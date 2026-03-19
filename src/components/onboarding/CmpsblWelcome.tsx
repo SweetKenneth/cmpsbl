@@ -4,19 +4,31 @@
  */
 
 import { useState, useEffect } from 'react';
-import { X, ArrowRight, Terminal, Sparkles, Database, ShoppingBag, Zap, Bot } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { X, ArrowRight, Sparkles, Terminal, Database, ShoppingBag, Zap, Bot, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'cmpsbl-welcomed';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  accent: string;
+  pattern: string;
+  /** Rendered on the final step only — actionable next steps */
+  nextSteps?: { text: string; href: string }[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
     icon: Sparkles,
     tag: 'Welcome',
     title: 'Welcome to CMPSBL',
-    body: 'A cognitive operating system where autonomous nodes discover, evolve, and export real software — not prompts, not wrappers. Real, scored, portable code.',
+    body: 'An AI operating system built from 40 autonomous nodes. It discovers, scores, and exports real software — not prompts or wrappers. Everything runs on one composable substrate.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -24,7 +36,7 @@ const STEPS = [
     icon: Terminal,
     tag: 'Build',
     title: 'CodeLab & Signal Forge',
-    body: 'Write, test, and forge signals directly inside the substrate. CodeLab is your creation surface — Signal Forge turns raw ideas into substrate-grade capabilities.',
+    body: 'Write code, test resolvers, and forge signals in-browser. Describe what you want — Signal Forge analyzes it against the full node topology and generates a scored blueprint.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -32,7 +44,7 @@ const STEPS = [
     icon: Database,
     tag: 'Remember',
     title: 'Persistent Memory',
-    body: 'Every discovery, every collision, every ascended capability is stored in your personal vault. Your work persists across sessions — the substrate never forgets.',
+    body: 'Every discovery is stored in your vault with 4-tier temperature management (hot → warm → cool → cold). Your work persists across sessions — the substrate never forgets.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
@@ -40,25 +52,22 @@ const STEPS = [
     icon: ShoppingBag,
     tag: 'Acquire',
     title: 'The Store',
-    body: 'Curated capability packs across 6 strategic domains. Each pack slots into your runtime — activate what you need, swap anytime, govern everything.',
+    body: '10 products on a single pricing ladder. Runtime Agents execute autonomously. Composable Engines power the infrastructure. Browse plans, memories, and collector cards.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
   {
-    icon: Zap,
-    tag: 'Scale',
-    title: 'Upgrade & Evolve',
-    body: 'Unlock more memory slots, higher-tier discoveries, and deeper collision chains. Your substrate grows with you — from prototype to production.',
-    accent: 'neon-magenta',
-    pattern: 'radial-gradient(circle at 60% 20%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
-  },
-  {
     icon: Bot,
-    tag: 'Meet',
-    title: 'Meet DECODE',
-    body: 'Your substrate interpreter. DECODE translates between you and the 40-node cognitive mesh — ask questions, run commands, explore capabilities. Always listening.',
+    tag: 'Your next step',
+    title: 'Start Exploring',
+    body: 'You\'re ready. The free Builder tier gives you 3 memory slots, full runtime access, and no credit card required. Here\'s where to go:',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      { text: 'Read the quick-start guide', href: '/start-here' },
+      { text: 'Try the Memory Stream live', href: '/foundry' },
+      { text: 'Browse the Store', href: '/store' },
+    ],
   },
 ];
 
@@ -84,6 +93,7 @@ export function CmpsblWelcome() {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const seen = localStorage.getItem(STORAGE_KEY);
@@ -122,12 +132,18 @@ export function CmpsblWelcome() {
     }
   };
 
+  const handleNextStepClick = (href: string) => {
+    dismiss();
+    navigate(href);
+  };
+
   if (!open) return null;
 
   const current = STEPS[step];
   const Icon = current.icon;
   const colors = accentMap[current.accent] || accentMap.primary;
   const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
     <div
@@ -213,6 +229,23 @@ export function CmpsblWelcome() {
             <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">
               {current.body}
             </p>
+
+            {/* Actionable next steps on final slide */}
+            {isLastStep && current.nextSteps && (
+              <div className="mt-4 space-y-2 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns) => (
+                  <button
+                    key={ns.href}
+                    onClick={() => handleNextStepClick(ns.href)}
+                    className="w-full flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 border border-border/20 hover:border-primary/30 transition-all text-left group"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                    <span className="text-xs font-medium text-foreground group-hover:text-primary transition-colors">{ns.text}</span>
+                    <ArrowRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-primary ml-auto shrink-0 transition-colors" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Footer */}
@@ -227,10 +260,10 @@ export function CmpsblWelcome() {
               </Button>
             )}
             <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-              {step < STEPS.length - 1 ? (
-                <>Next <ArrowRight className="w-3.5 h-3.5" /></>
+              {isLastStep ? (
+                'Got it — let\'s go →'
               ) : (
-                'Enter the Substrate →'
+                <>Next <ArrowRight className="w-3.5 h-3.5" /></>
               )}
             </Button>
           </div>

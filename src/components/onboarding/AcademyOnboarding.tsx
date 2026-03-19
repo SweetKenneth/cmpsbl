@@ -4,19 +4,29 @@
  */
 
 import { useState, useEffect } from 'react';
-import { X, ArrowRight, GraduationCap, BookOpen, Terminal, Trophy, Sparkles } from 'lucide-react';
+import { X, ArrowRight, GraduationCap, BookOpen, Terminal, Trophy, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'academy-onboarded';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  accent: string;
+  pattern: string;
+  nextSteps?: string[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
     icon: GraduationCap,
     tag: 'Learn',
     title: 'Developer Academy',
-    body: 'Master the cognitive substrate through hands-on learning tracks. From your first SDK call to production-grade Ascension pipelines — guided, scored, and free.',
+    body: 'Hands-on learning tracks for the cognitive substrate. From your first SDK call to production Ascension pipelines — guided, scored, and completely free.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -24,7 +34,7 @@ const STEPS = [
     icon: BookOpen,
     tag: 'Tracks',
     title: '8 Learning Tracks',
-    body: 'BRAIN memory, NEXUS routing, DREAM cycles, Ascension lifecycle, CJPI scoring, resolver patterns, intent mesh, and production hardening. Each track builds on the last.',
+    body: 'Memory systems, NEXUS routing, DREAM cycles, Ascension lifecycle, CJPI scoring, resolver patterns, intent mesh, and production hardening. Each track builds on the last.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -39,18 +49,23 @@ const STEPS = [
   {
     icon: Trophy,
     tag: 'Earn',
-    title: 'Certifications & XP',
-    body: 'Earn verifiable certifications as you progress. Bronze → Silver → Gold → Platinum. Share badges, build your profile, and prove your substrate expertise.',
+    title: 'Certifications',
+    body: 'Earn verifiable certifications as you progress: Bronze → Silver → Gold → Platinum. Share badges, build your profile, and prove your substrate expertise.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Sparkles,
-    tag: 'Assist',
-    title: 'AI-Powered Tools',
-    body: 'Code assistant, smart debugger, doc generator, query builder, and performance advisor — all powered by NEXUS. Get help while you learn.',
+    tag: 'Your next step',
+    title: 'Start Your First Track',
+    body: 'The learning tracks are below. Here\'s how to begin:',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      'Pick a track that matches your experience level',
+      'Complete the interactive exercises in order',
+      'Earn your first certification badge',
+    ],
   },
 ];
 
@@ -102,6 +117,7 @@ export function AcademyOnboarding() {
   const Icon = current.icon;
   const colors = accentMap[current.accent] || accentMap.primary;
   const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
     <div className="fixed inset-0 z-[12000] grid place-items-center p-4 cmpsbl-welcome-backdrop" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}>
@@ -133,12 +149,23 @@ export function AcademyOnboarding() {
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] mb-1.5 cmpsbl-welcome-tag-fade text-muted-foreground/60">{current.tag}</p>
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">{current.title}</h2>
             <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">{current.body}</p>
+
+            {isLastStep && current.nextSteps && (
+              <div className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns) => (
+                  <div key={ns} className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-xs text-foreground/80 leading-relaxed">{ns}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (<Button variant="ghost" size="sm" onClick={back} className="text-xs h-9">Back</Button>) : (<Button variant="ghost" size="sm" onClick={dismiss} className="text-xs h-9 text-muted-foreground">Skip tour</Button>)}
             <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-              {step < STEPS.length - 1 ? (<>Next <ArrowRight className="w-3.5 h-3.5" /></>) : 'Start Learning →'}
+              {isLastStep ? 'Start Learning →' : (<>Next <ArrowRight className="w-3.5 h-3.5" /></>)}
             </Button>
           </div>
         </div>

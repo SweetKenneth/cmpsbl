@@ -4,27 +4,37 @@
  */
 
 import { useState, useEffect } from 'react';
-import { X, ArrowRight, Terminal, Code, Layers, Command, Rocket } from 'lucide-react';
+import { X, ArrowRight, Terminal, Code, Layers, Command, Rocket, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'workspace-onboarded';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  accent: string;
+  pattern: string;
+  nextSteps?: string[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
     icon: Terminal,
     tag: 'Build',
     title: 'Builder Workspace',
-    body: 'Your personal development environment inside the substrate. SDK templates, a tiered terminal, and direct access to the full power of 40 cognitive nodes.',
+    body: 'Your development environment inside the substrate. SDK templates, a tiered terminal, and direct access to 40 cognitive nodes — all in one place.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
   {
     icon: Code,
     tag: 'SDK',
-    title: 'Ready-Made Templates',
-    body: 'Memory Agent, DECODE Bot, DEFENSE Scanner, NEXUS Router — pick a template, customize it, and build. Every template includes working code you can run instantly.',
+    title: 'Starter Templates',
+    body: 'Memory Agent, DECODE Bot, DEFENSE Scanner, NEXUS Router — pick a template and start coding. Every template includes working, runnable code.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -32,25 +42,30 @@ const STEPS = [
     icon: Command,
     tag: 'Terminal',
     title: 'Tiered Terminal',
-    body: '66 system commands across 5 tiers. Builder tier gets 12 core commands free — status, memory recall, crystallization, SDK init. Higher tiers unlock full system control.',
+    body: '66 system commands across 5 tiers. Builder tier (free) gives you 12 core commands — status, memory recall, crystallization, SDK init. Higher tiers unlock full system control.',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Layers,
-    tag: 'Memory',
+    tag: 'State',
     title: 'Persistent State',
-    body: 'Your workspace remembers everything — code history, terminal sessions, active projects. Pick up exactly where you left off, on any device.',
+    body: 'Your workspace remembers everything — code history, terminal sessions, active projects. Pick up where you left off on any device.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 20% 40%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Rocket,
-    tag: 'Free',
-    title: 'First-Class Builder',
-    body: 'Builder tier is free forever. Full runtime access, persistent memory, SDK templates, and 12 terminal commands. No credit card required — start building now.',
+    tag: 'Your next step',
+    title: 'Start Building',
+    body: 'The workspace is ready. Here\'s what to do:',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      'Pick an SDK template to scaffold your first project',
+      'Open the terminal and run "status" to see your nodes',
+      'Try "memory.store" to save your first persistent memory',
+    ],
   },
 ];
 
@@ -102,6 +117,7 @@ export function WorkspaceOnboarding() {
   const Icon = current.icon;
   const colors = accentMap[current.accent] || accentMap.primary;
   const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
     <div className="fixed inset-0 z-[12000] grid place-items-center p-4 cmpsbl-welcome-backdrop" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}>
@@ -133,12 +149,23 @@ export function WorkspaceOnboarding() {
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] mb-1.5 cmpsbl-welcome-tag-fade text-muted-foreground/60">{current.tag}</p>
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">{current.title}</h2>
             <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">{current.body}</p>
+
+            {isLastStep && current.nextSteps && (
+              <div className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns) => (
+                  <div key={ns} className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-xs text-foreground/80 leading-relaxed">{ns}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (<Button variant="ghost" size="sm" onClick={back} className="text-xs h-9">Back</Button>) : (<Button variant="ghost" size="sm" onClick={dismiss} className="text-xs h-9 text-muted-foreground">Skip tour</Button>)}
             <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-              {step < STEPS.length - 1 ? (<>Next <ArrowRight className="w-3.5 h-3.5" /></>) : 'Start Building →'}
+              {isLastStep ? 'Open Workspace →' : (<>Next <ArrowRight className="w-3.5 h-3.5" /></>)}
             </Button>
           </div>
         </div>

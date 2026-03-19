@@ -1,22 +1,32 @@
 /**
- * Upgrade Onboarding — First-visit explainer for /upgrade
+ * Upgrade Onboarding — First-visit explainer for /store plans tab
  * Introduces the tier system, slots, vault scaling, and Memory Stream pulls
  */
 
 import { useState, useEffect } from 'react';
-import { X, ArrowRight, Zap, Rocket, Database, Sparkles, Crown } from 'lucide-react';
+import { X, ArrowRight, Zap, Rocket, Database, Sparkles, Crown, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'upgrade-onboarded';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  accent: string;
+  pattern: string;
+  nextSteps?: string[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
     icon: Zap,
     tag: 'Scale',
-    title: 'Upgrade & Evolve',
-    body: 'Your substrate grows with you. Every tier unlocks more memory slots, higher-tier discoveries, and deeper collision chains — from prototype to production.',
+    title: 'Plans & Pricing',
+    body: 'Every tier runs the same 40-node substrate. Plans control capacity — how many memory slots, how deep your vault, and how many daily pulls you get.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -24,15 +34,15 @@ const STEPS = [
     icon: Rocket,
     tag: 'Free',
     title: 'Builder — $0 Forever',
-    body: '3 memory slots, full 40-node runtime, persistent memory, and governed orchestration. First-class citizen status — no credit card, no expiration.',
+    body: '3 memory slots, full runtime access, persistent memory, and governed orchestration. First-class builder status — no credit card, no time limit.',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Database,
     tag: 'Vault',
-    title: 'Scale Your Vault',
-    body: 'Higher tiers mean more vault capacity, more Memory Stream pulls per day, and access to rarer discovery tiers. Your crystallized memories compound over time.',
+    title: 'Vault Scaling',
+    body: 'Higher tiers expand your vault capacity, increase daily Memory Stream pulls, and unlock rarer discovery tiers. Your crystallized memories compound over time.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -40,17 +50,22 @@ const STEPS = [
     icon: Sparkles,
     tag: 'Discover',
     title: 'Deeper Discoveries',
-    body: 'Unlock Mythic and Apex-tier crystallizations. Higher plans access deeper collision chains and more complex multi-node compositions the substrate discovers.',
+    body: 'Paid plans access Mythic and Apex-tier crystallizations, longer collision chains, and more complex multi-node compositions that the substrate discovers.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Crown,
-    tag: 'Architect',
-    title: 'Unlimited Control',
-    body: 'The Architect tier unlocks unlimited slots, priority routing, dedicated compute, and full governance controls. Own the entire substrate.',
+    tag: 'Your next step',
+    title: 'Choose Your Tier',
+    body: 'The plan comparison is below. Here\'s what to look for:',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      'Compare memory slots, vault depth, and daily pulls',
+      'Start free with Builder — upgrade anytime',
+      'All plans include the full 40-node runtime',
+    ],
   },
 ];
 
@@ -102,6 +117,7 @@ export function UpgradeOnboarding() {
   const Icon = current.icon;
   const colors = accentMap[current.accent] || accentMap.primary;
   const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
     <div className="fixed inset-0 z-[12000] grid place-items-center p-4 cmpsbl-welcome-backdrop" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}>
@@ -113,7 +129,7 @@ export function UpgradeOnboarding() {
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-neon-purple/40 to-transparent" />
 
           <div className="relative flex items-center justify-between px-5 pt-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50">UPGRADE</span>
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50">PLANS</span>
             <div className="flex items-center gap-3">
               <span className="text-[10px] font-mono text-muted-foreground/40 tabular-nums">{String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
               <button onClick={dismiss} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors" aria-label="Skip"><X className="w-4 h-4" /></button>
@@ -133,12 +149,23 @@ export function UpgradeOnboarding() {
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] mb-1.5 cmpsbl-welcome-tag-fade text-muted-foreground/60">{current.tag}</p>
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">{current.title}</h2>
             <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">{current.body}</p>
+
+            {isLastStep && current.nextSteps && (
+              <div className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns) => (
+                  <div key={ns} className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-xs text-foreground/80 leading-relaxed">{ns}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (<Button variant="ghost" size="sm" onClick={back} className="text-xs h-9">Back</Button>) : (<Button variant="ghost" size="sm" onClick={dismiss} className="text-xs h-9 text-muted-foreground">Skip tour</Button>)}
             <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-              {step < STEPS.length - 1 ? (<>Next <ArrowRight className="w-3.5 h-3.5" /></>) : 'View Plans →'}
+              {isLastStep ? 'Compare Plans →' : (<>Next <ArrowRight className="w-3.5 h-3.5" /></>)}
             </Button>
           </div>
         </div>
