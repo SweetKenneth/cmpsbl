@@ -99,7 +99,7 @@ function UpgradeCTA({ feature, compact }: { feature: DepthFeatureKey; compact?: 
           <p className="text-xs text-muted-foreground">{meta.description}</p>
         </div>
         <Button variant="outline" size="sm" asChild className="shrink-0">
-          <Link to="/upgrade">
+          <Link to="/store?tab=plans">
             Upgrade <ArrowUpRight className="w-3 h-3 ml-1" />
           </Link>
         </Button>

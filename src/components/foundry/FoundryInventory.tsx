@@ -181,7 +181,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
             </button>
           ) : (
             <Link
-              to="/upgrade"
+              to="/store?tab=plans"
               className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded border border-border/20 hover:border-border/40"
             >
               <Lock className="w-3 h-3" />

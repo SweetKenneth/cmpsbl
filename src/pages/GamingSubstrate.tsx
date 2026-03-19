@@ -419,7 +419,7 @@ export default function GamingSubstrate() {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="gap-2 h-12 sm:h-14 px-6 sm:px-8 text-base">
-                <Link to="/upgrade">
+                <Link to="/store?tab=plans">
                   <Package className="w-5 h-5" />
                   Or Start With a Plan
                 </Link>

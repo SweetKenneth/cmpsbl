@@ -247,7 +247,7 @@ export default function Solutions() {
               <Link to="/start-here">Get Started Free <ArrowRight className="w-5 h-5" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/upgrade">View Plans</Link>
+              <Link to="/store?tab=plans">View Plans</Link>
             </Button>
           </div>
         </motion.div>
