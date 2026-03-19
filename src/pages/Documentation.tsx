@@ -872,7 +872,7 @@ function ExtensionsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Extensions</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Extend substrate functionality with custom hooks that run before or after system actions.
+          Extend platform functionality with custom hooks that run before or after system actions.
           Extensions are sandboxed and rate-limited to prevent interference with core operations.
         </p>
       </div>
