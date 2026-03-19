@@ -1137,7 +1137,7 @@ export default function Changelog() {
     id: `AUTO-${entry.id.slice(-4)}`,
     fossilized: entry.date,
     origin: 'autonomous',
-    stimulus: entry.pressures[0] || 'SEBA evolution run — autonomous pressure detection',
+    stimulus: entry.pressures[0] || 'Automated evolution run — autonomous pressure detection',
     adaptations: entry.responses,
     phenotype: entry.capabilities,
     autonomous: true,
