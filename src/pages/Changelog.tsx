@@ -58,8 +58,8 @@ interface Stratum {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// STRATUM I — IRONCLAD
-// The substrate grew armor, then learned to govern its own rhythm.
+// EPOCH I — IRONCLAD
+// The platform grew armor, then learned to govern its own rhythm.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const stratumIronclad: Specimen[] = [
