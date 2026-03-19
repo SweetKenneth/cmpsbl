@@ -969,7 +969,7 @@ const stratumMindgames: Specimen[] = [
     origin: "architecture",
     stimulus: "The evolution engine carried its old name through every runtime path — terminal, telemetry, and type system all referenced a deprecated identity",
     adaptations: [
-      "Node identity unified across all 40 positions in the matrix — terminal commands, type unions, and backend telemetry aligned",
+      "Module identity unified across all 40 positions in the matrix — terminal commands, type unions, and backend telemetry aligned",
       "Legacy aliases retained at the compatibility layer only — new code references the canonical name exclusively",
     ],
     phenotype: [
