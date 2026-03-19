@@ -226,7 +226,7 @@ export default function ApiAccess() {
           <motion.div {...fadeUp} className="text-center mb-10">
              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">What your key unlocks</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              One API key gives you access to every node through a single endpoint.
+              One API key gives you access to every module through a single endpoint.
             </p>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
