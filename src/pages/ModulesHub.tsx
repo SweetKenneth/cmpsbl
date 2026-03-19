@@ -22,13 +22,13 @@ export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="All Nodes — Browse the Full Topology | CMPSBL"
-        description="Explore every node in CMPSBL's substrate: BRAIN, MEMORY, DREAM, NEXUS, DEFENSE, ORACLE, PHANTOM, FORGE, and more. Each node is an autonomous subsystem with dedicated resolvers and mesh links."
+        title="All Modules — Browse the Full System Map | CMPSBL"
+        description="Explore every module in CMPSBL: Memory, Reasoning, Routing, Security, Evolution, and more. Each module is a specialized subsystem with dedicated capabilities and connections."
         image="https://cmpsbl.com/og/systems.jpg"
-        keywords={['substrate systems', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
+        keywords={['AI platform modules', 'composable AI architecture', 'AI architecture layers', 'cognitive systems', 'composable AI']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Nodes', url: 'https://cmpsbl.com/modules' },
+          { name: 'Modules', url: 'https://cmpsbl.com/modules' },
         ]}
       />
 
