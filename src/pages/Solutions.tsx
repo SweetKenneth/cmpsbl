@@ -106,9 +106,9 @@ export default function Solutions() {
 
       <SEO
         title="Solutions — Products & Deployment Options | CMPSBL"
-        description="CMPSBL's full product suite: free persistent memory, 54 sealed engines, 24 Memory Packs, composable agents with DREAM synthesis, CodeLab sandbox, and air-gapped LNCHBL self-hosted deployment."
+        description="CMPSBL's full product suite: free persistent memory, capability packs, smart routing, self-improvement cycles, CodeLab sandbox, and self-hosted deployment options."
         canonical="https://cmpsbl.com/solutions"
-        keywords={['AI solutions', 'persistent memory', 'composable agents', 'self-hosted AI', 'LNCHBL deployment', 'Memory Packs']}
+        keywords={['AI solutions', 'persistent memory', 'composable AI', 'self-hosted AI', 'capability packs']}
       />
 
       <PublicNav />
