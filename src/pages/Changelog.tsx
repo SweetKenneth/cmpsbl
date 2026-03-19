@@ -1029,7 +1029,7 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-002",
     fossilized: "2026-03-07",
     origin: "architecture",
-    stimulus: "The substrate's 40 nodes existed without a unified discovery surface — users couldn't explore what the system actually contained",
+    stimulus: "The platform's 40 modules existed without a unified discovery surface — users couldn't explore what the system actually contained",
     adaptations: [
       "Interactive node explorer with sector-grouped topology view",
       "Each node displays its generation tag, sector assignment, and real-time health status",
