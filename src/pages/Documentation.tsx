@@ -636,7 +636,7 @@ function DreamSection() {
 
       {/* Dream modes */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Dream Modes</h3>
+        <h3 className="font-semibold text-foreground mb-4">Processing Modes</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <InfoCard icon={Clock} title="Simnap Mode">
             Quick 30-second consolidation cycle. Compresses recent Hot-tier memories, rescores Warm-tier
