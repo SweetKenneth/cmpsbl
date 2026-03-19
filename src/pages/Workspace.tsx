@@ -190,7 +190,7 @@ export default function Workspace() {
                         </div>
                       )}
                       {isLocked && (
-                        <Button size="sm" variant="outline" className="w-full mt-3 text-xs font-mono h-8" onClick={() => navigate('/upgrade')}>
+                        <Button size="sm" variant="outline" className="w-full mt-3 text-xs font-mono h-8" onClick={() => navigate('/store?tab=plans')}>
                           <Lock className="w-3 h-3 mr-1" /> Upgrade to {tierInfo.label}
                         </Button>
                       )}
