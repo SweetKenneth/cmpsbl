@@ -548,7 +548,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "The hardest problem in AI isn't intelligence — it's continuity. How we built a three-tier memory architecture for persistent recall.",
     href: "/blog/teaching-machines-to-remember", category: "AI Technology",
     date: "2025-02-08", readTime: "15 min", image: ch03Img,
-    imageAlt: "BRAIN node memory architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "BRAIN module memory architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch02-routing', title: "Routing the Unknown",
