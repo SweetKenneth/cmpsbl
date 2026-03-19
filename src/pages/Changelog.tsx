@@ -958,7 +958,7 @@ const stratumMindgames: Specimen[] = [
       "Bot detection and exclusion happens at the data layer, not the presentation layer",
     ],
     phenotype: [
-      "The substrate observes its own traffic — no third-party analytics, no data leakage",
+      "The platform observes its own traffic — no third-party analytics, no data leakage",
       "Real-time visitor intelligence is a native system capability",
     ],
     affectedNodes: ["DECODE", "HARVEST"],
