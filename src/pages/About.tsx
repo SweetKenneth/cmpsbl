@@ -52,8 +52,8 @@ const PILLARS = [
   {
     icon: TrendingUp,
     name: "EVOLVE",
-    verb: "Compound over time",
-    description: "Every interaction feeds back. Heuristics mutate and improve. Your infrastructure gets smarter the more it runs.",
+     verb: "Get smarter over time",
+    description: "Every interaction feeds back into the system. Strategies improve, patterns sharpen, and your infrastructure gets smarter the longer it runs.",
     color: "text-amber-500",
     bg: "bg-amber-500/10",
     border: "border-amber-500/20",
