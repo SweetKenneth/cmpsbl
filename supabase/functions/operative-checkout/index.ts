@@ -30,23 +30,29 @@ serve(async (req) => {
       throw new Error("Missing price_id or operative_slug");
     }
 
-    // Try to get authenticated user (supports guest checkout)
+    // Require authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
     let customerEmail: string | undefined;
     let customerId: string | undefined;
     let userId: string | undefined;
 
-    const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      if (data.user?.email) {
-        customerEmail = data.user.email;
-        userId = data.user.id;
-        const customers = await stripe.customers.list({ email: customerEmail, limit: 1 });
-        if (customers.data.length > 0) {
-          customerId = customers.data[0].id;
-        }
-      }
+    const token = authHeader.replace("Bearer ", "");
+    const { data } = await supabaseClient.auth.getUser(token);
+    if (!data.user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
+    customerEmail = data.user.email;
+    userId = data.user.id;
+    const customers = await stripe.customers.list({ email: customerEmail, limit: 1 });
+    if (customers.data.length > 0) {
+      customerId = customers.data[0].id;
     }
 
     const origin = req.headers.get("origin") || "https://cmpsbl.com";

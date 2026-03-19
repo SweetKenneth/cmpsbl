@@ -120,6 +120,13 @@ export default function AgentDetail() {
       return;
     }
 
+    if (!user) {
+      toast.error("Please sign in to purchase.", {
+        action: { label: "Sign In", onClick: () => window.location.href = "/auth" },
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke("agent-checkout", {

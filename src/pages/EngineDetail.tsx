@@ -228,6 +228,13 @@ export default function EngineDetail() {
       return;
     }
 
+    if (!user) {
+      toast.error("Please sign in to purchase.", {
+        action: { label: "Sign In", onClick: () => window.location.href = "/auth" },
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const checkoutFn = engine.isSubscription ? "cmpsbl-engine-checkout" : "standalone-engine-checkout";

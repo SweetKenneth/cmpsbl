@@ -218,6 +218,13 @@ export default function GamingSubstrate() {
   }, [searchParams]);
 
   const handlePurchaseWorldEngine = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Please sign in to purchase.", {
+        action: { label: "Sign In", onClick: () => window.location.href = "/auth" },
+      });
+      return;
+    }
     setPurchasing(true);
     try {
       const { data, error } = await supabase.functions.invoke('world-engine-checkout', {

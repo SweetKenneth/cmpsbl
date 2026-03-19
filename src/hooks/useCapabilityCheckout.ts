@@ -6,6 +6,7 @@
 
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { 
   hasStripeConfig, 
@@ -90,6 +91,14 @@ export function useCapabilityCheckout() {
   });
 
   const checkout = useCallback(async (capabilityId: string, capabilityName?: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('Please sign in to purchase.', {
+        action: { label: 'Sign In', onClick: () => window.location.href = '/auth' },
+      });
+      return;
+    }
+    
     const result = getUnifiedStripeConfig(capabilityId);
 
     if (!result) {

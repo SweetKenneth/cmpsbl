@@ -80,8 +80,15 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
       return;
     }
 
-    setLoading(true);
+    // Require auth for paid checkout
+    if (!user) {
+      toast.error("Please sign in to purchase.", {
+        action: { label: "Sign In", onClick: () => navigate("/auth") },
+      });
+      return;
+    }
 
+    setLoading(true);
     try {
       if (isAgent) {
         const agentId = item.id.replace("agent-", "");

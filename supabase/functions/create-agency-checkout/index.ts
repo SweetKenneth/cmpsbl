@@ -39,21 +39,22 @@ serve(async (req) => {
     const { agencyId, additionalCognitives = 0, email } = await req.json();
     logStep("Request received", { agencyId, additionalCognitives, email });
 
-    // Try to get authenticated user
-    let user = null;
-    let userEmail = email;
-    
+    // Require authentication
     const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      user = data.user;
-      if (user?.email) userEmail = user.email;
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
-    
-    if (!userEmail) {
-      throw new Error("Email is required");
+    const authToken = authHeader.replace("Bearer ", "");
+    const { data: authResult } = await supabaseClient.auth.getUser(authToken);
+    const user = authResult.user;
+    if (!user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
+    const userEmail = user.email;
     logStep("User context", { userId: user?.id, email: userEmail });
 
     // Initialize Stripe

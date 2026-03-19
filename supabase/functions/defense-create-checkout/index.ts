@@ -18,22 +18,27 @@ serve(async (req) => {
   );
 
   try {
-    // Try to get user from auth header (web app flow)
+    // Require authentication
     const authHeader = req.headers.get("Authorization");
-    let userEmail: string | null = null;
-    
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      userEmail = data.user?.email || null;
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to subscribe", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
+    const token = authHeader.replace("Bearer ", "");
+    const { data: authData } = await supabaseClient.auth.getUser(token);
+    if (!authData.user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to subscribe", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
+    const userEmail = authData.user.email;
 
     // Parse request body
     const body = await req.json();
     const { priceId, tier, billingInterval, email, success_url, cancel_url, metadata } = body;
 
-    // Use email from body if no authenticated user (WordPress plugin flow)
-    const finalEmail = userEmail || email;
+    const finalEmail = userEmail;
 
     if (!priceId || !tier || !finalEmail) {
       throw new Error("Missing required fields: priceId, tier, and email");
