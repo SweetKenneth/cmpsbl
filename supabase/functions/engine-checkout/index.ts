@@ -79,7 +79,7 @@ serve(async (req) => {
     const { tier, interval = 'monthly' } = await req.json();
     
     if (!tier || !PRICE_MAP[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Valid tiers: creator, architect`);
+      throw new Error(`Invalid tier: ${tier}. Valid tiers: creator, studio, architect`);
     }
     
     const priceId = PRICE_MAP[tier][interval];
