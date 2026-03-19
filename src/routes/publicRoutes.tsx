@@ -109,7 +109,7 @@ export const publicRoutes = (
     <Route path="/dream-eater/artifacts" element={<DreamArtifacts />} />
     <Route path="/blog" element={<Blog />} />
     <Route path="/investors" element={<InvestorsPublic />} />
-    <Route path="/substrate" element={<Navigate to="/" replace />} />
+    <Route path="/substrate" element={<Navigate to="/ai-operating-system" replace />} />
     <Route path="/os" element={<SubstrateOS />} />
     <Route path="/demo" element={<Navigate to="/" replace />} />
     <Route path="/try" element={<Navigate to="/" replace />} />

@@ -163,8 +163,8 @@ export default function Foundations() {
                 <p className="text-sm text-muted-foreground mb-4">
                   The architectural specification — 40 nodes, 12 sectors, layered execution, mesh overlays, and synergy memories.
                 </p>
-                <Link to="/substrate" className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline">
-                  Explore Substrate <ArrowRight className="w-3.5 h-3.5" />
+                <Link to="/ai-operating-system" className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline">
+                  Explore Platform <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
               <Link to="/namespace" className="p-6 rounded-xl border border-border/50 hover:border-primary/30 transition-all duration-300 bg-card group card-lift">

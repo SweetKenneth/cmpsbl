@@ -129,7 +129,7 @@ export default function Enterprise() {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
-                <Link to="/architecture">View Architecture</Link>
+                <Link to="/ai-operating-system">How It Works</Link>
               </Button>
             </div>
           </motion.div>

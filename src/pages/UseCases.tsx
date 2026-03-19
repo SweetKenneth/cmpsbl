@@ -482,7 +482,7 @@ export default function UseCases() {
             <p className="text-muted-foreground max-w-2xl mx-auto">
               From self-healing aircraft to kitchens that learn your taste — see what's possible 
               when AI remembers, adapts, and improves over time. Powered by the{" "}
-              <Link to="/architecture" className="text-primary hover:underline font-medium">40-node substrate</Link>{" "}
+              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">cognitive platform</Link>{" "}
               and <a href="https://en.wikipedia.org/wiki/Internet_of_things" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">IoT integration</a>.
             </p>
           </motion.div>

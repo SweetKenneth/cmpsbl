@@ -140,7 +140,7 @@ export default function Solutions() {
               Intelligent routing. Offline learning. Governed evolution.{" "}
               <Link to="/enterprise" className="text-primary hover:underline font-medium">Self-hosted deployment</Link>.{" "}
               All production-ready. Built on the{" "}
-              <Link to="/architecture" className="text-primary hover:underline font-medium">CMPSBL cognitive substrate</Link>.
+              <Link to="/ai-operating-system" className="text-primary hover:underline font-medium">CMPSBL cognitive platform</Link>.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">

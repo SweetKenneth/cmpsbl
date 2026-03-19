@@ -97,8 +97,8 @@ export default function TryIt() {
               </Link>
             </Button>
             <Button variant="outline" asChild className="gap-2 min-h-[44px]">
-              <Link to="/architecture">
-                Explore Architecture
+              <Link to="/ai-operating-system">
+                How It Works
               </Link>
             </Button>
           </div>

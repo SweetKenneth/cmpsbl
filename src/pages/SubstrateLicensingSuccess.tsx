@@ -200,8 +200,8 @@ export default function SubstrateLicensingSuccess() {
 
                 <div className="flex justify-center mt-8">
                   <Button asChild className="gap-2">
-                    <Link to="/substrate">
-                      Go to Substrate Dashboard
+                    <Link to="/os">
+                      Go to Dashboard
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   </Button>

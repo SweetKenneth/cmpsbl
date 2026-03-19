@@ -343,7 +343,7 @@ export default function Architecture() {
               <Link to="/documentation">
                 <Button variant="outline" className="hover:border-primary/30 transition-colors">Documentation</Button>
               </Link>
-              <Link to="/substrate">
+              <Link to="/os">
                 <Button variant="outline" className="hover:border-primary/30 transition-colors">Live Dashboard</Button>
               </Link>
             </div>
