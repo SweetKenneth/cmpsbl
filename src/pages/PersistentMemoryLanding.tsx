@@ -207,15 +207,15 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Keep your stack. We add continuity.</h2>
-                <p className="text-lg text-muted-foreground">No rewrites. No new framework. No migration.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Works with what you already use</h2>
+                <p className="text-lg text-muted-foreground">No rewrites. No new framework. No migration required.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-6">
                 {[
-                  { icon: CheckCircle, title: "You keep your agent", description: "Works with LangChain, CrewAI, AutoGen, or your custom agent. No framework lock-in." },
-                  { icon: CheckCircle, title: "You keep your stack", description: "React, Node.js, Python — it all works. Drop-in integration, no infrastructure to manage." },
-                  { icon: CheckCircle, title: "We add memory", description: "Your agent just stops forgetting. Under an hour to integrate. Free forever on the base tier." }
+                  { icon: CheckCircle, title: "Keep your agent framework", description: "LangChain, CrewAI, AutoGen, or your own custom setup — it all works. No lock-in." },
+                  { icon: CheckCircle, title: "Keep your tech stack", description: "React, Node.js, Python, or anything with HTTP. Drop it in, no infrastructure to manage." },
+                  { icon: CheckCircle, title: "We just add memory", description: "Your agent stops forgetting. Under an hour to integrate. Free forever on the base tier." }
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
