@@ -19,7 +19,7 @@ export default function Upgrade() {
       </div>
       <SEO
         title="Pricing — Free to Architect Plans | CMPSBL"
-        description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, unlimited). Every tier gets full 40-node runtime. Scale vault and Memory Stream pulls."
+        description="CMPSBL plans: Builder (free, 3 slots), Studio ($29/mo, 6 slots), Creator ($49/mo, 9 slots), Architect ($79/mo, 12 slots). Every tier gets full platform access. Scale storage and capabilities as you grow."
       />
       <PublicNav />
       <UpgradeOnboarding />
