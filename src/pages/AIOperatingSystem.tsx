@@ -52,7 +52,7 @@ const faqItems = [
   },
   {
     question: "Can CMPSBL work with existing AI models?",
-    answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS node intelligently routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on task requirements. Bring your own keys and your existing AI stack — CMPSBL orchestrates everything underneath.",
+    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS node automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
     question: "What is the substrate architecture?",
