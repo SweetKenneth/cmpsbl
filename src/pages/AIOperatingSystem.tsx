@@ -48,7 +48,7 @@ const faqItems = [
   },
   {
     question: "Who needs an AI Operating System?",
-    answer: "Any organization running AI in production — especially those managing multiple models, needing persistent agent memory, requiring AI-specific security (prompt injection defense), or wanting their systems to autonomously improve. Enterprise AI teams, AI-native startups, and agencies building AI products all benefit.",
+    answer: "Any team running AI in production — especially those managing multiple models, needing persistent agent memory, requiring AI-specific security, or wanting their systems to automatically improve over time. Enterprise AI teams, AI startups, and agencies building AI products all benefit.",
   },
   {
     question: "Can CMPSBL work with existing AI models?",
