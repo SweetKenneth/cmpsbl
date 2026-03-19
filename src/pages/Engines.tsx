@@ -478,7 +478,7 @@ export default function Engines() {
                 </div>
                 <div className="flex gap-3 mt-2">
                   <Button asChild variant="outline" size="sm" className="gap-1">
-                    <Link to="/composable-cognitives">
+                    <Link to="/store">
                       Browse 5 Meta-Agents — 40% off bundled
                     </Link>
                   </Button>

@@ -85,7 +85,7 @@ export function TemplateGallery() {
 
           {/* CTA */}
           <Button asChild size="lg" className="w-full gap-2 bg-gradient-to-r from-primary to-violet-600 hover:opacity-90">
-            <Link to="/composable-cognitives">
+            <Link to="/store">
               <ShoppingCart className="w-5 h-5" />
               Browse Runtime Agents
               <ArrowRight className="w-4 h-4" />

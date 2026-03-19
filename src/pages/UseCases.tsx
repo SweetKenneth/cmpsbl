@@ -438,7 +438,7 @@ export default function UseCases() {
 
             <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>,{" "}
-              intelligent routing, and <Link to="/engines" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
+              intelligent routing, and <Link to="/store" className="text-primary hover:underline font-medium">adaptive security</Link> —{" "}
               CMPSBL powers{" "}
               <a href="https://en.wikipedia.org/wiki/Applications_of_artificial_intelligence" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI applications</a>{" "}
               from <Link to="/gaming" className="text-primary hover:underline font-medium">gaming</Link>{" "}

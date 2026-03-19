@@ -232,7 +232,7 @@ export default function Architecture() {
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
                   40 nodes across 12 sectors powering{" "}
-                  <Link to="/engines" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
+                  <Link to="/store" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
                   Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
                   No single node can dominate system-level decisions without proportional representation.{" "}
                   <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}

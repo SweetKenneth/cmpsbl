@@ -132,7 +132,7 @@ export default function StartHere() {
             You build on the substrate — adding{" "}
             <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
             DREAM cycles, governed evolution, and{" "}
-            <Link to="/engines" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
+            <Link to="/store" className="text-primary hover:underline font-medium">intelligent routing</Link>{" "}
             to any AI application.
           </motion.p>
           <motion.p {...stagger(0.2)} className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-3xl mb-12">
