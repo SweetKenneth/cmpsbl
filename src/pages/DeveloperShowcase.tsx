@@ -200,7 +200,7 @@ export default function DeveloperShowcase() {
             <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />What You Can Build With</Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Core Capabilities</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Everything your app needs to think, remember, and improve — built on 40 specialized nodes.
+              Everything your app needs to think, remember, and improve — built on 40 specialized modules.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
