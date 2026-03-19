@@ -110,12 +110,9 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
         }
         throw new Error("No checkout URL returned");
       } else {
-        const { data, error } = await supabase.functions.invoke("marketplace-checkout", {
-          body: {
-            product_type: "core",
-            unit_amount_usd: Math.round(item.priceCents / 100),
-            item_name: `${item.name} Engine — Sealed Runtime`,
-          },
+        const engineSlug = item.id.replace("engine-", "");
+        const { data, error } = await supabase.functions.invoke("standalone-engine-checkout", {
+          body: { engine_slug: engineSlug },
         });
         if (error) throw error;
         if ((data as any)?.url) {

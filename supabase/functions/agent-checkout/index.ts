@@ -1,7 +1,6 @@
 /**
- * Agent Checkout — Handles purchases for 5 Fused Meta-Agents
- * Tiered: Free $0, Starter $79, Pro $129, Elite $159, Apex $249
- * 40% bundle discount with CMPSBL Engine
+ * Agent Checkout — 5 Meta-Agents with Stripe Price IDs
+ * PRIMITIVE (Free), WRAITH ($79), OBSIDIAN ($129), MONOLITH ($159), RAPTOR ($249)
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -14,27 +13,15 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Tiered agent pricing (cents)
-const AGENT_PRICES: Record<string, number> = {
-  // Free
-  hybrid: 0, educator: 0, translator: 0,
-  // Starter — $79
-  writer: 7900, support: 7900, recruiter: 7900, marketing: 7900, designer: 7900,
-  // Professional — $129
-  sales: 12900, research: 12900, ops: 12900, legal: 12900,
-  "data-engineer": 12900, product: 12900, finance: 12900, devops: 12900, strategist: 12900,
-  // Elite — $159
-  coding: 15900, analyst: 15900, security: 15900,
+// Canonical agent → Stripe price mapping
+const AGENT_PRICE_IDS: Record<string, { price_id: string; tier: string }> = {
+  wraith:   { price_id: "price_1TCnaKQ7FtTiAL4alQC6BK8i", tier: "Starter" },
+  obsidian: { price_id: "price_1TCnaLQ7FtTiAL4aZBkVYaOJ", tier: "Pro" },
+  monolith: { price_id: "price_1TCnaMQ7FtTiAL4anddIc4gG", tier: "Elite" },
+  raptor:   { price_id: "price_1TCnaNQ7FtTiAL4aq09tW9PL", tier: "Apex" },
 };
 
-// Tier labels for checkout display
-const AGENT_TIERS: Record<string, string> = {
-  hybrid: 'Free', educator: 'Free', translator: 'Free',
-  writer: 'Starter', support: 'Starter', recruiter: 'Starter', marketing: 'Starter', designer: 'Starter',
-  sales: 'Professional', research: 'Professional', ops: 'Professional', legal: 'Professional',
-  "data-engineer": 'Professional', product: 'Professional', finance: 'Professional', devops: 'Professional', strategist: 'Professional',
-  coding: 'Elite', analyst: 'Elite', security: 'Elite',
-};
+const FREE_AGENTS = new Set(["primitive"]);
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -56,14 +43,8 @@ serve(async (req) => {
 
     if (!agent_id) throw new Error("Missing agent_id");
 
-    const basePriceCents = AGENT_PRICES[agent_id];
-    if (basePriceCents === undefined) throw new Error(`Unknown agent: ${agent_id}`);
-
-    // Apply 40% bundle discount if combining with CMPSBL Engine
-    const priceCents = bundle_with_engine ? Math.round(basePriceCents * 0.6) : basePriceCents;
-
     // Free agents — instant activation
-    if (priceCents === 0) {
+    if (FREE_AGENTS.has(agent_id)) {
       const mintId = `AGT-${agent_id.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
       return new Response(JSON.stringify({
         free: true,
@@ -75,6 +56,10 @@ serve(async (req) => {
       });
     }
 
+    // Paid agent — must have a known price ID
+    const agentConfig = AGENT_PRICE_IDS[agent_id];
+    if (!agentConfig) throw new Error(`Unknown agent: ${agent_id}`);
+
     // Require authentication for paid checkout
     const authHeader = req.headers.get("Authorization");
     if (!authHeader || authHeader === "Bearer null") {
@@ -84,10 +69,6 @@ serve(async (req) => {
       });
     }
 
-    let customerEmail: string | undefined;
-    let customerId: string | undefined;
-    let userId: string | undefined;
-
     const token = authHeader.replace("Bearer ", "");
     const { data } = await supabaseClient.auth.getUser(token);
     if (!data.user?.email) {
@@ -96,33 +77,19 @@ serve(async (req) => {
         status: 401,
       });
     }
-    customerEmail = data.user.email;
-    userId = data.user.id;
+    const customerEmail = data.user.email;
+    const userId = data.user.id;
+
     const customers = await stripe.customers.list({ email: customerEmail, limit: 1 });
-    if (customers.data.length > 0) customerId = customers.data[0].id;
+    const customerId = customers.data.length > 0 ? customers.data[0].id : undefined;
 
     const origin = req.headers.get("origin") || "https://cmpsbl.com";
     const displayName = (agent_name || agent_id).toUpperCase();
-    const tier = AGENT_TIERS[agent_id] || 'Standard';
-
-    const description = bundle_with_engine
-      ? `${tier} Sealed Runtime + CMPSBL Engine Bundle (40% off)`
-      : `${tier} Sealed Runtime — perpetual license with DREAM Synthesis, auto-tiering memory, and always-on CLM.`;
 
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
-      customer_email: customerId ? undefined : customerEmail || undefined,
-      line_items: [{
-        price_data: {
-          currency: "usd",
-          unit_amount: priceCents,
-          product_data: {
-            name: `${displayName} Agent — ${tier} Tier`,
-            description,
-          },
-        },
-        quantity: 1,
-      }],
+      customer_email: customerId ? undefined : customerEmail,
+      line_items: [{ price: agentConfig.price_id, quantity: 1 }],
       mode: "payment",
       success_url: `${origin}/composable-cognitives?licensed=${agent_id}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/composable-cognitives?canceled=1`,
@@ -131,15 +98,15 @@ serve(async (req) => {
         agent_id,
         agent_name: displayName,
         chosen_name: chosen_name || "",
-        tier,
+        tier: agentConfig.tier,
         bundle: bundle_with_engine ? "true" : "false",
         artifact_type: "sealed-runtime",
         license_type: "perpetual",
-        user_id: userId || "",
+        user_id: userId,
       },
     });
 
-    console.log(`[AGENT-CHECKOUT] Session for ${agent_id} (${tier}), price: $${priceCents / 100}${bundle_with_engine ? ' (bundled)' : ''}`);
+    console.log(`[AGENT-CHECKOUT] Session for ${agent_id} (${agentConfig.tier}), price: ${agentConfig.price_id}`);
 
     return new Response(JSON.stringify({ url: session.url }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
