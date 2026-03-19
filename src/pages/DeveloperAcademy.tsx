@@ -122,10 +122,10 @@ const DeveloperAcademy = () => {
           <section className="py-12 md:py-16 border-b border-border/40">
             <div className="container mx-auto px-4">
               <div className="text-center mb-10">
-                <h2 className="text-2xl md:text-3xl font-bold mb-3">Learning Tracks</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">Pick Your Track</h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
-                  Choose a track based on your experience level. Each track includes interactive tutorials,
-                  code exercises, and real SDK integration patterns.
+                  Start with the basics or jump straight to advanced topics. Each track includes
+                  step-by-step tutorials, code exercises, and working examples.
                 </p>
               </div>
 
