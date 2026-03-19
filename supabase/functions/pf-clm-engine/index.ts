@@ -627,7 +627,7 @@ serve(async (req) => {
     }
 
     // ═══ SELF-CHAIN: dispatch next burst immediately ═══
-    if (autoChain && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
+    if (autoChain && totalAiCalls > 0 && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
       chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, burstSize, {
         ...budget,
         todayCycles: budget.todayCycles + cycleResults.length,
@@ -635,6 +635,8 @@ serve(async (req) => {
         remainingDaily: budget.remainingDaily - cycleResults.length,
         remainingHourly: budget.remainingHourly - cycleResults.length,
       });
+    } else if (autoChain && totalAiCalls === 0) {
+      console.log('⏸️ Auto-chain skipped — no real external AI calls completed in this burst');
     }
 
     const totalDuration = Date.now() - startTime;
