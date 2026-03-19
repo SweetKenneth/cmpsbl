@@ -531,7 +531,7 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch05-seeing', title: "Seeing Everything at Once",
-    excerpt: "When we couldn't debug our own system, we built VISION — real-time observability across every node, every request, every cost.",
+    excerpt: "When we couldn't debug our own system, we built VISION — real-time observability across every module, every request, every cost.",
     href: "/blog/seeing-everything-at-once", category: "Platform",
     date: "2025-03-20", readTime: "11 min", image: ch05Img,
     imageAlt: "VISION observability dashboard", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
