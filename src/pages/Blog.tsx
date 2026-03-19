@@ -517,10 +517,10 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch07-identity', title: "Identity at Every Layer",
-    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the substrate safe to open to the world.",
+    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the platform safe to open to the world.",
     href: "/blog/identity-at-every-layer", category: "Platform",
     date: "2025-04-15", readTime: "10 min", image: ch07Img,
-    imageAlt: "ACCESS node identity and entitlements", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "ACCESS module identity and entitlements", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch06-nodes-talk', title: "Nodes That Talk",
