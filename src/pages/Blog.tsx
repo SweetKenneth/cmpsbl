@@ -432,11 +432,11 @@ const HUMAN_POSTS: BlogPost[] = [
     imageAlt: "Signal to Silicon journey", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch19-burning', title: "Burning It Down: The Complete Substrate Rebuild",
-    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the substrate from scratch. Here's why, and what we learned.",
+    id: 'ch19-burning', title: "Burning It Down: The Complete Platform Rebuild",
+    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the platform from scratch. Here's why, and what we learned.",
     href: "/blog/burning-it-down", category: "Technology",
     date: "2026-02-10", readTime: "20 min", image: ch19Img,
-    imageAlt: "Substrate rebuild from scratch", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Platform rebuild from scratch", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch18-evolving', title: "When Software Starts Evolving",
