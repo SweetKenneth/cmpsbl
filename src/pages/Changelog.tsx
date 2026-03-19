@@ -919,7 +919,7 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-009",
     fossilized: "2026-03-08",
     origin: "distribution",
-    stimulus: "The substrate's public API lacked a self-service onboarding path — developers couldn't register or generate keys without manual intervention",
+    stimulus: "The platform's public API lacked a self-service onboarding path — developers couldn't register or generate keys without manual intervention",
     adaptations: [
       "Developer registration flow built with email verification and profile creation",
       "API key generation with scoped permissions, rate limits, and expiration controls",
