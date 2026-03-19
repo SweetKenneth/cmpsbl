@@ -144,10 +144,10 @@ export default function Scanner() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button asChild size="lg" className="gap-2 relative overflow-hidden group h-12">
-              <Link to="/decode">
+              <Link to="/workspace">
                 <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Terminal className="w-4 h-4" />
-                Try in DECODE Terminal
+                Open Workspace
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="gap-2 h-12">
@@ -396,9 +396,9 @@ export default function Scanner() {
                     </Link>
                   </Button>
                   <Button asChild size="lg" variant="outline" className="gap-2 h-12">
-                    <Link to="/decode">
+                    <Link to="/workspace">
                       <Terminal className="w-4 h-4" />
-                      Preview in DECODE
+                      Open Workspace
                     </Link>
                   </Button>
                 </div>

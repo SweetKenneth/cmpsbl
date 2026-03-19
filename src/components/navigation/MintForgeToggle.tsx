@@ -12,8 +12,8 @@ interface MintForgeToggleProps {
 
 export function MintForgeToggle({ className }: MintForgeToggleProps) {
   const location = useLocation();
-  const isForge = location.pathname.startsWith('/forge');
-  const isMint = location.pathname === '/agency';
+  const isForge = location.pathname.startsWith('/foundry');
+  const isMint = location.pathname === '/store';
 
   return (
     <div className={cn(
@@ -21,7 +21,7 @@ export function MintForgeToggle({ className }: MintForgeToggleProps) {
       className
     )}>
       <Link
-        to="/agency"
+        to="/store"
         className={cn(
           "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
           isMint
@@ -30,11 +30,11 @@ export function MintForgeToggle({ className }: MintForgeToggleProps) {
         )}
       >
         <Users className="w-4 h-4" />
-        <span className="hidden sm:inline">Agency Mint</span>
-        <span className="sm:hidden">Mint</span>
+        <span className="hidden sm:inline">Marketplace</span>
+        <span className="sm:hidden">Store</span>
       </Link>
       <Link
-        to="/forge"
+        to="/foundry"
         className={cn(
           "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
           isForge
@@ -43,8 +43,8 @@ export function MintForgeToggle({ className }: MintForgeToggleProps) {
         )}
       >
         <Hammer className="w-4 h-4" />
-        <span className="hidden sm:inline">Cognitive Forge</span>
-        <span className="sm:hidden">Forge</span>
+        <span className="hidden sm:inline">Memory Stream</span>
+        <span className="sm:hidden">Stream</span>
       </Link>
     </div>
   );

@@ -115,7 +115,7 @@ export function TemplateGallery() {
           return (
             <Link 
               key={cat.name} 
-              to="/composable-cognitives"
+              to="/store"
               className="p-3 rounded-lg bg-muted/50 border border-border/50 hover:border-primary/50 transition-colors text-center group"
             >
               <Icon className={`w-5 h-5 mx-auto mb-1 ${cat.color}`} />

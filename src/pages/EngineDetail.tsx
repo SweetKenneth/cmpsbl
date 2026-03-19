@@ -290,7 +290,7 @@ export default function EngineDetail() {
           <PublicBreadcrumb />
         </div>
         <div className="container mx-auto max-w-4xl px-4 pt-6 pb-20">
-          <Link to="/engines" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 group">
+          <Link to="/store" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             All Engines
           </Link>

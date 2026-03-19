@@ -20,7 +20,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
             </div>
           </div>
           <Button asChild className="shadow-glow whitespace-nowrap">
-            <Link to="/scan">
+            <Link to="/scanner">
               Scan Free
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
@@ -54,7 +54,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="shadow-glow hover:shadow-glow-lg">
-              <Link to="/scan">
+              <Link to="/scanner">
                 <Accessibility className="w-5 h-5 mr-2" />
                 Free Accessibility Scan
                 <ArrowRight className="w-4 h-4 ml-2" />
