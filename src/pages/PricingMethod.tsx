@@ -26,10 +26,10 @@ export default function PricingMethod() {
           <div className="mb-16">
             <Badge variant="outline" className="mb-4">Methodology</Badge>
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight mb-6">
-              Our Pricing Method
+              How We Price Things
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
-              Every price on this platform is determined by a systematic, transparent methodology — not arbitrary guesswork. Here's exactly how it works.
+              Every price on this platform is calculated using a transparent, repeatable system — not guesswork. Here's exactly how it works.
             </p>
           </div>
 
