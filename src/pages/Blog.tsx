@@ -510,10 +510,10 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch08-dream', title: "What If Software Could Dream",
-    excerpt: "During off-peak hours, the substrate processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
+    excerpt: "During off-peak hours, the platform processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
     href: "/blog/what-if-software-could-dream", category: "Research",
     date: "2025-05-10", readTime: "13 min", image: ch08Img,
-    imageAlt: "DREAM node autonomous consolidation", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Autonomous self-improvement consolidation", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch07-identity', title: "Identity at Every Layer",
