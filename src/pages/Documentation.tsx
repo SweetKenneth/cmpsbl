@@ -514,7 +514,7 @@ const stats = await substrate.brain.stats();
         <h3 className="font-semibold text-foreground mb-4">Memory Scoring (RPS)</h3>
         <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
           Every memory is scored using the RPS (Relevance, Proximity, Specificity) model. Scores decay over time
-          unless the memory is accessed, which resets the decay timer. DREAM cycles recalculate scores in bulk.
+          unless the memory is accessed, which resets the decay timer. Self-improvement cycles recalculate scores in bulk.
         </p>
         <CodeBlock title="RPS scoring model">{`// Score = (Relevance × 0.4) + (Proximity × 0.3) + (Specificity × 0.3)
 //
