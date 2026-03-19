@@ -167,8 +167,8 @@ const WORLD_ENGINE_INCLUDES = [
   },
   {
     icon: Moon,
-    title: "Dream Cycle Processing",
-    description: "Offline memory consolidation where NPCs process experiences, extract patterns, form new associations, and evolve their personalities between play sessions.",
+    title: "Background Processing",
+    description: "Between play sessions, NPCs process experiences, extract patterns, form new associations, and evolve their personalities — automatically.",
   },
   {
     icon: Globe,

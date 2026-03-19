@@ -36,7 +36,7 @@ const solutions = [
   },
   {
     icon: Zap,
-    name: "NEXUS Router",
+    name: "NEXUS — Smart Routing",
     tagline: "Intelligent Multi-Provider Routing",
     description: "Routes every AI request to the optimal provider based on task complexity, cost, and latency. Automatic failover across 13+ providers. Zero vendor lock-in.",
     features: ["13+ AI providers supported", "Automatic failover & load balancing", "Cost optimization per request", "Task-aware model selection", "Zero-downtime provider switching", "Latency-optimized routing"],
@@ -46,49 +46,49 @@ const solutions = [
   },
   {
     icon: Moon,
-    name: "DREAM Cycles",
-    tagline: "Offline Cognitive Consolidation",
-    description: "Your AI processes learnings between sessions — consolidating memory, extracting patterns, and evolving capabilities. Five-phase autonomous improvement loop.",
-    features: ["Distill patterns from interactions", "Recognize emerging themes", "Encode into persistent memory", "Apply improvements in real-time", "Measure performance delta", "Scheduled or on-demand"],
-    metrics: ["5-Phase Loop", "Autonomous", "Always Learning"],
+    name: "Self-Improvement Cycles",
+    tagline: "Background Learning & Pattern Extraction",
+    description: "Your AI processes learnings between sessions — consolidating memory, extracting patterns, and improving capabilities. Runs automatically in the background.",
+    features: ["Extract patterns from interactions", "Recognize emerging themes", "Encode into persistent memory", "Apply improvements automatically", "Measure performance gains", "Scheduled or on-demand"],
+    metrics: ["5-Phase Loop", "Automatic", "Always Learning"],
     link: "/composable-cognitives",
     color: "from-indigo-500 to-violet-600",
   },
   {
     icon: Shield,
-    name: "DEFENSE Shell",
-    tagline: "Adaptive Security Layer",
+    name: "Security Layer",
+    tagline: "Adaptive Threat Detection",
     description: "Behavioral threat detection, intelligent rate limiting, and governance rules that learn from attack patterns. Security that adapts in real-time.",
     features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "Adaptive rate limiting", "Governance rule enforcement", "Enterprise audit logging"],
     metrics: ["Adaptive", "Real-Time", "Enterprise Grade"],
-    link: "/upgrade",
+    link: "/store?tab=plans",
     color: "from-red-500 to-rose-600",
   },
   {
     icon: Package,
     name: "Capability Packs",
-    tagline: "Modular Capability Upgrades",
-    description: "24 activatable packs across 6 strategic domains. Each pack = 1 slot. Choose the exact capabilities your AI needs — swap anytime.",
-    features: ["24 packs across 6 domains", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Domain-organized catalog", "Builder to Architect scaling"],
-    metrics: ["24 Packs", "6 Domains", "1 Slot Each"],
+    tagline: "Modular Feature Upgrades",
+    description: "24 activatable packs across 6 categories. Each pack = 1 slot. Choose the exact capabilities your AI needs — swap anytime.",
+    features: ["24 packs across 6 categories", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Category-organized catalog", "Builder to Architect scaling"],
+    metrics: ["24 Packs", "6 Categories", "1 Slot Each"],
     link: "/packs",
     color: "from-amber-500 to-orange-600",
   },
   {
     icon: Globe,
-    name: "LNCHBL (Self-Hosted)",
+    name: "Self-Hosted Deployment",
     tagline: "Your Infrastructure, Full Control",
-    description: "Deploy the complete CMPSBL substrate on your own servers via LNCHBL. Air-gapped, sovereign, and fully compliant. Contact enterprise@CMPSBL.com for pricing.",
-    features: ["Full 40-node substrate deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
-    metrics: ["Self-Hosted", "Sovereign", "40 Nodes"],
+    description: "Deploy the complete CMPSBL platform on your own servers. Air-gapped, sovereign, and fully compliant. Contact enterprise@CMPSBL.com for pricing.",
+    features: ["Full platform deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
+    metrics: ["Self-Hosted", "Sovereign", "40 Modules"],
     link: "/enterprise",
     color: "from-emerald-500 to-green-600",
   },
   {
     icon: Terminal,
     name: "CodeLab",
-    tagline: "Interactive Development Environment",
-    description: "Execute capabilities, remix templates, and test memories in real-time. The fastest way to prototype with CMPSBL's infrastructure.",
+    tagline: "Interactive Development Sandbox",
+    description: "Run modules, remix templates, and test capabilities in real-time. The fastest way to prototype with CMPSBL.",
     features: ["Live code execution", "30 free templates", "Real-time preview", "API testing sandbox", "Export to production", "Free for all users"],
     metrics: ["FREE", "30 Templates", "Real-Time"],
     link: "/codelab",
@@ -106,9 +106,9 @@ export default function Solutions() {
 
       <SEO
         title="Solutions — Products & Deployment Options | CMPSBL"
-        description="CMPSBL's full product suite: free persistent memory, 54 sealed engines, 24 Memory Packs, composable agents with DREAM synthesis, CodeLab sandbox, and air-gapped LNCHBL self-hosted deployment."
+        description="CMPSBL's full product suite: free persistent memory, capability packs, smart routing, self-improvement cycles, CodeLab sandbox, and self-hosted deployment options."
         canonical="https://cmpsbl.com/solutions"
-        keywords={['AI solutions', 'persistent memory', 'composable agents', 'self-hosted AI', 'LNCHBL deployment', 'Memory Packs']}
+        keywords={['AI solutions', 'persistent memory', 'composable AI', 'self-hosted AI', 'capability packs']}
       />
 
       <PublicNav />
@@ -124,7 +124,7 @@ export default function Solutions() {
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
               <Gauge className="w-3 h-3 mr-2" />
-              40 Nodes · 12 Sectors · 675+ Capabilities
+              40 Modules · 12 Groups · 675+ Capabilities
             </Badge>
             
              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6 text-foreground leading-tight">

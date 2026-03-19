@@ -1,6 +1,6 @@
 /**
  * CMPSBL® — Investor Relations
- * Memory Stream · Signal → Silicon
+ * CMPSBL® — Investor Relations
  */
 
 import { TrendingUp, DollarSign, Users, Rocket, FileText, BarChart, Award, Target, Brain, Download, Loader2, Shield, Eye, Server, Sparkles, Zap, Globe, Code, Layers, CheckCircle2 } from "lucide-react";
@@ -20,17 +20,17 @@ import { downloadInvestorDeck } from "@/lib/investor-deck-generator";
 import { downloadUserGuide } from "@/lib/user-guide-generator";
 
 const WORLD_FIRSTS = [
-  { title: "Autonomous AI Dream State", desc: "First AI to enter an offline dream state for memory synthesis (Simnap & Cascade)", badge: "Zenodo Verified" },
-  { title: "Self-Evolving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
-  { title: "40-Node Memory Stream", desc: "First cognitive infrastructure with 40 nodes across 12 sectors and hot-swappable protective layers", badge: "Production" },
-  { title: "Intent Mesh Crystallization", desc: "First emergent capability discovery with autonomous cross-system crystallization", badge: "50 Crystallized" },
-  { title: "DECODE → ENCODE Process", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
+  { title: "Autonomous AI Dream State", desc: "First AI to enter a background processing state for memory consolidation", badge: "Zenodo Verified" },
+  { title: "Self-Improving Bounded Agent", desc: "First verifiable self-improving AI with cryptographic evolution stamps", badge: "SEBA" },
+  { title: "40-Module Platform", desc: "First AI infrastructure with 40 modules across 12 groups and hot-swappable security layers", badge: "Production" },
+  { title: "Capability Crystallization", desc: "First emergent capability discovery with autonomous cross-system composition", badge: "50 Crystallized" },
+  { title: "Natural Language → Code", desc: "First governed natural-language-to-code execution with safety gates", badge: "ENCODE" },
   { title: "Graduated Autonomy Framework", desc: "First mastery-based AI code execution (Novice → Master)", badge: "ENCODE" },
-  { title: "Cognitive Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
-  { title: "Universal Brain Transfer", desc: "First automatic memory routing from BRAIN to all systems via relevance scoring", badge: "CLM" },
-  { title: "Memory Tiering + Staleness", desc: "First hot/warm/cold memory tiering with embedding staleness detection", badge: "MEMORY" },
+  { title: "Continuous Learning", desc: "First 24/7 server-side autonomous learning independent of browser sessions", badge: "CLM" },
+  { title: "Universal Memory Routing", desc: "First automatic memory routing from BRAIN to all systems via relevance scoring", badge: "CLM" },
+  { title: "Memory Temperature Tiering", desc: "First hot/warm/cold memory tiering with staleness detection", badge: "MEMORY" },
   { title: "Actor Reputation Scoring", desc: "First AI identity system with 5-tier trust scores and cross-agency portability", badge: "IDENTITY" },
-  { title: "Multi-Provider Fleet Affinity", desc: "First health-weighted routing with task-type-to-provider affinity mapping", badge: "NEXUS" },
+  { title: "Multi-Provider Fleet Routing", desc: "First health-weighted routing with task-type-to-provider affinity mapping", badge: "NEXUS" },
   { title: "AI Governance Namespace", desc: "First published namespace standard (AIGVRN v1.0) for AI governance terminology", badge: "Zenodo" },
   { title: "Predictive Cost Forecasting", desc: "First linear regression cost forecasting with per-capability attribution for AI ops", badge: "ECONOMY" },
   { title: "Cascade Failure Prevention", desc: "First proactive cascade failure detection across system dependency graphs", badge: "RIPPLE" },
@@ -77,25 +77,25 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Layers, label: "Stream Nodes", value: "40", color: "text-primary" },
-    { icon: Zap, label: "Crystallized Memories", value: String(stierPipelinesCount), color: "text-emerald-500" },
+    { icon: Layers, label: "Modules", value: "40", color: "text-primary" },
+    { icon: Zap, label: "Crystallized Capabilities", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
     { icon: Globe, label: "Capabilities", value: "675+", color: "text-violet-400" }
   ];
 
   const products = [
-    { icon: Brain, name: "BRAIN", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering within the Memory Stream." },
-    { icon: Eye, name: "VISION", subtitle: "Stream Observability", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 stream nodes." },
-    { icon: Shield, name: "DEFENSE", subtitle: "Stream Security", description: "Bot protection, threat detection, and governance guardrails — outermost protective shell of the Memory Stream." },
+    { icon: Brain, name: "BRAIN", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
+    { icon: Eye, name: "VISION", subtitle: "Monitoring", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 modules." },
+    { icon: Shield, name: "DEFENSE", subtitle: "Security", description: "Bot protection, threat detection, and governance guardrails — outermost security layer." },
     { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE process with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system memories autonomously from the Memory Stream." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "Natural-language-to-code with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT", subtitle: "Capability Discovery", description: "Systems advertise, compose, and discover cross-system capabilities autonomously." },
   ];
 
   const highlights = [
-    { icon: Rocket, title: "Memory Stream Infrastructure", description: `40 stream nodes across 12 sectors with 675+ capabilities. Self-evolving architecture (SEBA) with cryptographic stamps.` },
-    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + CMPSBL Local licensing + memory marketplace + sealed engine licensing. 90%+ gross margins." },
-    { icon: BarChart, title: "Compounding Moat", description: "Self-evolution + accumulated crystallization + 12-sector topology = a technical gap that widens daily. Can't be replicated." },
+    { icon: Rocket, title: "Platform Infrastructure", description: `40 modules across 12 groups with 675+ capabilities. Self-improving architecture with cryptographic verification.` },
+    { icon: DollarSign, title: "Revenue Model", description: "Tiered SaaS (Free → $79/mo) + self-hosted licensing + capability marketplace + engine licensing. 90%+ gross margins." },
+    { icon: BarChart, title: "Compounding Moat", description: "Self-improvement + accumulated capabilities + deep modular architecture = a technical gap that widens daily." },
     { icon: FileText, title: "Documented IP", description: "14 documented world firsts with Zenodo DOI deposits. AI Governance Reference Namespace (AIGVRN v1.0) published." },
   ];
 
@@ -103,9 +103,9 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investors — Seed Round Open | CMPSBL®"
-        description="Invest in CMPSBL: 14 documented world firsts, 54 engines, 90%+ gross margins, and compounding technical moat. Signal-to-silicon pipeline with Zenodo-verified IP. Seed round now open."
+        description="Invest in CMPSBL: 14 documented world firsts, 90%+ gross margins, and a compounding technical moat. AI platform with Zenodo-verified IP. Seed round now open."
         canonical="https://cmpsbl.com/investors"
-        keywords={['CMPSBL investment', 'AI seed round', 'signal to silicon', 'AI startup funding', 'memory stream investment']}
+        keywords={['CMPSBL investment', 'AI seed round', 'AI startup funding', 'AI platform investment']}
       />
       
       <PublicNav />
@@ -122,18 +122,18 @@ export default function InvestorsPublic() {
         <div className="max-w-4xl">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
             <TrendingUp className="w-3 h-3 mr-2" />
-            Signal → Silicon
+            Seed Round Open
           </Badge>
           
-          <div className="text-xs font-mono text-muted-foreground/60 uppercase tracking-[0.3em] mb-4">Memory Stream · Investor Relations</div>
+          <div className="text-xs font-mono text-muted-foreground/60 uppercase tracking-[0.3em] mb-4">CMPSBL · Investor Relations</div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6">
             Seeking <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent">Seed Investment</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-            Building the Memory Stream — the cognitive operating system where raw signal crystallizes into production software. 
-            40 nodes across 12 sectors, 675+ capabilities, and 14 documented world firsts.
+            Building CMPSBL — the composable AI platform where raw signals become production-ready software. 
+            40 modules across 12 groups, 675+ capabilities, and 14 documented world firsts.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">

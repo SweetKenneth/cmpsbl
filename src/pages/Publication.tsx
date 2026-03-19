@@ -54,35 +54,35 @@ const citations = {
 
 const priorArtDocs = [
   { title: "Release Abstract", desc: "System overview and publication purpose", icon: FileText, slug: "release-abstract", num: "01" },
-  { title: "System Overview", desc: "Clockless cognitive substrate infrastructure", icon: Layers, slug: "system-overview", num: "02" },
-  { title: "Memory Stream & Foundry", desc: "Signal → discovery → crystallization architecture", icon: Brain, slug: "memory-stream", num: "03" },
+  { title: "System Overview", desc: "Platform architecture and module topology", icon: Layers, slug: "system-overview", num: "02" },
+  { title: "Memory Stream & Foundry", desc: "Discovery and capability composition pipeline", icon: Brain, slug: "memory-stream", num: "03" },
   { title: "Memory Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
   { title: "Universal Export", desc: "Cross-language export and portable runtime", icon: Globe, slug: "universal-export", num: "05" },
-  { title: "Governance & Safety", desc: "Shadow verification, bounded autonomy, auditability", icon: Shield, slug: "governance-safety", num: "06" },
-  { title: "IRONCLAD Hardening", desc: "Safety switches, subsystem healing, safe-mode", icon: Fingerprint, slug: "resilience-hardening", num: "07" },
-  { title: "Intent Mesh", desc: "Cross-node semantic routing primitives", icon: GitBranch, slug: "intent-mesh", num: "08" },
-  { title: "Domain Extension", desc: "Primitive-node expansion for industry domains", icon: Layers, slug: "domain-extension", num: "09" },
-  { title: "Prior Art Statement", desc: "Defensive publication intent and scope", icon: Scale, slug: "prior-art", num: "10" },
+  { title: "Governance & Safety", desc: "Verification, bounded autonomy, and auditability", icon: Shield, slug: "governance-safety", num: "06" },
+  { title: "Resilience Hardening", desc: "Circuit breakers, self-healing, and safe-mode", icon: Fingerprint, slug: "resilience-hardening", num: "07" },
+  { title: "Intent Mesh", desc: "Cross-module semantic routing", icon: GitBranch, slug: "intent-mesh", num: "08" },
+  { title: "Domain Extension", desc: "Adding industry-specific modules", icon: Layers, slug: "domain-extension", num: "09" },
+  { title: "Prior Art Statement", desc: "Defensive publication scope and intent", icon: Scale, slug: "prior-art", num: "10" },
 ];
 
 const systemMetrics = [
-  { label: "Architecture Nodes", value: "40", icon: Layers },
-  { label: "Architectural Sectors", value: "12", icon: GitBranch },
-  { label: "Synergy Memories", value: "300+", icon: Zap },
+  { label: "Modules", value: "40", icon: Layers },
+  { label: "Functional Groups", value: "12", icon: GitBranch },
+  { label: "Capabilities", value: "300+", icon: Zap },
   { label: "Autonomy Tiers", value: "3", icon: Shield },
-  { label: "Hardening Coverage", value: "100%", icon: Fingerprint },
+  { label: "Resilience Coverage", value: "100%", icon: Fingerprint },
   { label: "Export Targets", value: "25", icon: Globe },
 ];
 
 const priorArtClaims = [
-  "Clockless cognitive orchestration with weighted integrity scoring",
-  "Memory stream architecture with signal-to-discovery crystallization",
-  "Memory crystallization with structural fingerprinting and replay verification",
-  "Universal cross-language export with embedded micro-substrate runtime",
-  "Shadow-mode governance with bounded autonomy tiers",
-  "IRONCLAD resilience fabric with per-module bulkhead isolation",
+  "Modular AI orchestration with weighted integrity scoring",
+  "Memory stream architecture with pattern discovery and composition",
+  "Capability crystallization with structural fingerprinting and replay verification",
+  "Universal cross-language export with embedded mini-runtime",
+  "Verification-based governance with bounded autonomy tiers",
+  "Resilience framework with per-module circuit breaker isolation",
   "Intent mesh for cross-module semantic routing",
-  "Domain extension through primitive-node expansion",
+  "Domain extension through modular expansion",
 ];
 
 export default function Publication() {

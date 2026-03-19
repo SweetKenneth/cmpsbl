@@ -1,6 +1,6 @@
 /**
  * Experimentation Lab — Live Demo Templates
- * Showcases working implementations of top 5 substrate templates
+ * Showcases working implementations of top 5 platform templates
  */
 
 import { useState } from "react";
@@ -40,10 +40,10 @@ const FEATURED_TEMPLATES = [
   {
     id: 'dream-feeder',
     name: 'Dream Processor',
-    description: 'Feed dreams into the cognitive substrate for mood analysis, interpretation, and synthesis.',
+    description: 'Feed text into the self-improvement engine for mood analysis, interpretation, and pattern synthesis.',
     icon: Moon,
     color: 'from-violet-500 to-purple-600',
-    features: ['Dream Ingestion', 'Mood Analysis', 'Dream Interpretation', 'Mutation Cycles'],
+    features: ['Text Ingestion', 'Mood Analysis', 'Interpretation', 'Pattern Cycles'],
     difficulty: 'beginner',
     price: '$27',
     tab: 'dream'
