@@ -44,7 +44,7 @@ const faqItems = [
   },
   {
     question: "What problems does CMPSBL solve?",
-    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated nodes that share context, propagate events in real time, and self-optimize automatically.",
+    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated modules that share context, propagate events in real time, and self-optimize automatically.",
   },
   {
     question: "Who needs an AI Operating System?",
