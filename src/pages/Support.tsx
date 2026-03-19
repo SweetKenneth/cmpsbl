@@ -54,7 +54,7 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "Do I need to use a specific AI provider?",
-    answer: "No. CMPSBL is model-agnostic and provider-agnostic. The NEXUS router supports OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination — with automatic failover and cost optimization.",
+    answer: "No. CMPSBL is model-agnostic and provider-agnostic. The smart router supports OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination — with automatic failover and cost optimization.",
   },
   {
     category: "Getting Started",
