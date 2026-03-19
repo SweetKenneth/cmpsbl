@@ -54,15 +54,15 @@ const citations = {
 
 const priorArtDocs = [
   { title: "Release Abstract", desc: "System overview and publication purpose", icon: FileText, slug: "release-abstract", num: "01" },
-  { title: "System Overview", desc: "Clockless cognitive substrate infrastructure", icon: Layers, slug: "system-overview", num: "02" },
-  { title: "Memory Stream & Foundry", desc: "Signal → discovery → crystallization architecture", icon: Brain, slug: "memory-stream", num: "03" },
+  { title: "System Overview", desc: "Platform architecture and module topology", icon: Layers, slug: "system-overview", num: "02" },
+  { title: "Memory Stream & Foundry", desc: "Discovery and capability composition pipeline", icon: Brain, slug: "memory-stream", num: "03" },
   { title: "Memory Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
   { title: "Universal Export", desc: "Cross-language export and portable runtime", icon: Globe, slug: "universal-export", num: "05" },
-  { title: "Governance & Safety", desc: "Shadow verification, bounded autonomy, auditability", icon: Shield, slug: "governance-safety", num: "06" },
-  { title: "IRONCLAD Hardening", desc: "Safety switches, subsystem healing, safe-mode", icon: Fingerprint, slug: "resilience-hardening", num: "07" },
-  { title: "Intent Mesh", desc: "Cross-node semantic routing primitives", icon: GitBranch, slug: "intent-mesh", num: "08" },
-  { title: "Domain Extension", desc: "Primitive-node expansion for industry domains", icon: Layers, slug: "domain-extension", num: "09" },
-  { title: "Prior Art Statement", desc: "Defensive publication intent and scope", icon: Scale, slug: "prior-art", num: "10" },
+  { title: "Governance & Safety", desc: "Verification, bounded autonomy, and auditability", icon: Shield, slug: "governance-safety", num: "06" },
+  { title: "Resilience Hardening", desc: "Circuit breakers, self-healing, and safe-mode", icon: Fingerprint, slug: "resilience-hardening", num: "07" },
+  { title: "Intent Mesh", desc: "Cross-module semantic routing", icon: GitBranch, slug: "intent-mesh", num: "08" },
+  { title: "Domain Extension", desc: "Adding industry-specific modules", icon: Layers, slug: "domain-extension", num: "09" },
+  { title: "Prior Art Statement", desc: "Defensive publication scope and intent", icon: Scale, slug: "prior-art", num: "10" },
 ];
 
 const systemMetrics = [
