@@ -121,13 +121,13 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Shield className="h-6 w-6 text-primary" />
-              Outlier Rejection
+              Removing Bad Estimates
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Before computing the consensus, we apply <strong className="text-foreground">modified IQR (Interquartile Range) analysis</strong> to detect and exclude outlier estimates. If one model suggests $5 while three others suggest $40–$60, the $5 estimate is flagged and excluded.
+              Before calculating the final price, we run <strong className="text-foreground">statistical outlier detection</strong> to catch and exclude wild estimates. If one model says $5 while three others say $40–$60, the $5 gets flagged and removed.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              This prevents a single unreliable or confused model from skewing the final price. Excluded estimates are still recorded in the pricing evidence — we're transparent about what was included and what wasn't.
+              This prevents a single confused model from throwing off the price. Excluded estimates are still recorded — we're transparent about what was used and what wasn't.
             </p>
           </section>
 
