@@ -89,7 +89,7 @@ export default function Enterprise() {
     <>
       <SEO
         title="Enterprise — Self-Hosted Private Deployment | CMPSBL"
-        description="Deploy CMPSBL on your own infrastructure via LNCHBL. Air-gapped, SOC2-ready, with private Memory Stream, dedicated DREAM cycles, compliance exports, and organization-level governance controls."
+        description="Deploy CMPSBL on your own infrastructure. Air-gapped, SOC2-ready, with private Memory Stream, dedicated self-improvement cycles, compliance exports, and organization-level governance controls."
         canonical="https://cmpsbl.com/enterprise"
         keywords={['enterprise AI', 'private deployment', 'on-premises AI', 'CMPSBL enterprise', 'governed AI', 'SOC2 AI']}
       />
