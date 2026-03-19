@@ -785,7 +785,7 @@ await cmpsbl.dream.cycle({
                     World Engine — $2,995
                   </Button>
                   <Button asChild size="lg" className="h-12 sm:h-14 px-6 sm:px-8 bg-white/20 text-white hover:bg-white/30 font-bold border-2 border-white/40 text-base">
-                    <Link to="/upgrade">
+                    <Link to="/store?tab=plans">
                       <Package className="w-5 h-5 mr-2" />
                       Subscription Plans
                     </Link>
