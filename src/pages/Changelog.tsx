@@ -1055,10 +1055,10 @@ const stratumMindgames: Specimen[] = [
       "Terminal command layer operational: /status, /memory, /nodes, /clm, /mode, /version all reporting MINDGAMES epoch",
     ],
     phenotype: [
-      "First epoch where the substrate exists FOR users rather than FOR itself",
+      "First epoch where the platform exists FOR users rather than FOR itself",
       "Memory Stream crystallization chain is the primary interaction surface",
       "Complete learning architecture with governed capability installation",
-      "Generation-tagged node topology enabling evolutionary lineage tracking",
+      "Generation-tagged module topology enabling evolutionary lineage tracking",
     ],
     affectedNodes: ["CORE", "ENGINEER", "MEMORY", "DECODE", "GOVERNANCE"],
   },
