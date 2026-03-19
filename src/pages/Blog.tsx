@@ -523,8 +523,8 @@ const HUMAN_POSTS: BlogPost[] = [
     imageAlt: "ACCESS module identity and entitlements", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch06-nodes-talk', title: "Nodes That Talk",
-    excerpt: "Five nodes needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate.",
+    id: 'ch06-nodes-talk', title: "Modules That Talk",
+    excerpt: "Five modules needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the platform.",
     href: "/blog/nodes-that-talk", category: "Technology",
     date: "2025-04-02", readTime: "12 min", image: ch06Img,
     imageAlt: "RIPPLE event bus architecture", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
