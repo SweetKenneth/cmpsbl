@@ -440,7 +440,7 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch18-evolving', title: "When Software Starts Evolving",
-    excerpt: "In January 2026, the substrate crossed a threshold: DREAM consolidation cycles started producing improvements we didn't program.",
+    excerpt: "In January 2026, the platform crossed a threshold: self-improvement cycles started producing improvements we didn't program.",
     href: "/blog/when-software-starts-evolving", category: "Research",
     date: "2026-01-15", readTime: "18 min", image: ch18Img,
     imageAlt: "Software evolution breakthrough", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
