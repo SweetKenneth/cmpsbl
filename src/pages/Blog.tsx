@@ -131,7 +131,7 @@ interface BlogPost {
   authorRole: string;
 }
 
-// ─── Category config (matching SubstrateStore style) ───
+// ─── Category config ───
 const BLOG_CATEGORIES = [
   { id: 'Security', label: 'Security', icon: Shield, color: 'from-rose-500/20 to-rose-600/5', border: 'border-rose-500/30', text: 'text-rose-400', bg: 'bg-rose-500/10' },
   { id: 'AI Technology', label: 'AI Technology', icon: Brain, color: 'from-violet-500/20 to-violet-600/5', border: 'border-violet-500/30', text: 'text-violet-400', bg: 'bg-violet-500/10' },
