@@ -56,7 +56,7 @@ const faqItems = [
   },
   {
     question: "What is the platform architecture?",
-    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Atlas (discovery), and Security Shell. All modules are weighted and coordinated by the core runtime.",
+    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Discovery, and Security Shell. All modules are weighted and coordinated by the core runtime.",
   },
 ];
 
@@ -74,14 +74,14 @@ const sectors = [
   { label: "Cognition", nodes: "BRAIN, MEMORY, DREAM", count: 3, color: "from-violet-500/10 to-violet-600/5" },
   { label: "Operations", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6, color: "from-amber-500/10 to-amber-600/5" },
   { label: "Execution", nodes: "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION", count: 10, color: "from-emerald-500/10 to-emerald-600/5" },
-  { label: "Safety & Compliance", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-cyan-500/10 to-cyan-600/5" },
+  { label: "Safety", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-cyan-500/10 to-cyan-600/5" },
   { label: "Simulation", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-orange-500/10 to-orange-600/5" },
   { label: "Manufacturing", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-pink-500/10 to-pink-600/5" },
   { label: "Evolution", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3, color: "from-red-500/10 to-red-600/5" },
   { label: "Fields", nodes: "EVOLUTION, IMMUNITY, INTENT", count: 3, color: "from-indigo-500/10 to-indigo-600/5" },
   { label: "Governance", nodes: "GOVERNANCE", count: 1, color: "from-slate-500/10 to-slate-600/5" },
   { label: "Discovery", nodes: "ATLAS", count: 1, color: "from-teal-500/10 to-teal-600/5" },
-  { label: "Security Shell", nodes: "DEFENSE", count: 1, color: "from-rose-500/10 to-rose-600/5" },
+  { label: "Security", nodes: "DEFENSE", count: 1, color: "from-rose-500/10 to-rose-600/5" },
 ];
 
 const comparisonRows = [
@@ -195,9 +195,9 @@ export default function AIOperatingSystem() {
 
             <motion.div {...fadeUp(0.22)} className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10">
               <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                <Link to="/architecture">
+                <Link to="/modules">
                   <Activity className="w-5 h-5" />
-                  Explore All 40 Nodes
+                  Explore All 40 Modules
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
@@ -305,11 +305,11 @@ export default function AIOperatingSystem() {
             <motion.div {...fadeUp()} className="mb-8 sm:mb-12">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
                 <Activity className="w-6 h-6 text-primary shrink-0" />
-                40-Node · 12-Sector Architecture
+                40 Modules · 12 Capability Groups
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                The CMPSBL Substrate organizes 40 specialized nodes across 12 sectors. Each node holds a weight in the system matrix (Σ = 1.000),
-                managed by CORE. Safety switches prevent cascading failures. DREAM cycles optimize autonomously.
+                The CMPSBL platform organizes 40 specialized modules across 12 capability groups. Each module holds a weight in the system matrix (Σ = 1.000),
+                managed by CORE. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
               </p>
             </motion.div>
 
@@ -430,9 +430,9 @@ export default function AIOperatingSystem() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/30 transition-colors">
-                  <Link to="/architecture">
+                  <Link to="/modules">
                     <Activity className="w-5 h-5" />
-                    Explore All 40 Nodes
+                    Explore All 40 Modules
                   </Link>
                 </Button>
               </div>

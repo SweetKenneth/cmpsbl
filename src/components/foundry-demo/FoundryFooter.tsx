@@ -9,9 +9,9 @@ const NAV_COLUMNS = [
     title: 'Platform',
     links: [
       { label: 'How it works', to: '/ai-operating-system' },
+      { label: 'All modules', to: '/modules' },
       { label: 'Runtime', to: '/runtime' },
-      { label: 'Store', to: '/store' },
-      { label: 'Upgrade', to: '/upgrade' },
+      { label: 'Persistent memory', to: '/persistent-memory' },
     ],
   },
   {
@@ -35,8 +35,8 @@ const NAV_COLUMNS = [
   {
     title: 'Resources',
     links: [
-      { label: 'Heritage Paper', to: '/heritage-paper' },
-      { label: 'API Access', to: '/api-access' },
+      { label: 'Heritage paper', to: '/heritage-paper' },
+      { label: 'API access', to: '/api-access' },
       { label: 'Privacy', to: '/privacy' },
       { label: 'Terms', to: '/terms' },
     ],
