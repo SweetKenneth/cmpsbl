@@ -216,14 +216,14 @@ Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
-            { icon: Brain,   name: "BRAIN",      desc: "Persistent multi-tier memory with automatic tiering and DREAM consolidation" },
-            { icon: Zap,     name: "NEXUS",      desc: "Intelligent multi-provider AI routing with failover and cost optimization" },
-            { icon: Moon,    name: "DREAM",      desc: "Offline synthesis, pattern consolidation, and heuristic generation" },
-            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input sanitization, and WebAuthn" },
-            { icon: Eye,     name: "VISION",     desc: "System observability, health metrics, and performance dashboards" },
-            { icon: Scroll,  name: "AUDIT",      desc: "Immutable append-only ledger with Merkle receipt chains" },
-            { icon: Code,    name: "DECODE",     desc: "Natural language understanding and contract interpretation" },
-            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent orchestration with 5 coordination patterns" },
+            { icon: Brain,   name: "BRAIN",      desc: "Persistent memory with automatic temperature tiering and self-improvement consolidation" },
+            { icon: Zap,     name: "NEXUS",      desc: "Smart AI routing across 13+ providers with automatic failover and cost controls" },
+            { icon: Moon,    name: "DREAM",      desc: "Background self-improvement — consolidates memory, extracts patterns, generates insights" },
+            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input filtering, and authentication" },
+            { icon: Eye,     name: "VISION",     desc: "System health monitoring, metrics dashboards, and performance tracking" },
+            { icon: Scroll,  name: "AUDIT",      desc: "Tamper-proof activity log with cryptographic verification" },
+            { icon: Code,    name: "DECODE",     desc: "Natural language understanding, intent detection, and response generation" },
+            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent teams with 5 built-in coordination patterns" },
           ].map((s, i) => (
             <motion.div
               key={s.name}
