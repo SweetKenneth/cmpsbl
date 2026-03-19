@@ -11,9 +11,9 @@ export interface GlossaryEntry {
 
 export const GLOSSARY: Record<string, GlossaryEntry> = {
   "node": {
-    term: "Node",
-    short: "An autonomous subsystem inside the CMPSBL operating system.",
-    detail: "Nodes expose resolvers and communicate through the INTENT mesh. CMPSBL has 40 nodes across 12 sectors.",
+    term: "Module",
+    short: "A specialized subsystem inside the CMPSBL platform.",
+    detail: "Modules expose resolvers and communicate through the INTENT mesh. CMPSBL has 40 modules across 12 groups.",
   },
   "memory-stream": {
     term: "Memory Stream",
