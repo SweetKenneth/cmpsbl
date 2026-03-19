@@ -626,9 +626,9 @@ function DreamSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DREAM Cycles</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Self-Improvement Cycles</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Autonomous offline synthesis. During idle periods, the substrate consolidates patterns,
+          Autonomous background processing. During idle periods, the platform consolidates patterns,
           compresses redundant memories, scores relevance, and surfaces lateral insights that wouldn't
           emerge from direct queries alone.
         </p>
