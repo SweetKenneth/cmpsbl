@@ -75,9 +75,9 @@ export default function PricingMethod() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-foreground mb-1">20%</div>
-                  <div className="font-semibold text-foreground mb-2">Internal Valuation</div>
+                  <div className="font-semibold text-foreground mb-2">Engineering Analysis</div>
                   <p className="text-sm text-muted-foreground">
-                    Engineering-derived value based on component analysis, crystallization depth, and system complexity. This anchors pricing to measurable technical metrics.
+                    Our engineering team's own assessment based on component analysis, build complexity, and system depth. This keeps pricing grounded in measurable technical work.
                   </p>
                 </CardContent>
               </Card>
