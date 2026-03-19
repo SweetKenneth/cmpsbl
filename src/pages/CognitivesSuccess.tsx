@@ -141,7 +141,7 @@ export default function CognitivesSuccess() {
                 <p>{result?.error || "Could not verify payment"}</p>
                 <div className="flex gap-2">
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/composable-cognitives">Back to Runtime Agents</Link>
+                    <Link to="/store">Back to Runtime Agents</Link>
                   </Button>
                   <Button asChild variant="outline" size="sm">
                     <Link to="/support">Contact Support</Link>
