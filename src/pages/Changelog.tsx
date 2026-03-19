@@ -1004,7 +1004,7 @@ const stratumMindgames: Specimen[] = [
       "Memory categories enable domain-specific retrieval without full-corpus search",
     ],
     phenotype: [
-      "The substrate remembers what it learned — knowledge persists across restarts and sessions",
+      "The platform remembers what it learned — knowledge persists across restarts and sessions",
       "Memory recall is intelligent, not exhaustive — it surfaces what matters when it matters",
     ],
     affectedNodes: ["MEMORY", "BRAIN"],
