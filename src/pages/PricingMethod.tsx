@@ -155,7 +155,7 @@ export default function PricingMethod() {
               ))}
             </ul>
             <div className="bg-muted/30 rounded-lg p-4">
-              <div className="text-sm font-medium text-foreground mb-2">CJPI Premium Multipliers</div>
+              <div className="text-sm font-medium text-foreground mb-2">Quality Score → Price Multiplier</div>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 text-xs">
                 {[
                   { score: '100', mult: '2.5×' },
