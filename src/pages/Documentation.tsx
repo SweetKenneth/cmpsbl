@@ -1,5 +1,5 @@
 /**
- * Documentation Hub — CMPSBL Substrate
+ * Documentation Hub — CMPSBL Platform
  * Mobile-first, sidebar navigation, polished cards
  * Full technical documentation with real content
  */
