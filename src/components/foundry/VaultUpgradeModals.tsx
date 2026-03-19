@@ -204,7 +204,7 @@ export function MythicDiscoveryModal({
           <div className="flex flex-col gap-2.5 px-5 pb-6 pt-3 sm:px-8 sm:pb-8">
             <Button
               className="w-full min-h-[44px] gap-1.5 bg-gradient-to-r from-neon-purple to-primary-variant text-primary-foreground border-0 shadow-lg shadow-neon-purple/25 hover:shadow-neon-purple/40 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-              onClick={() => { onOpenChange(false); navigate('/upgrade'); }}
+              onClick={() => { onOpenChange(false); navigate('/store?tab=plans'); }}
             >
               Upgrade Now <ArrowRight className="w-4 h-4" />
             </Button>
