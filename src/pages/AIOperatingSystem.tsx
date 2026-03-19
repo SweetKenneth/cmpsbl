@@ -55,8 +55,8 @@ const faqItems = [
     answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS node automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
-    question: "What is the substrate architecture?",
-    answer: "A 40-node matrix organized across 12 sectors — Kernel (CORE, SYSTEM), CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ, EPZ, EMZ, CSZ zones, Fields (EVOLUTION, IMMUNITY, INTENT), Plane (GOVERNANCE), Atlas (ATLAS), Engineering (ENGINEER), and Shell (DEFENSE). Weights managed by CORE with Σ = 1.000.",
+    question: "What is the platform architecture?",
+    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Atlas (discovery), and Security Shell. All modules are weighted and coordinated by the core runtime.",
   },
 ];
 
