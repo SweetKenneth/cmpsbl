@@ -24,7 +24,7 @@ const LICENSE_TIERS = [
     icon: Layers,
     gradient: "from-slate-500 to-zinc-500",
     cta: "Get Started",
-    ctaAction: "/start-here",
+    ctaAction: "/auth",
     popular: false,
     comingSoon: false,
     features: [

@@ -615,7 +615,7 @@ export default function UseCases() {
                 <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                   Choose your industry — Gaming, Developer, or Enterprise — and activate only 
                   the <Link to="/packs" className="text-primary hover:underline font-medium">packs</Link> you need. No bloat, just the right capabilities.{" "}
-                  Start with our <Link to="/start-here" className="text-primary hover:underline font-medium">quickstart guide</Link>.
+                  Start with our <Link to="/developers/guide" className="text-primary hover:underline font-medium">developer guide</Link>.
                 </p>
                 <div className="flex flex-wrap justify-center gap-3 mb-8">
                   <Badge variant="outline" className="text-primary border-primary/30">

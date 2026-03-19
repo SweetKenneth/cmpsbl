@@ -281,7 +281,7 @@ export default function Engines() {
                 call it from your own stack — any language, any framework.
                 You don't see the source. You see the results.{" "}
                 Browse <Link to="/use-cases" className="text-primary hover:underline font-medium">industry use cases</Link>{" "}
-                or <Link to="/start-here" className="text-primary hover:underline font-medium">start free</Link>.
+                or <Link to="/auth" className="text-primary hover:underline font-medium">start free</Link>.
               </p>
 
               {/* SDK + FAILSAFE callout */}
