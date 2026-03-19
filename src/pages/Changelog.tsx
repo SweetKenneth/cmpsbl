@@ -1036,8 +1036,8 @@ const stratumMindgames: Specimen[] = [
       "Search and filter across all 40 modules by name, group, or capability",
     ],
     phenotype: [
-      "The full 40-node matrix is discoverable from a single interface",
-      "Users can understand the substrate's architecture without reading documentation",
+      "The full 40-module system is discoverable from a single interface",
+      "Users can understand the platform's architecture without reading documentation",
     ],
     affectedNodes: ["ATLAS", "DECODE"],
   },
