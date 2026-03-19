@@ -26,7 +26,7 @@ const PersistentMemoryLanding = () => {
     <>
       <SEO 
         title="Persistent Memory — Free 4-Tier AI Recall | CMPSBL"
-        description="Add persistent memory to any AI agent free. CMPSBL's 4-tier system (hot, warm, cold, archive) with DREAM consolidation, automatic recall, and cross-session context. No credit card, no expiration."
+        description="Add persistent memory to any AI agent free. CMPSBL's 4-tier system (hot, warm, cold, archive) with automatic consolidation, recall, and cross-session context. No credit card, no expiration."
         image="https://cmpsbl.com/og/persistent-memory.jpg"
         keywords={['persistent memory AI', 'agent memory API', 'AI memory system', 'free AI memory', 'context engineering', 'episodic memory AI']}
         howTo={{

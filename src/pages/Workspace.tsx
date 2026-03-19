@@ -114,8 +114,8 @@ export default function Workspace() {
              <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
               Your Builder Space
             </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Create, test, and deploy with the full power of 40 nodes. 
+             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Create, test, and deploy with the full power of 40 integrated modules. 
               Free tier includes persistent memory, SDK templates, and {counts.free} terminal commands.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">

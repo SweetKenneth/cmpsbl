@@ -111,7 +111,7 @@ export default function Enterprise() {
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
               The complete CMPSBL platform —{" "}
-              <Link to="/modules" className="text-primary hover:underline font-medium">40 nodes across 12 sectors</Link>{" "}
+              <Link to="/modules" className="text-primary hover:underline font-medium">40 integrated modules</Link>{" "}
               — deployed on your servers. Self-improvement cycles, governed adaptation,{" "}
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
               built-in security, and smart routing — configured for your compliance requirements.

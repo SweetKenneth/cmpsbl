@@ -71,17 +71,17 @@ const pillars = [
 
 const sectors = [
   { label: "Kernel", nodes: "CORE, SYSTEM", count: 2, color: "from-blue-500/10 to-blue-600/5" },
-  { label: "CCR", nodes: "BRAIN, MEMORY, DREAM", count: 3, color: "from-violet-500/10 to-violet-600/5" },
-  { label: "OCG", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6, color: "from-amber-500/10 to-amber-600/5" },
+  { label: "Cognition", nodes: "BRAIN, MEMORY, DREAM", count: 3, color: "from-violet-500/10 to-violet-600/5" },
+  { label: "Operations", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6, color: "from-amber-500/10 to-amber-600/5" },
   { label: "Execution", nodes: "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION", count: 10, color: "from-emerald-500/10 to-emerald-600/5" },
-  { label: "ESZ", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-cyan-500/10 to-cyan-600/5" },
-  { label: "EPZ", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-orange-500/10 to-orange-600/5" },
-  { label: "EMZ", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-pink-500/10 to-pink-600/5" },
-  { label: "CSZ", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3, color: "from-red-500/10 to-red-600/5" },
+  { label: "Safety & Compliance", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-cyan-500/10 to-cyan-600/5" },
+  { label: "Simulation", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-orange-500/10 to-orange-600/5" },
+  { label: "Manufacturing", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-pink-500/10 to-pink-600/5" },
+  { label: "Evolution", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3, color: "from-red-500/10 to-red-600/5" },
   { label: "Fields", nodes: "EVOLUTION, IMMUNITY, INTENT", count: 3, color: "from-indigo-500/10 to-indigo-600/5" },
-  { label: "Plane", nodes: "GOVERNANCE", count: 1, color: "from-slate-500/10 to-slate-600/5" },
-  { label: "Atlas", nodes: "ATLAS", count: 1, color: "from-teal-500/10 to-teal-600/5" },
-  { label: "Shell", nodes: "DEFENSE", count: 1, color: "from-rose-500/10 to-rose-600/5" },
+  { label: "Governance", nodes: "GOVERNANCE", count: 1, color: "from-slate-500/10 to-slate-600/5" },
+  { label: "Discovery", nodes: "ATLAS", count: 1, color: "from-teal-500/10 to-teal-600/5" },
+  { label: "Security Shell", nodes: "DEFENSE", count: 1, color: "from-rose-500/10 to-rose-600/5" },
 ];
 
 const comparisonRows = [
