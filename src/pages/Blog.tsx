@@ -422,7 +422,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
   );
 }
 
-// ─── Static human posts (chronological substrate story) ───
+// ─── Static human posts (chronological platform story) ───
 const HUMAN_POSTS: BlogPost[] = [
   {
     id: 'ch20-signal', title: "Signal to Silicon: The Complete Journey",
