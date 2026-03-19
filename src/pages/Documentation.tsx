@@ -643,7 +643,7 @@ function DreamSection() {
             entries, and prunes duplicates. Runs automatically every 15 minutes during low-traffic periods.
             Minimal compute cost — designed for always-on operation.
           </InfoCard>
-          <InfoCard icon={Brain} title="Deep Dream Mode">
+          <InfoCard icon={Brain} title="Deep Processing Mode">
             Full synthesis cycle (2-5 minutes). Cross-references all memory tiers, identifies latent patterns
             across categories, generates heuristics, and prunes stale entries. Runs daily during lowest-traffic
             window or can be triggered manually.
