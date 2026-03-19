@@ -895,7 +895,7 @@ const stratumMindgames: Specimen[] = [
     phenotype: [
       "The substrate predicts who is leaving before they leave",
       "Page flows reveal the natural paths users create through the system",
-      "Feature adoption data shows what the substrate does that people actually care about",
+      "Feature adoption data shows what the platform does that people actually care about",
     ],
     affectedNodes: ["DECODE", "ANALYTICS"],
   },
