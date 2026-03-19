@@ -1271,11 +1271,11 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Documentation — API & Node Reference | CMPSBL"
-        description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, DREAM cycles, DEFENSE rules, EVOLUTION promotion, terminal commands, SDK guides, and full 40-node integration reference."
+        title="Documentation — API & Module Reference | CMPSBL"
+        description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, self-improvement cycles, DEFENSE security, EVOLUTION system, SDK guides, and full 40-module integration reference."
         canonical="https://cmpsbl.com/documentation"
         image="https://cmpsbl.com/og/documentation.jpg"
-        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'DREAM cycles docs', 'persistent memory API']}
+        keywords={['CMPSBL documentation', 'platform docs', 'AI API reference', 'persistent memory API', 'AI module reference']}
       />
 
       <PublicNav />
