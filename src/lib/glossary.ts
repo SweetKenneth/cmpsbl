@@ -11,9 +11,9 @@ export interface GlossaryEntry {
 
 export const GLOSSARY: Record<string, GlossaryEntry> = {
   "node": {
-    term: "Node",
-    short: "An autonomous subsystem inside the CMPSBL operating system.",
-    detail: "Nodes expose resolvers and communicate through the INTENT mesh. CMPSBL has 40 nodes across 12 sectors.",
+    term: "Module",
+    short: "A specialized subsystem inside the CMPSBL platform.",
+    detail: "Modules expose resolvers and communicate through the INTENT mesh. CMPSBL has 40 modules across 12 groups.",
   },
   "memory-stream": {
     term: "Memory Stream",
@@ -31,9 +31,9 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     detail: "Every action is expressed as an intent, routed to the correct resolvers, and logged with a receipt.",
   },
   "dream-cycle": {
-    term: "DREAM Cycle",
-    short: "Offline consolidation that improves the system over time.",
-    detail: "Like biological sleep, DREAM cycles compress experiences into heuristics, prune weak pathways, and strengthen successful patterns.",
+    term: "Self-Improvement Cycle",
+    short: "Background processing that improves the system over time.",
+    detail: "Like biological sleep, these cycles compress experiences into heuristics, prune weak pathways, and strengthen successful patterns.",
   },
   "cjpi": {
     term: "CJPI Score",
@@ -66,9 +66,9 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     detail: "Signals are persisted and translated into readable dialogue. Categories include acknowledgement, discovery, escalation, and heartbeat.",
   },
   "substrate": {
-    term: "Substrate",
+    term: "Platform",
     short: "The foundational cognitive runtime beneath all CMPSBL operations.",
-    detail: "A self-evolving operating system layer between AI models and applications, managing memory, orchestration, and governance.",
+    detail: "A self-evolving platform layer between AI models and applications, managing memory, orchestration, and governance.",
   },
   "nexus": {
     term: "NEXUS Routing",

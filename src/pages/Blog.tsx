@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 
-// Blog post images (chronological substrate story)
+// Blog post images (chronological platform story)
 import ch01Img from "@/assets/blog/promptfluid-market-disruptor.jpg";
 import ch02Img from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
 import ch03Img from "@/assets/blog/promptfluid-brain-learning-core.jpg";
@@ -131,7 +131,7 @@ interface BlogPost {
   authorRole: string;
 }
 
-// ─── Category config (matching SubstrateStore style) ───
+// ─── Category config ───
 const BLOG_CATEGORIES = [
   { id: 'Security', label: 'Security', icon: Shield, color: 'from-rose-500/20 to-rose-600/5', border: 'border-rose-500/30', text: 'text-rose-400', bg: 'bg-rose-500/10' },
   { id: 'AI Technology', label: 'AI Technology', icon: Brain, color: 'from-violet-500/20 to-violet-600/5', border: 'border-violet-500/30', text: 'text-violet-400', bg: 'bg-violet-500/10' },
@@ -180,7 +180,7 @@ function normalizeBlogCategory(rawCategory?: string | null): string {
   return existingCategory?.id ?? 'Research';
 }
 
-// ─── Horizontal Scroll Carousel (same as SubstrateStore) ───
+// ─── Horizontal Scroll Carousel ───
 function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 'left' | 'right') => {
@@ -422,25 +422,25 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
   );
 }
 
-// ─── Static human posts (chronological substrate story) ───
+// ─── Static human posts (chronological platform story) ───
 const HUMAN_POSTS: BlogPost[] = [
   {
     id: 'ch20-signal', title: "Signal to Silicon: The Complete Journey",
-    excerpt: "From behavioral signals through cognitive processing to deployable software. The substrate's complete signal-to-silicon process explained.",
+    excerpt: "From behavioral signals through cognitive processing to deployable software. The platform's complete signal-to-silicon process explained.",
     href: "/blog/signal-to-silicon", category: "Technology",
     date: "2026-03-04", readTime: "22 min", image: ch20Img,
     imageAlt: "Signal to Silicon journey", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch19-burning', title: "Burning It Down: The Complete Substrate Rebuild",
-    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the substrate from scratch. Here's why, and what we learned.",
+    id: 'ch19-burning', title: "Burning It Down: The Complete Platform Rebuild",
+    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the platform from scratch. Here's why, and what we learned.",
     href: "/blog/burning-it-down", category: "Technology",
     date: "2026-02-10", readTime: "20 min", image: ch19Img,
-    imageAlt: "Substrate rebuild from scratch", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Platform rebuild from scratch", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch18-evolving', title: "When Software Starts Evolving",
-    excerpt: "In January 2026, the substrate crossed a threshold: DREAM consolidation cycles started producing improvements we didn't program.",
+    excerpt: "In January 2026, the platform crossed a threshold: self-improvement cycles started producing improvements we didn't program.",
     href: "/blog/when-software-starts-evolving", category: "Research",
     date: "2026-01-15", readTime: "18 min", image: ch18Img,
     imageAlt: "Software evolution breakthrough", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
@@ -464,7 +464,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "We built INCLUSIVE because accessibility shouldn't require a dedicated team. AI-powered scanning and remediation for every application.",
     href: "/blog/accessibility-is-infrastructure", category: "Accessibility",
     date: "2025-10-15", readTime: "10 min", image: ch15Img,
-    imageAlt: "INCLUSIVE node accessibility mission", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "INCLUSIVE module accessibility mission", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch14-cybersecurity', title: "Cybersecurity Through Cognition",
@@ -502,89 +502,89 @@ const HUMAN_POSTS: BlogPost[] = [
     imageAlt: "Agent memory fading over time", source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch09-building', title: "Building on the Substrate",
-    excerpt: "Eight nodes and no documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure.",
+    id: 'ch09-building', title: "Building on the Platform",
+    excerpt: "Eight modules and no documentation. Making the platform usable meant rethinking how developers interact with cognitive infrastructure.",
     href: "/blog/building-on-the-substrate", category: "Development",
     date: "2025-05-25", readTime: "11 min", image: ch09Img,
-    imageAlt: "Developer building on the substrate", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Developer building on the platform", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch08-dream', title: "What If Software Could Dream",
-    excerpt: "During off-peak hours, the substrate processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
+    excerpt: "During off-peak hours, the platform processes its own experiences. We call it dreaming. It's the closest thing to autonomous learning we've built.",
     href: "/blog/what-if-software-could-dream", category: "Research",
     date: "2025-05-10", readTime: "13 min", image: ch08Img,
-    imageAlt: "DREAM node autonomous consolidation", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "Autonomous self-improvement consolidation", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch07-identity', title: "Identity at Every Layer",
-    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the substrate safe to open to the world.",
+    excerpt: "Authentication, API keys, rate limits, and tier-based entitlements. How ACCESS made the platform safe to open to the world.",
     href: "/blog/identity-at-every-layer", category: "Platform",
     date: "2025-04-15", readTime: "10 min", image: ch07Img,
-    imageAlt: "ACCESS node identity and entitlements", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "ACCESS module identity and entitlements", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch06-nodes-talk', title: "Nodes That Talk",
-    excerpt: "Five nodes needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate.",
+    id: 'ch06-nodes-talk', title: "Modules That Talk",
+    excerpt: "Five modules needed to coordinate. Point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the platform.",
     href: "/blog/nodes-that-talk", category: "Technology",
     date: "2025-04-02", readTime: "12 min", image: ch06Img,
     imageAlt: "RIPPLE event bus architecture", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch05-seeing', title: "Seeing Everything at Once",
-    excerpt: "When we couldn't debug our own system, we built VISION — real-time observability across every node, every request, every cost.",
+    excerpt: "When we couldn't debug our own system, we built VISION — real-time observability across every module, every request, every cost.",
     href: "/blog/seeing-everything-at-once", category: "Platform",
     date: "2025-03-20", readTime: "11 min", image: ch05Img,
     imageAlt: "VISION observability dashboard", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch04-bots', title: "When Bots Found Us First",
-    excerpt: "We didn't plan to build a security node. Then automated attacks found our API endpoints before we'd even launched.",
+    excerpt: "We didn't plan to build a security module. Then automated attacks found our API endpoints before we'd even launched.",
     href: "/blog/when-bots-found-us-first", category: "Security",
     date: "2025-03-05", readTime: "14 min", image: ch04Img,
-    imageAlt: "DEFENSE node security architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "DEFENSE module security architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch03-remember', title: "Teaching Machines to Remember",
     excerpt: "The hardest problem in AI isn't intelligence — it's continuity. How we built a three-tier memory architecture for persistent recall.",
     href: "/blog/teaching-machines-to-remember", category: "AI Technology",
     date: "2025-02-08", readTime: "15 min", image: ch03Img,
-    imageAlt: "BRAIN node memory architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "BRAIN module memory architecture", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch02-routing', title: "Routing the Unknown",
-    excerpt: "How the NEXUS node evolved from a simple failover function into an intelligent AI routing gateway with cost arbitrage.",
+    excerpt: "How the NEXUS module evolved from a simple failover function into an intelligent AI routing gateway with cost optimization.",
     href: "/blog/routing-the-unknown", category: "Technology",
     date: "2025-01-10", readTime: "14 min", image: ch02Img,
     imageAlt: "NEXUS routing gateway architecture", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch01-first', title: "The First Line of Code",
-    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL substrate. This is the honest story of why.",
+    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL platform. This is the honest story of why.",
     href: "/blog/the-first-line-of-code", category: "Platform",
     date: "2024-12-15", readTime: "12 min", image: ch01Img,
-    imageAlt: "The beginning of the CMPSBL substrate", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "The beginning of the CMPSBL platform", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   // ─── Chapters 21-40 ───
   { id: 'ch21-cascade', title: "When One Model Isn't Enough", excerpt: "A single LLM can't handle everything. CASCADE chains multiple models into adaptive processes that match complexity to capability.", href: "/blog/when-one-model-isnt-enough", category: "AI Technology", date: "2025-03-25", readTime: "12 min", image: ch21Img, imageAlt: "CASCADE adaptive processing", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch22-decode', title: "Breaking Problems Apart", excerpt: "Complex prompts fail. DECODE decomposes them into sub-tasks, routes each to the right model, and reassembles coherent responses.", href: "/blog/breaking-problems-apart", category: "AI Technology", date: "2025-04-08", readTime: "11 min", image: ch22Img, imageAlt: "DECODE task decomposition", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch23-proof', title: "Trust But Verify", excerpt: "AI outputs are probabilistic. PROOF validates them against constraints, catches hallucinations, and ensures quality thresholds.", href: "/blog/trust-but-verify", category: "AI Technology", date: "2025-05-18", readTime: "13 min", image: ch23Img, imageAlt: "PROOF validation node", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch24-atlas', title: "Mapping What We Built", excerpt: "With twelve nodes running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time.", href: "/blog/mapping-what-we-built", category: "Platform", date: "2025-06-14", readTime: "10 min", image: ch24Img, imageAlt: "ATLAS capability map", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch25-cognitives', title: "The Composable Agent", excerpt: "Composable Cognitives are personality-infused, skill-weighted AI agents assembled from substrate nodes.", href: "/blog/the-composable-agent", category: "AI Technology", date: "2025-07-20", readTime: "14 min", image: ch25Img, imageAlt: "Composable Cognitive agents", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch23-proof', title: "Trust But Verify", excerpt: "AI outputs are probabilistic. PROOF validates them against constraints, catches hallucinations, and ensures quality thresholds.", href: "/blog/trust-but-verify", category: "AI Technology", date: "2025-05-18", readTime: "13 min", image: ch23Img, imageAlt: "PROOF validation module", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch24-atlas', title: "Mapping What We Built", excerpt: "With twelve modules running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time.", href: "/blog/mapping-what-we-built", category: "Platform", date: "2025-06-14", readTime: "10 min", image: ch24Img, imageAlt: "ATLAS capability map", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch25-cognitives', title: "The Composable Agent", excerpt: "Composable Cognitives are personality-infused, skill-weighted AI agents assembled from platform modules.", href: "/blog/the-composable-agent", category: "AI Technology", date: "2025-07-20", readTime: "14 min", image: ch25Img, imageAlt: "Composable Cognitive agents", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch26-agency', title: "Teams of Machines", excerpt: "One agent isn't enough for real work. The Agency system orchestrates teams of cognitives with leaders, specialists, and shared learning.", href: "/blog/teams-of-machines", category: "AI Technology", date: "2025-08-12", readTime: "15 min", image: ch26Img, imageAlt: "Agency system", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch27-morph', title: "Interfaces That Think", excerpt: "Static UIs can't keep up with cognitive systems. MORPH generates and adapts interfaces based on context, capability, and user intent.", href: "/blog/interfaces-that-think", category: "Technology", date: "2025-09-15", readTime: "11 min", image: ch27Img, imageAlt: "MORPH adaptive UI", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch28-forge', title: "From Thought to Discovery", excerpt: "Ideas are cheap. FORGE turns substrate processing into downloadable, deployable software discoveries — scored, versioned, and ready to ship.", href: "/blog/from-thought-to-artifact", category: "Technology", date: "2025-10-08", readTime: "12 min", image: ch28Img, imageAlt: "FORGE discovery generation", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch29-store', title: "The Marketplace", excerpt: "We built discoveries nobody could find. The Store became a discovery layer — browse, preview, purchase, and deploy substrate-generated software.", href: "/blog/the-marketplace", category: "Platform", date: "2025-10-25", readTime: "10 min", image: ch29Img, imageAlt: "Substrate Store", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch28-forge', title: "From Thought to Discovery", excerpt: "Ideas are cheap. FORGE turns platform processing into downloadable, deployable software discoveries — scored, versioned, and ready to ship.", href: "/blog/from-thought-to-artifact", category: "Technology", date: "2025-10-08", readTime: "12 min", image: ch28Img, imageAlt: "FORGE discovery generation", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch29-store', title: "The Marketplace", excerpt: "We built discoveries nobody could find. The Store became a discovery layer — browse, preview, purchase, and deploy platform-generated software.", href: "/blog/the-marketplace", category: "Platform", date: "2025-10-25", readTime: "10 min", image: ch29Img, imageAlt: "CMPSBL Store", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch30-packs', title: "Packing Intelligence", excerpt: "Individual discoveries are useful. Packs bundle related capabilities into themed collections — curated, priced, and instantly deployable.", href: "/blog/packing-intelligence", category: "Platform", date: "2025-11-05", readTime: "9 min", image: ch30Img, imageAlt: "Capability Packs", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch31-intent', title: "The Intent Layer", excerpt: "Users say what they want, not how to get it. The Intent Mesh translates natural language into substrate operations across any number of nodes.", href: "/blog/the-intent-layer", category: "AI Technology", date: "2025-11-20", readTime: "13 min", image: ch31Img, imageAlt: "Intent Mesh", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch32-architecture', title: "The Full Architecture", excerpt: "From one function to a fully interconnected substrate. A technical map of the complete cognitive architecture and how it all fits together.", href: "/blog/thirty-eight-nodes-deep", category: "Technology", date: "2025-12-15", readTime: "18 min", image: ch32Img, imageAlt: "Substrate architecture map", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch31-intent', title: "The Intent Layer", excerpt: "Users say what they want, not how to get it. The Intent Mesh translates natural language into platform operations across any number of modules.", href: "/blog/the-intent-layer", category: "AI Technology", date: "2025-11-20", readTime: "13 min", image: ch31Img, imageAlt: "Intent Mesh", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch32-architecture', title: "The Full Architecture", excerpt: "From one function to a fully interconnected platform. A technical map of the complete cognitive architecture and how it all fits together.", href: "/blog/thirty-eight-nodes-deep", category: "Technology", date: "2025-12-15", readTime: "18 min", image: ch32Img, imageAlt: "Platform architecture map", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch33-stream', title: "The Memory Stream", excerpt: "Every interaction feeds the stream. Memory Stream crystallizes cognitive signals into scored, tiered, exportable software memories.", href: "/blog/the-memory-stream", category: "Technology", date: "2026-01-05", readTime: "14 min", image: ch33Img, imageAlt: "Memory Stream crystallization", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch34-economics', title: "The Economics of Intelligence", excerpt: "Running cognitive infrastructure isn't free. How we track cost per request, optimize model selection, and make AI economically sustainable.", href: "/blog/the-economics-of-intelligence", category: "Research", date: "2026-01-20", readTime: "12 min", image: ch34Img, imageAlt: "AI economics", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch35-gaming', title: "Gaming the Substrate", excerpt: "Games need real-time AI that remembers, adapts, and creates. The Gaming Substrate applies cognitive infrastructure to interactive entertainment.", href: "/blog/gaming-the-substrate", category: "Technology", date: "2026-01-30", readTime: "11 min", image: ch35Img, imageAlt: "Gaming substrate", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch36-autoblog', title: "When the System Writes About Itself", excerpt: "The substrate's auto-blog generates, reviews, and publishes its own content. A meta-chapter about AI that documents its own evolution.", href: "/blog/when-the-system-writes", category: "Research", date: "2026-02-05", readTime: "10 min", image: ch36Img, imageAlt: "Auto-blog system", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch35-gaming', title: "Gaming the Platform", excerpt: "Games need real-time AI that remembers, adapts, and creates. The Gaming Engine applies cognitive infrastructure to interactive entertainment.", href: "/blog/gaming-the-substrate", category: "Technology", date: "2026-01-30", readTime: "11 min", image: ch35Img, imageAlt: "Gaming engine", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch36-autoblog', title: "When the System Writes About Itself", excerpt: "The platform's auto-blog generates, reviews, and publishes its own content. A meta-chapter about AI that documents its own evolution.", href: "/blog/when-the-system-writes", category: "Research", date: "2026-02-05", readTime: "10 min", image: ch36Img, imageAlt: "Auto-blog system", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch37-standards', title: "Open Standards", excerpt: "We registered governance domains, published protocol specs, and open-sourced our terminology. Building standards, not moats.", href: "/blog/open-standards", category: "Governance", date: "2026-02-15", readTime: "10 min", image: ch37Img, imageAlt: "Open standards", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch38-wrong', title: "What We Got Wrong", excerpt: "Not everything worked. Over-engineered nodes, premature abstractions, and architectural decisions we'd reverse if we could.", href: "/blog/what-we-got-wrong", category: "Research", date: "2026-02-22", readTime: "15 min", image: ch38Img, imageAlt: "Engineering retrospective", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch38-wrong', title: "What We Got Wrong", excerpt: "Not everything worked. Over-engineered modules, premature abstractions, and architectural decisions we'd reverse if we could.", href: "/blog/what-we-got-wrong", category: "Research", date: "2026-02-22", readTime: "15 min", image: ch38Img, imageAlt: "Engineering retrospective", source: 'human', featured: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
   { id: 'ch39-scanner', title: "The Scanner", excerpt: "Security and accessibility scanning shouldn't require consultants. The Scanner runs automated audits and generates actionable fix reports.", href: "/blog/the-scanner", category: "Security", date: "2026-03-01", readTime: "11 min", image: ch39Img, imageAlt: "The Scanner", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
-  { id: 'ch40-now', title: "Where We Are Now", excerpt: "Forty chapters later. The current state of the substrate, what's running in production, and what comes next.", href: "/blog/where-we-are-now", category: "Platform", date: "2026-03-07", readTime: "16 min", image: ch40Img, imageAlt: "Current state of the substrate", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
+  { id: 'ch40-now', title: "Where We Are Now", excerpt: "Forty chapters later. The current state of the platform, what's running in production, and what comes next.", href: "/blog/where-we-are-now", category: "Platform", date: "2026-03-07", readTime: "16 min", image: ch40Img, imageAlt: "Current state of the platform", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering" },
 ];
 
 // ─── Main Blog Page ───

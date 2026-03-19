@@ -1,5 +1,5 @@
 /**
- * Documentation Hub — CMPSBL Substrate
+ * Documentation Hub — CMPSBL Platform
  * Mobile-first, sidebar navigation, polished cards
  * Full technical documentation with real content
  */
@@ -181,38 +181,38 @@ function OverviewSection() {
           the <strong className="text-foreground">Cognitive Core</strong> powers reasoning and memory, and the <strong className="text-foreground">Execution tier</strong> runs 
           all user-facing features. Cross-cutting systems like <strong className="text-foreground">Evolution, Security, and Routing</strong> span every layer.
         </p>
-        <CodeBlock title="40-node / 12-sector substrate topology">{`┌─────────────────────────────────────────────────────────┐
-│  GOVERNANCE (Plane)        Legitimacy supervision       │
+        <CodeBlock title="40-module / 12-group platform topology">{`┌─────────────────────────────────────────────────────────┐
+│  GOVERNANCE                Policy enforcement & oversight│
 ├─────────────────────────────────────────────────────────┤
-│  DEFENSE (Shell)           Terminal boundary enforcement │
+│  DEFENSE                   Security boundary layer      │
 ├─────────────────────────────────────────────────────────┤
 │  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
 │                            VISION · CORTEX · ECONOMY    │
 │                            SANDBOX · INCLUSIVE · MEDIC  │
 │                            INTEGRATION                  │
 ├─────────────────────────────────────────────────────────┤
-│  OCG                       RIPPLE · ACCESS · IDENTITY   │
+│  OPERATIONS                RIPPLE · ACCESS · IDENTITY   │
 │                            RELAY · AUDIT · NERVE        │
 ├─────────────────────────────────────────────────────────┤
-│  CCR (Cognitive Core)      BRAIN · MEMORY · DREAM       │
+│  COGNITIVE CORE            BRAIN · MEMORY · DREAM       │
 ├─────────────────────────────────────────────────────────┤
 │  SPINE                     CORE → SYSTEM                │
 ├─────────────────────────────────────────────────────────┤
-│  ESZ                       COMPLIANCE · PREDICT ·       │
+│  SAFETY                    COMPLIANCE · PREDICT ·       │
 │                            ETHICS · CONTRACT            │
-│  EPZ                       SIMULATE · GEOSPATIAL · EDGE │
-│  EMZ                       FORGE · TRANSLATE · INGEST   │
-│  CSZ                       EVOLUTION · SHADOW · PHANTOM │
+│  PERFORMANCE               SIMULATE · GEOSPATIAL · EDGE │
+│  MANUFACTURING             FORGE · TRANSLATE · INGEST   │
+│  CONTINUOUS                EVOLUTION · SHADOW · PHANTOM │
 ├─────────────────────────────────────────────────────────┤
-│  ATLAS                     Control plane (Node 40)      │
+│  ATLAS                     Control plane (Module 40)    │
 └─────────────────────────────────────────────────────────┘
-Fields: EVOLUTION · IMMUNITY · INTENT (cross-cutting)
-Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
+Cross-cutting: EVOLUTION · IMMUNITY · INTENT
+Total: 40 modules · 12 groups · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Core Nodes</h3>
+        <h3 className="font-semibold text-foreground mb-4">Core Modules</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
             { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
@@ -258,8 +258,8 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is built from 40 modules organized into 12 functional groups. Each module has a priority weight 
-          managed by the CORE module, which coordinates startup and system health.
+          CMPSBL is built from 40 specialized modules organized into 12 functional groups. Each module has a priority weight 
+          managed by the CORE module, which coordinates startup and overall system health.
         </p>
       </div>
 
@@ -273,10 +273,10 @@ function ArchitectureSection() {
             ["Cognitive Core", "Reasoning, memory, and self-improvement", "BRAIN, MEMORY, DREAM"],
             ["Operations", "Access control, auditing, and coordination", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
             ["Execution", "User-facing features and AI orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
-            ["Enterprise Safety", "Compliance, prediction, and ethics", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
-            ["Enterprise Performance", "Simulation and edge computing", "SIMULATE, GEOSPATIAL, EDGE"],
-            ["Enterprise Manufacturing", "Data ingestion, translation, and generation", "FORGE, TRANSLATE, INGEST"],
-            ["Continuous Safety", "Evolution, testing, and anomaly detection", "EVOLUTION, SHADOW, PHANTOM"],
+            ["Safety & Compliance", "Compliance, prediction, and ethics", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
+            ["Performance", "Simulation and edge computing", "SIMULATE, GEOSPATIAL, EDGE"],
+            ["Manufacturing", "Data ingestion, translation, and generation", "FORGE, TRANSLATE, INGEST"],
+            ["Continuous Improvement", "Evolution, testing, and anomaly detection", "EVOLUTION, SHADOW, PHANTOM"],
             ["Cross-Cutting", "Systems that span all layers", "EVOLUTION, IMMUNITY, INTENT"],
             ["Governance", "Supervisory oversight and policy enforcement", "GOVERNANCE"],
             ["Defense", "Outer security boundary", "DEFENSE"],
@@ -292,28 +292,28 @@ function ArchitectureSection() {
           Higher-weight modules (like CORE and DEFENSE) trigger faster alerts when degraded. Weights are 
           recalculated during startup and after system updates.
         </p>
-        <CodeBlock title="Matrix weight categories">{`// Weight categories (higher = more critical)
+        <CodeBlock title="Module weight categories">{`// Weight categories (higher = more critical)
 CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
 HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
 STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
 AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
-// Health score = Σ(node_health × weight) / Σ(weights)
-// Safety switch trips when node health < 0.3`}</CodeBlock>
+// Health score = Σ(module_health × weight) / Σ(weights)
+// Circuit breaker trips when module health < 0.3`}</CodeBlock>
       </div>
 
       {/* Safety switches */}
       <div>
         <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Circuit breakers prevent failures from spreading across modules. When a module's health drops too low,
+          Circuit breakers prevent failures from spreading across modules. When a module's health drops below threshold,
           it's automatically isolated. The MEDIC module then runs self-healing diagnostics to restore it.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { label: "Open", desc: "Node isolated — all traffic rejected. MEDIC healing active.", color: "border-red-500/30 bg-red-500/5" },
+            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-red-500/30 bg-red-500/5" },
             { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-amber-500/30 bg-amber-500/5" },
-            { label: "Closed", desc: "Normal operation — full traffic flows through node.", color: "border-emerald-500/30 bg-emerald-500/5" },
+            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-emerald-500/30 bg-emerald-500/5" },
           ].map(s => (
             <div key={s.label} className={cn("p-4 rounded-xl border", s.color)}>
               <h4 className="font-semibold text-sm mb-1">{s.label}</h4>
@@ -351,7 +351,7 @@ function BYOKSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">BYOK Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           <strong className="text-foreground">Bring Your Own Keys</strong> — developers register their own AI provider API keys
-          and pay compute costs directly to providers. Zero LLM costs for substrate operators.
+          and pay compute costs directly to providers. Zero LLM costs for platform operators.
         </p>
       </div>
 
@@ -429,10 +429,10 @@ function BrainSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Node</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Module</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           The cognitive core — a four-tier memory system with automatic demotion, compression,
-          and DREAM-cycle consolidation. Protected memory types are locked at 1.0 value with zero decay.
+          and background consolidation. Protected memory types are locked at 1.0 value with zero decay.
         </p>
       </div>
 
@@ -452,7 +452,7 @@ function BrainSection() {
 
       <Callout type="info">
         Memory demotion is automatic via FIFO/LRU eviction. When the Hot tier reaches capacity, the least-recently-used
-        entries are bulk-demoted to Warm. DREAM cycles compress Warm → Cold transitions during idle periods.
+        entries are bulk-demoted to Warm. Self-improvement cycles compress Warm → Cold transitions during idle periods.
       </Callout>
 
       {/* Protected types */}
@@ -514,7 +514,7 @@ const stats = await substrate.brain.stats();
         <h3 className="font-semibold text-foreground mb-4">Memory Scoring (RPS)</h3>
         <p className="text-sm text-muted-foreground mb-3 leading-relaxed">
           Every memory is scored using the RPS (Relevance, Proximity, Specificity) model. Scores decay over time
-          unless the memory is accessed, which resets the decay timer. DREAM cycles recalculate scores in bulk.
+          unless the memory is accessed, which resets the decay timer. Self-improvement cycles recalculate scores in bulk.
         </p>
         <CodeBlock title="RPS scoring model">{`// Score = (Relevance × 0.4) + (Proximity × 0.3) + (Specificity × 0.3)
 //
@@ -626,9 +626,9 @@ function DreamSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DREAM Cycles</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Self-Improvement Cycles</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Autonomous offline synthesis. During idle periods, the substrate consolidates patterns,
+          Autonomous background processing. During idle periods, the platform consolidates patterns,
           compresses redundant memories, scores relevance, and surfaces lateral insights that wouldn't
           emerge from direct queries alone.
         </p>
@@ -636,14 +636,14 @@ function DreamSection() {
 
       {/* Dream modes */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Dream Modes</h3>
+        <h3 className="font-semibold text-foreground mb-4">Processing Modes</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <InfoCard icon={Clock} title="Simnap Mode">
             Quick 30-second consolidation cycle. Compresses recent Hot-tier memories, rescores Warm-tier
             entries, and prunes duplicates. Runs automatically every 15 minutes during low-traffic periods.
             Minimal compute cost — designed for always-on operation.
           </InfoCard>
-          <InfoCard icon={Brain} title="Deep Dream Mode">
+          <InfoCard icon={Brain} title="Deep Processing Mode">
             Full synthesis cycle (2-5 minutes). Cross-references all memory tiers, identifies latent patterns
             across categories, generates heuristics, and prunes stale entries. Runs daily during lowest-traffic
             window or can be triggered manually.
@@ -683,7 +683,7 @@ await substrate.dream.schedule({
 
       {/* What dreams produce */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Dream Outputs</h3>
+        <h3 className="font-semibold text-foreground mb-4">Cycle Outputs</h3>
         <DocTable
           headers={["Output Type", "Description", "Example"]}
           rows={[
@@ -697,7 +697,7 @@ await substrate.dream.schedule({
       </div>
 
       <Callout type="tip">
-        <strong>Dream consent:</strong> For multi-tenant deployments, dream pooling can be configured per-tenant.
+        <strong>Processing consent:</strong> For multi-tenant deployments, background processing can be configured per-tenant.
         Tenants can opt in/out of global pattern pooling, heuristic sharing, and template sharing independently.
       </Callout>
     </div>
@@ -708,10 +708,10 @@ function DefenseSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Node</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Module</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Enterprise-grade security built into the substrate core. DEFENSE is the terminal boundary —
-          the outermost shell that every request must pass through before reaching any other node.
+          Enterprise-grade security built into the platform core. DEFENSE is the outermost boundary —
+          the security layer that every request must pass through before reaching any other module.
         </p>
       </div>
 
@@ -788,7 +788,7 @@ function EvolutionSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">EVOLUTION System</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Governed self-improvement. EVOLUTION manages version control, shadow testing, and promotion of
-          system changes — ensuring the substrate improves over time while maintaining integrity guarantees.
+          system changes — ensuring the platform improves over time while maintaining integrity guarantees.
         </p>
       </div>
 
@@ -872,7 +872,7 @@ function ExtensionsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Extensions</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Extend substrate functionality with custom hooks that run before or after system actions.
+          Extend platform functionality with custom hooks that run before or after system actions.
           Extensions are sandboxed and rate-limited to prevent interference with core operations.
         </p>
       </div>
@@ -939,7 +939,7 @@ function AgentsSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Multi-Agent Orchestration</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Create and coordinate AI agents using five built-in orchestration patterns. Each agent has its own
-          persistent memory, CLM (Constant Learning Mode) training, and sealed runtime environment.
+          persistent memory, continuous learning, and sealed runtime environment.
         </p>
       </div>
 
@@ -1000,7 +1000,7 @@ const chain = await substrate.agents.run(
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { label: "Auto-Tiering Memory", desc: "Each agent has its own 4-tier memory that auto-manages itself" },
-            { label: "CLM Training", desc: "Constant Learning Mode — agents improve 24/7 from every interaction" },
+            { label: "Continuous Learning", desc: "Agents improve around the clock from every interaction" },
             { label: "RIPPLE Orchestrator", desc: "Internal event bus for coordination between agents" },
             { label: "Version Minting", desc: "Purchase an agent and receive a unique snapshot of its learned state" },
             { label: "DECODE Channel", desc: "Natural language interface for direct agent interaction" },
@@ -1023,8 +1023,8 @@ function IntegrationsSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Integrations</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          Connect external services through the INTEGRATION node. Manage credentials, invoke APIs,
-          and receive webhooks — all within the substrate's governance and audit boundaries.
+          Connect external services through the INTEGRATION module. Manage credentials, invoke APIs,
+          and receive webhooks — all within the platform's governance and audit boundaries.
         </p>
       </div>
 
@@ -1074,7 +1074,7 @@ const connections = await substrate.integrations.list();
 
       <Callout type="info">
         All integration credentials are encrypted at rest. API calls through integrations are logged to the
-        AUDIT chain and subject to the same rate limiting and governance policies as direct substrate calls.
+        AUDIT chain and subject to the same rate limiting and governance policies as direct platform calls.
       </Callout>
     </div>
   );
@@ -1106,7 +1106,7 @@ function APISection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">API Reference</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          All substrate actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
+          All platform actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
           single unified gateway endpoint. The <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">action</code> field
           in the JSON body determines which module handles the request.
         </p>
@@ -1271,11 +1271,11 @@ export default function Documentation() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Documentation — API & Node Reference | CMPSBL"
-        description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, DREAM cycles, DEFENSE rules, EVOLUTION promotion, terminal commands, SDK guides, and full 40-node integration reference."
+        title="Documentation — API & Module Reference | CMPSBL"
+        description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, self-improvement cycles, DEFENSE security, EVOLUTION system, SDK guides, and full 40-module integration reference."
         canonical="https://cmpsbl.com/documentation"
         image="https://cmpsbl.com/og/documentation.jpg"
-        keywords={['CMPSBL documentation', 'substrate docs', 'AI API reference', 'DREAM cycles docs', 'persistent memory API']}
+        keywords={['CMPSBL documentation', 'platform docs', 'AI API reference', 'persistent memory API', 'AI module reference']}
       />
 
       <PublicNav />
@@ -1295,7 +1295,7 @@ export default function Documentation() {
               <span className="text-xs">Developer Resources</span>
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
-              Substrate{" "}
+              Platform{" "}
               <span style={{
                 background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                 WebkitBackgroundClip: "text",
@@ -1303,8 +1303,8 @@ export default function Documentation() {
               }}>Documentation</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Everything you need to build on the substrate — persistent memory, DREAM cycles,
-              NEXUS routing, governed evolution, and complete API reference.{" "}
+              Everything you need to build on the platform — persistent memory, self-improvement cycles,
+              smart routing, governed evolution, and complete API reference.{" "}
               <span className="text-primary font-medium">100% BYOK.</span>
             </p>
           </div>
@@ -1391,7 +1391,7 @@ export default function Documentation() {
         <div className="relative container mx-auto px-4 py-16 sm:py-20 max-w-3xl text-center">
           <h2 className="text-2xl sm:text-3xl font-bold mb-4 tracking-tight">Ready to Build?</h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto leading-relaxed">
-            Deploy your own substrate instance and start building with BYOK architecture.
+            Deploy your own platform instance and start building with BYOK architecture.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
@@ -1408,8 +1408,8 @@ export default function Documentation() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/documentation" title="Documentation" faq={[
-        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com. You get 3 memory slots immediately with full runtime access. No credit card required." },
-        { question: "Does CMPSBL have an API?", answer: "Yes. The CMPSBL substrate exposes a RESTful API with authentication, rate limiting, and full documentation at cmpsbl.com/api-access." },
+        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com. You get 3 capability slots immediately with full platform access. No credit card required." },
+        { question: "Does CMPSBL have an API?", answer: "Yes. The CMPSBL platform exposes a RESTful API with authentication, rate limiting, and full documentation at cmpsbl.com/api-access." },
         { question: "What programming languages does CMPSBL support?", answer: "CMPSBL is language-agnostic. The API works with any language that can make HTTP requests. SDKs are available for JavaScript/TypeScript with more coming." },
       ]} />
       <EnhancedFooter />
