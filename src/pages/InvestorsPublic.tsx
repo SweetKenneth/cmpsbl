@@ -77,19 +77,19 @@ export default function InvestorsPublic() {
   };
 
   const metrics = [
-    { icon: Layers, label: "Stream Nodes", value: "40", color: "text-primary" },
-    { icon: Zap, label: "Crystallized Memories", value: String(stierPipelinesCount), color: "text-emerald-500" },
+    { icon: Layers, label: "Modules", value: "40", color: "text-primary" },
+    { icon: Zap, label: "Crystallized Capabilities", value: String(stierPipelinesCount), color: "text-emerald-500" },
     { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
     { icon: Globe, label: "Capabilities", value: "675+", color: "text-violet-400" }
   ];
 
   const products = [
-    { icon: Brain, name: "BRAIN", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering within the Memory Stream." },
-    { icon: Eye, name: "VISION", subtitle: "Stream Observability", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 stream nodes." },
-    { icon: Shield, name: "DEFENSE", subtitle: "Stream Security", description: "Bot protection, threat detection, and governance guardrails — outermost protective shell of the Memory Stream." },
+    { icon: Brain, name: "BRAIN", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
+    { icon: Eye, name: "VISION", subtitle: "Monitoring", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 modules." },
+    { icon: Shield, name: "DEFENSE", subtitle: "Security", description: "Bot protection, threat detection, and governance guardrails — outermost security layer." },
     { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "DECODE→ENCODE process with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT", subtitle: "Stream Crystallization", description: "Systems advertise, compose, and crystallize cross-system memories autonomously from the Memory Stream." },
+    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "Natural-language-to-code with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT", subtitle: "Capability Discovery", description: "Systems advertise, compose, and discover cross-system capabilities autonomously." },
   ];
 
   const highlights = [
