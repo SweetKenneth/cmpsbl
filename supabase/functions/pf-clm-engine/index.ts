@@ -307,13 +307,21 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
   const topicPromises = LEARNING_TOPICS.map(async (topic) => {
     try {
       const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'brain', action: 'deep_think', data: { question: topic.prompt, depth: 'medium' } },
+        body: { module: 'brain', action: 'deep_think', data: { query: topic.prompt, depth: 2 } },
       });
 
-      if (!studyError && studyResult?.success) {
+      const usedRealProvider =
+        !studyError &&
+        studyResult?.success &&
+        typeof studyResult?.analysis === 'string' &&
+        studyResult?.ai_provider &&
+        studyResult.ai_provider !== 'local';
+
+      if (usedRealProvider) {
         aiCalls++;
 
-        const memoryContent = `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`;
+        const analysisText = studyResult.analysis as string;
+        const memoryContent = `[CLM Learning: ${topic.domain}] ${analysisText.substring(0, 500)}`;
         const storedTier = await writeLearningMemory(supabase, tierState, {
           content: memoryContent,
           context: `clm_study:${topic.domain}`,
@@ -324,6 +332,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
             domain: topic.domain,
             source: 'clm_burst_engine',
             cycle: cycleNumber,
+            ai_provider: studyResult.ai_provider,
           },
         });
 
@@ -334,12 +343,15 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
           data: {
             title: `CLM Study: ${topic.domain}`,
             domain: topic.domain,
-            result: studyResult?.analysis?.substring?.(0, 800) || 'completed',
+            result: analysisText.substring(0, 800),
             source: 'clm_burst_engine',
             version: CLM_VERSION,
             cycle: cycleNumber,
             stored_tier: storedTier,
             hot_pressure_start: Number(hotPressureAtStart.toFixed(2)),
+            ai_provider: studyResult.ai_provider,
+            tokens_used: studyResult.tokens_used ?? null,
+            latency_ms: studyResult.latency_ms ?? null,
           },
         });
 
