@@ -1,5 +1,5 @@
 /**
- * Systems Hub — Central index of all substrate execution surfaces
+ * Systems Hub — Central index of all platform modules
  * 1 Kernel + 9 Systems + 5 Mesh Overlays + 9 Hidden Zones
  */
 
