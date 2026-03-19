@@ -24,6 +24,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
 import { Link } from 'react-router-dom';
+import { SEO } from '@/components/SEO';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
