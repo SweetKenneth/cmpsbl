@@ -630,7 +630,7 @@ export default function UseCases() {
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                    <Link to="/explore">
+                    <Link to="/store">
                       <Play className="w-4 h-4" />
                       Browse Artifacts
                     </Link>

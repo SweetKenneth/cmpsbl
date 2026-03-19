@@ -128,7 +128,7 @@ export default function MarketplaceSuccess() {
                 <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
                 <p className="text-muted-foreground mb-4">{error}</p>
                 <Button asChild>
-                  <Link to="/explore">Return to Explore</Link>
+                  <Link to="/store">Return to Explore</Link>
                 </Button>
               </Card>
             ) : (
@@ -286,7 +286,7 @@ export default function MarketplaceSuccess() {
                         </Link>
                       </Button>
                       <Button variant="outline" className="flex-1 gap-2" asChild>
-                        <Link to="/explore">
+                        <Link to="/store">
                           Continue Browsing
                         </Link>
                       </Button>

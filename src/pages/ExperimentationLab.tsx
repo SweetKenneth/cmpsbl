@@ -289,7 +289,7 @@ export default function ExperimentationLab() {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/explore">
+                  <Link to="/store">
                     <ShoppingCart className="w-5 h-5" />
                     Browse All Templates
                   </Link>
@@ -492,7 +492,7 @@ export default function ExperimentationLab() {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-primary to-violet-600 hover:opacity-90">
-                  <Link to="/explore">
+                  <Link to="/store">
                     <ShoppingCart className="w-5 h-5" />
                     Browse Artifacts
                     <ArrowRight className="w-4 h-4" />

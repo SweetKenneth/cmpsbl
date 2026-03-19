@@ -979,7 +979,7 @@ export default function Blog() {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg" className="gap-2">
-                  <Link to="/explore">
+                  <Link to="/store">
                     <Sparkles className="w-4 h-4" />
                     Explore Artifacts
                   </Link>
