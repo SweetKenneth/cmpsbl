@@ -108,7 +108,7 @@ export default function Store() {
             >
               <Badge variant="outline" className="mb-6 border-primary/30 px-4 py-1.5 inline-flex backdrop-blur-sm">
                 <ShoppingBag className="w-3.5 h-3.5 mr-2 text-primary" />
-                <span className="text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Ladder</span>
+                <span className="text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Platform</span>
               </Badge>
             </motion.div>
 

@@ -147,11 +147,11 @@ export default function Foundry() {
   return (
     <>
       <SEO 
-        title="Memory Stream — Mine & Crystallize Software | CMPSBL"
-        description="Crystallize raw cognitive signals into scored, tiered, exportable software artifacts. 5 rarity tiers from Mint to Apex, CJPI quality floor of 68+, and per-user persistent vault. Mine free."
+        title="Memory Stream — Discover & Collect Software Capabilities | CMPSBL"
+        description="Discover scored, tiered, exportable software capabilities. 5 rarity tiers from Mint to Apex, quality floor of 68+, and per-user persistent vault. Start mining free."
         canonical="https://cmpsbl.com/foundry"
         image="https://cmpsbl.com/og-memory-stream.jpg"
-        keywords={['memory stream', 'crystallized memories', 'AI software discovery', 'CMPSBL foundry', 'CJPI scoring', 'composable pipelines']}
+        keywords={['memory stream', 'crystallized memories', 'AI software discovery', 'CMPSBL', 'quality scoring', 'composable capabilities']}
       />
 
       <PublicNav />
