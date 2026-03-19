@@ -61,12 +61,12 @@ const faqItems = [
 ];
 
 const pillars = [
-  { icon: Brain, title: "Persistent Memory", desc: "4-tier memory architecture (hot/warm/cold/legacy) with DREAM consolidation. Every agent remembers — free for all users.", link: "/persistent-memory" },
-  { icon: Network, title: "Intelligent Routing", desc: "NEXUS routes to 14+ providers based on task complexity, cost, and latency. Auto-failover. Budget-aware. Zero lock-in.", link: "/modules/nexus" },
-  { icon: Shield, title: "AI-Native Security", desc: "DEFENSE wraps the outer shell. Prompt injection detection, adversarial filtering, bot detection, and rate limiting — built in.", link: "/modules/defense" },
-  { icon: Moon, title: "DREAM Cycles", desc: "Autonomous optimization during idle periods. Consolidate memory, generate heuristics, and surface lateral insights overnight.", link: "/modules/dream" },
-  { icon: Workflow, title: "Meta-Orchestration", desc: "CORTEX coordinates all 40 nodes as a unified intelligence. Pre-built synergy memories discover emergent capabilities.", link: "/modules/cortex" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots 40 nodes in dependency order with safety switches, weighted health scoring, and zero-downtime hot reload.", link: "/modules/core" },
+  { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. 4-tier memory (hot → warm → cold → legacy) ensures fast recall for recent context and long-term storage for historical knowledge.", link: "/persistent-memory" },
+  { icon: Network, title: "Smart Model Routing", desc: "NEXUS picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/modules/nexus" },
+  { icon: Shield, title: "Built-in AI Security", desc: "DEFENSE protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/modules/defense" },
+  { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the system consolidates what it learned, discovers patterns, and generates new insights — all automatically.", link: "/modules/dream" },
+  { icon: Workflow, title: "Coordinated Intelligence", desc: "CORTEX coordinates all 40 nodes so they work as one unified system. Pre-built synergies discover capabilities that no single node could achieve alone.", link: "/modules/cortex" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots all 40 nodes in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/modules/core" },
 ];
 
 const sectors = [
