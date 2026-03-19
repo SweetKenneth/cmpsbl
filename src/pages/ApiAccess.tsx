@@ -296,7 +296,7 @@ await substrate('vision.health', {});`}
             {[
               { value: "60", label: "Requests / min" },
               { value: "1,000", label: "Requests / day" },
-              { value: "40", label: "Nodes accessible" },
+              { value: "40", label: "Modules accessible" },
               { value: "∞", label: "Time limit" },
             ].map((s, i) => (
               <motion.div
