@@ -66,9 +66,9 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     detail: "Signals are persisted and translated into readable dialogue. Categories include acknowledgement, discovery, escalation, and heartbeat.",
   },
   "substrate": {
-    term: "Substrate",
+    term: "Platform",
     short: "The foundational cognitive runtime beneath all CMPSBL operations.",
-    detail: "A self-evolving operating system layer between AI models and applications, managing memory, orchestration, and governance.",
+    detail: "A self-evolving platform layer between AI models and applications, managing memory, orchestration, and governance.",
   },
   "nexus": {
     term: "NEXUS Routing",
