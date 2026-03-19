@@ -236,7 +236,7 @@ export default function PricingMethod() {
                   <div className="text-sm font-bold text-foreground mb-1">Standard</div>
                   <div className="text-2xl font-bold text-primary">100%</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Professional teams, commercial use
+                    Professional teams and commercial products
                   </p>
                 </CardContent>
               </Card>
