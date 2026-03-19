@@ -49,7 +49,7 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "How do I get started?",
-    answer: "Sign up for a free Builder account. From the dashboard, you can explore the systems, create your first Memory Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
+    answer: "Sign up for a free Builder account. From the dashboard, you can explore the platform, create your first Memory Pack, and connect your AI provider keys through the smart router. DECODE — our conversational interface — is available on every page to guide you.",
   },
   {
     category: "Getting Started",
