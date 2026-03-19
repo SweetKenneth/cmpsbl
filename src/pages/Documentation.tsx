@@ -169,7 +169,7 @@ function OverviewSection() {
       </div>
 
       <Callout type="tip">
-        <strong>New to CMPSBL?</strong> Start with the <Link to="/start-here" className="text-primary underline">Quick Start Guide</Link> to
+        <strong>New to CMPSBL?</strong> Start with the <Link to="/documentation" className="text-primary underline">Quick Start Guide</Link> to
         get persistent memory running in under an hour — no framework changes needed.
       </Callout>
 
@@ -242,7 +242,7 @@ Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
       {/* Quick links */}
       <div className="flex flex-wrap gap-3 pt-2">
         <Button asChild size="sm" variant="outline">
-          <Link to="/start-here">Quick Start <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
+          <Link to="/developers/guide">Quick Start <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
         </Button>
         <Button asChild size="sm" variant="outline">
           <Link to="/developers">Developer Portal <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
@@ -1400,7 +1400,7 @@ export default function Documentation() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="hover:border-primary/30 transition-colors">
-              <Link to="/start-here">Start Here</Link>
+              <Link to="/developers/guide">Developer Guide</Link>
             </Button>
           </div>
         </div>
@@ -1408,7 +1408,7 @@ export default function Documentation() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/documentation" title="Documentation" faq={[
-        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com/start-here. You get 3 memory slots immediately with full runtime access. No credit card required." },
+        { question: "How do I get started with CMPSBL?", answer: "Create a free account at cmpsbl.com. You get 3 memory slots immediately with full runtime access. No credit card required." },
         { question: "Does CMPSBL have an API?", answer: "Yes. The CMPSBL substrate exposes a RESTful API with authentication, rate limiting, and full documentation at cmpsbl.com/api-access." },
         { question: "What programming languages does CMPSBL support?", answer: "CMPSBL is language-agnostic. The API works with any language that can make HTTP requests. SDKs are available for JavaScript/TypeScript with more coming." },
       ]} />

@@ -13,7 +13,7 @@ const LABEL_MAP: Record<string, string> = {
   admin: 'Admin',
   substrate: 'Substrate',
   documentation: 'Documentation',
-  'start-here': 'Start Here',
+  'developers': 'Developers',
   'persistent-memory': 'Persistent Memory',
   'composable-cognitives': 'Runtime Agents',
   'feed-dream-eater': 'Dream Eater',

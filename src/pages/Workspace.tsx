@@ -85,7 +85,7 @@ export default function Workspace() {
         getExclusiveCommands('architect').find(c => c.command === cmd) ||
         getExclusiveCommands('governor').find(c => c.command === cmd);
       if (lockedCmd) {
-        setTerminalHistory(prev => [...prev, { input: terminalInput, output: `⛔ "${cmd}" requires ${TIER_LABELS[lockedCmd.tier].label} tier (${TIER_LABELS[lockedCmd.tier].price})\nUpgrade at /upgrade to unlock ${counts[lockedCmd.tier]} commands.`, tier: lockedCmd.tier }]);
+        setTerminalHistory(prev => [...prev, { input: terminalInput, output: `⛔ "${cmd}" requires ${TIER_LABELS[lockedCmd.tier].label} tier (${TIER_LABELS[lockedCmd.tier].price})\nUpgrade at /store to unlock ${counts[lockedCmd.tier]} commands.`, tier: lockedCmd.tier }]);
       } else {
         setTerminalHistory(prev => [...prev, { input: terminalInput, output: `Unknown command: "${cmd}"\nType "help" to see available commands.` }]);
       }

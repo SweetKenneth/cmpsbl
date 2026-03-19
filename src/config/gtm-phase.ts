@@ -109,7 +109,7 @@ export const PHASE_1_LIVE_ROUTES = [
   '/roadmap',
   '/showcase',
   '/solutions',
-  '/start-here',
+  
   '/status',
   '/substrate',
   '/support',

@@ -42,7 +42,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Gaming Substrate", href: "/gaming", section: "Solutions", icon: Layers, keywords: ["games", "NPC", "world engine"] },
 
   // Developers
-  { name: "Start Here", href: "/start-here", section: "Build", icon: Code, keywords: ["getting started", "quickstart", "onboarding"] },
+  { name: "Developer Guide", href: "/developers/guide", section: "Build", icon: Code, keywords: ["getting started", "quickstart", "onboarding"] },
   { name: "Documentation", href: "/documentation", section: "Build", icon: BookOpen, keywords: ["API", "reference", "guides", "docs"] },
   { name: "Builder Workspace", href: "/workspace", section: "Build", icon: Terminal, keywords: ["SDK", "terminal", "build tools"] },
   { name: "Academy", href: "/academy", section: "Build", icon: Code, keywords: ["tutorials", "learning", "courses"] },

@@ -567,9 +567,9 @@ export default function About() {
                     size="lg"
                     className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
                   >
-                    <Link to="/start-here">
+                    <Link to="/auth">
                       <Sparkles className="w-4 h-4 mr-2" />
-                      Start Here
+                      Get Started
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>

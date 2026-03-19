@@ -299,7 +299,7 @@ await cmpsbl.dream.cycle({
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2">
-                <Link to="/start-here"><Rocket className="w-4 h-4" />Get Started Free<ArrowRight className="w-4 h-4" /></Link>
+                <Link to="/auth"><Rocket className="w-4 h-4" />Get Started Free<ArrowRight className="w-4 h-4" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link to="/api-access">API Access</Link>

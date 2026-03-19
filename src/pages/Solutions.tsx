@@ -144,7 +144,7 @@ export default function Solutions() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">
-                <Link to="/start-here">
+                <Link to="/auth">
                   Get Started Free <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
@@ -244,7 +244,7 @@ export default function Solutions() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/15">
-              <Link to="/start-here">Get Started Free <ArrowRight className="w-5 h-5" /></Link>
+              <Link to="/auth">Get Started Free <ArrowRight className="w-5 h-5" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline">
               <Link to="/store?tab=plans">View Plans</Link>
