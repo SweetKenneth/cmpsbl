@@ -320,7 +320,7 @@ await substrate('vision.health', {});`}
             <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-30" />
             <h2 className="text-2xl font-black text-foreground mb-3 tracking-tight">Need more?</h2>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Upgrade for higher limits, priority NEXUS routing, and enterprise features.
+              Upgrade for higher limits, priority AI routing, and enterprise features.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2">

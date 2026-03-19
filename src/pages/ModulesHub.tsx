@@ -106,7 +106,7 @@ export default function ModulesHub() {
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4 text-xs font-medium text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                          Explore {mod.visibility === 'mesh' ? 'mesh' : 'node'} <ArrowRight className="w-3 h-3" />
+                          Explore {mod.visibility === 'mesh' ? 'overlay' : 'module'} <ArrowRight className="w-3 h-3" />
                         </div>
                       </Link>
                     ))}
