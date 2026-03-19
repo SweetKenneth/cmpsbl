@@ -180,7 +180,7 @@ function normalizeBlogCategory(rawCategory?: string | null): string {
   return existingCategory?.id ?? 'Research';
 }
 
-// ─── Horizontal Scroll Carousel (same as SubstrateStore) ───
+// ─── Horizontal Scroll Carousel ───
 function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 'left' | 'right') => {
