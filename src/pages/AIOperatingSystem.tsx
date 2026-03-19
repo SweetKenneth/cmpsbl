@@ -195,9 +195,9 @@ export default function AIOperatingSystem() {
 
             <motion.div {...fadeUp(0.22)} className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10">
               <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                <Link to="/architecture">
+                <Link to="/modules">
                   <Activity className="w-5 h-5" />
-                  Explore All 40 Nodes
+                  Explore All 40 Modules
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
