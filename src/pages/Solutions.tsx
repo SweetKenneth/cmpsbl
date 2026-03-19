@@ -56,12 +56,12 @@ const solutions = [
   },
   {
     icon: Shield,
-    name: "DEFENSE Shell",
-    tagline: "Adaptive Security Layer",
+    name: "Security Layer",
+    tagline: "Adaptive Threat Detection",
     description: "Behavioral threat detection, intelligent rate limiting, and governance rules that learn from attack patterns. Security that adapts in real-time.",
     features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "Adaptive rate limiting", "Governance rule enforcement", "Enterprise audit logging"],
     metrics: ["Adaptive", "Real-Time", "Enterprise Grade"],
-    link: "/upgrade",
+    link: "/store?tab=plans",
     color: "from-red-500 to-rose-600",
   },
   {
