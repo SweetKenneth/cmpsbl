@@ -1106,7 +1106,7 @@ function APISection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">API Reference</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          All substrate actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
+          All platform actions are sent via <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">POST</code> to a
           single unified gateway endpoint. The <code className="text-primary text-xs bg-primary/10 px-1.5 py-0.5 rounded font-mono">action</code> field
           in the JSON body determines which module handles the request.
         </p>
