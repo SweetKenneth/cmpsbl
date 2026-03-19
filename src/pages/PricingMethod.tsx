@@ -11,8 +11,13 @@ export default function PricingMethod() {
   return (
     <>
       <Helmet>
-        <title>Our Pricing Method | CMPSBL®</title>
-        <meta name="description" content="How CMPSBL® systematically prices software capabilities using multi-model consensus, CJPI scoring, and market-grounded analysis." />
+        <title>Pricing Methodology — How We Price AI Capabilities | CMPSBL®</title>
+        <meta name="description" content="How CMPSBL® systematically prices software capabilities using multi-model consensus, quality scoring, and market-grounded analysis. Transparent, auditable methodology." />
+        <link rel="canonical" href="https://cmpsbl.com/pricing-method" />
+        <meta property="og:title" content="Pricing Methodology | CMPSBL®" />
+        <meta property="og:description" content="Transparent, auditable pricing for AI capabilities — multi-model consensus and quality scoring." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cmpsbl.com/pricing-method" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
