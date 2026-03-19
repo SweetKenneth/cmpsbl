@@ -351,7 +351,7 @@ function BYOKSection() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">BYOK Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           <strong className="text-foreground">Bring Your Own Keys</strong> — developers register their own AI provider API keys
-          and pay compute costs directly to providers. Zero LLM costs for substrate operators.
+          and pay compute costs directly to providers. Zero LLM costs for platform operators.
         </p>
       </div>
 
