@@ -110,7 +110,7 @@ const FAQ_ITEMS = [
   {
     category: "Exports",
     question: "Is there hardware export support?",
-    answer: "Hardware export is on the roadmap. Currently, all substrate capabilities run in cloud infrastructure. Contact us at support@cmpsbl.com for enterprise deployment requirements including on-premise options.",
+    answer: "Hardware export is on the roadmap. Currently, all capabilities run in cloud infrastructure. Contact us at support@cmpsbl.com for enterprise deployment requirements including on-premise options.",
   },
 
   // Account & Access
