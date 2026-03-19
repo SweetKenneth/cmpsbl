@@ -32,27 +32,27 @@ const fadeUp = (delay = 0) => ({
 const faqItems = [
   {
     question: "What is an AI Operating System?",
-    answer: "An AI Operating System is a unified software platform that provides all the cognitive infrastructure AI agents need to operate in production — persistent memory, intelligent routing, security, observability, and autonomous optimization — integrated into a single coherent runtime, much like how traditional operating systems unified file management, process scheduling, and I/O for applications.",
+    answer: "An AI Operating System is a platform that gives AI agents everything they need to work in production — persistent memory, smart routing, built-in security, monitoring, and self-improvement — all in one place. Think of it like how Windows or macOS unified computing: CMPSBL unifies AI infrastructure.",
   },
   {
     question: "How is an AI OS different from an AI framework?",
-    answer: "AI frameworks like LangChain or CrewAI solve individual problems — chaining prompts, managing agents, or structuring outputs. An AI Operating System integrates all of these concerns (memory, routing, security, monitoring, optimization) into a single platform where nodes communicate and enhance each other. The whole is greater than the sum of its parts.",
+    answer: "Frameworks like LangChain or CrewAI solve one problem at a time — chaining prompts, managing agents, or formatting outputs. An AI OS integrates all of these into a single platform where every part communicates and strengthens the others. The whole is greater than the sum of its parts.",
   },
   {
     question: "What is the Memory Stream?",
-    answer: "The Memory Stream is the substrate's autonomous memory formation engine. Every interaction flows through it — the system crystallizes memories of successful solutions, packages them, and exports them as capabilities. The rarest discoveries become specs for silicon computer chips. Think of it as the OS layer between AI models and your applications.",
+    answer: "The Memory Stream is how the system learns. Every interaction flows through it — the system finds successful patterns, packages them as reusable software, and exports them. The rarest discoveries become specs for silicon computer chips. It's the layer between AI models and your applications.",
   },
   {
     question: "What problems does CMPSBL solve?",
-    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the substrate provides 40 integrated nodes across 12 sectors that share context, propagate events in real time, and self-optimize through DREAM cycles.",
+    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated nodes that share context, propagate events in real time, and self-optimize automatically.",
   },
   {
     question: "Who needs an AI Operating System?",
-    answer: "Any organization running AI in production — especially those managing multiple models, needing persistent agent memory, requiring AI-specific security (prompt injection defense), or wanting their systems to autonomously improve. Enterprise AI teams, AI-native startups, and agencies building AI products all benefit.",
+    answer: "Any team running AI in production — especially those managing multiple models, needing persistent agent memory, requiring AI-specific security, or wanting their systems to automatically improve over time. Enterprise AI teams, AI startups, and agencies building AI products all benefit.",
   },
   {
     question: "Can CMPSBL work with existing AI models?",
-    answer: "Yes. CMPSBL is model-agnostic and provider-agnostic. The NEXUS node intelligently routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on task requirements. Bring your own keys and your existing AI stack — CMPSBL orchestrates everything underneath.",
+    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS node automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
     question: "What is the substrate architecture?",
@@ -61,12 +61,12 @@ const faqItems = [
 ];
 
 const pillars = [
-  { icon: Brain, title: "Persistent Memory", desc: "4-tier memory architecture (hot/warm/cold/legacy) with DREAM consolidation. Every agent remembers — free for all users.", link: "/persistent-memory" },
-  { icon: Network, title: "Intelligent Routing", desc: "NEXUS routes to 14+ providers based on task complexity, cost, and latency. Auto-failover. Budget-aware. Zero lock-in.", link: "/modules/nexus" },
-  { icon: Shield, title: "AI-Native Security", desc: "DEFENSE wraps the outer shell. Prompt injection detection, adversarial filtering, bot detection, and rate limiting — built in.", link: "/modules/defense" },
-  { icon: Moon, title: "DREAM Cycles", desc: "Autonomous optimization during idle periods. Consolidate memory, generate heuristics, and surface lateral insights overnight.", link: "/modules/dream" },
-  { icon: Workflow, title: "Meta-Orchestration", desc: "CORTEX coordinates all 40 nodes as a unified intelligence. Pre-built synergy memories discover emergent capabilities.", link: "/modules/cortex" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots 40 nodes in dependency order with safety switches, weighted health scoring, and zero-downtime hot reload.", link: "/modules/core" },
+  { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. 4-tier memory (hot → warm → cold → legacy) ensures fast recall for recent context and long-term storage for historical knowledge.", link: "/persistent-memory" },
+  { icon: Network, title: "Smart Model Routing", desc: "NEXUS picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/modules/nexus" },
+  { icon: Shield, title: "Built-in AI Security", desc: "DEFENSE protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/modules/defense" },
+  { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the system consolidates what it learned, discovers patterns, and generates new insights — all automatically.", link: "/modules/dream" },
+  { icon: Workflow, title: "Coordinated Intelligence", desc: "CORTEX coordinates all 40 nodes so they work as one unified system. Pre-built synergies discover capabilities that no single node could achieve alone.", link: "/modules/cortex" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots all 40 nodes in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/modules/core" },
 ];
 
 const sectors = [
@@ -85,12 +85,12 @@ const sectors = [
 ];
 
 const comparisonRows = [
-  { feature: "Persistent Memory", framework: "Manual (vector DB)", aiOs: "Built-in 4-tier + DREAM" },
-  { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS — cost/latency-aware" },
-  { feature: "Security", framework: "External tool", aiOs: "DEFENSE — native shell" },
-  { feature: "Observability", framework: "Separate APM", aiOs: "Integrated across 40 nodes" },
-  { feature: "Self-Optimization", framework: "None", aiOs: "Autonomous DREAM cycles" },
-  { feature: "Cross-Node Context", framework: "None", aiOs: "RIPPLE event propagation" },
+  { feature: "Persistent Memory", framework: "DIY (vector DB)", aiOs: "Built-in 4-tier + auto-consolidation" },
+  { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS — picks best model per task" },
+  { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE — built into the platform" },
+  { feature: "Monitoring", framework: "Separate APM tool", aiOs: "Built-in across all 40 nodes" },
+  { feature: "Self-Improvement", framework: "None", aiOs: "Automatic optimization cycles" },
+  { feature: "Shared Context", framework: "None", aiOs: "Real-time event propagation" },
 ];
 
 /* ── component ── */
@@ -178,20 +178,19 @@ export default function AIOperatingSystem() {
             </motion.h1>
 
             <motion.p {...fadeUp(0.1)} className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-4">
-              An <strong className="text-foreground">AI Operating System</strong> is a unified platform that provides all the cognitive infrastructure
-              AI agents need to operate in production — persistent memory, intelligent model routing, AI-native security,
-              real-time observability, and autonomous optimization — integrated into a single coherent runtime.
+              An <strong className="text-foreground">AI Operating System</strong> is a platform that gives AI agents everything they need to work in production — persistent memory, smart model routing, built-in security,
+              real-time monitoring, and automatic self-improvement — all in one place.
             </motion.p>
 
             <motion.p {...fadeUp(0.15)} className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl mb-4">
-              Just as traditional operating systems unified file management, process scheduling, and I/O for applications,
-              an AI Operating System unifies the fragmented AI infrastructure stack into one platform where every node
-              communicates, learns, and enhances the others.
+              Just as Windows or macOS unified computing for applications,
+              an AI OS unifies the fragmented AI tool stack into one platform where every component
+              communicates, learns, and makes the others better.
             </motion.p>
 
             <motion.p {...fadeUp(0.18)} className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed max-w-3xl italic">
-              Every interaction flows through the <strong className="text-foreground not-italic">Memory Stream</strong> — where the system autonomously discovers,
-              packages, and exports reusable software memories. The rarest discoveries become specs for silicon computer chips.
+              Every interaction flows through the <strong className="text-foreground not-italic">Memory Stream</strong> — where the system automatically discovers,
+              packages, and exports reusable software. The rarest discoveries become specs for silicon computer chips.
             </motion.p>
 
             <motion.div {...fadeUp(0.22)} className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10">
@@ -221,15 +220,15 @@ export default function AIOperatingSystem() {
                 The Fragmentation Problem
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-5 max-w-3xl">
-                Today's AI teams cobble together separate tools for every concern — a vector database for memory,
-                an API gateway for routing, a prompt filter for security, an APM tool for monitoring, and manual processes for optimization.
-                These tools don't talk to each other.
+                Today's AI teams stitch together separate tools for every concern — a vector database for memory,
+                an API gateway for routing, a prompt filter for security, and an APM tool for monitoring.
+                These tools don't share context or learn from each other.
               </p>
               <Card className="border-primary/15 bg-primary/[0.03] glass-edge">
                 <CardContent className="p-4 sm:p-6">
                   <p className="text-sm sm:text-base text-foreground font-medium leading-relaxed">
-                    An AI Operating System eliminates this fragmentation. Every node shares context, events propagate through RIPPLE in real time,
-                    and the system self-optimizes as a unified whole through DREAM cycles.
+                    An AI Operating System eliminates this fragmentation. Every node shares context, events flow through the system in real time,
+                    and the platform self-improves as a unified whole — automatically.
                   </p>
                 </CardContent>
               </Card>
@@ -279,7 +278,7 @@ export default function AIOperatingSystem() {
                 The 6 Pillars of an AI Operating System
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground max-w-2xl">
-                Every AI Operating System must provide these six core capabilities — integrated and communicating.
+                Every AI OS must provide these six core capabilities — integrated and working together.
               </p>
             </motion.div>
 

@@ -162,18 +162,18 @@ function PillarRow({ category, pillars }: { category: PillarCategory; pillars: B
 const ARCH_CARDS = [
   {
     icon: Layers,
-    title: 'Single Runtime',
-    description: 'One substrate serves all tiers. Nodes compose freely without version fragmentation.',
+    title: 'One Runtime for All',
+    description: 'Every plan runs the same full platform. No stripped-down versions, no feature fragmentation.',
   },
   {
     icon: Package,
-    title: 'Capability Packs Extend',
-    description: 'Packs activate composed capabilities on top of the baseline. Each pack = 1 slot.',
+    title: 'Memory Packs Add Power',
+    description: 'Packs bundle related capabilities into purpose-built workflows. Each pack uses 1 memory slot.',
   },
   {
     icon: Zap,
-    title: 'Capacity, Not Capability',
-    description: 'Plans differ in how many packs you can activate simultaneously — not in what the system can do.',
+    title: 'Plans Scale Capacity',
+    description: 'Higher plans let you activate more packs simultaneously — the platform itself never changes.',
   },
 ];
 
@@ -198,12 +198,12 @@ export default function Runtime() {
               <Layers className="w-3 h-3 mr-1.5 inline" />
               Baseline Runtime
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
               What You Get. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              The full substrate runs for every user. No capability gating. No feature locks.
-              Plans scale capacity — never capability.
+              Every user gets the full platform — all 40 nodes, all capabilities. No features are locked behind paywalls.
+              Plans only control how many memory packs you can activate at once.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
               <Button asChild>
@@ -255,7 +255,7 @@ export default function Runtime() {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold">Always-On Capabilities</h2>
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-              These pillars run for every user on every plan. Scroll each layer to explore.
+              These capabilities run for every user on every plan — no exceptions. Scroll each layer to explore.
             </p>
           </div>
 
@@ -271,10 +271,10 @@ export default function Runtime() {
         <section className="container mx-auto px-4 mb-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Package className="w-10 h-10 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold">How Capability Packs Extend the Runtime</h3>
+            <h3 className="text-2xl font-bold">How Memory Packs Extend the Runtime</h3>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-              Capability packs compose multiple baseline capabilities into purpose-built workflows.
-              They don't replace the baseline — they amplify it.
+              Memory packs bundle multiple baseline capabilities into ready-to-use workflows.
+              They don't replace the baseline — they build on top of it.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6">
               <Button asChild>

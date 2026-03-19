@@ -26,62 +26,62 @@ const fadeUp = {
 const capabilities = [
   {
     icon: Server,
-    title: "Private Infrastructure Deployment",
-    description: "Deploy the complete 40-node substrate on your own servers. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter. Supports AWS, GCP, Azure, and bare-metal.",
+    title: "Deploy on Your Servers",
+    description: "Run the complete platform on your own infrastructure. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter. Works with AWS, GCP, Azure, and bare-metal.",
   },
   {
     icon: Layers,
-    title: "Custom Node Configuration",
-    description: "Compose the exact stack your organization needs. Activate the nodes and sectors that matter, disable what doesn't — zero bloat. Choose which of the 12 sectors to deploy.",
+    title: "Custom Configuration",
+    description: "Build the exact stack your organization needs. Activate the nodes and capabilities that matter, skip what doesn't — zero bloat. You choose which capabilities to deploy.",
   },
   {
     icon: Shield,
-    title: "SOC2 & Compliance Ready",
-    description: "AUDIT node provides immutable append-only logging with Merkle receipt chains. GOVERNANCE plane enforces policy mesh. DEFENSE wraps the outer shell. SOC2, GDPR, HIPAA ready.",
+    title: "Compliance Ready",
+    description: "Immutable audit logging, policy enforcement, and boundary security are built in. Ready for SOC2, GDPR, and HIPAA out of the box.",
   },
   {
     icon: Brain,
-    title: "Dedicated DREAM Cycles",
-    description: "Configure autonomous optimization cycles for your deployment. DREAM consolidates memory, generates heuristics, and surfaces insights — tuned to your compliance requirements and data residency rules.",
+    title: "Dedicated Learning Cycles",
+    description: "Configure autonomous improvement cycles for your deployment. The system consolidates knowledge, generates insights, and surfaces patterns — tuned to your compliance and data residency rules.",
   },
   {
     icon: Globe,
     title: "Multi-Region Deployment",
-    description: "Run cognitive workloads across global regions with automatic failover, latency-aware NEXUS routing, and full data residency compliance. RELAY handles cross-region message dispatch.",
+    description: "Run AI workloads across global regions with automatic failover, latency-aware routing, and full data residency compliance.",
   },
   {
     icon: Lock,
     title: "Governance & Audit Trail",
-    description: "GOVERNANCE plane supervises all actions. Immutable audit logging via AUDIT node, role-based access through ACCESS, and full policy enforcement — enterprise-ready from day one.",
+    description: "Every action is supervised, logged immutably, and enforced by policy. Role-based access, full audit trails, and governance controls — enterprise-ready from day one.",
   },
   {
     icon: Users,
     title: "Dedicated Support & SLA",
-    description: "Direct line to the architecture team. Guaranteed uptime SLA, priority response, and engineering partnership — not just a ticket queue. Named account engineer included.",
+    description: "Direct line to the engineering team. Guaranteed uptime SLA, priority response, and a named account engineer — not just a ticket queue.",
   },
   {
     icon: Building2,
     title: "White-Label Ready",
-    description: "Embed CMPSBL's cognitive capabilities into your own products. Your brand, your customers, our 40-node substrate running invisibly underneath. Full API access included.",
+    description: "Embed CMPSBL's capabilities into your own products. Your brand, your customers, our platform running invisibly underneath. Full API access included.",
   },
   {
     icon: Cpu,
-    title: "BYOK Model Routing",
-    description: "NEXUS routes to 14+ AI providers with your own API keys. Budget-aware routing, automatic failover, and task complexity scoring — zero LLM costs to substrate operators.",
+    title: "Bring Your Own Keys",
+    description: "Route to 14+ AI providers with your own API keys. Budget-aware routing, automatic failover, and task-based model selection — zero AI costs to platform operators.",
   },
 ];
 
 const enterpriseFeatures = [
-  "40-node substrate with weighted matrix (Σ = 1.000)",
-  "12 sectors — Kernel, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Atlas, Shell",
-  "Persistent memory free for all users — 4-tier architecture",
-  "DREAM cycles with configurable consolidation schedules",
-  "DEFENSE outer shell with bot detection & prompt injection defense",
-  "NEXUS routing across 14+ AI providers with BYOK",
+  "Full 40-node platform with weighted health monitoring",
+  "12 sectors covering kernel, cognition, execution, compliance, and more",
+  "Persistent memory included free — 4-tier architecture",
+  "Configurable self-improvement cycles with custom schedules",
+  "Built-in security with bot detection & prompt injection defense",
+  "Smart routing across 14+ AI providers with your own keys",
   "Safety switches prevent cascading failures across nodes",
-  "AUDIT immutable logging with Merkle receipt chains",
-  "GOVERNANCE plane with 4 operational modes",
-  "Zero-downtime hot reload via CORE kernel",
+  "Immutable audit logging with tamper-proof receipt chains",
+  "Governance controls with 4 operational modes",
+  "Zero-downtime updates and hot reload",
 ];
 
 export default function Enterprise() {
@@ -106,22 +106,18 @@ export default function Enterprise() {
             <Badge variant="outline" className="mb-4 text-xs tracking-widest uppercase border-primary/30">
               Enterprise
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
               Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
-              The complete CMPSBL substrate —{" "}
-              <Link to="/architecture" className="text-primary hover:underline font-medium">40 nodes across 12 sectors</Link>{" "}
-              — deployed on your servers. DREAM cycles, governed ADAPT,{" "}
+              The complete CMPSBL platform —{" "}
+              <Link to="/modules" className="text-primary hover:underline font-medium">40 nodes across 12 sectors</Link>{" "}
+              — deployed on your servers. Self-improvement cycles, governed adaptation,{" "}
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
-              DEFENSE shell, and NEXUS routing — configured for your{" "}
-              <a href="https://gdpr.eu/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">GDPR</a>{" "}
-              and{" "}
-              <a href="https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">SOC 2</a>{" "}
-              compliance requirements.
+              built-in security, and smart routing — configured for your compliance requirements.
             </p>
             <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-8">
-              Persistent memory is free for all users. Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
+              Persistent memory is free for everyone. Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
               See <Link to="/solutions" className="text-primary hover:underline font-medium">all solutions</Link>{" "}
               or explore <Link to="/use-cases" className="text-primary hover:underline font-medium">real-world use cases</Link>.
             </p>
@@ -187,11 +183,10 @@ export default function Enterprise() {
         <section className="container mx-auto max-w-3xl px-4 text-center relative z-10">
           <motion.div {...fadeUp} className="p-8 sm:p-12 rounded-2xl border border-border bg-gradient-to-br from-muted/30 via-card/50 to-muted/30 backdrop-blur-sm shimmer-on-hover shadow-lg shadow-primary/[0.03]">
             <Activity className="w-8 h-8 text-primary mx-auto mb-4" />
-            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's architect your deployment.</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's design your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-4 max-w-xl mx-auto">
-              Custom slot capacity, dedicated instances, SOC2 compliance,{" "}
-              <Link to="/foundry" className="text-primary hover:underline font-medium">DREAM cycle</Link> configuration,{" "}
-              multi-region NEXUS routing, and white-glove onboarding — tailored to your organization.{" "}
+              Custom capacity, dedicated instances, SOC2 compliance,{" "}
+              self-improvement scheduling, multi-region routing, and white-glove onboarding — tailored to your organization.{" "}
               Read our <Link to="/documentation" className="text-primary hover:underline font-medium">technical docs</Link> for API details.
             </p>
             <p className="text-base font-bold text-foreground mb-6">

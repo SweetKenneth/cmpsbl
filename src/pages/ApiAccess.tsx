@@ -27,12 +27,12 @@ const fadeUp = {
 };
 
 const MODULES = [
-  { icon: Brain, name: "BRAIN", desc: "Persistent memory — store, recall, search across sessions" },
-  { icon: MessageSquare, name: "DECODE", desc: "Intent extraction and conversational AI" },
-  { icon: Network, name: "NEXUS", desc: "Multi-provider AI routing with failover" },
-  { icon: Shield, name: "DEFENSE", desc: "Threat detection, anomaly isolation, bot filtering" },
-  { icon: Eye, name: "VISION", desc: "Observability — health, metrics, distributed traces" },
-  { icon: Zap, name: "DREAM", desc: "Autonomous evolution and self-improvement cycles" },
+  { icon: Brain, name: "BRAIN", desc: "Give your agents permanent memory — store, recall, and search across sessions" },
+  { icon: MessageSquare, name: "DECODE", desc: "Extract user intent and power conversational AI" },
+  { icon: Network, name: "NEXUS", desc: "Route to the best AI model automatically with built-in failover" },
+  { icon: Shield, name: "DEFENSE", desc: "Detect threats, block bad actors, and filter malicious inputs" },
+  { icon: Eye, name: "VISION", desc: "Monitor system health, view metrics, and trace requests" },
+  { icon: Zap, name: "DREAM", desc: "Automatic learning cycles that improve your system over time" },
 ];
 
 export default function ApiAccess() {
@@ -108,9 +108,9 @@ export default function ApiAccess() {
                 Entire substrate.
               </span>
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Get instant access to 40 cognitive nodes through a single REST endpoint. 
-              Persistent memory, AI routing, security monitoring, and autonomous evolution — free to start, no credit card required.
+             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Get instant access to 40 nodes through a single REST endpoint. 
+              Persistent memory, smart AI routing, security monitoring, and automatic improvement — free to start, no credit card needed.
             </p>
           </motion.div>
         </section>
@@ -224,9 +224,9 @@ export default function ApiAccess() {
         {/* What You Get */}
         <section className="container mx-auto max-w-5xl px-4 mb-20 relative z-10">
           <motion.div {...fadeUp} className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">What your key unlocks</h2>
+             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">What your key unlocks</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              A single API key gives you access to every node in the 40-node substrate through one endpoint.
+              One API key gives you access to every node through a single endpoint.
             </p>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

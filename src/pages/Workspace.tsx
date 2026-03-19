@@ -111,12 +111,12 @@ export default function Workspace() {
             <div className="text-xs font-mono uppercase tracking-[0.4em] text-muted-foreground mb-4">
               Memory Stream · Builder Workspace
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
-              Signal → Silicon
+             <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+              Your Builder Space
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Your personal space to create, test, and deploy with the full power of 40 cognitive nodes across 12 sectors.
-              Free tier gets persistent memory, SDK templates, and {counts.free} terminal commands.
+              Create, test, and deploy with the full power of 40 nodes. 
+              Free tier includes persistent memory, SDK templates, and {counts.free} terminal commands.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
               <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 font-mono text-xs">
@@ -190,7 +190,7 @@ export default function Workspace() {
                         </div>
                       )}
                       {isLocked && (
-                        <Button size="sm" variant="outline" className="w-full mt-3 text-xs font-mono h-8" onClick={() => navigate('/upgrade')}>
+                        <Button size="sm" variant="outline" className="w-full mt-3 text-xs font-mono h-8" onClick={() => navigate('/store?tab=plans')}>
                           <Lock className="w-3 h-3 mr-1" /> Upgrade to {tierInfo.label}
                         </Button>
                       )}
@@ -341,7 +341,7 @@ export default function Workspace() {
               })}
 
               <div className="text-center mt-6">
-                <Button variant="outline" className="font-mono text-sm hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => navigate('/upgrade')}>
+                <Button variant="outline" className="font-mono text-sm hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => navigate('/store?tab=plans')}>
                   <Rocket className="w-4 h-4 mr-2" /> View Plans & Pricing
                 </Button>
               </div>

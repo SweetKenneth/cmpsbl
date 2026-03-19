@@ -32,8 +32,8 @@ const PILLARS = [
   {
     icon: Moon,
     name: "DREAM",
-    verb: "Synthesize while idle",
-    description: "Nocturnal cycles consolidate memory, fuse cross-domain patterns, and generate novel insights — all without active compute.",
+     verb: "Learn while idle",
+    description: "During quiet periods, the system consolidates what it knows, finds cross-domain patterns, and generates new insights — without active compute.",
     color: "text-violet-500",
     bg: "bg-violet-500/10",
     border: "border-violet-500/20",
@@ -42,8 +42,8 @@ const PILLARS = [
   {
     icon: RefreshCw,
     name: "ADAPT",
-    verb: "Governed self-modification",
-    description: "Routing, cost allocation, and operational parameters adjust automatically — within strict governance boundaries.",
+     verb: "Self-tune within guardrails",
+    description: "Routing, cost allocation, and operational settings adjust automatically — within strict governance boundaries your team controls.",
     color: "text-emerald-500",
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/20",
@@ -52,8 +52,8 @@ const PILLARS = [
   {
     icon: TrendingUp,
     name: "EVOLVE",
-    verb: "Compound over time",
-    description: "Every interaction feeds back. Heuristics mutate and improve. Your infrastructure gets smarter the more it runs.",
+     verb: "Get smarter over time",
+    description: "Every interaction feeds back into the system. Strategies improve, patterns sharpen, and your infrastructure gets smarter the longer it runs.",
     color: "text-amber-500",
     bg: "bg-amber-500/10",
     border: "border-amber-500/20",
@@ -62,8 +62,8 @@ const PILLARS = [
   {
     icon: Brain,
     name: "REMEMBER",
-    verb: "Memory that survives restarts",
-    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall across sessions and deployments.",
+     verb: "Memory that survives restarts",
+    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall across sessions and deployments. Free for all users.",
     color: "text-cyan-500",
     bg: "bg-cyan-500/10",
     border: "border-cyan-500/20",
@@ -192,15 +192,15 @@ export default function About() {
             {" "}for AI
           </motion.h1>
 
-          <motion.p
+           <motion.p
             {...stagger(0.15)}
             className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8"
           >
-            CMPSBL is the substrate — composable{" "}
-            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>{" "}
-            where your systems dream, adapt, evolve, and remember. The{" "}
+            CMPSBL is the platform — composable{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
+            where your systems learn during downtime, self-tune within guardrails, and get smarter with every interaction. The{" "}
             <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
-            captures what they learn.
+            captures what they discover.
           </motion.p>
 
           {/* Stat chips — mobile-friendly horizontal scroll */}
@@ -245,9 +245,9 @@ export default function About() {
                 Dream · Adapt · Evolve
               </span>
             </h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
-              Most AI platforms process and forget. When you build on the substrate, your systems
-              learn during downtime, self-modify under governance, and compound intelligence with every interaction.
+             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
+              Most AI platforms process and forget. When you build on CMPSBL, your systems
+              learn during downtime, self-tune under governance, and get smarter with every interaction.
             </p>
           </motion.div>
 
