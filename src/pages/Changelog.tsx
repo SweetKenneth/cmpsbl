@@ -1094,7 +1094,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "INFRASTRUCTURE",
-    codename: "The substrate grew organs",
+    codename: "The platform grew organs",
     range: "Foundation epoch",
     color: "bg-emerald-500/10 text-emerald-400",
     borderColor: "border-emerald-500/30",
