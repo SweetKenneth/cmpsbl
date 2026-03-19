@@ -48,7 +48,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Enterprise', href: '/enterprise' },
   { label: 'Upgrade & Pricing', href: '/upgrade' },
   // Developer
-  { label: 'Start Here', href: '/start-here' },
+  { label: 'Developer Guide', href: '/developers/guide' },
   { label: 'Documentation', href: '/documentation' },
   { label: 'Developer Guide', href: '/developers/guide' },
   { label: 'Developer Showcase', href: '/developers' },

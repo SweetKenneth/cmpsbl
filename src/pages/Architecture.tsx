@@ -332,7 +332,7 @@ export default function Architecture() {
             <p className="text-muted-foreground mb-8">
               Dive deeper into individual nodes, live infrastructure, and technical documentation.{" "}
               See real-world <Link to="/use-cases" className="text-primary hover:underline font-medium">deployment examples</Link>{" "}
-              or <Link to="/start-here" className="text-primary hover:underline font-medium">start building for free</Link>.
+              or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/modules">

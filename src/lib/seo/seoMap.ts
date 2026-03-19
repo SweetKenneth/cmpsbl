@@ -602,17 +602,6 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'substrate code intelligence agent',
   },
-  '/start-here': {
-    title: 'Start Here — Getting Oriented | CMPSBL',
-    description: 'New to CMPSBL? A guided introduction to the substrate, its sectors, and how to build your first autonomous discovery pipeline.',
-    ogTitle: 'Start Here — Getting Oriented',
-    ogDescription: 'Guided introduction to building your first discovery pipeline.',
-    ogImage: OG_HOME,
-    keywords: ['getting started guide', 'substrate orientation', 'first pipeline walkthrough', 'beginner onboarding', 'CMPSBL quickstart'],
-    schema: 'docs',
-    intent: 'Docs/Developer',
-    primaryKeyword: 'substrate getting started',
-  },
 
   // ═══════════════════════════════════════════════════
   // ARCHITECTURE / EVOLUTION

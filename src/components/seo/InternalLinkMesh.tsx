@@ -45,7 +45,7 @@ const LINK_GRAPH: LinkNode[] = [
   { path: '/codelab', label: 'CodeLab', tags: ['codelab', 'testing', 'sdk', 'developers'] },
   { path: '/workspace', label: 'Builder Workspace', tags: ['sdk', 'terminal', 'build', 'developers', 'workspace'] },
   { path: '/api-access', label: 'API Access', tags: ['api', 'keys', 'sdk', 'developers'] },
-  { path: '/start-here', label: 'Start Here', tags: ['onboarding', 'start', 'developers', 'platform'] },
+  { path: '/developers/guide', label: 'Developer Guide', tags: ['onboarding', 'start', 'developers', 'platform'] },
 
   // ── Discovery & content ──────────────────────────────
   { path: '/blog', label: 'Research Blog', tags: ['blog', 'research', 'insights', 'ai'] },

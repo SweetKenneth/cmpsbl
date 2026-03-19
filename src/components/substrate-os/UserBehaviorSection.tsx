@@ -541,7 +541,7 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
 const FUNNEL_STAGES = [
   { key: 'landing', label: 'Landing', paths: ['/', '/explore'], description: 'First visit — user hit the homepage or explore page' },
   { key: 'engagement', label: 'Engagement', paths: ['/scan', '/decode', '/lab'], description: 'Tried a tool — ran a scan, used DECODE, or opened the lab' },
-  { key: 'onboarding', label: 'Onboarding', paths: ['/start-here'], description: 'Started guided setup — visited the Start Here flow' },
+  { key: 'onboarding', label: 'Onboarding', paths: ['/developers/guide', '/documentation'], description: 'Started guided setup — visited docs or developer guide' },
   { key: 'signup', label: 'Signup', paths: ['/auth', '/register'], description: 'Created an account — hit auth or registration page' },
   { key: 'conversion', label: 'Conversion', paths: ['/upgrade', '/packs', '/store'], description: 'Purchase intent — viewed upgrade, packs, or store pages' },
   { key: 'deep_engagement', label: 'Deep Engagement', paths: ['/substrate', '/persistent-memory', '/composable-cognitives'], description: 'Power usage — accessing substrate OS, MEMORY, or cognitives' },
