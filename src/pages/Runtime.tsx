@@ -207,7 +207,7 @@ export default function Runtime() {
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
               <Button asChild>
-                <Link to="/upgrade">See Plans <ArrowRight className="w-4 h-4 ml-1" /></Link>
+                <Link to="/store?tab=plans">See Plans <ArrowRight className="w-4 h-4 ml-1" /></Link>
               </Button>
               <Button variant="outline" asChild>
                 <Link to="/docs/runtime">Developer Reference</Link>
