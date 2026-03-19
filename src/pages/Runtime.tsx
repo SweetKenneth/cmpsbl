@@ -198,12 +198,12 @@ export default function Runtime() {
               <Layers className="w-3 h-3 mr-1.5 inline" />
               Baseline Runtime
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
               What You Get. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              The full substrate runs for every user. No capability gating. No feature locks.
-              Plans scale capacity — never capability.
+              Every user gets the full platform — all 40 nodes, all capabilities. No features are locked behind paywalls.
+              Plans only control how many memory packs you can activate at once.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
               <Button asChild>
