@@ -197,10 +197,10 @@ export default function DeveloperShowcase() {
        <section className="py-16 sm:py-24">
          <div className="container mx-auto px-3 sm:px-4">
            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-14">
-            <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />Core Capabilities</Badge>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Everything Your App Needs</h2>
+            <Badge variant="outline" className="mb-4"><Sparkles className="w-3 h-3 mr-1" />What You Can Build With</Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4">Core Capabilities</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              A complete cognitive infrastructure built on 40 nodes across 12 sectors for building intelligent, adaptive applications.
+              Everything your app needs to think, remember, and improve — built on 40 specialized nodes.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
