@@ -37,13 +37,13 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Scale className="h-6 w-6 text-primary" />
-              Why Software Pricing Is Hard
+              Why Pricing Software Is Tricky
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Software doesn't have material costs. Its value depends on what it does, who needs it, how it's packaged, and what alternatives exist. A single library might be worth $5 to a hobbyist and $5,000 to an enterprise team. Most pricing methods pick one perspective and hope for the best.
+              Software has no material cost. Its value depends on what it does, who needs it, how it's packaged, and what alternatives exist. The same feature might be worth $5 to a hobbyist and $5,000 to an enterprise team. Most pricing methods pick one perspective and hope for the best.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              We don't. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each capability against real market comparisons, then combine those estimates with our internal technical signals to produce grounded, defensible pricing.
+              We don't guess. We use <strong className="text-foreground">multiple independent AI models</strong> to evaluate each capability against real market data, then combine those estimates with our own technical analysis to produce a fair, defensible price.
             </p>
           </section>
 
