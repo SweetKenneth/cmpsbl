@@ -44,7 +44,7 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "What is CMPSBL?",
-    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing through NEXUS, security via the DEFENSE system, and self-evolution — the operating system for AI.",
+    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing, built-in security, and self-improvement — the operating system for AI.",
   },
   {
     category: "Getting Started",
