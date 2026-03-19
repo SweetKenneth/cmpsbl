@@ -328,7 +328,7 @@ export default function About() {
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   The platform doesn't just run — it <span className="text-foreground font-medium">evolves</span>.{" "}
-                  <Link to="/packs" className="text-primary hover:underline font-medium">Pattern mutation</Link>, heuristic tuning, and self-improvement cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
+                  <Link to="/store?tab=memories" className="text-primary hover:underline font-medium">Pattern mutation</Link>, heuristic tuning, and self-improvement cycles mean every iteration makes the system smarter. Governed, auditable, autonomous.
                 </p>
                 <div className="flex items-center gap-2 text-xs text-primary mt-5 pt-4 border-t border-border/30">
                   <Sparkles className="w-3.5 h-3.5" />
