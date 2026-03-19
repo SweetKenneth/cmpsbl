@@ -28,7 +28,7 @@ const projects = [
     icon: Brain,
     status: "Live",
     features: ["40 nodes · 12 sectors", "Persistent memory", "DREAM cycles", "NEXUS routing", "Governed evolution", "175,000+ lines"],
-    href: "/substrate",
+    href: "/ai-operating-system",
     external: false
   },
   {
