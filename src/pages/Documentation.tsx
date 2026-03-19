@@ -292,14 +292,14 @@ function ArchitectureSection() {
           Higher-weight modules (like CORE and DEFENSE) trigger faster alerts when degraded. Weights are 
           recalculated during startup and after system updates.
         </p>
-        <CodeBlock title="Matrix weight categories">{`// Weight categories (higher = more critical)
+        <CodeBlock title="Module weight categories">{`// Weight categories (higher = more critical)
 CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
 HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
 STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
 AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
-// Health score = Σ(node_health × weight) / Σ(weights)
-// Safety switch trips when node health < 0.3`}</CodeBlock>
+// Health score = Σ(module_health × weight) / Σ(weights)
+// Circuit breaker trips when module health < 0.3`}</CodeBlock>
       </div>
 
       {/* Safety switches */}
