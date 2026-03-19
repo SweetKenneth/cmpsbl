@@ -72,16 +72,16 @@ const capabilities = [
 ];
 
 const enterpriseFeatures = [
-  "40-node substrate with weighted matrix (Σ = 1.000)",
-  "12 sectors — Kernel, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Atlas, Shell",
-  "Persistent memory free for all users — 4-tier architecture",
-  "DREAM cycles with configurable consolidation schedules",
-  "DEFENSE outer shell with bot detection & prompt injection defense",
-  "NEXUS routing across 14+ AI providers with BYOK",
+  "Full 40-node platform with weighted health monitoring",
+  "12 sectors covering kernel, cognition, execution, compliance, and more",
+  "Persistent memory included free — 4-tier architecture",
+  "Configurable self-improvement cycles with custom schedules",
+  "Built-in security with bot detection & prompt injection defense",
+  "Smart routing across 14+ AI providers with your own keys",
   "Safety switches prevent cascading failures across nodes",
-  "AUDIT immutable logging with Merkle receipt chains",
-  "GOVERNANCE plane with 4 operational modes",
-  "Zero-downtime hot reload via CORE kernel",
+  "Immutable audit logging with tamper-proof receipt chains",
+  "Governance controls with 4 operational modes",
+  "Zero-downtime updates and hot reload",
 ];
 
 export default function Enterprise() {
