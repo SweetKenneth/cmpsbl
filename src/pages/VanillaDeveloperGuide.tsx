@@ -136,8 +136,8 @@ export default function VanillaDeveloperGuide() {
               What you get
             </h2>
             <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-10">
-              A single API call gives you
-              an entire cognitive backend — no infra to provision, no models to host, no vector databases to manage.
+              One API call connects you to
+              an entire cognitive backend — no infrastructure to provision, no models to host, no vector databases to manage.
             </p>
           </motion.div>
 

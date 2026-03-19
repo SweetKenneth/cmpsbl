@@ -1315,10 +1315,10 @@ export default function Changelog() {
         <div className="text-center mt-24 space-y-4 opacity-50">
           <div className="section-divider max-w-xs mx-auto" />
           <p className="text-xs font-mono text-muted-foreground tracking-[0.3em]">
-            END OF GEOLOGICAL RECORD
+            END OF CHANGELOG
           </p>
           <p className="text-xs text-muted-foreground/60 italic">
-            New strata are deposited as the substrate evolves.
+            New entries are added as the platform evolves.
           </p>
         </div>
       </main>
