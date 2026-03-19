@@ -678,7 +678,15 @@ const nexusAnalytics: NexusAnalytics = {
   lastReset: Date.now(),
 };
 
-async function recordNexusCall(provider: string, success: boolean, tokens: number, costUsd: number, latencyMs: number): Promise<void> {
+async function recordNexusCall(
+  provider: string,
+  success: boolean,
+  tokens: number,
+  costUsd: number,
+  latencyMs: number,
+  model?: string,
+  metadata: Record<string, unknown> = {},
+): Promise<void> {
   nexusAnalytics.totalCalls++;
   if (success) nexusAnalytics.successfulCalls++;
   else nexusAnalytics.failedCalls++;
@@ -697,20 +705,49 @@ async function recordNexusCall(provider: string, success: boolean, tokens: numbe
   pc.costUsd += costUsd;
   pc.avgLatencyMs = (pc.avgLatencyMs * (pc.calls - 1) + latencyMs) / pc.calls;
 
-  // ═══ PERSIST to ai_daily_quota — awaited to ensure counters actually increment ═══
-  if (success && provider !== 'local') {
-    const today = new Date().toISOString().split('T')[0];
-    const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
-    const budget = budgetMap[provider] || 14400;
-    try {
-      const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-      const { data: existing } = await sb.from('ai_daily_quota').select('id, calls_used, tokens_used').eq('provider', provider).eq('date', today).maybeSingle();
+  if (provider === 'local') {
+    return;
+  }
+
+  try {
+    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+    await sb.from('ai_usage_log').insert({
+      provider,
+      model: model || null,
+      success,
+      tokens_used: tokens,
+      cost: costUsd,
+      response_time_ms: latencyMs,
+      category: typeof metadata.category === 'string' ? metadata.category : 'router',
+      metadata: {
+        ...metadata,
+        source: 'pf-substrate.routeTextToProvider',
+      },
+    });
+
+    if (success) {
+      const today = new Date().toISOString().split('T')[0];
+      const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
+      const budget = budgetMap[provider] || 14400;
+      const { data: existing } = await sb
+        .from('ai_daily_quota')
+        .select('id, calls_used, tokens_used')
+        .eq('provider', provider)
+        .eq('date', today)
+        .maybeSingle();
+
       if (existing) {
-        await sb.from('ai_daily_quota').update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens }).eq('id', existing.id);
+        await sb
+          .from('ai_daily_quota')
+          .update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens })
+          .eq('id', existing.id);
       } else {
         await sb.from('ai_daily_quota').insert({ provider, date: today, calls_used: 1, tokens_used: tokens, calls_budget: budget });
       }
-    } catch { /* telemetry must never block execution */ }
+    }
+  } catch {
+    /* telemetry must never block execution */
   }
 }
 
@@ -4981,11 +5018,19 @@ async function handleBrain(
     }
 
     case "deep_think": {
-      // v3.12.0: Full deep thinking implementation - extended reasoning with AI
-      const { query: thinkQuery, depth = 3 } = data;
+      const thinkQuery = String(data.query ?? data.question ?? '').trim();
+      const parsedDepth = Number(data.depth);
+      const depth = Number.isFinite(parsedDepth) ? Math.max(1, Math.min(parsedDepth, 5)) : 3;
+
+      if (!thinkQuery) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: 'query is required',
+        }, headers, 400);
+      }
       
       try {
-        // Gather context for deep thinking
         const [
           { data: recentMemories },
           { data: patterns },
@@ -5002,7 +5047,6 @@ async function handleBrain(
           recent_insights: reflections?.flatMap((r: { insights: string | null }) => r.insights ? [r.insights] : []).slice(0, 3) || [],
         };
 
-        // Build reasoning prompt
         const thinkPrompt = `Deep reasoning task (depth ${depth}):
 Query: ${thinkQuery}
 
@@ -5017,60 +5061,73 @@ Provide:
 3. Hypotheses: 2-3 testable hypotheses
 4. Next Steps: Recommended next research areas`;
 
-        // Call AI for deep thinking
-        let analysis = `Deep analysis of "${thinkQuery}" at depth ${depth}. Processed ${contextSummary.memories.length} memories and ${contextSummary.patterns.length} patterns.`;
-        let aiProvider = 'local';
+        const routed = await routeTextToProvider(thinkPrompt, {
+          systemPrompt: 'You are a deep reasoning engine. Analyze queries with multi-step logical reasoning, identify patterns, and generate testable hypotheses.',
+          temperature: 0.7,
+          maxTokens: 1500,
+          fallbackDepth: PROVIDER_ORDER.length,
+          reflectionMode: true,
+        });
 
-        // Use Nexus providers
-        for (const providerName of ['groq', 'cerebras']) {
-          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
-          if (!provider) continue;
-          const apiKey = Deno.env.get(provider.keyEnv);
-          if (!apiKey) continue;
-
-          try {
-            const response = await fetch(provider.url, {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                model: provider.model,
-                messages: [
-                  { role: 'system', content: 'You are a deep reasoning engine. Analyze queries with multi-step logical reasoning, identify patterns, and generate testable hypotheses.' },
-                  { role: 'user', content: thinkPrompt }
-                ],
-                temperature: 0.7,
-                max_tokens: 1500,
-              }),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              const content = result.choices?.[0]?.message?.content;
-              if (content) {
-                analysis = content;
-                aiProvider = providerName;
-                break;
-              }
+        if (!routed.success || routed.provider === 'local') {
+          await supabase.from('brain_events').insert({
+            event_type: 'deep_think',
+            module: 'brain',
+            outcome: 'provider_unavailable',
+            data: {
+              query: thinkQuery,
+              depth,
+              provider: routed.provider,
+              fallbacks_used: routed.fallbacksUsed,
+              latency_ms: routed.latencyMs,
+              external_call_made: false,
             }
-          } catch { continue; }
+          });
+
+          return jsonResponse({
+            success: false,
+            module: 'brain',
+            action: 'deep_think',
+            query: thinkQuery,
+            depth,
+            error: 'All AI providers unavailable',
+            ai_provider: routed.provider,
+            fallbacks_used: routed.fallbacksUsed,
+            timestamp: new Date().toISOString(),
+          }, headers, 503);
         }
 
-        // Store deep thinking event
-        await supabase.from('brain_events').insert({
-          event_type: 'deep_think',
-          module: 'brain',
-          outcome: 'success',
-          data: { query: thinkQuery, depth, provider: aiProvider, context_size: contextSummary.memories.length }
-        });
+        const analysis = routed.content;
 
-        // Optionally store as a high-priority memory
-        await supabase.from('brain_memory_hot').insert({
-          content: `Deep Think Result: ${analysis.substring(0, 500)}`,
-          context: 'deep_think',
-          priority: 8,
-          tags: ['deep_think', 'reasoning', 'auto'],
-          metadata: { query: thinkQuery, depth, provider: aiProvider }
-        });
+        await Promise.allSettled([
+          supabase.from('brain_events').insert({
+            event_type: 'deep_think',
+            module: 'brain',
+            outcome: 'success',
+            data: {
+              query: thinkQuery,
+              depth,
+              provider: routed.provider,
+              context_size: contextSummary.memories.length,
+              tokens_used: routed.tokens,
+              latency_ms: routed.latencyMs,
+              external_call_made: true,
+            }
+          }),
+          supabase.from('brain_memory_hot').insert({
+            content: `Deep Think Result: ${analysis.substring(0, 500)}`,
+            context: 'deep_think',
+            priority: 8,
+            tags: ['deep_think', 'reasoning', 'auto'],
+            metadata: {
+              query: thinkQuery,
+              depth,
+              provider: routed.provider,
+              tokens_used: routed.tokens,
+              latency_ms: routed.latencyMs,
+            }
+          }),
+        ]);
 
         return jsonResponse({
           success: true,
@@ -5080,7 +5137,10 @@ Provide:
           depth,
           analysis,
           context: contextSummary,
-          ai_provider: aiProvider,
+          ai_provider: routed.provider,
+          tokens_used: routed.tokens,
+          latency_ms: routed.latencyMs,
+          fallbacks_used: routed.fallbacksUsed,
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
@@ -5088,7 +5148,7 @@ Provide:
           success: false,
           action,
           error: error instanceof Error ? error.message : 'Deep think failed',
-        }, headers);
+        }, headers, 500);
       }
     }
 
@@ -9373,9 +9433,8 @@ async function routeTextToProvider(
   fallbacksUsed: number;
 }> {
   const startTime = Date.now();
-  const { systemPrompt, temperature = 0.7, maxTokens = 1200, fallbackDepth = 5, reflectionMode = false, proofMode = true } = options;
+  const { systemPrompt, temperature = 0.7, maxTokens = 1200, fallbackDepth = PROVIDER_ORDER.length, reflectionMode = false, proofMode = true } = options;
   
-  // If in reflection mode, add reflection context
   const effectiveSystemPrompt = reflectionMode 
     ? `${systemPrompt || ''}\n[REFLECTION MODE: Analyze and provide thoughtful, considered response]`.trim()
     : systemPrompt;
@@ -9391,24 +9450,19 @@ async function routeTextToProvider(
     const providerName = PROVIDER_ORDER[i];
     const provider = PROVIDERS[providerName];
     
-    if (!provider || !checkProviderAvailability(providerName)) {
-      fallbacksUsed++;
+    if (!provider || provider.type === 'local' || !checkProviderAvailability(providerName)) {
+      if (provider?.type !== 'local') {
+        fallbacksUsed++;
+      }
       continue;
     }
-    
-    // Skip local fallback until last resort
-    if (provider.type === 'local' && i < maxFallbacks - 1) continue;
     
     try {
       let content = '';
       let tokensUsed = 0;
-      
-      if (provider.type === 'local') {
-        // Local fallback response
-        content = `[Substrate Reflection] The cognitive mesh is currently in observation mode. Your prompt: "${prompt.substring(0, 100)}..." has been received. Please retry when providers are available.`;
-        tokensUsed = Math.ceil(content.length / 4);
-      } else if (provider.type === 'anthropic') {
-        // Anthropic Messages API
+      const resolvedModel = options.model || provider.model;
+
+      if (provider.type === 'anthropic') {
         const apiKey = Deno.env.get(provider.keyEnv);
         const response = await fetch(provider.url, {
           method: "POST",
@@ -9418,7 +9472,7 @@ async function routeTextToProvider(
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: options.model || provider.model,
+            model: resolvedModel,
             max_tokens: maxTokens,
             messages: messages.filter(m => m.role !== 'system'),
             system: effectiveSystemPrompt,
@@ -9426,7 +9480,16 @@ async function routeTextToProvider(
         });
         
         if (!response.ok) {
+          const detail = (await response.text()).slice(0, 500);
+          const latencyMs = Date.now() - startTime;
+          console.warn(`[NEXUS] Provider ${providerName} returned ${response.status}: ${detail}`);
           recordProviderFailure(providerName);
+          await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+            category: 'router',
+            route: 'text',
+            status: response.status,
+            error: detail,
+          });
           fallbacksUsed++;
           continue;
         }
@@ -9435,10 +9498,8 @@ async function routeTextToProvider(
         content = data.content?.[0]?.text || '';
         tokensUsed = (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0);
       } else if (provider.type === 'gemini') {
-        // Google Gemini API
         const apiKey = Deno.env.get(provider.keyEnv);
-        const modelName = options.model || provider.model;
-        const response = await fetch(`${provider.url}/${modelName}:generateContent?key=${apiKey}`, {
+        const response = await fetch(`${provider.url}/${resolvedModel}:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -9448,7 +9509,16 @@ async function routeTextToProvider(
         });
         
         if (!response.ok) {
+          const detail = (await response.text()).slice(0, 500);
+          const latencyMs = Date.now() - startTime;
+          console.warn(`[NEXUS] Provider ${providerName} returned ${response.status}: ${detail}`);
           recordProviderFailure(providerName);
+          await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+            category: 'router',
+            route: 'text',
+            status: response.status,
+            error: detail,
+          });
           fallbacksUsed++;
           continue;
         }
@@ -9457,7 +9527,6 @@ async function routeTextToProvider(
         content = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
         tokensUsed = data.usageMetadata?.totalTokenCount || Math.ceil((prompt.length + content.length) / 4);
       } else {
-        // OpenAI-compatible providers
         const apiKey = Deno.env.get(provider.keyEnv);
         const response = await fetch(provider.url, {
           method: "POST",
@@ -9466,7 +9535,7 @@ async function routeTextToProvider(
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: options.model || provider.model,
+            model: resolvedModel,
             messages,
             temperature,
             max_tokens: maxTokens,
@@ -9474,7 +9543,16 @@ async function routeTextToProvider(
         });
         
         if (!response.ok) {
+          const detail = (await response.text()).slice(0, 500);
+          const latencyMs = Date.now() - startTime;
+          console.warn(`[NEXUS] Provider ${providerName} returned ${response.status}: ${detail}`);
           recordProviderFailure(providerName);
+          await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+            category: 'router',
+            route: 'text',
+            status: response.status,
+            error: detail,
+          });
           fallbacksUsed++;
           continue;
         }
@@ -9489,29 +9567,51 @@ async function routeTextToProvider(
         const costUsd = (tokensUsed / 1_000_000) * (provider.pricing.inputPerMTok + provider.pricing.outputPerMTok) / 2;
         
         recordProviderSuccess(providerName);
-        recordNexusCall(providerName, true, tokensUsed, costUsd, latencyMs);
+        await recordNexusCall(providerName, true, tokensUsed, costUsd, latencyMs, resolvedModel, {
+          category: 'router',
+          route: 'text',
+          fallbacks_used: fallbacksUsed,
+        });
         
         return {
           success: true,
           content,
           provider: providerName,
-          model: options.model || provider.model,
+          model: resolvedModel,
           tokens: tokensUsed,
           costUsd: Math.round(costUsd * 1_000_000) / 1_000_000,
           latencyMs,
           fallbacksUsed,
         };
       }
+
+      const latencyMs = Date.now() - startTime;
+      recordProviderFailure(providerName);
+      await recordNexusCall(providerName, false, 0, 0, latencyMs, resolvedModel, {
+        category: 'router',
+        route: 'text',
+        reason: 'empty_content',
+      });
+      fallbacksUsed++;
     } catch (error) {
+      const latencyMs = Date.now() - startTime;
       console.error(`[NEXUS] Provider ${providerName} failed:`, error);
       recordProviderFailure(providerName);
+      await recordNexusCall(providerName, false, 0, 0, latencyMs, options.model || provider.model, {
+        category: 'router',
+        route: 'text',
+        error: error instanceof Error ? error.message : 'Unknown provider error',
+      });
       fallbacksUsed++;
     }
   }
   
-  // All providers failed, return local fallback
   const latencyMs = Date.now() - startTime;
-  recordNexusCall('local', false, 0, 0, latencyMs);
+  await recordNexusCall('local', false, 0, 0, latencyMs, 'fallback', {
+    category: 'router',
+    route: 'text',
+    reason: 'all_providers_exhausted',
+  });
   
   return {
     success: false,

@@ -230,6 +230,31 @@ async function getBudgetState(supabase: any): Promise<BudgetState> {
   };
 }
 
+async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour: number }> {
+  const now = new Date();
+  const todayKey = now.toISOString().split('T')[0];
+  const hourStart = new Date(now);
+  hourStart.setMinutes(0, 0, 0);
+
+  const [dailyRes, hourlyRes] = await Promise.all([
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', true)
+      .gte('created_at', `${todayKey}T00:00:00Z`),
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', true)
+      .gte('created_at', hourStart.toISOString()),
+  ]);
+
+  return {
+    today: dailyRes.count || 0,
+    hour: hourlyRes.count || 0,
+  };
+}
+
 /**
  * Execute a single CLM cycle — lean and fast
  * Returns the number of AI calls made
@@ -282,13 +307,21 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
   const topicPromises = LEARNING_TOPICS.map(async (topic) => {
     try {
       const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
-        body: { module: 'brain', action: 'deep_think', data: { question: topic.prompt, depth: 'medium' } },
+        body: { module: 'brain', action: 'deep_think', data: { query: topic.prompt, depth: 2 } },
       });
 
-      if (!studyError && studyResult?.success) {
+      const usedRealProvider =
+        !studyError &&
+        studyResult?.success &&
+        typeof studyResult?.analysis === 'string' &&
+        studyResult?.ai_provider &&
+        studyResult.ai_provider !== 'local';
+
+      if (usedRealProvider) {
         aiCalls++;
 
-        const memoryContent = `[CLM Learning: ${topic.domain}] ${studyResult?.analysis?.substring?.(0, 500) || topic.prompt}`;
+        const analysisText = studyResult.analysis as string;
+        const memoryContent = `[CLM Learning: ${topic.domain}] ${analysisText.substring(0, 500)}`;
         const storedTier = await writeLearningMemory(supabase, tierState, {
           content: memoryContent,
           context: `clm_study:${topic.domain}`,
@@ -299,6 +332,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
             domain: topic.domain,
             source: 'clm_burst_engine',
             cycle: cycleNumber,
+            ai_provider: studyResult.ai_provider,
           },
         });
 
@@ -309,12 +343,15 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
           data: {
             title: `CLM Study: ${topic.domain}`,
             domain: topic.domain,
-            result: studyResult?.analysis?.substring?.(0, 800) || 'completed',
+            result: analysisText.substring(0, 800),
             source: 'clm_burst_engine',
             version: CLM_VERSION,
             cycle: cycleNumber,
             stored_tier: storedTier,
             hot_pressure_start: Number(hotPressureAtStart.toFixed(2)),
+            ai_provider: studyResult.ai_provider,
+            tokens_used: studyResult.tokens_used ?? null,
+            latency_ms: studyResult.latency_ms ?? null,
           },
         });
 
@@ -511,13 +548,12 @@ serve(async (req) => {
 
     // ═══ STATUS ACTION ═══
     if (action === 'status') {
-      const [budget, memory] = await Promise.all([
+      const [budget, memory, realCalls] = await Promise.all([
         getBudgetState(supabase),
         getMemoryTierState(supabase),
+        getRealAICallCounts(supabase),
       ]);
-      const velocity = budget.todayCycles > 0
-        ? Math.round((budget.todayCycles * 10) / Math.max(1, new Date().getUTCHours())) // est AI calls/hour
-        : 0;
+      const velocity = realCalls.hour;
 
       return new Response(JSON.stringify({
         success: true,
@@ -527,10 +563,10 @@ serve(async (req) => {
           hourly: { used: budget.hourCycles, max: MAX_CYCLES_PER_HOUR, remaining: budget.remainingHourly },
         },
         velocity: {
-          est_ai_calls_today: budget.todayCycles * 10,
+          est_ai_calls_today: realCalls.today,
           est_ai_calls_per_hour: velocity,
           target_daily: 25000,
-          pct_of_target: Math.round((budget.todayCycles * 10 / 25000) * 100),
+          pct_of_target: Math.round((realCalls.today / 25000) * 100),
         },
         memory: {
           hot: { count: memory.hot, limit: memory.hotLimit, pressure: Number((memory.hot / Math.max(1, memory.hotLimit)).toFixed(2)) },
@@ -591,7 +627,7 @@ serve(async (req) => {
     }
 
     // ═══ SELF-CHAIN: dispatch next burst immediately ═══
-    if (autoChain && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
+    if (autoChain && totalAiCalls > 0 && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
       chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, burstSize, {
         ...budget,
         todayCycles: budget.todayCycles + cycleResults.length,
@@ -599,11 +635,16 @@ serve(async (req) => {
         remainingDaily: budget.remainingDaily - cycleResults.length,
         remainingHourly: budget.remainingHourly - cycleResults.length,
       });
+    } else if (autoChain && totalAiCalls === 0) {
+      console.log('⏸️ Auto-chain skipped — no real external AI calls completed in this burst');
     }
 
     const totalDuration = Date.now() - startTime;
 
-    const memory = await getMemoryTierState(supabase);
+    const [memory, realCalls] = await Promise.all([
+      getMemoryTierState(supabase),
+      getRealAICallCounts(supabase),
+    ]);
     const hotOverflow = Math.max(0, memory.hot - memory.hotLimit);
     const tierReliefQueued = hotOverflow > 0;
 
@@ -637,7 +678,7 @@ serve(async (req) => {
         hourly_max: MAX_CYCLES_PER_HOUR,
       },
       velocity: {
-        est_daily_at_current_rate: Math.round((budget.todayCycles + cycleResults.length) * 10),
+        est_daily_at_current_rate: realCalls.today,
         target: 25000,
       },
       memory: {
