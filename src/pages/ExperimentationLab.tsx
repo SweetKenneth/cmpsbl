@@ -1,6 +1,6 @@
 /**
  * Experimentation Lab — Live Demo Templates
- * Showcases working implementations of top 5 substrate templates
+ * Showcases working implementations of top 5 platform templates
  */
 
 import { useState } from "react";
