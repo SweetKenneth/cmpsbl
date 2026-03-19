@@ -85,8 +85,21 @@ export default function Store() {
   return (
     <>
       <Helmet>
-        <title>Store — CMPSBL Runtime Agents, Engines, Plans & Memories</title>
-        <meta name="description" content="10 products. One pricing ladder. Runtime Agents and Composable Engines — sealed, self-improving AI software you can own. Plans, pricing, and memory packs." />
+        <title>Store — Runtime Agents, Engines & Plans | CMPSBL</title>
+        <meta name="description" content="10 sealed AI products across 5 tiers. Runtime Agents learn and execute. Composable Engines power infrastructure. Pick your tier, own it forever." />
+        <link rel="canonical" href="https://cmpsbl.com/store" />
+        <meta property="og:title" content="The Store — CMPSBL Runtime Agents, Engines & Plans" />
+        <meta property="og:description" content="Sealed AI software you own forever. 10 products, 5 tiers, one pricing ladder. Agents learn. Engines power. Start free." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cmpsbl.com/store" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "CMPSBL Store",
+          description: "Runtime Agents and Composable Engines — sealed, self-improving AI software across 5 pricing tiers.",
+          url: "https://cmpsbl.com/store",
+          publisher: { "@type": "Organization", name: "CMPSBL", url: "https://cmpsbl.com" },
+        })}</script>
       </Helmet>
 
       <PublicNav />
