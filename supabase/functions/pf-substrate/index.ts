@@ -5018,11 +5018,19 @@ async function handleBrain(
     }
 
     case "deep_think": {
-      // v3.12.0: Full deep thinking implementation - extended reasoning with AI
-      const { query: thinkQuery, depth = 3 } = data;
+      const thinkQuery = String(data.query ?? data.question ?? '').trim();
+      const parsedDepth = Number(data.depth);
+      const depth = Number.isFinite(parsedDepth) ? Math.max(1, Math.min(parsedDepth, 5)) : 3;
+
+      if (!thinkQuery) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: 'query is required',
+        }, headers, 400);
+      }
       
       try {
-        // Gather context for deep thinking
         const [
           { data: recentMemories },
           { data: patterns },
@@ -5039,7 +5047,6 @@ async function handleBrain(
           recent_insights: reflections?.flatMap((r: { insights: string | null }) => r.insights ? [r.insights] : []).slice(0, 3) || [],
         };
 
-        // Build reasoning prompt
         const thinkPrompt = `Deep reasoning task (depth ${depth}):
 Query: ${thinkQuery}
 
@@ -5054,60 +5061,73 @@ Provide:
 3. Hypotheses: 2-3 testable hypotheses
 4. Next Steps: Recommended next research areas`;
 
-        // Call AI for deep thinking
-        let analysis = `Deep analysis of "${thinkQuery}" at depth ${depth}. Processed ${contextSummary.memories.length} memories and ${contextSummary.patterns.length} patterns.`;
-        let aiProvider = 'local';
+        const routed = await routeTextToProvider(thinkPrompt, {
+          systemPrompt: 'You are a deep reasoning engine. Analyze queries with multi-step logical reasoning, identify patterns, and generate testable hypotheses.',
+          temperature: 0.7,
+          maxTokens: 1500,
+          fallbackDepth: PROVIDER_ORDER.length,
+          reflectionMode: true,
+        });
 
-        // Use Nexus providers
-        for (const providerName of ['groq', 'cerebras']) {
-          const provider = PROVIDERS[providerName as keyof typeof PROVIDERS];
-          if (!provider) continue;
-          const apiKey = Deno.env.get(provider.keyEnv);
-          if (!apiKey) continue;
-
-          try {
-            const response = await fetch(provider.url, {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                model: provider.model,
-                messages: [
-                  { role: 'system', content: 'You are a deep reasoning engine. Analyze queries with multi-step logical reasoning, identify patterns, and generate testable hypotheses.' },
-                  { role: 'user', content: thinkPrompt }
-                ],
-                temperature: 0.7,
-                max_tokens: 1500,
-              }),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              const content = result.choices?.[0]?.message?.content;
-              if (content) {
-                analysis = content;
-                aiProvider = providerName;
-                break;
-              }
+        if (!routed.success || routed.provider === 'local') {
+          await supabase.from('brain_events').insert({
+            event_type: 'deep_think',
+            module: 'brain',
+            outcome: 'provider_unavailable',
+            data: {
+              query: thinkQuery,
+              depth,
+              provider: routed.provider,
+              fallbacks_used: routed.fallbacksUsed,
+              latency_ms: routed.latencyMs,
+              external_call_made: false,
             }
-          } catch { continue; }
+          });
+
+          return jsonResponse({
+            success: false,
+            module: 'brain',
+            action: 'deep_think',
+            query: thinkQuery,
+            depth,
+            error: 'All AI providers unavailable',
+            ai_provider: routed.provider,
+            fallbacks_used: routed.fallbacksUsed,
+            timestamp: new Date().toISOString(),
+          }, headers, 503);
         }
 
-        // Store deep thinking event
-        await supabase.from('brain_events').insert({
-          event_type: 'deep_think',
-          module: 'brain',
-          outcome: 'success',
-          data: { query: thinkQuery, depth, provider: aiProvider, context_size: contextSummary.memories.length }
-        });
+        const analysis = routed.content;
 
-        // Optionally store as a high-priority memory
-        await supabase.from('brain_memory_hot').insert({
-          content: `Deep Think Result: ${analysis.substring(0, 500)}`,
-          context: 'deep_think',
-          priority: 8,
-          tags: ['deep_think', 'reasoning', 'auto'],
-          metadata: { query: thinkQuery, depth, provider: aiProvider }
-        });
+        await Promise.allSettled([
+          supabase.from('brain_events').insert({
+            event_type: 'deep_think',
+            module: 'brain',
+            outcome: 'success',
+            data: {
+              query: thinkQuery,
+              depth,
+              provider: routed.provider,
+              context_size: contextSummary.memories.length,
+              tokens_used: routed.tokens,
+              latency_ms: routed.latencyMs,
+              external_call_made: true,
+            }
+          }),
+          supabase.from('brain_memory_hot').insert({
+            content: `Deep Think Result: ${analysis.substring(0, 500)}`,
+            context: 'deep_think',
+            priority: 8,
+            tags: ['deep_think', 'reasoning', 'auto'],
+            metadata: {
+              query: thinkQuery,
+              depth,
+              provider: routed.provider,
+              tokens_used: routed.tokens,
+              latency_ms: routed.latencyMs,
+            }
+          }),
+        ]);
 
         return jsonResponse({
           success: true,
@@ -5117,7 +5137,10 @@ Provide:
           depth,
           analysis,
           context: contextSummary,
-          ai_provider: aiProvider,
+          ai_provider: routed.provider,
+          tokens_used: routed.tokens,
+          latency_ms: routed.latencyMs,
+          fallbacks_used: routed.fallbacksUsed,
           timestamp: new Date().toISOString(),
         }, headers);
       } catch (error) {
@@ -5125,7 +5148,7 @@ Provide:
           success: false,
           action,
           error: error instanceof Error ? error.message : 'Deep think failed',
-        }, headers);
+        }, headers, 500);
       }
     }
 
