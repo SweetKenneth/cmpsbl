@@ -109,7 +109,7 @@ export default function ApiAccess() {
               </span>
             </h1>
              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Get instant access to 40 nodes through a single REST endpoint. 
+              Get instant access to 40 modules through a single REST endpoint. 
               Persistent memory, smart AI routing, security monitoring, and automatic improvement — free to start, no credit card needed.
             </p>
           </motion.div>
