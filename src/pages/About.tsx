@@ -192,15 +192,15 @@ export default function About() {
             {" "}for AI
           </motion.h1>
 
-          <motion.p
+           <motion.p
             {...stagger(0.15)}
             className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8"
           >
-            CMPSBL is the substrate — composable{" "}
-            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">cognitive infrastructure</a>{" "}
-            where your systems dream, adapt, evolve, and remember. The{" "}
+            CMPSBL is the platform — composable{" "}
+            <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
+            where your systems learn during downtime, self-tune within guardrails, and get smarter with every interaction. The{" "}
             <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
-            captures what they learn.
+            captures what they discover.
           </motion.p>
 
           {/* Stat chips — mobile-friendly horizontal scroll */}
