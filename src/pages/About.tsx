@@ -245,9 +245,9 @@ export default function About() {
                 Dream · Adapt · Evolve
               </span>
             </h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
-              Most AI platforms process and forget. When you build on the substrate, your systems
-              learn during downtime, self-modify under governance, and compound intelligence with every interaction.
+             <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
+              Most AI platforms process and forget. When you build on CMPSBL, your systems
+              learn during downtime, self-tune under governance, and get smarter with every interaction.
             </p>
           </motion.div>
 
