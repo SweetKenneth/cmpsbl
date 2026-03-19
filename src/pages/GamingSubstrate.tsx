@@ -419,7 +419,7 @@ export default function GamingSubstrate() {
                 </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="gap-2 h-12 sm:h-14 px-6 sm:px-8 text-base">
-                <Link to="/upgrade">
+                <Link to="/store?tab=plans">
                   <Package className="w-5 h-5" />
                   Or Start With a Plan
                 </Link>
@@ -617,7 +617,7 @@ export default function GamingSubstrate() {
                   Get World Engine — $2,995
                 </Button>
                 <Button asChild variant="outline" size="lg" className="h-12 sm:h-14 px-8 text-base">
-                  <Link to="/upgrade">
+                  <Link to="/store?tab=plans">
                     Or explore subscription plans
                   </Link>
                 </Button>
@@ -785,7 +785,7 @@ await cmpsbl.dream.cycle({
                     World Engine — $2,995
                   </Button>
                   <Button asChild size="lg" className="h-12 sm:h-14 px-6 sm:px-8 bg-white/20 text-white hover:bg-white/30 font-bold border-2 border-white/40 text-base">
-                    <Link to="/upgrade">
+                    <Link to="/store?tab=plans">
                       <Package className="w-5 h-5 mr-2" />
                       Subscription Plans
                     </Link>

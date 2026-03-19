@@ -324,7 +324,7 @@ await substrate('vision.health', {});`}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild size="lg" className="gap-2">
-                <Link to="/upgrade">
+                <Link to="/store?tab=plans">
                   View Plans <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>

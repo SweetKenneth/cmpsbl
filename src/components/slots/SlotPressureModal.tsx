@@ -82,7 +82,7 @@ export function SlotPressureModal({
           </Button>
           {nextTier && (
             <Button className="flex-1" asChild>
-              <Link to="/upgrade" onClick={() => onOpenChange(false)}>
+              <Link to="/store?tab=plans" onClick={() => onOpenChange(false)}>
                 View Plans <ArrowRight className="w-4 h-4 ml-1" />
               </Link>
             </Button>

@@ -13,7 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const SUGGESTIONS = [
   { name: "Memory Stream", href: "/foundry", description: "Crystallize memories from the stream" },
   { name: "Documentation", href: "/documentation", description: "API reference & guides" },
-  { name: "Upgrade", href: "/upgrade", description: "Plans, pricing & tiers" },
+  { name: "Plans & Pricing", href: "/store?tab=plans", description: "Compare tiers & upgrade" },
   { name: "Runtime Agents", href: "/composable-cognitives", description: "Sealed AI runtime agents" },
   { name: "Persistent Memory", href: "/persistent-memory", description: "Add memory to any agent" },
   { name: "Blog", href: "/blog", description: "Research & updates" },

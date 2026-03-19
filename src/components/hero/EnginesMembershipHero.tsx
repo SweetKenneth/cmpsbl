@@ -270,7 +270,7 @@ function EnginesShowcase() {
         className="mt-4 flex justify-center"
       >
         <Link 
-          to="/upgrade"
+          to="/store?tab=plans"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 transition-all shadow-lg shadow-primary/25 group"
         >
           View Plans

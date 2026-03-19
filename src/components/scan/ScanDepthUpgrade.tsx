@@ -40,7 +40,7 @@ export function ScanDepthUpgrade({ currentDepth, className = '' }: ScanDepthUpgr
             {info.next === 'deep' && 'Full root cause analysis with multiple remediation paths per finding.'}
             {info.next === 'forensic' && 'Complete forensic analysis with attack surface mapping and compliance audit.'}
           </p>
-          <Link to="/upgrade">
+          <Link to="/store?tab=plans">
             <Button variant="outline" size="sm" className="mt-3 gap-2 text-xs">
               Upgrade <ArrowUpRight className="w-3 h-3" />
             </Button>

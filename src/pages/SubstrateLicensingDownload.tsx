@@ -139,7 +139,7 @@ export default function SubstrateLicensingDownload() {
                   <h3 className="font-semibold mb-2">Pricing</h3>
                   <p className="text-sm text-muted-foreground">
                     Build on our <strong>master substrate</strong> with all infrastructure managed for you.{" "}
-                    <Link to="/upgrade" className="text-primary hover:underline">View pricing →</Link>
+                    <Link to="/store?tab=plans" className="text-primary hover:underline">View pricing →</Link>
                   </p>
                 </CardContent>
               </Card>

@@ -95,7 +95,7 @@ export function ArtifactExportPanel({ artifact, subscriptionTier }: ArtifactExpo
             </span>
           </div>
           <Link
-            to="/upgrade"
+            to="/store?tab=plans"
             className="flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary/80 transition-colors"
           >
             Upgrade <ArrowUpRight className="w-3 h-3" />

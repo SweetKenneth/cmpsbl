@@ -39,7 +39,7 @@ function Hero() {
             <Link to="/foundry/demo" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
               Explore the Memory Stream <ArrowRight className="w-4 h-4" />
             </Link>
-            <Link to="/upgrade" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-secondary transition-colors">
+            <Link to="/store?tab=plans" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-foreground font-medium hover:bg-secondary transition-colors">
               View Plans
             </Link>
           </div>

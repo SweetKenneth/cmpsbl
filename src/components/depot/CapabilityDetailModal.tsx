@@ -180,7 +180,7 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
                   : 'This artifact is delivered as a black-boxed runtime. Source code, export, and cloning are permanently disabled to protect proprietary architecture.'}
               </p>
               <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-orange-600 hover:bg-orange-500" : "bg-amber-600 hover:bg-amber-500")}>
-                <Link to="/upgrade">
+                <Link to="/store?tab=plans">
                   <Crown className="w-4 h-4 mr-2" />
                   {isGated ? 'View Enterprise Plans' : 'View Plans'}
                 </Link>

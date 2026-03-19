@@ -121,7 +121,7 @@ export function CmpsblNav() {
       icon: Sparkles,
       items: [
         { name: "Store", href: "/store", description: "Agents, engines, plans & memories", icon: Sparkles, highlight: true },
-        { name: "Upgrade", href: "/upgrade", description: "Plans & pricing tiers", icon: Zap },
+        { name: "Plans & pricing", href: "/store?tab=plans", description: "Compare tiers & upgrade", icon: Zap },
         { name: "Pricing methodology", href: "/pricing-method", description: "Transparent pricing model", icon: CreditCard },
         { name: "Academy", href: "/academy", description: "Tutorials & certification", icon: BookOpen },
         { name: "Showcase", href: "/showcase", description: "See what's been built", icon: Sparkles },
@@ -368,7 +368,7 @@ export function CmpsblNav() {
                       <Link to="/auth">Sign in</Link>
                     </Button>
                     <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold shadow-md shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                      <Link to="/upgrade">
+                      <Link to="/store">
                         Get Started
                         <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                       </Link>
@@ -441,7 +441,7 @@ export function CmpsblNav() {
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
-                  { name: "Upgrade", href: "/upgrade", icon: Zap },
+                  { name: "Plans", href: "/store?tab=plans", icon: Zap },
                   { name: "CodeLab", href: "/codelab", icon: FlaskConical, badge: "NEW FEATURES" },
                   { name: "Store", href: "/store", icon: Sparkles, badge: "NEW" },
                 ].map((item) => (
@@ -560,7 +560,7 @@ export function CmpsblNav() {
                 ) : (
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
-                      <Link to="/upgrade">
+                      <Link to="/store">
                         Get Started
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
