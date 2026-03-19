@@ -316,7 +316,7 @@ export default function About() {
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                     <Hammer className="w-4.5 h-4.5 text-primary" />
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Substrate</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">The Platform</h3>
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                   A cognitive operating system organized across{" "}
