@@ -352,7 +352,7 @@ export default function AIOperatingSystem() {
             <motion.div {...fadeUp()} className="text-center mb-8 sm:mb-12">
               <Badge variant="outline" className="mb-4 border-primary/20 bg-primary/5 px-3 py-1.5 gap-1.5">
                 <Zap className="w-3 h-3 text-primary" />
-                <span className="text-[10px] font-semibold tracking-widest uppercase">Signal → Silicon</span>
+                <span className="text-[10px] font-semibold tracking-widest uppercase">How Discovery Works</span>
               </Badge>
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 tracking-tight">
                 The Memory Stream

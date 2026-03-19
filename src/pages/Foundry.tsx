@@ -147,11 +147,11 @@ export default function Foundry() {
   return (
     <>
       <SEO 
-        title="Memory Stream — Mine & Crystallize Software | CMPSBL"
-        description="Crystallize raw cognitive signals into scored, tiered, exportable software artifacts. 5 rarity tiers from Mint to Apex, CJPI quality floor of 68+, and per-user persistent vault. Mine free."
+        title="Memory Stream — Discover & Collect Software Capabilities | CMPSBL"
+        description="Discover scored, tiered, exportable software capabilities. 5 rarity tiers from Mint to Apex, quality floor of 68+, and per-user persistent vault. Start mining free."
         canonical="https://cmpsbl.com/foundry"
         image="https://cmpsbl.com/og-memory-stream.jpg"
-        keywords={['memory stream', 'crystallized memories', 'AI software discovery', 'CMPSBL foundry', 'CJPI scoring', 'composable pipelines']}
+        keywords={['memory stream', 'crystallized memories', 'AI software discovery', 'CMPSBL', 'quality scoring', 'composable capabilities']}
       />
 
       <PublicNav />
@@ -208,9 +208,9 @@ export default function Foundry() {
                 transition={{ delay: 0.1 }}
                 className="text-muted-foreground/70 max-w-lg mx-auto text-sm leading-relaxed"
               >
-                The Memory Stream is a continuous substrate of evolving software systems.
-                The engine samples the stream and crystallizes viable memories.
-                Quality floor: 68+. No filler. Only stable systems survive.
+                The Memory Stream continuously discovers new software capabilities.
+                The engine scores each discovery and crystallizes the best into your vault.
+                Quality floor: 68+. No filler. Only proven capabilities survive.
               </motion.p>
             </div>
 

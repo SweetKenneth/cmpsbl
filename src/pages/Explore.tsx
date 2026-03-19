@@ -64,16 +64,16 @@ export default function Explore() {
     <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO 
         title="Composable AI Infrastructure | CMPSBL"
-        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 capability slots. Composable AI substrate for agentic systems that learn."
+        description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 capability slots. Composable AI platform for agentic systems that learn."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home.jpg"
-        keywords={['composable AI', 'cognitive infrastructure', 'AI substrate', 'agentic AI platform', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software', 'capability packs']}
+        keywords={['composable AI', 'cognitive infrastructure', 'AI platform', 'agentic AI', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software', 'capability packs']}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a node-based AI substrate where intelligence persists across sessions, adapts through governed evolution, and compounds over time.' },
+          { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI platform where intelligence persists across sessions, adapts through governed evolution, and compounds over time.' },
           { question: 'How does persistent memory work?', answer: 'CMPSBL provides multi-tier persistent memory that gives AI agents permanent recall across sessions. Add it to any agent in under an hour with the free tier.' },
-          { question: 'What are capability packs?', answer: 'Capability packs are bundles of capabilities you activate on demand. Each pack uses one slot. Your plan determines how many slots you have — not which packs you can access.' },
+          { question: 'What are capability packs?', answer: 'Capability packs are bundles of features you activate on demand. Each pack uses one slot. Your plan determines how many slots you have — not which packs you can access.' },
           { question: 'Is there a free tier?', answer: 'Yes. The Builder tier is completely free — 3 capability slots, full runtime access, persistent memory, and governed orchestration. No credit card required.' },
-          { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the NEXUS router. Bring your own keys or use managed routing.' },
+          { question: 'What AI providers does CMPSBL support?', answer: 'CMPSBL routes across multiple providers including OpenAI, Anthropic, Google, and open-source models through the intelligent router. Bring your own keys or use managed routing.' },
         ]}
       />
 
@@ -178,7 +178,7 @@ export default function Explore() {
               {/* Floating badge — CSS fade-in replaces motion */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <Sparkles className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
+                <span className="text-sm font-semibold text-white/90">Build Smarter AI</span>
               </div>
               
               <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
@@ -187,16 +187,16 @@ export default function Explore() {
                 <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
               </h2>
               <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-                Persistent memory, governed evolution, and DREAM cycles — systems that adapt and improve themselves. Start free with 3 memory slots.
+                Persistent memory, governed evolution, and self-improvement cycles — AI systems that adapt and get better over time. Start free with 3 capability slots.
               </p>
               
               {/* Mini stats row */}
               <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
-                 {[
-                   { value: "40", label: "Substrate Nodes" },
-                   { value: "24", label: "Memory Packs" },
-                   { value: "20", label: "Sealed Engines" },
-                   { value: "99.9%", label: "Uptime SLA" },
+                   {[
+                    { value: "40", label: "System Modules" },
+                    { value: "24", label: "Capability Packs" },
+                    { value: "20", label: "Sealed Products" },
+                    { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
                      <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>

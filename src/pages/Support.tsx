@@ -182,9 +182,9 @@ export default function Support() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Support — FAQ, Docs & Live AI Chat | CMPSBL"
-        description="Get help with CMPSBL: searchable FAQ, full substrate documentation, and live chat with DECODE — the cognitive interface. Troubleshoot memory, routing, DREAM cycles, and API issues instantly."
+        description="Get help with CMPSBL: searchable FAQ, full documentation, and live AI chat support. Troubleshoot memory, routing, learning cycles, and API issues instantly."
         canonical="https://cmpsbl.com/support"
-        keywords={["CMPSBL support", "help center", "FAQ", "DECODE support"]}
+        keywords={["CMPSBL support", "help center", "FAQ", "AI support"]}
       />
       <StructuredData
         type="faq"

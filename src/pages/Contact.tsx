@@ -244,10 +244,10 @@ export default function Contact() {
                 <Badge variant="outline" className="mb-4 border-primary/30 text-primary">Enterprise</Badge>
                 <h2 className="text-2xl font-bold mb-4 text-foreground">Custom Deployments</h2>
                 <p className="text-muted-foreground mb-4">
-                  Need self-hosted deployment via LNCHBL, custom compliance, or a substrate tailored to your organization?
+                  Need a private cloud deployment, custom compliance setup, or a platform tailored to your organization?
                 </p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  {["Self-hosted substrate deployment via LNCHBL", "Custom slot capacity beyond standard tiers", "Dedicated engineering support and SLA guarantees"].map((text, i) => (
+                  {["Private cloud or on-premise deployment", "Custom capacity beyond standard plans", "Dedicated engineering support and SLA guarantees"].map((text, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" /><span>{text}</span>
                     </li>

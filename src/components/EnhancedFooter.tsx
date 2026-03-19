@@ -113,10 +113,10 @@ export function EnhancedFooter() {
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Signal → Silicon
+                Composable AI Infrastructure
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
-                The Memory Stream captures raw system behavior and crystallizes it into production-grade software — and when exceptional, into physical silicon.
+                The Memory Stream discovers raw system behavior and turns it into production-grade software — and at the highest tiers, into hardware designs.
               </p>
               <Link 
                 to="/store?tab=plans" 

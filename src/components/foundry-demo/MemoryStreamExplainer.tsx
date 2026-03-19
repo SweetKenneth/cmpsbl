@@ -121,7 +121,7 @@ export function MemoryStreamExplainer() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-muted-foreground text-center mb-4 font-mono">
-            From Signal to Silicon
+            How It Works
           </h2>
           <p className="text-center text-muted-foreground/70 mb-4 sm:mb-6 max-w-2xl mx-auto text-base sm:text-lg px-1 leading-relaxed">
             The Memory Stream captures raw system behavior and crystallizes it

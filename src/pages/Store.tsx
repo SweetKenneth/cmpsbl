@@ -33,12 +33,12 @@ type StoreTab = "store" | "plans" | "memories";
 const TIERS: StoreTier[] = ["free", "starter", "pro", "elite", "apex"];
 
 const SEALED_FEATURES = [
-  { label: "4-Tier Auto Memory", desc: "HOT → WARM → COOL → COLD lifecycle with zero-config tiering", icon: Brain },
-  { label: "RIPPLE Orchestrator", desc: "Internal task delegation, flow routing & priority queuing", icon: Layers },
-  { label: "Always-On CLM", desc: "Continuous learning — even offline, even asleep", icon: Radio },
-  { label: "Sealed Runtime", desc: "Source-blocked, memory-isolated, clone-disabled execution", icon: Shield },
-  { label: "Version Minting", desc: "Unique immutable snapshot frozen at point of acquisition", icon: Sparkles },
-  { label: "DECODE Channel", desc: "Direct owner-to-agent encrypted communication relay", icon: Eye },
+  { label: "4-Tier Auto Memory", desc: "Automatic hot → warm → cool → cold data lifecycle — no configuration needed", icon: Brain },
+  { label: "Task Orchestrator", desc: "Built-in task delegation, workflow routing, and priority queuing", icon: Layers },
+  { label: "Always-On Learning", desc: "Continuous self-improvement — even offline, even idle", icon: Radio },
+  { label: "Sealed Runtime", desc: "Source-protected, memory-isolated, tamper-proof execution environment", icon: Shield },
+  { label: "Version Snapshots", desc: "Each purchase creates a unique, immutable version frozen at that moment", icon: Sparkles },
+  { label: "Encrypted Comms", desc: "Direct owner-to-agent encrypted communication channel", icon: Eye },
 ];
 
 const TAB_CONFIG = [
@@ -108,7 +108,7 @@ export default function Store() {
             >
               <Badge variant="outline" className="mb-6 border-primary/30 px-4 py-1.5 inline-flex backdrop-blur-sm">
                 <ShoppingBag className="w-3.5 h-3.5 mr-2 text-primary" />
-                <span className="text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Ladder</span>
+                <span className="text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Platform</span>
               </Badge>
             </motion.div>
 
@@ -250,9 +250,9 @@ export default function Store() {
                         <h2 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
                           Every Product Ships Sealed
                         </h2>
-                        <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
-                          Black-box runtime · Zero maintenance · Always learning · Source-blocked execution
-                        </p>
+                         <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
+                           Tamper-proof runtime · Zero maintenance · Always learning · Source-protected
+                         </p>
                       </div>
                     </div>
 
@@ -296,7 +296,7 @@ export default function Store() {
                 className="mt-16 sm:mt-20 text-center pb-8"
               >
                 <p className="text-[10px] text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
-                  Every agent and engine runs on the CMPSBL Sealed Runtime
+                  Every agent and engine runs on the CMPSBL sealed runtime — secure, self-improving, and yours to own
                 </p>
                 <div className="flex items-center justify-center gap-3 flex-wrap">
                   <Button
