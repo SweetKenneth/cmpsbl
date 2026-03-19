@@ -46,16 +46,16 @@ export default function ModulesHub() {
               className="text-center"
             >
               <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-3">
-                Substrate Architecture
+                Platform Architecture
               </span>
                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                Every Node.{" "}
+                Every Module.{" "}
                 <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
                   One System.
                 </span>
               </h1>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Browse all the specialized subsystems that make up the platform. Each node handles a specific job —
+               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Browse all the specialized modules that make up the platform. Each one handles a specific job —
                 together, they form an AI system that learns, adapts, and evolves on its own.
               </p>
             </motion.div>
