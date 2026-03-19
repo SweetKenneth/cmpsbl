@@ -449,7 +449,7 @@ interface MemoryContext {
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
-                  <Link to="/upgrade">
+                  <Link to="/store?tab=plans">
                     <Button variant="outline" size="lg">
                       View Pricing
                     </Button>

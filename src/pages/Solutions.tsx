@@ -149,7 +149,7 @@ export default function Solutions() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/upgrade">View Plans</Link>
+                <Link to="/store?tab=plans">View Plans</Link>
               </Button>
             </div>
           </motion.div>
