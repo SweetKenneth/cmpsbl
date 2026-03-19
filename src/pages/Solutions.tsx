@@ -36,7 +36,7 @@ const solutions = [
   },
   {
     icon: Zap,
-    name: "NEXUS Router",
+    name: "NEXUS — Smart Routing",
     tagline: "Intelligent Multi-Provider Routing",
     description: "Routes every AI request to the optimal provider based on task complexity, cost, and latency. Automatic failover across 13+ providers. Zero vendor lock-in.",
     features: ["13+ AI providers supported", "Automatic failover & load balancing", "Cost optimization per request", "Task-aware model selection", "Zero-downtime provider switching", "Latency-optimized routing"],
