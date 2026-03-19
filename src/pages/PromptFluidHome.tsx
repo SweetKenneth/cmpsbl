@@ -46,9 +46,9 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Clockless Cognitive Reality Born", description: "Launched the first Cognitive Reality System — 40 nodes across 12 sectors, powered by the CMPSBL Substrate." },
-  { year: "2025", title: "200k+ Lines of Code", description: "Grew to 675+ capabilities, 14-provider AI routing, and composable cognitive infrastructure." },
-  { year: "2026", title: "Zone Architecture", description: "Surgically hot-swappable subsystems with safety-switch isolation, 4 shielded expansion zones (ESZ, EPZ, EMZ, CSZ), and autonomous evolution." },
+  { year: "2024", title: "Cognitive Platform Launched", description: "Launched the composable AI platform — 40 modules across 12 functional groups, powered by persistent memory." },
+  { year: "2025", title: "200k+ Lines of Code", description: "Grew to 675+ capabilities, 14-provider AI routing, and composable AI infrastructure." },
+  { year: "2026", title: "Modular Architecture", description: "Hot-swappable modules with circuit-breaker isolation, 4 shielded expansion zones, and autonomous evolution." },
 ];
 
 const capabilities = [
