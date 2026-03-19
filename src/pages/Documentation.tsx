@@ -1400,7 +1400,7 @@ export default function Documentation() {
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline" className="hover:border-primary/30 transition-colors">
-              <Link to="/start-here">Start Here</Link>
+              <Link to="/developers/guide">Developer Guide</Link>
             </Button>
           </div>
         </div>
