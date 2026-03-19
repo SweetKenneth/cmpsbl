@@ -32,7 +32,7 @@ const MODULES = [
   { icon: Network, name: "NEXUS", desc: "Route to the best AI model automatically with built-in failover" },
   { icon: Shield, name: "DEFENSE", desc: "Detect threats, block bad actors, and filter malicious inputs" },
   { icon: Eye, name: "VISION", desc: "Monitor system health, view metrics, and trace requests" },
-  { icon: Zap, name: "DREAM", desc: "Automatic learning cycles that improve your system over time" },
+  { icon: Zap, name: "EVOLUTION", desc: "Automatic self-improvement cycles that make your system smarter over time" },
 ];
 
 export default function ApiAccess() {
