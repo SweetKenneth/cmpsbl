@@ -82,10 +82,10 @@ export function isCmpsblOnlyFunction(name: string): boolean {
  * Validate that a patch payload doesn't reference any pf-* functions
  * as dependencies. Returns validation errors if any are found.
  * 
- * ⛔ SUSPENDED: Always rejects with suspension error.
+ * ⛔ DISCONTINUED: Always rejects — LNCHBL is no longer offered.
  */
 export function validatePatchForLnchbl(payload: LnchblPatchPayload): string[] {
   return [
-    'LNCHBL distribution is SUSPENDED. No patches may be authored or dispatched until licensing is resolved.',
+    'LNCHBL distribution is DISCONTINUED. Self-hosted deployment is no longer available.',
   ];
 }
