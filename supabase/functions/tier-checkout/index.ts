@@ -1,5 +1,6 @@
 /**
- * Tier Checkout — Adoptable Pricing: Creator $9/mo | Architect $19/mo | Enterprise $99/mo
+ * Tier Checkout — Creator $29/mo | Studio $49/mo | Architect $79/mo
+ * Aligned with engine-stripe-products.ts and licensing-products.ts
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -11,33 +12,37 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const TIER_PRICES: Record<string, { price_id: string; product_id: string; amount: number }> = {
+// Aligned with ENGINE_SUBSCRIPTION_PRODUCTS in engine-stripe-products.ts
+const TIER_PRICES: Record<string, Record<string, { price_id: string; product_id: string; amount: number }>> = {
   creator: {
-    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
-    product_id: 'prod_TzwJfkmkooYhwU',
-    amount: 900,
+    monthly: { price_id: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu', product_id: 'prod_U3d8z2sorSG4sI', amount: 2900 },
+    annual:  { price_id: 'price_1T5VsgQ7FtTiAL4ahx89OgVH', product_id: 'prod_U3d84gNyBRQgeu', amount: 27600 },
+  },
+  studio: {
+    monthly: { price_id: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z', product_id: 'prod_U4vfFrx4XIT6Ah', amount: 4900 },
+    annual:  { price_id: 'price_1T6lnxQ7FtTiAL4a3N9AvKcG', product_id: 'prod_U4vfNOl4dHkmld', amount: 47040 },
   },
   architect: {
-    price_id: 'price_1T1wR8Q7FtTiAL4aJ3TYghDH',
-    product_id: 'prod_TzwJtYd5I4rH7j',
-    amount: 1900,
-  },
-  enterprise: {
-    price_id: 'price_1T1wR9Q7FtTiAL4aRHhQwX0m',
-    product_id: 'prod_TzwJm6Ji4E3Vca',
-    amount: 9900,
+    monthly: { price_id: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3', product_id: 'prod_U3d8XbUwCGrcfO', amount: 7900 },
+    annual:  { price_id: 'price_1T5VshQ7FtTiAL4a2cWVOSVU', product_id: 'prod_U3d8M0yNFGpGTw', amount: 75600 },
   },
   // Legacy aliases
   builder: {
-    price_id: 'price_1T1wR7Q7FtTiAL4a63bTsEk7',
-    product_id: 'prod_TzwJfkmkooYhwU',
-    amount: 900,
+    monthly: { price_id: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu', product_id: 'prod_U3d8z2sorSG4sI', amount: 2900 },
+    annual:  { price_id: 'price_1T5VsgQ7FtTiAL4ahx89OgVH', product_id: 'prod_U3d84gNyBRQgeu', amount: 27600 },
   },
   pro: {
-    price_id: 'price_1T1wR8Q7FtTiAL4aJ3TYghDH',
-    product_id: 'prod_TzwJtYd5I4rH7j',
-    amount: 1900,
+    monthly: { price_id: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3', product_id: 'prod_U3d8XbUwCGrcfO', amount: 7900 },
+    annual:  { price_id: 'price_1T5VshQ7FtTiAL4a2cWVOSVU', product_id: 'prod_U3d8M0yNFGpGTw', amount: 75600 },
   },
+  enterprise: {
+    monthly: { price_id: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3', product_id: 'prod_U3d8XbUwCGrcfO', amount: 7900 },
+    annual:  { price_id: 'price_1T5VshQ7FtTiAL4a2cWVOSVU', product_id: 'prod_U3d8M0yNFGpGTw', amount: 75600 },
+  },
+};
+
+const logStep = (step: string, details?: Record<string, unknown>) => {
+  console.log(`[TIER-CHECKOUT] ${step}`, details ? JSON.stringify(details) : '');
 };
 
 serve(async (req) => {
@@ -46,6 +51,8 @@ serve(async (req) => {
   }
 
   try {
+    logStep('Function started');
+
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
     });
@@ -66,13 +73,18 @@ serve(async (req) => {
     }
 
     const body = await req.json();
-    const { tier } = body;
+    const { tier, interval = 'monthly' } = body;
 
     if (!tier || !TIER_PRICES[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Must be 'creator', 'architect', or 'enterprise'.`);
+      return new Response(
+        JSON.stringify({ error: `Invalid tier: ${tier}. Valid: creator, studio, architect` }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
+      );
     }
 
-    const priceConfig = TIER_PRICES[tier];
+    const priceConfig = TIER_PRICES[tier][interval] || TIER_PRICES[tier].monthly;
+    logStep('Tier resolved', { tier, interval, priceId: priceConfig.price_id });
+
     const origin = req.headers.get("origin") || "https://cmpsbl.com";
 
     let customerId: string | undefined;
@@ -83,33 +95,41 @@ serve(async (req) => {
       }
     }
 
+    const displayTier = tier === 'builder' ? 'creator' : tier === 'pro' || tier === 'enterprise' ? 'architect' : tier;
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       customer_email: customerId ? undefined : userEmail || undefined,
       line_items: [{ price: priceConfig.price_id, quantity: 1 }],
       mode: 'subscription',
-      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${tier}`,
-      cancel_url: `${origin}/pricing?canceled=true`,
+      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
+      cancel_url: `${origin}/store?tab=plans&canceled=true`,
       metadata: {
-        tier,
-        product_id: priceConfig.product_id,
         user_id: userId || '',
+        tier: displayTier,
+        interval,
+        product_type: 'tier_subscription',
       },
       subscription_data: {
-        metadata: { tier, user_id: userId || '' },
+        metadata: {
+          user_id: userId || '',
+          tier: displayTier,
+          interval,
+        },
       },
     });
 
-    console.log(`Tier checkout created: ${tier}, session: ${session.id}, email: ${userEmail}`);
+    logStep('Checkout created', { sessionId: session.id, tier: displayTier });
 
     return new Response(
       JSON.stringify({ url: session.url, session_id: session.id }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 }
     );
   } catch (error) {
-    console.error("Tier checkout error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    logStep('ERROR', { message });
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : "Unknown error" }),
+      JSON.stringify({ error: message }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400 }
     );
   }

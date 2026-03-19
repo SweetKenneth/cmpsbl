@@ -14,16 +14,21 @@ const corsHeaders = {
 };
 
 // Current price IDs — Creator ($29/mo) and Architect ($79/mo)
+// Aligned with ENGINE_SUBSCRIPTION_PRODUCTS in engine-stripe-products.ts
 const PRICE_MAP: Record<string, Record<string, string>> = {
   creator: {
     monthly: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu',
     annual: 'price_1T5VsgQ7FtTiAL4ahx89OgVH',
   },
+  studio: {
+    monthly: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z',
+    annual: 'price_1T6lnxQ7FtTiAL4a3N9AvKcG',
+  },
   architect: {
     monthly: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3',
     annual: 'price_1T5VshQ7FtTiAL4a2cWVOSVU',
   },
-  // Legacy aliases — map to new tiers
+  // Legacy aliases
   builder: {
     monthly: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu',
     annual: 'price_1T5VsgQ7FtTiAL4ahx89OgVH',
