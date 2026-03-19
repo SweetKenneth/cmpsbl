@@ -19,6 +19,11 @@ serve(async (req) => {
 
   try {
     const authHeader = req.headers.get("Authorization");
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
     let userEmail: string | undefined;
     let customerId: string | undefined;
 
@@ -26,12 +31,14 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
-    // Auth is optional for World Engine purchase
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      userEmail = data.user?.email ?? undefined;
+    const token = authHeader.replace("Bearer ", "");
+    const { data } = await supabaseClient.auth.getUser(token);
+    if (!data.user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
+    userEmail = data.user.email;
 
     const { priceId } = await req.json();
 

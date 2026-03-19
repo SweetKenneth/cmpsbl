@@ -149,29 +149,27 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
-    // Check for authenticated user (optional for capabilities)
+    // Require authentication
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
     let customerId: string | undefined;
     let customerEmail: string | undefined;
-    
-    const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      const user = data.user;
-      
-      if (user?.email) {
-        customerEmail = user.email;
-        
-        // Check for existing Stripe customer
-        const customers = await stripe.customers.list({ 
-          email: user.email, 
-          limit: 1 
-        });
-        
-        if (customers.data.length > 0) {
-          customerId = customers.data[0].id;
-        }
-      }
+
+    const token = authHeader.replace("Bearer ", "");
+    const { data } = await supabaseClient.auth.getUser(token);
+    if (!data.user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
+    customerEmail = data.user.email;
+    const existingCustomers = await stripe.customers.list({ email: customerEmail, limit: 1 });
+    if (existingCustomers.data.length > 0) {
+      customerId = existingCustomers.data[0].id;
     }
 
     const origin = req.headers.get("origin") || "https://promptfluid-substrate.lovable.app";

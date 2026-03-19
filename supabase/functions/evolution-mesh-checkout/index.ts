@@ -39,15 +39,21 @@ serve(async (req) => {
     logStep("Tier selected", { tier, framework });
 
     const authHeader = req.headers.get("Authorization");
-    let userEmail: string | undefined;
-    let customerId: string | undefined;
-
-    if (authHeader && authHeader !== "Bearer null") {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      userEmail = data.user?.email ?? undefined;
-      logStep("User authenticated", { email: userEmail });
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
+    const token = authHeader.replace("Bearer ", "");
+    const { data: authData } = await supabaseClient.auth.getUser(token);
+    if (!authData.user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
+    const userEmail = authData.user.email;
+    let customerId: string | undefined;
+    logStep("User authenticated", { email: userEmail });
 
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",

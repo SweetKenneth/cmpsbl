@@ -27,14 +27,21 @@ serve(async (req) => {
       Deno.env.get("SUPABASE_ANON_KEY") ?? ""
     );
 
-    // Get user if authenticated (optional for purchases)
-    let userEmail: string | undefined;
+    // Require authentication for checkout
     const authHeader = req.headers.get("Authorization");
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabase.auth.getUser(token);
-      userEmail = data.user?.email;
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
+    const token = authHeader.replace("Bearer ", "");
+    const { data: authData } = await supabase.auth.getUser(token);
+    if (!authData.user?.email) {
+      return new Response(JSON.stringify({ error: "Please sign in to purchase", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
+    const userEmail = authData.user.email;
 
     const body = await req.json();
     const {

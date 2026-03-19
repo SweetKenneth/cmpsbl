@@ -28,19 +28,22 @@ serve(async (req) => {
   );
 
   try {
-    // Authenticate user
+    // Require authentication
     const authHeader = req.headers.get("Authorization");
-    let userId: string | undefined;
-    let customerEmail: string | undefined;
-
-    if (authHeader) {
-      const token = authHeader.replace("Bearer ", "");
-      const { data } = await supabaseClient.auth.getUser(token);
-      if (data.user) {
-        userId = data.user.id;
-        customerEmail = data.user.email ?? undefined;
-      }
+    if (!authHeader || authHeader === "Bearer null") {
+      return new Response(JSON.stringify({ error: "Please sign in to continue", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
     }
+    const token = authHeader.replace("Bearer ", "");
+    const { data: authData } = await supabaseClient.auth.getUser(token);
+    if (!authData.user) {
+      return new Response(JSON.stringify({ error: "Please sign in to continue", login_required: true }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 401,
+      });
+    }
+    const userId = authData.user.id;
+    const customerEmail = authData.user.email ?? undefined;
 
     // Any authenticated user gets free access (Builder+ = any account)
     if (userId) {
