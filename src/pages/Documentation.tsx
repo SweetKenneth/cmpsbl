@@ -242,7 +242,7 @@ Total: 40 nodes · 12 sectors · Σ weights = 1.000`}</CodeBlock>
       {/* Quick links */}
       <div className="flex flex-wrap gap-3 pt-2">
         <Button asChild size="sm" variant="outline">
-          <Link to="/start-here">Quick Start <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
+          <Link to="/developers/guide">Quick Start <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
         </Button>
         <Button asChild size="sm" variant="outline">
           <Link to="/developers">Developer Portal <ArrowRight className="w-3.5 h-3.5 ml-1.5" /></Link>
