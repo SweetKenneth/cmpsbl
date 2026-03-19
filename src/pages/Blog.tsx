@@ -464,7 +464,7 @@ const HUMAN_POSTS: BlogPost[] = [
     excerpt: "We built INCLUSIVE because accessibility shouldn't require a dedicated team. AI-powered scanning and remediation for every application.",
     href: "/blog/accessibility-is-infrastructure", category: "Accessibility",
     date: "2025-10-15", readTime: "10 min", image: ch15Img,
-    imageAlt: "INCLUSIVE node accessibility mission", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "INCLUSIVE module accessibility mission", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch14-cybersecurity', title: "Cybersecurity Through Cognition",
