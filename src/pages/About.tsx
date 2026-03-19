@@ -579,7 +579,7 @@ export default function About() {
                     variant="outline"
                     className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base border-white/30 text-white hover:bg-white/10 font-semibold"
                   >
-                    <Link to="/upgrade">
+                    <Link to="/store?tab=plans">
                       View Plans
                     </Link>
                   </Button>

@@ -37,7 +37,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Runtime Agents", href: "/composable-cognitives", section: "Product", icon: Zap, keywords: ["runtime", "agents", "AI agents", "sealed"] },
   { name: "Persistent Memory", href: "/persistent-memory", section: "Product", icon: Brain, keywords: ["memory", "agent memory", "recall"] },
   { name: "Enterprise", href: "/enterprise", section: "Product", icon: Shield, keywords: ["scale", "governed", "organization"] },
-  { name: "Upgrade", href: "/upgrade", section: "Product", icon: Gauge, keywords: ["pricing", "plans", "tiers", "billing"] },
+  { name: "Plans & Pricing", href: "/store?tab=plans", section: "Product", icon: Gauge, keywords: ["pricing", "plans", "tiers", "billing", "upgrade"] },
   { name: "Licensing", href: "/licensing", section: "Product", icon: FileText, keywords: ["self-hosted", "license key"] },
   { name: "Gaming Substrate", href: "/gaming", section: "Solutions", icon: Layers, keywords: ["games", "NPC", "world engine"] },
 

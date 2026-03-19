@@ -292,7 +292,7 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/upgrade">
+                <Link to="/store?tab=plans">
                   <Sparkles className="w-4 h-4" />
                   View Plans
                   <ArrowRight className="w-3.5 h-3.5" />
