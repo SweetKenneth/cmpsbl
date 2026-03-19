@@ -152,17 +152,17 @@ export default function DeveloperShowcase() {
               <Terminal className="w-4 h-4 mr-2" />
               For Software Developers
             </Badge>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 tracking-tight">
-              <span className="text-foreground">Build Apps That </span>
-              <span className="block sm:inline" style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-              }}>Think, Remember, Dream</span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
-              CMPSBL's 40-node substrate gives your applications persistent memory, 
-              DREAM cycles for autonomous improvement, and intelligent multi-provider AI routing across 12 coordinated sectors.
-            </p>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 tracking-tight">
+               <span className="text-foreground">Build Apps That </span>
+               <span className="block sm:inline" style={{
+                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
+                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+               }}>Think &amp; Remember</span>
+             </h1>
+             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
+               Add persistent memory, smart AI routing, and self-improvement capabilities 
+               to your applications. 40 specialized nodes across 12 coordinated sectors — all accessible via SDK or REST API.
+             </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
                <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg shadow-cyan-500/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
                  <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
