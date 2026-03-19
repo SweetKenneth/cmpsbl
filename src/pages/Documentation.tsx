@@ -169,7 +169,7 @@ function OverviewSection() {
       </div>
 
       <Callout type="tip">
-        <strong>New to CMPSBL?</strong> Start with the <Link to="/start-here" className="text-primary underline">Quick Start Guide</Link> to
+        <strong>New to CMPSBL?</strong> Start with the <Link to="/documentation" className="text-primary underline">Quick Start Guide</Link> to
         get persistent memory running in under an hour — no framework changes needed.
       </Callout>
 
