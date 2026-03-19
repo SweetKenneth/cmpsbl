@@ -160,11 +160,11 @@ function OverviewSection() {
   return (
     <div className="space-y-8">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Memory Stream Substrate</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">Platform Overview</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          A 40-node cognitive substrate organized across 12 sectors, providing routing, memory, learning cycles,
-          observability, defense, and execution coordination for AI systems.{" "}
-          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> across 40 nodes and 12 sectors.
+          CMPSBL is a modular AI platform with 40 specialized modules organized into 12 functional groups — covering routing, memory, 
+          self-improvement, monitoring, security, and orchestration for AI applications.{" "}
+          <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> ready to use.
         </p>
       </div>
 
