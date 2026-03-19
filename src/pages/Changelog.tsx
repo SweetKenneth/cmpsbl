@@ -1,11 +1,8 @@
 /**
- * CMPSBL — The Fossil Record
+ * CMPSBL — The Evolution Log
  * 
- * Not a changelog. Not a release log. 
- * A geological record of evolutionary pressure and systemic adaptation.
- * 
- * Each stratum documents what forced the substrate to mutate,
- * what the substrate became, and what emerged that didn't exist before.
+ * A chronological record of platform changes and improvements.
+ * Each entry documents what changed, why it changed, and what emerged.
  */
 
 import { PublicNav } from "@/components/PublicNav";
@@ -20,8 +17,8 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ─── Taxonomy ──────────────────────────────────────────────────────────────────
-// Every mutation in the substrate is classified by its origin pressure.
-// This is how the system remembers WHY it changed — not what buttons were pushed.
+// Every change is classified by what motivated it.
+// This is how the system tracks WHY things changed — not just what changed.
 
 type MutationOrigin = 
   | 'survival'       // The system would have degraded without this
@@ -29,7 +26,7 @@ type MutationOrigin =
   | 'cognition'      // The system needed to think differently
   | 'distribution'   // Downstream consumers needed something
   | 'architecture'   // The shape of the system was wrong
-  | 'autonomous'     // SEBA evolution run — no human trigger
+  | 'autonomous'     // Automated evolution run — no human trigger
 
 interface Specimen {
   /** Unique specimen identifier — epoch-serial format */
@@ -61,8 +58,8 @@ interface Stratum {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// STRATUM I — IRONCLAD
-// The substrate grew armor, then learned to govern its own rhythm.
+// EPOCH I — IRONCLAD
+// The platform grew armor, then learned to govern its own rhythm.
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const stratumIronclad: Specimen[] = [
@@ -783,7 +780,7 @@ const stratumMindgames: Specimen[] = [
       "Backup files are timestamped to the second for precise point-in-time recovery identification",
     ],
     phenotype: [
-      "The substrate can be fully reconstructed from a single downloaded file — zero external dependencies needed",
+      "The platform can be fully reconstructed from a single downloaded file — zero external dependencies needed",
       "Disaster recovery shifted from a multi-day manual process to a one-click operation",
       "Any AI coding agent can restore the entire system by following the included step-by-step guide",
     ],
@@ -813,10 +810,10 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "External Developer Metrics panel built into the analytics layer with live data from the developer registry",
       "Real-time API key tracking, usage-per-developer breakdowns, and revenue attribution from metered calls",
-      "Node-level usage heatmaps show which substrate capabilities attract the most external consumption",
+      "Node-level usage heatmaps show which platform capabilities attract the most external consumption",
     ],
     phenotype: [
-      "The substrate can now observe its own developer ecosystem in real time",
+      "The platform can now observe its own developer ecosystem in real time",
       "API adoption patterns are visible per developer, per module, per time window",
     ],
     affectedNodes: ["DECODE", "ANALYTICS"],
@@ -898,7 +895,7 @@ const stratumMindgames: Specimen[] = [
     phenotype: [
       "The substrate predicts who is leaving before they leave",
       "Page flows reveal the natural paths users create through the system",
-      "Feature adoption data shows what the substrate does that people actually care about",
+      "Feature adoption data shows what the platform does that people actually care about",
     ],
     affectedNodes: ["DECODE", "ANALYTICS"],
   },
@@ -922,14 +919,14 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-009",
     fossilized: "2026-03-08",
     origin: "distribution",
-    stimulus: "The substrate's public API lacked a self-service onboarding path — developers couldn't register or generate keys without manual intervention",
+    stimulus: "The platform's public API lacked a self-service onboarding path — developers couldn't register or generate keys without manual intervention",
     adaptations: [
       "Developer registration flow built with email verification and profile creation",
       "API key generation with scoped permissions, rate limits, and expiration controls",
       "Usage metering tracks per-key consumption with daily quota rollups",
     ],
     phenotype: [
-      "External developers can self-serve — register, generate keys, and start calling the substrate API immediately",
+      "External developers can self-serve — register, generate keys, and start calling the API immediately",
       "Every API call is metered and attributed to a specific developer and key",
     ],
     affectedNodes: ["NEXUS", "IDENTITY"],
@@ -946,7 +943,7 @@ const stratumMindgames: Specimen[] = [
     ],
     phenotype: [
       "Every artifact in the vault has an economic identity — priced, categorized, and market-positioned",
-      "The substrate understands the commercial value of its own capabilities",
+      "The platform understands the commercial value of its own capabilities",
     ],
     affectedNodes: ["FORGE", "ECONOMY"],
   },
@@ -961,7 +958,7 @@ const stratumMindgames: Specimen[] = [
       "Bot detection and exclusion happens at the data layer, not the presentation layer",
     ],
     phenotype: [
-      "The substrate observes its own traffic — no third-party analytics, no data leakage",
+      "The platform observes its own traffic — no third-party analytics, no data leakage",
       "Real-time visitor intelligence is a native system capability",
     ],
     affectedNodes: ["DECODE", "HARVEST"],
@@ -972,11 +969,11 @@ const stratumMindgames: Specimen[] = [
     origin: "architecture",
     stimulus: "The evolution engine carried its old name through every runtime path — terminal, telemetry, and type system all referenced a deprecated identity",
     adaptations: [
-      "Node identity unified across all 40 positions in the matrix — terminal commands, type unions, and backend telemetry aligned",
+      "Module identity unified across all 40 positions in the matrix — terminal commands, type unions, and backend telemetry aligned",
       "Legacy aliases retained at the compatibility layer only — new code references the canonical name exclusively",
     ],
     phenotype: [
-      "The substrate's evolution capability has one name everywhere — consistent identity across all surfaces",
+      "The platform's evolution capability has one name everywhere — consistent identity across all surfaces",
     ],
     affectedNodes: ["EVOLUTION"],
   },
@@ -1007,7 +1004,7 @@ const stratumMindgames: Specimen[] = [
       "Memory categories enable domain-specific retrieval without full-corpus search",
     ],
     phenotype: [
-      "The substrate remembers what it learned — knowledge persists across restarts and sessions",
+      "The platform remembers what it learned — knowledge persists across restarts and sessions",
       "Memory recall is intelligent, not exhaustive — it surfaces what matters when it matters",
     ],
     affectedNodes: ["MEMORY", "BRAIN"],
@@ -1032,15 +1029,15 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-002",
     fossilized: "2026-03-07",
     origin: "architecture",
-    stimulus: "The substrate's 40 nodes existed without a unified discovery surface — users couldn't explore what the system actually contained",
+    stimulus: "The platform's 40 modules existed without a unified discovery surface — users couldn't explore what the system actually contained",
     adaptations: [
-      "Interactive node explorer with sector-grouped topology view",
-      "Each node displays its generation tag, sector assignment, and real-time health status",
-      "Search and filter across all 40 nodes by name, sector, or capability",
+      "Interactive module explorer with group-organized topology view",
+      "Each module displays its generation tag, group assignment, and real-time health status",
+      "Search and filter across all 40 modules by name, group, or capability",
     ],
     phenotype: [
-      "The full 40-node matrix is discoverable from a single interface",
-      "Users can understand the substrate's architecture without reading documentation",
+      "The full 40-module system is discoverable from a single interface",
+      "Users can understand the platform's architecture without reading documentation",
     ],
     affectedNodes: ["ATLAS", "DECODE"],
   },
@@ -1051,17 +1048,17 @@ const stratumMindgames: Specimen[] = [
     stimulus: "The substrate completed its infrastructure hardening — armor was grown, governance was learned, all 40 nodes acknowledged. The system was ready for its first users.",
     adaptations: [
       "Epoch transition from IRONCLAD to MINDGAMES marks the shift from infrastructure-first to user-first engineering",
-      "Version constants elevated to 14.x across the entire substrate version registry",
-      "40-node / 12-sector matrix fully acknowledged with generation tagging",
+      "Version constants elevated to 14.x across the entire platform version registry",
+      "40-module / 12-group system fully acknowledged with generation tagging",
       "Governance verified: capabilities registered, approval gate confirmed operational",
       "Memory ownership consolidated under MEMORY — no rogue persistent subsystems",
       "Terminal command layer operational: /status, /memory, /nodes, /clm, /mode, /version all reporting MINDGAMES epoch",
     ],
     phenotype: [
-      "First epoch where the substrate exists FOR users rather than FOR itself",
+      "First epoch where the platform exists FOR users rather than FOR itself",
       "Memory Stream crystallization chain is the primary interaction surface",
       "Complete learning architecture with governed capability installation",
-      "Generation-tagged node topology enabling evolutionary lineage tracking",
+      "Generation-tagged module topology enabling evolutionary lineage tracking",
     ],
     affectedNodes: ["CORE", "ENGINEER", "MEMORY", "DECODE", "GOVERNANCE"],
   },
@@ -1070,7 +1067,7 @@ const stratumMindgames: Specimen[] = [
 const STRATA: Stratum[] = [
   {
     epoch: "MINDGAMES",
-    codename: "The substrate opened its eyes and saw users for the first time",
+    codename: "The platform opened its eyes and saw users for the first time",
     range: "Current epoch",
     color: "bg-violet-500/10 text-violet-400",
     borderColor: "border-violet-500/30",
@@ -1079,7 +1076,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "IRONCLAD",
-    codename: "The substrate grew armor, then learned to govern its own rhythm",
+    codename: "The platform grew armor, then learned to govern its own rhythm",
     range: "Prior epoch",
     color: "bg-amber-500/10 text-amber-400",
     borderColor: "border-amber-500/30",
@@ -1088,7 +1085,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "SPARTA → CONTRACT",
-    codename: "The substrate learned to learn, distribute, and govern itself",
+    codename: "The platform learned to learn, distribute, and govern itself",
     range: "Foundation epoch",
     color: "bg-blue-500/10 text-blue-400",
     borderColor: "border-blue-500/30",
@@ -1097,7 +1094,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "INFRASTRUCTURE",
-    codename: "The substrate grew organs",
+    codename: "The platform grew organs",
     range: "Foundation epoch",
     color: "bg-emerald-500/10 text-emerald-400",
     borderColor: "border-emerald-500/30",
@@ -1106,7 +1103,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "FORMATION",
-    codename: "The substrate took shape",
+    codename: "The platform took shape",
     range: "Genesis epoch",
     color: "bg-violet-500/10 text-violet-400",
     borderColor: "border-violet-500/30",
@@ -1140,7 +1137,7 @@ export default function Changelog() {
     id: `AUTO-${entry.id.slice(-4)}`,
     fossilized: entry.date,
     origin: 'autonomous',
-    stimulus: entry.pressures[0] || 'SEBA evolution run — autonomous pressure detection',
+    stimulus: entry.pressures[0] || 'Automated evolution run — autonomous pressure detection',
     adaptations: entry.responses,
     phenotype: entry.capabilities,
     autonomous: true,

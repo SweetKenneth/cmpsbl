@@ -72,14 +72,14 @@ const capabilities = [
 ];
 
 const enterpriseFeatures = [
-  "Full 40-node platform with weighted health monitoring",
-  "12 sectors covering kernel, cognition, execution, compliance, and more",
+  "Full platform with 40 integrated modules and real-time health monitoring",
+  "12 capability groups covering core logic, cognition, execution, compliance, and more",
   "Persistent memory included free — 4-tier architecture",
   "Configurable self-improvement cycles with custom schedules",
   "Built-in security with bot detection & prompt injection defense",
   "Smart routing across 14+ AI providers with your own keys",
-  "Safety switches prevent cascading failures across nodes",
-  "Immutable audit logging with tamper-proof receipt chains",
+  "Circuit breakers prevent cascading failures across modules",
+  "Immutable audit logging with cryptographic verification",
   "Governance controls with 4 operational modes",
   "Zero-downtime updates and hot reload",
 ];
@@ -111,7 +111,7 @@ export default function Enterprise() {
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
               The complete CMPSBL platform —{" "}
-              <Link to="/modules" className="text-primary hover:underline font-medium">40 nodes across 12 sectors</Link>{" "}
+              <Link to="/modules" className="text-primary hover:underline font-medium">40 integrated modules</Link>{" "}
               — deployed on your servers. Self-improvement cycles, governed adaptation,{" "}
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
               built-in security, and smart routing — configured for your compliance requirements.

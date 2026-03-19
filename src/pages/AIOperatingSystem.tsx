@@ -44,7 +44,7 @@ const faqItems = [
   },
   {
     question: "What problems does CMPSBL solve?",
-    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated nodes that share context, propagate events in real time, and self-optimize automatically.",
+    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated modules that share context, propagate events in real time, and self-optimize automatically.",
   },
   {
     question: "Who needs an AI Operating System?",
@@ -55,8 +55,8 @@ const faqItems = [
     answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS node automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
-    question: "What is the substrate architecture?",
-    answer: "A 40-node matrix organized across 12 sectors — Kernel (CORE, SYSTEM), CCR (BRAIN, MEMORY, DREAM), OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE), Execution (NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION), ESZ, EPZ, EMZ, CSZ zones, Fields (EVOLUTION, IMMUNITY, INTENT), Plane (GOVERNANCE), Atlas (ATLAS), Engineering (ENGINEER), and Shell (DEFENSE). Weights managed by CORE with Σ = 1.000.",
+    question: "What is the platform architecture?",
+    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Atlas (discovery), and Security Shell. All modules are weighted and coordinated by the core runtime.",
   },
 ];
 
@@ -71,17 +71,17 @@ const pillars = [
 
 const sectors = [
   { label: "Kernel", nodes: "CORE, SYSTEM", count: 2, color: "from-blue-500/10 to-blue-600/5" },
-  { label: "CCR", nodes: "BRAIN, MEMORY, DREAM", count: 3, color: "from-violet-500/10 to-violet-600/5" },
-  { label: "OCG", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6, color: "from-amber-500/10 to-amber-600/5" },
+  { label: "Cognition", nodes: "BRAIN, MEMORY, DREAM", count: 3, color: "from-violet-500/10 to-violet-600/5" },
+  { label: "Operations", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6, color: "from-amber-500/10 to-amber-600/5" },
   { label: "Execution", nodes: "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION", count: 10, color: "from-emerald-500/10 to-emerald-600/5" },
-  { label: "ESZ", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-cyan-500/10 to-cyan-600/5" },
-  { label: "EPZ", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-orange-500/10 to-orange-600/5" },
-  { label: "EMZ", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-pink-500/10 to-pink-600/5" },
-  { label: "CSZ", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3, color: "from-red-500/10 to-red-600/5" },
+  { label: "Safety & Compliance", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-cyan-500/10 to-cyan-600/5" },
+  { label: "Simulation", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-orange-500/10 to-orange-600/5" },
+  { label: "Manufacturing", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-pink-500/10 to-pink-600/5" },
+  { label: "Evolution", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3, color: "from-red-500/10 to-red-600/5" },
   { label: "Fields", nodes: "EVOLUTION, IMMUNITY, INTENT", count: 3, color: "from-indigo-500/10 to-indigo-600/5" },
-  { label: "Plane", nodes: "GOVERNANCE", count: 1, color: "from-slate-500/10 to-slate-600/5" },
-  { label: "Atlas", nodes: "ATLAS", count: 1, color: "from-teal-500/10 to-teal-600/5" },
-  { label: "Shell", nodes: "DEFENSE", count: 1, color: "from-rose-500/10 to-rose-600/5" },
+  { label: "Governance", nodes: "GOVERNANCE", count: 1, color: "from-slate-500/10 to-slate-600/5" },
+  { label: "Discovery", nodes: "ATLAS", count: 1, color: "from-teal-500/10 to-teal-600/5" },
+  { label: "Security Shell", nodes: "DEFENSE", count: 1, color: "from-rose-500/10 to-rose-600/5" },
 ];
 
 const comparisonRows = [

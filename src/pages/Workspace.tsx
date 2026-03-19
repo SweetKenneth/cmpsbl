@@ -74,9 +74,9 @@ export default function Workspace() {
     } else if (cmd === 'whoami') {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `Identity: ${user?.email || 'anonymous'}\nTier: ${TIER_LABELS[userTier].label} (${TIER_LABELS[userTier].price})\nCommands: ${availableCommands.length} available` }]);
     } else if (cmd === 'status') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Substrate: ONLINE\nNodes: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Platform: ONLINE\nModules: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
     } else if (cmd === 'modules') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 nodes across 12 sectors:\nCORE: BRAIN, MEMORY, DREAM, SYSTEM\nOCG: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION, EVOLUTION\nESZ/EPZ/EMZ/CSZ: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE, REFLEX, PERCEPTION, FORGE, FOUNDRY, PHANTOM, SHADOW\nField: IMMUNITY, INTENT\nPlane: GOVERNANCE\nShell: DEFENSE, ENGINEER, ENCODE' }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 modules across 12 groups:\nKernel: CORE, SYSTEM\nCognition: BRAIN, MEMORY, DREAM\nOperations: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION\nEvolution: EVOLUTION, SHADOW, PHANTOM\nSafety: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE\nManufacturing: FORGE, FOUNDRY, PERCEPTION, REFLEX\nFields: IMMUNITY, INTENT\nGovernance: GOVERNANCE\nSecurity: DEFENSE, ENGINEER, ENCODE' }]);
     } else if (matched) {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `[${matched.category.toUpperCase()}] ${matched.description}\n→ Executing ${matched.command}...\n✓ Complete`, tier: matched.tier }]);
     } else {
@@ -114,8 +114,8 @@ export default function Workspace() {
              <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
               Your Builder Space
             </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Create, test, and deploy with the full power of 40 nodes. 
+             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              Create, test, and deploy with the full power of 40 integrated modules. 
               Free tier includes persistent memory, SDK templates, and {counts.free} terminal commands.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">

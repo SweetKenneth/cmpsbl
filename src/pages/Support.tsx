@@ -44,17 +44,17 @@ const FAQ_ITEMS = [
   {
     category: "Getting Started",
     question: "What is CMPSBL?",
-    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing through NEXUS, security via the DEFENSE system, and self-evolution — the operating system for AI.",
+    answer: "CMPSBL® (Composable) is a cognitive infrastructure layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing, built-in security, and self-improvement — the operating system for AI.",
   },
   {
     category: "Getting Started",
     question: "How do I get started?",
-    answer: "Sign up for a free Builder account. From the dashboard, you can explore the systems, create your first Memory Pack, and connect your AI provider keys through the NEXUS router. DECODE — our conversational interface — is available on every page to guide you.",
+    answer: "Sign up for a free Builder account. From the dashboard, you can explore the platform, create your first Memory Pack, and connect your AI provider keys through the smart router. DECODE — our conversational interface — is available on every page to guide you.",
   },
   {
     category: "Getting Started",
     question: "Do I need to use a specific AI provider?",
-    answer: "No. CMPSBL is model-agnostic and provider-agnostic. The NEXUS router supports OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination — with automatic failover and cost optimization.",
+    answer: "No. CMPSBL is model-agnostic and provider-agnostic. The smart router supports OpenAI, Anthropic, Google AI, Mistral, open-source models, or any combination — with automatic failover and cost optimization.",
   },
   {
     category: "Getting Started",
@@ -66,51 +66,51 @@ const FAQ_ITEMS = [
   {
     category: "Memories & Foundry",
     question: "What are Memory Packs?",
-    answer: "Memory Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect substrate systems for specific workflows like content generation, data enrichment, or monitoring.",
+    answer: "Memory Packs are composable execution bundles — 24 total, managed through a slot activation system. Each pack contains pre-configured capability chains that connect platform modules for specific workflows like content generation, data enrichment, or monitoring.",
   },
   {
     category: "Memories & Foundry",
     question: "What is the Foundry?",
-    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring crystallized memories and lets you store and export them.",
+    answer: "The Foundry is where you explore the Memory Stream — the platform's continuous discovery output. It surfaces the highest-scoring capabilities and lets you store and export them.",
   },
   {
     category: "Memories & Foundry",
     question: "How does the Memory Stream work?",
-    answer: "The Memory Stream continuously forms scored memories. Each day you can crystallize a limited number of discoveries depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each memory. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging, and Mythic discoveries prompt vault upgrade if full.",
+    answer: "The Memory Stream continuously generates scored discoveries. Each day you can crystallize a limited number depending on your plan: Builder (3), Studio (6), Creator (9), Architect (12). After crystallization, you choose to Keep (store in vault) or Discard each discovery. Vault capacity is tier-based: Builder (5), Studio (25), Creator (75), Architect (unlimited). Rare discoveries (Relic, Mythic, Apex) trigger special messaging.",
   },
   {
     category: "Memories & Foundry",
-    question: "What is CLM (Constant Learning Mode)?",
-    answer: "CLM is the autonomous background learning engine that runs on 30-minute cycles. It uses a 70/30 weighting between global topics (system stability) and node-specific topics, achieving up to 14,400 AI calls per day for continuous knowledge acquisition.",
+    question: "What is Continuous Learning Mode?",
+    answer: "Continuous Learning Mode is the background learning engine that runs on automatic cycles. It uses a balanced weighting between global topics (system stability) and module-specific topics for ongoing knowledge acquisition and improvement.",
   },
 
   // Capability Packs
   {
     category: "Capability Packs",
     question: "What are Composable Cognitives?",
-    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as sealed runtimes. Each comes with 3–5 Apex Discovery powers, universal DREAM synthesis for autonomous improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
+    answer: "Composable Cognitives are self-contained AI agents ($39 standalone) delivered as sealed runtimes. Each comes with 3–5 Apex Discovery powers, automatic self-improvement, and portable 4-tier memory. They can be deployed independently or within agencies.",
   },
   {
     category: "Capability Packs",
     question: "What are Engines?",
-    answer: "Engines are the 20 specialized processing nodes in the substrate — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
+    answer: "Engines are the 20 specialized processing modules in the platform — each handling specific domains like content generation, data analysis, or security scanning. They run as sealed runtimes with built-in capability gating and tier-based access.",
   },
   {
     category: "Capability Packs",
     question: "Can I create custom capability packs?",
-    answer: "Yes. The Capability Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All packs are namespaced to your account with hard isolation from other users.",
+    answer: "Yes. The Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All packs are namespaced to your account with hard isolation from other users.",
   },
 
   // Exports
   {
     category: "Exports",
     question: "Can I export my work as software?",
-    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The distribution system includes export filters that protect proprietary orchestration logic while delivering functional sealed runtimes.",
+    answer: "Yes. Memory Packs and configured capabilities can be exported as standalone execution bundles. The export system includes filters that protect proprietary logic while delivering functional sealed runtimes.",
   },
   {
     category: "Exports",
     question: "Is there hardware export support?",
-    answer: "Hardware export is on the roadmap. Currently, all substrate capabilities run in cloud infrastructure. Contact us at support@cmpsbl.com for enterprise deployment requirements including on-premise options.",
+    answer: "Hardware export is on the roadmap. Currently, all capabilities run in cloud infrastructure. Contact us at support@cmpsbl.com for enterprise deployment requirements including on-premise options.",
   },
 
   // Account & Access
@@ -127,7 +127,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "Is CMPSBL secure for enterprise use?",
-    answer: "Yes. Security is built into the core via the DEFENSE system: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
+    answer: "Yes. Security is built into the platform: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
   },
   {
     category: "Account & Access",
