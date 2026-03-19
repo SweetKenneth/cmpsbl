@@ -32,8 +32,8 @@ const PILLARS = [
   {
     icon: Moon,
     name: "DREAM",
-    verb: "Synthesize while idle",
-    description: "Nocturnal cycles consolidate memory, fuse cross-domain patterns, and generate novel insights — all without active compute.",
+     verb: "Learn while idle",
+    description: "During quiet periods, the system consolidates what it knows, finds cross-domain patterns, and generates new insights — without active compute.",
     color: "text-violet-500",
     bg: "bg-violet-500/10",
     border: "border-violet-500/20",
