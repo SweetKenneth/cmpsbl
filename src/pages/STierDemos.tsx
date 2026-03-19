@@ -1164,10 +1164,11 @@ export default function STierDemos() {
                 <Activity className="w-10 h-10" />
               </div>
             </div>
-            <p className="text-sm">Tap a demo card above to begin</p>
-          </motion.div>
-        )}
-      </div>
-    </div>
-  );
-}
+             <p className="text-sm">Tap a demo card above to begin</p>
+           </motion.div>
+         )}
+       </div>
+       <EnhancedFooter />
+     </div>
+   );
+ }
