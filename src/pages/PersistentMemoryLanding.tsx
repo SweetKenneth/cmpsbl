@@ -170,18 +170,18 @@ const PersistentMemoryLanding = () => {
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <Badge className="mb-4 bg-emerald-500/10 text-emerald-500 border-emerald-500/30">FREE FOR ALL USERS</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">4-tier memory that just works</h2>
-                <p className="text-lg text-muted-foreground">Powered by the BRAIN and MEMORY nodes of the CMPSBL Substrate</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">How the memory system works</h2>
+                <p className="text-lg text-muted-foreground">Four temperature tiers that manage themselves automatically</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {[
-                  { icon: Database, title: "Hot → Warm → Cold → Legacy", description: "4-tier architecture with automatic demotion. Recent memories are instant (<10ms). Historical knowledge persists forever. No manual management." },
-                  { icon: Brain, title: "Automatic Semantic Recall", description: "Relevant memories surface automatically based on semantic similarity. Your agent remembers what matters without you writing retrieval logic." },
-                  { icon: Sparkles, title: "DREAM Consolidation", description: "Off-peak cycles compress redundant memories, generate heuristics, discover patterns, and prune stale entries. Your agent improves while it sleeps." },
-                  { icon: Shield, title: "Protected Memory Types", description: "Identity, safety rules, compliance constraints, and governance directives are locked at value 1.0 with zero decay. They never fade." },
-                  { icon: Lock, title: "Per-Agent Isolation", description: "Each agent's memory is completely isolated. Multi-tenant safe. No cross-contamination between agents or users." },
-                  { icon: Activity, title: "Graceful Degradation", description: "Memory failures never crash your app. The system degrades silently — your agent works without memory rather than erroring out." },
+                  { icon: Database, title: "4 tiers: Hot → Warm → Cold → Archive", description: "Recent memories load instantly (<10ms). Older knowledge moves to cheaper storage automatically. Nothing is lost — it just moves deeper." },
+                  { icon: Brain, title: "Smart recall without extra code", description: "When your agent needs context, relevant memories surface automatically based on meaning — not keywords. No retrieval logic to write." },
+                  { icon: Sparkles, title: "Self-improvement while idle", description: "During quiet periods, the system compresses duplicates, finds patterns, and prunes stale data. Your agent literally gets smarter overnight." },
+                  { icon: Shield, title: "Critical memories never fade", description: "Identity rules, safety constraints, and compliance directives are permanently locked. They can't decay or get accidentally deleted." },
+                  { icon: Lock, title: "Complete isolation per agent", description: "Each agent's memory is fully separated. Multiple agents can run on the same account with zero data leakage between them." },
+                  { icon: Activity, title: "Fails gracefully, never crashes", description: "If memory is temporarily unavailable, your agent keeps working without it. No errors, no downtime — just seamless fallback." },
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
                     <Card className="h-full border-primary/20 bg-primary/5 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-300 shimmer-on-hover">
