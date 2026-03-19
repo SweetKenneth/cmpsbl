@@ -304,10 +304,10 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
       {/* Safety switches */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Safety Switches</h3>
+        <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Safety switches prevent cascading failures across nodes. When a node's health drops below threshold,
-          the switch isolates it from the rest of the system. MEDIC then initiates self-healing diagnostics.
+          Circuit breakers prevent failures from spreading across modules. When a module's health drops too low,
+          it's automatically isolated. The MEDIC module then runs self-healing diagnostics to restore it.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
