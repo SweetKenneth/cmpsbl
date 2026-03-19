@@ -64,8 +64,8 @@ const PersistentMemoryLanding = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                Your AI agent{' '}
-                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">never forgets again</span>
+                Give your AI agent{' '}
+                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">a real memory</span>
               </motion.h1>
               
               <motion.p 
@@ -74,8 +74,8 @@ const PersistentMemoryLanding = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                4-tier persistent memory with automatic recall, DREAM consolidation, and smart decay. 
-                Add it to any agent in under an hour.
+                Your agent remembers users, learns preferences, and gets smarter over time — 
+                with a 4-tier memory system you can add in under an hour.
               </motion.p>
 
               <motion.p
@@ -84,7 +84,7 @@ const PersistentMemoryLanding = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.25 }}
               >
-                Completely free. No limits on the free tier. No catch.
+                100% free. No credit card. No expiration.
               </motion.p>
               
               <motion.div 
