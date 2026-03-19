@@ -1085,7 +1085,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "SPARTA → CONTRACT",
-    codename: "The substrate learned to learn, distribute, and govern itself",
+    codename: "The platform learned to learn, distribute, and govern itself",
     range: "Foundation epoch",
     color: "bg-blue-500/10 text-blue-400",
     borderColor: "border-blue-500/30",
