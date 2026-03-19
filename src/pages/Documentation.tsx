@@ -697,7 +697,7 @@ await substrate.dream.schedule({
       </div>
 
       <Callout type="tip">
-        <strong>Dream consent:</strong> For multi-tenant deployments, dream pooling can be configured per-tenant.
+        <strong>Processing consent:</strong> For multi-tenant deployments, background processing can be configured per-tenant.
         Tenants can opt in/out of global pattern pooling, heuristic sharing, and template sharing independently.
       </Callout>
     </div>
