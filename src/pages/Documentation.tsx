@@ -1295,7 +1295,7 @@ export default function Documentation() {
               <span className="text-xs">Developer Resources</span>
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
-              Substrate{" "}
+              Platform{" "}
               <span style={{
                 background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                 WebkitBackgroundClip: "text",
@@ -1303,8 +1303,8 @@ export default function Documentation() {
               }}>Documentation</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Everything you need to build on the substrate — persistent memory, DREAM cycles,
-              NEXUS routing, governed evolution, and complete API reference.{" "}
+              Everything you need to build on the platform — persistent memory, self-improvement cycles,
+              smart routing, governed evolution, and complete API reference.{" "}
               <span className="text-primary font-medium">100% BYOK.</span>
             </p>
           </div>
