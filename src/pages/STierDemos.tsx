@@ -933,8 +933,14 @@ export default function STierDemos() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Showcase — Live Interactive Demos | CMPSBL"
+        description="See CMPSBL in action: self-healing architecture, cognitive provenance chains, sovereign execution proofs, and living architecture maps. Interactive investor-facing demos."
+        canonical="https://cmpsbl.com/showcase"
+      />
+      <PublicNav />
       {/* Hero */}
-      <div className="relative border-b border-border/50 overflow-hidden">
+      <div className="relative border-b border-border/50 overflow-hidden pt-16 lg:pt-[72px]">
         {/* Layered ambient glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-primary/5" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-primary/6 blur-[140px] pointer-events-none animate-pulse" style={{ animationDuration: '4s' }} />
