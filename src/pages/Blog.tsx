@@ -617,8 +617,8 @@ export default function Blog() {
           image: getAutoblogImage(p.id),
           imageAlt: p.title,
           source: 'ai' as PostSource,
-          author: p.author_name || "CMPSBL Substrate",
-          authorRole: p.author_role || "Autonomous AI",
+          author: p.author_name || "CMPSBL AI",
+          authorRole: p.author_role || "AI Author",
         })));
       }
     };
