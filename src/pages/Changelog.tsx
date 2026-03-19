@@ -1076,7 +1076,7 @@ const STRATA: Stratum[] = [
   },
   {
     epoch: "IRONCLAD",
-    codename: "The substrate grew armor, then learned to govern its own rhythm",
+    codename: "The platform grew armor, then learned to govern its own rhythm",
     range: "Prior epoch",
     color: "bg-amber-500/10 text-amber-400",
     borderColor: "border-amber-500/30",
