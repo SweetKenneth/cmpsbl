@@ -1033,7 +1033,7 @@ const stratumMindgames: Specimen[] = [
     adaptations: [
       "Interactive module explorer with group-organized topology view",
       "Each module displays its generation tag, group assignment, and real-time health status",
-      "Search and filter across all 40 nodes by name, sector, or capability",
+      "Search and filter across all 40 modules by name, group, or capability",
     ],
     phenotype: [
       "The full 40-node matrix is discoverable from a single interface",
