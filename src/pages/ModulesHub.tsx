@@ -14,8 +14,8 @@ import { MODULE_REGISTRY, LAYER_COLORS, LAYER_LABELS, getPublicModules, getMeshO
 import { cn } from "@/lib/utils";
 
 const DISPLAY_SECTIONS = [
-  { key: 'public', label: 'Kernel & Systems', desc: 'The public execution surfaces — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
-  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all systems: DEFENSE → IMMUNITY → EVOLUTION → INTENT → GOVERNANCE', getter: getMeshOverlays },
+  { key: 'public', label: 'Kernel & Systems', desc: 'The core modules — boot, cognition, orchestration, and connectivity', getter: getPublicModules },
+  { key: 'mesh', label: 'Mesh Overlays', desc: 'Protective layers wrapping all systems: security, immunity, evolution, intent routing, and governance', getter: getMeshOverlays },
 ] as const;
 
 export default function ModulesHub() {
