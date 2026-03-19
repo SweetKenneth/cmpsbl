@@ -26,48 +26,48 @@ const fadeUp = {
 const capabilities = [
   {
     icon: Server,
-    title: "Private Infrastructure Deployment",
-    description: "Deploy the complete 40-node substrate on your own servers. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter. Supports AWS, GCP, Azure, and bare-metal.",
+    title: "Deploy on Your Servers",
+    description: "Run the complete platform on your own infrastructure. Air-gapped, sovereign, and fully compliant — no data ever leaves your perimeter. Works with AWS, GCP, Azure, and bare-metal.",
   },
   {
     icon: Layers,
-    title: "Custom Node Configuration",
-    description: "Compose the exact stack your organization needs. Activate the nodes and sectors that matter, disable what doesn't — zero bloat. Choose which of the 12 sectors to deploy.",
+    title: "Custom Configuration",
+    description: "Build the exact stack your organization needs. Activate the nodes and capabilities that matter, skip what doesn't — zero bloat. You choose which capabilities to deploy.",
   },
   {
     icon: Shield,
-    title: "SOC2 & Compliance Ready",
-    description: "AUDIT node provides immutable append-only logging with Merkle receipt chains. GOVERNANCE plane enforces policy mesh. DEFENSE wraps the outer shell. SOC2, GDPR, HIPAA ready.",
+    title: "Compliance Ready",
+    description: "Immutable audit logging, policy enforcement, and boundary security are built in. Ready for SOC2, GDPR, and HIPAA out of the box.",
   },
   {
     icon: Brain,
-    title: "Dedicated DREAM Cycles",
-    description: "Configure autonomous optimization cycles for your deployment. DREAM consolidates memory, generates heuristics, and surfaces insights — tuned to your compliance requirements and data residency rules.",
+    title: "Dedicated Learning Cycles",
+    description: "Configure autonomous improvement cycles for your deployment. The system consolidates knowledge, generates insights, and surfaces patterns — tuned to your compliance and data residency rules.",
   },
   {
     icon: Globe,
     title: "Multi-Region Deployment",
-    description: "Run cognitive workloads across global regions with automatic failover, latency-aware NEXUS routing, and full data residency compliance. RELAY handles cross-region message dispatch.",
+    description: "Run AI workloads across global regions with automatic failover, latency-aware routing, and full data residency compliance.",
   },
   {
     icon: Lock,
     title: "Governance & Audit Trail",
-    description: "GOVERNANCE plane supervises all actions. Immutable audit logging via AUDIT node, role-based access through ACCESS, and full policy enforcement — enterprise-ready from day one.",
+    description: "Every action is supervised, logged immutably, and enforced by policy. Role-based access, full audit trails, and governance controls — enterprise-ready from day one.",
   },
   {
     icon: Users,
     title: "Dedicated Support & SLA",
-    description: "Direct line to the architecture team. Guaranteed uptime SLA, priority response, and engineering partnership — not just a ticket queue. Named account engineer included.",
+    description: "Direct line to the engineering team. Guaranteed uptime SLA, priority response, and a named account engineer — not just a ticket queue.",
   },
   {
     icon: Building2,
     title: "White-Label Ready",
-    description: "Embed CMPSBL's cognitive capabilities into your own products. Your brand, your customers, our 40-node substrate running invisibly underneath. Full API access included.",
+    description: "Embed CMPSBL's capabilities into your own products. Your brand, your customers, our platform running invisibly underneath. Full API access included.",
   },
   {
     icon: Cpu,
-    title: "BYOK Model Routing",
-    description: "NEXUS routes to 14+ AI providers with your own API keys. Budget-aware routing, automatic failover, and task complexity scoring — zero LLM costs to substrate operators.",
+    title: "Bring Your Own Keys",
+    description: "Route to 14+ AI providers with your own API keys. Budget-aware routing, automatic failover, and task-based model selection — zero AI costs to platform operators.",
   },
 ];
 
