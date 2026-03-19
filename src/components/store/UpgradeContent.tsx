@@ -156,27 +156,50 @@ export function UpgradeContent() {
         >
           <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
             <Sparkles className="w-3 h-3 mr-1.5 inline" />
-            Memory Stream
+            Plans
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Memory Stream
+            Scale Your Platform
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto text-center">
-            The system <strong className="text-foreground">discovers memories</strong>. Your plan controls <strong className="text-foreground">how many</strong> you can pull.
+            Every tier unlocks <strong className="text-foreground">full runtime access</strong>. Upgrade for more memory, faster routing, and deeper capabilities.
           </p>
         </motion.div>
 
-        {/* Memory Stream Explainer */}
+        {/* What You Get — expanded value prop */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="max-w-2xl mx-auto mt-8 text-center sm:text-left bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
+          transition={{ delay: 0.15 }}
+          className="max-w-3xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            The <strong className="text-foreground">Memory Stream</strong> continuously forms new memories.
-            Each day you can <strong className="text-foreground">crystallize</strong> a limited number of discoveries depending on your plan.
-          </p>
+          {[
+            { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-violet-400' },
+            { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-amber-400' },
+            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code.', color: 'text-emerald-400' },
+            { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
+          ].map((item) => (
+            <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
+              <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
+              <div>
+                <div className="text-sm font-semibold">{item.title}</div>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Memory Stream pull breakdown */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="max-w-2xl mx-auto mt-8 text-center bg-card/50 border border-border/40 rounded-2xl p-6 sm:p-8 space-y-4"
+        >
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <Brain className="w-4 h-4 text-primary" />
+            <span className="text-sm font-semibold">Daily Memory Stream Pulls</span>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { tier: 'Builder', pulls: '3', color: 'text-emerald-400' },
@@ -190,14 +213,9 @@ export function UpgradeContent() {
               </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Each crystallization reveals a memory you may choose to <strong className="text-foreground">keep in your vault</strong> or <strong className="text-foreground">discard</strong>.{' '}
-            <strong className="text-foreground">Rare discoveries</strong> occasionally appear. If a <strong className="text-foreground">Mythic memory</strong> is discovered and your vault is full,
-            you will be prompted to upgrade immediately so the discovery is not lost.
-          </p>
-          <p className="text-xs text-muted-foreground/70">
-            <strong className="text-foreground">Slots</strong> control how many memories run simultaneously.{' '}
-            <strong className="text-foreground">Vault capacity</strong> controls how many discoveries you can store.
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
+            Each pull reveals a discovery you can <strong className="text-foreground">keep</strong> or <strong className="text-foreground">discard</strong>.
+            Rare and <strong className="text-foreground">Mythic</strong> discoveries appear occasionally — if your vault is full, you'll be prompted to upgrade.
           </p>
         </motion.div>
 
