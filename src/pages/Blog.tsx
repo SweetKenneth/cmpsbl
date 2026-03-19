@@ -606,7 +606,7 @@ export default function Blog() {
         .limit(50);
 
       if (data) {
-        setAutoPosts(data.map(p => ({
+        setAutoPosts(data.map((p: any) => ({
           id: p.id,
           title: p.title,
           excerpt: p.excerpt || "AI-generated insight from the CMPSBL Substrate.",
