@@ -559,10 +559,10 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch01-first', title: "The First Line of Code",
-    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL substrate. This is the honest story of why.",
+    excerpt: "In December 2024, we wrote the first line of what would become the CMPSBL platform. This is the honest story of why.",
     href: "/blog/the-first-line-of-code", category: "Platform",
     date: "2024-12-15", readTime: "12 min", image: ch01Img,
-    imageAlt: "The beginning of the CMPSBL substrate", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
+    imageAlt: "The beginning of the CMPSBL platform", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   // ─── Chapters 21-40 ───
   { id: 'ch21-cascade', title: "When One Model Isn't Enough", excerpt: "A single LLM can't handle everything. CASCADE chains multiple models into adaptive processes that match complexity to capability.", href: "/blog/when-one-model-isnt-enough", category: "AI Technology", date: "2025-03-25", readTime: "12 min", image: ch21Img, imageAlt: "CASCADE adaptive processing", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering" },
