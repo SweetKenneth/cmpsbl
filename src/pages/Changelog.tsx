@@ -926,7 +926,7 @@ const stratumMindgames: Specimen[] = [
       "Usage metering tracks per-key consumption with daily quota rollups",
     ],
     phenotype: [
-      "External developers can self-serve — register, generate keys, and start calling the substrate API immediately",
+      "External developers can self-serve — register, generate keys, and start calling the API immediately",
       "Every API call is metered and attributed to a specific developer and key",
     ],
     affectedNodes: ["NEXUS", "IDENTITY"],
