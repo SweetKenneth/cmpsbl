@@ -426,7 +426,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
 const HUMAN_POSTS: BlogPost[] = [
   {
     id: 'ch20-signal', title: "Signal to Silicon: The Complete Journey",
-    excerpt: "From behavioral signals through cognitive processing to deployable software. The substrate's complete signal-to-silicon process explained.",
+    excerpt: "From behavioral signals through cognitive processing to deployable software. The platform's complete signal-to-silicon process explained.",
     href: "/blog/signal-to-silicon", category: "Technology",
     date: "2026-03-04", readTime: "22 min", image: ch20Img,
     imageAlt: "Signal to Silicon journey", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
