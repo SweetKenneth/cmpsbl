@@ -1272,11 +1272,11 @@ export default function Changelog() {
                           </p>
                         </div>
 
-                        {/* ADAPTATION — what the system became */}
+                        {/* ADAPTATION — what changed */}
                         <div>
                           <div className="flex items-center gap-2 mb-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue-500/70" />
-                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">Adaptation</span>
+                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">What Changed</span>
                           </div>
                           <ul className="space-y-1.5">
                             {specimen.adaptations.map((a, idx) => (
