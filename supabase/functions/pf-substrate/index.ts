@@ -689,8 +689,10 @@ const PROVIDERS: Record<string, ProviderAdapter> = {
   }
 };
 
-// Provider routing order (fallback chain) — Nexus free-tier providers first
-const PROVIDER_ORDER = ["groq", "groq-scout", "groq-qwen", "groq-70b", "cerebras", "together", "deepseek", "gemini", "openai", "anthropic", "local"];
+// Provider routing order (fallback chain) — FREE-TIER ONLY
+// OpenAI & Anthropic BYPASSED — no paid AI calls until re-enabled
+// NO Lovable AI Gateway — all traffic through NEXUS free-tier fleet
+const PROVIDER_ORDER = ["groq", "groq-scout", "groq-qwen", "groq-70b", "cerebras", "sambanova", "together", "deepseek", "mistral", "openrouter", "gemini", "local"];
 
 // ═══════════════════════════════════════════════════════════════
 // NEXUS ANALYTICS ACCUMULATOR
