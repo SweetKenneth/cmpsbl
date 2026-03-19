@@ -245,7 +245,7 @@ export default function PricingMethod() {
                   <div className="text-sm font-bold text-foreground mb-1">Enterprise</div>
                   <div className="text-2xl font-bold text-primary">350%</div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Large organizations, custom licensing, SLA
+                    Large organizations with SLA requirements
                   </p>
                 </CardContent>
               </Card>
