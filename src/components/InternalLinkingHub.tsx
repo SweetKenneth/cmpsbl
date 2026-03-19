@@ -21,10 +21,10 @@ const LINK_SETS = {
     { href: "/blog/ai-cybersecurity-evolution", icon: Shield, label: "AI Cybersecurity Evolution", description: "How AI is reshaping threat detection", priority: "medium" as const },
   ],
   ai: [
-    { href: "/substrate", icon: Layers, label: "Substrate Architecture", description: "Composable cognitive infrastructure", priority: "high" as const },
+    { href: "/substrate", icon: Layers, label: "Platform Architecture", description: "Composable AI infrastructure", priority: "high" as const },
     { href: "/blog/why-agents-forget", icon: Brain, label: "Why Agents Forget", description: "Episodic memory for stateful AI", priority: "high" as const },
     { href: "/blog/building-agents-that-learn", icon: Code, label: "Building Agents That Learn", description: "Autonomous learning loop patterns", priority: "medium" as const },
-    { href: "/modules", icon: Eye, label: "Module Atlas", description: "Explore all substrate modules", priority: "medium" as const },
+    { href: "/modules", icon: Eye, label: "Module Atlas", description: "Explore all platform modules", priority: "medium" as const },
   ],
   accessibility: [
     { href: "/blog/accessibility-free-for-all", icon: Eye, label: "Free Accessibility Tools", description: "WCAG scanning at zero cost", priority: "high" as const },
