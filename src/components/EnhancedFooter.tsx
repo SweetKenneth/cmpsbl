@@ -54,7 +54,7 @@ export function EnhancedFooter() {
       title: "Marketplace",
       links: [
         { name: "Store", href: "/store", highlight: true },
-        { name: "Upgrade", href: "/upgrade" },
+        { name: "Plans & pricing", href: "/store?tab=plans" },
         { name: "Showcase", href: "/showcase" },
         { name: "World engine", href: "/gaming" },
         { name: "Projects", href: "/projects" },

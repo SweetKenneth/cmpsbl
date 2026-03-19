@@ -560,7 +560,7 @@ export function CmpsblNav() {
                 ) : (
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
-                      <Link to="/upgrade">
+                      <Link to="/store">
                         Get Started
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
