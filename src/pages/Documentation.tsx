@@ -258,8 +258,8 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          The substrate is a 40-node topology organized across 12 sectors. Every node participates in
-          a weighted matrix managed by CORE (Σ = 1.000), which acts as the kernel boot authority.
+          CMPSBL is built from 40 modules organized into 12 functional groups. Each module has a priority weight 
+          managed by the CORE module, which coordinates startup and system health.
         </p>
       </div>
 
