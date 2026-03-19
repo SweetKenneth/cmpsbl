@@ -813,7 +813,7 @@ const stratumMindgames: Specimen[] = [
       "Node-level usage heatmaps show which platform capabilities attract the most external consumption",
     ],
     phenotype: [
-      "The substrate can now observe its own developer ecosystem in real time",
+      "The platform can now observe its own developer ecosystem in real time",
       "API adoption patterns are visible per developer, per module, per time window",
     ],
     affectedNodes: ["DECODE", "ANALYTICS"],
