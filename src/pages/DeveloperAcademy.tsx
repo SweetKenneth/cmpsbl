@@ -80,19 +80,19 @@ const DeveloperAcademy = () => {
               <div className="max-w-4xl mx-auto text-center">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 animate-fade-in">
                   <GraduationCap className="w-4 h-4" />
-                  Academy v2 — Updated for v14.4.0
+                  Interactive Learning Platform
                 </div>
 
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight animate-fade-in">
-                  Learn the{' '}
+                  Learn to build with{' '}
                   <span className="bg-gradient-to-r from-primary to-neon-cyan bg-clip-text text-transparent">
-                    Cognitive Substrate
+                    CMPSBL
                   </span>
                 </h1>
 
                 <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed animate-fade-in">
-                  8 guided learning tracks. Live sandbox. Verifiable certifications.
-                  From your first SDK call to production-grade Ascension pipelines.
+                  8 hands-on tracks from beginner to expert. Write real code in a live sandbox.
+                  Earn verifiable certifications when you're done.
                 </p>
 
                 {/* Stats */}
