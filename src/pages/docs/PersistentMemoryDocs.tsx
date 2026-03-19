@@ -369,7 +369,7 @@ function ChatComponent() {
                   </li>
                 </ul>
                 <div className="mt-6">
-                  <Link to="/upgrade">
+                  <Link to="/store?tab=plans">
                     <Button variant="outline">
                       View Pricing
                       <ArrowRight className="w-4 h-4 ml-2" />

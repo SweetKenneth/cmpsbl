@@ -116,7 +116,7 @@ export function DepthGate({
           )}
         </div>
         <Button variant="outline" size="sm" className="h-7 text-[10px] gap-1.5" asChild>
-          <Link to="/upgrade">
+          <Link to="/store?tab=plans">
             Upgrade <ArrowUpRight className="w-3 h-3" />
           </Link>
         </Button>
