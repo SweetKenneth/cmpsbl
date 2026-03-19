@@ -178,7 +178,7 @@ export default function Explore() {
               {/* Floating badge — CSS fade-in replaces motion */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <Sparkles className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white/90">Signal → Silicon</span>
+                <span className="text-sm font-semibold text-white/90">Build Smarter AI</span>
               </div>
               
               <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">

@@ -250,9 +250,9 @@ export default function Store() {
                         <h2 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
                           Every Product Ships Sealed
                         </h2>
-                        <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
-                          Black-box runtime · Zero maintenance · Always learning · Source-blocked execution
-                        </p>
+                         <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
+                           Tamper-proof runtime · Zero maintenance · Always learning · Source-protected
+                         </p>
                       </div>
                     </div>
 
