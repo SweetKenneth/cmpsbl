@@ -32,11 +32,11 @@ const fadeUp = (delay = 0) => ({
 const faqItems = [
   {
     question: "What is an AI Operating System?",
-    answer: "An AI Operating System is a unified software platform that provides all the cognitive infrastructure AI agents need to operate in production — persistent memory, intelligent routing, security, observability, and autonomous optimization — integrated into a single coherent runtime, much like how traditional operating systems unified file management, process scheduling, and I/O for applications.",
+    answer: "An AI Operating System is a platform that gives AI agents everything they need to work in production — persistent memory, smart routing, built-in security, monitoring, and self-improvement — all in one place. Think of it like how Windows or macOS unified computing: CMPSBL unifies AI infrastructure.",
   },
   {
     question: "How is an AI OS different from an AI framework?",
-    answer: "AI frameworks like LangChain or CrewAI solve individual problems — chaining prompts, managing agents, or structuring outputs. An AI Operating System integrates all of these concerns (memory, routing, security, monitoring, optimization) into a single platform where nodes communicate and enhance each other. The whole is greater than the sum of its parts.",
+    answer: "Frameworks like LangChain or CrewAI solve one problem at a time — chaining prompts, managing agents, or formatting outputs. An AI OS integrates all of these into a single platform where every part communicates and strengthens the others. The whole is greater than the sum of its parts.",
   },
   {
     question: "What is the Memory Stream?",
