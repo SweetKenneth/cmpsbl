@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
 
-// Blog post images (chronological substrate story)
+// Blog post images (chronological platform story)
 import ch01Img from "@/assets/blog/promptfluid-market-disruptor.jpg";
 import ch02Img from "@/assets/blog/promptfluid-nexus-api-gateway.jpg";
 import ch03Img from "@/assets/blog/promptfluid-brain-learning-core.jpg";
