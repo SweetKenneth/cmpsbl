@@ -105,7 +105,7 @@ export default function ApiAccess() {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}>
-                Entire substrate.
+                Entire platform.
               </span>
             </h1>
              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
