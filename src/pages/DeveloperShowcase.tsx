@@ -161,7 +161,7 @@ export default function DeveloperShowcase() {
              </h1>
              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
                Add persistent memory, smart AI routing, and self-improvement capabilities 
-               to your applications. 40 specialized nodes across 12 coordinated sectors — all accessible via SDK or REST API.
+               to your applications. 40 specialized modules across 12 coordinated groups — all accessible via SDK or REST API.
              </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
                <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg shadow-cyan-500/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
