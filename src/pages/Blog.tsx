@@ -669,7 +669,7 @@ export default function Blog() {
     <>
       <SEO
         title="Blog — Research & Engineering Stories | CMPSBL"
-        description="40 chapters of origin stories, engineering deep-dives, and research from the CMPSBL substrate. Human-written and AI-generated posts covering memory, routing, security, and autonomous evolution."
+        description="Engineering deep-dives, research articles, and product updates from the CMPSBL team and AI authors. Covering persistent memory, smart routing, security, and platform evolution."
         canonical="https://cmpsbl.com/blog"
         image="https://cmpsbl.com/og/blog.jpg"
         keywords={['CMPSBL blog', 'AI infrastructure research', 'cognitive AI insights', 'persistent memory AI', 'agentic AI engineering']}
