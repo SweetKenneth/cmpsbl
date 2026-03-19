@@ -31,9 +31,9 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     detail: "Every action is expressed as an intent, routed to the correct resolvers, and logged with a receipt.",
   },
   "dream-cycle": {
-    term: "DREAM Cycle",
-    short: "Offline consolidation that improves the system over time.",
-    detail: "Like biological sleep, DREAM cycles compress experiences into heuristics, prune weak pathways, and strengthen successful patterns.",
+    term: "Self-Improvement Cycle",
+    short: "Background processing that improves the system over time.",
+    detail: "Like biological sleep, these cycles compress experiences into heuristics, prune weak pathways, and strengthen successful patterns.",
   },
   "cjpi": {
     term: "CJPI Score",
