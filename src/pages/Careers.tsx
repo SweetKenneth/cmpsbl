@@ -36,7 +36,7 @@ const values = [
   {
     icon: Sparkles,
     title: "Dream Boldly",
-    description: "The substrate exists because someone believed machines could learn to dream. We hire people who believe in the impossible.",
+    description: "CMPSBL exists because someone believed machines could learn to improve themselves. We hire people who believe in the impossible.",
     gradient: "from-amber-500 to-orange-600",
   },
   {
