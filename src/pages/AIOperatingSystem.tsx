@@ -56,7 +56,7 @@ const faqItems = [
   },
   {
     question: "What is the platform architecture?",
-    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Atlas (discovery), and Security Shell. All modules are weighted and coordinated by the core runtime.",
+    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Discovery, and Security Shell. All modules are weighted and coordinated by the core runtime.",
   },
 ];
 

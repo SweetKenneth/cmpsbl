@@ -327,10 +327,10 @@ export default function Store() {
                     className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
                     asChild
                   >
-                    <a href="/try">
+                    <Link to="/foundry">
                       <Sparkles className="w-4 h-4" />
-                      Try Live Demo
-                    </a>
+                      Explore Memory Stream
+                    </Link>
                   </Button>
                 </div>
               </motion.section>
