@@ -255,7 +255,7 @@ export default function Runtime() {
             </Badge>
             <h2 className="text-3xl md:text-4xl font-bold">Always-On Capabilities</h2>
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-              These pillars run for every user on every plan. Scroll each layer to explore.
+              These capabilities run for every user on every plan — no exceptions. Scroll each layer to explore.
             </p>
           </div>
 
