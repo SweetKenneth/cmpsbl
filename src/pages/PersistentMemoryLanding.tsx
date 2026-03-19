@@ -239,8 +239,8 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Three steps to persistent memory</h2>
-                <p className="text-lg text-muted-foreground">Under an hour. Zero infrastructure.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Add memory in 3 steps</h2>
+                <p className="text-lg text-muted-foreground">Takes under an hour. No databases to set up.</p>
               </motion.div>
 
               <div className="space-y-8">
