@@ -52,7 +52,7 @@ export default function Careers() {
     <>
       <SEO
         title="Careers — Join the CMPSBL Collective"
-        description="We're hiring engineers, researchers, and system architects to build CMPSBL's 40-node cognitive substrate. Remote-first from Dallas, TX. Shape persistent memory, DREAM cycles, and governed AI."
+        description="We're hiring engineers, researchers, and architects to build CMPSBL's composable AI platform. Remote-first from Dallas, TX. Shape persistent memory, self-improvement cycles, and governed AI."
         canonical="https://cmpsbl.com/careers"
         keywords={['CMPSBL careers', 'AI jobs', 'cognitive infrastructure jobs', 'Dallas AI startup']}
       />

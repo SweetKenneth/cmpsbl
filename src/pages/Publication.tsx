@@ -75,14 +75,14 @@ const systemMetrics = [
 ];
 
 const priorArtClaims = [
-  "Clockless cognitive orchestration with weighted integrity scoring",
-  "Memory stream architecture with signal-to-discovery crystallization",
-  "Memory crystallization with structural fingerprinting and replay verification",
-  "Universal cross-language export with embedded micro-substrate runtime",
-  "Shadow-mode governance with bounded autonomy tiers",
-  "IRONCLAD resilience fabric with per-module bulkhead isolation",
+  "Modular AI orchestration with weighted integrity scoring",
+  "Memory stream architecture with pattern discovery and composition",
+  "Capability crystallization with structural fingerprinting and replay verification",
+  "Universal cross-language export with embedded mini-runtime",
+  "Verification-based governance with bounded autonomy tiers",
+  "Resilience framework with per-module circuit breaker isolation",
   "Intent mesh for cross-module semantic routing",
-  "Domain extension through primitive-node expansion",
+  "Domain extension through modular expansion",
 ];
 
 export default function Publication() {
