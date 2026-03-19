@@ -137,15 +137,15 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">The problem every AI builder faces</h2>
-                <p className="text-lg text-muted-foreground">Your agent starts from zero. Every. Single. Time.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Why most AI agents feel broken</h2>
+                <p className="text-lg text-muted-foreground">They start from scratch every time a user comes back.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-6">
                 {[
-                  { icon: RefreshCw, title: "Context resets between sessions", description: "Users repeat themselves. Agents can't build on previous conversations. Every interaction is a blank slate." },
-                  { icon: Layers, title: "Wrappers don't preserve identity", description: "Prompt engineering and system prompts can't maintain long-term knowledge. Memory requires infrastructure." },
-                  { icon: Target, title: "Behavior drifts without memory", description: "Without recall, agents can't learn preferences, maintain consistency, or improve over time." }
+                  { icon: RefreshCw, title: "Every session is a blank slate", description: "Users have to repeat themselves. Your agent can't build on what it already learned. Context resets completely." },
+                  { icon: Layers, title: "Prompt tricks aren't memory", description: "System prompts and prompt engineering can't store long-term knowledge. Real memory needs real infrastructure." },
+                  { icon: Target, title: "No learning means no improvement", description: "Without recall, agents can't remember preferences, stay consistent, or get better over time." }
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <Card className="h-full border-destructive/20 bg-destructive/5 hover:border-destructive/30 transition-colors card-lift">
