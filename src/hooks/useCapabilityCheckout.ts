@@ -6,6 +6,7 @@
 
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { 
   hasStripeConfig, 
