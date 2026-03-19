@@ -452,7 +452,7 @@ function BrainSection() {
 
       <Callout type="info">
         Memory demotion is automatic via FIFO/LRU eviction. When the Hot tier reaches capacity, the least-recently-used
-        entries are bulk-demoted to Warm. DREAM cycles compress Warm → Cold transitions during idle periods.
+        entries are bulk-demoted to Warm. Self-improvement cycles compress Warm → Cold transitions during idle periods.
       </Callout>
 
       {/* Protected types */}
