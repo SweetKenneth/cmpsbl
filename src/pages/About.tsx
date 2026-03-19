@@ -118,18 +118,18 @@ export default function About() {
     <div className="min-h-screen bg-background">
       <SEO
         title="About — The Team Behind CMPSBL"
-        description="Meet the CMPSBL Collective building the first AI operating system from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — 14 world firsts, Zenodo-verified IP, and open governance."
+        description="Meet the CMPSBL team building composable AI infrastructure from Dallas, TX since 2009. Founded by Kenneth E. Sweet Jr — persistent memory, self-improvement cycles, and open governance."
         canonical="https://cmpsbl.com/about"
         image="https://cmpsbl.com/og/about.jpg"
-        keywords={['about CMPSBL', 'AI operating system', 'cognitive substrate', '40 node architecture', 'Memory Stream', 'Kenneth Sweet']}
+        keywords={['about CMPSBL', 'AI platform', 'composable AI', 'persistent memory', 'Kenneth Sweet']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'About', url: 'https://cmpsbl.com/about' },
         ]}
         faq={[
-          { question: 'What is the CMPSBL substrate?', answer: 'A composable cognitive operating system with persistent memory, dream cycles, intelligent routing, and governed orchestration.' },
-          { question: 'What are DREAM cycles?', answer: 'Offline synthesis periods where the substrate consolidates memory, extracts patterns, and generates novel insights without active compute.' },
-          { question: 'Can I build on the substrate?', answer: 'Yes. Activate memory packs, enable DREAM cycles, and let your systems adapt and evolve. Start free with 3 memory slots.' },
+          { question: 'What is CMPSBL?', answer: 'A composable AI platform with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
+          { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the platform consolidates memory, extracts patterns, and generates new insights without active compute.' },
+          { question: 'Can I build on the platform?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
         ]}
       />
 
