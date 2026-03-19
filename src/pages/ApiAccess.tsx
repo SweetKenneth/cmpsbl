@@ -108,9 +108,9 @@ export default function ApiAccess() {
                 Entire substrate.
               </span>
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Get instant access to 40 cognitive nodes through a single REST endpoint. 
-              Persistent memory, AI routing, security monitoring, and autonomous evolution — free to start, no credit card required.
+             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Get instant access to 40 nodes through a single REST endpoint. 
+              Persistent memory, smart AI routing, security monitoring, and automatic improvement — free to start, no credit card needed.
             </p>
           </motion.div>
         </section>
