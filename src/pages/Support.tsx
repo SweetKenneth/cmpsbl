@@ -127,7 +127,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "Is CMPSBL secure for enterprise use?",
-    answer: "Yes. Security is built into the core via the DEFENSE system: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
+    answer: "Yes. Security is built into the platform: rate limiting, bot detection, device fingerprinting, input sanitization, WebAuthn authentication, complete audit logging, and compliance-ready patterns (SOC 2, GDPR). All fingerprint signals are hashed client-side.",
   },
   {
     category: "Account & Access",
