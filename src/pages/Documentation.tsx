@@ -683,7 +683,7 @@ await substrate.dream.schedule({
 
       {/* What dreams produce */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Dream Outputs</h3>
+        <h3 className="font-semibold text-foreground mb-4">Cycle Outputs</h3>
         <DocTable
           headers={["Output Type", "Description", "Example"]}
           rows={[
