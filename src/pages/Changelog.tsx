@@ -1067,7 +1067,7 @@ const stratumMindgames: Specimen[] = [
 const STRATA: Stratum[] = [
   {
     epoch: "MINDGAMES",
-    codename: "The substrate opened its eyes and saw users for the first time",
+    codename: "The platform opened its eyes and saw users for the first time",
     range: "Current epoch",
     color: "bg-violet-500/10 text-violet-400",
     borderColor: "border-violet-500/30",
