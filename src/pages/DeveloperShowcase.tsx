@@ -115,17 +115,17 @@ export default function DeveloperShowcase() {
   ];
 
   const useCases = [
-    { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember context across sessions and learn from interactions.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600" },
-    { icon: FileCode, title: "RAG Memories", description: "Intelligent document retrieval with memory-enhanced context augmentation.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-purple-500", gradient: "from-purple-500 to-violet-600" },
-    { icon: Workflow, title: "Agent Workflows", description: "Multi-step autonomous agents with persistent state and learning loops.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-emerald-500", gradient: "from-emerald-500 to-green-600" },
-    { icon: Puzzle, title: "Plugin Systems", description: "Extensible architectures with shared cognitive substrate.", example: "cmpsbl.core.register({ node, config })", color: "text-rose-500", gradient: "from-rose-500 to-pink-600" },
+    { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember users across sessions and learn from every conversation.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600" },
+    { icon: FileCode, title: "Smart Document Search", description: "Retrieve documents with memory-enhanced context — not just keyword matching.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-purple-500", gradient: "from-purple-500 to-violet-600" },
+    { icon: Workflow, title: "Autonomous Agents", description: "Multi-step agents with persistent state, self-correction, and continuous learning.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-emerald-500", gradient: "from-emerald-500 to-green-600" },
+    { icon: Puzzle, title: "Plugin Systems", description: "Build extensible architectures where plugins share a common cognitive layer.", example: "cmpsbl.core.register({ node, config })", color: "text-rose-500", gradient: "from-rose-500 to-pink-600" },
   ];
 
   const techCapabilities = [
-    { icon: Database, label: "40", sublabel: "Nodes", description: "Full cognitive substrate" },
-    { icon: Clock, label: "12", sublabel: "Sectors", description: "Organized topology" },
-    { icon: Network, label: "675+", sublabel: "Capabilities", description: "Production-ready" },
-    { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple integrations" },
+    { icon: Database, label: "40", sublabel: "Nodes", description: "Specialized subsystems" },
+    { icon: Clock, label: "12", sublabel: "Sectors", description: "Organized by function" },
+    { icon: Network, label: "675+", sublabel: "Capabilities", description: "Ready to use" },
+    { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple options" },
   ];
 
   return (
