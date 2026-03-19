@@ -269,17 +269,17 @@ function ArchitectureSection() {
         <DocTable
           headers={["Sector", "Role", "Nodes"]}
           rows={[
-            ["Spine", "Kernel boot authority and lifecycle management", "CORE, SYSTEM"],
-            ["CCR", "Cognitive Core Reality — reasoning and synthesis", "BRAIN, MEMORY, DREAM"],
-            ["OCG", "Operational Compliance Grid — boundary enforcement", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
-            ["Execution", "User-facing capabilities and orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
-            ["ESZ", "Enterprise Safety Zone", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
-            ["EPZ", "Enterprise Performance Zone", "SIMULATE, GEOSPATIAL, EDGE"],
-            ["EMZ", "Enterprise Manufacturing Zone", "FORGE, TRANSLATE, INGEST"],
-            ["CSZ", "Continuous Safety Zone", "EVOLUTION, SHADOW, PHANTOM"],
-            ["Field", "Cross-cutting transformation fabric", "EVOLUTION, IMMUNITY, INTENT"],
-            ["Plane", "Supervisory overlay", "GOVERNANCE"],
-            ["Shell", "Outer containment boundary", "DEFENSE"],
+            ["Spine", "Startup and lifecycle management", "CORE, SYSTEM"],
+            ["Cognitive Core", "Reasoning, memory, and self-improvement", "BRAIN, MEMORY, DREAM"],
+            ["Operations", "Access control, auditing, and coordination", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
+            ["Execution", "User-facing features and AI orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
+            ["Enterprise Safety", "Compliance, prediction, and ethics", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
+            ["Enterprise Performance", "Simulation and edge computing", "SIMULATE, GEOSPATIAL, EDGE"],
+            ["Enterprise Manufacturing", "Data ingestion, translation, and generation", "FORGE, TRANSLATE, INGEST"],
+            ["Continuous Safety", "Evolution, testing, and anomaly detection", "EVOLUTION, SHADOW, PHANTOM"],
+            ["Cross-Cutting", "Systems that span all layers", "EVOLUTION, IMMUNITY, INTENT"],
+            ["Governance", "Supervisory oversight and policy enforcement", "GOVERNANCE"],
+            ["Defense", "Outer security boundary", "DEFENSE"],
           ]}
         />
       </div>
