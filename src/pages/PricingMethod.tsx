@@ -216,10 +216,10 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Zap className="h-6 w-6 text-primary" />
-              Indie / Standard / Enterprise Ranges
+              Three Price Tiers for Different Users
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every capability receives three pricing tiers derived from the recommended price:
+              Every capability comes with three price points based on who's buying:
             </p>
             <div className="grid sm:grid-cols-3 gap-3">
               <Card>
