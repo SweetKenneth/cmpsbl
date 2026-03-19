@@ -305,11 +305,11 @@ export default function AIOperatingSystem() {
             <motion.div {...fadeUp()} className="mb-8 sm:mb-12">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
                 <Activity className="w-6 h-6 text-primary shrink-0" />
-                40-Node · 12-Sector Architecture
+                40 Modules · 12 Capability Groups
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                The CMPSBL Substrate organizes 40 specialized nodes across 12 sectors. Each node holds a weight in the system matrix (Σ = 1.000),
-                managed by CORE. Safety switches prevent cascading failures. DREAM cycles optimize autonomously.
+                The CMPSBL platform organizes 40 specialized modules across 12 capability groups. Each module holds a weight in the system matrix (Σ = 1.000),
+                managed by CORE. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
               </p>
             </motion.div>
 
