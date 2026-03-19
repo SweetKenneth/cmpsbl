@@ -215,10 +215,10 @@ export default function DeveloperShowcase() {
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center mb-14">
-            <Badge variant="outline" className="mb-4"><Code className="w-3 h-3 mr-1" />Use Cases</Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Build Anything Intelligent</h2>
+            <Badge variant="outline" className="mb-4"><Code className="w-3 h-3 mr-1" />What Developers Build</Badge>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">Real-World Use Cases</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              From chatbots to autonomous agents, CMPSBL powers the next generation of AI apps.
+              From chatbots with long-term memory to fully autonomous agent teams.
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
