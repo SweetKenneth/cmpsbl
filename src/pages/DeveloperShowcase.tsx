@@ -293,9 +293,9 @@ await cmpsbl.dream.cycle({
       <section className="py-24 bg-gradient-to-b from-muted/20 via-primary/5 to-transparent">
         <div className="container mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4">Start Building Today</h2>
+            <h2 className="text-3xl sm:text-4xl font-black mb-4">Start Building for Free</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-              Free tier. No credit card. 40 nodes at your fingertips.
+              No credit card required. Full access to 40 nodes.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Button asChild size="lg" className="gap-2">

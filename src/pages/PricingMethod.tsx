@@ -254,12 +254,12 @@ export default function PricingMethod() {
 
           {/* Fairness */}
           <section className="mb-16">
-            <h2 className="text-2xl font-bold text-foreground mb-4">Fairness & Consistency</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-4">Consistent & Reproducible</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every capability, agent, engine, and sellable software object on this platform goes through the same pricing methodology. The same inputs always produce the same outputs. There is no manual price manipulation — the formula is deterministic, reproducible, and auditable.
+              Every product on this platform — capabilities, agents, engines — goes through the exact same pricing process. The same inputs always produce the same price. There's no manual price manipulation — the formula is deterministic and auditable.
             </p>
             <div className="bg-muted/30 border border-border/50 rounded-lg p-4 text-sm text-muted-foreground">
-              <strong className="text-foreground">Important:</strong> Prices are systematic estimates based on technical and market signals. They represent our best assessment of fair market value, not guaranteed sale prices. Actual market outcomes depend on demand, distribution, packaging, and timing.
+              <strong className="text-foreground">Note:</strong> Prices are systematic estimates based on technical and market signals. They represent our best assessment of fair value, not guaranteed sale prices. Actual outcomes depend on demand, distribution, packaging, and timing.
             </div>
           </section>
 

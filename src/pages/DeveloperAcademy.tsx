@@ -204,10 +204,10 @@ const DeveloperAcademy = () => {
                 <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10 flex items-center justify-center">
                   <Rocket className="w-8 h-8 text-primary" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Build on the Substrate?</h2>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Start Building?</h2>
                 <p className="text-muted-foreground mb-8">
-                  Complete learning tracks, earn certifications, and start building
-                  production-grade agents with persistent memory and Ascension capabilities.
+                  Finish a track, earn a certification, and start building
+                  production apps with persistent memory and intelligent routing.
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center gap-3">
                   <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
