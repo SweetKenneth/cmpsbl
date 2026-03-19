@@ -28,14 +28,14 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const LEARNING_TRACKS = [
-  { icon: Brain, title: 'BRAIN Memory API', desc: '4-tier persistent memory, DREAM consolidation, semantic recall', difficulty: 'Beginner', modules: 6, time: '45 min', color: 'text-primary' },
-  { icon: Network, title: 'NEXUS Routing', desc: 'Multi-provider AI routing with failover, budget controls, latency optimization', difficulty: 'Beginner', modules: 4, time: '30 min', color: 'text-neon-cyan' },
-  { icon: Shield, title: 'DEFENSE & Security', desc: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', difficulty: 'Intermediate', modules: 5, time: '40 min', color: 'text-neon-green' },
-  { icon: Layers, title: 'Resolver Patterns', desc: 'Node.resolver naming, intent routing, receipt logging, mesh telemetry', difficulty: 'Intermediate', modules: 7, time: '55 min', color: 'text-neon-purple' },
-  { icon: Zap, title: 'Ascension Lifecycle', desc: 'Node 41+ ingestion, primitive extraction, quality gates, delta measurement', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
-  { icon: Target, title: 'CJPI Scoring', desc: 'Novelty, utility, complexity, composability — how the substrate scores discoveries', difficulty: 'Advanced', modules: 5, time: '35 min', color: 'text-neon-magenta' },
-  { icon: Sparkles, title: 'Memory Stream', desc: 'Crystallization, tiering, vault management, and capability pack export', difficulty: 'Intermediate', modules: 6, time: '50 min', color: 'text-primary' },
-  { icon: Code, title: 'Production Hardening', desc: 'Error handling, retry logic, Forge protections, VOLVER handicapping', difficulty: 'Expert', modules: 9, time: '75 min', color: 'text-neon-cyan' },
+  { icon: Brain, title: 'Memory API Basics', desc: 'Learn the 4-tier memory system: store, recall, search, and automatic cleanup', difficulty: 'Beginner', modules: 6, time: '45 min', color: 'text-primary' },
+  { icon: Network, title: 'AI Routing', desc: 'Route requests across multiple AI providers with automatic failover and cost controls', difficulty: 'Beginner', modules: 4, time: '30 min', color: 'text-neon-cyan' },
+  { icon: Shield, title: 'Security & Safety', desc: 'Add threat detection, rate limiting, content filtering, and audit logging', difficulty: 'Intermediate', modules: 5, time: '40 min', color: 'text-neon-green' },
+  { icon: Layers, title: 'Building with Resolvers', desc: 'Learn the node → resolver pattern: naming, routing, logging, and observability', difficulty: 'Intermediate', modules: 7, time: '55 min', color: 'text-neon-purple' },
+  { icon: Zap, title: 'Advanced Pipelines', desc: 'Build multi-step processing chains with quality gates and performance tracking', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
+  { icon: Target, title: 'Discovery Scoring', desc: 'Understand how capabilities are scored for novelty, usefulness, and composability', difficulty: 'Advanced', modules: 5, time: '35 min', color: 'text-neon-magenta' },
+  { icon: Sparkles, title: 'Memory Stream', desc: 'Discover, crystallize, and export capabilities from the live discovery feed', difficulty: 'Intermediate', modules: 6, time: '50 min', color: 'text-primary' },
+  { icon: Code, title: 'Production Ready', desc: 'Error handling, retry patterns, graceful degradation, and performance tuning', difficulty: 'Expert', modules: 9, time: '75 min', color: 'text-neon-cyan' },
 ];
 
 const DIFF_COLORS: Record<string, string> = {
