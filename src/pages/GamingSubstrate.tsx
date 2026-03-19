@@ -617,7 +617,7 @@ export default function GamingSubstrate() {
                   Get World Engine — $2,995
                 </Button>
                 <Button asChild variant="outline" size="lg" className="h-12 sm:h-14 px-8 text-base">
-                  <Link to="/upgrade">
+                  <Link to="/store?tab=plans">
                     Or explore subscription plans
                   </Link>
                 </Button>
