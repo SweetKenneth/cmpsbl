@@ -943,7 +943,7 @@ const stratumMindgames: Specimen[] = [
     ],
     phenotype: [
       "Every artifact in the vault has an economic identity — priced, categorized, and market-positioned",
-      "The substrate understands the commercial value of its own capabilities",
+      "The platform understands the commercial value of its own capabilities",
     ],
     affectedNodes: ["FORGE", "ECONOMY"],
   },
