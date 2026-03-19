@@ -14,9 +14,9 @@ export default function Packs() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Memory Packs — Activate & Swap Capabilities | CMPSBL"
-        description="24 Memory Packs across 6 strategic domains: memory, coordination, intelligence, resilience, sovereignty, and perception. Each pack = 1 slot. Activate, swap, and combine — start free with 3 slots."
+        description="24 capability packs across 6 categories: memory, coordination, intelligence, resilience, sovereignty, and perception. Each pack uses 1 slot. Activate, swap, and combine — start free with 3 slots."
         canonical="https://cmpsbl.com/packs"
-        keywords={['Memory Packs', 'AI capability slots', 'CMPSBL packs', 'strategic domains', 'composable capabilities', 'slot activation']}
+        keywords={['capability packs', 'AI capability slots', 'CMPSBL packs', 'composable capabilities', 'slot activation']}
       />
       <PublicNav />
 
