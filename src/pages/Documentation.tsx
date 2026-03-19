@@ -258,8 +258,8 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is built from 40 modules organized into 12 functional groups. Each module has a priority weight 
-          managed by the CORE module, which coordinates startup and system health.
+          CMPSBL is built from 40 specialized modules organized into 12 functional groups. Each module has a priority weight 
+          managed by the CORE module, which coordinates startup and overall system health.
         </p>
       </div>
 
