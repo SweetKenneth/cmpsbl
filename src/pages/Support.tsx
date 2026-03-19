@@ -98,7 +98,7 @@ const FAQ_ITEMS = [
   {
     category: "Capability Packs",
     question: "Can I create custom capability packs?",
-    answer: "Yes. The Capability Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All packs are namespaced to your account with hard isolation from other users.",
+    answer: "Yes. The Store allows you to compose custom memory packs, configure capability chains, and define execution templates. All packs are namespaced to your account with hard isolation from other users.",
   },
 
   // Exports
