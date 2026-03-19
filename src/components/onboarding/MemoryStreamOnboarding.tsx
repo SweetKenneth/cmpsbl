@@ -4,56 +4,91 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Sparkles, Gem, Brain, Zap, Terminal, Rocket, X, ArrowRight, ChevronLeft } from 'lucide-react';
+import { Sparkles, Gem, Brain, Zap, Rocket, X, ArrowRight, ChevronLeft, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'memory-stream-onboarded';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  detail?: string;
+  accent: string;
+  pattern: string;
+  nextSteps?: string[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
-    icon: <Sparkles className="w-7 h-7" />,
+    icon: Sparkles,
     tag: 'MEMORY STREAM',
     title: 'Welcome to the Memory Stream',
-    body: 'The substrate discovers and scores software memories continuously. Crystallize them into your vault, choose what to keep, and deploy real production-grade software.',
-    detail: 'Every crystallization reveals a memory. You decide: Keep it or Discard it.',
+    body: 'The substrate continuously discovers and scores software memories. You decide which ones to crystallize into your vault — real, production-grade code you keep.',
+    detail: 'Crystallize = keep it. Discard = let it dissolve.',
+    accent: 'primary',
+    pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
   {
-    icon: <Gem className="w-7 h-7" />,
+    icon: Gem,
     tag: 'RARITY',
-    title: 'Rarity & Discovery',
-    body: 'Every memory is scored 68–100 and assigned a rarity tier. Rare discoveries (Relic, Mythic, Apex) appear occasionally — Mythic memories trigger special vault prompts so you never lose them.',
+    title: 'Rarity Tiers',
+    body: 'Every memory is scored 68–100 and assigned a rarity. Higher-tier discoveries are rarer and more valuable. Mythic-tier memories trigger a special vault prompt so you never miss them.',
     detail: 'Mint (68–79) · Prime (80–89) · Relic (90–93) · Mythic (94–99) · Apex (100)',
+    accent: 'neon-cyan',
+    pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
   {
-    icon: <Brain className="w-7 h-7" />,
+    icon: Brain,
     tag: 'VAULT',
-    title: 'Your Vault Stores Discoveries',
-    body: 'Memories you choose to keep go into your vault. Vault capacity depends on your tier — from 5 (Builder) to unlimited (Architect). Remove old memories to free space anytime.',
-    detail: 'Builder: 5 · Studio: 25 · Creator: 75 · Architect: Unlimited',
+    title: 'Your Vault',
+    body: 'Memories you crystallize are stored here. Vault capacity depends on your plan — you can remove old memories to free space anytime.',
+    detail: 'Builder: 5 slots · Studio: 25 · Creator: 75 · Architect: Unlimited',
+    accent: 'neon-purple',
+    pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
-    icon: <Zap className="w-7 h-7" />,
+    icon: Zap,
     tag: 'CAPABILITY',
-    title: 'Capability Packs',
-    body: 'Activate memory packs across 6 strategic domains. Each pack uses exactly one slot. Your plan controls how many slots you have — not which packs you can see.',
+    title: 'Memory Packs',
+    body: 'Activate pre-built packs across 6 domains. Each pack uses one memory slot. Your plan controls how many slots you have — not which packs you can see.',
     detail: '24 packs · 6 domains · Swap anytime',
+    accent: 'neon-amber',
+    pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
   {
-    icon: <Terminal className="w-7 h-7" />,
-    tag: 'BUILD',
-    title: 'Build & Command',
-    body: 'The Builder Workspace gives you in-browser SDK access with pre-installed templates. Creator and Architect tiers can equip discovered memories directly into custom runtime slots.',
-    detail: 'Studio ($29) · Creator ($49) · Architect ($79)',
-  },
-  {
-    icon: <Rocket className="w-7 h-7" />,
-    tag: 'UPGRADE',
-    title: 'Upgrade When You\'re Ready',
-    body: 'Paid tiers unlock more daily pulls, larger vaults, capability export, custom memory slots, and priority NEXUS routing. The substrate runs the same for everyone — tiers govern capacity, not capability.',
+    icon: Rocket,
+    tag: 'Your next step',
+    title: 'Pull Your First Memory',
+    body: 'The stream is live below. Here\'s what to do:',
+    accent: 'neon-green',
+    pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      'Click "Pull from Stream" to discover a memory',
+      'Review its score and rarity tier',
+      'Crystallize it into your vault — or discard it',
+    ],
   },
 ];
+
+const accentMap: Record<string, string> = {
+  primary: 'text-primary bg-primary/10 border-primary/20',
+  'neon-cyan': 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/20',
+  'neon-purple': 'text-neon-purple bg-neon-purple/10 border-neon-purple/20',
+  'neon-green': 'text-neon-green bg-neon-green/10 border-neon-green/20',
+  'neon-amber': 'text-neon-amber bg-neon-amber/10 border-neon-amber/20',
+};
+
+const iconAccent: Record<string, string> = {
+  primary: 'text-primary',
+  'neon-cyan': 'text-neon-cyan',
+  'neon-purple': 'text-neon-purple',
+  'neon-green': 'text-neon-green',
+  'neon-amber': 'text-neon-amber',
+};
 
 export function MemoryStreamOnboarding() {
   const [open, setOpen] = useState(false);
@@ -77,139 +112,71 @@ export function MemoryStreamOnboarding() {
     return () => window.removeEventListener('keydown', handler);
   });
 
-  const dismiss = () => {
-    setOpen(false);
-    localStorage.setItem(STORAGE_KEY, 'true');
-  };
-
-  const next = () => {
-    if (step < STEPS.length - 1) {
-      setDirection('next');
-      setStep(s => s + 1);
-    } else {
-      dismiss();
-    }
-  };
-
-  const back = () => {
-    if (step > 0) {
-      setDirection('prev');
-      setStep(s => s - 1);
-    }
-  };
+  const dismiss = () => { setOpen(false); localStorage.setItem(STORAGE_KEY, 'true'); };
+  const next = () => { if (step < STEPS.length - 1) { setDirection('next'); setStep(s => s + 1); } else dismiss(); };
+  const back = () => { if (step > 0) { setDirection('prev'); setStep(s => s - 1); } };
 
   if (!open) return null;
   const current = STEPS[step];
+  const Icon = current.icon;
+  const colors = accentMap[current.accent] || accentMap.primary;
+  const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
-    <div className="cmpsbl-welcome-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/70 backdrop-blur-sm">
-      <div className="cmpsbl-welcome-modal-enter relative bg-card border border-border/60 rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden">
-        {/* Scanline */}
-        <div className="cmpsbl-welcome-scanline" />
+    <div className="fixed inset-0 z-[12000] grid place-items-center p-4 cmpsbl-welcome-backdrop" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}>
+      <div className="absolute inset-0 bg-black/55 backdrop-blur-sm cmpsbl-welcome-fade-in" />
+      <div className="relative w-full max-w-md cmpsbl-welcome-modal-enter">
+        <div className="relative bg-background/95 border border-border/30 rounded-2xl shadow-2xl overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none cmpsbl-welcome-pattern-shift" style={{ background: current.pattern }} />
+          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl"><div className="cmpsbl-welcome-scanline" /></div>
+          <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-        {/* Header with ambient gradient */}
-        <div className="relative px-6 pt-5 pb-10 bg-gradient-to-br from-primary/5 via-primary/[0.02] to-transparent overflow-hidden">
-          <div className="cmpsbl-welcome-pattern-shift absolute inset-0 pointer-events-none">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 rounded-full bg-primary/15"
-                style={{
-                  left: `${15 + i * 14}%`,
-                  top: `${20 + (i % 3) * 25}%`,
-                  animationDelay: `${i * 0.5}s`,
-                }}
-              />
+          <div className="relative flex items-center justify-between px-5 pt-4">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50">MEMORY STREAM</span>
+            <div className="flex items-center gap-3">
+              <span className="text-[10px] font-mono text-muted-foreground/40 tabular-nums">{String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
+              <button onClick={dismiss} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors" aria-label="Skip"><X className="w-4 h-4" /></button>
+            </div>
+          </div>
+
+          <div className="relative flex gap-1.5 px-5 pt-3">
+            {STEPS.map((_, i) => (
+              <button key={i} onClick={() => { setDirection(i > step ? 'next' : 'prev'); setStep(i); }}
+                className={cn('h-1.5 rounded-full transition-all duration-500 cursor-pointer', i === step ? 'w-7 bg-primary cmpsbl-welcome-dot-active' : i < step ? 'w-3 bg-primary/50' : 'w-3 bg-muted-foreground/20')}
+                aria-label={`Step ${i + 1}: ${STEPS[i].title}`} />
             ))}
           </div>
 
-          {/* Step counter + close */}
-          <div className="flex items-center justify-between relative z-10">
-            <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-muted-foreground/60">
-              {current.tag}
-            </span>
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] font-mono text-muted-foreground/40 tabular-nums">
-                {String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}
-              </span>
-              <button
-                onClick={dismiss}
-                className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
-                aria-label="Close"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Centered icon */}
-          <div className="flex justify-center mt-4">
-            <div className="cmpsbl-welcome-icon-pop p-3.5 rounded-2xl bg-primary/10 text-primary border border-primary/20">
-              {current.icon}
-            </div>
-          </div>
-        </div>
-
-        {/* Progress dots */}
-        <div className="flex items-center justify-center gap-1.5 -mt-4 mb-2 relative z-10">
-          {STEPS.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setDirection(i > step ? 'next' : 'prev'); setStep(i); }}
-              className={cn(
-                'h-1.5 rounded-full transition-all duration-300',
-                i === step ? 'w-7 bg-primary cmpsbl-welcome-dot-active' : i < step ? 'w-1.5 bg-primary/30' : 'w-1.5 bg-muted-foreground/15',
-              )}
-              aria-label={`Step ${i + 1}`}
-            />
-          ))}
-        </div>
-
-        {/* Content */}
-        <div
-          key={step}
-          className={cn('px-6 pt-4 pb-2 text-center', direction === 'next' ? 'cmpsbl-welcome-slide-in-right' : 'cmpsbl-welcome-slide-in-left')}
-        >
-          <h3 className="cmpsbl-welcome-title-reveal text-xl font-bold text-foreground mb-2">
-            {current.title}
-          </h3>
-          <p className="cmpsbl-welcome-body-fade text-sm text-muted-foreground leading-relaxed mb-3 max-w-sm mx-auto">
-            {current.body}
-          </p>
-          {current.detail && (
-            <p className="cmpsbl-welcome-body-fade text-xs font-mono text-primary/70 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10 max-w-sm mx-auto mb-1">
-              {current.detail}
-            </p>
-          )}
-        </div>
-
-        {/* Navigation */}
-        <div className="px-6 pb-5 pt-3 flex justify-between items-center">
-          <button
-            onClick={dismiss}
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Skip
-          </button>
-          <div className="flex items-center gap-2">
-            {step > 0 && (
-              <Button variant="ghost" size="sm" onClick={back} className="gap-1 text-xs h-8">
-                <ChevronLeft className="w-3 h-3" /> Back
-              </Button>
+          <div key={step} className={cn('relative px-6 pt-5 pb-5', direction === 'next' ? 'cmpsbl-welcome-slide-in-right' : 'cmpsbl-welcome-slide-in-left')}>
+            <div className={cn('w-12 h-12 rounded-xl border flex items-center justify-center mb-4 cmpsbl-welcome-icon-pop', colors)}><Icon className={cn('w-6 h-6', iconColor)} /></div>
+            <p className="text-[10px] font-mono uppercase tracking-[0.15em] mb-1.5 cmpsbl-welcome-tag-fade text-muted-foreground/60">{current.tag}</p>
+            <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">{current.title}</h2>
+            <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">{current.body}</p>
+            {current.detail && (
+              <p className="cmpsbl-welcome-body-fade text-xs font-mono text-primary/70 px-3 py-2 mt-3 rounded-lg bg-primary/5 border border-primary/10">
+                {current.detail}
+              </p>
             )}
-            <Button size="sm" onClick={next} className="cmpsbl-welcome-cta-glow gap-1.5 text-xs h-8">
-              {step === STEPS.length - 1 ? 'Start Crystallizing' : 'Next'}
-              <ArrowRight className="w-3 h-3" />
+
+            {isLastStep && current.nextSteps && (
+              <div className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns, i) => (
+                  <div key={i} className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-xs text-foreground/80 leading-relaxed">{ns}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
+            {step > 0 ? (<Button variant="ghost" size="sm" onClick={back} className="text-xs h-9 gap-1"><ChevronLeft className="w-3 h-3" /> Back</Button>) : (<Button variant="ghost" size="sm" onClick={dismiss} className="text-xs h-9 text-muted-foreground">Skip tour</Button>)}
+            <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
+              {isLastStep ? 'Start Pulling →' : (<>Next <ArrowRight className="w-3.5 h-3.5" /></>)}
             </Button>
           </div>
-        </div>
-
-        {/* Progress bar */}
-        <div className="h-0.5 bg-muted/30">
-          <div
-            className="h-full bg-gradient-to-r from-primary/60 to-primary transition-all duration-500 ease-out"
-            style={{ width: `${((step + 1) / STEPS.length) * 100}%` }}
-          />
         </div>
       </div>
     </div>

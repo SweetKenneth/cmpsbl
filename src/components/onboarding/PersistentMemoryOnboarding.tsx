@@ -4,19 +4,29 @@
  */
 
 import { useState, useEffect } from 'react';
-import { X, ArrowRight, Brain, Layers, Moon, Search, Zap } from 'lucide-react';
+import { X, ArrowRight, Brain, Layers, Moon, Search, Zap, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'persistent-memory-onboarded';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  accent: string;
+  pattern: string;
+  nextSteps?: string[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
     icon: Brain,
     tag: 'Remember',
     title: 'Persistent Memory',
-    body: 'Your AI agent never forgets again. 4-tier persistent memory with automatic recall, DREAM consolidation, and smart decay — free for all users.',
+    body: 'Give any AI agent permanent recall. 4-tier memory with automatic temperature management, DREAM consolidation, and semantic search — free for all users.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -24,7 +34,7 @@ const STEPS = [
     icon: Layers,
     tag: '4 Tiers',
     title: 'HOT → WARM → COOL → COLD',
-    body: 'Memories automatically flow through 4 temperature tiers. Hot for immediate context, warm for recent history, cool for deep recall, cold for archival. Zero-config tiering.',
+    body: 'Memories flow automatically through 4 temperature tiers. Hot = immediate context. Warm = recent history. Cool = deep recall. Cold = archival. Zero configuration required.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -32,25 +42,30 @@ const STEPS = [
     icon: Moon,
     tag: 'DREAM',
     title: 'DREAM Consolidation',
-    body: 'While idle, your agent consolidates memories — merging fragments, strengthening connections, and surfacing patterns. Continuous learning, even offline.',
+    body: 'While your agent is idle, DREAM cycles merge fragments, strengthen connections, and surface patterns. Your agent learns continuously — even offline.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Search,
     tag: 'Recall',
-    title: 'Automatic Recall',
-    body: 'Vector-powered semantic search across all memory tiers. Your agent recalls what it needs, when it needs it — across sessions, conversations, and deployments.',
+    title: 'Semantic Recall',
+    body: 'Vector-powered search across all memory tiers. Your agent finds what it needs by meaning, not keywords — across sessions, conversations, and deployments.',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 20% 40%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Zap,
-    tag: 'Integrate',
-    title: 'Add It in Under an Hour',
-    body: 'Three lines of code. Import the SDK, wrap your agent, run. Memory recall happens automatically. Works with any framework, any provider, any stack.',
+    tag: 'Your next step',
+    title: 'Add It in 3 Lines',
+    body: 'Import the SDK, wrap your agent, run. Memory recall is automatic. Here\'s how to start:',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      'Scroll down to see the SDK integration guide',
+      'Copy the 3-line quick-start snippet',
+      'Read the full docs for advanced configuration',
+    ],
   },
 ];
 
@@ -102,6 +117,7 @@ export function PersistentMemoryOnboarding() {
   const Icon = current.icon;
   const colors = accentMap[current.accent] || accentMap.primary;
   const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
     <div className="fixed inset-0 z-[12000] grid place-items-center p-4 cmpsbl-welcome-backdrop" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}>
@@ -133,12 +149,23 @@ export function PersistentMemoryOnboarding() {
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] mb-1.5 cmpsbl-welcome-tag-fade text-muted-foreground/60">{current.tag}</p>
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">{current.title}</h2>
             <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">{current.body}</p>
+
+            {isLastStep && current.nextSteps && (
+              <div className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns) => (
+                  <div key={ns} className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-xs text-foreground/80 leading-relaxed">{ns}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (<Button variant="ghost" size="sm" onClick={back} className="text-xs h-9">Back</Button>) : (<Button variant="ghost" size="sm" onClick={dismiss} className="text-xs h-9 text-muted-foreground">Skip tour</Button>)}
             <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-              {step < STEPS.length - 1 ? (<>Next <ArrowRight className="w-3.5 h-3.5" /></>) : 'Get Started Free →'}
+              {isLastStep ? 'Get Started →' : (<>Next <ArrowRight className="w-3.5 h-3.5" /></>)}
             </Button>
           </div>
         </div>

@@ -4,19 +4,29 @@
  */
 
 import { useState, useEffect } from 'react';
-import { X, ArrowRight, ShoppingBag, Users, Cpu, Layers, Sparkles } from 'lucide-react';
+import { X, ArrowRight, ShoppingBag, Users, Cpu, Layers, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
 
 const STORAGE_KEY = 'store-onboarded';
 
-const STEPS = [
+interface OnboardingStep {
+  icon: React.ElementType;
+  tag: string;
+  title: string;
+  body: string;
+  accent: string;
+  pattern: string;
+  nextSteps?: string[];
+}
+
+const STEPS: OnboardingStep[] = [
   {
     icon: ShoppingBag,
     tag: 'Welcome',
-    title: 'The Collector Store',
-    body: 'Your hub for acquiring Runtime Agents and Composable Engines. 10 products across 5 tiers on a single pricing ladder — from free to Apex.',
+    title: 'The Store',
+    body: '10 products across 5 pricing tiers on a single ladder. Everything from free Runtime Agents to Apex-tier Composable Engines — all sealed, self-improving AI you own.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -24,7 +34,7 @@ const STEPS = [
     icon: Users,
     tag: 'Agents',
     title: 'Runtime Agents',
-    body: 'Sealed, self-improving AI that you own. From PRIMITIVE to RAPTOR — each agent comes with 4-tier memory, always-on learning, and a unique personality layer.',
+    body: 'Autonomous AI that learns and executes. Each agent ships with 4-tier memory, continuous learning, and a sealed runtime. FAILSAFE is free — higher tiers unlock AEGIS, SPECTRA, PHANTOM, and RAPTOR.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -32,25 +42,30 @@ const STEPS = [
     icon: Cpu,
     tag: 'Engines',
     title: 'Composable Engines',
-    body: 'BEACON, AUTOMATON, CORTEX, NEXUS, ARCHITECT — specialized systems that slot into your runtime. Mix and match to build exactly the stack you need.',
+    body: 'Infrastructure that powers your stack. BEACON monitors, AUTOMATON orchestrates, CORTEX reasons, NEXUS routes, ARCHITECT governs. Mix and match to build exactly what you need.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Layers,
     tag: 'Tiers',
-    title: '5-Tier Pricing Ladder',
-    body: 'Free → Starter → Pro → Elite → Apex. Every tier unlocks more power. FAILSAFE is free for authenticated users. No hidden costs, no surprises.',
+    title: 'One Pricing Ladder',
+    body: 'Free → Starter ($19) → Pro ($49) → Elite ($99) → Apex ($199). Each tier unlocks the next agent and engine. No hidden costs — FAILSAFE and BEACON are free for all authenticated users.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Sparkles,
-    tag: 'Collect',
-    title: 'Flip, Zoom, Collect',
-    body: 'Each product is a collector card — flip to see full specs, zoom for detail. Manage your memories and plans all from one place. Start collecting.',
+    tag: 'Your next step',
+    title: 'Start Exploring',
+    body: 'The collector deck is below. Here\'s what to do:',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
+    nextSteps: [
+      'Flip any card to see full specs and pricing',
+      'Switch to the Plans tab to compare tiers',
+      'Check the Memories tab for capability packs',
+    ],
   },
 ];
 
@@ -102,6 +117,7 @@ export function StoreOnboarding() {
   const Icon = current.icon;
   const colors = accentMap[current.accent] || accentMap.primary;
   const iconColor = iconAccent[current.accent] || iconAccent.primary;
+  const isLastStep = step === STEPS.length - 1;
 
   return (
     <div className="fixed inset-0 z-[12000] grid place-items-center p-4 cmpsbl-welcome-backdrop" role="dialog" aria-modal="true" onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}>
@@ -133,12 +149,23 @@ export function StoreOnboarding() {
             <p className="text-[10px] font-mono uppercase tracking-[0.15em] mb-1.5 cmpsbl-welcome-tag-fade text-muted-foreground/60">{current.tag}</p>
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">{current.title}</h2>
             <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">{current.body}</p>
+
+            {isLastStep && current.nextSteps && (
+              <div className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
+                {current.nextSteps.map((ns) => (
+                  <div key={ns} className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
+                    <span className="text-xs text-foreground/80 leading-relaxed">{ns}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (<Button variant="ghost" size="sm" onClick={back} className="text-xs h-9">Back</Button>) : (<Button variant="ghost" size="sm" onClick={dismiss} className="text-xs h-9 text-muted-foreground">Skip tour</Button>)}
             <Button size="sm" onClick={next} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-              {step < STEPS.length - 1 ? (<>Next <ArrowRight className="w-3.5 h-3.5" /></>) : 'Start Collecting →'}
+              {isLastStep ? 'Start Browsing →' : (<>Next <ArrowRight className="w-3.5 h-3.5" /></>)}
             </Button>
           </div>
         </div>
