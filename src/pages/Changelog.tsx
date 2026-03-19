@@ -780,7 +780,7 @@ const stratumMindgames: Specimen[] = [
       "Backup files are timestamped to the second for precise point-in-time recovery identification",
     ],
     phenotype: [
-      "The substrate can be fully reconstructed from a single downloaded file — zero external dependencies needed",
+      "The platform can be fully reconstructed from a single downloaded file — zero external dependencies needed",
       "Disaster recovery shifted from a multi-day manual process to a one-click operation",
       "Any AI coding agent can restore the entire system by following the included step-by-step guide",
     ],
