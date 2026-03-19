@@ -79,3 +79,39 @@ project_id = "bxodolqqczjuahwdrswy"
     verify_jwt = false
   [functions.pf-system-verify]
     verify_jwt = false
+  [functions.agent-checkout]
+    verify_jwt = false
+  [functions.capability-checkout]
+    verify_jwt = false
+  [functions.cmpsbl-engine-checkout]
+    verify_jwt = false
+  [functions.cognitives-checkout]
+    verify_jwt = false
+  [functions.create-agency-checkout]
+    verify_jwt = false
+  [functions.engine-checkout]
+    verify_jwt = false
+  [functions.evolution-mesh-checkout]
+    verify_jwt = false
+  [functions.failsafe-engine-checkout]
+    verify_jwt = false
+  [functions.licensing-checkout]
+    verify_jwt = false
+  [functions.marketplace-checkout]
+    verify_jwt = false
+  [functions.operative-checkout]
+    verify_jwt = false
+  [functions.standalone-engine-checkout]
+    verify_jwt = false
+  [functions.tier-checkout]
+    verify_jwt = false
+  [functions.world-engine-checkout]
+    verify_jwt = false
+  [functions.check-engine-subscription]
+    verify_jwt = false
+  [functions.defense-create-checkout]
+    verify_jwt = false
+  [functions.defense-check-subscription]
+    verify_jwt = false
+  [functions.defense-customer-portal]
+    verify_jwt = false
