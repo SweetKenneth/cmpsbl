@@ -1287,11 +1287,11 @@ export default function Changelog() {
                           </ul>
                         </div>
 
-                        {/* PHENOTYPE — what emerged */}
+                        {/* PHENOTYPE — what's new */}
                         <div className="bg-primary/5 rounded-md p-4 -mx-1">
                           <div className="flex items-center gap-2 mb-3">
                             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-primary">Phenotype</span>
+                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-primary">What's New</span>
                           </div>
                           <div className="grid sm:grid-cols-2 gap-2">
                             {specimen.phenotype.map((p, idx) => (
