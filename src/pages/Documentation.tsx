@@ -177,9 +177,9 @@ function OverviewSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Architecture at a Glance</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The substrate is organized into layers, each with a distinct responsibility. The <strong className="text-foreground">Spine</strong> (CORE → SYSTEM → CCR) provides the vertical core,
-          the <strong className="text-foreground">OCG</strong> (Operational Compliance Grid) handles boundary enforcement, and the <strong className="text-foreground">Execution tier</strong> runs
-          all user-facing capabilities. Cross-cutting <strong className="text-foreground">Fields</strong> (EVOLUTION, IMMUNITY, INTENT) permeate every layer.
+          The platform is organized into layers, each with a clear job. The <strong className="text-foreground">Spine</strong> handles startup and lifecycle, 
+          the <strong className="text-foreground">Cognitive Core</strong> powers reasoning and memory, and the <strong className="text-foreground">Execution tier</strong> runs 
+          all user-facing features. Cross-cutting systems like <strong className="text-foreground">Evolution, Security, and Routing</strong> span every layer.
         </p>
         <CodeBlock title="40-node / 12-sector substrate topology">{`┌─────────────────────────────────────────────────────────┐
 │  GOVERNANCE (Plane)        Legitimacy supervision       │
