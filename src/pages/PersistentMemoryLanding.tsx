@@ -285,18 +285,18 @@ const PersistentMemoryLanding = () => {
                   <Gift className="w-5 h-5 mr-2" />
                   $0 / month — forever
                 </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything you need, included free</h2>
-                <p className="text-lg text-muted-foreground">No credit card. No trial period. No catches.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">What's included for free</h2>
+                <p className="text-lg text-muted-foreground">No credit card. No trial. No strings attached.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {[
-                  { icon: Brain, title: "Full 4-Tier Memory", description: "Hot, warm, cold, and legacy tiers — all included. Automatic demotion and smart retrieval." },
-                  { icon: Sparkles, title: "DREAM Consolidation", description: "Autonomous off-peak optimization that compresses, prunes, and discovers patterns." },
-                  { icon: Shield, title: "Protected Memory Types", description: "Identity and safety rules locked at value 1.0. They never decay or get evicted." },
-                  { icon: Zap, title: "Semantic Search", description: "Relevance-based recall across all tiers. RPS scoring model with automatic decay management." },
-                  { icon: Lock, title: "Per-Agent Isolation", description: "Complete data isolation between agents. Multi-tenant safe out of the box." },
-                  { icon: Activity, title: "Graceful Degradation", description: "Memory failures never crash your app. Silent fallback to memoryless operation." },
+                  { icon: Brain, title: "All 4 memory tiers", description: "Hot, warm, cold, and archive — all included. Memories move between tiers automatically." },
+                  { icon: Sparkles, title: "Automatic optimization", description: "Off-peak cycles compress duplicates, find patterns, and clean up stale entries on their own." },
+                  { icon: Shield, title: "Protected memories", description: "Mark critical rules as permanent — they'll never decay, expire, or get accidentally removed." },
+                  { icon: Zap, title: "Meaning-based search", description: "Find relevant memories by meaning, not just keywords. Works across all tiers instantly." },
+                  { icon: Lock, title: "Agent isolation", description: "Each agent's data is completely separated. Safe for multi-tenant apps out of the box." },
+                  { icon: Activity, title: "Never crashes your app", description: "If memory is unavailable, your agent keeps running normally. Silent, graceful fallback." },
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
                     <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
