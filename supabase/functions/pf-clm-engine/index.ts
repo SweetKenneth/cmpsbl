@@ -548,13 +548,12 @@ serve(async (req) => {
 
     // ═══ STATUS ACTION ═══
     if (action === 'status') {
-      const [budget, memory] = await Promise.all([
+      const [budget, memory, realCalls] = await Promise.all([
         getBudgetState(supabase),
         getMemoryTierState(supabase),
+        getRealAICallCounts(supabase),
       ]);
-      const velocity = budget.todayCycles > 0
-        ? Math.round((budget.todayCycles * 10) / Math.max(1, new Date().getUTCHours())) // est AI calls/hour
-        : 0;
+      const velocity = realCalls.hour;
 
       return new Response(JSON.stringify({
         success: true,
@@ -564,10 +563,10 @@ serve(async (req) => {
           hourly: { used: budget.hourCycles, max: MAX_CYCLES_PER_HOUR, remaining: budget.remainingHourly },
         },
         velocity: {
-          est_ai_calls_today: budget.todayCycles * 10,
+          est_ai_calls_today: realCalls.today,
           est_ai_calls_per_hour: velocity,
           target_daily: 25000,
-          pct_of_target: Math.round((budget.todayCycles * 10 / 25000) * 100),
+          pct_of_target: Math.round((realCalls.today / 25000) * 100),
         },
         memory: {
           hot: { count: memory.hot, limit: memory.hotLimit, pressure: Number((memory.hot / Math.max(1, memory.hotLimit)).toFixed(2)) },
