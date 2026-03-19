@@ -103,9 +103,9 @@ export default function InvestorsPublic() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Investors — Seed Round Open | CMPSBL®"
-        description="Invest in CMPSBL: 14 documented world firsts, 54 engines, 90%+ gross margins, and compounding technical moat. Signal-to-silicon pipeline with Zenodo-verified IP. Seed round now open."
+        description="Invest in CMPSBL: 14 documented world firsts, 90%+ gross margins, and a compounding technical moat. AI platform with Zenodo-verified IP. Seed round now open."
         canonical="https://cmpsbl.com/investors"
-        keywords={['CMPSBL investment', 'AI seed round', 'signal to silicon', 'AI startup funding', 'memory stream investment']}
+        keywords={['CMPSBL investment', 'AI seed round', 'AI startup funding', 'AI platform investment']}
       />
       
       <PublicNav />
