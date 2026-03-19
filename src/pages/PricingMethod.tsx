@@ -66,9 +66,9 @@ export default function PricingMethod() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-foreground mb-1">25%</div>
-                  <div className="font-semibold text-foreground mb-2">CJPI Technical Premium</div>
+                  <div className="font-semibold text-foreground mb-2">Technical Quality Score</div>
                   <p className="text-sm text-muted-foreground">
-                    The Apex Discovery Index measures technical sophistication — node complexity, memory depth, system integration quality. Higher CJPI scores unlock premium multipliers.
+                    Our internal scoring system measures how sophisticated the capability is — including complexity, integration depth, and how well it works with other features. Higher scores earn a premium.
                   </p>
                 </CardContent>
               </Card>
