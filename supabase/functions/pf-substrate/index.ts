@@ -678,7 +678,15 @@ const nexusAnalytics: NexusAnalytics = {
   lastReset: Date.now(),
 };
 
-async function recordNexusCall(provider: string, success: boolean, tokens: number, costUsd: number, latencyMs: number): Promise<void> {
+async function recordNexusCall(
+  provider: string,
+  success: boolean,
+  tokens: number,
+  costUsd: number,
+  latencyMs: number,
+  model?: string,
+  metadata: Record<string, unknown> = {},
+): Promise<void> {
   nexusAnalytics.totalCalls++;
   if (success) nexusAnalytics.successfulCalls++;
   else nexusAnalytics.failedCalls++;
@@ -697,20 +705,49 @@ async function recordNexusCall(provider: string, success: boolean, tokens: numbe
   pc.costUsd += costUsd;
   pc.avgLatencyMs = (pc.avgLatencyMs * (pc.calls - 1) + latencyMs) / pc.calls;
 
-  // ═══ PERSIST to ai_daily_quota — awaited to ensure counters actually increment ═══
-  if (success && provider !== 'local') {
-    const today = new Date().toISOString().split('T')[0];
-    const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
-    const budget = budgetMap[provider] || 14400;
-    try {
-      const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-      const { data: existing } = await sb.from('ai_daily_quota').select('id, calls_used, tokens_used').eq('provider', provider).eq('date', today).maybeSingle();
+  if (provider === 'local') {
+    return;
+  }
+
+  try {
+    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+
+    await sb.from('ai_usage_log').insert({
+      provider,
+      model: model || null,
+      success,
+      tokens_used: tokens,
+      cost: costUsd,
+      response_time_ms: latencyMs,
+      category: typeof metadata.category === 'string' ? metadata.category : 'router',
+      metadata: {
+        ...metadata,
+        source: 'pf-substrate.routeTextToProvider',
+      },
+    });
+
+    if (success) {
+      const today = new Date().toISOString().split('T')[0];
+      const budgetMap: Record<string, number> = { hyperbolic: 86400, deepseek: 5000, google: 50 };
+      const budget = budgetMap[provider] || 14400;
+      const { data: existing } = await sb
+        .from('ai_daily_quota')
+        .select('id, calls_used, tokens_used')
+        .eq('provider', provider)
+        .eq('date', today)
+        .maybeSingle();
+
       if (existing) {
-        await sb.from('ai_daily_quota').update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens }).eq('id', existing.id);
+        await sb
+          .from('ai_daily_quota')
+          .update({ calls_used: (existing.calls_used || 0) + 1, tokens_used: (existing.tokens_used || 0) + tokens })
+          .eq('id', existing.id);
       } else {
         await sb.from('ai_daily_quota').insert({ provider, date: today, calls_used: 1, tokens_used: tokens, calls_budget: budget });
       }
-    } catch { /* telemetry must never block execution */ }
+    }
+  } catch {
+    /* telemetry must never block execution */
   }
 }
 

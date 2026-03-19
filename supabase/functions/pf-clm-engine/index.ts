@@ -230,6 +230,31 @@ async function getBudgetState(supabase: any): Promise<BudgetState> {
   };
 }
 
+async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour: number }> {
+  const now = new Date();
+  const todayKey = now.toISOString().split('T')[0];
+  const hourStart = new Date(now);
+  hourStart.setMinutes(0, 0, 0);
+
+  const [dailyRes, hourlyRes] = await Promise.all([
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', true)
+      .gte('created_at', `${todayKey}T00:00:00Z`),
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', true)
+      .gte('created_at', hourStart.toISOString()),
+  ]);
+
+  return {
+    today: dailyRes.count || 0,
+    hour: hourlyRes.count || 0,
+  };
+}
+
 /**
  * Execute a single CLM cycle — lean and fast
  * Returns the number of AI calls made
