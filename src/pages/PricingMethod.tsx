@@ -135,18 +135,18 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <Target className="h-6 w-6 text-primary" />
-              What CJPI Contributes
+              The Technical Quality Score
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              The Apex Discovery Index (CJPI) is our proprietary technical scoring system. It evaluates:
+              Every capability gets a quality score that reflects how sophisticated it is. This score looks at:
             </p>
             <ul className="space-y-2 mb-4">
               {[
-                'Node count and integration depth',
-                'Memory crystallization quality',
-                'System chain complexity',
-                'Export target breadth',
-                'Hardware compatibility signals',
+                'How many systems are involved',
+                'Depth of memory and learning integration',
+                'Overall system complexity',
+                'Number of supported output formats',
+                'Hardware compatibility',
               ].map(item => (
                 <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
