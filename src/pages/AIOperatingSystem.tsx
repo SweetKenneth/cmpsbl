@@ -85,12 +85,12 @@ const sectors = [
 ];
 
 const comparisonRows = [
-  { feature: "Persistent Memory", framework: "Manual (vector DB)", aiOs: "Built-in 4-tier + DREAM" },
-  { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS — cost/latency-aware" },
-  { feature: "Security", framework: "External tool", aiOs: "DEFENSE — native shell" },
-  { feature: "Observability", framework: "Separate APM", aiOs: "Integrated across 40 nodes" },
-  { feature: "Self-Optimization", framework: "None", aiOs: "Autonomous DREAM cycles" },
-  { feature: "Cross-Node Context", framework: "None", aiOs: "RIPPLE event propagation" },
+  { feature: "Persistent Memory", framework: "DIY (vector DB)", aiOs: "Built-in 4-tier + auto-consolidation" },
+  { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS — picks best model per task" },
+  { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE — built into the platform" },
+  { feature: "Monitoring", framework: "Separate APM tool", aiOs: "Built-in across all 40 nodes" },
+  { feature: "Self-Improvement", framework: "None", aiOs: "Automatic optimization cycles" },
+  { feature: "Shared Context", framework: "None", aiOs: "Real-time event propagation" },
 ];
 
 /* ── component ── */
