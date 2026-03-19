@@ -286,11 +286,11 @@ function ArchitectureSection() {
 
       {/* Matrix weighting */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Weighted Matrix</h3>
+        <h3 className="font-semibold text-foreground mb-4">Priority Weights</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Every node in the substrate holds a weight in the system matrix. These weights determine health contribution,
-          failure impact radius, and safety-switch sensitivity. CORE manages the matrix and recalculates weights during
-          boot, evolution promotions, and manual rebalance events.
+          Every module has a priority weight that determines how much it affects overall system health.
+          Higher-weight modules (like CORE and DEFENSE) trigger faster alerts when degraded. Weights are 
+          recalculated during startup and after system updates.
         </p>
         <CodeBlock title="Matrix weight categories">{`// Weight categories (higher = more critical)
 CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
