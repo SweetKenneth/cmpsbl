@@ -71,7 +71,7 @@ const FAQ_ITEMS = [
   {
     category: "Memories & Foundry",
     question: "What is the Foundry?",
-    answer: "The Foundry is where you explore the Memory Stream — the substrate's continuous discovery output. It surfaces the highest-scoring crystallized memories and lets you store and export them.",
+    answer: "The Foundry is where you explore the Memory Stream — the platform's continuous discovery output. It surfaces the highest-scoring capabilities and lets you store and export them.",
   },
   {
     category: "Memories & Foundry",
