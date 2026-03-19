@@ -42,8 +42,8 @@ const PILLARS = [
   {
     icon: RefreshCw,
     name: "ADAPT",
-    verb: "Governed self-modification",
-    description: "Routing, cost allocation, and operational parameters adjust automatically — within strict governance boundaries.",
+     verb: "Self-tune within guardrails",
+    description: "Routing, cost allocation, and operational settings adjust automatically — within strict governance boundaries your team controls.",
     color: "text-emerald-500",
     bg: "bg-emerald-500/10",
     border: "border-emerald-500/20",
