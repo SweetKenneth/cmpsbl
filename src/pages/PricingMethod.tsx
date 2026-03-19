@@ -178,17 +178,17 @@ export default function PricingMethod() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
               <BarChart3 className="h-6 w-6 text-primary" />
-              How Confidence Is Determined
+              How We Measure Confidence
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Every price includes a confidence score reflecting how much trust to place in the estimate. Confidence considers:
+              Every price comes with a confidence rating so you know how reliable the estimate is. It considers:
             </p>
             <div className="space-y-2 mb-4">
               {[
-                'Number of successful provider estimates (more = better)',
-                'Degree of price agreement between providers',
-                'Marketplace recommendation overlap',
-                'Strength of internal metadata signals (CJPI, module count, valuation)',
+                'How many AI models returned valid estimates (more = better)',
+                'How closely the models agreed with each other',
+                'Whether market comparisons overlap',
+                'Strength of our own technical signals',
               ].map(item => (
                 <div key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0" />
