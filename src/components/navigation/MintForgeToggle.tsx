@@ -12,8 +12,8 @@ interface MintForgeToggleProps {
 
 export function MintForgeToggle({ className }: MintForgeToggleProps) {
   const location = useLocation();
-  const isForge = location.pathname.startsWith('/forge');
-  const isMint = location.pathname === '/agency';
+  const isForge = location.pathname.startsWith('/foundry');
+  const isMint = location.pathname === '/store';
 
   return (
     <div className={cn(
