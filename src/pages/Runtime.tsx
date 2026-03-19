@@ -271,10 +271,10 @@ export default function Runtime() {
         <section className="container mx-auto px-4 mb-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Package className="w-10 h-10 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold">How Capability Packs Extend the Runtime</h3>
+            <h3 className="text-2xl font-bold">How Memory Packs Extend the Runtime</h3>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-              Capability packs compose multiple baseline capabilities into purpose-built workflows.
-              They don't replace the baseline — they amplify it.
+              Memory packs bundle multiple baseline capabilities into ready-to-use workflows.
+              They don't replace the baseline — they build on top of it.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6">
               <Button asChild>

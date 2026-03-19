@@ -183,11 +183,10 @@ export default function Enterprise() {
         <section className="container mx-auto max-w-3xl px-4 text-center relative z-10">
           <motion.div {...fadeUp} className="p-8 sm:p-12 rounded-2xl border border-border bg-gradient-to-br from-muted/30 via-card/50 to-muted/30 backdrop-blur-sm shimmer-on-hover shadow-lg shadow-primary/[0.03]">
             <Activity className="w-8 h-8 text-primary mx-auto mb-4" />
-            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's architect your deployment.</h2>
+            <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's design your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-4 max-w-xl mx-auto">
-              Custom slot capacity, dedicated instances, SOC2 compliance,{" "}
-              <Link to="/foundry" className="text-primary hover:underline font-medium">DREAM cycle</Link> configuration,{" "}
-              multi-region NEXUS routing, and white-glove onboarding — tailored to your organization.{" "}
+              Custom capacity, dedicated instances, SOC2 compliance,{" "}
+              self-improvement scheduling, multi-region routing, and white-glove onboarding — tailored to your organization.{" "}
               Read our <Link to="/documentation" className="text-primary hover:underline font-medium">technical docs</Link> for API details.
             </p>
             <p className="text-base font-bold text-foreground mb-6">
