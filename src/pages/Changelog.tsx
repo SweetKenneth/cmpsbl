@@ -1261,11 +1261,11 @@ export default function Changelog() {
                       </div>
 
                       <div className="p-5 space-y-5">
-                        {/* STIMULUS — the pressure */}
+                        {/* STIMULUS — why this changed */}
                         <div>
                           <div className="flex items-center gap-2 mb-2">
                             <span className="w-1.5 h-1.5 rounded-full bg-red-500/70" />
-                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">Stimulus</span>
+                            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">Why</span>
                           </div>
                           <p className="text-sm text-foreground/90 leading-relaxed pl-3.5 border-l-2 border-red-500/20">
                             {specimen.stimulus}
