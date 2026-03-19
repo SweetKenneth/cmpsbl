@@ -139,6 +139,13 @@ export default function ComposableCognitives() {
   }, [licensedAgent, sessionId, searchParams]);
 
   const handleBuy = useCallback(async (sku: string) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      pushToast({ message: "Please sign in to purchase", variant: "warning", anchor: "center", durationMs: 5000 });
+      navigate("/auth");
+      return;
+    }
+    
     const item = PUBLIC_CATALOG.find(c => c.sku === sku);
     if (!item?.isFree) {
       const validation = validateCognitiveName(chosenName);
