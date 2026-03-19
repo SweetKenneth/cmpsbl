@@ -441,7 +441,7 @@ export function CmpsblNav() {
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
                 {[
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
-                  { name: "Upgrade", href: "/upgrade", icon: Zap },
+                  { name: "Plans", href: "/store?tab=plans", icon: Zap },
                   { name: "CodeLab", href: "/codelab", icon: FlaskConical, badge: "NEW FEATURES" },
                   { name: "Store", href: "/store", icon: Sparkles, badge: "NEW" },
                 ].map((item) => (
