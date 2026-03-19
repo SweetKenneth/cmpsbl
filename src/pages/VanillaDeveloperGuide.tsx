@@ -55,12 +55,12 @@ function CopyBlock({ code, label }: { code: string; label?: string }) {
 }
 
 const MODULES = [
-  { name: "BRAIN", icon: Brain, desc: "Persistent memory — store, recall, and search knowledge across sessions.", actions: ["remember", "query", "recall", "reflect", "coherenceCheck"] },
-  { name: "DECODE", icon: MessageSquare, desc: "Intent extraction and conversational AI with contextual learning.", actions: ["chat", "intent", "propose", "learn"] },
-  { name: "NEXUS", icon: Network, desc: "Multi-provider AI routing with automatic failover and cost optimization.", actions: ["route", "providers", "text", "image"] },
-  { name: "DEFENSE", icon: Shield, desc: "Bot detection, threat analysis, IP intelligence, and anomaly detection.", actions: ["analyze", "reputation", "anomaly", "posture"] },
-  { name: "VISION", icon: Eye, desc: "System observability — health checks, metrics, logs, and distributed tracing.", actions: ["health", "metrics", "logs", "trace", "dashboard"] },
-  { name: "DREAM", icon: Zap, desc: "Autonomous evolution cycles — mutation, reflection, and self-improvement.", actions: ["cycle", "mutate", "reflect", "mood"] },
+  { name: "BRAIN", icon: Brain, desc: "Store, recall, and search knowledge that persists across sessions.", actions: ["remember", "query", "recall", "reflect", "coherenceCheck"] },
+  { name: "DECODE", icon: MessageSquare, desc: "Understand user intent, extract entities, and generate contextual responses.", actions: ["chat", "intent", "propose", "learn"] },
+  { name: "NEXUS", icon: Network, desc: "Route AI requests across 13+ providers with automatic failover and cost controls.", actions: ["route", "providers", "text", "image"] },
+  { name: "DEFENSE", icon: Shield, desc: "Detect bots, score threats, analyze IPs, and flag anomalies in real time.", actions: ["analyze", "reputation", "anomaly", "posture"] },
+  { name: "VISION", icon: Eye, desc: "Monitor system health with metrics, logs, dashboards, and distributed tracing.", actions: ["health", "metrics", "logs", "trace", "dashboard"] },
+  { name: "DREAM", icon: Zap, desc: "Run self-improvement cycles that consolidate memory and extract patterns.", actions: ["cycle", "mutate", "reflect", "mood"] },
 ];
 
 const INSTALL_STEPS = [
