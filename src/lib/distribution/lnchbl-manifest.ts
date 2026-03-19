@@ -1,15 +1,13 @@
 /**
- * LNCHBL Distribution Manifest — SUSPENDED
+ * LNCHBL Distribution Manifest — DISCONTINUED
  * 
- * ⛔ LNCHBL distribution is SUSPENDED pending licensing agreement.
- * All outbound operations (patches, brain sync, downloads) are blocked.
+ * ⛔ LNCHBL self-hosted distribution has been DISCONTINUED.
+ * This feature is no longer offered on any tier.
+ * All outbound operations (patches, brain sync, downloads) are permanently blocked.
  * Edge functions return 503. No new patches will be authored or dispatched.
  * 
- * To re-enable: remove 'LNCHBL' from SUSPENDED_DISTRIBUTIONS in distribution.ts
- * and restore edge function implementations from git history.
- * 
  * @module distribution/lnchbl-manifest
- * @version 11.6.0-suspended
+ * @version 12.0.0-discontinued
  */
 
 // ─── LNCHBL Edge Function Registry ──────────────────────────────────────────
