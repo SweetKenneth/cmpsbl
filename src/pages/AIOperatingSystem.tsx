@@ -220,9 +220,9 @@ export default function AIOperatingSystem() {
                 The Fragmentation Problem
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-5 max-w-3xl">
-                Today's AI teams cobble together separate tools for every concern — a vector database for memory,
-                an API gateway for routing, a prompt filter for security, an APM tool for monitoring, and manual processes for optimization.
-                These tools don't talk to each other.
+                Today's AI teams stitch together separate tools for every concern — a vector database for memory,
+                an API gateway for routing, a prompt filter for security, and an APM tool for monitoring.
+                These tools don't share context or learn from each other.
               </p>
               <Card className="border-primary/15 bg-primary/[0.03] glass-edge">
                 <CardContent className="p-4 sm:p-6">
