@@ -359,13 +359,13 @@ const PersistentMemoryLanding = () => {
               <Card className="bg-gradient-to-br from-primary/10 via-background to-primary/5 border-primary/20">
                 <CardContent className="pt-12 pb-12">
                   <Gift className="w-10 h-10 text-emerald-500 mx-auto mb-4" />
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Stop building memory infrastructure.</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Stop reinventing memory infrastructure</h2>
                   <p className="text-lg text-muted-foreground mb-2">
-                    Persistent memory is <span className="text-emerald-500 font-bold">free for all users</span>. 
-                    No credit card. No trial expiration. Just memory that works.
+                    Persistent memory is <span className="text-emerald-500 font-bold">free for everyone</span>. 
+                    No credit card. No trial that expires. Just memory that works.
                   </p>
                   <p className="text-sm text-muted-foreground mb-8">
-                    Your agent remembers preferences, learns patterns, and improves over time — starting today.
+                    Your agent remembers users, learns their preferences, and improves with every interaction.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
