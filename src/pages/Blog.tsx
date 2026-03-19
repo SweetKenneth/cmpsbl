@@ -552,7 +552,7 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch02-routing', title: "Routing the Unknown",
-    excerpt: "How the NEXUS node evolved from a simple failover function into an intelligent AI routing gateway with cost arbitrage.",
+    excerpt: "How the NEXUS module evolved from a simple failover function into an intelligent AI routing gateway with cost optimization.",
     href: "/blog/routing-the-unknown", category: "Technology",
     date: "2025-01-10", readTime: "14 min", image: ch02Img,
     imageAlt: "NEXUS routing gateway architecture", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",
