@@ -136,9 +136,19 @@ class MaintenanceManager {
       setTimeout(() => this.runTask(name), staggerDelay);
       staggerDelay += 5000;
 
-      const timer = setInterval(() => this.runTask(name), task.intervalMs);
+      const timer = setInterval(() => {
+        // Skip task execution when tab is hidden to save CPU/network
+        if (this.paused) return;
+        this.runTask(name);
+      }, task.intervalMs);
       this.timers.set(name, timer);
     }
+
+    // Pause/resume maintenance when tab visibility changes
+    this.visibilityHandler = () => {
+      this.paused = document.visibilityState === 'hidden';
+    };
+    document.addEventListener('visibilitychange', this.visibilityHandler);
 
     console.log(`[Neural] Maintenance manager started: ${this.tasks.size} tasks scheduled`);
   }
