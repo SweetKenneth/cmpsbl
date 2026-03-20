@@ -179,7 +179,7 @@ const MetricCard = memo(function MetricCard({ label, value, icon: Icon, trend = 
       </div>
     </motion.div>
   );
-}
+});
 
 interface StatusPanelProps {
   title: string;
