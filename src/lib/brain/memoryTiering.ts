@@ -162,7 +162,7 @@ export async function searchMemories(
     const sanitized = query.replace(/[%_\\]/g, '');
     if (!sanitized) return [];
 
-    const queries: Promise<any>[] = [];
+    const queries: Array<ReturnType<ReturnType<typeof supabase.from>['select']>> = [];
     const tierOrder: MemoryTier[] = [];
 
     if (tiers.includes('hot')) {
@@ -200,7 +200,7 @@ export async function searchMemories(
           .ilike('summary', `%${sanitized}%`)
           .gte('value_score', minScore)
           .order('value_score', { ascending: false })
-          .limit(limit)
+          .limit(limit) as any
       );
     }
 
@@ -209,11 +209,11 @@ export async function searchMemories(
       queries.push(
         supabase
           .from('brain_memory_archive')
-          .select('id, summary, tags, value_score, access_count, created_at, last_accessed')
-          .ilike('summary', `%${sanitized}%`)
+          .select('id, content, context, tags, value_score, access_count, created_at')
+          .ilike('content', `%${sanitized}%`)
           .gte('value_score', minScore)
           .order('value_score', { ascending: false })
-          .limit(limit)
+          .limit(limit) as any
       );
     }
 
