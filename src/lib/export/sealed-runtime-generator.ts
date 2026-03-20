@@ -668,7 +668,35 @@ const E: Record<string, { verb: string; handler: EH }> = {
 ${effectEntries}
 };
 
-function fallback(mod: string): { verb: string; depth: 'fallback'; handler: EH } {
+/** Dynamic handler registry for Ascension modules (Node 41+) */
+const _dynamicEffects: Record<string, { verb: string; handler: EH }> = {};
+
+/**
+ * Register a chain-level effect for an Ascension module.
+ * Call this after registerHandler() to wire the primary into chain execution.
+ */
+export function registerChainEffect(moduleName: string, verb: string, handler: EH): void {
+  _dynamicEffects[moduleName] = { verb, handler };
+}
+
+function resolveEffect(mod: string): { verb: string; depth: 'deep' | 'fallback'; handler: EH } {
+  // Priority 1: Substrate nodes (40-node matrix)
+  if (E[mod]) return { ...E[mod], depth: 'deep' as const };
+  // Priority 2: Dynamically registered Ascension modules (uploaded code)
+  if (_dynamicEffects[mod]) return { ..._dynamicEffects[mod], depth: 'deep' as const };
+  // Priority 3: Check handler registry (primary handler fallback)
+  const registered = getHandler(mod.replace(/^Ψ₄₁_/, ''));
+  if (registered?.handler) {
+    return {
+      verb: 'execute',
+      depth: 'deep' as const,
+      handler: (d, c) => {
+        const out = registered.handler(d, { confidence: c.confidence }) as Record<string, unknown>;
+        return { data: typeof out === 'object' && out ? { ...d, ...out } : d, confidence: c.confidence + 0.02, note: \`[\${mod}] Primary handler executed (\${registered.category})\` };
+      },
+    };
+  }
+  // Fallback: honest annotation
   return { verb: 'annotate', depth: 'fallback' as const, handler: (d, c) => { d[\`_\${mod.toLowerCase()}\`] = { participated: true, depth: 'fallback', stage: c.index }; return { data: d, confidence: c.confidence, note: \`[\${mod}] Fallback participation\` }; } };
 }
 
@@ -685,7 +713,7 @@ export async function executeChain(manifest: ChainManifest, input: Record<string
   for (let i = 0; i < manifest.modules.length; i++) {
     const mod = manifest.modules[i];
     const ss = typeof performance !== 'undefined' ? performance.now() : Date.now();
-    const effect = E[mod] ? { ...E[mod], depth: 'deep' as const } : fallback(mod);
+    const effect = resolveEffect(mod);
     depthReport.push({ module: mod, depth: effect.depth });
     try {
       const result = effect.handler(data, { confidence, trace, modules: manifest.modules, index: i, recoveries });
