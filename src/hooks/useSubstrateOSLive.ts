@@ -158,7 +158,7 @@ export function useLiveOrchestratorState() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_orchestrator_state')
-        .select('*')
+        .select('id, health_score, current_mode, active_tasks, updated_at')
         .order('updated_at', { ascending: false })
         .limit(1)
         .maybeSingle();
