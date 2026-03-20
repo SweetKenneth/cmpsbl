@@ -273,7 +273,7 @@ export default function SubstrateOS() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
-  const tabs = useMemo(() => getTabDefs(!!userAgency), [userAgency]);
+  const tabs = useMemo(() => getTabDefs(!!userAgency, isGovernor), [userAgency, isGovernor]);
 
   const handleLogout = useCallback(async () => {
     try { await signOut(); navigate('/'); } catch (e) { console.error('Logout error:', e); }
