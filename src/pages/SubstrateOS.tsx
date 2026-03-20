@@ -355,7 +355,7 @@ export default function SubstrateOS() {
             className="grid grid-cols-5 px-1 py-1"
             style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}
           >
-            {['account', 'overview', 'nexus', 'security'].map(id => {
+            {(isGovernor ? ['account', 'overview', 'nexus', 'security'] : ['account', 'overview', 'nexus', 'ccr']).map(id => {
               const tab = tabs.find(t => t.id === id)!;
               const active = activeTab === id;
               return (
