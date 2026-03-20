@@ -613,7 +613,43 @@ ${executeBody}
 `;
 }
 
-function generatePythonCapabilitySource(cap: CapabilityForExport): string {
+function generatePythonCapabilitySource(cap: CapabilityForExport, sourceFiles?: SourceFile[]): string {
+  const pyFiles = (sourceFiles || []).filter(f => /\.py$/i.test(f.name));
+  const importLines = pyFiles.length > 0
+    ? pyFiles.map(f => {
+        const modName = f.name.replace(/\.py$/i, '');
+        return `from original.${modName} import *  # Auto-wired from ../original/${f.name}`;
+      }).join('\n')
+    : '# No Python files detected in original/ — wire your imports manually\n# from original.your_file import YourClass';
+
+  const executeBody = pyFiles.length > 0
+    ? (() => {
+        const firstName = pyFiles[0].name.replace(/\.py$/i, '');
+        const className = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+        return [
+          `        # Auto-wired to: ${pyFiles.map(f => f.name).join(', ')}`,
+          `        import sys, importlib`,
+          `        mod = importlib.import_module('original.${firstName}')`,
+          `        # Try class instantiation first`,
+          `        for cls_name in ['${className}', '${firstName}']:`,
+          `            cls = getattr(mod, cls_name, None)`,
+          `            if cls and callable(cls):`,
+          `                instance = cls()`,
+          `                for method in ['execute', 'run', 'handle', 'process', 'main']:`,
+          `                    fn = getattr(instance, method, None)`,
+          `                    if callable(fn):`,
+          `                        return fn(input_data)`,
+          `        # Try top-level functions`,
+          `        for fn_name in ['execute', 'run', 'handle', 'process', 'main']:`,
+          `            fn = getattr(mod, fn_name, None)`,
+          `            if callable(fn):`,
+          `                return fn(input_data)`,
+          `        # Honest passthrough — no callable entry point found`,
+          `        return input_data or {}`,
+        ].join('\n');
+      })()
+    : '        # Original files are in ../original/ — wire your imports above\n        return input_data or {}';
+
   return `"""
 ═══════════════════════════════════════════════════════
  CMPSBL® Capability: ${cap.name}
@@ -644,8 +680,8 @@ import os
 import time
 from runtime_bridge import CMPSBLRuntimeBridge
 
-# TODO: Import your original code here:
-# from original.your_file import YourClass
+# ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
+${importLines}
 
 CAPABILITY_META = {
     "name": "${cap.name}",
