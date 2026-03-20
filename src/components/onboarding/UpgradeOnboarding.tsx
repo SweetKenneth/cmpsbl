@@ -35,7 +35,7 @@ const STEPS: OnboardingStep[] = [
     icon: Rocket,
     tag: 'Free',
     title: 'Builder — $0 Forever',
-    body: '3 memory slots, full runtime access, persistent memory, and governed orchestration. First-class builder status — no credit card, no time limit.',
+    body: '3 capability slots, full runtime access, persistent memory, and governed orchestration. First-class builder status — no credit card, no time limit.',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
   },
@@ -63,7 +63,7 @@ const STEPS: OnboardingStep[] = [
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
     nextSteps: [
-      'Compare memory slots, vault depth, and daily pulls',
+      'Compare capability slots, vault depth, and daily pulls',
       'Start free with Builder — upgrade anytime',
       'All plans include the full 40-node runtime',
     ],

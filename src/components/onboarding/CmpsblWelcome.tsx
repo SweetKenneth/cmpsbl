@@ -53,7 +53,7 @@ const STEPS: OnboardingStep[] = [
     icon: ShoppingBag,
     tag: 'Acquire',
     title: 'The Store',
-    body: '10 products on a single pricing ladder. Runtime Agents execute autonomously. Composable Engines power the infrastructure. Browse plans, memories, and collector cards.',
+    body: 'Runtime Agents execute autonomously. Composable Engines power the infrastructure. Browse plans, memories, and collector cards on a single pricing ladder.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },
@@ -61,7 +61,7 @@ const STEPS: OnboardingStep[] = [
     icon: Bot,
     tag: 'Your next step',
     title: 'Start Exploring',
-    body: 'You\'re ready. The free Builder tier gives you 3 memory slots, full runtime access, and no credit card required. Here\'s where to go:',
+    body: 'You\'re ready. The free Builder tier gives you 3 capability slots, full runtime access, and no credit card required. Here\'s where to go:',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
     nextSteps: [
