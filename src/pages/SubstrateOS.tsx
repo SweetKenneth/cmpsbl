@@ -555,16 +555,16 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'cognitives' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
+            {activeTab === 'cognitives' && (isGovernor || !!userAgency) && (
+              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
                 <PanelContainer id="cognitives">
                   <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'agency' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
+            {activeTab === 'agency' && (isGovernor || !!userAgency) && (
+              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
                 <PanelContainer id="agency">
                   <Suspense fallback={<PanelLoader />}>
                     <AgencyGallery />
