@@ -244,17 +244,50 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
       setIdentityRole('anonymous');
       return;
     }
-    // Check role via RPC
     (async () => {
+      const checkRole = async (roleName: string) => {
+        try {
+          const { data, error } = await supabase.rpc('has_role_text', {
+            _user_id: user.id,
+            _role: roleName,
+          });
+
+          return !error && data === true;
+        } catch {
+          return false;
+        }
+      };
+
+      if (await checkRole('admin')) {
+        setIdentityRole('governor');
+        return;
+      }
+
+      if (await checkRole('moderator')) {
+        setIdentityRole('architect');
+        return;
+      }
+
+      if (await checkRole('operator')) {
+        setIdentityRole('creator');
+        return;
+      }
+
       try {
-        const { data: isAdmin } = await supabase.rpc('has_role_text', { _user_id: user.id, _role: 'admin' });
-        if (isAdmin) { setIdentityRole('governor'); return; }
-        const { data: isMod } = await supabase.rpc('has_role_text', { _user_id: user.id, _role: 'moderator' });
-        if (isMod) { setIdentityRole('architect'); return; }
-        const { data: isOp } = await supabase.rpc('has_role_text', { _user_id: user.id, _role: 'operator' });
-        if (isOp) { setIdentityRole('creator'); return; }
-        setIdentityRole('user');
-      } catch { setIdentityRole('user'); }
+        const { data: identityResult, error: identityError } = await supabase.functions.invoke('pf-substrate', {
+          body: { module: 'access', action: 'identity' },
+        });
+
+        if (!identityError && identityResult?.success) {
+          const identityRole = identityResult.substrate_role;
+          setIdentityRole(identityRole === 'governor' ? 'governor' : identityRole === 'operator' ? 'creator' : 'user');
+          return;
+        }
+      } catch {
+        // Fall through to user access
+      }
+
+      setIdentityRole('user');
     })();
   }, [user, setIdentityRole]);
 
