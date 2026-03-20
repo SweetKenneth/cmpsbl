@@ -4,7 +4,7 @@
  * Tier: Free (read-only view), Creator+ (interactive actions)
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Shield, Activity, AlertTriangle, CheckCircle2, Eye, Ban, Zap, RefreshCw, Globe, Clock, TrendingUp, BarChart3 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

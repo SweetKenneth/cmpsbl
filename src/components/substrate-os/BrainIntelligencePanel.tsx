@@ -3,7 +3,7 @@
  * Deep thinking, curiosity engine, learning patterns
  */
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Brain, Sparkles, Network, TrendingUp, Lightbulb, Loader2, CheckCircle2, AlertCircle, Zap, Activity, ChevronDown, Layers, Trash2, ArrowUpDown } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
