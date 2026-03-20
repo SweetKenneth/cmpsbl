@@ -53,7 +53,7 @@ const STEPS: OnboardingStep[] = [
     icon: ShoppingBag,
     tag: 'Acquire',
     title: 'The Store',
-    body: '10 products on a single pricing ladder. Runtime Agents execute autonomously. Composable Engines power the infrastructure. Browse plans, memories, and collector cards.',
+    body: 'Runtime Agents execute autonomously. Composable Engines power the infrastructure. Browse plans, memories, and collector cards on a single pricing ladder.',
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
   },

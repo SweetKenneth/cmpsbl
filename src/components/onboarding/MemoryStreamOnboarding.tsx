@@ -47,7 +47,7 @@ const STEPS: OnboardingStep[] = [
     tag: 'VAULT',
     title: 'Your Vault',
     body: 'Memories you crystallize are stored here. Vault capacity depends on your plan — you can remove old memories to free space anytime.',
-    detail: 'Builder: 5 slots · Studio: 25 · Creator: 75 · Architect: Unlimited',
+    detail: 'Builder: 3 slots · Studio: 6 · Creator: 9 · Architect: 12',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
