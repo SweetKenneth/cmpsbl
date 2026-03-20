@@ -401,7 +401,7 @@ export function validate(): boolean {
   }
 
   if (lang === 'php') {
-    return generatePhpCapabilitySource(cap);
+    return generatePhpCapabilitySource(cap, sourceFiles);
   }
 
   if (lang === 'python') {
