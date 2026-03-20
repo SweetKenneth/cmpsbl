@@ -4,7 +4,7 @@
  * Streams events from all 37 Matrix Nodes across the substrate
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Radio, Filter, ChevronDown, Brain, MessageSquare, Shield, Zap, Eye, Moon, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
