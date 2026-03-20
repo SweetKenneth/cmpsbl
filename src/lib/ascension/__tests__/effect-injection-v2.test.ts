@@ -306,7 +306,7 @@ describe('Truthfulness rules', () => {
   });
 
   it('local success is truly executed', () => {
-    registerPrimitive({ name: 'truth', source: 'native', handler: () => ({ ok: true }) });
+    registerPrimitive({ id: 'p-truth', name: 'truth', source: 'native', handler: () => ({ ok: true }) });
     const unit = buildExecutableUnit(
       { name: 'truth', category: 'execution', confidence: 0.9, complexity: 1, extractionMethod: 'function' },
       'typescript'
