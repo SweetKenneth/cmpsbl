@@ -75,7 +75,7 @@
  export function planQuery(
    query: string,
    options?: {
-     tiers?: ('hot' | 'warm' | 'cold')[];
+     tiers?: ('hot' | 'warm' | 'cold' | 'glacier')[];
      limit?: number;
      useCache?: boolean;
    }
