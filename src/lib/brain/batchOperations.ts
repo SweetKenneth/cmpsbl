@@ -376,7 +376,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
   };
 
   try {
-    // Phase 1: Promote frequently accessed warm → hot
+    // Phase 1: Promote frequently accessed warm → hot (batched)
     const { data: warmCandidates } = await supabase
       .from('brain_memory_warm')
       .select('id, content, context, value_score, tags, metadata, source_module, category')
@@ -384,22 +384,25 @@ export async function runTierMigration(): Promise<MigrationResult> {
       .gte('value_score', 0.7)
       .limit(50);
 
-    for (const memory of warmCandidates || []) {
+    if (warmCandidates && warmCandidates.length > 0) {
+      const hotInserts = warmCandidates.map(m => ({
+        content: m.content,
+        context: m.context,
+        value_score: m.value_score,
+        tags: m.tags,
+        metadata: m.metadata,
+        source_module: m.source_module || 'general',
+        category: m.category || m.context || 'uncategorized',
+      }));
+
       const { error: insertError } = await supabase
         .from('brain_memory_hot')
-        .insert({
-          content: memory.content,
-          context: memory.context,
-          value_score: memory.value_score,
-          tags: memory.tags,
-          metadata: memory.metadata,
-          source_module: memory.source_module || 'general',
-          category: memory.category || memory.context || 'uncategorized',
-        });
+        .insert(hotInserts);
 
       if (!insertError) {
-        await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
-        result.movedUp++;
+        const ids = warmCandidates.map(m => m.id);
+        await supabase.from('brain_memory_warm').delete().in('id', ids);
+        result.movedUp += warmCandidates.length;
       } else {
         result.errors.push(insertError.message);
       }
