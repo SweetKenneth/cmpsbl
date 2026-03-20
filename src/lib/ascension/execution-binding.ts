@@ -196,18 +196,22 @@ export function bindAndExecute(
   // ── BRIDGE EXECUTION ──
   if (resolution.strategy === 'bridge') {
     try {
-      // Use the existing sync bridge path which delegates to registry
       const bridgeResult = primitiveExecutorSync(unit.name, inputData, unit.confidence);
+      const wasTrulyExecuted = !bridgeResult.signal.endsWith('_fallback') && bridgeResult.signal !== 'fallback';
       rawResult = bridgeResult.data;
-      executed = true;
+      executed = wasTrulyExecuted;
       success = true;
+      degraded = !wasTrulyExecuted;
       signals.push({
-        type: 'execution',
+        type: wasTrulyExecuted ? 'execution' : 'fallback',
         source: unit.name,
         duration_ms: round3(performance.now() - start),
         status: 'success',
         ts: Date.now(),
       });
+      if (!wasTrulyExecuted) {
+        errors.push({ type: 'bridge_executor_fallback', message: `Bridge executor used internal fallback for "${unit.name}"` });
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       errors.push({ type: 'bridge_execution_error', message: msg });
