@@ -1697,8 +1697,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       '---',
       '© Your original work. Cognitive overlay © 2025–2026 CMPSBL®.',
     ].join('\n'));
-      '© Your original work. Substrate enhancements © 2025–2026 CMPSBL®.',
-    ].join('\n'));
+  }
   }
 
   // manifest.json — CMPSBL manifest
