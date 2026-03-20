@@ -139,9 +139,10 @@ serve(async (req) => {
       free: 0,
       builder: 1,
       creator: 1,
-      pro: 2,
-      architect: 2,
-      enterprise: 3,
+      studio: 2,
+      pro: 3,
+      architect: 3,
+      enterprise: 4,
     };
 
     for (const sub of subscriptions.data) {
