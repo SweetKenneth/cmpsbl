@@ -93,7 +93,7 @@ export async function runQuickHealthCheck(): Promise<{
 // ── ENGINEER Integration ───────────────────────────────────────────────────
 
 let lastMaintenanceRun = 0;
-const MIN_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes minimum between auto-runs
+const MIN_INTERVAL_MS = 15 * 60 * 1000; // 15 minutes minimum between auto-runs
 
 /**
  * Called by ENGINEER during CLM cycles
