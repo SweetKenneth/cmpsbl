@@ -89,22 +89,29 @@ export function useLiveAIUsage() {
   return useQuery({
     queryKey: ['live', 'ai', 'usage'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('ai_usage_log')
-        .select('tokens_used, cost, provider')
-        .order('created_at', { ascending: false })
-        .limit(100);
+      // Use count + small sample instead of fetching 100 full rows
+      const [countRes, sampleRes] = await Promise.all([
+        supabase
+          .from('ai_usage_log')
+          .select('id', { count: 'exact', head: true }),
+        supabase
+          .from('ai_usage_log')
+          .select('tokens_used, cost, provider')
+          .order('created_at', { ascending: false })
+          .limit(30),
+      ]);
       
-      if (error) throw error;
+      if (countRes.error) throw countRes.error;
+      const data = sampleRes.data ?? [];
       
-      const totalTokens = data?.reduce((sum, r) => sum + (r.tokens_used ?? 0), 0) ?? 0;
-      const totalCost = data?.reduce((sum, r) => sum + (r.cost ?? 0), 0) ?? 0;
-      const providerCounts = data?.reduce((acc, r) => {
+      const totalTokens = data.reduce((sum, r) => sum + (r.tokens_used ?? 0), 0);
+      const totalCost = data.reduce((sum, r) => sum + (r.cost ?? 0), 0);
+      const providerCounts = data.reduce((acc, r) => {
         acc[r.provider] = (acc[r.provider] ?? 0) + 1;
         return acc;
-      }, {} as Record<string, number>) ?? {};
+      }, {} as Record<string, number>);
       
-      return { totalTokens, totalCost, providerCounts, recentCount: data?.length ?? 0 };
+      return { totalTokens, totalCost, providerCounts, recentCount: countRes.count ?? 0 };
     },
     refetchInterval: 30000,
   });
