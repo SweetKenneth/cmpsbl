@@ -17,6 +17,7 @@ import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
+import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
 
 export interface CapabilityForExport {
   id: string;
