@@ -162,6 +162,11 @@ class MaintenanceManager {
     }
     this.timers.clear();
     this.state.running = false;
+    this.paused = false;
+    if (this.visibilityHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityHandler);
+      this.visibilityHandler = null;
+    }
     vectorIndex.destroy();
     console.log('[Neural] Maintenance manager stopped');
   }
