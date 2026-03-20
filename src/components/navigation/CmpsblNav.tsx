@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Code,
   Layers,
+  Crown,
   FileText,
   Rocket,
   BookOpen,
@@ -122,7 +123,7 @@ export function CmpsblNav() {
       items: [
         { name: "Store", href: "/store", description: "Agents, engines & memory packs", icon: Sparkles, highlight: true },
         { name: "Plans & pricing", href: "/store?tab=plans", description: "Compare plans & upgrade", icon: Zap },
-        { name: "Pricing methodology", href: "/pricing-method", description: "How we calculate prices", icon: CreditCard },
+        { name: "Member Hub", href: "/member", description: "Workflows, exports, referrals & usage", icon: Crown, badge: "NEW" },
         { name: "Academy", href: "/academy", description: "Learn with tutorials & courses", icon: BookOpen },
         { name: "Showcase", href: "/showcase", description: "See what developers built", icon: Sparkles },
       ]
@@ -439,11 +440,11 @@ export function CmpsblNav() {
 
               {/* Mobile Quick Actions */}
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.15 }} className="grid grid-cols-2 gap-2 mb-6">
-                {[
+              {[
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
+                  { name: "Member Hub", href: "/member", icon: Crown, badge: "NEW" },
                   { name: "Plans", href: "/store?tab=plans", icon: Zap },
-                  { name: "CodeLab", href: "/codelab", icon: FlaskConical, badge: "NEW FEATURES" },
-                  { name: "Store", href: "/store", icon: Sparkles, badge: "NEW" },
+                  { name: "Store", href: "/store", icon: Sparkles },
                 ].map((item) => (
                   <Link
                     key={item.href}

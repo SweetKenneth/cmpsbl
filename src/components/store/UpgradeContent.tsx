@@ -59,6 +59,8 @@ const TIERS: {
       'Full runtime — not a demo',
       'Browse all 24 capability packs',
       'Standard memory (5 recalls)',
+      'Usage dashboard with ROI metrics',
+      'Member Hub access',
       'Community Discord support',
     ],
   },
@@ -76,9 +78,12 @@ const TIERS: {
     capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
     features: [
       'Run 6 packs simultaneously',
+      'Saved Workflows — one-click intent presets',
       'Export traces & audit logs',
       '2× deeper memory recall',
       'Priority queue — 3× faster routing',
+      'Usage dashboard with ROI tracking',
+      'Referral credits program',
       'Email support',
     ],
   },
@@ -97,9 +102,12 @@ const TIERS: {
     capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
     features: [
       '9 packs running concurrently',
+      'Saved Workflows & custom presets',
       'Dedicated memory partitions',
       'Full trace & compliance exports',
-      'Fastest NEXUS routing tier',
+      'Export templates (PDF/CSV/JSON)',
+      'Memory Stream alerts for pipelines',
+      'Trace replay — visual debugging',
       'Custom memory slots you configure',
       'Priority email support',
     ],
@@ -119,8 +127,11 @@ const TIERS: {
     features: [
       '12 packs — maximum throughput',
       'Unlimited vault — never lose context',
-      'Full governance & compliance controls',
+      'Private Discovery Pool — isolated memory',
+      'Governance snapshots & audit trails',
+      'Full export templates (PDF/CSV/JSON)',
       'Organization workspaces for teams',
+      'Early access to new nodes & resolvers',
       'Custom memory slots you configure',
       'White-glove onboarding call',
       'Dedicated Slack support channel',
@@ -200,8 +211,10 @@ export function UpgradeContent() {
           {[
             { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-violet-400' },
             { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-amber-400' },
-            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code.', color: 'text-emerald-400' },
+            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code. PDF/CSV/JSON templates.', color: 'text-emerald-400' },
             { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
+            { icon: Shield, title: 'Member Hub', desc: 'Saved Workflows, usage dashboards with ROI metrics, referral credits, export center, and priority status — all from one command center.', color: 'text-primary' },
+            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new nodes and resolvers.', color: 'text-orange-400' },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
               <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
