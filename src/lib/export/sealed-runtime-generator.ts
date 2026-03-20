@@ -280,40 +280,6 @@ export function createLockManager() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §11b — PRIMARY HANDLER REGISTRY (enables real execution of uploaded code)
-// ═══════════════════════════════════════════════════════════════════════════════
-
-export type PrimitiveHandler = (input: unknown, context?: unknown) => unknown;
-
-export interface PrimitiveRegistryEntry {
-  name: string;
-  category: string;
-  handler: PrimitiveHandler;
-  source: 'native' | 'generated' | 'external';
-}
-
-const _handlerRegistry = new Map<string, PrimitiveRegistryEntry>();
-
-/** Register a named handler. Called during init for primary module binding. */
-export function registerHandler(entry: PrimitiveRegistryEntry): void {
-  if (!entry.name) return;
-  _handlerRegistry.set(entry.name.toLowerCase().trim(), entry);
-}
-
-/** Look up a registered handler. */
-export function getHandler(name: string): PrimitiveRegistryEntry | null {
-  return _handlerRegistry.get(name.toLowerCase().trim()) ?? null;
-}
-
-/** List all registered handlers. */
-export function listHandlers(): PrimitiveRegistryEntry[] {
-  return Array.from(_handlerRegistry.values());
-}
-
-/** Clear handler registry. */
-export function clearHandlers(): void { _handlerRegistry.clear(); }
-
-// ═══════════════════════════════════════════════════════════════════════════════
 // §12 — RUNTIME FACTORY
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -336,9 +302,6 @@ export interface StandaloneRuntime {
   configureEndpoint: typeof configureEndpoint;
   getRuntimeMode: typeof getRuntimeMode;
   getExecutionTelemetry: typeof getExecutionTelemetry;
-  registerHandler: typeof registerHandler;
-  getHandler: typeof getHandler;
-  listHandlers: typeof listHandlers;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -348,35 +311,13 @@ export interface StandaloneRuntime {
 /** Default CMPSBL substrate endpoint — used when online */
 const CMPSBL_DEFAULT_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
 
-/** Runtime connectivity mode */
-type RuntimeMode = 'offline' | 'hybrid' | 'network';
+type RuntimeMode = 'network' | 'hybrid' | 'offline';
+interface ExecutionTelemetry { primitive: string; wasRemote: boolean; success: boolean; usedFallback: boolean; mode: RuntimeMode; timestamp: number; }
 
-interface ExecutionTelemetry {
-  primitive: string;
-  wasRemote: boolean;
-  success: boolean;
-  usedFallback: boolean;
-  mode: RuntimeMode;
-  timestamp: number;
-}
-
-interface NetworkBridgeState {
-  endpoint: string | null;
-  mode: RuntimeMode;
-  consecutiveSuccesses: number;
-  consecutiveFailures: number;
-  telemetry: ExecutionTelemetry[];
-}
-
-const _netState: NetworkBridgeState = {
-  endpoint: CMPSBL_DEFAULT_ENDPOINT,
-  mode: 'offline',
-  consecutiveSuccesses: 0,
-  consecutiveFailures: 0,
-  telemetry: [],
+const _netState: { endpoint: string | null; mode: RuntimeMode; consecutiveSuccesses: number; consecutiveFailures: number; telemetry: ExecutionTelemetry[] } = {
+  endpoint: CMPSBL_DEFAULT_ENDPOINT, mode: 'hybrid', consecutiveSuccesses: 0, consecutiveFailures: 0, telemetry: [],
 };
 
-/** Configure the remote execution endpoint. Pass null for offline-only mode. */
 export function configureEndpoint(url: string | null): void {
   _netState.endpoint = url;
   if (!url) { _netState.mode = 'offline'; _netState.consecutiveSuccesses = 0; _netState.consecutiveFailures = 0; }
@@ -400,31 +341,18 @@ function _recordTelemetry(entry: ExecutionTelemetry): void {
 export function getExecutionTelemetry(): ReadonlyArray<ExecutionTelemetry> { return [..._netState.telemetry]; }
 
 /**
- * Network-first primitive executor with LOCAL HANDLER REGISTRY support.
+ * Network-first primitive executor.
  * Execution order:
- *   1. Local registered handler (PRIMARY — synthesized from uploaded code)
- *   2. Remote execution (CMPSBL® Substrate — when endpoint configured)
- *   3. Deterministic fallback (always succeeds)
- * Remote/local failure NEVER breaks execution.
+ *   1. Remote execution (CMPSBL® Substrate — when endpoint configured)
+ *   2. Deterministic fallback (always succeeds)
+ * Remote failure NEVER breaks execution.
  */
 export async function executePrimitive(
   name: string,
   data: Record<string, unknown>,
   confidence: number
 ): Promise<{ data: Record<string, unknown>; confidence_delta: number; signal: string }> {
-  // Tier 1: Local registered handler (uploaded code's primary behavior)
-  const registered = getHandler(name);
-  if (registered?.handler) {
-    try {
-      const output = registered.handler(data, { confidence });
-      if (output && typeof output === 'object' && typeof (output as any).then !== 'function') {
-        _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: false, mode: _netState.mode, timestamp: Date.now() });
-        return { data: output as Record<string, unknown>, confidence_delta: 0.03, signal: name.toLowerCase() + '_executed' };
-      }
-    } catch { /* Handler failed — fall through */ }
-  }
-
-  // Tier 2: Remote
+  // Tier 1: Remote
   if (_netState.endpoint && _netState.mode !== 'offline') {
     try {
       const res = await fetch(_netState.endpoint, {
@@ -442,7 +370,7 @@ export async function executePrimitive(
     } catch { _updateMode(false); }
   }
 
-  // Tier 3: Local deterministic fallback
+  // Tier 2: Local deterministic fallback
   const out = { [name.toLowerCase() + '_result']: { module: name, confidence, processed: true } };
   _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: true, mode: _netState.mode, timestamp: Date.now() });
   return { data: out, confidence_delta: 0.01, signal: name.toLowerCase() + '_fallback' };
@@ -456,7 +384,6 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     computeStableId, sha256, canonicalize, createStateMachine, createSaga,
     CANONICAL_MODULES, DISCOVERY_CATEGORIES,
     executePrimitive, configureEndpoint, getRuntimeMode, getExecutionTelemetry,
-    registerHandler, getHandler, listHandlers,
   };
 }
 `;
