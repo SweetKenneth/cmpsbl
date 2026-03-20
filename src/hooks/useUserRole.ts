@@ -53,67 +53,66 @@ export function useUserRole(): UserRoleState {
     }
 
     try {
-      // Primary: Direct role check from user_roles table (most reliable)
-      const { data: isAdmin } = await supabase.rpc('has_role_text', {
-        _user_id: user.id,
-        _role: 'admin'
-      });
+      const checkRole = async (roleName: string): Promise<boolean> => {
+        try {
+          const { data, error } = await supabase.rpc('has_role_text', {
+            _user_id: user.id,
+            _role: roleName,
+          });
 
-      if (isAdmin === true) {
+          return !error && data === true;
+        } catch {
+          return false;
+        }
+      };
+
+      const isAdmin = await checkRole('admin');
+      if (isAdmin) {
         setRole('governor');
-        // Try to get display name from developer profile
+
         const { data: dev } = await supabase
           .from('access_developers')
           .select('id, display_name')
           .eq('user_id', user.id)
           .maybeSingle();
+
         if (dev) {
           setDisplayName(dev.display_name);
           setDeveloperId(dev.id);
         } else {
           setDisplayName(user.email?.split('@')[0] || 'Governor');
         }
+
         setLoading(false);
         return;
       }
 
-      // Check for architect role (moderator maps to architect)
-      const { data: isModerator } = await supabase.rpc('has_role_text', {
-        _user_id: user.id,
-        _role: 'moderator'
-      });
-
-      if (isModerator === true) {
+      const isModerator = await checkRole('moderator');
+      if (isModerator) {
         setRole('architect');
         setLoading(false);
         return;
       }
 
-      // Check for creator role (operator maps to creator)
-      const { data: isOperatorRole } = await supabase.rpc('has_role_text', {
-        _user_id: user.id,
-        _role: 'operator'
-      });
-
-      if (isOperatorRole === true) {
+      const isOperatorRole = await checkRole('operator');
+      if (isOperatorRole) {
         setRole('creator');
         setLoading(false);
         return;
       }
 
-      // Fallback: Try Access module identity endpoint
       try {
         const { data: identityResult, error: identityError } = await supabase.functions.invoke('pf-substrate', {
           body: { module: 'access', action: 'identity' }
         });
 
         if (!identityError && identityResult?.success) {
-          // Map legacy roles to new tier names
           const legacyRole = identityResult.substrate_role;
           const mappedRole: SubstrateRole = 
             legacyRole === 'governor' ? 'governor' :
             legacyRole === 'operator' ? 'creator' :
             'free';
+
           setRole(mappedRole);
           setDisplayName(identityResult.developer?.display_name || null);
           setDeveloperId(identityResult.developer?.id || null);
@@ -121,10 +120,9 @@ export function useUserRole(): UserRoleState {
           return;
         }
       } catch {
-        // Continue to default
+        // Continue to subscription fallback
       }
 
-      // Check subscription tier from access_subscriptions
       try {
         const { data: dev } = await supabase
           .from('access_developers')
@@ -142,11 +140,11 @@ export function useUserRole(): UserRoleState {
           
           if (sub?.tier) {
             const tierMap: Record<string, SubstrateRole> = {
-              'enterprise': 'governor',
-              'pro': 'architect',
-              'studio': 'studio',
-              'builder': 'creator',
-              'free': 'free',
+              enterprise: 'governor',
+              pro: 'architect',
+              studio: 'studio',
+              builder: 'creator',
+              free: 'free',
             };
             setRole(tierMap[sub.tier] || 'free');
             setLoading(false);
@@ -157,7 +155,6 @@ export function useUserRole(): UserRoleState {
         // Continue to default
       }
 
-      // Default to free for authenticated users
       setRole('free');
     } catch (error) {
       console.error('Role detection error:', error);
