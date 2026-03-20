@@ -1,11 +1,12 @@
 /**
- * pf-clm-engine — High-Velocity Constant Learning Engine
- * v5.0.0 SPARTA Epoch — Always-Burst Orchestrator
+ * pf-clm-engine — Adaptive Constant Learning Engine
+ * v5.1.0 — Failure-Aware Adaptive Burst
  * 
- * ALWAYS runs in burst mode. Every cron/manual invocation fires a full burst.
- * Target: 25,000+ AI calls/day via aggressive parallel cycling + self-chaining.
+ * Runs in adaptive burst mode. Respects free-tier provider capacity by tracking
+ * recent failure rates and backing off when providers are saturated.
+ * Target: ~2,000 successful AI calls/day (realistic for free-tier fleet).
  * 
- * Key change from v4: Default is BURST (not single cycle). Self-chains aggressively.
+ * v5.1 changes: Failure-rate backoff, reduced parallelism, adaptive burst sizing.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -16,13 +17,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "5.0.1";
-const MAX_CYCLES_PER_HOUR = 65;       // 650 AI calls/hour
-const MAX_CYCLES_PER_DAY = 1440;      // 14,400 AI calls/day target
-const DEFAULT_BURST_SIZE = 5;      // Cycles per burst (each ~10s, 5 fits in deadline)
-const MAX_BURST_SIZE = 8;          // Hard cap per invocation
+const CLM_VERSION = "5.1.0";
+const MAX_CYCLES_PER_HOUR = 12;        // ~36 AI calls/hour (3 topics × 12)
+const MAX_CYCLES_PER_DAY = 200;        // ~600 AI calls/day target (realistic free-tier)
+const DEFAULT_BURST_SIZE = 2;          // 2 cycles per burst (conservative)
+const MAX_BURST_SIZE = 3;             // Hard cap per invocation
 const CYCLE_TIMEOUT_MS = 45_000;
 const BURST_DEADLINE_MS = 50_000;
+const FAILURE_RATE_BACKOFF_THRESHOLD = 0.5; // Back off when >50% recent calls fail
+const FAILURE_RATE_HALT_THRESHOLD = 0.8;    // Halt when >80% recent calls fail
 
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
@@ -230,13 +233,13 @@ async function getBudgetState(supabase: any): Promise<BudgetState> {
   };
 }
 
-async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour: number }> {
+async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour: number; failureRate: number }> {
   const now = new Date();
   const todayKey = now.toISOString().split('T')[0];
   const hourStart = new Date(now);
   hourStart.setMinutes(0, 0, 0);
 
-  const [dailyRes, hourlyRes] = await Promise.all([
+  const [dailyRes, hourlyRes, recentFailRes, recentTotalRes] = await Promise.all([
     supabase
       .from('ai_usage_log')
       .select('id', { count: 'exact', head: true })
@@ -247,11 +250,26 @@ async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour
       .select('id', { count: 'exact', head: true })
       .eq('success', true)
       .gte('created_at', hourStart.toISOString()),
+    // Count recent failures (last 30 min) to detect provider saturation
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', false)
+      .gte('created_at', new Date(Date.now() - 30 * 60_000).toISOString()),
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', new Date(Date.now() - 30 * 60_000).toISOString()),
   ]);
+
+  const recentFails = recentFailRes.count || 0;
+  const recentTotal = recentTotalRes.count || 0;
+  const failureRate = recentTotal > 0 ? recentFails / recentTotal : 0;
 
   return {
     today: dailyRes.count || 0,
     hour: hourlyRes.count || 0,
+    failureRate,
   };
 }
 
@@ -303,8 +321,15 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
     } catch { /* non-fatal */ }
   });
 
-  // PHASE 2: Learning Topic Study — ALL 10 topics in parallel
-  const topicPromises = LEARNING_TOPICS.map(async (topic) => {
+  // PHASE 2: Learning Topic Study — 3 topics per cycle (sequential rotation, not all 10 in parallel)
+  const topicsPerCycle = 3;
+  const topicOffset = cycleNumber % LEARNING_TOPICS.length;
+  const selectedTopics = [];
+  for (let i = 0; i < topicsPerCycle; i++) {
+    selectedTopics.push(LEARNING_TOPICS[(topicOffset + i) % LEARNING_TOPICS.length]);
+  }
+
+  const topicPromises = selectedTopics.map(async (topic) => {
     try {
       const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
         body: { module: 'brain', action: 'deep_think', data: { query: topic.prompt, depth: 2 } },
@@ -330,7 +355,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
           preferWarm: preferWarmForLearning,
           metadata: {
             domain: topic.domain,
-            source: 'clm_burst_engine',
+            source: 'clm_adaptive_engine',
             cycle: cycleNumber,
             ai_provider: studyResult.ai_provider,
           },
@@ -344,7 +369,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
             title: `CLM Study: ${topic.domain}`,
             domain: topic.domain,
             result: analysisText.substring(0, 800),
-            source: 'clm_burst_engine',
+            source: 'clm_adaptive_engine',
             version: CLM_VERSION,
             cycle: cycleNumber,
             stored_tier: storedTier,
@@ -470,9 +495,9 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       cycle_number: cycleNumber,
       ai_calls: aiCalls,
       modules_analyzed: selectedModules.length,
-      topics_studied: LEARNING_TOPICS.length,
+      topics_studied: selectedTopics.length,
       duration_ms: Date.now() - cycleStart,
-      mode: 'burst',
+      mode: 'adaptive',
       memory_tiers: {
         hot: tierState.hot,
         warm: tierState.warm,
@@ -565,8 +590,9 @@ serve(async (req) => {
         velocity: {
           est_ai_calls_today: realCalls.today,
           est_ai_calls_per_hour: velocity,
-          target_daily: 25000,
-          pct_of_target: Math.round((realCalls.today / 25000) * 100),
+          failure_rate_30m: realCalls.failureRate,
+          target_daily: 2000,
+          pct_of_target: Math.round((realCalls.today / 2000) * 100),
         },
         memory: {
           hot: { count: memory.hot, limit: memory.hotLimit, pressure: Number((memory.hot / Math.max(1, memory.hotLimit)).toFixed(2)) },
@@ -600,15 +626,32 @@ serve(async (req) => {
       });
     }
 
+    // ═══ FAILURE-RATE GATE (v5.1) ═══
+    const recentHealth = await getRealAICallCounts(supabase);
+    if (recentHealth.failureRate >= FAILURE_RATE_HALT_THRESHOLD) {
+      console.log(`🛑 CLM halted — provider failure rate ${(recentHealth.failureRate * 100).toFixed(0)}% exceeds ${FAILURE_RATE_HALT_THRESHOLD * 100}% threshold`);
+      return new Response(JSON.stringify({
+        success: true, skipped: true,
+        reason: 'provider_saturation',
+        failure_rate: recentHealth.failureRate,
+        message: `Provider fleet failure rate is ${(recentHealth.failureRate * 100).toFixed(0)}%. Backing off to let rate limits recover.`,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    // Reduce burst size if moderate failure rate
+    let adaptiveBurstSize = burstSize;
+    if (recentHealth.failureRate >= FAILURE_RATE_BACKOFF_THRESHOLD) {
+      adaptiveBurstSize = 1;
+      console.log(`⚠️ CLM reduced to 1 cycle — failure rate ${(recentHealth.failureRate * 100).toFixed(0)}%`);
+    }
+
     // ═══ BURST / CYCLE EXECUTION ═══
-    // v5: Always burst — even 'cycle' action runs burst_size cycles
-    const effectiveBurstSize = Math.min(burstSize, budget.remainingDaily, budget.remainingHourly);
+    const effectiveBurstSize = Math.min(adaptiveBurstSize, budget.remainingDaily, budget.remainingHourly);
 
     const cycleResults: Array<{ cycle: number; aiCalls: number; durationMs: number }> = [];
     let totalAiCalls = 0;
 
     for (let i = 0; i < effectiveBurstSize; i++) {
-      // Check deadline
       if (Date.now() - startTime > BURST_DEADLINE_MS) {
         console.log(`⏰ Burst deadline reached after ${i} cycles`);
         break;
@@ -626,9 +669,11 @@ serve(async (req) => {
       }
     }
 
-    // ═══ SELF-CHAIN: dispatch next burst immediately ═══
-    if (autoChain && totalAiCalls > 0 && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
-      chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, burstSize, {
+    // ═══ SELF-CHAIN: only if healthy and productive ═══
+    const shouldChain = autoChain && totalAiCalls > 0 && recentHealth.failureRate < FAILURE_RATE_BACKOFF_THRESHOLD
+      && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize;
+    if (shouldChain) {
+      chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, adaptiveBurstSize, {
         ...budget,
         todayCycles: budget.todayCycles + cycleResults.length,
         hourCycles: budget.hourCycles + cycleResults.length,
@@ -636,7 +681,9 @@ serve(async (req) => {
         remainingHourly: budget.remainingHourly - cycleResults.length,
       });
     } else if (autoChain && totalAiCalls === 0) {
-      console.log('⏸️ Auto-chain skipped — no real external AI calls completed in this burst');
+      console.log('⏸️ Auto-chain skipped — no real external AI calls completed');
+    } else if (autoChain && recentHealth.failureRate >= FAILURE_RATE_BACKOFF_THRESHOLD) {
+      console.log(`⏸️ Auto-chain skipped — failure rate ${(recentHealth.failureRate * 100).toFixed(0)}% too high`);
     }
 
     const totalDuration = Date.now() - startTime;
