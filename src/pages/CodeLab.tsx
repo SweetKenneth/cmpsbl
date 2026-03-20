@@ -608,6 +608,7 @@ const response = await substrate.nexus.text(
         </Tabs>
       </main>
 
+      </Suspense>
       <EnhancedFooter />
     </div>
   );
