@@ -90,7 +90,7 @@ export function SavedWorkflows({ tier }: { tier: string }) {
       return;
     }
     if (data) {
-      setWorkflows(prev => [data as SavedWorkflow, ...prev]);
+      setWorkflows(prev => [{ ...data, intent_chain: data.intent_chain as unknown as SavedWorkflow['intent_chain'] }, ...prev]);
       toast.success(`Saved "${preset.name}"`);
     }
   };
