@@ -162,7 +162,7 @@ export async function searchMemories(
     const sanitized = query.replace(/[%_\\]/g, '');
     if (!sanitized) return [];
 
-    const queries: Array<ReturnType<ReturnType<typeof supabase.from>['select']>> = [];
+    const queries: Promise<any>[] = [];
     const tierOrder: MemoryTier[] = [];
 
     if (tiers.includes('hot')) {
@@ -173,7 +173,7 @@ export async function searchMemories(
         .ilike('content', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
-        .limit(limit);
+        .limit(limit) as any;
       if (options?.context) q = q.eq('context', options.context);
       queries.push(q);
     }
@@ -186,7 +186,7 @@ export async function searchMemories(
         .ilike('content', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
-        .limit(limit);
+        .limit(limit) as any;
       if (options?.context) q = q.eq('context', options.context);
       queries.push(q);
     }
@@ -221,8 +221,8 @@ export async function searchMemories(
 
     for (let i = 0; i < tierOrder.length; i++) {
       const tier = tierOrder[i];
-      const data = responses[i]?.data || [];
-      for (const item of data) {
+      const data = (responses[i] as any)?.data || [];
+      for (const item of data as any[]) {
         results.push({
           id: item.id,
           content: item.content || item.summary,
