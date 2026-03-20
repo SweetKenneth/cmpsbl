@@ -76,7 +76,7 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-export function DefenseAnalytics() {
+export const DefenseAnalytics = memo(function DefenseAnalytics() {
   const [events, setEvents] = useState<DefenseEvent[]>([]);
   const [stats, setStats] = useState<DefenseStats | null>(null);
   const [loading, setLoading] = useState(true);
