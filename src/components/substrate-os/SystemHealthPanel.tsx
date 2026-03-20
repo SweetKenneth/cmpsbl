@@ -303,4 +303,4 @@ export const SystemHealthPanel = memo(function SystemHealthPanel({ enabled }: Sy
       </div>
     </motion.div>
   );
-}
+});

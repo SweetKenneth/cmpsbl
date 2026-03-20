@@ -78,34 +78,34 @@ const NERVE_KEYS = {
 
 export function useNerve(): UseNerveReturn {
   const qc = useQueryClient();
-  const polling = debugMode.allowModulePolling() ? 8000 : undefined;
+  const polling = debugMode.allowModulePolling() ? 15000 : undefined;
 
   const statsQ = useQuery({
     queryKey: NERVE_KEYS.stats,
     queryFn: getNerveStats,
     refetchInterval: polling,
-    staleTime: 4000,
+    staleTime: 8000,
   });
 
   const heartbeatsQ = useQuery({
     queryKey: NERVE_KEYS.heartbeats,
     queryFn: getHeartbeats,
     refetchInterval: polling,
-    staleTime: 4000,
+    staleTime: 8000,
   });
 
   const circuitsQ = useQuery({
     queryKey: NERVE_KEYS.circuits,
     queryFn: getAllCircuits,
     refetchInterval: polling,
-    staleTime: 4000,
+    staleTime: 8000,
   });
 
   const bpQ = useQuery({
     queryKey: NERVE_KEYS.backpressure,
     queryFn: getAllBackpressure,
     refetchInterval: polling,
-    staleTime: 4000,
+    staleTime: 8000,
   });
 
   const topoQ = useQuery({

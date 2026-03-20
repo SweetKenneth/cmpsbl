@@ -275,4 +275,4 @@ export const EventStream = memo(function EventStream() {
       </ScrollArea>
     </div>
   );
-}
+});

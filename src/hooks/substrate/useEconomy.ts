@@ -80,16 +80,16 @@ export function useEconomy(): UseEconomyReturn {
   const balances = useQuery({
     queryKey: ['substrate', 'economy', 'balances'],
     queryFn: () => economyModule.getAllBalances(),
-    refetchInterval: pollingEnabled ? 30000 : false,
-    staleTime: 15000,
+    refetchInterval: pollingEnabled ? 60000 : false,
+    staleTime: 30000,
     enabled: pollingEnabled,
   });
 
   const recommendations = useQuery({
     queryKey: ['substrate', 'economy', 'recommendations'],
     queryFn: () => economyModule.getRecommendations(),
-    refetchInterval: pollingEnabled ? 60000 : false,
-    staleTime: 30000,
+    refetchInterval: pollingEnabled ? 120000 : false,
+    staleTime: 60000,
     enabled: pollingEnabled,
   });
 
