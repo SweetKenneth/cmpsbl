@@ -13,6 +13,7 @@
 import { primitiveExecutorSync, getRuntimeMode } from './primitive-executor-bridge';
 import { getPrimitive } from './primitive-registry';
 import { registerPrimaryHandler, type PrimaryHandlerRegistration } from './primary-handler-factory';
+import type { ExtractedPrimitive } from './types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
