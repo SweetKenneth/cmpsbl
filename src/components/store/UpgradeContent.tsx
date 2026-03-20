@@ -303,7 +303,10 @@ export function UpgradeContent() {
                 {isCurrent && (
                   <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground text-[10px]">Current</Badge>
                 )}
-                {t.popular && !isCurrent && (
+                {!isCurrent && t.stripeTier && (
+                  <Badge className="absolute top-4 right-4 bg-emerald-500 text-white text-[10px]">7-day free trial</Badge>
+                )}
+                {t.popular && !isCurrent && !t.stripeTier && (
                   <Badge className="absolute top-4 right-4 bg-violet-500 text-white text-[10px]">Popular</Badge>
                 )}
 
