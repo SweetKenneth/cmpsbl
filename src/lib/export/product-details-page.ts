@@ -146,12 +146,15 @@ export function generateProductDetailsHTML(input: ProductDetailsInput): string {
 
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 600;
-      line-height: 1.15;
+      line-height: 1.2;
       letter-spacing: -0.02em;
       margin-bottom: 0.3rem;
       word-break: break-word;
+      overflow-wrap: break-word;
+      hyphens: auto;
+      max-width: 100%;
     }
 
     h2 {

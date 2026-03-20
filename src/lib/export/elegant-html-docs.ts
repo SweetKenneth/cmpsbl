@@ -42,13 +42,14 @@ const DOCUMENT_STYLES = `
     }
     .doc-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 600;
       letter-spacing: -0.01em;
-      line-height: 1.2;
+      line-height: 1.25;
       word-break: break-word;
       overflow-wrap: break-word;
       hyphens: auto;
+      max-width: 100%;
     }
     .doc-subtitle {
       font-family: 'Cormorant Garamond', Georgia, serif;
