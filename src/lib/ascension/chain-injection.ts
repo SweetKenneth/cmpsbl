@@ -19,6 +19,7 @@ import {
   isAscensionModule,
   generateCorrelationId,
 } from './types';
+import { applyEffectInjection, ensureChain, detectPrimaryUnit } from './effect-injection';
 
 // Re-export types
 export type { InjectionResult, ChainParticipation };
@@ -66,6 +67,10 @@ export function buildNodeEffect(node: AscensionNode): ModuleEffect {
       let executedCount = 0;
       let failedCount = 0;
       const outputChanges: string[] = [];
+
+      // ── Universal Effect Injection (v1) ──
+      // Apply effect wrapper FIRST for traceability + signals + metrics
+      ctx = applyEffectInjection(ctx, node);
 
       // Execute each primitive handler — isolate failures
       for (const primitive of primitives.slice(0, 20)) {
@@ -136,12 +141,26 @@ export function injectNodeIntoChain(
   position?: number
 ): { chain: string[]; injectedAt: number } {
   const moduleName = buildAscensionModuleName(node.surface?.nodeName || node.name);
-  const insertAt = position !== undefined
-    ? Math.min(Math.max(0, position), existingChain.length)
-    : Math.floor(existingChain.length / 2);
 
-  const chain = [...existingChain];
-  chain.splice(insertAt, 0, moduleName);
+  // Use ensureChain to guarantee a valid chain exists
+  const baseChain = ensureChain(
+    existingChain.length > 0 ? existingChain : null,
+    node
+  );
+
+  // If chain was auto-generated, primary is already first
+  if (existingChain.length === 0) {
+    return { chain: baseChain, injectedAt: 0 };
+  }
+
+  const insertAt = position !== undefined
+    ? Math.min(Math.max(0, position), baseChain.length)
+    : Math.floor(baseChain.length / 2);
+
+  const chain = [...baseChain];
+  if (!chain.includes(moduleName)) {
+    chain.splice(insertAt, 0, moduleName);
+  }
 
   return { chain, injectedAt: insertAt };
 }

@@ -177,3 +177,20 @@ export {
   governorGetPrimitiveSummary,
   type GovernorInjection,
 } from './primitive-governor';
+
+// Universal Effect Injection (v1)
+export {
+  detectPrimaryUnit,
+  effectWrapper,
+  autoMapModuleName,
+  generateDefaultChain,
+  ensureChain,
+  applyEffectInjection,
+  enrichExtractionWithEffects,
+  type EffectSignal,
+  type IntelligenceMetrics,
+  type EffectContext,
+  type EffectInjectionResult,
+  type PrimaryExecutionUnit,
+  type EffectExtractionMeta,
+} from './effect-injection';
