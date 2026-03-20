@@ -1485,13 +1485,14 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   }));
 
   // LICENSE — Plain text + HTML
+  const humanizedPackName = humanizeCapabilityName(candidateName, capabilities[0]?.chain, capabilities[0]?.category);
   zip.file('LICENSE', generateLicenseMd());
-  zip.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${candidateName}`));
+  zip.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${humanizedPackName}`));
 
   // README — Plain text + HTML
   zip.file('README.md', generateReadmeMd(options));
   zip.file('README.html', generateReadmeHTML({
-    name: `Capability Pack — ${candidateName}`,
+    name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
     files: [
       { name: 'src/', purpose: 'Executable capability implementations' },
