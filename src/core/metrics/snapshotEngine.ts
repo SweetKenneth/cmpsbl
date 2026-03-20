@@ -196,6 +196,7 @@ export function startSnapshotEngine(): () => void {
   capture().catch(console.error);
 
   captureInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     capture().catch(console.error);
   }, CAPTURE_INTERVAL_MS);
 
