@@ -219,7 +219,7 @@ export function useLiveReflections() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_reflections')
-        .select('*')
+        .select('id, reflection_type, content, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
       
