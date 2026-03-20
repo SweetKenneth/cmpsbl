@@ -123,15 +123,15 @@ export function useLiveBrainEvents() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_events')
-        .select('*')
+        .select('id, module, event_type, data, created_at')
         .order('created_at', { ascending: false })
         .limit(50);
       
       if (error) throw error;
       return { events: data ?? [], fetchedAt: Date.now() };
     },
-    refetchInterval: 5000, // Poll every 5 seconds for live feed
-    staleTime: 4000,
+    refetchInterval: 10000, // 10s — was 5s, reduces query pressure by 50%
+    staleTime: 8000,
   });
 }
 
