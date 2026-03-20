@@ -139,7 +139,7 @@ class MeshAutoScheduler {
     // Full expansion
     this.timers.fullExpansion = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runFullExpansionCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in full expansion interval:', err);
