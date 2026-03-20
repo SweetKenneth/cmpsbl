@@ -61,7 +61,7 @@ const STEPS: OnboardingStep[] = [
     icon: Bot,
     tag: 'Your next step',
     title: 'Start Exploring',
-    body: 'You\'re ready. The free Builder tier gives you 3 memory slots, full runtime access, and no credit card required. Here\'s where to go:',
+    body: 'You\'re ready. The free Builder tier gives you 3 capability slots, full runtime access, and no credit card required. Here\'s where to go:',
     accent: 'neon-green',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-green) / 0.1) 0%, transparent 50%)',
     nextSteps: [

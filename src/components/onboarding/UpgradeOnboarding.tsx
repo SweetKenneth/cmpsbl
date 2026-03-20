@@ -63,7 +63,7 @@ const STEPS: OnboardingStep[] = [
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
     nextSteps: [
-      'Compare memory slots, vault depth, and daily pulls',
+      'Compare capability slots, vault depth, and daily pulls',
       'Start free with Builder — upgrade anytime',
       'All plans include the full 40-node runtime',
     ],
