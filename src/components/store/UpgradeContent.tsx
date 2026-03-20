@@ -59,6 +59,8 @@ const TIERS: {
       'Full runtime — not a demo',
       'Browse all 24 capability packs',
       'Standard memory (5 recalls)',
+      'Usage dashboard with ROI metrics',
+      'Member Hub access',
       'Community Discord support',
     ],
   },
