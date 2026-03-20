@@ -227,7 +227,7 @@ export function detectPrimaryUnit(
     const classMatch = primitives.find(
       (p) => p.extractionMethod === 'class' && p.name.toLowerCase() === baseName
     );
-    if (classMatch) return buildUnit(classMatch, lang);
+    if (classMatch) return buildUnit(classMatch, lang, primitives);
   }
 
   // Priority 2: Main/entry point function
@@ -237,26 +237,26 @@ export function detectPrimaryUnit(
       p.extractionMethod === 'function' &&
       entryNames.some((e) => p.name.toLowerCase() === e || p.name.toLowerCase().startsWith(e))
   );
-  if (entryMatch) return buildUnit(entryMatch, lang);
+  if (entryMatch) return buildUnit(entryMatch, lang, primitives);
 
   // Priority 3: Highest-confidence class
   const classHigh = primitives
     .filter((p) => p.extractionMethod === 'class')
     .sort((a, b) => b.confidence - a.confidence)[0];
-  if (classHigh) return buildUnit(classHigh, lang);
+  if (classHigh) return buildUnit(classHigh, lang, primitives);
 
   // Priority 4: Highest-confidence function
   const funcHigh = primitives
     .filter((p) => p.extractionMethod === 'function')
     .sort((a, b) => b.confidence - a.confidence)[0];
-  if (funcHigh) return buildUnit(funcHigh, lang);
+  if (funcHigh) return buildUnit(funcHigh, lang, primitives);
 
   // Priority 5: First module
   const moduleMatch = primitives.find((p) => p.extractionMethod === 'module');
-  if (moduleMatch) return buildUnit(moduleMatch, lang);
+  if (moduleMatch) return buildUnit(moduleMatch, lang, primitives);
 
   // Fallback: first primitive
-  return buildUnit(primitives[0], lang);
+  return buildUnit(primitives[0], lang, primitives);
 }
 
 function buildUnit(primitive: ExtractedPrimitive, sourceLanguage: string, allPrimitives?: ExtractedPrimitive[]): PrimaryExecutionUnit {
