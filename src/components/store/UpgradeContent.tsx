@@ -194,10 +194,10 @@ export function UpgradeContent() {
             Plans
           </Badge>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-            Scale Your Platform
+            Every Tier. Full Power.
           </h2>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto text-center">
-            Every tier unlocks <strong className="text-foreground">full runtime access</strong>. Upgrade for more memory, faster routing, and deeper capabilities.
+            Workflows, exports, Member Hub, governance, and the full cognitive runtime — <strong className="text-foreground">included on every plan</strong>. Scale slots, memory, and discovery as you grow.
           </p>
         </motion.div>
 
