@@ -1738,7 +1738,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   // src/ — Capability source files
   const srcFolder = zip.folder('src')!;
   for (const cap of capabilities) {
-    srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage));
+    srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
   }
 
   // src/ — Runtime Bridge (Runtime Binding Layer)
