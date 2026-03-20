@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { useNavigate } from 'react-router-dom';
 import { X, ArrowRight, Sparkles, Terminal, Database, ShoppingBag, Zap, Bot, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
