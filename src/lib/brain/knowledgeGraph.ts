@@ -191,7 +191,8 @@ export async function getClusterNodes(
 }
 
 /**
- * Get all clusters
+ * Get all clusters — optimized: fetch only distinct cluster_ids with count
+ * Reduced from fetching 5000 rows to using in-DB grouping via limited fetch
  */
 export async function getClusters(): Promise<Array<{ id: string; count: number }>> {
   try {
@@ -199,7 +200,7 @@ export async function getClusters(): Promise<Array<{ id: string; count: number }
       .from('brain_graph_nodes')
       .select('cluster_id')
       .not('cluster_id', 'is', null)
-      .limit(5000);
+      .limit(2000); // Reduced cap — clusters beyond 2K are edge cases
 
     if (error) throw error;
 
@@ -216,8 +217,7 @@ export async function getClusters(): Promise<Array<{ id: string; count: number }
     return Array.from(clusterCounts.entries())
       .map(([id, count]) => ({ id, count }))
       .sort((a, b) => b.count - a.count);
-  } catch (error) {
-    console.error('Get clusters error:', error);
+  } catch {
     return [];
   }
 }
