@@ -107,8 +107,8 @@ export default function CodeLab() {
       <PublicNav />
       <CodeLabOnboarding />
 
-      {/* SIGNAL FORGE — Hero Template Generator */}
       <Suspense fallback={<div className="h-64 flex items-center justify-center"><div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" /></div>}>
+      {/* SIGNAL FORGE — Hero Template Generator */}
       <SignalForge />
 
       {/* Quick Stats Bar + Dialect Selector */}
