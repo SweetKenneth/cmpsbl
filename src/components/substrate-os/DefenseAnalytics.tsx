@@ -468,4 +468,4 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
       </Tabs>
     </div>
   );
-}
+});

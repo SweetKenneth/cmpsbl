@@ -743,4 +743,4 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
       )}
     </div>
   );
-}
+});
