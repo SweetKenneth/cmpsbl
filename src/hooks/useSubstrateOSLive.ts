@@ -184,7 +184,7 @@ export function useLiveDreamEaterState() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('dream_eater_state')
-        .select('*')
+        .select('id, current_phase, dreams_consumed, updated_at')
         .order('updated_at', { ascending: false })
         .limit(1)
         .maybeSingle();
