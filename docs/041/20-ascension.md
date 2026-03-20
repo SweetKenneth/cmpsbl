@@ -41,7 +41,7 @@ This phase is visualized through a cinematic orbital canvas showing collision cy
 
 ### Phase 3: CRYSTALLIZATION
 
-Successful interaction chains scoring ≥ 68 CJPI are crystallized into capability artifacts. The crystallization process follows the standard pipeline: Sampling → Condensing → Crystallizing.
+Successful interaction chains are crystallized into capability artifacts — all archetype-matched discoveries are surfaced for ascending and export regardless of CJPI score. The crystallization process follows the standard pipeline: Sampling → Condensing → Crystallizing.
 
 ### Phase 4: ASCENDED MEMORY
 
