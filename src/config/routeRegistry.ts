@@ -58,7 +58,7 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/foundry", label: "Memory Stream", section: "product", priority: 0.95, changefreq: "daily", description: "Discover & crystallize memory pipelines" },
   { path: "/persistent-memory", label: "Persistent Memory", section: "product", priority: 0.92, changefreq: "monthly", description: "4-tier memory for any agent" },
   { path: "/packs", label: "Capability Packs", section: "product", priority: 0.88, changefreq: "weekly", description: "Activate substrate capabilities" },
-  { path: "/store", label: "Store", section: "product", priority: 0.90, changefreq: "weekly", description: "Agents, engines, plans & memories" },
+  
   { path: "/enterprise", label: "Enterprise", section: "product", priority: 0.85, changefreq: "monthly", description: "Scale with governed orchestration" },
   { path: "/pricing-method", label: "Pricing Methodology", section: "product", priority: 0.65, changefreq: "monthly", description: "Transparent pricing model" },
   { path: "/feed-dream-eater", label: "Dream Feeder", section: "product", priority: 0, changefreq: "monthly", redirect: true },

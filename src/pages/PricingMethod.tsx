@@ -18,6 +18,11 @@ export default function PricingMethod() {
         <meta property="og:description" content="Transparent, auditable pricing for AI capabilities — multi-model consensus and quality scoring." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/pricing-method" />
+        <meta property="og:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Pricing Methodology | CMPSBL®" />
+        <meta name="twitter:description" content="Transparent, auditable pricing for AI capabilities — multi-model consensus and quality scoring." />
+        <meta name="twitter:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
