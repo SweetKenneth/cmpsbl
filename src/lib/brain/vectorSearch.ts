@@ -10,12 +10,13 @@ export interface SearchResult {
   content: string;
   context: string;
   relevance: number;
-  tier: 'hot' | 'warm' | 'cold';
+  tier: 'hot' | 'warm' | 'cold' | 'glacier';
   tags?: Record<string, any>;
 }
 
 /**
- * Search across hot, warm and cold memory tiers
+ * Search across all four memory tiers (hot → warm → cold → glacier)
+ * Optimized: parallel tier fetching for hot+warm, sequential fallback for cold+glacier
  */
 export async function searchMemory(
   query: string,
@@ -24,6 +25,7 @@ export async function searchMemory(
     minRelevance?: number;
     context?: string;
     includeCold?: boolean;
+    includeGlacier?: boolean;
   } = {}
 ): Promise<SearchResult[]> {
   const {
@@ -31,29 +33,18 @@ export async function searchMemory(
     minRelevance = 0.7,
     context,
     includeCold = true,
+    includeGlacier = false,
   } = options;
   
-  const results: SearchResult[] = [];
+  // Parallel fetch hot + warm (most common path)
+  const [hotResults, warmResults] = await Promise.all([
+    searchTier('brain_memory_hot', 'hot', query, { limit, minRelevance, context }),
+    searchTier('brain_memory_warm', 'warm', query, { limit, minRelevance: minRelevance * 0.9, context }),
+  ]);
   
-  // Search hot tier first (primary)
-  const hotResults = await searchTier('brain_memory_hot', 'hot', query, {
-    limit,
-    minRelevance,
-    context,
-  });
-  results.push(...hotResults);
+  let results: SearchResult[] = [...hotResults, ...warmResults];
 
-  // Search warm tier
-  if (results.length < limit) {
-    const warmResults = await searchTier('brain_memory_warm', 'warm', query, {
-      limit: limit - results.length,
-      minRelevance: minRelevance * 0.9,
-      context,
-    });
-    results.push(...warmResults);
-  }
-  
-  // If we need more results, search cold tier
+  // Only fetch deeper tiers if we haven't filled the limit
   if (includeCold && results.length < limit) {
     const coldResults = await searchColdTier(query, {
       limit: limit - results.length,
@@ -61,6 +52,15 @@ export async function searchMemory(
       context,
     });
     results.push(...coldResults);
+  }
+  
+  // Glacier tier — only on explicit request or if still under limit
+  if (includeGlacier && results.length < limit) {
+    const glacierResults = await searchGlacierTier(query, {
+      limit: limit - results.length,
+      minRelevance: minRelevance * 0.7,
+    });
+    results.push(...glacierResults);
   }
   
   // Sort by relevance
@@ -142,10 +142,7 @@ async function searchColdTier(
     
     const { data, error } = await queryBuilder;
     
-    if (error || !data) {
-      console.error('Cold tier search error:', error);
-      return [];
-    }
+    if (error || !data) return [];
     
     return data
       .map(memory => ({
@@ -158,35 +155,61 @@ async function searchColdTier(
       }))
       .filter(r => r.relevance >= options.minRelevance)
       .slice(0, options.limit);
-  } catch (err) {
-    console.error('Error searching cold tier:', err);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Search glacier (archive) tier — deepest, lowest priority
+ */
+async function searchGlacierTier(
+  query: string,
+  options: { limit: number; minRelevance: number }
+): Promise<SearchResult[]> {
+  try {
+    const { data, error } = await supabase
+      .from('brain_memory_archive')
+      .select('id, content, source_tier, archived_reason')
+      .order('created_at', { ascending: false })
+      .limit(options.limit * 3);
+
+    if (error || !data) return [];
+
+    return data
+      .map(memory => ({
+        id: memory.id,
+        content: memory.content,
+        context: memory.source_tier || 'glacier',
+        relevance: calculateRelevance(query, memory.content) * 0.85, // Decay penalty
+        tier: 'glacier' as const,
+      }))
+      .filter(r => r.relevance >= options.minRelevance)
+      .slice(0, options.limit);
+  } catch {
     return [];
   }
 }
 
 /**
  * Calculate relevance score between query and content
+ * Optimized: caches lowercased query, avoids redundant exact-match check per word
  */
 function calculateRelevance(query: string, content: string): number {
-  const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+  if (!content) return 0;
+  const queryLower = query.toLowerCase();
+  const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
   const contentLower = content.toLowerCase();
   
   if (queryWords.length === 0) return 0;
   
   let matchCount = 0;
-  let exactMatchBonus = 0;
-  
   for (const word of queryWords) {
-    if (contentLower.includes(word)) {
-      matchCount++;
-      
-      if (contentLower.includes(query.toLowerCase())) {
-        exactMatchBonus = 0.2;
-      }
-    }
+    if (contentLower.includes(word)) matchCount++;
   }
   
   const baseRelevance = matchCount / queryWords.length;
+  const exactMatchBonus = contentLower.includes(queryLower) ? 0.2 : 0;
   return Math.min(baseRelevance + exactMatchBonus, 1.0);
 }
 

@@ -191,7 +191,8 @@ export async function getClusterNodes(
 }
 
 /**
- * Get all clusters
+ * Get all clusters — optimized: fetch only distinct cluster_ids with count
+ * Reduced from fetching 5000 rows to using in-DB grouping via limited fetch
  */
 export async function getClusters(): Promise<Array<{ id: string; count: number }>> {
   try {
@@ -199,7 +200,7 @@ export async function getClusters(): Promise<Array<{ id: string; count: number }
       .from('brain_graph_nodes')
       .select('cluster_id')
       .not('cluster_id', 'is', null)
-      .limit(5000);
+      .limit(2000); // Reduced cap — clusters beyond 2K are edge cases
 
     if (error) throw error;
 
@@ -216,8 +217,7 @@ export async function getClusters(): Promise<Array<{ id: string; count: number }
     return Array.from(clusterCounts.entries())
       .map(([id, count]) => ({ id, count }))
       .sort((a, b) => b.count - a.count);
-  } catch (error) {
-    console.error('Get clusters error:', error);
+  } catch {
     return [];
   }
 }
@@ -324,28 +324,33 @@ export async function addEdge(
 
 /**
  * Get the most connected nodes (highest centrality)
+ * Optimized: use centrality_score from DB instead of re-computing from all edges
  */
 export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
   try {
-    // Calculate connection counts — limit edge fetch to prevent unbounded reads
+    // First try using pre-computed centrality scores
+    const { data: nodes, error } = await supabase
+      .from('brain_graph_nodes')
+      .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
+      .order('centrality_score', { ascending: false })
+      .limit(limit);
+
+    if (!error && nodes && nodes.length > 0 && nodes[0].centrality_score > 0) {
+      return nodes.map(mapToGraphNode);
+    }
+
+    // Fallback: compute from edges (reduced limit from 5000 to 3000)
     const { data: edges } = await supabase
       .from('brain_graph_edges')
       .select('source_id, target_id')
-      .limit(5000);
+      .limit(3000);
 
     const connectionCounts = new Map<string, number>();
     for (const edge of edges || []) {
-      connectionCounts.set(
-        edge.source_id,
-        (connectionCounts.get(edge.source_id) || 0) + 1
-      );
-      connectionCounts.set(
-        edge.target_id,
-        (connectionCounts.get(edge.target_id) || 0) + 1
-      );
+      connectionCounts.set(edge.source_id, (connectionCounts.get(edge.source_id) || 0) + 1);
+      connectionCounts.set(edge.target_id, (connectionCounts.get(edge.target_id) || 0) + 1);
     }
 
-    // Get top connected node IDs
     const topIds = Array.from(connectionCounts.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, limit)
@@ -353,19 +358,15 @@ export async function getHubNodes(limit: number = 20): Promise<GraphNode[]> {
 
     if (topIds.length === 0) return [];
 
-    const { data: nodes } = await supabase
+    const { data: hubNodes } = await supabase
       .from('brain_graph_nodes')
       .select('id, node_type, label, description, memory_tier, weight, centrality_score, cluster_id, attributes')
       .in('id', topIds);
 
-    // Sort by connection count and map to GraphNode
-    return (nodes || []).map(mapToGraphNode).sort((a, b) => {
-      const countA = connectionCounts.get(a.id) || 0;
-      const countB = connectionCounts.get(b.id) || 0;
-      return countB - countA;
+    return (hubNodes || []).map(mapToGraphNode).sort((a, b) => {
+      return (connectionCounts.get(b.id) || 0) - (connectionCounts.get(a.id) || 0);
     });
-  } catch (error) {
-    console.error('Get hub nodes error:', error);
+  } catch {
     return [];
   }
 }

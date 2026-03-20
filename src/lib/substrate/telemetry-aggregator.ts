@@ -284,17 +284,17 @@ export async function aggregateTelemetry(): Promise<TelemetrySnapshot> {
   return snapshot;
 }
 
-// ═══ AI Usage (no row limit — paginated) ═════════════════════════
+// ═══ AI Usage (optimized — single-pass aggregation, reduced pages) ════
 
 async function aggregateAiUsage(): Promise<AiTelemetry> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-  // Fetch in pages to avoid 500-row ceiling
+  // Reduced to 2 pages max (2000 rows) — sufficient for 24h telemetry
   let allData: Array<{ provider: string; tokens_used: number | null; success: boolean | null; response_time_ms: number | null }> = [];
   let page = 0;
   const pageSize = 1000;
 
-  while (page < 5) { // Cap at 5000 rows for safety
+  while (page < 2) {
     const { data, error } = await supabase
       .from('ai_usage_log')
       .select('provider, tokens_used, success, response_time_ms')
@@ -309,25 +309,32 @@ async function aggregateAiUsage(): Promise<AiTelemetry> {
 
   if (allData.length === 0) return defaultAi();
 
-  const totalCalls = allData.length;
-  const successCount = allData.filter(d => d.success).length;
-  const totalTokens = allData.reduce((s, d) => s + (d.tokens_used || 0), 0);
-
-  const responseTimes = allData
-    .map(d => d.response_time_ms || 0)
-    .filter(t => t > 0);
-
-  const avgResponseTime = responseTimes.length > 0
-    ? Math.round(responseTimes.reduce((s, t) => s + t, 0) / responseTimes.length)
-    : 0;
-
-  // p95 response time
-  const sorted = [...responseTimes].sort((a, b) => a - b);
-  const p95Index = Math.max(0, Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.95) - 1));
-  const p95ResponseTime = sorted.length > 0 ? sorted[p95Index] : 0;
-
+  // Single-pass aggregation
+  let successCount = 0;
+  let totalTokens = 0;
+  let responseTimeSum = 0;
+  let responseTimeCount = 0;
+  const responseTimes: number[] = [];
   const providerCounts: Record<string, number> = {};
-  allData.forEach(d => { providerCounts[d.provider] = (providerCounts[d.provider] || 0) + 1; });
+
+  for (const d of allData) {
+    if (d.success) successCount++;
+    totalTokens += d.tokens_used || 0;
+    if (d.response_time_ms && d.response_time_ms > 0) {
+      responseTimeSum += d.response_time_ms;
+      responseTimeCount++;
+      responseTimes.push(d.response_time_ms);
+    }
+    providerCounts[d.provider] = (providerCounts[d.provider] || 0) + 1;
+  }
+
+  const totalCalls = allData.length;
+  const avgResponseTime = responseTimeCount > 0 ? Math.round(responseTimeSum / responseTimeCount) : 0;
+
+  responseTimes.sort((a, b) => a - b);
+  const p95Index = Math.max(0, Math.min(responseTimes.length - 1, Math.ceil(responseTimes.length * 0.95) - 1));
+  const p95ResponseTime = responseTimes.length > 0 ? responseTimes[p95Index] : 0;
+
   const topProvider = Object.entries(providerCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 
   return {

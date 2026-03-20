@@ -143,6 +143,7 @@ class TelemetryEngineClient {
 
   /**
    * Emit a telemetry event (non-blocking, side-effect free)
+   * Optimized: batches persistence calls to reduce DB write pressure
    */
   emit(
     type: TelemetryEventType,
@@ -151,6 +152,22 @@ class TelemetryEngineClient {
     payload: TelemetryEvent['payload'],
     correlationId?: string
   ): TelemetryEvent {
+    // Apply sampling — drop debug/info noise during bursts
+    const { shouldSample } = require('./telemetry-sampler');
+    if (!shouldSample(severity)) {
+      // Return a stub event without recording or persisting
+      return {
+        id: 'sampled-out',
+        type,
+        severity,
+        timestamp: new Date().toISOString(),
+        source,
+        payload,
+        correlation_id: correlationId,
+        session_id: this.currentSessionId,
+      };
+    }
+
     const event: TelemetryEvent = {
       id: this.generateId(),
       type,
@@ -165,10 +182,12 @@ class TelemetryEngineClient {
     // Update state (non-blocking)
     this.recordEvent(event);
 
-    // Optional: persist to backend (fire-and-forget)
-    this.persistEvent(event).catch(() => {
-      // Silently fail - telemetry should never block execution
-    });
+    // Batch persistence — only persist warn/error/critical immediately
+    if (severity === 'error' || severity === 'critical' || severity === 'warn') {
+      this.persistEvent(event).catch(() => {});
+    } else {
+      this.enqueuePersistence(event);
+    }
 
     return event;
   }
@@ -447,12 +466,17 @@ class TelemetryEngineClient {
   // PRIVATE HELPERS
   // ═══════════════════════════════════════════════════════════════════════════
 
+  private persistenceQueue: TelemetryEvent[] = [];
+  private flushTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly FLUSH_INTERVAL_MS = 5_000;
+  private readonly MAX_BATCH_SIZE = 25;
+
   private recordEvent(event: TelemetryEvent): void {
     this.eventLog.push(event);
     
-    // Trim if over max
+    // Efficient trim — splice from front instead of slice+reassign
     if (this.eventLog.length > this.MAX_EVENT_LOG) {
-      this.eventLog = this.eventLog.slice(-this.MAX_EVENT_LOG);
+      this.eventLog.splice(0, this.eventLog.length - this.MAX_EVENT_LOG);
     }
 
     // Update counters
@@ -462,9 +486,50 @@ class TelemetryEngineClient {
     this.state.lastEventTimestamp = event.timestamp;
   }
 
+  /** Enqueue low-severity events for batched persistence */
+  private enqueuePersistence(event: TelemetryEvent): void {
+    this.persistenceQueue.push(event);
+
+    // Flush immediately if batch is full
+    if (this.persistenceQueue.length >= this.MAX_BATCH_SIZE) {
+      this.flushPersistenceQueue();
+      return;
+    }
+
+    // Otherwise schedule a flush
+    if (!this.flushTimer) {
+      this.flushTimer = setTimeout(() => this.flushPersistenceQueue(), this.FLUSH_INTERVAL_MS);
+    }
+  }
+
+  /** Flush batched events in a single network call */
+  private flushPersistenceQueue(): void {
+    if (this.flushTimer) {
+      clearTimeout(this.flushTimer);
+      this.flushTimer = null;
+    }
+
+    if (this.persistenceQueue.length === 0) return;
+
+    const batch = this.persistenceQueue.splice(0, this.MAX_BATCH_SIZE);
+    supabase.functions.invoke('pf-telemetry-log', {
+      body: {
+        batch: batch.map(event => ({
+          event_name: event.type,
+          event_data: {
+            id: event.id,
+            severity: event.severity,
+            source: event.source,
+            payload: event.payload,
+          },
+          session_id: event.session_id,
+          metadata: { correlation_id: event.correlation_id },
+        })),
+      },
+    }).catch(() => {});
+  }
+
   private async persistEvent(event: TelemetryEvent): Promise<void> {
-    // Fire-and-forget persistence using edge function
-    // This should NEVER block or throw to the caller
     try {
       await supabase.functions.invoke('pf-telemetry-log', {
         body: {
@@ -476,13 +541,11 @@ class TelemetryEngineClient {
             payload: event.payload,
           },
           session_id: event.session_id,
-          metadata: {
-            correlation_id: event.correlation_id,
-          },
+          metadata: { correlation_id: event.correlation_id },
         },
       });
     } catch {
-      // Silently fail - telemetry persistence failure should never affect execution
+      // Silently fail
     }
   }
 }
