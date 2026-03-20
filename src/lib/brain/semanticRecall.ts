@@ -208,6 +208,23 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
       }
     }
     
+    // Process glacier tier
+    const glacierData = glacierResult.data || [];
+    for (const item of glacierData) {
+      const similarity = calculateCombinedSimilarity(query, item.content || '');
+      if (similarity >= minSimilarity) {
+        results.push({
+          id: item.id,
+          content: item.content,
+          tier: 'glacier',
+          similarity: similarity * 0.85, // Slight penalty for archived memories
+          context: item.context || (item.tags as any)?.context,
+          valueScore: item.value_score || 0,
+          accessCount: item.access_count || 0,
+        });
+      }
+    }
+    
     // Sort by similarity and return top results
     return results
       .sort((a, b) => b.similarity - a.similarity)

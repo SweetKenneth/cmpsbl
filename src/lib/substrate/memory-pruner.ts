@@ -329,11 +329,12 @@ async function pruneGlacier(capacity: number): Promise<PruneResult> {
 }
 
 /** Get current tier counts for monitoring */
-export async function getTierCounts(): Promise<{ hot: number; warm: number; cold: number; events: number; capacities: typeof CAPACITY }> {
-  const [h, w, c, e] = await Promise.all([
+export async function getTierCounts(): Promise<{ hot: number; warm: number; cold: number; glacier: number; events: number; capacities: typeof CAPACITY }> {
+  const [h, w, c, g, e] = await Promise.all([
     supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
     supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
     supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_archive').select('id', { count: 'exact', head: true }),
     supabase.from('brain_events').select('id', { count: 'exact', head: true }),
   ]);
 
@@ -341,6 +342,7 @@ export async function getTierCounts(): Promise<{ hot: number; warm: number; cold
     hot: h.count ?? 0,
     warm: w.count ?? 0,
     cold: c.count ?? 0,
+    glacier: g.count ?? 0,
     events: e.count ?? 0,
     capacities: CAPACITY,
   };
