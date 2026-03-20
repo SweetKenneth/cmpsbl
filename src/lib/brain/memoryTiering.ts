@@ -254,16 +254,16 @@ export async function accessMemory(memoryId: string, tier: MemoryTier): Promise<
     const accessField = tier === 'hot' ? 'last_used' : 'last_accessed';
 
     const { data: current } = await supabase
-      .from(table)
+      .from(table as any)
       .select('access_count')
       .eq('id', memoryId)
       .single();
 
     const { error } = await supabase
-      .from(table)
+      .from(table as any)
       .update({
         [accessField]: new Date().toISOString(),
-        access_count: (current?.access_count || 0) + 1,
+        access_count: ((current as any)?.access_count || 0) + 1,
       })
       .eq('id', memoryId);
 

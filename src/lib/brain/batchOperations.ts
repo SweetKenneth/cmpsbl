@@ -449,12 +449,13 @@ export async function runTierMigration(): Promise<MigrationResult> {
       const { error: insertError } = await supabase
         .from('brain_memory_archive')
         .insert({
-          summary: memory.summary,
+          content: memory.summary || '',
+          source_tier: 'cold',
+          archived_from_tier: 'cold',
+          archived_reason: 'auto_demotion',
           tags: memory.tags,
           value_score: memory.value_score,
           access_count: memory.access_count || 0,
-          source_module: memory.source_module || 'general',
-          category: memory.category || 'uncategorized',
         });
 
       if (!insertError) {
