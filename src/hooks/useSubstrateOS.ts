@@ -356,6 +356,9 @@ export function useSubstrateHealthScore() {
     evolution: () => evolutionMod.status(),
     intent: () => cortex.status(),
     governance: () => cortex.status(),
+    // Meta — Plane
+    atlas: () => cortex.status(),
+    engineer: () => cortex.status(),
   };
 
   const batchQuery = useQuery({
