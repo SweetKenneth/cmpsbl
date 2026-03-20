@@ -140,9 +140,9 @@ export function UsageDashboard({ tier }: { tier: string }) {
             <div className="text-xs text-muted-foreground mt-1">Value vs. Cost</div>
           </div>
           <div>
-            <div className="text-3xl font-black text-foreground font-mono">
-              {stats.compute_time_ms > 0 ? `${(stats.compute_time_ms / 3600000).toFixed(1)}h` : '—'}
-            </div>
+          <div className="text-3xl font-black text-foreground font-mono">
+            {stats.compute_time_ms > 0 ? `${(stats.compute_time_ms / 3600000).toFixed(1)}h` : '—'}
+          </div>
             <div className="text-xs text-muted-foreground mt-1">Time Saved</div>
           </div>
           <div>
