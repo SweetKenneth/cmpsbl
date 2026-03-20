@@ -131,7 +131,9 @@ serve(async (req) => {
     const { capability_id } = await req.json();
     
     if (!capability_id) {
-      throw new Error("Capability ID is required");
+      return new Response(JSON.stringify({ error: "Capability ID is required" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400,
+      });
     }
 
     const priceId = CAPABILITY_PRICES[capability_id];

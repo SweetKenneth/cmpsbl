@@ -34,7 +34,9 @@ serve(async (req) => {
 
     const { tier, framework } = await req.json();
     if (!tier || !PRICES[tier]) {
-      throw new Error(`Invalid tier: ${tier}. Must be 'pro', 'team', or 'standalone'.`);
+      return new Response(JSON.stringify({ error: `Invalid tier: ${tier}. Must be 'pro', 'team', or 'standalone'.` }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400,
+      });
     }
     logStep("Tier selected", { tier, framework });
 

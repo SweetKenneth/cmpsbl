@@ -34,7 +34,11 @@ serve(async (req) => {
 
     const url = new URL(req.url);
     const sessionId = url.searchParams.get("session_id");
-    if (!sessionId) throw new Error("Missing session_id");
+    if (!sessionId) {
+      return new Response(JSON.stringify({ ok: false, error: "Missing session_id" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400,
+      });
+    }
 
     const session = await stripe.checkout.sessions.retrieve(sessionId);
     if (session.payment_status !== 'paid') {

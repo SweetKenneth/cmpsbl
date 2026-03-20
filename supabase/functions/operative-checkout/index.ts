@@ -27,7 +27,9 @@ serve(async (req) => {
     const { price_id, operative_slug } = body;
 
     if (!price_id || !operative_slug) {
-      throw new Error("Missing price_id or operative_slug");
+      return new Response(JSON.stringify({ error: "Missing price_id or operative_slug" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400,
+      });
     }
 
     // Require authentication

@@ -39,7 +39,11 @@ serve(async (req) => {
     const body = await req.json();
     const { engine_slug } = body;
 
-    if (!engine_slug) throw new Error("Missing engine_slug");
+    if (!engine_slug) {
+      return new Response(JSON.stringify({ error: "Missing engine_slug" }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 400,
+      });
+    }
 
     // Resolve price from server-side map (ignores any client-provided price_id)
     const priceId = ENGINE_PRICE_IDS[engine_slug];
