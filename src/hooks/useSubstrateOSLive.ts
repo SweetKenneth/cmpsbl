@@ -89,22 +89,29 @@ export function useLiveAIUsage() {
   return useQuery({
     queryKey: ['live', 'ai', 'usage'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('ai_usage_log')
-        .select('tokens_used, cost, provider')
-        .order('created_at', { ascending: false })
-        .limit(100);
+      // Use count + small sample instead of fetching 100 full rows
+      const [countRes, sampleRes] = await Promise.all([
+        supabase
+          .from('ai_usage_log')
+          .select('id', { count: 'exact', head: true }),
+        supabase
+          .from('ai_usage_log')
+          .select('tokens_used, cost, provider')
+          .order('created_at', { ascending: false })
+          .limit(30),
+      ]);
       
-      if (error) throw error;
+      if (countRes.error) throw countRes.error;
+      const data = sampleRes.data ?? [];
       
-      const totalTokens = data?.reduce((sum, r) => sum + (r.tokens_used ?? 0), 0) ?? 0;
-      const totalCost = data?.reduce((sum, r) => sum + (r.cost ?? 0), 0) ?? 0;
-      const providerCounts = data?.reduce((acc, r) => {
+      const totalTokens = data.reduce((sum, r) => sum + (r.tokens_used ?? 0), 0);
+      const totalCost = data.reduce((sum, r) => sum + (r.cost ?? 0), 0);
+      const providerCounts = data.reduce((acc, r) => {
         acc[r.provider] = (acc[r.provider] ?? 0) + 1;
         return acc;
-      }, {} as Record<string, number>) ?? {};
+      }, {} as Record<string, number>);
       
-      return { totalTokens, totalCost, providerCounts, recentCount: data?.length ?? 0 };
+      return { totalTokens, totalCost, providerCounts, recentCount: countRes.count ?? 0 };
     },
     refetchInterval: 30000,
   });
@@ -116,15 +123,15 @@ export function useLiveBrainEvents() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_events')
-        .select('*')
+        .select('id, module, event_type, outcome, trace_id, data, created_at')
         .order('created_at', { ascending: false })
         .limit(50);
       
       if (error) throw error;
       return { events: data ?? [], fetchedAt: Date.now() };
     },
-    refetchInterval: 5000, // Poll every 5 seconds for live feed
-    staleTime: 4000,
+    refetchInterval: 10000, // 10s — was 5s, reduces query pressure by 50%
+    staleTime: 8000,
   });
 }
 
@@ -134,7 +141,7 @@ export function useLiveAuditLogs() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('audit_logs')
-        .select('*')
+        .select('id, action, entity_type, entity_id, created_at, performed_by')
         .order('created_at', { ascending: false })
         .limit(20);
       
@@ -151,7 +158,7 @@ export function useLiveOrchestratorState() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_orchestrator_state')
-        .select('*')
+        .select('id, health_score, current_phase, status, cycles_completed, updated_at')
         .order('updated_at', { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -177,7 +184,7 @@ export function useLiveDreamEaterState() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('dream_eater_state')
-        .select('*')
+        .select('id, current_mood, dreams_consumed_today, nightmares_consumed_today, mutation_level, mood_score, updated_at')
         .order('updated_at', { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -195,7 +202,7 @@ export function useLiveForecasts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_forecasts')
-        .select('*')
+        .select('id, metric_name, confidence, predicted_value, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
       
@@ -212,7 +219,7 @@ export function useLiveReflections() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_reflections')
-        .select('*')
+        .select('id, summary, insights, reflection_date, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
       
@@ -229,7 +236,7 @@ export function useLiveCuriosityLog() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_curiosity_log')
-        .select('*')
+        .select('id, query, domain, curiosity_score, created_at')
         .order('created_at', { ascending: false })
         .limit(10);
       
@@ -246,7 +253,7 @@ export function useLiveLearningPatterns() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('learning_patterns')
-        .select('*')
+        .select('id, pattern_type, pattern_name, confidence, created_at')
         .order('created_at', { ascending: false })
         .limit(10);
       

@@ -5,7 +5,7 @@
  */
 
 import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus, Sparkles, GitBranch } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLiveDashboardMetrics, useLiveBrainEvents, useLiveForecasts } from '@/hooks/useSubstrateOSLive';
@@ -99,7 +99,7 @@ function MiniSparkline({ trend }: { trend: 'up' | 'down' | 'stable' }) {
   );
 }
 
-function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoading, subValue, delay = 0 }: MetricCardProps) {
+const MetricCard = memo(function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoading, subValue, delay = 0 }: MetricCardProps) {
   if (isLoading) {
     return (
       <div className="p-4 rounded-xl border border-border/30 bg-muted/10 backdrop-blur-xl">
@@ -179,7 +179,7 @@ function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoadi
       </div>
     </motion.div>
   );
-}
+});
 
 interface StatusPanelProps {
   title: string;
