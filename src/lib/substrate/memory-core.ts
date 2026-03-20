@@ -18,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 // TYPES & INTERFACES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type MemoryTier = 'hot' | 'warm' | 'cold';
+export type MemoryTier = 'hot' | 'warm' | 'cold' | 'glacier';
 export type MemoryState = 'short_term' | 'long_term' | 'latent';
 export type MemoryType = 
   | 'doctrine' 
@@ -70,6 +70,7 @@ export interface MemoryStateSchema {
     hot: { capacity: number; current: number };
     warm: { capacity: number; current: number };
     cold: { capacity: number; current: number };
+    glacier: { capacity: number; current: number };
   };
   latent: {
     pending_reflection: number;
@@ -592,7 +593,7 @@ class MemoryCoreClient {
       // Determine which tables to search
       const tablesToSearch = tier 
         ? [this.getTableForTier(tier)] 
-        : ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'];
+        : ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold', 'brain_memory_archive'];
 
       // Build all query promises in parallel
       const strategies: ('fulltext' | 'pattern')[] = 
@@ -740,6 +741,13 @@ class MemoryCoreClient {
         return supabase.from('brain_memory_warm').select(cols).textSearch('content', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
+    } else if (table === 'brain_memory_archive') {
+      // Glacier tier
+      const cols = 'id, content, context, tags, value_score, access_count, created_at';
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_archive').select(cols).textSearch('content', sanitizedFts).limit(limit);
+      }
+      return supabase.from('brain_memory_archive').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
       // Cold tier uses 'summary' column, not 'content'
       const cols = 'id, summary, tags, value_score, access_count, created_at, memory_type, source_module, category, salience_score';
@@ -756,10 +764,11 @@ class MemoryCoreClient {
 
   async getState(): Promise<MemoryStateSchema> {
     try {
-      const [hotCount, warmCount, coldCount] = await Promise.all([
+      const [hotCount, warmCount, coldCount, glacierCount] = await Promise.all([
         supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
         supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
         supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_memory_archive').select('id', { count: 'exact', head: true }),
       ]);
 
       return {
@@ -772,6 +781,7 @@ class MemoryCoreClient {
           hot: { capacity: 500, current: hotCount.count || 0 },
           warm: { capacity: 10000, current: warmCount.count || 0 },
           cold: { capacity: 10000, current: coldCount.count || 0 },
+          glacier: { capacity: 50000, current: glacierCount.count || 0 },
         },
         latent: {
           pending_reflection: 0,
@@ -785,6 +795,7 @@ class MemoryCoreClient {
           hot: { capacity: 500, current: 0 },
           warm: { capacity: 10000, current: 0 },
           cold: { capacity: 10000, current: 0 },
+          glacier: { capacity: 50000, current: 0 },
         },
         latent: { pending_reflection: 0, pending_consolidation: 0 },
       };
@@ -964,6 +975,7 @@ class MemoryCoreClient {
       hot: 'brain_memory_hot',
       warm: 'brain_memory_warm',
       cold: 'brain_memory_cold',
+      glacier: 'brain_memory_archive',
     };
     return tableMap[tier];
   }
@@ -972,6 +984,7 @@ class MemoryCoreClient {
     const tierFromTable = (t: string): MemoryTier => {
       if (t.includes('hot')) return 'hot';
       if (t.includes('warm')) return 'warm';
+      if (t.includes('archive')) return 'glacier';
       return 'cold';
     };
 

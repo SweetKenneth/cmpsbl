@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 export interface SemanticMatch {
   id: string;
   content: string;
-  tier: 'hot' | 'warm' | 'cold';
+  tier: 'hot' | 'warm' | 'cold' | 'glacier';
   similarity: number;
   context?: string;
   valueScore: number;
@@ -18,7 +18,7 @@ export interface SemanticMatch {
 export interface RecallOptions {
   query: string;
   limit?: number;
-  tiers?: ('hot' | 'warm' | 'cold')[];
+  tiers?: ('hot' | 'warm' | 'cold' | 'glacier')[];
   minSimilarity?: number;
   boostRecent?: boolean;
   context?: string;
@@ -96,7 +96,7 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
   const {
     query,
     limit = 20,
-    tiers = ['hot', 'warm', 'cold'],
+    tiers = ['hot', 'warm', 'cold', 'glacier'],
     minSimilarity = 0.15,
     boostRecent = true,
     context,
@@ -132,11 +132,21 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
           .limit(100)
       : null;
     if (coldBuilder && context) coldBuilder = coldBuilder.contains('tags', { context });
+
+    let glacierBuilder = tiers.includes('glacier')
+      ? supabase
+          .from('brain_memory_archive')
+          .select('id, content, context, tags, value_score, access_count, created_at')
+          .order('value_score', { ascending: false })
+          .limit(50)
+      : null;
+    if (glacierBuilder && context) glacierBuilder = glacierBuilder.eq('context', context);
     
-    const [hotResult, warmResult, coldResult] = await Promise.all([
+    const [hotResult, warmResult, coldResult, glacierResult] = await Promise.all([
       hotBuilder ? hotBuilder : Promise.resolve({ data: [] }),
       warmBuilder ? warmBuilder : Promise.resolve({ data: [] }),
       coldBuilder ? coldBuilder : Promise.resolve({ data: [] }),
+      glacierBuilder ? glacierBuilder : Promise.resolve({ data: [] }),
     ]);
     
     // Process hot tier
@@ -192,6 +202,23 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
           tier: 'cold',
           similarity,
           context: (item.tags as any)?.context,
+          valueScore: item.value_score || 0,
+          accessCount: item.access_count || 0,
+        });
+      }
+    }
+    
+    // Process glacier tier
+    const glacierData = glacierResult.data || [];
+    for (const item of glacierData) {
+      const similarity = calculateCombinedSimilarity(query, item.content || '');
+      if (similarity >= minSimilarity) {
+        results.push({
+          id: item.id,
+          content: item.content,
+          tier: 'glacier',
+          similarity: similarity * 0.85, // Slight penalty for archived memories
+          context: item.context || (item.tags as any)?.context,
           valueScore: item.value_score || 0,
           accessCount: item.access_count || 0,
         });

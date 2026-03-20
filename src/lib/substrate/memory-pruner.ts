@@ -24,6 +24,7 @@ export interface FullPruneResult {
   hot: PruneResult;
   warm: PruneResult;
   cold: PruneResult;
+  glacier: PruneResult;
   events_purged: number;
   total_purged: number;
   started_at: string;
@@ -34,6 +35,7 @@ const CAPACITY = {
   hot: 500,
   warm: 10000,
   cold: 10000,
+  glacier: 50000,
 } as const;
 
 /**
@@ -256,41 +258,83 @@ export async function runEmergencyPrune(): Promise<FullPruneResult> {
   const started_at = new Date().toISOString();
   console.log('[MemoryPruner] 🚨 Starting emergency prune...');
 
-  const [hot, warm, cold, events_purged] = await Promise.all([
+  const [hot, warm, cold, glacier, events_purged] = await Promise.all([
     pruneHot(CAPACITY.hot),
     pruneWarm(CAPACITY.warm),
     pruneCold(CAPACITY.cold),
+    pruneGlacier(CAPACITY.glacier),
     purgeStaleBrainEvents(),
   ]);
 
-  const total_purged = hot.purged + warm.purged + cold.purged + events_purged;
+  const total_purged = hot.purged + warm.purged + cold.purged + glacier.purged + events_purged;
   const completed_at = new Date().toISOString();
 
   console.log(`[MemoryPruner] ✅ Emergency prune complete:
-    HOT:  ${hot.before} → ${hot.after} (purged ${hot.purged})
-    WARM: ${warm.before} → ${warm.after} (purged ${warm.purged})
-    COLD: ${cold.before} → ${cold.after} (purged ${cold.purged})
-    EVENTS: purged ${events_purged}
-    TOTAL: ${total_purged} entries removed`);
+    HOT:     ${hot.before} → ${hot.after} (purged ${hot.purged})
+    WARM:    ${warm.before} → ${warm.after} (purged ${warm.purged})
+    COLD:    ${cold.before} → ${cold.after} (purged ${cold.purged})
+    GLACIER: ${glacier.before} → ${glacier.after} (purged ${glacier.purged})
+    EVENTS:  purged ${events_purged}
+    TOTAL:   ${total_purged} entries removed`);
 
   try {
     await supabase.from('brain_events').insert({
       module: 'memory',
       event_type: 'emergency_prune',
       outcome: 'success',
-      data: { hot, warm, cold, events_purged, total_purged } as any,
+      data: { hot, warm, cold, glacier, events_purged, total_purged } as any,
     });
   } catch { /* non-critical */ }
 
-  return { hot, warm, cold, events_purged, total_purged, started_at, completed_at };
+  return { hot, warm, cold, glacier, events_purged, total_purged, started_at, completed_at };
+}
+
+/**
+ * Prune glacier tier to capacity limit.
+ */
+async function pruneGlacier(capacity: number): Promise<PruneResult> {
+  const start = Date.now();
+  const { count: before } = await supabase
+    .from('brain_memory_archive')
+    .select('id', { count: 'exact', head: true });
+
+  const currentCount = before ?? 0;
+  if (currentCount <= capacity) {
+    return { tier: 'glacier', before: currentCount, after: currentCount, purged: 0, duration_ms: Date.now() - start };
+  }
+
+  let purged = 0;
+  const excess = currentCount - capacity;
+
+  while (purged < excess) {
+    try {
+      const { data: ids } = await supabase
+        .from('brain_memory_archive')
+        .select('id')
+        .order('value_score', { ascending: true })
+        .order('created_at', { ascending: true })
+        .limit(Math.min(500, excess - purged));
+
+      if (!ids || ids.length === 0) break;
+      await supabase.from('brain_memory_archive').delete().in('id', ids.map(r => r.id));
+      purged += ids.length;
+    } catch { break; }
+  }
+
+  const { count: after } = await supabase
+    .from('brain_memory_archive')
+    .select('id', { count: 'exact', head: true });
+
+  return { tier: 'glacier', before: currentCount, after: after ?? 0, purged, duration_ms: Date.now() - start };
 }
 
 /** Get current tier counts for monitoring */
-export async function getTierCounts(): Promise<{ hot: number; warm: number; cold: number; events: number; capacities: typeof CAPACITY }> {
-  const [h, w, c, e] = await Promise.all([
+export async function getTierCounts(): Promise<{ hot: number; warm: number; cold: number; glacier: number; events: number; capacities: typeof CAPACITY }> {
+  const [h, w, c, g, e] = await Promise.all([
     supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
     supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
     supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_archive').select('id', { count: 'exact', head: true }),
     supabase.from('brain_events').select('id', { count: 'exact', head: true }),
   ]);
 
@@ -298,6 +342,7 @@ export async function getTierCounts(): Promise<{ hot: number; warm: number; cold
     hot: h.count ?? 0,
     warm: w.count ?? 0,
     cold: c.count ?? 0,
+    glacier: g.count ?? 0,
     events: e.count ?? 0,
     capacities: CAPACITY,
   };

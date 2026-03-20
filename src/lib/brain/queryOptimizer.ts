@@ -75,7 +75,7 @@
  export function planQuery(
    query: string,
    options?: {
-     tiers?: ('hot' | 'warm' | 'cold')[];
+     tiers?: ('hot' | 'warm' | 'cold' | 'glacier')[];
      limit?: number;
      useCache?: boolean;
    }
@@ -98,7 +98,7 @@
    // Analyze query complexity
    const hasWildcard = query.includes('*') || query.includes('%');
    const queryLength = query.length;
-   const tiers = options?.tiers || ['hot', 'warm', 'cold'];
+   const tiers = options?.tiers || ['hot', 'warm', 'cold', 'glacier'];
    
    let strategy: QueryPlan['strategy'] = 'index_scan';
    let estimatedCost = 1;
