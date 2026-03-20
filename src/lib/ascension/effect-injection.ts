@@ -259,7 +259,18 @@ export function detectPrimaryUnit(
   return buildUnit(primitives[0], lang);
 }
 
-function buildUnit(primitive: ExtractedPrimitive, sourceLanguage: string): PrimaryExecutionUnit {
+function buildUnit(primitive: ExtractedPrimitive, sourceLanguage: string, allPrimitives?: ExtractedPrimitive[]): PrimaryExecutionUnit {
+  // CRITICAL: Register the primary handler BEFORE building the executable unit
+  // This ensures getPrimitive(name) returns a real handler, not null
+  const primsToUse = allPrimitives || [primitive];
+  ensurePrimaryRegistered(
+    { name: primitive.name, category: primitive.category, confidence: primitive.confidence,
+      complexity: primitive.complexity, executionKind: 'unknown', callableSymbol: primitive.name,
+      sourceLanguage, directlyExecutable: false, requiresBridge: false, fallbackOnly: false },
+    primsToUse
+  );
+
+  // Now build the executable unit — getPrimitive will find the registered handler
   const execUnit = buildExecutableUnit(primitive, sourceLanguage);
 
   return {

@@ -324,9 +324,10 @@ export function buildExecutableUnit(
   const lang = sourceLanguage.toLowerCase();
   const isLocal = LOCAL_LANGUAGES.has(lang);
   const isBridge = BRIDGE_LANGUAGES.has(lang);
-  const hasHandler = getPrimitive(primitive.name) !== undefined;
+  const hasHandler = getPrimitive(primitive.name) !== null;
 
   const executionKind = mapExtractionKind(primitive.extractionMethod);
+  // After primary handler registration, hasHandler will be true for all primary units
   const directlyExecutable = isLocal || hasHandler;
   const requiresBridge = isBridge && !hasHandler;
   const fallbackOnly = !directlyExecutable && !requiresBridge;
@@ -353,3 +354,23 @@ function mapExtractionKind(method: string): ExecutableUnit['executionKind'] {
     default: return 'unknown';
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — PRIMARY HANDLER REGISTRATION BRIDGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Ensure the primary handler is registered before execution.
+ * Call this before bindAndExecute to guarantee the primary module
+ * has a handler and will NOT fall back to DEFAULT.
+ *
+ * Returns the registration result for traceability.
+ */
+export function ensurePrimaryRegistered(
+  unit: ExecutableUnit,
+  primitives: ExtractedPrimitive[]
+): PrimaryHandlerRegistration {
+  return registerPrimaryHandler(unit.name, primitives, unit.sourceLanguage);
+}
+
+export type { PrimaryHandlerRegistration };
