@@ -68,6 +68,119 @@ export interface EffectInjectionResult {
   binding: ExecutionBindingResult | null;
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// §1b — EFFECT SUMMARY (v2 Visibility Patch)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type EffectStatus = 'executed' | 'fallback' | 'degraded';
+
+/** Minimal UI contract — what frontend/dashboard/Radio consumes */
+export interface EffectUIContract {
+  module: string;
+  status: EffectStatus;
+  strategy: ExecutionStrategy;
+  executed: boolean;
+  degraded: boolean;
+  signals: number;
+  errors: number;
+  timing: number;
+  score: number;
+}
+
+/** Human-readable summary for demo + investor surfaces */
+export interface EffectSummary {
+  status: EffectStatus;
+  strategy: ExecutionStrategy;
+  primary: string;
+  category: string;
+  confidenceScore: number;
+  shortSummary: string;
+  badge: string;
+  score: number;
+  uiContract: EffectUIContract;
+}
+
+/** Global trace entry for runtime story layer */
+export interface EffectTraceEntry {
+  nodeId: string;
+  module: string;
+  strategy: ExecutionStrategy;
+  executed: boolean;
+  degraded: boolean;
+  timing: number;
+}
+
+/**
+ * Generate a human-readable effect summary from a binding result.
+ * Non-technical person should understand in <5 seconds.
+ */
+export function generateEffectSummary(
+  effectRecord: ExecutionBindingResult,
+  moduleName: string
+): EffectSummary {
+  // Determine status
+  let status: EffectStatus;
+  if (effectRecord.executed && !effectRecord.degraded) {
+    status = 'executed';
+  } else if (effectRecord.degraded) {
+    status = 'degraded';
+  } else {
+    status = 'fallback';
+  }
+
+  // Confidence score: base from signals vs errors ratio
+  const signalCount = effectRecord.signals.length;
+  const errorCount = effectRecord.errors.length;
+  const confidenceScore = signalCount > 0
+    ? Math.round(((signalCount - errorCount) / signalCount) * 100)
+    : 0;
+
+  // Effect score: (executed ? 1 : 0) * 0.6 + (degraded ? 0 : 0.4)
+  const score = (effectRecord.executed ? 1 : 0) * 0.6 + (effectRecord.degraded ? 0 : 0.4);
+
+  // Badge + short summary
+  let badge: string;
+  let shortSummary: string;
+  switch (status) {
+    case 'executed':
+      badge = '✅ Healthy';
+      shortSummary = `${effectRecord.primaryUnit} executed via ${effectRecord.strategy} in ${effectRecord.timingMs.toFixed(1)}ms`;
+      break;
+    case 'degraded':
+      badge = '⚠️ Degraded';
+      shortSummary = `${effectRecord.primaryUnit} execution failed safely — input preserved`;
+      break;
+    case 'fallback':
+      badge = '🔄 Fallback';
+      shortSummary = `${effectRecord.primaryUnit} has no execution path — passthrough only`;
+      break;
+  }
+
+  const uiContract: EffectUIContract = {
+    module: moduleName,
+    status,
+    strategy: effectRecord.strategy,
+    executed: effectRecord.executed,
+    degraded: effectRecord.degraded,
+    signals: signalCount,
+    errors: errorCount,
+    timing: effectRecord.timingMs,
+    score,
+  };
+
+  return {
+    status,
+    strategy: effectRecord.strategy,
+    primary: effectRecord.primaryUnit,
+    category: effectRecord.primaryCategory,
+    confidenceScore,
+    shortSummary,
+    badge,
+    score,
+    uiContract,
+  };
+}
+
 /**
  * Primary Execution Unit (v2) — backward-compatible extension.
  * v1 consumers still see name/category/confidence/complexity/handler.
