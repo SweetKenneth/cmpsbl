@@ -351,6 +351,7 @@ export function createModuleHardening(module: string, opts?: {
       hardeningState.autoRestoreEnabled = true;
 
       hardeningState.autoRestoreIntervalId = setInterval(() => {
+        if (document.visibilityState === 'hidden') return;
         try {
           const health = healthFn();
           if (health < hardeningState.healthRestoreThreshold) {

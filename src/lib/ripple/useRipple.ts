@@ -105,6 +105,7 @@ export function useRipple(autoRefresh: boolean = false, refreshInterval: number 
     refresh();
     if (autoRefresh) {
       const interval = setInterval(() => {
+        if (document.visibilityState === 'hidden') return;
         if (debugMode.allowAutoRefresh()) {
           refresh();
         }
