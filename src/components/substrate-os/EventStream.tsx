@@ -74,7 +74,7 @@ const OUTCOME_COLORS: Record<string, string> = {
 
 const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
 
-export function EventStream() {
+export const EventStream = memo(function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);
   const [isLive, setIsLive] = useState(false);
   const brainEvents = useLiveBrainEvents();
