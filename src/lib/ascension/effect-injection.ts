@@ -21,6 +21,7 @@ import {
   bindAndExecute,
   buildExecutableUnit,
   resolveExecutionStrategy,
+  ensurePrimaryRegistered,
   type ExecutableUnit,
   type ExecutionBindingResult,
   type ExecutionStrategy,
