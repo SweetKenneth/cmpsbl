@@ -178,7 +178,18 @@ export {
   type GovernorInjection,
 } from './primitive-governor';
 
-// Universal Effect Injection (v1)
+// Execution Binding (v2)
+export {
+  bindAndExecute,
+  buildExecutableUnit,
+  resolveExecutionStrategy,
+  type ExecutableUnit,
+  type ExecutionBindingResult,
+  type ExecutionStrategy,
+  type StrategyResolution,
+} from './execution-binding';
+
+// Universal Effect Injection (v2)
 export {
   detectPrimaryUnit,
   effectWrapper,
