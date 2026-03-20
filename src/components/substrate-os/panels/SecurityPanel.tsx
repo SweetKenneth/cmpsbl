@@ -61,9 +61,11 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
             <TabsTrigger value="patches" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Shield className="w-3.5 h-3.5 hidden sm:block" /> Patches
             </TabsTrigger>
-            <TabsTrigger value="backups" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
-              <HardDrive className="w-3.5 h-3.5 hidden sm:block" /> Backups
-            </TabsTrigger>
+            {isGovernor && (
+              <TabsTrigger value="backups" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+                <HardDrive className="w-3.5 h-3.5 hidden sm:block" /> Backups
+              </TabsTrigger>
+            )}
           </TabsList>
         </div>
 
