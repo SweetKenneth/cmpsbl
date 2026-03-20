@@ -18,7 +18,7 @@ import { supabase } from '@/integrations/supabase/client';
 // TYPES & INTERFACES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-export type MemoryTier = 'hot' | 'warm' | 'cold';
+export type MemoryTier = 'hot' | 'warm' | 'cold' | 'glacier';
 export type MemoryState = 'short_term' | 'long_term' | 'latent';
 export type MemoryType = 
   | 'doctrine' 
