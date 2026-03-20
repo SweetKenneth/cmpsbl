@@ -250,10 +250,50 @@ function generateSealedEngineStub(): string {
   return '// Discovery Engine is a substrate-exclusive capability. See https://cmpsbl.com';
 }
 
-function generateCapabilitySource(cap: CapabilityForExport, lang: string): string {
+interface SourceFile { name: string; extension: string; language: string; content: string; }
+
+function generateCapabilitySource(cap: CapabilityForExport, lang: string, sourceFiles?: SourceFile[]): string {
   const [line] = LANG_COMMENT[lang] || ['//', '/*'];
 
   if (lang === 'typescript') {
+    // Auto-wire imports from bundled original files
+    const origFiles = sourceFiles || [];
+    const tsFiles = origFiles.filter(f =>
+      /\.(ts|tsx|js|jsx|mjs|cjs)$/i.test(f.name)
+    );
+
+    // Generate real import statements for each original file
+    const importLines = tsFiles.length > 0
+      ? tsFiles.map(f => {
+          const modName = f.name.replace(/\.[^.]+$/, '');
+          return `import * as ${modName.replace(/[^a-zA-Z0-9_$]/g, '_')} from '../original/${modName}';`;
+        }).join('\n')
+      : `${line} No TypeScript/JavaScript files detected in original/ — manual wiring needed`;
+
+    // Build the executeOriginal body that calls into the originals
+    const executeBody = tsFiles.length > 0
+      ? (() => {
+          const firstMod = tsFiles[0].name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_$]/g, '_');
+          return [
+            `  ${line} Auto-wired to original source: ${tsFiles.map(f => f.name).join(', ')}`,
+            `  const mod = ${firstMod} as Record<string, unknown>;`,
+            `  ${line} Attempt to call known entry points in priority order`,
+            `  const entryPoints = ['execute', 'run', 'main', 'handle', 'process', 'default'];`,
+            `  for (const ep of entryPoints) {`,
+            `    if (typeof mod[ep] === 'function') {`,
+            `      return (mod[ep] as Function)(input);`,
+            `    }`,
+            `  }`,
+            `  ${line} No known entry point found — try default export`,
+            `  if (typeof mod.default === 'function') {`,
+            `    return (mod.default as Function)(input);`,
+            `  }`,
+            `  ${line} Return input if no callable found (honest passthrough)`,
+            `  return input;`,
+          ].join('\n');
+        })()
+      : `  ${line} Original files are in ../original/ — wire your imports above\n  return input;`;
+
     return `${line} ═══════════════════════════════════════════════════════
 ${line}  Capability: ${cap.name}
 ${line}  CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
@@ -272,6 +312,11 @@ ${line} ════════════════════════
 
 import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/standalone-runtime';
 
+${line} ═══════════════════════════════════════════════════════
+${line}  Layer 1 — Original Source Imports (auto-wired from ../original/)
+${line} ═══════════════════════════════════════════════════════
+${importLines}
+
 export const CAPABILITY_META = {
   name: '${cap.name}',
   cjpi: ${cap.cjpiScore},
@@ -282,27 +327,13 @@ export const CAPABILITY_META = {
   type: '${cap.capabilityType}',
 } as const;
 
-${line} ═══════════════════════════════════════════════════════
-${line}  Layer 1 — Native Execution
-${line}  Import your original code and call it directly.
-${line}  Replace the placeholder below with your actual import.
-${line} ═══════════════════════════════════════════════════════
-
-${line} TODO: Import your original module from ../original/
-${line} import { yourFunction } from '../original/your-file';
-
 /**
  * Execute your original code directly.
  * This is the NATIVE EXECUTION LAYER — your logic runs unchanged.
  * Returns the raw result from your original code.
  */
 export function executeOriginal(input: Record<string, unknown>): unknown {
-  ${line} Replace this with a call to your original code:
-  ${line}   return yourFunction(input);
-  ${line}
-  ${line} For now, returns input unchanged (passthrough).
-  ${line} Your original source files are in ../original/
-  return input;
+${executeBody}
 }
 
 /**
