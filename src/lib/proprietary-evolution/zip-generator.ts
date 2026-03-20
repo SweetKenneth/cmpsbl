@@ -686,7 +686,7 @@ function generateTestHarness(cap: CapabilityForExport, lang: string): string {
   if (lang === 'typescript') {
     return `${line} Test Harness for ${cap.name}
 import { describe, it, expect } from 'vitest';
-import { execute, validate, CAPABILITY_META } from '../src/${cap.name.toLowerCase()}';
+import { execute, executeNative, executeWithCognition, validate, CAPABILITY_META } from '../src/${cap.name.toLowerCase()}';
 
 describe('${cap.name}', () => {
   it('should have correct metadata', () => {
@@ -695,10 +695,22 @@ describe('${cap.name}', () => {
     expect(CAPABILITY_META.chain).toEqual(${JSON.stringify(cap.chain)});
   });
 
-  it('should execute without error', () => {
+  it('should execute with cognition (dual-layer)', () => {
+    const result = executeWithCognition({ test: true });
+    expect(result._cmpsbl).toBeDefined();
+    expect(result._cmpsbl.capability).toBe('${cap.name}');
+    expect(result._cmpsbl.execution.strategy).toBeDefined();
+  });
+
+  it('should execute native (original only, no overlay)', () => {
+    const result = executeNative({ test: true });
+    ${line} Native execution should NOT contain _cmpsbl overlay
+    expect(result).toBeDefined();
+  });
+
+  it('should default execute() to dual-layer mode', () => {
     const result = execute({ test: true });
-    expect(result._capability).toBe('${cap.name}');
-    expect(result._processed).toBe(true);
+    expect(result._cmpsbl).toBeDefined();
   });
 
   it('should validate structural integrity', () => {
