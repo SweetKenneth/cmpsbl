@@ -1,16 +1,15 @@
 /**
- * CMPSBL® Universal Effect Injection (v1)
+ * CMPSBL® Universal Effect Injection (v2)
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Upgrades ANY uploaded code into a CMPSBL capability with real
- * execution effects, traceability, and runtime compatibility.
+ * Upgrades ANY uploaded code into a CMPSBL capability with REAL
+ * execution binding, traceability, and runtime compatibility.
  *
- * Patch contract:
- *  1. Detect primary execution unit from extracted primitives
- *  2. Wrap execution with effect envelope (signals, metrics, degradation)
- *  3. Auto-map module name from source filename
- *  4. Auto-generate default chain if none exists
- *  5. Preserve original logic — wrap only
- *  6. Guarantee safe fallback (non-callable → passthrough + trace)
+ * v2 changes over v1:
+ *  - Real execution binding (local/bridge/fallback) replaces synthetic handler
+ *  - Truthful executed/degraded flags — no silent downgrades
+ *  - Normalized ExecutionBindingResult as canonical record
+ *  - Extended PrimaryExecutionUnit with executable hints
+ *  - Strategy-aware annotations and transformation notes
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -18,6 +17,15 @@
 import type { PipelineContext } from '@/lib/export/module-effects';
 import type { ExtractedPrimitive, AscensionNode, ExtractionResult } from './types';
 import { buildAscensionModuleName } from './types';
+import {
+  bindAndExecute,
+  buildExecutableUnit,
+  resolveExecutionStrategy,
+  type ExecutableUnit,
+  type ExecutionBindingResult,
+  type ExecutionStrategy,
+  type StrategyResolution,
+} from './execution-binding';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -56,32 +64,48 @@ export interface EffectInjectionResult {
   };
   intelligence: IntelligenceMetrics;
   degraded: boolean;
+  /** v2: Full execution binding record */
+  binding: ExecutionBindingResult | null;
 }
 
+/**
+ * Primary Execution Unit (v2) — backward-compatible extension.
+ * v1 consumers still see name/category/confidence/complexity/handler.
+ * v2 consumers also get executable hints for the binding layer.
+ */
 export interface PrimaryExecutionUnit {
   name: string;
   category: string;
   confidence: number;
   complexity: number;
   handler: (input: Record<string, unknown>) => Record<string, unknown>;
+  /** v2 executable hints */
+  executableUnit: ExecutableUnit;
 }
+
+// Re-export execution-binding types for barrel
+export type { ExecutableUnit, ExecutionBindingResult, ExecutionStrategy, StrategyResolution };
 
 // Default chain applied when no explicit chain exists
 const DEFAULT_EFFECT_CHAIN = ['PRIMARY', 'MEDIC', 'BRAIN', 'ORACLE', 'CONSCIENCE'] as const;
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §2 — PRIMARY EXECUTION UNIT DETECTION
+// §2 — PRIMARY EXECUTION UNIT DETECTION (v2)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
  * Detect the Primary Execution Unit from extracted primitives.
  * Priority: main class → primary exported function → first callable public method.
+ * v2: now includes executable hints for downstream binding.
  */
 export function detectPrimaryUnit(
   primitives: ExtractedPrimitive[],
-  sourceFileName?: string
+  sourceFileName?: string,
+  sourceLanguage?: string
 ): PrimaryExecutionUnit | null {
   if (primitives.length === 0) return null;
+
+  const lang = sourceLanguage || primitives[0]?.language || 'unknown';
 
   // Priority 1: Class matching filename
   if (sourceFileName) {
@@ -89,7 +113,7 @@ export function detectPrimaryUnit(
     const classMatch = primitives.find(
       (p) => p.extractionMethod === 'class' && p.name.toLowerCase() === baseName
     );
-    if (classMatch) return buildUnit(classMatch);
+    if (classMatch) return buildUnit(classMatch, lang);
   }
 
   // Priority 2: Main/entry point function
@@ -99,36 +123,39 @@ export function detectPrimaryUnit(
       p.extractionMethod === 'function' &&
       entryNames.some((e) => p.name.toLowerCase() === e || p.name.toLowerCase().startsWith(e))
   );
-  if (entryMatch) return buildUnit(entryMatch);
+  if (entryMatch) return buildUnit(entryMatch, lang);
 
   // Priority 3: Highest-confidence class
   const classHigh = primitives
     .filter((p) => p.extractionMethod === 'class')
     .sort((a, b) => b.confidence - a.confidence)[0];
-  if (classHigh) return buildUnit(classHigh);
+  if (classHigh) return buildUnit(classHigh, lang);
 
   // Priority 4: Highest-confidence function
   const funcHigh = primitives
     .filter((p) => p.extractionMethod === 'function')
     .sort((a, b) => b.confidence - a.confidence)[0];
-  if (funcHigh) return buildUnit(funcHigh);
+  if (funcHigh) return buildUnit(funcHigh, lang);
 
   // Priority 5: First module
   const moduleMatch = primitives.find((p) => p.extractionMethod === 'module');
-  if (moduleMatch) return buildUnit(moduleMatch);
+  if (moduleMatch) return buildUnit(moduleMatch, lang);
 
   // Fallback: first primitive
-  return buildUnit(primitives[0]);
+  return buildUnit(primitives[0], lang);
 }
 
-function buildUnit(primitive: ExtractedPrimitive): PrimaryExecutionUnit {
+function buildUnit(primitive: ExtractedPrimitive, sourceLanguage: string): PrimaryExecutionUnit {
+  const execUnit = buildExecutableUnit(primitive, sourceLanguage);
+
   return {
     name: primitive.name,
     category: primitive.category,
     confidence: primitive.confidence,
     complexity: primitive.complexity,
+    executableUnit: execUnit,
+    // Legacy handler retained for backward compat — v2 prefers bindAndExecute
     handler: (input: Record<string, unknown>) => {
-      // Wrap original logic — returns enriched context
       const key = `_${primitive.category}_${primitive.canonicalName || primitive.name}`;
       return {
         ...input,
@@ -147,88 +174,64 @@ function buildUnit(primitive: ExtractedPrimitive): PrimaryExecutionUnit {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — UNIVERSAL EFFECT WRAPPER
+// §3 — UNIVERSAL EFFECT WRAPPER (v2 — real execution binding)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Core effect wrapper — wraps ANY primary execution unit with:
- *  - Timing telemetry
- *  - Signal emission
- *  - Error capture
- *  - Normalization
- *  - Intelligence metrics
- *  - Degradation flagging
+ * Core effect wrapper v2 — binds primary unit to real execution,
+ * then wraps with signals, metrics, and truthful degradation.
  */
 export function effectWrapper(
   ctx: EffectContext,
   unit: PrimaryExecutionUnit
 ): EffectInjectionResult {
   const input = { ...ctx._data };
-  const start = performance.now();
-  let result: Record<string, unknown> = input;
-  let success = true;
 
-  try {
-    // Execute primary unit
-    result = unit.handler(input);
-    const duration = performance.now() - start;
+  // v2: Real execution binding — local/bridge/fallback
+  const binding = bindAndExecute(unit.executableUnit, input);
 
-    ctx._data = { ...ctx._data, _result: result };
-    ctx._signals.push({
-      type: 'execution',
-      source: unit.name,
-      duration_ms: Math.round(duration * 1000) / 1000,
-      status: 'success',
-      ts: Date.now(),
-    });
-  } catch (err: unknown) {
-    success = false;
-    const message = err instanceof Error ? err.message : String(err);
+  // Merge binding signals into effect context
+  for (const sig of binding.signals) {
+    ctx._signals.push(sig as EffectSignal);
+  }
+  for (const err of binding.errors) {
+    ctx._errors.push(err);
+  }
 
-    ctx._errors.push({ type: 'execution_error', message });
-    ctx._signals.push({
-      type: 'execution',
-      source: unit.name,
-      duration_ms: Math.round((performance.now() - start) * 1000) / 1000,
-      status: 'failed',
-      error: message,
-      ts: Date.now(),
-    });
-
-    // Safe fallback: return input unchanged, still emit signals
+  // Merge result into context data
+  if (binding.executed && binding.rawResult && typeof binding.rawResult === 'object') {
+    ctx._data = { ...ctx._data, _result: binding.rawResult };
+  } else {
+    // Passthrough — input preserved, no synthetic "execution"
     ctx._data = { ...ctx._data, _result: input };
   }
 
   // Normalization
   const normalized = {
     result: ctx._data._result ?? null,
-    success: ctx._errors.length === 0,
+    success: binding.success,
     signals: ctx._signals.length,
   };
 
   // Intelligence metrics
-  const inputStr = safeStringify(ctx._input);
-  const outputStr = safeStringify(ctx._data._result);
   const intelligence: IntelligenceMetrics = {
-    input_size: inputStr.length,
-    output_size: outputStr.length,
-    execution_density: ctx._signals.length,
+    ...binding.intelligence,
     primary_unit: unit.name,
     primary_category: unit.category,
   };
 
-  // Degradation flag
-  const degraded = ctx._errors.length > 0;
-
-  return { ctx, normalized, intelligence, degraded };
+  return {
+    ctx,
+    normalized,
+    intelligence,
+    degraded: binding.degraded,
+    binding,
+  };
 }
 
 function safeStringify(val: unknown): string {
-  try {
-    return JSON.stringify(val ?? {});
-  } catch {
-    return '{}';
-  }
+  try { return JSON.stringify(val ?? {}); }
+  catch { return '{}'; }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -242,8 +245,8 @@ function safeStringify(val: unknown): string {
  */
 export function autoMapModuleName(fileName: string): string {
   const base = fileName
-    .replace(/\.[^.]+$/, '')    // strip extension
-    .replace(/[^A-Za-z0-9_]/g, '_')  // remove symbols
+    .replace(/\.[^.]+$/, '')
+    .replace(/[^A-Za-z0-9_]/g, '_')
     .replace(/_+/g, '_')
     .replace(/^_|_$/g, '')
     .toUpperCase();
@@ -255,49 +258,40 @@ export function autoMapModuleName(fileName: string): string {
 // §5 — DEFAULT CHAIN GENERATION
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Generate default effect chain for an ascension node.
- * [PRIMARY_MODULE, MEDIC, BRAIN, ORACLE, CONSCIENCE]
- */
 export function generateDefaultChain(primaryModuleName: string): string[] {
-  return [
-    primaryModuleName,
-    ...DEFAULT_EFFECT_CHAIN.slice(1),
-  ];
+  return [primaryModuleName, ...DEFAULT_EFFECT_CHAIN.slice(1)];
 }
 
-/**
- * Ensure a chain exists for a node. If no explicit chain, auto-generate one.
- */
 export function ensureChain(
   existingChain: string[] | null | undefined,
   node: AscensionNode
 ): string[] {
   if (existingChain && existingChain.length > 0) {
-    // Ensure primary module is first
-    const moduleName = buildAscensionModuleName(
-      node.surface?.nodeName || node.name
-    );
+    const moduleName = buildAscensionModuleName(node.surface?.nodeName || node.name);
     if (existingChain[0] !== moduleName) {
       return [moduleName, ...existingChain];
     }
     return existingChain;
   }
 
-  // Auto-generate
-  const moduleName = buildAscensionModuleName(
-    node.surface?.nodeName || node.name
-  );
+  const moduleName = buildAscensionModuleName(node.surface?.nodeName || node.name);
   return generateDefaultChain(moduleName);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §6 — PIPELINE CONTEXT EFFECT APPLICATOR
+// §6 — PIPELINE CONTEXT EFFECT APPLICATOR (v2)
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/** Transformation note labels by strategy */
+const STRATEGY_LABELS: Record<ExecutionStrategy, string> = {
+  local: 'executed via local',
+  bridge: 'executed via bridge',
+  fallback: 'fallback passthrough',
+};
+
 /**
- * Apply Universal Effect Injection to a PipelineContext.
- * This is the integration point with the existing chain-injection system.
+ * Apply Universal Effect Injection v2 to a PipelineContext.
+ * Uses execution binding — not synthetic wrapping.
  */
 export function applyEffectInjection(
   ctx: PipelineContext,
@@ -305,73 +299,90 @@ export function applyEffectInjection(
 ): PipelineContext {
   const primaryUnit = detectPrimaryUnit(
     node.primitives,
-    node.source
+    node.source,
+    node.language
   );
 
-  // Build effect context from pipeline context
-  const effectCtx: EffectContext = {
-    _data: { ...ctx.data },
-    _input: { ...ctx.data },
-    _signals: [],
-    _errors: [],
-  };
+  const moduleName = buildAscensionModuleName(node.surface?.nodeName || node.name);
+  const effectKey = `_effect_${moduleName}`;
 
   if (primaryUnit) {
-    // Execute with effect wrapper
+    // Build effect context from pipeline context
+    const effectCtx: EffectContext = {
+      _data: { ...ctx.data },
+      _input: { ...ctx.data },
+      _signals: [],
+      _errors: [],
+    };
+
+    // v2: Execute with real binding
     const result = effectWrapper(effectCtx, primaryUnit);
+    const binding = result.binding!;
 
     // Merge back into pipeline context
-    const moduleName = buildAscensionModuleName(
-      node.surface?.nodeName || node.name
-    );
-    const effectKey = `_effect_${moduleName}`;
-
     ctx.data = {
       ...ctx.data,
-      ...result.ctx._data,
+      ...(binding.executed ? (typeof binding.rawResult === 'object' && binding.rawResult ? binding.rawResult as Record<string, unknown> : {}) : {}),
       [effectKey]: {
-        primary_unit: result.intelligence.primary_unit,
-        primary_category: result.intelligence.primary_category,
-        signals: result.ctx._signals.length,
-        errors: result.ctx._errors.length,
-        degraded: result.degraded,
-        intelligence: result.intelligence,
-        normalized: result.normalized,
+        primary_unit: binding.primaryUnit,
+        primary_category: binding.primaryCategory,
+        execution_strategy: binding.strategy,
+        executed: binding.executed,
+        degraded: binding.degraded,
+        signals: binding.signals.length,
+        errors: binding.errors.length,
+        fallback_reason: binding.fallbackReason,
+        timing_ms: binding.timingMs,
+        intelligence: binding.intelligence,
+        normalized: binding.normalizedResult,
       },
     };
 
+    // Annotations
     ctx.annotations[`effect.${node.id}.primary`] = primaryUnit.name;
-    ctx.annotations[`effect.${node.id}.signals`] = result.ctx._signals.length;
-    ctx.annotations[`effect.${node.id}.degraded`] = result.degraded;
+    ctx.annotations[`effect.${node.id}.strategy`] = binding.strategy;
+    ctx.annotations[`effect.${node.id}.executed`] = binding.executed;
+    ctx.annotations[`effect.${node.id}.signals`] = binding.signals.length;
+    ctx.annotations[`effect.${node.id}.degraded`] = binding.degraded;
+    ctx.annotations[`effect.${node.id}.fallback`] = binding.fallbackReason ?? false;
+    ctx.annotations[`effect.${node.id}.errors`] = binding.errors.length;
 
-    if (result.degraded) {
-      ctx.transformationNotes.push(
-        `[EFFECT] ${moduleName} degraded — ${result.ctx._errors.length} errors, ` +
-        `${result.ctx._signals.length} signals emitted`
-      );
-    } else {
-      ctx.transformationNotes.push(
-        `[EFFECT] ${moduleName} executed — primary: ${primaryUnit.name} ` +
-        `(${primaryUnit.category}), ${result.ctx._signals.length} signals`
-      );
-    }
+    // Transformation note — honest label
+    const label = binding.degraded
+      ? 'degraded execution'
+      : STRATEGY_LABELS[binding.strategy];
+
+    ctx.transformationNotes.push(
+      `[EFFECT] ${moduleName} — ${label} — primary: ${primaryUnit.name} ` +
+      `(${primaryUnit.category}), ${binding.signals.length} signals, ` +
+      `${binding.timingMs.toFixed(1)}ms`
+    );
   } else {
     // No callable unit — safe passthrough with trace
-    const moduleName = buildAscensionModuleName(
-      node.surface?.nodeName || node.name
-    );
-
-    ctx.data[`_effect_${moduleName}`] = {
+    ctx.data[effectKey] = {
       primary_unit: null,
+      primary_category: null,
+      execution_strategy: 'fallback' as ExecutionStrategy,
+      executed: false,
+      degraded: false,
       signals: 1,
       errors: 0,
-      degraded: false,
-      passthrough: true,
+      fallback_reason: 'No callable unit detected in extracted primitives',
+      timing_ms: 0,
+      intelligence: null,
+      normalized: null,
     };
 
-    ctx.annotations[`effect.${node.id}.passthrough`] = true;
+    ctx.annotations[`effect.${node.id}.primary`] = null;
+    ctx.annotations[`effect.${node.id}.strategy`] = 'fallback';
+    ctx.annotations[`effect.${node.id}.executed`] = false;
+    ctx.annotations[`effect.${node.id}.signals`] = 0;
+    ctx.annotations[`effect.${node.id}.degraded`] = false;
+    ctx.annotations[`effect.${node.id}.fallback`] = 'No callable unit detected';
+    ctx.annotations[`effect.${node.id}.errors`] = 0;
+
     ctx.transformationNotes.push(
-      `[EFFECT] ${moduleName} passthrough — no callable unit detected, input preserved`
+      `[EFFECT] ${moduleName} — fallback passthrough — no callable unit detected, input preserved`
     );
   }
 
@@ -382,36 +393,58 @@ export function applyEffectInjection(
 // §7 — BATCH INJECTION FOR EXTRACTION RESULTS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Post-extraction hook: enhance all primitives with effect metadata.
- * Called after extractPrimitives() to attach effect injection capabilities.
- */
 export function enrichExtractionWithEffects(
   extraction: ExtractionResult,
-  sourceFileName?: string
+  sourceFileName?: string,
+  sourceLanguage?: string
 ): ExtractionResult & { effectMeta: EffectExtractionMeta } {
-  const primary = detectPrimaryUnit(extraction.primitives, sourceFileName);
+  const primary = detectPrimaryUnit(extraction.primitives, sourceFileName, sourceLanguage);
   const moduleName = sourceFileName ? autoMapModuleName(sourceFileName) : 'UPLOADED';
   const chain = generateDefaultChain(buildAscensionModuleName(moduleName));
+
+  const execUnit = primary?.executableUnit ?? null;
+  const resolution = execUnit ? resolveExecutionStrategy(execUnit) : null;
 
   return {
     ...extraction,
     effectMeta: {
       primaryUnit: primary
-        ? { name: primary.name, category: primary.category, confidence: primary.confidence }
+        ? {
+            name: primary.name,
+            category: primary.category,
+            confidence: primary.confidence,
+            executionKind: execUnit?.executionKind ?? 'unknown',
+            sourceLanguage: execUnit?.sourceLanguage ?? 'unknown',
+            directlyExecutable: execUnit?.directlyExecutable ?? false,
+            requiresBridge: execUnit?.requiresBridge ?? false,
+            fallbackOnly: execUnit?.fallbackOnly ?? true,
+          }
         : null,
       autoMappedModule: moduleName,
       defaultChain: chain,
       effectReady: primary !== null,
-      injectionVersion: 1,
+      resolvedStrategy: resolution?.strategy ?? 'fallback',
+      strategyReason: resolution?.reason ?? 'No primary unit detected',
+      injectionVersion: 2,
     },
   };
 }
 
 export interface EffectExtractionMeta {
-  primaryUnit: { name: string; category: string; confidence: number } | null;
+  primaryUnit: {
+    name: string;
+    category: string;
+    confidence: number;
+    executionKind: string;
+    sourceLanguage: string;
+    directlyExecutable: boolean;
+    requiresBridge: boolean;
+    fallbackOnly: boolean;
+  } | null;
   autoMappedModule: string;
   defaultChain: string[];
   effectReady: boolean;
+  resolvedStrategy: ExecutionStrategy;
+  strategyReason: string;
   injectionVersion: number;
 }
