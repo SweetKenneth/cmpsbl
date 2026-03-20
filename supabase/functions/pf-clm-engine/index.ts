@@ -590,8 +590,9 @@ serve(async (req) => {
         velocity: {
           est_ai_calls_today: realCalls.today,
           est_ai_calls_per_hour: velocity,
-          target_daily: 25000,
-          pct_of_target: Math.round((realCalls.today / 25000) * 100),
+          failure_rate_30m: realCalls.failureRate,
+          target_daily: 2000,
+          pct_of_target: Math.round((realCalls.today / 2000) * 100),
         },
         memory: {
           hot: { count: memory.hot, limit: memory.hotLimit, pressure: Number((memory.hot / Math.max(1, memory.hotLimit)).toFixed(2)) },
