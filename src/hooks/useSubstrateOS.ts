@@ -306,11 +306,12 @@ export function useSubstrateHealthScore() {
   const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration'] as const;
   const EXPANSION_ZONES = ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest'] as const;
   const CSZ_ZONES = ['evolution', 'shadow', 'phantom'] as const;
+  const META_PLANE = ['atlas', 'engineer'] as const;
   const MESH_OVERLAYS = ['immunity', 'intent', 'governance', 'defense'] as const;
 
   const ALL_MODULES = [
     ...CORE_SYSTEM, ...CCR_ZONES, ...OCG_ZONES,
-    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...MESH_OVERLAYS,
+    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...META_PLANE, ...MESH_OVERLAYS,
   ] as const;
 
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
@@ -355,6 +356,9 @@ export function useSubstrateHealthScore() {
     evolution: () => evolutionMod.status(),
     intent: () => cortex.status(),
     governance: () => cortex.status(),
+    // Meta — Plane
+    atlas: () => cortex.status(),
+    engineer: () => cortex.status(),
   };
 
   const batchQuery = useQuery({
@@ -401,16 +405,18 @@ export function useSubstrateHealthScore() {
   const surfaceHealth = layerHealth(EXECUTION_SURFACES);
   const expansionHealth = layerHealth(EXPANSION_ZONES);
   const cszHealth = layerHealth(CSZ_ZONES);
+  const metaHealth = layerHealth(META_PLANE);
   const meshHealth = layerHealth(MESH_OVERLAYS);
 
   const healthScore = Math.round(
     coreSysHealth * 0.12 +
     ccrHealth * 0.12 +
-    ocgHealth * 0.15 +
+    ocgHealth * 0.14 +
     surfaceHealth * 0.18 +
-    expansionHealth * 0.13 +
-    cszHealth * 0.10 +
-    meshHealth * 0.20
+    expansionHealth * 0.12 +
+    cszHealth * 0.08 +
+    metaHealth * 0.06 +
+    meshHealth * 0.18
   );
 
   const totalModules = ALL_MODULES.length;

@@ -30,7 +30,7 @@ export const NARRATIVE = {
   subtitle: 'The Memory Stream is a continuous substrate of evolving software systems.',
   
   // Architecture identity
-  nodeCount: 38,
+  nodeCount: 40,
   sectorCount: 12,
   commandCount: '500+',
   capabilityCount: '675+',
