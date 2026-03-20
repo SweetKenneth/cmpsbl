@@ -62,8 +62,8 @@ const TIERS: {
     ],
   },
   {
-    key: 'studio',
-    name: 'Studio',
+    key: 'creator',
+    name: 'Creator',
     price: '$29',
     annualPrice: '$23',
     period: '/mo',
@@ -83,7 +83,7 @@ const TIERS: {
   },
   {
     key: 'studio',
-    name: 'Creator',
+    name: 'Studio',
     price: '$49',
     annualPrice: '$39',
     period: '/mo',
