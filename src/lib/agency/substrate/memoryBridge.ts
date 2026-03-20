@@ -10,7 +10,7 @@ import { memoryCore, type MemoryType as CoreMemoryType } from '@/lib/substrate/m
 
 // Legacy types maintained for backward compatibility
 export type MemoryType = 'template' | 'heuristic' | 'insight' | 'error' | 'improvement';
-export type MemoryTier = 'hot' | 'cold';
+export type MemoryTier = 'hot' | 'warm' | 'cold' | 'glacier';
 
 export interface SubstrateMemory {
   type: MemoryType;
