@@ -975,6 +975,7 @@ class MemoryCoreClient {
       hot: 'brain_memory_hot',
       warm: 'brain_memory_warm',
       cold: 'brain_memory_cold',
+      glacier: 'brain_memory_archive',
     };
     return tableMap[tier];
   }
