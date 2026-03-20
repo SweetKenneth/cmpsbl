@@ -7,6 +7,7 @@
 import type { SynthesisContext } from './logic-synthesizer';
 import { generateLicenseHTML, generateReadmeHTML } from './elegant-html-docs';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import { humanizeCapabilityName } from './humanize-name';
 import { getTierFromScore } from '@/lib/pipeline-valuation';
 
 export function generateTypeScriptTest(ctx: SynthesisContext): string {
