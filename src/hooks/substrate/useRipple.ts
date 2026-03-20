@@ -126,8 +126,8 @@ export function useRipple(): UseRippleReturn {
   const pulse = useQuery({
     queryKey: ['substrate', 'ripple', 'pulse'],
     queryFn: () => ripple.pulse(),
-    refetchInterval: pollingEnabled ? 10000 : false,
-    staleTime: 5000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
     enabled: pollingEnabled,
   });
 
@@ -171,16 +171,16 @@ export function useRipple(): UseRippleReturn {
   const events = (options?: { topic?: string; limit?: number; status?: string }) => useQuery({
     queryKey: ['substrate', 'ripple', 'events', options],
     queryFn: () => ripple.events(options),
-    refetchInterval: pollingEnabled ? 10000 : false,
-    staleTime: 5000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
     enabled: pollingEnabled,
   });
 
   const jobs = (options?: { queue?: string; status?: string; limit?: number }) => useQuery({
     queryKey: ['substrate', 'ripple', 'jobs', options],
     queryFn: () => ripple.jobs(options),
-    refetchInterval: pollingEnabled ? 10000 : false,
-    staleTime: 5000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
     enabled: pollingEnabled,
   });
 
