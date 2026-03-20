@@ -147,18 +147,18 @@ export async function findDuplicateClusters(
 ): Promise<DuplicateCluster[]> {
   const clusters: DuplicateCluster[] = [];
   
-  // Fetch recent memories from hot and warm tiers (only needed columns)
+  // Fetch recent memories from hot and warm tiers (only needed columns, reduced limits)
   const [{ data: hotMemories }, { data: warmMemories }] = await Promise.all([
     supabase
       .from('brain_memory_hot')
       .select('id, content, context, value_score, created_at')
       .order('created_at', { ascending: false })
-      .limit(500),
+      .limit(200),
     supabase
       .from('brain_memory_warm')
       .select('id, content, context, value_score, created_at')
       .order('created_at', { ascending: false })
-      .limit(500),
+      .limit(200),
   ]);
 
   const allMemories = [
