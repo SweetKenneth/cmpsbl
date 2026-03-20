@@ -96,7 +96,7 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
   const {
     query,
     limit = 20,
-    tiers = ['hot', 'warm', 'cold'],
+    tiers = ['hot', 'warm', 'cold', 'glacier'],
     minSimilarity = 0.15,
     boostRecent = true,
     context,
@@ -132,11 +132,21 @@ export async function semanticRecall(options: RecallOptions): Promise<SemanticMa
           .limit(100)
       : null;
     if (coldBuilder && context) coldBuilder = coldBuilder.contains('tags', { context });
+
+    let glacierBuilder = tiers.includes('glacier')
+      ? supabase
+          .from('brain_memory_archive')
+          .select('id, content, context, tags, value_score, access_count, created_at')
+          .order('value_score', { ascending: false })
+          .limit(50)
+      : null;
+    if (glacierBuilder && context) glacierBuilder = glacierBuilder.eq('context', context);
     
-    const [hotResult, warmResult, coldResult] = await Promise.all([
+    const [hotResult, warmResult, coldResult, glacierResult] = await Promise.all([
       hotBuilder ? hotBuilder : Promise.resolve({ data: [] }),
       warmBuilder ? warmBuilder : Promise.resolve({ data: [] }),
       coldBuilder ? coldBuilder : Promise.resolve({ data: [] }),
+      glacierBuilder ? glacierBuilder : Promise.resolve({ data: [] }),
     ]);
     
     // Process hot tier
