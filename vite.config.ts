@@ -112,6 +112,22 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('three') || id.includes('@react-three')) {
               return 'three-vendor';
             }
+            // Date utilities — used by many pages but not landing
+            if (id.includes('date-fns')) {
+              return 'date-fns';
+            }
+            // Markdown renderer — only blog/docs pages
+            if (id.includes('react-markdown') || id.includes('remark') || id.includes('rehype') || id.includes('unified') || id.includes('micromark') || id.includes('mdast')) {
+              return 'markdown-vendor';
+            }
+            // Zod — validation, defer from entry
+            if (id.includes('zod')) {
+              return 'zod';
+            }
+            // JSZip/file-saver — download features only
+            if (id.includes('jszip') || id.includes('file-saver')) {
+              return 'download-vendor';
+            }
           }
         },
       },
