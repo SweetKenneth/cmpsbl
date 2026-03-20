@@ -169,8 +169,9 @@ export async function downloadTieredFoundryZip(options: {
     artifactFolder.file('README.md', bundle.readme);
 
     // Pipeline Details page — in-depth HTML report with valuation
+    const displayName = humanizeCapabilityName(item.name, item.systemChain || ['SYSTEM'], item.category);
     const detailsHTML = generatePipelineDetailsHTML({
-      name: item.name,
+      name: displayName,
       description: item.description || getFunctionalDescription(item.name, item.systemChain || ['SYSTEM']),
       category: item.category || 'general',
       score: item.score,
