@@ -13,6 +13,7 @@ import { PipelineProvenance } from './PipelineProvenance';
 import { KeepDiscardPanel } from './KeepDiscardPanel';
 import { VaultUsageIndicator } from './VaultUsageIndicator';
 import { VaultCapacityModal, DailyLimitModal, MythicDiscoveryModal } from './VaultUpgradeModals';
+import { LockedDiscoveryTeaser } from './LockedDiscoveryTeaser';
 import { type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse, MineResult } from '@/lib/foundry/public-mining-engine';
 import { isPullLimitReached, isVaultFull, getVaultLimits } from '@/lib/substrate/vault-limits';
