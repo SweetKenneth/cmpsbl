@@ -114,7 +114,7 @@ describe('Execution Strategy Resolution', () => {
   beforeEach(() => clearPrimitives());
 
   it('resolves local for TypeScript with registered handler', () => {
-    registerPrimitive({ name: 'myFunc', source: 'native', handler: () => ({}) });
+    registerPrimitive({ id: 'p-myFunc', name: 'myFunc', source: 'native', handler: () => ({}) });
     const unit = buildExecutableUnit(
       { name: 'myFunc', category: 'execution', confidence: 0.9, complexity: 2, extractionMethod: 'function' },
       'typescript'
