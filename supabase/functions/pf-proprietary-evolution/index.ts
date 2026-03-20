@@ -281,6 +281,130 @@ const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
   'EVOLUTION+SHADOW+FORGE': [
     { name: 'Shadow_Evolution_Forge', desc: 'Mutates capabilities in shadow environments, tests divergent variants, then forges the fittest into production artifacts — Darwinian software manufacturing.' },
   ],
+  // ═══ Extended archetype coverage for remaining 21 nodes ═══
+  'BRAIN+CORE': [
+    { name: 'Cognitive_Bootstrap_Engine', desc: 'Wires reasoning directly into the system boot sequence — every startup cycle produces smarter initialization, turning cold starts into warm cognition.' },
+  ],
+  'BRAIN+SYSTEM': [
+    { name: 'Intelligent_Lifecycle_Manager', desc: 'Applies multi-step reasoning to system provisioning and teardown — diagnoses configuration drift and self-corrects before failures cascade.' },
+  ],
+  'BRAIN+DREAM': [
+    { name: 'Lucid_Reasoning_Synthesizer', desc: 'Combines deductive logic with generative heuristic synthesis — reasons about what exists, then imagines what could exist, producing novel solutions from structured thought.' },
+  ],
+  'BRAIN+RIPPLE': [
+    { name: 'Cascading_Inference_Network', desc: 'Propagates reasoning conclusions through event chains — one insight triggers downstream inferences automatically, creating compounding intelligence waves.' },
+  ],
+  'BRAIN+ACCESS': [
+    { name: 'Entitlement_Reasoning_Engine', desc: 'Applies contextual reasoning to access control decisions — goes beyond static roles to infer intent-aware permissions that adapt to behavioral patterns.' },
+  ],
+  'BRAIN+IDENTITY': [
+    { name: 'Entity_Resolution_Intelligence', desc: 'Uses semantic reasoning to resolve ambiguous identities across systems — disambiguates users, sessions, and entities with probabilistic confidence scoring.' },
+  ],
+  'BRAIN+RELAY': [
+    { name: 'Intelligent_Dispatch_Router', desc: 'Reasons about webhook payloads to determine optimal retry strategies and transformation paths — replaces blind dispatch with cognitive routing.' },
+  ],
+  'BRAIN+AUDIT': [
+    { name: 'Forensic_Reasoning_Ledger', desc: 'Applies causal inference to immutable audit trails — reconstructs decision chains, identifies anomalous patterns, and generates compliance narratives from raw logs.' },
+  ],
+  'BRAIN+NERVE': [
+    { name: 'Cognitive_Signal_Consensus', desc: 'Reasons about conflicting system signals to achieve intelligent consensus — resolves ambiguous heartbeats and gate conditions through weighted inference.' },
+  ],
+  'BRAIN+VISION': [
+    { name: 'Observability_Intelligence_Layer', desc: 'Applies reasoning to telemetry streams to surface insights humans miss — transforms raw dashboards into narrative-driven system understanding.' },
+  ],
+  'BRAIN+NEXUS': [
+    { name: 'Adaptive_AI_Router', desc: 'Reasons about model capabilities, cost profiles, and task complexity to dynamically select the optimal AI provider — intelligent routing that learns from every call.' },
+  ],
+  'BRAIN+ECONOMY': [
+    { name: 'Cost_Aware_Cognition', desc: 'Applies reasoning to metering and billing data to optimize resource allocation — thinks about economic impact before committing compute, maximizing ROI per inference.' },
+  ],
+  'BRAIN+SANDBOX': [
+    { name: 'Reasoned_Isolation_Engine', desc: 'Uses cognitive analysis to determine isolation boundaries — dynamically provisions sandboxes with just-right permissions based on inferred code behavior.' },
+  ],
+  'BRAIN+INCLUSIVE': [
+    { name: 'Accessibility_Reasoning_Advisor', desc: 'Applies semantic understanding to UI structures, identifying accessibility barriers that automated WCAG checks miss — human-like reasoning about usability.' },
+  ],
+  'BRAIN+MEDIC': [
+    { name: 'Diagnostic_Reasoning_Core', desc: 'Combines medical-style differential diagnosis with system health data — reasons through symptom trees to identify root causes, not just surface failures.' },
+  ],
+  'BRAIN+INTEGRATION': [
+    { name: 'Dependency_Intelligence_Resolver', desc: 'Reasons about dependency graphs and version compatibility to predict integration failures before they occur — proactive dependency management.' },
+  ],
+  'BRAIN+SOVEREIGN': [
+    { name: 'Sovereign_Data_Reasoner', desc: 'Applies jurisdictional reasoning to data flows — infers residency requirements, encryption needs, and sovereignty constraints from regulatory context.' },
+  ],
+  'BRAIN+INTENT': [
+    { name: 'Intent_Comprehension_Engine', desc: 'Goes beyond action routing to understand the WHY behind requests — decomposes ambiguous intents into structured execution plans with confidence scoring.' },
+  ],
+  'BRAIN+GOVERNANCE': [
+    { name: 'Policy_Reasoning_Enforcer', desc: 'Applies logical reasoning to governance policies — evaluates edge cases, resolves policy conflicts, and generates audit-ready justifications for every decision.' },
+  ],
+  'BRAIN+ATLAS': [
+    { name: 'Capability_Intelligence_Map', desc: 'Reasons about the full capability surface to identify gaps, redundancies, and optimization paths — turns the registry into a strategic intelligence asset.' },
+  ],
+  'BRAIN+ENGINEER': [
+    { name: 'Performance_Reasoning_Optimizer', desc: 'Applies causal reasoning to performance benchmarks — identifies optimization opportunities that profilers miss by understanding systemic bottleneck chains.' },
+  ],
+  'ORACLE+CORE': [
+    { name: 'Predictive_Boot_Sequencer', desc: 'Forecasts system load patterns to pre-configure boot parameters — every startup is optimized based on predicted usage before the first request arrives.' },
+  ],
+  'ORACLE+SYSTEM': [
+    { name: 'Lifecycle_Forecaster', desc: 'Predicts system degradation curves and maintenance windows — shifts lifecycle management from reactive scheduling to predictive optimization.' },
+  ],
+  'ORACLE+DREAM': [
+    { name: 'Generative_Forecast_Engine', desc: 'Combines Bayesian prediction with synthetic scenario generation — imagines futures that historical data alone cannot predict, then scores their likelihood.' },
+  ],
+  'ORACLE+VISION': [
+    { name: 'Predictive_Telemetry_Lens', desc: 'Forecasts system behavior from observability data — predicts failures, capacity exhaustion, and performance degradation before dashboards show red.' },
+  ],
+  'ORACLE+NEXUS': [
+    { name: 'AI_Cost_Forecaster', desc: 'Predicts AI provider costs and latency across providers — routes requests to minimize spend while maintaining quality targets through forecast-driven selection.' },
+  ],
+  'ORACLE+ECONOMY': [
+    { name: 'Revenue_Prediction_Engine', desc: 'Forecasts billing cycles, usage patterns, and revenue trajectories — turns metering data into financial intelligence with confidence intervals.' },
+  ],
+  'ORACLE+MEDIC': [
+    { name: 'Predictive_Health_Monitor', desc: 'Forecasts system health degradation before symptoms appear — combines diagnostic baselines with trend analysis for preemptive self-healing.' },
+  ],
+  'ORACLE+INTENT': [
+    { name: 'Intent_Prediction_Planner', desc: 'Predicts likely next actions from historical intent patterns — pre-computes execution plans for anticipated requests, reducing latency to near-zero.' },
+  ],
+  'ORACLE+GOVERNANCE': [
+    { name: 'Compliance_Forecaster', desc: 'Predicts regulatory compliance risks before violations occur — models policy drift and generates early warnings with actionable remediation paths.' },
+  ],
+  'ORACLE+ATLAS': [
+    { name: 'Capability_Growth_Predictor', desc: 'Forecasts which capabilities will be needed based on usage trends — enables proactive capability development guided by predicted demand.' },
+  ],
+  'ORACLE+ENGINEER': [
+    { name: 'Performance_Degradation_Oracle', desc: 'Predicts performance regression from code and configuration changes — identifies optimization opportunities before they become critical bottlenecks.' },
+  ],
+  'DEFENSE+CORE': [
+    { name: 'Hardened_Boot_Shield', desc: 'Wraps the system boot sequence with threat detection — validates every initialization step against known attack vectors before granting system control.' },
+  ],
+  'DEFENSE+SYSTEM': [
+    { name: 'System_Perimeter_Guard', desc: 'Applies continuous threat scoring to lifecycle operations — prevents privilege escalation during provisioning and detects anomalous configuration changes.' },
+  ],
+  'DEFENSE+AUDIT': [
+    { name: 'Tamper_Evident_Ledger', desc: 'Chains threat detection with immutable audit logging — every security event is cryptographically anchored, creating an unforgeable forensic record.' },
+  ],
+  'DEFENSE+SOVEREIGN': [
+    { name: 'Sovereign_Security_Mesh', desc: 'Enforces jurisdiction-aware security policies — threat models adapt to data residency requirements and cross-border compliance constraints.' },
+  ],
+  'DEFENSE+GOVERNANCE': [
+    { name: 'Governed_Threat_Response', desc: 'Routes security incidents through governance approval workflows — automated defense actions respect policy boundaries and generate compliance records.' },
+  ],
+  'CORTEX+ORACLE': [
+    { name: 'Predictive_Workflow_Engine', desc: 'Orchestrates multi-step workflows guided by predictive modeling — re-prioritizes task queues based on forecasted outcomes, not just static rules.' },
+  ],
+  'CORTEX+MEMORY': [
+    { name: 'Context_Aware_Orchestrator', desc: 'Orchestrates workflows with full historical context — recalls past execution patterns to optimize current task scheduling and resource allocation.' },
+  ],
+  'CORTEX+DEFENSE': [
+    { name: 'Secure_Workflow_Orchestrator', desc: 'Wraps every orchestrated step with threat validation — ensures multi-step workflows cannot be hijacked or manipulated through intermediate state corruption.' },
+  ],
+  'CORTEX+EVOLUTION': [
+    { name: 'Self_Optimizing_Orchestrator', desc: 'Applies evolutionary fitness scoring to workflow configurations — orchestration strategies mutate, compete, and the most efficient patterns survive.' },
+  ],
 };
 
 function chainKey(nodes: string[]): string {
