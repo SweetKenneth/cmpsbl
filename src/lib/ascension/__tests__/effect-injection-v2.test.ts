@@ -189,6 +189,7 @@ describe('bindAndExecute', () => {
 
   it('degraded path on execution failure', () => {
     registerPrimitive({
+      id: 'p-failUnit',
       name: 'failUnit',
       source: 'native',
       handler: () => { throw new Error('Intentional failure'); },
