@@ -100,6 +100,18 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@tanstack/react-query')) {
               return 'query';
             }
+            // Recharts — heavy charting lib, deduplicate across lazy chunks
+            if (id.includes('recharts') || id.includes('d3-') || id.includes('victory-vendor')) {
+              return 'recharts-vendor';
+            }
+            // Framer Motion — split from entry bundle
+            if (id.includes('framer-motion')) {
+              return 'framer-motion';
+            }
+            // Three.js — 3D rendering, rarely needed on initial load
+            if (id.includes('three') || id.includes('@react-three')) {
+              return 'three-vendor';
+            }
           }
         },
       },
