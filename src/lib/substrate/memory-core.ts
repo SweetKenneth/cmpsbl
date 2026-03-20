@@ -592,7 +592,7 @@ class MemoryCoreClient {
       // Determine which tables to search
       const tablesToSearch = tier 
         ? [this.getTableForTier(tier)] 
-        : ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold'];
+        : ['brain_memory_hot', 'brain_memory_warm', 'brain_memory_cold', 'brain_memory_archive'];
 
       // Build all query promises in parallel
       const strategies: ('fulltext' | 'pattern')[] = 
