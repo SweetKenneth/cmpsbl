@@ -142,10 +142,7 @@ async function searchColdTier(
     
     const { data, error } = await queryBuilder;
     
-    if (error || !data) {
-      console.error('Cold tier search error:', error);
-      return [];
-    }
+    if (error || !data) return [];
     
     return data
       .map(memory => ({
@@ -158,35 +155,61 @@ async function searchColdTier(
       }))
       .filter(r => r.relevance >= options.minRelevance)
       .slice(0, options.limit);
-  } catch (err) {
-    console.error('Error searching cold tier:', err);
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Search glacier (archive) tier — deepest, lowest priority
+ */
+async function searchGlacierTier(
+  query: string,
+  options: { limit: number; minRelevance: number }
+): Promise<SearchResult[]> {
+  try {
+    const { data, error } = await supabase
+      .from('brain_memory_archive')
+      .select('id, content, source_tier, archived_reason')
+      .order('created_at', { ascending: false })
+      .limit(options.limit * 3);
+
+    if (error || !data) return [];
+
+    return data
+      .map(memory => ({
+        id: memory.id,
+        content: memory.content,
+        context: memory.source_tier || 'glacier',
+        relevance: calculateRelevance(query, memory.content) * 0.85, // Decay penalty
+        tier: 'glacier' as const,
+      }))
+      .filter(r => r.relevance >= options.minRelevance)
+      .slice(0, options.limit);
+  } catch {
     return [];
   }
 }
 
 /**
  * Calculate relevance score between query and content
+ * Optimized: caches lowercased query, avoids redundant exact-match check per word
  */
 function calculateRelevance(query: string, content: string): number {
-  const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+  if (!content) return 0;
+  const queryLower = query.toLowerCase();
+  const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
   const contentLower = content.toLowerCase();
   
   if (queryWords.length === 0) return 0;
   
   let matchCount = 0;
-  let exactMatchBonus = 0;
-  
   for (const word of queryWords) {
-    if (contentLower.includes(word)) {
-      matchCount++;
-      
-      if (contentLower.includes(query.toLowerCase())) {
-        exactMatchBonus = 0.2;
-      }
-    }
+    if (contentLower.includes(word)) matchCount++;
   }
   
   const baseRelevance = matchCount / queryWords.length;
+  const exactMatchBonus = contentLower.includes(queryLower) ? 0.2 : 0;
   return Math.min(baseRelevance + exactMatchBonus, 1.0);
 }
 

@@ -153,6 +153,7 @@ async function compressCluster(
 
 /**
  * Run batch compression on hot tier memories
+ * Optimized: reduced fetch limit, batched inserts/deletes to avoid N+1
  */
 export async function runBatchCompression(
   config: Partial<CompressionConfig> = {}
@@ -165,7 +166,6 @@ export async function runBatchCompression(
   const finalConfig = { ...DEFAULT_CONFIG, ...config };
   
   try {
-    // Fetch candidates for compression (low access, old memories)
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - 30);
     
@@ -174,13 +174,12 @@ export async function runBatchCompression(
       .select('id, content, context')
       .lt('last_used', cutoffDate.toISOString())
       .order('last_used', { ascending: true })
-      .limit(500);
+      .limit(200); // Reduced from 500 to prevent memory pressure
     
     if (error || !candidates || candidates.length === 0) {
       return { clustersProcessed: 0, memoriesCompressed: 0, avgRatio: 0, savedBytes: 0 };
     }
     
-    // Cluster memories
     const clusters = finalConfig.semanticClustering 
       ? clusterMemories(candidates)
       : new Map([['all', candidates]]);
@@ -189,57 +188,67 @@ export async function runBatchCompression(
     let totalRatio = 0;
     let totalSaved = 0;
     let clustersProcessed = 0;
+
+    // Collect all inserts and deletes for batched execution
+    const coldInserts: Array<Record<string, unknown>> = [];
+    const hotDeleteIds: string[] = [];
+    const compressionResults: Array<{ batchLen: number; ratio: number; saved: number }> = [];
     
-    for (const [, clusterMemories] of clusters) {
-      if (clusterMemories.length < 2) continue;
+    for (const [, clusterMems] of clusters) {
+      if (clusterMems.length < 2) continue;
       
-      // Limit cluster size
-      const batch = clusterMemories.slice(0, finalConfig.maxClusterSize);
+      const batch = clusterMems.slice(0, finalConfig.maxClusterSize);
       const compressed = await compressCluster(batch, finalConfig);
       
       if (compressed) {
         const originalSize = batch.reduce((sum, m) => sum + m.content.length, 0);
         const compressedSize = compressed.summary.length + compressed.preservedCode.join('').length;
         
-        // Store compressed version (include preserved code in summary)
         const fullContent = compressed.preservedCode.length > 0
           ? `${compressed.summary}\n\n--- Preserved Code ---\n${compressed.preservedCode.join('\n\n')}`
           : compressed.summary;
 
-        const { error: insertError } = await supabase
-          .from('brain_memory_cold')
-          .insert({
-            summary: fullContent,
-            source_refs: compressed.originalIds,
-            compression_level: Math.round(compressed.compressionRatio),
-            source_module: batch[0]?.context === 'code' ? 'engineering' : 'general',
-            category: batch[0]?.context || 'uncategorized',
-            tags: {
-              semantic_hash: compressed.semanticHash,
-              cluster_tags: compressed.clusterTags,
-              preserved_code_count: compressed.preservedCode.length,
-              algorithm: 'v2_semantic',
-            },
-          });
-        
-        if (!insertError) {
-          // Remove from hot — verify delete succeeded before counting
-          const { error: deleteError } = await supabase
-            .from('brain_memory_hot')
-            .delete()
-            .in('id', compressed.originalIds);
-          
-          if (!deleteError) {
-            totalCompressed += batch.length;
-            totalRatio += compressed.compressionRatio;
-            totalSaved += originalSize - compressedSize;
-            clustersProcessed++;
-          } else {
-            console.error('[CompressionEngine] Delete failed after cold insert:', deleteError);
-            // Cold insert succeeded but delete failed — log but don't count as error
-            // Data is safe in cold; duplicates will be cleaned by dedup engine
-            clustersProcessed++;
-          }
+        coldInserts.push({
+          summary: fullContent,
+          source_refs: compressed.originalIds,
+          compression_level: Math.round(compressed.compressionRatio),
+          source_module: batch[0]?.context === 'code' ? 'engineering' : 'general',
+          category: batch[0]?.context || 'uncategorized',
+          tags: {
+            semantic_hash: compressed.semanticHash,
+            cluster_tags: compressed.clusterTags,
+            preserved_code_count: compressed.preservedCode.length,
+            algorithm: 'v2_semantic',
+          },
+        });
+
+        hotDeleteIds.push(...compressed.originalIds);
+        compressionResults.push({
+          batchLen: batch.length,
+          ratio: compressed.compressionRatio,
+          saved: originalSize - compressedSize,
+        });
+      }
+    }
+
+    // Batch insert into cold
+    if (coldInserts.length > 0) {
+      const { error: insertError } = await supabase
+        .from('brain_memory_cold')
+        .insert(coldInserts as any[]);
+      
+      if (!insertError && hotDeleteIds.length > 0) {
+        // Batch delete from hot (chunk to avoid URL length limits)
+        for (let i = 0; i < hotDeleteIds.length; i += 100) {
+          const chunk = hotDeleteIds.slice(i, i + 100);
+          await supabase.from('brain_memory_hot').delete().in('id', chunk);
+        }
+
+        for (const r of compressionResults) {
+          totalCompressed += r.batchLen;
+          totalRatio += r.ratio;
+          totalSaved += r.saved;
+          clustersProcessed++;
         }
       }
     }
