@@ -109,7 +109,7 @@ serve(async (req) => {
       line_items: [{ price: priceConfig.price_id, quantity: 1 }],
       mode: 'subscription',
       success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
-      cancel_url: `${origin}/store?tab=plans&canceled=true`,
+      cancel_url: `${origin}/store?tab=plans&canceled=true&tier=${displayTier}`,
       metadata: {
         user_id: userId || '',
         tier: displayTier,
@@ -117,6 +117,7 @@ serve(async (req) => {
         product_type: 'tier_subscription',
       },
       subscription_data: {
+        trial_period_days: 7,
         metadata: {
           user_id: userId || '',
           tier: displayTier,

@@ -2,9 +2,10 @@
  * UpgradeContent — Extracted inner content from Upgrade page.
  * Embeddable inside Store tabs or standalone Upgrade page.
  */
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { toast } from 'sonner';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -55,10 +56,10 @@ const TIERS: {
     icon: Unlock,
     capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
     features: [
-      'Full baseline runtime',
-      'All 24 packs visible',
-      'Standard memory depth',
-      'Community support',
+      'Full runtime — not a demo',
+      'Browse all 24 capability packs',
+      'Standard memory (5 recalls)',
+      'Community Discord support',
     ],
   },
   {
@@ -74,10 +75,10 @@ const TIERS: {
     stripeTier: 'creator' as EngineSubscriptionTier,
     capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
     features: [
-      'Expanded memory depth',
-      'All 24 packs visible',
-      'Executable capabilities',
-      'Priority routing',
+      'Run 6 packs simultaneously',
+      'Export traces & audit logs',
+      '2× deeper memory recall',
+      'Priority queue — 3× faster routing',
       'Email support',
     ],
   },
@@ -95,11 +96,11 @@ const TIERS: {
     stripeTier: 'studio' as EngineSubscriptionTier,
     capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
     features: [
-      '9 template packs included',
-      'Expanded memory partitions',
-      'Trace & audit exports',
-      'High-priority NEXUS routing',
-      'Custom memory slots',
+      '9 packs running concurrently',
+      'Dedicated memory partitions',
+      'Full trace & compliance exports',
+      'Fastest NEXUS routing tier',
+      'Custom memory slots you configure',
       'Priority email support',
     ],
   },
@@ -116,21 +117,44 @@ const TIERS: {
     stripeTier: 'architect' as EngineSubscriptionTier,
     capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
     features: [
-      'Dedicated memory partitions',
-      'Full governance authority',
-      'Compliance & audit exports',
-      'Organization workspaces',
-      'Custom memory slots',
-      'White-glove onboarding',
-      'Dedicated support channel',
+      '12 packs — maximum throughput',
+      'Unlimited vault — never lose context',
+      'Full governance & compliance controls',
+      'Organization workspaces for teams',
+      'Custom memory slots you configure',
+      'White-glove onboarding call',
+      'Dedicated Slack support channel',
     ],
   },
 ];
 export function UpgradeContent() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
   const [detailPack, setDetailPack] = useState<ArtifactPack | null>(null);
+
+  // Checkout recovery — show toast when user returns from canceled checkout
+  useEffect(() => {
+    if (searchParams.get('canceled') === 'true') {
+      const tier = searchParams.get('tier') || 'a plan';
+      toast.info(`Still thinking about ${tier}?`, {
+        description: 'Your 7-day free trial is waiting — no charge until day 8.',
+        duration: 10000,
+        action: {
+          label: 'Start trial',
+          onClick: () => {
+            const matchedTier = TIERS.find(t => t.name.toLowerCase() === tier.toLowerCase());
+            if (matchedTier?.stripeTier) startCheckout(matchedTier.stripeTier, billingInterval);
+          },
+        },
+      });
+      // Clean up URL params
+      searchParams.delete('canceled');
+      searchParams.delete('tier');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, []);
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
@@ -279,7 +303,10 @@ export function UpgradeContent() {
                 {isCurrent && (
                   <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground text-[10px]">Current</Badge>
                 )}
-                {t.popular && !isCurrent && (
+                {!isCurrent && t.stripeTier && (
+                  <Badge className="absolute top-4 right-4 bg-emerald-500 text-white text-[10px]">7-day free trial</Badge>
+                )}
+                {t.popular && !isCurrent && !t.stripeTier && (
                   <Badge className="absolute top-4 right-4 bg-violet-500 text-white text-[10px]">Popular</Badge>
                 )}
 
@@ -364,7 +391,7 @@ export function UpgradeContent() {
                         className={cn("w-full min-h-[44px] bg-gradient-to-r text-white border-0 shadow-lg shadow-primary/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
                         onClick={() => t.stripeTier && startCheckout(t.stripeTier, billingInterval)}
                       >
-                        Upgrade to {t.name} <ArrowRight className="w-4 h-4 ml-1" />
+                        Start 7-day free trial <ArrowRight className="w-4 h-4 ml-1" />
                       </Button>
                     )}
                   </div>
