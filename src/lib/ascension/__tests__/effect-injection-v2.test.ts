@@ -62,7 +62,11 @@ function makeCtx(): PipelineContext {
     annotations: {},
     transformationNotes: [],
     stageIndex: 0,
-    metadata: {},
+    trace: [],
+    recoveries: [],
+    originalInput: { input: 'test' },
+    chainId: 'test-chain',
+    chainModules: ['PRIMARY'],
   } as PipelineContext;
 }
 
