@@ -55,10 +55,10 @@ const TIERS: {
     icon: Unlock,
     capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
     features: [
-      'Full baseline runtime',
-      'All 24 packs visible',
-      'Standard memory depth',
-      'Community support',
+      'Full runtime — not a demo',
+      'Browse all 24 capability packs',
+      'Standard memory (5 recalls)',
+      'Community Discord support',
     ],
   },
   {

@@ -112,20 +112,21 @@ serve(async (req) => {
       customer_email: customerId ? undefined : user.email,
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
-      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
-      cancel_url: `${origin}/store?tab=plans&canceled=true`,
-      metadata: {
-        user_id: user.id,
-        tier: displayTier,
-        interval,
-        product_type: 'substrate_subscription',
-      },
       subscription_data: {
+        trial_period_days: 7,
         metadata: {
           user_id: user.id,
           tier: displayTier,
           interval,
         },
+      },
+      success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
+      cancel_url: `${origin}/store?tab=plans&canceled=true&tier=${displayTier}`,
+      metadata: {
+        user_id: user.id,
+        tier: displayTier,
+        interval,
+        product_type: 'substrate_subscription',
       },
     });
 
