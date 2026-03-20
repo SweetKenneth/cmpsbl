@@ -19,6 +19,7 @@ import {
   isAscensionModule,
   generateCorrelationId,
 } from './types';
+import { applyEffectInjection, ensureChain, detectPrimaryUnit } from './effect-injection';
 
 // Re-export types
 export type { InjectionResult, ChainParticipation };
