@@ -41,7 +41,7 @@ export function useOnboardingTracking(surface: OnboardingSurface) {
       tracked.current.add(key);
 
       supabase.auth.getUser().then(({ data }) => {
-        supabase
+        void supabase
           .from('analytics_events')
           .insert({
             event_type: eventType,
@@ -51,9 +51,7 @@ export function useOnboardingTracking(surface: OnboardingSurface) {
             value,
             session_id: getSessionId(),
             user_id: data?.user?.id ?? null,
-          })
-          .then(() => {})
-          .catch(() => {});
+          });
       });
     },
     [surface]
