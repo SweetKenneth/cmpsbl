@@ -430,7 +430,43 @@ ${line}  See runtime-bridge${LANG_EXT[lang] || '.ts'} for the cognitive layer.
 
 // ═══ PHP CAPABILITY SOURCE (REAL EXECUTABLE) ═══
 
-function generatePhpCapabilitySource(cap: CapabilityForExport): string {
+function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: SourceFile[]): string {
+  const phpFiles = (sourceFiles || []).filter(f => /\.php$/i.test(f.name));
+  const requireLines = phpFiles.length > 0
+    ? phpFiles.map(f => `require_once __DIR__ . '/../original/${f.name}';`).join('\n')
+    : "// No PHP files detected in original/ — wire your require_once manually\n// require_once __DIR__ . '/../original/YourFile.php';";
+
+  // Build the executeOriginal body
+  const executeBody = phpFiles.length > 0
+    ? (() => {
+        // Try to find a class name from the first PHP file
+        const firstName = phpFiles[0].name.replace(/\.php$/i, '');
+        // Common PHP class naming: file TradeMatcher.php → class TradeMatcher
+        return [
+          `        // Auto-wired to: ${phpFiles.map(f => f.name).join(', ')}`,
+          `        // Attempting to instantiate ${firstName} and call known entry points`,
+          `        if (class_exists('${firstName}')) {`,
+          `            $instance = new \\${firstName}();`,
+          `            $methods = ['execute', 'run', 'handle', 'process', 'main', '__invoke'];`,
+          `            foreach ($methods as $method) {`,
+          `                if (method_exists($instance, $method)) {`,
+          `                    return $instance->$method($input);`,
+          `                }`,
+          `            }`,
+          `        }`,
+          `        // No class found — try top-level functions`,
+          `        $functions = ['execute', 'run', 'handle', 'process', 'main'];`,
+          `        foreach ($functions as $fn) {`,
+          `            if (function_exists($fn)) {`,
+          `                return $fn($input);`,
+          `            }`,
+          `        }`,
+          `        // Honest passthrough — no callable entry point found`,
+          `        return $input;`,
+        ].join('\n');
+      })()
+    : `        // Original files are in ../original/ — wire your require_once above\n        return $input;`;
+
   return `<?php
 /**
  * ═══════════════════════════════════════════════════════
@@ -460,8 +496,8 @@ function generatePhpCapabilitySource(cap: CapabilityForExport): string {
 
 require_once __DIR__ . '/runtime-bridge.php';
 
-// TODO: Include your original source file here:
-// require_once __DIR__ . '/../original/YourFile.php';
+// ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
+${requireLines}
 
 class CMPSBLCapability
 {
@@ -496,19 +532,14 @@ class CMPSBLCapability
 
     /**
      * Layer 1 — Execute your original code directly.
-     * Replace this with a call to your actual original logic.
+     * Auto-wired from ../original/ source files.
      *
      * @param  array $input
      * @return mixed  The raw result from your original code
      */
     public function executeOriginal(array $input = []): mixed
     {
-        // TODO: Replace with your original code call:
-        //   $original = new YourOriginalClass();
-        //   return $original->yourMethod($input);
-        //
-        // Your original source files are in ../original/
-        return $input;
+${executeBody}
     }
 
     /**
