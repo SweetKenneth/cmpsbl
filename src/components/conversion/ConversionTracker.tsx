@@ -10,20 +10,17 @@ import { supabase } from '@/integrations/supabase/client';
 // Funnel stages — ordered
 const FUNNEL_STAGES: Record<string, string> = {
   '/': 'landing',
-  '/explore': 'landing',
-  '/scan': 'engagement',
-  '/decode': 'engagement',
-  '/lab': 'engagement',
+  '/scanner': 'engagement',
+  '/codelab': 'engagement',
+  '/foundry': 'engagement',
+  '/workspace': 'engagement',
   '/start-here': 'onboarding',
   '/auth': 'signup',
   '/register': 'signup',
-  '/upgrade': 'conversion',
-  '/packs': 'conversion',
   '/store': 'conversion',
-  '/substrate': 'deep_engagement',
   '/persistent-memory': 'deep_engagement',
-  '/composable-cognitives': 'deep_engagement',
-  '/admin/analytics': 'deep_engagement',
+  '/academy': 'deep_engagement',
+  '/ai-operating-system': 'deep_engagement',
 };
 
 function getSessionId(): string {
