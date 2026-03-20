@@ -115,7 +115,7 @@ function buildCapabilityLabel(chain: string[]): string {
     .filter((l): l is string => !!l);
 
   // Deduplicate
-  const unique = [...new Set(labels)];
+  const unique = Array.from(new Set(labels));
   return unique.slice(0, 2).join(' ');
 }
 
