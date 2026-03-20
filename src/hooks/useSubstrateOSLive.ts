@@ -253,7 +253,7 @@ export function useLiveLearningPatterns() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('learning_patterns')
-        .select('*')
+        .select('id, pattern_type, confidence, module, created_at')
         .order('created_at', { ascending: false })
         .limit(10);
       
