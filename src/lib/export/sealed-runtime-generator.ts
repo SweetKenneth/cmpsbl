@@ -280,40 +280,6 @@ export function createLockManager() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §11b — PRIMARY HANDLER REGISTRY (enables real execution of uploaded code)
-// ═══════════════════════════════════════════════════════════════════════════════
-
-export type PrimitiveHandler = (input: unknown, context?: unknown) => unknown;
-
-export interface PrimitiveRegistryEntry {
-  name: string;
-  category: string;
-  handler: PrimitiveHandler;
-  source: 'native' | 'generated' | 'external';
-}
-
-const _handlerRegistry = new Map<string, PrimitiveRegistryEntry>();
-
-/** Register a named handler. Called during init for primary module binding. */
-export function registerHandler(entry: PrimitiveRegistryEntry): void {
-  if (!entry.name) return;
-  _handlerRegistry.set(entry.name.toLowerCase().trim(), entry);
-}
-
-/** Look up a registered handler. */
-export function getHandler(name: string): PrimitiveRegistryEntry | null {
-  return _handlerRegistry.get(name.toLowerCase().trim()) ?? null;
-}
-
-/** List all registered handlers. */
-export function listHandlers(): PrimitiveRegistryEntry[] {
-  return Array.from(_handlerRegistry.values());
-}
-
-/** Clear handler registry. */
-export function clearHandlers(): void { _handlerRegistry.clear(); }
-
-// ═══════════════════════════════════════════════════════════════════════════════
 // §12 — RUNTIME FACTORY
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -336,9 +302,6 @@ export interface StandaloneRuntime {
   configureEndpoint: typeof configureEndpoint;
   getRuntimeMode: typeof getRuntimeMode;
   getExecutionTelemetry: typeof getExecutionTelemetry;
-  registerHandler: typeof registerHandler;
-  getHandler: typeof getHandler;
-  listHandlers: typeof listHandlers;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -348,35 +311,13 @@ export interface StandaloneRuntime {
 /** Default CMPSBL substrate endpoint — used when online */
 const CMPSBL_DEFAULT_ENDPOINT = 'https://api.cmpsbl.com/v1/substrate/primitive';
 
-/** Runtime connectivity mode */
-type RuntimeMode = 'offline' | 'hybrid' | 'network';
+type RuntimeMode = 'network' | 'hybrid' | 'offline';
+interface ExecutionTelemetry { primitive: string; wasRemote: boolean; success: boolean; usedFallback: boolean; mode: RuntimeMode; timestamp: number; }
 
-interface ExecutionTelemetry {
-  primitive: string;
-  wasRemote: boolean;
-  success: boolean;
-  usedFallback: boolean;
-  mode: RuntimeMode;
-  timestamp: number;
-}
-
-interface NetworkBridgeState {
-  endpoint: string | null;
-  mode: RuntimeMode;
-  consecutiveSuccesses: number;
-  consecutiveFailures: number;
-  telemetry: ExecutionTelemetry[];
-}
-
-const _netState: NetworkBridgeState = {
-  endpoint: CMPSBL_DEFAULT_ENDPOINT,
-  mode: 'offline',
-  consecutiveSuccesses: 0,
-  consecutiveFailures: 0,
-  telemetry: [],
+const _netState: { endpoint: string | null; mode: RuntimeMode; consecutiveSuccesses: number; consecutiveFailures: number; telemetry: ExecutionTelemetry[] } = {
+  endpoint: CMPSBL_DEFAULT_ENDPOINT, mode: 'hybrid', consecutiveSuccesses: 0, consecutiveFailures: 0, telemetry: [],
 };
 
-/** Configure the remote execution endpoint. Pass null for offline-only mode. */
 export function configureEndpoint(url: string | null): void {
   _netState.endpoint = url;
   if (!url) { _netState.mode = 'offline'; _netState.consecutiveSuccesses = 0; _netState.consecutiveFailures = 0; }
@@ -400,31 +341,18 @@ function _recordTelemetry(entry: ExecutionTelemetry): void {
 export function getExecutionTelemetry(): ReadonlyArray<ExecutionTelemetry> { return [..._netState.telemetry]; }
 
 /**
- * Network-first primitive executor with LOCAL HANDLER REGISTRY support.
+ * Network-first primitive executor.
  * Execution order:
- *   1. Local registered handler (PRIMARY — synthesized from uploaded code)
- *   2. Remote execution (CMPSBL® Substrate — when endpoint configured)
- *   3. Deterministic fallback (always succeeds)
- * Remote/local failure NEVER breaks execution.
+ *   1. Remote execution (CMPSBL® Substrate — when endpoint configured)
+ *   2. Deterministic fallback (always succeeds)
+ * Remote failure NEVER breaks execution.
  */
 export async function executePrimitive(
   name: string,
   data: Record<string, unknown>,
   confidence: number
 ): Promise<{ data: Record<string, unknown>; confidence_delta: number; signal: string }> {
-  // Tier 1: Local registered handler (uploaded code's primary behavior)
-  const registered = getHandler(name);
-  if (registered?.handler) {
-    try {
-      const output = registered.handler(data, { confidence });
-      if (output && typeof output === 'object' && typeof (output as any).then !== 'function') {
-        _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: false, mode: _netState.mode, timestamp: Date.now() });
-        return { data: output as Record<string, unknown>, confidence_delta: 0.03, signal: name.toLowerCase() + '_executed' };
-      }
-    } catch { /* Handler failed — fall through */ }
-  }
-
-  // Tier 2: Remote
+  // Tier 1: Remote
   if (_netState.endpoint && _netState.mode !== 'offline') {
     try {
       const res = await fetch(_netState.endpoint, {
@@ -442,7 +370,7 @@ export async function executePrimitive(
     } catch { _updateMode(false); }
   }
 
-  // Tier 3: Local deterministic fallback
+  // Tier 2: Local deterministic fallback
   const out = { [name.toLowerCase() + '_result']: { module: name, confidence, processed: true } };
   _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: true, mode: _netState.mode, timestamp: Date.now() });
   return { data: out, confidence_delta: 0.01, signal: name.toLowerCase() + '_fallback' };
@@ -456,7 +384,6 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     computeStableId, sha256, canonicalize, createStateMachine, createSaga,
     CANONICAL_MODULES, DISCOVERY_CATEGORIES,
     executePrimitive, configureEndpoint, getRuntimeMode, getExecutionTelemetry,
-    registerHandler, getHandler, listHandlers,
   };
 }
 `;
@@ -668,35 +595,8 @@ const E: Record<string, { verb: string; handler: EH }> = {
 ${effectEntries}
 };
 
-/** Dynamic handler registry for Ascension modules (Node 41+) */
-const _dynamicEffects: Record<string, { verb: string; handler: EH }> = {};
-
-/**
- * Register a chain-level effect for an Ascension module.
- * Call this after registerHandler() to wire the primary into chain execution.
- */
-export function registerChainEffect(moduleName: string, verb: string, handler: EH): void {
-  _dynamicEffects[moduleName] = { verb, handler };
-}
-
 function resolveEffect(mod: string): { verb: string; depth: 'deep' | 'fallback'; handler: EH } {
-  // Priority 1: Substrate nodes (40-node matrix)
   if (E[mod]) return { ...E[mod], depth: 'deep' as const };
-  // Priority 2: Dynamically registered Ascension modules (uploaded code)
-  if (_dynamicEffects[mod]) return { ..._dynamicEffects[mod], depth: 'deep' as const };
-  // Priority 3: Check handler registry (primary handler fallback)
-  const registered = getHandler(mod.replace(/^Ψ₄₁_/, ''));
-  if (registered?.handler) {
-    return {
-      verb: 'execute',
-      depth: 'deep' as const,
-      handler: (d, c) => {
-        const out = registered.handler(d, { confidence: c.confidence }) as Record<string, unknown>;
-        return { data: typeof out === 'object' && out ? { ...d, ...out } : d, confidence: c.confidence + 0.02, note: \`[\${mod}] Primary handler executed (\${registered.category})\` };
-      },
-    };
-  }
-  // Fallback: honest annotation
   return { verb: 'annotate', depth: 'fallback' as const, handler: (d, c) => { d[\`_\${mod.toLowerCase()}\`] = { participated: true, depth: 'fallback', stage: c.index }; return { data: d, confidence: c.confidence, note: \`[\${mod}] Fallback participation\` }; } };
 }
 
@@ -800,4 +700,127 @@ export function generateSealedRuntimeReadme(): string {
     '© CMPSBL® — All rights reserved.',
     'Unauthorized reverse engineering, decompilation, or redistribution is prohibited.',
   ].join('\\n');
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — ASCENSION-EXTENDED SEALED RUNTIME (only for Ascension/Node 41+ exports)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Extended sealed runtime for Ascension exports.
+ * Includes the full base runtime PLUS the Primary Handler Registry
+ * for real execution binding of uploaded code.
+ *
+ * Memory Stream exports MUST NOT use this — use generateSealedRuntime() instead.
+ */
+export function generateAscensionSealedRuntime(): string {
+  // Get the base runtime and inject the handler registry before the closing
+  const base = generateSealedRuntime();
+  // Remove the trailing backtick-semicolon to inject before it
+  const insertPoint = base.lastIndexOf('`;');
+  const before = base.slice(0, insertPoint);
+
+  const handlerRegistryBlock = `
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §A1 — PRIMARY HANDLER REGISTRY (Ascension — uploaded code execution binding)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type PrimitiveHandler = (input: unknown, context?: unknown) => unknown;
+
+export interface PrimitiveRegistryEntry {
+  name: string;
+  category: string;
+  handler: PrimitiveHandler;
+  source: 'native' | 'generated' | 'external';
+}
+
+const _handlerRegistry = new Map<string, PrimitiveRegistryEntry>();
+
+/** Register a named handler for uploaded code's primary execution unit. */
+export function registerHandler(entry: PrimitiveRegistryEntry): void {
+  if (!entry.name) return;
+  _handlerRegistry.set(entry.name.toLowerCase().trim(), entry);
+}
+
+/** Look up a registered handler. */
+export function getHandler(name: string): PrimitiveRegistryEntry | null {
+  return _handlerRegistry.get(name.toLowerCase().trim()) ?? null;
+}
+
+/** List all registered handlers. */
+export function listHandlers(): PrimitiveRegistryEntry[] {
+  return Array.from(_handlerRegistry.values());
+}
+
+/** Clear handler registry. */
+export function clearHandlers(): void { _handlerRegistry.clear(); }
+`;
+
+  return before + handlerRegistryBlock + '`;';
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §6 — ASCENSION-EXTENDED CHAIN EXECUTOR (only for Ascension/Node 41+ exports)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Extended chain executor for Ascension exports.
+ * Includes dynamic effect registry + handler registry bridge
+ * so uploaded code's primary module participates in chain execution.
+ *
+ * Memory Stream exports MUST NOT use this — use generateSealedChainExecutor() instead.
+ */
+export function generateAscensionChainExecutor(): string {
+  const base = generateSealedChainExecutor();
+  const insertPoint = base.lastIndexOf('`;');
+  const before = base.slice(0, insertPoint);
+
+  const ascensionBlock = `
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §A2 — ASCENSION DYNAMIC EFFECT REGISTRY (Node 41+ chain participation)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Dynamic handler registry for Ascension modules (Node 41+) */
+const _dynamicEffects: Record<string, { verb: string; handler: EH }> = {};
+
+/**
+ * Register a chain-level effect for an Ascension module.
+ * Call this after registerHandler() to wire the primary into chain execution.
+ */
+export function registerChainEffect(moduleName: string, verb: string, handler: EH): void {
+  _dynamicEffects[moduleName] = { verb, handler };
+}
+
+// Override resolveEffect to include Ascension modules
+const _baseResolveEffect = resolveEffect;
+function resolveEffectWithAscension(mod: string): { verb: string; depth: 'deep' | 'fallback'; handler: EH } {
+  // Priority 1: Substrate nodes (40-node matrix) — handled by base
+  const base = _baseResolveEffect(mod);
+  if (base.depth === 'deep') return base;
+  // Priority 2: Dynamically registered Ascension modules
+  if (_dynamicEffects[mod]) return { ..._dynamicEffects[mod], depth: 'deep' as const };
+  // Priority 3: Check handler registry from runtime (primary handler bridge)
+  if (typeof getHandler === 'function') {
+    const registered = getHandler(mod.replace(/^Ψ₄₁_/, ''));
+    if (registered?.handler) {
+      return {
+        verb: 'execute',
+        depth: 'deep' as const,
+        handler: (d, c) => {
+          const out = registered.handler(d, { confidence: c.confidence }) as Record<string, unknown>;
+          return { data: typeof out === 'object' && out ? { ...d, ...out } : d, confidence: c.confidence + 0.02, note: \\\`[\\\${mod}] Primary handler executed (\\\${registered.category})\\\` };
+        },
+      };
+    }
+  }
+  // Fallback from base
+  return base;
+}
+`;
+
+  return before + ascensionBlock + '`;';
 }
