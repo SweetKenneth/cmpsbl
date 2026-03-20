@@ -70,6 +70,8 @@ async function logMaintenance(
 class MaintenanceManager {
   private tasks: Map<string, MaintenanceTask> = new Map();
   private timers: Map<string, ReturnType<typeof setInterval>> = new Map();
+  private visibilityHandler: (() => void) | null = null;
+  private paused = false;
   private state: MaintenanceManagerState = {
     running: false,
     tasks: [],
@@ -134,9 +136,19 @@ class MaintenanceManager {
       setTimeout(() => this.runTask(name), staggerDelay);
       staggerDelay += 5000;
 
-      const timer = setInterval(() => this.runTask(name), task.intervalMs);
+      const timer = setInterval(() => {
+        // Skip task execution when tab is hidden to save CPU/network
+        if (this.paused) return;
+        this.runTask(name);
+      }, task.intervalMs);
       this.timers.set(name, timer);
     }
+
+    // Pause/resume maintenance when tab visibility changes
+    this.visibilityHandler = () => {
+      this.paused = document.visibilityState === 'hidden';
+    };
+    document.addEventListener('visibilitychange', this.visibilityHandler);
 
     console.log(`[Neural] Maintenance manager started: ${this.tasks.size} tasks scheduled`);
   }
@@ -150,6 +162,11 @@ class MaintenanceManager {
     }
     this.timers.clear();
     this.state.running = false;
+    this.paused = false;
+    if (this.visibilityHandler) {
+      document.removeEventListener('visibilitychange', this.visibilityHandler);
+      this.visibilityHandler = null;
+    }
     vectorIndex.destroy();
     console.log('[Neural] Maintenance manager stopped');
   }

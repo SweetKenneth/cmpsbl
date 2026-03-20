@@ -125,8 +125,11 @@ class EdgeHealthMonitor {
     // First ping after short delay
     setTimeout(() => this.pingAll(), 5000);
 
-    // Then at interval
-    this.intervalId = setInterval(() => this.pingAll(), this.config.heartbeatIntervalMs);
+    // Then at interval (skip when tab is hidden)
+    this.intervalId = setInterval(() => {
+      if (document.visibilityState === 'hidden') return;
+      this.pingAll();
+    }, this.config.heartbeatIntervalMs);
   }
 
   /**

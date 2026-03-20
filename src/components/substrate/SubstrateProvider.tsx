@@ -9,7 +9,7 @@
  * Shell: DEFENSE
  */
 
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef, useMemo } from 'react';
 import type { SubstrateModule } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import { initializeNeuralSubstrate, shutdownNeuralSubstrate } from '@/lib/substrate/neural';
@@ -230,45 +230,39 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     }
   }, [autoInit, refresh]);
 
-  // Topology-weighted health aggregation
-  const SYSTEM_LAYER: SubstrateModule[] = ['system'];
-  const CCR_ZONES: SubstrateModule[] = ['brain', 'memory', 'dream'];
-  const OCG_ZONES: SubstrateModule[] = ['ripple', 'access', 'identity', 'relay', 'audit'];
-  const EXEC_SURFACES: SubstrateModule[] = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration'];
-  const FIELDS: SubstrateModule[] = ['evolution', 'immunity', 'intent'];
-  const PLANE: SubstrateModule[] = ['governance'];
-  const SHELL: SubstrateModule[] = ['defense'];
+  // Topology-weighted health aggregation — memoized to prevent re-render cascades
+  const { layers, overallHealth } = useMemo(() => {
+    const avgHealth = (keys: SubstrateModule[]) => {
+      const vals = keys.map(k => modules[k]?.health ?? 0);
+      return vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
+    };
 
-  const avgHealth = (keys: SubstrateModule[]) => {
-    const vals = keys.map(k => modules[k]?.health ?? 0);
-    return vals.length > 0 ? vals.reduce((a, b) => a + b, 0) / vals.length : 0;
-  };
+    const l: LayerHealth = {
+      core: modules.core?.health ?? 0,
+      system: avgHealth(['system']),
+      ccr: avgHealth(['brain', 'memory', 'dream']),
+      ocg: avgHealth(['ripple', 'access', 'identity', 'relay', 'audit']),
+      surfaces: avgHealth(['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'integration']),
+      fields: avgHealth(['evolution', 'immunity', 'intent']),
+      plane: avgHealth(['governance']),
+      shell: avgHealth(['defense']),
+    };
 
-  const layers: LayerHealth = {
-    core: modules.core?.health ?? 0,
-    system: avgHealth(SYSTEM_LAYER),
-    ccr: avgHealth(CCR_ZONES),
-    ocg: avgHealth(OCG_ZONES),
-    surfaces: avgHealth(EXEC_SURFACES),
-    fields: avgHealth(FIELDS),
-    plane: avgHealth(PLANE),
-    shell: avgHealth(SHELL),
-  };
+    const h = Math.min(100, Math.round(
+      l.core * 0.20 + l.system * 0.05 + l.ccr * 0.15 + l.ocg * 0.20 +
+      l.surfaces * 0.25 + l.fields * 0.09 + l.plane * 0.03 + l.shell * 0.03
+    ));
 
-  // Weighted health: CORE=20%, SYSTEM=5%, CCR=15%, OCG=20%, Execution=25%, Fields=9%, Plane=3%, Shell=3%
-  const overallHealth = Math.min(100, Math.round(
-    layers.core * 0.20 +
-    layers.system * 0.05 +
-    layers.ccr * 0.15 +
-    layers.ocg * 0.20 +
-    layers.surfaces * 0.25 +
-    layers.fields * 0.09 +
-    layers.plane * 0.03 +
-    layers.shell * 0.03
-  ));
+    return { layers: l, overallHealth: h };
+  }, [modules]);
+
+  // Memoize context value to prevent unnecessary re-renders of consumers
+  const contextValue = useMemo(() => ({
+    initialized, modules, overallHealth, layers, refresh
+  }), [initialized, modules, overallHealth, layers, refresh]);
 
   return (
-    <SubstrateContext.Provider value={{ initialized, modules, overallHealth, layers, refresh }}>
+    <SubstrateContext.Provider value={contextValue}>
       {children}
     </SubstrateContext.Provider>
   );

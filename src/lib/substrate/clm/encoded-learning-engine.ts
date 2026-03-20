@@ -117,8 +117,9 @@ class EncodedLearningEngineClient {
     // Run immediately
     this.runLearningCycle();
 
-    // Then run every 15 minutes
+    // Then run every 15 minutes (skip when tab is hidden)
     this.intervalId = setInterval(() => {
+      if (document.visibilityState === 'hidden') return;
       this.runLearningCycle();
     }, LEARNING_INTERVAL_MS);
   }

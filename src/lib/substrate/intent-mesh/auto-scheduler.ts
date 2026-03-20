@@ -109,7 +109,7 @@ class MeshAutoScheduler {
     // Module self-discovery
     this.timers.moduleDiscovery = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runModuleDiscoveryCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in module discovery interval:', err);
@@ -119,7 +119,7 @@ class MeshAutoScheduler {
     // Gap analysis
     this.timers.gapAnalysis = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runGapAnalysisCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in gap analysis interval:', err);
@@ -129,7 +129,7 @@ class MeshAutoScheduler {
     // Intent scoring
     this.timers.intentScoring = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runIntentScoringCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in intent scoring interval:', err);
@@ -139,7 +139,7 @@ class MeshAutoScheduler {
     // Full expansion
     this.timers.fullExpansion = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runFullExpansionCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in full expansion interval:', err);

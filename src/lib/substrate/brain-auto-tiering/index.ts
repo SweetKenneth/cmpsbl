@@ -304,8 +304,9 @@ export function startAutoTiering(overrideConfig?: Partial<AutoTieringConfig>): v
   // Run immediately
   enforceAutoTiering().catch(err => console.error('[AutoTiering] Initial enforcement failed:', err));
 
-  // Schedule recurring
+  // Schedule recurring — skip when tab is hidden to save resources
   schedulerInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     enforceAutoTiering().catch(err => console.error('[AutoTiering] Scheduled enforcement failed:', err));
   }, config.intervalMs);
 }
