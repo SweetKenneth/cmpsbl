@@ -14,7 +14,7 @@ export interface MemoryEntry {
   content: string;
   timestamp: string;
   relevance?: number;
-  tier?: 'hot' | 'warm' | 'cold' | 'archive';
+  tier?: 'hot' | 'warm' | 'cold' | 'glacier';
   memory_type?: string;
   provenance?: MemoryProvenance;
 }

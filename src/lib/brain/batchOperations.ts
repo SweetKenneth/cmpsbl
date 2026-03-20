@@ -364,6 +364,7 @@ export async function importMemories(
 
 /**
  * Migrate memories between tiers based on access patterns
+ * Full 4-tier cascade: hot ↔ warm ↔ cold → glacier
  */
 export async function runTierMigration(): Promise<MigrationResult> {
   const result: MigrationResult = {
@@ -375,7 +376,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
   };
 
   try {
-    // Move frequently accessed warm memories to hot
+    // Phase 1: Promote frequently accessed warm → hot
     const { data: warmCandidates } = await supabase
       .from('brain_memory_warm')
       .select('id, content, context, value_score, tags, metadata, source_module, category')
@@ -404,7 +405,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
       }
     }
 
-    // Move stale hot memories to warm
+    // Phase 2: Demote stale hot → warm
     const staleCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
     const { data: hotCandidates } = await supabase
       .from('brain_memory_hot')
@@ -428,6 +429,36 @@ export async function runTierMigration(): Promise<MigrationResult> {
 
       if (!insertError) {
         await supabase.from('brain_memory_hot').delete().eq('id', memory.id);
+        result.movedDown++;
+      } else {
+        result.errors.push(insertError.message);
+      }
+    }
+
+    // Phase 3: Demote stale cold → glacier (archive)
+    const coldStaleCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: coldCandidates } = await supabase
+      .from('brain_memory_cold')
+      .select('id, summary, tags, value_score, access_count, source_module, category, created_at')
+      .lt('created_at', coldStaleCutoff)
+      .lt('value_score', 0.2)
+      .lte('access_count', 2)
+      .limit(50);
+
+    for (const memory of coldCandidates || []) {
+      const { error: insertError } = await supabase
+        .from('brain_memory_archive')
+        .insert({
+          summary: memory.summary,
+          tags: memory.tags,
+          value_score: memory.value_score,
+          access_count: memory.access_count || 0,
+          source_module: memory.source_module || 'general',
+          category: memory.category || 'uncategorized',
+        });
+
+      if (!insertError) {
+        await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
         result.movedDown++;
       } else {
         result.errors.push(insertError.message);
@@ -459,30 +490,34 @@ export async function runTierMigration(): Promise<MigrationResult> {
 }
 
 /**
- * Get tier distribution statistics
+ * Get tier distribution statistics across all 4 tiers
  */
 export async function getTierDistribution(): Promise<{
   hot: number;
   warm: number;
   cold: number;
+  glacier: number;
   total: number;
-  avgValueScores: { hot: number; warm: number; cold: number };
+  avgValueScores: { hot: number; warm: number; cold: number; glacier: number };
 }> {
-  const [hotCount, warmCount, coldCount] = await Promise.all([
+  const [hotCount, warmCount, coldCount, glacierCount] = await Promise.all([
     supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
     supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
     supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+    supabase.from('brain_memory_archive').select('id', { count: 'exact', head: true }),
   ]);
 
   return {
     hot: hotCount.count ?? 0,
     warm: warmCount.count ?? 0,
     cold: coldCount.count ?? 0,
-    total: (hotCount.count ?? 0) + (warmCount.count ?? 0) + (coldCount.count ?? 0),
+    glacier: glacierCount.count ?? 0,
+    total: (hotCount.count ?? 0) + (warmCount.count ?? 0) + (coldCount.count ?? 0) + (glacierCount.count ?? 0),
     avgValueScores: {
       hot: 0.85,
       warm: 0.5,
       cold: 0.2,
+      glacier: 0.05,
     },
   };
 }
