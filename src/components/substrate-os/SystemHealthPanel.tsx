@@ -3,7 +3,7 @@
  * Execution Surfaces, Zones, Overlays
  */
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Heart, Activity, RefreshCw, Loader2, Wrench, Server, Cpu, Brain, Shield, Zap, Moon, Eye, MessageSquare, Plug, Accessibility, GitBranch, Code, Database, Send, ClipboardCheck, Fingerprint, DollarSign, Radio, Key, Settings, Sparkles, Globe, Network, Dna, Scale, Target } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
