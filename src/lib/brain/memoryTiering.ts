@@ -1,11 +1,20 @@
 /**
- * CMPSBL® BRAIN — Three-Tier Memory System
- * Client library for Hot → Warm → Cold memory management
+ * CMPSBL® BRAIN — Four-Tier Memory System
+ * Client library for Hot → Warm → Cold → Glacier memory management
+ * Glacier tier maps to brain_memory_archive table
  */
 
 import { supabase } from '@/integrations/supabase/client';
 
-export type MemoryTier = 'hot' | 'warm' | 'cold';
+export type MemoryTier = 'hot' | 'warm' | 'cold' | 'glacier';
+
+/** Map tier names to their database tables */
+const TIER_TABLE: Record<MemoryTier, string> = {
+  hot: 'brain_memory_hot',
+  warm: 'brain_memory_warm',
+  cold: 'brain_memory_cold',
+  glacier: 'brain_memory_archive',
+};
 
 export interface Memory {
   id: string;
@@ -22,6 +31,7 @@ export interface TierStats {
   hot: { count: number; avgValueScore: number };
   warm: { count: number; avgValueScore: number };
   cold: { count: number; avgValueScore: number };
+  glacier: { count: number; avgValueScore: number };
   total: number;
 }
 
@@ -32,6 +42,7 @@ export interface TieringResult {
     promoted_to_hot: number;
     demoted_to_warm: number;
     demoted_to_cold: number;
+    demoted_to_glacier: number;
     pruned: number;
     rebalanced: number;
     errors: number;
@@ -43,21 +54,24 @@ export interface TieringResult {
  */
 export async function getTierStats(): Promise<TierStats> {
   try {
-    const [hotCount, warmCount, coldCount] = await Promise.all([
+    const [hotCount, warmCount, coldCount, glacierCount] = await Promise.all([
       supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
       supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
       supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+      supabase.from('brain_memory_archive').select('id', { count: 'exact', head: true }),
     ]);
 
     const hc = hotCount.count ?? 0;
     const wc = warmCount.count ?? 0;
     const cc = coldCount.count ?? 0;
+    const gc = glacierCount.count ?? 0;
 
     return {
       hot: { count: hc, avgValueScore: 0 },
       warm: { count: wc, avgValueScore: 0 },
       cold: { count: cc, avgValueScore: 0 },
-      total: hc + wc + cc,
+      glacier: { count: gc, avgValueScore: 0 },
+      total: hc + wc + cc + gc,
     };
   } catch (error) {
     console.error('Error getting tier stats:', error);
@@ -65,6 +79,7 @@ export async function getTierStats(): Promise<TierStats> {
       hot: { count: 0, avgValueScore: 0 },
       warm: { count: 0, avgValueScore: 0 },
       cold: { count: 0, avgValueScore: 0 },
+      glacier: { count: 0, avgValueScore: 0 },
       total: 0,
     };
   }
@@ -92,6 +107,7 @@ export async function rebalanceMemory(
         promoted_to_hot: 0,
         demoted_to_warm: 0,
         demoted_to_cold: 0,
+        demoted_to_glacier: 0,
         pruned: 0,
         rebalanced: 0,
         errors: 1,
@@ -101,7 +117,7 @@ export async function rebalanceMemory(
 }
 
 /**
- * Prune low-value memories
+ * Prune low-value memories (moves to glacier before hard delete)
  */
 export async function pruneMemories(options?: {
   tier?: MemoryTier | 'all';
@@ -126,7 +142,7 @@ export async function pruneMemories(options?: {
 }
 
 /**
- * Search memories across all tiers
+ * Search memories across all four tiers
  */
 export async function searchMemories(
   query: string,
@@ -137,65 +153,76 @@ export async function searchMemories(
     context?: string;
   }
 ): Promise<Memory[]> {
-  const tiers = options?.tiers || ['hot', 'warm', 'cold'];
+  const tiers = options?.tiers || ['hot', 'warm', 'cold', 'glacier'];
   const limit = options?.limit || 20;
   const minScore = options?.minValueScore || 0;
   const results: Memory[] = [];
 
   try {
-    // Sanitize query to prevent PostgREST filter injection
     const sanitized = query.replace(/[%_\\]/g, '');
     if (!sanitized) return [];
 
-    const queries = [];
+    const queries: Promise<any>[] = [];
+    const tierOrder: MemoryTier[] = [];
 
     if (tiers.includes('hot')) {
+      tierOrder.push('hot');
       let q = supabase
         .from('brain_memory_hot')
         .select('id, content, context, value_score, access_count, created_at, last_used')
         .ilike('content', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
-        .limit(limit);
-      
-      if (options?.context) {
-        q = q.eq('context', options.context);
-      }
+        .limit(limit) as any;
+      if (options?.context) q = q.eq('context', options.context);
       queries.push(q);
     }
 
     if (tiers.includes('warm')) {
+      tierOrder.push('warm');
       let q = supabase
         .from('brain_memory_warm')
         .select('id, content, context, value_score, access_count, created_at, last_accessed')
         .ilike('content', `%${sanitized}%`)
         .gte('value_score', minScore)
         .order('value_score', { ascending: false })
-        .limit(limit);
-      
-      if (options?.context) {
-        q = q.eq('context', options.context);
-      }
+        .limit(limit) as any;
+      if (options?.context) q = q.eq('context', options.context);
       queries.push(q);
     }
 
     if (tiers.includes('cold')) {
-      let q = supabase
-        .from('brain_memory_cold')
-        .select('id, summary, tags, value_score, access_count, created_at, last_accessed')
-        .ilike('summary', `%${sanitized}%`)
-        .gte('value_score', minScore)
-        .order('value_score', { ascending: false })
-        .limit(limit);
-      queries.push(q);
+      tierOrder.push('cold');
+      queries.push(
+        supabase
+          .from('brain_memory_cold')
+          .select('id, summary, tags, value_score, access_count, created_at, last_accessed')
+          .ilike('summary', `%${sanitized}%`)
+          .gte('value_score', minScore)
+          .order('value_score', { ascending: false })
+          .limit(limit) as any
+      );
+    }
+
+    if (tiers.includes('glacier')) {
+      tierOrder.push('glacier');
+      queries.push(
+        supabase
+          .from('brain_memory_archive')
+          .select('id, content, context, tags, value_score, access_count, created_at')
+          .ilike('content', `%${sanitized}%`)
+          .gte('value_score', minScore)
+          .order('value_score', { ascending: false })
+          .limit(limit) as any
+      );
     }
 
     const responses = await Promise.all(queries);
-    let tierIndex = 0;
 
-    for (const tier of tiers) {
-      const data = responses[tierIndex]?.data || [];
-      for (const item of data) {
+    for (let i = 0; i < tierOrder.length; i++) {
+      const tier = tierOrder[i];
+      const data = (responses[i] as any)?.data || [];
+      for (const item of data as any[]) {
         results.push({
           id: item.id,
           content: item.content || item.summary,
@@ -207,10 +234,8 @@ export async function searchMemories(
           last_accessed: item.last_used || item.last_accessed,
         });
       }
-      tierIndex++;
     }
 
-    // Sort by value score and limit
     return results
       .sort((a, b) => b.value_score - a.value_score)
       .slice(0, limit);
@@ -225,24 +250,20 @@ export async function searchMemories(
  */
 export async function accessMemory(memoryId: string, tier: MemoryTier): Promise<boolean> {
   try {
-    const table = tier === 'hot' ? 'brain_memory_hot'
-      : tier === 'warm' ? 'brain_memory_warm'
-      : 'brain_memory_cold';
-
+    const table = TIER_TABLE[tier];
     const accessField = tier === 'hot' ? 'last_used' : 'last_accessed';
 
-    // Get current access count first
     const { data: current } = await supabase
-      .from(table)
+      .from(table as any)
       .select('access_count')
       .eq('id', memoryId)
       .single();
 
     const { error } = await supabase
-      .from(table)
+      .from(table as any)
       .update({
         [accessField]: new Date().toISOString(),
-        access_count: (current?.access_count || 0) + 1,
+        access_count: ((current as any)?.access_count || 0) + 1,
       })
       .eq('id', memoryId);
 
@@ -319,22 +340,18 @@ export async function getPrunedMemories(limit: number = 50): Promise<any[]> {
 }
 
 /**
- * Restore a pruned memory
+ * Restore a pruned memory to warm tier
  */
 export async function restoreMemory(prunedId: string): Promise<boolean> {
   try {
-    // Get the pruned record
     const { data: pruned } = await supabase
       .from('brain_memory_pruned')
       .select('*')
       .eq('id', prunedId)
       .single();
 
-    if (!pruned || !pruned.can_restore) {
-      return false;
-    }
+    if (!pruned || !pruned.can_restore) return false;
 
-    // Restore to warm tier (safe middle ground)
     const { error: insertError } = await supabase
       .from('brain_memory_warm')
       .insert({
@@ -349,7 +366,6 @@ export async function restoreMemory(prunedId: string): Promise<boolean> {
 
     if (insertError) throw insertError;
 
-    // Mark as restored
     await supabase
       .from('brain_memory_pruned')
       .update({ can_restore: false })
