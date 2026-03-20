@@ -18,7 +18,7 @@ export interface SemanticMatch {
 export interface RecallOptions {
   query: string;
   limit?: number;
-  tiers?: ('hot' | 'warm' | 'cold')[];
+  tiers?: ('hot' | 'warm' | 'cold' | 'glacier')[];
   minSimilarity?: number;
   boostRecent?: boolean;
   context?: string;
