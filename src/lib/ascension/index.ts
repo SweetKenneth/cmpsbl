@@ -189,7 +189,7 @@ export {
   type StrategyResolution,
 } from './execution-binding';
 
-// Universal Effect Injection (v2)
+// Universal Effect Injection (v2 + Visibility Patch)
 export {
   detectPrimaryUnit,
   effectWrapper,
@@ -198,10 +198,15 @@ export {
   ensureChain,
   applyEffectInjection,
   enrichExtractionWithEffects,
+  generateEffectSummary,
   type EffectSignal,
   type IntelligenceMetrics,
   type EffectContext,
   type EffectInjectionResult,
   type PrimaryExecutionUnit,
   type EffectExtractionMeta,
+  type EffectStatus,
+  type EffectUIContract,
+  type EffectSummary,
+  type EffectTraceEntry,
 } from './effect-injection';

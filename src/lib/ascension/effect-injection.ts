@@ -392,7 +392,7 @@ export function ensureChain(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §6 — PIPELINE CONTEXT EFFECT APPLICATOR (v2)
+// §6 — PIPELINE CONTEXT EFFECT APPLICATOR (v2 + Visibility Patch)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /** Transformation note labels by strategy */
@@ -402,14 +402,37 @@ const STRATEGY_LABELS: Record<ExecutionStrategy, string> = {
   fallback: 'fallback passthrough',
 };
 
+/** Short demo-friendly note */
+function buildDemoNote(moduleName: string, binding: ExecutionBindingResult): string {
+  if (binding.executed && !binding.degraded) {
+    return `[EFFECT] ${moduleName} → ${STRATEGY_LABELS[binding.strategy]} in ${binding.timingMs.toFixed(1)}ms`;
+  }
+  if (binding.degraded) {
+    return `[EFFECT] ${moduleName} → degraded → execution failed safely`;
+  }
+  return `[EFFECT] ${moduleName} → fallback passthrough`;
+}
+
+/** Verbose technical note */
+function buildVerboseNote(moduleName: string, primaryName: string, category: string, binding: ExecutionBindingResult): string {
+  const label = binding.degraded ? 'degraded execution' : STRATEGY_LABELS[binding.strategy];
+  return (
+    `[EFFECT] ${moduleName} — ${label} — primary: ${primaryName} ` +
+    `(${category}), ${binding.signals.length} signals, ` +
+    `${binding.timingMs.toFixed(1)}ms`
+  );
+}
+
 /**
  * Apply Universal Effect Injection v2 to a PipelineContext.
  * Uses execution binding — not synthetic wrapping.
+ * Visibility Patch: attaches summary, score, trace entry, and demo-mode notes.
  */
 export function applyEffectInjection(
   ctx: PipelineContext,
   node: AscensionNode
 ): PipelineContext {
+  const isDemo = ctx.annotations['demo'] === true;
   const primaryUnit = detectPrimaryUnit(
     node.primitives,
     node.source,
@@ -432,6 +455,12 @@ export function applyEffectInjection(
     const result = effectWrapper(effectCtx, primaryUnit);
     const binding = result.binding!;
 
+    // ── Effect Score ──
+    const effectScore = (binding.executed ? 1 : 0) * 0.6 + (binding.degraded ? 0 : 0.4);
+
+    // ── Effect Summary ──
+    const summary = generateEffectSummary(binding, moduleName);
+
     // Merge back into pipeline context
     ctx.data = {
       ...ctx.data,
@@ -449,9 +478,11 @@ export function applyEffectInjection(
         intelligence: binding.intelligence,
         normalized: binding.normalizedResult,
       },
+      [`_effect_summary_${moduleName}`]: summary,
+      [`_effect_score_${moduleName}`]: effectScore,
     };
 
-    // Annotations
+    // ── Annotations ──
     ctx.annotations[`effect.${node.id}.primary`] = primaryUnit.name;
     ctx.annotations[`effect.${node.id}.strategy`] = binding.strategy;
     ctx.annotations[`effect.${node.id}.executed`] = binding.executed;
@@ -459,19 +490,59 @@ export function applyEffectInjection(
     ctx.annotations[`effect.${node.id}.degraded`] = binding.degraded;
     ctx.annotations[`effect.${node.id}.fallback`] = binding.fallbackReason ?? false;
     ctx.annotations[`effect.${node.id}.errors`] = binding.errors.length;
+    ctx.annotations[`effect.${node.id}.score`] = effectScore;
 
-    // Transformation note — honest label
-    const label = binding.degraded
-      ? 'degraded execution'
-      : STRATEGY_LABELS[binding.strategy];
+    // ── Global Execution Trace ──
+    ctx.trace.push({
+      module: moduleName,
+      effect: `effect-injection-v2:${binding.strategy}`,
+      status: binding.executed ? 'success' : binding.degraded ? 'recovered' : 'fallback',
+      durationMs: binding.timingMs,
+      inputSnapshot: {},
+      outputSnapshot: {},
+      annotations: {
+        nodeId: node.id,
+        strategy: binding.strategy,
+        executed: binding.executed,
+        degraded: binding.degraded,
+        score: effectScore,
+      },
+      notes: [isDemo ? buildDemoNote(moduleName, binding) : `${binding.strategy} execution`],
+      timestamp: Date.now(),
+    });
 
+    // ── Transformation Note (demo vs verbose) ──
     ctx.transformationNotes.push(
-      `[EFFECT] ${moduleName} — ${label} — primary: ${primaryUnit.name} ` +
-      `(${primaryUnit.category}), ${binding.signals.length} signals, ` +
-      `${binding.timingMs.toFixed(1)}ms`
+      isDemo
+        ? buildDemoNote(moduleName, binding)
+        : buildVerboseNote(moduleName, primaryUnit.name, primaryUnit.category, binding)
     );
   } else {
     // No callable unit — safe passthrough with trace
+    const fallbackScore = 0.4; // not executed (0) + not degraded (0.4)
+
+    const fallbackSummary: EffectSummary = {
+      status: 'fallback',
+      strategy: 'fallback',
+      primary: 'none',
+      category: 'none',
+      confidenceScore: 0,
+      shortSummary: `${moduleName} has no execution path — passthrough only`,
+      badge: '🔄 Fallback',
+      score: fallbackScore,
+      uiContract: {
+        module: moduleName,
+        status: 'fallback',
+        strategy: 'fallback',
+        executed: false,
+        degraded: false,
+        signals: 0,
+        errors: 0,
+        timing: 0,
+        score: fallbackScore,
+      },
+    };
+
     ctx.data[effectKey] = {
       primary_unit: null,
       primary_category: null,
@@ -485,6 +556,8 @@ export function applyEffectInjection(
       intelligence: null,
       normalized: null,
     };
+    ctx.data[`_effect_summary_${moduleName}`] = fallbackSummary;
+    ctx.data[`_effect_score_${moduleName}`] = fallbackScore;
 
     ctx.annotations[`effect.${node.id}.primary`] = null;
     ctx.annotations[`effect.${node.id}.strategy`] = 'fallback';
@@ -493,9 +566,30 @@ export function applyEffectInjection(
     ctx.annotations[`effect.${node.id}.degraded`] = false;
     ctx.annotations[`effect.${node.id}.fallback`] = 'No callable unit detected';
     ctx.annotations[`effect.${node.id}.errors`] = 0;
+    ctx.annotations[`effect.${node.id}.score`] = fallbackScore;
+
+    ctx.trace.push({
+      module: moduleName,
+      effect: 'effect-injection-v2:fallback',
+      status: 'fallback',
+      durationMs: 0,
+      inputSnapshot: {},
+      outputSnapshot: {},
+      annotations: {
+        nodeId: node.id,
+        strategy: 'fallback',
+        executed: false,
+        degraded: false,
+        score: fallbackScore,
+      },
+      notes: ['No callable unit — fallback passthrough'],
+      timestamp: Date.now(),
+    });
 
     ctx.transformationNotes.push(
-      `[EFFECT] ${moduleName} — fallback passthrough — no callable unit detected, input preserved`
+      isDemo
+        ? `[EFFECT] ${moduleName} → fallback passthrough`
+        : `[EFFECT] ${moduleName} — fallback passthrough — no callable unit detected, input preserved`
     );
   }
 
