@@ -250,10 +250,50 @@ function generateSealedEngineStub(): string {
   return '// Discovery Engine is a substrate-exclusive capability. See https://cmpsbl.com';
 }
 
-function generateCapabilitySource(cap: CapabilityForExport, lang: string): string {
+interface SourceFile { name: string; extension: string; language: string; content: string; }
+
+function generateCapabilitySource(cap: CapabilityForExport, lang: string, sourceFiles?: SourceFile[]): string {
   const [line] = LANG_COMMENT[lang] || ['//', '/*'];
 
   if (lang === 'typescript') {
+    // Auto-wire imports from bundled original files
+    const origFiles = sourceFiles || [];
+    const tsFiles = origFiles.filter(f =>
+      /\.(ts|tsx|js|jsx|mjs|cjs)$/i.test(f.name)
+    );
+
+    // Generate real import statements for each original file
+    const importLines = tsFiles.length > 0
+      ? tsFiles.map(f => {
+          const modName = f.name.replace(/\.[^.]+$/, '');
+          return `import * as ${modName.replace(/[^a-zA-Z0-9_$]/g, '_')} from '../original/${modName}';`;
+        }).join('\n')
+      : `${line} No TypeScript/JavaScript files detected in original/ — manual wiring needed`;
+
+    // Build the executeOriginal body that calls into the originals
+    const executeBody = tsFiles.length > 0
+      ? (() => {
+          const firstMod = tsFiles[0].name.replace(/\.[^.]+$/, '').replace(/[^a-zA-Z0-9_$]/g, '_');
+          return [
+            `  ${line} Auto-wired to original source: ${tsFiles.map(f => f.name).join(', ')}`,
+            `  const mod = ${firstMod} as Record<string, unknown>;`,
+            `  ${line} Attempt to call known entry points in priority order`,
+            `  const entryPoints = ['execute', 'run', 'main', 'handle', 'process', 'default'];`,
+            `  for (const ep of entryPoints) {`,
+            `    if (typeof mod[ep] === 'function') {`,
+            `      return (mod[ep] as Function)(input);`,
+            `    }`,
+            `  }`,
+            `  ${line} No known entry point found — try default export`,
+            `  if (typeof mod.default === 'function') {`,
+            `    return (mod.default as Function)(input);`,
+            `  }`,
+            `  ${line} Return input if no callable found (honest passthrough)`,
+            `  return input;`,
+          ].join('\n');
+        })()
+      : `  ${line} Original files are in ../original/ — wire your imports above\n  return input;`;
+
     return `${line} ═══════════════════════════════════════════════════════
 ${line}  Capability: ${cap.name}
 ${line}  CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
@@ -272,6 +312,11 @@ ${line} ════════════════════════
 
 import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/standalone-runtime';
 
+${line} ═══════════════════════════════════════════════════════
+${line}  Layer 1 — Original Source Imports (auto-wired from ../original/)
+${line} ═══════════════════════════════════════════════════════
+${importLines}
+
 export const CAPABILITY_META = {
   name: '${cap.name}',
   cjpi: ${cap.cjpiScore},
@@ -282,27 +327,13 @@ export const CAPABILITY_META = {
   type: '${cap.capabilityType}',
 } as const;
 
-${line} ═══════════════════════════════════════════════════════
-${line}  Layer 1 — Native Execution
-${line}  Import your original code and call it directly.
-${line}  Replace the placeholder below with your actual import.
-${line} ═══════════════════════════════════════════════════════
-
-${line} TODO: Import your original module from ../original/
-${line} import { yourFunction } from '../original/your-file';
-
 /**
  * Execute your original code directly.
  * This is the NATIVE EXECUTION LAYER — your logic runs unchanged.
  * Returns the raw result from your original code.
  */
 export function executeOriginal(input: Record<string, unknown>): unknown {
-  ${line} Replace this with a call to your original code:
-  ${line}   return yourFunction(input);
-  ${line}
-  ${line} For now, returns input unchanged (passthrough).
-  ${line} Your original source files are in ../original/
-  return input;
+${executeBody}
 }
 
 /**
@@ -370,11 +401,11 @@ export function validate(): boolean {
   }
 
   if (lang === 'php') {
-    return generatePhpCapabilitySource(cap);
+    return generatePhpCapabilitySource(cap, sourceFiles);
   }
 
   if (lang === 'python') {
-    return generatePythonCapabilitySource(cap);
+    return generatePythonCapabilitySource(cap, sourceFiles);
   }
 
   // Other languages — structured metadata + dual-layer guidance
@@ -399,7 +430,43 @@ ${line}  See runtime-bridge${LANG_EXT[lang] || '.ts'} for the cognitive layer.
 
 // ═══ PHP CAPABILITY SOURCE (REAL EXECUTABLE) ═══
 
-function generatePhpCapabilitySource(cap: CapabilityForExport): string {
+function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: SourceFile[]): string {
+  const phpFiles = (sourceFiles || []).filter(f => /\.php$/i.test(f.name));
+  const requireLines = phpFiles.length > 0
+    ? phpFiles.map(f => `require_once __DIR__ . '/../original/${f.name}';`).join('\n')
+    : "// No PHP files detected in original/ — wire your require_once manually\n// require_once __DIR__ . '/../original/YourFile.php';";
+
+  // Build the executeOriginal body
+  const executeBody = phpFiles.length > 0
+    ? (() => {
+        // Try to find a class name from the first PHP file
+        const firstName = phpFiles[0].name.replace(/\.php$/i, '');
+        // Common PHP class naming: file TradeMatcher.php → class TradeMatcher
+        return [
+          `        // Auto-wired to: ${phpFiles.map(f => f.name).join(', ')}`,
+          `        // Attempting to instantiate ${firstName} and call known entry points`,
+          `        if (class_exists('${firstName}')) {`,
+          `            $instance = new \\${firstName}();`,
+          `            $methods = ['execute', 'run', 'handle', 'process', 'main', '__invoke'];`,
+          `            foreach ($methods as $method) {`,
+          `                if (method_exists($instance, $method)) {`,
+          `                    return $instance->$method($input);`,
+          `                }`,
+          `            }`,
+          `        }`,
+          `        // No class found — try top-level functions`,
+          `        $functions = ['execute', 'run', 'handle', 'process', 'main'];`,
+          `        foreach ($functions as $fn) {`,
+          `            if (function_exists($fn)) {`,
+          `                return $fn($input);`,
+          `            }`,
+          `        }`,
+          `        // Honest passthrough — no callable entry point found`,
+          `        return $input;`,
+        ].join('\n');
+      })()
+    : `        // Original files are in ../original/ — wire your require_once above\n        return $input;`;
+
   return `<?php
 /**
  * ═══════════════════════════════════════════════════════
@@ -429,8 +496,8 @@ function generatePhpCapabilitySource(cap: CapabilityForExport): string {
 
 require_once __DIR__ . '/runtime-bridge.php';
 
-// TODO: Include your original source file here:
-// require_once __DIR__ . '/../original/YourFile.php';
+// ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
+${requireLines}
 
 class CMPSBLCapability
 {
@@ -465,19 +532,14 @@ class CMPSBLCapability
 
     /**
      * Layer 1 — Execute your original code directly.
-     * Replace this with a call to your actual original logic.
+     * Auto-wired from ../original/ source files.
      *
      * @param  array $input
      * @return mixed  The raw result from your original code
      */
     public function executeOriginal(array $input = []): mixed
     {
-        // TODO: Replace with your original code call:
-        //   $original = new YourOriginalClass();
-        //   return $original->yourMethod($input);
-        //
-        // Your original source files are in ../original/
-        return $input;
+${executeBody}
     }
 
     /**
@@ -551,7 +613,43 @@ class CMPSBLCapability
 `;
 }
 
-function generatePythonCapabilitySource(cap: CapabilityForExport): string {
+function generatePythonCapabilitySource(cap: CapabilityForExport, sourceFiles?: SourceFile[]): string {
+  const pyFiles = (sourceFiles || []).filter(f => /\.py$/i.test(f.name));
+  const importLines = pyFiles.length > 0
+    ? pyFiles.map(f => {
+        const modName = f.name.replace(/\.py$/i, '');
+        return `from original.${modName} import *  # Auto-wired from ../original/${f.name}`;
+      }).join('\n')
+    : '# No Python files detected in original/ — wire your imports manually\n# from original.your_file import YourClass';
+
+  const executeBody = pyFiles.length > 0
+    ? (() => {
+        const firstName = pyFiles[0].name.replace(/\.py$/i, '');
+        const className = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+        return [
+          `        # Auto-wired to: ${pyFiles.map(f => f.name).join(', ')}`,
+          `        import sys, importlib`,
+          `        mod = importlib.import_module('original.${firstName}')`,
+          `        # Try class instantiation first`,
+          `        for cls_name in ['${className}', '${firstName}']:`,
+          `            cls = getattr(mod, cls_name, None)`,
+          `            if cls and callable(cls):`,
+          `                instance = cls()`,
+          `                for method in ['execute', 'run', 'handle', 'process', 'main']:`,
+          `                    fn = getattr(instance, method, None)`,
+          `                    if callable(fn):`,
+          `                        return fn(input_data)`,
+          `        # Try top-level functions`,
+          `        for fn_name in ['execute', 'run', 'handle', 'process', 'main']:`,
+          `            fn = getattr(mod, fn_name, None)`,
+          `            if callable(fn):`,
+          `                return fn(input_data)`,
+          `        # Honest passthrough — no callable entry point found`,
+          `        return input_data or {}`,
+        ].join('\n');
+      })()
+    : '        # Original files are in ../original/ — wire your imports above\n        return input_data or {}';
+
   return `"""
 ═══════════════════════════════════════════════════════
  CMPSBL® Capability: ${cap.name}
@@ -582,8 +680,8 @@ import os
 import time
 from runtime_bridge import CMPSBLRuntimeBridge
 
-# TODO: Import your original code here:
-# from original.your_file import YourClass
+# ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
+${importLines}
 
 CAPABILITY_META = {
     "name": "${cap.name}",
@@ -610,16 +708,9 @@ class CMPSBLCapability:
     def execute_original(self, input_data: dict = None) -> any:
         """
         Layer 1 — Execute your original code directly.
-        Replace this with a call to your actual original logic.
-
-        Example:
-            original = YourClass()
-            return original.your_method(input_data)
-
-        Your original source files are in ../original/
+        Auto-wired from ../original/ source files.
         """
-        # TODO: Replace with your original code call
-        return input_data or {}
+${executeBody}
 
     def execute_native(self, input_data: dict = None) -> any:
         """Layer 1 only — Run original code with NO CMPSBL overlay."""
@@ -1647,7 +1738,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   // src/ — Capability source files
   const srcFolder = zip.folder('src')!;
   for (const cap of capabilities) {
-    srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage));
+    srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
   }
 
   // src/ — Runtime Bridge (Runtime Binding Layer)
