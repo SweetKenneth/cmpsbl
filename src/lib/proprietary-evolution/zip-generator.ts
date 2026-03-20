@@ -1515,9 +1515,11 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
 
   // PIPELINE-DETAILS.html — Per-capability valuation & details
   for (const cap of capabilities) {
+    const displayName = humanizeCapabilityName(cap.name, cap.chain, cap.category);
+    const safeFilename = humanizeFilename(cap.name);
     const detailsHTML = generatePipelineDetailsHTML({
-      name: cap.name,
-      description: cap.description || `Collision capability: ${cap.chain.join(' × ')}`,
+      name: displayName,
+      description: cap.description || `Evolved capability: ${cap.chain.join(' → ')}`,
       category: cap.category || 'proprietary-evolution',
       score: cap.cjpiScore,
       tier: cap.tier || getTierFromScore(cap.cjpiScore),
@@ -1527,7 +1529,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       obtainedAt: new Date().toISOString(),
       source: 'Proprietary Evolution Lifecycle',
     });
-    zip.file(`${cap.name.toLowerCase()}-PIPELINE-DETAILS.html`, detailsHTML);
+    zip.file(`${safeFilename}-PIPELINE-DETAILS.html`, detailsHTML);
   }
 
   // export-tier.json — Valuation summary
