@@ -70,6 +70,7 @@ export interface MemoryStateSchema {
     hot: { capacity: number; current: number };
     warm: { capacity: number; current: number };
     cold: { capacity: number; current: number };
+    glacier: { capacity: number; current: number };
   };
   latent: {
     pending_reflection: number;
