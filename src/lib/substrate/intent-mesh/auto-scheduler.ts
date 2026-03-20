@@ -109,7 +109,7 @@ class MeshAutoScheduler {
     // Module self-discovery
     this.timers.moduleDiscovery = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runModuleDiscoveryCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in module discovery interval:', err);
