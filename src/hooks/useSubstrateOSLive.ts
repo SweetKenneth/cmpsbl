@@ -236,7 +236,7 @@ export function useLiveCuriosityLog() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_curiosity_log')
-        .select('*')
+        .select('id, query, category, created_at')
         .order('created_at', { ascending: false })
         .limit(10);
       
