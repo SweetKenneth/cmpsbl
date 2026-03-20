@@ -405,16 +405,18 @@ export function useSubstrateHealthScore() {
   const surfaceHealth = layerHealth(EXECUTION_SURFACES);
   const expansionHealth = layerHealth(EXPANSION_ZONES);
   const cszHealth = layerHealth(CSZ_ZONES);
+  const metaHealth = layerHealth(META_PLANE);
   const meshHealth = layerHealth(MESH_OVERLAYS);
 
   const healthScore = Math.round(
     coreSysHealth * 0.12 +
     ccrHealth * 0.12 +
-    ocgHealth * 0.15 +
+    ocgHealth * 0.14 +
     surfaceHealth * 0.18 +
-    expansionHealth * 0.13 +
-    cszHealth * 0.10 +
-    meshHealth * 0.20
+    expansionHealth * 0.12 +
+    cszHealth * 0.08 +
+    metaHealth * 0.06 +
+    meshHealth * 0.18
   );
 
   const totalModules = ALL_MODULES.length;

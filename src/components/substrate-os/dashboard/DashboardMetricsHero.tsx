@@ -55,9 +55,11 @@ const MODULES_CONFIG = [
   { id: 'evolution', label: 'EVOLUTION', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
   { id: 'shadow', label: 'SHADOW', icon: Shield, color: 'text-gray-400', hsl: '220, 9%, 46%' },
   { id: 'phantom', label: 'PHANTOM', icon: Shield, color: 'text-slate-300', hsl: '215, 16%, 60%' },
-  // Fields + Plane + Shell
+  // Fields + Meta + Plane + Shell
   { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-rose-300', hsl: '350, 80%, 70%' },
   { id: 'intent', label: 'INTENT', icon: Brain, color: 'text-amber-400', hsl: '38, 92%, 50%' },
+  { id: 'atlas', label: 'ATLAS', icon: Globe, color: 'text-sky-300', hsl: '199, 89%, 68%' },
+  { id: 'engineer', label: 'ENGINEER', icon: Settings, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
   { id: 'governance', label: 'GOVERNANCE', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
   { id: 'defense', label: 'DEFENSE', icon: Shield, color: 'text-red-400', hsl: '0, 84%, 60%' },
 ];
