@@ -123,7 +123,7 @@ export function useLiveBrainEvents() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_events')
-        .select('id, module, event_type, data, created_at')
+        .select('id, module, event_type, outcome, trace_id, data, created_at')
         .order('created_at', { ascending: false })
         .limit(50);
       
