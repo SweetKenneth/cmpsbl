@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Primary Handler Factory — Tests
- * Validates the critical fix: primary modules get real handlers, never DEFAULT.
+ * Validates the dual-layer architecture: handlers WRAP original code, never simulate.
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -37,12 +37,12 @@ describe('Primary Handler Factory', () => {
     registerDefaults();
   });
 
-  it('registers a handler for a primary unit name', () => {
+  it('registers a wrapping handler for a primary unit name', () => {
     const prims = [makePrimitive(), makePrimitive({ name: 'processOrder', category: 'execution' })];
     const result = registerPrimaryHandler('TradeMatcher', prims, 'php');
 
     expect(result.registered).toBe(true);
-    expect(result.handlerType).toBe('behavioral');
+    expect(result.handlerType).toBe('wrapping');
     expect(result.hasMeaningfulBehavior).toBe(true);
     expect(hasPrimaryHandler('TradeMatcher')).toBe(true);
   });
@@ -56,16 +56,22 @@ describe('Primary Handler Factory', () => {
     expect(prim!.handler).toBeDefined();
   });
 
-  it('handler returns enriched data — not just passthrough', () => {
+  it('handler preserves original input and adds cognitive overlay', () => {
     registerPrimaryHandler('TradeMatcher', [makePrimitive()], 'php');
     const prim = getPrimitive('TradeMatcher');
     const result = prim!.handler!({ bid: 100, ask: 95 }) as Record<string, unknown>;
 
-    expect(result).toHaveProperty('_primary_tradematcher');
-    const primary = result._primary_tradematcher as Record<string, unknown>;
-    expect(primary.executed).toBe(true);
-    expect(primary.intent).toBeDefined();
-    expect(primary.meaningful).toBe(true);
+    // Original input MUST be preserved
+    expect(result.bid).toBe(100);
+    expect(result.ask).toBe(95);
+
+    // Cognitive overlay MUST be present (in _cmpsbl_overlay, NOT replacing original keys)
+    expect(result).toHaveProperty('_cmpsbl_overlay');
+    const overlay = result._cmpsbl_overlay as Record<string, unknown>;
+    const execution = overlay.execution as Record<string, unknown>;
+    expect(execution.handler_type).toBe('wrapping');
+    expect(execution.original_preserved).toBe(true);
+    expect(execution.computation_replaced).toBe(false);
   });
 
   it('creates passthrough_primary when no meaningful behavior detected', () => {
@@ -84,7 +90,6 @@ describe('Primary Handler Factory', () => {
   });
 
   it('registered handler works with primitiveExecutorSync flow', () => {
-    // This simulates what execution-binding does
     registerPrimaryHandler('Analyzer', [
       makePrimitive({ name: 'analyze', category: 'analysis', keywords: ['analyze', 'score', 'if'] }),
     ], 'python');
@@ -98,7 +103,6 @@ describe('Primary Handler Factory', () => {
   });
 
   it('does not overwrite native handlers', () => {
-    // 'identity' is registered as native by registerDefaults
     const result = registerPrimaryHandler('identity', [makePrimitive()], 'typescript');
     expect(result.reason).toContain('Already registered');
   });
@@ -108,5 +112,24 @@ describe('Primary Handler Factory', () => {
     expect(result.registered).toBe(true);
     expect(result.handlerType).toBe('passthrough_primary');
     expect(result.reason).toContain('No primitives');
+  });
+
+  it('never replaces original computation (dual-layer invariant)', () => {
+    registerPrimaryHandler('SafeCracker', [
+      makePrimitive({ name: 'solve', category: 'computation', keywords: ['compute', 'iterate', 'for'] }),
+    ], 'python');
+
+    const prim = getPrimitive('SafeCracker');
+    const input = { combination: [1, 2, 3], attempts: 100 };
+    const result = prim!.handler!(input) as Record<string, unknown>;
+
+    // Original data keys MUST survive unchanged
+    expect(result.combination).toEqual([1, 2, 3]);
+    expect(result.attempts).toBe(100);
+
+    // Overlay must declare it did NOT replace computation
+    const overlay = result._cmpsbl_overlay as Record<string, unknown>;
+    const execution = overlay.execution as Record<string, unknown>;
+    expect(execution.computation_replaced).toBe(false);
   });
 });
