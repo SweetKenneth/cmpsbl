@@ -20,7 +20,7 @@ interface SystemHealthPanelProps {
   enabled: boolean;
 }
 
-export function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
+export const SystemHealthPanel = memo(function SystemHealthPanel({ enabled }: SystemHealthPanelProps) {
   const [healTarget, setHealTarget] = useState<string | undefined>();
   
   const healthScore = useSubstrateHealthScore();
