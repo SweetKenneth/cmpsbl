@@ -126,7 +126,7 @@ export function SavedWorkflows({ tier }: { tier: string }) {
       .select()
       .single();
     if (!error && data) {
-      setWorkflows(prev => [data as SavedWorkflow, ...prev]);
+      setWorkflows(prev => [{ ...data, intent_chain: data.intent_chain as unknown as SavedWorkflow['intent_chain'] }, ...prev]);
       setNewName('');
       setShowCreate(false);
       toast.success('Workflow created');
