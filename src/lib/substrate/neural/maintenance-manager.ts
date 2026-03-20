@@ -70,6 +70,8 @@ async function logMaintenance(
 class MaintenanceManager {
   private tasks: Map<string, MaintenanceTask> = new Map();
   private timers: Map<string, ReturnType<typeof setInterval>> = new Map();
+  private visibilityHandler: (() => void) | null = null;
+  private paused = false;
   private state: MaintenanceManagerState = {
     running: false,
     tasks: [],
