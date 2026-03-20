@@ -78,9 +78,12 @@ const TIERS: {
     capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
     features: [
       'Run 6 packs simultaneously',
+      'Saved Workflows — one-click intent presets',
       'Export traces & audit logs',
       '2× deeper memory recall',
       'Priority queue — 3× faster routing',
+      'Usage dashboard with ROI tracking',
+      'Referral credits program',
       'Email support',
     ],
   },
