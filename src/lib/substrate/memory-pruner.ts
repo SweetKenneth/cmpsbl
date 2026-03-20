@@ -34,6 +34,7 @@ const CAPACITY = {
   hot: 500,
   warm: 10000,
   cold: 10000,
+  glacier: 50000,
 } as const;
 
 /**
