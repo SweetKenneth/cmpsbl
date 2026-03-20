@@ -321,8 +321,15 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
     } catch { /* non-fatal */ }
   });
 
-  // PHASE 2: Learning Topic Study — ALL 10 topics in parallel
-  const topicPromises = LEARNING_TOPICS.map(async (topic) => {
+  // PHASE 2: Learning Topic Study — 3 topics per cycle (sequential rotation, not all 10 in parallel)
+  const topicsPerCycle = 3;
+  const topicOffset = cycleNumber % LEARNING_TOPICS.length;
+  const selectedTopics = [];
+  for (let i = 0; i < topicsPerCycle; i++) {
+    selectedTopics.push(LEARNING_TOPICS[(topicOffset + i) % LEARNING_TOPICS.length]);
+  }
+
+  const topicPromises = selectedTopics.map(async (topic) => {
     try {
       const { data: studyResult, error: studyError } = await supabase.functions.invoke('pf-substrate', {
         body: { module: 'brain', action: 'deep_think', data: { query: topic.prompt, depth: 2 } },
@@ -348,7 +355,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
           preferWarm: preferWarmForLearning,
           metadata: {
             domain: topic.domain,
-            source: 'clm_burst_engine',
+            source: 'clm_adaptive_engine',
             cycle: cycleNumber,
             ai_provider: studyResult.ai_provider,
           },
@@ -362,7 +369,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
             title: `CLM Study: ${topic.domain}`,
             domain: topic.domain,
             result: analysisText.substring(0, 800),
-            source: 'clm_burst_engine',
+            source: 'clm_adaptive_engine',
             version: CLM_VERSION,
             cycle: cycleNumber,
             stored_tier: storedTier,
