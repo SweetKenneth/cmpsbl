@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: ShoppingBag,
     tag: 'Welcome',
     title: 'The Store',
-    body: '10 products across 5 pricing tiers on a single ladder. Everything from free Runtime Agents to Apex-tier Composable Engines — all sealed, self-improving AI you own.',
+    body: '10 products across a single pricing ladder. Everything from free Runtime Agents to high-tier Composable Engines — all sealed, self-improving AI you own.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
