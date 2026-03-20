@@ -284,41 +284,44 @@ export async function aggregateTelemetry(): Promise<TelemetrySnapshot> {
   return snapshot;
 }
 
-// ═══ AI Usage (optimized — single-pass aggregation, reduced pages) ════
+// ═══ AI Usage (optimized — count-only + sample, no pagination) ════
 
 async function aggregateAiUsage(): Promise<AiTelemetry> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-  // Reduced to 2 pages max (2000 rows) — sufficient for 24h telemetry
-  let allData: Array<{ provider: string; tokens_used: number | null; success: boolean | null; response_time_ms: number | null }> = [];
-  let page = 0;
-  const pageSize = 1000;
-
-  while (page < 2) {
-    const { data, error } = await supabase
+  // Parallel: exact counts (zero payload) + small sample for distributions
+  const [totalRes, successRes, sampleRes] = await Promise.allSettled([
+    supabase
       .from('ai_usage_log')
-      .select('provider, tokens_used, success, response_time_ms')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', since),
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', true)
+      .gte('created_at', since),
+    supabase
+      .from('ai_usage_log')
+      .select('provider, tokens_used, response_time_ms')
       .gte('created_at', since)
-      .range(page * pageSize, (page + 1) * pageSize - 1);
+      .order('created_at', { ascending: false })
+      .limit(200),
+  ]);
 
-    if (error || !data || data.length === 0) break;
-    allData = allData.concat(data as any);
-    if (data.length < pageSize) break;
-    page++;
-  }
+  const totalCalls = totalRes.status === 'fulfilled' ? (totalRes.value.count ?? 0) : 0;
+  const successCount = successRes.status === 'fulfilled' ? (successRes.value.count ?? 0) : 0;
 
-  if (allData.length === 0) return defaultAi();
+  if (totalCalls === 0) return defaultAi();
 
-  // Single-pass aggregation
-  let successCount = 0;
+  // Single-pass aggregation over sample
   let totalTokens = 0;
   let responseTimeSum = 0;
   let responseTimeCount = 0;
   const responseTimes: number[] = [];
   const providerCounts: Record<string, number> = {};
 
-  for (const d of allData) {
-    if (d.success) successCount++;
+  const sample = sampleRes.status === 'fulfilled' ? (sampleRes.value.data ?? []) : [];
+  for (const d of sample) {
     totalTokens += d.tokens_used || 0;
     if (d.response_time_ms && d.response_time_ms > 0) {
       responseTimeSum += d.response_time_ms;
@@ -328,7 +331,6 @@ async function aggregateAiUsage(): Promise<AiTelemetry> {
     providerCounts[d.provider] = (providerCounts[d.provider] || 0) + 1;
   }
 
-  const totalCalls = allData.length;
   const avgResponseTime = responseTimeCount > 0 ? Math.round(responseTimeSum / responseTimeCount) : 0;
 
   responseTimes.sort((a, b) => a - b);
