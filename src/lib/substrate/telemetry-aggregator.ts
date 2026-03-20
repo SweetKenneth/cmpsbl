@@ -349,32 +349,42 @@ async function aggregateAiUsage(): Promise<AiTelemetry> {
   };
 }
 
-// ═══ Access Usage (paginated) ════════════════════════════════════
+// ═══ Access Usage (parallelized) ════════════════════════════════════
 
 async function aggregateAccessUsage(): Promise<AccessTelemetry> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const yesterdaySince = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString();
 
-  // Today's data
-  const { data } = await supabase
-    .from('access_usage')
-    .select('module, api_key_id, cost_millicents')
-    .gte('created_at', since)
-    .limit(1000);
+  // Parallel: count + sample today + yesterday cost sample
+  const [countRes, todayRes, yesterdayRes] = await Promise.allSettled([
+    supabase
+      .from('access_usage')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', since),
+    supabase
+      .from('access_usage')
+      .select('module, api_key_id, cost_millicents')
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(300),
+    supabase
+      .from('access_usage')
+      .select('cost_millicents')
+      .gte('created_at', yesterdaySince)
+      .lt('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(300),
+  ]);
 
-  // Yesterday's cost for trend
-  const { data: yesterdayData } = await supabase
-    .from('access_usage')
-    .select('cost_millicents')
-    .gte('created_at', yesterdaySince)
-    .lt('created_at', since)
-    .limit(1000);
+  const totalRequests = countRes.status === 'fulfilled' ? (countRes.value.count ?? 0) : 0;
+  const data = todayRes.status === 'fulfilled' ? (todayRes.value.data ?? []) : [];
+  const yesterdayData = yesterdayRes.status === 'fulfilled' ? (yesterdayRes.value.data ?? []) : [];
 
-  if (!data) return defaultAccess();
+  if (data.length === 0) return defaultAccess();
 
   const uniqueKeys = new Set(data.map(d => d.api_key_id).filter(Boolean)).size;
   const totalCost = data.reduce((s, d) => s + (d.cost_millicents || 0), 0);
-  const yesterdayCost = (yesterdayData ?? []).reduce((s, d) => s + (d.cost_millicents || 0), 0);
+  const yesterdayCost = yesterdayData.reduce((s, d) => s + (d.cost_millicents || 0), 0);
 
   const moduleCounts: Record<string, number> = {};
   data.forEach(d => { moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1; });
@@ -386,7 +396,7 @@ async function aggregateAccessUsage(): Promise<AccessTelemetry> {
     : 'flat';
 
   return {
-    totalRequests: data.length,
+    totalRequests,
     uniqueKeys,
     topModule,
     totalCostMillicents: totalCost,
