@@ -63,7 +63,7 @@ const STEPS: OnboardingStep[] = [
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
     nextSteps: [
-      'Try Signal Forge — describe any idea to get a blueprint',
+      'Try Signal Forge — hit Forge to discover a new blueprint',
       'Pick a starter template to see working code',
       'Open the workbench to run your first resolver call',
     ],
