@@ -17,6 +17,9 @@ const PRODUCT_TO_TIER: Record<string, string> = {
   // Creator ($29/mo)
   'prod_U3d8z2sorSG4sI': 'creator',
   'prod_U3d84gNyBRQgeu': 'creator',
+  // Studio ($49/mo)
+  'prod_U4vfFrx4XIT6Ah': 'studio',
+  'prod_U4vfNOl4dHkmld': 'studio',
   // Architect ($79/mo)
   'prod_U3d8XbUwCGrcfO': 'architect',
   'prod_U3d8M0yNFGpGTw': 'architect',
