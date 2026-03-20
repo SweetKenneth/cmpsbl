@@ -585,12 +585,14 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
 
     .certificate-subtitle {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 400;
       font-style: italic;
       color: var(--ink-muted);
       line-height: 1.65;
       margin-top: 0.6rem;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .seal-container {
