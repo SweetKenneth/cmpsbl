@@ -127,8 +127,11 @@ const TIERS: {
     features: [
       '12 packs — maximum throughput',
       'Unlimited vault — never lose context',
-      'Full governance & compliance controls',
+      'Private Discovery Pool — isolated memory',
+      'Governance snapshots & audit trails',
+      'Full export templates (PDF/CSV/JSON)',
       'Organization workspaces for teams',
+      'Early access to new nodes & resolvers',
       'Custom memory slots you configure',
       'White-glove onboarding call',
       'Dedicated Slack support channel',

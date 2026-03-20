@@ -92,10 +92,12 @@ export function Header({ onMenuClick }: { onMenuClick?: () => void }) {
             variant="outline"
             size="sm"
             className="hidden lg:flex gap-2 min-h-[44px]"
-            onClick={() => navigate('/ai-operating-system')}
+            asChild
           >
-            <Map className="w-4 h-4" />
-            How It Works
+            <Link to="/member">
+              <Users className="w-4 h-4" />
+              <span className="hidden xl:inline">Member Hub</span>
+            </Link>
           </Button>
 
           <Button
