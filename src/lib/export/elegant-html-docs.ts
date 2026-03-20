@@ -13,8 +13,9 @@ const DOCUMENT_STYLES = `
       background: #faf9f6;
       color: #1a1a1f;
       line-height: 1.75;
-      font-size: 13.5px;
+      font-size: 12.5px;
       -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
     }
     .page {
       max-width: 740px;

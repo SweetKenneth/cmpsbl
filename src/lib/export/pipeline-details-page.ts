@@ -485,10 +485,11 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       background: var(--cream);
       color: var(--ink);
       line-height: 1.7;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-wrap: break-word;
     }
 
     .page {

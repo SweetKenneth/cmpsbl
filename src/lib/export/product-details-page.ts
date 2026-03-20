@@ -125,8 +125,9 @@ export function generateProductDetailsHTML(input: ProductDetailsInput): string {
       background: var(--cream);
       color: var(--ink);
       line-height: 1.7;
-      font-size: 14px;
+      font-size: 13px;
       -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
     }
 
     .page {
