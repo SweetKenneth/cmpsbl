@@ -115,6 +115,11 @@ export default function ProprietaryEvolution() {
                   {phases[activeStep]}
                 </motion.div>
               </AnimatePresence>
+
+              {/* ═══ VISION: Effect Monitor (always visible) ═══ */}
+              <div className="mt-8 pt-6 border-t border-border/10">
+                <AscensionEffectPanel />
+              </div>
             </div>
           </main>
 
