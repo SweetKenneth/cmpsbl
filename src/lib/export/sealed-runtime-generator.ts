@@ -459,7 +459,7 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     registerHandler, getHandler, listHandlers,
   };
 }
-\`;
+`;
 }
 
 
