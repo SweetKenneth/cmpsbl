@@ -582,6 +582,8 @@ export function applyEffectInjection(
         degraded: false,
         score: fallbackScore,
       },
+      notes: ['No callable unit — fallback passthrough'],
+      timestamp: Date.now(),
     });
 
     ctx.transformationNotes.push(
