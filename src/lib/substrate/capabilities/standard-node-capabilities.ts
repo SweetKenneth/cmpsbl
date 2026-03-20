@@ -1,5 +1,5 @@
 /**
- * Standard Node Capabilities — Core Operations for All 38 Matrix Nodes
+ * Standard Node Capabilities — Core Operations for All 40 Matrix Nodes
  * 
  * Surfaces 8 fundamental capabilities per uncovered node (15 nodes × 8 = 120).
  * These are standard operational capabilities intrinsic to each node's design,
