@@ -37,8 +37,8 @@ export function useVision(): UseVisionReturn {
   const health = useQuery({
     queryKey: ['substrate', 'vision', 'health'],
     queryFn: () => vision.health(),
-    refetchInterval: 15000,
-    staleTime: 5000,
+    refetchInterval: 30000,
+    staleTime: 15000,
   });
   
   const status = useQuery({
@@ -51,8 +51,8 @@ export function useVision(): UseVisionReturn {
   const pulse = useQuery({
     queryKey: ['substrate', 'vision', 'pulse'],
     queryFn: () => vision.pulse(),
-    refetchInterval: 10000,
-    staleTime: 5000,
+    refetchInterval: 30000,
+    staleTime: 15000,
   });
   
   const metrics = useQuery({
@@ -72,8 +72,8 @@ export function useVision(): UseVisionReturn {
   const healthSnapshot = useQuery({
     queryKey: ['substrate', 'vision', 'health_snapshot'],
     queryFn: () => vision.healthSnapshot(),
-    refetchInterval: 15000,
-    staleTime: 5000,
+    refetchInterval: 30000,
+    staleTime: 15000,
   });
   
   const introspection = useQuery({

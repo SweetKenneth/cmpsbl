@@ -4,7 +4,7 @@
  * Streams events from all 37 Matrix Nodes across the substrate
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { Radio, Filter, ChevronDown, Brain, MessageSquare, Shield, Zap, Eye, Moon, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -74,7 +74,7 @@ const OUTCOME_COLORS: Record<string, string> = {
 
 const ALL_MODULES = ['brain', 'decode', 'defense', 'nexus', 'vision', 'dream', 'core', 'ripple', 'access', 'system', 'evolution', 'integration', 'terminal', 'atlas', 'seba', 'encoded'];
 
-export function EventStream() {
+export const EventStream = memo(function EventStream() {
   const [selectedModules, setSelectedModules] = useState<string[]>(ALL_MODULES);
   const [isLive, setIsLive] = useState(false);
   const brainEvents = useLiveBrainEvents();
@@ -275,4 +275,4 @@ export function EventStream() {
       </ScrollArea>
     </div>
   );
-}
+});

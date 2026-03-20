@@ -48,8 +48,8 @@ export function useCore(): UseCoreReturn {
   const pulse = useQuery({
     queryKey: ['substrate', 'core', 'pulse'],
     queryFn: () => core.pulse(),
-    refetchInterval: pollingEnabled ? 10000 : false,
-    staleTime: 5000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
     enabled: pollingEnabled,
   });
   

@@ -49,16 +49,16 @@ export function useEvolution(): UseEvolutionReturn {
   const recentCycles = useQuery({
     queryKey: ['substrate', 'evolution', 'cycles', 'recent'],
     queryFn: () => evolutionModule.getRecentCycles(20),
-    refetchInterval: pollingEnabled ? 15000 : false,
-    staleTime: 5000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
     enabled: pollingEnabled,
   });
 
   const activeCycle = useQuery({
     queryKey: ['substrate', 'evolution', 'cycles', 'active'],
     queryFn: () => evolutionModule.getActiveCycle(),
-    refetchInterval: pollingEnabled ? 5000 : false,
-    staleTime: 2000,
+    refetchInterval: pollingEnabled ? 15000 : false,
+    staleTime: 8000,
     enabled: pollingEnabled,
   });
 

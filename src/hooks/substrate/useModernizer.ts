@@ -65,8 +65,8 @@ export function useModernizer(): UseModernizerReturn {
   const pulse = useQuery({
     queryKey: ['substrate', 'evolution', 'pulse'],
     queryFn: () => evolution.pulse(),
-    refetchInterval: pollingEnabled ? 10000 : false,
-    staleTime: 5000,
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
     enabled: pollingEnabled,
   });
   
