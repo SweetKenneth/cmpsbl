@@ -506,8 +506,7 @@ export async function runTierMigration(): Promise<MigrationResult> {
       } else {
         result.errors.push(insertError.message);
       }
-
-
+    }
 
   } catch (error) {
     result.success = false;
