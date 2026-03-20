@@ -8,6 +8,7 @@ import {
 } from './universal-adapter';
 import { serializeCmpsblManifest } from './cmpsbl-manifest';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import { humanizeCapabilityName } from './humanize-name';
 import {
   generateSealedRuntime,
   generateSealedRuntimeReadme,
