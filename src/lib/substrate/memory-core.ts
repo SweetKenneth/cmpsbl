@@ -984,6 +984,7 @@ class MemoryCoreClient {
     const tierFromTable = (t: string): MemoryTier => {
       if (t.includes('hot')) return 'hot';
       if (t.includes('warm')) return 'warm';
+      if (t.includes('archive')) return 'glacier';
       return 'cold';
     };
 
