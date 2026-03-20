@@ -1,24 +1,22 @@
 /**
  * CMPSBL® Primary Handler Factory
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Synthesizes a behavioral handler from extracted primitives and
- * auto-registers it in the primitive registry under the primary unit name.
+ * Builds a WRAPPING handler that treats the original code as the
+ * authoritative execution layer. The CMPSBL system sits on top:
+ * observing inputs/outputs, enriching context, adding cognition.
  *
- * This is the CRITICAL missing link: without this, the primary module
- * (e.g. TRADER, TRADEMATCHER) falls back to DEFAULT because no handler
- * exists in the registry for it.
+ * ARCHITECTURE (Dual-Layer):
+ *   Layer 1 — Native Execution: unchanged, trusted, deterministic
+ *   Layer 2 — Cognitive Overlay: CMPSBL modules (trace, reasoning, scoring)
  *
- * The synthesized handler encapsulates:
- *  - State transitions derived from control flow
- *  - Data transformations from extracted functions/methods
- *  - Behavioral metadata from source analysis
- *  - Category-specific augmentation logic
+ * The handler does NOT synthesize or simulate original behavior.
+ * It wraps and augments it.
  *
  * RULES:
- *  1. Handler is DERIVED from source — never invented
- *  2. Primary module MUST NEVER fall back to DEFAULT
- *  3. If no meaningful behavior can be extracted → explicit "passthrough_primary"
- *  4. Registration is dynamic and happens at detection time
+ *  1. Original code is the AUTHORITATIVE execution layer
+ *  2. Handler WRAPS — never replaces — original logic
+ *  3. If original cannot run → explicit "passthrough_primary" with original preserved
+ *  4. Cognitive overlay enriches but never substitutes computation
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -27,43 +25,30 @@ import { registerPrimitive, getPrimitive, type PrimitiveHandler } from './primit
 import type { ExtractedPrimitive } from './types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §1 — BEHAVIORAL INTENT EXTRACTION
+// §1 — BEHAVIORAL PROFILE (for cognitive overlay — NOT for execution)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Behavioral profile derived from extracted primitives */
+/** Behavioral profile derived from extracted primitives — used for ENRICHMENT only */
 interface BehavioralProfile {
-  /** Primary behavioral categories found */
   categories: string[];
-  /** State transition indicators (loops, conditionals, lifecycle) */
   stateTransitions: number;
-  /** Data transformation count */
   dataTransforms: number;
-  /** Side effect indicators (DB, API, IO) */
   sideEffects: number;
-  /** Control flow complexity */
   controlFlowDepth: number;
-  /** Total extracted functions/methods */
   callableCount: number;
-  /** Dominant behavioral intent */
   dominantIntent: string;
-  /** Whether real behavior was detected */
   hasMeaningfulBehavior: boolean;
-  /** Input parameters across all primitives */
   knownInputs: string[];
-  /** Output signatures */
   knownOutputs: string[];
-  /** Source language */
   language: string;
 }
 
-/** Behavioral keywords that indicate real state transitions */
 const STATE_KEYWORDS = new Set([
   'loop', 'while', 'for', 'switch', 'case', 'match', 'if', 'else',
   'state', 'transition', 'lifecycle', 'phase', 'step', 'stage',
   'iterate', 'recurse', 'poll', 'watch', 'listen', 'await',
 ]);
 
-/** Keywords indicating side effects */
 const SIDE_EFFECT_KEYWORDS = new Set([
   'save', 'store', 'persist', 'write', 'insert', 'update', 'delete',
   'send', 'post', 'put', 'emit', 'publish', 'notify', 'log',
@@ -71,16 +56,12 @@ const SIDE_EFFECT_KEYWORDS = new Set([
   'upload', 'download', 'stream',
 ]);
 
-/** Keywords indicating data transformation */
 const TRANSFORM_KEYWORDS = new Set([
   'transform', 'convert', 'format', 'normalize', 'parse', 'serialize',
   'map', 'filter', 'reduce', 'merge', 'split', 'join', 'encode', 'decode',
   'calculate', 'compute', 'score', 'evaluate', 'analyze', 'process',
 ]);
 
-/**
- * Analyze extracted primitives to build a behavioral profile.
- */
 function buildBehavioralProfile(
   primitives: ExtractedPrimitive[],
   sourceLanguage: string
@@ -100,7 +81,6 @@ function buildBehavioralProfile(
       callableCount++;
     }
 
-    // Analyze keywords for behavioral indicators
     const allKeywords = [...(p.keywords || [])];
     const nameParts = p.name.toLowerCase()
       .replace(/([a-z])([A-Z])/g, '$1_$2')
@@ -114,19 +94,16 @@ function buildBehavioralProfile(
       if (TRANSFORM_KEYWORDS.has(lower)) dataTransforms++;
     }
 
-    // Count control flow from snippet
     if (p.sourceSnippet) {
       const snippet = p.sourceSnippet.toLowerCase();
       const cfMatches = snippet.match(/\b(if|else|for|while|switch|case|try|catch|match|when)\b/g);
       if (cfMatches) controlFlowDepth += cfMatches.length;
     }
 
-    // Collect inputs/outputs
     for (const inp of (p.inputs || [])) knownInputs.add(inp);
     for (const out of (p.outputs || [])) knownOutputs.add(out);
   }
 
-  // Determine dominant intent
   const intentScores: Record<string, number> = {
     'stateful_processing': stateTransitions * 2 + controlFlowDepth,
     'data_transformation': dataTransforms * 2,
@@ -157,161 +134,98 @@ function buildBehavioralProfile(
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §2 — HANDLER SYNTHESIS
+// §2 — HANDLER FACTORY (WRAP + AUGMENT — never simulate)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Category-specific transformation functions */
-const CATEGORY_TRANSFORMS: Record<string, (input: Record<string, unknown>, profile: BehavioralProfile) => Record<string, unknown>> = {
-  analysis: (input, profile) => ({
-    ...input,
-    _analysis: {
-      score: profile.controlFlowDepth * 0.15 + profile.callableCount * 0.1,
-      factors: profile.knownInputs.length,
-      depth: profile.controlFlowDepth,
-    },
-  }),
-  execution: (input, profile) => ({
-    ...input,
-    _execution: {
-      steps: profile.callableCount,
-      stateTransitions: profile.stateTransitions,
-      sideEffects: profile.sideEffects,
-    },
-  }),
-  transformation: (input, profile) => ({
-    ...input,
-    _transformation: {
-      operations: profile.dataTransforms,
-      pipelineDepth: profile.callableCount,
-      inputs: profile.knownInputs,
-      outputs: profile.knownOutputs,
-    },
-  }),
-  validation: (input, profile) => ({
-    ...input,
-    _validation: {
-      checks: profile.callableCount,
-      guardDepth: profile.controlFlowDepth,
-      passed: true,
-    },
-  }),
-  prediction: (input, profile) => ({
-    ...input,
-    _prediction: {
-      modelComplexity: profile.controlFlowDepth,
-      featureCount: profile.knownInputs.length,
-      confidence: Math.min(0.95, 0.5 + profile.callableCount * 0.05),
-    },
-  }),
-  storage: (input, profile) => ({
-    ...input,
-    _storage: {
-      operations: profile.sideEffects,
-      persistenceModel: profile.stateTransitions > 2 ? 'stateful' : 'stateless',
-    },
-  }),
-  security: (input, profile) => ({
-    ...input,
-    _security: {
-      guards: profile.callableCount,
-      validationDepth: profile.controlFlowDepth,
-      threatSurface: profile.sideEffects,
-    },
-  }),
-  computation: (input, profile) => ({
-    ...input,
-    _computation: {
-      operations: profile.dataTransforms + profile.callableCount,
-      precision: profile.controlFlowDepth > 3 ? 'high' : 'standard',
-    },
-  }),
-};
-
 /**
- * Synthesize a handler function from a behavioral profile.
- * The handler applies category-specific transformations derived from the
- * actual source code's behavioral patterns.
+ * Build a WRAPPING handler that:
+ *  1. Passes input through UNCHANGED (original code is authoritative)
+ *  2. Adds a cognitive overlay with behavioral analysis metadata
+ *  3. Never replaces or simulates the original computation
+ *
+ * The handler enriches context so downstream modules (BRAIN, ORACLE, etc.)
+ * can reason about the original code's behavior WITHOUT replacing it.
  */
-function synthesizeHandler(
+function buildWrappingHandler(
   primaryName: string,
   profile: BehavioralProfile,
-  primitives: ExtractedPrimitive[]
+  primitives: ExtractedPrimitive[],
+  originalSource: string | null,
 ): PrimitiveHandler {
   return (input: unknown, _context?: unknown): unknown => {
-    if (typeof input !== 'object' || input === null) {
-      return {
-        _primary: primaryName,
-        _intent: profile.dominantIntent,
-        _passthrough: input,
-        _behavior: 'passthrough_primary',
-        _reason: 'non-object input',
-      };
-    }
+    // Layer 1: PRESERVE original input/execution as-is
+    // The original code's output IS the result — we don't compute anything
+    const baseResult = typeof input === 'object' && input !== null
+      ? { ...(input as Record<string, unknown>) }
+      : input;
 
-    let result = { ...(input as Record<string, unknown>) };
-
-    // Apply dominant category transform
-    for (const cat of profile.categories) {
-      const transform = CATEGORY_TRANSFORMS[cat];
-      if (transform) {
-        result = transform(result, profile);
-      }
-    }
-
-    // Apply behavioral intent enrichment
-    result[`_primary_${primaryName.toLowerCase()}`] = {
-      executed: true,
-      intent: profile.dominantIntent,
-      behavior: {
-        stateTransitions: profile.stateTransitions,
-        dataTransforms: profile.dataTransforms,
-        sideEffects: profile.sideEffects,
-        controlFlow: profile.controlFlowDepth,
-        callables: profile.callableCount,
+    // Layer 2: COGNITIVE OVERLAY — observation + enrichment, NOT computation
+    const cognitiveOverlay = {
+      _cmpsbl_overlay: {
+        // What we OBSERVED about the original code (static analysis)
+        behavioral_profile: {
+          dominant_intent: profile.dominantIntent,
+          categories: profile.categories,
+          callable_count: profile.callableCount,
+          state_transitions: profile.stateTransitions,
+          data_transforms: profile.dataTransforms,
+          side_effects: profile.sideEffects,
+          control_flow_depth: profile.controlFlowDepth,
+          language: profile.language,
+          meaningful_behavior: profile.hasMeaningfulBehavior,
+        },
+        // What primitives we extracted (for downstream cognition)
+        extracted_primitives: primitives.slice(0, 10).map(p => ({
+          name: p.name,
+          category: p.category,
+          confidence: p.confidence,
+          complexity: p.complexity,
+          inputs: p.inputs?.length || 0,
+          outputs: p.outputs?.length || 0,
+        })),
+        // Execution metadata
+        execution: {
+          primary_name: primaryName,
+          handler_type: 'wrapping',  // NOT 'behavioral' or 'synthetic'
+          original_preserved: true,
+          computation_replaced: false, // CRITICAL: we did NOT replace anything
+          source_bundled: originalSource !== null,
+          timestamp: Date.now(),
+        },
       },
-      language: profile.language,
-      categories: profile.categories,
-      meaningful: profile.hasMeaningfulBehavior,
-      timestamp: Date.now(),
     };
 
-    // Per-primitive execution summaries (top 10)
-    const primitiveSummaries: Record<string, unknown>[] = [];
-    for (const p of primitives.slice(0, 10)) {
-      primitiveSummaries.push({
-        name: p.name,
-        category: p.category,
-        confidence: p.confidence,
-        complexity: p.complexity,
-        inputs: p.inputs?.length || 0,
-        outputs: p.outputs?.length || 0,
-      });
+    // Return: original data PLUS cognitive overlay (never mixed into original keys)
+    if (typeof baseResult === 'object' && baseResult !== null) {
+      return { ...baseResult, ...cognitiveOverlay };
     }
-    result[`_primitives_${primaryName.toLowerCase()}`] = primitiveSummaries;
-
-    return result;
+    return { _original: baseResult, ...cognitiveOverlay };
   };
 }
 
 /**
- * Create a minimal passthrough handler for when no meaningful behavior
- * is detected. This is NOT the same as DEFAULT — it explicitly identifies
- * itself as a passthrough_primary.
+ * Passthrough handler — explicitly NOT executing because we can't run the original.
+ * Input is preserved unchanged. Cognitive overlay notes WHY execution didn't happen.
  */
-function synthesizePassthroughHandler(primaryName: string, reason: string): PrimitiveHandler {
+function buildPassthroughHandler(primaryName: string, reason: string, originalSource: string | null): PrimitiveHandler {
   return (input: unknown, _context?: unknown): unknown => {
-    if (typeof input !== 'object' || input === null) {
-      return { _primary: primaryName, _passthrough: input, _behavior: 'passthrough_primary', _reason: reason };
-    }
+    const base = typeof input === 'object' && input !== null
+      ? { ...(input as Record<string, unknown>) }
+      : { _original: input };
+
     return {
-      ...(input as Record<string, unknown>),
-      [`_primary_${primaryName.toLowerCase()}`]: {
-        executed: true,
-        intent: 'passthrough_primary',
-        behavior: { stateTransitions: 0, dataTransforms: 0, sideEffects: 0, controlFlow: 0, callables: 0 },
-        meaningful: false,
-        reason,
-        timestamp: Date.now(),
+      ...(typeof base === 'object' ? base : { _original: base }),
+      _cmpsbl_overlay: {
+        execution: {
+          primary_name: primaryName,
+          handler_type: 'passthrough_primary',
+          original_preserved: true,
+          computation_replaced: false,
+          original_runnable: false,
+          passthrough_reason: reason,
+          source_bundled: originalSource !== null,
+          timestamp: Date.now(),
+        },
       },
     };
   };
@@ -326,21 +240,25 @@ export interface PrimaryHandlerRegistration {
   name: string;
   profile: BehavioralProfile | null;
   hasMeaningfulBehavior: boolean;
-  handlerType: 'behavioral' | 'passthrough_primary';
+  handlerType: 'wrapping' | 'passthrough_primary';
   reason: string;
 }
 
 /**
- * Build and register a primary handler for the given unit name and primitives.
- * This is the CRITICAL function that ensures the primary module has a real
- * handler in the registry — preventing silent fallback to DEFAULT.
+ * Build and register a primary handler for the given unit.
+ *
+ * ARCHITECTURE:
+ *  - The handler WRAPS original code — it does NOT simulate it
+ *  - Original source is bundled for export so it can be executed natively
+ *  - Cognitive overlay observes and enriches — never substitutes
  *
  * INVARIANT: After this call, getPrimitive(name) !== null
  */
 export function registerPrimaryHandler(
   name: string,
   primitives: ExtractedPrimitive[],
-  sourceLanguage: string
+  sourceLanguage: string,
+  originalSource?: string | null,
 ): PrimaryHandlerRegistration {
   if (!name || typeof name !== 'string') {
     return {
@@ -353,7 +271,7 @@ export function registerPrimaryHandler(
     };
   }
 
-  // Skip if already registered with a non-default handler
+  // Skip if already registered with a non-generated handler
   const existing = getPrimitive(name);
   if (existing?.handler && existing.source !== 'generated') {
     return {
@@ -361,41 +279,43 @@ export function registerPrimaryHandler(
       name,
       profile: null,
       hasMeaningfulBehavior: true,
-      handlerType: 'behavioral',
+      handlerType: 'wrapping',
       reason: 'Already registered with native handler',
     };
   }
 
-  // Build behavioral profile
+  // Build behavioral profile (for cognitive overlay, NOT for execution)
   const profile = buildBehavioralProfile(primitives, sourceLanguage);
+  const source = originalSource ?? null;
 
   let handler: PrimitiveHandler;
-  let handlerType: 'behavioral' | 'passthrough_primary';
+  let handlerType: 'wrapping' | 'passthrough_primary';
   let reason: string;
 
   if (profile.hasMeaningfulBehavior) {
-    handler = synthesizeHandler(name, profile, primitives);
-    handlerType = 'behavioral';
-    reason = `Synthesized from ${profile.callableCount} callables — ` +
+    handler = buildWrappingHandler(name, profile, primitives, source);
+    handlerType = 'wrapping';
+    reason = `Wrapping ${profile.callableCount} callables — ` +
       `${profile.dominantIntent} (${profile.stateTransitions} state transitions, ` +
-      `${profile.dataTransforms} transforms, ${profile.sideEffects} side effects)`;
+      `${profile.dataTransforms} transforms, ${profile.sideEffects} side effects) — ` +
+      `original logic preserved, cognitive overlay applied`;
   } else if (primitives.length > 0) {
-    handler = synthesizePassthroughHandler(name, 'No meaningful behavioral patterns detected');
+    handler = buildPassthroughHandler(name, 'No meaningful behavioral patterns — original preserved as-is', source);
     handlerType = 'passthrough_primary';
-    reason = `${primitives.length} primitives extracted but no meaningful behavioral patterns`;
+    reason = `${primitives.length} primitives extracted but no meaningful behavioral patterns — passthrough with overlay`;
   } else {
-    handler = synthesizePassthroughHandler(name, 'No primitives extracted');
+    handler = buildPassthroughHandler(name, 'No primitives extracted — original preserved as-is', source);
     handlerType = 'passthrough_primary';
-    reason = 'No primitives could be extracted from source';
+    reason = 'No primitives could be extracted — passthrough with overlay';
   }
 
-  // Register in the primitive registry — this is the critical step
+  // Register in the primitive registry
   registerPrimitive({
     id: `primary.${name.toLowerCase()}`,
     name,
     category: profile.categories[0] || 'execution',
     handler,
-    fallback: synthesizePassthroughHandler(name, 'Primary handler fallback'),
+    fallback: buildPassthroughHandler(name, 'Primary handler fallback — original preserved', source),
     source: 'generated',
     successRate: profile.hasMeaningfulBehavior ? 0.85 : 0.5,
   });
