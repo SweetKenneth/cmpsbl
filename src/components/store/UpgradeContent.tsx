@@ -2,9 +2,10 @@
  * UpgradeContent — Extracted inner content from Upgrade page.
  * Embeddable inside Store tabs or standalone Upgrade page.
  */
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
+import { toast } from 'sonner';
 import { useArtifactSlots } from '@/hooks/useArtifactSlots';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
