@@ -129,7 +129,7 @@ class MeshAutoScheduler {
     // Intent scoring
     this.timers.intentScoring = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runIntentScoringCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in intent scoring interval:', err);
