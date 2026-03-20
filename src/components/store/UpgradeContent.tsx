@@ -211,8 +211,10 @@ export function UpgradeContent() {
           {[
             { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-violet-400' },
             { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-amber-400' },
-            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code.', color: 'text-emerald-400' },
+            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code. PDF/CSV/JSON templates.', color: 'text-emerald-400' },
             { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
+            { icon: Shield, title: 'Member Hub', desc: 'Saved Workflows, usage dashboards with ROI metrics, referral credits, export center, and priority status — all from one command center.', color: 'text-primary' },
+            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new nodes and resolvers.', color: 'text-orange-400' },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
               <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
