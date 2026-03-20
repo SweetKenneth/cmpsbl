@@ -35,7 +35,7 @@ const STEPS: OnboardingStep[] = [
     icon: Zap,
     tag: 'Forge',
     title: 'Signal Forge',
-    body: 'Describe what you want to build in plain text. Signal Forge maps your intent to the 40-node topology and generates a scored blueprint with implementation steps.',
+    body: 'Hit the Forge button and the system discovers a new blueprint by mapping capabilities across the 40-module topology. Each result is scored, validated, and ready to build on.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -63,7 +63,7 @@ const STEPS: OnboardingStep[] = [
     accent: 'neon-amber',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
     nextSteps: [
-      'Try Signal Forge — describe any idea to get a blueprint',
+      'Try Signal Forge — hit Forge to discover a new blueprint',
       'Pick a starter template to see working code',
       'Open the workbench to run your first resolver call',
     ],
