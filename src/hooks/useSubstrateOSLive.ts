@@ -141,7 +141,7 @@ export function useLiveAuditLogs() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('audit_logs')
-        .select('*')
+        .select('id, action, entity_type, entity_id, created_at, performed_by')
         .order('created_at', { ascending: false })
         .limit(20);
       
