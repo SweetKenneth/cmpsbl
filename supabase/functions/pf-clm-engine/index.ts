@@ -625,15 +625,32 @@ serve(async (req) => {
       });
     }
 
+    // ═══ FAILURE-RATE GATE (v5.1) ═══
+    const recentHealth = await getRealAICallCounts(supabase);
+    if (recentHealth.failureRate >= FAILURE_RATE_HALT_THRESHOLD) {
+      console.log(`🛑 CLM halted — provider failure rate ${(recentHealth.failureRate * 100).toFixed(0)}% exceeds ${FAILURE_RATE_HALT_THRESHOLD * 100}% threshold`);
+      return new Response(JSON.stringify({
+        success: true, skipped: true,
+        reason: 'provider_saturation',
+        failure_rate: recentHealth.failureRate,
+        message: `Provider fleet failure rate is ${(recentHealth.failureRate * 100).toFixed(0)}%. Backing off to let rate limits recover.`,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    // Reduce burst size if moderate failure rate
+    let adaptiveBurstSize = burstSize;
+    if (recentHealth.failureRate >= FAILURE_RATE_BACKOFF_THRESHOLD) {
+      adaptiveBurstSize = 1;
+      console.log(`⚠️ CLM reduced to 1 cycle — failure rate ${(recentHealth.failureRate * 100).toFixed(0)}%`);
+    }
+
     // ═══ BURST / CYCLE EXECUTION ═══
-    // v5: Always burst — even 'cycle' action runs burst_size cycles
-    const effectiveBurstSize = Math.min(burstSize, budget.remainingDaily, budget.remainingHourly);
+    const effectiveBurstSize = Math.min(adaptiveBurstSize, budget.remainingDaily, budget.remainingHourly);
 
     const cycleResults: Array<{ cycle: number; aiCalls: number; durationMs: number }> = [];
     let totalAiCalls = 0;
 
     for (let i = 0; i < effectiveBurstSize; i++) {
-      // Check deadline
       if (Date.now() - startTime > BURST_DEADLINE_MS) {
         console.log(`⏰ Burst deadline reached after ${i} cycles`);
         break;
@@ -651,9 +668,11 @@ serve(async (req) => {
       }
     }
 
-    // ═══ SELF-CHAIN: dispatch next burst immediately ═══
-    if (autoChain && totalAiCalls > 0 && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize) {
-      chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, burstSize, {
+    // ═══ SELF-CHAIN: only if healthy and productive ═══
+    const shouldChain = autoChain && totalAiCalls > 0 && recentHealth.failureRate < FAILURE_RATE_BACKOFF_THRESHOLD
+      && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize;
+    if (shouldChain) {
+      chainNextBurst(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, adaptiveBurstSize, {
         ...budget,
         todayCycles: budget.todayCycles + cycleResults.length,
         hourCycles: budget.hourCycles + cycleResults.length,
@@ -661,7 +680,9 @@ serve(async (req) => {
         remainingHourly: budget.remainingHourly - cycleResults.length,
       });
     } else if (autoChain && totalAiCalls === 0) {
-      console.log('⏸️ Auto-chain skipped — no real external AI calls completed in this burst');
+      console.log('⏸️ Auto-chain skipped — no real external AI calls completed');
+    } else if (autoChain && recentHealth.failureRate >= FAILURE_RATE_BACKOFF_THRESHOLD) {
+      console.log(`⏸️ Auto-chain skipped — failure rate ${(recentHealth.failureRate * 100).toFixed(0)}% too high`);
     }
 
     const totalDuration = Date.now() - startTime;
