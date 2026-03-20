@@ -785,7 +785,7 @@ export default function STierVault() {
 
       const exportChain = (d.module_chain && d.module_chain.length > 0) ? d.module_chain : [d.category.toUpperCase()];
       const detailsHTML = generatePipelineDetailsHTML({
-        name: d.name,
+        name: humanizeCapabilityName(d.name, exportChain, d.category),
         score: d.cjpi,
         tier: getTierFromScore(d.cjpi),
         category: d.category,
