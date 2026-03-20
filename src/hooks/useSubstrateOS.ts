@@ -306,6 +306,7 @@ export function useSubstrateHealthScore() {
   const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration'] as const;
   const EXPANSION_ZONES = ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest'] as const;
   const CSZ_ZONES = ['evolution', 'shadow', 'phantom'] as const;
+  const META_PLANE = ['atlas', 'engineer'] as const;
   const MESH_OVERLAYS = ['immunity', 'intent', 'governance', 'defense'] as const;
 
   const ALL_MODULES = [
