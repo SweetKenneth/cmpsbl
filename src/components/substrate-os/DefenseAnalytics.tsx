@@ -4,7 +4,7 @@
  * Tier: Free (read-only view), Creator+ (interactive actions)
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { Shield, Activity, AlertTriangle, CheckCircle2, Eye, Ban, Zap, RefreshCw, Globe, Clock, TrendingUp, BarChart3 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -76,7 +76,7 @@ function timeAgo(dateStr: string): string {
   return `${Math.floor(diff / 86400)}d ago`;
 }
 
-export function DefenseAnalytics() {
+export const DefenseAnalytics = memo(function DefenseAnalytics() {
   const [events, setEvents] = useState<DefenseEvent[]>([]);
   const [stats, setStats] = useState<DefenseStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -468,4 +468,4 @@ export function DefenseAnalytics() {
       </Tabs>
     </div>
   );
-}
+});

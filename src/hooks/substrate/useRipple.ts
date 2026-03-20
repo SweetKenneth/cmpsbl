@@ -223,8 +223,8 @@ export function useRipple(): UseRippleReturn {
   const stalePartitionsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'stalePartitions'],
     queryFn: () => getStalePartitions(),
-    staleTime: 10000,
-    refetchInterval: pollingEnabled ? 15000 : false,
+    staleTime: 15000,
+    refetchInterval: pollingEnabled ? 30000 : false,
   });
 
   // ── Propagation (Tempest) ──────────────────────────────────────
@@ -259,8 +259,8 @@ export function useRipple(): UseRippleReturn {
   const activeSessionsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'activeSessions'],
     queryFn: () => getActiveSessions(),
-    staleTime: 10000,
-    refetchInterval: pollingEnabled ? 15000 : false,
+    staleTime: 15000,
+    refetchInterval: pollingEnabled ? 30000 : false,
   });
 
   // ── Analytics ──────────────────────────────────────────────────
@@ -282,15 +282,15 @@ export function useRipple(): UseRippleReturn {
   const backpressureQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'backpressure'],
     queryFn: () => getBackpressureState(),
-    staleTime: 10000,
-    refetchInterval: pollingEnabled ? 15000 : false,
+    staleTime: 15000,
+    refetchInterval: pollingEnabled ? 30000 : false,
   });
 
   const throughputQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'throughput'],
     queryFn: () => getThroughputStats(),
-    staleTime: 10000,
-    refetchInterval: pollingEnabled ? 15000 : false,
+    staleTime: 15000,
+    refetchInterval: pollingEnabled ? 30000 : false,
   });
 
   const topicHeatmapQuery = useQuery({
