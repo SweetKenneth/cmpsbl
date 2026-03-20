@@ -19,6 +19,7 @@ import { CrystallizationPhase } from '@/components/proprietary-evolution/Crystal
 import { ExportPhase } from '@/components/proprietary-evolution/ExportPhase';
 import { AscensionStepper } from '@/components/proprietary-evolution/AscensionStepper';
 import { AscensionOnboarding } from '@/components/proprietary-evolution/AscensionOnboarding';
+import { AscensionEffectPanel } from '@/components/proprietary-evolution/AscensionEffectPanel';
 
 const PHASE_LABELS = ['Ingest', 'Discovery', 'Ascend', 'Export'] as const;
 
