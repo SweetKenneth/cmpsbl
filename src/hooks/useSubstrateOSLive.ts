@@ -202,7 +202,7 @@ export function useLiveForecasts() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('brain_forecasts')
-        .select('id, title, confidence, category, created_at')
+        .select('id, metric_name, confidence, predicted_value, created_at')
         .order('created_at', { ascending: false })
         .limit(5);
       
