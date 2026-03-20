@@ -299,12 +299,18 @@ function buildUnit(primitive: ExtractedPrimitive, sourceLanguage: string, allPri
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — UNIVERSAL EFFECT WRAPPER (v2 — real execution binding)
+// §3 — UNIVERSAL EFFECT WRAPPER (v2 — wrap + augment, never simulate)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Core effect wrapper v2 — binds primary unit to real execution,
- * then wraps with signals, metrics, and truthful degradation.
+ * Core effect wrapper v2 — DUAL-LAYER ARCHITECTURE
+ *
+ * Layer 1: Native Execution — runs the primary unit (original code's behavior)
+ *          Result is AUTHORITATIVE and preserved unchanged.
+ * Layer 2: Cognitive Overlay — observes the execution, adds signals/metrics/trace.
+ *          Never substitutes the original computation.
+ *
+ * Flow: execute original → capture result → enrich with cognition
  */
 export function effectWrapper(
   ctx: EffectContext,
@@ -312,10 +318,10 @@ export function effectWrapper(
 ): EffectInjectionResult {
   const input = { ...ctx._data };
 
-  // v2: Real execution binding — local/bridge/fallback
+  // Layer 1: Execute primary unit (wraps original code behavior)
   const binding = bindAndExecute(unit.executableUnit, input);
 
-  // Merge binding signals into effect context
+  // Merge binding signals into effect context (Layer 2: observation)
   for (const sig of binding.signals) {
     ctx._signals.push(sig as EffectSignal);
   }
@@ -323,22 +329,23 @@ export function effectWrapper(
     ctx._errors.push(err);
   }
 
-  // Merge result into context data
+  // CRITICAL: Original execution result is AUTHORITATIVE
+  // We merge it as the primary result — never replace it with synthetic data
   if (binding.executed && binding.rawResult && typeof binding.rawResult === 'object') {
+    // Original code ran — its output is the truth
     ctx._data = { ...ctx._data, _result: binding.rawResult };
   } else {
-    // Passthrough — input preserved, no synthetic "execution"
+    // No execution path — input preserved unchanged (honest passthrough)
     ctx._data = { ...ctx._data, _result: input };
   }
 
-  // Normalization
+  // Layer 2: Cognitive overlay (observation + metrics, NOT computation)
   const normalized = {
     result: ctx._data._result ?? null,
     success: binding.success,
     signals: ctx._signals.length,
   };
 
-  // Intelligence metrics
   const intelligence: IntelligenceMetrics = {
     ...binding.intelligence,
     primary_unit: unit.name,
