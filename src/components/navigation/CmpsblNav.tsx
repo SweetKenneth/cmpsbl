@@ -12,6 +12,7 @@ import {
   ChevronRight,
   Code,
   Layers,
+  Crown,
   FileText,
   Rocket,
   BookOpen,
