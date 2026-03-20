@@ -405,7 +405,7 @@ export function validate(): boolean {
   }
 
   if (lang === 'python') {
-    return generatePythonCapabilitySource(cap);
+    return generatePythonCapabilitySource(cap, sourceFiles);
   }
 
   // Other languages — structured metadata + dual-layer guidance
