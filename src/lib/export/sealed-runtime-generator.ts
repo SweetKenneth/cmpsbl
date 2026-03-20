@@ -461,7 +461,6 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
 }
 `;
 }
-}
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
