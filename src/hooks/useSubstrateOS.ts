@@ -311,7 +311,7 @@ export function useSubstrateHealthScore() {
 
   const ALL_MODULES = [
     ...CORE_SYSTEM, ...CCR_ZONES, ...OCG_ZONES,
-    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...MESH_OVERLAYS,
+    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...META_PLANE, ...MESH_OVERLAYS,
   ] as const;
 
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
