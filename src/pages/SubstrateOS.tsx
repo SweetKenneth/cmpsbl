@@ -94,30 +94,28 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
   return [
     // ── Account (always first) ──
     { id: 'account', label: 'Account', icon: UserCircle, group: 'Command', description: 'Your profile & quick links' },
-    // ── Free tier ──
+    // ── Free tier (personal tools) ──
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
-    { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage' },
-    { id: 'operations', label: 'Operations', icon: Layers, group: 'Govern', description: 'DECODE · VISION · ECONOMY + 5', governorOnly: true, minTier: 'governor' },
-    // ── Creator tier ──
+    { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage', governorOnly: true, minTier: 'governor' },
+    // ── Creator tier (user-facing tools) ──
     { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface', minTier: 'creator' },
     { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
     { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM', minTier: 'creator' },
     { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST', minTier: 'creator' },
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', minTier: 'creator' },
     ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', minTier: 'creator' as SubstrateRole }] : []),
-    // ── Studio tier ──
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Node mesh & governance', minTier: 'studio' },
-    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', minTier: 'studio' },
-    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', minTier: 'studio' },
-    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & safety switches', minTier: 'studio' },
-    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code generation', minTier: 'studio' },
-    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', minTier: 'studio' },
-    // ── Architect tier ──
-    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution engine', minTier: 'architect' },
-    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC', minTier: 'architect' },
-    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo', minTier: 'architect' },
-    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit', minTier: 'architect' },
-    // ── Governor ──
+    // ── Governor-only (substrate-level controls — not for users) ──
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Node mesh & governance', governorOnly: true, minTier: 'governor' },
+    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', governorOnly: true, minTier: 'governor' },
+    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', governorOnly: true, minTier: 'governor' },
+    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & safety switches', governorOnly: true, minTier: 'governor' },
+    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code generation', governorOnly: true, minTier: 'governor' },
+    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', governorOnly: true, minTier: 'governor' },
+    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution engine', governorOnly: true, minTier: 'governor' },
+    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC', governorOnly: true, minTier: 'governor' },
+    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo', governorOnly: true, minTier: 'governor' },
+    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit', governorOnly: true, minTier: 'governor' },
+    { id: 'operations', label: 'Operations', icon: Layers, group: 'Govern', description: 'DECODE · VISION · ECONOMY + 5', governorOnly: true, minTier: 'governor' },
     { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true, minTier: 'governor' },
   ];
 }
