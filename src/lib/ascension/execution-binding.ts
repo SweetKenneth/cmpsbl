@@ -161,16 +161,22 @@ export function bindAndExecute(
   if (resolution.strategy === 'local') {
     try {
       const localResult = primitiveExecutorSync(unit.name, inputData, unit.confidence);
+      // Check signal for truthfulness — executor's own fallback is not real execution
+      const wasTrulyExecuted = !localResult.signal.endsWith('_fallback') && localResult.signal !== 'fallback';
       rawResult = localResult.data;
-      executed = true;
+      executed = wasTrulyExecuted;
       success = true;
+      degraded = !wasTrulyExecuted;
       signals.push({
-        type: 'execution',
+        type: wasTrulyExecuted ? 'execution' : 'fallback',
         source: unit.name,
         duration_ms: round3(performance.now() - start),
         status: 'success',
         ts: Date.now(),
       });
+      if (!wasTrulyExecuted) {
+        errors.push({ type: 'local_executor_fallback', message: `Local executor used internal fallback for "${unit.name}"` });
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       errors.push({ type: 'local_execution_error', message: msg });
