@@ -382,7 +382,7 @@ async function consolidateRelatedMemories(threshold: number): Promise<number> {
       .from('brain_memory_warm')
       .select('id, content, context, value_score, created_at')
       .order('context')
-      .limit(500);
+      .limit(300);
     
     if (!memories || memories.length === 0) return 0;
     

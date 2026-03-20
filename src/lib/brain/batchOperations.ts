@@ -451,27 +451,30 @@ export async function runTierMigration(): Promise<MigrationResult> {
       .lte('access_count', 3)
       .limit(50);
 
-    for (const memory of warmStaleCandidates || []) {
+    if (warmStaleCandidates && warmStaleCandidates.length > 0) {
+      const coldInserts = warmStaleCandidates.map(m => ({
+        summary: m.content || '',
+        tags: m.tags,
+        value_score: m.value_score,
+        access_count: m.access_count || 0,
+        source_module: m.source_module || 'general',
+        category: m.category || m.context || 'uncategorized',
+      }));
+
       const { error: insertError } = await supabase
         .from('brain_memory_cold')
-        .insert({
-          summary: memory.content || '',
-          tags: memory.tags,
-          value_score: memory.value_score,
-          access_count: memory.access_count || 0,
-          source_module: memory.source_module || 'general',
-          category: memory.category || memory.context || 'uncategorized',
-        });
+        .insert(coldInserts);
 
       if (!insertError) {
-        await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
-        result.movedDown++;
+        const ids = warmStaleCandidates.map(m => m.id);
+        await supabase.from('brain_memory_warm').delete().in('id', ids);
+        result.movedDown += warmStaleCandidates.length;
       } else {
         result.errors.push(insertError.message);
       }
     }
 
-    // Phase 4: Demote stale cold → glacier (archive)
+    // Phase 4: Demote stale cold → glacier (archive) (batched)
     const coldStaleCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: coldCandidates } = await supabase
       .from('brain_memory_cold')
@@ -481,23 +484,29 @@ export async function runTierMigration(): Promise<MigrationResult> {
       .lte('access_count', 2)
       .limit(50);
 
-    for (const memory of coldCandidates || []) {
+    if (coldCandidates && coldCandidates.length > 0) {
+      const archiveInserts = coldCandidates.map(m => ({
+        content: m.summary || '',
+        source_tier: 'cold',
+        archived_from_tier: 'cold',
+        archived_reason: 'auto_demotion',
+        tags: m.tags,
+        value_score: m.value_score,
+        access_count: m.access_count || 0,
+      }));
+
       const { error: insertError } = await supabase
         .from('brain_memory_archive')
-        .insert({
-          content: memory.summary || '',
-          source_tier: 'cold',
-          archived_from_tier: 'cold',
-          archived_reason: 'auto_demotion',
-          tags: memory.tags,
-          value_score: memory.value_score,
-          access_count: memory.access_count || 0,
-        });
+        .insert(archiveInserts);
 
       if (!insertError) {
-        await supabase.from('brain_memory_cold').delete().eq('id', memory.id);
-        result.movedDown++;
+        const ids = coldCandidates.map(m => m.id);
+        await supabase.from('brain_memory_cold').delete().in('id', ids);
+        result.movedDown += coldCandidates.length;
       } else {
+        result.errors.push(insertError.message);
+      }
+    }
         result.errors.push(insertError.message);
       }
     }
