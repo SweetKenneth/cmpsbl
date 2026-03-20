@@ -24,6 +24,7 @@ export interface FullPruneResult {
   hot: PruneResult;
   warm: PruneResult;
   cold: PruneResult;
+  glacier: PruneResult;
   events_purged: number;
   total_purged: number;
   started_at: string;
