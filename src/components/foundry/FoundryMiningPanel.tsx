@@ -13,6 +13,7 @@ import { PipelineProvenance } from './PipelineProvenance';
 import { KeepDiscardPanel } from './KeepDiscardPanel';
 import { VaultUsageIndicator } from './VaultUsageIndicator';
 import { VaultCapacityModal, DailyLimitModal, MythicDiscoveryModal } from './VaultUpgradeModals';
+import { LockedDiscoveryTeaser } from './LockedDiscoveryTeaser';
 import { type PipelineStep } from '@/substrate/pipeline-fingerprint';
 import type { MineResponse, MineResult } from '@/lib/foundry/public-mining-engine';
 import { isPullLimitReached, isVaultFull, getVaultLimits } from '@/lib/substrate/vault-limits';
@@ -225,6 +226,22 @@ export function FoundryMiningPanel({
                 ? 'Reroll credit earned — try again'
                 : 'All current memories already in your vault'}
             </div>
+          </motion.div>
+        )}
+
+        {/* Locked discovery teasers when at pull limit */}
+        {atPullLimit && (
+          <motion.div
+            key="locked-teasers"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <LockedDiscoveryTeaser
+              tier={subscriptionTier}
+              pullsUsed={pullsToday}
+              pullsMax={limits.pullsPerDay}
+            />
           </motion.div>
         )}
       </AnimatePresence>

@@ -197,6 +197,80 @@ const DeveloperAcademy = () => {
             </div>
           </section>
 
+          {/* ═══ QUICK START GUIDES — SEO content ═══ */}
+          <section className="py-12 md:py-16 border-t border-border/40">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-10">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3">Quick Start Guides</h2>
+                <p className="text-muted-foreground max-w-xl mx-auto">
+                  Bite-sized walkthroughs for the most common tasks. Each guide takes under 5 minutes.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+                {[
+                  {
+                    title: 'What is a Cognitive Runtime?',
+                    desc: 'Understand the difference between traditional APIs and a self-improving system that learns from every interaction. The runtime is the foundation everything else builds on.',
+                    tag: 'Concept',
+                    link: '/blog/what-is-a-cognitive-runtime',
+                    time: '3 min read',
+                  },
+                  {
+                    title: 'Your First Memory Stream Pull',
+                    desc: 'Walk through crystallizing a discovery from the live stream — from browsing scored patterns to storing them in your vault for later use.',
+                    tag: 'Hands-on',
+                    link: '/foundry',
+                    time: '2 min',
+                  },
+                  {
+                    title: 'Understanding CJPI Scoring',
+                    desc: 'How discoveries are ranked by novelty, utility, complexity, and composability. Learn to spot high-value patterns before they crystallize.',
+                    tag: 'Concept',
+                    link: '/blog/signal-to-silicon',
+                    time: '4 min read',
+                  },
+                  {
+                    title: 'Broadcasting Your First Intent',
+                    desc: 'The intent mesh routes all system actions. Learn broadcastIntent(), resolver dispatch, and how to read execution receipts.',
+                    tag: 'Code',
+                    link: '/documentation',
+                    time: '5 min',
+                  },
+                  {
+                    title: 'Resolver Patterns',
+                    desc: 'Naming conventions (node.resolver_name), logging, telemetry hooks, and the resolver lifecycle from registration to execution.',
+                    tag: 'Code',
+                    link: '/documentation',
+                    time: '4 min',
+                  },
+                  {
+                    title: 'Choosing Your Tier',
+                    desc: 'Compare Builder, Creator, Studio, and Architect tiers. See what each unlocks in terms of daily pulls, vault capacity, and runtime slots.',
+                    tag: 'Guide',
+                    link: '/store?tab=plans',
+                    time: '2 min',
+                  },
+                ].map((guide) => (
+                  <Link
+                    key={guide.title}
+                    to={guide.link}
+                    className="group block rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm p-5 hover:border-primary/30 hover:bg-card/60 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge variant="outline" className="text-[10px] px-2 py-0.5 bg-muted/30">
+                        {guide.tag}
+                      </Badge>
+                      <span className="text-[10px] font-mono text-muted-foreground/50">{guide.time}</span>
+                    </div>
+                    <h3 className="text-sm font-semibold mb-2 group-hover:text-primary transition-colors">{guide.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{guide.desc}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+
           {/* ═══ CTA v2 ═══ */}
           <section className="py-16 md:py-20 border-t border-border/40 bg-gradient-to-b from-background to-muted/20">
             <div className="container mx-auto px-4 text-center">
