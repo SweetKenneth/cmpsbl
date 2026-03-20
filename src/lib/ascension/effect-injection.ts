@@ -342,6 +342,7 @@ export function effectWrapper(
   };
 }
 
+// safeStringify used by effectWrapper intelligence metrics
 function safeStringify(val: unknown): string {
   try { return JSON.stringify(val ?? {}); }
   catch { return '{}'; }
