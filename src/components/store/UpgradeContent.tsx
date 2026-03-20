@@ -102,9 +102,12 @@ const TIERS: {
     capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
     features: [
       '9 packs running concurrently',
+      'Saved Workflows & custom presets',
       'Dedicated memory partitions',
       'Full trace & compliance exports',
-      'Fastest NEXUS routing tier',
+      'Export templates (PDF/CSV/JSON)',
+      'Memory Stream alerts for pipelines',
+      'Trace replay — visual debugging',
       'Custom memory slots you configure',
       'Priority email support',
     ],
