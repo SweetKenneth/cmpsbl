@@ -364,7 +364,7 @@ export function UpgradeContent() {
                         className={cn("w-full min-h-[44px] bg-gradient-to-r text-white border-0 shadow-lg shadow-primary/25 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200", t.accent)}
                         onClick={() => t.stripeTier && startCheckout(t.stripeTier, billingInterval)}
                       >
-                        Upgrade to {t.name} <ArrowRight className="w-4 h-4 ml-1" />
+                        Start 7-day free trial <ArrowRight className="w-4 h-4 ml-1" />
                       </Button>
                     )}
                   </div>
