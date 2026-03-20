@@ -708,16 +708,9 @@ class CMPSBLCapability:
     def execute_original(self, input_data: dict = None) -> any:
         """
         Layer 1 — Execute your original code directly.
-        Replace this with a call to your actual original logic.
-
-        Example:
-            original = YourClass()
-            return original.your_method(input_data)
-
-        Your original source files are in ../original/
+        Auto-wired from ../original/ source files.
         """
-        # TODO: Replace with your original code call
-        return input_data or {}
+${executeBody}
 
     def execute_native(self, input_data: dict = None) -> any:
         """Layer 1 only — Run original code with NO CMPSBL overlay."""
