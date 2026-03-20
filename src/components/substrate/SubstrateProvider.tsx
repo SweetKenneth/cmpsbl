@@ -9,7 +9,7 @@
  * Shell: DEFENSE
  */
 
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef, useMemo } from 'react';
 import type { SubstrateModule } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import { initializeNeuralSubstrate, shutdownNeuralSubstrate } from '@/lib/substrate/neural';
