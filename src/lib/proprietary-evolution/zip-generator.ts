@@ -410,25 +410,31 @@ function generatePhpCapabilitySource(cap: CapabilityForExport): string {
  *  Moat Signature: ${cap.moatSignature.slice(0, 8)}
  * ═══════════════════════════════════════════════════════
  *
- *  This is a REAL executable capability entrypoint.
- *  Requires: runtime-bridge.php (included in this pack)
+ *  DUAL-LAYER ARCHITECTURE:
+ *    Layer 1 — Native Execution: Your original code runs first (unchanged)
+ *    Layer 2 — Cognitive Overlay: CMPSBL observes, enriches, augments
+ *
+ *  Your original code is in the ../original/ folder.
  *
  *  Usage:
- *    require_once __DIR__ . '/runtime-bridge.php';
  *    require_once __DIR__ . '/${cap.name.toLowerCase()}.php';
  *    $cap = new CMPSBLCapability();
+ *
+ *    // Run with cognition (original + CMPSBL overlay)
  *    $result = $cap->execute(['key' => 'value']);
- *    print_r($result);
+ *
+ *    // Run original only (no CMPSBL overlay)
+ *    $native = $cap->executeNative(['key' => 'value']);
  */
 
 require_once __DIR__ . '/runtime-bridge.php';
 
+// TODO: Include your original source file here:
+// require_once __DIR__ . '/../original/YourFile.php';
+
 class CMPSBLCapability
 {
-    /** @var array Capability metadata */
     private array $meta;
-
-    /** @var CMPSBLRuntimeBridge Runtime bridge instance */
     private CMPSBLRuntimeBridge $bridge;
 
     public function __construct(?string $manifestPath = null)
@@ -443,7 +449,6 @@ class CMPSBLCapability
             'type'          => '${cap.capabilityType}',
         ];
 
-        // If a manifest path is provided, merge manifest data
         if ($manifestPath !== null && file_exists($manifestPath)) {
             $manifest = json_decode(file_get_contents($manifestPath), true);
             if (is_array($manifest)) {
@@ -459,31 +464,85 @@ class CMPSBLCapability
     }
 
     /**
-     * Execute this capability against an input payload.
+     * Layer 1 — Execute your original code directly.
+     * Replace this with a call to your actual original logic.
      *
-     * @param  array $input  Arbitrary input data
-     * @return array         Structured result with output, trace, and metadata
+     * @param  array $input
+     * @return mixed  The raw result from your original code
      */
-    public function execute(array $input = []): array
+    public function executeOriginal(array $input = []): mixed
     {
-        return $this->bridge->executePipeline($input);
+        // TODO: Replace with your original code call:
+        //   $original = new YourOriginalClass();
+        //   return $original->yourMethod($input);
+        //
+        // Your original source files are in ../original/
+        return $input;
     }
 
     /**
-     * Validate structural integrity of this capability.
+     * Layer 1 only — Run original code with NO CMPSBL overlay.
      *
-     * @return bool
+     * @param  array $input
+     * @return mixed
      */
+    public function executeNative(array $input = []): mixed
+    {
+        return $this->executeOriginal($input);
+    }
+
+    /**
+     * Dual-layer execution — Original code FIRST, then CMPSBL cognitive overlay.
+     * Flow: execute original → capture result → enrich with cognition
+     *
+     * @param  array $input  Arbitrary input data
+     * @return array         Original result + CMPSBL cognitive enrichment
+     */
+    public function execute(array $input = []): array
+    {
+        $start = microtime(true);
+        $originalExecuted = false;
+        $originalError = null;
+
+        // Layer 1: Run original code
+        try {
+            $originalResult = $this->executeOriginal($input);
+            $originalExecuted = true;
+        } catch (\\Throwable $e) {
+            $originalError = $e->getMessage();
+            $originalResult = $input; // Preserve input on failure
+        }
+
+        $executionMs = round((microtime(true) - $start) * 1000, 3);
+
+        // Layer 2: CMPSBL cognitive overlay via pipeline
+        $pipelineResult = $this->bridge->executePipeline(
+            is_array($originalResult) ? $originalResult : ['_original_result' => $originalResult]
+        );
+
+        // Merge: original result is authoritative, pipeline adds cognition
+        return array_merge(
+            is_array($originalResult) ? $originalResult : ['_original_result' => $originalResult],
+            ['_cmpsbl' => [
+                'capability' => $this->meta['name'],
+                'cjpi' => $this->meta['cjpi'],
+                'tier' => $this->meta['tier'],
+                'pipeline' => $pipelineResult['trace'] ?? [],
+                'execution' => [
+                    'original_executed' => $originalExecuted,
+                    'original_error' => $originalError,
+                    'execution_ms' => $executionMs,
+                    'strategy' => $originalExecuted ? 'native' : 'passthrough',
+                ],
+            ]]
+        );
+    }
+
     public function validate(): bool
     {
         return $this->bridge->validateIntegrity();
     }
 
-    /**
-     * Get capability metadata.
-     *
-     * @return array
-     */
     public function getMeta(): array
     {
         return $this->meta;
@@ -491,8 +550,6 @@ class CMPSBLCapability
 }
 `;
 }
-
-// ═══ PYTHON CAPABILITY SOURCE (REAL EXECUTABLE) ═══
 
 function generatePythonCapabilitySource(cap: CapabilityForExport): string {
   return `"""
@@ -504,16 +561,29 @@ function generatePythonCapabilitySource(cap: CapabilityForExport): string {
  Moat Signature: ${cap.moatSignature.slice(0, 8)}
 ═══════════════════════════════════════════════════════
 
+ DUAL-LAYER ARCHITECTURE:
+   Layer 1 — Native Execution: Your original code runs first (unchanged)
+   Layer 2 — Cognitive Overlay: CMPSBL observes, enriches, augments
+
+ Your original code is in the ../original/ folder.
+
  Usage:
-   from runtime_bridge import CMPSBLRuntimeBridge
    from ${cap.name.toLowerCase()} import CMPSBLCapability
    cap = CMPSBLCapability()
+
+   # Run with cognition (original + CMPSBL overlay)
    result = cap.execute({"key": "value"})
-   print(result)
+
+   # Run original only (no CMPSBL overlay)
+   native = cap.execute_native({"key": "value"})
 """
 import json
 import os
+import time
 from runtime_bridge import CMPSBLRuntimeBridge
+
+# TODO: Import your original code here:
+# from original.your_file import YourClass
 
 CAPABILITY_META = {
     "name": "${cap.name}",
@@ -537,12 +607,66 @@ class CMPSBLCapability:
             self.meta["exported"] = manifest.get("exported", "")
         self.bridge = CMPSBLRuntimeBridge(self.meta)
 
+    def execute_original(self, input_data: dict = None) -> any:
+        """
+        Layer 1 — Execute your original code directly.
+        Replace this with a call to your actual original logic.
+
+        Example:
+            original = YourClass()
+            return original.your_method(input_data)
+
+        Your original source files are in ../original/
+        """
+        # TODO: Replace with your original code call
+        return input_data or {}
+
+    def execute_native(self, input_data: dict = None) -> any:
+        """Layer 1 only — Run original code with NO CMPSBL overlay."""
+        return self.execute_original(input_data)
+
     def execute(self, input_data: dict = None) -> dict:
-        """Execute this capability against an input payload."""
-        return self.bridge.execute_pipeline(input_data or {})
+        """
+        Dual-layer execution — Original code FIRST, then CMPSBL cognitive overlay.
+        Flow: execute original → capture result → enrich with cognition
+        """
+        start = time.time()
+        original_executed = False
+        original_error = None
+
+        # Layer 1: Run original code
+        try:
+            original_result = self.execute_original(input_data or {})
+            original_executed = True
+        except Exception as e:
+            original_error = str(e)
+            original_result = input_data or {}
+
+        execution_ms = round((time.time() - start) * 1000, 3)
+
+        # Layer 2: CMPSBL cognitive overlay via pipeline
+        pipeline_input = original_result if isinstance(original_result, dict) else {"_original_result": original_result}
+        pipeline_result = self.bridge.execute_pipeline(pipeline_input)
+
+        # Merge: original result is authoritative, pipeline adds cognition
+        base = original_result if isinstance(original_result, dict) else {"_original_result": original_result}
+        return {
+            **base,
+            "_cmpsbl": {
+                "capability": self.meta["name"],
+                "cjpi": self.meta["cjpi"],
+                "tier": self.meta["tier"],
+                "pipeline": pipeline_result.get("trace", []),
+                "execution": {
+                    "original_executed": original_executed,
+                    "original_error": original_error,
+                    "execution_ms": execution_ms,
+                    "strategy": "native" if original_executed else "passthrough",
+                },
+            },
+        }
 
     def validate(self) -> bool:
-        """Validate structural integrity."""
         return self.bridge.validate_integrity()
 
     def get_meta(self) -> dict:
