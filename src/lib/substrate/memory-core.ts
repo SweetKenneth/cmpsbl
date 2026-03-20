@@ -740,6 +740,13 @@ class MemoryCoreClient {
         return supabase.from('brain_memory_warm').select(cols).textSearch('content', sanitizedFts).limit(limit);
       }
       return supabase.from('brain_memory_warm').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
+    } else if (table === 'brain_memory_archive') {
+      // Glacier tier
+      const cols = 'id, content, context, tags, value_score, access_count, created_at';
+      if (strategy === 'fulltext' && sanitizedFts.length > 0) {
+        return supabase.from('brain_memory_archive').select(cols).textSearch('content', sanitizedFts).limit(limit);
+      }
+      return supabase.from('brain_memory_archive').select(cols).ilike('content', `%${sanitized}%`).limit(limit);
     } else {
       // Cold tier uses 'summary' column, not 'content'
       const cols = 'id, summary, tags, value_score, access_count, created_at, memory_type, source_module, category, salience_score';
