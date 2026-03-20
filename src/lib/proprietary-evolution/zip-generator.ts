@@ -261,6 +261,14 @@ ${line}  Chain: ${cap.chain.join(' → ')}
 ${line}  Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
 ${line}  Moat Signature: ${cap.moatSignature.slice(0, 8)}
 ${line} ═══════════════════════════════════════════════════════
+${line}
+${line}  DUAL-LAYER ARCHITECTURE:
+${line}    Layer 1 — Native Execution: Your original code runs first (unchanged)
+${line}    Layer 2 — Cognitive Overlay: CMPSBL observes, enriches, augments
+${line}
+${line}  Your original code is in the ../original/ folder.
+${line}  This file wraps it with the CMPSBL cognitive layer.
+${line} ═══════════════════════════════════════════════════════
 
 import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/standalone-runtime';
 
@@ -274,17 +282,83 @@ export const CAPABILITY_META = {
   type: '${cap.capabilityType}',
 } as const;
 
-${line} Capability implementation
-${line} Discovered collision: ${cap.chain[0] || 'CANDIDATE'} × ${cap.chain[1] || 'NODE'}
-export function execute(input: Record<string, unknown>): Record<string, unknown> {
+${line} ═══════════════════════════════════════════════════════
+${line}  Layer 1 — Native Execution
+${line}  Import your original code and call it directly.
+${line}  Replace the placeholder below with your actual import.
+${line} ═══════════════════════════════════════════════════════
+
+${line} TODO: Import your original module from ../original/
+${line} import { yourFunction } from '../original/your-file';
+
+/**
+ * Execute your original code directly.
+ * This is the NATIVE EXECUTION LAYER — your logic runs unchanged.
+ * Returns the raw result from your original code.
+ */
+export function executeOriginal(input: Record<string, unknown>): unknown {
+  ${line} Replace this with a call to your original code:
+  ${line}   return yourFunction(input);
+  ${line}
+  ${line} For now, returns input unchanged (passthrough).
+  ${line} Your original source files are in ../original/
+  return input;
+}
+
+/**
+ * Execute with CMPSBL cognitive overlay.
+ * Runs your original code FIRST, then enriches with cognition.
+ *
+ * Flow: execute original → capture result → enrich with CMPSBL
+ */
+export function executeWithCognition(input: Record<string, unknown>): Record<string, unknown> {
+  const start = Date.now();
+
+  ${line} Layer 1: Run original code
+  let originalResult: unknown;
+  let originalExecuted = false;
+  let originalError: string | null = null;
+
+  try {
+    originalResult = executeOriginal(input);
+    originalExecuted = true;
+  } catch (err) {
+    originalError = err instanceof Error ? err.message : String(err);
+    originalResult = input; ${line} Preserve input on failure
+  }
+
+  const executionMs = Date.now() - start;
+
+  ${line} Layer 2: CMPSBL cognitive overlay
   return {
-    ...input,
-    _capability: CAPABILITY_META.name,
-    _cjpi: CAPABILITY_META.cjpi,
-    _tier: CAPABILITY_META.tier,
-    _processed: true,
-    _timestamp: new Date().toISOString(),
+    ...(typeof originalResult === 'object' && originalResult !== null ? originalResult as Record<string, unknown> : { _original_result: originalResult }),
+    _cmpsbl: {
+      capability: CAPABILITY_META.name,
+      cjpi: CAPABILITY_META.cjpi,
+      tier: CAPABILITY_META.tier,
+      chain: CAPABILITY_META.chain,
+      execution: {
+        original_executed: originalExecuted,
+        original_error: originalError,
+        execution_ms: executionMs,
+        strategy: originalExecuted ? 'native' : 'passthrough',
+        timestamp: new Date().toISOString(),
+      },
+    },
   };
+}
+
+${line} Default export — runs with cognition
+export function execute(input: Record<string, unknown>): Record<string, unknown> {
+  return executeWithCognition(input);
+}
+
+/**
+ * Run original code ONLY — no CMPSBL overlay.
+ * Use this when you want pure, unaugmented execution.
+ */
+export function executeNative(input: Record<string, unknown>): unknown {
+  return executeOriginal(input);
 }
 
 export function validate(): boolean {
@@ -303,7 +377,7 @@ export function validate(): boolean {
     return generatePythonCapabilitySource(cap);
   }
 
-  // Other languages — structured metadata + execution stub with clear entrypoint
+  // Other languages — structured metadata + dual-layer guidance
   return `${line} ═══════════════════════════════════════════════════════
 ${line}  Capability: ${cap.name}
 ${line}  CJPI: ${cap.cjpiScore} | Tier: ${cap.tier.toUpperCase()}
@@ -312,10 +386,14 @@ ${line}  Fingerprint: ${cap.fingerprint.slice(0, 12).toUpperCase()}
 ${line}  Moat Signature: ${cap.moatSignature.slice(0, 8)}
 ${line} ═══════════════════════════════════════════════════════
 ${line}
-${line}  Execution model: Load manifest.json, instantiate runtime bridge,
-${line}  call execute(input) to run the module chain pipeline.
-${line}  See runtime-bridge${LANG_EXT[lang] || '.ts'} for the execution layer.
-${line}  See TypeScript reference implementation for full API surface.
+${line}  DUAL-LAYER ARCHITECTURE:
+${line}    Layer 1 — Native Execution: Your original code (in ../original/)
+${line}    Layer 2 — Cognitive Overlay: CMPSBL enrichment pipeline
+${line}
+${line}  To use: Import your original code, call it first,
+${line}  then pipe the result through the runtime bridge for enrichment.
+${line}
+${line}  See runtime-bridge${LANG_EXT[lang] || '.ts'} for the cognitive layer.
 `;
 }
 
