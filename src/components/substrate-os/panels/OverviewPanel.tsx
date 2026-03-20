@@ -27,7 +27,6 @@ import { pushToast } from '@/components/toast/SmartToastStore';
 import { NodeDreamingWidget } from '@/components/substrate-os/widgets/NodeDreamingWidget';
 
 const SystemHealthPanel = lazy(() => import('@/components/substrate-os/SystemHealthPanel').then(m => ({ default: m.SystemHealthPanel })));
-const BackupRestorePanel = lazy(() => import('@/components/substrate-os/BackupRestorePanel').then(m => ({ default: m.BackupRestorePanel })));
 
 // 12 sectors for the topology map
 const SECTORS = [
