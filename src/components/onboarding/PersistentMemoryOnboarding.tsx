@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { X, ArrowRight, Brain, Layers, Moon, Search, Zap, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
