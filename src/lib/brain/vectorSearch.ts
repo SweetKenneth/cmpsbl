@@ -10,12 +10,13 @@ export interface SearchResult {
   content: string;
   context: string;
   relevance: number;
-  tier: 'hot' | 'warm' | 'cold';
+  tier: 'hot' | 'warm' | 'cold' | 'glacier';
   tags?: Record<string, any>;
 }
 
 /**
- * Search across hot, warm and cold memory tiers
+ * Search across all four memory tiers (hot → warm → cold → glacier)
+ * Optimized: parallel tier fetching for hot+warm, sequential fallback for cold+glacier
  */
 export async function searchMemory(
   query: string,
@@ -24,6 +25,7 @@ export async function searchMemory(
     minRelevance?: number;
     context?: string;
     includeCold?: boolean;
+    includeGlacier?: boolean;
   } = {}
 ): Promise<SearchResult[]> {
   const {
@@ -31,29 +33,18 @@ export async function searchMemory(
     minRelevance = 0.7,
     context,
     includeCold = true,
+    includeGlacier = false,
   } = options;
   
-  const results: SearchResult[] = [];
+  // Parallel fetch hot + warm (most common path)
+  const [hotResults, warmResults] = await Promise.all([
+    searchTier('brain_memory_hot', 'hot', query, { limit, minRelevance, context }),
+    searchTier('brain_memory_warm', 'warm', query, { limit, minRelevance: minRelevance * 0.9, context }),
+  ]);
   
-  // Search hot tier first (primary)
-  const hotResults = await searchTier('brain_memory_hot', 'hot', query, {
-    limit,
-    minRelevance,
-    context,
-  });
-  results.push(...hotResults);
+  let results: SearchResult[] = [...hotResults, ...warmResults];
 
-  // Search warm tier
-  if (results.length < limit) {
-    const warmResults = await searchTier('brain_memory_warm', 'warm', query, {
-      limit: limit - results.length,
-      minRelevance: minRelevance * 0.9,
-      context,
-    });
-    results.push(...warmResults);
-  }
-  
-  // If we need more results, search cold tier
+  // Only fetch deeper tiers if we haven't filled the limit
   if (includeCold && results.length < limit) {
     const coldResults = await searchColdTier(query, {
       limit: limit - results.length,
@@ -61,6 +52,15 @@ export async function searchMemory(
       context,
     });
     results.push(...coldResults);
+  }
+  
+  // Glacier tier — only on explicit request or if still under limit
+  if (includeGlacier && results.length < limit) {
+    const glacierResults = await searchGlacierTier(query, {
+      limit: limit - results.length,
+      minRelevance: minRelevance * 0.7,
+    });
+    results.push(...glacierResults);
   }
   
   // Sort by relevance
