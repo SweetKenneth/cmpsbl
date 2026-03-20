@@ -14,6 +14,8 @@ interface CapabilityEntry {
 }
 
 const registry = new Map<string, CapabilityEntry[]>();
+// Module→capabilities reverse index for O(1) setHealthy lookups
+const moduleIndex = new Map<string, CapabilityEntry[]>();
 
 export function registerCapability(module: string, capability: string, priority = 50): void {
   if (!registry.has(capability)) registry.set(capability, []);
@@ -23,8 +25,12 @@ export function registerCapability(module: string, capability: string, priority 
     existing.priority = priority;
     return;
   }
-  list.push({ module, capability, priority, healthy: true, latencyAvgMs: 0, samples: 0 });
+  const entry: CapabilityEntry = { module, capability, priority, healthy: true, latencyAvgMs: 0, samples: 0 };
+  list.push(entry);
   list.sort((a, b) => b.priority - a.priority);
+  // Update reverse index
+  if (!moduleIndex.has(module)) moduleIndex.set(module, []);
+  moduleIndex.get(module)!.push(entry);
 }
 
 /** Find the best module for a capability */
@@ -50,10 +56,11 @@ export function recordLatency(module: string, capability: string, latencyMs: num
   }
 }
 
+/** O(1) module lookup via reverse index instead of O(N) full registry scan */
 export function setHealthy(module: string, healthy: boolean): void {
-  for (const list of registry.values()) {
-    const entry = list.find(e => e.module === module);
-    if (entry) entry.healthy = healthy;
+  const entries = moduleIndex.get(module);
+  if (entries) {
+    for (const entry of entries) entry.healthy = healthy;
   }
 }
 

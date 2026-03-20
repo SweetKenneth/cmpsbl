@@ -1,6 +1,7 @@
 /**
  * GOAL Module Adapter — ECONOMY
  * Tracks API usage costs, quota health, and billing metrics.
+ * Optimized: count-only for totals, small sample for cost aggregation.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -12,12 +13,17 @@ export const economyAdapter: ModuleAdapter = {
   async getLiveMetrics(): Promise<ModuleLiveMetrics> {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    const [usageRes, quotaRes] = await Promise.allSettled([
+    const [countRes, sampleRes, quotaRes] = await Promise.allSettled([
       supabase
         .from('access_usage')
-        .select('cost_millicents, tokens_used', { count: 'exact' })
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', since),
+      supabase
+        .from('access_usage')
+        .select('cost_millicents, tokens_used')
         .gte('created_at', since)
-        .limit(1000),
+        .order('created_at', { ascending: false })
+        .limit(200),
       supabase
         .from('ai_daily_quota')
         .select('calls_used, calls_budget')
@@ -25,13 +31,12 @@ export const economyAdapter: ModuleAdapter = {
         .limit(10),
     ]);
 
+    const totalUsageEvents = countRes.status === 'fulfilled' ? (countRes.value.count ?? 0) : 0;
+
     let totalCost = 0;
     let totalTokens = 0;
-    let totalUsageEvents = 0;
-
-    if (usageRes.status === 'fulfilled' && usageRes.value.data) {
-      totalUsageEvents = usageRes.value.count ?? usageRes.value.data.length;
-      for (const row of usageRes.value.data) {
+    if (sampleRes.status === 'fulfilled' && sampleRes.value.data) {
+      for (const row of sampleRes.value.data) {
         totalCost += (row as any).cost_millicents ?? 0;
         totalTokens += (row as any).tokens_used ?? 0;
       }

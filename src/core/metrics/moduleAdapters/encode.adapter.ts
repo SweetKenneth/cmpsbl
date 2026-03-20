@@ -1,6 +1,7 @@
 /**
  * GOAL Module Adapter — ENCODE
  * Code generation pipeline health and throughput metrics.
+ * Optimized: count-only queries instead of fetching rows.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -12,27 +13,36 @@ export const encodeAdapter: ModuleAdapter = {
   async getLiveMetrics(): Promise<ModuleLiveMetrics> {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    const [genRes] = await Promise.allSettled([
+    const [totalRes, successRes, tokenSampleRes] = await Promise.allSettled([
       supabase
         .from('ai_usage_log')
-        .select('id, success, tokens_used', { count: 'exact' })
+        .select('id', { count: 'exact', head: true })
+        .eq('category', 'code_generation')
+        .gte('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('id', { count: 'exact', head: true })
+        .eq('category', 'code_generation')
+        .eq('success', true)
+        .gte('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('tokens_used')
         .eq('category', 'code_generation')
         .gte('created_at', since)
-        .limit(200),
+        .order('created_at', { ascending: false })
+        .limit(50),
     ]);
 
-    let totalGenerations = 0;
-    let successGenerations = 0;
-    let totalTokens = 0;
+    const totalGenerations = totalRes.status === 'fulfilled' ? (totalRes.value.count ?? 0) : 0;
+    const successGenerations = successRes.status === 'fulfilled' ? (successRes.value.count ?? 0) : 0;
 
-    if (genRes.status === 'fulfilled' && genRes.value.data) {
-      totalGenerations = genRes.value.count ?? genRes.value.data.length;
-      successGenerations = genRes.value.data.filter((r: any) => r.success).length;
-      totalTokens = genRes.value.data.reduce((s: number, r: any) => s + (r.tokens_used ?? 0), 0);
+    let totalTokens = 0;
+    if (tokenSampleRes.status === 'fulfilled' && tokenSampleRes.value.data) {
+      totalTokens = tokenSampleRes.value.data.reduce((s: number, r: any) => s + (r.tokens_used ?? 0), 0);
     }
 
     const successRate = totalGenerations > 0 ? successGenerations / totalGenerations : 1;
-    const healthScore = Math.round(successRate * 100);
 
     return {
       counters: {
@@ -44,7 +54,7 @@ export const encodeAdapter: ModuleAdapter = {
       rates: {
         generationSuccessRate: successRate,
       },
-      healthScore,
+      healthScore: Math.round(successRate * 100),
       lastUpdated: new Date().toISOString(),
     };
   },
