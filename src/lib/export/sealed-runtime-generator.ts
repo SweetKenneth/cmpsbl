@@ -280,6 +280,40 @@ export function createLockManager() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// §11b — PRIMARY HANDLER REGISTRY (enables real execution of uploaded code)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type PrimitiveHandler = (input: unknown, context?: unknown) => unknown;
+
+export interface PrimitiveRegistryEntry {
+  name: string;
+  category: string;
+  handler: PrimitiveHandler;
+  source: 'native' | 'generated' | 'external';
+}
+
+const _handlerRegistry = new Map<string, PrimitiveRegistryEntry>();
+
+/** Register a named handler. Called during init for primary module binding. */
+export function registerHandler(entry: PrimitiveRegistryEntry): void {
+  if (!entry.name) return;
+  _handlerRegistry.set(entry.name.toLowerCase().trim(), entry);
+}
+
+/** Look up a registered handler. */
+export function getHandler(name: string): PrimitiveRegistryEntry | null {
+  return _handlerRegistry.get(name.toLowerCase().trim()) ?? null;
+}
+
+/** List all registered handlers. */
+export function listHandlers(): PrimitiveRegistryEntry[] {
+  return Array.from(_handlerRegistry.values());
+}
+
+/** Clear handler registry. */
+export function clearHandlers(): void { _handlerRegistry.clear(); }
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // §12 — RUNTIME FACTORY
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -302,6 +336,9 @@ export interface StandaloneRuntime {
   configureEndpoint: typeof configureEndpoint;
   getRuntimeMode: typeof getRuntimeMode;
   getExecutionTelemetry: typeof getExecutionTelemetry;
+  registerHandler: typeof registerHandler;
+  getHandler: typeof getHandler;
+  listHandlers: typeof listHandlers;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -363,23 +400,37 @@ function _recordTelemetry(entry: ExecutionTelemetry): void {
 export function getExecutionTelemetry(): ReadonlyArray<ExecutionTelemetry> { return [..._netState.telemetry]; }
 
 /**
- * Network-first primitive executor.
- * 1. Remote execution (PRIMARY — when endpoint configured)
- * 2. Local fallback (deterministic, always succeeds)
- * Remote failure NEVER breaks execution.
+ * Network-first primitive executor with LOCAL HANDLER REGISTRY support.
+ * Execution order:
+ *   1. Local registered handler (PRIMARY — synthesized from uploaded code)
+ *   2. Remote execution (CMPSBL® Substrate — when endpoint configured)
+ *   3. Deterministic fallback (always succeeds)
+ * Remote/local failure NEVER breaks execution.
  */
 export async function executePrimitive(
   name: string,
   data: Record<string, unknown>,
   confidence: number
 ): Promise<{ data: Record<string, unknown>; confidence_delta: number; signal: string }> {
-  // Tier 1: Remote
+  // Tier 1: Local registered handler (uploaded code's primary behavior)
+  const registered = getHandler(name);
+  if (registered?.handler) {
+    try {
+      const output = registered.handler(data, { confidence });
+      if (output && typeof output === 'object' && typeof (output as any).then !== 'function') {
+        _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: false, mode: _netState.mode, timestamp: Date.now() });
+        return { data: output as Record<string, unknown>, confidence_delta: 0.03, signal: name.toLowerCase() + '_executed' };
+      }
+    } catch { /* Handler failed — fall through */ }
+  }
+
+  // Tier 2: Remote
   if (_netState.endpoint && _netState.mode !== 'offline') {
     try {
       const res = await fetch(_netState.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, data, confidence, meta: { timestamp: Date.now(), runtimeType: 'sealed', version: '14.3.0' } }),
+        body: JSON.stringify({ name, data, confidence, meta: { timestamp: Date.now(), runtimeType: 'sealed', version: '14.4.1' } }),
       });
       if (res.ok) {
         const result = await res.json();
@@ -391,10 +442,10 @@ export async function executePrimitive(
     } catch { _updateMode(false); }
   }
 
-  // Tier 2: Local deterministic fallback
+  // Tier 3: Local deterministic fallback
   const out = { [name.toLowerCase() + '_result']: { module: name, confidence, processed: true } };
   _recordTelemetry({ primitive: name, wasRemote: false, success: true, usedFallback: true, mode: _netState.mode, timestamp: Date.now() });
-  return { data: out, confidence_delta: 0.01, signal: name.toLowerCase() + '_local' };
+  return { data: out, confidence_delta: 0.01, signal: name.toLowerCase() + '_fallback' };
 }
 
 export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
@@ -405,9 +456,10 @@ export function createRuntime(storage?: StorageAdapter): StandaloneRuntime {
     computeStableId, sha256, canonicalize, createStateMachine, createSaga,
     CANONICAL_MODULES, DISCOVERY_CATEGORIES,
     executePrimitive, configureEndpoint, getRuntimeMode, getExecutionTelemetry,
+    registerHandler, getHandler, listHandlers,
   };
 }
-`;
+\`;
 }
 
 
