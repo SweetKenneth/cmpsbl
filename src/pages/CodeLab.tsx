@@ -3,8 +3,7 @@
  * A unique space for devs to explore, build, and launch with free templates
  */
 
-import { useState } from "react";
-import { TechShowcase } from "@/components/home/TechShowcase";
+import { useState, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,19 +25,20 @@ import { toast } from "sonner";
 // Import templates with tier support
 import { TEMPLATES, ALL_TEMPLATES, Template, getTemplateTier } from "@/data/templates";
 
-// Components
-import { SignalForge } from "@/components/codelab/SignalForge";
-import { ExplorerCards } from "@/components/codelab/ExplorerCards";
-import { CodeWorkbench } from "@/components/codelab/CodeWorkbench";
-import { ProjectStarter } from "@/components/codelab/ProjectStarter";
-import { ObservabilityHUD } from "@/components/codelab/ObservabilityHUD";
-import { DialectSelector } from "@/components/codelab/DialectSelector";
-import { CodeViewer } from "@/components/codelab/CodeViewer";
-import { IntegrationsHub } from "@/components/codelab/IntegrationsHub";
-import { SDKQuickReference } from "@/components/codelab/SDKQuickReference";
-import { RecipeBuilder } from "@/components/codelab/RecipeBuilder";
-import { EnvironmentSetup } from "@/components/codelab/EnvironmentSetup";
-import { CommunityShowcase } from "@/components/codelab/CommunityShowcase";
+// Lazy-loaded tab components to reduce initial chunk size
+const SignalForge = lazy(() => import("@/components/codelab/SignalForge").then(m => ({ default: m.SignalForge })));
+const ExplorerCards = lazy(() => import("@/components/codelab/ExplorerCards").then(m => ({ default: m.ExplorerCards })));
+const CodeWorkbench = lazy(() => import("@/components/codelab/CodeWorkbench").then(m => ({ default: m.CodeWorkbench })));
+const ProjectStarter = lazy(() => import("@/components/codelab/ProjectStarter").then(m => ({ default: m.ProjectStarter })));
+const ObservabilityHUD = lazy(() => import("@/components/codelab/ObservabilityHUD").then(m => ({ default: m.ObservabilityHUD })));
+const DialectSelector = lazy(() => import("@/components/codelab/DialectSelector").then(m => ({ default: m.DialectSelector })));
+const CodeViewer = lazy(() => import("@/components/codelab/CodeViewer").then(m => ({ default: m.CodeViewer })));
+const IntegrationsHub = lazy(() => import("@/components/codelab/IntegrationsHub").then(m => ({ default: m.IntegrationsHub })));
+const SDKQuickReference = lazy(() => import("@/components/codelab/SDKQuickReference").then(m => ({ default: m.SDKQuickReference })));
+const RecipeBuilder = lazy(() => import("@/components/codelab/RecipeBuilder").then(m => ({ default: m.RecipeBuilder })));
+const EnvironmentSetup = lazy(() => import("@/components/codelab/EnvironmentSetup").then(m => ({ default: m.EnvironmentSetup })));
+const CommunityShowcase = lazy(() => import("@/components/codelab/CommunityShowcase").then(m => ({ default: m.CommunityShowcase })));
+const TechShowcase = lazy(() => import("@/components/home/TechShowcase").then(m => ({ default: m.TechShowcase })));
 import { useObsMode } from "@/lib/ui/obsfunction-mode";
 import { renderDialect } from "@/lib/ui/dialect-render";
 import { DIALECT_LABELS } from "@/lib/ui/display-dialect";
