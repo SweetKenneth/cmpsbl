@@ -73,6 +73,7 @@ function makeCtx(): PipelineContext {
 // ── TESTS ──
 
 describe('Primary Unit Detection (v2)', () => {
+  beforeEach(() => clearPrimitives());
   it('detects class matching filename', () => {
     const prims = [makePrimitive({ name: 'TradeMatcher', extractionMethod: 'class' })];
     const unit = detectPrimaryUnit(prims, 'TradeMatcher.ts', 'typescript');
