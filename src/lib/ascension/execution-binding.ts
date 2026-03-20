@@ -157,11 +157,10 @@ export function bindAndExecute(
   let degraded = false;
   let success = false;
 
-  // ── LOCAL EXECUTION ──
   if (resolution.strategy === 'local') {
+    // ── LOCAL EXECUTION ──
     try {
       const localResult = primitiveExecutorSync(unit.name, inputData, unit.confidence);
-      // Check signal for truthfulness — executor's own fallback is not real execution
       const wasTrulyExecuted = !localResult.signal.endsWith('_fallback') && localResult.signal !== 'fallback';
       rawResult = localResult.data;
       executed = wasTrulyExecuted;
@@ -190,11 +189,19 @@ export function bindAndExecute(
       });
       degraded = true;
       executed = false;
+      success = false;
+      // Degraded local — apply safe fallback passthrough
+      rawResult = inputData;
+      signals.push({
+        type: 'passthrough',
+        source: unit.name,
+        duration_ms: round3(performance.now() - start),
+        status: 'success',
+        ts: Date.now(),
+      });
     }
-  }
-
-  // ── BRIDGE EXECUTION ──
-  if (resolution.strategy === 'bridge') {
+  } else if (resolution.strategy === 'bridge') {
+    // ── BRIDGE EXECUTION ──
     try {
       const bridgeResult = primitiveExecutorSync(unit.name, inputData, unit.confidence);
       const wasTrulyExecuted = !bridgeResult.signal.endsWith('_fallback') && bridgeResult.signal !== 'fallback';
@@ -225,15 +232,23 @@ export function bindAndExecute(
       });
       degraded = true;
       executed = false;
+      success = false;
+      // Degraded bridge — apply safe fallback passthrough
+      rawResult = inputData;
+      signals.push({
+        type: 'passthrough',
+        source: unit.name,
+        duration_ms: round3(performance.now() - start),
+        status: 'success',
+        ts: Date.now(),
+      });
     }
-  }
-
-  // ── FALLBACK PASSTHROUGH ──
-  if (resolution.strategy === 'fallback' || (degraded && !executed)) {
+  } else {
+    // ── FALLBACK PASSTHROUGH ──
     rawResult = inputData;
     executed = false;
-    success = true; // passthrough always "succeeds" in the pipeline sense
-    degraded = resolution.strategy !== 'fallback' ? true : false;
+    success = true;
+    degraded = false; // Pure fallback is not degraded — it's honest about having no path
     signals.push({
       type: 'passthrough',
       source: unit.name,
