@@ -763,10 +763,11 @@ class MemoryCoreClient {
 
   async getState(): Promise<MemoryStateSchema> {
     try {
-      const [hotCount, warmCount, coldCount] = await Promise.all([
+      const [hotCount, warmCount, coldCount, glacierCount] = await Promise.all([
         supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true }),
         supabase.from('brain_memory_warm').select('id', { count: 'exact', head: true }),
         supabase.from('brain_memory_cold').select('id', { count: 'exact', head: true }),
+        supabase.from('brain_memory_archive').select('id', { count: 'exact', head: true }),
       ]);
 
       return {
@@ -779,6 +780,7 @@ class MemoryCoreClient {
           hot: { capacity: 500, current: hotCount.count || 0 },
           warm: { capacity: 10000, current: warmCount.count || 0 },
           cold: { capacity: 10000, current: coldCount.count || 0 },
+          glacier: { capacity: 50000, current: glacierCount.count || 0 },
         },
         latent: {
           pending_reflection: 0,
@@ -792,6 +794,7 @@ class MemoryCoreClient {
           hot: { capacity: 500, current: 0 },
           warm: { capacity: 10000, current: 0 },
           cold: { capacity: 10000, current: 0 },
+          glacier: { capacity: 50000, current: 0 },
         },
         latent: { pending_reflection: 0, pending_consolidation: 0 },
       };
