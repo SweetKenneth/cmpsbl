@@ -95,11 +95,12 @@ export function MemoryStreamOnboarding() {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
+  const { trackOpened, trackStep, trackCompleted, trackSkipped } = useOnboardingTracking('memory-stream');
 
   useEffect(() => {
     const seen = localStorage.getItem(STORAGE_KEY);
     const welcomeDone = localStorage.getItem('cmpsbl-welcomed');
-    if (!seen && welcomeDone) setOpen(true);
+    if (!seen && welcomeDone) { setOpen(true); trackOpened(); }
   }, []);
 
   useEffect(() => {
@@ -113,8 +114,8 @@ export function MemoryStreamOnboarding() {
     return () => window.removeEventListener('keydown', handler);
   });
 
-  const dismiss = () => { setOpen(false); localStorage.setItem(STORAGE_KEY, 'true'); };
-  const next = () => { if (step < STEPS.length - 1) { setDirection('next'); setStep(s => s + 1); } else dismiss(); };
+  const dismiss = () => { if (step < STEPS.length - 1) trackSkipped(step, STEPS.length); else trackCompleted(STEPS.length); setOpen(false); localStorage.setItem(STORAGE_KEY, 'true'); };
+  const next = () => { if (step < STEPS.length - 1) { setDirection('next'); setStep(s => { const ns = s + 1; trackStep(ns, STEPS[ns]?.tag); return ns; }); } else dismiss(); };
   const back = () => { if (step > 0) { setDirection('prev'); setStep(s => s - 1); } };
 
   if (!open) return null;

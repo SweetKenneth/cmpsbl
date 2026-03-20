@@ -95,10 +95,11 @@ export function CmpsblWelcome() {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<'next' | 'prev'>('next');
   const navigate = useNavigate();
+  const { trackOpened, trackStep, trackCompleted, trackSkipped } = useOnboardingTracking('welcome');
 
   useEffect(() => {
     const seen = localStorage.getItem(STORAGE_KEY);
-    if (!seen) setOpen(true);
+    if (!seen) { setOpen(true); trackOpened(); }
   }, []);
 
   useEffect(() => {
@@ -113,6 +114,11 @@ export function CmpsblWelcome() {
   });
 
   const dismiss = () => {
+    if (step < STEPS.length - 1) {
+      trackSkipped(step, STEPS.length);
+    } else {
+      trackCompleted(STEPS.length);
+    }
     setOpen(false);
     localStorage.setItem(STORAGE_KEY, 'true');
   };
@@ -120,7 +126,11 @@ export function CmpsblWelcome() {
   const next = () => {
     if (step < STEPS.length - 1) {
       setDirection('next');
-      setStep(s => s + 1);
+      setStep(s => {
+        const ns = s + 1;
+        trackStep(ns, STEPS[ns]?.tag);
+        return ns;
+      });
     } else {
       dismiss();
     }
