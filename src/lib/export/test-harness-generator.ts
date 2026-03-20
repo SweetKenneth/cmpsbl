@@ -506,7 +506,7 @@ For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
     {
       filename: 'PIPELINE-DETAILS.html',
       content: generatePipelineDetailsHTML({
-        name: ctx.name,
+        name: humanizeCapabilityName(ctx.name, ctx.moduleChain, ctx.category),
         description: ctx.description,
         category: ctx.category,
         score: ctx.cjpi,
