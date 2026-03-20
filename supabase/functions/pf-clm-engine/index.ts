@@ -495,9 +495,9 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       cycle_number: cycleNumber,
       ai_calls: aiCalls,
       modules_analyzed: selectedModules.length,
-      topics_studied: LEARNING_TOPICS.length,
+      topics_studied: selectedTopics.length,
       duration_ms: Date.now() - cycleStart,
-      mode: 'burst',
+      mode: 'adaptive',
       memory_tiers: {
         hot: tierState.hot,
         warm: tierState.warm,
