@@ -123,7 +123,7 @@ export function CmpsblNav() {
       items: [
         { name: "Store", href: "/store", description: "Agents, engines & memory packs", icon: Sparkles, highlight: true },
         { name: "Plans & pricing", href: "/store?tab=plans", description: "Compare plans & upgrade", icon: Zap },
-        { name: "Pricing methodology", href: "/pricing-method", description: "How we calculate prices", icon: CreditCard },
+        { name: "Member Hub", href: "/member", description: "Workflows, exports, referrals & usage", icon: Crown, badge: "NEW" },
         { name: "Academy", href: "/academy", description: "Learn with tutorials & courses", icon: BookOpen },
         { name: "Showcase", href: "/showcase", description: "See what developers built", icon: Sparkles },
       ]
