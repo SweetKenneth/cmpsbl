@@ -113,7 +113,7 @@ serve(async (req) => {
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
       success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
-      cancel_url: `${origin}/upgrade?canceled=true`,
+      cancel_url: `${origin}/store?tab=plans&canceled=true`,
       metadata: {
         user_id: user.id,
         tier: displayTier,
