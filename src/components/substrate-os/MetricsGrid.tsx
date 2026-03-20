@@ -99,7 +99,7 @@ function MiniSparkline({ trend }: { trend: 'up' | 'down' | 'stable' }) {
   );
 }
 
-function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoading, subValue, delay = 0 }: MetricCardProps) {
+const MetricCard = memo(function MetricCard({ label, value, icon: Icon, trend = 'stable', color, isLoading, subValue, delay = 0 }: MetricCardProps) {
   if (isLoading) {
     return (
       <div className="p-4 rounded-xl border border-border/30 bg-muted/10 backdrop-blur-xl">
