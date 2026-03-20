@@ -67,7 +67,7 @@ export function SavedWorkflows({ tier }: { tier: string }) {
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
-      if (data) setWorkflows(data as SavedWorkflow[]);
+      if (data) setWorkflows(data.map(d => ({ ...d, intent_chain: d.intent_chain as unknown as SavedWorkflow['intent_chain'] })));
     };
     load();
   }, [user]);
