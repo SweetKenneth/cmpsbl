@@ -119,7 +119,7 @@ class MeshAutoScheduler {
     // Gap analysis
     this.timers.gapAnalysis = setInterval(async () => {
       try {
-        if (!isMeshEnabled()) return;
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
         await this.runGapAnalysisCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in gap analysis interval:', err);
