@@ -213,28 +213,60 @@ async function checkOrphanRecords(): Promise<MaintenanceFinding[]> {
 async function checkMemoryHygiene(): Promise<MaintenanceFinding[]> {
   const findings: MaintenanceFinding[] = [];
 
+  // Tier capacity limits — exceeding these triggers bloat warnings
+  const TIER_LIMITS = { hot: 2000, warm: 5000, cold: 10000, glacier: 50000 };
+
   try {
-    const { count: hotCount } = await supabase
-      .from('brain_memory_hot')
-      .select('*', { count: 'exact', head: true });
+    const [hotRes, warmRes, coldRes, glacierRes] = await Promise.all([
+      supabase.from('brain_memory_hot').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_warm').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_cold').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_memory_archive').select('*', { count: 'exact', head: true }),
+    ]);
 
-    const { count: warmCount } = await supabase
-      .from('brain_memory_warm')
-      .select('*', { count: 'exact', head: true });
-
-    const { count: coldCount } = await supabase
-      .from('brain_memory_cold')
-      .select('*', { count: 'exact', head: true });
-
-    const total = (hotCount ?? 0) + (warmCount ?? 0) + (coldCount ?? 0);
+    const hc = hotRes.count ?? 0;
+    const wc = warmRes.count ?? 0;
+    const cc = coldRes.count ?? 0;
+    const gc = glacierRes.count ?? 0;
+    const total = hc + wc + cc + gc;
 
     findings.push({
       id: 'memory_tier_counts',
       severity: total > 100000 ? 'warn' : 'info',
       category: 'memory',
-      title: `Memory tiers: ${hotCount ?? 0} hot / ${warmCount ?? 0} warm / ${coldCount ?? 0} cold`,
+      title: `Memory tiers: ${hc} hot / ${wc} warm / ${cc} cold / ${gc} glacier`,
       detail: `Total memory entries: ${total}. ${total > 100000 ? 'Consider running memory tiering to optimize.' : 'Within healthy bounds.'}`,
     });
+
+    // Per-tier bloat detection
+    const tierChecks: Array<{ name: string; count: number; limit: number }> = [
+      { name: 'hot', count: hc, limit: TIER_LIMITS.hot },
+      { name: 'warm', count: wc, limit: TIER_LIMITS.warm },
+      { name: 'cold', count: cc, limit: TIER_LIMITS.cold },
+      { name: 'glacier', count: gc, limit: TIER_LIMITS.glacier },
+    ];
+
+    for (const tier of tierChecks) {
+      const ratio = tier.limit > 0 ? tier.count / tier.limit : 0;
+      if (ratio > 1.0) {
+        findings.push({
+          id: `memory_bloat_${tier.name}`,
+          severity: ratio > 1.5 ? 'error' : 'warn',
+          category: 'memory',
+          title: `${tier.name.toUpperCase()} tier bloated: ${tier.count}/${tier.limit} (${Math.round(ratio * 100)}%)`,
+          detail: `Tier exceeds capacity limit. Run tier migration and pruning to demote or purge low-value entries.`,
+          remediation: `Invoke pf-brain-memory-tiering with operation=demote or pf-brain-memory-prune for ${tier.name} tier.`,
+        });
+      } else if (ratio > 0.9) {
+        findings.push({
+          id: `memory_near_cap_${tier.name}`,
+          severity: 'warn',
+          category: 'memory',
+          title: `${tier.name.toUpperCase()} tier near capacity: ${tier.count}/${tier.limit} (${Math.round(ratio * 100)}%)`,
+          detail: `Approaching limit. Proactive tiering recommended.`,
+        });
+      }
+    }
   } catch (err: any) {
     findings.push({
       id: 'memory_check_error',

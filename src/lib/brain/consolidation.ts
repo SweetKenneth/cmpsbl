@@ -304,6 +304,7 @@ async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
   for (const pattern of patterns) {
     patternCache.set(pattern.id, pattern);
   }
+  evictPatternCache();
 
   // Persist patterns — update existing pattern memory or create new one
   if (patterns.length > 0) {

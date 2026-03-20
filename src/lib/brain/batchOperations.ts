@@ -435,7 +435,37 @@ export async function runTierMigration(): Promise<MigrationResult> {
       }
     }
 
-    // Phase 3: Demote stale cold → glacier (archive)
+    // Phase 3: Demote stale warm → cold
+    const warmStaleCutoff = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
+    const { data: warmStaleCandidates } = await supabase
+      .from('brain_memory_warm')
+      .select('id, content, context, value_score, tags, metadata, source_module, category, access_count')
+      .lt('created_at', warmStaleCutoff)
+      .lt('value_score', 0.4)
+      .lte('access_count', 3)
+      .limit(50);
+
+    for (const memory of warmStaleCandidates || []) {
+      const { error: insertError } = await supabase
+        .from('brain_memory_cold')
+        .insert({
+          summary: memory.content || '',
+          tags: memory.tags,
+          value_score: memory.value_score,
+          access_count: memory.access_count || 0,
+          source_module: memory.source_module || 'general',
+          category: memory.category || memory.context || 'uncategorized',
+        });
+
+      if (!insertError) {
+        await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
+        result.movedDown++;
+      } else {
+        result.errors.push(insertError.message);
+      }
+    }
+
+    // Phase 4: Demote stale cold → glacier (archive)
     const coldStaleCutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { data: coldCandidates } = await supabase
       .from('brain_memory_cold')
