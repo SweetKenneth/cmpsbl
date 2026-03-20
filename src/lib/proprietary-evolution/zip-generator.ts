@@ -1698,7 +1698,6 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       '© Your original work. Cognitive overlay © 2025–2026 CMPSBL®.',
     ].join('\n'));
   }
-  }
 
   // manifest.json — CMPSBL manifest
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
