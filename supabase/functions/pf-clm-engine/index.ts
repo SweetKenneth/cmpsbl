@@ -1,11 +1,12 @@
 /**
- * pf-clm-engine — High-Velocity Constant Learning Engine
- * v5.0.0 SPARTA Epoch — Always-Burst Orchestrator
+ * pf-clm-engine — Adaptive Constant Learning Engine
+ * v5.1.0 — Failure-Aware Adaptive Burst
  * 
- * ALWAYS runs in burst mode. Every cron/manual invocation fires a full burst.
- * Target: 25,000+ AI calls/day via aggressive parallel cycling + self-chaining.
+ * Runs in adaptive burst mode. Respects free-tier provider capacity by tracking
+ * recent failure rates and backing off when providers are saturated.
+ * Target: ~2,000 successful AI calls/day (realistic for free-tier fleet).
  * 
- * Key change from v4: Default is BURST (not single cycle). Self-chains aggressively.
+ * v5.1 changes: Failure-rate backoff, reduced parallelism, adaptive burst sizing.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -16,13 +17,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "5.0.1";
-const MAX_CYCLES_PER_HOUR = 65;       // 650 AI calls/hour
-const MAX_CYCLES_PER_DAY = 1440;      // 14,400 AI calls/day target
-const DEFAULT_BURST_SIZE = 5;      // Cycles per burst (each ~10s, 5 fits in deadline)
-const MAX_BURST_SIZE = 8;          // Hard cap per invocation
+const CLM_VERSION = "5.1.0";
+const MAX_CYCLES_PER_HOUR = 12;        // ~36 AI calls/hour (3 topics × 12)
+const MAX_CYCLES_PER_DAY = 200;        // ~600 AI calls/day target (realistic free-tier)
+const DEFAULT_BURST_SIZE = 2;          // 2 cycles per burst (conservative)
+const MAX_BURST_SIZE = 3;             // Hard cap per invocation
 const CYCLE_TIMEOUT_MS = 45_000;
 const BURST_DEADLINE_MS = 50_000;
+const FAILURE_RATE_BACKOFF_THRESHOLD = 0.5; // Back off when >50% recent calls fail
+const FAILURE_RATE_HALT_THRESHOLD = 0.8;    // Halt when >80% recent calls fail
 
 // All 20 modules that participate in CLM
 const CLM_MODULES = [
