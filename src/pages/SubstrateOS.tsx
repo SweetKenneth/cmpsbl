@@ -466,56 +466,56 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'cortex' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="CORTEX" description="Memory orchestration engine. Design, monitor, and debug multi-step execution memories with real-time tracing.">
+            {activeTab === 'cortex' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="Memory orchestration engine. Design, monitor, and debug multi-step execution memories with real-time tracing.">
                 <PanelContainer id="cortex">
                   <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'atlas' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="ATLAS" description="Control plane management. Configure capability toggles, revision snapshots, and environment-scoped settings.">
+            {activeTab === 'atlas' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="Control plane management. Configure capability toggles, revision snapshots, and environment-scoped settings.">
                 <PanelContainer id="atlas">
                   <Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'engines' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with safety switches. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
+            {activeTab === 'engines' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with safety switches. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
                 <PanelContainer id="engines">
                   <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'encode' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="ENCODE" description="Code generation engine. Monitor code agent execution, review outputs, and track memory formation performance.">
+            {activeTab === 'encode' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="Code generation engine. Monitor code agent execution, review outputs, and track memory formation performance.">
                 <PanelContainer id="encode">
                   <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'mesh' && (
-              <TierGate requiredTier="studio" currentTier={role} tabLabel="Mesh Activity" description="Live capability mesh visualization. Track inter-node communication patterns, throughput, and mesh topology.">
+            {activeTab === 'mesh' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh Activity" description="Live capability mesh visualization. Track inter-node communication patterns, throughput, and mesh topology.">
                 <PanelContainer id="mesh">
                   <Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'evolution' && (
-              <TierGate requiredTier="architect" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
+            {activeTab === 'evolution' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
                 <PanelContainer id="evolution">
                   <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'shadow' && (
-              <TierGate requiredTier="architect" currentTier={role} tabLabel="SHADOW" description="Adversarial probe monitoring and TSAC divergence detection. Inspect immunity mesh activity and shadow execution traces.">
+            {activeTab === 'shadow' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="SHADOW" description="Adversarial probe monitoring and TSAC divergence detection. Inspect immunity mesh activity and shadow execution traces.">
                 <PanelContainer id="shadow">
                   <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
                 </PanelContainer>
@@ -530,7 +530,7 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'operations' && (
+            {activeTab === 'operations' && isGovernor && (
               <TierGate requiredTier="governor" currentTier={role} tabLabel="Operations" description="System operations center. Governor-restricted operational controls, batch actions, and infrastructure management.">
                 <PanelContainer id="operations">
                   <Suspense fallback={<PanelLoader />}><OperationsTab /></Suspense>
@@ -538,8 +538,8 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'oracle' && (
-              <TierGate requiredTier="architect" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, scenario simulation (COMPASS), and pattern detection (ECHO). Advanced foresight for system optimization.">
+            {activeTab === 'oracle' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, scenario simulation (COMPASS), and pattern detection (ECHO). Advanced foresight for system optimization.">
                 <PanelContainer id="oracle">
                   <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
                 </PanelContainer>
@@ -572,8 +572,8 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'security' && (
-              <TierGate requiredTier="architect" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail. Advanced threat monitoring, vulnerability assessment, and incident response.">
+            {activeTab === 'security' && isGovernor && (
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail. Advanced threat monitoring, vulnerability assessment, and incident response.">
                 <PanelContainer id="security">
                   <ModuleErrorBoundary moduleName="Security">
                     <Suspense fallback={<PanelLoader />}>
