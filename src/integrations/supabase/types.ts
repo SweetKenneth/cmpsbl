@@ -9876,6 +9876,48 @@ export type Database = {
         }
         Relationships: []
       }
+      member_usage_stats: {
+        Row: {
+          compute_time_ms: number | null
+          created_at: string
+          discoveries_pulled: number | null
+          estimated_value_cents: number | null
+          exports_created: number | null
+          id: string
+          intents_executed: number | null
+          period_date: string
+          tokens_consumed: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          compute_time_ms?: number | null
+          created_at?: string
+          discoveries_pulled?: number | null
+          estimated_value_cents?: number | null
+          exports_created?: number | null
+          id?: string
+          intents_executed?: number | null
+          period_date?: string
+          tokens_consumed?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          compute_time_ms?: number | null
+          created_at?: string
+          discoveries_pulled?: number | null
+          estimated_value_cents?: number | null
+          exports_created?: number | null
+          id?: string
+          intents_executed?: number | null
+          period_date?: string
+          tokens_consumed?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       memory_tier_receipts: {
         Row: {
           actor: string
@@ -13864,6 +13906,77 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          code: string
+          created_at: string
+          credit_days_per_referral: number | null
+          id: string
+          is_active: boolean | null
+          max_uses: number | null
+          user_id: string
+          uses: number | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          credit_days_per_referral?: number | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          user_id: string
+          uses?: number | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          credit_days_per_referral?: number | null
+          id?: string
+          is_active?: boolean | null
+          max_uses?: number | null
+          user_id?: string
+          uses?: number | null
+        }
+        Relationships: []
+      }
+      referral_redemptions: {
+        Row: {
+          code_id: string
+          created_at: string
+          credit_days: number | null
+          id: string
+          referred_id: string
+          referrer_id: string
+          status: string | null
+        }
+        Insert: {
+          code_id: string
+          created_at?: string
+          credit_days?: number | null
+          id?: string
+          referred_id: string
+          referrer_id: string
+          status?: string | null
+        }
+        Update: {
+          code_id?: string
+          created_at?: string
+          credit_days?: number | null
+          id?: string
+          referred_id?: string
+          referrer_id?: string
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referral_redemptions_code_id_fkey"
+            columns: ["code_id"]
+            isOneToOne: false
+            referencedRelation: "referral_codes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       resilience_ledger: {
         Row: {
           auto_fix_applied: boolean | null
@@ -14172,6 +14285,48 @@ export type Database = {
           is_active?: boolean | null
           name?: string
           retention_days?: number | null
+        }
+        Relationships: []
+      }
+      saved_workflows: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          intent_chain: Json
+          last_run_at: string | null
+          name: string
+          run_count: number | null
+          tier_required: string
+          trigger_shortcut: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          intent_chain?: Json
+          last_run_at?: string | null
+          name: string
+          run_count?: number | null
+          tier_required?: string
+          trigger_shortcut?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          intent_chain?: Json
+          last_run_at?: string | null
+          name?: string
+          run_count?: number | null
+          tier_required?: string
+          trigger_shortcut?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

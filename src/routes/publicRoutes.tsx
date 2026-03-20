@@ -97,6 +97,7 @@ const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
+const MemberHub = lazy(() => import("@/pages/MemberHub"));
 const HeritagePaper = lazy(() => import("@/pages/HeritagePaper"));
 
 export const publicRoutes = (
@@ -204,6 +205,7 @@ export const publicRoutes = (
     <Route path="/privacy" element={<Privacy />} />
     <Route path="/terms" element={<Terms />} />
     <Route path="/heritage-paper" element={<HeritagePaper />} />
+    <Route path="/member" element={<MemberHub />} />
 
     {/* Misc public */}
     <Route path="/evolution" element={<EvolutionControlCenter />} />
