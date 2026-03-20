@@ -12,6 +12,8 @@
 
 import { primitiveExecutorSync, getRuntimeMode } from './primitive-executor-bridge';
 import { getPrimitive } from './primitive-registry';
+import { registerPrimaryHandler, type PrimaryHandlerRegistration } from './primary-handler-factory';
+import type { ExtractedPrimitive } from './types';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — TYPES
@@ -84,14 +86,20 @@ const BRIDGE_LANGUAGES = new Set([
 /**
  * Single resolver: language + unit traits → execution strategy.
  * No scattered business logic — one place, one decision.
+ *
+ * CRITICAL: Now checks for registered primary handler FIRST.
+ * Since registerPrimaryHandler guarantees a handler exists after
+ * ensurePrimaryRegistered() is called, the primary module will
+ * NEVER fall back to DEFAULT.
  */
 export function resolveExecutionStrategy(unit: ExecutableUnit): StrategyResolution {
   const lang = unit.sourceLanguage.toLowerCase();
-  const hasLocalHandler = getPrimitive(unit.name) !== undefined;
+  const hasLocalHandler = getPrimitive(unit.name) !== null;
   const hasBridge = BRIDGE_LANGUAGES.has(lang) || getRuntimeMode() !== 'offline';
 
   // Rule 1: If we have a registered local handler, always prefer local
-  if (hasLocalHandler && unit.directlyExecutable) {
+  // This now catches dynamically registered primary handlers
+  if (hasLocalHandler) {
     return {
       strategy: 'local',
       reason: `Local handler registered for "${unit.name}"`,
@@ -106,7 +114,7 @@ export function resolveExecutionStrategy(unit: ExecutableUnit): StrategyResoluti
       strategy: 'local',
       reason: `Source language "${lang}" is natively executable`,
       bridgeAvailable: hasBridge,
-      localHandlerAvailable: hasLocalHandler,
+      localHandlerAvailable: false,
     };
   }
 
@@ -116,7 +124,7 @@ export function resolveExecutionStrategy(unit: ExecutableUnit): StrategyResoluti
       strategy: 'bridge',
       reason: `Bridge available for "${lang}" via runtime`,
       bridgeAvailable: true,
-      localHandlerAvailable: hasLocalHandler,
+      localHandlerAvailable: false,
     };
   }
 
@@ -127,7 +135,7 @@ export function resolveExecutionStrategy(unit: ExecutableUnit): StrategyResoluti
       ? `Unit "${unit.name}" marked fallback-only (no safe invocation path)`
       : `No local handler or bridge for "${lang}"`,
     bridgeAvailable: false,
-    localHandlerAvailable: hasLocalHandler,
+    localHandlerAvailable: false,
   };
 }
 
@@ -317,9 +325,10 @@ export function buildExecutableUnit(
   const lang = sourceLanguage.toLowerCase();
   const isLocal = LOCAL_LANGUAGES.has(lang);
   const isBridge = BRIDGE_LANGUAGES.has(lang);
-  const hasHandler = getPrimitive(primitive.name) !== undefined;
+  const hasHandler = getPrimitive(primitive.name) !== null;
 
   const executionKind = mapExtractionKind(primitive.extractionMethod);
+  // After primary handler registration, hasHandler will be true for all primary units
   const directlyExecutable = isLocal || hasHandler;
   const requiresBridge = isBridge && !hasHandler;
   const fallbackOnly = !directlyExecutable && !requiresBridge;
@@ -346,3 +355,23 @@ function mapExtractionKind(method: string): ExecutableUnit['executionKind'] {
     default: return 'unknown';
   }
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — PRIMARY HANDLER REGISTRATION BRIDGE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Ensure the primary handler is registered before execution.
+ * Call this before bindAndExecute to guarantee the primary module
+ * has a handler and will NOT fall back to DEFAULT.
+ *
+ * Returns the registration result for traceability.
+ */
+export function ensurePrimaryRegistered(
+  unit: ExecutableUnit,
+  primitives: ExtractedPrimitive[]
+): PrimaryHandlerRegistration {
+  return registerPrimaryHandler(unit.name, primitives, unit.sourceLanguage);
+}
+
+export type { PrimaryHandlerRegistration };

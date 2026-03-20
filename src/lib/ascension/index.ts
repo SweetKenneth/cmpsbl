@@ -183,11 +183,20 @@ export {
   bindAndExecute,
   buildExecutableUnit,
   resolveExecutionStrategy,
+  ensurePrimaryRegistered,
   type ExecutableUnit,
   type ExecutionBindingResult,
   type ExecutionStrategy,
   type StrategyResolution,
+  type PrimaryHandlerRegistration,
 } from './execution-binding';
+
+// Primary Handler Factory
+export {
+  registerPrimaryHandler,
+  hasPrimaryHandler,
+  type PrimaryHandlerRegistration as PrimaryHandlerResult,
+} from './primary-handler-factory';
 
 // Universal Effect Injection (v2 + Visibility Patch)
 export {
