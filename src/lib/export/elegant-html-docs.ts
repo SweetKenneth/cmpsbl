@@ -13,8 +13,9 @@ const DOCUMENT_STYLES = `
       background: #faf9f6;
       color: #1a1a1f;
       line-height: 1.75;
-      font-size: 13.5px;
+      font-size: 12.5px;
       -webkit-font-smoothing: antialiased;
+      overflow-wrap: break-word;
     }
     .page {
       max-width: 740px;
@@ -42,13 +43,14 @@ const DOCUMENT_STYLES = `
     }
     .doc-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 600;
       letter-spacing: -0.01em;
-      line-height: 1.2;
+      line-height: 1.25;
       word-break: break-word;
       overflow-wrap: break-word;
       hyphens: auto;
+      max-width: 100%;
     }
     .doc-subtitle {
       font-family: 'Cormorant Garamond', Georgia, serif;

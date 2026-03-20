@@ -17,6 +17,7 @@ import { serializeCmpsblManifest } from '@/lib/export/cmpsbl-manifest';
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
+import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
 
 export interface CapabilityForExport {
   id: string;
@@ -1484,13 +1485,14 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   }));
 
   // LICENSE — Plain text + HTML
+  const humanizedPackName = humanizeCapabilityName(candidateName, capabilities[0]?.chain, capabilities[0]?.category);
   zip.file('LICENSE', generateLicenseMd());
-  zip.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${candidateName}`));
+  zip.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${humanizedPackName}`));
 
   // README — Plain text + HTML
   zip.file('README.md', generateReadmeMd(options));
   zip.file('README.html', generateReadmeHTML({
-    name: `Capability Pack — ${candidateName}`,
+    name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
     files: [
       { name: 'src/', purpose: 'Executable capability implementations' },
@@ -1514,9 +1516,11 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
 
   // PIPELINE-DETAILS.html — Per-capability valuation & details
   for (const cap of capabilities) {
+    const displayName = humanizeCapabilityName(cap.name, cap.chain, cap.category);
+    const safeFilename = humanizeFilename(cap.name);
     const detailsHTML = generatePipelineDetailsHTML({
-      name: cap.name,
-      description: cap.description || `Collision capability: ${cap.chain.join(' × ')}`,
+      name: displayName,
+      description: cap.description || `Evolved capability: ${cap.chain.join(' → ')}`,
       category: cap.category || 'proprietary-evolution',
       score: cap.cjpiScore,
       tier: cap.tier || getTierFromScore(cap.cjpiScore),
@@ -1526,7 +1530,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       obtainedAt: new Date().toISOString(),
       source: 'Proprietary Evolution Lifecycle',
     });
-    zip.file(`${cap.name.toLowerCase()}-PIPELINE-DETAILS.html`, detailsHTML);
+    zip.file(`${safeFilename}-PIPELINE-DETAILS.html`, detailsHTML);
   }
 
   // export-tier.json — Valuation summary

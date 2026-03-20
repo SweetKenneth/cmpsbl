@@ -485,10 +485,11 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       background: var(--cream);
       color: var(--ink);
       line-height: 1.7;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 400;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-wrap: break-word;
     }
 
     .page {
@@ -517,15 +518,16 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
 
     h1 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 600;
-      line-height: 1.15;
+      line-height: 1.2;
       letter-spacing: -0.02em;
       color: var(--ink);
       margin-bottom: 0.3rem;
       word-break: break-word;
       overflow-wrap: break-word;
       hyphens: auto;
+      max-width: 100%;
     }
 
     h2 {
@@ -583,12 +585,14 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
 
     .certificate-subtitle {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 400;
       font-style: italic;
       color: var(--ink-muted);
       line-height: 1.65;
       margin-top: 0.6rem;
+      word-break: break-word;
+      overflow-wrap: break-word;
     }
 
     .seal-container {

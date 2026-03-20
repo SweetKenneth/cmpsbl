@@ -7,6 +7,7 @@
 import type { SynthesisContext } from './logic-synthesizer';
 import { generateLicenseHTML, generateReadmeHTML } from './elegant-html-docs';
 import { generatePipelineDetailsHTML } from './pipeline-details-page';
+import { humanizeCapabilityName } from './humanize-name';
 import { getTierFromScore } from '@/lib/pipeline-valuation';
 
 export function generateTypeScriptTest(ctx: SynthesisContext): string {
@@ -505,7 +506,7 @@ For licensing inquiries: legal@cmpsbl.com | https://cmpsbl.com
     {
       filename: 'PIPELINE-DETAILS.html',
       content: generatePipelineDetailsHTML({
-        name: ctx.name,
+        name: humanizeCapabilityName(ctx.name, ctx.moduleChain, ctx.category),
         description: ctx.description,
         category: ctx.category,
         score: ctx.cjpi,
