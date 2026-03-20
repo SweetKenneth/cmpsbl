@@ -208,7 +208,7 @@ export async function exportMemories(
   options: ExportOptions
 ): Promise<ExportResult> {
   const memories: any[] = [];
-  const tiers = options.tiers ?? ['hot', 'warm', 'cold'];
+  const tiers = options.tiers ?? ['hot', 'warm', 'cold', 'glacier'];
 
   // Fetch from each tier
   // Parallel fetch from all requested tiers
@@ -242,6 +242,15 @@ export async function exportMemories(
       if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
       const { data } = await query.limit(5000);
       memories.push(...(data || []).map(m => ({ ...m, tier: 'cold' })));
+    })());
+  }
+
+  if (tiers.includes('glacier')) {
+    tierFetchers.push((async () => {
+      let query = supabase.from('brain_memory_archive').select('id, summary, tags, value_score, access_count, created_at');
+      if (options.minValueScore) query = query.gte('value_score', options.minValueScore);
+      const { data } = await query.limit(5000);
+      memories.push(...(data || []).map(m => ({ ...m, tier: 'glacier' })));
     })());
   }
 
