@@ -701,3 +701,126 @@ export function generateSealedRuntimeReadme(): string {
     'Unauthorized reverse engineering, decompilation, or redistribution is prohibited.',
   ].join('\\n');
 }
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §5 — ASCENSION-EXTENDED SEALED RUNTIME (only for Ascension/Node 41+ exports)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Extended sealed runtime for Ascension exports.
+ * Includes the full base runtime PLUS the Primary Handler Registry
+ * for real execution binding of uploaded code.
+ *
+ * Memory Stream exports MUST NOT use this — use generateSealedRuntime() instead.
+ */
+export function generateAscensionSealedRuntime(): string {
+  // Get the base runtime and inject the handler registry before the closing
+  const base = generateSealedRuntime();
+  // Remove the trailing backtick-semicolon to inject before it
+  const insertPoint = base.lastIndexOf('`;');
+  const before = base.slice(0, insertPoint);
+
+  const handlerRegistryBlock = `
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §A1 — PRIMARY HANDLER REGISTRY (Ascension — uploaded code execution binding)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export type PrimitiveHandler = (input: unknown, context?: unknown) => unknown;
+
+export interface PrimitiveRegistryEntry {
+  name: string;
+  category: string;
+  handler: PrimitiveHandler;
+  source: 'native' | 'generated' | 'external';
+}
+
+const _handlerRegistry = new Map<string, PrimitiveRegistryEntry>();
+
+/** Register a named handler for uploaded code's primary execution unit. */
+export function registerHandler(entry: PrimitiveRegistryEntry): void {
+  if (!entry.name) return;
+  _handlerRegistry.set(entry.name.toLowerCase().trim(), entry);
+}
+
+/** Look up a registered handler. */
+export function getHandler(name: string): PrimitiveRegistryEntry | null {
+  return _handlerRegistry.get(name.toLowerCase().trim()) ?? null;
+}
+
+/** List all registered handlers. */
+export function listHandlers(): PrimitiveRegistryEntry[] {
+  return Array.from(_handlerRegistry.values());
+}
+
+/** Clear handler registry. */
+export function clearHandlers(): void { _handlerRegistry.clear(); }
+`;
+
+  return before + handlerRegistryBlock + '`;';
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §6 — ASCENSION-EXTENDED CHAIN EXECUTOR (only for Ascension/Node 41+ exports)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Extended chain executor for Ascension exports.
+ * Includes dynamic effect registry + handler registry bridge
+ * so uploaded code's primary module participates in chain execution.
+ *
+ * Memory Stream exports MUST NOT use this — use generateSealedChainExecutor() instead.
+ */
+export function generateAscensionChainExecutor(): string {
+  const base = generateSealedChainExecutor();
+  const insertPoint = base.lastIndexOf('`;');
+  const before = base.slice(0, insertPoint);
+
+  const ascensionBlock = `
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// §A2 — ASCENSION DYNAMIC EFFECT REGISTRY (Node 41+ chain participation)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/** Dynamic handler registry for Ascension modules (Node 41+) */
+const _dynamicEffects: Record<string, { verb: string; handler: EH }> = {};
+
+/**
+ * Register a chain-level effect for an Ascension module.
+ * Call this after registerHandler() to wire the primary into chain execution.
+ */
+export function registerChainEffect(moduleName: string, verb: string, handler: EH): void {
+  _dynamicEffects[moduleName] = { verb, handler };
+}
+
+// Override resolveEffect to include Ascension modules
+const _baseResolveEffect = resolveEffect;
+function resolveEffectWithAscension(mod: string): { verb: string; depth: 'deep' | 'fallback'; handler: EH } {
+  // Priority 1: Substrate nodes (40-node matrix) — handled by base
+  const base = _baseResolveEffect(mod);
+  if (base.depth === 'deep') return base;
+  // Priority 2: Dynamically registered Ascension modules
+  if (_dynamicEffects[mod]) return { ..._dynamicEffects[mod], depth: 'deep' as const };
+  // Priority 3: Check handler registry from runtime (primary handler bridge)
+  if (typeof getHandler === 'function') {
+    const registered = getHandler(mod.replace(/^Ψ₄₁_/, ''));
+    if (registered?.handler) {
+      return {
+        verb: 'execute',
+        depth: 'deep' as const,
+        handler: (d, c) => {
+          const out = registered.handler(d, { confidence: c.confidence }) as Record<string, unknown>;
+          return { data: typeof out === 'object' && out ? { ...d, ...out } : d, confidence: c.confidence + 0.02, note: \\\`[\\\${mod}] Primary handler executed (\\\${registered.category})\\\` };
+        },
+      };
+    }
+  }
+  // Fallback from base
+  return base;
+}
+`;
+
+  return before + ascensionBlock + '`;';
+}
