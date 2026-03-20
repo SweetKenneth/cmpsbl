@@ -111,8 +111,8 @@ export async function engineerTriggeredMaintenance(): Promise<OrchestratorRunRes
   // Quick health check first
   const health = await runQuickHealthCheck();
 
-  // Only run full maintenance if degraded OR if >6 hours since last run
-  const sixHours = 6 * 60 * 60 * 1000;
+  // Only run full maintenance if degraded OR if >3 hours since last run
+  const threeHours = 3 * 60 * 60 * 1000;
   if (health.healthy && now - lastMaintenanceRun < sixHours) {
     console.log('[ENGINEER→MAINT] Skipped — system healthy, last run recent');
     return null;
