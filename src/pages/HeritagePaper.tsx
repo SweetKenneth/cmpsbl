@@ -56,6 +56,11 @@ const HeritagePaper = () => {
         <meta property="og:description" content="The complete technical lineage of CMPSBL — from first prototype to 40-module cognitive platform." />
         <meta property="og:type" content="article" />
         <meta property="og:url" content="https://cmpsbl.com/heritage-paper" />
+        <meta property="og:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Heritage Paper — Cognitive Infrastructure Lineage | CMPSBL®" />
+        <meta name="twitter:description" content="Complete technical lineage from BRAIN Genesis to 40-module cognitive platform." />
+        <meta name="twitter:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
       </Helmet>
 
       {/* Sticky toolbar — hidden in print */}

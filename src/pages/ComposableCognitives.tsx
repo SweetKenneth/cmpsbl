@@ -177,6 +177,16 @@ export default function ComposableCognitives() {
       <Helmet>
         <title>Meta-Agents — 5 Fused Runtime Agents | CMPSBL®</title>
         <meta name="description" content="5 fused Meta-Agents with sealed runtimes, DREAM synthesis, and persistent memory. Each is a fusion of multiple specialized AI runtimes. Own forever from free to $249." />
+        <link rel="canonical" href="https://cmpsbl.com/composable-cognitives" />
+        <meta property="og:title" content="Meta-Agents — 5 Fused Runtime Agents | CMPSBL®" />
+        <meta property="og:description" content="5 fused Meta-Agents with sealed runtimes, DREAM synthesis, and persistent memory. Own forever from free to $249." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://cmpsbl.com/composable-cognitives" />
+        <meta property="og:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Meta-Agents — 5 Fused Runtime Agents | CMPSBL®" />
+        <meta name="twitter:description" content="5 fused Meta-Agents with sealed runtimes, DREAM synthesis, and persistent memory." />
+        <meta name="twitter:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
       </Helmet>
 
       <PublicNav />
