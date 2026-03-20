@@ -233,13 +233,13 @@ async function getBudgetState(supabase: any): Promise<BudgetState> {
   };
 }
 
-async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour: number }> {
+async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour: number; failureRate: number }> {
   const now = new Date();
   const todayKey = now.toISOString().split('T')[0];
   const hourStart = new Date(now);
   hourStart.setMinutes(0, 0, 0);
 
-  const [dailyRes, hourlyRes] = await Promise.all([
+  const [dailyRes, hourlyRes, recentFailRes, recentTotalRes] = await Promise.all([
     supabase
       .from('ai_usage_log')
       .select('id', { count: 'exact', head: true })
@@ -250,11 +250,26 @@ async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour
       .select('id', { count: 'exact', head: true })
       .eq('success', true)
       .gte('created_at', hourStart.toISOString()),
+    // Count recent failures (last 30 min) to detect provider saturation
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', false)
+      .gte('created_at', new Date(Date.now() - 30 * 60_000).toISOString()),
+    supabase
+      .from('ai_usage_log')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', new Date(Date.now() - 30 * 60_000).toISOString()),
   ]);
+
+  const recentFails = recentFailRes.count || 0;
+  const recentTotal = recentTotalRes.count || 0;
+  const failureRate = recentTotal > 0 ? recentFails / recentTotal : 0;
 
   return {
     today: dailyRes.count || 0,
     hour: hourlyRes.count || 0,
+    failureRate,
   };
 }
 
