@@ -507,6 +507,8 @@ export function applyEffectInjection(
         degraded: binding.degraded,
         score: effectScore,
       },
+      notes: [isDemo ? buildDemoNote(moduleName, binding) : `${binding.strategy} execution`],
+      timestamp: Date.now(),
     });
 
     // ── Transformation Note (demo vs verbose) ──
