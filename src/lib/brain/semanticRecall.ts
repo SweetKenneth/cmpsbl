@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 export interface SemanticMatch {
   id: string;
   content: string;
-  tier: 'hot' | 'warm' | 'cold';
+  tier: 'hot' | 'warm' | 'cold' | 'glacier';
   similarity: number;
   context?: string;
   valueScore: number;
