@@ -243,6 +243,7 @@ async function runMaintenanceBattery(): Promise<{
 function startScheduler(intervalMs = 600_000): void {
   if (schedulerInterval) return;
   schedulerInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     runMaintenanceBattery().catch(() => {});
   }, intervalMs);
 }

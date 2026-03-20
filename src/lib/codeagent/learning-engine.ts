@@ -586,6 +586,7 @@ export function startBackgroundLearning(intervalMs: number = 15 * 60 * 1000): vo
   }
   
   learningInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     runLearningCycle().catch(console.error);
   }, intervalMs);
   

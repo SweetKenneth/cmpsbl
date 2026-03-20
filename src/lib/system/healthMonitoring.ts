@@ -311,6 +311,7 @@ export function startMonitoring(intervalMs: number = 60000): void {
   
   // Periodic checks
   monitoringInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     runHealthCheck();
   }, intervalMs);
 }

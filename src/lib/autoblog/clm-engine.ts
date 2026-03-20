@@ -405,7 +405,10 @@ export async function startCLMMode(): Promise<{ ok: boolean; message: string }> 
   
   // Run cycles every 2 hours (gives ~12 opportunities per day)
   const intervalMs = 2 * 60 * 60 * 1000;
-  clmInterval = setInterval(() => runCLMCycle(), intervalMs);
+  clmInterval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
+    runCLMCycle();
+  }, intervalMs);
   
   // Run first cycle immediately
   await runCLMCycle();

@@ -194,6 +194,7 @@ export function startAutoRecovery(intervalMs?: number): void {
   const checkInterval = intervalMs ?? DEFAULT_CONFIG.autoRecoveryIntervalMs;
   
   autoRecoveryTimer = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     const openBreakers = getAllBreakerStates().filter(b => b.state === 'open');
     for (const b of openBreakers) {
       const cfg = configs.get(b.module) || DEFAULT_CONFIG;
