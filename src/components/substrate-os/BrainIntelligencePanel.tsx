@@ -328,7 +328,7 @@ function ReflectionCard({ reflection }: { reflection: any }) {
 }
 
 
-export function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps) {
+export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ enabled }: BrainIntelligencePanelProps) {
   const [deepThinkQuery, setDeepThinkQuery] = useState('');
   const [exploreQuery, setExploreQuery] = useState('');
   
