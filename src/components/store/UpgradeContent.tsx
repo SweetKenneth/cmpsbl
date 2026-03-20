@@ -129,9 +129,32 @@ const TIERS: {
 ];
 export function UpgradeContent() {
   const { tier: currentTier, startCheckout } = useEngineSubscription();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [billingInterval, setBillingInterval] = useState<'monthly' | 'annual'>('monthly');
   const [pressureModal, setPressureModal] = useState<{ open: boolean; packName?: string }>({ open: false });
   const [detailPack, setDetailPack] = useState<ArtifactPack | null>(null);
+
+  // Checkout recovery — show toast when user returns from canceled checkout
+  useEffect(() => {
+    if (searchParams.get('canceled') === 'true') {
+      const tier = searchParams.get('tier') || 'a plan';
+      toast.info(`Still thinking about ${tier}?`, {
+        description: 'Your 7-day free trial is waiting — no charge until day 8.',
+        duration: 10000,
+        action: {
+          label: 'Start trial',
+          onClick: () => {
+            const matchedTier = TIERS.find(t => t.name.toLowerCase() === tier.toLowerCase());
+            if (matchedTier?.stripeTier) startCheckout(matchedTier.stripeTier, billingInterval);
+          },
+        },
+      });
+      // Clean up URL params
+      searchParams.delete('canceled');
+      searchParams.delete('tier');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, []);
 
   const currentProductTier: ProductTier =
     currentTier === 'enterprise' ? 'architect' :
