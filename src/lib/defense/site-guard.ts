@@ -248,6 +248,7 @@ export function installSiteGuard(): (() => void) | undefined {
   
   // Periodic re-check (every 60 seconds)
   const interval = setInterval(() => {
+    if (document.visibilityState === 'hidden') return;
     const recheck = detectBot();
     if (recheck.confidence > 0.5) {
       reportDetection(recheck);

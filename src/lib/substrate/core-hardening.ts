@@ -1286,6 +1286,11 @@ export function startKernelWatchdog(onEmergency?: () => void): void {
   watchdog.onEmergency = onEmergency ?? null;
 
   watchdogTimer = setInterval(() => {
+    // Skip watchdog checks when tab is hidden to avoid false positives
+    if (document.visibilityState === 'hidden') {
+      watchdog.lastPing = Date.now(); // Reset ping to avoid false emergency on tab return
+      return;
+    }
     const elapsed = Date.now() - watchdog.lastPing;
     if (elapsed > watchdog.pingIntervalMs * 2) {
       watchdog.missedPings++;
