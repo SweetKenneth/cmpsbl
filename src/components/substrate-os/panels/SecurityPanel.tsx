@@ -98,25 +98,27 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
           </ModuleErrorBoundary>
         </TabsContent>
 
-        <TabsContent value="backups" className="mt-4 space-y-4">
-          {/* Full System Backup — disaster recovery ZIP */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg border border-blue-500/20 bg-blue-500/5">
-            <div className="min-w-0">
-              <h3 className="text-sm font-semibold flex items-center gap-2">
-                <Download className="w-4 h-4 text-blue-400 shrink-0" />
-                Full System Backup
-              </h3>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                One-click disaster recovery — downloads all tables, schema & restoration guide as ZIP
-              </p>
+        {isGovernor && (
+          <TabsContent value="backups" className="mt-4 space-y-4">
+            {/* Full System Backup — disaster recovery ZIP */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg border border-blue-500/20 bg-blue-500/5">
+              <div className="min-w-0">
+                <h3 className="text-sm font-semibold flex items-center gap-2">
+                  <Download className="w-4 h-4 text-blue-400 shrink-0" />
+                  Full System Backup
+                </h3>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  One-click disaster recovery — downloads all tables, schema & restoration guide as ZIP
+                </p>
+              </div>
+              <FullBackupButton />
             </div>
-            <FullBackupButton />
-          </div>
 
-          <ModuleErrorBoundary moduleName="Backups">
-            <Suspense fallback={<Loader />}><BackupRestorePanel enabled={isOperator} /></Suspense>
-          </ModuleErrorBoundary>
-        </TabsContent>
+            <ModuleErrorBoundary moduleName="Backups">
+              <Suspense fallback={<Loader />}><BackupRestorePanel enabled={isGovernor} /></Suspense>
+            </ModuleErrorBoundary>
+          </TabsContent>
+        )}
       </Tabs>
     </div>
   );
