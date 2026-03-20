@@ -158,6 +158,7 @@ describe('bindAndExecute', () => {
 
   it('local execution path returns executed=true', () => {
     registerPrimitive({
+      id: 'p-localUnit',
       name: 'localUnit',
       source: 'native',
       handler: (input) => ({ ...(input as Record<string, unknown>), processed: true }),
