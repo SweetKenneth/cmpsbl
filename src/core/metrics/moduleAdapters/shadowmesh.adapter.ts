@@ -1,7 +1,7 @@
 /**
  * GOAL Module Adapter — SHADOW MESH (ENCODE/Immune)
  * Pulls live numeric state from immune_metrics and immune_escalations.
- * No narrative. Only structured numeric state.
+ * Optimized: count-only for escalation stats, reduced row fetches.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -13,19 +13,28 @@ export const shadowmeshAdapter: ModuleAdapter = {
   async getLiveMetrics(): Promise<ModuleLiveMetrics> {
     const since = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
-    const [metricsRes, escalationsRes] = await Promise.allSettled([
+    const [metricsRes, openRes, encodeClaimedRes, encodeResolvedRes] = await Promise.allSettled([
       supabase
         .from('immune_metrics')
         .select('executor, total_runs, repair_successes, escalations, safe_failures')
-        .gte('run_at', since),
+        .gte('run_at', since)
+        .limit(100),
       supabase
         .from('immune_escalations')
-        .select('status, claimed_by, resolved_at')
-        .limit(500),
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'open'),
+      supabase
+        .from('immune_escalations')
+        .select('id', { count: 'exact', head: true })
+        .eq('claimed_by', 'ENCODE'),
+      supabase
+        .from('immune_escalations')
+        .select('id', { count: 'exact', head: true })
+        .eq('claimed_by', 'ENCODE')
+        .eq('status', 'resolved'),
     ]);
 
     const metricsData = metricsRes.status === 'fulfilled' ? ((metricsRes.value.data ?? []) as any[]) : [];
-    const escalationData = escalationsRes.status === 'fulfilled' ? ((escalationsRes.value.data ?? []) as any[]) : [];
 
     let totalRuns = 0, repairSuccesses = 0, escalations = 0, safeFailures = 0;
     for (const row of metricsData) {
@@ -35,11 +44,10 @@ export const shadowmeshAdapter: ModuleAdapter = {
       safeFailures += row.safe_failures ?? 0;
     }
 
-    const encodeResolved = escalationData.filter(d => d.claimed_by === 'ENCODE' && d.status === 'resolved').length;
-    const encodeClaimed = escalationData.filter(d => d.claimed_by === 'ENCODE').length;
-    const openEscalations = escalationData.filter(d => d.status === 'open').length;
+    const openEscalations = openRes.status === 'fulfilled' ? (openRes.value.count ?? 0) : 0;
+    const encodeClaimed = encodeClaimedRes.status === 'fulfilled' ? (encodeClaimedRes.value.count ?? 0) : 0;
+    const encodeResolved = encodeResolvedRes.status === 'fulfilled' ? (encodeResolvedRes.value.count ?? 0) : 0;
 
-    // CORRECTED: safe_failures are NOT repair attempts — only repair_successes + escalations
     const repairAttempts = repairSuccesses + escalations;
     const repairRate = repairAttempts > 0 ? repairSuccesses / repairAttempts : 0;
     const encodeResolutionRate = encodeClaimed > 0 ? encodeResolved / encodeClaimed : 0;

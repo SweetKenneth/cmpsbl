@@ -1,7 +1,7 @@
 /**
  * GOAL Module Adapter — VISION
  * Pulls live numeric state from accessibility scans + learning queries.
- * No narrative. Only structured numeric state.
+ * Optimized: count-only queries for totals, small sample for score averaging.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -13,30 +13,43 @@ export const visionAdapter: ModuleAdapter = {
   async getLiveMetrics(): Promise<ModuleLiveMetrics> {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    const [scansRes, learningRes] = await Promise.allSettled([
+    const [totalScansRes, completedScansRes, scoreSampleRes, totalQueriesRes, completedQueriesRes] = await Promise.allSettled([
       supabase
         .from('accessibility_scans')
-        .select('score, scan_status')
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', since),
+      supabase
+        .from('accessibility_scans')
+        .select('id', { count: 'exact', head: true })
+        .eq('scan_status', 'completed')
+        .gte('created_at', since),
+      supabase
+        .from('accessibility_scans')
+        .select('score')
         .gte('created_at', since)
-        .limit(200),
+        .order('created_at', { ascending: false })
+        .limit(50),
       supabase
         .from('learning_queries')
-        .select('status')
-        .gte('created_at', since)
-        .limit(500),
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', since),
+      supabase
+        .from('learning_queries')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'completed')
+        .gte('created_at', since),
     ]);
 
-    const scans = scansRes.status === 'fulfilled' ? (scansRes.value.data ?? []) : [];
-    const queries = learningRes.status === 'fulfilled' ? (learningRes.value.data ?? []) : [];
+    const totalScans = totalScansRes.status === 'fulfilled' ? (totalScansRes.value.count ?? 0) : 0;
+    const completedScans = completedScansRes.status === 'fulfilled' ? (completedScansRes.value.count ?? 0) : 0;
+    const totalQueries = totalQueriesRes.status === 'fulfilled' ? (totalQueriesRes.value.count ?? 0) : 0;
+    const completedQueries = completedQueriesRes.status === 'fulfilled' ? (completedQueriesRes.value.count ?? 0) : 0;
 
-    const totalScans = scans.length;
-    const completedScans = scans.filter(s => s.scan_status === 'completed').length;
-    const avgScanScore = totalScans > 0
-      ? Math.round(scans.reduce((s, d) => s + (d.score ?? 0), 0) / totalScans)
-      : 0;
-
-    const totalQueries = queries.length;
-    const completedQueries = queries.filter(q => q.status === 'completed').length;
+    let avgScanScore = 0;
+    if (scoreSampleRes.status === 'fulfilled' && scoreSampleRes.value.data?.length) {
+      const scores = scoreSampleRes.value.data;
+      avgScanScore = Math.round(scores.reduce((s, d) => s + (d.score ?? 0), 0) / scores.length);
+    }
 
     const scanCompletionRate = totalScans > 0 ? completedScans / totalScans : 1;
     const queryCompletionRate = totalQueries > 0 ? completedQueries / totalQueries : 1;

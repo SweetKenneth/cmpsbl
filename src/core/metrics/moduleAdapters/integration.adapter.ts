@@ -1,6 +1,7 @@
 /**
  * GOAL Module Adapter — INTEGRATION
  * External service connectivity and reliability metrics.
+ * Optimized: count-only for totals + small sample for latency/provider metrics.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -12,23 +13,31 @@ export const integrationAdapter: ModuleAdapter = {
   async getLiveMetrics(): Promise<ModuleLiveMetrics> {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    const [apiRes] = await Promise.allSettled([
+    const [totalRes, successRes, sampleRes] = await Promise.allSettled([
       supabase
         .from('ai_usage_log')
-        .select('id, success, provider, response_time_ms', { count: 'exact' })
+        .select('id', { count: 'exact', head: true })
+        .gte('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('id', { count: 'exact', head: true })
+        .eq('success', true)
+        .gte('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('provider, response_time_ms')
         .gte('created_at', since)
-        .limit(500),
+        .order('created_at', { ascending: false })
+        .limit(100),
     ]);
 
-    let totalCalls = 0;
-    let successCalls = 0;
+    const totalCalls = totalRes.status === 'fulfilled' ? (totalRes.value.count ?? 0) : 0;
+    const successCalls = successRes.status === 'fulfilled' ? (successRes.value.count ?? 0) : 0;
     let providers = new Set<string>();
     let avgLatency = 0;
 
-    if (apiRes.status === 'fulfilled' && apiRes.value.data) {
-      const rows = apiRes.value.data;
-      totalCalls = apiRes.value.count ?? rows.length;
-      successCalls = rows.filter((r: any) => r.success).length;
+    if (sampleRes.status === 'fulfilled' && sampleRes.value.data) {
+      const rows = sampleRes.value.data;
       rows.forEach((r: any) => providers.add(r.provider));
       const latencies = rows.map((r: any) => r.response_time_ms ?? 0).filter((v: number) => v > 0);
       avgLatency = latencies.length > 0 ? latencies.reduce((a: number, b: number) => a + b, 0) / latencies.length : 0;

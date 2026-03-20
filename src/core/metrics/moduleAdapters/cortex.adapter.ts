@@ -1,6 +1,7 @@
 /**
  * GOAL Module Adapter — CORTEX
  * Pulls orchestration pipeline health metrics.
+ * Optimized: count-only queries + small sample for latency.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -12,24 +13,33 @@ export const cortexAdapter: ModuleAdapter = {
   async getLiveMetrics(): Promise<ModuleLiveMetrics> {
     const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    const [usageRes] = await Promise.allSettled([
+    const [totalRes, successRes, latencyRes] = await Promise.allSettled([
       supabase
         .from('ai_usage_log')
-        .select('id, success, response_time_ms', { count: 'exact' })
+        .select('id', { count: 'exact', head: true })
+        .eq('category', 'orchestration')
+        .gte('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('id', { count: 'exact', head: true })
+        .eq('category', 'orchestration')
+        .eq('success', true)
+        .gte('created_at', since),
+      supabase
+        .from('ai_usage_log')
+        .select('response_time_ms')
         .eq('category', 'orchestration')
         .gte('created_at', since)
-        .limit(500),
+        .order('created_at', { ascending: false })
+        .limit(50),
     ]);
 
-    let totalCalls = 0;
-    let successCalls = 0;
-    let avgLatency = 0;
+    const totalCalls = totalRes.status === 'fulfilled' ? (totalRes.value.count ?? 0) : 0;
+    const successCalls = successRes.status === 'fulfilled' ? (successRes.value.count ?? 0) : 0;
 
-    if (usageRes.status === 'fulfilled' && usageRes.value.data) {
-      const rows = usageRes.value.data;
-      totalCalls = usageRes.value.count ?? rows.length;
-      successCalls = rows.filter((r: any) => r.success).length;
-      const latencies = rows.map((r: any) => r.response_time_ms ?? 0).filter((v: number) => v > 0);
+    let avgLatency = 0;
+    if (latencyRes.status === 'fulfilled' && latencyRes.value.data) {
+      const latencies = latencyRes.value.data.map((r: any) => r.response_time_ms ?? 0).filter((v: number) => v > 0);
       avgLatency = latencies.length > 0 ? latencies.reduce((a: number, b: number) => a + b, 0) / latencies.length : 0;
     }
 
