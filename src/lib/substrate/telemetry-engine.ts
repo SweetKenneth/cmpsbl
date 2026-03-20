@@ -143,6 +143,7 @@ class TelemetryEngineClient {
 
   /**
    * Emit a telemetry event (non-blocking, side-effect free)
+   * Optimized: batches persistence calls to reduce DB write pressure
    */
   emit(
     type: TelemetryEventType,
@@ -151,6 +152,22 @@ class TelemetryEngineClient {
     payload: TelemetryEvent['payload'],
     correlationId?: string
   ): TelemetryEvent {
+    // Apply sampling — drop debug/info noise during bursts
+    const { shouldSample } = require('./telemetry-sampler');
+    if (!shouldSample(severity)) {
+      // Return a stub event without recording or persisting
+      return {
+        id: 'sampled-out',
+        type,
+        severity,
+        timestamp: new Date().toISOString(),
+        source,
+        payload,
+        correlation_id: correlationId,
+        session_id: this.currentSessionId,
+      };
+    }
+
     const event: TelemetryEvent = {
       id: this.generateId(),
       type,
@@ -165,10 +182,12 @@ class TelemetryEngineClient {
     // Update state (non-blocking)
     this.recordEvent(event);
 
-    // Optional: persist to backend (fire-and-forget)
-    this.persistEvent(event).catch(() => {
-      // Silently fail - telemetry should never block execution
-    });
+    // Batch persistence — only persist warn/error/critical immediately
+    if (severity === 'error' || severity === 'critical' || severity === 'warn') {
+      this.persistEvent(event).catch(() => {});
+    } else {
+      this.enqueuePersistence(event);
+    }
 
     return event;
   }
