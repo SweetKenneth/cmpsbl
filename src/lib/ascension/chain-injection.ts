@@ -68,6 +68,10 @@ export function buildNodeEffect(node: AscensionNode): ModuleEffect {
       let failedCount = 0;
       const outputChanges: string[] = [];
 
+      // ── Universal Effect Injection (v1) ──
+      // Apply effect wrapper FIRST for traceability + signals + metrics
+      ctx = applyEffectInjection(ctx, node);
+
       // Execute each primitive handler — isolate failures
       for (const primitive of primitives.slice(0, 20)) {
         try {
