@@ -257,7 +257,7 @@ export async function extractPatterns(
     .from('brain_memory_warm')
     .select('content, context, created_at')
     .order('created_at', { ascending: false })
-    .limit(1000);
+    .limit(500);
 
   if (!memories) return [];
 
