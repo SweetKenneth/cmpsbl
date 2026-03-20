@@ -90,7 +90,7 @@ interface TabDef {
  * ARCHITECT— EVOLUTION, SHADOW, ORACLE, Security (advanced controls)
  * GOVERNOR — Governor panel (admin only, already gated)
  */
-function getTabDefs(hasAgency: boolean): TabDef[] {
+function getTabDefs(hasAgency: boolean, isGovernor: boolean): TabDef[] {
   return [
     // ── Account (always first) ──
     { id: 'account', label: 'Account', icon: UserCircle, group: 'Command', description: 'Your profile & quick links' },
@@ -102,8 +102,9 @@ function getTabDefs(hasAgency: boolean): TabDef[] {
     { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
     { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM', minTier: 'creator' },
     { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST', minTier: 'creator' },
-    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', minTier: 'creator' },
-    ...(hasAgency ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', minTier: 'creator' as SubstrateRole }] : []),
+    // ── Cognitives & Agency: governor-only unless user purchased agents from the store ──
+    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', governorOnly: !isGovernor && !hasAgency, minTier: hasAgency ? 'creator' as SubstrateRole : 'governor' as SubstrateRole },
+    ...((hasAgency || isGovernor) ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', governorOnly: !hasAgency, minTier: (hasAgency ? 'creator' : 'governor') as SubstrateRole }] : []),
     // ── Governor-only (substrate-level controls — not for users) ──
     { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Node mesh & governance', governorOnly: true, minTier: 'governor' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', governorOnly: true, minTier: 'governor' },
@@ -272,7 +273,7 @@ export default function SubstrateOS() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
-  const tabs = useMemo(() => getTabDefs(!!userAgency), [userAgency]);
+  const tabs = useMemo(() => getTabDefs(!!userAgency, isGovernor), [userAgency, isGovernor]);
 
   const handleLogout = useCallback(async () => {
     try { await signOut(); navigate('/'); } catch (e) { console.error('Logout error:', e); }
@@ -554,16 +555,16 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'cognitives' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
+            {activeTab === 'cognitives' && (isGovernor || !!userAgency) && (
+              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
                 <PanelContainer id="cognitives">
                   <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
                 </PanelContainer>
               </TierGate>
             )}
 
-            {activeTab === 'agency' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
+            {activeTab === 'agency' && (isGovernor || !!userAgency) && (
+              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
                 <PanelContainer id="agency">
                   <Suspense fallback={<PanelLoader />}>
                     <AgencyGallery />
