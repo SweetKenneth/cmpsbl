@@ -54,8 +54,20 @@ const DEFAULT_CONFIG: ConsolidationConfig = {
   dryRun: false,
 };
 
-// In-memory pattern cache
+// In-memory pattern cache — capped to prevent memory leak
+const MAX_PATTERN_CACHE = 500;
 const patternCache = new Map<string, MemoryPattern>();
+
+function evictPatternCache(): void {
+  if (patternCache.size <= MAX_PATTERN_CACHE) return;
+  // Evict oldest entries (Map preserves insertion order)
+  const excess = patternCache.size - MAX_PATTERN_CACHE;
+  const keys = patternCache.keys();
+  for (let i = 0; i < excess; i++) {
+    const { value } = keys.next();
+    if (value) patternCache.delete(value);
+  }
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CONSOLIDATION ENGINE
