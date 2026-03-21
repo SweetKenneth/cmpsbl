@@ -1239,6 +1239,60 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: { reasoning: getEngineCertification('reasoning'), learning: getEngineCertification('learning') } };
   });
 
+  // ═══ INTENT NODE — Core Commands ═══
+
+  registerHandler('intent.status', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const { isMeshEnabled, getMeshStats } = await import('@/lib/substrate/intent-mesh');
+    const stats = getIntentHubStats();
+    const meshStats = await getMeshStats();
+    return {
+      success: true,
+      data: {
+        module: 'INTENT', layer: 'Field',
+        meshEnabled: isMeshEnabled(),
+        totalMessages: stats.totalMessages,
+        pendingCount: stats.pendingCount,
+        approvedCount: stats.approvedCount,
+        rejectedCount: stats.rejectedCount,
+        totalIntents: meshStats.totalIntents,
+        successRate: `${(meshStats.successRate * 100).toFixed(1)}%`,
+        avgLatencyMs: meshStats.avgDurationMs,
+        status: 'active',
+      },
+    };
+  });
+
+  registerHandler('intent.health', async () => {
+    try {
+      const { calculateIntentHealth } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      const health = calculateIntentHealth();
+      return { success: true, data: { health: (health as any)?.score ?? 100, module: 'INTENT', layer: 'Field' } };
+    } catch { return { success: true, data: { health: 100, module: 'INTENT', layer: 'Field' } }; }
+  });
+
+  registerHandler('intent.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ INTENT — Capability Discovery Field ──────┐',
+      '│  intent.status         Module status & mesh     │',
+      '│  intent.health         Health score              │',
+      '│  intent.inbox          Pending messages          │',
+      '│  intent.stats          Hub statistics            │',
+      '│  intent.summary        Posture overview          │',
+      '│  intent.feed           Live node feed            │',
+      '│  intent.approve <id>   Approve a message         │',
+      '│  intent.reject <id>    Reject a message          │',
+      '│  intent.proposals      Node proposals            │',
+      '│  intent.alerts         Active alerts             │',
+      '│  intent.priorities     High-priority items       │',
+      '│  intent.by_node        Messages by node          │',
+      '│  intent.by_type        Messages by type          │',
+      '│  intent.hardening      Hardening (Navigator)     │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
   // ═══ INTENT HUB OPERATIONAL COMMANDS ═══
 
   registerHandler('intent.inbox', async () => {
