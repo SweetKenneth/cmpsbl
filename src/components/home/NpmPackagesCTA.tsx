@@ -171,7 +171,7 @@ export function NpmPackagesCTA() {
                     {pkg.tier}
                   </Badge>
                 </div>
-                <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{pkg.desc}</p>
+                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{pkg.desc}</p>
               </div>
             </motion.div>
           ))}
