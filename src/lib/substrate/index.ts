@@ -1163,12 +1163,13 @@ export {
   type EchoModuleState,
 } from './echo-module';
 
-// TREATY — Multi-Tenant Contract Negotiation & SLA Enforcement
+// TREATY — Inter-Node Contracts & SLA Enforcement
 export {
   initTreaty,
   createContract,
   activateContract,
   evaluateSLA,
+  checkExpiringContracts,
   getTreatyState,
   getTreatyHealth,
   getTreatyResilience,
@@ -1177,7 +1178,9 @@ export {
   upgradeTreatyEngine,
   type ContractStatus,
   type SLAMetric,
+  type PenaltyEscalation,
   type Contract,
+  type SLAReport,
   type TreatyModuleState,
 } from './treaty-module';
 
