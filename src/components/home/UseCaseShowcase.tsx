@@ -134,7 +134,7 @@ export function UseCaseShowcase() {
             <Sparkles className="w-3 h-3 text-primary" />
             <span className="text-xs font-semibold">What You Can Build</span>
           </Badge>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             From{" "}
             <span style={{
               background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)))",
