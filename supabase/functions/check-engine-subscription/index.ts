@@ -14,21 +14,21 @@ const corsHeaders = {
 
 // Map product IDs to tiers
 const PRODUCT_TO_TIER: Record<string, string> = {
-  // Creator ($29/mo)
-  'prod_U3d8z2sorSG4sI': 'creator',
-  'prod_U3d84gNyBRQgeu': 'creator',
-  // Studio ($49/mo)
-  'prod_U4vfFrx4XIT6Ah': 'studio',
-  'prod_U4vfNOl4dHkmld': 'studio',
+  // Studio ($29/mo)
+  'prod_U3d8z2sorSG4sI': 'studio',
+  'prod_U3d84gNyBRQgeu': 'studio',
+  // Creator ($49/mo)
+  'prod_U4vfFrx4XIT6Ah': 'creator',
+  'prod_U4vfNOl4dHkmld': 'creator',
   // Architect ($79/mo)
   'prod_U3d8XbUwCGrcfO': 'architect',
   'prod_U3d8M0yNFGpGTw': 'architect',
   // Legacy product IDs — map to new tiers
-  'prod_TzwJfkmkooYhwU': 'creator',
+  'prod_TzwJfkmkooYhwU': 'studio',
   'prod_TzwJtYd5I4rH7j': 'architect',
   'prod_TzwJm6Ji4E3Vca': 'architect',
-  'prod_TwE1Eqx3bpZsSy': 'creator',
-  'prod_TwE1VkEdBVaiuR': 'creator',
+  'prod_TwE1Eqx3bpZsSy': 'studio',
+  'prod_TwE1VkEdBVaiuR': 'studio',
   'prod_TwE1R8rSXH8Hku': 'architect',
   'prod_TwE1RRfo82Y15Z': 'architect',
   'prod_TwE1Ft7HTEDerh': 'architect',

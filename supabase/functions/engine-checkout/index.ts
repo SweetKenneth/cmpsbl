@@ -1,7 +1,7 @@
 /**
  * Engine Subscription Checkout
  * Creates Stripe checkout sessions for subscription tiers
- * Tiers: creator ($29/mo), architect ($79/mo)
+ * Tiers: studio ($29/mo), creator ($49/mo), architect ($79/mo)
  */
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
@@ -13,14 +13,14 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
 };
 
-// Current price IDs — Creator ($29/mo) and Architect ($79/mo)
+// Current price IDs — Studio ($29/mo), Creator ($49/mo), Architect ($79/mo)
 // Aligned with ENGINE_SUBSCRIPTION_PRODUCTS in engine-stripe-products.ts
 const PRICE_MAP: Record<string, Record<string, string>> = {
-  creator: {
+  studio: {
     monthly: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu',
     annual: 'price_1T5VsgQ7FtTiAL4ahx89OgVH',
   },
-  studio: {
+  creator: {
     monthly: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z',
     annual: 'price_1T6lnxQ7FtTiAL4a3N9AvKcG',
   },

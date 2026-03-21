@@ -1,10 +1,10 @@
 /**
  * Engine Subscription Stripe Product Configuration
- * Creator ($29/mo) | Studio ($49/mo) | Architect ($79/mo)
+ * Builder ($0) | Studio ($29/mo) | Creator ($49/mo) | Architect ($79/mo)
  */
 
 export const ENGINE_SUBSCRIPTION_PRODUCTS = {
-  creator: {
+  studio: {
     monthly: {
       price_id: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu',
       product_id: 'prod_U3d8z2sorSG4sI',
@@ -19,7 +19,7 @@ export const ENGINE_SUBSCRIPTION_PRODUCTS = {
       savings: 7200 // $72 savings
     }
   },
-  studio: {
+  creator: {
     monthly: {
       price_id: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z',
       product_id: 'prod_U4vfFrx4XIT6Ah',
@@ -70,13 +70,13 @@ export function getEnginePriceId(
 
 // Map Stripe product IDs to tiers for subscription lookup
 export const PRODUCT_TO_TIER_MAP: Record<string, EngineSubscriptionTier> = {
-  // Creator
-  'prod_U3d8z2sorSG4sI': 'creator',
-  'prod_U3d84gNyBRQgeu': 'creator',
-  // Studio
-  'prod_U4vfFrx4XIT6Ah': 'studio',
-  'prod_U4vfNOl4dHkmld': 'studio',
-  // Architect
+  // Studio ($29/mo)
+  'prod_U3d8z2sorSG4sI': 'studio',
+  'prod_U3d84gNyBRQgeu': 'studio',
+  // Creator ($49/mo)
+  'prod_U4vfFrx4XIT6Ah': 'creator',
+  'prod_U4vfNOl4dHkmld': 'creator',
+  // Architect ($79/mo)
   'prod_U3d8XbUwCGrcfO': 'architect',
   'prod_U3d8M0yNFGpGTw': 'architect',
 };
