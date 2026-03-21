@@ -82,10 +82,8 @@ const defaultConfigs: Record<string, CapabilityConfig> = {
   sandbox: { enabled: true, mode: 'governed', requiresApproval: false },
   inclusive: { enabled: true, mode: 'governed', requiresApproval: false },
   integration: { enabled: true, mode: 'governed', requiresApproval: true },
-  evolution: { enabled: true, mode: 'governed', requiresApproval: true },
   // Mesh Overlays
   defense: { enabled: true, mode: 'governed', requiresApproval: true },
-  evolution: { enabled: true, mode: 'governed', requiresApproval: false },
   immunity: { enabled: true, mode: 'governed', requiresApproval: false },
   intent: { enabled: true, mode: 'governed', requiresApproval: false },
   governance: { enabled: true, mode: 'governed', requiresApproval: false },

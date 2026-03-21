@@ -17,7 +17,7 @@ const NODE_SECTORS: Record<string, string> = {
   GOVERNANCE: 'Fields', AUDIT: 'Fields', ACCESS: 'Fields', SOVEREIGN: 'Fields',
   ANALYTICS: 'Plane', RIPPLE: 'Plane', TREATY: 'Plane', COMPASS: 'Plane',
   INCLUSIVE: 'Plane', LINGUA: 'Plane', SYSTEM: 'Shell', INTEGRATION: 'Shell',
-  EVOLUTION: 'Shell', ENGINEER: 'Atlas', ATLAS: 'Atlas',
+  ENGINEER: 'Atlas', ATLAS: 'Atlas',
 };
 
 interface VaultEntry {
