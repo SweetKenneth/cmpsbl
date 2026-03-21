@@ -47,10 +47,10 @@ const freeTools = [
 
 // Premium engine tiers
 const engineTiers = [
-  { name: "Free", price: "Free", engines: "30 + 1 meta", color: "from-slate-400 to-slate-500" },
+  { name: "Builder", price: "Free", engines: "30 + 1 meta", color: "from-slate-400 to-slate-500" },
+  { name: "Studio", price: "$29", engines: "50 + 4 meta", color: "from-emerald-400 to-emerald-600" },
   { name: "Creator", price: "$49", engines: "76 + 8 meta", color: "from-cyan-400 to-cyan-600" },
-  { name: "Architect", price: "$149", engines: "76 + 16 meta", color: "from-violet-400 to-violet-600", featured: true },
-  { name: "Enterprise", price: "Custom", engines: "76 + 24 meta", color: "from-amber-400 to-amber-600" },
+  { name: "Architect", price: "$79", engines: "76 + 16 meta", color: "from-violet-400 to-violet-600", featured: true },
 ];
 
 // Floating particle with reduced motion for mobile
