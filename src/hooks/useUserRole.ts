@@ -19,7 +19,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-export type SubstrateRole = 'free' | 'creator' | 'studio' | 'architect' | 'governor';
+export type SubstrateRole = 'free' | 'studio' | 'creator' | 'architect' | 'governor';
 
 interface UserRoleState {
   role: SubstrateRole;
