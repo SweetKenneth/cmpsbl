@@ -318,7 +318,7 @@ export function WhySubstrate() {
              <Hammer className="w-3 h-3 text-primary" />
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
-           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
              Nine Systems.{" "}
              <span 
                className="inline-block"
