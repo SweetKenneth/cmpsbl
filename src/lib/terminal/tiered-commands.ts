@@ -5,7 +5,7 @@
  * Tiers unlock deeper control surfaces progressively.
  */
 
-export type CommandTier = 'free' | 'creator' | 'studio' | 'architect' | 'governor';
+export type CommandTier = 'free' | 'studio' | 'creator' | 'architect' | 'governor';
 
 export interface TieredCommand {
   command: string;
