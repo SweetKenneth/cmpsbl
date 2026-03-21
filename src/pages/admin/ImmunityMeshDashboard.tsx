@@ -27,7 +27,7 @@ import { useSubstrateVoice } from "@/components/substrate-os/audio";
 import { motion, AnimatePresence } from "framer-motion";
 import { getSharedRuleStats, getSharedRules, type SharedRule } from "@/immune/shared-rule-registry";
 import { getSkillStats, type SkillRecord } from "@/lib/shadow/shadowBuild";
-import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/modernizerShadow";
+import { getPerformanceSummary, getPerformanceStats, type PerformanceEntry, type GapCategory, type ModernizerShadowReport } from "@/lib/shadow/evolution-shadow";
 import { getSkillTier, getTierProgress, type SkillTierInfo } from "@/lib/substrate/skill-tiers";
 import { verifyCode, type CodeVerificationResult } from "@/lib/substrate/code-verification";
 import { promotionService } from "@/lib/evolution-mesh/promotion-service";
