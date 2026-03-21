@@ -550,9 +550,9 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
       const { error: discError } = await supabase.from('discoveries').upsert(rows, { onConflict: 'id' });
       if (discError) console.error('Failed to persist discoveries:', discError);
 
-      // 9. AUTO-PROMOTE — discoveries with CJPI ≥ 90 are promoted to vault_promotions
+      // 9. AUTO-PROMOTE — discoveries with CJPI ≥ 95 are promoted to S-Tier vault
       if (!config.dryRun) {
-        const promotable = accepted.filter(c => c.cjpi >= 90 && c.tier);
+        const promotable = accepted.filter(c => c.cjpi >= 95 && c.tier);
         if (promotable.length > 0) {
           const promotionRows = promotable.map(c => ({
             discovery_id: c.id,
@@ -570,8 +570,34 @@ export async function runReactor(config: ReactorConfig, userId: string): Promise
           const { error: promoError } = await supabase
             .from('vault_promotions' as any)
             .upsert(promotionRows, { onConflict: 'discovery_id' });
-          if (promoError) console.error('Failed to promote to vault:', promoError);
-          else console.log(`Auto-promoted ${promotable.length} discoveries to vault (CJPI ≥ 90)`);
+          if (promoError) console.error('Failed to promote to S-Tier vault:', promoError);
+          else console.log(`[Reactor] S-Tier vault: ${promotable.length} discoveries promoted (CJPI ≥ 95)`);
+        }
+      }
+
+      // 10. FEED MEMORY STREAM — all accepted discoveries flow into pipeline_vault
+      // This is the continuous feed that makes the Memory Stream a living discovery engine
+      if (!config.dryRun && userId) {
+        try {
+          const memoryRows = accepted.map(c => ({
+            user_id: userId,
+            pipeline_name: c.name,
+            pipeline_score: c.cjpi,
+            pipeline_tier: c.tier ?? 'untiered',
+            pipeline_category: c.category,
+            system_chain: c.moduleChain,
+            pipeline_fingerprint: c.id,
+            valuation_display: null,
+            mine_result_id: run.id,
+          }));
+          // Upsert by fingerprint to avoid duplicates across runs
+          const { error: memError } = await supabase
+            .from('pipeline_vault')
+            .upsert(memoryRows, { onConflict: 'pipeline_fingerprint', ignoreDuplicates: true });
+          if (memError) console.warn('[Reactor] Memory Stream feed error (non-fatal):', memError.message);
+          else console.log(`[Reactor] Memory Stream: ${accepted.length} discoveries fed`);
+        } catch (memErr) {
+          console.warn('[Reactor] Memory Stream feed failed (non-fatal):', memErr);
         }
       }
     }
