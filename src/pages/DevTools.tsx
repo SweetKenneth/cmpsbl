@@ -300,6 +300,9 @@ export default function DevTools() {
                 </CardContent>
               </Card>
 
+              {/* NPM Packages Grid */}
+              <NpmPackagesGrid />
+
               {/* Node Overview */}
               <div>
                 <h2 className="text-xl font-semibold mb-4">Available Nodes</h2>
