@@ -96,7 +96,7 @@ export const TIERED_COMMANDS: TieredCommand[] = [
   { command: 'chaos inject', description: 'Inject controlled chaos for resilience testing', tier: 'governor', category: 'governance' },
 ];
 
-const TIER_ORDER: CommandTier[] = ['free', 'creator', 'studio', 'architect', 'governor'];
+const TIER_ORDER: CommandTier[] = ['free', 'studio', 'creator', 'architect', 'governor'];
 
 /**
  * Get all commands available to a given tier (includes inherited).
