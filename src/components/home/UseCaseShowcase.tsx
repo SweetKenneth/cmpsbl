@@ -152,7 +152,7 @@ export function UseCaseShowcase() {
               Tomorrow
             </span>
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Production-ready applications crystallized from the Memory Stream today, and the transformative possibilities on the horizon.
           </p>
         </motion.div>
