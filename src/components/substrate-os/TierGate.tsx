@@ -19,9 +19,9 @@ import { cn } from '@/lib/utils';
 const TIER_ORDER: SubstrateRole[] = ['free', 'studio', 'creator', 'architect', 'governor'];
 
 const TIER_LABELS: Record<SubstrateRole, string> = {
-  free: 'Free',
-  creator: 'Creator',
+  free: 'Builder',
   studio: 'Studio',
+  creator: 'Creator',
   architect: 'Architect',
   governor: 'Governor',
 };

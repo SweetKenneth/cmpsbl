@@ -193,23 +193,12 @@ export function CmpsblNav() {
     ? Math.round(Math.min(dropdownAnchor.left, window.innerWidth - 360))
     : 0;
 
-  const [bannerVisible, setBannerVisible] = useState(() => {
-    try { return sessionStorage.getItem('npm-banner-dismissed') !== '1'; } catch { return true; }
-  });
-
-  const dismissBanner = useCallback(() => {
-    setBannerVisible(false);
-    try { sessionStorage.setItem('npm-banner-dismissed', '1'); } catch {}
-  }, []);
-
-  const bannerHeight = bannerVisible ? 36 : 0;
+  const bannerHeight = 36;
 
   return (
     <>
-      {/* ═══ NPM ANNOUNCEMENT BANNER ═══ */}
-      <AnimatePresence>
-        {bannerVisible && <NpmAnnouncementBanner onDismiss={dismissBanner} />}
-      </AnimatePresence>
+      {/* ═══ NPM ANNOUNCEMENT BANNER (permanent) ═══ */}
+      <NpmAnnouncementBanner />
 
       {/* ═══ DESKTOP NAV ═══ */}
       <motion.header
