@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
+import { NpmAnnouncementBanner } from "./NpmAnnouncementBanner";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Menu,
