@@ -1,6 +1,6 @@
 /**
  * DifferentiationSection — Dream · Remember · Adapt · Self-Improve
- * Technical but accessible explanation of what makes CMPSBL fundamentally different.
+ * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
 import { motion } from "framer-motion";
@@ -17,11 +17,10 @@ const pillars = [
     description: "Offline synthesis cycles consolidate memories, extract latent patterns, and generate novel insights — without consuming active compute. Your system learns even when no one is using it.",
     link: "/blog/clockless-modules-deep-dive",
     linkLabel: "How DREAM works",
-    color: "from-violet-500 to-purple-600",
-    iconBg: "bg-violet-500/10",
-    iconColor: "text-violet-500",
-    borderColor: "border-violet-500/20",
-    glowColor: "violet",
+    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
+    iconColor: "text-[hsl(var(--neon-purple))]",
+    borderColor: "border-[hsl(var(--neon-purple)/0.2)]",
   },
   {
     icon: Brain,
@@ -30,11 +29,10 @@ const pillars = [
     description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall. Context carries across sessions, deployments, and infrastructure changes. Nothing resets.",
     link: "/persistent-memory",
     linkLabel: "Explore memory tiers",
-    color: "from-cyan-500 to-blue-600",
-    iconBg: "bg-cyan-500/10",
-    iconColor: "text-cyan-500",
-    borderColor: "border-cyan-500/20",
-    glowColor: "cyan",
+    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
+    iconBg: "bg-[hsl(var(--neon-cyan)/0.1)]",
+    iconColor: "text-[hsl(var(--neon-cyan))]",
+    borderColor: "border-[hsl(var(--neon-cyan)/0.2)]",
   },
   {
     icon: RefreshCw,
@@ -43,11 +41,10 @@ const pillars = [
     description: "The runtime adjusts routing, cost allocation, and operational parameters based on real-world performance — within strict governance boundaries. Adaptation is a system property, not an afterthought.",
     link: "/blog/clockless-what-makes-it-different",
     linkLabel: "Why governed adaptation matters",
-    color: "from-emerald-500 to-teal-600",
-    iconBg: "bg-emerald-500/10",
-    iconColor: "text-emerald-500",
-    borderColor: "border-emerald-500/20",
-    glowColor: "emerald",
+    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-magenta)/0.1)]",
+    iconColor: "text-[hsl(var(--neon-magenta))]",
+    borderColor: "border-[hsl(var(--neon-magenta)/0.2)]",
   },
   {
     icon: TrendingUp,
@@ -56,11 +53,10 @@ const pillars = [
     description: "Every interaction feeds back into the system's understanding. Memories crystallize into reusable intelligence. Performance improves with usage — your infrastructure gets smarter the more you use it.",
     link: "/blog/clockless-account-setup-artifact-packs",
     linkLabel: "Start compounding",
-    color: "from-amber-500 to-orange-600",
-    iconBg: "bg-amber-500/10",
-    iconColor: "text-amber-500",
-    borderColor: "border-amber-500/20",
-    glowColor: "amber",
+    color: "from-[hsl(var(--primary))] to-[hsl(var(--neon-purple))]",
+    iconBg: "bg-primary/10",
+    iconColor: "text-primary",
+    borderColor: "border-primary/20",
   },
 ];
 
@@ -68,29 +64,19 @@ export function DifferentiationSection() {
   return (
     <section className="relative z-10 py-16 sm:py-28 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <div className="relative inline-block">
-            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">02</span>
-          </div>
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary px-4 py-1.5 gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
             <span className="text-xs font-semibold">Why Build Here</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Systems That{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               Dream · Adapt · Evolve
             </span>
           </h2>
@@ -100,7 +86,6 @@ export function DifferentiationSection() {
            </p>
         </motion.div>
 
-        {/* Pillar Grid */}
         <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
           {pillars.map((pillar, idx) => (
             <motion.div
@@ -117,11 +102,9 @@ export function DifferentiationSection() {
                 pillar.borderColor,
                 "hover:border-opacity-80"
               )}>
-                {/* Top accent — memory-stream bar + gradient */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] memory-stream-bar opacity-20 rounded-t-2xl" />
                 <div className={cn("absolute top-[2px] left-6 right-6 h-px bg-gradient-to-r opacity-30", pillar.color)} />
 
-                {/* Icon + Module name */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center", pillar.iconBg)}>
                     <pillar.icon className={cn("w-5 h-5", pillar.iconColor)} />
@@ -131,7 +114,6 @@ export function DifferentiationSection() {
                   </span>
                 </div>
 
-                {/* Content */}
                 <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">
                   {pillar.headline}
                 </h3>
@@ -139,7 +121,6 @@ export function DifferentiationSection() {
                   {pillar.description}
                 </p>
 
-                {/* Link */}
                 <Link
                   to={pillar.link}
                   className={cn(
