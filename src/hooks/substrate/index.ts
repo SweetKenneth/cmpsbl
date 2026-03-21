@@ -24,7 +24,7 @@ export { useIntegration, type UseIntegrationReturn } from './useIntegration';
 // Administrative Layer
 export { useSystem, type UseSystemReturn } from './useSystem';
 export { useInclusive, type UseInclusiveReturn } from './useInclusive';
-// MODERNIZER deprecated alias removed — useEvolution is at line 65 (CSZ)
+
 
 // Orchestrator Layer
 export { useCortex, type UseCortexReturn } from './useCortex';
@@ -72,7 +72,7 @@ export { useSEBAHook as useSEBA, type UseSEBAHookReturn } from './useSEBA';
 export { useTSAC, type UseTSACReturn } from './useTSAC';
 
 // Re-export existing specialized hooks from lib/substrate
-export { useSEBA as useSEBALegacy, type UseSEBAReturn } from '@/lib/substrate/seba/useSEBA';
+
 export { useCLM, type UseCLMReturn } from '@/lib/substrate/clm/useCLM';
 export { useModuleCLM, type UseModuleCLMReturn } from '@/lib/substrate/module-clm/useModuleCLM';
 export { useCapabilities, type UseCapabilitiesReturn } from '@/lib/substrate/capabilities/useCapabilities';
