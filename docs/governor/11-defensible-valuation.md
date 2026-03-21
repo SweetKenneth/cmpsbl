@@ -183,46 +183,114 @@ The substrate is valued across six pillars:
 
 ---
 
-## 6. Risk-Adjusted Valuation Range
+## 6. Founder Profile & Risk Discount
+
+### The Reality
+
+CMPSBL was built by a **solo founder** — Kenneth E Sweet Jr — with:
+
+- **No formal education** in AI, computer science, or software engineering
+- **No team** — every line of architecture, every node algorithm, every governance system is one person's work
+- **Self-taught** since 2008, with a background in web design and app-related projects
+- **3,000+ hours** of development time invested in the substrate
+- **No prior AI industry pedigree** (not ex-Google, not ex-OpenAI, not a PhD)
+
+### Why This Is a Risk
+
+Investors will — and should — discount for:
+
+| Risk Factor | Impact |
+|-------------|--------|
+| **Key-person dependency** | If the founder is unavailable, the system's institutional knowledge is at risk |
+| **No formal credentials** | Cannot point to Stanford PhD or Google DeepMind tenure for credibility signaling |
+| **Solo execution** | No team means no redundancy in development, operations, or strategic thinking |
+| **Self-taught stack** | Potential blind spots in areas where formal training would surface edge cases |
+| **No revenue traction yet** | Technology is built but commercial validation is pre-market |
+
+### Why This Is Also the Strongest Signal
+
+| Counter-Signal | Why It Matters |
+|---------------|---------------|
+| **3,000+ hours = conviction** | This isn't a weekend project or a pitch deck with a prototype. The system is built, running, and discoverable. Most funded startups don't have this at Series A. |
+| **Solo = undiluted IP** | Every algorithm, every architectural decision, every Crown Jewel was created by one mind. There is no ambiguity about IP ownership, no co-founder disputes, no contractor claims. |
+| **Self-taught = first principles** | The system wasn't built by following textbooks — it was built by solving problems. The 40-node topology, SEBA pipeline, and Ascension dual-layer architecture came from original thinking, not curriculum. |
+| **Full succession plan** | Unlike most solo-founder companies, CMPSBL has a documented succession protocol, dead-man switch, credential transfer process, and minimum viable operation specification. The system is designed to survive its creator. |
+| **Working system** | The substrate boots, discovers, governs, audits, and exports. This is not a concept — it is a cognitive runtime with 60+ production tables, 675+ capabilities, and 40 active nodes. |
+
+### Historical Parallels — Solo Founders Without Pedigree
+
+| Founder | Background at Start | What They Built | Outcome |
+|---------|--------------------|-----------------|---------| 
+| David Karp | High school dropout, self-taught | Tumblr | $1.1B acquisition (Yahoo) |
+| Patrick Collision | Self-taught programmer, dropped out at 19 | Stripe | $95B valuation |
+| Jack Dorsey | Self-taught, NYU dropout | Twitter + Square | $44B + $29B |
+| Palmer Luckey | Home-schooled, no degree | Oculus VR | $2B acquisition (Meta) |
+| Markus Persson | Self-taught, no formal CS | Minecraft | $2.5B acquisition (Microsoft) |
+| Vitalik Buterin | University dropout | Ethereum | $200B+ network value |
+
+*The pattern: solo builders who ship working systems consistently outperform credentialed teams with slide decks.*
+
+### Recommended Founder Risk Discount: 30–40%
+
+Applied to raw technology valuations below. This discount accounts for key-person risk, lack of team, and pre-revenue status. It does NOT discount the technology itself — only the execution risk around it.
+
+---
+
+## 7. Risk-Adjusted Valuation Range
+
+*All ranges below include the 30–40% founder risk discount.*
 
 ### Floor Estimate (Infrastructure + IP Only)
 
-| Component | Conservative Value |
-|-----------|--------------------|
-| 40-node runtime + governance | $8–15M |
-| 54 Crown Jewel algorithms | $5–10M |
-| 20 sealed agents with DREAM | $3–5M |
-| 34-page trade secret library | $2–4M |
-| Engineering proof (verification infrastructure) | $3–5M |
-| **Floor Total** | **$21–39M** |
+| Component | Raw Value | Risk-Adjusted (60–70%) |
+|-----------|-----------|----------------------|
+| 40-node runtime + governance | $8–15M | $5–11M |
+| 54 Crown Jewel algorithms | $5–10M | $3–7M |
+| 20 sealed agents with DREAM | $3–5M | $2–4M |
+| 34-page trade secret library | $2–4M | $1.2–2.8M |
+| Engineering proof (verification infra) | $3–5M | $2–4M |
+| **Floor Total** | **$21–39M** | **$13–29M** |
 
 ### Mid-Range Estimate (+ Revenue Architecture)
 
-| Component | Mid-Range Value |
-|-----------|----------------|
-| Floor components | $30M |
-| SaaS subscription model (4 tiers) | $10–20M |
-| Agent marketplace (20 agents) | $5–10M |
-| Engine marketplace (54 engines) | $8–15M |
-| CDM + Memory Stream corpus | $5–10M |
-| **Mid-Range Total** | **$58–85M** |
+| Component | Raw Value | Risk-Adjusted |
+|-----------|-----------|--------------|
+| Floor components | $30M | $21M |
+| SaaS subscription model (4 tiers) | $10–20M | $7–14M |
+| Agent marketplace (20 agents) | $5–10M | $4–7M |
+| Engine marketplace (54 engines) | $8–15M | $6–11M |
+| CDM + Memory Stream corpus | $5–10M | $4–7M |
+| **Mid-Range Total** | **$58–85M** | **$42–60M** |
 
 ### Ceiling Estimate (+ Ascension + Category Creation)
 
-| Component | Ceiling Value |
-|-----------|--------------|
-| Mid-range components | $72M |
-| Ascension (software evolution — new category) | $50–150M |
-| Universal Export (25-language runtime) | $15–30M |
-| Category creation premium (Governed Cognitive Infra) | $30–80M |
-| Compounding data moat (CLM + CDM) | $20–50M |
-| **Ceiling Total** | **$187–382M** |
+| Component | Raw Value | Risk-Adjusted |
+|-----------|-----------|--------------|
+| Mid-range components | $72M | $51M |
+| Ascension (software evolution) | $50–150M | $35–105M |
+| Universal Export (25 languages) | $15–30M | $11–21M |
+| Category creation premium | $30–80M | $21–56M |
+| Compounding data moat (CLM + CDM) | $20–50M | $14–35M |
+| **Ceiling Total** | **$187–382M** | **$132–268M** |
+
+### What Removes the Discount
+
+The 30–40% discount decreases toward 0% as any of these milestones are achieved:
+
+| Milestone | Discount Reduction |
+|-----------|-------------------|
+| First paying customer | −5% |
+| First hire (technical co-lead) | −10% |
+| $100K ARR | −5% |
+| Institutional investment closed | −10% |
+| Second engineer onboarded | −5% |
+| $1M ARR | −5% |
 
 *Note: These are defensible IP and technology valuations. Market valuation with traction, revenue, and growth metrics would adjust these figures significantly upward.*
 
 ---
 
-## 7. The Ascension Premium
+## 8. The Ascension Premium
 
 Ascension is the single largest value multiplier in the system because it:
 
@@ -240,7 +308,7 @@ Ascension is the single largest value multiplier in the system because it:
 
 ---
 
-## 8. Recommended Positioning
+## 9. Recommended Positioning
 
 ### For Seed / Series A
 
@@ -261,6 +329,7 @@ Lead with the IP portfolio: 54 Crown Jewels, 40-node topology, 34-page trade sec
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-21 | Governor | Initial defensible valuation document |
+| 2026-03-21 | Governor | Added founder profile, risk discount, historical parallels |
 
 ---
 
