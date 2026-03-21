@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>02 — Governance & Authority — CMPSBL®</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --fg: hsl(220 15% 15%);
+  --fg-muted: hsl(220 10% 40%);
+  --bg: hsl(0 0% 100%);
+  --primary: hsl(210 60% 45%);
+  --border: hsl(220 10% 85%);
+  --muted-bg: hsl(220 10% 96%);
+  --destructive: hsl(0 70% 50%);
+  --accent: hsl(45 90% 50%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.doc-header .brand {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+  margin-bottom: 0.5rem;
+}
+
+.doc-header .doc-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  float: right;
+}
+
+.doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  background: var(--muted-bg);
+}
+
+.badge.primary {
+  border-color: hsl(210 60% 45% / 0.3);
+  color: var(--primary);
+  background: hsl(210 60% 45% / 0.06);
+}
+
+.badge.sealed {
+  border-color: hsl(0 70% 50% / 0.25);
+  color: var(--destructive);
+  background: hsl(0 70% 50% / 0.05);
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+p { margin-bottom: 0.85rem; }
+strong { font-weight: 600; color: var(--fg); }
+em { font-style: italic; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+a:hover { border-bottom-color: var(--primary); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.25rem;
+  font-size: 0.875rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+}
+
+th {
+  background: var(--muted-bg);
+  font-weight: 600;
+  color: var(--fg);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+td { color: var(--fg); }
+tr:nth-child(even) td { background: hsl(220 10% 98%); }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: hsl(210 60% 45% / 0.06);
+  color: var(--primary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--muted-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--fg);
+}
+
+ul, ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+li::marker { color: var(--fg-muted); }
+
+blockquote {
+  border-left: 3px solid var(--primary);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsl(210 60% 45% / 0.04);
+  color: var(--fg-muted);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.doc-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  text-align: center;
+}
+
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+}
+.print-btn:hover { opacity: 0.9; }
+
+@media print {
+  body { padding: 0; max-width: 100%; font-size: 12pt; }
+  .print-btn { display: none !important; }
+  h1 { font-size: 18pt; }
+  h2 { font-size: 14pt; break-after: avoid; }
+  h3 { font-size: 12pt; break-after: avoid; }
+  table { break-inside: avoid; font-size: 9pt; }
+  pre { break-inside: avoid; font-size: 8pt; }
+  blockquote { break-inside: avoid; }
+  a { color: var(--fg); border-bottom: none; }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: var(--fg-muted);
+  }
+  .doc-footer { break-before: avoid; }
+  @page { margin: 2cm; }
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+<div class="doc-header">
+  <span class="doc-id">GOVERNOR-02</span>
+  <div class="brand">CMPSBL® Documentation</div>
+  <h1>02 — Governance & Authority</h1>
+  <div class="doc-meta">
+    <span class="badge primary">GOVERNOR</span>
+    <span class="badge">v14.1.0</span>
+    <span class="badge">March 21, 2026</span>
+  </div>
+</div>
+
+
+<p><strong>Classification:</strong> 🔒 GOVERNOR EYES ONLY</p>
+<hr />
+<h2>1. Your Role</h2>
+<p>You are the <strong>single human authority</strong> with ultimate decision-making power over the CMPSBL substrate. You:</p>
+<ul>
+<li>Approve or reject evolution proposals that exceed auto-promotion confidence</li>
+<li>Set system-wide policy via the GOVERNANCE plane</li>
+<li>Have override authority on all automated decisions</li>
+<li>Own the credential transfer and succession plan</li>
+<li>Bear responsibility for the system's ethical boundaries</li>
+</ul>
+<hr />
+<h2>2. Autonomy Levels</h2>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Full Autonomy</strong></td>
+<td>System acts without approval</td>
+<td>Health monitoring, telemetry, cache, CLM cycling, memory tier enforcement</td>
+</tr>
+<tr>
+<td><strong>Guided Autonomy</strong></td>
+<td>System acts with soft constraints</td>
+<td>NEXUS routing, provider selection, cost optimization, INTENT scoring</td>
+</tr>
+<tr>
+<td><strong>Supervised</strong></td>
+<td>System proposes, you approve</td>
+<td>Config changes, capability promotion, policy updates, ENGINEER proposals</td>
+</tr>
+<tr>
+<td><strong>Restricted</strong></td>
+<td>You initiate, system executes</td>
+<td>Credential rotation, tier changes, data deletion, governance mode switching</td>
+</tr>
+<tr>
+<td><strong>Forbidden</strong></td>
+<td>No execution path exists</td>
+<td>Disabling AUDIT, bypassing DEFENSE, modifying GOVERNANCE logic</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Decision Authority Matrix</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Auto</th>
+<th>Governor Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mutation with confidence ≥ 0.95</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Mutation with confidence 0.85–0.94</td>
+<td>❌</td>
+<td>✅ (review)</td>
+</tr>
+<tr>
+<td>Mutation with confidence &lt; 0.70</td>
+<td>❌ Rejected</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Circuit breaker open</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Cascade arrest</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Module quarantine</td>
+<td>✅</td>
+<td>Notified</td>
+</tr>
+<tr>
+<td>Evolution pipeline reset</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Governance policy change</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Emergency shutdown</td>
+<td>✅ (if P0)</td>
+<td>Notified</td>
+</tr>
+<tr>
+<td>Secret rotation</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Tier/pricing changes</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>IP protection override</td>
+<td>❌</td>
+<td>✅ (red line)</td>
+</tr>
+<tr>
+<td>Agent deployment</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>AutoBlog publish override</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Disaster recovery backup</td>
+<td>❌</td>
+<td>✅ (admin-initiated)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>4. Governance Modes</h2>
+<p>You can set the system operating mode via ATLAS:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ACTIVE</strong></td>
+<td>Full governance enforcement, all approvals required</td>
+<td>Default / normal operation</td>
+</tr>
+<tr>
+<td><strong>OBSERVE</strong></td>
+<td>Governance monitors but does not block; logs for review</td>
+<td>Diagnostic assessment</td>
+</tr>
+<tr>
+<td><strong>LOCKDOWN</strong></td>
+<td>No mutations permitted; read-only operation</td>
+<td>Security incident, emergency</td>
+</tr>
+<tr>
+<td><strong>EVOLVE</strong></td>
+<td>Relaxed gates for controlled experimentation (shadow only)</td>
+<td>Accelerated evolution cycles</td>
+</tr>
+</tbody>
+</table>
+<h3>Mode Transitions</h3>
+<ul>
+<li>ACTIVE → OBSERVE (manual)</li>
+<li>ACTIVE → LOCKDOWN (manual or automatic on critical alert)</li>
+<li>ACTIVE → EVOLVE (manual, requires your confirmation)</li>
+<li>LOCKDOWN → ACTIVE (manual, requires health verification)</li>
+<li>EVOLVE → ACTIVE (manual or automatic after target met)</li>
+</ul>
+<hr />
+<h2>5. Red Lines — Non-Negotiable Boundaries</h2>
+<p>These MUST NEVER be crossed, regardless of circumstances:</p>
+<ol>
+<li><strong>No source code exposure</strong> for sealed cognitives or crown jewel algorithms</li>
+<li><strong>No governance self-modification</strong> — SEBA cannot change its own constraints</li>
+<li><strong>No user data leakage</strong> — PII never leaves the tenant boundary</li>
+<li><strong>No unauthorized environment deployment</strong> — environment signature lock is absolute</li>
+<li><strong>No audit trail tampering</strong> — Merkle chain integrity is sacrosanct</li>
+<li><strong>No bypass of promotion gates</strong> — all 7 SEBA gates must pass</li>
+<li><strong>No cross-tenant data access</strong> — isolation is absolute</li>
+<li><strong>No agent runtime escape</strong> — sealed isolation is enforced</li>
+<li><strong>No disabling CLM</strong> — continuous learning is a system property</li>
+<li><strong>No TSAC bypass</strong> — truth preservation is mandatory for all evolution</li>
+</ol>
+<hr />
+<h2>6. Escalation Model</h2>
+<pre><code>Level 0: Module handles autonomously
+    ↓ (unresolvable)
+Level 1: CORTEX pipeline reroutes
+    ↓ (policy conflict)
+Level 2: GOVERNANCE evaluates / INTENT Mesh translates
+    ↓ (governance deadlock)
+Level 3: Human override (via ATLAS Node Inbox) ← YOU
+    ↓ (system-critical)
+Level 4: Emergency shutdown (CORE kill switch)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Trigger</th>
+<th>Response Time</th>
+<th>Authority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Routine operation</td>
+<td>Immediate</td>
+<td>Module</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Module failure</td>
+<td>&lt; 1s</td>
+<td>CORTEX</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Policy violation</td>
+<td>&lt; 5s</td>
+<td>GOVERNANCE / INTENT</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Governance deadlock</td>
+<td>Operator-dependent</td>
+<td><strong>Governor</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>System-critical failure</td>
+<td>Immediate</td>
+<td>CORE</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>7. Human Override Protocol</h2>
+<p>When you exercise override authority:</p>
+<ol>
+<li>You authenticate via admin credentials</li>
+<li>Override request is logged in AUDIT before execution</li>
+<li>GOVERNANCE records the override with your identity and justification</li>
+<li>Override is applied with automatic 30-minute monitoring</li>
+<li>If override causes degradation, automatic rollback triggers</li>
+<li>All overrides visible in ATLAS Node Inbox history</li>
+</ol>
+<hr />
+<h2>8. Abuse Prevention (What the System Guards Against)</h2>
+<table>
+<thead>
+<tr>
+<th>Vector</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Excessive API calls</td>
+<td>Ironclad rate limiting (per-key, per-IP, per-module)</td>
+</tr>
+<tr>
+<td>Credential stuffing</td>
+<td>Behavioral analysis, progressive delays</td>
+</tr>
+<tr>
+<td>Privilege escalation</td>
+<td>RBAC enforcement, Crown Jewel isolation</td>
+</tr>
+<tr>
+<td>Data exfiltration</td>
+<td>RLS, query limits, anomaly detection</td>
+</tr>
+<tr>
+<td>Prompt injection</td>
+<td>DECODE sanitization, DEFENSE payload analysis</td>
+</tr>
+<tr>
+<td>Self-modification</td>
+<td>Immutable governance logic, boot protection</td>
+</tr>
+<tr>
+<td>Agent escape</td>
+<td>Sealed runtime, source-blocked execution</td>
+</tr>
+<tr>
+<td>Cost inflation</td>
+<td>ECONOMY quotas, NEXUS cost ledger, budget caps</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>© 2025–2026 PromptFluid®. Governor Eyes Only.</p>
+
+<div class="doc-footer">
+  © 2025–2026 PromptFluid® — CMPSBL® Cognitive Infrastructure Layer for AI<br>
+  cmpsbl.ai • Confidential
+</div>
+
+</body>
+</html>

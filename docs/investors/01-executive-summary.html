@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 — Executive Summary — CMPSBL®</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --fg: hsl(220 15% 15%);
+  --fg-muted: hsl(220 10% 40%);
+  --bg: hsl(0 0% 100%);
+  --primary: hsl(210 60% 45%);
+  --border: hsl(220 10% 85%);
+  --muted-bg: hsl(220 10% 96%);
+  --destructive: hsl(0 70% 50%);
+  --accent: hsl(45 90% 50%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.doc-header .brand {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+  margin-bottom: 0.5rem;
+}
+
+.doc-header .doc-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  float: right;
+}
+
+.doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  background: var(--muted-bg);
+}
+
+.badge.primary {
+  border-color: hsl(210 60% 45% / 0.3);
+  color: var(--primary);
+  background: hsl(210 60% 45% / 0.06);
+}
+
+.badge.sealed {
+  border-color: hsl(0 70% 50% / 0.25);
+  color: var(--destructive);
+  background: hsl(0 70% 50% / 0.05);
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+p { margin-bottom: 0.85rem; }
+strong { font-weight: 600; color: var(--fg); }
+em { font-style: italic; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+a:hover { border-bottom-color: var(--primary); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.25rem;
+  font-size: 0.875rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+}
+
+th {
+  background: var(--muted-bg);
+  font-weight: 600;
+  color: var(--fg);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+td { color: var(--fg); }
+tr:nth-child(even) td { background: hsl(220 10% 98%); }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: hsl(210 60% 45% / 0.06);
+  color: var(--primary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--muted-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--fg);
+}
+
+ul, ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+li::marker { color: var(--fg-muted); }
+
+blockquote {
+  border-left: 3px solid var(--primary);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsl(210 60% 45% / 0.04);
+  color: var(--fg-muted);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.doc-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  text-align: center;
+}
+
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+}
+.print-btn:hover { opacity: 0.9; }
+
+@media print {
+  body { padding: 0; max-width: 100%; font-size: 12pt; }
+  .print-btn { display: none !important; }
+  h1 { font-size: 18pt; }
+  h2 { font-size: 14pt; break-after: avoid; }
+  h3 { font-size: 12pt; break-after: avoid; }
+  table { break-inside: avoid; font-size: 9pt; }
+  pre { break-inside: avoid; font-size: 8pt; }
+  blockquote { break-inside: avoid; }
+  a { color: var(--fg); border-bottom: none; }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: var(--fg-muted);
+  }
+  .doc-footer { break-before: avoid; }
+  @page { margin: 2cm; }
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+<div class="doc-header">
+  <span class="doc-id">INVESTOR-01</span>
+  <div class="brand">CMPSBL® Documentation</div>
+  <h1>01 — Executive Summary</h1>
+  <div class="doc-meta">
+    <span class="badge primary">INVESTOR</span>
+    <span class="badge">v14.1.0</span>
+    <span class="badge">March 21, 2026</span>
+  </div>
+</div>
+
+
+<p><strong>Classification:</strong> CONFIDENTIAL — Investor Use</p>
+<hr />
+<h2>The Problem</h2>
+<p>Current AI systems are <strong>stateless, ungoverned, and fragile</strong>. They lack:</p>
+<ul>
+<li>Persistent memory across sessions</li>
+<li>Governance over autonomous actions</li>
+<li>Observability into what the system is doing and why</li>
+<li>Validated evolution mechanisms</li>
+<li>Multi-agent coordination with economic accountability</li>
+<li>Security designed for adversarial environments</li>
+<li>Continuous learning that compounds knowledge</li>
+<li>Disaster recovery enabling full reconstruction</li>
+</ul>
+<p>These gaps make AI systems unsuitable for production infrastructure, enterprise deployment, and regulated environments.</p>
+<hr />
+<h2>The Solution</h2>
+<p>CMPSBL is a <strong>cognitive orchestration substrate</strong> — a runtime infrastructure layer providing governed, persistent, and self-evolving AI agent execution. It is not an application, chatbot, or model. It is the operating surface on which intelligent systems run.</p>
+<hr />
+<h2>Key Numbers</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Matrix nodes</td>
+<td>40 across 12 sectors</td>
+</tr>
+<tr>
+<td>Registered capabilities</td>
+<td>675+</td>
+</tr>
+<tr>
+<td>Premium engines</td>
+<td>54 across 4 price tiers</td>
+</tr>
+<tr>
+<td>Database tables</td>
+<td>60+ production tables</td>
+</tr>
+<tr>
+<td>Terminal commands</td>
+<td>500+</td>
+</tr>
+<tr>
+<td>Documentation pages</td>
+<td>80+ across 5 tiers</td>
+</tr>
+<tr>
+<td>Internal library</td>
+<td>34 classified documents</td>
+</tr>
+<tr>
+<td>Cognitive agents</td>
+<td>20 sealed-runtime agents</td>
+</tr>
+<tr>
+<td>Target export languages</td>
+<td>25 (18 software, 7 HDL)</td>
+</tr>
+<tr>
+<td>CLM training calls/day</td>
+<td>Up to 14,400</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Why This Matters</h2>
+<p>CMPSBL is the <strong>only AI orchestration system</strong> where:</p>
+<ol>
+<li><strong>Governance is architectural</strong> — enforced by code, not policy</li>
+<li><strong>Evolution is validated</strong> — 7-gate pipeline with truth preservation</li>
+<li><strong>Memory is persistent and tiered</strong> — 4-tier, capacity-enforced</li>
+<li><strong>Agents are sealed</strong> — source-blocked, memory-isolated runtimes</li>
+<li><strong>Audit is tamper-evident</strong> — Merkle chain integrity verification</li>
+<li><strong>Learning is continuous</strong> — CLM compounds knowledge 24/7</li>
+<li><strong>Recovery is one-click</strong> — full system state in a single portable archive</li>
+</ol>
+<hr />
+<h2>Business Model</h2>
+<table>
+<thead>
+<tr>
+<th>Revenue Stream</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SaaS Subscriptions</td>
+<td>Free / Pro / Enterprise tiers</td>
+</tr>
+<tr>
+<td>Agent Marketplace</td>
+<td>20 agents across 4 price tiers ($0–$159/agent)</td>
+</tr>
+<tr>
+<td>Engine Marketplace</td>
+<td>54 premium engines across META, APEX, ELITE, CORE tiers</td>
+</tr>
+<tr>
+<td>Self-Hosted Licenses</td>
+<td>Full-control perpetual licenses</td>
+</tr>
+<tr>
+<td>Artifact Packs</td>
+<td>Exportable discovered pipelines</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Founder</h2>
+<p><strong>Kenneth E Sweet Jr</strong> · PromptFluid®<br />
+ORCID: <a href="https://orcid.org/0009-0001-4237-1243">0009-0001-4237-1243</a></p>
+<hr />
+<p>© 2025–2026 PromptFluid®. Confidential.</p>
+
+<div class="doc-footer">
+  © 2025–2026 PromptFluid® — CMPSBL® Cognitive Infrastructure Layer for AI<br>
+  cmpsbl.ai • Confidential
+</div>
+
+</body>
+</html>

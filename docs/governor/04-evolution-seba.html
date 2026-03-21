@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 — Evolution & SEBA Pipeline — CMPSBL®</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --fg: hsl(220 15% 15%);
+  --fg-muted: hsl(220 10% 40%);
+  --bg: hsl(0 0% 100%);
+  --primary: hsl(210 60% 45%);
+  --border: hsl(220 10% 85%);
+  --muted-bg: hsl(220 10% 96%);
+  --destructive: hsl(0 70% 50%);
+  --accent: hsl(45 90% 50%);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.7;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.doc-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.doc-header .brand {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+  margin-bottom: 0.5rem;
+}
+
+.doc-header .doc-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  float: right;
+}
+
+.doc-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  background: var(--muted-bg);
+}
+
+.badge.primary {
+  border-color: hsl(210 60% 45% / 0.3);
+  color: var(--primary);
+  background: hsl(210 60% 45% / 0.06);
+}
+
+.badge.sealed {
+  border-color: hsl(0 70% 50% / 0.25);
+  color: var(--destructive);
+  background: hsl(0 70% 50% / 0.05);
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+p { margin-bottom: 0.85rem; }
+strong { font-weight: 600; color: var(--fg); }
+em { font-style: italic; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+a:hover { border-bottom-color: var(--primary); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0 1.25rem;
+  font-size: 0.875rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+}
+
+th {
+  background: var(--muted-bg);
+  font-weight: 600;
+  color: var(--fg);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+td { color: var(--fg); }
+tr:nth-child(even) td { background: hsl(220 10% 98%); }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: hsl(210 60% 45% / 0.06);
+  color: var(--primary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--muted-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--fg);
+}
+
+ul, ol {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+li::marker { color: var(--fg-muted); }
+
+blockquote {
+  border-left: 3px solid var(--primary);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: hsl(210 60% 45% / 0.04);
+  color: var(--fg-muted);
+  border-radius: 0 6px 6px 0;
+  font-size: 0.9rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.doc-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  text-align: center;
+}
+
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  font-family: inherit;
+}
+.print-btn:hover { opacity: 0.9; }
+
+@media print {
+  body { padding: 0; max-width: 100%; font-size: 12pt; }
+  .print-btn { display: none !important; }
+  h1 { font-size: 18pt; }
+  h2 { font-size: 14pt; break-after: avoid; }
+  h3 { font-size: 12pt; break-after: avoid; }
+  table { break-inside: avoid; font-size: 9pt; }
+  pre { break-inside: avoid; font-size: 8pt; }
+  blockquote { break-inside: avoid; }
+  a { color: var(--fg); border-bottom: none; }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: var(--fg-muted);
+  }
+  .doc-footer { break-before: avoid; }
+  @page { margin: 2cm; }
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨 Print / Save as PDF</button>
+
+<div class="doc-header">
+  <span class="doc-id">GOVERNOR-04</span>
+  <div class="brand">CMPSBL® Documentation</div>
+  <h1>04 — Evolution & SEBA Pipeline</h1>
+  <div class="doc-meta">
+    <span class="badge primary">GOVERNOR</span>
+    <span class="badge">v14.1.0</span>
+    <span class="badge">March 21, 2026</span>
+  </div>
+</div>
+
+
+<p><strong>Classification:</strong> 🔒 GOVERNOR EYES ONLY</p>
+<hr />
+<h2>1. Evolution Philosophy</h2>
+<p>The substrate evolves through <strong>validated, auditable transitions</strong> — never ad-hoc changes. Every modification must pass the EVOLUTION module's shadow-run pipeline before production promotion. Evolution is a system property, not a deployment event.</p>
+<hr />
+<h2>2. CSZ Architecture (Covert Systems Zone)</h2>
+<table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>EVOLUTION</strong></td>
+<td>Proposal intake, SEBA pipeline orchestration, promotion execution</td>
+</tr>
+<tr>
+<td><strong>SHADOW</strong></td>
+<td>Isolated shadow runs, divergence scoring, behavioral comparison</td>
+</tr>
+<tr>
+<td><strong>PHANTOM</strong></td>
+<td>Decoy operations, threat detection, A/B variant testing</td>
+</tr>
+</tbody>
+</table>
+<p>The CSZ is zone-shielded — failures cannot propagate to production.</p>
+<hr />
+<h2>3. The 7-Gate SEBA Validation Pipeline</h2>
+<p>Every change must pass all 7 gates:</p>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Check</th>
+<th>Threshold</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Schema</td>
+<td>Migration compatibility</td>
+<td>Must pass</td>
+<td>EVOLUTION</td>
+</tr>
+<tr>
+<td>2. Behavioral</td>
+<td>Output equivalence vs. production</td>
+<td>≥ 95%</td>
+<td>SHADOW</td>
+</tr>
+<tr>
+<td>3. TSAC</td>
+<td>Truth Shadow Arbitration Check</td>
+<td>Divergence &lt; 0.05</td>
+<td>SHADOW</td>
+</tr>
+<tr>
+<td>4. Performance</td>
+<td>Latency regression</td>
+<td>&lt; 10% degradation</td>
+<td>EVOLUTION</td>
+</tr>
+<tr>
+<td>5. Error Rate</td>
+<td>Errors during shadow run</td>
+<td>&lt; 1%</td>
+<td>EVOLUTION</td>
+</tr>
+<tr>
+<td>6. GOVERNANCE</td>
+<td>Governor approval via Node Inbox</td>
+<td>Required</td>
+<td><strong>YOU</strong></td>
+</tr>
+<tr>
+<td>7. Security</td>
+<td>DEFENSE review (if trust boundary crossed)</td>
+<td>Required</td>
+<td>DEFENSE</td>
+</tr>
+</tbody>
+</table>
+<h3>TSAC (Gate 3)</h3>
+<p>TSAC ensures evolution candidates preserve system truth:<br />
+- Compares shadow output semantic equivalence against production baseline<br />
+- Detects meaning drift even when syntactic output differs<br />
+- Flags candidates that subtly alter behavior without explicit intent<br />
+- TSAC failures trigger <strong>mandatory governor review</strong> with full divergence report</p>
+<hr />
+<h2>4. Shadow Run Model</h2>
+<p>Shadow runs execute proposed changes against real inputs, writing results to isolated storage.</p>
+<pre><code>Proposal → Validation → Shadow Execution → Comparison → Scoring → Report
+                                                            ↓
+                                              [Pass] → Promotion Eligible
+                                              [Fail] → Deviation Report
+</code></pre>
+<p><strong>Divergence formula:</strong> <code>0.50 × output_div + 0.30 × latency_div + 0.20 × error_div</code></p>
+<ul>
+<li>&lt; 0.05: Pass</li>
+<li>0.05–0.15: Review required</li>
+<li>
+<blockquote>
+<p>0.15: Fail</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>Minimum 10 shadow cycles</strong> required before promotion eligibility.</p>
+<hr />
+<h2>5. Confidence Scoring</h2>
+<pre><code>confidence = 0.40 × behavioral_equivalence
+           + 0.20 × error_rate_score
+           + 0.15 × performance_score
+           + 0.15 × resource_score
+           + 0.10 × sample_size_score
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Classification</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.95–1.00</td>
+<td>High confidence</td>
+<td>Auto-eligible for promotion</td>
+</tr>
+<tr>
+<td>0.85–0.94</td>
+<td>Moderate</td>
+<td><strong>Manual review required (you)</strong></td>
+</tr>
+<tr>
+<td>0.70–0.84</td>
+<td>Low</td>
+<td>Additional shadow runs needed</td>
+</tr>
+<tr>
+<td>&lt; 0.70</td>
+<td>Insufficient</td>
+<td>Proposal rejected</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>6. Convergence Criteria</h2>
+<p>A change is converged when:<br />
+1. Minimum 10 shadow cycles completed<br />
+2. Confidence ≥ 0.95 for 3 consecutive cycles<br />
+3. No regression in any validation gate<br />
+4. GOVERNANCE has not vetoed<br />
+5. Rollback plan documented and tested<br />
+6. TSAC divergence &lt; 0.05 for all cycles</p>
+<hr />
+<h2>7. Rollback</h2>
+<h3>Automatic Rollback Triggers</h3>
+<ul>
+<li>Error rate &gt; 5% within 5 minutes of promotion</li>
+<li>CORE integrity &lt; 0.700</li>
+<li>Any Spine module enters circuit-breaker open</li>
+<li>GOVERNANCE post-promotion veto</li>
+<li>Ironclad detects bulkhead pressure exceeding threshold</li>
+<li>Scanner Orchestrator detects regression</li>
+</ul>
+<h3>Manual Rollback</h3>
+<ul>
+<li>One-click via Evolution Control Center (<code>/evolution</code>)</li>
+<li>Restores from snapshot + WAL replay</li>
+<li>Dry-run impact preview available before execution</li>
+<li>Logged in AUDIT with your identity and justification</li>
+</ul>
+<hr />
+<h2>8. Promotion Workflow</h2>
+<pre><code>Change Proposal
+  → EVOLUTION receives
+  → SHADOW run initiated (min 10 cycles)
+  → TSAC pass? → Confidence ≥ 0.95?
+  → GOVERNANCE review (Node Inbox) ← YOU APPROVE HERE
+  → Promotion to production
+  → 30-min Ironclad monitoring
+  → Stable? → Complete | Unstable? → Auto-rollback
+</code></pre>
+<hr />
+<h2>9. ENGINEER Integration</h2>
+<p>ENGINEER generates proposals based on:<br />
+- Health scans across 76 engines and 24 meta-engines<br />
+- CLM topic mastery signals<br />
+- INTEL enriched signals flagging optimization opportunities</p>
+<p>All ENGINEER proposals enter SEBA at Gate 1 — same pipeline as manual proposals.</p>
+<hr />
+<h2>10. Epoch History</h2>
+<table>
+<thead>
+<tr>
+<th>Epoch</th>
+<th>Versions</th>
+<th>Significance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INFRASTRUCTURE</td>
+<td>v1.0–v12.x</td>
+<td>The substrate grew organs</td>
+</tr>
+<tr>
+<td>IRONCLAD</td>
+<td>v13.0–v13.x</td>
+<td>The substrate grew armor</td>
+</tr>
+<tr>
+<td>MINDGAMES</td>
+<td>v14.0–current</td>
+<td>The substrate opened its eyes and saw users</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>© 2025–2026 PromptFluid®. Governor Eyes Only.</p>
+
+<div class="doc-footer">
+  © 2025–2026 PromptFluid® — CMPSBL® Cognitive Infrastructure Layer for AI<br>
+  cmpsbl.ai • Confidential
+</div>
+
+</body>
+</html>
