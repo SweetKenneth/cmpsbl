@@ -368,7 +368,7 @@ export function addRetentionPolicy(policy: Omit<DataRetentionPolicy, 'id'>): Dat
   // Warn if below framework minimum
   const min = FRAMEWORK_RETENTION_MINIMUMS[policy.framework];
   if (safeRetention < min) {
-    emit({ module: 'sovereign', event_type: 'retention_below_minimum', outcome: 'warning', data: { dataType: policy.dataType, retentionDays: safeRetention, frameworkMinimum: min } });
+    emit({ module: 'sovereign', event_type: 'retention_below_minimum', outcome: 'failed', data: { dataType: policy.dataType, retentionDays: safeRetention, frameworkMinimum: min } });
   }
 
   return full;

@@ -272,7 +272,7 @@ function enforceOperationTTLs(): void {
         op.status = 'expired';
         sanitizeOperation(op);
         state.expiredOperations++;
-        emit({ module: 'phantom', event_type: 'covert_op_expired', outcome: 'warning', data: { id: op.id, type: op.type } });
+        emit({ module: 'phantom', event_type: 'covert_op_expired', outcome: 'failed', data: { id: op.id, type: op.type } });
       }
     }
     recalculateOps();
