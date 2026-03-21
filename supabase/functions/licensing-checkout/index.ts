@@ -1,6 +1,6 @@
 /**
  * Licensing Checkout — Create Stripe checkout session for subscription tiers
- * Supports: Creator ($29/mo), Studio ($49/mo), Architect ($79/mo)
+ * Supports: Studio ($29/mo), Creator ($49/mo), Architect ($79/mo)
  * Aligned with licensing-products.ts UNIFIED_TIERS
  */
 
