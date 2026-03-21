@@ -28,8 +28,8 @@ const TIER_LABELS: Record<SubstrateRole, string> = {
 
 const TIER_COLORS: Record<SubstrateRole, string> = {
   free: 'text-muted-foreground',
-  creator: 'text-blue-400',
   studio: 'text-violet-400',
+  creator: 'text-blue-400',
   architect: 'text-amber-400',
   governor: 'text-primary',
 };
