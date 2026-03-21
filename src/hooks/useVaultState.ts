@@ -72,10 +72,10 @@ export function useVaultState() {
         (r: any) => !promotedIds.has(r.pipeline_fingerprint)
       );
 
-      setVaultCount(countRes.data ?? 0);
+      setVaultCount(filteredVault.length);
       setPullsToday(pullsRes.data ?? 0);
       setVault(
-        (vaultRes.data ?? []).map((r: any) => ({
+        filteredVault.map((r: any) => ({
           id: r.id,
           pipelineName: r.pipeline_name,
           pipelineScore: r.pipeline_score,
