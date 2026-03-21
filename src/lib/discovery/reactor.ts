@@ -65,14 +65,11 @@ export interface ReactorRunResult {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const CANONICAL_MODULES = [
-  // 40-node architecture (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
-  'BRAIN', 'MEMORY', 'CORTEX', 'DREAM', 'NEXUS', 'DECODE',
-  'DEFENSE', 'ACCESS', 'VISION', 'ANALYTICS', 'GOVERNANCE',
-  'SYSTEM', 'EVOLUTION', 'INTEGRATION', 'NERVE', 'INCLUSIVE',
-  'MEDIC', 'RIPPLE', 'AUDIT', 'IDENTITY',
-  // Expansion zones: ESZ, EPZ, EMZ
-  'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
-  'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
+  // Full 40-node matrix
+  'CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE', 'ENCODE', 'CORTEX', 'DEFENSE', 'ORACLE', 'CONSCIENCE',
+  'PHANTOM', 'HARVEST', 'EVOLUTION', 'SHADOW', 'IMMUNITY', 'INTENT', 'GOVERNANCE', 'ATLAS', 'FORGE', 'LINGUA',
+  'ECHO', 'SOVEREIGN', 'REFLEX', 'TREATY', 'ENGINEER', 'COMPASS', 'OBSERVER', 'RELAY', 'NEXUS', 'DREAM',
+  'PRISM', 'AUDIT', 'IDENTITY', 'MESH', 'ECONOMY', 'ACCESS', 'VISION', 'ANALYTICS', 'MEDIC', 'RIPPLE',
 ];
 
 const CATEGORIES: DiscoveryCategory[] = [
