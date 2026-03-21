@@ -341,10 +341,7 @@ export async function rollbackEvolution(runId: string): Promise<boolean> {
 import { SUBSTRATE_VERSION as _MV } from '@/lib/substrate/versions';
 export const EVOLUTION_VERSION = _MV;
 export const EVOLUTION_CODENAME = 'Architect';
-/** @deprecated Use EVOLUTION_VERSION */
-export const MODERNIZER_VERSION = EVOLUTION_VERSION;
-/** @deprecated Use EVOLUTION_CODENAME */
-export const MODERNIZER_CODENAME = EVOLUTION_CODENAME;
+// Deprecated MODERNIZER_VERSION / MODERNIZER_CODENAME aliases removed — use EVOLUTION_VERSION / EVOLUTION_CODENAME
 
 export interface EvolutionStatus {
   version: string;
