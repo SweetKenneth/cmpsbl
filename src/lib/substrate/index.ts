@@ -1062,11 +1062,16 @@ export {
   type ConscienceModuleState,
 } from './conscience-module';
 
-// PHANTOM — Synthetic Data & Privacy-Preserving Computation
+// PHANTOM — Stealth Operations & Covert Execution
 export {
   initPhantom,
   generateSynthetic,
   anonymize,
+  requestCovertOperation,
+  approveCovertOperation,
+  executeCovertOperation,
+  setPrivacyBudget,
+  addNoise,
   getPhantomState,
   getPhantomHealth,
   getPhantomResilience,
@@ -1075,6 +1080,9 @@ export {
   upgradePhantomEngine,
   type PrivacyMechanism,
   type AnonymizationMethod,
+  type OperationStatus,
+  type CovertOperation,
+  type SealedAuditEntry,
   type PhantomModuleState,
 } from './phantom-module';
 
@@ -1116,11 +1124,13 @@ export {
   type LinguaModuleState,
 } from './lingua-module';
 
-// COMPASS — Spatial-Temporal Reasoning
+// COMPASS — Spatial-Temporal Reasoning & Forecasting
 export {
   initCompass,
+  calculateDistance,
   optimizeRoute,
   forecastTimeSeries,
+  detectPatterns,
   getCompassState,
   getCompassHealth,
   getCompassResilience,
@@ -1130,6 +1140,9 @@ export {
   type GeoPoint,
   type GeoRegion,
   type Route,
+  type PatternType,
+  type TemporalPattern,
+  type TimeSeriesForecast,
   type CompassModuleState,
 } from './compass-module';
 
@@ -1150,12 +1163,13 @@ export {
   type EchoModuleState,
 } from './echo-module';
 
-// TREATY — Multi-Tenant Contract Negotiation & SLA Enforcement
+// TREATY — Inter-Node Contracts & SLA Enforcement
 export {
   initTreaty,
   createContract,
   activateContract,
   evaluateSLA,
+  checkExpiringContracts,
   getTreatyState,
   getTreatyHealth,
   getTreatyResilience,
@@ -1164,7 +1178,9 @@ export {
   upgradeTreatyEngine,
   type ContractStatus,
   type SLAMetric,
+  type PenaltyEscalation,
   type Contract,
+  type SLAReport,
   type TreatyModuleState,
 } from './treaty-module';
 

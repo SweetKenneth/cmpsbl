@@ -1,6 +1,7 @@
 /**
  * TREATY Node — Expansion Sovereignty Zone (ESZ)
- * Inter-node contracts, SLA enforcement, penalty management.
+ * Inter-node contracts, bilateral SLA enforcement, penalty escalation,
+ * automatic contract renewal.
  *
  * Re-exports core treaty-module and adds CLM + hardening layers.
  */
@@ -10,6 +11,7 @@ export {
   createContract,
   activateContract,
   evaluateSLA,
+  checkExpiringContracts,
   getTreatyState,
   getTreatyHealth,
   getTreatyResilience,
@@ -18,6 +20,7 @@ export {
   upgradeTreatyEngine,
   type ContractStatus,
   type SLAMetric,
+  type PenaltyEscalation,
   type Contract,
   type ContractTerm,
   type SLADefinition,

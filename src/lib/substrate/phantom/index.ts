@@ -1,6 +1,7 @@
 /**
  * PHANTOM Node — Covert Systems Zone (CSZ)
- * Privacy enforcement, data anonymization, synthetic data generation.
+ * Privacy enforcement, data anonymization, synthetic data generation,
+ * governance-gated covert operations.
  *
  * Re-exports core phantom-module and adds CLM + hardening layers.
  */
@@ -11,6 +12,9 @@ export {
   addNoise,
   generateSynthetic,
   anonymize,
+  requestCovertOperation,
+  approveCovertOperation,
+  executeCovertOperation,
   getPhantomState,
   getPhantomHealth,
   getPhantomResilience,
@@ -19,9 +23,13 @@ export {
   upgradePhantomEngine,
   type PrivacyMechanism,
   type AnonymizationMethod,
+  type OperationStatus,
   type PrivacyBudget,
   type SyntheticDataset,
   type AnonymizationResult,
+  type CovertOperation,
+  type OperationConstraints,
+  type SealedAuditEntry,
   type PhantomModuleState,
 } from '../phantom-module';
 
