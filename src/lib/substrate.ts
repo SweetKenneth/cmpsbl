@@ -652,7 +652,7 @@ class SubstrateClient {
       this.invoke({ module: 'dream', action: 'reflect' }),
   };
 
-  // EVOLUTION Node — Substrate Self-Improvement Engine (formerly Modernizer)
+  // EVOLUTION Node — Substrate Self-Improvement Engine
   // Unified Evolution Cycle for substrate self-improvement
   evolution = {
     /** Get EVOLUTION node status with substrate health metrics */
