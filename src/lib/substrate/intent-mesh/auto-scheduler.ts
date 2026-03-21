@@ -146,7 +146,20 @@ class MeshAutoScheduler {
       }
     }, this.config.fullExpansionIntervalMs);
 
-    console.log('[MeshScheduler] Started — all cycles armed');
+    // Run an initial gentle discovery cycle after a short warm-up delay
+    // This ensures the Memory Stream is actively observing from the moment the substrate boots
+    setTimeout(async () => {
+      try {
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        console.log('[MeshScheduler] Initial warm-up discovery cycle...');
+        await this.runGapAnalysisCycle();
+        await this.runIntentScoringCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Initial warm-up cycle error (non-fatal):', err);
+      }
+    }, 60_000); // 60s after boot — let everything settle first
+
+    console.log('[MeshScheduler] Started — continuous autonomous discovery active');
   }
 
   /**
