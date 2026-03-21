@@ -1383,18 +1383,18 @@ export * from './observer/s-tier';
 
 // OBSERVER — The Watchdog (production telemetry & anomaly detection)
 export {
-  ingestTelemetry,
-  getTelemetrySummary,
+  ingestTelemetry as observerIngestTelemetry,
+  getTelemetrySummary as observerGetTelemetrySummary,
   runWatchdogSweep,
   registerAlert,
   silenceAlert,
   acknowledgeEscalation,
   resetObserver,
-  type TelemetrySnapshot,
+  type TelemetrySnapshot as ObserverTelemetrySnapshot,
   type AnomalyFlag,
   type AlertCondition,
   type WatchdogReport,
-  type TelemetrySummary,
+  type TelemetrySummary as ObserverTelemetrySummary,
   type EscalationEntry,
 } from './observer-module/index';
 
