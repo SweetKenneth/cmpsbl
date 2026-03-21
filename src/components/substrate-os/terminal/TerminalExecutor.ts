@@ -491,10 +491,11 @@ function generateFullHelp(): string {
 │  Architecture: 40-node matrix │ 675+ caps │ 300 Synergies  │
 │                                                             │
 │  Access Tiers:                                              │
-│    ○ FREE        Read-only, status, pulse                   │
-│    ◆ CREATOR     Actions, mutations ($29/mo)                │
-│    ★ ARCHITECT   Evolution, advanced ops ($79/mo)           │
-│    ◉ GOVERNOR    System restore, admin (CMPSBL only)        │
+│    ○ BUILDER      Read-only, status, pulse                  │
+│    ◇ STUDIO       SDK, templates, memory ($29/mo)           │
+│    ◆ CREATOR      Actions, engines, agents ($49/mo)         │
+│    ★ ARCHITECT    Evolution, advanced ops ($79/mo)           │
+│    ◉ GOVERNOR     System restore, admin (CMPSBL only)       │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
