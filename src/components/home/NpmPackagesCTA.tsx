@@ -127,7 +127,7 @@ export function NpmPackagesCTA() {
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button asChild size="lg" className="font-semibold">
-            <Link to="/dev-tools">
+            <Link to="/documentation">
               <Package className="w-4 h-4 mr-2" />
               View All 11 Packages
               <ArrowRight className="w-4 h-4 ml-2" />
