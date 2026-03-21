@@ -316,8 +316,6 @@ export function formatScanResult(result: ScanResultExtended, options: ScanOption
   return formatScanResultMobile(result, options);
 }
 
-/** @deprecated Use evolutionScan */
-export const modernizerScan = evolutionScan;
 
 export const scan = {
   execute: evolutionScan,
