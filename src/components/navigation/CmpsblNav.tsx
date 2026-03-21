@@ -590,8 +590,10 @@ export function CmpsblNav() {
         )}
       </AnimatePresence>
 
-      {/* Spacer */}
-      <div className="h-20 sm:h-16 lg:h-[72px]" />
+      {/* Spacer — accounts for fixed nav + banner */}
+      <div style={{ height: `calc(${bannerHeight}px + 72px)` }} className="sm:hidden" />
+      <div style={{ height: `calc(${bannerHeight}px + 64px)` }} className="hidden sm:block lg:hidden" />
+      <div style={{ height: `calc(${bannerHeight}px + 72px)` }} className="hidden lg:block" />
     </>
   );
 }
