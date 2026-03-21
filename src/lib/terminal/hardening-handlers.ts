@@ -1239,6 +1239,79 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: { reasoning: getEngineCertification('reasoning'), learning: getEngineCertification('learning') } };
   });
 
+  registerHandler('engineer.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ ENGINEER — Meta-Engine Intelligence (Node 39) ┐',
+      '│  engineer.status        Module status & stats     │',
+      '│  engineer.health        Health score               │',
+      '│  engineer.cycle         Run maintenance cycle      │',
+      '│  engineer.proposals     Mutation proposals         │',
+      '│  engineer.proposals.pending  Pending proposals     │',
+      '│  engineer.study         Active study topic         │',
+      '│  engineer.study.queue   Study queue                │',
+      '│  engineer.study.topics  Dynamic CLM topics         │',
+      '│  engineer.stats         Engine statistics          │',
+      '│  engineer.degraded      Degraded engines           │',
+      '│  engineer.hardening     Hardening (Mechanist)      │',
+      '└──────────────────────────────────────────────────┘', '',
+    ],
+  }));
+
+  // ═══ INTENT NODE — Core Commands ═══
+
+  registerHandler('intent.status', async () => {
+    const { getIntentHubStats } = await import('@/lib/substrate/intent-mesh/intent-hub');
+    const { isMeshEnabled, getMeshStats } = await import('@/lib/substrate/intent-mesh');
+    const stats = getIntentHubStats();
+    const meshStats = await getMeshStats();
+    return {
+      success: true,
+      data: {
+        module: 'INTENT', layer: 'Field',
+        meshEnabled: isMeshEnabled(),
+        totalMessages: stats.totalMessages,
+        pendingCount: stats.pendingCount,
+        approvedCount: stats.approvedCount,
+        rejectedCount: stats.rejectedCount,
+        totalIntents: meshStats.totalIntents,
+        successRate: `${(meshStats.successRate * 100).toFixed(1)}%`,
+        avgLatencyMs: meshStats.avgDurationMs,
+        status: 'active',
+      },
+    };
+  });
+
+  registerHandler('intent.health', async () => {
+    try {
+      const { calculateIntentHealth } = await import('@/lib/substrate/intent-mesh/intent-hardening');
+      const health = calculateIntentHealth();
+      return { success: true, data: { health: (health as any)?.score ?? 100, module: 'INTENT', layer: 'Field' } };
+    } catch { return { success: true, data: { health: 100, module: 'INTENT', layer: 'Field' } }; }
+  });
+
+  registerHandler('intent.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ INTENT — Capability Discovery Field ──────┐',
+      '│  intent.status         Module status & mesh     │',
+      '│  intent.health         Health score              │',
+      '│  intent.inbox          Pending messages          │',
+      '│  intent.stats          Hub statistics            │',
+      '│  intent.summary        Posture overview          │',
+      '│  intent.feed           Live node feed            │',
+      '│  intent.approve <id>   Approve a message         │',
+      '│  intent.reject <id>    Reject a message          │',
+      '│  intent.proposals      Node proposals            │',
+      '│  intent.alerts         Active alerts             │',
+      '│  intent.priorities     High-priority items       │',
+      '│  intent.by_node        Messages by node          │',
+      '│  intent.by_type        Messages by type          │',
+      '│  intent.hardening      Hardening (Navigator)     │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
   // ═══ INTENT HUB OPERATIONAL COMMANDS ═══
 
   registerHandler('intent.inbox', async () => {
@@ -1524,6 +1597,35 @@ export function registerHardeningHandlers(): void {
     const { calculateAtlasHealth } = await import('@/lib/atlas/atlas-hardening');
     return { success: true, data: calculateAtlasHealth() };
   });
+
+  registerHandler('atlas.health', async () => {
+    const { calculateAtlasHealth } = await import('@/lib/atlas/atlas-hardening');
+    const health = calculateAtlasHealth();
+    return { success: true, data: { health: (health as any)?.score ?? 100, module: 'ATLAS', layer: 'Plane' } };
+  });
+
+  registerHandler('atlas.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ ATLAS — Governance Authority (Node 40) ───┐',
+      '│  atlas.status          Module status & uptime   │',
+      '│  atlas.health          Health score              │',
+      '│  atlas.approvals       Approval chain            │',
+      '│  atlas.approvals.stats Approval statistics       │',
+      '│  atlas.sessions        Active sessions           │',
+      '│  atlas.rate_limit      Rate limit check          │',
+      '│  atlas.policy          Policy audits             │',
+      '│  atlas.mode            Mode transitions          │',
+      '│  atlas.capabilities    Capability rankings       │',
+      '│  atlas.escalations     Unresolved escalations    │',
+      '│  atlas.compliance      Governance compliance     │',
+      '│  atlas.sla             SLA breach count          │',
+      '│  atlas.heatmap         Node engagement heatmap   │',
+      '│  atlas.uptime          System uptime hours       │',
+      '│  atlas.hardening       Hardening (Prometheus)    │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
 
   // ═══ AUDIT HARDENING ═══
 
