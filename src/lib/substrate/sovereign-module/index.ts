@@ -187,7 +187,7 @@ function detectJurisdictionGaps(): void {
   }
   state.jurisdictionGaps = gaps;
   if (gaps.length > 0) {
-    emit({ module: 'sovereign', event_type: 'jurisdiction_gaps_detected', outcome: 'warning', data: { gaps } });
+    emit({ module: 'sovereign', event_type: 'jurisdiction_gaps_detected', outcome: 'failed', data: { gaps } });
   }
 }
 
