@@ -290,7 +290,7 @@ The 30–40% discount decreases toward 0% as any of these milestones are achieve
 
 ---
 
-## 7. The Ascension Premium
+## 8. The Ascension Premium
 
 Ascension is the single largest value multiplier in the system because it:
 
