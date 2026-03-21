@@ -10,9 +10,9 @@ import { toast } from 'sonner';
 import { useCallback } from 'react';
 
 const TIER_LABELS: Record<SubstrateRole, string> = {
-  free: 'Free',
-  creator: 'Creator ($29/mo)',
-  studio: 'Studio ($49/mo)',
+  free: 'Builder',
+  studio: 'Studio ($29/mo)',
+  creator: 'Creator ($49/mo)',
   architect: 'Architect ($79/mo)',
   governor: 'Governor (Admin)',
 };

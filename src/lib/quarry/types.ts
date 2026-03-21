@@ -142,7 +142,7 @@ export const TIER_ORDER: Record<QuarryTier, number> = {
 };
 
 export const TIER_LABELS: Record<QuarryTier, string> = {
-  free: 'Free',
+  free: 'Builder',
   creator: 'Creator',
   architect: 'Architect',
   enterprise: 'Enterprise',
