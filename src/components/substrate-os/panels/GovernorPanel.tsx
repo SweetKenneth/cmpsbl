@@ -27,6 +27,7 @@ import { useLiveAuditFeed } from '@/hooks/useSubstrateOS';
 import { formatDistanceToNow } from 'date-fns';
 import type { DiligenceReport } from '@/lib/diligence/run-diligence';
 import type { AuditReport } from '@/lib/audit/audit-types';
+import { SystemUptimeCard } from './SystemUptimeCard';
 
 const GovernorSection = lazy(() => import('@/components/substrate-os/GovernorSection').then(m => ({ default: m.GovernorSection })));
 const SoundingBoard = lazy(() => import('@/components/governance/SoundingBoard').then(m => ({ default: m.SoundingBoard })));
