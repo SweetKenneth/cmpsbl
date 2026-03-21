@@ -1,6 +1,7 @@
 /**
  * SOVEREIGN Node — Expansion Sovereignty Zone (ESZ)
- * Data sovereignty, jurisdictional compliance, consent management.
+ * Data sovereignty, jurisdictional compliance, consent management,
+ * jurisdiction gap detection, retention minimums.
  *
  * Re-exports core sovereign-module and adds CLM + hardening layers.
  */
