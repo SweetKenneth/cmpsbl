@@ -56,13 +56,13 @@ interface SchedulerTimers {
 // ─── Default Config ───
 
 const DEFAULT_SCHEDULER_CONFIG: SchedulerConfig = {
-  moduleDiscoveryIntervalMs: 4 * 60 * 60 * 1000, // 4 hours
-  gapAnalysisIntervalMs: 2 * 60 * 60 * 1000, // 2 hours
-  intentScoringIntervalMs: 60 * 60 * 1000, // 1 hour
+  moduleDiscoveryIntervalMs: 6 * 60 * 60 * 1000, // 6 hours — gentle continuous
+  gapAnalysisIntervalMs: 4 * 60 * 60 * 1000, // 4 hours
+  intentScoringIntervalMs: 2 * 60 * 60 * 1000, // 2 hours
   fullExpansionIntervalMs: 24 * 60 * 60 * 1000, // 24 hours
   autoApplyThreshold: 0.85, // Only auto-apply very high confidence
   maxProposalsPerCycle: 10,
-  enabled: false, // Off by default — must be explicitly enabled
+  enabled: true, // Always-on — Memory Stream watches continuously
 };
 
 // ─── Scheduler Singleton ───
@@ -146,7 +146,20 @@ class MeshAutoScheduler {
       }
     }, this.config.fullExpansionIntervalMs);
 
-    console.log('[MeshScheduler] Started — all cycles armed');
+    // Run an initial gentle discovery cycle after a short warm-up delay
+    // This ensures the Memory Stream is actively observing from the moment the substrate boots
+    setTimeout(async () => {
+      try {
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        console.log('[MeshScheduler] Initial warm-up discovery cycle...');
+        await this.runGapAnalysisCycle();
+        await this.runIntentScoringCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Initial warm-up cycle error (non-fatal):', err);
+      }
+    }, 60_000); // 60s after boot — let everything settle first
+
+    console.log('[MeshScheduler] Started — continuous autonomous discovery active');
   }
 
   /**
