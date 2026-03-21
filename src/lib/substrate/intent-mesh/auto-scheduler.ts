@@ -29,6 +29,7 @@ export interface SchedulerConfig {
   gapAnalysisIntervalMs: number;
   intentScoringIntervalMs: number;
   fullExpansionIntervalMs: number;
+  cdmReactorIntervalMs: number; // CDM — Constant Discovery Mode reactor cycle
   autoApplyThreshold: number; // confidence score above which proposals auto-apply
   maxProposalsPerCycle: number;
   enabled: boolean;
