@@ -257,7 +257,7 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
         </div>
         
         {/* Content */}
-        <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
+         <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
           {item.title}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
