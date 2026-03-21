@@ -42,7 +42,7 @@ const TIER_NAMES: Record<string, string> = {
 };
 
 const TIER_PRIORITY: Record<string, number> = {
-  free: 0, builder: 0, starter: 0, creator: 1, studio: 2, architect: 3, pro: 3, enterprise: 4, governor: 5,
+  free: 0, builder: 0, starter: 0, studio: 1, creator: 2, architect: 3, pro: 3, enterprise: 4, governor: 5,
 };
 
 function canAccess(currentTier: string, minTier: string): boolean {

@@ -31,7 +31,7 @@ export interface CommandDefinition {
 
 /** Check if a user's tier meets the command requirement */
 export function meetsRequiredTier(userTier: CommandTier, requiredTier: CommandTier): boolean {
-  const tierOrder: CommandTier[] = ['free', 'creator', 'studio', 'architect', 'governor'];
+  const tierOrder: CommandTier[] = ['free', 'studio', 'creator', 'architect', 'governor'];
   return tierOrder.indexOf(userTier) >= tierOrder.indexOf(requiredTier);
 }
 

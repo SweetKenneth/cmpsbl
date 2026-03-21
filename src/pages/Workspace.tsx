@@ -35,9 +35,9 @@ const SDK_TEMPLATES = [
 ];
 
 const TIER_LABELS: Record<CommandTier, { label: string; color: string; price: string }> = {
-  free: { label: 'Free', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', price: '$0' },
-  creator: { label: 'Creator', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20', price: '$29/mo' },
-  studio: { label: 'Studio', color: 'bg-violet-500/10 text-violet-400 border-violet-500/20', price: '$49/mo' },
+  free: { label: 'Builder', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', price: '$0' },
+  studio: { label: 'Studio', color: 'bg-violet-500/10 text-violet-400 border-violet-500/20', price: '$29/mo' },
+  creator: { label: 'Creator', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20', price: '$49/mo' },
   architect: { label: 'Architect', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20', price: '$79/mo' },
   governor: { label: 'Governor', color: 'bg-rose-500/10 text-rose-400 border-rose-500/20', price: 'Admin' },
 };
@@ -289,11 +289,11 @@ export default function Workspace() {
                 Commands build progressively. Every tier inherits all commands from lower tiers.
               </p>
 
-              {(['free', 'creator', 'studio', 'architect', 'governor'] as CommandTier[]).map((tier) => {
+              {(['free', 'studio', 'creator', 'architect', 'governor'] as CommandTier[]).map((tier) => {
                 const tierCmds = getExclusiveCommands(tier);
                 const info = TIER_LABELS[tier];
                 const isExpanded = expandedTier === tier;
-                const isAvailable = ['free', 'creator', 'studio', 'architect', 'governor'].indexOf(userTier) >= ['free', 'creator', 'studio', 'architect', 'governor'].indexOf(tier);
+                const isAvailable = ['free', 'studio', 'creator', 'architect', 'governor'].indexOf(userTier) >= ['free', 'studio', 'creator', 'architect', 'governor'].indexOf(tier);
 
                 return (
                   <Card

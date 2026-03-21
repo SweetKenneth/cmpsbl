@@ -308,29 +308,29 @@
 <div class="tier-hierarchy">
   <span class="tier-chip tier-governor">Governor</span>
   <span class="tier-arrow">⊇</span>
-  <span class="tier-chip tier-architect">Architect ($149)</span>
+  <span class="tier-chip tier-architect">Architect ($79/mo)</span>
   <span class="tier-arrow">⊇</span>
-  <span class="tier-chip tier-studio">Studio ($49)</span>
+  <span class="tier-chip tier-creator">Creator ($49/mo)</span>
   <span class="tier-arrow">⊇</span>
-  <span class="tier-chip tier-creator">Creator ($12)</span>
+  <span class="tier-chip tier-studio">Studio ($29/mo)</span>
   <span class="tier-arrow">⊇</span>
-  <span class="tier-chip tier-free">Free ($0)</span>
+  <span class="tier-chip tier-free">Builder ($0)</span>
 </div>
 
 <table>
   <tr><th>Tier</th><th>Terminal Cmds</th><th>CLI Cmds</th><th>Key Capabilities</th></tr>
   <tr>
-    <td><span class="tier-chip tier-free">Free</span></td>
+    <td><span class="tier-chip tier-free">Builder</span></td>
     <td>~45</td><td>12</td>
     <td>Dashboard view, help, glossary, status, basic memory recall</td>
   </tr>
   <tr>
-    <td><span class="tier-chip tier-creator">Creator</span></td>
+    <td><span class="tier-chip tier-studio">Studio</span></td>
     <td>~120</td><td>24</td>
     <td>Terminal, SDK templates, memory crystallization, analytics</td>
   </tr>
   <tr>
-    <td><span class="tier-chip tier-studio">Studio</span></td>
+    <td><span class="tier-chip tier-creator">Creator</span></td>
     <td>~280</td><td>38</td>
     <td>Ascension exports, engines, agent deployment, DECODE channel</td>
   </tr>
@@ -378,8 +378,8 @@
   <h4>CORE (Node 1)</h4>
   <table>
     <tr><th>Command</th><th>Tier</th><th>Description</th></tr>
-    <tr><td><code>core status</code></td><td><span class="tier-chip tier-free">Free</span></td><td>System pulse, boot state</td></tr>
-    <tr><td><code>core health</code></td><td><span class="tier-chip tier-free">Free</span></td><td>Node health diagnostics</td></tr>
+    <tr><td><code>core status</code></td><td><span class="tier-chip tier-free">Builder</span></td><td>System pulse, boot state</td></tr>
+    <tr><td><code>core health</code></td><td><span class="tier-chip tier-free">Builder</span></td><td>Node health diagnostics</td></tr>
     <tr><td><code>core pulse</code></td><td><span class="tier-chip tier-creator">Creator</span></td><td>Trigger health heartbeat</td></tr>
     <tr><td><code>core boot-sequence</code></td><td><span class="tier-chip tier-architect">Architect</span></td><td>View boot log</td></tr>
     <tr><td><code>core kill-switch</code></td><td><span class="tier-chip tier-governor">Governor</span></td><td>Emergency system halt</td></tr>
@@ -389,7 +389,7 @@
   <h4>BRAIN (Node 2)</h4>
   <table>
     <tr><th>Command</th><th>Tier</th><th>Description</th></tr>
-    <tr><td><code>brain status</code></td><td><span class="tier-chip tier-free">Free</span></td><td>Reasoning engine state</td></tr>
+    <tr><td><code>brain status</code></td><td><span class="tier-chip tier-free">Builder</span></td><td>Reasoning engine state</td></tr>
     <tr><td><code>brain reason [prompt]</code></td><td><span class="tier-chip tier-creator">Creator</span></td><td>Execute reasoning context</td></tr>
     <tr><td><code>brain embeddings</code></td><td><span class="tier-chip tier-creator">Creator</span></td><td>Embedding stats (384-dim)</td></tr>
     <tr><td><code>brain context</code></td><td><span class="tier-chip tier-studio">Studio</span></td><td>Full reasoning context dump</td></tr>
@@ -400,8 +400,8 @@
   <h4>MEMORY (Node 3)</h4>
   <table>
     <tr><th>Command</th><th>Tier</th><th>Description</th></tr>
-    <tr><td><code>memory status</code></td><td><span class="tier-chip tier-free">Free</span></td><td>Memory tier overview</td></tr>
-    <tr><td><code>memory recall [query]</code></td><td><span class="tier-chip tier-free">Free</span></td><td>Search warm memory</td></tr>
+    <tr><td><code>memory status</code></td><td><span class="tier-chip tier-free">Builder</span></td><td>Memory tier overview</td></tr>
+    <tr><td><code>memory recall [query]</code></td><td><span class="tier-chip tier-free">Builder</span></td><td>Search warm memory</td></tr>
     <tr><td><code>memory stream</code></td><td><span class="tier-chip tier-creator">Creator</span></td><td>Memory Stream activity</td></tr>
     <tr><td><code>memory crystallize</code></td><td><span class="tier-chip tier-creator">Creator</span></td><td>Trigger crystallization</td></tr>
     <tr><td><code>memory tiers</code></td><td><span class="tier-chip tier-creator">Creator</span></td><td>4-tier breakdown</td></tr>
@@ -565,7 +565,7 @@ If true  → Execute command</code></pre>
 
 <h3>6.1 Memory</h3>
 <table>
-  <tr><th>Capability</th><th>Free</th><th>Creator</th><th>Studio</th><th>Architect</th><th>Governor</th></tr>
+  <tr><th>Capability</th><th>Builder</th><th>Studio</th><th>Creator</th><th>Architect</th><th>Governor</th></tr>
   <tr><td>Memory recall</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Memory Stream</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Crystallization</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
@@ -575,7 +575,7 @@ If true  → Execute command</code></pre>
 
 <h3>6.2 Ascension (Software Evolution)</h3>
 <table>
-  <tr><th>Capability</th><th>Free</th><th>Creator</th><th>Studio</th><th>Architect</th><th>Governor</th></tr>
+  <tr><th>Capability</th><th>Builder</th><th>Studio</th><th>Creator</th><th>Architect</th><th>Governor</th></tr>
   <tr><td>View discoveries</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Start Ascension</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Export artifacts</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
@@ -585,7 +585,7 @@ If true  → Execute command</code></pre>
 
 <h3>6.3 Agents & Agencies</h3>
 <table>
-  <tr><th>Capability</th><th>Free</th><th>Creator</th><th>Studio</th><th>Architect</th><th>Governor</th></tr>
+  <tr><th>Capability</th><th>Builder</th><th>Studio</th><th>Creator</th><th>Architect</th><th>Governor</th></tr>
   <tr><td>View templates</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Purchase agency</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Agency count</td><td>0</td><td>0</td><td>1</td><td>3</td><td>∞</td></tr>
@@ -595,7 +595,7 @@ If true  → Execute command</code></pre>
 
 <h3>6.4 Engines</h3>
 <table>
-  <tr><th>Capability</th><th>Free</th><th>Creator</th><th>Studio</th><th>Architect</th><th>Governor</th></tr>
+  <tr><th>Capability</th><th>Builder</th><th>Studio</th><th>Creator</th><th>Architect</th><th>Governor</th></tr>
   <tr><td>Free engines</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Paid engines</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
   <tr><td>Custom deploy</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td></tr>
@@ -622,7 +622,7 @@ If true  → Execute command</code></pre>
 <h2 id="rates">8. Rate Limits by Tier</h2>
 
 <table>
-  <tr><th>Resource</th><th>Free</th><th>Creator</th><th>Studio</th><th>Architect</th><th>Governor</th></tr>
+  <tr><th>Resource</th><th>Builder</th><th>Studio</th><th>Creator</th><th>Architect</th><th>Governor</th></tr>
   <tr><td>API calls/min</td><td>10</td><td>60</td><td>200</td><td>500</td><td>∞</td></tr>
   <tr><td>API calls/day</td><td>100</td><td>5,000</td><td>20,000</td><td>100,000</td><td>∞</td></tr>
   <tr><td>Memory entries</td><td>50</td><td>500</td><td>5,000</td><td>50,000</td><td>∞</td></tr>
@@ -653,10 +653,10 @@ If true  → Execute command</code></pre>
 
 <table>
   <tr><th>Package</th><th>Purpose</th><th>Min Tier</th></tr>
-  <tr><td><code>@cmpsbl/types</code></td><td>TypeScript schemas and interfaces</td><td><span class="tier-chip tier-free">Free</span></td></tr>
-  <tr><td><code>@cmpsbl/runtime</code></td><td>Mini-Runtime™ engine (CJPI, tiering, gates)</td><td><span class="tier-chip tier-free">Free</span></td></tr>
-  <tr><td><code>@cmpsbl/failsafe</code></td><td>Migration toolkit</td><td><span class="tier-chip tier-free">Free</span></td></tr>
-  <tr><td><code>@cmpsbl/cli</code></td><td>Command-line interface</td><td><span class="tier-chip tier-free">Free</span> (gated)</td></tr>
+  <tr><td><code>@cmpsbl/types</code></td><td>TypeScript schemas and interfaces</td><td><span class="tier-chip tier-free">Builder</span></td></tr>
+  <tr><td><code>@cmpsbl/runtime</code></td><td>Mini-Runtime™ engine (CJPI, tiering, gates)</td><td><span class="tier-chip tier-free">Builder</span></td></tr>
+  <tr><td><code>@cmpsbl/failsafe</code></td><td>Migration toolkit</td><td><span class="tier-chip tier-free">Builder</span></td></tr>
+  <tr><td><code>@cmpsbl/cli</code></td><td>Command-line interface</td><td><span class="tier-chip tier-free">Builder</span> (gated)</td></tr>
   <tr><td><code>@cmpsbl/intent</code></td><td>Intent broadcast & DAG sequencing</td><td><span class="tier-chip tier-creator">Creator</span></td></tr>
   <tr><td><code>@cmpsbl/mesh</code></td><td>Mesh telemetry & communications</td><td><span class="tier-chip tier-creator">Creator</span></td></tr>
   <tr><td><code>@cmpsbl/react</code></td><td>React hooks for substrate</td><td><span class="tier-chip tier-creator">Creator</span></td></tr>

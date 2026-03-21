@@ -5,7 +5,7 @@
  * Tiers unlock deeper control surfaces progressively.
  */
 
-export type CommandTier = 'free' | 'creator' | 'studio' | 'architect' | 'governor';
+export type CommandTier = 'free' | 'studio' | 'creator' | 'architect' | 'governor';
 
 export interface TieredCommand {
   command: string;
@@ -96,7 +96,7 @@ export const TIERED_COMMANDS: TieredCommand[] = [
   { command: 'chaos inject', description: 'Inject controlled chaos for resilience testing', tier: 'governor', category: 'governance' },
 ];
 
-const TIER_ORDER: CommandTier[] = ['free', 'creator', 'studio', 'architect', 'governor'];
+const TIER_ORDER: CommandTier[] = ['free', 'studio', 'creator', 'architect', 'governor'];
 
 /**
  * Get all commands available to a given tier (includes inherited).
@@ -133,7 +133,7 @@ export function getRequiredTier(command: string): CommandTier | null {
  * Get summary counts per tier.
  */
 export function getTierCommandCounts(): Record<CommandTier, number> {
-  const counts: Record<CommandTier, number> = { free: 0, creator: 0, studio: 0, architect: 0, governor: 0 };
+  const counts: Record<CommandTier, number> = { free: 0, studio: 0, creator: 0, architect: 0, governor: 0 };
   for (const tier of TIER_ORDER) {
     counts[tier] = getCommandsForTier(tier).length;
   }

@@ -16,20 +16,20 @@ import { Badge } from '@/components/ui/badge';
 import { type SubstrateRole } from '@/hooks/useUserRole';
 import { cn } from '@/lib/utils';
 
-const TIER_ORDER: SubstrateRole[] = ['free', 'creator', 'studio', 'architect', 'governor'];
+const TIER_ORDER: SubstrateRole[] = ['free', 'studio', 'creator', 'architect', 'governor'];
 
 const TIER_LABELS: Record<SubstrateRole, string> = {
-  free: 'Free',
-  creator: 'Creator',
+  free: 'Builder',
   studio: 'Studio',
+  creator: 'Creator',
   architect: 'Architect',
   governor: 'Governor',
 };
 
 const TIER_COLORS: Record<SubstrateRole, string> = {
   free: 'text-muted-foreground',
-  creator: 'text-blue-400',
   studio: 'text-violet-400',
+  creator: 'text-blue-400',
   architect: 'text-amber-400',
   governor: 'text-primary',
 };

@@ -26,15 +26,15 @@ The **CLI** is a curated local tool — 66 commands designed for offline develop
 Every user falls into exactly one tier. Higher tiers inherit all permissions from lower tiers.
 
 ```
-Governor ⊇ Architect ⊇ Studio ⊇ Creator ⊇ Free
+Governor ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 ```
 
 | Tier | Monthly | Role in DB | Terminal Commands | CLI Commands | Key Capabilities |
 |------|---------|-----------|-------------------|-------------|-----------------|
-| **Free** | $0 | `user` | ~45 (read-only + help) | 12 | Dashboard view, `help`, `glossary`, `status`, basic memory recall |
-| **Creator** | $12 | `operator` | ~120 | 24 | Terminal access, SDK templates, memory crystallization, basic analytics |
-| **Studio** | $49 | (subscription) | ~280 | 38 | Ascension exports, engine access, agent deployment (1 agency), DECODE channel |
-| **Architect** | $149 | `moderator` | ~450 | 52 | Evolution proposals, mesh telemetry, multi-agency, SHADOW runs, ENCODE console |
+| **Builder** | $0 | `user` | ~45 (read-only + help) | 12 | Dashboard view, `help`, `glossary`, `status`, basic memory recall |
+| **Studio** | $29 | (subscription) | ~120 | 24 | Terminal access, SDK templates, memory crystallization, basic analytics |
+| **Creator** | $49 | `operator` | ~280 | 38 | Ascension exports, engine access, agent deployment (1 agency), DECODE channel |
+| **Architect** | $79 | `moderator` | ~450 | 52 | Evolution proposals, mesh telemetry, multi-agency, SHADOW runs, ENCODE console |
 | **Governor** | Admin | `admin` | **All ~600** | **All 66** | Full system control, governance modes, credential rotation, minting, red-line override |
 
 ### How tier is determined
@@ -52,7 +52,7 @@ Governor ⊇ Architect ⊇ Studio ⊇ Creator ⊇ Free
 
 ### 3.1 Universal Commands (All Tiers)
 
-Every user, including Free tier, gets these foundational commands:
+Every user, including Builder tier, gets these foundational commands:
 
 | Command | Description |
 |---------|-------------|
@@ -704,7 +704,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.1 Memory System
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | Memory recall (read) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Memory Stream view | ❌ | ✅ | ✅ | ✅ | ✅ |
@@ -715,7 +715,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.2 Ascension (Software Evolution)
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View discoveries | ✅ | ✅ | ✅ | ✅ | ✅ |
 | CJPI scoring | ❌ | ✅ | ✅ | ✅ | ✅ |
@@ -732,7 +732,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.3 Agents & Agencies
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View agent templates | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Purchase agency | ❌ | ❌ | ✅ | ✅ | ✅ |
@@ -745,7 +745,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.4 Engines
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View engine catalog | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Invoke free engines | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -756,7 +756,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.5 Evolution & SEBA
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View evolution state | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Submit proposals | ❌ | ❌ | ❌ | ✅ | ✅ |
@@ -787,7 +787,7 @@ Regardless of tier, these are absolute restrictions:
 
 ## 8. Rate Limits by Tier
 
-| Resource | Free | Creator | Studio | Architect | Governor |
+| Resource | Builder | Studio | Creator | Architect | Governor |
 |----------|------|---------|--------|-----------|---------|
 | API calls/minute | 10 | 60 | 200 | 500 | Unlimited |
 | API calls/day | 100 | 5,000 | 20,000 | 100,000 | Unlimited |

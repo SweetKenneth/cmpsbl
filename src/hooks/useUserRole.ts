@@ -1,24 +1,25 @@
 /**
  * User Role Detection Hook — Centralized Access Identity
- * Determines Free / Creator / Architect / Governor access level
+ * Determines Builder / Studio / Creator / Architect / Governor access level
  * 
  * Uses the Access module's identity endpoint for unified role resolution
  * across Dashboard, Terminal, EVOLUTION, and all substrate modules.
  * 
- * Role Hierarchy (governor ⊇ architect ⊇ creator ⊇ free):
- * - Free: Any authenticated user (read-only dashboard, basic commands)
- * - Creator: Users with 'operator' or 'moderator' role (terminal, engines, analytics)
- * - Architect: Users with specific architect entitlements (evolution, mesh)
- * - Governor: Admin users only (full system access, cognitive forge, agencies, mints)
+ * Role Hierarchy (governor ⊇ architect ⊇ creator ⊇ studio ⊇ builder):
+ * - Builder (free): Any authenticated user (read-only dashboard, basic commands)
+ * - Studio: Users with basic subscription (terminal, SDK templates)
+ * - Creator: Users with 'operator' role (engines, analytics, agents)
+ * - Architect: Users with 'moderator' role (evolution, mesh, ENCODE)
+ * - Governor: Admin users only (full system access, cognitive forge, mints)
  * 
- * @version 3.0.0 — Unified with pricing tiers
+ * @version 4.0.0 — Corrected tier hierarchy
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
-export type SubstrateRole = 'free' | 'creator' | 'studio' | 'architect' | 'governor';
+export type SubstrateRole = 'free' | 'studio' | 'creator' | 'architect' | 'governor';
 
 interface UserRoleState {
   role: SubstrateRole;
@@ -168,11 +169,12 @@ export function useUserRole(): UserRoleState {
     detectRole();
   }, [detectRole]);
 
-  // Tier hierarchy: governor > architect > creator > free
+  // Tier hierarchy: governor > architect > creator > studio > builder(free)
   const isGovernor = role === 'governor';
   const isArchitect = isGovernor || role === 'architect';
   const isCreator = isArchitect || role === 'creator';
-  const isFree = true; // Everyone is at least free
+  const isStudio = isCreator || role === 'studio';
+  const isFree = true; // Everyone is at least builder(free)
 
   return {
     role,
