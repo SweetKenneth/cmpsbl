@@ -21,6 +21,9 @@ import { runLiveGapExecution } from './live-gap-execution';
 import { buildAffinityMatrix } from './affinity-matrix';
 import { detectPatterns } from './pattern-recognition';
 import { discoverCapabilities, getDiscoverySummary } from '../capability-discovery';
+import { runReactor, type ReactorRunResult } from '@/lib/discovery/reactor';
+import { generateTemplateBatch } from '@/lib/discovery/template-generator';
+import { supabase } from '@/integrations/supabase/client';
 
 // ─── Types ───
 
