@@ -1062,11 +1062,16 @@ export {
   type ConscienceModuleState,
 } from './conscience-module';
 
-// PHANTOM — Synthetic Data & Privacy-Preserving Computation
+// PHANTOM — Stealth Operations & Covert Execution
 export {
   initPhantom,
   generateSynthetic,
   anonymize,
+  requestCovertOperation,
+  approveCovertOperation,
+  executeCovertOperation,
+  setPrivacyBudget,
+  addNoise,
   getPhantomState,
   getPhantomHealth,
   getPhantomResilience,
@@ -1075,6 +1080,9 @@ export {
   upgradePhantomEngine,
   type PrivacyMechanism,
   type AnonymizationMethod,
+  type OperationStatus,
+  type CovertOperation,
+  type SealedAuditEntry,
   type PhantomModuleState,
 } from './phantom-module';
 
