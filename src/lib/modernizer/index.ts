@@ -341,10 +341,7 @@ export async function rollbackEvolution(runId: string): Promise<boolean> {
 import { SUBSTRATE_VERSION as _MV } from '@/lib/substrate/versions';
 export const EVOLUTION_VERSION = _MV;
 export const EVOLUTION_CODENAME = 'Architect';
-/** @deprecated Use EVOLUTION_VERSION */
-export const MODERNIZER_VERSION = EVOLUTION_VERSION;
-/** @deprecated Use EVOLUTION_CODENAME */
-export const MODERNIZER_CODENAME = EVOLUTION_CODENAME;
+// Deprecated MODERNIZER_VERSION / MODERNIZER_CODENAME aliases removed — use EVOLUTION_VERSION / EVOLUTION_CODENAME
 
 export interface EvolutionStatus {
   version: string;
@@ -353,8 +350,7 @@ export interface EvolutionStatus {
   active_runs: number;
   patterns_available: number;
 }
-/** @deprecated Use EvolutionStatus */
-export type ModernizerStatus = EvolutionStatus;
+// Deprecated ModernizerStatus alias removed — use EvolutionStatus
 
 export async function getEvolutionModuleStatus(): Promise<EvolutionStatus> {
   try {
@@ -379,8 +375,7 @@ export async function getEvolutionModuleStatus(): Promise<EvolutionStatus> {
     };
   }
 }
-/** @deprecated Use getEvolutionModuleStatus */
-export const getModernizerStatus = getEvolutionModuleStatus;
+// Deprecated getModernizerStatus alias removed — use getEvolutionModuleStatus
  
  // Code analysis
  export * from './codeAnalysis';
