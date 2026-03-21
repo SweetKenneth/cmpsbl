@@ -272,8 +272,8 @@ function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, b
     .replace('{modules}', selectedModules.join(' × '))
     .replace('{modules}', selectedModules.join(' × '));
 
-  // Execution time — more modules = more time
-  const maxExecOptions = [1000, 2000, 3000, 5000, 8000, 10000, 15000];
+  // Execution time — more modules = more time (supports up to 12-node deep chains)
+  const maxExecOptions = [1000, 2000, 3000, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 35000, 40000];
   const maxExecutionMs = maxExecOptions[Math.min(selectedModules.length - 1, maxExecOptions.length - 1)];
 
   return {
