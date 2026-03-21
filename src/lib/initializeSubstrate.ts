@@ -145,14 +145,25 @@ export async function initializeSubstrate(): Promise<void> {
       await startPersistenceScheduler();
     } catch { /* graceful */ }
 
+    // Start Memory Stream continuous discovery — always watching
+    try {
+      const { meshScheduler } = await import('./substrate/intent-mesh/auto-scheduler');
+      if (!meshScheduler.getState().isRunning) {
+        meshScheduler.start();
+        console.log('🌊 Memory Stream discovery active — continuous autonomous observation');
+      }
+    } catch { /* graceful */ }
+
     // Register shutdown hook: flush + release lease
     try {
       const { registerShutdownHook } = await import('./substrate/graceful-shutdown');
       const { flushAll } = await import('@/lib/control-plane/persistence');
       const { stopPersistenceScheduler } = await import('@/lib/control-plane/persistence-scheduler');
+      const { meshScheduler: scheduler } = await import('./substrate/intent-mesh/auto-scheduler');
       registerShutdownHook('control-plane-persistence', async () => {
         await flushAll();
         await stopPersistenceScheduler();
+        scheduler.stop();
       }, 1); // Highest priority (runs first)
     } catch { /* graceful */ }
     

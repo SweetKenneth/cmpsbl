@@ -56,13 +56,13 @@ interface SchedulerTimers {
 // ─── Default Config ───
 
 const DEFAULT_SCHEDULER_CONFIG: SchedulerConfig = {
-  moduleDiscoveryIntervalMs: 4 * 60 * 60 * 1000, // 4 hours
-  gapAnalysisIntervalMs: 2 * 60 * 60 * 1000, // 2 hours
-  intentScoringIntervalMs: 60 * 60 * 1000, // 1 hour
+  moduleDiscoveryIntervalMs: 6 * 60 * 60 * 1000, // 6 hours — gentle continuous
+  gapAnalysisIntervalMs: 4 * 60 * 60 * 1000, // 4 hours
+  intentScoringIntervalMs: 2 * 60 * 60 * 1000, // 2 hours
   fullExpansionIntervalMs: 24 * 60 * 60 * 1000, // 24 hours
   autoApplyThreshold: 0.85, // Only auto-apply very high confidence
   maxProposalsPerCycle: 10,
-  enabled: false, // Off by default — must be explicitly enabled
+  enabled: true, // Always-on — Memory Stream watches continuously
 };
 
 // ─── Scheduler Singleton ───
