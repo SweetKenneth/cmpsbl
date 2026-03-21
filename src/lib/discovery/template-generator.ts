@@ -296,7 +296,7 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
   const cfg: GeneratorConfig = {
     batchSize: config.batchSize ?? 20,
     minModules: config.minModules ?? 2,
-    maxModules: config.maxModules ?? 5,
+    maxModules: config.maxModules ?? 12,
     minCjpiTarget: config.minCjpiTarget ?? 80,
     biasHighValue: config.biasHighValue ?? true,
   };
