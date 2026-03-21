@@ -26,15 +26,15 @@ The **CLI** is a curated local tool — 66 commands designed for offline develop
 Every user falls into exactly one tier. Higher tiers inherit all permissions from lower tiers.
 
 ```
-Governor ⊇ Architect ⊇ Studio ⊇ Creator ⊇ Free
+Governor ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 ```
 
 | Tier | Monthly | Role in DB | Terminal Commands | CLI Commands | Key Capabilities |
 |------|---------|-----------|-------------------|-------------|-----------------|
-| **Free** | $0 | `user` | ~45 (read-only + help) | 12 | Dashboard view, `help`, `glossary`, `status`, basic memory recall |
-| **Creator** | $12 | `operator` | ~120 | 24 | Terminal access, SDK templates, memory crystallization, basic analytics |
-| **Studio** | $49 | (subscription) | ~280 | 38 | Ascension exports, engine access, agent deployment (1 agency), DECODE channel |
-| **Architect** | $149 | `moderator` | ~450 | 52 | Evolution proposals, mesh telemetry, multi-agency, SHADOW runs, ENCODE console |
+| **Builder** | $0 | `user` | ~45 (read-only + help) | 12 | Dashboard view, `help`, `glossary`, `status`, basic memory recall |
+| **Studio** | $29 | (subscription) | ~120 | 24 | Terminal access, SDK templates, memory crystallization, basic analytics |
+| **Creator** | $49 | `operator` | ~280 | 38 | Ascension exports, engine access, agent deployment (1 agency), DECODE channel |
+| **Architect** | $79 | `moderator` | ~450 | 52 | Evolution proposals, mesh telemetry, multi-agency, SHADOW runs, ENCODE console |
 | **Governor** | Admin | `admin` | **All ~600** | **All 66** | Full system control, governance modes, credential rotation, minting, red-line override |
 
 ### How tier is determined
