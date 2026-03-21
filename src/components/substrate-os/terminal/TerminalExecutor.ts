@@ -930,7 +930,8 @@ export async function executeCommand(
     
     const tierDescriptions: Record<string, string> = {
       free: 'Read-only dashboard, status commands',
-      creator: 'Terminal, engines, analytics, actions ($29/mo)',
+      studio: 'SDK, templates, memory, analytics ($29/mo)',
+      creator: 'Engines, agents, actions, exports ($49/mo)',
       architect: 'Evolution, mesh, advanced ops ($79/mo)',
       governor: 'Full system authority, admin, mint (CMPSBL only)',
     };
