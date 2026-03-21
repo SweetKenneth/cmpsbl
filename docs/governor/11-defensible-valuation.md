@@ -329,6 +329,7 @@ Lead with the IP portfolio: 54 Crown Jewels, 40-node topology, 34-page trade sec
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-21 | Governor | Initial defensible valuation document |
+| 2026-03-21 | Governor | Added founder profile, risk discount, historical parallels |
 
 ---
 
