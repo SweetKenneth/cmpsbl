@@ -369,12 +369,14 @@ class MeshAutoScheduler {
    * Run a single full cycle manually (all phases)
    */
   async runOnce(): Promise<{
+    cdmReactor: { accepted: number; sTierPromoted: number };
     moduleDiscovery: number;
     gapAnalysis: { gaps: number; recommendations: number };
     intentScoring: number;
     expansion: number;
     advancedDiscovery: { liveGaps: number; affinityEdges: number; patterns: number };
   }> {
+    const cdm = await this.runCdmReactorCycle();
     const md = await this.runModuleDiscoveryCycle();
     const ga = await this.runGapAnalysisCycle();
     const is = await this.runIntentScoringCycle();
@@ -382,6 +384,7 @@ class MeshAutoScheduler {
     const ad = await this.runAdvancedDiscoveryCycle();
     
     return {
+      cdmReactor: cdm,
       moduleDiscovery: md.totalProposals,
       gapAnalysis: { gaps: ga.gapsFound, recommendations: ga.recommendations },
       intentScoring: is.intentsScored,
