@@ -112,9 +112,9 @@ export function CmpsblNav() {
       items: [
         { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal, highlight: true },
         { name: "CodeLab", href: "/codelab", description: "Test and run code live", icon: Terminal },
+        { name: "DevTools", href: "/devtools", description: "SDK docs, NPM packages & playground", icon: Package },
         { name: "Documentation", href: "/documentation", description: "Guides & API reference", icon: FileText },
         { name: "API access", href: "/api-access", description: "Keys, quotas & usage tracking", icon: Code },
-        { name: "Developer guide", href: "/developers/guide", description: "Get started with the SDK", icon: BookOpen },
       ]
     },
     {
