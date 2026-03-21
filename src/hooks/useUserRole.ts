@@ -1,17 +1,18 @@
 /**
  * User Role Detection Hook — Centralized Access Identity
- * Determines Free / Creator / Architect / Governor access level
+ * Determines Builder / Studio / Creator / Architect / Governor access level
  * 
  * Uses the Access module's identity endpoint for unified role resolution
  * across Dashboard, Terminal, EVOLUTION, and all substrate modules.
  * 
- * Role Hierarchy (governor ⊇ architect ⊇ creator ⊇ free):
- * - Free: Any authenticated user (read-only dashboard, basic commands)
- * - Creator: Users with 'operator' or 'moderator' role (terminal, engines, analytics)
- * - Architect: Users with specific architect entitlements (evolution, mesh)
- * - Governor: Admin users only (full system access, cognitive forge, agencies, mints)
+ * Role Hierarchy (governor ⊇ architect ⊇ creator ⊇ studio ⊇ builder):
+ * - Builder (free): Any authenticated user (read-only dashboard, basic commands)
+ * - Studio: Users with basic subscription (terminal, SDK templates)
+ * - Creator: Users with 'operator' role (engines, analytics, agents)
+ * - Architect: Users with 'moderator' role (evolution, mesh, ENCODE)
+ * - Governor: Admin users only (full system access, cognitive forge, mints)
  * 
- * @version 3.0.0 — Unified with pricing tiers
+ * @version 4.0.0 — Corrected tier hierarchy
  */
 
 import { useState, useEffect, useCallback } from 'react';
