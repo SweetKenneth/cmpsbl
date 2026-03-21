@@ -193,16 +193,33 @@ export function CmpsblNav() {
     ? Math.round(Math.min(dropdownAnchor.left, window.innerWidth - 360))
     : 0;
 
+  const [bannerVisible, setBannerVisible] = useState(() => {
+    try { return sessionStorage.getItem('npm-banner-dismissed') !== '1'; } catch { return true; }
+  });
+
+  const dismissBanner = useCallback(() => {
+    setBannerVisible(false);
+    try { sessionStorage.setItem('npm-banner-dismissed', '1'); } catch {}
+  }, []);
+
+  const bannerHeight = bannerVisible ? 36 : 0;
+
   return (
     <>
+      {/* ═══ NPM ANNOUNCEMENT BANNER ═══ */}
+      <AnimatePresence>
+        {bannerVisible && <NpmAnnouncementBanner onDismiss={dismissBanner} />}
+      </AnimatePresence>
+
       {/* ═══ DESKTOP NAV ═══ */}
       <motion.header
         ref={headerRef}
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", damping: 30, stiffness: 300 }}
+        style={{ top: bannerHeight }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-[10000] transition-all duration-300",
+          "fixed left-0 right-0 z-[10000] transition-all duration-300",
           scrolled
             ? "bg-background/95 backdrop-blur-xl border-b border-border shadow-sm"
             : "bg-background/80 backdrop-blur-md"
