@@ -1124,11 +1124,13 @@ export {
   type LinguaModuleState,
 } from './lingua-module';
 
-// COMPASS — Spatial-Temporal Reasoning
+// COMPASS — Spatial-Temporal Reasoning & Forecasting
 export {
   initCompass,
+  calculateDistance,
   optimizeRoute,
   forecastTimeSeries,
+  detectPatterns,
   getCompassState,
   getCompassHealth,
   getCompassResilience,
@@ -1138,6 +1140,9 @@ export {
   type GeoPoint,
   type GeoRegion,
   type Route,
+  type PatternType,
+  type TemporalPattern,
+  type TimeSeriesForecast,
   type CompassModuleState,
 } from './compass-module';
 
