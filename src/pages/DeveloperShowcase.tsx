@@ -289,6 +289,56 @@ await cmpsbl.dream.cycle({
         </div>
       </section>
 
+      {/* NPM Packages */}
+      <section className="py-16 border-t border-border/30">
+        <div className="container mx-auto px-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+            <Badge variant="outline" className="mb-3 font-mono">@cmpsbl</Badge>
+            <h2 className="text-2xl sm:text-3xl font-black mb-3">11 NPM Packages</h2>
+            <p className="text-muted-foreground max-w-lg mx-auto">Modular, composable — install only what you need.</p>
+          </motion.div>
+          <div className="max-w-2xl mx-auto bg-card border border-border rounded-xl p-4 mb-8">
+            <div className="flex items-center gap-3 font-mono text-sm">
+              <Terminal className="w-4 h-4 text-primary shrink-0" />
+              <code className="text-foreground">npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">
+            {[
+              { pkg: '@cmpsbl/types', d: 'Shared TypeScript schemas' },
+              { pkg: '@cmpsbl/runtime', d: 'Mini-Runtime™ engine' },
+              { pkg: '@cmpsbl/failsafe', d: 'Zero-dep migration toolkit' },
+              { pkg: '@cmpsbl/intent', d: 'Intent router & dispatch' },
+              { pkg: '@cmpsbl/mesh', d: 'Mesh telemetry client' },
+              { pkg: '@cmpsbl/bridge', d: 'Polyglot runtime adapters' },
+              { pkg: '@cmpsbl/sdk', d: 'Authenticated engine access' },
+              { pkg: '@cmpsbl/discovery', d: 'Pipeline crystallization' },
+              { pkg: '@cmpsbl/cli', d: 'CLI dev tools' },
+              { pkg: '@cmpsbl/react', d: 'React hooks' },
+              { pkg: '@cmpsbl/test-harness', d: 'Validation suite' },
+            ].map(p => (
+              <div key={p.pkg} className="flex items-center gap-2 p-3 rounded-lg border border-border/50 bg-card/50">
+                <Package className="w-3.5 h-3.5 text-primary shrink-0" />
+                <div className="min-w-0">
+                  <code className="text-xs font-mono font-semibold">{p.pkg}</code>
+                  <p className="text-[10px] text-muted-foreground">{p.d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center gap-3 mt-8">
+            <Button asChild size="sm" variant="outline">
+              <Link to="/devtools"><Code className="w-3.5 h-3.5 mr-1.5" />DevTools</Link>
+            </Button>
+            <Button asChild size="sm" variant="outline">
+              <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-3.5 h-3.5 mr-1.5" />View on NPM
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-24 bg-gradient-to-b from-muted/20 via-primary/5 to-transparent">
         <div className="container mx-auto px-4 text-center">
