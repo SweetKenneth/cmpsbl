@@ -1,0 +1,20 @@
+{
+  "name": "@cmpsbl/runtime",
+  "version": "1.0.0",
+  "description": "CMPSBL® Mini-Runtime™ Engine — CJPI scoring, auto-tiering, pipeline orchestration, and manifest parsing. Zero dependencies.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["cmpsbl", "runtime", "cjpi", "scoring", "pipeline", "orchestration"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": { "type": "git", "url": "https://github.com/cmpsbl/runtime" },
+  "homepage": "https://cmpsbl.com",
+  "dependencies": {
+    "@cmpsbl/types": "^1.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@cmpsbl/types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for the CMPSBL® substrate — manifests, CJPI schemas, resolver contracts, mesh event shapes",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["cmpsbl", "types", "cjpi", "substrate", "mesh"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": { "type": "git", "url": "https://github.com/cmpsbl/types" },
+  "homepage": "https://cmpsbl.com"
+}
