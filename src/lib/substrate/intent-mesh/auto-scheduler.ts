@@ -210,6 +210,52 @@ class MeshAutoScheduler {
   }
 
   /**
+   * CDM — Constant Discovery Mode reactor cycle
+   * Runs the full reactor with auto-generated 2-12 node depth templates.
+   * Feeds S-Tier Vault (95+ CJPI) and Memory Stream (all accepted).
+   */
+  async runCdmReactorCycle(): Promise<{ accepted: number; sTierPromoted: number }> {
+    try {
+      // Get current user for reactor context
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.warn('[CDM] No authenticated user — skipping reactor cycle');
+        return { accepted: 0, sTierPromoted: 0 };
+      }
+
+      // Generate fresh 2-12 node depth templates
+      const templates = generateTemplateBatch({
+        batchSize: 30,
+        minModules: 2,
+        maxModules: 12,
+        minCjpiTarget: 75,
+        biasHighValue: true,
+      });
+
+      console.log(`[CDM] Generated ${templates.length} templates (2-12 nodes deep)`);
+
+      // Run the reactor — it handles S-Tier promotion (95+) and Memory Stream feed internally
+      const result = await runReactor({
+        dryRun: false,
+        exploratoryMode: true,
+        scoringVersion: 'CDM-1.0',
+        injectedTemplates: templates,
+      }, user.id);
+
+      this.state.lastCdmReactor = new Date().toISOString();
+      this.state.totalCyclesRun++;
+
+      const sTierCount = result.discoveries.filter(d => d.cjpi >= 95).length;
+      console.log(`[CDM] Reactor complete: ${result.acceptedCount} accepted, ${sTierCount} promoted to S-Tier Vault, all fed to Memory Stream`);
+
+      return { accepted: result.acceptedCount, sTierPromoted: sTierCount };
+    } catch (err) {
+      console.warn('[CDM] Reactor cycle failed (non-fatal):', err);
+      return { accepted: 0, sTierPromoted: 0 };
+    }
+  }
+
+  /**
    * Run module self-discovery for all entities + zones
    */
   async runModuleDiscoveryCycle(): Promise<{ totalProposals: number; endpointHealth: number }> {
