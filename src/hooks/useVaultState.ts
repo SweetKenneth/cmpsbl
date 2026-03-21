@@ -51,6 +51,12 @@ export function useVaultState() {
     }
 
     try {
+      // Fetch promoted discovery fingerprints to exclude from user pool
+      const { data: promotedData } = await supabase
+        .from('vault_promotions' as any)
+        .select('discovery_id');
+      const promotedIds = new Set((promotedData ?? []).map((p: any) => p.discovery_id));
+
       const [countRes, pullsRes, vaultRes] = await Promise.all([
         supabase.rpc('get_vault_count', { p_user_id: user.id }),
         supabase.rpc('get_daily_pulls', { p_user_id: user.id }),
@@ -61,10 +67,15 @@ export function useVaultState() {
           .order('created_at', { ascending: false }),
       ]);
 
-      setVaultCount(countRes.data ?? 0);
+      // Filter out promoted discoveries from user-facing pool
+      const filteredVault = (vaultRes.data ?? []).filter(
+        (r: any) => !promotedIds.has(r.pipeline_fingerprint)
+      );
+
+      setVaultCount(filteredVault.length);
       setPullsToday(pullsRes.data ?? 0);
       setVault(
-        (vaultRes.data ?? []).map((r: any) => ({
+        filteredVault.map((r: any) => ({
           id: r.id,
           pipelineName: r.pipeline_name,
           pipelineScore: r.pipeline_score,

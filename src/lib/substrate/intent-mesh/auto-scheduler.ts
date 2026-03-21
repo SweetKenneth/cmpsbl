@@ -1,12 +1,12 @@
 /**
- * Mesh Auto-Expansion Scheduler
- * Periodic discovery cycles that self-improve the manifest
- * Now includes CLM feedback loop integration
- * Runs on configurable intervals:
- * - Module self-discovery: every 4 hours (each module introspects)
- * - Gap analysis: every 2 hours (scan failed intents)
- * - Intent quality scoring: every 1 hour (score intent effectiveness)
- * - Full expansion: daily (apply high-confidence proposals)
+ * Mesh Auto-Expansion Scheduler + CDM (Constant Discovery Mode)
+ * 
+ * Periodic discovery cycles that self-improve the manifest AND
+ * run the reactor to feed both the S-Tier Vault (95+ CJPI) and
+ * the Memory Stream (all accepted discoveries).
+ * 
+ * CDM runs the full reactor with 2-12 node depth chains on a
+ * gentle 8-hour interval, producing real discoveries continuously.
  * 
  * Kill switch: Disabled when mesh is disabled
  * Dashboard: /os → Observe → Mesh Activity → Scheduler
@@ -21,6 +21,9 @@ import { runLiveGapExecution } from './live-gap-execution';
 import { buildAffinityMatrix } from './affinity-matrix';
 import { detectPatterns } from './pattern-recognition';
 import { discoverCapabilities, getDiscoverySummary } from '../capability-discovery';
+import { runReactor, type ReactorRunResult } from '@/lib/discovery/reactor';
+import { generateTemplateBatch } from '@/lib/discovery/template-generator';
+import { supabase } from '@/integrations/supabase/client';
 
 // ─── Types ───
 
@@ -29,6 +32,7 @@ export interface SchedulerConfig {
   gapAnalysisIntervalMs: number;
   intentScoringIntervalMs: number;
   fullExpansionIntervalMs: number;
+  cdmReactorIntervalMs: number; // CDM — Constant Discovery Mode reactor cycle
   autoApplyThreshold: number; // confidence score above which proposals auto-apply
   maxProposalsPerCycle: number;
   enabled: boolean;
@@ -37,6 +41,7 @@ export interface SchedulerConfig {
 export interface SchedulerState {
   config: SchedulerConfig;
   isRunning: boolean;
+  lastCdmReactor: string | null;
   lastModuleDiscovery: string | null;
   lastGapAnalysis: string | null;
   lastIntentScoring: string | null;
@@ -47,6 +52,7 @@ export interface SchedulerState {
 }
 
 interface SchedulerTimers {
+  cdmReactor: ReturnType<typeof setInterval> | null;
   moduleDiscovery: ReturnType<typeof setInterval> | null;
   gapAnalysis: ReturnType<typeof setInterval> | null;
   intentScoring: ReturnType<typeof setInterval> | null;
@@ -60,6 +66,7 @@ const DEFAULT_SCHEDULER_CONFIG: SchedulerConfig = {
   gapAnalysisIntervalMs: 4 * 60 * 60 * 1000, // 4 hours
   intentScoringIntervalMs: 2 * 60 * 60 * 1000, // 2 hours
   fullExpansionIntervalMs: 24 * 60 * 60 * 1000, // 24 hours
+  cdmReactorIntervalMs: 8 * 60 * 60 * 1000, // 8 hours — CDM reactor cycle
   autoApplyThreshold: 0.85, // Only auto-apply very high confidence
   maxProposalsPerCycle: 10,
   enabled: true, // Always-on — Memory Stream watches continuously
@@ -71,6 +78,7 @@ class MeshAutoScheduler {
   private static instance: MeshAutoScheduler;
   private config: SchedulerConfig;
   private timers: SchedulerTimers = {
+    cdmReactor: null,
     moduleDiscovery: null,
     gapAnalysis: null,
     intentScoring: null,
@@ -78,6 +86,7 @@ class MeshAutoScheduler {
   };
   private state: Omit<SchedulerState, 'config'> = {
     isRunning: false,
+    lastCdmReactor: null,
     lastModuleDiscovery: null,
     lastGapAnalysis: null,
     lastIntentScoring: null,
@@ -146,6 +155,16 @@ class MeshAutoScheduler {
       }
     }, this.config.fullExpansionIntervalMs);
 
+    // CDM — Constant Discovery Mode reactor (feeds S-Tier Vault + Memory Stream)
+    this.timers.cdmReactor = setInterval(async () => {
+      try {
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        await this.runCdmReactorCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Unhandled error in CDM reactor interval:', err);
+      }
+    }, this.config.cdmReactorIntervalMs);
+
     // Run an initial gentle discovery cycle after a short warm-up delay
     // This ensures the Memory Stream is actively observing from the moment the substrate boots
     setTimeout(async () => {
@@ -159,7 +178,18 @@ class MeshAutoScheduler {
       }
     }, 60_000); // 60s after boot — let everything settle first
 
-    console.log('[MeshScheduler] Started — continuous autonomous discovery active');
+    // CDM reactor warm-up — first autonomous reactor run after 5 minutes
+    setTimeout(async () => {
+      try {
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        console.log('[CDM] Initial reactor cycle starting...');
+        await this.runCdmReactorCycle();
+      } catch (err) {
+        console.warn('[CDM] Initial reactor cycle error (non-fatal):', err);
+      }
+    }, 5 * 60_000); // 5 min after boot
+
+    console.log('[MeshScheduler] Started — CDM + continuous autonomous discovery active');
   }
 
   /**
@@ -177,6 +207,52 @@ class MeshAutoScheduler {
     }
 
     console.log('[MeshScheduler] Stopped');
+  }
+
+  /**
+   * CDM — Constant Discovery Mode reactor cycle
+   * Runs the full reactor with auto-generated 2-12 node depth templates.
+   * Feeds S-Tier Vault (95+ CJPI) and Memory Stream (all accepted).
+   */
+  async runCdmReactorCycle(): Promise<{ accepted: number; sTierPromoted: number }> {
+    try {
+      // Get current user for reactor context
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.warn('[CDM] No authenticated user — skipping reactor cycle');
+        return { accepted: 0, sTierPromoted: 0 };
+      }
+
+      // Generate fresh 2-12 node depth templates
+      const templates = generateTemplateBatch({
+        batchSize: 30,
+        minModules: 2,
+        maxModules: 12,
+        minCjpiTarget: 75,
+        biasHighValue: true,
+      });
+
+      console.log(`[CDM] Generated ${templates.length} templates (2-12 nodes deep)`);
+
+      // Run the reactor — it handles S-Tier promotion (95+) and Memory Stream feed internally
+      const result = await runReactor({
+        dryRun: false,
+        exploratoryMode: true,
+        scoringVersion: 'CDM-1.0',
+        injectedTemplates: templates,
+      }, user.id);
+
+      this.state.lastCdmReactor = new Date().toISOString();
+      this.state.totalCyclesRun++;
+
+      const sTierCount = result.discoveries.filter(d => d.cjpi >= 95).length;
+      console.log(`[CDM] Reactor complete: ${result.acceptedCount} accepted, ${sTierCount} promoted to S-Tier Vault, all fed to Memory Stream`);
+
+      return { accepted: result.acceptedCount, sTierPromoted: sTierCount };
+    } catch (err) {
+      console.warn('[CDM] Reactor cycle failed (non-fatal):', err);
+      return { accepted: 0, sTierPromoted: 0 };
+    }
   }
 
   /**
@@ -293,12 +369,14 @@ class MeshAutoScheduler {
    * Run a single full cycle manually (all phases)
    */
   async runOnce(): Promise<{
+    cdmReactor: { accepted: number; sTierPromoted: number };
     moduleDiscovery: number;
     gapAnalysis: { gaps: number; recommendations: number };
     intentScoring: number;
     expansion: number;
     advancedDiscovery: { liveGaps: number; affinityEdges: number; patterns: number };
   }> {
+    const cdm = await this.runCdmReactorCycle();
     const md = await this.runModuleDiscoveryCycle();
     const ga = await this.runGapAnalysisCycle();
     const is = await this.runIntentScoringCycle();
@@ -306,6 +384,7 @@ class MeshAutoScheduler {
     const ad = await this.runAdvancedDiscoveryCycle();
     
     return {
+      cdmReactor: cdm,
       moduleDiscovery: md.totalProposals,
       gapAnalysis: { gaps: ga.gapsFound, recommendations: ga.recommendations },
       intentScoring: is.intentsScored,
