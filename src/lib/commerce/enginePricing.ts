@@ -109,8 +109,6 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionPlan, PlanDefinition> = {
   },
 };
 
-// Legacy aliases for backward compatibility
-export type { SubscriptionPlan as LegacyPlan };
 
 // ============================================================================
 // ENGINE VISIBILITY & MONETIZATION
