@@ -29,8 +29,8 @@ export interface GeneratedTemplate {
 
 export interface GeneratorConfig {
   batchSize: number;         // how many templates per batch
-  minModules: number;        // minimum modules in chain (2-5)
-  maxModules: number;        // maximum modules in chain (2-5)
+  minModules: number;        // minimum modules in chain (2-12)
+  maxModules: number;        // maximum modules in chain (2-12)
   minCjpiTarget: number;     // minimum CJPI to target (e.g. 80)
   biasHighValue: boolean;    // bias toward higher scoring combos
 }
@@ -272,8 +272,8 @@ function generateOneTemplate(category: DiscoveryCategory, moduleCount: number, b
     .replace('{modules}', selectedModules.join(' × '))
     .replace('{modules}', selectedModules.join(' × '));
 
-  // Execution time — more modules = more time
-  const maxExecOptions = [1000, 2000, 3000, 5000, 8000, 10000, 15000];
+  // Execution time — more modules = more time (supports up to 12-node deep chains)
+  const maxExecOptions = [1000, 2000, 3000, 5000, 8000, 10000, 15000, 20000, 25000, 30000, 35000, 40000];
   const maxExecutionMs = maxExecOptions[Math.min(selectedModules.length - 1, maxExecOptions.length - 1)];
 
   return {
@@ -296,7 +296,7 @@ export function generateTemplateBatch(config: Partial<GeneratorConfig> = {}): Ge
   const cfg: GeneratorConfig = {
     batchSize: config.batchSize ?? 20,
     minModules: config.minModules ?? 2,
-    maxModules: config.maxModules ?? 5,
+    maxModules: config.maxModules ?? 12,
     minCjpiTarget: config.minCjpiTarget ?? 80,
     biasHighValue: config.biasHighValue ?? true,
   };
