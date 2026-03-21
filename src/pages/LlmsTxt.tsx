@@ -157,7 +157,7 @@ Base URL: https://cmpsbl.com/api/substrate
 
 ## Access Tiers
 
-Free (read-only) · Creator ($29/mo) · Architect ($79/mo) · Governor (admin)
+Builder (free) · Studio ($29/mo) · Creator ($49/mo) · Architect ($79/mo) · Governor (admin)
 
 ## Contact
 

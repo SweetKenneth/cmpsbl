@@ -21,7 +21,7 @@ export interface PublicCapability {
 
 export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
   // ══════════════════════════════════════════════════════
-  // CREATOR TIER ($29/mo) — 12 core + 27 crown jewels = 39
+  // CREATOR TIER ($49/mo) — 12 core + 27 crown jewels = 39
   // ══════════════════════════════════════════════════════
   {
     name: 'Knowledge Gap Detection',

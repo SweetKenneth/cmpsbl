@@ -153,7 +153,7 @@ serve(async (req) => {
               <div style="font-size:20px;">💎</div>
               <div>
                 <p style="color:#fff;font-size:14px;font-weight:600;margin:0 0 4px;">Upgrade for More</p>
-                <p style="color:#666;font-size:12px;margin:0;">Creator tier unlocks 9 daily pulls + 75 vault slots for $29/mo.</p>
+                <p style="color:#666;font-size:12px;margin:0;">Creator tier unlocks 9 daily pulls + 75 vault slots for $49/mo.</p>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 /**
  * Engine Subscription Pricing Configuration
- * Unified tier naming (Free/Creator/Architect/Enterprise)
+ * Unified tier naming (Builder/Studio/Creator/Architect)
  * 
  * Free: 30 engines + 1 meta-engine
  * Creator: All 80 engines + 8 meta-engines

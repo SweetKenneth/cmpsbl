@@ -16,7 +16,8 @@ const FORBIDDEN_BRANDING = [
 ];
 
 const CANONICAL_PRICING = {
-  creator: '$29',
+  studio: '$29',
+  creator: '$49',
   architect: '$79',
 };
 

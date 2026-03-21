@@ -491,10 +491,11 @@ function generateFullHelp(): string {
 │  Architecture: 40-node matrix │ 675+ caps │ 300 Synergies  │
 │                                                             │
 │  Access Tiers:                                              │
-│    ○ FREE        Read-only, status, pulse                   │
-│    ◆ CREATOR     Actions, mutations ($29/mo)                │
-│    ★ ARCHITECT   Evolution, advanced ops ($79/mo)           │
-│    ◉ GOVERNOR    System restore, admin (CMPSBL only)        │
+│    ○ BUILDER      Read-only, status, pulse                  │
+│    ◇ STUDIO       SDK, templates, memory ($29/mo)           │
+│    ◆ CREATOR      Actions, engines, agents ($49/mo)         │
+│    ★ ARCHITECT    Evolution, advanced ops ($79/mo)           │
+│    ◉ GOVERNOR     System restore, admin (CMPSBL only)       │
 │                                                             │
 │  Quick navigation:                                          │
 │    help <module>   Show module commands                     │
@@ -929,7 +930,8 @@ export async function executeCommand(
     
     const tierDescriptions: Record<string, string> = {
       free: 'Read-only dashboard, status commands',
-      creator: 'Terminal, engines, analytics, actions ($29/mo)',
+      studio: 'SDK, templates, memory, analytics ($29/mo)',
+      creator: 'Engines, agents, actions, exports ($49/mo)',
       architect: 'Evolution, mesh, advanced ops ($79/mo)',
       governor: 'Full system authority, admin, mint (CMPSBL only)',
     };

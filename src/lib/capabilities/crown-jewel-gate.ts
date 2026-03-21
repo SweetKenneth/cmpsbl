@@ -186,12 +186,12 @@ export function canAccessTieredItem(
 export function getUpgradeTierLabel(id: string, name: string = '', difficulty?: string, category?: string): string {
   // Check experience jewels first
   const jewelTier = getExperienceJewelTier(id);
-  if (jewelTier === 'creator') return 'Creator ($29/mo)';
+  if (jewelTier === 'creator') return 'Creator ($49/mo)';
   if (jewelTier === 'architect') return 'Architect ($79/mo)';
   
   // Check category/difficulty badge
   const badge = getItemTierBadge(id, name, difficulty, category);
-  if (badge === 'CREATOR') return 'Creator ($29/mo)';
+  if (badge === 'CREATOR') return 'Creator ($49/mo)';
   if (badge === 'ARCHITECT') return 'Architect ($79/mo)';
   if (badge === 'CMPSBL CORE') return 'CMPSBL Internal';
   
