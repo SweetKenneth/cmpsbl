@@ -151,8 +151,8 @@ export const DEPRECATED_TERMS = [
   '21 modules',
   '24 modules',
   '10 modules',
-  '37 nodes',
-  '38 nodes',
+  '39 nodes',
+  '40 nodes',
   'execution surfaces',
 ] as const;
 

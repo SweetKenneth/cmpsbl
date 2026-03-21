@@ -614,7 +614,7 @@ function ProofModeContent() {
                     {selectedScenario === "health" && (
                       <>
                         <p>✓ The substrate is deployed and responding to HTTP requests</p>
-                        <p>✓ All 38 matrix nodes across 12 sectors reachable</p>
+                        <p>✓ All 40 matrix nodes across 12 sectors reachable</p>
                         <p>✓ Edge functions are executing on Deno runtime in {EDGE_REGION}</p>
                         <p>✓ Active deployment is live</p>
                       </>

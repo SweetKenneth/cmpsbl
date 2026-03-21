@@ -23,7 +23,7 @@ export const TIERED_COMMANDS: TieredCommand[] = [
   { command: 'help', description: 'Show available commands for your tier', tier: 'free', category: 'system' },
   { command: 'status', description: 'System health overview', tier: 'free', category: 'system' },
   { command: 'whoami', description: 'Show your identity and tier', tier: 'free', category: 'system' },
-  { command: 'modules', description: 'List all 38 substrate nodes', tier: 'free', category: 'system' },
+  { command: 'modules', description: 'List all 40 substrate nodes', tier: 'free', category: 'system' },
   { command: 'memory recall', description: 'Recall memories from your namespace', tier: 'free', category: 'memory' },
   { command: 'memory store', description: 'Store a new memory', tier: 'free', category: 'memory' },
   { command: 'memory stats', description: 'View memory usage and tier counts', tier: 'free', category: 'memory' },
