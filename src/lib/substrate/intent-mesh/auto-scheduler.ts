@@ -49,6 +49,7 @@ export interface SchedulerState {
 }
 
 interface SchedulerTimers {
+  cdmReactor: ReturnType<typeof setInterval> | null;
   moduleDiscovery: ReturnType<typeof setInterval> | null;
   gapAnalysis: ReturnType<typeof setInterval> | null;
   intentScoring: ReturnType<typeof setInterval> | null;
