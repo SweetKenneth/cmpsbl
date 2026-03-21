@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { InteractivePlayground } from "@/components/developer/InteractivePlayground";
+import { NpmPackagesGrid } from "@/components/home/NpmPackagesCTA";
 import { DeveloperSignupForm } from "@/components/developer/DeveloperSignupForm";
 import { PricingCalculator } from "@/components/developer/PricingCalculator";
 import { DownloadableTemplates } from "@/components/developer/DownloadableTemplates";
