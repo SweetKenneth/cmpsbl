@@ -195,7 +195,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.badge}
           </Badge>
           
-          <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
+          <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1">
             {audience.title}
           </h3>
           <p className={cn(
