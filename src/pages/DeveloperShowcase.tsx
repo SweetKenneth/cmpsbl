@@ -9,7 +9,7 @@ import {
   ArrowRight, Brain, Moon, Zap, Code, Terminal, Layers,
   MessageSquare, Sparkles, Database, Network, Shield, Clock,
   Bot, FileCode, Workflow, Puzzle, GitBranch, Play,
-  CheckCircle2, BookOpen, Rocket,
+  CheckCircle2, BookOpen, Rocket, Package, ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
