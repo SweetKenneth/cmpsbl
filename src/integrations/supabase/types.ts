@@ -16845,6 +16845,24 @@ export type Database = {
         }
         Relationships: []
       }
+      system_boot_log: {
+        Row: {
+          boot_at: string
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          boot_at?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          boot_at?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
       system_config: {
         Row: {
           created_at: string
