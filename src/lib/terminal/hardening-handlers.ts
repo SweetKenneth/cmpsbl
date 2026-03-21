@@ -1239,6 +1239,25 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: { reasoning: getEngineCertification('reasoning'), learning: getEngineCertification('learning') } };
   });
 
+  registerHandler('engineer.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ ENGINEER — Meta-Engine Intelligence (Node 39) ┐',
+      '│  engineer.status        Module status & stats     │',
+      '│  engineer.health        Health score               │',
+      '│  engineer.cycle         Run maintenance cycle      │',
+      '│  engineer.proposals     Mutation proposals         │',
+      '│  engineer.proposals.pending  Pending proposals     │',
+      '│  engineer.study         Active study topic         │',
+      '│  engineer.study.queue   Study queue                │',
+      '│  engineer.study.topics  Dynamic CLM topics         │',
+      '│  engineer.stats         Engine statistics          │',
+      '│  engineer.degraded      Degraded engines           │',
+      '│  engineer.hardening     Hardening (Mechanist)      │',
+      '└──────────────────────────────────────────────────┘', '',
+    ],
+  }));
+
   // ═══ INTENT NODE — Core Commands ═══
 
   registerHandler('intent.status', async () => {
