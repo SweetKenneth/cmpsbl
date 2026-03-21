@@ -38,6 +38,7 @@ export interface SchedulerConfig {
 export interface SchedulerState {
   config: SchedulerConfig;
   isRunning: boolean;
+  lastCdmReactor: string | null;
   lastModuleDiscovery: string | null;
   lastGapAnalysis: string | null;
   lastIntentScoring: string | null;
