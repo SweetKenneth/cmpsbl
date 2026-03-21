@@ -155,6 +155,16 @@ class MeshAutoScheduler {
       }
     }, this.config.fullExpansionIntervalMs);
 
+    // CDM — Constant Discovery Mode reactor (feeds S-Tier Vault + Memory Stream)
+    this.timers.cdmReactor = setInterval(async () => {
+      try {
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        await this.runCdmReactorCycle();
+      } catch (err) {
+        console.warn('[MeshScheduler] Unhandled error in CDM reactor interval:', err);
+      }
+    }, this.config.cdmReactorIntervalMs);
+
     // Run an initial gentle discovery cycle after a short warm-up delay
     // This ensures the Memory Stream is actively observing from the moment the substrate boots
     setTimeout(async () => {
@@ -168,7 +178,18 @@ class MeshAutoScheduler {
       }
     }, 60_000); // 60s after boot — let everything settle first
 
-    console.log('[MeshScheduler] Started — continuous autonomous discovery active');
+    // CDM reactor warm-up — first autonomous reactor run after 5 minutes
+    setTimeout(async () => {
+      try {
+        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        console.log('[CDM] Initial reactor cycle starting...');
+        await this.runCdmReactorCycle();
+      } catch (err) {
+        console.warn('[CDM] Initial reactor cycle error (non-fatal):', err);
+      }
+    }, 5 * 60_000); // 5 min after boot
+
+    console.log('[MeshScheduler] Started — CDM + continuous autonomous discovery active');
   }
 
   /**
