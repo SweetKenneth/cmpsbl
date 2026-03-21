@@ -137,6 +137,11 @@ export default function Explore() {
         <UseCaseShowcase />
 
         <SectionDivider />
+
+        {/* ═══ NPM SDK — Open Source Packages ═══ */}
+        <NpmPackagesCTA />
+
+        <SectionDivider />
       </Suspense>
 
       {/* ═══ FINAL CTA — Cinematic closing ═══ */}
