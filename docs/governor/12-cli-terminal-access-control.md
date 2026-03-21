@@ -704,7 +704,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.1 Memory System
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | Memory recall (read) | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Memory Stream view | ❌ | ✅ | ✅ | ✅ | ✅ |
@@ -715,7 +715,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.2 Ascension (Software Evolution)
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View discoveries | ✅ | ✅ | ✅ | ✅ | ✅ |
 | CJPI scoring | ❌ | ✅ | ✅ | ✅ | ✅ |
@@ -732,7 +732,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.3 Agents & Agencies
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View agent templates | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Purchase agency | ❌ | ❌ | ✅ | ✅ | ✅ |
@@ -745,7 +745,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.4 Engines
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View engine catalog | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Invoke free engines | ✅ | ✅ | ✅ | ✅ | ✅ |
@@ -756,7 +756,7 @@ API keys carry scope arrays that map to tier permissions:
 
 ### 6.5 Evolution & SEBA
 
-| Capability | Free | Creator | Studio | Architect | Governor |
+| Capability | Builder | Studio | Creator | Architect | Governor |
 |-----------|------|---------|--------|-----------|---------|
 | View evolution state | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Submit proposals | ❌ | ❌ | ❌ | ✅ | ✅ |
@@ -787,7 +787,7 @@ Regardless of tier, these are absolute restrictions:
 
 ## 8. Rate Limits by Tier
 
-| Resource | Free | Creator | Studio | Architect | Governor |
+| Resource | Builder | Studio | Creator | Architect | Governor |
 |----------|------|---------|--------|-----------|---------|
 | API calls/minute | 10 | 60 | 200 | 500 | Unlimited |
 | API calls/day | 100 | 5,000 | 20,000 | 100,000 | Unlimited |
