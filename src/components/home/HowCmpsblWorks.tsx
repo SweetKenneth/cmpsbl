@@ -35,13 +35,7 @@ export function HowCmpsblWorks() {
             </Badge>
             <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
               How{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
+              <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
                 CMPSBL
               </span>{" "}
               Works
