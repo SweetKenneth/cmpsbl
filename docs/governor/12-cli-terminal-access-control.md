@@ -52,7 +52,7 @@ Governor ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 
 ### 3.1 Universal Commands (All Tiers)
 
-Every user, including Free tier, gets these foundational commands:
+Every user, including Builder tier, gets these foundational commands:
 
 | Command | Description |
 |---------|-------------|
