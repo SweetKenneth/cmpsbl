@@ -26,6 +26,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 09 | [Founder Intent & Red Lines](09-founder-intent.md) | Non-negotiable principles, ethical boundaries, anti-corruption guardrails |
 | 10 | [Emergency Procedures](10-emergency-procedures.md) | P0–P3 response, cascade arrest, credential compromise, full recovery |
 | 11 | [Defensible Valuation](11-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium, positioning |
+| 12 | [CLI, Terminal & Access Control](12-cli-terminal-access-control.md) | Full command map (~600 terminal + 66 CLI), 5-tier permissions, rate limits, NPM ecosystem |
 
 ---
 
