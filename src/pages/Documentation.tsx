@@ -1234,6 +1234,37 @@ const data = await res.json();`}</CodeBlock>
   -H "Content-Type: application/json" \\
   -d '{"action": "brain.query", "query": "user preferences"}'`}</CodeBlock>
       </div>
+
+      {/* NPM Packages */}
+      <div>
+        <h3 className="font-semibold mb-3">NPM Packages</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          11 modular packages under the <code className="text-primary font-mono">@cmpsbl</code> org on NPM. Install only what you need.
+        </p>
+        <CodeBlock title="Install Core">{`npm i @cmpsbl/types @cmpsbl/runtime @cmpsbl/intent`}</CodeBlock>
+        <CodeBlock title="Install React Hooks">{`npm i @cmpsbl/react`}</CodeBlock>
+        <div className="grid sm:grid-cols-2 gap-2 mt-3">
+          {[
+            { pkg: '@cmpsbl/types', desc: 'Shared TypeScript schemas' },
+            { pkg: '@cmpsbl/runtime', desc: 'Mini-Runtime™ engine' },
+            { pkg: '@cmpsbl/failsafe', desc: 'Zero-dep migration toolkit' },
+            { pkg: '@cmpsbl/intent', desc: 'Intent router & dispatch' },
+            { pkg: '@cmpsbl/mesh', desc: 'Mesh telemetry client' },
+            { pkg: '@cmpsbl/bridge', desc: 'Polyglot runtime adapters' },
+            { pkg: '@cmpsbl/sdk', desc: 'Authenticated engine access' },
+            { pkg: '@cmpsbl/discovery', desc: 'Pipeline crystallization' },
+            { pkg: '@cmpsbl/cli', desc: 'CLI dev tools' },
+            { pkg: '@cmpsbl/react', desc: 'React hooks' },
+            { pkg: '@cmpsbl/test-harness', desc: 'Validation suite' },
+          ].map(p => (
+            <div key={p.pkg} className="flex items-center gap-2 p-2 rounded border border-border/50 bg-card/50 text-xs">
+              <Package className="w-3 h-3 text-primary shrink-0" />
+              <code className="font-mono font-semibold">{p.pkg}</code>
+              <span className="text-muted-foreground ml-auto hidden sm:inline">{p.desc}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

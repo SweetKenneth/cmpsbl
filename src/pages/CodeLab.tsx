@@ -594,6 +594,41 @@ const response = await substrate.nexus.text(
           <TabsContent value="sdk" className="space-y-8">
             <TechShowcase />
             <SDKQuickReference />
+            {/* NPM Packages */}
+            <Card className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Package className="w-5 h-5 text-primary" />
+                <h3 className="text-lg font-semibold">NPM Packages</h3>
+                <Badge variant="secondary" className="text-xs font-mono">@cmpsbl</Badge>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                11 modular packages — install only what you need.
+              </p>
+              <div className="bg-muted rounded-lg p-3 font-mono text-sm mb-4 flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-primary shrink-0" />
+                <code>npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {[
+                  '@cmpsbl/types', '@cmpsbl/runtime', '@cmpsbl/failsafe',
+                  '@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/bridge',
+                  '@cmpsbl/sdk', '@cmpsbl/discovery', '@cmpsbl/cli',
+                  '@cmpsbl/react', '@cmpsbl/test-harness',
+                ].map(pkg => (
+                  <div key={pkg} className="flex items-center gap-2 p-2 rounded border border-border/50 text-xs">
+                    <Package className="w-3 h-3 text-primary shrink-0" />
+                    <code className="font-mono font-semibold">{pkg}</code>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 flex gap-3">
+                <Button asChild size="sm" variant="outline">
+                  <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
+                    View on NPM <ExternalLink className="w-3 h-3 ml-1" />
+                  </a>
+                </Button>
+              </div>
+            </Card>
           </TabsContent>
 
           {/* Showcase Tab */}
