@@ -308,7 +308,7 @@ Ascension is the single largest value multiplier in the system because it:
 
 ---
 
-## 8. Recommended Positioning
+## 9. Recommended Positioning
 
 ### For Seed / Series A
 
