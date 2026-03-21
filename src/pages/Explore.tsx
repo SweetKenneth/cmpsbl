@@ -105,16 +105,8 @@ export default function Explore() {
       <LiveStatsBar />
 
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        {/* ═══ WHAT IT IS — 9 core systems ═══ */}
-        <WhySubstrate />
-
-        {/* ═══ MENTAL MODEL — How CMPSBL Works ═══ */}
-        <HowCmpsblWorks />
-
-        <SectionDivider />
-
-        {/* ═══ HOW IT'S DIFFERENT — Dream · Remember · Adapt · Self-Improve ═══ */}
-        <DifferentiationSection />
+        {/* ═══ NPM SDK — Build on the Substrate ═══ */}
+        <NpmPackagesCTA />
 
         <SectionDivider />
 
@@ -128,8 +120,11 @@ export default function Explore() {
 
         <SectionDivider />
 
-        {/* ═══ SOCIAL PROOF — Testimonials ═══ */}
-        <SocialProof />
+        {/* ═══ WHAT IT IS — 9 core systems ═══ */}
+        <WhySubstrate />
+
+        {/* ═══ HOW IT'S DIFFERENT — Dream · Adapt · Evolve ═══ */}
+        <DifferentiationSection />
 
         <SectionDivider />
 
@@ -138,8 +133,13 @@ export default function Explore() {
 
         <SectionDivider />
 
-        {/* ═══ NPM SDK — Open Source Packages ═══ */}
-        <NpmPackagesCTA />
+        {/* ═══ MENTAL MODEL — How CMPSBL Works ═══ */}
+        <HowCmpsblWorks />
+
+        <SectionDivider />
+
+        {/* ═══ SOCIAL PROOF — Testimonials ═══ */}
+        <SocialProof />
 
         <SectionDivider />
       </Suspense>
