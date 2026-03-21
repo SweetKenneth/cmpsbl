@@ -14,11 +14,11 @@ const corsHeaders = {
 
 // Aligned with ENGINE_SUBSCRIPTION_PRODUCTS in engine-stripe-products.ts
 const TIER_PRICES: Record<string, Record<string, { price_id: string; product_id: string; amount: number }>> = {
-  creator: {
+  studio: {
     monthly: { price_id: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu', product_id: 'prod_U3d8z2sorSG4sI', amount: 2900 },
     annual:  { price_id: 'price_1T5VsgQ7FtTiAL4ahx89OgVH', product_id: 'prod_U3d84gNyBRQgeu', amount: 27600 },
   },
-  studio: {
+  creator: {
     monthly: { price_id: 'price_1T6lnoQ7FtTiAL4aOoMJtK9z', product_id: 'prod_U4vfFrx4XIT6Ah', amount: 4900 },
     annual:  { price_id: 'price_1T6lnxQ7FtTiAL4a3N9AvKcG', product_id: 'prod_U4vfNOl4dHkmld', amount: 47040 },
   },
@@ -26,7 +26,7 @@ const TIER_PRICES: Record<string, Record<string, { price_id: string; product_id:
     monthly: { price_id: 'price_1T5VsZQ7FtTiAL4aCNAQYuY3', product_id: 'prod_U3d8XbUwCGrcfO', amount: 7900 },
     annual:  { price_id: 'price_1T5VshQ7FtTiAL4a2cWVOSVU', product_id: 'prod_U3d8M0yNFGpGTw', amount: 75600 },
   },
-  // Legacy aliases
+  // Legacy aliases — "builder" maps to studio ($29)
   builder: {
     monthly: { price_id: 'price_1T5VsXQ7FtTiAL4aj5FIIVCu', product_id: 'prod_U3d8z2sorSG4sI', amount: 2900 },
     annual:  { price_id: 'price_1T5VsgQ7FtTiAL4ahx89OgVH', product_id: 'prod_U3d84gNyBRQgeu', amount: 27600 },
