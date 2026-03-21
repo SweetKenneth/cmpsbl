@@ -130,6 +130,15 @@ export async function initializeCortex(): Promise<{
 // Pipeline scheduler
 export * from './pipelineScheduler';
 
+// Bottleneck analysis (doc-aligned)
+export * from './bottleneckAnalysis';
+
+// Cascade failure prevention (doc-aligned)
+export * from './cascadeFailurePrevention';
+
+// CLM — Continuous Learning Module
+export * from './cortexCLM';
+
 // Hardening layer v2.0.0
 export * from './cortex-hardening';
 
