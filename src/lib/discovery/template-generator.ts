@@ -29,8 +29,8 @@ export interface GeneratedTemplate {
 
 export interface GeneratorConfig {
   batchSize: number;         // how many templates per batch
-  minModules: number;        // minimum modules in chain (2-5)
-  maxModules: number;        // maximum modules in chain (2-5)
+  minModules: number;        // minimum modules in chain (2-12)
+  maxModules: number;        // maximum modules in chain (2-12)
   minCjpiTarget: number;     // minimum CJPI to target (e.g. 80)
   biasHighValue: boolean;    // bias toward higher scoring combos
 }
