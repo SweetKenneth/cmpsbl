@@ -33,6 +33,7 @@ const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksS
 
 const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
+const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 
 // Section divider with animated gradient, memory-stream accent, and side flair
 // Uses CSS keyframes instead of framer-motion to avoid 56KB dependency
@@ -134,6 +135,11 @@ export default function Explore() {
 
         {/* ═══ USE CASES — What you can build ═══ */}
         <UseCaseShowcase />
+
+        <SectionDivider />
+
+        {/* ═══ NPM SDK — Open Source Packages ═══ */}
+        <NpmPackagesCTA />
 
         <SectionDivider />
       </Suspense>

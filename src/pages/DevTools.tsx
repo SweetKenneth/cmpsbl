@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { InteractivePlayground } from "@/components/developer/InteractivePlayground";
+import { NpmPackagesGrid } from "@/components/home/NpmPackagesCTA";
 import { DeveloperSignupForm } from "@/components/developer/DeveloperSignupForm";
 import { PricingCalculator } from "@/components/developer/PricingCalculator";
 import { DownloadableTemplates } from "@/components/developer/DownloadableTemplates";
@@ -261,16 +262,20 @@ export default function DevTools() {
                     </div>
                   </div>
 
-                  {/* NPM Coming Soon */}
-                  <div className="p-4 rounded-lg border border-dashed border-muted-foreground/30 bg-muted/30">
+                   {/* NPM Packages — Live */}
+                  <div className="p-4 rounded-lg border border-primary/20 bg-primary/5">
                     <div className="flex items-center gap-2 mb-2">
-                      <Package className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm font-medium text-muted-foreground">Public NPM Package</span>
-                      <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
+                      <Package className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-medium">Public NPM Packages</span>
+                      <Badge className="text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/20">Live</Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      A public NPM package (@cmpsbl/memory) will be available soon.
+                    <p className="text-xs text-muted-foreground mb-3">
+                      11 modular packages under the <code className="text-primary font-mono">@cmpsbl</code> org on NPM.
                     </p>
+                    <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-2 font-mono text-xs">
+                      <Terminal className="w-3 h-3 text-primary shrink-0" />
+                      <code>npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
+                    </div>
                   </div>
 
                   {/* Usage Example */}
@@ -294,6 +299,9 @@ export default function DevTools() {
                   </div>
                 </CardContent>
               </Card>
+
+              {/* NPM Packages Grid */}
+              <NpmPackagesGrid />
 
               {/* Node Overview */}
               <div>
