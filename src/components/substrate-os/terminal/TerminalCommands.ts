@@ -3,9 +3,10 @@
  * 500+ commands across 40 nodes / 12 sectors
  * Complete list of all substrate commands organized by sector
  *
- * Tier Gating: free | creator | architect | governor
+ * Tier Gating: free | studio | creator | architect | governor
  *   free      = Status, pulse, read-only queries
- *   creator   = Actions, mutations, basic operations ($29/mo)
+ *   studio    = SDK, templates, memory ($29/mo)
+ *   creator   = Engines, agents, actions ($49/mo)
  *   architect = Evolution, advanced ops ($79/mo)
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */

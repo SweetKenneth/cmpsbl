@@ -1,10 +1,11 @@
 /**
- * CMPSBL Pricing — Three Tiers
+ * CMPSBL Pricing — Four Tiers
  * 
- * Three tiers. Clean hierarchy. Zero IP leakage.
+ * Four tiers. Clean hierarchy. Zero IP leakage.
  *   Builder    → $0/mo   (3 capability slots, full runtime, 30 free templates)
- *   Creator    → $29/mo  (6 capability slots, expanded memory, executable capabilities)
- *   Architect  → $79/mo  (12 capability slots, governance, self-hosted deployment, compliance)
+ *   Studio     → $29/mo  (6 capability slots, expanded memory, SDK templates)
+ *   Creator    → $49/mo  (9 capability slots, engines, agents, exports)
+ *   Architect  → $79/mo  (12 capability slots, governance, evolution, compliance)
  *
  * Core Rule: User projects run ON the CMPSBL Substrate.
  *            User projects never run AS the CMPSBL Substrate.

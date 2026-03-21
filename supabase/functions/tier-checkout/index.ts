@@ -1,5 +1,5 @@
 /**
- * Tier Checkout — Creator $29/mo | Studio $49/mo | Architect $79/mo
+ * Tier Checkout — Studio $29/mo | Creator $49/mo | Architect $79/mo
  * Aligned with engine-stripe-products.ts and licensing-products.ts
  */
 
