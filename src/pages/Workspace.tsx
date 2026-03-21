@@ -289,11 +289,11 @@ export default function Workspace() {
                 Commands build progressively. Every tier inherits all commands from lower tiers.
               </p>
 
-              {(['free', 'creator', 'studio', 'architect', 'governor'] as CommandTier[]).map((tier) => {
+              {(['free', 'studio', 'creator', 'architect', 'governor'] as CommandTier[]).map((tier) => {
                 const tierCmds = getExclusiveCommands(tier);
                 const info = TIER_LABELS[tier];
                 const isExpanded = expandedTier === tier;
-                const isAvailable = ['free', 'creator', 'studio', 'architect', 'governor'].indexOf(userTier) >= ['free', 'creator', 'studio', 'architect', 'governor'].indexOf(tier);
+                const isAvailable = ['free', 'studio', 'creator', 'architect', 'governor'].indexOf(userTier) >= ['free', 'studio', 'creator', 'architect', 'governor'].indexOf(tier);
 
                 return (
                   <Card

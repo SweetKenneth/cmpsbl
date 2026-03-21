@@ -52,7 +52,7 @@ const EXPORT_TEMPLATES: ExportTemplate[] = [
 ];
 
 const TIER_PRIORITY: Record<string, number> = {
-  free: 0, builder: 0, creator: 1, studio: 2, architect: 3, governor: 5,
+  free: 0, builder: 0, studio: 1, creator: 2, architect: 3, governor: 5,
 };
 
 export function ExportCenter({ tier }: { tier: string }) {
