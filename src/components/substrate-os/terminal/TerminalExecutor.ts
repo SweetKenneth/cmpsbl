@@ -860,6 +860,7 @@ export async function executeCommand(
     const infraModuleAliases: Record<string, string> = {
       'memory': 'memory_mod', 'relay': 'relay_mod', 'audit': 'audit_mod',
       'identity': 'identity_mod', 'economy': 'economy_mod', 'sandbox': 'sandbox_mod',
+      'intent': 'intent_hub', 'atlas': 'atlas_op', 'engineer': 'engineer_op',
     };
     if (module && module in infraModuleAliases) {
       return { success: true, output: generateModuleHelp(infraModuleAliases[module] as keyof typeof COMMAND_CATEGORIES) };
