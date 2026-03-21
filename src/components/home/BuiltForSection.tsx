@@ -297,7 +297,7 @@ export function BuiltForSection() {
               Evolves
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             The substrate gives your systems DREAM cycles, governed ADAPT, and persistent memory. 
             Build for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}

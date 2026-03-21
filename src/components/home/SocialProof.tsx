@@ -68,7 +68,7 @@ export function SocialProof() {
               Building
             </span>
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Teams using the substrate and Memory Stream to build intelligence that compounds.
           </p>
         </motion.div>

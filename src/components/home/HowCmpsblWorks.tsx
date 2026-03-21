@@ -33,7 +33,7 @@ export function HowCmpsblWorks() {
               <Lightbulb className="w-3 h-3 text-primary" />
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
               How{" "}
               <span
                 style={{

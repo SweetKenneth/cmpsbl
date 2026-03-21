@@ -333,7 +333,7 @@ export function WhySubstrate() {
                One Operating System.
              </span>
            </h2>
-           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+           <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Build apps that{" "}
               <span className="text-foreground font-medium">think with reasoning models</span>,{" "}
               <span className="text-foreground font-medium">remember across sessions</span>, and{" "}
