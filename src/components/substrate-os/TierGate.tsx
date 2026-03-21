@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { type SubstrateRole } from '@/hooks/useUserRole';
 import { cn } from '@/lib/utils';
 
-const TIER_ORDER: SubstrateRole[] = ['free', 'creator', 'studio', 'architect', 'governor'];
+const TIER_ORDER: SubstrateRole[] = ['free', 'studio', 'creator', 'architect', 'governor'];
 
 const TIER_LABELS: Record<SubstrateRole, string> = {
   free: 'Free',

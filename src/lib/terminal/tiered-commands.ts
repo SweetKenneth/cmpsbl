@@ -133,7 +133,7 @@ export function getRequiredTier(command: string): CommandTier | null {
  * Get summary counts per tier.
  */
 export function getTierCommandCounts(): Record<CommandTier, number> {
-  const counts: Record<CommandTier, number> = { free: 0, creator: 0, studio: 0, architect: 0, governor: 0 };
+  const counts: Record<CommandTier, number> = { free: 0, studio: 0, creator: 0, architect: 0, governor: 0 };
   for (const tier of TIER_ORDER) {
     counts[tier] = getCommandsForTier(tier).length;
   }

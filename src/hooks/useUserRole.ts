@@ -169,11 +169,12 @@ export function useUserRole(): UserRoleState {
     detectRole();
   }, [detectRole]);
 
-  // Tier hierarchy: governor > architect > creator > free
+  // Tier hierarchy: governor > architect > creator > studio > builder(free)
   const isGovernor = role === 'governor';
   const isArchitect = isGovernor || role === 'architect';
   const isCreator = isArchitect || role === 'creator';
-  const isFree = true; // Everyone is at least free
+  const isStudio = isCreator || role === 'studio';
+  const isFree = true; // Everyone is at least builder(free)
 
   return {
     role,
