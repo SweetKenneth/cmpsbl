@@ -1,0 +1,14 @@
+{
+  "name": "@cmpsbl/discovery",
+  "version": "1.0.0",
+  "description": "CMPSBL® Pipeline Discovery Engine — CJPI scoring + crystallization for building foundries",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
+  "keywords": ["cmpsbl", "discovery", "pipeline", "crystallization", "foundry"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "dependencies": { "@cmpsbl/types": "^1.0.0", "@cmpsbl/runtime": "^1.0.0" }
+}

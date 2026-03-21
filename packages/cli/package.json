@@ -1,0 +1,15 @@
+{
+  "name": "@cmpsbl/cli",
+  "version": "1.0.0",
+  "description": "CMPSBL® CLI — init, score, export, validate-manifest commands for local dev workflows",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": { "cmpsbl": "dist/bin.js" },
+  "files": ["dist"],
+  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
+  "keywords": ["cmpsbl", "cli", "cjpi", "score", "manifest"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "dependencies": { "@cmpsbl/types": "^1.0.0", "@cmpsbl/runtime": "^1.0.0" }
+}

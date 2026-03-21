@@ -1,0 +1,14 @@
+{
+  "name": "@cmpsbl/intent",
+  "version": "1.0.0",
+  "description": "CMPSBL® Intent Router — Standalone broadcastIntent() + resolver dispatch for apps",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
+  "keywords": ["cmpsbl", "intent", "router", "resolver", "dispatch"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "dependencies": { "@cmpsbl/types": "^1.0.0" }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@cmpsbl/react",
+  "version": "1.0.0",
+  "description": "CMPSBL® React Hooks — useIntent, useMesh, useRuntime for React apps",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
+  "keywords": ["cmpsbl", "react", "hooks", "intent", "mesh", "runtime"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "peerDependencies": { "react": ">=17.0.0" },
+  "dependencies": {
+    "@cmpsbl/types": "^1.0.0",
+    "@cmpsbl/runtime": "^1.0.0",
+    "@cmpsbl/intent": "^1.0.0",
+    "@cmpsbl/mesh": "^1.0.0"
+  }
+}

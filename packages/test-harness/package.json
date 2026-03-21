@@ -1,0 +1,18 @@
+{
+  "name": "@cmpsbl/test-harness",
+  "version": "1.0.0",
+  "description": "CMPSBL® Test Harness — Utilities for validating exported pipelines and bridge adapters",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
+  "keywords": ["cmpsbl", "test", "harness", "validation", "pipeline"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "dependencies": {
+    "@cmpsbl/types": "^1.0.0",
+    "@cmpsbl/runtime": "^1.0.0",
+    "@cmpsbl/bridge": "^1.0.0"
+  }
+}

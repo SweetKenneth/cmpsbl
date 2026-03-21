@@ -1,0 +1,14 @@
+{
+  "name": "@cmpsbl/mesh",
+  "version": "1.0.0",
+  "description": "CMPSBL® Mesh Telemetry Client — Emit/subscribe to node communication events",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": { "build": "tsc", "prepublishOnly": "npm run build" },
+  "keywords": ["cmpsbl", "mesh", "telemetry", "events", "substrate"],
+  "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://cmpsbl.com",
+  "dependencies": { "@cmpsbl/types": "^1.0.0" }
+}
