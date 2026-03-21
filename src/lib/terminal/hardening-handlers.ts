@@ -1525,6 +1525,35 @@ export function registerHardeningHandlers(): void {
     return { success: true, data: calculateAtlasHealth() };
   });
 
+  registerHandler('atlas.health', async () => {
+    const { calculateAtlasHealth } = await import('@/lib/atlas/atlas-hardening');
+    const health = calculateAtlasHealth();
+    return { success: true, data: { health: (health as any)?.score ?? 100, module: 'ATLAS', layer: 'Plane' } };
+  });
+
+  registerHandler('atlas.help', async () => ({
+    success: true,
+    formatted: [
+      '', '┌─ ATLAS — Governance Authority (Node 40) ───┐',
+      '│  atlas.status          Module status & uptime   │',
+      '│  atlas.health          Health score              │',
+      '│  atlas.approvals       Approval chain            │',
+      '│  atlas.approvals.stats Approval statistics       │',
+      '│  atlas.sessions        Active sessions           │',
+      '│  atlas.rate_limit      Rate limit check          │',
+      '│  atlas.policy          Policy audits             │',
+      '│  atlas.mode            Mode transitions          │',
+      '│  atlas.capabilities    Capability rankings       │',
+      '│  atlas.escalations     Unresolved escalations    │',
+      '│  atlas.compliance      Governance compliance     │',
+      '│  atlas.sla             SLA breach count          │',
+      '│  atlas.heatmap         Node engagement heatmap   │',
+      '│  atlas.uptime          System uptime hours       │',
+      '│  atlas.hardening       Hardening (Prometheus)    │',
+      '└───────────────────────────────────────────────┘', '',
+    ],
+  }));
+
   // ═══ AUDIT HARDENING ═══
 
   registerHandler('audit.hardening', async () => {
