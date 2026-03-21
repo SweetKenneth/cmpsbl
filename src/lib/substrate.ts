@@ -818,8 +818,6 @@ class SubstrateClient {
       this.invoke({ module: 'evolution', action: 'implement_archived', payload: { archived_function, target_action } }),
   };
 
-  /** @deprecated Use `evolution` — Modernizer was absorbed by EVOLUTION */
-  get _legacyEvolutionAlias() { return this.evolution; }
 
   // ═══════════════════════════════════════════════════════════════
   // CORE MODULE — The Kernel (Scheduler, Router, Lifecycle)
