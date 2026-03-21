@@ -27,6 +27,7 @@ const stepColors = [
 const tiers = [
   { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-emerald-500 to-emerald-600" },
   { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo", color: "from-violet-500 to-purple-500" },
+  { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo", color: "from-blue-500 to-indigo-500" },
   { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-amber-500 to-orange-500" },
 ];
 
