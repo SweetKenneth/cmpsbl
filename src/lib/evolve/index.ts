@@ -26,7 +26,7 @@ export * from './ts-verify';
 export * from './codeagent-controller';
 
 // Commands & diagnostics
-export * from './modernizer-commands';
+export * from './evolution-commands';
 export * from './decode-fallback';
 export * from './diagnostics';
 

@@ -10,4 +10,4 @@ export { runShadowBatch } from './runBatch';
 export { startShadowScheduler, stopShadowScheduler } from './scheduler';
 export { getShadowMeshAnalytics, type ShadowMeshAnalyticsData } from './analytics';
 export { runShadowBuild, runAllShadowBuilds, getSkillStats, getAllSkills, type ShadowBuildReport, type ShadowBuildResult, type SkillRecord } from './shadowBuild';
-export { runModernizerShadow as runEvolutionShadow, runModernizerShadow, getPerformanceStats, getPerformanceSummary, getPerformanceForExecutor, type ModernizerShadowReport as EvolutionShadowReport, type ModernizerShadowReport, type GapAttemptResult, type PerformanceEntry, type GapCategory } from './modernizerShadow';
+export { runModernizerShadow, getPerformanceStats, getPerformanceSummary, getPerformanceForExecutor, type ModernizerShadowReport, type GapAttemptResult, type PerformanceEntry, type GapCategory } from './modernizerShadow';
