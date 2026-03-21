@@ -25,6 +25,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 08 | [Succession & Survivability](08-succession-survivability.md) | Credential transfer, dead-man switch, continuity guarantees |
 | 09 | [Founder Intent & Red Lines](09-founder-intent.md) | Non-negotiable principles, ethical boundaries, anti-corruption guardrails |
 | 10 | [Emergency Procedures](10-emergency-procedures.md) | P0–P3 response, cascade arrest, credential compromise, full recovery |
+| 11 | [Defensible Valuation](11-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium, positioning |
 
 ---
 
