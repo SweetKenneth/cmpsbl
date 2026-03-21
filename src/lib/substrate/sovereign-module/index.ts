@@ -353,7 +353,7 @@ function checkExpiringConsents(): void {
   state.expiringConsents = expiring.length;
 
   if (expiring.length >= 5) {
-    emit({ module: 'sovereign', event_type: 'consent_expiry_warning', outcome: 'warning', data: { count: expiring.length } });
+    emit({ module: 'sovereign', event_type: 'consent_expiry_warning', outcome: 'failed', data: { count: expiring.length } });
   }
 }
 
