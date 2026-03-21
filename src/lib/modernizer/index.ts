@@ -375,8 +375,7 @@ export async function getEvolutionModuleStatus(): Promise<EvolutionStatus> {
     };
   }
 }
-/** @deprecated Use getEvolutionModuleStatus */
-export const getModernizerStatus = getEvolutionModuleStatus;
+// Deprecated getModernizerStatus alias removed — use getEvolutionModuleStatus
  
  // Code analysis
  export * from './codeAnalysis';

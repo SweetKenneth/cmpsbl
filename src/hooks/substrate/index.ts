@@ -24,8 +24,7 @@ export { useIntegration, type UseIntegrationReturn } from './useIntegration';
 // Administrative Layer
 export { useSystem, type UseSystemReturn } from './useSystem';
 export { useInclusive, type UseInclusiveReturn } from './useInclusive';
-/** @deprecated Use useEvolution from CSZ exports (line 64) */
-export { useModernizer, type UseModernizerReturn } from './useModernizer';
+// MODERNIZER deprecated alias removed — useEvolution is at line 65 (CSZ)
 
 // Orchestrator Layer
 export { useCortex, type UseCortexReturn } from './useCortex';

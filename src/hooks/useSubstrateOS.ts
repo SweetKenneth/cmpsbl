@@ -119,10 +119,7 @@ export function useDreamStatusOS() {
   });
 }
 
-/** @deprecated Use useEvolutionStatusOS — EVOLUTION node */
-export function useModernizerStatusOS() {
-  return useEvolutionStatusOS();
-}
+// Deprecated useModernizerStatusOS removed — use useEvolutionStatusOS
 
 export function useEvolutionStatusOS() {
   const pollingEnabled = debugMode.allowModulePolling();

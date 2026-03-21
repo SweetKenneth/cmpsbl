@@ -449,7 +449,7 @@ function getModuleFiles(module: string): string[] {
     vision: ['src/lib/substrate/telemetry-engine.ts', 'src/hooks/useSubstrate.ts'],
     decode: ['src/lib/substrate/decode/', 'src/lib/substrate.ts'],
     encode: ['src/lib/substrate/encode-module/', 'src/lib/codeagent/encoded/'],
-    evolution: ['src/lib/evolution-mesh/', 'src/pages/Modernizer.tsx'],
+    evolution: ['src/lib/evolution-mesh/', 'src/lib/evolve/'],
     economy: ['src/lib/substrate/economy-module/'],
     sandbox: ['src/lib/substrate/sandbox-module/'],
     inclusive: ['src/lib/inclusive/'],
