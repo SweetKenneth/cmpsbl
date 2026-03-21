@@ -35,7 +35,7 @@ const SDK_TEMPLATES = [
 ];
 
 const TIER_LABELS: Record<CommandTier, { label: string; color: string; price: string }> = {
-  free: { label: 'Free', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', price: '$0' },
+  free: { label: 'Builder', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', price: '$0' },
   creator: { label: 'Creator', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20', price: '$29/mo' },
   studio: { label: 'Studio', color: 'bg-violet-500/10 text-violet-400 border-violet-500/20', price: '$49/mo' },
   architect: { label: 'Architect', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20', price: '$79/mo' },
