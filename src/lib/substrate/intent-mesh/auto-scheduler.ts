@@ -75,6 +75,7 @@ class MeshAutoScheduler {
   private static instance: MeshAutoScheduler;
   private config: SchedulerConfig;
   private timers: SchedulerTimers = {
+    cdmReactor: null,
     moduleDiscovery: null,
     gapAnalysis: null,
     intentScoring: null,
@@ -82,6 +83,7 @@ class MeshAutoScheduler {
   };
   private state: Omit<SchedulerState, 'config'> = {
     isRunning: false,
+    lastCdmReactor: null,
     lastModuleDiscovery: null,
     lastGapAnalysis: null,
     lastIntentScoring: null,
