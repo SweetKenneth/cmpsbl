@@ -1225,7 +1225,7 @@ function ModernizerShadowPanel() {
   const handleRunScan = async () => {
     setRunning(true);
     try {
-      const { runModernizerShadow } = await import('@/lib/shadow/modernizerShadow');
+      const { runModernizerShadow } = await import('@/lib/shadow/evolution-shadow');
       const report = await runModernizerShadow();
       setLastReport(report);
       setPerfStats(getPerformanceSummary());
