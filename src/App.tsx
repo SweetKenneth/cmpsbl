@@ -143,10 +143,13 @@ const App = () => {
     Promise.all([
       import("@/lib/defense/site-guard"),
       import("@/lib/telemetry/error-telemetry"),
-    ]).then(([guard, telemetry]) => {
+      import("@/lib/error-recovery/globalErrorRecovery"),
+    ]).then(([guard, telemetry, recovery]) => {
       const c = guard.installSiteGuard();
       telemetry.installGlobalErrorHandler();
+      const c2 = recovery.installGlobalErrorRecovery();
       if (c) cleanupRef.current.push(c);
+      if (c2) cleanupRef.current.push(c2);
     });
 
     // Tier 2: UX essentials (after 100ms)

@@ -1381,6 +1381,23 @@ export * from './defense/s-tier';
 export * from './immunity/s-tier';
 export * from './observer/s-tier';
 
+// OBSERVER — The Watchdog (production telemetry & anomaly detection)
+export {
+  ingestTelemetry as observerIngestTelemetry,
+  getTelemetrySummary as observerGetTelemetrySummary,
+  runWatchdogSweep,
+  registerAlert,
+  silenceAlert,
+  acknowledgeEscalation,
+  resetObserver,
+  type TelemetrySnapshot as ObserverTelemetrySnapshot,
+  type AnomalyFlag,
+  type AlertCondition,
+  type WatchdogReport,
+  type TelemetrySummary as ObserverTelemetrySummary,
+  type EscalationEntry,
+} from './observer-module/index';
+
 // Vault Primitive Loader — 1,894 dynamic capabilities
 export {
   loadVaultPrimitives,
