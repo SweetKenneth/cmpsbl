@@ -1,7 +1,7 @@
 /**
  * Why CMPSBL — 9 Core Nodes Showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * Only the 9 public-facing nodes
+ * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -23,7 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// 9 public-facing nodes only — no kernel, zones, overlays, or infrastructure
+// 9 public-facing nodes — cycling through cyan, purple, magenta
 const nodes = [
   {
     icon: Brain,
@@ -33,10 +33,9 @@ const nodes = [
     highlight: "Never Forgets",
     stat: "∞",
     statLabel: "Memory Depth",
-    color: "from-purple-500 to-violet-600",
-    iconBg: "bg-gradient-to-br from-purple-500/20 to-violet-500/20",
-    iconColor: "text-purple-500",
-    glowColor: "purple",
+    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
+    iconBg: "bg-[hsl(var(--neon-cyan)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-cyan))]",
   },
   {
     icon: MessageSquare,
@@ -46,10 +45,9 @@ const nodes = [
     highlight: "Context-Aware",
     stat: "∞",
     statLabel: "Context",
-    color: "from-fuchsia-500 to-pink-600",
-    iconBg: "bg-gradient-to-br from-fuchsia-500/20 to-pink-500/20",
-    iconColor: "text-fuchsia-500",
-    glowColor: "pink",
+    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-purple))]",
   },
   {
     icon: Shield,
@@ -59,10 +57,9 @@ const nodes = [
     highlight: "Enterprise Security",
     stat: "100%",
     statLabel: "Coverage",
-    color: "from-red-500 to-rose-600",
-    iconBg: "bg-gradient-to-br from-red-500/20 to-rose-500/20",
-    iconColor: "text-red-500",
-    glowColor: "red",
+    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]",
+    iconBg: "bg-[hsl(var(--neon-magenta)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-magenta))]",
   },
   {
     icon: Zap,
@@ -72,10 +69,9 @@ const nodes = [
     highlight: "Auto-Optimized",
     stat: "<100ms",
     statLabel: "Latency",
-    color: "from-green-500 to-emerald-600",
-    iconBg: "bg-gradient-to-br from-green-500/20 to-emerald-500/20",
-    iconColor: "text-green-500",
-    glowColor: "green",
+    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--primary))]",
+    iconBg: "bg-[hsl(var(--neon-cyan)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-cyan))]",
   },
   {
     icon: Eye,
@@ -85,10 +81,9 @@ const nodes = [
     highlight: "See Everything",
     stat: "24/7",
     statLabel: "Monitoring",
-    color: "from-blue-500 to-indigo-600",
-    iconBg: "bg-gradient-to-br from-blue-500/20 to-indigo-500/20",
-    iconColor: "text-blue-500",
-    glowColor: "blue",
+    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--primary))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-purple))]",
   },
   {
     icon: Moon,
@@ -98,10 +93,9 @@ const nodes = [
     highlight: "Learns While Idle",
     stat: "24/7",
     statLabel: "Processing",
-    color: "from-violet-500 to-purple-600",
-    iconBg: "bg-gradient-to-br from-violet-500/20 to-purple-500/20",
-    iconColor: "text-violet-500",
-    glowColor: "violet",
+    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-magenta)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-magenta))]",
   },
   {
     icon: Code2,
@@ -111,10 +105,9 @@ const nodes = [
     highlight: "Code Execution",
     stat: "AI",
     statLabel: "Codegen",
-    color: "from-yellow-500 to-lime-600",
-    iconBg: "bg-gradient-to-br from-yellow-500/20 to-lime-500/20",
-    iconColor: "text-yellow-500",
-    glowColor: "amber",
+    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-magenta))]",
+    iconBg: "bg-[hsl(var(--neon-cyan)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-cyan))]",
   },
   {
     icon: Plug,
@@ -124,10 +117,9 @@ const nodes = [
     highlight: "LLM Governance",
     stat: "35+",
     statLabel: "Adapters",
-    color: "from-emerald-500 to-teal-600",
-    iconBg: "bg-gradient-to-br from-emerald-500/20 to-teal-500/20",
-    iconColor: "text-emerald-500",
-    glowColor: "emerald",
+    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-purple))]",
   },
   {
     icon: Accessibility,
@@ -137,10 +129,9 @@ const nodes = [
     highlight: "Human Compatibility",
     stat: "WCAG",
     statLabel: "2.2 AA",
-    color: "from-pink-500 to-rose-600",
-    iconBg: "bg-gradient-to-br from-pink-500/20 to-rose-500/20",
-    iconColor: "text-pink-500",
-    glowColor: "rose",
+    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--primary))]",
+    iconBg: "bg-[hsl(var(--neon-magenta)/0.12)]",
+    iconColor: "text-[hsl(var(--neon-magenta))]",
   },
 ];
 
@@ -200,14 +191,6 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
           "overflow-hidden cursor-default shimmer-on-hover"
         )}
       >
-        {/* Animated glow on hover */}
-        <motion.div
-          className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          style={{
-            background: `linear-gradient(135deg, hsl(var(--neon-${item.glowColor === 'cyan' ? 'cyan' : item.glowColor === 'violet' ? 'purple' : item.glowColor === 'green' ? 'green' : item.glowColor === 'amber' ? 'amber' : item.glowColor === 'rose' ? 'magenta' : 'blue'}) / 0.15), transparent)`,
-          }}
-        />
-        
         {/* Gradient hover overlay */}
         <div 
           className={cn(
@@ -220,7 +203,6 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
         
         {/* Top row: Icon + Stat */}
         <div className="relative flex items-start justify-between mb-4">
-          {/* Icon */}
           <motion.div 
             className={cn(
               "w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center",
@@ -257,7 +239,7 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
         </div>
         
         {/* Content */}
-         <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
+        <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
           {item.title}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -280,15 +262,16 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
 export function WhySubstrate() {
   return (
     <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
-      {/* Enhanced background decoration — CSS-only for mobile perf */}
+      {/* Enhanced background decoration */}
       <div className="absolute inset-0 pointer-events-none hidden sm:block">
         <div 
-          className="absolute top-1/4 -left-64 w-[600px] h-[600px] bg-primary/8 rounded-full blur-[150px] animate-hero-orb-1"
+          className="absolute top-1/4 -left-64 w-[600px] h-[600px] rounded-full blur-[150px] animate-hero-orb-1"
+          style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
         />
         <div 
-          className="absolute bottom-1/4 -right-64 w-[600px] h-[600px] bg-violet-500/8 rounded-full blur-[150px] animate-hero-orb-3"
+          className="absolute bottom-1/4 -right-64 w-[600px] h-[600px] rounded-full blur-[150px] animate-hero-orb-3"
+          style={{ background: "hsl(var(--neon-purple) / 0.08)" }}
         />
-        {/* Subtle grid pattern */}
         <div 
           className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
           style={{
@@ -302,7 +285,6 @@ export function WhySubstrate() {
       </div>
       
       <div className="relative max-w-7xl mx-auto">
-        {/* Header with section ordinal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -310,26 +292,13 @@ export function WhySubstrate() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-14"
         >
-          {/* Faded ordinal behind heading */}
-          <div className="relative inline-block">
-            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">01</span>
-          </div>
            <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
              <Hammer className="w-3 h-3 text-primary" />
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
              Nine Systems.{" "}
-             <span 
-               className="inline-block"
-               style={{
-                 background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)), hsl(var(--neon-purple)))",
-                 backgroundSize: "200% 200%",
-                 WebkitBackgroundClip: "text",
-                 WebkitTextFillColor: "transparent",
-                 animation: "gradientShift 4s ease-in-out infinite",
-               }}
-             >
+             <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
                One Operating System.
              </span>
            </h2>
@@ -342,7 +311,6 @@ export function WhySubstrate() {
             </p>
         </motion.div>
         
-        {/* Systems Grid — 3 columns on desktop, 9 cards */}
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           layout

@@ -1,6 +1,6 @@
 /**
  * Social Proof / Testimonials
- * Balanced: Building on substrate + Memory Stream output
+ * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
 import { motion } from 'framer-motion';
@@ -13,6 +13,7 @@ interface Testimonial {
   role: string;
   rating: number;
   highlight: string;
+  accentColor: string;
 }
 
 const TESTIMONIALS: Testimonial[] = [
@@ -22,6 +23,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "AI Infrastructure Lead",
     rating: 5,
     highlight: "DREAM Cycles",
+    accentColor: "hsl(var(--neon-purple))",
   },
   {
     quote: "Building on the substrate changed everything. Our agents adapt their routing in real-time, and EVOLUTION auto-patches drift before we even notice it. We just build — the substrate handles the rest.",
@@ -29,6 +31,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "Platform Engineer",
     rating: 5,
     highlight: "EVOLUTION",
+    accentColor: "hsl(var(--neon-cyan))",
   },
   {
     quote: "Persistent memory and governed evolution gave us what we couldn't build ourselves — an AI system that remembers, adapts, and stays compliant. Every action is auditable.",
@@ -36,6 +39,7 @@ const TESTIMONIALS: Testimonial[] = [
     role: "CTO, Enterprise SaaS",
     rating: 5,
     highlight: "Governance",
+    accentColor: "hsl(var(--neon-magenta))",
   },
 ];
 
@@ -49,22 +53,13 @@ export function SocialProof() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-12"
         >
-          <div className="relative inline-block">
-            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">06</span>
-          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
             <Users className="w-3 h-3 text-primary" />
             <span className="text-xs font-semibold">Builders on the Substrate</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
             What Teams Are{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               Building
             </span>
           </h2>
@@ -83,16 +78,21 @@ export function SocialProof() {
               transition={{ delay: i * 0.1, duration: 0.4 }}
               className="relative p-5 sm:p-7 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group shimmer-on-hover glass-edge card-lift testimonial-border"
             >
-              {/* Top accent line */}
               <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl overflow-hidden">
                 <div className="h-full memory-stream-bar opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
               </div>
               
               <Quote className="w-8 h-8 text-primary/10 absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-primary/20" />
               
-              {/* Feature pill */}
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/5 border border-primary/15 mb-4 text-[10px] font-semibold text-primary uppercase tracking-wider group-hover:bg-primary/10 group-hover:border-primary/25 transition-all duration-300">
-                <span className="w-1 h-1 rounded-full bg-primary/50" />
+              <div
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border mb-4 text-[10px] font-semibold uppercase tracking-wider group-hover:border-opacity-50 transition-all duration-300"
+                style={{
+                  backgroundColor: `color-mix(in srgb, ${t.accentColor} 8%, transparent)`,
+                  borderColor: `color-mix(in srgb, ${t.accentColor} 25%, transparent)`,
+                  color: t.accentColor,
+                }}
+              >
+                <span className="w-1 h-1 rounded-full" style={{ backgroundColor: t.accentColor }} />
                 {t.highlight}
               </div>
               

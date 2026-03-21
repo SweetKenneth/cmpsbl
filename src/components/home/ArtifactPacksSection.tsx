@@ -1,6 +1,6 @@
 /**
  * CapabilityPacksSection — Clear explanation of the pack activation model
- * Free start → Packs activate capabilities → Slots create structure → Governance enforces boundaries
+ * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
 import { motion } from "framer-motion";
@@ -18,46 +18,36 @@ import {
 
 const stepIcons = [Sparkles, Package, Layers, Shield] as const;
 const stepColors = [
-  { color: "text-emerald-500", borderColor: "border-emerald-500/20", bg: "bg-emerald-500/5" },
+  { color: "text-[hsl(var(--neon-cyan))]", borderColor: "border-[hsl(var(--neon-cyan)/0.2)]", bg: "bg-[hsl(var(--neon-cyan)/0.05)]" },
+  { color: "text-[hsl(var(--neon-purple))]", borderColor: "border-[hsl(var(--neon-purple)/0.2)]", bg: "bg-[hsl(var(--neon-purple)/0.05)]" },
+  { color: "text-[hsl(var(--neon-magenta))]", borderColor: "border-[hsl(var(--neon-magenta)/0.2)]", bg: "bg-[hsl(var(--neon-magenta)/0.05)]" },
   { color: "text-primary", borderColor: "border-primary/20", bg: "bg-primary/5" },
-  { color: "text-violet-500", borderColor: "border-violet-500/20", bg: "bg-violet-500/5" },
-  { color: "text-amber-500", borderColor: "border-amber-500/20", bg: "bg-amber-500/5" },
 ] as const;
 
 const tiers = [
-  { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-emerald-500 to-emerald-600" },
-  { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo", color: "from-violet-500 to-purple-500" },
-  { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo", color: "from-blue-500 to-indigo-500" },
-  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-amber-500 to-orange-500" },
+  { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]" },
+  { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo", color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" },
+  { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo", color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]" },
+  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-[hsl(var(--primary))] to-[hsl(var(--neon-cyan))]" },
 ];
 
 export function ArtifactPacksSection() {
   return (
     <section className="relative z-10 py-16 sm:py-28 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <div className="relative inline-block">
-            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">04</span>
-          </div>
           <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
             <Package className="w-3 h-3 mr-1.5 text-primary" />
             <span className="text-xs font-semibold">{PIPELINE_PACKS_LABEL}</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Activate What You{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               Need
             </span>
           </h2>
@@ -66,7 +56,6 @@ export function ArtifactPacksSection() {
           </p>
         </motion.div>
 
-        {/* How it works — 4 steps */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
           {PIPELINE_STEPS.map((step, idx) => {
             const Icon = stepIcons[idx];
@@ -95,7 +84,6 @@ export function ArtifactPacksSection() {
           })}
         </div>
 
-        {/* Tier comparison — compact */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -114,7 +102,6 @@ export function ArtifactPacksSection() {
             ))}
           </div>
 
-          {/* CTA */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
               <Link to="/auth">

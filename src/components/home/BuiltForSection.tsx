@@ -1,7 +1,6 @@
 /**
  * Built For Section — Shows who CMPSBL is designed for
- * Premium audience cards with 3D effects and gradient borders
- * Rebalanced: emphasizes building on the substrate, not just the stream
+ * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
  */
 
 import { Link } from "react-router-dom";
@@ -39,10 +38,9 @@ const audiences = [
     stats: { value: "∞", label: "Memory Depth" },
     cta: "Build Game AI",
     href: "/gaming",
-    gradient: "from-purple-600 via-violet-600 to-fuchsia-600",
-    glow: "shadow-purple-500/25",
-    borderGlow: "group-hover:shadow-[0_0_30px_rgba(168,85,247,0.4)]",
-    iconGradient: "from-purple-500 to-violet-500",
+    gradient: "from-[hsl(var(--neon-purple))] via-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]",
+    glow: "shadow-[hsl(var(--neon-purple)/0.25)]",
+    borderGlow: "group-hover:shadow-[0_0_30px_hsl(var(--neon-purple)/0.3)]",
   },
   {
     icon: Code,
@@ -58,10 +56,9 @@ const audiences = [
     stats: { value: "200+", label: "Templates" },
     cta: "Start Building",
     href: "/developers",
-    gradient: "from-cyan-600 via-blue-600 to-indigo-600",
-    glow: "shadow-cyan-500/25",
-    borderGlow: "group-hover:shadow-[0_0_30px_rgba(6,182,212,0.4)]",
-    iconGradient: "from-cyan-500 to-blue-500",
+    gradient: "from-[hsl(var(--neon-cyan))] via-[hsl(var(--primary))] to-[hsl(var(--neon-purple))]",
+    glow: "shadow-[hsl(var(--neon-cyan)/0.25)]",
+    borderGlow: "group-hover:shadow-[0_0_30px_hsl(var(--neon-cyan)/0.3)]",
   },
   {
     icon: Building2,
@@ -77,10 +74,9 @@ const audiences = [
     stats: { value: "100%", label: "Your Data" },
     cta: "Enterprise Solutions",
     href: "/use-cases",
-    gradient: "from-amber-500 via-orange-500 to-red-500",
-    glow: "shadow-amber-500/25",
-    borderGlow: "group-hover:shadow-[0_0_30px_rgba(245,158,11,0.4)]",
-    iconGradient: "from-amber-500 to-orange-500",
+    gradient: "from-[hsl(var(--neon-magenta))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
+    glow: "shadow-[hsl(var(--neon-magenta)/0.25)]",
+    borderGlow: "group-hover:shadow-[0_0_30px_hsl(var(--neon-magenta)/0.3)]",
   },
 ];
 
@@ -89,7 +85,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
-  // 3D tilt effect
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), { stiffness: 300, damping: 30 });
@@ -132,14 +127,9 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           audience.borderGlow
         )}
       >
-        {/* Gradient top bar — flowing accent */}
         <div className="h-[2px] memory-stream-bar opacity-60" />
-        <div className={cn(
-          "h-1 w-full bg-gradient-to-r",
-          audience.gradient
-        )} />
+        <div className={cn("h-1 w-full bg-gradient-to-r", audience.gradient)} />
         
-        {/* Animated gradient border on hover */}
         <motion.div
           className={cn(
             "absolute inset-0 rounded-3xl opacity-0 pointer-events-none",
@@ -151,7 +141,6 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
         />
         
         <div className="p-5 sm:p-8 flex flex-col h-full relative">
-          {/* Header */}
           <div className="flex items-start justify-between mb-5">
             <motion.div 
               className={cn(
@@ -257,14 +246,15 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
 export function BuiltForSection() {
   return (
     <section className="relative py-16 sm:py-32 px-4 overflow-hidden">
-      {/* Enhanced Background — CSS-only for mobile perf */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/30 to-transparent" />
         <div 
-          className="absolute top-0 left-1/4 w-[700px] h-[700px] bg-purple-500/8 rounded-full blur-[180px] animate-hero-orb-1 hidden sm:block"
+          className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-1 hidden sm:block"
+          style={{ background: "hsl(var(--neon-purple) / 0.08)" }}
         />
         <div 
-          className="absolute bottom-0 right-1/4 w-[700px] h-[700px] bg-cyan-500/8 rounded-full blur-[180px] animate-hero-orb-3 hidden sm:block"
+          className="absolute bottom-0 right-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-3 hidden sm:block"
+          style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
         />
       </div>
       
@@ -276,24 +266,13 @@ export function BuiltForSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 sm:mb-20"
         >
-          <div className="relative inline-block">
-            <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">03</span>
-          </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Hammer className="w-3 h-3 text-primary" />
             <span className="text-xs">Built For Builders</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Build What{" "}
-            <span 
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)), hsl(var(--neon-amber)))",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 4s ease-in-out infinite",
-              }}
-            >
+            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
               Evolves
             </span>
           </h2>
