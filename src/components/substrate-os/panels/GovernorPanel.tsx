@@ -225,6 +225,9 @@ export default function GovernorPanel() {
         ))}
       </div>
 
+      {/* System Uptime */}
+      <SystemUptimeCard />
+
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
