@@ -350,8 +350,7 @@ export interface EvolutionStatus {
   active_runs: number;
   patterns_available: number;
 }
-/** @deprecated Use EvolutionStatus */
-export type ModernizerStatus = EvolutionStatus;
+// Deprecated ModernizerStatus alias removed — use EvolutionStatus
 
 export async function getEvolutionModuleStatus(): Promise<EvolutionStatus> {
   try {
