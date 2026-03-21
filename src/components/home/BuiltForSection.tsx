@@ -195,7 +195,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
             {audience.badge}
           </Badge>
           
-          <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-1">
+          <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1">
             {audience.title}
           </h3>
           <p className={cn(
@@ -283,7 +283,7 @@ export function BuiltForSection() {
             <Hammer className="w-3 h-3 text-primary" />
             <span className="text-xs">Built For Builders</span>
           </Badge>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Build What{" "}
             <span 
               style={{
@@ -297,7 +297,7 @@ export function BuiltForSection() {
               Evolves
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             The substrate gives your systems DREAM cycles, governed ADAPT, and persistent memory. 
             Build for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}

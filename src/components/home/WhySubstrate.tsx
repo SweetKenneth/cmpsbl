@@ -257,7 +257,7 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
         </div>
         
         {/* Content */}
-        <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
+         <h3 className="font-bold text-lg sm:text-xl text-foreground mb-2 group-hover:text-foreground/90 transition-colors">
           {item.title}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -318,7 +318,7 @@ export function WhySubstrate() {
              <Hammer className="w-3 h-3 text-primary" />
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
-           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
              Nine Systems.{" "}
              <span 
                className="inline-block"
@@ -333,7 +333,7 @@ export function WhySubstrate() {
                One Operating System.
              </span>
            </h2>
-           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+           <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Build apps that{" "}
               <span className="text-foreground font-medium">think with reasoning models</span>,{" "}
               <span className="text-foreground font-medium">remember across sessions</span>, and{" "}

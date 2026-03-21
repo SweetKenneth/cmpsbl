@@ -146,8 +146,8 @@ export function NpmPackagesCTA() {
               transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
             >
               <h.icon className="w-5 h-5 text-primary" />
-              <span className="text-xs font-semibold text-foreground">{h.title}</span>
-              <span className="text-[10px] text-muted-foreground leading-snug">{h.desc}</span>
+              <span className="text-sm font-semibold text-foreground">{h.title}</span>
+              <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
             </motion.div>
           ))}
         </div>
@@ -171,7 +171,7 @@ export function NpmPackagesCTA() {
                     {pkg.tier}
                   </Badge>
                 </div>
-                <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">{pkg.desc}</p>
+                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{pkg.desc}</p>
               </div>
             </motion.div>
           ))}
