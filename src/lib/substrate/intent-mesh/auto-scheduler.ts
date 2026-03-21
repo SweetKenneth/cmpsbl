@@ -1,12 +1,12 @@
 /**
- * Mesh Auto-Expansion Scheduler
- * Periodic discovery cycles that self-improve the manifest
- * Now includes CLM feedback loop integration
- * Runs on configurable intervals:
- * - Module self-discovery: every 4 hours (each module introspects)
- * - Gap analysis: every 2 hours (scan failed intents)
- * - Intent quality scoring: every 1 hour (score intent effectiveness)
- * - Full expansion: daily (apply high-confidence proposals)
+ * Mesh Auto-Expansion Scheduler + CDM (Constant Discovery Mode)
+ * 
+ * Periodic discovery cycles that self-improve the manifest AND
+ * run the reactor to feed both the S-Tier Vault (95+ CJPI) and
+ * the Memory Stream (all accepted discoveries).
+ * 
+ * CDM runs the full reactor with 2-12 node depth chains on a
+ * gentle 8-hour interval, producing real discoveries continuously.
  * 
  * Kill switch: Disabled when mesh is disabled
  * Dashboard: /os → Observe → Mesh Activity → Scheduler
