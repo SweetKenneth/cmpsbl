@@ -135,8 +135,8 @@ import {
 } from '@/lib/core/index';
 
 describe('§2 — CORE Module', () => {
-  it('SUBSTRATE_MODULES has all 38+ entries (including evolution)', () => {
-    expect(SUBSTRATE_MODULES.length).toBeGreaterThanOrEqual(38);
+  it('SUBSTRATE_MODULES has all 40+ entries (including evolution)', () => {
+    expect(SUBSTRATE_MODULES.length).toBeGreaterThanOrEqual(40);
   });
 
   it('every module has an entity type', () => {

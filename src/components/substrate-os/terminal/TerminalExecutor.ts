@@ -374,7 +374,7 @@ function formatSystemHealth(data: any): string {
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
 ║  Threat Level:    ${threatLevel.toUpperCase().padEnd(10)}                                ║
-║  Modules:         38/38 reporting                             ║
+║  Modules:         40/40 reporting                             ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  MODULE HEALTH REPORT                                        ║
 ╠══════════════════════════════════════════════════════════════╣`;
