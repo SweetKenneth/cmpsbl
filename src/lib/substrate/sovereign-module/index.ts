@@ -312,7 +312,7 @@ export function checkCompliance(framework: ComplianceFramework, jurisdiction: Ju
     state.complianceChecks.push(check);
     recalculateScore();
 
-    emit({ module: 'sovereign', event_type: 'compliance_checked', outcome: status === 'compliant' ? 'succeeded' : 'warning', data: { framework, jurisdiction, status, violationCount: violations.length } });
+    emit({ module: 'sovereign', event_type: 'compliance_checked', outcome: status === 'compliant' ? 'succeeded' : 'failed', data: { framework, jurisdiction, status, violationCount: violations.length } });
     return check;
   }, fallback, 'check_compliance');
 
