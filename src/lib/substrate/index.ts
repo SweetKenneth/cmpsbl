@@ -412,7 +412,7 @@ export {
   type SEBACommandResult,
 } from './seba';
 
-export { useSEBA, type UseSEBAReturn } from './seba/useSEBA';
+
 
 // Cross-Module Capabilities v9.1.0 ARCHITECT
 export {

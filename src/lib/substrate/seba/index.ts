@@ -70,8 +70,6 @@ export {
   type EvolutionStamp,
 } from './evolution-stamp';
 
-// React Hook (deprecated - use src/hooks/useSEBA.ts instead)
-export { useSEBA, type UseSEBAReturn } from './useSEBA';
 
 // Cross-Validator & Proposal Chaining (v3.1.0)
 export {
