@@ -340,6 +340,7 @@ DEFENSE — encloses all sectors
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-22 | System | v14.2.0 — Added OBSERVER auxiliary node, expanded all node capability surfaces with standardized lifecycle (init/health/resilience/hardening/runCLM/upgradeEngine), updated node docs |
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node/12-sector topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
 | 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
 | 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
