@@ -162,7 +162,7 @@ export function NpmPackagesCTA() {
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
             >
-              <Package className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+              <Package className="w-4 h-4 text-[hsl(var(--neon-cyan))] mt-0.5 shrink-0" />
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <code className="text-xs font-mono font-semibold text-foreground">{pkg.name}</code>
