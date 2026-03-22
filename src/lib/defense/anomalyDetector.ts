@@ -106,11 +106,7 @@
      };
  
      activeSignals.set(signal.id, signal);
-     // Evict oldest if over limit
-     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
-       const oldest = activeSignals.keys().next().value;
-       if (oldest) activeSignals.delete(oldest);
-     }
+     boundSignals();
      return signal;
    }
  
