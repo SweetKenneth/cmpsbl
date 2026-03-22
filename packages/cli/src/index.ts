@@ -6,7 +6,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { computeCJPI, parseManifest, generateManifest, tierFromCJPI } from '@cmpsbl/runtime';
+import { computeCJPI, parseManifest, generateManifest } from '@cmpsbl/runtime';
 import {
   initFirstContact,
   discoverMemory,
