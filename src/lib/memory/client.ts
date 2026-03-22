@@ -437,11 +437,12 @@ export class MemoryClient {
     try {
       const userId = this.assertUserId();
 
-      // FIX #11: Query hot AND warm in parallel
+      // FIX #11: Query hot AND warm in parallel — uses hoisted select constant
+      const sel = MemoryClient.MEMORY_SELECT;
       const [hotResult, warmResult] = await Promise.allSettled([
         supabase
           .from('brain_memory_hot' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .gte('created_at', timeframe.from)
@@ -450,7 +451,7 @@ export class MemoryClient {
           .limit(limit),
         supabase
           .from('brain_memory_warm' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .gte('created_at', timeframe.from)
