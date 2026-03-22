@@ -145,13 +145,14 @@ export class MemoryClient {
   // #15 PROVENANCE BUILDER
   // ═══════════════════════════════════════════════════════════════════
   private buildProvenance(source: string): MemoryProvenance {
+    const ts = new Date().toISOString();
     return {
       source,
-      ingested_at: new Date().toISOString(),
+      ingested_at: ts,
       recall_count: 0,
       reinforced_count: 0,
       contradiction_checks: 0,
-      lineage: [`ingested:${source}:${new Date().toISOString()}`],
+      lineage: [`ingested:${source}:${ts}`],
     };
   }
 
