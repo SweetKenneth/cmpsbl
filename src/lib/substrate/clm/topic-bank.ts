@@ -372,6 +372,31 @@ class TopicBankClient {
   private topicCache: Map<string, { topic: Topic; expiresAt: number }> = new Map();
   private readonly CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
+  /** Cached core curriculum — built once */
+  private _coreCurriculum: Topic[] | null = null;
+  /** Cached study history with TTL */
+  private _studyHistoryCache: { data: Map<string, number>; expiresAt: number } | null = null;
+  private readonly STUDY_HISTORY_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+  /** Pre-built micro-learning response (immutable) */
+  private static readonly MICRO_REFLECT_SELECTION: TopicSelection = {
+    topic: {
+      id: 'micro-reflect',
+      name: 'Quick reflection on recent learnings',
+      category: 'spaced_repetition',
+      weight: 0.5,
+      priority: 0,
+      domainAnchors: ['reflection'],
+      moduleRefs: ['BRAIN'],
+      kpis: ['consolidation_quality'],
+      confidenceLevel: 0.5,
+      studyCount: 0,
+    },
+    source: 'spaced_repetition',
+    reason: 'Micro-learning mode: budget below 5%',
+    estimatedUnits: 1,
+  };
+
   private constructor() {}
 
   static getInstance(): TopicBankClient {
@@ -391,25 +416,9 @@ class TopicBankClient {
   async selectNextTopic(spacedRepQueue: Topic[] = []): Promise<TopicSelection | null> {
     const budgetState = budgetGovernor.getState();
     
-    // Micro-learning mode: only reflect, no new topics
+    // Micro-learning mode: return pre-built object
     if (budgetState.microLearningMode) {
-      return {
-        topic: {
-          id: 'micro-reflect',
-          name: 'Quick reflection on recent learnings',
-          category: 'spaced_repetition',
-          weight: 0.5,
-          priority: 0,
-          domainAnchors: ['reflection'],
-          moduleRefs: ['BRAIN'],
-          kpis: ['consolidation_quality'],
-          confidenceLevel: 0.5,
-          studyCount: 0,
-        },
-        source: 'spaced_repetition',
-        reason: 'Micro-learning mode: budget below 5%',
-        estimatedUnits: 1,
-      };
+      return TopicBankClient.MICRO_REFLECT_SELECTION;
     }
 
     // Roll weighted random selection
@@ -417,27 +426,21 @@ class TopicBankClient {
     let selection: TopicSelection | null = null;
 
     if (roll < 0.50) {
-      // 50% core curriculum
       selection = await this.selectFromCoreCurriculum();
     } else if (roll < 0.75) {
-      // 25% gap detection
       selection = await this.selectFromGaps();
     } else if (roll < 0.90) {
-      // 15% spaced repetition
       selection = this.selectFromSpacedRepetition(spacedRepQueue);
     } else {
-      // 10% deep dive (only if budget > 20%)
       if (budgetState.remainingPct > 0.20) {
         selection = await this.selectDeepDive();
       } else {
-        // Fallback to curriculum
         selection = await this.selectFromCoreCurriculum();
       }
     }
 
     // Skip if recently processed
     if (selection && budgetGovernor.isRecentlyProcessed(selection.topic.name)) {
-      // Try alternative
       selection = await this.selectFromCoreCurriculum();
     }
 
@@ -445,14 +448,16 @@ class TopicBankClient {
   }
 
   /**
-   * Get all core curriculum topics
+   * Get all core curriculum topics (cached — returns same array reference)
    */
   getCoreCurriculum(): Topic[] {
-    return CORE_CURRICULUM.map(t => ({
+    if (this._coreCurriculum) return this._coreCurriculum;
+    this._coreCurriculum = CORE_CURRICULUM.map(t => ({
       ...t,
       lastStudiedAt: undefined,
       studyCount: 0,
     }));
+    return this._coreCurriculum;
   }
 
   /**
