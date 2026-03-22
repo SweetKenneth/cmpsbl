@@ -6,7 +6,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { computeCJPI, parseManifest, generateManifest, tierFromCJPI } from '@cmpsbl/runtime';
+import { computeCJPI, parseManifest, generateManifest } from '@cmpsbl/runtime';
 import {
   initFirstContact,
   discoverMemory,
@@ -22,7 +22,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import { spinner, withSpinner, progressBar, animatedList, table, box } from './ui';
+import { spinner, progressBar, animatedList, table, box } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 
 // ═══════════════════════════════════════════════════════════════
@@ -48,11 +48,10 @@ function header(title: string) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Global flags
+// Global flags (reset per invocation to prevent REPL flag leaking)
 // ═══════════════════════════════════════════════════════════════
 
 let JSON_MODE = false;
-let NO_COLOR = false;
 
 function jsonOut(data: unknown) {
   console.log(JSON.stringify(data, null, 2));
@@ -62,7 +61,7 @@ function jsonOut(data: unknown) {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '1.3.0';
+const CLI_VERSION = '1.3.0' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -127,9 +126,9 @@ const NODES = [
 // ═══════════════════════════════════════════════════════════════
 
 export async function run(args: string[]): Promise<void> {
-  // Parse global flags
-  if (args.includes('--json')) { JSON_MODE = true; args = args.filter(a => a !== '--json'); }
-  if (args.includes('--no-color')) { NO_COLOR = true; args = args.filter(a => a !== '--no-color'); }
+  // Reset and parse global flags (prevents REPL shell from leaking state)
+  JSON_MODE = args.includes('--json');
+  args = args.filter(a => a !== '--json' && a !== '--no-color');
 
   const command = args[0]?.toLowerCase();
 
@@ -933,8 +932,8 @@ function cmdDiff(args: string[]) {
     } else {
       for (const c of changes) {
         say(`  ${c.key}:`);
-        say(`    - ${JSON.stringify(c.from) ?? '(undefined)'}`);
-        say(`    + ${JSON.stringify(c.to) ?? '(undefined)'}`);
+        say(`    - ${c.from === undefined ? '(undefined)' : JSON.stringify(c.from)}`);
+        say(`    + ${c.to === undefined ? '(undefined)' : JSON.stringify(c.to)}`);
       }
       blank();
       say(`${changes.length} difference(s) found.`);

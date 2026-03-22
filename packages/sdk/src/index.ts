@@ -11,7 +11,6 @@ import type {
   EngineCallOptions, EngineResult, EngineStageResult,
   FirstContactConfig, DiscoveryInput, DiscoveryResult,
   CaptureResult, ApplyResult, ExportResult, MemoryChain,
-  DOMAIN_PATTERNS,
 } from '@cmpsbl/types';
 
 export type { EngineCallOptions, EngineResult, EngineStageResult };
@@ -174,24 +173,33 @@ export class SDKResponse<T> {
     return JSON.stringify({ data: this.data, meta: this.meta }, null, 2);
   }
 
+  /** Get raw data without wrapper (for backward compatibility) */
+  get raw(): T {
+    return this.data;
+  }
+
   /** Serialize to Markdown table/report */
   toMarkdown(): string {
     const lines = [`## ${this.meta.method}`, '', `_${this.meta.timestamp}_ (${this.meta.durationMs}ms)`, ''];
-    const d = this.data as Record<string, unknown>;
-    if (typeof d === 'object' && d !== null && !Array.isArray(d)) {
-      lines.push('| Key | Value |', '|---|---|');
-      for (const [k, v] of Object.entries(d)) {
-        lines.push(`| ${k} | ${typeof v === 'object' ? JSON.stringify(v) : String(v)} |`);
-      }
+    const d = this.data;
+
+    if (d == null) {
+      lines.push('_No data returned._');
     } else if (Array.isArray(d)) {
       lines.push(`${d.length} entries returned.`);
-      if (d.length > 0 && typeof d[0] === 'object') {
+      if (d.length > 0 && typeof d[0] === 'object' && d[0] !== null) {
         const keys = Object.keys(d[0] as Record<string, unknown>);
         lines.push('| ' + keys.join(' | ') + ' |');
         lines.push('|' + keys.map(() => '---').join('|') + '|');
         for (const item of d.slice(0, 20) as Record<string, unknown>[]) {
           lines.push('| ' + keys.map(k => String(item[k] ?? '')).join(' | ') + ' |');
         }
+      }
+    } else if (typeof d === 'object') {
+      lines.push('| Key | Value |', '|---|---|');
+      for (const [k, v] of Object.entries(d as Record<string, unknown>)) {
+        const display = v == null ? '' : typeof v === 'object' ? JSON.stringify(v) : String(v);
+        lines.push(`| ${k} | ${display} |`);
       }
     } else {
       lines.push(String(d));
@@ -368,8 +376,8 @@ import {
   endFirstContactSession,
 } from '@cmpsbl/runtime';
 
-const SDK_DOMAIN_PATTERNS: typeof DOMAIN_PATTERNS['sdk'] = {
-  domain: 'sdk',
+const SDK_DOMAIN_PATTERNS = {
+  domain: 'sdk' as const,
   patterns: ['API usage optimization', 'Engine coordination chain', 'Client integration pattern'],
   scopes: ['Cross-engine adoption', 'Multi-system integration', 'Developer workflow optimization'],
 };
