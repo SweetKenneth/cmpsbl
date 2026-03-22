@@ -587,7 +587,7 @@ export function AnalyticsTab() {
           <div className="grid md:grid-cols-2 gap-4">
             <motion.div className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Network className="w-4 h-4 text-purple-400" /> Active Modules
+                <Network className="w-4 h-4 text-neon-purple" /> Active Modules
               </h3>
               <div className="space-y-2">
                 {data.topModules.length > 0 ? data.topModules.map((mod, idx) => {
