@@ -10389,7 +10389,7 @@ async function handleVision(
       }, headers);
     }
 
-    // ═══ STUB HANDLERS ═══
+    // ═══ TELEMETRY HANDLERS ═══
     case "alert": {
       // Alerting system (wired to telemetry)
       const { severity = "info", message, metadata = {} } = data;
