@@ -90,7 +90,7 @@ const useCases = [
   {
     icon: Stethoscope,
     title: "Diagnostic AI With History",
-    description: "Medical AI that builds patient timelines, correlates symptoms across decades, and finds pattern connections.",
+    description: "Medical systems that build patient timelines, correlate long-term data, and uncover hidden patterns.",
     industry: "Healthcare",
     iconColor: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--neon-cyan)/0.15)]",
