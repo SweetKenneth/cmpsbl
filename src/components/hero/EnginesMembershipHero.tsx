@@ -329,9 +329,9 @@ export function EnginesMembershipHero() {
           {/* Divider */}
           <div className="relative flex items-center gap-3">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-              <Check className="w-3 h-3 text-emerald-500" />
-              <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Free Tier</span>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[hsl(var(--neon-cyan))]/10 border border-[hsl(var(--neon-cyan))]/20">
+              <Check className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wide">Free Tier</span>
             </div>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
           </div>
