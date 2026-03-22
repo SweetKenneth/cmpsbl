@@ -1,7 +1,7 @@
 /**
  * Why CMPSBL — 9 Core Nodes Showcase
  * Premium bento grid with enhanced visuals and micro-animations
- * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
+ * Color palette: Cyan / Purple / Magenta — solid colors, gradients reserved for key moments
  */
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -23,7 +23,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// 9 public-facing nodes — cycling through cyan, purple, magenta
+// 9 public-facing nodes — cycling through cyan, purple, magenta (solid colors)
 const nodes = [
   {
     icon: Brain,
@@ -33,9 +33,10 @@ const nodes = [
     highlight: "Never Forgets",
     stat: "∞",
     statLabel: "Memory Depth",
-    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
     iconBg: "bg-[hsl(var(--neon-cyan)/0.12)]",
     iconColor: "text-[hsl(var(--neon-cyan))]",
+    statColor: "text-[hsl(var(--neon-cyan))]",
+    pillBg: "bg-[hsl(var(--neon-cyan))]",
   },
   {
     icon: MessageSquare,
@@ -45,9 +46,10 @@ const nodes = [
     highlight: "Context-Aware",
     stat: "∞",
     statLabel: "Context",
-    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]",
     iconBg: "bg-[hsl(var(--neon-purple)/0.12)]",
     iconColor: "text-[hsl(var(--neon-purple))]",
+    statColor: "text-[hsl(var(--neon-purple))]",
+    pillBg: "bg-[hsl(var(--neon-purple))]",
   },
   {
     icon: Shield,
@@ -57,9 +59,10 @@ const nodes = [
     highlight: "Enterprise Security",
     stat: "100%",
     statLabel: "Coverage",
-    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]",
     iconBg: "bg-[hsl(var(--neon-magenta)/0.12)]",
     iconColor: "text-[hsl(var(--neon-magenta))]",
+    statColor: "text-[hsl(var(--neon-magenta))]",
+    pillBg: "bg-[hsl(var(--neon-magenta))]",
   },
   {
     icon: Zap,
@@ -69,9 +72,10 @@ const nodes = [
     highlight: "Auto-Optimized",
     stat: "<100ms",
     statLabel: "Latency",
-    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--primary))]",
     iconBg: "bg-[hsl(var(--neon-cyan)/0.12)]",
     iconColor: "text-[hsl(var(--neon-cyan))]",
+    statColor: "text-[hsl(var(--neon-cyan))]",
+    pillBg: "bg-[hsl(var(--neon-cyan))]",
   },
   {
     icon: Eye,
@@ -81,9 +85,10 @@ const nodes = [
     highlight: "See Everything",
     stat: "24/7",
     statLabel: "Monitoring",
-    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--primary))]",
     iconBg: "bg-[hsl(var(--neon-purple)/0.12)]",
     iconColor: "text-[hsl(var(--neon-purple))]",
+    statColor: "text-[hsl(var(--neon-purple))]",
+    pillBg: "bg-[hsl(var(--neon-purple))]",
   },
   {
     icon: Moon,
@@ -93,9 +98,10 @@ const nodes = [
     highlight: "Learns While Idle",
     stat: "24/7",
     statLabel: "Processing",
-    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-cyan))]",
     iconBg: "bg-[hsl(var(--neon-magenta)/0.12)]",
     iconColor: "text-[hsl(var(--neon-magenta))]",
+    statColor: "text-[hsl(var(--neon-magenta))]",
+    pillBg: "bg-[hsl(var(--neon-magenta))]",
   },
   {
     icon: Code2,
@@ -105,9 +111,10 @@ const nodes = [
     highlight: "Code Execution",
     stat: "AI",
     statLabel: "Codegen",
-    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-magenta))]",
     iconBg: "bg-[hsl(var(--neon-cyan)/0.12)]",
     iconColor: "text-[hsl(var(--neon-cyan))]",
+    statColor: "text-[hsl(var(--neon-cyan))]",
+    pillBg: "bg-[hsl(var(--neon-cyan))]",
   },
   {
     icon: Plug,
@@ -117,9 +124,10 @@ const nodes = [
     highlight: "LLM Governance",
     stat: "35+",
     statLabel: "Adapters",
-    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
     iconBg: "bg-[hsl(var(--neon-purple)/0.12)]",
     iconColor: "text-[hsl(var(--neon-purple))]",
+    statColor: "text-[hsl(var(--neon-purple))]",
+    pillBg: "bg-[hsl(var(--neon-purple))]",
   },
   {
     icon: Accessibility,
@@ -129,9 +137,10 @@ const nodes = [
     highlight: "Human Compatibility",
     stat: "WCAG",
     statLabel: "2.2 AA",
-    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--primary))]",
     iconBg: "bg-[hsl(var(--neon-magenta)/0.12)]",
     iconColor: "text-[hsl(var(--neon-magenta))]",
+    statColor: "text-[hsl(var(--neon-magenta))]",
+    pillBg: "bg-[hsl(var(--neon-magenta))]",
   },
 ];
 
@@ -191,14 +200,12 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
           "overflow-hidden cursor-default shimmer-on-hover"
         )}
       >
-        {/* Gradient hover overlay */}
+        {/* Solid color hover overlay instead of gradient */}
         <div 
-          className={cn(
-            "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-            "bg-gradient-to-br",
-            item.color
-          )}
-          style={{ opacity: isHovered ? 0.06 : 0 }}
+          className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
+          style={{ 
+            background: `hsl(var(--${item.iconColor.includes('cyan') ? 'neon-cyan' : item.iconColor.includes('purple') ? 'neon-purple' : 'neon-magenta'}) / ${isHovered ? 0.04 : 0})`,
+          }}
         />
         
         {/* Top row: Icon + Stat */}
@@ -214,11 +221,11 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
             <item.icon className={cn("w-6 h-6 sm:w-7 sm:h-7", item.iconColor)} />
           </motion.div>
           
-          {/* Stat */}
+          {/* Stat — solid color instead of gradient */}
           <div className="text-right">
             <div className={cn(
-              "text-lg sm:text-xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent",
-              item.color
+              "text-lg sm:text-xl font-black font-mono tabular-nums",
+              item.statColor
             )}>
               {item.stat}
             </div>
@@ -226,12 +233,11 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
           </div>
         </div>
         
-        {/* System name pill */}
+        {/* System name pill — solid bg instead of gradient */}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <div className={cn(
-            "inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-semibold",
-            "bg-gradient-to-r text-white shadow-sm",
-            item.color
+            "inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-white shadow-sm",
+            item.pillBg
           )}>
             {item.highlight}
           </div>
@@ -262,22 +268,22 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
 export function WhySubstrate() {
   return (
     <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
-      {/* Enhanced background decoration */}
+      {/* Background decoration — solid color glows */}
       <div className="absolute inset-0 pointer-events-none hidden sm:block">
         <div 
           className="absolute top-1/4 -left-64 w-[600px] h-[600px] rounded-full blur-[150px] animate-hero-orb-1"
-          style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
+          style={{ background: "hsl(var(--neon-cyan) / 0.06)" }}
         />
         <div 
           className="absolute bottom-1/4 -right-64 w-[600px] h-[600px] rounded-full blur-[150px] animate-hero-orb-3"
-          style={{ background: "hsl(var(--neon-purple) / 0.08)" }}
+          style={{ background: "hsl(var(--neon-purple) / 0.06)" }}
         />
         <div 
           className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
           style={{
             backgroundImage: `
-              linear-gradient(hsl(var(--primary) / 0.5) 1px, transparent 1px), 
-              linear-gradient(90deg, hsl(var(--primary) / 0.5) 1px, transparent 1px)
+              linear-gradient(hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px), 
+              linear-gradient(90deg, hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px)
             `,
             backgroundSize: "60px 60px",
           }}

@@ -1,6 +1,6 @@
 /**
  * Built For Section — Shows who CMPSBL is designed for
- * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
+ * Color palette: Cyan / Purple / Magenta — solid accents, gradients only on primary CTAs
  */
 
 import { Link } from "react-router-dom";
@@ -38,9 +38,9 @@ const audiences = [
     stats: { value: "∞", label: "Memory Depth" },
     cta: "Build Game AI",
     href: "/gaming",
-    gradient: "from-[hsl(var(--neon-purple))] via-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]",
-    glow: "shadow-[hsl(var(--neon-purple)/0.25)]",
-    borderGlow: "group-hover:shadow-[0_0_30px_hsl(var(--neon-purple)/0.3)]",
+    accentColor: "hsl(var(--neon-purple))",
+    accentVar: "--neon-purple",
+    featureIconBg: "bg-[hsl(var(--neon-purple))]",
   },
   {
     icon: Code,
@@ -56,9 +56,9 @@ const audiences = [
     stats: { value: "200+", label: "Templates" },
     cta: "Start Building",
     href: "/developers",
-    gradient: "from-[hsl(var(--neon-cyan))] via-[hsl(var(--primary))] to-[hsl(var(--neon-purple))]",
-    glow: "shadow-[hsl(var(--neon-cyan)/0.25)]",
-    borderGlow: "group-hover:shadow-[0_0_30px_hsl(var(--neon-cyan)/0.3)]",
+    accentColor: "hsl(var(--neon-cyan))",
+    accentVar: "--neon-cyan",
+    featureIconBg: "bg-[hsl(var(--neon-cyan))]",
   },
   {
     icon: Building2,
@@ -74,9 +74,9 @@ const audiences = [
     stats: { value: "100%", label: "Your Data" },
     cta: "Enterprise Solutions",
     href: "/use-cases",
-    gradient: "from-[hsl(var(--neon-magenta))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
-    glow: "shadow-[hsl(var(--neon-magenta)/0.25)]",
-    borderGlow: "group-hover:shadow-[0_0_30px_hsl(var(--neon-magenta)/0.3)]",
+    accentColor: "hsl(var(--neon-magenta))",
+    accentVar: "--neon-magenta",
+    featureIconBg: "bg-[hsl(var(--neon-magenta))]",
   },
 ];
 
@@ -123,31 +123,24 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           "border border-border/50 bg-[hsl(var(--stream-slate))] backdrop-blur-sm",
           "transition-all duration-500",
           "hover:shadow-2xl",
-          audience.glow,
-          audience.borderGlow
         )}
       >
-        <div className="h-[2px] memory-stream-bar opacity-60" />
-        <div className={cn("h-1 w-full bg-gradient-to-r", audience.gradient)} />
+        {/* Solid color top bar */}
+        <div className="h-1 w-full" style={{ background: audience.accentColor }} />
         
+        {/* Solid hover overlay */}
         <motion.div
-          className={cn(
-            "absolute inset-0 rounded-3xl opacity-0 pointer-events-none",
-            "bg-gradient-to-br",
-            audience.gradient
-          )}
-          animate={{ opacity: isHovered ? 0.05 : 0 }}
+          className="absolute inset-0 rounded-3xl pointer-events-none"
+          style={{ background: audience.accentColor }}
+          animate={{ opacity: isHovered ? 0.04 : 0 }}
           transition={{ duration: 0.3 }}
         />
         
         <div className="p-5 sm:p-8 flex flex-col h-full relative">
           <div className="flex items-start justify-between mb-5">
             <motion.div 
-              className={cn(
-                "w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center",
-                "bg-gradient-to-br shadow-lg",
-                audience.gradient
-              )}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-lg"
+              style={{ background: audience.accentColor }}
               animate={{ 
                 scale: isHovered ? 1.1 : 1,
                 rotate: isHovered ? 5 : 0
@@ -162,10 +155,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
               animate={{ scale: isHovered ? 1.05 : 1 }}
               transition={{ duration: 0.3 }}
             >
-              <div className={cn(
-                "text-2xl sm:text-3xl font-black bg-gradient-to-r bg-clip-text text-transparent",
-                audience.gradient
-              )}>
+              <div className="text-2xl sm:text-3xl font-black" style={{ color: audience.accentColor }}>
                 {audience.stats.value}
               </div>
               <div className="text-[10px] sm:text-xs text-muted-foreground">
@@ -176,10 +166,8 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           
           <Badge 
             variant="outline" 
-            className={cn(
-              "w-fit mb-3 border-current/30",
-              `bg-gradient-to-r ${audience.gradient} bg-clip-text text-transparent`
-            )}
+            className="w-fit mb-3"
+            style={{ color: audience.accentColor, borderColor: `${audience.accentColor}40` }}
           >
             {audience.badge}
           </Badge>
@@ -187,10 +175,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           <h3 className="text-lg sm:text-xl font-bold text-foreground mb-1">
             {audience.title}
           </h3>
-          <p className={cn(
-            "text-sm font-medium bg-gradient-to-r bg-clip-text text-transparent mb-3",
-            audience.gradient
-          )}>
+          <p className="text-sm font-medium mb-3" style={{ color: audience.accentColor }}>
             {audience.tagline}
           </p>
           
@@ -210,8 +195,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
               >
                 <div className={cn(
                   "w-7 h-7 rounded-lg flex items-center justify-center shrink-0",
-                  "bg-gradient-to-br",
-                  audience.gradient
+                  audience.featureIconBg
                 )}>
                   <feature.icon className="w-3.5 h-3.5 text-white" />
                 </div>
@@ -222,11 +206,9 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
           
           <Button asChild className={cn(
             "w-full gap-2 h-11 sm:h-12 text-sm sm:text-base font-semibold",
-            "bg-gradient-to-r text-white border-0 shadow-lg",
+            "text-white border-0 shadow-lg",
             "transition-all duration-300 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
-            audience.gradient,
-            audience.glow
-          )}>
+          )} style={{ background: audience.accentColor }}>
             <Link to={audience.href}>
               {audience.cta}
               <motion.div
@@ -247,14 +229,13 @@ export function BuiltForSection() {
   return (
     <section className="relative py-16 sm:py-32 px-4 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-muted/30 to-transparent" />
         <div 
           className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-1 hidden sm:block"
-          style={{ background: "hsl(var(--neon-purple) / 0.08)" }}
+          style={{ background: "hsl(var(--neon-purple) / 0.06)" }}
         />
         <div 
           className="absolute bottom-0 right-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-3 hidden sm:block"
-          style={{ background: "hsl(var(--neon-cyan) / 0.08)" }}
+          style={{ background: "hsl(var(--neon-cyan) / 0.06)" }}
         />
       </div>
       
