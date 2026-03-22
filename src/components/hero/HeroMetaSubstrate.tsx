@@ -177,20 +177,30 @@ function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-background" />
+      {/* Primary orbs — richer, larger, more layered */}
       <div
-        className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
-        style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.06) 0%, transparent 55%)" }}
+        className="absolute -top-48 -left-48 w-[700px] h-[700px] rounded-full animate-hero-orb-1"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.07) 0%, hsl(var(--neon-cyan) / 0.02) 40%, transparent 60%)" }}
       />
       <div
-        className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full animate-hero-orb-2"
-        style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.05) 0%, transparent 55%)" }}
+        className="absolute -bottom-48 -right-48 w-[700px] h-[700px] rounded-full animate-hero-orb-2"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.06) 0%, hsl(var(--neon-magenta) / 0.015) 40%, transparent 60%)" }}
       />
       <div
-        className="absolute top-1/3 left-1/2 w-[400px] h-[400px] rounded-full animate-hero-orb-3"
-        style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+        className="absolute top-1/4 left-1/2 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
+        style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, hsl(var(--neon-purple) / 0.01) 40%, transparent 55%)" }}
       />
-      <div className="absolute inset-0 substrate-grid-bg opacity-[0.25] dark:opacity-[0.4]" />
-      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.6) 100%)" }} />
+      {/* Secondary ambient — subtle depth layer */}
+      <div
+        className="absolute top-1/2 left-1/4 w-[400px] h-[300px] rounded-full animate-hero-orb-2 opacity-50"
+        style={{ background: "radial-gradient(ellipse, hsl(var(--primary) / 0.04) 0%, transparent 50%)" }}
+      />
+      {/* Substrate grid with enhanced opacity */}
+      <div className="absolute inset-0 substrate-grid-bg opacity-[0.3] dark:opacity-[0.5]" />
+      {/* Noise texture overlay for tactile depth */}
+      <div className="absolute inset-0 texture-noise" />
+      {/* Vignette fade */}
+      <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 70%, hsl(var(--background) / 0.85) 100%)" }} />
     </div>
   );
 }
@@ -385,10 +395,12 @@ export function HeroMetaSubstrate() {
         {/* Stats bar */}
         <FadeIn delay={0.7}>
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-lg shadow-primary/[0.03] glass-edge"
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge"
           >
-            <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-30" />
-            <div className="absolute inset-x-0 bottom-0 h-px memory-stream-bar opacity-10" />
+            <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
+            <div className="absolute inset-x-0 bottom-0 h-[1px] memory-stream-bar opacity-15" />
+            {/* Inner ambient glow */}
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-primary/[0.01] pointer-events-none" />
             <AnimatedStat value={40} label="Modules" delay={0} />
             <AnimatedStat value={24} label="Capability Packs" delay={1} />
             <AnimatedStat value={20} label="Sealed Products" delay={2} />

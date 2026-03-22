@@ -35,13 +35,17 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 
-// Clean section divider — minimal, refined
+// Clean section divider — animated diamond with cross-glow
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
-      <div className="absolute inset-x-[15%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+    <div className="relative py-12 sm:py-16">
+      <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+      {/* Secondary accent line */}
+      <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="w-1.5 h-1.5 bg-primary/30 rotate-45 rounded-[1px]" />
+        <div className="w-2 h-2 bg-primary/25 rotate-45 rounded-[2px] animate-divider-diamond" />
+        {/* Glow ring behind diamond */}
+        <div className="absolute inset-0 -m-2 rounded-full bg-primary/5 blur-sm animate-fade-pulse" />
       </div>
     </div>
   );
@@ -69,20 +73,25 @@ export default function Explore() {
       <PublicNav />
       <CmpsblWelcome />
 
-      {/* Ambient animated mesh background */}
+      {/* Ambient animated mesh background — richer layering */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-80" />
         <div
-          className="absolute -top-40 -left-40 w-[800px] h-[800px] rounded-full animate-hero-orb-1"
-          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+          className="absolute -top-48 -left-48 w-[900px] h-[900px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, hsl(var(--primary) / 0.02) 35%, transparent 55%)" }}
         />
         <div
-          className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full animate-hero-orb-2"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.04) 0%, transparent 55%)" }}
+          className="absolute top-1/3 -right-20 w-[600px] h-[600px] rounded-full animate-hero-orb-2"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.05) 0%, hsl(var(--neon-cyan) / 0.01) 35%, transparent 55%)" }}
         />
         <div
-          className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full animate-hero-orb-3"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, transparent 55%)" }}
+          className="absolute -bottom-48 -right-48 w-[700px] h-[700px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.06) 0%, hsl(var(--neon-purple) / 0.015) 35%, transparent 55%)" }}
+        />
+        {/* Subtle mid-page warmth */}
+        <div
+          className="absolute top-[60%] left-1/3 w-[500px] h-[400px] rounded-full animate-hero-orb-1 opacity-40"
+          style={{ background: "radial-gradient(ellipse, hsl(var(--neon-magenta) / 0.04) 0%, transparent 50%)" }}
         />
       </div>
 
@@ -139,9 +148,10 @@ export default function Explore() {
         </div>
         <div className="max-w-5xl mx-auto relative animate-fade-in-up">
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
-            {/* Layered gradient background */}
+            {/* Layered gradient background — richer color stops */}
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
             
             {/* Grid overlay */}
             <div 

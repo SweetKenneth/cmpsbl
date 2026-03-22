@@ -714,14 +714,21 @@ All colors MUST be HSL.
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent 0%, hsl(var(--primary) / 0.05) 45%, hsl(var(--neon-cyan) / 0.03) 55%, transparent 100%);
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      hsl(var(--primary) / 0.04) 35%,
+      hsl(var(--neon-cyan) / 0.06) 50%,
+      hsl(var(--neon-purple) / 0.03) 65%,
+      transparent 100%
+    );
     transform: translateX(-100%);
     pointer-events: none;
     transition: none;
   }
 
   .shimmer-on-hover:hover::after {
-    animation: shimmer-sweep 0.9s ease-out;
+    animation: shimmer-sweep 1s ease-out;
   }
 
   /* Gradient border glow — reusable for premium cards */
@@ -879,7 +886,14 @@ All colors MUST be HSL.
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.15), transparent 50%, hsl(var(--neon-cyan) / 0.1));
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.18),
+      hsl(var(--neon-cyan) / 0.08) 30%,
+      transparent 50%,
+      hsl(var(--neon-purple) / 0.06) 80%,
+      hsl(var(--neon-cyan) / 0.12)
+    );
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -982,14 +996,15 @@ All colors MUST be HSL.
     pointer-events: none;
   }
 
-  /* Card lift — premium hover with layered shadow */
+  /* Card lift — premium hover with layered shadow and inner glow */
   .card-lift {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
   }
   .card-lift:hover {
     transform: translateY(-6px);
-    box-shadow: 0 24px 48px -12px hsl(var(--primary) / 0.08),
-                0 8px 16px -4px hsl(var(--foreground) / 0.04);
+    box-shadow: 0 24px 48px -12px hsl(var(--primary) / 0.1),
+                0 8px 16px -4px hsl(var(--foreground) / 0.05),
+                inset 0 1px 0 hsl(var(--primary) / 0.06);
   }
 
   /* Collector card perspective for 3D flip */
@@ -1115,24 +1130,30 @@ All colors MUST be HSL.
   }
 }
 
-/* Hero background orb animations — pure CSS, GPU-accelerated */
+/* Hero background orb animations — pure CSS, GPU-accelerated, richer motion paths */
 @keyframes hero-orb-1 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(60px, 30px); }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(40px, 15px) scale(1.05); }
+  50% { transform: translate(80px, 40px) scale(1.02); }
+  75% { transform: translate(30px, 55px) scale(1.08); }
 }
 @keyframes hero-orb-2 {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-50px, -25px); }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  30% { transform: translate(-60px, -20px) scale(1.06); }
+  60% { transform: translate(-30px, -45px) scale(0.97); }
+  80% { transform: translate(-70px, -10px) scale(1.03); }
 }
 @keyframes hero-orb-3 {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(-30px, 25px); }
-  66% { transform: translate(15px, -15px); }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(-25px, 30px) scale(1.04); }
+  45% { transform: translate(20px, -20px) scale(1.07); }
+  70% { transform: translate(-10px, -35px) scale(0.98); }
+  90% { transform: translate(30px, 15px) scale(1.02); }
 }
 
-.animate-hero-orb-1 { animation: hero-orb-1 30s ease-in-out infinite; will-change: transform; }
-.animate-hero-orb-2 { animation: hero-orb-2 35s ease-in-out infinite; will-change: transform; }
-.animate-hero-orb-3 { animation: hero-orb-3 22s ease-in-out infinite; will-change: transform; }
+.animate-hero-orb-1 { animation: hero-orb-1 28s ease-in-out infinite; will-change: transform; }
+.animate-hero-orb-2 { animation: hero-orb-2 33s ease-in-out infinite; will-change: transform; }
+.animate-hero-orb-3 { animation: hero-orb-3 21s ease-in-out infinite; will-change: transform; }
 
 /* CMPSBL wordmark — per-letter gradient flow */
 @keyframes cmpsblLetterFlow {
@@ -1140,13 +1161,16 @@ All colors MUST be HSL.
   50% { background-position: 100% 50%; }
 }
 
-/* CMPSBL wordmark — pulsing glow */
+/* CMPSBL wordmark — pulsing glow with richer depth */
 @keyframes cmpsblPulseGlow {
   0%, 100% {
-    filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.2)) drop-shadow(0 0 20px hsl(var(--neon-cyan) / 0.1));
+    filter: drop-shadow(0 0 6px hsl(var(--primary) / 0.15)) drop-shadow(0 0 16px hsl(var(--neon-cyan) / 0.08));
   }
-  50% {
-    filter: drop-shadow(0 0 16px hsl(var(--primary) / 0.4)) drop-shadow(0 0 40px hsl(var(--neon-cyan) / 0.25)) drop-shadow(0 0 60px hsl(var(--neon-purple) / 0.15));
+  33% {
+    filter: drop-shadow(0 0 12px hsl(var(--primary) / 0.35)) drop-shadow(0 0 32px hsl(var(--neon-cyan) / 0.2)) drop-shadow(0 0 48px hsl(var(--neon-purple) / 0.1));
+  }
+  66% {
+    filter: drop-shadow(0 0 10px hsl(var(--neon-purple) / 0.25)) drop-shadow(0 0 28px hsl(var(--primary) / 0.18)) drop-shadow(0 0 56px hsl(var(--neon-magenta) / 0.08));
   }
 }
 
@@ -1166,12 +1190,14 @@ All colors MUST be HSL.
 .memory-stream-bar {
   background: linear-gradient(90deg,
     hsl(var(--neon-cyan)) 0%,
-    hsl(var(--primary)) 25%,
-    hsl(var(--neon-purple)) 50%,
-    hsl(var(--primary)) 75%,
+    hsl(var(--primary)) 18%,
+    hsl(var(--neon-purple)) 36%,
+    hsl(var(--neon-magenta)) 54%,
+    hsl(var(--neon-purple)) 72%,
+    hsl(var(--primary)) 88%,
     hsl(var(--neon-cyan)) 100%);
-  background-size: 200% 100%;
-  animation: flowingGradient 4s linear infinite;
+  background-size: 300% 100%;
+  animation: flowingGradient 5s linear infinite;
 }
 
 /* Signal to Silicon border glow — available globally */

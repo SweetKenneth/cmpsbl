@@ -231,11 +231,16 @@ export function BuiltForSection() {
       <div className="absolute inset-0 pointer-events-none">
         <div 
           className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-1 hidden sm:block"
-          style={{ background: "hsl(var(--neon-purple) / 0.06)" }}
+          style={{ background: "hsl(var(--neon-purple) / 0.07)" }}
         />
         <div 
           className="absolute bottom-0 right-1/4 w-[700px] h-[700px] rounded-full blur-[180px] animate-hero-orb-3 hidden sm:block"
-          style={{ background: "hsl(var(--neon-cyan) / 0.06)" }}
+          style={{ background: "hsl(var(--neon-cyan) / 0.07)" }}
+        />
+        {/* Cross glow for depth */}
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full blur-[200px] animate-hero-orb-2 hidden sm:block opacity-50"
+          style={{ background: "hsl(var(--neon-magenta) / 0.04)" }}
         />
       </div>
       

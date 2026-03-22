@@ -96,12 +96,14 @@ export function DifferentiationSection() {
             >
               <div className={cn(
                 "relative h-full rounded-2xl border bg-[hsl(var(--stream-slate))] backdrop-blur-sm p-6 sm:p-8",
-                "hover:shadow-xl transition-all duration-500 shimmer-on-hover glass-edge card-lift",
+                "hover:shadow-2xl transition-all duration-500 shimmer-on-hover glass-edge card-lift",
                 pillar.borderColor,
                 "hover:border-opacity-80"
               )}>
-                {/* Solid color top accent line */}
-                <div className="absolute top-0 left-6 right-6 h-[2px] rounded-t-2xl" style={{ background: pillar.accentColor, opacity: 0.3 }} />
+                {/* Solid color top accent line — enhanced opacity */}
+                <div className="absolute top-0 left-6 right-6 h-[2px] rounded-t-2xl" style={{ background: pillar.accentColor, opacity: 0.45 }} />
+                {/* Inner top glow */}
+                <div className="absolute top-0 left-0 right-0 h-16 rounded-t-2xl pointer-events-none" style={{ background: `linear-gradient(180deg, ${pillar.accentColor}08, transparent)` }} />
 
                 <div className="flex items-center gap-3 mb-4">
                   <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center", pillar.iconBg)}>

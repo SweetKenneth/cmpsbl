@@ -5,9 +5,11 @@
 
 export function LiveStatsBar() {
   return (
-    <section className="relative z-10 py-3 sm:py-4 border-b border-border/30 bg-gradient-to-r from-card/30 via-card/50 to-card/30 overflow-hidden">
-      <div className="absolute inset-x-0 top-0 h-[1px] memory-stream-bar opacity-40" />
+    <section className="relative z-10 py-3 sm:py-4 border-b border-border/30 bg-gradient-to-r from-card/20 via-card/50 to-card/20 overflow-hidden">
+      <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
       <div className="absolute inset-x-0 bottom-0 h-px divider-flow" />
+      {/* Inner ambient glow */}
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] to-transparent pointer-events-none" />
       <div className="container mx-auto px-4">
         {/* Live indicator */}
         <div className="flex items-center justify-center gap-2 mb-2 sm:mb-3">
