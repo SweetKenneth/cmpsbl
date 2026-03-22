@@ -278,11 +278,11 @@ async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
   }
 
   // Fire-and-forget
-  supabase.from('brain_events').insert({
+  Promise.resolve(supabase.from('brain_events').insert({
     module: 'brain', event_type: 'patterns.extracted',
     data: { count: patterns.length, topPatterns: patterns.slice(0, 5).map(p => ({ pattern: p.pattern.substring(0, 50), frequency: p.frequency })) } as unknown as Record<string, never>,
     outcome: 'success',
-  }).then(() => {}).catch(() => {});
+  })).catch(() => {});
 }
 
 /**
