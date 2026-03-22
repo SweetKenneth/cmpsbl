@@ -215,14 +215,7 @@ export default function Support() {
                 <span className="text-xs font-semibold">Help Center</span>
               </Badge>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4 tracking-tight">
-                How can we{" "}
-                <span style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}>
-                  help?
-                </span>
+                How can we <span className="text-primary">help?</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
                 Browse our FAQ below or chat directly with DECODE — the cognitive interface that can answer questions, troubleshoot issues, and escalate to our team when needed.

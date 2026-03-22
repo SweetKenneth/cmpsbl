@@ -59,13 +59,12 @@ const PersistentMemoryLanding = () => {
               </motion.div>
               
               <motion.h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
               >
-                Give your AI agent{' '}
-                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">a real memory</span>
+                Give your AI agent <span className="text-primary">a real memory</span>
               </motion.h1>
               
               <motion.p 

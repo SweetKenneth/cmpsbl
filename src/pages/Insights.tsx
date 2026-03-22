@@ -90,14 +90,7 @@ export default function Insights() {
               <span className="text-xs font-semibold">Observer Access</span>
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
-              Substrate{" "}
-              <span style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                Insights
-              </span>
+              Platform <span className="text-primary">Insights</span>
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
               Observer-level access to the CMPSBL cognitive substrate.

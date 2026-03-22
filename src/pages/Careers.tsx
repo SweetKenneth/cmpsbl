@@ -72,14 +72,7 @@ export default function Careers() {
               <span className="text-xs font-semibold tracking-widest uppercase">Careers</span>
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
-              Build What{" "}
-              <span style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                Matters
-              </span>
+              Build What <span className="text-primary">Matters</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
               We're building the cognitive substrate — systems that dream, adapt, evolve, and remember. Join a team where your work shapes the future of AI infrastructure.

@@ -1168,13 +1168,8 @@ export default function Changelog() {
            <Badge variant="outline" className="px-4 py-1.5 border-primary/20 bg-primary/5 text-primary font-mono text-xs tracking-widest">
              FULL HISTORY
            </Badge>
-           <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight">
-             The{" "}
-             <span style={{
-               background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-               WebkitBackgroundClip: "text",
-               WebkitTextFillColor: "transparent",
-             }}>Changelog</span>
+           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
+             The <span className="text-primary">Changelog</span>
            </h1>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
              Every change to the platform is recorded here — what triggered it,

@@ -99,14 +99,7 @@ export default function ApiAccess() {
               <span className="text-xs font-semibold tracking-widest uppercase">Free API Access</span>
             </Badge>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
-              One key.{" "}
-              <span style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
-                Entire platform.
-              </span>
+              One key. <span className="text-primary">Entire platform.</span>
             </h1>
              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Get instant access to 40 modules through a single REST endpoint. 
