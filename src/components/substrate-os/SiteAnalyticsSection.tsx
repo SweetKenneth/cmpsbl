@@ -186,8 +186,8 @@ function MetricCard({ label, value, sub, icon: Icon, iconColor, border, bg, icon
         <span className="text-[10px] text-muted-foreground font-mono uppercase">{label}</span>
         {trend && (
           trend === 'up'
-            ? <ArrowUpRight className="w-3 h-3 text-green-400 ml-auto" />
-            : <ArrowDownRight className="w-3 h-3 text-red-400 ml-auto" />
+            ? <ArrowUpRight className="w-3 h-3 text-neon-green ml-auto" />
+            : <ArrowDownRight className="w-3 h-3 text-destructive ml-auto" />
         )}
       </div>
       <p className="text-2xl font-bold font-mono text-foreground">{value}</p>
@@ -225,7 +225,7 @@ function RankList({ title, icon: Icon, iconColor, items, valueLabel }: {
               </div>
               <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
                 <motion.div
-                  className={cn("h-full rounded-full bg-gradient-to-r from-cyan-500/70 to-blue-500/50")}
+                  className={cn("h-full rounded-full bg-gradient-to-r from-neon-cyan/70 to-neon-blue/50")}
                   initial={{ width: 0 }}
                   animate={{ width: `${pct}%` }}
                   transition={{ delay: idx * 0.03 }}
@@ -281,8 +281,8 @@ export function SiteAnalyticsSection() {
       {/* Section Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 flex items-center justify-center">
-            <Users className="w-5 h-5 text-green-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-green/20 to-neon-green/10 border border-neon-green/30 flex items-center justify-center">
+            <Users className="w-5 h-5 text-neon-green" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Human Traffic Intelligence</h2>
@@ -306,7 +306,7 @@ export function SiteAnalyticsSection() {
                 className={cn(
                   "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
                   dateRange === key
-                    ? "bg-green-500/20 text-green-400 border border-green-500/40"
+                    ? "bg-neon-green/20 text-neon-green border border-neon-green/40"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -332,44 +332,44 @@ export function SiteAnalyticsSection() {
             <MetricCard
               label="Unique Visitors" value={fmt(data.uniqueVisitors)}
               sub={`${data.newVisitors} new · ${data.returningVisitors} returning`}
-              icon={Users} iconColor="text-green-400"
-              border="border-green-500/30" bg="from-green-500/10 to-green-500/5"
-              iconBg="bg-green-500/20 border-green-500/40"
+              icon={Users} iconColor="text-neon-green"
+              border="border-neon-green/30" bg="from-neon-green/10 to-neon-green/5"
+              iconBg="bg-neon-green/20 border-neon-green/40"
             />
             <MetricCard
               label="Page Views" value={fmt(data.totalPageViews)}
               sub={`${data.totalSessions} sessions`}
-              icon={Eye} iconColor="text-blue-400"
-              border="border-blue-500/30" bg="from-blue-500/10 to-blue-500/5"
-              iconBg="bg-blue-500/20 border-blue-500/40"
+              icon={Eye} iconColor="text-neon-blue"
+              border="border-neon-blue/30" bg="from-neon-blue/10 to-neon-blue/5"
+              iconBg="bg-neon-blue/20 border-neon-blue/40"
             />
             <MetricCard
               label="Pages / Visitor" value={data.avgPagesPerSession.toFixed(1)}
               sub="avg depth"
-              icon={Layers} iconColor="text-purple-400"
-              border="border-purple-500/30" bg="from-purple-500/10 to-purple-500/5"
-              iconBg="bg-purple-500/20 border-purple-500/40"
+              icon={Layers} iconColor="text-neon-purple"
+              border="border-neon-purple/30" bg="from-neon-purple/10 to-neon-purple/5"
+              iconBg="bg-neon-purple/20 border-neon-purple/40"
             />
             <MetricCard
               label="Avg Duration" value={formatDuration(data.avgSessionDuration)}
               sub="per session"
-              icon={Timer} iconColor="text-cyan-400"
-              border="border-cyan-500/30" bg="from-cyan-500/10 to-cyan-500/5"
-              iconBg="bg-cyan-500/20 border-cyan-500/40"
+              icon={Timer} iconColor="text-neon-cyan"
+              border="border-neon-cyan/30" bg="from-neon-cyan/10 to-neon-cyan/5"
+              iconBg="bg-neon-cyan/20 border-neon-cyan/40"
             />
             <MetricCard
               label="Bounce Rate" value={`${data.bounceRate}%`}
               sub="single-page visits"
-              icon={ArrowDownRight} iconColor="text-amber-400"
-              border="border-amber-500/30" bg="from-amber-500/10 to-amber-500/5"
-              iconBg="bg-amber-500/20 border-amber-500/40"
+              icon={ArrowDownRight} iconColor="text-neon-amber"
+              border="border-neon-amber/30" bg="from-neon-amber/10 to-neon-amber/5"
+              iconBg="bg-neon-amber/20 border-neon-amber/40"
             />
             <MetricCard
               label="Fingerprints" value={fmt(data.uniqueFingerprints)}
               sub="unique device profiles"
-              icon={Fingerprint} iconColor="text-rose-400"
-              border="border-rose-500/30" bg="from-rose-500/10 to-rose-500/5"
-              iconBg="bg-rose-500/20 border-rose-500/40"
+              icon={Fingerprint} iconColor="text-neon-magenta"
+              border="border-neon-magenta/30" bg="from-neon-magenta/10 to-neon-magenta/5"
+              iconBg="bg-neon-magenta/20 border-neon-magenta/40"
             />
           </div>
 
@@ -383,8 +383,8 @@ export function SiteAnalyticsSection() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-foreground">Daily Traffic</h3>
               <div className="flex gap-3 text-[9px] font-mono">
-                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" /> Visitors</span>
-                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-400" /> Views</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon-green" /> Visitors</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon-blue" /> Views</span>
               </div>
             </div>
             <div className="flex items-end gap-1 h-32">
@@ -394,7 +394,7 @@ export function SiteAnalyticsSection() {
                 return (
                   <div key={day.date} className="flex-1 group relative">
                     <motion.div
-                      className="w-full rounded-t-md bg-gradient-to-t from-green-500/60 to-blue-400/30 hover:from-green-500/80 hover:to-blue-400/50 transition-all cursor-pointer"
+                      className="w-full rounded-t-md bg-gradient-to-t from-neon-green/60 to-neon-blue/30 hover:from-neon-green/80 hover:to-neon-blue/50 transition-all cursor-pointer"
                       style={{ height: `${Math.max(height, 4)}%` }}
                       initial={{ scaleY: 0 }}
                       animate={{ scaleY: 1 }}
@@ -422,7 +422,7 @@ export function SiteAnalyticsSection() {
             animate={{ opacity: 1, y: 0 }}
           >
             <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-              <MousePointerClick className="w-4 h-4 text-blue-400" /> Top Pages
+              <MousePointerClick className="w-4 h-4 text-neon-blue" /> Top Pages
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
@@ -456,25 +456,25 @@ export function SiteAnalyticsSection() {
             <RankList
               title="Traffic Sources"
               icon={ExternalLink}
-              iconColor="text-orange-400"
+              iconColor="text-neon-amber"
               items={data.topReferrers.map(r => ({ label: r.domain, value: r.count })).filter(i => i.value > 0)}
             />
             <RankList
               title="Devices"
               icon={Monitor}
-              iconColor="text-purple-400"
+              iconColor="text-neon-purple"
               items={data.deviceBreakdown.map(d => ({ label: d.type, value: d.count }))}
             />
             <RankList
               title="Browsers"
               icon={Globe}
-              iconColor="text-blue-400"
+              iconColor="text-neon-blue"
               items={data.browserBreakdown.map(b => ({ label: b.name, value: b.count }))}
             />
             <RankList
               title="Operating Systems"
               icon={Monitor}
-              iconColor="text-green-400"
+              iconColor="text-neon-green"
               items={data.osBreakdown.map(o => ({ label: o.name, value: o.count }))}
             />
           </div>
@@ -484,19 +484,19 @@ export function SiteAnalyticsSection() {
             <RankList
               title="Timezones (Geography)"
               icon={MapPin}
-              iconColor="text-rose-400"
+              iconColor="text-neon-magenta"
               items={data.topTimezones.map(t => ({ label: t.tz.replace(/_/g, ' '), value: t.count }))}
             />
             <RankList
               title="Languages"
               icon={Globe}
-              iconColor="text-cyan-400"
+              iconColor="text-neon-cyan"
               items={data.topLanguages.map(l => ({ label: l.lang, value: l.count }))}
             />
             <RankList
               title="Screen Resolutions"
               icon={Monitor}
-              iconColor="text-indigo-400"
+              iconColor="text-primary"
               items={data.screenSizes.map(s => ({ label: s.size, value: s.count }))}
             />
           </div>
@@ -508,7 +508,7 @@ export function SiteAnalyticsSection() {
                 <RankList
                   title="UTM Sources"
                   icon={TrendingUp}
-                  iconColor="text-amber-400"
+                  iconColor="text-neon-amber"
                   items={data.topUTMSources.map(u => ({ label: u.source, value: u.count }))}
                 />
               )}
@@ -516,7 +516,7 @@ export function SiteAnalyticsSection() {
                 <RankList
                   title="Connection Types"
                   icon={Globe}
-                  iconColor="text-teal-400"
+                  iconColor="text-neon-cyan"
                   items={data.connectionTypes.map(c => ({ label: c.type, value: c.count }))}
                 />
               )}

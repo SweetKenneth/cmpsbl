@@ -148,14 +148,14 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
     <Card className={cn(
       "border transition-all",
       isCritical 
-        ? "border-red-500/50 bg-red-500/5 dark:bg-red-500/10 animate-pulse-slow" 
-        : "border-amber-500/30 bg-amber-500/5"
+        ? "border-destructive/50 bg-destructive/5 dark:bg-destructive/10 animate-pulse-slow" 
+        : "border-neon-amber/30 bg-neon-amber/5"
     )}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-medium flex items-center gap-2">
           <AlertTriangle className={cn(
             "w-5 h-5",
-            isCritical ? "text-red-500" : "text-amber-500"
+            isCritical ? "text-destructive" : "text-neon-amber"
           )} />
           {isCritical ? 'Emergency Recovery' : 'System Recovery Options'}
           {isCritical && (
@@ -172,8 +172,8 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
             className={cn(
               "gap-2",
               isCritical 
-                ? "bg-red-500 hover:bg-red-600 text-white" 
-                : "bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30"
+                ? "bg-destructive hover:bg-destructive/90 text-white" 
+                : "bg-neon-amber/20 hover:bg-neon-amber/30 text-neon-amber border border-neon-amber/30"
             )}
           >
             {healMutation.isPending ? (
@@ -220,8 +220,8 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                   key={backup.id}
                   className={cn(
                     "p-2 rounded-lg border cursor-pointer transition-all",
-                    "bg-muted/10 border-border/30 hover:border-cyan-500/30 hover:bg-muted/20",
-                    selectedBackup === backup.backup_id && "border-cyan-500/50 bg-cyan-500/10"
+                    "bg-muted/10 border-border/30 hover:border-neon-cyan/30 hover:bg-muted/20",
+                    selectedBackup === backup.backup_id && "border-neon-cyan/50 bg-neon-cyan/10"
                   )}
                   onClick={() => setSelectedBackup(
                     selectedBackup === backup.backup_id ? null : backup.backup_id
@@ -247,7 +247,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                         <AlertDialogTrigger asChild>
                           <Button 
                             size="sm" 
-                            className="w-full gap-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30"
+                            className="w-full gap-1 bg-neon-cyan/20 hover:bg-neon-cyan/30 text-neon-cyan border border-neon-cyan/30"
                           >
                             <RotateCcw className="w-3 h-3" />
                             Restore This Backup
@@ -256,7 +256,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle className="flex items-center gap-2">
-                              <RotateCcw className="w-5 h-5 text-cyan-400" />
+                              <RotateCcw className="w-5 h-5 text-neon-cyan" />
                               Restore from Backup
                             </AlertDialogTitle>
                             <AlertDialogDescription>
@@ -277,7 +277,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                             <AlertDialogAction
                               disabled={confirmValue !== 'RESTORE' || restoreMutation.isPending}
                               onClick={() => restoreMutation.mutate(backup.backup_id)}
-                              className="bg-cyan-600 hover:bg-cyan-700"
+                              className="bg-neon-cyan hover:bg-neon-cyan/80"
                             >
                               {restoreMutation.isPending ? (
                                 <>
@@ -306,10 +306,10 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
           </span>
           <div className="flex items-center gap-1">
             {healMutation.isSuccess && (
-              <CheckCircle className="w-3 h-3 text-emerald-400" />
+              <CheckCircle className="w-3 h-3 text-neon-green" />
             )}
             {healMutation.isError && (
-              <XCircle className="w-3 h-3 text-red-400" />
+              <XCircle className="w-3 h-3 text-destructive" />
             )}
           </div>
         </div>

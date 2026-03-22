@@ -7,11 +7,11 @@ import { Shield, RefreshCw, CheckCircle, AlertTriangle, XCircle } from 'lucide-r
 import { useHardeningHealth } from '@/hooks/useHardeningHealth';
 
 const GRADE_COLORS: Record<string, string> = {
-  A: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
-  B: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
-  C: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
-  D: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
-  F: 'text-red-400 bg-red-500/10 border-red-500/30',
+  A: 'text-neon-green bg-neon-green/10 border-neon-green/30',
+  B: 'text-neon-blue bg-neon-blue/10 border-neon-blue/30',
+  C: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  D: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  F: 'text-destructive bg-destructive/10 border-destructive/30',
 };
 
 const GRADE_ICON: Record<string, typeof CheckCircle> = {

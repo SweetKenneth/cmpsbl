@@ -43,32 +43,32 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
 };
 
 const MODULE_COLORS: Record<string, string> = {
-  brain: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
-  decode: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
-  defense: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
-  nexus: 'text-green-400 bg-green-500/10 border-green-500/30',
-  vision: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
-  dream: 'text-violet-400 bg-violet-500/10 border-violet-500/30',
-  terminal: 'text-slate-400 bg-slate-500/10 border-slate-500/30',
-  atlas: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
-  seba: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
-  encoded: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
-  core: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
-  ripple: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
-  access: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
-  system: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
-  evolution: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
-  integration: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
-  cortex: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
-  inclusive: 'text-pink-400 bg-pink-500/10 border-pink-500/30',
-  economy: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
-  identity: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/30',
+  brain: 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/30',
+  decode: 'text-neon-purple bg-neon-purple/10 border-neon-purple/30',
+  defense: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  nexus: 'text-neon-green bg-neon-green/10 border-neon-green/30',
+  vision: 'text-neon-blue bg-neon-blue/10 border-neon-blue/30',
+  dream: 'text-neon-purple bg-neon-purple/10 border-neon-purple/30',
+  terminal: 'text-muted-foreground bg-muted/10 border-border/30',
+  atlas: 'text-neon-magenta bg-neon-magenta/10 border-neon-magenta/30',
+  seba: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  encoded: 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/30',
+  core: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  ripple: 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/30',
+  access: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  system: 'text-neon-green bg-neon-green/10 border-neon-green/30',
+  evolution: 'text-neon-magenta bg-neon-magenta/10 border-neon-magenta/30',
+  integration: 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/30',
+  cortex: 'text-primary bg-primary/10 border-primary/30',
+  inclusive: 'text-neon-magenta bg-neon-magenta/10 border-neon-magenta/30',
+  economy: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  identity: 'text-neon-green bg-neon-green/10 border-neon-green/30',
 };
 
 const OUTCOME_COLORS: Record<string, string> = {
-  started: 'text-blue-400',
-  succeeded: 'text-green-400',
-  failed: 'text-red-400',
+  started: 'text-neon-blue',
+  succeeded: 'text-neon-green',
+  failed: 'text-destructive',
   skipped: 'text-muted-foreground',
 };
 
@@ -137,10 +137,10 @@ export const EventStream = memo(function EventStream() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/30 bg-muted/20">
         <div className="flex items-center gap-2">
-          <Radio className={cn("w-4 h-4", isLive ? "text-green-400 animate-pulse" : "text-muted-foreground")} />
+          <Radio className={cn("w-4 h-4", isLive ? "text-neon-green animate-pulse" : "text-muted-foreground")} />
           <span className="text-sm font-medium">Event Stream</span>
           {isLive && (
-            <Badge variant="outline" className="text-[10px] h-5 font-mono text-green-400 border-green-500/30 bg-green-500/10">
+            <Badge variant="outline" className="text-[10px] h-5 font-mono text-neon-green border-neon-green/30 bg-neon-green/10">
               LIVE
             </Badge>
           )}
@@ -194,8 +194,8 @@ export const EventStream = memo(function EventStream() {
             ))
           ) : brainEvents.isError ? (
             <div className="flex flex-col items-center justify-center h-[240px] text-center">
-              <Shield className="w-8 h-8 text-red-400/50 mb-3" />
-              <p className="text-sm text-red-400">
+              <Shield className="w-8 h-8 text-destructive/50 mb-3" />
+              <p className="text-sm text-destructive">
                 Failed to load events
               </p>
               <p className="text-xs text-muted-foreground/60 mt-1">

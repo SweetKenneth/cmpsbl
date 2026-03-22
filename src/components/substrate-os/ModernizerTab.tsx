@@ -504,15 +504,15 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'proposed':
-        return <Badge variant="outline" className="border-amber-500/50 text-amber-400 bg-amber-500/10">Proposed</Badge>;
+        return <Badge variant="outline" className="border-neon-amber/50 text-neon-amber bg-neon-amber/10">Proposed</Badge>;
       case 'approved':
-        return <Badge variant="outline" className="border-blue-500/50 text-blue-400 bg-blue-500/10">Approved</Badge>;
+        return <Badge variant="outline" className="border-neon-blue/50 text-neon-blue bg-neon-blue/10">Approved</Badge>;
       case 'applied':
-        return <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10">Applied</Badge>;
+        return <Badge variant="outline" className="border-neon-green/50 text-neon-green bg-neon-green/10">Applied</Badge>;
       case 'rolled_back':
-        return <Badge variant="outline" className="border-red-500/50 text-red-400 bg-red-500/10">Rolled Back</Badge>;
+        return <Badge variant="outline" className="border-destructive/50 text-destructive bg-destructive/10">Rolled Back</Badge>;
       case 'rejected':
-        return <Badge variant="outline" className="border-gray-500/50 text-gray-400 bg-gray-500/10">Rejected</Badge>;
+        return <Badge variant="outline" className="border-muted-foreground/50 text-muted-foreground bg-muted/10">Rejected</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -523,9 +523,9 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
       case 'high':
         return <Badge variant="destructive" className="text-[10px]">HIGH RISK</Badge>;
       case 'medium':
-        return <Badge variant="outline" className="border-amber-500/50 text-amber-400 text-[10px]">MEDIUM</Badge>;
+        return <Badge variant="outline" className="border-neon-amber/50 text-neon-amber text-[10px]">MEDIUM</Badge>;
       case 'low':
-        return <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 text-[10px]">LOW</Badge>;
+        return <Badge variant="outline" className="border-neon-green/50 text-neon-green text-[10px]">LOW</Badge>;
       default:
         return null;
     }
@@ -534,11 +534,11 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
   const getValidationIcon = (status: 'pass' | 'warning' | 'fail') => {
     switch (status) {
       case 'pass':
-        return <CheckCircle className="w-4 h-4 text-emerald-400" />;
+        return <CheckCircle className="w-4 h-4 text-neon-green" />;
       case 'warning':
-        return <AlertTriangle className="w-4 h-4 text-amber-400" />;
+        return <AlertTriangle className="w-4 h-4 text-neon-amber" />;
       case 'fail':
-        return <XCircle className="w-4 h-4 text-red-400" />;
+        return <XCircle className="w-4 h-4 text-destructive" />;
     }
   };
 
@@ -566,8 +566,8 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500/20 to-cyan-500/20 border border-fuchsia-500/40 flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-fuchsia-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-magenta/20 to-neon-cyan/20 border border-neon-magenta/40 flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-neon-magenta" />
           </div>
           <div>
             <h2 className="text-lg font-semibold text-foreground">EVOLUTION</h2>
@@ -580,13 +580,13 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             className={cn(
               "text-xs",
               isHealthy 
-                ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10"
-                : "border-amber-500/50 text-amber-400 bg-amber-500/10"
+                ? "border-neon-green/50 text-neon-green bg-neon-green/10"
+                : "border-neon-amber/50 text-neon-amber bg-neon-amber/10"
             )}
           >
             {healthScore}% Health
           </Badge>
-          <Badge variant="outline" className="border-amber-500/50 text-amber-400 bg-amber-500/10">
+          <Badge variant="outline" className="border-neon-amber/50 text-neon-amber bg-neon-amber/10">
             <Shield className="w-3 h-3 mr-1" />
             SHADOW MODE
           </Badge>
@@ -600,35 +600,35 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-fuchsia-500/40 transition-colors">
+          <Card className="border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-magenta/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <TrendingUp className="w-5 h-5 mx-auto mb-2 text-fuchsia-400" />
+              <TrendingUp className="w-5 h-5 mx-auto mb-2 text-neon-magenta" />
               <p className={cn(
                 "text-2xl font-bold",
-                healthScore >= 90 ? "text-emerald-400" : healthScore >= 70 ? "text-amber-400" : "text-red-400"
+                healthScore >= 90 ? "text-neon-green" : healthScore >= 70 ? "text-neon-amber" : "text-destructive"
               )}>{healthScore}%</p>
               <p className="text-[10px] text-muted-foreground">System Health</p>
             </CardContent>
           </Card>
-          <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-cyan-500/40 transition-colors">
+          <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-cyan/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <Database className="w-5 h-5 mx-auto mb-2 text-cyan-400" />
+              <Database className="w-5 h-5 mx-auto mb-2 text-neon-cyan" />
               <p className="text-2xl font-bold text-foreground">{plans?.filter(p => p.status === 'proposed').length ?? 0}</p>
               <p className="text-[10px] text-muted-foreground">Pending</p>
             </CardContent>
           </Card>
-          <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-emerald-500/40 transition-colors">
+          <Card className="border border-neon-green/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-green/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <CheckCircle className="w-5 h-5 mx-auto mb-2 text-emerald-400" />
+              <CheckCircle className="w-5 h-5 mx-auto mb-2 text-neon-green" />
               <p className="text-2xl font-bold text-foreground">
                 {plans?.filter(p => p.status === 'applied').length ?? 0}
               </p>
               <p className="text-[10px] text-muted-foreground">Applied</p>
             </CardContent>
           </Card>
-          <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-amber-500/40 transition-colors">
+          <Card className="border border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-amber/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <RotateCcw className="w-5 h-5 mx-auto mb-2 text-amber-400" />
+              <RotateCcw className="w-5 h-5 mx-auto mb-2 text-neon-amber" />
               <p className="text-2xl font-bold text-foreground">
                 {plans?.filter(p => p.status === 'rolled_back').length ?? 0}
               </p>
@@ -664,7 +664,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-400" />
+                <Clock className="w-4 h-4 text-neon-amber" />
                 Upgrade Proposals
               </CardTitle>
               <Button 
