@@ -13,7 +13,7 @@ export function NpmAnnouncementBanner() {
       animate={{ height: "auto", opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="fixed top-0 left-0 right-0 z-[10001] overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, hsl(210, 90%, 50%), hsl(230, 85%, 55%), hsl(250, 80%, 60%))' }}
+      style={{ background: 'linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))' }}
     >
       <div className="relative flex items-center justify-center gap-2 px-4 py-2 text-sm text-white">
         <motion.div
