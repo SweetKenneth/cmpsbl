@@ -128,17 +128,17 @@ class LearningOrchestratorClient {
       // 4. Execute learning
       const learningResult = await this.executeLearningJob(job);
 
-      // 5. Run reflection
-      const reflectionGenerated = await this.runDeepReflection(job, learningResult);
-
-      // 6. Update memory graph
-      const { nodes, edges } = await this.updateMemoryGraph(job, learningResult);
+      // 5+6. Reflection and graph update are independent — run in parallel
+      const [reflectionGenerated, graphResult] = await Promise.all([
+        this.runDeepReflection(job, learningResult),
+        this.updateMemoryGraph(job, learningResult),
+      ]);
+      const { nodes, edges } = graphResult;
 
       // 7. Add to spaced repetition queue
       if (selection.source === 'core_curriculum' || selection.source === 'deep_dive') {
         spacedRepetition.addToQueue(selection.topic, learningResult.confidence || 0.7);
       } else if (selection.source === 'spaced_repetition') {
-        // Process SR review
         spacedRepetition.processReview(selection.topic.id, {
           recallQuality: learningResult.success ? 4 : 2,
           confidence: learningResult.confidence || 0.5,
@@ -149,7 +149,8 @@ class LearningOrchestratorClient {
       // 8. Check for dream/prune cycle
       this.state.jobsSinceLastDream++;
       if (this.state.jobsSinceLastDream >= JOBS_BEFORE_DREAM) {
-        await this.runPruneAndDream();
+        // Fire-and-forget — don't block the cycle result
+        this.runPruneAndDream().catch(() => {});
         this.state.jobsSinceLastDream = 0;
       }
 
