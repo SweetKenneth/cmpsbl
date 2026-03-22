@@ -109,31 +109,34 @@ export class MemoryClient {
     return this.userId;
   }
   
+  /** Pre-compiled fact extraction patterns (hoisted for perf) */
+  private static readonly FACT_PATTERNS = [
+    /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
+  ];
+
   /** Extract discrete facts from text */
   extractFacts(text: string): string[] {
-    const patterns = [
-      /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
-    ];
-    
     const facts: string[] = [];
-    for (const pattern of patterns) {
+    const seen = new Set<string>();
+    for (const pattern of MemoryClient.FACT_PATTERNS) {
       let match;
       pattern.lastIndex = 0;
       while ((match = pattern.exec(text)) !== null) {
         let fact = match[0].trim()
           .replace(/^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i, '')
           .trim();
-        if (fact.length > 3 && fact.length < 200) {
+        if (fact.length > 3 && fact.length < 200 && !seen.has(fact)) {
+          seen.add(fact);
           facts.push(fact);
         }
       }
     }
-    return [...new Set(facts)];
+    return facts;
   }
 
   // ═══════════════════════════════════════════════════════════════════
