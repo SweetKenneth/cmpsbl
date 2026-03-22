@@ -55,6 +55,7 @@ import {
   executeChain,
   // Manifest
   getMeshModules,
+  type MeshIntent,
   type MeshReceipt,
 } from '@/lib/substrate/intent-mesh';
 
