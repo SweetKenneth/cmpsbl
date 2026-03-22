@@ -120,7 +120,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         className={cn(
           "relative h-full rounded-3xl overflow-hidden",
-          "border border-border/50 bg-card/50 backdrop-blur-sm",
+          "border border-border/50 bg-[hsl(var(--stream-slate))] backdrop-blur-sm",
           "transition-all duration-500",
           "hover:shadow-2xl",
           audience.glow,

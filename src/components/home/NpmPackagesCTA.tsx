@@ -156,7 +156,7 @@ export function NpmPackagesCTA() {
           {featured.map((pkg, i) => (
             <motion.div
               key={pkg.name}
-              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/50 hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-300"
+              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-[hsl(var(--stream-slate))] hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-300"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
