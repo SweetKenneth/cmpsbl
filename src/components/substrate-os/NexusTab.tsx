@@ -140,12 +140,6 @@ export function NexusTab() {
         version: '5.0.0',
         totalRequestsToday: todayLogs.length,
         providers,
-        imageGeneration: {
-          usedToday: imagesUsed,
-          remainingToday: remaining,
-          dailyLimit: 25,
-          status: remaining > 5 ? 'available' : remaining > 0 ? 'limited' : 'exhausted'
-        }
       });
 
       // Build cost log display from real data
