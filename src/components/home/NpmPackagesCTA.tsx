@@ -115,7 +115,7 @@ export function NpmPackagesCTA() {
             </span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            The <code className="text-primary font-mono text-sm bg-primary/5 px-2 py-0.5 rounded">@cmpsbl</code> SDK 
+            The <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl</code> SDK 
             gives you composable intelligence — intent routing, mesh telemetry, and cognitive scoring 
             in any JavaScript or TypeScript project.
           </p>
