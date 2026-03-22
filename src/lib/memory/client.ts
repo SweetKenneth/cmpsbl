@@ -234,53 +234,51 @@ export class MemoryClient {
     salience: number,
     metadata?: Record<string, unknown>
   ): Promise<void> {
-    // FIX #5: Remove version string from source
-    const provenance = this.buildProvenance(
-      (metadata?.source as string) || 'memory_sdk'
-    );
+    // Early return for noise — skip all object construction
+    if (salience < 0.3) return;
 
-    // #8: Assign decay curve based on type — static Sets for O(1) lookup
+    const source = (metadata?.source as string) || 'memory_sdk';
+    const provenance = this.buildProvenance(source);
     const decayCurve = MemoryClient.FAST_DECAY_TYPES.has(memoryType) ? 'fast' :
       MemoryClient.SLOW_DECAY_TYPES.has(memoryType) ? 'slow' : 'standard';
 
-    const basePayload = {
-      module: 'brain',
-      action: 'remember',
-      content,
-      memory_type: memoryType,
-      confidence: salience,
-      metadata: {
+    if (salience >= 0.7) {
+      // Hot tier via substrate
+      const meta: Record<string, unknown> = {
         agentId: this.agentId,
         userId: this.userId,
         scope: this.scope,
-        sessionId: this.scope === 'session' ? this.sessionId : undefined,
         salience_score: salience,
         source: 'memory_sdk',
         decay_curve: decayCurve,
         provenance,
-        ...metadata
-      }
-    };
+      };
+      if (this.scope === 'session') meta.sessionId = this.sessionId;
+      if (metadata) Object.assign(meta, metadata);
 
-    // Salience gate: high → hot (via substrate), medium → warm direct, low → skip
-    if (salience >= 0.7) {
-      await supabase.functions.invoke('pf-substrate', { body: basePayload });
-    } else if (salience >= 0.3) {
+      await supabase.functions.invoke('pf-substrate', {
+        body: {
+          module: 'brain', action: 'remember',
+          content, memory_type: memoryType, confidence: salience,
+          metadata: meta,
+        }
+      });
+    } else {
+      // Warm tier direct insert
       await supabase.from('brain_memory_warm' as any).insert({
-            content,
-            context: memoryType,
-            user_id: this.userId,
-            agent_id: this.agentId,
-            memory_type: memoryType,
-            salience_score: salience,
-            value_score: salience * 0.8,
-            decay_curve: decayCurve,
-            provenance,
-            metadata: basePayload.metadata,
-            tags: ['memory_sdk'],
-          });
+        content,
+        context: memoryType,
+        user_id: this.userId,
+        agent_id: this.agentId,
+        memory_type: memoryType,
+        salience_score: salience,
+        value_score: salience * 0.8,
+        decay_curve: decayCurve,
+        provenance,
+        metadata: { agentId: this.agentId, userId: this.userId, scope: this.scope, ...metadata },
+        tags: ['memory_sdk'],
+      });
     }
-    // salience < 0.3 → don't store (noise)
   }
   
   /**
