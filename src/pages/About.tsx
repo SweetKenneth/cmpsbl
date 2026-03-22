@@ -176,18 +176,9 @@ export default function About() {
 
           <motion.h1
             {...stagger(0.1)}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-5"
+            className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.1] mb-5"
           >
-            Cognitive{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Infrastructure
-            </span>
+            Cognitive <span className="text-primary">Infrastructure</span>
             <br className="hidden sm:block" />
             {" "}for AI
           </motion.h1>
