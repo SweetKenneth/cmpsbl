@@ -279,8 +279,8 @@ await cmpsbl.evolution.apply({
     layer: "Admin",
     title: "INTEGRATION Enterprise",
     description: "Enterprise adapters & LLM governance",
-    color: "text-emerald-500",
-    gradient: "from-emerald-500 to-teal-600",
+    color: "text-[hsl(var(--neon-cyan))]",
+    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Discover enterprise systems
 const systems = await cmpsbl.integration.discover({
   target: "erp",
