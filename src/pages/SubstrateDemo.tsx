@@ -391,8 +391,8 @@ export default function SubstrateDemo() {
                                   exit={{ opacity: 0 }}
                                   className={cn(
                                     "flex items-start gap-2",
-                                    log.status === 'success' && "text-emerald-400",
-                                    log.status === 'warning' && "text-amber-400",
+                                    log.status === 'success' && "text-neon-green",
+                                    log.status === 'warning' && "text-neon-amber",
                                     log.status === 'info' && "text-muted-foreground"
                                   )}
                                 >
@@ -491,7 +491,7 @@ function LayerRow({
               className={cn(
                 "relative flex flex-col items-center gap-1 p-2 rounded-lg border-2 min-w-[60px] transition-all",
                 isComplete 
-                  ? "bg-emerald-500/20 border-emerald-500"
+                  ? "bg-neon-green/20 border-neon-green"
                   : isCurrentlyActive
                     ? "bg-primary/20 border-primary animate-pulse"
                     : isInSequence
@@ -508,7 +508,7 @@ function LayerRow({
               )}
               <Icon className={cn(
                 "w-5 h-5",
-                isComplete ? "text-emerald-400" : isCurrentlyActive ? "text-primary" : "text-muted-foreground"
+                isComplete ? "text-neon-green" : isCurrentlyActive ? "text-primary" : "text-muted-foreground"
               )} />
               <span className="text-[10px] font-medium">{module.name}</span>
             </motion.div>

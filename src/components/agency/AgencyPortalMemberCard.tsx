@@ -74,7 +74,7 @@ export function AgencyPortalMemberCard({
   const getStatusBadge = () => {
     if (agentStatus === 'learning') {
       return (
-        <Badge variant="outline" className="text-[10px] h-5 border-purple-500/50 text-purple-400 gap-1">
+        <Badge variant="outline" className="text-[10px] h-5 border-neon-purple/50 text-neon-purple gap-1">
           <BookOpen className="w-3 h-3 animate-pulse" />
           Learning
         </Badge>
@@ -82,14 +82,14 @@ export function AgencyPortalMemberCard({
     }
     if (agentStatus === 'working' || currentTask) {
       return (
-        <Badge variant="outline" className="text-[10px] h-5 border-amber-500/50 text-amber-400 gap-1">
+        <Badge variant="outline" className="text-[10px] h-5 border-neon-amber/50 text-neon-amber gap-1">
           <Loader2 className="w-3 h-3 animate-spin" />
           Working
         </Badge>
       );
     }
     return (
-      <Badge variant="outline" className="text-[10px] h-5 border-emerald-500/50 text-emerald-400 gap-1">
+      <Badge variant="outline" className="text-[10px] h-5 border-neon-green/50 text-neon-green gap-1">
         <Zap className="w-3 h-3" />
         Ready
       </Badge>
@@ -100,7 +100,7 @@ export function AgencyPortalMemberCard({
     <Card
       className={cn(
         "border-border/30 bg-black/40 backdrop-blur-sm transition-all",
-        isLeader && "border-fuchsia-500/40 bg-fuchsia-500/5",
+        isLeader && "border-neon-magenta/40 bg-neon-magenta/5",
         className
       )}
     >
@@ -112,14 +112,14 @@ export function AgencyPortalMemberCard({
               className={cn(
                 "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
                 isLeader
-                  ? "bg-gradient-to-br from-fuchsia-500/30 to-purple-600/30 border border-fuchsia-500/40"
-                  : "bg-cyan-500/20 border border-cyan-500/30"
+                  ? "bg-gradient-to-br from-neon-magenta/30 to-neon-purple/30 border border-neon-magenta/40"
+                  : "bg-neon-cyan/20 border border-neon-cyan/30"
               )}
             >
               {isLeader ? (
-                <Crown className="w-5 h-5 text-fuchsia-400" />
+                <Crown className="w-5 h-5 text-neon-magenta" />
               ) : (
-                <User className="w-5 h-5 text-cyan-400" />
+                <User className="w-5 h-5 text-neon-cyan" />
               )}
             </div>
 
@@ -128,7 +128,7 @@ export function AgencyPortalMemberCard({
               <div className="flex items-center gap-2">
                 <h4 className="font-medium text-sm">{displayName}</h4>
                 {isLeader && (
-                  <Badge variant="outline" className="text-[10px] h-4 border-fuchsia-500/50 text-fuchsia-400">
+                  <Badge variant="outline" className="text-[10px] h-4 border-neon-magenta/50 text-neon-magenta">
                     Leader
                   </Badge>
                 )}
@@ -179,7 +179,7 @@ export function AgencyPortalMemberCard({
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-7 text-[10px] gap-1 text-purple-400 hover:bg-purple-500/10"
+                    className="h-7 text-[10px] gap-1 text-neon-purple hover:bg-neon-purple/10"
                     disabled={isStartingLearning}
                     onClick={onStartLearning}
                   >
@@ -197,7 +197,7 @@ export function AgencyPortalMemberCard({
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-7 text-[10px] gap-1 border-fuchsia-500/30 hover:bg-fuchsia-500/10"
+                        className="h-7 text-[10px] gap-1 border-neon-magenta/30 hover:bg-neon-magenta/10"
                         disabled={isDispatching}
                       >
                         {isDispatching ? (
@@ -231,7 +231,7 @@ export function AgencyPortalMemberCard({
         {isIdle && isLeader && (
           <div className="mt-3 pt-3 border-t border-border/20">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <CheckCircle className="w-3 h-3 text-emerald-400" />
+              <CheckCircle className="w-3 h-3 text-neon-green" />
               <span>Coordinating team operations...</span>
             </div>
           </div>

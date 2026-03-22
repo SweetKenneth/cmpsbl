@@ -124,8 +124,8 @@ export function DevMetricsSection() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-orange-500/30 flex items-center justify-center">
-            <Code2 className="w-5 h-5 text-orange-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-amber/20 to-neon-amber/20 border border-neon-amber/30 flex items-center justify-center">
+            <Code2 className="w-5 h-5 text-neon-amber" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">External Developer Metrics</h2>
@@ -146,10 +146,10 @@ export function DevMetricsSection() {
           {/* Summary Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: 'Registered Devs', value: fmt(data.totalDevs), sub: `${data.activeDevs} active`, icon: Users, border: 'border-orange-500/30', bg: 'from-orange-500/10 to-orange-500/5', iconBg: 'bg-orange-500/20 border-orange-500/40', iconColor: 'text-orange-400' },
-              { label: 'API Keys', value: fmt(data.totalKeys), sub: `${data.activeKeys} active`, icon: Key, border: 'border-amber-500/30', bg: 'from-amber-500/10 to-amber-500/5', iconBg: 'bg-amber-500/20 border-amber-500/40', iconColor: 'text-amber-400' },
-              { label: 'Total API Calls', value: fmt(data.totalApiCalls), sub: `${fmt(data.totalTokensUsed)} tokens`, icon: Zap, border: 'border-green-500/30', bg: 'from-green-500/10 to-green-500/5', iconBg: 'bg-green-500/20 border-green-500/40', iconColor: 'text-green-400' },
-              { label: 'Revenue', value: data.totalCostCents > 0 ? `$${(data.totalCostCents / 100).toFixed(2)}` : '$0.00', sub: 'from API usage', icon: TrendingUp, border: 'border-cyan-500/30', bg: 'from-cyan-500/10 to-cyan-500/5', iconBg: 'bg-cyan-500/20 border-cyan-500/40', iconColor: 'text-cyan-400' },
+              { label: 'Registered Devs', value: fmt(data.totalDevs), sub: `${data.activeDevs} active`, icon: Users, border: 'border-neon-amber/30', bg: 'from-neon-amber/10 to-neon-amber/5', iconBg: 'bg-neon-amber/20 border-neon-amber/40', iconColor: 'text-neon-amber' },
+              { label: 'API Keys', value: fmt(data.totalKeys), sub: `${data.activeKeys} active`, icon: Key, border: 'border-neon-amber/30', bg: 'from-neon-amber/10 to-neon-amber/5', iconBg: 'bg-neon-amber/20 border-neon-amber/40', iconColor: 'text-neon-amber' },
+              { label: 'Total API Calls', value: fmt(data.totalApiCalls), sub: `${fmt(data.totalTokensUsed)} tokens`, icon: Zap, border: 'border-neon-green/30', bg: 'from-neon-green/10 to-neon-green/5', iconBg: 'bg-neon-green/20 border-neon-green/40', iconColor: 'text-neon-green' },
+              { label: 'Revenue', value: data.totalCostCents > 0 ? `$${(data.totalCostCents / 100).toFixed(2)}` : '$0.00', sub: 'from API usage', icon: TrendingUp, border: 'border-neon-cyan/30', bg: 'from-neon-cyan/10 to-neon-cyan/5', iconBg: 'bg-neon-cyan/20 border-neon-cyan/40', iconColor: 'text-neon-cyan' },
             ].map((card, idx) => {
               const CardIcon = card.icon;
               return (
@@ -181,7 +181,7 @@ export function DevMetricsSection() {
             transition={{ delay: 0.2 }}
           >
             <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-              <Users className="w-4 h-4 text-orange-400" /> Registered Developers
+              <Users className="w-4 h-4 text-neon-amber" /> Registered Developers
             </h3>
             {data.devList.length === 0 ? (
               <p className="text-xs text-muted-foreground text-center py-6">No external developers registered yet</p>
@@ -212,7 +212,7 @@ export function DevMetricsSection() {
                         <td className="py-2.5 text-muted-foreground font-mono">{dev.email || '—'}</td>
                         <td className="py-2.5 text-center">
                           <Badge variant="outline" className={cn("text-[9px] font-mono",
-                            dev.status === 'active' ? 'border-green-500/40 text-green-400' : 'border-red-500/40 text-red-400'
+                            dev.status === 'active' ? 'border-neon-green/40 text-neon-green' : 'border-destructive/40 text-destructive'
                           )}>
                             {dev.status}
                           </Badge>
@@ -243,7 +243,7 @@ export function DevMetricsSection() {
               transition={{ delay: 0.25 }}
             >
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Activity className="w-4 h-4 text-amber-400" /> Usage by Module
+                <Activity className="w-4 h-4 text-neon-amber" /> Usage by Module
               </h3>
               {data.usageByModule.length === 0 ? (
                 <p className="text-xs text-muted-foreground text-center py-6">No API usage recorded yet</p>
@@ -260,7 +260,7 @@ export function DevMetricsSection() {
                         </div>
                         <div className="h-2 rounded-full bg-muted/30 overflow-hidden">
                           <motion.div
-                            className="h-full rounded-full bg-gradient-to-r from-amber-500/60 to-orange-500/40"
+                            className="h-full rounded-full bg-gradient-to-r from-neon-amber/60 to-neon-amber/40"
                             initial={{ width: 0 }}
                             animate={{ width: `${pct}%` }}
                             transition={{ duration: 0.4, delay: idx * 0.05 }}
@@ -281,7 +281,7 @@ export function DevMetricsSection() {
               transition={{ delay: 0.3 }}
             >
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-green-400" /> Recent API Activity
+                <Clock className="w-4 h-4 text-neon-green" /> Recent API Activity
               </h3>
               {data.recentUsage.length === 0 ? (
                 <p className="text-xs text-muted-foreground text-center py-6">No recent API calls</p>

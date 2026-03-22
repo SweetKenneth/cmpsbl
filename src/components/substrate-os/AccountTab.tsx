@@ -66,14 +66,14 @@ interface RecentActivity {
 }
 
 const QUICK_LINKS = [
-  { label: 'Memory Foundry', href: '/foundry', icon: Flame, description: 'Discover & crystallize software artifacts', color: 'from-orange-500/15 to-amber-500/10 border-orange-500/20' },
-  { label: 'Developer Academy', href: '/academy', icon: BookOpen, description: 'Master the substrate with guided learning', color: 'from-blue-500/15 to-cyan-500/10 border-blue-500/20' },
-  { label: 'CodeLab', href: '/codelab', icon: Code2, description: 'Interactive coding playground', color: 'from-emerald-500/15 to-green-500/10 border-emerald-500/20' },
-  { label: 'SDK Playground', href: '/sdk-playground', icon: Terminal, description: 'Test live API methods interactively', color: 'from-violet-500/15 to-purple-500/10 border-violet-500/20' },
-  { label: 'Documentation', href: '/documentation', icon: FileText, description: 'Full API & architecture reference', color: 'from-purple-500/15 to-violet-500/10 border-purple-500/20' },
-  { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-cyan-500/15 to-teal-500/10 border-cyan-500/20' },
-  { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-pink-500/15 to-rose-500/10 border-pink-500/20' },
-  { label: 'System Integrity', href: '/system-integrity', icon: Shield, description: 'Health checks & safety switches', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
+  { label: 'Memory Foundry', href: '/foundry', icon: Flame, description: 'Discover & crystallize software artifacts', color: 'from-neon-amber/15 to-neon-amber/10 border-neon-amber/20' },
+  { label: 'Developer Academy', href: '/academy', icon: BookOpen, description: 'Master the substrate with guided learning', color: 'from-neon-blue/15 to-neon-cyan/10 border-neon-blue/20' },
+  { label: 'CodeLab', href: '/codelab', icon: Code2, description: 'Interactive coding playground', color: 'from-neon-green/15 to-neon-green/10 border-neon-green/20' },
+  { label: 'SDK Playground', href: '/sdk-playground', icon: Terminal, description: 'Test live API methods interactively', color: 'from-neon-purple/15 to-neon-purple/10 border-neon-purple/20' },
+  { label: 'Documentation', href: '/documentation', icon: FileText, description: 'Full API & architecture reference', color: 'from-neon-purple/15 to-neon-purple/10 border-neon-purple/20' },
+  { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-neon-cyan/15 to-neon-cyan/10 border-neon-cyan/20' },
+  { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-neon-magenta/15 to-neon-magenta/10 border-neon-magenta/20' },
+  { label: 'System Integrity', href: '/system-integrity', icon: Shield, description: 'Health checks & safety switches', color: 'from-destructive/15 to-neon-amber/10 border-destructive/20' },
 ];
 
 export function AccountTab() {
@@ -433,10 +433,10 @@ export function AccountTab() {
       {/* ── Security & Session ── */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.06 }}>
         <Card className="border-border/30 overflow-hidden relative">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-green/30 to-transparent" />
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <Lock className="w-4 h-4 text-emerald-500" />
+              <Lock className="w-4 h-4 text-neon-green" />
               Security & Session
             </CardTitle>
           </CardHeader>
@@ -454,7 +454,7 @@ export function AccountTab() {
                   </Badge>
                   <Badge variant="outline" className={cn(
                     "text-[10px] font-mono",
-                    sessionInfo?.aal === 'aal2' ? "border-emerald-500/30 text-emerald-600 bg-emerald-500/5" : "border-amber-500/30 text-amber-600 bg-amber-500/5"
+                    sessionInfo?.aal === 'aal2' ? "border-neon-green/30 text-neon-green bg-neon-green/5" : "border-neon-amber/30 text-neon-amber bg-neon-amber/5"
                   )}>
                     {sessionInfo?.aal === 'aal2' ? 'MFA Active' : 'Standard'}
                   </Badge>
@@ -488,7 +488,7 @@ export function AccountTab() {
                         className={cn(
                           "w-6 h-1.5 rounded-full",
                           level <= (sessionInfo?.aal === 'aal2' ? 3 : sessionInfo?.aal === 'aal1' ? 2 : 1)
-                            ? "bg-emerald-500"
+                            ? "bg-neon-green"
                             : "bg-muted"
                         )}
                       />
@@ -507,11 +507,11 @@ export function AccountTab() {
       {/* ── API Keys ── */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
         <Card className="border-border/30 overflow-hidden relative">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-purple/30 to-transparent" />
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <Key className="w-4 h-4 text-violet-500" />
+                <Key className="w-4 h-4 text-neon-purple" />
                 API Keys
                 {apiKeys.length > 0 && (
                   <Badge variant="outline" className="text-[10px] font-mono">{apiKeys.length}</Badge>
@@ -544,7 +544,7 @@ export function AccountTab() {
                   <div key={key.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/20 border border-border/20 hover:border-primary/15 transition-colors">
                     <div className={cn(
                       "w-2 h-2 rounded-full shrink-0",
-                      key.is_active ? "bg-emerald-500" : "bg-muted-foreground/30"
+                      key.is_active ? "bg-neon-green" : "bg-muted-foreground/30"
                     )} />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium text-foreground truncate">
@@ -556,7 +556,7 @@ export function AccountTab() {
                       <Badge variant="outline" className={cn(
                         "text-[9px] font-mono",
                         key.is_active
-                          ? "border-emerald-500/20 text-emerald-600 bg-emerald-500/5"
+                          ? "border-neon-green/20 text-neon-green bg-neon-green/5"
                           : "border-muted text-muted-foreground"
                       )}>
                         {key.is_active ? 'Active' : 'Inactive'}
@@ -590,12 +590,12 @@ export function AccountTab() {
             <CardContent>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                 {[
-                  { label: 'Memories Formed', value: discoveryStats.totalDiscovered, icon: Zap, color: 'text-amber-400' },
-                  { label: 'Total Mines', value: discoveryStats.totalMines, icon: Pickaxe, color: 'text-blue-400' },
-                  { label: 'Avg Score', value: discoveryStats.avgScore, icon: TrendingUp, color: 'text-emerald-400' },
-                  { label: 'Highest Score', value: discoveryStats.highestScore, icon: Trophy, color: 'text-yellow-400' },
-                  { label: 'Streak Days', value: discoveryStats.streakDays, icon: Flame, color: 'text-orange-400' },
-                  { label: 'Categories', value: Object.keys(discoveryStats.categoryCounts).length, icon: Map, color: 'text-cyan-400' },
+                  { label: 'Memories Formed', value: discoveryStats.totalDiscovered, icon: Zap, color: 'text-neon-amber' },
+                  { label: 'Total Mines', value: discoveryStats.totalMines, icon: Pickaxe, color: 'text-neon-blue' },
+                  { label: 'Avg Score', value: discoveryStats.avgScore, icon: TrendingUp, color: 'text-neon-green' },
+                  { label: 'Highest Score', value: discoveryStats.highestScore, icon: Trophy, color: 'text-neon-amber' },
+                  { label: 'Streak Days', value: discoveryStats.streakDays, icon: Flame, color: 'text-neon-amber' },
+                  { label: 'Categories', value: Object.keys(discoveryStats.categoryCounts).length, icon: Map, color: 'text-neon-cyan' },
                 ].map(stat => (
                   <div key={stat.label} className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-1.5 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                     <stat.icon className={cn("w-4 h-4 mx-auto", stat.color)} />
@@ -625,10 +625,10 @@ export function AccountTab() {
       {recentActivity.length > 0 && (
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.18 }}>
           <Card className="border-border/30 overflow-hidden relative">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/30 to-transparent" />
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <Activity className="w-4 h-4 text-cyan-500" />
+                <Activity className="w-4 h-4 text-neon-cyan" />
                 Recent API Activity
                 <span className="text-[10px] text-muted-foreground/50 font-mono ml-auto">last {recentActivity.length} calls</span>
               </CardTitle>
@@ -637,7 +637,7 @@ export function AccountTab() {
               <div className="space-y-1">
                 {recentActivity.map((event, i) => (
                   <div key={event.id} className="flex items-center gap-3 px-2.5 py-2 rounded-md hover:bg-muted/30 transition-colors group">
-                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/60 shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-neon-cyan/60 shrink-0" />
                     <div className="flex-1 min-w-0 flex items-center gap-2">
                       <Badge variant="outline" className="text-[9px] font-mono shrink-0 uppercase">
                         {event.module}
@@ -717,9 +717,9 @@ export function AccountTab() {
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Tier', value: tierLabel, icon: Crown, color: tierLabel === 'CREATOR' ? 'text-amber-500' : tierLabel === 'BUILDER' ? 'text-emerald-500' : 'text-primary' },
+                { label: 'Tier', value: tierLabel, icon: Crown, color: tierLabel === 'CREATOR' ? 'text-neon-amber' : tierLabel === 'BUILDER' ? 'text-neon-green' : 'text-primary' },
                 { label: 'Role', value: roleLabel, icon: Shield, color: roleLabel === 'ADMIN' ? 'text-destructive' : 'text-primary' },
-                { label: 'API Keys', value: `${apiKeys.filter(k => k.is_active).length} active`, icon: Key, color: 'text-violet-500' },
+                { label: 'API Keys', value: `${apiKeys.filter(k => k.is_active).length} active`, icon: Key, color: 'text-neon-purple' },
                 { label: 'Member Since', value: profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '—', icon: Calendar, color: 'text-muted-foreground' },
               ].map(stat => (
                 <div key={stat.label} className="p-3 rounded-lg bg-muted/30 border border-border/20 space-y-1 transition-all duration-300 hover:border-primary/15 hover:bg-muted/40">

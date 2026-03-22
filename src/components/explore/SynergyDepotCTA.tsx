@@ -78,16 +78,16 @@ export function SynergyDepotCTA() {
             <div className={cn(
               "h-full rounded-3xl overflow-hidden transition-all duration-500",
               "border border-border/50 bg-card/50 backdrop-blur-sm",
-              "hover:shadow-2xl hover:shadow-violet-500/10 hover:border-violet-500/30"
+              "hover:shadow-2xl hover:shadow-neon-purple/10 hover:border-neon-purple/30"
             )}>
               {/* Gradient accent bar */}
-              <div className="h-1.5 w-full bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500" />
+              <div className="h-1.5 w-full bg-gradient-to-r from-neon-purple via-neon-purple to-neon-magenta" />
               
               <div className="p-5 sm:p-8">
                 {/* Icon + Title */}
                 <div className="flex items-start gap-4 mb-6">
                   <motion.div 
-                    className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/20"
+                    className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neon-purple to-neon-purple flex items-center justify-center shadow-lg shadow-neon-purple/20"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -104,11 +104,11 @@ export function SynergyDepotCTA() {
                 </div>
 
                 {/* Stats */}
-                <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-violet-500/5 to-purple-500/5 border border-violet-500/10">
+                <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-neon-purple/5 to-neon-purple/5 border border-neon-purple/10">
                   <StatBadge value="300" label="Memories" />
-                  <div className="w-px bg-violet-500/20" />
+                  <div className="w-px bg-neon-purple/20" />
                   <StatBadge value="10" label="Entities" />
-                  <div className="w-px bg-violet-500/20" />
+                  <div className="w-px bg-neon-purple/20" />
                   <StatBadge value="6" label="Layers" />
                 </div>
 
@@ -121,7 +121,7 @@ export function SynergyDepotCTA() {
                     { icon: Zap, text: "Self-Scaling" },
                   ].map((f) => (
                     <div key={f.text} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-purple to-neon-purple flex items-center justify-center shrink-0">
                         <f.icon className="w-3.5 h-3.5 text-white" />
                       </div>
                       <span className="font-medium">{f.text}</span>
@@ -130,7 +130,7 @@ export function SynergyDepotCTA() {
                 </div>
 
                 {/* CTA */}
-                <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:opacity-90 shadow-lg shadow-violet-500/20 transition-all">
+                <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-neon-purple to-neon-purple text-white hover:opacity-90 shadow-lg shadow-neon-purple/20 transition-all">
                   <Link to="/store">
                     Explore Memories
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -151,16 +151,16 @@ export function SynergyDepotCTA() {
             <div className={cn(
               "h-full rounded-3xl overflow-hidden transition-all duration-500",
               "border border-border/50 bg-card/50 backdrop-blur-sm",
-              "hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-500/30"
+              "hover:shadow-2xl hover:shadow-neon-green/10 hover:border-neon-green/30"
             )}>
               {/* Gradient accent bar */}
-              <div className="h-1.5 w-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500" />
+              <div className="h-1.5 w-full bg-gradient-to-r from-neon-green via-neon-cyan to-neon-cyan" />
               
               <div className="p-5 sm:p-8">
                 {/* Icon + Title */}
                 <div className="flex items-start gap-4 mb-6">
                   <motion.div 
-                    className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20"
+                    className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center shadow-lg shadow-neon-green/20"
                     whileHover={{ scale: 1.1, rotate: -5 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -177,11 +177,11 @@ export function SynergyDepotCTA() {
                 </div>
 
                 {/* Stats */}
-                <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border border-emerald-500/10">
+                <div className="flex justify-around py-5 mb-6 rounded-2xl bg-gradient-to-br from-neon-green/5 to-neon-cyan/5 border border-neon-green/10">
                   <StatBadge value="525+" label="Capabilities" />
-                  <div className="w-px bg-emerald-500/20" />
+                  <div className="w-px bg-neon-green/20" />
                   <StatBadge value="7" label="Categories" />
-                  <div className="w-px bg-emerald-500/20" />
+                  <div className="w-px bg-neon-green/20" />
                   <StatBadge value="4" label="Tiers" />
                 </div>
 
@@ -194,7 +194,7 @@ export function SynergyDepotCTA() {
                     { icon: Workflow, text: "Automation Kit" },
                   ].map((f) => (
                     <div key={f.text} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center shrink-0">
                         <f.icon className="w-3.5 h-3.5 text-white" />
                       </div>
                       <span className="font-medium">{f.text}</span>
@@ -203,7 +203,7 @@ export function SynergyDepotCTA() {
                 </div>
 
                 {/* CTA */}
-                <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:opacity-90 shadow-lg shadow-emerald-500/20 transition-all">
+                <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-neon-green to-neon-cyan text-white hover:opacity-90 shadow-lg shadow-neon-green/20 transition-all">
                   <Link to="/store">
                     Browse Discoveries
                     <ArrowRight className="w-4 h-4 ml-2" />

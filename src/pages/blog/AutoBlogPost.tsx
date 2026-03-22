@@ -104,12 +104,12 @@ export default function AutoBlogPost() {
 
   const getCategoryColor = (category: string) => {
     const colors: Record<string, string> = {
-      changelog: 'border-green-500/50 text-green-400 bg-green-500/10',
-      insight: 'border-blue-500/50 text-blue-400 bg-blue-500/10',
-      release: 'border-purple-500/50 text-purple-400 bg-purple-500/10',
-      update: 'border-amber-500/50 text-amber-400 bg-amber-500/10',
-      internal: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10',
-      research: 'border-pink-500/50 text-pink-400 bg-pink-500/10',
+      changelog: 'border-neon-green/50 text-neon-green bg-neon-green/10',
+      insight: 'border-neon-blue/50 text-neon-blue bg-neon-blue/10',
+      release: 'border-neon-purple/50 text-neon-purple bg-neon-purple/10',
+      update: 'border-neon-amber/50 text-neon-amber bg-neon-amber/10',
+      internal: 'border-neon-cyan/50 text-neon-cyan bg-neon-cyan/10',
+      research: 'border-neon-magenta/50 text-neon-magenta bg-neon-magenta/10',
     };
     return colors[category] || 'border-primary/50 text-primary bg-primary/10';
   };

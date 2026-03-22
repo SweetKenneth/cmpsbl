@@ -41,25 +41,25 @@ interface ActivityFeedProps {
 const getEventIcon = (type: ActivityEvent['type']) => {
   switch (type) {
     case 'task_started': return <Clock className="w-4 h-4" />;
-    case 'task_completed': return <CheckCircle className="w-4 h-4 text-emerald-500" />;
-    case 'task_failed': return <XCircle className="w-4 h-4 text-red-500" />;
-    case 'insight': return <Lightbulb className="w-4 h-4 text-amber-500" />;
-    case 'collaboration': return <Zap className="w-4 h-4 text-purple-500" />;
-    case 'learning': return <Search className="w-4 h-4 text-blue-500" />;
-    case 'message': return <MessageSquare className="w-4 h-4 text-cyan-500" />;
+    case 'task_completed': return <CheckCircle className="w-4 h-4 text-neon-green" />;
+    case 'task_failed': return <XCircle className="w-4 h-4 text-destructive" />;
+    case 'insight': return <Lightbulb className="w-4 h-4 text-neon-amber" />;
+    case 'collaboration': return <Zap className="w-4 h-4 text-neon-purple" />;
+    case 'learning': return <Search className="w-4 h-4 text-neon-blue" />;
+    case 'message': return <MessageSquare className="w-4 h-4 text-neon-cyan" />;
     default: return <FileText className="w-4 h-4" />;
   }
 };
 
 const getEventColor = (type: ActivityEvent['type']) => {
   switch (type) {
-    case 'task_started': return 'border-l-amber-500';
-    case 'task_completed': return 'border-l-emerald-500';
-    case 'task_failed': return 'border-l-red-500';
-    case 'insight': return 'border-l-amber-400';
-    case 'collaboration': return 'border-l-purple-500';
-    case 'learning': return 'border-l-blue-500';
-    case 'message': return 'border-l-cyan-500';
+    case 'task_started': return 'border-l-neon-amber';
+    case 'task_completed': return 'border-l-neon-green';
+    case 'task_failed': return 'border-l-destructive';
+    case 'insight': return 'border-l-neon-amber';
+    case 'collaboration': return 'border-l-neon-purple';
+    case 'learning': return 'border-l-neon-blue';
+    case 'message': return 'border-l-neon-cyan';
     default: return 'border-l-muted';
   }
 };
@@ -216,7 +216,7 @@ export function LiveActivityDot({ active, className }: LiveDotProps) {
       <motion.div
         className={cn(
           'w-2 h-2 rounded-full',
-          active ? 'bg-emerald-500' : 'bg-muted'
+          active ? 'bg-neon-green' : 'bg-muted'
         )}
         animate={active ? { scale: [1, 1.2, 1], opacity: [1, 0.7, 1] } : {}}
         transition={{ repeat: Infinity, duration: 1.5 }}

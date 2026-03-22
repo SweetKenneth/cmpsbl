@@ -65,61 +65,61 @@ const MODULE_ICONS: Record<ModuleName, React.ElementType> = {
 
 const MODULE_COLORS: Record<ModuleName, string> = {
   core: 'from-slate-500/20 to-slate-600/5 border-slate-500/30',
-  brain: 'from-purple-500/20 to-purple-600/5 border-purple-500/30',
-  cortex: 'from-blue-500/20 to-blue-600/5 border-blue-500/30',
-  defense: 'from-red-500/20 to-red-600/5 border-red-500/30',
-  nexus: 'from-green-500/20 to-green-600/5 border-green-500/30',
-  vision: 'from-amber-500/20 to-amber-600/5 border-amber-500/30',
-  ripple: 'from-cyan-500/20 to-cyan-600/5 border-cyan-500/30',
-  access: 'from-orange-500/20 to-orange-600/5 border-orange-500/30',
-  inclusive: 'from-pink-500/20 to-pink-600/5 border-pink-500/30',
+  brain: 'from-neon-purple/20 to-neon-purple/5 border-neon-purple/30',
+  cortex: 'from-neon-blue/20 to-neon-blue/5 border-neon-blue/30',
+  defense: 'from-destructive/20 to-destructive/5 border-destructive/30',
+  nexus: 'from-neon-green/20 to-neon-green/5 border-neon-green/30',
+  vision: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
+  ripple: 'from-neon-cyan/20 to-neon-cyan/5 border-neon-cyan/30',
+  access: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
+  inclusive: 'from-neon-magenta/20 to-neon-magenta/5 border-neon-magenta/30',
   
   system: 'from-gray-500/20 to-gray-600/5 border-gray-500/30',
-  decode: 'from-indigo-500/20 to-indigo-600/5 border-indigo-500/30',
-  dream: 'from-violet-500/20 to-violet-600/5 border-violet-500/30',
-  integration: 'from-fuchsia-500/20 to-fuchsia-600/5 border-fuchsia-500/30',
-  encode: 'from-yellow-500/20 to-yellow-600/5 border-yellow-500/30',
+  decode: 'from-primary/20 to-primary/5 border-primary/30',
+  dream: 'from-neon-purple/20 to-neon-purple/5 border-neon-purple/30',
+  integration: 'from-neon-magenta/20 to-neon-magenta/5 border-neon-magenta/30',
+  encode: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
   memory: 'from-sky-500/20 to-sky-600/5 border-sky-500/30',
   relay: 'from-lime-500/20 to-lime-600/5 border-lime-500/30',
   audit: 'from-stone-500/20 to-stone-600/5 border-stone-500/30',
-  identity: 'from-rose-500/20 to-rose-600/5 border-rose-500/30',
-  economy: 'from-amber-600/20 to-amber-700/5 border-amber-600/30',
-  sandbox: 'from-teal-500/20 to-teal-600/5 border-teal-500/30',
-  nerve: 'from-cyan-600/20 to-cyan-700/5 border-cyan-600/30',
-  medic: 'from-red-400/20 to-red-500/5 border-red-400/30',
-  sovereign: 'from-yellow-600/20 to-yellow-700/5 border-yellow-600/30',
-  oracle: 'from-purple-600/20 to-purple-700/5 border-purple-600/30',
-  conscience: 'from-pink-600/20 to-pink-700/5 border-pink-600/30',
-  treaty: 'from-orange-600/20 to-orange-700/5 border-orange-600/30',
-  compass: 'from-green-600/20 to-green-700/5 border-green-600/30',
-  echo: 'from-blue-600/20 to-blue-700/5 border-blue-600/30',
-  reflex: 'from-red-600/20 to-red-700/5 border-red-600/30',
-  forge: 'from-amber-500/20 to-amber-600/5 border-amber-500/30',
-  lingua: 'from-indigo-600/20 to-indigo-700/5 border-indigo-600/30',
+  identity: 'from-neon-magenta/20 to-neon-magenta/5 border-neon-magenta/30',
+  economy: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
+  sandbox: 'from-neon-cyan/20 to-neon-cyan/5 border-neon-cyan/30',
+  nerve: 'from-neon-cyan/20 to-neon-cyan/5 border-neon-cyan/30',
+  medic: 'from-destructive/20 to-destructive/5 border-destructive/30',
+  sovereign: 'from-neon-amber/20 to-yellow-700/5 border-neon-amber/30',
+  oracle: 'from-neon-purple/20 to-neon-purple/5 border-neon-purple/30',
+  conscience: 'from-neon-magenta/20 to-neon-magenta/5 border-neon-magenta/30',
+  treaty: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
+  compass: 'from-neon-green/20 to-neon-green/5 border-neon-green/30',
+  echo: 'from-neon-blue/20 to-neon-blue/5 border-neon-blue/30',
+  reflex: 'from-destructive/20 to-destructive/5 border-destructive/30',
+  forge: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
+  lingua: 'from-primary/20 to-primary/5 border-primary/30',
   harvest: 'from-lime-600/20 to-lime-700/5 border-lime-600/30',
   phantom: 'from-gray-600/20 to-gray-700/5 border-gray-600/30',
-  evolution: 'from-emerald-600/20 to-emerald-700/5 border-emerald-600/30',
+  evolution: 'from-neon-green/20 to-neon-green/5 border-neon-green/30',
   shadow: 'from-slate-600/20 to-slate-700/5 border-slate-600/30',
-  immunity: 'from-rose-600/20 to-rose-700/5 border-rose-600/30',
-  intent: 'from-violet-600/20 to-violet-700/5 border-violet-600/30',
+  immunity: 'from-neon-magenta/20 to-neon-magenta/5 border-neon-magenta/30',
+  intent: 'from-neon-purple/20 to-neon-purple/5 border-neon-purple/30',
   governance: 'from-stone-600/20 to-stone-700/5 border-stone-600/30',
   engineer: 'from-sky-600/20 to-sky-700/5 border-sky-600/30',
 };
 
 const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
-  core: 'text-slate-400', brain: 'text-purple-400', cortex: 'text-blue-400',
-  defense: 'text-red-400', nexus: 'text-green-400', vision: 'text-amber-400',
-  ripple: 'text-cyan-400', access: 'text-orange-400', inclusive: 'text-pink-400',
-  system: 'text-gray-400', decode: 'text-indigo-400',
-  dream: 'text-violet-400', integration: 'text-fuchsia-400', encode: 'text-yellow-400',
+  core: 'text-slate-400', brain: 'text-neon-purple', cortex: 'text-neon-blue',
+  defense: 'text-destructive', nexus: 'text-neon-green', vision: 'text-neon-amber',
+  ripple: 'text-neon-cyan', access: 'text-neon-amber', inclusive: 'text-neon-magenta',
+  system: 'text-gray-400', decode: 'text-primary',
+  dream: 'text-neon-purple', integration: 'text-neon-magenta', encode: 'text-neon-amber',
   memory: 'text-sky-400', relay: 'text-lime-400', audit: 'text-stone-400',
-  identity: 'text-rose-400', economy: 'text-amber-500', sandbox: 'text-teal-400',
-  nerve: 'text-cyan-500', medic: 'text-red-300', sovereign: 'text-yellow-500',
-  oracle: 'text-purple-500', conscience: 'text-pink-500', treaty: 'text-orange-500',
-  compass: 'text-green-500', echo: 'text-blue-500', reflex: 'text-red-500',
-  forge: 'text-amber-400', lingua: 'text-indigo-500', harvest: 'text-lime-500',
-  phantom: 'text-gray-500', evolution: 'text-emerald-500', shadow: 'text-slate-500',
-  immunity: 'text-rose-500', intent: 'text-violet-500', governance: 'text-stone-500',
+  identity: 'text-neon-magenta', economy: 'text-neon-amber', sandbox: 'text-neon-cyan',
+  nerve: 'text-neon-cyan', medic: 'text-destructive', sovereign: 'text-neon-amber',
+  oracle: 'text-neon-purple', conscience: 'text-neon-magenta', treaty: 'text-neon-amber',
+  compass: 'text-neon-green', echo: 'text-neon-blue', reflex: 'text-destructive',
+  forge: 'text-neon-amber', lingua: 'text-primary', harvest: 'text-lime-500',
+  phantom: 'text-gray-500', evolution: 'text-neon-green', shadow: 'text-slate-500',
+  immunity: 'text-neon-magenta', intent: 'text-neon-purple', governance: 'text-stone-500',
   engineer: 'text-sky-500',
 };
 
@@ -146,7 +146,7 @@ function ObserverBackground() {
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-cyan-500/5 blur-3xl"
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-neon-cyan/5 blur-3xl"
         animate={{
           scale: [1.2, 1, 1.2],
           opacity: [0.4, 0.2, 0.4],
@@ -169,20 +169,20 @@ function CLMStatusBeacon() {
     <div className="relative">
       {/* Pulsing rings */}
       <motion.div
-        className="absolute inset-0 rounded-full border-2 border-green-500/50"
+        className="absolute inset-0 rounded-full border-2 border-neon-green/50"
         animate={{ scale: [1, 2], opacity: [0.5, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
       />
       <motion.div
-        className="absolute inset-0 rounded-full border-2 border-green-500/50"
+        className="absolute inset-0 rounded-full border-2 border-neon-green/50"
         animate={{ scale: [1, 2], opacity: [0.5, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
       />
       
       {/* Core beacon */}
-      <div className="relative w-4 h-4 rounded-full bg-green-500 shadow-[0_0_20px_rgba(34,197,94,0.6)]">
+      <div className="relative w-4 h-4 rounded-full bg-neon-green shadow-[0_0_20px_rgba(34,197,94,0.6)]">
         <motion.div
-          className="absolute inset-0 rounded-full bg-green-400"
+          className="absolute inset-0 rounded-full bg-neon-green"
           animate={{ opacity: [1, 0.5, 1] }}
           transition={{ duration: 1, repeat: Infinity }}
         />
@@ -380,7 +380,7 @@ function ObserverGate() {
             <CLMStatusBeacon />
             <div className="text-left">
               <p className="text-sm font-medium text-foreground">Constant Learning Mode</p>
-              <p className="text-xs text-green-400">Running 24/7 • Autonomous</p>
+              <p className="text-xs text-neon-green">Running 24/7 • Autonomous</p>
             </div>
           </div>
           
@@ -480,7 +480,7 @@ export default function SystemIntelligenceFeed() {
                     <Eye className="w-5 h-5 text-primary" />
                     <span className="font-bold text-lg">OBSERVER MODE</span>
                   </div>
-                  <Badge variant="outline" className="hidden sm:flex gap-1.5 border-green-500/30 text-green-400">
+                  <Badge variant="outline" className="hidden sm:flex gap-1.5 border-neon-green/30 text-neon-green">
                     <CLMStatusBeacon />
                     <span>CLM Active</span>
                   </Badge>

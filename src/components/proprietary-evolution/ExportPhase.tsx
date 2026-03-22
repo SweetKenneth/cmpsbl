@@ -423,7 +423,7 @@ export function ExportPhase() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-amber-500" />
+              <AlertTriangle className="w-5 h-5 text-neon-amber" />
               Export & Retire
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2">
@@ -449,13 +449,13 @@ export function ExportPhase() {
 
       {/* Export Result */}
       {exportResult && (
-        <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-green-500/10 border border-green-500/20">
-          <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+        <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-neon-green/10 border border-neon-green/20">
+          <CheckCircle2 className="w-4 h-4 text-neon-green shrink-0" />
           <div className="flex-1">
-            <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+            <p className="text-xs text-neon-green dark:text-neon-green font-medium">
               Pack downloaded — {exportResult.count} capabilities exported & retired
             </p>
-            <p className="text-[10px] text-green-600/70 dark:text-green-400/70 font-mono truncate">
+            <p className="text-[10px] text-neon-green/70 dark:text-neon-green/70 font-mono truncate">
               Pack ID: {exportResult.packId.slice(0, 8)}…
             </p>
           </div>
@@ -483,18 +483,18 @@ export function ExportPhase() {
                 <span className="text-xs text-foreground font-medium truncate flex-1">{c.name}</span>
                 <span className={cn(
                   "text-[10px] font-mono font-bold uppercase",
-                  c.cjpiScore >= 94 ? "text-amber-400" :
-                  c.cjpiScore >= 90 ? "text-orange-400" :
-                  c.cjpiScore >= 80 ? "text-blue-400" :
+                  c.cjpiScore >= 94 ? "text-neon-amber" :
+                  c.cjpiScore >= 90 ? "text-neon-amber" :
+                  c.cjpiScore >= 80 ? "text-neon-blue" :
                   "text-muted-foreground"
                 )}>
                   {c.tier}
                 </span>
                 <span className={cn(
                   "text-[10px] font-mono tabular-nums",
-                  c.cjpiScore >= 94 ? "text-amber-400" :
-                  c.cjpiScore >= 90 ? "text-orange-400" :
-                  c.cjpiScore >= 80 ? "text-blue-400" :
+                  c.cjpiScore >= 94 ? "text-neon-amber" :
+                  c.cjpiScore >= 90 ? "text-neon-amber" :
+                  c.cjpiScore >= 80 ? "text-neon-blue" :
                   "text-muted-foreground"
                 )}>
                   CJPI {c.cjpiScore}

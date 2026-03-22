@@ -25,7 +25,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
   return (
     <section className="relative overflow-hidden">
       {/* Immersive background with richer gradients */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-violet-500/5" />
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-neon-purple/5" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.15),transparent_50%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,hsl(280_100%_60%/0.08),transparent_50%)]" />
       
@@ -40,7 +40,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div 
-          className="absolute top-1/2 right-[15%] w-96 h-96 bg-violet-500/15 rounded-full blur-[120px]"
+          className="absolute top-1/2 right-[15%] w-96 h-96 bg-neon-purple/15 rounded-full blur-[120px]"
           animate={{ 
             scale: [1.2, 1, 1.2],
             opacity: [0.4, 0.2, 0.4],
@@ -48,7 +48,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div 
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-cyan-500/10 rounded-full blur-[80px]"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-neon-cyan/10 rounded-full blur-[80px]"
           animate={{ 
             opacity: [0.2, 0.4, 0.2],
           }}
@@ -67,15 +67,15 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           className="flex flex-wrap justify-center gap-2 mb-6"
         >
           <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-primary/30 shadow-lg shadow-primary/5">
-            <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+            <Star className="w-3.5 h-3.5 text-neon-amber fill-neon-amber" />
             <span className="text-xs font-medium">Trusted by 500+ developers</span>
           </Badge>
-          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-emerald-500/30 shadow-lg shadow-emerald-500/5">
-            <Award className="w-3.5 h-3.5 text-emerald-500" />
+          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-neon-green/30 shadow-lg shadow-neon-green/5">
+            <Award className="w-3.5 h-3.5 text-neon-green" />
             <span className="text-xs font-medium">Zero Drift Guarantee</span>
           </Badge>
-          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-violet-500/30 shadow-lg shadow-violet-500/5 hidden sm:flex">
-            <Rocket className="w-3.5 h-3.5 text-violet-500" />
+          <Badge variant="outline" className="gap-1.5 px-3 py-1.5 bg-background/50 backdrop-blur-sm border-neon-purple/30 shadow-lg shadow-neon-purple/5 hidden sm:flex">
+            <Rocket className="w-3.5 h-3.5 text-neon-purple" />
             <span className="text-xs font-medium">{TEMPLATES.length}+ Templates</span>
           </Badge>
         </motion.div>
@@ -96,7 +96,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
             {TEMPLATES.length}+ production-ready cognitive templates with built-in memory,
             drift prevention & self-improvement. 
             <span className="block mt-1 font-medium text-foreground">
-              From <span className="text-primary">$19</span> • Bundles from <span className="text-emerald-500">${(BUNDLES[2]?.bundlePrice / 100 || 95).toFixed(0)}</span>
+              From <span className="text-primary">$19</span> • Bundles from <span className="text-neon-green">${(BUNDLES[2]?.bundlePrice / 100 || 95).toFixed(0)}</span>
             </span>
           </p>
         </motion.div>

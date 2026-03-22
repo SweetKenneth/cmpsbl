@@ -56,7 +56,7 @@ function MetricBar({ label, value, max, unit, invert }: { label: string; value: 
     <div className="space-y-0.5">
       <div className="flex justify-between text-[9px]">
         <span className="text-muted-foreground">{label}</span>
-        <span className={cn("font-mono", isGood ? "text-green-400" : "text-amber-400")}>
+        <span className={cn("font-mono", isGood ? "text-neon-green" : "text-neon-amber")}>
           {typeof value === 'number' ? value.toFixed(2) : '—'}{unit}
         </span>
       </div>
@@ -75,7 +75,7 @@ function VariantCard({ variant, isWinner, otherMetrics }: {
     <div className={cn(
       "rounded-lg border p-3 space-y-2 transition-all",
       isWinner
-        ? "border-green-500/40 bg-green-500/5 ring-1 ring-green-500/20"
+        ? "border-neon-green/40 bg-neon-green/5 ring-1 ring-neon-green/20"
         : "border-border/30 bg-card/30",
       variant.status === 'failed' && "border-destructive/30 bg-destructive/5 opacity-60"
     )}>
@@ -83,18 +83,18 @@ function VariantCard({ variant, isWinner, otherMetrics }: {
         <div className="flex items-center gap-1.5">
           <Badge variant="outline" className={cn(
             "text-[9px] font-mono px-1.5",
-            variant.label === 'A' ? "border-blue-500/30 text-blue-400" : "border-purple-500/30 text-purple-400"
+            variant.label === 'A' ? "border-neon-blue/30 text-neon-blue" : "border-neon-purple/30 text-neon-purple"
           )}>
             VARIANT {variant.label}
           </Badge>
           {isWinner && (
-            <Trophy className="w-3 h-3 text-amber-400" />
+            <Trophy className="w-3 h-3 text-neon-amber" />
           )}
         </div>
         <Badge variant="outline" className={cn(
           "text-[8px] font-mono",
-          variant.status === 'completed' ? "border-green-500/30 text-green-400" :
-          variant.status === 'running' ? "border-amber-500/30 text-amber-400" :
+          variant.status === 'completed' ? "border-neon-green/30 text-neon-green" :
+          variant.status === 'running' ? "border-neon-amber/30 text-neon-amber" :
           variant.status === 'failed' ? "border-destructive/30 text-destructive" :
           "border-muted-foreground/30 text-muted-foreground"
         )}>
@@ -115,7 +115,7 @@ function VariantCard({ variant, isWinner, otherMetrics }: {
           <div className="flex items-center justify-between text-[9px] pt-1">
             <span className="text-muted-foreground">Safety</span>
             {m.safety_pass ? (
-              <span className="text-green-400 flex items-center gap-0.5"><Check className="w-2.5 h-2.5" /> PASS</span>
+              <span className="text-neon-green flex items-center gap-0.5"><Check className="w-2.5 h-2.5" /> PASS</span>
             ) : (
               <span className="text-destructive flex items-center gap-0.5"><X className="w-2.5 h-2.5" /> FAIL</span>
             )}
@@ -137,13 +137,13 @@ function VariantCard({ variant, isWinner, otherMetrics }: {
                   const eDelta = otherMetrics.error_rate - m.error_rate;
                   return (
                     <>
-                      <span className={cn("font-mono", qDelta > 0 ? "text-green-400" : qDelta < 0 ? "text-red-400" : "text-muted-foreground")}>
+                      <span className={cn("font-mono", qDelta > 0 ? "text-neon-green" : qDelta < 0 ? "text-destructive" : "text-muted-foreground")}>
                         Q: {qDelta > 0 ? '+' : ''}{(qDelta * 100).toFixed(1)}%
                       </span>
-                      <span className={cn("font-mono", lDelta > 0 ? "text-green-400" : lDelta < 0 ? "text-red-400" : "text-muted-foreground")}>
+                      <span className={cn("font-mono", lDelta > 0 ? "text-neon-green" : lDelta < 0 ? "text-destructive" : "text-muted-foreground")}>
                         L: {lDelta > 0 ? '+' : ''}{lDelta.toFixed(0)}ms
                       </span>
-                      <span className={cn("font-mono", eDelta > 0 ? "text-green-400" : eDelta < 0 ? "text-red-400" : "text-muted-foreground")}>
+                      <span className={cn("font-mono", eDelta > 0 ? "text-neon-green" : eDelta < 0 ? "text-destructive" : "text-muted-foreground")}>
                         E: {eDelta > 0 ? '+' : ''}{(eDelta * 100).toFixed(2)}%
                       </span>
                     </>
@@ -182,9 +182,9 @@ export function ShadowABPanel({ experiments, onSelectWinner, onCancel }: ShadowA
             </div>
             <Badge variant="outline" className={cn(
               "text-[8px] font-mono",
-              exp.status === 'decided' ? "border-green-500/30 text-green-400" :
-              exp.status === 'shadowing' ? "border-amber-500/30 text-amber-400 animate-pulse" :
-              exp.status === 'comparing' ? "border-blue-500/30 text-blue-400" :
+              exp.status === 'decided' ? "border-neon-green/30 text-neon-green" :
+              exp.status === 'shadowing' ? "border-neon-amber/30 text-neon-amber animate-pulse" :
+              exp.status === 'comparing' ? "border-neon-blue/30 text-neon-blue" :
               "border-muted-foreground/30"
             )}>
               {exp.status.toUpperCase()}
@@ -226,8 +226,8 @@ export function ShadowABPanel({ experiments, onSelectWinner, onCancel }: ShadowA
 
           {/* Winner announcement */}
           {exp.winner && exp.winnerReason && (
-            <div className="rounded-md bg-green-500/5 border border-green-500/20 p-2">
-              <p className="text-[9px] font-semibold text-green-400 flex items-center gap-1">
+            <div className="rounded-md bg-neon-green/5 border border-neon-green/20 p-2">
+              <p className="text-[9px] font-semibold text-neon-green flex items-center gap-1">
                 <Trophy className="w-3 h-3" /> Variant {exp.winner} selected as implementation template
               </p>
               <p className="text-[8px] text-muted-foreground/70 mt-0.5">{exp.winnerReason}</p>
@@ -240,7 +240,7 @@ export function ShadowABPanel({ experiments, onSelectWinner, onCancel }: ShadowA
               <Button
                 size="sm"
                 variant="outline"
-                className="h-6 text-[9px] flex-1 border-blue-500/30 text-blue-400 hover:bg-blue-500/10"
+                className="h-6 text-[9px] flex-1 border-neon-blue/30 text-neon-blue hover:bg-neon-blue/10"
                 onClick={() => onSelectWinner(exp.id, 'A')}
               >
                 Use Variant A
@@ -248,7 +248,7 @@ export function ShadowABPanel({ experiments, onSelectWinner, onCancel }: ShadowA
               <Button
                 size="sm"
                 variant="outline"
-                className="h-6 text-[9px] flex-1 border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
+                className="h-6 text-[9px] flex-1 border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10"
                 onClick={() => onSelectWinner(exp.id, 'B')}
               >
                 Use Variant B

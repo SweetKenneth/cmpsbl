@@ -20,49 +20,49 @@ interface MatrixIntegrityPanelProps {
 }
 
 const SECTOR_COLORS: Record<MatrixSector, string> = {
-  core: 'text-orange-400',
-  system: 'text-yellow-400',
-  ccr: 'text-purple-400',
-  ocg: 'text-cyan-400',
-  execution: 'text-blue-400',
-  esz: 'text-amber-400',
-  epz: 'text-teal-400',
-  emz: 'text-indigo-400',
-  csz: 'text-violet-400',
-  field: 'text-emerald-400',
-  plane: 'text-red-400',
-  shell: 'text-rose-400',
+  core: 'text-neon-amber',
+  system: 'text-neon-amber',
+  ccr: 'text-neon-purple',
+  ocg: 'text-neon-cyan',
+  execution: 'text-neon-blue',
+  esz: 'text-neon-amber',
+  epz: 'text-neon-cyan',
+  emz: 'text-primary',
+  csz: 'text-neon-purple',
+  field: 'text-neon-green',
+  plane: 'text-destructive',
+  shell: 'text-neon-magenta',
 };
 
 const SECTOR_BG: Record<MatrixSector, string> = {
-  core: 'bg-orange-500/10 border-orange-500/20',
-  system: 'bg-yellow-500/10 border-yellow-500/20',
-  ccr: 'bg-purple-500/10 border-purple-500/20',
-  ocg: 'bg-cyan-500/10 border-cyan-500/20',
-  execution: 'bg-blue-500/10 border-blue-500/20',
-  esz: 'bg-amber-500/10 border-amber-500/20',
-  epz: 'bg-teal-500/10 border-teal-500/20',
-  emz: 'bg-indigo-500/10 border-indigo-500/20',
-  csz: 'bg-violet-500/10 border-violet-500/20',
-  field: 'bg-emerald-500/10 border-emerald-500/20',
-  plane: 'bg-red-500/10 border-red-500/20',
-  shell: 'bg-rose-500/10 border-rose-500/20',
+  core: 'bg-neon-amber/10 border-neon-amber/20',
+  system: 'bg-neon-amber/10 border-neon-amber/20',
+  ccr: 'bg-neon-purple/10 border-neon-purple/20',
+  ocg: 'bg-neon-cyan/10 border-neon-cyan/20',
+  execution: 'bg-neon-blue/10 border-neon-blue/20',
+  esz: 'bg-neon-amber/10 border-neon-amber/20',
+  epz: 'bg-neon-cyan/10 border-neon-cyan/20',
+  emz: 'bg-primary/10 border-primary/20',
+  csz: 'bg-neon-purple/10 border-neon-purple/20',
+  field: 'bg-neon-green/10 border-neon-green/20',
+  plane: 'bg-destructive/10 border-destructive/20',
+  shell: 'bg-neon-magenta/10 border-neon-magenta/20',
 };
 
 export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
   const [expanded, setExpanded] = useState(false);
 
   const statusColor = report.isCritical
-    ? 'text-red-400'
+    ? 'text-destructive'
     : report.operational < 80
-      ? 'text-amber-400'
-      : 'text-emerald-400';
+      ? 'text-neon-amber'
+      : 'text-neon-green';
 
   const statusBg = report.isCritical
-    ? 'bg-red-500/10 border-red-500/30'
+    ? 'bg-destructive/10 border-destructive/30'
     : report.operational < 80
-      ? 'bg-amber-500/10 border-amber-500/30'
-      : 'bg-emerald-500/10 border-emerald-500/30';
+      ? 'bg-neon-amber/10 border-neon-amber/30'
+      : 'bg-neon-green/10 border-neon-green/30';
 
   return (
     <motion.div
@@ -75,8 +75,8 @@ export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
       <div className="p-4 sm:p-5">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-emerald-400" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-green/20 to-neon-cyan/20 border border-neon-green/30 flex items-center justify-center">
+              <Activity className="w-4 h-4 text-neon-green" />
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">Stream Integrity</h3>
@@ -150,7 +150,7 @@ export function MatrixIntegrityPanel({ report }: MatrixIntegrityPanelProps) {
               className="overflow-hidden"
             >
               <div className="mt-2 p-3 rounded-lg bg-muted/10 border border-border/20">
-                <code className="text-[10px] text-cyan-400/80 font-mono block leading-relaxed">
+                <code className="text-[10px] text-neon-cyan/80 font-mono block leading-relaxed">
                   {getIntegrityEquation()}
                 </code>
                 <div className="mt-2 text-[9px] text-muted-foreground/50 font-mono space-y-0.5">

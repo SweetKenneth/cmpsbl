@@ -38,7 +38,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <Badge className="mb-4 gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-lg shadow-amber-500/25">
+          <Badge className="mb-4 gap-1.5 bg-gradient-to-r from-neon-amber to-neon-amber text-white border-0 shadow-lg shadow-neon-amber/25">
             <Crown className="w-3.5 h-3.5" />
             Premium Products
           </Badge>
@@ -61,7 +61,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
           >
             <Card className="relative overflow-hidden h-full group border-2 border-primary/30 hover:border-primary/60 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20">
               {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-violet-500/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-neon-purple/10 pointer-events-none" />
               
               {/* Animated glow on hover */}
               <motion.div 
@@ -75,12 +75,12 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <motion.div 
-                    className="p-4 rounded-2xl bg-gradient-to-br from-primary to-violet-600 shadow-xl shadow-primary/30"
+                    className="p-4 rounded-2xl bg-gradient-to-br from-primary to-neon-purple shadow-xl shadow-primary/30"
                     whileHover={{ scale: 1.05, rotate: 3 }}
                   >
                     <Cpu className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                   </motion.div>
-                  <Badge className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white border-0 shadow-lg gap-1">
+                  <Badge className="bg-gradient-to-r from-neon-green to-neon-cyan text-white border-0 shadow-lg gap-1">
                     <FileText className="w-3 h-3" />
                     Enterprise Licensing
                   </Badge>
@@ -96,10 +96,10 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                 {/* Features grid with hover effects */}
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { icon: Brain, label: '3-Tier Memory', desc: 'Never forgets', color: 'text-violet-500' },
-                    { icon: Shield, label: 'Defense System', desc: 'Anti-drift', color: 'text-rose-500' },
-                    { icon: Moon, label: 'Dream Cycles', desc: 'Self-improve', color: 'text-purple-500' },
-                    { icon: Zap, label: 'AI Routing', desc: 'Multi-provider', color: 'text-emerald-500' },
+                    { icon: Brain, label: '3-Tier Memory', desc: 'Never forgets', color: 'text-neon-purple' },
+                    { icon: Shield, label: 'Defense System', desc: 'Anti-drift', color: 'text-neon-magenta' },
+                    { icon: Moon, label: 'Dream Cycles', desc: 'Self-improve', color: 'text-neon-purple' },
+                    { icon: Zap, label: 'AI Routing', desc: 'Multi-provider', color: 'text-neon-green' },
                   ].map(({ icon: Icon, label, desc, color }) => (
                     <motion.div 
                       key={label} 
@@ -125,7 +125,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                     { text: 'Strategic License — Custom', highlight: true },
                   ].map(({ text, highlight }) => (
                     <div key={text} className="flex items-center gap-2 text-sm">
-                      <Check className={`w-4 h-4 shrink-0 ${highlight ? 'text-emerald-500' : 'text-muted-foreground'}`} />
+                      <Check className={`w-4 h-4 shrink-0 ${highlight ? 'text-neon-green' : 'text-muted-foreground'}`} />
                       <span className={highlight ? 'font-medium' : ''}>{text}</span>
                     </div>
                   ))}
@@ -177,20 +177,20 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
             transition={{ duration: 0.5 }}
             whileHover={{ y: -4 }}
           >
-            <Card className="relative overflow-hidden h-full group border-2 border-orange-500/30 hover:border-orange-500/60 transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/20">
+            <Card className="relative overflow-hidden h-full group border-2 border-neon-amber/30 hover:border-neon-amber/60 transition-all duration-300 hover:shadow-2xl hover:shadow-neon-amber/20">
               {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/15 via-orange-500/5 to-amber-500/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-amber/15 via-neon-amber/5 to-neon-amber/10 pointer-events-none" />
               
               <CardContent className="p-6 sm:p-8 relative">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                   <motion.div 
-                    className="p-4 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-600 shadow-xl shadow-orange-500/30"
+                    className="p-4 rounded-2xl bg-gradient-to-br from-neon-amber to-neon-amber shadow-xl shadow-neon-amber/30"
                     whileHover={{ scale: 1.05, rotate: -3 }}
                   >
                     <Globe className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                   </motion.div>
-                  <Badge variant="outline" className="border-orange-500/50 text-orange-600 bg-orange-500/5 gap-1">
+                  <Badge variant="outline" className="border-neon-amber/50 text-neon-amber bg-neon-amber/5 gap-1">
                     <Layers className="w-3 h-3" />
                     Game Dev
                   </Badge>
@@ -206,14 +206,14 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                 {/* Features grid */}
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {[
-                    { icon: Brain, label: 'NPC Memory', desc: 'Remember players', color: 'text-violet-500' },
-                    { icon: Moon, label: 'Dream Cycles', desc: 'NPCs evolve', color: 'text-purple-500' },
-                    { icon: Globe, label: 'World State', desc: 'Persistent', color: 'text-orange-500' },
-                    { icon: Users, label: 'Multi-Agent', desc: 'Coordinated', color: 'text-cyan-500' },
+                    { icon: Brain, label: 'NPC Memory', desc: 'Remember players', color: 'text-neon-purple' },
+                    { icon: Moon, label: 'Dream Cycles', desc: 'NPCs evolve', color: 'text-neon-purple' },
+                    { icon: Globe, label: 'World State', desc: 'Persistent', color: 'text-neon-amber' },
+                    { icon: Users, label: 'Multi-Agent', desc: 'Coordinated', color: 'text-neon-cyan' },
                   ].map(({ icon: Icon, label, desc, color }) => (
                     <motion.div 
                       key={label} 
-                      className="flex items-start gap-2 p-2.5 rounded-lg bg-background/50 border border-border/50 hover:border-orange-500/30 transition-colors"
+                      className="flex items-start gap-2 p-2.5 rounded-lg bg-background/50 border border-border/50 hover:border-neon-amber/30 transition-colors"
                       whileHover={{ scale: 1.02 }}
                     >
                       <Icon className={`w-4 h-4 ${color} mt-0.5 shrink-0`} />
@@ -234,7 +234,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                     { text: 'Example scenes', highlight: false },
                   ].map(({ text, highlight }) => (
                     <div key={text} className="flex items-center gap-2 text-sm">
-                      <Check className={`w-4 h-4 shrink-0 ${highlight ? 'text-emerald-500' : 'text-muted-foreground'}`} />
+                      <Check className={`w-4 h-4 shrink-0 ${highlight ? 'text-neon-green' : 'text-muted-foreground'}`} />
                       <span className={highlight ? 'font-medium' : ''}>{text}</span>
                     </div>
                   ))}
@@ -245,7 +245,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                   <div>
                     <div className="flex items-baseline gap-2">
                       <motion.span 
-                        className="text-4xl sm:text-5xl font-black text-orange-500"
+                        className="text-4xl sm:text-5xl font-black text-neon-amber"
                         initial={{ scale: 0.9 }}
                         whileInView={{ scale: 1 }}
                         viewport={{ once: true }}
@@ -264,7 +264,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                       disabled={isLoading} 
                       size="lg"
                       variant="outline"
-                      className="w-full sm:w-auto gap-2 border-orange-500/50 text-orange-600 hover:bg-orange-500/10 hover:border-orange-500"
+                      className="w-full sm:w-auto gap-2 border-neon-amber/50 text-neon-amber hover:bg-neon-amber/10 hover:border-neon-amber"
                     >
                       <ShoppingCart className="w-5 h-5" />
                       Buy Now
@@ -286,9 +286,9 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
           transition={{ delay: 0.3 }}
         >
           {[
-            { icon: Award, label: 'Zero Drift Guarantee', color: 'text-emerald-500' },
+            { icon: Award, label: 'Zero Drift Guarantee', color: 'text-neon-green' },
             { icon: Users, label: '500+ Developers', color: 'text-primary' },
-            { icon: TrendingUp, label: 'Enterprise Ready', color: 'text-violet-500' },
+            { icon: TrendingUp, label: 'Enterprise Ready', color: 'text-neon-purple' },
           ].map(({ icon: TrustIcon, label, color }) => (
             <div key={label} className="flex items-center gap-2 text-sm text-muted-foreground">
               <TrustIcon className={`w-4 h-4 ${color}`} />

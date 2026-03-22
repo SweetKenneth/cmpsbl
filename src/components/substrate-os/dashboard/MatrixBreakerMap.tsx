@@ -19,26 +19,26 @@ interface MatrixBreakerMapProps {
 }
 
 const BREAKER_STYLES: Record<BreakerState, { color: string; bg: string; icon: typeof CheckCircle2; label: string }> = {
-  closed: { color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', icon: CheckCircle2, label: 'CLOSED' },
-  'half-open': { color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20', icon: AlertTriangle, label: 'HALF-OPEN' },
-  open: { color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', icon: Zap, label: 'OPEN' },
-  rerouting: { color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20', icon: RefreshCw, label: 'REROUTING' },
+  closed: { color: 'text-neon-green', bg: 'bg-neon-green/10 border-neon-green/20', icon: CheckCircle2, label: 'CLOSED' },
+  'half-open': { color: 'text-neon-amber', bg: 'bg-neon-amber/10 border-neon-amber/20', icon: AlertTriangle, label: 'HALF-OPEN' },
+  open: { color: 'text-destructive', bg: 'bg-destructive/10 border-destructive/20', icon: Zap, label: 'OPEN' },
+  rerouting: { color: 'text-neon-blue', bg: 'bg-neon-blue/10 border-neon-blue/20', icon: RefreshCw, label: 'REROUTING' },
 };
 
 const SECTOR_ORDER: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
 const SECTOR_COLORS: Record<MatrixSector, string> = {
-  core: 'border-orange-500/30',
-  system: 'border-yellow-500/30',
-  ccr: 'border-purple-500/30',
-  ocg: 'border-cyan-500/30',
-  execution: 'border-blue-500/30',
-  esz: 'border-amber-500/30',
-  epz: 'border-teal-500/30',
-  emz: 'border-indigo-500/30',
-  csz: 'border-violet-500/30',
-  field: 'border-emerald-500/30',
-  plane: 'border-red-500/30',
-  shell: 'border-rose-500/30',
+  core: 'border-neon-amber/30',
+  system: 'border-neon-amber/30',
+  ccr: 'border-neon-purple/30',
+  ocg: 'border-neon-cyan/30',
+  execution: 'border-neon-blue/30',
+  esz: 'border-neon-amber/30',
+  epz: 'border-neon-cyan/30',
+  emz: 'border-primary/30',
+  csz: 'border-neon-purple/30',
+  field: 'border-neon-green/30',
+  plane: 'border-destructive/30',
+  shell: 'border-neon-magenta/30',
 };
 
 export function MatrixBreakerMap({ nodes }: MatrixBreakerMapProps) {
@@ -55,8 +55,8 @@ export function MatrixBreakerMap({ nodes }: MatrixBreakerMapProps) {
       transition={{ duration: 0.4, delay: 0.2 }}
     >
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-500/20 to-amber-500/20 border border-red-500/30 flex items-center justify-center">
-          <Shield className="w-4 h-4 text-red-400" />
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-destructive/20 to-neon-amber/20 border border-destructive/30 flex items-center justify-center">
+          <Shield className="w-4 h-4 text-destructive" />
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Stream Integrity Map</h3>

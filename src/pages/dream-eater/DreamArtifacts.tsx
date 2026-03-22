@@ -28,18 +28,18 @@ interface Artifact {
 }
 
 const VISUAL_SEED_GRADIENTS: Record<string, string> = {
-  crystalline_void: 'from-cyan-500/20 via-blue-500/10 to-transparent',
-  neural_storm: 'from-violet-500/20 via-purple-500/10 to-transparent',
-  temporal_fracture: 'from-amber-500/20 via-orange-500/10 to-transparent',
+  crystalline_void: 'from-neon-cyan/20 via-neon-blue/10 to-transparent',
+  neural_storm: 'from-neon-purple/20 via-neon-purple/10 to-transparent',
+  temporal_fracture: 'from-neon-amber/20 via-neon-amber/10 to-transparent',
   obsidian_depths: 'from-gray-500/20 via-slate-500/10 to-transparent',
-  aurora_membrane: 'from-emerald-500/20 via-teal-500/10 to-transparent',
-  quantum_fog: 'from-indigo-500/20 via-violet-500/10 to-transparent',
-  spectral_lattice: 'from-pink-500/20 via-rose-500/10 to-transparent',
-  void_bloom: 'from-purple-500/20 via-indigo-500/10 to-transparent',
-  memory_cascade: 'from-blue-500/20 via-cyan-500/10 to-transparent',
-  dream_sediment: 'from-teal-500/20 via-emerald-500/10 to-transparent',
-  nightmare_residue: 'from-red-500/20 via-rose-500/10 to-transparent',
-  cognitive_aurora: 'from-fuchsia-500/20 via-violet-500/10 to-transparent',
+  aurora_membrane: 'from-neon-green/20 via-neon-cyan/10 to-transparent',
+  quantum_fog: 'from-primary/20 via-neon-purple/10 to-transparent',
+  spectral_lattice: 'from-neon-magenta/20 via-neon-magenta/10 to-transparent',
+  void_bloom: 'from-neon-purple/20 via-primary/10 to-transparent',
+  memory_cascade: 'from-neon-blue/20 via-neon-cyan/10 to-transparent',
+  dream_sediment: 'from-neon-cyan/20 via-neon-green/10 to-transparent',
+  nightmare_residue: 'from-destructive/20 via-neon-magenta/10 to-transparent',
+  cognitive_aurora: 'from-neon-magenta/20 via-neon-purple/10 to-transparent',
 };
 
 const DreamArtifacts = () => {
@@ -70,12 +70,12 @@ const DreamArtifacts = () => {
 
   const getMoodBorder = (mood: string) => {
     const borders: Record<string, string> = {
-      calm: 'border-emerald-500/30',
-      curious: 'border-violet-500/30',
-      agitated: 'border-orange-500/30',
-      fractured: 'border-red-500/30',
+      calm: 'border-neon-green/30',
+      curious: 'border-neon-purple/30',
+      agitated: 'border-neon-amber/30',
+      fractured: 'border-destructive/30',
       dormant: 'border-gray-500/30',
-      feral: 'border-rose-500/30',
+      feral: 'border-neon-magenta/30',
     };
     return borders[mood] || 'border-border/30';
   };
@@ -89,7 +89,7 @@ const DreamArtifacts = () => {
 
       <PublicNav />
 
-      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-violet-950/20">
+      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-neon-purple/20">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           {/* Header */}
           <motion.div
@@ -98,8 +98,8 @@ const DreamArtifacts = () => {
             className="text-center mb-12"
           >
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Gem className="w-8 h-8 text-violet-400" />
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
+              <Gem className="w-8 h-8 text-neon-purple" />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-purple to-primary bg-clip-text text-transparent">
                 Dream Artifacts
               </h1>
             </div>
@@ -112,7 +112,7 @@ const DreamArtifacts = () => {
           {/* Artifacts Grid */}
           {loading ? (
             <div className="text-center py-12">
-              <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto" />
+              <div className="w-8 h-8 border-2 border-neon-purple border-t-transparent rounded-full animate-spin mx-auto" />
               <p className="text-muted-foreground mt-4">Crystallizing artifacts...</p>
             </div>
           ) : artifacts.length === 0 ? (
@@ -160,11 +160,11 @@ const DreamArtifacts = () => {
                             })}</span>
                           </div>
                           <div className="flex items-center gap-3 text-sm">
-                            <span className="flex items-center gap-1 text-violet-400">
+                            <span className="flex items-center gap-1 text-neon-purple">
                               <Moon className="w-3 h-3" />
                               {artifact.dreams_compressed}
                             </span>
-                            <span className="flex items-center gap-1 text-rose-400">
+                            <span className="flex items-center gap-1 text-neon-magenta">
                               <Flame className="w-3 h-3" />
                               {artifact.nightmares_compressed}
                             </span>

@@ -19,9 +19,9 @@ interface ConversationStreamProps {
 }
 
 const ROLE_CONFIG: Record<string, { icon: React.ElementType; label: string; color: string; bg: string }> = {
-  user: { icon: User, label: 'USER', color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20' },
-  decode: { icon: Cpu, label: 'DECODE', color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20' },
-  encode: { icon: Bot, label: 'ENCODE', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+  user: { icon: User, label: 'USER', color: 'text-neon-blue', bg: 'bg-neon-blue/10 border-neon-blue/20' },
+  decode: { icon: Cpu, label: 'DECODE', color: 'text-neon-amber', bg: 'bg-neon-amber/10 border-neon-amber/20' },
+  encode: { icon: Bot, label: 'ENCODE', color: 'text-neon-green', bg: 'bg-neon-green/10 border-neon-green/20' },
   system: { icon: Shield, label: 'SYSTEM', color: 'text-muted-foreground', bg: 'bg-muted/30 border-border/20' },
 };
 
@@ -118,9 +118,9 @@ export function ConversationStream({ messages, plans, systemMessages }: Conversa
             info: Layers,
           };
           const colorMap: Record<string, string> = {
-            success: 'text-green-500',
+            success: 'text-neon-green',
             error: 'text-destructive',
-            warning: 'text-yellow-500',
+            warning: 'text-neon-amber',
             info: 'text-muted-foreground',
           };
           const SysIcon = iconMap[sys.type] || Layers;
@@ -163,9 +163,9 @@ function ReviewResponse({ review }: { review: any }) {
 
       {review.clarification_questions?.length > 0 && (
         <div className="space-y-1">
-          <span className="text-[9px] text-amber-400/80 uppercase tracking-wider font-bold">Questions</span>
+          <span className="text-[9px] text-neon-amber/80 uppercase tracking-wider font-bold">Questions</span>
           {review.clarification_questions.map((q: string, i: number) => (
-            <p key={i} className="text-[10px] text-amber-400/60 font-mono pl-2 border-l border-amber-500/20">
+            <p key={i} className="text-[10px] text-neon-amber/60 font-mono pl-2 border-l border-neon-amber/20">
               {q}
             </p>
           ))}
@@ -189,7 +189,7 @@ function PlanCard({ plan }: { plan: PatchPlan }) {
         <span className="text-[11px] font-bold text-primary uppercase tracking-wider">Patch Plan</span>
         <Badge variant="outline" className={cn(
           "text-[9px] ml-auto",
-          plan.status === 'approved' && 'border-green-500/30 text-green-500',
+          plan.status === 'approved' && 'border-neon-green/30 text-neon-green',
           plan.status === 'rejected' && 'border-destructive/30 text-destructive',
         )}>
           {plan.status}

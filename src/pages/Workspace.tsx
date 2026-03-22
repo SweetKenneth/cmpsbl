@@ -35,11 +35,11 @@ const SDK_TEMPLATES = [
 ];
 
 const TIER_LABELS: Record<CommandTier, { label: string; color: string; price: string }> = {
-  free: { label: 'Builder', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', price: '$0' },
-  studio: { label: 'Studio', color: 'bg-violet-500/10 text-violet-400 border-violet-500/20', price: '$29/mo' },
+  free: { label: 'Builder', color: 'bg-neon-green/10 text-neon-green border-neon-green/20', price: '$0' },
+  studio: { label: 'Studio', color: 'bg-neon-purple/10 text-neon-purple border-neon-purple/20', price: '$29/mo' },
   creator: { label: 'Creator', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20', price: '$49/mo' },
-  architect: { label: 'Architect', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20', price: '$79/mo' },
-  governor: { label: 'Governor', color: 'bg-rose-500/10 text-rose-400 border-rose-500/20', price: 'Admin' },
+  architect: { label: 'Architect', color: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20', price: '$79/mo' },
+  governor: { label: 'Governor', color: 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/20', price: 'Admin' },
 };
 
 export default function Workspace() {
@@ -119,7 +119,7 @@ export default function Workspace() {
               Free tier includes persistent memory, SDK templates, and {counts.free} terminal commands.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
-              <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 font-mono text-xs">
+              <Badge variant="outline" className="border-neon-green/30 text-neon-green font-mono text-xs">
                 {counts.free} Free Commands
               </Badge>
               <Badge variant="outline" className="border-muted text-muted-foreground font-mono text-xs">
@@ -174,7 +174,7 @@ export default function Workspace() {
                             onClick={() => copyCode(tpl.code, tpl.id)}
                             className="absolute top-2 right-2 p-1.5 rounded bg-background/80 border border-border/50 hover:bg-accent transition-colors"
                           >
-                            {copiedId === tpl.id ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3 text-muted-foreground" />}
+                            {copiedId === tpl.id ? <Check className="w-3 h-3 text-neon-green" /> : <Copy className="w-3 h-3 text-muted-foreground" />}
                           </button>
                         )}
                       </div>
@@ -202,19 +202,19 @@ export default function Workspace() {
               {/* Quick Links */}
               <div className="grid gap-3 sm:grid-cols-3 mt-8">
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/persistent-memory')}>
-                  <Brain className="w-5 h-5 text-violet-400 mb-2" />
+                  <Brain className="w-5 h-5 text-neon-purple mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Persistent Memory</h4>
                   <p className="text-xs text-muted-foreground mt-1">Free for all tiers. Add memory to any agent.</p>
-                  <Badge variant="outline" className="mt-2 text-[10px] border-emerald-500/30 text-emerald-400">FREE</Badge>
+                  <Badge variant="outline" className="mt-2 text-[10px] border-neon-green/30 text-neon-green">FREE</Badge>
                 </Card>
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/foundry')}>
                   <Sparkles className="w-5 h-5 text-sky-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Memory Stream</h4>
                   <p className="text-xs text-muted-foreground mt-1">Crystallize memories. Rare finds on every tier.</p>
-                  <Badge variant="outline" className="mt-2 text-[10px] border-emerald-500/30 text-emerald-400">FREE</Badge>
+                  <Badge variant="outline" className="mt-2 text-[10px] border-neon-green/30 text-neon-green">FREE</Badge>
                 </Card>
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/documentation')}>
-                  <BookOpen className="w-5 h-5 text-amber-400 mb-2" />
+                  <BookOpen className="w-5 h-5 text-neon-amber mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Documentation</h4>
                   <p className="text-xs text-muted-foreground mt-1">Full API reference and integration guides.</p>
                 </Card>
@@ -240,14 +240,14 @@ export default function Workspace() {
                 <div className="h-80 overflow-y-auto p-4 font-mono text-xs space-y-3">
                   {/* Welcome */}
                   <div className="text-muted-foreground">
-                    <div className="text-emerald-400">CMPSBL Substrate Terminal</div>
+                    <div className="text-neon-green">CMPSBL Substrate Terminal</div>
                     <div>Tier: {TIER_LABELS[userTier].label} · Commands: {availableCommands.length} · Type "help" to begin</div>
                     <div className="border-b border-border/20 mt-2" />
                   </div>
 
                   {terminalHistory.map((entry, i) => (
                     <div key={i}>
-                      <div className="text-emerald-400">
+                      <div className="text-neon-green">
                         <span className="text-muted-foreground">$</span> {entry.input}
                       </div>
                       <pre className="text-muted-foreground whitespace-pre-wrap mt-1 pl-2 border-l border-border/20">{entry.output}</pre>
@@ -257,7 +257,7 @@ export default function Workspace() {
 
                 {/* Terminal Input */}
                 <div className="border-t border-border/30 px-4 py-3 flex items-center gap-2 bg-muted/10">
-                  <span className="text-emerald-400 font-mono text-xs">$</span>
+                  <span className="text-neon-green font-mono text-xs">$</span>
                   <input
                     type="text"
                     value={terminalInput}

@@ -39,19 +39,19 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 
 const STATUS_COLORS: Record<string, string> = {
-  recording: "bg-red-500 animate-pulse",
-  completed: "bg-green-500",
-  playing: "bg-blue-500 animate-pulse",
+  recording: "bg-destructive animate-pulse",
+  completed: "bg-neon-green",
+  playing: "bg-neon-blue animate-pulse",
 };
 
 const MODULE_COLORS: Record<string, string> = {
-  brain: "text-purple-400",
-  decode: "text-cyan-400",
-  defense: "text-red-400",
-  nexus: "text-amber-400",
-  vision: "text-green-400",
-  dream: "text-indigo-400",
-  core: "text-blue-400",
+  brain: "text-neon-purple",
+  decode: "text-neon-cyan",
+  defense: "text-destructive",
+  nexus: "text-neon-amber",
+  vision: "text-neon-green",
+  dream: "text-primary",
+  core: "text-neon-blue",
 };
 
 export function EventReplayTimeline() {
@@ -135,10 +135,10 @@ export function EventReplayTimeline() {
   // Handle error state for missing tables
   if (sessionsError || eventsError) {
     return (
-      <Card className="p-8 border-amber-500/30 bg-amber-500/5">
+      <Card className="p-8 border-neon-amber/30 bg-neon-amber/5">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
-            <History className="w-6 h-6 text-amber-400" />
+          <div className="w-12 h-12 rounded-full bg-neon-amber/20 flex items-center justify-center">
+            <History className="w-6 h-6 text-neon-amber" />
           </div>
           <div>
             <h3 className="font-semibold mb-1">Event Replay Unavailable</h3>
@@ -186,7 +186,7 @@ export function EventReplayTimeline() {
                   onClick={handleStartRecording}
                   disabled={startRecording.isPending}
                 >
-                  <Circle className="h-4 w-4 mr-2 text-red-500 fill-red-500" />
+                  <Circle className="h-4 w-4 mr-2 text-destructive fill-destructive" />
                   Start Recording
                 </Button>
               </div>
@@ -237,7 +237,7 @@ export function EventReplayTimeline() {
                               handleStopRecording(session.id);
                             }}
                           >
-                            <Square className="h-3 w-3 text-red-500" />
+                            <Square className="h-3 w-3 text-destructive" />
                           </Button>
                         )}
                         <Button

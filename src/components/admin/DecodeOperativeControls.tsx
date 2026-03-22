@@ -177,22 +177,22 @@ export function DecodeOperativeControls() {
         {/* Status Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-background/50 rounded-lg p-3 text-center">
-            <Activity className="w-4 h-4 mx-auto mb-1 text-green-500" />
+            <Activity className="w-4 h-4 mx-auto mb-1 text-neon-green" />
             <div className="text-lg font-bold">{status?.cycles_completed || 0}</div>
             <div className="text-xs text-muted-foreground">Cycles</div>
           </div>
           <div className="bg-background/50 rounded-lg p-3 text-center">
-            <Zap className="w-4 h-4 mx-auto mb-1 text-yellow-500" />
+            <Zap className="w-4 h-4 mx-auto mb-1 text-neon-amber" />
             <div className="text-lg font-bold">{Math.round((status?.health_score || 0) * 100)}%</div>
             <div className="text-xs text-muted-foreground">Health</div>
           </div>
           <div className="bg-background/50 rounded-lg p-3 text-center">
-            <Clock className="w-4 h-4 mx-auto mb-1 text-blue-500" />
+            <Clock className="w-4 h-4 mx-auto mb-1 text-neon-blue" />
             <div className="text-xs font-medium">{formatTime(status?.last_cycle)}</div>
             <div className="text-xs text-muted-foreground">Last Cycle</div>
           </div>
           <div className="bg-background/50 rounded-lg p-3 text-center">
-            <CheckCircle className="w-4 h-4 mx-auto mb-1 text-violet-500" />
+            <CheckCircle className="w-4 h-4 mx-auto mb-1 text-neon-purple" />
             <div className="text-xs font-medium">{formatTime(status?.last_email)}</div>
             <div className="text-xs text-muted-foreground">Last Email</div>
           </div>
@@ -257,11 +257,11 @@ export function DecodeOperativeControls() {
               >
                 <div className="flex items-center gap-2">
                   {event.outcome === 'dispatched' ? (
-                    <CheckCircle className="w-3 h-3 text-green-500" />
+                    <CheckCircle className="w-3 h-3 text-neon-green" />
                   ) : event.outcome === 'failed' ? (
-                    <AlertCircle className="w-3 h-3 text-red-500" />
+                    <AlertCircle className="w-3 h-3 text-destructive" />
                   ) : (
-                    <Activity className="w-3 h-3 text-blue-500" />
+                    <Activity className="w-3 h-3 text-neon-blue" />
                   )}
                   <span className="font-medium">{event.event_type}</span>
                 </div>

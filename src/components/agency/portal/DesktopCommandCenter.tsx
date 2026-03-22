@@ -238,7 +238,7 @@ export function DesktopCommandCenter({
                 <tab.icon className="w-3.5 h-3.5" />
                 {tab.label}
                 {tab.id === 'tasks' && activeTasks.length > 0 && (
-                  <Badge className="h-4 px-1 text-[10px] bg-amber-500 text-black ml-0.5">
+                  <Badge className="h-4 px-1 text-[10px] bg-neon-amber text-black ml-0.5">
                     {activeTasks.length}
                   </Badge>
                 )}

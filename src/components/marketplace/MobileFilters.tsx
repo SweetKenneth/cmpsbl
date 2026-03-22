@@ -14,13 +14,13 @@ import {
 
 const CATEGORIES = [
   { id: null, name: 'All', icon: Sparkles, color: 'text-primary' },
-  { id: 'brain', name: 'Memory', icon: Brain, color: 'text-violet-500' },
-  { id: 'decode', name: 'Chatbots', icon: MessageSquare, color: 'text-cyan-500' },
-  { id: 'defense', name: 'Security', icon: Shield, color: 'text-rose-500' },
-  { id: 'dream', name: 'Dream', icon: Moon, color: 'text-purple-500' },
-  { id: 'vision', name: 'Vision', icon: Eye, color: 'text-blue-500' },
-  { id: 'nexus', name: 'Routing', icon: Zap, color: 'text-emerald-500' },
-  { id: 'world_engine', name: 'World', icon: Server, color: 'text-orange-500' },
+  { id: 'brain', name: 'Memory', icon: Brain, color: 'text-neon-purple' },
+  { id: 'decode', name: 'Chatbots', icon: MessageSquare, color: 'text-neon-cyan' },
+  { id: 'defense', name: 'Security', icon: Shield, color: 'text-neon-magenta' },
+  { id: 'dream', name: 'Dream', icon: Moon, color: 'text-neon-purple' },
+  { id: 'vision', name: 'Vision', icon: Eye, color: 'text-neon-blue' },
+  { id: 'nexus', name: 'Routing', icon: Zap, color: 'text-neon-green' },
+  { id: 'world_engine', name: 'World', icon: Server, color: 'text-neon-amber' },
 ];
 
 const DIFFICULTIES = [

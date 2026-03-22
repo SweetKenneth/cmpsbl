@@ -13,9 +13,9 @@ import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const DREAM_TYPES = [
-  { id: 'dream', label: 'Dream', icon: Cloud, color: 'from-violet-500 to-purple-600' },
-  { id: 'nightmare', label: 'Nightmare', icon: Zap, color: 'from-red-500 to-orange-600' },
-  { id: 'vision', label: 'Vision', icon: Eye, color: 'from-cyan-500 to-blue-600' },
+  { id: 'dream', label: 'Dream', icon: Cloud, color: 'from-neon-purple to-neon-purple' },
+  { id: 'nightmare', label: 'Nightmare', icon: Zap, color: 'from-destructive to-neon-amber' },
+  { id: 'vision', label: 'Vision', icon: Eye, color: 'from-neon-cyan to-neon-blue' },
 ];
 
 const EXAMPLE_DREAMS = [
@@ -80,7 +80,7 @@ export function DreamProcessorDemo() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between pb-4 border-b border-border/50">
-        <div className="flex items-center gap-2"><Moon className="w-5 h-5 text-violet-500" /><span className="text-sm font-medium">Dream Processor</span></div>
+        <div className="flex items-center gap-2"><Moon className="w-5 h-5 text-neon-purple" /><span className="text-sm font-medium">Dream Processor</span></div>
         <Badge variant="outline" className="text-xs"><Sparkles className="w-3 h-3 mr-1" />{dreamsProcessed.toLocaleString()} dreams processed</Badge>
       </div>
 
@@ -101,11 +101,11 @@ export function DreamProcessorDemo() {
       <AnimatePresence>
         {interpretation && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-            <Card className="p-4 bg-gradient-to-br from-violet-500/5 to-purple-500/5 border-violet-500/20 space-y-4">
-              <div className="flex items-center gap-2"><Brain className="w-4 h-4 text-violet-500" /><span className="text-sm font-medium">Detected Mood:</span><Badge className="bg-violet-500/20 text-violet-400 border-violet-500/30">{interpretation.mood}</Badge></div>
+            <Card className="p-4 bg-gradient-to-br from-neon-purple/5 to-neon-purple/5 border-neon-purple/20 space-y-4">
+              <div className="flex items-center gap-2"><Brain className="w-4 h-4 text-neon-purple" /><span className="text-sm font-medium">Detected Mood:</span><Badge className="bg-neon-purple/20 text-neon-purple border-neon-purple/30">{interpretation.mood}</Badge></div>
               <div><span className="text-xs text-muted-foreground block mb-2">Themes:</span><div className="flex flex-wrap gap-1.5">{interpretation.themes.map((theme, i) => <Badge key={i} variant="outline" className="text-xs">{theme}</Badge>)}</div></div>
               <div><span className="text-xs text-muted-foreground block mb-2">Interpretation:</span><p className="text-sm">{interpretation.interpretation}</p></div>
-              <div><span className="text-xs text-muted-foreground block mb-2">Insights:</span><ul className="space-y-1">{interpretation.insights.map((insight, i) => <li key={i} className="text-sm flex items-start gap-2"><Sparkles className="w-3 h-3 text-violet-500 mt-1 shrink-0" />{insight}</li>)}</ul></div>
+              <div><span className="text-xs text-muted-foreground block mb-2">Insights:</span><ul className="space-y-1">{interpretation.insights.map((insight, i) => <li key={i} className="text-sm flex items-start gap-2"><Sparkles className="w-3 h-3 text-neon-purple mt-1 shrink-0" />{insight}</li>)}</ul></div>
             </Card>
           </motion.div>
         )}

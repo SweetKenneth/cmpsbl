@@ -59,13 +59,13 @@ export function CodeAnnotations({ code, filename, showLineNumbers = true }: Code
   
   const getTypeColor = (type: Annotation['type']) => {
     switch (type) {
-      case 'function': return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
-      case 'component': return 'bg-purple-500/10 text-purple-400 border-purple-500/30';
-      case 'hook': return 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30';
-      case 'import': return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
-      case 'type': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
-      case 'effect': return 'bg-pink-500/10 text-pink-400 border-pink-500/30';
-      case 'state': return 'bg-orange-500/10 text-orange-400 border-orange-500/30';
+      case 'function': return 'bg-neon-blue/10 text-neon-blue border-neon-blue/30';
+      case 'component': return 'bg-neon-purple/10 text-neon-purple border-neon-purple/30';
+      case 'hook': return 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30';
+      case 'import': return 'bg-neon-amber/10 text-neon-amber border-neon-amber/30';
+      case 'type': return 'bg-neon-green/10 text-neon-green border-neon-green/30';
+      case 'effect': return 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30';
+      case 'state': return 'bg-neon-amber/10 text-neon-amber border-neon-amber/30';
       default: return 'bg-muted text-muted-foreground';
     }
   };
@@ -162,14 +162,14 @@ export function CodeAnnotations({ code, filename, showLineNumbers = true }: Code
                         
                         {ann.tips && ann.tips.length > 0 && (
                           <div className="mt-3 pt-2 border-t border-border/30">
-                            <div className="flex items-center gap-1 text-xs text-amber-400 mb-1">
+                            <div className="flex items-center gap-1 text-xs text-neon-amber mb-1">
                               <Lightbulb className="h-3 w-3" />
                               <span>Tips</span>
                             </div>
                             <ul className="space-y-1">
                               {ann.tips.map((tip, j) => (
                                 <li key={j} className="text-xs text-muted-foreground flex items-start gap-1">
-                                  <Zap className="h-3 w-3 mt-0.5 text-amber-400/50" />
+                                  <Zap className="h-3 w-3 mt-0.5 text-neon-amber/50" />
                                   {tip}
                                 </li>
                               ))}

@@ -219,12 +219,12 @@ export default function LlmsTxt() {
   };
 
   const nodes = [
-    { name: "BRAIN", icon: Brain, color: "text-cyan-500", desc: "Memory & learning" },
-    { name: "DECODE", icon: MessageSquare, color: "text-purple-500", desc: "Epistemic interpreter" },
-    { name: "DEFENSE", icon: Shield, color: "text-amber-500", desc: "Security layer" },
-    { name: "NEXUS", icon: Zap, color: "text-green-500", desc: "AI routing" },
-    { name: "VISION", icon: Eye, color: "text-blue-500", desc: "Observability" },
-    { name: "DREAM", icon: Moon, color: "text-violet-500", desc: "Pattern synthesis" },
+    { name: "BRAIN", icon: Brain, color: "text-neon-cyan", desc: "Memory & learning" },
+    { name: "DECODE", icon: MessageSquare, color: "text-neon-purple", desc: "Epistemic interpreter" },
+    { name: "DEFENSE", icon: Shield, color: "text-neon-amber", desc: "Security layer" },
+    { name: "NEXUS", icon: Zap, color: "text-neon-green", desc: "AI routing" },
+    { name: "VISION", icon: Eye, color: "text-neon-blue", desc: "Observability" },
+    { name: "DREAM", icon: Moon, color: "text-neon-purple", desc: "Pattern synthesis" },
   ];
 
   return (

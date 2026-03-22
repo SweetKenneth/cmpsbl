@@ -68,9 +68,9 @@ export function AgencyQuickDispatch({
       <Card className="border-border/30 bg-black/40">
         <CardHeader className="pb-2 px-3 pt-3">
           <CardTitle className="text-xs sm:text-sm flex items-center gap-2">
-            <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+            <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-amber" />
             Quick Launch
-            <Badge variant="outline" className="text-[9px] px-1.5 py-0 ml-auto border-emerald-500/30 text-emerald-400">
+            <Badge variant="outline" className="text-[9px] px-1.5 py-0 ml-auto border-neon-green/30 text-neon-green">
               {Object.keys(EXECUTABLE_TASKS).length} tasks
             </Badge>
           </CardTitle>
@@ -90,8 +90,8 @@ export function AgencyQuickDispatch({
                 className={cn(
                   "justify-start gap-1.5 sm:gap-2 h-8 sm:h-9 text-[10px] sm:text-xs px-2 sm:px-3",
                   selectedTask?.id === task.id 
-                    ? "border-fuchsia-500/50 bg-fuchsia-500/10" 
-                    : "hover:border-fuchsia-500/50"
+                    ? "border-neon-magenta/50 bg-neon-magenta/10" 
+                    : "hover:border-neon-magenta/50"
                 )}
               >
                 <span className="text-sm">{task.icon}</span>
@@ -104,7 +104,7 @@ export function AgencyQuickDispatch({
 
       {/* Selected Task Input */}
       {selectedTask && (
-        <Card className="border-fuchsia-500/30 bg-fuchsia-500/5">
+        <Card className="border-neon-magenta/30 bg-neon-magenta/5">
           <CardContent className="p-3 space-y-2">
             <div className="flex items-center gap-2">
               <span className="text-lg">{selectedTask.icon}</span>
@@ -126,7 +126,7 @@ export function AgencyQuickDispatch({
                 onClick={() => handleQuickLaunch(selectedTask)}
                 disabled={isLaunching || !customInput.trim()}
                 size="sm"
-                className="shrink-0 h-8 bg-gradient-to-r from-fuchsia-600 to-purple-600"
+                className="shrink-0 h-8 bg-gradient-to-r from-neon-magenta to-neon-purple"
               >
                 {isLaunching ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Rocket className="w-3.5 h-3.5" />}
               </Button>
@@ -186,7 +186,7 @@ export function AgencyQuickDispatch({
                         disabled={isLaunching}
                         className={cn(
                           "justify-start gap-2 h-auto py-1.5 px-2 text-left",
-                          selectedTask?.id === task.id && "bg-fuchsia-500/20 border-fuchsia-500/50"
+                          selectedTask?.id === task.id && "bg-neon-magenta/20 border-neon-magenta/50"
                         )}
                       >
                         <span className="text-base shrink-0">{task.icon}</span>

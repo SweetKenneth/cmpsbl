@@ -16,9 +16,9 @@ import { pushToast } from '@/components/toast/SmartToastStore';
 import type { DreamCycleType } from '@/lib/substrate/node-dreaming';
 
 const TIER_COLORS: Record<string, { text: string; bg: string; border: string }> = {
-  A: { text: 'text-violet-600 dark:text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
-  B: { text: 'text-cyan-600 dark:text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/20' },
-  C: { text: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+  A: { text: 'text-neon-purple dark:text-neon-purple', bg: 'bg-neon-purple/10', border: 'border-neon-purple/20' },
+  B: { text: 'text-neon-cyan dark:text-neon-cyan', bg: 'bg-neon-cyan/10', border: 'border-neon-cyan/20' },
+  C: { text: 'text-neon-amber dark:text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/20' },
 };
 
 const CYCLE_LABELS: Record<DreamCycleType, string> = {
@@ -91,8 +91,8 @@ export function NodeDreamingWidget() {
       {/* Header */}
       <div className="flex items-center justify-between p-3 sm:p-4 border-b border-border/10">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20">
-            <Moon className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+          <div className="p-1.5 rounded-lg bg-neon-purple/10 border border-neon-purple/20">
+            <Moon className="w-4 h-4 text-neon-purple dark:text-neon-purple" />
           </div>
           <div>
             <h3 className="text-xs sm:text-sm font-semibold text-foreground">Node Dreaming</h3>
@@ -145,14 +145,14 @@ export function NodeDreamingWidget() {
         <div className="grid grid-cols-2 gap-2">
           <div className="rounded-lg border border-border/10 p-2.5 bg-muted/5">
             <div className="flex items-center gap-1.5 mb-1">
-              <Sparkles className="w-3 h-3 text-amber-500" />
+              <Sparkles className="w-3 h-3 text-neon-amber" />
               <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-wider">Total Dreams</span>
             </div>
             <span className="text-base sm:text-lg font-bold font-mono text-foreground">{totalDreams}</span>
           </div>
           <div className="rounded-lg border border-border/10 p-2.5 bg-muted/5">
             <div className="flex items-center gap-1.5 mb-1">
-              <Zap className="w-3 h-3 text-emerald-500" />
+              <Zap className="w-3 h-3 text-neon-green" />
               <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-wider">Insights</span>
             </div>
             <span className="text-base sm:text-lg font-bold font-mono text-foreground">{totalInsights}</span>
@@ -163,9 +163,9 @@ export function NodeDreamingWidget() {
         {analyticsSummary && (
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: 'Contradictions', value: analyticsSummary.avgContradictions ?? 0, icon: AlertTriangle, color: 'text-rose-500' },
-              { label: 'Merged', value: analyticsSummary.avgPatternsMerged ?? 0, icon: Activity, color: 'text-cyan-500' },
-              { label: 'Success', value: `${Math.round((analyticsSummary.successRate ?? 0) * 100)}%`, icon: Sparkles, color: 'text-amber-500' },
+              { label: 'Contradictions', value: analyticsSummary.avgContradictions ?? 0, icon: AlertTriangle, color: 'text-neon-magenta' },
+              { label: 'Merged', value: analyticsSummary.avgPatternsMerged ?? 0, icon: Activity, color: 'text-neon-cyan' },
+              { label: 'Success', value: `${Math.round((analyticsSummary.successRate ?? 0) * 100)}%`, icon: Sparkles, color: 'text-neon-amber' },
             ].map(stat => (
               <div key={stat.label} className="rounded-lg border border-border/10 p-2 bg-muted/5 text-center">
                 <stat.icon className={cn("w-3 h-3 mx-auto mb-1", stat.color)} />
@@ -186,15 +186,15 @@ export function NodeDreamingWidget() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-muted/5 hover:bg-muted/15 transition-colors cursor-default text-[10px]">
-                        <Moon className="w-3 h-3 text-violet-400 shrink-0" />
+                        <Moon className="w-3 h-3 text-neon-purple shrink-0" />
                         <span className="font-mono font-medium text-foreground truncate">{log.nodeId}</span>
                         <Badge variant="outline" className="text-[8px] ml-auto border-border/20 shrink-0">
                           {CYCLE_LABELS[log.cycleType as DreamCycleType] ?? log.cycleType}
                         </Badge>
                         {log.success ? (
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-neon-green shrink-0" />
                         ) : (
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-destructive shrink-0" />
                         )}
                       </div>
                     </TooltipTrigger>
@@ -224,14 +224,14 @@ export function NodeDreamingWidget() {
                     key={c.nodeId}
                     variant="outline"
                     size="sm"
-                    className="h-7 px-2.5 text-[10px] font-mono border-violet-500/20 hover:bg-violet-500/10 hover:border-violet-500/30"
+                    className="h-7 px-2.5 text-[10px] font-mono border-neon-purple/20 hover:bg-neon-purple/10 hover:border-neon-purple/30"
                     onClick={() => handleTrigger(c.nodeId)}
                     disabled={triggerDream.isPending}
                   >
                     {triggerDream.isPending ? (
                       <Loader2 className="w-3 h-3 mr-1 animate-spin" />
                     ) : (
-                      <Moon className="w-3 h-3 mr-1 text-violet-400" />
+                      <Moon className="w-3 h-3 mr-1 text-neon-purple" />
                     )}
                     {c.nodeId}
                   </Button>
@@ -243,13 +243,13 @@ export function NodeDreamingWidget() {
         {/* Cognitive Capabilities (Synapse Engine) */}
         <div className="space-y-1.5 border-t border-border/10 pt-3">
           <div className="flex items-center gap-1.5 px-0.5">
-            <Brain className="w-3 h-3 text-emerald-500" />
+            <Brain className="w-3 h-3 text-neon-green" />
             <span className="text-[9px] text-muted-foreground/50 font-mono uppercase tracking-wider">Cognitive Capabilities</span>
             <Badge variant="outline" className="text-[8px] ml-auto font-mono border-border/20">Synapse</Badge>
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { label: 'Self-Assess', icon: Brain, action: handleAssess, color: 'text-emerald-500' },
+              { label: 'Self-Assess', icon: Brain, action: handleAssess, color: 'text-neon-green' },
               { label: 'Replay', icon: RotateCcw, action: handleReplay, color: 'text-sky-500' },
             ].map(cap => (
               <Button
@@ -284,7 +284,7 @@ export function NodeDreamingWidget() {
                 <span className="text-muted-foreground/50">Calibration</span>
                 <span className="text-foreground">{Math.round(cognitive.lastAssessment.confidenceCalibration * 100)}%</span>
                 <span className="text-muted-foreground/50">Drift</span>
-                <span className={cn("text-foreground", cognitive.lastAssessment.driftScore > 0.4 && "text-amber-500")}>
+                <span className={cn("text-foreground", cognitive.lastAssessment.driftScore > 0.4 && "text-neon-amber")}>
                   {Math.round(cognitive.lastAssessment.driftScore * 100)}%
                 </span>
               </div>

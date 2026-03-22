@@ -14,7 +14,7 @@ import { useEvolutionReceipts, useScanHistory } from '@/hooks/useEvolutionContro
 function TrendIndicator({ current, previous }: { current: number; previous: number }) {
   const delta = current - previous;
   if (Math.abs(delta) < 0.5) return <Minus className="w-3 h-3 text-muted-foreground" />;
-  return delta > 0 ? <TrendingUp className="w-3 h-3 text-emerald-400" /> : <TrendingDown className="w-3 h-3 text-destructive" />;
+  return delta > 0 ? <TrendingUp className="w-3 h-3 text-neon-green" /> : <TrendingDown className="w-3 h-3 text-destructive" />;
 }
 
 export function ScanTrendDashboard() {

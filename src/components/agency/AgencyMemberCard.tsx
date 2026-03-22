@@ -29,25 +29,25 @@ export function AgencyMemberCard({
   const isLeader = member.role === 'leader';
 
   const colorClasses: Record<string, string> = {
-    fuchsia: 'border-fuchsia-500/40 bg-fuchsia-500/10 text-fuchsia-400',
-    violet: 'border-violet-500/40 bg-violet-500/10 text-violet-400',
-    cyan: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-400',
-    emerald: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400',
-    amber: 'border-amber-500/40 bg-amber-500/10 text-amber-400',
-    red: 'border-red-500/40 bg-red-500/10 text-red-400',
-    pink: 'border-pink-500/40 bg-pink-500/10 text-pink-400',
-    green: 'border-green-500/40 bg-green-500/10 text-green-400',
-    blue: 'border-blue-500/40 bg-blue-500/10 text-blue-400',
-    orange: 'border-orange-500/40 bg-orange-500/10 text-orange-400',
-    teal: 'border-teal-500/40 bg-teal-500/10 text-teal-400',
-    rose: 'border-rose-500/40 bg-rose-500/10 text-rose-400',
-    indigo: 'border-indigo-500/40 bg-indigo-500/10 text-indigo-400',
+    fuchsia: 'border-neon-magenta/40 bg-neon-magenta/10 text-neon-magenta',
+    violet: 'border-neon-purple/40 bg-neon-purple/10 text-neon-purple',
+    cyan: 'border-neon-cyan/40 bg-neon-cyan/10 text-neon-cyan',
+    emerald: 'border-neon-green/40 bg-neon-green/10 text-neon-green',
+    amber: 'border-neon-amber/40 bg-neon-amber/10 text-neon-amber',
+    red: 'border-destructive/40 bg-destructive/10 text-destructive',
+    pink: 'border-neon-magenta/40 bg-neon-magenta/10 text-neon-magenta',
+    green: 'border-neon-green/40 bg-neon-green/10 text-neon-green',
+    blue: 'border-neon-blue/40 bg-neon-blue/10 text-neon-blue',
+    orange: 'border-neon-amber/40 bg-neon-amber/10 text-neon-amber',
+    teal: 'border-neon-cyan/40 bg-neon-cyan/10 text-neon-cyan',
+    rose: 'border-neon-magenta/40 bg-neon-magenta/10 text-neon-magenta',
+    indigo: 'border-primary/40 bg-primary/10 text-primary',
     slate: 'border-slate-500/40 bg-slate-500/10 text-slate-400',
-    yellow: 'border-yellow-500/40 bg-yellow-500/10 text-yellow-400',
+    yellow: 'border-neon-amber/40 bg-neon-amber/10 text-neon-amber',
     stone: 'border-stone-500/40 bg-stone-500/10 text-stone-400',
     lime: 'border-lime-500/40 bg-lime-500/10 text-lime-400',
     sky: 'border-sky-500/40 bg-sky-500/10 text-sky-400',
-    purple: 'border-purple-500/40 bg-purple-500/10 text-purple-400',
+    purple: 'border-neon-purple/40 bg-neon-purple/10 text-neon-purple',
   };
 
   const colors = colorClasses[spec?.color || 'fuchsia'];
@@ -63,7 +63,7 @@ export function AgencyMemberCard({
         {onRemove && !isLeader && (
           <button 
             onClick={onRemove}
-            className="ml-auto hover:text-red-400 transition-colors"
+            className="ml-auto hover:text-destructive transition-colors"
           >
             <X className="w-3 h-3" />
           </button>
@@ -85,7 +85,7 @@ export function AgencyMemberCard({
             {spec?.name || member.specialization}
           </Badge>
           {isLeader && (
-            <Badge variant="outline" className="text-[9px] h-4 border-amber-500/50 text-amber-400">
+            <Badge variant="outline" className="text-[9px] h-4 border-neon-amber/50 text-neon-amber">
               Leader
             </Badge>
           )}
@@ -94,7 +94,7 @@ export function AgencyMemberCard({
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-6 w-6 text-muted-foreground hover:text-red-400"
+            className="h-6 w-6 text-muted-foreground hover:text-destructive"
             onClick={onRemove}
           >
             <X className="w-3 h-3" />

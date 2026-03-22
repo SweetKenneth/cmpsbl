@@ -89,22 +89,22 @@ export default function EmailListPanel() {
     <div className="space-y-5 sm:space-y-6 p-4 sm:p-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500/15 to-violet-500/10 border border-blue-500/25 flex items-center justify-center shrink-0">
-          <Mail className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-blue/15 to-neon-purple/10 border border-neon-blue/25 flex items-center justify-center shrink-0">
+          <Mail className="w-5 h-5 text-neon-blue dark:text-neon-blue" />
         </div>
         <div className="min-w-0 flex-1">
           <h1 className="text-lg sm:text-xl font-bold tracking-tight">Email Lists</h1>
           <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">SUBSCRIBER MANAGEMENT · EXPORT · OBSERVABILITY</p>
         </div>
-        <Badge className="text-[9px] bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 shrink-0">GOVERNOR</Badge>
+        <Badge className="text-[9px] bg-neon-blue/10 text-neon-blue dark:text-neon-blue border-neon-blue/20 shrink-0">GOVERNOR</Badge>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {[
-          { label: 'Total', value: entries.length, icon: Users, color: 'text-blue-500' },
-          { label: 'Active', value: activeCount, icon: CheckCircle2, color: 'text-emerald-500' },
-          { label: 'Unsubscribed', value: unsubCount, icon: XCircle, color: 'text-red-500' },
+          { label: 'Total', value: entries.length, icon: Users, color: 'text-neon-blue' },
+          { label: 'Active', value: activeCount, icon: CheckCircle2, color: 'text-neon-green' },
+          { label: 'Unsubscribed', value: unsubCount, icon: XCircle, color: 'text-destructive' },
         ].map(s => (
           <Card key={s.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardContent className="p-3 text-center">
@@ -138,7 +138,7 @@ export default function EmailListPanel() {
           <Button size="sm" variant="outline" onClick={() => refetch()} className="gap-1.5 h-9">
             <RefreshCw className="w-3.5 h-3.5" />
           </Button>
-          <Button size="sm" onClick={() => exportCSV(filtered)} disabled={filtered.length === 0} className="gap-1.5 h-9 bg-blue-600 hover:bg-blue-500 text-white">
+          <Button size="sm" onClick={() => exportCSV(filtered)} disabled={filtered.length === 0} className="gap-1.5 h-9 bg-neon-blue hover:bg-neon-blue text-white">
             <Download className="w-3.5 h-3.5" />
             Export CSV
           </Button>
@@ -175,8 +175,8 @@ export default function EmailListPanel() {
                       <Badge variant="outline" className={cn(
                         'text-[10px] h-5',
                         entry.is_active !== false
-                          ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20'
-                          : 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20'
+                          ? 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20'
+                          : 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20'
                       )}>
                         {entry.is_active !== false ? 'Active' : 'Unsub'}
                       </Badge>

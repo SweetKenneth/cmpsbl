@@ -116,8 +116,8 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
     return (
       <section className="space-y-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-            <Play className="w-4 h-4 text-amber-500" />
+          <div className="w-8 h-8 rounded-lg bg-neon-amber/10 flex items-center justify-center">
+            <Play className="w-4 h-4 text-neon-amber" />
           </div>
           <h2 className="text-lg md:text-xl font-semibold text-muted-foreground">Operator</h2>
           <Badge variant="outline" className="text-xs">Locked</Badge>
@@ -137,11 +137,11 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
     <section className="space-y-4 md:space-y-6">
       {/* Section Header */}
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-          <Play className="w-4 h-4 text-amber-500" />
+        <div className="w-8 h-8 rounded-lg bg-neon-amber/10 flex items-center justify-center">
+          <Play className="w-4 h-4 text-neon-amber" />
         </div>
         <h2 className="text-lg md:text-xl font-semibold">Operator</h2>
-        <Badge variant="outline" className="text-xs bg-amber-500/10 text-amber-600 border-amber-500/20">
+        <Badge variant="outline" className="text-xs bg-neon-amber/10 text-neon-amber border-neon-amber/20">
           Actions
         </Badge>
       </div>
@@ -152,7 +152,7 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
           title="Brain Reflect"
           description="Synthesize recent memories into reflections"
           icon={Sparkles}
-          iconColor="text-cyan-500"
+          iconColor="text-neon-cyan"
           onAction={() => handleAction(
             () => reflectMutation.mutateAsync(),
             'Reflection cycle complete',
@@ -165,7 +165,7 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
           title="Brain Dream"
           description="Process hot memories through dream cycle"
           icon={Moon}
-          iconColor="text-indigo-500"
+          iconColor="text-primary"
           onAction={() => handleAction(
             () => dreamMutation.mutateAsync(),
             'Dream cycle initiated',
@@ -178,7 +178,7 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
           title="Brain Synthesize"
           description="Cross-domain cognitive synthesis"
           icon={Sparkles}
-          iconColor="text-purple-500"
+          iconColor="text-neon-purple"
           onAction={() => handleAction(
             () => synthesizeMutation.mutateAsync(),
             'Synthesis complete',
@@ -191,7 +191,7 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
           title="Dream-Eater Cycle"
           description="Trigger dream consumption and mutation"
           icon={Moon}
-          iconColor="text-violet-500"
+          iconColor="text-neon-purple"
           onAction={() => handleAction(
             () => dreamCycleMutation.mutateAsync(),
             'Dream-Eater cycle complete',
@@ -205,7 +205,7 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Route className="w-4 h-4 text-green-500" />
+            <Route className="w-4 h-4 text-neon-green" />
             Nexus Route Test
           </CardTitle>
           <CardDescription className="text-xs">
@@ -237,7 +237,7 @@ export function OperatorSection({ enabled = true }: { enabled?: boolean }) {
             <div className="p-3 rounded-lg bg-muted/30 text-sm">
               <div className="flex items-center gap-2 mb-2">
                 {routeResult.success ? (
-                  <CheckCircle2 className="w-4 h-4 text-green-500" />
+                  <CheckCircle2 className="w-4 h-4 text-neon-green" />
                 ) : (
                   <XCircle className="w-4 h-4 text-destructive" />
                 )}

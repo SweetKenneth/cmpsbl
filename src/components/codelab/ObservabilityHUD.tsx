@@ -40,19 +40,19 @@ interface PulseData {
 const moduleConfig: { id: SubstrateModule; name: string; icon: React.ElementType; color: string; layer: string }[] = [
   // Kernel Layer
   { id: "core", name: "Core", icon: Settings, color: "text-slate-400", layer: "Kernel" },
-  { id: "ripple", name: "Ripple", icon: MessageSquare, color: "text-indigo-500", layer: "Kernel" },
-  { id: "access", name: "Access", icon: Shield, color: "text-orange-500", layer: "Kernel" },
+  { id: "ripple", name: "Ripple", icon: MessageSquare, color: "text-primary", layer: "Kernel" },
+  { id: "access", name: "Access", icon: Shield, color: "text-neon-amber", layer: "Kernel" },
   // Cognitive Layer
-  { id: "brain", name: "Brain", icon: Brain, color: "text-cyan-500", layer: "Cognitive" },
-  { id: "decode", name: "Decode", icon: MessageSquare, color: "text-purple-500", layer: "Cognitive" },
-  { id: "dream", name: "Dream", icon: Moon, color: "text-pink-500", layer: "Cognitive" },
+  { id: "brain", name: "Brain", icon: Brain, color: "text-neon-cyan", layer: "Cognitive" },
+  { id: "decode", name: "Decode", icon: MessageSquare, color: "text-neon-purple", layer: "Cognitive" },
+  { id: "dream", name: "Dream", icon: Moon, color: "text-neon-magenta", layer: "Cognitive" },
   // Operational Layer
-  { id: "defense", name: "Defense", icon: Shield, color: "text-amber-500", layer: "Operational" },
-  { id: "nexus", name: "Nexus", icon: Zap, color: "text-green-500", layer: "Operational" },
-  { id: "vision", name: "Vision", icon: Eye, color: "text-blue-500", layer: "Operational" },
+  { id: "defense", name: "Defense", icon: Shield, color: "text-neon-amber", layer: "Operational" },
+  { id: "nexus", name: "Nexus", icon: Zap, color: "text-neon-green", layer: "Operational" },
+  { id: "vision", name: "Vision", icon: Eye, color: "text-neon-blue", layer: "Operational" },
   // Administrative Layer
-  { id: "system", name: "System", icon: Settings, color: "text-red-500", layer: "CCR Zone" },
-  { id: "evolution", name: "Evolution", icon: Zap, color: "text-emerald-500", layer: "Overlay" },
+  { id: "system", name: "System", icon: Settings, color: "text-destructive", layer: "CCR Zone" },
+  { id: "evolution", name: "Evolution", icon: Zap, color: "text-neon-green", layer: "Overlay" },
 ];
 
 export function ObservabilityHUD() {
@@ -127,17 +127,17 @@ export function ObservabilityHUD() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "online": return <CheckCircle2 className="w-4 h-4 text-green-500" />;
-      case "degraded": return <AlertTriangle className="w-4 h-4 text-amber-500" />;
-      default: return <XCircle className="w-4 h-4 text-red-500" />;
+      case "online": return <CheckCircle2 className="w-4 h-4 text-neon-green" />;
+      case "degraded": return <AlertTriangle className="w-4 h-4 text-neon-amber" />;
+      default: return <XCircle className="w-4 h-4 text-destructive" />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "online": return "border-green-500/50 bg-green-500/10";
-      case "degraded": return "border-amber-500/50 bg-amber-500/10";
-      default: return "border-red-500/50 bg-red-500/10";
+      case "online": return "border-neon-green/50 bg-neon-green/10";
+      case "degraded": return "border-neon-amber/50 bg-neon-amber/10";
+      default: return "border-destructive/50 bg-destructive/10";
     }
   };
 
@@ -188,12 +188,12 @@ export function ObservabilityHUD() {
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-4 flex-1 min-w-[200px]">
             <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
-              pulse?.ok ? "bg-green-500/10" : "bg-red-500/10"
+              pulse?.ok ? "bg-neon-green/10" : "bg-destructive/10"
             }`}>
               {pulse?.ok ? (
-                <CheckCircle2 className="w-8 h-8 text-green-500" />
+                <CheckCircle2 className="w-8 h-8 text-neon-green" />
               ) : (
-                <AlertTriangle className="w-8 h-8 text-red-500" />
+                <AlertTriangle className="w-8 h-8 text-destructive" />
               )}
             </div>
             <div>
@@ -267,7 +267,7 @@ export function ObservabilityHUD() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="p-4">
             <div className="flex items-center gap-3">
-              <Database className="w-8 h-8 text-cyan-500" />
+              <Database className="w-8 h-8 text-neon-cyan" />
               <div>
                 <p className="text-2xl font-bold">
                   {metrics.brain_memories?.toLocaleString() || "—"}
@@ -279,7 +279,7 @@ export function ObservabilityHUD() {
           
           <Card className="p-4">
             <div className="flex items-center gap-3">
-              <Shield className="w-8 h-8 text-amber-500" />
+              <Shield className="w-8 h-8 text-neon-amber" />
               <div>
                 <p className="text-2xl font-bold">
                   {metrics.defense_events?.toLocaleString() || "—"}
@@ -291,7 +291,7 @@ export function ObservabilityHUD() {
           
           <Card className="p-4">
             <div className="flex items-center gap-3">
-              <MessageSquare className="w-8 h-8 text-purple-500" />
+              <MessageSquare className="w-8 h-8 text-neon-purple" />
               <div>
                 <p className="text-2xl font-bold">
                   {metrics.decode_conversations?.toLocaleString() || "—"}
@@ -303,7 +303,7 @@ export function ObservabilityHUD() {
           
           <Card className="p-4">
             <div className="flex items-center gap-3">
-              <TrendingUp className="w-8 h-8 text-green-500" />
+              <TrendingUp className="w-8 h-8 text-neon-green" />
               <div>
                 <p className="text-2xl font-bold">
                   {metrics.nexus_calls?.toLocaleString() || "—"}

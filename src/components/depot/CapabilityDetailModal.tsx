@@ -60,17 +60,17 @@ interface CapabilityDetailModalProps {
 }
 
 const tierColors: Record<string, string> = {
-  utility: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-500',
-  advanced: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-500',
-  system: 'border-violet-500/30 bg-violet-500/10 text-violet-500',
-  flagship: 'border-amber-500/30 bg-amber-500/10 text-amber-500',
+  utility: 'border-neon-green/30 bg-neon-green/10 text-neon-green',
+  advanced: 'border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan',
+  system: 'border-neon-purple/30 bg-neon-purple/10 text-neon-purple',
+  flagship: 'border-neon-amber/30 bg-neon-amber/10 text-neon-amber',
 };
 
 const difficultyColors: Record<string, string> = {
-  beginner: 'text-emerald-500',
-  intermediate: 'text-cyan-500',
-  advanced: 'text-amber-500',
-  expert: 'text-rose-500',
+  beginner: 'text-neon-green',
+  intermediate: 'text-neon-cyan',
+  advanced: 'text-neon-amber',
+  expert: 'text-neon-magenta',
 };
 
 function ModalContent({ capability, categoryConfig }: { capability: CapabilityArtifact; categoryConfig: CapabilityDetailModalProps['categoryConfig'] }) {
@@ -116,7 +116,7 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
         </div>
         
         {isSynergy && (
-          <Badge variant="outline" className="text-xs border-violet-500/30 bg-violet-500/10 text-violet-400">
+          <Badge variant="outline" className="text-xs border-neon-purple/30 bg-neon-purple/10 text-neon-purple">
             <Zap className="w-2.5 h-2.5 mr-1" />
             Synergy
           </Badge>
@@ -126,12 +126,12 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
         </Badge>
         
         {isGated ? (
-          <Badge className="text-xs bg-amber-500/10 text-amber-400 border-amber-500/30">
+          <Badge className="text-xs bg-neon-amber/10 text-neon-amber border-neon-amber/30">
             <Crown className="w-2.5 h-2.5 mr-1" />
             ENTERPRISE ONLY
           </Badge>
         ) : (
-          <Badge className="text-xs bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+          <Badge className="text-xs bg-neon-green/10 text-neon-green border-neon-green/30">
             <Unlock className="w-2.5 h-2.5 mr-1" />
             FREE
           </Badge>
@@ -167,10 +167,10 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
             <div className={cn(
               "p-6 rounded-xl border text-center space-y-3",
               isBlackBoxed && !isGated
-                ? "border-orange-500/20 bg-orange-500/5"
-                : "border-amber-500/20 bg-amber-500/5"
+                ? "border-neon-amber/20 bg-neon-amber/5"
+                : "border-neon-amber/20 bg-neon-amber/5"
             )}>
-              <Lock className={cn("w-10 h-10 mx-auto", isBlackBoxed && !isGated ? "text-orange-400" : "text-amber-400")} />
+              <Lock className={cn("w-10 h-10 mx-auto", isBlackBoxed && !isGated ? "text-neon-amber" : "text-neon-amber")} />
               <h4 className="text-lg font-bold text-foreground">
                 {isGated ? 'Enterprise Only' : 'Sealed Runtime'}
               </h4>
@@ -179,7 +179,7 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
                   ? 'This Apex Discovery capability requires an Enterprise subscription. Upgrade to unlock code snippets, SDK imports, and full documentation.'
                   : 'This artifact is delivered as a black-boxed runtime. Source code, export, and cloning are permanently disabled to protect proprietary architecture.'}
               </p>
-              <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-orange-600 hover:bg-orange-500" : "bg-amber-600 hover:bg-amber-500")}>
+              <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-neon-amber hover:bg-neon-amber" : "bg-neon-amber hover:bg-neon-amber")}>
                 <Link to="/store?tab=plans">
                   <Crown className="w-4 h-4 mr-2" />
                   {isGated ? 'View Enterprise Plans' : 'View Plans'}
@@ -338,7 +338,7 @@ function ModalFooter({ onClose }: { onClose: () => void }) {
       {/* Free Status */}
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-2xl font-black text-emerald-400 flex items-center gap-2">
+          <div className="text-2xl font-black text-neon-green flex items-center gap-2">
             <Unlock className="w-5 h-5" />
             FREE
           </div>
@@ -361,7 +361,7 @@ function ModalFooter({ onClose }: { onClose: () => void }) {
         <Button 
           size="lg"
           asChild
-          className="flex-1 h-12 text-base touch-manipulation bg-emerald-600 hover:bg-emerald-500"
+          className="flex-1 h-12 text-base touch-manipulation bg-neon-green hover:bg-neon-green"
         >
           <a href="/support">
             <Download className="w-4 h-4 mr-2" />

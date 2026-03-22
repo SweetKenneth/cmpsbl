@@ -200,20 +200,20 @@ export function TemplatePreviewModal({
                     {/* Core Capabilities with icons */}
                     <div className="grid grid-cols-2 gap-3">
                       <motion.div 
-                        className="p-4 rounded-xl bg-violet-500/5 border border-violet-500/20"
+                        className="p-4 rounded-xl bg-neon-purple/5 border border-neon-purple/20"
                         whileHover={{ scale: 1.02 }}
                       >
-                        <Brain className="w-6 h-6 text-violet-500 mb-2" />
+                        <Brain className="w-6 h-6 text-neon-purple mb-2" />
                         <h4 className="font-medium text-sm mb-1">Memory Enabled</h4>
                         <p className="text-xs text-muted-foreground">
                           Persists state across sessions
                         </p>
                       </motion.div>
                       <motion.div 
-                        className="p-4 rounded-xl bg-rose-500/5 border border-rose-500/20"
+                        className="p-4 rounded-xl bg-neon-magenta/5 border border-neon-magenta/20"
                         whileHover={{ scale: 1.02 }}
                       >
-                        <Shield className="w-6 h-6 text-rose-500 mb-2" />
+                        <Shield className="w-6 h-6 text-neon-magenta mb-2" />
                         <h4 className="font-medium text-sm mb-1">Drift Protected</h4>
                         <p className="text-xs text-muted-foreground">
                           Self-correcting behavior
@@ -223,11 +223,11 @@ export function TemplatePreviewModal({
 
                     {/* Related Stacks Cross-sell */}
                     {relatedStacks.length > 0 && (
-                      <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/5 to-teal-500/5 border border-emerald-500/20">
+                      <div className="p-4 rounded-xl bg-gradient-to-r from-neon-green/5 to-neon-cyan/5 border border-neon-green/20">
                         <div className="flex items-center gap-2 mb-3">
-                          <Gift className="w-5 h-5 text-emerald-500" />
+                          <Gift className="w-5 h-5 text-neon-green" />
                           <h4 className="font-semibold text-sm">Save with a Stack</h4>
-                          <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30 text-[10px]">
+                          <Badge className="bg-neon-green/10 text-neon-green border-neon-green/30 text-[10px]">
                             Up to 30% off
                           </Badge>
                         </div>
@@ -241,7 +241,7 @@ export function TemplatePreviewModal({
                                 <p className="text-sm font-medium">{stack.name}</p>
                                 <p className="text-[10px] text-muted-foreground">{stack.templateIds.length} templates</p>
                               </div>
-                              <Badge variant="outline" className="text-emerald-600 border-emerald-500/30">
+                              <Badge variant="outline" className="text-neon-green border-neon-green/30">
                                 -{Math.round(stack.discount * 100)}%
                               </Badge>
                             </div>
@@ -298,7 +298,7 @@ export function TemplatePreviewModal({
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: i * 0.05 }}
                           >
-                            <Check className="w-4 h-4 text-emerald-500 shrink-0" />
+                            <Check className="w-4 h-4 text-neon-green shrink-0" />
                             {item}
                           </motion.li>
                         ))}
@@ -377,10 +377,10 @@ export function TemplatePreviewModal({
                 </div>
 
                 {/* Rating */}
-                <div className="p-2.5 rounded-lg bg-amber-500/5 border border-amber-500/20 flex items-center gap-2">
+                <div className="p-2.5 rounded-lg bg-neon-amber/5 border border-neon-amber/20 flex items-center gap-2">
                   <div className="flex">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <Star key={i} className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+                      <Star key={i} className="w-3.5 h-3.5 text-neon-amber fill-neon-amber" />
                     ))}
                   </div>
                   <span className="text-sm font-semibold">5.0</span>
@@ -398,7 +398,7 @@ export function TemplatePreviewModal({
 
                 {/* Trust badge */}
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Shield className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                  <Shield className="w-3.5 h-3.5 text-neon-green shrink-0" />
                   <span>CMPSBL® Trade Secret License</span>
                 </div>
 
@@ -433,15 +433,15 @@ export function TemplatePreviewModal({
                 </div>
 
                 {/* Upgrade prompt */}
-                <div className="p-3 rounded-xl bg-gradient-to-r from-violet-500/5 to-purple-500/5 border border-violet-500/20">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-neon-purple/5 to-neon-purple/5 border border-neon-purple/20">
                   <div className="flex items-center gap-2 mb-2">
-                    <TrendingUp className="w-4 h-4 text-violet-500" />
+                    <TrendingUp className="w-4 h-4 text-neon-purple" />
                     <span className="text-xs font-semibold">Need more?</span>
                   </div>
                   <p className="text-[10px] text-muted-foreground mb-2">
                     Get commercial rights with Agency Packs starting at $199/mo
                   </p>
-                  <Button variant="ghost" size="sm" className="h-6 text-[10px] text-violet-600 hover:text-violet-500 p-0">
+                  <Button variant="ghost" size="sm" className="h-6 text-[10px] text-neon-purple hover:text-neon-purple p-0">
                     Learn about licensing →
                   </Button>
                 </div>

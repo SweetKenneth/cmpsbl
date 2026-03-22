@@ -49,9 +49,9 @@ const examples: CodeExample[] = [
 ];
 
 const frameworkColors = {
-  react: 'bg-cyan-500/10 text-cyan-500 border-cyan-500/20',
-  node: 'bg-green-500/10 text-green-500 border-green-500/20',
-  python: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+  react: 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20',
+  node: 'bg-neon-green/10 text-neon-green border-neon-green/20',
+  python: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20',
 };
 
 export function LiveCodeExamples({ className }: { className?: string }) {

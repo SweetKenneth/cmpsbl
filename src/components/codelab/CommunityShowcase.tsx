@@ -166,17 +166,17 @@ const CATEGORIES = [
 ];
 
 const MODULE_COLORS: Record<string, string> = {
-  brain: "bg-cyan-500",
-  nexus: "bg-green-500",
-  decode: "bg-purple-500",
-  defense: "bg-amber-500",
-  vision: "bg-blue-500",
-  dream: "bg-pink-500",
-  system: "bg-red-500",
-  access: "bg-orange-500",
+  brain: "bg-neon-cyan",
+  nexus: "bg-neon-green",
+  decode: "bg-neon-purple",
+  defense: "bg-neon-amber",
+  vision: "bg-neon-blue",
+  dream: "bg-neon-magenta",
+  system: "bg-destructive",
+  access: "bg-neon-amber",
   core: "bg-slate-500",
-  ripple: "bg-indigo-500",
-  evolution: "bg-emerald-500",
+  ripple: "bg-primary",
+  evolution: "bg-neon-green",
 };
 
 export function CommunityShowcase() {
@@ -206,7 +206,7 @@ export function CommunityShowcase() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-purple flex items-center justify-center">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -272,14 +272,14 @@ export function CommunityShowcase() {
               key={project.id}
               className={cn(
                 "p-4 hover:border-primary/50 transition-all group",
-                project.featured && "ring-1 ring-amber-500/30 bg-amber-500/5"
+                project.featured && "ring-1 ring-neon-amber/30 bg-neon-amber/5"
               )}
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1 min-w-0">
                   {project.featured && (
-                    <Badge className="mb-2 bg-amber-500/10 text-amber-500 border-amber-500/30">
+                    <Badge className="mb-2 bg-neon-amber/10 text-neon-amber border-neon-amber/30">
                       <Sparkles className="w-3 h-3 mr-1" />
                       Featured
                     </Badge>
@@ -293,9 +293,9 @@ export function CommunityShowcase() {
                   variant="secondary"
                   className={cn(
                     "shrink-0 text-xs",
-                    project.difficulty === "beginner" && "bg-emerald-500/10 text-emerald-500",
-                    project.difficulty === "intermediate" && "bg-amber-500/10 text-amber-500",
-                    project.difficulty === "advanced" && "bg-rose-500/10 text-rose-500"
+                    project.difficulty === "beginner" && "bg-neon-green/10 text-neon-green",
+                    project.difficulty === "intermediate" && "bg-neon-amber/10 text-neon-amber",
+                    project.difficulty === "advanced" && "bg-neon-magenta/10 text-neon-magenta"
                   )}
                 >
                   {project.difficulty}

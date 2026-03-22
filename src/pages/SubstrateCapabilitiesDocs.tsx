@@ -331,11 +331,11 @@ export default function SubstrateCapabilitiesDocs() {
           </Link>
           
           <div className="flex items-start gap-4 mb-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center shrink-0">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center shrink-0">
               <BookOpen className="w-7 h-7 text-white" />
             </div>
             <div>
-              <Badge className="mb-2 bg-cyan-500/20 text-cyan-400 border-cyan-500/30">
+              <Badge className="mb-2 bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30">
                 SDK Reference
               </Badge>
               <h1 className="text-3xl sm:text-4xl font-bold">
@@ -475,7 +475,7 @@ export default function SubstrateCapabilitiesDocs() {
                               >
                                 {copiedCode === `${currentCategory.id}-${idx}` ? (
                                   <>
-                                    <Check className="w-3.5 h-3.5 text-green-500" />
+                                    <Check className="w-3.5 h-3.5 text-neon-green" />
                                     <span className="text-xs">Copied</span>
                                   </>
                                 ) : (
@@ -501,9 +501,9 @@ export default function SubstrateCapabilitiesDocs() {
                 )}
 
                 {/* SDK Import Note */}
-                <Card className="mt-8 p-4 bg-gradient-to-r from-cyan-500/5 to-violet-500/5 border-cyan-500/20">
+                <Card className="mt-8 p-4 bg-gradient-to-r from-neon-cyan/5 to-neon-purple/5 border-neon-cyan/20">
                   <div className="flex items-start gap-3">
-                    <Sparkles className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
+                    <Sparkles className="w-5 h-5 text-neon-cyan shrink-0 mt-0.5" />
                     <div>
                       <h4 className="font-medium mb-1">All Templates Include the SDK</h4>
                       <p className="text-sm text-muted-foreground">

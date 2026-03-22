@@ -217,7 +217,7 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
                 msg.role === 'user' 
                   ? "bg-primary/10 border-primary/30" 
                   : msg.role === 'system'
-                    ? "bg-amber-500/10 border-amber-500/30"
+                    ? "bg-neon-amber/10 border-neon-amber/30"
                     : "bg-card border-border/50"
               )}>
                 {msg.role === 'user' ? (
@@ -225,7 +225,7 @@ export function PortalChatPanel({ agency, className }: PortalChatPanelProps) {
                 ) : (
                   <Bot className={cn(
                     "w-4 h-4",
-                    msg.role === 'system' ? "text-amber-400" : "text-foreground"
+                    msg.role === 'system' ? "text-neon-amber" : "text-foreground"
                   )} />
                 )}
               </div>

@@ -53,19 +53,19 @@ const CATEGORY_ICONS: Record<string, typeof Brain> = {
 };
 
 const CATEGORY_COLORS: Record<string, { border: string; bg: string; text: string }> = {
-  'Foundation': { border: 'border-amber-500/30', bg: 'bg-amber-500/10', text: 'text-amber-400' },
-  'Engineering': { border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
-  'Defense': { border: 'border-red-500/30', bg: 'bg-red-500/10', text: 'text-red-400' },
-  'Intelligence': { border: 'border-violet-500/30', bg: 'bg-violet-500/10', text: 'text-violet-400' },
-  'Growth': { border: 'border-cyan-500/30', bg: 'bg-cyan-500/10', text: 'text-cyan-400' },
+  'Foundation': { border: 'border-neon-amber/30', bg: 'bg-neon-amber/10', text: 'text-neon-amber' },
+  'Engineering': { border: 'border-neon-green/30', bg: 'bg-neon-green/10', text: 'text-neon-green' },
+  'Defense': { border: 'border-destructive/30', bg: 'bg-destructive/10', text: 'text-destructive' },
+  'Intelligence': { border: 'border-neon-purple/30', bg: 'bg-neon-purple/10', text: 'text-neon-purple' },
+  'Growth': { border: 'border-neon-cyan/30', bg: 'bg-neon-cyan/10', text: 'text-neon-cyan' },
 };
 
 const TIER_ACCENT: Record<string, string> = {
-  free: 'bg-emerald-500',
+  free: 'bg-neon-green',
   starter: 'bg-sky-500',
-  professional: 'bg-amber-500',
-  elite: 'bg-gradient-to-r from-rose-500 to-violet-500',
-  apex: 'bg-gradient-to-r from-fuchsia-500 to-cyan-500',
+  professional: 'bg-neon-amber',
+  elite: 'bg-gradient-to-r from-neon-magenta to-neon-purple',
+  apex: 'bg-gradient-to-r from-neon-magenta to-neon-cyan',
 };
 
 function priceLabel(item: CognitiveItem): string {
@@ -197,9 +197,9 @@ export default function ComposableCognitives() {
 
       {purchaseSuccess && (
         <div className="container mx-auto px-4 pt-4">
-          <Alert className="border-emerald-500/30 bg-emerald-500/10">
-            <CheckCircle className="h-4 w-4 text-emerald-400" />
-            <AlertDescription className="text-emerald-300">
+          <Alert className="border-neon-green/30 bg-neon-green/10">
+            <CheckCircle className="h-4 w-4 text-neon-green" />
+            <AlertDescription className="text-neon-green">
               <strong>{purchaseSuccess}</strong> Meta-Agent activated successfully!
             </AlertDescription>
           </Alert>
@@ -332,15 +332,15 @@ export default function ComposableCognitives() {
                 }
                 frontBadge={tierCfg.label}
                 frontBadgeClass={cn(
-                  item.tier === 'free' && 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+                  item.tier === 'free' && 'bg-neon-green/10 text-neon-green border-neon-green/30',
                   item.tier === 'starter' && 'bg-sky-500/10 text-sky-400 border-sky-500/30',
-                  item.tier === 'professional' && 'bg-amber-500/10 text-amber-400 border-amber-500/30',
-                  item.tier === 'elite' && 'bg-rose-500/10 text-rose-400 border-rose-500/30',
-                  item.tier === 'apex' && 'bg-fuchsia-500/10 text-fuchsia-400 border-fuchsia-500/30',
+                  item.tier === 'professional' && 'bg-neon-amber/10 text-neon-amber border-neon-amber/30',
+                  item.tier === 'elite' && 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30',
+                  item.tier === 'apex' && 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/30',
                 )}
                 frontAccentBar={TIER_ACCENT[item.tier]}
                 frontStats={[
-                  { label: 'fused', value: String(item.fusedFrom.length), icon: <Sparkles className="w-3 h-3 text-amber-500" /> },
+                  { label: 'fused', value: String(item.fusedFrom.length), icon: <Sparkles className="w-3 h-3 text-neon-amber" /> },
                   { label: '', value: 'META', icon: <Brain className="w-3 h-3 text-primary" /> },
                 ]}
                 backCapabilities={item.capabilities}

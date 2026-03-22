@@ -24,15 +24,15 @@ const SAMPLE_FINDINGS = [
 ];
 
 const VERDICT_CONFIG = {
-  true_positive: { icon: ThumbsUp, label: 'Confirmed', color: 'bg-emerald-500/20 text-emerald-400', description: 'This is a real issue that should be fixed' },
-  false_positive: { icon: ThumbsDown, label: 'False Positive', color: 'bg-amber-500/20 text-amber-400', description: 'This finding is not applicable to our system' },
-  needs_review: { icon: HelpCircle, label: 'Needs Review', color: 'bg-blue-500/20 text-blue-400', description: 'Unsure — needs a closer look before deciding' },
+  true_positive: { icon: ThumbsUp, label: 'Confirmed', color: 'bg-neon-green/20 text-neon-green', description: 'This is a real issue that should be fixed' },
+  false_positive: { icon: ThumbsDown, label: 'False Positive', color: 'bg-neon-amber/20 text-neon-amber', description: 'This finding is not applicable to our system' },
+  needs_review: { icon: HelpCircle, label: 'Needs Review', color: 'bg-neon-blue/20 text-neon-blue', description: 'Unsure — needs a closer look before deciding' },
 } as const;
 
 const SEVERITY_COLORS: Record<string, string> = {
   error: 'bg-destructive/20 text-destructive',
-  warning: 'bg-amber-500/20 text-amber-400',
-  info: 'bg-blue-500/20 text-blue-400',
+  warning: 'bg-neon-amber/20 text-neon-amber',
+  info: 'bg-neon-blue/20 text-neon-blue',
 };
 
 export function FalsePositiveFeedback() {

@@ -35,9 +35,9 @@ import { listCapabilities, getManifest, type RegisteredCapability } from '@/lib/
 
 // Risk level colors
 const riskColors: Record<string, { bg: string; text: string; border: string }> = {
-  low: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/30' },
-  medium: { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/30' },
-  high: { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/30' },
+  low: { bg: 'bg-neon-green/10', text: 'text-neon-green', border: 'border-neon-green/30' },
+  medium: { bg: 'bg-neon-amber/10', text: 'text-neon-amber', border: 'border-neon-amber/30' },
+  high: { bg: 'bg-destructive/10', text: 'text-destructive', border: 'border-destructive/30' },
 };
 
 // Module icon mapping
@@ -80,7 +80,7 @@ function CapabilityCard({ capability, enabled, onToggle, lastToggled }: Capabili
       {/* Status indicator */}
       <div className={cn(
         "absolute top-3 right-3 w-2 h-2 rounded-full",
-        enabled ? "bg-emerald-500 animate-pulse" : "bg-muted-foreground/30"
+        enabled ? "bg-neon-green animate-pulse" : "bg-muted-foreground/30"
       )} />
       
       <div className="flex items-start gap-3">
@@ -137,7 +137,7 @@ function CapabilityCard({ capability, enabled, onToggle, lastToggled }: Capabili
               <Switch
                 checked={enabled}
                 onCheckedChange={onToggle}
-                className="data-[state=checked]:bg-emerald-500"
+                className="data-[state=checked]:bg-neon-green"
               />
               <span className="text-[10px] text-muted-foreground">
                 {enabled ? 'Enabled' : 'Disabled'}
@@ -158,8 +158,8 @@ function CapabilityCard({ capability, enabled, onToggle, lastToggled }: Capabili
       <div className="absolute bottom-3 right-3">
         <span className={cn(
           "text-[9px] font-mono",
-          capability.valueScore >= 90 ? "text-emerald-400" :
-          capability.valueScore >= 80 ? "text-amber-400" :
+          capability.valueScore >= 90 ? "text-neon-green" :
+          capability.valueScore >= 80 ? "text-neon-amber" :
           "text-muted-foreground"
         )}>
           v{capability.valueScore}
@@ -243,8 +243,8 @@ export function CapabilitiesTab() {
         <Card className="bg-muted/10 border-border/30">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-                <Zap className="w-5 h-5 text-cyan-400" />
+              <div className="w-10 h-10 rounded-xl bg-neon-cyan/10 border border-neon-cyan/30 flex items-center justify-center">
+                <Zap className="w-5 h-5 text-neon-cyan" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{ARCHIVED_CAPABILITIES.length}</p>
@@ -257,8 +257,8 @@ export function CapabilitiesTab() {
         <Card className="bg-muted/10 border-border/30">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-                <CheckCircle className="w-5 h-5 text-emerald-400" />
+              <div className="w-10 h-10 rounded-xl bg-neon-green/10 border border-neon-green/30 flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-neon-green" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{enabledCount}</p>
@@ -271,8 +271,8 @@ export function CapabilitiesTab() {
         <Card className="bg-muted/10 border-border/30">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-                <XCircle className="w-5 h-5 text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-neon-amber/10 border border-neon-amber/30 flex items-center justify-center">
+                <XCircle className="w-5 h-5 text-neon-amber" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{ARCHIVED_CAPABILITIES.length - enabledCount}</p>
@@ -285,8 +285,8 @@ export function CapabilitiesTab() {
         <Card className="bg-muted/10 border-border/30">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center">
-                <Activity className="w-5 h-5 text-purple-400" />
+              <div className="w-10 h-10 rounded-xl bg-neon-purple/10 border border-neon-purple/30 flex items-center justify-center">
+                <Activity className="w-5 h-5 text-neon-purple" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">
@@ -318,7 +318,7 @@ export function CapabilitiesTab() {
             onClick={() => setFilterRisk(filterRisk === 'low' ? null : 'low')}
             className={cn(
               "text-xs",
-              filterRisk === 'low' && "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+              filterRisk === 'low' && "bg-neon-green/10 border-neon-green/30 text-neon-green"
             )}
           >
             Low Risk
@@ -329,7 +329,7 @@ export function CapabilitiesTab() {
             onClick={() => setFilterRisk(filterRisk === 'medium' ? null : 'medium')}
             className={cn(
               "text-xs",
-              filterRisk === 'medium' && "bg-amber-500/10 border-amber-500/30 text-amber-400"
+              filterRisk === 'medium' && "bg-neon-amber/10 border-neon-amber/30 text-neon-amber"
             )}
           >
             Medium Risk

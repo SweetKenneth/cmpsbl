@@ -31,13 +31,13 @@ export function LogViewer() {
   const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'critical':
-        return 'bg-red-500/20 text-red-400 border-red-500/30';
+        return 'bg-destructive/20 text-destructive border-destructive/30';
       case 'error':
-        return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
+        return 'bg-neon-amber/20 text-neon-amber border-neon-amber/30';
       case 'warning':
-        return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30';
+        return 'bg-neon-amber/20 text-neon-amber border-neon-amber/30';
       default:
-        return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+        return 'bg-neon-blue/20 text-neon-blue border-neon-blue/30';
     }
   };
 

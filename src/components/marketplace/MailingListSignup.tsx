@@ -126,7 +126,7 @@ export function MailingListSignup({ variant = 'card', onSuccess }: MailingListSi
       variant === 'floating' && "shadow-2xl"
     )}>
       <CardContent className="p-0">
-        <div className="bg-gradient-to-br from-primary/10 via-violet-500/10 to-cyan-500/10 p-6 border-b">
+        <div className="bg-gradient-to-br from-primary/10 via-neon-purple/10 to-neon-cyan/10 p-6 border-b">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/30">
               <Bell className="w-6 h-6 text-primary" />
@@ -142,15 +142,15 @@ export function MailingListSignup({ variant = 'card', onSuccess }: MailingListSi
           {/* Benefits */}
           <div className="flex flex-wrap gap-2 mt-4">
             <Badge variant="outline" className="gap-1 bg-background/50">
-              <Zap className="w-3 h-3 text-amber-500" />
+              <Zap className="w-3 h-3 text-neon-amber" />
               Early Access
             </Badge>
             <Badge variant="outline" className="gap-1 bg-background/50">
-              <Gift className="w-3 h-3 text-rose-500" />
+              <Gift className="w-3 h-3 text-neon-magenta" />
               Exclusive Deals
             </Badge>
             <Badge variant="outline" className="gap-1 bg-background/50">
-              <Star className="w-3 h-3 text-violet-500" />
+              <Star className="w-3 h-3 text-neon-purple" />
               Featured Templates
             </Badge>
           </div>
@@ -208,7 +208,7 @@ export function MailingListSignup({ variant = 'card', onSuccess }: MailingListSi
                     Handpicked templates recommended by our team
                   </div>
                 </div>
-                <Star className="w-4 h-4 text-amber-500" />
+                <Star className="w-4 h-4 text-neon-amber" />
               </label>
 
               <label className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer transition-colors">
@@ -224,7 +224,7 @@ export function MailingListSignup({ variant = 'card', onSuccess }: MailingListSi
                     Special discounts and bundle offers
                   </div>
                 </div>
-                <Gift className="w-4 h-4 text-rose-500" />
+                <Gift className="w-4 h-4 text-neon-magenta" />
               </label>
             </div>
           </div>

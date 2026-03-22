@@ -150,10 +150,10 @@ export function BotBuilder({ onSuccess }: BotBuilderProps) {
   // Success screen
   if (mintedBot && artifacts) {
     return (
-      <Card className="border-green-500/30">
+      <Card className="border-neon-green/30">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-green-500" />
+            <CheckCircle2 className="w-5 h-5 text-neon-green" />
             <CardTitle className="text-lg">Bot Minted Successfully</CardTitle>
           </div>
           <CardDescription>
@@ -263,8 +263,8 @@ export function BotBuilder({ onSuccess }: BotBuilderProps) {
             </SelectContent>
           </Select>
           {memoryMode === 'Persistent' && (
-            <Alert className="border-amber-500/30">
-              <AlertCircle className="h-4 w-4 text-amber-500" />
+            <Alert className="border-neon-amber/30">
+              <AlertCircle className="h-4 w-4 text-neon-amber" />
               <AlertDescription className="text-xs">
                 Persistent memory uses brain_memory tables. Ensure tables exist.
               </AlertDescription>

@@ -178,7 +178,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <div className="rounded-xl border border-dashed border-teal-500/20 bg-muted/5 backdrop-blur-xl p-12">
+        <div className="rounded-xl border border-dashed border-neon-cyan/20 bg-muted/5 backdrop-blur-xl p-12">
           <div className="text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
             <h3 className="text-lg font-semibold text-muted-foreground/60">INCLUSIVE Access Restricted</h3>
@@ -198,8 +198,8 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center shrink-0">
-            <Accessibility className="w-5 sm:w-6 h-5 sm:h-6 text-teal-400" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-neon-cyan/20 border border-neon-cyan/40 flex items-center justify-center shrink-0">
+            <Accessibility className="w-5 sm:w-6 h-5 sm:h-6 text-neon-cyan" />
           </div>
           <div>
             <h2 className="text-lg sm:text-xl font-bold">INCLUSIVE Module</h2>
@@ -219,10 +219,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
           <Badge variant="outline" className={cn(
             "text-xs",
             globalScore >= 90 
-              ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
+              ? "border-neon-green/50 text-neon-green bg-neon-green/10" 
               : globalScore >= 70
-              ? "border-amber-500/50 text-amber-400 bg-amber-500/10"
-              : "border-red-500/50 text-red-400 bg-red-500/10"
+              ? "border-neon-amber/50 text-neon-amber bg-neon-amber/10"
+              : "border-destructive/50 text-destructive bg-destructive/10"
           )}>
             WCAG {wcagLevel}
           </Badge>
@@ -232,10 +232,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       {/* Score Cards */}
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {/* Global Score */}
-        <Card className="border-teal-500/20 bg-muted/10 backdrop-blur-xl">
+        <Card className="border-neon-cyan/20 bg-muted/10 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Target className="w-4 h-4 text-teal-400" />
+              <Target className="w-4 h-4 text-neon-cyan" />
               Global Accessibility Score
             </CardTitle>
           </CardHeader>
@@ -247,17 +247,17 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
                 <div className="flex items-center justify-between">
                   <span className={cn(
                     "text-3xl font-bold",
-                    globalScore >= 90 ? "text-emerald-400" : globalScore >= 70 ? "text-amber-400" : "text-red-400"
+                    globalScore >= 90 ? "text-neon-green" : globalScore >= 70 ? "text-neon-amber" : "text-destructive"
                   )}>
                     {globalScore}%
                   </span>
                   <Badge variant="outline" className={cn(
                     "text-xs",
                     globalScore >= 90 
-                      ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
+                      ? "border-neon-green/50 text-neon-green bg-neon-green/10" 
                       : globalScore >= 70
-                      ? "border-amber-500/50 text-amber-400 bg-amber-500/10"
-                      : "border-red-500/50 text-red-400 bg-red-500/10"
+                      ? "border-neon-amber/50 text-neon-amber bg-neon-amber/10"
+                      : "border-destructive/50 text-destructive bg-destructive/10"
                   )}>
                     {globalScore >= 90 ? 'EXCELLENT' : globalScore >= 70 ? 'GOOD' : 'NEEDS WORK'}
                   </Badge>
@@ -269,10 +269,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
         </Card>
 
         {/* Violations */}
-        <Card className="border-amber-500/20 bg-muted/10 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-muted/10 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-400" />
+              <AlertTriangle className="w-4 h-4 text-neon-amber" />
               Active Violations
             </CardTitle>
           </CardHeader>
@@ -283,14 +283,14 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
               <div className="flex items-center justify-between">
                 <span className={cn(
                   "text-3xl font-bold",
-                  totalViolations === 0 ? "text-emerald-400" : "text-amber-400"
+                  totalViolations === 0 ? "text-neon-green" : "text-neon-amber"
                 )}>
                   {totalViolations}
                 </span>
                 {totalViolations === 0 ? (
-                  <CheckCircle className="w-8 h-8 text-emerald-400/50" />
+                  <CheckCircle className="w-8 h-8 text-neon-green/50" />
                 ) : (
-                  <XCircle className="w-8 h-8 text-amber-400/50" />
+                  <XCircle className="w-8 h-8 text-neon-amber/50" />
                 )}
               </div>
             )}
@@ -298,10 +298,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
         </Card>
 
         {/* Template Coverage */}
-        <Card className="border-cyan-500/20 bg-muted/10 backdrop-blur-xl">
+        <Card className="border-neon-cyan/20 bg-muted/10 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-cyan-400" />
+              <BarChart3 className="w-4 h-4 text-neon-cyan" />
               Template Coverage
             </CardTitle>
           </CardHeader>
@@ -310,10 +310,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
               <Skeleton className="h-16 w-full" />
             ) : (
               <div className="flex items-center justify-between">
-                <span className="text-3xl font-bold text-cyan-400">
+                <span className="text-3xl font-bold text-neon-cyan">
                   {coverage?.coverage_percent || coverage?.total_templates || 0}%
                 </span>
-                <Badge variant="outline" className="border-cyan-500/50 text-cyan-400 bg-cyan-500/10 text-xs">
+                <Badge variant="outline" className="border-neon-cyan/50 text-neon-cyan bg-neon-cyan/10 text-xs">
                   {coverage?.scanned_templates || 0}/{coverage?.total_templates || 0} scanned
                 </Badge>
               </div>
@@ -323,10 +323,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       </div>
 
       {/* Scan Controls */}
-      <Card className="border-teal-500/20 bg-muted/10 backdrop-blur-xl">
+      <Card className="border-neon-cyan/20 bg-muted/10 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Eye className="w-4 h-4 text-teal-400" />
+            <Eye className="w-4 h-4 text-neon-cyan" />
             Accessibility Scanner
           </CardTitle>
           <CardDescription className="text-xs">Scan any URL for WCAG 2.2 compliance</CardDescription>
@@ -399,12 +399,12 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
             </div>
             
             {/* Auto-Repair Toggle */}
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-teal-500/20">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-neon-cyan/20">
               <Switch
                 id="auto-repair"
                 checked={autoRepairEnabled}
                 onCheckedChange={setAutoRepairEnabled}
-                className="data-[state=checked]:bg-teal-500"
+                className="data-[state=checked]:bg-neon-cyan"
               />
               <Label htmlFor="auto-repair" className="text-xs font-medium cursor-pointer flex items-center gap-1.5">
                 <Wrench className="w-3 h-3" />
@@ -415,12 +415,12 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
 
           {/* Scan Results */}
           {scanMutation.data && (
-            <div className="mt-4 p-4 rounded-lg bg-muted/20 border border-teal-500/20">
+            <div className="mt-4 p-4 rounded-lg bg-muted/20 border border-neon-cyan/20">
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-sm font-medium flex items-center gap-2">
                   Scan Results
                   {scanMutation.data.repair?.applied && (
-                    <Badge variant="outline" className="border-teal-500/50 text-teal-400 bg-teal-500/10 text-[10px]">
+                    <Badge variant="outline" className="border-neon-cyan/50 text-neon-cyan bg-neon-cyan/10 text-[10px]">
                       <Wrench className="w-3 h-3 mr-1" />
                       Auto-Fixed
                     </Badge>
@@ -428,15 +428,15 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
                 </h4>
                 <div className="flex items-center gap-2">
                   {scanMutation.data.repair?.applied && scanMutation.data.repair?.fixes_count > 0 && (
-                    <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10 text-xs">
+                    <Badge variant="outline" className="border-neon-green/50 text-neon-green bg-neon-green/10 text-xs">
                       +{scanMutation.data.improvement || 0}% improved
                     </Badge>
                   )}
                   <Badge variant="outline" className={cn(
                     "text-xs",
                     (scanMutation.data.final_score || scanMutation.data.score || 0) >= 90 
-                      ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
-                      : "border-amber-500/50 text-amber-400 bg-amber-500/10"
+                      ? "border-neon-green/50 text-neon-green bg-neon-green/10" 
+                      : "border-neon-amber/50 text-neon-amber bg-neon-amber/10"
                   )}>
                     Score: {scanMutation.data.final_score || scanMutation.data.score || 0}%
                   </Badge>
@@ -445,8 +445,8 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
               
               {/* Show repairs applied */}
               {scanMutation.data.repair?.applied && scanMutation.data.repair?.fixes_count > 0 && (
-                <div className="mb-3 p-3 rounded-lg bg-teal-500/10 border border-teal-500/20">
-                  <div className="flex items-center gap-2 text-teal-400 mb-2">
+                <div className="mb-3 p-3 rounded-lg bg-neon-cyan/10 border border-neon-cyan/20">
+                  <div className="flex items-center gap-2 text-neon-cyan mb-2">
                     <CheckCircle className="w-4 h-4" />
                     <span className="text-xs font-medium">
                       {scanMutation.data.repair.fixes_count} issue(s) automatically fixed
@@ -477,9 +477,9 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
                       <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-muted/20">
                         <div className={cn(
                           "w-2 h-2 rounded-full mt-1.5 shrink-0",
-                          (v.impact === 'critical' || v.severity === 'critical') ? "bg-red-500" :
-                          (v.impact === 'serious' || v.severity === 'high') ? "bg-orange-500" :
-                          (v.impact === 'moderate' || v.severity === 'medium') ? "bg-amber-500" : "bg-blue-500"
+                          (v.impact === 'critical' || v.severity === 'critical') ? "bg-destructive" :
+                          (v.impact === 'serious' || v.severity === 'high') ? "bg-neon-amber" :
+                          (v.impact === 'moderate' || v.severity === 'medium') ? "bg-neon-amber" : "bg-neon-blue"
                         )} />
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-medium truncate">{v.id || v.type}</p>
@@ -494,8 +494,8 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
                 </ScrollArea>
               ) : (
                 <div className="text-center py-4">
-                  <CheckCircle className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                  <p className="text-sm text-emerald-400">All checks passed!</p>
+                  <CheckCircle className="w-8 h-8 text-neon-green mx-auto mb-2" />
+                  <p className="text-sm text-neon-green">All checks passed!</p>
                 </div>
               )}
             </div>
@@ -504,10 +504,10 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
       </Card>
 
       {/* Pipeline Info */}
-      <Card className="border-teal-500/20 bg-muted/10 backdrop-blur-xl">
+      <Card className="border-neon-cyan/20 bg-muted/10 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Users className="w-4 h-4 text-teal-400" />
+            <Users className="w-4 h-4 text-neon-cyan" />
             Human Compatibility Pipeline
           </CardTitle>
           <CardDescription className="text-xs">End-to-end accessibility workflow</CardDescription>
@@ -522,9 +522,9 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
               { name: 'Report', icon: FileText, desc: 'Document compliance' },
             ].map((step, i) => (
               <div key={step.name} className="flex items-center gap-1 sm:gap-2 flex-1 min-w-[60px]">
-                <div className="flex-1 text-center p-2 sm:p-3 rounded-lg bg-muted/20 border border-teal-500/20">
-                  <step.icon className="w-4 sm:w-5 h-4 sm:h-5 text-teal-400 mx-auto mb-1" />
-                  <p className="text-[10px] sm:text-xs font-medium text-teal-400">{step.name}</p>
+                <div className="flex-1 text-center p-2 sm:p-3 rounded-lg bg-muted/20 border border-neon-cyan/20">
+                  <step.icon className="w-4 sm:w-5 h-4 sm:h-5 text-neon-cyan mx-auto mb-1" />
+                  <p className="text-[10px] sm:text-xs font-medium text-neon-cyan">{step.name}</p>
                   <p className="text-[9px] sm:text-[10px] text-muted-foreground hidden sm:block">{step.desc}</p>
                 </div>
                 {i < 4 && <ChevronRight className="w-3 sm:w-4 h-3 sm:h-4 text-muted-foreground shrink-0" />}

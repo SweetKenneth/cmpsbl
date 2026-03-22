@@ -41,21 +41,21 @@ const PILLAR_CATEGORIES: PillarCategory[] = [
     title: 'Foundation Layer',
     description: 'Memory, identity, and governance — the bedrock every capability builds on.',
     pillarIds: ['memory', 'identity', 'governance'],
-    accent: 'from-blue-500/20 to-cyan-500/20',
+    accent: 'from-neon-blue/20 to-neon-cyan/20',
   },
   {
     id: 'intelligence',
     title: 'Intelligence Layer',
     description: 'Routing, cognition, and orchestration — the thinking and coordination core.',
     pillarIds: ['routing', 'cognition', 'orchestration'],
-    accent: 'from-violet-500/20 to-fuchsia-500/20',
+    accent: 'from-neon-purple/20 to-neon-magenta/20',
   },
   {
     id: 'resilience',
     title: 'Resilience Layer',
     description: 'Defense, observability, events, and autonomous evolution — the self-healing surface.',
     pillarIds: ['defense', 'observability', 'communication', 'evolution'],
-    accent: 'from-emerald-500/20 to-teal-500/20',
+    accent: 'from-neon-green/20 to-neon-cyan/20',
   },
 ];
 

@@ -83,7 +83,7 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlac
           </div>
           <div className="flex items-center gap-2">
             {!isPurchased && (
-              <Badge variant="outline" className="text-[10px] border-amber-500/50 text-amber-400 gap-1">
+              <Badge variant="outline" className="text-[10px] border-neon-amber/50 text-neon-amber gap-1">
                 <Lock className="w-3 h-3" />
                 Trade Secret Protected
               </Badge>
@@ -132,8 +132,8 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlac
           className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/70 backdrop-blur-[3px] rounded-xl"
         >
           <div className="text-center space-y-4 p-6">
-            <div className="w-16 h-16 mx-auto rounded-full bg-orange-500/10 border border-orange-500/30 flex items-center justify-center">
-              <Shield className="w-8 h-8 text-orange-400" />
+            <div className="w-16 h-16 mx-auto rounded-full bg-neon-amber/10 border border-neon-amber/30 flex items-center justify-center">
+              <Shield className="w-8 h-8 text-neon-amber" />
             </div>
             <div className="space-y-2">
               <h4 className="text-lg font-bold text-white">
@@ -143,7 +143,7 @@ export function BlurredCodePreview({ code, isPurchased, onBuy, isLoading, isBlac
                 This capability is delivered as a black-boxed runtime. Source code is permanently sealed to protect proprietary architecture.
               </p>
             </div>
-            <Badge variant="outline" className="text-[10px] border-orange-500/50 text-orange-400 gap-1">
+            <Badge variant="outline" className="text-[10px] border-neon-amber/50 text-neon-amber gap-1">
               <Lock className="w-3 h-3" />
               Black-Box Protected
             </Badge>

@@ -15,13 +15,13 @@ import {
 
 const CATEGORIES = [
   { id: null, name: 'All Templates', icon: Sparkles, color: 'text-primary' },
-  { id: 'brain', name: 'Memory & Learning', icon: Brain, color: 'text-violet-500' },
-  { id: 'decode', name: 'Chatbots & NLP', icon: MessageSquare, color: 'text-cyan-500' },
-  { id: 'defense', name: 'Security & Safety', icon: Shield, color: 'text-rose-500' },
-  { id: 'dream', name: 'Dream Cycles', icon: Moon, color: 'text-purple-500' },
-  { id: 'vision', name: 'Observability', icon: Eye, color: 'text-blue-500' },
-  { id: 'nexus', name: 'AI Routing', icon: Zap, color: 'text-emerald-500' },
-  { id: 'world_engine', name: 'Substrate', icon: Server, color: 'text-orange-500' },
+  { id: 'brain', name: 'Memory & Learning', icon: Brain, color: 'text-neon-purple' },
+  { id: 'decode', name: 'Chatbots & NLP', icon: MessageSquare, color: 'text-neon-cyan' },
+  { id: 'defense', name: 'Security & Safety', icon: Shield, color: 'text-neon-magenta' },
+  { id: 'dream', name: 'Dream Cycles', icon: Moon, color: 'text-neon-purple' },
+  { id: 'vision', name: 'Observability', icon: Eye, color: 'text-neon-blue' },
+  { id: 'nexus', name: 'AI Routing', icon: Zap, color: 'text-neon-green' },
+  { id: 'world_engine', name: 'Substrate', icon: Server, color: 'text-neon-amber' },
   { id: 'system', name: 'System & Admin', icon: Settings, color: 'text-slate-500' },
 ];
 
@@ -29,9 +29,9 @@ const DIFFICULTIES = [
   { id: 'beginner', name: 'Starter', price: '$27', color: 'bg-system-green/20 text-system-green border-system-green/30' },
   { id: 'intermediate', name: 'Advanced', price: '$87', color: 'bg-system-amber/20 text-system-amber border-system-amber/30' },
   { id: 'advanced', name: 'Enterprise', price: '$147', color: 'bg-destructive/20 text-destructive border-destructive/30' },
-  { id: 'premium', name: 'Premium', price: '$299', color: 'bg-violet-500/20 text-violet-400 border-violet-500/30' },
-  { id: 'elite', name: 'Elite', price: '$399', color: 'bg-amber-500/20 text-amber-400 border-amber-500/30' },
-  { id: 'pro', name: 'Pro', price: '$499', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30' },
+  { id: 'premium', name: 'Premium', price: '$299', color: 'bg-neon-purple/20 text-neon-purple border-neon-purple/30' },
+  { id: 'elite', name: 'Elite', price: '$399', color: 'bg-neon-amber/20 text-neon-amber border-neon-amber/30' },
+  { id: 'pro', name: 'Pro', price: '$499', color: 'bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30' },
 ];
 
 interface MarketplaceSidebarProps {

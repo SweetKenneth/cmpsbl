@@ -187,12 +187,12 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
     switch (outcome) {
       case 'success':
       case 'completed':
-        return 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20';
+        return 'bg-neon-green/10 text-neon-green border-neon-green/20';
       case 'error':
       case 'failed':
         return 'bg-destructive/10 text-destructive border-destructive/20';
       case 'warning':
-        return 'bg-amber-500/10 text-amber-600 border-amber-500/20';
+        return 'bg-neon-amber/10 text-neon-amber border-neon-amber/20';
       default:
         return 'bg-muted text-muted-foreground';
     }
@@ -247,10 +247,10 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
       {/* Telemetry Overview */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, iconClass: 'text-blue-400' },
-          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, iconClass: 'text-cyan-400' },
-          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, iconClass: 'text-emerald-400' },
-          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, iconClass: telemetry.recentErrors > 0 ? 'text-red-400' : 'text-emerald-400' },
+          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, iconClass: 'text-neon-blue' },
+          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, iconClass: 'text-neon-cyan' },
+          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, iconClass: 'text-neon-green' },
+          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, iconClass: telemetry.recentErrors > 0 ? 'text-destructive' : 'text-neon-green' },
         ].map((stat) => {
           const Icon = stat.icon;
           return (
@@ -272,10 +272,10 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
       </div>
 
       {/* Kill Switches */}
-      <Card className="border-amber-500/20">
+      <Card className="border-neon-amber/20">
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Power className="w-4 h-4 text-amber-500" />
+            <Power className="w-4 h-4 text-neon-amber" />
             Kill Switches
           </CardTitle>
           <CardDescription className="text-xs">Global system toggles for critical subsystems</CardDescription>
@@ -284,7 +284,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
               <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-amber-400" />
+                <Activity className="w-4 h-4 text-neon-amber" />
                 <div>
                   <p className="text-sm font-medium">Intent Mesh</p>
                   <p className="text-[10px] text-muted-foreground">Emergent module routing</p>
@@ -300,7 +300,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
               <div className="flex items-center gap-2">
-                <Shield className="w-4 h-4 text-red-400" />
+                <Shield className="w-4 h-4 text-destructive" />
                 <div>
                   <p className="text-sm font-medium">Defense Module</p>
                   <p className="text-[10px] text-muted-foreground">Threat detection & blocking</p>
@@ -314,7 +314,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-purple-400" />
+                <Zap className="w-4 h-4 text-neon-purple" />
                 <div>
                   <p className="text-sm font-medium">SEBA Agent</p>
                   <p className="text-[10px] text-muted-foreground">Autonomous evolution</p>
@@ -328,7 +328,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </div>
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border/30">
               <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-cyan-400" />
+                <FileText className="w-4 h-4 text-neon-cyan" />
                 <div>
                   <p className="text-sm font-medium">Autoblog</p>
                   <p className="text-[10px] text-muted-foreground">Content generation</p>
@@ -340,9 +340,9 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
                 disabled={killSwitchesLoading}
               />
             </div>
-            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-emerald-500/20">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-neon-green/20">
               <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-emerald-400" />
+                <Brain className="w-4 h-4 text-neon-green" />
                 <div>
                   <p className="text-sm font-medium">CLM Engine</p>
                   <p className="text-[10px] text-muted-foreground">24/7 continuous learning</p>
@@ -359,11 +359,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
       </Card>
 
       {/* EVLVBL API Card */}
-      <Card className="border-cyan-500/30 bg-cyan-500/[0.03]">
+      <Card className="border-neon-cyan/30 bg-neon-cyan/[0.03]">
         <CardContent className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center shrink-0">
-              <Zap className="w-6 h-6 text-cyan-600" />
+            <div className="w-12 h-12 rounded-xl bg-neon-cyan/10 flex items-center justify-center shrink-0">
+              <Zap className="w-6 h-6 text-neon-cyan" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-base font-bold">EVLVBL API</h3>
@@ -413,7 +413,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               onClick={() => navigate('/admin/patches')}
             >
               <div className="flex items-center gap-3 text-left">
-                <Zap className="w-5 h-5 text-amber-400 shrink-0" />
+                <Zap className="w-5 h-5 text-neon-amber shrink-0" />
                 <div>
                   <p className="text-sm font-medium">Patch Distribution</p>
                   <p className="text-[10px] text-muted-foreground">Deploy & manage patches</p>
@@ -423,11 +423,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-3 sm:p-4 border-emerald-500/20 hover:bg-emerald-500/5"
+              className="justify-between h-auto p-3 sm:p-4 border-neon-green/20 hover:bg-neon-green/5"
               onClick={() => navigate('/docs')}
             >
               <div className="flex items-center gap-3 text-left">
-                <Shield className="w-5 h-5 text-emerald-500 shrink-0" />
+                <Shield className="w-5 h-5 text-neon-green shrink-0" />
                 <div>
                   <p className="text-sm font-medium">EVLVBL v2</p>
                   <p className="text-[10px] text-muted-foreground">SDK · Download · Probes</p>
@@ -441,7 +441,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               onClick={() => navigate('/admin/encode-console')}
             >
               <div className="flex items-center gap-3 text-left">
-                <Activity className="w-5 h-5 text-purple-400 shrink-0" />
+                <Activity className="w-5 h-5 text-neon-purple shrink-0" />
                 <div>
                   <p className="text-sm font-medium">ENCODE Console</p>
                   <p className="text-[10px] text-muted-foreground">Systems engineer · Build · Modify</p>
@@ -451,11 +451,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-3 sm:p-4 border-cyan-500/20 hover:bg-cyan-500/5"
+              className="justify-between h-auto p-3 sm:p-4 border-neon-cyan/20 hover:bg-neon-cyan/5"
               onClick={() => navigate('/admin/evolution')}
             >
               <div className="flex items-center gap-3 text-left">
-                <Zap className="w-5 h-5 text-cyan-500 shrink-0" />
+                <Zap className="w-5 h-5 text-neon-cyan shrink-0" />
                 <div>
                   <p className="text-sm font-medium">Evolution Dashboard</p>
                   <p className="text-[10px] text-muted-foreground">MPE · Shadow A/B · Canary</p>
@@ -469,7 +469,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
               onClick={() => navigate('/diligence')}
             >
               <div className="flex items-center gap-3 text-left">
-                <FileText className="w-5 h-5 text-amber-500 shrink-0" />
+                <FileText className="w-5 h-5 text-neon-amber shrink-0" />
                 <div>
                   <p className="text-sm font-medium">Diligence Harness</p>
                   <p className="text-[10px] text-muted-foreground">Investor-grade test battery</p>
@@ -479,11 +479,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-3 sm:p-4 border-red-500/20 hover:bg-red-500/5"
+              className="justify-between h-auto p-3 sm:p-4 border-destructive/20 hover:bg-destructive/5"
               onClick={() => navigate('/admin/governance')}
             >
               <div className="flex items-center gap-3 text-left">
-                <Lock className="w-5 h-5 text-red-500 shrink-0" />
+                <Lock className="w-5 h-5 text-destructive shrink-0" />
                 <div>
                   <p className="text-sm font-medium">Governance Control</p>
                   <p className="text-[10px] text-muted-foreground">Mode · Lockdown · Audit</p>
@@ -493,11 +493,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-3 sm:p-4 border-orange-500/20 hover:bg-orange-500/5"
+              className="justify-between h-auto p-3 sm:p-4 border-neon-amber/20 hover:bg-neon-amber/5"
               onClick={() => navigate('/evolution')}
             >
               <div className="flex items-center gap-3 text-left">
-                <Zap className="w-5 h-5 text-orange-500 shrink-0" />
+                <Zap className="w-5 h-5 text-neon-amber shrink-0" />
                 <div>
                   <p className="text-sm font-medium">EVOLUTION Control Center</p>
                   <p className="text-[10px] text-muted-foreground">Dry-run · Rollback · Agent Connect</p>
@@ -507,11 +507,11 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
             </Button>
             <Button
               variant="outline"
-              className="justify-between h-auto p-3 sm:p-4 border-blue-500/20 hover:bg-blue-500/5"
+              className="justify-between h-auto p-3 sm:p-4 border-neon-blue/20 hover:bg-neon-blue/5"
               onClick={() => navigate('/admin/analytics')}
             >
               <div className="flex items-center gap-3 text-left">
-                <BarChart3 className="w-5 h-5 text-blue-500 shrink-0" />
+                <BarChart3 className="w-5 h-5 text-neon-blue shrink-0" />
                 <div>
                   <p className="text-sm font-medium">Analytics Intelligence</p>
                   <p className="text-[10px] text-muted-foreground">Pulse · Retention · Churn · Journeys</p>
@@ -559,13 +559,13 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
-              <FileText className="w-4 h-4 text-blue-500" />
+              <FileText className="w-4 h-4 text-neon-blue" />
               Audit Log
               {liveAuditFeed.isFetching && !liveAuditFeed.isLoading && (
                 <Loader2 className="w-3 h-3 animate-spin text-muted-foreground ml-auto" />
               )}
               {liveAuditFeed.data && liveAuditFeed.data.length > 0 && (
-                <Badge variant="outline" className="ml-auto text-[9px] h-4 bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                <Badge variant="outline" className="ml-auto text-[9px] h-4 bg-neon-green/10 text-neon-green border-neon-green/20">
                   <Activity className="w-2.5 h-2.5 mr-1" />
                   LIVE
                 </Badge>
@@ -632,7 +632,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2">
-              <Settings className="w-4 h-4 text-amber-500" />
+              <Settings className="w-4 h-4 text-neon-amber" />
               Rate Limits
             </CardTitle>
             <CardDescription className="text-xs">
@@ -688,7 +688,7 @@ export function GovernorSection({ enabled = false }: { enabled?: boolean }) {
 
             <ConfirmActionDialog
               trigger={
-                <Button variant="outline" size="sm" className="gap-2 border-amber-500/30 text-amber-600 hover:bg-amber-500/10">
+                <Button variant="outline" size="sm" className="gap-2 border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10">
                   <RefreshCw className="w-4 h-4" />
                   Trigger Backup
                 </Button>

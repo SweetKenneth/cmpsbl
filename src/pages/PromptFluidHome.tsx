@@ -161,7 +161,7 @@ export default function PromptFluidHome() {
           >
             <div className="flex flex-col md:flex-row gap-8 items-start">
               <div className="flex-shrink-0">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-primary to-cyan-400 flex items-center justify-center">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-primary to-neon-cyan flex items-center justify-center">
                   <span className="text-3xl sm:text-4xl font-black text-primary-foreground">PF</span>
                 </div>
               </div>
@@ -318,7 +318,7 @@ export default function PromptFluidHome() {
           className="max-w-5xl mx-auto"
         >
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-neon-purple" />
             <div
               className="absolute inset-0 opacity-10"
               style={{

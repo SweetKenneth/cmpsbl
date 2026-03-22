@@ -47,7 +47,7 @@ export function ScanHistoryTimeline({ domain }: { domain: string }) {
           const prev = scans[i + 1];
           const delta = prev?.score != null && scan.score != null ? scan.score - prev.score : 0;
           const TrendIcon = delta > 0 ? TrendingUp : delta < 0 ? TrendingDown : Minus;
-          const trendColor = delta > 0 ? 'text-green-500' : delta < 0 ? 'text-destructive' : 'text-muted-foreground';
+          const trendColor = delta > 0 ? 'text-neon-green' : delta < 0 ? 'text-destructive' : 'text-muted-foreground';
 
           return (
             <div key={scan.id} className="relative flex items-center gap-3">

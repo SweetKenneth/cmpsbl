@@ -67,8 +67,8 @@ const modules: ModuleConfig[] = [
     name: "Ripple",
     description: "Pub/sub messaging, event queues, inter-system communication",
     icon: MessageSquare,
-    color: "text-indigo-500",
-    bgColor: "bg-indigo-500/10",
+    color: "text-primary",
+    bgColor: "bg-primary/10",
     actions: [
       { name: "status", description: "Get message bus status" },
       { name: "publish", description: "Publish event", params: [{ name: "topic", type: "string", required: true }, { name: "message", type: "string", required: true }] },
@@ -81,8 +81,8 @@ const modules: ModuleConfig[] = [
     name: "Access",
     description: "API key management, rate limiting, quotas, billing",
     icon: Shield,
-    color: "text-orange-500",
-    bgColor: "bg-orange-500/10",
+    color: "text-neon-amber",
+    bgColor: "bg-neon-amber/10",
     actions: [
       { name: "status", description: "Get access layer status" },
       { name: "validate", description: "Validate API key", params: [{ name: "key", type: "string", required: true }] },
@@ -96,8 +96,8 @@ const modules: ModuleConfig[] = [
     name: "Brain",
     description: "Memory, learning cycles, reflection, and cognitive synthesis",
     icon: Brain,
-    color: "text-cyan-500",
-    bgColor: "bg-cyan-500/10",
+    color: "text-neon-cyan",
+    bgColor: "bg-neon-cyan/10",
     actions: [
       { name: "status", description: "Get BRAIN system status" },
       { name: "query", description: "Query memories", params: [{ name: "query_text", type: "string", required: true, placeholder: "What do you remember about..." }] },
@@ -111,8 +111,8 @@ const modules: ModuleConfig[] = [
     name: "Decode",
     description: "Intent decoding, cognitive interpretation, proposals",
     icon: MessageSquare,
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/10",
+    color: "text-neon-purple",
+    bgColor: "bg-neon-purple/10",
     actions: [
       { name: "status", description: "Get DECODE system status" },
       { name: "chat", description: "Chat with interpreter", params: [{ name: "message", type: "string", required: true, placeholder: "Your message..." }] },
@@ -125,8 +125,8 @@ const modules: ModuleConfig[] = [
     name: "Dream",
     description: "Dream-Eater operations, mood, mutations, nocturnal processing",
     icon: Moon,
-    color: "text-pink-500",
-    bgColor: "bg-pink-500/10",
+    color: "text-neon-magenta",
+    bgColor: "bg-neon-magenta/10",
     actions: [
       { name: "status", description: "Get dream-eater status" },
       { name: "mood", description: "Get/set mood", params: [{ name: "mood", type: "string", placeholder: "curious|hungry|content" }] },
@@ -140,8 +140,8 @@ const modules: ModuleConfig[] = [
     name: "Defense",
     description: "Bot detection, threat analysis, security posture",
     icon: Shield,
-    color: "text-amber-500",
-    bgColor: "bg-amber-500/10",
+    color: "text-neon-amber",
+    bgColor: "bg-neon-amber/10",
     actions: [
       { name: "status", description: "Get DEFENSE system status" },
       { name: "analyze", description: "Analyze request", params: [{ name: "ip", type: "string", placeholder: "IP address" }] },
@@ -155,8 +155,8 @@ const modules: ModuleConfig[] = [
     name: "Nexus",
     description: "Multi-provider AI routing, text and image generation",
     icon: Zap,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
+    color: "text-neon-green",
+    bgColor: "bg-neon-green/10",
     actions: [
       { name: "status", description: "Get NEXUS system status" },
       { name: "text", description: "Generate text", params: [{ name: "prompt", type: "string", required: true }, { name: "model", type: "string", placeholder: "openai|anthropic|google" }] },
@@ -169,8 +169,8 @@ const modules: ModuleConfig[] = [
     name: "Vision",
     description: "Observability, metrics, health monitoring",
     icon: Eye,
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
+    color: "text-neon-blue",
+    bgColor: "bg-neon-blue/10",
     actions: [
       { name: "health", description: "Get system health" },
       { name: "metrics", description: "Get system metrics" },
@@ -185,8 +185,8 @@ const modules: ModuleConfig[] = [
     name: "System",
     description: "Administration, backup, restore, configuration",
     icon: Settings,
-    color: "text-red-500",
-    bgColor: "bg-red-500/10",
+    color: "text-destructive",
+    bgColor: "bg-destructive/10",
     actions: [
       { name: "status", description: "Get system status" },
       { name: "health", description: "Full health diagnostics" },
@@ -200,8 +200,8 @@ const modules: ModuleConfig[] = [
     name: "Evolution",
     description: "Self-improvement proposals, architecture scanning, upgrades",
     icon: Zap,
-    color: "text-emerald-500",
-    bgColor: "bg-emerald-500/10",
+    color: "text-neon-green",
+    bgColor: "bg-neon-green/10",
     actions: [
       { name: "status", description: "Get evolution status" },
       { name: "scan", description: "Scan for improvements", params: [{ name: "system", type: "string", placeholder: "brain|defense|nexus" }] },
@@ -346,9 +346,9 @@ const { data, error } = await supabase.functions.invoke("pf-substrate", {
               <Badge variant="outline" className="shrink-0 text-xs">
                 {result ? (
                   (result as { success?: boolean }).success ? (
-                    <CheckCircle2 className="w-3 h-3 text-green-500" />
+                    <CheckCircle2 className="w-3 h-3 text-neon-green" />
                   ) : (
-                    <AlertCircle className="w-3 h-3 text-red-500" />
+                    <AlertCircle className="w-3 h-3 text-destructive" />
                   )
                 ) : (
                   <span className="text-muted-foreground">Ready</span>
@@ -382,7 +382,7 @@ const { data, error } = await supabase.functions.invoke("pf-substrate", {
                 {action.params.map((param) => (
                   <div key={param.name}>
                     <Label className="text-xs text-muted-foreground">
-                      {param.name} {param.required && <span className="text-red-500">*</span>}
+                      {param.name} {param.required && <span className="text-destructive">*</span>}
                     </Label>
                     {param.type === "string" && param.name.includes("content") || param.name.includes("message") || param.name.includes("text") ? (
                       <Textarea

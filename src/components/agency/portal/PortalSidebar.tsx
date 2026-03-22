@@ -102,14 +102,14 @@ export function PortalSidebar({
         <div className="flex gap-2">
           <Badge variant="outline" className={cn(
             "flex-1 justify-center gap-1 py-1.5 text-[10px]",
-            workingCount > 0 && "border-amber-500/30 text-amber-400 bg-amber-500/10"
+            workingCount > 0 && "border-neon-amber/30 text-neon-amber bg-neon-amber/10"
           )}>
             <Zap className="w-3 h-3" />
             {workingCount} Working
           </Badge>
           <Badge variant="outline" className={cn(
             "flex-1 justify-center gap-1 py-1.5 text-[10px]",
-            learningCount > 0 && "border-purple-500/30 text-purple-400 bg-purple-500/10"
+            learningCount > 0 && "border-neon-purple/30 text-neon-purple bg-neon-purple/10"
           )}>
             <BookOpen className="w-3 h-3" />
             {learningCount} Learning
@@ -135,7 +135,7 @@ export function PortalSidebar({
                   className={cn(
                     "group p-3 rounded-xl border transition-all cursor-default",
                     "bg-card/50 border-border/30 hover:border-border/50",
-                    member.is_leader && "border-amber-500/30 bg-amber-500/5"
+                    member.is_leader && "border-neon-amber/30 bg-neon-amber/5"
                   )}
                 >
                   <div className="flex items-center gap-3">
@@ -143,16 +143,16 @@ export function PortalSidebar({
                     <div className={cn(
                       "w-9 h-9 rounded-lg flex items-center justify-center shrink-0",
                       "bg-gradient-to-br",
-                      status === 'working' && "from-amber-500/20 to-orange-500/20",
-                      status === 'learning' && "from-purple-500/20 to-fuchsia-500/20",
+                      status === 'working' && "from-neon-amber/20 to-neon-amber/20",
+                      status === 'learning' && "from-neon-purple/20 to-neon-magenta/20",
                       status === 'idle' && "from-muted/40 to-muted/20"
                     )}>
                       {member.is_leader ? (
-                        <Crown className="w-4 h-4 text-amber-400" />
+                        <Crown className="w-4 h-4 text-neon-amber" />
                       ) : status === 'learning' ? (
-                        <Brain className="w-4 h-4 text-purple-400 animate-pulse" />
+                        <Brain className="w-4 h-4 text-neon-purple animate-pulse" />
                       ) : status === 'working' ? (
-                        <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
+                        <Loader2 className="w-4 h-4 text-neon-amber animate-spin" />
                       ) : (
                         <CheckCircle className="w-4 h-4 text-muted-foreground" />
                       )}
@@ -165,7 +165,7 @@ export function PortalSidebar({
                           {spec?.name || member.specialization}
                         </span>
                         {member.is_leader && (
-                          <Badge variant="outline" className="text-[9px] px-1 py-0 h-4 border-amber-500/30 text-amber-400">
+                          <Badge variant="outline" className="text-[9px] px-1 py-0 h-4 border-neon-amber/30 text-neon-amber">
                             Lead
                           </Badge>
                         )}
@@ -176,8 +176,8 @@ export function PortalSidebar({
                           <>
                             <span>•</span>
                             <span className={cn(
-                              status === 'working' && "text-amber-400",
-                              status === 'learning' && "text-purple-400"
+                              status === 'working' && "text-neon-amber",
+                              status === 'learning' && "text-neon-purple"
                             )}>
                               {status === 'learning' ? 'Learning' : 'Working'}
                             </span>
@@ -211,7 +211,7 @@ export function PortalSidebar({
             size="sm"
             onClick={handleStartLearning}
             disabled={isStartingLearning}
-            className="w-full gap-2 text-xs border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
+            className="w-full gap-2 text-xs border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10"
           >
             {isStartingLearning ? (
               <Loader2 className="w-3 h-3 animate-spin" />

@@ -19,10 +19,10 @@ import type { AuditReport, AuditFinding, AuditSeverity, AuditCategory } from '@/
 import { TEST_SUITE_DEFS, runTestSuite, runAllTestSuites, type SuiteResult } from '@/lib/audit/test-suites';
 
 const SEVERITY_CONFIG: Record<AuditSeverity, { icon: typeof Shield; color: string; bg: string; border: string }> = {
-  fatal: { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30' },
-  error: { icon: AlertTriangle, color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30' },
-  warn: { icon: Info, color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-  info: { icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  fatal: { icon: XCircle, color: 'text-destructive', bg: 'bg-destructive/10', border: 'border-destructive/30' },
+  error: { icon: AlertTriangle, color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30' },
+  warn: { icon: Info, color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30' },
+  info: { icon: CheckCircle2, color: 'text-neon-green', bg: 'bg-neon-green/10', border: 'border-neon-green/30' },
 };
 
 const CATEGORY_LABELS: Record<AuditCategory, string> = {
@@ -68,7 +68,7 @@ function FindingRow({ finding }: { finding: AuditFinding }) {
                 <p className="font-mono text-[10px] text-muted-foreground/60">📁 {finding.file}</p>
               )}
               {finding.fix_applied && (
-                <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+                <Badge variant="outline" className="text-[10px] border-neon-green/30 text-neon-green bg-neon-green/10">
                   ✅ Auto-fixed
                 </Badge>
               )}
@@ -124,7 +124,7 @@ function TestSuiteRunner() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-            <FlaskConical className="w-5 h-5 text-violet-400" />
+            <FlaskConical className="w-5 h-5 text-neon-purple" />
             Test Suites
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
@@ -135,7 +135,7 @@ function TestSuiteRunner() {
           onClick={handleRunAll}
           disabled={!!running}
           size="sm"
-          className="gap-2 bg-violet-600 hover:bg-violet-500 text-white shrink-0"
+          className="gap-2 bg-neon-purple hover:bg-neon-purple text-white shrink-0"
         >
           {running === 'all' ? <Cpu className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
           {running === 'all' ? 'Running All…' : 'Run All Suites'}
@@ -145,11 +145,11 @@ function TestSuiteRunner() {
       {/* Summary bar */}
       {hasResults && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 text-sm">
-          <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+          <Badge variant="outline" className="border-neon-green/30 text-neon-green bg-neon-green/10">
             ✅ {totalPassed} passed
           </Badge>
           {totalFailed > 0 && (
-            <Badge variant="outline" className="border-red-500/30 text-red-400 bg-red-500/10">
+            <Badge variant="outline" className="border-destructive/30 text-destructive bg-destructive/10">
               ❌ {totalFailed} failed
             </Badge>
           )}
@@ -165,8 +165,8 @@ function TestSuiteRunner() {
           return (
             <Card key={def.id} className={cn(
               'border transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm',
-              result && result.failed === 0 && 'border-emerald-500/20',
-              result && result.failed > 0 && 'border-red-500/20',
+              result && result.failed === 0 && 'border-neon-green/20',
+              result && result.failed > 0 && 'border-destructive/20',
             )}>
               <CardHeader className="p-3 pb-0">
                 <div className="flex items-center justify-between">
@@ -203,16 +203,16 @@ function TestSuiteRunner() {
                       <div key={i} className="flex items-start gap-2 text-xs">
                         <span className="shrink-0 mt-0.5">
                           {t.passed
-                            ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                            : <XCircle className="w-3.5 h-3.5 text-red-400" />}
+                            ? <CheckCircle2 className="w-3.5 h-3.5 text-neon-green" />
+                            : <XCircle className="w-3.5 h-3.5 text-destructive" />}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <span className={cn('font-medium', t.passed ? 'text-foreground' : 'text-red-400')}>
+                          <span className={cn('font-medium', t.passed ? 'text-foreground' : 'text-destructive')}>
                             {t.name}
                           </span>
                           <span className="text-muted-foreground/50 ml-1.5 font-mono tabular-nums">{t.durationMs}ms</span>
                           {t.error && (
-                            <p className="text-red-400/80 text-[10px] mt-0.5 font-mono truncate">{t.error}</p>
+                            <p className="text-destructive/80 text-[10px] mt-0.5 font-mono truncate">{t.error}</p>
                           )}
                         </div>
                       </div>
@@ -281,7 +281,7 @@ export function AuditTab() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div>
               <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                <Shield className="w-5 h-5 text-cyan-400" />
+                <Shield className="w-5 h-5 text-neon-cyan" />
                 Production Audit
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
@@ -292,7 +292,7 @@ export function AuditTab() {
               onClick={handleRun}
               disabled={loading}
               size="sm"
-              className="gap-2 bg-cyan-600 hover:bg-cyan-500 text-white shrink-0"
+              className="gap-2 bg-neon-cyan hover:bg-neon-cyan text-white shrink-0"
             >
               {loading ? <Cpu className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
               {loading ? 'Scanning…' : 'Run Audit'}
@@ -301,9 +301,9 @@ export function AuditTab() {
 
           {report && (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-2 sm:grid-cols-5 gap-2">
-              <Card className={cn('border-2', report.summary.passed ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-red-500/40 bg-red-500/5')}>
+              <Card className={cn('border-2', report.summary.passed ? 'border-neon-green/40 bg-neon-green/5' : 'border-destructive/40 bg-destructive/5')}>
                 <CardContent className="p-3 text-center">
-                  <div className={cn('text-lg font-bold', report.summary.passed ? 'text-emerald-400' : 'text-red-400')}>
+                  <div className={cn('text-lg font-bold', report.summary.passed ? 'text-neon-green' : 'text-destructive')}>
                     {report.summary.passed ? '✅ PASS' : '❌ FAIL'}
                   </div>
                   <div className="text-[10px] text-muted-foreground mt-0.5">Release Gate</div>

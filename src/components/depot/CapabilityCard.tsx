@@ -36,17 +36,17 @@ interface CapabilityCardProps {
 
 // Colorful tier badges (applied to badge only, not as page overlay)
 const tierColors: Record<string, string> = {
-  utility: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
-  advanced: 'border-cyan-500/30 bg-cyan-500/10 text-cyan-400',
+  utility: 'border-neon-green/30 bg-neon-green/10 text-neon-green',
+  advanced: 'border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan',
   system: 'border-primary/30 bg-primary/10 text-primary',
-  flagship: 'border-amber-500/30 bg-amber-500/10 text-amber-400',
+  flagship: 'border-neon-amber/30 bg-neon-amber/10 text-neon-amber',
 };
 
 const difficultyColors: Record<string, string> = {
-  beginner: 'text-emerald-400',
-  intermediate: 'text-cyan-400',
-  advanced: 'text-amber-400',
-  expert: 'text-rose-400',
+  beginner: 'text-neon-green',
+  intermediate: 'text-neon-cyan',
+  advanced: 'text-neon-amber',
+  expert: 'text-neon-magenta',
 };
 
 export function CapabilityCard({ capability, categoryConfig, onViewDetails }: CapabilityCardProps) {
@@ -91,7 +91,7 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
   const premiumBorder = isRecursiveCapability 
     ? 'ring-1 ring-primary/30 hover:ring-primary/50'
     : isSTierCapability
-      ? 'ring-1 ring-cyan-500/30 hover:ring-cyan-500/50'
+      ? 'ring-1 ring-neon-cyan/30 hover:ring-neon-cyan/50'
       : '';
 
   return (
@@ -126,7 +126,7 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
                 </Badge>
               )}
               {isSTierCapability && !isRecursiveCapability && (
-                <Badge variant="outline" className="text-[10px] border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
+                <Badge variant="outline" className="text-[10px] border-neon-cyan/30 bg-neon-cyan/10 text-neon-cyan">
                   <Zap className="w-2.5 h-2.5 mr-1" />
                   S-Tier
                 </Badge>
@@ -250,7 +250,7 @@ export function CapabilityCard({ capability, categoryConfig, onViewDetails }: Ca
                 className={cn(
                   "h-9 px-3 touch-manipulation text-xs md:text-sm",
                   isRecursiveCapability && "bg-primary hover:bg-primary/90",
-                  isSTierCapability && !isRecursiveCapability && "bg-cyan-600 hover:bg-cyan-500",
+                  isSTierCapability && !isRecursiveCapability && "bg-neon-cyan hover:bg-neon-cyan",
                   !isPremium && "bg-primary hover:bg-primary/90"
                 )}
               >

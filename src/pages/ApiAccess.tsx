@@ -165,8 +165,8 @@ export default function ApiAccess() {
                   </>
                 ) : (
                   <div className="text-center space-y-5">
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto">
-                      <Check className="w-7 h-7 text-emerald-400" />
+                    <div className="w-14 h-14 rounded-2xl bg-neon-green/10 flex items-center justify-center mx-auto">
+                      <Check className="w-7 h-7 text-neon-green" />
                     </div>
                     <div>
                       <h2 className="text-xl font-bold text-foreground mb-1">Your API key is ready</h2>
@@ -180,7 +180,7 @@ export default function ApiAccess() {
                         onClick={copyKey}
                         className="absolute top-2 right-2 p-2 rounded-lg bg-background/80 border border-border/50 hover:bg-accent transition-colors"
                       >
-                        {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-muted-foreground" />}
+                        {copied ? <Check className="w-4 h-4 text-neon-green" /> : <Copy className="w-4 h-4 text-muted-foreground" />}
                       </button>
                     </div>
                     <div className="text-left">

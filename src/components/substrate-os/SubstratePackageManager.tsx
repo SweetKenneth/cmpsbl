@@ -210,10 +210,10 @@ export function SubstratePackageManager() {
 
   return (
     <>
-      <Card className="border border-purple-500/20 bg-white/5 backdrop-blur-xl">
+      <Card className="border border-neon-purple/20 bg-white/5 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
-            <Package className="w-5 h-5 text-purple-400" />
+            <Package className="w-5 h-5 text-neon-purple" />
             Substrate Package Manager
           </CardTitle>
           <CardDescription>
@@ -262,13 +262,13 @@ export function SubstratePackageManager() {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 space-y-3">
               <h3 className="text-sm font-medium flex items-center gap-2">
-                <Download className="w-4 h-4 text-emerald-400" />
+                <Download className="w-4 h-4 text-neon-green" />
                 Export Package
               </h3>
               <Button
                 onClick={() => createPackage.mutate(selectedType)}
                 disabled={createPackage.isPending}
-                className="w-full gap-2 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30"
+                className="w-full gap-2 bg-neon-green/20 border border-neon-green/40 text-neon-green hover:bg-neon-green/30"
               >
                 {createPackage.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -287,7 +287,7 @@ export function SubstratePackageManager() {
 
             <div className="flex-1 space-y-3">
               <h3 className="text-sm font-medium flex items-center gap-2">
-                <Upload className="w-4 h-4 text-blue-400" />
+                <Upload className="w-4 h-4 text-neon-blue" />
                 Import Package
               </h3>
               <input
@@ -301,7 +301,7 @@ export function SubstratePackageManager() {
                 onClick={() => fileInputRef.current?.click()}
                 disabled={importPackage.isPending}
                 variant="outline"
-                className="w-full gap-2 border-blue-500/30 text-blue-400 hover:bg-blue-500/10"
+                className="w-full gap-2 border-neon-blue/30 text-neon-blue hover:bg-neon-blue/10"
               >
                 {importPackage.isPending ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -317,9 +317,9 @@ export function SubstratePackageManager() {
           </div>
 
           {/* Info */}
-          <div className="bg-purple-500/5 border border-purple-500/20 rounded-lg p-4">
+          <div className="bg-neon-purple/5 border border-neon-purple/20 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/40">
+              <Badge className="bg-neon-purple/20 text-neon-purple border-neon-purple/40">
                 NEW
               </Badge>
               <div className="text-sm">

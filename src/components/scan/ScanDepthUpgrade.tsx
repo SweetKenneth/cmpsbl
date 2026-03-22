@@ -15,8 +15,8 @@ interface ScanDepthUpgradeProps {
 const DEPTH_INFO = {
   triage: { label: 'Triage', next: 'standard', icon: Search, color: 'text-muted-foreground' },
   standard: { label: 'Standard', next: 'deep', icon: Shield, color: 'text-primary' },
-  deep: { label: 'Deep', next: 'forensic', icon: Zap, color: 'text-yellow-500' },
-  forensic: { label: 'Forensic', next: null, icon: Zap, color: 'text-red-500' },
+  deep: { label: 'Deep', next: 'forensic', icon: Zap, color: 'text-neon-amber' },
+  forensic: { label: 'Forensic', next: null, icon: Zap, color: 'text-destructive' },
 };
 
 export function ScanDepthUpgrade({ currentDepth, className = '' }: ScanDepthUpgradeProps) {

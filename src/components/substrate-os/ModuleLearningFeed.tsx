@@ -62,23 +62,23 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
 };
 
 const MODULE_COLORS: Record<string, string> = {
-  brain: 'text-purple-400 border-purple-500/30',
-  cortex: 'text-blue-400 border-blue-500/30',
-  defense: 'text-red-400 border-red-500/30',
-  nexus: 'text-green-400 border-green-500/30',
-  vision: 'text-amber-400 border-amber-500/30',
-  ripple: 'text-cyan-400 border-cyan-500/30',
-  access: 'text-orange-400 border-orange-500/30',
-  inclusive: 'text-pink-400 border-pink-500/30',
-  evolution: 'text-emerald-400 border-emerald-500/30',
+  brain: 'text-neon-purple border-neon-purple/30',
+  cortex: 'text-neon-blue border-neon-blue/30',
+  defense: 'text-destructive border-destructive/30',
+  nexus: 'text-neon-green border-neon-green/30',
+  vision: 'text-neon-amber border-neon-amber/30',
+  ripple: 'text-neon-cyan border-neon-cyan/30',
+  access: 'text-neon-amber border-neon-amber/30',
+  inclusive: 'text-neon-magenta border-neon-magenta/30',
+  evolution: 'text-neon-green border-neon-green/30',
   system: 'text-gray-400 border-gray-500/30',
-  decode: 'text-indigo-400 border-indigo-500/30',
-  autoblog: 'text-violet-400 border-violet-500/30',
-  encoded: 'text-fuchsia-400 border-fuchsia-500/30',
-  encoded_learning_engine: 'text-fuchsia-400 border-fuchsia-500/30',
-  clm: 'text-purple-400 border-purple-500/30',
-  cerebras: 'text-amber-400 border-amber-500/30',
-  openrouter: 'text-green-400 border-green-500/30',
+  decode: 'text-primary border-primary/30',
+  autoblog: 'text-neon-purple border-neon-purple/30',
+  encoded: 'text-neon-magenta border-neon-magenta/30',
+  encoded_learning_engine: 'text-neon-magenta border-neon-magenta/30',
+  clm: 'text-neon-purple border-neon-purple/30',
+  cerebras: 'text-neon-amber border-neon-amber/30',
+  openrouter: 'text-neon-green border-neon-green/30',
 };
 
 export function ModuleLearningFeed() {
@@ -219,9 +219,9 @@ export function ModuleLearningFeed() {
                               {log.source.replace(/_/g, ' ')}
                             </span>
                             {log.success ? (
-                              <CheckCircle2 className="w-3 h-3 text-green-400" />
+                              <CheckCircle2 className="w-3 h-3 text-neon-green" />
                             ) : (
-                              <Zap className="w-3 h-3 text-amber-400" />
+                              <Zap className="w-3 h-3 text-neon-amber" />
                             )}
                           </div>
                           

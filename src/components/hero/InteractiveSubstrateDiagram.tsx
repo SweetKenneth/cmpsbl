@@ -28,7 +28,7 @@ const modules: ModuleNode[] = [
     id: "brain",
     name: "BRAIN",
     icon: Brain,
-    color: "text-cyan-300",
+    color: "text-neon-cyan",
     glowColor: "shadow-[0_0_30px_rgba(34,211,238,0.6)]",
     position: { x: 50, y: 15 },
     description: "Memory • Auto-Tiering • Cognitive Recall",
@@ -38,7 +38,7 @@ const modules: ModuleNode[] = [
     id: "decode",
     name: "DECODE",
     icon: MessageSquare,
-    color: "text-fuchsia-400",
+    color: "text-neon-magenta",
     glowColor: "shadow-[0_0_30px_rgba(232,121,249,0.6)]",
     position: { x: 15, y: 38 },
     description: "Intent • NL Understanding • Personality",
@@ -48,7 +48,7 @@ const modules: ModuleNode[] = [
     id: "defense",
     name: "DEFENSE",
     icon: Shield,
-    color: "text-amber-300",
+    color: "text-neon-amber",
     glowColor: "shadow-[0_0_30px_rgba(252,211,77,0.6)]",
     position: { x: 85, y: 38 },
     description: "Threat Detection • Input Scanning • Security",
@@ -58,7 +58,7 @@ const modules: ModuleNode[] = [
     id: "nexus",
     name: "NEXUS",
     icon: Zap,
-    color: "text-emerald-300",
+    color: "text-neon-green",
     glowColor: "shadow-[0_0_30px_rgba(110,231,183,0.6)]",
     position: { x: 12, y: 68 },
     description: "Fleet Routing • Multi-Provider • Health-Weighted",
@@ -68,7 +68,7 @@ const modules: ModuleNode[] = [
     id: "encode",
     name: "ENCODE",
     icon: Cpu,
-    color: "text-orange-300",
+    color: "text-neon-amber",
     glowColor: "shadow-[0_0_30px_rgba(253,186,116,0.6)]",
     position: { x: 88, y: 68 },
     description: "Code Generation • Error Patterns • Task Engine",
@@ -88,7 +88,7 @@ const modules: ModuleNode[] = [
     id: "dream",
     name: "DREAM",
     icon: Moon,
-    color: "text-violet-300",
+    color: "text-neon-purple",
     glowColor: "shadow-[0_0_30px_rgba(196,181,253,0.6)]",
     position: { x: 70, y: 85 },
     description: "Autonomous Learning • Mutation • Synthesis",
@@ -98,7 +98,7 @@ const modules: ModuleNode[] = [
     id: "core",
     name: "CORE",
     icon: Network,
-    color: "text-rose-300",
+    color: "text-neon-magenta",
     glowColor: "shadow-[0_0_30px_rgba(253,164,175,0.6)]",
     position: { x: 50, y: 50 },
     description: "Kernel • Circuit Recovery • Orchestration",
@@ -309,17 +309,17 @@ export function InteractiveSubstrateDiagram() {
     <div className="relative w-full aspect-square max-w-2xl mx-auto pb-16 md:pb-12">
       {/* Neon background glow effects */}
       <div className="absolute inset-0 overflow-hidden rounded-3xl">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-fuchsia-500/10" />
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-cyan-400/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-fuchsia-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-violet-400/15 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/10 via-transparent to-neon-magenta/10" />
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-neon-cyan/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-32 h-32 bg-neon-magenta/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-neon-purple/15 rounded-full blur-3xl" />
       </div>
       
       {/* Grid lines - enhanced neon */}
       <svg className="absolute inset-0 w-full h-full opacity-30">
         <defs>
           <pattern id="neon-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-cyan-400/40" />
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-neon-cyan/40" />
           </pattern>
           <linearGradient id="neon-fade" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="rgb(34, 211, 238)" stopOpacity="0.3" />
@@ -370,7 +370,7 @@ export function InteractiveSubstrateDiagram() {
         }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-cyan-400/30 via-violet-500/25 to-fuchsia-500/30 blur-2xl" />
+        <div className="w-28 h-28 md:w-36 md:h-36 rounded-full bg-gradient-to-br from-neon-cyan/30 via-neon-purple/25 to-neon-magenta/30 blur-2xl" />
       </motion.div>
       <motion.div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0"
@@ -380,7 +380,7 @@ export function InteractiveSubstrateDiagram() {
         }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
       >
-        <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-tr from-emerald-400/25 to-amber-400/25 blur-xl" />
+        <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-tr from-neon-green/25 to-neon-amber/25 blur-xl" />
       </motion.div>
 
       {/* Module nodes */}
@@ -440,19 +440,19 @@ export function InteractiveSubstrateDiagram() {
 
       {/* Corner stats - Neon enhanced */}
       <div className="absolute top-0 left-0 text-left">
-        <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+        <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-neon-cyan/30 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
           <div className="flex items-center gap-2">
-            <Cpu className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-mono text-cyan-300">SUBSTRATE SPARTA</span>
+            <Cpu className="w-4 h-4 text-neon-cyan" />
+            <span className="text-xs font-mono text-neon-cyan">SUBSTRATE SPARTA</span>
           </div>
         </div>
       </div>
 
       <div className="absolute top-0 right-0 text-right">
-        <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-emerald-500/30 shadow-[0_0_15px_rgba(52,211,153,0.2)]">
+        <div className="bg-background/80 backdrop-blur-md rounded-lg px-3 py-2 border border-neon-green/30 shadow-[0_0_15px_rgba(52,211,153,0.2)]">
           <div className="flex items-center gap-2">
-            <Network className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs font-mono text-emerald-300">ONLINE</span>
+            <Network className="w-4 h-4 text-neon-green" />
+            <span className="text-xs font-mono text-neon-green">ONLINE</span>
           </div>
         </div>
       </div>

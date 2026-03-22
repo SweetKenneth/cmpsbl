@@ -78,9 +78,9 @@ export default function InvestorsPublic() {
 
   const metrics = [
     { icon: Layers, label: "Modules", value: "40", color: "text-primary" },
-    { icon: Zap, label: "Crystallized Capabilities", value: String(stierPipelinesCount), color: "text-emerald-500" },
-    { icon: Award, label: "World Firsts", value: "14", color: "text-amber-500" },
-    { icon: Globe, label: "Capabilities", value: "675+", color: "text-violet-400" }
+    { icon: Zap, label: "Crystallized Capabilities", value: String(stierPipelinesCount), color: "text-neon-green" },
+    { icon: Award, label: "World Firsts", value: "14", color: "text-neon-amber" },
+    { icon: Globe, label: "Capabilities", value: "675+", color: "text-neon-purple" }
   ];
 
   const products = [
@@ -114,7 +114,7 @@ export default function InvestorsPublic() {
       <div className="fixed inset-0 pointer-events-none -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-primary/5" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-primary/5 blur-[120px]" />
-        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-violet-500/5 blur-[100px]" />
+        <div className="absolute bottom-1/3 right-1/4 w-80 h-80 rounded-full bg-neon-purple/5 blur-[100px]" />
       </div>
 
       {/* Hero */}
@@ -141,7 +141,7 @@ export default function InvestorsPublic() {
               size="lg"
               onClick={handleDownloadDeck}
               disabled={downloading}
-              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="bg-gradient-to-r from-primary to-neon-purple hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}
@@ -184,7 +184,7 @@ export default function InvestorsPublic() {
       {/* World Firsts */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-300 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex items-center gap-3 mb-2">
-          <Award className="w-7 h-7 text-amber-500" />
+          <Award className="w-7 h-7 text-neon-amber" />
           <h2 className="text-3xl font-semibold text-foreground">14 Documented World Firsts</h2>
         </div>
         <p className="text-muted-foreground mb-8 text-sm italic max-w-3xl">
@@ -196,7 +196,7 @@ export default function InvestorsPublic() {
             <Card key={i} className="p-5 bg-card/60 backdrop-blur border-border/50 hover:border-primary/30 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 group">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-neon-green shrink-0 mt-0.5" />
                   <h3 className="text-sm font-semibold text-foreground">{wf.title}</h3>
                 </div>
                 <Badge variant="outline" className="text-[10px] px-2 py-0.5 shrink-0 border-primary/30 text-primary">
@@ -220,7 +220,7 @@ export default function InvestorsPublic() {
           <div className="bg-card/60 backdrop-blur border border-border/50 rounded-2xl p-8 hover:border-primary/40 transition-all">
             <div className="flex items-center gap-3 mb-4">
               <Brain className="w-6 h-6 text-primary" />
-              <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/30">Zenodo DOI Verified</Badge>
+              <Badge className="bg-neon-green/10 text-neon-green border-neon-green/30">Zenodo DOI Verified</Badge>
             </div>
             <h2 className="text-2xl md:text-3xl font-semibold mb-2 text-foreground">World's First Autonomous Dreaming AI</h2>
             <p className="text-muted-foreground">
@@ -304,7 +304,7 @@ export default function InvestorsPublic() {
               size="lg"
               onClick={handleDownloadDeck}
               disabled={downloading}
-              className="bg-gradient-to-r from-primary to-violet-500 hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="bg-gradient-to-r from-primary to-neon-purple hover:opacity-90 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               {downloading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Download className="w-5 h-5 mr-2" />}
               {downloading ? "Generating..." : "Download Investor Deck"}

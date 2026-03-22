@@ -70,9 +70,9 @@ export default function RecentLearningEvents() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     {event.success ? (
-                      <CheckCircle className="w-4 h-4 text-green-400" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-red-400" />
+                      <XCircle className="w-4 h-4 text-destructive" />
                     )}
                     <span className="text-sm font-medium">
                       {event.provider || 'unknown'}

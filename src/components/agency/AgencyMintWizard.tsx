@@ -282,15 +282,15 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                 disabled={!isPast}
                 className={cn(
                   "flex items-center gap-2 px-3 py-2 rounded-lg transition-all",
-                  isActive && "bg-fuchsia-500/20 text-fuchsia-400",
-                  isPast && "text-emerald-400 cursor-pointer hover:bg-emerald-500/10",
+                  isActive && "bg-neon-magenta/20 text-neon-magenta",
+                  isPast && "text-neon-green cursor-pointer hover:bg-neon-green/10",
                   !isActive && !isPast && "text-muted-foreground"
                 )}
               >
                 <div className={cn(
                   "w-6 h-6 rounded-full flex items-center justify-center text-xs",
-                  isActive && "bg-fuchsia-500/30 border border-fuchsia-500/50",
-                  isPast && "bg-emerald-500/30 border border-emerald-500/50",
+                  isActive && "bg-neon-magenta/30 border border-neon-magenta/50",
+                  isPast && "bg-neon-green/30 border border-neon-green/50",
                   !isActive && !isPast && "bg-muted/30 border border-border/30"
                 )}>
                   {isPast ? <Check className="w-3 h-3" /> : <Icon className="w-3 h-3" />}
@@ -324,7 +324,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                   onClick={() => setUseTemplate(true)}
                   className={cn(
                     "flex-1 h-auto py-4",
-                    useTemplate === true && "bg-fuchsia-500/20 border-fuchsia-500/50 text-fuchsia-400"
+                    useTemplate === true && "bg-neon-magenta/20 border-neon-magenta/50 text-neon-magenta"
                   )}
                 >
                   <div className="text-center">
@@ -338,7 +338,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                   onClick={() => { setUseTemplate(false); addLeader(); }}
                   className={cn(
                     "flex-1 h-auto py-4",
-                    useTemplate === false && "bg-cyan-500/20 border-cyan-500/50 text-cyan-400"
+                    useTemplate === false && "bg-neon-cyan/20 border-neon-cyan/50 text-neon-cyan"
                   )}
                 >
                   <div className="text-center">
@@ -481,7 +481,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                         "flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all",
                         "backdrop-blur-xl bg-white/5",
                         dreamPoolMode === mode.id
-                          ? "border-cyan-500/50 bg-cyan-500/10"
+                          ? "border-neon-cyan/50 bg-neon-cyan/10"
                           : "border-border/30 hover:border-border/50"
                       )}
                     >
@@ -526,8 +526,8 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                   <div>
                     <p className="text-xs text-muted-foreground">Cohesion Rating</p>
                     <div className="flex items-center gap-2">
-                      <p className="text-lg font-semibold text-emerald-400">{cohesionRating}%</p>
-                      <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400">
+                      <p className="text-lg font-semibold text-neon-green">{cohesionRating}%</p>
+                      <Badge variant="outline" className="text-[9px] border-neon-green/30 text-neon-green">
                         {cohesionRating >= 80 ? 'High' : cohesionRating >= 60 ? 'Medium' : 'Low'}
                       </Badge>
                     </div>
@@ -577,16 +577,16 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                 <Separator className="bg-border/20" />
                 <div className="flex justify-between items-center">
                   <span className="font-semibold">Total</span>
-                  <span className="text-xl font-bold text-fuchsia-400">{formatPrice(totalPrice)}</span>
+                  <span className="text-xl font-bold text-neon-magenta">{formatPrice(totalPrice)}</span>
                 </div>
               </div>
 
               {/* Governor Self-Mint Option */}
               {isGovernor && (
-                <div className="p-4 rounded-xl bg-fuchsia-500/10 border border-fuchsia-500/30 space-y-3">
+                <div className="p-4 rounded-xl bg-neon-magenta/10 border border-neon-magenta/30 space-y-3">
                   <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-fuchsia-400" />
-                    <span className="font-medium text-fuchsia-400">Governor Privilege</span>
+                    <Shield className="w-4 h-4 text-neon-magenta" />
+                    <span className="font-medium text-neon-magenta">Governor Privilege</span>
                   </div>
                   <p className="text-xs text-muted-foreground">
                     As a Governor, you can deploy this agency for free and set owner credentials directly.
@@ -602,7 +602,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                   >
                     <Button 
                       variant="outline" 
-                      className="w-full gap-2 border-fuchsia-500/50 text-fuchsia-400 hover:bg-fuchsia-500/20"
+                      className="w-full gap-2 border-neon-magenta/50 text-neon-magenta hover:bg-neon-magenta/20"
                     >
                       <Shield className="w-4 h-4" />
                       Self-Mint (Free Deploy)
@@ -619,7 +619,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
               <Button
                 onClick={handleCheckout}
                 disabled={loading || !agencyName.trim()}
-                className="w-full h-12 text-lg bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500"
+                className="w-full h-12 text-lg bg-gradient-to-r from-neon-magenta to-neon-purple hover:from-neon-magenta hover:to-neon-purple"
               >
                 {loading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -650,7 +650,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
           <Button
             onClick={goNext}
             disabled={!canGoNext()}
-            className="gap-2 bg-fuchsia-600 hover:bg-fuchsia-500"
+            className="gap-2 bg-neon-magenta hover:bg-neon-magenta"
           >
             Continue
             <ChevronRight className="w-4 h-4" />

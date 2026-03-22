@@ -82,11 +82,11 @@ export function MintedBotsList() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'Research': return 'bg-cyan-500/20 text-cyan-400 border-cyan-500/50';
-      case 'Analyst': return 'bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/50';
-      case 'Planner': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/50';
-      case 'Strategist': return 'bg-amber-500/20 text-amber-400 border-amber-500/50';
-      case 'Hybrid': return 'bg-violet-500/20 text-violet-400 border-violet-500/50';
+      case 'Research': return 'bg-neon-cyan/20 text-neon-cyan border-neon-cyan/50';
+      case 'Analyst': return 'bg-neon-magenta/20 text-neon-magenta border-neon-magenta/50';
+      case 'Planner': return 'bg-neon-green/20 text-neon-green border-neon-green/50';
+      case 'Strategist': return 'bg-neon-amber/20 text-neon-amber border-neon-amber/50';
+      case 'Hybrid': return 'bg-neon-purple/20 text-neon-purple border-neon-purple/50';
       default: return 'bg-muted text-muted-foreground';
     }
   };
@@ -105,8 +105,8 @@ export function MintedBotsList() {
       <div className="flex items-center justify-center py-12">
         <div className="text-center space-y-3">
           <div className="relative">
-            <Loader2 className="w-8 h-8 animate-spin text-cyan-500 mx-auto" />
-            <div className="absolute inset-0 w-8 h-8 mx-auto rounded-full bg-cyan-500/30 blur-xl animate-pulse" />
+            <Loader2 className="w-8 h-8 animate-spin text-neon-cyan mx-auto" />
+            <div className="absolute inset-0 w-8 h-8 mx-auto rounded-full bg-neon-cyan/30 blur-xl animate-pulse" />
           </div>
           <p className="text-sm text-muted-foreground font-mono">loading bots...</p>
         </div>
@@ -119,7 +119,7 @@ export function MintedBotsList() {
       <div className="rounded-xl border-dashed border border-white/10 bg-white/5 backdrop-blur-xl p-12 text-center">
         <div className="relative w-16 h-16 mx-auto mb-4">
           <Bot className="w-16 h-16 text-muted-foreground/30" />
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 rounded-full blur-xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/20 to-neon-magenta/20 rounded-full blur-xl" />
         </div>
         <h3 className="text-lg font-medium mb-1 text-foreground">No Bots Minted</h3>
         <p className="text-sm text-muted-foreground">
@@ -135,7 +135,7 @@ export function MintedBotsList() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h3 className="text-lg font-semibold flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+            <Sparkles className="w-4 h-4 text-neon-cyan" />
             Your Bots
           </h3>
           <p className="text-sm text-muted-foreground font-mono">
@@ -146,7 +146,7 @@ export function MintedBotsList() {
           variant="outline" 
           size="sm" 
           onClick={() => refetch()} 
-          className="gap-2 border-border/50 hover:border-cyan-500/50 hover:bg-cyan-500/10"
+          className="gap-2 border-border/50 hover:border-neon-cyan/50 hover:bg-neon-cyan/10"
         >
           <RotateCw className="w-4 h-4" />
           Refresh
@@ -161,7 +161,7 @@ export function MintedBotsList() {
               key={bot.id} 
               className={cn(
                 "group rounded-xl border bg-white/5 dark:bg-white/[0.03] backdrop-blur-xl transition-all duration-300",
-                "border-white/10 hover:border-cyan-500/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)]"
+                "border-white/10 hover:border-neon-cyan/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)]"
               )}
             >
               <div className="p-4">
@@ -226,7 +226,7 @@ export function MintedBotsList() {
                         variant="ghost"
                         size="sm"
                         onClick={() => setRunBot(bot)}
-                        className="gap-1.5 text-xs h-8 hover:bg-emerald-500/10 hover:text-emerald-400"
+                        className="gap-1.5 text-xs h-8 hover:bg-neon-green/10 hover:text-neon-green"
                       >
                         <Play className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">Run</span>
@@ -236,7 +236,7 @@ export function MintedBotsList() {
                         variant="ghost"
                         size="sm"
                         onClick={() => setBumpBot(bot)}
-                        className="gap-1.5 text-xs h-8 hover:bg-fuchsia-500/10 hover:text-fuchsia-400"
+                        className="gap-1.5 text-xs h-8 hover:bg-neon-magenta/10 hover:text-neon-magenta"
                       >
                         <ArrowUpCircle className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">Bump</span>
@@ -247,7 +247,7 @@ export function MintedBotsList() {
                         size="sm"
                         onClick={() => handleExport(bot)}
                         disabled={exportingId === bot.id}
-                        className="gap-1.5 text-xs h-8 border-cyan-500/30 hover:bg-cyan-500/10 hover:border-cyan-500/50"
+                        className="gap-1.5 text-xs h-8 border-neon-cyan/30 hover:bg-neon-cyan/10 hover:border-neon-cyan/50"
                       >
                         {exportingId === bot.id ? (
                           <Loader2 className="w-3.5 h-3.5 animate-spin" />

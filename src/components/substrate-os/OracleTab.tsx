@@ -136,15 +136,15 @@ function usePredictions() {
 }
 
 const signalColor = (s: string) => {
-  if (s === 'stable' || s === 'low') return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20';
-  if (s === 'caution' || s === 'medium') return 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20';
-  return 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20';
+  if (s === 'stable' || s === 'low') return 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20';
+  if (s === 'caution' || s === 'medium') return 'bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20';
+  return 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20';
 };
 
 const sevColor = (s: string) => {
-  if (s === 'info') return 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20';
-  if (s === 'warn') return 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20';
-  return 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20';
+  if (s === 'info') return 'bg-neon-blue/10 text-neon-blue dark:text-neon-blue border-neon-blue/20';
+  if (s === 'warn') return 'bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20';
+  return 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20';
 };
 
 export function OracleTab() {
@@ -154,26 +154,26 @@ export function OracleTab() {
     <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-violet-500/15 to-indigo-500/10 border border-violet-500/25 flex items-center justify-center shrink-0">
-          <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-violet-600 dark:text-violet-400" />
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-neon-purple/15 to-primary/10 border border-neon-purple/25 flex items-center justify-center shrink-0">
+          <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-neon-purple dark:text-neon-purple" />
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Perception Zone</h2>
           <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">ORACLE · COMPASS · ECHO — EPZ</p>
         </div>
-        <Badge className="text-[9px] bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20 shrink-0">EPZ</Badge>
+        <Badge className="text-[9px] bg-neon-purple/10 text-neon-purple dark:text-neon-purple border-neon-purple/20 shrink-0">EPZ</Badge>
       </div>
 
       <Tabs defaultValue="oracle">
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
-            <TabsTrigger value="oracle" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-600 dark:data-[state=active]:text-violet-400">
+            <TabsTrigger value="oracle" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple dark:data-[state=active]:text-neon-purple">
               <Eye className="w-3.5 h-3.5 hidden sm:block" /> ORACLE
             </TabsTrigger>
-            <TabsTrigger value="compass" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-600 dark:data-[state=active]:text-violet-400">
+            <TabsTrigger value="compass" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple dark:data-[state=active]:text-neon-purple">
               <Compass className="w-3.5 h-3.5 hidden sm:block" /> COMPASS
             </TabsTrigger>
-            <TabsTrigger value="echo" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-600 dark:data-[state=active]:text-violet-400">
+            <TabsTrigger value="echo" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple dark:data-[state=active]:text-neon-purple">
               <Radio className="w-3.5 h-3.5 hidden sm:block" /> ECHO
             </TabsTrigger>
           </TabsList>
@@ -217,7 +217,7 @@ export function OracleTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Compass className="w-4 h-4 text-violet-500 shrink-0" />
+                <Compass className="w-4 h-4 text-neon-purple shrink-0" />
                 Scenario Simulations
               </CardTitle>
               <CardDescription className="text-[11px]">Pre-computed resilience scenarios</CardDescription>
@@ -250,7 +250,7 @@ export function OracleTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Radio className="w-4 h-4 text-violet-500 shrink-0" />
+                <Radio className="w-4 h-4 text-neon-purple shrink-0" />
                 Detected Patterns
               </CardTitle>
               <CardDescription className="text-[11px]">Recurring signals from system telemetry</CardDescription>

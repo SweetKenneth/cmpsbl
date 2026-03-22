@@ -71,7 +71,7 @@ export function FeedbackCapture({ originalOutputId, originalText, onSubmitted }:
     <Card className="border-primary/20">
       <CardHeader>
         <CardTitle className="text-base flex items-center gap-2">
-          <Heart className="w-4 h-4 text-pink-500" />
+          <Heart className="w-4 h-4 text-neon-magenta" />
           Submit Correction
         </CardTitle>
         <CardDescription className="text-xs">

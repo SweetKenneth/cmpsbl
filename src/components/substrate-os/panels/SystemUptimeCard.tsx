@@ -78,21 +78,21 @@ export function SystemUptimeCard() {
   const lastBootDate = lastBootAt ? new Date(lastBootAt) : null;
 
   return (
-    <Card className="border-emerald-500/15 dark:border-emerald-500/10 bg-card/50 dark:bg-card/20">
+    <Card className="border-neon-green/15 dark:border-neon-green/10 bg-card/50 dark:bg-card/20">
       <CardContent className="p-3 sm:p-4">
         <div className="flex items-center gap-2 mb-3">
-          <Clock className="w-4 h-4 text-emerald-500" />
+          <Clock className="w-4 h-4 text-neon-green" />
           <span className="text-xs font-semibold tracking-tight">System Uptime</span>
           <span className="ml-auto flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono">ONLINE</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
+            <span className="text-[9px] text-neon-green dark:text-neon-green font-mono">ONLINE</span>
           </span>
         </div>
         <div className="grid grid-cols-3 gap-2">
           {/* Total Uptime */}
           <div className="p-2 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15">
             <div className="flex items-center gap-1 mb-1">
-              <Timer className="w-3 h-3 text-emerald-500" />
+              <Timer className="w-3 h-3 text-neon-green" />
               <span className="text-[8px] sm:text-[9px] text-muted-foreground/50 font-mono uppercase">Total</span>
             </div>
             {loading ? (
@@ -104,7 +104,7 @@ export function SystemUptimeCard() {
           {/* Session Uptime */}
           <div className="p-2 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15">
             <div className="flex items-center gap-1 mb-1">
-              <Power className="w-3 h-3 text-cyan-500" />
+              <Power className="w-3 h-3 text-neon-cyan" />
               <span className="text-[8px] sm:text-[9px] text-muted-foreground/50 font-mono uppercase">Session</span>
             </div>
             <span className="text-xs sm:text-sm font-bold font-mono tabular-nums">{formatDuration(sessionMs)}</span>
@@ -112,7 +112,7 @@ export function SystemUptimeCard() {
           {/* Last Boot */}
           <div className="p-2 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15">
             <div className="flex items-center gap-1 mb-1">
-              <Clock className="w-3 h-3 text-amber-500" />
+              <Clock className="w-3 h-3 text-neon-amber" />
               <span className="text-[8px] sm:text-[9px] text-muted-foreground/50 font-mono uppercase">Last Boot</span>
             </div>
             {loading ? (

@@ -186,11 +186,11 @@ export default function MarketplaceSuccess() {
                     )}
 
                     {/* Copy Protection Notice */}
-                    <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <div className="p-4 rounded-lg bg-neon-amber/10 border border-neon-amber/20">
                       <div className="flex items-start gap-3">
-                        <Shield className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" />
+                        <Shield className="w-5 h-5 text-neon-amber mt-0.5 shrink-0" />
                         <div className="text-sm">
-                          <p className="font-medium text-amber-600 dark:text-amber-400 mb-1">Single-Install License Protection</p>
+                          <p className="font-medium text-neon-amber dark:text-neon-amber mb-1">Single-Install License Protection</p>
                           <p className="text-muted-foreground">
                             This license key is domain-bound and can only be activated once. 
                             Sharing or duplicate installations will invalidate the license.
@@ -220,7 +220,7 @@ export default function MarketplaceSuccess() {
                     {productType === 'os' && licenseData?.license_key && (
                       <Button 
                         size="lg" 
-                        className="w-full gap-2 bg-gradient-to-r from-primary to-violet-600 hover:from-primary/90 hover:to-violet-600/90"
+                        className="w-full gap-2 bg-gradient-to-r from-primary to-neon-purple hover:from-primary/90 hover:to-neon-purple/90"
                         onClick={handleDownload}
                         disabled={downloading}
                       >
@@ -252,7 +252,7 @@ export default function MarketplaceSuccess() {
                               <span>Configure your BYOK API keys in the admin panel</span>
                             </div>
                             <div className="flex items-start gap-3 text-sm">
-                              <span className="w-6 h-6 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-xs font-bold shrink-0">
+                              <span className="w-6 h-6 rounded-full bg-neon-amber/20 text-neon-amber flex items-center justify-center text-xs font-bold shrink-0">
                                 <Lock className="w-3 h-3" />
                               </span>
                               <span className="text-muted-foreground">License activates on first run and binds to your domain</span>

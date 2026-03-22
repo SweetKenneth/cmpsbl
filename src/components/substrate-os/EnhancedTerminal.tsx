@@ -583,9 +583,9 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     dark: {
       bg: 'bg-black/90',
       text: 'text-foreground',
-      accent: 'text-cyan-400',
-      success: 'text-emerald-400',
-      error: 'text-red-400',
+      accent: 'text-neon-cyan',
+      success: 'text-neon-green',
+      error: 'text-destructive',
       border: 'border-border/50',
       input: 'text-foreground',
       placeholder: 'placeholder:text-muted-foreground/60',
@@ -595,9 +595,9 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     light: {
       bg: 'bg-white',
       text: 'text-gray-900',
-      accent: 'text-blue-700',
-      success: 'text-green-700',
-      error: 'text-red-700',
+      accent: 'text-neon-blue',
+      success: 'text-neon-green',
+      error: 'text-destructive',
       border: 'border-gray-300',
       input: 'text-gray-900',
       placeholder: 'placeholder:text-gray-500',
@@ -606,15 +606,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     },
     matrix: {
       bg: 'bg-black',
-      text: 'text-green-400',
-      accent: 'text-green-300',
-      success: 'text-green-500',
-      error: 'text-red-500',
-      border: 'border-green-500/30',
-      input: 'text-green-400',
-      placeholder: 'placeholder:text-green-400/50',
-      suggestion: 'text-green-400',
-      suggestionMuted: 'text-green-500/70',
+      text: 'text-neon-green',
+      accent: 'text-neon-green',
+      success: 'text-neon-green',
+      error: 'text-destructive',
+      border: 'border-neon-green/30',
+      input: 'text-neon-green',
+      placeholder: 'placeholder:text-neon-green/50',
+      suggestion: 'text-neon-green',
+      suggestionMuted: 'text-neon-green/70',
     },
     biohack: {
       bg: 'biohack-terminal',
@@ -664,9 +664,9 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             </>
           ) : (
             <>
-              <span className="w-3 h-3 rounded-full bg-red-500/90 shadow-[0_0_6px_rgba(239,68,68,0.5)]" />
-              <span className="w-3 h-3 rounded-full bg-amber-500/90 shadow-[0_0_6px_rgba(245,158,11,0.5)]" />
-              <span className="w-3 h-3 rounded-full bg-emerald-500/90 shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
+              <span className="w-3 h-3 rounded-full bg-destructive/90 shadow-[0_0_6px_rgba(239,68,68,0.5)]" />
+              <span className="w-3 h-3 rounded-full bg-neon-amber/90 shadow-[0_0_6px_rgba(245,158,11,0.5)]" />
+              <span className="w-3 h-3 rounded-full bg-neon-green/90 shadow-[0_0_6px_rgba(16,185,129,0.5)]" />
             </>
           )}
         </div>
@@ -694,17 +694,17 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           <span className={isBiohack ? "biohack-stat biohack-stat-cmds" : ""}>
             {sessionStats.commands} cmds
           </span>
-          <span className={isBiohack ? "biohack-stat biohack-stat-success" : "text-emerald-400"}>
+          <span className={isBiohack ? "biohack-stat biohack-stat-success" : "text-neon-green"}>
             {sessionStats.success} ✓
           </span>
-          <span className={isBiohack ? "biohack-stat biohack-stat-error" : "text-red-400"}>
+          <span className={isBiohack ? "biohack-stat biohack-stat-error" : "text-destructive"}>
             {sessionStats.errors} ✗
           </span>
           <span className={isBiohack ? "text-[hsl(200_60%_50%)]" : "text-muted-foreground/60"}>
             {sessionDuration}
           </span>
           {getActiveSessions().length > 0 && (
-            <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : "text-amber-400"} title="Active watch sessions">
+            <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : "text-neon-amber"} title="Active watch sessions">
               ⟳ {getActiveSessions().length}
             </span>
           )}
@@ -717,8 +717,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             isBiohack 
               ? enabled ? "biohack-badge-operator" : "biohack-badge-observer"
               : enabled 
-                ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
-                : "border-amber-500/50 text-amber-400 bg-amber-500/10"
+                ? "border-neon-green/50 text-neon-green bg-neon-green/10" 
+                : "border-neon-amber/50 text-neon-amber bg-neon-amber/10"
           )}
         >
           {isBiohack ? (
@@ -826,7 +826,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               {isBiohack ? (
                 <div className="biohack-cursor" />
               ) : (
-                <span className={cn("w-2 h-4 animate-pulse", theme === 'matrix' ? 'bg-green-400' : 'bg-cyan-400')} />
+                <span className={cn("w-2 h-4 animate-pulse", theme === 'matrix' ? 'bg-neon-green' : 'bg-neon-cyan')} />
               )}
               <span style={isBiohack ? { textShadow: '0 0 10px hsl(180 100% 50% / 0.5)' } : undefined}>
                 {getRandomItem(PERSONALITY_RESPONSES.greeting)}
@@ -860,7 +860,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                   title="Copy output"
                 >
                   {copiedId === result.id ? (
-                    <Check className="w-3 h-3 text-emerald-400" />
+                    <Check className="w-3 h-3 text-neon-green" />
                   ) : (
                     <Copy className="w-3 h-3 text-muted-foreground" />
                   )}
@@ -874,7 +874,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                   )}
                   title={pinnedResults.has(result.id) ? "Unpin result" : "Pin result"}
                 >
-                  <Pin className={cn("w-3 h-3", pinnedResults.has(result.id) ? "text-amber-400" : "text-muted-foreground")} />
+                  <Pin className={cn("w-3 h-3", pinnedResults.has(result.id) ? "text-neon-amber" : "text-muted-foreground")} />
                 </button>
                 
                 <span className={cn(
@@ -884,8 +884,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                   {result.duration !== undefined && (
                     <span className={cn(
                       isBiohack ? "text-[hsl(280_100%_70%)]" : "text-muted-foreground/70",
-                      result.duration > 1000 && "text-amber-400",
-                      result.duration > 3000 && "text-red-400"
+                      result.duration > 1000 && "text-neon-amber",
+                      result.duration > 3000 && "text-destructive"
                     )}>
                       {result.duration < 1000 ? `${result.duration}ms` : `${(result.duration / 1000).toFixed(1)}s`}
                     </span>
@@ -902,7 +902,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                   result.status === 'success' ? "biohack-output-success" :
                   "biohack-output-error"
                 ) : (
-                  result.status === 'pending' ? "text-amber-400/80" :
+                  result.status === 'pending' ? "text-neon-amber/80" :
                   result.status === 'success' ? currentTheme.success :
                   currentTheme.error
                 )
@@ -964,11 +964,11 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     : "biohack-suggestion-item"
                 ) : isLight ? (
                   idx === selectedSuggestion 
-                    ? "bg-blue-100 text-blue-800" 
+                    ? "bg-neon-blue text-neon-blue" 
                     : "hover:bg-gray-100 text-gray-700"
                 ) : (
                   idx === selectedSuggestion 
-                    ? "bg-cyan-500/20 text-cyan-400" 
+                    ? "bg-neon-cyan/20 text-neon-cyan" 
                     : "hover:bg-muted/30 text-muted-foreground"
                 )
               )}
@@ -988,7 +988,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               {cmd.requiresOperator && (
                 <Badge variant="outline" className={cn(
                   "text-[8px] h-4",
-                  isBiohack ? "border-[hsl(280_100%_60%/0.5)] text-[hsl(280_100%_70%)]" : "border-amber-500/30 text-amber-400"
+                  isBiohack ? "border-[hsl(280_100%_60%/0.5)] text-[hsl(280_100%_70%)]" : "border-neon-amber/30 text-neon-amber"
                 )}>
                   ⚡
                 </Badge>
@@ -1006,14 +1006,14 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           isBiohack 
             ? "biohack-suggestions" 
             : isLight
-              ? "bg-gradient-to-r from-amber-100/50 via-white to-blue-100/50"
-              : "bg-gradient-to-r from-amber-500/5 via-transparent to-cyan-500/5"
+              ? "bg-gradient-to-r from-neon-amber/50 via-white to-neon-blue/50"
+              : "bg-gradient-to-r from-neon-amber/5 via-transparent to-neon-cyan/5"
         )}>
           <div className={cn(
             "flex items-center gap-2 text-[10px] mb-1.5",
             isBiohack ? "text-[hsl(280_100%_70%)]" : isLight ? "text-gray-600" : "text-muted-foreground"
           )}>
-            <Sparkles className={cn("w-3 h-3", isBiohack ? "text-[hsl(180_100%_60%)]" : isLight ? "text-amber-600" : "text-amber-400")} 
+            <Sparkles className={cn("w-3 h-3", isBiohack ? "text-[hsl(180_100%_60%)]" : isLight ? "text-neon-amber" : "text-neon-amber")} 
               style={isBiohack ? { filter: 'drop-shadow(0 0 5px hsl(180 100% 50%))' } : undefined} />
             <span>{isBiohack ? 'Neural Pathways' : 'Smart Suggestions'}</span>
             <span className={isBiohack ? "text-[hsl(200_60%_50%)]" : isLight ? "text-gray-500" : "text-muted-foreground/50"}>
@@ -1032,8 +1032,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     isBiohack 
                       ? "biohack-suggestion-item hover:biohack-suggestion-active"
                       : isLight
-                        ? "hover:bg-blue-100 hover:text-blue-800 bg-gray-100 text-gray-700"
-                        : "hover:bg-cyan-500/20 hover:text-cyan-400 bg-muted/20 text-muted-foreground"
+                        ? "hover:bg-neon-blue hover:text-neon-blue bg-gray-100 text-gray-700"
+                        : "hover:bg-neon-cyan/20 hover:text-neon-cyan bg-muted/20 text-muted-foreground"
                   )}
                   onClick={() => executeSmartSuggestion(idx + 1)}
                 >
@@ -1042,8 +1042,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     isBiohack 
                       ? "biohack-suggestion-number text-[hsl(180_100%_70%)]"
                       : isLight
-                        ? "bg-blue-200 text-blue-800 group-hover:bg-blue-300"
-                        : "bg-cyan-500/20 text-cyan-400 group-hover:bg-cyan-500/30"
+                        ? "bg-neon-blue text-neon-blue group-hover:bg-neon-blue"
+                        : "bg-neon-cyan/20 text-neon-cyan group-hover:bg-neon-cyan/30"
                   )}>
                     {idx + 1}
                   </span>
@@ -1060,7 +1060,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                   {def?.requiresOperator && (
                     <Badge variant="outline" className={cn(
                       "text-[8px] h-4",
-                      isBiohack ? "border-[hsl(280_100%_60%/0.5)] text-[hsl(280_100%_70%)]" : "border-amber-500/30 text-amber-500"
+                      isBiohack ? "border-[hsl(280_100%_60%/0.5)] text-[hsl(280_100%_70%)]" : "border-neon-amber/30 text-neon-amber"
                     )}>
                       ⚡
                     </Badge>
@@ -1077,11 +1077,11 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         <div className={cn(
           "border-t px-4 py-2",
           currentTheme.border,
-          isBiohack ? "biohack-suggestions" : isLight ? "bg-amber-50" : "bg-amber-500/5"
+          isBiohack ? "biohack-suggestions" : isLight ? "bg-neon-amber" : "bg-neon-amber/5"
         )}>
           <div className="flex items-center gap-2">
-            <SearchIcon className={cn("w-3 h-3", isBiohack ? "text-[hsl(180_100%_60%)]" : "text-amber-400")} />
-            <span className={cn("text-xs", isBiohack ? "text-[hsl(200_60%_50%)]" : "text-amber-600")}>
+            <SearchIcon className={cn("w-3 h-3", isBiohack ? "text-[hsl(180_100%_60%)]" : "text-neon-amber")} />
+            <span className={cn("text-xs", isBiohack ? "text-[hsl(200_60%_50%)]" : "text-neon-amber")}>
               reverse-i-search: {reverseSearchQuery}
             </span>
             {reverseSearchMatch && (
@@ -1109,8 +1109,8 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             ) : (
               <span className={cn(
                 "w-2 h-2 rounded-full animate-pulse shadow-[0_0_6px]",
-                theme === 'matrix' ? 'bg-green-400 shadow-green-400/80' : 
-                isLight ? 'bg-blue-500 shadow-blue-500/80' : 'bg-cyan-400 shadow-cyan-400/80'
+                theme === 'matrix' ? 'bg-neon-green shadow-neon-green/80' : 
+                isLight ? 'bg-neon-blue shadow-neon-blue/80' : 'bg-neon-cyan shadow-neon-cyan/80'
               )} />
             )}
             {isBiohack ? (
@@ -1148,19 +1148,19 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           )}>
             {showSmartSuggestions && (
               <>
-                <kbd className={isBiohack ? "biohack-kbd biohack-kbd-smart" : isLight ? "px-1 py-0.5 rounded bg-amber-200 text-amber-700" : "px-1 py-0.5 rounded bg-amber-500/20 text-amber-400"}>
+                <kbd className={isBiohack ? "biohack-kbd biohack-kbd-smart" : isLight ? "px-1 py-0.5 rounded bg-neon-amber text-neon-amber" : "px-1 py-0.5 rounded bg-neon-amber/20 text-neon-amber"}>
                   1-4
                 </kbd>
-                <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : isLight ? "text-amber-600" : "text-amber-400/70"}>
+                <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : isLight ? "text-neon-amber" : "text-neon-amber/70"}>
                   {isBiohack ? 'neural' : 'smart'}
                 </span>
               </>
             )}
             <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-gray-200 text-gray-700" : "px-1 py-0.5 rounded bg-muted/30"}>↑↓</kbd>
             <span className={isBiohack ? "text-[hsl(180_100%_60%)]" : isLight ? "text-gray-600" : ""}>history</span>
-            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-blue-200 text-blue-700" : "px-1 py-0.5 rounded bg-cyan-500/20 text-cyan-400"}>Ctrl+R</kbd>
+            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-neon-blue text-neon-blue" : "px-1 py-0.5 rounded bg-neon-cyan/20 text-neon-cyan"}>Ctrl+R</kbd>
             <span>search</span>
-            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-purple-200 text-purple-700" : "px-1 py-0.5 rounded bg-purple-500/20 text-purple-400"}>F11</kbd>
+            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-neon-purple text-neon-purple" : "px-1 py-0.5 rounded bg-neon-purple/20 text-neon-purple"}>F11</kbd>
             <span>fullscreen</span>
           </div>
         </div>

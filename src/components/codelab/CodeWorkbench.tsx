@@ -296,7 +296,7 @@ export function CodeWorkbench() {
           {showDialectSettings && (
             <div className="mb-4 p-3 rounded-lg bg-muted/30 border border-border/50">
               <div className="flex items-center gap-3">
-                <Eye className="w-4 h-4 text-violet-500" />
+                <Eye className="w-4 h-4 text-neon-purple" />
                 <span className="text-sm font-medium">Code Display Dialect</span>
                 <DialectSelector compact />
                 <span className="text-xs text-muted-foreground ml-auto">
@@ -354,7 +354,7 @@ export function CodeWorkbench() {
                 <span className="text-muted-foreground">// Console output...</span>
               ) : (
                 console.map((line, i) => (
-                  <div key={i} className={line.includes("✗") ? "text-red-500" : line.includes("←") ? "text-green-500" : "text-muted-foreground"}>
+                  <div key={i} className={line.includes("✗") ? "text-destructive" : line.includes("←") ? "text-neon-green" : "text-muted-foreground"}>
                     {line}
                   </div>
                 ))
@@ -389,7 +389,7 @@ export function CodeWorkbench() {
                     <div className="flex items-center gap-2 mb-1">
                       <Badge 
                         variant="outline" 
-                        className={`text-xs ${item.success ? "border-green-500/50 text-green-500" : "border-red-500/50 text-red-500"}`}
+                        className={`text-xs ${item.success ? "border-neon-green/50 text-neon-green" : "border-destructive/50 text-destructive"}`}
                       >
                         {item.request.module}
                       </Badge>

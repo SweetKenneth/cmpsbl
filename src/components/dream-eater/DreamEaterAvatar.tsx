@@ -23,38 +23,38 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
     switch (mood) {
       case 'peaceful':
         return {
-          body: 'from-emerald-900/80 to-teal-800/60',
-          glow: 'shadow-emerald-500/50',
-          eyes: 'bg-emerald-400',
-          aura: 'bg-emerald-500/20',
+          body: 'from-neon-green/80 to-neon-cyan/60',
+          glow: 'shadow-neon-green/50',
+          eyes: 'bg-neon-green',
+          aura: 'bg-neon-green/20',
         };
       case 'agitated':
         return {
-          body: 'from-orange-900/80 to-amber-800/60',
-          glow: 'shadow-orange-500/50',
-          eyes: 'bg-orange-400',
-          aura: 'bg-orange-500/20',
+          body: 'from-neon-amber/80 to-neon-amber/60',
+          glow: 'shadow-neon-amber/50',
+          eyes: 'bg-neon-amber',
+          aura: 'bg-neon-amber/20',
         };
       case 'nightmare':
         return {
-          body: 'from-red-950/90 to-purple-900/70',
-          glow: 'shadow-red-500/60',
-          eyes: 'bg-red-500',
-          aura: 'bg-red-500/30',
+          body: 'from-destructive/90 to-neon-purple/70',
+          glow: 'shadow-destructive/60',
+          eyes: 'bg-destructive',
+          aura: 'bg-destructive/30',
         };
       case 'dreaming':
         return {
-          body: 'from-violet-900/80 to-indigo-800/60',
-          glow: 'shadow-violet-500/50',
-          eyes: 'bg-violet-400',
-          aura: 'bg-violet-500/20',
+          body: 'from-neon-purple/80 to-primary/60',
+          glow: 'shadow-neon-purple/50',
+          eyes: 'bg-neon-purple',
+          aura: 'bg-neon-purple/20',
         };
       case 'feeding':
         return {
-          body: 'from-cyan-900/80 to-blue-800/60',
-          glow: 'shadow-cyan-500/60',
-          eyes: 'bg-cyan-300',
-          aura: 'bg-cyan-500/30',
+          body: 'from-neon-cyan/80 to-neon-blue/60',
+          glow: 'shadow-neon-cyan/60',
+          eyes: 'bg-neon-cyan',
+          aura: 'bg-neon-cyan/30',
         };
       default:
         return {
@@ -85,7 +85,7 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
       <div 
         className={cn(
           "absolute w-64 h-64 rounded-full border-2 border-primary/20 transition-all duration-500",
-          isFeeding && "animate-spin-slow border-cyan-400/40"
+          isFeeding && "animate-spin-slow border-neon-cyan/40"
         )}
       />
 
@@ -126,12 +126,12 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
           <div 
             className={cn(
               "transition-all duration-300",
-              mood === 'peaceful' && "w-12 h-6 border-b-4 border-emerald-400 rounded-b-full",
-              mood === 'agitated' && "w-8 h-4 border-2 border-orange-400 rounded-sm",
-              mood === 'nightmare' && "w-16 h-8 border-t-4 border-red-500 rounded-t-full",
+              mood === 'peaceful' && "w-12 h-6 border-b-4 border-neon-green rounded-b-full",
+              mood === 'agitated' && "w-8 h-4 border-2 border-neon-amber rounded-sm",
+              mood === 'nightmare' && "w-16 h-8 border-t-4 border-destructive rounded-t-full",
               mood === 'neutral' && "w-10 h-1 bg-gray-400 rounded-full",
-              mood === 'dreaming' && "w-6 h-6 border-2 border-violet-400 rounded-full",
-              isFeeding && "w-12 h-12 border-4 border-cyan-300 rounded-full animate-ping"
+              mood === 'dreaming' && "w-6 h-6 border-2 border-neon-purple rounded-full",
+              isFeeding && "w-12 h-12 border-4 border-neon-cyan rounded-full animate-ping"
             )}
           />
         </div>
@@ -142,7 +142,7 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
             {Array.from({ length: Math.min(mutationLevel, 5) }).map((_, i) => (
               <div
                 key={i}
-                className="w-3 h-3 rounded-full bg-purple-500 animate-pulse"
+                className="w-3 h-3 rounded-full bg-neon-purple animate-pulse"
                 style={{ animationDelay: `${i * 0.2}s` }}
               />
             ))}
@@ -152,9 +152,9 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
         {/* Floating particles when feeding */}
         {isFeeding && (
           <>
-            <div className="absolute -top-8 left-1/2 w-2 h-2 bg-cyan-400 rounded-full animate-float" />
-            <div className="absolute -top-12 left-1/3 w-1.5 h-1.5 bg-blue-400 rounded-full animate-float" style={{ animationDelay: '0.3s' }} />
-            <div className="absolute -top-6 right-1/3 w-2 h-2 bg-violet-400 rounded-full animate-float" style={{ animationDelay: '0.6s' }} />
+            <div className="absolute -top-8 left-1/2 w-2 h-2 bg-neon-cyan rounded-full animate-float" />
+            <div className="absolute -top-12 left-1/3 w-1.5 h-1.5 bg-neon-blue rounded-full animate-float" style={{ animationDelay: '0.3s' }} />
+            <div className="absolute -top-6 right-1/3 w-2 h-2 bg-neon-purple rounded-full animate-float" style={{ animationDelay: '0.6s' }} />
           </>
         )}
       </div>
@@ -164,12 +164,12 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
         <div 
           className={cn(
             "w-3 h-3 rounded-full",
-            mood === 'peaceful' && "bg-emerald-400",
+            mood === 'peaceful' && "bg-neon-green",
             mood === 'neutral' && "bg-gray-400",
-            mood === 'agitated' && "bg-orange-400",
-            mood === 'nightmare' && "bg-red-500",
-            mood === 'dreaming' && "bg-violet-400",
-            isFeeding && "bg-cyan-400 animate-ping"
+            mood === 'agitated' && "bg-neon-amber",
+            mood === 'nightmare' && "bg-destructive",
+            mood === 'dreaming' && "bg-neon-purple",
+            isFeeding && "bg-neon-cyan animate-ping"
           )}
         />
         <span className="text-sm text-muted-foreground capitalize">

@@ -232,12 +232,12 @@ export default function CapabilityMap() {
 
                 {/* Section header */}
                 <div className="flex items-center gap-3 mb-5">
-                  <div className="h-px flex-1 bg-emerald-500/20" />
-                  <h2 className="text-xs font-semibold uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+                  <div className="h-px flex-1 bg-neon-green/20" />
+                  <h2 className="text-xs font-semibold uppercase tracking-widest text-neon-green flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5" />
                     Always Active
                   </h2>
-                  <div className="h-px flex-1 bg-emerald-500/20" />
+                  <div className="h-px flex-1 bg-neon-green/20" />
                 </div>
 
                 {/* Horizontal scroll cards */}
@@ -253,17 +253,17 @@ export default function CapabilityMap() {
                           transition={{ delay: i * 0.03 }}
                           className="snap-start shrink-0 w-[280px] sm:w-[320px]"
                         >
-                          <Card className="border-emerald-500/10 bg-emerald-500/[0.02] hover:border-emerald-500/20 transition-colors h-full">
+                          <Card className="border-neon-green/10 bg-neon-green/[0.02] hover:border-neon-green/20 transition-colors h-full">
                             <CardHeader className="pb-3">
                               <div className="flex items-start gap-3">
-                                <div className="p-2 rounded-lg bg-emerald-500/10 shrink-0">
-                                  <Icon className="w-5 h-5 text-emerald-400" />
+                                <div className="p-2 rounded-lg bg-neon-green/10 shrink-0">
+                                  <Icon className="w-5 h-5 text-neon-green" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <CardTitle className="text-sm flex items-center gap-2">
                                     <span className="truncate">{pillar.name}</span>
                                   </CardTitle>
-                                  <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-400 mt-1">
+                                  <Badge variant="outline" className="text-[10px] border-neon-green/30 text-neon-green mt-1">
                                     <Unlock className="w-2.5 h-2.5 mr-1" />
                                     Always On
                                   </Badge>

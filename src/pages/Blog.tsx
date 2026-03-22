@@ -136,17 +136,17 @@ interface BlogPost {
 
 // ─── Category config ───
 const BLOG_CATEGORIES = [
-  { id: 'Security', label: 'Security', icon: Shield, color: 'from-rose-500/20 to-rose-600/5', border: 'border-rose-500/30', text: 'text-rose-400', bg: 'bg-rose-500/10' },
-  { id: 'AI Technology', label: 'AI Technology', icon: Brain, color: 'from-violet-500/20 to-violet-600/5', border: 'border-violet-500/30', text: 'text-violet-400', bg: 'bg-violet-500/10' },
-  { id: 'Technology', label: 'Technology', icon: Code, color: 'from-blue-500/20 to-blue-600/5', border: 'border-blue-500/30', text: 'text-blue-400', bg: 'bg-blue-500/10' },
-  { id: 'Platform', label: 'Platform', icon: Layers, color: 'from-purple-500/20 to-purple-600/5', border: 'border-purple-500/30', text: 'text-purple-400', bg: 'bg-purple-500/10' },
-  { id: 'Research', label: 'Research', icon: TrendingUp, color: 'from-emerald-500/20 to-emerald-600/5', border: 'border-emerald-500/30', text: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-  { id: 'Development', label: 'Development', icon: Code, color: 'from-cyan-500/20 to-cyan-600/5', border: 'border-cyan-500/30', text: 'text-cyan-400', bg: 'bg-cyan-500/10' },
-  { id: 'Accessibility', label: 'Accessibility', icon: Accessibility, color: 'from-amber-500/20 to-amber-600/5', border: 'border-amber-500/30', text: 'text-amber-400', bg: 'bg-amber-500/10' },
-  { id: 'Protocol', label: 'Protocol', icon: BookOpen, color: 'from-pink-500/20 to-pink-600/5', border: 'border-pink-500/30', text: 'text-pink-400', bg: 'bg-pink-500/10' },
-  { id: 'Governance', label: 'Governance', icon: Eye, color: 'from-indigo-500/20 to-indigo-600/5', border: 'border-indigo-500/30', text: 'text-indigo-400', bg: 'bg-indigo-500/10' },
-  { id: 'Threat Intel', label: 'Threat Intel', icon: Shield, color: 'from-red-500/20 to-red-600/5', border: 'border-red-500/30', text: 'text-red-400', bg: 'bg-red-500/10' },
-  { id: 'AI Security', label: 'AI Security', icon: Shield, color: 'from-orange-500/20 to-orange-600/5', border: 'border-orange-500/30', text: 'text-orange-400', bg: 'bg-orange-500/10' },
+  { id: 'Security', label: 'Security', icon: Shield, color: 'from-neon-magenta/20 to-neon-magenta/5', border: 'border-neon-magenta/30', text: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
+  { id: 'AI Technology', label: 'AI Technology', icon: Brain, color: 'from-neon-purple/20 to-neon-purple/5', border: 'border-neon-purple/30', text: 'text-neon-purple', bg: 'bg-neon-purple/10' },
+  { id: 'Technology', label: 'Technology', icon: Code, color: 'from-neon-blue/20 to-neon-blue/5', border: 'border-neon-blue/30', text: 'text-neon-blue', bg: 'bg-neon-blue/10' },
+  { id: 'Platform', label: 'Platform', icon: Layers, color: 'from-neon-purple/20 to-neon-purple/5', border: 'border-neon-purple/30', text: 'text-neon-purple', bg: 'bg-neon-purple/10' },
+  { id: 'Research', label: 'Research', icon: TrendingUp, color: 'from-neon-green/20 to-neon-green/5', border: 'border-neon-green/30', text: 'text-neon-green', bg: 'bg-neon-green/10' },
+  { id: 'Development', label: 'Development', icon: Code, color: 'from-neon-cyan/20 to-neon-cyan/5', border: 'border-neon-cyan/30', text: 'text-neon-cyan', bg: 'bg-neon-cyan/10' },
+  { id: 'Accessibility', label: 'Accessibility', icon: Accessibility, color: 'from-neon-amber/20 to-neon-amber/5', border: 'border-neon-amber/30', text: 'text-neon-amber', bg: 'bg-neon-amber/10' },
+  { id: 'Protocol', label: 'Protocol', icon: BookOpen, color: 'from-neon-magenta/20 to-neon-magenta/5', border: 'border-neon-magenta/30', text: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
+  { id: 'Governance', label: 'Governance', icon: Eye, color: 'from-primary/20 to-primary/5', border: 'border-primary/30', text: 'text-primary', bg: 'bg-primary/10' },
+  { id: 'Threat Intel', label: 'Threat Intel', icon: Shield, color: 'from-destructive/20 to-destructive/5', border: 'border-destructive/30', text: 'text-destructive', bg: 'bg-destructive/10' },
+  { id: 'AI Security', label: 'AI Security', icon: Shield, color: 'from-neon-amber/20 to-neon-amber/5', border: 'border-neon-amber/30', text: 'text-neon-amber', bg: 'bg-neon-amber/10' },
 ] as const;
 
 const CATEGORY_ALIASES: Record<string, string> = {
@@ -230,7 +230,7 @@ function PostCard({ post, href }: { post: BlogPost; href: string }) {
           "hover:border-primary/30 hover:-translate-y-1 transition-all duration-200",
           "flex flex-col",
           isHuman
-            ? "border-amber-500/20 from-amber-500/[0.04] to-transparent"
+            ? "border-neon-amber/20 from-neon-amber/[0.04] to-transparent"
             : "border-slate-400/20 from-slate-400/[0.04] to-transparent",
         )}
       >
@@ -238,7 +238,7 @@ function PostCard({ post, href }: { post: BlogPost; href: string }) {
         <div className={cn(
           "h-1 w-full",
           isHuman
-            ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
+            ? "bg-gradient-to-r from-neon-amber via-neon-amber to-neon-amber"
             : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
         )} />
 
@@ -256,7 +256,7 @@ function PostCard({ post, href }: { post: BlogPost; href: string }) {
             <Badge className={cn(
               "text-[10px] font-bold backdrop-blur-md border",
               isHuman
-                ? "bg-amber-500/20 text-amber-200 border-amber-400/40"
+                ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40"
                 : "bg-slate-400/20 text-slate-200 border-slate-300/40"
             )}>
               {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
@@ -279,7 +279,7 @@ function PostCard({ post, href }: { post: BlogPost; href: string }) {
           {/* Author & meta footer */}
           <div className="flex items-center gap-2.5">
             {isHuman ? (
-              <img src={founderPhoto} alt={post.author} className="w-6 h-6 rounded-full object-cover ring-2 ring-amber-500/30" loading="lazy" />
+              <img src={founderPhoto} alt={post.author} className="w-6 h-6 rounded-full object-cover ring-2 ring-neon-amber/30" loading="lazy" />
             ) : (
               <div className="w-6 h-6 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
                 <Bot className="w-3 h-3 text-slate-400" />
@@ -317,14 +317,14 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
           "group h-full rounded-xl border overflow-hidden transition-all duration-300",
           "hover:-translate-y-1 hover:shadow-xl",
           isHuman
-            ? "border-amber-500/25 hover:border-amber-400/50 hover:shadow-amber-500/10"
+            ? "border-neon-amber/25 hover:border-neon-amber/50 hover:shadow-neon-amber/10"
             : "border-slate-400/25 hover:border-slate-300/50 hover:shadow-slate-400/10",
           "bg-card"
         )}>
           <div className={cn(
             "h-[3px] w-full",
             isHuman
-              ? "bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600"
+              ? "bg-gradient-to-r from-neon-amber via-neon-amber to-neon-amber"
               : "bg-gradient-to-r from-slate-400 via-slate-300 to-slate-500"
           )} />
 
@@ -334,7 +334,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
             <div className="absolute top-3 right-3">
               <Badge className={cn(
                 "text-[10px] font-bold backdrop-blur-md border",
-                isHuman ? "bg-amber-500/20 text-amber-200 border-amber-400/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+                isHuman ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
               )}>
                 {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
                 {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
@@ -350,7 +350,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
             <p className="text-sm text-muted-foreground line-clamp-2 mb-4 leading-relaxed">{post.excerpt}</p>
             <div className="flex items-center gap-3">
               {isHuman ? (
-                <img src={founderPhoto} alt={post.author} className="w-7 h-7 rounded-full object-cover ring-2 ring-amber-500/30" loading="lazy" />
+                <img src={founderPhoto} alt={post.author} className="w-7 h-7 rounded-full object-cover ring-2 ring-neon-amber/30" loading="lazy" />
               ) : (
                 <div className="w-7 h-7 rounded-full bg-slate-500/20 border border-slate-400/30 flex items-center justify-center">
                   <Bot className="w-3.5 h-3.5 text-slate-400" />
@@ -382,7 +382,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
         "hover:-translate-y-1 hover:shadow-2xl",
         post.pillar
           ? "border-primary/40 hover:border-primary/60 hover:shadow-primary/20"
-          : "border-amber-500/30 hover:border-amber-400/50 hover:shadow-amber-500/10",
+          : "border-neon-amber/30 hover:border-neon-amber/50 hover:shadow-neon-amber/10",
         "bg-card"
       )}>
         <div className="aspect-[16/9] overflow-hidden relative">
@@ -402,7 +402,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
           <div className="absolute top-4 right-4">
             <Badge className={cn(
               "text-xs font-bold backdrop-blur-md border",
-              isHuman ? "bg-amber-500/20 text-amber-200 border-amber-400/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+              isHuman ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
             )}>
               {isHuman ? <User className="w-3 h-3 mr-1" /> : <Bot className="w-3 h-3 mr-1" />}
               {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
@@ -741,7 +741,7 @@ export default function Blog() {
               {/* Stats pills — matching SubstrateStore */}
               <div className="flex flex-wrap justify-center gap-3 mb-8">
                 {[
-                  { label: 'by Team', count: String(humanCount), dotClass: 'bg-gradient-to-r from-amber-500 to-yellow-400' },
+                  { label: 'by Team', count: String(humanCount), dotClass: 'bg-gradient-to-r from-neon-amber to-neon-amber' },
                   { label: 'AI Generated', count: String(aiCount), dotClass: 'bg-gradient-to-r from-slate-400 to-slate-300' },
                 ].map((stat, i) => (
                   <motion.div
@@ -970,7 +970,7 @@ export default function Blog() {
               {/* Legend */}
               <div className="flex justify-center gap-6 mb-8 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-[3px] rounded bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-600" />
+                  <div className="w-6 h-[3px] rounded bg-gradient-to-r from-neon-amber via-neon-amber to-neon-amber" />
                   <span>Kenneth E Sweet Jr</span>
                 </div>
                 <div className="flex items-center gap-2">

@@ -145,7 +145,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
         className={cn(
           "fixed bottom-20 right-4 lg:bottom-6 lg:right-6 z-50",
           "w-14 h-14 rounded-full",
-          "bg-gradient-to-br from-cyan-600 via-primary to-purple-600",
+          "bg-gradient-to-br from-neon-cyan via-primary to-neon-purple",
           "flex items-center justify-center",
           "shadow-xl shadow-primary/30",
           "border-2 border-primary/50",
@@ -155,7 +155,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
       >
         <Compass className="w-6 h-6 text-white" />
         <motion.div
-          className="absolute inset-0 rounded-full border-2 border-cyan-400/50"
+          className="absolute inset-0 rounded-full border-2 border-neon-cyan/50"
           animate={{ scale: [1, 1.3, 1.3], opacity: [0.6, 0, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         />
@@ -174,7 +174,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
           : "w-full",
         "flex flex-col",
         "bg-card/95 backdrop-blur-xl",
-        "border border-cyan-500/30 rounded-2xl",
+        "border border-neon-cyan/30 rounded-2xl",
         "shadow-2xl shadow-primary/20",
         "overflow-hidden",
         className
@@ -182,15 +182,15 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
       style={{ maxHeight: compact ? '70vh' : '600px', height: compact ? 'auto' : '600px' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-gradient-to-r from-cyan-500/10 via-transparent to-purple-500/10">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 bg-gradient-to-r from-neon-cyan/10 via-transparent to-neon-purple/10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/30 to-purple-500/30 flex items-center justify-center border border-cyan-400/40">
-            <Compass className="w-4 h-4 text-cyan-300" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-cyan/30 to-neon-purple/30 flex items-center justify-center border border-neon-cyan/40">
+            <Compass className="w-4 h-4 text-neon-cyan" />
           </div>
           <div>
             <h3 className="text-sm font-bold flex items-center gap-2">
               Atlas Command
-              <Badge className="text-[9px] bg-emerald-500/20 text-emerald-300 border-emerald-400/40">
+              <Badge className="text-[9px] bg-neon-green/20 text-neon-green border-neon-green/40">
                 LIVE
               </Badge>
             </h3>
@@ -235,15 +235,15 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
                   msg.role === 'user' 
                     ? "bg-primary/20 border border-primary/40"
                     : msg.role === 'system'
-                    ? "bg-amber-500/20 border border-amber-400/40"
-                    : "bg-cyan-500/20 border border-cyan-400/40"
+                    ? "bg-neon-amber/20 border border-neon-amber/40"
+                    : "bg-neon-cyan/20 border border-neon-cyan/40"
                 )}>
                   {msg.role === 'user' ? (
                     <User className="w-4 h-4 text-primary" />
                   ) : msg.role === 'system' ? (
-                    <Terminal className="w-4 h-4 text-amber-400" />
+                    <Terminal className="w-4 h-4 text-neon-amber" />
                   ) : (
-                    <Bot className="w-4 h-4 text-cyan-400" />
+                    <Bot className="w-4 h-4 text-neon-cyan" />
                   )}
                 </div>
 
@@ -257,12 +257,12 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
                     msg.role === 'user'
                       ? "bg-primary/20 border border-primary/30 text-foreground"
                       : msg.role === 'system'
-                      ? "bg-amber-500/10 border border-amber-400/30 text-foreground/90"
+                      ? "bg-neon-amber/10 border border-neon-amber/30 text-foreground/90"
                       : "bg-muted/50 border border-border/50 text-foreground/90"
                   )}>
                     <div 
                       className="whitespace-pre-wrap leading-relaxed 
-                        [&_strong]:text-cyan-300 [&_strong]:font-semibold
+                        [&_strong]:text-neon-cyan [&_strong]:font-semibold
                         [&_em]:text-muted-foreground [&_a]:text-primary"
                       dangerouslySetInnerHTML={{ __html: formatChatMessage(msg.content) }}
                     />
@@ -275,7 +275,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
                         <button
                           key={i}
                           onClick={() => handleSuggestion(suggestion)}
-                          className="px-2.5 py-1 text-[11px] rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-400/30 hover:bg-cyan-500/25 transition-colors"
+                          className="px-2.5 py-1 text-[11px] rounded-full bg-neon-cyan/15 text-neon-cyan border border-neon-cyan/30 hover:bg-neon-cyan/25 transition-colors"
                         >
                           {suggestion}
                         </button>
@@ -298,8 +298,8 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
               animate={{ opacity: 1 }}
               className="flex gap-3"
             >
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center">
-                <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
+              <div className="w-8 h-8 rounded-lg bg-neon-cyan/20 border border-neon-cyan/40 flex items-center justify-center">
+                <Loader2 className="w-4 h-4 text-neon-cyan animate-spin" />
               </div>
               <div className="px-4 py-3 rounded-2xl bg-muted/50 border border-border/50">
                 <span className="text-sm text-muted-foreground">Processing...</span>
@@ -316,7 +316,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
             <button
               key={cmd.label}
               onClick={() => handleSuggestion(cmd.command)}
-              className="flex-shrink-0 px-3 py-1.5 text-[11px] font-medium rounded-lg bg-background/60 border border-border/50 text-muted-foreground hover:text-foreground hover:border-cyan-400/50 transition-colors"
+              className="flex-shrink-0 px-3 py-1.5 text-[11px] font-medium rounded-lg bg-background/60 border border-border/50 text-muted-foreground hover:text-foreground hover:border-neon-cyan/50 transition-colors"
             >
               {cmd.label}
             </button>
@@ -339,7 +339,7 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
                 "w-full px-4 py-3 pr-14",
                 "bg-muted/50 border border-border/50 rounded-xl",
                 "text-sm placeholder:text-muted-foreground/60",
-                "focus:outline-none focus:ring-2 focus:ring-cyan-400/50 focus:border-cyan-400/50",
+                "focus:outline-none focus:ring-2 focus:ring-neon-cyan/50 focus:border-neon-cyan/50",
                 "resize-none",
                 "transition-all"
               )}
@@ -351,8 +351,8 @@ export function AtlasChatInterface({ className, compact = false }: AtlasChatInte
               onClick={sendMessage}
               className={cn(
                 "absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-lg z-50",
-                "bg-gradient-to-r from-cyan-600 to-primary",
-                "hover:from-cyan-500 hover:to-primary/90",
+                "bg-gradient-to-r from-neon-cyan to-primary",
+                "hover:from-neon-cyan hover:to-primary/90",
                 "disabled:opacity-40"
               )}
             >

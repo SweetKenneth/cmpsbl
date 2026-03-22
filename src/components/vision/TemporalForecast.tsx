@@ -49,9 +49,9 @@ export default function TemporalForecast() {
   };
 
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 0.8) return 'text-green-500';
-    if (confidence >= 0.6) return 'text-yellow-500';
-    return 'text-orange-500';
+    if (confidence >= 0.8) return 'text-neon-green';
+    if (confidence >= 0.6) return 'text-neon-amber';
+    return 'text-neon-amber';
   };
 
   const formatMetricName = (name: string) => {

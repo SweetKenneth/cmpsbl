@@ -54,22 +54,22 @@ export function AgencyTelemetryPanel({ agencyId, className }: AgencyTelemetryPan
             <StatCard
               label="Tasks Completed"
               value={metrics?.tasks_completed || 0}
-              icon={<CheckCircle className="h-4 w-4 text-emerald-500" />}
+              icon={<CheckCircle className="h-4 w-4 text-neon-green" />}
             />
             <StatCard
               label="Websites Crawled"
               value={metrics?.websites_crawled || 0}
-              icon={<Globe className="h-4 w-4 text-blue-500" />}
+              icon={<Globe className="h-4 w-4 text-neon-blue" />}
             />
             <StatCard
               label="API Calls"
               value={metrics?.api_calls || 0}
-              icon={<Zap className="h-4 w-4 text-amber-500" />}
+              icon={<Zap className="h-4 w-4 text-neon-amber" />}
             />
             <StatCard
               label="Datasets Processed"
               value={metrics?.datasets_processed || 0}
-              icon={<Database className="h-4 w-4 text-purple-500" />}
+              icon={<Database className="h-4 w-4 text-neon-purple" />}
             />
           </div>
 
@@ -121,9 +121,9 @@ export function AgencyTelemetryPanel({ agencyId, className }: AgencyTelemetryPan
                 <div key={call.id} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     {call.success ? (
-                      <CheckCircle className="h-3 w-3 text-emerald-500" />
+                      <CheckCircle className="h-3 w-3 text-neon-green" />
                     ) : (
-                      <XCircle className="h-3 w-3 text-red-500" />
+                      <XCircle className="h-3 w-3 text-destructive" />
                     )}
                     <span className="font-mono">{call.api_name}</span>
                   </div>

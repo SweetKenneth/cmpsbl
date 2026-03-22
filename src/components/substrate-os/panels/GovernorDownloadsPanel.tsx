@@ -140,12 +140,12 @@ export function GovernorDownloadsPanel() {
 
   const tierColor = (tier: string) => {
     switch (tier) {
-      case 'APEX': case 'apex': return 'bg-fuchsia-500/15 text-fuchsia-400 border-fuchsia-500/20';
-      case 'ELITE': case 'elite': return 'bg-violet-500/15 text-violet-400 border-violet-500/20';
+      case 'APEX': case 'apex': return 'bg-neon-magenta/15 text-neon-magenta border-neon-magenta/20';
+      case 'ELITE': case 'elite': return 'bg-neon-purple/15 text-neon-purple border-neon-purple/20';
       case 'CORE': case 'pro': return 'bg-sky-500/15 text-sky-400 border-sky-500/20';
-      case 'META': return 'bg-amber-500/15 text-amber-400 border-amber-500/20';
-      case 'starter': return 'bg-amber-500/15 text-amber-400 border-amber-500/20';
-      case 'free': return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/20';
+      case 'META': return 'bg-neon-amber/15 text-neon-amber border-neon-amber/20';
+      case 'starter': return 'bg-neon-amber/15 text-neon-amber border-neon-amber/20';
+      case 'free': return 'bg-neon-green/15 text-neon-green border-neon-green/20';
       default: return 'bg-muted text-muted-foreground border-border/20';
     }
   };
@@ -157,8 +157,8 @@ export function GovernorDownloadsPanel() {
     return (
       <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15 gap-2 sm:gap-3">
         <div className="flex items-center gap-3 flex-1">
-          <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", product.kind === 'engine' ? 'bg-cyan-500/10 border border-cyan-500/20' : 'bg-violet-500/10 border border-violet-500/20')}>
-            {product.kind === 'engine' ? <Cpu className="w-4 h-4 text-cyan-400" /> : <Bot className="w-4 h-4 text-violet-400" />}
+          <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0", product.kind === 'engine' ? 'bg-neon-cyan/10 border border-neon-cyan/20' : 'bg-neon-purple/10 border border-neon-purple/20')}>
+            {product.kind === 'engine' ? <Cpu className="w-4 h-4 text-neon-cyan" /> : <Bot className="w-4 h-4 text-neon-purple" />}
           </div>
           <div>
             <Link
@@ -182,7 +182,7 @@ export function GovernorDownloadsPanel() {
             disabled={isDownloading || downloading === 'all'}
             onClick={() => handleDownload(product)}
           >
-            {isDownloading ? <Loader2 className="w-3 h-3 animate-spin" /> : isDone ? <CheckCircle2 className="w-3 h-3 text-emerald-400" /> : <Download className="w-3 h-3" />}
+            {isDownloading ? <Loader2 className="w-3 h-3 animate-spin" /> : isDone ? <CheckCircle2 className="w-3 h-3 text-neon-green" /> : <Download className="w-3 h-3" />}
             {isDownloading ? 'Building…' : isDone ? 'Done' : 'ZIP'}
           </Button>
         </div>
@@ -233,7 +233,7 @@ export function GovernorDownloadsPanel() {
           {engines.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+                <Cpu className="w-3.5 h-3.5 text-neon-cyan" />
                 <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/50">Engines ({engines.length})</span>
               </div>
               <div className="space-y-1.5">
@@ -246,7 +246,7 @@ export function GovernorDownloadsPanel() {
           {agents.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Bot className="w-3.5 h-3.5 text-violet-400" />
+                <Bot className="w-3.5 h-3.5 text-neon-purple" />
                 <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/50">Meta-Agents ({agents.length})</span>
               </div>
               <div className="space-y-1.5">

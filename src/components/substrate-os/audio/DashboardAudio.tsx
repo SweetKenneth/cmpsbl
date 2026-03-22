@@ -32,7 +32,7 @@ export function DashboardAudio({ className }: DashboardAudioProps) {
           onClick={toggleEnabled}
           className={cn(
             "h-8 w-8 relative shrink-0",
-            settings.enabled && "text-emerald-400"
+            settings.enabled && "text-neon-green"
           )}
           aria-label={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
           title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
@@ -101,7 +101,7 @@ function DesktopAudioControls({ className }: { className?: string }) {
         onClick={toggleEnabled}
         className={cn(
           "h-9 w-9 relative shrink-0",
-          settings.enabled && "text-emerald-400"
+          settings.enabled && "text-neon-green"
         )}
         aria-label={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
         title={settings.enabled ? 'Mute sounds' : 'Enable sounds'}
@@ -112,7 +112,7 @@ function DesktopAudioControls({ className }: { className?: string }) {
           <VolumeX className="w-4 h-4 text-muted-foreground" />
         )}
         {settings.enabled && (
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-emerald-500 rounded-full" />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-neon-green rounded-full" />
         )}
       </Button>
       
@@ -208,7 +208,7 @@ function DesktopAudioControls({ className }: { className?: string }) {
                         className={cn(
                           "text-[9px]",
                           settings.enabled 
-                            ? "border-emerald-500/50 text-emerald-400"
+                            ? "border-neon-green/50 text-neon-green"
                             : "border-muted-foreground/30 text-muted-foreground"
                         )}
                       >

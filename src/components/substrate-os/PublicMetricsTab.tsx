@@ -131,7 +131,7 @@ export function PublicMetricsTab() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {isModified && <Badge variant="outline" className="text-[9px] text-amber-400 border-amber-500/30">modified</Badge>}
+            {isModified && <Badge variant="outline" className="text-[9px] text-neon-amber border-neon-amber/30">modified</Badge>}
             <Switch 
               checked={value as boolean}
               onCheckedChange={(checked) => handleChange(field.key, checked)}
@@ -149,7 +149,7 @@ export function PublicMetricsTab() {
           <p className="text-xs text-muted-foreground truncate">{field.description}</p>
         </div>
         <div className="flex items-center gap-2">
-          {isModified && <Badge variant="outline" className="text-[9px] text-amber-400 border-amber-500/30">modified</Badge>}
+          {isModified && <Badge variant="outline" className="text-[9px] text-neon-amber border-neon-amber/30">modified</Badge>}
           <Input
             type={field.type === 'number' ? 'number' : 'text'}
             value={value as string | number}

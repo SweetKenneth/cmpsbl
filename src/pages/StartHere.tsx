@@ -38,29 +38,29 @@ const buildCapabilities = [
     icon: Moon,
     title: "DREAM",
     description: "Your systems synthesize patterns and consolidate memory while idle — learning without active compute.",
-    color: "text-violet-500",
-    bg: "bg-violet-500/10",
+    color: "text-neon-purple",
+    bg: "bg-neon-purple/10",
   },
   {
     icon: RefreshCw,
     title: "ADAPT",
     description: "Governed self-modification adjusts routing, cost allocation, and operational parameters based on real performance.",
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
+    color: "text-neon-green",
+    bg: "bg-neon-green/10",
   },
   {
     icon: TrendingUp,
     title: "EVOLVE",
     description: "Every interaction feeds back. Memories crystallize into reusable intelligence. Your infrastructure gets smarter over time.",
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
+    color: "text-neon-amber",
+    bg: "bg-neon-amber/10",
   },
   {
     icon: Brain,
     title: "REMEMBER",
     description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall across sessions and deployments.",
-    color: "text-cyan-500",
-    bg: "bg-cyan-500/10",
+    color: "text-neon-cyan",
+    bg: "bg-neon-cyan/10",
   },
 ];
 
@@ -140,7 +140,7 @@ export default function StartHere() {
               {...stagger(0.25)}
               className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-primary/[0.03] transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
             >
-              <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-emerald-500 to-amber-500" />
+              <div className="h-1 w-full bg-gradient-to-r from-neon-purple via-neon-green to-neon-amber" />
               <div className="p-6 sm:p-8">
                 <div className="flex items-center gap-2 mb-4">
                   <Hammer className="w-5 h-5 text-primary" />
@@ -179,7 +179,7 @@ export default function StartHere() {
               {...stagger(0.3)}
               className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden hover:shadow-lg hover:shadow-primary/[0.03] transition-all duration-500 shimmer-on-hover card-lift gradient-border-reveal"
             >
-              <div className="h-1 w-full bg-gradient-to-r from-primary via-cyan-500 to-primary" />
+              <div className="h-1 w-full bg-gradient-to-r from-primary via-neon-cyan to-primary" />
               <div className="p-6 sm:p-8">
                 <div className="flex items-center gap-2 mb-4">
                   <Layers className="w-5 h-5 text-primary" />

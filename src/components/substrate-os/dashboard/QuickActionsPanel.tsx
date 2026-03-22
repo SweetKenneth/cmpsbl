@@ -85,36 +85,36 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
     {
       id: 'heal', label: 'Auto-Heal', icon: Wrench,
       description: 'Repair unhealthy modules',
-      borderClass: 'border-emerald-500/15 hover:border-emerald-500/40',
-      bgGradient: 'from-emerald-500/[0.06]', glowBg: 'bg-emerald-500/10',
-      iconGradient: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
+      borderClass: 'border-neon-green/15 hover:border-neon-green/40',
+      bgGradient: 'from-neon-green/[0.06]', glowBg: 'bg-neon-green/10',
+      iconGradient: 'bg-gradient-to-br from-neon-green to-neon-green',
       isPending: healMutation.isPending,
       onClick: handleHealAll,
     },
     {
       id: 'backup', label: 'Backup', icon: Server,
       description: 'Create system snapshot',
-      borderClass: 'border-cyan-500/15 hover:border-cyan-500/40',
-      bgGradient: 'from-cyan-500/[0.06]', glowBg: 'bg-cyan-500/10',
-      iconGradient: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
+      borderClass: 'border-neon-cyan/15 hover:border-neon-cyan/40',
+      bgGradient: 'from-neon-cyan/[0.06]', glowBg: 'bg-neon-cyan/10',
+      iconGradient: 'bg-gradient-to-br from-neon-cyan to-neon-cyan',
       isPending: backupMutation.isPending,
       onClick: handleBackup,
     },
     {
       id: 'diagnostics', label: 'Diagnostics', icon: Activity,
       description: 'Full system analysis',
-      borderClass: 'border-amber-500/15 hover:border-amber-500/40',
-      bgGradient: 'from-amber-500/[0.06]', glowBg: 'bg-amber-500/10',
-      iconGradient: 'bg-gradient-to-br from-amber-500 to-amber-600',
+      borderClass: 'border-neon-amber/15 hover:border-neon-amber/40',
+      bgGradient: 'from-neon-amber/[0.06]', glowBg: 'bg-neon-amber/10',
+      iconGradient: 'bg-gradient-to-br from-neon-amber to-neon-amber',
       isPending: diagnosticsRunning,
       onClick: handleDiagnostics,
     },
     {
       id: 'terminal', label: 'Terminal', icon: Terminal,
       description: 'Command interface',
-      borderClass: 'border-fuchsia-500/15 hover:border-fuchsia-500/40',
-      bgGradient: 'from-fuchsia-500/[0.06]', glowBg: 'bg-fuchsia-500/10',
-      iconGradient: 'bg-gradient-to-br from-fuchsia-500 to-fuchsia-600',
+      borderClass: 'border-neon-magenta/15 hover:border-neon-magenta/40',
+      bgGradient: 'from-neon-magenta/[0.06]', glowBg: 'bg-neon-magenta/10',
+      iconGradient: 'bg-gradient-to-br from-neon-magenta to-neon-magenta',
       isPending: false,
       onClick: onOpenTerminal,
     },
@@ -123,7 +123,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
       description: 'Crystallize memories',
       borderClass: 'border-sky-500/15 hover:border-sky-500/40',
       bgGradient: 'from-sky-500/[0.06]', glowBg: 'bg-sky-500/10',
-      iconGradient: 'bg-gradient-to-br from-sky-500 to-indigo-600',
+      iconGradient: 'bg-gradient-to-br from-sky-500 to-primary',
       isPending: false,
       onClick: () => navigate('/foundry'),
     },
@@ -165,7 +165,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
       
       <div className="relative p-6">
         <div className="flex items-center gap-3 mb-6">
-          <motion.div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/15 to-indigo-500/15 border border-sky-500/25 flex items-center justify-center">
+          <motion.div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/15 to-primary/15 border border-sky-500/25 flex items-center justify-center">
             <Zap className="w-5 h-5 text-sky-400" />
             <motion.div
               className="absolute inset-0 rounded-xl border border-sky-400/20"
@@ -182,12 +182,12 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
             className={cn(
               "ml-auto text-[9px] font-mono gap-1.5",
               healthScore.isHealthy 
-                ? "border-emerald-500/30 text-emerald-400/80 bg-emerald-500/5"
-                : "border-amber-500/30 text-amber-400/80 bg-amber-500/5"
+                ? "border-neon-green/30 text-neon-green/80 bg-neon-green/5"
+                : "border-neon-amber/30 text-neon-amber/80 bg-neon-amber/5"
             )}
           >
             <motion.span 
-              className={cn("w-1.5 h-1.5 rounded-full", healthScore.isHealthy ? "bg-emerald-500" : "bg-amber-500")}
+              className={cn("w-1.5 h-1.5 rounded-full", healthScore.isHealthy ? "bg-neon-green" : "bg-neon-amber")}
               animate={{ opacity: [1, 0.4, 1] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             />
@@ -250,7 +250,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
                   <h4 className="text-sm font-semibold text-foreground mb-0.5 flex items-center gap-2">
                     {action.label}
                     {isSuccess && (
-                      <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-[10px] text-emerald-400 font-mono">✓</motion.span>
+                      <motion.span initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }} className="text-[10px] text-neon-green font-mono">✓</motion.span>
                     )}
                   </h4>
                   <p className="text-[11px] text-muted-foreground/60 leading-relaxed">{action.description}</p>

@@ -11,9 +11,9 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 const tools = [
-  { icon: Package, label: "Templates", count: "200+", href: "/explore", color: "from-cyan-500 to-blue-500" },
-  { icon: Zap, label: "Capabilities", count: "525+", href: "/explore", color: "from-violet-500 to-purple-500" },
-  { icon: Layers, label: "Documentation", count: "SDK", href: "/documentation", color: "from-amber-500 to-orange-500" },
+  { icon: Package, label: "Templates", count: "200+", href: "/explore", color: "from-neon-cyan to-neon-blue" },
+  { icon: Zap, label: "Capabilities", count: "525+", href: "/explore", color: "from-neon-purple to-neon-purple" },
+  { icon: Layers, label: "Documentation", count: "SDK", href: "/documentation", color: "from-neon-amber to-neon-amber" },
   { icon: Brain, label: "Memory", count: "∞", href: "/persistent-memory", color: "from-primary to-primary-variant" },
 ];
 
@@ -28,7 +28,7 @@ export function CodeLabCTA() {
       >
         <div className="relative rounded-3xl overflow-hidden border border-border/50">
           {/* Multi-layer background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-card to-violet-500/8" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-card to-neon-purple/8" />
           <div 
             className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
             style={{
@@ -42,13 +42,13 @@ export function CodeLabCTA() {
           
           {/* Glow orbs */}
           <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-primary/15 blur-[100px]" />
-          <div className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-violet-500/15 blur-[100px]" />
+          <div className="absolute -bottom-32 -left-32 w-64 h-64 rounded-full bg-neon-purple/15 blur-[100px]" />
           
           <div className="relative p-5 sm:p-10 md:p-14 lg:p-16">
             <div className="grid lg:grid-cols-[1fr,auto] gap-10 items-center">
               {/* Left content */}
               <div className="text-center lg:text-left">
-                <Badge variant="outline" className="mb-5 border-emerald-500/30 bg-emerald-500/10 text-emerald-500 gap-1.5">
+                <Badge variant="outline" className="mb-5 border-neon-green/30 bg-neon-green/10 text-neon-green gap-1.5">
                   <Unlock className="w-3 h-3" />
                   Free Tier — No Account Required
                 </Badge>

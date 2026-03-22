@@ -205,7 +205,7 @@ export function EnvironmentSetup() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center">
             <Key className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -224,8 +224,8 @@ export function EnvironmentSetup() {
       </div>
 
       {/* Info Alert */}
-      <Alert className="border-amber-500/30 bg-amber-500/5">
-        <Shield className="w-4 h-4 text-amber-500" />
+      <Alert className="border-neon-amber/30 bg-neon-amber/5">
+        <Shield className="w-4 h-4 text-neon-amber" />
         <AlertDescription className="text-sm">
           <strong>Security Note:</strong> Never expose secret keys in client-side code. 
           Use edge functions or backend routes to safely access these values. 
@@ -299,7 +299,7 @@ export function EnvironmentSetup() {
                       className={cn(
                         "p-3 rounded-lg border transition-colors",
                         checkedVars[envVar.key] 
-                          ? "border-emerald-500/50 bg-emerald-500/5" 
+                          ? "border-neon-green/50 bg-neon-green/5" 
                           : "border-border/50 bg-muted/20"
                       )}
                     >
@@ -343,7 +343,7 @@ export function EnvironmentSetup() {
                           onClick={() => copyKey(envVar.key)}
                         >
                           {copiedKey === envVar.key ? (
-                            <Check className="w-4 h-4 text-emerald-500" />
+                            <Check className="w-4 h-4 text-neon-green" />
                           ) : (
                             <Copy className="w-4 h-4" />
                           )}

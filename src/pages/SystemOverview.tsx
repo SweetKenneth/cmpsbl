@@ -82,10 +82,10 @@ function WhatIs() {
 function MemoryStreamSection() {
   const phases = [
     { icon: Eye, label: 'Signal Capture', desc: 'The substrate observes inputs, conversations, and environmental data continuously.', color: 'text-sky-500' },
-    { icon: Brain, label: 'Memory Formation', desc: 'Signals are compressed into persistent memory traces across isolated namespaces.', color: 'text-amber-500' },
+    { icon: Brain, label: 'Memory Formation', desc: 'Signals are compressed into persistent memory traces across isolated namespaces.', color: 'text-neon-amber' },
     { icon: Sparkles, label: 'Crystallization', desc: 'The autonomous engine discovers viable software patterns and scores them (CJPI 68–100).', color: 'text-primary' },
-    { icon: Code2, label: 'Software Export', desc: 'Crystallized memories export to 20+ languages with the CMPSBL® Mini-Runtime™ Engine and test harness.', color: 'text-emerald-500' },
-    { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier memories (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-purple-500' },
+    { icon: Code2, label: 'Software Export', desc: 'Crystallized memories export to 20+ languages with the CMPSBL® Mini-Runtime™ Engine and test harness.', color: 'text-neon-green' },
+    { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier memories (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-neon-purple' },
   ];
 
   return (
@@ -127,10 +127,10 @@ function MemoryStreamSection() {
           <h3 className="text-base font-semibold text-foreground mb-4">Memory Quality Tiers</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { name: 'Mint', range: '68–79', color: 'text-emerald-500', desc: 'Production-viable' },
+              { name: 'Mint', range: '68–79', color: 'text-neon-green', desc: 'Production-viable' },
               { name: 'Prime', range: '80–89', color: 'text-sky-500', desc: 'High-quality' },
-              { name: 'Relic', range: '90–93', color: 'text-amber-500', desc: 'Rare find' },
-              { name: 'Mythic', range: '94–99', color: 'text-purple-500', desc: 'Silicon-eligible' },
+              { name: 'Relic', range: '90–93', color: 'text-neon-amber', desc: 'Rare find' },
+              { name: 'Mythic', range: '94–99', color: 'text-neon-purple', desc: 'Silicon-eligible' },
               { name: 'Apex', range: '100', color: 'text-primary', desc: 'Perfect score' },
             ].map(t => (
               <div key={t.name} className="text-center p-3 rounded-lg border border-border bg-background">

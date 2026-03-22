@@ -64,28 +64,28 @@ const NODE_MAP: Record<string, NodeMeta> = {
 
 const SECTOR_COLORS: Record<string, string> = {
   kernel:    'text-primary',
-  ccr:       'text-blue-400',
-  ocg:       'text-amber-400',
-  execution: 'text-emerald-400',
-  esz:       'text-violet-400',
-  epz:       'text-cyan-400',
-  emz:       'text-orange-400',
-  csz:       'text-pink-400',
-  mesh:      'text-teal-400',
-  plane:     'text-indigo-400',
+  ccr:       'text-neon-blue',
+  ocg:       'text-neon-amber',
+  execution: 'text-neon-green',
+  esz:       'text-neon-purple',
+  epz:       'text-neon-cyan',
+  emz:       'text-neon-amber',
+  csz:       'text-neon-magenta',
+  mesh:      'text-neon-cyan',
+  plane:     'text-primary',
 };
 
 const SECTOR_BG: Record<string, string> = {
   kernel:    'bg-primary/10 border-primary/20',
-  ccr:       'bg-blue-500/10 border-blue-500/20',
-  ocg:       'bg-amber-500/10 border-amber-500/20',
-  execution: 'bg-emerald-500/10 border-emerald-500/20',
-  esz:       'bg-violet-500/10 border-violet-500/20',
-  epz:       'bg-cyan-500/10 border-cyan-500/20',
-  emz:       'bg-orange-500/10 border-orange-500/20',
-  csz:       'bg-pink-500/10 border-pink-500/20',
-  mesh:      'bg-teal-500/10 border-teal-500/20',
-  plane:     'bg-indigo-500/10 border-indigo-500/20',
+  ccr:       'bg-neon-blue/10 border-neon-blue/20',
+  ocg:       'bg-neon-amber/10 border-neon-amber/20',
+  execution: 'bg-neon-green/10 border-neon-green/20',
+  esz:       'bg-neon-purple/10 border-neon-purple/20',
+  epz:       'bg-neon-cyan/10 border-neon-cyan/20',
+  emz:       'bg-neon-amber/10 border-neon-amber/20',
+  csz:       'bg-neon-magenta/10 border-neon-magenta/20',
+  mesh:      'bg-neon-cyan/10 border-neon-cyan/20',
+  plane:     'bg-primary/10 border-primary/20',
 };
 
 // ─── Tree structure ─────────────────────────────────────────────
@@ -150,9 +150,9 @@ export function SubstrateGraph({ className }: { className?: string }) {
         {/* Header */}
         <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border/30">
           <div className="flex gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500/60" />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
+            <span className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
+            <span className="w-2.5 h-2.5 rounded-full bg-neon-amber/60" />
+            <span className="w-2.5 h-2.5 rounded-full bg-neon-green/60" />
           </div>
           <span className="text-[10px] font-mono text-muted-foreground/50 tracking-wider uppercase">
             40-Node Topology · 12 Sectors
@@ -192,7 +192,7 @@ export function SubstrateGraph({ className }: { className?: string }) {
 
         {/* Node count badge */}
         <div className="mt-4 pt-3 border-t border-border/20 flex items-center gap-2 text-[10px] font-mono text-muted-foreground/40">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50 animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-neon-green/50 animate-pulse" />
           <span>Σ 40 nodes · weights = 1.000</span>
         </div>
       </div>
@@ -232,7 +232,7 @@ export function SubstrateGraph({ className }: { className?: string }) {
 
             <div className="mt-3 flex items-center gap-4 text-[10px] text-muted-foreground/40 font-mono">
               <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
                 Operational
               </span>
               <span>Sector: {selected.sector.toUpperCase()}</span>

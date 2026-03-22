@@ -42,8 +42,8 @@ export class AdminErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-background via-background to-background/95">
           <Card className="glass-panel p-8 max-w-lg w-full text-center space-y-6 animate-fade-in">
             <div className="flex justify-center">
-              <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center">
-                <AlertTriangle className="w-8 h-8 text-red-500" />
+              <div className="w-16 h-16 rounded-full bg-destructive/20 flex items-center justify-center">
+                <AlertTriangle className="w-8 h-8 text-destructive" />
               </div>
             </div>
             

@@ -72,9 +72,9 @@ export default function CognitivesDownload() {
 
           {!loading && downloadUrl && (
             <>
-              <Card className="border-amber-500/20">
+              <Card className="border-neon-amber/20">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-amber-400">
+                  <CardTitle className="flex items-center gap-2 text-neon-amber">
                     <CheckCircle className="w-6 h-6" />
                     Hybrid Cognitive Ready
                   </CardTitle>

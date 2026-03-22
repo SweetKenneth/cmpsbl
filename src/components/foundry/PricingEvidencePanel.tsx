@@ -82,9 +82,9 @@ export function PricingEvidencePanel({
                   <div className="flex items-center gap-2">
                     {p.success ? (
                       p.excluded_as_outlier ? (
-                        <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
+                        <AlertTriangle className="h-3.5 w-3.5 text-neon-amber" />
                       ) : (
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-neon-green" />
                       )
                     ) : (
                       <XCircle className="h-3.5 w-3.5 text-destructive" />
@@ -144,7 +144,7 @@ export function PricingEvidencePanel({
 
           {/* Outliers */}
           {outlierCount > 0 && (
-            <div className="text-xs text-amber-600 dark:text-amber-400">
+            <div className="text-xs text-neon-amber dark:text-neon-amber">
               <AlertTriangle className="h-3 w-3 inline mr-1" />
               {outlierCount} outlier{outlierCount > 1 ? 's' : ''} excluded: {evidence.outliers_rejected.join(', ')}
             </div>

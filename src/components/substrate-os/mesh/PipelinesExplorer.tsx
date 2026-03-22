@@ -19,12 +19,12 @@ import type { MeshSavedPipeline } from '@/lib/substrate/intent-mesh/pipelines';
 
 // Category config matching the Composable Capabilities page style
 const PIPELINE_CATEGORIES = [
-  { id: 'security', label: 'Security', icon: Shield, text: 'text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/30' },
-  { id: 'identity', label: 'Identity', icon: Eye, text: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-  { id: 'intelligence', label: 'Intelligence', icon: Brain, text: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
-  { id: 'orchestration', label: 'Orchestration', icon: Network, text: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30' },
-  { id: 'enrichment', label: 'Enrichment', icon: Sparkles, text: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
-  { id: 'automation', label: 'Automation', icon: Settings, text: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
+  { id: 'security', label: 'Security', icon: Shield, text: 'text-neon-magenta', bg: 'bg-neon-magenta/10', border: 'border-neon-magenta/30' },
+  { id: 'identity', label: 'Identity', icon: Eye, text: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30' },
+  { id: 'intelligence', label: 'Intelligence', icon: Brain, text: 'text-neon-purple', bg: 'bg-neon-purple/10', border: 'border-neon-purple/30' },
+  { id: 'orchestration', label: 'Orchestration', icon: Network, text: 'text-neon-blue', bg: 'bg-neon-blue/10', border: 'border-neon-blue/30' },
+  { id: 'enrichment', label: 'Enrichment', icon: Sparkles, text: 'text-neon-green', bg: 'bg-neon-green/10', border: 'border-neon-green/30' },
+  { id: 'automation', label: 'Automation', icon: Settings, text: 'text-neon-cyan', bg: 'bg-neon-cyan/10', border: 'border-neon-cyan/30' },
   { id: 'other', label: 'Other', icon: Layers, text: 'text-muted-foreground', bg: 'bg-muted/20', border: 'border-border/50' },
 ] as const;
 
@@ -129,11 +129,11 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="border border-cyan-500/20 bg-cyan-500/5">
+      <Card className="border border-neon-cyan/20 bg-neon-cyan/5">
         <CardContent className="py-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <div className="flex items-center gap-3 flex-1">
-              <Layers className="w-5 h-5 text-cyan-400 shrink-0" />
+              <Layers className="w-5 h-5 text-neon-cyan shrink-0" />
               <div>
                 <p className="text-sm font-medium">Crystallized Memories</p>
                 <p className="text-xs text-muted-foreground">

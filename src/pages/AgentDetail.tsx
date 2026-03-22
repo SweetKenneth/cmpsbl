@@ -45,27 +45,27 @@ function getPriceDisplay(agent: AgentWithPowers): string {
 }
 
 const TIER_ACCENT: Record<string, string> = {
-  APEX: "text-fuchsia-400",
-  ELITE: "text-violet-400",
+  APEX: "text-neon-magenta",
+  ELITE: "text-neon-purple",
   PRO: "text-sky-400",
-  STARTER: "text-amber-400",
-  FREE: "text-emerald-400",
+  STARTER: "text-neon-amber",
+  FREE: "text-neon-green",
 };
 
 const TIER_BORDER: Record<string, string> = {
-  APEX: "border-fuchsia-500/20",
-  ELITE: "border-violet-500/20",
+  APEX: "border-neon-magenta/20",
+  ELITE: "border-neon-purple/20",
   PRO: "border-sky-500/20",
-  STARTER: "border-amber-500/20",
-  FREE: "border-emerald-500/20",
+  STARTER: "border-neon-amber/20",
+  FREE: "border-neon-green/20",
 };
 
 const TIER_GLOW: Record<string, string> = {
-  APEX: "shadow-fuchsia-500/10",
-  ELITE: "shadow-violet-500/10",
+  APEX: "shadow-neon-magenta/10",
+  ELITE: "shadow-neon-purple/10",
   PRO: "shadow-sky-500/10",
-  STARTER: "shadow-amber-500/10",
-  FREE: "shadow-emerald-500/10",
+  STARTER: "shadow-neon-amber/10",
+  FREE: "shadow-neon-green/10",
 };
 
 export default function AgentDetail() {

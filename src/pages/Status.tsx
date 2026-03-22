@@ -33,10 +33,10 @@ interface ModuleHealth {
 }
 
 const STATUS_CONFIG: Record<ModuleStatus, { label: string; color: string; icon: React.ElementType; dotColor: string }> = {
-  operational: { label: "Operational", color: "text-emerald-500", icon: CheckCircle2, dotColor: "bg-emerald-500" },
-  degraded: { label: "Degraded", color: "text-amber-500", icon: AlertTriangle, dotColor: "bg-amber-500" },
-  outage: { label: "Outage", color: "text-red-500", icon: XCircle, dotColor: "bg-red-500" },
-  maintenance: { label: "Maintenance", color: "text-blue-500", icon: Settings, dotColor: "bg-blue-500" },
+  operational: { label: "Operational", color: "text-neon-green", icon: CheckCircle2, dotColor: "bg-neon-green" },
+  degraded: { label: "Degraded", color: "text-neon-amber", icon: AlertTriangle, dotColor: "bg-neon-amber" },
+  outage: { label: "Outage", color: "text-destructive", icon: XCircle, dotColor: "bg-destructive" },
+  maintenance: { label: "Maintenance", color: "text-neon-blue", icon: Settings, dotColor: "bg-neon-blue" },
 };
 
 const MODULE_DEFINITIONS: { name: string; layer: string; icon: React.ElementType }[] = [
@@ -163,10 +163,10 @@ function OverallStatusBanner({ status }: { status: ModuleStatus }) {
       animate={{ opacity: 1, y: 0 }}
       className={cn(
         "rounded-2xl border p-6 sm:p-8 text-center",
-        status === "operational" && "border-emerald-500/30 bg-emerald-500/[0.04]",
-        status === "degraded" && "border-amber-500/30 bg-amber-500/[0.04]",
-        status === "outage" && "border-red-500/30 bg-red-500/[0.04]",
-        status === "maintenance" && "border-blue-500/30 bg-blue-500/[0.04]",
+        status === "operational" && "border-neon-green/30 bg-neon-green/[0.04]",
+        status === "degraded" && "border-neon-amber/30 bg-neon-amber/[0.04]",
+        status === "outage" && "border-destructive/30 bg-destructive/[0.04]",
+        status === "maintenance" && "border-neon-blue/30 bg-neon-blue/[0.04]",
       )}
     >
       <div className="flex items-center justify-center gap-3 mb-3">
@@ -271,7 +271,7 @@ export default function Status() {
 
         {/* Uptime History Bar (90 days) — based on real incident data */}
         <Card className="mb-8 border-border/50 overflow-hidden">
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-green/20 to-transparent" />
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
               <Clock className="w-4 h-4 text-muted-foreground" />
@@ -295,8 +295,8 @@ export default function Status() {
                     key={i}
                     className={cn(
                       "flex-1 h-8 rounded-sm transition-all duration-200 hover:scale-y-125 cursor-default relative group",
-                      isToday ? "bg-emerald-500 ring-1 ring-emerald-400 shadow-sm shadow-emerald-500/30" :
-                      hasIncident ? "bg-amber-500/80 hover:bg-amber-500" : "bg-emerald-500/70 hover:bg-emerald-500/90"
+                      isToday ? "bg-neon-green ring-1 ring-neon-green shadow-sm shadow-neon-green/30" :
+                      hasIncident ? "bg-neon-amber/80 hover:bg-neon-amber" : "bg-neon-green/70 hover:bg-neon-green/90"
                     )}
                     title={isToday ? "Today" : `${90 - i} days ago${hasIncident ? " — incident" : ""}`}
                   >
@@ -347,14 +347,14 @@ export default function Status() {
         <Card className="mt-8 border-border/50">
           <CardHeader>
             <CardTitle className="text-sm flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-amber-500/70" />
+              <AlertTriangle className="w-4 h-4 text-neon-amber/70" />
               Recent Incidents
             </CardTitle>
           </CardHeader>
           <CardContent>
             {recentIncidents.length === 0 ? (
               <div className="text-center py-8">
-                <CheckCircle2 className="w-8 h-8 text-emerald-500/50 mx-auto mb-2" />
+                <CheckCircle2 className="w-8 h-8 text-neon-green/50 mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground">No recent incidents — all systems stable</p>
               </div>
             ) : (
@@ -363,7 +363,7 @@ export default function Status() {
                   <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 border border-border/30">
                     <div className={cn(
                       "w-2 h-2 rounded-full mt-1.5 flex-shrink-0",
-                      incident.resolved ? "bg-emerald-500" : incident.severity === "critical" ? "bg-red-500" : "bg-amber-500"
+                      incident.resolved ? "bg-neon-green" : incident.severity === "critical" ? "bg-destructive" : "bg-neon-amber"
                     )} />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium">{incident.description}</p>

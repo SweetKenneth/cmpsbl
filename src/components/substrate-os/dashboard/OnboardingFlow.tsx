@@ -228,8 +228,8 @@ export function OnboardingFlow({ tier, onComplete }: OnboardingFlowProps) {
 
           {step === 'done' && (
             <motion.div className="text-center space-y-4 py-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
-                <Check className="w-7 h-7 text-emerald-500" />
+              <div className="w-14 h-14 rounded-2xl bg-neon-green/10 border border-neon-green/20 flex items-center justify-center mx-auto">
+                <Check className="w-7 h-7 text-neon-green" />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-foreground">You're Set Up!</h3>

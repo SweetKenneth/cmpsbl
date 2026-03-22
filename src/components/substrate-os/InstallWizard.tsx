@@ -63,7 +63,7 @@ const INDUSTRY_PRESETS = [
     name: 'Video Game Development',
     icon: Gamepad2,
     description: 'NPC memory, dream cycles, world engines, and dialogue systems',
-    color: 'text-purple-400 border-purple-500/30 bg-purple-500/10',
+    color: 'text-neon-purple border-neon-purple/30 bg-neon-purple/10',
     enabledModules: ['core', 'ripple', 'access', 'brain', 'decode', 'dream', 'defense', 'system'],
     tagline: 'NPCs that remember and evolve',
   },
@@ -72,7 +72,7 @@ const INDUSTRY_PRESETS = [
     name: 'Software Development',
     icon: Code,
     description: 'RAG systems, AI agents, chatbots, and cognitive applications',
-    color: 'text-cyan-400 border-cyan-500/30 bg-cyan-500/10',
+    color: 'text-neon-cyan border-neon-cyan/30 bg-neon-cyan/10',
     enabledModules: ['core', 'ripple', 'access', 'brain', 'decode', 'nexus', 'defense', 'system'],
     tagline: 'Apps that think and learn',
   },
@@ -81,7 +81,7 @@ const INDUSTRY_PRESETS = [
     name: 'Enterprise Business',
     icon: Briefcase,
     description: 'Operations AI, institutional memory, workflow automation, LLM governance, and system integration',
-    color: 'text-blue-400 border-blue-500/30 bg-blue-500/10',
+    color: 'text-neon-blue border-neon-blue/30 bg-neon-blue/10',
     enabledModules: ['core', 'ripple', 'access', 'brain', 'vision', 'nexus', 'defense', 'system', 'evolution', 'integration'],
     tagline: 'Intelligence that scales',
   },
@@ -222,15 +222,15 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
       <div className="container max-w-4xl mx-auto py-8 px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 flex items-center justify-center">
-            <Package className="w-8 h-8 text-cyan-400" />
+          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 border border-neon-cyan/30 flex items-center justify-center">
+            <Package className="w-8 h-8 text-neon-cyan" />
           </div>
           <h1 className="text-2xl font-bold mb-2">Substrate Installation Wizard</h1>
           <p className="text-muted-foreground text-sm">
             Configure your substrate in {WIZARD_STEPS.length} easy steps
           </p>
           {packageData?._manifest && (
-            <Badge className="mt-2 bg-emerald-500/20 text-emerald-400 border-emerald-500/40">
+            <Badge className="mt-2 bg-neon-green/20 text-neon-green border-neon-green/40">
               v{packageData._manifest.substrate_version} • {packageData._manifest.total_records?.toLocaleString()} records
             </Badge>
           )}
@@ -245,15 +245,15 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                 key={s.id}
                 className={cn(
                   "flex flex-col items-center gap-1 text-xs transition-colors",
-                  i === currentStep ? "text-cyan-400" : i < currentStep ? "text-emerald-400" : "text-muted-foreground"
+                  i === currentStep ? "text-neon-cyan" : i < currentStep ? "text-neon-green" : "text-muted-foreground"
                 )}
               >
                 <div className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center border transition-colors",
                   i === currentStep 
-                    ? "border-cyan-500 bg-cyan-500/20" 
+                    ? "border-neon-cyan bg-neon-cyan/20" 
                     : i < currentStep 
-                      ? "border-emerald-500 bg-emerald-500/20" 
+                      ? "border-neon-green bg-neon-green/20" 
                       : "border-white/10 bg-white/5"
                 )}>
                   {i < currentStep ? (
@@ -272,7 +272,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
         <Card className="border border-white/10 bg-white/5 backdrop-blur-xl mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <step.icon className="w-5 h-5 text-cyan-400" />
+              <step.icon className="w-5 h-5 text-neon-cyan" />
               {step.title}
             </CardTitle>
             <CardDescription>
@@ -419,7 +419,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                         className={cn(
                           "p-4 rounded-lg border text-left transition-all",
                           config.theme === theme.value
-                            ? "border-cyan-500 bg-cyan-500/10"
+                            ? "border-neon-cyan bg-neon-cyan/10"
                             : "border-white/10 bg-white/5 hover:bg-white/10"
                         )}
                       >
@@ -427,7 +427,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                           <span className="text-2xl">{theme.emoji}</span>
                           <span className="font-medium">{theme.label}</span>
                           {config.theme === theme.value && (
-                            <Check className="w-4 h-4 text-cyan-400 ml-auto" />
+                            <Check className="w-4 h-4 text-neon-cyan ml-auto" />
                           )}
                         </div>
                         <div className="flex gap-2">
@@ -454,7 +454,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                         className={cn(
                           "w-full p-4 rounded-lg border text-left transition-all",
                           config.layout === layout.value
-                            ? "border-cyan-500 bg-cyan-500/10"
+                            ? "border-neon-cyan bg-neon-cyan/10"
                             : "border-white/10 bg-white/5 hover:bg-white/10"
                         )}
                       >
@@ -464,7 +464,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                             <p className="text-sm text-muted-foreground">{layout.description}</p>
                           </div>
                           {config.layout === layout.value && (
-                            <Check className="w-5 h-5 text-cyan-400" />
+                            <Check className="w-5 h-5 text-neon-cyan" />
                           )}
                         </div>
                       </button>
@@ -481,9 +481,9 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                         className={cn(
                           "p-3 rounded-lg border flex items-center justify-between",
                           module.required
-                            ? "border-emerald-500/30 bg-emerald-500/5"
+                            ? "border-neon-green/30 bg-neon-green/5"
                             : config.modules[module.key]
-                              ? "border-cyan-500/30 bg-cyan-500/5"
+                              ? "border-neon-cyan/30 bg-neon-cyan/5"
                               : "border-white/10 bg-white/5"
                         )}
                       >
@@ -492,7 +492,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                           <div>
                             <p className="font-medium text-sm">{module.name}</p>
                             {module.required && (
-                              <Badge className="text-[10px] bg-emerald-500/20 text-emerald-400 border-emerald-500/40">
+                              <Badge className="text-[10px] bg-neon-green/20 text-neon-green border-neon-green/40">
                                 Required
                               </Badge>
                             )}
@@ -511,11 +511,11 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                 {/* AI Providers Step */}
                 {step.id === 'ai_providers' && (
                   <div className="space-y-4">
-                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 mb-4">
+                    <div className="bg-neon-amber/10 border border-neon-amber/30 rounded-lg p-3 mb-4">
                       <div className="flex items-start gap-2">
-                        <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5" />
+                        <AlertTriangle className="w-4 h-4 text-neon-amber mt-0.5" />
                         <div className="text-sm">
-                          <p className="font-medium text-amber-400">API keys are optional</p>
+                          <p className="font-medium text-neon-amber">API keys are optional</p>
                           <p className="text-muted-foreground text-xs">
                             You can configure these later in your project settings.
                           </p>
@@ -599,7 +599,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
           <Button
             onClick={handleNext}
             disabled={isInstalling || (step.id === 'branding' && !config.branding.company_name)}
-            className="gap-2 bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/30"
+            className="gap-2 bg-neon-cyan/20 border border-neon-cyan/40 text-neon-cyan hover:bg-neon-cyan/30"
           >
             {isInstalling ? (
               <>

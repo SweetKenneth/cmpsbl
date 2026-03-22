@@ -33,9 +33,9 @@ import {
 import { toast } from "sonner";
 
 const STATUS_COLORS: Record<string, string> = {
-  success: "text-green-400",
-  error: "text-red-400",
-  pending: "text-amber-400",
+  success: "text-neon-green",
+  error: "text-destructive",
+  pending: "text-neon-amber",
 };
 
 const STATUS_ICONS: Record<string, React.ElementType> = {
@@ -45,15 +45,15 @@ const STATUS_ICONS: Record<string, React.ElementType> = {
 };
 
 const MODULE_COLORS: Record<string, string> = {
-  brain: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  decode: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  defense: "bg-red-500/20 text-red-400 border-red-500/30",
-  nexus: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  vision: "bg-green-500/20 text-green-400 border-green-500/30",
-  dream: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
-  core: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  access: "bg-pink-500/20 text-pink-400 border-pink-500/30",
-  ripple: "bg-teal-500/20 text-teal-400 border-teal-500/30",
+  brain: "bg-neon-purple/20 text-neon-purple border-neon-purple/30",
+  decode: "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30",
+  defense: "bg-destructive/20 text-destructive border-destructive/30",
+  nexus: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
+  vision: "bg-neon-green/20 text-neon-green border-neon-green/30",
+  dream: "bg-primary/20 text-primary border-primary/30",
+  core: "bg-neon-blue/20 text-neon-blue border-neon-blue/30",
+  access: "bg-neon-magenta/20 text-neon-magenta border-neon-magenta/30",
+  ripple: "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30",
 };
 
 export function LiveDebugger() {
@@ -115,10 +115,10 @@ export function LiveDebugger() {
 
   if (sessionError || tracesError) {
     return (
-      <Card className="p-8 border-amber-500/30 bg-amber-500/5">
+      <Card className="p-8 border-neon-amber/30 bg-neon-amber/5">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          <div className="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
-            <AlertCircle className="w-6 h-6 text-amber-400" />
+          <div className="w-12 h-12 rounded-full bg-neon-amber/20 flex items-center justify-center">
+            <AlertCircle className="w-6 h-6 text-neon-amber" />
           </div>
           <div>
             <h3 className="font-semibold mb-1">Debugger Unavailable</h3>
@@ -155,7 +155,7 @@ export function LiveDebugger() {
             <div className="flex items-center gap-2">
               {activeSession ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse" />
+                  <div className="w-3 h-3 rounded-full bg-neon-green animate-pulse" />
                   <span className="font-medium">Recording: {activeSession.name}</span>
                 </div>
               ) : (
@@ -207,11 +207,11 @@ export function LiveDebugger() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground">Success Rate</p>
-                  <p className="text-2xl font-bold text-green-400">
+                  <p className="text-2xl font-bold text-neon-green">
                     {traces?.length ? Math.round((successCount / traces.length) * 100) : 0}%
                   </p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-green-500 opacity-50" />
+                <CheckCircle className="h-8 w-8 text-neon-green opacity-50" />
               </div>
             </CardContent>
           </Card>
@@ -221,9 +221,9 @@ export function LiveDebugger() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-muted-foreground">Errors</p>
-                  <p className="text-2xl font-bold text-red-400">{errorCount}</p>
+                  <p className="text-2xl font-bold text-destructive">{errorCount}</p>
                 </div>
-                <AlertCircle className="h-8 w-8 text-red-500 opacity-50" />
+                <AlertCircle className="h-8 w-8 text-destructive opacity-50" />
               </div>
             </CardContent>
           </Card>
@@ -235,7 +235,7 @@ export function LiveDebugger() {
                   <p className="text-xs text-muted-foreground">Avg Latency</p>
                   <p className="text-2xl font-bold">{avgLatency?.toFixed(0) || 0}ms</p>
                 </div>
-                <Clock className="h-8 w-8 text-amber-500 opacity-50" />
+                <Clock className="h-8 w-8 text-neon-amber opacity-50" />
               </div>
             </CardContent>
           </Card>
@@ -314,7 +314,7 @@ export function LiveDebugger() {
                               </div>
                             </div>
                             {trace.error_message && (
-                              <p className="text-xs text-red-400 mt-2 truncate">
+                              <p className="text-xs text-destructive mt-2 truncate">
                                 {trace.error_message}
                               </p>
                             )}
@@ -402,7 +402,7 @@ export function LiveDebugger() {
                 {selectedTraceData.error_message && (
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">Error</p>
-                    <pre className="bg-red-500/10 text-red-400 p-2 rounded text-xs overflow-auto">
+                    <pre className="bg-destructive/10 text-destructive p-2 rounded text-xs overflow-auto">
                       {selectedTraceData.error_message}
                     </pre>
                   </div>
@@ -426,7 +426,7 @@ export function LiveDebugger() {
 // Flame graph row component
 function FlameRow({ node, depth, maxValue }: { node: any; depth: number; maxValue: number }) {
   const width = Math.max((node.value / maxValue) * 100, 10);
-  const statusColor = node.status === "success" ? "bg-green-500" : node.status === "error" ? "bg-red-500" : "bg-amber-500";
+  const statusColor = node.status === "success" ? "bg-neon-green" : node.status === "error" ? "bg-destructive" : "bg-neon-amber";
 
   return (
     <div style={{ marginLeft: depth * 16 }}>

@@ -25,7 +25,7 @@ export function MintForgeToggle({ className }: MintForgeToggleProps) {
         className={cn(
           "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
           isMint
-            ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40"
+            ? "bg-neon-magenta/20 text-neon-magenta border border-neon-magenta/40"
             : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
         )}
       >
@@ -38,7 +38,7 @@ export function MintForgeToggle({ className }: MintForgeToggleProps) {
         className={cn(
           "flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-all",
           isForge
-            ? "bg-amber-500/20 text-amber-400 border border-amber-500/40"
+            ? "bg-neon-amber/20 text-neon-amber border border-neon-amber/40"
             : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
         )}
       >

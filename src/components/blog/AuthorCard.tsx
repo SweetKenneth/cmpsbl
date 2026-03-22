@@ -67,7 +67,7 @@ export function AuthorCard({
             <span className="text-xs">{role}</span>
           </div>
           {isReviewed && (
-            <div className="flex items-center gap-1 ml-auto px-2 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs">
+            <div className="flex items-center gap-1 ml-auto px-2 py-1 rounded-full bg-neon-green/10 border border-neon-green/20 text-neon-green text-xs">
               <Shield className="w-3 h-3" />
               Reviewed
             </div>
@@ -91,7 +91,7 @@ export function AuthorCard({
             <div className="flex items-center gap-2 mb-1">
               <h4 className="font-semibold text-foreground">{name}</h4>
               {isReviewed && (
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs">
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-neon-green/10 border border-neon-green/20 text-neon-green text-xs">
                   <Shield className="w-3 h-3" />
                   Expert Reviewed
                 </div>

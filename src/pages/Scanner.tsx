@@ -36,9 +36,9 @@ const EVOLUTION_PHASES = [
     icon: Bug,
     tagline: 'Find the rot before it spreads',
     description: 'Scans edge functions, database schema, module wiring, and dependency graphs. Surfaces orphaned code, missing guards, and architectural drift you didn\'t know existed.',
-    color: 'from-red-500/20 to-orange-500/10',
-    accent: 'text-red-400',
-    border: 'border-red-500/20',
+    color: 'from-destructive/20 to-neon-amber/10',
+    accent: 'text-destructive',
+    border: 'border-destructive/20',
   },
   {
     phase: '02',
@@ -46,9 +46,9 @@ const EVOLUTION_PHASES = [
     icon: Activity,
     tagline: 'Understand why, not just what',
     description: 'Cross-correlates findings across nodes using VISION telemetry, MEMORY decay patterns, and DEFENSE threat scoring. Grades each issue A→F by impact.',
-    color: 'from-amber-500/20 to-yellow-500/10',
-    accent: 'text-amber-400',
-    border: 'border-amber-500/20',
+    color: 'from-neon-amber/20 to-neon-amber/10',
+    accent: 'text-neon-amber',
+    border: 'border-neon-amber/20',
   },
   {
     phase: '03',
@@ -56,9 +56,9 @@ const EVOLUTION_PHASES = [
     icon: Brain,
     tagline: 'AI-synthesized action plans',
     description: 'Multi-model LLM consensus generates prioritized evolution proposals — concrete diffs, migration scripts, and config patches. Not suggestions. Plans.',
-    color: 'from-violet-500/20 to-purple-500/10',
-    accent: 'text-violet-400',
-    border: 'border-violet-500/20',
+    color: 'from-neon-purple/20 to-neon-purple/10',
+    accent: 'text-neon-purple',
+    border: 'border-neon-purple/20',
   },
   {
     phase: '04',
@@ -66,9 +66,9 @@ const EVOLUTION_PHASES = [
     icon: Dna,
     tagline: 'Apply, stamp, verify, repeat',
     description: 'Cryptographically stamped evolution receipts. Pre/post metric deltas. Automatic rollback on regression. Your system doesn\'t just change — it provably improves.',
-    color: 'from-emerald-500/20 to-cyan-500/10',
-    accent: 'text-emerald-400',
-    border: 'border-emerald-500/20',
+    color: 'from-neon-green/20 to-neon-cyan/10',
+    accent: 'text-neon-green',
+    border: 'border-neon-green/20',
   },
 ];
 
@@ -145,7 +145,7 @@ export default function Scanner() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button asChild size="lg" className="gap-2 relative overflow-hidden group h-12">
               <Link to="/workspace">
-                <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <span className="absolute inset-0 bg-gradient-to-r from-primary/20 to-neon-green/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Terminal className="w-4 h-4" />
                 Open Workspace
               </Link>
@@ -292,9 +292,9 @@ export default function Scanner() {
             <Card className="bg-card/80 border-border/60 overflow-hidden shadow-lg shadow-primary/[0.03]">
               <div className="bg-muted/40 px-4 py-2.5 border-b border-border/50 flex items-center gap-2">
                 <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/60" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-neon-amber/60" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-neon-green/60" />
                 </div>
                 <span className="text-xs font-mono text-muted-foreground ml-2">DECODE Terminal</span>
                 <Badge variant="outline" className="ml-auto text-[10px] border-primary/30">PREVIEW</Badge>
@@ -302,7 +302,7 @@ export default function Scanner() {
               <CardContent className="p-0">
                 {TERMINAL_EXAMPLES.map((ex, i) => (
                   <div key={i} className="px-4 py-3 border-b border-border/30 last:border-b-0 flex items-start gap-3 hover:bg-muted/20 transition-colors group">
-                    <span className="text-primary font-mono text-sm shrink-0 group-hover:text-emerald-400 transition-colors">$</span>
+                    <span className="text-primary font-mono text-sm shrink-0 group-hover:text-neon-green transition-colors">$</span>
                     <div className="min-w-0">
                       <code className="text-sm font-mono text-foreground group-hover:text-primary transition-colors">{ex.command}</code>
                       <p className="text-xs text-muted-foreground mt-0.5">{ex.description}</p>
@@ -327,7 +327,7 @@ export default function Scanner() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-emerald-500/5 overflow-hidden relative">
+            <Card className="border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-neon-green/5 overflow-hidden relative">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] pointer-events-none" />
               <CardContent className="p-8 sm:p-12 relative">
                 <div className="grid sm:grid-cols-2 gap-8">
@@ -375,10 +375,10 @@ export default function Scanner() {
           className="max-w-3xl mx-auto px-4 text-center mb-16"
         >
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-emerald-500/8 rounded-2xl blur-xl" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/8 via-transparent to-neon-green/8 rounded-2xl blur-xl" />
             <Card className="border-primary/15 relative">
               <CardContent className="p-8 sm:p-10">
-                <Badge variant="outline" className="mb-4 text-[11px] border-amber-500/30 text-amber-400 gap-1.5">
+                <Badge variant="outline" className="mb-4 text-[11px] border-neon-amber/30 text-neon-amber gap-1.5">
                   <Construction className="w-3 h-3" />
                   Coming Soon
                 </Badge>

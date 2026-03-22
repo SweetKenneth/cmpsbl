@@ -83,7 +83,7 @@ export function AgencyTaskControls({
     <div className={cn("flex items-center gap-2 flex-wrap", className)}>
       {/* Status badges */}
       {stuckCount > 0 && (
-        <Badge variant="outline" className="gap-1 text-[10px] border-orange-500/50 text-orange-400 animate-pulse">
+        <Badge variant="outline" className="gap-1 text-[10px] border-neon-amber/50 text-neon-amber animate-pulse">
           <AlertTriangle className="w-3 h-3" />
           {stuckCount} Stuck
         </Badge>
@@ -96,7 +96,7 @@ export function AgencyTaskControls({
             <Button
               variant="outline"
               size="sm"
-              className="gap-1.5 text-xs border-red-500/30 text-red-400 hover:bg-red-500/10"
+              className="gap-1.5 text-xs border-destructive/30 text-destructive hover:bg-destructive/10"
               disabled={isCancelling}
             >
               <XCircle className="w-3 h-3" />
@@ -115,7 +115,7 @@ export function AgencyTaskControls({
               <AlertDialogCancel>Keep Running</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleCancelAll}
-                className="bg-red-600 hover:bg-red-700"
+                className="bg-destructive hover:bg-destructive"
               >
                 Cancel All
               </AlertDialogAction>
@@ -131,7 +131,7 @@ export function AgencyTaskControls({
           size="sm"
           onClick={handleRetryFailed}
           disabled={isRetrying}
-          className="gap-1.5 text-xs border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+          className="gap-1.5 text-xs border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
         >
           <RotateCcw className={cn("w-3 h-3", isRetrying && "animate-spin")} />
           Retry Failed ({failedCount})
@@ -145,7 +145,7 @@ export function AgencyTaskControls({
           size="sm"
           onClick={handleResetToLearning}
           disabled={isResetting}
-          className="gap-1.5 text-xs border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
+          className="gap-1.5 text-xs border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10"
         >
           <Brain className={cn("w-3 h-3", isResetting && "animate-pulse")} />
           {isResetting ? 'Starting...' : 'Start Team Learning'}

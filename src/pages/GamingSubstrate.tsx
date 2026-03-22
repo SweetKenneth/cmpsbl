@@ -252,8 +252,8 @@ export default function GamingSubstrate() {
         "Emotional state persistence",
         "Cross-session recall",
       ],
-      color: "text-purple-500",
-      gradient: "from-purple-500 to-violet-600",
+      color: "text-neon-purple",
+      gradient: "from-neon-purple to-neon-purple",
     },
     {
       icon: Moon,
@@ -265,8 +265,8 @@ export default function GamingSubstrate() {
         "Personality evolution",
         "Emergent storytelling",
       ],
-      color: "text-cyan-500",
-      gradient: "from-cyan-500 to-teal-600",
+      color: "text-neon-cyan",
+      gradient: "from-neon-cyan to-neon-cyan",
     },
     {
       icon: MessageSquare,
@@ -278,8 +278,8 @@ export default function GamingSubstrate() {
         "Personality-driven speech",
         "Memory-informed dialogue",
       ],
-      color: "text-cyan-500",
-      gradient: "from-cyan-500 to-blue-600",
+      color: "text-neon-cyan",
+      gradient: "from-neon-cyan to-neon-blue",
     },
     {
       icon: Zap,
@@ -291,8 +291,8 @@ export default function GamingSubstrate() {
         "Latency-based routing",
         "BYOK architecture",
       ],
-      color: "text-green-500",
-      gradient: "from-green-500 to-emerald-600",
+      color: "text-neon-green",
+      gradient: "from-neon-green to-neon-green",
     },
     {
       icon: Globe,
@@ -304,8 +304,8 @@ export default function GamingSubstrate() {
         "News/rumor propagation",
         "Environmental memory",
       ],
-      color: "text-amber-500",
-      gradient: "from-amber-500 to-orange-600",
+      color: "text-neon-amber",
+      gradient: "from-neon-amber to-neon-amber",
     },
     {
       icon: Users,
@@ -317,8 +317,8 @@ export default function GamingSubstrate() {
         "Shared knowledge bases",
         "Leader/follower dynamics",
       ],
-      color: "text-rose-500",
-      gradient: "from-rose-500 to-pink-600",
+      color: "text-neon-magenta",
+      gradient: "from-neon-magenta to-neon-magenta",
     },
   ];
 
@@ -328,32 +328,32 @@ export default function GamingSubstrate() {
       title: "RPG Companions",
       description: "Party members who remember your adventures together and grow based on shared experiences.",
       example: "Remember when we defeated that dragon together? I've been practicing fire resistance since then.",
-      color: "text-amber-500",
-      gradient: "from-amber-500 to-orange-600",
+      color: "text-neon-amber",
+      gradient: "from-neon-amber to-neon-amber",
     },
     {
       icon: Map,
       title: "Open World NPCs",
       description: "Shopkeepers, guards, and villagers who remember you and react to your reputation.",
       example: "You're the one who saved my daughter! Take this discount, hero.",
-      color: "text-emerald-500",
-      gradient: "from-emerald-500 to-green-600",
+      color: "text-neon-green",
+      gradient: "from-neon-green to-neon-green",
     },
     {
       icon: Heart,
       title: "Dating Sims",
       description: "Characters with genuine emotional memory who build authentic relationships over time.",
       example: "You remembered my favorite flower from our first conversation...",
-      color: "text-rose-500",
-      gradient: "from-rose-500 to-pink-600",
+      color: "text-neon-magenta",
+      gradient: "from-neon-magenta to-neon-magenta",
     },
     {
       icon: Bot,
       title: "Strategy AI",
       description: "Opponents that learn your tactics and adapt their strategies across matches.",
       example: "You always attack from the east. Not this time.",
-      color: "text-blue-500",
-      gradient: "from-blue-500 to-indigo-600",
+      color: "text-neon-blue",
+      gradient: "from-neon-blue to-primary",
     },
   ];
 
@@ -382,9 +382,9 @@ export default function GamingSubstrate() {
       {/* Hero Section */}
       <section className="relative py-20 sm:py-24 md:py-36 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent" />
-          <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-neon-purple/5 via-transparent to-transparent" />
+          <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-neon-cyan/10 rounded-full blur-[120px]" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -409,7 +409,7 @@ export default function GamingSubstrate() {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
-              <Button asChild size="lg" className="gap-2 h-12 sm:h-14 px-6 sm:px-8 text-base bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700">
+              <Button asChild size="lg" className="gap-2 h-12 sm:h-14 px-6 sm:px-8 text-base bg-gradient-to-r from-neon-purple to-neon-purple hover:from-neon-purple hover:to-neon-purple">
                 <a href="#world-engine">
                   <Crown className="w-5 h-5" />
                   Get World Engine — $2,995
@@ -440,8 +440,8 @@ export default function GamingSubstrate() {
                 transition={{ delay: idx * 0.1 }}
                 className="text-center"
               >
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mx-auto mb-3">
-                  <cap.icon className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-neon-purple/10 flex items-center justify-center mx-auto mb-3">
+                  <cap.icon className="w-5 h-5 sm:w-6 sm:h-6 text-neon-purple" />
                 </div>
                 <div className="text-xl sm:text-2xl md:text-3xl font-black text-foreground">{cap.label}</div>
                 <div className="text-[10px] sm:text-xs text-muted-foreground">{cap.sublabel}</div>
@@ -456,9 +456,9 @@ export default function GamingSubstrate() {
       {/* ═══════════════════════════════════════════════ */}
       <section id="world-engine" className="py-16 sm:py-24 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-500/3 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-neon-purple/3 via-transparent to-transparent" />
           <motion.div 
-            className="absolute top-0 left-1/3 w-[800px] h-[800px] bg-purple-500/5 rounded-full blur-[200px]"
+            className="absolute top-0 left-1/3 w-[800px] h-[800px] bg-neon-purple/5 rounded-full blur-[200px]"
             animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -520,7 +520,7 @@ export default function GamingSubstrate() {
                     onClick={handlePurchaseWorldEngine}
                     disabled={purchasing}
                     size="lg"
-                    className="w-full h-14 text-lg font-bold bg-white text-purple-600 hover:bg-white/90 shadow-2xl shadow-black/30"
+                    className="w-full h-14 text-lg font-bold bg-white text-neon-purple hover:bg-white/90 shadow-2xl shadow-black/30"
                   >
                     {purchasing ? (
                       <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -552,10 +552,10 @@ export default function GamingSubstrate() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.05 }}
-                      className="p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm hover:bg-card/60 hover:border-purple-500/20 transition-all"
+                      className="p-5 sm:p-6 rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm hover:bg-card/60 hover:border-neon-purple/20 transition-all"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-3">
-                        <Icon className="w-5 h-5 text-purple-500" />
+                      <div className="w-10 h-10 rounded-xl bg-neon-purple/10 flex items-center justify-center mb-3">
+                        <Icon className="w-5 h-5 text-neon-purple" />
                       </div>
                       <h4 className="font-bold text-sm sm:text-base mb-2">{item.title}</h4>
                       <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.description}</p>
@@ -566,10 +566,10 @@ export default function GamingSubstrate() {
             </div>
 
             {/* Why It's Different */}
-            <div className="rounded-2xl border border-purple-500/20 bg-card/30 p-6 sm:p-10">
+            <div className="rounded-2xl border border-neon-purple/20 bg-card/30 p-6 sm:p-10">
               <h3 className="text-xl sm:text-2xl font-bold mb-6 text-center">
                 Why the World Engine Makes Games{" "}
-                <span className="text-purple-400">Unforgettable</span>
+                <span className="text-neon-purple">Unforgettable</span>
               </h3>
               <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
                 {[
@@ -603,7 +603,7 @@ export default function GamingSubstrate() {
                   onClick={handlePurchaseWorldEngine}
                   disabled={purchasing}
                   size="lg"
-                  className="h-12 sm:h-14 px-8 text-base bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 font-bold"
+                  className="h-12 sm:h-14 px-8 text-base bg-gradient-to-r from-neon-purple to-neon-purple hover:from-neon-purple hover:to-neon-purple font-bold"
                 >
                   {purchasing ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Crown className="w-5 h-5 mr-2" />}
                   Get World Engine — $2,995
@@ -702,15 +702,15 @@ export default function GamingSubstrate() {
             <Card className="bg-card/80 border-primary/30 overflow-hidden shadow-2xl shadow-primary/10">
               <div className="flex items-center gap-2 px-4 py-3 border-b border-border/30">
                 <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-destructive/80" />
+                  <div className="w-3 h-3 rounded-full bg-neon-amber/80" />
+                  <div className="w-3 h-3 rounded-full bg-neon-green/80" />
                 </div>
                 <span className="text-xs text-white/40 ml-2">npc-memory.ts</span>
               </div>
               <CardContent className="p-4 sm:p-6">
                 <pre className="text-xs sm:text-sm overflow-x-auto">
-                  <code className="text-green-400 font-mono">{`// Initialize NPC with persistent memory
+                  <code className="text-neon-green font-mono">{`// Initialize NPC with persistent memory
 const npc = await cmpsbl.brain.remember({
   entity_id: "npc_innkeeper_03",
   memory: {
@@ -744,7 +744,7 @@ await cmpsbl.dream.cycle({
 
       {/* CTA Section */}
       <section className="py-16 sm:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-500/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-purple/5 to-transparent" />
         <div className="container mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -753,7 +753,7 @@ await cmpsbl.dream.cycle({
             className="max-w-4xl mx-auto"
           >
             <div className="relative p-8 sm:p-10 md:p-14 rounded-3xl overflow-hidden text-center">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-violet-600 to-fuchsia-600" />
+              <div className="absolute inset-0 bg-gradient-to-br from-neon-purple via-neon-purple to-neon-magenta" />
               <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
 
               <div className="relative">
@@ -771,7 +771,7 @@ await cmpsbl.dream.cycle({
                     onClick={handlePurchaseWorldEngine}
                     disabled={purchasing}
                     size="lg" 
-                    className="h-12 sm:h-14 px-6 sm:px-8 bg-white text-purple-600 hover:bg-white/90 font-bold shadow-lg text-base hover:scale-[1.02] active:scale-[0.98] transition-all"
+                    className="h-12 sm:h-14 px-6 sm:px-8 bg-white text-neon-purple hover:bg-white/90 font-bold shadow-lg text-base hover:scale-[1.02] active:scale-[0.98] transition-all"
                   >
                     <Crown className="w-5 h-5 mr-2" />
                     World Engine — $2,995

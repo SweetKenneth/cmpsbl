@@ -105,8 +105,8 @@ export function UserBehaviorSection() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 border border-violet-500/30 flex items-center justify-center">
-            <Users className="w-5 h-5 text-violet-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-purple/20 to-neon-magenta/20 border border-neon-purple/30 flex items-center justify-center">
+            <Users className="w-5 h-5 text-neon-purple" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">User Behavior</h2>
@@ -123,7 +123,7 @@ export function UserBehaviorSection() {
                 className={cn(
                   "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
                   dateRange === r
-                    ? "bg-violet-500/20 text-violet-400 border border-violet-500/40"
+                    ? "bg-neon-purple/20 text-neon-purple border border-neon-purple/40"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
@@ -148,7 +148,7 @@ export function UserBehaviorSection() {
               className={cn(
                 "px-3 py-2 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5",
                 subView === sv.key
-                  ? "bg-violet-500/20 text-violet-400 border border-violet-500/40"
+                  ? "bg-neon-purple/20 text-neon-purple border border-neon-purple/40"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -212,12 +212,12 @@ function UserTimeline({ events, resolveUser }: { events: RawEvent[]; resolveUser
 
   const categoryColor = (cat: string) => {
     switch (cat) {
-      case 'navigation': return 'text-blue-400 bg-blue-500/10 border-blue-500/30';
-      case 'conversion': return 'text-green-400 bg-green-500/10 border-green-500/30';
-      case 'engagement': return 'text-violet-400 bg-violet-500/10 border-violet-500/30';
-      case 'scan': return 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30';
-      case 'auth': return 'text-amber-400 bg-amber-500/10 border-amber-500/30';
-      case 'error': return 'text-red-400 bg-red-500/10 border-red-500/30';
+      case 'navigation': return 'text-neon-blue bg-neon-blue/10 border-neon-blue/30';
+      case 'conversion': return 'text-neon-green bg-neon-green/10 border-neon-green/30';
+      case 'engagement': return 'text-neon-purple bg-neon-purple/10 border-neon-purple/30';
+      case 'scan': return 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/30';
+      case 'auth': return 'text-neon-amber bg-neon-amber/10 border-neon-amber/30';
+      case 'error': return 'text-destructive bg-destructive/10 border-destructive/30';
       default: return 'text-muted-foreground bg-muted/10 border-border/30';
     }
   };
@@ -306,13 +306,13 @@ function FeatureHeatmap({ events }: { events: RawEvent[] }) {
   const maxCount = featureData[0]?.count || 1;
 
   const categoryColors: Record<string, string> = {
-    navigation: 'from-blue-500 to-blue-600',
-    conversion: 'from-green-500 to-green-600',
-    engagement: 'from-violet-500 to-violet-600',
-    scan: 'from-cyan-500 to-cyan-600',
-    auth: 'from-amber-500 to-amber-600',
-    error: 'from-red-500 to-red-600',
-    user_interaction: 'from-fuchsia-500 to-fuchsia-600',
+    navigation: 'from-neon-blue to-neon-blue',
+    conversion: 'from-neon-green to-neon-green',
+    engagement: 'from-neon-purple to-neon-purple',
+    scan: 'from-neon-cyan to-neon-cyan',
+    auth: 'from-neon-amber to-neon-amber',
+    error: 'from-destructive to-destructive',
+    user_interaction: 'from-neon-magenta to-neon-magenta',
   };
 
   return (
@@ -431,11 +431,11 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
       {/* Journey Summary Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: 'Sessions', value: totalSessions.toString(), sub: 'tracked journeys', color: 'text-violet-400' },
-          { label: 'Avg Depth', value: avgDepth, sub: 'pages per session', color: 'text-blue-400' },
-          { label: 'Avg Duration', value: avgDuration, sub: 'time on site', color: 'text-cyan-400' },
-          { label: 'Conversions', value: conversionSessions.toString(), sub: `${totalSessions > 0 ? Math.round((conversionSessions / totalSessions) * 100) : 0}% of sessions`, color: 'text-green-400' },
-          { label: 'Bounce Rate', value: `${bounceRate}%`, sub: `${bounceSessions} single-page`, color: bounceRate > 60 ? 'text-red-400' : 'text-amber-400' },
+          { label: 'Sessions', value: totalSessions.toString(), sub: 'tracked journeys', color: 'text-neon-purple' },
+          { label: 'Avg Depth', value: avgDepth, sub: 'pages per session', color: 'text-neon-blue' },
+          { label: 'Avg Duration', value: avgDuration, sub: 'time on site', color: 'text-neon-cyan' },
+          { label: 'Conversions', value: conversionSessions.toString(), sub: `${totalSessions > 0 ? Math.round((conversionSessions / totalSessions) * 100) : 0}% of sessions`, color: 'text-neon-green' },
+          { label: 'Bounce Rate', value: `${bounceRate}%`, sub: `${bounceSessions} single-page`, color: bounceRate > 60 ? 'text-destructive' : 'text-neon-amber' },
         ].map((card, idx) => (
           <motion.div
             key={card.label}
@@ -460,12 +460,12 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
           transition={{ delay: 0.2 }}
         >
           <h4 className="text-xs font-semibold text-foreground mb-2 flex items-center gap-1.5">
-            <ChevronRight className="w-3.5 h-3.5 text-green-400" /> Top Entry Points
+            <ChevronRight className="w-3.5 h-3.5 text-neon-green" /> Top Entry Points
           </h4>
           <div className="flex gap-2 flex-wrap">
             {topEntries.map(([page, count]) => (
               <Badge key={page} variant="outline" className="text-[10px] font-mono gap-1">
-                {page} <span className="text-green-400 font-bold">{count}</span>
+                {page} <span className="text-neon-green font-bold">{count}</span>
               </Badge>
             ))}
           </div>
@@ -480,7 +480,7 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
             key={s.sessionId}
             className={cn(
               "rounded-xl border bg-card/50 p-4",
-              s.hasConversion ? "border-green-500/30" : s.hasAuth ? "border-amber-500/30" : "border-border/30"
+              s.hasConversion ? "border-neon-green/30" : s.hasAuth ? "border-neon-amber/30" : "border-border/30"
             )}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -493,9 +493,9 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
                 <Badge variant="outline" className="text-[10px] font-mono">{s.eventCount} events</Badge>
                 <Badge variant="outline" className="text-[10px] font-mono">{fmtDuration(s.durationMs)}</Badge>
                 <Badge variant="outline" className="text-[10px] font-mono">{s.depth} pages</Badge>
-                {s.hasConversion && <Badge className="text-[9px] bg-green-500/20 text-green-400 border border-green-500/40">CONVERTED</Badge>}
-                {s.hasAuth && !s.hasConversion && <Badge className="text-[9px] bg-amber-500/20 text-amber-400 border border-amber-500/40">SIGNED UP</Badge>}
-                {s.hasScan && <Badge className="text-[9px] bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">SCANNED</Badge>}
+                {s.hasConversion && <Badge className="text-[9px] bg-neon-green/20 text-neon-green border border-neon-green/40">CONVERTED</Badge>}
+                {s.hasAuth && !s.hasConversion && <Badge className="text-[9px] bg-neon-amber/20 text-neon-amber border border-neon-amber/40">SIGNED UP</Badge>}
+                {s.hasScan && <Badge className="text-[9px] bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40">SCANNED</Badge>}
               </div>
               <span className="text-[10px] text-muted-foreground font-mono">
                 {new Date(s.startTime).toLocaleString()}
@@ -510,9 +510,9 @@ function SessionJourneys({ events, resolveUser }: { events: RawEvent[]; resolveU
                   <span className={cn(
                     "px-2 py-0.5 rounded-md border text-[10px] font-mono",
                     i === 0
-                      ? "bg-green-500/10 border-green-500/30 text-green-400"
+                      ? "bg-neon-green/10 border-neon-green/30 text-neon-green"
                       : i === s.uniquePages.length - 1
-                        ? "bg-red-500/10 border-red-500/30 text-red-400"
+                        ? "bg-destructive/10 border-destructive/30 text-destructive"
                         : "bg-muted/30 border-border/20 text-foreground"
                   )}>
                     {i === 0 && '▶ '}{page}{i === s.uniquePages.length - 1 && s.uniquePages.length > 1 && ' ◼'}
@@ -582,12 +582,12 @@ function ConversionFunnel({ events }: { events: RawEvent[] }) {
   }, [events]);
 
   const stageColors = [
-    'from-blue-500 to-blue-600',
-    'from-violet-500 to-violet-600',
-    'from-fuchsia-500 to-fuchsia-600',
-    'from-amber-500 to-amber-600',
-    'from-green-500 to-green-600',
-    'from-cyan-500 to-cyan-600',
+    'from-neon-blue to-neon-blue',
+    'from-neon-purple to-neon-purple',
+    'from-neon-magenta to-neon-magenta',
+    'from-neon-amber to-neon-amber',
+    'from-neon-green to-neon-green',
+    'from-neon-cyan to-neon-cyan',
   ];
 
   return (
@@ -612,7 +612,7 @@ function ConversionFunnel({ events }: { events: RawEvent[] }) {
               </div>
               <div className="flex items-center gap-3">
                 {idx > 0 && stage.dropOff > 0 && (
-                  <span className="text-[10px] text-red-400 font-mono">-{stage.dropOff} ({stage.dropOffPct}%)</span>
+                  <span className="text-[10px] text-destructive font-mono">-{stage.dropOff} ({stage.dropOffPct}%)</span>
                 )}
                 <span className="text-lg font-bold font-mono text-foreground">{stage.count}</span>
               </div>

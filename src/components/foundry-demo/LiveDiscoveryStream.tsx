@@ -15,7 +15,7 @@ interface Discovery {
 
 const TIER_STYLES: Record<string, string> = {
   'cmpsbl-only': 'bg-primary/10 text-primary border-primary/30',
-  'enterprise': 'bg-amber-500/10 text-amber-400 border-amber-500/30',
+  'enterprise': 'bg-neon-amber/10 text-neon-amber border-neon-amber/30',
   'architect': 'bg-sky-500/10 text-sky-400 border-sky-500/30',
 };
 
@@ -53,7 +53,7 @@ function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: numb
         <div className="text-right shrink-0">
           <div className={`text-2xl sm:text-3xl font-mono font-black ${
             discovery.cjpi >= 95 ? 'text-primary' : 
-            discovery.cjpi >= 85 ? 'text-amber-400' : 'text-sky-400'
+            discovery.cjpi >= 85 ? 'text-neon-amber' : 'text-sky-400'
           }`}>
             {discovery.cjpi}
           </div>

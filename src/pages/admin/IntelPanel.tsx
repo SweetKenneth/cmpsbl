@@ -43,9 +43,9 @@ import { generateUnifiedProposal, type UnifiedProposal } from '@/lib/control-pla
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const severityStyles: Record<string, string> = {
-  critical: 'border-l-red-500 bg-red-50/50',
-  warn: 'border-l-amber-500 bg-amber-50/30',
-  info: 'border-l-blue-500 bg-blue-50/20',
+  critical: 'border-l-destructive bg-red-50/50',
+  warn: 'border-l-neon-amber bg-neon-amber/30',
+  info: 'border-l-neon-blue bg-blue-50/20',
 };
 
 const severityIcons: Record<string, typeof AlertTriangle> = {
@@ -121,9 +121,9 @@ function IntelCardView({ card }: { card: IntelCard }) {
 
 function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
   const statusColors: Record<string, string> = {
-    mastered: 'text-green-700 bg-green-50',
-    progressing: 'text-blue-700 bg-blue-50',
-    stale: 'text-amber-700 bg-amber-50',
+    mastered: 'text-neon-green bg-green-50',
+    progressing: 'text-neon-blue bg-blue-50',
+    stale: 'text-neon-amber bg-neon-amber',
     new: 'text-gray-600 bg-gray-50',
   };
   
@@ -512,13 +512,13 @@ export default function IntelPanel() {
                 {/* Section 1: System Integrity */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                   <div className="bg-muted/50 rounded p-2">
-                    <p className={`text-lg font-bold ${unifiedProposal.structural_health.overall_verdict === 'PASS' ? 'text-green-600' : 'text-destructive'}`}>
+                    <p className={`text-lg font-bold ${unifiedProposal.structural_health.overall_verdict === 'PASS' ? 'text-neon-green' : 'text-destructive'}`}>
                       {unifiedProposal.structural_health.overall_verdict}
                     </p>
                     <p className="text-[10px] text-muted-foreground">Structure</p>
                   </div>
                   <div className="bg-muted/50 rounded p-2">
-                    <p className={`text-lg font-bold ${unifiedProposal.production_audit.passed ? 'text-green-600' : 'text-destructive'}`}>
+                    <p className={`text-lg font-bold ${unifiedProposal.production_audit.passed ? 'text-neon-green' : 'text-destructive'}`}>
                       {unifiedProposal.production_audit.passed ? 'PASS' : 'FAIL'}
                     </p>
                     <p className="text-[10px] text-muted-foreground">Prod Audit</p>
@@ -538,13 +538,13 @@ export default function IntelPanel() {
                     <p className="text-[10px] text-muted-foreground">Critical Debt</p>
                   </div>
                   <div className="bg-muted/50 rounded p-2">
-                    <p className={`text-lg font-bold ${unifiedProposal.accessibility.score >= 80 ? 'text-green-600' : unifiedProposal.accessibility.score >= 50 ? 'text-amber-600' : 'text-destructive'}`}>
+                    <p className={`text-lg font-bold ${unifiedProposal.accessibility.score >= 80 ? 'text-neon-green' : unifiedProposal.accessibility.score >= 50 ? 'text-neon-amber' : 'text-destructive'}`}>
                       {unifiedProposal.accessibility.score}/100
                     </p>
                     <p className="text-[10px] text-muted-foreground">INCLUSIVE</p>
                   </div>
                   <div className="bg-muted/50 rounded p-2">
-                    <p className={`text-lg font-bold ${unifiedProposal.security_posture.threat_level === 'low' ? 'text-green-600' : unifiedProposal.security_posture.threat_level === 'medium' ? 'text-amber-600' : 'text-destructive'}`}>
+                    <p className={`text-lg font-bold ${unifiedProposal.security_posture.threat_level === 'low' ? 'text-neon-green' : unifiedProposal.security_posture.threat_level === 'medium' ? 'text-neon-amber' : 'text-destructive'}`}>
                       {unifiedProposal.security_posture.threat_level.toUpperCase()}
                     </p>
                     <p className="text-[10px] text-muted-foreground">DEFENSE</p>
@@ -556,7 +556,7 @@ export default function IntelPanel() {
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
                   <div className="bg-muted/50 rounded p-2">
-                    <p className={`text-lg font-bold ${unifiedProposal.evolution_scan.scan_completed ? 'text-green-600' : 'text-destructive'}`}>
+                    <p className={`text-lg font-bold ${unifiedProposal.evolution_scan.scan_completed ? 'text-neon-green' : 'text-destructive'}`}>
                       {unifiedProposal.evolution_scan.scan_completed ? 'OK' : 'FAIL'}
                     </p>
                     <p className="text-[10px] text-muted-foreground">EVOLUTION</p>
@@ -748,7 +748,7 @@ function SummaryTile({ label, value, icon: Icon, accent }: {
   icon: typeof Activity;
   accent?: 'red' | 'amber' | 'green';
 }) {
-  const accentClass = accent === 'red' ? 'text-red-600' : accent === 'amber' ? 'text-amber-600' : accent === 'green' ? 'text-green-600' : 'text-foreground';
+  const accentClass = accent === 'red' ? 'text-destructive' : accent === 'amber' ? 'text-neon-amber' : accent === 'green' ? 'text-neon-green' : 'text-foreground';
   
   return (
     <Card className="print:break-inside-avoid">

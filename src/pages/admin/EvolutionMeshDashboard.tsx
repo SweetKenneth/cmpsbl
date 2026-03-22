@@ -42,10 +42,10 @@ import {
 
 const GATE_COLORS: Record<string, string> = {
   pending: 'bg-muted text-muted-foreground',
-  shadow_running: 'bg-blue-500/20 text-blue-400',
-  passed: 'bg-emerald-500/20 text-emerald-400',
+  shadow_running: 'bg-neon-blue/20 text-neon-blue',
+  passed: 'bg-neon-green/20 text-neon-green',
   failed: 'bg-destructive/20 text-destructive',
-  canary: 'bg-amber-500/20 text-amber-400',
+  canary: 'bg-neon-amber/20 text-neon-amber',
   promoted: 'bg-primary/20 text-primary',
   rolled_back: 'bg-muted text-muted-foreground line-through',
 };
@@ -158,11 +158,11 @@ function MetricDelta({ label, value, inverse }: { label: string; value: number; 
   return (
     <div className="flex items-center gap-1 min-w-0">
       <span className="text-muted-foreground truncate">{label}:</span>
-      <span className={`font-mono font-medium whitespace-nowrap ${degraded ? 'text-destructive' : improved ? 'text-emerald-400' : 'text-muted-foreground'}`}>
+      <span className={`font-mono font-medium whitespace-nowrap ${degraded ? 'text-destructive' : improved ? 'text-neon-green' : 'text-muted-foreground'}`}>
         {value > 0 ? '+' : ''}{typeof value === 'number' ? value.toFixed(3) : value}
       </span>
       {degraded && <TrendingDown className="w-3 h-3 text-destructive flex-shrink-0" />}
-      {improved && <TrendingUp className="w-3 h-3 text-emerald-400 flex-shrink-0" />}
+      {improved && <TrendingUp className="w-3 h-3 text-neon-green flex-shrink-0" />}
     </div>
   );
 }
@@ -181,9 +181,9 @@ function PipelineStatsBar({ proposals }: { proposals: MutationProposal[] }) {
 
   const segments = [
     { key: 'pending', label: 'Pending', color: 'bg-muted-foreground/40' },
-    { key: 'shadow_running', label: 'Shadow', color: 'bg-blue-500' },
-    { key: 'passed', label: 'Passed', color: 'bg-emerald-500' },
-    { key: 'canary', label: 'Canary', color: 'bg-amber-500' },
+    { key: 'shadow_running', label: 'Shadow', color: 'bg-neon-blue' },
+    { key: 'passed', label: 'Passed', color: 'bg-neon-green' },
+    { key: 'canary', label: 'Canary', color: 'bg-neon-amber' },
     { key: 'promoted', label: 'Promoted', color: 'bg-primary' },
     { key: 'failed', label: 'Failed', color: 'bg-destructive' },
     { key: 'rolled_back', label: 'Rolled Back', color: 'bg-muted-foreground/30' },
@@ -496,7 +496,7 @@ export default function EvolutionMeshDashboard() {
                   size="sm"
                   variant="outline"
                   disabled={resetPipelineMutation.isPending}
-                  className="border-amber-500/40 text-amber-500 hover:bg-amber-500/10 gap-1.5"
+                  className="border-neon-amber/40 text-neon-amber hover:bg-neon-amber/10 gap-1.5"
                 >
                   {resetPipelineMutation.isPending ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -518,7 +518,7 @@ export default function EvolutionMeshDashboard() {
                   <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => resetPipelineMutation.mutate()}
-                    className="bg-amber-600 text-white hover:bg-amber-700 w-full sm:w-auto"
+                    className="bg-neon-amber text-white hover:bg-neon-amber w-full sm:w-auto"
                   >
                     {resetPipelineMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <RotateCcw className="w-3 h-3 mr-1" />}
                     Confirm Reset
@@ -834,7 +834,7 @@ export default function EvolutionMeshDashboard() {
                         <div key={run.id} className="p-2.5 sm:p-3 rounded-lg bg-muted/20 border border-border/20 text-xs space-y-2 overflow-hidden">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                             <span className="font-medium">
-                              Confidence: <strong className={run.confidence_score >= 0.75 ? 'text-emerald-400' : 'text-amber-400'}>
+                              Confidence: <strong className={run.confidence_score >= 0.75 ? 'text-neon-green' : 'text-neon-amber'}>
                                 {((run.confidence_score ?? 0) * 100).toFixed(0)}%
                               </strong>
                             </span>
@@ -976,7 +976,7 @@ export default function EvolutionMeshDashboard() {
                             {run.mutation_id.slice(0, 8)}
                           </Badge>
                           <span className="font-medium text-[11px] sm:text-xs">
-                            Confidence: <strong className={run.confidence_score >= 0.75 ? 'text-emerald-400' : 'text-amber-400'}>
+                            Confidence: <strong className={run.confidence_score >= 0.75 ? 'text-neon-green' : 'text-neon-amber'}>
                               {((run.confidence_score ?? 0) * 100).toFixed(0)}%
                             </strong>
                           </span>
@@ -1025,9 +1025,9 @@ export default function EvolutionMeshDashboard() {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0">
                       {v.status === 'clean' ? (
-                        <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                        <CheckCircle className="w-4 h-4 text-neon-green flex-shrink-0" />
                       ) : (
-                        <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                        <AlertTriangle className="w-4 h-4 text-neon-amber flex-shrink-0" />
                       )}
                       <span className="text-xs sm:text-sm font-medium break-words">
                         {v.status === 'clean' ? 'Clean — No gaps detected' : `${v.gaps_found} structural gap${v.gaps_found !== 1 ? 's' : ''} detected`}
@@ -1198,7 +1198,7 @@ export default function EvolutionMeshDashboard() {
                       {finding.severity === 'error' ? (
                         <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                       ) : finding.severity === 'warning' ? (
-                        <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                        <AlertTriangle className="w-4 h-4 text-neon-amber shrink-0 mt-0.5" />
                       ) : (
                         <Info className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                       )}

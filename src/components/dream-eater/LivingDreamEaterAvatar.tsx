@@ -31,31 +31,31 @@ const MOOD_CONFIG: Record<DreamEaterMood, {
   pulseSpeed: number;
 }> = {
   calm: {
-    body: 'from-emerald-900/80 to-teal-800/60',
-    glow: 'shadow-emerald-500/50',
-    eyes: 'bg-emerald-400',
-    aura: 'bg-emerald-500/20',
+    body: 'from-neon-green/80 to-neon-cyan/60',
+    glow: 'shadow-neon-green/50',
+    eyes: 'bg-neon-green',
+    aura: 'bg-neon-green/20',
     pulseSpeed: 4,
   },
   curious: {
-    body: 'from-violet-900/80 to-indigo-800/60',
-    glow: 'shadow-violet-500/50',
-    eyes: 'bg-violet-400',
-    aura: 'bg-violet-500/20',
+    body: 'from-neon-purple/80 to-primary/60',
+    glow: 'shadow-neon-purple/50',
+    eyes: 'bg-neon-purple',
+    aura: 'bg-neon-purple/20',
     pulseSpeed: 2.5,
   },
   agitated: {
-    body: 'from-orange-900/80 to-amber-800/60',
-    glow: 'shadow-orange-500/50',
-    eyes: 'bg-orange-400',
-    aura: 'bg-orange-500/20',
+    body: 'from-neon-amber/80 to-neon-amber/60',
+    glow: 'shadow-neon-amber/50',
+    eyes: 'bg-neon-amber',
+    aura: 'bg-neon-amber/20',
     pulseSpeed: 1.5,
   },
   fractured: {
-    body: 'from-red-950/90 to-purple-900/70',
-    glow: 'shadow-red-500/60',
-    eyes: 'bg-red-500',
-    aura: 'bg-red-500/30',
+    body: 'from-destructive/90 to-neon-purple/70',
+    glow: 'shadow-destructive/60',
+    eyes: 'bg-destructive',
+    aura: 'bg-destructive/30',
     pulseSpeed: 0.8,
   },
   dormant: {
@@ -66,24 +66,24 @@ const MOOD_CONFIG: Record<DreamEaterMood, {
     pulseSpeed: 6,
   },
   feral: {
-    body: 'from-rose-950/95 to-red-900/80',
-    glow: 'shadow-rose-500/70',
-    eyes: 'bg-rose-400',
-    aura: 'bg-rose-500/40',
+    body: 'from-destructive/95 to-destructive/80',
+    glow: 'shadow-neon-magenta/70',
+    eyes: 'bg-neon-magenta',
+    aura: 'bg-neon-magenta/40',
     pulseSpeed: 0.4,
   },
   feeding: {
-    body: 'from-cyan-900/80 to-blue-800/60',
-    glow: 'shadow-cyan-500/60',
-    eyes: 'bg-cyan-300',
-    aura: 'bg-cyan-500/30',
+    body: 'from-neon-cyan/80 to-neon-blue/60',
+    glow: 'shadow-neon-cyan/60',
+    eyes: 'bg-neon-cyan',
+    aura: 'bg-neon-cyan/30',
     pulseSpeed: 0.3,
   },
   dreaming: {
-    body: 'from-indigo-900/80 to-purple-800/60',
-    glow: 'shadow-indigo-500/50',
-    eyes: 'bg-indigo-400',
-    aura: 'bg-indigo-500/25',
+    body: 'from-primary/80 to-neon-purple/60',
+    glow: 'shadow-primary/50',
+    eyes: 'bg-primary',
+    aura: 'bg-primary/25',
     pulseSpeed: 5,
   },
 };
@@ -183,9 +183,9 @@ export const LivingDreamEaterAvatar = ({
       <motion.div
         className={cn(
           "absolute w-64 h-64 rounded-full border-2 transition-all duration-500",
-          mood === 'feral' ? 'border-rose-400/60' :
-          mood === 'fractured' ? 'border-red-400/40' :
-          mood === 'curious' ? 'border-violet-400/40' :
+          mood === 'feral' ? 'border-neon-magenta/60' :
+          mood === 'fractured' ? 'border-destructive/40' :
+          mood === 'curious' ? 'border-neon-purple/40' :
           'border-primary/20'
         )}
         animate={reducedMotion ? {} : { rotate: isFeeding ? 360 : 0 }}
@@ -195,7 +195,7 @@ export const LivingDreamEaterAvatar = ({
       {/* Instability ring */}
       {instability > 0.3 && (
         <motion.div
-          className="absolute w-72 h-72 rounded-full border border-dashed border-rose-500/40"
+          className="absolute w-72 h-72 rounded-full border border-dashed border-neon-magenta/40"
           animate={reducedMotion ? {} : { rotate: -360, scale: [1, 1.02, 1] }}
           transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
         />
@@ -248,13 +248,13 @@ export const LivingDreamEaterAvatar = ({
           <motion.div
             className={cn(
               "transition-all duration-300",
-              mood === 'calm' && "w-12 h-6 border-b-4 border-emerald-400 rounded-b-full",
-              mood === 'curious' && "w-8 h-8 border-2 border-violet-400 rounded-full",
-              mood === 'agitated' && "w-8 h-4 border-2 border-orange-400",
-              mood === 'fractured' && "w-12 h-3 bg-red-500/50 skew-x-6",
+              mood === 'calm' && "w-12 h-6 border-b-4 border-neon-green rounded-b-full",
+              mood === 'curious' && "w-8 h-8 border-2 border-neon-purple rounded-full",
+              mood === 'agitated' && "w-8 h-4 border-2 border-neon-amber",
+              mood === 'fractured' && "w-12 h-3 bg-destructive/50 skew-x-6",
               mood === 'dormant' && "w-10 h-1 bg-gray-500 rounded-full",
-              mood === 'feral' && "w-14 h-8 border-t-4 border-rose-400 rounded-t-full",
-              isFeeding && "w-12 h-12 border-4 border-cyan-300 rounded-full animate-ping"
+              mood === 'feral' && "w-14 h-8 border-t-4 border-neon-magenta rounded-t-full",
+              isFeeding && "w-12 h-12 border-4 border-neon-cyan rounded-full animate-ping"
             )}
           />
         </div>
@@ -271,7 +271,7 @@ export const LivingDreamEaterAvatar = ({
                   exit={{ scale: 0, opacity: 0 }}
                   className={cn(
                     "w-2.5 h-2.5 rounded-full",
-                    i >= 8 ? 'bg-rose-500' : i >= 5 ? 'bg-amber-500' : 'bg-violet-500'
+                    i >= 8 ? 'bg-neon-magenta' : i >= 5 ? 'bg-neon-amber' : 'bg-neon-purple'
                   )}
                   style={{ animationDelay: `${i * 0.1}s` }}
                 />
@@ -283,7 +283,7 @@ export const LivingDreamEaterAvatar = ({
         {/* Memory unlock indicator */}
         {hasMemoryUnlock && (
           <motion.div
-            className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-mono text-violet-400/80"
+            className="absolute -bottom-4 left-1/2 -translate-x-1/2 text-xs font-mono text-neon-purple/80"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0.5, 1, 0.5] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -299,7 +299,7 @@ export const LivingDreamEaterAvatar = ({
               {[...Array(5)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-2 h-2 bg-cyan-400 rounded-full"
+                  className="absolute w-2 h-2 bg-neon-cyan rounded-full"
                   initial={{ 
                     x: 0, 
                     y: 100, 

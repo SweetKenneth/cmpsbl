@@ -17,14 +17,14 @@ import {
 } from 'lucide-react';
 
 const EVENT_TYPES = [
-  { value: 'memory.chain.discovered', label: 'Memory Chain Discovered', color: 'text-cyan-400' },
-  { value: 'dream.cycle.completed', label: 'Dream Cycle Completed', color: 'text-violet-400' },
-  { value: 'defense.alert', label: 'Defense Alert', color: 'text-red-400' },
-  { value: 'brain.learning.complete', label: 'Brain Learning Complete', color: 'text-emerald-400' },
-  { value: 'nexus.provider.degraded', label: 'Nexus Provider Degraded', color: 'text-amber-400' },
-  { value: 'system.health.changed', label: 'System Health Changed', color: 'text-blue-400' },
-  { value: 'pipeline.crystallized', label: 'Pipeline Crystallized', color: 'text-pink-400' },
-  { value: 'audit.completed', label: 'Audit Completed', color: 'text-orange-400' },
+  { value: 'memory.chain.discovered', label: 'Memory Chain Discovered', color: 'text-neon-cyan' },
+  { value: 'dream.cycle.completed', label: 'Dream Cycle Completed', color: 'text-neon-purple' },
+  { value: 'defense.alert', label: 'Defense Alert', color: 'text-destructive' },
+  { value: 'brain.learning.complete', label: 'Brain Learning Complete', color: 'text-neon-green' },
+  { value: 'nexus.provider.degraded', label: 'Nexus Provider Degraded', color: 'text-neon-amber' },
+  { value: 'system.health.changed', label: 'System Health Changed', color: 'text-neon-blue' },
+  { value: 'pipeline.crystallized', label: 'Pipeline Crystallized', color: 'text-neon-magenta' },
+  { value: 'audit.completed', label: 'Audit Completed', color: 'text-neon-amber' },
 ] as const;
 
 interface Subscription {
@@ -233,7 +233,7 @@ export function WebhooksTab() {
         </Card>
         <Card className="bg-muted/20 border-border/30">
           <CardContent className="p-3 text-center">
-            <div className="text-2xl font-bold text-emerald-400">{successRate}%</div>
+            <div className="text-2xl font-bold text-neon-green">{successRate}%</div>
             <div className="text-[10px] text-muted-foreground">Success Rate</div>
           </CardContent>
         </Card>
@@ -314,7 +314,7 @@ export function WebhooksTab() {
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="font-medium text-sm truncate">{sub.name}</h4>
                       {sub.failure_count >= 5 && (
-                        <AlertTriangle className="w-3 h-3 text-amber-400 shrink-0" />
+                        <AlertTriangle className="w-3 h-3 text-neon-amber shrink-0" />
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground font-mono truncate">{sub.url}</p>
@@ -344,7 +344,7 @@ export function WebhooksTab() {
                       </span>
                     )}
                     {sub.failure_count > 0 && (
-                      <span className="text-amber-400">{sub.failure_count} failures</span>
+                      <span className="text-neon-amber">{sub.failure_count} failures</span>
                     )}
                   </div>
                   <div className="flex gap-1.5">
@@ -394,7 +394,7 @@ export function WebhooksTab() {
                   <div key={log.id} className="flex items-center justify-between p-2 rounded bg-muted/20 text-xs">
                     <div className="flex items-center gap-2">
                       {log.success ? (
-                        <CheckCircle className="w-3 h-3 text-emerald-500" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                       ) : (
                         <XCircle className="w-3 h-3 text-destructive" />
                       )}

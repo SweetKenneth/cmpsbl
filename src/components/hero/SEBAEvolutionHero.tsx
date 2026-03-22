@@ -30,55 +30,55 @@ const sebaPhases = [
     id: "cognize", 
     name: "Cognize", 
     icon: Brain, 
-    color: "from-cyan-400 via-cyan-500 to-blue-500",
+    color: "from-neon-cyan via-neon-cyan to-neon-blue",
     glowColor: "185 100% 50%",
-    borderColor: "border-cyan-400/60",
-    bgColor: "bg-cyan-500/15",
-    shadowColor: "shadow-cyan-500/30",
+    borderColor: "border-neon-cyan/60",
+    bgColor: "bg-neon-cyan/15",
+    shadowColor: "shadow-neon-cyan/30",
     description: "Analyze memory, learning patterns, reasoning gaps"
   },
   { 
     id: "propose", 
     name: "Propose", 
     icon: Lightbulb, 
-    color: "from-amber-400 via-orange-400 to-orange-500",
+    color: "from-neon-amber via-neon-amber to-neon-amber",
     glowColor: "38 100% 55%",
-    borderColor: "border-amber-400/60",
-    bgColor: "bg-amber-500/15",
-    shadowColor: "shadow-amber-500/30",
+    borderColor: "border-neon-amber/60",
+    bgColor: "bg-neon-amber/15",
+    shadowColor: "shadow-neon-amber/30",
     description: "Map insights to improvement actions"
   },
   { 
     id: "evaluate", 
     name: "Evaluate", 
     icon: Scale, 
-    color: "from-purple-400 via-violet-500 to-violet-600",
+    color: "from-neon-purple via-neon-purple to-neon-purple",
     glowColor: "280 100% 65%",
-    borderColor: "border-purple-400/60",
-    bgColor: "bg-purple-500/15",
-    shadowColor: "shadow-purple-500/30",
+    borderColor: "border-neon-purple/60",
+    bgColor: "bg-neon-purple/15",
+    shadowColor: "shadow-neon-purple/30",
     description: "Risk assessment & impact scoring"
   },
   { 
     id: "gate", 
     name: "Gate", 
     icon: ShieldCheck, 
-    color: "from-emerald-400 via-emerald-500 to-green-500",
+    color: "from-neon-green via-neon-green to-neon-green",
     glowColor: "145 80% 50%",
-    borderColor: "border-emerald-400/60",
-    bgColor: "bg-emerald-500/15",
-    shadowColor: "shadow-emerald-500/30",
+    borderColor: "border-neon-green/60",
+    bgColor: "bg-neon-green/15",
+    shadowColor: "shadow-neon-green/30",
     description: "Governance safety check"
   },
   { 
     id: "apply", 
     name: "Apply", 
     icon: Sparkles, 
-    color: "from-rose-400 via-pink-500 to-pink-600",
+    color: "from-neon-magenta via-neon-magenta to-neon-magenta",
     glowColor: "340 100% 60%",
-    borderColor: "border-rose-400/60",
-    bgColor: "bg-rose-500/15",
-    shadowColor: "shadow-rose-500/30",
+    borderColor: "border-neon-magenta/60",
+    bgColor: "bg-neon-magenta/15",
+    shadowColor: "shadow-neon-magenta/30",
     description: "Evolution execution with rollback"
   },
 ];
@@ -281,7 +281,7 @@ const PhaseNode = memo(function PhaseNode({
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
-              className="absolute -top-1.5 -right-1.5 z-20 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30"
+              className="absolute -top-1.5 -right-1.5 z-20 w-5 h-5 rounded-full bg-gradient-to-br from-neon-green to-neon-green flex items-center justify-center shadow-lg shadow-neon-green/30"
             >
               <CheckCircle2 className="w-3 h-3 text-white" />
             </motion.div>
@@ -439,9 +439,9 @@ function StatusPanel({
       <motion.div 
         className={cn(
           "relative flex items-center gap-2.5 px-4 py-2.5 rounded-full backdrop-blur-md border shadow-lg overflow-hidden",
-          gateStatus === "open" ? "bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 border-emerald-500/40" :
-          gateStatus === "closed" ? "bg-gradient-to-br from-rose-500/15 to-rose-500/5 border-rose-500/40" :
-          "bg-gradient-to-br from-amber-500/15 to-amber-500/5 border-amber-500/40"
+          gateStatus === "open" ? "bg-gradient-to-br from-neon-green/15 to-neon-green/5 border-neon-green/40" :
+          gateStatus === "closed" ? "bg-gradient-to-br from-neon-magenta/15 to-neon-magenta/5 border-neon-magenta/40" :
+          "bg-gradient-to-br from-neon-amber/15 to-neon-amber/5 border-neon-amber/40"
         )}
         animate={{
           boxShadow: gateStatus === "open" 
@@ -457,8 +457,8 @@ function StatusPanel({
         <motion.div
           className={cn(
             "absolute inset-0 opacity-30",
-            gateStatus === "open" ? "bg-emerald-500" :
-            gateStatus === "closed" ? "bg-rose-500" : "bg-amber-500"
+            gateStatus === "open" ? "bg-neon-green" :
+            gateStatus === "closed" ? "bg-neon-magenta" : "bg-neon-amber"
           )}
           animate={{ opacity: [0.1, 0.2, 0.1] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -469,16 +469,16 @@ function StatusPanel({
           transition={{ duration: 0.6, repeat: gateStatus === "pending" ? Infinity : 0 }}
           className="relative z-10"
         >
-          {gateStatus === "open" ? <Unlock className="w-4 h-4 text-emerald-400" /> :
-           gateStatus === "closed" ? <Lock className="w-4 h-4 text-rose-400" /> :
-           <AlertTriangle className="w-4 h-4 text-amber-400" />}
+          {gateStatus === "open" ? <Unlock className="w-4 h-4 text-neon-green" /> :
+           gateStatus === "closed" ? <Lock className="w-4 h-4 text-neon-magenta" /> :
+           <AlertTriangle className="w-4 h-4 text-neon-amber" />}
         </motion.div>
         <div className="flex flex-col relative z-10">
           <span className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-wider">Gate</span>
           <span className={cn(
             "text-xs font-bold uppercase tracking-wide",
-            gateStatus === "open" ? "text-emerald-400" :
-            gateStatus === "closed" ? "text-rose-400" : "text-amber-400"
+            gateStatus === "open" ? "text-neon-green" :
+            gateStatus === "closed" ? "text-neon-magenta" : "text-neon-amber"
           )}>
             {gateStatus}
           </span>
@@ -487,7 +487,7 @@ function StatusPanel({
       
       {/* Cycle counter with animated number */}
       <motion.div 
-        className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-md border border-violet-500/30 shadow-lg shadow-violet-500/10"
+        className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-br from-card/90 to-card/70 backdrop-blur-md border border-neon-purple/30 shadow-lg shadow-neon-purple/10"
         whileHover={{ scale: 1.05, y: -2 }}
         transition={{ type: "spring", stiffness: 400 }}
       >
@@ -495,7 +495,7 @@ function StatusPanel({
           animate={{ rotate: -360 }}
           transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
         >
-          <RotateCcw className="w-4 h-4 text-violet-400" />
+          <RotateCcw className="w-4 h-4 text-neon-purple" />
         </motion.div>
         <div className="flex flex-col">
           <span className="text-[10px] text-muted-foreground/70 font-medium uppercase tracking-wider">Cycle</span>
@@ -503,7 +503,7 @@ function StatusPanel({
             key={cycleCount}
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="text-xs font-bold font-mono text-violet-400"
+            className="text-xs font-bold font-mono text-neon-purple"
           >
             #{cycleCount}
           </motion.span>
@@ -563,11 +563,11 @@ export function SEBAEvolutionHero() {
       {/* Enhanced background effects */}
       <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
         {/* Gradient mesh base */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-neon-purple/5" />
         
         {/* Animated aurora blobs */}
         <motion.div
-          className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-cyan-500/25 to-blue-500/15 rounded-full blur-3xl"
+          className="absolute -top-20 -left-20 w-64 h-64 bg-gradient-to-br from-neon-cyan/25 to-neon-blue/15 rounded-full blur-3xl"
           animate={{
             x: [0, 40, 0],
             y: [0, 30, 0],
@@ -577,7 +577,7 @@ export function SEBAEvolutionHero() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-to-br from-violet-500/25 to-purple-500/15 rounded-full blur-3xl"
+          className="absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-to-br from-neon-purple/25 to-neon-purple/15 rounded-full blur-3xl"
           animate={{
             x: [0, -40, 0],
             y: [0, -30, 0],
@@ -587,7 +587,7 @@ export function SEBAEvolutionHero() {
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-amber-500/15 to-orange-500/10 rounded-full blur-3xl"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-gradient-to-br from-neon-amber/15 to-neon-amber/10 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3],
@@ -606,7 +606,7 @@ export function SEBAEvolutionHero() {
         transition={{ duration: 0.5 }}
         className="text-center mb-6 sm:mb-8"
       >
-        <div className="relative inline-flex items-center gap-3 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-primary/20 via-primary/10 to-violet-500/20 border border-primary/30 shadow-xl shadow-primary/10 backdrop-blur-md overflow-hidden">
+        <div className="relative inline-flex items-center gap-3 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-primary/20 via-primary/10 to-neon-purple/20 border border-primary/30 shadow-xl shadow-primary/10 backdrop-blur-md overflow-hidden">
           {/* Animated gradient border */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/20 to-primary/0"
@@ -697,7 +697,7 @@ export function SEBAEvolutionHero() {
         <div className="sm:hidden mt-5 mx-3">
           <div className="h-1.5 bg-border/30 rounded-full overflow-hidden shadow-inner">
             <motion.div
-              className="h-full bg-gradient-to-r from-cyan-500 via-violet-500 to-pink-500 rounded-full"
+              className="h-full bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-magenta rounded-full"
               animate={{
                 width: `${((activePhase + 1) / sebaPhases.length) * 100}%`,
               }}

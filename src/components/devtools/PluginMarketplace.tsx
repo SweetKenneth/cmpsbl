@@ -152,10 +152,10 @@ export function PluginMarketplace() {
                         <CardTitle className="text-lg flex items-center gap-2">
                             {plugin.name}
                             {plugin.is_official && (
-                              <Shield className="h-4 w-4 text-blue-400" />
+                              <Shield className="h-4 w-4 text-neon-blue" />
                             )}
                             {plugin.is_verified && (
-                              <CheckCircle className="h-4 w-4 text-green-400" />
+                              <CheckCircle className="h-4 w-4 text-neon-green" />
                             )}
                           </CardTitle>
                           <p className="text-xs text-muted-foreground">by {plugin.author}</p>
@@ -176,7 +176,7 @@ export function PluginMarketplace() {
                     <div className="flex items-center justify-between pt-2 border-t border-border/50">
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
-                          <Star className="h-3 w-3 text-amber-400" />
+                          <Star className="h-3 w-3 text-neon-amber" />
                           {plugin.rating?.toFixed(1) || "N/A"}
                         </span>
                         <span className="flex items-center gap-1">
@@ -233,7 +233,7 @@ export function PluginMarketplace() {
                           <h4 className="font-medium flex items-center gap-2">
                             {installation.plugin?.name || "Unknown Plugin"}
                             {installation.plugin?.is_official && (
-                              <Shield className="h-4 w-4 text-blue-400" />
+                              <Shield className="h-4 w-4 text-neon-blue" />
                             )}
                           </h4>
                           <p className="text-xs text-muted-foreground">

@@ -26,15 +26,15 @@ export function MarketplaceAuthPrompt({ variant = 'banner' }: MarketplaceAuthPro
   }
 
   const benefits = [
-    { icon: Heart, label: 'Save favorites', color: 'text-rose-500' },
-    { icon: Bell, label: 'Release alerts', color: 'text-amber-500' },
+    { icon: Heart, label: 'Save favorites', color: 'text-neon-magenta' },
+    { icon: Bell, label: 'Release alerts', color: 'text-neon-amber' },
     { icon: Package, label: 'Track purchases', color: 'text-primary' },
-    { icon: Sparkles, label: 'Get recommendations', color: 'text-violet-500' },
+    { icon: Sparkles, label: 'Get recommendations', color: 'text-neon-purple' },
   ];
 
   if (variant === 'sidebar') {
     return (
-      <Card className="bg-gradient-to-br from-primary/5 via-violet-500/5 to-muted/50">
+      <Card className="bg-gradient-to-br from-primary/5 via-neon-purple/5 to-muted/50">
         <CardContent className="p-4 space-y-4">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-primary/10">
@@ -76,8 +76,8 @@ export function MarketplaceAuthPrompt({ variant = 'banner' }: MarketplaceAuthPro
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row">
             {/* Left: Benefits */}
-            <div className="flex-1 p-6 bg-gradient-to-br from-primary/5 via-violet-500/5 to-transparent">
-              <Badge className="bg-violet-500/10 text-violet-500 border-violet-500/30 mb-4">
+            <div className="flex-1 p-6 bg-gradient-to-br from-primary/5 via-neon-purple/5 to-transparent">
+              <Badge className="bg-neon-purple/10 text-neon-purple border-neon-purple/30 mb-4">
                 <Eye className="w-3 h-3 mr-1" />
                 Observer Access
               </Badge>

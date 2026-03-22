@@ -141,7 +141,7 @@ export function VerifyPanel() {
           <div className="flex items-center gap-2.5 px-4 sm:px-5 py-3 border-b border-border/10 bg-muted/5">
             <div className="flex gap-1.5">
               <div className="w-3 h-3 rounded-full bg-destructive/40" />
-              <div className="w-3 h-3 rounded-full bg-amber-500/40" />
+              <div className="w-3 h-3 rounded-full bg-neon-amber/40" />
               <div className="w-3 h-3 rounded-full bg-primary/40" />
             </div>
             <span className="text-xs sm:text-sm font-mono text-muted-foreground/50 ml-2">

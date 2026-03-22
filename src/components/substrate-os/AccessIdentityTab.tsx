@@ -140,8 +140,8 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
-            <Key className="w-5 h-5 text-amber-400" />
+          <div className="w-10 h-10 rounded-xl bg-neon-amber/20 border border-neon-amber/40 flex items-center justify-center">
+            <Key className="w-5 h-5 text-neon-amber" />
           </div>
           <div>
             <h2 className="text-lg font-semibold">ACCESS Identity & Billing</h2>
@@ -154,11 +154,11 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="border-amber-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                <Key className="w-4 h-4 text-amber-400" />
+              <div className="w-8 h-8 rounded-lg bg-neon-amber/20 flex items-center justify-center">
+                <Key className="w-4 h-4 text-neon-amber" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{activeKeys}</p>
@@ -168,11 +168,11 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
           </CardContent>
         </Card>
         
-        <Card className="border-cyan-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                <Activity className="w-4 h-4 text-cyan-400" />
+              <div className="w-8 h-8 rounded-lg bg-neon-cyan/20 flex items-center justify-center">
+                <Activity className="w-4 h-4 text-neon-cyan" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{totalTokens.toLocaleString()}</p>
@@ -182,11 +182,11 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
           </CardContent>
         </Card>
         
-        <Card className="border-emerald-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-green/20 bg-white/5 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                <CreditCard className="w-4 h-4 text-emerald-400" />
+              <div className="w-8 h-8 rounded-lg bg-neon-green/20 flex items-center justify-center">
+                <CreditCard className="w-4 h-4 text-neon-green" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">${(totalCost / 100000).toFixed(2)}</p>
@@ -196,11 +196,11 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
           </CardContent>
         </Card>
         
-        <Card className="border-purple-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-purple/20 bg-white/5 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <Users className="w-4 h-4 text-purple-400" />
+              <div className="w-8 h-8 rounded-lg bg-neon-purple/20 flex items-center justify-center">
+                <Users className="w-4 h-4 text-neon-purple" />
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{subscriptions?.length || 0}</p>
@@ -213,10 +213,10 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* API Keys */}
-        <Card className="border-amber-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Key className="w-4 h-4 text-amber-400" />
+              <Key className="w-4 h-4 text-neon-amber" />
               API Keys
             </CardTitle>
           </CardHeader>
@@ -250,7 +250,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
                       key.is_active ? "bg-white/5" : "bg-white/[0.02] opacity-50"
                     )}
                   >
-                    <Key className={cn("w-4 h-4", key.is_active ? "text-amber-400" : "text-muted-foreground")} />
+                    <Key className={cn("w-4 h-4", key.is_active ? "text-neon-amber" : "text-muted-foreground")} />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-xs text-foreground">{key.name || 'Unnamed'}</span>
@@ -285,7 +285,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 text-red-400 hover:text-red-300"
+                        className="h-6 w-6 text-destructive hover:text-destructive"
                         onClick={() => revokeKey.mutate(key.id)}
                       >
                         <Trash2 className="w-3 h-3" />
@@ -299,10 +299,10 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
         </Card>
 
         {/* Usage Log */}
-        <Card className="border-amber-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <BarChart3 className="w-4 h-4 text-amber-400" />
+              <BarChart3 className="w-4 h-4 text-neon-amber" />
               Recent Usage
             </CardTitle>
           </CardHeader>
@@ -311,12 +311,12 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
               <div className="space-y-2">
                 {usage?.map((u) => (
                   <div key={u.id} className="flex items-center gap-3 p-2 rounded-lg bg-white/5 text-xs">
-                    <Activity className="w-3 h-3 text-cyan-400 shrink-0" />
+                    <Activity className="w-3 h-3 text-neon-cyan shrink-0" />
                     <span className="font-mono text-muted-foreground">{u.module}</span>
                     <span className="text-foreground">{u.action}</span>
                     <div className="ml-auto flex items-center gap-2">
                       <span className="text-[10px] text-muted-foreground">{u.tokens_used || 0} tokens</span>
-                      <span className="text-[10px] text-emerald-400">${((u.cost_millicents || 0) / 100000).toFixed(4)}</span>
+                      <span className="text-[10px] text-neon-green">${((u.cost_millicents || 0) / 100000).toFixed(4)}</span>
                     </div>
                   </div>
                 ))}

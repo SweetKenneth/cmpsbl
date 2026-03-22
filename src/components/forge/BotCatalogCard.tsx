@@ -56,11 +56,11 @@ export function BotCatalogCard({
 }: BotCatalogCardProps) {
   const getTypeColor = (t: string) => {
     switch (t) {
-      case 'Research': return 'bg-blue-500/10 text-blue-500 border-blue-500/30';
-      case 'Analyst': return 'bg-purple-500/10 text-purple-500 border-purple-500/30';
-      case 'Planner': return 'bg-green-500/10 text-green-500 border-green-500/30';
-      case 'Strategist': return 'bg-amber-500/10 text-amber-500 border-amber-500/30';
-      case 'Hybrid': return 'bg-cyan-500/10 text-cyan-500 border-cyan-500/30';
+      case 'Research': return 'bg-neon-blue/10 text-neon-blue border-neon-blue/30';
+      case 'Analyst': return 'bg-neon-purple/10 text-neon-purple border-neon-purple/30';
+      case 'Planner': return 'bg-neon-green/10 text-neon-green border-neon-green/30';
+      case 'Strategist': return 'bg-neon-amber/10 text-neon-amber border-neon-amber/30';
+      case 'Hybrid': return 'bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30';
       default: return 'bg-muted';
     }
   };

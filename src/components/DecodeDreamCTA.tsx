@@ -44,9 +44,9 @@ export function DecodeDreamCTA() {
             size="lg"
             onClick={() => navigate('/feed-dream-eater')}
             variant="outline"
-            className="group text-lg px-8 py-6 border-purple-500/30 hover:border-purple-500 hover:bg-purple-500/5 transition-all duration-300"
+            className="group text-lg px-8 py-6 border-neon-purple/30 hover:border-neon-purple hover:bg-neon-purple/5 transition-all duration-300"
           >
-            <Moon className="w-5 h-5 mr-2 text-purple-500" />
+            <Moon className="w-5 h-5 mr-2 text-neon-purple" />
             Feed the Dream Eater
           </Button>
         </div>

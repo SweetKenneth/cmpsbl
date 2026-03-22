@@ -19,13 +19,13 @@ export const DreamEchoDisplay = ({ echo, mood, onDismiss }: DreamEchoDisplayProp
 
   const getMoodGradient = () => {
     switch (mood) {
-      case 'calm': return 'from-emerald-500/20 to-teal-500/10';
-      case 'curious': return 'from-violet-500/20 to-indigo-500/10';
-      case 'agitated': return 'from-orange-500/20 to-amber-500/10';
-      case 'fractured': return 'from-red-500/20 to-purple-500/10';
-      case 'feral': return 'from-rose-500/20 to-red-500/10';
+      case 'calm': return 'from-neon-green/20 to-neon-cyan/10';
+      case 'curious': return 'from-neon-purple/20 to-primary/10';
+      case 'agitated': return 'from-neon-amber/20 to-neon-amber/10';
+      case 'fractured': return 'from-destructive/20 to-neon-purple/10';
+      case 'feral': return 'from-neon-magenta/20 to-destructive/10';
       case 'dormant': return 'from-gray-500/20 to-slate-500/10';
-      default: return 'from-violet-500/20 to-indigo-500/10';
+      default: return 'from-neon-purple/20 to-primary/10';
     }
   };
 

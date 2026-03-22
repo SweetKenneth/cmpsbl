@@ -64,9 +64,9 @@ export function AgencyTaskCard({
   // Determine status color class
   const getStatusColorClass = () => {
     switch (task.status) {
-      case 'completed': return 'border-emerald-500/30 bg-emerald-500/5';
-      case 'failed': return 'border-red-500/30 bg-red-500/5';
-      case 'in_progress': return isStuck ? 'border-orange-500/30 bg-orange-500/5' : 'border-amber-500/30 bg-amber-500/5';
+      case 'completed': return 'border-neon-green/30 bg-neon-green/5';
+      case 'failed': return 'border-destructive/30 bg-destructive/5';
+      case 'in_progress': return isStuck ? 'border-neon-amber/30 bg-neon-amber/5' : 'border-neon-amber/30 bg-neon-amber/5';
       case 'cancelled': return 'border-slate-500/30 bg-slate-500/5';
       default: return 'border-border/30 bg-muted/10';
     }
@@ -95,7 +95,7 @@ export function AgencyTaskCard({
         {/* Status + Actions */}
         <div className="flex items-center gap-1.5 shrink-0">
           {isStuck && (
-            <Badge variant="outline" className="text-[10px] border-orange-500/50 text-orange-400">
+            <Badge variant="outline" className="text-[10px] border-neon-amber/50 text-neon-amber">
               Stuck
             </Badge>
           )}
@@ -104,9 +104,9 @@ export function AgencyTaskCard({
             variant="outline" 
             className={cn(
               "text-[10px] gap-1",
-              task.status === 'completed' && "border-emerald-500/50 text-emerald-400",
-              task.status === 'failed' && "border-red-500/50 text-red-400",
-              task.status === 'in_progress' && "border-amber-500/50 text-amber-400",
+              task.status === 'completed' && "border-neon-green/50 text-neon-green",
+              task.status === 'failed' && "border-destructive/50 text-destructive",
+              task.status === 'in_progress' && "border-neon-amber/50 text-neon-amber",
               task.status === 'queued' && "border-slate-500/50 text-slate-400",
               task.status === 'cancelled' && "border-slate-500/50 text-slate-400",
             )}
@@ -123,7 +123,7 @@ export function AgencyTaskCard({
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 text-muted-foreground hover:text-red-400 hover:bg-red-500/10"
+              className="h-6 w-6 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
               onClick={handleCancel}
               disabled={isCancelling}
             >
@@ -140,7 +140,7 @@ export function AgencyTaskCard({
             <Button
               variant="ghost"
               size="icon"
-              className="h-6 w-6 text-muted-foreground hover:text-amber-400 hover:bg-amber-500/10"
+              className="h-6 w-6 text-muted-foreground hover:text-neon-amber hover:bg-neon-amber/10"
               onClick={handleRetry}
               disabled={isRetrying}
             >
@@ -176,7 +176,7 @@ export function AgencyTaskCard({
 
       {/* Error message for failed tasks */}
       {task.status === 'failed' && task.error_message && (
-        <p className="mt-2 text-xs text-red-400 line-clamp-2">
+        <p className="mt-2 text-xs text-destructive line-clamp-2">
           {task.error_message}
         </p>
       )}

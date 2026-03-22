@@ -25,11 +25,11 @@ export function LnchblCTA() {
           />
           
           {/* Top accent bar */}
-          <div className="h-1 w-full bg-gradient-to-r from-primary via-violet-500 to-primary" />
+          <div className="h-1 w-full bg-gradient-to-r from-primary via-neon-purple to-primary" />
           
           {/* Glow orbs */}
           <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/10 blur-[80px] pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-violet-500/10 blur-[80px] pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-neon-purple/10 blur-[80px] pointer-events-none" />
           
           <div className="relative p-5 sm:p-10 md:p-12">
             {/* Badge */}
@@ -38,7 +38,7 @@ export function LnchblCTA() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/25 mb-6"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neon-green/15 border border-neon-green/25 mb-6"
             >
               <Zap className="w-4 h-4 text-primary" />
               <span className="text-sm font-bold tracking-wide text-primary">Available Now</span>
@@ -68,8 +68,8 @@ export function LnchblCTA() {
             <div className="flex flex-wrap gap-3 mb-8">
               {[
                 { icon: Rocket, text: "Full Substrate", color: "text-primary" },
-                { icon: Download, text: "Free Download", color: "text-emerald-500" },
-                { icon: Sparkles, text: "Persistent Memory Included", color: "text-violet-500" },
+                { icon: Download, text: "Free Download", color: "text-neon-green" },
+                { icon: Sparkles, text: "Persistent Memory Included", color: "text-neon-purple" },
               ].map((pill) => (
                 <div key={pill.text} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-muted/40 border border-border/50">
                   <pill.icon className={cn("w-4 h-4", pill.color)} />

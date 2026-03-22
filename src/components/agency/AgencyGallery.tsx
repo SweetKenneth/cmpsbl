@@ -206,9 +206,9 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
   };
 
   const statusColors: Record<Agency['status'], string> = {
-    draft: 'border-amber-500/50 text-amber-400',
-    purchased: 'border-cyan-500/50 text-cyan-400',
-    deployed: 'border-emerald-500/50 text-emerald-400',
+    draft: 'border-neon-amber/50 text-neon-amber',
+    purchased: 'border-neon-cyan/50 text-neon-cyan',
+    deployed: 'border-neon-green/50 text-neon-green',
     archived: 'border-muted-foreground/50 text-muted-foreground',
   };
 
@@ -248,7 +248,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
         {agencies.map((agency) => (
           <Card 
             key={agency.id} 
-            className="border-border/30 bg-black/40 backdrop-blur-xl hover:border-fuchsia-500/30 transition-all"
+            className="border-border/30 bg-black/40 backdrop-blur-xl hover:border-neon-magenta/30 transition-all"
           >
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between">
@@ -285,7 +285,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       onClick={() => setDeleteId(agency.id)}
-                      className="text-red-400 focus:text-red-400"
+                      className="text-destructive focus:text-destructive"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
                       Delete
@@ -314,7 +314,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="h-6 gap-1 text-xs hover:bg-fuchsia-500/10 hover:text-fuchsia-400"
+                    className="h-6 gap-1 text-xs hover:bg-neon-magenta/10 hover:text-neon-magenta"
                     onClick={() => setChatAgency(agency)}
                   >
                     <MessageCircle className="w-3 h-3" />
@@ -346,7 +346,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-red-600 hover:bg-red-500">
+            <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive">
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -376,7 +376,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
 
       {/* Chat Dialog */}
       <Dialog open={!!chatAgency} onOpenChange={() => setChatAgency(null)}>
-        <DialogContent className="max-w-2xl h-[80vh] p-0 bg-background/95 backdrop-blur-xl border-fuchsia-500/30">
+        <DialogContent className="max-w-2xl h-[80vh] p-0 bg-background/95 backdrop-blur-xl border-neon-magenta/30">
           <DialogHeader className="sr-only">
             <DialogTitle>Chat with {chatAgency?.name}</DialogTitle>
           </DialogHeader>

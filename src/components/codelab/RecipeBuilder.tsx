@@ -96,18 +96,18 @@ const STARTER_RECIPES: Recipe[] = [
 ];
 
 const AVAILABLE_STEPS = [
-  { module: "brain", action: "query", icon: Brain, color: "text-cyan-500", description: "Search memories" },
-  { module: "brain", action: "remember", icon: Brain, color: "text-cyan-500", description: "Store memory" },
-  { module: "brain", action: "reflect", icon: Brain, color: "text-cyan-500", description: "Reflect & learn" },
-  { module: "nexus", action: "text", icon: Zap, color: "text-green-500", description: "Generate text" },
-  { module: "nexus", action: "route", icon: Zap, color: "text-green-500", description: "Auto-route task" },
-  { module: "decode", action: "chat", icon: MessageSquare, color: "text-purple-500", description: "Chat interface" },
-  { module: "decode", action: "intent", icon: MessageSquare, color: "text-purple-500", description: "Extract intent" },
-  { module: "defense", action: "analyze", icon: Shield, color: "text-amber-500", description: "Threat analysis" },
-  { module: "defense", action: "reputation", icon: Shield, color: "text-amber-500", description: "Check reputation" },
-  { module: "vision", action: "health", icon: Eye, color: "text-blue-500", description: "System health" },
-  { module: "vision", action: "metrics", icon: Eye, color: "text-blue-500", description: "Get metrics" },
-  { module: "dream", action: "cycle", icon: Moon, color: "text-pink-500", description: "Dream cycle" },
+  { module: "brain", action: "query", icon: Brain, color: "text-neon-cyan", description: "Search memories" },
+  { module: "brain", action: "remember", icon: Brain, color: "text-neon-cyan", description: "Store memory" },
+  { module: "brain", action: "reflect", icon: Brain, color: "text-neon-cyan", description: "Reflect & learn" },
+  { module: "nexus", action: "text", icon: Zap, color: "text-neon-green", description: "Generate text" },
+  { module: "nexus", action: "route", icon: Zap, color: "text-neon-green", description: "Auto-route task" },
+  { module: "decode", action: "chat", icon: MessageSquare, color: "text-neon-purple", description: "Chat interface" },
+  { module: "decode", action: "intent", icon: MessageSquare, color: "text-neon-purple", description: "Extract intent" },
+  { module: "defense", action: "analyze", icon: Shield, color: "text-neon-amber", description: "Threat analysis" },
+  { module: "defense", action: "reputation", icon: Shield, color: "text-neon-amber", description: "Check reputation" },
+  { module: "vision", action: "health", icon: Eye, color: "text-neon-blue", description: "System health" },
+  { module: "vision", action: "metrics", icon: Eye, color: "text-neon-blue", description: "Get metrics" },
+  { module: "dream", action: "cycle", icon: Moon, color: "text-neon-magenta", description: "Dream cycle" },
 ];
 
 const MODULE_ICONS: Record<string, React.ElementType> = {
@@ -124,16 +124,16 @@ const MODULE_ICONS: Record<string, React.ElementType> = {
 };
 
 const MODULE_COLORS: Record<string, string> = {
-  brain: "text-cyan-500",
-  nexus: "text-green-500",
-  decode: "text-purple-500",
-  defense: "text-amber-500",
-  vision: "text-blue-500",
-  dream: "text-pink-500",
-  system: "text-red-500",
-  access: "text-orange-500",
+  brain: "text-neon-cyan",
+  nexus: "text-neon-green",
+  decode: "text-neon-purple",
+  defense: "text-neon-amber",
+  vision: "text-neon-blue",
+  dream: "text-neon-magenta",
+  system: "text-destructive",
+  access: "text-neon-amber",
   core: "text-slate-500",
-  evolution: "text-emerald-500",
+  evolution: "text-neon-green",
 };
 
 export function RecipeBuilder() {
@@ -236,7 +236,7 @@ ${params || "      // No parameters"}
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-amber to-neon-amber flex items-center justify-center">
             <ChefHat className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -298,9 +298,9 @@ ${params || "      // No parameters"}
                     variant="secondary" 
                     className={cn(
                       "text-xs",
-                      recipe.difficulty === "beginner" && "bg-emerald-500/10 text-emerald-500",
-                      recipe.difficulty === "intermediate" && "bg-amber-500/10 text-amber-500",
-                      recipe.difficulty === "advanced" && "bg-rose-500/10 text-rose-500"
+                      recipe.difficulty === "beginner" && "bg-neon-green/10 text-neon-green",
+                      recipe.difficulty === "intermediate" && "bg-neon-amber/10 text-neon-amber",
+                      recipe.difficulty === "advanced" && "bg-neon-magenta/10 text-neon-magenta"
                     )}
                   >
                     {recipe.difficulty}

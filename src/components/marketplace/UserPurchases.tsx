@@ -129,7 +129,7 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
           <section className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold flex items-center gap-2">
-                <Eye className="w-5 h-5 text-blue-500" />
+                <Eye className="w-5 h-5 text-neon-blue" />
                 Recently Viewed
               </h2>
             </div>
@@ -211,7 +211,7 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
           <section>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-violet-500" />
+                <Sparkles className="w-5 h-5 text-neon-purple" />
                 Recommended For You
               </h2>
               <Button variant="ghost" size="sm" className="gap-1 text-xs">
@@ -240,8 +240,8 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                     >
                       <CardContent className="p-4">
                         <div className="flex items-start gap-4">
-                          <div className="p-3 rounded-xl bg-violet-500/10 border border-violet-500/20">
-                            <Icon className="w-8 h-8 text-violet-500" />
+                          <div className="p-3 rounded-xl bg-neon-purple/10 border border-neon-purple/20">
+                            <Icon className="w-8 h-8 text-neon-purple" />
                           </div>
                           
                           <div className="flex-1 min-w-0">

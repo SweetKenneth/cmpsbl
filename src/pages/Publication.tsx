@@ -172,7 +172,7 @@ export default function Publication() {
                         </a>
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <div className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
                         <span className="text-xs text-muted-foreground font-mono">ARCHIVED</span>
                       </div>
                     </div>
@@ -425,7 +425,7 @@ export default function Publication() {
                         className="h-7 px-2.5 text-xs text-muted-foreground hover:text-foreground"
                       >
                         {copiedFormat === format ? (
-                          <><Check className="w-3 h-3 mr-1.5 text-green-500" /> Copied</>
+                          <><Check className="w-3 h-3 mr-1.5 text-neon-green" /> Copied</>
                         ) : (
                           <><Copy className="w-3 h-3 mr-1.5" /> Copy</>
                         )}

@@ -80,45 +80,45 @@ export default function DeveloperShowcase() {
       icon: Brain, title: "Persistent Memory",
       description: "Give your apps memory that survives sessions. Four temperature tiers handle hot cache, warm storage, cold archive, and long-term recall automatically.",
       features: ["4-tier temperature management", "Cross-session persistence", "Meaning-based search & recall", "Automatic cleanup & reinforcement"],
-      color: "text-purple-500", gradient: "from-purple-500 to-violet-600",
+      color: "text-neon-purple", gradient: "from-neon-purple to-neon-purple",
     },
     {
       icon: Moon, title: "Self-Improvement Cycles",
       description: "During idle periods, the system consolidates learnings, extracts patterns, and evolves your AI — without any manual intervention.",
       features: ["Memory consolidation", "Pattern extraction", "Schema evolution", "Scheduled processing"],
-      color: "text-violet-500", gradient: "from-violet-500 to-purple-600",
+      color: "text-neon-purple", gradient: "from-neon-purple to-neon-purple",
     },
     {
       icon: MessageSquare, title: "Conversation Intelligence",
       description: "Add intent classification, entity extraction, and memory-informed responses to any conversational interface.",
       features: ["Intent classification", "Entity extraction", "Context windowing", "Memory-aware responses"],
-      color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600",
+      color: "text-neon-cyan", gradient: "from-neon-cyan to-neon-blue",
     },
     {
       icon: Zap, title: "Smart AI Routing",
       description: "Automatically route requests to the best AI provider based on cost, speed, and capability. Supports 13+ providers with automatic failover.",
       features: ["Multi-provider routing", "Cost optimization", "Speed-based selection", "Bring your own keys"],
-      color: "text-green-500", gradient: "from-green-500 to-emerald-600",
+      color: "text-neon-green", gradient: "from-neon-green to-neon-green",
     },
     {
       icon: Shield, title: "Built-In Security",
       description: "Rate limiting, threat detection, content filtering, and complete audit logging — all included out of the box.",
       features: ["Rate limiting", "Threat scoring", "Content filtering", "Audit logging"],
-      color: "text-red-500", gradient: "from-red-500 to-rose-600",
+      color: "text-destructive", gradient: "from-destructive to-neon-magenta",
     },
     {
       icon: Layers, title: "Event-Driven Architecture",
       description: "Decouple your app with pub/sub messaging. Events flow through the system, nodes react, and state propagates automatically.",
       features: ["Pub/sub messaging", "Event sourcing", "Replay capability", "Webhook integration"],
-      color: "text-amber-500", gradient: "from-amber-500 to-orange-600",
+      color: "text-neon-amber", gradient: "from-neon-amber to-neon-amber",
     },
   ];
 
   const useCases = [
-    { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember users across sessions and learn from every conversation.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-cyan-500", gradient: "from-cyan-500 to-blue-600" },
-    { icon: FileCode, title: "Smart Document Search", description: "Retrieve documents with memory-enhanced context — not just keyword matching.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-purple-500", gradient: "from-purple-500 to-violet-600" },
-    { icon: Workflow, title: "Autonomous Agents", description: "Multi-step agents with persistent state, self-correction, and continuous learning.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-emerald-500", gradient: "from-emerald-500 to-green-600" },
-    { icon: Puzzle, title: "Plugin Systems", description: "Build extensible architectures where plugins share a common cognitive layer.", example: "cmpsbl.core.register({ node, config })", color: "text-rose-500", gradient: "from-rose-500 to-pink-600" },
+    { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember users across sessions and learn from every conversation.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-neon-cyan", gradient: "from-neon-cyan to-neon-blue" },
+    { icon: FileCode, title: "Smart Document Search", description: "Retrieve documents with memory-enhanced context — not just keyword matching.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-neon-purple", gradient: "from-neon-purple to-neon-purple" },
+    { icon: Workflow, title: "Autonomous Agents", description: "Multi-step agents with persistent state, self-correction, and continuous learning.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-neon-green", gradient: "from-neon-green to-neon-green" },
+    { icon: Puzzle, title: "Plugin Systems", description: "Build extensible architectures where plugins share a common cognitive layer.", example: "cmpsbl.core.register({ node, config })", color: "text-neon-magenta", gradient: "from-neon-magenta to-neon-magenta" },
   ];
 
   const techCapabilities = [
@@ -142,13 +142,13 @@ export default function DeveloperShowcase() {
       {/* Hero */}
       <section className="relative py-20 sm:py-24 md:py-36 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/5 via-transparent to-transparent" />
-          <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[120px]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-neon-cyan/5 via-transparent to-transparent" />
+          <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-neon-cyan/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px]" />
         </div>
         <div className="container mx-auto px-3 sm:px-4 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 px-4 py-1.5 bg-cyan-500/10 text-cyan-400 border-cyan-500/30">
+            <Badge className="mb-6 px-4 py-1.5 bg-neon-cyan/10 text-neon-cyan border-neon-cyan/30">
               <Terminal className="w-4 h-4 mr-2" />
               For Software Developers
             </Badge>
@@ -161,7 +161,7 @@ export default function DeveloperShowcase() {
                to your applications. 40 specialized modules across 12 coordinated groups — all accessible via SDK or REST API.
              </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-               <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-lg shadow-cyan-500/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
+               <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-cyan hover:to-neon-blue shadow-lg shadow-neon-cyan/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
                  <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
                </Button>
                <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base">
@@ -179,8 +179,8 @@ export default function DeveloperShowcase() {
             {techCapabilities.map((cap, idx) => (
               <motion.div key={cap.label} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto mb-3">
-                  <cap.icon className="w-6 h-6 text-cyan-500" />
+                <div className="w-12 h-12 rounded-xl bg-neon-cyan/10 flex items-center justify-center mx-auto mb-3">
+                  <cap.icon className="w-6 h-6 text-neon-cyan" />
                 </div>
                 <div className="text-2xl sm:text-3xl font-black text-foreground">{cap.label}</div>
                 <div className="text-xs text-muted-foreground">{cap.sublabel}</div>

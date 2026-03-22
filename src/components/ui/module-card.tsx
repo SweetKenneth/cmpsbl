@@ -19,9 +19,9 @@ export function ModuleCard({
   className,
 }: ModuleCardProps) {
   const statusColors = {
-    active: "bg-green-500/20 text-green-400 border-green-500/30",
+    active: "bg-neon-green/20 text-neon-green border-neon-green/30",
     inactive: "bg-gray-500/20 text-gray-400 border-gray-500/30",
-    warning: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+    warning: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
   };
 
   return (

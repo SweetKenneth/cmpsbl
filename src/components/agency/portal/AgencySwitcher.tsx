@@ -121,7 +121,7 @@ export function AgencySwitcher({
               <Check className="w-4 h-4 text-primary shrink-0" />
             )}
             {agency.status === 'deployed' && agency.id !== currentAgencyId && (
-              <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400 shrink-0">
+              <Badge variant="outline" className="text-[9px] border-neon-green/30 text-neon-green shrink-0">
                 LIVE
               </Badge>
             )}

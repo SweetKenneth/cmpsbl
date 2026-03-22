@@ -128,8 +128,8 @@ export function TryItChat({ className }: { className?: string }) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="gap-1 text-[10px] border-emerald-500/30 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <Badge variant="outline" className="gap-1 text-[10px] border-neon-green/30 text-neon-green">
+            <span className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
             Live
           </Badge>
           {messages.length > 0 && (

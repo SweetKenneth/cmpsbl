@@ -83,7 +83,7 @@ export function DeveloperSignupForm({ className }: { className?: string }) {
   return (
     <Card className={cn("border-primary/20 bg-card/50 backdrop-blur-sm", className)}>
       <CardHeader className="text-center pb-4">
-        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-violet-500/20 flex items-center justify-center mx-auto mb-4">
+        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/20 to-neon-purple/20 flex items-center justify-center mx-auto mb-4">
           <Key className="w-7 h-7 text-primary" />
         </div>
         <CardTitle className="text-xl">Get Your API Key</CardTitle>
@@ -150,9 +150,9 @@ export function DeveloperSignupForm({ className }: { className?: string }) {
             >
               {result.apiKey ? (
                 <>
-                  <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-lg p-4">
+                  <div className="bg-neon-green/5 border border-neon-green/20 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <Badge className="bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                      <Badge className="bg-neon-green/10 text-neon-green border-neon-green/20">
                         <CheckCircle2 className="w-3 h-3 mr-1" />
                         Generated
                       </Badge>

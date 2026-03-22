@@ -582,7 +582,7 @@ export function CmpsblNav() {
 
               {/* Mobile Footer */}
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <div className="w-1.5 h-1.5 rounded-full bg-neon-green" />
                 <span>All Systems Operational</span>
               </motion.div>
             </motion.div>

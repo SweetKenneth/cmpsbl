@@ -66,9 +66,9 @@ export function ReflexMonitor() {
 
   const getActionColor = (action: string) => {
     switch (action) {
-      case 'block': return 'bg-red-500/20 text-red-400 border-red-500/50';
-      case 'challenge': return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50';
-      case 'allow': return 'bg-green-500/20 text-green-400 border-green-500/50';
+      case 'block': return 'bg-destructive/20 text-destructive border-destructive/50';
+      case 'challenge': return 'bg-neon-amber/20 text-neon-amber border-neon-amber/50';
+      case 'allow': return 'bg-neon-green/20 text-neon-green border-neon-green/50';
       default: return 'bg-gray-500/20 text-gray-400 border-gray-500/50';
     }
   };
@@ -100,7 +100,7 @@ export function ReflexMonitor() {
             <Shield className="w-5 h-5 text-primary" />
             <CardTitle>CMPSBL.com Reflex Protection</CardTitle>
           </div>
-          <Badge variant="outline" className="border-green-500/50 text-green-400 bg-green-500/10">
+          <Badge variant="outline" className="border-neon-green/50 text-neon-green bg-neon-green/10">
             <Activity className="w-3 h-3 mr-1 animate-pulse" />
             Live
           </Badge>
@@ -115,12 +115,12 @@ export function ReflexMonitor() {
       <CardContent className="space-y-6">
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 rounded-lg bg-gradient-to-br from-red-500/10 to-red-500/5 border border-red-500/20">
+          <div className="p-4 rounded-lg bg-gradient-to-br from-destructive/10 to-destructive/5 border border-destructive/20">
             <div className="flex items-center justify-between mb-2">
-              <AlertTriangle className="w-4 h-4 text-red-400" />
-              <TrendingUp className="w-3 h-3 text-red-400/50" />
+              <AlertTriangle className="w-4 h-4 text-destructive" />
+              <TrendingUp className="w-3 h-3 text-destructive/50" />
             </div>
-            <div className="text-2xl font-bold text-red-400">
+            <div className="text-2xl font-bold text-destructive">
               {stats?.threats_blocked_24h || 0}
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -128,12 +128,12 @@ export function ReflexMonitor() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-500/5 border border-green-500/20">
+          <div className="p-4 rounded-lg bg-gradient-to-br from-neon-green/10 to-neon-green/5 border border-neon-green/20">
             <div className="flex items-center justify-between mb-2">
-              <CheckCircle className="w-4 h-4 text-green-400" />
-              <TrendingUp className="w-3 h-3 text-green-400/50" />
+              <CheckCircle className="w-4 h-4 text-neon-green" />
+              <TrendingUp className="w-3 h-3 text-neon-green/50" />
             </div>
-            <div className="text-2xl font-bold text-green-400">
+            <div className="text-2xl font-bold text-neon-green">
               {stats?.bot_detection_accuracy || 99.2}%
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -141,12 +141,12 @@ export function ReflexMonitor() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20">
+          <div className="p-4 rounded-lg bg-gradient-to-br from-neon-blue/10 to-neon-blue/5 border border-neon-blue/20">
             <div className="flex items-center justify-between mb-2">
-              <Shield className="w-4 h-4 text-blue-400" />
-              <Activity className="w-3 h-3 text-blue-400/50 animate-pulse" />
+              <Shield className="w-4 h-4 text-neon-blue" />
+              <Activity className="w-3 h-3 text-neon-blue/50 animate-pulse" />
             </div>
-            <div className="text-2xl font-bold text-blue-400">
+            <div className="text-2xl font-bold text-neon-blue">
               {stats?.active_protection_modules || 5}/5
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -154,12 +154,12 @@ export function ReflexMonitor() {
             </div>
           </div>
 
-          <div className="p-4 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20">
+          <div className="p-4 rounded-lg bg-gradient-to-br from-neon-purple/10 to-neon-purple/5 border border-neon-purple/20">
             <div className="flex items-center justify-between mb-2">
-              <Globe className="w-4 h-4 text-purple-400" />
-              <TrendingUp className="w-3 h-3 text-purple-400/50" />
+              <Globe className="w-4 h-4 text-neon-purple" />
+              <TrendingUp className="w-3 h-3 text-neon-purple/50" />
             </div>
-            <div className="text-2xl font-bold text-purple-400">
+            <div className="text-2xl font-bold text-neon-purple">
               {stats?.avg_response_time || 42}ms
             </div>
             <div className="text-xs text-muted-foreground mt-1">
@@ -197,9 +197,9 @@ export function ReflexMonitor() {
                     </div>
                     <div className="text-right shrink-0">
                       <div className={`text-sm font-semibold ${
-                        event.risk_score >= 70 ? 'text-red-400' :
-                        event.risk_score >= 40 ? 'text-yellow-400' :
-                        'text-green-400'
+                        event.risk_score >= 70 ? 'text-destructive' :
+                        event.risk_score >= 40 ? 'text-neon-amber' :
+                        'text-neon-green'
                       }`}>
                         Risk: {event.risk_score}
                       </div>

@@ -52,7 +52,7 @@ const TIERS: {
     period: '/mo',
     tagline: 'Build real things. Not a trial.',
     description: 'Full runtime access with baseline technology.',
-    accent: 'from-emerald-500 to-emerald-600',
+    accent: 'from-neon-green to-neon-green',
     icon: Unlock,
     capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
     features: [
@@ -72,7 +72,7 @@ const TIERS: {
     period: '/mo',
     tagline: 'More capacity for builders shipping products.',
     description: 'Expanded memory, executable capabilities, and priority routing.',
-    accent: 'from-violet-500 to-purple-500',
+    accent: 'from-neon-purple to-neon-purple',
     icon: Sparkles,
     stripeTier: 'creator' as EngineSubscriptionTier,
     capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
@@ -95,7 +95,7 @@ const TIERS: {
     period: '/mo',
     tagline: '9 template packs. Maximum creative output.',
     description: 'Trace exports, high-priority NEXUS routing, custom memory slots.',
-    accent: 'from-blue-500 to-indigo-500',
+    accent: 'from-neon-blue to-primary',
     icon: Layers,
     popular: true,
     stripeTier: 'studio' as EngineSubscriptionTier,
@@ -120,7 +120,7 @@ const TIERS: {
     period: '/mo',
     tagline: 'Full control. Maximum capability.',
     description: 'Unlimited vault, dedicated partitions, and full governance authority.',
-    accent: 'from-amber-500 to-orange-500',
+    accent: 'from-neon-amber to-neon-amber',
     icon: Building2,
     stripeTier: 'architect' as EngineSubscriptionTier,
     capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
@@ -209,12 +209,12 @@ export function UpgradeContent() {
           className="max-w-3xl mx-auto mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4"
         >
           {[
-            { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-violet-400' },
-            { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-amber-400' },
-            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code. PDF/CSV/JSON templates.', color: 'text-emerald-400' },
+            { icon: Brain, title: 'Memory Stream', desc: 'Daily discoveries scale with your plan — from 3 to 12 pulls per day. Keep the best in your vault.', color: 'text-neon-purple' },
+            { icon: Zap, title: 'Runtime & Slots', desc: 'More slots mean more capabilities running simultaneously. Architect gets 12 active slots.', color: 'text-neon-amber' },
+            { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code. PDF/CSV/JSON templates.', color: 'text-neon-green' },
             { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
             { icon: Shield, title: 'Member Hub', desc: 'Saved Workflows, usage dashboards with ROI metrics, referral credits, export center, and priority status — all from one command center.', color: 'text-primary' },
-            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new nodes and resolvers.', color: 'text-orange-400' },
+            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new nodes and resolvers.', color: 'text-neon-amber' },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
               <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
@@ -239,10 +239,10 @@ export function UpgradeContent() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { tier: 'Builder', pulls: '3', color: 'text-emerald-400' },
-              { tier: 'Studio', pulls: '6', color: 'text-violet-400' },
+              { tier: 'Builder', pulls: '3', color: 'text-neon-green' },
+              { tier: 'Studio', pulls: '6', color: 'text-neon-purple' },
               { tier: 'Creator', pulls: '9', color: 'text-sky-400' },
-              { tier: 'Architect', pulls: '12', color: 'text-amber-400' },
+              { tier: 'Architect', pulls: '12', color: 'text-neon-amber' },
             ].map(t => (
               <div key={t.tier} className="text-center p-2 rounded-lg bg-muted/30">
                 <div className={`text-lg font-mono font-bold ${t.color}`}>{t.pulls}</div>
@@ -307,7 +307,7 @@ export function UpgradeContent() {
                   isCurrent
                     ? "border-primary ring-2 ring-primary/20 shadow-lg shadow-primary/10"
                     : t.popular
-                    ? "border-violet-500/40 ring-1 ring-violet-500/10 hover:shadow-violet-500/10"
+                    ? "border-neon-purple/40 ring-1 ring-neon-purple/10 hover:shadow-neon-purple/10"
                     : "border-border/50 hover:border-primary/20",
                 )}
               >
@@ -317,10 +317,10 @@ export function UpgradeContent() {
                   <Badge className="absolute top-4 right-4 bg-primary text-primary-foreground text-[10px]">Current</Badge>
                 )}
                 {!isCurrent && t.stripeTier && (
-                  <Badge className="absolute top-4 right-4 bg-emerald-500 text-white text-[10px]">7-day free trial</Badge>
+                  <Badge className="absolute top-4 right-4 bg-neon-green text-white text-[10px]">7-day free trial</Badge>
                 )}
                 {t.popular && !isCurrent && !t.stripeTier && (
-                  <Badge className="absolute top-4 right-4 bg-violet-500 text-white text-[10px]">Popular</Badge>
+                  <Badge className="absolute top-4 right-4 bg-neon-purple text-white text-[10px]">Popular</Badge>
                 )}
 
                 <div className="p-5 sm:p-6 flex flex-col flex-1">
@@ -364,7 +364,7 @@ export function UpgradeContent() {
                     <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
                       <span className={`text-[9px] sm:text-[10px] font-mono px-2 py-1 rounded-full border inline-flex items-center gap-1 ${
                         t.capacity.exportEnabled
-                          ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10'
+                          ? 'border-neon-green/30 text-neon-green bg-neon-green/10'
                           : 'border-border/30 text-muted-foreground/50'
                       }`}>
                         {t.capacity.exportEnabled ? (
@@ -437,15 +437,15 @@ export function UpgradeContent() {
 
       {/* ═══ ENTERPRISE CTA ═══ */}
       <section className="container mx-auto px-4 mt-24">
-        <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover hover:border-amber-500/20 transition-all duration-300">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mx-auto mb-5">
-            <Building2 className="w-7 h-7 text-amber-500" />
+        <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background shadow-xl shadow-primary/[0.03] shimmer-on-hover hover:border-neon-amber/20 transition-all duration-300">
+          <div className="w-14 h-14 rounded-2xl bg-neon-amber/10 border border-neon-amber/20 flex items-center justify-center mx-auto mb-5">
+            <Building2 className="w-7 h-7 text-neon-amber" />
           </div>
           <h3 className="text-2xl font-bold tracking-tight">Architect Custom</h3>
           <p className="text-muted-foreground mt-2 max-w-lg mx-auto leading-relaxed">
             Dedicated instances, custom compliance, SOC2 requirements, and white-glove onboarding. Custom slot capacity beyond 12 with dedicated support.
           </p>
-          <Button variant="outline" className="mt-6 gap-2 hover:border-amber-500/30 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200" asChild>
+          <Button variant="outline" className="mt-6 gap-2 hover:border-neon-amber/30 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200" asChild>
             <a href="mailto:Dev@CMPSBL.com">Contact Sales <ArrowRight className="w-4 h-4" /></a>
           </Button>
         </div>

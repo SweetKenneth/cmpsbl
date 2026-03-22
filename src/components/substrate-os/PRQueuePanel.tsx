@@ -104,10 +104,10 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
   
   const getStatusColor = (status: PRPatch['status']) => {
     switch (status) {
-      case 'pending': return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
-      case 'approved': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
-      case 'rejected': return 'bg-red-500/10 text-red-400 border-red-500/30';
-      case 'deployed': return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
+      case 'pending': return 'bg-neon-amber/10 text-neon-amber border-neon-amber/30';
+      case 'approved': return 'bg-neon-green/10 text-neon-green border-neon-green/30';
+      case 'rejected': return 'bg-destructive/10 text-destructive border-destructive/30';
+      case 'deployed': return 'bg-neon-blue/10 text-neon-blue border-neon-blue/30';
       case 'rolled_back': return 'bg-muted text-muted-foreground';
       default: return '';
     }
@@ -123,7 +123,7 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
             <GitPullRequest className="h-5 w-5 text-primary" />
             <CardTitle className="text-lg">PR Queue</CardTitle>
             {pendingCount > 0 && (
-              <Badge variant="outline" className="bg-amber-500/10 text-amber-400">
+              <Badge variant="outline" className="bg-neon-amber/10 text-neon-amber">
                 {pendingCount} pending
               </Badge>
             )}
@@ -193,9 +193,9 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
                       <p className="text-sm text-muted-foreground">{pr.description}</p>
                       
                       {pr.validationErrors && pr.validationErrors.length > 0 && (
-                        <div className="flex items-start gap-2 p-2 rounded bg-amber-500/10 border border-amber-500/30">
-                          <AlertTriangle className="h-4 w-4 text-amber-400 mt-0.5" />
-                          <div className="text-xs text-amber-400">
+                        <div className="flex items-start gap-2 p-2 rounded bg-neon-amber/10 border border-neon-amber/30">
+                          <AlertTriangle className="h-4 w-4 text-neon-amber mt-0.5" />
+                          <div className="text-xs text-neon-amber">
                             <strong>Validation warnings:</strong>
                             <ul className="mt-1 space-y-0.5">
                               {pr.validationErrors.map((err, i) => (
@@ -225,7 +225,7 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
                             <Button
                               size="sm"
                               onClick={() => handleApprove(pr.id)}
-                              className="bg-emerald-600 hover:bg-emerald-700"
+                              className="bg-neon-green hover:bg-neon-green"
                             >
                               <Check className="h-4 w-4 mr-1" />
                               Approve
@@ -247,7 +247,7 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
                           <Button
                             size="sm"
                             onClick={() => handleDeploy(pr)}
-                            className="bg-blue-600 hover:bg-blue-700"
+                            className="bg-neon-blue hover:bg-neon-blue"
                           >
                             <Rocket className="h-4 w-4 mr-1" />
                             Deploy Now

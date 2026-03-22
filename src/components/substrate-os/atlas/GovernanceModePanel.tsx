@@ -50,7 +50,7 @@ export function GovernanceModePanel() {
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Shield className="w-4 h-4 text-cyan-400" />
+              <Shield className="w-4 h-4 text-neon-cyan" />
               Governance Control Plane
             </CardTitle>
             <Button variant="ghost" size="icon" className="h-7 w-7" onClick={refresh}>
@@ -72,7 +72,7 @@ export function GovernanceModePanel() {
                   className={cn(
                     'p-3 rounded-xl border text-center transition-all',
                     isActive
-                      ? 'border-cyan-500/40 bg-cyan-500/10 scale-[1.02]'
+                      ? 'border-neon-cyan/40 bg-neon-cyan/10 scale-[1.02]'
                       : 'border-border/30 bg-muted/10 hover:border-border/50'
                   )}
                 >
@@ -89,7 +89,7 @@ export function GovernanceModePanel() {
             <div className="flex items-center gap-2 mb-2">
               <ModeIcon className={cn('w-4 h-4', meta.color)} />
               <span className="text-sm font-bold">{meta.label} Mode</span>
-              <Badge className={cn('text-[10px]', meta.color === 'text-green-400' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : meta.color === 'text-red-400' ? 'bg-red-500/20 text-red-400 border-red-500/40' : meta.color === 'text-blue-400' ? 'bg-blue-500/20 text-blue-400 border-blue-500/40' : 'bg-yellow-500/20 text-yellow-400 border-yellow-500/40')}>
+              <Badge className={cn('text-[10px]', meta.color === 'text-neon-green' ? 'bg-neon-green/20 text-neon-green border-neon-green/40' : meta.color === 'text-destructive' ? 'bg-destructive/20 text-destructive border-destructive/40' : meta.color === 'text-neon-blue' ? 'bg-neon-blue/20 text-neon-blue border-neon-blue/40' : 'bg-neon-amber/20 text-neon-amber border-neon-amber/40')}>
                 {currentMode}
               </Badge>
             </div>
@@ -104,11 +104,11 @@ export function GovernanceModePanel() {
                 className={cn(
                   'p-2.5 rounded-lg border text-center transition-colors',
                   enabled
-                    ? 'border-emerald-500/30 bg-emerald-500/10'
-                    : 'border-red-500/20 bg-red-500/5'
+                    ? 'border-neon-green/30 bg-neon-green/10'
+                    : 'border-destructive/20 bg-destructive/5'
                 )}
               >
-                <div className={cn('text-[10px] font-mono font-bold', enabled ? 'text-emerald-400' : 'text-red-400')}>
+                <div className={cn('text-[10px] font-mono font-bold', enabled ? 'text-neon-green' : 'text-destructive')}>
                   {enabled ? '● ON' : '○ OFF'}
                 </div>
                 <div className="text-[9px] text-muted-foreground mt-0.5 font-mono">
@@ -124,12 +124,12 @@ export function GovernanceModePanel() {
       <Card className="border-border/20 bg-gradient-to-b from-card/60 to-card/30 backdrop-blur-xl">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <Activity className="w-4 h-4 text-emerald-400" />
+            <Activity className="w-4 h-4 text-neon-green" />
             Hardening Health — {modules.length} Modules
             <Badge className={cn('text-[10px] ml-auto',
-              overallGrade === 'A' ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' :
-              overallGrade === 'B' ? 'bg-blue-500/20 text-blue-400 border-blue-500/40' :
-              'bg-amber-500/20 text-amber-400 border-amber-500/40'
+              overallGrade === 'A' ? 'bg-neon-green/20 text-neon-green border-neon-green/40' :
+              overallGrade === 'B' ? 'bg-neon-blue/20 text-neon-blue border-neon-blue/40' :
+              'bg-neon-amber/20 text-neon-amber border-neon-amber/40'
             )}>
               {overallGrade} — {averageScore}/100
             </Badge>
@@ -144,16 +144,16 @@ export function GovernanceModePanel() {
                 animate={{ opacity: 1, scale: 1 }}
                 className={cn(
                   'p-2.5 rounded-lg border text-center transition-all hover:scale-[1.02]',
-                  mod.grade === 'A' ? 'border-emerald-500/30 bg-emerald-500/10' :
-                  mod.grade === 'B' ? 'border-blue-500/30 bg-blue-500/10' :
-                  mod.grade === 'C' ? 'border-amber-500/30 bg-amber-500/10' :
-                  'border-red-500/30 bg-red-500/10'
+                  mod.grade === 'A' ? 'border-neon-green/30 bg-neon-green/10' :
+                  mod.grade === 'B' ? 'border-neon-blue/30 bg-neon-blue/10' :
+                  mod.grade === 'C' ? 'border-neon-amber/30 bg-neon-amber/10' :
+                  'border-destructive/30 bg-destructive/10'
                 )}
               >
                 <div className={cn('text-lg font-bold font-mono',
-                  mod.grade === 'A' ? 'text-emerald-400' :
-                  mod.grade === 'B' ? 'text-blue-400' :
-                  mod.grade === 'C' ? 'text-amber-400' : 'text-red-400'
+                  mod.grade === 'A' ? 'text-neon-green' :
+                  mod.grade === 'B' ? 'text-neon-blue' :
+                  mod.grade === 'C' ? 'text-neon-amber' : 'text-destructive'
                 )}>
                   {mod.grade}
                 </div>

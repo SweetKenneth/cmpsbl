@@ -802,13 +802,13 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-fuchsia-500/30 to-violet-500/30 border border-fuchsia-500/40 flex items-center justify-center">
-            <Code className="w-5 h-5 text-fuchsia-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-magenta/30 to-neon-purple/30 border border-neon-magenta/40 flex items-center justify-center">
+            <Code className="w-5 h-5 text-neon-magenta" />
           </div>
           <div>
             <h2 className="text-lg font-semibold flex items-center gap-2">
               ENCODE
-              <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
+              <Badge variant="outline" className="text-[10px] border-neon-cyan/40 text-neon-cyan bg-neon-cyan/10">
                 via DECODE
               </Badge>
               
@@ -907,7 +907,7 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         <Card className="border-primary/20 bg-card/50 backdrop-blur-xl">
           <CardHeader className="border-b border-border/50 py-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-cyan-400" />
+              <MessageSquare className="w-4 h-4 text-neon-cyan" />
               DECODE → ENCODE Chat
             </CardTitle>
           </CardHeader>

@@ -50,9 +50,9 @@ export function CodeViewer({
       {/* Header bar */}
       <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-t-lg border border-b-0 border-border/50">
         <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500/50" />
-          <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-          <div className="w-3 h-3 rounded-full bg-green-500/50" />
+          <div className="w-3 h-3 rounded-full bg-destructive/50" />
+          <div className="w-3 h-3 rounded-full bg-neon-amber/50" />
+          <div className="w-3 h-3 rounded-full bg-neon-green/50" />
         </div>
         <span className="text-xs text-muted-foreground font-mono">{filename}</span>
         

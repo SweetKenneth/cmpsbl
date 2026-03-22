@@ -99,7 +99,7 @@ export function XctblModal({ isOpen, onClose }: XctblModalProps) {
                       </Button>
                       <Button
                         onClick={handleEnterSpace}
-                        className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white hover:from-fuchsia-500 hover:to-purple-500"
+                        className="gap-2 bg-gradient-to-r from-neon-magenta to-neon-purple text-white hover:from-neon-magenta hover:to-neon-purple"
                       >
                         <ExternalLink className="w-4 h-4" />
                         Enter Space

@@ -29,17 +29,17 @@ export function StatCard({
   const variantStyles = {
     default: "from-card to-card/80",
     primary: "from-primary/10 to-primary/5 border-primary/20",
-    success: "from-green-500/10 to-green-500/5 border-green-500/20",
-    warning: "from-yellow-500/10 to-yellow-500/5 border-yellow-500/20",
-    danger: "from-red-500/10 to-red-500/5 border-red-500/20",
+    success: "from-neon-green/10 to-neon-green/5 border-neon-green/20",
+    warning: "from-neon-amber/10 to-neon-amber/5 border-neon-amber/20",
+    danger: "from-destructive/10 to-destructive/5 border-destructive/20",
   };
 
   const iconVariantStyles = {
     default: "bg-primary/10 text-primary",
     primary: "bg-primary/20 text-primary",
-    success: "bg-green-500/20 text-green-500",
-    warning: "bg-yellow-500/20 text-yellow-500",
-    danger: "bg-red-500/20 text-red-500",
+    success: "bg-neon-green/20 text-neon-green",
+    warning: "bg-neon-amber/20 text-neon-amber",
+    danger: "bg-destructive/20 text-destructive",
   };
 
   return (
@@ -77,9 +77,9 @@ export function StatCard({
                 <span
                   className={`text-xs font-medium px-2 py-0.5 rounded-full ${
                     change.trend === "up"
-                      ? "bg-green-500/20 text-green-500"
+                      ? "bg-neon-green/20 text-neon-green"
                       : change.trend === "down"
-                      ? "bg-red-500/20 text-red-500"
+                      ? "bg-destructive/20 text-destructive"
                       : "bg-muted text-muted-foreground"
                   }`}
                 >

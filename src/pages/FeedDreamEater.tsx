@@ -133,7 +133,7 @@ const FeedDreamEater = () => {
 
       <CmpsblNav />
 
-      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-violet-950/20">
+      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-neon-purple/20">
         <div className="container mx-auto px-4 py-12 max-w-5xl">
           {/* Header with new copy */}
           <motion.div 
@@ -154,7 +154,7 @@ const FeedDreamEater = () => {
             {/* Live indicator */}
             <div className="flex items-center justify-center gap-2 mt-4 text-sm text-muted-foreground">
               <motion.div
-                className={isLive ? "w-2 h-2 rounded-full bg-emerald-500" : "w-2 h-2 rounded-full bg-amber-500"}
+                className={isLive ? "w-2 h-2 rounded-full bg-neon-green" : "w-2 h-2 rounded-full bg-neon-amber"}
                 animate={isLive ? { scale: [1, 1.3, 1], opacity: [1, 0.7, 1] } : {}}
                 transition={{ duration: 1.5, repeat: Infinity }}
               />
@@ -202,28 +202,28 @@ const FeedDreamEater = () => {
           >
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
-                <Moon className="w-5 h-5 mx-auto mb-1 text-violet-400" />
+                <Moon className="w-5 h-5 mx-auto mb-1 text-neon-purple" />
                 <p className="text-2xl font-bold">{state?.dreams_consumed_today || 0}</p>
                 <p className="text-xs text-muted-foreground">Dreams Today</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
-                <Skull className="w-5 h-5 mx-auto mb-1 text-rose-400" />
+                <Skull className="w-5 h-5 mx-auto mb-1 text-neon-magenta" />
                 <p className="text-2xl font-bold">{state?.nightmares_consumed_today || 0}</p>
                 <p className="text-xs text-muted-foreground">Nightmares Today</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
-                <Activity className="w-5 h-5 mx-auto mb-1 text-cyan-400" />
+                <Activity className="w-5 h-5 mx-auto mb-1 text-neon-cyan" />
                 <p className="text-2xl font-bold capitalize">{currentMood}</p>
                 <p className="text-xs text-muted-foreground">Current Mood</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 backdrop-blur">
               <CardContent className="pt-4 text-center">
-                <Sparkles className="w-5 h-5 mx-auto mb-1 text-amber-400" />
+                <Sparkles className="w-5 h-5 mx-auto mb-1 text-neon-amber" />
                 <p className="text-2xl font-bold">{mutationLevel}</p>
                 <p className="text-xs text-muted-foreground">Mutation Level</p>
               </CardContent>
@@ -249,10 +249,10 @@ const FeedDreamEater = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <Card className="bg-card/80 backdrop-blur border-violet-500/20">
+                <Card className="bg-card/80 backdrop-blur border-neon-purple/20">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Moon className="w-5 h-5 text-violet-400" />
+                      <Moon className="w-5 h-5 text-neon-purple" />
                       Offer Your Vision
                     </CardTitle>
                     <CardDescription>
@@ -285,14 +285,14 @@ const FeedDreamEater = () => {
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="dream" id="dream" />
                             <Label htmlFor="dream" className="flex items-center gap-2 cursor-pointer">
-                              <Moon className="w-4 h-4 text-violet-400" />
+                              <Moon className="w-4 h-4 text-neon-purple" />
                               Dream
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
                             <RadioGroupItem value="nightmare" id="nightmare" />
                             <Label htmlFor="nightmare" className="flex items-center gap-2 cursor-pointer">
-                              <Skull className="w-4 h-4 text-rose-400" />
+                              <Skull className="w-4 h-4 text-neon-magenta" />
                               Nightmare
                             </Label>
                           </div>
@@ -367,7 +367,7 @@ const FeedDreamEater = () => {
                 <Card className="bg-card/80 backdrop-blur border-border/30">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Radio className="w-5 h-5 text-emerald-400" />
+                      <Radio className="w-5 h-5 text-neon-green" />
                       Public Dream Stream
                     </CardTitle>
                     <CardDescription>
@@ -407,7 +407,7 @@ const FeedDreamEater = () => {
           <Card className="mt-8 bg-card/50 backdrop-blur border-primary/10">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <Shield className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                <Shield className="w-5 h-5 text-neon-green flex-shrink-0" />
                 <p>
                   All submissions are processed through the substrate's secure edge layer. 
                   Content is sanitized and rate-limited. No personal data is stored without consent.

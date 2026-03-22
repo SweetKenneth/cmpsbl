@@ -90,8 +90,8 @@ export function HealButton({
       <div className={cn(
         "relative overflow-hidden rounded-xl border p-4 transition-all",
         isUrgent ? "border-destructive/50 bg-destructive/5" :
-        isDegraded ? "border-amber-500/50 bg-amber-500/5" :
-        "border-green-500/30 bg-green-500/5"
+        isDegraded ? "border-neon-amber/50 bg-neon-amber/5" :
+        "border-neon-green/30 bg-neon-green/5"
       )}>
         {/* Animated pulse for urgent state */}
         {isUrgent && (
@@ -103,22 +103,22 @@ export function HealButton({
             <div className={cn(
               "w-12 h-12 rounded-lg flex items-center justify-center",
               isUrgent ? "bg-destructive/20" :
-              isDegraded ? "bg-amber-500/20" :
-              "bg-green-500/20"
+              isDegraded ? "bg-neon-amber/20" :
+              "bg-neon-green/20"
             )}>
               {isHealing ? (
                 <Loader2 className={cn(
                   "w-6 h-6 animate-spin",
                   isUrgent ? "text-destructive" :
-                  isDegraded ? "text-amber-500" :
-                  "text-green-500"
+                  isDegraded ? "text-neon-amber" :
+                  "text-neon-green"
                 )} />
               ) : (
                 <Heart className={cn(
                   "w-6 h-6",
                   isUrgent ? "text-destructive" :
-                  isDegraded ? "text-amber-500" :
-                  "text-green-500"
+                  isDegraded ? "text-neon-amber" :
+                  "text-neon-green"
                 )} />
               )}
             </div>
@@ -131,8 +131,8 @@ export function HealButton({
                   className={cn(
                     "text-[10px] h-5",
                     isUrgent ? "border-destructive/50 text-destructive" :
-                    isDegraded ? "border-amber-500/50 text-amber-500" :
-                    "border-green-500/50 text-green-500"
+                    isDegraded ? "border-neon-amber/50 text-neon-amber" :
+                    "border-neon-green/50 text-neon-green"
                   )}
                 >
                   {healthScore}%
@@ -153,8 +153,8 @@ export function HealButton({
             className={cn(
               "gap-2 min-w-[140px]",
               isUrgent ? "bg-destructive hover:bg-destructive/90" :
-              isDegraded ? "bg-amber-500 hover:bg-amber-600 text-black" :
-              "bg-green-600 hover:bg-green-700"
+              isDegraded ? "bg-neon-amber hover:bg-neon-amber text-black" :
+              "bg-neon-green hover:bg-neon-green"
             )}
           >
             {isHealing ? (
@@ -180,7 +180,7 @@ export function HealButton({
           <div className="mt-3 pt-3 border-t border-border/50">
             <div className="flex flex-wrap gap-1.5">
               {healResult.healed_modules?.map((mod) => (
-                <Badge key={mod} variant="outline" className="text-[9px] h-4 bg-green-500/10 border-green-500/30 text-green-600">
+                <Badge key={mod} variant="outline" className="text-[9px] h-4 bg-neon-green/10 border-neon-green/30 text-neon-green">
                   <CheckCircle2 className="w-2 h-2 mr-1" />
                   {mod}
                 </Badge>
@@ -202,8 +202,8 @@ export function HealButton({
         className={cn(
           "h-8 gap-1.5 text-xs",
           isUrgent ? "border-destructive/50 text-destructive hover:bg-destructive/10" :
-          isDegraded ? "border-amber-500/50 text-amber-600 hover:bg-amber-500/10" :
-          "border-green-500/30 text-green-600 hover:bg-green-500/10"
+          isDegraded ? "border-neon-amber/50 text-neon-amber hover:bg-neon-amber/10" :
+          "border-neon-green/30 text-neon-green hover:bg-neon-green/10"
         )}
       >
         {isHealing ? (
@@ -224,8 +224,8 @@ export function HealButton({
       variant={isUrgent ? "destructive" : "outline"}
       className={cn(
         "gap-2",
-        !isUrgent && isDegraded && "border-amber-500/50 text-amber-600 hover:bg-amber-500/10",
-        !isUrgent && !isDegraded && "border-green-500/30 text-green-600 hover:bg-green-500/10"
+        !isUrgent && isDegraded && "border-neon-amber/50 text-neon-amber hover:bg-neon-amber/10",
+        !isUrgent && !isDegraded && "border-neon-green/30 text-neon-green hover:bg-neon-green/10"
       )}
     >
       {isHealing ? (

@@ -131,18 +131,18 @@ export function MaintenanceTab() {
 
   const getCircuitIcon = (state: string) => {
     switch (state) {
-      case 'closed': return <CheckCircle2 className="w-4 h-4 text-emerald-500" />;
-      case 'open': return <XCircle className="w-4 h-4 text-red-500" />;
-      case 'half-open': return <AlertTriangle className="w-4 h-4 text-amber-500" />;
+      case 'closed': return <CheckCircle2 className="w-4 h-4 text-neon-green" />;
+      case 'open': return <XCircle className="w-4 h-4 text-destructive" />;
+      case 'half-open': return <AlertTriangle className="w-4 h-4 text-neon-amber" />;
       default: return <CircuitBoard className="w-4 h-4 text-muted-foreground" />;
     }
   };
 
   const getCircuitColor = (state: string) => {
     switch (state) {
-      case 'closed': return 'border-emerald-500/30 bg-emerald-500/5';
-      case 'open': return 'border-red-500/30 bg-red-500/5';
-      case 'half-open': return 'border-amber-500/30 bg-amber-500/5';
+      case 'closed': return 'border-neon-green/30 bg-neon-green/5';
+      case 'open': return 'border-destructive/30 bg-destructive/5';
+      case 'half-open': return 'border-neon-amber/30 bg-neon-amber/5';
       default: return 'border-border/30';
     }
   };
@@ -159,8 +159,8 @@ export function MaintenanceTab() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/30 flex items-center justify-center">
-            <Wrench className="w-5 h-5 text-amber-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-amber/20 to-neon-amber/20 border border-neon-amber/30 flex items-center justify-center">
+            <Wrench className="w-5 h-5 text-neon-amber" />
           </div>
           <div>
             <h2 className="text-lg font-bold">MAINTENANCE</h2>
@@ -183,7 +183,7 @@ export function MaintenanceTab() {
             size="sm"
             onClick={() => maintenance.runMaintenance('manual')}
             disabled={maintenance.isRunning}
-            className="gap-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500"
+            className="gap-2 bg-gradient-to-r from-neon-amber to-neon-amber hover:from-neon-amber hover:to-neon-amber"
           >
             {maintenance.isRunning ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -197,42 +197,42 @@ export function MaintenanceTab() {
 
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="bg-gradient-to-br from-emerald-500/5 to-transparent border-emerald-500/20">
+        <Card className="bg-gradient-to-br from-neon-green/5 to-transparent border-neon-green/20">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
               <Heart className="w-3 h-3" />
               Overall Health
             </div>
-            <div className={cn("text-2xl font-bold", overallHealth >= 80 ? "text-emerald-400" : overallHealth >= 50 ? "text-amber-400" : "text-red-400")}>
+            <div className={cn("text-2xl font-bold", overallHealth >= 80 ? "text-neon-green" : overallHealth >= 50 ? "text-neon-amber" : "text-destructive")}>
               {overallHealth}%
             </div>
           </CardContent>
         </Card>
-        <Card className="bg-gradient-to-br from-emerald-500/5 to-transparent border-emerald-500/20">
+        <Card className="bg-gradient-to-br from-neon-green/5 to-transparent border-neon-green/20">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
               <CheckCircle2 className="w-3 h-3" />
               Circuits Closed
             </div>
-            <div className="text-2xl font-bold text-emerald-400">{totalClosed}</div>
+            <div className="text-2xl font-bold text-neon-green">{totalClosed}</div>
           </CardContent>
         </Card>
-        <Card className={cn("bg-gradient-to-br to-transparent", totalOpen > 0 ? "from-red-500/5 border-red-500/20" : "from-muted/5 border-border/20")}>
+        <Card className={cn("bg-gradient-to-br to-transparent", totalOpen > 0 ? "from-destructive/5 border-destructive/20" : "from-muted/5 border-border/20")}>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
               <XCircle className="w-3 h-3" />
               Circuits Open
             </div>
-            <div className={cn("text-2xl font-bold", totalOpen > 0 ? "text-red-400" : "text-muted-foreground")}>{totalOpen}</div>
+            <div className={cn("text-2xl font-bold", totalOpen > 0 ? "text-destructive" : "text-muted-foreground")}>{totalOpen}</div>
           </CardContent>
         </Card>
-        <Card className={cn("bg-gradient-to-br to-transparent", totalHalfOpen > 0 ? "from-amber-500/5 border-amber-500/20" : "from-muted/5 border-border/20")}>
+        <Card className={cn("bg-gradient-to-br to-transparent", totalHalfOpen > 0 ? "from-neon-amber/5 border-neon-amber/20" : "from-muted/5 border-border/20")}>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
               <AlertTriangle className="w-3 h-3" />
               Half-Open
             </div>
-            <div className={cn("text-2xl font-bold", totalHalfOpen > 0 ? "text-amber-400" : "text-muted-foreground")}>{totalHalfOpen}</div>
+            <div className={cn("text-2xl font-bold", totalHalfOpen > 0 ? "text-neon-amber" : "text-muted-foreground")}>{totalHalfOpen}</div>
           </CardContent>
         </Card>
       </div>
@@ -279,9 +279,9 @@ export function MaintenanceTab() {
                           <Badge 
                             variant="outline"
                             className={cn("text-[10px] uppercase font-mono",
-                              cb.state === 'closed' ? 'border-emerald-500/40 text-emerald-400' :
-                              cb.state === 'open' ? 'border-red-500/40 text-red-400' :
-                              'border-amber-500/40 text-amber-400'
+                              cb.state === 'closed' ? 'border-neon-green/40 text-neon-green' :
+                              cb.state === 'open' ? 'border-destructive/40 text-destructive' :
+                              'border-neon-amber/40 text-neon-amber'
                             )}
                           >
                             {cb.state}
@@ -317,15 +317,15 @@ export function MaintenanceTab() {
                 {repairLogs.map((log) => (
                   <div key={log.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20">
                     {log.success ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                      <CheckCircle2 className="w-4 h-4 text-neon-green shrink-0" />
                     ) : (
-                      <XCircle className="w-4 h-4 text-red-500 shrink-0" />
+                      <XCircle className="w-4 h-4 text-destructive shrink-0" />
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium">{log.executor}</span>
                         <Badge variant="outline" className={cn("text-[10px]",
-                          log.success ? "border-emerald-500/30 text-emerald-400" : "border-red-500/30 text-red-400"
+                          log.success ? "border-neon-green/30 text-neon-green" : "border-destructive/30 text-destructive"
                         )}>
                           {log.action}
                         </Badge>
@@ -367,8 +367,8 @@ export function MaintenanceTab() {
                     </div>
                     <div>
                       <div className={cn("text-lg font-bold",
-                        maintenance.currentRun.overallStatus === 'passed' ? 'text-emerald-400' :
-                        maintenance.currentRun.overallStatus === 'failed' ? 'text-red-400' : 'text-amber-400'
+                        maintenance.currentRun.overallStatus === 'passed' ? 'text-neon-green' :
+                        maintenance.currentRun.overallStatus === 'failed' ? 'text-destructive' : 'text-neon-amber'
                       )}>
                         {maintenance.currentRun.overallStatus.toUpperCase()}
                       </div>
@@ -385,11 +385,11 @@ export function MaintenanceTab() {
                         <div key={i} className="flex items-center justify-between p-2 rounded bg-muted/30 text-xs">
                           <div className="flex items-center gap-2">
                             {eng.status === 'passed' ? (
-                              <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                              <CheckCircle2 className="w-3 h-3 text-neon-green" />
                             ) : eng.status === 'failed' ? (
-                              <XCircle className="w-3 h-3 text-red-500" />
+                              <XCircle className="w-3 h-3 text-destructive" />
                             ) : (
-                              <AlertTriangle className="w-3 h-3 text-amber-500" />
+                              <AlertTriangle className="w-3 h-3 text-neon-amber" />
                             )}
                             <span className="font-medium">{eng.engine}</span>
                           </div>
@@ -411,15 +411,15 @@ export function MaintenanceTab() {
                 {maintenance.history.map((report: any, i: number) => (
                   <div key={report.id || i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 border border-border/20">
                     <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                      report.status === 'passed' ? 'bg-emerald-500/20' :
-                      report.status === 'failed' ? 'bg-red-500/20' : 'bg-amber-500/20'
+                      report.status === 'passed' ? 'bg-neon-green/20' :
+                      report.status === 'failed' ? 'bg-destructive/20' : 'bg-neon-amber/20'
                     )}>
                       {report.status === 'passed' ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                        <CheckCircle2 className="w-4 h-4 text-neon-green" />
                       ) : report.status === 'failed' ? (
-                        <XCircle className="w-4 h-4 text-red-500" />
+                        <XCircle className="w-4 h-4 text-destructive" />
                       ) : (
-                        <AlertTriangle className="w-4 h-4 text-amber-500" />
+                        <AlertTriangle className="w-4 h-4 text-neon-amber" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">

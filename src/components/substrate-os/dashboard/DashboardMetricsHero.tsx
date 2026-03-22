@@ -14,54 +14,54 @@ import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/comp
 /** 40 Matrix Nodes across 12 sectors */
 const MODULES_CONFIG = [
   // CORE + SYSTEM
-  { id: 'core', label: 'CORE', icon: Cpu, color: 'text-orange-400', hsl: '25, 95%, 53%' },
-  { id: 'system', label: 'SYSTEM', icon: Settings, color: 'text-emerald-400', hsl: '160, 84%, 39%' },
+  { id: 'core', label: 'CORE', icon: Cpu, color: 'text-neon-amber', hsl: '25, 95%, 53%' },
+  { id: 'system', label: 'SYSTEM', icon: Settings, color: 'text-neon-green', hsl: '160, 84%, 39%' },
   // CCR — Clockless Cognitive Reality
-  { id: 'brain', label: 'BRAIN', icon: Brain, color: 'text-purple-400', hsl: '270, 67%, 58%' },
-  { id: 'memory', label: 'MEMORY', icon: Database, color: 'text-cyan-300', hsl: '187, 92%, 69%' },
-  { id: 'dream', label: 'DREAM', icon: Moon, color: 'text-violet-400', hsl: '258, 90%, 66%' },
+  { id: 'brain', label: 'BRAIN', icon: Brain, color: 'text-neon-purple', hsl: '270, 67%, 58%' },
+  { id: 'memory', label: 'MEMORY', icon: Database, color: 'text-neon-cyan', hsl: '187, 92%, 69%' },
+  { id: 'dream', label: 'DREAM', icon: Moon, color: 'text-neon-purple', hsl: '258, 90%, 66%' },
   // OCG — Operational Compliance Grid (6 nodes)
-  { id: 'ripple', label: 'RIPPLE', icon: Radio, color: 'text-cyan-400', hsl: '188, 86%, 53%' },
-  { id: 'access', label: 'ACCESS', icon: Key, color: 'text-amber-400', hsl: '38, 92%, 50%' },
-  { id: 'identity', label: 'IDENTITY', icon: Fingerprint, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
-  { id: 'relay', label: 'RELAY', icon: Send, color: 'text-amber-300', hsl: '45, 93%, 58%' },
+  { id: 'ripple', label: 'RIPPLE', icon: Radio, color: 'text-neon-cyan', hsl: '188, 86%, 53%' },
+  { id: 'access', label: 'ACCESS', icon: Key, color: 'text-neon-amber', hsl: '38, 92%, 50%' },
+  { id: 'identity', label: 'IDENTITY', icon: Fingerprint, color: 'text-neon-green', hsl: '160, 84%, 60%' },
+  { id: 'relay', label: 'RELAY', icon: Send, color: 'text-neon-amber', hsl: '45, 93%, 58%' },
   { id: 'audit', label: 'AUDIT', icon: ClipboardCheck, color: 'text-slate-400', hsl: '215, 16%, 47%' },
   { id: 'nerve', label: 'NERVE', icon: Zap, color: 'text-sky-300', hsl: '199, 89%, 68%' },
   // Execution (10 nodes)
-  { id: 'decode', label: 'DECODE', icon: Activity, color: 'text-fuchsia-400', hsl: '292, 84%, 61%' },
+  { id: 'decode', label: 'DECODE', icon: Activity, color: 'text-neon-magenta', hsl: '292, 84%, 61%' },
   { id: 'encode', label: 'ENCODE', icon: Code, color: 'text-lime-400', hsl: '84, 81%, 44%' },
-  { id: 'vision', label: 'VISION', icon: Eye, color: 'text-blue-400', hsl: '217, 91%, 60%' },
-  { id: 'cortex', label: 'CORTEX', icon: GitBranch, color: 'text-indigo-400', hsl: '239, 84%, 67%' },
-  { id: 'nexus', label: 'NEXUS', icon: Zap, color: 'text-green-400', hsl: '142, 76%, 42%' },
-  { id: 'economy', label: 'ECONOMY', icon: DollarSign, color: 'text-yellow-400', hsl: '48, 96%, 53%' },
-  { id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-violet-300', hsl: '258, 90%, 72%' },
-  { id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-pink-400', hsl: '330, 81%, 60%' },
-  { id: 'medic', label: 'MEDIC', icon: Activity, color: 'text-rose-300', hsl: '350, 80%, 70%' },
-  { id: 'integration', label: 'INTEGRATION', icon: Plug, color: 'text-teal-400', hsl: '173, 80%, 40%' },
+  { id: 'vision', label: 'VISION', icon: Eye, color: 'text-neon-blue', hsl: '217, 91%, 60%' },
+  { id: 'cortex', label: 'CORTEX', icon: GitBranch, color: 'text-primary', hsl: '239, 84%, 67%' },
+  { id: 'nexus', label: 'NEXUS', icon: Zap, color: 'text-neon-green', hsl: '142, 76%, 42%' },
+  { id: 'economy', label: 'ECONOMY', icon: DollarSign, color: 'text-neon-amber', hsl: '48, 96%, 53%' },
+  { id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-neon-purple', hsl: '258, 90%, 72%' },
+  { id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-neon-magenta', hsl: '330, 81%, 60%' },
+  { id: 'medic', label: 'MEDIC', icon: Activity, color: 'text-neon-magenta', hsl: '350, 80%, 70%' },
+  { id: 'integration', label: 'INTEGRATION', icon: Plug, color: 'text-neon-cyan', hsl: '173, 80%, 40%' },
   // ESZ — Expansion Sovereignty Zone
-  { id: 'sovereign', label: 'SOVEREIGN', icon: Globe, color: 'text-orange-300', hsl: '25, 95%, 63%' },
-  { id: 'oracle', label: 'ORACLE', icon: Eye, color: 'text-amber-300', hsl: '38, 92%, 60%' },
-  { id: 'conscience', label: 'CONSCIENCE', icon: Brain, color: 'text-rose-300', hsl: '340, 82%, 65%' },
-  { id: 'treaty', label: 'TREATY', icon: ClipboardCheck, color: 'text-emerald-300', hsl: '155, 72%, 55%' },
+  { id: 'sovereign', label: 'SOVEREIGN', icon: Globe, color: 'text-neon-amber', hsl: '25, 95%, 63%' },
+  { id: 'oracle', label: 'ORACLE', icon: Eye, color: 'text-neon-amber', hsl: '38, 92%, 60%' },
+  { id: 'conscience', label: 'CONSCIENCE', icon: Brain, color: 'text-neon-magenta', hsl: '340, 82%, 65%' },
+  { id: 'treaty', label: 'TREATY', icon: ClipboardCheck, color: 'text-neon-green', hsl: '155, 72%, 55%' },
   // EPZ — Expansion Perception Zone
   { id: 'compass', label: 'COMPASS', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
-  { id: 'echo', label: 'ECHO', icon: Radio, color: 'text-indigo-300', hsl: '230, 84%, 70%' },
-  { id: 'reflex', label: 'REFLEX', icon: Zap, color: 'text-pink-300', hsl: '330, 81%, 70%' },
+  { id: 'echo', label: 'ECHO', icon: Radio, color: 'text-primary', hsl: '230, 84%, 70%' },
+  { id: 'reflex', label: 'REFLEX', icon: Zap, color: 'text-neon-magenta', hsl: '330, 81%, 70%' },
   // EMZ — Expansion Manufacturing Zone (3 nodes)
-  { id: 'forge', label: 'FORGE', icon: Cpu, color: 'text-orange-400', hsl: '20, 90%, 50%' },
-  { id: 'lingua', label: 'LINGUA', icon: Globe, color: 'text-teal-300', hsl: '173, 80%, 55%' },
+  { id: 'forge', label: 'FORGE', icon: Cpu, color: 'text-neon-amber', hsl: '20, 90%, 50%' },
+  { id: 'lingua', label: 'LINGUA', icon: Globe, color: 'text-neon-cyan', hsl: '173, 80%, 55%' },
   { id: 'harvest', label: 'HARVEST', icon: Database, color: 'text-lime-300', hsl: '84, 81%, 55%' },
   // CSZ — Covert Systems Zone (3 nodes)
-  { id: 'evolution', label: 'EVOLUTION', icon: Sparkles, color: 'text-rose-400', hsl: '350, 89%, 60%' },
+  { id: 'evolution', label: 'EVOLUTION', icon: Sparkles, color: 'text-neon-magenta', hsl: '350, 89%, 60%' },
   { id: 'shadow', label: 'SHADOW', icon: Shield, color: 'text-gray-400', hsl: '220, 9%, 46%' },
   { id: 'phantom', label: 'PHANTOM', icon: Shield, color: 'text-slate-300', hsl: '215, 16%, 60%' },
   // Fields + Meta + Plane + Shell
-  { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-rose-300', hsl: '350, 80%, 70%' },
-  { id: 'intent', label: 'INTENT', icon: Brain, color: 'text-amber-400', hsl: '38, 92%, 50%' },
+  { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-neon-magenta', hsl: '350, 80%, 70%' },
+  { id: 'intent', label: 'INTENT', icon: Brain, color: 'text-neon-amber', hsl: '38, 92%, 50%' },
   { id: 'atlas', label: 'ATLAS', icon: Globe, color: 'text-sky-300', hsl: '199, 89%, 68%' },
-  { id: 'engineer', label: 'ENGINEER', icon: Settings, color: 'text-emerald-300', hsl: '160, 84%, 60%' },
+  { id: 'engineer', label: 'ENGINEER', icon: Settings, color: 'text-neon-green', hsl: '160, 84%, 60%' },
   { id: 'governance', label: 'GOVERNANCE', icon: Globe, color: 'text-sky-400', hsl: '199, 89%, 48%' },
-  { id: 'defense', label: 'DEFENSE', icon: Shield, color: 'text-red-400', hsl: '0, 84%, 60%' },
+  { id: 'defense', label: 'DEFENSE', icon: Shield, color: 'text-destructive', hsl: '0, 84%, 60%' },
 ];
 
 export function DashboardMetricsHero() {
@@ -77,10 +77,10 @@ export function DashboardMetricsHero() {
   
   // Explicit color mappings — dynamic Tailwind classes don't work with JIT
   const statusStyles = healthScore.isHealthy 
-    ? { text: 'text-emerald-400', bg: 'bg-emerald-500', border: 'border-emerald-500/20', borderHover: 'hover:border-emerald-500/40', from: 'from-emerald-500', labelText: 'text-emerald-400/80' }
+    ? { text: 'text-neon-green', bg: 'bg-neon-green', border: 'border-neon-green/20', borderHover: 'hover:border-neon-green/40', from: 'from-neon-green', labelText: 'text-neon-green/80' }
     : healthScore.isDegraded
-    ? { text: 'text-amber-400', bg: 'bg-amber-500', border: 'border-amber-500/20', borderHover: 'hover:border-amber-500/40', from: 'from-amber-500', labelText: 'text-amber-400/80' }
-    : { text: 'text-red-400', bg: 'bg-red-500', border: 'border-red-500/20', borderHover: 'hover:border-red-500/40', from: 'from-red-500', labelText: 'text-red-400/80' };
+    ? { text: 'text-neon-amber', bg: 'bg-neon-amber', border: 'border-neon-amber/20', borderHover: 'hover:border-neon-amber/40', from: 'from-neon-amber', labelText: 'text-neon-amber/80' }
+    : { text: 'text-destructive', bg: 'bg-destructive', border: 'border-destructive/20', borderHover: 'hover:border-destructive/40', from: 'from-destructive', labelText: 'text-destructive/80' };
 
   return (
     <motion.div 
@@ -94,8 +94,8 @@ export function DashboardMetricsHero() {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:32px_32px]" />
       
       {/* Ambient orbs — CSS animations for GPU performance */}
-      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/[0.08] blur-[120px] animate-pulse" style={{ animationDuration: '12s' }} />
-      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-fuchsia-500/[0.08] blur-[120px] animate-pulse" style={{ animationDuration: '15s', animationDelay: '3s' }} />
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-neon-cyan/[0.08] blur-[120px] animate-pulse" style={{ animationDuration: '12s' }} />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-neon-magenta/[0.08] blur-[120px] animate-pulse" style={{ animationDuration: '15s', animationDelay: '3s' }} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full bg-primary/5 blur-[100px] animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
 
       {/* Animated border glow */}
@@ -181,9 +181,9 @@ export function DashboardMetricsHero() {
             {/* Stat Cards Row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
-                { label: 'MATRIX NODES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-cyan-400/80', border: 'border-cyan-500/20 hover:border-cyan-500/40', from: 'from-cyan-500' } },
+                { label: 'MATRIX NODES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-neon-cyan/80', border: 'border-neon-cyan/20 hover:border-neon-cyan/40', from: 'from-neon-cyan' } },
                 { label: 'STATUS', value: statusLabel, styles: { text: statusStyles.labelText, border: `${statusStyles.border} ${statusStyles.borderHover}`, from: statusStyles.from } },
-                { label: 'VERSION', value: `v${version}`, styles: { text: 'text-amber-400/80', border: 'border-amber-500/20 hover:border-amber-500/40', from: 'from-amber-500' } },
+                { label: 'VERSION', value: `v${version}`, styles: { text: 'text-neon-amber/80', border: 'border-neon-amber/20 hover:border-neon-amber/40', from: 'from-neon-amber' } },
               ].map((stat, idx) => (
                 <motion.div 
                   key={stat.label}
@@ -257,7 +257,7 @@ export function DashboardMetricsHero() {
                             <motion.span 
                               className={cn(
                                 "absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border-2 border-background",
-                                isActive ? "bg-emerald-500" : "bg-muted-foreground/20"
+                                isActive ? "bg-neon-green" : "bg-muted-foreground/20"
                               )}
                               animate={isActive ? { scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] } : {}}
                               transition={{ duration: 2.5, repeat: Infinity }}
@@ -266,7 +266,7 @@ export function DashboardMetricsHero() {
                         </TooltipTrigger>
                         <TooltipContent side="bottom" className="text-xs border-border/50 bg-popover/95 backdrop-blur-xl">
                           <p className="font-semibold">{module.label}</p>
-                          <p className={cn("text-[10px]", isActive ? "text-emerald-400" : "text-red-400")}>
+                          <p className={cn("text-[10px]", isActive ? "text-neon-green" : "text-destructive")}>
                             {isActive ? "● Online" : "○ Offline"}
                           </p>
                         </TooltipContent>
@@ -281,7 +281,7 @@ export function DashboardMetricsHero() {
             <div className="flex items-center gap-4 pt-1">
               <div className="flex items-center gap-2">
                 <motion.div 
-                  className="w-1.5 h-1.5 rounded-full bg-emerald-500"
+                  className="w-1.5 h-1.5 rounded-full bg-neon-green"
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />

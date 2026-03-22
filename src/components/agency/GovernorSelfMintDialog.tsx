@@ -245,10 +245,10 @@ export function GovernorSelfMintDialog({
       <DialogTrigger asChild disabled={disabled}>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-lg bg-black/95 border-fuchsia-500/30">
+      <DialogContent className="max-w-lg bg-black/95 border-neon-magenta/30">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-fuchsia-400" />
+            <Shield className="w-5 h-5 text-neon-magenta" />
             Governor Self-Mint
           </DialogTitle>
           <DialogDescription>
@@ -259,8 +259,8 @@ export function GovernorSelfMintDialog({
         {/* Success State */}
         {deployedUrl ? (
           <div className="space-y-4 py-4">
-            <div className="space-y-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
-              <div className="flex items-center gap-2 text-emerald-400">
+            <div className="space-y-3 p-4 rounded-xl bg-neon-green/10 border border-neon-green/30">
+              <div className="flex items-center gap-2 text-neon-green">
                 <Check className="w-5 h-5" />
                 <span className="font-medium">Agency Deployed!</span>
               </div>
@@ -268,7 +268,7 @@ export function GovernorSelfMintDialog({
                 Your agency is now live and accessible at:
               </p>
               <div className="flex items-center gap-2">
-                <code className="text-sm text-emerald-300 flex-1 truncate bg-black/30 px-3 py-2 rounded">
+                <code className="text-sm text-neon-green flex-1 truncate bg-black/30 px-3 py-2 rounded">
                   {deployedUrl}
                 </code>
                 <Button 
@@ -303,12 +303,12 @@ export function GovernorSelfMintDialog({
           <>
             <div className="space-y-5 py-4">
               {/* Agency Summary */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-fuchsia-500/10 border border-fuchsia-500/30">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-neon-magenta/10 border border-neon-magenta/30">
                 <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-fuchsia-400" />
+                  <Users className="w-4 h-4 text-neon-magenta" />
                   <span className="font-medium">{agencyName || 'Unnamed Agency'}</span>
                 </div>
-                <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400">
+                <Badge variant="outline" className="text-[10px] border-neon-magenta/50 text-neon-magenta">
                   {members.length} cognitives
                 </Badge>
               </div>
@@ -316,7 +316,7 @@ export function GovernorSelfMintDialog({
               {/* Owner Credentials */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm font-medium">
-                  <Lock className="w-4 h-4 text-cyan-400" />
+                  <Lock className="w-4 h-4 text-neon-cyan" />
                   Owner Credentials
                 </div>
                 
@@ -355,7 +355,7 @@ export function GovernorSelfMintDialog({
                         "flex items-center justify-center p-3 rounded-lg border cursor-pointer transition-all",
                         "text-xs capitalize",
                         deploymentType === type
-                          ? "border-cyan-500/50 bg-cyan-500/10 text-cyan-400"
+                          ? "border-neon-cyan/50 bg-neon-cyan/10 text-neon-cyan"
                           : "border-border/30 hover:border-border/50"
                       )}
                     >
@@ -368,9 +368,9 @@ export function GovernorSelfMintDialog({
 
               {/* Hosted deployment info */}
               {deploymentType === 'hosted' && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/30">
-                  <LinkIcon className="w-4 h-4 text-cyan-400 shrink-0" />
-                  <div className="text-xs text-cyan-300">
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-neon-cyan/10 border border-neon-cyan/30">
+                  <LinkIcon className="w-4 h-4 text-neon-cyan shrink-0" />
+                  <div className="text-xs text-neon-cyan">
                     A unique portal URL will be auto-generated from your agency name.
                   </div>
                 </div>
@@ -408,7 +408,7 @@ export function GovernorSelfMintDialog({
               <Button
                 onClick={handleSelfMint}
                 disabled={loading || !agencyName.trim() || !userEmail}
-                className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500"
+                className="gap-2 bg-gradient-to-r from-neon-magenta to-neon-purple hover:from-neon-magenta hover:to-neon-purple"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

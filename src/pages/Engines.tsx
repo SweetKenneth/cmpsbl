@@ -27,52 +27,52 @@ const TIER_CONFIG = [
     label: "META",
     subtitle: "Recursive super-memories",
     price: "$1,999",
-    bg: "bg-amber-500/10",
-    text: "text-amber-400",
-    border: "border-amber-500/30",
-    color: "from-amber-500/20 to-yellow-500/10",
-    badgeClass: "bg-amber-500/15 text-amber-400 border-amber-500/25",
-    glow: "hover:shadow-amber-500/8",
-    accent: "from-amber-500 via-yellow-400 to-amber-600",
+    bg: "bg-neon-amber/10",
+    text: "text-neon-amber",
+    border: "border-neon-amber/30",
+    color: "from-neon-amber/20 to-neon-amber/10",
+    badgeClass: "bg-neon-amber/15 text-neon-amber border-neon-amber/25",
+    glow: "hover:shadow-neon-amber/8",
+    accent: "from-neon-amber via-neon-amber to-neon-amber",
   },
   {
     id: "APEX" as const,
     label: "APEX",
     subtitle: "Supreme sealed runtimes",
     price: "$599–$999",
-    bg: "bg-red-500/10",
-    text: "text-red-400",
-    border: "border-red-500/30",
-    color: "from-red-500/20 to-orange-500/10",
-    badgeClass: "bg-red-500/15 text-red-400 border-red-500/25",
-    glow: "hover:shadow-red-500/8",
-    accent: "from-red-500 via-orange-400 to-red-600",
+    bg: "bg-destructive/10",
+    text: "text-destructive",
+    border: "border-destructive/30",
+    color: "from-destructive/20 to-neon-amber/10",
+    badgeClass: "bg-destructive/15 text-destructive border-destructive/25",
+    glow: "hover:shadow-destructive/8",
+    accent: "from-destructive via-neon-amber to-destructive",
   },
   {
     id: "ELITE" as const,
     label: "ELITE",
     subtitle: "Professional-grade engines",
     price: "$399",
-    bg: "bg-purple-500/10",
-    text: "text-purple-400",
-    border: "border-purple-500/30",
-    color: "from-purple-500/20 to-blue-500/10",
-    badgeClass: "bg-purple-500/15 text-purple-400 border-purple-500/25",
-    glow: "hover:shadow-purple-500/8",
-    accent: "from-purple-500 via-violet-400 to-purple-600",
+    bg: "bg-neon-purple/10",
+    text: "text-neon-purple",
+    border: "border-neon-purple/30",
+    color: "from-neon-purple/20 to-neon-blue/10",
+    badgeClass: "bg-neon-purple/15 text-neon-purple border-neon-purple/25",
+    glow: "hover:shadow-neon-purple/8",
+    accent: "from-neon-purple via-neon-purple to-neon-purple",
   },
   {
     id: "CORE" as const,
     label: "CORE",
     subtitle: "Essential building blocks",
     price: "$199 & Free",
-    bg: "bg-cyan-500/10",
-    text: "text-cyan-400",
-    border: "border-cyan-500/30",
-    color: "from-cyan-500/20 to-green-500/10",
-    badgeClass: "bg-cyan-500/15 text-cyan-400 border-cyan-500/25",
-    glow: "hover:shadow-cyan-500/8",
-    accent: "from-cyan-500 via-teal-400 to-cyan-600",
+    bg: "bg-neon-cyan/10",
+    text: "text-neon-cyan",
+    border: "border-neon-cyan/30",
+    color: "from-neon-cyan/20 to-neon-green/10",
+    badgeClass: "bg-neon-cyan/15 text-neon-cyan border-neon-cyan/25",
+    glow: "hover:shadow-neon-cyan/8",
+    accent: "from-neon-cyan via-neon-cyan to-neon-cyan",
   },
 ] as const;
 
@@ -180,11 +180,11 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
             <div>
               <span className="text-2xl font-black tracking-tight">{engine.priceDisplay}</span>
               {engine.isFree ? (
-                <span className="text-xs text-emerald-400 font-semibold ml-1">No card required</span>
+                <span className="text-xs text-neon-green font-semibold ml-1">No card required</span>
               ) : engine.freeForSubscribers ? (
                 <>
                   <span className="text-xs text-muted-foreground ml-1">one-time</span>
-                  <span className="block text-xs text-emerald-400 font-semibold mt-0.5">
+                  <span className="block text-xs text-neon-green font-semibold mt-0.5">
                     Free with Creator+ subscription
                   </span>
                 </>
@@ -294,7 +294,7 @@ export default function Engines() {
                   See the <Link to="/documentation" className="text-primary hover:underline font-medium">full API docs</Link>.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  <strong className="text-emerald-400">⚡ Special: FAILSAFE</strong> is the only <em>standalone</em> engine —
+                  <strong className="text-neon-green">⚡ Special: FAILSAFE</strong> is the only <em>standalone</em> engine —
                   it's a self-contained edge function you deploy directly to your own project.
                   No API key needed. No dependency on CMPSBL infrastructure. <strong className="text-foreground">Use it to transfer off Lovable Cloud</strong> to your own hosting, create disaster recovery checkpoints, or migrate between platforms.
                 </p>

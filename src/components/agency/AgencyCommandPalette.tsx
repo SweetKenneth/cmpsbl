@@ -85,7 +85,7 @@ export function AgencyCommandPalette({
       className="absolute bottom-full left-0 right-0 mb-2 mx-4 bg-black/95 border border-border/30 rounded-lg shadow-xl overflow-hidden"
     >
       <div className="p-2 border-b border-border/30 flex items-center gap-2">
-        <Command className="w-4 h-4 text-fuchsia-400" />
+        <Command className="w-4 h-4 text-neon-magenta" />
         <span className="text-xs text-muted-foreground">Quick Commands</span>
       </div>
 
@@ -99,12 +99,12 @@ export function AgencyCommandPalette({
               <button
                 key={cmd.id}
                 onClick={() => onSelect(cmd)}
-                className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-fuchsia-500/10 transition-colors text-left group"
+                className="w-full flex items-center gap-3 px-2 py-2 rounded-md hover:bg-neon-magenta/10 transition-colors text-left group"
               >
                 <span className="text-lg">{cmd.icon}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <code className="text-xs bg-black/50 px-1.5 py-0.5 rounded text-fuchsia-400">
+                    <code className="text-xs bg-black/50 px-1.5 py-0.5 rounded text-neon-magenta">
                       {cmd.command}
                     </code>
                     <span className="text-sm truncate">{cmd.label}</span>

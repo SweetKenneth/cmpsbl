@@ -95,8 +95,8 @@ function usePatches() {
 function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { icon: typeof CheckCircle2; cls: string }> = {
     draft: { icon: Clock, cls: 'border-muted-foreground/30 text-muted-foreground bg-muted/30' },
-    published: { icon: CheckCircle2, cls: 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' },
-    revoked: { icon: XCircle, cls: 'border-red-500/30 text-red-400 bg-red-500/10' },
+    published: { icon: CheckCircle2, cls: 'border-neon-green/30 text-neon-green bg-neon-green/10' },
+    revoked: { icon: XCircle, cls: 'border-destructive/30 text-destructive bg-destructive/10' },
   };
   const { icon: Icon, cls } = config[status] || config.draft;
   return <Badge variant="outline" className={cn('gap-1', cls)}><Icon className="w-3 h-3" />{status}</Badge>;
@@ -104,9 +104,9 @@ function StatusBadge({ status }: { status: string }) {
 
 function TierBadge({ tier }: { tier: string }) {
   const cls: Record<string, string> = {
-    free: 'border-blue-500/30 text-blue-400 bg-blue-500/10',
-    builder: 'border-amber-500/30 text-amber-400 bg-amber-500/10',
-    pro: 'border-purple-500/30 text-purple-400 bg-purple-500/10',
+    free: 'border-neon-blue/30 text-neon-blue bg-neon-blue/10',
+    builder: 'border-neon-amber/30 text-neon-amber bg-neon-amber/10',
+    pro: 'border-neon-purple/30 text-neon-purple bg-neon-purple/10',
   };
   return <Badge variant="outline" className={cls[tier] || cls.free}>{tier}</Badge>;
 }
@@ -299,7 +299,7 @@ function CreatePatchForm({ onSuccess }: { onSuccess: () => void }) {
                     <span className="text-sm font-medium">{group.label}</span>
                     <span className="text-xs text-muted-foreground">({group.ids.length})</span>
                     {selectedInGroup > 0 && (
-                      <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+                      <Badge variant="outline" className="text-[10px] border-neon-green/30 text-neon-green bg-neon-green/10">
                         {selectedInGroup} ✓
                       </Badge>
                     )}
@@ -471,7 +471,7 @@ function PatchListItem({ patch }: { patch: PatchRow }) {
           </Button>
         )}
         {patch.status === 'published' && (
-          <Button size="sm" variant="outline" onClick={() => updateStatus.mutate('revoked')} disabled={updateStatus.isPending} className="gap-1 text-xs h-7 text-red-400 hover:text-red-300">
+          <Button size="sm" variant="outline" onClick={() => updateStatus.mutate('revoked')} disabled={updateStatus.isPending} className="gap-1 text-xs h-7 text-destructive hover:text-destructive">
             <Ban className="w-3 h-3" /> Revoke
           </Button>
         )}
@@ -509,7 +509,7 @@ export function PatchAuthoringTab() {
         <div>
           <h2 className="text-lg font-bold flex items-center gap-2">
             Patch Authoring
-            <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+            <Badge variant="outline" className="text-[10px] border-neon-green/30 text-neon-green bg-neon-green/10">
               {DISTRIBUTION_ID} → LNCHBL
             </Badge>
           </h2>
@@ -529,13 +529,13 @@ export function PatchAuthoringTab() {
         </Card>
         <Card className="border-border/30 bg-muted/10">
           <CardContent className="py-3 text-center">
-            <div className="text-xl font-bold text-amber-400">{draftCount}</div>
+            <div className="text-xl font-bold text-neon-amber">{draftCount}</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Drafts</div>
           </CardContent>
         </Card>
         <Card className="border-border/30 bg-muted/10">
           <CardContent className="py-3 text-center">
-            <div className="text-xl font-bold text-emerald-400">{publishedCount}</div>
+            <div className="text-xl font-bold text-neon-green">{publishedCount}</div>
             <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Published</div>
           </CardContent>
         </Card>
