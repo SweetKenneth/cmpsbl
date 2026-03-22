@@ -18,11 +18,11 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "We plugged DREAM cycles into our agent fleet and within a week they were surfacing patterns we'd never have found manually. The substrate does the thinking while we sleep.",
-    author: "J.L.",
-    role: "AI Infrastructure Lead",
+    quote: "Building on the substrate changed everything. Our agents adapt in real time, and issues resolve before we even notice them. We just build — the system handles the rest.",
+    author: "M.K.",
+    role: "Platform Engineer",
     rating: 5,
-    highlight: "DREAM Cycles",
+    highlight: "EVOLUTION",
     accentColor: "hsl(var(--neon-purple))",
   },
   {
