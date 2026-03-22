@@ -729,16 +729,14 @@ export class MemoryClient {
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
-    // Take top 5 — memories are already sorted by relevance from recall()
     const top = memories.length <= 5 ? memories : memories.slice(0, 5);
-    let result = '\n\n[Relevant context from memory — strategy: adaptive]\n';
+    const parts = ['\n\n[Relevant context from memory — strategy: adaptive]'];
     for (const m of top) {
-      result += '- ';
-      if (m.tier) result += `[${m.tier}]`;
-      if (m.memory_type) result += `(${m.memory_type})`;
-      result += ` ${m.content}\n`;
+      const tier = m.tier ? `[${m.tier}]` : '';
+      const type = m.memory_type ? `(${m.memory_type})` : '';
+      parts.push(`- ${tier}${type} ${m.content}`);
     }
-    return result;
+    return parts.join('\n');
   }
 
   /** Track recall hit/miss for metacognition */
