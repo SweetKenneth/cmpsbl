@@ -1,10 +1,12 @@
 /**
- * CMPSBL® BRAIN — Cold Migration
+ * CMPSBL® BRAIN — Cold Migration v2
  * Cron task that compresses & archives stale hot data
+ * v2: Uses content-dedup compression + importance-aware retention
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import { compressMemories } from './compressMemory';
+import { compressForStorage, classifyImportance, shouldPreserveIndefinitely, compactMetadata } from '@/lib/memory/content-dedup';
 
 export interface MigrationStats {
   checked: number;
