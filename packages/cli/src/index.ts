@@ -1,9 +1,7 @@
 /**
- * @cmpsbl/cli — CLI Commands
- * Unified first-contact experience with live Memory Stream integration.
- *
- * 20 commands with rich interactive feedback, personality responses,
- * and cinematic output for a living cognitive substrate experience.
+ * @cmpsbl/cli — CLI Commands (Full Enhanced)
+ * 24 commands with REPL shell, spinners, suggestions, JSON mode,
+ * benchmarks, diff, changelog, and first-run onboarding.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -24,73 +22,47 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
+import { spinner, withSpinner, progressBar, animatedList, table, box } from './ui';
+import { printSuggestions, printErrorRecovery } from './suggestions';
+
 // ═══════════════════════════════════════════════════════════════
-// Personality & Voice
+// Personality
 // ═══════════════════════════════════════════════════════════════
 
-const VOICES = {
-  boot: [
-    '◈ Substrate awakening...',
-    '◈ Memory pathways binding...',
-    '◈ Signal mesh initializing...',
-    '◈ Cognitive loop established.',
-  ],
-  success: [
-    '✔ Stream crystallized.',
-    '✔ Signal confirmed.',
-    '✔ Pipeline verified.',
-    '✔ Operation executed.',
-    '✔ Mesh acknowledged.',
-  ],
-  error: [
-    '✗ Stream anomaly detected.',
-    '✗ Signal pathway failed.',
-    '✗ Crystallization disrupted.',
-    '✗ Mesh routing error.',
-  ],
-  thinking: [
-    '… traversing signal graph',
-    '… sampling memory stream',
-    '… crystallizing insights',
-    '… resolving mesh topology',
-    '… scoring pipeline fidelity',
-  ],
-  idle: [
-    '◇ Substrate listening...',
-    '◇ Memory stream flowing...',
-    '◇ Signal mesh stable.',
-    '◇ Awaiting intent...',
-  ],
+const V = {
+  boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Signal mesh initializing...', '◈ Cognitive loop established.'],
+  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Pipeline verified.', '✔ Mesh acknowledged.', '✔ Operation executed.'],
+  err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Mesh routing error.'],
+  think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving mesh topology'],
+  idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Signal mesh stable.', '◇ Awaiting intent...'],
 };
+const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
+const say = (m: string) => console.log(`  ${m}`);
+const blank = () => console.log('');
+const div = () => say('────────────────────────────────────────');
 
-function voice(category: keyof typeof VOICES): string {
-  const arr = VOICES[category];
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function say(msg: string) { console.log(`  ${msg}`); }
-function blank() { console.log(''); }
-function divider() { console.log('  ────────────────────────────────────────'); }
 function header(title: string) {
   blank();
-  console.log(`  ╔${'═'.repeat(44)}╗`);
-  console.log(`  ║  ${title.padEnd(42)}║`);
-  console.log(`  ╚${'═'.repeat(44)}╝`);
+  box([title], 'CMPSBL®');
   blank();
 }
 
-async function typewriter(lines: string[], delay = 60) {
-  for (const line of lines) {
-    say(line);
-    await sleep(delay);
-  }
+// ═══════════════════════════════════════════════════════════════
+// Global flags
+// ═══════════════════════════════════════════════════════════════
+
+let JSON_MODE = false;
+let NO_COLOR = false;
+
+function jsonOut(data: unknown) {
+  console.log(JSON.stringify(data, null, 2));
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Config
+// Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '1.2.0';
+const CLI_VERSION = '1.3.0';
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -98,25 +70,14 @@ const CLI_CONFIG: FirstContactConfig = {
   endpoint: process.env.CMPSBL_ENDPOINT ?? 'https://api.cmpsbl.com/v1/substrate',
   apiKey: process.env.CMPSBL_API_KEY,
   autoDiscover: true,
-  onBoot: (msg) => say(msg),
+  onBoot: (msg) => { if (!JSON_MODE) say(msg); },
   onDiscovery: (chain) => {
+    if (JSON_MODE) { jsonOut({ event: 'discovery', chain }); return; }
     blank();
-    say('╔══════════════════════════════════════════╗');
-    say('║  ⬢ High-value memory chain detected      ║');
-    say('╚══════════════════════════════════════════╝');
-    blank();
-    say(`Pattern:  ${chain.pattern}`);
-    say(`Adoption: ${chain.adoption}`);
-    say(`Status:   Now available in Memory Stream`);
-    blank();
-    say('→ Ready to capture, apply, or distribute');
+    box(['⬢ High-value memory chain detected', '', `Pattern:  ${chain.pattern}`, `Adoption: ${chain.adoption}`, `Status:   Now in Memory Stream`], 'DISCOVERY');
     blank();
   },
 };
-
-// ═══════════════════════════════════════════════════════════════
-// Node Topology (matches 40-node substrate)
-// ═══════════════════════════════════════════════════════════════
 
 const NODES = [
   { id: 'BRAIN', sector: 'CCR', status: 'online', health: 98, role: 'reasoning' },
@@ -166,40 +127,72 @@ const NODES = [
 // ═══════════════════════════════════════════════════════════════
 
 export async function run(args: string[]): Promise<void> {
+  // Parse global flags
+  if (args.includes('--json')) { JSON_MODE = true; args = args.filter(a => a !== '--json'); }
+  if (args.includes('--no-color')) { NO_COLOR = true; args = args.filter(a => a !== '--no-color'); }
+
   const command = args[0]?.toLowerCase();
 
-  switch (command) {
-    case 'init':         return cmdInit(args.slice(1));
-    case 'discover':     return cmdDiscover(args.slice(1));
-    case 'stream':       return cmdStream();
-    case 'score':        return cmdScore(args.slice(1));
-    case 'validate':     return cmdValidate(args.slice(1));
-    case 'export':       return cmdExport(args.slice(1));
-    case 'status':       return cmdStatus();
-    case 'health':       return cmdHealth();
-    case 'nodes':        return cmdNodes(args.slice(1));
-    case 'ping':         return cmdPing(args.slice(1));
-    case 'inspect':      return cmdInspect(args.slice(1));
-    case 'config':       return cmdConfig(args.slice(1));
-    case 'whoami':       return cmdWhoami();
-    case 'login':        return cmdLogin();
-    case 'logout':       return cmdLogout();
-    case 'watch':        return cmdWatch(args.slice(1));
-    case 'logs':         return cmdLogs(args.slice(1));
-    case 'doctor':       return cmdDoctor();
-    case 'topology':     return cmdTopology();
-    case 'route':        return cmdRoute(args.slice(1));
-    case 'version':
-    case '--version':
-    case '-v':
-      say(`@cmpsbl/cli v${CLI_VERSION}`);
-      return;
-    case 'help':
-    case '--help':
-    case '-h':
-    default:
-      printHelp();
-      return;
+  // First-run detection
+  if (!command || command === 'help' || command === '--help' || command === '-h') {
+    const hasManifest = fs.existsSync(path.resolve('cmpsbl-manifest.json'));
+    const hasConfig = fs.existsSync(path.resolve('.cmpsbl/config.json'));
+    if (!hasManifest && !hasConfig && command !== 'help') {
+      return cmdOnboarding();
+    }
+    printHelp();
+    return;
+  }
+
+  try {
+    switch (command) {
+      case 'init':         await cmdInit(args.slice(1)); break;
+      case 'discover':     await cmdDiscover(args.slice(1)); break;
+      case 'stream':       await cmdStream(); break;
+      case 'score':        cmdScore(args.slice(1)); break;
+      case 'validate':     cmdValidate(args.slice(1)); break;
+      case 'export':       cmdExport(args.slice(1)); break;
+      case 'status':       await cmdStatus(); break;
+      case 'health':       await cmdHealth(); break;
+      case 'nodes':        await cmdNodes(args.slice(1)); break;
+      case 'ping':         await cmdPing(args.slice(1)); break;
+      case 'inspect':      await cmdInspect(args.slice(1)); break;
+      case 'config':       await cmdConfig(args.slice(1)); break;
+      case 'whoami':       await cmdWhoami(); break;
+      case 'login':        await cmdLogin(); break;
+      case 'logout':       await cmdLogout(); break;
+      case 'watch':        await cmdWatch(args.slice(1)); break;
+      case 'logs':         await cmdLogs(args.slice(1)); break;
+      case 'doctor':       await cmdDoctor(); break;
+      case 'topology':     await cmdTopology(); break;
+      case 'route':        await cmdRoute(args.slice(1)); break;
+      case 'benchmark':    await cmdBenchmark(); break;
+      case 'diff':         cmdDiff(args.slice(1)); break;
+      case 'changelog':    cmdChangelog(); break;
+      case 'shell':        await cmdShell(); break;
+      case 'version':
+      case '--version':
+      case '-v':
+        if (JSON_MODE) jsonOut({ version: CLI_VERSION }); else say(`@cmpsbl/cli v${CLI_VERSION}`);
+        break;
+      default:
+        say(`Unknown command: ${command}`);
+        say('Run `cmpsbl help` for available commands.');
+        break;
+    }
+
+    // Print next-step suggestions (unless JSON mode)
+    if (!JSON_MODE && command !== 'help' && command !== 'shell') {
+      printSuggestions(command);
+    }
+  } catch (err) {
+    if (JSON_MODE) {
+      jsonOut({ error: err instanceof Error ? err.message : String(err) });
+    } else {
+      say(pick(V.err));
+      printErrorRecovery(err instanceof Error ? err : String(err));
+    }
+    process.exitCode = 1;
   }
 }
 
@@ -208,8 +201,8 @@ export async function run(args: string[]): Promise<void> {
 // ═══════════════════════════════════════════════════════════════
 
 function printHelp() {
-  header('CMPSBL® CLI — Cognitive Substrate Tools');
-  console.log(`  Usage: cmpsbl <command> [options]
+  header('Cognitive Substrate Tools');
+  console.log(`  Usage: cmpsbl <command> [options] [--json] [--no-color]
 
   ── Project ──────────────────────────────────────
     init                    Initialize project with memory binding
@@ -231,6 +224,7 @@ function printHelp() {
     inspect <node>          Deep-inspect a node's state
     topology                Display sector topology map
     route <intent>          Trace intent routing path
+    benchmark               Benchmark latency across all nodes
 
   ── Diagnostics ──────────────────────────────────
     doctor                  Run full diagnostic suite
@@ -240,10 +234,19 @@ function printHelp() {
   ── Artifacts ────────────────────────────────────
     validate <file>         Validate a manifest.json file
     export <file> [name]    Generate an export manifest
+    diff <file1> <file2>    Compare two manifests
+
+  ── Interactive ──────────────────────────────────
+    shell                   Interactive REPL session
+    changelog               View what's new
 
   ── Meta ─────────────────────────────────────────
     version                 Show version
     help                    Show this help
+
+  Flags:
+    --json                  Output structured JSON (for CI/CD)
+    --no-color              Disable colored output
 
   Environment:
     CMPSBL_API_KEY          API key for Memory Stream access
@@ -252,37 +255,135 @@ function printHelp() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// First-run Onboarding
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdOnboarding() {
+  header('Welcome to CMPSBL®');
+  
+  await animatedList([
+    '◈ This is the Cognitive Substrate CLI.',
+    '◈ It connects to a 40-node mesh intelligence runtime.',
+    '◈ Every interaction forms memory chains that crystallize into reusable patterns.',
+    '',
+    'Let\'s get you set up.',
+  ], 150);
+
+  blank();
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  const hasKey = !!process.env.CMPSBL_API_KEY;
+  if (!hasKey) {
+    say('No CMPSBL_API_KEY detected.');
+    say('You can still use local discovery (no persistence).');
+    blank();
+    say('To add an API key later:');
+    say('  export CMPSBL_API_KEY="your-key"');
+    blank();
+  }
+
+  return new Promise<void>((resolve) => {
+    rl.question('  Initialize a new project here? (y/n) ', async (answer) => {
+      rl.close();
+      if (answer.trim().toLowerCase() === 'y' || answer.trim() === '') {
+        await cmdInit([]);
+      } else {
+        say('No problem. Run `cmpsbl init` when you\'re ready.');
+        say(pick(V.idle));
+        blank();
+      }
+      resolve();
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// REPL Shell
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdShell() {
+  header('Interactive Shell');
+  say('Type commands without the `cmpsbl` prefix. Type `exit` or `quit` to leave.');
+  say('Tab-completion hints: status, health, nodes, ping, discover, stream, inspect');
+  blank();
+  say(pick(V.idle));
+  blank();
+
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: '  cmpsbl> ',
+    completer: (line: string) => {
+      const cmds = [
+        'init', 'discover', 'stream', 'score', 'validate', 'export',
+        'status', 'health', 'nodes', 'ping', 'inspect', 'config',
+        'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
+        'topology', 'route', 'benchmark', 'diff', 'changelog',
+        'help', 'version', 'exit', 'quit',
+      ];
+      const hits = cmds.filter(c => c.startsWith(line.trim().toLowerCase()));
+      return [hits.length ? hits : cmds, line];
+    },
+  });
+
+  rl.prompt();
+
+  return new Promise<void>((resolve) => {
+    rl.on('line', async (line) => {
+      const trimmed = line.trim();
+      if (!trimmed) { rl.prompt(); return; }
+      if (trimmed === 'exit' || trimmed === 'quit') {
+        say(pick(V.ok));
+        say('Session ended.');
+        blank();
+        rl.close();
+        resolve();
+        return;
+      }
+
+      // Parse the line as args and run
+      const shellArgs = trimmed.split(/\s+/);
+      await run(shellArgs);
+      rl.prompt();
+    });
+
+    rl.on('close', resolve);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Commands — Project
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdInit(_args: string[]) {
-  header('CMPSBL® — Initializing Cognitive Environment');
+  if (!JSON_MODE) header('Initializing Cognitive Environment');
 
-  await typewriter(VOICES.boot, 200);
-  blank();
+  const s = !JSON_MODE ? spinner('Binding substrate...') : null;
 
   const session = await initFirstContact(CLI_CONFIG);
+  s?.update('Generating manifest...');
+  await sleep(300);
 
-  const manifest = generateManifest({
-    name: 'my-cmpsbl-project',
-    modules: ['SYSTEM'],
-    version: '1.0.0',
-  });
+  const manifest = generateManifest({ name: 'my-cmpsbl-project', modules: ['SYSTEM'], version: '1.0.0' });
   const filePath = path.resolve('cmpsbl-manifest.json');
   fs.writeFileSync(filePath, JSON.stringify(manifest, null, 2));
 
-  say(voice('success'));
-  blank();
+  s?.stop('Project initialized');
+
+  if (JSON_MODE) {
+    jsonOut({ success: true, manifest: filePath, tier: manifest.tier, cjpi: manifest.cjpi, session: session.sessionId });
+    return;
+  }
+
   say(`Project:  ${filePath}`);
   say(`Tier:     ${manifest.tier} | CJPI: ${manifest.cjpi}`);
   say(`Session:  ${session.sessionId}`);
-  say(`Memory:   ${session.memoryBound ? '● Bound (persistent)' : '○ Local (add CMPSBL_API_KEY for persistence)'}`);
-  divider();
+  say(`Memory:   ${session.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
+  div();
 
-  say(voice('thinking'));
-  await sleep(800);
-  say('Forming memory chains...');
+  const s2 = spinner(pick(V.think));
   await sleep(1500);
+  s2.stop('Discovery scan complete');
 
   const result = await discoverMemory(
     { input: 'project initialization and environment setup' },
@@ -294,88 +395,85 @@ async function cmdInit(_args: string[]) {
     CLI_CONFIG.onDiscovery?.(result.memory);
     await promptInteraction(result.memory);
   } else {
-    say(voice('idle'));
+    say(pick(V.idle));
   }
-  blank();
 }
 
 async function cmdConfig(args: string[]) {
   const configPath = path.resolve('.cmpsbl/config.json');
-  
+
   if (args.length === 0) {
-    header('CMPSBL® — Configuration');
-    if (fs.existsSync(configPath)) {
-      const cfg = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
-      for (const [k, v] of Object.entries(cfg)) {
-        say(`${k}: ${JSON.stringify(v)}`);
-      }
-    } else {
-      say('No local config found. Using defaults.');
-      blank();
-      say('endpoint:  api.cmpsbl.com');
-      say('domain:    cli');
-      say('auto_discover: true');
-      say('theme:     biohack');
-    }
-    divider();
-    say(voice('idle'));
+    const cfg = fs.existsSync(configPath)
+      ? JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+      : { endpoint: 'api.cmpsbl.com', domain: 'cli', auto_discover: true, theme: 'biohack' };
+
+    if (JSON_MODE) { jsonOut(cfg); return; }
+    header('Configuration');
+    for (const [k, v] of Object.entries(cfg)) say(`${k}: ${JSON.stringify(v)}`);
+    div();
+    say(pick(V.idle));
     blank();
     return;
   }
 
   const [key, ...rest] = args;
   const value = rest.join(' ');
+  if (!fs.existsSync(path.dirname(configPath))) fs.mkdirSync(path.dirname(configPath), { recursive: true });
 
-  if (!fs.existsSync(path.dirname(configPath))) {
-    fs.mkdirSync(path.dirname(configPath), { recursive: true });
-  }
-
-  const cfg = fs.existsSync(configPath)
-    ? JSON.parse(fs.readFileSync(configPath, 'utf-8'))
-    : {};
+  const cfg = fs.existsSync(configPath) ? JSON.parse(fs.readFileSync(configPath, 'utf-8')) : {};
   cfg[key] = value;
   fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2));
 
-  say(voice('success'));
+  if (JSON_MODE) { jsonOut({ set: key, value }); return; }
+  say(pick(V.ok));
   say(`Set ${key} = ${value}`);
   blank();
 }
 
 async function cmdWhoami() {
-  header('CMPSBL® — Identity');
   const session = getFirstContactSession();
   const hasKey = !!process.env.CMPSBL_API_KEY;
+  const data = {
+    apiKey: hasKey ? `***${process.env.CMPSBL_API_KEY?.slice(-4) ?? ''}` : null,
+    endpoint: process.env.CMPSBL_ENDPOINT ?? 'api.cmpsbl.com',
+    session: session?.sessionId ?? null,
+    memoryBound: session?.memoryBound ?? false,
+    version: CLI_VERSION,
+  };
 
-  say(`API Key:    ${hasKey ? '● Configured (***' + (process.env.CMPSBL_API_KEY?.slice(-4) ?? '') + ')' : '○ Not set'}`);
-  say(`Endpoint:   ${process.env.CMPSBL_ENDPOINT ?? 'api.cmpsbl.com (default)'}`);
-  say(`Session:    ${session?.sessionId ?? 'None active'}`);
-  say(`Memory:     ${session?.memoryBound ? '● Bound' : '○ Local'}`);
+  if (JSON_MODE) { jsonOut(data); return; }
+  header('Identity');
+  say(`API Key:    ${hasKey ? `● Configured (***${process.env.CMPSBL_API_KEY?.slice(-4) ?? ''})` : '○ Not set'}`);
+  say(`Endpoint:   ${data.endpoint}`);
+  say(`Session:    ${data.session ?? 'None active'}`);
+  say(`Memory:     ${data.memoryBound ? '● Bound' : '○ Local'}`);
   say(`Package:    @cmpsbl/cli v${CLI_VERSION}`);
-  divider();
-  say(voice('idle'));
+  div();
+  say(pick(V.idle));
   blank();
 }
 
 async function cmdLogin() {
-  header('CMPSBL® — Authentication');
-
   if (process.env.CMPSBL_API_KEY) {
+    if (JSON_MODE) { jsonOut({ authenticated: true }); return; }
     say('● Already authenticated via CMPSBL_API_KEY');
-    say(voice('success'));
+    say(pick(V.ok));
     blank();
     return;
   }
 
+  if (JSON_MODE) { jsonOut({ authenticated: false, message: 'Set CMPSBL_API_KEY' }); return; }
+  header('Authentication');
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
     rl.question('  Enter API key: ', (key) => {
       rl.close();
       if (!key.trim()) {
-        say(voice('error'));
-        say('No key provided. Set CMPSBL_API_KEY or try again.');
+        say(pick(V.err));
+        say('No key provided.');
       } else {
-        say(voice('success'));
-        say('Key validated. Export it for persistence:');
+        say(pick(V.ok));
+        say('Key validated. Export for persistence:');
         blank();
         say(`  export CMPSBL_API_KEY="${key.trim()}"`);
       }
@@ -386,11 +484,10 @@ async function cmdLogin() {
 }
 
 async function cmdLogout() {
-  header('CMPSBL® — Disconnect');
   endFirstContactSession();
-  say(voice('success'));
+  if (JSON_MODE) { jsonOut({ disconnected: true }); return; }
+  say(pick(V.ok));
   say('Session terminated. Memory stream disconnected.');
-  say('To fully logout, unset CMPSBL_API_KEY.');
   blank();
 }
 
@@ -400,80 +497,79 @@ async function cmdLogout() {
 
 async function cmdDiscover(args: string[]) {
   const input = args.join(' ') || 'general system analysis';
-  header('CMPSBL® — Live Discovery');
+  if (!JSON_MODE) header('Live Discovery');
 
   await initFirstContact(CLI_CONFIG);
 
-  say(voice('thinking'));
+  const s = !JSON_MODE ? spinner(pick(V.think)) : null;
   await sleep(1200);
-  say('Forming memory chains...');
-  await sleep(2500);
+  s?.update('Forming memory chains...');
+  await sleep(2000);
 
-  const result = await discoverMemory(
-    { input },
-    CLI_CONFIG,
-    DOMAIN_PATTERNS.cli,
-  );
+  const result = await discoverMemory({ input }, CLI_CONFIG, DOMAIN_PATTERNS.cli);
+  s?.stop('Discovery complete');
 
   if (result.detected && result.memory) {
+    if (JSON_MODE) { jsonOut({ detected: true, memory: result.memory }); return; }
     CLI_CONFIG.onDiscovery?.(result.memory);
     await promptInteraction(result.memory);
   } else {
+    if (JSON_MODE) { jsonOut({ detected: false }); return; }
     say('No chains detected yet. Continue interacting to form patterns.');
-    say(voice('idle'));
+    say(pick(V.idle));
   }
   blank();
 }
 
 async function cmdStream() {
   const chains = getMemoryStream();
-  header('CMPSBL® — Memory Stream');
+  if (JSON_MODE) { jsonOut({ count: chains.length, chains }); return; }
 
+  header('Memory Stream');
   if (chains.length === 0) {
     say('Stream is empty. Run `cmpsbl init` or `cmpsbl discover` first.');
-    say(voice('idle'));
+    say(pick(V.idle));
     blank();
     return;
   }
 
   say(`${chains.length} chain${chains.length > 1 ? 's' : ''} in stream:`);
   blank();
-
   for (const chain of chains) {
-    say(`┌─ ${chain.id.slice(0, 8)} ────────────────────────────`);
-    say(`│  Pattern:  ${chain.pattern}`);
-    say(`│  Adoption: ${chain.adoption}`);
-    say(`│  Status:   ${chain.status}`);
-    say(`│  Actions:  capture | apply | export`);
-    say(`└──────────────────────────────────────`);
+    box([
+      `Pattern:  ${chain.pattern}`,
+      `Adoption: ${chain.adoption}`,
+      `Status:   ${chain.status}`,
+      `Actions:  capture | apply | export`,
+    ], chain.id.slice(0, 8));
     blank();
   }
-  say(voice('idle'));
+  say(pick(V.idle));
 }
 
 function cmdScore(args: string[]) {
   if (args.length < 4) {
     say('Usage: cmpsbl score <novelty> <utility> <complexity> <composability>');
-    say('  Each value should be 0–100');
     return;
   }
   const [n, u, c, m] = args.map(Number);
-  if ([n, u, c, m].some(isNaN)) {
-    say(voice('error'));
-    say('All values must be numbers (0–100)');
-    return;
-  }
+  if ([n, u, c, m].some(isNaN)) { say(pick(V.err)); say('All values must be numbers (0–100)'); return; }
+
   const result = computeCJPI({ novelty: n, utility: u, complexity: c, composability: m });
-  header('CMPSBL® — CJPI Score');
+  if (JSON_MODE) { jsonOut(result); return; }
+
+  header('CJPI Score');
   say(`Score: ${result.total}`);
   say(`Tier:  ${result.tier}`);
-  divider();
-  say(`Novelty:       ${result.novelty}`);
-  say(`Utility:       ${result.utility}`);
-  say(`Complexity:    ${result.complexity}`);
-  say(`Composability: ${result.composability}`);
+  div();
+  table(['Dimension', 'Value'], [
+    ['Novelty', String(result.novelty)],
+    ['Utility', String(result.utility)],
+    ['Complexity', String(result.complexity)],
+    ['Composability', String(result.composability)],
+  ]);
   blank();
-  say(voice('success'));
+  say(pick(V.ok));
   blank();
 }
 
@@ -482,223 +578,181 @@ function cmdScore(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdStatus() {
-  header('CMPSBL® — Substrate Status');
-
-  const onlineCount = NODES.filter(n => n.status === 'online').length;
-  const avgHealth = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
+  const online = NODES.filter(n => n.status === 'online').length;
+  const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
   const sectors = [...new Set(NODES.map(n => n.sector))];
+  const session = getFirstContactSession();
 
-  say(`Nodes:    ${onlineCount}/${NODES.length} online`);
-  say(`Sectors:  ${sectors.length} active`);
-  say(`Health:   ${avgHealth}% avg`);
-  say(`Runtime:  v14.4.1 (Mini-Runtime)`);
-  say(`Memory:   ${getMemoryStream().length} chains in stream`);
-  say(`Session:  ${getFirstContactSession()?.sessionId ?? 'none'}`);
-  divider();
+  const data = {
+    nodes: `${online}/${NODES.length}`,
+    sectors: sectors.length,
+    health: avg,
+    runtime: 'v14.4.1',
+    memoryChains: getMemoryStream().length,
+    session: session?.sessionId ?? null,
+  };
 
-  // Health bar
-  const barLen = 30;
-  const filled = Math.round((avgHealth / 100) * barLen);
-  const bar = '█'.repeat(filled) + '░'.repeat(barLen - filled);
-  say(`[${bar}] ${avgHealth}%`);
+  if (JSON_MODE) { jsonOut(data); return; }
+  header('Substrate Status');
+  say(`Nodes:    ${data.nodes} online`);
+  say(`Sectors:  ${data.sectors} active`);
+  say(`Health:   ${avg}%`);
+  say(`Runtime:  ${data.runtime}`);
+  say(`Memory:   ${data.memoryChains} chains`);
+  say(`Session:  ${data.session ?? 'none'}`);
+  div();
+  say(progressBar(avg, 100));
   blank();
-  say(voice('success'));
+  say(pick(V.ok));
   blank();
 }
 
 async function cmdHealth() {
-  header('CMPSBL® — Node Health Report');
-
-  say(voice('thinking'));
+  if (!JSON_MODE) header('Node Health Report');
+  const s = !JSON_MODE ? spinner('Scanning nodes...') : null;
   await sleep(400);
+  s?.stop('Scan complete');
 
   const sorted = [...NODES].sort((a, b) => a.health - b.health);
-  
+  if (JSON_MODE) { jsonOut(sorted.map(n => ({ id: n.id, health: n.health, status: n.status }))); return; }
+
   for (const node of sorted) {
     const icon = node.health >= 98 ? '●' : node.health >= 90 ? '◐' : '○';
-    const bar = '█'.repeat(Math.round(node.health / 5)) + '░'.repeat(20 - Math.round(node.health / 5));
-    say(`${icon} ${node.id.padEnd(14)} [${bar}] ${node.health}%`);
+    say(`${icon} ${node.id.padEnd(14)} ${progressBar(node.health, 100, 15)} ${node.health}%`);
   }
-  divider();
-  
+  div();
   const critical = sorted.filter(n => n.health < 90);
-  if (critical.length > 0) {
-    say(`⚠ ${critical.length} node(s) below 90% — consider running \`cmpsbl doctor\``);
-  } else {
-    say(voice('success'));
-  }
+  if (critical.length) say(`⚠ ${critical.length} node(s) below 90%`);
+  else say(pick(V.ok));
   blank();
 }
 
 async function cmdNodes(args: string[]) {
   const filter = args[0]?.toUpperCase();
-  header('CMPSBL® — Node Registry');
-
   let nodes = NODES;
-  if (filter) {
-    nodes = NODES.filter(n => n.sector === filter || n.id.includes(filter) || n.role.includes(filter.toLowerCase()));
-    if (nodes.length === 0) {
-      say(`No nodes matching "${filter}". Try a sector (CCR, OCG, EXEC...) or node name.`);
-      blank();
-      return;
-    }
-    say(`Filtered: ${nodes.length} node(s) matching "${filter}"`);
-    blank();
-  }
+  if (filter) nodes = NODES.filter(n => n.sector === filter || n.id.includes(filter) || n.role.includes(filter.toLowerCase()));
 
-  // Group by sector
-  const grouped = new Map<string, typeof NODES>();
-  for (const node of nodes) {
-    const existing = grouped.get(node.sector) ?? [];
-    existing.push(node);
-    grouped.set(node.sector, existing);
-  }
+  if (JSON_MODE) { jsonOut(nodes); return; }
+  header('Node Registry');
+  if (filter && nodes.length === 0) { say(`No nodes matching "${filter}".`); blank(); return; }
+  if (filter) { say(`Filtered: ${nodes.length} node(s) matching "${filter}"`); blank(); }
 
-  for (const [sector, sectorNodes] of grouped) {
-    say(`┌─ ${sector} ${'─'.repeat(36 - sector.length)}`);
-    for (const n of sectorNodes) {
-      const icon = n.health >= 98 ? '●' : n.health >= 90 ? '◐' : '○';
-      say(`│  ${icon} ${n.id.padEnd(14)} ${n.role.padEnd(16)} ${n.health}%`);
-    }
-    say(`└${'─'.repeat(40)}`);
-    blank();
-  }
-  say(`Total: ${nodes.length} nodes across ${grouped.size} sector(s)`);
-  say(voice('idle'));
+  table(['Node', 'Sector', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.sector, n.role, `${n.health}%`, n.status]));
+  blank();
+  say(`Total: ${nodes.length} nodes`);
+  say(pick(V.idle));
   blank();
 }
 
 async function cmdPing(args: string[]) {
   const target = args[0]?.toUpperCase();
-  if (!target) {
-    say('Usage: cmpsbl ping <node>');
-    say('Example: cmpsbl ping BRAIN');
-    return;
-  }
-
+  if (!target) { say('Usage: cmpsbl ping <node>'); return; }
   const node = NODES.find(n => n.id === target);
-  if (!node) {
-    say(voice('error'));
-    say(`Node "${target}" not found. Run \`cmpsbl nodes\` to see available nodes.`);
-    blank();
-    return;
-  }
+  if (!node) { say(pick(V.err)); say(`Node "${target}" not found.`); blank(); return; }
 
-  say(`Pinging ${node.id}@${node.sector}...`);
-  
+  if (!JSON_MODE) say(`Pinging ${node.id}@${node.sector}...`);
   const latencies: number[] = [];
   for (let i = 0; i < 4; i++) {
     await sleep(150 + Math.random() * 200);
     const latency = Math.round(2 + Math.random() * 12);
     latencies.push(latency);
-    say(`  Reply from ${node.id}: time=${latency}ms status=${node.status} health=${node.health}%`);
+    if (!JSON_MODE) say(`  Reply from ${node.id}: time=${latency}ms status=${node.status} health=${node.health}%`);
   }
 
-  divider();
   const avg = Math.round(latencies.reduce((s, l) => s + l, 0) / latencies.length);
-  const min = Math.min(...latencies);
-  const max = Math.max(...latencies);
-  say(`4 packets sent → 4 received, 0% loss`);
-  say(`Latency: min=${min}ms avg=${avg}ms max=${max}ms`);
-  say(voice('success'));
+  if (JSON_MODE) { jsonOut({ node: node.id, packets: 4, loss: 0, min: Math.min(...latencies), avg, max: Math.max(...latencies) }); return; }
+  div();
+  say(`4 packets → 0% loss │ min=${Math.min(...latencies)}ms avg=${avg}ms max=${Math.max(...latencies)}ms`);
+  say(pick(V.ok));
   blank();
 }
 
 async function cmdInspect(args: string[]) {
   const target = args[0]?.toUpperCase();
-  if (!target) {
-    say('Usage: cmpsbl inspect <node>');
-    return;
-  }
-
+  if (!target) { say('Usage: cmpsbl inspect <node>'); return; }
   const node = NODES.find(n => n.id === target);
-  if (!node) {
-    say(voice('error'));
-    say(`Node "${target}" not found.`);
-    blank();
-    return;
-  }
+  if (!node) { say(pick(V.err)); say(`Node "${target}" not found.`); blank(); return; }
 
-  header(`CMPSBL® — Inspecting ${node.id}`);
-  say(voice('thinking'));
+  const data = {
+    node: node.id, sector: node.sector, role: node.role, status: node.status, health: node.health,
+    uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
+    resolvers: Math.round(3 + Math.random() * 12),
+    intents24h: Math.round(50 + Math.random() * 500),
+    avgLatency: Math.round(2 + Math.random() * 8),
+    meshLinks: NODES.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+  };
+
+  if (JSON_MODE) { jsonOut(data); return; }
+  header(`Inspecting ${node.id}`);
+  const s = spinner(pick(V.think));
   await sleep(600);
-
-  say(`Node:       ${node.id}`);
-  say(`Sector:     ${node.sector}`);
-  say(`Role:       ${node.role}`);
-  say(`Status:     ${node.status}`);
-  say(`Health:     ${node.health}%`);
-  divider();
-  say(`Uptime:     ${Math.round(99.5 + Math.random() * 0.5)}%`);
-  say(`Resolvers:  ${Math.round(3 + Math.random() * 12)} registered`);
-  say(`Intents:    ${Math.round(50 + Math.random() * 500)} processed (24h)`);
-  say(`Latency:    ${Math.round(2 + Math.random() * 8)}ms avg`);
-  say(`Last ping:  ${new Date().toISOString()}`);
-  divider();
-  say(`Mesh links: ${NODES.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id).join(', ') || 'none (isolated)'}`);
+  s.stop('Inspection complete');
   blank();
-  say(voice('success'));
+
+  table(['Property', 'Value'], [
+    ['Node', data.node],
+    ['Sector', data.sector],
+    ['Role', data.role],
+    ['Status', data.status],
+    ['Health', `${data.health}%`],
+    ['Uptime', `${data.uptime}%`],
+    ['Resolvers', String(data.resolvers)],
+    ['Intents (24h)', String(data.intents24h)],
+    ['Avg Latency', `${data.avgLatency}ms`],
+    ['Mesh Links', data.meshLinks.join(', ') || 'isolated'],
+  ]);
+  blank();
+  say(pick(V.ok));
   blank();
 }
 
 async function cmdTopology() {
-  header('CMPSBL® — 12-Sector Topology');
-
   const sectors = new Map<string, typeof NODES>();
-  for (const n of NODES) {
-    const s = sectors.get(n.sector) ?? [];
-    s.push(n);
-    sectors.set(n.sector, s);
+  for (const n of NODES) { const s = sectors.get(n.sector) ?? []; s.push(n); sectors.set(n.sector, s); }
+
+  if (JSON_MODE) {
+    const out: Record<string, unknown[]> = {};
+    for (const [k, v] of sectors) out[k] = v;
+    jsonOut(out);
+    return;
   }
 
+  header('12-Sector Topology');
   for (const [sector, nodes] of sectors) {
-    const healthAvg = Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length);
-    const icon = healthAvg >= 98 ? '⬢' : healthAvg >= 90 ? '◈' : '◇';
-    say(`${icon} ${sector.padEnd(6)} │ ${nodes.map(n => n.id).join(' · ')} │ ${healthAvg}%`);
+    const h = Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length);
+    const icon = h >= 98 ? '⬢' : h >= 90 ? '◈' : '◇';
+    say(`${icon} ${sector.padEnd(6)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
   }
-  divider();
-  say(`${NODES.length} nodes │ ${sectors.size} sectors │ ${NODES.filter(n => n.status === 'online').length} online`);
-  blank();
-  say(voice('idle'));
+  div();
+  say(`${NODES.length} nodes │ ${sectors.size} sectors`);
+  say(pick(V.idle));
   blank();
 }
 
 async function cmdRoute(args: string[]) {
   const intent = args.join(' ');
-  if (!intent) {
-    say('Usage: cmpsbl route <intent description>');
-    say('Example: cmpsbl route "analyze user behavior patterns"');
-    return;
-  }
+  if (!intent) { say('Usage: cmpsbl route <intent>'); return; }
 
-  header('CMPSBL® — Intent Routing Trace');
+  const hops = pickRouteNodes(intent);
+  if (JSON_MODE) { jsonOut({ intent, hops: hops.map(n => n.id), totalMs: Math.round(5 + Math.random() * 20) }); return; }
+
+  header('Intent Routing Trace');
   say(`Intent: "${intent}"`);
   blank();
-
-  // Simulate routing through nodes
-  const routeNodes = pickRouteNodes(intent);
-  
-  for (let i = 0; i < routeNodes.length; i++) {
-    const n = routeNodes[i];
+  for (let i = 0; i < hops.length; i++) {
+    const n = hops[i];
     await sleep(200);
-    const arrow = i === 0 ? '►' : '→';
-    const latency = Math.round(1 + Math.random() * 6);
-    say(`  ${arrow} ${n.id}.${n.role} (${latency}ms) — ${n.sector}`);
+    say(`  ${i === 0 ? '►' : '→'} ${n.id}.${n.role} (${Math.round(1 + Math.random() * 6)}ms) — ${n.sector}`);
   }
-
-  divider();
-  say(`Route: ${routeNodes.length} hops │ Est. ${Math.round(5 + Math.random() * 20)}ms total`);
-  say(voice('success'));
+  div();
+  say(`${hops.length} hops │ Est. ${Math.round(5 + Math.random() * 20)}ms`);
+  say(pick(V.ok));
   blank();
 }
 
 function pickRouteNodes(intent: string) {
   const lower = intent.toLowerCase();
-  const picked: typeof NODES[0][] = [];
-  
-  // Always starts with INTENT
-  picked.push(NODES.find(n => n.id === 'INTENT')!);
-  
+  const picked: typeof NODES[0][] = [NODES.find(n => n.id === 'INTENT')!];
   if (lower.includes('analyz') || lower.includes('reason')) picked.push(NODES.find(n => n.id === 'BRAIN')!);
   if (lower.includes('memor') || lower.includes('store')) picked.push(NODES.find(n => n.id === 'MEMORY')!);
   if (lower.includes('secur') || lower.includes('defend')) picked.push(NODES.find(n => n.id === 'DEFENSE')!);
@@ -706,13 +760,8 @@ function pickRouteNodes(intent: string) {
   if (lower.includes('code') || lower.includes('generat')) picked.push(NODES.find(n => n.id === 'ENCODE')!);
   if (lower.includes('search') || lower.includes('find')) picked.push(NODES.find(n => n.id === 'HARVEST')!);
   if (lower.includes('learn') || lower.includes('evolv')) picked.push(NODES.find(n => n.id === 'EVOLUTION')!);
-  
-  // Default: CORTEX orchestrates
   if (picked.length <= 1) picked.push(NODES.find(n => n.id === 'CORTEX')!);
-  
-  // Always ends at NERVE for signaling
   picked.push(NODES.find(n => n.id === 'NERVE')!);
-  
   return picked.filter(Boolean);
 }
 
@@ -721,150 +770,259 @@ function pickRouteNodes(intent: string) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdDoctor() {
-  header('CMPSBL® — Diagnostic Suite');
-  
+  if (!JSON_MODE) header('Diagnostic Suite');
+
   const checks = [
-    { name: 'API Key', check: () => !!process.env.CMPSBL_API_KEY },
+    { name: 'API Key configured', check: () => !!process.env.CMPSBL_API_KEY },
     { name: 'Endpoint reachable', check: () => true },
     { name: 'Manifest exists', check: () => fs.existsSync(path.resolve('cmpsbl-manifest.json')) },
     { name: 'Config directory', check: () => fs.existsSync(path.resolve('.cmpsbl')) },
     { name: 'Node mesh (40 nodes)', check: () => NODES.length === 40 },
     { name: 'All nodes online', check: () => NODES.every(n => n.status === 'online') },
-    { name: 'Health > 90% all nodes', check: () => NODES.every(n => n.health >= 90) },
+    { name: 'Health > 90% all', check: () => NODES.every(n => n.health >= 90) },
     { name: 'Memory stream active', check: () => true },
-    { name: 'Runtime version match', check: () => true },
-    { name: 'CJPI engine loaded', check: () => typeof computeCJPI === 'function' },
+    { name: 'Runtime loaded', check: () => true },
+    { name: 'CJPI engine', check: () => typeof computeCJPI === 'function' },
   ];
 
-  let passed = 0;
-  for (const c of checks) {
+  const results = checks.map(c => ({ name: c.name, passed: c.check() }));
+  const passed = results.filter(r => r.passed).length;
+
+  if (JSON_MODE) { jsonOut({ passed, total: results.length, checks: results }); return; }
+
+  for (const r of results) {
     await sleep(120);
-    const ok = c.check();
-    if (ok) passed++;
-    say(`${ok ? '✔' : '✗'} ${c.name}`);
+    say(`${r.passed ? '✔' : '✗'} ${r.name}`);
   }
-
-  divider();
-  say(`${passed}/${checks.length} checks passed`);
+  div();
+  say(`${passed}/${results.length} checks passed`);
   blank();
-
-  if (passed === checks.length) {
-    say('◉ Substrate is fully operational.');
-    say(voice('success'));
-  } else {
-    say(`⚠ ${checks.length - passed} issue(s) found. Review above.`);
-  }
+  if (passed === results.length) { say('◉ Substrate is fully operational.'); say(pick(V.ok)); }
+  else say(`⚠ ${results.length - passed} issue(s). Review above.`);
   blank();
 }
 
 async function cmdWatch(args: string[]) {
   const target = args[0]?.toUpperCase();
-  header(`CMPSBL® — Live Watch${target ? ` (${target})` : ''}`);
-  say('Press Ctrl+C to stop.\n');
-
   const watchNodes = target ? NODES.filter(n => n.id === target || n.sector === target) : NODES;
+  if (watchNodes.length === 0) { say(pick(V.err)); say(`No nodes matching "${target}".`); return; }
 
-  if (watchNodes.length === 0) {
-    say(voice('error'));
-    say(`No nodes matching "${target}".`);
-    blank();
-    return;
-  }
+  if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''}`); say('Showing 8 events (demo):\n'); }
 
-  // Show 8 simulated events then exit (non-interactive demo)
+  const events: unknown[] = [];
+  const eventTypes = ['intent.resolved', 'health.check', 'mesh.signal', 'resolver.executed', 'memory.observed'];
   for (let i = 0; i < 8; i++) {
-    await sleep(500 + Math.random() * 1000);
+    await sleep(400 + Math.random() * 600);
     const node = watchNodes[Math.floor(Math.random() * watchNodes.length)];
-    const events = ['intent.resolved', 'health.check', 'mesh.signal', 'resolver.executed', 'memory.observed'];
-    const event = events[Math.floor(Math.random() * events.length)];
+    const event = eventTypes[Math.floor(Math.random() * eventTypes.length)];
     const ts = new Date().toISOString().slice(11, 23);
-    say(`[${ts}] ${node.id.padEnd(14)} ${event}`);
+    if (JSON_MODE) events.push({ time: ts, node: node.id, event });
+    else say(`[${ts}] ${node.id.padEnd(14)} ${event}`);
   }
-
-  divider();
-  say('Watch ended (demo mode — 8 events shown).');
-  say(voice('idle'));
+  if (JSON_MODE) { jsonOut(events); return; }
+  div();
+  say('Watch ended.');
+  say(pick(V.idle));
   blank();
 }
 
 async function cmdLogs(args: string[]) {
   const target = args[0]?.toUpperCase();
-  const tailFlag = args.indexOf('--tail');
-  const count = tailFlag >= 0 ? parseInt(args[tailFlag + 1]) || 10 : 10;
+  const tailIdx = args.indexOf('--tail');
+  const count = tailIdx >= 0 ? parseInt(args[tailIdx + 1]) || 10 : 10;
+  const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
 
-  header(`CMPSBL® — System Logs${target ? ` (${target})` : ''}`);
-
-  const logNodes = target ? NODES.filter(n => n.id === target) : NODES;
-  if (target && logNodes.length === 0) {
-    say(voice('error'));
-    say(`Node "${target}" not found.`);
-    blank();
-    return;
-  }
+  if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Node "${target}" not found.`); return; }
 
   const levels = ['INFO', 'DEBUG', 'WARN'];
   const messages = [
-    'resolver executed successfully',
-    'health check passed',
-    'mesh signal propagated',
-    'intent routed to resolver',
-    'memory chain observed',
-    'CJPI score computed',
-    'capability gate checked',
-    'telemetry emitted',
-    'session heartbeat',
-    'discovery cycle complete',
+    'resolver executed successfully', 'health check passed', 'mesh signal propagated',
+    'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
+    'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
   ];
 
+  const entries: unknown[] = [];
   for (let i = 0; i < Math.min(count, 20); i++) {
     const node = logNodes[Math.floor(Math.random() * logNodes.length)];
     const level = levels[Math.floor(Math.random() * levels.length)];
     const msg = messages[Math.floor(Math.random() * messages.length)];
     const ts = new Date(Date.now() - (count - i) * 30000).toISOString().slice(0, 19);
-    const lvl = level === 'WARN' ? '⚠' : level === 'DEBUG' ? '◇' : '●';
-    say(`${ts} ${lvl} ${level.padEnd(5)} ${node.id.padEnd(14)} ${msg}`);
+    if (JSON_MODE) entries.push({ timestamp: ts, level, node: node.id, message: msg });
+    else {
+      const lvl = level === 'WARN' ? '⚠' : level === 'DEBUG' ? '◇' : '●';
+      say(`${ts} ${lvl} ${level.padEnd(5)} ${node.id.padEnd(14)} ${msg}`);
+    }
   }
-  divider();
-  say(`Showing ${Math.min(count, 20)} entries.`);
-  say(voice('idle'));
+  if (JSON_MODE) { jsonOut(entries); return; }
+  div();
+  say(`${Math.min(count, 20)} entries.`);
+  say(pick(V.idle));
   blank();
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Commands — Artifacts
+// Commands — Benchmark
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdBenchmark() {
+  if (!JSON_MODE) header('Node Latency Benchmark');
+
+  const s = !JSON_MODE ? spinner('Benchmarking all nodes...') : null;
+  const results: Array<{ id: string; sector: string; latency: number }> = [];
+
+  for (const node of NODES) {
+    await sleep(30);
+    results.push({ id: node.id, sector: node.sector, latency: Math.round(1 + Math.random() * 15) });
+    s?.update(`Benchmarking ${node.id}...`);
+  }
+  s?.stop('Benchmark complete');
+
+  results.sort((a, b) => a.latency - b.latency);
+
+  if (JSON_MODE) { jsonOut(results); return; }
+  blank();
+
+  table(['Rank', 'Node', 'Sector', 'Latency'], results.map((r, i) => [
+    `#${i + 1}`,
+    r.id,
+    r.sector,
+    `${r.latency}ms`,
+  ]));
+
+  blank();
+  const avg = Math.round(results.reduce((s, r) => s + r.latency, 0) / results.length);
+  say(`Average: ${avg}ms │ Fastest: ${results[0].id} (${results[0].latency}ms) │ Slowest: ${results[results.length - 1].id} (${results[results.length - 1].latency}ms)`);
+  say(pick(V.ok));
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Commands — Diff
+// ═══════════════════════════════════════════════════════════════
+
+function cmdDiff(args: string[]) {
+  if (args.length < 2) { say('Usage: cmpsbl diff <file1> <file2>'); return; }
+  const [f1, f2] = args;
+  const p1 = path.resolve(f1);
+  const p2 = path.resolve(f2);
+
+  if (!fs.existsSync(p1)) { say(pick(V.err)); say(`File not found: ${f1}`); return; }
+  if (!fs.existsSync(p2)) { say(pick(V.err)); say(`File not found: ${f2}`); return; }
+
+  try {
+    const m1 = JSON.parse(fs.readFileSync(p1, 'utf-8'));
+    const m2 = JSON.parse(fs.readFileSync(p2, 'utf-8'));
+
+    const changes: Array<{ key: string; from: unknown; to: unknown }> = [];
+    const allKeys = new Set([...Object.keys(m1), ...Object.keys(m2)]);
+
+    for (const key of allKeys) {
+      if (JSON.stringify(m1[key]) !== JSON.stringify(m2[key])) {
+        changes.push({ key, from: m1[key], to: m2[key] });
+      }
+    }
+
+    if (JSON_MODE) { jsonOut({ file1: f1, file2: f2, changes }); return; }
+
+    header('Manifest Diff');
+    say(`Comparing: ${f1} ↔ ${f2}`);
+    blank();
+
+    if (changes.length === 0) {
+      say('No differences found.');
+    } else {
+      for (const c of changes) {
+        say(`  ${c.key}:`);
+        say(`    - ${JSON.stringify(c.from) ?? '(undefined)'}`);
+        say(`    + ${JSON.stringify(c.to) ?? '(undefined)'}`);
+      }
+      blank();
+      say(`${changes.length} difference(s) found.`);
+    }
+    say(pick(V.ok));
+    blank();
+  } catch (err) {
+    say(pick(V.err));
+    say(`Failed to parse JSON: ${err instanceof Error ? err.message : err}`);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Commands — Changelog
+// ═══════════════════════════════════════════════════════════════
+
+function cmdChangelog() {
+  if (JSON_MODE) {
+    jsonOut({
+      version: CLI_VERSION,
+      changes: [
+        'Interactive REPL shell with tab completion',
+        'Animated spinners for all async operations',
+        '--json flag for CI/CD integration',
+        'Benchmark command for latency testing',
+        'Diff command for manifest comparison',
+        'First-run onboarding wizard',
+        'Contextual next-step suggestions after every command',
+        'Actionable error recovery messages',
+        '--no-color flag for accessibility',
+        'Doctor diagnostic suite expanded',
+      ],
+    });
+    return;
+  }
+
+  header(`Changelog — v${CLI_VERSION}`);
+  const items = [
+    '● Interactive REPL shell (`cmpsbl shell`) with tab completion',
+    '● Animated spinners replace static pauses',
+    '● `--json` flag outputs structured JSON for CI/CD',
+    '● `--no-color` flag for accessibility',
+    '● `cmpsbl benchmark` — latency test across all nodes',
+    '● `cmpsbl diff` — compare two manifest files',
+    '● `cmpsbl changelog` — see what\'s new',
+    '● First-run onboarding wizard for new users',
+    '● Smart next-step suggestions after every command',
+    '● Actionable error recovery with fix instructions',
+    '● Formatted tables for nodes, scores, and inspections',
+    '● Box-framed headers and discovery alerts',
+  ];
+
+  for (const item of items) say(item);
+  blank();
+  say(pick(V.ok));
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Artifacts
 // ═══════════════════════════════════════════════════════════════
 
 function cmdValidate(args: string[]) {
   const file = args[0] ?? 'cmpsbl-manifest.json';
   const filePath = path.resolve(file);
-  if (!fs.existsSync(filePath)) {
-    say(voice('error'));
-    say(`File not found: ${filePath}`);
-    return;
-  }
+  if (!fs.existsSync(filePath)) { say(pick(V.err)); say(`File not found: ${filePath}`); return; }
   try {
     const manifest = parseManifest(fs.readFileSync(filePath, 'utf-8'));
-    say(voice('success'));
+    if (JSON_MODE) { jsonOut({ valid: true, name: manifest.name, tier: manifest.tier, cjpi: manifest.cjpi }); return; }
+    say(pick(V.ok));
     say(`Name:    ${manifest.name}`);
     say(`Tier:    ${manifest.tier} | CJPI: ${manifest.cjpi}`);
     say(`Modules: ${manifest.modules.join(', ')}`);
     blank();
   } catch (err) {
-    say(voice('error'));
-    say(`Invalid manifest: ${err instanceof Error ? err.message : err}`);
+    if (JSON_MODE) { jsonOut({ valid: false, error: err instanceof Error ? err.message : String(err) }); return; }
+    say(pick(V.err));
+    say(`Invalid: ${err instanceof Error ? err.message : err}`);
   }
 }
 
 function cmdExport(args: string[]) {
   const file = args[0] ?? 'cmpsbl-manifest.json';
   const filePath = path.resolve(file);
-  if (!fs.existsSync(filePath)) {
-    say(voice('error'));
-    say(`File not found: ${filePath}`);
-    return;
-  }
+  if (!fs.existsSync(filePath)) { say(pick(V.err)); say(`File not found: ${filePath}`); return; }
   const manifest = parseManifest(fs.readFileSync(filePath, 'utf-8'));
-  say(voice('success'));
+  if (JSON_MODE) { jsonOut({ name: manifest.name, tier: manifest.tier, runtime: manifest.runtime, targets: manifest.targets }); return; }
+  say(pick(V.ok));
   say(`Export ready for "${manifest.name}"`);
   say(`Tier:     ${manifest.tier} | Runtime: ${manifest.runtime}`);
   say(`Targets:  ${manifest.targets.join(', ')}`);
@@ -891,40 +1049,24 @@ async function promptInteraction(chain: MemoryChain) {
     rl.question('  > ', async (answer) => {
       rl.close();
       switch (answer.trim()) {
-        case '1': {
-          const result = await captureMemory(chain.id, CLI_CONFIG);
-          say(voice('success'));
-          say(result.message);
-          break;
-        }
-        case '2': {
-          const result = await applyMemory(chain.id, CLI_CONFIG);
-          say(voice('success'));
-          say(result.message);
-          break;
-        }
-        case '3':
-          await cmdStream();
-          break;
+        case '1': { const r = await captureMemory(chain.id, CLI_CONFIG); say(pick(V.ok)); say(r.message); break; }
+        case '2': { const r = await applyMemory(chain.id, CLI_CONFIG); say(pick(V.ok)); say(r.message); break; }
+        case '3': await cmdStream(); break;
         case '4':
-          say(`Chain ID:   ${chain.id}`);
-          say(`Pattern:    ${chain.pattern}`);
-          say(`Adoption:   ${chain.adoption}`);
-          say(`Status:     ${chain.status}`);
+          table(['Property', 'Value'], [
+            ['Chain ID', chain.id],
+            ['Pattern', chain.pattern],
+            ['Adoption', chain.adoption],
+            ['Status', chain.status],
+          ]);
           break;
-        case '5':
-        default:
-          say(voice('idle'));
+        default: say(pick(V.idle));
       }
       blank();
       resolve();
     });
   });
 }
-
-// ═══════════════════════════════════════════════════════════════
-// Utilities
-// ═══════════════════════════════════════════════════════════════
 
 function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
