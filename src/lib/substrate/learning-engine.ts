@@ -294,27 +294,25 @@ class LearningEngineClient {
     let totalGain = 0;
     let memoriesAffected = 0;
 
-    if (input) {
-      const inputResult = await this.input(input);
-      stages.push(inputResult);
-      totalGain += inputResult.metrics?.gain || 0;
-      memoriesAffected += inputResult.metrics?.memories_affected || 0;
-    }
+    const accum = (r: LearningResult) => {
+      stages.push(r);
+      totalGain += r.metrics?.gain || 0;
+      memoriesAffected += r.metrics?.memories_affected || 0;
+    };
 
-    const adjustmentResult = await this.adjustment();
-    stages.push(adjustmentResult);
-    totalGain += adjustmentResult.metrics?.gain || 0;
-    memoriesAffected += adjustmentResult.metrics?.memories_affected || 0;
+    // Stage 1: Input (must complete before adjustment reads its events)
+    if (input) accum(await this.input(input));
 
-    const reinforcementResult = await this.reinforcement();
-    stages.push(reinforcementResult);
-    totalGain += reinforcementResult.metrics?.gain || 0;
-    memoriesAffected += reinforcementResult.metrics?.memories_affected || 0;
+    // Stage 2+3: Adjustment and Reinforcement are independent — run in parallel
+    const [adjustmentResult, reinforcementResult] = await Promise.all([
+      this.adjustment(),
+      this.reinforcement(),
+    ]);
+    accum(adjustmentResult);
+    accum(reinforcementResult);
 
-    const stabilizationResult = await this.stabilization();
-    stages.push(stabilizationResult);
-    totalGain += stabilizationResult.metrics?.gain || 0;
-    memoriesAffected += stabilizationResult.metrics?.memories_affected || 0;
+    // Stage 4: Stabilization depends on prior state updates
+    accum(await this.stabilization());
 
     return { success: stages.every(s => s.success), stages, totalGain, memoriesAffected };
   }

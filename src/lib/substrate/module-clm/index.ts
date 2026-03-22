@@ -779,25 +779,25 @@ Format as JSON: { title, content, requests, priority, confidence }`,
 
   private async storeAnalysis(analysis: ModuleSelfAnalysis): Promise<void> {
     try {
-      // Store in brain_reflection_log for persistence
-      await supabase.from('brain_reflection_log').insert({
-        content: `[${analysis.moduleId.toUpperCase()}] ${analysis.title}\n\n${analysis.content}`,
-        reflection_type: `module_clm_${analysis.analysisType}`,
-        insights: analysis.metadata,
-        created_at: analysis.createdAt,
-      });
-
-      // Also store as memory for cross-module learning
-      await memoryCore.ingest(
-        `[Module CLM: ${analysis.moduleId}] ${analysis.title}\n\n${analysis.content}`,
-        {
-          type: 'reflection',
-          source: `module_clm_${analysis.moduleId}`,
-          confidence: analysis.confidence,
-          tags: ['module-clm', analysis.moduleId, analysis.analysisType],
-          metadata: analysis.metadata,
-        }
-      );
+      // Parallelize: reflection log + memory ingestion are independent writes
+      await Promise.all([
+        supabase.from('brain_reflection_log').insert({
+          content: `[${analysis.moduleId.toUpperCase()}] ${analysis.title}\n\n${analysis.content}`,
+          reflection_type: `module_clm_${analysis.analysisType}`,
+          insights: analysis.metadata,
+          created_at: analysis.createdAt,
+        }),
+        memoryCore.ingest(
+          `[Module CLM: ${analysis.moduleId}] ${analysis.title}\n\n${analysis.content}`,
+          {
+            type: 'reflection',
+            source: `module_clm_${analysis.moduleId}`,
+            confidence: analysis.confidence,
+            tags: ['module-clm', analysis.moduleId, analysis.analysisType],
+            metadata: analysis.metadata,
+          }
+        ),
+      ]);
     } catch (error) {
       console.error('[ModuleCLM] Storage failed:', error);
     }
