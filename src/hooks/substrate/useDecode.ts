@@ -1,20 +1,34 @@
 /**
  * useDecode Hook — DECODE (Interpreter) module operations
- * Respects debug mode kill-switch
+ * Full capability surface: chat, intent, personality, admin directives, hardening diagnostics
+ * Respects debugMode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
+import {
+  issueDirective,
+  acknowledgeDirective,
+  getPendingDirectives,
+  getDirectiveHistory,
+  getSubstrateInsights,
+  getSubstrateSummary,
+} from '@/lib/substrate/decode/admin-directive';
+import {
+  disambiguateIntent,
+  checkIntentRateLimit,
+  getRoutingAuditChain,
+  verifyRoutingChain,
+} from '@/lib/substrate/decode/decode-hardening';
 
-// Access decode module from substrate singleton
 const decode = substrate.decode;
 
 export interface UseDecodeReturn {
   // Status & Health
   status: ReturnType<typeof useQuery>;
   
-  // Actions
+  // Core Actions
   chat: ReturnType<typeof useMutation>;
   dream: ReturnType<typeof useMutation>;
   propose: ReturnType<typeof useMutation>;
@@ -33,6 +47,22 @@ export interface UseDecodeReturn {
     interpret: ReturnType<typeof useMutation>;
     reset: ReturnType<typeof useMutation>;
   };
+
+  // Admin Directives
+  directive: ReturnType<typeof useMutation>;
+  acknowledgeDirective: ReturnType<typeof useMutation>;
+  pendingDirectives: ReturnType<typeof useMutation>;
+  directiveHistory: ReturnType<typeof useMutation>;
+
+  // Intelligence
+  substrateInsights: ReturnType<typeof useMutation>;
+  substrateSummary: ReturnType<typeof useMutation>;
+
+  // Hardening & Diagnostics
+  disambiguate: ReturnType<typeof useMutation>;
+  rateLimit: ReturnType<typeof useMutation>;
+  routingAudit: ReturnType<typeof useMutation>;
+  verifyRouting: ReturnType<typeof useMutation>;
 }
 
 export function useDecode(): UseDecodeReturn {
@@ -75,46 +105,66 @@ export function useDecode(): UseDecodeReturn {
     mutationFn: (message: string) => decode.intent(message),
   });
   
-  // Personality Subsystem
-  const personalityList = useMutation({
-    mutationFn: () => decode.personality.list(),
-  });
-  
-  const personalityGet = useMutation({
-    mutationFn: () => decode.personality.get(),
-  });
-  
-  const personalitySet = useMutation({
-    mutationFn: (profile: string) => decode.personality.set(profile),
+  // ═══ Personality Subsystem ═══
+  const personalityList = useMutation({ mutationFn: () => decode.personality.list() });
+  const personalityGet = useMutation({ mutationFn: () => decode.personality.get() });
+  const personalitySet = useMutation({ mutationFn: (profile: string) => decode.personality.set(profile), onSuccess: invalidateDecode });
+  const personalityAuto = useMutation({ mutationFn: () => decode.personality.auto(), onSuccess: invalidateDecode });
+  const personalityLock = useMutation({ mutationFn: () => decode.personality.lock(), onSuccess: invalidateDecode });
+  const personalityUnlock = useMutation({ mutationFn: () => decode.personality.unlock(), onSuccess: invalidateDecode });
+  const personalityDetect = useMutation({ mutationFn: (text: string) => decode.personality.detect(text) });
+  const personalityInterpret = useMutation({ mutationFn: (text: string) => decode.personality.interpret(text) });
+  const personalityReset = useMutation({ mutationFn: () => decode.personality.reset(), onSuccess: invalidateDecode });
+
+  // ═══ Admin Directives ═══
+  const directiveMut = useMutation({
+    mutationFn: (params: { directive: string; targetModules: string[]; priority?: 'low' | 'normal' | 'high' | 'critical'; type?: 'query' | 'command' | 'configuration'; sessionId?: string }) =>
+      Promise.resolve(issueDirective(params.directive, params.targetModules, params.priority, params.type, params.sessionId)),
     onSuccess: invalidateDecode,
   });
-  
-  const personalityAuto = useMutation({
-    mutationFn: () => decode.personality.auto(),
-    onSuccess: invalidateDecode,
+
+  const ackDirective = useMutation({
+    mutationFn: (params: { directiveId: string; moduleId: string }) =>
+      Promise.resolve(acknowledgeDirective(params.directiveId, params.moduleId)),
   });
-  
-  const personalityLock = useMutation({
-    mutationFn: () => decode.personality.lock(),
-    onSuccess: invalidateDecode,
+
+  const pendingDir = useMutation({
+    mutationFn: (moduleId: string) =>
+      Promise.resolve(getPendingDirectives(moduleId)),
   });
-  
-  const personalityUnlock = useMutation({
-    mutationFn: () => decode.personality.unlock(),
-    onSuccess: invalidateDecode,
+
+  const dirHistory = useMutation({
+    mutationFn: (limit?: number) =>
+      Promise.resolve(getDirectiveHistory(limit)),
   });
-  
-  const personalityDetect = useMutation({
-    mutationFn: (text: string) => decode.personality.detect(text),
+
+  // ═══ Intelligence ═══
+  const insights = useMutation({
+    mutationFn: (sessionId?: string) =>
+      Promise.resolve(getSubstrateInsights(sessionId)),
   });
-  
-  const personalityInterpret = useMutation({
-    mutationFn: (text: string) => decode.personality.interpret(text),
+
+  const summary = useMutation({
+    mutationFn: (sessionId?: string) =>
+      Promise.resolve(getSubstrateSummary(sessionId)),
   });
-  
-  const personalityReset = useMutation({
-    mutationFn: () => decode.personality.reset(),
-    onSuccess: invalidateDecode,
+
+  // ═══ Hardening & Diagnostics ═══
+  const disambiguate = useMutation({
+    mutationFn: (candidates: Array<{ intent: string; confidence: number }>) =>
+      Promise.resolve(disambiguateIntent(candidates)),
+  });
+
+  const rateLimit = useMutation({
+    mutationFn: () => Promise.resolve(checkIntentRateLimit()),
+  });
+
+  const routingAudit = useMutation({
+    mutationFn: (limit?: number) => Promise.resolve(getRoutingAuditChain(limit)),
+  });
+
+  const verifyRouting = useMutation({
+    mutationFn: () => Promise.resolve(verifyRoutingChain()),
   });
   
   return {
@@ -135,6 +185,16 @@ export function useDecode(): UseDecodeReturn {
       interpret: personalityInterpret,
       reset: personalityReset,
     },
+    directive: directiveMut,
+    acknowledgeDirective: ackDirective,
+    pendingDirectives: pendingDir,
+    directiveHistory: dirHistory,
+    substrateInsights: insights,
+    substrateSummary: summary,
+    disambiguate,
+    rateLimit,
+    routingAudit,
+    verifyRouting,
   };
 }
 

@@ -19,6 +19,7 @@ export interface UseDefenseReturn {
   
   // Actions
   analyze: ReturnType<typeof useMutation>;
+  report: ReturnType<typeof useMutation>;
   reputation: ReturnType<typeof useMutation>;
   ipIntel: ReturnType<typeof useMutation>;
   anomaly: ReturnType<typeof useMutation>;
@@ -70,6 +71,10 @@ export function useDefense(): UseDefenseReturn {
     },
   });
   
+  const report = useMutation({
+    mutationFn: (threatId: string) => defense.report(threatId),
+  });
+
   const reputation = useMutation({
     mutationFn: (ipAddress: string) => defense.reputation(ipAddress),
   });
@@ -96,6 +101,7 @@ export function useDefense(): UseDefenseReturn {
     limits,
     rules,
     analyze,
+    report,
     reputation,
     ipIntel,
     anomaly,
