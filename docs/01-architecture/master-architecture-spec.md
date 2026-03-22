@@ -140,8 +140,9 @@ graph TD
 | Meta | ATLAS, ENGINEER | 0.040 | Capability mapping, maintenance intelligence |
 | Plane | GOVERNANCE | 0.030 | Supervisory legitimacy checks |
 | Shell | DEFENSE | 0.030 | Terminal containment boundary |
+| Auxiliary | OBSERVER | — | Watchdog monitoring, telemetry aggregation, anomaly detection |
 
-**Total: 40 Matrix Nodes across 12 Sectors, Σ(weight) = 1.000**
+**Total: 40 Matrix Nodes + 1 Auxiliary (OBSERVER) across 12 Sectors, Σ(weight) = 1.000**
 
 ## 6. Component Registry
 
