@@ -232,42 +232,43 @@ class EncodedLearningEngineClient {
   // TOPIC SELECTION
   // ═══════════════════════════════════════════════════════════════════════════
 
-  private async selectNextTopic(): Promise<Topic | null> {
-    const curriculum = getEncodedCurriculum();
-    
-    // Weighted selection based on:
-    // 1. Priority (higher weight for lower priority numbers)
-    // 2. Mastery (lower mastery = more likely to select)
-    // 3. Recency (avoid recently studied topics)
-    
-    const scored = curriculum.map(topic => {
-      const mastery = this.state.masteryScores[topic.id] || 0;
-      const priorityScore = (51 - topic.priority) / 50; // 1.0 for priority 1, 0.02 for priority 50
-      const masteryScore = 1 - mastery; // 1.0 for 0% mastery, 0.0 for 100%
-      const weightScore = topic.weight;
-      
-      return {
-        topic,
-        score: (priorityScore * 0.4) + (masteryScore * 0.4) + (weightScore * 0.2),
-      };
-    });
+  /** Reusable scored array to avoid per-call allocation */
+  private _scoredBuf: Array<{ topic: Topic; score: number }> = [];
 
-    // Sort by score and add randomness
-    scored.sort((a, b) => b.score - a.score);
+  private async selectNextTopic(): Promise<Topic | null> {
+    const curriculum = getEncodedCurriculum(); // now cached, returns same reference
+    const masteryScores = this.state.masteryScores;
     
-    // Pick from top 10 with weighted random
-    const top10 = scored.slice(0, 10);
-    const totalScore = top10.reduce((sum, s) => sum + s.score, 0);
-    let random = Math.random() * totalScore;
-    
-    for (const item of top10) {
-      random -= item.score;
-      if (random <= 0) {
-        return item.topic;
-      }
+    // Reuse buffer — resize only if curriculum changed
+    if (this._scoredBuf.length !== curriculum.length) {
+      this._scoredBuf = new Array(curriculum.length);
     }
 
-    return top10[0]?.topic || null;
+    for (let i = 0; i < curriculum.length; i++) {
+      const topic = curriculum[i];
+      const mastery = masteryScores[topic.id] || 0;
+      const priorityScore = (51 - topic.priority) / 50;
+      const masteryScore = 1 - mastery;
+      this._scoredBuf[i] = {
+        topic,
+        score: (priorityScore * 0.4) + (masteryScore * 0.4) + (topic.weight * 0.2),
+      };
+    }
+
+    // Partial sort: only need top 10
+    this._scoredBuf.sort((a, b) => b.score - a.score);
+    
+    const top10End = Math.min(10, this._scoredBuf.length);
+    let totalScore = 0;
+    for (let i = 0; i < top10End; i++) totalScore += this._scoredBuf[i].score;
+    let random = Math.random() * totalScore;
+    
+    for (let i = 0; i < top10End; i++) {
+      random -= this._scoredBuf[i].score;
+      if (random <= 0) return this._scoredBuf[i].topic;
+    }
+
+    return this._scoredBuf[0]?.topic || null;
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

@@ -185,7 +185,7 @@ class LearningOrchestratorClient {
       this.state.currentJob = null;
       this.state.lastJobAt = new Date().toISOString();
       this.state.totalJobsToday++;
-      this.persistState();
+      this.debouncedPersist();
     }
 
     // Record with budget governor
@@ -500,6 +500,17 @@ Be concise, precise, and focused on practical utility. This learning will be sto
       secureSet('clm_orchestrator_state', this.state);
     } catch {
       /* Quota exceeded — non-critical */
+    }
+  }
+
+  private _persistTimer: ReturnType<typeof setTimeout> | null = null;
+
+  private debouncedPersist(): void {
+    if (!this._persistTimer) {
+      this._persistTimer = setTimeout(() => {
+        this._persistTimer = null;
+        this.persistState();
+      }, 1500);
     }
   }
 }

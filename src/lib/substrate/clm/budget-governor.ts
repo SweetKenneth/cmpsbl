@@ -291,9 +291,18 @@ class BudgetGovernorClient {
     this.persistState();
   }
 
+  /** Cached today string — avoids new Date().toISOString() on every check */
+  private _cachedToday: string = '';
+  private _cachedTodayExpiry: number = 0;
+
   private checkDayRollover(): void {
-    const today = new Date().toISOString().split('T')[0];
-    if (this.state.dateKey !== today) {
+    const now = Date.now();
+    // Only recompute date string every 30 seconds
+    if (now > this._cachedTodayExpiry) {
+      this._cachedToday = new Date(now).toISOString().split('T')[0];
+      this._cachedTodayExpiry = now + 30_000;
+    }
+    if (this.state.dateKey !== this._cachedToday) {
       this.state = this.initializeState();
       this.jobFingerprints.clear();
       this.syncFromNexus();

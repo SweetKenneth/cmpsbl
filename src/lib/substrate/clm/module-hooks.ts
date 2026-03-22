@@ -98,13 +98,20 @@ export function getModuleHook(module: SubstrateModule): ModuleLearningHook | nul
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// DEFAULT MODULE IMPLEMENTATIONS
+// DEFAULT MODULE IMPLEMENTATIONS (with TTL cache)
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/** Per-module KPI cache with 2-minute TTL to avoid hammering brain_events */
+const _kpiCache = new Map<string, { kpis: ModuleKPIs; expiresAt: number }>();
+const KPI_CACHE_TTL_MS = 2 * 60 * 1000; // 2 minutes
+
 /**
- * Create a default KPI fetcher for a module
+ * Create a default KPI fetcher for a module (cached)
  */
 async function getDefaultKPIs(module: SubstrateModule): Promise<ModuleKPIs> {
+  const cached = _kpiCache.get(module);
+  if (cached && Date.now() < cached.expiresAt) return cached.kpis;
+
   const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   
   try {
@@ -115,19 +122,25 @@ async function getDefaultKPIs(module: SubstrateModule): Promise<ModuleKPIs> {
       .gte('created_at', since24h);
 
     const total = events?.length || 0;
-    const successes = events?.filter(e => e.outcome === 'success').length || 0;
-    const errors = events?.filter(e => e.outcome === 'error' || e.outcome === 'failure').length || 0;
+    let successes = 0;
+    let errors = 0;
+    for (const e of events || []) {
+      if (e.outcome === 'success') successes++;
+      else if (e.outcome === 'error' || e.outcome === 'failure') errors++;
+    }
 
-    return {
+    const kpis: ModuleKPIs = {
       module,
       success_rate: total > 0 ? successes / total : 1.0,
-      response_time_avg_ms: 0, // Would need timing data
+      response_time_avg_ms: 0,
       error_count_24h: errors,
       throughput_24h: total,
       health_score: Math.round(100 * (total > 0 ? successes / total : 1)),
     };
+    _kpiCache.set(module, { kpis, expiresAt: Date.now() + KPI_CACHE_TTL_MS });
+    return kpis;
   } catch {
-    return {
+    const fallback: ModuleKPIs = {
       module,
       success_rate: 0,
       response_time_avg_ms: 0,
@@ -135,6 +148,8 @@ async function getDefaultKPIs(module: SubstrateModule): Promise<ModuleKPIs> {
       throughput_24h: 0,
       health_score: 50,
     };
+    _kpiCache.set(module, { kpis: fallback, expiresAt: Date.now() + KPI_CACHE_TTL_MS });
+    return fallback;
   }
 }
 
