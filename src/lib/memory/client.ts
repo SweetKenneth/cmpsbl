@@ -344,41 +344,28 @@ export class MemoryClient {
         }
       }
 
-      // Process hot tier results
-      if (hotResult.status === 'fulfilled') {
-        const hotData = ((hotResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-        if (hotData.length > 0) {
-          tiersSearched.push('hot');
-          for (const m of hotData) {
-            if (!allMemories.some(e => e.id === m.id)) {
-              allMemories.push({
-                id: m.id, content: m.content,
-                timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.0,
-                tier: 'hot', memory_type: m.memory_type,
-                provenance: m.provenance,
-              });
-            }
-          }
-        }
-      }
+      // Deduplicate via Set for O(1) lookups instead of O(n) .some()
+      const seenIds = new Set<string>();
+      const seenContent = new Set<string>();
 
-      // Process warm tier results (now from parallel batch instead of sequential waterfall)
-      if (warmResult.status === 'fulfilled') {
-        const warmData = ((warmResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-        if (warmData.length > 0) {
-          tiersSearched.push('warm');
-          for (const m of warmData) {
-            if (!allMemories.some(e => e.id === m.id)) {
-              allMemories.push({
-                id: m.id, content: m.content,
-                timestamp: m.created_at, relevance: (m.value_score || 0.3) * 0.8,
-                tier: 'warm', memory_type: m.memory_type,
-                provenance: m.provenance,
-              });
-            }
-          }
+      const addEntries = (result: PromiseSettledResult<any>, tier: 'hot' | 'warm', tierLabel: string, relevanceMult: number) => {
+        if (result.status !== 'fulfilled') return;
+        const data = ((result.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+        if (data.length === 0) return;
+        tiersSearched.push(tierLabel);
+        for (const m of data) {
+          if (seenIds.has(m.id)) continue;
+          seenIds.add(m.id);
+          allMemories.push({
+            id: m.id, content: m.content,
+            timestamp: m.created_at, relevance: (m.value_score || 0.5) * relevanceMult,
+            tier, memory_type: m.memory_type, provenance: m.provenance,
+          });
         }
-      }
+      };
+
+      addEntries(hotResult, 'hot', 'hot', 1.0);
+      addEntries(warmResult, 'warm', 'warm', 0.8);
 
       // Process substrate vector results
       if (substrateResult.status === 'fulfilled') {
@@ -386,13 +373,13 @@ export class MemoryClient {
         if (response?.data?.memories) {
           tiersSearched.push('substrate_vector');
           for (const m of response.data.memories) {
-            if (!allMemories.some(existing => existing.content === m.content)) {
-              allMemories.push({
-                id: m.id, content: m.content,
-                timestamp: m.created_at, relevance: m.relevance_score,
-                tier: 'hot', memory_type: m.memory_type,
-              });
-            }
+            if (seenContent.has(m.content)) continue;
+            seenContent.add(m.content);
+            allMemories.push({
+              id: m.id, content: m.content,
+              timestamp: m.created_at, relevance: m.relevance_score,
+              tier: 'hot', memory_type: m.memory_type,
+            });
           }
         }
       }
