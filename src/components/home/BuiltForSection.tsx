@@ -47,7 +47,7 @@ const audiences = [
     badge: "For Developers",
     title: "Apps That Evolve",
     tagline: "Infrastructure that improves itself",
-    description: "Build on the substrate with persistent memory, ADAPT-governed routing, and EVOLUTION for self-improvement. Your apps dream, adapt, and get smarter the more they run.",
+    description: "Build with persistent memory, governed routing, and continuous self-improvement. Your apps adapt and get smarter the more they run.",
     features: [
       { icon: Zap, text: "ADAPT-governed routing" },
       { icon: Brain, text: "Memory persistence" },
