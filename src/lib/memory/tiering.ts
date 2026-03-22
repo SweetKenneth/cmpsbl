@@ -1,19 +1,16 @@
 /**
  * Memory Tiering — RPS-driven tier management with receipts
  * Extends SM-2 repetition scheduling with RPS + credibility + contradiction guards
- *
- * FIX #14: inferReason now uses rps score for threshold-based reasoning
  */
 
-import { computeRPS, type MemoryEntry, type RpsWeights, DEFAULT_RPS_WEIGHTS } from './rps';
+import { computeRPS, computeRPSBatch, type MemoryEntry, type RpsWeights, DEFAULT_RPS_WEIGHTS } from './rps';
 
 export type MemoryTier = 'hot' | 'warm' | 'cold' | 'glacier';
 
 export interface TierThresholds {
-  hot_min: number;     // RPS >= this → hot
-  warm_min: number;    // RPS >= this → warm
-  cold_min: number;    // RPS >= this → cold
-  // below cold_min → glacier
+  hot_min: number;
+  warm_min: number;
+  cold_min: number;
 }
 
 export const DEFAULT_TIER_THRESHOLDS: TierThresholds = {
@@ -50,6 +47,9 @@ export interface TierMoveReceipt {
 
 const TIER_RANK: Record<MemoryTier, number> = { hot: 3, warm: 2, cold: 1, glacier: 0 };
 
+/** Pre-computed hide threshold */
+const HIDE_THRESHOLD = DEFAULT_TIER_THRESHOLDS.cold_min * 0.5;
+
 /** Determine tier from RPS */
 export function tierFromRPS(rps: number, thresholds: TierThresholds = DEFAULT_TIER_THRESHOLDS): MemoryTier {
   if (rps >= thresholds.hot_min) return 'hot';
@@ -70,16 +70,50 @@ export function computeTierMove(
 
   if (newTier === currentTier) return null;
 
-  const reason = inferReason(entry, currentTier, newTier, rps);
-  const confidenceAdjust = entry.contradicted ? entry.confidence * 0.7 : entry.confidence;
+  return buildReceipt(entry, currentTier, newTier, rps, actor);
+}
 
+/**
+ * Batch-compute tier moves for an array of entries.
+ * Shares a single Date.now() across all RPS calculations.
+ * Returns only entries that changed tier (filters nulls).
+ */
+export function computeTierMovesBatch(
+  entries: MemoryEntry[],
+  currentTiers: MemoryTier[],
+  actor: TierMoveActor = 'system',
+  weights?: RpsWeights
+): TierMoveReceipt[] {
+  const w = weights ?? DEFAULT_RPS_WEIGHTS;
+  const scores = computeRPSBatch(entries, w);
+  const receipts: TierMoveReceipt[] = [];
+
+  for (let i = 0; i < entries.length; i++) {
+    const rps = scores[i];
+    const newTier = tierFromRPS(rps);
+    if (newTier === currentTiers[i]) continue;
+    receipts.push(buildReceipt(entries[i], currentTiers[i], newTier, rps, actor));
+  }
+
+  return receipts;
+}
+
+/** Shared receipt builder */
+function buildReceipt(
+  entry: MemoryEntry,
+  beforeTier: MemoryTier,
+  afterTier: MemoryTier,
+  rps: number,
+  actor: TierMoveActor
+): TierMoveReceipt {
+  const reason = inferReason(entry, beforeTier, afterTier, rps);
   return {
     memory_id: entry.id,
     reason_code: reason,
-    before_tier: currentTier,
-    after_tier: newTier,
+    before_tier: beforeTier,
+    after_tier: afterTier,
     before_confidence: entry.confidence,
-    after_confidence: confidenceAdjust,
+    after_confidence: entry.contradicted ? entry.confidence * 0.7 : entry.confidence,
     rps_score: rps,
     actor,
     evidence: {
@@ -93,18 +127,13 @@ export function computeTierMove(
   };
 }
 
-/**
- * FIX #14: inferReason now uses rps score for threshold-based reasoning
- */
 function inferReason(entry: MemoryEntry, from: MemoryTier, to: MemoryTier, rps: number): TierMoveReason {
   if (entry.contradicted) return 'contradiction_penalty';
 
-  // Branch-free direction check using pre-computed rank
   if (TIER_RANK[to] > TIER_RANK[from]) {
     return rps >= DEFAULT_TIER_THRESHOLDS.hot_min ? 'used_recently' : 'rps_promotion';
   }
 
-  // Demotion: use threshold cascade
   return entry.access_count <= 1 ? 'staleness_decay'
     : rps < DEFAULT_TIER_THRESHOLDS.cold_min ? 'rps_demotion'
     : 'rps_marginal_demotion';
@@ -112,6 +141,5 @@ function inferReason(entry: MemoryEntry, from: MemoryTier, to: MemoryTier, rps: 
 
 /** Check if memory should be hidden by default (below glacier threshold) */
 export function shouldHide(entry: MemoryEntry, weights?: RpsWeights): boolean {
-  const rps = computeRPS(entry, weights ?? DEFAULT_RPS_WEIGHTS);
-  return rps < DEFAULT_TIER_THRESHOLDS.cold_min * 0.5;
+  return computeRPS(entry, weights ?? DEFAULT_RPS_WEIGHTS) < HIDE_THRESHOLD;
 }

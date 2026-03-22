@@ -16,7 +16,7 @@ export { LocalTierCache, getNodeCache, getAllNodeCacheStats, maintainAllCaches, 
 
 // Tiering & RPS
 export { computeRPS, computeRPSBatch, DEFAULT_RPS_WEIGHTS, CREDIBILITY_WEIGHTS, type RpsWeights, type SourceCredibility } from './rps';
-export { tierFromRPS, computeTierMove, shouldHide, DEFAULT_TIER_THRESHOLDS, type MemoryTier, type TierThresholds, type TierMoveReceipt, type TierMoveReason, type TierMoveActor } from './tiering';
+export { tierFromRPS, computeTierMove, computeTierMovesBatch, shouldHide, DEFAULT_TIER_THRESHOLDS, type MemoryTier, type TierThresholds, type TierMoveReceipt, type TierMoveReason, type TierMoveActor } from './tiering';
 // Note: rps.ts MemoryEntry is re-exported as RpsMemoryEntry to avoid collision with client.ts MemoryEntry
 export { type MemoryEntry as RpsMemoryEntry } from './rps';
 

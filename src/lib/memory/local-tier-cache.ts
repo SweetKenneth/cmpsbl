@@ -87,11 +87,11 @@ export class LocalTierCache<T = unknown> {
       return hotEntry.value;
     }
 
-    // 2. Warm tier → promote to hot
+    // 2. Warm tier → promote to hot (reuse timestamp)
     const warmEntry = this.warm.get(key);
     if (warmEntry) {
       this.stats.warmHits++;
-      this.promote(key, warmEntry);
+      this.promote(key, warmEntry, now);
       return warmEntry.value;
     }
 
