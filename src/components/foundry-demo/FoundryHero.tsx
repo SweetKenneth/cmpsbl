@@ -42,20 +42,17 @@ export function FoundryHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[2.5rem] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9] mb-6 sm:mb-8"
+          className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-[0.95] mb-6 sm:mb-8"
         >
-          Software that
-          <br />
-          <span className="bg-gradient-to-r from-primary via-primary to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent">
-            crystallizes software
-          </span>
+          Software that{' '}
+          <span className="text-primary">crystallizes software</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-base sm:text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
+          className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
         >
           A recursive discovery engine that surfaces production-grade software memories
           directly from silicon.{' '}
@@ -104,17 +101,17 @@ export function FoundryHero() {
           className="flex items-center justify-center gap-6 sm:gap-10 md:gap-16 font-mono"
         >
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-black text-foreground tracking-tight">1,143</div>
-            <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Memories Crystallized</div>
+            <div className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">1,143</div>
+            <div className="text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Memories Crystallized</div>
           </div>
           <div className="w-px h-10 sm:h-12 bg-border/20" />
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-black text-primary tracking-tight">95</div>
-            <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Perfect Scores</div>
+            <div className="text-2xl sm:text-3xl font-black text-primary tracking-tight">95</div>
+            <div className="text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Perfect Scores</div>
           </div>
           <div className="w-px h-10 sm:h-12 bg-border/20" />
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-black text-foreground tracking-tight">&lt;9h</div>
+            <div className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">&lt;9h</div>
             <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Total Runtime</div>
           </div>
         </motion.div>

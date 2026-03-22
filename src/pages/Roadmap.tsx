@@ -168,11 +168,11 @@ export default function Roadmap() {
               Discovery → Economy → Engines → Dreaming → Evolution
             </Badge>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight text-foreground mb-6 leading-[0.95]">
-              The Evolution
-              <br />
-              <span className="text-primary">Roadmap</span>
-            </h1>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-6 leading-[0.95]">
+               The Evolution
+               <br />
+               <span className="text-primary">Roadmap</span>
+             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-10">
               Five phases. From crystallizing patterns to self-improving architecture.

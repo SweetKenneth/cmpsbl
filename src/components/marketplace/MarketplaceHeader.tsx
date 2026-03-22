@@ -87,15 +87,11 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ delay: 0.1 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 tracking-tight">
-            <span className="bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
-              AI Templates That
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-primary via-violet-500 to-cyan-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-              Never Forget
-            </span>
-          </h1>
+           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+             <span className="text-foreground">AI Templates That</span>
+             <br />
+             <span className="text-primary">Never Forget</span>
+           </h1>
         <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
             {TEMPLATES.length}+ production-ready cognitive templates with built-in memory,
             drift prevention & self-improvement. 
@@ -126,22 +122,22 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ delay: 0.3 }}
           className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-4 max-w-4xl mx-auto"
         >
-          {[
-            { icon: Brain, label: 'Persistent Memory', color: 'text-violet-500', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
-            { icon: Shield, label: 'Drift Prevention', color: 'text-rose-500', bg: 'bg-rose-500/10', border: 'border-rose-500/20' },
-            { icon: Moon, label: 'Offline Learning', color: 'text-purple-500', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
-            { icon: Server, label: 'NEXUS Router', color: 'text-orange-500', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
-            { icon: Zap, label: 'Multi-Provider', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
-          ].map(({ icon: Icon, label, color, bg, border }) => (
-            <motion.div 
-              key={label}
-              whileHover={{ scale: 1.05 }}
-              className={`flex items-center gap-2 px-3 py-2 rounded-full ${bg} border ${border} cursor-default transition-shadow hover:shadow-lg`}
-            >
-              <Icon className={`w-4 h-4 ${color}`} />
-              <span className="text-xs sm:text-sm font-medium text-foreground">{label}</span>
-            </motion.div>
-          ))}
+           {[
+             { icon: Brain, label: 'Persistent Memory', colorClass: 'text-[hsl(var(--neon-purple))] bg-[hsl(var(--neon-purple))]/10 border-[hsl(var(--neon-purple))]/20' },
+             { icon: Shield, label: 'Drift Prevention', colorClass: 'text-[hsl(var(--neon-magenta))] bg-[hsl(var(--neon-magenta))]/10 border-[hsl(var(--neon-magenta))]/20' },
+             { icon: Moon, label: 'Offline Learning', colorClass: 'text-[hsl(var(--neon-purple))] bg-[hsl(var(--neon-purple))]/10 border-[hsl(var(--neon-purple))]/20' },
+             { icon: Server, label: 'NEXUS Router', colorClass: 'text-primary bg-primary/10 border-primary/20' },
+             { icon: Zap, label: 'Multi-Provider', colorClass: 'text-[hsl(var(--neon-cyan))] bg-[hsl(var(--neon-cyan))]/10 border-[hsl(var(--neon-cyan))]/20' },
+           ].map(({ icon: Icon, label, colorClass }) => (
+             <motion.div 
+               key={label}
+               whileHover={{ scale: 1.05 }}
+               className={`flex items-center gap-2 px-3 py-2 rounded-full border cursor-default transition-shadow hover:shadow-lg ${colorClass}`}
+             >
+               <Icon className="w-4 h-4" />
+               <span className="text-xs sm:text-sm font-medium text-foreground">{label}</span>
+             </motion.div>
+           ))}
         </motion.div>
 
         {/* Stats bar with enhanced styling */}
@@ -151,15 +147,15 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ delay: 0.4 }}
           className="flex flex-wrap justify-center gap-6 sm:gap-10 mt-10 pt-8 border-t border-border/30"
         >
-          {[
-            { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
-            { value: '14', label: 'Core Nodes', accent: 'text-violet-500' },
-            { value: '0%', label: 'AI Drift', accent: 'text-emerald-500' },
-            { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-orange-500' },
-          ].map(({ value, label, accent }) => (
-            <div key={label} className="text-center group cursor-default">
-              <div className={`text-2xl sm:text-3xl font-black ${accent} transition-transform group-hover:scale-110`}>{value}</div>
-              <div className="text-xs text-muted-foreground">{label}</div>
+           {[
+             { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
+             { value: '14', label: 'Core Modules', accent: 'text-[hsl(var(--neon-purple))]' },
+             { value: '0%', label: 'AI Drift', accent: 'text-[hsl(var(--neon-cyan))]' },
+             { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-[hsl(var(--neon-magenta))]' },
+           ].map(({ value, label, accent }) => (
+             <div key={label} className="text-center group cursor-default">
+               <div className={`text-2xl sm:text-3xl font-black ${accent} transition-transform group-hover:scale-110`}>{value}</div>
+               <div className="text-xs text-muted-foreground">{label}</div>
             </div>
           ))}
         </motion.div>
@@ -177,7 +173,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
               View Bundles
             </Link>
           </Button>
-          <Button variant="outline" size="sm" className="gap-2 text-xs border-orange-500/30 text-orange-600 hover:bg-orange-500/10" asChild>
+          <Button variant="outline" size="sm" className="gap-2 text-xs border-primary/30 text-primary hover:bg-primary/10" asChild>
             <Link to="#agencies">
               <TrendingUp className="w-3.5 h-3.5" />
               For Agencies

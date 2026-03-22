@@ -17,14 +17,14 @@ export function FoundryMidCTA() {
         viewport={{ once: true }}
         className="max-w-3xl mx-auto relative"
       >
-        <div className="bg-card/40 border border-primary/15 rounded-2xl p-8 sm:p-10 md:p-12 backdrop-blur-sm text-center shadow-lg shadow-primary/5">
+        <div className="bg-[hsl(var(--stream-slate))]/40 border border-border/40 rounded-2xl p-8 sm:p-10 md:p-12 backdrop-blur-sm text-center">
           <div className="text-xs font-mono uppercase tracking-[0.2em] text-primary/60 mb-3">
             Ready to see for yourself?
           </div>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground mb-3 sm:mb-4">
+          <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground mb-3 sm:mb-4">
             Every memory is <span className="text-primary">yours to explore</span>
           </h3>
-          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-md mx-auto mb-6 sm:mb-8 leading-relaxed">
+          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6 sm:mb-8 leading-relaxed">
             Create a free account and start crystallizing memories from the Memory Stream.
             No credit card. No setup. Just pull.
           </p>

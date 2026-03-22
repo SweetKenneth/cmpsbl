@@ -19,13 +19,13 @@ export function FoundryFinalCTA() {
         transition={{ duration: 0.6 }}
         className="max-w-2xl mx-auto text-center relative"
       >
-        <p className="text-sm sm:text-base text-muted-foreground/70 max-w-lg mx-auto mb-8 leading-relaxed">
+        <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
           The Memory Stream captures system behavior and turns it
           into production-ready capabilities — automatically.
         </p>
         <button
           onClick={() => navigate('/auth?redirect=/foundry')}
-          className="px-10 sm:px-12 py-4 sm:py-5 bg-primary text-primary-foreground rounded-xl font-mono text-base sm:text-lg font-bold hover:bg-primary/90 transition-all duration-200 shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/35 hover:-translate-y-1 min-h-[56px] crystallize-glow"
+          className="px-10 sm:px-12 py-4 bg-primary text-primary-foreground rounded-xl font-mono text-sm sm:text-base font-bold hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 min-h-[52px]"
         >
           Create Free Account
         </button>

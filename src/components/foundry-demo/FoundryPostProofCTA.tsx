@@ -17,10 +17,10 @@ export function FoundryPostProofCTA() {
         viewport={{ once: true }}
         className="max-w-2xl mx-auto relative text-center"
       >
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-4 leading-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-4 leading-tight">
           Want to discover memories yourself?
         </h2>
-        <p className="text-sm sm:text-base text-muted-foreground/70 max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
+        <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-8 sm:mb-10 leading-relaxed">
           Create an account to access the Foundry and explore discoveries
           from the Memory Stream in real time.
         </p>

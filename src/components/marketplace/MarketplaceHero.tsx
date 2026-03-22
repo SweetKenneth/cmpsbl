@@ -14,27 +14,21 @@ import { TEMPLATES } from "@/data/templates";
 
 // The 9 modules + zones + meshes of the substrate
 const MODULES = [
-  // Kernel Layer
-  { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },
-  { icon: Zap, name: "Ripple", color: "text-teal-400", description: "Message bus" },
-  { icon: Lock, name: "Access", color: "text-amber-400", description: "Identity & keys" },
-  // Cognitive Layer
-  { icon: Brain, name: "Brain", color: "text-violet-400", description: "3-tier memory" },
-  { icon: MessageSquare, name: "Decode", color: "text-cyan-400", description: "Intent parsing" },
-  { icon: Sparkles, name: "Nexus", color: "text-green-400", description: "AI routing" },
-  // Operational Layer
-  { icon: Shield, name: "Defense", color: "text-red-400", description: "Threat detection" },
-  { icon: Eye, name: "Vision", color: "text-blue-400", description: "Observability" },
-  { icon: Moon, name: "Dream", color: "text-purple-400", description: "Evolution" },
-  // Admin Layer
-  { icon: Settings, name: "System", color: "text-slate-400", description: "Administration" },
-  { icon: Crown, name: "Evolution", color: "text-pink-400", description: "Self-improvement" },
-  { icon: Globe, name: "Integration", color: "text-emerald-400", description: "Enterprise" },
-  // Orchestrator Layer
-  { icon: Sparkles, name: "Cortex", color: "text-fuchsia-400", description: "Orchestrator" },
-  { icon: Sparkles, name: "Encode", color: "text-lime-400", description: "Execution engine" },
-  // Human Compatibility Layer
-  { icon: Eye, name: "Inclusive", color: "text-rose-400", description: "Human a11y" },
+  { icon: Cpu, name: "Core", description: "Kernel scheduling" },
+  { icon: Zap, name: "Ripple", description: "Message bus" },
+  { icon: Lock, name: "Access", description: "Identity & keys" },
+  { icon: Brain, name: "Brain", description: "3-tier memory" },
+  { icon: MessageSquare, name: "Decode", description: "Intent parsing" },
+  { icon: Sparkles, name: "Nexus", description: "AI routing" },
+  { icon: Shield, name: "Defense", description: "Threat detection" },
+  { icon: Eye, name: "Vision", description: "Observability" },
+  { icon: Moon, name: "Dream", description: "Evolution" },
+  { icon: Settings, name: "System", description: "Administration" },
+  { icon: Crown, name: "Evolution", description: "Self-improvement" },
+  { icon: Globe, name: "Integration", description: "Enterprise" },
+  { icon: Sparkles, name: "Cortex", description: "Orchestrator" },
+  { icon: Sparkles, name: "Encode", description: "Execution engine" },
+  { icon: Eye, name: "Inclusive", description: "Human a11y" },
 ];
 
 // Competitor logos (stylized as text for now)
@@ -97,13 +91,10 @@ export function MarketplaceHero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center mb-8"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.95] tracking-tight">
-              <span className="block bg-gradient-to-r from-rose-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%] mb-2">
-                Build AI That
-              </span>
-              <span className="block bg-gradient-to-r from-amber-400 via-emerald-400 to-blue-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
-                Thinks, Remembers, Defends
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[0.95] tracking-tight">
+              <span className="text-foreground">Build AI That</span>
+              <br />
+              <span className="text-primary">Thinks, Remembers, Defends</span>
             </h1>
           </motion.div>
 
@@ -138,7 +129,7 @@ export function MarketplaceHero() {
                   transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
                   className="absolute w-[75%] h-[75%] rounded-full border border-primary/20"
                 />
-                <div className="relative z-10 w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-rose-500 via-purple-500 to-cyan-500 flex items-center justify-center shadow-2xl">
+                <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-primary flex items-center justify-center shadow-2xl">
                   <Server className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 </div>
               </div>
@@ -164,8 +155,8 @@ export function MarketplaceHero() {
                       whileHover={{ scale: 1.2 }}
                       className="group relative"
                     >
-                      <div className={`p-2.5 md:p-3 rounded-xl bg-card border border-border/50 shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/50`}>
-                        <Icon className={`w-4 h-4 md:w-5 md:h-5 ${mod.color}`} />
+                       <div className={`p-2.5 md:p-3 rounded-xl bg-card border border-border/50 shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/50`}>
+                         <Icon className="w-4 h-4 md:w-5 md:h-5 text-primary" />
                       </div>
                       {/* Tooltip */}
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
@@ -185,27 +176,27 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1 }}
             className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-12 max-w-5xl mx-auto"
           >
-            <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-500/10 to-amber-500/10 border border-rose-500/30 col-span-2 md:col-span-1">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent">$39</div>
-              <div className="text-xs text-muted-foreground">AI Generator</div>
-              <Badge className="mt-1 text-[10px] bg-rose-500/20 text-rose-400 border-rose-500/30">NEW</Badge>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent">{TEMPLATES.length}+</div>
-              <div className="text-xs text-muted-foreground">Templates</div>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">13</div>
-              <div className="text-xs text-muted-foreground">Modules</div>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black text-emerald-500">FREE</div>
-              <div className="text-xs text-muted-foreground">SDK Access</div>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$27</div>
-              <div className="text-xs text-muted-foreground">From</div>
-            </div>
+             <div className="text-center p-4 rounded-2xl bg-primary/10 border border-primary/30 col-span-2 md:col-span-1">
+               <div className="text-2xl md:text-3xl font-black text-primary">$39</div>
+               <div className="text-xs text-muted-foreground">AI Generator</div>
+               <Badge className="mt-1 text-[10px] bg-primary/20 text-primary border-primary/30">NEW</Badge>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-primary">{TEMPLATES.length}+</div>
+               <div className="text-xs text-muted-foreground">Templates</div>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-cyan))]">13</div>
+               <div className="text-xs text-muted-foreground">Modules</div>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-purple))]">FREE</div>
+               <div className="text-xs text-muted-foreground">SDK Access</div>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-magenta))]">$27</div>
+               <div className="text-xs text-muted-foreground">From</div>
+             </div>
           </motion.div>
 
           {/* Differentiator Cards */}
@@ -215,27 +206,27 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1.2 }}
             className="grid md:grid-cols-3 gap-4 mb-12 max-w-5xl mx-auto"
           >
-            <div className="group p-6 rounded-2xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 hover:border-violet-500/40 transition-all">
-              <Brain className="w-8 h-8 text-violet-500 mb-3" />
-              <h3 className="font-bold text-foreground mb-2">3-Tier Memory</h3>
-              <p className="text-sm text-muted-foreground">
-                Working, episodic, and semantic memory that persists across sessions. <strong className="text-foreground">Prevents context amnesia.</strong>
-              </p>
-            </div>
-            <div className="group p-6 rounded-2xl bg-gradient-to-br from-rose-500/10 to-rose-500/5 border border-rose-500/20 hover:border-rose-500/40 transition-all">
-              <Shield className="w-8 h-8 text-rose-500 mb-3" />
-              <h3 className="font-bold text-foreground mb-2">Autonomous Governance</h3>
-              <p className="text-sm text-muted-foreground">
-                Real-time threat detection, PII filtering, and compliance enforcement. <strong className="text-foreground">Prevents prompt injection & drift attacks.</strong>
-              </p>
-            </div>
-            <div className="group p-6 rounded-2xl bg-gradient-to-br from-purple-500/10 to-purple-500/5 border border-purple-500/20 hover:border-purple-500/40 transition-all">
-              <Moon className="w-8 h-8 text-purple-500 mb-3" />
-              <h3 className="font-bold text-foreground mb-2">Dream Synthesis</h3>
-              <p className="text-sm text-muted-foreground">
-                Autonomous overnight learning cycles. <strong className="text-foreground">Your AI improves while you sleep. No competitor offers this.</strong>
-              </p>
-            </div>
+             <div className="group p-6 rounded-2xl bg-[hsl(var(--neon-purple))]/5 border border-[hsl(var(--neon-purple))]/20 hover:border-[hsl(var(--neon-purple))]/40 transition-all">
+               <Brain className="w-8 h-8 text-[hsl(var(--neon-purple))] mb-3" />
+               <h3 className="font-bold text-foreground mb-2">3-Tier Memory</h3>
+               <p className="text-sm text-muted-foreground">
+                 Working, episodic, and semantic memory that persists across sessions. <strong className="text-foreground">Prevents context amnesia.</strong>
+               </p>
+             </div>
+             <div className="group p-6 rounded-2xl bg-[hsl(var(--neon-magenta))]/5 border border-[hsl(var(--neon-magenta))]/20 hover:border-[hsl(var(--neon-magenta))]/40 transition-all">
+               <Shield className="w-8 h-8 text-[hsl(var(--neon-magenta))] mb-3" />
+               <h3 className="font-bold text-foreground mb-2">Autonomous Governance</h3>
+               <p className="text-sm text-muted-foreground">
+                 Real-time threat detection, PII filtering, and compliance enforcement. <strong className="text-foreground">Prevents prompt injection & drift attacks.</strong>
+               </p>
+             </div>
+             <div className="group p-6 rounded-2xl bg-primary/5 border border-primary/20 hover:border-primary/40 transition-all">
+               <Moon className="w-8 h-8 text-primary mb-3" />
+               <h3 className="font-bold text-foreground mb-2">Background Processing</h3>
+               <p className="text-sm text-muted-foreground">
+                 Autonomous overnight learning cycles. <strong className="text-foreground">Your AI improves while you sleep. No competitor offers this.</strong>
+               </p>
+             </div>
           </motion.div>
 
           {/* CTA Section */}
@@ -245,13 +236,13 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button 
-              size="lg" 
-              className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 hover:opacity-90 transition-opacity text-white"
-              onClick={() => document.getElementById('ai-generator')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <Sparkles className="w-5 h-5" />
-              Generate Unique Template — $39
+             <Button 
+               size="lg" 
+               className="gap-2 px-8 py-6 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground"
+               onClick={() => document.getElementById('ai-generator')?.scrollIntoView({ behavior: 'smooth' })}
+             >
+               <Sparkles className="w-5 h-5" />
+               Generate Unique Template — $39
             </Button>
             <Button 
               variant="outline" 
@@ -270,22 +261,22 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1.6 }}
             className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-muted-foreground"
           >
-            <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-emerald-500" />
-              <span>Licensed capabilities</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-amber-500" />
-              <span>82,944+ unique combinations</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-cyan-500" />
-              <span>Multi-model compatible</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-purple-500" />
-              <span>Enterprise support</span>
-            </div>
+             <div className="flex items-center gap-2">
+               <Lock className="w-4 h-4 text-[hsl(var(--neon-cyan))]" />
+               <span>Licensed capabilities</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Star className="w-4 h-4 text-primary" />
+               <span>82,944+ unique combinations</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Globe className="w-4 h-4 text-[hsl(var(--neon-cyan))]" />
+               <span>Multi-model compatible</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Users className="w-4 h-4 text-[hsl(var(--neon-purple))]" />
+               <span>Enterprise support</span>
+             </div>
           </motion.div>
         </div>
       </div>
