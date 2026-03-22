@@ -101,17 +101,17 @@ export function FoundryHero() {
           className="flex items-center justify-center gap-6 sm:gap-10 md:gap-16 font-mono"
         >
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-black text-foreground tracking-tight">1,143</div>
-            <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Memories Crystallized</div>
+            <div className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">1,143</div>
+            <div className="text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Memories Crystallized</div>
           </div>
           <div className="w-px h-10 sm:h-12 bg-border/20" />
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-black text-primary tracking-tight">95</div>
-            <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Perfect Scores</div>
+            <div className="text-2xl sm:text-3xl font-black text-primary tracking-tight">95</div>
+            <div className="text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Perfect Scores</div>
           </div>
           <div className="w-px h-10 sm:h-12 bg-border/20" />
           <div className="text-center">
-            <div className="text-2xl sm:text-3xl md:text-5xl font-black text-foreground tracking-tight">&lt;9h</div>
+            <div className="text-2xl sm:text-3xl font-black text-foreground tracking-tight">&lt;9h</div>
             <div className="text-xs sm:text-xs text-muted-foreground uppercase tracking-[0.12em] mt-1">Total Runtime</div>
           </div>
         </motion.div>
