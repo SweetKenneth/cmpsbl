@@ -33,20 +33,22 @@ const DEFAULT_CONFIG: CompressionConfig = {
  * Extract semantic fingerprint from content
  */
 function extractSemanticHash(content: string): string {
-  const words = content.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+  const words = content.toLowerCase().split(/\s+/);
   const wordFreq = new Map<string, number>();
   
-  words.forEach(word => {
-    wordFreq.set(word, (wordFreq.get(word) || 0) + 1);
-  });
+  for (const word of words) {
+    if (word.length > 3) {
+      wordFreq.set(word, (wordFreq.get(word) || 0) + 1);
+    }
+  }
   
-  // Top 10 most frequent meaningful words
-  const topWords = [...wordFreq.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([word]) => word);
+  // Top 10 most frequent meaningful words — partial sort via heap-select
+  const entries = Array.from(wordFreq.entries());
+  const top = entries.length <= 10
+    ? entries.sort((a, b) => b[1] - a[1])
+    : entries.sort((a, b) => b[1] - a[1]).slice(0, 10);
   
-  return topWords.join('|');
+  return top.map(([word]) => word).join('|');
 }
 
 /**

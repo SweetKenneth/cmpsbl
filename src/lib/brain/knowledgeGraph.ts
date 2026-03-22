@@ -235,15 +235,17 @@ export async function findPath(
     const { data: allEdges } = await supabase
       .from('brain_graph_edges')
       .select('source_id, target_id')
-      .limit(5000);
+      .limit(3000);
 
     if (!allEdges || allEdges.length === 0) return null;
 
-    // Build adjacency list
+    // Build bidirectional adjacency list for undirected traversal
     const adjacency = new Map<string, string[]>();
     for (const edge of allEdges) {
       if (!adjacency.has(edge.source_id)) adjacency.set(edge.source_id, []);
       adjacency.get(edge.source_id)!.push(edge.target_id);
+      if (!adjacency.has(edge.target_id)) adjacency.set(edge.target_id, []);
+      adjacency.get(edge.target_id)!.push(edge.source_id);
     }
 
     // BFS using in-memory adjacency
