@@ -37,10 +37,12 @@ export function detectContradiction(
   let contradictionSignals = 0;
   const reasons: string[] = [];
 
-  // 1. Negation-keyword overlap (original logic, improved)
+  // 1. Negation-keyword overlap — use Set for O(1) neg lookup
   const existingWords = existingLower.split(/\s+/).filter(w => w.length > 3);
+  const newWords = newLower.split(/\s+/);
+  const newWordsLong = newWords.filter(w => w.length > 3);
   for (const word of existingWords) {
-    for (const neg of NEGATIONS) {
+    for (const neg of NEGATION_SET) {
       if (newLower.includes(`${neg} ${word}`) || newLower.includes(`${word} ${neg}`)) {
         contradictionSignals++;
         reasons.push(`negation: "${neg} ${word}"`);
