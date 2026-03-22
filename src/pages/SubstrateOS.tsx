@@ -317,8 +317,8 @@ export default function SubstrateOS() {
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="dark:block hidden">
-          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[hsl(185,100%,50%,0.02)] rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-[hsl(280,100%,65%,0.02)] rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-primary/[0.02] rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-neon-purple/[0.02] rounded-full blur-[100px]" />
         </div>
       </div>
 
