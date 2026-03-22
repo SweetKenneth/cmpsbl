@@ -59,8 +59,8 @@ console.log(scheduled.tasks);
     layer: "Kernel",
     title: "RIPPLE Events",
     description: "Message bus & cross-system communication",
-    color: "text-cyan-500",
-    gradient: "from-cyan-500 to-teal-600",
+    color: "text-[hsl(var(--neon-cyan))]",
+    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Publish an event to the message bus
 await cmpsbl.ripple.emit({
   channel: "user.actions",
