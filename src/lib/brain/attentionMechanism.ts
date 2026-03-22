@@ -181,7 +181,7 @@ export function calculateSalience(
          .order('value_score', { ascending: false })
          .limit(limit * 3);
 
-      const allMemories = [...(hotMemories || []), ...(warmMemories || [])];
+      const allMemories = hotMemories || [];
 
       // Calculate salience for each memory
       const scored = allMemories.map(m => ({
