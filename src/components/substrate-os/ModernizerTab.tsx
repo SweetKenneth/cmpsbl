@@ -664,7 +664,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Clock className="w-4 h-4 text-amber-400" />
+                <Clock className="w-4 h-4 text-neon-amber" />
                 Upgrade Proposals
               </CardTitle>
               <Button 
