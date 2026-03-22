@@ -34,8 +34,8 @@ export function EnhancedFooter() {
       title: "Infrastructure",
       links: [
         { name: "How it works", href: "/ai-operating-system" },
-        { name: "All modules", href: "/modules" },
-        { name: "Runtime", href: "/runtime" },
+        { name: "Modules", href: "/modules" },
+        { name: "Runtime Engine", href: "/runtime" },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Persistent memory", href: "/persistent-memory" },
       ]
@@ -47,7 +47,7 @@ export function EnhancedFooter() {
         { name: "CodeLab", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },
         { name: "API access", href: "/api-access" },
-        { name: "Experiment Lab", href: "/lab" },
+        { name: "Experimentation", href: "/lab" },
       ]
     },
     {
@@ -56,7 +56,7 @@ export function EnhancedFooter() {
         { name: "Store", href: "/store", highlight: true },
         { name: "Plans & pricing", href: "/store?tab=plans" },
         { name: "Showcase", href: "/showcase" },
-        { name: "World engine", href: "/gaming" },
+        { name: "World Engine", href: "/gaming" },
         { name: "Projects", href: "/projects" },
       ]
     },
@@ -66,7 +66,7 @@ export function EnhancedFooter() {
         { name: "About", href: "/about" },
         { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
-        { name: "Publication", href: "/publication" },
+        { name: "Publications", href: "/publication" },
         { name: "Heritage paper", href: "/heritage-paper", highlight: true },
       ]
     },
