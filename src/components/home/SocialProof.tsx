@@ -59,9 +59,7 @@ export function SocialProof() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
             What Teams Are{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Building
-            </span>
+            <span className="text-[hsl(var(--neon-cyan))]">Building</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Teams using the substrate and Memory Stream to build intelligence that compounds.

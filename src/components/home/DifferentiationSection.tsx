@@ -76,9 +76,7 @@ export function DifferentiationSection() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Systems That{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Dream · Adapt · Evolve
-            </span>
+            <span className="text-[hsl(var(--neon-purple))]">Dream · Adapt · Evolve</span>
           </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
              Most AI platforms process and forget. CMPSBL runs like an operating system for AI — your systems

@@ -110,9 +110,7 @@ export function NpmPackagesCTA() {
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
             Build on the{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Substrate
-            </span>
+            <span className="text-[hsl(var(--neon-purple))]">Substrate</span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             The <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl</code> SDK 
