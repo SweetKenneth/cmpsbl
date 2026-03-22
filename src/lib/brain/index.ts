@@ -121,56 +121,11 @@ export async function storeMemory(
 ): Promise<{ success: boolean; memory_id?: string; tier?: string }> {
   try {
     const importance = options?.importance ?? 0.5;
-    
-    // High importance goes to hot, medium to warm, low to cold
-    let tier = 'warm';
-    
-    if (importance >= 0.8) {
-      tier = 'hot';
-    } else if (importance < 0.3) {
-      tier = 'cold';
-    }
-
-    // Use the appropriate table based on tier
-    // Infer source_module from context
+    const tier = importance >= 0.8 ? 'hot' : importance < 0.3 ? 'cold' : 'warm';
     const sourceModule = context === 'code' ? 'engineering' : context === 'architecture' ? 'architecture' : 'general';
     const category = context || 'uncategorized';
 
-    if (tier === 'hot') {
-      const { data, error } = await supabase
-        .from('brain_memory_hot')
-        .insert({
-          content,
-          context,
-          value_score: importance,
-          tags: options?.tags || [],
-          metadata: { ttl_days: options?.ttl_days },
-          source_module: sourceModule,
-          category,
-        })
-        .select('id')
-        .single();
-
-      if (error) throw error;
-      return { success: true, memory_id: data?.id, tier };
-    } else if (tier === 'warm') {
-      const { data, error } = await supabase
-        .from('brain_memory_warm')
-        .insert({
-          content,
-          context,
-          value_score: importance,
-          tags: options?.tags || [],
-          metadata: { ttl_days: options?.ttl_days },
-          source_module: sourceModule,
-          category,
-        })
-        .select('id')
-        .single();
-
-      if (error) throw error;
-      return { success: true, memory_id: data?.id, tier };
-    } else {
+    if (tier === 'cold') {
       const { data, error } = await supabase
         .from('brain_memory_cold')
         .insert({
@@ -182,16 +137,32 @@ export async function storeMemory(
         })
         .select('id')
         .single();
-
       if (error) throw error;
       return { success: true, memory_id: data?.id, tier };
     }
+
+    const table = tier === 'hot' ? 'brain_memory_hot' : 'brain_memory_warm';
+    const { data, error } = await supabase
+      .from(table)
+      .insert({
+        content,
+        context,
+        value_score: importance,
+        tags: options?.tags || [],
+        metadata: { ttl_days: options?.ttl_days },
+        source_module: sourceModule,
+        category,
+      })
+      .select('id')
+      .single();
+
+    if (error) throw error;
+    return { success: true, memory_id: data?.id, tier };
   } catch (error) {
     console.error('Error storing memory:', error);
     return { success: false };
   }
 }
-
 /**
  * Recall memories by context
  */
