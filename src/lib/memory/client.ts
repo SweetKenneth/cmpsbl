@@ -8,6 +8,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { isDuplicate, compactMetadata, classifyImportance, shouldPreserveIndefinitely } from './content-dedup';
 
 export interface MemoryEntry {
   id: string;
