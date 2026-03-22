@@ -111,14 +111,14 @@
    // Calculate patterns from events
    const patterns = calculatePatterns(events);
    
-   const profile: BehaviorProfile = {
-     entityId,
-     entityType,
-     normalPatterns: patterns,
-     riskScore: calculateRiskScore(entityId),
-     lastUpdated: new Date().toISOString(),
-     eventCount: events.length,
-     anomalyCount: anomalies.filter(a => a.entityId === entityId && !a.resolved).length,
+    const profile: BehaviorProfile = {
+      entityId,
+      entityType,
+      normalPatterns: patterns,
+      riskScore: calculateRiskScore(entityId),
+      lastUpdated: new Date().toISOString(),
+      eventCount: events.length,
+      anomalyCount: unresolvedCounts.get(entityId) || 0,
    };
    
    behaviorProfiles.set(key, profile);
