@@ -401,18 +401,20 @@ export class MemoryClient {
       allMemories.sort((a, b) => (b.relevance || 0) - (a.relevance || 0));
       const finalMemories = allMemories.slice(0, limit);
       
-      // Track recall hit in metacognition
       const hit = finalMemories.length > 0;
-      await this.trackRecallHit(hit);
-      
-      const hasUserFacts = finalMemories.some(m => m.memory_type === 'user_fact');
+      let hasUserFacts = false;
+      for (let i = 0; i < finalMemories.length; i++) {
+        if (finalMemories[i].memory_type === 'user_fact') { hasUserFacts = true; break; }
+      }
 
-      // #14: RAG — Log context for audit
-      const ragContextId = await this.logRAGContext(query, finalMemories);
+      // Fire-and-forget: recall tracking + RAG audit don't block response
+      const ragContextId = `rag-${Date.now().toString(36)}`;
+      this.trackRecallHit(hit).catch(() => {});
+      this.logRAGContext(query, finalMemories).catch(() => {});
       
       return {
         memories: finalMemories,
-        confidence: hasUserFacts ? 0.95 : (finalMemories.length > 0 ? 0.7 : 0),
+        confidence: hasUserFacts ? 0.95 : (hit ? 0.7 : 0),
         tiers_searched: tiersSearched,
         rag_context_id: ragContextId,
       };
