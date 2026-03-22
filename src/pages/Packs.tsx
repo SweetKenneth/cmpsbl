@@ -20,7 +20,7 @@ export default function Packs() {
       />
       <PublicNav />
 
-      <main className="pt-24 sm:pt-28 pb-20">
+      <main className="pt-28 sm:pt-32 pb-20">
         <div className="max-w-6xl mx-auto">
           <PacksContent />
         </div>

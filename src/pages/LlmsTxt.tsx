@@ -256,14 +256,8 @@ export default function LlmsTxt() {
               <a href="https://llmstxt.org" target="_blank" rel="noopener noreferrer" className="hover:underline">llmstxt.org</a>
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4">
-            <span style={{
-              background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--foreground)))",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}>
-              LLMS.txt
-            </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
+            <span className="text-primary">LLMS.txt</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
             A machine-readable context format for AI systems, designed by{" "}

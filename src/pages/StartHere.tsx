@@ -112,16 +112,7 @@ export default function StartHere() {
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.1]"
             {...stagger(0.1)}
           >
-            Build on the{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Substrate
-            </span>
+            Build on the <span className="text-primary">Platform</span>
           </motion.h1>
 
           {/* Intro — balanced narrative */}

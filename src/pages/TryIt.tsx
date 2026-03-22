@@ -30,22 +30,22 @@ export default function TryIt() {
       />
       <PublicNav />
 
-      <main className="container mx-auto max-w-5xl px-4 pt-24 pb-20">
+      <main className="container mx-auto max-w-5xl px-4 pt-28 sm:pt-32 pb-20">
         {/* ─── Hero ─── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10"
         >
-          <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
+          <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 bg-primary/5 px-4 py-1.5">
             <Sparkles className="w-3 h-3 text-primary" />
             <span className="text-xs font-semibold">Live Demo</span>
           </Badge>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3">
-            Try CMPSBL
+            Try <span className="text-primary">CMPSBL</span>
           </h1>
-          <p className="text-muted-foreground max-w-md mx-auto text-sm sm:text-base">
-            No signup. No API key. Talk to the substrate and watch it remember.
+          <p className="text-muted-foreground max-w-md mx-auto text-sm sm:text-base leading-relaxed">
+            No signup. No API key. Talk to the platform and watch it remember.
           </p>
         </motion.div>
 

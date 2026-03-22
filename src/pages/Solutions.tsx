@@ -127,13 +127,8 @@ export default function Solutions() {
               40 Modules · 12 Groups · 675+ Capabilities
             </Badge>
             
-             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6 text-foreground leading-tight">
-               Everything Your AI{" "}
-              <span style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>Needs to Think</span>
+             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 text-foreground leading-tight">
+               Everything Your AI <span className="text-primary">Needs to Think</span>
             </h1>
             <p className="text-base sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">Persistent memory</Link>.{" "}

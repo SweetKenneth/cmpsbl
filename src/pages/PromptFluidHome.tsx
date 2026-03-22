@@ -103,10 +103,10 @@ export default function PromptFluidHome() {
           <motion.h1
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.05] mb-6"
           >
             <span className="text-foreground">Prompt</span>
-            <span className="bg-gradient-to-r from-primary via-cyan-400 to-primary bg-clip-text text-transparent">Fluid</span>
+            <span className="text-primary">Fluid</span>
           </motion.h1>
 
           <motion.p
@@ -200,7 +200,7 @@ export default function PromptFluidHome() {
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-foreground mb-4">
               Cognitive Infrastructure{" "}
-              <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">at Scale</span>
+              <span className="text-primary">at Scale</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               The technology stack behind CMPSBL® — our flagship cognitive operating system.
@@ -236,7 +236,7 @@ export default function PromptFluidHome() {
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-foreground">
               Building the{" "}
-              <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">Future</span>
+              <span className="text-primary">Future</span>
             </h2>
           </motion.div>
 
@@ -285,7 +285,7 @@ export default function PromptFluidHome() {
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-foreground mb-4">
               How We Can{" "}
-              <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">Help</span>
+              <span className="text-primary">Help</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               From consulting to custom cognitive agents — we bring production-grade AI infrastructure to your organization.
@@ -414,7 +414,7 @@ export default function PromptFluidHome() {
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-foreground mb-4">
               Research-Backed{" "}
-              <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">Innovation</span>
+              <span className="text-primary">Innovation</span>
             </h2>
           </motion.div>
 

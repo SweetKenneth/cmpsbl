@@ -198,8 +198,8 @@ export default function Runtime() {
               <Layers className="w-3 h-3 mr-1.5 inline" />
               Baseline Runtime
             </Badge>
-             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              What You Get. <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">Always.</span>
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              What You Get. <span className="text-primary">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
               Every user gets the full platform — all 40 nodes, all capabilities. No features are locked behind paywalls.

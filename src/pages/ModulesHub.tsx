@@ -48,11 +48,8 @@ export default function ModulesHub() {
               <span className="inline-block text-xs font-bold tracking-widest uppercase text-primary mb-3">
                 Platform Architecture
               </span>
-               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-                Every Module.{" "}
-                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                  One System.
-                </span>
+               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+                Every Module. <span className="text-primary">One System.</span>
               </h1>
                <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Browse all the specialized modules that make up the platform. Each one handles a specific job —

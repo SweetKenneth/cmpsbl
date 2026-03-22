@@ -96,11 +96,8 @@ export default function CapabilityManifest() {
               <FileJson className="w-3 h-3 mr-1.5 inline" />
               Developer Reference
             </Badge>
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tight mb-4">
-              Capability{' '}
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Manifest
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
+              Capability <span className="text-primary">Manifest</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
               {stats.total} capabilities across {stats.systems} systems. {stats.crownJewels} Apex Discoveries.

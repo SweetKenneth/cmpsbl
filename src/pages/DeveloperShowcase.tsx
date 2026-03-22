@@ -152,12 +152,9 @@ export default function DeveloperShowcase() {
               <Terminal className="w-4 h-4 mr-2" />
               For Software Developers
             </Badge>
-             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-6 tracking-tight">
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6 tracking-tight">
                <span className="text-foreground">Build Apps That </span>
-               <span className="block sm:inline" style={{
-                 background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
-                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-               }}>Think &amp; Remember</span>
+               <span className="text-primary">Think &amp; Remember</span>
              </h1>
              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
                Add persistent memory, smart AI routing, and self-improvement capabilities 

@@ -176,18 +176,9 @@ export default function About() {
 
           <motion.h1
             {...stagger(0.1)}
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-5"
+            className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.1] mb-5"
           >
-            Cognitive{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Infrastructure
-            </span>
+            Cognitive <span className="text-primary">Infrastructure</span>
             <br className="hidden sm:block" />
             {" "}for AI
           </motion.h1>
@@ -234,16 +225,7 @@ export default function About() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp} className="mb-10 sm:mb-14">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3">
-              Systems That{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Dream · Adapt · Evolve
-              </span>
+              Systems That <span className="text-primary">Dream · Adapt · Evolve</span>
             </h2>
              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
               Most AI platforms process and forget. When you build on CMPSBL, your systems
@@ -538,7 +520,7 @@ export default function About() {
             {...fadeUp}
             className="rounded-2xl overflow-hidden shadow-2xl shadow-primary/10"
           >
-            <div className="relative bg-gradient-to-br from-primary via-primary/90 to-violet-600 p-6 sm:p-10 md:p-14 text-center">
+            <div className="relative bg-gradient-to-br from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))] p-6 sm:p-10 md:p-14 text-center">
               {/* Grid overlay */}
               <div
                 className="absolute inset-0 opacity-10"

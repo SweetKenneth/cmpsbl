@@ -395,7 +395,7 @@ export default function Auth() {
                         <CardFooter>
                           <Button type="submit" variant="outline" className="w-full gap-2 relative overflow-hidden" disabled={loading}>
                             <Mail className="w-4 h-4" />
-                            {loading ? 'Crystallizing...' : 'Send Sign-In Link'}
+                            {loading ? 'Sending...' : 'Send Sign-In Link'}
                             <ArrowRight className="w-4 h-4" />
                             {loading && (
                               <motion.div
@@ -435,7 +435,7 @@ export default function Auth() {
                         >
                           <Mail className="w-8 h-8 text-primary" />
                         </motion.div>
-                        <h3 className="text-lg font-semibold">Signal Crystallizing</h3>
+                        <h3 className="text-lg font-semibold">Verification Sent</h3>
                         <p className="text-sm text-muted-foreground">
                           We sent a verification link to <strong className="text-foreground">{signupEmail}</strong>.
                         </p>
@@ -495,7 +495,7 @@ export default function Auth() {
                         <CardFooter className="flex-col gap-3">
                           <Button type="submit" className="w-full gap-2 relative overflow-hidden" disabled={loading}>
                             <Mail className="w-4 h-4" />
-                            {loading ? 'Crystallizing...' : 'Send Verification Link'}
+                            {loading ? 'Sending...' : 'Send Verification Link'}
                             {loading && (
                               <motion.div
                                 className="absolute bottom-0 left-0 h-[2px] memory-stream-bar"

@@ -141,7 +141,7 @@ const FeedDreamEater = () => {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8"
           >
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4">
               This System Remembers
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

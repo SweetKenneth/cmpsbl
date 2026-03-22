@@ -990,7 +990,7 @@ export default function STierDemos() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
-                className="block bg-gradient-to-r from-primary via-primary to-foreground bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.15)]"
+                className="block text-primary"
               >
                 Trigger Systems.
               </motion.span>
