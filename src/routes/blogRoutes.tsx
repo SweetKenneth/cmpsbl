@@ -45,6 +45,9 @@ const OpenStandards = lazy(() => import("@/pages/blog/OpenStandards"));
 const WhatWeGotWrong = lazy(() => import("@/pages/blog/WhatWeGotWrong"));
 const TheScanner = lazy(() => import("@/pages/blog/TheScanner"));
 const WhereWeAreNow = lazy(() => import("@/pages/blog/WhereWeAreNow"));
+const FollowingTheThread = lazy(() => import("@/pages/blog/FollowingTheThread"));
+const ContactChapter = lazy(() => import("@/pages/blog/Contact"));
+const TheContactEpoch = lazy(() => import("@/pages/blog/TheContactEpoch"));
 const AutoBlogPost = lazy(() => import("@/pages/blog/AutoBlogPost"));
 
 export const blogRoutes = (
@@ -90,6 +93,9 @@ export const blogRoutes = (
     <Route path="/blog/what-we-got-wrong" element={<WhatWeGotWrong />} />
     <Route path="/blog/the-scanner" element={<TheScanner />} />
     <Route path="/blog/where-we-are-now" element={<WhereWeAreNow />} />
+    <Route path="/blog/following-the-thread" element={<FollowingTheThread />} />
+    <Route path="/blog/contact" element={<ContactChapter />} />
+    <Route path="/blog/the-contact-epoch" element={<TheContactEpoch />} />
 
     {/* ═══ LEGACY SLUG REDIRECTS ═══ */}
     {/* Memory Stream / Signal series */}
