@@ -280,23 +280,23 @@
  /**
   * Calculate entity risk score
   */
+ // Severity scores hoisted — avoid re-creating per call
+ const SEVERITY_SCORES: Record<BehavioralAnomaly['severity'], number> = {
+   low: 10, medium: 25, high: 50, critical: 100,
+ };
+
  function calculateRiskScore(entityId: string): number {
-   const entityAnomalies = anomalies.filter(a => 
-     a.entityId === entityId && !a.resolved
-   );
+   const count = unresolvedCounts.get(entityId) || 0;
+   if (count === 0) return 0;
    
-   if (entityAnomalies.length === 0) return 0;
-   
-   const severityScores: Record<BehavioralAnomaly['severity'], number> = {
-     low: 10,
-     medium: 25,
-     high: 50,
-     critical: 100,
-   };
-   
-   const totalScore = entityAnomalies.reduce((sum, a) => 
-     sum + severityScores[a.severity], 0
-   );
+   // Only scan anomalies matching this entity
+   let totalScore = 0;
+   for (let i = anomalies.length - 1; i >= 0 && totalScore < 100; i--) {
+     const a = anomalies[i];
+     if (a.entityId === entityId && !a.resolved) {
+       totalScore += SEVERITY_SCORES[a.severity];
+     }
+   }
    
    return Math.min(100, totalScore);
  }
