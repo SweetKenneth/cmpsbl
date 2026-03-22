@@ -378,7 +378,7 @@ export function EvolutionTab() {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           {cycle.outcome === 'success' ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                            <CheckCircle2 className="w-4 h-4 text-neon-green" />
                           ) : cycle.outcome === 'no_improvements' ? (
                             <CheckCircle2 className="w-4 h-4 text-primary" />
                           ) : (
