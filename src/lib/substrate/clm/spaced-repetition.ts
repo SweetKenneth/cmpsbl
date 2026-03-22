@@ -99,13 +99,13 @@ class SpacedRepetitionClient {
    * Get items due for review
    */
   getDueItems(): SpacedRepItem[] {
-    const now = new Date();
+    const nowMs = Date.now();
     return this.queue
-      .filter(item => new Date(item.nextReviewAt) <= now)
+      .filter(item => new Date(item.nextReviewAt).getTime() <= nowMs)
       .sort((a, b) => {
         // Sort by: overdue time (most overdue first), then confidence (lowest first)
-        const aOverdue = now.getTime() - new Date(a.nextReviewAt).getTime();
-        const bOverdue = now.getTime() - new Date(b.nextReviewAt).getTime();
+        const aOverdue = nowMs - new Date(a.nextReviewAt).getTime();
+        const bOverdue = nowMs - new Date(b.nextReviewAt).getTime();
         if (aOverdue !== bOverdue) return bOverdue - aOverdue;
         return a.confidence - b.confidence;
       });
