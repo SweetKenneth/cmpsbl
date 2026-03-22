@@ -135,7 +135,7 @@ export function MarketplaceHero() {
                   transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
                   className="absolute w-[75%] h-[75%] rounded-full border border-primary/20"
                 />
-                <div className="relative z-10 w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-gradient-to-br from-rose-500 via-purple-500 to-cyan-500 flex items-center justify-center shadow-2xl">
+                <div className="w-20 h-20 md:w-28 md:h-28 rounded-2xl bg-primary flex items-center justify-center shadow-2xl">
                   <Server className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 </div>
               </div>
