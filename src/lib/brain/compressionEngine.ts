@@ -228,9 +228,27 @@ export async function runBatchCompression(
         const originalSize = batch.reduce((sum, m) => sum + m.content.length, 0);
         const compressedSize = compressed.summary.length + compressed.preservedCode.join('').length;
         
+        // Importance check: flag critical memories in tags for retention policy
+        const importance = classifyImportance(
+          compressed.summary,
+          batch[0]?.context || 'general',
+          0.5,
+          0
+        );
+
         const fullContent = compressed.preservedCode.length > 0
           ? `${compressed.summary}\n\n--- Preserved Code ---\n${compressed.preservedCode.join('\n\n')}`
           : compressed.summary;
+
+        // Compact the tags metadata to minimize storage
+        const tags = compactMetadata({
+          semantic_hash: compressed.semanticHash,
+          cluster_tags: compressed.clusterTags,
+          preserved_code_count: compressed.preservedCode.length,
+          algorithm: 'v3_semantic_dedup',
+          importance,
+          preserve: shouldPreserveIndefinitely(importance),
+        });
 
         coldInserts.push({
           summary: fullContent,
@@ -238,12 +256,7 @@ export async function runBatchCompression(
           compression_level: Math.round(compressed.compressionRatio),
           source_module: batch[0]?.context === 'code' ? 'engineering' : 'general',
           category: batch[0]?.context || 'uncategorized',
-          tags: {
-            semantic_hash: compressed.semanticHash,
-            cluster_tags: compressed.clusterTags,
-            preserved_code_count: compressed.preservedCode.length,
-            algorithm: 'v2_semantic',
-          },
+          tags,
         });
 
         hotDeleteIds.push(...compressed.originalIds);
