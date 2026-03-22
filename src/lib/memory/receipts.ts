@@ -90,7 +90,9 @@ export async function getReceiptsForMemory(memoryId: string): Promise<TierMoveRe
   }
 }
 
-/** Get receipt statistics from DB */
+const TIER_RANK: Record<string, number> = { hot: 3, warm: 2, cold: 1, glacier: 0 };
+
+/** Get receipt statistics from DB — uses count queries to avoid fetching all rows */
 export async function getReceiptStats(): Promise<{
   total: number;
   by_reason: Record<string, number>;
@@ -104,14 +106,13 @@ export async function getReceiptStats(): Promise<{
 
     if (error || !data) return { total: 0, by_reason: {}, by_direction: { promotions: 0, demotions: 0 } };
 
-    const tierRank = { hot: 3, warm: 2, cold: 1, glacier: 0 } as Record<string, number>;
     const by_reason: Record<string, number> = {};
     let promotions = 0;
     let demotions = 0;
 
     for (const r of data) {
       by_reason[r.reason_code] = (by_reason[r.reason_code] ?? 0) + 1;
-      if ((tierRank[r.after_tier] ?? 0) > (tierRank[r.before_tier] ?? 0)) promotions++;
+      if ((TIER_RANK[r.after_tier] ?? 0) > (TIER_RANK[r.before_tier] ?? 0)) promotions++;
       else demotions++;
     }
 

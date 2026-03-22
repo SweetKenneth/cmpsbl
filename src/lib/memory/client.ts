@@ -109,31 +109,34 @@ export class MemoryClient {
     return this.userId;
   }
   
+  /** Pre-compiled fact extraction patterns (hoisted for perf) */
+  private static readonly FACT_PATTERNS = [
+    /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
+    /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
+  ];
+
   /** Extract discrete facts from text */
   extractFacts(text: string): string[] {
-    const patterns = [
-      /\bmy\s+(\w[\w\s]{0,30}?)\s+(?:is|are|was|were)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\bi(?:'m|\s+am)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\bi\s+(?:like|love|hate|prefer|enjoy|want|need)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\b(?:my\s+name\s+is|call\s+me|i'm\s+called)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
-      /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
-    ];
-    
     const facts: string[] = [];
-    for (const pattern of patterns) {
+    const seen = new Set<string>();
+    for (const pattern of MemoryClient.FACT_PATTERNS) {
       let match;
       pattern.lastIndex = 0;
       while ((match = pattern.exec(text)) !== null) {
         let fact = match[0].trim()
           .replace(/^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i, '')
           .trim();
-        if (fact.length > 3 && fact.length < 200) {
+        if (fact.length > 3 && fact.length < 200 && !seen.has(fact)) {
+          seen.add(fact);
           facts.push(fact);
         }
       }
     }
-    return [...new Set(facts)];
+    return facts;
   }
 
   // ═══════════════════════════════════════════════════════════════════
@@ -341,41 +344,28 @@ export class MemoryClient {
         }
       }
 
-      // Process hot tier results
-      if (hotResult.status === 'fulfilled') {
-        const hotData = ((hotResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-        if (hotData.length > 0) {
-          tiersSearched.push('hot');
-          for (const m of hotData) {
-            if (!allMemories.some(e => e.id === m.id)) {
-              allMemories.push({
-                id: m.id, content: m.content,
-                timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.0,
-                tier: 'hot', memory_type: m.memory_type,
-                provenance: m.provenance,
-              });
-            }
-          }
-        }
-      }
+      // Deduplicate via Set for O(1) lookups instead of O(n) .some()
+      const seenIds = new Set<string>();
+      const seenContent = new Set<string>();
 
-      // Process warm tier results (now from parallel batch instead of sequential waterfall)
-      if (warmResult.status === 'fulfilled') {
-        const warmData = ((warmResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
-        if (warmData.length > 0) {
-          tiersSearched.push('warm');
-          for (const m of warmData) {
-            if (!allMemories.some(e => e.id === m.id)) {
-              allMemories.push({
-                id: m.id, content: m.content,
-                timestamp: m.created_at, relevance: (m.value_score || 0.3) * 0.8,
-                tier: 'warm', memory_type: m.memory_type,
-                provenance: m.provenance,
-              });
-            }
-          }
+      const addEntries = (result: PromiseSettledResult<any>, tier: 'hot' | 'warm', tierLabel: string, relevanceMult: number) => {
+        if (result.status !== 'fulfilled') return;
+        const data = ((result.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
+        if (data.length === 0) return;
+        tiersSearched.push(tierLabel);
+        for (const m of data) {
+          if (seenIds.has(m.id)) continue;
+          seenIds.add(m.id);
+          allMemories.push({
+            id: m.id, content: m.content,
+            timestamp: m.created_at, relevance: (m.value_score || 0.5) * relevanceMult,
+            tier, memory_type: m.memory_type, provenance: m.provenance,
+          });
         }
-      }
+      };
+
+      addEntries(hotResult, 'hot', 'hot', 1.0);
+      addEntries(warmResult, 'warm', 'warm', 0.8);
 
       // Process substrate vector results
       if (substrateResult.status === 'fulfilled') {
@@ -383,13 +373,13 @@ export class MemoryClient {
         if (response?.data?.memories) {
           tiersSearched.push('substrate_vector');
           for (const m of response.data.memories) {
-            if (!allMemories.some(existing => existing.content === m.content)) {
-              allMemories.push({
-                id: m.id, content: m.content,
-                timestamp: m.created_at, relevance: m.relevance_score,
-                tier: 'hot', memory_type: m.memory_type,
-              });
-            }
+            if (seenContent.has(m.content)) continue;
+            seenContent.add(m.content);
+            allMemories.push({
+              id: m.id, content: m.content,
+              timestamp: m.created_at, relevance: m.relevance_score,
+              tier: 'hot', memory_type: m.memory_type,
+            });
           }
         }
       }
@@ -488,63 +478,68 @@ export class MemoryClient {
   async shareWithAgent(targetAgentId: string, memoryIds: string[]): Promise<number> {
     try {
       const userId = this.assertUserId();
-      let shared = 0;
-      for (const memoryId of memoryIds) {
-        const { data } = await supabase
-          .from('brain_memory_hot' as any)
-          .select('id, content, context, memory_type, salience_score, value_score, metadata')
-          .eq('id', memoryId)
-          .eq('user_id', userId)
-          .eq('agent_id', this.agentId)
-          .single();
-        
-        if (data) {
-          const entry = data as any;
-          const sourceSalience = entry.salience_score || 0.5;
-          // FIX #12: Shared memories use salience-aware tier routing
-          const sharedSalience = sourceSalience * 0.8; // slight penalty for cross-agent
+      if (memoryIds.length === 0) return 0;
 
-          if (sharedSalience >= 0.7) {
-            // High salience → route through substrate to hot tier
-            await supabase.functions.invoke('pf-substrate', {
-              body: {
-                module: 'brain',
-                action: 'remember',
-                content: entry.content,
-                memory_type: entry.memory_type,
-                confidence: sharedSalience,
-                metadata: {
-                  agentId: targetAgentId,
-                  userId,
-                  scope: this.scope,
-                  salience_score: sharedSalience,
-                  source: 'cross_agent_share',
-                  shared_from_agent: this.agentId,
-                }
-              }
-            });
-          } else {
-            // Lower salience → warm tier direct
-            await supabase.from('brain_memory_warm' as any).insert({
-              content: entry.content,
-              context: entry.context,
-              user_id: userId,
-              agent_id: targetAgentId,
-              memory_type: entry.memory_type,
-              salience_score: sharedSalience,
-              value_score: sharedSalience * 0.7,
-              provenance: {
-                ...this.buildProvenance('cross_agent_share'),
-                lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
-              },
-              metadata: { ...entry.metadata, shared_from_agent: this.agentId },
-              tags: ['cross_agent_share'],
-            });
-          }
-          shared++;
+      // Batch fetch all memories in one query instead of N sequential queries
+      const { data: allData } = await supabase
+        .from('brain_memory_hot' as any)
+        .select('id, content, context, memory_type, salience_score, value_score, metadata')
+        .eq('user_id', userId)
+        .eq('agent_id', this.agentId)
+        .in('id', memoryIds);
+
+      if (!allData || allData.length === 0) return 0;
+
+      const hotInserts: any[] = [];
+      const warmInserts: any[] = [];
+
+      for (const entry of allData as any[]) {
+        const sourceSalience = entry.salience_score || 0.5;
+        const sharedSalience = sourceSalience * 0.8;
+
+        if (sharedSalience >= 0.7) {
+          hotInserts.push(entry);
+        } else {
+          warmInserts.push({
+            content: entry.content,
+            context: entry.context,
+            user_id: userId,
+            agent_id: targetAgentId,
+            memory_type: entry.memory_type,
+            salience_score: sharedSalience,
+            value_score: sharedSalience * 0.7,
+            provenance: {
+              ...this.buildProvenance('cross_agent_share'),
+              lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
+            },
+            metadata: { ...entry.metadata, shared_from_agent: this.agentId },
+            tags: ['cross_agent_share'],
+          });
         }
       }
-      return shared;
+
+      // Batch operations in parallel
+      const promises: Promise<any>[] = [];
+      if (warmInserts.length > 0) {
+        promises.push(Promise.resolve(supabase.from('brain_memory_warm' as any).insert(warmInserts)));
+      }
+      for (const entry of hotInserts) {
+        const sharedSalience = (entry.salience_score || 0.5) * 0.8;
+        promises.push(supabase.functions.invoke('pf-substrate', {
+          body: {
+            module: 'brain', action: 'remember',
+            content: entry.content, memory_type: entry.memory_type,
+            confidence: sharedSalience,
+            metadata: {
+              agentId: targetAgentId, userId, scope: this.scope,
+              salience_score: sharedSalience, source: 'cross_agent_share',
+              shared_from_agent: this.agentId,
+            }
+          }
+        }));
+      }
+      await Promise.allSettled(promises);
+      return allData.length;
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Share failed: ${msg}`);
@@ -606,15 +601,18 @@ export class MemoryClient {
   // #13 USER FINGERPRINTING
   // FIX #3: userId passed explicitly, not read from nullable field
   // ═══════════════════════════════════════════════════════════════════
+  private static readonly FINGERPRINT_CLEAN_RE = /[^a-z0-9\s]/g;
+
   private async updateFingerprint(content: string, userId?: string): Promise<void> {
     const uid = userId || this.userId;
     if (!uid) return;
     try {
-      const keywords = content.toLowerCase()
-        .replace(/[^a-z0-9\s]/g, ' ')
-        .split(/\s+/)
-        .filter(w => w.length > 3)
-        .slice(0, 10);
+      // Single-pass keyword extraction
+      const keywords: string[] = [];
+      const words = content.toLowerCase().replace(MemoryClient.FINGERPRINT_CLEAN_RE, ' ').split(/\s+/);
+      for (let i = 0; i < words.length && keywords.length < 10; i++) {
+        if (words[i].length > 3) keywords.push(words[i]);
+      }
 
       await supabase.rpc('update_user_fingerprint', {
         p_user_id: uid,
@@ -772,18 +770,25 @@ export class MemoryClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // #11 WORKLOAD-AWARE TIERING — Track hourly patterns
+  // #11 WORKLOAD-AWARE TIERING — Track hourly patterns (throttled)
   // ═══════════════════════════════════════════════════════════════════
+  private lastHourlyTrack = 0;
+  private static readonly HOURLY_THROTTLE_MS = 60_000; // max once per minute
+
   private async trackHourlyActivity(): Promise<void> {
     try {
       if (!this.userId) return;
+      const now = Date.now();
+      if (now - this.lastHourlyTrack < MemoryClient.HOURLY_THROTTLE_MS) return;
+      this.lastHourlyTrack = now;
+
       const hour = new Date().getHours();
       const { data: meta } = await supabase
         .from('brain_memory_meta' as any)
         .select('hourly_activity, peak_hours')
         .eq('user_id', this.userId)
         .eq('agent_id', this.agentId)
-        .single();
+        .maybeSingle();
       
       if (meta) {
         const activity = (meta as any).hourly_activity || {};

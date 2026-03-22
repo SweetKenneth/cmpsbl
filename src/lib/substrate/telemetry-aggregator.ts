@@ -409,29 +409,45 @@ async function aggregateAccessUsage(): Promise<AccessTelemetry> {
 async function aggregateBrainEvents(): Promise<BrainTelemetry> {
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-  // Get events + find the latest timestamp
-  const { data } = await supabase
-    .from('brain_events')
-    .select('module, outcome, created_at')
-    .gte('created_at', since)
-    .order('created_at', { ascending: false })
-    .limit(1000);
+  // Use ai_learning_data (exists in schema) — parallel count + sample
+  const [totalRes, successRes, sampleRes] = await Promise.allSettled([
+    supabase
+      .from('ai_learning_data')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', since),
+    supabase
+      .from('ai_learning_data')
+      .select('id', { count: 'exact', head: true })
+      .eq('success', true)
+      .gte('created_at', since),
+    supabase
+      .from('ai_learning_data')
+      .select('model, created_at')
+      .gte('created_at', since)
+      .order('created_at', { ascending: false })
+      .limit(200),
+  ]);
 
-  if (!data || data.length === 0) return defaultBrain();
+  const totalEvents = totalRes.status === 'fulfilled' ? (totalRes.value.count ?? 0) : 0;
+  const successCount = successRes.status === 'fulfilled' ? (successRes.value.count ?? 0) : 0;
+  const sample = sampleRes.status === 'fulfilled' ? (sampleRes.value.data ?? []) : [];
 
-  const successCount = data.filter(d => d.outcome === 'success' || d.outcome === 'completed').length;
+  if (totalEvents === 0) return defaultBrain();
+
+  // Single-pass aggregation for topModule
   const moduleCounts: Record<string, number> = {};
-  data.forEach(d => { moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1; });
+  for (const d of sample) {
+    const mod = (d as any).model || 'unknown';
+    moduleCounts[mod] = (moduleCounts[mod] || 0) + 1;
+  }
   const topModule = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
-
-  // True last event timestamp (data is sorted desc)
-  const lastEventAt = data[0]?.created_at ?? null;
+  const lastEventAt = (sample[0] as any)?.created_at ?? null;
 
   return {
-    totalEvents: data.length,
-    recentEvents: data.length,
+    totalEvents,
+    recentEvents: totalEvents,
     topModule,
-    successRate: data.length > 0 ? successCount / data.length : 1,
+    successRate: totalEvents > 0 ? successCount / totalEvents : 1,
     lastEventAt,
   };
 }

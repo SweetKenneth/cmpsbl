@@ -24,7 +24,7 @@ const ANTONYM_PAIRS: [string, string][] = [
 ];
 
 /** Negation words that flip meaning */
-const NEGATIONS = ['not', 'never', 'no', 'false', 'incorrect', 'wrong', 'deprecated', 'removed', 'invalid', "doesn't", "isn't", "won't", "can't", "don't"];
+const NEGATION_SET = new Set(['not', 'never', 'no', 'false', 'incorrect', 'wrong', 'deprecated', 'removed', 'invalid', "doesn't", "isn't", "won't", "can't", "don't"]);
 
 /** Check if new evidence contradicts an existing memory claim */
 export function detectContradiction(
@@ -37,10 +37,12 @@ export function detectContradiction(
   let contradictionSignals = 0;
   const reasons: string[] = [];
 
-  // 1. Negation-keyword overlap (original logic, improved)
+  // 1. Negation-keyword overlap — use Set for O(1) neg lookup
   const existingWords = existingLower.split(/\s+/).filter(w => w.length > 3);
+  const newWords = newLower.split(/\s+/);
+  const newWordsLong = newWords.filter(w => w.length > 3);
   for (const word of existingWords) {
-    for (const neg of NEGATIONS) {
+    for (const neg of NEGATION_SET) {
       if (newLower.includes(`${neg} ${word}`) || newLower.includes(`${word} ${neg}`)) {
         contradictionSignals++;
         reasons.push(`negation: "${neg} ${word}"`);
@@ -49,6 +51,7 @@ export function detectContradiction(
   }
 
   // 2. Antonym detection — if existing has one side, new has the other
+  const newWordSet = new Set(newWordsLong);
   for (const [a, b] of ANTONYM_PAIRS) {
     const existingHasA = existingLower.includes(a);
     const existingHasB = existingLower.includes(b);
@@ -56,10 +59,11 @@ export function detectContradiction(
     const newHasB = newLower.includes(b);
 
     if ((existingHasA && newHasB) || (existingHasB && newHasA)) {
-      // Ensure they share a common subject (at least 2 overlapping content words)
-      const newWords = newLower.split(/\s+/).filter(w => w.length > 3);
-      const overlap = existingWords.filter(w => newWords.includes(w) && w !== a && w !== b);
-      if (overlap.length >= 1) {
+      let overlapCount = 0;
+      for (const w of existingWords) {
+        if (w !== a && w !== b && newWordSet.has(w)) { overlapCount++; break; }
+      }
+      if (overlapCount >= 1) {
         contradictionSignals++;
         reasons.push(`antonym: "${a}" vs "${b}"`);
       }
@@ -70,13 +74,15 @@ export function detectContradiction(
   const existingNums = existingLower.match(/\b\d+\.?\d*\b/g);
   const newNums = newLower.match(/\b\d+\.?\d*\b/g);
   if (existingNums && newNums) {
-    // Check if they share context words (subject overlap)
-    const newWords = newLower.split(/\s+/).filter(w => w.length > 3 && !/^\d/.test(w));
-    const overlap = existingWords.filter(w => newWords.includes(w) && !/^\d/.test(w));
-    if (overlap.length >= 1) {
-      const existingSet = new Set(existingNums);
-      const conflicting = newNums.filter(n => !existingSet.has(n));
-      if (conflicting.length > 0) {
+    // Check subject overlap using pre-built set
+    let hasOverlap = false;
+    for (const w of existingWords) {
+      if (!/^\d/.test(w) && newWordSet.has(w)) { hasOverlap = true; break; }
+    }
+    if (hasOverlap) {
+      const existingNumSet = new Set(existingNums);
+      const hasConflict = newNums.some(n => !existingNumSet.has(n));
+      if (hasConflict) {
         contradictionSignals++;
         reasons.push(`numeric: existing=[${existingNums.join(',')}] vs new=[${newNums.join(',')}]`);
       }
