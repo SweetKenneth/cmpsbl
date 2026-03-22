@@ -30,17 +30,17 @@ const SystemHealthPanel = lazy(() => import('@/components/substrate-os/SystemHea
 
 // 12 sectors for the topology map
 const SECTORS = [
-  { id: 'CORE', nodes: ['CORE', 'SYSTEM'], color: 'text-orange-500 dark:text-orange-400' },
-  { id: 'CCR', nodes: ['BRAIN', 'MEMORY', 'DREAM'], color: 'text-purple-500 dark:text-purple-400' },
-  { id: 'OCG', nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT', 'NERVE'], color: 'text-cyan-500 dark:text-cyan-400' },
-  { id: 'Execution', nodes: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'INTEGRATION'], color: 'text-emerald-500 dark:text-emerald-400' },
-  { id: 'ESZ', nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'], color: 'text-amber-500 dark:text-amber-400' },
-  { id: 'EPZ', nodes: ['COMPASS', 'ECHO', 'REFLEX'], color: 'text-sky-500 dark:text-sky-400' },
-  { id: 'EMZ', nodes: ['FORGE', 'LINGUA', 'HARVEST'], color: 'text-lime-500 dark:text-lime-400' },
-  { id: 'CSZ', nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'], color: 'text-rose-500 dark:text-rose-400' },
-  { id: 'Fields', nodes: ['IMMUNITY', 'INTENT'], color: 'text-pink-500 dark:text-pink-400' },
-  { id: 'Plane', nodes: ['GOVERNANCE'], color: 'text-indigo-500 dark:text-indigo-400' },
-  { id: 'Shell', nodes: ['DEFENSE'], color: 'text-red-500 dark:text-red-400' },
+  { id: 'CORE', nodes: ['CORE', 'SYSTEM'], color: 'text-neon-amber' },
+  { id: 'CCR', nodes: ['BRAIN', 'MEMORY', 'DREAM'], color: 'text-neon-purple' },
+  { id: 'OCG', nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT', 'NERVE'], color: 'text-primary' },
+  { id: 'Execution', nodes: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'INTEGRATION'], color: 'text-neon-green' },
+  { id: 'ESZ', nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'], color: 'text-neon-amber' },
+  { id: 'EPZ', nodes: ['COMPASS', 'ECHO', 'REFLEX'], color: 'text-neon-blue' },
+  { id: 'EMZ', nodes: ['FORGE', 'LINGUA', 'HARVEST'], color: 'text-neon-green' },
+  { id: 'CSZ', nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'], color: 'text-neon-magenta' },
+  { id: 'Fields', nodes: ['IMMUNITY', 'INTENT'], color: 'text-neon-magenta' },
+  { id: 'Plane', nodes: ['GOVERNANCE'], color: 'text-neon-blue' },
+  { id: 'Shell', nodes: ['DEFENSE'], color: 'text-destructive' },
 ];
 
 interface OverviewPanelProps {

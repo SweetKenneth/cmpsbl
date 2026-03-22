@@ -651,8 +651,8 @@ export function AnalyticsTab() {
                     <span className="text-xs text-muted-foreground">{rate.label}</span>
                     <span className={cn(
                       "text-sm font-bold font-mono",
-                      rate.value >= rate.threshold[0] ? "text-emerald-400" :
-                      rate.value >= rate.threshold[1] ? "text-amber-400" : "text-red-400"
+                      rate.value >= rate.threshold[0] ? "text-neon-green" :
+                      rate.value >= rate.threshold[1] ? "text-neon-amber" : "text-destructive"
                     )}>
                       {rate.value}%
                     </span>
