@@ -247,7 +247,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                         <AlertDialogTrigger asChild>
                           <Button 
                             size="sm" 
-                            className="w-full gap-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30"
+                            className="w-full gap-1 bg-neon-cyan/20 hover:bg-neon-cyan/30 text-neon-cyan border border-neon-cyan/30"
                           >
                             <RotateCcw className="w-3 h-3" />
                             Restore This Backup
