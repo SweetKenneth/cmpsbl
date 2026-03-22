@@ -478,8 +478,8 @@ console.log(costs.total, costs.by_module);`,
     layer: "Infrastructure",
     title: "SANDBOX Isolation",
     description: "Isolated execution environments",
-    color: "text-cyan-600",
-    gradient: "from-cyan-500 to-teal-600",
+    color: "text-[hsl(var(--neon-cyan))]",
+    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Create an isolated sandbox
 const env = await cmpsbl.sandbox.create({
   runtime: "node20",
