@@ -237,8 +237,8 @@ console.log(dreamResult.patterns_extracted);
     layer: "Admin",
     title: "SYSTEM Control",
     description: "Core administration & backups",
-    color: "text-emerald-500",
-    gradient: "from-emerald-500 to-green-600",
+    color: "text-[hsl(var(--neon-green))]",
+    gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Create a system backup
 const backup = await cmpsbl.system.backup({
   include: ["brain", "config", "access"],
