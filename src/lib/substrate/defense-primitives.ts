@@ -15,5 +15,5 @@ export * from '@/crownjewels/s-tier/174-adversarial-simulation';
 export * from '@/crownjewels/s-tier/072-zero-trust-verification';
 export * from '@/crownjewels/s-tier/167-cascade-prevention';
 
-// Enterprise Virus Protection Suite
-export * from './defense/virus-protection';
+// Enterprise Virus Protection Suite (namespaced to avoid collisions)
+export * as VirusProtection from './defense/virus-protection';
