@@ -362,8 +362,8 @@ const proposal = await cmpsbl.cortex.dispatch({
     layer: "Infrastructure",
     title: "MEMORY Vectors",
     description: "Vector embeddings & RAG orchestration",
-    color: "text-sky-500",
-    gradient: "from-sky-500 to-blue-600",
+    color: "text-[hsl(var(--neon-blue))]",
+    gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--neon-blue)/0.7)]",
     code: `// Store vector embeddings
 await cmpsbl.memory.embed({
   collection: "product_docs",
