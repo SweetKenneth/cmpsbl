@@ -125,19 +125,8 @@ export default function Store() {
               </Badge>
             </motion.div>
 
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-6">
-              The{" "}
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">
-                  Store.
-                </span>
-                <motion.span
-                  className="absolute -bottom-1 left-0 right-0 h-1 bg-gradient-to-r from-primary/60 via-primary to-primary/60 rounded-full"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                />
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6">
+              The <span className="text-primary">Store</span>
             </h1>
 
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
