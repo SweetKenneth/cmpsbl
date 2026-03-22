@@ -373,7 +373,7 @@ export function AnalyticsTab() {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex gap-1 p-1 rounded-lg bg-muted/30 border border-border/30">
             {(['7d', '30d', '90d'] as const).map(range => (
-              <button key={range} onClick={() => setDateRange(range)} className={cn("px-3 py-1.5 rounded-md text-xs font-medium transition-all", dateRange === range ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "text-muted-foreground hover:text-foreground")}>
+              <button key={range} onClick={() => setDateRange(range)} className={cn("px-3 py-1.5 rounded-md text-xs font-medium transition-all", dateRange === range ? "bg-primary/20 text-primary border border-primary/40" : "text-muted-foreground hover:text-foreground")}>
                 {range}
               </button>
             ))}
