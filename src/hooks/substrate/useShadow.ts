@@ -123,8 +123,8 @@ export function useShadow(): UseShadowReturn {
 
   // Shadow A/B
   const createExperiment = useMutation({
-    mutationFn: (params: { planId: string; name: string; variantA?: any; variantB?: any }) =>
-      Promise.resolve(createShadowAB(params.planId, params.name, params.variantA, params.variantB)),
+    mutationFn: (params: { planId: string; name: string; module: string; approachA: { approach: string; description: string }; approachB: { approach: string; description: string } }) =>
+      Promise.resolve(createShadowAB(params.planId, params.name, params.module, params.approachA, params.approachB)),
     onSuccess: invalidate,
   });
 
