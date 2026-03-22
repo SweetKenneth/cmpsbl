@@ -103,7 +103,7 @@ export function ArtifactPacksSection() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-[hsl(var(--neon-purple)/0.2)] hover:shadow-[hsl(var(--neon-purple)/0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 bg-gradient-to-r from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))] border-0 text-white">
               <Link to="/auth">
                 <Sparkles className="w-4 h-4" />
                 Start Free — 3 Slots
