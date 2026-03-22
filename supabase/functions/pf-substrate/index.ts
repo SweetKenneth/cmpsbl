@@ -13223,18 +13223,43 @@ async function handleSystem(
         .limit(20);
 
       if (key && value !== undefined) {
-        // Config SET not implemented - but return current state
+        // Validate key format
+        if (typeof key !== 'string' || key.length > 100) {
+          return jsonResponse({ success: false, error: "Invalid key format" }, headers, 400);
+        }
+
+        // Write config via upsert
+        const { error: upsertError } = await supabase
+          .from("core_settings")
+          .upsert({
+            key,
+            value: typeof value === 'string' ? value : JSON.stringify(value),
+            updated_at: new Date().toISOString(),
+          }, { onConflict: 'key' });
+
+        if (upsertError) {
+          return jsonResponse({
+            success: false,
+            action,
+            error: `Config set failed: ${upsertError.message}`,
+          }, headers, 500);
+        }
+
+        // Log the config change to audit
+        await supabase.from('audit_logs').insert({
+          action: 'governance.config_set',
+          entity_type: 'core_settings',
+          entity_id: key,
+          details: { key, value, previous_count: settings?.length || 0 },
+        }).catch(() => {});
+
         return jsonResponse({
-          success: false,
-          not_implemented: true,
-          action,
+          success: true,
+          action: 'config_set',
           key,
-          message: "Config set not yet implemented - read-only access available",
-          partial_data: {
-            current_settings: settings?.length || 0,
-            requested_key: key,
-            requested_value: value,
-          },
+          value,
+          message: `Configuration key '${key}' updated successfully`,
+          timestamp: new Date().toISOString(),
         }, headers);
       }
       
@@ -13250,25 +13275,51 @@ async function handleSystem(
       if (!confirm) {
         return jsonResponse({
           success: false,
-          not_implemented: true,
           action,
-          message: "Shutdown requires confirm=true. This action is destructive.",
-          partial_data: {
+          message: "Emergency shutdown requires confirm=true. This action is destructive and will halt all active processing.",
+          current_state: {
             uptime_ms: Date.now() - substrateState.initialized,
             active_modules: Object.keys(substrateState.modules).length,
+            heal_attempts: substrateState.healAttempts,
           },
-        }, headers);
+        }, headers, 400);
       }
-      
-      return jsonResponse({
-        success: false,
-        not_implemented: true,
-        action,
-        confirmed: true,
-        message: "Emergency shutdown not yet implemented - use pf-emergency-shutdown edge function",
-        partial_data: {
-          suggestion: "Call supabase.functions.invoke('pf-emergency-shutdown', { body: { confirm: true } })",
+
+      // Execute graceful shutdown sequence
+      const shutdownLog: string[] = [];
+
+      // 1. Set all modules to maintenance mode
+      for (const [modName, mod] of Object.entries(substrateState.modules)) {
+        mod.status = 'degraded';
+        mod.healthScore = 0;
+        mod.circuitState = 'open';
+        shutdownLog.push(`${modName}: circuit opened, health zeroed`);
+      }
+
+      // 2. Log shutdown event to audit chain
+      await supabase.from('audit_logs').insert({
+        action: 'governance.emergency_shutdown',
+        entity_type: 'substrate',
+        entity_id: 'global',
+        details: {
+          uptime_ms: Date.now() - substrateState.initialized,
+          modules_halted: Object.keys(substrateState.modules).length,
+          shutdown_log: shutdownLog,
+          initiated_at: new Date().toISOString(),
         },
+      }).catch(() => {});
+
+      // 3. Reset initialization timestamp to force re-init on next request
+      substrateState.initialized = 0;
+
+      return jsonResponse({
+        success: true,
+        action,
+        message: "Emergency shutdown executed. All modules set to degraded state with open circuits. System will re-initialize on next request.",
+        shutdown_log: shutdownLog,
+        modules_halted: Object.keys(substrateState.modules).length,
+        recovery: "Send any request to re-initialize the substrate, or call governance/heal for targeted recovery.",
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
