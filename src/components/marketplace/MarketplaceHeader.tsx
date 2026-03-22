@@ -173,7 +173,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
               View Bundles
             </Link>
           </Button>
-          <Button variant="outline" size="sm" className="gap-2 text-xs border-orange-500/30 text-orange-600 hover:bg-orange-500/10" asChild>
+          <Button variant="outline" size="sm" className="gap-2 text-xs border-primary/30 text-primary hover:bg-primary/10" asChild>
             <Link to="#agencies">
               <TrendingUp className="w-3.5 h-3.5" />
               For Agencies
