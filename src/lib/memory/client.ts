@@ -800,33 +800,52 @@ export class MemoryClient {
       if (now - this.lastHourlyTrack < MemoryClient.HOURLY_THROTTLE_MS) return;
       this.lastHourlyTrack = now;
 
-      const hour = new Date().getHours();
-      const { data: meta } = await supabase
-        .from('brain_memory_meta' as any)
-        .select('hourly_activity, peak_hours')
-        .eq('user_id', this.userId)
-        .eq('agent_id', this.agentId)
-        .maybeSingle();
-      
-      if (meta) {
-        const activity = (meta as any).hourly_activity || {};
-        activity[hour] = (activity[hour] || 0) + 1;
-        
-        // Calculate peak hours (top 3)
-        const sorted = Object.entries(activity)
-          .sort(([, a], [, b]) => (b as number) - (a as number))
-          .slice(0, 3)
-          .map(([h]) => parseInt(h));
-
-        await supabase
-          .from('brain_memory_meta' as any)
-          .update({ hourly_activity: activity, peak_hours: sorted })
-          .eq('user_id', this.userId)
-          .eq('agent_id', this.agentId);
-      }
+      // Single RPC call replaces read-modify-write pattern
+      await supabase.rpc('track_hourly_activity' as any, {
+        p_user_id: this.userId,
+        p_agent_id: this.agentId,
+        p_hour: new Date().getHours(),
+      }).then(({ error }) => {
+        if (error) {
+          // Fallback: fire-and-forget meta update
+          this.trackHourlyFallback().catch(() => {});
+        }
+      });
     } catch {
       // Silent
     }
+  }
+
+  private async trackHourlyFallback(): Promise<void> {
+    const { data: meta } = await supabase
+      .from('brain_memory_meta' as any)
+      .select('hourly_activity')
+      .eq('user_id', this.userId!)
+      .eq('agent_id', this.agentId)
+      .maybeSingle();
+    
+    if (!meta) return;
+    const activity = (meta as any).hourly_activity || {};
+    const hour = new Date().getHours();
+    activity[hour] = (activity[hour] || 0) + 1;
+    
+    // Top 3 peak hours via partial sort (avoids full sort)
+    const entries = Object.entries(activity) as [string, number][];
+    const peaks: number[] = [];
+    for (let i = 0; i < 3 && entries.length > 0; i++) {
+      let maxIdx = 0;
+      for (let j = 1; j < entries.length; j++) {
+        if (entries[j][1] > entries[maxIdx][1]) maxIdx = j;
+      }
+      peaks.push(parseInt(entries[maxIdx][0]));
+      entries.splice(maxIdx, 1);
+    }
+
+    await supabase
+      .from('brain_memory_meta' as any)
+      .update({ hourly_activity: activity, peak_hours: peaks })
+      .eq('user_id', this.userId!)
+      .eq('agent_id', this.agentId);
   }
 
   /** Run tiering cascade if near capacity */
