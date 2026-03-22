@@ -490,7 +490,7 @@ export function AnalyticsTab() {
                           <span className="font-mono text-muted-foreground">{fmt(cat.count)}</span>
                         </div>
                         <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
-                          <motion.div className="h-full rounded-full bg-gradient-to-r from-pink-500/70 to-purple-500/50" initial={{ width: 0 }} animate={{ width: `${(cat.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
+                          <motion.div className="h-full rounded-full bg-gradient-to-r from-neon-magenta/70 to-neon-purple/50" initial={{ width: 0 }} animate={{ width: `${(cat.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
                         </div>
                       </div>
                     );
