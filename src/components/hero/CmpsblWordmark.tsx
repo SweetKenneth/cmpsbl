@@ -1,61 +1,48 @@
 /**
- * CMPSBL Wordmark — Puzzle-piece letters with individual flowing gradients
- * Each letter appears to snap together like interlocking blocks
+ * CMPSBL Wordmark — Interlocking block letters with individual flowing gradients
+ * Each letter has its own gradient animation, offset timing, and slight vertical
+ * displacement to create a "snapped together" puzzle-piece effect.
  */
 
 import { cn } from "@/lib/utils";
 
-const LETTERS = [
-  { char: "C", gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--primary))]", delay: "0s" },
-  { char: "M", gradient: "from-[hsl(var(--primary))] to-[hsl(var(--neon-purple))]", delay: "1s" },
-  { char: "P", gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]", delay: "2s" },
-  { char: "S", gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-cyan))]", delay: "3s" },
-  { char: "B", gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]", delay: "4s" },
-  { char: "L", gradient: "from-[hsl(var(--primary))] to-[hsl(var(--neon-magenta))]", delay: "5s" },
+const LETTERS: { char: string; colors: string; delay: number }[] = [
+  { char: "C", colors: "hsl(var(--neon-cyan)), hsl(var(--primary)), hsl(var(--neon-cyan))", delay: 0 },
+  { char: "M", colors: "hsl(var(--primary)), hsl(var(--neon-purple)), hsl(var(--primary))", delay: 0.8 },
+  { char: "P", colors: "hsl(var(--neon-purple)), hsl(var(--neon-magenta)), hsl(var(--neon-purple))", delay: 1.6 },
+  { char: "S", colors: "hsl(var(--neon-magenta)), hsl(var(--neon-cyan)), hsl(var(--neon-magenta))", delay: 2.4 },
+  { char: "B", colors: "hsl(var(--neon-cyan)), hsl(var(--neon-purple)), hsl(var(--neon-cyan))", delay: 3.2 },
+  { char: "L", colors: "hsl(var(--primary)), hsl(var(--neon-magenta)), hsl(var(--primary))", delay: 4.0 },
 ];
+
+// Alternating Y offsets for the puzzle snap effect
+const Y_OFFSETS = [2, -3, 2, -2, 3, -2];
 
 export function CmpsblWordmark({ className }: { className?: string }) {
   return (
     <span
-      className={cn("inline-flex items-end select-none", className)}
+      className={cn("inline-flex items-baseline select-none", className)}
       aria-label="CMPSBL"
+      role="img"
     >
       {LETTERS.map((l, i) => (
         <span
-          key={i}
-          className={cn(
-            "relative inline-block font-black leading-none",
-            // Negative margin to snap letters together like puzzle pieces
-            i > 0 && "-ml-[0.02em]",
-          )}
+          key={l.char}
+          className="inline-block font-black leading-none transition-transform duration-500"
           style={{
-            // Slight vertical offsets for puzzle-piece feel
-            transform: i % 2 === 1 ? "translateY(-0.03em)" : "translateY(0.03em)",
+            marginLeft: i > 0 ? "-0.015em" : undefined,
+            transform: `translateY(${Y_OFFSETS[i]}px)`,
+            backgroundImage: `linear-gradient(135deg, ${l.colors})`,
+            backgroundSize: "200% 200%",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            color: "transparent",
+            animation: `cmpsblLetterFlow 5s ease-in-out infinite`,
+            animationDelay: `${l.delay}s`,
+            filter: `drop-shadow(0 0 12px hsl(var(--primary) / 0.15))`,
           }}
         >
-          {/* The gradient letter */}
-          <span
-            className="inline-block bg-gradient-to-br bg-[length:200%_200%] animate-[wordmarkShift_6s_ease-in-out_infinite] bg-clip-text text-transparent"
-            style={{
-              animationDelay: l.delay,
-              backgroundImage: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to), var(--tw-gradient-from))`,
-            }}
-          >
-            {/* Use Tailwind gradient utilities via className */}
-            <span className={cn("bg-gradient-to-br bg-clip-text text-transparent bg-[length:200%_200%] animate-[wordmarkShift_6s_ease-in-out_infinite]", l.gradient)}
-              style={{ animationDelay: l.delay }}
-            >
-              {l.char}
-            </span>
-          </span>
-
-          {/* Subtle connector notch between letters */}
-          {i < LETTERS.length - 1 && (
-            <span
-              className="absolute right-[-0.04em] top-1/2 -translate-y-1/2 w-[0.08em] h-[0.25em] rounded-full bg-primary/10"
-              aria-hidden="true"
-            />
-          )}
+          {l.char}
         </span>
       ))}
     </span>
