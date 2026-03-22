@@ -185,8 +185,8 @@ export default function SubstrateDemo() {
         <section className="relative py-12 md:py-16 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[100px]" />
-            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-violet-500/10 blur-[80px]" />
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-neon-purple/10 blur-[80px]" />
+            <div className="absolute inset-0 bg-[linear-gradient(hsl(var(--neon-purple)/0.02)_1px,transparent_1px),linear-gradient(90deg,hsl(var(--neon-purple)/0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
           </div>
 
           <div className="container mx-auto px-4 relative z-10">
