@@ -504,15 +504,15 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'proposed':
-        return <Badge variant="outline" className="border-amber-500/50 text-amber-400 bg-amber-500/10">Proposed</Badge>;
+        return <Badge variant="outline" className="border-neon-amber/50 text-neon-amber bg-neon-amber/10">Proposed</Badge>;
       case 'approved':
-        return <Badge variant="outline" className="border-blue-500/50 text-blue-400 bg-blue-500/10">Approved</Badge>;
+        return <Badge variant="outline" className="border-neon-blue/50 text-neon-blue bg-neon-blue/10">Approved</Badge>;
       case 'applied':
-        return <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10">Applied</Badge>;
+        return <Badge variant="outline" className="border-neon-green/50 text-neon-green bg-neon-green/10">Applied</Badge>;
       case 'rolled_back':
-        return <Badge variant="outline" className="border-red-500/50 text-red-400 bg-red-500/10">Rolled Back</Badge>;
+        return <Badge variant="outline" className="border-destructive/50 text-destructive bg-destructive/10">Rolled Back</Badge>;
       case 'rejected':
-        return <Badge variant="outline" className="border-gray-500/50 text-gray-400 bg-gray-500/10">Rejected</Badge>;
+        return <Badge variant="outline" className="border-muted-foreground/50 text-muted-foreground bg-muted/10">Rejected</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
@@ -523,9 +523,9 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
       case 'high':
         return <Badge variant="destructive" className="text-[10px]">HIGH RISK</Badge>;
       case 'medium':
-        return <Badge variant="outline" className="border-amber-500/50 text-amber-400 text-[10px]">MEDIUM</Badge>;
+        return <Badge variant="outline" className="border-neon-amber/50 text-neon-amber text-[10px]">MEDIUM</Badge>;
       case 'low':
-        return <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 text-[10px]">LOW</Badge>;
+        return <Badge variant="outline" className="border-neon-green/50 text-neon-green text-[10px]">LOW</Badge>;
       default:
         return null;
     }
@@ -534,11 +534,11 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
   const getValidationIcon = (status: 'pass' | 'warning' | 'fail') => {
     switch (status) {
       case 'pass':
-        return <CheckCircle className="w-4 h-4 text-emerald-400" />;
+        return <CheckCircle className="w-4 h-4 text-neon-green" />;
       case 'warning':
-        return <AlertTriangle className="w-4 h-4 text-amber-400" />;
+        return <AlertTriangle className="w-4 h-4 text-neon-amber" />;
       case 'fail':
-        return <XCircle className="w-4 h-4 text-red-400" />;
+        return <XCircle className="w-4 h-4 text-destructive" />;
     }
   };
 
