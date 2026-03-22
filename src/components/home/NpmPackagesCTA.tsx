@@ -104,7 +104,7 @@ export function NpmPackagesCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary mb-5 tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.2)] text-xs font-bold text-[hsl(var(--neon-cyan))] mb-5 tracking-wide uppercase">
             <Package className="w-3.5 h-3.5" />
             Now on NPM — 11 Packages
           </div>
