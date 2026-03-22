@@ -982,14 +982,15 @@ All colors MUST be HSL.
     pointer-events: none;
   }
 
-  /* Card lift — premium hover with layered shadow */
+  /* Card lift — premium hover with layered shadow and inner glow */
   .card-lift {
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
   }
   .card-lift:hover {
     transform: translateY(-6px);
-    box-shadow: 0 24px 48px -12px hsl(var(--primary) / 0.08),
-                0 8px 16px -4px hsl(var(--foreground) / 0.04);
+    box-shadow: 0 24px 48px -12px hsl(var(--primary) / 0.1),
+                0 8px 16px -4px hsl(var(--foreground) / 0.05),
+                inset 0 1px 0 hsl(var(--primary) / 0.06);
   }
 
   /* Collector card perspective for 3D flip */
