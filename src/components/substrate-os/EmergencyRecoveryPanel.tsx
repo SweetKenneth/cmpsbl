@@ -256,7 +256,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                         <AlertDialogContent>
                           <AlertDialogHeader>
                             <AlertDialogTitle className="flex items-center gap-2">
-                              <RotateCcw className="w-5 h-5 text-cyan-400" />
+                              <RotateCcw className="w-5 h-5 text-neon-cyan" />
                               Restore from Backup
                             </AlertDialogTitle>
                             <AlertDialogDescription>
