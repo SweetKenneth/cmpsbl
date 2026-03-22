@@ -71,6 +71,10 @@ export function useDefense(): UseDefenseReturn {
     },
   });
   
+  const report = useMutation({
+    mutationFn: (threatId: string) => defense.report(threatId),
+  });
+
   const reputation = useMutation({
     mutationFn: (ipAddress: string) => defense.reputation(ipAddress),
   });
