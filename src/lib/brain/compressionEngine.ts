@@ -117,7 +117,9 @@ function generateCompressedSummary(contents: string[], targetLength: number): st
 }
 
 /**
- * Compress a cluster of memories into a single cold memory
+ * Compress a cluster of memories into a single cold memory.
+ * v3: Uses content-dedup compression, importance-aware preservation,
+ * and deduplicates within cluster via content hash.
  */
 async function compressCluster(
   memories: Array<{ id: string; content: string; context: string }>,
@@ -125,10 +127,19 @@ async function compressCluster(
 ): Promise<CompressedMemory | null> {
   if (memories.length === 0) return null;
   
+  // Deduplicate within cluster using content hash
+  const seen = new Set<number>();
+  const uniqueMemories = memories.filter(m => {
+    const hash = contentHash(m.content);
+    if (seen.has(hash)) return false;
+    seen.add(hash);
+    return true;
+  });
+  
   const allCode: string[] = [];
   const textContents: string[] = [];
   
-  memories.forEach(memory => {
+  for (const memory of uniqueMemories) {
     if (config.preserveCode) {
       const { text, code } = extractCodeBlocks(memory.content);
       textContents.push(text);
@@ -136,12 +147,21 @@ async function compressCluster(
     } else {
       textContents.push(memory.content);
     }
-  });
+  }
   
   const totalLength = textContents.join('').length;
-  const targetLength = Math.max(100, Math.floor(totalLength / config.targetRatio));
+  const targetLength = Math.max(50, Math.floor(totalLength / config.targetRatio));
   
-  const summary = generateCompressedSummary(textContents, targetLength);
+  // Use content-dedup compression for non-code text
+  const combinedText = textContents.join(' ');
+  const isCode = uniqueMemories[0]?.context === 'code';
+  const { compressed: preCompressed } = compressForStorage(combinedText, isCode);
+  
+  // Then apply extractive summarization on the pre-compressed text
+  const summary = preCompressed.length > targetLength
+    ? generateCompressedSummary([preCompressed], targetLength)
+    : preCompressed;
+  
   const semanticHash = extractSemanticHash(summary);
   
   return {
@@ -149,9 +169,9 @@ async function compressCluster(
     originalIds: memories.map(m => m.id),
     summary,
     semanticHash,
-    compressionRatio: totalLength / summary.length,
+    compressionRatio: totalLength / Math.max(summary.length, 1),
     preservedCode: allCode,
-    clusterTags: [memories[0].context, ...semanticHash.split('|').slice(0, 3)],
+    clusterTags: [uniqueMemories[0].context, ...semanticHash.split('|').slice(0, 3)],
   };
 }
 
