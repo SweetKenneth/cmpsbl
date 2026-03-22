@@ -98,11 +98,8 @@ export default function MemberHub() {
               <Crown className="w-3 h-3 mr-1.5" />
               <span className="text-xs font-semibold">{tierName} Member</span>
             </Badge>
-            <h1 className="text-4xl sm:text-5xl font-black tracking-tighter mb-3">
-              Member{' '}
-              <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">
-                Hub
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3">
+              Member <span className="text-primary">Hub</span>
             </h1>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               Your command center for usage metrics, workflows, and member perks.

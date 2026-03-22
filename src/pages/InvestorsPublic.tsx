@@ -127,8 +127,8 @@ export default function InvestorsPublic() {
           
           <div className="text-xs font-mono text-muted-foreground/60 uppercase tracking-[0.3em] mb-4">CMPSBL · Investor Relations</div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-foreground mb-6">
-            Seeking <span className="font-medium bg-gradient-to-r from-primary via-violet-500 to-primary bg-clip-text text-transparent">Seed Investment</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-foreground mb-6">
+            Seeking <span className="font-medium text-primary">Seed Investment</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
