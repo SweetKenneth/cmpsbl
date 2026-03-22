@@ -38,8 +38,8 @@ const codeExamples = [
     layer: "Kernel",
     title: "CORE Scheduling",
     description: "Kernel orchestration & task scheduling",
-    color: "text-orange-500",
-    gradient: "from-orange-500 to-amber-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Schedule a recurring task with CORE
 const task = await cmpsbl.core.schedule({
   name: "daily_memory_cleanup",
@@ -59,8 +59,8 @@ console.log(scheduled.tasks);
     layer: "Kernel",
     title: "RIPPLE Events",
     description: "Message bus & cross-system communication",
-    color: "text-cyan-500",
-    gradient: "from-cyan-500 to-teal-600",
+    color: "text-[hsl(var(--neon-cyan))]",
+    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Publish an event to the message bus
 await cmpsbl.ripple.emit({
   channel: "user.actions",
@@ -80,8 +80,8 @@ cmpsbl.ripple.on("dream.cycle_complete", (event) => {
     layer: "Kernel",
     title: "ACCESS Identity",
     description: "API keys, metering & access control",
-    color: "text-amber-500",
-    gradient: "from-amber-500 to-yellow-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Generate a scoped API key
 const apiKey = await cmpsbl.access.createKey({
   name: "mobile-app-prod",
@@ -101,8 +101,8 @@ console.log(usage.calls_today, usage.quota_remaining);`,
     layer: "Cognitive",
     title: "BRAIN Memory",
     description: "3-tier persistent memory system",
-    color: "text-purple-500",
-    gradient: "from-purple-500 to-violet-600",
+    color: "text-[hsl(var(--neon-purple))]",
+    gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Store a memory with semantic context
 await cmpsbl.brain.remember({
   entity_id: "user_jane_doe",
@@ -127,8 +127,8 @@ const context = await cmpsbl.brain.recall({
     layer: "Cognitive",
     title: "DECODE Chat",
     description: "Epistemic conversation engine",
-    color: "text-fuchsia-500",
-    gradient: "from-fuchsia-500 to-pink-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Start an epistemic conversation
 const session = await cmpsbl.decode.chat({
   context: "onboarding_flow",
@@ -148,8 +148,8 @@ const reply = await session.send({
     layer: "Cognitive",
     title: "NEXUS Routing",
     description: "Intelligent AI provider selection",
-    color: "text-green-500",
-    gradient: "from-green-500 to-emerald-600",
+    color: "text-[hsl(var(--neon-green))]",
+    gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Auto-route to optimal provider
 const response = await cmpsbl.nexus.route({
   task: "complex_reasoning",
@@ -171,8 +171,8 @@ console.log(response.provider); // "claude-3"`,
     layer: "Operational",
     title: "DEFENSE Security",
     description: "Threat detection & governance",
-    color: "text-red-500",
-    gradient: "from-red-500 to-rose-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Check security posture
 const posture = await cmpsbl.defense.posture();
 console.log(posture.threat_level); // "low"
@@ -194,8 +194,8 @@ if (analysis.risk_score > 0.7) {
     layer: "Operational",
     title: "VISION Telemetry",
     description: "Observability & system monitoring",
-    color: "text-blue-500",
-    gradient: "from-blue-500 to-indigo-600",
+    color: "text-[hsl(var(--neon-blue))]",
+    gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--neon-blue)/0.7)]",
     code: `// Get real-time system health
 const health = await cmpsbl.vision.health();
 console.log(health.overall); // 98.5
@@ -214,8 +214,8 @@ const metrics = await cmpsbl.vision.query({
     layer: "Operational",
     title: "DREAM Evolution",
     description: "Offline learning & pattern extraction",
-    color: "text-violet-500",
-    gradient: "from-violet-500 to-purple-600",
+    color: "text-[hsl(var(--neon-purple))]",
+    gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Trigger a dream cycle
 const dreamResult = await cmpsbl.dream.cycle({
   entity_ids: ["npc_merchant", "npc_guard"],
@@ -237,8 +237,8 @@ console.log(dreamResult.patterns_extracted);
     layer: "Admin",
     title: "SYSTEM Control",
     description: "Core administration & backups",
-    color: "text-emerald-500",
-    gradient: "from-emerald-500 to-green-600",
+    color: "text-[hsl(var(--neon-green))]",
+    gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Create a system backup
 const backup = await cmpsbl.system.backup({
   include: ["brain", "config", "access"],
@@ -258,8 +258,8 @@ await cmpsbl.system.restore({
     layer: "Overlay",
     title: "EVOLUTION Lifecycle",
     description: "Self-improvement & shadow mode",
-    color: "text-rose-500",
-    gradient: "from-rose-500 to-pink-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Scan for improvement opportunities
 const proposals = await cmpsbl.evolution.scan({
   scope: ["brain", "nexus"],
@@ -279,8 +279,8 @@ await cmpsbl.evolution.apply({
     layer: "Admin",
     title: "INTEGRATION Enterprise",
     description: "Enterprise adapters & LLM governance",
-    color: "text-emerald-500",
-    gradient: "from-emerald-500 to-teal-600",
+    color: "text-[hsl(var(--neon-cyan))]",
+    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Discover enterprise systems
 const systems = await cmpsbl.integration.discover({
   target: "erp",
@@ -308,8 +308,8 @@ await cmpsbl.integration.execute({
     layer: "Admin",
     title: "INCLUSIVE A11y",
     description: "Human compatibility & accessibility engine",
-    color: "text-pink-500",
-    gradient: "from-pink-500 to-rose-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Scan a target for accessibility issues
 const result = await cmpsbl.inclusive.scan({
   target: "https://example.com",
@@ -334,8 +334,8 @@ const selfCheck = await cmpsbl.inclusive.selfScan();`,
     layer: "Orchestrator",
     title: "CORTEX Evolution",
     description: "Agency-class autonomous orchestrator",
-    color: "text-violet-500",
-    gradient: "from-violet-500 to-purple-600",
+    color: "text-[hsl(var(--neon-purple))]",
+    gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Get the world state
 const world = await cmpsbl.cortex.world({
   flags: ["--eligible", "--dag"]
@@ -362,8 +362,8 @@ const proposal = await cmpsbl.cortex.dispatch({
     layer: "Infrastructure",
     title: "MEMORY Vectors",
     description: "Vector embeddings & RAG orchestration",
-    color: "text-sky-500",
-    gradient: "from-sky-500 to-blue-600",
+    color: "text-[hsl(var(--neon-blue))]",
+    gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--neon-blue)/0.7)]",
     code: `// Store vector embeddings
 await cmpsbl.memory.embed({
   collection: "product_docs",
@@ -387,8 +387,8 @@ const results = await cmpsbl.memory.search({
     layer: "Infrastructure",
     title: "RELAY Webhooks",
     description: "Outbound notifications & event delivery",
-    color: "text-lime-500",
-    gradient: "from-lime-500 to-green-600",
+    color: "text-[hsl(var(--neon-green))]",
+    gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Register a webhook endpoint
 await cmpsbl.relay.register({
   url: "https://api.company.com/webhook",
@@ -411,8 +411,8 @@ await cmpsbl.relay.notify({
     layer: "Infrastructure",
     title: "AUDIT Ledger",
     description: "Immutable compliance & audit trail",
-    color: "text-stone-500",
-    gradient: "from-stone-500 to-gray-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Query the audit ledger
 const trail = await cmpsbl.audit.query({
   entity_type: "user",
@@ -434,8 +434,8 @@ const report = await cmpsbl.audit.export({
     layer: "Infrastructure",
     title: "IDENTITY Attribution",
     description: "Actor signatures & provenance tracking",
-    color: "text-rose-500",
-    gradient: "from-rose-500 to-red-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Verify actor identity
 const verified = await cmpsbl.identity.verify({
   actor_id: "agent_cortex",
@@ -456,8 +456,8 @@ console.log(chain.origin, chain.transformations);`,
     layer: "Infrastructure",
     title: "ECONOMY Budgets",
     description: "Cost attribution & budget enforcement",
-    color: "text-amber-600",
-    gradient: "from-amber-500 to-orange-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Set budget constraints
 await cmpsbl.economy.budget({
   scope: "project_alpha",
@@ -478,8 +478,8 @@ console.log(costs.total, costs.by_module);`,
     layer: "Infrastructure",
     title: "SANDBOX Isolation",
     description: "Isolated execution environments",
-    color: "text-cyan-600",
-    gradient: "from-cyan-500 to-teal-600",
+    color: "text-[hsl(var(--neon-cyan))]",
+    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Create an isolated sandbox
 const env = await cmpsbl.sandbox.create({
   runtime: "node20",
@@ -502,8 +502,8 @@ console.log(result.output, result.metrics);`,
     layer: "Cognitive",
     title: "ENCODE Execution",
     description: "Code generation & execution intelligence",
-    color: "text-yellow-500",
-    gradient: "from-yellow-500 to-lime-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Generate code from intent (via DECODE memory formation)
 const result = await cmpsbl.encode.generate({
   intent: "Create a REST API endpoint for user profiles",
@@ -543,13 +543,13 @@ function highlightCode(code: string): string {
 
 // Layer configuration for grouping modules
 const LAYER_CONFIG = {
-  Kernel: { color: 'text-orange-400', bgGlow: 'from-orange-500/20' },
-  Cognitive: { color: 'text-purple-400', bgGlow: 'from-purple-500/20' },
-  Operational: { color: 'text-blue-400', bgGlow: 'from-blue-500/20' },
-  Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
-  Infrastructure: { color: 'text-sky-400', bgGlow: 'from-sky-500/20' },
-  Orchestrator: { color: 'text-violet-400', bgGlow: 'from-violet-500/20' },
-  Overlay: { color: 'text-rose-400', bgGlow: 'from-rose-500/20' },
+  Kernel: { color: 'text-[hsl(var(--neon-amber))]', bgGlow: 'from-[hsl(var(--neon-amber)/0.2)]' },
+  Cognitive: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
+  Operational: { color: 'text-[hsl(var(--neon-cyan))]', bgGlow: 'from-[hsl(var(--neon-cyan)/0.2)]' },
+  Admin: { color: 'text-[hsl(var(--neon-green))]', bgGlow: 'from-[hsl(var(--neon-green)/0.2)]' },
+  Infrastructure: { color: 'text-[hsl(var(--neon-blue))]', bgGlow: 'from-[hsl(var(--neon-blue)/0.2)]' },
+  Orchestrator: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
+  Overlay: { color: 'text-[hsl(var(--neon-magenta))]', bgGlow: 'from-[hsl(var(--neon-magenta)/0.2)]' },
 } as const;
 
 export function TechShowcase() {

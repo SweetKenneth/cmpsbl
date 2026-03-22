@@ -129,10 +129,10 @@ export function AgentsSection() {
                 const tierIcons = [Clock, Database, HardDrive, Archive];
                 const TierIcon = tierIcons[i];
                 const tierColors = [
-                  "from-red-500/20 to-orange-500/20 border-red-500/30",
-                  "from-amber-500/20 to-yellow-500/20 border-amber-500/30",
-                  "from-sky-500/20 to-blue-500/20 border-sky-500/30",
-                  "from-slate-500/20 to-zinc-500/20 border-slate-500/30",
+                  "from-[hsl(var(--neon-magenta)/0.2)] to-[hsl(var(--neon-amber)/0.2)] border-[hsl(var(--neon-magenta)/0.3)]",
+                  "from-[hsl(var(--neon-amber)/0.2)] to-[hsl(var(--neon-cyan)/0.2)] border-[hsl(var(--neon-amber)/0.3)]",
+                  "from-[hsl(var(--neon-cyan)/0.2)] to-[hsl(var(--neon-blue)/0.2)] border-[hsl(var(--neon-cyan)/0.3)]",
+                  "from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-purple)/0.1)] border-[hsl(var(--neon-purple)/0.3)]",
                 ];
                 return (
                   <div key={tier.name} className={cn("rounded-xl border p-4 bg-gradient-to-br hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300", tierColors[i])}>
