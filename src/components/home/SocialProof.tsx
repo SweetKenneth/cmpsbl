@@ -58,7 +58,7 @@ export function SocialProof() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 max-w-4xl mx-auto">
           {TESTIMONIALS.map((t, i) => (
             <motion.div
               key={t.highlight}
