@@ -543,13 +543,13 @@ function highlightCode(code: string): string {
 
 // Layer configuration for grouping modules
 const LAYER_CONFIG = {
-  Kernel: { color: 'text-orange-400', bgGlow: 'from-orange-500/20' },
-  Cognitive: { color: 'text-purple-400', bgGlow: 'from-purple-500/20' },
-  Operational: { color: 'text-blue-400', bgGlow: 'from-blue-500/20' },
-  Admin: { color: 'text-emerald-400', bgGlow: 'from-emerald-500/20' },
-  Infrastructure: { color: 'text-sky-400', bgGlow: 'from-sky-500/20' },
-  Orchestrator: { color: 'text-violet-400', bgGlow: 'from-violet-500/20' },
-  Overlay: { color: 'text-rose-400', bgGlow: 'from-rose-500/20' },
+  Kernel: { color: 'text-[hsl(var(--neon-amber))]', bgGlow: 'from-[hsl(var(--neon-amber)/0.2)]' },
+  Cognitive: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
+  Operational: { color: 'text-[hsl(var(--neon-cyan))]', bgGlow: 'from-[hsl(var(--neon-cyan)/0.2)]' },
+  Admin: { color: 'text-[hsl(var(--neon-green))]', bgGlow: 'from-[hsl(var(--neon-green)/0.2)]' },
+  Infrastructure: { color: 'text-[hsl(var(--neon-blue))]', bgGlow: 'from-[hsl(var(--neon-blue)/0.2)]' },
+  Orchestrator: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
+  Overlay: { color: 'text-[hsl(var(--neon-magenta))]', bgGlow: 'from-[hsl(var(--neon-magenta)/0.2)]' },
 } as const;
 
 export function TechShowcase() {
