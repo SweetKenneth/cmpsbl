@@ -98,7 +98,7 @@ export function AgencySettingsPanel({
         <Card className="border-border/30 bg-black/40">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <User className="w-4 h-4 text-fuchsia-400" />
+              <User className="w-4 h-4 text-neon-magenta" />
               Leader Configuration
             </CardTitle>
           </CardHeader>
@@ -132,7 +132,7 @@ export function AgencySettingsPanel({
         <Card className="border-border/30 bg-black/40">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Brain className="w-4 h-4 text-purple-400" />
+              <Brain className="w-4 h-4 text-neon-purple" />
               Learning & Intelligence
             </CardTitle>
           </CardHeader>
@@ -168,7 +168,7 @@ export function AgencySettingsPanel({
         <Card className="border-border/30 bg-black/40">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-400" />
+              <Zap className="w-4 h-4 text-neon-amber" />
               Quick Action Presets
             </CardTitle>
           </CardHeader>
@@ -229,7 +229,7 @@ export function AgencySettingsPanel({
         <Card className="border-border/30 bg-black/40">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Bookmark className="w-4 h-4 text-cyan-400" />
+              <Bookmark className="w-4 h-4 text-neon-cyan" />
               Default Research Domains
             </CardTitle>
           </CardHeader>
@@ -239,7 +239,7 @@ export function AgencySettingsPanel({
                 <Badge 
                   key={i} 
                   variant="outline" 
-                  className="text-xs border-cyan-500/30 text-cyan-400"
+                  className="text-xs border-neon-cyan/30 text-neon-cyan"
                 >
                   {domain}
                 </Badge>

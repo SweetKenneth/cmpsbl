@@ -345,7 +345,7 @@ export default function SDKPlayground() {
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-sm flex items-center gap-2">
                           {result.success ? (
-                            <CheckCircle className="w-4 h-4 text-emerald-500" />
+                            <CheckCircle className="w-4 h-4 text-neon-green" />
                           ) : (
                             <span className="w-4 h-4 text-destructive">✕</span>
                           )}
@@ -433,7 +433,7 @@ export default function SDKPlayground() {
                       >
                         <div className="flex items-center gap-2">
                           {h.success ? (
-                            <CheckCircle className="w-3 h-3 text-emerald-500" />
+                            <CheckCircle className="w-3 h-3 text-neon-green" />
                           ) : (
                             <span className="w-3 h-3 text-destructive">✕</span>
                           )}

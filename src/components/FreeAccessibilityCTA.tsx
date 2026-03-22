@@ -35,7 +35,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
       <Card className="max-w-4xl mx-auto p-8 md:p-12 bg-gradient-to-br from-primary/10 via-primary-variant/5 to-accent/10 border-primary/20 shadow-glow-lg">
         <div className="text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 mb-6">
-            <Heart className="w-4 h-4 text-red-500" />
+            <Heart className="w-4 h-4 text-destructive" />
             <span className="text-sm font-medium">Our Mission</span>
           </div>
 

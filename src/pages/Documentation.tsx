@@ -37,14 +37,14 @@ interface DocSection {
 const sections: DocSection[] = [
   { id: "overview",       label: "Overview",        icon: BookOpen,   color: "text-primary" },
   { id: "architecture",   label: "Architecture",    icon: Layers,     color: "text-sky-500" },
-  { id: "byok",           label: "BYOK",            icon: Key,        color: "text-amber-500" },
-  { id: "brain",          label: "BRAIN",           icon: Brain,      color: "text-violet-500" },
-  { id: "nexus",          label: "NEXUS",           icon: Zap,        color: "text-cyan-500" },
-  { id: "dream",          label: "DREAM",           icon: Moon,       color: "text-indigo-500" },
-  { id: "defense",        label: "DEFENSE",         icon: Shield,     color: "text-emerald-500" },
-  { id: "evolution",      label: "EVOLUTION",       icon: GitBranch,  color: "text-rose-500" },
-  { id: "extensions",     label: "Extensions",      icon: Package,    color: "text-orange-500" },
-  { id: "agents",         label: "Agents",          icon: Bot,        color: "text-pink-500" },
+  { id: "byok",           label: "BYOK",            icon: Key,        color: "text-neon-amber" },
+  { id: "brain",          label: "BRAIN",           icon: Brain,      color: "text-neon-purple" },
+  { id: "nexus",          label: "NEXUS",           icon: Zap,        color: "text-neon-cyan" },
+  { id: "dream",          label: "DREAM",           icon: Moon,       color: "text-primary" },
+  { id: "defense",        label: "DEFENSE",         icon: Shield,     color: "text-neon-green" },
+  { id: "evolution",      label: "EVOLUTION",       icon: GitBranch,  color: "text-neon-magenta" },
+  { id: "extensions",     label: "Extensions",      icon: Package,    color: "text-neon-amber" },
+  { id: "agents",         label: "Agents",          icon: Bot,        color: "text-neon-magenta" },
   { id: "integrations",   label: "Integrations",    icon: Globe,      color: "text-sky-500" },
   { id: "api",            label: "API Reference",   icon: Terminal,   color: "text-primary" },
 ];
@@ -74,7 +74,7 @@ function CodeBlock({ children, title }: { children: string; title?: string }) {
         className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 border border-border/40 opacity-0 group-hover:opacity-100 transition-opacity"
         aria-label="Copy code"
       >
-        {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5 text-muted-foreground" />}
+        {copied ? <Check className="w-3.5 h-3.5 text-neon-green" /> : <Copy className="w-3.5 h-3.5 text-muted-foreground" />}
       </button>
     </div>
   );
@@ -109,8 +109,8 @@ function InfoCard({ icon: Icon, title, children, accent = "border-primary" }: {
 function Callout({ type = "info", children }: { type?: "info" | "warning" | "tip"; children: React.ReactNode }) {
   const styles = {
     info: "bg-sky-500/5 border-sky-500/20 text-sky-600 dark:text-sky-400",
-    warning: "bg-amber-500/5 border-amber-500/20 text-amber-600 dark:text-amber-400",
-    tip: "bg-emerald-500/5 border-emerald-500/20 text-emerald-600 dark:text-emerald-400",
+    warning: "bg-neon-amber/5 border-neon-amber/20 text-neon-amber dark:text-neon-amber",
+    tip: "bg-neon-green/5 border-neon-green/20 text-neon-green dark:text-neon-green",
   };
   const icons = { info: AlertTriangle, warning: AlertTriangle, tip: Zap };
   const Icon = icons[type];
@@ -311,9 +311,9 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-red-500/30 bg-red-500/5" },
-            { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-amber-500/30 bg-amber-500/5" },
-            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-emerald-500/30 bg-emerald-500/5" },
+            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-destructive/30 bg-destructive/5" },
+            { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-neon-amber/30 bg-neon-amber/5" },
+            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-neon-green/30 bg-neon-green/5" },
           ].map(s => (
             <div key={s.label} className={cn("p-4 rounded-xl border", s.color)}>
               <h4 className="font-semibold text-sm mb-1">{s.label}</h4>
@@ -728,7 +728,7 @@ function DefenseSection() {
             { icon: Network, label: "DDoS Protection", desc: "Automatic traffic shaping and IP reputation scoring under volumetric attacks" },
           ].map(f => (
             <div key={f.label} className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/30">
-              <f.icon className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+              <f.icon className="w-4 h-4 text-neon-green shrink-0 mt-0.5" />
               <div>
                 <h4 className="font-semibold text-sm mb-1">{f.label}</h4>
                 <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
@@ -771,7 +771,7 @@ await substrate.defense.configure({
         <div className="grid gap-2 sm:grid-cols-3">
           {["SOC 2 Type II", "GDPR Ready", "HIPAA Eligible", "WCAG 2.2 AA", "CCPA Compliant", "ISO 27001"].map(c => (
             <div key={c} className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-border/40 bg-card/30 text-sm">
-              <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+              <Check className="w-3.5 h-3.5 text-neon-green shrink-0" />
               <span>{c}</span>
             </div>
           ))}
@@ -1138,7 +1138,7 @@ Content-Type: application/json`}</CodeBlock>
           {endpoints.map(ep => (
             <div key={ep.action} className="rounded-xl border border-border/50 bg-card/30 overflow-hidden">
               <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border/30">
-                <Badge className="bg-emerald-500/15 text-emerald-500 border-emerald-500/30 text-[10px] font-mono px-2">
+                <Badge className="bg-neon-green/15 text-neon-green border-neon-green/30 text-[10px] font-mono px-2">
                   {ep.method}
                 </Badge>
                 <code className="text-sm font-semibold text-foreground">{ep.action}</code>

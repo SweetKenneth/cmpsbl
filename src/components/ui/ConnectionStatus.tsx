@@ -42,7 +42,7 @@ export function ConnectionBadge() {
   }, []);
 
   return (
-    <span className={`inline-flex items-center gap-1 text-xs ${online ? 'text-green-500' : 'text-destructive'}`}>
+    <span className={`inline-flex items-center gap-1 text-xs ${online ? 'text-neon-green' : 'text-destructive'}`}>
       {online ? <Wifi className="h-3 w-3" /> : <WifiOff className="h-3 w-3" />}
       {online ? 'Online' : 'Offline'}
     </span>

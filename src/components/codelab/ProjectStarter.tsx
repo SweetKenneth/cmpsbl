@@ -81,7 +81,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key_here`,
     title: "Install SDK",
     description: "Add substrate SDK to an existing project",
     icon: Package,
-    color: "text-green-500 bg-green-500/10",
+    color: "text-neon-green bg-neon-green/10",
     steps: [
       {
         title: "Import SDK",
@@ -110,7 +110,7 @@ const memory = await substrate.brain.query("recent insights");`,
     title: "Supabase Schema",
     description: "Set up substrate tables in your Supabase project",
     icon: Database,
-    color: "text-emerald-500 bg-emerald-500/10",
+    color: "text-neon-green bg-neon-green/10",
     steps: [
       {
         title: "Core Tables",
@@ -152,7 +152,7 @@ CREATE POLICY "Public read" ON brain_memories FOR SELECT USING (true);`,
     title: "BYOK Integrations",
     description: "Bring your own API keys for AI providers",
     icon: Key,
-    color: "text-amber-500 bg-amber-500/10",
+    color: "text-neon-amber bg-neon-amber/10",
     steps: [
       {
         title: "OpenAI",

@@ -98,10 +98,10 @@ export default function DecisionCenter() {
                 </p>
               </div>
               <span className={`text-xs px-2 py-1 rounded ${
-                p.status === 'approved' ? 'bg-emerald-500/20 text-emerald-300' :
-                p.status === 'executed' ? 'bg-blue-500/20 text-blue-300' :
-                p.status === 'rejected' ? 'bg-red-500/20 text-red-300' :
-                'bg-yellow-500/20 text-yellow-300'
+                p.status === 'approved' ? 'bg-neon-green/20 text-neon-green' :
+                p.status === 'executed' ? 'bg-neon-blue/20 text-neon-blue' :
+                p.status === 'rejected' ? 'bg-destructive/20 text-destructive' :
+                'bg-neon-amber/20 text-neon-amber'
               }`}>
                 {p.status}
               </span>

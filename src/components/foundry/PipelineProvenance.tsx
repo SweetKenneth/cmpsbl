@@ -36,10 +36,10 @@ interface Props {
 
 function tierColor(score: number): string {
   if (score === 100) return 'text-primary';
-  if (score >= 94) return 'text-purple-400';
-  if (score >= 90) return 'text-amber-400';
+  if (score >= 94) return 'text-neon-purple';
+  if (score >= 90) return 'text-neon-amber';
   if (score >= 80) return 'text-sky-400';
-  return 'text-emerald-400';
+  return 'text-neon-green';
 }
 
 function tierGlow(score: number): string {
@@ -184,14 +184,14 @@ function ProvenanceBody({
               className="p-1 rounded hover:bg-muted/30 transition-colors text-muted-foreground hover:text-foreground shrink-0"
               title="Copy full fingerprint"
             >
-              {copied ? <CheckCircle className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+              {copied ? <CheckCircle className="w-3 h-3 text-neon-green" /> : <Copy className="w-3 h-3" />}
             </button>
           </div>
           <div className="text-[9px] font-mono text-muted-foreground/40 mt-1">
             Identity derived from architecture only (steps + epoch)
           </div>
           {verified !== null && (
-            <div className={`text-[9px] font-mono mt-1 ${verified ? 'text-emerald-400' : 'text-destructive'}`}>
+            <div className={`text-[9px] font-mono mt-1 ${verified ? 'text-neon-green' : 'text-destructive'}`}>
               {verified ? '✓ Verified — structural fingerprint matches' : '✗ Mismatch detected'}
             </div>
           )}

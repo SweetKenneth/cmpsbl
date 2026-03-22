@@ -21,37 +21,37 @@ const OBSERVER_FEATURES = [
     icon: Eye,
     title: "Read-Only Visibility",
     description: "Access to documentation, architecture diagrams, and system overviews without modification rights.",
-    gradient: "from-cyan-500 to-blue-600",
+    gradient: "from-neon-cyan to-neon-blue",
   },
   {
     icon: BarChart3,
     title: "Public Metrics",
     description: "View aggregate performance benchmarks and validation methodology results.",
-    gradient: "from-emerald-500 to-teal-600",
+    gradient: "from-neon-green to-teal-600",
   },
   {
     icon: FileText,
     title: "Documentation Access",
     description: "Full access to the architecture library covering all 40 nodes across 12 sectors.",
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-neon-purple to-neon-purple",
   },
   {
     icon: BookOpen,
     title: "Research Materials",
     description: "Access to academic-grade documentation suitable for citation and reference.",
-    gradient: "from-amber-500 to-orange-600",
+    gradient: "from-neon-amber to-orange-600",
   },
   {
     icon: Shield,
     title: "Standards Reference",
     description: "Review AIGVRN governance namespace and LLMS.txt machine context standards.",
-    gradient: "from-rose-500 to-pink-600",
+    gradient: "from-neon-magenta to-pink-600",
   },
   {
     icon: Layers,
     title: "Architecture Overview",
     description: "Understand the layered kernel architecture — 40 nodes across 12 sectors.",
-    gradient: "from-blue-500 to-indigo-600",
+    gradient: "from-neon-blue to-primary",
   },
 ];
 

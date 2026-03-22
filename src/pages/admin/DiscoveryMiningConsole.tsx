@@ -30,10 +30,10 @@ import {
 import type { ReactorRunResult, ReactorCandidate } from '@/lib/discovery/reactor';
 
 const TIER_COLORS: Record<string, string> = {
-  'cmpsbl-only': 'bg-red-500/20 text-red-400 border-red-500/30',
-  'enterprise': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  'architect': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  'creator': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+  'cmpsbl-only': 'bg-destructive/20 text-destructive border-destructive/30',
+  'enterprise': 'bg-neon-blue/20 text-neon-blue border-neon-blue/30',
+  'architect': 'bg-neon-green/20 text-neon-green border-neon-green/30',
+  'creator': 'bg-neon-amber/20 text-neon-amber border-neon-amber/30',
 };
 
 const CATEGORY_ICONS: Record<string, typeof Brain> = {
@@ -149,7 +149,7 @@ function DiscoveryCard({
         {/* Top badges */}
         <div className="flex items-center gap-2 flex-wrap mb-2">
           <span className="font-mono text-xs text-muted-foreground font-bold">#{index + 1}</span>
-          <span className={`font-mono font-bold text-sm ${d.cjpi >= 95 ? 'text-red-400' : d.cjpi >= 85 ? 'text-blue-400' : 'text-emerald-400'}`}>
+          <span className={`font-mono font-bold text-sm ${d.cjpi >= 95 ? 'text-destructive' : d.cjpi >= 85 ? 'text-neon-blue' : 'text-neon-green'}`}>
             {d.cjpi}
           </span>
           <TierBadge tier={d.tier} />
@@ -493,7 +493,7 @@ function TemplateComposer() {
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
             CJPI Scoring
-            <span className={`font-mono text-lg ${previewCjpi >= 90 ? 'text-red-400' : previewCjpi >= 80 ? 'text-blue-400' : 'text-amber-400'}`}>
+            <span className={`font-mono text-lg ${previewCjpi >= 90 ? 'text-destructive' : previewCjpi >= 80 ? 'text-neon-blue' : 'text-neon-amber'}`}>
               {previewCjpi}
             </span>
           </CardTitle>
@@ -560,11 +560,11 @@ function AutoMinerTab() {
 
   const phaseLabels: Record<string, { label: string; color: string; icon: typeof Bot }> = {
     idle: { label: 'Idle', color: 'text-muted-foreground', icon: Bot },
-    generating: { label: 'Generating Templates', color: 'text-blue-400', icon: Sparkles },
-    probing: { label: 'Probing Discoveries', color: 'text-amber-400', icon: FlaskConical },
-    mining: { label: 'Deep Mining', color: 'text-emerald-400', icon: Pickaxe },
-    retiring: { label: 'Retiring Combos', color: 'text-orange-400', icon: RotateCcw },
-    paused: { label: 'Paused', color: 'text-yellow-400', icon: Pause },
+    generating: { label: 'Generating Templates', color: 'text-neon-blue', icon: Sparkles },
+    probing: { label: 'Probing Discoveries', color: 'text-neon-amber', icon: FlaskConical },
+    mining: { label: 'Deep Mining', color: 'text-neon-green', icon: Pickaxe },
+    retiring: { label: 'Retiring Combos', color: 'text-neon-amber', icon: RotateCcw },
+    paused: { label: 'Paused', color: 'text-neon-amber', icon: Pause },
     complete: { label: 'Complete', color: 'text-primary', icon: Check },
   };
 
@@ -575,7 +575,7 @@ function AutoMinerTab() {
   return (
     <div className="space-y-4">
       {/* Status Banner */}
-      <Card className={`border-2 ${state.phase === 'mining' ? 'border-emerald-500/40' : state.phase === 'probing' ? 'border-amber-500/40' : 'border-border/50'}`}>
+      <Card className={`border-2 ${state.phase === 'mining' ? 'border-neon-green/40' : state.phase === 'probing' ? 'border-neon-amber/40' : 'border-border/50'}`}>
         <CardContent className="p-4">
           <div className="flex items-center gap-3 mb-3">
             <div className={`p-2 rounded-lg ${state.phase !== 'idle' ? 'bg-primary/10 animate-pulse' : 'bg-muted'}`}>
@@ -736,7 +736,7 @@ function AutoMinerTab() {
                         {c.discoveriesFound} found
                       </span>
                       {c.miningRuns > 0 && (
-                        <span className="text-emerald-400"> (+{c.miningRuns} mining runs)</span>
+                        <span className="text-neon-green"> (+{c.miningRuns} mining runs)</span>
                       )}
                     </div>
                   </div>

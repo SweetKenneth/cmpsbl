@@ -182,8 +182,8 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
               </Button>
               <div className="h-4 w-px bg-border/50" />
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-fuchsia-500/30 to-purple-600/30 border border-fuchsia-500/40 flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-fuchsia-400" />
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-magenta/30 to-neon-purple/30 border border-neon-magenta/40 flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-neon-magenta" />
                 </div>
                 <div>
                   <span className="font-semibold text-sm">{agency.name}</span>
@@ -198,7 +198,7 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
 
             <div className="flex items-center gap-2">
               {!isAuthenticated && (
-                <Button asChild variant="outline" size="sm" className="gap-2 text-xs border-fuchsia-500/30">
+                <Button asChild variant="outline" size="sm" className="gap-2 text-xs border-neon-magenta/30">
                   <Link to="/auth">
                     <LogIn className="w-3 h-3" />
                     Sign In
@@ -206,17 +206,17 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
                 </Button>
               )}
               {isAuthenticated && isOwner && (
-                <Badge variant="outline" className="text-[10px] border-fuchsia-500/50 text-fuchsia-400">
+                <Badge variant="outline" className="text-[10px] border-neon-magenta/50 text-neon-magenta">
                   Owner
                 </Badge>
               )}
               {activeTasks.length > 0 && (
-                <Badge variant="outline" className="text-[10px] border-amber-500/50 text-amber-400 animate-pulse">
+                <Badge variant="outline" className="text-[10px] border-neon-amber/50 text-neon-amber animate-pulse">
                   {activeTasks.length} Active
                 </Badge>
               )}
               {queuedTasks.length > 0 && (
-                <Badge variant="outline" className="text-[10px] border-cyan-500/50 text-cyan-400">
+                <Badge variant="outline" className="text-[10px] border-neon-cyan/50 text-neon-cyan">
                   {queuedTasks.length} Queued
                 </Badge>
               )}
@@ -229,24 +229,24 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
       <div className="flex-1 container max-w-5xl mx-auto px-4 py-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
           <TabsList className="grid w-full grid-cols-4 bg-black/40 border border-border/30">
-            <TabsTrigger value="chat" className="gap-2 data-[state=active]:bg-fuchsia-500/20">
+            <TabsTrigger value="chat" className="gap-2 data-[state=active]:bg-neon-magenta/20">
               <MessageSquare className="w-4 h-4" />
               <span className="hidden sm:inline">Chat</span>
             </TabsTrigger>
-            <TabsTrigger value="tasks" className="gap-2 data-[state=active]:bg-amber-500/20 relative">
+            <TabsTrigger value="tasks" className="gap-2 data-[state=active]:bg-neon-amber/20 relative">
               <ListTodo className="w-4 h-4" />
               <span className="hidden sm:inline">Tasks</span>
               {activeTasks.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-500 text-[10px] flex items-center justify-center text-black font-bold">
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-neon-amber text-[10px] flex items-center justify-center text-black font-bold">
                   {activeTasks.length}
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="team" className="gap-2 data-[state=active]:bg-cyan-500/20">
+            <TabsTrigger value="team" className="gap-2 data-[state=active]:bg-neon-cyan/20">
               <Users2 className="w-4 h-4" />
               <span className="hidden sm:inline">Team</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="gap-2 data-[state=active]:bg-purple-500/20">
+            <TabsTrigger value="settings" className="gap-2 data-[state=active]:bg-neon-purple/20">
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">Settings</span>
             </TabsTrigger>

@@ -54,9 +54,9 @@ const scenarios = [
     description: "Calls vision.health() and returns system health snapshot.",
     technicalNote: "Queries all 12 substrate modules for liveness.",
     icon: Activity,
-    color: "text-emerald-500",
-    bgColor: "bg-emerald-500/10",
-    borderColor: "border-emerald-500/30",
+    color: "text-neon-green",
+    bgColor: "bg-neon-green/10",
+    borderColor: "border-neon-green/30",
     endpoint: "/pf-substrate",
     method: "POST",
   },
@@ -66,9 +66,9 @@ const scenarios = [
     description: "Runs a decode.chat() call with a fixed substrate-interpretation prompt.",
     technicalNote: "Routes through Nexus → Groq (llama-3.3-70b) with interpreter persona constraints.",
     icon: MessageSquare,
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
-    borderColor: "border-blue-500/30",
+    color: "text-neon-blue",
+    bgColor: "bg-neon-blue/10",
+    borderColor: "border-neon-blue/30",
     endpoint: "/pf-substrate",
     method: "POST",
   },
@@ -78,9 +78,9 @@ const scenarios = [
     description: "Feeds a canned dream snippet for acknowledgement only.",
     technicalNote: "Writes to dream_feeder_submissions table with sanitization layer.",
     icon: Moon,
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/10",
-    borderColor: "border-purple-500/30",
+    color: "text-neon-purple",
+    bgColor: "bg-neon-purple/10",
+    borderColor: "border-neon-purple/30",
     endpoint: "/pf-substrate",
     method: "POST",
   },
@@ -102,7 +102,7 @@ function ProofModeFallback() {
       <PublicNav />
       <main className="flex-1 flex items-center justify-center">
         <div className="text-center max-w-md px-6">
-          <AlertTriangle className="w-16 h-16 text-amber-500 mx-auto mb-6" />
+          <AlertTriangle className="w-16 h-16 text-neon-amber mx-auto mb-6" />
           <h1 className="text-2xl font-bold text-foreground mb-3">
             Proof Mode collapsed harder than intended.
           </h1>
@@ -500,10 +500,10 @@ function ProofModeContent() {
                   <div
                     className={`p-4 rounded-lg border flex items-start gap-3 font-mono text-sm ${
                       statusBanner.type === "success"
-                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                        ? "bg-neon-green/10 border-neon-green/30 text-neon-green"
                         : statusBanner.type === "limit"
-                        ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
-                        : "bg-red-500/10 border-red-500/30 text-red-400"
+                        ? "bg-neon-amber/10 border-neon-amber/30 text-neon-amber"
+                        : "bg-destructive/10 border-destructive/30 text-destructive"
                     }`}
                   >
                     {statusBanner.type === "success" ? (
@@ -574,14 +574,14 @@ function ProofModeContent() {
                           <Badge 
                             variant="outline" 
                             className={`text-[10px] border-zinc-700 ${
-                              responsePayload.success ? "text-emerald-400" : "text-red-400"
+                              responsePayload.success ? "text-neon-green" : "text-destructive"
                             }`}
                           >
                             {responsePayload.success ? "SUCCESS" : "FAILED"}
                           </Badge>
                         )}
                       </div>
-                      <pre className="text-xs text-blue-400/90 overflow-x-auto p-4 font-mono leading-relaxed max-h-80 overflow-y-auto">
+                      <pre className="text-xs text-neon-blue/90 overflow-x-auto p-4 font-mono leading-relaxed max-h-80 overflow-y-auto">
                         {responsePayload 
                           ? JSON.stringify(responsePayload, null, 2) 
                           : isRunning 

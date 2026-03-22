@@ -79,7 +79,7 @@ export default function CompressionStats() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
               <div className="flex items-center gap-2">
-                <TrendingDown className="w-4 h-4 text-green-400" />
+                <TrendingDown className="w-4 h-4 text-neon-green" />
                 <span className="text-sm font-medium">Avg Compression</span>
               </div>
               <span className="text-2xl font-bold text-primary">
@@ -100,8 +100,8 @@ export default function CompressionStats() {
             </div>
 
             {stats.avg_ratio >= 2.5 && (
-              <div className="p-2 rounded bg-green-500/10 border border-green-500/20">
-                <p className="text-xs text-green-400">
+              <div className="p-2 rounded bg-neon-green/10 border border-neon-green/20">
+                <p className="text-xs text-neon-green">
                   ✓ Optimal compression achieved (target: 2.5x)
                 </p>
               </div>

@@ -34,8 +34,8 @@ export function AgencyTemplateCard({ template, selected, onSelect }: AgencyTempl
         "backdrop-blur-xl bg-white/5 dark:bg-white/[0.03]",
         "border hover:shadow-lg",
         selected
-          ? "border-fuchsia-500/60 shadow-fuchsia-500/20 bg-fuchsia-500/10"
-          : "border-border/30 hover:border-fuchsia-400/40"
+          ? "border-neon-magenta/60 shadow-neon-magenta/20 bg-neon-magenta/10"
+          : "border-border/30 hover:border-neon-magenta/40"
       )}
     >
       <div className="flex items-start gap-3">
@@ -43,19 +43,19 @@ export function AgencyTemplateCard({ template, selected, onSelect }: AgencyTempl
           "w-10 h-10 rounded-lg flex items-center justify-center shrink-0",
           "border",
           selected
-            ? "bg-fuchsia-500/30 border-fuchsia-500/50"
-            : "bg-fuchsia-500/10 border-fuchsia-500/30"
+            ? "bg-neon-magenta/30 border-neon-magenta/50"
+            : "bg-neon-magenta/10 border-neon-magenta/30"
         )}>
           <Icon className={cn(
             "w-5 h-5",
-            selected ? "text-fuchsia-300" : "text-fuchsia-400"
+            selected ? "text-neon-magenta" : "text-neon-magenta"
           )} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-medium text-sm text-foreground">{template.name}</h3>
             {template.isFeatured && (
-              <Badge variant="outline" className="text-[9px] h-4 border-amber-500/50 text-amber-400">
+              <Badge variant="outline" className="text-[9px] h-4 border-neon-amber/50 text-neon-amber">
                 Featured
               </Badge>
             )}
@@ -67,7 +67,7 @@ export function AgencyTemplateCard({ template, selected, onSelect }: AgencyTempl
             <Badge variant="secondary" className="text-[10px] h-5 bg-background/50">
               {memberCount} agents
             </Badge>
-            <Badge variant="outline" className="text-[10px] h-5 border-cyan-500/30 text-cyan-400">
+            <Badge variant="outline" className="text-[10px] h-5 border-neon-cyan/30 text-neon-cyan">
               {template.dreamPoolMode.replace('_', ' ')}
             </Badge>
           </div>

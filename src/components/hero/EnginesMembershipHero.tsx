@@ -48,9 +48,9 @@ const freeTools = [
 // Premium engine tiers
 const engineTiers = [
   { name: "Builder", price: "Free", engines: "30 + 1 meta", color: "from-slate-400 to-slate-500" },
-  { name: "Studio", price: "$29", engines: "50 + 4 meta", color: "from-emerald-400 to-emerald-600" },
-  { name: "Creator", price: "$49", engines: "76 + 8 meta", color: "from-cyan-400 to-cyan-600" },
-  { name: "Architect", price: "$79", engines: "76 + 16 meta", color: "from-violet-400 to-violet-600", featured: true },
+  { name: "Studio", price: "$29", engines: "50 + 4 meta", color: "from-neon-green to-neon-green" },
+  { name: "Creator", price: "$49", engines: "76 + 8 meta", color: "from-neon-cyan to-neon-cyan" },
+  { name: "Architect", price: "$79", engines: "76 + 16 meta", color: "from-neon-purple to-neon-purple", featured: true },
 ];
 
 // Floating particle with reduced motion for mobile
@@ -218,7 +218,7 @@ function EnginesShowcase() {
             className={cn(
               "relative p-3 rounded-xl border transition-all duration-300 overflow-hidden",
               tier.featured 
-                ? "bg-gradient-to-br from-violet-500/10 to-primary/5 border-primary/40" 
+                ? "bg-gradient-to-br from-neon-purple/10 to-primary/5 border-primary/40" 
                 : "bg-card/80 border-border/40"
             )}
             initial={{ opacity: 0, y: 10 }}
@@ -314,7 +314,7 @@ export function EnginesMembershipHero() {
       <div className="relative p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-border/40 bg-gradient-to-br from-card/95 via-card/80 to-card/95 backdrop-blur-lg shadow-xl">
         {/* Animated border gradient */}
         <div 
-          className="absolute inset-0 rounded-2xl sm:rounded-3xl p-px bg-gradient-to-br from-emerald-500/20 via-transparent to-violet-500/20 pointer-events-none" 
+          className="absolute inset-0 rounded-2xl sm:rounded-3xl p-px bg-gradient-to-br from-neon-green/20 via-transparent to-neon-purple/20 pointer-events-none" 
           style={{ 
             mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)", 
             maskComposite: "xor",

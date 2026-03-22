@@ -31,8 +31,8 @@ interface SuggestionCardProps {
 
 function SuggestionCard({ suggestion, onAction, compact = false, className }: SuggestionCardProps) {
   const priorityColors = {
-    high: 'border-l-amber-500 bg-amber-500/5',
-    medium: 'border-l-blue-500 bg-blue-500/5',
+    high: 'border-l-neon-amber bg-neon-amber/5',
+    medium: 'border-l-neon-blue bg-neon-blue/5',
     low: 'border-l-muted bg-muted/30',
   };
   
@@ -126,7 +126,7 @@ export function SuggestionsPanel({
   return (
     <div className={cn('space-y-3', className)}>
       <div className="flex items-center gap-2 text-sm">
-        <Sparkles className="w-4 h-4 text-amber-500" />
+        <Sparkles className="w-4 h-4 text-neon-amber" />
         <span className="font-medium">Suggested Actions</span>
       </div>
       
@@ -260,7 +260,7 @@ export function FloatingSuggestion({
         
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <Sparkles className="w-3.5 h-3.5 text-neon-amber" />
             <span className="text-xs text-muted-foreground">Suggestion</span>
           </div>
           

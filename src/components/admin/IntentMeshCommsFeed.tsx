@@ -22,14 +22,14 @@ const MAX_EVENTS = 80;
 
 const CATEGORY_COLORS: Record<SignalCategory, { border: string; badge: string }> = {
   acknowledgement: { border: 'border-l-primary/50',       badge: 'bg-primary/10 text-primary border-primary/20' },
-  approval:        { border: 'border-l-emerald-500/60',    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+  approval:        { border: 'border-l-neon-green/60',    badge: 'bg-neon-green/10 text-neon-green border-neon-green/20' },
   confirmation:    { border: 'border-l-sky-500/50',        badge: 'bg-sky-500/10 text-sky-400 border-sky-500/20' },
   denial:          { border: 'border-l-destructive/60',    badge: 'bg-destructive/10 text-destructive border-destructive/20' },
-  processing:      { border: 'border-l-amber-500/50',      badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
-  completion:      { border: 'border-l-emerald-500/60',    badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
-  warning:         { border: 'border-l-orange-500/60',     badge: 'bg-orange-500/10 text-orange-400 border-orange-500/20' },
-  escalation:      { border: 'border-l-rose-500/60',       badge: 'bg-rose-500/10 text-rose-400 border-rose-500/20' },
-  discovery:       { border: 'border-l-violet-500/50',     badge: 'bg-violet-500/10 text-violet-400 border-violet-500/20' },
+  processing:      { border: 'border-l-neon-amber/50',      badge: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20' },
+  completion:      { border: 'border-l-neon-green/60',    badge: 'bg-neon-green/10 text-neon-green border-neon-green/20' },
+  warning:         { border: 'border-l-neon-amber/60',     badge: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20' },
+  escalation:      { border: 'border-l-neon-magenta/60',       badge: 'bg-neon-magenta/10 text-neon-magenta border-neon-magenta/20' },
+  discovery:       { border: 'border-l-neon-purple/50',     badge: 'bg-neon-purple/10 text-neon-purple border-neon-purple/20' },
   heartbeat:       { border: 'border-l-muted-foreground/30', badge: 'bg-muted text-muted-foreground border-border' },
 };
 
@@ -147,7 +147,7 @@ export function IntentMeshCommsFeed() {
               <MessageSquare className="w-4 h-4 text-primary shrink-0" />
               Mesh Communications
               {connected ? (
-                <Wifi className="w-3 h-3 text-emerald-500" />
+                <Wifi className="w-3 h-3 text-neon-green" />
               ) : (
                 <WifiOff className="w-3 h-3 text-muted-foreground" />
               )}

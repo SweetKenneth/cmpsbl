@@ -31,25 +31,25 @@ const categoryIcons: Record<string, React.ElementType> = {
 };
 
 const categoryGradients: Record<string, string> = {
-  brain: 'from-violet-600/30 via-violet-500/20 to-fuchsia-600/30',
-  decode: 'from-cyan-600/30 via-cyan-500/20 to-blue-600/30',
-  defense: 'from-rose-600/30 via-rose-500/20 to-red-600/30',
-  nexus: 'from-emerald-600/30 via-emerald-500/20 to-teal-600/30',
-  vision: 'from-blue-600/30 via-blue-500/20 to-indigo-600/30',
-  dream: 'from-purple-600/30 via-purple-500/20 to-indigo-600/30',
+  brain: 'from-neon-purple/30 via-neon-purple/20 to-neon-magenta/30',
+  decode: 'from-neon-cyan/30 via-neon-cyan/20 to-neon-blue/30',
+  defense: 'from-neon-magenta/30 via-neon-magenta/20 to-destructive/30',
+  nexus: 'from-neon-green/30 via-neon-green/20 to-teal-600/30',
+  vision: 'from-neon-blue/30 via-neon-blue/20 to-primary/30',
+  dream: 'from-neon-purple/30 via-neon-purple/20 to-primary/30',
   system: 'from-slate-600/30 via-slate-500/20 to-zinc-600/30',
-  world_engine: 'from-orange-600/30 via-orange-500/20 to-amber-600/30',
+  world_engine: 'from-orange-600/30 via-neon-amber/20 to-neon-amber/30',
 };
 
 const categoryColors: Record<string, string> = {
-  brain: 'border-violet-500/40 shadow-violet-500/20',
-  decode: 'border-cyan-500/40 shadow-cyan-500/20',
-  defense: 'border-rose-500/40 shadow-rose-500/20',
-  nexus: 'border-emerald-500/40 shadow-emerald-500/20',
-  vision: 'border-blue-500/40 shadow-blue-500/20',
-  dream: 'border-purple-500/40 shadow-purple-500/20',
+  brain: 'border-neon-purple/40 shadow-neon-purple/20',
+  decode: 'border-neon-cyan/40 shadow-neon-cyan/20',
+  defense: 'border-neon-magenta/40 shadow-neon-magenta/20',
+  nexus: 'border-neon-green/40 shadow-neon-green/20',
+  vision: 'border-neon-blue/40 shadow-neon-blue/20',
+  dream: 'border-neon-purple/40 shadow-neon-purple/20',
   system: 'border-slate-500/40 shadow-slate-500/20',
-  world_engine: 'border-orange-500/40 shadow-orange-500/20',
+  world_engine: 'border-neon-amber/40 shadow-neon-amber/20',
 };
 
 interface TemplateCardProps {
@@ -163,7 +163,7 @@ export function TemplateCard({
           {/* Featured badge */}
           {featured && (
             <div className="absolute top-3 left-3">
-              <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 gap-1 shadow-lg">
+              <Badge className="bg-gradient-to-r from-neon-amber to-neon-amber text-white border-0 gap-1 shadow-lg">
                 <TrendingUp className="w-3 h-3" />
                 Featured
               </Badge>
@@ -177,7 +177,7 @@ export function TemplateCard({
                 "absolute top-3 right-3 p-2.5 rounded-full transition-all",
                 "bg-background/90 backdrop-blur-sm hover:bg-background shadow-lg",
                 "border border-border/50",
-                isLiked ? "text-rose-500" : "text-muted-foreground hover:text-rose-500"
+                isLiked ? "text-neon-magenta" : "text-muted-foreground hover:text-neon-magenta"
               )}
               onClick={handleLikeClick}
               whileTap={{ scale: 0.9 }}

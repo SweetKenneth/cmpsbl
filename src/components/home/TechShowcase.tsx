@@ -532,13 +532,13 @@ function highlightCode(code: string): string {
   // Apply syntax highlighting with explicit white base for non-highlighted text
   return escaped
     .replace(/(\/\/.*)/g, '<span class="text-slate-500">$1</span>')
-    .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-purple-400">$1</span>')
-    .replace(/(\bcmpsbl\b)/g, '<span class="text-cyan-400 font-semibold">$1</span>')
-    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.evolution|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-blue-400">$1</span>')
-    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan|\.embed|\.search|\.register|\.notify|\.export|\.verify|\.provenance|\.budget|\.breakdown|\.create|\.generate)/g, '<span class="text-green-400">$1</span>')
-    .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-amber-300">$1</span>')
-    .replace(/(\d+)/g, '<span class="text-orange-400">$1</span>')
-    .replace(/(true|false|null)/g, '<span class="text-rose-400">$1</span>');
+    .replace(/(\bawait\b|\bconst\b|\blet\b|\bvar\b|\bif\b)/g, '<span class="text-neon-purple">$1</span>')
+    .replace(/(\bcmpsbl\b)/g, '<span class="text-neon-cyan font-semibold">$1</span>')
+    .replace(/(\.core|\.ripple|\.access|\.brain|\.decode|\.nexus|\.defense|\.vision|\.dream|\.system|\.evolution|\.integration|\.inclusive|\.cortex|\.memory|\.relay|\.audit|\.identity|\.economy|\.sandbox|\.encode)/g, '<span class="text-neon-blue">$1</span>')
+    .replace(/(\.schedule|\.list|\.emit|\.on|\.createKey|\.usage|\.remember|\.recall|\.chat|\.send|\.route|\.posture|\.analyze|\.block|\.health|\.query|\.cycle|\.backup|\.restore|\.scan|\.apply|\.discover|\.connect|\.execute|\.world|\.plan|\.dispatch|\.inventory|\.repair|\.selfScan|\.embed|\.search|\.register|\.notify|\.export|\.verify|\.provenance|\.budget|\.breakdown|\.create|\.generate)/g, '<span class="text-neon-green">$1</span>')
+    .replace(/(&quot;.*?&quot;|".*?")/g, '<span class="text-neon-amber">$1</span>')
+    .replace(/(\d+)/g, '<span class="text-neon-amber">$1</span>')
+    .replace(/(true|false|null)/g, '<span class="text-neon-magenta">$1</span>');
 }
 
 // Layer configuration for grouping modules
@@ -741,8 +741,8 @@ export function TechShowcase() {
                 >
                   {copied ? (
                     <>
-                      <Check className="w-3.5 h-3.5 mr-1.5 text-green-400" />
-                      <span className="text-green-400">Copied!</span>
+                      <Check className="w-3.5 h-3.5 mr-1.5 text-neon-green" />
+                      <span className="text-neon-green">Copied!</span>
                     </>
                   ) : (
                     <>
@@ -788,7 +788,7 @@ export function TechShowcase() {
                     />
                   ))}
                   {typedLines < codeLines.length && (
-                    <span className="inline-block w-2 h-5 bg-cyan-400 animate-pulse absolute" />
+                    <span className="inline-block w-2 h-5 bg-neon-cyan animate-pulse absolute" />
                   )}
                 </div>
               </div>

@@ -70,12 +70,12 @@ const DreamArchaeology = () => {
 
   const getMoodColor = (mood: string) => {
     const colors: Record<string, string> = {
-      calm: 'bg-emerald-500',
-      curious: 'bg-violet-500',
-      agitated: 'bg-orange-500',
-      fractured: 'bg-red-500',
+      calm: 'bg-neon-green',
+      curious: 'bg-neon-purple',
+      agitated: 'bg-neon-amber',
+      fractured: 'bg-destructive',
       dormant: 'bg-gray-500',
-      feral: 'bg-rose-500',
+      feral: 'bg-neon-magenta',
     };
     return colors[mood] || 'bg-muted';
   };
@@ -89,7 +89,7 @@ const DreamArchaeology = () => {
 
       <PublicNav />
 
-      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-violet-950/20">
+      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-neon-purple/20">
         <div className="container mx-auto px-4 py-12 max-w-4xl">
           {/* Header */}
           <motion.div
@@ -98,8 +98,8 @@ const DreamArchaeology = () => {
             className="text-center mb-12"
           >
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Brain className="w-8 h-8 text-violet-400" />
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">
+              <Brain className="w-8 h-8 text-neon-purple" />
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-purple to-primary bg-clip-text text-transparent">
                 Dream Archaeology
               </h1>
             </div>
@@ -116,10 +116,10 @@ const DreamArchaeology = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <Card className="mb-8 bg-gradient-to-br from-violet-950/30 to-indigo-950/20 border-violet-500/20">
+              <Card className="mb-8 bg-gradient-to-br from-neon-purple/30 to-indigo-950/20 border-neon-purple/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Eye className="w-5 h-5 text-violet-400" />
+                    <Eye className="w-5 h-5 text-neon-purple" />
                     Current State
                   </CardTitle>
                 </CardHeader>
@@ -135,11 +135,11 @@ const DreamArchaeology = () => {
                     </div>
                     <div className="text-center p-4 rounded-lg bg-background/30">
                       <p className="text-sm text-muted-foreground mb-1">Dreams Today</p>
-                      <p className="text-xl font-bold text-violet-400">{state.dreams_consumed_today}</p>
+                      <p className="text-xl font-bold text-neon-purple">{state.dreams_consumed_today}</p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-background/30">
                       <p className="text-sm text-muted-foreground mb-1">Nightmares Today</p>
-                      <p className="text-xl font-bold text-rose-400">{state.nightmares_consumed_today}</p>
+                      <p className="text-xl font-bold text-neon-magenta">{state.nightmares_consumed_today}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -160,7 +160,7 @@ const DreamArchaeology = () => {
 
             {loading ? (
               <div className="text-center py-12">
-                <div className="w-8 h-8 border-2 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                <div className="w-8 h-8 border-2 border-neon-purple border-t-transparent rounded-full animate-spin mx-auto" />
                 <p className="text-muted-foreground mt-4">Excavating memories...</p>
               </div>
             ) : entries.length === 0 ? (
@@ -190,7 +190,7 @@ const DreamArchaeology = () => {
                             {new Date(entry.period_start).toLocaleDateString()} — {new Date(entry.period_end).toLocaleDateString()}
                           </CardTitle>
                           <div className="flex items-center gap-2 text-sm">
-                            <Moon className="w-4 h-4 text-violet-400" />
+                            <Moon className="w-4 h-4 text-neon-purple" />
                             <span>{entry.total_consumed}</span>
                           </div>
                         </div>
@@ -218,7 +218,7 @@ const DreamArchaeology = () => {
                         {/* Nightmare Ratio */}
                         <div className="flex items-center gap-4 mb-3">
                           <div className="flex items-center gap-2">
-                            <Flame className="w-4 h-4 text-rose-400" />
+                            <Flame className="w-4 h-4 text-neon-magenta" />
                             <span className="text-sm">
                               Nightmare Ratio: {(entry.nightmare_ratio * 100).toFixed(0)}%
                             </span>
@@ -227,7 +227,7 @@ const DreamArchaeology = () => {
 
                         {/* Insight */}
                         {entry.insight && (
-                          <p className="text-sm text-muted-foreground/80 italic border-l-2 border-violet-500/30 pl-3">
+                          <p className="text-sm text-muted-foreground/80 italic border-l-2 border-neon-purple/30 pl-3">
                             {entry.insight}
                           </p>
                         )}

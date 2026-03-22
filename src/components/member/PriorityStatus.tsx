@@ -25,7 +25,7 @@ const PRIORITY_CONFIG: Record<string, {
     features: ['Shared routing pool', 'Standard latency', 'Best-effort execution'],
   },
   creator: {
-    level: 'Priority', label: 'Priority Lane', color: 'text-violet-400',
+    level: 'Priority', label: 'Priority Lane', color: 'text-neon-purple',
     barWidth: 'w-2/4',
     features: ['Dedicated priority lane', '3× faster routing', 'Queue jump on contention', 'Email support channel'],
   },
@@ -35,7 +35,7 @@ const PRIORITY_CONFIG: Record<string, {
     features: ['Express routing lane', '5× faster routing', 'Dedicated memory partitions', 'Priority email support'],
   },
   architect: {
-    level: 'Maximum', label: 'Dedicated Infrastructure', color: 'text-amber-400',
+    level: 'Maximum', label: 'Dedicated Infrastructure', color: 'text-neon-amber',
     barWidth: 'w-full',
     features: ['Dedicated infrastructure', 'Lowest latency guaranteed', 'Isolated memory partitions', 'Full governance controls', 'Dedicated Slack channel'],
   },

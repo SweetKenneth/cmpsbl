@@ -48,9 +48,9 @@ function fmt(val: number | null | undefined, suffix = '%'): string {
 
 function statusIcon(status?: 'good' | 'warn' | 'bad' | 'neutral') {
   switch (status) {
-    case 'good': return <CheckCircle2 className="w-4 h-4 text-emerald-500" />;
-    case 'warn': return <Minus className="w-4 h-4 text-amber-500" />;
-    case 'bad': return <XCircle className="w-4 h-4 text-red-500" />;
+    case 'good': return <CheckCircle2 className="w-4 h-4 text-neon-green" />;
+    case 'warn': return <Minus className="w-4 h-4 text-neon-amber" />;
+    case 'bad': return <XCircle className="w-4 h-4 text-destructive" />;
     default: return null;
   }
 }
@@ -67,19 +67,19 @@ function MetricCard({
   icon?: typeof Shield; delay?: number;
 }) {
   const borderColor = status === 'good' 
-    ? 'border-emerald-500/20 hover:border-emerald-500/40' 
+    ? 'border-neon-green/20 hover:border-neon-green/40' 
     : status === 'warn' 
-    ? 'border-amber-500/20 hover:border-amber-500/40' 
+    ? 'border-neon-amber/20 hover:border-neon-amber/40' 
     : status === 'bad' 
-    ? 'border-red-500/20 hover:border-red-500/40' 
+    ? 'border-destructive/20 hover:border-destructive/40' 
     : 'border-border/50 hover:border-primary/30';
   
   const glowColor = status === 'good' 
-    ? 'shadow-emerald-500/5' 
+    ? 'shadow-neon-green/5' 
     : status === 'warn' 
-    ? 'shadow-amber-500/5' 
+    ? 'shadow-neon-amber/5' 
     : status === 'bad' 
-    ? 'shadow-red-500/5' 
+    ? 'shadow-destructive/5' 
     : 'shadow-primary/5';
 
   return (
@@ -119,9 +119,9 @@ function MRIGauge({ score, status, factors }: {
   const circumference = 2 * Math.PI * 45;
   const offset = circumference - (score / 100) * circumference;
   const color = status === 'ready' ? '#10b981' : status === 'caution' ? '#f59e0b' : '#ef4444';
-  const bgColor = status === 'ready' ? 'from-emerald-500/10 to-emerald-500/5' 
-    : status === 'caution' ? 'from-amber-500/10 to-amber-500/5' 
-    : 'from-red-500/10 to-red-500/5';
+  const bgColor = status === 'ready' ? 'from-neon-green/10 to-neon-green/5' 
+    : status === 'caution' ? 'from-neon-amber/10 to-neon-amber/5' 
+    : 'from-destructive/10 to-destructive/5';
 
   return (
     <motion.div
@@ -129,7 +129,7 @@ function MRIGauge({ score, status, factors }: {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className={`border-2 ${status === 'ready' ? 'border-emerald-500/30' : status === 'caution' ? 'border-amber-500/30' : 'border-red-500/30'} bg-gradient-to-br ${bgColor} relative overflow-hidden`}>
+      <Card className={`border-2 ${status === 'ready' ? 'border-neon-green/30' : status === 'caution' ? 'border-neon-amber/30' : 'border-destructive/30'} bg-gradient-to-br ${bgColor} relative overflow-hidden`}>
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-primary/5 to-transparent rounded-full -translate-y-1/2 translate-x-1/4" />
         
         <CardContent className="py-5 sm:py-8 px-4 sm:px-6 flex flex-col sm:flex-row items-center sm:justify-between gap-5 sm:gap-8">
@@ -192,7 +192,7 @@ function MRIGauge({ score, status, factors }: {
 
 function FactorBar({ label, value, weight }: { label: string; value: number; weight: string }) {
   const pct = Math.round(value * 100);
-  const color = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
+  const color = pct >= 80 ? 'bg-neon-green' : pct >= 50 ? 'bg-neon-amber' : 'bg-destructive';
   return (
     <div className="space-y-0.5">
       <div className="flex justify-between">
@@ -429,9 +429,9 @@ export default function ImmunityMeshDashboard() {
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                     <IILStat label="Total Events" value={data.iil.totalEvents} />
-                    <IILStat label="Safe Fails" value={data.iil.safeFails} color="text-amber-500" />
-                    <IILStat label="Repaired" value={data.iil.repairedSuccess} color="text-emerald-500" />
-                    <IILStat label="Repair Failures" value={data.iil.repairFailures} color="text-red-400" />
+                    <IILStat label="Safe Fails" value={data.iil.safeFails} color="text-neon-amber" />
+                    <IILStat label="Repaired" value={data.iil.repairedSuccess} color="text-neon-green" />
+                    <IILStat label="Repair Failures" value={data.iil.repairFailures} color="text-destructive" />
                     <IILStat label="Preflight Blocks" value={data.iil.preflightBlocks} />
                     <div>
                       <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Escalations</p>
@@ -442,7 +442,7 @@ export default function ImmunityMeshDashboard() {
                           ))}
                         </div>
                       ) : (
-                        <p className="text-lg font-bold text-emerald-500">0</p>
+                        <p className="text-lg font-bold text-neon-green">0</p>
                       )}
                     </div>
                   </div>
@@ -523,19 +523,19 @@ export default function ImmunityMeshDashboard() {
                             >
                               <td className="py-2 px-2 sm:px-3 font-mono text-[10px] sm:text-xs break-all">{eid}</td>
                               <td className="py-2 px-2 sm:px-3 text-right font-mono text-xs">
-                                <span className={dkd > 0.7 ? 'text-emerald-500' : dkd > 0.4 ? 'text-amber-500' : 'text-red-400'}>
+                                <span className={dkd > 0.7 ? 'text-neon-green' : dkd > 0.4 ? 'text-neon-amber' : 'text-destructive'}>
                                   {fmt(dkd)}
                                 </span>
                               </td>
                               <td className="py-2 px-2 sm:px-3 text-right font-mono text-xs">
-                                <span className={fnr < 0.3 ? 'text-emerald-500' : fnr < 0.6 ? 'text-amber-500' : 'text-red-400'}>
+                                <span className={fnr < 0.3 ? 'text-neon-green' : fnr < 0.6 ? 'text-neon-amber' : 'text-destructive'}>
                                   {fmt(fnr)}
                                 </span>
                               </td>
                               <td className="py-2 px-2 sm:px-3 text-right hidden sm:table-cell">
                                 {healthy 
-                                  ? <Badge variant="outline" className="text-[10px] text-emerald-500 border-emerald-500/30">Healthy</Badge>
-                                  : <Badge variant="outline" className="text-[10px] text-amber-500 border-amber-500/30">Watch</Badge>
+                                  ? <Badge variant="outline" className="text-[10px] text-neon-green border-neon-green/30">Healthy</Badge>
+                                  : <Badge variant="outline" className="text-[10px] text-neon-amber border-neon-amber/30">Watch</Badge>
                                 }
                               </td>
                             </motion.tr>
@@ -607,7 +607,7 @@ export default function ImmunityMeshDashboard() {
                 </CardHeader>
                 <CardContent>
                   {!data?.rmi.riskyRules.length ? (
-                    <div className="flex items-center gap-2 py-4 text-sm text-emerald-500">
+                    <div className="flex items-center gap-2 py-4 text-sm text-neon-green">
                       <CheckCircle2 className="w-4 h-4" />
                       No risky rules — all rules healthy
                     </div>
@@ -767,7 +767,7 @@ function RepairSkillsPanel() {
             </div>
             <div className="p-3 rounded-lg border border-border/30 bg-card">
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Active Rules</p>
-              <p className="text-xl font-bold font-mono text-emerald-500">{stats.activeRules}</p>
+              <p className="text-xl font-bold font-mono text-neon-green">{stats.activeRules}</p>
             </div>
             <div className="p-3 rounded-lg border border-border/30 bg-card">
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Top Contributors</p>
@@ -823,7 +823,7 @@ function RepairSkillsPanel() {
                             </Badge>
                           )}
                           {!isSeed && (
-                            <Badge className="text-[9px] px-1.5 py-0 bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                            <Badge className="text-[9px] px-1.5 py-0 bg-neon-green/10 text-neon-green border-neon-green/20">
                               learned
                             </Badge>
                           )}
@@ -845,7 +845,7 @@ function RepairSkillsPanel() {
                           <p className="text-[9px] text-muted-foreground">executors</p>
                         </div>
                         <div className="text-left sm:text-right">
-                          <p className={`font-mono font-medium ${overallSuccessRate >= 0.8 ? 'text-emerald-500' : overallSuccessRate >= 0.5 ? 'text-amber-500' : 'text-red-400'}`}>
+                          <p className={`font-mono font-medium ${overallSuccessRate >= 0.8 ? 'text-neon-green' : overallSuccessRate >= 0.5 ? 'text-neon-amber' : 'text-destructive'}`}>
                             {(overallSuccessRate * 100).toFixed(0)}%
                           </p>
                           <p className="text-[9px] text-muted-foreground">success</p>
@@ -1097,7 +1097,7 @@ function ShadowBuildPanel() {
                               </Badge>
                               <div className="w-12 sm:w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
                                 <motion.div
-                                  className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-emerald-500' : skill.proficiency >= 0.5 ? 'bg-amber-500' : 'bg-red-400'}`}
+                                  className={`h-full rounded-full ${skill.proficiency >= 0.8 ? 'bg-neon-green' : skill.proficiency >= 0.5 ? 'bg-neon-amber' : 'bg-destructive'}`}
                                   initial={{ width: 0 }}
                                   animate={{ width: `${skill.proficiency * 100}%` }}
                                   transition={{ duration: 0.6 }}
@@ -1144,20 +1144,20 @@ function ShadowBuildPanel() {
                     return (
                       <motion.div
                         key={`${skill.name}-${skill.learnedAt}`}
-                        className={`flex items-center justify-between p-3 rounded-lg border ${isNew ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-border/20 bg-card'} transition-colors`}
+                        className={`flex items-center justify-between p-3 rounded-lg border ${isNew ? 'border-neon-green/30 bg-neon-green/5' : 'border-border/20 bg-card'} transition-colors`}
                         initial={{ opacity: 0, x: 6 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.04 }}
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          {isNew && <Sparkles className="w-3 h-3 text-emerald-500 flex-shrink-0" />}
+                          {isNew && <Sparkles className="w-3 h-3 text-neon-green flex-shrink-0" />}
                           <code className="text-[11px] font-mono truncate">{skill.name}</code>
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <Badge variant={isNew ? 'default' : 'secondary'} className="text-[9px]">
                             {ageStr}
                           </Badge>
-                          <span className={`text-xs font-mono ${skill.proficiency >= 0.6 ? 'text-emerald-500' : 'text-muted-foreground'}`}>
+                          <span className={`text-xs font-mono ${skill.proficiency >= 0.6 ? 'text-neon-green' : 'text-muted-foreground'}`}>
                             {(skill.proficiency * 100).toFixed(0)}%
                           </span>
                         </div>
@@ -1378,7 +1378,7 @@ function ModernizerShadowPanel() {
                     <p className="text-lg font-bold font-mono">{data.fixed}/{data.total}</p>
                     <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden mt-1.5">
                       <motion.div
-                        className={`h-full rounded-full ${data.rate >= 0.7 ? 'bg-emerald-500' : data.rate >= 0.4 ? 'bg-amber-500' : 'bg-red-400'}`}
+                        className={`h-full rounded-full ${data.rate >= 0.7 ? 'bg-neon-green' : data.rate >= 0.4 ? 'bg-neon-amber' : 'bg-destructive'}`}
                         initial={{ width: 0 }}
                         animate={{ width: `${data.rate * 100}%` }}
                         transition={{ duration: 0.6 }}
@@ -1407,8 +1407,8 @@ function ModernizerShadowPanel() {
             <CardContent>
               <div className="space-y-2">
                 {perfEntries.slice(0, 15).map((entry, i) => {
-                  const trendIcon = entry.trend > 0.05 ? <ArrowUp className="w-3 h-3 text-emerald-500" /> 
-                    : entry.trend < -0.05 ? <ArrowDown className="w-3 h-3 text-red-400" /> 
+                  const trendIcon = entry.trend > 0.05 ? <ArrowUp className="w-3 h-3 text-neon-green" /> 
+                    : entry.trend < -0.05 ? <ArrowDown className="w-3 h-3 text-destructive" /> 
                     : <Minus className="w-3 h-3 text-muted-foreground" />;
                   
                   return (
@@ -1428,7 +1428,7 @@ function ModernizerShadowPanel() {
                       <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end text-xs">
                         <div className="w-12 sm:w-16 h-1.5 bg-muted/40 rounded-full overflow-hidden">
                           <motion.div
-                            className={`h-full rounded-full ${entry.successRate >= 0.7 ? 'bg-emerald-500' : entry.successRate >= 0.4 ? 'bg-amber-500' : 'bg-red-400'}`}
+                            className={`h-full rounded-full ${entry.successRate >= 0.7 ? 'bg-neon-green' : entry.successRate >= 0.4 ? 'bg-neon-amber' : 'bg-destructive'}`}
                             initial={{ width: 0 }}
                             animate={{ width: `${entry.successRate * 100}%` }}
                             transition={{ duration: 0.6 }}
@@ -1439,7 +1439,7 @@ function ModernizerShadowPanel() {
                         </span>
                         <div className="flex items-center gap-1">
                           {trendIcon}
-                          <span className={`font-mono text-[10px] ${entry.trend > 0 ? 'text-emerald-500' : entry.trend < 0 ? 'text-red-400' : 'text-muted-foreground'}`}>
+                          <span className={`font-mono text-[10px] ${entry.trend > 0 ? 'text-neon-green' : entry.trend < 0 ? 'text-destructive' : 'text-muted-foreground'}`}>
                             {entry.trend > 0 ? '+' : ''}{(entry.trend * 100).toFixed(0)}%
                           </span>
                         </div>
@@ -1466,21 +1466,21 @@ function ModernizerShadowPanel() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {perfStats.topImprovers.length > 0 && (
             <motion.div initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}>
-              <Card className="h-full border-emerald-500/20">
+              <Card className="h-full border-neon-green/20">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+                    <ArrowUpRight className="w-4 h-4 text-neon-green" />
                     Top Improvers
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     {perfStats.topImprovers.map((e, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-emerald-500/10 bg-emerald-500/5">
+                      <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-neon-green/10 bg-neon-green/5">
                         <code className="font-mono truncate max-w-[80px] sm:max-w-[120px] text-[10px] sm:text-xs">{e.executor}</code>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
-                          <span className="text-emerald-500 font-mono font-medium">+{(e.trend * 100).toFixed(0)}%</span>
+                          <span className="text-neon-green font-mono font-medium">+{(e.trend * 100).toFixed(0)}%</span>
                         </div>
                       </div>
                     ))}
@@ -1492,10 +1492,10 @@ function ModernizerShadowPanel() {
 
           {perfStats.needsWork.length > 0 && (
             <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }}>
-              <Card className="h-full border-amber-500/20">
+              <Card className="h-full border-neon-amber/20">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-amber-500" />
+                    <AlertTriangle className="w-4 h-4 text-neon-amber" />
                     Needs Work
                   </CardTitle>
                   <CardDescription className="text-xs">Under 50% success with 3+ attempts</CardDescription>
@@ -1503,11 +1503,11 @@ function ModernizerShadowPanel() {
                 <CardContent>
                   <div className="space-y-2">
                     {perfStats.needsWork.map((e, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-amber-500/10 bg-amber-500/5">
+                      <div key={i} className="flex items-center justify-between text-xs p-2 rounded border border-neon-amber/10 bg-neon-amber/5">
                         <code className="font-mono truncate max-w-[80px] sm:max-w-[120px] text-[10px] sm:text-xs">{e.executor}</code>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-[9px]">{e.gapType}</Badge>
-                          <span className="text-amber-500 font-mono font-medium">{(e.successRate * 100).toFixed(0)}%</span>
+                          <span className="text-neon-amber font-mono font-medium">{(e.successRate * 100).toFixed(0)}%</span>
                         </div>
                       </div>
                     ))}
@@ -1567,10 +1567,10 @@ function ModernizerShadowPanel() {
                   <motion.div
                     key={r.task.id}
                     className={`p-3 rounded-lg border text-xs ${
-                      r.outcome === 'fixed' ? 'border-emerald-500/20 bg-emerald-500/5'
-                      : r.outcome === 'partial' ? 'border-amber-500/20 bg-amber-500/5'
-                      : r.encodeOutcome === 'fixed' ? 'border-blue-500/20 bg-blue-500/5'
-                      : 'border-red-500/20 bg-red-500/5'
+                      r.outcome === 'fixed' ? 'border-neon-green/20 bg-neon-green/5'
+                      : r.outcome === 'partial' ? 'border-neon-amber/20 bg-neon-amber/5'
+                      : r.encodeOutcome === 'fixed' ? 'border-neon-blue/20 bg-neon-blue/5'
+                      : 'border-destructive/20 bg-destructive/5'
                     }`}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -1782,7 +1782,7 @@ function PromoteToProductionPanel() {
                     >
                       <div className="flex items-center justify-between gap-2 flex-wrap">
                         <div className="flex items-center gap-2 min-w-0">
-                          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${tsacOk ? 'bg-emerald-500' : tsacWarn ? 'bg-amber-500' : 'bg-red-500'}`} />
+                          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${tsacOk ? 'bg-neon-green' : tsacWarn ? 'bg-neon-amber' : 'bg-destructive'}`} />
                           <span className="font-mono text-xs truncate">{c.run_id.slice(0, 12)}</span>
                           <Badge variant="outline" className="text-[9px]">{c.plan_title ?? c.plan_id.slice(0, 8)}</Badge>
                         </div>
@@ -1836,10 +1836,10 @@ function PromoteToProductionPanel() {
       {/* Confirmation Dialog */}
       {confirmOpen && selectedCandidate && (
         <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}>
-          <Card className="border-amber-500/30 bg-amber-500/5">
+          <Card className="border-neon-amber/30 bg-neon-amber/5">
             <CardContent className="pt-4 pb-4">
               <div className="flex items-start gap-3 mb-3">
-                <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <AlertTriangle className="w-5 h-5 text-neon-amber flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-semibold text-sm">Confirm Production Promotion</h4>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -1928,7 +1928,7 @@ function PromoteToProductionPanel() {
                     <Button
                       size="sm"
                       variant="ghost"
-                      className="h-6 px-2 text-[10px] text-red-400 hover:text-red-300"
+                      className="h-6 px-2 text-[10px] text-destructive hover:text-destructive"
                       onClick={() => handleRollback(p.id)}
                     >
                       <RotateCcw className="w-3 h-3 mr-1" />
@@ -2021,7 +2021,7 @@ function TSACVerificationPanel() {
     setVerifying(false);
   };
 
-  const verdictColor = (v: string) => v === 'pass' ? 'text-emerald-400' : v === 'fail' ? 'text-red-400' : 'text-amber-400';
+  const verdictColor = (v: string) => v === 'pass' ? 'text-neon-green' : v === 'fail' ? 'text-destructive' : 'text-neon-amber';
   const verdictEmoji = (v: string) => v === 'pass' ? '✅' : v === 'fail' ? '❌' : '⚠️';
 
   return (
@@ -2101,9 +2101,9 @@ function TSACVerificationPanel() {
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
           {/* Verdict Banner */}
           <Card className={`p-4 border-2 ${
-            result.verdict === 'pass' ? 'border-emerald-500/30 bg-emerald-500/5' :
-            result.verdict === 'fail' ? 'border-red-500/30 bg-red-500/5' :
-            'border-amber-500/30 bg-amber-500/5'
+            result.verdict === 'pass' ? 'border-neon-green/30 bg-neon-green/5' :
+            result.verdict === 'fail' ? 'border-destructive/30 bg-destructive/5' :
+            'border-neon-amber/30 bg-neon-amber/5'
           }`}>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -2130,11 +2130,11 @@ function TSACVerificationPanel() {
                 const criterion = result.criteria?.find((c: any) => c.id === cr.criterion_id);
                 return (
                   <div key={i} className={`p-3 rounded-lg border text-xs ${
-                    cr.passed ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-red-500/20 bg-red-500/5'
+                    cr.passed ? 'border-neon-green/20 bg-neon-green/5' : 'border-destructive/20 bg-destructive/5'
                   }`}>
                     <div className="flex items-start gap-2">
                       <div className="flex-shrink-0 mt-0.5">
-                        {cr.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-red-400" />}
+                        {cr.passed ? <CheckCircle2 className="w-4 h-4 text-neon-green" /> : <XCircle className="w-4 h-4 text-destructive" />}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
@@ -2160,7 +2160,7 @@ function TSACVerificationPanel() {
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {result.quality_checks.map((qc: any, i: number) => (
-                  <div key={i} className={`p-2 rounded text-xs flex items-center gap-1.5 ${qc.passed ? 'text-emerald-400' : 'text-red-400'}`}>
+                  <div key={i} className={`p-2 rounded text-xs flex items-center gap-1.5 ${qc.passed ? 'text-neon-green' : 'text-destructive'}`}>
                     {qc.passed ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
                     <span className="truncate">{qc.name}</span>
                   </div>
@@ -2258,7 +2258,7 @@ function EncodeTrainingPanel() {
 
       {lastResult && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <Card className="p-3 border-emerald-500/20 bg-emerald-500/5">
+          <Card className="p-3 border-neon-green/20 bg-neon-green/5">
             <div className="flex items-center justify-between text-xs">
               <span>Last training: <strong className="capitalize">{lastResult.mode}</strong></span>
               <span><strong>{lastResult.success}</strong>/{lastResult.total} passed</span>

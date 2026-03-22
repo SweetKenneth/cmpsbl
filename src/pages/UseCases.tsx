@@ -157,7 +157,7 @@ export default function UseCases() {
         "World state propagation & rumor systems",
       ],
       example: "The innkeeper remembers you saved her daughter three sessions ago and offers a special discount.",
-      color: "text-purple-500",
+      color: "text-neon-purple",
       link: "/gaming",
     },
     {
@@ -172,7 +172,7 @@ export default function UseCases() {
         "Decision support with historical context",
       ],
       example: "The system learns that Q4 budget reviews always require these 12 reports and pre-generates them.",
-      color: "text-blue-500",
+      color: "text-neon-blue",
     },
     {
       icon: Stethoscope,
@@ -186,7 +186,7 @@ export default function UseCases() {
         "Care coordination across providers",
       ],
       example: "The AI recalls this patient had an adverse reaction to penicillin three years ago during triage.",
-      color: "text-emerald-500",
+      color: "text-neon-green",
     },
     {
       icon: Gavel,
@@ -200,7 +200,7 @@ export default function UseCases() {
         "Outcome-based learning",
       ],
       example: "Based on 47 similar cases, this clause has a 73% chance of being contested.",
-      color: "text-amber-500",
+      color: "text-neon-amber",
     },
     {
       icon: School,
@@ -214,7 +214,7 @@ export default function UseCases() {
         "Learning style optimization",
       ],
       example: "This student struggles with algebra but excels at geometry—adjusting lesson plan accordingly.",
-      color: "text-cyan-500",
+      color: "text-neon-cyan",
     },
     {
       icon: Store,
@@ -228,7 +228,7 @@ export default function UseCases() {
         "Inventory optimization",
       ],
       example: "This customer always buys running shoes in January—proactively suggest the new models.",
-      color: "text-rose-500",
+      color: "text-neon-magenta",
     },
     {
       icon: Phone,
@@ -242,7 +242,7 @@ export default function UseCases() {
         "Proactive issue detection",
       ],
       example: "I see you called about this same printer issue twice before—let me escalate to a specialist.",
-      color: "text-violet-500",
+      color: "text-neon-purple",
     },
     {
       icon: Factory,
@@ -256,7 +256,7 @@ export default function UseCases() {
         "Supply chain optimization",
       ],
       example: "Machine 7's vibration pattern matches the pre-failure signature from 6 months ago—scheduling maintenance.",
-      color: "text-orange-500",
+      color: "text-neon-amber",
     },
   ];
 
@@ -289,7 +289,7 @@ export default function UseCases() {
         "Fleet-wide learning propagation",
       ],
       example: "Your braking pattern suggests worn pads—scheduling service and rerouting to avoid steep grades.",
-      color: "text-red-500",
+      color: "text-destructive",
       timeline: "Future Vision",
     },
     {
@@ -319,7 +319,7 @@ export default function UseCases() {
         "Autonomous skill evolution",
       ],
       example: "Wind pattern learned from 50,000 flights—adjusting approach for optimal battery conservation.",
-      color: "text-cyan-600",
+      color: "text-neon-cyan",
       timeline: "Future Vision",
     },
     {
@@ -334,7 +334,7 @@ export default function UseCases() {
         "Meal timing optimization",
       ],
       example: "You've been avoiding gluten for 3 months—here's a modified version of your favorite pasta recipe.",
-      color: "text-yellow-500",
+      color: "text-neon-amber",
       timeline: "Available Now",
     },
     {
@@ -349,7 +349,7 @@ export default function UseCases() {
         "Experiment pattern learning",
       ],
       example: "This protein structure reminds me of a 2019 paper you read—potential new binding site discovered.",
-      color: "text-fuchsia-500",
+      color: "text-neon-magenta",
       timeline: "In Development",
     },
     {
@@ -364,7 +364,7 @@ export default function UseCases() {
         "Lifestyle anticipation",
       ],
       example: "Kids usually get home in 10 minutes—pre-heating their snacks and unlocking the back door.",
-      color: "text-teal-500",
+      color: "text-neon-cyan",
       timeline: "Available Now",
     },
     {
@@ -417,7 +417,7 @@ export default function UseCases() {
       <section className="relative py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-neon-purple/10 rounded-full blur-[100px]" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -472,7 +472,7 @@ export default function UseCases() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <Badge className="mb-4 bg-violet-500/10 text-violet-400 border-violet-500/30">
+            <Badge className="mb-4 bg-neon-purple/10 text-neon-purple border-neon-purple/30">
               <Clock className="w-3 h-3 mr-1" />
               What's Possible
             </Badge>
@@ -508,10 +508,10 @@ export default function UseCases() {
                       className={cn(
                         "text-[10px]",
                         vision.timeline === "Available Now" 
-                          ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                          ? "bg-neon-green/10 text-neon-green border-neon-green/30"
                           : vision.timeline === "In Development"
-                          ? "bg-amber-500/10 text-amber-400 border-amber-500/30"
-                          : "bg-violet-500/10 text-violet-400 border-violet-500/30"
+                          ? "bg-neon-amber/10 text-neon-amber border-neon-amber/30"
+                          : "bg-neon-purple/10 text-neon-purple border-neon-purple/30"
                       )}
                     >
                       {vision.timeline}

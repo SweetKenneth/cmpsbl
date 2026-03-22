@@ -32,13 +32,13 @@ export function SlotCapacityIndicator({
   const colorClass = atCapacity
     ? 'text-destructive'
     : nearCapacity
-    ? 'text-yellow-400'
+    ? 'text-neon-amber'
     : 'text-primary';
 
   const barColor = atCapacity
     ? 'bg-destructive'
     : nearCapacity
-    ? 'bg-yellow-400'
+    ? 'bg-neon-amber'
     : 'bg-primary';
 
   if (variant === 'compact') {
@@ -50,7 +50,7 @@ export function SlotCapacityIndicator({
               className={cn(
                 'flex items-center gap-2 px-3 py-1.5 rounded-lg border border-border/50 bg-muted/30 cursor-default transition-colors',
                 atCapacity && 'border-destructive/30 bg-destructive/5',
-                nearCapacity && !atCapacity && 'border-yellow-500/30 bg-yellow-500/5',
+                nearCapacity && !atCapacity && 'border-neon-amber/30 bg-neon-amber/5',
                 className,
               )}
             >

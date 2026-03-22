@@ -126,14 +126,14 @@ export function AgencyTeamPanel({
         <div className="flex items-center gap-3 flex-wrap">
           <Badge variant="outline" className={cn(
             "gap-1.5 text-xs",
-            workingCount > 0 && "border-amber-500/50 text-amber-400"
+            workingCount > 0 && "border-neon-amber/50 text-neon-amber"
           )}>
             <Zap className="w-3 h-3" />
             {workingCount} Working
           </Badge>
           <Badge variant="outline" className={cn(
             "gap-1.5 text-xs",
-            learningCount > 0 && "border-purple-500/50 text-purple-400"
+            learningCount > 0 && "border-neon-purple/50 text-neon-purple"
           )}>
             <BookOpen className="w-3 h-3" />
             {learningCount} Learning
@@ -150,7 +150,7 @@ export function AgencyTeamPanel({
               variant="outline"
               size="sm"
               onClick={handleTeamLearning}
-              className="ml-auto gap-2 text-xs border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
+              className="ml-auto gap-2 text-xs border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10"
             >
               <Brain className="w-3 h-3" />
               Start Team Learning

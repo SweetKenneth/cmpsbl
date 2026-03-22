@@ -106,10 +106,10 @@ export function ResearchQueryManager() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'done': return 'text-green-400';
-      case 'running': return 'text-blue-400';
-      case 'failed': return 'text-red-400';
-      default: return 'text-yellow-400';
+      case 'done': return 'text-neon-green';
+      case 'running': return 'text-neon-blue';
+      case 'failed': return 'text-destructive';
+      default: return 'text-neon-amber';
     }
   };
 
@@ -169,7 +169,7 @@ export function ResearchQueryManager() {
                 variant="ghost"
                 size="sm"
                 onClick={() => deleteQuery(query.id)}
-                className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                className="text-destructive hover:text-destructive hover:bg-destructive/10"
               >
                 <Trash2 className="w-4 h-4" />
               </Button>

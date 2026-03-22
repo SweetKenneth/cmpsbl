@@ -52,7 +52,7 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <Badge className="mb-6 px-4 py-2 text-sm bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                <Badge className="mb-6 px-4 py-2 text-sm bg-neon-green/10 text-neon-green border-neon-green/30">
                   <Gift className="w-4 h-4 mr-2" />
                   Free for All Users — No Credit Card Required
                 </Badge>
@@ -78,7 +78,7 @@ const PersistentMemoryLanding = () => {
               </motion.p>
 
               <motion.p
-                className="text-lg text-emerald-500 font-semibold mb-8"
+                className="text-lg text-neon-green font-semibold mb-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.25 }}
@@ -122,7 +122,7 @@ const PersistentMemoryLanding = () => {
                   "Works with React apps",
                 ].map(text => (
                   <Badge key={text} variant="outline" className="px-4 py-2">
-                    <CheckCircle className="w-4 h-4 mr-2 text-emerald-500" />
+                    <CheckCircle className="w-4 h-4 mr-2 text-neon-green" />
                     {text}
                   </Badge>
                 ))}
@@ -168,7 +168,7 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <Badge className="mb-4 bg-emerald-500/10 text-emerald-500 border-emerald-500/30">FREE FOR ALL USERS</Badge>
+                <Badge className="mb-4 bg-neon-green/10 text-neon-green border-neon-green/30">FREE FOR ALL USERS</Badge>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">How the memory system works</h2>
                 <p className="text-lg text-muted-foreground">Four temperature tiers that manage themselves automatically</p>
               </motion.div>
@@ -219,8 +219,8 @@ const PersistentMemoryLanding = () => {
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
                       <CardContent className="pt-6">
-                        <div className="w-12 h-12 rounded-lg bg-emerald-500/10 flex items-center justify-center mb-4">
-                          <item.icon className="w-6 h-6 text-emerald-500" />
+                        <div className="w-12 h-12 rounded-lg bg-neon-green/10 flex items-center justify-center mb-4">
+                          <item.icon className="w-6 h-6 text-neon-green" />
                         </div>
                         <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
                         <p className="text-muted-foreground">{item.description}</p>
@@ -261,7 +261,7 @@ const PersistentMemoryLanding = () => {
                               <code>{item.code}</code>
                             </pre>
                             <p className="text-sm text-muted-foreground flex items-center gap-2">
-                              <CheckCircle className="w-4 h-4 text-emerald-500" />
+                              <CheckCircle className="w-4 h-4 text-neon-green" />
                               {item.note}
                             </p>
                           </div>
@@ -280,7 +280,7 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <Badge className="mb-4 bg-emerald-500/10 text-emerald-500 border-emerald-500/30 text-base px-5 py-2">
+                <Badge className="mb-4 bg-neon-green/10 text-neon-green border-neon-green/30 text-base px-5 py-2">
                   <Gift className="w-5 h-5 mr-2" />
                   $0 / month — forever
                 </Badge>
@@ -300,8 +300,8 @@ const PersistentMemoryLanding = () => {
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
                     <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                       <CardContent className="pt-6 flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center shrink-0">
-                          <item.icon className="w-5 h-5 text-emerald-500" />
+                        <div className="w-10 h-10 rounded-lg bg-neon-green/10 flex items-center justify-center shrink-0">
+                          <item.icon className="w-5 h-5 text-neon-green" />
                         </div>
                         <div>
                           <h3 className="font-semibold mb-1">{item.title}</h3>
@@ -357,10 +357,10 @@ const PersistentMemoryLanding = () => {
             <motion.div className="max-w-3xl mx-auto text-center" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <Card className="bg-gradient-to-br from-primary/10 via-background to-primary/5 border-primary/20">
                 <CardContent className="pt-12 pb-12">
-                  <Gift className="w-10 h-10 text-emerald-500 mx-auto mb-4" />
+                  <Gift className="w-10 h-10 text-neon-green mx-auto mb-4" />
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">Stop reinventing memory infrastructure</h2>
                   <p className="text-lg text-muted-foreground mb-2">
-                    Persistent memory is <span className="text-emerald-500 font-bold">free for everyone</span>. 
+                    Persistent memory is <span className="text-neon-green font-bold">free for everyone</span>. 
                     No credit card. No trial that expires. Just memory that works.
                   </p>
                   <p className="text-sm text-muted-foreground mb-8">

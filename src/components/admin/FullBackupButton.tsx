@@ -74,7 +74,7 @@ export function FullBackupButton() {
         </>
       ) : status === 'done' ? (
         <>
-          <CheckCircle2 className="h-4 w-4 text-green-500" />
+          <CheckCircle2 className="h-4 w-4 text-neon-green" />
           Downloaded
         </>
       ) : (

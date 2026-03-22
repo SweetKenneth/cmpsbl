@@ -124,7 +124,7 @@ function MobileTabBar({
                   isActive && "scale-110"
                 )} />
                 {showBadge && (
-                  <span className="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-amber-500 text-[9px] flex items-center justify-center text-black font-bold">
+                  <span className="absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-neon-amber text-[9px] flex items-center justify-center text-black font-bold">
                     {activeTaskCount > 9 ? '9+' : activeTaskCount}
                   </span>
                 )}

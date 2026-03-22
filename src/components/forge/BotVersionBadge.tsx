@@ -31,7 +31,7 @@ export function BotVersionBadge({
             <Badge 
               variant="outline" 
               className={cn(
-                "gap-1 border-amber-500/50 bg-amber-500/10 text-amber-500 cursor-pointer",
+                "gap-1 border-neon-amber/50 bg-neon-amber/10 text-neon-amber cursor-pointer",
                 className
               )}
             >
@@ -55,7 +55,7 @@ export function BotVersionBadge({
             <Badge 
               variant="outline" 
               className={cn(
-                "gap-1 border-emerald-500/50 bg-emerald-500/10 text-emerald-500",
+                "gap-1 border-neon-green/50 bg-neon-green/10 text-neon-green",
                 className
               )}
             >

@@ -89,14 +89,14 @@ export function PricingCalculator({ className }: { className?: string }) {
 
   const tierColors = {
     free: 'text-muted-foreground',
-    builder: 'text-blue-500',
-    pro: 'text-purple-500',
-    enterprise: 'text-amber-500',
+    builder: 'text-neon-blue',
+    pro: 'text-neon-purple',
+    enterprise: 'text-neon-amber',
   };
 
   return (
     <Card className={cn("border-primary/20 overflow-hidden", className)}>
-      <CardHeader className="bg-gradient-to-br from-primary/5 to-violet-500/5 border-b border-border/50">
+      <CardHeader className="bg-gradient-to-br from-primary/5 to-neon-purple/5 border-b border-border/50">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
             <Calculator className="w-6 h-6 text-primary" />
@@ -150,7 +150,7 @@ export function PricingCalculator({ className }: { className?: string }) {
           <Switch checked={isAnnual} onCheckedChange={setIsAnnual} />
           <span className={cn("text-sm", isAnnual && "font-medium")}>
             Annual
-            <Badge variant="outline" className="ml-2 text-[10px] text-emerald-500 border-emerald-500/30">
+            <Badge variant="outline" className="ml-2 text-[10px] text-neon-green border-neon-green/30">
               Save ~17%
             </Badge>
           </span>
@@ -189,12 +189,12 @@ export function PricingCalculator({ className }: { className?: string }) {
           
           {/* CMPSBL Column */}
           <motion.div 
-            className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20"
+            className="p-4 rounded-xl bg-neon-green/5 border border-neon-green/20"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
           >
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-sm text-emerald-500">CMPSBL</h3>
+              <h3 className="font-semibold text-sm text-neon-green">CMPSBL</h3>
               <Badge className={cn("text-[10px] capitalize", tierColors[calculations.recommendedTier])}>
                 {calculations.recommendedTier} tier
               </Badge>
@@ -202,7 +202,7 @@ export function PricingCalculator({ className }: { className?: string }) {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Setup cost</span>
-                <span className="text-emerald-500">$0</span>
+                <span className="text-neon-green">$0</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Monthly cost</span>
@@ -210,12 +210,12 @@ export function PricingCalculator({ className }: { className?: string }) {
               </div>
               <div className="flex justify-between pt-2 border-t border-border/50 font-medium">
                 <span>First Year Total</span>
-                <span className="text-emerald-500">
+                <span className="text-neon-green">
                   ${calculations.cmpsblAnnual.toLocaleString()}
                 </span>
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-2 text-xs text-emerald-500">
+            <div className="mt-3 flex items-center gap-2 text-xs text-neon-green">
               <CheckCircle2 className="w-3 h-3" />
               Ready in under an hour
             </div>
@@ -224,7 +224,7 @@ export function PricingCalculator({ className }: { className?: string }) {
         
         {/* Savings Summary */}
         <motion.div 
-          className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-violet-500/10 border border-primary/20"
+          className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-neon-purple/10 border border-primary/20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -246,7 +246,7 @@ export function PricingCalculator({ className }: { className?: string }) {
               <div className="text-xs text-muted-foreground">saved first year</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-violet-500">
+              <div className="text-2xl font-bold text-neon-purple">
                 {calculations.timeSavedAnnualHours}h
               </div>
               <div className="text-xs text-muted-foreground">dev time saved</div>

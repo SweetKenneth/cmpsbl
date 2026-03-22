@@ -59,12 +59,12 @@ export function EvolveStatusDashboard() {
   const getPhaseIcon = (phase: string) => {
     switch (phase) {
       case 'verified':
-        return <CheckCircle2 className="h-4 w-4 text-green-500" />;
+        return <CheckCircle2 className="h-4 w-4 text-neon-green" />;
       case 'failed':
       case 'aborted':
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return <XCircle className="h-4 w-4 text-destructive" />;
       default:
-        return <Clock className="h-4 w-4 text-yellow-500" />;
+        return <Clock className="h-4 w-4 text-neon-amber" />;
     }
   };
 
@@ -126,11 +126,11 @@ export function EvolveStatusDashboard() {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               {diagnostics.status === 'healthy' ? (
-                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <CheckCircle2 className="h-4 w-4 text-neon-green" />
               ) : diagnostics.status === 'degraded' ? (
-                <AlertTriangle className="h-4 w-4 text-yellow-500" />
+                <AlertTriangle className="h-4 w-4 text-neon-amber" />
               ) : (
-                <XCircle className="h-4 w-4 text-red-500" />
+                <XCircle className="h-4 w-4 text-destructive" />
               )}
               System Health
             </CardTitle>

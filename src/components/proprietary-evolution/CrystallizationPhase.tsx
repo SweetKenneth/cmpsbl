@@ -236,7 +236,7 @@ export function CrystallizationPhase() {
 
             <span className={cn(
               "text-xs font-mono font-bold",
-              d.cjpiScore >= 85 ? "text-amber-400" : d.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
+              d.cjpiScore >= 85 ? "text-neon-amber" : d.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
             )}>
               {d.cjpiScore}
             </span>

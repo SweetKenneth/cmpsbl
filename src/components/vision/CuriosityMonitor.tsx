@@ -76,13 +76,13 @@ export default function CuriosityMonitor() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs text-muted-foreground">Exploitation</span>
-                <span className="text-sm font-bold text-green-500">
+                <span className="text-sm font-bold text-neon-green">
                   {(exploitationRatio * 100).toFixed(0)}%
                 </span>
               </div>
               <div className="h-2 rounded-full bg-muted overflow-hidden">
                 <div 
-                  className="h-full bg-green-500 transition-all duration-500"
+                  className="h-full bg-neon-green transition-all duration-500"
                   style={{ width: `${exploitationRatio * 100}%` }}
                 />
               </div>

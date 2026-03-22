@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import type { GateRunResult, GatePassResult } from '@/lib/gate/engine';
 
 function statusIcon(status: string) {
-  if (status === 'PASS') return <CheckCircle className="w-4 h-4 text-emerald-500" />;
+  if (status === 'PASS') return <CheckCircle className="w-4 h-4 text-neon-green" />;
   if (status === 'FAIL') return <XCircle className="w-4 h-4 text-destructive" />;
   return <SkipForward className="w-4 h-4 text-muted-foreground" />;
 }
@@ -128,7 +128,7 @@ export function GateHistory({ runs, loading }: GateHistoryProps) {
             className="flex items-center gap-3 px-3 py-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
           >
             {run.status === 'passed' ? (
-              <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-neon-green flex-shrink-0" />
             ) : (
               <XCircle className="w-4 h-4 text-destructive flex-shrink-0" />
             )}

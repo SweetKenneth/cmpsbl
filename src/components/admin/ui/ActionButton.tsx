@@ -14,9 +14,9 @@ export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
     const variantStyles = {
       primary: "bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white shadow-lg hover:shadow-xl glow-primary",
       secondary: "bg-gradient-to-r from-secondary to-secondary/80 hover:from-secondary/90 hover:to-secondary/70 text-secondary-foreground",
-      success: "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg",
-      warning: "bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-lg",
-      danger: "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-lg",
+      success: "bg-gradient-to-r from-neon-green to-neon-green hover:from-neon-green hover:to-green-700 text-white shadow-lg",
+      warning: "bg-gradient-to-r from-neon-amber to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-lg",
+      danger: "bg-gradient-to-r from-destructive to-destructive hover:from-destructive hover:to-red-700 text-white shadow-lg",
       ghost: "hover:bg-muted/50",
     };
 

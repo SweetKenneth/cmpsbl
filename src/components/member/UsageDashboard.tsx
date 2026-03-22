@@ -69,11 +69,11 @@ export function UsageDashboard({ tier }: { tier: string }) {
 
   const metrics = [
     { label: 'Intents Executed', value: stats.intents_executed, icon: Zap, color: 'text-primary', format: (v: number) => v.toLocaleString() },
-    { label: 'Tokens Consumed', value: stats.tokens_consumed, icon: Cpu, color: 'text-violet-400', format: (v: number) => v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v.toString() },
-    { label: 'Discoveries', value: stats.discoveries_pulled, icon: Sparkles, color: 'text-amber-400', format: (v: number) => v.toString() },
-    { label: 'Exports', value: stats.exports_created, icon: Download, color: 'text-emerald-400', format: (v: number) => v.toString() },
+    { label: 'Tokens Consumed', value: stats.tokens_consumed, icon: Cpu, color: 'text-neon-purple', format: (v: number) => v >= 1000 ? `${(v / 1000).toFixed(1)}k` : v.toString() },
+    { label: 'Discoveries', value: stats.discoveries_pulled, icon: Sparkles, color: 'text-neon-amber', format: (v: number) => v.toString() },
+    { label: 'Exports', value: stats.exports_created, icon: Download, color: 'text-neon-green', format: (v: number) => v.toString() },
     { label: 'Compute Time', value: stats.compute_time_ms, icon: Clock, color: 'text-sky-400', format: (v: number) => v >= 60000 ? `${(v / 60000).toFixed(1)}m` : `${(v / 1000).toFixed(1)}s` },
-    { label: 'Estimated Value', value: stats.estimated_value_cents, icon: TrendingUp, color: 'text-emerald-500', format: (v: number) => `$${(v / 100).toFixed(2)}` },
+    { label: 'Estimated Value', value: stats.estimated_value_cents, icon: TrendingUp, color: 'text-neon-green', format: (v: number) => `$${(v / 100).toFixed(2)}` },
   ];
 
   return (
@@ -146,7 +146,7 @@ export function UsageDashboard({ tier }: { tier: string }) {
             <div className="text-xs text-muted-foreground mt-1">Time Saved</div>
           </div>
           <div>
-            <div className="text-3xl font-black text-emerald-500 font-mono">
+            <div className="text-3xl font-black text-neon-green font-mono">
               {stats.intents_executed > 0 ? `${((stats.intents_executed - (stats.exports_created || 0)) / Math.max(stats.intents_executed, 1) * 100).toFixed(0)}%` : '—'}
             </div>
             <div className="text-xs text-muted-foreground mt-1">Success Rate</div>

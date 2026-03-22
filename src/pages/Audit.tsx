@@ -90,11 +90,11 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">User Actions</p>
-              <p className="text-3xl font-bold text-blue-500">
+              <p className="text-3xl font-bold text-neon-blue">
                 {logs.filter(l => l.event_type.includes('user')).length}
               </p>
             </div>
-            <User className="w-8 h-8 text-blue-500/40" />
+            <User className="w-8 h-8 text-neon-blue/40" />
           </div>
         </Card>
 
@@ -102,11 +102,11 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Security Events</p>
-              <p className="text-3xl font-bold text-orange-500">
+              <p className="text-3xl font-bold text-neon-amber">
                 {logs.filter(l => l.severity === 'warning' || l.severity === 'critical').length}
               </p>
             </div>
-            <Shield className="w-8 h-8 text-orange-500/40" />
+            <Shield className="w-8 h-8 text-neon-amber/40" />
           </div>
         </Card>
 
@@ -114,14 +114,14 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Last 24h</p>
-              <p className="text-3xl font-bold text-green-500">
+              <p className="text-3xl font-bold text-neon-green">
                 {logs.filter(l => {
                   const diff = Date.now() - new Date(l.timestamp).getTime();
                   return diff < 24 * 60 * 60 * 1000;
                 }).length}
               </p>
             </div>
-            <Clock className="w-8 h-8 text-green-500/40" />
+            <Clock className="w-8 h-8 text-neon-green/40" />
           </div>
         </Card>
       </div>
@@ -135,14 +135,14 @@ export default function Audit() {
               <div className="flex items-start justify-between">
                 <div className="flex items-start gap-3">
                   <div className={`p-2 rounded-lg ${
-                    log.severity === 'critical' ? 'bg-red-500/20' :
-                    log.severity === 'warning' ? 'bg-yellow-500/20' :
-                    'bg-blue-500/20'
+                    log.severity === 'critical' ? 'bg-destructive/20' :
+                    log.severity === 'warning' ? 'bg-neon-amber/20' :
+                    'bg-neon-blue/20'
                   }`}>
                     <Icon className={`w-5 h-5 ${
-                      log.severity === 'critical' ? 'text-red-500' :
-                      log.severity === 'warning' ? 'text-yellow-500' :
-                      'text-blue-500'
+                      log.severity === 'critical' ? 'text-destructive' :
+                      log.severity === 'warning' ? 'text-neon-amber' :
+                      'text-neon-blue'
                     }`} />
                   </div>
                   <div className="flex-1">

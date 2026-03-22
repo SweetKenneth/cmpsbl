@@ -81,7 +81,7 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
   return (
     <section className="py-12 sm:py-16 border-t border-border/50 relative overflow-hidden">
       {/* Subtle background accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-orange-500/[0.02] to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neon-amber/[0.02] to-transparent pointer-events-none" />
       
       <div className="container mx-auto px-4 relative">
         {/* Header with enhanced styling */}
@@ -92,8 +92,8 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
             viewport={{ once: true }}
           >
             <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-orange-500/10">
-                <Flame className="w-6 h-6 text-orange-500" />
+              <div className="p-2 rounded-lg bg-neon-amber/10">
+                <Flame className="w-6 h-6 text-neon-amber" />
               </div>
               What Developers Are Buying
             </h2>
@@ -160,7 +160,7 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
                   <Card 
                     className={cn(
                       "group cursor-pointer transition-all hover:shadow-xl hover:border-primary/50 h-full",
-                      index === 0 && activeTab === 'trending' && "ring-2 ring-orange-500/50 shadow-lg shadow-orange-500/10"
+                      index === 0 && activeTab === 'trending' && "ring-2 ring-neon-amber/50 shadow-lg shadow-neon-amber/10"
                     )}
                     onClick={() => onPreview(template)}
                   >
@@ -169,9 +169,9 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
                         {/* Rank badge with enhanced styling */}
                         <div className={cn(
                           "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-bold text-sm shadow-lg",
-                          index === 0 ? "bg-gradient-to-br from-amber-400 to-orange-500 text-white" :
+                          index === 0 ? "bg-gradient-to-br from-neon-amber to-neon-amber text-white" :
                           index === 1 ? "bg-gradient-to-br from-zinc-300 to-zinc-400 text-zinc-800" :
-                          index === 2 ? "bg-gradient-to-br from-amber-600 to-amber-700 text-white" :
+                          index === 2 ? "bg-gradient-to-br from-neon-amber to-amber-700 text-white" :
                           "bg-muted text-muted-foreground"
                         )}>
                           {index + 1}
@@ -193,7 +193,7 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
                               {rarity.label}
                             </Badge>
                             {index === 0 && activeTab === 'trending' && (
-                              <Badge className="bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[9px] h-4 shrink-0 border-0">
+                              <Badge className="bg-gradient-to-r from-neon-amber to-neon-amber text-white text-[9px] h-4 shrink-0 border-0">
                                 <Flame className="w-2.5 h-2.5 mr-0.5" />
                                 Hot
                               </Badge>

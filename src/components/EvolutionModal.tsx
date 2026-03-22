@@ -113,20 +113,20 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
               <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80">
                 {/* Outer pulsing ring */}
                 <div
-                  className="absolute inset-0 rounded-full border-2 border-fuchsia-500/30 animate-ping"
+                  className="absolute inset-0 rounded-full border-2 border-neon-magenta/30 animate-ping"
                   style={{ animationDuration: '2s' }}
                 />
 
                 {/* Core organism */}
-                <div className="absolute inset-4 rounded-full bg-gradient-to-br from-fuchsia-600/20 via-cyan-500/20 to-purple-600/20 backdrop-blur-sm animate-pulse">
+                <div className="absolute inset-4 rounded-full bg-gradient-to-br from-neon-magenta/20 via-neon-cyan/20 to-neon-purple/20 backdrop-blur-sm animate-pulse">
                   {/* Inner membrane */}
-                  <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-cyan-400/30 via-fuchsia-500/40 to-purple-500/30 overflow-hidden">
+                  <div className="absolute inset-4 rounded-full bg-gradient-to-tr from-neon-cyan/30 via-neon-magenta/40 to-neon-purple/30 overflow-hidden">
                     {/* Organelle particles */}
                     <div className="absolute inset-0">
                       {[...Array(12)].map((_, i) => (
                         <div
                           key={i}
-                          className="absolute w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500"
+                          className="absolute w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 rounded-full bg-gradient-to-r from-neon-cyan to-neon-magenta"
                           style={{
                             left: `${20 + Math.random() * 60}%`,
                             top: `${20 + Math.random() * 60}%`,
@@ -140,7 +140,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
 
                     {/* Nucleus */}
                     <div
-                      className="absolute inset-[30%] rounded-full bg-gradient-to-br from-fuchsia-500/60 via-purple-600/50 to-cyan-400/60 animate-spin"
+                      className="absolute inset-[30%] rounded-full bg-gradient-to-br from-neon-magenta/60 via-neon-purple/50 to-neon-cyan/60 animate-spin"
                       style={{ animationDuration: '8s' }}
                     >
                       <div className="absolute inset-2 rounded-full bg-gradient-to-tl from-white/10 via-transparent to-transparent" />
@@ -152,7 +152,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={`tendril-${i}`}
-                    className="absolute w-1 h-12 sm:h-16 md:h-20 bg-gradient-to-b from-fuchsia-500/60 to-transparent rounded-full"
+                    className="absolute w-1 h-12 sm:h-16 md:h-20 bg-gradient-to-b from-neon-magenta/60 to-transparent rounded-full"
                     style={{
                       left: '50%',
                       top: '50%',
@@ -173,7 +173,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
                 {/* Progress bar */}
                 <div className="w-40 sm:w-48 md:w-64 h-1 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-purple-500 transition-all duration-100 ease-linear"
+                    className="h-full bg-gradient-to-r from-neon-cyan via-neon-magenta to-neon-purple transition-all duration-100 ease-linear"
                     style={{ width: `${loadingProgress}%` }}
                   />
                 </div>
@@ -230,7 +230,7 @@ export function EvolutionModal({ isOpen, onClose }: EvolutionModalProps) {
                         </Button>
                         <Button
                           onClick={onClose}
-                          className="gap-2 bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white hover:from-fuchsia-500 hover:to-purple-500"
+                          className="gap-2 bg-gradient-to-r from-neon-magenta to-neon-purple text-white hover:from-neon-magenta hover:to-neon-purple"
                         >
                           <X className="w-4 h-4" />
                           Close

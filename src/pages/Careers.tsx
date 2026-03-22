@@ -25,25 +25,25 @@ const values = [
     icon: Brain,
     title: "Think in Systems",
     description: "We build cognitive architecture, not features. Every contribution shapes how machines understand the world.",
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-neon-purple to-neon-purple",
   },
   {
     icon: Heart,
     title: "Care Deeply",
     description: "About the craft, about each other, about the humans who use what we build. Quality is non-negotiable.",
-    gradient: "from-rose-500 to-pink-600",
+    gradient: "from-neon-magenta to-pink-600",
   },
   {
     icon: Sparkles,
     title: "Dream Boldly",
     description: "CMPSBL exists because someone believed machines could learn to improve themselves. We hire people who believe in the impossible.",
-    gradient: "from-amber-500 to-orange-600",
+    gradient: "from-neon-amber to-orange-600",
   },
   {
     icon: Globe,
     title: "Work Anywhere",
     description: "Fully remote, async-first. We hire the best minds regardless of geography. Results matter, not hours.",
-    gradient: "from-cyan-500 to-blue-600",
+    gradient: "from-neon-cyan to-neon-blue",
   },
 ];
 

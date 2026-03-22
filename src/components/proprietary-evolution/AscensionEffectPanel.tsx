@@ -37,13 +37,13 @@ const STATUS_CONFIG: Record<EffectStatus, { label: string; badge: string; color:
   executed: {
     label: 'Healthy Execution',
     badge: '✅',
-    color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
+    color: 'text-neon-green dark:text-neon-green bg-neon-green/10 border-neon-green/20',
     icon: Zap,
   },
   degraded: {
     label: 'Degraded — Failed Safely',
     badge: '⚠️',
-    color: 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20',
+    color: 'text-neon-amber dark:text-neon-amber bg-neon-amber/10 border-neon-amber/20',
     icon: AlertTriangle,
   },
   fallback: {
@@ -182,7 +182,7 @@ export function AscensionEffectPanel() {
     <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center gap-2">
-        <Eye className="w-4 h-4 text-blue-500" />
+        <Eye className="w-4 h-4 text-neon-blue" />
         <h3 className="text-sm font-bold text-foreground tracking-tight">
           Ascension Effect Monitor
         </h3>
@@ -194,13 +194,13 @@ export function AscensionEffectPanel() {
       {/* Aggregate Stats */}
       <div className="grid grid-cols-4 gap-2">
         <StatCard label="Nodes" value={stats.total} icon={Activity} />
-        <StatCard label="Executed" value={stats.executed} icon={Zap} color="text-emerald-500" />
-        <StatCard label="Degraded" value={stats.degraded} icon={AlertTriangle} color="text-amber-500" />
+        <StatCard label="Executed" value={stats.executed} icon={Zap} color="text-neon-green" />
+        <StatCard label="Degraded" value={stats.degraded} icon={AlertTriangle} color="text-neon-amber" />
         <StatCard
           label="Avg Score"
           value={`${(stats.avgScore * 100).toFixed(0)}%`}
           icon={TrendingUp}
-          color="text-blue-500"
+          color="text-neon-blue"
         />
       </div>
 

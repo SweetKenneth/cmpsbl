@@ -65,15 +65,15 @@ await substrate.dream.feed('I was floating through space...', 'dream');
 const interpretation = await substrate.dream.interpret(dreamText);`;
 
 const MODULES = [
-  { id: 'core', name: 'CORE', icon: Cpu, color: 'text-orange-400', desc: 'Scheduling & orchestration' },
-  { id: 'ripple', name: 'RIPPLE', icon: Zap, color: 'text-teal-400', desc: 'Event bus & messaging' },
-  { id: 'access', name: 'ACCESS', icon: Shield, color: 'text-amber-400', desc: 'Identity & API keys' },
-  { id: 'brain', name: 'BRAIN', icon: Brain, color: 'text-violet-400', desc: 'Persistent memory & recall' },
-  { id: 'decode', name: 'DECODE', icon: MessageSquare, color: 'text-cyan-400', desc: 'Intent parsing & conversation' },
-  { id: 'nexus', name: 'NEXUS', icon: Zap, color: 'text-green-400', desc: 'Multi-provider AI routing' },
-  { id: 'defense', name: 'DEFENSE', icon: Shield, color: 'text-red-400', desc: 'Adaptive security & threat detection' },
-  { id: 'vision', name: 'VISION', icon: Eye, color: 'text-blue-400', desc: 'Observability & monitoring' },
-  { id: 'dream', name: 'DREAM', icon: Moon, color: 'text-purple-400', desc: 'Offline learning & synthesis' },
+  { id: 'core', name: 'CORE', icon: Cpu, color: 'text-neon-amber', desc: 'Scheduling & orchestration' },
+  { id: 'ripple', name: 'RIPPLE', icon: Zap, color: 'text-neon-cyan', desc: 'Event bus & messaging' },
+  { id: 'access', name: 'ACCESS', icon: Shield, color: 'text-neon-amber', desc: 'Identity & API keys' },
+  { id: 'brain', name: 'BRAIN', icon: Brain, color: 'text-neon-purple', desc: 'Persistent memory & recall' },
+  { id: 'decode', name: 'DECODE', icon: MessageSquare, color: 'text-neon-cyan', desc: 'Intent parsing & conversation' },
+  { id: 'nexus', name: 'NEXUS', icon: Zap, color: 'text-neon-green', desc: 'Multi-provider AI routing' },
+  { id: 'defense', name: 'DEFENSE', icon: Shield, color: 'text-destructive', desc: 'Adaptive security & threat detection' },
+  { id: 'vision', name: 'VISION', icon: Eye, color: 'text-neon-blue', desc: 'Observability & monitoring' },
+  { id: 'dream', name: 'DREAM', icon: Moon, color: 'text-neon-purple', desc: 'Offline learning & synthesis' },
 ];
 
 const TABS = [
@@ -114,7 +114,7 @@ export default function DevTools() {
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-violet-500/20">
+              <div className="p-3 rounded-xl bg-gradient-to-br from-primary/20 to-neon-purple/20">
                 <Terminal className="h-8 w-8 text-primary" />
               </div>
               <div>
@@ -130,7 +130,7 @@ export default function DevTools() {
             
             {/* Free SDK + Marketplace CTA */}
             <div className="flex flex-wrap items-center gap-4 mt-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-sm">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neon-green/10 border border-neon-green/30 text-neon-green text-sm">
                 <Sparkles className="w-4 h-4" />
                 <span className="font-medium">Free Tier Available</span>
               </div>
@@ -216,7 +216,7 @@ export default function DevTools() {
                           "Real-time usage dashboard",
                         ].map((item) => (
                           <li key={item} className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-neon-green" />
                             {item}
                           </li>
                         ))}
@@ -267,7 +267,7 @@ export default function DevTools() {
                     <div className="flex items-center gap-2 mb-2">
                       <Package className="w-4 h-4 text-primary" />
                       <span className="text-sm font-medium">Public NPM Packages</span>
-                      <Badge className="text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/20">Live</Badge>
+                      <Badge className="text-xs bg-neon-green/10 text-neon-green border-neon-green/20">Live</Badge>
                     </div>
                     <p className="text-xs text-muted-foreground mb-3">
                       11 modular packages under the <code className="text-primary font-mono">@cmpsbl</code> org on NPM.

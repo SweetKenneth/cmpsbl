@@ -21,12 +21,12 @@ const EXAMPLE_TEXTS = [
 ];
 
 const EMOTION_COLORS: Record<string, { bg: string; bar: string }> = {
-  joy: { bg: 'bg-yellow-500/20', bar: 'bg-yellow-500' },
-  sadness: { bg: 'bg-blue-500/20', bar: 'bg-blue-500' },
-  anger: { bg: 'bg-red-500/20', bar: 'bg-red-500' },
-  fear: { bg: 'bg-purple-500/20', bar: 'bg-purple-500' },
-  surprise: { bg: 'bg-pink-500/20', bar: 'bg-pink-500' },
-  trust: { bg: 'bg-green-500/20', bar: 'bg-green-500' },
+  joy: { bg: 'bg-neon-amber/20', bar: 'bg-neon-amber' },
+  sadness: { bg: 'bg-neon-blue/20', bar: 'bg-neon-blue' },
+  anger: { bg: 'bg-destructive/20', bar: 'bg-destructive' },
+  fear: { bg: 'bg-neon-purple/20', bar: 'bg-neon-purple' },
+  surprise: { bg: 'bg-neon-magenta/20', bar: 'bg-neon-magenta' },
+  trust: { bg: 'bg-neon-green/20', bar: 'bg-neon-green' },
 };
 
 export function SentimentAnalysisDemo() {
@@ -36,8 +36,8 @@ export function SentimentAnalysisDemo() {
   const [history, setHistory] = useState<{ text: string; result: SentimentResult }[]>([]);
   const [analysisCount, setAnalysisCount] = useState(2847);
 
-  const getSentimentIcon = (s: string) => s === 'positive' ? <TrendingUp className="w-5 h-5 text-green-500" /> : s === 'negative' ? <TrendingDown className="w-5 h-5 text-red-500" /> : s === 'mixed' ? <Zap className="w-5 h-5 text-amber-500" /> : <Minus className="w-5 h-5 text-muted-foreground" />;
-  const getSentimentColor = (s: string) => s === 'positive' ? 'border-green-500/40 bg-green-500/10 text-green-400' : s === 'negative' ? 'border-red-500/40 bg-red-500/10 text-red-400' : s === 'mixed' ? 'border-amber-500/40 bg-amber-500/10 text-amber-400' : 'border-muted bg-muted/50';
+  const getSentimentIcon = (s: string) => s === 'positive' ? <TrendingUp className="w-5 h-5 text-neon-green" /> : s === 'negative' ? <TrendingDown className="w-5 h-5 text-destructive" /> : s === 'mixed' ? <Zap className="w-5 h-5 text-neon-amber" /> : <Minus className="w-5 h-5 text-muted-foreground" />;
+  const getSentimentColor = (s: string) => s === 'positive' ? 'border-neon-green/40 bg-neon-green/10 text-neon-green' : s === 'negative' ? 'border-destructive/40 bg-destructive/10 text-destructive' : s === 'mixed' ? 'border-neon-amber/40 bg-neon-amber/10 text-neon-amber' : 'border-muted bg-muted/50';
 
   const determineSentiment = (t: string): SentimentResult['sentiment'] => {
     const lower = t.toLowerCase();
@@ -88,7 +88,7 @@ export function SentimentAnalysisDemo() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between pb-4 border-b border-border/50">
-        <div className="flex items-center gap-2"><BarChart3 className="w-5 h-5 text-emerald-500" /><span className="text-sm font-medium">Sentiment Analysis Engine</span></div>
+        <div className="flex items-center gap-2"><BarChart3 className="w-5 h-5 text-neon-green" /><span className="text-sm font-medium">Sentiment Analysis Engine</span></div>
         <Badge variant="outline" className="text-xs"><Sparkles className="w-3 h-3 mr-1" />{analysisCount.toLocaleString()} analyses</Badge>
       </div>
 
@@ -103,7 +103,7 @@ export function SentimentAnalysisDemo() {
       <AnimatePresence>
         {result && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-            <Card className="p-4 bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 border-emerald-500/20 space-y-4">
+            <Card className="p-4 bg-gradient-to-br from-neon-green/5 to-neon-cyan/5 border-neon-green/20 space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">{getSentimentIcon(result.sentiment)}<span className="text-sm font-medium capitalize">{result.sentiment}</span><span className="text-xs text-muted-foreground">({(result.confidence * 100).toFixed(0)}% confidence)</span></div>
                 <Badge className={getSentimentColor(result.sentiment)}>{result.sentiment.toUpperCase()}</Badge>

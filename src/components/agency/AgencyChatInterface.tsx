@@ -270,7 +270,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/30">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-neon-magenta to-neon-purple flex items-center justify-center">
             <Bot className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -316,26 +316,26 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
               <div className={cn(
                 "w-7 h-7 rounded-full flex items-center justify-center shrink-0",
                 msg.role === 'user' 
-                  ? "bg-cyan-500/20" 
+                  ? "bg-neon-cyan/20" 
                   : msg.role === 'system'
-                    ? "bg-amber-500/20"
-                    : "bg-fuchsia-500/20"
+                    ? "bg-neon-amber/20"
+                    : "bg-neon-magenta/20"
               )}>
                 {msg.role === 'user' ? (
-                  <User className="w-3.5 h-3.5 text-cyan-400" />
+                  <User className="w-3.5 h-3.5 text-neon-cyan" />
                 ) : (
                   <Bot className={cn(
                     "w-3.5 h-3.5",
-                    msg.role === 'system' ? "text-amber-400" : "text-fuchsia-400"
+                    msg.role === 'system' ? "text-neon-amber" : "text-neon-magenta"
                   )} />
                 )}
               </div>
               <div className={cn(
                 "flex-1 max-w-[80%] rounded-lg px-3 py-2",
                 msg.role === 'user' 
-                  ? "bg-cyan-500/10 border border-cyan-500/20" 
+                  ? "bg-neon-cyan/10 border border-neon-cyan/20" 
                   : msg.role === 'system'
-                    ? "bg-amber-500/10 border border-amber-500/20"
+                    ? "bg-neon-amber/10 border border-neon-amber/20"
                     : "bg-muted/30 border border-border/30"
               )}>
                 <div 
@@ -347,7 +347,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
                   }}
                 />
                 {msg.metadata?.tasksCreated && msg.metadata.tasksCreated.length > 0 && (
-                  <div className="mt-2 flex items-center gap-1.5 text-emerald-400">
+                  <div className="mt-2 flex items-center gap-1.5 text-neon-green">
                     <CheckCircle className="w-3 h-3" />
                     <span className="text-[10px]">Task queued</span>
                   </div>
@@ -366,8 +366,8 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
           
           {isLoading && (
             <div className="flex gap-3">
-              <div className="w-7 h-7 rounded-full bg-fuchsia-500/20 flex items-center justify-center">
-                <Loader2 className="w-3.5 h-3.5 text-fuchsia-400 animate-spin" />
+              <div className="w-7 h-7 rounded-full bg-neon-magenta/20 flex items-center justify-center">
+                <Loader2 className="w-3.5 h-3.5 text-neon-magenta animate-spin" />
               </div>
               <div className="bg-muted/30 border border-border/30 rounded-lg px-3 py-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -396,7 +396,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
           <div className="p-6 max-w-2xl mx-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold flex items-center gap-2">
-                <Command className="w-5 h-5 text-fuchsia-400" />
+                <Command className="w-5 h-5 text-neon-magenta" />
                 Quick Commands
               </h2>
               <Button variant="ghost" size="icon" onClick={() => setShowHelp(false)}>
@@ -422,11 +422,11 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
                           setShowHelp(false);
                           handleCommandSelect(cmd);
                         }}
-                        className="text-left p-3 rounded-lg bg-muted/20 border border-border/30 hover:border-fuchsia-500/30 hover:bg-fuchsia-500/5 transition-all"
+                        className="text-left p-3 rounded-lg bg-muted/20 border border-border/30 hover:border-neon-magenta/30 hover:bg-neon-magenta/5 transition-all"
                       >
                         <div className="flex items-center gap-2 mb-1">
                           <span>{cmd.icon}</span>
-                          <code className="text-xs bg-black/30 px-1.5 py-0.5 rounded text-fuchsia-400">
+                          <code className="text-xs bg-black/30 px-1.5 py-0.5 rounded text-neon-magenta">
                             {cmd.command}
                           </code>
                         </div>
@@ -441,14 +441,14 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
 
             {/* Capabilities Section */}
             <div className="mt-8 space-y-4">
-              <h3 className="text-sm font-medium text-emerald-400">✓ What We Can Do</h3>
+              <h3 className="text-sm font-medium text-neon-green">✓ What We Can Do</h3>
               <ul className="text-sm space-y-1 text-muted-foreground">
                 {getCapabilitiesSummary().canDo.map((item, i) => (
                   <li key={i}>• {item}</li>
                 ))}
               </ul>
 
-              <h3 className="text-sm font-medium text-amber-400">⚠ Current Limitations</h3>
+              <h3 className="text-sm font-medium text-neon-amber">⚠ Current Limitations</h3>
               <ul className="text-sm space-y-1 text-muted-foreground">
                 {getCapabilitiesSummary().cannotDo.map((item, i) => (
                   <li key={i}>• {item}</li>
@@ -456,7 +456,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
               </ul>
             </div>
 
-            <div className="mt-8 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
+            <div className="mt-8 p-4 bg-neon-cyan/10 border border-neon-cyan/30 rounded-lg">
               <p className="text-sm">
                 <strong>Tip:</strong> Just describe what you need — I'll create the right task and assign it to the best team member automatically.
               </p>
@@ -493,7 +493,7 @@ export function AgencyChatInterface({ agency, className }: AgencyChatInterfacePr
           <Button
             onClick={sendMessage}
             disabled={!input.trim() || isLoading}
-            className="shrink-0 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-500 hover:to-purple-500"
+            className="shrink-0 bg-gradient-to-r from-neon-magenta to-neon-purple hover:from-neon-magenta hover:to-neon-purple"
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

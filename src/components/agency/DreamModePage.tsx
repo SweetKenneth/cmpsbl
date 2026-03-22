@@ -116,7 +116,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                 <p className="text-sm text-muted-foreground">Local Improvements</p>
                 <p className="text-2xl font-bold">{localCount}</p>
               </div>
-              <Moon className="h-8 w-8 text-blue-500 opacity-50" />
+              <Moon className="h-8 w-8 text-neon-blue opacity-50" />
             </div>
           </CardContent>
         </Card>
@@ -128,7 +128,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                 <p className="text-sm text-muted-foreground">Global Available</p>
                 <p className="text-2xl font-bold">{globalCount}</p>
               </div>
-              <Globe className="h-8 w-8 text-green-500 opacity-50" />
+              <Globe className="h-8 w-8 text-neon-green opacity-50" />
             </div>
           </CardContent>
         </Card>
@@ -140,7 +140,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                 <p className="text-sm text-muted-foreground">Applied</p>
                 <p className="text-2xl font-bold">{appliedCount}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-purple-500 opacity-50" />
+              <CheckCircle className="h-8 w-8 text-neon-purple opacity-50" />
             </div>
           </CardContent>
         </Card>
@@ -154,7 +154,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                   {latestMetrics ? `${(latestMetrics.success_rate_delta * 100).toFixed(1)}%` : '--'}
                 </p>
               </div>
-              <TrendingUp className="h-8 w-8 text-orange-500 opacity-50" />
+              <TrendingUp className="h-8 w-8 text-neon-amber opacity-50" />
             </div>
           </CardContent>
         </Card>
@@ -272,7 +272,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                               <Badge variant="outline">{improvement.improvement_type}</Badge>
                               <Badge variant="secondary">{improvement.category}</Badge>
                               {improvement.applied && (
-                                <Badge className="bg-green-500/10 text-green-500">Applied</Badge>
+                                <Badge className="bg-neon-green/10 text-neon-green">Applied</Badge>
                               )}
                             </div>
                           </div>
@@ -322,7 +322,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                         className="flex items-start justify-between p-4 rounded-lg border bg-card"
                       >
                         <div className="flex items-start gap-3">
-                          <div className="p-2 rounded-lg bg-green-500/10 text-green-500">
+                          <div className="p-2 rounded-lg bg-neon-green/10 text-neon-green">
                             {IMPROVEMENT_ICONS[improvement.improvement_type] || <Globe className="h-4 w-4" />}
                           </div>
                           <div>
@@ -332,7 +332,7 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                               <Badge variant="outline">{improvement.improvement_type}</Badge>
                               <Badge variant="secondary">{improvement.category}</Badge>
                               <Badge variant="outline">v{improvement.version}</Badge>
-                              <Badge className="bg-blue-500/10 text-blue-500">
+                              <Badge className="bg-neon-blue/10 text-neon-blue">
                                 {improvement.source_count} sources
                               </Badge>
                             </div>
@@ -380,9 +380,9 @@ export function DreamModePage({ agencyId }: DreamModePageProps) {
                     >
                       <div className="flex items-center gap-3">
                         {log.cycle_type === 'local' ? (
-                          <Moon className="h-5 w-5 text-blue-500" />
+                          <Moon className="h-5 w-5 text-neon-blue" />
                         ) : (
-                          <Globe className="h-5 w-5 text-green-500" />
+                          <Globe className="h-5 w-5 text-neon-green" />
                         )}
                         <div>
                           <p className="font-medium">

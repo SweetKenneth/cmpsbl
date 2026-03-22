@@ -152,7 +152,7 @@ function ScheduleCard({ task, onToggle, onDelete, onRunNow, compact }: ScheduleC
         <Switch
           checked={task.isActive}
           onCheckedChange={onToggle}
-          className="data-[state=checked]:bg-emerald-500"
+          className="data-[state=checked]:bg-neon-green"
         />
         
         <DropdownMenu>

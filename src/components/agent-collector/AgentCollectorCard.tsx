@@ -18,11 +18,11 @@ interface AgentCollectorCardProps {
 }
 
 const tierConfig = (agent: AgentWithPowers) => {
-  if (agent.isApex) return { label: "APEX", price: "$249", glow: "shadow-fuchsia-500/30", border: "border-fuchsia-500/40", bg: "bg-fuchsia-500/15", text: "text-fuchsia-400", ring: "ring-fuchsia-500/20" };
-  if (agent.isElite) return { label: "ELITE", price: "$159", glow: "shadow-violet-500/30", border: "border-violet-500/40", bg: "bg-violet-500/15", text: "text-violet-400", ring: "ring-violet-500/20" };
-  if (agent.isFlagship) return { label: "PRO", price: "$129", glow: "shadow-red-500/30", border: "border-red-500/40", bg: "bg-red-500/15", text: "text-red-400", ring: "ring-red-500/20" };
-  if (agent.priceCents) return { label: "STARTER", price: "$79", glow: "shadow-emerald-500/30", border: "border-emerald-500/40", bg: "bg-emerald-500/15", text: "text-emerald-400", ring: "ring-emerald-500/20" };
-  return { label: "FREE", price: "$0", glow: "shadow-amber-500/20", border: "border-amber-500/30", bg: "bg-amber-500/15", text: "text-amber-400", ring: "ring-amber-500/20" };
+  if (agent.isApex) return { label: "APEX", price: "$249", glow: "shadow-neon-magenta/30", border: "border-neon-magenta/40", bg: "bg-neon-magenta/15", text: "text-neon-magenta", ring: "ring-neon-magenta/20" };
+  if (agent.isElite) return { label: "ELITE", price: "$159", glow: "shadow-neon-purple/30", border: "border-neon-purple/40", bg: "bg-neon-purple/15", text: "text-neon-purple", ring: "ring-neon-purple/20" };
+  if (agent.isFlagship) return { label: "PRO", price: "$129", glow: "shadow-destructive/30", border: "border-destructive/40", bg: "bg-destructive/15", text: "text-destructive", ring: "ring-destructive/20" };
+  if (agent.priceCents) return { label: "STARTER", price: "$79", glow: "shadow-neon-green/30", border: "border-neon-green/40", bg: "bg-neon-green/15", text: "text-neon-green", ring: "ring-neon-green/20" };
+  return { label: "FREE", price: "$0", glow: "shadow-neon-amber/20", border: "border-neon-amber/30", bg: "bg-neon-amber/15", text: "text-neon-amber", ring: "ring-neon-amber/20" };
 };
 
 export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: AgentCollectorCardProps) {

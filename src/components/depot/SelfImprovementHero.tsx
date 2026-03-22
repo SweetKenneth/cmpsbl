@@ -51,12 +51,12 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/30 bg-card backdrop-blur-sm">
-              <Crown className="w-4 h-4 text-amber-400" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neon-amber/30 bg-card backdrop-blur-sm">
+              <Crown className="w-4 h-4 text-neon-amber" />
               <span className="text-sm font-semibold text-foreground">
                 World's First Self-Improving AI Marketplace
               </span>
-              <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-[10px]">
+              <Badge className="bg-neon-amber/20 text-neon-amber border-neon-amber/30 text-[10px]">
                 PIONEERING
               </Badge>
             </div>
@@ -73,7 +73,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
               <span className="block text-foreground mb-2">
                 Systems That
               </span>
-              <span className="block bg-gradient-to-r from-primary via-cyan-400 to-emerald-400 bg-clip-text text-transparent pb-2">
+              <span className="block bg-gradient-to-r from-primary via-neon-cyan to-neon-green bg-clip-text text-transparent pb-2">
                 Improve Themselves
               </span>
             </h1>
@@ -90,8 +90,8 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             <span className="text-foreground font-semibold">recursive self-improvement</span>{' '}
             capabilities. Download cognitive artifacts that{' '}
             <span className="text-primary font-semibold">learn to learn</span>,{' '}
-            <span className="text-cyan-400 font-semibold">optimize their own optimization</span>, and{' '}
-            <span className="text-emerald-400 font-semibold">compound intelligence</span>{' '}
+            <span className="text-neon-cyan font-semibold">optimize their own optimization</span>, and{' '}
+            <span className="text-neon-green font-semibold">compound intelligence</span>{' '}
             over time.
           </motion.p>
 
@@ -105,7 +105,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
             <Button 
               size="lg" 
               onClick={onViewApex}
-              className="w-full sm:w-auto h-14 px-8 text-lg bg-gradient-to-r from-primary to-cyan-500 hover:from-primary/90 hover:to-cyan-400 border-0 touch-manipulation"
+              className="w-full sm:w-auto h-14 px-8 text-lg bg-gradient-to-r from-primary to-neon-cyan hover:from-primary/90 hover:to-neon-cyan border-0 touch-manipulation"
             >
               <Crown className="w-5 h-5 mr-2" />
               View Apex Capabilities
@@ -164,19 +164,19 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
           >
             <div className="relative group">
               {/* Colored border glow - contained to this card only */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-500/40 via-primary/30 to-cyan-500/40 rounded-2xl blur opacity-40 group-hover:opacity-60 transition-opacity" />
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-neon-amber/40 via-primary/30 to-neon-cyan/40 rounded-2xl blur opacity-40 group-hover:opacity-60 transition-opacity" />
               
-              <div className="relative p-6 md:p-8 rounded-2xl border border-amber-500/30 bg-card backdrop-blur-xl">
+              <div className="relative p-6 md:p-8 rounded-2xl border border-neon-amber/30 bg-card backdrop-blur-xl">
                 <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
                   {/* Icon */}
-                  <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-amber-500/20 to-primary/20 border border-amber-500/20">
-                    <Zap className="w-8 h-8 text-amber-400" />
+                  <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-neon-amber/20 to-primary/20 border border-neon-amber/20">
+                    <Zap className="w-8 h-8 text-neon-amber" />
                   </div>
                   
                   {/* Content */}
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-2">
-                      <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">
+                      <Badge className="bg-neon-amber/20 text-neon-amber border-neon-amber/30">
                         APEX TIER
                       </Badge>
                       <Badge variant="outline" className="border-primary/30 text-primary">
@@ -195,7 +195,7 @@ export function SelfImprovementHero({ onExplore, onViewApex }: SelfImprovementHe
                   {/* CTA */}
                   <Button 
                     onClick={onViewApex}
-                    className="shrink-0 w-full md:w-auto bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 touch-manipulation"
+                    className="shrink-0 w-full md:w-auto bg-gradient-to-r from-neon-amber to-neon-amber hover:from-neon-amber hover:to-neon-amber touch-manipulation"
                   >
                     Learn More
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -223,17 +223,17 @@ interface TrustCardProps {
 function TrustCard({ icon: Icon, label, value, color }: TrustCardProps) {
   // Color applied to icon and border only - not as background overlay
   const colorClasses = {
-    violet: 'border-violet-500/30 hover:border-violet-500/50',
-    cyan: 'border-cyan-500/30 hover:border-cyan-500/50',
-    emerald: 'border-emerald-500/30 hover:border-emerald-500/50',
-    amber: 'border-amber-500/30 hover:border-amber-500/50',
+    violet: 'border-neon-purple/30 hover:border-neon-purple/50',
+    cyan: 'border-neon-cyan/30 hover:border-neon-cyan/50',
+    emerald: 'border-neon-green/30 hover:border-neon-green/50',
+    amber: 'border-neon-amber/30 hover:border-neon-amber/50',
   };
 
   const iconColors = {
-    violet: 'text-violet-400',
-    cyan: 'text-cyan-400',
-    emerald: 'text-emerald-400',
-    amber: 'text-amber-400',
+    violet: 'text-neon-purple',
+    cyan: 'text-neon-cyan',
+    emerald: 'text-neon-green',
+    amber: 'text-neon-amber',
   };
 
   return (

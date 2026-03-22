@@ -189,8 +189,8 @@ export default function CurrentProjects() {
                         <p className="text-xs font-medium text-primary/80">{project.tagline}</p>
                       </div>
                     </div>
-                    <Badge variant="outline" className="text-[10px] border-emerald-500/30 text-emerald-400 bg-emerald-500/10 font-mono shrink-0">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse" />
+                    <Badge variant="outline" className="text-[10px] border-neon-green/30 text-neon-green bg-neon-green/10 font-mono shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-neon-green mr-1.5 animate-pulse" />
                       {project.status}
                     </Badge>
                   </div>

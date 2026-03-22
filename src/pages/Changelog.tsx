@@ -1118,54 +1118,54 @@ const STRATA: Stratum[] = [
     epoch: "CONTACT",
     codename: "The platform reached outward and made first contact with developers",
     range: "Current epoch",
-    color: "bg-cyan-500/10 text-cyan-400",
-    borderColor: "border-cyan-500/30",
-    dotColor: "bg-cyan-500",
+    color: "bg-neon-cyan/10 text-neon-cyan",
+    borderColor: "border-neon-cyan/30",
+    dotColor: "bg-neon-cyan",
     specimens: stratumContact,
   },
   {
     epoch: "MINDGAMES",
     codename: "The platform opened its eyes and saw users for the first time",
     range: "Prior epoch",
-    color: "bg-violet-500/10 text-violet-400",
-    borderColor: "border-violet-500/30",
-    dotColor: "bg-violet-500",
+    color: "bg-neon-purple/10 text-neon-purple",
+    borderColor: "border-neon-purple/30",
+    dotColor: "bg-neon-purple",
     specimens: stratumMindgames,
   },
   {
     epoch: "IRONCLAD",
     codename: "The platform grew armor, then learned to govern its own rhythm",
     range: "Prior epoch",
-    color: "bg-amber-500/10 text-amber-400",
-    borderColor: "border-amber-500/30",
-    dotColor: "bg-amber-500",
+    color: "bg-neon-amber/10 text-neon-amber",
+    borderColor: "border-neon-amber/30",
+    dotColor: "bg-neon-amber",
     specimens: stratumIronclad,
   },
   {
     epoch: "SPARTA → CONTRACT",
     codename: "The platform learned to learn, distribute, and govern itself",
     range: "Foundation epoch",
-    color: "bg-blue-500/10 text-blue-400",
-    borderColor: "border-blue-500/30",
-    dotColor: "bg-blue-500",
+    color: "bg-neon-blue/10 text-neon-blue",
+    borderColor: "border-neon-blue/30",
+    dotColor: "bg-neon-blue",
     specimens: stratumSparta,
   },
   {
     epoch: "INFRASTRUCTURE",
     codename: "The platform grew organs",
     range: "Foundation epoch",
-    color: "bg-emerald-500/10 text-emerald-400",
-    borderColor: "border-emerald-500/30",
-    dotColor: "bg-emerald-500",
+    color: "bg-neon-green/10 text-neon-green",
+    borderColor: "border-neon-green/30",
+    dotColor: "bg-neon-green",
     specimens: stratumInfra,
   },
   {
     epoch: "FORMATION",
     codename: "The platform took shape",
     range: "Genesis epoch",
-    color: "bg-violet-500/10 text-violet-400",
-    borderColor: "border-violet-500/30",
-    dotColor: "bg-violet-500",
+    color: "bg-neon-purple/10 text-neon-purple",
+    borderColor: "border-neon-purple/30",
+    dotColor: "bg-neon-purple",
     specimens: stratumFormation,
   },
 ];
@@ -1173,12 +1173,12 @@ const STRATA: Stratum[] = [
 // ─── Origin Badge ──────────────────────────────────────────────────────────────
 
 const ORIGIN_STYLES: Record<MutationOrigin, { label: string; className: string }> = {
-  survival:      { label: "SURVIVAL",      className: "bg-red-500/10 text-red-400 border-red-500/20" },
-  governance:    { label: "GOVERNANCE",    className: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20" },
-  cognition:     { label: "COGNITION",     className: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20" },
-  distribution:  { label: "DISTRIBUTION",  className: "bg-purple-500/10 text-purple-400 border-purple-500/20" },
-  architecture:  { label: "ARCHITECTURE",  className: "bg-orange-500/10 text-orange-400 border-orange-500/20" },
-  autonomous:    { label: "AUTONOMOUS",    className: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" },
+  survival:      { label: "SURVIVAL",      className: "bg-destructive/10 text-destructive border-destructive/20" },
+  governance:    { label: "GOVERNANCE",    className: "bg-neon-amber/10 text-neon-amber border-neon-amber/20" },
+  cognition:     { label: "COGNITION",     className: "bg-neon-cyan/10 text-neon-cyan border-neon-cyan/20" },
+  distribution:  { label: "DISTRIBUTION",  className: "bg-neon-purple/10 text-neon-purple border-neon-purple/20" },
+  architecture:  { label: "ARCHITECTURE",  className: "bg-neon-amber/10 text-neon-amber border-neon-amber/20" },
+  autonomous:    { label: "AUTONOMOUS",    className: "bg-neon-green/10 text-neon-green border-neon-green/20" },
 };
 
 // ─── Component ─────────────────────────────────────────────────────────────────
@@ -1235,11 +1235,11 @@ export default function Changelog() {
            </p>
            <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground font-mono pt-2">
              <span className="flex items-center gap-1.5">
-               <span className="w-2 h-2 rounded-full bg-red-500/70" />
+               <span className="w-2 h-2 rounded-full bg-destructive/70" />
                WHY
              </span>
              <span className="flex items-center gap-1.5">
-               <span className="w-2 h-2 rounded-full bg-blue-500/70" />
+               <span className="w-2 h-2 rounded-full bg-neon-blue/70" />
                WHAT CHANGED
              </span>
              <span className="flex items-center gap-1.5">
@@ -1314,10 +1314,10 @@ export default function Changelog() {
                         {/* STIMULUS — why this changed */}
                         <div>
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500/70" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-destructive/70" />
                             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">Why</span>
                           </div>
-                          <p className="text-sm text-foreground/90 leading-relaxed pl-3.5 border-l-2 border-red-500/20">
+                          <p className="text-sm text-foreground/90 leading-relaxed pl-3.5 border-l-2 border-destructive/20">
                             {specimen.stimulus}
                           </p>
                         </div>
@@ -1325,12 +1325,12 @@ export default function Changelog() {
                         {/* ADAPTATION — what changed */}
                         <div>
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500/70" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-neon-blue/70" />
                             <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">What Changed</span>
                           </div>
                           <ul className="space-y-1.5">
                             {specimen.adaptations.map((a, idx) => (
-                              <li key={idx} className="text-sm text-muted-foreground pl-3.5 border-l-2 border-blue-500/15 leading-relaxed">
+                              <li key={idx} className="text-sm text-muted-foreground pl-3.5 border-l-2 border-neon-blue/15 leading-relaxed">
                                 {a}
                               </li>
                             ))}

@@ -105,12 +105,12 @@ export function BrainPulse({ size = 'md', className }: { size?: 'sm' | 'md' | 'l
 export function ProcessingSpinner({ state, className }: { state: ThinkingState; className?: string }) {
   const stateConfig = {
     idle: { icon: Sparkles, color: 'text-muted-foreground' },
-    thinking: { icon: Brain, color: 'text-purple-500' },
-    researching: { icon: Search, color: 'text-blue-500' },
-    analyzing: { icon: Zap, color: 'text-amber-500' },
-    writing: { icon: FileText, color: 'text-emerald-500' },
+    thinking: { icon: Brain, color: 'text-neon-purple' },
+    researching: { icon: Search, color: 'text-neon-blue' },
+    analyzing: { icon: Zap, color: 'text-neon-amber' },
+    writing: { icon: FileText, color: 'text-neon-green' },
     processing: { icon: Loader2, color: 'text-primary' },
-    learning: { icon: Sparkles, color: 'text-fuchsia-500' },
+    learning: { icon: Sparkles, color: 'text-neon-magenta' },
   };
   
   const { icon: Icon, color } = stateConfig[state];
@@ -193,12 +193,12 @@ export function AgentThinkingCard({
   
   const stateColors: Record<ThinkingState, string> = {
     idle: 'bg-muted/30',
-    thinking: 'bg-purple-500/10 border-purple-500/30',
-    researching: 'bg-blue-500/10 border-blue-500/30',
-    analyzing: 'bg-amber-500/10 border-amber-500/30',
-    writing: 'bg-emerald-500/10 border-emerald-500/30',
+    thinking: 'bg-neon-purple/10 border-neon-purple/30',
+    researching: 'bg-neon-blue/10 border-neon-blue/30',
+    analyzing: 'bg-neon-amber/10 border-neon-amber/30',
+    writing: 'bg-neon-green/10 border-neon-green/30',
     processing: 'bg-primary/10 border-primary/30',
-    learning: 'bg-fuchsia-500/10 border-fuchsia-500/30',
+    learning: 'bg-neon-magenta/10 border-neon-magenta/30',
   };
   
   return (

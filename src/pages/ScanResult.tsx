@@ -108,7 +108,7 @@ export default function ScanResult() {
                   <div className="text-xs text-muted-foreground mt-1">Findings</div>
                 </div>
                 <div className="p-6 rounded-xl bg-muted/30 border border-border text-center">
-                  <div className={`text-4xl font-bold ${scan.score != null && scan.score >= 80 ? 'text-green-500' : scan.score != null && scan.score >= 50 ? 'text-yellow-500' : 'text-red-500'}`}>
+                  <div className={`text-4xl font-bold ${scan.score != null && scan.score >= 80 ? 'text-neon-green' : scan.score != null && scan.score >= 50 ? 'text-neon-amber' : 'text-destructive'}`}>
                     {scoreLabel}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">Rating</div>

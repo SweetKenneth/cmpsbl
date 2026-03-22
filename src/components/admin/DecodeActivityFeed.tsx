@@ -56,18 +56,18 @@ export function DecodeActivityFeed() {
 
   const getModuleIcon = (module: string) => {
     switch (module.toLowerCase()) {
-      case 'defense': return <Shield className="w-4 h-4 text-red-400" />;
-      case 'vision': return <Eye className="w-4 h-4 text-blue-400" />;
-      case 'brain': return <Brain className="w-4 h-4 text-purple-400" />;
-      case 'decode': return <Zap className="w-4 h-4 text-cyan-400" />;
-      default: return <Zap className="w-4 h-4 text-yellow-400" />;
+      case 'defense': return <Shield className="w-4 h-4 text-destructive" />;
+      case 'vision': return <Eye className="w-4 h-4 text-neon-blue" />;
+      case 'brain': return <Brain className="w-4 h-4 text-neon-purple" />;
+      case 'decode': return <Zap className="w-4 h-4 text-neon-cyan" />;
+      default: return <Zap className="w-4 h-4 text-neon-amber" />;
     }
   };
 
   const getOutcomeBadge = (outcome: string | null) => {
     if (!outcome) return <Badge variant="secondary">Pending</Badge>;
-    if (outcome === 'success') return <Badge className="bg-green-500/20 text-green-500">Success</Badge>;
-    if (outcome === 'failed') return <Badge className="bg-red-500/20 text-red-500">Failed</Badge>;
+    if (outcome === 'success') return <Badge className="bg-neon-green/20 text-neon-green">Success</Badge>;
+    if (outcome === 'failed') return <Badge className="bg-destructive/20 text-destructive">Failed</Badge>;
     return <Badge variant="secondary">{outcome}</Badge>;
   };
 

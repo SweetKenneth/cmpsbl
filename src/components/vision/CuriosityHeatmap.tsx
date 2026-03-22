@@ -40,9 +40,9 @@ export default function CuriosityHeatmap() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 0.7) return 'text-green-400';
-    if (score >= 0.4) return 'text-yellow-400';
-    return 'text-red-400';
+    if (score >= 0.7) return 'text-neon-green';
+    if (score >= 0.4) return 'text-neon-amber';
+    return 'text-destructive';
   };
 
   const getScoreIcon = (score: number) => {

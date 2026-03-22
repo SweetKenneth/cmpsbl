@@ -38,7 +38,7 @@ export function FoundryStats({ inventoryCount, bestPull, totalMines, streakDays,
       <StatCard
         label="Best Pull"
         value={bestPull ? String(bestPull.score) : '—'}
-        accent={bestPull ? (bestPull.score === 100 ? 'text-primary' : bestPull.score >= 94 ? 'text-purple-400' : bestPull.score >= 90 ? 'text-amber-400' : bestPull.score >= 80 ? 'text-sky-400' : 'text-emerald-400') : undefined}
+        accent={bestPull ? (bestPull.score === 100 ? 'text-primary' : bestPull.score >= 94 ? 'text-neon-purple' : bestPull.score >= 90 ? 'text-neon-amber' : bestPull.score >= 80 ? 'text-sky-400' : 'text-neon-green') : undefined}
         sub={bestPull?.publicTier}
         delay={0.06}
       />

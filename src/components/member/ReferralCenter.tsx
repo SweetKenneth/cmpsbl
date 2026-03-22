@@ -87,8 +87,8 @@ export function ReferralCenter({ tier }: { tier: string }) {
       <div className="grid grid-cols-3 gap-3">
         {[
           { label: 'Referrals', value: totalReferrals, icon: Users, color: 'text-primary' },
-          { label: 'Credits Earned', value: `${totalCredits}d`, icon: Trophy, color: 'text-amber-400' },
-          { label: 'Active Codes', value: codes.filter(c => c.is_active).length, icon: Sparkles, color: 'text-emerald-400' },
+          { label: 'Credits Earned', value: `${totalCredits}d`, icon: Trophy, color: 'text-neon-amber' },
+          { label: 'Active Codes', value: codes.filter(c => c.is_active).length, icon: Sparkles, color: 'text-neon-green' },
         ].map((s, i) => (
           <motion.div
             key={s.label}

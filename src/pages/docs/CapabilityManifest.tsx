@@ -21,17 +21,17 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const CATEGORY_META: Record<string, { icon: React.ElementType; label: string; color: string }> = {
-  security: { icon: Shield, label: 'Security', color: 'text-emerald-400' },
-  intelligence: { icon: Brain, label: 'Intelligence', color: 'text-violet-400' },
-  optimization: { icon: Zap, label: 'Optimization', color: 'text-amber-400' },
-  compliance: { icon: CheckCircle2, label: 'Compliance', color: 'text-cyan-400' },
-  observability: { icon: Eye, label: 'Observability', color: 'text-pink-400' },
+  security: { icon: Shield, label: 'Security', color: 'text-neon-green' },
+  intelligence: { icon: Brain, label: 'Intelligence', color: 'text-neon-purple' },
+  optimization: { icon: Zap, label: 'Optimization', color: 'text-neon-amber' },
+  compliance: { icon: CheckCircle2, label: 'Compliance', color: 'text-neon-cyan' },
+  observability: { icon: Eye, label: 'Observability', color: 'text-neon-magenta' },
 };
 
 const TIER_META: Record<string, { label: string; color: string }> = {
-  creator: { label: 'Creator', color: 'border-violet-500/30 text-violet-400' },
-  architect: { label: 'Architect', color: 'border-amber-500/30 text-amber-400' },
-  enterprise: { label: 'Architect', color: 'border-amber-500/30 text-amber-400' },
+  creator: { label: 'Creator', color: 'border-neon-purple/30 text-neon-purple' },
+  architect: { label: 'Architect', color: 'border-neon-amber/30 text-neon-amber' },
+  enterprise: { label: 'Architect', color: 'border-neon-amber/30 text-neon-amber' },
 };
 
 function downloadManifestJSON() {
@@ -189,7 +189,7 @@ export default function CapabilityManifest() {
                         <h3 className="text-sm font-bold leading-tight">{cap.name}</h3>
                       </div>
                       {cap.is_crown_jewel && (
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                        <Sparkles className="w-3.5 h-3.5 text-neon-amber shrink-0" />
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground leading-relaxed">{cap.outcome_summary}</p>

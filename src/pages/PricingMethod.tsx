@@ -114,7 +114,7 @@ export default function PricingMethod() {
                 { name: 'Qwen3 80B', desc: 'OpenRouter\'s free tier — independent cross-validation' },
               ].map(m => (
                 <div key={m.name} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-neon-green mt-0.5 shrink-0" />
                   <div>
                     <div className="font-medium text-sm text-foreground">{m.name}</div>
                     <div className="text-xs text-muted-foreground">{m.desc}</div>
@@ -207,12 +207,12 @@ export default function PricingMethod() {
               ))}
             </div>
             <div className="grid grid-cols-3 gap-3">
-              <div className="text-center p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-                <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400">High</div>
+              <div className="text-center p-3 bg-neon-green/10 border border-neon-green/20 rounded-lg">
+                <div className="text-sm font-bold text-neon-green dark:text-neon-green">High</div>
                 <div className="text-xs text-muted-foreground">≥70% · 3+ models agree</div>
               </div>
-              <div className="text-center p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                <div className="text-sm font-bold text-amber-600 dark:text-amber-400">Medium</div>
+              <div className="text-center p-3 bg-neon-amber/10 border border-neon-amber/20 rounded-lg">
+                <div className="text-sm font-bold text-neon-amber dark:text-neon-amber">Medium</div>
                 <div className="text-xs text-muted-foreground">40–69% · partial agreement</div>
               </div>
               <div className="text-center p-3 bg-muted/30 border border-border/50 rounded-lg">

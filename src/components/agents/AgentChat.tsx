@@ -231,7 +231,7 @@ export function AgentChat({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-black text-white tracking-tight">{agent.name}</h3>
-              <Radio className="w-3 h-3 text-emerald-400 animate-pulse" />
+              <Radio className="w-3 h-3 text-neon-green animate-pulse" />
             </div>
             <p className="text-[9px] font-mono text-white/50 break-words">DECODE RELAY · MEMORY STREAM · SOVEREIGN CHANNEL</p>
           </div>

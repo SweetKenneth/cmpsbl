@@ -32,7 +32,7 @@ const solutions = [
     features: ["Drop-in integration — no rewrites", "4-tier memory architecture", "Automatic compression & retrieval", "Cross-session context recall", "Works with any framework", "Free for all users"],
     metrics: ["FREE", "< 1 Hour Setup", "Any Agent"],
     link: "/persistent-memory",
-    color: "from-violet-500 to-purple-600",
+    color: "from-neon-purple to-neon-purple",
   },
   {
     icon: Zap,
@@ -42,7 +42,7 @@ const solutions = [
     features: ["13+ AI providers supported", "Automatic failover & load balancing", "Cost optimization per request", "Task-aware model selection", "Zero-downtime provider switching", "Latency-optimized routing"],
     metrics: ["13+ Providers", "< 100ms Routing", "Zero Lock-In"],
     link: "/upgrade",
-    color: "from-cyan-500 to-blue-600",
+    color: "from-neon-cyan to-neon-blue",
   },
   {
     icon: Moon,
@@ -52,7 +52,7 @@ const solutions = [
     features: ["Extract patterns from interactions", "Recognize emerging themes", "Encode into persistent memory", "Apply improvements automatically", "Measure performance gains", "Scheduled or on-demand"],
     metrics: ["5-Phase Loop", "Automatic", "Always Learning"],
     link: "/composable-cognitives",
-    color: "from-indigo-500 to-violet-600",
+    color: "from-primary to-neon-purple",
   },
   {
     icon: Shield,
@@ -62,7 +62,7 @@ const solutions = [
     features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "Adaptive rate limiting", "Governance rule enforcement", "Enterprise audit logging"],
     metrics: ["Adaptive", "Real-Time", "Enterprise Grade"],
     link: "/store?tab=plans",
-    color: "from-red-500 to-rose-600",
+    color: "from-destructive to-neon-magenta",
   },
   {
     icon: Package,
@@ -72,7 +72,7 @@ const solutions = [
     features: ["24 packs across 6 categories", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Category-organized catalog", "Builder to Architect scaling"],
     metrics: ["24 Packs", "6 Categories", "1 Slot Each"],
     link: "/packs",
-    color: "from-amber-500 to-orange-600",
+    color: "from-neon-amber to-orange-600",
   },
   {
     icon: Globe,
@@ -82,7 +82,7 @@ const solutions = [
     features: ["Full platform deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
     metrics: ["Self-Hosted", "Sovereign", "40 Modules"],
     link: "/enterprise",
-    color: "from-emerald-500 to-green-600",
+    color: "from-neon-green to-neon-green",
   },
   {
     icon: Terminal,
@@ -92,7 +92,7 @@ const solutions = [
     features: ["Live code execution", "30 free templates", "Real-time preview", "API testing sandbox", "Export to production", "Free for all users"],
     metrics: ["FREE", "30 Templates", "Real-Time"],
     link: "/codelab",
-    color: "from-cyan-500 to-teal-600",
+    color: "from-neon-cyan to-teal-600",
   },
 ];
 
@@ -117,7 +117,7 @@ export default function Solutions() {
       <section className="relative py-20 sm:py-24 md:py-32 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-violet-500/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-neon-purple/10 rounded-full blur-[100px]" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10 max-w-4xl text-center">

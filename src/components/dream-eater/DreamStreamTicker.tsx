@@ -107,7 +107,7 @@ export const DreamStreamTicker = ({ maxItems = 5, compact = false }: DreamStream
         <motion.div
           className={cn(
             "w-2 h-2 rounded-full",
-            isLive ? "bg-emerald-500" : "bg-amber-500"
+            isLive ? "bg-neon-green" : "bg-neon-amber"
           )}
           animate={isLive ? { scale: [1, 1.3, 1], opacity: [1, 0.7, 1] } : {}}
           transition={{ duration: 1.5, repeat: Infinity }}
@@ -128,22 +128,22 @@ export const DreamStreamTicker = ({ maxItems = 5, compact = false }: DreamStream
             className={cn(
               "rounded-lg border transition-colors",
               item.stream_type === 'nightmare' 
-                ? 'bg-rose-950/20 border-rose-500/30' 
-                : 'bg-violet-950/20 border-violet-500/30',
+                ? 'bg-rose-950/20 border-neon-magenta/30' 
+                : 'bg-neon-purple/20 border-neon-purple/30',
               compact ? 'p-2' : 'p-3'
             )}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {item.stream_type === 'nightmare' ? (
-                  <Flame className="w-4 h-4 text-rose-400" />
+                  <Flame className="w-4 h-4 text-neon-magenta" />
                 ) : (
-                  <Moon className="w-4 h-4 text-violet-400" />
+                  <Moon className="w-4 h-4 text-neon-purple" />
                 )}
                 <span className={cn(
                   "font-medium",
                   compact ? 'text-xs' : 'text-sm',
-                  item.stream_type === 'nightmare' ? 'text-rose-300' : 'text-violet-300'
+                  item.stream_type === 'nightmare' ? 'text-neon-magenta' : 'text-neon-purple'
                 )}>
                   A {item.stream_type} was consumed
                 </span>
@@ -164,7 +164,7 @@ export const DreamStreamTicker = ({ maxItems = 5, compact = false }: DreamStream
                   {getMoodEmoji(item.mood_after)} {item.mood_after}
                 </span>
                 {item.mutation_delta > 0 && (
-                  <span className="ml-auto text-amber-400/80 font-mono">
+                  <span className="ml-auto text-neon-amber/80 font-mono">
                     +{item.mutation_delta} mutation
                   </span>
                 )}

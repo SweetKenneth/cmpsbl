@@ -73,8 +73,8 @@ export default function AuditCenterPage() {
   }, []);
 
   const getOutcomeColor = (outcome: string) => {
-    if (outcome === 'success' || outcome === 'completed') return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20';
-    if (outcome === 'error' || outcome === 'failed') return 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20';
+    if (outcome === 'success' || outcome === 'completed') return 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20';
+    if (outcome === 'error' || outcome === 'failed') return 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20';
     return 'bg-muted text-muted-foreground border-border/20';
   };
 
@@ -82,26 +82,26 @@ export default function AuditCenterPage() {
     <div className="space-y-5 sm:space-y-6 p-4 sm:p-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500/15 to-cyan-500/10 border border-amber-500/25 flex items-center justify-center shrink-0">
-          <ScrollText className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-amber/15 to-neon-cyan/10 border border-neon-amber/25 flex items-center justify-center shrink-0">
+          <ScrollText className="w-5 h-5 text-neon-amber dark:text-neon-amber" />
         </div>
         <div className="min-w-0 flex-1">
           <h1 className="text-lg sm:text-xl font-bold tracking-tight">Audit Center</h1>
           <p className="text-[10px] text-muted-foreground/60 font-mono tracking-wider">TEST SUITES · PRODUCTION AUDIT · DILIGENCE · LIVE FEED</p>
         </div>
-        <Badge className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20 shrink-0">GOVERNOR</Badge>
+        <Badge className="text-[9px] bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20 shrink-0">GOVERNOR</Badge>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-none">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max min-w-full sm:w-auto">
-            <TabsTrigger value="suites" className="data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-600 dark:data-[state=active]:text-violet-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="suites" className="data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple dark:data-[state=active]:text-neon-purple text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <FlaskConical className="w-3.5 h-3.5 hidden sm:block" /> Test Suites & Audit
             </TabsTrigger>
-            <TabsTrigger value="diligence" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="diligence" className="data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber dark:data-[state=active]:text-neon-amber text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Shield className="w-3.5 h-3.5 hidden sm:block" /> Diligence & Runner
             </TabsTrigger>
-            <TabsTrigger value="feed" className="data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-600 dark:data-[state=active]:text-cyan-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="feed" className="data-[state=active]:bg-neon-cyan/10 data-[state=active]:text-neon-cyan dark:data-[state=active]:text-neon-cyan text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Activity className="w-3.5 h-3.5 hidden sm:block" /> Live Feed
             </TabsTrigger>
           </TabsList>
@@ -122,7 +122,7 @@ export default function AuditCenterPage() {
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-amber-500" />
+                    <Shield className="w-4 h-4 text-neon-amber" />
                     <div>
                       <p className="text-xs sm:text-sm font-bold">Diligence Harness</p>
                       <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">Terminal & governance probe battery</p>
@@ -136,7 +136,7 @@ export default function AuditCenterPage() {
                 {diligenceReport && (
                   <div className="space-y-2 pt-2 border-t border-border/10">
                     <div className="flex items-center gap-2">
-                      {diligenceReport.summary.critical === 0 ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-red-500" />}
+                      {diligenceReport.summary.critical === 0 ? <CheckCircle2 className="w-4 h-4 text-neon-green" /> : <XCircle className="w-4 h-4 text-destructive" />}
                       <span className="text-xs font-mono">{diligenceReport.summary.passed}/{diligenceReport.summary.total} PASS · {diligenceReport.summary.minor} MINOR · {diligenceReport.summary.critical} CRITICAL</span>
                     </div>
                     {diligenceReport.failed_probes.length > 0 && (
@@ -144,7 +144,7 @@ export default function AuditCenterPage() {
                         <div className="space-y-1">
                           {diligenceReport.failed_probes.map(p => (
                             <div key={p.id} className="text-[10px] p-1.5 rounded bg-muted/10 border border-border/10 font-mono">
-                              <span className={p.severity === 'CRITICAL' ? 'text-red-500' : 'text-amber-500'}>[{p.severity}]</span> {p.name} — <span className="text-muted-foreground/60">{p.command}</span>
+                              <span className={p.severity === 'CRITICAL' ? 'text-destructive' : 'text-neon-amber'}>[{p.severity}]</span> {p.name} — <span className="text-muted-foreground/60">{p.command}</span>
                             </div>
                           ))}
                         </div>
@@ -160,7 +160,7 @@ export default function AuditCenterPage() {
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-cyan-500" />
+                    <Activity className="w-4 h-4 text-neon-cyan" />
                     <div>
                       <p className="text-xs sm:text-sm font-bold">Full Audit Runner</p>
                       <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">Structural, contract, SEO & branding audit</p>
@@ -174,7 +174,7 @@ export default function AuditCenterPage() {
                 {auditReport && (
                   <div className="space-y-2 pt-2 border-t border-border/10">
                     <div className="flex items-center gap-2">
-                      {auditReport.summary.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+                      {auditReport.summary.passed ? <CheckCircle2 className="w-4 h-4 text-neon-green" /> : <AlertCircle className="w-4 h-4 text-neon-amber" />}
                       <span className="text-xs font-mono">{auditReport.summary.passed ? 'PASSED' : 'ISSUES'} · {auditReport.summary.fatal}F {auditReport.summary.error}E {auditReport.summary.warn}W {auditReport.summary.info}I · {auditReport.duration_ms}ms</span>
                     </div>
                     {auditReport.findings.filter(f => f.severity === 'fatal' || f.severity === 'error').length > 0 && (
@@ -182,7 +182,7 @@ export default function AuditCenterPage() {
                         <div className="space-y-1">
                           {auditReport.findings.filter(f => f.severity === 'fatal' || f.severity === 'error').map(f => (
                             <div key={f.id} className="text-[10px] p-1.5 rounded bg-muted/10 border border-border/10 font-mono">
-                              <span className={f.severity === 'fatal' ? 'text-red-500' : 'text-amber-500'}>[{f.severity.toUpperCase()}]</span> {f.title}
+                              <span className={f.severity === 'fatal' ? 'text-destructive' : 'text-neon-amber'}>[{f.severity.toUpperCase()}]</span> {f.title}
                             </div>
                           ))}
                         </div>

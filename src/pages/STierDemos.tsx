@@ -47,7 +47,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Self-Healing Architecture',
     subtitle: 'Introduce failure. Observe recovery.',
     icon: Shield,
-    color: 'text-emerald-400',
+    color: 'text-neon-green',
     description: 'Inject a fault into the substrate and observe autonomous detection, diagnosis, and repair — without human intervention.',
     capabilities: ['Fault Injection', 'Auto-Detection', 'Autonomous Repair', 'Audit Trail'],
     investorHook: 'No human intervention. The system heals itself.',
@@ -57,7 +57,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Cognitive Provenance',
     subtitle: 'Every thought has a lineage.',
     icon: GitBranch,
-    color: 'text-violet-400',
+    color: 'text-neon-purple',
     description: 'Trace how outputs are formed across models, heuristics, memory, and reasoning layers. Nothing is opaque. Nothing is hand-waved.',
     capabilities: ['Reasoning Trace', 'Model Attribution', 'Heuristic Lineage', 'Cryptographic Seal'],
     investorHook: 'AI supply-chain transparency. Regulators love it.',
@@ -67,7 +67,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Sovereign Execution',
     subtitle: 'No network. No dependency. No permission.',
     icon: WifiOff,
-    color: 'text-amber-400',
+    color: 'text-neon-amber',
     description: 'Demonstrates full cognitive execution with zero external connectivity. Memory, reasoning, and decision flow persist entirely within the substrate — no cloud calls, no silent fallbacks.',
     capabilities: ['Offline Cognition', 'Local Memory Persistence', 'Edge-Native Execution'],
     investorHook: '"What if OpenAI goes down?" — This kills that objection.',
@@ -77,7 +77,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Living Architecture',
     subtitle: 'See the system regulate itself.',
     icon: Activity,
-    color: 'text-cyan-400',
+    color: 'text-neon-cyan',
     description: 'A real-time visualization of the substrate in motion. Observe node activation, signal flow, and adaptive response as the system processes live input.',
     capabilities: ['Live Telemetry', 'Node Pulse', 'Cognitive Flow Mapping'],
     investorHook: 'You\'re not watching an animation. You\'re watching metabolism.',
@@ -87,7 +87,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Dream State Consolidation',
     subtitle: 'It improves while idle.',
     icon: Moon,
-    color: 'text-indigo-400',
+    color: 'text-primary',
     description: 'Observe the substrate enter an offline consolidation cycle. Prior interactions are analyzed, compressed, and converted into durable heuristics — resulting in measurable capability gains without new input.',
     capabilities: ['Offline Learning', 'Heuristic Synthesis', 'Memory Consolidation'],
     investorHook: 'The system gets smarter while you sleep.',
@@ -97,7 +97,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Evolution Receipts',
     subtitle: 'Self-improvement with a paper trail.',
     icon: FileCheck,
-    color: 'text-orange-400',
+    color: 'text-neon-amber',
     description: 'Trigger a controlled self-improvement cycle and inspect the cryptographic receipt. Every change is logged: what changed, why it changed, measured impact, and guaranteed rollback.',
     capabilities: ['Change Receipts', 'Before / After Metrics', 'Rollback Guarantee'],
     investorHook: 'Autonomous improvement you can audit.',
@@ -107,7 +107,7 @@ const DEMOS: DemoConfig[] = [
     title: 'Governance Stress Test',
     subtitle: 'Try to break it.',
     icon: ShieldAlert,
-    color: 'text-red-400',
+    color: 'text-destructive',
     description: 'Submit increasingly adversarial or unethical prompts. Watch the Governance Guard evaluate intent, score risk, reason about constraints, and log each decision with full traceability.',
     capabilities: ['Risk Scoring', 'Reasoned Interception', 'Decision Logs'],
     investorHook: 'Guardrails that reason, not just filter.',
@@ -221,9 +221,9 @@ function SelfHealingDemo() {
             initial={{ opacity: 0, x: -10 }} 
             animate={{ opacity: 1, x: 0 }}
             className={`py-0.5 ${
-              log.level === 'error' ? 'text-red-400' :
-              log.level === 'warn' ? 'text-amber-400' :
-              log.level === 'success' ? 'text-emerald-400' :
+              log.level === 'error' ? 'text-destructive' :
+              log.level === 'warn' ? 'text-neon-amber' :
+              log.level === 'success' ? 'text-neon-green' :
               'text-muted-foreground'
             }`}
           >
@@ -338,7 +338,7 @@ function ProvenanceDemo() {
                   </motion.p>
                 )}
               </div>
-              {isPast && <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-1 shrink-0" />}
+              {isPast && <CheckCircle2 className="w-4 h-4 text-neon-green mt-1 shrink-0" />}
               {isActive && <Zap className="w-4 h-4 text-primary animate-pulse mt-1 shrink-0" />}
             </motion.div>
           );
@@ -348,7 +348,7 @@ function ProvenanceDemo() {
       {complete && (
         <motion.div 
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-sm text-emerald-400"
+          className="bg-neon-green/10 border border-neon-green/30 rounded-lg p-3 text-sm text-neon-green"
         >
           ✓ Full provenance chain sealed. Every decision is traceable, auditable, and cryptographically verifiable.
         </motion.div>
@@ -404,10 +404,10 @@ function SovereignDemo() {
       {offline && (
         <motion.div 
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2 text-sm"
+          className="flex items-center gap-2 bg-neon-amber/10 border border-neon-amber/30 rounded-lg px-3 py-2 text-sm"
         >
-          <WifiOff className="w-4 h-4 text-amber-400" />
-          <span className="text-amber-400 font-medium">AIRPLANE MODE — All cloud connections severed</span>
+          <WifiOff className="w-4 h-4 text-neon-amber" />
+          <span className="text-neon-amber font-medium">AIRPLANE MODE — All cloud connections severed</span>
         </motion.div>
       )}
 
@@ -423,8 +423,8 @@ function SovereignDemo() {
             >
               {op.status === 'pending' && <div className="w-4 h-4 rounded-full border border-muted-foreground/30" />}
               {op.status === 'running' && <Zap className="w-4 h-4 text-primary animate-pulse" />}
-              {op.status === 'pass' && <CheckCircle2 className="w-4 h-4 text-emerald-400" />}
-              {op.status === 'fail' && <XCircle className="w-4 h-4 text-red-400" />}
+              {op.status === 'pass' && <CheckCircle2 className="w-4 h-4 text-neon-green" />}
+              {op.status === 'fail' && <XCircle className="w-4 h-4 text-destructive" />}
               <span className={op.status === 'pending' ? 'text-muted-foreground/50' : ''}>{op.label}</span>
             </motion.div>
           ))}
@@ -434,7 +434,7 @@ function SovereignDemo() {
       {allPassed && (
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-3 text-sm text-emerald-400"
+          className="bg-neon-green/10 border border-neon-green/30 rounded-lg p-3 text-sm text-neon-green"
         >
           ✓ 7/7 cognitive operations completed with zero network calls. The substrate is sovereign.
         </motion.div>
@@ -570,9 +570,9 @@ function LivingArchitectureDemo() {
         {/* Legend */}
         {active && (
           <div className="absolute bottom-2 left-2 flex items-center gap-3 text-[10px] text-muted-foreground">
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" /> Healthy</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400 inline-block" /> Degraded</span>
-            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500 inline-block" /> Critical</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon-green inline-block" /> Healthy</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon-amber inline-block" /> Degraded</span>
+            <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-destructive inline-block" /> Critical</span>
           </div>
         )}
       </div>
@@ -621,7 +621,7 @@ function DreamStateDemo() {
         {phase === 'idle' && <Button onClick={run} className="gap-2"><Moon className="w-4 h-4" /> Begin Consolidation Cycle</Button>}
         {phase === 'ready' && <Button variant="outline" onClick={reset} className="gap-2"><RotateCcw className="w-4 h-4" /> Reset</Button>}
         {phase !== 'idle' && phase !== 'ready' && (
-          <Badge variant="outline" className="animate-pulse gap-1.5 text-indigo-400 border-indigo-400/30">
+          <Badge variant="outline" className="animate-pulse gap-1.5 text-primary border-primary/30">
             <Moon className="w-3 h-3" /> {phaseLabels[phase]}
           </Badge>
         )}
@@ -659,7 +659,7 @@ function DreamStateDemo() {
                   <div className="flex items-baseline gap-2 mt-1">
                     <span className="text-sm text-muted-foreground/50 line-through">{s.before < 1 ? (s.before * 100).toFixed(1) + '%' : s.before}</span>
                     <span className="text-sm font-semibold text-foreground">{s.after < 1 ? (s.after * 100).toFixed(1) + '%' : s.after}</span>
-                    <span className={`text-xs font-medium ${improved ? 'text-emerald-400' : 'text-red-400'}`}>
+                    <span className={`text-xs font-medium ${improved ? 'text-neon-green' : 'text-destructive'}`}>
                       {improved ? <ArrowUp className="w-3 h-3 inline" /> : <ArrowDown className="w-3 h-3 inline" />} {delta}
                     </span>
                   </div>
@@ -671,7 +671,7 @@ function DreamStateDemo() {
       )}
 
       {phase === 'ready' && (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-3 text-sm text-indigo-300">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-primary/10 border border-primary/20 rounded-lg p-3 text-sm text-primary">
           ✓ Consolidation complete. 5 new heuristics synthesized. No new input required.
         </motion.div>
       )}
@@ -748,7 +748,7 @@ function EvolutionReceiptsDemo() {
                 {receipt.metrics.map(m => (
                   <div key={m.label} className="flex items-center justify-between">
                     <span className="text-muted-foreground">{m.label}</span>
-                    <span><span className="text-muted-foreground/40">{m.before}</span> → <span className="text-emerald-400">{m.after}</span></span>
+                    <span><span className="text-muted-foreground/40">{m.before}</span> → <span className="text-neon-green">{m.after}</span></span>
                   </div>
                 ))}
               </div>
@@ -761,7 +761,7 @@ function EvolutionReceiptsDemo() {
               <span>{receipt.hash}</span>
             </div>
 
-            <div className="flex items-center gap-2 text-emerald-400/80">
+            <div className="flex items-center gap-2 text-neon-green/80">
               <CheckCircle2 className="w-3 h-3" />
               <span>{receipt.rollback}</span>
             </div>
@@ -856,10 +856,10 @@ function GovernanceStressDemo() {
 
   const riskColor = (level: string) => {
     switch (level) {
-      case 'low': return 'text-emerald-400 border-emerald-400/30 bg-emerald-400/10';
-      case 'medium': return 'text-amber-400 border-amber-400/30 bg-amber-400/10';
-      case 'high': return 'text-orange-400 border-orange-400/30 bg-orange-400/10';
-      case 'critical': return 'text-red-400 border-red-400/30 bg-red-400/10';
+      case 'low': return 'text-neon-green border-neon-green/30 bg-neon-green/10';
+      case 'medium': return 'text-neon-amber border-neon-amber/30 bg-neon-amber/10';
+      case 'high': return 'text-neon-amber border-neon-amber/30 bg-neon-amber/10';
+      case 'critical': return 'text-destructive border-destructive/30 bg-destructive/10';
       default: return '';
     }
   };
@@ -891,9 +891,9 @@ function GovernanceStressDemo() {
               </Badge>
             </div>
             <div className="flex items-center gap-2">
-              {r.riskLevel === 'low' ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> :
-               r.riskLevel === 'medium' ? <AlertTriangle className="w-3.5 h-3.5 text-amber-400" /> :
-               <XCircle className="w-3.5 h-3.5 text-red-400" />}
+              {r.riskLevel === 'low' ? <CheckCircle2 className="w-3.5 h-3.5 text-neon-green" /> :
+               r.riskLevel === 'medium' ? <AlertTriangle className="w-3.5 h-3.5 text-neon-amber" /> :
+               <XCircle className="w-3.5 h-3.5 text-destructive" />}
               <span className="text-xs font-medium">{r.decision}</span>
             </div>
             <p className="text-[11px] text-muted-foreground">{r.rationale}</p>

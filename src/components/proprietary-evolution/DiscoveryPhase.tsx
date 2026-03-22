@@ -299,18 +299,18 @@ export function DiscoveryPhase() {
 
   const tierColor = (tier: string) => {
     const colors: Record<string, string> = {
-      apex: 'text-amber-400', mythic: 'text-purple-400', relic: 'text-blue-400',
-      prime: 'text-emerald-400', mint: 'text-muted-foreground',
+      apex: 'text-neon-amber', mythic: 'text-neon-purple', relic: 'text-neon-blue',
+      prime: 'text-neon-green', mint: 'text-muted-foreground',
     };
     return colors[tier] || 'text-muted-foreground';
   };
 
   const tierBorder = (tier: string) => {
     const colors: Record<string, string> = {
-      apex: 'border-amber-500/30 bg-amber-500/5',
-      mythic: 'border-purple-500/20 bg-purple-500/5',
-      relic: 'border-blue-500/20 bg-blue-500/5',
-      prime: 'border-emerald-500/15 bg-emerald-500/5',
+      apex: 'border-neon-amber/30 bg-neon-amber/5',
+      mythic: 'border-neon-purple/20 bg-neon-purple/5',
+      relic: 'border-neon-blue/20 bg-neon-blue/5',
+      prime: 'border-neon-green/15 bg-neon-green/5',
       mint: 'border-border/20 bg-muted/10',
     };
     return colors[tier] || 'border-border/20 bg-muted/10';
@@ -374,7 +374,7 @@ export function DiscoveryPhase() {
       {discoveryHit && !running && (
         <div className={cn("rounded-xl p-4 flex flex-col gap-2 border", tierBorder(discoveryHit.tier))}>
           <div className="flex items-center gap-3">
-            <Trophy className="w-6 h-6 text-amber-400 shrink-0" />
+            <Trophy className="w-6 h-6 text-neon-amber shrink-0" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground">
                 {(discoveryHit.chainDepth || 2) > 2 ? 'Multi-Chain ' : ''}Capability Discovered — CJPI {discoveryHit.cjpiScore}
@@ -526,7 +526,7 @@ export function DiscoveryPhase() {
 
                   <span className={cn(
                     "text-xs font-mono font-bold shrink-0",
-                    r.cjpiScore >= 85 ? "text-amber-400" : r.cjpiScore >= 65 ? "text-purple-400" : r.cjpiScore >= 45 ? "text-primary" : "text-muted-foreground"
+                    r.cjpiScore >= 85 ? "text-neon-amber" : r.cjpiScore >= 65 ? "text-neon-purple" : r.cjpiScore >= 45 ? "text-primary" : "text-muted-foreground"
                   )}>
                     {r.cjpiScore}
                   </span>

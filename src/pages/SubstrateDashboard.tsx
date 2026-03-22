@@ -76,8 +76,8 @@ const modulesByLayer = {
       name: "CORE",
       description: "Kernel scheduler, lifecycle, orchestration",
       icon: Cpu,
-      color: "text-orange-500",
-      bg: "bg-orange-500/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["init", "status", "schedule", "lifecycle"],
     },
     {
@@ -85,8 +85,8 @@ const modulesByLayer = {
       name: "RIPPLE",
       description: "Message bus, pub/sub, queues",
       icon: Radio,
-      color: "text-cyan-400",
-      bg: "bg-cyan-400/10",
+      color: "text-neon-cyan",
+      bg: "bg-neon-cyan/10",
       actions: ["publish", "subscribe", "queue", "broadcast"],
     },
     {
@@ -94,8 +94,8 @@ const modulesByLayer = {
       name: "ACCESS",
       description: "API keys, billing, metering",
       icon: Key,
-      color: "text-amber-400",
-      bg: "bg-amber-400/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["validate", "meter", "quota", "billing"],
     },
   ],
@@ -105,8 +105,8 @@ const modulesByLayer = {
       name: "BRAIN",
       description: "Memory, learning cycles, reflection",
       icon: Brain,
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
+      color: "text-neon-purple",
+      bg: "bg-neon-purple/10",
       actions: ["query", "remember", "reflect", "reinforce", "dream"],
     },
     {
@@ -114,8 +114,8 @@ const modulesByLayer = {
       name: "DECODE",
       description: "Intent decoding, chat, oracle",
       icon: MessageSquare,
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
+      color: "text-neon-blue",
+      bg: "bg-neon-blue/10",
       actions: ["chat", "propose", "interpret", "status"],
     },
     {
@@ -123,8 +123,8 @@ const modulesByLayer = {
       name: "DREAM",
       description: "Dream-Eater operations, nightly processing",
       icon: Moon,
-      color: "text-indigo-500",
-      bg: "bg-indigo-500/10",
+      color: "text-primary",
+      bg: "bg-primary/10",
       actions: ["process", "consolidate", "analyze", "schedule"],
     },
   ],
@@ -134,8 +134,8 @@ const modulesByLayer = {
       name: "NERVE",
       description: "Signal propagation, consensus repair",
       icon: Activity,
-      color: "text-rose-400",
-      bg: "bg-rose-400/10",
+      color: "text-neon-magenta",
+      bg: "bg-neon-magenta/10",
       actions: ["propagate", "consensus", "repair", "status"],
     },
     {
@@ -143,8 +143,8 @@ const modulesByLayer = {
       name: "NEXUS",
       description: "Multi-provider AI routing",
       icon: Zap,
-      color: "text-yellow-500",
-      bg: "bg-yellow-500/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["route", "fallback", "balance", "status"],
     },
     {
@@ -152,8 +152,8 @@ const modulesByLayer = {
       name: "VISION",
       description: "Observability, metrics, health",
       icon: Eye,
-      color: "text-green-500",
-      bg: "bg-green-500/10",
+      color: "text-neon-green",
+      bg: "bg-neon-green/10",
       actions: ["health", "metrics", "trace", "alert"],
     },
   ],
@@ -172,8 +172,8 @@ const modulesByLayer = {
       name: "INTEGRATION",
       description: "Enterprise adapters, LLM governance",
       icon: Plug,
-      color: "text-emerald-500",
-      bg: "bg-emerald-500/10",
+      color: "text-neon-green",
+      bg: "bg-neon-green/10",
       actions: ["connect", "discover", "govern", "sync"],
     },
     {
@@ -181,8 +181,8 @@ const modulesByLayer = {
       name: "INCLUSIVE",
       description: "Human compatibility, WCAG, a11y",
       icon: Accessibility,
-      color: "text-pink-500",
-      bg: "bg-pink-500/10",
+      color: "text-neon-magenta",
+      bg: "bg-neon-magenta/10",
       actions: ["scan", "repair", "validate", "profile", "report"],
     },
     {
@@ -190,8 +190,8 @@ const modulesByLayer = {
       name: "MEDIC",
       description: "Self-healing diagnostics & recovery",
       icon: HeartPulse,
-      color: "text-red-400",
-      bg: "bg-red-400/10",
+      color: "text-destructive",
+      bg: "bg-destructive/10",
       actions: ["diagnose", "heal", "triage", "status"],
     },
   ],
@@ -201,8 +201,8 @@ const modulesByLayer = {
       name: "CORTEX",
       description: "Agency orchestrator, evolution, governance",
       icon: Wand2,
-      color: "text-violet-500",
-      bg: "bg-violet-500/10",
+      color: "text-neon-purple",
+      bg: "bg-neon-purple/10",
       actions: ["propose", "evaluate", "apply", "audit", "learn"],
     },
   ],
@@ -212,8 +212,8 @@ const modulesByLayer = {
       name: "MEMORY",
       description: "Embedding store, staleness detection, relevance feedback",
       icon: Database,
-      color: "text-teal-500",
-      bg: "bg-teal-500/10",
+      color: "text-neon-cyan",
+      bg: "bg-neon-cyan/10",
       actions: ["store", "recall", "compress", "stale-check"],
     },
     {
@@ -239,8 +239,8 @@ const modulesByLayer = {
       name: "IDENTITY",
       description: "Actor reputation, passkeys, biometric portability",
       icon: Fingerprint,
-      color: "text-rose-400",
-      bg: "bg-rose-400/10",
+      color: "text-neon-magenta",
+      bg: "bg-neon-magenta/10",
       actions: ["register", "authenticate", "reputation", "passkey"],
     },
     {
@@ -248,8 +248,8 @@ const modulesByLayer = {
       name: "ECONOMY",
       description: "Predictive cost forecasting, per-capability attribution",
       icon: Coins,
-      color: "text-amber-500",
-      bg: "bg-amber-500/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["forecast", "attribute", "budget", "report"],
     },
     {
@@ -266,8 +266,8 @@ const modulesByLayer = {
       name: "ENCODE",
       description: "Structural generation, filesystem-aware, error patterns",
       icon: FileCode,
-      color: "text-cyan-500",
-      bg: "bg-cyan-500/10",
+      color: "text-neon-cyan",
+      bg: "bg-neon-cyan/10",
       actions: ["generate", "validate", "structure", "pattern"],
     },
   ],
@@ -278,8 +278,8 @@ const modulesByLayer = {
       name: "SOVEREIGN",
       description: "Ethical policy engine, consent enforcement",
       icon: Scale,
-      color: "text-amber-300",
-      bg: "bg-amber-300/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["enforce", "consent", "policy", "audit"],
     },
     {
@@ -287,8 +287,8 @@ const modulesByLayer = {
       name: "ORACLE",
       description: "Predictive analytics, scenario simulation",
       icon: Compass,
-      color: "text-indigo-400",
-      bg: "bg-indigo-400/10",
+      color: "text-primary",
+      bg: "bg-primary/10",
       actions: ["predict", "simulate", "foresight", "calibrate"],
     },
     {
@@ -296,8 +296,8 @@ const modulesByLayer = {
       name: "CONSCIENCE",
       description: "Moral reasoning, value alignment verification",
       icon: Globe,
-      color: "text-emerald-300",
-      bg: "bg-emerald-300/10",
+      color: "text-neon-green",
+      bg: "bg-neon-green/10",
       actions: ["evaluate", "align", "flag", "report"],
     },
     {
@@ -305,8 +305,8 @@ const modulesByLayer = {
       name: "TREATY",
       description: "Inter-system agreements, trust federation",
       icon: ClipboardCheck,
-      color: "text-blue-300",
-      bg: "bg-blue-300/10",
+      color: "text-neon-blue",
+      bg: "bg-neon-blue/10",
       actions: ["negotiate", "ratify", "verify", "revoke"],
     },
   ],
@@ -317,8 +317,8 @@ const modulesByLayer = {
       name: "COMPASS",
       description: "Navigation heuristics, path optimization",
       icon: Compass,
-      color: "text-teal-300",
-      bg: "bg-teal-300/10",
+      color: "text-neon-cyan",
+      bg: "bg-neon-cyan/10",
       actions: ["navigate", "optimize", "calibrate", "explore"],
     },
     {
@@ -335,8 +335,8 @@ const modulesByLayer = {
       name: "REFLEX",
       description: "Rapid response, instinctive routing",
       icon: Zap,
-      color: "text-yellow-300",
-      bg: "bg-yellow-300/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["trigger", "route", "respond", "throttle"],
     },
   ],
@@ -347,8 +347,8 @@ const modulesByLayer = {
       name: "FORGE",
       description: "Artifact production, template smithing",
       icon: Hammer,
-      color: "text-orange-400",
-      bg: "bg-orange-400/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["craft", "temper", "mint", "catalog"],
     },
     {
@@ -356,8 +356,8 @@ const modulesByLayer = {
       name: "LINGUA",
       description: "Translation, localization, semantic bridging",
       icon: Languages,
-      color: "text-purple-300",
-      bg: "bg-purple-300/10",
+      color: "text-neon-purple",
+      bg: "bg-neon-purple/10",
       actions: ["translate", "localize", "bridge", "validate"],
     },
     {
@@ -365,8 +365,8 @@ const modulesByLayer = {
       name: "HARVEST",
       description: "Data ingestion, ETL processes, enrichment",
       icon: Wheat,
-      color: "text-green-300",
-      bg: "bg-green-300/10",
+      color: "text-neon-green",
+      bg: "bg-neon-green/10",
       actions: ["ingest", "transform", "enrich", "schedule"],
     },
   ],
@@ -377,8 +377,8 @@ const modulesByLayer = {
       name: "EVOLUTION",
       description: "Self-improvement lifecycle, mutation process",
       icon: Dna,
-      color: "text-fuchsia-500",
-      bg: "bg-fuchsia-500/10",
+      color: "text-neon-magenta",
+      bg: "bg-neon-magenta/10",
       actions: ["mutate", "evaluate", "promote", "rollback"],
     },
     {
@@ -395,8 +395,8 @@ const modulesByLayer = {
       name: "PHANTOM",
       description: "Simulation doubles, canary deployment",
       icon: Ghost,
-      color: "text-violet-300",
-      bg: "bg-violet-300/10",
+      color: "text-neon-purple",
+      bg: "bg-neon-purple/10",
       actions: ["spawn", "mirror", "canary", "dissolve"],
     },
   ],
@@ -407,8 +407,8 @@ const modulesByLayer = {
       name: "IMMUNITY",
       description: "Cascade breaking, anomaly signature training",
       icon: Shield,
-      color: "text-red-300",
-      bg: "bg-red-300/10",
+      color: "text-destructive",
+      bg: "bg-destructive/10",
       actions: ["isolate", "quarantine", "heal", "vaccinate"],
     },
     {
@@ -416,8 +416,8 @@ const modulesByLayer = {
       name: "INTENT",
       description: "Goal decomposition, capability mesh routing",
       icon: Orbit,
-      color: "text-blue-400",
-      bg: "bg-blue-400/10",
+      color: "text-neon-blue",
+      bg: "bg-neon-blue/10",
       actions: ["route", "classify", "approve", "trace"],
     },
   ],
@@ -428,8 +428,8 @@ const modulesByLayer = {
       name: "GOVERNANCE",
       description: "Policy mesh, veto precision, compliance",
       icon: Gauge,
-      color: "text-amber-400",
-      bg: "bg-amber-400/10",
+      color: "text-neon-amber",
+      bg: "bg-neon-amber/10",
       actions: ["enforce", "audit", "policy", "override"],
     },
     {
@@ -446,8 +446,8 @@ const modulesByLayer = {
       name: "ATLAS",
       description: "Capability discovery, dependency mapping",
       icon: Globe,
-      color: "text-cyan-300",
-      bg: "bg-cyan-300/10",
+      color: "text-neon-cyan",
+      bg: "bg-neon-cyan/10",
       actions: ["discover", "map", "govern", "audit"],
     },
   ],
@@ -458,8 +458,8 @@ const modulesByLayer = {
       name: "DEFENSE",
       description: "Bot detection, behavioral fingerprinting, perimeter security",
       icon: Siren,
-      color: "text-rose-500",
-      bg: "bg-rose-500/10",
+      color: "text-neon-magenta",
+      bg: "bg-neon-magenta/10",
       actions: ["detect", "block", "fingerprint", "report"],
     },
   ],
@@ -483,19 +483,19 @@ const allModules = [
 ];
 
 const layerLabels: Record<string, { label: string; color: string }> = {
-  kernel: { label: "KERNEL", color: "text-orange-400 border-orange-500/30" },
-  cognitive: { label: "COGNITIVE", color: "text-purple-400 border-purple-500/30" },
-  operational: { label: "OPERATIONAL", color: "text-blue-400 border-blue-500/30" },
-  admin: { label: "ADMIN", color: "text-emerald-400 border-emerald-500/30" },
-  orchestrator: { label: "ORCHESTRATOR", color: "text-violet-400 border-violet-500/30" },
-  infrastructure: { label: "INFRASTRUCTURE", color: "text-teal-400 border-teal-500/30" },
-  esz: { label: "ESZ — ETHICAL SOVEREIGNTY", color: "text-amber-300 border-amber-400/30" },
+  kernel: { label: "KERNEL", color: "text-neon-amber border-neon-amber/30" },
+  cognitive: { label: "COGNITIVE", color: "text-neon-purple border-neon-purple/30" },
+  operational: { label: "OPERATIONAL", color: "text-neon-blue border-neon-blue/30" },
+  admin: { label: "ADMIN", color: "text-neon-green border-neon-green/30" },
+  orchestrator: { label: "ORCHESTRATOR", color: "text-neon-purple border-neon-purple/30" },
+  infrastructure: { label: "INFRASTRUCTURE", color: "text-neon-cyan border-neon-cyan/30" },
+  esz: { label: "ESZ — ETHICAL SOVEREIGNTY", color: "text-neon-amber border-neon-amber/30" },
   epz: { label: "EPZ — ENGINE PERFORMANCE", color: "text-sky-300 border-sky-400/30" },
-  emz: { label: "EMZ — EVOLUTION MANUFACTURING", color: "text-green-300 border-green-400/30" },
-  csz: { label: "CSZ — COGNITIVE SHADOW", color: "text-fuchsia-400 border-fuchsia-500/30" },
-  fields: { label: "FIELDS", color: "text-red-300 border-red-400/30" },
-  plane: { label: "PLANE", color: "text-amber-300 border-amber-400/30" },
-  shell: { label: "SHELL", color: "text-rose-400 border-rose-500/30" },
+  emz: { label: "EMZ — EVOLUTION MANUFACTURING", color: "text-neon-green border-neon-green/30" },
+  csz: { label: "CSZ — COGNITIVE SHADOW", color: "text-neon-magenta border-neon-magenta/30" },
+  fields: { label: "FIELDS", color: "text-destructive border-destructive/30" },
+  plane: { label: "PLANE", color: "text-neon-amber border-neon-amber/30" },
+  shell: { label: "SHELL", color: "text-neon-magenta border-neon-magenta/30" },
 };
 
 export default function SubstrateDashboard() {
@@ -589,7 +589,7 @@ export default function SubstrateDashboard() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-3">
               {status?.healthy ? (
-                <Badge className="bg-green-500/10 text-green-500 border-green-500/20 gap-2">
+                <Badge className="bg-neon-green/10 text-neon-green border-neon-green/20 gap-2">
                   <CheckCircle2 className="w-4 h-4" />
                   All Systems Operational
                 </Badge>
@@ -616,7 +616,7 @@ export default function SubstrateDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 md:mb-8">
             <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center gap-3 md:gap-4">
-                <Brain className="w-6 h-6 md:w-8 md:h-8 text-purple-500 shrink-0" />
+                <Brain className="w-6 h-6 md:w-8 md:h-8 text-neon-purple shrink-0" />
                 <div>
                   <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.brain_memories.toLocaleString()}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Brain Memories</p>
@@ -625,7 +625,7 @@ export default function SubstrateDashboard() {
             </Card>
             <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center gap-3 md:gap-4">
-                <Shield className="w-6 h-6 md:w-8 md:h-8 text-red-500 shrink-0" />
+                <Shield className="w-6 h-6 md:w-8 md:h-8 text-destructive shrink-0" />
                 <div>
                   <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.defense_events.toLocaleString()}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Defense Events</p>
@@ -634,7 +634,7 @@ export default function SubstrateDashboard() {
             </Card>
             <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
               <div className="flex items-center gap-3 md:gap-4">
-                <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-blue-500 shrink-0" />
+                <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-neon-blue shrink-0" />
                 <div>
                   <p className="text-xl md:text-2xl font-bold font-mono tabular-nums">{metrics.decode_conversations?.toLocaleString() || 0}</p>
                   <p className="text-xs md:text-sm text-muted-foreground">Conversations</p>

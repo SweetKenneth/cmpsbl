@@ -58,7 +58,7 @@ export function XPBar({ xp, showLevel = true, size = 'md', animated = true, clas
         sizeClasses[size]
       )}>
         <motion.div
-          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500"
+          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-neon-amber via-neon-amber to-neon-amber"
           initial={animated ? { width: 0 } : undefined}
           animate={{ width: `${Math.min(progress.percentage, 100)}%` }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -99,8 +99,8 @@ export function LevelBadge({ level: levelNum, size = 'md', showTitle = false, cl
       <motion.div
         className={cn(
           'flex items-center justify-center rounded-full',
-          'bg-gradient-to-br from-amber-400 to-orange-600',
-          'shadow-lg shadow-amber-500/30',
+          'bg-gradient-to-br from-neon-amber to-orange-600',
+          'shadow-lg shadow-neon-amber/30',
           sizeClasses[size]
         )}
         whileHover={{ scale: 1.1, rotate: 5 }}
@@ -140,10 +140,10 @@ export function AchievementBadge({
 }: AchievementBadgeProps) {
   const rarityColors = {
     common: 'from-slate-400 to-slate-600',
-    uncommon: 'from-green-400 to-emerald-600',
-    rare: 'from-blue-400 to-indigo-600',
-    epic: 'from-purple-400 to-violet-600',
-    legendary: 'from-amber-400 to-orange-600',
+    uncommon: 'from-neon-green to-neon-green',
+    rare: 'from-neon-blue to-primary',
+    epic: 'from-neon-purple to-neon-purple',
+    legendary: 'from-neon-amber to-orange-600',
   };
   
   const sizeClasses = {
@@ -188,7 +188,7 @@ export function AchievementBadge({
             <p className="font-semibold">{achievement.name}</p>
             <p className="text-xs text-muted-foreground mt-1">{achievement.description}</p>
             <div className="flex items-center gap-1 mt-2 text-xs">
-              <Star className="w-3 h-3 text-amber-500" />
+              <Star className="w-3 h-3 text-neon-amber" />
               <span>{achievement.xpReward} XP</span>
             </div>
           </div>
@@ -262,9 +262,9 @@ export function StreakCounter({ streak, showFlame = true, size = 'md', className
         'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full',
         'bg-gradient-to-r',
         isOnFire 
-          ? 'from-orange-500 to-red-500 text-white' 
+          ? 'from-neon-amber to-destructive text-white' 
           : isHot 
-            ? 'from-amber-400 to-orange-500 text-white'
+            ? 'from-neon-amber to-neon-amber text-white'
             : 'from-muted to-muted text-muted-foreground',
         sizeClasses[size],
         className
@@ -355,8 +355,8 @@ export function XPGainPopup({ amount, reason, onComplete, className }: XPGainPop
       className={cn(
         'fixed top-20 right-4 z-50',
         'flex items-center gap-2 px-4 py-2 rounded-lg',
-        'bg-gradient-to-r from-amber-500 to-orange-500 text-white',
-        'shadow-lg shadow-amber-500/30',
+        'bg-gradient-to-r from-neon-amber to-neon-amber text-white',
+        'shadow-lg shadow-neon-amber/30',
         className
       )}
       initial={{ opacity: 0, y: -20, scale: 0.8 }}

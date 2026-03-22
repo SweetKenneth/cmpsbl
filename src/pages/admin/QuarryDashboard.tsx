@@ -25,11 +25,11 @@ import {
 import { toast } from 'sonner';
 
 const TIER_COLORS: Record<QuarryTier, string> = {
-  free: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-  creator: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-  architect: 'bg-violet-500/20 text-violet-400 border-violet-500/30',
-  enterprise: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  internal: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+  free: 'bg-neon-green/20 text-neon-green border-neon-green/30',
+  creator: 'bg-neon-blue/20 text-neon-blue border-neon-blue/30',
+  architect: 'bg-neon-purple/20 text-neon-purple border-neon-purple/30',
+  enterprise: 'bg-neon-amber/20 text-neon-amber border-neon-amber/30',
+  internal: 'bg-neon-magenta/20 text-neon-magenta border-neon-magenta/30',
 };
 
 const TYPE_ICONS: Partial<Record<QuarryAssetType, React.ElementType>> = {
@@ -70,7 +70,7 @@ function AssetRow({ asset, onUpdate, onDelete }: {
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium truncate">{asset.name}</span>
           <Badge variant="outline" className="text-[10px]">{ASSET_TYPE_LABELS[asset.asset_type]}</Badge>
-          {asset.future_release && <Badge variant="outline" className="text-[10px] border-amber-500/30 text-amber-400">Future</Badge>}
+          {asset.future_release && <Badge variant="outline" className="text-[10px] border-neon-amber/30 text-neon-amber">Future</Badge>}
         </div>
         {asset.description && <p className="text-xs text-muted-foreground truncate mt-0.5">{asset.description}</p>}
       </div>

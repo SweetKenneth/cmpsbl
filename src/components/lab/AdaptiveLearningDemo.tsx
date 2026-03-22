@@ -74,22 +74,22 @@ export function AdaptiveLearningDemo() {
   const resetQuiz = () => { setProfile({ totalAnswered: 0, correctAnswers: 0, streak: 0, maxStreak: 0, topicStrengths: {}, adaptedDifficulty: 'easy' }); setUsedQuestions(new Set()); setQuizComplete(false); selectNextQuestion(); };
 
   const accuracy = profile.totalAnswered > 0 ? Math.round((profile.correctAnswers / profile.totalAnswered) * 100) : 0;
-  const getDifficultyColor = (d: string) => d === 'easy' ? 'bg-green-500/20 text-green-400 border-green-500/40' : d === 'medium' ? 'bg-amber-500/20 text-amber-400 border-amber-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40';
+  const getDifficultyColor = (d: string) => d === 'easy' ? 'bg-neon-green/20 text-neon-green border-neon-green/40' : d === 'medium' ? 'bg-neon-amber/20 text-neon-amber border-neon-amber/40' : 'bg-destructive/20 text-destructive border-destructive/40';
 
   if (quizComplete) {
     const grade = accuracy >= 80 ? 'A' : accuracy >= 60 ? 'B' : accuracy >= 40 ? 'C' : 'D';
     return (
       <div className="space-y-4">
-        <div className="flex items-center justify-between pb-4 border-b border-border/50"><div className="flex items-center gap-2"><Brain className="w-5 h-5 text-violet-500" /><span className="text-sm font-medium">Adaptive Learning Assistant</span></div></div>
+        <div className="flex items-center justify-between pb-4 border-b border-border/50"><div className="flex items-center gap-2"><Brain className="w-5 h-5 text-neon-purple" /><span className="text-sm font-medium">Adaptive Learning Assistant</span></div></div>
         <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
-          <Card className="p-6 bg-gradient-to-br from-violet-500/10 to-purple-500/10 border-violet-500/20 text-center">
-            <Trophy className="w-16 h-16 mx-auto mb-4 text-amber-500" />
+          <Card className="p-6 bg-gradient-to-br from-neon-purple/10 to-neon-purple/10 border-neon-purple/20 text-center">
+            <Trophy className="w-16 h-16 mx-auto mb-4 text-neon-amber" />
             <h3 className="text-2xl font-bold mb-2">Quiz Complete!</h3>
             <p className="text-muted-foreground mb-2">You scored {profile.correctAnswers}/{profile.totalAnswered}</p>
             <div className="text-4xl font-bold text-primary mb-4">Grade: {grade}</div>
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="p-3 rounded-lg bg-muted/30"><div className="text-2xl font-bold">{accuracy}%</div><div className="text-xs text-muted-foreground">Accuracy</div></div>
-              <div className="p-3 rounded-lg bg-muted/30"><div className="text-2xl font-bold text-amber-500 flex items-center justify-center gap-1">{profile.maxStreak}<Flame className="w-5 h-5" /></div><div className="text-xs text-muted-foreground">Best Streak</div></div>
+              <div className="p-3 rounded-lg bg-muted/30"><div className="text-2xl font-bold text-neon-amber flex items-center justify-center gap-1">{profile.maxStreak}<Flame className="w-5 h-5" /></div><div className="text-xs text-muted-foreground">Best Streak</div></div>
               <div className="p-3 rounded-lg bg-muted/30"><Badge className={getDifficultyColor(profile.adaptedDifficulty)}>{profile.adaptedDifficulty}</Badge><div className="text-xs text-muted-foreground mt-1">Final Level</div></div>
             </div>
             <Button onClick={resetQuiz} className="gap-2" size="lg"><RotateCcw className="w-4 h-4" />Try Again</Button>
@@ -101,11 +101,11 @@ export function AdaptiveLearningDemo() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between pb-4 border-b border-border/50"><div className="flex items-center gap-2"><Brain className="w-5 h-5 text-violet-500" /><span className="text-sm font-medium">Adaptive Learning Assistant</span></div><Badge variant="outline" className="text-xs"><Sparkles className="w-3 h-3 mr-1" />{learnersCount.toLocaleString()} learners</Badge></div>
+      <div className="flex items-center justify-between pb-4 border-b border-border/50"><div className="flex items-center gap-2"><Brain className="w-5 h-5 text-neon-purple" /><span className="text-sm font-medium">Adaptive Learning Assistant</span></div><Badge variant="outline" className="text-xs"><Sparkles className="w-3 h-3 mr-1" />{learnersCount.toLocaleString()} learners</Badge></div>
       <div className="grid grid-cols-4 gap-2">
         <div className="p-2 rounded-lg bg-muted/30 text-center"><div className="text-lg font-bold flex items-center justify-center gap-1"><BookOpen className="w-4 h-4" />{profile.totalAnswered}/{TOTAL_QUESTIONS}</div><div className="text-[10px] text-muted-foreground">Progress</div></div>
-        <div className="p-2 rounded-lg bg-muted/30 text-center"><div className="text-lg font-bold text-green-400">{accuracy}%</div><div className="text-[10px] text-muted-foreground">Accuracy</div></div>
-        <div className="p-2 rounded-lg bg-muted/30 text-center"><div className="text-lg font-bold text-amber-400 flex items-center justify-center gap-1">{profile.streak}<Flame className={`w-4 h-4 ${profile.streak >= 2 ? 'animate-pulse' : ''}`} /></div><div className="text-[10px] text-muted-foreground">Streak</div></div>
+        <div className="p-2 rounded-lg bg-muted/30 text-center"><div className="text-lg font-bold text-neon-green">{accuracy}%</div><div className="text-[10px] text-muted-foreground">Accuracy</div></div>
+        <div className="p-2 rounded-lg bg-muted/30 text-center"><div className="text-lg font-bold text-neon-amber flex items-center justify-center gap-1">{profile.streak}<Flame className={`w-4 h-4 ${profile.streak >= 2 ? 'animate-pulse' : ''}`} /></div><div className="text-[10px] text-muted-foreground">Streak</div></div>
         <div className="p-2 rounded-lg bg-muted/30 text-center"><Badge className={`${getDifficultyColor(profile.adaptedDifficulty)} text-[10px]`}>{profile.adaptedDifficulty}</Badge><div className="text-[10px] text-muted-foreground mt-1">Level</div></div>
       </div>
       <Progress value={(profile.totalAnswered / TOTAL_QUESTIONS) * 100} className="h-2" />
@@ -120,11 +120,11 @@ export function AdaptiveLearningDemo() {
               const showCorrect = showResult && isCorrect;
               const showWrong = showResult && isSelected && !isCorrect;
               return (
-                <motion.button key={index} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.08 }} onClick={() => handleAnswer(index)} disabled={showResult} className={`w-full p-3 rounded-lg border text-left transition-all flex items-center gap-3 ${showCorrect ? 'border-green-500 bg-green-500/10' : showWrong ? 'border-red-500 bg-red-500/10' : isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50 hover:bg-muted/30'}`}>
-                  <span className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-medium ${showCorrect ? 'bg-green-500 text-white' : showWrong ? 'bg-red-500 text-white' : 'bg-muted'}`}>{String.fromCharCode(65 + index)}</span>
+                <motion.button key={index} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.08 }} onClick={() => handleAnswer(index)} disabled={showResult} className={`w-full p-3 rounded-lg border text-left transition-all flex items-center gap-3 ${showCorrect ? 'border-neon-green bg-neon-green/10' : showWrong ? 'border-destructive bg-destructive/10' : isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-primary/50 hover:bg-muted/30'}`}>
+                  <span className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-medium ${showCorrect ? 'bg-neon-green text-white' : showWrong ? 'bg-destructive text-white' : 'bg-muted'}`}>{String.fromCharCode(65 + index)}</span>
                   <span className="flex-1">{option}</span>
-                  {showCorrect && <CheckCircle2 className="w-5 h-5 text-green-500" />}
-                  {showWrong && <XCircle className="w-5 h-5 text-red-500" />}
+                  {showCorrect && <CheckCircle2 className="w-5 h-5 text-neon-green" />}
+                  {showWrong && <XCircle className="w-5 h-5 text-destructive" />}
                 </motion.button>
               );
             })}
@@ -132,14 +132,14 @@ export function AdaptiveLearningDemo() {
           <AnimatePresence>
             {showResult && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-4 p-3 rounded-lg bg-muted/50 border border-border/50">
-                <div className="flex items-start gap-2"><Lightbulb className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" /><div><span className="text-xs font-medium block mb-1">Explanation:</span><p className="text-sm text-muted-foreground">{currentQuestion.explanation}</p></div></div>
+                <div className="flex items-start gap-2"><Lightbulb className="w-4 h-4 text-neon-amber mt-0.5 shrink-0" /><div><span className="text-xs font-medium block mb-1">Explanation:</span><p className="text-sm text-muted-foreground">{currentQuestion.explanation}</p></div></div>
               </motion.div>
             )}
           </AnimatePresence>
           {showResult && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-4"><Button onClick={nextQuestion} className="w-full gap-2" size="lg">{profile.totalAnswered >= TOTAL_QUESTIONS ? <><Trophy className="w-4 h-4" />View Results</> : <>Next Question<ChevronRight className="w-4 h-4" /></>}</Button></motion.div>}
         </Card>
       )}
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-violet-500/10 border border-violet-500/20 text-xs"><TrendingUp className="w-4 h-4 text-violet-400 shrink-0" /><span className="text-muted-foreground">The quiz adapts to your performance—get answers right to increase difficulty!</span></div>
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-neon-purple/10 border border-neon-purple/20 text-xs"><TrendingUp className="w-4 h-4 text-neon-purple shrink-0" /><span className="text-muted-foreground">The quiz adapts to your performance—get answers right to increase difficulty!</span></div>
     </div>
   );
 }

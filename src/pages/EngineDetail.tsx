@@ -26,21 +26,21 @@ import { saveAs } from "file-saver";
 import { useDownloadCeremony } from "@/hooks/useDownloadCeremony";
 
 const TIER_ACCENT: Record<string, string> = {
-  APEX: "text-red-400",
-  ELITE: "text-purple-400",
-  CORE: "text-cyan-400",
+  APEX: "text-destructive",
+  ELITE: "text-neon-purple",
+  CORE: "text-neon-cyan",
 };
 
 const TIER_GLOW: Record<string, string> = {
-  APEX: "shadow-red-500/10",
-  ELITE: "shadow-purple-500/10",
-  CORE: "shadow-cyan-500/10",
+  APEX: "shadow-destructive/10",
+  ELITE: "shadow-neon-purple/10",
+  CORE: "shadow-neon-cyan/10",
 };
 
 const TIER_BORDER: Record<string, string> = {
-  APEX: "border-red-500/20",
-  ELITE: "border-purple-500/20",
-  CORE: "border-cyan-500/20",
+  APEX: "border-destructive/20",
+  ELITE: "border-neon-purple/20",
+  CORE: "border-neon-cyan/20",
 };
 
 function UnlockCeremony({ engine, onComplete }: { engine: Engine; onComplete: () => void }) {
@@ -391,8 +391,8 @@ export default function EngineDetail() {
                       {engine.isFree ? "Free — no payment required" : engine.isSubscription ? "Annual subscription" : "One-time license — yours forever"}
                     </p>
                     {engine.slug === 'failsafe' && (
-                      <div className="mt-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                        <p className="text-xs text-emerald-400 font-semibold">
+                      <div className="mt-2 px-3 py-1.5 rounded-lg bg-neon-green/10 border border-neon-green/20">
+                        <p className="text-xs text-neon-green font-semibold">
                           ✦ Free for all authenticated users — no subscription required
                         </p>
                       </div>

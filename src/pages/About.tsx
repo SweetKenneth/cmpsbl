@@ -34,40 +34,40 @@ const PILLARS = [
     name: "DREAM",
      verb: "Learn while idle",
     description: "During quiet periods, the system consolidates what it knows, finds cross-domain patterns, and generates new insights — without active compute.",
-    color: "text-violet-500",
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20",
-    gradient: "from-violet-500 to-purple-600",
+    color: "text-neon-purple",
+    bg: "bg-neon-purple/10",
+    border: "border-neon-purple/20",
+    gradient: "from-neon-purple to-neon-purple",
   },
   {
     icon: RefreshCw,
     name: "ADAPT",
      verb: "Self-tune within guardrails",
     description: "Routing, cost allocation, and operational settings adjust automatically — within strict governance boundaries your team controls.",
-    color: "text-emerald-500",
-    bg: "bg-emerald-500/10",
-    border: "border-emerald-500/20",
-    gradient: "from-emerald-500 to-teal-600",
+    color: "text-neon-green",
+    bg: "bg-neon-green/10",
+    border: "border-neon-green/20",
+    gradient: "from-neon-green to-teal-600",
   },
   {
     icon: TrendingUp,
     name: "EVOLVE",
      verb: "Get smarter over time",
     description: "Every interaction feeds back into the system. Strategies improve, patterns sharpen, and your infrastructure gets smarter the longer it runs.",
-    color: "text-amber-500",
-    bg: "bg-amber-500/10",
-    border: "border-amber-500/20",
-    gradient: "from-amber-500 to-orange-600",
+    color: "text-neon-amber",
+    bg: "bg-neon-amber/10",
+    border: "border-neon-amber/20",
+    gradient: "from-neon-amber to-orange-600",
   },
   {
     icon: Brain,
     name: "REMEMBER",
      verb: "Memory that survives restarts",
     description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall across sessions and deployments. Free for all users.",
-    color: "text-cyan-500",
-    bg: "bg-cyan-500/10",
-    border: "border-cyan-500/20",
-    gradient: "from-cyan-500 to-blue-600",
+    color: "text-neon-cyan",
+    bg: "bg-neon-cyan/10",
+    border: "border-neon-cyan/20",
+    gradient: "from-neon-cyan to-neon-blue",
   },
 ];
 
@@ -292,7 +292,7 @@ export default function About() {
               {...stagger(0.1)}
               className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden card-lift gradient-border-reveal"
             >
-              <div className="h-1 w-full bg-gradient-to-r from-violet-500 via-emerald-500 to-amber-500" />
+              <div className="h-1 w-full bg-gradient-to-r from-neon-purple via-neon-green to-neon-amber" />
               <div className="p-5 sm:p-8">
                 <div className="flex items-center gap-2.5 mb-4">
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -324,7 +324,7 @@ export default function About() {
               {...stagger(0.15)}
               className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm overflow-hidden card-lift gradient-border-reveal"
             >
-              <div className="h-1 w-full bg-gradient-to-r from-primary via-cyan-500 to-primary" />
+              <div className="h-1 w-full bg-gradient-to-r from-primary via-neon-cyan to-primary" />
               <div className="p-5 sm:p-8">
                 <div className="flex items-center gap-2.5 mb-4">
                   <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">

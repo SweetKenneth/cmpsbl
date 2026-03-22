@@ -108,7 +108,7 @@ const PersistentMemoryDocs = () => {
                 </p>
                 <CodeBlock code="import { withPersistentMemory } from '@cmpsbl/memory';" />
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-500" />
+                  <CheckCircle className="w-4 h-4 text-neon-green" />
                   No additional infrastructure required. No vector database setup.
                 </p>
               </CardContent>
@@ -149,19 +149,19 @@ const agent = withPersistentMemory({
                   <h4 className="font-semibold mb-2">What the wrapper does automatically:</h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Auto-extracts facts from user messages (names, preferences, etc.)
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Recalls exact stored facts without hallucination
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Remembers previous workloads and task outcomes
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Persists salient outcomes post-response
                     </li>
                   </ul>
@@ -268,19 +268,19 @@ function ChatComponent() {
                   <h4 className="font-semibold mb-2">Hook features:</h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Works inside existing components
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       No provider boilerplate required
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Built-in loading and error states
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       Graceful degradation on failures
                     </li>
                   </ul>
@@ -292,7 +292,7 @@ function ChatComponent() {
           {/* What You Get Free */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <CheckCircle className="w-6 h-6 text-emerald-500" />
+              <CheckCircle className="w-6 h-6 text-neon-green" />
               What you get for free
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -317,7 +317,7 @@ function ChatComponent() {
                 <Card key={item.title}>
                   <CardContent className="pt-6">
                     <h3 className="font-semibold mb-2 flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
                       {item.title}
                     </h3>
                     <p className="text-sm text-muted-foreground">{item.description}</p>

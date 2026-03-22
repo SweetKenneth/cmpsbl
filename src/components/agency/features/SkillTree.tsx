@@ -220,7 +220,7 @@ export function SkillBars({
                     animate={{ opacity: 1, y: 0 }}
                     className={cn(
                       'text-xs font-medium',
-                      change > 0 ? 'text-emerald-500' : 'text-red-500'
+                      change > 0 ? 'text-neon-green' : 'text-destructive'
                     )}
                   >
                     {change > 0 ? '+' : ''}{Math.round(change * 100)}%

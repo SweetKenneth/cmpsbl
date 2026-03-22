@@ -43,7 +43,7 @@ function DensityBar({ value, max, label }: { value: number; max: number; label: 
         <span className="text-muted-foreground">{label}</span>
         <span className={cn(
           'font-mono font-medium',
-          isOver ? 'text-destructive' : isNear ? 'text-yellow-500' : 'text-muted-foreground'
+          isOver ? 'text-destructive' : isNear ? 'text-neon-amber' : 'text-muted-foreground'
         )}>
           {typeof value === 'number' && value < 1 ? value.toFixed(2) : value} / {max}
         </span>
@@ -52,7 +52,7 @@ function DensityBar({ value, max, label }: { value: number; max: number; label: 
         value={pct}
         className={cn(
           'h-1.5',
-          isOver ? '[&>div]:bg-destructive' : isNear ? '[&>div]:bg-yellow-500' : ''
+          isOver ? '[&>div]:bg-destructive' : isNear ? '[&>div]:bg-neon-amber' : ''
         )}
       />
     </div>
@@ -109,7 +109,7 @@ export function PackReleaseChecklist() {
           <div className="text-center p-2 rounded-lg bg-muted/30">
             <div className={cn(
               'text-lg font-bold',
-              errors.length > 0 ? 'text-destructive' : warnings.length > 0 ? 'text-yellow-500' : 'text-green-500'
+              errors.length > 0 ? 'text-destructive' : warnings.length > 0 ? 'text-neon-amber' : 'text-neon-green'
             )}>
               {errors.length}E / {warnings.length}W
             </div>
@@ -131,7 +131,7 @@ export function PackReleaseChecklist() {
                 key={i}
                 className={cn(
                   'flex items-start gap-2 p-2 rounded-md text-xs',
-                  issue.severity === 'error' ? 'bg-destructive/10 text-destructive' : 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400'
+                  issue.severity === 'error' ? 'bg-destructive/10 text-destructive' : 'bg-neon-amber/10 text-yellow-600 dark:text-neon-amber'
                 )}
               >
                 {issue.severity === 'error' ? (
@@ -149,7 +149,7 @@ export function PackReleaseChecklist() {
         )}
 
         {issues.length === 0 && (
-          <div className="flex items-center gap-2 p-2 rounded-md bg-green-500/10 text-green-600 dark:text-green-400 text-xs">
+          <div className="flex items-center gap-2 p-2 rounded-md bg-neon-green/10 text-neon-green dark:text-neon-green text-xs">
             <CheckCircle2 className="w-3.5 h-3.5" />
             All density checks passed. Ecosystem is balanced.
           </div>
@@ -196,14 +196,14 @@ export function PackReleaseChecklist() {
                       <TableCell className="text-xs text-center font-mono">
                         <span className={cn(
                           pack.densityScore > DENSITY_THRESHOLDS.maxPackDensity ? 'text-destructive' :
-                          pack.densityScore > DENSITY_THRESHOLDS.maxPackDensity * 0.8 ? 'text-yellow-500' : ''
+                          pack.densityScore > DENSITY_THRESHOLDS.maxPackDensity * 0.8 ? 'text-neon-amber' : ''
                         )}>
                           {pack.densityScore.toFixed(2)}
                         </span>
                       </TableCell>
                       <TableCell className="text-xs text-center">
                         <span className={cn(
-                          pack.overlapPercent > DENSITY_THRESHOLDS.maxOverlapPercent ? 'text-yellow-500' : ''
+                          pack.overlapPercent > DENSITY_THRESHOLDS.maxOverlapPercent ? 'text-neon-amber' : ''
                         )}>
                           {pack.overlapPercent}%
                         </span>
@@ -212,9 +212,9 @@ export function PackReleaseChecklist() {
                         {hasError ? (
                           <XCircle className="w-3.5 h-3.5 text-destructive inline" />
                         ) : hasWarning ? (
-                          <AlertTriangle className="w-3.5 h-3.5 text-yellow-500 inline" />
+                          <AlertTriangle className="w-3.5 h-3.5 text-neon-amber inline" />
                         ) : (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-green-500 inline" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-neon-green inline" />
                         )}
                       </TableCell>
                     </TableRow>

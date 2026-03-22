@@ -189,14 +189,14 @@ ${requirementsBlock}${generatedTemplate.code}
           <CardHeader className="text-center pb-4 px-4 sm:px-6">
             {/* Badge */}
             <div className="flex justify-center mb-3 sm:mb-4">
-              <Badge className="gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-gradient-to-r from-amber-500/20 to-rose-500/20 text-amber-400 border-amber-500/30">
+              <Badge className="gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-gradient-to-r from-neon-amber/20 to-neon-magenta/20 text-neon-amber border-neon-amber/30">
                 <Dices className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden xs:inline">AI-Powered •</span> {FORMATTED_COMBINATIONS}+ Combos
               </Badge>
             </div>
 
             <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-black">
-              <span className="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
+              <span className="bg-gradient-to-r from-neon-magenta via-neon-amber to-neon-green bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
                 AI Template Generator
               </span>
             </CardTitle>
@@ -209,22 +209,22 @@ ${requirementsBlock}${generatedTemplate.code}
           <CardContent className="space-y-6 sm:space-y-8 px-4 sm:px-6">
             {/* Value Proposition Grid */}
             <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
-              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20">
-                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-violet-500 mb-2" />
+              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-neon-purple/10 to-neon-purple/5 border border-neon-purple/20">
+                <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-neon-purple mb-2" />
                 <h3 className="font-bold text-sm sm:text-base mb-1">Truly Unique</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   {FORMATTED_COMBINATIONS}+ combinations. One-of-a-kind.
                 </p>
               </div>
-              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20">
-                <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-amber-500 mb-2" />
+              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-neon-amber/10 to-neon-amber/5 border border-neon-amber/20">
+                <Crown className="w-6 h-6 sm:w-8 sm:h-8 text-neon-amber mb-2" />
                 <h3 className="font-bold text-sm sm:text-base mb-1">Variable Value</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   Worth {formatValueRange()}. Avg: {formatExpectedValue()}.
                 </p>
               </div>
-              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20">
-                <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-500 mb-2" />
+              <div className="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-neon-green/10 to-neon-green/5 border border-neon-green/20">
+                <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-neon-green mb-2" />
                 <h3 className="font-bold text-sm sm:text-base mb-1">{getGeneratorValueMultiplier()} Value</h3>
                 <p className="text-xs sm:text-sm text-muted-foreground">
                   Download & keep forever.
@@ -266,7 +266,7 @@ ${requirementsBlock}${generatedTemplate.code}
                 <div className="text-3xl sm:text-4xl font-black text-foreground">${GENERATOR_PRICE / 100}</div>
                 <div className="text-left">
                   <p className="text-xs sm:text-sm text-muted-foreground line-through">{formatExpectedValue()} avg value</p>
-                  <Badge variant="outline" className="text-[10px] sm:text-xs text-emerald-500 border-emerald-500/30">
+                  <Badge variant="outline" className="text-[10px] sm:text-xs text-neon-green border-neon-green/30">
                     {getGeneratorValueMultiplier()} Avg Return
                   </Badge>
                 </div>
@@ -276,7 +276,7 @@ ${requirementsBlock}${generatedTemplate.code}
                 size="lg"
                 onClick={handleCheckout}
                 disabled={isCheckingOut}
-                className="gap-2 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-bold bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 hover:opacity-90 text-white w-full sm:w-auto"
+                className="gap-2 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg font-bold bg-gradient-to-r from-neon-magenta via-neon-amber to-neon-green hover:opacity-90 text-white w-full sm:w-auto"
               >
                 {isCheckingOut ? (
                   <>
@@ -302,7 +302,7 @@ ${requirementsBlock}${generatedTemplate.code}
             <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 pt-3 sm:pt-4 border-t border-border/50">
               <div className="space-y-1.5 sm:space-y-2">
                 <h4 className="font-semibold text-sm sm:text-base flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-green" />
                   What's Included
                 </h4>
                 <ul className="text-xs sm:text-sm text-muted-foreground space-y-0.5 sm:space-y-1">
@@ -314,7 +314,7 @@ ${requirementsBlock}${generatedTemplate.code}
               </div>
               <div className="space-y-1.5 sm:space-y-2">
                 <h4 className="font-semibold text-sm sm:text-base flex items-center gap-2">
-                  <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500" />
+                  <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-amber" />
                   Categories
                 </h4>
                 <ul className="text-xs sm:text-sm text-muted-foreground space-y-0.5 sm:space-y-1">
@@ -348,11 +348,11 @@ ${requirementsBlock}${generatedTemplate.code}
             >
               <div className="text-center mb-6">
                 <Badge className={`mb-2 ${
-                  generatedTemplate.rarity === 'mythic' ? 'bg-rose-500/20 text-rose-400' :
-                  generatedTemplate.rarity === 'legendary' ? 'bg-amber-500/20 text-amber-400' :
-                  generatedTemplate.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400' :
-                  generatedTemplate.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400' :
-                  generatedTemplate.rarity === 'uncommon' ? 'bg-emerald-500/20 text-emerald-400' :
+                  generatedTemplate.rarity === 'mythic' ? 'bg-neon-magenta/20 text-neon-magenta' :
+                  generatedTemplate.rarity === 'legendary' ? 'bg-neon-amber/20 text-neon-amber' :
+                  generatedTemplate.rarity === 'epic' ? 'bg-neon-purple/20 text-neon-purple' :
+                  generatedTemplate.rarity === 'rare' ? 'bg-neon-blue/20 text-neon-blue' :
+                  generatedTemplate.rarity === 'uncommon' ? 'bg-neon-green/20 text-neon-green' :
                   'bg-slate-500/20 text-slate-400'
                 }`}>
                   {generatedTemplate.rarity.toUpperCase()} • {generatedTemplate.difficulty}
@@ -368,7 +368,7 @@ ${requirementsBlock}${generatedTemplate.code}
                   if (policy.mode === 'degraded') {
                     return (
                       <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/50 border border-border/50 text-xs">
-                        <AlertTriangle className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
+                        <AlertTriangle className="w-4 h-4 text-neon-amber shrink-0 mt-0.5" />
                         <div>
                           <span className="font-medium text-foreground">Baseline mode</span>
                           <span className="text-muted-foreground"> — Activate </span>

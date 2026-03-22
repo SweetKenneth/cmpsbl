@@ -31,10 +31,10 @@ interface CapabilityCardFreeProps {
 }
 
 const difficultyColors: Record<string, string> = {
-  beginner: 'text-emerald-400',
-  intermediate: 'text-cyan-400',
-  advanced: 'text-amber-400',
-  expert: 'text-rose-400',
+  beginner: 'text-neon-green',
+  intermediate: 'text-neon-cyan',
+  advanced: 'text-neon-amber',
+  expert: 'text-neon-magenta',
 };
 
 export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }: CapabilityCardFreeProps) {
@@ -51,7 +51,7 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
     <div className="group">
       <Card className={cn(
         "h-full flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1",
-        "border-border/50 hover:border-emerald-500/30"
+        "border-border/50 hover:border-neon-green/30"
       )}>
         <CardContent className="relative flex-1 p-4 md:p-5">
           {/* Header: Category Badge */}
@@ -66,12 +66,12 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
             
             {/* FREE Badge */}
             {isGated ? (
-              <Badge className="text-[10px] bg-amber-500/10 text-amber-400 border-amber-500/30">
+              <Badge className="text-[10px] bg-neon-amber/10 text-neon-amber border-neon-amber/30">
                 <Crown className="w-2.5 h-2.5 mr-1" />
                 ENTERPRISE
               </Badge>
             ) : (
-              <Badge className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+              <Badge className="text-[10px] bg-neon-green/10 text-neon-green border-neon-green/30">
                 <Unlock className="w-2.5 h-2.5 mr-1" />
                 FREE
               </Badge>
@@ -135,7 +135,7 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
           <div>
             {isGated ? (
               <>
-                <div className="flex items-center gap-1.5 text-amber-400">
+                <div className="flex items-center gap-1.5 text-neon-amber">
                   <Lock className="w-4 h-4" />
                   <span className="font-semibold text-sm">Enterprise Only</span>
                 </div>
@@ -145,7 +145,7 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
               </>
             ) : (
               <>
-                <div className="flex items-center gap-1.5 text-emerald-400">
+                <div className="flex items-center gap-1.5 text-neon-green">
                   <Check className="w-4 h-4" />
                   <span className="font-semibold">Unlocked</span>
                 </div>
@@ -162,7 +162,7 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
               size="sm" 
               variant="outline" 
               asChild
-              className="h-9 px-3 touch-manipulation text-xs md:text-sm border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+              className="h-9 px-3 touch-manipulation text-xs md:text-sm border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
             >
               <Link to="/store?tab=plans">
                 Upgrade

@@ -31,7 +31,7 @@ const FEATURED_TEMPLATES = [
     name: 'Self-Learning Chatbot',
     description: 'AI chatbot with persistent memory that learns from every conversation and recalls context across sessions.',
     icon: MessageSquare,
-    color: 'from-cyan-500 to-blue-600',
+    color: 'from-neon-cyan to-neon-blue',
     features: ['Persistent Memory', 'Context Recall', 'Continuous Learning', 'Session Reflection'],
     difficulty: 'advanced',
     price: '$147',
@@ -42,7 +42,7 @@ const FEATURED_TEMPLATES = [
     name: 'Dream Processor',
     description: 'Feed text into the self-improvement engine for mood analysis, interpretation, and pattern synthesis.',
     icon: Moon,
-    color: 'from-violet-500 to-purple-600',
+    color: 'from-neon-purple to-neon-purple',
     features: ['Text Ingestion', 'Mood Analysis', 'Interpretation', 'Pattern Cycles'],
     difficulty: 'beginner',
     price: '$27',
@@ -53,7 +53,7 @@ const FEATURED_TEMPLATES = [
     name: 'Knowledge Graph',
     description: 'Build interconnected knowledge structures with relationship mapping and cross-domain synthesis.',
     icon: GitBranch,
-    color: 'from-emerald-500 to-teal-600',
+    color: 'from-neon-green to-teal-600',
     features: ['Graph Building', 'Relationship Mapping', 'Cross-Domain Synthesis', 'Memory Reinforcement'],
     difficulty: 'advanced',
     price: '$147',
@@ -64,7 +64,7 @@ const FEATURED_TEMPLATES = [
     name: 'Sentiment Analysis Engine',
     description: 'Real-time text analysis with emotion detection, keyword extraction, and confidence scoring.',
     icon: BarChart3,
-    color: 'from-emerald-500 to-cyan-600',
+    color: 'from-neon-green to-neon-cyan',
     features: ['Emotion Detection', 'Confidence Scoring', 'Keyword Extraction', 'Historical Tracking'],
     difficulty: 'intermediate',
     price: '$87',
@@ -75,7 +75,7 @@ const FEATURED_TEMPLATES = [
     name: 'Adaptive Learning Assistant',
     description: 'Self-adjusting quiz system that learns from responses and adapts difficulty in real-time.',
     icon: GraduationCap,
-    color: 'from-violet-500 to-pink-600',
+    color: 'from-neon-purple to-pink-600',
     features: ['Adaptive Difficulty', 'Topic Mastery Tracking', 'Streak Rewards', 'Learning Analytics'],
     difficulty: 'advanced',
     price: '$127',
@@ -268,10 +268,10 @@ export default function ExperimentationLab() {
 
         {/* Hero Section */}
         <section className="relative overflow-hidden border-b border-border/50">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-neon-purple/5" />
           <div className="absolute inset-0 opacity-30">
-            <div className="absolute top-20 left-20 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-20 right-20 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="absolute top-20 left-20 w-72 h-72 bg-neon-cyan/20 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-neon-purple/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
           </div>
           
           <div className="container mx-auto px-4 py-16 relative z-10">
@@ -280,7 +280,7 @@ export default function ExperimentationLab() {
                 <Cpu className="w-3 h-3 mr-1" />
                 Live Demos
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-violet-500 bg-clip-text text-transparent">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-neon-purple bg-clip-text text-transparent">
                 Experimentation Lab
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
@@ -310,19 +310,19 @@ export default function ExperimentationLab() {
           <div className="container mx-auto px-4 py-6">
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-cyan-500" />
+                <Sparkles className="w-4 h-4 text-neon-cyan" />
                 <span>5 live templates</span>
               </div>
               <div className="flex items-center gap-2">
-                <Code className="w-4 h-4 text-violet-500" />
+                <Code className="w-4 h-4 text-neon-purple" />
                 <span>Full source code exposed</span>
               </div>
               <div className="flex items-center gap-2">
-                <Brain className="w-4 h-4 text-emerald-500" />
+                <Brain className="w-4 h-4 text-neon-green" />
                 <span>Powered by real substrate</span>
               </div>
               <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-amber-500" />
+                <BookOpen className="w-4 h-4 text-neon-amber" />
                 <span>Free to use & learn from</span>
               </div>
             </div>
@@ -418,7 +418,7 @@ export default function ExperimentationLab() {
                 {/* Interactive Demo */}
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                    <div className="w-3 h-3 rounded-full bg-neon-green animate-pulse" />
                     <span className="text-sm font-medium">Live Demo</span>
                   </div>
                   
@@ -457,9 +457,9 @@ export default function ExperimentationLab() {
                   
                   <div className="bg-background rounded-lg border border-border/50 overflow-hidden">
                     <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 border-b border-border/50">
-                      <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                      <div className="w-3 h-3 rounded-full bg-green-500/60" />
+                      <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                      <div className="w-3 h-3 rounded-full bg-neon-amber/60" />
+                      <div className="w-3 h-3 rounded-full bg-neon-green/60" />
                       <span className="text-xs text-muted-foreground ml-2">template.ts</span>
                     </div>
                     <pre className="p-4 text-xs overflow-x-auto max-h-[400px]">
@@ -482,7 +482,7 @@ export default function ExperimentationLab() {
         </section>
 
         {/* CTA Section */}
-        <section className="border-t border-border/50 bg-gradient-to-br from-primary/5 via-transparent to-violet-500/5">
+        <section className="border-t border-border/50 bg-gradient-to-br from-primary/5 via-transparent to-neon-purple/5">
           <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-4">Ready to Build Your Own?</h2>
@@ -491,7 +491,7 @@ export default function ExperimentationLab() {
                 full source code, documentation, and integration guides.
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-primary to-violet-600 hover:opacity-90">
+                <Button asChild size="lg" className="gap-2 bg-gradient-to-r from-primary to-neon-purple hover:opacity-90">
                   <Link to="/store">
                     <ShoppingCart className="w-5 h-5" />
                     Browse Artifacts

@@ -60,7 +60,7 @@ export function PortalHeader({
             {/* Online indicator */}
             <div className={cn(
               "absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-card",
-              isOnline ? "bg-emerald-500" : "bg-muted-foreground"
+              isOnline ? "bg-neon-green" : "bg-muted-foreground"
             )} />
           </div>
 
@@ -68,7 +68,7 @@ export function PortalHeader({
             <h1 className="font-semibold text-sm truncate">{agencyName}</h1>
             {leaderName && (
               <p className="text-xs text-muted-foreground truncate flex items-center gap-1">
-                <Crown className="w-3 h-3 text-amber-400" />
+                <Crown className="w-3 h-3 text-neon-amber" />
                 {leaderName}
               </p>
             )}
@@ -81,9 +81,9 @@ export function PortalHeader({
         {activeTaskCount > 0 && (
           <Badge 
             variant="outline" 
-            className="gap-1.5 text-xs border-amber-500/50 text-amber-400 bg-amber-500/10 animate-pulse"
+            className="gap-1.5 text-xs border-neon-amber/50 text-neon-amber bg-neon-amber/10 animate-pulse"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            <span className="w-1.5 h-1.5 rounded-full bg-neon-amber" />
             {activeTaskCount} Active
           </Badge>
         )}
@@ -93,7 +93,7 @@ export function PortalHeader({
           className={cn(
             "gap-1.5 text-xs",
             isOnline 
-              ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
+              ? "border-neon-green/50 text-neon-green bg-neon-green/10" 
               : "border-muted-foreground/50 text-muted-foreground"
           )}
         >

@@ -25,7 +25,7 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
   return (
     <section className="py-12 sm:py-16 relative overflow-hidden" id="bundles">
       {/* Background accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.02] via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-neon-green/[0.02] via-transparent to-transparent pointer-events-none" />
       
       <div className="container mx-auto px-4 relative">
         {/* Section header */}
@@ -35,7 +35,7 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <Badge className="mb-4 gap-1.5 bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 shadow-lg">
+          <Badge className="mb-4 gap-1.5 bg-gradient-to-r from-neon-green to-neon-cyan text-white border-0 shadow-lg">
             <Gift className="w-3.5 h-3.5" />
             Save Up to 30%
           </Badge>
@@ -71,7 +71,7 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
                       <div className="p-3 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20">
                         <Package className="w-6 h-6 text-primary" />
                       </div>
-                      <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/30">
+                      <Badge className="bg-neon-green/10 text-neon-green border-neon-green/30">
                         {Math.round(stack.discount * 100)}% OFF
                       </Badge>
                     </div>
@@ -109,7 +109,7 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
                               {formatPriceUtil(originalPrice)}
                             </span>
                           </div>
-                          <p className="text-xs text-emerald-600 font-medium">
+                          <p className="text-xs text-neon-green font-medium">
                             Save {formatPriceUtil(originalPrice - discountedPrice)}
                           </p>
                         </div>
@@ -175,9 +175,9 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
         {/* Volume Bundles */}
         <div>
           <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-            <Package className="w-5 h-5 text-orange-500" />
+            <Package className="w-5 h-5 text-neon-amber" />
             Volume Bundles
-            <Badge variant="outline" className="ml-2 border-orange-500/30 text-orange-600">Best Savings</Badge>
+            <Badge variant="outline" className="ml-2 border-neon-amber/30 text-orange-600">Best Savings</Badge>
           </h3>
 
           <div className="grid sm:grid-cols-3 gap-6">
@@ -192,11 +192,11 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
               >
                 <Card className={cn(
                   "h-full border-2 transition-all hover:shadow-xl",
-                  index === 1 && "border-orange-500/50 shadow-lg shadow-orange-500/10"
+                  index === 1 && "border-neon-amber/50 shadow-lg shadow-neon-amber/10"
                 )}>
                   <CardContent className="p-6">
                     {index === 1 && (
-                      <Badge className="mb-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0">
+                      <Badge className="mb-4 bg-gradient-to-r from-neon-amber to-neon-amber text-white border-0">
                         <Star className="w-3 h-3 mr-1 fill-current" />
                         Most Popular
                       </Badge>
@@ -215,7 +215,7 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
                           {formatPriceUtil(bundle.originalPrice)}
                         </span>
                       </div>
-                      <p className="text-xs text-emerald-600 font-medium">
+                      <p className="text-xs text-neon-green font-medium">
                         Save {formatPriceUtil(bundle.savings)} ({bundle.savingsPercent}% off)
                       </p>
                     </div>

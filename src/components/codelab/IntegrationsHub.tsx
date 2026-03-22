@@ -52,8 +52,8 @@ const INTEGRATIONS: Integration[] = [
     name: "Stripe",
     description: "Accept payments, subscriptions, and invoices with the world's leading payment platform.",
     icon: CreditCard,
-    color: "text-violet-500",
-    bgGradient: "from-violet-500/10 to-purple-500/10",
+    color: "text-neon-purple",
+    bgGradient: "from-neon-purple/10 to-neon-purple/10",
     category: "payments",
     features: ["One-time payments", "Subscriptions", "Customer portal", "Webhooks", "Invoices"],
     quickStart: `// 1. Create checkout session (Edge Function)
@@ -109,8 +109,8 @@ serve(async (req) => {
     name: "Twilio",
     description: "Send SMS, WhatsApp messages, and voice calls with powerful communication APIs.",
     icon: MessageSquare,
-    color: "text-red-500",
-    bgGradient: "from-red-500/10 to-orange-500/10",
+    color: "text-destructive",
+    bgGradient: "from-destructive/10 to-neon-amber/10",
     category: "messaging",
     features: ["SMS messaging", "WhatsApp", "Voice calls", "Programmable messaging", "Verification"],
     quickStart: `// Send SMS with Twilio
@@ -174,8 +174,8 @@ serve(async (req) => {
     name: "Resend",
     description: "Modern email API for developers. Send transactional and marketing emails with ease.",
     icon: Mail,
-    color: "text-cyan-500",
-    bgGradient: "from-cyan-500/10 to-blue-500/10",
+    color: "text-neon-cyan",
+    bgGradient: "from-neon-cyan/10 to-neon-blue/10",
     category: "email",
     features: ["Transactional emails", "Email templates", "Analytics", "Webhooks", "React Email"],
     quickStart: `// Send email with Resend
@@ -231,8 +231,8 @@ serve(async (req) => {
     name: "S3 / Cloudflare R2",
     description: "Object storage for files, images, and assets. Compatible with AWS S3 and Cloudflare R2.",
     icon: HardDrive,
-    color: "text-amber-500",
-    bgGradient: "from-amber-500/10 to-orange-500/10",
+    color: "text-neon-amber",
+    bgGradient: "from-neon-amber/10 to-neon-amber/10",
     category: "storage",
     features: ["File uploads", "Signed URLs", "CDN delivery", "Bucket policies", "Multipart uploads"],
     quickStart: `// Upload file to S3/R2
@@ -305,10 +305,10 @@ serve(async (req) => {
 ];
 
 const CATEGORY_META = {
-  payments: { label: "Payments", icon: CreditCard, color: "text-violet-500" },
-  messaging: { label: "Messaging", icon: MessageSquare, color: "text-red-500" },
-  email: { label: "Email", icon: Mail, color: "text-cyan-500" },
-  storage: { label: "Storage", icon: HardDrive, color: "text-amber-500" },
+  payments: { label: "Payments", icon: CreditCard, color: "text-neon-purple" },
+  messaging: { label: "Messaging", icon: MessageSquare, color: "text-destructive" },
+  email: { label: "Email", icon: Mail, color: "text-neon-cyan" },
+  storage: { label: "Storage", icon: HardDrive, color: "text-neon-amber" },
 };
 
 export function IntegrationsHub() {
@@ -330,7 +330,7 @@ export function IntegrationsHub() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-purple to-neon-cyan flex items-center justify-center">
             <Zap className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -341,10 +341,10 @@ export function IntegrationsHub() {
           </div>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Unlock className="w-4 h-4 text-emerald-500" />
+          <Unlock className="w-4 h-4 text-neon-green" />
           <span>Templates are public</span>
           <span className="mx-2">•</span>
-          <Lock className="w-4 h-4 text-amber-500" />
+          <Lock className="w-4 h-4 text-neon-amber" />
           <span>Live connectors require auth</span>
         </div>
       </div>
@@ -465,7 +465,7 @@ export function IntegrationsHub() {
                 {/* Features */}
                 <Card className="p-5">
                   <h4 className="font-semibold mb-4 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-amber-500" />
+                    <Zap className="w-4 h-4 text-neon-amber" />
                     Features
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -480,7 +480,7 @@ export function IntegrationsHub() {
                 {/* Environment Variables */}
                 <Card className="p-5">
                   <h4 className="font-semibold mb-4 flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-emerald-500" />
+                    <Shield className="w-4 h-4 text-neon-green" />
                     Required Secrets
                   </h4>
                   <div className="space-y-2">
@@ -510,7 +510,7 @@ export function IntegrationsHub() {
               {/* Quick Start */}
               <Card className="p-5">
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <Play className="w-4 h-4 text-cyan-500" />
+                  <Play className="w-4 h-4 text-neon-cyan" />
                   Quick Start
                 </h4>
                 <div className="relative">
@@ -548,7 +548,7 @@ export function IntegrationsHub() {
               <Card className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-semibold flex items-center gap-2">
-                    <FileCode className="w-4 h-4 text-violet-500" />
+                    <FileCode className="w-4 h-4 text-neon-purple" />
                     Edge Function Template
                   </h4>
                   <div className="flex items-center gap-2">
@@ -587,7 +587,7 @@ export function IntegrationsHub() {
             <TabsContent value="guide" className="space-y-6 mt-6">
               <Card className="p-6">
                 <h4 className="font-semibold mb-4 flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-emerald-500" />
+                  <BookOpen className="w-4 h-4 text-neon-green" />
                   Setup Guide: {integration.name}
                 </h4>
                 <div className="space-y-6">
@@ -673,11 +673,11 @@ export function IntegrationsHub() {
 
                   {/* Step 5 */}
                   <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 font-bold text-emerald-500">
+                    <div className="w-8 h-8 rounded-full bg-neon-green/20 flex items-center justify-center shrink-0 font-bold text-neon-green">
                       ✓
                     </div>
                     <div>
-                      <h5 className="font-semibold mb-2 text-emerald-500">You're ready!</h5>
+                      <h5 className="font-semibold mb-2 text-neon-green">You're ready!</h5>
                       <p className="text-sm text-muted-foreground">
                         Call your Edge Function from the frontend using{" "}
                         <code className="px-1.5 py-0.5 rounded bg-muted font-mono text-xs">

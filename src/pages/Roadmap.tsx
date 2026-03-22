@@ -134,10 +134,10 @@ const DOMAIN_NODES = [
 ];
 
 const statusStyle: Record<string, string> = {
-  Live: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-  "In Progress": "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-  Planned: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
-  Research: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20",
+  Live: "bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20",
+  "In Progress": "bg-neon-blue/10 text-neon-blue dark:text-neon-blue border-neon-blue/20",
+  Planned: "bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20",
+  Research: "bg-neon-purple/10 text-neon-purple dark:text-neon-purple border-neon-purple/20",
 };
 
 const fadeUp = {
@@ -181,15 +181,15 @@ export default function Roadmap() {
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <CheckCircle2 className="w-4 h-4 text-neon-green" />
                 <span>Phase 1 Live</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-500" />
+                <Clock className="w-4 h-4 text-neon-blue" />
                 <span>Phases 2-3 Active</span>
               </div>
               <div className="flex items-center gap-2">
-                <Beaker className="w-4 h-4 text-purple-500" />
+                <Beaker className="w-4 h-4 text-neon-purple" />
                 <span>6 Domain Verticals</span>
               </div>
             </div>

@@ -59,40 +59,40 @@ const CODE_FILES: Record<number, () => Promise<{ default: string }>> = {
 };
 
 const MODULE_COLORS: Record<string, string> = {
-  CORE: "bg-red-500/20 text-red-400 border-red-500/30",
-  NEXUS: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  DECODE: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  MEDIC: "bg-green-500/20 text-green-400 border-green-500/30",
-  NERVE: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  VISION: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  IMMUNITY: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  AUDIT: "bg-orange-500/20 text-orange-400 border-orange-500/30",
-  MEMORY: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
-  BRAIN: "bg-pink-500/20 text-pink-400 border-pink-500/30",
-  CORTEX: "bg-violet-500/20 text-violet-400 border-violet-500/30",
-  DREAM: "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/30",
-  GOVERNANCE: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+  CORE: "bg-destructive/20 text-destructive border-destructive/30",
+  NEXUS: "bg-neon-blue/20 text-neon-blue border-neon-blue/30",
+  DECODE: "bg-neon-purple/20 text-neon-purple border-neon-purple/30",
+  MEDIC: "bg-neon-green/20 text-neon-green border-neon-green/30",
+  NERVE: "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30",
+  VISION: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
+  IMMUNITY: "bg-neon-green/20 text-neon-green border-neon-green/30",
+  AUDIT: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
+  MEMORY: "bg-primary/20 text-primary border-primary/30",
+  BRAIN: "bg-neon-magenta/20 text-neon-magenta border-neon-magenta/30",
+  CORTEX: "bg-neon-purple/20 text-neon-purple border-neon-purple/30",
+  DREAM: "bg-neon-magenta/20 text-neon-magenta border-neon-magenta/30",
+  GOVERNANCE: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
   EVOLUTION: "bg-lime-500/20 text-lime-400 border-lime-500/30",
   SYSTEM: "bg-slate-500/20 text-slate-400 border-slate-500/30",
-  DEFENSE: "bg-rose-500/20 text-rose-400 border-rose-500/30",
-  ANALYTICS: "bg-teal-500/20 text-teal-400 border-teal-500/30",
-  SOVEREIGN: "bg-amber-600/20 text-amber-300 border-amber-500/30",
+  DEFENSE: "bg-neon-magenta/20 text-neon-magenta border-neon-magenta/30",
+  ANALYTICS: "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30",
+  SOVEREIGN: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
   ORACLE: "bg-sky-500/20 text-sky-400 border-sky-500/30",
-  CONSCIENCE: "bg-emerald-600/20 text-emerald-300 border-emerald-500/30",
+  CONSCIENCE: "bg-neon-green/20 text-neon-green border-neon-green/30",
   PHANTOM: "bg-zinc-500/20 text-zinc-300 border-zinc-500/30",
-  FORGE: "bg-orange-600/20 text-orange-300 border-orange-500/30",
-  LINGUA: "bg-blue-600/20 text-blue-300 border-blue-500/30",
-  COMPASS: "bg-cyan-600/20 text-cyan-300 border-cyan-500/30",
-  ECHO: "bg-purple-600/20 text-purple-300 border-purple-500/30",
-  TREATY: "bg-yellow-600/20 text-yellow-300 border-yellow-500/30",
-  HARVEST: "bg-green-600/20 text-green-300 border-green-500/30",
-  REFLEX: "bg-red-600/20 text-red-300 border-red-500/30",
+  FORGE: "bg-orange-600/20 text-neon-amber border-neon-amber/30",
+  LINGUA: "bg-neon-blue/20 text-neon-blue border-neon-blue/30",
+  COMPASS: "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30",
+  ECHO: "bg-neon-purple/20 text-neon-purple border-neon-purple/30",
+  TREATY: "bg-yellow-600/20 text-neon-amber border-neon-amber/30",
+  HARVEST: "bg-neon-green/20 text-neon-green border-neon-green/30",
+  REFLEX: "bg-destructive/20 text-destructive border-destructive/30",
 };
 
 function getCJPIColor(cjpi: number): string {
-  if (cjpi >= 96) return "text-yellow-400 bg-yellow-500/20 border-yellow-500/40";
-  if (cjpi >= 92) return "text-orange-400 bg-orange-500/20 border-orange-500/40";
-  if (cjpi >= 88) return "text-blue-400 bg-blue-500/20 border-blue-500/40";
+  if (cjpi >= 96) return "text-neon-amber bg-neon-amber/20 border-neon-amber/40";
+  if (cjpi >= 92) return "text-neon-amber bg-neon-amber/20 border-neon-amber/40";
+  if (cjpi >= 88) return "text-neon-blue bg-neon-blue/20 border-neon-blue/40";
   return "text-muted-foreground bg-muted border-border";
 }
 
@@ -180,15 +180,15 @@ function AnalyticsSummary({ registryEntries, promoted }: { registryEntries: STie
           <div className="text-[10px] text-muted-foreground">Registry Discoveries</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50 hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
+      <Card className="border-border/50 hover:border-neon-amber/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold font-mono tabular-nums text-amber-400">{promoted.length}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-neon-amber">{promoted.length}</div>
           <div className="text-[10px] text-muted-foreground">Discovered</div>
         </CardContent>
       </Card>
-      <Card className="border-border/50 hover:border-emerald-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
+      <Card className="border-border/50 hover:border-neon-green/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm">
         <CardContent className="p-3 text-center">
-          <div className="text-2xl font-bold font-mono tabular-nums text-emerald-400">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
+          <div className="text-2xl font-bold font-mono tabular-nums text-neon-green">{formatMarketValue(stats.totalRegValue + stats.totalPromValue)}</div>
           <div className="text-[10px] text-muted-foreground">Total Est. Value</div>
         </CardContent>
       </Card>
@@ -270,12 +270,12 @@ function ArtifactCard({
           <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(entry.cjpi)}`}>{entry.cjpi}</Badge>
           <Badge variant="outline" className={`text-xs border ${MODULE_COLORS[entry.module] ?? "bg-muted text-muted-foreground"}`}>{entry.module}</Badge>
           <Badge variant="outline" className="text-xs">{entry.type}</Badge>
-          <Badge variant="outline" className="text-[10px] font-mono border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+          <Badge variant="outline" className="text-[10px] font-mono border-neon-green/40 text-neon-green bg-neon-green/10">
             <DollarSign className="w-3 h-3 mr-0.5" />
             {formatMarketValue(entryValue)}
           </Badge>
           {entry.approved ? (
-            <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
+            <CheckCircle className="w-4 h-4 text-neon-green ml-auto shrink-0" />
           ) : (
             <Lock className="w-4 h-4 text-muted-foreground/50 ml-auto shrink-0" />
           )}
@@ -318,7 +318,7 @@ function ArtifactCard({
               <div><span className="text-muted-foreground">Node:</span> {entry.module}</div>
               <div><span className="text-muted-foreground">Type:</span> {entry.type}</div>
               <div><span className="text-muted-foreground">Export:</span> {entry.exportMode}</div>
-              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(entryValue)}</span></div>
+              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-neon-green">{formatMarketValue(entryValue)}</span></div>
               <div className="col-span-2"><span className="text-muted-foreground">Signature:</span> <code className="font-mono">{entry.signatureHash}</code></div>
               <div className="col-span-2"><span className="text-muted-foreground">Generated:</span> {new Date(entry.generatedAt).toLocaleDateString()}</div>
             </div>
@@ -340,20 +340,20 @@ function PromotedCard({
 }) {
   const modules = discovery.module_chain || [];
   return (
-    <Card className="border-amber-500/30 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm bg-amber-500/5">
+    <Card className="border-neon-amber/30 hover:border-neon-amber/50 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm bg-neon-amber/5">
       <CardContent className="p-3 sm:p-4">
         <div className="flex items-center gap-2 flex-wrap mb-2">
-          <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-400 bg-amber-500/10">
+          <Badge variant="outline" className="text-[10px] border-neon-amber/40 text-neon-amber bg-neon-amber/10">
             <Zap className="w-3 h-3 mr-1" /> DISCOVERED
           </Badge>
           <Badge variant="outline" className={`font-mono text-xs ${getCJPIColor(discovery.cjpi)}`}>{discovery.cjpi}</Badge>
           <Badge variant="outline" className="text-xs capitalize">{discovery.category}</Badge>
-          <Badge variant="outline" className="text-[10px] font-mono border-emerald-500/40 text-emerald-400 bg-emerald-500/10">
+          <Badge variant="outline" className="text-[10px] font-mono border-neon-green/40 text-neon-green bg-neon-green/10">
             <DollarSign className="w-3 h-3 mr-0.5" />
             {formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, modules.length))}
           </Badge>
           {discovery.export_ready && (
-            <CheckCircle className="w-4 h-4 text-green-400 ml-auto shrink-0" />
+            <CheckCircle className="w-4 h-4 text-neon-green ml-auto shrink-0" />
           )}
         </div>
         <h3 className="font-semibold text-sm sm:text-base text-foreground mb-1 break-words">{discovery.name}</h3>
@@ -364,10 +364,10 @@ function PromotedCard({
           {getFunctionalDescription(discovery.name, modules)}
         </p>
         <div className="flex items-center gap-2 flex-wrap">
-          <Button variant="outline" size="sm" onClick={() => onExport(discovery)} className="gap-1.5 text-xs border-amber-500/40 text-amber-400 hover:bg-amber-500/10">
+          <Button variant="outline" size="sm" onClick={() => onExport(discovery)} className="gap-1.5 text-xs border-neon-amber/40 text-neon-amber hover:bg-neon-amber/10">
             <Globe className="w-3.5 h-3.5" /> Universal Export
           </Button>
-          <Button variant="outline" size="sm" onClick={() => onPromote(discovery)} disabled={promoting} className="gap-1.5 text-xs border-green-500/40 text-green-400 hover:bg-green-500/10">
+          <Button variant="outline" size="sm" onClick={() => onPromote(discovery)} disabled={promoting} className="gap-1.5 text-xs border-neon-green/40 text-neon-green hover:bg-neon-green/10">
             <ArrowUp className="w-3.5 h-3.5" /> Promote to Registry
           </Button>
           <Button variant="ghost" size="sm" onClick={onToggle} className="ml-auto gap-1 text-xs">
@@ -384,7 +384,7 @@ function PromotedCard({
               <div><span className="text-muted-foreground">Tier:</span> {discovery.tier}</div>
               <div><span className="text-muted-foreground">Status:</span> {discovery.status}</div>
               <div><span className="text-muted-foreground">Export Ready:</span> {discovery.export_ready ? '✓' : '✗'}</div>
-              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-emerald-400">{formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, modules.length))}</span></div>
+              <div className="col-span-2"><span className="text-muted-foreground">Est. Market Value:</span> <span className="font-semibold text-neon-green">{formatMarketValue(estimateMarketValue(discovery.cjpi, discovery.category, modules.length))}</span></div>
               <div className="col-span-2"><span className="text-muted-foreground">Promoted:</span> {new Date(discovery.promoted_at).toLocaleString()}</div>
               <div className="col-span-2"><span className="text-muted-foreground">Run:</span> <code className="font-mono text-[10px]">{discovery.run_id}</code></div>
             </div>
@@ -489,7 +489,7 @@ function ExportDialog({
             <h4 className="text-xs font-medium text-muted-foreground mb-2">Hardware / HDL (FPGA &amp; ASIC)</h4>
             <div className="flex flex-wrap gap-1.5">
               {LANGUAGES.filter(l => ['verilog','vhdl','systemverilog','chisel','amaranth','spice','systemc'].includes(l.value)).map(l => (
-                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-amber-500/40 text-amber-400" onClick={() => setSelectedLang(l.value)}>⚡ {l.label}</Badge>
+                <Badge key={l.value} variant={l.value === selectedLang ? 'default' : 'outline'} className="text-[10px] cursor-pointer border-neon-amber/40 text-neon-amber" onClick={() => setSelectedLang(l.value)}>⚡ {l.label}</Badge>
               ))}
             </div>
           </div>
@@ -909,7 +909,7 @@ export default function STierVault() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-yellow-400 shrink-0" />
+            <Shield className="w-7 h-7 sm:w-8 sm:h-8 text-neon-amber shrink-0" />
             <div>
               <h1 className="text-xl sm:text-2xl font-bold">S-Tier Apex Discovery Vault</h1>
               <p className="text-xs sm:text-sm text-muted-foreground">

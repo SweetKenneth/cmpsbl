@@ -163,7 +163,7 @@ export function PersistentChatbotDemo() {
     <div className="flex flex-col h-[450px]">
       <div className="flex items-center justify-between pb-4 border-b border-border/50 mb-4">
         <div className="flex items-center gap-2">
-          <Brain className="w-5 h-5 text-cyan-500" />
+          <Brain className="w-5 h-5 text-neon-cyan" />
           <span className="text-sm font-medium">Self-Learning Chatbot</span>
         </div>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
@@ -183,7 +183,7 @@ export function PersistentChatbotDemo() {
           <AnimatePresence mode="popLayout">
             {messages.map((msg) => (
               <motion.div key={msg.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} transition={{ duration: 0.2 }} className={`flex gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : msg.role === 'system' ? 'bg-muted' : 'bg-gradient-to-br from-cyan-500 to-blue-600 text-white'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${msg.role === 'user' ? 'bg-primary text-primary-foreground' : msg.role === 'system' ? 'bg-muted' : 'bg-gradient-to-br from-neon-cyan to-neon-blue text-white'}`}>
                   {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
                 </div>
                 <div className={`max-w-[80%] ${msg.role === 'user' ? 'text-right' : ''}`}>

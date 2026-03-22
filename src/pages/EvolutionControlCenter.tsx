@@ -718,7 +718,7 @@ function CaseStudies() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <Badge variant="outline" className="mb-3 border-emerald-500/30 text-emerald-400 text-[11px]">
+          <Badge variant="outline" className="mb-3 border-neon-green/30 text-neon-green text-[11px]">
             <CheckCircle className="w-3 h-3 mr-1" /> Real results
           </Badge>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
@@ -758,7 +758,7 @@ function CaseStudies() {
                       <div className="text-[10px] text-primary uppercase tracking-wider mb-1">After</div>
                       <div className="text-lg sm:text-xl font-bold text-primary">{cs.after.health}</div>
                       <div className="text-[10px] text-muted-foreground">health</div>
-                      <div className="text-[10px] sm:text-xs text-emerald-400 mt-1">{cs.after.debt} debt flags</div>
+                      <div className="text-[10px] sm:text-xs text-neon-green mt-1">{cs.after.debt} debt flags</div>
                     </div>
                   </div>
 
@@ -767,7 +767,7 @@ function CaseStudies() {
                       <Zap className="w-2.5 h-2.5 mr-1" />
                       {cs.cycles} cycles
                     </Badge>
-                    <Badge variant="outline" className="text-[10px] border-emerald-500/20 text-emerald-400">
+                    <Badge variant="outline" className="text-[10px] border-neon-green/20 text-neon-green">
                       +{cs.after.health - cs.before.health} health
                     </Badge>
                   </div>

@@ -54,14 +54,14 @@ const templatesByCategory = FREE_TEMPLATES.reduce((acc, t) => {
 }, {} as Record<string, Template[]>);
 
 const categoryMeta: Record<string, { icon: React.ElementType; color: string; label: string }> = {
-  brain: { icon: Brain, color: "text-violet-500", label: "Brain" },
-  decode: { icon: MessageSquare, color: "text-cyan-500", label: "Decode" },
-  defense: { icon: Shield, color: "text-rose-500", label: "Defense" },
-  nexus: { icon: Network, color: "text-emerald-500", label: "Nexus" },
-  vision: { icon: Eye, color: "text-blue-500", label: "Vision" },
-  dream: { icon: Moon, color: "text-purple-500", label: "Learning" },
+  brain: { icon: Brain, color: "text-neon-purple", label: "Brain" },
+  decode: { icon: MessageSquare, color: "text-neon-cyan", label: "Decode" },
+  defense: { icon: Shield, color: "text-neon-magenta", label: "Defense" },
+  nexus: { icon: Network, color: "text-neon-green", label: "Nexus" },
+  vision: { icon: Eye, color: "text-neon-blue", label: "Vision" },
+  dream: { icon: Moon, color: "text-neon-purple", label: "Learning" },
   system: { icon: Settings, color: "text-slate-500", label: "System" },
-  world_engine: { icon: Layers, color: "text-amber-500", label: "Platform" },
+  world_engine: { icon: Layers, color: "text-neon-amber", label: "Platform" },
 };
 
 export default function CodeLab() {
@@ -140,29 +140,29 @@ export default function CodeLab() {
           <div className="overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
             <div className="flex items-center justify-start md:justify-center gap-4 md:gap-8 text-sm min-w-max">
               <div className="flex items-center gap-2 shrink-0">
-                <Package className="w-4 h-4 text-emerald-500" />
+                <Package className="w-4 h-4 text-neon-green" />
                 <span className="font-mono font-bold">{FREE_TEMPLATES.length}</span>
                 <span className="text-muted-foreground whitespace-nowrap">Free Templates</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <Layers className="w-4 h-4 text-cyan-500" />
+                <Layers className="w-4 h-4 text-neon-cyan" />
                 <span className="font-mono font-bold">{modulesCount}</span>
                 <span className="text-muted-foreground">Nodes</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <Zap className="w-4 h-4 text-amber-500" />
+                <Zap className="w-4 h-4 text-neon-amber" />
                 <span className="font-mono font-bold">100%</span>
                 <span className="text-muted-foreground whitespace-nowrap">Free SDK</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <Star className="w-4 h-4 text-yellow-500" />
+                <Star className="w-4 h-4 text-neon-amber" />
                 <span className="font-mono font-bold">MIT</span>
                 <span className="text-muted-foreground">License</span>
               </div>
               
               {/* Dialect Selector - Display Only Toggle */}
               <div className="flex items-center gap-2 pl-4 border-l border-border/50 shrink-0">
-                <Eye className="w-4 h-4 text-violet-500" />
+                <Eye className="w-4 h-4 text-neon-purple" />
                 <span className="text-muted-foreground text-xs">Display:</span>
                 <DialectSelector compact />
               </div>
@@ -180,14 +180,14 @@ export default function CodeLab() {
               <TabsList className="inline-flex h-auto gap-1 p-1.5 bg-muted/50 rounded-xl border border-border/50">
                 <TabsTrigger 
                   value="playground" 
-                  className="flex items-center gap-1.5 data-[state=active]:bg-emerald-500/10 data-[state=active]:text-emerald-500 data-[state=active]:border-emerald-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-green/10 data-[state=active]:text-neon-green data-[state=active]:border-neon-green/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Command className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Playground</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="templates"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-cyan/10 data-[state=active]:text-neon-cyan data-[state=active]:border-neon-cyan/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Package className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Templates</span>
@@ -195,50 +195,50 @@ export default function CodeLab() {
                 </TabsTrigger>
                 <TabsTrigger 
                   value="explorer"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple data-[state=active]:border-neon-purple/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Layers className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Explorer</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="workbench"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber data-[state=active]:border-neon-amber/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Terminal className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Workbench</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="integrations"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-violet-500/10 data-[state=active]:text-violet-500 data-[state=active]:border-violet-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple data-[state=active]:border-neon-purple/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Plug className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Integrations</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="recipes"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-500 data-[state=active]:border-amber-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber data-[state=active]:border-neon-amber/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Sparkles className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Recipes</span>
-                  <Badge variant="secondary" className="ml-1 text-[10px] md:text-xs h-5 bg-amber-500/20 text-amber-400">New</Badge>
+                  <Badge variant="secondary" className="ml-1 text-[10px] md:text-xs h-5 bg-neon-amber/20 text-neon-amber">New</Badge>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="sdk"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-500 data-[state=active]:border-cyan-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-cyan/10 data-[state=active]:text-neon-cyan data-[state=active]:border-neon-cyan/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <BookOpen className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">SDK</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="showcase"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-purple-500/10 data-[state=active]:text-purple-500 data-[state=active]:border-purple-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-purple/10 data-[state=active]:text-neon-purple data-[state=active]:border-neon-purple/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Star className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Showcase</span>
                 </TabsTrigger>
                 <TabsTrigger 
                   value="starter"
-                  className="flex items-center gap-1.5 data-[state=active]:bg-rose-500/10 data-[state=active]:text-rose-500 data-[state=active]:border-rose-500/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
+                  className="flex items-center gap-1.5 data-[state=active]:bg-neon-magenta/10 data-[state=active]:text-neon-magenta data-[state=active]:border-neon-magenta/30 px-3 md:px-4 py-2 md:py-2.5 rounded-lg border border-transparent text-sm whitespace-nowrap touch-target"
                 >
                   <Rocket className="w-4 h-4 flex-shrink-0" />
                   <span className="hidden xs:inline">Launch</span>
@@ -250,11 +250,11 @@ export default function CodeLab() {
           {/* Playground Tab - Main landing with quick access */}
           <TabsContent value="playground" className="space-y-8">
             {/* SDK Quick Install */}
-            <Card className="p-6 border-emerald-500/30 bg-gradient-to-br from-emerald-500/5 via-transparent to-cyan-500/5">
+            <Card className="p-6 border-neon-green/30 bg-gradient-to-br from-neon-green/5 via-transparent to-neon-cyan/5">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center">
                       <Download className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -325,8 +325,8 @@ const response = await substrate.nexus.text(
             <div>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center">
-                    <Package className="w-5 h-5 text-cyan-500" />
+                  <div className="w-10 h-10 rounded-xl bg-neon-cyan/10 flex items-center justify-center">
+                    <Package className="w-5 h-5 text-neon-cyan" />
                   </div>
                   <div>
                     <h2 className="text-xl font-bold">Featured Free Templates</h2>
@@ -404,11 +404,11 @@ const response = await substrate.nexus.text(
 
             {/* Resources Grid */}
             <div className="grid gap-4 md:grid-cols-3">
-              <Card className="p-6 hover:border-violet-500/50 transition-colors group">
-                <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-4">
-                  <Layers className="w-6 h-6 text-violet-500" />
+              <Card className="p-6 hover:border-neon-purple/50 transition-colors group">
+                <div className="w-12 h-12 rounded-xl bg-neon-purple/10 flex items-center justify-center mb-4">
+                  <Layers className="w-6 h-6 text-neon-purple" />
                 </div>
-                <h3 className="font-semibold mb-2 group-hover:text-violet-500 transition-colors">Module Explorer</h3>
+                <h3 className="font-semibold mb-2 group-hover:text-neon-purple transition-colors">Module Explorer</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Interactive API explorer for all substrate execution surfaces. Execute calls, see responses, copy code.
                 </p>
@@ -417,11 +417,11 @@ const response = await substrate.nexus.text(
                 </Button>
               </Card>
 
-              <Card className="p-6 hover:border-amber-500/50 transition-colors group">
-                <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center mb-4">
-                  <Terminal className="w-6 h-6 text-amber-500" />
+              <Card className="p-6 hover:border-neon-amber/50 transition-colors group">
+                <div className="w-12 h-12 rounded-xl bg-neon-amber/10 flex items-center justify-center mb-4">
+                  <Terminal className="w-6 h-6 text-neon-amber" />
                 </div>
-                <h3 className="font-semibold mb-2 group-hover:text-amber-500 transition-colors">Code Workbench</h3>
+                <h3 className="font-semibold mb-2 group-hover:text-neon-amber transition-colors">Code Workbench</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Write and test substrate calls in a live REPL. Save scripts, track history, debug responses.
                 </p>
@@ -430,11 +430,11 @@ const response = await substrate.nexus.text(
                 </Button>
               </Card>
 
-              <Card className="p-6 hover:border-rose-500/50 transition-colors group">
-                <div className="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center mb-4">
-                  <Rocket className="w-6 h-6 text-rose-500" />
+              <Card className="p-6 hover:border-neon-magenta/50 transition-colors group">
+                <div className="w-12 h-12 rounded-xl bg-neon-magenta/10 flex items-center justify-center mb-4">
+                  <Rocket className="w-6 h-6 text-neon-magenta" />
                 </div>
-                <h3 className="font-semibold mb-2 group-hover:text-rose-500 transition-colors">Project Launchers</h3>
+                <h3 className="font-semibold mb-2 group-hover:text-neon-magenta transition-colors">Project Launchers</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Quickstart templates for Next.js, Vercel, Supabase. Get from zero to deployed in minutes.
                 </p>
@@ -445,12 +445,12 @@ const response = await substrate.nexus.text(
             </div>
 
             {/* Premium Upsell - Links to Marketplace */}
-            <Card className="p-6 border-primary/30 bg-gradient-to-r from-primary/5 via-transparent to-violet-500/5">
+            <Card className="p-6 border-primary/30 bg-gradient-to-r from-primary/5 via-transparent to-neon-purple/5">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="flex-1 text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                     <Sparkles className="w-5 h-5 text-primary" />
-                    <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">Premium</Badge>
+                    <Badge className="bg-gradient-to-r from-neon-amber to-neon-amber text-white border-0">Premium</Badge>
                   </div>
                   <h3 className="text-xl font-bold mb-2">Want More Advanced Templates?</h3>
                   <p className="text-muted-foreground">
@@ -524,7 +524,7 @@ const response = await substrate.nexus.text(
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           <h3 className="font-semibold truncate">{template.name}</h3>
-                          <Badge variant="outline" className="shrink-0 text-xs bg-emerald-500/10 text-emerald-500 border-emerald-500/30">
+                          <Badge variant="outline" className="shrink-0 text-xs bg-neon-green/10 text-neon-green border-neon-green/30">
                             Free
                           </Badge>
                         </div>

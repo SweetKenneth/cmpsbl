@@ -119,19 +119,19 @@ export function PortalTaskPanel({
   };
 
   const getStatusConfig = (status: string, isStuck: boolean) => {
-    if (isStuck) return { icon: AlertTriangle, color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30' };
+    if (isStuck) return { icon: AlertTriangle, color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30' };
     
     switch (status) {
       case 'in_progress':
-        return { icon: Loader2, color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', spin: true };
+        return { icon: Loader2, color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30', spin: true };
       case 'completed':
-        return { icon: CheckCircle, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' };
+        return { icon: CheckCircle, color: 'text-neon-green', bg: 'bg-neon-green/10', border: 'border-neon-green/30' };
       case 'failed':
-        return { icon: XCircle, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30' };
+        return { icon: XCircle, color: 'text-destructive', bg: 'bg-destructive/10', border: 'border-destructive/30' };
       case 'cancelled':
         return { icon: XCircle, color: 'text-muted-foreground', bg: 'bg-muted/20', border: 'border-muted/30' };
       case 'queued':
-        return { icon: Clock, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' };
+        return { icon: Clock, color: 'text-neon-cyan', bg: 'bg-neon-cyan/10', border: 'border-neon-cyan/30' };
       default:
         return { icon: Activity, color: 'text-muted-foreground', bg: 'bg-muted/10', border: 'border-border/30' };
     }
@@ -155,24 +155,24 @@ export function PortalTaskPanel({
       <div className="flex flex-wrap items-center gap-2 p-3 sm:p-4 border-b border-border/30">
         <Badge variant="outline" className={cn(
           "gap-1 text-[10px] sm:text-xs px-2 py-0.5",
-          activeCount > 0 ? "border-amber-500/30 text-amber-400 bg-amber-500/10" : ""
+          activeCount > 0 ? "border-neon-amber/30 text-neon-amber bg-neon-amber/10" : ""
         )}>
           <Zap className="w-3 h-3" />
           {activeCount} Active
         </Badge>
         {queuedCount > 0 && (
-          <Badge variant="outline" className="gap-1 text-[10px] sm:text-xs px-2 py-0.5 border-cyan-500/30 text-cyan-400 bg-cyan-500/10">
+          <Badge variant="outline" className="gap-1 text-[10px] sm:text-xs px-2 py-0.5 border-neon-cyan/30 text-neon-cyan bg-neon-cyan/10">
             <Clock className="w-3 h-3" />
             {queuedCount} Queued
           </Badge>
         )}
         {failedCount > 0 && (
-          <Badge variant="outline" className="gap-1 text-[10px] sm:text-xs px-2 py-0.5 border-red-500/30 text-red-400 bg-red-500/10">
+          <Badge variant="outline" className="gap-1 text-[10px] sm:text-xs px-2 py-0.5 border-destructive/30 text-destructive bg-destructive/10">
             <XCircle className="w-3 h-3" />
             {failedCount} Failed
           </Badge>
         )}
-        <Badge variant="outline" className="gap-1 text-[10px] sm:text-xs px-2 py-0.5 border-emerald-500/30 text-emerald-400 bg-emerald-500/10">
+        <Badge variant="outline" className="gap-1 text-[10px] sm:text-xs px-2 py-0.5 border-neon-green/30 text-neon-green bg-neon-green/10">
           <CheckCircle className="w-3 h-3" />
           {completedCount} Done
         </Badge>
@@ -223,7 +223,7 @@ export function PortalTaskPanel({
                         {task.title}
                       </span>
                       {isStuck && (
-                        <Badge variant="outline" className="text-[8px] sm:text-[9px] px-1 py-0 h-4 border-orange-500/30 text-orange-400 shrink-0">
+                        <Badge variant="outline" className="text-[8px] sm:text-[9px] px-1 py-0 h-4 border-neon-amber/30 text-neon-amber shrink-0">
                           Stuck
                         </Badge>
                       )}
@@ -242,7 +242,7 @@ export function PortalTaskPanel({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 sm:h-7 sm:w-7 text-muted-foreground hover:text-red-400"
+                          className="h-6 w-6 sm:h-7 sm:w-7 text-muted-foreground hover:text-destructive"
                           onClick={() => onCancelTask(task.id)}
                         >
                           <XCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -264,9 +264,9 @@ export function PortalTaskPanel({
 
                 {/* Queue Position Indicator */}
                 {task.status === 'queued' && queuePosition && (
-                  <div className="mt-2 sm:mt-3 p-2 rounded-lg bg-cyan-500/5 border border-cyan-500/20">
+                  <div className="mt-2 sm:mt-3 p-2 rounded-lg bg-neon-cyan/5 border border-neon-cyan/20">
                     <div className="flex items-center justify-between text-[10px] sm:text-xs">
-                      <div className="flex items-center gap-1.5 text-cyan-400">
+                      <div className="flex items-center gap-1.5 text-neon-cyan">
                         <Timer className="w-3 h-3" />
                         <span>Queue #{queuePosition.position}</span>
                       </div>
@@ -276,7 +276,7 @@ export function PortalTaskPanel({
                     </div>
                     <Progress 
                       value={(1 / (queuePosition.position + 1)) * 100} 
-                      className="h-1 mt-1.5 bg-cyan-500/10" 
+                      className="h-1 mt-1.5 bg-neon-cyan/10" 
                     />
                   </div>
                 )}
@@ -294,7 +294,7 @@ export function PortalTaskPanel({
 
                 {/* Error message - with wrapping */}
                 {task.status === 'failed' && task.error_message && (
-                  <p className="mt-2 text-[10px] sm:text-xs text-red-400/80 break-words">
+                  <p className="mt-2 text-[10px] sm:text-xs text-destructive/80 break-words">
                     {task.error_message}
                   </p>
                 )}

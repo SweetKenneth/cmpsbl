@@ -75,10 +75,10 @@ export function FoundryPreview() {
         <div className="flex items-center justify-center gap-2 sm:gap-3 mb-12 flex-wrap">
           {['Mint', 'Prime', 'Relic', 'Mythic', 'Apex'].map((tier, i) => {
             const colors = [
-              'bg-emerald-500/10 text-emerald-400 border-emerald-500/30',
+              'bg-neon-green/10 text-neon-green border-neon-green/30',
               'bg-sky-500/10 text-sky-400 border-sky-500/30',
-              'bg-amber-500/10 text-amber-400 border-amber-500/30',
-              'bg-purple-500/10 text-purple-400 border-purple-500/30',
+              'bg-neon-amber/10 text-neon-amber border-neon-amber/30',
+              'bg-neon-purple/10 text-neon-purple border-neon-purple/30',
               'bg-primary/10 text-primary border-primary/30',
             ];
             return (

@@ -267,15 +267,15 @@ const SDK_ACTIONS: SDKAction[] = [
 ];
 
 const MODULE_META: Record<string, { icon: React.ElementType; color: string }> = {
-  brain: { icon: Brain, color: "text-cyan-500" },
-  nexus: { icon: Zap, color: "text-green-500" },
-  decode: { icon: MessageSquare, color: "text-purple-500" },
-  defense: { icon: Shield, color: "text-amber-500" },
-  vision: { icon: Eye, color: "text-blue-500" },
-  dream: { icon: Moon, color: "text-pink-500" },
-  system: { icon: Settings, color: "text-red-500" },
+  brain: { icon: Brain, color: "text-neon-cyan" },
+  nexus: { icon: Zap, color: "text-neon-green" },
+  decode: { icon: MessageSquare, color: "text-neon-purple" },
+  defense: { icon: Shield, color: "text-neon-amber" },
+  vision: { icon: Eye, color: "text-neon-blue" },
+  dream: { icon: Moon, color: "text-neon-magenta" },
+  system: { icon: Settings, color: "text-destructive" },
   core: { icon: Settings, color: "text-slate-500" },
-  ripple: { icon: Network, color: "text-indigo-500" },
+  ripple: { icon: Network, color: "text-primary" },
 };
 
 export function SDKQuickReference() {
@@ -320,7 +320,7 @@ export function SDKQuickReference() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-neon-cyan to-neon-blue flex items-center justify-center">
             <BookOpen className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -436,11 +436,11 @@ export function SDKQuickReference() {
                                 <div className="space-y-1">
                                   {action.params.map(param => (
                                     <div key={param.name} className="flex items-center gap-2 text-sm font-mono">
-                                      <span className={param.required ? "text-amber-500" : "text-muted-foreground"}>
+                                      <span className={param.required ? "text-neon-amber" : "text-muted-foreground"}>
                                         {param.name}
                                       </span>
                                       <span className="text-xs text-muted-foreground">:</span>
-                                      <span className="text-cyan-500">{param.type}</span>
+                                      <span className="text-neon-cyan">{param.type}</span>
                                       {param.required && (
                                         <Badge variant="outline" className="text-[10px] h-4 px-1">required</Badge>
                                       )}
@@ -461,7 +461,7 @@ export function SDKQuickReference() {
                             {/* Returns */}
                             <div>
                               <h4 className="text-xs font-semibold text-muted-foreground mb-2">Returns</h4>
-                              <code className="text-xs font-mono text-emerald-500">{action.returns}</code>
+                              <code className="text-xs font-mono text-neon-green">{action.returns}</code>
                             </div>
                             
                             {/* Tags */}

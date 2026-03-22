@@ -100,11 +100,11 @@ export function AgencyTaskFeed({
 
   const getLogIcon = (logType: AgencyTaskLog['log_type']) => {
     switch (logType) {
-      case 'completion': return <CheckCircle className="w-3 h-3 text-emerald-400" />;
-      case 'error': return <XCircle className="w-3 h-3 text-red-400" />;
-      case 'progress': return <Zap className="w-3 h-3 text-amber-400" />;
-      case 'insight': return <Brain className="w-3 h-3 text-purple-400" />;
-      default: return <Activity className="w-3 h-3 text-cyan-400" />;
+      case 'completion': return <CheckCircle className="w-3 h-3 text-neon-green" />;
+      case 'error': return <XCircle className="w-3 h-3 text-destructive" />;
+      case 'progress': return <Zap className="w-3 h-3 text-neon-amber" />;
+      case 'insight': return <Brain className="w-3 h-3 text-neon-purple" />;
+      default: return <Activity className="w-3 h-3 text-neon-cyan" />;
     }
   };
 

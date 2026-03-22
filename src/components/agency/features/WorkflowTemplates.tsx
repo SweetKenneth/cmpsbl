@@ -47,19 +47,19 @@ export function WorkflowCard({
   const estimatedTime = estimateWorkflowDuration(workflow, teamSize);
   
   const difficultyColors = {
-    beginner: 'bg-green-500/10 text-green-600',
-    intermediate: 'bg-blue-500/10 text-blue-600',
-    advanced: 'bg-purple-500/10 text-purple-600',
-    expert: 'bg-red-500/10 text-red-600',
+    beginner: 'bg-neon-green/10 text-neon-green',
+    intermediate: 'bg-neon-blue/10 text-neon-blue',
+    advanced: 'bg-neon-purple/10 text-neon-purple',
+    expert: 'bg-destructive/10 text-destructive',
   };
   
   const categoryColors = {
-    research: 'from-blue-500 to-indigo-600',
-    content: 'from-violet-500 to-purple-600',
-    analysis: 'from-cyan-500 to-blue-600',
-    outreach: 'from-orange-500 to-red-600',
+    research: 'from-neon-blue to-primary',
+    content: 'from-neon-purple to-neon-purple',
+    analysis: 'from-neon-cyan to-neon-blue',
+    outreach: 'from-neon-amber to-destructive',
     audit: 'from-slate-500 to-gray-600',
-    growth: 'from-lime-500 to-green-600',
+    growth: 'from-lime-500 to-neon-green',
   };
   
   return (
@@ -193,9 +193,9 @@ interface WorkflowStepItemProps {
 function WorkflowStepItem({ step, index, isLast, status = 'pending' }: WorkflowStepItemProps) {
   const statusColors = {
     pending: 'bg-muted text-muted-foreground',
-    running: 'bg-amber-500 text-white animate-pulse',
-    completed: 'bg-emerald-500 text-white',
-    failed: 'bg-red-500 text-white',
+    running: 'bg-neon-amber text-white animate-pulse',
+    completed: 'bg-neon-green text-white',
+    failed: 'bg-destructive text-white',
   };
   
   return (
@@ -306,7 +306,7 @@ export function WorkflowPicker({ teamSpecs, onSelect, className }: WorkflowPicke
       {!search && !activeCategory && (
         <div className="space-y-2">
           <h3 className="text-sm font-medium flex items-center gap-2">
-            <Zap className="w-4 h-4 text-amber-500" />
+            <Zap className="w-4 h-4 text-neon-amber" />
             Popular Workflows
           </h3>
           <div className="grid gap-4">

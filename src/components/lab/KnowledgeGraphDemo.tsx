@@ -83,7 +83,7 @@ export function KnowledgeGraphDemo() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between pb-4 border-b border-border/50">
-        <div className="flex items-center gap-2"><GitBranch className="w-5 h-5 text-emerald-500" /><span className="text-sm font-medium">Knowledge Graph</span></div>
+        <div className="flex items-center gap-2"><GitBranch className="w-5 h-5 text-neon-green" /><span className="text-sm font-medium">Knowledge Graph</span></div>
         <div className="flex items-center gap-2 text-xs">
           <Badge variant="outline" className="gap-1"><Network className="w-3 h-3" />{graphStats.nodes.toLocaleString()} nodes</Badge>
           <Badge variant="outline" className="gap-1"><Database className="w-3 h-3" />{graphStats.edges.toLocaleString()} edges</Badge>
@@ -117,7 +117,7 @@ export function KnowledgeGraphDemo() {
                 <div key={result.id} className="flex items-start gap-2 p-2 rounded bg-background/50 border border-border/50">
                   <Badge variant="outline" className="text-[10px] shrink-0">{result.memory_type}</Badge>
                   <p className="text-xs flex-1">{result.content}</p>
-                  <Badge className="text-[10px] bg-emerald-500/20 text-emerald-400 border-emerald-500/30">{(result.value_score * 100).toFixed(0)}%</Badge>
+                  <Badge className="text-[10px] bg-neon-green/20 text-neon-green border-neon-green/30">{(result.value_score * 100).toFixed(0)}%</Badge>
                 </div>
               ))}
             </Card>
@@ -130,9 +130,9 @@ export function KnowledgeGraphDemo() {
       <AnimatePresence>
         {insights.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-            <Card className="p-4 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border-emerald-500/20">
-              <div className="flex items-center gap-2 mb-3"><Lightbulb className="w-4 h-4 text-emerald-500" /><span className="text-sm font-medium">Synthesized Insights</span></div>
-              <ul className="space-y-2">{insights.map((insight, i) => <li key={i} className="text-sm flex items-start gap-2"><ArrowRight className="w-3 h-3 text-emerald-500 mt-1 shrink-0" />{insight}</li>)}</ul>
+            <Card className="p-4 bg-gradient-to-br from-neon-green/5 to-neon-cyan/5 border-neon-green/20">
+              <div className="flex items-center gap-2 mb-3"><Lightbulb className="w-4 h-4 text-neon-green" /><span className="text-sm font-medium">Synthesized Insights</span></div>
+              <ul className="space-y-2">{insights.map((insight, i) => <li key={i} className="text-sm flex items-start gap-2"><ArrowRight className="w-3 h-3 text-neon-green mt-1 shrink-0" />{insight}</li>)}</ul>
             </Card>
           </motion.div>
         )}

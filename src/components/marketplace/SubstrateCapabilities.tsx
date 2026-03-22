@@ -23,7 +23,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'memory',
     title: 'Memory & Context',
     icon: Brain,
-    color: 'from-cyan-500 to-blue-600',
+    color: 'from-neon-cyan to-neon-blue',
     description: 'Persistent context across sessions with multi-tier memory architecture',
     features: [
       { name: 'Context Recall', description: 'Retrieve relevant memories from previous interactions', icon: Search },
@@ -38,7 +38,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'analysis',
     title: 'Analysis & Understanding',
     icon: Microscope,
-    color: 'from-violet-500 to-purple-600',
+    color: 'from-neon-purple to-neon-purple',
     description: 'Deep understanding of content, intent, and emotional context',
     features: [
       { name: 'Mood Detection', description: 'Analyze emotional tone and sentiment in real-time', icon: Activity },
@@ -53,7 +53,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'relationships',
     title: 'Relationship Mapping',
     icon: Network,
-    color: 'from-emerald-500 to-teal-600',
+    color: 'from-neon-green to-teal-600',
     description: 'Build and traverse semantic connections between concepts',
     features: [
       { name: 'Entity Extraction', description: 'Identify people, places, and concepts from text', icon: Users },
@@ -68,7 +68,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'learning',
     title: 'Adaptive Learning',
     icon: TrendingUp,
-    color: 'from-amber-500 to-orange-600',
+    color: 'from-neon-amber to-orange-600',
     description: 'Self-improving systems that get smarter with each interaction',
     features: [
       { name: 'Difficulty Scaling', description: 'Adjust complexity based on user mastery', icon: Gauge },
@@ -83,7 +83,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'security',
     title: 'Security & Defense',
     icon: Shield,
-    color: 'from-red-500 to-rose-600',
+    color: 'from-destructive to-neon-magenta',
     description: 'Built-in protection against threats and misuse',
     features: [
       { name: 'Bot Detection', description: 'Identify and block automated abuse', icon: Fingerprint },
@@ -98,7 +98,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'evolution',
     title: 'Dream & Evolution',
     icon: Moon,
-    color: 'from-indigo-500 to-violet-600',
+    color: 'from-primary to-neon-purple',
     description: 'Nocturnal processing for system-wide improvements',
     features: [
       { name: 'Dream Cycles', description: 'Background processing for optimization', icon: Moon },
@@ -113,7 +113,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'observability',
     title: 'Observability & Health',
     icon: Eye,
-    color: 'from-sky-500 to-cyan-600',
+    color: 'from-sky-500 to-neon-cyan',
     description: 'Real-time monitoring and health tracking',
     features: [
       { name: 'Health Monitoring', description: 'Track system health in real-time', icon: HeartPulse },
@@ -128,7 +128,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'accessibility',
     title: 'Human Compatibility',
     icon: Accessibility,
-    color: 'from-pink-500 to-rose-600',
+    color: 'from-neon-magenta to-neon-magenta',
     description: 'WCAG compliance and accessibility built-in',
     features: [
       { name: 'WCAG 2.2 Scanning', description: 'Automated accessibility auditing', icon: Search },
@@ -164,12 +164,12 @@ export function SubstrateCapabilities({ compact = false }: SubstrateCapabilities
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
-          <Badge className="mb-3 gap-2 px-4 py-1.5 bg-gradient-to-r from-cyan-500/20 to-violet-500/20 text-cyan-400 border-cyan-500/30">
+          <Badge className="mb-3 gap-2 px-4 py-1.5 bg-gradient-to-r from-neon-cyan/20 to-neon-purple/20 text-neon-cyan border-neon-cyan/30">
             <Cpu className="w-3.5 h-3.5" />
             Built Into Every Template
           </Badge>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
-            <span className="bg-gradient-to-r from-cyan-400 via-violet-500 to-purple-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-purple bg-clip-text text-transparent">
               Substrate Capabilities
             </span>
           </h2>

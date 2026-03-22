@@ -114,7 +114,7 @@ Full documentation: https://cmpsbl.com/docs/persistent-memory
     name: 'Express.js Agent',
     description: 'Backend agent with memory integration',
     framework: 'Express 4',
-    color: 'bg-green-500/10 text-green-500 border-green-500/20',
+    color: 'bg-neon-green/10 text-neon-green border-neon-green/20',
     files: {
       'package.json': JSON.stringify({
         name: 'express-memory-agent',
@@ -214,7 +214,7 @@ PORT=3000
     name: 'Python Agent',
     description: 'LangChain-compatible memory agent',
     framework: 'Python 3.11',
-    color: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+    color: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20',
     files: {
       'requirements.txt': `cmpsbl-memory>=1.0.0
 python-dotenv>=1.0.0

@@ -110,13 +110,13 @@ export function ReceiptsDashboard() {
   function getPhaseIcon(phase: string) {
     switch (phase) {
       case 'verified':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-neon-green" />;
       case 'failed':
-        return <XCircle className="h-4 w-4 text-red-500" />;
+        return <XCircle className="h-4 w-4 text-destructive" />;
       case 'aborted':
-        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+        return <AlertTriangle className="h-4 w-4 text-neon-amber" />;
       default:
-        return <Clock className="h-4 w-4 text-blue-500" />;
+        return <Clock className="h-4 w-4 text-neon-blue" />;
     }
   }
 
@@ -160,7 +160,7 @@ export function ReceiptsDashboard() {
         <Card>
           <CardContent className="pt-4">
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-500" />
+              <CheckCircle className="h-5 w-5 text-neon-green" />
               <div>
                 <p className="text-2xl font-bold">{stats?.successful_evolutions || 0}</p>
                 <p className="text-xs text-muted-foreground">Verified</p>
@@ -172,7 +172,7 @@ export function ReceiptsDashboard() {
         <Card>
           <CardContent className="pt-4">
             <div className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-blue-500" />
+              <TrendingUp className="h-5 w-5 text-neon-blue" />
               <div>
                 <p className="text-2xl font-bold">
                   {((stats?.avg_confidence || 0) * 100).toFixed(0)}%
@@ -186,7 +186,7 @@ export function ReceiptsDashboard() {
         <Card>
           <CardContent className="pt-4">
             <div className="flex items-center gap-2">
-              <Activity className="h-5 w-5 text-purple-500" />
+              <Activity className="h-5 w-5 text-neon-purple" />
               <div>
                 <p className="text-2xl font-bold">
                   {((stats?.avg_test_pass_rate || 0) * 100).toFixed(0)}%
@@ -204,9 +204,9 @@ export function ReceiptsDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               {circuit?.is_blocking ? (
-                <ShieldOff className="h-5 w-5 text-red-500" />
+                <ShieldOff className="h-5 w-5 text-destructive" />
               ) : (
-                <Shield className="h-5 w-5 text-green-500" />
+                <Shield className="h-5 w-5 text-neon-green" />
               )}
               Safety Switch
             </CardTitle>

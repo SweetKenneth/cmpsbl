@@ -134,12 +134,12 @@ const LAYERS: LayerDef[] = [
 ];
 
 const colorMap: Record<string, { bg: string; border: string; text: string; progress: string }> = {
-  cyan: { bg: 'bg-cyan-500/10', border: 'border-cyan-500/30', text: 'text-cyan-400', progress: '[&>div]:bg-cyan-500' },
-  violet: { bg: 'bg-violet-500/10', border: 'border-violet-500/30', text: 'text-violet-400', progress: '[&>div]:bg-violet-500' },
-  blue: { bg: 'bg-blue-500/10', border: 'border-blue-500/30', text: 'text-blue-400', progress: '[&>div]:bg-blue-500' },
-  emerald: { bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', text: 'text-emerald-400', progress: '[&>div]:bg-emerald-500' },
-  amber: { bg: 'bg-amber-500/10', border: 'border-amber-500/30', text: 'text-amber-400', progress: '[&>div]:bg-amber-500' },
-  red: { bg: 'bg-red-500/10', border: 'border-red-500/30', text: 'text-red-400', progress: '[&>div]:bg-red-500' },
+  cyan: { bg: 'bg-neon-cyan/10', border: 'border-neon-cyan/30', text: 'text-neon-cyan', progress: '[&>div]:bg-neon-cyan' },
+  violet: { bg: 'bg-neon-purple/10', border: 'border-neon-purple/30', text: 'text-neon-purple', progress: '[&>div]:bg-neon-purple' },
+  blue: { bg: 'bg-neon-blue/10', border: 'border-neon-blue/30', text: 'text-neon-blue', progress: '[&>div]:bg-neon-blue' },
+  emerald: { bg: 'bg-neon-green/10', border: 'border-neon-green/30', text: 'text-neon-green', progress: '[&>div]:bg-neon-green' },
+  amber: { bg: 'bg-neon-amber/10', border: 'border-neon-amber/30', text: 'text-neon-amber', progress: '[&>div]:bg-neon-amber' },
+  red: { bg: 'bg-destructive/10', border: 'border-destructive/30', text: 'text-destructive', progress: '[&>div]:bg-destructive' },
 };
 
 function ZoneRow({ moduleKey, label, modules }: { moduleKey: string; label: string; modules: Record<string, boolean> }) {
@@ -151,27 +151,27 @@ function ZoneRow({ moduleKey, label, modules }: { moduleKey: string; label: stri
     <div className="flex items-center gap-3 py-2 px-3 rounded-lg bg-muted/10 border border-border/10">
       <div className={cn(
         "w-2 h-2 rounded-full shrink-0",
-        isHealthy ? "bg-emerald-500" : "bg-red-500",
+        isHealthy ? "bg-neon-green" : "bg-destructive",
         isHealthy && "animate-pulse"
       )} />
       <span className="text-xs font-mono font-medium text-foreground flex-1">{label}</span>
       <Badge variant="outline" className={cn(
         "text-[9px] h-5 gap-1",
         breaker.state === 'closed' 
-          ? "border-emerald-500/30 text-emerald-400 bg-emerald-500/10"
+          ? "border-neon-green/30 text-neon-green bg-neon-green/10"
           : breaker.state === 'open'
-          ? "border-red-500/30 text-red-400 bg-red-500/10"
-          : "border-amber-500/30 text-amber-400 bg-amber-500/10"
+          ? "border-destructive/30 text-destructive bg-destructive/10"
+          : "border-neon-amber/30 text-neon-amber bg-neon-amber/10"
       )}>
         {breaker.state === 'closed' ? <Unlock className="w-2.5 h-2.5" /> : <Lock className="w-2.5 h-2.5" />}
         {stateLabel}
       </Badge>
       {breaker.failures > 0 && (
-        <span className="text-[9px] text-red-400 font-mono">{breaker.failures}f</span>
+        <span className="text-[9px] text-destructive font-mono">{breaker.failures}f</span>
       )}
       <span className={cn(
         "text-[10px] font-mono font-semibold w-10 text-right",
-        isHealthy ? "text-emerald-400" : "text-red-400"
+        isHealthy ? "text-neon-green" : "text-destructive"
       )}>
         {isHealthy ? '100%' : '0%'}
       </span>
@@ -213,7 +213,7 @@ const LayerCard = memo(function LayerCard({
             <div className="text-right">
               <div className={cn(
                 "text-xl font-black font-mono",
-                health >= 80 ? "text-emerald-400" : health >= 40 ? "text-amber-400" : "text-red-400"
+                health >= 80 ? "text-neon-green" : health >= 40 ? "text-neon-amber" : "text-destructive"
               )}>
                 {health}%
               </div>
@@ -312,11 +312,11 @@ export default function SystemIntegrity() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex items-center gap-3 p-4 rounded-xl border border-red-500/30 bg-red-500/10"
+            className="flex items-center gap-3 p-4 rounded-xl border border-destructive/30 bg-destructive/10"
           >
-            <AlertTriangle className="w-5 h-5 text-red-400 shrink-0" />
+            <AlertTriangle className="w-5 h-5 text-destructive shrink-0" />
             <div>
-              <p className="text-sm font-semibold text-red-400">Integrity Degraded</p>
+              <p className="text-sm font-semibold text-destructive">Integrity Degraded</p>
               <p className="text-xs text-muted-foreground">
                 {breakerSummary.open} safety switch{breakerSummary.open !== 1 ? 'es' : ''} open
                 {breakerSummary.unhealthy.length > 0 && ` · Affected: ${breakerSummary.unhealthy.join(', ')}`}

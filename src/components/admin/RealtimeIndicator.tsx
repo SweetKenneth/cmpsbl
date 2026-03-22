@@ -24,7 +24,7 @@ export function RealtimeIndicator() {
             aria-label={status.isReconnecting ? "Reconnecting to realtime" : status.isConnected ? "Realtime connected" : "Realtime disconnected — click to reconnect"}
             className={cn(
               "relative transition-all duration-300",
-              status.isConnected ? "text-green-500 hover:text-green-600" : "text-red-500 hover:text-red-600",
+              status.isConnected ? "text-neon-green hover:text-neon-green" : "text-destructive hover:text-destructive",
               status.isReconnecting && "animate-pulse cursor-wait"
             )}
           >
@@ -36,7 +36,7 @@ export function RealtimeIndicator() {
               <WifiOff className="w-4 h-4" />
             )}
             {status.isConnected && !status.isReconnecting && (
-              <span className="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="absolute top-0 right-0 w-2 h-2 bg-neon-green rounded-full animate-pulse" />
             )}
           </Button>
         </TooltipTrigger>
@@ -54,7 +54,7 @@ export function RealtimeIndicator() {
               </p>
             )}
             {!status.isConnected && (
-              <p className="text-xs text-yellow-500 mt-2">
+              <p className="text-xs text-neon-amber mt-2">
                 Click to reconnect
               </p>
             )}

@@ -72,15 +72,15 @@ const STATUS_ICON: Record<string, typeof CheckCircle2> = {
 };
 
 const STATUS_COLOR: Record<string, string> = {
-  sent: "text-green-400",
-  generated: "text-yellow-400",
-  send_failed: "text-red-400",
+  sent: "text-neon-green",
+  generated: "text-neon-amber",
+  send_failed: "text-destructive",
 };
 
 const SYSTEM_COLOR: Record<string, string> = {
-  ONLINE: "bg-green-500/20 text-green-400 border-green-500/30",
-  DEGRADED: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-  CRITICAL: "bg-red-500/20 text-red-400 border-red-500/30",
+  ONLINE: "bg-neon-green/20 text-neon-green border-neon-green/30",
+  DEGRADED: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
+  CRITICAL: "bg-destructive/20 text-destructive border-destructive/30",
 };
 
 export default function OwnerReports() {
@@ -142,7 +142,7 @@ export default function OwnerReports() {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="max-w-sm">
           <CardContent className="py-8 text-center">
-            <Shield className="w-12 h-12 mx-auto mb-4 text-red-400" />
+            <Shield className="w-12 h-12 mx-auto mb-4 text-destructive" />
             <h2 className="text-xl font-semibold mb-2">Governor Access Required</h2>
             <p className="text-sm text-muted-foreground">Owner Reports are restricted to Governors.</p>
           </CardContent>

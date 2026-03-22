@@ -17,15 +17,15 @@ import type { DryRunResult, SimulatedChange } from '@/lib/evolve/dry-run-preview
 import type { EvolutionMetrics } from '@/lib/evolve/evolution-delta';
 
 const RISK_COLORS: Record<string, string> = {
-  low: 'bg-emerald-500/20 text-emerald-400',
-  medium: 'bg-amber-500/20 text-amber-400',
-  high: 'bg-orange-500/20 text-orange-400',
+  low: 'bg-neon-green/20 text-neon-green',
+  medium: 'bg-neon-amber/20 text-neon-amber',
+  high: 'bg-neon-amber/20 text-neon-amber',
   critical: 'bg-destructive/20 text-destructive',
 };
 
 const RECOMMENDATION_CONFIG = {
-  proceed: { icon: CheckCircle, label: 'Safe to Proceed', color: 'text-emerald-400' },
-  review: { icon: Eye, label: 'Needs Human Review', color: 'text-amber-400' },
+  proceed: { icon: CheckCircle, label: 'Safe to Proceed', color: 'text-neon-green' },
+  review: { icon: Eye, label: 'Needs Human Review', color: 'text-neon-amber' },
   abort: { icon: XOctagon, label: 'Not Recommended', color: 'text-destructive' },
 };
 
@@ -39,14 +39,14 @@ function MetricRow({ label, before, after }: { label: string; before: number; af
       <div className="flex items-center gap-3">
         <span className="text-sm font-mono">{before.toFixed(1)}</span>
         <ArrowRight className="w-3 h-3 text-muted-foreground" />
-        <span className={`text-sm font-mono font-medium ${degraded ? 'text-destructive' : improved ? 'text-emerald-400' : 'text-muted-foreground'}`}>
+        <span className={`text-sm font-mono font-medium ${degraded ? 'text-destructive' : improved ? 'text-neon-green' : 'text-muted-foreground'}`}>
           {after.toFixed(1)}
         </span>
         <div className="flex items-center gap-1 w-16 justify-end">
           {degraded && <TrendingDown className="w-3 h-3 text-destructive" />}
-          {improved && <TrendingUp className="w-3 h-3 text-emerald-400" />}
+          {improved && <TrendingUp className="w-3 h-3 text-neon-green" />}
           {!degraded && !improved && <Minus className="w-3 h-3 text-muted-foreground" />}
-          <span className={`text-xs font-mono ${degraded ? 'text-destructive' : improved ? 'text-emerald-400' : 'text-muted-foreground'}`}>
+          <span className={`text-xs font-mono ${degraded ? 'text-destructive' : improved ? 'text-neon-green' : 'text-muted-foreground'}`}>
             {delta > 0 ? '+' : ''}{delta.toFixed(1)}
           </span>
         </div>
@@ -158,13 +158,13 @@ export function DryRunPreview() {
               </div>
               <div>
                 <span className="text-xs text-muted-foreground">Health Δ</span>
-                <p className={`text-sm font-mono ${result.changeImpact.projectedHealthChange >= 0 ? 'text-emerald-400' : 'text-destructive'}`}>
+                <p className={`text-sm font-mono ${result.changeImpact.projectedHealthChange >= 0 ? 'text-neon-green' : 'text-destructive'}`}>
                   {result.changeImpact.projectedHealthChange >= 0 ? '+' : ''}{result.changeImpact.projectedHealthChange.toFixed(2)}
                 </p>
               </div>
               <div>
                 <span className="text-xs text-muted-foreground">Debt Δ</span>
-                <p className={`text-sm font-mono ${result.changeImpact.projectedDebtChange <= 0 ? 'text-emerald-400' : 'text-destructive'}`}>
+                <p className={`text-sm font-mono ${result.changeImpact.projectedDebtChange <= 0 ? 'text-neon-green' : 'text-destructive'}`}>
                   {result.changeImpact.projectedDebtChange > 0 ? '+' : ''}{result.changeImpact.projectedDebtChange.toFixed(1)}
                 </p>
               </div>

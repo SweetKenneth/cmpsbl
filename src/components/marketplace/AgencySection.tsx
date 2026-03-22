@@ -26,7 +26,7 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
   return (
     <section className="py-12 sm:py-16 relative overflow-hidden" id="agencies">
       {/* Background accent */}
-      <div className="absolute inset-0 bg-gradient-to-b from-violet-500/[0.02] via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-neon-purple/[0.02] via-transparent to-transparent pointer-events-none" />
       
       <div className="container mx-auto px-4 relative">
         {/* Section header */}
@@ -36,7 +36,7 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
           viewport={{ once: true }}
           className="text-center mb-10"
         >
-          <Badge className="mb-4 gap-1.5 bg-gradient-to-r from-violet-500 to-purple-500 text-white border-0 shadow-lg">
+          <Badge className="mb-4 gap-1.5 bg-gradient-to-r from-neon-purple to-neon-purple text-white border-0 shadow-lg">
             <Building2 className="w-3.5 h-3.5" />
             For Agencies
           </Badge>
@@ -141,7 +141,7 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
                         <span className="text-sm text-muted-foreground">/mo</span>
                       </div>
                       {billingCycle === 'annual' && (
-                        <p className="text-xs text-emerald-600">
+                        <p className="text-xs text-neon-green">
                           Billed annually (${(pack.annualPrice / 100).toLocaleString()}/yr)
                         </p>
                       )}
@@ -151,7 +151,7 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
                     <ul className="space-y-2 mb-6">
                       {pack.entitlements.map((entitlement, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm">
-                          <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                          <Check className="w-4 h-4 text-neon-green shrink-0 mt-0.5" />
                           {entitlement}
                         </li>
                       ))}
@@ -182,9 +182,9 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
           viewport={{ once: true }}
         >
           {[
-            { icon: Shield, label: 'Commercial License', color: 'text-emerald-500' },
-            { icon: Users, label: 'Multi-Client Rights', color: 'text-violet-500' },
-            { icon: Zap, label: 'Priority Support', color: 'text-orange-500' },
+            { icon: Shield, label: 'Commercial License', color: 'text-neon-green' },
+            { icon: Users, label: 'Multi-Client Rights', color: 'text-neon-purple' },
+            { icon: Zap, label: 'Priority Support', color: 'text-neon-amber' },
           ].map(({ icon: TrustIcon, label, color }) => (
             <div key={label} className="flex items-center gap-2 text-sm text-muted-foreground">
               <TrustIcon className={`w-4 h-4 ${color}`} />

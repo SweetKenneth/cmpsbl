@@ -74,14 +74,14 @@ export default function BrainActivationTest() {
           {results.activation_status && (
             <div className={`p-4 rounded-lg border ${
               results.activation_status.overall_status === 'fully_operational'
-                ? 'bg-emerald-500/10 border-emerald-500/30'
-                : 'bg-yellow-500/10 border-yellow-500/30'
+                ? 'bg-neon-green/10 border-neon-green/30'
+                : 'bg-neon-amber/10 border-neon-amber/30'
             }`}>
               <div className="flex items-center gap-2 mb-2">
                 {results.activation_status.overall_status === 'fully_operational' ? (
-                  <CheckCircle className="h-5 w-5 text-emerald-400" />
+                  <CheckCircle className="h-5 w-5 text-neon-green" />
                 ) : (
-                  <XCircle className="h-5 w-5 text-yellow-400" />
+                  <XCircle className="h-5 w-5 text-neon-amber" />
                 )}
                 <span className="font-semibold text-foreground">
                   Status: {results.activation_status.overall_status}
@@ -105,16 +105,16 @@ export default function BrainActivationTest() {
                   key={idx}
                   className={`p-3 rounded border text-sm ${
                     test.status === 'passed'
-                      ? 'bg-emerald-500/5 border-emerald-500/20'
-                      : 'bg-red-500/5 border-red-500/20'
+                      ? 'bg-neon-green/5 border-neon-green/20'
+                      : 'bg-destructive/5 border-destructive/20'
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-medium text-foreground">{test.name}</span>
                     <span className={`text-xs px-2 py-1 rounded ${
                       test.status === 'passed'
-                        ? 'bg-emerald-500/20 text-emerald-300'
-                        : 'bg-red-500/20 text-red-300'
+                        ? 'bg-neon-green/20 text-neon-green'
+                        : 'bg-destructive/20 text-destructive'
                     }`}>
                       {test.status}
                     </span>
@@ -125,7 +125,7 @@ export default function BrainActivationTest() {
                     </div>
                   )}
                   {test.error && (
-                    <div className="text-xs text-red-400 mt-1">
+                    <div className="text-xs text-destructive mt-1">
                       Error: {test.error}
                     </div>
                   )}
@@ -135,8 +135,8 @@ export default function BrainActivationTest() {
           )}
 
           {results.error && (
-            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-              <p className="text-sm text-red-400">{results.error}</p>
+            <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30">
+              <p className="text-sm text-destructive">{results.error}</p>
             </div>
           )}
         </div>

@@ -35,10 +35,10 @@ export function AgentAvatar({
   
   const statusColors = {
     idle: 'bg-slate-400',
-    working: 'bg-emerald-500',
-    thinking: 'bg-amber-500',
-    success: 'bg-green-500',
-    error: 'bg-red-500',
+    working: 'bg-neon-green',
+    thinking: 'bg-neon-amber',
+    success: 'bg-neon-green',
+    error: 'bg-destructive',
   };
   
   const animationVariants = {
@@ -123,7 +123,7 @@ export function AgentAvatar({
       {/* Streak badge */}
       {mood && mood.streak >= 3 && (
         <motion.div
-          className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5"
+          className="absolute -top-1 -right-1 bg-neon-amber text-white text-xs font-bold rounded-full px-1.5 py-0.5"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
         >
@@ -273,7 +273,7 @@ export function AgentCard({
             <span>✅ {tasksCompleted} tasks</span>
             {status === 'working' && (
               <motion.span
-                className="text-emerald-500"
+                className="text-neon-green"
                 animate={{ opacity: [1, 0.5, 1] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
               >

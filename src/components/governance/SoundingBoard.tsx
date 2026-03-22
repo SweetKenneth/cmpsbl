@@ -22,19 +22,19 @@ import {
 
 // Post type metadata
 const POST_TYPE_META: Record<string, { label: string; icon: React.ElementType; color: string }> = {
-  capability_outcome: { label: 'Outcome Report', icon: Target, color: 'text-emerald-400' },
-  clm_request: { label: 'CLM Request', icon: TrendingUp, color: 'text-blue-400' },
-  discovery: { label: 'Discovery', icon: Sparkles, color: 'text-amber-400' },
-  anomaly: { label: 'Anomaly', icon: AlertTriangle, color: 'text-red-400' },
-  milestone: { label: 'Milestone', icon: CheckCircle2, color: 'text-cyan-400' },
+  capability_outcome: { label: 'Outcome Report', icon: Target, color: 'text-neon-green' },
+  clm_request: { label: 'CLM Request', icon: TrendingUp, color: 'text-neon-blue' },
+  discovery: { label: 'Discovery', icon: Sparkles, color: 'text-neon-amber' },
+  anomaly: { label: 'Anomaly', icon: AlertTriangle, color: 'text-destructive' },
+  milestone: { label: 'Milestone', icon: CheckCircle2, color: 'text-neon-cyan' },
 };
 
 const STATUS_META: Record<string, { label: string; icon: React.ElementType; color: string }> = {
   open: { label: 'Open', icon: MessageSquare, color: 'text-muted-foreground' },
-  acknowledged: { label: 'Acknowledged', icon: Eye, color: 'text-blue-400' },
-  approved: { label: 'Approved for Review', icon: CheckCircle2, color: 'text-emerald-400' },
-  scheduled: { label: 'Scheduled for Audit', icon: Clock, color: 'text-amber-400' },
-  declined: { label: 'Declined', icon: XCircle, color: 'text-red-400' },
+  acknowledged: { label: 'Acknowledged', icon: Eye, color: 'text-neon-blue' },
+  approved: { label: 'Approved for Review', icon: CheckCircle2, color: 'text-neon-green' },
+  scheduled: { label: 'Scheduled for Audit', icon: Clock, color: 'text-neon-amber' },
+  declined: { label: 'Declined', icon: XCircle, color: 'text-destructive' },
 };
 
 function getModuleMeta(slug: string) {
@@ -42,7 +42,7 @@ function getModuleMeta(slug: string) {
   return {
     name: mod?.name ?? slug.toUpperCase(),
     icon: mod?.icon ?? Brain,
-    color: mod?.color ?? 'blue-500',
+    color: mod?.color ?? 'neon-blue',
   };
 }
 
@@ -140,7 +140,7 @@ export function SoundingBoard() {
           </p>
         </div>
         {openCount > 0 && (
-          <Badge variant="outline" className="border-amber-500/40 text-amber-400 bg-amber-500/10">
+          <Badge variant="outline" className="border-neon-amber/40 text-neon-amber bg-neon-amber/10">
             {openCount} open
           </Badge>
         )}
@@ -217,7 +217,7 @@ export function SoundingBoard() {
                         <span>{new Date(post.created_at).toLocaleDateString()}</span>
                         <span>Confidence: {Math.round((post.confidence || 0) * 100)}%</span>
                         {post.severity !== 'info' && (
-                          <span className={post.severity === 'critical' ? 'text-red-400' : 'text-amber-400'}>
+                          <span className={post.severity === 'critical' ? 'text-destructive' : 'text-neon-amber'}>
                             {post.severity}
                           </span>
                         )}
@@ -250,7 +250,7 @@ export function SoundingBoard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-xs h-7 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                        className="text-xs h-7 border-neon-green/30 text-neon-green hover:bg-neon-green/10"
                         onClick={() => handleAction(post.id, 'approved')}
                         disabled={actionMutation.isPending}
                       >
@@ -260,7 +260,7 @@ export function SoundingBoard() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="text-xs h-7 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                        className="text-xs h-7 border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
                         onClick={() => handleAction(post.id, 'scheduled')}
                         disabled={actionMutation.isPending}
                       >
@@ -277,7 +277,7 @@ export function SoundingBoard() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="text-xs h-7 border-red-500/30 text-red-400 hover:bg-red-500/10 shrink-0"
+                          className="text-xs h-7 border-destructive/30 text-destructive hover:bg-destructive/10 shrink-0"
                           onClick={() => handleAction(post.id, 'declined')}
                           disabled={actionMutation.isPending}
                         >

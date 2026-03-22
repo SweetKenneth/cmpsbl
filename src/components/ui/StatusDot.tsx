@@ -11,9 +11,9 @@ interface StatusDotProps {
 }
 
 const colors: Record<StatusDotProps['status'], string> = {
-  healthy: 'bg-green-500',
-  degraded: 'bg-yellow-500',
-  critical: 'bg-red-500',
+  healthy: 'bg-neon-green',
+  degraded: 'bg-neon-amber',
+  critical: 'bg-destructive',
   unknown: 'bg-muted-foreground',
   offline: 'bg-muted-foreground/50',
 };

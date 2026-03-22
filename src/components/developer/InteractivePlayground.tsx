@@ -105,7 +105,7 @@ export function InteractivePlayground() {
             </div>
           </div>
           <Badge variant="outline" className="gap-1">
-            <Activity className="w-3 h-3 text-green-500" />
+            <Activity className="w-3 h-3 text-neon-green" />
             Live
           </Badge>
         </div>
@@ -203,15 +203,15 @@ export function InteractivePlayground() {
                 className={cn(
                   "rounded-lg border p-4 text-sm",
                   result.success 
-                    ? "bg-emerald-500/5 border-emerald-500/20" 
+                    ? "bg-neon-green/5 border-neon-green/20" 
                     : "bg-destructive/5 border-destructive/20"
                 )}
               >
                 <div className="flex items-center gap-2 mb-2 text-xs font-medium">
                   {result.success ? (
                     <>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                      <span className="text-emerald-500">Success</span>
+                      <CheckCircle2 className="w-4 h-4 text-neon-green" />
+                      <span className="text-neon-green">Success</span>
                     </>
                   ) : (
                     <>

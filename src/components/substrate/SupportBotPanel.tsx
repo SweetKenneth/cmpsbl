@@ -64,7 +64,7 @@ function ChatMessage({ message, onFeedback }: ChatMessageProps) {
           isBot 
             ? 'bg-muted text-muted-foreground' 
             : isSystem
-            ? 'bg-yellow-500/10 text-yellow-600 border border-yellow-500/20'
+            ? 'bg-neon-amber/10 text-yellow-600 border border-neon-amber/20'
             : 'bg-primary text-primary-foreground'
         }`}>
           <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -141,7 +141,7 @@ function StatsCard({ icon, label, value, trend }: StatsCardProps) {
       </div>
       {trend && (
         <TrendingUp className={`w-4 h-4 ml-auto ${
-          trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : 'text-muted-foreground'
+          trend === 'up' ? 'text-neon-green' : trend === 'down' ? 'text-destructive' : 'text-muted-foreground'
         }`} />
       )}
     </div>
@@ -224,7 +224,7 @@ export function SupportBotPanel() {
               <CardTitle className="text-lg flex items-center gap-2">
                 Support Bot
                 {isEnabled && (
-                  <Badge className="bg-green-500/10 text-green-500 border-green-500/20">
+                  <Badge className="bg-neon-green/10 text-neon-green border-neon-green/20">
                     <Zap className="w-3 h-3 mr-1" />
                     Evolving
                   </Badge>
@@ -396,17 +396,17 @@ export function SupportBotPanel() {
               value={state.stats.total_questions}
             />
             <StatsCard 
-              icon={<CheckCircle className="w-5 h-5 text-green-500" />}
+              icon={<CheckCircle className="w-5 h-5 text-neon-green" />}
               label="Bot Answered"
               value={state.stats.answered_by_bot}
             />
             <StatsCard 
-              icon={<ArrowUpCircle className="w-5 h-5 text-yellow-500" />}
+              icon={<ArrowUpCircle className="w-5 h-5 text-neon-amber" />}
               label="Escalated"
               value={state.stats.escalated}
             />
             <StatsCard 
-              icon={<Sparkles className="w-5 h-5 text-purple-500" />}
+              icon={<Sparkles className="w-5 h-5 text-neon-purple" />}
               label="Avg Confidence"
               value={`${Math.round(state.stats.avg_confidence * 100)}%`}
             />

@@ -181,11 +181,11 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
   // Success Screen
   if (step === 'success' && mintedCognitive) {
     return (
-      <Card className="border-emerald-500/30 bg-black/40">
+      <Card className="border-neon-green/30 bg-black/40">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+            <div className="w-10 h-10 rounded-lg bg-neon-green/20 border border-neon-green/40 flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-neon-green" />
             </div>
             <div>
               <CardTitle className="text-lg">Cognitive Minted</CardTitle>
@@ -226,7 +226,7 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Button onClick={handleExport} className="gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500">
+            <Button onClick={handleExport} className="gap-2 bg-gradient-to-r from-neon-green to-neon-cyan hover:from-neon-green hover:to-neon-cyan">
               <Download className="w-4 h-4" />
               Download Bundle
             </Button>
@@ -267,28 +267,28 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
           {BOT_CLASSES.map((cls) => {
             const Icon = CLASS_ICONS[cls.icon] || Layers;
             const colorClasses = {
-              cyan: 'border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-cyan-500/20',
-              emerald: 'border-emerald-500/30 hover:border-emerald-400/60 hover:shadow-emerald-500/20',
-              violet: 'border-violet-500/30 hover:border-violet-400/60 hover:shadow-violet-500/20',
-              amber: 'border-amber-500/30 hover:border-amber-400/60 hover:shadow-amber-500/20',
-              rose: 'border-rose-500/30 hover:border-rose-400/60 hover:shadow-rose-500/20',
-              fuchsia: 'border-fuchsia-500/30 hover:border-fuchsia-400/60 hover:shadow-fuchsia-500/20',
+              cyan: 'border-neon-cyan/30 hover:border-neon-cyan/60 hover:shadow-neon-cyan/20',
+              emerald: 'border-neon-green/30 hover:border-neon-green/60 hover:shadow-neon-green/20',
+              violet: 'border-neon-purple/30 hover:border-neon-purple/60 hover:shadow-neon-purple/20',
+              amber: 'border-neon-amber/30 hover:border-neon-amber/60 hover:shadow-neon-amber/20',
+              rose: 'border-neon-magenta/30 hover:border-neon-magenta/60 hover:shadow-neon-magenta/20',
+              fuchsia: 'border-neon-magenta/30 hover:border-neon-magenta/60 hover:shadow-neon-magenta/20',
             };
             const iconBgClasses = {
-              cyan: 'bg-cyan-500/20 border-cyan-500/40',
-              emerald: 'bg-emerald-500/20 border-emerald-500/40',
-              violet: 'bg-violet-500/20 border-violet-500/40',
-              amber: 'bg-amber-500/20 border-amber-500/40',
-              rose: 'bg-rose-500/20 border-rose-500/40',
-              fuchsia: 'bg-fuchsia-500/20 border-fuchsia-500/40',
+              cyan: 'bg-neon-cyan/20 border-neon-cyan/40',
+              emerald: 'bg-neon-green/20 border-neon-green/40',
+              violet: 'bg-neon-purple/20 border-neon-purple/40',
+              amber: 'bg-neon-amber/20 border-neon-amber/40',
+              rose: 'bg-neon-magenta/20 border-neon-magenta/40',
+              fuchsia: 'bg-neon-magenta/20 border-neon-magenta/40',
             };
             const iconTextClasses = {
-              cyan: 'text-cyan-400',
-              emerald: 'text-emerald-400',
-              violet: 'text-violet-400',
-              amber: 'text-amber-400',
-              rose: 'text-rose-400',
-              fuchsia: 'text-fuchsia-400',
+              cyan: 'text-neon-cyan',
+              emerald: 'text-neon-green',
+              violet: 'text-neon-purple',
+              amber: 'text-neon-amber',
+              rose: 'text-neon-magenta',
+              fuchsia: 'text-neon-magenta',
             };
             return (
               <div 
@@ -389,12 +389,12 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
                     className={cn(
                       "p-3 rounded-lg border text-left transition-all",
                       isSelected 
-                        ? "border-cyan-500/50 bg-cyan-500/10" 
+                        ? "border-neon-cyan/50 bg-neon-cyan/10" 
                         : "border-border/30 bg-black/20 hover:border-border/50"
                     )}
                   >
                     <div className="flex items-center gap-2 mb-1">
-                      <Icon className={cn("w-4 h-4", isSelected ? "text-cyan-400" : "text-muted-foreground")} />
+                      <Icon className={cn("w-4 h-4", isSelected ? "text-neon-cyan" : "text-muted-foreground")} />
                       <span className="text-sm font-medium">{mode.name}</span>
                     </div>
                     <p className="text-[10px] text-muted-foreground">{mode.description}</p>
@@ -442,7 +442,7 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
                   className={cn(
                     "cursor-pointer transition-all",
                     learningModes.includes(mode.id) 
-                      ? "bg-fuchsia-500/20 text-fuchsia-400 border-fuchsia-500/50" 
+                      ? "bg-neon-magenta/20 text-neon-magenta border-neon-magenta/50" 
                       : "border-border/50 hover:border-border"
                   )}
                   onClick={() => toggleLearningMode(mode.id)}
@@ -464,7 +464,7 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
                   className={cn(
                     "cursor-pointer transition-all",
                     providers.includes(provider.id) 
-                      ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/50" 
+                      ? "bg-neon-green/20 text-neon-green border-neon-green/50" 
                       : "border-border/50 hover:border-border"
                   )}
                   onClick={() => toggleProvider(provider.id)}
@@ -499,7 +499,7 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
           <Button
             onClick={handleMint}
             disabled={loading || !botName.trim() || providers.length === 0}
-            className="w-full gap-2 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500"
+            className="w-full gap-2 bg-gradient-to-r from-neon-amber to-orange-600 hover:from-neon-amber hover:to-neon-amber"
             size="lg"
           >
             {loading ? (

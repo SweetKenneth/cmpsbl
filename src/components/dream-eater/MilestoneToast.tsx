@@ -27,10 +27,10 @@ const MILESTONE_ICONS: Record<number, React.ElementType> = {
 };
 
 const MILESTONE_COLORS: Record<number, string> = {
-  10: 'from-violet-500/30 to-indigo-500/20 border-violet-500/50',
-  25: 'from-emerald-500/30 to-teal-500/20 border-emerald-500/50',
-  50: 'from-amber-500/30 to-orange-500/20 border-amber-500/50',
-  100: 'from-rose-500/30 to-pink-500/20 border-rose-500/50',
+  10: 'from-neon-purple/30 to-primary/20 border-neon-purple/50',
+  25: 'from-neon-green/30 to-neon-cyan/20 border-neon-green/50',
+  50: 'from-neon-amber/30 to-neon-amber/20 border-neon-amber/50',
+  100: 'from-neon-magenta/30 to-neon-magenta/20 border-neon-magenta/50',
 };
 
 export const MilestoneToast = ({ milestone, onDismiss }: MilestoneToastProps) => {

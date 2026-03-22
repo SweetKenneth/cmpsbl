@@ -22,9 +22,9 @@ const TEASER_DISCOVERIES = [
 ];
 
 const RARITY_COLORS: Record<string, string> = {
-  Prime: 'text-blue-400',
-  Relic: 'text-purple-400',
-  Mythic: 'text-amber-400',
+  Prime: 'text-neon-blue',
+  Relic: 'text-neon-purple',
+  Mythic: 'text-neon-amber',
 };
 
 export function LockedDiscoveryTeaser({ tier = 'starter', pullsUsed, pullsMax, className = '' }: LockedDiscoveryTeaserProps) {

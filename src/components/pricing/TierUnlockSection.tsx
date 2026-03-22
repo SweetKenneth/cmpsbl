@@ -11,10 +11,10 @@ import { Package } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const TIER_DISPLAY: { key: ProductTier; label: string; gradient: string }[] = [
-  { key: 'builder', label: 'Builder', gradient: 'from-emerald-500 to-emerald-600' },
-  { key: 'studio', label: 'Studio', gradient: 'from-violet-500 to-purple-500' },
-  { key: 'creator', label: 'Creator', gradient: 'from-blue-500 to-indigo-500' },
-  { key: 'architect', label: 'Architect', gradient: 'from-amber-500 to-orange-500' },
+  { key: 'builder', label: 'Builder', gradient: 'from-neon-green to-neon-green' },
+  { key: 'studio', label: 'Studio', gradient: 'from-neon-purple to-neon-purple' },
+  { key: 'creator', label: 'Creator', gradient: 'from-neon-blue to-primary' },
+  { key: 'architect', label: 'Architect', gradient: 'from-neon-amber to-neon-amber' },
 ];
 
 export function TierUnlockSection() {

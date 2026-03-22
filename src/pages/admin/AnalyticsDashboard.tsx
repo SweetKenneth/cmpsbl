@@ -111,8 +111,8 @@ function fmt(n: number): string {
 
 function trendIcon(current: number, prev: number) {
   if (prev === 0 && current === 0) return null;
-  if (current > prev) return <ArrowUpRight className="w-3 h-3 text-green-400" />;
-  if (current < prev) return <ArrowDownRight className="w-3 h-3 text-red-400" />;
+  if (current > prev) return <ArrowUpRight className="w-3 h-3 text-neon-green" />;
+  if (current < prev) return <ArrowDownRight className="w-3 h-3 text-destructive" />;
   return null;
 }
 
@@ -125,22 +125,22 @@ function trendPct(current: number, prev: number): string {
 // ─── Static color maps (Tailwind needs full class names at build time) ───
 
 const CARD_STYLES: Record<string, { border: string; bg: string; iconBg: string; iconColor: string }> = {
-  green:   { border: 'border-green-500/30',   bg: 'from-green-500/10 to-green-500/5',     iconBg: 'bg-green-500/20 border-green-500/40',     iconColor: 'text-green-400' },
-  emerald: { border: 'border-emerald-500/30', bg: 'from-emerald-500/10 to-emerald-500/5', iconBg: 'bg-emerald-500/20 border-emerald-500/40', iconColor: 'text-emerald-400' },
-  blue:    { border: 'border-blue-500/30',    bg: 'from-blue-500/10 to-blue-500/5',       iconBg: 'bg-blue-500/20 border-blue-500/40',       iconColor: 'text-blue-400' },
-  purple:  { border: 'border-purple-500/30',  bg: 'from-purple-500/10 to-purple-500/5',   iconBg: 'bg-purple-500/20 border-purple-500/40',   iconColor: 'text-purple-400' },
-  cyan:    { border: 'border-cyan-500/30',    bg: 'from-cyan-500/10 to-cyan-500/5',       iconBg: 'bg-cyan-500/20 border-cyan-500/40',       iconColor: 'text-cyan-400' },
-  amber:   { border: 'border-amber-500/30',   bg: 'from-amber-500/10 to-amber-500/5',     iconBg: 'bg-amber-500/20 border-amber-500/40',     iconColor: 'text-amber-400' },
-  red:     { border: 'border-red-500/30',     bg: 'from-red-500/10 to-red-500/5',         iconBg: 'bg-red-500/20 border-red-500/40',         iconColor: 'text-red-400' },
+  green:   { border: 'border-neon-green/30',   bg: 'from-neon-green/10 to-neon-green/5',     iconBg: 'bg-neon-green/20 border-neon-green/40',     iconColor: 'text-neon-green' },
+  emerald: { border: 'border-neon-green/30', bg: 'from-neon-green/10 to-neon-green/5', iconBg: 'bg-neon-green/20 border-neon-green/40', iconColor: 'text-neon-green' },
+  blue:    { border: 'border-neon-blue/30',    bg: 'from-neon-blue/10 to-neon-blue/5',       iconBg: 'bg-neon-blue/20 border-neon-blue/40',       iconColor: 'text-neon-blue' },
+  purple:  { border: 'border-neon-purple/30',  bg: 'from-neon-purple/10 to-neon-purple/5',   iconBg: 'bg-neon-purple/20 border-neon-purple/40',   iconColor: 'text-neon-purple' },
+  cyan:    { border: 'border-neon-cyan/30',    bg: 'from-neon-cyan/10 to-neon-cyan/5',       iconBg: 'bg-neon-cyan/20 border-neon-cyan/40',       iconColor: 'text-neon-cyan' },
+  amber:   { border: 'border-neon-amber/30',   bg: 'from-neon-amber/10 to-neon-amber/5',     iconBg: 'bg-neon-amber/20 border-neon-amber/40',     iconColor: 'text-neon-amber' },
+  red:     { border: 'border-destructive/30',     bg: 'from-destructive/10 to-destructive/5',         iconBg: 'bg-destructive/20 border-destructive/40',         iconColor: 'text-destructive' },
 };
 
 const TAB_STYLES: Record<string, string> = {
-  green:  'bg-green-500/20 text-green-400 border border-green-500/40',
-  blue:   'bg-blue-500/20 text-blue-400 border border-blue-500/40',
-  amber:  'bg-amber-500/20 text-amber-400 border border-amber-500/40',
-  purple: 'bg-purple-500/20 text-purple-400 border border-purple-500/40',
-  cyan:   'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40',
-  red:    'bg-red-500/20 text-red-400 border border-red-500/40',
+  green:  'bg-neon-green/20 text-neon-green border border-neon-green/40',
+  blue:   'bg-neon-blue/20 text-neon-blue border border-neon-blue/40',
+  amber:  'bg-neon-amber/20 text-neon-amber border border-neon-amber/40',
+  purple: 'bg-neon-purple/20 text-neon-purple border border-neon-purple/40',
+  cyan:   'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40',
+  red:    'bg-destructive/20 text-destructive border border-destructive/40',
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -181,11 +181,11 @@ function ExcludeDeviceButton() {
   if (!fp) return null;
 
   return excluded ? (
-    <Badge className="bg-green-500/20 text-green-400 border border-green-500/40 gap-1 h-9 px-3">
+    <Badge className="bg-neon-green/20 text-neon-green border border-neon-green/40 gap-1 h-9 px-3">
       <CheckCircle className="w-3 h-3" /> Device Excluded
     </Badge>
   ) : (
-    <Button variant="outline" size="sm" onClick={handleExclude} disabled={busy} className="gap-1.5 h-9 border-red-500/30 text-red-400 hover:bg-red-500/10">
+    <Button variant="outline" size="sm" onClick={handleExclude} disabled={busy} className="gap-1.5 h-9 border-destructive/30 text-destructive hover:bg-destructive/10">
       {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Fingerprint className="w-3.5 h-3.5" />}
       Exclude This Device
     </Button>
@@ -396,7 +396,7 @@ function PulseView({ data }: { data: RealtimePulse | null }) {
                   className={cn(
                     "w-full rounded-t-sm transition-all cursor-pointer",
                     isCurrentHour
-                      ? "bg-gradient-to-t from-green-500 to-green-400"
+                      ? "bg-gradient-to-t from-neon-green to-neon-green"
                       : sessions > 0
                         ? "bg-gradient-to-t from-primary/60 to-primary/30 hover:from-primary/80 hover:to-primary/50"
                         : "bg-muted/20"
@@ -433,7 +433,7 @@ function PulseView({ data }: { data: RealtimePulse | null }) {
           transition={{ delay: 0.25 }}
         >
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Zap className="w-4 h-4 text-green-400" /> Active Pages (15 min)
+            <Zap className="w-4 h-4 text-neon-green" /> Active Pages (15 min)
           </h3>
           <div className="space-y-2">
             {data.top_pages_now.map((p) => (
@@ -455,7 +455,7 @@ function PulseView({ data }: { data: RealtimePulse | null }) {
           transition={{ delay: 0.3 }}
         >
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Clock className="w-4 h-4 text-purple-400" /> Time Per Page (24h avg)
+            <Clock className="w-4 h-4 text-neon-purple" /> Time Per Page (24h avg)
           </h3>
           <div className="space-y-2">
             {data.page_times.map((p) => {
@@ -497,7 +497,7 @@ function PulseCard({ label, value, sub, icon: Icon, color, pulse: isPulsing }: {
         <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center border relative", styles.iconBg)}>
           <Icon className={cn("w-4 h-4", styles.iconColor)} />
           {isPulsing && (
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse" />
+            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-neon-green animate-pulse" />
           )}
         </div>
         <span className="text-[10px] text-muted-foreground font-mono uppercase">{label}</span>
@@ -533,17 +533,17 @@ function RetentionView({ cohorts }: { cohorts: CohortRow[] }) {
   }
 
   const retentionColor = (pct: number) => {
-    if (pct >= 30) return 'bg-green-500/80 text-white';
-    if (pct >= 15) return 'bg-green-500/40 text-green-100';
-    if (pct >= 5) return 'bg-amber-500/30 text-amber-100';
-    if (pct > 0) return 'bg-red-500/20 text-red-200';
+    if (pct >= 30) return 'bg-neon-green/80 text-white';
+    if (pct >= 15) return 'bg-neon-green/40 text-green-100';
+    if (pct >= 5) return 'bg-neon-amber/30 text-amber-100';
+    if (pct > 0) return 'bg-destructive/20 text-red-200';
     return 'bg-muted/10 text-muted-foreground';
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <TrendingUp className="w-5 h-5 text-blue-400" />
+        <TrendingUp className="w-5 h-5 text-neon-blue" />
         <div>
           <h3 className="text-lg font-bold text-foreground">Cohort Retention</h3>
           <p className="text-xs text-muted-foreground">Visitors grouped by first-visit week. Darker = better retention.</p>
@@ -599,10 +599,10 @@ function RetentionView({ cohorts }: { cohorts: CohortRow[] }) {
       <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
         <span>Retention strength:</span>
         <div className="flex items-center gap-1">
-          <span className="w-4 h-3 rounded bg-red-500/20" /> &lt;5%
-          <span className="w-4 h-3 rounded bg-amber-500/30 ml-2" /> 5-15%
-          <span className="w-4 h-3 rounded bg-green-500/40 ml-2" /> 15-30%
-          <span className="w-4 h-3 rounded bg-green-500/80 ml-2" /> &gt;30%
+          <span className="w-4 h-3 rounded bg-destructive/20" /> &lt;5%
+          <span className="w-4 h-3 rounded bg-neon-amber/30 ml-2" /> 5-15%
+          <span className="w-4 h-3 rounded bg-neon-green/40 ml-2" /> 15-30%
+          <span className="w-4 h-3 rounded bg-neon-green/80 ml-2" /> &gt;30%
         </div>
       </div>
     </div>
@@ -640,7 +640,7 @@ function ChurnView({ data }: { data: ChurnData | null }) {
           <div className="h-6 rounded-full overflow-hidden flex bg-muted/20">
             {s.healthy_count > 0 && (
               <motion.div
-                className="bg-green-500/70 flex items-center justify-center text-[9px] font-mono text-white"
+                className="bg-neon-green/70 flex items-center justify-center text-[9px] font-mono text-white"
                 initial={{ width: 0 }}
                 animate={{ width: `${(s.healthy_count / s.total_scored) * 100}%` }}
                 transition={{ duration: 0.6 }}
@@ -650,7 +650,7 @@ function ChurnView({ data }: { data: ChurnData | null }) {
             )}
             {s.warning_count > 0 && (
               <motion.div
-                className="bg-amber-500/70 flex items-center justify-center text-[9px] font-mono text-white"
+                className="bg-neon-amber/70 flex items-center justify-center text-[9px] font-mono text-white"
                 initial={{ width: 0 }}
                 animate={{ width: `${(s.warning_count / s.total_scored) * 100}%` }}
                 transition={{ duration: 0.6, delay: 0.1 }}
@@ -660,7 +660,7 @@ function ChurnView({ data }: { data: ChurnData | null }) {
             )}
             {s.critical_count > 0 && (
               <motion.div
-                className="bg-red-500/70 flex items-center justify-center text-[9px] font-mono text-white"
+                className="bg-destructive/70 flex items-center justify-center text-[9px] font-mono text-white"
                 initial={{ width: 0 }}
                 animate={{ width: `${(s.critical_count / s.total_scored) * 100}%` }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -670,9 +670,9 @@ function ChurnView({ data }: { data: ChurnData | null }) {
             )}
           </div>
           <div className="flex justify-between mt-2 text-[9px] text-muted-foreground font-mono">
-            <span className="text-green-400">Healthy</span>
-            <span className="text-amber-400">Warning</span>
-            <span className="text-red-400">Critical</span>
+            <span className="text-neon-green">Healthy</span>
+            <span className="text-neon-amber">Warning</span>
+            <span className="text-destructive">Critical</span>
           </div>
         </motion.div>
       )}
@@ -712,18 +712,18 @@ function ChurnView({ data }: { data: ChurnData | null }) {
                     <td className="py-2 text-center">
                       <span className={cn(
                         "inline-block px-2 py-0.5 rounded font-mono font-bold",
-                        v.churn_score >= 70 ? 'bg-red-500/20 text-red-400' :
-                        v.churn_score >= 40 ? 'bg-amber-500/20 text-amber-400' :
-                        'bg-green-500/20 text-green-400'
+                        v.churn_score >= 70 ? 'bg-destructive/20 text-destructive' :
+                        v.churn_score >= 40 ? 'bg-neon-amber/20 text-neon-amber' :
+                        'bg-neon-green/20 text-neon-green'
                       )}>
                         {v.churn_score}
                       </span>
                     </td>
                     <td className="py-2 text-center">
                       <Badge variant="outline" className={cn("text-[9px] font-mono",
-                        v.risk_level === 'critical' ? 'border-red-500/40 text-red-400' :
-                        v.risk_level === 'warning' ? 'border-amber-500/40 text-amber-400' :
-                        'border-green-500/40 text-green-400'
+                        v.risk_level === 'critical' ? 'border-destructive/40 text-destructive' :
+                        v.risk_level === 'warning' ? 'border-neon-amber/40 text-neon-amber' :
+                        'border-neon-green/40 text-neon-green'
                       )}>
                         {v.risk_level}
                       </Badge>
@@ -735,8 +735,8 @@ function ChurnView({ data }: { data: ChurnData | null }) {
                       <span className="flex items-center justify-end gap-1 font-mono">
                         {trendIcon(v.recent_7d, v.prev_7d)}
                         <span className={cn(
-                          v.recent_7d > v.prev_7d ? 'text-green-400' :
-                          v.recent_7d < v.prev_7d ? 'text-red-400' :
+                          v.recent_7d > v.prev_7d ? 'text-neon-green' :
+                          v.recent_7d < v.prev_7d ? 'text-destructive' :
                           'text-muted-foreground'
                         )}>
                           {v.recent_7d} vs {v.prev_7d}
@@ -768,18 +768,18 @@ function JourneysView({ data }: { data: JourneyFlows | null }) {
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Entry Points */}
         <motion.div
-          className="p-5 rounded-2xl border border-green-500/30 bg-gradient-to-br from-green-500/10 to-transparent"
+          className="p-5 rounded-2xl border border-neon-green/30 bg-gradient-to-br from-neon-green/10 to-transparent"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <ArrowRight className="w-4 h-4 text-green-400" /> Entry Pages
+            <ArrowRight className="w-4 h-4 text-neon-green" /> Entry Pages
           </h3>
           <div className="space-y-2">
             {(data.entry_pages || []).map(p => (
               <div key={p.page} className="flex items-center justify-between text-xs">
                 <span className="font-mono text-foreground/80 truncate max-w-[65%]">{p.page}</span>
-                <span className="font-mono text-green-400 font-medium">{p.entries}</span>
+                <span className="font-mono text-neon-green font-medium">{p.entries}</span>
               </div>
             ))}
             {(!data.entry_pages || data.entry_pages.length === 0) && (
@@ -790,19 +790,19 @@ function JourneysView({ data }: { data: JourneyFlows | null }) {
 
         {/* Exit Points */}
         <motion.div
-          className="p-5 rounded-2xl border border-red-500/30 bg-gradient-to-br from-red-500/10 to-transparent"
+          className="p-5 rounded-2xl border border-destructive/30 bg-gradient-to-br from-destructive/10 to-transparent"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
         >
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <ArrowDownRight className="w-4 h-4 text-red-400" /> Exit Pages
+            <ArrowDownRight className="w-4 h-4 text-destructive" /> Exit Pages
           </h3>
           <div className="space-y-2">
             {(data.exit_pages || []).map(p => (
               <div key={p.page} className="flex items-center justify-between text-xs">
                 <span className="font-mono text-foreground/80 truncate max-w-[65%]">{p.page}</span>
-                <span className="font-mono text-red-400 font-medium">{p.exits}</span>
+                <span className="font-mono text-destructive font-medium">{p.exits}</span>
               </div>
             ))}
             {(!data.exit_pages || data.exit_pages.length === 0) && (
@@ -813,13 +813,13 @@ function JourneysView({ data }: { data: JourneyFlows | null }) {
 
         {/* Drop-off Danger Zones */}
         <motion.div
-          className="p-5 rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-transparent"
+          className="p-5 rounded-2xl border border-neon-amber/30 bg-gradient-to-br from-neon-amber/10 to-transparent"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-400" /> Drop-off Zones
+            <AlertTriangle className="w-4 h-4 text-neon-amber" /> Drop-off Zones
           </h3>
           <div className="space-y-2">
             {(data.drop_offs || []).slice(0, 8).map(p => (
@@ -828,9 +828,9 @@ function JourneysView({ data }: { data: JourneyFlows | null }) {
                 <div className="flex items-center gap-2">
                   <span className="font-mono text-muted-foreground">{p.views} views</span>
                   <span className={cn("font-mono font-medium",
-                    p.drop_rate >= 60 ? 'text-red-400' :
-                    p.drop_rate >= 40 ? 'text-amber-400' :
-                    'text-green-400'
+                    p.drop_rate >= 60 ? 'text-destructive' :
+                    p.drop_rate >= 40 ? 'text-neon-amber' :
+                    'text-neon-green'
                   )}>
                     {p.drop_rate}%
                   </span>
@@ -852,7 +852,7 @@ function JourneysView({ data }: { data: JourneyFlows | null }) {
         transition={{ delay: 0.15 }}
       >
         <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-          <Route className="w-4 h-4 text-purple-400" /> Page-to-Page Flows
+          <Route className="w-4 h-4 text-neon-purple" /> Page-to-Page Flows
         </h3>
         <div className="space-y-2">
           {(data.transitions || []).slice(0, 20).map((t, idx) => {
@@ -878,7 +878,7 @@ function JourneysView({ data }: { data: JourneyFlows | null }) {
                 </div>
                 <div className="h-1.5 rounded-full bg-muted/20 overflow-hidden">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-purple-500/60 to-blue-500/40"
+                    className="h-full rounded-full bg-gradient-to-r from-neon-purple/60 to-neon-blue/40"
                     initial={{ width: 0 }}
                     animate={{ width: `${pct}%` }}
                     transition={{ duration: 0.4, delay: idx * 0.03 }}
@@ -908,12 +908,12 @@ function FeaturesView({ data }: { data: FeatureAdoption | null }) {
   const maxUses = data.features?.[0]?.total_uses || 1;
 
   const categoryColors: Record<string, string> = {
-    navigation: 'from-blue-500 to-blue-600',
-    conversion: 'from-green-500 to-green-600',
-    engagement: 'from-violet-500 to-violet-600',
-    scan: 'from-cyan-500 to-cyan-600',
-    auth: 'from-amber-500 to-amber-600',
-    error: 'from-red-500 to-red-600',
+    navigation: 'from-neon-blue to-neon-blue',
+    conversion: 'from-neon-green to-neon-green',
+    engagement: 'from-neon-purple to-neon-purple',
+    scan: 'from-neon-cyan to-neon-cyan',
+    auth: 'from-neon-amber to-neon-amber',
+    error: 'from-destructive to-destructive',
   };
 
   return (
@@ -944,7 +944,7 @@ function FeaturesView({ data }: { data: FeatureAdoption | null }) {
         transition={{ delay: 0.1 }}
       >
         <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-          <Flame className="w-4 h-4 text-cyan-400" /> Feature Adoption (30d)
+          <Flame className="w-4 h-4 text-neon-cyan" /> Feature Adoption (30d)
         </h3>
         <div className="space-y-3">
           {(data.features || []).map((f, idx) => {
@@ -973,7 +973,7 @@ function FeaturesView({ data }: { data: FeatureAdoption | null }) {
                     <div className="flex items-center gap-1">
                       {trendIcon(f.trend_7d, f.trend_prev_7d)}
                       <span className={cn("font-mono text-[10px]",
-                        trending > 0 ? 'text-green-400' : trending < 0 ? 'text-red-400' : 'text-muted-foreground'
+                        trending > 0 ? 'text-neon-green' : trending < 0 ? 'text-destructive' : 'text-muted-foreground'
                       )}>
                         {trendPct(f.trend_7d, f.trend_prev_7d)}
                       </span>
@@ -1063,7 +1063,7 @@ function ExclusionsView() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <ShieldOff className="w-5 h-5 text-red-400" />
+        <ShieldOff className="w-5 h-5 text-destructive" />
         <div>
           <h3 className="text-lg font-bold text-foreground">Exclusion Management</h3>
           <p className="text-xs text-muted-foreground">Remove yourself and bots from analytics — only track real humans.</p>
@@ -1096,7 +1096,7 @@ function ExclusionsView() {
                 FP: {myFingerprint.slice(0, 16)}…
               </p>
               {isMyFpExcluded ? (
-                <Badge className="bg-green-500/20 text-green-400 border border-green-500/40">
+                <Badge className="bg-neon-green/20 text-neon-green border border-neon-green/40">
                   <CheckCircle className="w-3 h-3 mr-1" /> Already excluded
                 </Badge>
               ) : (
@@ -1209,9 +1209,9 @@ function ExclusionsView() {
               >
                 <div className="flex items-center gap-3 min-w-0">
                   {ex.reason === 'bot' ? (
-                    <Bot className="w-4 h-4 text-amber-400 shrink-0" />
+                    <Bot className="w-4 h-4 text-neon-amber shrink-0" />
                   ) : (
-                    <UserX className="w-4 h-4 text-red-400 shrink-0" />
+                    <UserX className="w-4 h-4 text-destructive shrink-0" />
                   )}
                   <div className="min-w-0">
                     <div className="flex items-center gap-2">
@@ -1231,7 +1231,7 @@ function ExclusionsView() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 w-7 p-0 text-muted-foreground hover:text-red-400"
+                  className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
                   onClick={() => removeExclusion(ex.id)}
                 >
                   <Trash2 className="w-3.5 h-3.5" />

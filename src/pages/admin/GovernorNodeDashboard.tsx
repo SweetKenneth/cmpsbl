@@ -59,8 +59,8 @@ import { cn } from '@/lib/utils';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const STATUS_CONFIG: Record<NodeStatus, { label: string; className: string }> = {
-  candidate: { label: 'Candidate', className: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
-  active: { label: 'Active', className: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
+  candidate: { label: 'Candidate', className: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20' },
+  active: { label: 'Active', className: 'bg-neon-green/10 text-neon-green border-neon-green/20' },
   archived: { label: 'Archived', className: 'bg-muted text-muted-foreground border-border/50' },
   rejected: { label: 'Rejected', className: 'bg-destructive/10 text-destructive border-destructive/20' },
 };
@@ -219,8 +219,8 @@ export default function GovernorNodeDashboard() {
           </div>
           <div className="flex items-center gap-3">
             <Badge variant="outline" className="text-xs font-mono">{nodes.length} nodes</Badge>
-            <Badge className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-xs">{activeCount} active</Badge>
-            <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 text-xs">{candidateCount} candidates</Badge>
+            <Badge className="bg-neon-green/10 text-neon-green border-neon-green/20 text-xs">{activeCount} active</Badge>
+            <Badge className="bg-neon-amber/10 text-neon-amber border-neon-amber/20 text-xs">{candidateCount} candidates</Badge>
             <Badge variant="outline" className="text-xs font-mono">{totalPrimitives} primitives</Badge>
           </div>
         </div>
@@ -331,13 +331,13 @@ export default function GovernorNodeDashboard() {
                       <TableCell onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
                           {node.status === 'candidate' && (
-                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-emerald-600 hover:text-emerald-700"
+                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-neon-green hover:text-emerald-700"
                               onClick={() => promoteMutation.mutate(node.id)} disabled={promoteMutation.isPending} title="Promote">
                               <ArrowUpCircle className="w-4 h-4" />
                             </Button>
                           )}
                           {node.status === 'active' && (
-                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-amber-600 hover:text-amber-700"
+                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-neon-amber hover:text-amber-700"
                               onClick={() => archiveMutation.mutate(node.id)} disabled={archiveMutation.isPending} title="Archive">
                               <ArrowDownCircle className="w-4 h-4" />
                             </Button>
@@ -474,8 +474,8 @@ export default function GovernorNodeDashboard() {
                             <div className="flex items-center gap-2">
                               <span className="font-mono font-medium text-foreground">{p.name}</span>
                               <Badge variant="outline" className="text-[10px]">{p.category}</Badge>
-                              {p.extractionTrust === 'high' && <span className="text-emerald-500 text-[10px]">✓</span>}
-                              {p.extractionTrust === 'heuristic' && <span className="text-amber-500 text-[10px]">~</span>}
+                              {p.extractionTrust === 'high' && <span className="text-neon-green text-[10px]">✓</span>}
+                              {p.extractionTrust === 'heuristic' && <span className="text-neon-amber text-[10px]">~</span>}
                             </div>
                             <div className="flex items-center gap-2 text-muted-foreground">
                               <span>{(p.qualityScore * 100).toFixed(0)}%q</span>

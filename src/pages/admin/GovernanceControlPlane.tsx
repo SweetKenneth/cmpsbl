@@ -165,7 +165,7 @@ export default function GovernanceControlPlane() {
               ].map(({ label, active }) => (
                 <div key={label} className="flex items-center gap-2 text-sm p-2 rounded-lg border border-transparent hover:border-border/50 transition-all duration-200">
                   {active ? (
-                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <CheckCircle className="w-4 h-4 text-neon-green" />
                   ) : (
                     <XCircle className="w-4 h-4 text-muted-foreground/50" />
                   )}

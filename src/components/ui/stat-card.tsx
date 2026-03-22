@@ -34,8 +34,8 @@ export function StatCard({ title, value, icon: Icon, trend, className }: StatCar
             className={cn(
               "text-sm font-semibold px-2 py-0.5 rounded-full",
               trend.isPositive 
-                ? "text-emerald-500 bg-emerald-500/10" 
-                : "text-red-400 bg-red-400/10"
+                ? "text-neon-green bg-neon-green/10" 
+                : "text-destructive bg-destructive/10"
             )}
           >
             {trend.isPositive ? "↑" : "↓"} {Math.abs(trend.value)}%

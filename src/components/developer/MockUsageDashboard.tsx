@@ -128,9 +128,9 @@ export function MockUsageDashboard({ className }: { className?: string }) {
         const total = hotCount + warmCount + coldCount || 1;
 
         setTierDistribution([
-          { tier: 'Hot', count: hotCount, percentage: Math.round((hotCount / total) * 100), color: 'bg-red-500' },
-          { tier: 'Warm', count: warmCount, percentage: Math.round((warmCount / total) * 100), color: 'bg-amber-500' },
-          { tier: 'Cold', count: coldCount, percentage: Math.round((coldCount / total) * 100), color: 'bg-blue-500' },
+          { tier: 'Hot', count: hotCount, percentage: Math.round((hotCount / total) * 100), color: 'bg-destructive' },
+          { tier: 'Warm', count: warmCount, percentage: Math.round((warmCount / total) * 100), color: 'bg-neon-amber' },
+          { tier: 'Cold', count: coldCount, percentage: Math.round((coldCount / total) * 100), color: 'bg-neon-blue' },
         ]);
       } catch {
         // Fallback to zero state
@@ -141,9 +141,9 @@ export function MockUsageDashboard({ className }: { className?: string }) {
         });
         setRecentRequests([]);
         setTierDistribution([
-          { tier: 'Hot', count: 0, percentage: 0, color: 'bg-red-500' },
-          { tier: 'Warm', count: 0, percentage: 0, color: 'bg-amber-500' },
-          { tier: 'Cold', count: 0, percentage: 0, color: 'bg-blue-500' },
+          { tier: 'Hot', count: 0, percentage: 0, color: 'bg-destructive' },
+          { tier: 'Warm', count: 0, percentage: 0, color: 'bg-neon-amber' },
+          { tier: 'Cold', count: 0, percentage: 0, color: 'bg-neon-blue' },
         ]);
       } finally {
         setLoading(false);
@@ -183,7 +183,7 @@ export function MockUsageDashboard({ className }: { className?: string }) {
           label="Memories Stored"
           value={stats.memoriesStored.toLocaleString()}
           subValue={`${stats.memoriesRecalled.toLocaleString()} recalled`}
-          color="text-purple-500"
+          color="text-neon-purple"
         />
         <StatCard
           icon={Zap}
@@ -191,7 +191,7 @@ export function MockUsageDashboard({ className }: { className?: string }) {
           value={stats.avgLatency > 0 ? `${stats.avgLatency}ms` : '—'}
           subValue="p50 response time"
           change={stats.latencyChange}
-          color="text-green-500"
+          color="text-neon-green"
           invertChange
         />
         <StatCard
@@ -199,7 +199,7 @@ export function MockUsageDashboard({ className }: { className?: string }) {
           label="Quota Used"
           value={`${stats.quotaUsed}%`}
           subValue="of 1,000/day"
-          color="text-amber-500"
+          color="text-neon-amber"
           progress={stats.quotaUsed}
         />
       </div>
@@ -259,7 +259,7 @@ export function MockUsageDashboard({ className }: { className?: string }) {
                     <TableRow key={req.id}>
                       <TableCell className="text-xs font-medium capitalize">{req.action}</TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-500 border-emerald-500/20">
+                        <Badge variant="outline" className="text-[10px] bg-neon-green/10 text-neon-green border-neon-green/20">
                           {req.status}
                         </Badge>
                       </TableCell>
@@ -321,7 +321,7 @@ function StatCard({
                 variant="outline" 
                 className={cn(
                   "text-[10px] gap-0.5",
-                  isPositive ? "text-emerald-500 border-emerald-500/20" : "text-rose-500 border-rose-500/20"
+                  isPositive ? "text-neon-green border-neon-green/20" : "text-neon-magenta border-neon-magenta/20"
                 )}
               >
                 {isPositive ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
