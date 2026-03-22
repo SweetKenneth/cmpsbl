@@ -2,12 +2,14 @@
  * useSystem Hook — SYSTEM zone (Administration) operations
  * 
  * Part of the 40-Node / 12-Sector Field-Based Topology
+ * Fixed: All queries are top-level useQuery calls (no Rules-of-Hooks violations).
+ * Fixed: Respects debugMode.allowModulePolling() kill-switch.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
-// Access system module from substrate singleton
 const system = substrate.system;
 
 export interface UseSystemReturn {
@@ -18,11 +20,6 @@ export interface UseSystemReturn {
   diagnostics: ReturnType<typeof useQuery>;
   resilience: ReturnType<typeof useQuery>;
   modules: ReturnType<typeof useQuery>;
-  
-  // Queries
-  config: (key?: string) => ReturnType<typeof useQuery>;
-  audit: (since?: string, type?: string) => ReturnType<typeof useQuery>;
-  module: (name: string) => ReturnType<typeof useQuery>;
   backups: ReturnType<typeof useQuery>;
   
   // Actions
@@ -31,18 +28,24 @@ export interface UseSystemReturn {
   backup: ReturnType<typeof useMutation>;
   restore: ReturnType<typeof useMutation>;
   
+  // Config & Audit — mutations for parameterized access
+  fetchConfig: ReturnType<typeof useMutation>;
+  fetchAudit: ReturnType<typeof useMutation>;
+  fetchModule: ReturnType<typeof useMutation>;
+  
   // Upgrade Engine
   upgrade: {
     propose: ReturnType<typeof useMutation>;
     listPlans: ReturnType<typeof useQuery>;
-    getPlan: (planId: string) => ReturnType<typeof useQuery>;
     applyPlan: ReturnType<typeof useMutation>;
     rollbackPlan: ReturnType<typeof useMutation>;
+    fetchPlan: ReturnType<typeof useMutation>;
   };
 }
 
 export function useSystem(): UseSystemReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const invalidateSystem = () => {
     queryClient.invalidateQueries({ queryKey: ['substrate', 'system'] });
@@ -51,64 +54,67 @@ export function useSystem(): UseSystemReturn {
   const status = useQuery({
     queryKey: ['substrate', 'system', 'status'],
     queryFn: () => system.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const health = useQuery({
     queryKey: ['substrate', 'system', 'health'],
     queryFn: () => system.health(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const version = useQuery({
     queryKey: ['substrate', 'system', 'version'],
     queryFn: () => system.version(),
-    staleTime: 300000, // 5 minutes
+    staleTime: 300000,
+    enabled: pollingEnabled,
   });
   
   const diagnostics = useQuery({
     queryKey: ['substrate', 'system', 'diagnostics'],
     queryFn: () => system.diagnostics({ full: true }),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const resilience = useQuery({
     queryKey: ['substrate', 'system', 'resilience'],
     queryFn: () => system.resilience(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const modules = useQuery({
     queryKey: ['substrate', 'system', 'modules'],
     queryFn: () => system.modules({ full: true, health: true }),
     staleTime: 60000,
-  });
-  
-  const config = (key?: string) => useQuery({
-    queryKey: ['substrate', 'system', 'config', key],
-    queryFn: () => system.config(key),
-    staleTime: 30000,
-  });
-  
-  const audit = (since?: string, type?: string) => useQuery({
-    queryKey: ['substrate', 'system', 'audit', since, type],
-    queryFn: () => system.audit(since, type),
-    staleTime: 30000,
-  });
-  
-  const module = (name: string) => useQuery({
-    queryKey: ['substrate', 'system', 'module', name],
-    queryFn: () => system.module(name),
-    staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const backups = useQuery({
     queryKey: ['substrate', 'system', 'backups'],
     queryFn: () => system.listBackups(),
     staleTime: 60000,
+    enabled: pollingEnabled,
+  });
+  
+  // Parameterized queries converted to mutations to avoid Rules-of-Hooks violations
+  const fetchConfig = useMutation({
+    mutationFn: (key?: string) => system.config(key),
+  });
+  
+  const fetchAudit = useMutation({
+    mutationFn: (params?: { since?: string; type?: string }) =>
+      system.audit(params?.since, params?.type),
+  });
+  
+  const fetchModule = useMutation({
+    mutationFn: (name: string) => system.module(name),
   });
   
   const heal = useMutation({
@@ -146,13 +152,11 @@ export function useSystem(): UseSystemReturn {
     queryKey: ['substrate', 'system', 'upgrade', 'plans'],
     queryFn: () => system.upgrade.listPlans(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
-  const getUpgradePlan = (planId: string) => useQuery({
-    queryKey: ['substrate', 'system', 'upgrade', 'plan', planId],
-    queryFn: () => system.upgrade.getPlan(planId),
-    staleTime: 30000,
-    enabled: !!planId,
+  const fetchPlan = useMutation({
+    mutationFn: (planId: string) => system.upgrade.getPlan(planId),
   });
   
   const applyUpgradePlan = useMutation({
@@ -178,10 +182,10 @@ export function useSystem(): UseSystemReturn {
     diagnostics,
     resilience,
     modules,
-    config,
-    audit,
-    module,
     backups,
+    fetchConfig,
+    fetchAudit,
+    fetchModule,
     heal,
     restart,
     backup,
@@ -189,7 +193,7 @@ export function useSystem(): UseSystemReturn {
     upgrade: {
       propose: upgradePropose,
       listPlans: upgradePlans,
-      getPlan: getUpgradePlan,
+      fetchPlan,
       applyPlan: applyUpgradePlan,
       rollbackPlan: rollbackUpgradePlan,
     },

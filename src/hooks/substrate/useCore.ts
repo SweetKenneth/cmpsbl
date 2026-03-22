@@ -7,13 +7,18 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 
-// Access core module from substrate singleton
 const core = substrate.core;
 
 export interface UseCoreReturn {
   // Status & Health
   status: ReturnType<typeof useQuery>;
   pulse: ReturnType<typeof useQuery>;
+  health: ReturnType<typeof useQuery>;
+  version: ReturnType<typeof useQuery>;
+  uptime: ReturnType<typeof useQuery>;
+  diagnostics: ReturnType<typeof useQuery>;
+  resilience: ReturnType<typeof useQuery>;
+  modules: ReturnType<typeof useQuery>;
   
   // Actions
   boot: ReturnType<typeof useMutation>;
@@ -33,9 +38,11 @@ export interface UseCoreReturn {
 
 export function useCore(): UseCoreReturn {
   const queryClient = useQueryClient();
-  
-  // Only poll if debug mode allows it
   const pollingEnabled = debugMode.allowModulePolling();
+  
+  const invalidateCore = () => {
+    queryClient.invalidateQueries({ queryKey: ['substrate', 'core'] });
+  };
   
   const status = useQuery({
     queryKey: ['substrate', 'core', 'status'],
@@ -50,6 +57,51 @@ export function useCore(): UseCoreReturn {
     queryFn: () => core.pulse(),
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
+  });
+
+  const health = useQuery({
+    queryKey: ['substrate', 'core', 'health'],
+    queryFn: () => core.health(),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
+    enabled: pollingEnabled,
+  });
+
+  const version = useQuery({
+    queryKey: ['substrate', 'core', 'version'],
+    queryFn: () => core.version(),
+    staleTime: 300000, // 5 minutes — rarely changes
+    enabled: pollingEnabled,
+  });
+
+  const uptime = useQuery({
+    queryKey: ['substrate', 'core', 'uptime'],
+    queryFn: () => core.uptime(),
+    refetchInterval: pollingEnabled ? 60000 : false,
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
+
+  const diagnostics = useQuery({
+    queryKey: ['substrate', 'core', 'diagnostics'],
+    queryFn: () => core.diagnostics({ verbose: true }),
+    staleTime: 60000,
+    enabled: pollingEnabled,
+  });
+
+  const resilience = useQuery({
+    queryKey: ['substrate', 'core', 'resilience'],
+    queryFn: () => core.resilience(),
+    refetchInterval: pollingEnabled ? 60000 : false,
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
+
+  const modules = useQuery({
+    queryKey: ['substrate', 'core', 'modules'],
+    queryFn: () => core.modules(),
+    staleTime: 60000,
     enabled: pollingEnabled,
   });
   
@@ -83,9 +135,7 @@ export function useCore(): UseCoreReturn {
   
   const shutdown = useMutation({
     mutationFn: () => core.shutdown(),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['substrate'] });
-    },
+    onSuccess: invalidateCore,
   });
   
   const config = useMutation({
@@ -96,7 +146,6 @@ export function useCore(): UseCoreReturn {
   });
   
   // NOTE: `jobs` returns a query config object — consumers should call useQuery(core.jobs(...))
-  // rather than invoking this inside a callback (which violates Rules of Hooks).
   const jobs = (jobStatus?: string, limit?: number) => ({
     queryKey: ['substrate', 'core', 'jobs', jobStatus, limit],
     queryFn: () => core.jobs(jobStatus as any, limit),
@@ -107,6 +156,12 @@ export function useCore(): UseCoreReturn {
   return {
     status,
     pulse,
+    health,
+    version,
+    uptime,
+    diagnostics,
+    resilience,
+    modules,
     boot,
     schedule,
     process,
