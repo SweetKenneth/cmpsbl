@@ -334,8 +334,8 @@ const selfCheck = await cmpsbl.inclusive.selfScan();`,
     layer: "Orchestrator",
     title: "CORTEX Evolution",
     description: "Agency-class autonomous orchestrator",
-    color: "text-violet-500",
-    gradient: "from-violet-500 to-purple-600",
+    color: "text-[hsl(var(--neon-purple))]",
+    gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Get the world state
 const world = await cmpsbl.cortex.world({
   flags: ["--eligible", "--dag"]
