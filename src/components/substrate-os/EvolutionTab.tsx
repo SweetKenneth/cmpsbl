@@ -82,11 +82,11 @@ const phaseColors: Record<string, string> = {
 // Pre-defined phase architecture items with explicit Tailwind classes
 // (dynamic template literals like `border-${color}-500` are NOT safe for JIT purge)
 const ARCHITECTURE_PHASES = [
-  { phase: 'SCAN', icon: Zap, desc: 'Detect improvements across all nodes', borderClass: 'border-cyan-500/20 bg-cyan-500/5', iconClass: 'text-cyan-400' },
-  { phase: 'GENERATE', icon: Code, desc: 'ENCODE synthesizes code changes', borderClass: 'border-fuchsia-500/20 bg-fuchsia-500/5', iconClass: 'text-fuchsia-400' },
-  { phase: 'SANDBOX', icon: FlaskConical, desc: 'Isolated verification & testing', borderClass: 'border-amber-500/20 bg-amber-500/5', iconClass: 'text-amber-400' },
-  { phase: 'APPLY', icon: Rocket, desc: 'Deploy to shadow/production', borderClass: 'border-emerald-500/20 bg-emerald-500/5', iconClass: 'text-emerald-400' },
-  { phase: 'LEARN', icon: Brain, desc: 'BRAIN records patterns', borderClass: 'border-purple-500/20 bg-purple-500/5', iconClass: 'text-purple-400' },
+  { phase: 'SCAN', icon: Zap, desc: 'Detect improvements across all nodes', borderClass: 'border-neon-cyan/20 bg-neon-cyan/5', iconClass: 'text-neon-cyan' },
+  { phase: 'GENERATE', icon: Code, desc: 'ENCODE synthesizes code changes', borderClass: 'border-neon-magenta/20 bg-neon-magenta/5', iconClass: 'text-neon-magenta' },
+  { phase: 'SANDBOX', icon: FlaskConical, desc: 'Isolated verification & testing', borderClass: 'border-neon-amber/20 bg-neon-amber/5', iconClass: 'text-neon-amber' },
+  { phase: 'APPLY', icon: Rocket, desc: 'Deploy to shadow/production', borderClass: 'border-neon-green/20 bg-neon-green/5', iconClass: 'text-neon-green' },
+  { phase: 'LEARN', icon: Brain, desc: 'BRAIN records patterns', borderClass: 'border-neon-purple/20 bg-neon-purple/5', iconClass: 'text-neon-purple' },
 ] as const;
 
 export function EvolutionTab() {
