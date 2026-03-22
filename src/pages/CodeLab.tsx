@@ -108,6 +108,29 @@ export default function CodeLab() {
       <CodeLabOnboarding />
 
       <Suspense fallback={<div className="h-64 flex items-center justify-center"><div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" /></div>}>
+
+      {/* SDK Playground CTA */}
+      <section className="border-b border-border/50 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Plug className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground text-sm">SDK Playground — Test live API methods</p>
+                <p className="text-xs text-muted-foreground">Run discover(), capture(), route() and more against the live substrate.</p>
+              </div>
+            </div>
+            <Link to="/sdk-playground">
+              <Button size="sm" className="gap-2 whitespace-nowrap">
+                Open Playground <ArrowRight className="w-3.5 h-3.5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* SIGNAL FORGE — Hero Template Generator */}
       <SignalForge />
 

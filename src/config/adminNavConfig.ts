@@ -56,6 +56,7 @@ export const adminNavConfig: NavGroup[] = [
     title: "Tools",
     items: [
       { id: "cognitive-forge", label: "Cognitive Forge", path: "/forge", icon: Hammer, isNew: true },
+      { id: "sdk-playground", label: "SDK Playground", path: "/sdk-playground", icon: Terminal, isNew: true },
       { id: "codelab", label: "CodeLab", path: "/codelab", icon: Terminal },
       { id: "devtools", label: "DevTools", path: "/devtools", icon: Terminal },
       { id: "capabilities", label: "Capabilities", path: "/docs/substrate/capabilities", icon: Sparkles },
