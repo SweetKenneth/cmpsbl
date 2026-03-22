@@ -67,7 +67,7 @@ export async function generateDefenseLearningSummary(
     // Select only needed columns
     const { data: events } = await supabase
       .from('defense_events')
-      .select('action, threat_type, risk_score, ip_address, detected_at')
+      .select('action, risk_score, ip, reason, detected_at')
       .gte('detected_at', periodStart.toISOString())
       .lte('detected_at', periodEnd.toISOString())
       .limit(500);
@@ -77,14 +77,14 @@ export async function generateDefenseLearningSummary(
     // Pre-compute stats to shrink AI prompt
     let blocked = 0, challenged = 0;
     const actionCounts = new Map<string, number>();
-    const threatTypes = new Map<string, number>();
+    const reasonCounts = new Map<string, number>();
 
     for (const e of events) {
       if (e.action === 'block') blocked++;
       else if (e.action === 'challenge') challenged++;
       actionCounts.set(e.action, (actionCounts.get(e.action) || 0) + 1);
-      if (e.threat_type) {
-        threatTypes.set(e.threat_type, (threatTypes.get(e.threat_type) || 0) + 1);
+      if (e.reason) {
+        reasonCounts.set(e.reason, (reasonCounts.get(e.reason) || 0) + 1);
       }
     }
 
