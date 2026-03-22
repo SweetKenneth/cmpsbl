@@ -434,8 +434,8 @@ const report = await cmpsbl.audit.export({
     layer: "Infrastructure",
     title: "IDENTITY Attribution",
     description: "Actor signatures & provenance tracking",
-    color: "text-rose-500",
-    gradient: "from-rose-500 to-red-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Verify actor identity
 const verified = await cmpsbl.identity.verify({
   actor_id: "agent_cortex",
