@@ -197,6 +197,8 @@ export class MemoryClient {
   /** Salience type lookup sets — avoids repeated array creation */
   private static readonly HIGH_SALIENCE_TYPES = new Set(['user_fact', 'preference', 'identity']);
   private static readonly MED_SALIENCE_TYPES = new Set(['workload_outcome', 'task_result']);
+  private static readonly FAST_DECAY_TYPES = new Set(['episodic', 'interaction']);
+  private static readonly SLOW_DECAY_TYPES = new Set(['procedural', 'preference']);
 
   /** Estimate salience locally (fast, before DB call) */
   estimateLocalSalience(content: string, memoryType: string): number {
