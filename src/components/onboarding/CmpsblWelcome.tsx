@@ -236,9 +236,18 @@ export function CmpsblWelcome() {
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">
               {current.title}
             </h2>
-            <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">
-              {current.body}
-            </p>
+            {current.body.split('\n\n').map((paragraph, i) => (
+              <p key={i} className={cn("text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade", i > 0 && "mt-2.5")}>
+                {paragraph}
+              </p>
+            ))}
+
+            {/* Footer quote */}
+            {current.footer && (
+              <p className="mt-3 text-[11px] font-mono text-muted-foreground/60 cmpsbl-welcome-body-fade">
+                {current.footer}
+              </p>
+            )}
 
             {/* Bullet list for card 4 */}
             {current.bullets && (
