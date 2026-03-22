@@ -97,6 +97,7 @@ graph TD
 
     GOVERNANCE[GOVERNANCE - Supervisory Plane]
     DEFENSE[DEFENSE - Shell]
+    OBSERVER[OBSERVER - Watchdog Auxiliary]
 
     CORE --> SYSTEM_NODE
     SYSTEM_NODE --> CCR
