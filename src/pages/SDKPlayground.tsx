@@ -487,7 +487,7 @@ export default function SDKPlayground() {
         </motion.div>
       </main>
 
-      <Footer />
+      <EnhancedFooter />
     </div>
   );
 }
