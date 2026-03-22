@@ -480,12 +480,17 @@ export class MemoryClient {
       processTier(hotResult, 'hot');
       processTier(warmResult, 'warm');
 
-      // Sort chronologically using cached getTime() — avoids Date construction per comparison
-      for (const e of entries) {
-        (e as any)._ts = new Date(e.timestamp).getTime();
-      }
-      entries.sort((a, b) => (a as any)._ts - (b as any)._ts);
-      return entries.slice(0, limit);
+      // Sort chronologically — pre-compute timestamps in typed array for cache-friendly sort
+      if (entries.length <= 1) return entries.slice(0, limit);
+      const ts = new Float64Array(entries.length);
+      for (let i = 0; i < entries.length; i++) ts[i] = new Date(entries[i].timestamp).getTime();
+      // Index-sort to avoid repeated property access during comparisons
+      const indices = Array.from({ length: entries.length }, (_, i) => i);
+      indices.sort((a, b) => ts[a] - ts[b]);
+      const sorted: MemoryEntry[] = [];
+      const cap = Math.min(limit, indices.length);
+      for (let i = 0; i < cap; i++) sorted.push(entries[indices[i]]);
+      return sorted;
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Replay failed: ${msg}`);
