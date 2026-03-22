@@ -33,9 +33,9 @@ export function HowCmpsblWorks() {
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
-              How{" "}
+              Why{" "}
               <span className="text-[hsl(var(--neon-cyan))]">CMPSBL</span>{" "}
-              Works
+              Wins
             </h2>
           </div>
 
