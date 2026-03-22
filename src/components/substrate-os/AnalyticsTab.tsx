@@ -436,7 +436,7 @@ export function AnalyticsTab() {
                 const height = (day.ops / maxVal) * 100;
                 return (
                   <motion.div key={day.date} className="flex-1 group relative" initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: 0.3 + idx * 0.02 }} style={{ transformOrigin: 'bottom' }}>
-                    <div className="w-full rounded-t-md bg-gradient-to-t from-cyan-500/60 to-cyan-400/30 hover:from-cyan-500/80 hover:to-cyan-400/50 transition-all cursor-pointer" style={{ height: `${Math.max(height, 4)}%` }} />
+                    <div className="w-full rounded-t-md bg-gradient-to-t from-primary/60 to-primary/30 hover:from-primary/80 hover:to-primary/50 transition-all cursor-pointer" style={{ height: `${Math.max(height, 4)}%` }} />
                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 hidden group-hover:block z-10">
                       <div className="bg-background border border-border/60 rounded-md px-2 py-1 text-[9px] font-mono whitespace-nowrap shadow-lg">{day.ops} ops • {day.date.slice(5)}</div>
                     </div>
