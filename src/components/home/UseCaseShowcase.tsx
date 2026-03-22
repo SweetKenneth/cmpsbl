@@ -13,7 +13,6 @@ import {
   Shield,
   Stethoscope,
   Plane,
-  Plane,
   ArrowRight,
   Sparkles,
 } from "lucide-react";
