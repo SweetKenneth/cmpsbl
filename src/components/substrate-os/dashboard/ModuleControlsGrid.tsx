@@ -113,7 +113,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       metrics: [{ label: 'Bus', value: rippleStatus.data?.success ? 'Connected' : 'Checking' }],
       actions: [{ id: 'jobs', label: 'Jobs', icon: Activity }],
       onAction: async (actionId: string) => {
-        if (actionId === 'jobs') { const r = await ripple.jobs(); toast.info(`Ripple: ${r.success ? 'Fetched' : 'Failed'}`); }
+        if (actionId === 'jobs') { const r = await ripple.fetchJobs.mutateAsync(); toast.info(`Ripple: ${r.success ? 'Fetched' : 'Failed'}`); }
       },
     },
     {
