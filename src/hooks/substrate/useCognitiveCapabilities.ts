@@ -41,19 +41,25 @@ export function useCognitiveCapabilities(nodeId?: string) {
     const history = getSelfAssessmentHistory(id);
     const memoryScores = history.length > 0
       ? history.map((entry, i) => ({
-          id: `assess-${i}-${entry.timestamp}`,
-          score: entry.overallScore / 100,
+          id: `assess-${i}-${entry.assessedAt}`,
+          score: entry.recallAccuracy,
           topic: entry.recommendations[0] || ['patterns', 'heuristics', 'observations', 'rules'][i % 4],
-          tier: (entry.overallScore > 70 ? 'hot' : entry.overallScore > 40 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
+          tier: (entry.healthAtAssessment > 70 ? 'hot' : entry.healthAtAssessment > 40 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
         }))
       : // Bootstrap from a fresh assessment if no history exists
         (() => {
           const fresh = runSelfAssessment(id);
-          return fresh.dimensions.map((dim, i) => ({
+          const metrics = [
+            { name: 'recallAccuracy', score: fresh.recallAccuracy },
+            { name: 'confidenceCalibration', score: fresh.confidenceCalibration },
+            { name: 'knowledgeCoverage', score: fresh.knowledgeCoverage },
+            { name: 'driftScore', score: 1 - fresh.driftScore },
+          ];
+          return metrics.map((dim, i) => ({
             id: `dim-${i}-${dim.name}`,
-            score: dim.score / 100,
+            score: dim.score,
             topic: dim.name,
-            tier: (dim.score > 70 ? 'hot' : dim.score > 40 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
+            tier: (dim.score > 0.7 ? 'hot' : dim.score > 0.4 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
           }));
         })();
     const result = replayHighValueMemories(id, memoryScores);
