@@ -110,10 +110,10 @@ export async function runConsolidation(
   result.duration = Date.now() - startTime;
   
   // Fire-and-forget event log
-  supabase.from('brain_events').insert({
+  Promise.resolve(supabase.from('brain_events').insert({
     module: 'brain', event_type: 'consolidation.completed',
     data: result as unknown as Record<string, never>, outcome: 'success',
-  }).then(() => {}).catch(() => {});
+  })).catch(() => {});
 
   return result;
 }
