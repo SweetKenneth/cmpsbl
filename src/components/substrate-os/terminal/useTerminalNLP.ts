@@ -159,7 +159,7 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Check evolution status',
   },
   
-  // Cortex (Agency module, resurrected from Cascade)
+  // Cortex (Orchestrator module)
   {
     patterns: [/propose/i, /suggest.*improvement/i, /generate.*proposal/i, /improvement.*idea/i, /new.*proposal/i],
     command: 'cortex.propose',
