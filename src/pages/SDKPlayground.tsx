@@ -18,8 +18,8 @@ import {
   Package, Loader2, CheckCircle, Clock, ArrowRight,
   Code2, Sparkles, Download, ChevronDown
 } from 'lucide-react';
-import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 
 interface PlaygroundResult {
   success: boolean;
