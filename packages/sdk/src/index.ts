@@ -1,13 +1,24 @@
 /**
  * @cmpsbl/sdk — Engine SDK Client
  * Authenticated access to hosted CMPSBL® engines.
+ * Includes unified first-contact experience with live Memory Stream.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { EngineCallOptions, EngineResult, EngineStageResult } from '@cmpsbl/types';
+import type {
+  EngineCallOptions, EngineResult, EngineStageResult,
+  FirstContactConfig, DiscoveryInput, DiscoveryResult,
+  CaptureResult, ApplyResult, ExportResult, MemoryChain,
+  DOMAIN_PATTERNS,
+} from '@cmpsbl/types';
 
 export type { EngineCallOptions, EngineResult, EngineStageResult };
+export type { FirstContactConfig, DiscoveryResult, CaptureResult, ApplyResult, ExportResult, MemoryChain };
+
+// ═══════════════════════════════════════════════════════════════
+// Engine API
+// ═══════════════════════════════════════════════════════════════
 
 export class EngineAPIError extends Error {
   constructor(message: string, public status: number) {
@@ -86,5 +97,78 @@ export class Engine {
       forge: ['generate', 'refactor', 'test', 'analyze'],
       oracle: ['predict', 'detect', 'process', 'forecast'],
     };
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// CMPSBL — First Contact SDK Client
+// ═══════════════════════════════════════════════════════════════
+
+import {
+  initFirstContact,
+  discoverMemory,
+  captureMemory,
+  applyMemory,
+  exportMemory,
+  getMemoryStream,
+  getFirstContactSession,
+  endFirstContactSession,
+} from '@cmpsbl/runtime';
+
+const SDK_DOMAIN_PATTERNS: typeof DOMAIN_PATTERNS['sdk'] = {
+  domain: 'sdk',
+  patterns: ['API usage optimization', 'Engine coordination chain', 'Client integration pattern'],
+  scopes: ['Cross-engine adoption', 'Multi-system integration', 'Developer workflow optimization'],
+};
+
+export class CMPSBL {
+  private config: FirstContactConfig;
+  private initialized = false;
+
+  constructor(options: { apiKey?: string; endpoint?: string; onDiscovery?: (chain: MemoryChain) => void } = {}) {
+    this.config = {
+      package: '@cmpsbl/sdk',
+      domain: 'sdk',
+      apiKey: options.apiKey,
+      endpoint: options.endpoint ?? 'https://api.cmpsbl.com/v1/substrate',
+      autoDiscover: true,
+      onDiscovery: options.onDiscovery,
+    };
+  }
+
+  async init(): Promise<void> {
+    if (this.initialized) return;
+    await initFirstContact(this.config);
+    this.initialized = true;
+  }
+
+  async discover(input: DiscoveryInput): Promise<DiscoveryResult> {
+    if (!this.initialized) await this.init();
+    return discoverMemory(input, this.config, SDK_DOMAIN_PATTERNS);
+  }
+
+  async capture(chainId: string): Promise<CaptureResult> {
+    return captureMemory(chainId, this.config);
+  }
+
+  async apply(chainId: string): Promise<ApplyResult> {
+    return applyMemory(chainId, this.config);
+  }
+
+  async export(chainId: string): Promise<ExportResult> {
+    return exportMemory(chainId, this.config);
+  }
+
+  get stream(): MemoryChain[] {
+    return getMemoryStream();
+  }
+
+  get session() {
+    return getFirstContactSession();
+  }
+
+  disconnect(): void {
+    endFirstContactSession();
+    this.initialized = false;
   }
 }

@@ -1,11 +1,12 @@
 /**
  * @cmpsbl/mesh — Mesh Telemetry Client
  * Emit and subscribe to node-to-node communication events.
+ * Includes first-contact Memory Stream integration.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { MeshCommEvent, MeshSignalCategory, SubstrateNode } from '@cmpsbl/types';
+import type { MeshCommEvent, MeshSignalCategory, SubstrateNode, FirstContactConfig } from '@cmpsbl/types';
 
 export type { MeshCommEvent, MeshSignalCategory, SubstrateNode };
 
@@ -98,5 +99,19 @@ export function createSignal(
     resolver_id: options?.resolver_id,
     personality_trait: options?.personality_trait,
     personality_icon: options?.personality_icon,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact — Mesh Domain
+// ═══════════════════════════════════════════════════════════════
+
+export function createMeshFirstContact(apiKey?: string): FirstContactConfig {
+  return {
+    package: '@cmpsbl/mesh',
+    domain: 'mesh',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
   };
 }

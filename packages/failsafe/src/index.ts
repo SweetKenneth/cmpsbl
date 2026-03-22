@@ -1,9 +1,12 @@
 /**
  * @cmpsbl/failsafe — Disaster Recovery & Platform Migration Engine
  * Zero-dependency backup, restore, and migration toolkit.
+ * Includes first-contact Memory Stream integration.
  *
  * © CMPSBL® — All rights reserved.
  */
+
+import type { FirstContactConfig } from '@cmpsbl/types';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -275,4 +278,18 @@ function simpleHash(str: string): string {
     hash |= 0;
   }
   return Math.abs(hash).toString(16).padStart(8, '0');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact — Failsafe Domain
+// ═══════════════════════════════════════════════════════════════
+
+export function createFailsafeFirstContact(apiKey?: string): FirstContactConfig {
+  return {
+    package: '@cmpsbl/failsafe',
+    domain: 'failsafe',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
+  };
 }

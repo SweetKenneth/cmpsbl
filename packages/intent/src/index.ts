@@ -1,11 +1,13 @@
 /**
  * @cmpsbl/intent — Standalone Intent Router
  * Brings CMPSBL's broadcastIntent() + resolver dispatch to any app.
+ * Includes first-contact Memory Stream integration.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { MeshIntent, ResolverResponse } from '@cmpsbl/types';
+import type { MeshIntent, ResolverResponse, FirstContactConfig, DiscoveryInput, DiscoveryResult } from '@cmpsbl/types';
+import { DOMAIN_PATTERNS } from '@cmpsbl/types';
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -25,6 +27,8 @@ export type ResolverHandler = (input: Record<string, unknown>) => ResolverRespon
 export interface IntentRouterConfig {
   onReceipt?: (resolution: IntentResolution) => void;
   onError?: (error: Error, intentId: string) => void;
+  /** Enable first-contact Memory Stream integration */
+  firstContact?: FirstContactConfig;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -104,4 +108,20 @@ export function getRegisteredIntentTypes(): string[] {
 
 export function clearResolvers(): void {
   resolverRegistry.clear();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact — Intent Domain
+// ═══════════════════════════════════════════════════════════════
+
+export { DOMAIN_PATTERNS } from '@cmpsbl/types';
+
+export function createIntentFirstContact(apiKey?: string): FirstContactConfig {
+  return {
+    package: '@cmpsbl/intent',
+    domain: 'intent',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
+  };
 }
