@@ -615,8 +615,7 @@ class TopicBankClient {
   }
 
   private async selectDeepDive(): Promise<TopicSelection | null> {
-    // Deep dives fetch real external knowledge from curated URL sources
-    const { selectDeepDiveSource } = await import('./deep-dive-urls');
+    // Static import — no dynamic import overhead
     const source = selectDeepDiveSource();
 
     if (source) {
