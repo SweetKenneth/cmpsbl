@@ -22,7 +22,7 @@ export function CmpsblWordmark({ className }: { className?: string }) {
   return (
     <span
       className={cn("inline-flex items-baseline select-none", className)}
-      aria-label="CMPSBL"
+      aria-label="CMPSBL®"
       role="img"
       style={{
         animation: "cmpsblPulseGlow 3s ease-in-out infinite",
@@ -47,6 +47,23 @@ export function CmpsblWordmark({ className }: { className?: string }) {
           {l.char}
         </span>
       ))}
+      <span
+        className="inline-block font-bold leading-none"
+        style={{
+          fontSize: "0.35em",
+          verticalAlign: "super",
+          marginLeft: "0.05em",
+          backgroundImage: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)), hsl(var(--neon-purple)))",
+          backgroundSize: "200% 200%",
+          backgroundClip: "text",
+          WebkitBackgroundClip: "text",
+          color: "transparent",
+          animation: "cmpsblLetterFlow 5s ease-in-out infinite",
+          animationDelay: "4.8s",
+        }}
+      >
+        ®
+      </span>
     </span>
   );
 }
