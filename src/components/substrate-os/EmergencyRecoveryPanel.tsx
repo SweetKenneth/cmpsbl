@@ -220,8 +220,8 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                   key={backup.id}
                   className={cn(
                     "p-2 rounded-lg border cursor-pointer transition-all",
-                    "bg-muted/10 border-border/30 hover:border-cyan-500/30 hover:bg-muted/20",
-                    selectedBackup === backup.backup_id && "border-cyan-500/50 bg-cyan-500/10"
+                    "bg-muted/10 border-border/30 hover:border-neon-cyan/30 hover:bg-muted/20",
+                    selectedBackup === backup.backup_id && "border-neon-cyan/50 bg-neon-cyan/10"
                   )}
                   onClick={() => setSelectedBackup(
                     selectedBackup === backup.backup_id ? null : backup.backup_id
