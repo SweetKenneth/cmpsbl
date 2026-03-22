@@ -102,9 +102,7 @@ export default function VanillaDeveloperGuide() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
               <span className="text-foreground">Drop it in your stack.</span>
               <br />
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                Ship smarter systems.
-              </span>
+              <span className="text-primary">Ship smarter systems.</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
               No AI framework required. The CMPSBL SDK is a standard TypeScript library that gives your app
