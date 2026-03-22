@@ -241,7 +241,7 @@ export function HeroMetaSubstrate() {
             {/* Tagline */}
             <FadeIn delay={0.2} className="mb-6 sm:mb-8">
               <p className="text-xl sm:text-2xl md:text-3xl font-medium text-foreground/70 tracking-tight leading-snug mb-2">
-                Systems That Dream · Adapt · Evolve
+                Where machines learn how to
               </p>
               <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
                 <TypedText 
@@ -258,12 +258,15 @@ export function HeroMetaSubstrate() {
               </div>
             </FadeIn>
 
-            {/* Single clear value prop */}
+            {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
               <p className="text-sm sm:text-base text-muted-foreground/80 leading-[1.8]">
-                Most AI platforms process and forget. CMPSBL runs continuously — your systems
-                operate in the background, adapt under governance, and compound intelligence
-                with every interaction.
+                CMPSBL gives your software{' '}
+                <span className="text-foreground/90 font-medium">persistent memory</span>,{' '}
+                <span className="text-foreground/90 font-medium">self-improvement</span>, and{' '}
+                <span className="text-foreground/90 font-medium">governed reasoning</span>.
+                Every interaction flows through the Memory Stream, where the system
+                crystallizes discoveries into exportable capabilities — automatically.
               </p>
             </FadeIn>
             

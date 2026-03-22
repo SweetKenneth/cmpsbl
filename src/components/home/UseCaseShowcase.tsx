@@ -13,6 +13,7 @@ import {
   Shield,
   Stethoscope,
   Plane,
+  ChefHat,
   ArrowRight,
   Sparkles,
 } from "lucide-react";
@@ -23,7 +24,7 @@ const useCases = [
   {
     icon: Gamepad2,
     title: "NPCs That Dream & Evolve",
-    description: "Game characters that remember player behavior, adapt strategies, and generate new approaches over time.",
+    description: "Game characters with persistent memory that adapt to player style, remember past encounters, and dream new strategies.",
     industry: "Gaming",
     iconColor: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--neon-magenta)/0.15)]",
@@ -34,7 +35,7 @@ const useCases = [
   {
     icon: Brain,
     title: "Chatbots With True Memory",
-    description: "Conversational AI that retains customer context and builds long-term relationships.",
+    description: "Conversational AI that remembers customer history, builds relationship context, and provides personalized support.",
     industry: "Development",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--neon-purple)/0.15)]",
@@ -43,9 +44,20 @@ const useCases = [
     timelineColor: "bg-[hsl(var(--neon-cyan)/0.15)] text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan)/0.3)]",
   },
   {
+    icon: ChefHat,
+    title: "Cooking Apps That Learn",
+    description: "Recipe platforms that learn your taste preferences, adapt to ingredients, and suggest personalized meal plans.",
+    industry: "Consumer",
+    iconColor: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta)/0.15)] to-[hsl(var(--neon-cyan)/0.15)]",
+    borderColor: "group-hover:border-[hsl(var(--neon-magenta)/0.4)]",
+    timeline: "Available Now",
+    timelineColor: "bg-[hsl(var(--neon-cyan)/0.15)] text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan)/0.3)]",
+  },
+  {
     icon: Code,
     title: "IDE Assistants With Context",
-    description: "Code editors that understand your architecture and evolve with your coding patterns.",
+    description: "Code editors that remember your patterns, understand project architecture, and suggest refactors based on style.",
     industry: "Development",
     iconColor: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--primary)/0.15)]",
@@ -56,7 +68,7 @@ const useCases = [
   {
     icon: Building2,
     title: "Self-Healing Enterprises",
-    description: "Systems that detect degradation, predict failures, and autonomously reroute around bottlenecks.",
+    description: "Enterprise systems that detect degradation patterns, predict failures, and autonomously route around bottlenecks.",
     industry: "Enterprise",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--neon-magenta)/0.15)]",
@@ -66,8 +78,8 @@ const useCases = [
   },
   {
     icon: Shield,
-    title: "Autonomous Security Systems",
-    description: "Defense platforms that learn attack patterns, simulate counter-strategies, and adapt in real time.",
+    title: "Autonomous Security Teams",
+    description: "Defense systems that study attack patterns, dream counter-strategies, and adapt defenses in real-time.",
     industry: "Cybersecurity",
     iconColor: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta)/0.15)] to-[hsl(var(--neon-purple)/0.15)]",
@@ -78,7 +90,7 @@ const useCases = [
   {
     icon: Stethoscope,
     title: "Diagnostic AI With History",
-    description: "Medical systems that build patient timelines, correlate long-term data, and uncover hidden patterns.",
+    description: "Medical AI that builds patient timelines, correlates symptoms across decades, and finds pattern connections.",
     industry: "Healthcare",
     iconColor: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--neon-cyan)/0.15)]",
@@ -89,7 +101,7 @@ const useCases = [
   {
     icon: Plane,
     title: "Mid-Flight Self-Repair",
-    description: "Avionics systems that simulate failure scenarios and pre-compute recovery paths before issues occur.",
+    description: "Avionics that dream failure scenarios, pre-compute recovery paths, and self-heal anomalies before they cascade.",
     industry: "Aviation",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--neon-magenta)/0.15)]",
@@ -124,7 +136,7 @@ export function UseCaseShowcase() {
             <span className="text-[hsl(var(--neon-magenta))]">Tomorrow</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Production-ready applications crystallized from the Memory Stream today — and entirely new categories emerging tomorrow.
+            Production-ready applications crystallized from the Memory Stream today, and the transformative possibilities on the horizon.
           </p>
         </motion.div>
         

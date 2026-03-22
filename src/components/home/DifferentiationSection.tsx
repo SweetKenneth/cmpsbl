@@ -14,7 +14,7 @@ const pillars = [
     icon: Moon,
     title: "DREAM",
     headline: "Process while idle",
-    description: "Offline synthesis cycles consolidate memory, extract latent patterns, and generate new insights — without consuming active compute. Your system learns even when unused.",
+    description: "Offline synthesis cycles consolidate memories, extract latent patterns, and generate novel insights — without consuming active compute. Your system learns even when no one is using it.",
     link: "/blog/clockless-modules-deep-dive",
     linkLabel: "How DREAM works",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
@@ -26,7 +26,7 @@ const pillars = [
     icon: Brain,
     title: "REMEMBER",
     headline: "Memory that survives restarts",
-    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall. Context persists across sessions, deployments, and infrastructure changes. Nothing resets.",
+    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall. Context carries across sessions, deployments, and infrastructure changes. Nothing resets.",
     link: "/persistent-memory",
     linkLabel: "Explore memory tiers",
     iconBg: "bg-[hsl(var(--neon-cyan)/0.1)]",
@@ -38,7 +38,7 @@ const pillars = [
     icon: RefreshCw,
     title: "ADAPT",
     headline: "Governed self-modification",
-    description: "The runtime adjusts routing, cost allocation, and operational parameters based on real-world performance — within strict governance boundaries.",
+    description: "The runtime adjusts routing, cost allocation, and operational parameters based on real-world performance — within strict governance boundaries. Adaptation is a system property, not an afterthought.",
     link: "/blog/clockless-what-makes-it-different",
     linkLabel: "Why governed adaptation matters",
     iconBg: "bg-[hsl(var(--neon-magenta)/0.1)]",
@@ -50,7 +50,7 @@ const pillars = [
     icon: TrendingUp,
     title: "SELF-IMPROVE",
     headline: "Compound intelligence over time",
-    description: "Every interaction feeds back into the system. Memory crystallizes into reusable intelligence. Performance improves with usage — your infrastructure gets smarter over time.",
+    description: "Every interaction feeds back into the system's understanding. Memories crystallize into reusable intelligence. Performance improves with usage — your infrastructure gets smarter the more you use it.",
     link: "/blog/clockless-account-setup-artifact-packs",
     linkLabel: "Start compounding",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
@@ -80,7 +80,7 @@ export function DifferentiationSection() {
           </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
              Most AI platforms process and forget. CMPSBL runs continuously — your systems
-             operate in the background, adapt under governance, and compound intelligence with every interaction.
+             process in the background, adapt under governance, and compound intelligence with every interaction.
            </p>
         </motion.div>
 

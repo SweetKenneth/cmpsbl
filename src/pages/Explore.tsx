@@ -162,12 +162,13 @@ export default function Explore() {
               </div>
               
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
-                Start Building —{" "}
-                <span className="text-white/80">Free</span>
+                Start Building{" "}
+                <br className="hidden sm:block" />
+                <span className="text-white/80">Today — Free</span>
               </h2>
               <p className="text-white/70 text-sm sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
-                Persistent memory, governed evolution, and self-improving systems — included.
-                Start with 3 capability slots. No credit card required.
+                Persistent memory, governed evolution, and self-improvement cycles — all included. 
+                Start with 3 capability slots, no credit card required.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -181,7 +182,7 @@ export default function Explore() {
                 <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
                   <Link to="/store?tab=plans">
                     <Terminal className="w-5 h-5 mr-2" />
-                    See Plans
+                    View Plans
                   </Link>
                 </Button>
               </div>

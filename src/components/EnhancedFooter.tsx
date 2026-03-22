@@ -34,8 +34,8 @@ export function EnhancedFooter() {
       title: "Infrastructure",
       links: [
         { name: "How it works", href: "/ai-operating-system" },
-        { name: "Modules", href: "/modules" },
-        { name: "Runtime Engine", href: "/runtime" },
+        { name: "All modules", href: "/modules" },
+        { name: "Runtime", href: "/runtime" },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Persistent memory", href: "/persistent-memory" },
       ]
@@ -47,7 +47,7 @@ export function EnhancedFooter() {
         { name: "CodeLab", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },
         { name: "API access", href: "/api-access" },
-        { name: "Experimentation", href: "/lab" },
+        { name: "Experiment Lab", href: "/lab" },
       ]
     },
     {
@@ -56,7 +56,7 @@ export function EnhancedFooter() {
         { name: "Store", href: "/store", highlight: true },
         { name: "Plans & pricing", href: "/store?tab=plans" },
         { name: "Showcase", href: "/showcase" },
-        { name: "World Engine", href: "/gaming" },
+        { name: "World engine", href: "/gaming" },
         { name: "Projects", href: "/projects" },
       ]
     },
@@ -66,7 +66,7 @@ export function EnhancedFooter() {
         { name: "About", href: "/about" },
         { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
-        { name: "Publications", href: "/publication" },
+        { name: "Publication", href: "/publication" },
         { name: "Heritage paper", href: "/heritage-paper", highlight: true },
       ]
     },
@@ -116,7 +116,7 @@ export function EnhancedFooter() {
                 Composable AI Infrastructure
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
-                The Memory Stream turns system behavior into production-ready capabilities — automatically.
+                The Memory Stream discovers patterns in system behavior and turns them into production-ready capabilities — automatically.
               </p>
               <Link 
                 to="/store?tab=plans" 
