@@ -194,8 +194,8 @@ export const EventStream = memo(function EventStream() {
             ))
           ) : brainEvents.isError ? (
             <div className="flex flex-col items-center justify-center h-[240px] text-center">
-              <Shield className="w-8 h-8 text-red-400/50 mb-3" />
-              <p className="text-sm text-red-400">
+              <Shield className="w-8 h-8 text-destructive/50 mb-3" />
+              <p className="text-sm text-destructive">
                 Failed to load events
               </p>
               <p className="text-xs text-muted-foreground/60 mt-1">
