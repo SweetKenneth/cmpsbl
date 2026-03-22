@@ -176,9 +176,9 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Apply approved proposal changes',
   },
   {
-    patterns: [/cortex.*status/i, /agency.*status/i, /cascade.*status/i, /proposal.*status/i],
+    patterns: [/cortex.*status/i, /orchestrat.*status/i, /cascade.*status/i, /proposal.*status/i],
     command: 'cortex.status',
-    explanation: 'Cortex agency module status',
+    explanation: 'Cortex orchestrator status',
   },
   {
     patterns: [/cortex.*audit/i, /proposal.*audit/i, /decision.*log/i, /cortex.*history/i],
