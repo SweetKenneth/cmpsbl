@@ -485,7 +485,7 @@ function gracefulFallback(module: string, action: string): Record<string, unknow
 }
 
 // ═══════════════════════════════════════════════════════════════
-// NEXUS v1.1 — Provider Skeleton + Routing Spine
+// NEXUS v1.1 — Provider Registry + Routing Spine
 // ═══════════════════════════════════════════════════════════════
 
 // Provider Adapter Interface
