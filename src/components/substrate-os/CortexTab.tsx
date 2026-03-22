@@ -42,7 +42,6 @@ export function CortexTab({ enabled }: CortexTabProps) {
   const queryClient = useQueryClient();
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
 
-  // Fetch cortex status
   const { data: status, isLoading: statusLoading, refetch: refetchStatus } = useQuery({
     queryKey: ['cortex-status'],
     queryFn: async () => {
@@ -62,7 +61,6 @@ export function CortexTab({ enabled }: CortexTabProps) {
     enabled,
   });
 
-  // Fetch world model
   const { data: worldModel, isLoading: worldLoading, refetch: refetchWorld } = useQuery({
     queryKey: ['cortex-world'],
     queryFn: async () => {
@@ -82,7 +80,6 @@ export function CortexTab({ enabled }: CortexTabProps) {
     enabled,
   });
 
-  // Mode change mutation
   const modeMutation = useMutation({
     mutationFn: async (newMode: 'manual' | 'shadow' | 'auto') => {
       const result = await cortex.mode(newMode);
@@ -98,7 +95,6 @@ export function CortexTab({ enabled }: CortexTabProps) {
     },
   });
 
-  // Panic mutation
   const panicMutation = useMutation({
     mutationFn: async (action: 'freeze' | 'resume') => {
       const result = await cortex.panic(action, action === 'freeze' ? 'Manual freeze from dashboard' : undefined);
@@ -125,7 +121,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
-        <div className="rounded-xl border border-dashed border-violet-500/20 bg-muted/5 backdrop-blur-xl p-12">
+        <div className="rounded-xl border border-dashed border-neon-purple/20 bg-muted/5 backdrop-blur-xl p-12">
           <div className="text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
             <h3 className="text-lg font-semibold text-muted-foreground/60">CORTEX Access Restricted</h3>
@@ -145,8 +141,8 @@ export function CortexTab({ enabled }: CortexTabProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-violet-500/20 border border-violet-500/40 flex items-center justify-center">
-            <Wand2 className="w-6 h-6 text-violet-400" />
+          <div className="w-12 h-12 rounded-xl bg-neon-purple/20 border border-neon-purple/40 flex items-center justify-center">
+            <Wand2 className="w-6 h-6 text-neon-purple" />
           </div>
           <div>
             <h2 className="text-xl font-bold">CORTEX Orchestrator</h2>
@@ -166,8 +162,8 @@ export function CortexTab({ enabled }: CortexTabProps) {
           <Badge variant="outline" className={cn(
             "text-xs",
             isPanic 
-              ? "border-red-500/50 text-red-400 bg-red-500/10" 
-              : "border-violet-500/50 text-violet-400 bg-violet-500/10"
+              ? "border-destructive/50 text-destructive bg-destructive/10" 
+              : "border-neon-purple/50 text-neon-purple bg-neon-purple/10"
           )}>
             {isPanic ? 'FROZEN' : 'OPERATIONAL'}
           </Badge>
@@ -177,10 +173,10 @@ export function CortexTab({ enabled }: CortexTabProps) {
       {/* Status Cards */}
       <div className="grid md:grid-cols-3 gap-4">
         {/* Mode Control */}
-        <Card className="border-violet-500/20 bg-muted/10 backdrop-blur-xl">
+        <Card className="border-neon-purple/20 bg-muted/10 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Settings className="w-4 h-4 text-violet-400" />
+              <Settings className="w-4 h-4 text-neon-purple" />
               Operating Mode
             </CardTitle>
             <CardDescription className="text-xs">Manual mode by default</CardDescription>
@@ -200,19 +196,19 @@ export function CortexTab({ enabled }: CortexTabProps) {
                 <SelectContent>
                   <SelectItem value="manual">
                     <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-emerald-400" />
+                      <Shield className="w-4 h-4 text-neon-green" />
                       Manual — Human approval required
                     </div>
                   </SelectItem>
                   <SelectItem value="shadow">
                     <div className="flex items-center gap-2">
-                      <Eye className="w-4 h-4 text-amber-400" />
+                      <Eye className="w-4 h-4 text-neon-amber" />
                       Shadow — Test without applying
                     </div>
                   </SelectItem>
                   <SelectItem value="auto">
                     <div className="flex items-center gap-2">
-                      <PlayCircle className="w-4 h-4 text-cyan-400" />
+                      <PlayCircle className="w-4 h-4 text-primary" />
                       Auto — Full autonomy (LOW risk only)
                     </div>
                   </SelectItem>
@@ -225,11 +221,11 @@ export function CortexTab({ enabled }: CortexTabProps) {
         {/* Panic Control */}
         <Card className={cn(
           "border bg-muted/10 backdrop-blur-xl",
-          isPanic ? "border-red-500/40" : "border-amber-500/20"
+          isPanic ? "border-destructive/40" : "border-neon-amber/20"
         )}>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <AlertTriangle className={cn("w-4 h-4", isPanic ? "text-red-400" : "text-amber-400")} />
+              <AlertTriangle className={cn("w-4 h-4", isPanic ? "text-destructive" : "text-neon-amber")} />
               Panic Safety Switch
             </CardTitle>
             <CardDescription className="text-xs">Emergency system halt</CardDescription>
@@ -260,10 +256,10 @@ export function CortexTab({ enabled }: CortexTabProps) {
         </Card>
 
         {/* Health Score */}
-        <Card className="border-emerald-500/20 bg-muted/10 backdrop-blur-xl">
+        <Card className="border-neon-green/20 bg-muted/10 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Activity className="w-4 h-4 text-emerald-400" />
+              <Activity className="w-4 h-4 text-neon-green" />
               System Health
             </CardTitle>
             <CardDescription className="text-xs">Orchestrator health score</CardDescription>
@@ -274,8 +270,8 @@ export function CortexTab({ enabled }: CortexTabProps) {
             ) : (
               <>
                 <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-emerald-400">{healthScore}%</span>
-                  <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10 text-xs">
+                  <span className="text-2xl font-bold text-neon-green">{healthScore}%</span>
+                  <Badge variant="outline" className="border-neon-green/50 text-neon-green bg-neon-green/10 text-xs">
                     {healthScore >= 80 ? 'HEALTHY' : healthScore >= 50 ? 'DEGRADED' : 'CRITICAL'}
                   </Badge>
                 </div>
@@ -287,10 +283,10 @@ export function CortexTab({ enabled }: CortexTabProps) {
       </div>
 
       {/* World Model */}
-      <Card className="border-violet-500/20 bg-muted/10 backdrop-blur-xl">
+      <Card className="border-neon-purple/20 bg-muted/10 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Globe className="w-4 h-4 text-violet-400" />
+            <Globe className="w-4 h-4 text-neon-purple" />
             World Model — Surface Registry
           </CardTitle>
           <CardDescription className="text-xs">CORTEX maintains a complete model of all substrate surfaces</CardDescription>
@@ -327,7 +323,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
                       <button
                         className={cn(
                           "w-full p-3 rounded-lg border text-left transition-all hover:bg-muted/30",
-                          isHealthy ? "border-emerald-500/20" : "border-amber-500/30"
+                          isHealthy ? "border-neon-green/20" : "border-neon-amber/30"
                         )}
                         onClick={() => setExpandedModule(expandedModule === mod.name ? null : mod.name)}
                       >
@@ -342,11 +338,11 @@ export function CortexTab({ enabled }: CortexTabProps) {
                         <div className="flex items-center gap-2">
                           <div className={cn(
                             "w-2 h-2 rounded-full",
-                            isHealthy ? "bg-emerald-500" : "bg-amber-500"
+                            isHealthy ? "bg-neon-green" : "bg-neon-amber"
                           )} />
                           <span className={cn(
                             "text-sm font-medium",
-                            isHealthy ? "text-emerald-400" : "text-amber-400"
+                            isHealthy ? "text-neon-green" : "text-neon-amber"
                           )}>
                             {mod.health || mod.health_score || 100}%
                           </span>
@@ -368,10 +364,10 @@ export function CortexTab({ enabled }: CortexTabProps) {
       </Card>
 
       {/* PEARL Cycle Info */}
-      <Card className="border-violet-500/20 bg-muted/10 backdrop-blur-xl">
+      <Card className="border-neon-purple/20 bg-muted/10 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
-            <Workflow className="w-4 h-4 text-violet-400" />
+            <Workflow className="w-4 h-4 text-neon-purple" />
             PEARL Autonomous Loop
           </CardTitle>
           <CardDescription className="text-xs">Propose → Evaluate → Apply → Audit → Learn</CardDescription>
@@ -380,8 +376,8 @@ export function CortexTab({ enabled }: CortexTabProps) {
           <div className="flex items-center justify-between gap-2">
             {['Propose', 'Evaluate', 'Apply', 'Audit', 'Learn'].map((step, i) => (
               <div key={step} className="flex items-center gap-2 flex-1">
-                <div className="flex-1 text-center p-3 rounded-lg bg-muted/20 border border-violet-500/20">
-                  <p className="text-xs font-medium text-violet-400">{step}</p>
+                <div className="flex-1 text-center p-3 rounded-lg bg-muted/20 border border-neon-purple/20">
+                  <p className="text-xs font-medium text-neon-purple">{step}</p>
                   <p className="text-[10px] text-muted-foreground mt-1">
                     {i === 0 && 'Generate proposals'}
                     {i === 1 && 'Assess cost/risk'}
