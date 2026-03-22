@@ -24,7 +24,7 @@ export default function Upgrade() {
       <PublicNav />
       <UpgradeOnboarding />
 
-      <main className="pt-28 pb-20">
+      <main className="pt-28 sm:pt-32 pb-20">
         <UpgradeContent />
       </main>
 

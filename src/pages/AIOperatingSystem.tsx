@@ -170,11 +170,8 @@ export default function AIOperatingSystem() {
               </Badge>
             </motion.div>
 
-            <motion.h1 {...fadeUp(0.05)} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-5 sm:mb-6 leading-[1.1]">
-              What is an{" "}
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                AI Operating System?
-              </span>
+            <motion.h1 {...fadeUp(0.05)} className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-5 sm:mb-6 leading-[1.1]">
+              What is an <span className="text-primary">AI Operating System?</span>
             </motion.h1>
 
             <motion.p {...fadeUp(0.1)} className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mb-4">

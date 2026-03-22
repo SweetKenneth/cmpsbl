@@ -435,7 +435,7 @@ export default function Auth() {
                         >
                           <Mail className="w-8 h-8 text-primary" />
                         </motion.div>
-                        <h3 className="text-lg font-semibold">Signal Crystallizing</h3>
+                        <h3 className="text-lg font-semibold">Verification Sent</h3>
                         <p className="text-sm text-muted-foreground">
                           We sent a verification link to <strong className="text-foreground">{signupEmail}</strong>.
                         </p>

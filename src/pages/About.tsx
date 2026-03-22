@@ -520,7 +520,7 @@ export default function About() {
             {...fadeUp}
             className="rounded-2xl overflow-hidden shadow-2xl shadow-primary/10"
           >
-            <div className="relative bg-gradient-to-br from-primary via-primary/90 to-violet-600 p-6 sm:p-10 md:p-14 text-center">
+            <div className="relative bg-gradient-to-br from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))] p-6 sm:p-10 md:p-14 text-center">
               {/* Grid overlay */}
               <div
                 className="absolute inset-0 opacity-10"
