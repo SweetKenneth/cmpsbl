@@ -139,7 +139,7 @@ export function NpmPackagesCTA() {
           {HIGHLIGHTS.map((h, i) => (
             <motion.div
               key={h.title}
-              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border/40 bg-card/30 text-center"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border/40 bg-[hsl(var(--stream-slate))] text-center"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
