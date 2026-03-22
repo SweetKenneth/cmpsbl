@@ -186,7 +186,7 @@ export function EvolutionTab() {
           <Badge variant="outline" className={cn(
             "text-xs",
             status?.enabled 
-              ? "border-emerald-500/40 text-emerald-400 bg-emerald-500/10"
+              ? "border-neon-green/40 text-neon-green bg-neon-green/10"
               : "border-muted text-muted-foreground bg-muted/10"
           )}>
             {status?.enabled ? 'Active' : 'Paused'}
