@@ -451,6 +451,9 @@ const ALL_MODULES: SubstrateModule[] = [
   'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'immunity', 'intent', 'governance',
   'medic', 'nerve',
+  // Expansion nodes (40-node architecture)
+  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ];
 
 // Register default hooks for all modules
