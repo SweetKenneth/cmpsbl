@@ -16442,7 +16442,19 @@ async function updateSubscriberCircuit(
   }
 }
 
-// Helper: Check if circuit allows execution
+// Helper: Route to module handler by name
+// deno-lint-ignore no-explicit-any
+function getModuleHandler(module: string): ((supabase: any, action: string, data: any, headers: any) => Promise<Response>) | null {
+  const handlers: Record<string, any> = {
+    core: handleCore,
+    brain: handleBrain,
+    dream: handleDream,
+    ripple: handleRipple,
+    nexus: handleNexus,
+  };
+  return handlers[module.toLowerCase()] || null;
+}
+
 async function isCircuitClosed(supabase: any, module: string, action: string): Promise<boolean> {
   const subscriberKey = `${module}/${action}`;
   
