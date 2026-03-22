@@ -12,12 +12,13 @@ import {
   Building2, Cpu, Shield, Layers, Eye, LogOut, Home, Network, Zap,
   Menu, X, Brain, Gauge, HardDrive, FileText, Settings, UserCircle,
   GitBranch, Wrench, AlertTriangle, MessageSquare, Dna,
-  Users, Wand2, Key, Radio, Hammer, Compass,
+  Users, Wand2, Key, Radio, Hammer, Compass, PanelLeftClose, PanelLeft,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
@@ -79,51 +80,42 @@ interface TabDef {
   group: string;
   description: string;
   governorOnly?: boolean;
-  /** Minimum tier required. Defaults to 'free' (everyone). */
   minTier?: SubstrateRole;
 }
 
-/**
- * Tier gating strategy:
- * FREE     — Overview, Analytics, Operations (enough telemetry to be interesting)
- * CREATOR  — Terminal, NEXUS, CCR, FORGE, Cognitives (hands-on tools)
- * STUDIO   — INTENT, CORTEX, ATLAS, Maintenance, ENCODE, Mesh (deep orchestration)
- * ARCHITECT— EVOLUTION, SHADOW, ORACLE, Security (advanced controls)
- * GOVERNOR — Governor panel (admin only, already gated)
- */
 function getTabDefs(hasAgency: boolean, isGovernor: boolean): TabDef[] {
   return [
-    // ── Account (always first) ──
-    { id: 'account', label: 'Account', icon: UserCircle, group: 'Command', description: 'Your profile & quick links' },
-    // ── Free tier (personal tools) ──
-    { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'Command', description: 'System health & quick actions' },
-    { id: 'analytics', label: 'Analytics', icon: Activity, group: 'Command', description: 'Traffic & usage', governorOnly: true, minTier: 'governor' },
-    // ── Creator tier (user-facing tools) ──
-    { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface', minTier: 'creator' },
-    { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
-    { id: 'webhooks', label: 'Webhooks', icon: Zap, group: 'Intelligence', description: 'Event subscriptions', minTier: 'creator' },
-    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM', minTier: 'creator' },
-    { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST', minTier: 'creator' },
-    // ── Cognitives & Agency: governor-only unless user purchased agents from the store ──
-    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Extend', description: 'Sealed runtimes', governorOnly: !isGovernor && !hasAgency, minTier: hasAgency ? 'creator' as SubstrateRole : 'governor' as SubstrateRole },
-    ...((hasAgency || isGovernor) ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Extend' as string, description: 'Agency command center', governorOnly: !hasAgency, minTier: (hasAgency ? 'creator' : 'governor') as SubstrateRole }] : []),
-    // ── Governor-only (substrate-level controls — not for users) ──
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Intelligence', description: 'Node mesh & governance', governorOnly: true, minTier: 'governor' },
-    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Intelligence', description: 'Memory orchestration', governorOnly: true, minTier: 'governor' },
-    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Intelligence', description: 'Control plane', governorOnly: true, minTier: 'governor' },
-    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Execution', description: 'Engine repairs & safety switches', governorOnly: true, minTier: 'governor' },
-    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Execution', description: 'Code generation', governorOnly: true, minTier: 'governor' },
-    { id: 'mesh', label: 'Mesh Activity', icon: Network, group: 'Execution', description: 'Capability mesh', governorOnly: true, minTier: 'governor' },
-    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Execution', description: 'Self-evolution engine', governorOnly: true, minTier: 'governor' },
-    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Execution', description: 'Adversarial probes & TSAC', governorOnly: true, minTier: 'governor' },
-    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Perception', description: 'Predictions · Simulation · Echo', governorOnly: true, minTier: 'governor' },
-    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity · Audit', governorOnly: true, minTier: 'governor' },
-    { id: 'operations', label: 'Operations', icon: Layers, group: 'Govern', description: 'DECODE · VISION · ECONOMY + 5', governorOnly: true, minTier: 'governor' },
-    { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Admin controls & kill switches', governorOnly: true, minTier: 'governor' },
+    // ── Account ──
+    { id: 'account', label: 'Account', icon: UserCircle, group: 'You', description: 'Profile & settings' },
+    // ── Free ──
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard, group: 'You', description: 'Health & topology' },
+    { id: 'analytics', label: 'Analytics', icon: Activity, group: 'You', description: 'Traffic & telemetry', governorOnly: true, minTier: 'governor' },
+    // ── Creator ──
+    { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Build', description: 'Command interface', minTier: 'creator' },
+    { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Build', description: 'Fleet routing', minTier: 'creator' },
+    { id: 'webhooks', label: 'Webhooks', icon: Radio, group: 'Build', description: 'Event subscriptions', minTier: 'creator' },
+    { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Memory', description: 'MEMORY · DREAM', minTier: 'creator' },
+    { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Create', description: 'Artifacts · LINGUA', minTier: 'creator' },
+    // ── Cognitives & Agency ──
+    { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Agents', description: 'Sealed runtimes', governorOnly: !isGovernor && !hasAgency, minTier: hasAgency ? 'creator' as SubstrateRole : 'governor' as SubstrateRole },
+    ...((hasAgency || isGovernor) ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Agents' as string, description: 'Multi-agent teams', governorOnly: !hasAgency, minTier: (hasAgency ? 'creator' : 'governor') as SubstrateRole }] : []),
+    // ── Governor ──
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Orchestrate', description: 'Node mesh', governorOnly: true, minTier: 'governor' },
+    { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Orchestrate', description: 'Memory orchestration', governorOnly: true, minTier: 'governor' },
+    { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Orchestrate', description: 'Control plane', governorOnly: true, minTier: 'governor' },
+    { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Operate', description: 'Engine repairs', governorOnly: true, minTier: 'governor' },
+    { id: 'encode', label: 'ENCODE', icon: Bot, group: 'Operate', description: 'Code generation', governorOnly: true, minTier: 'governor' },
+    { id: 'mesh', label: 'Mesh', icon: Network, group: 'Operate', description: 'Capability mesh', governorOnly: true, minTier: 'governor' },
+    { id: 'evolution', label: 'EVOLUTION', icon: Dna, group: 'Evolve', description: 'Self-evolution', governorOnly: true, minTier: 'governor' },
+    { id: 'shadow', label: 'SHADOW', icon: Eye, group: 'Evolve', description: 'Adversarial probes', governorOnly: true, minTier: 'governor' },
+    { id: 'oracle', label: 'ORACLE', icon: Compass, group: 'Evolve', description: 'Predictions & echo', governorOnly: true, minTier: 'governor' },
+    { id: 'security', label: 'Security', icon: Shield, group: 'Govern', description: 'DEFENSE · Immunity', governorOnly: true, minTier: 'governor' },
+    { id: 'operations', label: 'Operations', icon: Layers, group: 'Govern', description: 'DECODE · VISION +5', governorOnly: true, minTier: 'governor' },
+    { id: 'governor', label: 'Governor', icon: AlertTriangle, group: 'Govern', description: 'Kill switches', governorOnly: true, minTier: 'governor' },
   ];
 }
 
-const GROUP_ORDER = ['Command', 'Intelligence', 'Cognitive', 'Execution', 'Perception', 'Manufacturing', 'Extend', 'Govern'];
+const GROUP_ORDER = ['You', 'Build', 'Memory', 'Create', 'Agents', 'Orchestrate', 'Operate', 'Evolve', 'Govern'];
 
 // ── Sidebar ──
 interface SidebarProps {
@@ -135,11 +127,11 @@ interface SidebarProps {
   isGovernor: boolean;
   healthScore: number;
   collapsed?: boolean;
+  onToggleCollapse?: () => void;
   currentTier: SubstrateRole;
 }
 
-function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed, currentTier }: SidebarProps) {
-  const version = useMetric('version');
+function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isGovernor, healthScore, collapsed, onToggleCollapse, currentTier }: SidebarProps) {
   const grouped = useMemo(() => {
     const map: Record<string, TabDef[]> = {};
     tabs.forEach(t => {
@@ -151,114 +143,110 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
   }, [tabs, isGovernor]);
 
   return (
-    <div className={cn(
-      "flex flex-col h-full border-r border-border/20 transition-all duration-200",
-      "bg-gradient-to-b from-background via-background to-muted/20",
-      "dark:from-[hsl(220,25%,5%)] dark:via-[hsl(220,25%,4%)] dark:to-[hsl(220,20%,6%)]",
-      collapsed ? "w-[52px]" : "w-56"
-    )}>
-      {/* Brand */}
-      {!collapsed && (
-        <div className="px-4 pt-4 pb-3 border-b border-border/15">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/25 flex items-center justify-center shrink-0">
-              <Cpu className="w-3.5 h-3.5 text-primary" />
-            </div>
-            <div className="min-w-0">
-              <div className="text-xs font-bold text-foreground tracking-tight">Memory Stream</div>
-              <div className="text-[9px] text-muted-foreground/50 font-mono">signal → silicon v{version}</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <ScrollArea className="flex-1 py-2">
-        <nav className="space-y-0.5 px-1.5">
-          {grouped.map((section, gi) => (
-            <div key={section.group}>
-              {gi > 0 && <div className="h-px bg-border/10 mx-2 my-2" />}
-              {!collapsed && (
-                <div className="px-2.5 mb-1">
-                  <span className="text-[9px] font-semibold text-muted-foreground/40 uppercase tracking-[0.15em]">
-                    {section.group}
-                  </span>
-                </div>
-              )}
-              {section.items.map(tab => {
-                const active = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => { onTabChange(tab.id); onClose?.(); }}
-                    title={collapsed ? tab.label : undefined}
-                    className={cn(
-                      "w-full flex items-center gap-2 rounded-lg text-[13px] transition-all duration-150",
-                      collapsed ? "justify-center px-1 py-2" : "px-2.5 py-[7px]",
-                      active
-                        ? "bg-primary/8 text-primary font-medium dark:bg-primary/10"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
-                    )}
-                  >
-                    <div className={cn(
-                      "w-6 h-6 rounded-md flex items-center justify-center shrink-0 transition-colors",
-                      active ? "bg-primary/15" : ""
-                    )}>
-                      <tab.icon className={cn("w-3.5 h-3.5", active ? "text-primary" : "")} />
-                    </div>
-                    {!collapsed && (
-                      <>
-                        <span className="flex-1 text-left truncate">{tab.label}</span>
-                        {tab.minTier && <TierLockBadge requiredTier={tab.minTier} currentTier={currentTier} />}
-                        {active && !tab.minTier && <div className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
-                      </>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          ))}
-        </nav>
-      </ScrollArea>
-
-      {/* Footer */}
-      <div
-        className={cn("border-t border-border/15 shrink-0", collapsed ? "p-1.5" : "p-3")}
-        style={{ paddingBottom: `max(${collapsed ? '0.375rem' : '1.25rem'}, calc(env(safe-area-inset-bottom, 0px) + 1rem))` }}
-      >
-        <div className={cn("flex gap-1.5", collapsed ? "flex-col" : "")}>
-          <Button variant="ghost" size="sm" asChild className={cn("text-muted-foreground hover:text-foreground min-h-[44px]", collapsed ? "w-full justify-center px-1" : "flex-1")}>
-            <Link to="/"><Home className="w-4 h-4" />{!collapsed && <span className="ml-1.5 text-sm">Home</span>}</Link>
-          </Button>
-          <Button variant="ghost" size="sm" onClick={onLogout} className={cn("text-muted-foreground hover:text-destructive min-h-[44px]", collapsed ? "w-full justify-center px-1" : "flex-1")}>
-            <LogOut className="w-4 h-4" />{!collapsed && <span className="ml-1.5 text-sm">Logout</span>}
-          </Button>
-        </div>
-        {!collapsed && (
-          <div className="flex items-center justify-between text-[9px] text-muted-foreground/35 font-mono mt-2 pt-2 border-t border-border/10">
-            <div className="flex items-center gap-1.5">
-              <div className={cn(
-                "w-1.5 h-1.5 rounded-full animate-pulse",
-                healthScore >= 80 ? "bg-emerald-500" : healthScore >= 50 ? "bg-amber-500" : "bg-red-500"
-              )} />
-              <span>Health {healthScore}%</span>
-            </div>
+    <TooltipProvider delayDuration={collapsed ? 100 : 999999}>
+      <div className={cn(
+        "flex flex-col h-full border-r border-border/15 transition-all duration-200",
+        "bg-gradient-to-b from-background to-muted/10",
+        "dark:from-[hsl(220,25%,4%)] dark:to-[hsl(220,20%,6%)]",
+        collapsed ? "w-[52px]" : "w-52"
+      )}>
+        {/* Collapse toggle (desktop) */}
+        {onToggleCollapse && (
+          <div className={cn("flex items-center border-b border-border/10 shrink-0", collapsed ? "justify-center py-2.5" : "justify-between px-3 py-2.5")}>
+            {!collapsed && <span className="text-[9px] font-bold text-muted-foreground/40 font-mono uppercase tracking-[0.2em]">Substrate</span>}
+            <button onClick={onToggleCollapse} className="w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground/50 hover:text-foreground hover:bg-muted/30 transition-colors">
+              {collapsed ? <PanelLeft className="w-3.5 h-3.5" /> : <PanelLeftClose className="w-3.5 h-3.5" />}
+            </button>
           </div>
         )}
+
+        <ScrollArea className="flex-1 py-1.5">
+          <nav className="space-y-0.5 px-1.5">
+            {grouped.map((section, gi) => (
+              <div key={section.group}>
+                {gi > 0 && <div className="h-px bg-border/8 mx-2 my-1.5" />}
+                {!collapsed && (
+                  <div className="px-2.5 mb-0.5 mt-1">
+                    <span className="text-[8px] font-semibold text-muted-foreground/30 uppercase tracking-[0.2em]">{section.group}</span>
+                  </div>
+                )}
+                {section.items.map(tab => {
+                  const active = activeTab === tab.id;
+                  const btn = (
+                    <button
+                      key={tab.id}
+                      onClick={() => { onTabChange(tab.id); onClose?.(); }}
+                      className={cn(
+                        "w-full flex items-center gap-2 rounded-lg transition-all duration-150",
+                        collapsed ? "justify-center px-1 py-2" : "px-2.5 py-[6px]",
+                        active
+                          ? "bg-primary/8 text-primary font-medium dark:bg-primary/10"
+                          : "text-muted-foreground/60 hover:text-foreground hover:bg-muted/30"
+                      )}
+                    >
+                      <div className={cn("w-6 h-6 rounded-md flex items-center justify-center shrink-0 transition-colors", active && "bg-primary/12")}>
+                        <tab.icon className={cn("w-3.5 h-3.5", active && "text-primary")} />
+                      </div>
+                      {!collapsed && (
+                        <>
+                          <div className="flex-1 text-left min-w-0">
+                            <span className="text-[12px] block truncate">{tab.label}</span>
+                          </div>
+                          {tab.minTier && <TierLockBadge requiredTier={tab.minTier} currentTier={currentTier} />}
+                          {active && !tab.minTier && <div className="w-1 h-1 rounded-full bg-primary shrink-0" />}
+                        </>
+                      )}
+                    </button>
+                  );
+                  if (collapsed) {
+                    return (
+                      <Tooltip key={tab.id}>
+                        <TooltipTrigger asChild>{btn}</TooltipTrigger>
+                        <TooltipContent side="right" className="text-xs font-medium">{tab.label}</TooltipContent>
+                      </Tooltip>
+                    );
+                  }
+                  return btn;
+                })}
+              </div>
+            ))}
+          </nav>
+        </ScrollArea>
+
+        {/* Footer */}
+        <div className={cn("border-t border-border/10 shrink-0", collapsed ? "p-1.5" : "p-2.5")}
+          style={{ paddingBottom: `max(${collapsed ? '0.375rem' : '0.75rem'}, calc(env(safe-area-inset-bottom, 0px) + 0.5rem))` }}
+        >
+          <div className={cn("flex gap-1", collapsed ? "flex-col" : "")}>
+            <Button variant="ghost" size="sm" asChild className={cn("text-muted-foreground/50 hover:text-foreground min-h-[40px]", collapsed ? "w-full justify-center px-1" : "flex-1")}>
+              <Link to="/"><Home className="w-3.5 h-3.5" />{!collapsed && <span className="ml-1.5 text-[11px]">Home</span>}</Link>
+            </Button>
+            <Button variant="ghost" size="sm" onClick={onLogout} className={cn("text-muted-foreground/50 hover:text-destructive min-h-[40px]", collapsed ? "w-full justify-center px-1" : "flex-1")}>
+              <LogOut className="w-3.5 h-3.5" />{!collapsed && <span className="ml-1.5 text-[11px]">Logout</span>}
+            </Button>
+          </div>
+          {!collapsed && (
+            <div className="flex items-center gap-1.5 text-[8px] text-muted-foreground/25 font-mono mt-2 pt-1.5 border-t border-border/8">
+              <div className={cn("w-1.5 h-1.5 rounded-full", healthScore >= 80 ? "bg-emerald-500" : healthScore >= 50 ? "bg-amber-500" : "bg-red-500")} />
+              <span>Health {healthScore}%</span>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   );
 }
 
-// ── Panel Container — mobile-first padding ──
+// ── Panel Container ──
 function PanelContainer({ children, id }: { children: React.ReactNode; id: string }) {
   return (
     <motion.div
       key={id}
-      className="w-full max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 py-4 sm:py-6 lg:py-8"
-      initial={{ opacity: 0, y: 6 }}
+      className="w-full max-w-7xl mx-auto px-4 sm:px-5 lg:px-8 py-4 sm:py-5 lg:py-6"
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      exit={{ opacity: 0, y: -3 }}
+      transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
@@ -273,6 +261,7 @@ export default function SubstrateOS() {
   const healthScore = useSubstrateHealthScore();
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const navigate = useNavigate();
 
   const tabs = useMemo(() => getTabDefs(!!userAgency, isGovernor), [userAgency, isGovernor]);
@@ -281,7 +270,7 @@ export default function SubstrateOS() {
     try { await signOut(); navigate('/'); } catch (e) { console.error('Logout error:', e); }
   }, [signOut, navigate]);
 
-  // Keyboard shortcuts: Ctrl+1..9
+  // Keyboard shortcuts
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.ctrlKey || e.metaKey) && !e.shiftKey) {
@@ -303,20 +292,19 @@ export default function SubstrateOS() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <motion.div className="text-center space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <div className="relative w-14 h-14 sm:w-16 sm:h-16 mx-auto">
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20" />
-            <Cpu className="absolute inset-0 m-auto w-6 h-6 sm:w-7 sm:h-7 text-primary" />
-            <motion.div
-              className="absolute inset-0 rounded-2xl border border-primary/25"
-              animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
+          <div className="relative w-12 h-12 mx-auto">
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/15" />
+            <Cpu className="absolute inset-0 m-auto w-5 h-5 text-primary" />
+            <motion.div className="absolute inset-0 rounded-xl border border-primary/20" animate={{ scale: [1, 1.15, 1], opacity: [0.5, 0, 0.5] }} transition={{ duration: 2, repeat: Infinity }} />
           </div>
-          <p className="text-xs sm:text-sm font-semibold font-mono text-primary tracking-wide">Memory Stream</p>
+          <p className="text-xs font-semibold font-mono text-primary tracking-wide">Memory Stream</p>
         </motion.div>
       </div>
     );
   }
+
+  // Active tab label for mobile breadcrumb
+  const activeTabDef = tabs.find(t => t.id === activeTab);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -330,9 +318,8 @@ export default function SubstrateOS() {
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="dark:block hidden">
-          <div className="absolute top-0 left-1/4 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] bg-[hsl(185,100%,50%,0.03)] rounded-full blur-[100px] sm:blur-[150px]" />
-          <div className="absolute bottom-0 right-1/4 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-[hsl(280,100%,65%,0.03)] rounded-full blur-[80px] sm:blur-[130px]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-[hsl(210,100%,50%,0.02)] rounded-full blur-[70px] sm:blur-[100px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[hsl(185,100%,50%,0.02)] rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-[hsl(280,100%,65%,0.02)] rounded-full blur-[100px]" />
         </div>
       </div>
 
@@ -348,16 +335,15 @@ export default function SubstrateOS() {
             onLogout={handleLogout}
             isGovernor={isGovernor}
             healthScore={healthScore.healthScore}
+            collapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed(prev => !prev)}
             currentTier={role}
           />
         </div>
 
         {/* Mobile Bottom Nav */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/25">
-          <div
-            className="grid grid-cols-5 px-1 py-1"
-            style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}
-          >
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/20">
+          <div className="grid grid-cols-5 px-1 py-0.5" style={{ paddingBottom: 'max(0.25rem, env(safe-area-inset-bottom))' }}>
             {(isGovernor ? ['account', 'overview', 'nexus', 'security'] : ['account', 'overview', 'nexus', 'ccr']).map(id => {
               const tab = tabs.find(t => t.id === id)!;
               const active = activeTab === id;
@@ -366,31 +352,34 @@ export default function SubstrateOS() {
                   key={id}
                   onClick={() => setActiveTab(id)}
                   className={cn(
-                    "relative flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] rounded-lg transition-all touch-manipulation",
-                    active ? "text-primary" : "text-muted-foreground/45"
+                    "relative flex flex-col items-center justify-center gap-0.5 py-2 min-h-[44px] rounded-lg transition-all touch-manipulation",
+                    active ? "text-primary" : "text-muted-foreground/40"
                   )}
                 >
-                  <tab.icon className={cn("w-5 h-5", active && "scale-110")} />
-                  <span className="text-[10px] font-medium leading-none">{tab.label}</span>
-                  {active && <motion.div className="absolute top-0.5 w-6 h-[2px] rounded-full bg-primary" layoutId="mob-tab" />}
+                  <tab.icon className={cn("w-4.5 h-4.5", active && "scale-110")} />
+                  <span className="text-[9px] font-medium leading-none">{tab.label}</span>
+                  {active && <motion.div className="absolute top-0 w-5 h-[2px] rounded-full bg-primary" layoutId="mob-tab" />}
                 </button>
               );
             })}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[48px] rounded-lg text-muted-foreground/45 touch-manipulation"
+              className="flex flex-col items-center justify-center gap-0.5 py-2 min-h-[44px] rounded-lg text-muted-foreground/40 touch-manipulation"
             >
-              <Menu className="w-5 h-5" />
-              <span className="text-[10px] font-medium leading-none">More</span>
+              <Menu className="w-4.5 h-4.5" />
+              <span className="text-[9px] font-medium leading-none">More</span>
             </button>
           </div>
         </div>
 
         {/* Mobile Sheet */}
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-[280px] bg-background">
-            <div className="flex items-center px-4 py-3 border-b border-border/20">
-              <h3 className="font-semibold text-sm">Navigation</h3>
+          <SheetContent side="left" className="p-0 w-[260px] bg-background">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border/15">
+              <h3 className="text-xs font-bold text-foreground tracking-tight">Navigation</h3>
+              {activeTabDef && (
+                <Badge variant="outline" className="text-[9px] font-mono">{activeTabDef.label}</Badge>
+              )}
             </div>
             <DashboardSidebar
               tabs={tabs}
@@ -405,204 +394,152 @@ export default function SubstrateOS() {
           </SheetContent>
         </Sheet>
 
-        {/* Content — extra bottom padding on mobile for bottom nav */}
-        <div className="flex-1 overflow-auto pb-24 lg:pb-0">
+        {/* Content */}
+        <div className="flex-1 overflow-auto pb-20 lg:pb-0">
+          {/* Mobile breadcrumb */}
+          {activeTabDef && (
+            <div className="lg:hidden px-4 pt-3 pb-1">
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground/50 font-mono">
+                <span>{activeTabDef.group}</span>
+                <span>/</span>
+                <span className="text-foreground/70 font-medium">{activeTabDef.label}</span>
+              </div>
+            </div>
+          )}
+
           <AnimatePresence mode="wait">
             {activeTab === 'account' && (
-              <PanelContainer id="account">
-                <Suspense fallback={<PanelLoader />}>
-                  <AccountTab />
-                </Suspense>
-              </PanelContainer>
+              <PanelContainer id="account"><Suspense fallback={<PanelLoader />}><AccountTab /></Suspense></PanelContainer>
             )}
 
             {activeTab === 'overview' && (
               <PanelContainer id="overview">
                 <ModuleErrorBoundary moduleName="Overview">
                   <Suspense fallback={<PanelLoader />}>
-                    <OverviewPanel
-                      isOperator={isOperator}
-                      isGovernor={isGovernor}
-                      onOpenTerminal={() => setActiveTab('terminal')}
-                      onNavigate={setActiveTab}
-                    />
+                    <OverviewPanel isOperator={isOperator} isGovernor={isGovernor} onOpenTerminal={() => setActiveTab('terminal')} onNavigate={setActiveTab} />
                   </Suspense>
                 </ModuleErrorBoundary>
               </PanelContainer>
             )}
 
             {activeTab === 'terminal' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations, querying system state, and managing memories in real-time.">
-                <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-12rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <Suspense fallback={<PanelLoader />}>
-                    <EnhancedTerminal enabled={isOperator} fullHeight className="h-full" />
-                  </Suspense>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Terminal" description="Interactive command interface for executing substrate operations.">
+                <motion.div key="terminal" className="mx-auto px-4 sm:px-6 py-4 sm:py-5 max-w-5xl flex-1 flex flex-col min-h-[calc(100vh-10rem)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <Suspense fallback={<PanelLoader />}><EnhancedTerminal enabled={isOperator} fullHeight className="h-full" /></Suspense>
                 </motion.div>
               </TierGate>
             )}
 
             {activeTab === 'analytics' && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Analytics" description="Substrate telemetry and human traffic intelligence. System metrics, visitor analytics, and conversion tracking — governor-restricted.">
-                <PanelContainer id="analytics">
-                  <Suspense fallback={<PanelLoader />}><AnalyticsTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Analytics" description="Substrate telemetry, traffic intelligence, and cost analytics.">
+                <PanelContainer id="analytics"><Suspense fallback={<PanelLoader />}><AnalyticsTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'nexus' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="NEXUS" description="Multi-model fleet routing engine. Route prompts across providers with intelligent cost/quality optimization.">
-                <PanelContainer id="nexus">
-                  <Suspense fallback={<PanelLoader />}><NexusTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="NEXUS" description="Multi-model fleet routing with cost/quality optimization.">
+                <PanelContainer id="nexus"><Suspense fallback={<PanelLoader />}><NexusTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'webhooks' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="Webhooks" description="Subscribe to real-time substrate events and receive signed payloads at your endpoints.">
-                <PanelContainer id="webhooks">
-                  <Suspense fallback={<PanelLoader />}><WebhooksTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Webhooks" description="Subscribe to real-time substrate events.">
+                <PanelContainer id="webhooks"><Suspense fallback={<PanelLoader />}><WebhooksTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'intent' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Node mesh governance hub. Monitor inter-node communication, approve actions, and manage intent routing across the 40-node matrix.">
-                <PanelContainer id="intent">
-                  <ModuleErrorBoundary moduleName="INTENT">
-                    <Suspense fallback={<PanelLoader />}>
-                      <IntentPanel />
-                    </Suspense>
-                  </ModuleErrorBoundary>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Node mesh governance and intent routing.">
+                <PanelContainer id="intent"><ModuleErrorBoundary moduleName="INTENT"><Suspense fallback={<PanelLoader />}><IntentPanel /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'cortex' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="Memory orchestration engine. Design, monitor, and debug multi-step execution memories with real-time tracing.">
-                <PanelContainer id="cortex">
-                  <Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="Memory orchestration and multi-step execution tracing.">
+                <PanelContainer id="cortex"><Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'atlas' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="Control plane management. Configure capability toggles, revision snapshots, and environment-scoped settings.">
-                <PanelContainer id="atlas">
-                  <Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="Control plane configuration and capability toggles.">
+                <PanelContainer id="atlas"><Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'engines' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Maintenance" description="Engine repair bay with safety switches. Monitor executor health, trigger maintenance cycles, and manage closed/open/half-open states.">
-                <PanelContainer id="engines">
-                  <Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Maintenance" description="Engine repair bay and safety switches.">
+                <PanelContainer id="engines"><Suspense fallback={<PanelLoader />}><MaintenanceTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'encode' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="Code generation engine. Monitor code agent execution, review outputs, and track memory formation performance.">
-                <PanelContainer id="encode">
-                  <Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="Code generation engine and memory formation.">
+                <PanelContainer id="encode"><Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'mesh' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh Activity" description="Live capability mesh visualization. Track inter-node communication patterns, throughput, and mesh topology.">
-                <PanelContainer id="mesh">
-                  <Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh" description="Live capability mesh and inter-node communication.">
+                <PanelContainer id="mesh"><Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'evolution' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification. Manage controlled system mutations, SEBA governance, and production promotion.">
-                <PanelContainer id="evolution">
-                  <Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification.">
+                <PanelContainer id="evolution"><Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'shadow' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="SHADOW" description="Adversarial probe monitoring and TSAC divergence detection. Inspect immunity mesh activity and shadow execution traces.">
-                <PanelContainer id="shadow">
-                  <Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="SHADOW" description="Adversarial probes and TSAC divergence detection.">
+                <PanelContainer id="shadow"><Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'ccr' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — tiered MEMORY management and DREAM synthesis cycles. Monitor hot/warm/cold memory tiers and heuristic consolidation.">
-                <PanelContainer id="ccr">
-                  <Suspense fallback={<PanelLoader />}><CCRTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — memory tiers and DREAM synthesis.">
+                <PanelContainer id="ccr"><Suspense fallback={<PanelLoader />}><CCRTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'operations' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Operations" description="System operations center. Governor-restricted operational controls, batch actions, and infrastructure management.">
-                <PanelContainer id="operations">
-                  <Suspense fallback={<PanelLoader />}><OperationsTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Operations" description="System operations center and infrastructure controls.">
+                <PanelContainer id="operations"><Suspense fallback={<PanelLoader />}><OperationsTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'oracle' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, scenario simulation (COMPASS), and pattern detection (ECHO). Advanced foresight for system optimization.">
-                <PanelContainer id="oracle">
-                  <Suspense fallback={<PanelLoader />}><OracleTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, COMPASS simulation, and ECHO patterns.">
+                <PanelContainer id="oracle"><Suspense fallback={<PanelLoader />}><OracleTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'forge' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production engine with LINGUA translation and HARVEST data ingestion. Create, manage, and distribute system artifacts.">
-                <PanelContainer id="forge">
-                  <Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production with LINGUA translation and HARVEST ingestion.">
+                <PanelContainer id="forge"><Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'cognitives' && (isGovernor || !!userAgency) && (
-              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes. Deploy, manage, and monitor autonomous cognitive agents within isolated execution environments.">
-                <PanelContainer id="cognitives">
-                  <Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense>
-                </PanelContainer>
+              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Cognitives" description="Sealed cognitive runtimes and autonomous agent environments.">
+                <PanelContainer id="cognitives"><Suspense fallback={<PanelLoader />}><CognitivesPanel /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'agency' && (isGovernor || !!userAgency) && (
-              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Agency" description="Agency command center. Manage multi-agent teams, task orchestration, and collaborative intelligence workflows.">
-                <PanelContainer id="agency">
-                  <Suspense fallback={<PanelLoader />}>
-                    <AgencyGallery />
-                  </Suspense>
-                </PanelContainer>
+              <TierGate requiredTier={userAgency ? 'creator' : 'governor'} currentTier={role} tabLabel="Agency" description="Multi-agent team orchestration and collaborative intelligence.">
+                <PanelContainer id="agency"><Suspense fallback={<PanelLoader />}><AgencyGallery /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'security' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail. Advanced threat monitoring, vulnerability assessment, and incident response.">
-                <PanelContainer id="security">
-                  <ModuleErrorBoundary moduleName="Security">
-                    <Suspense fallback={<PanelLoader />}>
-                      <SecurityPanel isGovernor={isGovernor} isOperator={isOperator} />
-                    </Suspense>
-                  </ModuleErrorBoundary>
-                </PanelContainer>
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail.">
+                <PanelContainer id="security"><ModuleErrorBoundary moduleName="Security"><Suspense fallback={<PanelLoader />}><SecurityPanel isGovernor={isGovernor} isOperator={isOperator} /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'governor' && isGovernor && (
-              <PanelContainer id="governor">
-                <ModuleErrorBoundary moduleName="Governor">
-                  <Suspense fallback={<PanelLoader />}>
-                    <GovernorPanel />
-                  </Suspense>
-                </ModuleErrorBoundary>
-              </PanelContainer>
+              <PanelContainer id="governor"><ModuleErrorBoundary moduleName="Governor"><Suspense fallback={<PanelLoader />}><GovernorPanel /></Suspense></ModuleErrorBoundary></PanelContainer>
             )}
           </AnimatePresence>
         </div>
