@@ -422,7 +422,7 @@ export function SiteAnalyticsSection() {
             animate={{ opacity: 1, y: 0 }}
           >
             <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-              <MousePointerClick className="w-4 h-4 text-blue-400" /> Top Pages
+              <MousePointerClick className="w-4 h-4 text-neon-blue" /> Top Pages
             </h3>
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
