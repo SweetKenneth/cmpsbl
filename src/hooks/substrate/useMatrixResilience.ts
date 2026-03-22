@@ -7,6 +7,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { debugMode } from '@/lib/debug-mode';
 
 // Node Canary
 import {
