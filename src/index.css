@@ -1175,12 +1175,14 @@ All colors MUST be HSL.
 .memory-stream-bar {
   background: linear-gradient(90deg,
     hsl(var(--neon-cyan)) 0%,
-    hsl(var(--primary)) 25%,
-    hsl(var(--neon-purple)) 50%,
-    hsl(var(--primary)) 75%,
+    hsl(var(--primary)) 18%,
+    hsl(var(--neon-purple)) 36%,
+    hsl(var(--neon-magenta)) 54%,
+    hsl(var(--neon-purple)) 72%,
+    hsl(var(--primary)) 88%,
     hsl(var(--neon-cyan)) 100%);
-  background-size: 200% 100%;
-  animation: flowingGradient 4s linear infinite;
+  background-size: 300% 100%;
+  animation: flowingGradient 5s linear infinite;
 }
 
 /* Signal to Silicon border glow — available globally */
