@@ -386,58 +386,42 @@ Be concise, precise, and focused on practical utility. This learning will be sto
   }): Promise<{ nodes: number; edges: number }> {
     if (!learningResult.success) return { nodes: 0, edges: 0 };
 
-    let nodesCreated = 0;
-    let edgesCreated = 0;
-
     try {
-      // Create topic node in graph
-      const { data: nodeData, error: nodeError } = await supabase
-        .from('brain_graph_edges')
-        .insert({
+      // Batch all edge inserts into a single DB call
+      const edges = [
+        // Topic → learning edge
+        {
           source_id: job.id,
           target_id: job.topic.id,
           relation: 'learning',
           weight: learningResult.confidence,
-        });
+        },
+        // Module reference edges
+        ...job.topic.moduleRefs.map(ref => ({
+          source_id: job.topic.id,
+          target_id: ref.toLowerCase(),
+          relation: 'concept_module',
+          weight: 0.7,
+        })),
+        // Domain anchor edges
+        ...job.topic.domainAnchors.map(anchor => ({
+          source_id: job.topic.id,
+          target_id: anchor,
+          relation: 'topic_concept',
+          weight: 0.6,
+        })),
+      ];
 
-      if (!nodeError) {
-        nodesCreated++;
+      const { error } = await supabase
+        .from('brain_graph_edges')
+        .insert(edges);
 
-        // Create edges to module references
-        for (const moduleRef of job.topic.moduleRefs) {
-          try {
-            await supabase.from('brain_graph_edges').insert({
-              source_id: job.topic.id,
-              target_id: moduleRef.toLowerCase(),
-              relation: 'concept_module',
-              weight: 0.7,
-            });
-            edgesCreated++;
-          } catch {
-            // Non-critical
-          }
-        }
-
-        // Create edges to domain anchors
-        for (const anchor of job.topic.domainAnchors) {
-          try {
-            await supabase.from('brain_graph_edges').insert({
-              source_id: job.topic.id,
-              target_id: anchor,
-              relation: 'topic_concept',
-              weight: 0.6,
-            });
-            edgesCreated++;
-          } catch {
-            // Non-critical
-          }
-        }
-      }
+      if (error) throw error;
+      return { nodes: 1, edges: edges.length - 1 };
     } catch (error) {
       console.error('[CLM] Graph update failed:', error);
+      return { nodes: 0, edges: 0 };
     }
-
-    return { nodes: nodesCreated, edges: edgesCreated };
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
