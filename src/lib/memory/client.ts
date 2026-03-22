@@ -700,18 +700,23 @@ export class MemoryClient {
     }
   }
   
-  /** Get metacognitive state — the brain knowing its own memory */
+  /** Get metacognitive state — with 30s cache to reduce DB round-trips */
   async getMetaState(): Promise<MemoryMetaState | null> {
     try {
       if (!this.userId) return null;
+      const now = Date.now();
+      if (this.cachedMeta && now < this.metaCacheExpiry) return this.cachedMeta;
+
       const { data } = await supabase
         .from('brain_memory_meta' as any)
         .select('hot_count, warm_count, cold_count, archive_count, hot_limit, warm_limit, cold_limit, recall_hit_rate, total_stores, total_recalls, retrieval_strategy, recall_accuracy, avg_salience, contradiction_count, compression_ratio, peak_hours')
         .eq('user_id', this.userId)
         .eq('agent_id', this.agentId)
-        .single();
+        .maybeSingle();
       
-      return data as unknown as MemoryMetaState | null;
+      this.cachedMeta = data as unknown as MemoryMetaState | null;
+      this.metaCacheExpiry = now + MemoryClient.META_CACHE_TTL_MS;
+      return this.cachedMeta;
     } catch {
       return null;
     }
