@@ -182,17 +182,17 @@ export default function Explore() {
 
             <div className="relative p-5 sm:p-14 md:p-20 text-center">
               {/* Floating badge — CSS fade-in replaces motion */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-                <Sparkles className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white/90">Build Smarter AI</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 border border-black/15 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <Sparkles className="w-4 h-4 text-gray-800" />
+                <span className="text-sm font-semibold text-gray-800">Build Smarter AI</span>
               </div>
               
-              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 sm:mb-6 leading-[1.05] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
-                <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
+                <span className="text-gray-800 drop-shadow-[0_0_30px_rgba(0,0,0,0.1)]">Substrate</span>
               </h2>
-              <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
+              <p className="text-gray-700 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
                 Persistent memory, governed evolution, and self-improvement cycles — AI systems that adapt and get better over time. Start free with 3 capability slots.
               </p>
               
@@ -205,24 +205,24 @@ export default function Explore() {
                     { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
-                     <div className="text-[9px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
+                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-gray-900 group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(0,0,0,0.15)] transition-all duration-300">{stat.value}</div>
+                     <div className="text-[9px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
               
                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                 <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-white text-primary hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
+                 <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-gray-900 text-white hover:bg-gray-800 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
                   <Link to="/auth">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Start Building — Free
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-white/25 !text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
+                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-gray-900/30 text-gray-900 hover:bg-black/10 font-semibold backdrop-blur-sm rounded-xl">
                   <Link to="/store?tab=plans">
                     <Terminal className="w-5 h-5 mr-2" />
-                    <span className="text-white">View Plans</span>
+                    View Plans
                   </Link>
                 </Button>
               </div>
