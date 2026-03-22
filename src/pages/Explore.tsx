@@ -35,13 +35,17 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 
-// Clean section divider — minimal, refined
+// Clean section divider — animated diamond with cross-glow
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
-      <div className="absolute inset-x-[15%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+    <div className="relative py-12 sm:py-16">
+      <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+      {/* Secondary accent line */}
+      <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="w-1.5 h-1.5 bg-primary/30 rotate-45 rounded-[1px]" />
+        <div className="w-2 h-2 bg-primary/25 rotate-45 rounded-[2px] animate-divider-diamond" />
+        {/* Glow ring behind diamond */}
+        <div className="absolute inset-0 -m-2 rounded-full bg-primary/5 blur-sm animate-fade-pulse" />
       </div>
     </div>
   );
