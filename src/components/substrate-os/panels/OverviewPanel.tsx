@@ -171,9 +171,9 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
           <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1">Stream Controls</h3>
           <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
             {[
-              { id: 'heal', label: 'Auto-Heal', icon: Wrench, onClick: handleHeal, pending: healMutation.isPending, color: 'text-emerald-500' },
-              { id: 'backup', label: 'Backup', icon: Server, onClick: handleBackup, pending: backupMutation.isPending, color: 'text-cyan-500' },
-              { id: 'diagnostics', label: 'Diagnostics', icon: Activity, onClick: handleDiagnostics, pending: diagnosticsRunning, color: 'text-amber-500' },
+              { id: 'heal', label: 'Auto-Heal', icon: Wrench, onClick: handleHeal, pending: healMutation.isPending, color: 'text-neon-green' },
+              { id: 'backup', label: 'Backup', icon: Server, onClick: handleBackup, pending: backupMutation.isPending, color: 'text-primary' },
+              { id: 'diagnostics', label: 'Diagnostics', icon: Activity, onClick: handleDiagnostics, pending: diagnosticsRunning, color: 'text-neon-amber' },
               { id: 'terminal', label: 'Terminal', icon: Terminal, onClick: onOpenTerminal, pending: false, color: 'text-primary' },
             ].map(action => (
               <Button
