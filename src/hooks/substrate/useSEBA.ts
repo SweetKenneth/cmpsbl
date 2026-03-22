@@ -7,9 +7,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 
-// Access seba module from substrate singleton
-const seba = substrate.seba;
-
 export interface UseSEBAHookReturn {
   // Status & Health
   status: ReturnType<typeof useQuery>;
@@ -34,11 +31,11 @@ export interface UseSEBAHookReturn {
   config: ReturnType<typeof useMutation>;
   thresholds: ReturnType<typeof useMutation>;
   
-  // History
-  history: (limit?: number) => ReturnType<typeof useQuery>;
+  // History — now a proper useQuery (not a function returning useQuery)
+  history: ReturnType<typeof useQuery>;
 }
 
-export function useSEBAHook(): UseSEBAHookReturn {
+export function useSEBAHook(historyLimit = 20): UseSEBAHookReturn {
   const queryClient = useQueryClient();
   const pollingEnabled = debugMode.allowModulePolling();
   
@@ -48,7 +45,7 @@ export function useSEBAHook(): UseSEBAHookReturn {
   
   const status = useQuery({
     queryKey: ['substrate', 'seba', 'status'],
-    queryFn: () => seba.status(),
+    queryFn: () => substrate.seba.status(),
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
     enabled: pollingEnabled,
@@ -56,69 +53,71 @@ export function useSEBAHook(): UseSEBAHookReturn {
   
   const mode = useMutation({
     mutationFn: (newMode?: 'off' | 'observe' | 'advisory' | 'governed' | 'autonomous') => 
-      seba.mode(newMode),
+      substrate.seba.mode(newMode),
     onSuccess: invalidateSEBA,
   });
   
   const enable = useMutation({
-    mutationFn: () => seba.enable(),
+    mutationFn: () => substrate.seba.enable(),
     onSuccess: invalidateSEBA,
   });
   
   const disable = useMutation({
-    mutationFn: () => seba.disable(),
+    mutationFn: () => substrate.seba.disable(),
     onSuccess: invalidateSEBA,
   });
   
   const cycle = useMutation({
-    mutationFn: () => seba.cycle(),
+    mutationFn: () => substrate.seba.cycle(),
     onSuccess: invalidateSEBA,
   });
   
   const propose = useMutation({
-    mutationFn: () => seba.propose(),
+    mutationFn: () => substrate.seba.propose(),
     onSuccess: invalidateSEBA,
   });
   
   const review = useMutation({
-    mutationFn: () => seba.review(),
+    mutationFn: () => substrate.seba.review(),
   });
   
   const approve = useMutation({
-    mutationFn: (proposalId: string) => seba.approve(proposalId),
+    mutationFn: (proposalId: string) => substrate.seba.approve(proposalId),
     onSuccess: invalidateSEBA,
   });
   
   const reject = useMutation({
-    mutationFn: (proposalId: string) => seba.reject(proposalId),
+    mutationFn: (proposalId: string) => substrate.seba.reject(proposalId),
     onSuccess: invalidateSEBA,
   });
   
   const execute = useMutation({
-    mutationFn: (proposalId: string) => seba.execute(proposalId),
+    mutationFn: (proposalId: string) => substrate.seba.execute(proposalId),
     onSuccess: invalidateSEBA,
   });
   
   const rollback = useMutation({
-    mutationFn: (executionId: string) => seba.rollback(executionId),
+    mutationFn: (executionId: string) => substrate.seba.rollback(executionId),
     onSuccess: invalidateSEBA,
   });
   
   const config = useMutation({
-    mutationFn: (updates?: Record<string, unknown>) => seba.config(updates),
+    mutationFn: (updates?: Record<string, unknown>) => substrate.seba.config(updates),
     onSuccess: invalidateSEBA,
   });
   
   const thresholds = useMutation({
     mutationFn: (updates?: { auto_approve?: number; risk_tolerance?: string }) => 
-      seba.thresholds(updates),
+      substrate.seba.thresholds(updates),
     onSuccess: invalidateSEBA,
   });
   
-  const history = (limit = 20) => useQuery({
-    queryKey: ['substrate', 'seba', 'history', limit],
-    queryFn: () => seba.history(limit),
+  // Fixed: history is now a proper useQuery at hook top-level, not a function returning useQuery
+  const history = useQuery({
+    queryKey: ['substrate', 'seba', 'history', historyLimit],
+    queryFn: () => substrate.seba.history(historyLimit),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   return {
