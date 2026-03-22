@@ -146,11 +146,40 @@ Failed integrity seals trigger Level 2 escalation.
 | Visitor Intelligence | Session depth, bounce rate, retention cohorts (D1/D7/D14/D30), churn risk scoring |
 | Developer Adoption | Per-developer API usage, module-level heatmaps, revenue attribution |
 | Disaster Recovery | Backup initiation events, archive size, table export counts |
+| OBSERVER Watchdog | Rolling telemetry buffer health, Z-score anomaly counts, alert escalation rates |
 
-## 11. Revision History
+## 11. OBSERVER Integration
+
+The OBSERVER node (Node 41, auxiliary) provides a dedicated watchdog layer that complements the existing health scoring model:
+
+- **Telemetry Ingestion**: Accepts `TelemetrySnapshot` events from all 40 primary nodes
+- **Rolling Buffer**: Maintains a 500-entry rolling buffer per module for Z-score anomaly detection
+- **Alert Lifecycle**: Manages registered alert conditions through trigger → escalation → acknowledgement → silence lifecycle
+- **Watchdog Sweeps**: Periodic sweeps (default: 15s interval) verify all node health states
+- **Module-Scoped Summaries**: On-demand aggregation from telemetry buffer, no pre-computation required
+
+OBSERVER alerts feed into the existing alert threshold system (Section 7) and integrate with GOVERNANCE for critical escalations.
+
+## 12. Node Capability Audit (v14.2.0)
+
+All 40 primary nodes plus OBSERVER have been audited for production-grade capability coverage. Each node now exposes a standardized lifecycle surface:
+
+| Lifecycle Capability | Description |
+|---|---|
+| `init` | Engine initialization with configuration |
+| `health` | Module health metrics query |
+| `resilience` | Resilience posture and recovery data |
+| `hardening` | Hardening configuration and rate limits |
+| `runCLM` | Continuous Lifecycle Management cycle trigger |
+| `upgradeEngine` | Engine upgrade with rollback support |
+
+Nodes expanded during the audit: GOVERNANCE (+7), ATLAS (+13), FORGE (+11), LINGUA (+8), ECHO (+8), SOVEREIGN (+6), REFLEX (+9), TREATY (+8), ENGINEER (+14), COMPASS (+7), OBSERVER (new, +8).
+
+## 13. Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-22 | System | v14.2.0 — Added OBSERVER node integration, documented node capability audit results, updated capability counts |
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added memory tier enforcement, visitor intelligence, developer adoption, disaster recovery observability |
 | 2026-03-03 | System | Added recent feature observability, updated node count seal to 38 nodes |
 | 2026-03-03 | System | Verified health scoring model matches 38-node weighted topology |
