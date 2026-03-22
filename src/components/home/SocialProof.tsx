@@ -82,7 +82,7 @@ export function SocialProof() {
                 <div className="h-full memory-stream-bar opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
               </div>
               
-              <Quote className="w-8 h-8 text-primary/10 absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-primary/20" />
+              <Quote className="w-8 h-8 text-[hsl(var(--neon-purple)/0.1)] absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-[hsl(var(--neon-purple)/0.2)]" />
               
               <div
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border mb-4 text-[10px] font-semibold uppercase tracking-wider group-hover:border-opacity-50 transition-all duration-300"
