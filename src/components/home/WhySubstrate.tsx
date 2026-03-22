@@ -292,8 +292,8 @@ export function WhySubstrate() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-14"
         >
-           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-             <Hammer className="w-3 h-3 text-primary" />
+           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-[hsl(var(--neon-cyan)/0.3)]">
+             <Hammer className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">

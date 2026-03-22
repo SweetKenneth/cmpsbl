@@ -103,7 +103,7 @@ export function SocialProof() {
               </div>
               <p className="text-sm text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-3 border-t border-border/30">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-[10px] font-bold text-primary">{t.author.charAt(0)}</div>
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] flex items-center justify-center text-[10px] font-bold text-[hsl(var(--neon-purple))]">{t.author.charAt(0)}</div>
                 <div>
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
                   {t.role && <span className="text-[11px] text-muted-foreground/60">{t.role}</span>}

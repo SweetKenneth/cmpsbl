@@ -110,7 +110,7 @@ export function ArtifactPacksSection() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base hover:border-primary/30 transition-all duration-200">
+            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base text-foreground hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-200">
               <Link to="/packs">
                 <Package className="w-4 h-4" />
                 Explore All Packs

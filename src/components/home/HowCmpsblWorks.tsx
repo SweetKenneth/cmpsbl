@@ -84,7 +84,7 @@ export function HowCmpsblWorks() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {explanations.map((item) => (
-              <div key={item.label} className="text-center p-3 rounded-lg border border-border/15 bg-card/30 hover:border-primary/20 hover:bg-primary/[0.02] transition-all duration-300 card-lift">
+              <div key={item.label} className="text-center p-3 rounded-lg border border-[hsl(var(--neon-purple)/0.15)] bg-[hsl(var(--neon-purple)/0.03)] hover:border-[hsl(var(--neon-purple)/0.3)] hover:bg-[hsl(var(--neon-purple)/0.05)] transition-all duration-300 card-lift">
                 <span className="text-xs font-bold text-foreground">{item.label}</span>
                 <span className="text-xs text-muted-foreground"> {item.desc}</span>
               </div>
