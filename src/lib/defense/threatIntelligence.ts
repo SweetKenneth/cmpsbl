@@ -79,13 +79,13 @@ const ipReputationCache = new Map<string, IPReputation>();
 const threatIndicators = new Map<string, ThreatIndicator>();
 const recentRequests = new Map<string, Array<{ timestamp: number; path: string }>>();
 
-// Attack pattern definitions
+// Pre-compiled attack pattern definitions — regex compiled once at module load
 const ATTACK_PATTERNS: AttackPattern[] = [
   {
     id: 'brute_force_login',
     name: 'Brute Force Login Attempt',
     type: 'brute_force',
-    signature: '/auth|/login|/signin/i',
+    signature: /\/auth|\/login|\/signin/i,
     threshold: 10,
     window: 60,
     action: 'block',
@@ -115,7 +115,7 @@ const ATTACK_PATTERNS: AttackPattern[] = [
     id: 'api_scanning',
     name: 'API Endpoint Scanning',
     type: 'scanning',
-    signature: '/.well-known|/api/|/admin|/debug/i',
+    signature: /\.well-known|\/api\/|\/admin|\/debug/i,
     threshold: 20,
     window: 60,
     action: 'rate_limit',
@@ -135,7 +135,7 @@ const ATTACK_PATTERNS: AttackPattern[] = [
     id: 'credential_stuffing',
     name: 'Credential Stuffing',
     type: 'credential_stuffing',
-    signature: '/auth/login',
+    signature: /\/auth\/login/i,
     threshold: 5,
     window: 300,
     action: 'challenge',
