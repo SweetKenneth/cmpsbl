@@ -101,6 +101,7 @@ function getTabDefs(hasAgency: boolean, isGovernor: boolean): TabDef[] {
     // ── Creator tier (user-facing tools) ──
     { id: 'terminal', label: 'Terminal', icon: Terminal, group: 'Command', description: 'Command interface', minTier: 'creator' },
     { id: 'nexus', label: 'NEXUS', icon: Zap, group: 'Intelligence', description: 'Fleet routing engine', minTier: 'creator' },
+    { id: 'webhooks', label: 'Webhooks', icon: Zap, group: 'Intelligence', description: 'Event subscriptions', minTier: 'creator' },
     { id: 'ccr', label: 'CCR', icon: HardDrive, group: 'Cognitive', description: 'MEMORY · DREAM', minTier: 'creator' },
     { id: 'forge', label: 'FORGE', icon: Hammer, group: 'Manufacturing', description: 'Artifacts · LINGUA · HARVEST', minTier: 'creator' },
     // ── Cognitives & Agency: governor-only unless user purchased agents from the store ──
