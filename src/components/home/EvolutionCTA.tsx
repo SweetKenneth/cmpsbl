@@ -114,17 +114,18 @@ export function EvolutionCTA() {
               </motion.div>
 
               <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.08] mb-5">
-                <span className="text-foreground">Your System</span>
+                <span className="text-foreground">Start Building</span>
                 <br />
                 <span className="text-[hsl(var(--neon-cyan))]">
-                  Improves Itself
+                  — Free
                 </span>
               </h2>
 
-              <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-lg mb-8 leading-relaxed">
-                EVOLUTION is the substrate's governed self-improvement loop — powered by the Memory Stream.
-                It scans for drift, previews changes in dry-run, applies upgrades through policy gates,
-                and rolls back anything that breaks. Intelligence crystallizes automatically.
+              <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-lg mb-4 leading-relaxed">
+                Persistent memory, governed evolution, and self-improving systems — included.
+              </p>
+              <p className="text-muted-foreground text-sm sm:text-base max-w-lg mb-8 leading-relaxed">
+                Start with 3 capability slots. No credit card required.
               </p>
 
               {/* 4-pillar strip */}
@@ -148,15 +149,15 @@ export function EvolutionCTA() {
               {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button asChild size="lg" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-bold shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 bg-[hsl(var(--neon-cyan))] text-white border-0 hover:bg-[hsl(var(--neon-cyan)/0.9)]">
-                  <Link to="/evolution">
+                  <Link to="/auth">
                     <Zap className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    Open EVOLUTION
+                    Start Building — Free
                     <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-2" />
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-semibold border-border/40 hover:border-[hsl(var(--neon-cyan)/0.3)] transition-colors">
-                  <Link to="/developers/guide">
-                    Integrate via SDK
+                  <Link to="/store?tab=plans">
+                    See Plans
                   </Link>
                 </Button>
               </div>

@@ -102,9 +102,9 @@ export function CmpsblNav() {
       items: [
         { name: "How it works", href: "/ai-operating-system", description: "Learn the core concepts", icon: Globe },
         { name: "All modules", href: "/modules", description: "Browse every system module", icon: Layers },
-        { name: "Runtime", href: "/runtime", description: "Where your AI runs", icon: Terminal },
+        { name: "Runtime", href: "/runtime", description: "Where your AI executes", icon: Terminal },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governance & compliance", icon: Building2 },
-        { name: "Persistent memory", href: "/persistent-memory", description: "Give any agent long-term recall", icon: Brain },
+        { name: "Persistent memory", href: "/persistent-memory", description: "Give agents persistent memory", icon: Brain },
       ]
     },
     {
@@ -113,7 +113,7 @@ export function CmpsblNav() {
       items: [
         { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal, highlight: true },
         { name: "CodeLab", href: "/codelab", description: "Test and run code live", icon: Terminal },
-        { name: "DevTools", href: "/devtools", description: "SDK docs, NPM packages & playground", icon: Package },
+        { name: "DevTools", href: "/devtools", description: "SDKs, packages, and playground", icon: Package },
         { name: "Documentation", href: "/documentation", description: "Guides & API reference", icon: FileText },
         { name: "API access", href: "/api-access", description: "Keys, quotas & usage tracking", icon: Code },
       ]
