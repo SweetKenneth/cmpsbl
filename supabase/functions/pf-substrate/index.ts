@@ -12431,13 +12431,28 @@ async function handleDream(
         moodHistogram[mood] = (moodHistogram[mood] || 0) + 1;
       }
 
-      // Provider usage stats (mock for now - can be enhanced)
-      const providerStats = {
-        groq: { calls: 0, success_rate: 1.0 },
-        cerebras: { calls: 0, success_rate: 1.0 },
-        together: { calls: 0, success_rate: 1.0 },
-        local: { calls: 0, success_rate: 1.0 },
-      };
+      // Provider usage stats from real ai_usage_log data
+      const { data: providerUsageRaw } = await supabase
+        .from("ai_usage_log")
+        .select("provider, success")
+        .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      
+      const providerStats: Record<string, { calls: number; success_rate: number }> = {};
+      for (const row of (providerUsageRaw || [])) {
+        const p = (row.provider || 'unknown').toLowerCase();
+        if (!providerStats[p]) providerStats[p] = { calls: 0, success_rate: 1.0 };
+        providerStats[p].calls++;
+      }
+      // Calculate success rates per provider
+      for (const row of (providerUsageRaw || [])) {
+        const p = (row.provider || 'unknown').toLowerCase();
+        if (providerStats[p] && providerStats[p].calls > 0) {
+          const successCount = (providerUsageRaw || []).filter(r => 
+            (r.provider || '').toLowerCase() === p && r.success === true
+          ).length;
+          providerStats[p].success_rate = successCount / providerStats[p].calls;
+        }
+      }
 
       return jsonResponse({
         success: true,
