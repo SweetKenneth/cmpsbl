@@ -258,8 +258,8 @@ await cmpsbl.system.restore({
     layer: "Overlay",
     title: "EVOLUTION Lifecycle",
     description: "Self-improvement & shadow mode",
-    color: "text-rose-500",
-    gradient: "from-rose-500 to-pink-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Scan for improvement opportunities
 const proposals = await cmpsbl.evolution.scan({
   scope: ["brain", "nexus"],
