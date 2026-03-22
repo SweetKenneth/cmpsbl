@@ -32,7 +32,7 @@ const audiences = [
     description: "Build NPCs with persistent memory, background processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
     features: [
       { icon: Brain, text: "3-tier NPC memory" },
-      { icon: Moon, text: "DREAM cycle processing" },
+      { icon: Moon, text: "Background processing" },
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
     stats: { value: "∞", label: "Memory Depth" },
