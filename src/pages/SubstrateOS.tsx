@@ -147,7 +147,6 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
       <div className={cn(
         "flex flex-col h-full border-r border-border/15 transition-all duration-200",
         "bg-gradient-to-b from-background to-muted/10",
-        "dark:from-[hsl(220,25%,4%)] dark:to-[hsl(220,20%,6%)]",
         collapsed ? "w-[52px]" : "w-52"
       )}>
         {/* Collapse toggle (desktop) */}
