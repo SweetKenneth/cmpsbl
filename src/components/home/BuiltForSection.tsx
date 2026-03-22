@@ -49,7 +49,7 @@ const audiences = [
     tagline: "Infrastructure that improves itself",
     description: "Build with persistent memory, governed routing, and continuous self-improvement. Your apps adapt and get smarter the more they run.",
     features: [
-      { icon: Zap, text: "ADAPT-governed routing" },
+      { icon: Zap, text: "Governed routing" },
       { icon: Brain, text: "Memory persistence" },
       { icon: Eye, text: "Full observability" },
     ],
