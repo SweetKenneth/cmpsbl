@@ -120,7 +120,7 @@ const nodes = [
     icon: Plug,
     title: "Enterprise Integration",
     node: "INTEGRATION",
-    description: "Connect to enterprise systems (SAP, Oracle, Workday) with LLM governance.",
+    description: "Connect to enterprise systems (SAP, Oracle, Workday) with built-in LLM governance.",
     highlight: "LLM Governance",
     stat: "35+",
     statLabel: "Adapters",
