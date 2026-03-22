@@ -186,8 +186,8 @@ function MetricCard({ label, value, sub, icon: Icon, iconColor, border, bg, icon
         <span className="text-[10px] text-muted-foreground font-mono uppercase">{label}</span>
         {trend && (
           trend === 'up'
-            ? <ArrowUpRight className="w-3 h-3 text-green-400 ml-auto" />
-            : <ArrowDownRight className="w-3 h-3 text-red-400 ml-auto" />
+            ? <ArrowUpRight className="w-3 h-3 text-neon-green ml-auto" />
+            : <ArrowDownRight className="w-3 h-3 text-destructive ml-auto" />
         )}
       </div>
       <p className="text-2xl font-bold font-mono text-foreground">{value}</p>
