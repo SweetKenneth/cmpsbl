@@ -24,7 +24,7 @@ const ANTONYM_PAIRS: [string, string][] = [
 ];
 
 /** Negation words that flip meaning */
-const NEGATIONS = ['not', 'never', 'no', 'false', 'incorrect', 'wrong', 'deprecated', 'removed', 'invalid', "doesn't", "isn't", "won't", "can't", "don't"];
+const NEGATION_SET = new Set(['not', 'never', 'no', 'false', 'incorrect', 'wrong', 'deprecated', 'removed', 'invalid', "doesn't", "isn't", "won't", "can't", "don't"]);
 
 /** Check if new evidence contradicts an existing memory claim */
 export function detectContradiction(
