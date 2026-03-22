@@ -26,7 +26,7 @@ const pillars = [
     icon: Brain,
     title: "REMEMBER",
     headline: "Memory that survives restarts",
-    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall. Context carries across sessions, deployments, and infrastructure changes. Nothing resets.",
+    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall. Context persists across sessions, deployments, and infrastructure changes. Nothing resets.",
     link: "/persistent-memory",
     linkLabel: "Explore memory tiers",
     iconBg: "bg-[hsl(var(--neon-cyan)/0.1)]",
