@@ -387,8 +387,8 @@ const results = await cmpsbl.memory.search({
     layer: "Infrastructure",
     title: "RELAY Webhooks",
     description: "Outbound notifications & event delivery",
-    color: "text-lime-500",
-    gradient: "from-lime-500 to-green-600",
+    color: "text-[hsl(var(--neon-green))]",
+    gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Register a webhook endpoint
 await cmpsbl.relay.register({
   url: "https://api.company.com/webhook",
