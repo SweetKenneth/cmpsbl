@@ -1,11 +1,10 @@
 /**
  * CMPSBL Logo Component
- * Uses high-color dark logo with transparent background
+ * Uses the futuristic "C" mark with ® symbol
  * Restricted to navigation bar and footer
  */
 
-import cmpsblLogo from "@/assets/cmpsbl-logo.webp";
-import cmpsblLogoSm from "@/assets/cmpsbl-logo-sm.webp";
+import cmpsblLogoC from "@/assets/cmpsbl-logo-c.webp";
 import { cn } from "@/lib/utils";
 
 interface CmpsblLogoProps {
@@ -24,23 +23,33 @@ const sizeConfig = {
 
 export function CmpsblLogo({ className, iconOnly = false, size = "md", priority = false }: CmpsblLogoProps) {
   const { className: sizeClass, width, height } = sizeConfig[size];
-  const logoSrc = size === "sm" || size === "md" ? cmpsblLogoSm : cmpsblLogo;
   return (
-    <img
-      src={logoSrc}
-      alt="CMPSBL"
-      width={width}
-      height={height}
-      sizes={`${width}px`}
-      loading={priority ? "eager" : "lazy"}
-      decoding={priority ? "sync" : "async"}
-      {...(priority ? { fetchpriority: "high" as const } : {})}
-      className={cn(
-        sizeClass,
-        "w-auto object-contain",
-        iconOnly && "aspect-square object-left object-cover",
-        className
-      )}
-    />
+    <span className={cn("inline-flex items-center gap-0.5", className)}>
+      <img
+        src={cmpsblLogoC}
+        alt="CMPSBL"
+        width={width}
+        height={height}
+        sizes={`${width}px`}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        {...(priority ? { fetchpriority: "high" as const } : {})}
+        className={cn(
+          sizeClass,
+          "w-auto object-contain",
+          iconOnly && "aspect-square object-left object-cover",
+        )}
+      />
+      <span
+        className="font-bold text-neon-cyan"
+        style={{
+          fontSize: `${height * 0.28}px`,
+          lineHeight: 1,
+          marginTop: `-${height * 0.25}px`,
+        }}
+      >
+        ®
+      </span>
+    </span>
   );
 }
