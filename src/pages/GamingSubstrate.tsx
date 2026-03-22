@@ -473,19 +473,13 @@ export default function GamingSubstrate() {
           >
             {/* World Engine Header */}
             <div className="text-center mb-10 sm:mb-16">
-              <Badge className="mb-4 px-4 py-1.5 bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-amber-400 border-amber-500/30">
+              <Badge className="mb-4 px-4 py-1.5 bg-[hsl(var(--neon-amber)/0.1)] text-[hsl(var(--neon-amber))] border-[hsl(var(--neon-amber)/0.3)]">
                 <Crown className="w-4 h-4 mr-2" />
                 Premium Product
               </Badge>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
                 The{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, hsl(45 90% 55%), hsl(280 80% 60%), hsl(320 80% 60%))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
+                <span className="text-[hsl(var(--neon-amber))]">
                   World Engine
                 </span>
               </h2>
