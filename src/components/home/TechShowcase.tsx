@@ -456,8 +456,8 @@ console.log(chain.origin, chain.transformations);`,
     layer: "Infrastructure",
     title: "ECONOMY Budgets",
     description: "Cost attribution & budget enforcement",
-    color: "text-amber-600",
-    gradient: "from-amber-500 to-orange-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Set budget constraints
 await cmpsbl.economy.budget({
   scope: "project_alpha",
