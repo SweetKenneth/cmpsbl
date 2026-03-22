@@ -98,10 +98,10 @@ export function EnhancedFooter() {
       <footer className="relative z-20 border-t border-border/50 bg-gradient-to-b from-background via-background to-muted/20" role="contentinfo">
         {/* Memory Stream flowing accent bar at top of footer */}
         <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-70" />
-        <div className="absolute inset-x-0 top-[2px] h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
-        <div className="absolute inset-x-0 top-[3px] h-8 bg-gradient-to-b from-primary/[0.02] to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-[2px] h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon-purple)/0.15)] to-transparent" />
+        <div className="absolute inset-x-0 top-[3px] h-8 bg-gradient-to-b from-[hsl(var(--neon-purple)/0.02)] to-transparent pointer-events-none" />
         {/* Subtle background texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--primary)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--neon-cyan)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
           {/* Main grid: brand + 4 link columns */}
@@ -120,7 +120,7 @@ export function EnhancedFooter() {
               </p>
               <Link 
                 to="/store?tab=plans" 
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors mb-4"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] transition-colors mb-4"
               >
                 View Plans → Builder (free) · Creator · Architect
               </Link>
@@ -133,7 +133,7 @@ export function EnhancedFooter() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-primary/10 hover:text-primary hover:scale-110 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 touch-target"
+                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-[hsl(var(--neon-cyan)/0.1)] hover:text-[hsl(var(--neon-cyan))] hover:scale-110 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 touch-target"
                     title={social.name}
                   >
                     <social.icon className="w-5 h-5 sm:w-4 sm:h-4" />
@@ -156,7 +156,7 @@ export function EnhancedFooter() {
                           rel="noopener noreferrer"
                           className={cn(
                             "text-sm transition-all duration-300 inline-block underline-reveal",
-                            link.highlight ? "text-primary hover:text-primary/80 font-medium" : "text-muted-foreground hover:text-foreground"
+                            link.highlight ? "text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
@@ -166,7 +166,7 @@ export function EnhancedFooter() {
                           to={link.href}
                           className={cn(
                             "text-sm transition-all duration-300 inline-block underline-reveal hover:translate-x-0.5",
-                            link.highlight ? "text-primary hover:text-primary/80 font-medium" : "text-muted-foreground hover:text-foreground"
+                            link.highlight ? "text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
@@ -196,7 +196,7 @@ export function EnhancedFooter() {
                     <button
                       key={link.name}
                       onClick={() => setXctblOpen(true)}
-                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-[hsl(var(--neon-purple))] transition-colors"
                     >
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
@@ -205,7 +205,7 @@ export function EnhancedFooter() {
                     <a
                       key={link.name}
                       href={link.href}
-                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors"
+                      className="text-xs text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] font-semibold transition-colors"
                     >
                       {link.name}
                     </a>
@@ -228,7 +228,7 @@ export function EnhancedFooter() {
                     <button
                       key={link.name}
                       onClick={() => setXctblOpen(true)}
-                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors min-h-[36px] py-1"
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-[hsl(var(--neon-purple))] transition-colors min-h-[36px] py-1"
                     >
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
@@ -237,7 +237,7 @@ export function EnhancedFooter() {
                     <a
                       key={link.name}
                       href={link.href}
-                      className="text-xs text-primary hover:text-primary/80 font-semibold transition-colors min-h-[36px] inline-flex items-center py-1"
+                      className="text-xs text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] font-semibold transition-colors min-h-[36px] inline-flex items-center py-1"
                     >
                       {link.name}
                     </a>
