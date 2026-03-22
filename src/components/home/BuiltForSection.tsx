@@ -256,7 +256,7 @@ export function BuiltForSection() {
             <span className="text-[hsl(var(--neon-cyan))]">Evolves</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The substrate gives your systems DREAM cycles, governed ADAPT, and persistent memory. 
+            The platform gives your systems background processing, governed adaptation, and persistent memory. 
             Build for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}
             <span className="text-foreground font-medium">development</span>, or{" "}
