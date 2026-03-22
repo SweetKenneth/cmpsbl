@@ -88,6 +88,18 @@ export interface UseEncodeReturn {
   complete: ReturnType<typeof useMutation>;
   runCLM: ReturnType<typeof useMutation>;
   processEscalationQueue: ReturnType<typeof useMutation>;
+
+  // Hardening & Intelligence
+  enqueueTask: ReturnType<typeof useMutation>;
+  checkSafety: ReturnType<typeof useMutation>;
+  forecastOutcome: ReturnType<typeof useMutation>;
+  generationBudget: ReturnType<typeof useQuery>;
+  calibration: ReturnType<typeof useQuery>;
+  surfaceCapabilities: ReturnType<typeof useQuery>;
+  concurrencyState: ReturnType<typeof useQuery>;
+  healthComposite: ReturnType<typeof useQuery>;
+  auditTrail: ReturnType<typeof useMutation>;
+  learningMetrics: ReturnType<typeof useQuery>;
 }
 
 export function useEncode(): UseEncodeReturn {
