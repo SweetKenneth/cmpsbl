@@ -18,6 +18,14 @@ ECHO creates and manages digital twins — virtual replicas of system components
 | `createTwin` | Create a digital twin of a system component |
 | `syncTwin` | Synchronize twin state with production source |
 | `runScenario` | Execute a what-if scenario with interventions |
+| `init` | Initialize echo engine with configuration |
+| `health` | Query echo module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `twins` | List all active digital twins |
+| `scenarios` | List all scenario results with divergence metrics |
 
 ---
 

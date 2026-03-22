@@ -19,6 +19,20 @@ ENGINEER is the substrate's performance optimization engine. It owns runtime tun
 | `tune` | Adjust runtime parameters for optimization |
 | `diagnose` | Identify bottlenecks and inefficiencies |
 | `allocate` | Distribute resources across competing demands |
+| `init` | Initialize engineer engine with configuration |
+| `runCycle` | Execute a full optimization cycle |
+| `createProposal` | Create an engineering improvement proposal |
+| `updateProposalStatus` | Advance proposal through review lifecycle |
+| `addStudyFocus` | Register a CLM study focus area |
+| `completeStudy` | Mark a CLM study as complete with findings |
+| `generateTopics` | Generate engineering study topics from metrics |
+| `health` | Query engineer module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `proposals` | List all active engineering proposals |
+| `studies` | List CLM studies with status and findings |
 
 ---
 

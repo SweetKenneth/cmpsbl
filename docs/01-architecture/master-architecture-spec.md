@@ -97,6 +97,7 @@ graph TD
 
     GOVERNANCE[GOVERNANCE - Supervisory Plane]
     DEFENSE[DEFENSE - Shell]
+    OBSERVER[OBSERVER - Watchdog Auxiliary]
 
     CORE --> SYSTEM_NODE
     SYSTEM_NODE --> CCR
@@ -139,8 +140,9 @@ graph TD
 | Meta | ATLAS, ENGINEER | 0.040 | Capability mapping, maintenance intelligence |
 | Plane | GOVERNANCE | 0.030 | Supervisory legitimacy checks |
 | Shell | DEFENSE | 0.030 | Terminal containment boundary |
+| Auxiliary | OBSERVER | — | Watchdog monitoring, telemetry aggregation, anomaly detection |
 
-**Total: 40 Matrix Nodes across 12 Sectors, Σ(weight) = 1.000**
+**Total: 40 Matrix Nodes + 1 Auxiliary (OBSERVER) across 12 Sectors, Σ(weight) = 1.000**
 
 ## 6. Component Registry
 
@@ -338,6 +340,7 @@ DEFENSE — encloses all sectors
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-03-22 | System | v14.2.0 — Added OBSERVER auxiliary node, expanded all node capability surfaces with standardized lifecycle (init/health/resilience/hardening/runCLM/upgradeEngine), updated node docs |
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node/12-sector topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
 | 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
 | 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
