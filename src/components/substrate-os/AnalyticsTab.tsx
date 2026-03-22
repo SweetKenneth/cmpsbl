@@ -609,7 +609,7 @@ export function AnalyticsTab() {
 
             <motion.div className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 }}>
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Database className="w-4 h-4 text-cyan-400" /> Data Sources
+                <Database className="w-4 h-4 text-primary" /> Data Sources
               </h3>
               <div className="space-y-3">
                 {[
