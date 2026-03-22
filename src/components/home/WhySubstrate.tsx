@@ -268,18 +268,23 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
 export function WhySubstrate() {
   return (
     <section className="relative py-14 sm:py-32 px-4 overflow-hidden">
-      {/* Background decoration — solid color glows */}
+      {/* Background decoration — richer solid color glows with depth */}
       <div className="absolute inset-0 pointer-events-none hidden sm:block">
         <div 
-          className="absolute top-1/4 -left-64 w-[600px] h-[600px] rounded-full blur-[150px] animate-hero-orb-1"
-          style={{ background: "hsl(var(--neon-cyan) / 0.06)" }}
+          className="absolute top-1/4 -left-64 w-[700px] h-[700px] rounded-full blur-[160px] animate-hero-orb-1"
+          style={{ background: "hsl(var(--neon-cyan) / 0.07)" }}
         />
         <div 
-          className="absolute bottom-1/4 -right-64 w-[600px] h-[600px] rounded-full blur-[150px] animate-hero-orb-3"
-          style={{ background: "hsl(var(--neon-purple) / 0.06)" }}
+          className="absolute bottom-1/4 -right-64 w-[700px] h-[700px] rounded-full blur-[160px] animate-hero-orb-3"
+          style={{ background: "hsl(var(--neon-purple) / 0.07)" }}
+        />
+        {/* Mid-section warmth */}
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full blur-[180px] animate-hero-orb-2 opacity-60"
+          style={{ background: "hsl(var(--neon-magenta) / 0.04)" }}
         />
         <div 
-          className="absolute inset-0 opacity-[0.02] dark:opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04]"
           style={{
             backgroundImage: `
               linear-gradient(hsl(var(--neon-cyan) / 0.3) 1px, transparent 1px), 

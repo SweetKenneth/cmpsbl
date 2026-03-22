@@ -395,10 +395,12 @@ export function HeroMetaSubstrate() {
         {/* Stats bar */}
         <FadeIn delay={0.7}>
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-lg shadow-primary/[0.03] glass-edge"
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge"
           >
-            <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-30" />
-            <div className="absolute inset-x-0 bottom-0 h-px memory-stream-bar opacity-10" />
+            <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
+            <div className="absolute inset-x-0 bottom-0 h-[1px] memory-stream-bar opacity-15" />
+            {/* Inner ambient glow */}
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-primary/[0.01] pointer-events-none" />
             <AnimatedStat value={40} label="Modules" delay={0} />
             <AnimatedStat value={24} label="Capability Packs" delay={1} />
             <AnimatedStat value={20} label="Sealed Products" delay={2} />
