@@ -495,7 +495,7 @@ export default function Auth() {
                         <CardFooter className="flex-col gap-3">
                           <Button type="submit" className="w-full gap-2 relative overflow-hidden" disabled={loading}>
                             <Mail className="w-4 h-4" />
-                            {loading ? 'Crystallizing...' : 'Send Verification Link'}
+                            {loading ? 'Sending...' : 'Send Verification Link'}
                             {loading && (
                               <motion.div
                                 className="absolute bottom-0 left-0 h-[2px] memory-stream-bar"
