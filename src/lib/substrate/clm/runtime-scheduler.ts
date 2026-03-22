@@ -298,13 +298,17 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
 export function getCLMState(): CLMState {
   ensureTopics();
   const topicArr = Array.from(topics.values());
+  let masteredCount = 0;
+  for (const t of topicArr) {
+    if (t.mastered) masteredCount++;
+  }
   return {
     isRunning,
     totalCycles,
     todayCycles,
     activeTopic: null,
     topicPool: topicArr,
-    masteredCount: topicArr.reduce((n, t) => n + (t.mastered ? 1 : 0), 0),
+    masteredCount,
   };
 }
 

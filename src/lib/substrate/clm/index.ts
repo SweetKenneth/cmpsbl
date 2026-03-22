@@ -135,9 +135,10 @@ export function getCLMStatus(): {
   const budgetState = budgetGovernor.getState();
   const tier = tierCommand.getCurrentTier();
   const orchestratorState = learningOrchestrator.getState();
-  const srSummary = spacedRepetition.getQueueSummary();
-  const curriculum = topicBank.getCoreCurriculum();
-  const encodedCurriculum = getEncodedCurriculum();
+  const srTotal = spacedRepetition.getQueueSize();
+  // Avoid calling getCoreCurriculum() + getEncodedCurriculum() every 30s poll;
+  // use static lengths from the source arrays.
+  const topicsCount = 23 + 50; // CORE_CURRICULUM.length + ENCODED_CODE_CURRICULUM.length (static)
 
   return {
     enabled: config.enabled && !config.killSwitch,
@@ -145,11 +146,11 @@ export function getCLMStatus(): {
     kill_switch: config.killSwitch,
     budget_used: budgetState.usedUnits,
     budget_total: budgetState.totalBudgetUnits,
-    topics_count: curriculum.length + encodedCurriculum.length,
-    review_queue_size: srSummary.total,
+    topics_count: topicsCount,
+    review_queue_size: srTotal,
     budget: budgetState,
     tier,
-    srQueueSize: srSummary.total,
+    srQueueSize: srTotal,
     orchestratorState,
     encodedLearning: encodedLearningEngine.getState(),
   };
