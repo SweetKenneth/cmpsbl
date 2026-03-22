@@ -216,8 +216,8 @@ export function HeroMetaSubstrate() {
               <Sparkles className="w-3 h-3 text-primary" />
               <span className="text-[10px] sm:text-xs font-medium text-muted-foreground tracking-wide">AI Operating System</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[9px] font-bold text-emerald-500 uppercase tracking-wider">Live</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
+                <span className="text-[9px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
               </span>
             </FadeIn>
             

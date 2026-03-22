@@ -38,11 +38,11 @@ const getFreeTools = () => {
 
 // Legacy static export for initial render
 const freeTools = [
-  { name: "Templates", icon: Package, count: "200+", color: "text-cyan-500" },
-  { name: "Memories", icon: Layers, count: "300+", color: "text-violet-500" },
-  { name: "Capabilities", icon: Zap, count: "525+", color: "text-amber-500" },
-  { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
-  { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
+  { name: "Templates", icon: Package, count: "200+", color: "text-[hsl(var(--neon-cyan))]" },
+  { name: "Memories", icon: Layers, count: "300+", color: "text-[hsl(var(--neon-purple))]" },
+  { name: "Capabilities", icon: Zap, count: "525+", color: "text-primary" },
+  { name: "Memory", icon: Brain, count: "∞", color: "text-[hsl(var(--neon-magenta))]" },
+  { name: "CodeLab", icon: Code, count: "Live", color: "text-[hsl(var(--neon-cyan))]" },
 ];
 
 // Premium engine tiers
