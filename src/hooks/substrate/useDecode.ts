@@ -118,8 +118,8 @@ export function useDecode(): UseDecodeReturn {
 
   // ═══ Admin Directives ═══
   const directiveMut = useMutation({
-    mutationFn: (params: Parameters<typeof issueDirective>[0]) =>
-      Promise.resolve(issueDirective(params)),
+    mutationFn: (params: { directive: string; targetModules: string[]; priority?: 'low' | 'normal' | 'high' | 'critical'; type?: 'command' | 'policy' | 'override'; sessionId?: string }) =>
+      Promise.resolve(issueDirective(params.directive, params.targetModules, params.priority, params.type, params.sessionId)),
     onSuccess: invalidateDecode,
   });
 
