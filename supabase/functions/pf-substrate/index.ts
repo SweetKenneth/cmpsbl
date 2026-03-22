@@ -9549,7 +9549,7 @@ async function handleDefense(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// NEXUS MODULE v1.1 — Provider Skeleton + Routing Spine
+// NEXUS MODULE v1.1 — Provider Fleet + Routing Engine
 // ═══════════════════════════════════════════════════════════════
 
 // Unified text routing with fallback chain
