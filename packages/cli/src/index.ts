@@ -932,8 +932,8 @@ function cmdDiff(args: string[]) {
     } else {
       for (const c of changes) {
         say(`  ${c.key}:`);
-        say(`    - ${JSON.stringify(c.from) ?? '(undefined)'}`);
-        say(`    + ${JSON.stringify(c.to) ?? '(undefined)'}`);
+        say(`    - ${c.from === undefined ? '(undefined)' : JSON.stringify(c.from)}`);
+        say(`    + ${c.to === undefined ? '(undefined)' : JSON.stringify(c.to)}`);
       }
       blank();
       say(`${changes.length} difference(s) found.`);
