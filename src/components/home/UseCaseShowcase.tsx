@@ -101,7 +101,7 @@ const useCases = [
   {
     icon: Plane,
     title: "Mid-Flight Self-Repair",
-    description: "Avionics that dream failure scenarios, pre-compute recovery paths, and self-heal anomalies before they cascade.",
+    description: "Avionics systems that simulate failure scenarios and pre-compute recovery paths before issues occur.",
     industry: "Aviation",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--neon-magenta)/0.15)]",
