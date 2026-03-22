@@ -12,7 +12,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
-  BookOpen,
   Sparkles,
   ChevronDown,
   Layers,
@@ -53,7 +52,6 @@ function TypedText({ texts, gradientColors, className }: {
   const [isDeleting, setIsDeleting] = useState(false);
   
   useEffect(() => {
-    // If reduced motion, just cycle text without typing effect
     if (prefersReduced.current) {
       const interval = setInterval(() => {
         setCurrentIndex(prev => (prev + 1) % texts.length);
@@ -62,7 +60,7 @@ function TypedText({ texts, gradientColors, className }: {
     }
     
     const currentText = texts[currentIndex];
-    const typingSpeed = isDeleting ? 40 : 80; // Slightly slower = fewer renders
+    const typingSpeed = isDeleting ? 40 : 80;
     
     if (!isDeleting && displayText === currentText) {
       const timeout = setTimeout(() => setIsDeleting(true), 2800);
@@ -86,7 +84,6 @@ function TypedText({ texts, gradientColors, className }: {
     return () => clearTimeout(timeout);
   }, [displayText, isDeleting, currentIndex, texts]);
   
-  // For reduced motion, update displayText when index changes
   useEffect(() => {
     if (prefersReduced.current) {
       setDisplayText(texts[currentIndex]);
@@ -179,8 +176,6 @@ function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-background" />
-      
-      {/* Gradient orbs — CSS-only ambient drift, GPU-composited */}
       <div
         className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.06) 0%, transparent 55%)" }}
@@ -193,7 +188,6 @@ function HeroBackground() {
         className="absolute top-1/3 left-1/2 w-[400px] h-[400px] rounded-full animate-hero-orb-3"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
       />
-      
       <div className="absolute inset-0 substrate-grid-bg opacity-[0.25] dark:opacity-[0.4]" />
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.6) 100%)" }} />
     </div>
@@ -215,7 +209,7 @@ export function HeroMetaSubstrate() {
           
           {/* Left column — Copy */}
           <div className="text-center lg:text-left order-1">
-            {/* Engine badge — refined pill */}
+            {/* Engine badge */}
             <FadeIn delay={0.1}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
             >
@@ -227,7 +221,7 @@ export function HeroMetaSubstrate() {
               </span>
             </FadeIn>
             
-            {/* CMPSBL — massive wordmark */}
+            {/* CMPSBL wordmark */}
             <h1 
               className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
             >
@@ -264,68 +258,41 @@ export function HeroMetaSubstrate() {
               </div>
             </FadeIn>
 
-            {/* Thesis line */}
-            <FadeIn delay={0.3}
-              className="text-sm sm:text-base text-muted-foreground/80 font-medium max-w-md mx-auto lg:mx-0 mb-5 sm:mb-6 tracking-tight"
-            >
-              CMPSBL is an AI Operating System that gives software memory, reasoning, and self-improvement.
-            </FadeIn>
-            
-            {/* Subtitle — clear value prop */}
-            <FadeIn delay={0.4} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9 space-y-4">
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
-                Every interaction flows through the{' '}
-                <span className="text-foreground/90 font-medium">Memory Stream</span>, where the system
-                crystallizes memories and packages them into working, exportable capabilities automatically.
-              </p>
-              <p className="text-sm sm:text-base text-muted-foreground/70 leading-[1.8]">
-                The rarest discoveries don't stop at software. They become designs for{' '}
-                <span className="text-primary font-medium">silicon computer chips</span>.{' '}
-                <span className="text-foreground/90 font-semibold">Start now — free.</span>
+            {/* Single clear value prop — replaces redundant thesis + subtitle */}
+            <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
+              <p className="text-sm sm:text-base text-muted-foreground/80 leading-[1.8]">
+                CMPSBL gives your software{' '}
+                <span className="text-foreground/90 font-medium">persistent memory</span>,{' '}
+                <span className="text-foreground/90 font-medium">self-improvement</span>, and{' '}
+                <span className="text-foreground/90 font-medium">governed reasoning</span>.
+                Every interaction flows through the Memory Stream, where the system
+                crystallizes discoveries into exportable capabilities — automatically.
               </p>
             </FadeIn>
             
             {/* CTAs */}
-            <FadeIn delay={0.45} className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
+            <FadeIn delay={0.4} className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
               <Button 
                 asChild 
                 size="lg" 
                 className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/store?tab=plans">
+                <Link to="/auth">
                   <Sparkles className="w-4 h-4" />
-                  View Plans
+                  Start Free
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
               <Button 
                 asChild 
-                variant="ghost" 
+                variant="outline" 
                 size="lg" 
-                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl hover:bg-muted/40 transition-all duration-300 active:scale-[0.98]"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/foundry">
-                  <Brain className="w-4 h-4 text-muted-foreground" />
-                  Explore the Memory Stream
+                <Link to="/store?tab=plans">
+                  View Plans
                 </Link>
               </Button>
-            </FadeIn>
-            
-            {/* Research DOI */}
-            <FadeIn delay={0.55} className="mt-5 sm:mt-7 text-center lg:text-left">
-              <a 
-                href="https://doi.org/10.5281/zenodo.18234909"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-lg border border-border/30 bg-card/30 hover:bg-card/60 hover:border-primary/20 transition-all duration-300 group"
-              >
-                <BookOpen className="w-3.5 h-3.5 text-muted-foreground/60 group-hover:text-primary transition-colors" />
-                <div className="text-left">
-                  <span className="block text-[11px] font-medium text-foreground/70 group-hover:text-primary transition-colors leading-tight">Research Paper</span>
-                  <span className="block text-[9px] text-muted-foreground/50 leading-tight">DOI: 10.5281/zenodo.18234909</span>
-                </div>
-                <ArrowRight className="w-3 h-3 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-0.5 transition-all hidden sm:block" />
-              </a>
             </FadeIn>
           </div>
           
@@ -360,7 +327,7 @@ export function HeroMetaSubstrate() {
             <FadeIn delay={0.7} className="grid grid-cols-3 gap-2">
               {[
                 { label: "Memory Depth", value: "Persistent", glow: "--neon-cyan" },
-                { label: "Dream Cycles", value: "Autonomous", glow: "--neon-purple" },
+                { label: "Background Processing", value: "Autonomous", glow: "--neon-purple" },
                 { label: "Defense Mesh", value: "Always-On", glow: "--neon-magenta" },
               ].map((item) => (
                 <div 
@@ -377,18 +344,18 @@ export function HeroMetaSubstrate() {
         
         {/* Feature pills */}
         <FadeIn
-          delay={0.75}
+          delay={0.55}
           className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
             { icon: Sparkles, label: "Free to Start", href: "/auth" },
             { icon: Brain, label: "Persistent Memory", href: "/persistent-memory" },
-            { icon: Layers, label: "24 Memory Packs", href: "/packs" },
+            { icon: Layers, label: "24 Capability Packs", href: "/packs" },
             { icon: Shield, label: "Governed Runtime", href: "/documentation" },
           ].map((item, index) => (
             <FadeIn
               key={item.label}
-              delay={0.8 + index * 0.05}
+              delay={0.6 + index * 0.05}
             >
               <Link
                 to={item.href}
@@ -402,13 +369,13 @@ export function HeroMetaSubstrate() {
         </FadeIn>
 
         {/* Architecture strip */}
-        <FadeIn delay={0.85} className="mb-6 sm:mb-10">
+        <FadeIn delay={0.65} className="mb-6 sm:mb-10">
           <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
             {[
               "Signal",
               "Memory Stream",
               "Governed Runtime",
-              "Memory Packs",
+              "Capability Packs",
               "Sealed Engines",
               "Applications",
             ].map((step, i, arr) => (
@@ -424,17 +391,17 @@ export function HeroMetaSubstrate() {
           </div>
         </FadeIn>
         
-        {/* Stats bar — minimal, glassy */}
-        <FadeIn delay={0.9}>
+        {/* Stats bar */}
+        <FadeIn delay={0.7}>
           <div 
             className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-lg shadow-primary/[0.03] glass-edge"
           >
             <div className="absolute inset-x-0 top-0 h-px memory-stream-bar opacity-30" />
             <div className="absolute inset-x-0 bottom-0 h-px memory-stream-bar opacity-10" />
-            <AnimatedStat value={107} suffix="K" label="Crystallized" delay={0} />
-            <AnimatedStat value={40} label="Stream Nodes" delay={1} />
-            <AnimatedStat value={95} suffix="+" label="Apex Tier" delay={2} />
-            <AnimatedStat value={9} label="Capability Domains" delay={3} />
+            <AnimatedStat value={40} label="Modules" delay={0} />
+            <AnimatedStat value={24} label="Capability Packs" delay={1} />
+            <AnimatedStat value={20} label="Sealed Products" delay={2} />
+            <AnimatedStat value={9} label="System Domains" delay={3} />
           </div>
         </FadeIn>
       </div>

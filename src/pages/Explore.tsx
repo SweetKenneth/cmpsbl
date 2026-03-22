@@ -1,7 +1,7 @@
 /**
  * Explore — The CMPSBL Gateway
- * Narrative flow: Hero → Stats → What It Is → How It's Different → Who It's For →
- * Activation Model → Governance → Social Proof → Evolution → Engines → Final CTA
+ * Narrative flow: Hero → Stats → NPM → Who It's For → Packs →
+ * Core Systems → Differentiation → Use Cases → Mental Model → Social Proof → Final CTA
  *
  * NOTE: framer-motion is NOT imported here to avoid pulling 56KB into the
  * landing page critical path. All animations use CSS keyframes instead.
@@ -35,25 +35,13 @@ const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m =>
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
 
-// Section divider with animated gradient, memory-stream accent, and side flair
-// Uses CSS keyframes instead of framer-motion to avoid 56KB dependency
+// Clean section divider — minimal, refined
 function SectionDivider() {
   return (
-    <div className="relative py-12 sm:py-16">
-      {/* Outer fade line */}
-      <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-border/30 to-transparent" />
-      {/* Colored memory-stream accent */}
-      <div className="absolute left-[10%] right-[10%] top-1/2 h-px">
-        <div className="h-full divider-flow" />
-      </div>
-      {/* Center diamond with concentric rings — CSS pulse replaces motion.div */}
+    <div className="relative py-10 sm:py-14">
+      <div className="absolute inset-x-[15%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div 
-          className="w-2.5 h-2.5 bg-primary/50 rotate-45 rounded-[1px] animate-divider-diamond"
-        />
-        <div className="absolute -inset-2 border border-primary/10 rotate-45 rounded-[2px]" />
-        <div className="absolute -inset-4 border border-primary/5 rotate-45 rounded-[3px]" />
-        <div className="absolute inset-0 w-2.5 h-2.5 bg-primary/20 rotate-45 blur-md" />
+        <div className="w-1.5 h-1.5 bg-primary/30 rotate-45 rounded-[1px]" />
       </div>
     </div>
   );
@@ -81,7 +69,7 @@ export default function Explore() {
       <PublicNav />
       <CmpsblWelcome />
 
-      {/* Ambient animated mesh background — layered for depth */}
+      {/* Ambient animated mesh background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-80" />
         <div
@@ -105,61 +93,59 @@ export default function Explore() {
       <LiveStatsBar />
 
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        {/* ═══ NPM SDK — Build on the Substrate ═══ */}
+        {/* ═══ NPM SDK ═══ */}
         <NpmPackagesCTA />
 
         <SectionDivider />
 
-        {/* ═══ WHO IT'S FOR — Game Devs, Developers, Enterprise ═══ */}
+        {/* ═══ WHO IT'S FOR ═══ */}
         <BuiltForSection />
 
         <SectionDivider />
 
-        {/* ═══ ACTIVATION MODEL — Packs & Slots ═══ */}
+        {/* ═══ ACTIVATION MODEL ═══ */}
         <ArtifactPacksSection />
 
         <SectionDivider />
 
-        {/* ═══ WHAT IT IS — 9 core systems ═══ */}
+        {/* ═══ CORE SYSTEMS ═══ */}
         <WhySubstrate />
 
-        {/* ═══ HOW IT'S DIFFERENT — Dream · Adapt · Evolve ═══ */}
+        {/* ═══ DIFFERENTIATION ═══ */}
         <DifferentiationSection />
 
         <SectionDivider />
 
-        {/* ═══ USE CASES — What you can build ═══ */}
+        {/* ═══ USE CASES ═══ */}
         <UseCaseShowcase />
 
         <SectionDivider />
 
-        {/* ═══ MENTAL MODEL — How CMPSBL Works ═══ */}
+        {/* ═══ MENTAL MODEL ═══ */}
         <HowCmpsblWorks />
 
         <SectionDivider />
 
-        {/* ═══ SOCIAL PROOF — Testimonials ═══ */}
+        {/* ═══ SOCIAL PROOF ═══ */}
         <SocialProof />
 
         <SectionDivider />
       </Suspense>
 
-      {/* ═══ FINAL CTA — Cinematic closing ═══ */}
+      {/* ═══ FINAL CTA ═══ */}
       <section className="relative z-10 px-3 sm:px-4 py-14 sm:py-32 overflow-hidden">
-        {/* Ambient background glow */}
         <div className="absolute inset-0 pointer-events-none hidden sm:block">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[200px]" />
         </div>
         <div className="max-w-5xl mx-auto relative animate-fade-in-up">
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
             {/* Layered gradient background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-violet-600" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/15 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
             
-            {/* Animated grid overlay */}
+            {/* Grid overlay */}
             <div 
-              className="absolute inset-0 opacity-[0.07]"
+              className="absolute inset-0 opacity-[0.05]"
               style={{
                 backgroundImage: `
                   linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), 
@@ -168,58 +154,32 @@ export default function Explore() {
                 backgroundSize: "50px 50px",
               }}
             />
-            
-            {/* Glow orbs — CSS animation replaces framer-motion */}
-            <div 
-              className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-white/10 blur-[100px] animate-glow-orb-a"
-            />
-            <div 
-              className="absolute -bottom-24 -left-24 w-56 h-56 rounded-full bg-white/10 blur-[80px] animate-glow-orb-b"
-            />
-            
-            {/* Flowing accent at top */}
-            <div className="h-[2px] memory-stream-bar opacity-70" />
 
-            <div className="relative p-5 sm:p-14 md:p-20 text-center">
-              {/* Floating badge — CSS fade-in replaces motion */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 border border-black/15 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-                <Sparkles className="w-4 h-4 text-gray-800" />
-                <span className="text-sm font-semibold text-gray-800">Build Smarter AI</span>
+            <div className="relative p-6 sm:p-14 md:p-20 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <Sparkles className="w-4 h-4 text-white" />
+                <span className="text-sm font-semibold text-white/90">Ready to Build?</span>
               </div>
               
-              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 sm:mb-6 leading-[1.05] tracking-tight">
-                Build on the{" "}
+              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+                Start Building{" "}
                 <br className="hidden sm:block" />
-                <span className="text-gray-800 drop-shadow-[0_0_30px_rgba(0,0,0,0.1)]">Substrate</span>
+                <span className="text-white/80">Today — Free</span>
               </h2>
-              <p className="text-gray-700 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
-                Persistent memory, governed evolution, and self-improvement cycles — AI systems that adapt and get better over time. Start free with 3 capability slots.
+              <p className="text-white/70 text-sm sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+                Persistent memory, governed evolution, and self-improvement cycles — all included. 
+                Start with 3 capability slots, no credit card required.
               </p>
               
-              {/* Mini stats row */}
-              <div className="grid grid-cols-2 gap-4 sm:flex sm:flex-wrap sm:justify-center sm:gap-6 md:gap-12 mb-8 sm:mb-10">
-                   {[
-                    { value: "40", label: "System Modules" },
-                    { value: "24", label: "Capability Packs" },
-                    { value: "20", label: "Sealed Products" },
-                    { value: "99.9%", label: "Uptime SLA" },
-                ].map((stat) => (
-                  <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-gray-900 group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(0,0,0,0.15)] transition-all duration-300">{stat.value}</div>
-                     <div className="text-[9px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider mt-0.5">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-              
-               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                 <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-gray-900 text-white hover:bg-gray-800 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl cta-ring">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-white text-gray-900 hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
                   <Link to="/auth">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Start Building — Free
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-gray-900/30 text-gray-900 hover:bg-black/10 font-semibold backdrop-blur-sm rounded-xl">
+                <Button asChild size="lg" variant="outline" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border-white/30 text-white hover:bg-white/10 font-semibold backdrop-blur-sm rounded-xl">
                   <Link to="/store?tab=plans">
                     <Terminal className="w-5 h-5 mr-2" />
                     View Plans
@@ -228,7 +188,6 @@ export default function Explore() {
               </div>
             </div>
             
-            {/* Bottom accent */}
             <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           </div>
         </div>

@@ -29,10 +29,10 @@ const audiences = [
     badge: "For Game Devs",
     title: "NPCs That Dream",
     tagline: "Give your characters a soul",
-    description: "Build NPCs on the substrate with persistent memory, DREAM cycle processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
+    description: "Build NPCs with persistent memory, background processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
     features: [
       { icon: Brain, text: "3-tier NPC memory" },
-      { icon: Moon, text: "DREAM cycle processing" },
+      { icon: Moon, text: "Background processing" },
       { icon: MessageSquare, text: "Context-aware dialogue" },
     ],
     stats: { value: "∞", label: "Memory Depth" },
@@ -47,9 +47,9 @@ const audiences = [
     badge: "For Developers",
     title: "Apps That Evolve",
     tagline: "Infrastructure that improves itself",
-    description: "Build on the substrate with persistent memory, ADAPT-governed routing, and EVOLUTION for self-improvement. Your apps dream, adapt, and get smarter the more they run.",
+    description: "Build with persistent memory, governed routing, and continuous self-improvement. Your apps adapt and get smarter the more they run.",
     features: [
-      { icon: Zap, text: "ADAPT-governed routing" },
+      { icon: Zap, text: "Governed routing" },
       { icon: Brain, text: "Memory persistence" },
       { icon: Eye, text: "Full observability" },
     ],
@@ -65,7 +65,7 @@ const audiences = [
     badge: "For Enterprise",
     title: "Operations That Learn",
     tagline: "Governed evolution at scale",
-    description: "Deploy the substrate on your infrastructure with DREAM cycles for pattern discovery, governed ADAPT for compliance, and EVOLUTION for continuous improvement — all auditable.",
+    description: "Deploy on your infrastructure with background processing for pattern discovery, governed adaptation for compliance, and continuous improvement — all auditable.",
     features: [
       { icon: Shield, text: "Governed adaptation" },
       { icon: Brain, text: "Institutional memory" },
@@ -256,7 +256,7 @@ export function BuiltForSection() {
             <span className="text-[hsl(var(--neon-cyan))]">Evolves</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            The substrate gives your systems DREAM cycles, governed ADAPT, and persistent memory. 
+            The platform gives your systems background processing, governed adaptation, and persistent memory. 
             Build for{" "}
             <span className="text-foreground font-medium">gaming</span>,{" "}
             <span className="text-foreground font-medium">development</span>, or{" "}
