@@ -700,11 +700,11 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           <span className={isBiohack ? "biohack-stat biohack-stat-error" : "text-destructive"}>
             {sessionStats.errors} ✗
           </span>
-          <span className={isBiohack ? "text-[hsl(200_60%_50%)]" : "text-muted-foreground/60"}>
+          <span className={isBiohack ? "text-neon-blue/60" : "text-muted-foreground/60"}>
             {sessionDuration}
           </span>
           {getActiveSessions().length > 0 && (
-            <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : "text-neon-amber"} title="Active watch sessions">
+            <span className={isBiohack ? "text-neon-purple" : "text-neon-amber"} title="Active watch sessions">
               ⟳ {getActiveSessions().length}
             </span>
           )}
