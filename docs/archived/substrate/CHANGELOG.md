@@ -4,6 +4,37 @@
 
 ---
 
+## 2026-03-22 · v15.0.0 (CONTACT Epoch — NPM Distribution & Developer Touchpoints)
+
+⟨This entry describes the epoch transition from MINDGAMES to CONTACT, the creation of 11 @cmpsbl NPM packages across four tiers, the unified First Contact System, and the substrate's first programmatic distribution channel.⟩
+
+### Epoch Transition
+
+- **MINDGAMES → CONTACT** — Version elevated to v15.0.0. The substrate shifts from user-facing polish to developer-facing distribution. The CONTACT epoch marks the platform's first programmatic handshake with external developers.
+
+### NPM Package Ecosystem (11 Packages)
+
+- **Foundation Tier** — @cmpsbl/types (shared type definitions), @cmpsbl/runtime (minimal substrate runtime), @cmpsbl/failsafe (disaster recovery engine)
+- **Core Tier** — @cmpsbl/intent (intent broadcasting), @cmpsbl/mesh (mesh communications), @cmpsbl/bridge (cross-environment bridge)
+- **Developer Tier** — @cmpsbl/sdk (full SDK client), @cmpsbl/discovery (pattern detection), @cmpsbl/cli (CLI tooling)
+- **Ecosystem Tier** — @cmpsbl/react (React hooks and components), @cmpsbl/test-harness (testing utilities)
+
+### First Contact System
+
+- **Unified Initialization** — Every package binds real persistent user identity at init, connects to the live Memory Stream, and starts live discovery automatically.
+- **CLI Entry Point** — `npx cmpsbl init` bootstraps cognitive environment, connects Memory Stream, binds user identity, starts live discovery.
+- **SDK Client** — CMPSBL class exposes discover(), capture(), apply(), and export() methods for programmatic Memory Stream interaction.
+- **Mock Data Blocked** — All packages enforce live discovery mode. Simulated outputs are architecturally blocked.
+
+### Domain-Specific Pattern Detection
+
+- **@cmpsbl/security** — Threat detection patterns, cross-system defense scope
+- **@cmpsbl/commerce** — Checkout optimization patterns, multi-system adoption scope
+- **@cmpsbl/health** — Patient timeline correlation, longitudinal analysis scope
+- **@cmpsbl/dev** — Code optimization patterns, cross-repo usage scope
+
+---
+
 ## 2026-03-12 · v14.2.0 (MINDGAMES Epoch — Performance & Stability)
 
 ⟨This entry describes substrate-wide performance optimizations targeting telemetry throughput, memory deduplication efficiency, DOM observability overhead, and database query acceleration.⟩

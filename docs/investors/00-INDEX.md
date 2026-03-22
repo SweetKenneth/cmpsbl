@@ -1,7 +1,7 @@
 # CMPSBL® Investor Documentation Library
 
 **Classification:** CONFIDENTIAL — Investor & Stakeholder Use  
-**Version:** v14.1.0 — MINDGAMES Epoch
+**Version:** v15.0.0 — CONTACT Epoch
 
 ---
 
