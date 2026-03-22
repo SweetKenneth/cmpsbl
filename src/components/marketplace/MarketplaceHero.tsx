@@ -182,27 +182,27 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1 }}
             className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-12 max-w-5xl mx-auto"
           >
-            <div className="text-center p-4 rounded-2xl bg-gradient-to-br from-rose-500/10 to-amber-500/10 border border-rose-500/30 col-span-2 md:col-span-1">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent">$39</div>
-              <div className="text-xs text-muted-foreground">AI Generator</div>
-              <Badge className="mt-1 text-[10px] bg-rose-500/20 text-rose-400 border-rose-500/30">NEW</Badge>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-rose-500 to-purple-500 bg-clip-text text-transparent">{TEMPLATES.length}+</div>
-              <div className="text-xs text-muted-foreground">Templates</div>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">13</div>
-              <div className="text-xs text-muted-foreground">Modules</div>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black text-emerald-500">FREE</div>
-              <div className="text-xs text-muted-foreground">SDK Access</div>
-            </div>
-            <div className="text-center p-4 rounded-2xl bg-card/50 border border-border/50">
-              <div className="text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-500 to-rose-500 bg-clip-text text-transparent">$27</div>
-              <div className="text-xs text-muted-foreground">From</div>
-            </div>
+             <div className="text-center p-4 rounded-2xl bg-primary/10 border border-primary/30 col-span-2 md:col-span-1">
+               <div className="text-2xl md:text-3xl font-black text-primary">$39</div>
+               <div className="text-xs text-muted-foreground">AI Generator</div>
+               <Badge className="mt-1 text-[10px] bg-primary/20 text-primary border-primary/30">NEW</Badge>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-primary">{TEMPLATES.length}+</div>
+               <div className="text-xs text-muted-foreground">Templates</div>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-cyan))]">13</div>
+               <div className="text-xs text-muted-foreground">Modules</div>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-purple))]">FREE</div>
+               <div className="text-xs text-muted-foreground">SDK Access</div>
+             </div>
+             <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
+               <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-magenta))]">$27</div>
+               <div className="text-xs text-muted-foreground">From</div>
+             </div>
           </motion.div>
 
           {/* Differentiator Cards */}
