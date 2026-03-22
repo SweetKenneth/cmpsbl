@@ -395,7 +395,7 @@ export default function Auth() {
                         <CardFooter>
                           <Button type="submit" variant="outline" className="w-full gap-2 relative overflow-hidden" disabled={loading}>
                             <Mail className="w-4 h-4" />
-                            {loading ? 'Crystallizing...' : 'Send Sign-In Link'}
+                            {loading ? 'Sending...' : 'Send Sign-In Link'}
                             <ArrowRight className="w-4 h-4" />
                             {loading && (
                               <motion.div
