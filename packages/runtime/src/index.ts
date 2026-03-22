@@ -272,3 +272,18 @@ export function createRuntime(): MiniRuntime {
     version: '1.0.0',
   };
 }
+
+// ═══════════════════════════════════════════════════════════════
+// §7 — First Contact Engine (re-export)
+// ═══════════════════════════════════════════════════════════════
+
+export {
+  initFirstContact,
+  discover as discoverMemory,
+  capture as captureMemory,
+  apply as applyMemory,
+  exportChain as exportMemory,
+  getMemoryStream,
+  getSession as getFirstContactSession,
+  endSession as endFirstContactSession,
+} from './first-contact';
