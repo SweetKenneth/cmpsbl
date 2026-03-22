@@ -122,22 +122,22 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ delay: 0.3 }}
           className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center gap-3 sm:gap-4 max-w-4xl mx-auto"
         >
-          {[
-            { icon: Brain, label: 'Persistent Memory', color: 'text-violet-500', bg: 'bg-violet-500/10', border: 'border-violet-500/20' },
-            { icon: Shield, label: 'Drift Prevention', color: 'text-rose-500', bg: 'bg-rose-500/10', border: 'border-rose-500/20' },
-            { icon: Moon, label: 'Offline Learning', color: 'text-purple-500', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
-            { icon: Server, label: 'NEXUS Router', color: 'text-orange-500', bg: 'bg-orange-500/10', border: 'border-orange-500/20' },
-            { icon: Zap, label: 'Multi-Provider', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
-          ].map(({ icon: Icon, label, color, bg, border }) => (
-            <motion.div 
-              key={label}
-              whileHover={{ scale: 1.05 }}
-              className={`flex items-center gap-2 px-3 py-2 rounded-full ${bg} border ${border} cursor-default transition-shadow hover:shadow-lg`}
-            >
-              <Icon className={`w-4 h-4 ${color}`} />
-              <span className="text-xs sm:text-sm font-medium text-foreground">{label}</span>
-            </motion.div>
-          ))}
+           {[
+             { icon: Brain, label: 'Persistent Memory', colorClass: 'text-[hsl(var(--neon-purple))] bg-[hsl(var(--neon-purple))]/10 border-[hsl(var(--neon-purple))]/20' },
+             { icon: Shield, label: 'Drift Prevention', colorClass: 'text-[hsl(var(--neon-magenta))] bg-[hsl(var(--neon-magenta))]/10 border-[hsl(var(--neon-magenta))]/20' },
+             { icon: Moon, label: 'Offline Learning', colorClass: 'text-[hsl(var(--neon-purple))] bg-[hsl(var(--neon-purple))]/10 border-[hsl(var(--neon-purple))]/20' },
+             { icon: Server, label: 'NEXUS Router', colorClass: 'text-primary bg-primary/10 border-primary/20' },
+             { icon: Zap, label: 'Multi-Provider', colorClass: 'text-[hsl(var(--neon-cyan))] bg-[hsl(var(--neon-cyan))]/10 border-[hsl(var(--neon-cyan))]/20' },
+           ].map(({ icon: Icon, label, colorClass }) => (
+             <motion.div 
+               key={label}
+               whileHover={{ scale: 1.05 }}
+               className={`flex items-center gap-2 px-3 py-2 rounded-full border cursor-default transition-shadow hover:shadow-lg ${colorClass}`}
+             >
+               <Icon className="w-4 h-4" />
+               <span className="text-xs sm:text-sm font-medium text-foreground">{label}</span>
+             </motion.div>
+           ))}
         </motion.div>
 
         {/* Stats bar with enhanced styling */}
