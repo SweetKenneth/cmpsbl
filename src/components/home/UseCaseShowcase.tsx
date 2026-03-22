@@ -24,7 +24,7 @@ const useCases = [
   {
     icon: Gamepad2,
     title: "NPCs That Dream & Evolve",
-    description: "Game characters with persistent memory that adapt to player style, remember past encounters, and dream new strategies.",
+    description: "Game characters that remember player behavior, adapt strategies, and generate new approaches over time.",
     industry: "Gaming",
     iconColor: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--neon-magenta)/0.15)]",
