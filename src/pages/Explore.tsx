@@ -182,9 +182,9 @@ export default function Explore() {
 
             <div className="relative p-5 sm:p-14 md:p-20 text-center">
               {/* Floating badge — CSS fade-in replaces motion */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
-                <Sparkles className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white/90">Build Smarter AI</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/10 border border-black/15 backdrop-blur-sm mb-8 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+                <Sparkles className="w-4 h-4 text-gray-800" />
+                <span className="text-sm font-semibold text-gray-800">Build Smarter AI</span>
               </div>
               
               <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 sm:mb-6 leading-[1.05] tracking-tight">
