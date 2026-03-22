@@ -367,8 +367,8 @@ import {
   endFirstContactSession,
 } from '@cmpsbl/runtime';
 
-const SDK_DOMAIN_PATTERNS: typeof DOMAIN_PATTERNS['sdk'] = {
-  domain: 'sdk',
+const SDK_DOMAIN_PATTERNS = {
+  domain: 'sdk' as const,
   patterns: ['API usage optimization', 'Engine coordination chain', 'Client integration pattern'],
   scopes: ['Cross-engine adoption', 'Multi-system integration', 'Developer workflow optimization'],
 };
