@@ -1,11 +1,12 @@
 /**
  * @cmpsbl/discovery — Pipeline Discovery Engine
  * CJPI scoring, crystallization, and foundry pipeline management.
+ * Includes first-contact Memory Stream integration.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { CrystallizedTier, DiscoveryCategory, DiscoveryPipeline, CJPIInput } from '@cmpsbl/types';
+import type { CrystallizedTier, DiscoveryCategory, DiscoveryPipeline, CJPIInput, FirstContactConfig } from '@cmpsbl/types';
 import { computeCJPI, tierFromCJPI } from '@cmpsbl/runtime';
 
 export type { CrystallizedTier, DiscoveryCategory, DiscoveryPipeline };
@@ -55,7 +56,7 @@ export function crystallize(candidate: DiscoveryCandidate): CrystallizedResult {
   return {
     pipeline,
     phase: 'complete',
-    promotable: pipeline.cjpi >= 55, // Relic+ tier
+    promotable: pipeline.cjpi >= 55,
   };
 }
 
@@ -87,4 +88,18 @@ function simpleFingerprint(modules: string[]): string {
     hash |= 0;
   }
   return Math.abs(hash).toString(16).padStart(8, '0');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact — Discovery Domain
+// ═══════════════════════════════════════════════════════════════
+
+export function createDiscoveryFirstContact(apiKey?: string): FirstContactConfig {
+  return {
+    package: '@cmpsbl/discovery',
+    domain: 'discovery',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
+  };
 }

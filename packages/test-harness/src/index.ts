@@ -1,12 +1,13 @@
 /**
  * @cmpsbl/test-harness — Test Utilities
- * Validate exported pipelines, manifests, and bridge adapters.
+ * Validate exported pipelines, manifests, bridge adapters, and first-contact flows.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { CmpsblManifest, ChainManifest, ChainResult, PrimitiveResult } from '@cmpsbl/types';
-import { parseManifest, executeChain, executePrimitive } from '@cmpsbl/runtime';
+import type { CmpsblManifest, ChainManifest, ChainResult, PrimitiveResult, FirstContactConfig } from '@cmpsbl/types';
+import { parseManifest, executeChain, executePrimitive, initFirstContact, discoverMemory, getMemoryStream } from '@cmpsbl/runtime';
+import { DOMAIN_PATTERNS } from '@cmpsbl/types';
 import type { BridgeAdapter } from '@cmpsbl/bridge';
 
 // ═══════════════════════════════════════════════════════════════
@@ -37,7 +38,6 @@ export function validateManifest(json: string): TestSuiteResult {
   const start = Date.now();
   const results: TestResult[] = [];
 
-  // Test: parseable
   let manifest: CmpsblManifest | null = null;
   try {
     manifest = parseManifest(json);
@@ -47,7 +47,6 @@ export function validateManifest(json: string): TestSuiteResult {
   }
 
   if (manifest) {
-    // Test: required fields
     results.push({
       name: 'has_name', passed: !!manifest.name,
       message: manifest.name ? `Name: ${manifest.name}` : 'Missing name', durationMs: 0,
@@ -134,19 +133,16 @@ export async function testBridge(bridge: BridgeAdapter): Promise<TestSuiteResult
   const start = Date.now();
   const results: TestResult[] = [];
 
-  // Test: language set
   results.push({
     name: 'has_language', passed: !!bridge.language,
     message: `Language: ${bridge.language}`, durationMs: 0,
   });
 
-  // Test: mode set
   results.push({
     name: 'has_mode', passed: !!bridge.mode,
     message: `Mode: ${bridge.mode}`, durationMs: 0,
   });
 
-  // Test: primitive execution
   try {
     const result = await bridge.executePrimitive('TEST', { test: true }, 0.9);
     results.push({
@@ -160,7 +156,6 @@ export async function testBridge(bridge: BridgeAdapter): Promise<TestSuiteResult
     });
   }
 
-  // Test: ping
   try {
     const reachable = await bridge.ping();
     results.push({
@@ -174,6 +169,75 @@ export async function testBridge(bridge: BridgeAdapter): Promise<TestSuiteResult
   const passed = results.filter(r => r.passed).length;
   return {
     suite: 'bridge-adapter',
+    total: results.length,
+    passed,
+    failed: results.length - passed,
+    results,
+    durationMs: Date.now() - start,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact Test Suite
+// ═══════════════════════════════════════════════════════════════
+
+export async function testFirstContact(domain: keyof typeof DOMAIN_PATTERNS): Promise<TestSuiteResult> {
+  const start = Date.now();
+  const results: TestResult[] = [];
+
+  const config: FirstContactConfig = {
+    package: `@cmpsbl/${domain}`,
+    domain,
+    autoDiscover: true,
+  };
+
+  // Test: initialization
+  try {
+    const session = await initFirstContact(config);
+    results.push({
+      name: 'first_contact_init', passed: true,
+      message: `Session: ${session.sessionId}`, durationMs: 0,
+    });
+    results.push({
+      name: 'session_has_package', passed: session.package === config.package,
+      message: `Package: ${session.package}`, durationMs: 0,
+    });
+    results.push({
+      name: 'discovery_active', passed: session.discoveryActive,
+      message: 'Discovery auto-started', durationMs: 0,
+    });
+  } catch (err) {
+    results.push({
+      name: 'first_contact_init', passed: false,
+      message: `Init failed: ${err}`, durationMs: 0,
+    });
+  }
+
+  // Test: discovery produces chains
+  try {
+    const discovery = await discoverMemory(
+      { input: 'test pattern detection' },
+      config,
+      DOMAIN_PATTERNS[domain],
+    );
+    results.push({
+      name: 'discovery_detected', passed: discovery.detected,
+      message: discovery.memory ? `Pattern: ${discovery.memory.pattern}` : 'No pattern', durationMs: 0,
+    });
+    results.push({
+      name: 'chain_in_stream', passed: getMemoryStream().length > 0,
+      message: `Stream: ${getMemoryStream().length} chains`, durationMs: 0,
+    });
+  } catch (err) {
+    results.push({
+      name: 'discovery_detected', passed: false,
+      message: `Discovery failed: ${err}`, durationMs: 0,
+    });
+  }
+
+  const passed = results.filter(r => r.passed).length;
+  return {
+    suite: `first-contact-${domain}`,
     total: results.length,
     passed,
     failed: results.length - passed,
@@ -198,4 +262,18 @@ export function formatTestResults(suite: TestSuiteResult): string {
   }
 
   return lines.join('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact — Test Harness Domain
+// ═══════════════════════════════════════════════════════════════
+
+export function createTestHarnessFirstContact(apiKey?: string): FirstContactConfig {
+  return {
+    package: '@cmpsbl/test-harness',
+    domain: 'test-harness',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
+  };
 }

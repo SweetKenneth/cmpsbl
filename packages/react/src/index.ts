@@ -1,5 +1,6 @@
 /**
  * @cmpsbl/react — React Hooks for the CMPSBL® Substrate
+ * Includes first-contact Memory Stream hooks.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -7,8 +8,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { broadcastIntent, registerResolver, type IntentResolution, type ResolverHandler } from '@cmpsbl/intent';
 import { subscribe, emit, getEventLog, createSignal, type MeshEventHandler, type MeshFilter } from '@cmpsbl/mesh';
-import { createRuntime, computeCJPI, type MiniRuntime } from '@cmpsbl/runtime';
-import type { MeshCommEvent, CJPIInput, CJPIScoreBreakdown, MeshIntent } from '@cmpsbl/types';
+import { createRuntime, computeCJPI, type MiniRuntime, initFirstContact, discoverMemory, captureMemory, applyMemory, exportMemory, getMemoryStream, getFirstContactSession } from '@cmpsbl/runtime';
+import type { MeshCommEvent, CJPIInput, CJPIScoreBreakdown, MeshIntent, FirstContactConfig, MemoryChain, DiscoveryInput, DiscoveryResult } from '@cmpsbl/types';
+import { DOMAIN_PATTERNS } from '@cmpsbl/types';
 
 // ═══════════════════════════════════════════════════════════════
 // useIntent
@@ -96,4 +98,78 @@ export function useRuntime(): MiniRuntime {
 
 export function useCJPI(input: CJPIInput): CJPIScoreBreakdown {
   return computeCJPI(input);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact Hooks
+// ═══════════════════════════════════════════════════════════════
+
+export interface UseFirstContactReturn {
+  initialized: boolean;
+  chains: MemoryChain[];
+  discover: (input: DiscoveryInput) => Promise<DiscoveryResult>;
+  capture: (chainId: string) => Promise<void>;
+  apply: (chainId: string) => Promise<void>;
+  exportChain: (chainId: string) => Promise<Record<string, unknown>>;
+  isDiscovering: boolean;
+}
+
+export function useFirstContact(apiKey?: string): UseFirstContactReturn {
+  const [initialized, setInitialized] = useState(false);
+  const [chains, setChains] = useState<MemoryChain[]>([]);
+  const [isDiscovering, setIsDiscovering] = useState(false);
+
+  const configRef = useRef<FirstContactConfig>({
+    package: '@cmpsbl/react',
+    domain: 'react',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
+    onDiscovery: (chain) => {
+      setChains(prev => [...prev, chain]);
+    },
+  });
+
+  useEffect(() => {
+    initFirstContact(configRef.current).then(() => {
+      setInitialized(true);
+    });
+  }, []);
+
+  const discover = useCallback(async (input: DiscoveryInput) => {
+    setIsDiscovering(true);
+    try {
+      const result = await discoverMemory(input, configRef.current, DOMAIN_PATTERNS.react);
+      setChains(getMemoryStream());
+      return result;
+    } finally {
+      setIsDiscovering(false);
+    }
+  }, []);
+
+  const capture = useCallback(async (chainId: string) => {
+    await captureMemory(chainId, configRef.current);
+    setChains(getMemoryStream());
+  }, []);
+
+  const applyChain = useCallback(async (chainId: string) => {
+    await applyMemory(chainId, configRef.current);
+    setChains(getMemoryStream());
+  }, []);
+
+  const exportChainFn = useCallback(async (chainId: string) => {
+    const result = await exportMemory(chainId, configRef.current);
+    setChains(getMemoryStream());
+    return result.data;
+  }, []);
+
+  return {
+    initialized,
+    chains,
+    discover,
+    capture,
+    apply: applyChain,
+    exportChain: exportChainFn,
+    isDiscovering,
+  };
 }

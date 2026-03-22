@@ -1,16 +1,12 @@
 /**
  * @cmpsbl/bridge — Bridge Adapter Framework
  * Wire any language runtime to the CMPSBL® substrate delegation protocol.
- *
- * Bridges follow the "One Runtime, Many Bridges" architecture:
- * - Network mode: delegate to canonical TypeScript runtime via API
- * - Hybrid mode: remote-first with local fallback
- * - Offline mode: deterministic local execution only
+ * Includes first-contact Memory Stream integration.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { RuntimeMode, BridgeType, ChainManifest, ChainResult, PrimitiveResult, ExecutionOptions } from '@cmpsbl/types';
+import type { RuntimeMode, BridgeType, ChainManifest, ChainResult, PrimitiveResult, ExecutionOptions, FirstContactConfig } from '@cmpsbl/types';
 
 export type { RuntimeMode, BridgeType };
 
@@ -19,13 +15,9 @@ export type { RuntimeMode, BridgeType };
 // ═══════════════════════════════════════════════════════════════
 
 export interface BridgeConfig {
-  /** Language identifier (e.g., 'python', 'go', 'rust') */
   language: string;
-  /** Canonical runtime endpoint URL (null = offline only) */
   endpoint?: string | null;
-  /** Preferred execution mode */
   mode?: RuntimeMode;
-  /** Timeout for remote calls in ms */
   timeoutMs?: number;
 }
 
@@ -88,7 +80,6 @@ export function createBridge(config: BridgeConfig): BridgeAdapter {
           if (currentMode === 'network') throw new Error('Network mode failed and no fallback');
         }
       }
-      // Offline / hybrid fallback
       const start = Date.now();
       let current = input;
       let completed = 0;
@@ -147,3 +138,17 @@ export const SUPPORTED_LANGUAGES = [
 ] as const;
 
 export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact — Bridge Domain
+// ═══════════════════════════════════════════════════════════════
+
+export function createBridgeFirstContact(apiKey?: string): FirstContactConfig {
+  return {
+    package: '@cmpsbl/bridge',
+    domain: 'bridge',
+    apiKey,
+    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    autoDiscover: true,
+  };
+}

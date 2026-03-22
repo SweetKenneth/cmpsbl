@@ -1,96 +1,74 @@
 /**
- * Example: Vanilla Developer Setup
+ * Example: Vanilla Developer Setup — First Contact
  *
- * Traditional integration — no AI agents, no vibe coding.
- * Install the SDK, configure, call. That's it.
+ * Initialize the CMPSBL SDK, connect to the Memory Stream,
+ * and start discovering memory chains from your interactions.
  *
  * Works in Node.js, Deno, Bun, or any TypeScript project.
  */
 
-import { SubstrateClient } from '../substrate-client';
+import { CMPSBL, Engine } from '@cmpsbl/sdk';
 
-// ── 1. Initialize ───────────────────────────────────────────
-const substrate = new SubstrateClient({
-  url: process.env.SUPABASE_URL!,
-  anonKey: process.env.SUPABASE_ANON_KEY!,
-  developerId: process.env.DEVELOPER_ID!,
-  appId: process.env.APP_ID!,
+// ── 1. First Contact ────────────────────────────────────────
+const cmpsbl = new CMPSBL({
+  apiKey: process.env.CMPSBL_API_KEY,
+  onDiscovery: (chain) => {
+    console.log('\n  Memory chain detected:');
+    console.log(`    Pattern:  ${chain.pattern}`);
+    console.log(`    Adoption: ${chain.adoption}`);
+    console.log(`    Status:   Now available in Memory Stream\n`);
+  },
 });
 
-// ── 2. Persistent Memory ────────────────────────────────────
-async function memoryExample() {
-  // Store knowledge
-  await substrate.brain.remember(
-    'Customer prefers weekly email digests',
-    'preference',
-    0.9
-  );
-
-  // Retrieve by semantic search
-  const results = await substrate.brain.query('customer preferences', 5);
-  console.log('Memories:', results.data);
-
-  // Trigger reflection (consolidates and prunes)
-  await substrate.brain.reflect();
-}
-
-// ── 3. AI Routing ───────────────────────────────────────────
-async function routingExample() {
-  // Auto-routes to fastest/cheapest available provider
-  const response = await substrate.nexus.route(
-    'Summarize this document in 3 bullet points'
-  );
-  console.log('AI Response:', response.data?.content);
-
-  // Check which providers are online
-  const providers = await substrate.nexus.providers();
-  console.log('Available providers:', providers.data);
-}
-
-// ── 4. Security / Bot Detection ─────────────────────────────
-async function securityExample(requestIp: string, headers: Record<string, string>) {
-  // Analyze an incoming request
-  const check = await substrate.defense.analyze({
-    fingerprint: headers,
-    ip: requestIp,
+// ── 2. Discovery ────────────────────────────────────────────
+async function discoveryExample() {
+  // Discovery starts automatically on first interaction
+  const discovery = await cmpsbl.discover({
+    input: 'track user behavior across sessions',
   });
 
-  if (!check.data?.allowed) {
-    console.warn('Request blocked:', check.data?.reason);
-    return false;
+  if (discovery.detected && discovery.memory) {
+    console.log('Chain ID:', discovery.memory.id);
+    console.log('Pattern:', discovery.memory.pattern);
+
+    // Capture to Memory Stream
+    const captured = await cmpsbl.capture(discovery.memory.id);
+    console.log(captured.message);
+
+    // Apply to system
+    const applied = await cmpsbl.apply(discovery.memory.id);
+    console.log(applied.message);
   }
-
-  // IP reputation lookup
-  const rep = await substrate.defense.reputation(requestIp);
-  console.log('IP Reputation:', rep.data);
-
-  return true;
 }
 
-// ── 5. Observability ────────────────────────────────────────
-async function healthExample() {
-  // Quick health check (great for /healthz endpoints)
-  const snapshot = await substrate.vision.healthSnapshot();
-  console.log('System health:', snapshot.data?.overall_health);
+// ── 3. Memory Stream ────────────────────────────────────────
+async function streamExample() {
+  console.log('\nMemory Stream (Live):');
+  for (const chain of cmpsbl.stream) {
+    console.log(`  [${chain.id.slice(0, 8)}] ${chain.pattern} — ${chain.status}`);
+  }
+}
 
-  // Full metrics
-  const metrics = await substrate.vision.metrics();
-  console.log('Metrics:', metrics.data);
+// ── 4. Engine API (optional) ────────────────────────────────
+async function engineExample() {
+  const engine = new Engine(process.env.CMPSBL_API_KEY!);
 
-  // Recent logs filtered by module
-  const logs = await substrate.vision.logs('brain', 25);
-  console.log('Brain logs:', logs.data);
+  // Typed engine call
+  const analysis = await engine.godmind.analyze('Security audit of this codebase');
+  console.log('Analysis:', analysis.result);
+
+  // Browse catalog
+  console.log('Available engines:', Object.keys(Engine.catalog));
 }
 
 // ── Main ────────────────────────────────────────────────────
 async function main() {
-  console.log('=== Vanilla Developer Setup ===\n');
+  console.log('=== CMPSBL® First Contact ===\n');
 
-  await memoryExample();
-  await routingExample();
-  await healthExample();
+  await discoveryExample();
+  await streamExample();
 }
 
 main().catch(console.error);
 
-export { memoryExample, routingExample, securityExample, healthExample };
+export { discoveryExample, streamExample, engineExample };

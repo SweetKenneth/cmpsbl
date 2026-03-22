@@ -24,6 +24,9 @@ export function CmpsblWordmark({ className }: { className?: string }) {
       className={cn("inline-flex items-baseline select-none", className)}
       aria-label="CMPSBL"
       role="img"
+      style={{
+        animation: "cmpsblPulseGlow 3s ease-in-out infinite",
+      }}
     >
       {LETTERS.map((l, i) => (
         <span
@@ -39,7 +42,6 @@ export function CmpsblWordmark({ className }: { className?: string }) {
             color: "transparent",
             animation: `cmpsblLetterFlow 5s ease-in-out infinite`,
             animationDelay: `${l.delay}s`,
-            filter: `drop-shadow(0 0 12px hsl(var(--primary) / 0.15))`,
           }}
         >
           {l.char}

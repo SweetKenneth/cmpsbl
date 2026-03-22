@@ -225,3 +225,23 @@ export interface NodeHealth {
   resolverCount: number;
   lastHeartbeat: string;
 }
+
+// ═══════════════════════════════════════════════════════════════
+// First Contact (re-exported from first-contact.ts)
+// ═══════════════════════════════════════════════════════════════
+
+export type {
+  MemoryChain,
+  MemoryStreamEntry,
+  FirstContactSession,
+  FirstContactConfig,
+  DiscoveryInput,
+  DiscoveryResult,
+  CaptureResult,
+  ApplyResult,
+  ExportResult,
+  PackageDomain,
+  DomainPattern,
+} from './first-contact';
+
+export { DOMAIN_PATTERNS } from './first-contact';
