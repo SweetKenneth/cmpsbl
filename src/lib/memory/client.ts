@@ -193,18 +193,29 @@ export class MemoryClient {
     }
   }
 
+  /** Salience type lookup sets — avoids repeated array creation */
+  private static readonly HIGH_SALIENCE_TYPES = new Set(['user_fact', 'preference', 'identity']);
+  private static readonly MED_SALIENCE_TYPES = new Set(['workload_outcome', 'task_result']);
+
   /** Estimate salience locally (fast, before DB call) */
   estimateLocalSalience(content: string, memoryType: string): number {
     let salience = 0.5;
-    const wordCount = content.split(/\s+/).length;
+    // Count words without allocating split array
+    let wordCount = 0;
+    let inWord = false;
+    for (let i = 0; i < content.length; i++) {
+      const isSpace = content.charCodeAt(i) <= 32;
+      if (!isSpace && !inWord) { wordCount++; inWord = true; }
+      else if (isSpace) { inWord = false; }
+    }
     
     if (wordCount < 3) salience -= 0.2;
     else if (wordCount >= 5 && wordCount <= 50) salience += 0.1;
     
-    if (['user_fact', 'preference', 'identity'].includes(memoryType)) salience += 0.3;
-    else if (['workload_outcome', 'task_result'].includes(memoryType)) salience += 0.15;
+    if (MemoryClient.HIGH_SALIENCE_TYPES.has(memoryType)) salience += 0.3;
+    else if (MemoryClient.MED_SALIENCE_TYPES.has(memoryType)) salience += 0.15;
     
-    return Math.min(1, Math.max(0, salience));
+    return salience > 1 ? 1 : salience < 0 ? 0 : salience;
   }
 
   /** Route to appropriate tier based on salience */
