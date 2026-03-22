@@ -516,7 +516,7 @@ export function SiteAnalyticsSection() {
                 <RankList
                   title="Connection Types"
                   icon={Globe}
-                  iconColor="text-teal-400"
+                  iconColor="text-neon-cyan"
                   items={data.connectionTypes.map(c => ({ label: c.type, value: c.count }))}
                 />
               )}
