@@ -11,6 +11,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 import { budgetGovernor } from './budget-governor';
+import { selectDeepDiveSource } from './deep-dive-urls';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
