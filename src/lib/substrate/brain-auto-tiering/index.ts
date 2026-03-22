@@ -29,7 +29,7 @@ const DEFAULT_CONFIG: AutoTieringConfig = {
   batchSize: 2000,
   intervalMs: 15 * 60 * 1000, // 15 minutes
   enforceOnCycle: true,
-  watermarkPercent: 80,
+  watermarkPercent: 75,        // Trigger soft enforcement earlier (was 80)
 };
 
 let config = { ...DEFAULT_CONFIG };
