@@ -131,16 +131,7 @@ export function IndustryShowcase() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             One Substrate,{" "}
-            <span 
-              className="inline-block"
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-purple)), hsl(var(--neon-magenta)))",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 4s ease-in-out infinite",
-              }}
-            >
+            <span className="text-[hsl(var(--neon-purple))]">
               Every Industry
             </span>
           </h2>
