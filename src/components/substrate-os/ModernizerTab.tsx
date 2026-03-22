@@ -600,35 +600,35 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-fuchsia-500/40 transition-colors">
+          <Card className="border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-magenta/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <TrendingUp className="w-5 h-5 mx-auto mb-2 text-fuchsia-400" />
+              <TrendingUp className="w-5 h-5 mx-auto mb-2 text-neon-magenta" />
               <p className={cn(
                 "text-2xl font-bold",
-                healthScore >= 90 ? "text-emerald-400" : healthScore >= 70 ? "text-amber-400" : "text-red-400"
+                healthScore >= 90 ? "text-neon-green" : healthScore >= 70 ? "text-neon-amber" : "text-destructive"
               )}>{healthScore}%</p>
               <p className="text-[10px] text-muted-foreground">System Health</p>
             </CardContent>
           </Card>
-          <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-cyan-500/40 transition-colors">
+          <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-cyan/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <Database className="w-5 h-5 mx-auto mb-2 text-cyan-400" />
+              <Database className="w-5 h-5 mx-auto mb-2 text-neon-cyan" />
               <p className="text-2xl font-bold text-foreground">{plans?.filter(p => p.status === 'proposed').length ?? 0}</p>
               <p className="text-[10px] text-muted-foreground">Pending</p>
             </CardContent>
           </Card>
-          <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-emerald-500/40 transition-colors">
+          <Card className="border border-neon-green/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-green/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <CheckCircle className="w-5 h-5 mx-auto mb-2 text-emerald-400" />
+              <CheckCircle className="w-5 h-5 mx-auto mb-2 text-neon-green" />
               <p className="text-2xl font-bold text-foreground">
                 {plans?.filter(p => p.status === 'applied').length ?? 0}
               </p>
               <p className="text-[10px] text-muted-foreground">Applied</p>
             </CardContent>
           </Card>
-          <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-amber-500/40 transition-colors">
+          <Card className="border border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-amber/40 transition-colors">
             <CardContent className="p-4 text-center">
-              <RotateCcw className="w-5 h-5 mx-auto mb-2 text-amber-400" />
+              <RotateCcw className="w-5 h-5 mx-auto mb-2 text-neon-amber" />
               <p className="text-2xl font-bold text-foreground">
                 {plans?.filter(p => p.status === 'rolled_back').length ?? 0}
               </p>
