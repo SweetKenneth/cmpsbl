@@ -277,7 +277,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
                             <AlertDialogAction
                               disabled={confirmValue !== 'RESTORE' || restoreMutation.isPending}
                               onClick={() => restoreMutation.mutate(backup.backup_id)}
-                              className="bg-cyan-600 hover:bg-cyan-700"
+                              className="bg-neon-cyan hover:bg-neon-cyan/80"
                             >
                               {restoreMutation.isPending ? (
                                 <>
