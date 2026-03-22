@@ -456,25 +456,25 @@ export function SiteAnalyticsSection() {
             <RankList
               title="Traffic Sources"
               icon={ExternalLink}
-              iconColor="text-orange-400"
+              iconColor="text-neon-amber"
               items={data.topReferrers.map(r => ({ label: r.domain, value: r.count })).filter(i => i.value > 0)}
             />
             <RankList
               title="Devices"
               icon={Monitor}
-              iconColor="text-purple-400"
+              iconColor="text-neon-purple"
               items={data.deviceBreakdown.map(d => ({ label: d.type, value: d.count }))}
             />
             <RankList
               title="Browsers"
               icon={Globe}
-              iconColor="text-blue-400"
+              iconColor="text-neon-blue"
               items={data.browserBreakdown.map(b => ({ label: b.name, value: b.count }))}
             />
             <RankList
               title="Operating Systems"
               icon={Monitor}
-              iconColor="text-green-400"
+              iconColor="text-neon-green"
               items={data.osBreakdown.map(o => ({ label: o.name, value: o.count }))}
             />
           </div>
@@ -484,19 +484,19 @@ export function SiteAnalyticsSection() {
             <RankList
               title="Timezones (Geography)"
               icon={MapPin}
-              iconColor="text-rose-400"
+              iconColor="text-neon-magenta"
               items={data.topTimezones.map(t => ({ label: t.tz.replace(/_/g, ' '), value: t.count }))}
             />
             <RankList
               title="Languages"
               icon={Globe}
-              iconColor="text-cyan-400"
+              iconColor="text-neon-cyan"
               items={data.topLanguages.map(l => ({ label: l.lang, value: l.count }))}
             />
             <RankList
               title="Screen Resolutions"
               icon={Monitor}
-              iconColor="text-indigo-400"
+              iconColor="text-primary"
               items={data.screenSizes.map(s => ({ label: s.size, value: s.count }))}
             />
           </div>
