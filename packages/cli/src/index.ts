@@ -126,9 +126,9 @@ const NODES = [
 // ═══════════════════════════════════════════════════════════════
 
 export async function run(args: string[]): Promise<void> {
-  // Parse global flags
-  if (args.includes('--json')) { JSON_MODE = true; args = args.filter(a => a !== '--json'); }
-  if (args.includes('--no-color')) { NO_COLOR = true; args = args.filter(a => a !== '--no-color'); }
+  // Reset and parse global flags (prevents REPL shell from leaking state)
+  JSON_MODE = args.includes('--json');
+  args = args.filter(a => a !== '--json' && a !== '--no-color');
 
   const command = args[0]?.toLowerCase();
 
