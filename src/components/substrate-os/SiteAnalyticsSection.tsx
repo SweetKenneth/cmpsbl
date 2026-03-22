@@ -332,44 +332,44 @@ export function SiteAnalyticsSection() {
             <MetricCard
               label="Unique Visitors" value={fmt(data.uniqueVisitors)}
               sub={`${data.newVisitors} new · ${data.returningVisitors} returning`}
-              icon={Users} iconColor="text-green-400"
-              border="border-green-500/30" bg="from-green-500/10 to-green-500/5"
-              iconBg="bg-green-500/20 border-green-500/40"
+              icon={Users} iconColor="text-neon-green"
+              border="border-neon-green/30" bg="from-neon-green/10 to-neon-green/5"
+              iconBg="bg-neon-green/20 border-neon-green/40"
             />
             <MetricCard
               label="Page Views" value={fmt(data.totalPageViews)}
               sub={`${data.totalSessions} sessions`}
-              icon={Eye} iconColor="text-blue-400"
-              border="border-blue-500/30" bg="from-blue-500/10 to-blue-500/5"
-              iconBg="bg-blue-500/20 border-blue-500/40"
+              icon={Eye} iconColor="text-neon-blue"
+              border="border-neon-blue/30" bg="from-neon-blue/10 to-neon-blue/5"
+              iconBg="bg-neon-blue/20 border-neon-blue/40"
             />
             <MetricCard
               label="Pages / Visitor" value={data.avgPagesPerSession.toFixed(1)}
               sub="avg depth"
-              icon={Layers} iconColor="text-purple-400"
-              border="border-purple-500/30" bg="from-purple-500/10 to-purple-500/5"
-              iconBg="bg-purple-500/20 border-purple-500/40"
+              icon={Layers} iconColor="text-neon-purple"
+              border="border-neon-purple/30" bg="from-neon-purple/10 to-neon-purple/5"
+              iconBg="bg-neon-purple/20 border-neon-purple/40"
             />
             <MetricCard
               label="Avg Duration" value={formatDuration(data.avgSessionDuration)}
               sub="per session"
-              icon={Timer} iconColor="text-cyan-400"
-              border="border-cyan-500/30" bg="from-cyan-500/10 to-cyan-500/5"
-              iconBg="bg-cyan-500/20 border-cyan-500/40"
+              icon={Timer} iconColor="text-neon-cyan"
+              border="border-neon-cyan/30" bg="from-neon-cyan/10 to-neon-cyan/5"
+              iconBg="bg-neon-cyan/20 border-neon-cyan/40"
             />
             <MetricCard
               label="Bounce Rate" value={`${data.bounceRate}%`}
               sub="single-page visits"
-              icon={ArrowDownRight} iconColor="text-amber-400"
-              border="border-amber-500/30" bg="from-amber-500/10 to-amber-500/5"
-              iconBg="bg-amber-500/20 border-amber-500/40"
+              icon={ArrowDownRight} iconColor="text-neon-amber"
+              border="border-neon-amber/30" bg="from-neon-amber/10 to-neon-amber/5"
+              iconBg="bg-neon-amber/20 border-neon-amber/40"
             />
             <MetricCard
               label="Fingerprints" value={fmt(data.uniqueFingerprints)}
               sub="unique device profiles"
-              icon={Fingerprint} iconColor="text-rose-400"
-              border="border-rose-500/30" bg="from-rose-500/10 to-rose-500/5"
-              iconBg="bg-rose-500/20 border-rose-500/40"
+              icon={Fingerprint} iconColor="text-neon-magenta"
+              border="border-neon-magenta/30" bg="from-neon-magenta/10 to-neon-magenta/5"
+              iconBg="bg-neon-magenta/20 border-neon-magenta/40"
             />
           </div>
 
