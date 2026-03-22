@@ -19,6 +19,7 @@ export interface UseDefenseReturn {
   
   // Actions
   analyze: ReturnType<typeof useMutation>;
+  report: ReturnType<typeof useMutation>;
   reputation: ReturnType<typeof useMutation>;
   ipIntel: ReturnType<typeof useMutation>;
   anomaly: ReturnType<typeof useMutation>;
