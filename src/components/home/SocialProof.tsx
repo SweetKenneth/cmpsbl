@@ -98,7 +98,7 @@ export function SocialProof() {
               
               <div className="flex gap-0.5 mb-3">
                 {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} className="w-3.5 h-3.5 fill-primary text-primary group-hover:drop-shadow-[0_0_4px_hsl(var(--primary)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
+                  <Star key={j} className="w-3.5 h-3.5 fill-[hsl(var(--neon-cyan))] text-[hsl(var(--neon-cyan))] group-hover:drop-shadow-[0_0_4px_hsl(var(--neon-cyan)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
                 ))}
               </div>
               <p className="text-sm text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
