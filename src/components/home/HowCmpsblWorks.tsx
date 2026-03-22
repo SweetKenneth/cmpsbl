@@ -78,7 +78,7 @@ export function HowCmpsblWorks() {
 
           {/* What the OS manages */}
           <div className="text-center mb-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               The platform coordinates intelligence across your application:
             </p>
           </div>

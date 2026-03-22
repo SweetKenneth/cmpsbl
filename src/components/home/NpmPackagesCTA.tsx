@@ -190,7 +190,7 @@ export function NpmPackagesCTA() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>
-          <Button asChild size="lg" variant="outline" className="font-semibold">
+          <Button asChild size="lg" variant="outline" className="font-semibold text-foreground border-border hover:text-primary">
             <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
               <ExternalLink className="w-4 h-4 mr-2" />
               View on NPM
