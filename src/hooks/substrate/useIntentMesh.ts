@@ -242,14 +242,14 @@ export function useIntentMesh(): UseIntentMeshReturn {
 
   // ── Pipelines ──
   const savePipeline = useMutation({
-    mutationFn: (params: { receiptId: string; name: string }) =>
-      savePipelineFromReceipt(params.receiptId, params.name),
+    mutationFn: (params: { receipt: MeshReceipt; name: string }) =>
+      savePipelineFromReceipt(params.receipt, params.name),
     onSuccess: invalidate,
   });
 
   const runPipeline = useMutation({
-    mutationFn: (params: { pipelineId: string; overrides?: Partial<MeshIntent> }) =>
-      runSavedPipeline(params.pipelineId, params.overrides),
+    mutationFn: (params: { pipeline: any }) =>
+      runSavedPipeline(params.pipeline),
     onSuccess: invalidate,
   });
 
@@ -266,7 +266,8 @@ export function useIntentMesh(): UseIntentMeshReturn {
   });
 
   const generateRecommendationsMut = useMutation({
-    mutationFn: () => generateRecommendations(),
+    mutationFn: (params: { gaps: any[] }) =>
+      Promise.resolve(generateRecommendations(params.gaps)),
     onSuccess: invalidate,
   });
 
@@ -320,18 +321,18 @@ export function useIntentMesh(): UseIntentMeshReturn {
 
   // ── Chains ──
   const discoverChainsMut = useMutation({
-    mutationFn: (params: { intent: MeshIntent }) =>
-      Promise.resolve(discoverChains(params.intent)),
+    mutationFn: (params: { seedInputKeys: string[]; options?: { maxDepth?: number; maxChains?: number } }) =>
+      Promise.resolve(discoverChains(params.seedInputKeys, params.options)),
   });
 
   const findOptimalChainMut = useMutation({
-    mutationFn: (params: { intent: MeshIntent }) =>
-      Promise.resolve(findOptimalChain(params.intent)),
+    mutationFn: (params: { intentType: string; inputKeys: string[] }) =>
+      Promise.resolve(findOptimalChain(params.intentType, params.inputKeys)),
   });
 
   const executeChainMut = useMutation({
-    mutationFn: (params: { chainId: string; intent: MeshIntent }) =>
-      executeChain(params.chainId, params.intent),
+    mutationFn: (params: { chain: any; initialInput: Record<string, unknown> }) =>
+      executeChain(params.chain, params.initialInput),
     onSuccess: invalidate,
   });
 
