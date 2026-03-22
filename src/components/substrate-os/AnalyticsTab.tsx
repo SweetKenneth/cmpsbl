@@ -613,13 +613,13 @@ export function AnalyticsTab() {
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: 'Brain Events', count: data.brainEvents, icon: Brain, color: 'text-purple-400' },
-                  { label: 'Brain Metrics', count: data.brainMetrics, icon: Cpu, color: 'text-blue-400' },
-                  { label: 'AI Usage Log', count: data.apiCalls, icon: Zap, color: 'text-green-400' },
-                  { label: 'Access Usage', count: data.accessOps, icon: Shield, color: 'text-amber-400' },
-                  { label: 'Audit Log', count: data.auditActions, icon: Activity, color: 'text-red-400' },
-                  { label: 'Mesh Comms', count: data.meshCommsTotal, icon: Radio, color: 'text-pink-400' },
-                  { label: 'Intent Receipts', count: data.intentTotal, icon: GitBranch, color: 'text-teal-400' },
+                  { label: 'Brain Events', count: data.brainEvents, icon: Brain, color: 'text-neon-purple' },
+                  { label: 'Brain Metrics', count: data.brainMetrics, icon: Cpu, color: 'text-neon-blue' },
+                  { label: 'AI Usage Log', count: data.apiCalls, icon: Zap, color: 'text-neon-green' },
+                  { label: 'Access Usage', count: data.accessOps, icon: Shield, color: 'text-neon-amber' },
+                  { label: 'Audit Log', count: data.auditActions, icon: Activity, color: 'text-destructive' },
+                  { label: 'Mesh Comms', count: data.meshCommsTotal, icon: Radio, color: 'text-neon-magenta' },
+                  { label: 'Intent Receipts', count: data.intentTotal, icon: GitBranch, color: 'text-neon-cyan' },
                 ].map(src => {
                   const SrcIcon = src.icon;
                   const total = data.totalOps + data.meshCommsTotal + data.intentTotal;
