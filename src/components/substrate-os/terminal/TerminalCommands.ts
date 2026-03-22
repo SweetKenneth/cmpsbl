@@ -412,7 +412,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help dream', description: 'Dream module commands', category: 'meta', icon: Moon, requiresOperator: false },
   { command: 'help system', description: 'System module commands', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'help evolution', description: 'EVOLUTION module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
-  { command: 'help cortex', description: 'Cortex (Agency) module commands', category: 'meta', icon: Wand2, requiresOperator: false },
+  { command: 'help cortex', description: 'Cortex orchestrator commands', category: 'meta', icon: Wand2, requiresOperator: false },
   { command: 'help core', description: 'Core kernel commands', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
