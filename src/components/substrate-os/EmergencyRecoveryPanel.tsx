@@ -306,10 +306,10 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
           </span>
           <div className="flex items-center gap-1">
             {healMutation.isSuccess && (
-              <CheckCircle className="w-3 h-3 text-emerald-400" />
+              <CheckCircle className="w-3 h-3 text-neon-green" />
             )}
             {healMutation.isError && (
-              <XCircle className="w-3 h-3 text-red-400" />
+              <XCircle className="w-3 h-3 text-destructive" />
             )}
           </div>
         </div>
