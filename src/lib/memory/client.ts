@@ -231,9 +231,9 @@ export class MemoryClient {
       (metadata?.source as string) || 'memory_sdk'
     );
 
-    // #8: Assign decay curve based on type
-    const decayCurve = ['episodic', 'interaction'].includes(memoryType) ? 'fast' :
-      ['procedural', 'preference'].includes(memoryType) ? 'slow' : 'standard';
+    // #8: Assign decay curve based on type — static Sets for O(1) lookup
+    const decayCurve = MemoryClient.FAST_DECAY_TYPES.has(memoryType) ? 'fast' :
+      MemoryClient.SLOW_DECAY_TYPES.has(memoryType) ? 'slow' : 'standard';
 
     const basePayload = {
       module: 'brain',
