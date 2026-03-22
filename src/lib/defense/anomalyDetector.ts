@@ -61,11 +61,18 @@
    behavioral_score: number;
  }>();
  
- /**
-  * Generate unique signal ID
-  */
+ // Monotonic counter for unique IDs — avoids crypto/random overhead
+ let signalCounter = 0;
  function generateSignalId(): string {
-   return `sig_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+   return `sig_${Date.now()}_${(signalCounter++).toString(36)}`;
+ }
+
+ /** Evict oldest signal if over capacity */
+ function boundSignals(): void {
+   if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
+     const oldest = activeSignals.keys().next().value;
+     if (oldest) activeSignals.delete(oldest);
+   }
  }
  
  /**
@@ -99,11 +106,7 @@
      };
  
      activeSignals.set(signal.id, signal);
-     // Evict oldest if over limit
-     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
-       const oldest = activeSignals.keys().next().value;
-       if (oldest) activeSignals.delete(oldest);
-     }
+     boundSignals();
      return signal;
    }
  
@@ -135,10 +138,7 @@
      };
  
      activeSignals.set(signal.id, signal);
-     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
-       const oldest = activeSignals.keys().next().value;
-       if (oldest) activeSignals.delete(oldest);
-     }
+     boundSignals();
      return signal;
    }
  
@@ -173,10 +173,7 @@
      };
  
      activeSignals.set(signal.id, signal);
-     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
-       const oldest = activeSignals.keys().next().value;
-       if (oldest) activeSignals.delete(oldest);
-     }
+     boundSignals();
      return signal;
    }
  

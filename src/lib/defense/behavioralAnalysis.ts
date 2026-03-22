@@ -63,6 +63,8 @@
  const anomalies: BehavioralAnomaly[] = [];
  const MAX_EVENTS_PER_ENTITY = 1000;
  const MAX_ANOMALIES = 500;
+ // Index: entityId → count of unresolved anomalies (avoids O(n) scans)
+ const unresolvedCounts = new Map<string, number>();
  
  /**
   * Record a behavior event
@@ -109,14 +111,14 @@
    // Calculate patterns from events
    const patterns = calculatePatterns(events);
    
-   const profile: BehaviorProfile = {
-     entityId,
-     entityType,
-     normalPatterns: patterns,
-     riskScore: calculateRiskScore(entityId),
-     lastUpdated: new Date().toISOString(),
-     eventCount: events.length,
-     anomalyCount: anomalies.filter(a => a.entityId === entityId && !a.resolved).length,
+    const profile: BehaviorProfile = {
+      entityId,
+      entityType,
+      normalPatterns: patterns,
+      riskScore: calculateRiskScore(entityId),
+      lastUpdated: new Date().toISOString(),
+      eventCount: events.length,
+      anomalyCount: unresolvedCounts.get(entityId) || 0,
    };
    
    behaviorProfiles.set(key, profile);
@@ -229,12 +231,18 @@
      resolved: false,
    };
    
-   anomalies.push(anomaly);
-   
-   // Limit history
-   if (anomalies.length > MAX_ANOMALIES) {
-     anomalies.shift();
-   }
+    anomalies.push(anomaly);
+    unresolvedCounts.set(entityId, (unresolvedCounts.get(entityId) || 0) + 1);
+    
+    // Limit history — decrement index for evicted entry
+    if (anomalies.length > MAX_ANOMALIES) {
+      const evicted = anomalies.shift()!;
+      if (!evicted.resolved) {
+        const c = unresolvedCounts.get(evicted.entityId) || 1;
+        if (c <= 1) unresolvedCounts.delete(evicted.entityId);
+        else unresolvedCounts.set(evicted.entityId, c - 1);
+      }
+    }
    
    // Log to database
    logAnomaly(anomaly);
@@ -272,23 +280,23 @@
  /**
   * Calculate entity risk score
   */
+ // Severity scores hoisted — avoid re-creating per call
+ const SEVERITY_SCORES: Record<BehavioralAnomaly['severity'], number> = {
+   low: 10, medium: 25, high: 50, critical: 100,
+ };
+
  function calculateRiskScore(entityId: string): number {
-   const entityAnomalies = anomalies.filter(a => 
-     a.entityId === entityId && !a.resolved
-   );
+   const count = unresolvedCounts.get(entityId) || 0;
+   if (count === 0) return 0;
    
-   if (entityAnomalies.length === 0) return 0;
-   
-   const severityScores: Record<BehavioralAnomaly['severity'], number> = {
-     low: 10,
-     medium: 25,
-     high: 50,
-     critical: 100,
-   };
-   
-   const totalScore = entityAnomalies.reduce((sum, a) => 
-     sum + severityScores[a.severity], 0
-   );
+   // Only scan anomalies matching this entity
+   let totalScore = 0;
+   for (let i = anomalies.length - 1; i >= 0 && totalScore < 100; i--) {
+     const a = anomalies[i];
+     if (a.entityId === entityId && !a.resolved) {
+       totalScore += SEVERITY_SCORES[a.severity];
+     }
+   }
    
    return Math.min(100, totalScore);
  }
@@ -343,8 +351,11 @@
   */
  export function resolveAnomaly(anomalyId: string): boolean {
    const anomaly = anomalies.find(a => a.id === anomalyId);
-   if (anomaly) {
+   if (anomaly && !anomaly.resolved) {
      anomaly.resolved = true;
+     const c = unresolvedCounts.get(anomaly.entityId) || 1;
+     if (c <= 1) unresolvedCounts.delete(anomaly.entityId);
+     else unresolvedCounts.set(anomaly.entityId, c - 1);
      return true;
    }
    return false;

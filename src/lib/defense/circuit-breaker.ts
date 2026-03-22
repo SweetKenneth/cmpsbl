@@ -312,30 +312,29 @@ class CircuitBreakerManager {
     return Array.from(this.circuits.values());
   }
 
-  getState(): CircuitBreakersState {
-    const circuits = Array.from(this.circuits.values());
-    const openCircuits = circuits.filter(c => c.state === 'open').map(c => c.module);
-    const totalHealth = circuits.reduce((sum, c) => sum + c.health, 0);
-    const globalHealth = circuits.length > 0 ? Math.round(totalHealth / circuits.length) : 100;
+  // Single-pass computation for all aggregate stats
+  private computeAggregates(): { openCircuits: string[]; globalHealth: number } {
+    let totalHealth = 0;
+    const openCircuits: string[] = [];
+    for (const c of this.circuits.values()) {
+      totalHealth += c.health;
+      if (c.state === 'open') openCircuits.push(c.module);
+    }
+    const globalHealth = this.circuits.size > 0 ? Math.round(totalHealth / this.circuits.size) : 100;
+    return { openCircuits, globalHealth };
+  }
 
-    return {
-      circuits: this.circuits,
-      globalHealth,
-      openCircuits,
-    };
+  getState(): CircuitBreakersState {
+    const { openCircuits, globalHealth } = this.computeAggregates();
+    return { circuits: this.circuits, globalHealth, openCircuits };
   }
 
   getOpenCircuits(): string[] {
-    return Array.from(this.circuits.values())
-      .filter(c => c.state === 'open')
-      .map(c => c.module);
+    return this.computeAggregates().openCircuits;
   }
 
   getGlobalHealth(): number {
-    const circuits = Array.from(this.circuits.values());
-    if (circuits.length === 0) return 100;
-    const totalHealth = circuits.reduce((sum, c) => sum + c.health, 0);
-    return Math.round(totalHealth / circuits.length);
+    return this.computeAggregates().globalHealth;
   }
 }
 
