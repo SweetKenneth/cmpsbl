@@ -65,7 +65,7 @@ const audiences = [
     badge: "For Enterprise",
     title: "Operations That Learn",
     tagline: "Governed evolution at scale",
-    description: "Deploy the substrate on your infrastructure with DREAM cycles for pattern discovery, governed ADAPT for compliance, and EVOLUTION for continuous improvement — all auditable.",
+    description: "Deploy on your infrastructure with background processing for pattern discovery, governed adaptation for compliance, and continuous improvement — all auditable.",
     features: [
       { icon: Shield, text: "Governed adaptation" },
       { icon: Brain, text: "Institutional memory" },

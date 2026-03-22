@@ -79,8 +79,8 @@ export function DifferentiationSection() {
             <span className="text-[hsl(var(--neon-purple))]">Dream · Adapt · Evolve</span>
           </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-             Most AI platforms process and forget. CMPSBL runs like an operating system for AI — your systems
-             dream during downtime, adapt under governance, and compound intelligence over every interaction.
+             Most AI platforms process and forget. CMPSBL runs continuously — your systems
+             process in the background, adapt under governance, and compound intelligence with every interaction.
            </p>
         </motion.div>
 
