@@ -169,19 +169,24 @@ class SpacedRepetitionClient {
     avgConfidence: number;
     avgInterval: number;
   } {
-    const due = this.getDueItems().length;
-    const avgConfidence = this.queue.length > 0
-      ? this.queue.reduce((sum, item) => sum + item.confidence, 0) / this.queue.length
-      : 0;
-    const avgInterval = this.queue.length > 0
-      ? this.queue.reduce((sum, item) => sum + item.interval, 0) / this.queue.length
-      : 0;
+    const len = this.queue.length;
+    if (len === 0) return { total: 0, due: 0, avgConfidence: 0, avgInterval: 0 };
+
+    const nowMs = Date.now();
+    let due = 0;
+    let sumConf = 0;
+    let sumInterval = 0;
+    for (const item of this.queue) {
+      if (new Date(item.nextReviewAt).getTime() <= nowMs) due++;
+      sumConf += item.confidence;
+      sumInterval += item.interval;
+    }
 
     return {
-      total: this.queue.length,
+      total: len,
       due,
-      avgConfidence,
-      avgInterval,
+      avgConfidence: sumConf / len,
+      avgInterval: sumInterval / len,
     };
   }
 

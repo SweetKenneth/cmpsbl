@@ -464,10 +464,18 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
   // MASTERY TRACKING
   // ═══════════════════════════════════════════════════════════════════════════
 
+  private _persistTimer: ReturnType<typeof setTimeout> | null = null;
+
   private updateMastery(topicId: string, increment: number): void {
     const current = this.state.masteryScores[topicId] || 0;
     this.state.masteryScores[topicId] = Math.min(1, current + increment);
-    this.persistState();
+    // Debounce persistence — mastery updates can batch
+    if (!this._persistTimer) {
+      this._persistTimer = setTimeout(() => {
+        this._persistTimer = null;
+        this.persistState();
+      }, 2000);
+    }
   }
 
   getMasteryScore(topicId: string): number {
