@@ -122,8 +122,38 @@ serve(async (req) => {
       throw new Error("Failed to create license");
     }
 
-    // TODO: Send email with license key (integrate with email service)
-    // For now, return the key directly (in production, email it)
+    // Deliver license key via email using the agency email queue
+    const recipientEmail = purchaser_email || session.customer_email;
+    if (recipientEmail) {
+      try {
+        await supabase.from('agency_email_queue').insert({
+          agency_id: '00000000-0000-0000-0000-000000000000',
+          email_type: 'license_delivery',
+          recipient_email: recipientEmail,
+          recipient_name: session.customer_details?.name || null,
+          subject: product_type === 'os'
+            ? 'Your CMPSBL Substrate OS License Key'
+            : `Your ${template_name || 'Template'} License Key`,
+          body_html: `
+            <div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
+              <h2 style="color:#0f172a;">Your License Key</h2>
+              <p>Thank you for your purchase! Here is your license key:</p>
+              <div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center;margin:16px 0;">
+                <code style="font-size:18px;font-weight:bold;letter-spacing:2px;color:#0f172a;">${plainKey}</code>
+              </div>
+              <p style="color:#64748b;font-size:14px;">Save this key securely — it cannot be recovered once this email is closed.</p>
+              <p style="color:#64748b;font-size:14px;">Product: ${product_type === 'os' ? 'Substrate OS' : (template_name || 'Template')}</p>
+            </div>
+          `,
+          body_text: `Your license key: ${plainKey}\n\nSave this key securely. Product: ${product_type === 'os' ? 'Substrate OS' : (template_name || 'Template')}`,
+          status: 'pending',
+          metadata: { license_id: license.id, product_type, stripe_session_id: session_id },
+        });
+        console.log(`License delivery email queued for ${recipientEmail}`);
+      } catch (emailErr) {
+        console.error("Failed to queue license email (non-fatal):", emailErr);
+      }
+    }
 
     return new Response(
       JSON.stringify({

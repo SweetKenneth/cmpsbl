@@ -80,8 +80,10 @@ export function SkillTreeProgress() {
         setLevel(Math.floor(xp / 500) + 1);
       }
     } catch {
-      setSkillTree({ skills: MOCK_SKILLS });
-      setTotalXp(45);
+      // Use default skill definitions with zero progress when API is unavailable
+      const defaultSkills = SKILL_DEFINITIONS.map(s => ({ ...s, is_unlocked: s.tier === 1 && s.prerequisites.length === 0, progress: null }));
+      setSkillTree({ skills: defaultSkills });
+      setTotalXp(0);
       setLevel(1);
     }
   };

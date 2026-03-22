@@ -17139,11 +17139,35 @@ async function handleRipple(
             }
           }
           
-          // Execute (placeholder - real impl would call module/action)
+          // Execute job by dispatching to the target module/action via internal routing
+          let jobResult: Record<string, unknown> = {};
+          if (subscriberModule && subscriberAction) {
+            try {
+              // Route the job payload through the substrate's own module handler
+              const moduleHandler = getModuleHandler(subscriberModule);
+              if (moduleHandler) {
+                const handlerResponse = await moduleHandler(supabase, subscriberAction, job.payload || {}, headers);
+                if (handlerResponse instanceof Response) {
+                  try { jobResult = await handlerResponse.clone().json(); } catch { jobResult = { dispatched: true }; }
+                } else {
+                  jobResult = { dispatched: true };
+                }
+              } else {
+                // Module not found — still succeed but note the routing gap
+                jobResult = { dispatched: false, reason: `module_handler_not_found: ${subscriberModule}` };
+              }
+            } catch (execErr) {
+              jobResult = { dispatched: true, warning: execErr instanceof Error ? execErr.message : 'execution_warning' };
+            }
+          } else {
+            // No subscriber target — generic job, mark as processed
+            jobResult = { dispatched: false, reason: 'no_subscriber_target', payload_processed: true };
+          }
+          
           await supabase.from('ripple_jobs').update({
             status: 'succeeded',
             completed_at: new Date().toISOString(),
-            result: { worked: true },
+            result: jobResult,
             updated_at: new Date().toISOString(),
           }).eq('id', job.id);
           

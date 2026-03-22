@@ -37,8 +37,8 @@ export class IntelligenceGovernanceKernel {
     let pass = true;
 
     for (const rule of applicableRules) {
-      // Simulated constraint check — real implementation would parse constraint expressions
-      const violated = Math.random() < 0.1; // Placeholder for actual constraint evaluation
+      // Parse constraint expression and evaluate against the operation context
+      const violated = this.evaluateConstraint(rule.constraint, operation, scope);
       if (violated) {
         const violation: GovernanceViolation = {
           id: crypto.randomUUID(),
