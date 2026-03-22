@@ -108,15 +108,15 @@ function FreeToolsSection() {
       {/* Central FREE badge */}
       <div className="flex justify-center mb-5">
         <motion.div
-          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex flex-col items-center justify-center shadow-xl shadow-emerald-500/30"
+          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-primary flex flex-col items-center justify-center shadow-xl shadow-primary/30"
           animate={{
             scale: [1, 1.02, 1],
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Gift className="w-7 h-7 sm:w-8 sm:h-8 text-white mb-0.5" />
-          <span className="text-white font-black text-base sm:text-lg tracking-tight">FREE</span>
-          <span className="text-emerald-100 text-[9px] sm:text-[10px] font-medium">Dev Tools</span>
+          <Gift className="w-7 h-7 sm:w-8 sm:h-8 text-primary-foreground mb-0.5" />
+          <span className="text-primary-foreground font-black text-base sm:text-lg tracking-tight">FREE</span>
+          <span className="text-primary-foreground/80 text-[9px] sm:text-[10px] font-medium">Dev Tools</span>
         </motion.div>
       </div>
       
