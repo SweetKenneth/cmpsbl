@@ -412,7 +412,7 @@ function chainKey(nodes: string[]): string {
 }
 
 // ═══════════════════════════════════════════════════════════════════════
-// CAPABILITY SURFACE EXTRACTION — The heart of Node 41
+// CAPABILITY SURFACE EXTRACTION — The heart of the Auxiliary Node
 // Scans user code to derive a REAL capability profile:
 //   - nodeName: e.g. "TRADE_ENGINE"
 //   - capabilities: 4 verbs (like every substrate node)
@@ -595,7 +595,7 @@ const NODE_CAPABILITY_LABELS: Record<string, string> = {
   DEFENSE: 'threat detection',
 };
 
-// ═══ MULTI-NODE COLLISION ENGINE (Node 41 = First-Class Participant) ═══
+// ═══ MULTI-NODE COLLISION ENGINE (Auxiliary Node = First-Class Participant) ═══
 
 interface CollisionResult {
   name: string;
@@ -633,7 +633,7 @@ function collideNodesMultiChain(
   // ═══ DERIVE NODE 41's CAPABILITY SURFACE ═══
   const surface = deriveCapabilitySurface(candidateName, candidateMeta);
   
-  // Register Node 41 into the local lookup tables for this collision
+  // Register the Auxiliary Node into the local lookup tables for this collision
   const node41Name = `Ψ₄₁ ${surface.nodeName}`;
   const candidateResolvers = Number(candidateMeta.resolver_count || 1);
   const candidateSize = Number(candidateMeta.size_kb || 0);
@@ -648,7 +648,7 @@ function collideNodesMultiChain(
   if (candidateResolvers > 30) traitBonus += 1;
   traitBonus = Math.min(traitBonus, 5);
 
-  // ─── 2-node chains (Node 41 + Target) ───
+  // ─── 2-node chains (Auxiliary Node + Target) ───
   // Now the Auxiliary Node's sector participates in synergy!
   const targetCaps = NODE_CAPABILITIES[targetNode] || ['generic'];
   const candidateSector = surface.sector;
@@ -693,7 +693,7 @@ function collideNodesMultiChain(
     }
   }
 
-  // ─── 3-6 node chains (Node 41 + Target + Partners) ───
+  // ─── 3-6 node chains (Auxiliary Node + Target + Partners) ───
   const crossSectorNodes = SUBSTRATE_NODES.filter(n => 
     n !== targetNode && (NODE_SECTOR[n] || 'unknown') !== targetSector
   );

@@ -11,7 +11,7 @@
  * - Graceful degradation on parse errors
  * - Dead-letter fallback logging
  *
- * POST-INGEST: Displays the derived Capability Surface (Node 41 identity)
+ * POST-INGEST: Displays the derived Capability Surface (Auxiliary Node identity)
  */
 
 import { useState, useCallback, useRef } from 'react';

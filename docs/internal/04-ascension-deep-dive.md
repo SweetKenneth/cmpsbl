@@ -63,7 +63,7 @@ The detected language is stored as `source_export_language` in the candidate's m
 
 ### 3.4 Capability Surface Derivation — deriveCapabilitySurface()
 
-This is the core IP of the ingest phase. The function scans all ingested source code to assign Node 41 a real capability profile.
+This is the core IP of the ingest phase. The function scans all ingested source code to assign the Auxiliary Node a real capability profile.
 
 **Domain signal detection** (substring matching on combined source):
 

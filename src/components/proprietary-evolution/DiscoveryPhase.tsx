@@ -1,9 +1,9 @@
 /**
  * ASCENSION Phase — Discovery Engine
- * Runs multi-node chain collisions between Node 41 (user's capability surface)
+ * Runs multi-node chain collisions between the Auxiliary Node (user's capability surface)
  * and the 40-node substrate matrix.
  * 
- * Node 41 is a first-class participant with its own capability verbs and sector.
+ * The Auxiliary Node is a first-class participant with its own capability verbs and sector.
  */
 
 import { useState, useEffect, useRef } from 'react';
