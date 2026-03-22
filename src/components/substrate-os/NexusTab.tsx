@@ -262,17 +262,6 @@ export function NexusTab() {
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-violet-500/5 to-transparent border-violet-500/20">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                  <Image className="w-3 h-3" />
-                  Images Left
-                </div>
-                <div className="text-2xl font-bold text-violet-400">
-                  {imageRemaining}/25
-                </div>
-              </CardContent>
-            </Card>
             
             <Card className="bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/20">
               <CardContent className="p-4">
