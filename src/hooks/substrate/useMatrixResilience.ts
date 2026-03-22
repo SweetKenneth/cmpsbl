@@ -74,6 +74,7 @@ import type { SubstrateModuleName } from '@/lib/core';
 
 export function useMatrixResilience() {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
 
   const invalidateResilience = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ['matrix', 'resilience'] });

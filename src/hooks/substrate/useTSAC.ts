@@ -29,6 +29,7 @@ export interface UseTSACReturn {
 }
 
 export function useTSAC(executorFilter?: string): UseTSACReturn {
+  const qc = useQueryClient();
   const pollingEnabled = debugMode.allowModulePolling();
 
   const statsQuery = useQuery({
