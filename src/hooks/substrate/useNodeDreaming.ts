@@ -4,6 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { debugMode } from '@/lib/debug-mode';
 import {
   fetchDreamConfigs,
   fetchDreamLogs,
@@ -13,6 +14,7 @@ import {
 } from '@/lib/substrate/node-dreaming';
 
 export function useNodeDreaming(nodeId?: string) {
+  const pollingEnabled = debugMode.allowModulePolling();
   const queryClient = useQueryClient();
 
   const configs = useQuery({
