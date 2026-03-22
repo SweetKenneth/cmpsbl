@@ -664,6 +664,11 @@ class TopicBankClient {
   // ═══════════════════════════════════════════════════════════════════════════
 
   private async getStudyHistory(): Promise<Map<string, number>> {
+    // Return cached if still fresh
+    if (this._studyHistoryCache && Date.now() < this._studyHistoryCache.expiresAt) {
+      return this._studyHistoryCache.data;
+    }
+
     const counts = new Map<string, number>();
     
     try {
@@ -683,6 +688,7 @@ class TopicBankClient {
       // Return empty counts
     }
 
+    this._studyHistoryCache = { data: counts, expiresAt: Date.now() + this.STUDY_HISTORY_TTL_MS };
     return counts;
   }
 

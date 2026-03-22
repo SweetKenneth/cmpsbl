@@ -86,45 +86,68 @@ export const DEEP_DIVE_SOURCES: DeepDiveSource[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SELECTION LOGIC
+// SELECTION LOGIC (with pre-built indexes)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Get sources for a specific module */
+/** Pre-built module→sources index for O(1) lookups */
+const _moduleSourceIndex = new Map<string, DeepDiveSource[]>();
+/** Pre-computed total weight for the full pool */
+let _totalWeight = 0;
+/** Pre-computed per-source weights */
+const _sourceWeights: number[] = [];
+/** Pre-computed covered modules */
+let _coveredModules: string[] | null = null;
+
+// Build indexes once at module load
+for (const s of DEEP_DIVE_SOURCES) {
+  const key = s.module.toLowerCase();
+  const arr = _moduleSourceIndex.get(key);
+  if (arr) arr.push(s);
+  else _moduleSourceIndex.set(key, [s]);
+  const w = 1 / s.priority;
+  _sourceWeights.push(w);
+  _totalWeight += w;
+}
+// Sort each module's sources by priority
+for (const arr of _moduleSourceIndex.values()) {
+  arr.sort((a, b) => a.priority - b.priority);
+}
+
+/** Get sources for a specific module (O(1) lookup) */
 export function getSourcesForModule(moduleId: string): DeepDiveSource[] {
-  return DEEP_DIVE_SOURCES
-    .filter(s => s.module.toLowerCase() === moduleId.toLowerCase())
-    .sort((a, b) => a.priority - b.priority);
+  return _moduleSourceIndex.get(moduleId.toLowerCase()) || [];
 }
 
 /** Select a random high-priority source for deep dive learning */
 export function selectDeepDiveSource(preferModule?: string): DeepDiveSource | null {
   let candidates = DEEP_DIVE_SOURCES;
+  let weights = _sourceWeights;
+  let total = _totalWeight;
 
   if (preferModule) {
     const moduleSources = getSourcesForModule(preferModule);
-    if (moduleSources.length > 0) candidates = moduleSources;
+    if (moduleSources.length > 0) {
+      candidates = moduleSources;
+      weights = moduleSources.map(s => 1 / s.priority);
+      total = 0;
+      for (const w of weights) total += w;
+    }
   }
 
-  // Weight by priority (lower priority number = higher weight)
-  const weighted = candidates.map(s => ({
-    source: s,
-    weight: 1 / s.priority,
-  }));
-
-  const totalWeight = weighted.reduce((sum, w) => sum + w.weight, 0);
-  let roll = Math.random() * totalWeight;
-
-  for (const { source, weight } of weighted) {
-    roll -= weight;
-    if (roll <= 0) return source;
+  let roll = Math.random() * total;
+  for (let i = 0; i < candidates.length; i++) {
+    roll -= weights[i];
+    if (roll <= 0) return candidates[i];
   }
 
   return candidates[0] || null;
 }
 
-/** Get all unique modules with sources */
+/** Get all unique modules with sources (cached) */
 export function getCoveredModules(): string[] {
-  return [...new Set(DEEP_DIVE_SOURCES.map(s => s.module))];
+  if (_coveredModules) return _coveredModules;
+  _coveredModules = Array.from(_moduleSourceIndex.keys());
+  return _coveredModules;
 }
 
 /** Get source count summary */

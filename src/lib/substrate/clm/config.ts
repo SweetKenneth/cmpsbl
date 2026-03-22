@@ -153,23 +153,27 @@ export function loadCLMConfigFromEnv(): CLMConfig {
 // HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
+/** Parsed quiet hours cache — avoids regex on every canExecute() call */
+let _parsedQuietHours: { input: string; start: number; end: number } | null = null;
+
 export function isInQuietHours(quietHours: string | null): boolean {
   if (!quietHours) return false;
 
-  const match = quietHours.match(/^(\d{2}):(\d{2})-(\d{2}):(\d{2})$/);
-  if (!match) return false;
+  // Parse and cache
+  if (!_parsedQuietHours || _parsedQuietHours.input !== quietHours) {
+    const match = quietHours.match(/^(\d{2}):(\d{2})-(\d{2}):(\d{2})$/);
+    if (!match) return false;
+    const [, sh, sm, eh, em] = match.map(Number);
+    _parsedQuietHours = { input: quietHours, start: sh * 60 + sm, end: eh * 60 + em };
+  }
 
-  const [, startHour, startMin, endHour, endMin] = match.map(Number);
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
-  const startMinutes = startHour * 60 + startMin;
-  const endMinutes = endHour * 60 + endMin;
+  const { start, end } = _parsedQuietHours;
 
-  if (startMinutes < endMinutes) {
-    return currentMinutes >= startMinutes && currentMinutes < endMinutes;
-  } else {
-    return currentMinutes >= startMinutes || currentMinutes < endMinutes;
-  }
+  return start < end
+    ? currentMinutes >= start && currentMinutes < end
+    : currentMinutes >= start || currentMinutes < end;
 }
 
 export function calculateJitteredDelay(baseMinutes: number, jitterMinutes: number): number {

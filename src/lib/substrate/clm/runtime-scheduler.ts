@@ -339,5 +339,6 @@ export function addEngineerTopic(label: string, nodeId: string): CLMTopic {
     mastered: false,
   };
   topics.set(id, topic);
+  _topicArrCache = null; // Invalidate cache
   return topic;
 }

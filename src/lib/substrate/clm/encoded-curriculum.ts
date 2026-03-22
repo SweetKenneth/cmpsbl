@@ -590,60 +590,79 @@ export const ENCODED_CODE_CURRICULUM: Omit<Topic, 'lastStudiedAt' | 'studyCount'
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// CURRICULUM UTILITIES
+// CURRICULUM UTILITIES — cached to avoid per-call object allocations
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Get all Encoded curriculum topics
- */
-export function getEncodedCurriculum(): Topic[] {
-  return ENCODED_CODE_CURRICULUM.map(t => ({
+/** Pre-built immutable Topic[] — created once, returned by reference */
+let _cachedCurriculum: Topic[] | null = null;
+
+/** Pre-built id→Topic lookup for O(1) access */
+let _topicIndex: Map<string, Topic> | null = null;
+
+function ensureCurriculumCache(): Topic[] {
+  if (_cachedCurriculum) return _cachedCurriculum;
+  _cachedCurriculum = ENCODED_CODE_CURRICULUM.map(t => ({
     ...t,
     lastStudiedAt: undefined,
     studyCount: 0,
     mastery: t.confidenceLevel,
   }));
+  _topicIndex = new Map(_cachedCurriculum.map(t => [t.id, t]));
+  return _cachedCurriculum;
 }
 
 /**
- * Get topic by ID from Encoded curriculum
+ * Get all Encoded curriculum topics (cached — returns same array reference)
+ */
+export function getEncodedCurriculum(): Topic[] {
+  return ensureCurriculumCache();
+}
+
+/**
+ * Get topic by ID from Encoded curriculum (O(1) via index)
  */
 export function getEncodedTopic(topicId: string): Topic | null {
-  const topic = ENCODED_CODE_CURRICULUM.find(t => t.id === topicId);
-  if (!topic) return null;
-  return {
-    ...topic,
-    lastStudiedAt: undefined,
-    studyCount: 0,
-    mastery: topic.confidenceLevel,
-  };
+  ensureCurriculumCache();
+  return _topicIndex!.get(topicId) ?? null;
 }
 
+/** Pre-computed stats — computed once */
+let _cachedStats: { totalTopics: number; byTier: Record<string, number>; avgWeight: number } | null = null;
+
 /**
- * Get curriculum statistics
+ * Get curriculum statistics (cached)
  */
 export function getEncodedCurriculumStats(): {
   totalTopics: number;
   byTier: Record<string, number>;
   avgWeight: number;
 } {
+  if (_cachedStats) return _cachedStats;
+
   const topics = ENCODED_CODE_CURRICULUM;
-  
-  const byTier = {
-    'Tier 1 (1-10)': topics.filter(t => t.priority <= 10).length,
-    'Tier 2 (11-20)': topics.filter(t => t.priority > 10 && t.priority <= 20).length,
-    'Tier 3 (21-30)': topics.filter(t => t.priority > 20 && t.priority <= 30).length,
-    'Tier 4 (31-40)': topics.filter(t => t.priority > 30 && t.priority <= 40).length,
-    'Tier 5 (41-50)': topics.filter(t => t.priority > 40).length,
-  };
-  
-  const avgWeight = topics.reduce((sum, t) => sum + t.weight, 0) / topics.length;
-  
-  return {
+  let t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0;
+  let weightSum = 0;
+  for (const t of topics) {
+    weightSum += t.weight;
+    if (t.priority <= 10) t1++;
+    else if (t.priority <= 20) t2++;
+    else if (t.priority <= 30) t3++;
+    else if (t.priority <= 40) t4++;
+    else t5++;
+  }
+
+  _cachedStats = {
     totalTopics: topics.length,
-    byTier,
-    avgWeight,
+    byTier: {
+      'Tier 1 (1-10)': t1,
+      'Tier 2 (11-20)': t2,
+      'Tier 3 (21-30)': t3,
+      'Tier 4 (31-40)': t4,
+      'Tier 5 (41-50)': t5,
+    },
+    avgWeight: weightSum / topics.length,
   };
+  return _cachedStats;
 }
 
-export const ENCODED_CURRICULUM_VERSION = '7.5.3';
+export const ENCODED_CURRICULUM_VERSION = '7.5.4';

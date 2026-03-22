@@ -185,7 +185,7 @@ class LearningOrchestratorClient {
       this.state.currentJob = null;
       this.state.lastJobAt = new Date().toISOString();
       this.state.totalJobsToday++;
-      this.persistState();
+      this.debouncedPersist();
     }
 
     // Record with budget governor
