@@ -626,16 +626,38 @@ export class MemoryClient {
   // FIX #3: userId passed explicitly, not read from nullable field
   // ═══════════════════════════════════════════════════════════════════
   private static readonly FINGERPRINT_CLEAN_RE = /[^a-z0-9\s]/g;
+  /** Stop-words to skip during keyword extraction */
+  private static readonly STOP_WORDS = new Set([
+    'this', 'that', 'with', 'from', 'have', 'been', 'were', 'they', 'will',
+    'would', 'could', 'should', 'about', 'their', 'which', 'there', 'these',
+    'those', 'other', 'into', 'some', 'than', 'then', 'them', 'your', 'what',
+  ]);
 
   private async updateFingerprint(content: string, userId?: string): Promise<void> {
     const uid = userId || this.userId;
     if (!uid) return;
     try {
-      // Single-pass keyword extraction
+      // Single-pass: extract keywords without intermediate .replace().split()
       const keywords: string[] = [];
-      const words = content.toLowerCase().replace(MemoryClient.FINGERPRINT_CLEAN_RE, ' ').split(/\s+/);
-      for (let i = 0; i < words.length && keywords.length < 10; i++) {
-        if (words[i].length > 3) keywords.push(words[i]);
+      const len = content.length;
+      let wordStart = -1;
+      
+      for (let i = 0; i <= len && keywords.length < 10; i++) {
+        const ch = i < len ? content.charCodeAt(i) : 32;
+        const isAlphaNum = (ch >= 97 && ch <= 122) || (ch >= 48 && ch <= 57); // a-z, 0-9
+        const isUpper = ch >= 65 && ch <= 90;
+        
+        if ((isAlphaNum || isUpper) && wordStart === -1) {
+          wordStart = i;
+        } else if (!isAlphaNum && !isUpper && wordStart !== -1) {
+          if (i - wordStart > 3) {
+            const word = content.slice(wordStart, i).toLowerCase();
+            if (!MemoryClient.STOP_WORDS.has(word)) {
+              keywords.push(word);
+            }
+          }
+          wordStart = -1;
+        }
       }
 
       await supabase.rpc('update_user_fingerprint', {
