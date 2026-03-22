@@ -601,15 +601,18 @@ export class MemoryClient {
   // #13 USER FINGERPRINTING
   // FIX #3: userId passed explicitly, not read from nullable field
   // ═══════════════════════════════════════════════════════════════════
+  private static readonly FINGERPRINT_CLEAN_RE = /[^a-z0-9\s]/g;
+
   private async updateFingerprint(content: string, userId?: string): Promise<void> {
     const uid = userId || this.userId;
     if (!uid) return;
     try {
-      const keywords = content.toLowerCase()
-        .replace(/[^a-z0-9\s]/g, ' ')
-        .split(/\s+/)
-        .filter(w => w.length > 3)
-        .slice(0, 10);
+      // Single-pass keyword extraction
+      const keywords: string[] = [];
+      const words = content.toLowerCase().replace(MemoryClient.FINGERPRINT_CLEAN_RE, ' ').split(/\s+/);
+      for (let i = 0; i < words.length && keywords.length < 10; i++) {
+        if (words[i].length > 3) keywords.push(words[i]);
+      }
 
       await supabase.rpc('update_user_fingerprint', {
         p_user_id: uid,
