@@ -147,15 +147,15 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ delay: 0.4 }}
           className="flex flex-wrap justify-center gap-6 sm:gap-10 mt-10 pt-8 border-t border-border/30"
         >
-          {[
-            { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
-            { value: '14', label: 'Core Nodes', accent: 'text-violet-500' },
-            { value: '0%', label: 'AI Drift', accent: 'text-emerald-500' },
-            { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-orange-500' },
-          ].map(({ value, label, accent }) => (
-            <div key={label} className="text-center group cursor-default">
-              <div className={`text-2xl sm:text-3xl font-black ${accent} transition-transform group-hover:scale-110`}>{value}</div>
-              <div className="text-xs text-muted-foreground">{label}</div>
+           {[
+             { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
+             { value: '14', label: 'Core Modules', accent: 'text-[hsl(var(--neon-purple))]' },
+             { value: '0%', label: 'AI Drift', accent: 'text-[hsl(var(--neon-cyan))]' },
+             { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-[hsl(var(--neon-magenta))]' },
+           ].map(({ value, label, accent }) => (
+             <div key={label} className="text-center group cursor-default">
+               <div className={`text-2xl sm:text-3xl font-black ${accent} transition-transform group-hover:scale-110`}>{value}</div>
+               <div className="text-xs text-muted-foreground">{label}</div>
             </div>
           ))}
         </motion.div>
