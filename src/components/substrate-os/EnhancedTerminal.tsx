@@ -798,27 +798,38 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
       >
         <div className="p-4 space-y-2">
           {/* Boot Animation */}
-          {bootLines.map((line, idx) => (
-            <div 
-              key={idx} 
-              className={cn(
-                "text-xs biohack-boot-line",
-                isBiohack ? (
-                  line.startsWith('▓') ? "biohack-boot-header" : 
-                  line.startsWith('◉') ? "biohack-boot-module" :
-                  line.startsWith('─') ? "biohack-boot-divider" :
-                  "text-[hsl(200_60%_50%)]"
-                ) : (
-                  line.startsWith('▓') ? cn("font-bold", currentTheme.accent) : 
-                  line.startsWith('◉') ? currentTheme.success :
-                  line.startsWith('─') ? "text-border" :
-                  "text-muted-foreground"
-                )
-              )}
-            >
-              {line}
-            </div>
-          ))}
+          {bootLines.map((line, idx) => {
+            const isHeader = line.includes('┏') || line.includes('┗') || line.includes('┃') || line.includes('╔') || line.includes('╚') || line.includes('║');
+            const isStatus = line.includes('ONLINE') || line.includes('READY') || line.includes('100%');
+            const isProgress = line.startsWith('  ▸');
+            const isNodeLine = line.includes('◉');
+            const isBorder = line.includes('┌') || line.includes('└') || line.includes('│') || line.includes('─');
+            
+            return (
+              <div 
+                key={idx} 
+                className={cn(
+                  "text-xs biohack-boot-line",
+                  isBiohack ? (
+                    isHeader ? "biohack-boot-header" : 
+                    isStatus ? "biohack-boot-status" :
+                    isProgress ? "biohack-boot-progress" :
+                    isNodeLine ? "biohack-boot-module" :
+                    isBorder ? "biohack-boot-divider" :
+                    "text-neon-blue/60"
+                  ) : (
+                    isHeader ? cn("font-bold", currentTheme.accent) : 
+                    isStatus ? currentTheme.success :
+                    isNodeLine ? currentTheme.success :
+                    isBorder ? "text-border" :
+                    "text-muted-foreground"
+                  )
+                )}
+              >
+                {line}
+              </div>
+            );
+          })}
 
           {/* Ready indicator after boot */}
           {bootComplete && history.length === 0 && (
