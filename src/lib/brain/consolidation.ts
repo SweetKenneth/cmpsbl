@@ -366,7 +366,7 @@ async function consolidateRelatedMemories(threshold: number): Promise<number> {
               consolidated_from: cluster.length,
               consolidated_at: new Date().toISOString(),
               importance,
-            }),
+            }) as unknown as import('@/integrations/supabase/types').Json,
           })
           .eq('id', primary.id);
         
