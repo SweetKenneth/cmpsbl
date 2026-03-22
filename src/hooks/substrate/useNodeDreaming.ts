@@ -4,6 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { debugMode } from '@/lib/debug-mode';
 import {
   fetchDreamConfigs,
   fetchDreamLogs,
@@ -13,24 +14,28 @@ import {
 } from '@/lib/substrate/node-dreaming';
 
 export function useNodeDreaming(nodeId?: string) {
+  const pollingEnabled = debugMode.allowModulePolling();
   const queryClient = useQueryClient();
 
   const configs = useQuery({
     queryKey: ['substrate', 'dreaming', 'configs'],
     queryFn: fetchDreamConfigs,
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const logs = useQuery({
     queryKey: ['substrate', 'dreaming', 'logs', nodeId],
     queryFn: () => fetchDreamLogs(nodeId, 20),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const analytics = useQuery({
     queryKey: ['substrate', 'dreaming', 'analytics'],
     queryFn: getDreamAnalyticsSummary,
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const triggerDream = useMutation({

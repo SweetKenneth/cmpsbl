@@ -4,6 +4,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { debugMode } from '@/lib/debug-mode';
 import {
   getTSACStats,
   getTSACHistory,
@@ -29,17 +30,20 @@ export interface UseTSACReturn {
 
 export function useTSAC(executorFilter?: string): UseTSACReturn {
   const qc = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
 
   const statsQuery = useQuery({
     queryKey: ['tsac', 'stats'],
     queryFn: getTSACStats,
     staleTime: 30_000,
+    enabled: pollingEnabled,
   });
 
   const historyQuery = useQuery({
     queryKey: ['tsac', 'history', executorFilter ?? 'all'],
     queryFn: () => getTSACHistory(executorFilter),
     staleTime: 15_000,
+    enabled: pollingEnabled,
   });
 
   const verify = useMutation({

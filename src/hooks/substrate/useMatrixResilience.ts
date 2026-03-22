@@ -7,6 +7,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { debugMode } from '@/lib/debug-mode';
 
 // Node Canary
 import {
@@ -74,6 +75,7 @@ import type { SubstrateModuleName } from '@/lib/core';
 
 export function useMatrixResilience() {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
 
   const invalidateResilience = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ['matrix', 'resilience'] });
@@ -166,49 +168,57 @@ export function useMatrixResilience() {
   const killStates = useQuery({
     queryKey: ['matrix', 'resilience', 'killStates'],
     queryFn: () => getAllKillStates(),
-    refetchInterval: 10_000,
+    refetchInterval: pollingEnabled ? 10_000 : false,
+    enabled: pollingEnabled,
   });
 
   const redundantPairs = useQuery({
     queryKey: ['matrix', 'resilience', 'redundantPairs'],
     queryFn: () => getAllPairs(),
-    refetchInterval: 15_000,
+    refetchInterval: pollingEnabled ? 15_000 : false,
+    enabled: pollingEnabled,
   });
 
   const chaosStats = useQuery({
     queryKey: ['matrix', 'resilience', 'chaosStats'],
     queryFn: () => getChaosStats(),
-    refetchInterval: 30_000,
+    refetchInterval: pollingEnabled ? 30_000 : false,
+    enabled: pollingEnabled,
   });
 
   const forecasts = useQuery({
     queryKey: ['matrix', 'resilience', 'forecasts'],
     queryFn: () => ({ active: getActiveForecasts(), summary: getForecastSummary() }),
-    refetchInterval: 30_000,
+    refetchInterval: pollingEnabled ? 30_000 : false,
+    enabled: pollingEnabled,
   });
 
   const quorumState = useQuery({
     queryKey: ['matrix', 'resilience', 'quorum'],
     queryFn: () => getQuorumSummary(),
-    refetchInterval: 15_000,
+    refetchInterval: pollingEnabled ? 15_000 : false,
+    enabled: pollingEnabled,
   });
 
   const incidents = useQuery({
     queryKey: ['matrix', 'resilience', 'incidents'],
     queryFn: () => ({ open: getOpenIncidents(), summary: getIncidentSummary() }),
-    refetchInterval: 15_000,
+    refetchInterval: pollingEnabled ? 15_000 : false,
+    enabled: pollingEnabled,
   });
 
   const correlationState = useQuery({
     queryKey: ['matrix', 'resilience', 'correlation'],
     queryFn: () => getCorrelationSummary(),
-    refetchInterval: 30_000,
+    refetchInterval: pollingEnabled ? 30_000 : false,
+    enabled: pollingEnabled,
   });
 
   const heatmapSummary = useQuery({
     queryKey: ['matrix', 'resilience', 'heatmap'],
     queryFn: () => getHeatmapSummary(),
-    refetchInterval: 60_000,
+    refetchInterval: pollingEnabled ? 60_000 : false,
+    enabled: pollingEnabled,
   });
 
   return {
