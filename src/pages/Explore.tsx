@@ -187,12 +187,12 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">Build Smarter AI</span>
               </div>
               
-              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 sm:mb-6 leading-[1.05] tracking-tight">
                 Build on the{" "}
                 <br className="hidden sm:block" />
-                <span className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">Substrate</span>
+                <span className="text-gray-800 drop-shadow-[0_0_30px_rgba(0,0,0,0.1)]">Substrate</span>
               </h2>
-              <p className="text-white/60 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
+              <p className="text-gray-700 text-sm sm:text-lg max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
                 Persistent memory, governed evolution, and self-improvement cycles — AI systems that adapt and get better over time. Start free with 3 capability slots.
               </p>
               
@@ -205,8 +205,8 @@ export default function Explore() {
                     { value: "99.9%", label: "Uptime SLA" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center group/cta-stat hover:scale-105 transition-transform duration-300">
-                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-white group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(255,255,255,0.35)] transition-all duration-300">{stat.value}</div>
-                     <div className="text-[9px] sm:text-xs font-semibold text-white/40 uppercase tracking-wider mt-0.5">{stat.label}</div>
+                     <div className="text-xl sm:text-3xl font-black font-mono tabular-nums text-gray-900 group-hover/cta-stat:drop-shadow-[0_0_12px_rgba(0,0,0,0.15)] transition-all duration-300">{stat.value}</div>
+                     <div className="text-[9px] sm:text-xs font-semibold text-gray-600 uppercase tracking-wider mt-0.5">{stat.label}</div>
                   </div>
                 ))}
               </div>
