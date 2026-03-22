@@ -400,16 +400,7 @@ export default function GamingSubstrate() {
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight">
               <span className="text-foreground">NPCs That </span>
-              <span
-                className="block sm:inline"
-                style={{
-                  background: "linear-gradient(135deg, hsl(280 80% 60%), hsl(320 80% 60%), hsl(var(--neon-cyan)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Remember, Dream, Evolve
-              </span>
+              <span className="text-primary">Remember, Dream, Evolve</span>
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed px-2">
