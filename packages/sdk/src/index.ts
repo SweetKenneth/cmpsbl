@@ -11,7 +11,6 @@ import type {
   EngineCallOptions, EngineResult, EngineStageResult,
   FirstContactConfig, DiscoveryInput, DiscoveryResult,
   CaptureResult, ApplyResult, ExportResult, MemoryChain,
-  DOMAIN_PATTERNS,
 } from '@cmpsbl/types';
 
 export type { EngineCallOptions, EngineResult, EngineStageResult };
