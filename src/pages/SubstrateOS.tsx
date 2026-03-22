@@ -457,8 +457,6 @@ export default function SubstrateOS() {
               </TierGate>
             )}
 
-            {activeTab === 'intent' && isGovernor && (
-
             {activeTab === 'webhooks' && (
               <TierGate requiredTier="creator" currentTier={role} tabLabel="Webhooks" description="Subscribe to real-time substrate events and receive signed payloads at your endpoints.">
                 <PanelContainer id="webhooks">
