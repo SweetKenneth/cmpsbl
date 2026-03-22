@@ -21,7 +21,7 @@ const stepColors = [
   { color: "text-[hsl(var(--neon-cyan))]", borderColor: "border-[hsl(var(--neon-cyan)/0.2)]", bg: "bg-[hsl(var(--neon-cyan)/0.05)]" },
   { color: "text-[hsl(var(--neon-purple))]", borderColor: "border-[hsl(var(--neon-purple)/0.2)]", bg: "bg-[hsl(var(--neon-purple)/0.05)]" },
   { color: "text-[hsl(var(--neon-magenta))]", borderColor: "border-[hsl(var(--neon-magenta)/0.2)]", bg: "bg-[hsl(var(--neon-magenta)/0.05)]" },
-  { color: "text-primary", borderColor: "border-primary/20", bg: "bg-primary/5" },
+  { color: "text-[hsl(var(--neon-cyan))]", borderColor: "border-[hsl(var(--neon-cyan)/0.2)]", bg: "bg-[hsl(var(--neon-cyan)/0.05)]" },
 ] as const;
 
 const tiers = [
