@@ -98,6 +98,7 @@ export function useEncode(): UseEncodeReturn {
     queryKey: ['substrate', 'encode', 'plans'],
     queryFn: () => listPlans(),
     staleTime: 10000,
+    enabled: pollingEnabled,
   });
 
   const encodeState = state.data;
