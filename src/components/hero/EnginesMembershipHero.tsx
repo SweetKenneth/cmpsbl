@@ -201,7 +201,7 @@ function EnginesShowcase() {
     <div className="relative w-full">
       {/* Section header */}
       <div className="text-center mb-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-violet-500/10 to-primary/10 border border-primary/30 mb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-2">
           <Crown className="w-3.5 h-3.5 text-primary" />
           <span className="text-xs font-bold text-foreground">Engine Subscriptions</span>
         </div>
