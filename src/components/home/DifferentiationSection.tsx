@@ -1,6 +1,6 @@
 /**
  * DifferentiationSection — Dream · Remember · Adapt · Self-Improve
- * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
+ * Uses solid neon colors; gradient only on the top accent bar
  */
 
 import { motion } from "framer-motion";
@@ -17,10 +17,10 @@ const pillars = [
     description: "Offline synthesis cycles consolidate memories, extract latent patterns, and generate novel insights — without consuming active compute. Your system learns even when no one is using it.",
     link: "/blog/clockless-modules-deep-dive",
     linkLabel: "How DREAM works",
-    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
     iconColor: "text-[hsl(var(--neon-purple))]",
     borderColor: "border-[hsl(var(--neon-purple)/0.2)]",
+    accentColor: "hsl(var(--neon-purple))",
   },
   {
     icon: Brain,
@@ -29,10 +29,10 @@ const pillars = [
     description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall. Context carries across sessions, deployments, and infrastructure changes. Nothing resets.",
     link: "/persistent-memory",
     linkLabel: "Explore memory tiers",
-    color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
     iconBg: "bg-[hsl(var(--neon-cyan)/0.1)]",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     borderColor: "border-[hsl(var(--neon-cyan)/0.2)]",
+    accentColor: "hsl(var(--neon-cyan))",
   },
   {
     icon: RefreshCw,
@@ -41,10 +41,10 @@ const pillars = [
     description: "The runtime adjusts routing, cost allocation, and operational parameters based on real-world performance — within strict governance boundaries. Adaptation is a system property, not an afterthought.",
     link: "/blog/clockless-what-makes-it-different",
     linkLabel: "Why governed adaptation matters",
-    color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-cyan))]",
     iconBg: "bg-[hsl(var(--neon-magenta)/0.1)]",
     iconColor: "text-[hsl(var(--neon-magenta))]",
     borderColor: "border-[hsl(var(--neon-magenta)/0.2)]",
+    accentColor: "hsl(var(--neon-magenta))",
   },
   {
     icon: TrendingUp,
@@ -53,10 +53,10 @@ const pillars = [
     description: "Every interaction feeds back into the system's understanding. Memories crystallize into reusable intelligence. Performance improves with usage — your infrastructure gets smarter the more you use it.",
     link: "/blog/clockless-account-setup-artifact-packs",
     linkLabel: "Start compounding",
-    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
     iconColor: "text-[hsl(var(--neon-purple))]",
     borderColor: "border-[hsl(var(--neon-purple)/0.2)]",
+    accentColor: "hsl(var(--neon-purple))",
   },
 ];
 
@@ -98,12 +98,12 @@ export function DifferentiationSection() {
             >
               <div className={cn(
                 "relative h-full rounded-2xl border bg-[hsl(var(--stream-slate))] backdrop-blur-sm p-6 sm:p-8",
-                "hover:shadow-xl hover:shadow-primary/[0.04] transition-all duration-500 shimmer-on-hover glass-edge card-lift gradient-border-reveal",
+                "hover:shadow-xl transition-all duration-500 shimmer-on-hover glass-edge card-lift",
                 pillar.borderColor,
                 "hover:border-opacity-80"
               )}>
-                <div className="absolute top-0 left-0 right-0 h-[2px] memory-stream-bar opacity-20 rounded-t-2xl" />
-                <div className={cn("absolute top-[2px] left-6 right-6 h-px bg-gradient-to-r opacity-30", pillar.color)} />
+                {/* Solid color top accent line */}
+                <div className="absolute top-0 left-6 right-6 h-[2px] rounded-t-2xl" style={{ background: pillar.accentColor, opacity: 0.3 }} />
 
                 <div className="flex items-center gap-3 mb-4">
                   <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center", pillar.iconBg)}>

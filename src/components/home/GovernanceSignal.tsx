@@ -1,6 +1,6 @@
 /**
  * GovernanceSignal — Subtle technical credibility section
- * Communicates namespaced commands, guardrails, failure discipline, diligence harness.
+ * Uses solid neon colors, no unnecessary gradients
  */
 
 import { motion } from "framer-motion";
@@ -14,24 +14,32 @@ const signals = [
     label: "Namespaced Commands",
     description: "Every operation lives in a governed namespace — brain.recall, dream.cycle, defense.scan. No ambiguity, full auditability.",
     code: "brain.recall({ depth: 3, tier: 'warm' })",
+    color: "text-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-cyan)/0.08)]",
   },
   {
     icon: Shield,
     label: "Guardrails",
     description: "Capability invocation passes through governance checks before execution. Budget, safety, and scope constraints enforced at the runtime level.",
     code: "defense.check({ scope: 'write', budget: 50 })",
+    color: "text-[hsl(var(--neon-purple))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.08)]",
   },
   {
     icon: AlertTriangle,
     label: "Failure Discipline",
     description: "Every capability declares failure modes upfront. Timeouts, fallbacks, and escalation paths are first-class constructs — not afterthoughts.",
     code: "nexus.route({ fallback: 'anthropic', timeout: 3000 })",
+    color: "text-[hsl(var(--neon-magenta))]",
+    iconBg: "bg-[hsl(var(--neon-magenta)/0.08)]",
   },
   {
     icon: Eye,
     label: "Diligence Harness",
     description: "Full observability across every invocation — including cost tracking, latency monitoring, and confidence scoring.",
     code: "vision.trace({ cost: true, latency: true })",
+    color: "text-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-cyan)/0.08)]",
   },
 ];
 
@@ -43,30 +51,23 @@ export function GovernanceSignal() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl border border-border/30 bg-gradient-to-br from-card/40 via-card/30 to-card/40 backdrop-blur-sm overflow-hidden shadow-lg shadow-primary/[0.03] shimmer-on-hover glass-edge"
+          className="rounded-2xl border border-border/30 bg-[hsl(var(--stream-slate))] backdrop-blur-sm overflow-hidden shadow-lg shadow-[hsl(var(--neon-cyan)/0.03)] shimmer-on-hover glass-edge"
         >
-          {/* Top bar — memory-stream accent */}
+          {/* Top bar — memory-stream accent (allowed gradient) */}
           <div className="h-[2px] memory-stream-bar opacity-30" />
-          <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
           <div className="p-6 sm:p-10">
             <div className="text-center mb-8">
               <div className="relative inline-block">
                 <span className="section-ordinal absolute -top-10 left-1/2 -translate-x-1/2 hidden sm:block" aria-hidden="true">05</span>
               </div>
-              <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
-                <Hammer className="w-3 h-3 text-primary" />
+              <Badge variant="outline" className="mb-4 gap-1.5 border-[hsl(var(--neon-cyan)/0.3)] px-4 py-1.5">
+                <Hammer className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
                 <span className="text-xs font-semibold">Governance Layer</span>
               </Badge>
               <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-foreground tracking-tight">
                 Every Operation Is{" "}
-                <span style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}>
-                  Governed
-                </span>
+                <span className="text-[hsl(var(--neon-cyan))]">Governed</span>
               </h3>
             </div>
 
@@ -78,11 +79,11 @@ export function GovernanceSignal() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.08 }}
-                  className="space-y-3 p-4 sm:p-5 rounded-xl border border-border/20 bg-card/30 hover:border-primary/20 hover:bg-primary/[0.03] transition-all duration-300 group/signal card-lift"
+                  className="space-y-3 p-4 sm:p-5 rounded-xl border border-border/20 bg-card/30 hover:border-[hsl(var(--neon-cyan)/0.2)] transition-all duration-300 group/signal card-lift"
                 >
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-primary/8 flex items-center justify-center group-hover/signal:bg-primary/15 transition-colors duration-300">
-                      <signal.icon className="w-4 h-4 text-primary/70 group-hover/signal:text-primary transition-colors duration-300" />
+                    <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center transition-colors duration-300", signal.iconBg)}>
+                      <signal.icon className={cn("w-4 h-4 transition-colors duration-300", signal.color)} />
                     </div>
                     <span className="text-sm font-bold text-foreground">{signal.label}</span>
                   </div>
@@ -90,9 +91,8 @@ export function GovernanceSignal() {
                     {signal.description}
                   </p>
                   <div className="relative rounded-lg overflow-hidden">
-                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
-                    <code className="block text-[11px] font-mono text-primary bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-3 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-primary/20 code-glow transition-all duration-300">
-                      <span className="text-primary/40 text-[9px] mr-1">›</span>{signal.code}
+                    <code className="block text-[11px] font-mono text-[hsl(var(--neon-cyan))] bg-[#0d1117] dark:bg-[#0d1117] rounded-lg px-3 py-3 border border-white/[0.06] shadow-inner shadow-black/20 hover:border-[hsl(var(--neon-cyan)/0.2)] code-glow transition-all duration-300">
+                      <span className="text-[hsl(var(--neon-cyan)/0.4)] text-[9px] mr-1">›</span>{signal.code}
                     </code>
                   </div>
                 </motion.div>

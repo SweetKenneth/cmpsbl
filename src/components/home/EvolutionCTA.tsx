@@ -1,6 +1,7 @@
 /**
  * EvolutionCTA — Cinematic CTA for the EVOLUTION system
  * Asymmetric layout with orbital animation and scan-line texture
+ * Uses solid neon colors; gradient reserved for hero CTA button only
  */
 
 import { Link } from "react-router-dom";
@@ -18,9 +19,9 @@ function OrbitalRing() {
     >
       <defs>
         <linearGradient id="evo-ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.7" />
-          <stop offset="50%" stopColor="hsl(var(--primary))" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0.5" />
+          <stop offset="0%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.7" />
+          <stop offset="50%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="hsl(var(--neon-cyan))" stopOpacity="0.5" />
         </linearGradient>
       </defs>
       <motion.circle
@@ -68,27 +69,28 @@ export function EvolutionCTA() {
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="max-w-6xl mx-auto"
       >
-        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-primary/[0.05] glass-edge">
-          {/* Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-background via-card to-background" />
+        <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-[hsl(var(--neon-cyan)/0.05)] glass-edge">
+          {/* Background — solid color tones */}
+          <div className="absolute inset-0 bg-[hsl(var(--stream-slate))]" />
           <div
             className="absolute inset-0 opacity-[0.02]"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(0deg, transparent, transparent 3px, hsl(var(--primary)) 3px, hsl(var(--primary)) 4px)",
+                "repeating-linear-gradient(0deg, transparent, transparent 3px, hsl(var(--neon-cyan)) 3px, hsl(var(--neon-cyan)) 4px)",
             }}
           />
 
           {/* Animated scan line — hidden on mobile for perf */}
           <motion.div
-            className="absolute top-0 w-px h-full bg-gradient-to-b from-transparent via-primary/30 to-transparent hidden sm:block"
+            className="absolute top-0 w-px h-full hidden sm:block"
+            style={{ background: 'hsl(var(--neon-cyan) / 0.2)' }}
             animate={{ left: ["0%", "100%"] }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
           />
 
-          {/* Glow accents */}
-          <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full bg-primary/8 blur-[120px]" />
-          <div className="absolute -bottom-32 -left-32 w-48 h-48 rounded-full bg-primary/5 blur-[100px]" />
+          {/* Glow accents — solid */}
+          <div className="absolute -top-32 -right-32 w-64 h-64 rounded-full blur-[120px]" style={{ background: 'hsl(var(--neon-cyan) / 0.06)' }} />
+          <div className="absolute -bottom-32 -left-32 w-48 h-48 rounded-full blur-[100px]" style={{ background: 'hsl(var(--neon-purple) / 0.04)' }} />
 
           {/* Content grid */}
           <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-0">
@@ -100,13 +102,13 @@ export function EvolutionCTA() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.15 }}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/8 border border-primary/15 w-fit mb-5"
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[hsl(var(--neon-cyan)/0.08)] border border-[hsl(var(--neon-cyan)/0.15)] w-fit mb-5"
               >
                 <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(var(--neon-cyan))] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[hsl(var(--neon-cyan))]" />
                 </span>
-                <span className="text-[10px] sm:text-xs font-bold text-primary uppercase tracking-[0.15em]">
+                <span className="text-[10px] sm:text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.15em]">
                   EVOLUTION — Live
                 </span>
               </motion.div>
@@ -114,7 +116,7 @@ export function EvolutionCTA() {
               <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.08] mb-5">
                 <span className="text-foreground">Your System</span>
                 <br />
-                <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">
+                <span className="text-[hsl(var(--neon-cyan))]">
                   Improves Itself
                 </span>
               </h2>
@@ -134,9 +136,9 @@ export function EvolutionCTA() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.25 + i * 0.07 }}
-                    className="flex flex-col items-center text-center p-3 rounded-xl bg-muted/30 border border-border/40 hover:border-primary/25 hover:bg-primary/[0.03] transition-all duration-300 shimmer-on-hover card-lift"
+                    className="flex flex-col items-center text-center p-3 rounded-xl bg-[hsl(var(--stream-slate))] border border-border/40 hover:border-[hsl(var(--neon-cyan)/0.25)] transition-all duration-300 shimmer-on-hover card-lift"
                   >
-                    <p.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary mb-1.5" />
+                    <p.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[hsl(var(--neon-cyan))] mb-1.5" />
                     <span className="text-[11px] sm:text-xs font-bold text-foreground">{p.label}</span>
                     <span className="text-[9px] sm:text-[10px] text-muted-foreground leading-tight mt-0.5">{p.desc}</span>
                   </motion.div>
@@ -145,14 +147,14 @@ export function EvolutionCTA() {
 
               {/* CTA buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild size="lg" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-bold shadow-lg shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                <Button asChild size="lg" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-bold shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 bg-[hsl(var(--neon-cyan))] text-white border-0 hover:bg-[hsl(var(--neon-cyan)/0.9)]">
                   <Link to="/evolution">
                     <Zap className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                     Open EVOLUTION
                     <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-2" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-semibold border-border/40 hover:border-primary/30 transition-colors">
+                <Button asChild size="lg" variant="outline" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-semibold border-border/40 hover:border-[hsl(var(--neon-cyan)/0.3)] transition-colors">
                   <Link to="/developers/guide">
                     Integrate via SDK
                   </Link>
@@ -170,9 +172,9 @@ export function EvolutionCTA() {
                 animate={{ scale: [1, 1.04, 1] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 blur-xl" />
-                <div className="relative w-16 h-16 xl:w-20 xl:h-20 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-2xl shadow-primary/25">
-                  <Zap className="w-8 h-8 xl:w-10 xl:h-10 text-primary-foreground" />
+                <div className="absolute inset-0 rounded-full blur-xl" style={{ background: 'hsl(var(--neon-cyan) / 0.1)' }} />
+                <div className="relative w-16 h-16 xl:w-20 xl:h-20 rounded-full flex items-center justify-center shadow-2xl" style={{ background: 'hsl(var(--neon-cyan))' }}>
+                  <Zap className="w-8 h-8 xl:w-10 xl:h-10 text-white" />
                 </div>
               </motion.div>
 
