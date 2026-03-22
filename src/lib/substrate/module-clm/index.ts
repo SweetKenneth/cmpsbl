@@ -623,15 +623,23 @@ class ModuleCLMClient {
    * Run learning for all modules
    */
   async runAllModuleLearning(): Promise<ModuleSelfAnalysis[]> {
+    const moduleIds = Object.keys(MODULE_CLM_CONFIGS) as ModuleName[];
     const results: ModuleSelfAnalysis[] = [];
     
-    for (const moduleId of Object.keys(MODULE_CLM_CONFIGS) as ModuleName[]) {
-      const analysis = await this.runModuleLearning(moduleId);
-      if (analysis) {
-        results.push(analysis);
+    // Run in batches of 5 to balance parallelism vs rate limiting
+    const BATCH_SIZE = 5;
+    for (let i = 0; i < moduleIds.length; i += BATCH_SIZE) {
+      const batch = moduleIds.slice(i, i + BATCH_SIZE);
+      const batchResults = await Promise.allSettled(
+        batch.map(moduleId => this.runModuleLearning(moduleId))
+      );
+      for (const r of batchResults) {
+        if (r.status === 'fulfilled' && r.value) results.push(r.value);
       }
-      // Small delay between modules to avoid rate limiting
-      await new Promise(resolve => setTimeout(resolve, 500));
+      // Brief pause between batches to avoid rate limiting
+      if (i + BATCH_SIZE < moduleIds.length) {
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
     }
 
     return results;
