@@ -57,7 +57,7 @@ const useCases = [
   {
     icon: Code,
     title: "IDE Assistants With Context",
-    description: "Code editors that remember your patterns, understand project architecture, and suggest refactors based on style.",
+    description: "Code editors that understand your architecture and evolve with your coding patterns.",
     industry: "Development",
     iconColor: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--primary)/0.15)]",
