@@ -25,3 +25,9 @@ export { detectContradiction, applyContradictionPenalty, type ContradictionResul
 
 // Receipts (DB-backed tier move audit trail)
 export { recordReceipt, recordReceipts, getReceipts, getReceiptsForMemory, getReceiptStats, clearReceipts } from './receipts';
+
+// Content deduplication & storage optimization
+export { isDuplicate, clearDedupCache, contentHash, semanticFingerprint, normalizeContent, compactMetadata, compressForStorage, classifyImportance, shouldPreserveIndefinitely, type ImportanceLevel } from './content-dedup';
+
+// Smart retention policy
+export { runRetentionPolicy, type RetentionStats, type RetentionConfig } from './retention-policy';
