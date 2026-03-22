@@ -124,10 +124,10 @@ export default function Scanner() {
             </Badge>
           </motion.div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 leading-[0.95]">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[0.95]">
             <span className="text-foreground">Your code has</span>
             <br />
-            <span className="bg-gradient-to-r from-red-400 via-primary to-emerald-400 bg-clip-text text-transparent">
+            <span className="text-[hsl(var(--neon-magenta))]">
               technical debt.
             </span>
             <br />

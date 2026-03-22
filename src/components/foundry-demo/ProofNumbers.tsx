@@ -48,7 +48,7 @@ function AnimatedStat({ label, value, suffix = '', prefix = '', delay = 0, highl
     <div ref={ref} className="text-center group">
       <div className={`font-black tracking-tighter font-mono transition-colors duration-300 ${
         highlight ? 'text-primary' : 'text-foreground group-hover:text-primary/80'
-      } ${size === 'lg' ? 'text-3xl sm:text-4xl md:text-6xl' : 'text-2xl sm:text-3xl md:text-5xl'}`}>
+      } ${size === 'lg' ? 'text-3xl sm:text-4xl md:text-5xl' : 'text-2xl sm:text-3xl md:text-4xl'}`}>
         {prefix}{count.toLocaleString()}{suffix}
       </div>
       <div className="text-xs sm:text-sm text-muted-foreground mt-1.5 sm:mt-2 uppercase tracking-[0.12em] font-medium">

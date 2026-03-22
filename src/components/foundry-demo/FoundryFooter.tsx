@@ -66,12 +66,12 @@ export function FoundryFooter() {
           <div className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] text-primary/60 mb-6 sm:mb-8">
             The question isn't whether it works
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter text-foreground mb-6 sm:mb-8 leading-[0.93]">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-foreground mb-6 sm:mb-8 leading-[0.93]">
             1,143&nbsp;memories.
             <br />
             95&nbsp;perfect&nbsp;scores.
             <br />
-            <span className="bg-gradient-to-r from-primary to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent">
+            <span className="text-primary">
               Under 9 hours.
             </span>
           </h2>

@@ -161,7 +161,7 @@ export default function Explore() {
                 <span className="text-sm font-semibold text-white/90">Ready to Build?</span>
               </div>
               
-              <h2 className="text-2xl sm:text-5xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 sm:mb-6 leading-[1.05] tracking-tight">
                 Start Building{" "}
                 <br className="hidden sm:block" />
                 <span className="text-white/80">Today — Free</span>

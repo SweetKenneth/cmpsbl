@@ -405,8 +405,8 @@ export default function About() {
             {...fadeUp}
             className="relative max-w-3xl mx-auto text-center"
           >
-            <div className="text-6xl sm:text-7xl font-black text-primary/10 leading-none select-none mb-4">"</div>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-foreground leading-tight tracking-tight -mt-10">
+            <div className="text-5xl sm:text-6xl font-black text-primary/10 leading-none select-none mb-4">"</div>
+            <p className="text-xl sm:text-2xl md:text-3xl font-black text-foreground leading-tight tracking-tight -mt-10">
               Infrastructure that{" "}
               <span className="text-primary">dreams</span>,{" "}
               <span className="text-primary">evolves</span>, and{" "}

@@ -393,12 +393,12 @@ export default function GamingSubstrate() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <Badge className="mb-6 px-4 py-1.5 bg-purple-500/10 text-purple-400 border-purple-500/30">
+            <Badge className="mb-6 px-4 py-1.5 bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] border-[hsl(var(--neon-purple)/0.3)]">
               <Gamepad2 className="w-4 h-4 mr-2" />
               For Video Game Developers
             </Badge>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 tracking-tight">
               <span className="text-foreground">NPCs That </span>
               <span className="text-primary">Remember, Dream, Evolve</span>
             </h1>
@@ -473,19 +473,13 @@ export default function GamingSubstrate() {
           >
             {/* World Engine Header */}
             <div className="text-center mb-10 sm:mb-16">
-              <Badge className="mb-4 px-4 py-1.5 bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-amber-400 border-amber-500/30">
+              <Badge className="mb-4 px-4 py-1.5 bg-[hsl(var(--neon-amber)/0.1)] text-[hsl(var(--neon-amber))] border-[hsl(var(--neon-amber)/0.3)]">
                 <Crown className="w-4 h-4 mr-2" />
                 Premium Product
               </Badge>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
                 The{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, hsl(45 90% 55%), hsl(280 80% 60%), hsl(320 80% 60%))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
+                <span className="text-[hsl(var(--neon-amber))]">
                   World Engine
                 </span>
               </h2>
@@ -505,16 +499,16 @@ export default function GamingSubstrate() {
               className="max-w-lg mx-auto mb-12 sm:mb-16"
             >
               <div className="relative rounded-3xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-violet-600 to-fuchsia-600" />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-magenta)))' }} />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15)_0%,transparent_50%)]" />
                 
                 <div className="relative p-6 sm:p-10 text-center text-white">
-                  <Crown className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-amber-300" />
+                  <Crown className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[hsl(var(--neon-amber))]" />
                   <h3 className="text-2xl sm:text-3xl font-black mb-2">World Engine</h3>
                   <p className="text-white/70 text-sm sm:text-base mb-6">Complete Gaming AI Infrastructure</p>
                   
                   <div className="mb-6">
-                    <span className="text-5xl sm:text-6xl font-black">$2,995</span>
+                    <span className="text-4xl sm:text-5xl font-black">$2,995</span>
                     <span className="text-white/60 text-sm sm:text-base ml-2">one-time</span>
                   </div>
 
