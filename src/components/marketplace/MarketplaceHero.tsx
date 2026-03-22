@@ -155,8 +155,8 @@ export function MarketplaceHero() {
                       whileHover={{ scale: 1.2 }}
                       className="group relative"
                     >
-                      <div className={`p-2.5 md:p-3 rounded-xl bg-card border border-border/50 shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/50`}>
-                        <Icon className={`w-4 h-4 md:w-5 md:h-5 ${mod.color}`} />
+                       <div className={`p-2.5 md:p-3 rounded-xl bg-card border border-border/50 shadow-lg cursor-pointer transition-all duration-300 hover:border-primary/50`}>
+                         <Icon className="w-4 h-4 md:w-5 md:h-5 text-primary" />
                       </div>
                       {/* Tooltip */}
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-popover border border-border rounded text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">

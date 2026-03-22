@@ -8,13 +8,13 @@ import { cn } from '@/lib/utils';
 
 // AI Provider logos (using text badges for legal compliance)
 const integrations = [
-  { name: 'OpenAI', color: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
-  { name: 'Anthropic', color: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
-  { name: 'Google AI', color: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
-  { name: 'Mistral', color: 'bg-violet-500/10 text-violet-500 border-violet-500/20' },
-  { name: 'Cohere', color: 'bg-pink-500/10 text-pink-500 border-pink-500/20' },
-  { name: 'LangChain', color: 'bg-teal-500/10 text-teal-500 border-teal-500/20' },
-  { name: 'LlamaIndex', color: 'bg-purple-500/10 text-purple-500 border-purple-500/20' },
+  { name: 'OpenAI', color: 'bg-[hsl(var(--neon-cyan))]/10 text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan))]/20' },
+  { name: 'Anthropic', color: 'bg-primary/10 text-primary border-primary/20' },
+  { name: 'Google AI', color: 'bg-[hsl(var(--neon-purple))]/10 text-[hsl(var(--neon-purple))] border-[hsl(var(--neon-purple))]/20' },
+  { name: 'Mistral', color: 'bg-[hsl(var(--neon-magenta))]/10 text-[hsl(var(--neon-magenta))] border-[hsl(var(--neon-magenta))]/20' },
+  { name: 'Cohere', color: 'bg-[hsl(var(--neon-cyan))]/10 text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan))]/20' },
+  { name: 'LangChain', color: 'bg-primary/10 text-primary border-primary/20' },
+  { name: 'LlamaIndex', color: 'bg-[hsl(var(--neon-purple))]/10 text-[hsl(var(--neon-purple))] border-[hsl(var(--neon-purple))]/20' },
   { name: 'Vercel AI', color: 'bg-foreground/10 text-foreground border-foreground/20' },
 ];
 
