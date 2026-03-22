@@ -282,11 +282,11 @@ export class LocalTierCache<T = unknown> {
 
   // ─── Internals ──────────────────────────────────────────
 
-  /** Promote a warm entry to hot */
-  private promote(key: string, entry: LocalCacheEntry<T>): void {
+  /** Promote a warm entry to hot — reuses caller's timestamp when available */
+  private promote(key: string, entry: LocalCacheEntry<T>, now?: number): void {
     this.warm.delete(key);
     this.ensureHotCapacity();
-    entry.lastAccess = Date.now();
+    entry.lastAccess = now ?? Date.now();
     entry.accessCount++;
     this.hot.set(key, entry);
     this.stats.promotions++;
