@@ -38,8 +38,8 @@ const codeExamples = [
     layer: "Kernel",
     title: "CORE Scheduling",
     description: "Kernel orchestration & task scheduling",
-    color: "text-orange-500",
-    gradient: "from-orange-500 to-amber-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Schedule a recurring task with CORE
 const task = await cmpsbl.core.schedule({
   name: "daily_memory_cleanup",
