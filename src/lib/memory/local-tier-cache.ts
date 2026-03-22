@@ -120,12 +120,11 @@ export class LocalTierCache<T = unknown> {
   async getMany(keys: string[]): Promise<Map<string, T>> {
     const result = new Map<string, T>();
     const centralMisses: string[] = [];
+    const now = Date.now(); // Hoist single timestamp for entire batch
 
     for (const key of keys) {
-      // Sync tiers first
       const hotEntry = this.hot.get(key);
       if (hotEntry) {
-        const now = Date.now();
         hotEntry.lastAccess = now;
         hotEntry.accessCount++;
         this.stats.hotHits++;
@@ -135,7 +134,7 @@ export class LocalTierCache<T = unknown> {
       const warmEntry = this.warm.get(key);
       if (warmEntry) {
         this.stats.warmHits++;
-        this.promote(key, warmEntry);
+        this.promote(key, warmEntry, now);
         result.set(key, warmEntry.value);
         continue;
       }
