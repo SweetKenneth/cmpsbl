@@ -77,24 +77,21 @@ export function usePersistentAgent(
     setError(null);
     
     try {
-      // Auto-store user input first (extracts facts automatically)
-      await client.store(input, { type: 'user_input' });
+      // Run store + recall in parallel — no dependency between them
+      const [, result] = await Promise.all([
+        client.store(input, { type: 'user_input' }),
+        client.recall(input),
+      ]);
       
-      // Then recall relevant memories
-      const result = await client.recall(input);
-      
-      const context: MemoryContext = {
+      return {
         memories: result.memories.map(m => m.content),
         confidence: result.confidence,
         contextString: client.buildContextString(result.memories)
       };
-      
-      return context;
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Memory operation failed');
       setError(error);
       console.warn(`[Memory] respond error: ${error.message}`);
-      // Return empty context on error - memory is enhancement, not requirement
       return { memories: [], confidence: 0, contextString: '' };
     } finally {
       setIsLoading(false);

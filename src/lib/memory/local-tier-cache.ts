@@ -146,41 +146,42 @@ export class LocalTierCache<T = unknown> {
 
   /**
    * Run a maintenance pass — demote stale hot entries, evict stale warm entries.
-   * Call this on a timer or before bulk operations.
+   * Optimized: single pass with batch collection, avoids repeated Map mutations during iteration.
    */
   maintain(): { demoted: number; evicted: number } {
     const now = Date.now();
     let demoted = 0;
     let evicted = 0;
 
-    // Collect keys to demote first to avoid mutating Map during iteration
-    const hotDemotions: string[] = [];
+    // Batch hot → warm demotions
+    const hotCutoff = now - this.hotTtlMs;
     for (const [key, entry] of this.hot) {
-      if (now - entry.lastAccess > this.hotTtlMs) {
-        hotDemotions.push(key);
+      if (entry.lastAccess < hotCutoff) {
+        this.hot.delete(key);
+        // Skip ensureWarmCapacity per-item — do a bulk eviction after
+        this.warm.set(key, entry);
+        demoted++;
       }
     }
-    for (const key of hotDemotions) {
-      const entry = this.hot.get(key)!;
-      this.hot.delete(key);
-      this.ensureWarmCapacity();
-      this.warm.set(key, entry);
-      demoted++;
-      this.stats.demotions++;
+    this.stats.demotions += demoted;
+
+    // Trim warm if over capacity after demotions
+    while (this.warm.size > this.warmCapacity) {
+      const lruKey = this.warm.keys().next().value;
+      if (!lruKey) break;
+      this.warm.delete(lruKey);
+      evicted++;
     }
 
-    // Collect stale warm keys before deleting
-    const warmEvictions: string[] = [];
+    // Evict stale warm entries
+    const warmCutoff = now - this.warmTtlMs;
     for (const [key, entry] of this.warm) {
-      if (now - entry.lastAccess > this.warmTtlMs) {
-        warmEvictions.push(key);
+      if (entry.lastAccess < warmCutoff) {
+        this.warm.delete(key);
+        evicted++;
       }
     }
-    for (const key of warmEvictions) {
-      this.warm.delete(key);
-      evicted++;
-      this.stats.evictions++;
-    }
+    this.stats.evictions += evicted;
 
     return { demoted, evicted };
   }

@@ -78,26 +78,21 @@ export function withPersistentMemory(config: MemoryConfig): PersistentMemoryAgen
   
   const respond = async (input: string): Promise<string> => {
     try {
-      // 1. Auto-store the user's input (extracts facts automatically via client)
-      await client.store(input, { type: 'user_input' });
+      // Run store + recall in parallel — store doesn't block recall
+      const [, context] = await Promise.all([
+        client.store(input, { type: 'user_input' }),
+        getContext(input),
+      ]);
       
-      // 2. Recall relevant memories
-      const context = await getContext(input);
-      
-      // 3. If custom handler provided, use it
       if (handler) {
         const response = await handler(input, context);
-        
-        // 4. Store the interaction outcome
-        await storeInteraction(input, response);
-        
+        // Fire-and-forget — don't block response on interaction logging
+        storeInteraction(input, response).catch(() => {});
         return response;
       }
       
-      // 3. Default: return context for manual integration
       return context.contextString || 'No relevant memories found.';
     } catch (error) {
-      // FIX #16: Log error details instead of crashing
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] respond failed: ${msg}`);
       return 'Memory unavailable — proceeding without context.';

@@ -722,20 +722,20 @@ export class MemoryClient {
     }
   }
 
-  /** Build context string from recalled memories */
+  /** Build context string from recalled memories — avoids re-sorting already-sorted input */
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
-    const contextLines = memories
-      .sort((a, b) => (b.relevance || 0) - (a.relevance || 0))
-      .slice(0, 5)
-      .map(m => {
-        const tierTag = m.tier ? `[${m.tier}]` : '';
-        const typeTag = m.memory_type ? `(${m.memory_type})` : '';
-        return `- ${tierTag}${typeTag} ${m.content}`;
-      });
-    
-    return `\n\n[Relevant context from memory — strategy: adaptive]\n${contextLines.join('\n')}`;
+    // Take top 5 — memories are already sorted by relevance from recall()
+    const top = memories.length <= 5 ? memories : memories.slice(0, 5);
+    let result = '\n\n[Relevant context from memory — strategy: adaptive]\n';
+    for (const m of top) {
+      result += '- ';
+      if (m.tier) result += `[${m.tier}]`;
+      if (m.memory_type) result += `(${m.memory_type})`;
+      result += ` ${m.content}\n`;
+    }
+    return result;
   }
 
   /** Track recall hit/miss for metacognition */

@@ -40,28 +40,30 @@ export const CREDIBILITY_WEIGHTS: Record<SourceCredibility, number> = {
   inferred: 0.40,
 };
 
+/** Pre-computed constants */
+const LN2_OVER_48 = 0.693 / 48;
+const INV_86400000 = 1 / 86_400_000;
+
 /** Compute recency score (0–1) based on time since last access */
 function recencyScore(lastAccessedAt: string, nowMs: number): number {
-  const ageMs = nowMs - new Date(lastAccessedAt).getTime();
-  const ageHours = ageMs / 3_600_000;
+  const ageHours = (nowMs - new Date(lastAccessedAt).getTime()) / 3_600_000;
   // Exponential decay: half-life of 48 hours
-  return Math.exp(-0.693 * ageHours / 48);
+  return Math.exp(-LN2_OVER_48 * ageHours);
 }
 
 /** Compute staleness penalty (0–1) based on time since creation with no access */
 function stalenessScore(createdAt: string, accessCount: number, nowMs: number): number {
   if (accessCount > 3) return 0; // well-used items aren't stale
-  const ageMs = nowMs - new Date(createdAt).getTime();
-  const ageDays = ageMs / 86_400_000;
-  return Math.min(ageDays / 30, 1); // linear penalty, capped at 1 after 30 days
+  const ageDays = (nowMs - new Date(createdAt).getTime()) * INV_86400000;
+  return ageDays > 30 ? 1 : ageDays / 30;
 }
 
 /** Compute full RPS for a memory entry */
 export function computeRPS(entry: MemoryEntry, weights: RpsWeights = DEFAULT_RPS_WEIGHTS): number {
   const now = Date.now();
   const recency = recencyScore(entry.last_accessed_at, now);
-  const frequency = Math.min(entry.access_count / 20, 1); // normalize to 20 accesses
-  const centrality = Math.min(entry.link_count / 10, 1);   // normalize to 10 links
+  const frequency = entry.access_count >= 20 ? 1 : entry.access_count / 20;
+  const centrality = entry.link_count >= 10 ? 1 : entry.link_count / 10;
   const relevance = entry.task_relevance;
   const staleness = stalenessScore(entry.created_at, entry.access_count, now);
 
@@ -78,5 +80,5 @@ export function computeRPS(entry: MemoryEntry, weights: RpsWeights = DEFAULT_RPS
   // Source credibility weighting
   rps *= CREDIBILITY_WEIGHTS[entry.source_credibility];
 
-  return Math.max(0, Math.min(1, rps));
+  return rps > 1 ? 1 : rps < 0 ? 0 : rps;
 }
