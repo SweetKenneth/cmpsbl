@@ -148,9 +148,10 @@ export default function Explore() {
         </div>
         <div className="max-w-5xl mx-auto relative animate-fade-in-up">
           <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-primary/15 group/cta">
-            {/* Layered gradient background */}
+            {/* Layered gradient background — richer color stops */}
             <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
             
             {/* Grid overlay */}
             <div 
