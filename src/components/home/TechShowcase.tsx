@@ -308,8 +308,8 @@ await cmpsbl.integration.execute({
     layer: "Admin",
     title: "INCLUSIVE A11y",
     description: "Human compatibility & accessibility engine",
-    color: "text-pink-500",
-    gradient: "from-pink-500 to-rose-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Scan a target for accessibility issues
 const result = await cmpsbl.inclusive.scan({
   target: "https://example.com",
