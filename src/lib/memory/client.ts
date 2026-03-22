@@ -186,10 +186,13 @@ export class MemoryClient {
       // Store full content — let salience gate decide tier
       const salience = Math.min(1, this.estimateLocalSalience(content, memoryType) + salienceBoost);
 
+      // Compact metadata before storage to save space
+      const compactMeta = metadata ? compactMetadata(metadata) : undefined;
+
       // Run ALL stores + fingerprint + bookkeeping in ONE parallel batch
       const allPromises: Promise<any>[] = [
         this.updateFingerprint(content, userId),
-        this.storeToTier(content, memoryType, salience, metadata),
+        this.storeToTier(content, memoryType, salience, compactMeta),
         this.incrementMetaStores(),
         this.trackHourlyActivity(),
       ];
