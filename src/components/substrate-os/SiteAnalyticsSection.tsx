@@ -383,8 +383,8 @@ export function SiteAnalyticsSection() {
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-foreground">Daily Traffic</h3>
               <div className="flex gap-3 text-[9px] font-mono">
-                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-green-400" /> Visitors</span>
-                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-400" /> Views</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon-green" /> Visitors</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-neon-blue" /> Views</span>
               </div>
             </div>
             <div className="flex items-end gap-1 h-32">
