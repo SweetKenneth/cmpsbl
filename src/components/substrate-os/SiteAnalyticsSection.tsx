@@ -225,7 +225,7 @@ function RankList({ title, icon: Icon, iconColor, items, valueLabel }: {
               </div>
               <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
                 <motion.div
-                  className={cn("h-full rounded-full bg-gradient-to-r from-cyan-500/70 to-blue-500/50")}
+                  className={cn("h-full rounded-full bg-gradient-to-r from-neon-cyan/70 to-neon-blue/50")}
                   initial={{ width: 0 }}
                   animate={{ width: `${pct}%` }}
                   transition={{ delay: idx * 0.03 }}
