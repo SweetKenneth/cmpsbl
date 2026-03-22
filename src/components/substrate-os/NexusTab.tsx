@@ -166,56 +166,6 @@ export function NexusTab() {
     toast.success('Nexus status refreshed');
   };
 
-  const handleGenerateImage = async () => {
-    if (!imagePrompt.trim() || isGenerating) return;
-
-    setIsGenerating(true);
-    setGeneratedImage(null);
-
-    try {
-      const { data, error } = await supabase.functions.invoke('pf-nexus-image-gen', {
-        body: {
-          prompt: imagePrompt.trim(),
-          style: imageStyle.trim() || undefined
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.success && data?.imageData) {
-        setGeneratedImage(`data:${data.mimeType || 'image/png'};base64,${data.imageData}`);
-        setImageRemaining(data.remainingToday || imageRemaining - 1);
-        toast.success('Image generated successfully!');
-      } else {
-        throw new Error(data?.error || 'Failed to generate image');
-      }
-    } catch (error: any) {
-      console.error('Image generation error:', error);
-      toast.error(error.message || 'Failed to generate image');
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const downloadImage = () => {
-    if (!generatedImage) return;
-    const link = document.createElement('a');
-    link.href = generatedImage;
-    link.download = `nexus-image-${Date.now()}.png`;
-    link.click();
-  };
-
-  const copyImageToClipboard = async () => {
-    if (!generatedImage) return;
-    try {
-      const response = await fetch(generatedImage);
-      const blob = await response.blob();
-      await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-      toast.success('Image copied to clipboard');
-    } catch {
-      toast.error('Failed to copy image');
-    }
-  };
 
   const getCircuitIcon = (state: string) => {
     switch (state) {
