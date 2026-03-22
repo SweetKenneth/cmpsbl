@@ -114,17 +114,18 @@ export function EvolutionCTA() {
               </motion.div>
 
               <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.08] mb-5">
-                <span className="text-foreground">Your System</span>
+                <span className="text-foreground">Start Building</span>
                 <br />
                 <span className="text-[hsl(var(--neon-cyan))]">
-                  Improves Itself
+                  — Free
                 </span>
               </h2>
 
-              <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-lg mb-8 leading-relaxed">
-                EVOLUTION is the substrate's governed self-improvement loop — powered by the Memory Stream.
-                It scans for drift, previews changes in dry-run, applies upgrades through policy gates,
-                and rolls back anything that breaks. Intelligence crystallizes automatically.
+              <p className="text-muted-foreground text-sm sm:text-base lg:text-lg max-w-lg mb-4 leading-relaxed">
+                Persistent memory, governed evolution, and self-improving systems — included.
+              </p>
+              <p className="text-muted-foreground text-sm sm:text-base max-w-lg mb-8 leading-relaxed">
+                Start with 3 capability slots. No credit card required.
               </p>
 
               {/* 4-pillar strip */}
