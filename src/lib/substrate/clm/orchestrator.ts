@@ -15,6 +15,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { budgetGovernor } from './budget-governor';
 import { topicBank, type TopicSelection, type Topic } from './topic-bank';
 import { spacedRepetition, type ReviewResult } from './spaced-repetition';
@@ -128,17 +129,17 @@ class LearningOrchestratorClient {
       // 4. Execute learning
       const learningResult = await this.executeLearningJob(job);
 
-      // 5. Run reflection
-      const reflectionGenerated = await this.runDeepReflection(job, learningResult);
-
-      // 6. Update memory graph
-      const { nodes, edges } = await this.updateMemoryGraph(job, learningResult);
+      // 5+6. Reflection and graph update are independent — run in parallel
+      const [reflectionGenerated, graphResult] = await Promise.all([
+        this.runDeepReflection(job, learningResult),
+        this.updateMemoryGraph(job, learningResult),
+      ]);
+      const { nodes, edges } = graphResult;
 
       // 7. Add to spaced repetition queue
       if (selection.source === 'core_curriculum' || selection.source === 'deep_dive') {
         spacedRepetition.addToQueue(selection.topic, learningResult.confidence || 0.7);
       } else if (selection.source === 'spaced_repetition') {
-        // Process SR review
         spacedRepetition.processReview(selection.topic.id, {
           recallQuality: learningResult.success ? 4 : 2,
           confidence: learningResult.confidence || 0.5,
@@ -149,7 +150,8 @@ class LearningOrchestratorClient {
       // 8. Check for dream/prune cycle
       this.state.jobsSinceLastDream++;
       if (this.state.jobsSinceLastDream >= JOBS_BEFORE_DREAM) {
-        await this.runPruneAndDream();
+        // Fire-and-forget — don't block the cycle result
+        this.runPruneAndDream().catch(() => {});
         this.state.jobsSinceLastDream = 0;
       }
 
@@ -385,58 +387,42 @@ Be concise, precise, and focused on practical utility. This learning will be sto
   }): Promise<{ nodes: number; edges: number }> {
     if (!learningResult.success) return { nodes: 0, edges: 0 };
 
-    let nodesCreated = 0;
-    let edgesCreated = 0;
-
     try {
-      // Create topic node in graph
-      const { data: nodeData, error: nodeError } = await supabase
-        .from('brain_graph_edges')
-        .insert({
+      // Batch all edge inserts into a single DB call
+      const edges = [
+        // Topic → learning edge
+        {
           source_id: job.id,
           target_id: job.topic.id,
           relation: 'learning',
           weight: learningResult.confidence,
-        });
+        },
+        // Module reference edges
+        ...job.topic.moduleRefs.map(ref => ({
+          source_id: job.topic.id,
+          target_id: ref.toLowerCase(),
+          relation: 'concept_module',
+          weight: 0.7,
+        })),
+        // Domain anchor edges
+        ...job.topic.domainAnchors.map(anchor => ({
+          source_id: job.topic.id,
+          target_id: anchor,
+          relation: 'topic_concept',
+          weight: 0.6,
+        })),
+      ];
 
-      if (!nodeError) {
-        nodesCreated++;
+      const { error } = await supabase
+        .from('brain_graph_edges')
+        .insert(edges);
 
-        // Create edges to module references
-        for (const moduleRef of job.topic.moduleRefs) {
-          try {
-            await supabase.from('brain_graph_edges').insert({
-              source_id: job.topic.id,
-              target_id: moduleRef.toLowerCase(),
-              relation: 'concept_module',
-              weight: 0.7,
-            });
-            edgesCreated++;
-          } catch {
-            // Non-critical
-          }
-        }
-
-        // Create edges to domain anchors
-        for (const anchor of job.topic.domainAnchors) {
-          try {
-            await supabase.from('brain_graph_edges').insert({
-              source_id: job.topic.id,
-              target_id: anchor,
-              relation: 'topic_concept',
-              weight: 0.6,
-            });
-            edgesCreated++;
-          } catch {
-            // Non-critical
-          }
-        }
-      }
+      if (error) throw error;
+      return { nodes: 1, edges: edges.length - 1 };
     } catch (error) {
       console.error('[CLM] Graph update failed:', error);
+      return { nodes: 0, edges: 0 };
     }
-
-    return { nodes: nodesCreated, edges: edgesCreated };
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -496,8 +482,7 @@ Be concise, precise, and focused on practical utility. This learning will be sto
 
   private loadState(): void {
     try {
-      const { secureGet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
-      const parsed = secureGet('clm_orchestrator_state') as typeof this.state | null;
+      const parsed = secureGet<typeof this.state>('clm_orchestrator_state');
       if (parsed) {
         const today = new Date().toISOString().split('T')[0];
         const lastJobDay = parsed.lastJobAt?.split('T')[0];
@@ -512,7 +497,6 @@ Be concise, precise, and focused on practical utility. This learning will be sto
 
   private persistState(): void {
     try {
-      const { secureSet } = require('@/lib/system/secureStorage') as typeof import('@/lib/system/secureStorage');
       secureSet('clm_orchestrator_state', this.state);
     } catch {
       /* Quota exceeded — non-critical */
