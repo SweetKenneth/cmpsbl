@@ -479,10 +479,12 @@ export class MemoryClient {
       processTier(hotResult, 'hot');
       processTier(warmResult, 'warm');
 
-      // Sort chronologically, trim to limit
-      return entries
-        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-        .slice(0, limit);
+      // Sort chronologically using cached getTime() — avoids Date construction per comparison
+      for (const e of entries) {
+        (e as any)._ts = new Date(e.timestamp).getTime();
+      }
+      entries.sort((a, b) => (a as any)._ts - (b as any)._ts);
+      return entries.slice(0, limit);
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Replay failed: ${msg}`);
