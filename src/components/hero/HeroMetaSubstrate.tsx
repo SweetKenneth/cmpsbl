@@ -223,9 +223,11 @@ export function HeroMetaSubstrate() {
             </FadeIn>
             
             {/* CMPSBL wordmark */}
-            <CmpsblWordmark 
-              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] mb-4 sm:mb-5"
-            />
+            <h1 className="tracking-[-0.06em] leading-[0.85]">
+              <CmpsblWordmark 
+                className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] mb-4 sm:mb-5"
+              />
+            </h1>
 
             {/* Tagline */}
             <FadeIn delay={0.2} className="mb-6 sm:mb-8">
