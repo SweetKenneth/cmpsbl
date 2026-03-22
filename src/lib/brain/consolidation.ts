@@ -1,13 +1,15 @@
 /**
- * BRAIN Memory Consolidation Engine
+ * BRAIN Memory Consolidation Engine v2
  * Pattern Extraction & Deduplication
  * 
- * OPTIMIZED: Uses shared tokenize/jaccardSimilarity, reduced allocations
+ * OPTIMIZED: Uses shared tokenize/jaccardSimilarity, content-dedup for
+ * importance-aware consolidation and reduced allocations.
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Memory } from './memoryTiering';
 import { tokenizeToSet, jaccardSimilarity } from './shared';
+import { classifyImportance, shouldPreserveIndefinitely, compressForStorage, compactMetadata } from '@/lib/memory/content-dedup';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -336,10 +338,36 @@ async function consolidateRelatedMemories(threshold: number): Promise<number> {
         const primary = sortedByValue[0];
         const secondaryIds = sortedByValue.slice(1).map(m => m.id);
         
-        const consolidatedContent = `[Consolidated from ${cluster.length} memories]\n\n${primary.content}\n\n---\nRelated: ${sortedByValue.slice(1, 3).map(m => m.content.substring(0, 50)).join(' | ')}`;
+        // Check if primary is important — if so, just delete duplicates
+        const importance = classifyImportance(
+          primary.content,
+          primary.context || 'general',
+          primary.value_score ?? 0.5,
+          0
+        );
+
+        if (shouldPreserveIndefinitely(importance)) {
+          // Important: keep primary intact, just remove duplicates
+          await supabase.from('brain_memory_warm').delete().in('id', secondaryIds);
+          consolidated += secondaryIds.length;
+          continue;
+        }
+
+        // Compress the consolidation — stop-word removal on merged content
+        const relatedSnippets = sortedByValue.slice(1, 3).map(m => m.content.substring(0, 40)).join(' | ');
+        const rawConsolidated = `${primary.content}\n---\nRelated: ${relatedSnippets}`;
+        const { compressed } = compressForStorage(rawConsolidated, primary.context === 'code');
         
         const { error: updateError } = await supabase.from('brain_memory_warm')
-          .update({ content: consolidatedContent, value_score: Math.min(1, (primary.value_score ?? 0.5) + 0.1) })
+          .update({ 
+            content: compressed, 
+            value_score: Math.min(1, (primary.value_score ?? 0.5) + 0.1),
+            metadata: compactMetadata({
+              consolidated_from: cluster.length,
+              consolidated_at: new Date().toISOString(),
+              importance,
+            }) as unknown as import('@/integrations/supabase/types').Json,
+          })
           .eq('id', primary.id);
         
         if (!updateError) {
