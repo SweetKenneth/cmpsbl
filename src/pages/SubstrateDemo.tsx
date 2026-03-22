@@ -238,7 +238,7 @@ export default function SubstrateDemo() {
                   <div className="flex items-center gap-3">
                     <div className={cn(
                       "w-3 h-3 rounded-full transition-colors",
-                      isRunning ? "bg-emerald-500 animate-pulse" : "bg-primary/50"
+                      isRunning ? "bg-neon-green animate-pulse" : "bg-primary/50"
                     )} />
                     <span className="text-sm font-medium">
                       {isRunning ? `Running: ${DEMO_SCENARIOS[currentScenario].name}` : 'Ready'}
