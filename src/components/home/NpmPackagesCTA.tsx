@@ -145,7 +145,7 @@ export function NpmPackagesCTA() {
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
             >
-              <h.icon className="w-5 h-5 text-primary" />
+              <h.icon className={cn("w-5 h-5", i % 3 === 0 ? "text-[hsl(var(--neon-cyan))]" : i % 3 === 1 ? "text-[hsl(var(--neon-purple))]" : "text-[hsl(var(--neon-magenta))]")} />
               <span className="text-sm font-semibold text-foreground">{h.title}</span>
               <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
             </motion.div>
