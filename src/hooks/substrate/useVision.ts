@@ -234,7 +234,7 @@ export function useVision(): UseVisionReturn {
   // ── New: Metrics Management ──
   const recordMetricMut = useMutation({
     mutationFn: (params: { name: string; value: number; module?: string; tags?: Record<string, string> }) =>
-      Promise.resolve(recordMetric(params.name, params.value, params.module, params.tags)),
+      Promise.resolve(recordMetric(params.name, params.value, params.module as any, params.tags)),
   });
 
   const checkAlerts = useMutation({
