@@ -762,6 +762,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                 command: h.command,
                 status: h.status,
                 timestamp: h.timestamp.toISOString(),
+                output: h.output,
               }));
               const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
@@ -769,6 +770,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               a.href = url;
               a.download = `terminal-${Date.now()}.json`;
               a.click();
+              URL.revokeObjectURL(url);
             }}
           >
             <Download className="h-3 w-3" />
