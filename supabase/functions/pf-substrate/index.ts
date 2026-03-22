@@ -9827,39 +9827,8 @@ async function handleNexus(
       }, headers);
     }
 
-    // ═══ NEXUS v1.1: IMAGE — Image generation routing ═══
-    case "image": {
-      const { prompt, model, size, style, fallbackDepth } = data;
-      
-      if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
-        return jsonResponse({
-          success: false,
-          error: 'Prompt is required',
-          module: 'nexus',
-          action: 'image',
-        }, headers);
-      }
-      
-      const result = await routeImageToProvider(prompt as string, {
-        model: model as string,
-        size: size as string,
-        style: style as string,
-        fallbackDepth: fallbackDepth as number,
-      });
-      
-      return jsonResponse({
-        success: result.success,
-        module: 'nexus',
-        action: 'image',
-        provider: result.provider,
-        model: result.model,
-        image_url: result.imageUrl,
-        metadata: result.metadata,
-        latency_ms: result.latencyMs,
-        proof_mode: true,
-        timestamp: new Date().toISOString(),
-      }, headers);
-    }
+    // Image generation is handled by the dedicated NEXUS image endpoint (pf-nexus-image-gen).
+    // Use supabase.functions.invoke('pf-nexus-image-gen', { body: { prompt, style } }) instead.
 
     // ═══ NEXUS v1.1: ROUTE — Generic routing (backwards compatible) ═══
     case "route": {
