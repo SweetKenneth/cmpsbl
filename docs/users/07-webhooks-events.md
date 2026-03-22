@@ -6,8 +6,8 @@
 
 | Event | Trigger |
 |-------|---------|
-| `task.completed` | Agency task finished |
-| `task.failed` | Agency task failed |
+| `memory.crystallized` | Memory stream crystallization complete |
+| `discovery.found` | New pipeline discovery detected |
 | `quota.warning` | Quota at 80% utilization |
 | `quota.exceeded` | Quota exhausted |
 | `security.incident` | DEFENSE detected threat |
