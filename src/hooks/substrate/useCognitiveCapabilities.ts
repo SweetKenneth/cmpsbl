@@ -37,14 +37,26 @@ export function useCognitiveCapabilities(nodeId?: string) {
   const replay = useCallback((targetNodeId?: string) => {
     const id = targetNodeId || nodeId;
     if (!id) return null;
-    // Simulated memory scores for replay
-    const mockScores = Array.from({ length: 20 }, (_, i) => ({
-      id: `mem-${i}`,
-      score: Math.random(),
-      topic: ['patterns', 'heuristics', 'observations', 'rules'][i % 4],
-      tier: (['hot', 'warm', 'cold'] as const)[i % 3],
-    }));
-    const result = replayHighValueMemories(id, mockScores);
+    // Pull real scores from assessment history for this node
+    const history = getSelfAssessmentHistory(id);
+    const memoryScores = history.length > 0
+      ? history.map((entry, i) => ({
+          id: `assess-${i}-${entry.timestamp}`,
+          score: entry.overallScore / 100,
+          topic: entry.recommendations[0] || ['patterns', 'heuristics', 'observations', 'rules'][i % 4],
+          tier: (entry.overallScore > 70 ? 'hot' : entry.overallScore > 40 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
+        }))
+      : // Bootstrap from a fresh assessment if no history exists
+        (() => {
+          const fresh = runSelfAssessment(id);
+          return fresh.dimensions.map((dim, i) => ({
+            id: `dim-${i}-${dim.name}`,
+            score: dim.score / 100,
+            topic: dim.name,
+            tier: (dim.score > 70 ? 'hot' : dim.score > 40 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
+          }));
+        })();
+    const result = replayHighValueMemories(id, memoryScores);
     setLastReplay(result);
     return result;
   }, [nodeId]);
