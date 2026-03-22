@@ -95,7 +95,7 @@ export * from './attentionMechanism';
 
 import { supabase } from '@/integrations/supabase/client';
 import type { TierStats, Memory } from './memoryTiering';
-import { getTierStats } from './memoryTiering';
+import { getTierStats, searchMemories as searchMemoriesFn } from './memoryTiering';
 
 // ============ Core Brain Operations ============
 
