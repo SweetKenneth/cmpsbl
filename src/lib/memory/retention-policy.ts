@@ -126,7 +126,7 @@ async function processHotTier(cfg: RetentionConfig): Promise<TierStats> {
       stats.preserved++;
       if ((mem.value_score || 0) < 0.8) {
         boostPromises.push(
-          supabase.from('brain_memory_hot').update({ value_score: 0.85 }).eq('id', mem.id)
+          supabase.from('brain_memory_hot').update({ value_score: 0.85 }).eq('id', mem.id).then()
         );
       }
       continue;
