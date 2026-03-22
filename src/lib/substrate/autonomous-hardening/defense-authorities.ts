@@ -1,10 +1,12 @@
 /**
- * CMPSBL® DEFENSE Autonomous Authorities v1.0.0
+ * CMPSBL® DEFENSE Autonomous Authorities v2.0.0
  * Safe, governed autonomous actions for DEFENSE module
  * 
- * Grants DEFENSE the ability to act on threats without waiting
- * for manual intervention, within strict safety bounds.
- * All actions are journaled and reversible.
+ * v2 optimizations:
+ *  - O(1) action lookup via Map index
+ *  - Batch cleanup with generational GC
+ *  - Lazy expiration (check on access, not via setTimeout)
+ *  - Reduced memory churn by avoiding setTimeout per action
  */
 
 import { journalAction } from './index';
@@ -18,20 +20,22 @@ type AuthorityLevel = 'observe' | 'warn' | 'block' | 'isolate' | 'lockdown';
 interface DefenseAuthority {
   level: AuthorityLevel;
   maxEscalation: AuthorityLevel;
-  autoBlockThreshold: number;       // error rate % to auto-block
-  autoIsolateThreshold: number;     // cascade count to auto-isolate
-  cooldownMs: number;               // min time between escalations
-  requiresConsensus: boolean;       // needs multi-module agreement
+  autoBlockThreshold: number;
+  autoIsolateThreshold: number;
+  cooldownMs: number;
+  requiresConsensus: boolean;
 }
 
-const ESCALATION_ORDER: AuthorityLevel[] = ['observe', 'warn', 'block', 'isolate', 'lockdown'];
+const ESCALATION_INDEX: Record<AuthorityLevel, number> = {
+  observe: 0, warn: 1, block: 2, isolate: 3, lockdown: 4,
+};
 
 const defaultAuthority: DefenseAuthority = {
   level: 'observe',
-  maxEscalation: 'isolate',         // Cannot self-lockdown — that requires human
-  autoBlockThreshold: 30,           // 30% error rate triggers auto-block
-  autoIsolateThreshold: 3,          // 3 cascading modules triggers isolate
-  cooldownMs: 60_000,               // 1 min between escalations
+  maxEscalation: 'isolate',
+  autoBlockThreshold: 30,
+  autoIsolateThreshold: 3,
+  cooldownMs: 60_000,
   requiresConsensus: false,
 };
 
@@ -49,135 +53,124 @@ interface ThreatAction {
   reason: string;
   ts: number;
   reversible: boolean;
-  expiresAt?: number;
+  expiresAt: number; // 0 = no expiry
   reversed: boolean;
 }
 
-const activeActions: ThreatAction[] = [];
-const MAX_ACTIVE_ACTIONS = 500;
+// Primary storage + O(1) index
+const actions: ThreatAction[] = [];
+const actionIndex = new Map<string, ThreatAction>();
+const MAX_ACTIONS = 500;
+
 const blockedIPs = new Set<string>();
 const MAX_BLOCKED_IPS = 1000;
 const quarantinedModules = new Set<string>();
 const rateLimitedEntities = new Map<string, { limit: number; expiresAt: number }>();
 
-/** Push action with cap enforcement */
-function pushAction(action: ThreatAction): void {
-  activeActions.push(action);
-  if (activeActions.length > MAX_ACTIVE_ACTIONS) {
-    activeActions.splice(0, activeActions.length - MAX_ACTIVE_ACTIONS);
-  }
-}
+// Generation counter for amortized GC
+let gcGeneration = 0;
+const GC_INTERVAL = 50; // run GC every 50 actions
 
-/** Remove expired/reversed actions and their associated state */
-function cleanupExpiredActions(): void {
+/** Amortized cleanup — runs every GC_INTERVAL pushes */
+function maybeGC(): void {
+  if (++gcGeneration < GC_INTERVAL) return;
+  gcGeneration = 0;
   const now = Date.now();
-  for (let i = activeActions.length - 1; i >= 0; i--) {
-    const a = activeActions[i];
-    if (a.reversed || (a.expiresAt && now > a.expiresAt)) {
-      if (a.type === 'block_ip') blockedIPs.delete(a.target);
-      if (a.type === 'quarantine_module') quarantinedModules.delete(a.target);
-      if (a.type === 'rate_limit') rateLimitedEntities.delete(a.target);
-      a.reversed = true;
+  for (let i = actions.length - 1; i >= 0; i--) {
+    const a = actions[i];
+    if (a.reversed) continue;
+    if (a.expiresAt > 0 && now > a.expiresAt) {
+      expireAction(a);
     }
   }
+  // Trim to cap
+  if (actions.length > MAX_ACTIONS) {
+    const removed = actions.splice(0, actions.length - MAX_ACTIONS);
+    for (const r of removed) actionIndex.delete(r.id);
+  }
 }
 
-/**
- * Auto-block an IP address exhibiting malicious behavior.
- * Block expires after TTL. Fully reversible.
- */
+function expireAction(a: ThreatAction): void {
+  a.reversed = true;
+  if (a.type === 'block_ip') blockedIPs.delete(a.target);
+  else if (a.type === 'quarantine_module') quarantinedModules.delete(a.target);
+  else if (a.type === 'rate_limit') rateLimitedEntities.delete(a.target);
+}
+
+function pushAction(action: ThreatAction): void {
+  actions.push(action);
+  actionIndex.set(action.id, action);
+  maybeGC();
+}
+
+let actionCounter = 0;
+function nextId(): string {
+  return `def_${(++actionCounter).toString(36)}_${Date.now().toString(36)}`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ESCALATION CHECK — O(1) index lookup
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function canEscalate(requiredLevel: AuthorityLevel): boolean {
+  const now = Date.now();
+  if (now - lastEscalation < currentAuthority.cooldownMs) return false;
+  if (ESCALATION_INDEX[requiredLevel] > ESCALATION_INDEX[currentAuthority.maxEscalation]) {
+    journalAction('DEFENSE', 'escalation_blocked', `${requiredLevel} exceeds max ${currentAuthority.maxEscalation}`, 'blocked');
+    return false;
+  }
+  lastEscalation = now;
+  return true;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ACTION CREATORS — No setTimeout, lazy expiration
+// ═══════════════════════════════════════════════════════════════════════════════
+
 export function autoBlockIP(ip: string, reason: string, ttlMs = 3600_000): ThreatAction | null {
   if (!canEscalate('block')) return null;
-  
-  // Cap blocked IPs to prevent unbounded growth
-  if (blockedIPs.size >= MAX_BLOCKED_IPS && !blockedIPs.has(ip)) {
-    // Evict oldest by clearing expired actions first
-    cleanupExpiredActions();
-  }
-  
+  if (blockedIPs.size >= MAX_BLOCKED_IPS && !blockedIPs.has(ip)) maybeGC();
+
   blockedIPs.add(ip);
   const action: ThreatAction = {
-    id: `def_${Date.now().toString(36)}`,
-    type: 'block_ip',
-    target: ip,
-    reason,
-    ts: Date.now(),
-    reversible: true,
-    expiresAt: Date.now() + ttlMs,
-    reversed: false,
+    id: nextId(), type: 'block_ip', target: ip, reason,
+    ts: Date.now(), reversible: true, expiresAt: Date.now() + ttlMs, reversed: false,
   };
   pushAction(action);
   journalAction('DEFENSE', 'block_ip', reason, 'success', { ip, ttlMs });
-  
-  // Auto-expire
-  setTimeout(() => { blockedIPs.delete(ip); action.reversed = true; }, ttlMs);
   return action;
 }
 
-/**
- * Auto-quarantine a module exhibiting cascading failure symptoms.
- * Module is isolated from receiving new requests.
- */
 export function autoQuarantineModule(module: string, reason: string, ttlMs = 300_000): ThreatAction | null {
   if (!canEscalate('isolate')) return null;
-  
   quarantinedModules.add(module);
   const action: ThreatAction = {
-    id: `def_${Date.now().toString(36)}`,
-    type: 'quarantine_module',
-    target: module,
-    reason,
-    ts: Date.now(),
-    reversible: true,
-    expiresAt: Date.now() + ttlMs,
-    reversed: false,
+    id: nextId(), type: 'quarantine_module', target: module, reason,
+    ts: Date.now(), reversible: true, expiresAt: Date.now() + ttlMs, reversed: false,
   };
   pushAction(action);
   journalAction('DEFENSE', 'quarantine_module', reason, 'success', { module, ttlMs });
-  
-  setTimeout(() => { quarantinedModules.delete(module); action.reversed = true; }, ttlMs);
   return action;
 }
 
-/**
- * Auto-apply rate limits to a suspicious entity.
- */
 export function autoRateLimit(entity: string, limit: number, reason: string, ttlMs = 600_000): ThreatAction | null {
   if (!canEscalate('warn')) return null;
-  
   rateLimitedEntities.set(entity, { limit, expiresAt: Date.now() + ttlMs });
   const action: ThreatAction = {
-    id: `def_${Date.now().toString(36)}`,
-    type: 'rate_limit',
-    target: entity,
-    reason,
-    ts: Date.now(),
-    reversible: true,
-    expiresAt: Date.now() + ttlMs,
-    reversed: false,
+    id: nextId(), type: 'rate_limit', target: entity, reason,
+    ts: Date.now(), reversible: true, expiresAt: Date.now() + ttlMs, reversed: false,
   };
   pushAction(action);
   journalAction('DEFENSE', 'rate_limit', reason, 'success', { entity, limit, ttlMs });
-  
-  setTimeout(() => { rateLimitedEntities.delete(entity); action.reversed = true; }, ttlMs);
   return action;
 }
 
-/**
- * Auto-shift security posture based on threat level.
- */
 export function autoPostureShift(newPosture: 'relaxed' | 'standard' | 'elevated' | 'critical', reason: string): ThreatAction | null {
   if (newPosture === 'critical' && !canEscalate('isolate')) return null;
   if (newPosture === 'elevated' && !canEscalate('warn')) return null;
-  
   const action: ThreatAction = {
-    id: `def_${Date.now().toString(36)}`,
-    type: 'posture_shift',
-    target: newPosture,
-    reason,
-    ts: Date.now(),
-    reversible: true,
-    reversed: false,
+    id: nextId(), type: 'posture_shift', target: newPosture, reason,
+    ts: Date.now(), reversible: true, expiresAt: 0, reversed: false,
   };
   pushAction(action);
   journalAction('DEFENSE', 'posture_shift', reason, 'success', { newPosture });
@@ -185,21 +178,11 @@ export function autoPostureShift(newPosture: 'relaxed' | 'standard' | 'elevated'
   return action;
 }
 
-/**
- * Auto-trigger circuit break for a specific module's external calls.
- */
 export function autoCircuitBreak(module: string, reason: string, ttlMs = 120_000): ThreatAction | null {
   if (!canEscalate('block')) return null;
-  
   const action: ThreatAction = {
-    id: `def_${Date.now().toString(36)}`,
-    type: 'circuit_break',
-    target: module,
-    reason,
-    ts: Date.now(),
-    reversible: true,
-    expiresAt: Date.now() + ttlMs,
-    reversed: false,
+    id: nextId(), type: 'circuit_break', target: module, reason,
+    ts: Date.now(), reversible: true, expiresAt: Date.now() + ttlMs, reversed: false,
   };
   pushAction(action);
   journalAction('DEFENSE', 'circuit_break', reason, 'success', { module, ttlMs });
@@ -207,23 +190,8 @@ export function autoCircuitBreak(module: string, reason: string, ttlMs = 120_000
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// AUTHORITY GOVERNANCE
+// QUERIES — lazy expiration on access
 // ═══════════════════════════════════════════════════════════════════════════════
-
-function canEscalate(requiredLevel: AuthorityLevel): boolean {
-  const now = Date.now();
-  if (now - lastEscalation < currentAuthority.cooldownMs) return false;
-  
-  const requiredIdx = ESCALATION_ORDER.indexOf(requiredLevel);
-  const maxIdx = ESCALATION_ORDER.indexOf(currentAuthority.maxEscalation);
-  if (requiredIdx > maxIdx) {
-    journalAction('DEFENSE', 'escalation_blocked', `${requiredLevel} exceeds max ${currentAuthority.maxEscalation}`, 'blocked');
-    return false;
-  }
-  
-  lastEscalation = now;
-  return true;
-}
 
 export function setDefenseAuthority(config: Partial<DefenseAuthority>): void {
   currentAuthority = { ...currentAuthority, ...config };
@@ -232,30 +200,60 @@ export function setDefenseAuthority(config: Partial<DefenseAuthority>): void {
 
 export function getDefenseAuthority(): DefenseAuthority { return { ...currentAuthority }; }
 
-export function isIPBlocked(ip: string): boolean { return blockedIPs.has(ip); }
-export function isModuleQuarantined(module: string): boolean { return quarantinedModules.has(module); }
+export function isIPBlocked(ip: string): boolean {
+  if (!blockedIPs.has(ip)) return false;
+  // Lazy check — find the action, expire if needed
+  for (let i = actions.length - 1; i >= 0; i--) {
+    const a = actions[i];
+    if (a.type === 'block_ip' && a.target === ip && !a.reversed) {
+      if (a.expiresAt > 0 && Date.now() > a.expiresAt) { expireAction(a); return false; }
+      return true;
+    }
+  }
+  blockedIPs.delete(ip); // orphan cleanup
+  return false;
+}
+
+export function isModuleQuarantined(module: string): boolean {
+  if (!quarantinedModules.has(module)) return false;
+  for (let i = actions.length - 1; i >= 0; i--) {
+    const a = actions[i];
+    if (a.type === 'quarantine_module' && a.target === module && !a.reversed) {
+      if (a.expiresAt > 0 && Date.now() > a.expiresAt) { expireAction(a); return false; }
+      return true;
+    }
+  }
+  quarantinedModules.delete(module);
+  return false;
+}
+
 export function getEntityRateLimit(entity: string): number | null {
   const rl = rateLimitedEntities.get(entity);
-  if (!rl || Date.now() > rl.expiresAt) { rateLimitedEntities.delete(entity); return null; }
+  if (!rl) return null;
+  if (Date.now() > rl.expiresAt) { rateLimitedEntities.delete(entity); return null; }
   return rl.limit;
 }
 
 export function getActiveDefenseActions(): ThreatAction[] {
-  return activeActions.filter(a => !a.reversed && (!a.expiresAt || Date.now() < a.expiresAt));
+  const now = Date.now();
+  const active: ThreatAction[] = [];
+  for (let i = actions.length - 1; i >= 0; i--) {
+    const a = actions[i];
+    if (a.reversed) continue;
+    if (a.expiresAt > 0 && now > a.expiresAt) { expireAction(a); continue; }
+    active.push(a);
+  }
+  return active;
 }
 
 export function reverseAction(actionId: string): boolean {
-  const action = activeActions.find(a => a.id === actionId && !a.reversed);
-  if (!action || !action.reversible) return false;
-  
-  if (action.type === 'block_ip') blockedIPs.delete(action.target);
-  if (action.type === 'quarantine_module') quarantinedModules.delete(action.target);
-  if (action.type === 'rate_limit') rateLimitedEntities.delete(action.target);
-  action.reversed = true;
+  const action = actionIndex.get(actionId);
+  if (!action || action.reversed || !action.reversible) return false;
+  expireAction(action);
   journalAction('DEFENSE', 'action_reversed', `Reversed ${action.type} on ${action.target}`, 'success');
   return true;
 }
 
 export function getDefenseActionHistory(limit = 50): ThreatAction[] {
-  return activeActions.slice(-limit);
+  return actions.slice(-limit);
 }
