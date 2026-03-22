@@ -458,6 +458,16 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'intent' && isGovernor && (
+
+            {activeTab === 'webhooks' && (
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="Webhooks" description="Subscribe to real-time substrate events and receive signed payloads at your endpoints.">
+                <PanelContainer id="webhooks">
+                  <Suspense fallback={<PanelLoader />}><WebhooksTab /></Suspense>
+                </PanelContainer>
+              </TierGate>
+            )}
+
+            {activeTab === 'intent' && isGovernor && (
               <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Node mesh governance hub. Monitor inter-node communication, approve actions, and manage intent routing across the 40-node matrix.">
                 <PanelContainer id="intent">
                   <ModuleErrorBoundary moduleName="INTENT">
