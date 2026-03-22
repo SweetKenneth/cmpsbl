@@ -306,13 +306,14 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
 
 export function getCLMState(): CLMState {
   ensureTopics();
+  const topicArr = Array.from(topics.values());
   return {
     isRunning,
     totalCycles,
     todayCycles,
     activeTopic: null,
-    topicPool: Array.from(topics.values()),
-    masteredCount: Array.from(topics.values()).filter(t => t.mastered).length,
+    topicPool: topicArr,
+    masteredCount: topicArr.reduce((n, t) => n + (t.mastered ? 1 : 0), 0),
   };
 }
 

@@ -302,25 +302,22 @@ class SpacedRepetitionClient {
     }
   }
 
-  private async logReview(item: SpacedRepItem, result: ReviewResult): Promise<void> {
-    try {
-      await supabase.from('brain_events').insert({
-        event_type: 'clm_spaced_rep_review',
-        module: 'brain',
-        data: {
-          topic_id: item.topicId,
-          topic_name: item.topicName,
-          recall_quality: result.recallQuality,
-          new_interval: item.interval,
-          new_ease: item.easeFactor,
-          repetition_count: item.repetitions,
-          confidence: result.confidence,
-        },
-        outcome: result.recallQuality >= 3 ? 'success' : 'failure',
-      } as any);
-    } catch {
-      // Non-critical
-    }
+  private logReview(item: SpacedRepItem, result: ReviewResult): void {
+    // Fire-and-forget — review logging is non-critical
+    supabase.from('brain_events').insert({
+      event_type: 'clm_spaced_rep_review',
+      module: 'brain',
+      data: {
+        topic_id: item.topicId,
+        topic_name: item.topicName,
+        recall_quality: result.recallQuality,
+        new_interval: item.interval,
+        new_ease: item.easeFactor,
+        repetition_count: item.repetitions,
+        confidence: result.confidence,
+      },
+      outcome: result.recallQuality >= 3 ? 'success' : 'failure',
+    } as any).then(() => {}, () => {});
   }
 }
 

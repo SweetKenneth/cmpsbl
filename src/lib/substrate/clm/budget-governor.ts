@@ -326,18 +326,17 @@ class BudgetGovernorClient {
     } as any).then(() => {}, () => {});
   }
 
-  private async emitAutoDisableEvent(): Promise<void> {
-    try {
-      await supabase.from('brain_events').insert({
-        event_type: 'clm_auto_disabled',
-        module: 'brain',
-        data: {
-          consecutive_failures: this.state.consecutiveFailures,
-          last_backoff_level: this.state.backoffLevel,
-        },
-        outcome: 'alert',
-      } as any);
-    } catch { /* Non-critical */ }
+  private emitAutoDisableEvent(): void {
+    // Fire-and-forget
+    supabase.from('brain_events').insert({
+      event_type: 'clm_auto_disabled',
+      module: 'brain',
+      data: {
+        consecutive_failures: this.state.consecutiveFailures,
+        last_backoff_level: this.state.backoffLevel,
+      },
+      outcome: 'alert',
+    } as any).then(() => {}, () => {});
   }
 }
 
