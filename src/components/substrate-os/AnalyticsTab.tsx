@@ -362,8 +362,8 @@ export function AnalyticsTab() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
-            <BarChart3 className="w-5 h-5 text-cyan-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-neon-blue/20 border border-primary/30 flex items-center justify-center">
+            <BarChart3 className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Substrate Telemetry</h2>
