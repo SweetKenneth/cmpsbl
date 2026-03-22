@@ -32,6 +32,10 @@ export interface UseCortexReturn {
   propose: ReturnType<typeof useMutation>;
   evaluate: ReturnType<typeof useMutation>;
   apply: ReturnType<typeof useMutation>;
+  rollback: ReturnType<typeof useMutation>;
+  audit: ReturnType<typeof useMutation>;
+  learn: ReturnType<typeof useMutation>;
+  summary: ReturnType<typeof useMutation>;
   
   // Sequence Operations
   plan: ReturnType<typeof useMutation>;
@@ -74,18 +78,21 @@ export function useCortex(): UseCortexReturn {
     queryKey: ['substrate', 'cortex', 'diagnostics'],
     queryFn: () => cortex.diagnostics(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const world = useQuery({
     queryKey: ['substrate', 'cortex', 'world'],
     queryFn: () => cortex.world({ dag: true, roles: true }),
     staleTime: 120000,
+    enabled: pollingEnabled,
   });
   
   const inventory = useQuery({
     queryKey: ['substrate', 'cortex', 'inventory'],
     queryFn: () => cortex.inventory(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const mode = useMutation({
@@ -131,6 +138,29 @@ export function useCortex(): UseCortexReturn {
     onSuccess: invalidateCortex,
   });
   
+  // === NEW: Missing capabilities from substrate.ts ===
+  
+  const rollback = useMutation({
+    mutationFn: (params: { applyId: string; reason?: string }) => 
+      cortex.rollback(params.applyId, params.reason),
+    onSuccess: invalidateCortex,
+  });
+  
+  const audit = useMutation({
+    mutationFn: (params?: { since?: string; type?: string }) => 
+      cortex.audit(params?.since, params?.type),
+  });
+  
+  const learn = useMutation({
+    mutationFn: (params: { outcome: string; proposalId?: string; feedback?: string }) => 
+      cortex.learn(params.outcome, params.proposalId, params.feedback),
+    onSuccess: invalidateCortex,
+  });
+  
+  const summary = useMutation({
+    mutationFn: () => cortex.summary(),
+  });
+  
   const plan = useMutation({
     mutationFn: (sequenceId: string) => cortex.plan(sequenceId),
   });
@@ -156,6 +186,10 @@ export function useCortex(): UseCortexReturn {
     propose,
     evaluate,
     apply,
+    rollback,
+    audit,
+    learn,
+    summary,
     plan,
     run,
   };
