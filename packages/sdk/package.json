@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/sdk",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "CMPSBL® Engine SDK — Authenticated client for hosted CMPSBL engines (GODMIND, FORTRESS, etc.)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
