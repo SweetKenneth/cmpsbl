@@ -1,9 +1,13 @@
 /**
  * CMPSBL® BRAIN — Vector Search
  * Semantic retrieval across hot, warm & cold memory tiers
+ * 
+ * OPTIMIZED: Uses shared wordMatchRelevance, parallelized all 4 tiers,
+ * eliminated duplicate calculateRelevance implementations.
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { wordMatchRelevance } from './shared';
 
 export interface SearchResult {
   id: string;
@@ -16,7 +20,7 @@ export interface SearchResult {
 
 /**
  * Search across all four memory tiers (hot → warm → cold → glacier)
- * Optimized: parallel tier fetching for hot+warm, sequential fallback for cold+glacier
+ * OPTIMIZED: Parallel fetch for all requested tiers instead of sequential fallback
  */
 export async function searchMemory(
   query: string,
@@ -35,200 +39,89 @@ export async function searchMemory(
     includeCold = true,
     includeGlacier = false,
   } = options;
-  
-  // Parallel fetch hot + warm (most common path)
-  const [hotResults, warmResults] = await Promise.all([
-    searchTier('brain_memory_hot', 'hot', query, { limit, minRelevance, context }),
-    searchTier('brain_memory_warm', 'warm', query, { limit, minRelevance: minRelevance * 0.9, context }),
-  ]);
-  
-  let results: SearchResult[] = [...hotResults, ...warmResults];
 
-  // Only fetch deeper tiers if we haven't filled the limit
-  if (includeCold && results.length < limit) {
-    const coldResults = await searchColdTier(query, {
-      limit: limit - results.length,
-      minRelevance: minRelevance * 0.8,
-      context,
-    });
-    results.push(...coldResults);
-  }
-  
-  // Glacier tier — only on explicit request or if still under limit
-  if (includeGlacier && results.length < limit) {
-    const glacierResults = await searchGlacierTier(query, {
-      limit: limit - results.length,
-      minRelevance: minRelevance * 0.7,
-    });
-    results.push(...glacierResults);
-  }
-  
-  // Sort by relevance
-  results.sort((a, b) => b.relevance - a.relevance);
-  
-  return results.slice(0, limit);
-}
-
-/**
- * Search hot or warm memory tier
- */
-async function searchTier(
-  table: 'brain_memory_hot' | 'brain_memory_warm',
-  tier: 'hot' | 'warm',
-  query: string,
-  options: {
-    limit: number;
-    minRelevance: number;
-    context?: string;
-  }
-): Promise<SearchResult[]> {
-  try {
-    const orderField = table === 'brain_memory_hot' ? 'last_used' : 'created_at';
-    let queryBuilder = supabase
-      .from(table)
-      .select('id, content, context, tags, value_score')
-      .order('value_score', { ascending: false })
-      .order(orderField, { ascending: false })
-      .limit(options.limit * 2); // Over-fetch slightly to compensate for relevance filtering
-    
-    if (options.context) {
-      queryBuilder = queryBuilder.eq('context', options.context);
-    }
-    
-    const { data, error } = await queryBuilder;
-    
-    if (error || !data) {
-      console.error(`${tier} tier search error:`, error);
-      return [];
-    }
-    
-    // Pre-compute query tokens once
-    const queryLower = query.toLowerCase();
-    const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
-    if (queryWords.length === 0) return [];
-    
-    const results: SearchResult[] = [];
-    for (const memory of data) {
-      const contentLower = memory.content?.toLowerCase() || '';
-      let matchCount = 0;
-      for (const word of queryWords) {
-        if (contentLower.includes(word)) matchCount++;
-      }
-      const baseRelevance = matchCount / queryWords.length;
-      const exactBonus = contentLower.includes(queryLower) ? 0.2 : 0;
-      const relevance = Math.min(baseRelevance + exactBonus, 1.0);
-      
-      if (relevance >= options.minRelevance) {
-        results.push({
-          id: memory.id,
-          content: memory.content,
-          context: memory.context,
-          relevance,
-          tier,
-          tags: memory.tags as Record<string, any>,
-        });
-      }
-    }
-    return results;
-  } catch (err) {
-    console.error(`Error searching ${tier} tier:`, err);
-    return [];
-  }
-}
-
-/**
- * Search cold memory tier
- */
-async function searchColdTier(
-  query: string,
-  options: {
-    limit: number;
-    minRelevance: number;
-    context?: string;
-  }
-): Promise<SearchResult[]> {
-  try {
-    let queryBuilder = supabase
-      .from('brain_memory_cold')
-      .select('id, summary, tags')
-      .order('created_at', { ascending: false })
-      .limit(options.limit * 2);
-    
-    if (options.context) {
-      queryBuilder = queryBuilder.contains('tags', { context: options.context });
-    }
-    
-    const { data, error } = await queryBuilder;
-    
-    if (error || !data) return [];
-    
-    return data
-      .map(memory => ({
-        id: memory.id,
-        content: memory.summary,
-        context: (memory.tags as any)?.context || 'unknown',
-        relevance: calculateRelevance(query, memory.summary),
-        tier: 'cold' as const,
-        tags: memory.tags as Record<string, any>,
-      }))
-      .filter(r => r.relevance >= options.minRelevance)
-      .slice(0, options.limit);
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Search glacier (archive) tier — deepest, lowest priority
- */
-async function searchGlacierTier(
-  query: string,
-  options: { limit: number; minRelevance: number }
-): Promise<SearchResult[]> {
-  try {
-    const { data, error } = await supabase
-      .from('brain_memory_archive')
-      .select('id, content, source_tier, archived_reason')
-      .order('created_at', { ascending: false })
-      .limit(options.limit * 3);
-
-    if (error || !data) return [];
-
-    return data
-      .map(memory => ({
-        id: memory.id,
-        content: memory.content,
-        context: memory.source_tier || 'glacier',
-        relevance: calculateRelevance(query, memory.content) * 0.85, // Decay penalty
-        tier: 'glacier' as const,
-      }))
-      .filter(r => r.relevance >= options.minRelevance)
-      .slice(0, options.limit);
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Calculate relevance score between query and content
- * Optimized: caches lowercased query, avoids redundant exact-match check per word
- */
-function calculateRelevance(query: string, content: string): number {
-  if (!content) return 0;
+  // Pre-compute query tokens once for all tiers
   const queryLower = query.toLowerCase();
   const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
-  const contentLower = content.toLowerCase();
-  
-  if (queryWords.length === 0) return 0;
-  
-  let matchCount = 0;
-  for (const word of queryWords) {
-    if (contentLower.includes(word)) matchCount++;
+  if (queryWords.length === 0) return [];
+
+  const nowMs = Date.now();
+
+  // Build all tier queries — fetch all in parallel
+  type TierConfig = { tier: 'hot' | 'warm' | 'cold' | 'glacier'; query: any; contentField: string; relevanceMult: number; minRel: number };
+  const tiers: TierConfig[] = [];
+
+  {
+    let q = supabase.from('brain_memory_hot')
+      .select('id, content, context, tags, value_score, last_used')
+      .order('value_score', { ascending: false })
+      .limit(limit * 2);
+    if (context) q = q.eq('context', context);
+    tiers.push({ tier: 'hot', query: q, contentField: 'content', relevanceMult: 1.0, minRel: minRelevance });
   }
-  
-  const baseRelevance = matchCount / queryWords.length;
-  const exactMatchBonus = contentLower.includes(queryLower) ? 0.2 : 0;
-  return Math.min(baseRelevance + exactMatchBonus, 1.0);
+  {
+    let q = supabase.from('brain_memory_warm')
+      .select('id, content, context, tags, value_score')
+      .order('value_score', { ascending: false })
+      .limit(limit * 2);
+    if (context) q = q.eq('context', context);
+    tiers.push({ tier: 'warm', query: q, contentField: 'content', relevanceMult: 1.0, minRel: minRelevance * 0.9 });
+  }
+  if (includeCold) {
+    let q = supabase.from('brain_memory_cold')
+      .select('id, summary, tags')
+      .order('created_at', { ascending: false })
+      .limit(limit * 2);
+    if (context) q = q.contains('tags', { context });
+    tiers.push({ tier: 'cold', query: q, contentField: 'summary', relevanceMult: 1.0, minRel: minRelevance * 0.8 });
+  }
+  if (includeGlacier) {
+    tiers.push({
+      tier: 'glacier',
+      query: supabase.from('brain_memory_archive')
+        .select('id, content, source_tier, archived_reason')
+        .order('created_at', { ascending: false })
+        .limit(limit * 3),
+      contentField: 'content',
+      relevanceMult: 0.85,
+      minRel: minRelevance * 0.7,
+    });
+  }
+
+  // Parallel fetch all tiers
+  const responses = await Promise.all(tiers.map(t => t.query));
+
+  const results: SearchResult[] = [];
+
+  for (let i = 0; i < tiers.length; i++) {
+    const { tier, contentField, relevanceMult, minRel } = tiers[i];
+    const data = (responses[i] as any)?.data || [];
+
+    for (const item of data) {
+      const text = (item[contentField] || '').toLowerCase();
+      let relevance = wordMatchRelevance(queryLower, queryWords, text) * relevanceMult;
+
+      // Recency boost for hot tier
+      if (tier === 'hot' && item.last_used) {
+        const hoursSince = (nowMs - new Date(item.last_used).getTime()) / 3600000;
+        if (hoursSince < 24) relevance *= 1 + (24 - hoursSince) / 48;
+      }
+
+      if (relevance < minRel) continue;
+
+      results.push({
+        id: item.id,
+        content: item[contentField] || item.content || '',
+        context: item.context || (item.tags as any)?.context || item.source_tier || 'unknown',
+        relevance,
+        tier,
+        tags: item.tags as Record<string, any>,
+      });
+    }
+  }
+
+  results.sort((a, b) => b.relevance - a.relevance);
+  return results.slice(0, limit);
 }
 
 /**
@@ -256,9 +149,7 @@ export async function getTopAccessedMemories(limit: number = 100): Promise<Searc
       .order('last_used', { ascending: false })
       .limit(limit);
     
-    if (error || !data) {
-      return [];
-    }
+    if (error || !data) return [];
     
     return data.map(memory => ({
       id: memory.id,
