@@ -8,6 +8,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { isDuplicate, compactMetadata, classifyImportance, shouldPreserveIndefinitely } from './content-dedup';
 
 export interface MemoryEntry {
   id: string;
@@ -170,17 +171,28 @@ export class MemoryClient {
   async store(content: string, metadata?: Record<string, unknown>): Promise<void> {
     try {
       const userId = this.assertUserId();
+
+      // DEDUP GATE: Skip exact/near duplicates to save storage
+      if (isDuplicate(content)) return;
+
       const facts = this.extractFacts(content);
       const memoryType = facts.length > 0 ? 'user_fact' : 
         (metadata?.memory_type as string) || 'general';
       
+      // Importance classification — critical memories get salience boost
+      const importance = classifyImportance(content, memoryType, 0.5, 0);
+      const salienceBoost = shouldPreserveIndefinitely(importance) ? 0.2 : 0;
+      
       // Store full content — let salience gate decide tier
-      const salience = this.estimateLocalSalience(content, memoryType);
+      const salience = Math.min(1, this.estimateLocalSalience(content, memoryType) + salienceBoost);
+
+      // Compact metadata before storage to save space
+      const compactMeta = metadata ? compactMetadata(metadata) : undefined;
 
       // Run ALL stores + fingerprint + bookkeeping in ONE parallel batch
       const allPromises: Promise<any>[] = [
         this.updateFingerprint(content, userId),
-        this.storeToTier(content, memoryType, salience, metadata),
+        this.storeToTier(content, memoryType, salience, compactMeta),
         this.incrementMetaStores(),
         this.trackHourlyActivity(),
       ];

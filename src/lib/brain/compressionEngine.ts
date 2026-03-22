@@ -1,9 +1,11 @@
 /**
- * Brain Memory Compression Engine v2
- * Advanced compression with semantic clustering and lossless code preservation
+ * Brain Memory Compression Engine v3
+ * Advanced compression with semantic clustering, lossless code preservation,
+ * importance-aware retention, and content normalization for max space savings
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { compressForStorage, classifyImportance, shouldPreserveIndefinitely, compactMetadata, contentHash } from '@/lib/memory/content-dedup';
 
 export interface CompressionConfig {
   targetRatio: number;
@@ -23,10 +25,10 @@ export interface CompressedMemory {
 }
 
 const DEFAULT_CONFIG: CompressionConfig = {
-  targetRatio: 5,
+  targetRatio: 8,        // Increased from 5 for better compression
   preserveCode: true,
   semanticClustering: true,
-  maxClusterSize: 10,
+  maxClusterSize: 15,    // Increased from 10 for bigger batches
 };
 
 /**
@@ -115,7 +117,9 @@ function generateCompressedSummary(contents: string[], targetLength: number): st
 }
 
 /**
- * Compress a cluster of memories into a single cold memory
+ * Compress a cluster of memories into a single cold memory.
+ * v3: Uses content-dedup compression, importance-aware preservation,
+ * and deduplicates within cluster via content hash.
  */
 async function compressCluster(
   memories: Array<{ id: string; content: string; context: string }>,
@@ -123,10 +127,19 @@ async function compressCluster(
 ): Promise<CompressedMemory | null> {
   if (memories.length === 0) return null;
   
+  // Deduplicate within cluster using content hash
+  const seen = new Set<number>();
+  const uniqueMemories = memories.filter(m => {
+    const hash = contentHash(m.content);
+    if (seen.has(hash)) return false;
+    seen.add(hash);
+    return true;
+  });
+  
   const allCode: string[] = [];
   const textContents: string[] = [];
   
-  memories.forEach(memory => {
+  for (const memory of uniqueMemories) {
     if (config.preserveCode) {
       const { text, code } = extractCodeBlocks(memory.content);
       textContents.push(text);
@@ -134,12 +147,21 @@ async function compressCluster(
     } else {
       textContents.push(memory.content);
     }
-  });
+  }
   
   const totalLength = textContents.join('').length;
-  const targetLength = Math.max(100, Math.floor(totalLength / config.targetRatio));
+  const targetLength = Math.max(50, Math.floor(totalLength / config.targetRatio));
   
-  const summary = generateCompressedSummary(textContents, targetLength);
+  // Use content-dedup compression for non-code text
+  const combinedText = textContents.join(' ');
+  const isCode = uniqueMemories[0]?.context === 'code';
+  const { compressed: preCompressed } = compressForStorage(combinedText, isCode);
+  
+  // Then apply extractive summarization on the pre-compressed text
+  const summary = preCompressed.length > targetLength
+    ? generateCompressedSummary([preCompressed], targetLength)
+    : preCompressed;
+  
   const semanticHash = extractSemanticHash(summary);
   
   return {
@@ -147,9 +169,9 @@ async function compressCluster(
     originalIds: memories.map(m => m.id),
     summary,
     semanticHash,
-    compressionRatio: totalLength / summary.length,
+    compressionRatio: totalLength / Math.max(summary.length, 1),
     preservedCode: allCode,
-    clusterTags: [memories[0].context, ...semanticHash.split('|').slice(0, 3)],
+    clusterTags: [uniqueMemories[0].context, ...semanticHash.split('|').slice(0, 3)],
   };
 }
 
@@ -206,9 +228,27 @@ export async function runBatchCompression(
         const originalSize = batch.reduce((sum, m) => sum + m.content.length, 0);
         const compressedSize = compressed.summary.length + compressed.preservedCode.join('').length;
         
+        // Importance check: flag critical memories in tags for retention policy
+        const importance = classifyImportance(
+          compressed.summary,
+          batch[0]?.context || 'general',
+          0.5,
+          0
+        );
+
         const fullContent = compressed.preservedCode.length > 0
           ? `${compressed.summary}\n\n--- Preserved Code ---\n${compressed.preservedCode.join('\n\n')}`
           : compressed.summary;
+
+        // Compact the tags metadata to minimize storage
+        const tags = compactMetadata({
+          semantic_hash: compressed.semanticHash,
+          cluster_tags: compressed.clusterTags,
+          preserved_code_count: compressed.preservedCode.length,
+          algorithm: 'v3_semantic_dedup',
+          importance,
+          preserve: shouldPreserveIndefinitely(importance),
+        });
 
         coldInserts.push({
           summary: fullContent,
@@ -216,12 +256,7 @@ export async function runBatchCompression(
           compression_level: Math.round(compressed.compressionRatio),
           source_module: batch[0]?.context === 'code' ? 'engineering' : 'general',
           category: batch[0]?.context || 'uncategorized',
-          tags: {
-            semantic_hash: compressed.semanticHash,
-            cluster_tags: compressed.clusterTags,
-            preserved_code_count: compressed.preservedCode.length,
-            algorithm: 'v2_semantic',
-          },
+          tags,
         });
 
         hotDeleteIds.push(...compressed.originalIds);
