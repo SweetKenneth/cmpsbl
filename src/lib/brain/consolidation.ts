@@ -2,12 +2,12 @@
  * BRAIN Memory Consolidation Engine
  * Pattern Extraction & Deduplication
  * 
- * Memory consolidation and pattern extraction during low-activity
- * periods to improve recall efficiency.
+ * OPTIMIZED: Uses shared tokenize/jaccardSimilarity, reduced allocations
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Memory } from './memoryTiering';
+import { tokenizeToSet, jaccardSimilarity } from './shared';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -54,13 +54,11 @@ const DEFAULT_CONFIG: ConsolidationConfig = {
   dryRun: false,
 };
 
-// In-memory pattern cache — capped to prevent memory leak
 const MAX_PATTERN_CACHE = 500;
 const patternCache = new Map<string, MemoryPattern>();
 
 function evictPatternCache(): void {
   if (patternCache.size <= MAX_PATTERN_CACHE) return;
-  // Evict oldest entries (Map preserves insertion order)
   const excess = patternCache.size - MAX_PATTERN_CACHE;
   const keys = patternCache.keys();
   for (let i = 0; i < excess; i++) {
@@ -73,9 +71,6 @@ function evictPatternCache(): void {
 // CONSOLIDATION ENGINE
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Run full memory consolidation cycle
- */
 export async function runConsolidation(
   config: Partial<ConsolidationConfig> = {}
 ): Promise<ConsolidationResult> {
@@ -83,82 +78,62 @@ export async function runConsolidation(
   const mergedConfig = { ...DEFAULT_CONFIG, ...config };
   
   const result: ConsolidationResult = {
-    duplicatesFound: 0,
-    duplicatesRemoved: 0,
-    patternsExtracted: 0,
-    memoriesConsolidated: 0,
-    spaceReclaimed: 0,
-    duration: 0,
+    duplicatesFound: 0, duplicatesRemoved: 0, patternsExtracted: 0,
+    memoriesConsolidated: 0, spaceReclaimed: 0, duration: 0,
   };
 
   try {
-    // Step 1: Find duplicate clusters
     const duplicates = await findDuplicateClusters(mergedConfig.similarityThreshold);
     result.duplicatesFound = duplicates.reduce((sum, c) => sum + c.duplicates.length, 0);
 
-    // Step 2: Remove duplicates (keep canonical)
     if (!mergedConfig.dryRun) {
       for (const cluster of duplicates) {
         const removed = await removeDuplicates(cluster, mergedConfig.preserveHighValue);
         result.duplicatesRemoved += removed;
-        result.spaceReclaimed += removed * 500; // Estimate 500 bytes per memory
+        result.spaceReclaimed += removed * 500;
       }
     }
 
-    // Step 3: Extract patterns
     const patterns = await extractPatterns(mergedConfig.minPatternFrequency);
     result.patternsExtracted = patterns.length;
 
-    // Step 4: Store patterns
     if (!mergedConfig.dryRun && patterns.length > 0) {
       await storePatterns(patterns.slice(0, mergedConfig.maxPatternsPerRun));
     }
 
-    // Step 5: Consolidate related memories
     const consolidated = await consolidateRelatedMemories(mergedConfig.similarityThreshold);
     result.memoriesConsolidated = consolidated;
-
   } catch (error) {
     console.error('[Consolidation] Error during consolidation:', error);
   }
 
   result.duration = Date.now() - startTime;
   
-  // Log consolidation event (non-critical — wrap in try/catch)
-  try {
-    await supabase.from('brain_events').insert({
-      module: 'brain',
-      event_type: 'consolidation.completed',
-      data: result as unknown as Record<string, never>,
-      outcome: 'success',
-    });
-  } catch {
-    // Event logging is non-critical
-  }
+  // Fire-and-forget event log
+  supabase.from('brain_events').insert({
+    module: 'brain', event_type: 'consolidation.completed',
+    data: result as unknown as Record<string, never>, outcome: 'success',
+  }).then(() => {}).catch(() => {});
 
   return result;
 }
 
 /**
  * Find clusters of duplicate or near-duplicate memories
+ * OPTIMIZED: Uses shared tokenizeToSet + jaccardSimilarity
  */
 export async function findDuplicateClusters(
   threshold: number = 0.85
 ): Promise<DuplicateCluster[]> {
   const clusters: DuplicateCluster[] = [];
   
-  // Fetch recent memories from hot and warm tiers (only needed columns, reduced limits)
   const [{ data: hotMemories }, { data: warmMemories }] = await Promise.all([
-    supabase
-      .from('brain_memory_hot')
+    supabase.from('brain_memory_hot')
       .select('id, content, context, value_score, created_at')
-      .order('created_at', { ascending: false })
-      .limit(200),
-    supabase
-      .from('brain_memory_warm')
+      .order('created_at', { ascending: false }).limit(200),
+    supabase.from('brain_memory_warm')
       .select('id, content, context, value_score, created_at')
-      .order('created_at', { ascending: false })
-      .limit(200),
+      .order('created_at', { ascending: false }).limit(200),
   ]);
 
   const allMemories = [
@@ -166,33 +141,24 @@ export async function findDuplicateClusters(
     ...(warmMemories || []).map(m => ({ ...m, tier: 'warm' as const })),
   ];
 
-  // Pre-tokenize all memories once to avoid O(n²) repeated tokenization
+  // Pre-tokenize all memories once — uses shared tokenizeToSet
   const tokenized = allMemories.map(m => ({
     ...m,
-    tokens: new Set(tokenize(m.content)),
+    tokens: tokenizeToSet(m.content),
   }));
 
-  // Content-based similarity clustering with pre-computed tokens
   const processed = new Set<string>();
   
   for (let i = 0; i < tokenized.length; i++) {
     const memory = tokenized[i];
-    if (processed.has(memory.id)) continue;
-    if (memory.tokens.size === 0) continue;
+    if (processed.has(memory.id) || memory.tokens.size === 0) continue;
     
     const similar = [];
     for (let j = i + 1; j < tokenized.length; j++) {
       const other = tokenized[j];
-      if (processed.has(other.id)) continue;
-      if (other.tokens.size === 0) continue;
+      if (processed.has(other.id) || other.tokens.size === 0) continue;
       
-      // Fast Jaccard with pre-computed token sets — no intermediate arrays
-      let intersection = 0;
-      for (const t of memory.tokens) {
-        if (other.tokens.has(t)) intersection++;
-      }
-      const union = memory.tokens.size + other.tokens.size - intersection;
-      if (union > 0 && intersection / union >= threshold) {
+      if (jaccardSimilarity(memory.tokens, other.tokens) >= threshold) {
         similar.push(other);
       }
     }
@@ -206,56 +172,36 @@ export async function findDuplicateClusters(
         duplicates: allInCluster.slice(1) as unknown as Memory[],
         similarity: threshold,
       });
-
-      allInCluster.forEach(m => processed.add(m.id));
+      for (const m of allInCluster) processed.add(m.id);
     }
   }
 
   return clusters;
 }
 
-/**
- * Remove duplicate memories, keeping the canonical version
- */
-async function removeDuplicates(
-  cluster: DuplicateCluster,
-  preserveHighValue: boolean
-): Promise<number> {
-  // Filter duplicates to remove
+async function removeDuplicates(cluster: DuplicateCluster, preserveHighValue: boolean): Promise<number> {
   const toRemove = cluster.duplicates.filter(dup => {
     if (preserveHighValue && (dup as any).value_score >= 0.8) return false;
     return true;
   });
-
   if (toRemove.length === 0) return 0;
 
-  // Batch delete by tier
   const hotIds = toRemove.filter(d => (d as any).tier === 'hot').map(d => d.id);
   const warmIds = toRemove.filter(d => (d as any).tier !== 'hot').map(d => d.id);
-
   let removed = 0;
 
-  if (hotIds.length > 0) {
-    const { error } = await supabase.from('brain_memory_hot').delete().in('id', hotIds);
-    if (!error) removed += hotIds.length;
-  }
-  if (warmIds.length > 0) {
-    const { error } = await supabase.from('brain_memory_warm').delete().in('id', warmIds);
-    if (!error) removed += warmIds.length;
-  }
+  // Parallel deletes
+  const deletes: Promise<any>[] = [];
+  if (hotIds.length > 0) deletes.push(supabase.from('brain_memory_hot').delete().in('id', hotIds).then(({ error }) => { if (!error) removed += hotIds.length; }));
+  if (warmIds.length > 0) deletes.push(supabase.from('brain_memory_warm').delete().in('id', warmIds).then(({ error }) => { if (!error) removed += warmIds.length; }));
+  await Promise.all(deletes);
 
   return removed;
 }
 
-/**
- * Extract recurring patterns from memory content
- */
-export async function extractPatterns(
-  minFrequency: number = 3
-): Promise<MemoryPattern[]> {
+export async function extractPatterns(minFrequency: number = 3): Promise<MemoryPattern[]> {
   const patterns: Map<string, MemoryPattern> = new Map();
   
-  // Get recent memories for pattern extraction
   const { data: memories } = await supabase
     .from('brain_memory_warm')
     .select('content, context, created_at')
@@ -264,7 +210,6 @@ export async function extractPatterns(
 
   if (!memories) return [];
 
-  // Extract n-grams and phrases
   for (const memory of memories) {
     const phrases = extractPhrases(memory.content);
     
@@ -272,51 +217,37 @@ export async function extractPatterns(
       const normalizedPhrase = phrase.toLowerCase().trim();
       if (normalizedPhrase.length < 10) continue;
 
-      if (patterns.has(normalizedPhrase)) {
-        const existing = patterns.get(normalizedPhrase)!;
+      const existing = patterns.get(normalizedPhrase);
+      if (existing) {
         existing.frequency++;
         existing.lastSeen = memory.created_at;
-        if (!existing.contexts.includes(memory.context)) {
-          existing.contexts.push(memory.context);
-        }
+        if (!existing.contexts.includes(memory.context)) existing.contexts.push(memory.context);
         existing.strength = Math.min(1, existing.frequency / 10);
       } else {
         patterns.set(normalizedPhrase, {
-          id: crypto.randomUUID(),
-          pattern: normalizedPhrase,
-          frequency: 1,
-          contexts: [memory.context],
-          firstSeen: memory.created_at,
-          lastSeen: memory.created_at,
-          strength: 0.1,
+          id: crypto.randomUUID(), pattern: normalizedPhrase, frequency: 1,
+          contexts: [memory.context], firstSeen: memory.created_at,
+          lastSeen: memory.created_at, strength: 0.1,
         });
       }
     }
   }
 
-  // Filter by minimum frequency
   return Array.from(patterns.values())
     .filter(p => p.frequency >= minFrequency)
     .sort((a, b) => b.frequency - a.frequency);
 }
 
-/**
- * Store extracted patterns for future use
- */
 async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
-  for (const pattern of patterns) {
-    patternCache.set(pattern.id, pattern);
-  }
+  for (const pattern of patterns) patternCache.set(pattern.id, pattern);
   evictPatternCache();
 
-  // Persist patterns — update existing pattern memory or create new one
   if (patterns.length > 0) {
     const patternSummary = patterns.slice(0, 10).map(p =>
       `[${p.frequency}x] ${p.pattern.substring(0, 100)}`
     ).join('\n');
 
     try {
-      // Check for existing pattern extraction memory to avoid duplicates
       const { data: existing } = await supabase
         .from('brain_memory_warm')
         .select('id')
@@ -327,69 +258,47 @@ async function storePatterns(patterns: MemoryPattern[]): Promise<void> {
         .maybeSingle();
 
       if (existing) {
-        // Update existing pattern memory instead of creating duplicates
         await supabase.from('brain_memory_warm').update({
           content: `[Extracted Patterns]\n${patternSummary}`,
           value_score: 0.6,
-          metadata: {
-            pattern_count: patterns.length,
-            top_frequency: patterns[0]?.frequency,
-            extracted_at: new Date().toISOString(),
-          },
+          metadata: { pattern_count: patterns.length, top_frequency: patterns[0]?.frequency, extracted_at: new Date().toISOString() },
         }).eq('id', existing.id);
       } else {
         await supabase.from('brain_memory_warm').insert({
           content: `[Extracted Patterns]\n${patternSummary}`,
-          context: 'pattern_extraction',
-          value_score: 0.6,
-          memory_type: 'pattern',
-          source_module: 'consolidation',
-          category: 'patterns',
+          context: 'pattern_extraction', value_score: 0.6, memory_type: 'pattern',
+          source_module: 'consolidation', category: 'patterns',
           tags: ['auto_extracted', 'consolidation'],
-          metadata: {
-            pattern_count: patterns.length,
-            top_frequency: patterns[0]?.frequency,
-            extracted_at: new Date().toISOString(),
-          },
+          metadata: { pattern_count: patterns.length, top_frequency: patterns[0]?.frequency, extracted_at: new Date().toISOString() },
         });
       }
     } catch {
-      // Non-critical — in-memory cache is still populated
+      // Non-critical
     }
   }
 
-  // Log pattern extraction
-  await supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'patterns.extracted',
-    data: {
-      count: patterns.length,
-      topPatterns: patterns.slice(0, 5).map(p => ({
-        pattern: p.pattern.substring(0, 50),
-        frequency: p.frequency,
-      })),
-    } as unknown as Record<string, never>,
+  // Fire-and-forget
+  supabase.from('brain_events').insert({
+    module: 'brain', event_type: 'patterns.extracted',
+    data: { count: patterns.length, topPatterns: patterns.slice(0, 5).map(p => ({ pattern: p.pattern.substring(0, 50), frequency: p.frequency })) } as unknown as Record<string, never>,
     outcome: 'success',
-  });
+  }).then(() => {}).catch(() => {});
 }
 
 /**
- * Consolidate related memories into summary memories
+ * Consolidate related memories — uses shared jaccardSimilarity
  */
 async function consolidateRelatedMemories(threshold: number): Promise<number> {
   let consolidated = 0;
   
   try {
-    // Fetch memories grouped by context
     const { data: memories } = await supabase
       .from('brain_memory_warm')
       .select('id, content, context, value_score, created_at')
-      .order('context')
-      .limit(300);
+      .order('context').limit(300);
     
     if (!memories || memories.length === 0) return 0;
     
-    // Group by context
     const contextGroups = new Map<string, typeof memories>();
     for (const memory of memories) {
       const group = contextGroups.get(memory.context) || [];
@@ -397,59 +306,44 @@ async function consolidateRelatedMemories(threshold: number): Promise<number> {
       contextGroups.set(memory.context, group);
     }
     
-    // Process groups with multiple similar entries
-    for (const [context, group] of contextGroups.entries()) {
+    for (const [, group] of contextGroups.entries()) {
       if (group.length < 3) continue;
       
-      // Find clusters of similar content
-      const clusters: typeof memories[] = [];
+      // Pre-tokenize group
+      const tokenized = group.map(m => ({ ...m, tokens: tokenizeToSet(m.content) }));
       const processed = new Set<string>();
+      const clusters: (typeof tokenized)[] = [];
       
-      for (const memory of group) {
+      for (const memory of tokenized) {
         if (processed.has(memory.id)) continue;
         
-        const cluster = group.filter(m => {
+        const cluster = tokenized.filter(m => {
           if (processed.has(m.id) || m.id === memory.id) return false;
-          return calculateContentSimilarity(memory.content, m.content) >= threshold;
+          return jaccardSimilarity(memory.tokens, m.tokens) >= threshold;
         });
         
         if (cluster.length > 0) {
           cluster.push(memory);
           clusters.push(cluster);
-          cluster.forEach(m => processed.add(m.id));
+          for (const m of cluster) processed.add(m.id);
         }
       }
       
-      // Consolidate each cluster into a summary
       for (const cluster of clusters) {
         if (cluster.length < 2) continue;
         
-        // Create consolidated summary
-        const sortedByValue = [...cluster].sort((a, b) => 
-          (b.value_score ?? 0) - (a.value_score ?? 0)
-        );
-        
+        const sortedByValue = [...cluster].sort((a, b) => (b.value_score ?? 0) - (a.value_score ?? 0));
         const primary = sortedByValue[0];
         const secondaryIds = sortedByValue.slice(1).map(m => m.id);
         
-        // Update primary with consolidated content
         const consolidatedContent = `[Consolidated from ${cluster.length} memories]\n\n${primary.content}\n\n---\nRelated: ${sortedByValue.slice(1, 3).map(m => m.content.substring(0, 50)).join(' | ')}`;
         
-        const { error: updateError } = await supabase
-          .from('brain_memory_warm')
-          .update({
-            content: consolidatedContent,
-            value_score: Math.min(1, (primary.value_score ?? 0.5) + 0.1),
-          })
+        const { error: updateError } = await supabase.from('brain_memory_warm')
+          .update({ content: consolidatedContent, value_score: Math.min(1, (primary.value_score ?? 0.5) + 0.1) })
           .eq('id', primary.id);
         
         if (!updateError) {
-          // Mark secondary memories as consolidated (lower value)
-          await supabase
-            .from('brain_memory_warm')
-            .update({ value_score: 0.1 })
-            .in('id', secondaryIds);
-          
+          await supabase.from('brain_memory_warm').update({ value_score: 0.1 }).in('id', secondaryIds);
           consolidated += cluster.length;
         }
       }
@@ -461,78 +355,23 @@ async function consolidateRelatedMemories(threshold: number): Promise<number> {
   return consolidated;
 }
 
-/**
- * Get cached patterns
- */
-export function getCachedPatterns(): MemoryPattern[] {
-  return Array.from(patternCache.values());
-}
-
-/**
- * Get pattern by ID
- */
-export function getPattern(id: string): MemoryPattern | undefined {
-  return patternCache.get(id);
-}
-
-/**
- * Clear pattern cache
- */
-export function clearPatternCache(): void {
-  patternCache.clear();
-}
+export function getCachedPatterns(): MemoryPattern[] { return Array.from(patternCache.values()); }
+export function getPattern(id: string): MemoryPattern | undefined { return patternCache.get(id); }
+export function clearPatternCache(): void { patternCache.clear(); }
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Calculate content similarity using Jaccard similarity on tokens
- */
-function calculateContentSimilarity(a: string, b: string): number {
-  const tokensA = new Set(tokenize(a));
-  const tokensB = new Set(tokenize(b));
-  
-  if (tokensA.size === 0 || tokensB.size === 0) return 0;
-  
-  // Iterate smaller set for O(min(m,n)) intersection
-  const [smaller, larger] = tokensA.size <= tokensB.size ? [tokensA, tokensB] : [tokensB, tokensA];
-  let intersection = 0;
-  for (const t of smaller) {
-    if (larger.has(t)) intersection++;
-  }
-  const union = tokensA.size + tokensB.size - intersection;
-  return union > 0 ? intersection / union : 0;
-}
-
-/**
- * Tokenize text into words
- */
-function tokenize(text: string): string[] {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s]/g, ' ')
-    .split(/\s+/)
-    .filter(t => t.length > 2);
-}
-
-/**
- * Extract meaningful phrases from text
- */
 function extractPhrases(text: string): string[] {
   const phrases: string[] = [];
-  
-  // Split by sentence boundaries
   const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10);
   phrases.push(...sentences.map(s => s.trim()));
   
-  // Extract noun phrases (simplified)
   const words = text.split(/\s+/);
   for (let i = 0; i < words.length - 2; i++) {
     const trigram = words.slice(i, i + 3).join(' ');
-    if (trigram.length >= 10) {
-      phrases.push(trigram);
-    }
+    if (trigram.length >= 10) phrases.push(trigram);
   }
   
   return phrases;
