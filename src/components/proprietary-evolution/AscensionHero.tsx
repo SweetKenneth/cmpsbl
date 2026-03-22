@@ -323,9 +323,9 @@ export function AscensionHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 sm:mb-5"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 sm:mb-5"
           >
-            <span className="bg-gradient-to-r from-primary via-neon-purple to-neon-magenta bg-clip-text text-transparent">
+            <span className="text-primary">
               Ascend Your Software
             </span>
           </motion.h1>

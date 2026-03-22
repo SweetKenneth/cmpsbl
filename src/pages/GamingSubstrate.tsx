@@ -393,12 +393,12 @@ export default function GamingSubstrate() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <Badge className="mb-6 px-4 py-1.5 bg-purple-500/10 text-purple-400 border-purple-500/30">
+            <Badge className="mb-6 px-4 py-1.5 bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] border-[hsl(var(--neon-purple)/0.3)]">
               <Gamepad2 className="w-4 h-4 mr-2" />
               For Video Game Developers
             </Badge>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 tracking-tight">
               <span className="text-foreground">NPCs That </span>
               <span className="text-primary">Remember, Dream, Evolve</span>
             </h1>

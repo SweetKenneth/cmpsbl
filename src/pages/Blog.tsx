@@ -695,7 +695,7 @@ export default function Blog() {
               </div>
 
               {/* Supreme-style stacked type */}
-              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-[0.9] mb-4">
                 <motion.span
                   className="block font-mono uppercase tracking-[-0.05em]"
                   initial={{ opacity: 0, x: -30 }}

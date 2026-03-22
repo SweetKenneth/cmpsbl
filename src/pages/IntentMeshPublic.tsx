@@ -154,7 +154,7 @@ export default function IntentMeshPublic() {
                   CMPSBL OS Substrate
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6">
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">

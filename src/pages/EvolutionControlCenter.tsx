@@ -295,16 +295,16 @@ export default function EvolutionControlCenter() {
                 <Zap className="w-3 h-3 mr-1" /> Governed Self-Improvement
               </Badge>
               {user && (
-                <Badge variant="outline" className="border-emerald-500/30 text-emerald-400 text-[10px] sm:text-[11px] px-2.5 py-0.5">
+                <Badge variant="outline" className="border-[hsl(var(--neon-green)/0.3)] text-[hsl(var(--neon-green))] text-[10px] sm:text-[11px] px-2.5 py-0.5">
                   <Shield className="w-3 h-3 mr-1" /> Authenticated
                 </Badge>
               )}
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.08]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.08]">
               <span className="text-foreground">Your system evolves.</span>
               <br />
-              <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
+              <span className="text-primary">
                 You stay in control.
               </span>
             </h1>

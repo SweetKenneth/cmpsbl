@@ -98,12 +98,12 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
                 <Card className={cn(
                   "h-full border-2 transition-all hover:shadow-xl relative",
                   isPopular 
-                    ? "border-violet-500/50 shadow-lg shadow-violet-500/10" 
+                    ? "border-[hsl(var(--neon-purple)/0.5)] shadow-lg shadow-[hsl(var(--neon-purple)/0.1)]" 
                     : "hover:border-primary/50"
                 )}>
                   {isPopular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-gradient-to-r from-violet-500 to-purple-500 text-white border-0 gap-1 shadow-lg">
+                      <Badge className="bg-[hsl(var(--neon-purple))] text-white border-0 gap-1 shadow-lg">
                         <Star className="w-3 h-3 fill-current" />
                         Most Popular
                       </Badge>
@@ -114,13 +114,13 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
                     <div className="flex items-center gap-3 mb-4">
                       <div className={cn(
                         "p-2.5 rounded-xl",
-                        index === 0 && "bg-slate-500/10",
-                        index === 1 && "bg-violet-500/10",
-                        index === 2 && "bg-amber-500/10"
+                        index === 0 && "bg-[hsl(var(--neon-cyan)/0.1)]",
+                        index === 1 && "bg-[hsl(var(--neon-purple)/0.1)]",
+                        index === 2 && "bg-[hsl(var(--neon-amber)/0.1)]"
                       )}>
-                        {index === 0 && <Users className="w-5 h-5 text-slate-600" />}
-                        {index === 1 && <Building2 className="w-5 h-5 text-violet-500" />}
-                        {index === 2 && <Crown className="w-5 h-5 text-amber-500" />}
+                        {index === 0 && <Users className="w-5 h-5 text-[hsl(var(--neon-cyan))]" />}
+                        {index === 1 && <Building2 className="w-5 h-5 text-[hsl(var(--neon-purple))]" />}
+                        {index === 2 && <Crown className="w-5 h-5 text-[hsl(var(--neon-amber))]" />}
                       </div>
                       <div>
                         <h4 className="font-bold">{pack.name}</h4>

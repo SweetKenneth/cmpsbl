@@ -977,7 +977,7 @@ export default function STierDemos() {
               </Badge>
             </motion.div>
             
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight mb-5 leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-5 leading-[1.1]">
               <motion.span 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
