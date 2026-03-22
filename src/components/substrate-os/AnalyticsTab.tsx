@@ -248,12 +248,11 @@ export function AnalyticsTab() {
       });
       const providerBreakdown = Array.from(provMap.entries()).sort((a, b) => b[1].count - a[1].count).map(([provider, d]) => ({ provider, count: d.count, tokens: d.tokens }));
 
-      // ─── INTENT RECEIPTS ───
+      // ─── INTENT APPROXIMATION (from mesh_comms processing signals) ───
       const intentTotal = intentCountRes.count ?? 0;
-      const latRows = (intentLatencyRes.data || []) as any[];
-      const intentAvgLatency = latRows.length > 0
-        ? Math.round(latRows.reduce((s: number, r: any) => s + (r.latency_ms || 0), 0) / latRows.length)
-        : 0;
+      const resolverRows = (intentLatencyRes.data || []) as any[];
+      // Approximate latency from timestamp deltas isn't possible, so use count-only
+      const intentAvgLatency = 0; // No direct latency column; shown as "N/A" in UI
 
       setData({
         brainEvents: brainEventsCount, brainMetrics: brainMetricsCount,
