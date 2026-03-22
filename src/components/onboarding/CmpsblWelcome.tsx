@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, ChevronRight, Zap, Terminal, Database, LayoutDashboard, Route, Package } from 'lucide-react';
+import { X, ArrowRight, ChevronRight, Zap, Terminal, Database, LayoutDashboard, Route, Package, Brain, Shield, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
