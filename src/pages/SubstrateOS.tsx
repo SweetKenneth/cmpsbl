@@ -38,6 +38,7 @@ const IntentPanel = lazy(() => import('@/components/substrate-os/panels/IntentPa
 const CortexTab = lazy(() => import('@/components/substrate-os/CortexTab').then(m => ({ default: m.CortexTab })));
 const EnginesTab = lazy(() => import('@/components/substrate-os/EnginesTab').then(m => ({ default: m.EnginesTab })));
 const MaintenanceTab = lazy(() => import('@/components/substrate-os/MaintenanceTab').then(m => ({ default: m.MaintenanceTab })));
+const WebhooksTab = lazy(() => import('@/components/substrate-os/WebhooksTab').then(m => ({ default: m.WebhooksTab })));
 const EvolutionTab = lazy(() => import('@/components/substrate-os/EvolutionTab').then(m => ({ default: m.EvolutionTab })));
 const ShadowTab = lazy(() => import('@/components/substrate-os/ShadowTab').then(m => ({ default: m.ShadowTab })));
 const OracleTab = lazy(() => import('@/components/substrate-os/OracleTab').then(m => ({ default: m.OracleTab })));
