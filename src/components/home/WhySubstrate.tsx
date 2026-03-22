@@ -29,7 +29,7 @@ const nodes = [
     icon: Brain,
     title: "Persistent Memory",
     node: "BRAIN",
-    description: "3-tier memory (hot/warm/cold) that survives sessions. Your AI never forgets.",
+    description: "Four-tier cognitive memory (hot/warm/cold/glacier) that survives sessions. Your AI never forgets.",
     highlight: "Never Forgets",
     stat: "∞",
     statLabel: "Memory Depth",
