@@ -8515,44 +8515,146 @@ CRITICAL MEMORY RULES — YOU MUST FOLLOW THESE EXACTLY:
     }
 
     case "reflect": {
-      // Fetch recent decode events to provide partial data
+      // Fetch recent decode events for reflection analysis
       const { data: recentDecodes } = await supabase
         .from('cascade_conversations')
-        .select('id, created_at, intent')
+        .select('id, created_at, intent, messages')
         .order('created_at', { ascending: false })
-        .limit(5);
-      
+        .limit(10);
+
+      if (!recentDecodes || recentDecodes.length === 0) {
+        return jsonResponse({
+          success: true,
+          action,
+          reflection: "No recent conversations to reflect on. The decode channel has been quiet.",
+          patterns: [],
+          recommendations: [],
+          conversation_count: 0,
+          timestamp: new Date().toISOString(),
+        }, headers);
+      }
+
+      // Extract patterns from recent conversations
+      const intents = recentDecodes.map(d => d.intent).filter(Boolean);
+      const intentFrequency: Record<string, number> = {};
+      for (const intent of intents) {
+        intentFrequency[intent] = (intentFrequency[intent] || 0) + 1;
+      }
+
+      const topIntents = Object.entries(intentFrequency)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 5)
+        .map(([intent, count]) => ({ intent, count, percentage: Math.round((count / intents.length) * 100) }));
+
+      // Use NEXUS for AI-powered reflection
+      const reflectionPrompt = `Analyze these conversation patterns from a cognitive system's decode channel and provide a brief reflection:
+
+Top intents (last ${recentDecodes.length} conversations): ${JSON.stringify(topIntents)}
+Time range: ${recentDecodes[recentDecodes.length - 1]?.created_at} to ${recentDecodes[0]?.created_at}
+
+Provide:
+1. A 2-3 sentence reflection on usage patterns
+2. 3 actionable recommendations for the system operator
+Format as JSON: { "reflection": "...", "recommendations": ["...", "...", "..."] }`;
+
+      let reflection = `${recentDecodes.length} conversations analyzed. Top intent: ${topIntents[0]?.intent || 'unknown'} (${topIntents[0]?.percentage || 0}% of traffic).`;
+      let recommendations: string[] = ['Review conversation logs for quality', 'Check intent classification accuracy', 'Monitor response latency'];
+
+      try {
+        const aiResult = await routeTextToProvider(reflectionPrompt, {
+          systemPrompt: 'You are a cognitive system analyst. Return valid JSON only.',
+          temperature: 0.5,
+          maxTokens: 500,
+        });
+        if (aiResult.success) {
+          try {
+            const parsed = JSON.parse(aiResult.content.replace(/```json?\n?/g, '').replace(/```/g, '').trim());
+            if (parsed.reflection) reflection = parsed.reflection;
+            if (Array.isArray(parsed.recommendations)) recommendations = parsed.recommendations;
+          } catch { /* use defaults */ }
+        }
+      } catch { /* use defaults */ }
+
       return jsonResponse({
-        success: false,
-        not_implemented: true,
+        success: true,
         action,
-        message: "Decode reflect not yet implemented - conversation reflection pending",
-        partial_data: {
-          recent_conversations: recentDecodes?.length || 0,
-          last_activity: recentDecodes?.[0]?.created_at || null,
+        reflection,
+        patterns: topIntents,
+        recommendations,
+        conversation_count: recentDecodes.length,
+        time_range: {
+          from: recentDecodes[recentDecodes.length - 1]?.created_at,
+          to: recentDecodes[0]?.created_at,
         },
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
     case "summary": {
       const { sessionId } = data;
-      // Fetch session data if available
+      
+      if (!sessionId) {
+        return jsonResponse({ success: false, error: "sessionId is required" }, headers, 400);
+      }
+
+      // Fetch session data
       const { data: session } = await supabase
         .from('cascade_conversations')
-        .select('id, created_at, messages')
+        .select('id, created_at, messages, intent')
         .eq('session_id', sessionId)
         .single();
       
+      if (!session) {
+        return jsonResponse({
+          success: false,
+          action,
+          error: `No session found for sessionId: ${sessionId}`,
+        }, headers, 404);
+      }
+
+      const messages = Array.isArray(session.messages) ? session.messages : [];
+      const messageCount = messages.length;
+
+      // Use NEXUS for AI-powered summarization
+      const summaryPrompt = `Summarize this conversation session concisely:
+
+Session ID: ${sessionId}
+Messages: ${messageCount}
+Intent: ${session.intent || 'unknown'}
+Content preview: ${JSON.stringify(messages.slice(0, 5)).substring(0, 1500)}
+
+Provide a JSON response: { "summary": "2-3 sentence summary", "key_topics": ["topic1", "topic2"], "sentiment": "positive|neutral|negative" }`;
+
+      let summary = `Session with ${messageCount} messages. Intent: ${session.intent || 'general conversation'}.`;
+      let keyTopics: string[] = [session.intent || 'general'];
+      let sentiment = 'neutral';
+
+      try {
+        const aiResult = await routeTextToProvider(summaryPrompt, {
+          systemPrompt: 'You are a conversation summarizer. Return valid JSON only.',
+          temperature: 0.3,
+          maxTokens: 400,
+        });
+        if (aiResult.success) {
+          try {
+            const parsed = JSON.parse(aiResult.content.replace(/```json?\n?/g, '').replace(/```/g, '').trim());
+            if (parsed.summary) summary = parsed.summary;
+            if (Array.isArray(parsed.key_topics)) keyTopics = parsed.key_topics;
+            if (parsed.sentiment) sentiment = parsed.sentiment;
+          } catch { /* use defaults */ }
+        }
+      } catch { /* use defaults */ }
+
       return jsonResponse({
-        success: false,
-        not_implemented: true,
+        success: true,
         action,
         sessionId,
-        message: "Summary not yet implemented - conversation summarization pending",
-        partial_data: {
-          session_found: !!session,
-          message_count: session?.messages?.length || 0,
-        },
+        summary,
+        key_topics: keyTopics,
+        sentiment,
+        message_count: messageCount,
+        created_at: session.created_at,
+        timestamp: new Date().toISOString(),
       }, headers);
     }
 
