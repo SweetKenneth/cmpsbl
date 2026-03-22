@@ -44,17 +44,6 @@ const useCases = [
     timelineColor: "bg-[hsl(var(--neon-cyan)/0.15)] text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan)/0.3)]",
   },
   {
-    icon: ChefHat,
-    title: "Chatbots With True Memory",
-    description: "Conversational AI that retains customer context and builds long-term relationships.",
-    industry: "Consumer",
-    iconColor: "text-[hsl(var(--neon-magenta))]",
-    gradient: "from-[hsl(var(--neon-magenta)/0.15)] to-[hsl(var(--neon-cyan)/0.15)]",
-    borderColor: "group-hover:border-[hsl(var(--neon-magenta)/0.4)]",
-    timeline: "Available Now",
-    timelineColor: "bg-[hsl(var(--neon-cyan)/0.15)] text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan)/0.3)]",
-  },
-  {
     icon: Code,
     title: "IDE Assistants With Context",
     description: "Code editors that understand your architecture and evolve with your coding patterns.",
