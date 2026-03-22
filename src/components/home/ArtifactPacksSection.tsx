@@ -28,7 +28,7 @@ const tiers = [
   { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]" },
   { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo", color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" },
   { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo", color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]" },
-  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-[hsl(var(--primary))] to-[hsl(var(--neon-cyan))]" },
+  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-magenta))]" },
 ];
 
 export function ArtifactPacksSection() {
