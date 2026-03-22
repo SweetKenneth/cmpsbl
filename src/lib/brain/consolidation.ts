@@ -233,22 +233,16 @@ async function removeDuplicates(
   const warmIds = toRemove.filter(d => (d as any).tier !== 'hot').map(d => d.id);
 
   let removed = 0;
-  const deletes: Array<Promise<any>> = [];
 
   if (hotIds.length > 0) {
-    deletes.push(
-      supabase.from('brain_memory_hot').delete().in('id', hotIds)
-        .then(({ error }: any) => { if (!error) removed += hotIds.length; })
-    );
+    const { error } = await supabase.from('brain_memory_hot').delete().in('id', hotIds);
+    if (!error) removed += hotIds.length;
   }
   if (warmIds.length > 0) {
-    deletes.push(
-      supabase.from('brain_memory_warm').delete().in('id', warmIds)
-        .then(({ error }: any) => { if (!error) removed += warmIds.length; })
-    );
+    const { error } = await supabase.from('brain_memory_warm').delete().in('id', warmIds);
+    if (!error) removed += warmIds.length;
   }
 
-  await Promise.all(deletes);
   return removed;
 }
 
