@@ -14,7 +14,7 @@ const pillars = [
     icon: Moon,
     title: "DREAM",
     headline: "Process while idle",
-    description: "Offline synthesis cycles consolidate memories, extract latent patterns, and generate novel insights — without consuming active compute. Your system learns even when no one is using it.",
+    description: "Offline synthesis cycles consolidate memory, extract latent patterns, and generate new insights — without consuming active compute. Your system learns even when unused.",
     link: "/blog/clockless-modules-deep-dive",
     linkLabel: "How DREAM works",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
