@@ -12,10 +12,9 @@ const traditionalStack = ["Models", "Applications"];
 const cmpsblStack = ["Models", "CMPSBL AI Platform", "Applications"];
 
 const explanations = [
-  { label: "Modules", desc: "handle specialized tasks" },
-  { label: "Memories", desc: "capture proven solutions" },
-  { label: "Persistent Memory", desc: "remembers across sessions" },
-  { label: "Self-Improvement", desc: "gets smarter over time" },
+  { label: "Systems that learn", desc: "without retraining" },
+  { label: "Memory that survives", desc: "everything" },
+  { label: "Intelligence that", desc: "compounds over time" },
 ];
 
 export function HowCmpsblWorks() {
@@ -34,9 +33,9 @@ export function HowCmpsblWorks() {
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
-              How{" "}
+              Why{" "}
               <span className="text-[hsl(var(--neon-cyan))]">CMPSBL</span>{" "}
-              Works
+              Wins
             </h2>
           </div>
 
@@ -75,12 +74,8 @@ export function HowCmpsblWorks() {
           </div>
 
           {/* What the OS manages */}
-          <div className="text-center mb-4">
-            <p className="text-base sm:text-lg text-muted-foreground">
-              The platform coordinates intelligence across your application:
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="text-center mb-4" />
+          <div className="grid grid-cols-3 gap-3">
             {explanations.map((item) => (
               <div key={item.label} className="text-center p-3 rounded-lg border border-[hsl(var(--neon-purple)/0.15)] bg-[hsl(var(--neon-purple)/0.03)] hover:border-[hsl(var(--neon-purple)/0.3)] hover:bg-[hsl(var(--neon-purple)/0.05)] transition-all duration-300 card-lift">
                 <span className="text-xs font-bold text-foreground">{item.label}</span>
@@ -92,6 +87,7 @@ export function HowCmpsblWorks() {
           <p className="text-xs text-muted-foreground/60 text-center mt-6">
             CMPSBL manages memory, orchestration, governance, and continuous improvement automatically.
           </p>
+
         </motion.div>
       </div>
     </section>

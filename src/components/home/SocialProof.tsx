@@ -18,15 +18,7 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "We plugged DREAM cycles into our agent fleet and within a week they were surfacing patterns we'd never have found manually. The substrate does the thinking while we sleep.",
-    author: "J.L.",
-    role: "AI Infrastructure Lead",
-    rating: 5,
-    highlight: "DREAM Cycles",
-    accentColor: "hsl(var(--neon-purple))",
-  },
-  {
-    quote: "Building on the substrate changed everything. Our agents adapt their routing in real-time, and EVOLUTION auto-patches drift before we even notice it. We just build — the substrate handles the rest.",
+    quote: "Building on the substrate changed everything. Our agents adapt in real time, and issues resolve before we even notice them. We just build — the system handles the rest.",
     author: "M.K.",
     role: "Platform Engineer",
     rating: 5,
@@ -34,7 +26,7 @@ const TESTIMONIALS: Testimonial[] = [
     accentColor: "hsl(var(--neon-cyan))",
   },
   {
-    quote: "Persistent memory and governed evolution gave us what we couldn't build ourselves — an AI system that remembers, adapts, and stays compliant. Every action is auditable.",
+    quote: "Persistent memory and governed evolution gave us something we couldn't build ourselves — a system that remembers, adapts, and stays compliant. Every action is auditable.",
     author: "R.S.",
     role: "CTO, Enterprise SaaS",
     rating: 5,
