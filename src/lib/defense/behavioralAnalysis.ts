@@ -63,6 +63,8 @@
  const anomalies: BehavioralAnomaly[] = [];
  const MAX_EVENTS_PER_ENTITY = 1000;
  const MAX_ANOMALIES = 500;
+ // Index: entityId → count of unresolved anomalies (avoids O(n) scans)
+ const unresolvedCounts = new Map<string, number>();
  
  /**
   * Record a behavior event
