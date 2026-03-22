@@ -1115,9 +1115,18 @@ const stratumMindgames: Specimen[] = [
 
 const STRATA: Stratum[] = [
   {
+    epoch: "CONTACT",
+    codename: "The platform reached outward and made first contact with developers",
+    range: "Current epoch",
+    color: "bg-cyan-500/10 text-cyan-400",
+    borderColor: "border-cyan-500/30",
+    dotColor: "bg-cyan-500",
+    specimens: stratumContact,
+  },
+  {
     epoch: "MINDGAMES",
     codename: "The platform opened its eyes and saw users for the first time",
-    range: "Current epoch",
+    range: "Prior epoch",
     color: "bg-violet-500/10 text-violet-400",
     borderColor: "border-violet-500/30",
     dotColor: "bg-violet-500",
