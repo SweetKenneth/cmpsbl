@@ -127,8 +127,8 @@ const context = await cmpsbl.brain.recall({
     layer: "Cognitive",
     title: "DECODE Chat",
     description: "Epistemic conversation engine",
-    color: "text-fuchsia-500",
-    gradient: "from-fuchsia-500 to-pink-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Start an epistemic conversation
 const session = await cmpsbl.decode.chat({
   context: "onboarding_flow",
