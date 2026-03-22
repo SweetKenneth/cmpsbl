@@ -275,7 +275,7 @@ export function NexusTab() {
 
       {/* Sub-tabs */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab}>
-        <TabsList className="grid w-full grid-cols-4 bg-muted/30">
+        <TabsList className="grid w-full grid-cols-3 bg-muted/30">
           <TabsTrigger value="overview" className="gap-2">
             <Gauge className="w-4 h-4" />
             Overview
@@ -283,10 +283,6 @@ export function NexusTab() {
           <TabsTrigger value="providers" className="gap-2">
             <Server className="w-4 h-4" />
             Providers
-          </TabsTrigger>
-          <TabsTrigger value="image" className="gap-2">
-            <Image className="w-4 h-4" />
-            Image Gen
           </TabsTrigger>
           <TabsTrigger value="costs" className="gap-2">
             <DollarSign className="w-4 h-4" />
