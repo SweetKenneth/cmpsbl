@@ -183,7 +183,7 @@ export function MaintenanceTab() {
             size="sm"
             onClick={() => maintenance.runMaintenance('manual')}
             disabled={maintenance.isRunning}
-            className="gap-2 bg-gradient-to-r from-neon-amber to-orange-600 hover:from-neon-amber hover:to-neon-amber"
+            className="gap-2 bg-gradient-to-r from-neon-amber to-neon-amber hover:from-neon-amber hover:to-neon-amber"
           >
             {maintenance.isRunning ? (
               <Loader2 className="w-4 h-4 animate-spin" />

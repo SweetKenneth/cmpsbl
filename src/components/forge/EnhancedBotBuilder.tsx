@@ -499,7 +499,7 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
           <Button
             onClick={handleMint}
             disabled={loading || !botName.trim() || providers.length === 0}
-            className="w-full gap-2 bg-gradient-to-r from-neon-amber to-orange-600 hover:from-neon-amber hover:to-neon-amber"
+            className="w-full gap-2 bg-gradient-to-r from-neon-amber to-neon-amber hover:from-neon-amber hover:to-neon-amber"
             size="lg"
           >
             {loading ? (

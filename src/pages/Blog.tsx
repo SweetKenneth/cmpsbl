@@ -143,10 +143,10 @@ const BLOG_CATEGORIES = [
   { id: 'Research', label: 'Research', icon: TrendingUp, color: 'from-neon-green/20 to-neon-green/5', border: 'border-neon-green/30', text: 'text-neon-green', bg: 'bg-neon-green/10' },
   { id: 'Development', label: 'Development', icon: Code, color: 'from-neon-cyan/20 to-neon-cyan/5', border: 'border-neon-cyan/30', text: 'text-neon-cyan', bg: 'bg-neon-cyan/10' },
   { id: 'Accessibility', label: 'Accessibility', icon: Accessibility, color: 'from-neon-amber/20 to-neon-amber/5', border: 'border-neon-amber/30', text: 'text-neon-amber', bg: 'bg-neon-amber/10' },
-  { id: 'Protocol', label: 'Protocol', icon: BookOpen, color: 'from-neon-magenta/20 to-pink-600/5', border: 'border-neon-magenta/30', text: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
+  { id: 'Protocol', label: 'Protocol', icon: BookOpen, color: 'from-neon-magenta/20 to-neon-magenta/5', border: 'border-neon-magenta/30', text: 'text-neon-magenta', bg: 'bg-neon-magenta/10' },
   { id: 'Governance', label: 'Governance', icon: Eye, color: 'from-primary/20 to-primary/5', border: 'border-primary/30', text: 'text-primary', bg: 'bg-primary/10' },
   { id: 'Threat Intel', label: 'Threat Intel', icon: Shield, color: 'from-destructive/20 to-destructive/5', border: 'border-destructive/30', text: 'text-destructive', bg: 'bg-destructive/10' },
-  { id: 'AI Security', label: 'AI Security', icon: Shield, color: 'from-neon-amber/20 to-orange-600/5', border: 'border-neon-amber/30', text: 'text-neon-amber', bg: 'bg-neon-amber/10' },
+  { id: 'AI Security', label: 'AI Security', icon: Shield, color: 'from-neon-amber/20 to-neon-amber/5', border: 'border-neon-amber/30', text: 'text-neon-amber', bg: 'bg-neon-amber/10' },
 ] as const;
 
 const CATEGORY_ALIASES: Record<string, string> = {
@@ -256,7 +256,7 @@ function PostCard({ post, href }: { post: BlogPost; href: string }) {
             <Badge className={cn(
               "text-[10px] font-bold backdrop-blur-md border",
               isHuman
-                ? "bg-neon-amber/20 text-amber-200 border-neon-amber/40"
+                ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40"
                 : "bg-slate-400/20 text-slate-200 border-slate-300/40"
             )}>
               {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
@@ -334,7 +334,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
             <div className="absolute top-3 right-3">
               <Badge className={cn(
                 "text-[10px] font-bold backdrop-blur-md border",
-                isHuman ? "bg-neon-amber/20 text-amber-200 border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+                isHuman ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
               )}>
                 {isHuman ? <User className="w-2.5 h-2.5 mr-1" /> : <Bot className="w-2.5 h-2.5 mr-1" />}
                 {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}
@@ -402,7 +402,7 @@ function FeaturedPostCard({ post }: { post: BlogPost }) {
           <div className="absolute top-4 right-4">
             <Badge className={cn(
               "text-xs font-bold backdrop-blur-md border",
-              isHuman ? "bg-neon-amber/20 text-amber-200 border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
+              isHuman ? "bg-neon-amber/20 text-neon-amber border-neon-amber/40" : "bg-slate-400/20 text-slate-200 border-slate-300/40"
             )}>
               {isHuman ? <User className="w-3 h-3 mr-1" /> : <Bot className="w-3 h-3 mr-1" />}
               {isHuman ? (post.author || 'CMPSBL Team') : 'AI Generated'}

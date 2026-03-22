@@ -188,7 +188,7 @@ export function OperationsTab() {
                 <div className="flex items-center gap-2">
                   <mod.icon className={cn("w-4 h-4 shrink-0", mod.color)} />
                   <span className="text-xs sm:text-sm font-bold font-mono">{mod.label}</span>
-                  <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20">online</Badge>
+                  <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20">online</Badge>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 leading-relaxed">{mod.desc}</p>
                 <div className="space-y-1.5 pt-1 border-t border-border/10">
@@ -220,7 +220,7 @@ export function OperationsTab() {
               {ops.decode.recentLogs.map((log: any, i: number) => (
                 <div key={i} className="flex items-center gap-3 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10 transition-colors duration-200 hover:bg-muted/20">
                   <Badge variant="outline" className={cn("text-[8px] h-4 px-1.5 shrink-0",
-                    log.success ? 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20' : 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20'
+                    log.success ? 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20' : 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20'
                   )}>
                     {log.success ? '✓' : '✗'}
                   </Badge>

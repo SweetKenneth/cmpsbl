@@ -23,35 +23,35 @@ export const DreamEaterAvatar = ({ mood, isFeeding = false, mutationLevel = 0 }:
     switch (mood) {
       case 'peaceful':
         return {
-          body: 'from-emerald-900/80 to-teal-800/60',
+          body: 'from-neon-green/80 to-teal-800/60',
           glow: 'shadow-neon-green/50',
           eyes: 'bg-neon-green',
           aura: 'bg-neon-green/20',
         };
       case 'agitated':
         return {
-          body: 'from-orange-900/80 to-amber-800/60',
+          body: 'from-orange-900/80 to-neon-amber/60',
           glow: 'shadow-neon-amber/50',
           eyes: 'bg-neon-amber',
           aura: 'bg-neon-amber/20',
         };
       case 'nightmare':
         return {
-          body: 'from-red-950/90 to-purple-900/70',
+          body: 'from-red-950/90 to-neon-purple/70',
           glow: 'shadow-destructive/60',
           eyes: 'bg-destructive',
           aura: 'bg-destructive/30',
         };
       case 'dreaming':
         return {
-          body: 'from-violet-900/80 to-indigo-800/60',
+          body: 'from-neon-purple/80 to-primary/60',
           glow: 'shadow-neon-purple/50',
           eyes: 'bg-neon-purple',
           aura: 'bg-neon-purple/20',
         };
       case 'feeding':
         return {
-          body: 'from-cyan-900/80 to-blue-800/60',
+          body: 'from-neon-cyan/80 to-neon-blue/60',
           glow: 'shadow-neon-cyan/60',
           eyes: 'bg-neon-cyan',
           aura: 'bg-neon-cyan/30',

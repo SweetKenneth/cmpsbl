@@ -225,7 +225,7 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
                             <Button
                               size="sm"
                               onClick={() => handleApprove(pr.id)}
-                              className="bg-neon-green hover:bg-emerald-700"
+                              className="bg-neon-green hover:bg-neon-green"
                             >
                               <Check className="h-4 w-4 mr-1" />
                               Approve
@@ -247,7 +247,7 @@ export function PRQueuePanel({ onDeploy }: PRQueuePanelProps) {
                           <Button
                             size="sm"
                             onClick={() => handleDeploy(pr)}
-                            className="bg-neon-blue hover:bg-blue-700"
+                            className="bg-neon-blue hover:bg-neon-blue"
                           >
                             <Rocket className="h-4 w-4 mr-1" />
                             Deploy Now

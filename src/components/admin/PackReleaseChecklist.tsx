@@ -131,7 +131,7 @@ export function PackReleaseChecklist() {
                 key={i}
                 className={cn(
                   'flex items-start gap-2 p-2 rounded-md text-xs',
-                  issue.severity === 'error' ? 'bg-destructive/10 text-destructive' : 'bg-neon-amber/10 text-yellow-600 dark:text-neon-amber'
+                  issue.severity === 'error' ? 'bg-destructive/10 text-destructive' : 'bg-neon-amber/10 text-neon-amber dark:text-neon-amber'
                 )}
               >
                 {issue.severity === 'error' ? (

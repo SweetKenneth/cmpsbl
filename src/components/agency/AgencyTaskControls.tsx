@@ -115,7 +115,7 @@ export function AgencyTaskControls({
               <AlertDialogCancel>Keep Running</AlertDialogCancel>
               <AlertDialogAction
                 onClick={handleCancelAll}
-                className="bg-destructive hover:bg-red-700"
+                className="bg-destructive hover:bg-destructive"
               >
                 Cancel All
               </AlertDialogAction>

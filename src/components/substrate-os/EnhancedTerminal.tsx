@@ -595,9 +595,9 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     light: {
       bg: 'bg-white',
       text: 'text-gray-900',
-      accent: 'text-blue-700',
-      success: 'text-green-700',
-      error: 'text-red-700',
+      accent: 'text-neon-blue',
+      success: 'text-neon-green',
+      error: 'text-destructive',
       border: 'border-gray-300',
       input: 'text-gray-900',
       placeholder: 'placeholder:text-gray-500',
@@ -964,7 +964,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     : "biohack-suggestion-item"
                 ) : isLight ? (
                   idx === selectedSuggestion 
-                    ? "bg-blue-100 text-blue-800" 
+                    ? "bg-neon-blue text-neon-blue" 
                     : "hover:bg-gray-100 text-gray-700"
                 ) : (
                   idx === selectedSuggestion 
@@ -1006,7 +1006,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           isBiohack 
             ? "biohack-suggestions" 
             : isLight
-              ? "bg-gradient-to-r from-amber-100/50 via-white to-blue-100/50"
+              ? "bg-gradient-to-r from-neon-amber/50 via-white to-neon-blue/50"
               : "bg-gradient-to-r from-neon-amber/5 via-transparent to-neon-cyan/5"
         )}>
           <div className={cn(
@@ -1032,7 +1032,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     isBiohack 
                       ? "biohack-suggestion-item hover:biohack-suggestion-active"
                       : isLight
-                        ? "hover:bg-blue-100 hover:text-blue-800 bg-gray-100 text-gray-700"
+                        ? "hover:bg-neon-blue hover:text-neon-blue bg-gray-100 text-gray-700"
                         : "hover:bg-neon-cyan/20 hover:text-neon-cyan bg-muted/20 text-muted-foreground"
                   )}
                   onClick={() => executeSmartSuggestion(idx + 1)}
@@ -1042,7 +1042,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                     isBiohack 
                       ? "biohack-suggestion-number text-[hsl(180_100%_70%)]"
                       : isLight
-                        ? "bg-blue-200 text-blue-800 group-hover:bg-neon-blue"
+                        ? "bg-neon-blue text-neon-blue group-hover:bg-neon-blue"
                         : "bg-neon-cyan/20 text-neon-cyan group-hover:bg-neon-cyan/30"
                   )}>
                     {idx + 1}
@@ -1148,7 +1148,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
           )}>
             {showSmartSuggestions && (
               <>
-                <kbd className={isBiohack ? "biohack-kbd biohack-kbd-smart" : isLight ? "px-1 py-0.5 rounded bg-amber-200 text-amber-700" : "px-1 py-0.5 rounded bg-neon-amber/20 text-neon-amber"}>
+                <kbd className={isBiohack ? "biohack-kbd biohack-kbd-smart" : isLight ? "px-1 py-0.5 rounded bg-neon-amber text-neon-amber" : "px-1 py-0.5 rounded bg-neon-amber/20 text-neon-amber"}>
                   1-4
                 </kbd>
                 <span className={isBiohack ? "text-[hsl(280_100%_70%)]" : isLight ? "text-neon-amber" : "text-neon-amber/70"}>
@@ -1158,9 +1158,9 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
             )}
             <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-gray-200 text-gray-700" : "px-1 py-0.5 rounded bg-muted/30"}>↑↓</kbd>
             <span className={isBiohack ? "text-[hsl(180_100%_60%)]" : isLight ? "text-gray-600" : ""}>history</span>
-            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-blue-200 text-blue-700" : "px-1 py-0.5 rounded bg-neon-cyan/20 text-neon-cyan"}>Ctrl+R</kbd>
+            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-neon-blue text-neon-blue" : "px-1 py-0.5 rounded bg-neon-cyan/20 text-neon-cyan"}>Ctrl+R</kbd>
             <span>search</span>
-            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-purple-200 text-purple-700" : "px-1 py-0.5 rounded bg-neon-purple/20 text-neon-purple"}>F11</kbd>
+            <kbd className={isBiohack ? "biohack-kbd" : isLight ? "px-1 py-0.5 rounded bg-neon-purple text-neon-purple" : "px-1 py-0.5 rounded bg-neon-purple/20 text-neon-purple"}>F11</kbd>
             <span>fullscreen</span>
           </div>
         </div>

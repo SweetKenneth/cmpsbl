@@ -100,7 +100,7 @@ export function TemplateGenerator() {
             <div className="flex items-start gap-3">
               <Fingerprint className="w-6 h-6 text-neon-amber mt-0.5" />
               <div>
-                <p className="font-semibold text-amber-200">
+                <p className="font-semibold text-neon-amber">
                   Solve AI Behavioral Drift — The #1 Problem in Production AI
                 </p>
                 <p className="text-sm text-muted-foreground mt-1">

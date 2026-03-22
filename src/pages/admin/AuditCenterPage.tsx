@@ -73,8 +73,8 @@ export default function AuditCenterPage() {
   }, []);
 
   const getOutcomeColor = (outcome: string) => {
-    if (outcome === 'success' || outcome === 'completed') return 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20';
-    if (outcome === 'error' || outcome === 'failed') return 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20';
+    if (outcome === 'success' || outcome === 'completed') return 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20';
+    if (outcome === 'error' || outcome === 'failed') return 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20';
     return 'bg-muted text-muted-foreground border-border/20';
   };
 

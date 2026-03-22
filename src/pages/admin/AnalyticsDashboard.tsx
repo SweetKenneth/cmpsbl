@@ -534,9 +534,9 @@ function RetentionView({ cohorts }: { cohorts: CohortRow[] }) {
 
   const retentionColor = (pct: number) => {
     if (pct >= 30) return 'bg-neon-green/80 text-white';
-    if (pct >= 15) return 'bg-neon-green/40 text-green-100';
-    if (pct >= 5) return 'bg-neon-amber/30 text-amber-100';
-    if (pct > 0) return 'bg-destructive/20 text-red-200';
+    if (pct >= 15) return 'bg-neon-green/40 text-neon-green';
+    if (pct >= 5) return 'bg-neon-amber/30 text-neon-amber';
+    if (pct > 0) return 'bg-destructive/20 text-destructive';
     return 'bg-muted/10 text-muted-foreground';
   };
 

@@ -160,7 +160,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Target,
     label: 'Intent',
     description: 'Cross-module intent routing, goal decomposition',
-    color: 'text-orange-600',
+    color: 'text-neon-amber',
   },
   governance: {
     icon: Scale,
@@ -185,7 +185,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Crown,
     label: 'SOVEREIGN',
     description: 'Jurisdictional compliance & data sovereignty',
-    color: 'text-amber-700',
+    color: 'text-neon-amber',
   },
   oracle: {
     icon: Telescope,
@@ -209,7 +209,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Hammer,
     label: 'FORGE',
     description: 'Discovery manufacturing & code generation',
-    color: 'text-orange-700',
+    color: 'text-neon-amber',
   },
   lingua: {
     icon: Languages,
@@ -221,7 +221,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Navigation,
     label: 'COMPASS',
     description: 'Strategic navigation & trend analysis',
-    color: 'text-teal-600',
+    color: 'text-neon-cyan',
   },
   echo: {
     icon: Repeat,
@@ -233,7 +233,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Handshake,
     label: 'TREATY',
     description: 'Inter-system agreements & SLA management',
-    color: 'text-emerald-700',
+    color: 'text-neon-green',
   },
   harvest: {
     icon: Wheat,
@@ -264,7 +264,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Scale,
     label: 'ATLAS',
     description: 'Governance authority & system control',
-    color: 'text-amber-800',
+    color: 'text-neon-amber',
   },
 };
 

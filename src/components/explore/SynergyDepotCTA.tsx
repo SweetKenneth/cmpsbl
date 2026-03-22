@@ -160,7 +160,7 @@ export function SynergyDepotCTA() {
                 {/* Icon + Title */}
                 <div className="flex items-start gap-4 mb-6">
                   <motion.div 
-                    className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neon-green to-teal-600 flex items-center justify-center shadow-lg shadow-neon-green/20"
+                    className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center shadow-lg shadow-neon-green/20"
                     whileHover={{ scale: 1.1, rotate: -5 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -194,7 +194,7 @@ export function SynergyDepotCTA() {
                     { icon: Workflow, text: "Automation Kit" },
                   ].map((f) => (
                     <div key={f.text} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-green to-teal-600 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center shrink-0">
                         <f.icon className="w-3.5 h-3.5 text-white" />
                       </div>
                       <span className="font-medium">{f.text}</span>
@@ -203,7 +203,7 @@ export function SynergyDepotCTA() {
                 </div>
 
                 {/* CTA */}
-                <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-neon-green to-teal-600 text-white hover:opacity-90 shadow-lg shadow-neon-green/20 transition-all">
+                <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-neon-green to-neon-cyan text-white hover:opacity-90 shadow-lg shadow-neon-green/20 transition-all">
                   <Link to="/store">
                     Browse Discoveries
                     <ArrowRight className="w-4 h-4 ml-2" />

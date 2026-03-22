@@ -121,9 +121,9 @@ function IntelCardView({ card }: { card: IntelCard }) {
 
 function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
   const statusColors: Record<string, string> = {
-    mastered: 'text-green-700 bg-green-50',
-    progressing: 'text-blue-700 bg-blue-50',
-    stale: 'text-amber-700 bg-amber-50',
+    mastered: 'text-neon-green bg-green-50',
+    progressing: 'text-neon-blue bg-blue-50',
+    stale: 'text-neon-amber bg-amber-50',
     new: 'text-gray-600 bg-gray-50',
   };
   

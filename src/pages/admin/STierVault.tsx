@@ -80,11 +80,11 @@ const MODULE_COLORS: Record<string, string> = {
   ORACLE: "bg-sky-500/20 text-sky-400 border-sky-500/30",
   CONSCIENCE: "bg-neon-green/20 text-neon-green border-neon-green/30",
   PHANTOM: "bg-zinc-500/20 text-zinc-300 border-zinc-500/30",
-  FORGE: "bg-orange-600/20 text-neon-amber border-neon-amber/30",
+  FORGE: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
   LINGUA: "bg-neon-blue/20 text-neon-blue border-neon-blue/30",
   COMPASS: "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30",
   ECHO: "bg-neon-purple/20 text-neon-purple border-neon-purple/30",
-  TREATY: "bg-yellow-600/20 text-neon-amber border-neon-amber/30",
+  TREATY: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
   HARVEST: "bg-neon-green/20 text-neon-green border-neon-green/30",
   REFLEX: "bg-destructive/20 text-destructive border-destructive/30",
 };

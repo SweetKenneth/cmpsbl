@@ -331,13 +331,13 @@ export default function GovernorNodeDashboard() {
                       <TableCell onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center gap-1">
                           {node.status === 'candidate' && (
-                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-neon-green hover:text-emerald-700"
+                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-neon-green hover:text-neon-green"
                               onClick={() => promoteMutation.mutate(node.id)} disabled={promoteMutation.isPending} title="Promote">
                               <ArrowUpCircle className="w-4 h-4" />
                             </Button>
                           )}
                           {node.status === 'active' && (
-                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-neon-amber hover:text-amber-700"
+                            <Button size="sm" variant="ghost" className="h-7 w-7 p-0 text-neon-amber hover:text-neon-amber"
                               onClick={() => archiveMutation.mutate(node.id)} disabled={archiveMutation.isPending} title="Archive">
                               <ArrowDownCircle className="w-4 h-4" />
                             </Button>

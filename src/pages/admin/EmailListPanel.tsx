@@ -175,8 +175,8 @@ export default function EmailListPanel() {
                       <Badge variant="outline" className={cn(
                         'text-[10px] h-5',
                         entry.is_active !== false
-                          ? 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20'
-                          : 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20'
+                          ? 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20'
+                          : 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20'
                       )}>
                         {entry.is_active !== false ? 'Active' : 'Unsub'}
                       </Badge>

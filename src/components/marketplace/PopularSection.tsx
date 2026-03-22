@@ -171,7 +171,7 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
                           "w-9 h-9 rounded-xl flex items-center justify-center shrink-0 font-bold text-sm shadow-lg",
                           index === 0 ? "bg-gradient-to-br from-neon-amber to-neon-amber text-white" :
                           index === 1 ? "bg-gradient-to-br from-zinc-300 to-zinc-400 text-zinc-800" :
-                          index === 2 ? "bg-gradient-to-br from-neon-amber to-amber-700 text-white" :
+                          index === 2 ? "bg-gradient-to-br from-neon-amber to-neon-amber text-white" :
                           "bg-muted text-muted-foreground"
                         )}>
                           {index + 1}

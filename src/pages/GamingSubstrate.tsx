@@ -266,7 +266,7 @@ export default function GamingSubstrate() {
         "Emergent storytelling",
       ],
       color: "text-neon-cyan",
-      gradient: "from-neon-cyan to-teal-600",
+      gradient: "from-neon-cyan to-neon-cyan",
     },
     {
       icon: MessageSquare,
@@ -305,7 +305,7 @@ export default function GamingSubstrate() {
         "Environmental memory",
       ],
       color: "text-neon-amber",
-      gradient: "from-neon-amber to-orange-600",
+      gradient: "from-neon-amber to-neon-amber",
     },
     {
       icon: Users,
@@ -318,7 +318,7 @@ export default function GamingSubstrate() {
         "Leader/follower dynamics",
       ],
       color: "text-neon-magenta",
-      gradient: "from-neon-magenta to-pink-600",
+      gradient: "from-neon-magenta to-neon-magenta",
     },
   ];
 
@@ -329,7 +329,7 @@ export default function GamingSubstrate() {
       description: "Party members who remember your adventures together and grow based on shared experiences.",
       example: "Remember when we defeated that dragon together? I've been practicing fire resistance since then.",
       color: "text-neon-amber",
-      gradient: "from-neon-amber to-orange-600",
+      gradient: "from-neon-amber to-neon-amber",
     },
     {
       icon: Map,
@@ -345,7 +345,7 @@ export default function GamingSubstrate() {
       description: "Characters with genuine emotional memory who build authentic relationships over time.",
       example: "You remembered my favorite flower from our first conversation...",
       color: "text-neon-magenta",
-      gradient: "from-neon-magenta to-pink-600",
+      gradient: "from-neon-magenta to-neon-magenta",
     },
     {
       icon: Bot,
@@ -409,7 +409,7 @@ export default function GamingSubstrate() {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 px-4 sm:px-0">
-              <Button asChild size="lg" className="gap-2 h-12 sm:h-14 px-6 sm:px-8 text-base bg-gradient-to-r from-neon-purple to-neon-purple hover:from-purple-700 hover:to-violet-700">
+              <Button asChild size="lg" className="gap-2 h-12 sm:h-14 px-6 sm:px-8 text-base bg-gradient-to-r from-neon-purple to-neon-purple hover:from-neon-purple hover:to-neon-purple">
                 <a href="#world-engine">
                   <Crown className="w-5 h-5" />
                   Get World Engine — $2,995
@@ -603,7 +603,7 @@ export default function GamingSubstrate() {
                   onClick={handlePurchaseWorldEngine}
                   disabled={purchasing}
                   size="lg"
-                  className="h-12 sm:h-14 px-8 text-base bg-gradient-to-r from-neon-purple to-neon-purple hover:from-purple-700 hover:to-violet-700 font-bold"
+                  className="h-12 sm:h-14 px-8 text-base bg-gradient-to-r from-neon-purple to-neon-purple hover:from-neon-purple hover:to-neon-purple font-bold"
                 >
                   {purchasing ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : <Crown className="w-5 h-5 mr-2" />}
                   Get World Engine — $2,995

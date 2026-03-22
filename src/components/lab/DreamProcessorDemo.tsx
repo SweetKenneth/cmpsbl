@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const DREAM_TYPES = [
   { id: 'dream', label: 'Dream', icon: Cloud, color: 'from-neon-purple to-neon-purple' },
-  { id: 'nightmare', label: 'Nightmare', icon: Zap, color: 'from-destructive to-orange-600' },
+  { id: 'nightmare', label: 'Nightmare', icon: Zap, color: 'from-destructive to-neon-amber' },
   { id: 'vision', label: 'Vision', icon: Eye, color: 'from-neon-cyan to-neon-blue' },
 ];
 

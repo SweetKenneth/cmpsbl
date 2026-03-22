@@ -31,28 +31,28 @@ const MOOD_CONFIG: Record<DreamEaterMood, {
   pulseSpeed: number;
 }> = {
   calm: {
-    body: 'from-emerald-900/80 to-teal-800/60',
+    body: 'from-neon-green/80 to-teal-800/60',
     glow: 'shadow-neon-green/50',
     eyes: 'bg-neon-green',
     aura: 'bg-neon-green/20',
     pulseSpeed: 4,
   },
   curious: {
-    body: 'from-violet-900/80 to-indigo-800/60',
+    body: 'from-neon-purple/80 to-primary/60',
     glow: 'shadow-neon-purple/50',
     eyes: 'bg-neon-purple',
     aura: 'bg-neon-purple/20',
     pulseSpeed: 2.5,
   },
   agitated: {
-    body: 'from-orange-900/80 to-amber-800/60',
+    body: 'from-orange-900/80 to-neon-amber/60',
     glow: 'shadow-neon-amber/50',
     eyes: 'bg-neon-amber',
     aura: 'bg-neon-amber/20',
     pulseSpeed: 1.5,
   },
   fractured: {
-    body: 'from-red-950/90 to-purple-900/70',
+    body: 'from-red-950/90 to-neon-purple/70',
     glow: 'shadow-destructive/60',
     eyes: 'bg-destructive',
     aura: 'bg-destructive/30',
@@ -66,21 +66,21 @@ const MOOD_CONFIG: Record<DreamEaterMood, {
     pulseSpeed: 6,
   },
   feral: {
-    body: 'from-rose-950/95 to-red-900/80',
+    body: 'from-rose-950/95 to-destructive/80',
     glow: 'shadow-neon-magenta/70',
     eyes: 'bg-neon-magenta',
     aura: 'bg-neon-magenta/40',
     pulseSpeed: 0.4,
   },
   feeding: {
-    body: 'from-cyan-900/80 to-blue-800/60',
+    body: 'from-neon-cyan/80 to-neon-blue/60',
     glow: 'shadow-neon-cyan/60',
     eyes: 'bg-neon-cyan',
     aura: 'bg-neon-cyan/30',
     pulseSpeed: 0.3,
   },
   dreaming: {
-    body: 'from-indigo-900/80 to-purple-800/60',
+    body: 'from-primary/80 to-neon-purple/60',
     glow: 'shadow-primary/50',
     eyes: 'bg-primary',
     aura: 'bg-primary/25',

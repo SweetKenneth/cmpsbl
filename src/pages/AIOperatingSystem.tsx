@@ -75,12 +75,12 @@ const sectors = [
   { label: "Operations", nodes: "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE", count: 6, color: "from-neon-amber/10 to-neon-amber/5" },
   { label: "Execution", nodes: "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION", count: 10, color: "from-neon-green/10 to-neon-green/5" },
   { label: "Safety", nodes: "COMPLIANCE, PREDICT, ETHICS, CONTRACT", count: 4, color: "from-neon-cyan/10 to-neon-cyan/5" },
-  { label: "Simulation", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-neon-amber/10 to-orange-600/5" },
-  { label: "Manufacturing", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-neon-magenta/10 to-pink-600/5" },
+  { label: "Simulation", nodes: "SIMULATE, GEOSPATIAL, EDGE", count: 3, color: "from-neon-amber/10 to-neon-amber/5" },
+  { label: "Manufacturing", nodes: "FORGE, TRANSLATE, INGEST", count: 3, color: "from-neon-magenta/10 to-neon-magenta/5" },
   { label: "Evolution", nodes: "EVOLUTION, SHADOW, PHANTOM", count: 3, color: "from-destructive/10 to-destructive/5" },
   { label: "Fields", nodes: "EVOLUTION, IMMUNITY, INTENT", count: 3, color: "from-primary/10 to-primary/5" },
   { label: "Governance", nodes: "GOVERNANCE", count: 1, color: "from-slate-500/10 to-slate-600/5" },
-  { label: "Discovery", nodes: "ATLAS", count: 1, color: "from-neon-cyan/10 to-teal-600/5" },
+  { label: "Discovery", nodes: "ATLAS", count: 1, color: "from-neon-cyan/10 to-neon-cyan/5" },
   { label: "Security", nodes: "DEFENSE", count: 1, color: "from-neon-magenta/10 to-neon-magenta/5" },
 ];
 

@@ -177,7 +177,7 @@ export function BundlesSection({ onBuyBundle, isLoading }: BundlesSectionProps) 
           <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
             <Package className="w-5 h-5 text-neon-amber" />
             Volume Bundles
-            <Badge variant="outline" className="ml-2 border-neon-amber/30 text-orange-600">Best Savings</Badge>
+            <Badge variant="outline" className="ml-2 border-neon-amber/30 text-neon-amber">Best Savings</Badge>
           </h3>
 
           <div className="grid sm:grid-cols-3 gap-6">

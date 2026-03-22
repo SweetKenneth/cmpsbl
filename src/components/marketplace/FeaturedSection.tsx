@@ -190,7 +190,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                   >
                     <Globe className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                   </motion.div>
-                  <Badge variant="outline" className="border-neon-amber/50 text-orange-600 bg-neon-amber/5 gap-1">
+                  <Badge variant="outline" className="border-neon-amber/50 text-neon-amber bg-neon-amber/5 gap-1">
                     <Layers className="w-3 h-3" />
                     Game Dev
                   </Badge>
@@ -264,7 +264,7 @@ export function FeaturedSection({ onBuyOS, onBuyWorldEngine, isLoading }: Featur
                       disabled={isLoading} 
                       size="lg"
                       variant="outline"
-                      className="w-full sm:w-auto gap-2 border-neon-amber/50 text-orange-600 hover:bg-neon-amber/10 hover:border-neon-amber"
+                      className="w-full sm:w-auto gap-2 border-neon-amber/50 text-neon-amber hover:bg-neon-amber/10 hover:border-neon-amber"
                     >
                       <ShoppingCart className="w-5 h-5" />
                       Buy Now

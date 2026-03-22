@@ -518,7 +518,7 @@ export default function EvolutionMeshDashboard() {
                   <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => resetPipelineMutation.mutate()}
-                    className="bg-neon-amber text-white hover:bg-amber-700 w-full sm:w-auto"
+                    className="bg-neon-amber text-white hover:bg-neon-amber w-full sm:w-auto"
                   >
                     {resetPipelineMutation.isPending ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <RotateCcw className="w-3 h-3 mr-1" />}
                     Confirm Reset

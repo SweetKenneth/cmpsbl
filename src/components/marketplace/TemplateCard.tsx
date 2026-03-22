@@ -34,11 +34,11 @@ const categoryGradients: Record<string, string> = {
   brain: 'from-neon-purple/30 via-neon-purple/20 to-neon-magenta/30',
   decode: 'from-neon-cyan/30 via-neon-cyan/20 to-neon-blue/30',
   defense: 'from-neon-magenta/30 via-neon-magenta/20 to-destructive/30',
-  nexus: 'from-neon-green/30 via-neon-green/20 to-teal-600/30',
+  nexus: 'from-neon-green/30 via-neon-green/20 to-neon-cyan/30',
   vision: 'from-neon-blue/30 via-neon-blue/20 to-primary/30',
   dream: 'from-neon-purple/30 via-neon-purple/20 to-primary/30',
   system: 'from-slate-600/30 via-slate-500/20 to-zinc-600/30',
-  world_engine: 'from-orange-600/30 via-neon-amber/20 to-neon-amber/30',
+  world_engine: 'from-neon-amber/30 via-neon-amber/20 to-neon-amber/30',
 };
 
 const categoryColors: Record<string, string> = {

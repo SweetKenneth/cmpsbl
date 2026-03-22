@@ -72,7 +72,7 @@ const solutions = [
     features: ["24 packs across 6 categories", "Equal-weight slot system", "Activate and swap instantly", "All packs visible to all tiers", "Category-organized catalog", "Builder to Architect scaling"],
     metrics: ["24 Packs", "6 Categories", "1 Slot Each"],
     link: "/packs",
-    color: "from-neon-amber to-orange-600",
+    color: "from-neon-amber to-neon-amber",
   },
   {
     icon: Globe,
@@ -92,7 +92,7 @@ const solutions = [
     features: ["Live code execution", "30 free templates", "Real-time preview", "API testing sandbox", "Export to production", "Free for all users"],
     metrics: ["FREE", "30 Templates", "Real-Time"],
     link: "/codelab",
-    color: "from-neon-cyan to-teal-600",
+    color: "from-neon-cyan to-neon-cyan",
   },
 ];
 

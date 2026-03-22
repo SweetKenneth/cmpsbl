@@ -24,11 +24,11 @@ import { toast } from 'sonner';
 
 const INTENT_TYPES = [
   { type: 'query', label: 'Query', handlers: ['DECODE', 'BRAIN', 'MEMORY'], color: 'bg-neon-cyan/15 text-neon-cyan dark:text-neon-cyan border-neon-cyan/25' },
-  { type: 'generate', label: 'Generate', handlers: ['ENCODE', 'FORGE', 'NEXUS'], color: 'bg-neon-magenta/15 text-fuchsia-700 dark:text-neon-magenta border-neon-magenta/25' },
-  { type: 'analyze', label: 'Analyze', handlers: ['VISION', 'ORACLE', 'CORTEX'], color: 'bg-neon-amber/15 text-amber-700 dark:text-neon-amber border-neon-amber/25' },
-  { type: 'manage', label: 'Manage', handlers: ['GOVERNANCE', 'ATLAS'], color: 'bg-primary/15 text-indigo-700 dark:text-primary border-primary/25' },
-  { type: 'learn', label: 'Learn', handlers: ['BRAIN', 'MEMORY', 'DREAM'], color: 'bg-neon-purple/15 text-purple-700 dark:text-neon-purple border-neon-purple/25' },
-  { type: 'secure', label: 'Secure', handlers: ['DEFENSE', 'PHANTOM'], color: 'bg-destructive/15 text-red-700 dark:text-destructive border-destructive/25' },
+  { type: 'generate', label: 'Generate', handlers: ['ENCODE', 'FORGE', 'NEXUS'], color: 'bg-neon-magenta/15 text-neon-magenta dark:text-neon-magenta border-neon-magenta/25' },
+  { type: 'analyze', label: 'Analyze', handlers: ['VISION', 'ORACLE', 'CORTEX'], color: 'bg-neon-amber/15 text-neon-amber dark:text-neon-amber border-neon-amber/25' },
+  { type: 'manage', label: 'Manage', handlers: ['GOVERNANCE', 'ATLAS'], color: 'bg-primary/15 text-primary dark:text-primary border-primary/25' },
+  { type: 'learn', label: 'Learn', handlers: ['BRAIN', 'MEMORY', 'DREAM'], color: 'bg-neon-purple/15 text-neon-purple dark:text-neon-purple border-neon-purple/25' },
+  { type: 'secure', label: 'Secure', handlers: ['DEFENSE', 'PHANTOM'], color: 'bg-destructive/15 text-destructive dark:text-destructive border-destructive/25' },
 ];
 
 const AFFINITY_PAIRS = [
@@ -122,9 +122,9 @@ export default function IntentPanel() {
   const pendingCount = messages.filter(m => m.status === 'pending').length;
 
   const urgencyColor = (u: string) => {
-    if (u === 'critical') return 'bg-destructive/15 text-red-700 dark:text-destructive border-destructive/25';
-    if (u === 'high') return 'bg-neon-amber/15 text-amber-700 dark:text-neon-amber border-neon-amber/25';
-    if (u === 'medium') return 'bg-neon-blue/15 text-blue-700 dark:text-neon-blue border-neon-blue/25';
+    if (u === 'critical') return 'bg-destructive/15 text-destructive dark:text-destructive border-destructive/25';
+    if (u === 'high') return 'bg-neon-amber/15 text-neon-amber dark:text-neon-amber border-neon-amber/25';
+    if (u === 'medium') return 'bg-neon-blue/15 text-neon-blue dark:text-neon-blue border-neon-blue/25';
     return 'bg-muted/30 text-muted-foreground border-border/20';
   };
 

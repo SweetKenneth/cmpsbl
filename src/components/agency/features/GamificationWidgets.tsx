@@ -99,7 +99,7 @@ export function LevelBadge({ level: levelNum, size = 'md', showTitle = false, cl
       <motion.div
         className={cn(
           'flex items-center justify-center rounded-full',
-          'bg-gradient-to-br from-neon-amber to-orange-600',
+          'bg-gradient-to-br from-neon-amber to-neon-amber',
           'shadow-lg shadow-neon-amber/30',
           sizeClasses[size]
         )}
@@ -143,7 +143,7 @@ export function AchievementBadge({
     uncommon: 'from-neon-green to-neon-green',
     rare: 'from-neon-blue to-primary',
     epic: 'from-neon-purple to-neon-purple',
-    legendary: 'from-neon-amber to-orange-600',
+    legendary: 'from-neon-amber to-neon-amber',
   };
   
   const sizeClasses = {

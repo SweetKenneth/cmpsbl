@@ -27,7 +27,7 @@ const OBSERVER_FEATURES = [
     icon: BarChart3,
     title: "Public Metrics",
     description: "View aggregate performance benchmarks and validation methodology results.",
-    gradient: "from-neon-green to-teal-600",
+    gradient: "from-neon-green to-neon-cyan",
   },
   {
     icon: FileText,
@@ -39,13 +39,13 @@ const OBSERVER_FEATURES = [
     icon: BookOpen,
     title: "Research Materials",
     description: "Access to academic-grade documentation suitable for citation and reference.",
-    gradient: "from-neon-amber to-orange-600",
+    gradient: "from-neon-amber to-neon-amber",
   },
   {
     icon: Shield,
     title: "Standards Reference",
     description: "Review AIGVRN governance namespace and LLMS.txt machine context standards.",
-    gradient: "from-neon-magenta to-pink-600",
+    gradient: "from-neon-magenta to-neon-magenta",
   },
   {
     icon: Layers,

@@ -186,8 +186,8 @@ export default function GovernorPanel() {
   }, []);
 
   const getOutcomeColor = (outcome: string) => {
-    if (outcome === 'success' || outcome === 'completed') return 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20';
-    if (outcome === 'error' || outcome === 'failed') return 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20';
+    if (outcome === 'success' || outcome === 'completed') return 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20';
+    if (outcome === 'error' || outcome === 'failed') return 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20';
     return 'bg-muted text-muted-foreground border-border/20';
   };
 
@@ -335,7 +335,7 @@ export default function GovernorPanel() {
                   <div className="flex items-center gap-2">
                     <node.icon className={cn("w-4 h-4 shrink-0", node.color)} />
                     <span className="text-xs sm:text-sm font-bold font-mono">{node.module}</span>
-                    <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20">active</Badge>
+                    <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20">active</Badge>
                   </div>
                   <p className="text-[10px] sm:text-[11px] text-muted-foreground/60">{node.desc}</p>
                   <div className="space-y-1.5">

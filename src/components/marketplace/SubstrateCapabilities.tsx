@@ -53,7 +53,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'relationships',
     title: 'Relationship Mapping',
     icon: Network,
-    color: 'from-neon-green to-teal-600',
+    color: 'from-neon-green to-neon-cyan',
     description: 'Build and traverse semantic connections between concepts',
     features: [
       { name: 'Entity Extraction', description: 'Identify people, places, and concepts from text', icon: Users },
@@ -68,7 +68,7 @@ const CAPABILITY_CATEGORIES = [
     id: 'learning',
     title: 'Adaptive Learning',
     icon: TrendingUp,
-    color: 'from-neon-amber to-orange-600',
+    color: 'from-neon-amber to-neon-amber',
     description: 'Self-improving systems that get smarter with each interaction',
     features: [
       { name: 'Difficulty Scaling', description: 'Adjust complexity based on user mastery', icon: Gauge },

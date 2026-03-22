@@ -154,7 +154,7 @@ export function HealButton({
               "gap-2 min-w-[140px]",
               isUrgent ? "bg-destructive hover:bg-destructive/90" :
               isDegraded ? "bg-neon-amber hover:bg-neon-amber text-black" :
-              "bg-neon-green hover:bg-green-700"
+              "bg-neon-green hover:bg-neon-green"
             )}
           >
             {isHealing ? (

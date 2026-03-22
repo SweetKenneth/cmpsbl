@@ -47,7 +47,7 @@ const PILLARS = [
     color: "text-neon-green",
     bg: "bg-neon-green/10",
     border: "border-neon-green/20",
-    gradient: "from-neon-green to-teal-600",
+    gradient: "from-neon-green to-neon-cyan",
   },
   {
     icon: TrendingUp,
@@ -57,7 +57,7 @@ const PILLARS = [
     color: "text-neon-amber",
     bg: "bg-neon-amber/10",
     border: "border-neon-amber/20",
-    gradient: "from-neon-amber to-orange-600",
+    gradient: "from-neon-amber to-neon-amber",
   },
   {
     icon: Brain,

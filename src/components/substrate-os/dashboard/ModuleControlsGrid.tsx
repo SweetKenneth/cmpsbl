@@ -119,7 +119,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'access', name: 'ACCESS', layer: 'kernel' as const, icon: Key,
       description: 'Identity, API keys & metering',
-      gradient: 'bg-gradient-to-r from-neon-amber to-yellow-600', accentColor: 'bg-neon-amber',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: accessStatus,
       metrics: [{ label: 'Identity', value: accessStatus.data?.success ? 'Verified' : 'Checking' }],
       actions: [{ id: 'products', label: 'Products', icon: Layers }],
@@ -148,7 +148,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'decode', name: 'DECODE', layer: 'cognitive' as const, icon: MessageSquare,
       description: 'Epistemic conversation engine',
-      gradient: 'bg-gradient-to-r from-neon-magenta to-pink-600', accentColor: 'bg-neon-magenta',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: decodeStatus,
       metrics: [{ label: 'Interface', value: decodeStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -210,7 +210,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'system', name: 'SYSTEM', layer: 'admin' as const, icon: Settings,
       description: 'Core administration & control',
-      gradient: 'bg-gradient-to-r from-neon-green to-teal-600', accentColor: 'bg-neon-green',
+      gradient: 'bg-gradient-to-r from-neon-green to-neon-cyan', accentColor: 'bg-neon-green',
       status: systemStatusQuery,
       metrics: [{ label: 'Health', value: systemStatusQuery.data?.success ? 'Nominal' : 'Checking' }],
       actions: [{ id: 'heal', label: 'Heal', icon: Wrench, variant: 'success' as const }],
@@ -219,7 +219,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'admin' as const, icon: Sparkles,
       description: 'Bounded self-evolution engine',
-      gradient: 'bg-gradient-to-r from-neon-magenta to-pink-600', accentColor: 'bg-neon-magenta',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: evolutionAdminStatus,
       metrics: [{ label: 'Engine', value: evolutionAdminStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'scan', label: 'Scan', icon: Activity }],
@@ -439,7 +439,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'orchestrator' as const, icon: Sparkles,
       description: 'Mutation pipeline & shadow runs',
-      gradient: 'bg-gradient-to-r from-neon-magenta to-pink-600', accentColor: 'bg-neon-magenta',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: evolutionStatus,
       metrics: [{ label: 'Field', value: evolutionStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],

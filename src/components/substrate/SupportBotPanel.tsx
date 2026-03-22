@@ -64,7 +64,7 @@ function ChatMessage({ message, onFeedback }: ChatMessageProps) {
           isBot 
             ? 'bg-muted text-muted-foreground' 
             : isSystem
-            ? 'bg-neon-amber/10 text-yellow-600 border border-neon-amber/20'
+            ? 'bg-neon-amber/10 text-neon-amber border border-neon-amber/20'
             : 'bg-primary text-primary-foreground'
         }`}>
           <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -426,7 +426,7 @@ export function SupportBotPanel() {
               <span>Escalation threshold</span>
               <span className="font-mono">{Math.round(state.config.escalation_threshold * 100)}%</span>
             </div>
-            <Progress value={state.config.escalation_threshold * 100} className="bg-yellow-100" />
+            <Progress value={state.config.escalation_threshold * 100} className="bg-neon-amber" />
           </div>
 
           <Separator className="my-4" />

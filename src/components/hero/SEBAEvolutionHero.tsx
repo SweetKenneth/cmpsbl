@@ -74,7 +74,7 @@ const sebaPhases = [
     id: "apply", 
     name: "Apply", 
     icon: Sparkles, 
-    color: "from-neon-magenta via-neon-magenta to-pink-600",
+    color: "from-neon-magenta via-neon-magenta to-neon-magenta",
     glowColor: "340 100% 60%",
     borderColor: "border-neon-magenta/60",
     bgColor: "bg-neon-magenta/15",

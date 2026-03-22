@@ -179,7 +179,7 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
                   ? 'This Apex Discovery capability requires an Enterprise subscription. Upgrade to unlock code snippets, SDK imports, and full documentation.'
                   : 'This artifact is delivered as a black-boxed runtime. Source code, export, and cloning are permanently disabled to protect proprietary architecture.'}
               </p>
-              <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-orange-600 hover:bg-neon-amber" : "bg-neon-amber hover:bg-neon-amber")}>
+              <Button asChild className={cn("mt-2", isBlackBoxed && !isGated ? "bg-neon-amber hover:bg-neon-amber" : "bg-neon-amber hover:bg-neon-amber")}>
                 <Link to="/store?tab=plans">
                   <Crown className="w-4 h-4 mr-2" />
                   {isGated ? 'View Enterprise Plans' : 'View Plans'}

@@ -136,15 +136,15 @@ function usePredictions() {
 }
 
 const signalColor = (s: string) => {
-  if (s === 'stable' || s === 'low') return 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20';
-  if (s === 'caution' || s === 'medium') return 'bg-neon-amber/10 text-amber-700 dark:text-neon-amber border-neon-amber/20';
-  return 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20';
+  if (s === 'stable' || s === 'low') return 'bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20';
+  if (s === 'caution' || s === 'medium') return 'bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20';
+  return 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20';
 };
 
 const sevColor = (s: string) => {
-  if (s === 'info') return 'bg-neon-blue/10 text-blue-700 dark:text-neon-blue border-neon-blue/20';
-  if (s === 'warn') return 'bg-neon-amber/10 text-amber-700 dark:text-neon-amber border-neon-amber/20';
-  return 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20';
+  if (s === 'info') return 'bg-neon-blue/10 text-neon-blue dark:text-neon-blue border-neon-blue/20';
+  if (s === 'warn') return 'bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20';
+  return 'bg-destructive/10 text-destructive dark:text-destructive border-destructive/20';
 };
 
 export function OracleTab() {

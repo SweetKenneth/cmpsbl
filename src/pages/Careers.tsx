@@ -31,13 +31,13 @@ const values = [
     icon: Heart,
     title: "Care Deeply",
     description: "About the craft, about each other, about the humans who use what we build. Quality is non-negotiable.",
-    gradient: "from-neon-magenta to-pink-600",
+    gradient: "from-neon-magenta to-neon-magenta",
   },
   {
     icon: Sparkles,
     title: "Dream Boldly",
     description: "CMPSBL exists because someone believed machines could learn to improve themselves. We hire people who believe in the impossible.",
-    gradient: "from-neon-amber to-orange-600",
+    gradient: "from-neon-amber to-neon-amber",
   },
   {
     icon: Globe,

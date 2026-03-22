@@ -110,7 +110,7 @@ export default function DeveloperShowcase() {
       icon: Layers, title: "Event-Driven Architecture",
       description: "Decouple your app with pub/sub messaging. Events flow through the system, nodes react, and state propagates automatically.",
       features: ["Pub/sub messaging", "Event sourcing", "Replay capability", "Webhook integration"],
-      color: "text-neon-amber", gradient: "from-neon-amber to-orange-600",
+      color: "text-neon-amber", gradient: "from-neon-amber to-neon-amber",
     },
   ];
 
@@ -118,7 +118,7 @@ export default function DeveloperShowcase() {
     { icon: Bot, title: "AI Assistants", description: "Build chatbots that remember users across sessions and learn from every conversation.", example: "cmpsbl.brain.remember({ user_id, context })", color: "text-neon-cyan", gradient: "from-neon-cyan to-neon-blue" },
     { icon: FileCode, title: "Smart Document Search", description: "Retrieve documents with memory-enhanced context — not just keyword matching.", example: "cmpsbl.brain.recall({ query, limit: 10 })", color: "text-neon-purple", gradient: "from-neon-purple to-neon-purple" },
     { icon: Workflow, title: "Autonomous Agents", description: "Multi-step agents with persistent state, self-correction, and continuous learning.", example: "cmpsbl.agency.createTask({ type, members })", color: "text-neon-green", gradient: "from-neon-green to-neon-green" },
-    { icon: Puzzle, title: "Plugin Systems", description: "Build extensible architectures where plugins share a common cognitive layer.", example: "cmpsbl.core.register({ node, config })", color: "text-neon-magenta", gradient: "from-neon-magenta to-pink-600" },
+    { icon: Puzzle, title: "Plugin Systems", description: "Build extensible architectures where plugins share a common cognitive layer.", example: "cmpsbl.core.register({ node, config })", color: "text-neon-magenta", gradient: "from-neon-magenta to-neon-magenta" },
   ];
 
   const techCapabilities = [
@@ -161,7 +161,7 @@ export default function DeveloperShowcase() {
                to your applications. 40 specialized modules across 12 coordinated groups — all accessible via SDK or REST API.
              </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-               <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-cyan hover:to-blue-700 shadow-lg shadow-neon-cyan/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
+               <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-cyan hover:to-neon-blue shadow-lg shadow-neon-cyan/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
                  <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
                </Button>
                <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base">

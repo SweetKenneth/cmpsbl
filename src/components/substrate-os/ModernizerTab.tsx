@@ -1430,7 +1430,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                       setPromoteDialog({ open: true, planId: validationDialog.planId });
                     }
                   }}
-                  className="w-full bg-neon-green hover:bg-emerald-700"
+                  className="w-full bg-neon-green hover:bg-neon-green"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Promote to Production
@@ -1517,7 +1517,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                       setPromoteDialog({ open: true, planId: testDialog.planId });
                     }
                   }}
-                  className="w-full bg-neon-green hover:bg-emerald-700"
+                  className="w-full bg-neon-green hover:bg-neon-green"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Promote to Production
@@ -1656,7 +1656,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             <Button
               disabled={confirmValue !== 'CONFIRM' || applyMutation.isPending || !applyDialog.planId}
               onClick={() => applyDialog.planId && applyMutation.mutate(applyDialog.planId)}
-              className="bg-neon-green hover:bg-emerald-700"
+              className="bg-neon-green hover:bg-neon-green"
             >
               {applyMutation.isPending ? (
                 <>
@@ -1823,7 +1823,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             <Button
               disabled={confirmValue !== 'PROMOTE' || promoteMutation.isPending || !promoteDialog.planId}
               onClick={() => promoteDialog.planId && promoteMutation.mutate(promoteDialog.planId)}
-              className="bg-neon-green hover:bg-emerald-700"
+              className="bg-neon-green hover:bg-neon-green"
             >
               {promoteMutation.isPending ? (
                 <>

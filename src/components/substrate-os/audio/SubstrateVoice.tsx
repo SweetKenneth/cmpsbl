@@ -36,7 +36,7 @@ const VOICE_CONFIGS: Record<VoiceType, { icon: string; gradient: string; sound: 
   },
   warning: {
     icon: '◇',
-    gradient: 'from-neon-amber to-orange-600',
+    gradient: 'from-neon-amber to-neon-amber',
     sound: 'notification',
   },
   error: {
