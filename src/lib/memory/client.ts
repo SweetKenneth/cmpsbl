@@ -517,6 +517,11 @@ export class MemoryClient {
       const hotInserts: any[] = [];
       const warmInserts: any[] = [];
 
+      // Hoist shared provenance + timestamp outside loop
+      const shareTs = new Date().toISOString();
+      const shareProvenance = this.buildProvenance('cross_agent_share');
+      shareProvenance.lineage = [`shared_from:${this.agentId}:${shareTs}`];
+
       for (const entry of allData as any[]) {
         const sourceSalience = entry.salience_score || 0.5;
         const sharedSalience = sourceSalience * 0.8;
@@ -532,10 +537,7 @@ export class MemoryClient {
             memory_type: entry.memory_type,
             salience_score: sharedSalience,
             value_score: sharedSalience * 0.7,
-            provenance: {
-              ...this.buildProvenance('cross_agent_share'),
-              lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
-            },
+            provenance: shareProvenance,
             metadata: { ...entry.metadata, shared_from_agent: this.agentId },
             tags: ['cross_agent_share'],
           });
