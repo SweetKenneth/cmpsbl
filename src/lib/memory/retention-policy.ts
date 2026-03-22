@@ -303,7 +303,7 @@ async function compactGlacierMetadata(): Promise<{ compressed: number; spaceSave
       
       if (compactStr.length < original.length * 0.8) {
         updates.push(
-          supabase.from('brain_memory_archive').update({ tags: compact as any }).eq('id', arch.id)
+          supabase.from('brain_memory_archive').update({ tags: compact as any }).eq('id', arch.id).then()
         );
         compressed++;
         spaceSavedBytes += original.length - compactStr.length;
