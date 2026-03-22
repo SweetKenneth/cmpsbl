@@ -75,24 +75,16 @@ export function NexusTab() {
       const today = new Date().toISOString().split('T')[0];
 
       // Fetch real API call data from ai_usage_log
-      const [todayLogsRes, imageCountRes] = await Promise.all([
+      const [todayLogsRes] = await Promise.all([
         supabase
           .from('ai_usage_log')
           .select('provider, success, tokens_used, cost, response_time_ms, category, created_at, model')
           .gte('created_at', `${today}T00:00:00Z`)
           .order('created_at', { ascending: false })
           .limit(500),
-        supabase
-          .from('ai_usage_log')
-          .select('id', { count: 'exact', head: true })
-          .eq('category', 'image_generation')
-          .gte('created_at', `${today}T00:00:00Z`),
       ]);
 
       const todayLogs = todayLogsRes.data || [];
-      const imagesUsed = imageCountRes.count || 0;
-      const remaining = Math.max(0, 25 - imagesUsed);
-      setImageRemaining(remaining);
 
       // Aggregate per-provider stats from real data
       const providerMap: Record<string, { calls: number; successes: number; totalLatency: number; tokens: number }> = {};
