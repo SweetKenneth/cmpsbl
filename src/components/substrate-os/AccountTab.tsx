@@ -1,5 +1,5 @@
 /**
- * Account Tab — Personalized profile hub with discovery stats & quick links.
+ * Account Tab — Enhanced profile hub with security, sessions, API keys & activity.
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -19,10 +21,13 @@ import {
   Camera, Save, User, Mail, Calendar, Sparkles, ExternalLink,
   Flame, BookOpen, Code2, FileText, Map, Crown, Shield, Compass,
   Loader2, Check, Pencil, Brain, TrendingUp, Pickaxe, Trophy, Zap,
+  Key, Fingerprint, Clock, Activity, LogOut, Globe, Smartphone,
+  Monitor, ChevronRight, Lock, Bell, Eye, Terminal, BarChart3,
+  RefreshCw, AlertTriangle, CheckCircle2, XCircle, Plug,
 } from 'lucide-react';
 import { useUserRole } from '@/hooks/useUserRole';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
-import { formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow, format } from 'date-fns';
 import { AnimatedCounter } from '@/components/ui/AnimatedCounter';
 
 interface ProfileData {
@@ -43,15 +48,32 @@ interface DiscoveryStats {
   categoryCounts: Record<string, number>;
 }
 
+interface ApiKeyInfo {
+  id: string;
+  name: string | null;
+  key_prefix: string;
+  is_active: boolean | null;
+  last_used_at: string | null;
+  created_at: string | null;
+}
+
+interface RecentActivity {
+  id: string;
+  action: string;
+  module: string;
+  created_at: string | null;
+  tokens_used: number | null;
+}
+
 const QUICK_LINKS = [
   { label: 'Memory Foundry', href: '/foundry', icon: Flame, description: 'Discover & crystallize software artifacts', color: 'from-orange-500/15 to-amber-500/10 border-orange-500/20' },
   { label: 'Developer Academy', href: '/academy', icon: BookOpen, description: 'Master the substrate with guided learning', color: 'from-blue-500/15 to-cyan-500/10 border-blue-500/20' },
   { label: 'CodeLab', href: '/codelab', icon: Code2, description: 'Interactive coding playground', color: 'from-emerald-500/15 to-green-500/10 border-emerald-500/20' },
+  { label: 'SDK Playground', href: '/sdk-playground', icon: Terminal, description: 'Test live API methods interactively', color: 'from-violet-500/15 to-purple-500/10 border-violet-500/20' },
   { label: 'Documentation', href: '/documentation', icon: FileText, description: 'Full API & architecture reference', color: 'from-purple-500/15 to-violet-500/10 border-purple-500/20' },
   { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-cyan-500/15 to-teal-500/10 border-cyan-500/20' },
   { label: 'Cognitive Showcase', href: '/showcase', icon: Crown, description: 'Browse sealed cognitive runtimes', color: 'from-pink-500/15 to-rose-500/10 border-pink-500/20' },
   { label: 'System Integrity', href: '/system-integrity', icon: Shield, description: 'Health checks & safety switches', color: 'from-red-500/15 to-orange-500/10 border-red-500/20' },
-  { label: 'Memories', href: '/blog/the-first-line-of-code', icon: Brain, description: 'Read the origin story & build log', color: 'from-indigo-500/15 to-blue-500/10 border-indigo-500/20' },
 ];
 
 export function AccountTab() {
@@ -70,6 +92,9 @@ export function AccountTab() {
   const [bio, setBio] = useState('');
 
   const [discoveryStats, setDiscoveryStats] = useState<DiscoveryStats | null>(null);
+  const [apiKeys, setApiKeys] = useState<ApiKeyInfo[]>([]);
+  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
+  const [sessionInfo, setSessionInfo] = useState<{ provider: string; lastSignIn: string | null; aal: string } | null>(null);
 
   // Fetch profile
   useEffect(() => {
@@ -110,7 +135,7 @@ export function AccountTab() {
     })();
   }, [user]);
 
-  // Fetch discovery stats from foundry_inventory + foundry_user_state
+  // Fetch discovery stats
   useEffect(() => {
     if (!user) return;
     (async () => {
@@ -139,6 +164,49 @@ export function AccountTab() {
         avgScore: scores.length > 0 ? Math.round(scores.reduce((a: number, b: number) => a + b, 0) / scores.length) : 0,
         categoryCounts,
       });
+    })();
+  }, [user]);
+
+  // Fetch API keys, recent usage activity, and session info
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      // API keys (via developer lookup)
+      const { data: devData } = await supabase
+        .from('access_developers')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (devData?.id) {
+        const { data: keys } = await supabase
+          .from('access_api_keys')
+          .select('id, name, key_prefix, is_active, last_used_at, created_at')
+          .eq('developer_id', devData.id)
+          .order('created_at', { ascending: false })
+          .limit(5);
+        setApiKeys((keys as ApiKeyInfo[]) ?? []);
+
+        // Recent usage from this developer
+        const { data: usage } = await supabase
+          .from('access_usage')
+          .select('id, action, module, created_at, tokens_used')
+          .eq('developer_id', devData.id)
+          .order('created_at', { ascending: false })
+          .limit(8);
+        setRecentActivity((usage as RecentActivity[]) ?? []);
+      }
+
+      // Session info from Supabase auth
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        const { data: mfa } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+        setSessionInfo({
+          provider: session.user?.app_metadata?.provider || 'email',
+          lastSignIn: session.user?.last_sign_in_at || null,
+          aal: mfa?.currentLevel || 'aal1',
+        });
+      }
     })();
   }, [user]);
 
@@ -200,6 +268,11 @@ export function AccountTab() {
     setUploading(false);
   };
 
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    toast.success('Signed out');
+  };
+
   const initials = (profile?.display_name || user?.email || '?')
     .split(/[\s@]/)
     .slice(0, 2)
@@ -209,6 +282,9 @@ export function AccountTab() {
   const memberSince = profile?.created_at
     ? formatDistanceToNow(new Date(profile.created_at), { addSuffix: true })
     : '';
+
+  const tierLabel = ((tier || role || 'free') === 'free' ? 'BUILDER' : (tier || role || 'free').toUpperCase());
+  const roleLabel = ((role || 'free') === 'free' ? 'BUILDER' : (role || 'free').toUpperCase());
 
   if (loading) {
     return (
@@ -220,15 +296,19 @@ export function AccountTab() {
 
   return (
     <div className="space-y-6 lg:space-y-8">
-      {/* Profile Hero Card */}
+      {/* ── Profile Hero Card ── */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <Card className="relative overflow-hidden border-border/30 bg-gradient-to-br from-card via-card to-muted/30">
-          {/* Decorative top bar */}
           <div className="absolute inset-x-0 top-0 h-24 sm:h-32 bg-gradient-to-br from-primary/8 via-primary/4 to-transparent" />
-          <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-2">
             <Badge variant="outline" className="text-[10px] font-mono border-primary/30 text-primary bg-primary/5">
-              {role?.toUpperCase() || 'FREE'}
+              {tierLabel}
             </Badge>
+            {roleLabel === 'ADMIN' && (
+              <Badge className="text-[10px] font-mono bg-destructive/10 text-destructive border border-destructive/20">
+                GOVERNOR
+              </Badge>
+            )}
           </div>
 
           <CardContent className="relative pt-12 sm:pt-16 pb-6 sm:pb-8 px-5 sm:px-8">
@@ -280,17 +360,28 @@ export function AccountTab() {
                 </div>
               </div>
 
-              {/* Edit toggle */}
-              <Button
-                variant={editing ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => editing ? handleSave() : setEditing(true)}
-                disabled={saving}
-                className="min-h-[44px] gap-2"
-              >
-                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : editing ? <Check className="w-4 h-4" /> : <Pencil className="w-4 h-4" />}
-                {editing ? 'Save' : 'Edit Profile'}
-              </Button>
+              {/* Actions */}
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={editing ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => editing ? handleSave() : setEditing(true)}
+                  disabled={saving}
+                  className="min-h-[44px] gap-2"
+                >
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : editing ? <Check className="w-4 h-4" /> : <Pencil className="w-4 h-4" />}
+                  {editing ? 'Save' : 'Edit'}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className="min-h-[44px] gap-2 text-muted-foreground hover:text-destructive"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">Sign Out</span>
+                </Button>
+              </div>
             </div>
 
             {/* Editable fields */}
@@ -329,7 +420,7 @@ export function AccountTab() {
               </motion.div>
             )}
 
-            {/* Bio display (non-editing) */}
+            {/* Bio display */}
             {!editing && profile?.bio && (
               <p className="mt-4 text-sm text-muted-foreground/80 max-w-xl leading-relaxed italic">
                 "{profile.bio}"
@@ -339,9 +430,154 @@ export function AccountTab() {
         </Card>
       </motion.div>
 
-      {/* Discovery Stats */}
+      {/* ── Security & Session ── */}
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.06 }}>
+        <Card className="border-border/30 overflow-hidden relative">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+              <Lock className="w-4 h-4 text-emerald-500" />
+              Security & Session
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Auth method */}
+              <div className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Fingerprint className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-medium text-foreground">Auth Method</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-[10px] font-mono capitalize">
+                    {sessionInfo?.provider === 'email' ? 'Magic Link' : sessionInfo?.provider || 'email'}
+                  </Badge>
+                  <Badge variant="outline" className={cn(
+                    "text-[10px] font-mono",
+                    sessionInfo?.aal === 'aal2' ? "border-emerald-500/30 text-emerald-600 bg-emerald-500/5" : "border-amber-500/30 text-amber-600 bg-amber-500/5"
+                  )}>
+                    {sessionInfo?.aal === 'aal2' ? 'MFA Active' : 'Standard'}
+                  </Badge>
+                </div>
+              </div>
+
+              {/* Last sign in */}
+              <div className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-medium text-foreground">Last Sign In</span>
+                </div>
+                <p className="text-xs text-muted-foreground font-mono">
+                  {sessionInfo?.lastSignIn
+                    ? formatDistanceToNow(new Date(sessionInfo.lastSignIn), { addSuffix: true })
+                    : 'Current session'}
+                </p>
+              </div>
+
+              {/* Assurance level */}
+              <div className="p-3 rounded-lg bg-muted/20 border border-border/20 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-medium text-foreground">Security Level</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="flex gap-0.5">
+                    {[1, 2, 3].map(level => (
+                      <div
+                        key={level}
+                        className={cn(
+                          "w-6 h-1.5 rounded-full",
+                          level <= (sessionInfo?.aal === 'aal2' ? 3 : sessionInfo?.aal === 'aal1' ? 2 : 1)
+                            ? "bg-emerald-500"
+                            : "bg-muted"
+                        )}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-[10px] text-muted-foreground font-mono ml-1">
+                    {sessionInfo?.aal === 'aal2' ? 'Maximum' : 'Good'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* ── API Keys ── */}
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+        <Card className="border-border/30 overflow-hidden relative">
+          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Key className="w-4 h-4 text-violet-500" />
+                API Keys
+                {apiKeys.length > 0 && (
+                  <Badge variant="outline" className="text-[10px] font-mono">{apiKeys.length}</Badge>
+                )}
+              </CardTitle>
+              <Link to="/developers">
+                <Button variant="ghost" size="sm" className="text-xs gap-1.5 h-7 text-muted-foreground">
+                  Manage <ChevronRight className="w-3 h-3" />
+                </Button>
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {apiKeys.length === 0 ? (
+              <div className="text-center py-6 space-y-3">
+                <Key className="w-8 h-8 text-muted-foreground/30 mx-auto" />
+                <div>
+                  <p className="text-sm text-muted-foreground">No API keys yet</p>
+                  <p className="text-xs text-muted-foreground/60 mt-1">Create your first key in the Developer portal</p>
+                </div>
+                <Link to="/developers">
+                  <Button variant="outline" size="sm" className="text-xs gap-1.5 mt-1">
+                    <Plug className="w-3.5 h-3.5" /> Get API Key
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {apiKeys.map(key => (
+                  <div key={key.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/20 border border-border/20 hover:border-primary/15 transition-colors">
+                    <div className={cn(
+                      "w-2 h-2 rounded-full shrink-0",
+                      key.is_active ? "bg-emerald-500" : "bg-muted-foreground/30"
+                    )} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-foreground truncate">
+                        {key.name || 'Unnamed key'}
+                      </p>
+                      <p className="text-[10px] text-muted-foreground font-mono">{key.key_prefix}••••••••</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <Badge variant="outline" className={cn(
+                        "text-[9px] font-mono",
+                        key.is_active
+                          ? "border-emerald-500/20 text-emerald-600 bg-emerald-500/5"
+                          : "border-muted text-muted-foreground"
+                      )}>
+                        {key.is_active ? 'Active' : 'Inactive'}
+                      </Badge>
+                      {key.last_used_at && (
+                        <p className="text-[9px] text-muted-foreground/50 mt-0.5">
+                          Used {formatDistanceToNow(new Date(key.last_used_at), { addSuffix: true })}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* ── Discovery Stats ── */}
       {discoveryStats && (
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08 }}>
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.14 }}>
           <Card className="border-border/30 bg-gradient-to-br from-card via-card to-primary/[0.03] overflow-hidden relative">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
             <CardHeader className="pb-2">
@@ -385,8 +621,47 @@ export function AccountTab() {
         </motion.div>
       )}
 
-      {/* Quick Links */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.15 }}>
+      {/* ── Recent Activity Feed ── */}
+      {recentActivity.length > 0 && (
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.18 }}>
+          <Card className="border-border/30 overflow-hidden relative">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Activity className="w-4 h-4 text-cyan-500" />
+                Recent API Activity
+                <span className="text-[10px] text-muted-foreground/50 font-mono ml-auto">last {recentActivity.length} calls</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-1">
+                {recentActivity.map((event, i) => (
+                  <div key={event.id} className="flex items-center gap-3 px-2.5 py-2 rounded-md hover:bg-muted/30 transition-colors group">
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/60 shrink-0" />
+                    <div className="flex-1 min-w-0 flex items-center gap-2">
+                      <Badge variant="outline" className="text-[9px] font-mono shrink-0 uppercase">
+                        {event.module}
+                      </Badge>
+                      <span className="text-xs text-foreground truncate">{event.action}</span>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      {event.tokens_used != null && event.tokens_used > 0 && (
+                        <span className="text-[9px] text-muted-foreground/50 font-mono">{event.tokens_used} tok</span>
+                      )}
+                      <span className="text-[10px] text-muted-foreground/40 font-mono">
+                        {event.created_at ? formatDistanceToNow(new Date(event.created_at), { addSuffix: true }) : '—'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* ── Quick Links ── */}
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.22 }}>
         <div className="space-y-3">
           <div className="flex items-center gap-2 px-1">
             <Compass className="w-4 h-4 text-primary" />
@@ -430,26 +705,26 @@ export function AccountTab() {
         </div>
       </motion.div>
 
-      {/* Account Stats */}
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }}>
+      {/* ── Account Details ── */}
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.26 }}>
         <Card className="border-border/20">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <Shield className="w-4 h-4 text-primary" />
-              Account Details
+              <BarChart3 className="w-4 h-4 text-primary" />
+              Account Summary
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { label: 'Tier', value: ((tier || role || 'free') === 'free' ? 'BUILDER' : (tier || role || 'free').toUpperCase()), icon: Crown },
-                { label: 'Role', value: ((role || 'free') === 'free' ? 'BUILDER' : (role || 'free').toUpperCase()), icon: Shield },
-                { label: 'Email', value: user?.email?.split('@')[0] ?? '—', icon: Mail },
-                { label: 'Member Since', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '—', icon: Calendar },
+                { label: 'Tier', value: tierLabel, icon: Crown, color: tierLabel === 'CREATOR' ? 'text-amber-500' : tierLabel === 'BUILDER' ? 'text-emerald-500' : 'text-primary' },
+                { label: 'Role', value: roleLabel, icon: Shield, color: roleLabel === 'ADMIN' ? 'text-destructive' : 'text-primary' },
+                { label: 'API Keys', value: `${apiKeys.filter(k => k.is_active).length} active`, icon: Key, color: 'text-violet-500' },
+                { label: 'Member Since', value: profile?.created_at ? format(new Date(profile.created_at), 'MMM yyyy') : '—', icon: Calendar, color: 'text-muted-foreground' },
               ].map(stat => (
                 <div key={stat.label} className="p-3 rounded-lg bg-muted/30 border border-border/20 space-y-1 transition-all duration-300 hover:border-primary/15 hover:bg-muted/40">
                   <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground/60 font-mono uppercase tracking-wider">
-                    <stat.icon className="w-3 h-3" />
+                    <stat.icon className={cn("w-3 h-3", stat.color)} />
                     {stat.label}
                   </div>
                   <p className="text-sm font-semibold font-mono text-foreground truncate">{stat.value}</p>
