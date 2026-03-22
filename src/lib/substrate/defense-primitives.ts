@@ -1,6 +1,7 @@
 /**
- * DEFENSE — S-Tier Primitives
- * Honeypots, injection shields, anomaly detection, containment, threat anticipation
+ * DEFENSE — S-Tier Primitives + Enterprise Virus Protection
+ * Honeypots, injection shields, anomaly detection, containment, threat anticipation,
+ * payload scanning, injection detection, behavioral threat engine
  */
 
 export * from '@/crownjewels/s-tier/077-honeypot-intelligence';
@@ -13,3 +14,6 @@ export * from '@/crownjewels/s-tier/124-emergent-threat-anticipator';
 export * from '@/crownjewels/s-tier/174-adversarial-simulation';
 export * from '@/crownjewels/s-tier/072-zero-trust-verification';
 export * from '@/crownjewels/s-tier/167-cascade-prevention';
+
+// Enterprise Virus Protection Suite (namespaced to avoid collisions)
+export * as VirusProtection from './defense/virus-protection';
