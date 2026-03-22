@@ -15,72 +15,29 @@ export interface ClassificationResult {
 /**
  * Classify content into appropriate context category
  */
+// Pre-compiled pattern arrays — avoid re-creating RegExp on every call
+const CODE_PATTERNS = [
+  /function\s+\w+\s*\(/, /const\s+\w+\s*=/, /import\s+.*from/,
+  /class\s+\w+/, /<\w+.*>/, /\{\s*[\w\s:]+\}/, /=>/, /console\./,
+];
+const DOC_PATTERNS = [
+  /^#\s+\w+/m, /\*\*.*\*\*/, /documentation/i, /readme/i, /guide/i, /tutorial/i,
+];
+const CHAT_PATTERNS = [
+  /^(user|assistant|system):/im, /\bask\b.*\bquestion\b/i,
+  /\bhow\s+(do|can|should)\b/i, /\bwhat\s+is\b/i, /\bplease\b/i,
+];
+const PLAN_PATTERNS = [
+  /roadmap/i, /milestone/i, /objective/i, /goal/i, /strategy/i, /architecture/i, /design/i,
+];
+
 export function classifyContext(content: string, metadata?: Record<string, any>): ClassificationResult {
-  const lowerContent = content.toLowerCase();
+  let codeScore = 0, docScore = 0, chatScore = 0, planScore = 0;
   
-  // Code detection patterns
-  const codePatterns = [
-    /function\s+\w+\s*\(/,
-    /const\s+\w+\s*=/,
-    /import\s+.*from/,
-    /class\s+\w+/,
-    /<\w+.*>/,
-    /\{\s*[\w\s:]+\}/,
-    /=>/,
-    /console\./,
-  ];
-  
-  // Documentation patterns
-  const docPatterns = [
-    /^#\s+\w+/m,
-    /\*\*.*\*\*/,
-    /documentation/i,
-    /readme/i,
-    /guide/i,
-    /tutorial/i,
-  ];
-  
-  // Chat/conversation patterns
-  const chatPatterns = [
-    /^(user|assistant|system):/im,
-    /\bask\b.*\bquestion\b/i,
-    /\bhow\s+(do|can|should)\b/i,
-    /\bwhat\s+is\b/i,
-    /\bplease\b/i,
-  ];
-  
-  // Planning patterns
-  const planPatterns = [
-    /roadmap/i,
-    /milestone/i,
-    /objective/i,
-    /goal/i,
-    /strategy/i,
-    /architecture/i,
-    /design/i,
-  ];
-  
-  let codeScore = 0;
-  let docScore = 0;
-  let chatScore = 0;
-  let planScore = 0;
-  
-  // Score each category
-  codePatterns.forEach(pattern => {
-    if (pattern.test(content)) codeScore++;
-  });
-  
-  docPatterns.forEach(pattern => {
-    if (pattern.test(content)) docScore++;
-  });
-  
-  chatPatterns.forEach(pattern => {
-    if (pattern.test(content)) chatScore++;
-  });
-  
-  planPatterns.forEach(pattern => {
-    if (pattern.test(content)) planScore++;
-  });
+  for (const p of CODE_PATTERNS) { if (p.test(content)) codeScore++; }
+  for (const p of DOC_PATTERNS) { if (p.test(content)) docScore++; }
+  for (const p of CHAT_PATTERNS) { if (p.test(content)) chatScore++; }
+  for (const p of PLAN_PATTERNS) { if (p.test(content)) planScore++; }
   
   // Check metadata for hints
   if (metadata?.type === 'code' || metadata?.source?.includes('code')) codeScore += 2;

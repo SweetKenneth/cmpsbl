@@ -495,10 +495,14 @@ function calculateContentSimilarity(a: string, b: string): number {
   
   if (tokensA.size === 0 || tokensB.size === 0) return 0;
   
-  const intersection = new Set([...tokensA].filter(x => tokensB.has(x)));
-  const union = new Set([...tokensA, ...tokensB]);
-  
-  return intersection.size / union.size;
+  // Iterate smaller set for O(min(m,n)) intersection
+  const [smaller, larger] = tokensA.size <= tokensB.size ? [tokensA, tokensB] : [tokensB, tokensA];
+  let intersection = 0;
+  for (const t of smaller) {
+    if (larger.has(t)) intersection++;
+  }
+  const union = tokensA.size + tokensB.size - intersection;
+  return union > 0 ? intersection / union : 0;
 }
 
 /**

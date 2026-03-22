@@ -136,14 +136,15 @@ Recommendations:
 ${recommendations.map(r => `- ${r}`).join('\n')}
     `.trim();
     
-    // Store reflection
+    // Store reflection — use upsert to prevent race-condition duplicates
+    const lessons = insights.filter(i => i.lesson);
     const { error } = await supabase
       .from('brain_reflections')
-      .insert([{
+      .upsert({
         reflection_date: today,
         summary,
-        lessons: insights.filter(i => i.lesson) as unknown as import('@/integrations/supabase/types').Json,
-      }]);
+        lessons: lessons as unknown as import('@/integrations/supabase/types').Json,
+      }, { onConflict: 'reflection_date' });
     
     if (error) {
       console.error('Error storing reflection:', error);

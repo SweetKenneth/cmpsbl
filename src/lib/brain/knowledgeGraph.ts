@@ -244,6 +244,8 @@ export async function findPath(
     for (const edge of allEdges) {
       if (!adjacency.has(edge.source_id)) adjacency.set(edge.source_id, []);
       adjacency.get(edge.source_id)!.push(edge.target_id);
+      if (!adjacency.has(edge.target_id)) adjacency.set(edge.target_id, []);
+      adjacency.get(edge.target_id)!.push(edge.source_id);
     }
 
     // BFS using in-memory adjacency

@@ -327,21 +327,25 @@ export function getIndexStats(userId?: string, agentId?: string): {
   };
 }
 
+// Hoisted stop-words set — allocated once, not per call
+const STOP_WORDS = new Set([
+  'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can',
+  'had', 'her', 'was', 'one', 'our', 'out', 'has', 'have', 'been',
+  'this', 'that', 'with', 'they', 'from', 'what', 'which', 'their',
+]);
+
 /** Extract keywords from text */
 function extractKeywords(text: string): string[] {
-  const words = text
-    .toLowerCase()
-    .replace(/[^a-z0-9\s]/g, ' ')
-    .split(/\s+/)
-    .filter(w => w.length > 2);
-  
-  const stopWords = new Set([
-    'the', 'and', 'for', 'are', 'but', 'not', 'you', 'all', 'can',
-    'had', 'her', 'was', 'one', 'our', 'out', 'has', 'have', 'been',
-    'this', 'that', 'with', 'they', 'from', 'what', 'which', 'their',
-  ]);
-  
-  return [...new Set(words.filter(w => !stopWords.has(w)))];
+  const words = text.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/);
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const w of words) {
+    if (w.length > 2 && !STOP_WORDS.has(w) && !seen.has(w)) {
+      seen.add(w);
+      result.push(w);
+    }
+  }
+  return result;
 }
 
 /** Update access tracking for a memory */
