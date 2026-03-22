@@ -21,18 +21,21 @@ export function useNodeDreaming(nodeId?: string) {
     queryKey: ['substrate', 'dreaming', 'configs'],
     queryFn: fetchDreamConfigs,
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const logs = useQuery({
     queryKey: ['substrate', 'dreaming', 'logs', nodeId],
     queryFn: () => fetchDreamLogs(nodeId, 20),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const analytics = useQuery({
     queryKey: ['substrate', 'dreaming', 'analytics'],
     queryFn: getDreamAnalyticsSummary,
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const triggerDream = useMutation({
