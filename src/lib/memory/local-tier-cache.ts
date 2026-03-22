@@ -193,7 +193,7 @@ export class LocalTierCache<T = unknown> {
 
   /**
    * Run a maintenance pass — demote stale hot entries, evict stale warm entries.
-   * Optimized: single pass with batch collection, avoids repeated Map mutations during iteration.
+   * Merged: single pass for warm handles both capacity overflow and staleness.
    */
   maintain(): { demoted: number; evicted: number } {
     const now = Date.now();
@@ -205,27 +205,35 @@ export class LocalTierCache<T = unknown> {
     for (const [key, entry] of this.hot) {
       if (entry.lastAccess < hotCutoff) {
         this.hot.delete(key);
-        // Skip ensureWarmCapacity per-item — do a bulk eviction after
         this.warm.set(key, entry);
         demoted++;
       }
     }
     this.stats.demotions += demoted;
 
-    // Trim warm if over capacity after demotions
-    while (this.warm.size > this.warmCapacity) {
-      const lruKey = this.warm.keys().next().value;
-      if (!lruKey) break;
-      this.warm.delete(lruKey);
-      evicted++;
-    }
-
-    // Evict stale warm entries
+    // Single merged pass: evict stale OR over-capacity warm entries
     const warmCutoff = now - this.warmTtlMs;
-    for (const [key, entry] of this.warm) {
-      if (entry.lastAccess < warmCutoff) {
+    if (this.warm.size > this.warmCapacity) {
+      // Over capacity — evict oldest (LRU by insertion order) AND stale
+      const toEvict: string[] = [];
+      let overCount = this.warm.size - this.warmCapacity;
+      for (const [key, entry] of this.warm) {
+        if (overCount > 0 || entry.lastAccess < warmCutoff) {
+          toEvict.push(key);
+          if (overCount > 0) overCount--;
+        }
+      }
+      for (const key of toEvict) {
         this.warm.delete(key);
         evicted++;
+      }
+    } else {
+      // Under capacity — only evict stale
+      for (const [key, entry] of this.warm) {
+        if (entry.lastAccess < warmCutoff) {
+          this.warm.delete(key);
+          evicted++;
+        }
       }
     }
     this.stats.evictions += evicted;
