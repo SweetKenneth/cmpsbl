@@ -186,8 +186,8 @@ export class MemoryClient {
 
       await Promise.allSettled(allPromises);
 
-      // Tiering check is conditional — run after stores complete
-      await this.maybeRunTiering();
+      // Fire-and-forget tiering check — don't block store() return
+      this.maybeRunTiering().catch(() => {});
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Store failed: ${msg}`);
