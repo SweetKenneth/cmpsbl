@@ -281,8 +281,8 @@ export function SiteAnalyticsSection() {
       {/* Section Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-500/30 flex items-center justify-center">
-            <Users className="w-5 h-5 text-green-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-green/20 to-neon-green/10 border border-neon-green/30 flex items-center justify-center">
+            <Users className="w-5 h-5 text-neon-green" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Human Traffic Intelligence</h2>
