@@ -154,7 +154,7 @@ export function useIntegration(): UseIntegrationReturn {
   // ── Schema Mapper (fixed: was returning useQuery from functions) ──
 
   const fetchSchemaMappings = useMutation({
-    mutationFn: (adapterId?: string) => integrationModule.listSchemaMappings(adapterId),
+    mutationFn: (adapterId?: string) => Promise.resolve(integrationModule.listSchemaMappings(adapterId)),
   });
 
   const mapperStats = useQuery({
