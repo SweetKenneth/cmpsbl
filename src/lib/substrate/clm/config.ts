@@ -90,18 +90,18 @@ export interface LearningJobResult {
  */
 export const DEFAULT_CLM_CONFIG: CLMConfig = {
   enabled: true,
-  minSpacingMinutes: 8,        // Production spacing — optimizer overrides during discovery
-  maxConcurrent: 3,            // Conservative concurrency — optimizer scales during discovery
-  errorBackoffMultiplier: 1.8,
-  maxBackoffMinutes: 60,
-  quietHours: '03:00-05:00',   // Standard quiet hours
-  jitterMinutes: 2,
+  minSpacingMinutes: 5,        // Tighter spacing — NEXUS budget allows high throughput
+  maxConcurrent: 5,            // Higher concurrency for 40-node coverage
+  errorBackoffMultiplier: 1.5,
+  maxBackoffMinutes: 45,
+  quietHours: '03:00-04:30',   // Narrower quiet window — maximize learning time
+  jitterMinutes: 1.5,
   killSwitch: false,
-  maxConsecutiveFailures: 5,
-  spacedRepetitionBudgetPct: 0.20,
-  microLearningThreshold: 0.10,
-  jobFingerprintTTLHours: 8,
-  topicCacheTTLHours: 12,
+  maxConsecutiveFailures: 8,   // More tolerant — free-tier providers are flaky
+  spacedRepetitionBudgetPct: 0.15,
+  microLearningThreshold: 0.08,
+  jobFingerprintTTLHours: 6,
+  topicCacheTTLHours: 8,
 };
 
 /** Discovery-phase overrides — applied when nexus_clm_budget.phase === 'discovery' */

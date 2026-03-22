@@ -1,12 +1,17 @@
 /**
  * pf-clm-engine — Adaptive Constant Learning Engine
- * v5.1.0 — Failure-Aware Adaptive Burst
+ * v6.0.0 — Full 40-Node Coverage + Auto-Maintenance
  * 
  * Runs in adaptive burst mode. Respects free-tier provider capacity by tracking
  * recent failure rates and backing off when providers are saturated.
- * Target: ~2,000 successful AI calls/day (realistic for free-tier fleet).
  * 
- * v5.1 changes: Failure-rate backoff, reduced parallelism, adaptive burst sizing.
+ * v6.0 changes:
+ * - All 40 substrate nodes covered (was 20)
+ * - Raised daily cap to 600 (was 200) — NEXUS budget allows 98k/hour
+ * - Cold tier auto-pruning when at capacity
+ * - Node-priority-aware topic selection
+ * - Per-node health-driven learning intensity
+ * - Smarter memory tier overflow handling
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
@@ -17,49 +22,90 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const CLM_VERSION = "5.1.0";
-const MAX_CYCLES_PER_HOUR = 12;        // ~36 AI calls/hour (3 topics × 12)
-const MAX_CYCLES_PER_DAY = 200;        // ~600 AI calls/day target (realistic free-tier)
-const DEFAULT_BURST_SIZE = 2;          // 2 cycles per burst (conservative)
-const MAX_BURST_SIZE = 3;             // Hard cap per invocation
+const CLM_VERSION = "6.0.0";
+const MAX_CYCLES_PER_HOUR = 30;        // Raised from 12
+const MAX_CYCLES_PER_DAY = 600;        // Raised from 200 — NEXUS budget allows far more
+const DEFAULT_BURST_SIZE = 3;          // 3 cycles per burst (was 2)
+const MAX_BURST_SIZE = 5;             // Hard cap per invocation (was 3)
 const CYCLE_TIMEOUT_MS = 45_000;
-const BURST_DEADLINE_MS = 50_000;
-const FAILURE_RATE_BACKOFF_THRESHOLD = 0.5; // Back off when >50% recent calls fail
-const FAILURE_RATE_HALT_THRESHOLD = 0.8;    // Halt when >80% recent calls fail
+const BURST_DEADLINE_MS = 55_000;
+const FAILURE_RATE_BACKOFF_THRESHOLD = 0.5;
+const FAILURE_RATE_HALT_THRESHOLD = 0.8;
 
-// All 20 modules that participate in CLM
+// All 40 substrate nodes
 const CLM_MODULES = [
-  'brain', 'decode', 'defense', 'nexus', 'vision', 'dream',
-  'cortex', 'ripple', 'evolution', 'encode', 'access',
-  'system', 'inclusive', 'integration', 'memory', 'relay',
-  'audit', 'identity', 'economy', 'sandbox'
+  // Core + System
+  'core', 'system',
+  // CCR Zone
+  'brain', 'memory', 'dream',
+  // OCG Zone
+  'ripple', 'access', 'identity', 'relay', 'audit', 'nerve',
+  // Execution Sector
+  'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy',
+  'sandbox', 'inclusive', 'medic', 'integration', 'evolution',
+  // ESZ — Expansion Sovereignty Zone
+  'sovereign', 'oracle', 'conscience', 'treaty',
+  // EPZ — Expansion Perception Zone
+  'compass', 'echo', 'reflex',
+  // EMZ — Expansion Manufacturing Zone
+  'forge', 'lingua', 'harvest',
+  // CSZ — Cognitive Shadow Zone
+  'shadow', 'phantom',
+  // Fields
+  'immunity', 'intent',
+  // Plane
+  'governance',
+  // Shell
+  'defense',
+  // Auxiliary
+  'atlas', 'observer',
 ];
 
 // Module transfer configs — relevance signals for brain→module knowledge routing
 const MODULE_RELEVANCE: Record<string, string[]> = {
-  decode:       ['response', 'conversation', 'chat', 'personality', 'tone', 'user', 'context'],
-  defense:      ['security', 'threat', 'attack', 'vulnerability', 'injection', 'bot', 'anomaly'],
-  nexus:        ['routing', 'provider', 'model', 'fallback', 'latency', 'cost', 'health'],
-  vision:       ['trace', 'diagnostic', 'observability', 'metric', 'monitor', 'alert', 'latency'],
-  dream:        ['dream', 'synthesis', 'creative', 'imagination', 'insight', 'hypothesis'],
-  cortex:       ['architecture', 'design', 'pattern', 'proposal', 'refactor', 'structure'],
-  encode:       ['code generation', 'task packet', 'code review', 'refactor', 'implementation'],
+  core:         ['memory', 'storage', 'persistence', 'state', 'cache', 'retrieve'],
+  system:       ['health', 'audit', 'configuration', 'settings', 'admin', 'governance'],
+  brain:        ['reasoning', 'knowledge', 'graph', 'memory', 'consolidation', 'tiering'],
   memory:       ['vector', 'embedding', 'semantic', 'rag', 'retrieval', 'recall', 'tiering'],
+  dream:        ['dream', 'synthesis', 'creative', 'imagination', 'insight', 'hypothesis'],
+  ripple:       ['event', 'propagation', 'broadcast', 'publish', 'subscribe', 'cascade'],
+  access:       ['permission', 'role', 'authorization', 'api key', 'token', 'quota'],
+  identity:     ['actor', 'attribution', 'signature', 'webauthn', 'session', 'credential'],
   relay:        ['webhook', 'outbound', 'delivery', 'retry', 'queue', 'notification'],
   audit:        ['compliance', 'audit trail', 'immutable', 'chain', 'retention', 'regulatory'],
-  identity:     ['actor', 'attribution', 'signature', 'webauthn', 'session', 'credential'],
+  nerve:        ['signal', 'propagation', 'consensus', 'quorum', 'split-brain'],
+  decode:       ['response', 'conversation', 'chat', 'personality', 'tone', 'user', 'context'],
+  encode:       ['code generation', 'task packet', 'code review', 'refactor', 'implementation'],
+  vision:       ['trace', 'diagnostic', 'observability', 'metric', 'monitor', 'alert', 'latency'],
+  cortex:       ['architecture', 'design', 'pattern', 'proposal', 'refactor', 'structure'],
+  nexus:        ['routing', 'provider', 'model', 'fallback', 'latency', 'cost', 'health'],
   economy:      ['cost', 'budget', 'pricing', 'billing', 'usage', 'metering', 'roi'],
   sandbox:      ['isolation', 'sandbox', 'speculative', 'safe execution', 'containment'],
-  access:       ['permission', 'role', 'authorization', 'api key', 'token', 'quota'],
-  ripple:       ['event', 'propagation', 'broadcast', 'publish', 'subscribe', 'cascade'],
-  system:       ['health', 'audit', 'configuration', 'settings', 'admin', 'governance'],
-  evolution:    ['upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff'],
   inclusive:    ['accessibility', 'a11y', 'wcag', 'aria', 'screen reader', 'keyboard'],
+  medic:        ['diagnostics', 'health', 'recovery', 'self-heal', 'repair'],
   integration:  ['webhook', 'api', 'endpoint', 'transform', 'pipeline', 'data sync'],
-  core:         ['memory', 'storage', 'persistence', 'state', 'cache', 'retrieve'],
+  evolution:    ['upgrade', 'evolution', 'modernize', 'refactor', 'migrate', 'diff'],
+  sovereign:    ['compliance', 'jurisdiction', 'residency', 'gdpr', 'ccpa', 'consent'],
+  oracle:       ['prediction', 'forecast', 'bayesian', 'monte carlo', 'confidence'],
+  conscience:   ['bias', 'ethics', 'fairness', 'impact', 'transparency'],
+  treaty:       ['sla', 'contract', 'agreement', 'penalty', 'compliance'],
+  compass:      ['geospatial', 'routing', 'optimization', 'decomposition', 'trend'],
+  echo:         ['digital twin', 'replay', 'simulation', 'fidelity', 'drift'],
+  reflex:       ['edge', 'latency', 'decision', 'pre-computed', 'critical-path'],
+  forge:        ['artifact', 'template', 'synthesis', 'generation', 'quality'],
+  lingua:       ['translation', 'localization', 'language', 'glossary', 'locale'],
+  harvest:      ['data', 'acquisition', 'etl', 'ingestion', 'source', 'pipeline'],
+  shadow:       ['shadow', 'execution', 'divergence', 'a/b test', 'comparison'],
+  phantom:      ['privacy', 'pii', 'masking', 'differential', 'anonymization'],
+  immunity:     ['cascade', 'circuit breaker', 'auto-heal', 'isolation', 'resilience'],
+  intent:       ['goal', 'decomposition', 'capability', 'mesh', 'routing'],
+  governance:   ['veto', 'policy', 'rule', 'constraint', 'approval'],
+  defense:      ['security', 'threat', 'attack', 'vulnerability', 'injection', 'bot', 'anomaly'],
+  atlas:        ['navigation', 'discovery', 'capability', 'map', 'topology'],
+  observer:     ['telemetry', 'watchdog', 'anomaly', 'z-score', 'alert'],
 };
 
-// Learning topics — expanded for deeper coverage
+// Learning topics — expanded with node-specific focus areas
 const LEARNING_TOPICS = [
   { domain: 'security', prompt: 'Analyze recent defense events and identify emerging threat patterns. What new detection rules should be added?' },
   { domain: 'performance', prompt: 'Review system latency metrics and memory usage. Identify bottlenecks and propose optimizations.' },
@@ -71,6 +117,11 @@ const LEARNING_TOPICS = [
   { domain: 'cost_optimization', prompt: 'Analyze AI provider usage patterns. How can we maximize free-tier utilization across the fleet?' },
   { domain: 'testing', prompt: 'Review recent failures and regressions. What test coverage gaps exist?' },
   { domain: 'accessibility', prompt: 'Evaluate WCAG compliance and inclusive design patterns. What accessibility improvements are needed?' },
+  { domain: 'governance', prompt: 'Assess policy enforcement effectiveness. Are there gaps in governance coverage or false vetoes?' },
+  { domain: 'privacy', prompt: 'Review PII handling and data anonymization. Are there privacy risks or masking gaps?' },
+  { domain: 'prediction', prompt: 'Evaluate prediction accuracy and Bayesian model calibration. Where can forecasting improve?' },
+  { domain: 'integration', prompt: 'Review external API integration health, retry patterns, and webhook delivery reliability.' },
+  { domain: 'observability', prompt: 'Assess telemetry coverage, alert quality, and anomaly detection effectiveness across all 40 nodes.' },
 ];
 
 interface BudgetState {
@@ -101,7 +152,7 @@ async function getMemoryTierState(supabase: any): Promise<MemoryTierState> {
 
   const configRows: Array<{ tier_name: string; max_entries: number | null }> = configRes.data || [];
   const hotLimit = configRows.find((r) => r.tier_name === 'hot')?.max_entries || 500;
-  const warmLimit = configRows.find((r) => r.tier_name === 'warm')?.max_entries || 2000;
+  const warmLimit = configRows.find((r) => r.tier_name === 'warm')?.max_entries || 10000;
   const coldLimit = configRows.find((r) => r.tier_name === 'cold')?.max_entries || 10000;
 
   return {
@@ -114,6 +165,48 @@ async function getMemoryTierState(supabase: any): Promise<MemoryTierState> {
   };
 }
 
+/**
+ * Auto-prune cold tier when at capacity — evict lowest-value entries
+ */
+async function autoRelieveColdPressure(supabase: any, tiers: MemoryTierState): Promise<number> {
+  if (tiers.cold < tiers.coldLimit * 0.95) return 0;
+  
+  const pruneTarget = Math.min(200, Math.max(50, Math.floor(tiers.coldLimit * 0.05)));
+  
+  try {
+    // Delete lowest value_score entries that are old
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 3600000).toISOString();
+    const { data: candidates } = await supabase
+      .from('brain_memory_cold')
+      .select('id')
+      .lt('value_score', 0.3)
+      .lt('created_at', thirtyDaysAgo)
+      .order('value_score', { ascending: true })
+      .limit(pruneTarget);
+
+    if (candidates?.length) {
+      await supabase.from('brain_memory_cold').delete().in('id', candidates.map((m: any) => m.id));
+      tiers.cold -= candidates.length;
+      return candidates.length;
+    }
+
+    // Fallback: prune oldest low-confidence regardless of age
+    const { data: fallback } = await supabase
+      .from('brain_memory_cold')
+      .select('id')
+      .lt('value_score', 0.25)
+      .order('created_at', { ascending: true })
+      .limit(pruneTarget);
+
+    if (fallback?.length) {
+      await supabase.from('brain_memory_cold').delete().in('id', fallback.map((m: any) => m.id));
+      tiers.cold -= fallback.length;
+      return fallback.length;
+    }
+  } catch { /* non-fatal */ }
+  return 0;
+}
+
 function selectLearningTier(
   tiers: MemoryTierState,
   options?: { preferWarm?: boolean; forceCold?: boolean }
@@ -122,13 +215,17 @@ function selectLearningTier(
 
   const hotPressure = tiers.hot / Math.max(1, tiers.hotLimit);
   const warmPressure = tiers.warm / Math.max(1, tiers.warmLimit);
+  const coldPressure = tiers.cold / Math.max(1, tiers.coldLimit);
 
   if (options?.preferWarm || hotPressure >= 0.9) {
-    return warmPressure >= 1.25 ? 'cold' : 'warm';
+    if (warmPressure >= 0.95) {
+      return coldPressure >= 0.95 ? 'warm' : 'cold'; // Warm over overflow if cold also full
+    }
+    return 'warm';
   }
 
   if (hotPressure >= 1) {
-    return warmPressure >= 1.25 ? 'cold' : 'warm';
+    return warmPressure >= 0.95 ? 'cold' : 'warm';
   }
 
   return 'hot';
@@ -151,7 +248,6 @@ async function writeLearningMemory(
   const tier = selectLearningTier(tiers, { preferWarm: input.preferWarm });
   const valueScore = Math.max(0.15, Math.min(0.95, input.valueScore ?? 0.62));
 
-  // Extract source_module and category from metadata for distillation clustering
   const sourceModule = String(input.metadata?.source_module || input.metadata?.module || 'CLM');
   const category = String(input.metadata?.domain || input.metadata?.category || input.context?.split(':')?.[1] || 'uncategorized');
 
@@ -187,6 +283,11 @@ async function writeLearningMemory(
     });
     tiers.warm += 1;
     return 'warm';
+  }
+
+  // Cold — auto-prune first if at capacity
+  if (tiers.cold >= tiers.coldLimit * 0.95) {
+    await autoRelieveColdPressure(supabase, tiers);
   }
 
   await supabase.from('brain_memory_cold').insert({
@@ -250,7 +351,6 @@ async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour
       .select('id', { count: 'exact', head: true })
       .eq('success', true)
       .gte('created_at', hourStart.toISOString()),
-    // Count recent failures (last 30 min) to detect provider saturation
     supabase
       .from('ai_usage_log')
       .select('id', { count: 'exact', head: true })
@@ -274,24 +374,89 @@ async function getRealAICallCounts(supabase: any): Promise<{ today: number; hour
 }
 
 /**
- * Execute a single CLM cycle — lean and fast
- * Returns the number of AI calls made
+ * Get node health scores — prioritize degraded nodes for more learning
  */
-async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCalls: number; success: boolean; durationMs: number }> {
+async function getNodeHealthScores(supabase: any): Promise<Map<string, number>> {
+  const scores = new Map<string, number>();
+  const since24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+  try {
+    const { data: events } = await supabase
+      .from('brain_events')
+      .select('module, outcome')
+      .in('module', CLM_MODULES)
+      .gte('created_at', since24h)
+      .limit(1000);
+
+    if (events) {
+      const moduleCounts = new Map<string, { success: number; total: number }>();
+      for (const e of events) {
+        const m = e.module as string;
+        const entry = moduleCounts.get(m) || { success: 0, total: 0 };
+        entry.total++;
+        if (e.outcome === 'success') entry.success++;
+        moduleCounts.set(m, entry);
+      }
+      for (const [mod, counts] of moduleCounts) {
+        scores.set(mod, counts.total > 0 ? (counts.success / counts.total) * 100 : 50);
+      }
+    }
+  } catch { /* non-fatal */ }
+
+  // Default score for untracked modules
+  for (const mod of CLM_MODULES) {
+    if (!scores.has(mod)) scores.set(mod, 50);
+  }
+
+  return scores;
+}
+
+/**
+ * Select modules for this cycle — prioritize degraded nodes
+ */
+function selectModulesForCycle(cycleNumber: number, healthScores: Map<string, number>, modulesPerCycle: number): string[] {
+  // Always include 1 degraded module if any exist
+  const degraded = CLM_MODULES.filter(m => (healthScores.get(m) || 50) < 70);
+  const selected: string[] = [];
+
+  if (degraded.length > 0) {
+    selected.push(degraded[cycleNumber % degraded.length]);
+  }
+
+  // Fill remaining slots with rotating selection
+  const remaining = modulesPerCycle - selected.length;
+  for (let i = 0; i < remaining; i++) {
+    const idx = (cycleNumber * modulesPerCycle + i) % CLM_MODULES.length;
+    const mod = CLM_MODULES[idx];
+    if (!selected.includes(mod)) selected.push(mod);
+  }
+
+  return selected.slice(0, modulesPerCycle);
+}
+
+/**
+ * Execute a single CLM cycle
+ */
+async function executeCycle(supabase: any, cycleNumber: number, healthScores: Map<string, number>): Promise<{ aiCalls: number; success: boolean; durationMs: number; coldPruned: number }> {
   const cycleStart = Date.now();
   let aiCalls = 0;
+  let coldPruned = 0;
 
   let tierState = await getMemoryTierState(supabase);
   const hotPressureAtStart = tierState.hot / Math.max(1, tierState.hotLimit);
   const preferWarmForLearning = hotPressureAtStart >= 0.85;
 
-  // PHASE 1: Module Self-Analysis (3 modules per cycle, fast rotation)
-  const modulesPerCycle = 3;
-  const cycleIndex = cycleNumber % CLM_MODULES.length;
-  const selectedModules = [];
-  for (let i = 0; i < modulesPerCycle; i++) {
-    selectedModules.push(CLM_MODULES[(cycleIndex + i) % CLM_MODULES.length]);
+  // Auto-prune cold tier if at capacity before we start writing
+  if (tierState.cold >= tierState.coldLimit * 0.95) {
+    coldPruned = await autoRelieveColdPressure(supabase, tierState);
+    if (coldPruned > 0) {
+      console.log(`🧹 Auto-pruned ${coldPruned} low-value cold entries`);
+    }
   }
+
+  // PHASE 1: Module Self-Analysis (4 modules per cycle, health-prioritized)
+  const modulesPerCycle = 4;
+  const selectedModules = selectModulesForCycle(cycleNumber, healthScores, modulesPerCycle);
 
   const modulePromises = selectedModules.map(async (moduleName) => {
     try {
@@ -305,6 +470,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       const successCount = moduleEvents?.filter((e: any) => e.outcome === 'success').length || 0;
       const totalCount = moduleEvents?.length || 0;
       const successRate = totalCount > 0 ? successCount / totalCount : 0;
+      const healthScore = healthScores.get(moduleName) || 50;
 
       await supabase.from('brain_events').insert({
         event_type: 'module_learning_insight',
@@ -312,8 +478,8 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
         outcome: 'success',
         data: {
           title: `${moduleName.toUpperCase()} Self-Analysis`,
-          content: `Module ${moduleName}: ${totalCount} events, ${(successRate * 100).toFixed(0)}% success.`,
-          health_trend: successRate > 0.8 ? 'healthy' : successRate > 0.5 ? 'degraded' : 'critical',
+          content: `Module ${moduleName}: ${totalCount} events, ${(successRate * 100).toFixed(0)}% success, health=${healthScore.toFixed(0)}.`,
+          health_trend: healthScore > 80 ? 'healthy' : healthScore > 50 ? 'degraded' : 'critical',
           source: 'clm_burst_engine',
           version: CLM_VERSION,
         },
@@ -321,10 +487,10 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
     } catch { /* non-fatal */ }
   });
 
-  // PHASE 2: Learning Topic Study — 3 topics per cycle (sequential rotation, not all 10 in parallel)
+  // PHASE 2: Learning Topic Study — 3 topics per cycle
   const topicsPerCycle = 3;
   const topicOffset = cycleNumber % LEARNING_TOPICS.length;
-  const selectedTopics = [];
+  const selectedTopics: typeof LEARNING_TOPICS = [];
   for (let i = 0; i < topicsPerCycle; i++) {
     selectedTopics.push(LEARNING_TOPICS[(topicOffset + i) % LEARNING_TOPICS.length]);
   }
@@ -391,7 +557,7 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
   // Fire modules + topics in parallel
   await Promise.allSettled([...modulePromises, ...topicPromises]);
 
-  // PHASE 3: Brain Transfer (every cycle — fast 2-module transfer)
+  // PHASE 3: Brain Transfer (2 modules per cycle, fast rotation)
   try {
     const transferModules = [
       CLM_MODULES[cycleNumber % CLM_MODULES.length],
@@ -439,7 +605,6 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       const safeHotTarget = Math.max(100, Math.floor(tierState.hotLimit * 0.85));
       const promoteBudget = Math.max(0, safeHotTarget - tierState.hot);
 
-      // Promote warm → hot only when HOT has headroom
       if (promoteBudget > 0) {
         const { data: warmHighAccess } = await supabase
           .from('brain_memory_warm')
@@ -470,17 +635,9 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
         }
       }
 
-      // Quick prune cold low-confidence
-      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 3600000).toISOString();
-      const { data: coldLow } = await supabase
-        .from('brain_memory_cold')
-        .select('id')
-        .lt('confidence', 0.3)
-        .lt('created_at', thirtyDaysAgo)
-        .limit(20);
-
-      if (coldLow?.length) {
-        await supabase.from('brain_memory_cold').delete().in('id', coldLow.map((m: any) => m.id));
+      // Auto-prune cold
+      if (tierState.cold >= tierState.coldLimit * 0.9) {
+        coldPruned += await autoRelieveColdPressure(supabase, tierState);
       }
     } catch { /* non-fatal */ }
   }
@@ -495,15 +652,18 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
       cycle_number: cycleNumber,
       ai_calls: aiCalls,
       modules_analyzed: selectedModules.length,
+      modules_selected: selectedModules,
       topics_studied: selectedTopics.length,
       duration_ms: Date.now() - cycleStart,
       mode: 'adaptive',
+      cold_pruned: coldPruned,
       memory_tiers: {
         hot: tierState.hot,
         warm: tierState.warm,
         cold: tierState.cold,
         hot_limit: tierState.hotLimit,
         warm_limit: tierState.warmLimit,
+        cold_limit: tierState.coldLimit,
         prefer_warm_for_learning: preferWarmForLearning,
       },
     },
@@ -513,12 +673,12 @@ async function executeCycle(supabase: any, cycleNumber: number): Promise<{ aiCal
     aiCalls,
     success: true,
     durationMs: Date.now() - cycleStart,
+    coldPruned,
   };
 }
 
 /**
  * Self-chain: dispatch the next burst immediately after this one completes.
- * Uses fire-and-forget fetch to avoid blocking the response.
  */
 function chainNextBurst(supabaseUrl: string, serviceKey: string, burstSize: number, budget: BudgetState): void {
   const remaining = Math.min(budget.remainingDaily - burstSize, budget.remainingHourly - burstSize);
@@ -527,7 +687,6 @@ function chainNextBurst(supabaseUrl: string, serviceKey: string, burstSize: numb
   const nextSize = Math.min(burstSize, MAX_BURST_SIZE, remaining);
   if (nextSize <= 0) return;
 
-  // Fire-and-forget via raw fetch — avoids supabase client overhead and recursive awaits
   const url = `${supabaseUrl}/functions/v1/pf-clm-engine`;
   fetch(url, {
     method: 'POST',
@@ -556,7 +715,7 @@ serve(async (req) => {
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
-    let action = 'burst';   // v5: ALWAYS burst by default
+    let action = 'burst';
     let burstSize = DEFAULT_BURST_SIZE;
     let autoChain = true;
 
@@ -573,12 +732,14 @@ serve(async (req) => {
 
     // ═══ STATUS ACTION ═══
     if (action === 'status') {
-      const [budget, memory, realCalls] = await Promise.all([
+      const [budget, memory, realCalls, healthScores] = await Promise.all([
         getBudgetState(supabase),
         getMemoryTierState(supabase),
         getRealAICallCounts(supabase),
+        getNodeHealthScores(supabase),
       ]);
-      const velocity = realCalls.hour;
+
+      const degradedNodes = CLM_MODULES.filter(m => (healthScores.get(m) || 50) < 70);
 
       return new Response(JSON.stringify({
         success: true,
@@ -589,7 +750,7 @@ serve(async (req) => {
         },
         velocity: {
           est_ai_calls_today: realCalls.today,
-          est_ai_calls_per_hour: velocity,
+          est_ai_calls_per_hour: realCalls.hour,
           failure_rate_30m: realCalls.failureRate,
           target_daily: 2000,
           pct_of_target: Math.round((realCalls.today / 2000) * 100),
@@ -599,6 +760,11 @@ serve(async (req) => {
           warm: { count: memory.warm, limit: memory.warmLimit, pressure: Number((memory.warm / Math.max(1, memory.warmLimit)).toFixed(2)) },
           cold: { count: memory.cold, limit: memory.coldLimit, pressure: Number((memory.cold / Math.max(1, memory.coldLimit)).toFixed(2)) },
           write_policy: memory.hot >= Math.floor(memory.hotLimit * 0.85) ? 'prefer_warm' : 'allow_hot',
+        },
+        nodes: {
+          total: CLM_MODULES.length,
+          degraded: degradedNodes,
+          degraded_count: degradedNodes.length,
         },
         config: {
           burst_size: DEFAULT_BURST_SIZE,
@@ -626,7 +792,7 @@ serve(async (req) => {
       });
     }
 
-    // ═══ FAILURE-RATE GATE (v5.1) ═══
+    // ═══ FAILURE-RATE GATE ═══
     const recentHealth = await getRealAICallCounts(supabase);
     if (recentHealth.failureRate >= FAILURE_RATE_HALT_THRESHOLD) {
       console.log(`🛑 CLM halted — provider failure rate ${(recentHealth.failureRate * 100).toFixed(0)}% exceeds ${FAILURE_RATE_HALT_THRESHOLD * 100}% threshold`);
@@ -638,18 +804,21 @@ serve(async (req) => {
       }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Reduce burst size if moderate failure rate
     let adaptiveBurstSize = burstSize;
     if (recentHealth.failureRate >= FAILURE_RATE_BACKOFF_THRESHOLD) {
       adaptiveBurstSize = 1;
       console.log(`⚠️ CLM reduced to 1 cycle — failure rate ${(recentHealth.failureRate * 100).toFixed(0)}%`);
     }
 
+    // ═══ FETCH NODE HEALTH FOR PRIORITIZED LEARNING ═══
+    const healthScores = await getNodeHealthScores(supabase);
+
     // ═══ BURST / CYCLE EXECUTION ═══
     const effectiveBurstSize = Math.min(adaptiveBurstSize, budget.remainingDaily, budget.remainingHourly);
 
-    const cycleResults: Array<{ cycle: number; aiCalls: number; durationMs: number }> = [];
+    const cycleResults: Array<{ cycle: number; aiCalls: number; durationMs: number; coldPruned: number }> = [];
     let totalAiCalls = 0;
+    let totalColdPruned = 0;
 
     for (let i = 0; i < effectiveBurstSize; i++) {
       if (Date.now() - startTime > BURST_DEADLINE_MS) {
@@ -659,17 +828,18 @@ serve(async (req) => {
 
       const cycleNumber = budget.todayCycles + i + 1;
       try {
-        const result = await executeCycle(supabase, cycleNumber);
+        const result = await executeCycle(supabase, cycleNumber, healthScores);
         totalAiCalls += result.aiCalls;
-        cycleResults.push({ cycle: cycleNumber, aiCalls: result.aiCalls, durationMs: result.durationMs });
+        totalColdPruned += result.coldPruned;
+        cycleResults.push({ cycle: cycleNumber, aiCalls: result.aiCalls, durationMs: result.durationMs, coldPruned: result.coldPruned });
         console.log(`✅ Cycle #${cycleNumber}: ${result.aiCalls} AI calls in ${result.durationMs}ms`);
       } catch (err) {
         console.warn(`❌ Cycle #${cycleNumber} failed:`, err);
-        cycleResults.push({ cycle: cycleNumber, aiCalls: 0, durationMs: 0 });
+        cycleResults.push({ cycle: cycleNumber, aiCalls: 0, durationMs: 0, coldPruned: 0 });
       }
     }
 
-    // ═══ SELF-CHAIN: only if healthy and productive ═══
+    // ═══ SELF-CHAIN ═══
     const shouldChain = autoChain && totalAiCalls > 0 && recentHealth.failureRate < FAILURE_RATE_BACKOFF_THRESHOLD
       && budget.remainingDaily > effectiveBurstSize && budget.remainingHourly > effectiveBurstSize;
     if (shouldChain) {
@@ -716,6 +886,7 @@ serve(async (req) => {
       mode: action,
       cycles_completed: cycleResults.length,
       total_ai_calls: totalAiCalls,
+      total_cold_pruned: totalColdPruned,
       duration_ms: totalDuration,
       cycles: cycleResults,
       budget: {
@@ -726,12 +897,15 @@ serve(async (req) => {
       },
       velocity: {
         est_daily_at_current_rate: realCalls.today,
-        target: 25000,
+        target: 2000,
       },
       memory: {
         hot: { count: memory.hot, limit: memory.hotLimit, overflow: hotOverflow },
         warm: { count: memory.warm, limit: memory.warmLimit },
         cold: { count: memory.cold, limit: memory.coldLimit },
+      },
+      nodes: {
+        total: CLM_MODULES.length,
       },
       safeguards: {
         clm_write_policy: memory.hot >= Math.floor(memory.hotLimit * 0.85) ? 'prefer_warm' : 'allow_hot',

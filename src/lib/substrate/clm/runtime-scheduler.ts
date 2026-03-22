@@ -2,7 +2,7 @@
  * CLM Runtime Scheduler — Constant Learning Mode
  * 
  * Client-side supplementary learning loop (server runs via pg_cron).
- * ~10 calls/min when active tab, topic-driven with 70/30 global/node split.
+ * Covers all 40 substrate nodes with health-prioritized topic selection.
  * 
  * Integrations:
  *   NEXUS → provider routing
@@ -15,6 +15,7 @@
 
 import { emit } from '../events/emit';
 import { memoryCore } from '../memory-core';
+import { supabase } from '@/integrations/supabase/client';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -50,7 +51,7 @@ export interface CLMState {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// TOPIC POOLS
+// TOPIC POOLS — ALL 40 NODES
 // ═══════════════════════════════════════════════════════════════
 
 const GLOBAL_TOPICS: Omit<CLMTopic, 'mastery' | 'attempts' | 'successes' | 'lastStudied' | 'mastered'>[] = [
@@ -64,19 +65,63 @@ const GLOBAL_TOPICS: Omit<CLMTopic, 'mastery' | 'attempts' | 'successes' | 'last
   { id: 'g-testing', label: 'Testing Discipline', category: 'global' },
   { id: 'g-memory', label: 'Memory Management', category: 'global' },
   { id: 'g-ai-routing', label: 'AI Provider Routing', category: 'global' },
+  { id: 'g-privacy', label: 'Privacy & Data Protection', category: 'global' },
+  { id: 'g-compliance', label: 'Regulatory Compliance', category: 'global' },
 ];
 
 const NODE_TOPICS: Omit<CLMTopic, 'mastery' | 'attempts' | 'successes' | 'lastStudied' | 'mastered'>[] = [
-  { id: 'n-decode', label: 'DECODE Intent Classification', category: 'node', nodeId: 'decode' },
-  { id: 'n-encode', label: 'ENCODE Code Generation', category: 'node', nodeId: 'encode' },
+  // Core + System
+  { id: 'n-core', label: 'CORE Lifecycle Management', category: 'node', nodeId: 'core' },
+  { id: 'n-system', label: 'SYSTEM Health Checks', category: 'node', nodeId: 'system' },
+  // CCR Zone
   { id: 'n-brain', label: 'BRAIN Reasoning Depth', category: 'node', nodeId: 'brain' },
   { id: 'n-memory', label: 'MEMORY Tiering', category: 'node', nodeId: 'memory' },
-  { id: 'n-defense', label: 'DEFENSE Threat Detection', category: 'node', nodeId: 'defense' },
-  { id: 'n-nexus', label: 'NEXUS Fleet Management', category: 'node', nodeId: 'nexus' },
-  { id: 'n-vision', label: 'VISION Anomaly Detection', category: 'node', nodeId: 'vision' },
   { id: 'n-dream', label: 'DREAM Synthesis', category: 'node', nodeId: 'dream' },
-  { id: 'n-evolution', label: 'EVOLUTION Mutation Safety', category: 'node', nodeId: 'evolution' },
+  // OCG Zone
+  { id: 'n-ripple', label: 'RIPPLE Event Propagation', category: 'node', nodeId: 'ripple' },
+  { id: 'n-access', label: 'ACCESS Authorization', category: 'node', nodeId: 'access' },
+  { id: 'n-identity', label: 'IDENTITY Attribution', category: 'node', nodeId: 'identity' },
+  { id: 'n-relay', label: 'RELAY Delivery', category: 'node', nodeId: 'relay' },
+  { id: 'n-audit', label: 'AUDIT Chain Integrity', category: 'node', nodeId: 'audit' },
+  { id: 'n-nerve', label: 'NERVE Signal Propagation', category: 'node', nodeId: 'nerve' },
+  // Execution Sector
+  { id: 'n-decode', label: 'DECODE Intent Classification', category: 'node', nodeId: 'decode' },
+  { id: 'n-encode', label: 'ENCODE Code Generation', category: 'node', nodeId: 'encode' },
+  { id: 'n-vision', label: 'VISION Anomaly Detection', category: 'node', nodeId: 'vision' },
   { id: 'n-cortex', label: 'CORTEX Orchestration', category: 'node', nodeId: 'cortex' },
+  { id: 'n-nexus', label: 'NEXUS Fleet Management', category: 'node', nodeId: 'nexus' },
+  { id: 'n-economy', label: 'ECONOMY Cost Attribution', category: 'node', nodeId: 'economy' },
+  { id: 'n-sandbox', label: 'SANDBOX Isolation', category: 'node', nodeId: 'sandbox' },
+  { id: 'n-inclusive', label: 'INCLUSIVE WCAG Coverage', category: 'node', nodeId: 'inclusive' },
+  { id: 'n-medic', label: 'MEDIC Self-Diagnostics', category: 'node', nodeId: 'medic' },
+  { id: 'n-integration', label: 'INTEGRATION Sync', category: 'node', nodeId: 'integration' },
+  { id: 'n-evolution', label: 'EVOLUTION Mutation Safety', category: 'node', nodeId: 'evolution' },
+  // ESZ
+  { id: 'n-sovereign', label: 'SOVEREIGN Jurisdiction', category: 'node', nodeId: 'sovereign' },
+  { id: 'n-oracle', label: 'ORACLE Predictions', category: 'node', nodeId: 'oracle' },
+  { id: 'n-conscience', label: 'CONSCIENCE Bias Detection', category: 'node', nodeId: 'conscience' },
+  { id: 'n-treaty', label: 'TREATY SLA Management', category: 'node', nodeId: 'treaty' },
+  // EPZ
+  { id: 'n-compass', label: 'COMPASS Geospatial', category: 'node', nodeId: 'compass' },
+  { id: 'n-echo', label: 'ECHO Digital Twin', category: 'node', nodeId: 'echo' },
+  { id: 'n-reflex', label: 'REFLEX Edge Decisions', category: 'node', nodeId: 'reflex' },
+  // EMZ
+  { id: 'n-forge', label: 'FORGE Artifact Synthesis', category: 'node', nodeId: 'forge' },
+  { id: 'n-lingua', label: 'LINGUA Translation', category: 'node', nodeId: 'lingua' },
+  { id: 'n-harvest', label: 'HARVEST Data Acquisition', category: 'node', nodeId: 'harvest' },
+  // CSZ
+  { id: 'n-shadow', label: 'SHADOW Execution Fidelity', category: 'node', nodeId: 'shadow' },
+  { id: 'n-phantom', label: 'PHANTOM Privacy Engine', category: 'node', nodeId: 'phantom' },
+  // Fields
+  { id: 'n-immunity', label: 'IMMUNITY Cascade Breaking', category: 'node', nodeId: 'immunity' },
+  { id: 'n-intent', label: 'INTENT Goal Decomposition', category: 'node', nodeId: 'intent' },
+  // Plane
+  { id: 'n-governance', label: 'GOVERNANCE Veto Precision', category: 'node', nodeId: 'governance' },
+  // Shell
+  { id: 'n-defense', label: 'DEFENSE Threat Detection', category: 'node', nodeId: 'defense' },
+  // Auxiliary
+  { id: 'n-atlas', label: 'ATLAS Discovery Navigation', category: 'node', nodeId: 'atlas' },
+  { id: 'n-observer', label: 'OBSERVER Watchdog Telemetry', category: 'node', nodeId: 'observer' },
 ];
 
 // Runtime state
@@ -113,7 +158,7 @@ function computeMastery(topic: CLMTopic): number {
   const successRate = topic.successes / topic.attempts;
   const age = Date.now() - topic.lastStudied;
   const recencyWeight = Math.exp(-age / RECENCY_HALFLIFE_MS);
-  const novelty = topic.mastered ? 0.5 : 1.0; // Reduced weight if already mastered
+  const novelty = topic.mastered ? 0.5 : 1.0;
 
   return Math.min(1, successRate * recencyWeight * novelty);
 }
@@ -132,7 +177,6 @@ export function selectNextTopic(): CLMTopic | null {
   });
 
   if (pool.length === 0) {
-    // Fall back to any non-mastered topic
     const any = Array.from(topics.values()).filter(t => !t.mastered);
     if (any.length === 0) return null;
     return any[Math.floor(Math.random() * any.length)];
@@ -144,7 +188,7 @@ export function selectNextTopic(): CLMTopic | null {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// LEARNING CYCLE
+// LEARNING CYCLE — REAL AI CALLS VIA NEXUS
 // ═══════════════════════════════════════════════════════════════
 
 export async function runCLMCycle(): Promise<CLMCycleResult | null> {
@@ -165,9 +209,32 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
   topic.attempts++;
   topic.lastStudied = Date.now();
 
-  // Simulate learning (in production, this calls NEXUS for AI extraction)
-  const success = Math.random() > 0.2; // 80% success rate baseline
-  const learningGain = success ? 0.05 + Math.random() * 0.1 : 0;
+  // Execute real learning via NEXUS router
+  let success = false;
+  let learningGain = 0;
+  let extraction: string | undefined;
+
+  try {
+    const { data, error } = await supabase.functions.invoke('pf-nexus-router', {
+      body: {
+        prompt: `Analyze and provide insights on: ${topic.label}. Focus on practical improvements, common pitfalls, and actionable recommendations for a cognitive substrate system.`,
+        systemPrompt: 'You are a substrate learning engine. Provide concise, actionable technical insights.',
+        maxTokens: 600,
+        temperature: 0.7,
+        metadata: { routeKey: 'clm-client-learning', topicId: topic.id },
+      },
+    });
+
+    if (!error && data?.content) {
+      success = true;
+      extraction = typeof data.content === 'string' ? data.content.substring(0, 500) : undefined;
+      learningGain = 0.05 + Math.random() * 0.1;
+    }
+  } catch {
+    // Fallback: still count as a low-confidence attempt
+    success = false;
+    learningGain = 0;
+  }
 
   if (success) {
     topic.successes++;
@@ -191,16 +258,20 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
   // Store learning in memory
   if (success && learningGain > 0) {
     try {
-      await memoryCore.ingest(`CLM learning: ${topic.label}`, {
-        source: `clm-${topic.category}`,
-        confidence: learningGain,
-      });
+      await memoryCore.ingest(
+        `CLM learning: ${topic.label}${extraction ? ` — ${extraction.substring(0, 200)}` : ''}`,
+        {
+          source: `clm-${topic.category}`,
+          confidence: Math.min(0.55, learningGain + 0.3), // Cap to warm tier
+        },
+      );
     } catch { /* memory storage optional */ }
   }
 
   const result: CLMCycleResult = {
     topic: { ...topic },
     success,
+    extraction,
     learningGain,
     timestamp: Date.now(),
   };
@@ -215,6 +286,7 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
       learning_gain: learningGain,
       total_cycles: totalCycles,
       today_cycles: todayCycles,
+      used_real_ai: success,
     },
   });
 
