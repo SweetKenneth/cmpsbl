@@ -357,48 +357,48 @@ async function defaultAcknowledgeEnhancement(module: SubstrateModule, enhancemen
  * Get all module enhancement reports ranked by importance
  */
 export async function getAllEnhancementReports(): Promise<ModuleEnhancementReport[]> {
-  const reports: ModuleEnhancementReport[] = [];
-  
-  for (const module of getRegisteredModules()) {
-    const hook = getModuleHook(module);
-    if (!hook) continue;
-    
-    try {
-      const requests = await hook.getEnhancementRequests();
-      const kpis = await hook.getKPIs();
-      
-      // Calculate importance score: higher = more important
+  const modules = getRegisteredModules();
+  const hooks = modules.map(m => ({ module: m, hook: getModuleHook(m) })).filter(h => h.hook);
+
+  // Fetch all KPIs and enhancement requests in parallel
+  const results = await Promise.allSettled(
+    hooks.map(async ({ module, hook }) => {
+      const [requests, kpis] = await Promise.all([
+        hook!.getEnhancementRequests(),
+        hook!.getKPIs(),
+      ]);
+
       const priorityWeights = { critical: 100, high: 70, medium: 40, low: 15 };
-      const topPriority = requests.length > 0 
+      const topPriority = requests.length > 0
         ? Math.max(...requests.map(r => priorityWeights[r.priority] || 0))
         : 0;
-      const healthPenalty = Math.max(0, 50 - kpis.health_score) * 1.5; // Unhealthy modules rank higher
+      const healthPenalty = Math.max(0, 50 - kpis.health_score) * 1.5;
       const errorBoost = Math.min(50, kpis.error_count_24h * 5);
       const importanceScore = Math.min(100, topPriority + healthPenalty + errorBoost);
-      
-      // Sort requests by priority
-      const sorted = [...requests].sort((a, b) => 
+
+      const sorted = [...requests].sort((a, b) =>
         (priorityWeights[b.priority] || 0) - (priorityWeights[a.priority] || 0)
       );
-      
-      reports.push({
+
+      return {
         module,
         topRequest: sorted[0]?.title || 'no requests',
         requests: sorted,
         importanceScore,
-      });
-    } catch {
-      reports.push({
-        module,
-        topRequest: 'unavailable',
-        requests: [],
-        importanceScore: 0,
-      });
-    }
-  }
-  
-  // Sort by importance (descending)
-  return reports.sort((a, b) => b.importanceScore - a.importanceScore);
+      } as ModuleEnhancementReport;
+    })
+  );
+
+  const reports = results
+    .map((r, i) => r.status === 'fulfilled' ? r.value : {
+      module: hooks[i].module,
+      topRequest: 'unavailable',
+      requests: [] as EnhancementRequest[],
+      importanceScore: 0,
+    } as ModuleEnhancementReport)
+    .sort((a, b) => b.importanceScore - a.importanceScore);
+
+  return reports;
 }
 
 /**
