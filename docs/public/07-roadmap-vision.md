@@ -2,7 +2,7 @@
 
 ---
 
-## Current State (v14.1.0 — MINDGAMES Epoch)
+## Current State (v15.0.0 — CONTACT Epoch)
 
 The substrate is production-ready with:
 - 40-node cognitive kernel across 12 sectors
@@ -13,6 +13,8 @@ The substrate is production-ready with:
 - One-click disaster recovery
 - Universal export to 25 target languages
 - First-party analytics and developer portal
+- 11 @cmpsbl NPM packages across 4 tiers
+- Unified First Contact System for developer onboarding
 
 ---
 
@@ -44,7 +46,8 @@ The substrate is production-ready with:
 |-------|----------|-------|
 | **INFRASTRUCTURE** | v1.0–v12.x | The substrate grew organs |
 | **IRONCLAD** | v13.0–v13.x | The substrate grew armor |
-| **MINDGAMES** | v14.0–current | The substrate opened its eyes and saw users |
+| **MINDGAMES** | v14.0–v14.x | The substrate opened its eyes and saw users |
+| **CONTACT** | v15.0–current | The substrate reached outward to developers |
 
 ---
 

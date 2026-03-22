@@ -645,6 +645,55 @@ const stratumFormation: Specimen[] = [
 
 // ─── Strata Definition ─────────────────────────────────────────────────────────
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// EPOCH — CONTACT
+// The platform reached outward — developer touchpoints, SDKs, and NPM packages.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const stratumContact: Specimen[] = [
+  {
+    id: "CNTC-001",
+    fossilized: "2026-03-22",
+    origin: "distribution",
+    stimulus: "The substrate had no external developer touchpoints — all intelligence was locked inside the platform with no programmatic access for external systems, agents, or applications",
+    adaptations: [
+      "11 @cmpsbl NPM packages created across four tiers: Foundation (@cmpsbl/types, /runtime, /failsafe), Core (@cmpsbl/intent, /mesh, /bridge), Developer (@cmpsbl/sdk, /discovery, /cli), and Ecosystem (@cmpsbl/react, /test-harness)",
+      "Unified First Contact System implemented — every package binds real persistent user identity at initialization and connects to the live Memory Stream",
+      "CLI entry point established: 'npx cmpsbl init' bootstraps cognitive environment, connects Memory Stream, binds user identity, and starts live discovery",
+      "SDK client class (CMPSBL) exposes discover(), capture(), apply(), and export() methods for programmatic Memory Stream interaction",
+      "Domain-specific pattern detection wired for @cmpsbl/security (threat detection), @cmpsbl/commerce (checkout optimization), @cmpsbl/health (patient timeline correlation), and @cmpsbl/dev (code optimization)",
+      "All packages enforce live discovery mode — mock data and simulated outputs are architecturally blocked",
+      "Dependency-ordered build and publish pipeline created via unified 'npm run sdk:publish' script",
+      "Package READMEs standardized with First Contact examples showing real memory chain detection and capture",
+    ],
+    phenotype: [
+      "The substrate has 11 external exposure points — developers can interact with the Memory Stream from any Node.js environment",
+      "Every @cmpsbl package feels alive on first run — discovery starts automatically and memory chains form in real time",
+      "External systems can now discover, capture, and export reusable intelligence without ever opening the platform UI",
+      "The NPM ecosystem is the substrate's first programmatic distribution channel",
+    ],
+    affectedNodes: ["INTEGRATION", "FORGE", "MEMORY", "DECODE", "ENCODE", "CORTEX"],
+  },
+  {
+    id: "CNTC-002",
+    fossilized: "2026-03-22",
+    origin: "architecture",
+    stimulus: "Version 14.x MINDGAMES epoch completed its mission — the platform had opened its eyes to users. The next evolutionary pressure was reaching outward to developers and external systems",
+    adaptations: [
+      "Epoch transition from MINDGAMES to CONTACT marks the shift from user-facing polish to developer-facing distribution",
+      "Version constants elevated to v15.0.0 across the platform version registry",
+      "CONTACT epoch name reflects the substrate's first programmatic handshake with external developers",
+      "Pipeline fingerprint epoch rotation path updated: SPARTA → ATHENA → TITAN → CONTACT",
+    ],
+    phenotype: [
+      "The substrate has a name for this phase: CONTACT — the moment it stopped being an island",
+      "v15 signals a major distribution milestone, not just incremental improvement",
+      "The epoch hierarchy now traces a complete arc: formation → infrastructure → governance → users → developers",
+    ],
+    affectedNodes: ["CORE", "EVOLUTION", "GOVERNANCE"],
+  },
+];
+
 const stratumMindgames: Specimen[] = [
   {
     id: "MNDG-025",
@@ -1066,9 +1115,18 @@ const stratumMindgames: Specimen[] = [
 
 const STRATA: Stratum[] = [
   {
+    epoch: "CONTACT",
+    codename: "The platform reached outward and made first contact with developers",
+    range: "Current epoch",
+    color: "bg-cyan-500/10 text-cyan-400",
+    borderColor: "border-cyan-500/30",
+    dotColor: "bg-cyan-500",
+    specimens: stratumContact,
+  },
+  {
     epoch: "MINDGAMES",
     codename: "The platform opened its eyes and saw users for the first time",
-    range: "Current epoch",
+    range: "Prior epoch",
     color: "bg-violet-500/10 text-violet-400",
     borderColor: "border-violet-500/30",
     dotColor: "bg-violet-500",

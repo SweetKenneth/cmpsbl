@@ -1,6 +1,6 @@
 # CMPSBL® Public Documentation Library
 
-**Version:** v14.1.0 — MINDGAMES Epoch
+**Version:** v15.0.0 — CONTACT Epoch
 
 ---
 
