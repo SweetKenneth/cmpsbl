@@ -1,9 +1,11 @@
 /**
- * Brain Memory Compression Engine v2
- * Advanced compression with semantic clustering and lossless code preservation
+ * Brain Memory Compression Engine v3
+ * Advanced compression with semantic clustering, lossless code preservation,
+ * importance-aware retention, and content normalization for max space savings
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { compressForStorage, classifyImportance, shouldPreserveIndefinitely, compactMetadata, contentHash } from '@/lib/memory/content-dedup';
 
 export interface CompressionConfig {
   targetRatio: number;
