@@ -428,7 +428,7 @@ export function AnalyticsTab() {
           <motion.div className="p-6 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-foreground">Operations Over Time</h3>
-              <Badge variant="outline" className="text-[9px] font-mono border-cyan-500/30 text-cyan-400 bg-cyan-500/10">{dateRange.toUpperCase()}</Badge>
+              <Badge variant="outline" className="text-[9px] font-mono border-primary/30 text-primary bg-primary/10">{dateRange.toUpperCase()}</Badge>
             </div>
             <div className="flex items-end gap-1 h-32">
               {data.series.slice(dateRange === '7d' ? -7 : -30).map((day, idx) => {
