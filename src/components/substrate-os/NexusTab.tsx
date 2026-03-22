@@ -63,12 +63,7 @@ export function NexusTab() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   
-  // Image generation state
-  const [imagePrompt, setImagePrompt] = useState('');
-  const [imageStyle, setImageStyle] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [imageRemaining, setImageRemaining] = useState(25);
+  // Image generation is handled by the dedicated NEXUS image endpoint
 
   useEffect(() => {
     fetchNexusData();
