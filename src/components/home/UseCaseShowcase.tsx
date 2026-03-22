@@ -35,7 +35,7 @@ const useCases = [
   {
     icon: Brain,
     title: "Chatbots With True Memory",
-    description: "Conversational AI that remembers customer history, builds relationship context, and provides personalized support.",
+    description: "Conversational AI that retains customer context and builds long-term relationships.",
     industry: "Development",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--neon-purple)/0.15)]",
