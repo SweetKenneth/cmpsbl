@@ -11,7 +11,7 @@
  * - Graceful degradation on parse errors
  * - Dead-letter fallback logging
  *
- * POST-INGEST: Displays the derived Capability Surface (Node 41 identity)
+ * POST-INGEST: Displays the derived Capability Surface (Auxiliary Node identity)
  */
 
 import { useState, useCallback, useRef } from 'react';
@@ -305,7 +305,7 @@ export function IngestPhase() {
           category: 'proprietary-evolution',
           description: capSurface
             ? `Ψ₄₁ ${capSurface.nodeName} — ${capSurface.description} (${parsedNode.language}, ${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers)`
-            : `Candidate Node #41 — ${parsedNode.language} (${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers, ${parsedNode.sizeKb}KB)`,
+            : `Candidate Auxiliary Node — ${parsedNode.language} (${parsedNode.fileCount} files, ${parsedNode.resolverCount} resolvers, ${parsedNode.sizeKb}KB)`,
           metadata: {
             phase: 'ingest',
             language: parsedNode.language,
@@ -517,7 +517,7 @@ export function IngestPhase() {
               </div>
 
               <p className="text-[10px] text-muted-foreground leading-relaxed">
-                This capability surface will be used as Node 41 in the collision engine — your code participates as a first-class peer alongside the 40 substrate nodes.
+                This capability surface will be used as the Auxiliary Node in the collision engine — your code participates as a first-class peer alongside the 40 substrate nodes.
               </p>
             </div>
           )}
@@ -555,8 +555,8 @@ export function IngestPhase() {
             >
               {registering ? <Loader2 className="w-4 h-4 animate-spin" /> : <Layers className="w-4 h-4" />}
               {capSurface
-                ? `Register Ψ₄₁ ${capSurface.nodeName} as Node 41`
-                : 'Register as Candidate Node #41'}
+                ? `Register Ψ₄₁ ${capSurface.nodeName} as Auxiliary Node`
+                : 'Register as Candidate Auxiliary Node'}
             </Button>
           )}
 

@@ -48,7 +48,7 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   "ascension": {
     term: "Ascension",
     short: "The lifecycle where developer software enters the substrate and evolves.",
-    detail: "Your code becomes Candidate Node #41, collides against 40 substrate nodes, and successful chains are ascended into portable Ascended Memories.",
+    detail: "Your code becomes Auxiliary Node, collides against 40 substrate nodes, and successful chains are ascended into portable Ascended Memories.",
   },
   "ascended-memory": {
     term: "Ascended Memory",

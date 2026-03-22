@@ -7,7 +7,7 @@
 
 ## 1. Purpose
 
-This document is the exhaustive internal reference for the Ascension pipeline — the proprietary process where external developer software enters the CMPSBL cognitive substrate as a Candidate Node (Node 41), undergoes collision-based discovery against the 40-node matrix, and produces Ascended Memories exportable in the developer's original language.
+This document is the exhaustive internal reference for the Ascension pipeline — the proprietary process where external developer software enters the CMPSBL cognitive substrate as a Candidate Node (Auxiliary Node), undergoes collision-based discovery against the 40-node matrix, and produces Ascended Memories exportable in the developer's original language.
 
 ---
 
@@ -63,7 +63,7 @@ The detected language is stored as `source_export_language` in the candidate's m
 
 ### 3.4 Capability Surface Derivation — deriveCapabilitySurface()
 
-This is the core IP of the ingest phase. The function scans all ingested source code to assign Node 41 a real capability profile.
+This is the core IP of the ingest phase. The function scans all ingested source code to assign the Auxiliary Node a real capability profile.
 
 **Domain signal detection** (substring matching on combined source):
 
@@ -155,7 +155,7 @@ Discovery is executed server-side in the `pf-proprietary-evolution` edge functio
 
 ### 4.2 Multi-Chain Collision Algorithm
 
-The discovery engine explores chains of **2 to 6 nodes**, always including Node 41 (the candidate).
+The discovery engine explores chains of **2 to 6 nodes**, always including the Auxiliary Node (the candidate).
 
 **Chain generation:**
 
@@ -178,7 +178,7 @@ for chain_length in [2, 3, 4, 5, 6]:
 | 5 | 300 |
 | 6 | 100 |
 
-Permutations are selected using **weighted random sampling** — nodes in the same sector as Node 41 are 3x more likely to be selected, adjacent sectors 1.5x.
+Permutations are selected using **weighted random sampling** — nodes in the same sector as Auxiliary Node are 3x more likely to be selected, adjacent sectors 1.5x.
 
 ### 4.3 Synergy Scoring — CJPI (Crown Jewel Pipeline Index)
 

@@ -8,7 +8,7 @@
 
 ## Purpose
 
-This document describes the internal architecture of the Ascension subsystem — the pipeline that transforms developer software into first-class substrate nodes (Node 41+).
+This document describes the internal architecture of the Ascension subsystem — the pipeline that transforms developer software into first-class substrate nodes (Auxiliary Node).
 
 ---
 

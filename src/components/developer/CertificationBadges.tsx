@@ -49,7 +49,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'ascension_specialist',
     name: 'Ascension Specialist',
-    description: 'Node 41+ lifecycle mastery: primitive extraction, quality gates, delta measurement, and CJPI scoring.',
+    description: 'Auxiliary Node lifecycle mastery: primitive extraction, quality gates, delta measurement, and CJPI scoring.',
     badge_icon: '🚀', badge_level: 'platinum',
     required_skills: ['ascension_basics', 'cjpi_scoring', 'memory_stream'],
     min_xp_total: 1200, is_earned: false, progress_percent: 10,

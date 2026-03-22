@@ -50,7 +50,7 @@ const SKILL_DEFINITIONS: Omit<Skill, 'is_unlocked' | 'progress'>[] = [
 
   // Tier 3 — Advanced
   { skill_key: 'defense_security', name: 'DEFENSE & Security', description: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', category: 'advanced', tier: 3, xp_required: 300, prerequisites: ['nexus_routing'], unlocks: ['cjpi_scoring'], icon: '🛡️' },
-  { skill_key: 'ascension_basics', name: 'Ascension Lifecycle', description: 'Node 41+ ingestion, primitive extraction, quality gates, and delta measurement', category: 'advanced', tier: 3, xp_required: 350, prerequisites: ['memory_stream'], unlocks: ['production_hardening'], icon: '🚀' },
+  { skill_key: 'ascension_basics', name: 'Ascension Lifecycle', description: 'Auxiliary Node ingestion, primitive extraction, quality gates, and delta measurement', category: 'advanced', tier: 3, xp_required: 350, prerequisites: ['memory_stream'], unlocks: ['production_hardening'], icon: '🚀' },
   { skill_key: 'cjpi_scoring', name: 'CJPI Scoring', description: 'Novelty, utility, complexity, composability — discovery evaluation framework', category: 'advanced', tier: 3, xp_required: 275, prerequisites: ['defense_security'], unlocks: ['production_hardening'], icon: '🎯' },
 
   // Tier 4 — Expert

@@ -68,7 +68,7 @@ Complete terminology reference for the CMPSBL cognitive substrate.
 | Continuous Learning Mode | Constant Learning Mode (CLM) |
 | Crown Jewel | Apex Discovery |
 | Module | Node |
-| Node 41 | Ascension |
+| Auxiliary Node | Ascension |
 | Pipeline | Memory or Chain |
 
 ---

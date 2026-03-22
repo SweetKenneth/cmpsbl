@@ -150,7 +150,7 @@ Failed integrity seals trigger Level 2 escalation.
 
 ## 11. OBSERVER Integration
 
-The OBSERVER node (Node 41, auxiliary) provides a dedicated watchdog layer that complements the existing health scoring model:
+The OBSERVER node (Auxiliary Node) provides a dedicated watchdog layer that complements the existing health scoring model:
 
 - **Telemetry Ingestion**: Accepts `TelemetrySnapshot` events from all 40 primary nodes
 - **Rolling Buffer**: Maintains a 500-entry rolling buffer per module for Z-score anomaly detection

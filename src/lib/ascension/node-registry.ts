@@ -1,7 +1,7 @@
 /**
  * CMPSBL® Ascension Node Registry
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Manages all ingested Candidate Nodes (Node 41+).
+ * Manages all ingested Candidate Nodes (Auxiliary Node).
  * Uses structured metadata schema with migration support.
  *
  * © CMPSBL® — All rights reserved.
