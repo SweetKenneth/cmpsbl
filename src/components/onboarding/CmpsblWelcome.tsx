@@ -7,7 +7,7 @@
 import { useState, useEffect } from 'react';
 import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, ChevronRight, Zap, Terminal, Database, LayoutDashboard, Route, Package } from 'lucide-react';
+import { X, ArrowRight, ChevronRight, Zap, Terminal, Database, LayoutDashboard, Route, Package, Brain, Shield, Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
@@ -21,66 +21,64 @@ interface OnboardingStep {
   body: string;
   accent: string;
   pattern: string;
+  footer?: string;
   /** Inline CTA (embedded in card body, not footer) */
   inlineCta?: { text: string; href: string };
   /** Second inline CTA */
   secondaryInlineCta?: { text: string; href: string };
-  /** Bullet list for card 4 */
+  /** Bullet list */
   bullets?: string[];
-  /** Dual entry descriptions for card 5 */
+  /** Dual entry descriptions */
   entries?: { icon: React.ElementType; label: string; desc: string }[];
 }
 
 const STEPS: OnboardingStep[] = [
   {
-    icon: Zap,
-    tag: 'What this is',
-    title: 'Welcome to CMPSBL',
-    body: 'Build and run real software with AI. Start locally with packages, or connect to unlock memory, runtime, and system-level coordination.',
+    icon: Brain,
+    tag: 'Memory',
+    title: 'CMPSBL Remembers',
+    body: 'CMPSBL maintains a persistent memory layer where activity is retained and built upon over time.\n\nMemory can be applied to agents, language models, and applications, allowing behavior to carry forward between interactions. Systems can retain context, reuse what has already been learned, and operate with continuity instead of starting over.',
+    footer: 'Nothing resets.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 50%)',
   },
   {
-    icon: Terminal,
-    tag: 'Build',
-    title: 'Build with CodeLab',
-    body: 'Write and test real components in your browser. Signal Forge generates structured starting points — you take it from there.',
+    icon: Database,
+    tag: 'Discovery',
+    title: 'Memories Are Exportable',
+    body: 'CMPSBL is a cognitive environment that searches for memory chains autonomously. As they are discovered, chains are stored in the Memory Stream for users to capture, reuse, or resell.',
+    footer: 'Crystallize memories daily. Licensed, exportable, and valuable.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Open CodeLab', href: '/codelab' },
   },
   {
-    icon: Database,
-    tag: 'Remember',
-    title: 'Persistent Memory',
-    body: "Your system doesn't reset. Every build, test, and discovery is stored and evolves over time in your Memory Stream.",
+    icon: Moon,
+    tag: 'Evolution',
+    title: 'Self-Improving Infrastructure',
+    body: "CMPSBL enters dream states during off-peak hours, reasoning through the day's interactions to refine and optimize its capabilities.\n\nThis same behavior can be applied to agents, models, and applications, allowing what you build to improve over time without manual updates.",
+    footer: 'FAILSAFE provides backup and restore. Install it from The Store.',
     accent: 'neon-magenta',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'View Memory', href: '/foundry' },
   },
   {
-    icon: LayoutDashboard,
-    tag: 'System + Store',
-    title: 'Run & Expand Your System',
-    body: 'Use the dashboard to run agents and monitor your system. Install new capabilities from the Store:',
+    icon: Shield,
+    tag: 'Governance',
+    title: 'Complete Control',
+    body: 'CMPSBL has built-in guardrails that give you direct control over your agents and language models. These can be used to guide behavior, validate outputs, and keep systems operating the way you intend.',
+    footer: 'You decide how it runs.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Open Dashboard', href: '/workspace' },
-    bullets: ['Agents', 'Engines', 'Upgrades'],
   },
   {
-    icon: Route,
-    tag: 'Start your way',
-    title: 'Start Your Way',
-    body: 'You can use CMPSBL in two ways:',
+    icon: Zap,
+    tag: 'Get started',
+    title: 'Create a Free Account',
+    body: "Upgradable plans unlock new capabilities, expand Memory Stream access, and open deeper parts of the system.\n\nEverything you build can retain context, improve through real usage, and behave the way you intend. The system is already running — you can explore it at any time.",
+    footer: 'All users are first-class. No credit card required.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Create Account', href: '/auth' },
-    secondaryInlineCta: { text: 'View npm Packages', href: '/documentation' },
-    entries: [
-      { icon: Package, label: 'Install packages (npm)', desc: 'Use parts of the system in your own stack' },
-      { icon: Zap, label: 'Create an account', desc: 'Unlock memory, runtime, and full system features' },
-    ],
+    inlineCta: { text: 'Explore the Platform', href: '/explore' },
+    secondaryInlineCta: { text: 'Start Building — Free', href: '/auth' },
   },
 ];
 
@@ -238,9 +236,18 @@ export function CmpsblWelcome() {
             <h2 className="text-lg font-bold text-foreground mb-2.5 tracking-tight cmpsbl-welcome-title-reveal">
               {current.title}
             </h2>
-            <p className="text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade">
-              {current.body}
-            </p>
+            {current.body.split('\n\n').map((paragraph, i) => (
+              <p key={i} className={cn("text-[13px] text-muted-foreground leading-relaxed cmpsbl-welcome-body-fade", i > 0 && "mt-2.5")}>
+                {paragraph}
+              </p>
+            ))}
+
+            {/* Footer quote */}
+            {current.footer && (
+              <p className="mt-3 text-[11px] font-mono text-muted-foreground/60 cmpsbl-welcome-body-fade">
+                {current.footer}
+              </p>
+            )}
 
             {/* Bullet list for card 4 */}
             {current.bullets && (
@@ -318,7 +325,7 @@ export function CmpsblWelcome() {
               onClick={next}
               className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow"
             >
-              {isLastStep ? 'Get Started' : 'Next'}
+              {isLastStep ? 'Explore the Platform' : 'Next →'}
               <ChevronRight className="w-3.5 h-3.5" />
             </Button>
           </div>
