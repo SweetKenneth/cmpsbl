@@ -5,6 +5,7 @@
  */
 
 import cmpsblLogo from "@/assets/cmpsbl-logo.webp";
+import cmpsblLogoSm from "@/assets/cmpsbl-logo-sm.webp";
 import { cn } from "@/lib/utils";
 
 interface CmpsblLogoProps {
