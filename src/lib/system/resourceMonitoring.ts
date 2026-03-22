@@ -154,12 +154,27 @@ export function getLatestMetrics(): ResourceMetrics | null {
 // ============ Individual Collectors ============
 
 function collectCpuMetrics(): CpuMetrics {
-  // Simulated - in production would use actual system metrics
+  // Derive CPU-like metrics from real JS event loop and heap pressure
+  const perfMemory = (performance as any).memory;
+  const heapPressure = perfMemory
+    ? (perfMemory.usedJSHeapSize / perfMemory.jsHeapSizeLimit) * 100
+    : 0;
+
+  // Use performance.now() delta as a proxy for event loop contention
+  const entries = performance.getEntriesByType?.('measure') || [];
+  const recentEntries = entries.slice(-10);
+  const avgDuration = recentEntries.length > 0
+    ? recentEntries.reduce((s, e) => s + e.duration, 0) / recentEntries.length
+    : 0;
+
+  // Normalize: heap pressure + event loop lag → usage estimate
+  const usagePercent = Math.min(100, Math.max(0, heapPressure * 0.7 + Math.min(avgDuration, 100) * 0.3));
+
   return {
-    usage_percent: 15 + Math.random() * 30,
-    load_average_1m: 0.5 + Math.random() * 0.5,
-    load_average_5m: 0.4 + Math.random() * 0.4,
-    load_average_15m: 0.3 + Math.random() * 0.3,
+    usage_percent: Math.round(usagePercent * 10) / 10,
+    load_average_1m: Math.round(usagePercent / 100 * 10) / 10,
+    load_average_5m: Math.round(usagePercent / 100 * 0.8 * 10) / 10,
+    load_average_15m: Math.round(usagePercent / 100 * 0.6 * 10) / 10,
   };
 }
 

@@ -37,14 +37,32 @@ export function useCognitiveCapabilities(nodeId?: string) {
   const replay = useCallback((targetNodeId?: string) => {
     const id = targetNodeId || nodeId;
     if (!id) return null;
-    // Simulated memory scores for replay
-    const mockScores = Array.from({ length: 20 }, (_, i) => ({
-      id: `mem-${i}`,
-      score: Math.random(),
-      topic: ['patterns', 'heuristics', 'observations', 'rules'][i % 4],
-      tier: (['hot', 'warm', 'cold'] as const)[i % 3],
-    }));
-    const result = replayHighValueMemories(id, mockScores);
+    // Pull real scores from assessment history for this node
+    const history = getSelfAssessmentHistory(id);
+    const memoryScores = history.length > 0
+      ? history.map((entry, i) => ({
+          id: `assess-${i}-${entry.assessedAt}`,
+          score: entry.recallAccuracy,
+          topic: entry.recommendations[0] || ['patterns', 'heuristics', 'observations', 'rules'][i % 4],
+          tier: (entry.healthAtAssessment > 70 ? 'hot' : entry.healthAtAssessment > 40 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
+        }))
+      : // Bootstrap from a fresh assessment if no history exists
+        (() => {
+          const fresh = runSelfAssessment(id);
+          const metrics = [
+            { name: 'recallAccuracy', score: fresh.recallAccuracy },
+            { name: 'confidenceCalibration', score: fresh.confidenceCalibration },
+            { name: 'knowledgeCoverage', score: fresh.knowledgeCoverage },
+            { name: 'driftScore', score: 1 - fresh.driftScore },
+          ];
+          return metrics.map((dim, i) => ({
+            id: `dim-${i}-${dim.name}`,
+            score: dim.score,
+            topic: dim.name,
+            tier: (dim.score > 0.7 ? 'hot' : dim.score > 0.4 ? 'warm' : 'cold') as 'hot' | 'warm' | 'cold',
+          }));
+        })();
+    const result = replayHighValueMemories(id, memoryScores);
     setLastReplay(result);
     return result;
   }, [nodeId]);
