@@ -831,6 +831,30 @@ class SubstrateClient {
     /** Lightweight heartbeat check */
     pulse: () =>
       this.invoke({ module: 'core', action: 'pulse' }),
+
+    /** Kernel health score (0-100) */
+    health: () =>
+      this.invoke({ module: 'core', action: 'health' }),
+
+    /** Kernel version and build info */
+    version: () =>
+      this.invoke({ module: 'core', action: 'version' }),
+
+    /** System uptime and boot timestamp */
+    uptime: () =>
+      this.invoke({ module: 'core', action: 'uptime' }),
+
+    /** Kernel diagnostics (scheduler, queues, breakers) */
+    diagnostics: (options?: { verbose?: boolean }) =>
+      this.invoke({ module: 'core', action: 'diagnostics', payload: options }),
+
+    /** Circuit breaker and recovery state */
+    resilience: () =>
+      this.invoke({ module: 'core', action: 'resilience' }),
+
+    /** List all registered modules with health */
+    modules: () =>
+      this.invoke({ module: 'core', action: 'modules' }),
     
     /** Initialize boot sequence for all modules */
     boot: () =>

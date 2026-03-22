@@ -261,6 +261,12 @@ export const EVOLUTION_CORE_COMMANDS: CommandDefinition[] = [
 export const CORE_COMMANDS: CommandDefinition[] = [
   { command: 'core.status', description: 'Kernel status with uptime', category: 'core', icon: Server, requiresOperator: false, requiredTier: 'free' },
   { command: 'core.pulse', description: 'Lightweight heartbeat', category: 'core', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.health', description: 'Kernel health score (0-100)', category: 'core', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.version', description: 'Kernel version and build info', category: 'core', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.uptime', description: 'System uptime and boot timestamp', category: 'core', icon: Clock, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.diagnostics', description: 'Kernel diagnostics (scheduler, queues, breakers)', category: 'core', icon: Cpu, requiresOperator: false, requiredTier: 'free', args: '[--verbose]' },
+  { command: 'core.resilience', description: 'Circuit breaker and recovery state', category: 'core', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'core.modules', description: 'List all registered modules with health', category: 'core', icon: Box, requiresOperator: false, requiredTier: 'free' },
   { command: 'core.boot', description: 'Initialize boot sequence', category: 'core', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect' },
   { command: 'core.schedule', description: 'Schedule a delayed job', category: 'core', icon: Clock, requiresOperator: true, requiredTier: 'creator', args: '<module> <action> [delay]', example: 'core.schedule brain reflect 5m' },
   { command: 'core.jobs', description: 'List scheduled jobs', category: 'core', icon: List, requiresOperator: false, requiredTier: 'free', args: '[status] [limit]' },
