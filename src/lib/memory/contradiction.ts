@@ -4,6 +4,7 @@
  * 
  * FIX #19: Enhanced detection beyond simple adjacent-word negation —
  * now checks antonym pairs, numeric conflicts, and temporal supersession.
+ * OPT: Pre-built antonym lookup map for O(1), reduced allocations.
  */
 
 export interface ContradictionResult {
@@ -23,8 +24,18 @@ const ANTONYM_PAIRS: [string, string][] = [
   ['available', 'unavailable'], ['online', 'offline'],
 ];
 
+/** Pre-built O(1) antonym lookup: word → its antonym */
+const ANTONYM_MAP = new Map<string, string>();
+for (const [a, b] of ANTONYM_PAIRS) {
+  ANTONYM_MAP.set(a, b);
+  ANTONYM_MAP.set(b, a);
+}
+
 /** Negation words that flip meaning */
 const NEGATION_SET = new Set(['not', 'never', 'no', 'false', 'incorrect', 'wrong', 'deprecated', 'removed', 'invalid', "doesn't", "isn't", "won't", "can't", "don't"]);
+
+/** Pre-compiled regex */
+const NUM_RE = /\b\d+\.?\d*\b/g;
 
 /** Check if new evidence contradicts an existing memory claim */
 export function detectContradiction(
@@ -37,10 +48,19 @@ export function detectContradiction(
   let contradictionSignals = 0;
   const reasons: string[] = [];
 
-  // 1. Negation-keyword overlap — use Set for O(1) neg lookup
-  const existingWords = existingLower.split(/\s+/).filter(w => w.length > 3);
-  const newWords = newLower.split(/\s+/);
-  const newWordsLong = newWords.filter(w => w.length > 3);
+  // Extract long words once, reuse across checks
+  const existingWords: string[] = [];
+  const newWordSet = new Set<string>();
+  
+  // Single-pass word extraction for both strings
+  for (const w of existingLower.split(/\s+/)) {
+    if (w.length > 3) existingWords.push(w);
+  }
+  for (const w of newLower.split(/\s+/)) {
+    if (w.length > 3) newWordSet.add(w);
+  }
+
+  // 1. Negation-keyword overlap
   for (const word of existingWords) {
     for (const neg of NEGATION_SET) {
       if (newLower.includes(`${neg} ${word}`) || newLower.includes(`${word} ${neg}`)) {
@@ -50,41 +70,41 @@ export function detectContradiction(
     }
   }
 
-  // 2. Antonym detection — if existing has one side, new has the other
-  const newWordSet = new Set(newWordsLong);
-  for (const [a, b] of ANTONYM_PAIRS) {
-    const existingHasA = existingLower.includes(a);
-    const existingHasB = existingLower.includes(b);
-    const newHasA = newLower.includes(a);
-    const newHasB = newLower.includes(b);
-
-    if ((existingHasA && newHasB) || (existingHasB && newHasA)) {
-      let overlapCount = 0;
-      for (const w of existingWords) {
-        if (w !== a && w !== b && newWordSet.has(w)) { overlapCount++; break; }
-      }
-      if (overlapCount >= 1) {
+  // 2. Antonym detection via O(1) map lookup
+  for (const word of existingWords) {
+    const antonym = ANTONYM_MAP.get(word);
+    if (!antonym) continue;
+    if (!newLower.includes(antonym)) continue;
+    // Verify subject overlap (at least 1 shared non-antonym word)
+    for (const w of existingWords) {
+      if (w !== word && w !== antonym && newWordSet.has(w)) {
         contradictionSignals++;
-        reasons.push(`antonym: "${a}" vs "${b}"`);
+        reasons.push(`antonym: "${word}" vs "${antonym}"`);
+        break;
       }
     }
   }
 
   // 3. Numeric conflict — same subject, different numbers
-  const existingNums = existingLower.match(/\b\d+\.?\d*\b/g);
-  const newNums = newLower.match(/\b\d+\.?\d*\b/g);
-  if (existingNums && newNums) {
-    // Check subject overlap using pre-built set
-    let hasOverlap = false;
-    for (const w of existingWords) {
-      if (!/^\d/.test(w) && newWordSet.has(w)) { hasOverlap = true; break; }
-    }
-    if (hasOverlap) {
-      const existingNumSet = new Set(existingNums);
-      const hasConflict = newNums.some(n => !existingNumSet.has(n));
-      if (hasConflict) {
-        contradictionSignals++;
-        reasons.push(`numeric: existing=[${existingNums.join(',')}] vs new=[${newNums.join(',')}]`);
+  NUM_RE.lastIndex = 0;
+  const existingNums = existingLower.match(NUM_RE);
+  if (existingNums) {
+    const newNums = newLower.match(NUM_RE);
+    if (newNums) {
+      // Check subject overlap
+      let hasOverlap = false;
+      for (const w of existingWords) {
+        if (w.charCodeAt(0) > 57 && newWordSet.has(w)) { hasOverlap = true; break; } // charCode > '9'
+      }
+      if (hasOverlap) {
+        const existingNumSet = new Set(existingNums);
+        for (const n of newNums) {
+          if (!existingNumSet.has(n)) {
+            contradictionSignals++;
+            reasons.push(`numeric: existing=[${existingNums.join(',')}] vs new=[${newNums.join(',')}]`);
+            break;
+          }
+        }
       }
     }
   }
@@ -94,8 +114,7 @@ export function detectContradiction(
   }
 
   // Scale confidence drop with signal strength (capped at 50%)
-  const dropFactor = Math.min(contradictionSignals * 0.15, 0.50);
-  const drop = existingConfidence * dropFactor;
+  const drop = existingConfidence * (contradictionSignals * 0.15 > 0.50 ? 0.50 : contradictionSignals * 0.15);
 
   return {
     contradicted: true,
@@ -107,5 +126,6 @@ export function detectContradiction(
 
 /** Apply contradiction penalty to confidence */
 export function applyContradictionPenalty(confidence: number, drop: number): number {
-  return Math.max(0, confidence - drop);
+  const result = confidence - drop;
+  return result > 0 ? result : 0;
 }

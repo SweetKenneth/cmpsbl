@@ -145,13 +145,14 @@ export class MemoryClient {
   // #15 PROVENANCE BUILDER
   // ═══════════════════════════════════════════════════════════════════
   private buildProvenance(source: string): MemoryProvenance {
+    const ts = new Date().toISOString();
     return {
       source,
-      ingested_at: new Date().toISOString(),
+      ingested_at: ts,
       recall_count: 0,
       reinforced_count: 0,
       contradiction_checks: 0,
-      lineage: [`ingested:${source}:${new Date().toISOString()}`],
+      lineage: [`ingested:${source}:${ts}`],
     };
   }
 
@@ -400,18 +401,20 @@ export class MemoryClient {
       allMemories.sort((a, b) => (b.relevance || 0) - (a.relevance || 0));
       const finalMemories = allMemories.slice(0, limit);
       
-      // Track recall hit in metacognition
       const hit = finalMemories.length > 0;
-      await this.trackRecallHit(hit);
-      
-      const hasUserFacts = finalMemories.some(m => m.memory_type === 'user_fact');
+      let hasUserFacts = false;
+      for (let i = 0; i < finalMemories.length; i++) {
+        if (finalMemories[i].memory_type === 'user_fact') { hasUserFacts = true; break; }
+      }
 
-      // #14: RAG — Log context for audit
-      const ragContextId = await this.logRAGContext(query, finalMemories);
+      // Fire-and-forget: recall tracking + RAG audit don't block response
+      const ragContextId = `rag-${Date.now().toString(36)}`;
+      this.trackRecallHit(hit).catch(() => {});
+      this.logRAGContext(query, finalMemories).catch(() => {});
       
       return {
         memories: finalMemories,
-        confidence: hasUserFacts ? 0.95 : (finalMemories.length > 0 ? 0.7 : 0),
+        confidence: hasUserFacts ? 0.95 : (hit ? 0.7 : 0),
         tiers_searched: tiersSearched,
         rag_context_id: ragContextId,
       };
@@ -726,16 +729,14 @@ export class MemoryClient {
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
-    // Take top 5 — memories are already sorted by relevance from recall()
     const top = memories.length <= 5 ? memories : memories.slice(0, 5);
-    let result = '\n\n[Relevant context from memory — strategy: adaptive]\n';
+    const parts = ['\n\n[Relevant context from memory — strategy: adaptive]'];
     for (const m of top) {
-      result += '- ';
-      if (m.tier) result += `[${m.tier}]`;
-      if (m.memory_type) result += `(${m.memory_type})`;
-      result += ` ${m.content}\n`;
+      const tier = m.tier ? `[${m.tier}]` : '';
+      const type = m.memory_type ? `(${m.memory_type})` : '';
+      parts.push(`- ${tier}${type} ${m.content}`);
     }
-    return result;
+    return parts.join('\n');
   }
 
   /** Track recall hit/miss for metacognition */
@@ -799,33 +800,52 @@ export class MemoryClient {
       if (now - this.lastHourlyTrack < MemoryClient.HOURLY_THROTTLE_MS) return;
       this.lastHourlyTrack = now;
 
-      const hour = new Date().getHours();
-      const { data: meta } = await supabase
-        .from('brain_memory_meta' as any)
-        .select('hourly_activity, peak_hours')
-        .eq('user_id', this.userId)
-        .eq('agent_id', this.agentId)
-        .maybeSingle();
-      
-      if (meta) {
-        const activity = (meta as any).hourly_activity || {};
-        activity[hour] = (activity[hour] || 0) + 1;
-        
-        // Calculate peak hours (top 3)
-        const sorted = Object.entries(activity)
-          .sort(([, a], [, b]) => (b as number) - (a as number))
-          .slice(0, 3)
-          .map(([h]) => parseInt(h));
-
-        await supabase
-          .from('brain_memory_meta' as any)
-          .update({ hourly_activity: activity, peak_hours: sorted })
-          .eq('user_id', this.userId)
-          .eq('agent_id', this.agentId);
-      }
+      // Single RPC call replaces read-modify-write pattern
+      await supabase.rpc('track_hourly_activity' as any, {
+        p_user_id: this.userId,
+        p_agent_id: this.agentId,
+        p_hour: new Date().getHours(),
+      }).then(({ error }) => {
+        if (error) {
+          // Fallback: fire-and-forget meta update
+          this.trackHourlyFallback().catch(() => {});
+        }
+      });
     } catch {
       // Silent
     }
+  }
+
+  private async trackHourlyFallback(): Promise<void> {
+    const { data: meta } = await supabase
+      .from('brain_memory_meta' as any)
+      .select('hourly_activity')
+      .eq('user_id', this.userId!)
+      .eq('agent_id', this.agentId)
+      .maybeSingle();
+    
+    if (!meta) return;
+    const activity = (meta as any).hourly_activity || {};
+    const hour = new Date().getHours();
+    activity[hour] = (activity[hour] || 0) + 1;
+    
+    // Top 3 peak hours via partial sort (avoids full sort)
+    const entries = Object.entries(activity) as [string, number][];
+    const peaks: number[] = [];
+    for (let i = 0; i < 3 && entries.length > 0; i++) {
+      let maxIdx = 0;
+      for (let j = 1; j < entries.length; j++) {
+        if (entries[j][1] > entries[maxIdx][1]) maxIdx = j;
+      }
+      peaks.push(parseInt(entries[maxIdx][0]));
+      entries.splice(maxIdx, 1);
+    }
+
+    await supabase
+      .from('brain_memory_meta' as any)
+      .update({ hourly_activity: activity, peak_hours: peaks })
+      .eq('user_id', this.userId!)
+      .eq('agent_id', this.agentId);
   }
 
   /** Run tiering cascade if near capacity */

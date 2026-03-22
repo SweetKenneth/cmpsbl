@@ -99,18 +99,15 @@ export function computeTierMove(
 function inferReason(entry: MemoryEntry, from: MemoryTier, to: MemoryTier, rps: number): TierMoveReason {
   if (entry.contradicted) return 'contradiction_penalty';
 
-  const isPromotion = TIER_RANK[to] > TIER_RANK[from];
-
-  if (isPromotion) {
-    // Distinguish strong promotions from marginal ones
-    if (rps >= DEFAULT_TIER_THRESHOLDS.hot_min) return 'used_recently';
-    return 'rps_promotion';
+  // Branch-free direction check using pre-computed rank
+  if (TIER_RANK[to] > TIER_RANK[from]) {
+    return rps >= DEFAULT_TIER_THRESHOLDS.hot_min ? 'used_recently' : 'rps_promotion';
   }
 
-  // Demotion reasons
-  if (entry.access_count <= 1) return 'staleness_decay';
-  if (rps < DEFAULT_TIER_THRESHOLDS.cold_min) return 'rps_demotion';
-  return 'rps_marginal_demotion';
+  // Demotion: use threshold cascade
+  return entry.access_count <= 1 ? 'staleness_decay'
+    : rps < DEFAULT_TIER_THRESHOLDS.cold_min ? 'rps_demotion'
+    : 'rps_marginal_demotion';
 }
 
 /** Check if memory should be hidden by default (below glacier threshold) */

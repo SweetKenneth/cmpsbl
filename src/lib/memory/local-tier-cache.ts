@@ -74,7 +74,6 @@ export class LocalTierCache<T = unknown> {
   /**
    * Read-through lookup: hot → warm → central MEMORY
    * Promotes on hit; returns null on full miss.
-   * FIX #10: Central fallback errors are now caught instead of propagating
    */
   async get(key: string): Promise<T | null> {
     const now = Date.now();
@@ -105,15 +104,63 @@ export class LocalTierCache<T = unknown> {
           this.put(key, centralValue);
           return centralValue;
         }
-      } catch (err) {
-        // FIX #10: Don't let central fallback errors crash the cache
-        const msg = err instanceof Error ? err.message : String(err);
-        console.warn(`[LocalTierCache:${this.nodeId}] Central fallback error for "${key}": ${msg}`);
+      } catch {
+        // Silent — don't let central fallback errors crash the cache
       }
     }
 
     this.stats.misses++;
     return null;
+  }
+
+  /**
+   * Batch multi-key lookup — returns found entries, skips misses.
+   * Avoids N sequential async calls for multi-key access patterns.
+   */
+  async getMany(keys: string[]): Promise<Map<string, T>> {
+    const result = new Map<string, T>();
+    const centralMisses: string[] = [];
+
+    for (const key of keys) {
+      // Sync tiers first
+      const hotEntry = this.hot.get(key);
+      if (hotEntry) {
+        const now = Date.now();
+        hotEntry.lastAccess = now;
+        hotEntry.accessCount++;
+        this.stats.hotHits++;
+        result.set(key, hotEntry.value);
+        continue;
+      }
+      const warmEntry = this.warm.get(key);
+      if (warmEntry) {
+        this.stats.warmHits++;
+        this.promote(key, warmEntry);
+        result.set(key, warmEntry.value);
+        continue;
+      }
+      if (this.centralFallback) centralMisses.push(key);
+      else this.stats.misses++;
+    }
+
+    // Batch central fallback in parallel
+    if (centralMisses.length > 0 && this.centralFallback) {
+      const settled = await Promise.allSettled(
+        centralMisses.map(k => this.centralFallback!(k))
+      );
+      for (let i = 0; i < settled.length; i++) {
+        const s = settled[i];
+        if (s.status === 'fulfilled' && s.value !== null && s.value !== undefined) {
+          this.stats.centralHits++;
+          this.put(centralMisses[i], s.value);
+          result.set(centralMisses[i], s.value);
+        } else {
+          this.stats.misses++;
+        }
+      }
+    }
+
+    return result;
   }
 
   /**

@@ -13,6 +13,7 @@ export { usePersistentAgent, type PersistentAgentResult } from './usePersistentA
 export { MemoryClient, type RecallResult, type MemoryEntry, type MemoryMetaState, type ContradictionResult, type MemoryProvenance, type UserFingerprint } from './client';
 export { LocalTierCache, getNodeCache, getAllNodeCacheStats, maintainAllCaches, type LocalCacheEntry, type LocalTierCacheConfig, type CacheStats } from './local-tier-cache';
 
+
 // Tiering & RPS
 export { computeRPS, DEFAULT_RPS_WEIGHTS, CREDIBILITY_WEIGHTS, type RpsWeights, type SourceCredibility } from './rps';
 export { tierFromRPS, computeTierMove, shouldHide, DEFAULT_TIER_THRESHOLDS, type MemoryTier, type TierThresholds, type TierMoveReceipt, type TierMoveReason, type TierMoveActor } from './tiering';
