@@ -248,7 +248,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
                             <div className={cn(
                               "px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-mono font-medium transition-all cursor-default",
                               isActive
-                                ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20"
+                                ? "bg-neon-green/10 text-neon-green border border-neon-green/20"
                                 : "bg-muted/20 text-muted-foreground/30 border border-border/10"
                             )}>
                               {node}
