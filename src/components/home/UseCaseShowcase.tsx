@@ -158,7 +158,7 @@ export function UseCaseShowcase() {
                  to="/use-cases"
                  className={cn(
                     "group relative block h-full p-5 sm:p-6 rounded-2xl border border-border/50",
-                    "bg-card/50 backdrop-blur-sm",
+                    "bg-[hsl(var(--stream-slate))] backdrop-blur-sm",
                     "transition-all duration-500",
                     "overflow-hidden shimmer-on-hover card-lift",
                    useCase.iconColor,

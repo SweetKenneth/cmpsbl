@@ -77,6 +77,9 @@ export default {
           green: "hsl(var(--neon-green))",
           blue: "hsl(var(--neon-blue))",
         },
+        stream: {
+          slate: "hsl(var(--stream-slate))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

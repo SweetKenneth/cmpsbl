@@ -76,7 +76,7 @@ export function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="relative p-5 sm:p-7 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-[hsl(var(--neon-purple)/0.3)] hover:shadow-xl hover:shadow-[hsl(var(--neon-purple)/0.05)] transition-all duration-500 group shimmer-on-hover glass-edge card-lift testimonial-border"
+              className="relative p-5 sm:p-7 rounded-2xl bg-[hsl(var(--stream-slate))] backdrop-blur-sm border border-border/50 hover:border-[hsl(var(--neon-purple)/0.3)] hover:shadow-xl hover:shadow-[hsl(var(--neon-purple)/0.05)] transition-all duration-500 group shimmer-on-hover glass-edge card-lift testimonial-border"
             >
               <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl overflow-hidden">
                 <div className="h-full memory-stream-bar opacity-0 group-hover:opacity-40 transition-opacity duration-500" />

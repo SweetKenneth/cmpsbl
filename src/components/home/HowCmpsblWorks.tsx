@@ -26,7 +26,7 @@ export function HowCmpsblWorks() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="rounded-2xl border border-border/30 bg-card/40 backdrop-blur-sm p-6 sm:p-10 overflow-hidden"
+          className="rounded-2xl border border-border/30 bg-[hsl(var(--stream-slate))] backdrop-blur-sm p-6 sm:p-10 overflow-hidden"
         >
           <div className="text-center mb-8">
             <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-[hsl(var(--neon-cyan)/0.3)]">

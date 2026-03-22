@@ -186,8 +186,8 @@ function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         className={cn(
           "relative h-full p-6 sm:p-7 rounded-2xl border border-border/50",
-          "bg-card/50 backdrop-blur-sm",
-          "hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.04] transition-all duration-500",
+          "bg-[hsl(var(--stream-slate))] backdrop-blur-sm",
+          "hover:border-[hsl(var(--neon-purple)/0.3)] hover:-translate-y-1 hover:shadow-xl hover:shadow-[hsl(var(--neon-purple)/0.04)] transition-all duration-500",
           "overflow-hidden cursor-default shimmer-on-hover"
         )}
       >

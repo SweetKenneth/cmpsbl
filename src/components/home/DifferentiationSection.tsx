@@ -97,7 +97,7 @@ export function DifferentiationSection() {
               className="group"
             >
               <div className={cn(
-                "relative h-full rounded-2xl border bg-card/50 backdrop-blur-sm p-6 sm:p-8",
+                "relative h-full rounded-2xl border bg-[hsl(var(--stream-slate))] backdrop-blur-sm p-6 sm:p-8",
                 "hover:shadow-xl hover:shadow-primary/[0.04] transition-all duration-500 shimmer-on-hover glass-edge card-lift gradient-border-reveal",
                 pillar.borderColor,
                 "hover:border-opacity-80"

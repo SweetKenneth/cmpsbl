@@ -139,7 +139,7 @@ export function NpmPackagesCTA() {
           {HIGHLIGHTS.map((h, i) => (
             <motion.div
               key={h.title}
-              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border/40 bg-card/30 text-center"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-border/40 bg-[hsl(var(--stream-slate))] text-center"
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -156,7 +156,7 @@ export function NpmPackagesCTA() {
           {featured.map((pkg, i) => (
             <motion.div
               key={pkg.name}
-              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/50 hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-300"
+              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-[hsl(var(--stream-slate))] hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-300"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
