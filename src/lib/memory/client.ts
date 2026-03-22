@@ -664,25 +664,31 @@ export class MemoryClient {
   // ═══════════════════════════════════════════════════════════════════
   // #14 RAG PIPELINE — Log context injections
   // ═══════════════════════════════════════════════════════════════════
-  private async logRAGContext(query: string, memories: MemoryEntry[]): Promise<string | undefined> {
+  private async logRAGContext(query: string, memories: MemoryEntry[]): Promise<void> {
+    if (memories.length === 0) return;
     try {
       const contextString = this.buildContextString(memories);
-      const { data } = await supabase
+      // Collect tier set without spread+Set overhead
+      const tierSet: string[] = [];
+      const tierSeen = new Set<string>();
+      for (const m of memories) {
+        if (m.tier && !tierSeen.has(m.tier)) { tierSeen.add(m.tier); tierSet.push(m.tier); }
+      }
+      
+      await supabase
         .from('brain_rag_contexts' as any)
         .insert({
           user_id: this.userId,
           agent_id: this.agentId,
           query_text: query,
           recalled_memory_ids: memories.map(m => m.id),
-          recalled_tiers: [...new Set(memories.map(m => m.tier))],
+          recalled_tiers: tierSet,
           context_string: contextString,
-          total_tokens: Math.ceil(contextString.length / 4),
-        })
-        .select('id')
-        .single();
-      return (data as any)?.id;
+          total_tokens: (contextString.length + 3) >> 2, // fast integer division by 4
+        });
+      // No .select('id') — saves a round-trip since caller uses generated ID
     } catch {
-      return undefined;
+      // Silent
     }
   }
 

@@ -24,4 +24,4 @@ export { type MemoryEntry as RpsMemoryEntry } from './rps';
 export { detectContradiction, applyContradictionPenalty, type ContradictionResult as LocalContradictionResult } from './contradiction';
 
 // Receipts (DB-backed tier move audit trail)
-export { recordReceipt, getReceipts, getReceiptsForMemory, getReceiptStats, clearReceipts } from './receipts';
+export { recordReceipt, recordReceipts, getReceipts, getReceiptsForMemory, getReceiptStats, clearReceipts } from './receipts';

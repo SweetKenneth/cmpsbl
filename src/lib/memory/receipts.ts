@@ -1,14 +1,28 @@
 /**
  * Memory Tier Move Receipt Logger — DB-backed
  * Persists tier transition receipts to memory_tier_receipts table
- * 
- * FIX #7: All operations now have proper error handling
- * FIX #8: clearReceipts uses proper gt filter instead of neq hack
- * FIX #20: Receipts now persist confidence fields
  */
 
 import type { TierMoveReceipt } from './tiering';
 import { supabase } from '@/integrations/supabase/client';
+
+/** Shared mapper: DB row → TierMoveReceipt */
+function mapRow(r: any): TierMoveReceipt {
+  return {
+    memory_id: r.memory_id,
+    reason_code: r.reason_code,
+    before_tier: r.before_tier,
+    after_tier: r.after_tier,
+    before_confidence: r.before_confidence ?? 0,
+    after_confidence: r.after_confidence ?? 0,
+    rps_score: r.rps_score ?? 0,
+    actor: r.actor,
+    evidence: r.evidence ?? {},
+    timestamp: r.created_at,
+  };
+}
+
+const RECEIPT_SELECT = 'memory_id, reason_code, before_tier, after_tier, before_confidence, after_confidence, rps_score, actor, evidence, created_at';
 
 /** Record a tier move receipt to DB */
 export async function recordReceipt(receipt: TierMoveReceipt): Promise<void> {
@@ -33,29 +47,38 @@ export async function recordReceipt(receipt: TierMoveReceipt): Promise<void> {
   }
 }
 
+/** Batch-record multiple receipts in one insert */
+export async function recordReceipts(receipts: TierMoveReceipt[]): Promise<void> {
+  if (receipts.length === 0) return;
+  try {
+    const rows = receipts.map(r => ({
+      memory_id: r.memory_id,
+      before_tier: r.before_tier,
+      after_tier: r.after_tier,
+      reason_code: r.reason_code,
+      rps_score: r.rps_score,
+      actor: r.actor,
+      before_confidence: r.before_confidence,
+      after_confidence: r.after_confidence,
+      evidence: r.evidence as any,
+    }));
+    await supabase.from('memory_tier_receipts').insert(rows);
+  } catch {
+    // Silent
+  }
+}
+
 /** Get recent receipts from DB */
 export async function getReceipts(limit = 50): Promise<TierMoveReceipt[]> {
   try {
     const { data, error } = await supabase
       .from('memory_tier_receipts')
-      .select('memory_id, reason_code, before_tier, after_tier, before_confidence, after_confidence, rps_score, actor, evidence, created_at')
+      .select(RECEIPT_SELECT)
       .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error || !data) return [];
-
-    return data.map((r: any) => ({
-      memory_id: r.memory_id,
-      reason_code: r.reason_code,
-      before_tier: r.before_tier,
-      after_tier: r.after_tier,
-      before_confidence: r.before_confidence ?? 0,
-      after_confidence: r.after_confidence ?? 0,
-      rps_score: r.rps_score ?? 0,
-      actor: r.actor,
-      evidence: r.evidence ?? {},
-      timestamp: r.created_at,
-    }));
+    return data.map(mapRow);
   } catch {
     return [];
   }
@@ -66,25 +89,13 @@ export async function getReceiptsForMemory(memoryId: string): Promise<TierMoveRe
   try {
     const { data, error } = await supabase
       .from('memory_tier_receipts')
-      .select('memory_id, reason_code, before_tier, after_tier, before_confidence, after_confidence, rps_score, actor, evidence, created_at')
+      .select(RECEIPT_SELECT)
       .eq('memory_id', memoryId)
       .order('created_at', { ascending: false })
       .limit(100);
 
     if (error || !data) return [];
-
-    return data.map((r: any) => ({
-      memory_id: r.memory_id,
-      reason_code: r.reason_code,
-      before_tier: r.before_tier,
-      after_tier: r.after_tier,
-      before_confidence: r.before_confidence ?? 0,
-      after_confidence: r.after_confidence ?? 0,
-      rps_score: r.rps_score ?? 0,
-      actor: r.actor,
-      evidence: r.evidence ?? {},
-      timestamp: r.created_at,
-    }));
+    return data.map(mapRow);
   } catch {
     return [];
   }
@@ -122,7 +133,7 @@ export async function getReceiptStats(): Promise<{
   }
 }
 
-/** FIX #8: Clear all receipts properly using created_at filter instead of fragile neq hack */
+/** Clear all receipts */
 export async function clearReceipts(): Promise<void> {
   try {
     await supabase
