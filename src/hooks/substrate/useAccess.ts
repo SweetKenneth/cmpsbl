@@ -19,10 +19,10 @@ export interface UseAccessReturn {
   
   // Identity
   identity: ReturnType<typeof useQuery>;
-  developer: (developerId?: string) => ReturnType<typeof useQuery>;
+  fetchDeveloper: ReturnType<typeof useMutation>;
   subscription: ReturnType<typeof useQuery>;
   entitlements: ReturnType<typeof useQuery>;
-  products: (category?: string) => ReturnType<typeof useQuery>;
+  fetchProducts: ReturnType<typeof useMutation>;
   
   // Keys
   listKeys: ReturnType<typeof useQuery>;
@@ -61,36 +61,38 @@ export function useAccess(): UseAccessReturn {
     queryKey: ['substrate', 'access', 'identity'],
     queryFn: () => access.identity(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
-  const developer = (developerId?: string) => useQuery({
-    queryKey: ['substrate', 'access', 'developer', developerId],
-    queryFn: () => access.developer(developerId),
-    staleTime: 60000,
+  // Converted from parameterized useQuery to mutation (Rules-of-Hooks fix)
+  const fetchDeveloper = useMutation({
+    mutationFn: (developerId?: string) => access.developer(developerId),
   });
   
   const subscription = useQuery({
     queryKey: ['substrate', 'access', 'subscription'],
     queryFn: () => access.subscription(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const entitlements = useQuery({
     queryKey: ['substrate', 'access', 'entitlements'],
     queryFn: () => access.entitlements(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
-  const products = (category?: string) => useQuery({
-    queryKey: ['substrate', 'access', 'products', category],
-    queryFn: () => access.products(category),
-    staleTime: 120000,
+  // Converted from parameterized useQuery to mutation (Rules-of-Hooks fix)
+  const fetchProducts = useMutation({
+    mutationFn: (category?: string) => access.products(category),
   });
   
   const listKeys = useQuery({
     queryKey: ['substrate', 'access', 'list_keys'],
     queryFn: () => access.listKeys(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const quota = useQuery({
@@ -153,10 +155,10 @@ export function useAccess(): UseAccessReturn {
     status,
     pulse,
     identity,
-    developer,
+    fetchDeveloper,
     subscription,
     entitlements,
-    products,
+    fetchProducts,
     listKeys,
     quota,
     bootstrap,
