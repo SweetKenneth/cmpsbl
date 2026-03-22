@@ -95,9 +95,7 @@ import { budgetGovernor } from './budget-governor';
 import { learningOrchestrator } from './orchestrator';
 import { tierCommand } from './tier-command';
 import { spacedRepetition } from './spaced-repetition';
-import { topicBank } from './topic-bank';
 import { encodedLearningEngine } from './encoded-learning-engine';
-import { getEncodedCurriculum } from './encoded-curriculum';
 
 /**
  * Check if CLM is ready to run
