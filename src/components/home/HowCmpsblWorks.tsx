@@ -33,13 +33,13 @@ export function HowCmpsblWorks() {
               <Lightbulb className="w-3 h-3 text-primary" />
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
-            <h3 className="text-2xl sm:text-3xl font-black tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
               How{" "}
               <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
                 CMPSBL
               </span>{" "}
               Works
-            </h3>
+            </h2>
           </div>
 
           {/* Stack comparison */}
@@ -78,7 +78,7 @@ export function HowCmpsblWorks() {
 
           {/* What the OS manages */}
           <div className="text-center mb-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               The platform coordinates intelligence across your application:
             </p>
           </div>
