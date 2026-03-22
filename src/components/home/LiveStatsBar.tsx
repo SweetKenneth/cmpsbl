@@ -1,5 +1,5 @@
 /**
- * Live Stats Bar — Design space narrative with live indicator
+ * Live Stats Bar — Concise platform status indicator
  * PERFORMANCE: Pure CSS, no framer-motion
  */
 
@@ -15,16 +15,16 @@ export function LiveStatsBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
           </span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Substrate · Memory Stream · Live</span>
+          <span className="text-[9px] sm:text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Platform · Memory Stream · Live</span>
         </div>
 
-        {/* Design space narrative */}
+        {/* Concise value statement */}
         <p
           className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
           style={{ animationDelay: "0.15s", animationFillMode: "both" }}
         >
-          Built from <span className="text-foreground/90 font-medium">endless capabilities</span> across{' '}
-          <span className="text-foreground/90 font-medium">40 autonomous nodes</span>, it explores a design space a million times larger than the stars in the observable universe.
+          <span className="text-foreground/90 font-medium">40 modules</span> coordinating across{' '}
+          <span className="text-foreground/90 font-medium">9 system domains</span> — persistent memory, governed routing, and self-improvement running continuously.
         </p>
       </div>
     </section>
