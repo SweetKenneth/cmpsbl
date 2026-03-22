@@ -66,34 +66,35 @@ export async function migrateStaleMemories(
     } else if (staleWarm && staleWarm.length > 0) {
       stats.checked += staleWarm.length;
       
-      for (const memory of staleWarm) {
-        try {
-          const { error: insertError } = await supabase
-            .from('brain_memory_cold')
-            .insert({
-              summary: memory.content,
-              source_refs: [memory.id],
-              compression_level: 2,
-              source_module: memory.source_module || 'general',
-              category: memory.category || 'uncategorized',
-              tags: {
-                context: memory.context,
-                archived: true,
-                migrated_from: 'warm',
-                migrated_at: new Date().toISOString(),
-              },
-              value_score: memory.value_score,
-            });
-          
-          if (!insertError) {
-            await supabase.from('brain_memory_warm').delete().eq('id', memory.id);
-            stats.migrated++;
-          } else {
-            stats.errors++;
-          }
-        } catch {
-          stats.errors++;
+      // Batch insert into cold
+      const coldInserts = staleWarm.map(memory => ({
+        summary: memory.content,
+        source_refs: [memory.id],
+        compression_level: 2,
+        source_module: memory.source_module || 'general',
+        category: memory.category || 'uncategorized',
+        tags: {
+          context: memory.context,
+          archived: true,
+          migrated_from: 'warm',
+          migrated_at: new Date().toISOString(),
+        },
+        value_score: memory.value_score,
+      }));
+
+      const { error: insertError } = await supabase
+        .from('brain_memory_cold')
+        .insert(coldInserts as any[]);
+
+      if (!insertError) {
+        const ids = staleWarm.map(m => m.id);
+        // Chunk deletes to avoid URL length limits
+        for (let i = 0; i < ids.length; i += 100) {
+          await supabase.from('brain_memory_warm').delete().in('id', ids.slice(i, i + 100));
         }
+        stats.migrated += staleWarm.length;
+      } else {
+        stats.errors += staleWarm.length;
       }
     }
 
