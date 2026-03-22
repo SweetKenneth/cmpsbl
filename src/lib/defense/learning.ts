@@ -21,10 +21,10 @@ export async function generateLearningSummary(
   periodEnd: Date
 ): Promise<LearningInsights | null> {
   try {
-    // Fetch events in period
+    // Fetch only needed columns instead of *
     const { data: events } = await supabase
       .from('defense_events')
-      .select('*')
+      .select('ip, action')
       .gte('detected_at', periodStart.toISOString())
       .lte('detected_at', periodEnd.toISOString());
 
