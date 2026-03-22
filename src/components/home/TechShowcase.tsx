@@ -101,8 +101,8 @@ console.log(usage.calls_today, usage.quota_remaining);`,
     layer: "Cognitive",
     title: "BRAIN Memory",
     description: "3-tier persistent memory system",
-    color: "text-purple-500",
-    gradient: "from-purple-500 to-violet-600",
+    color: "text-[hsl(var(--neon-purple))]",
+    gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Store a memory with semantic context
 await cmpsbl.brain.remember({
   entity_id: "user_jane_doe",
