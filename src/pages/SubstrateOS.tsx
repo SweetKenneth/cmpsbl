@@ -226,7 +226,7 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
           </div>
           {!collapsed && (
             <div className="flex items-center gap-1.5 text-[8px] text-muted-foreground/25 font-mono mt-2 pt-1.5 border-t border-border/8">
-              <div className={cn("w-1.5 h-1.5 rounded-full", healthScore >= 80 ? "bg-emerald-500" : healthScore >= 50 ? "bg-amber-500" : "bg-red-500")} />
+              <div className={cn("w-1.5 h-1.5 rounded-full", healthScore >= 80 ? "bg-neon-green" : healthScore >= 50 ? "bg-neon-amber" : "bg-destructive")} />
               <span>Health {healthScore}%</span>
             </div>
           )}
