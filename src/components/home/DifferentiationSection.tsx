@@ -53,10 +53,10 @@ const pillars = [
     description: "Every interaction feeds back into the system's understanding. Memories crystallize into reusable intelligence. Performance improves with usage — your infrastructure gets smarter the more you use it.",
     link: "/blog/clockless-account-setup-artifact-packs",
     linkLabel: "Start compounding",
-    color: "from-[hsl(var(--primary))] to-[hsl(var(--neon-purple))]",
-    iconBg: "bg-primary/10",
-    iconColor: "text-primary",
-    borderColor: "border-primary/20",
+    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
+    iconColor: "text-[hsl(var(--neon-purple))]",
+    borderColor: "border-[hsl(var(--neon-purple)/0.2)]",
   },
 ];
 
