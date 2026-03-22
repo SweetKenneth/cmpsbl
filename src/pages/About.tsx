@@ -234,16 +234,7 @@ export default function About() {
         <div className="max-w-5xl mx-auto">
           <motion.div {...fadeUp} className="mb-10 sm:mb-14">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-3">
-              Systems That{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Dream · Adapt · Evolve
-              </span>
+              Systems That <span className="text-primary">Dream · Adapt · Evolve</span>
             </h2>
              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl leading-relaxed">
               Most AI platforms process and forget. When you build on CMPSBL, your systems
