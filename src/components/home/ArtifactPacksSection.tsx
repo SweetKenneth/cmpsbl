@@ -41,8 +41,8 @@ export function ArtifactPacksSection() {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
-            <Package className="w-3 h-3 mr-1.5 text-primary" />
+          <Badge variant="outline" className="mb-4 border-[hsl(var(--neon-magenta)/0.3)] px-4 py-1.5">
+            <Package className="w-3 h-3 mr-1.5 text-[hsl(var(--neon-magenta))]" />
             <span className="text-xs font-semibold">{PIPELINE_PACKS_LABEL}</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
