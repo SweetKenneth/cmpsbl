@@ -839,7 +839,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               ) : (
                 <span className={cn("w-2 h-4 animate-pulse", theme === 'matrix' ? 'bg-neon-green' : 'bg-neon-cyan')} />
               )}
-              <span style={isBiohack ? { textShadow: '0 0 10px hsl(180 100% 50% / 0.5)' } : undefined}>
+              <span style={isBiohack ? { textShadow: '0 0 10px hsl(var(--neon-cyan) / 0.5)' } : undefined}>
                 {getRandomItem(PERSONALITY_RESPONSES.greeting)}
               </span>
             </div>
