@@ -8,6 +8,7 @@
  */
 
 import React, { useEffect, useState, useRef, useMemo, lazy, Suspense } from "react";
+import { CmpsblWordmark } from "./CmpsblWordmark";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
@@ -222,20 +223,10 @@ export function HeroMetaSubstrate() {
             </FadeIn>
             
             {/* CMPSBL wordmark */}
-            <h1 
-              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
-            >
-              <span 
-                className="inline-block clockless-river-text"
-                style={{
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                  padding: "0 0.1em 0.05em 0",
-                }}
-              >
-                CMPSBL
-              </span>
+            <h1 className="tracking-[-0.06em] leading-[0.85]">
+              <CmpsblWordmark 
+                className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] mb-4 sm:mb-5"
+              />
             </h1>
 
             {/* Tagline */}

@@ -1134,7 +1134,13 @@ All colors MUST be HSL.
 .animate-hero-orb-2 { animation: hero-orb-2 35s ease-in-out infinite; will-change: transform; }
 .animate-hero-orb-3 { animation: hero-orb-3 22s ease-in-out infinite; will-change: transform; }
 
-/* Auth page stream line animation */
+/* CMPSBL wordmark — per-letter gradient flow */
+@keyframes cmpsblLetterFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+
 @keyframes auth-stream {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
