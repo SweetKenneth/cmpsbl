@@ -578,7 +578,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     }
   };
 
-  // Theme classes - improved light mode contrast
+  // Theme classes - semantic tokens, improved light/dark contrast
   const themeClasses = useMemo(() => ({
     dark: {
       bg: 'bg-black/90',
@@ -594,15 +594,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     },
     light: {
       bg: 'bg-white',
-      text: 'text-gray-900',
-      accent: 'text-neon-blue',
+      text: 'text-foreground',
+      accent: 'text-primary',
       success: 'text-neon-green',
       error: 'text-destructive',
-      border: 'border-gray-300',
-      input: 'text-gray-900',
-      placeholder: 'placeholder:text-gray-500',
-      suggestion: 'text-gray-900',
-      suggestionMuted: 'text-gray-600',
+      border: 'border-border',
+      input: 'text-foreground',
+      placeholder: 'placeholder:text-muted-foreground',
+      suggestion: 'text-foreground',
+      suggestionMuted: 'text-muted-foreground',
     },
     matrix: {
       bg: 'bg-black',
@@ -618,15 +618,15 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
     },
     biohack: {
       bg: 'biohack-terminal',
-      text: 'text-[hsl(180_100%_85%)]',
+      text: 'text-neon-cyan/90',
       accent: 'biohack-command-text',
       success: 'biohack-output-success',
       error: 'biohack-output-error',
-      border: 'border-[hsl(180_100%_50%/0.3)]',
-      input: 'text-[hsl(180_100%_85%)]',
-      placeholder: 'placeholder:text-[hsl(240_20%_40%)]',
-      suggestion: 'text-[hsl(180_100%_70%)]',
-      suggestionMuted: 'text-[hsl(200_60%_50%)]',
+      border: 'border-neon-cyan/20',
+      input: 'text-neon-cyan/90',
+      placeholder: 'placeholder:text-muted-foreground/40',
+      suggestion: 'text-neon-cyan',
+      suggestionMuted: 'text-neon-blue/60',
     },
   }), []);
 
