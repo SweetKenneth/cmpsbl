@@ -228,7 +228,7 @@ export function EvolutionTab() {
               <Skeleton className="h-12 w-full" />
             ) : (
               <div className="text-center">
-                <p className="text-3xl font-bold text-emerald-400">{cyclesRemaining}</p>
+                <p className="text-3xl font-bold text-neon-green">{cyclesRemaining}</p>
                 <p className="text-xs text-muted-foreground">Remaining Today</p>
               </div>
             )}
