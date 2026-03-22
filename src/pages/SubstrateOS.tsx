@@ -147,7 +147,6 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
       <div className={cn(
         "flex flex-col h-full border-r border-border/15 transition-all duration-200",
         "bg-gradient-to-b from-background to-muted/10",
-        "dark:from-[hsl(220,25%,4%)] dark:to-[hsl(220,20%,6%)]",
         collapsed ? "w-[52px]" : "w-52"
       )}>
         {/* Collapse toggle (desktop) */}
@@ -227,7 +226,7 @@ function DashboardSidebar({ tabs, activeTab, onTabChange, onClose, onLogout, isG
           </div>
           {!collapsed && (
             <div className="flex items-center gap-1.5 text-[8px] text-muted-foreground/25 font-mono mt-2 pt-1.5 border-t border-border/8">
-              <div className={cn("w-1.5 h-1.5 rounded-full", healthScore >= 80 ? "bg-emerald-500" : healthScore >= 50 ? "bg-amber-500" : "bg-red-500")} />
+              <div className={cn("w-1.5 h-1.5 rounded-full", healthScore >= 80 ? "bg-neon-green" : healthScore >= 50 ? "bg-neon-amber" : "bg-destructive")} />
               <span>Health {healthScore}%</span>
             </div>
           )}
@@ -318,8 +317,8 @@ export default function SubstrateOS() {
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="dark:block hidden">
-          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[hsl(185,100%,50%,0.02)] rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-[hsl(280,100%,65%,0.02)] rounded-full blur-[100px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-primary/[0.02] rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[350px] h-[350px] bg-neon-purple/[0.02] rounded-full blur-[100px]" />
         </div>
       </div>
 

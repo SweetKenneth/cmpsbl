@@ -362,8 +362,8 @@ export function AnalyticsTab() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 flex items-center justify-center">
-            <BarChart3 className="w-5 h-5 text-cyan-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-neon-blue/20 border border-primary/30 flex items-center justify-center">
+            <BarChart3 className="w-5 h-5 text-primary" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Substrate Telemetry</h2>
@@ -373,7 +373,7 @@ export function AnalyticsTab() {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="flex gap-1 p-1 rounded-lg bg-muted/30 border border-border/30">
             {(['7d', '30d', '90d'] as const).map(range => (
-              <button key={range} onClick={() => setDateRange(range)} className={cn("px-3 py-1.5 rounded-md text-xs font-medium transition-all", dateRange === range ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40" : "text-muted-foreground hover:text-foreground")}>
+              <button key={range} onClick={() => setDateRange(range)} className={cn("px-3 py-1.5 rounded-md text-xs font-medium transition-all", dateRange === range ? "bg-primary/20 text-primary border border-primary/40" : "text-muted-foreground hover:text-foreground")}>
                 {range}
               </button>
             ))}
@@ -399,14 +399,14 @@ export function AnalyticsTab() {
           {/* ═══ PRIMARY METRICS GRID ═══ */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: 'Total Ops', value: fmt(data.totalOps), sub: `${dateRange} window`, icon: Activity, iconColor: 'cyan-400', border: 'border-cyan-500/30', bg: 'from-cyan-500/10 to-cyan-500/5', iconBg: 'bg-cyan-500/20 border-cyan-500/40' },
-              { label: 'Brain Events', value: fmt(data.brainEvents), sub: `${fmt(data.brainMetrics)} metrics`, icon: Brain, iconColor: 'purple-400', border: 'border-purple-500/30', bg: 'from-purple-500/10 to-purple-500/5', iconBg: 'bg-purple-500/20 border-purple-500/40' },
-              { label: 'API Calls', value: fmt(data.apiCalls), sub: `${data.successRate}% success`, icon: Zap, iconColor: 'green-400', border: 'border-green-500/30', bg: 'from-green-500/10 to-green-500/5', iconBg: 'bg-green-500/20 border-green-500/40' },
-              { label: 'Mesh Comms', value: fmt(data.meshCommsTotal), sub: `${data.meshCategories.length} categories`, icon: Radio, iconColor: 'pink-400', border: 'border-pink-500/30', bg: 'from-pink-500/10 to-pink-500/5', iconBg: 'bg-pink-500/20 border-pink-500/40' },
-              { label: 'Processing Signals', value: fmt(data.intentTotal), sub: 'Mesh processing events', icon: GitBranch, iconColor: 'teal-400', border: 'border-teal-500/30', bg: 'from-teal-500/10 to-teal-500/5', iconBg: 'bg-teal-500/20 border-teal-500/40' },
-              { label: 'Access Ops', value: fmt(data.accessOps), sub: `${fmt(data.auditActions)} audited`, icon: Shield, iconColor: 'amber-400', border: 'border-amber-500/30', bg: 'from-amber-500/10 to-amber-500/5', iconBg: 'bg-amber-500/20 border-amber-500/40' },
-              { label: 'Tokens Used', value: fmt(data.totalTokensUsed), sub: fmtCost(data.totalCostCents) + ' total cost', icon: DollarSign, iconColor: 'emerald-400', border: 'border-emerald-500/30', bg: 'from-emerald-500/10 to-emerald-500/5', iconBg: 'bg-emerald-500/20 border-emerald-500/40' },
-              { label: 'Discoveries', value: fmt(data.foundryArtifacts), sub: `${data.foundryCategories.length} categories`, icon: Package, iconColor: 'orange-400', border: 'border-orange-500/30', bg: 'from-orange-500/10 to-orange-500/5', iconBg: 'bg-orange-500/20 border-orange-500/40' },
+              { label: 'Total Ops', value: fmt(data.totalOps), sub: `${dateRange} window`, icon: Activity, iconColor: 'primary', border: 'border-primary/30', bg: 'from-primary/10 to-primary/5', iconBg: 'bg-primary/20 border-primary/40' },
+              { label: 'Brain Events', value: fmt(data.brainEvents), sub: `${fmt(data.brainMetrics)} metrics`, icon: Brain, iconColor: 'neon-purple', border: 'border-neon-purple/30', bg: 'from-neon-purple/10 to-neon-purple/5', iconBg: 'bg-neon-purple/20 border-neon-purple/40' },
+              { label: 'API Calls', value: fmt(data.apiCalls), sub: `${data.successRate}% success`, icon: Zap, iconColor: 'neon-green', border: 'border-neon-green/30', bg: 'from-neon-green/10 to-neon-green/5', iconBg: 'bg-neon-green/20 border-neon-green/40' },
+              { label: 'Mesh Comms', value: fmt(data.meshCommsTotal), sub: `${data.meshCategories.length} categories`, icon: Radio, iconColor: 'neon-magenta', border: 'border-neon-magenta/30', bg: 'from-neon-magenta/10 to-neon-magenta/5', iconBg: 'bg-neon-magenta/20 border-neon-magenta/40' },
+              { label: 'Processing Signals', value: fmt(data.intentTotal), sub: 'Mesh processing events', icon: GitBranch, iconColor: 'neon-cyan', border: 'border-neon-cyan/30', bg: 'from-neon-cyan/10 to-neon-cyan/5', iconBg: 'bg-neon-cyan/20 border-neon-cyan/40' },
+              { label: 'Access Ops', value: fmt(data.accessOps), sub: `${fmt(data.auditActions)} audited`, icon: Shield, iconColor: 'neon-amber', border: 'border-neon-amber/30', bg: 'from-neon-amber/10 to-neon-amber/5', iconBg: 'bg-neon-amber/20 border-neon-amber/40' },
+              { label: 'Tokens Used', value: fmt(data.totalTokensUsed), sub: fmtCost(data.totalCostCents) + ' total cost', icon: DollarSign, iconColor: 'neon-green', border: 'border-neon-green/30', bg: 'from-neon-green/10 to-neon-green/5', iconBg: 'bg-neon-green/20 border-neon-green/40' },
+              { label: 'Discoveries', value: fmt(data.foundryArtifacts), sub: `${data.foundryCategories.length} categories`, icon: Package, iconColor: 'neon-amber', border: 'border-neon-amber/30', bg: 'from-neon-amber/10 to-neon-amber/5', iconBg: 'bg-neon-amber/20 border-neon-amber/40' },
             ].map((card, idx) => {
               const CardIcon = card.icon;
               return (
@@ -428,7 +428,7 @@ export function AnalyticsTab() {
           <motion.div className="p-6 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-foreground">Operations Over Time</h3>
-              <Badge variant="outline" className="text-[9px] font-mono border-cyan-500/30 text-cyan-400 bg-cyan-500/10">{dateRange.toUpperCase()}</Badge>
+              <Badge variant="outline" className="text-[9px] font-mono border-primary/30 text-primary bg-primary/10">{dateRange.toUpperCase()}</Badge>
             </div>
             <div className="flex items-end gap-1 h-32">
               {data.series.slice(dateRange === '7d' ? -7 : -30).map((day, idx) => {
@@ -436,7 +436,7 @@ export function AnalyticsTab() {
                 const height = (day.ops / maxVal) * 100;
                 return (
                   <motion.div key={day.date} className="flex-1 group relative" initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: 0.3 + idx * 0.02 }} style={{ transformOrigin: 'bottom' }}>
-                    <div className="w-full rounded-t-md bg-gradient-to-t from-cyan-500/60 to-cyan-400/30 hover:from-cyan-500/80 hover:to-cyan-400/50 transition-all cursor-pointer" style={{ height: `${Math.max(height, 4)}%` }} />
+                    <div className="w-full rounded-t-md bg-gradient-to-t from-primary/60 to-primary/30 hover:from-primary/80 hover:to-primary/50 transition-all cursor-pointer" style={{ height: `${Math.max(height, 4)}%` }} />
                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 hidden group-hover:block z-10">
                       <div className="bg-background border border-border/60 rounded-md px-2 py-1 text-[9px] font-mono whitespace-nowrap shadow-lg">{day.ops} ops • {day.date.slice(5)}</div>
                     </div>
@@ -490,7 +490,7 @@ export function AnalyticsTab() {
                           <span className="font-mono text-muted-foreground">{fmt(cat.count)}</span>
                         </div>
                         <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
-                          <motion.div className="h-full rounded-full bg-gradient-to-r from-pink-500/70 to-purple-500/50" initial={{ width: 0 }} animate={{ width: `${(cat.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
+                          <motion.div className="h-full rounded-full bg-gradient-to-r from-neon-magenta/70 to-neon-purple/50" initial={{ width: 0 }} animate={{ width: `${(cat.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
                         </div>
                       </div>
                     );
@@ -573,7 +573,7 @@ export function AnalyticsTab() {
                           </div>
                         </div>
                         <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
-                          <motion.div className="h-full rounded-full bg-gradient-to-r from-emerald-500/70 to-teal-500/50" initial={{ width: 0 }} animate={{ width: `${(p.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
+                          <motion.div className="h-full rounded-full bg-gradient-to-r from-neon-green/70 to-neon-cyan/50" initial={{ width: 0 }} animate={{ width: `${(p.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
                         </div>
                       </div>
                     );
@@ -587,7 +587,7 @@ export function AnalyticsTab() {
           <div className="grid md:grid-cols-2 gap-4">
             <motion.div className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Network className="w-4 h-4 text-purple-400" /> Active Modules
+                <Network className="w-4 h-4 text-neon-purple" /> Active Modules
               </h3>
               <div className="space-y-2">
                 {data.topModules.length > 0 ? data.topModules.map((mod, idx) => {
@@ -599,7 +599,7 @@ export function AnalyticsTab() {
                         <span className="font-mono text-muted-foreground">{fmt(mod.count)}</span>
                       </div>
                       <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
-                        <motion.div className="h-full rounded-full bg-gradient-to-r from-purple-500/70 to-cyan-500/50" initial={{ width: 0 }} animate={{ width: `${(mod.count / maxCount) * 100}%` }} transition={{ delay: 0.4 + idx * 0.03 }} />
+                        <motion.div className="h-full rounded-full bg-gradient-to-r from-neon-purple/70 to-primary/50" initial={{ width: 0 }} animate={{ width: `${(mod.count / maxCount) * 100}%` }} transition={{ delay: 0.4 + idx * 0.03 }} />
                       </div>
                     </div>
                   );
@@ -609,17 +609,17 @@ export function AnalyticsTab() {
 
             <motion.div className="p-5 rounded-2xl border border-border/40 bg-gradient-to-br from-card/90 to-transparent backdrop-blur-xl" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 }}>
               <h3 className="text-sm font-semibold text-foreground mb-4 flex items-center gap-2">
-                <Database className="w-4 h-4 text-cyan-400" /> Data Sources
+                <Database className="w-4 h-4 text-primary" /> Data Sources
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: 'Brain Events', count: data.brainEvents, icon: Brain, color: 'text-purple-400' },
-                  { label: 'Brain Metrics', count: data.brainMetrics, icon: Cpu, color: 'text-blue-400' },
-                  { label: 'AI Usage Log', count: data.apiCalls, icon: Zap, color: 'text-green-400' },
-                  { label: 'Access Usage', count: data.accessOps, icon: Shield, color: 'text-amber-400' },
-                  { label: 'Audit Log', count: data.auditActions, icon: Activity, color: 'text-red-400' },
-                  { label: 'Mesh Comms', count: data.meshCommsTotal, icon: Radio, color: 'text-pink-400' },
-                  { label: 'Intent Receipts', count: data.intentTotal, icon: GitBranch, color: 'text-teal-400' },
+                  { label: 'Brain Events', count: data.brainEvents, icon: Brain, color: 'text-neon-purple' },
+                  { label: 'Brain Metrics', count: data.brainMetrics, icon: Cpu, color: 'text-neon-blue' },
+                  { label: 'AI Usage Log', count: data.apiCalls, icon: Zap, color: 'text-neon-green' },
+                  { label: 'Access Usage', count: data.accessOps, icon: Shield, color: 'text-neon-amber' },
+                  { label: 'Audit Log', count: data.auditActions, icon: Activity, color: 'text-destructive' },
+                  { label: 'Mesh Comms', count: data.meshCommsTotal, icon: Radio, color: 'text-neon-magenta' },
+                  { label: 'Intent Receipts', count: data.intentTotal, icon: GitBranch, color: 'text-neon-cyan' },
                 ].map(src => {
                   const SrcIcon = src.icon;
                   const total = data.totalOps + data.meshCommsTotal + data.intentTotal;
@@ -651,8 +651,8 @@ export function AnalyticsTab() {
                     <span className="text-xs text-muted-foreground">{rate.label}</span>
                     <span className={cn(
                       "text-sm font-bold font-mono",
-                      rate.value >= rate.threshold[0] ? "text-emerald-400" :
-                      rate.value >= rate.threshold[1] ? "text-amber-400" : "text-red-400"
+                      rate.value >= rate.threshold[0] ? "text-neon-green" :
+                      rate.value >= rate.threshold[1] ? "text-neon-amber" : "text-destructive"
                     )}>
                       {rate.value}%
                     </span>

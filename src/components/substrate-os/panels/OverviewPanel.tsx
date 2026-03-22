@@ -30,17 +30,17 @@ const SystemHealthPanel = lazy(() => import('@/components/substrate-os/SystemHea
 
 // 12 sectors for the topology map
 const SECTORS = [
-  { id: 'CORE', nodes: ['CORE', 'SYSTEM'], color: 'text-orange-500 dark:text-orange-400' },
-  { id: 'CCR', nodes: ['BRAIN', 'MEMORY', 'DREAM'], color: 'text-purple-500 dark:text-purple-400' },
-  { id: 'OCG', nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT', 'NERVE'], color: 'text-cyan-500 dark:text-cyan-400' },
-  { id: 'Execution', nodes: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'INTEGRATION'], color: 'text-emerald-500 dark:text-emerald-400' },
-  { id: 'ESZ', nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'], color: 'text-amber-500 dark:text-amber-400' },
-  { id: 'EPZ', nodes: ['COMPASS', 'ECHO', 'REFLEX'], color: 'text-sky-500 dark:text-sky-400' },
-  { id: 'EMZ', nodes: ['FORGE', 'LINGUA', 'HARVEST'], color: 'text-lime-500 dark:text-lime-400' },
-  { id: 'CSZ', nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'], color: 'text-rose-500 dark:text-rose-400' },
-  { id: 'Fields', nodes: ['IMMUNITY', 'INTENT'], color: 'text-pink-500 dark:text-pink-400' },
-  { id: 'Plane', nodes: ['GOVERNANCE'], color: 'text-indigo-500 dark:text-indigo-400' },
-  { id: 'Shell', nodes: ['DEFENSE'], color: 'text-red-500 dark:text-red-400' },
+  { id: 'CORE', nodes: ['CORE', 'SYSTEM'], color: 'text-neon-amber' },
+  { id: 'CCR', nodes: ['BRAIN', 'MEMORY', 'DREAM'], color: 'text-neon-purple' },
+  { id: 'OCG', nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT', 'NERVE'], color: 'text-primary' },
+  { id: 'Execution', nodes: ['DECODE', 'ENCODE', 'VISION', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'INTEGRATION'], color: 'text-neon-green' },
+  { id: 'ESZ', nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'], color: 'text-neon-amber' },
+  { id: 'EPZ', nodes: ['COMPASS', 'ECHO', 'REFLEX'], color: 'text-neon-blue' },
+  { id: 'EMZ', nodes: ['FORGE', 'LINGUA', 'HARVEST'], color: 'text-neon-green' },
+  { id: 'CSZ', nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'], color: 'text-neon-magenta' },
+  { id: 'Fields', nodes: ['IMMUNITY', 'INTENT'], color: 'text-neon-magenta' },
+  { id: 'Plane', nodes: ['GOVERNANCE'], color: 'text-neon-blue' },
+  { id: 'Shell', nodes: ['DEFENSE'], color: 'text-destructive' },
 ];
 
 interface OverviewPanelProps {
@@ -61,8 +61,8 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
   const integrity = useMemo(() => calculateIntegrity(matrixNodes), [matrixNodes]);
 
   const statusLabel = healthScore.isHealthy ? 'OPTIMAL' : healthScore.isDegraded ? 'DEGRADED' : 'CRITICAL';
-  const statusColor = healthScore.isHealthy ? 'text-emerald-600 dark:text-emerald-400' : healthScore.isDegraded ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
-  const ringColor = healthScore.isHealthy ? 'stroke-emerald-500' : healthScore.isDegraded ? 'stroke-amber-500' : 'stroke-red-500';
+  const statusColor = healthScore.isHealthy ? 'text-neon-green' : healthScore.isDegraded ? 'text-neon-amber' : 'text-destructive';
+  const ringColor = healthScore.isHealthy ? 'stroke-neon-green' : healthScore.isDegraded ? 'stroke-neon-amber' : 'stroke-destructive';
 
   const circumference = 2 * Math.PI * 42;
   const progress = (healthScore.healthScore / 100) * circumference;
@@ -171,9 +171,9 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
           <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em] px-1">Stream Controls</h3>
           <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
             {[
-              { id: 'heal', label: 'Auto-Heal', icon: Wrench, onClick: handleHeal, pending: healMutation.isPending, color: 'text-emerald-500' },
-              { id: 'backup', label: 'Backup', icon: Server, onClick: handleBackup, pending: backupMutation.isPending, color: 'text-cyan-500' },
-              { id: 'diagnostics', label: 'Diagnostics', icon: Activity, onClick: handleDiagnostics, pending: diagnosticsRunning, color: 'text-amber-500' },
+              { id: 'heal', label: 'Auto-Heal', icon: Wrench, onClick: handleHeal, pending: healMutation.isPending, color: 'text-neon-green' },
+              { id: 'backup', label: 'Backup', icon: Server, onClick: handleBackup, pending: backupMutation.isPending, color: 'text-primary' },
+              { id: 'diagnostics', label: 'Diagnostics', icon: Activity, onClick: handleDiagnostics, pending: diagnosticsRunning, color: 'text-neon-amber' },
               { id: 'terminal', label: 'Terminal', icon: Terminal, onClick: onOpenTerminal, pending: false, color: 'text-primary' },
             ].map(action => (
               <Button
@@ -248,7 +248,7 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
                             <div className={cn(
                               "px-1.5 py-0.5 rounded text-[8px] sm:text-[9px] font-mono font-medium transition-all cursor-default",
                               isActive
-                                ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20"
+                                ? "bg-neon-green/10 text-neon-green border border-neon-green/20"
                                 : "bg-muted/20 text-muted-foreground/30 border border-border/10"
                             )}>
                               {node}

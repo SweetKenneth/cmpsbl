@@ -1,6 +1,6 @@
 /**
  * OS Header — Compact, single-row status bar with essential telemetry
- * Glassmorphic with live indicators. Designed for minimal vertical space.
+ * Glassmorphic with live indicators. Uses semantic design tokens for theme cohesion.
  */
 
 import { useState, useEffect, memo } from 'react';
@@ -40,10 +40,10 @@ function MiniHealthRing({ score, isHealthy, isDegraded }: { score: number; isHea
           initial={{ strokeDashoffset: c }}
           animate={{ strokeDashoffset: c - p }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
-          className={cn(isHealthy ? "stroke-emerald-400" : isDegraded ? "stroke-amber-400" : "stroke-red-400")}
+          className={cn(isHealthy ? "stroke-neon-green" : isDegraded ? "stroke-neon-amber" : "stroke-destructive")}
         />
       </svg>
-      <span className={cn("absolute text-[7px] font-bold font-mono", isHealthy ? "text-emerald-400" : isDegraded ? "text-amber-400" : "text-red-400")}>
+      <span className={cn("absolute text-[7px] font-bold font-mono", isHealthy ? "text-neon-green" : isDegraded ? "text-neon-amber" : "text-destructive")}>
         {score}
       </span>
     </div>
@@ -51,11 +51,11 @@ function MiniHealthRing({ score, isHealthy, isDegraded }: { score: number; isHea
 }
 
 const ROLE_CONFIG: Record<SubstrateRole, { label: string; border: string; text: string; icon: typeof Terminal }> = {
-  governor: { label: 'GOV', border: 'border-red-500/40', text: 'text-red-400', icon: Crown },
-  architect: { label: 'ARC', border: 'border-purple-500/40', text: 'text-purple-400', icon: Sparkles },
-  studio: { label: 'STD', border: 'border-indigo-500/40', text: 'text-indigo-400', icon: Sparkles },
-  creator: { label: 'CRT', border: 'border-amber-500/40', text: 'text-amber-400', icon: Palette },
-  free: { label: 'BLD', border: 'border-cyan-500/40', text: 'text-cyan-400', icon: Activity },
+  governor: { label: 'GOV', border: 'border-destructive/40', text: 'text-destructive', icon: Crown },
+  architect: { label: 'ARC', border: 'border-neon-purple/40', text: 'text-neon-purple', icon: Sparkles },
+  studio: { label: 'STD', border: 'border-neon-blue/40', text: 'text-neon-blue', icon: Sparkles },
+  creator: { label: 'CRT', border: 'border-neon-amber/40', text: 'text-neon-amber', icon: Palette },
+  free: { label: 'BLD', border: 'border-primary/40', text: 'text-primary', icon: Activity },
 };
 
 interface OSHeaderProps {
@@ -87,15 +87,15 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
         <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
           {/* Brand mark */}
           <div className="relative shrink-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/15 to-fuchsia-500/10 border border-cyan-500/30 flex items-center justify-center">
-              <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/15 to-neon-purple/10 border border-primary/30 flex items-center justify-center">
+              <Terminal className="w-3.5 h-3.5 text-primary" />
             </div>
           </div>
 
           {/* Title - desktop only */}
           <div className="hidden sm:block min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="text-sm font-bold bg-gradient-to-r from-cyan-400 to-fuchsia-400 bg-clip-text text-transparent">Memory Stream</span>
+              <span className="text-sm font-bold glow-text">Memory Stream</span>
               <span className="text-[9px] font-mono text-muted-foreground/40">v{version}</span>
             </div>
           </div>
@@ -107,11 +107,11 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="flex items-center gap-1.5">
               {isOnline ? (
-                <Wifi className="w-3 h-3 text-emerald-400" />
+                <Wifi className="w-3 h-3 text-neon-green" />
               ) : (
                 <WifiOff className="w-3 h-3 text-destructive" />
               )}
-              <span className={cn("text-[9px] font-mono uppercase tracking-wider hidden md:inline", isOnline ? "text-emerald-400/70" : "text-destructive/70")}>
+              <span className={cn("text-[9px] font-mono uppercase tracking-wider hidden md:inline", isOnline ? "text-neon-green/70" : "text-destructive/70")}>
                 {isOnline ? 'LIVE' : 'OFF'}
               </span>
             </div>
@@ -138,7 +138,7 @@ export function OSHeader({ userEmail, role }: OSHeaderProps) {
 
           {/* Session */}
           <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-md bg-muted/20 border border-border/20">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-neon-green animate-pulse" />
             <span className="text-[10px] font-mono text-foreground/80 max-w-[80px] truncate">
               {userEmail?.split('@')[0] || 'anon'}
             </span>
