@@ -1,12 +1,13 @@
 /**
  * CMPSBL Welcome Onboarding — First-visit guided tour for /
  * Animated multi-step modal introducing the platform
+ * Uniform "Next" button bottom-right on every card
  */
 
 import { useState, useEffect } from 'react';
 import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, Zap, Terminal, Database, LayoutDashboard, Route, Package } from 'lucide-react';
+import { X, ArrowRight, ChevronRight, Zap, Terminal, Database, LayoutDashboard, Route, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
@@ -20,10 +21,10 @@ interface OnboardingStep {
   body: string;
   accent: string;
   pattern: string;
-  cta: string;
-  ctaHref?: string;
-  /** Final step dual CTAs */
-  secondaryCta?: { text: string; href: string };
+  /** Inline CTA (embedded in card body, not footer) */
+  inlineCta?: { text: string; href: string };
+  /** Second inline CTA */
+  secondaryInlineCta?: { text: string; href: string };
   /** Bullet list for card 4 */
   bullets?: string[];
   /** Dual entry descriptions for card 5 */
@@ -38,7 +39,6 @@ const STEPS: OnboardingStep[] = [
     body: 'Build and run real software with AI. Start locally with packages, or connect to unlock memory, runtime, and system-level coordination.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 50%)',
-    cta: 'Continue',
   },
   {
     icon: Terminal,
@@ -47,8 +47,7 @@ const STEPS: OnboardingStep[] = [
     body: 'Write and test real components in your browser. Signal Forge generates structured starting points — you take it from there.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    cta: 'Open CodeLab',
-    ctaHref: '/codelab',
+    inlineCta: { text: 'Open CodeLab', href: '/codelab' },
   },
   {
     icon: Database,
@@ -57,8 +56,7 @@ const STEPS: OnboardingStep[] = [
     body: "Your system doesn't reset. Every build, test, and discovery is stored and evolves over time in your Memory Stream.",
     accent: 'neon-magenta',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
-    cta: 'View Memory',
-    ctaHref: '/foundry',
+    inlineCta: { text: 'View Memory', href: '/foundry' },
   },
   {
     icon: LayoutDashboard,
@@ -67,8 +65,7 @@ const STEPS: OnboardingStep[] = [
     body: 'Use the dashboard to run agents and monitor your system. Install new capabilities from the Store:',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
-    cta: 'Open Dashboard',
-    ctaHref: '/workspace',
+    inlineCta: { text: 'Open Dashboard', href: '/workspace' },
     bullets: ['Agents', 'Engines', 'Upgrades'],
   },
   {
@@ -78,9 +75,8 @@ const STEPS: OnboardingStep[] = [
     body: 'You can use CMPSBL in two ways:',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    cta: 'Create Account',
-    ctaHref: '/auth',
-    secondaryCta: { text: 'View npm Packages', href: '/documentation' },
+    inlineCta: { text: 'Create Account', href: '/auth' },
+    secondaryInlineCta: { text: 'View npm Packages', href: '/documentation' },
     entries: [
       { icon: Package, label: 'Install packages (npm)', desc: 'Use parts of the system in your own stack' },
       { icon: Zap, label: 'Create an account', desc: 'Unlock memory, runtime, and full system features' },
@@ -153,16 +149,6 @@ export function CmpsblWelcome() {
     }
   };
 
-  const handleCta = () => {
-    const current = STEPS[step];
-    if (current.ctaHref) {
-      dismiss();
-      navigate(current.ctaHref);
-    } else {
-      next();
-    }
-  };
-
   if (!open) return null;
 
   const current = STEPS[step];
@@ -181,7 +167,7 @@ export function CmpsblWelcome() {
       <div className="absolute inset-0 bg-black/55 backdrop-blur-sm cmpsbl-welcome-fade-in" />
 
       <div className="relative w-full max-w-md cmpsbl-welcome-modal-enter">
-        <div className="relative bg-background/95 border border-border/30 rounded-2xl shadow-2xl overflow-hidden">
+        <div className="relative bg-background/95 border border-border/30 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
           {/* Ambient glow */}
           <div
             className="absolute inset-0 pointer-events-none cmpsbl-welcome-pattern-shift"
@@ -194,7 +180,7 @@ export function CmpsblWelcome() {
           </div>
 
           {/* Top edge accent */}
-          <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+          <div className="absolute top-0 inset-x-0 h-[2px] bg-[hsl(var(--neon-cyan)/0.4)]" />
 
           {/* Progress + close */}
           <div className="relative flex items-center justify-between px-5 pt-4">
@@ -206,9 +192,9 @@ export function CmpsblWelcome() {
                   className={cn(
                     'h-1.5 rounded-full transition-all duration-500 cursor-pointer',
                     i === step
-                      ? 'w-7 bg-primary cmpsbl-welcome-dot-active'
+                      ? 'w-7 bg-[hsl(var(--neon-cyan))] cmpsbl-welcome-dot-active'
                       : i < step
-                        ? 'w-3 bg-primary/50'
+                        ? 'w-3 bg-[hsl(var(--neon-cyan)/0.5)]'
                         : 'w-3 bg-muted-foreground/20'
                   )}
                   aria-label={`Step ${i + 1}: ${STEPS[i].title}`}
@@ -235,7 +221,7 @@ export function CmpsblWelcome() {
           <div
             key={step}
             className={cn(
-              'relative px-6 pt-3 pb-5',
+              'relative px-6 pt-3 pb-5 flex-1',
               direction === 'next' ? 'cmpsbl-welcome-slide-in-right' : 'cmpsbl-welcome-slide-in-left'
             )}
           >
@@ -285,9 +271,37 @@ export function CmpsblWelcome() {
                 })}
               </div>
             )}
+
+            {/* Inline CTAs embedded in card body */}
+            {(current.inlineCta || current.secondaryInlineCta) && (
+              <div className="mt-4 flex flex-wrap gap-2 cmpsbl-welcome-body-fade">
+                {current.inlineCta && (
+                  <button
+                    onClick={() => { dismiss(); navigate(current.inlineCta!.href); }}
+                    className={cn(
+                      'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border transition-colors',
+                      colors,
+                      'hover:opacity-80'
+                    )}
+                  >
+                    {current.inlineCta.text}
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                )}
+                {current.secondaryInlineCta && (
+                  <button
+                    onClick={() => { dismiss(); navigate(current.secondaryInlineCta!.href); }}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg border border-border/30 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {current.secondaryInlineCta.text}
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* Footer */}
+          {/* Footer — uniform Next button bottom-right on every card */}
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (
               <Button variant="ghost" size="sm" onClick={back} className="text-xs h-9 gap-1">
@@ -299,21 +313,14 @@ export function CmpsblWelcome() {
               </Button>
             )}
 
-            <div className="flex items-center gap-2">
-              {isLastStep && current.secondaryCta && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => { dismiss(); navigate(current.secondaryCta!.href); }}
-                  className="text-xs h-9 gap-1.5"
-                >
-                  {current.secondaryCta.text}
-                </Button>
-              )}
-              <Button size="sm" onClick={handleCta} className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow">
-                {current.cta} <ArrowRight className="w-3.5 h-3.5" />
-              </Button>
-            </div>
+            <Button
+              size="sm"
+              onClick={next}
+              className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow"
+            >
+              {isLastStep ? 'Get Started' : 'Next'}
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Button>
           </div>
         </div>
       </div>
