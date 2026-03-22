@@ -54,9 +54,7 @@ export function ArtifactPacksSection() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Activate What You{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Need
-            </span>
+            <span className="text-[hsl(var(--neon-magenta))]">Need</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             {PIPELINE_PACK_DESCRIPTION}

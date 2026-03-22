@@ -131,13 +131,9 @@ export function UseCaseShowcase() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             From{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Today
-            </span>
+            <span className="text-[hsl(var(--neon-cyan))]">Today</span>
             {" "}to{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Tomorrow
-            </span>
+            <span className="text-[hsl(var(--neon-magenta))]">Tomorrow</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Production-ready applications crystallized from the Memory Stream today, and the transformative possibilities on the horizon.

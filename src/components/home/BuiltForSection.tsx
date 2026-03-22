@@ -253,9 +253,7 @@ export function BuiltForSection() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
             Build What{" "}
-            <span className="clockless-river-text" style={{ WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>
-              Evolves
-            </span>
+            <span className="text-[hsl(var(--neon-cyan))]">Evolves</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             The substrate gives your systems DREAM cycles, governed ADAPT, and persistent memory. 
