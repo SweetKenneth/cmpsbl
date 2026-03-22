@@ -480,48 +480,60 @@ export async function runModuleLearningCycle(): Promise<{
   totalInsights: number;
   averageHealth: number;
 }> {
+  const modules = getRegisteredModules();
+  const hooks = modules.map(m => ({ module: m, hook: getModuleHook(m) })).filter(h => h.hook);
+
+  // Process in parallel batches of 6 to avoid overwhelming the DB
+  const BATCH_SIZE = 6;
   let totalInsights = 0;
   let totalHealth = 0;
-  const modules = getRegisteredModules();
+  let processed = 0;
 
-  for (const module of modules) {
-    const hook = getModuleHook(module);
-    if (!hook) continue;
+  for (let i = 0; i < hooks.length; i += BATCH_SIZE) {
+    const batch = hooks.slice(i, i + BATCH_SIZE);
+    const results = await Promise.allSettled(
+      batch.map(async ({ module, hook }) => {
+        const [kpis, reflection] = await Promise.all([
+          hook!.getKPIs(),
+          hook!.reflect(),
+        ]);
 
-    try {
-      const kpis = await hook.getKPIs();
-      totalHealth += kpis.health_score;
-
-      const reflection = await hook.reflect();
-      totalInsights += reflection.insights.length;
-
-      // Ingest high-confidence insights
-      for (const insight of reflection.insights) {
-        if (reflection.confidence > 0.6) {
-          await hook.ingestLearning(insight, reflection.confidence);
+        // Ingest high-confidence insights in parallel
+        if (reflection.confidence > 0.6 && reflection.insights.length > 0) {
+          await Promise.all(
+            reflection.insights.map(insight => hook!.ingestLearning(insight, reflection.confidence))
+          );
         }
-      }
 
-      // Log cycle completion
-      await supabase.from('brain_events').insert({
-        module: 'clm',
-        event_type: 'module_cycle_complete',
-        data: {
-          targetModule: module,
-          kpis,
-          insightCount: reflection.insights.length,
-        } as unknown as Json,
-        outcome: 'success',
-      });
-    } catch {
-      // Continue with other modules
+        // Fire-and-forget telemetry
+        supabase.from('brain_events').insert({
+          module: 'clm',
+          event_type: 'module_cycle_complete',
+          data: {
+            targetModule: module,
+            kpis,
+            insightCount: reflection.insights.length,
+          } as unknown as Json,
+          outcome: 'success',
+        }).then(() => {}, () => {});
+
+        return { health: kpis.health_score, insights: reflection.insights.length };
+      })
+    );
+
+    for (const r of results) {
+      if (r.status === 'fulfilled') {
+        totalHealth += r.value.health;
+        totalInsights += r.value.insights;
+        processed++;
+      }
     }
   }
 
   return {
-    modulesProcessed: modules.length,
+    modulesProcessed: processed,
     totalInsights,
-    averageHealth: modules.length > 0 ? Math.round(totalHealth / modules.length) : 0,
+    averageHealth: processed > 0 ? Math.round(totalHealth / processed) : 0,
   };
 }
 
