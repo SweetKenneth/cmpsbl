@@ -14,27 +14,21 @@ import { TEMPLATES } from "@/data/templates";
 
 // The 9 modules + zones + meshes of the substrate
 const MODULES = [
-  // Kernel Layer
-  { icon: Cpu, name: "Core", color: "text-orange-400", description: "Kernel scheduling" },
-  { icon: Zap, name: "Ripple", color: "text-teal-400", description: "Message bus" },
-  { icon: Lock, name: "Access", color: "text-amber-400", description: "Identity & keys" },
-  // Cognitive Layer
-  { icon: Brain, name: "Brain", color: "text-violet-400", description: "3-tier memory" },
-  { icon: MessageSquare, name: "Decode", color: "text-cyan-400", description: "Intent parsing" },
-  { icon: Sparkles, name: "Nexus", color: "text-green-400", description: "AI routing" },
-  // Operational Layer
-  { icon: Shield, name: "Defense", color: "text-red-400", description: "Threat detection" },
-  { icon: Eye, name: "Vision", color: "text-blue-400", description: "Observability" },
-  { icon: Moon, name: "Dream", color: "text-purple-400", description: "Evolution" },
-  // Admin Layer
-  { icon: Settings, name: "System", color: "text-slate-400", description: "Administration" },
-  { icon: Crown, name: "Evolution", color: "text-pink-400", description: "Self-improvement" },
-  { icon: Globe, name: "Integration", color: "text-emerald-400", description: "Enterprise" },
-  // Orchestrator Layer
-  { icon: Sparkles, name: "Cortex", color: "text-fuchsia-400", description: "Orchestrator" },
-  { icon: Sparkles, name: "Encode", color: "text-lime-400", description: "Execution engine" },
-  // Human Compatibility Layer
-  { icon: Eye, name: "Inclusive", color: "text-rose-400", description: "Human a11y" },
+  { icon: Cpu, name: "Core", description: "Kernel scheduling" },
+  { icon: Zap, name: "Ripple", description: "Message bus" },
+  { icon: Lock, name: "Access", description: "Identity & keys" },
+  { icon: Brain, name: "Brain", description: "3-tier memory" },
+  { icon: MessageSquare, name: "Decode", description: "Intent parsing" },
+  { icon: Sparkles, name: "Nexus", description: "AI routing" },
+  { icon: Shield, name: "Defense", description: "Threat detection" },
+  { icon: Eye, name: "Vision", description: "Observability" },
+  { icon: Moon, name: "Dream", description: "Evolution" },
+  { icon: Settings, name: "System", description: "Administration" },
+  { icon: Crown, name: "Evolution", description: "Self-improvement" },
+  { icon: Globe, name: "Integration", description: "Enterprise" },
+  { icon: Sparkles, name: "Cortex", description: "Orchestrator" },
+  { icon: Sparkles, name: "Encode", description: "Execution engine" },
+  { icon: Eye, name: "Inclusive", description: "Human a11y" },
 ];
 
 // Competitor logos (stylized as text for now)
