@@ -236,10 +236,11 @@ export class LocalTierCache<T = unknown> {
     this.stats.promotions++;
   }
 
-  /** Evict LRU from hot → warm if at capacity */
+  /** Evict LRU from hot → warm if at capacity. Uses Map insertion-order for O(1). */
   private ensureHotCapacity(): void {
     if (this.hot.size < this.hotCapacity) return;
-    const lruKey = this.findLRU(this.hot);
+    // Map.keys().next() gives oldest insertion — good LRU approximation
+    const lruKey = this.hot.keys().next().value;
     if (!lruKey) return;
     const evicted = this.hot.get(lruKey)!;
     this.hot.delete(lruKey);
@@ -251,23 +252,10 @@ export class LocalTierCache<T = unknown> {
   /** Evict LRU from warm (drops to central) if at capacity */
   private ensureWarmCapacity(): void {
     if (this.warm.size < this.warmCapacity) return;
-    const lruKey = this.findLRU(this.warm);
+    const lruKey = this.warm.keys().next().value;
     if (!lruKey) return;
     this.warm.delete(lruKey);
     this.stats.evictions++;
-  }
-
-  /** Find the least-recently-used key in a Map */
-  private findLRU(tier: Map<string, LocalCacheEntry<T>>): string | null {
-    let oldestKey: string | null = null;
-    let oldestAccess = Infinity;
-    for (const [key, entry] of tier) {
-      if (entry.lastAccess < oldestAccess) {
-        oldestAccess = entry.lastAccess;
-        oldestKey = key;
-      }
-    }
-    return oldestKey;
   }
 }
 

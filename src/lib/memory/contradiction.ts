@@ -74,13 +74,15 @@ export function detectContradiction(
   const existingNums = existingLower.match(/\b\d+\.?\d*\b/g);
   const newNums = newLower.match(/\b\d+\.?\d*\b/g);
   if (existingNums && newNums) {
-    // Check if they share context words (subject overlap)
-    const newWords = newLower.split(/\s+/).filter(w => w.length > 3 && !/^\d/.test(w));
-    const overlap = existingWords.filter(w => newWords.includes(w) && !/^\d/.test(w));
-    if (overlap.length >= 1) {
-      const existingSet = new Set(existingNums);
-      const conflicting = newNums.filter(n => !existingSet.has(n));
-      if (conflicting.length > 0) {
+    // Check subject overlap using pre-built set
+    let hasOverlap = false;
+    for (const w of existingWords) {
+      if (!/^\d/.test(w) && newWordSet.has(w)) { hasOverlap = true; break; }
+    }
+    if (hasOverlap) {
+      const existingNumSet = new Set(existingNums);
+      const hasConflict = newNums.some(n => !existingNumSet.has(n));
+      if (hasConflict) {
         contradictionSignals++;
         reasons.push(`numeric: existing=[${existingNums.join(',')}] vs new=[${newNums.join(',')}]`);
       }

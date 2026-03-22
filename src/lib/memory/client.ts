@@ -770,18 +770,25 @@ export class MemoryClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // #11 WORKLOAD-AWARE TIERING — Track hourly patterns
+  // #11 WORKLOAD-AWARE TIERING — Track hourly patterns (throttled)
   // ═══════════════════════════════════════════════════════════════════
+  private lastHourlyTrack = 0;
+  private static readonly HOURLY_THROTTLE_MS = 60_000; // max once per minute
+
   private async trackHourlyActivity(): Promise<void> {
     try {
       if (!this.userId) return;
+      const now = Date.now();
+      if (now - this.lastHourlyTrack < MemoryClient.HOURLY_THROTTLE_MS) return;
+      this.lastHourlyTrack = now;
+
       const hour = new Date().getHours();
       const { data: meta } = await supabase
         .from('brain_memory_meta' as any)
         .select('hourly_activity, peak_hours')
         .eq('user_id', this.userId)
         .eq('agent_id', this.agentId)
-        .single();
+        .maybeSingle();
       
       if (meta) {
         const activity = (meta as any).hourly_activity || {};
