@@ -357,48 +357,48 @@ async function defaultAcknowledgeEnhancement(module: SubstrateModule, enhancemen
  * Get all module enhancement reports ranked by importance
  */
 export async function getAllEnhancementReports(): Promise<ModuleEnhancementReport[]> {
-  const reports: ModuleEnhancementReport[] = [];
-  
-  for (const module of getRegisteredModules()) {
-    const hook = getModuleHook(module);
-    if (!hook) continue;
-    
-    try {
-      const requests = await hook.getEnhancementRequests();
-      const kpis = await hook.getKPIs();
-      
-      // Calculate importance score: higher = more important
+  const modules = getRegisteredModules();
+  const hooks = modules.map(m => ({ module: m, hook: getModuleHook(m) })).filter(h => h.hook);
+
+  // Fetch all KPIs and enhancement requests in parallel
+  const results = await Promise.allSettled(
+    hooks.map(async ({ module, hook }) => {
+      const [requests, kpis] = await Promise.all([
+        hook!.getEnhancementRequests(),
+        hook!.getKPIs(),
+      ]);
+
       const priorityWeights = { critical: 100, high: 70, medium: 40, low: 15 };
-      const topPriority = requests.length > 0 
+      const topPriority = requests.length > 0
         ? Math.max(...requests.map(r => priorityWeights[r.priority] || 0))
         : 0;
-      const healthPenalty = Math.max(0, 50 - kpis.health_score) * 1.5; // Unhealthy modules rank higher
+      const healthPenalty = Math.max(0, 50 - kpis.health_score) * 1.5;
       const errorBoost = Math.min(50, kpis.error_count_24h * 5);
       const importanceScore = Math.min(100, topPriority + healthPenalty + errorBoost);
-      
-      // Sort requests by priority
-      const sorted = [...requests].sort((a, b) => 
+
+      const sorted = [...requests].sort((a, b) =>
         (priorityWeights[b.priority] || 0) - (priorityWeights[a.priority] || 0)
       );
-      
-      reports.push({
+
+      return {
         module,
         topRequest: sorted[0]?.title || 'no requests',
         requests: sorted,
         importanceScore,
-      });
-    } catch {
-      reports.push({
-        module,
-        topRequest: 'unavailable',
-        requests: [],
-        importanceScore: 0,
-      });
-    }
-  }
-  
-  // Sort by importance (descending)
-  return reports.sort((a, b) => b.importanceScore - a.importanceScore);
+      } as ModuleEnhancementReport;
+    })
+  );
+
+  const reports = results
+    .map((r, i) => r.status === 'fulfilled' ? r.value : {
+      module: hooks[i].module,
+      topRequest: 'unavailable',
+      requests: [] as EnhancementRequest[],
+      importanceScore: 0,
+    } as ModuleEnhancementReport)
+    .sort((a, b) => b.importanceScore - a.importanceScore);
+
+  return reports;
 }
 
 /**
@@ -451,6 +451,9 @@ const ALL_MODULES: SubstrateModule[] = [
   'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'immunity', 'intent', 'governance',
   'medic', 'nerve',
+  // Expansion nodes (40-node architecture)
+  'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
+  'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ];
 
 // Register default hooks for all modules
@@ -477,48 +480,60 @@ export async function runModuleLearningCycle(): Promise<{
   totalInsights: number;
   averageHealth: number;
 }> {
+  const modules = getRegisteredModules();
+  const hooks = modules.map(m => ({ module: m, hook: getModuleHook(m) })).filter(h => h.hook);
+
+  // Process in parallel batches of 6 to avoid overwhelming the DB
+  const BATCH_SIZE = 6;
   let totalInsights = 0;
   let totalHealth = 0;
-  const modules = getRegisteredModules();
+  let processed = 0;
 
-  for (const module of modules) {
-    const hook = getModuleHook(module);
-    if (!hook) continue;
+  for (let i = 0; i < hooks.length; i += BATCH_SIZE) {
+    const batch = hooks.slice(i, i + BATCH_SIZE);
+    const results = await Promise.allSettled(
+      batch.map(async ({ module, hook }) => {
+        const [kpis, reflection] = await Promise.all([
+          hook!.getKPIs(),
+          hook!.reflect(),
+        ]);
 
-    try {
-      const kpis = await hook.getKPIs();
-      totalHealth += kpis.health_score;
-
-      const reflection = await hook.reflect();
-      totalInsights += reflection.insights.length;
-
-      // Ingest high-confidence insights
-      for (const insight of reflection.insights) {
-        if (reflection.confidence > 0.6) {
-          await hook.ingestLearning(insight, reflection.confidence);
+        // Ingest high-confidence insights in parallel
+        if (reflection.confidence > 0.6 && reflection.insights.length > 0) {
+          await Promise.all(
+            reflection.insights.map(insight => hook!.ingestLearning(insight, reflection.confidence))
+          );
         }
-      }
 
-      // Log cycle completion
-      await supabase.from('brain_events').insert({
-        module: 'clm',
-        event_type: 'module_cycle_complete',
-        data: {
-          targetModule: module,
-          kpis,
-          insightCount: reflection.insights.length,
-        } as unknown as Json,
-        outcome: 'success',
-      });
-    } catch {
-      // Continue with other modules
+        // Fire-and-forget telemetry
+        supabase.from('brain_events').insert({
+          module: 'clm',
+          event_type: 'module_cycle_complete',
+          data: {
+            targetModule: module,
+            kpis,
+            insightCount: reflection.insights.length,
+          } as unknown as Json,
+          outcome: 'success',
+        }).then(() => {}, () => {});
+
+        return { health: kpis.health_score, insights: reflection.insights.length };
+      })
+    );
+
+    for (const r of results) {
+      if (r.status === 'fulfilled') {
+        totalHealth += r.value.health;
+        totalInsights += r.value.insights;
+        processed++;
+      }
     }
   }
 
   return {
-    modulesProcessed: modules.length,
+    modulesProcessed: processed,
     totalInsights,
-    averageHealth: modules.length > 0 ? Math.round(totalHealth / modules.length) : 0,
+    averageHealth: processed > 0 ? Math.round(totalHealth / processed) : 0,
   };
 }
 
@@ -526,28 +541,25 @@ export async function runModuleLearningCycle(): Promise<{
  * Get KPIs for all modules
  */
 export async function getAllModuleKPIs(): Promise<ModuleKPIs[]> {
-  const results: ModuleKPIs[] = [];
-  
-  for (const module of getRegisteredModules()) {
-    const hook = getModuleHook(module);
-    if (hook) {
-      try {
-        const kpis = await hook.getKPIs();
-        results.push(kpis);
-      } catch {
-        results.push({
-          module,
-          success_rate: 0,
-          response_time_avg_ms: 0,
-          error_count_24h: 0,
-          throughput_24h: 0,
-          health_score: 0,
-        });
-      }
-    }
-  }
+  const modules = getRegisteredModules();
+  const results = await Promise.allSettled(
+    modules.map(async module => {
+      const hook = getModuleHook(module);
+      if (!hook) throw new Error('no hook');
+      return hook.getKPIs();
+    })
+  );
 
-  return results;
+  return results.map((r, i) =>
+    r.status === 'fulfilled' ? r.value : {
+      module: modules[i],
+      success_rate: 0,
+      response_time_avg_ms: 0,
+      error_count_24h: 0,
+      throughput_24h: 0,
+      health_score: 0,
+    }
+  );
 }
 
 /**

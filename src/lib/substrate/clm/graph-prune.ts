@@ -26,7 +26,6 @@ export async function runGraphPruning(options?: {
   try {
     const cutoffDate = new Date(Date.now() - maxAgeDays * 24 * 3600000).toISOString();
 
-    // Find low-confidence stale edges (uses brain_graph_edges - the actual table)
     const { data: staleEdges } = await supabase
       .from('brain_graph_edges')
       .select('id, source_id, target_id, weight')
@@ -37,28 +36,22 @@ export async function runGraphPruning(options?: {
     const edges = ((staleEdges || []) as unknown) as Array<{ id: string; source_id: string; target_id: string; weight: number }>;
 
     if (!dryRun && edges.length) {
-      // Create tombstone records
-      for (const edge of edges) {
-        await supabase.from('brain_events').insert({
-          event_type: 'graph_edge_pruned',
-          module: 'brain',
-          data: { edge_id: edge.id, reason: 'low_confidence_stale', source_id: edge.source_id, target_id: edge.target_id },
-          outcome: 'archived',
-        } as any);
-        result.tombstonesCreated++;
-      }
+      // Batch insert all tombstone records in one call
+      const tombstones = edges.map(edge => ({
+        event_type: 'graph_edge_pruned',
+        module: 'brain',
+        data: { edge_id: edge.id, reason: 'low_confidence_stale', source_id: edge.source_id, target_id: edge.target_id },
+        outcome: 'archived',
+      }));
 
-      // Delete edges
-      const ids = edges.map(e => e.id);
-      await supabase.from('brain_graph_edges').delete().in('id', ids);
-      result.nodesDecayed = ids.length;
+      const [tombstoneResult] = await Promise.all([
+        supabase.from('brain_events').insert(tombstones as any),
+        supabase.from('brain_graph_edges').delete().in('id', edges.map(e => e.id)),
+      ]);
+
+      result.tombstonesCreated = edges.length;
+      result.nodesDecayed = edges.length;
     }
-
-    // Decay weights on aging edges (simplified)
-    if (!dryRun) {
-      // Note: weight decay would be done via edge function in production
-    }
-
   } catch (error) {
     console.error('[CLM] Graph pruning failed:', error);
   }
@@ -73,24 +66,22 @@ export async function getGraphMetrics(): Promise<{
   learningEdges: number;
 }> {
   try {
-    const { count: edgeCount } = await supabase
-      .from('brain_graph_edges')
-      .select('*', { count: 'exact', head: true });
+    // Parallelize both queries
+    const [edgeCountResult, learningEdgesResult] = await Promise.all([
+      supabase.from('brain_graph_edges').select('*', { count: 'exact', head: true }),
+      supabase.from('brain_graph_edges').select('weight').eq('relation', 'learning'),
+    ]);
 
-    const { data: learningEdges } = await supabase
-      .from('brain_graph_edges')
-      .select('weight')
-      .eq('relation', 'learning');
-
-    const avgWeight = learningEdges?.length
+    const learningEdges = learningEdgesResult.data || [];
+    const avgWeight = learningEdges.length
       ? learningEdges.reduce((sum: number, e: any) => sum + (e.weight || 0), 0) / learningEdges.length
       : 0;
 
     return {
-      totalNodes: 0, // Would need separate node table
-      totalEdges: edgeCount || 0,
+      totalNodes: 0,
+      totalEdges: edgeCountResult.count || 0,
       avgWeight,
-      learningEdges: learningEdges?.length || 0,
+      learningEdges: learningEdges.length,
     };
   } catch {
     return { totalNodes: 0, totalEdges: 0, avgWeight: 0, learningEdges: 0 };
