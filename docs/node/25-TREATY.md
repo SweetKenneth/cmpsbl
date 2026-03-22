@@ -18,6 +18,15 @@ TREATY manages formal contracts between substrate nodes, enforces SLA (Service L
 | `createContract` | Define a contract with terms, SLAs, and penalty clauses |
 | `activateContract` | Move contract from draft to active enforcement |
 | `evaluateSLA` | Run SLA compliance check against current metrics |
+| `checkExpiring` | Surface contracts approaching expiration |
+| `init` | Initialize treaty engine with configuration |
+| `health` | Query treaty module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `contracts` | List all contracts with status and compliance data |
+| `penalties` | Query accumulated penalty records |
 
 ---
 

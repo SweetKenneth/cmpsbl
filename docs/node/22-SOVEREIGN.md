@@ -21,6 +21,12 @@ SOVEREIGN owns data sovereignty, jurisdictional compliance, consent management, 
 | `recordConsent` | Record user consent with purpose and expiration |
 | `addRetentionPolicy` | Define retention period and auto-delete behavior |
 | `classifyData` | Classify data as public/internal/confidential/restricted/top_secret |
+| `init` | Initialize sovereign engine with configuration |
+| `health` | Query sovereign module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
 
 ---
 

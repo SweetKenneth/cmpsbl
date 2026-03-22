@@ -19,6 +19,13 @@ COMPASS owns spatial-temporal reasoning — distance calculation, route optimiza
 | `optimizeRoute` | Multi-waypoint route optimization |
 | `forecastTimeSeries` | Time-series forecasting with confidence intervals |
 | `detectPatterns` | Temporal pattern detection (seasonality, trends, anomalies) |
+| `forecast` | Run a quick-forecast query for a single metric |
+| `init` | Initialize compass engine with configuration |
+| `health` | Query compass module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
 
 ---
 

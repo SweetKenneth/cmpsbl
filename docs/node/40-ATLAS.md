@@ -19,6 +19,20 @@ ATLAS is the substrate's system map and capability registry. It owns node discov
 | `register` | Add new capabilities to the registry |
 | `query` | Find nodes by capability or sector |
 | `visualize` | Generate topology maps and diagrams |
+| `init` | Initialize ATLAS registry with node catalog |
+| `health` | Query ATLAS module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `setCapabilityLock` | Lock/unlock a specific capability registration |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `sectors` | Enumerate all sectors and their node membership |
+| `topology` | Retrieve the full system topology graph |
+| `capabilities` | List all registered capabilities across all nodes |
+| `nodeDetail` | Deep inspection of a specific node's registry entry |
+| `diffTopology` | Compare current topology against a baseline |
+| `healthMap` | Per-node health status map across all sectors |
+| `registerBulk` | Bulk register multiple capabilities atomically |
 
 ---
 

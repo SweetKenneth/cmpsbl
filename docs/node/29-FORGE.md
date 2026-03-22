@@ -18,6 +18,17 @@ FORGE is the substrate's artifact factory. It owns blueprint management, code ar
 | `createBlueprint` | Define an artifact specification with language and type |
 | `generate` | Generate an artifact from a blueprint |
 | `build` | Compile, test, and deploy an artifact |
+| `signalBatch` | Batch-process forge signal operations |
+| `retireCombo` | Retire a signal combination from active rotation |
+| `signalStats` | Retrieve signal processing statistics |
+| `init` | Initialize forge engine with configuration |
+| `health` | Query forge module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `blueprints` | List all active blueprints |
+| `artifacts` | List all generated artifacts with metadata |
 
 ---
 

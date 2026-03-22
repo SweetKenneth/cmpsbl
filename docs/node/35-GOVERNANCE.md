@@ -19,6 +19,17 @@ GOVERNANCE is the substrate's policy enforcement authority. It owns access contr
 | `requireApproval` | Block operation pending human approval |
 | `enforceLimit` | Apply rate limits, quotas, and constraints |
 | `auditDecision` | Record decision rationale for compliance |
+| `coherenceValidation` | Validate system-wide coherence across nodes |
+| `ethicalCheck` | Run ethical constraint evaluation on proposed actions |
+| `emitSignal` | Broadcast governance signals to the mesh |
+| `runCycle` | Execute a full governance evaluation cycle |
+| `state` | Query current governance engine state |
+| `init` | Initialize governance engine with configuration |
+| `health` | Query governance module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
 
 ---
 

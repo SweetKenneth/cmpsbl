@@ -18,6 +18,14 @@ LINGUA is the substrate's universal translator. It owns protocol translation bet
 | `translate` | Translate data between modality formats |
 | `mapSchema` | Create schema mappings between data structures |
 | `createBridge` | Establish a persistent modality bridge |
+| `init` | Initialize lingua engine with configuration |
+| `health` | Query lingua module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `bridges` | List all active modality bridges with stats |
+| `schemas` | List all registered schema mappings |
 
 ---
 

@@ -19,6 +19,15 @@ REFLEX is the substrate's fastest node — designed for sub-10ms response loops.
 | `addRule` | Define a reactive trigger rule |
 | `decide` | Execute a real-time decision |
 | `heartbeat` | Edge node health check |
+| `init` | Initialize reflex engine with configuration |
+| `health` | Query reflex module health metrics |
+| `resilience` | Retrieve resilience posture and recovery data |
+| `hardening` | Access hardening configuration and limits |
+| `runCLM` | Trigger Continuous Lifecycle Management cycle |
+| `upgradeEngine` | Apply engine upgrades with rollback support |
+| `nodes` | List all registered edge nodes with status |
+| `rules` | List all active trigger rules with hit counts |
+| `decisions` | Query recent decision log with latency stats |
 
 ---
 
