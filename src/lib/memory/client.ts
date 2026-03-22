@@ -874,16 +874,23 @@ export class MemoryClient {
     const hour = new Date().getHours();
     activity[hour] = (activity[hour] || 0) + 1;
     
-    // Top 3 peak hours via partial sort (avoids full sort)
+    // Top 3 peak hours — swap-to-end instead of O(n) splice
     const entries = Object.entries(activity) as [string, number][];
     const peaks: number[] = [];
-    for (let i = 0; i < 3 && entries.length > 0; i++) {
+    let activeLen = entries.length;
+    for (let i = 0; i < 3 && activeLen > 0; i++) {
       let maxIdx = 0;
-      for (let j = 1; j < entries.length; j++) {
+      for (let j = 1; j < activeLen; j++) {
         if (entries[j][1] > entries[maxIdx][1]) maxIdx = j;
       }
       peaks.push(parseInt(entries[maxIdx][0]));
-      entries.splice(maxIdx, 1);
+      // Swap max to end and shrink active window — O(1) vs O(n) splice
+      activeLen--;
+      if (maxIdx !== activeLen) {
+        const tmp = entries[maxIdx];
+        entries[maxIdx] = entries[activeLen];
+        entries[activeLen] = tmp;
+      }
     }
 
     await supabase

@@ -210,29 +210,14 @@ export class LocalTierCache<T = unknown> {
     }
     this.stats.demotions += demoted;
 
-    // Single merged pass: evict stale OR over-capacity warm entries
+    // Single merged pass: inline delete — no intermediate array allocation
     const warmCutoff = now - this.warmTtlMs;
-    if (this.warm.size > this.warmCapacity) {
-      // Over capacity — evict oldest (LRU by insertion order) AND stale
-      const toEvict: string[] = [];
-      let overCount = this.warm.size - this.warmCapacity;
-      for (const [key, entry] of this.warm) {
-        if (overCount > 0 || entry.lastAccess < warmCutoff) {
-          toEvict.push(key);
-          if (overCount > 0) overCount--;
-        }
-      }
-      for (const key of toEvict) {
+    let overCount = this.warm.size > this.warmCapacity ? this.warm.size - this.warmCapacity : 0;
+    for (const [key, entry] of this.warm) {
+      if (overCount > 0 || entry.lastAccess < warmCutoff) {
         this.warm.delete(key);
         evicted++;
-      }
-    } else {
-      // Under capacity — only evict stale
-      for (const [key, entry] of this.warm) {
-        if (entry.lastAccess < warmCutoff) {
-          this.warm.delete(key);
-          evicted++;
-        }
+        if (overCount > 0) overCount--;
       }
     }
     this.stats.evictions += evicted;

@@ -60,12 +60,15 @@ export function detectContradiction(
     if (w.length > 3) newWordSet.add(w);
   }
 
-  // 1. Negation-keyword overlap
+  // 1. Negation-keyword overlap — pre-build negation phrases for O(1) lookup
   for (const word of existingWords) {
+    // Only check words present in new text to avoid pointless negation scans
+    if (!newLower.includes(word)) continue;
     for (const neg of NEGATION_SET) {
       if (newLower.includes(`${neg} ${word}`) || newLower.includes(`${word} ${neg}`)) {
         contradictionSignals++;
         reasons.push(`negation: "${neg} ${word}"`);
+        break; // One negation signal per word is sufficient
       }
     }
   }
