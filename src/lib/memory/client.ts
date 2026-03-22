@@ -120,6 +120,8 @@ export class MemoryClient {
     /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
     /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
   ];
+  /** Pre-compiled cleanup regex for fact extraction */
+  private static readonly FACT_CLEANUP_RE = /^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i;
 
   /** Extract discrete facts from text */
   extractFacts(text: string): string[] {
@@ -129,9 +131,10 @@ export class MemoryClient {
       let match;
       pattern.lastIndex = 0;
       while ((match = pattern.exec(text)) !== null) {
-        let fact = match[0].trim()
-          .replace(/^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i, '')
-          .trim();
+        const raw = match[0].trim();
+        const fact = MemoryClient.FACT_CLEANUP_RE.test(raw)
+          ? raw.replace(MemoryClient.FACT_CLEANUP_RE, '').trim()
+          : raw;
         if (fact.length > 3 && fact.length < 200 && !seen.has(fact)) {
           seen.add(fact);
           facts.push(fact);
@@ -514,6 +517,11 @@ export class MemoryClient {
       const hotInserts: any[] = [];
       const warmInserts: any[] = [];
 
+      // Hoist shared provenance + timestamp outside loop
+      const shareTs = new Date().toISOString();
+      const shareProvenance = this.buildProvenance('cross_agent_share');
+      shareProvenance.lineage = [`shared_from:${this.agentId}:${shareTs}`];
+
       for (const entry of allData as any[]) {
         const sourceSalience = entry.salience_score || 0.5;
         const sharedSalience = sourceSalience * 0.8;
@@ -529,10 +537,7 @@ export class MemoryClient {
             memory_type: entry.memory_type,
             salience_score: sharedSalience,
             value_score: sharedSalience * 0.7,
-            provenance: {
-              ...this.buildProvenance('cross_agent_share'),
-              lineage: [`shared_from:${this.agentId}:${new Date().toISOString()}`],
-            },
+            provenance: shareProvenance,
             metadata: { ...entry.metadata, shared_from_agent: this.agentId },
             tags: ['cross_agent_share'],
           });
@@ -623,16 +628,38 @@ export class MemoryClient {
   // FIX #3: userId passed explicitly, not read from nullable field
   // ═══════════════════════════════════════════════════════════════════
   private static readonly FINGERPRINT_CLEAN_RE = /[^a-z0-9\s]/g;
+  /** Stop-words to skip during keyword extraction */
+  private static readonly STOP_WORDS = new Set([
+    'this', 'that', 'with', 'from', 'have', 'been', 'were', 'they', 'will',
+    'would', 'could', 'should', 'about', 'their', 'which', 'there', 'these',
+    'those', 'other', 'into', 'some', 'than', 'then', 'them', 'your', 'what',
+  ]);
 
   private async updateFingerprint(content: string, userId?: string): Promise<void> {
     const uid = userId || this.userId;
     if (!uid) return;
     try {
-      // Single-pass keyword extraction
+      // Single-pass: extract keywords without intermediate .replace().split()
       const keywords: string[] = [];
-      const words = content.toLowerCase().replace(MemoryClient.FINGERPRINT_CLEAN_RE, ' ').split(/\s+/);
-      for (let i = 0; i < words.length && keywords.length < 10; i++) {
-        if (words[i].length > 3) keywords.push(words[i]);
+      const len = content.length;
+      let wordStart = -1;
+      
+      for (let i = 0; i <= len && keywords.length < 10; i++) {
+        const ch = i < len ? content.charCodeAt(i) : 32;
+        const isAlphaNum = (ch >= 97 && ch <= 122) || (ch >= 48 && ch <= 57); // a-z, 0-9
+        const isUpper = ch >= 65 && ch <= 90;
+        
+        if ((isAlphaNum || isUpper) && wordStart === -1) {
+          wordStart = i;
+        } else if (!isAlphaNum && !isUpper && wordStart !== -1) {
+          if (i - wordStart > 3) {
+            const word = content.slice(wordStart, i).toLowerCase();
+            if (!MemoryClient.STOP_WORDS.has(word)) {
+              keywords.push(word);
+            }
+          }
+          wordStart = -1;
+        }
       }
 
       await supabase.rpc('update_user_fingerprint', {

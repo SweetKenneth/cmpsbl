@@ -83,10 +83,16 @@ export function usePersistentAgent(
         client.recall(input),
       ]);
       
+      // Build context string once — recall already sorted by relevance
+      const contextString = client.buildContextString(result.memories);
+      const memories = result.memories;
+      
       return {
-        memories: result.memories.map(m => m.content),
+        memories: memories.length <= 8
+          ? memories.map(m => m.content)
+          : memories.slice(0, 8).map(m => m.content),
         confidence: result.confidence,
-        contextString: client.buildContextString(result.memories)
+        contextString,
       };
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Memory operation failed');
