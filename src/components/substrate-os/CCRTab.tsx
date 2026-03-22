@@ -77,23 +77,23 @@ export function CCRTab() {
     <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-cyan-500/25 flex items-center justify-center shrink-0">
-          <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-cyan-600 dark:text-cyan-400" />
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary/15 to-neon-blue/10 border border-primary/25 flex items-center justify-center shrink-0">
+          <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Cognitive Core</h2>
           <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">MEMORY · DREAM — CCR</p>
         </div>
-        <Badge className="text-[9px] bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20 shrink-0">CCR</Badge>
+        <Badge className="text-[9px] bg-primary/10 text-primary border-primary/20 shrink-0">CCR</Badge>
       </div>
 
       {/* Brain Events Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {[
-          { label: 'Total Memories', value: totalMemories.toLocaleString(), icon: Database, color: 'text-cyan-500' },
-          { label: 'Brain Events', value: brainEvents.toLocaleString(), icon: Activity, color: 'text-blue-500' },
-          { label: 'Recall Rate', value: `${memory.recallRate}%`, icon: TrendingUp, color: 'text-emerald-500' },
-          { label: 'Contradictions', value: memory.contradictions.toString(), icon: Zap, color: memory.contradictions > 0 ? 'text-amber-500' : 'text-emerald-500' },
+          { label: 'Total Memories', value: totalMemories.toLocaleString(), icon: Database, color: 'text-primary' },
+          { label: 'Brain Events', value: brainEvents.toLocaleString(), icon: Activity, color: 'text-neon-blue' },
+          { label: 'Recall Rate', value: `${memory.recallRate}%`, icon: TrendingUp, color: 'text-neon-green' },
+          { label: 'Contradictions', value: memory.contradictions.toString(), icon: Zap, color: memory.contradictions > 0 ? 'text-neon-amber' : 'text-neon-green' },
         ].map(stat => (
           <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-3">
@@ -110,10 +110,10 @@ export function CCRTab() {
       <Tabs defaultValue="memory">
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
-            <TabsTrigger value="memory" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-600 dark:data-[state=active]:text-cyan-400">
+            <TabsTrigger value="memory" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
               <HardDrive className="w-3.5 h-3.5 hidden sm:block" /> MEMORY
             </TabsTrigger>
-            <TabsTrigger value="dream" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-cyan-500/10 data-[state=active]:text-cyan-600 dark:data-[state=active]:text-cyan-400">
+            <TabsTrigger value="dream" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
               <Sparkles className="w-3.5 h-3.5 hidden sm:block" /> DREAM
             </TabsTrigger>
           </TabsList>
@@ -124,17 +124,17 @@ export function CCRTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Layers className="w-4 h-4 text-cyan-500 shrink-0" />
+                <Layers className="w-4 h-4 text-primary shrink-0" />
                 Memory Tiers
               </CardTitle>
               <CardDescription className="text-[11px]">SM-2 spaced repetition with adaptive limits</CardDescription>
             </CardHeader>
             <CardContent className="px-4 sm:px-6 space-y-3">
               {[
-                { tier: 'Hot', count: memory.hot, color: 'bg-red-500', desc: 'Active context — instant recall', pct: totalMemories > 0 ? (memory.hot / totalMemories) * 100 : 0 },
-                { tier: 'Warm', count: memory.warm, color: 'bg-amber-500', desc: 'Recently demoted — decay active', pct: totalMemories > 0 ? (memory.warm / totalMemories) * 100 : 0 },
-                { tier: 'Cold', count: memory.cold, color: 'bg-blue-500', desc: 'Long-term — compressed summaries', pct: totalMemories > 0 ? (memory.cold / totalMemories) * 100 : 0 },
-                { tier: 'Archive', count: memory.archive, color: 'bg-slate-500', desc: 'Permanent — never deleted', pct: totalMemories > 0 ? (memory.archive / totalMemories) * 100 : 0 },
+                { tier: 'Hot', count: memory.hot, color: 'bg-destructive', desc: 'Active context — instant recall', pct: totalMemories > 0 ? (memory.hot / totalMemories) * 100 : 0 },
+                { tier: 'Warm', count: memory.warm, color: 'bg-neon-amber', desc: 'Recently demoted — decay active', pct: totalMemories > 0 ? (memory.warm / totalMemories) * 100 : 0 },
+                { tier: 'Cold', count: memory.cold, color: 'bg-neon-blue', desc: 'Long-term — compressed summaries', pct: totalMemories > 0 ? (memory.cold / totalMemories) * 100 : 0 },
+                { tier: 'Archive', count: memory.archive, color: 'bg-muted-foreground', desc: 'Permanent — never deleted', pct: totalMemories > 0 ? (memory.archive / totalMemories) * 100 : 0 },
               ].map((t, i) => (
                 <motion.div key={t.tier} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06 }}
                   className="p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/10 transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
@@ -155,14 +155,14 @@ export function CCRTab() {
           <div className="grid grid-cols-2 gap-2 sm:gap-3">
             <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 text-center">
-                <BarChart3 className="w-4 h-4 mx-auto mb-1.5 text-cyan-500" />
+                <BarChart3 className="w-4 h-4 mx-auto mb-1.5 text-primary" />
                 <p className="text-lg font-bold font-mono tabular-nums">{memory.totalRecalls.toLocaleString()}</p>
                 <p className="text-[9px] text-muted-foreground/50 font-mono">TOTAL RECALLS</p>
               </CardContent>
             </Card>
             <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
               <CardContent className="p-3 text-center">
-                <Archive className="w-4 h-4 mx-auto mb-1.5 text-violet-500" />
+                <Archive className="w-4 h-4 mx-auto mb-1.5 text-neon-purple" />
                 <p className="text-lg font-bold font-mono tabular-nums">{memory.contradictions}</p>
                 <p className="text-[9px] text-muted-foreground/50 font-mono">CONTRADICTIONS</p>
               </CardContent>
@@ -174,9 +174,9 @@ export function CCRTab() {
         <TabsContent value="dream" className="mt-4 space-y-3">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { label: 'Dreams', value: dream.dreams, icon: Sparkles, color: 'text-violet-500' },
-              { label: 'Applied', value: dream.heuristics, icon: Zap, color: 'text-emerald-500' },
-              { label: 'Avg Confidence', value: `${dream.avgConfidence}%`, icon: TrendingUp, color: 'text-cyan-500' },
+              { label: 'Dreams', value: dream.dreams, icon: Sparkles, color: 'text-neon-purple' },
+              { label: 'Applied', value: dream.heuristics, icon: Zap, color: 'text-neon-green' },
+              { label: 'Avg Confidence', value: `${dream.avgConfidence}%`, icon: TrendingUp, color: 'text-primary' },
             ].map(stat => (
               <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
                 <CardContent className="p-3 text-center">
@@ -191,7 +191,7 @@ export function CCRTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-violet-500 shrink-0" />
+                <Sparkles className="w-4 h-4 text-neon-purple shrink-0" />
                 Recent Dream Synthesis
               </CardTitle>
             </CardHeader>
@@ -207,7 +207,7 @@ export function CCRTab() {
                           <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">{d.improvement_type}</p>
                         </div>
                         <Badge variant="outline" className={cn("text-[8px] h-4 px-1.5 shrink-0",
-                          d.applied ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20' : 'bg-muted text-muted-foreground border-border/20'
+                          d.applied ? 'bg-neon-green/10 text-neon-green border-neon-green/20' : 'bg-muted text-muted-foreground border-border/20'
                         )}>
                           {d.applied ? 'applied' : 'pending'}
                         </Badge>

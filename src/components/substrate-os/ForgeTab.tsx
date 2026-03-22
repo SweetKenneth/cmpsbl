@@ -27,7 +27,6 @@ function useManufacturingData() {
 
   useEffect(() => {
     async function fetch() {
-      // Pull real artifact data
       const [blogRes, artifactRes, scanRes] = await Promise.all([
         supabase.from('auto_blog_posts').select('id, title, status, category, created_at, word_count, confidence_score').order('created_at', { ascending: false }).limit(10),
         supabase.from('agency_task_artifacts').select('id, artifact_type, file_name, created_at, file_size_bytes').order('created_at', { ascending: false }).limit(10),
@@ -37,36 +36,22 @@ function useManufacturingData() {
       const blogs = blogRes.data || [];
       const artifacts = artifactRes.data || [];
 
-      // FORGE artifacts: combine real data
       const forgeArtifacts = [
         ...blogs.slice(0, 4).map(b => ({
-          id: b.id,
-          name: b.title,
-          type: 'blog_post',
+          id: b.id, name: b.title, type: 'blog_post',
           status: b.status === 'published' ? 'complete' : b.status === 'draft' ? 'in_progress' : 'queued',
-          quality: b.confidence_score || 75,
-          created: b.created_at,
+          quality: b.confidence_score || 75, created: b.created_at,
           meta: `${b.word_count || 0} words · ${b.category}`,
         })),
         ...artifacts.slice(0, 3).map(a => ({
-          id: a.id,
-          name: a.file_name,
-          type: a.artifact_type,
-          status: 'complete',
-          quality: 90,
-          created: a.created_at,
+          id: a.id, name: a.file_name, type: a.artifact_type, status: 'complete',
+          quality: 90, created: a.created_at,
           meta: `${a.artifact_type} · ${a.file_size_bytes ? Math.round(a.file_size_bytes / 1024) + 'KB' : 'inline'}`,
         })),
       ];
 
-      // LINGUA stats (derived from system capabilities)
-      const linguaStats = {
-        languages: 25,
-        translations: 120,
-        accuracy: 96.4,
-      };
+      const linguaStats = { languages: 25, translations: 120, accuracy: 96.4 };
 
-      // HARVEST pipelines (real scan data + derived)
       const harvestPipelines = [
         { id: 'security-scans', name: 'Security Scans', records: scanRes.data?.length || 0, freshness: '< 1h', status: 'active', throughput: 12 },
         { id: 'usage-telemetry', name: 'Usage Telemetry', records: 0, freshness: 'live', status: 'active', throughput: 48 },
@@ -74,7 +59,6 @@ function useManufacturingData() {
         { id: 'blog-content', name: 'Blog Content Pipeline', records: blogs.length, freshness: '< 24h', status: blogs.length > 0 ? 'active' : 'idle', throughput: 3 },
       ];
 
-      // Fetch real counts for harvest
       const [usageCount, learningCount] = await Promise.all([
         supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }),
         supabase.from('ai_learning_data').select('*', { count: 'exact', head: true }),
@@ -91,10 +75,10 @@ function useManufacturingData() {
 }
 
 const statusStyle = (s: string) => {
-  if (s === 'complete' || s === 'active') return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20';
-  if (s === 'in_progress') return 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20';
+  if (s === 'complete' || s === 'active') return 'bg-neon-green/10 text-neon-green border-neon-green/20';
+  if (s === 'in_progress') return 'bg-neon-amber/10 text-neon-amber border-neon-amber/20';
   if (s === 'idle') return 'bg-muted text-muted-foreground border-border/20';
-  return 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border-blue-500/20';
+  return 'bg-neon-blue/10 text-neon-blue border-neon-blue/20';
 };
 
 export function ForgeTab() {
@@ -104,26 +88,26 @@ export function ForgeTab() {
     <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-orange-500/15 to-amber-500/10 border border-orange-500/25 flex items-center justify-center shrink-0">
-          <Hammer className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 dark:text-orange-400" />
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-neon-amber/15 to-accent/10 border border-neon-amber/25 flex items-center justify-center shrink-0">
+          <Hammer className="w-4 h-4 sm:w-5 sm:h-5 text-neon-amber" />
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Manufacturing Zone</h2>
           <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">FORGE · LINGUA · HARVEST — EMZ</p>
         </div>
-        <Badge className="text-[9px] bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20 shrink-0">EMZ</Badge>
+        <Badge className="text-[9px] bg-neon-amber/10 text-neon-amber border-neon-amber/20 shrink-0">EMZ</Badge>
       </div>
 
       <Tabs defaultValue="forge">
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
-            <TabsTrigger value="forge" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-orange-500/10 data-[state=active]:text-orange-600 dark:data-[state=active]:text-orange-400">
+            <TabsTrigger value="forge" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber">
               <Hammer className="w-3.5 h-3.5 hidden sm:block" /> FORGE
             </TabsTrigger>
-            <TabsTrigger value="lingua" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-orange-500/10 data-[state=active]:text-orange-600 dark:data-[state=active]:text-orange-400">
+            <TabsTrigger value="lingua" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber">
               <Languages className="w-3.5 h-3.5 hidden sm:block" /> LINGUA
             </TabsTrigger>
-            <TabsTrigger value="harvest" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-orange-500/10 data-[state=active]:text-orange-600 dark:data-[state=active]:text-orange-400">
+            <TabsTrigger value="harvest" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber">
               <Database className="w-3.5 h-3.5 hidden sm:block" /> HARVEST
             </TabsTrigger>
           </TabsList>
@@ -134,7 +118,7 @@ export function ForgeTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Package className="w-4 h-4 text-orange-500 shrink-0" />
+                <Package className="w-4 h-4 text-neon-amber shrink-0" />
                 Artifact Pipeline
               </CardTitle>
               <CardDescription className="text-[11px]">{artifacts.length} artifacts tracked</CardDescription>
@@ -173,9 +157,9 @@ export function ForgeTab() {
         <TabsContent value="lingua" className="mt-4 space-y-3">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { label: 'Languages', value: linguaStats.languages, icon: Languages, color: 'text-blue-500' },
-              { label: 'Translations', value: linguaStats.translations, icon: FileCode, color: 'text-emerald-500' },
-              { label: 'Accuracy', value: `${linguaStats.accuracy}%`, icon: CheckCircle2, color: 'text-violet-500' },
+              { label: 'Languages', value: linguaStats.languages, icon: Languages, color: 'text-neon-blue' },
+              { label: 'Translations', value: linguaStats.translations, icon: FileCode, color: 'text-neon-green' },
+              { label: 'Accuracy', value: `${linguaStats.accuracy}%`, icon: CheckCircle2, color: 'text-neon-purple' },
             ].map(stat => (
               <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
                 <CardContent className="p-3 text-center">
@@ -190,7 +174,7 @@ export function ForgeTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Languages className="w-4 h-4 text-orange-500 shrink-0" />
+                <Languages className="w-4 h-4 text-neon-amber shrink-0" />
                 Universal Export Adapter
               </CardTitle>
               <CardDescription className="text-[11px]">25 target language support via UEA pipeline</CardDescription>
@@ -199,7 +183,7 @@ export function ForgeTab() {
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">
                 {['TypeScript', 'Python', 'Rust', 'Go', 'Java', 'C#', 'Ruby', 'Swift', 'Kotlin', 'Dart', 'PHP', 'Elixir'].map(lang => (
                   <div key={lang} className="flex items-center gap-2 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className="w-3 h-3 text-neon-green shrink-0" />
                     <span className="text-[11px] font-mono truncate">{lang}</span>
                   </div>
                 ))}
@@ -213,7 +197,7 @@ export function ForgeTab() {
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Database className="w-4 h-4 text-orange-500 shrink-0" />
+                <Database className="w-4 h-4 text-neon-amber shrink-0" />
                 Data Pipelines
               </CardTitle>
               <CardDescription className="text-[11px]">Ingestion streams feeding the substrate</CardDescription>
