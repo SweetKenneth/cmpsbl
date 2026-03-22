@@ -1,6 +1,6 @@
 /**
  * CapabilityPacksSection — Clear explanation of the pack activation model
- * Color palette: Cyan / Purple / Magenta (matching CMPSBL hero gradient)
+ * Solid neon colors; gradient only on primary CTA button
  */
 
 import { motion } from "framer-motion";
@@ -24,11 +24,18 @@ const stepColors = [
   { color: "text-[hsl(var(--neon-cyan))]", borderColor: "border-[hsl(var(--neon-cyan)/0.2)]", bg: "bg-[hsl(var(--neon-cyan)/0.05)]" },
 ] as const;
 
+const tierColors = [
+  "text-[hsl(var(--neon-cyan))]",
+  "text-[hsl(var(--neon-purple))]",
+  "text-[hsl(var(--neon-magenta))]",
+  "text-[hsl(var(--neon-cyan))]",
+];
+
 const tiers = [
-  { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]" },
-  { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo", color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" },
-  { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo", color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]" },
-  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-magenta))]" },
+  { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free" },
+  { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo" },
+  { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo" },
+  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo" },
 ];
 
 export function ArtifactPacksSection() {
@@ -91,9 +98,9 @@ export function ArtifactPacksSection() {
           className="max-w-4xl mx-auto"
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-            {tiers.map((tier) => (
+            {tiers.map((tier, idx) => (
               <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-[hsl(var(--stream-slate))] p-5 hover:border-[hsl(var(--neon-purple)/0.3)] hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
-                <div className={cn("text-3xl sm:text-4xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
+                <div className={cn("text-3xl sm:text-4xl font-black font-mono tabular-nums transition-transform duration-300 group-hover:scale-110", tierColors[idx])}>
                   {tier.slots}
                 </div>
                 <div className="text-sm font-bold mt-1">{tier.name}</div>
@@ -103,6 +110,7 @@ export function ArtifactPacksSection() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {/* Primary CTA — one of the few allowed gradients */}
             <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-[hsl(var(--neon-purple)/0.2)] hover:shadow-[hsl(var(--neon-purple)/0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 bg-gradient-to-r from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))] border-0 text-white">
               <Link to="/auth">
                 <Sparkles className="w-4 h-4" />
