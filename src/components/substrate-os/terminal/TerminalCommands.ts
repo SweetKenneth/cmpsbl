@@ -6,7 +6,7 @@
  * Tier Gating: free | studio | creator | architect | governor
  *   free      = Status, pulse, read-only queries
  *   studio    = SDK, templates, memory ($29/mo)
- *   creator   = Engines, agents, actions ($49/mo)
+ *   creator   = Engines, actions ($49/mo)
  *   architect = Evolution, advanced ops ($79/mo)
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
