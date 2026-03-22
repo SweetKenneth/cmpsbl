@@ -68,7 +68,7 @@ const useCases = [
   {
     icon: Building2,
     title: "Self-Healing Enterprises",
-    description: "Enterprise systems that detect degradation patterns, predict failures, and autonomously route around bottlenecks.",
+    description: "Systems that detect degradation, predict failures, and autonomously reroute around bottlenecks.",
     industry: "Enterprise",
     iconColor: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan)/0.15)] to-[hsl(var(--neon-magenta)/0.15)]",
