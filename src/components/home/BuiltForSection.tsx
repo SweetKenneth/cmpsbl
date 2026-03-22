@@ -29,7 +29,7 @@ const audiences = [
     badge: "For Game Devs",
     title: "NPCs That Dream",
     tagline: "Give your characters a soul",
-    description: "Build NPCs on the substrate with persistent memory, DREAM cycle processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
+    description: "Build NPCs with persistent memory, background processing, and emotional evolution. Characters that remember every player, adapt their behavior, and grow between sessions.",
     features: [
       { icon: Brain, text: "3-tier NPC memory" },
       { icon: Moon, text: "DREAM cycle processing" },
