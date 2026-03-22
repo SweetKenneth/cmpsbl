@@ -308,12 +308,21 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
 
     if (result.output.startsWith('__THEME__')) {
       const newTheme = result.output.replace('__THEME__', '');
+      let resolvedThemeName = newTheme;
       if (newTheme === 'toggle') {
-        setTheme(prev => prev === 'biohack' ? 'dark' : prev === 'dark' ? 'matrix' : prev === 'matrix' ? 'light' : 'biohack');
+        const THEME_ORDER: TerminalTheme[] = ['biohack', 'dark', 'matrix', 'light'];
+        setTheme(prev => {
+          const nextIdx = (THEME_ORDER.indexOf(prev) + 1) % THEME_ORDER.length;
+          resolvedThemeName = THEME_ORDER[nextIdx];
+          return THEME_ORDER[nextIdx];
+        });
       } else if (['dark', 'light', 'matrix', 'biohack'].includes(newTheme)) {
         setTheme(newTheme as TerminalTheme);
       }
-      updateResult(resultId, 'success', `◉ Theme set to: ${newTheme === 'toggle' ? theme : newTheme}`, duration);
+      // Use setTimeout(0) so the message reflects the new theme after state update
+      setTimeout(() => {
+        updateResult(resultId, 'success', `◉ Theme set to: ${resolvedThemeName}`, duration);
+      }, 0);
       setSessionStats(prev => ({ ...prev, success: prev.success + 1 }));
       return;
     }
@@ -753,6 +762,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
                 command: h.command,
                 status: h.status,
                 timestamp: h.timestamp.toISOString(),
+                output: h.output,
               }));
               const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
@@ -760,6 +770,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
               a.href = url;
               a.download = `terminal-${Date.now()}.json`;
               a.click();
+              URL.revokeObjectURL(url);
             }}
           >
             <Download className="h-3 w-3" />
