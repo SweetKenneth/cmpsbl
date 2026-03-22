@@ -1,21 +1,12 @@
 /**
- * BIOHACK TERMINAL THEME v2026.2
- * Space Age Bio-Hacking Neural Interface
- * Premium cognitive terminal experience
+ * CMPSBL TERMINAL THEME v2026.3
+ * Neon Memory Stream Neural Interface
+ * Matches site-wide neon palette: cyan, purple, magenta, green, amber
  */
 
 /* ═══════════════════════════════════════════════════════════
-   DNA HELIX ANIMATION - Rotating double helix in background
+   KEYFRAME ANIMATIONS
    ═══════════════════════════════════════════════════════════ */
-@keyframes dna-rotate {
-  0% { transform: rotateY(0deg) rotateX(10deg); }
-  100% { transform: rotateY(360deg) rotateX(10deg); }
-}
-
-@keyframes dna-pulse {
-  0%, 100% { opacity: 0.3; filter: blur(1px); }
-  50% { opacity: 0.7; filter: blur(0px); }
-}
 
 @keyframes neural-fire {
   0% { background-position: 0% 50%; opacity: 0.5; }
@@ -52,100 +43,81 @@
   97% { opacity: 1; }
 }
 
-@keyframes circuit-flow {
-  0% { stroke-dashoffset: 1000; }
-  100% { stroke-dashoffset: 0; }
-}
-
 @keyframes glitch-shift {
-  0%, 100% { transform: translateX(0); filter: hue-rotate(0deg); }
-  20% { transform: translateX(-2px); filter: hue-rotate(90deg); }
-  40% { transform: translateX(2px); filter: hue-rotate(180deg); }
-  60% { transform: translateX(-1px); filter: hue-rotate(270deg); }
-  80% { transform: translateX(1px); filter: hue-rotate(360deg); }
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
 }
 
 @keyframes synapse-glow {
   0%, 100% { 
     box-shadow: 
-      0 0 5px hsl(180 100% 50% / 0.5),
-      0 0 10px hsl(280 100% 60% / 0.3),
-      inset 0 0 10px hsl(180 100% 50% / 0.1);
+      0 0 5px hsl(var(--neon-cyan) / 0.3),
+      0 0 10px hsl(var(--neon-purple) / 0.2),
+      inset 0 0 10px hsl(var(--neon-cyan) / 0.05);
   }
   50% { 
     box-shadow: 
-      0 0 20px hsl(180 100% 50% / 0.8),
-      0 0 40px hsl(280 100% 60% / 0.5),
-      0 0 60px hsl(320 100% 50% / 0.3),
-      inset 0 0 20px hsl(180 100% 50% / 0.2);
+      0 0 15px hsl(var(--neon-cyan) / 0.5),
+      0 0 30px hsl(var(--neon-purple) / 0.3),
+      0 0 45px hsl(var(--neon-magenta) / 0.15),
+      inset 0 0 15px hsl(var(--neon-cyan) / 0.1);
   }
 }
 
 @keyframes bio-grid-pulse {
-  0%, 100% { 
-    opacity: 0.1;
-    background-size: 20px 20px;
-  }
-  50% { 
-    opacity: 0.2;
-    background-size: 22px 22px;
-  }
+  0%, 100% { opacity: 0.08; background-size: 20px 20px; }
+  50% { opacity: 0.15; background-size: 22px 22px; }
 }
 
-/* Command typing cursor blink */
 @keyframes cursor-blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
 
-/* Neural particle float */
-@keyframes particle-float {
-  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.4; }
-  25% { transform: translateY(-10px) translateX(5px); opacity: 0.7; }
-  50% { transform: translateY(-5px) translateX(-5px); opacity: 0.5; }
-  75% { transform: translateY(-15px) translateX(3px); opacity: 0.6; }
-}
-
-/* Success pulse */
 @keyframes success-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 hsl(160 100% 50% / 0); }
-  50% { box-shadow: 0 0 20px 4px hsl(160 100% 50% / 0.3); }
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--neon-green) / 0); }
+  50% { box-shadow: 0 0 15px 3px hsl(var(--neon-green) / 0.2); }
 }
 
-/* Error shake */
 @keyframes error-shake {
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
   20%, 40%, 60%, 80% { transform: translateX(2px); }
 }
 
+@keyframes boot-line-enter {
+  0% { opacity: 0; transform: translateX(-8px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes progress-fill {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
 /* ═══════════════════════════════════════════════════════════
-   TERMINAL CONTAINER STYLES
+   TERMINAL CONTAINER — Uses CSS custom properties
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-terminal {
   position: relative;
   background: 
-    /* Holographic scanlines */
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      hsl(180 100% 50% / 0.03) 2px,
-      hsl(180 100% 50% / 0.03) 4px
+      hsl(var(--neon-cyan) / 0.02) 2px,
+      hsl(var(--neon-cyan) / 0.02) 4px
     ),
-    /* Deep bio-organic gradient */
-    radial-gradient(ellipse at 20% 20%, hsl(280 60% 10% / 0.8) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, hsl(180 60% 8% / 0.8) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, hsl(320 40% 5% / 0.5) 0%, transparent 70%),
-    /* Base */
-    hsl(240 20% 3%);
-  border: 1px solid hsl(180 100% 40% / 0.3);
-  box-shadow: 
-    0 0 40px hsl(180 100% 50% / 0.15),
-    0 0 80px hsl(280 100% 50% / 0.1),
-    inset 0 0 60px hsl(180 100% 50% / 0.05);
-  animation: synapse-glow 4s ease-in-out infinite;
+    radial-gradient(ellipse at 20% 20%, hsl(var(--neon-purple) / 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, hsl(var(--neon-magenta) / 0.05) 0%, transparent 70%),
+    hsl(220 20% 4%);
+  border: 1px solid hsl(var(--neon-cyan) / 0.25);
+  animation: synapse-glow 5s ease-in-out infinite;
   overflow: hidden;
 }
 
@@ -154,11 +126,10 @@
   position: absolute;
   inset: 0;
   background: 
-    /* Circuit pattern overlay */
-    linear-gradient(90deg, transparent 49%, hsl(180 100% 50% / 0.03) 50%, transparent 51%),
-    linear-gradient(0deg, transparent 49%, hsl(180 100% 50% / 0.03) 50%, transparent 51%);
+    linear-gradient(90deg, transparent 49%, hsl(var(--neon-cyan) / 0.02) 50%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, hsl(var(--neon-cyan) / 0.02) 50%, transparent 51%);
   background-size: 40px 40px;
-  animation: bio-grid-pulse 3s ease-in-out infinite;
+  animation: bio-grid-pulse 4s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -173,9 +144,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    hsl(180 100% 50% / 0.8) 20%,
-    hsl(280 100% 60%) 50%,
-    hsl(320 100% 50% / 0.8) 80%,
+    hsl(var(--neon-cyan)) 20%,
+    hsl(var(--neon-purple)) 50%,
+    hsl(var(--neon-magenta)) 80%,
     transparent 100%
   );
   animation: neural-fire 3s ease-in-out infinite;
@@ -183,18 +154,18 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HEADER - NEURAL COMMAND CENTER
+   HEADER
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-header {
   position: relative;
   background: 
     linear-gradient(135deg, 
-      hsl(280 40% 8% / 0.9) 0%,
-      hsl(200 30% 6% / 0.95) 50%,
-      hsl(320 30% 8% / 0.9) 100%
+      hsl(var(--neon-purple) / 0.15) 0%,
+      hsl(220 20% 5% / 0.95) 50%,
+      hsl(var(--neon-magenta) / 0.1) 100%
     );
-  border-bottom: 1px solid hsl(180 100% 50% / 0.2);
+  border-bottom: 1px solid hsl(var(--neon-cyan) / 0.15);
   backdrop-filter: blur(20px);
   overflow: hidden;
 }
@@ -208,14 +179,14 @@
       90deg,
       transparent,
       transparent 100px,
-      hsl(180 100% 50% / 0.05) 100px,
-      hsl(180 100% 50% / 0.05) 101px
+      hsl(var(--neon-cyan) / 0.03) 100px,
+      hsl(var(--neon-cyan) / 0.03) 101px
     );
   animation: data-stream 20s linear infinite;
   pointer-events: none;
 }
 
-/* Biometric Orbs */
+/* Orbs — match neon palette */
 .biohack-orb {
   position: relative;
   width: 12px;
@@ -236,43 +207,42 @@
 
 .biohack-orb-red {
   background: radial-gradient(circle at 30% 30%, hsl(0 100% 70%), hsl(0 80% 50%));
-  box-shadow: 0 0 10px hsl(0 100% 50% / 0.8), inset 0 0 5px hsl(0 100% 80% / 0.5);
+  box-shadow: 0 0 8px hsl(0 100% 50% / 0.6);
 }
 
 .biohack-orb-amber {
-  background: radial-gradient(circle at 30% 30%, hsl(40 100% 70%), hsl(30 90% 50%));
-  box-shadow: 0 0 10px hsl(40 100% 50% / 0.8), inset 0 0 5px hsl(40 100% 80% / 0.5);
+  background: radial-gradient(circle at 30% 30%, hsl(var(--neon-amber) / 1), hsl(var(--neon-amber) / 0.7));
+  box-shadow: 0 0 8px hsl(var(--neon-amber) / 0.6);
   animation-delay: 0.3s;
 }
 
 .biohack-orb-cyan {
-  background: radial-gradient(circle at 30% 30%, hsl(180 100% 70%), hsl(180 80% 50%));
-  box-shadow: 0 0 10px hsl(180 100% 50% / 0.8), inset 0 0 5px hsl(180 100% 80% / 0.5);
+  background: radial-gradient(circle at 30% 30%, hsl(var(--neon-cyan) / 1), hsl(var(--neon-cyan) / 0.7));
+  box-shadow: 0 0 8px hsl(var(--neon-cyan) / 0.6);
   animation-delay: 0.6s;
 }
 
-/* Title styling */
+/* Title — gradient matching site palette */
 .biohack-title {
   font-family: 'Courier New', monospace;
   font-size: 11px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   background: linear-gradient(90deg, 
-    hsl(180 100% 60%),
-    hsl(280 100% 70%),
-    hsl(320 100% 60%),
-    hsl(180 100% 60%)
+    hsl(var(--neon-cyan)),
+    hsl(var(--neon-purple)),
+    hsl(var(--neon-magenta)),
+    hsl(var(--neon-cyan))
   );
   background-size: 300% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: neural-fire 4s ease-in-out infinite;
-  text-shadow: 0 0 20px hsl(180 100% 50% / 0.5);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CONTENT AREA - NEURAL STREAM
+   CONTENT AREA
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-content {
@@ -290,39 +260,48 @@
   background: linear-gradient(
     180deg,
     transparent 0%,
-    hsl(180 100% 50% / 0.3) 10%,
-    hsl(280 100% 60% / 0.5) 30%,
-    hsl(320 100% 50% / 0.3) 50%,
-    hsl(180 100% 50% / 0.5) 70%,
-    hsl(280 100% 60% / 0.3) 90%,
+    hsl(var(--neon-cyan) / 0.3) 10%,
+    hsl(var(--neon-purple) / 0.5) 30%,
+    hsl(var(--neon-magenta) / 0.3) 50%,
+    hsl(var(--neon-cyan) / 0.5) 70%,
+    hsl(var(--neon-purple) / 0.3) 90%,
     transparent 100%
   );
   animation: bio-scan 8s ease-in-out infinite;
 }
 
-/* Boot text styling */
+/* Boot text */
 .biohack-boot-line {
   font-family: 'Courier New', monospace;
-  animation: holo-flicker 5s ease-in-out infinite;
+  animation: boot-line-enter 0.3s ease-out, holo-flicker 6s ease-in-out infinite;
 }
 
 .biohack-boot-header {
-  background: linear-gradient(90deg, hsl(180 100% 60%), hsl(280 100% 70%));
+  background: linear-gradient(90deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: bold;
-  text-shadow: 0 0 30px hsl(180 100% 50% / 0.8);
 }
 
 .biohack-boot-module {
-  color: hsl(160 100% 60%);
-  text-shadow: 0 0 10px hsl(160 100% 50% / 0.5);
+  color: hsl(var(--neon-green));
+  text-shadow: 0 0 8px hsl(var(--neon-green) / 0.4);
 }
 
 .biohack-boot-divider {
-  color: hsl(280 60% 50%);
-  opacity: 0.6;
+  color: hsl(var(--neon-purple) / 0.6);
+}
+
+.biohack-boot-progress {
+  color: hsl(var(--neon-cyan));
+  text-shadow: 0 0 8px hsl(var(--neon-cyan) / 0.4);
+}
+
+.biohack-boot-status {
+  color: hsl(var(--neon-green));
+  text-shadow: 0 0 10px hsl(var(--neon-green) / 0.5);
+  font-weight: 600;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -338,45 +317,45 @@
   content: '▸';
   position: absolute;
   left: 0;
-  color: hsl(180 100% 60%);
-  text-shadow: 0 0 10px hsl(180 100% 50%);
-  animation: heartbeat 1s ease-in-out infinite;
+  color: hsl(var(--neon-cyan));
+  text-shadow: 0 0 8px hsl(var(--neon-cyan) / 0.5);
+  animation: heartbeat 1.5s ease-in-out infinite;
 }
 
 .biohack-command-text {
-  color: hsl(180 100% 70%);
-  text-shadow: 0 0 8px hsl(180 100% 50% / 0.5);
+  color: hsl(var(--neon-cyan));
+  text-shadow: 0 0 6px hsl(var(--neon-cyan) / 0.3);
   font-weight: 500;
 }
 
 .biohack-output-success {
-  color: hsl(140 90% 60%);
-  text-shadow: 0 0 8px hsl(140 100% 50% / 0.4);
+  color: hsl(var(--neon-green));
+  text-shadow: 0 0 6px hsl(var(--neon-green) / 0.3);
 }
 
 .biohack-output-error {
-  color: hsl(350 100% 65%);
-  text-shadow: 0 0 8px hsl(350 100% 50% / 0.4);
+  color: hsl(var(--destructive));
+  text-shadow: 0 0 6px hsl(var(--destructive) / 0.3);
   animation: glitch-shift 0.5s ease-in-out;
 }
 
 .biohack-output-pending {
-  color: hsl(45 100% 60%);
-  text-shadow: 0 0 8px hsl(45 100% 50% / 0.4);
+  color: hsl(var(--neon-amber));
+  text-shadow: 0 0 6px hsl(var(--neon-amber) / 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   INPUT AREA - NEURAL INTERFACE
+   INPUT AREA
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-input-area {
   position: relative;
   background: 
     linear-gradient(180deg,
-      hsl(240 20% 5% / 0.9) 0%,
-      hsl(260 20% 4%) 100%
+      hsl(220 20% 5% / 0.9) 0%,
+      hsl(220 20% 4%) 100%
     );
-  border-top: 1px solid hsl(180 100% 50% / 0.3);
+  border-top: 1px solid hsl(var(--neon-cyan) / 0.2);
   overflow: hidden;
 }
 
@@ -390,9 +369,9 @@
   background: linear-gradient(
     90deg,
     transparent,
-    hsl(180 100% 50% / 0.8),
-    hsl(280 100% 60%),
-    hsl(320 100% 50% / 0.8),
+    hsl(var(--neon-cyan)),
+    hsl(var(--neon-purple)),
+    hsl(var(--neon-magenta)),
     transparent
   );
   animation: neural-fire 2s ease-in-out infinite reverse;
@@ -404,41 +383,40 @@
   border-radius: 50%;
   background: 
     radial-gradient(circle at 30% 30%,
-      hsl(180 100% 80%),
-      hsl(180 100% 50%)
+      hsl(var(--neon-cyan) / 1),
+      hsl(var(--neon-cyan) / 0.7)
     );
   box-shadow: 
-    0 0 10px hsl(180 100% 60%),
-    0 0 20px hsl(180 100% 50% / 0.5),
-    0 0 30px hsl(180 100% 40% / 0.3);
+    0 0 8px hsl(var(--neon-cyan) / 0.6),
+    0 0 16px hsl(var(--neon-cyan) / 0.3);
   animation: heartbeat 1s ease-in-out infinite;
 }
 
 .biohack-input {
   background: transparent !important;
   border: none !important;
-  color: hsl(180 100% 85%) !important;
-  caret-color: hsl(180 100% 70%);
-  text-shadow: 0 0 5px hsl(180 100% 50% / 0.3);
+  color: hsl(var(--neon-cyan) / 0.9) !important;
+  caret-color: hsl(var(--neon-cyan));
+  text-shadow: 0 0 4px hsl(var(--neon-cyan) / 0.2);
   font-family: 'Courier New', monospace;
 }
 
 .biohack-input::placeholder {
-  color: hsl(240 20% 40%) !important;
+  color: hsl(220 20% 35%) !important;
   text-shadow: none;
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SUGGESTIONS - HOLOGRAPHIC DISPLAY
+   SUGGESTIONS
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-suggestions {
   background: 
     linear-gradient(135deg,
-      hsl(240 30% 8% / 0.95) 0%,
-      hsl(260 25% 6% / 0.98) 100%
+      hsl(220 25% 6% / 0.95) 0%,
+      hsl(220 20% 5% / 0.98) 100%
     );
-  border-top: 1px solid hsl(180 100% 50% / 0.2);
+  border-top: 1px solid hsl(var(--neon-cyan) / 0.15);
   backdrop-filter: blur(20px);
   position: relative;
   overflow: hidden;
@@ -453,8 +431,8 @@
       90deg,
       transparent,
       transparent 2px,
-      hsl(180 100% 50% / 0.02) 2px,
-      hsl(180 100% 50% / 0.02) 4px
+      hsl(var(--neon-cyan) / 0.015) 2px,
+      hsl(var(--neon-cyan) / 0.015) 4px
     );
   pointer-events: none;
 }
@@ -467,33 +445,29 @@
 }
 
 .biohack-suggestion-item:hover {
-  background: hsl(180 100% 50% / 0.1);
-  border-color: hsl(180 100% 50% / 0.3);
-  box-shadow: 
-    0 0 15px hsl(180 100% 50% / 0.2),
-    inset 0 0 10px hsl(180 100% 50% / 0.05);
+  background: hsl(var(--neon-cyan) / 0.08);
+  border-color: hsl(var(--neon-cyan) / 0.2);
+  box-shadow: 0 0 12px hsl(var(--neon-cyan) / 0.15);
 }
 
 .biohack-suggestion-active {
   background: 
     linear-gradient(90deg,
-      hsl(180 100% 50% / 0.15),
-      hsl(280 100% 60% / 0.1)
+      hsl(var(--neon-cyan) / 0.12),
+      hsl(var(--neon-purple) / 0.08)
     );
-  border-color: hsl(180 100% 50% / 0.4);
-  box-shadow: 
-    0 0 20px hsl(180 100% 50% / 0.3),
-    inset 0 0 15px hsl(180 100% 50% / 0.1);
+  border-color: hsl(var(--neon-cyan) / 0.3);
+  box-shadow: 0 0 15px hsl(var(--neon-cyan) / 0.2);
 }
 
 .biohack-suggestion-number {
   background: 
     linear-gradient(135deg,
-      hsl(280 100% 60% / 0.3),
-      hsl(180 100% 50% / 0.3)
+      hsl(var(--neon-purple) / 0.25),
+      hsl(var(--neon-cyan) / 0.25)
     );
-  border: 1px solid hsl(180 100% 50% / 0.5);
-  box-shadow: 0 0 10px hsl(180 100% 50% / 0.3);
+  border: 1px solid hsl(var(--neon-cyan) / 0.4);
+  box-shadow: 0 0 8px hsl(var(--neon-cyan) / 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -501,20 +475,18 @@
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-badge-operator {
-  background: linear-gradient(90deg, hsl(160 100% 40% / 0.2), hsl(140 80% 35% / 0.2));
-  border: 1px solid hsl(160 100% 50% / 0.5);
-  color: hsl(160 100% 70%);
-  box-shadow: 0 0 10px hsl(160 100% 50% / 0.3);
-  text-shadow: 0 0 5px hsl(160 100% 50% / 0.5);
+  background: linear-gradient(90deg, hsl(var(--neon-green) / 0.15), hsl(var(--neon-green) / 0.1));
+  border: 1px solid hsl(var(--neon-green) / 0.4);
+  color: hsl(var(--neon-green));
+  box-shadow: 0 0 8px hsl(var(--neon-green) / 0.2);
   animation: heartbeat 3s ease-in-out infinite;
 }
 
 .biohack-badge-observer {
-  background: linear-gradient(90deg, hsl(280 100% 50% / 0.2), hsl(320 80% 45% / 0.2));
-  border: 1px solid hsl(280 100% 60% / 0.5);
-  color: hsl(280 100% 75%);
-  box-shadow: 0 0 10px hsl(280 100% 50% / 0.3);
-  text-shadow: 0 0 5px hsl(280 100% 50% / 0.5);
+  background: linear-gradient(90deg, hsl(var(--neon-purple) / 0.15), hsl(var(--neon-magenta) / 0.1));
+  border: 1px solid hsl(var(--neon-purple) / 0.4);
+  color: hsl(var(--neon-purple));
+  box-shadow: 0 0 8px hsl(var(--neon-purple) / 0.2);
 }
 
 /* Stats */
@@ -525,18 +497,18 @@
 }
 
 .biohack-stat-cmds {
-  color: hsl(200 80% 60%);
-  text-shadow: 0 0 5px hsl(200 100% 50% / 0.5);
+  color: hsl(var(--neon-blue));
+  text-shadow: 0 0 4px hsl(var(--neon-blue) / 0.4);
 }
 
 .biohack-stat-success {
-  color: hsl(160 100% 60%);
-  text-shadow: 0 0 5px hsl(160 100% 50% / 0.5);
+  color: hsl(var(--neon-green));
+  text-shadow: 0 0 4px hsl(var(--neon-green) / 0.4);
 }
 
 .biohack-stat-error {
-  color: hsl(350 100% 65%);
-  text-shadow: 0 0 5px hsl(350 100% 50% / 0.5);
+  color: hsl(var(--destructive));
+  text-shadow: 0 0 4px hsl(var(--destructive) / 0.4);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -562,14 +534,12 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, hsl(45 100% 60%), transparent);
+  background: linear-gradient(90deg, transparent, hsl(var(--neon-amber)), transparent);
   animation: neural-fire 1.5s ease-in-out infinite;
 }
 
-/* Loading spinner enhancement */
 .biohack-loading-spinner {
-  animation: dna-rotate 2s linear infinite;
-  filter: drop-shadow(0 0 8px hsl(180 100% 60%));
+  filter: drop-shadow(0 0 6px hsl(var(--neon-cyan)));
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -577,120 +547,223 @@
    ═══════════════════════════════════════════════════════════ */
 
 .biohack-kbd {
-  background: hsl(180 100% 50% / 0.1);
-  border: 1px solid hsl(180 100% 50% / 0.3);
-  color: hsl(180 100% 70%);
+  background: hsl(var(--neon-cyan) / 0.08);
+  border: 1px solid hsl(var(--neon-cyan) / 0.25);
+  color: hsl(var(--neon-cyan));
   border-radius: 3px;
   padding: 2px 6px;
   font-size: 9px;
   font-family: 'Courier New', monospace;
-  box-shadow: 0 0 5px hsl(180 100% 50% / 0.2);
+  box-shadow: 0 0 4px hsl(var(--neon-cyan) / 0.15);
   transition: all 0.2s ease;
 }
 
 .biohack-kbd:hover {
-  background: hsl(180 100% 50% / 0.2);
-  box-shadow: 0 0 10px hsl(180 100% 50% / 0.4);
+  background: hsl(var(--neon-cyan) / 0.15);
+  box-shadow: 0 0 8px hsl(var(--neon-cyan) / 0.3);
 }
 
 .biohack-kbd-smart {
-  background: hsl(280 100% 60% / 0.15);
-  border-color: hsl(280 100% 60% / 0.4);
-  color: hsl(280 100% 75%);
-  box-shadow: 0 0 5px hsl(280 100% 60% / 0.3);
+  background: hsl(var(--neon-purple) / 0.1);
+  border-color: hsl(var(--neon-purple) / 0.3);
+  color: hsl(var(--neon-purple));
+  box-shadow: 0 0 4px hsl(var(--neon-purple) / 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════
-   COMMAND OUTPUT SYNTAX HIGHLIGHTING
+   SYNTAX HIGHLIGHTING
    ═══════════════════════════════════════════════════════════ */
 
-.biohack-output-key {
-  color: hsl(200 100% 70%);
-  font-weight: 500;
-}
+.biohack-output-key { color: hsl(var(--neon-blue)); font-weight: 500; }
+.biohack-output-value-string { color: hsl(var(--neon-green)); }
+.biohack-output-value-number { color: hsl(var(--neon-amber)); }
+.biohack-output-value-boolean { color: hsl(var(--neon-purple)); }
+.biohack-output-separator { color: hsl(220 20% 45%); }
+.biohack-output-module { color: hsl(var(--neon-green)); font-weight: 600; }
+.biohack-output-action { color: hsl(var(--neon-amber)); }
+.biohack-output-status-ok { color: hsl(var(--neon-green)); text-shadow: 0 0 4px hsl(var(--neon-green) / 0.3); }
+.biohack-output-status-warn { color: hsl(var(--neon-amber)); text-shadow: 0 0 4px hsl(var(--neon-amber) / 0.3); }
+.biohack-output-status-error { color: hsl(var(--destructive)); text-shadow: 0 0 4px hsl(var(--destructive) / 0.3); }
 
-.biohack-output-value-string {
-  color: hsl(120 70% 60%);
-}
-
-.biohack-output-value-number {
-  color: hsl(35 100% 65%);
-}
-
-.biohack-output-value-boolean {
-  color: hsl(280 80% 70%);
-}
-
-.biohack-output-separator {
-  color: hsl(240 20% 50%);
-}
-
-.biohack-output-module {
-  color: hsl(160 100% 60%);
-  font-weight: 600;
-}
-
-.biohack-output-action {
-  color: hsl(45 100% 60%);
-}
-
-.biohack-output-status-ok {
-  color: hsl(160 100% 60%);
-  text-shadow: 0 0 5px hsl(160 100% 50% / 0.5);
-}
-
-.biohack-output-status-warn {
-  color: hsl(45 100% 60%);
-  text-shadow: 0 0 5px hsl(45 100% 50% / 0.5);
-}
-
-.biohack-output-status-error {
-  color: hsl(350 100% 65%);
-  text-shadow: 0 0 5px hsl(350 100% 50% / 0.5);
-}
-
-/* Box drawing character styling */
-.biohack-box-top,
-.biohack-box-bottom {
-  color: hsl(280 60% 55%);
-}
-
-.biohack-box-side {
-  color: hsl(280 60% 50%);
-}
-
-.biohack-box-corner {
-  color: hsl(280 80% 60%);
-}
+/* Box drawing */
+.biohack-box-top, .biohack-box-bottom { color: hsl(var(--neon-purple) / 0.6); }
+.biohack-box-side { color: hsl(var(--neon-purple) / 0.5); }
+.biohack-box-corner { color: hsl(var(--neon-purple) / 0.7); }
 
 /* ═══════════════════════════════════════════════════════════
    SCROLLBAR
    ═══════════════════════════════════════════════════════════ */
 
-.biohack-terminal ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.biohack-terminal ::-webkit-scrollbar-track {
-  background: hsl(240 20% 5%);
-}
-
+.biohack-terminal ::-webkit-scrollbar { width: 6px; height: 6px; }
+.biohack-terminal ::-webkit-scrollbar-track { background: hsl(220 20% 5%); }
 .biohack-terminal ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, hsl(180 100% 40%), hsl(280 100% 50%));
+  background: linear-gradient(180deg, hsl(var(--neon-cyan) / 0.5), hsl(var(--neon-purple) / 0.5));
   border-radius: 3px;
-  box-shadow: 0 0 10px hsl(180 100% 50% / 0.5);
 }
-
 .biohack-terminal ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, hsl(180 100% 50%), hsl(280 100% 60%));
+  background: linear-gradient(180deg, hsl(var(--neon-cyan) / 0.7), hsl(var(--neon-purple) / 0.7));
 }
 
 /* ═══════════════════════════════════════════════════════════
-   MOBILE-FIRST RESPONSIVE DESIGN
+   LIGHT MODE OVERRIDES — High contrast for readability
    ═══════════════════════════════════════════════════════════ */
 
-/* No-break zones: prevent atomic tokens from splitting across lines */
+:root[class~="light"] .biohack-terminal,
+.light .biohack-terminal {
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(220 30% 90% / 0.3) 2px,
+      hsl(220 30% 90% / 0.3) 4px
+    ),
+    hsl(220 15% 97%);
+  border-color: hsl(220 20% 80%);
+  box-shadow: 0 0 20px hsl(220 30% 70% / 0.15);
+  animation: none;
+}
+
+:root[class~="light"] .biohack-terminal::before,
+.light .biohack-terminal::before {
+  background: 
+    linear-gradient(90deg, transparent 49%, hsl(220 30% 85% / 0.3) 50%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, hsl(220 30% 85% / 0.3) 50%, transparent 51%);
+  animation: none;
+}
+
+:root[class~="light"] .biohack-terminal::after,
+.light .biohack-terminal::after {
+  background: linear-gradient(90deg, transparent, hsl(var(--neon-cyan)), hsl(var(--primary)), transparent);
+  height: 1px;
+  animation: none;
+}
+
+:root[class~="light"] .biohack-header,
+.light .biohack-header {
+  background: hsl(220 15% 95%);
+  border-bottom-color: hsl(220 20% 85%);
+}
+
+:root[class~="light"] .biohack-header::before,
+.light .biohack-header::before { display: none; }
+
+:root[class~="light"] .biohack-title,
+.light .biohack-title {
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--neon-purple)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: none;
+}
+
+:root[class~="light"] .biohack-boot-line,
+.light .biohack-boot-line { animation: none; color: hsl(220 15% 35%); }
+
+:root[class~="light"] .biohack-boot-header,
+.light .biohack-boot-header {
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--neon-purple)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[class~="light"] .biohack-boot-module,
+.light .biohack-boot-module { color: hsl(150 80% 30%); text-shadow: none; }
+
+:root[class~="light"] .biohack-command-text,
+.light .biohack-command-text { color: hsl(var(--primary)); text-shadow: none; }
+
+:root[class~="light"] .biohack-command::before,
+.light .biohack-command::before { color: hsl(var(--primary)); text-shadow: none; animation: none; }
+
+:root[class~="light"] .biohack-output-success,
+.light .biohack-output-success { color: hsl(150 80% 30%); text-shadow: none; }
+
+:root[class~="light"] .biohack-output-error,
+.light .biohack-output-error { color: hsl(0 80% 45%); text-shadow: none; animation: none; }
+
+:root[class~="light"] .biohack-output-pending,
+.light .biohack-output-pending { color: hsl(35 90% 40%); text-shadow: none; }
+
+:root[class~="light"] .biohack-input-area,
+.light .biohack-input-area { background: hsl(220 15% 95%); border-top-color: hsl(220 20% 85%); }
+
+:root[class~="light"] .biohack-input-area::before,
+.light .biohack-input-area::before { 
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent); 
+  animation: none;
+}
+
+:root[class~="light"] .biohack-input,
+.light .biohack-input { color: hsl(220 15% 15%) !important; text-shadow: none; caret-color: hsl(var(--primary)); }
+
+:root[class~="light"] .biohack-input::placeholder,
+.light .biohack-input::placeholder { color: hsl(220 15% 55%) !important; }
+
+:root[class~="light"] .biohack-cursor,
+.light .biohack-cursor {
+  background: hsl(var(--primary));
+  box-shadow: 0 0 6px hsl(var(--primary) / 0.4);
+}
+
+:root[class~="light"] .biohack-suggestions,
+.light .biohack-suggestions { background: hsl(220 15% 97%); border-top-color: hsl(220 20% 85%); }
+
+:root[class~="light"] .biohack-suggestion-item:hover,
+.light .biohack-suggestion-item:hover { background: hsl(var(--primary) / 0.06); border-color: hsl(var(--primary) / 0.15); box-shadow: none; }
+
+:root[class~="light"] .biohack-suggestion-active,
+.light .biohack-suggestion-active { background: hsl(var(--primary) / 0.08); border-color: hsl(var(--primary) / 0.2); box-shadow: none; }
+
+:root[class~="light"] .biohack-badge-operator,
+.light .biohack-badge-operator { background: hsl(150 80% 95%); border-color: hsl(150 60% 40%); color: hsl(150 80% 30%); box-shadow: none; }
+
+:root[class~="light"] .biohack-badge-observer,
+.light .biohack-badge-observer { background: hsl(var(--neon-purple) / 0.08); border-color: hsl(var(--neon-purple) / 0.3); color: hsl(var(--neon-purple)); box-shadow: none; }
+
+:root[class~="light"] .biohack-stat-cmds,
+.light .biohack-stat-cmds { color: hsl(var(--primary)); text-shadow: none; }
+
+:root[class~="light"] .biohack-stat-success,
+.light .biohack-stat-success { color: hsl(150 80% 30%); text-shadow: none; }
+
+:root[class~="light"] .biohack-stat-error,
+.light .biohack-stat-error { color: hsl(0 80% 45%); text-shadow: none; }
+
+:root[class~="light"] .biohack-content::before,
+.light .biohack-content::before { display: none; }
+
+:root[class~="light"] .biohack-kbd,
+.light .biohack-kbd { background: hsl(220 15% 92%); border-color: hsl(220 20% 80%); color: hsl(220 15% 30%); box-shadow: none; }
+
+:root[class~="light"] .biohack-kbd-smart,
+.light .biohack-kbd-smart { background: hsl(var(--neon-purple) / 0.08); border-color: hsl(var(--neon-purple) / 0.2); color: hsl(var(--neon-purple)); }
+
+:root[class~="light"] .biohack-output-key,
+.light .biohack-output-key { color: hsl(var(--primary)); }
+:root[class~="light"] .biohack-output-value-string,
+.light .biohack-output-value-string { color: hsl(150 70% 30%); }
+:root[class~="light"] .biohack-output-value-number,
+.light .biohack-output-value-number { color: hsl(25 90% 40%); }
+:root[class~="light"] .biohack-output-value-boolean,
+.light .biohack-output-value-boolean { color: hsl(var(--neon-purple)); }
+
+:root[class~="light"] .biohack-result-pending::after,
+.light .biohack-result-pending::after { background: linear-gradient(90deg, transparent, hsl(35 90% 50%), transparent); animation: none; }
+
+:root[class~="light"] .biohack-orb,
+.light .biohack-orb { animation: none; }
+
+:root[class~="light"] .biohack-terminal ::-webkit-scrollbar-track,
+.light .biohack-terminal ::-webkit-scrollbar-track { background: hsl(220 15% 92%); }
+
+:root[class~="light"] .biohack-terminal ::-webkit-scrollbar-thumb,
+.light .biohack-terminal ::-webkit-scrollbar-thumb { background: hsl(220 20% 75%); }
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════════════ */
+
 .biohack-terminal .no-break,
 .biohack-terminal .terminal-uuid,
 .biohack-terminal .terminal-hash,
@@ -702,7 +775,6 @@
   word-break: keep-all;
 }
 
-/* Terminal output container */
 .biohack-terminal pre {
   white-space: pre-wrap;
   word-break: break-word;
@@ -712,7 +784,6 @@
   line-height: 1.5;
 }
 
-/* Mobile-friendly text with no mid-word breaks */
 .biohack-terminal .terminal-output {
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -722,7 +793,6 @@
   line-height: 1.4;
 }
 
-/* Atomic tokens that should never break (UUIDs, hashes, etc.) */
 .biohack-terminal .terminal-output .atomic-token,
 .biohack-terminal .terminal-output code,
 .biohack-terminal .terminal-output .uuid {
@@ -733,18 +803,14 @@
   scrollbar-width: none;
 }
 
-.biohack-terminal .terminal-output .atomic-token::-webkit-scrollbar {
-  display: none;
-}
+.biohack-terminal .terminal-output .atomic-token::-webkit-scrollbar { display: none; }
 
-/* Preserve box-drawing characters on their own lines */
 .biohack-terminal .terminal-box-line {
   white-space: pre;
   overflow: hidden;
   text-overflow: clip;
 }
 
-/* JSON blocks with horizontal scroll on mobile */
 .biohack-terminal .terminal-json {
   white-space: pre;
   overflow-x: auto;
@@ -755,7 +821,6 @@
   scrollbar-width: thin;
 }
 
-/* Copy affordance for long content */
 .biohack-terminal .terminal-copyable {
   position: relative;
   cursor: pointer;
@@ -770,136 +835,41 @@
   opacity: 0.6;
 }
 
-/* Mobile breakpoint: < 480px (compact mode) */
 @media (max-width: 479px) {
-  .biohack-terminal {
-    font-size: 10px;
-    border-radius: 8px;
-  }
-
-  .biohack-header {
-    padding: 8px 12px;
-  }
-
-  .biohack-title {
-    font-size: 9px;
-    letter-spacing: 0.15em;
-  }
-
-  .biohack-orb {
-    width: 8px;
-    height: 8px;
-  }
-
-  .biohack-terminal pre {
-    font-size: 10px;
-    line-height: 1.4;
-    padding: 8px;
-  }
-
-  /* Truncate long IDs on mobile */
-  .biohack-terminal .terminal-uuid {
-    max-width: 80px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Stack table data vertically */
-  .biohack-terminal .terminal-table-row {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 4px 0;
-    border-bottom: 1px solid hsl(180 100% 50% / 0.1);
-  }
-
-  .biohack-terminal .terminal-table-cell {
-    display: block;
-    padding: 2px 0;
-  }
-
-  .biohack-terminal .terminal-table-cell::before {
-    content: attr(data-label) ": ";
-    color: hsl(280 60% 60%);
-    font-weight: 500;
-  }
-
-  /* Compact suggestions */
-  .biohack-suggestions {
-    max-height: 150px;
-  }
-
-  .biohack-suggestion-item {
-    padding: 6px 8px;
-    font-size: 10px;
-  }
-
-  /* Input area */
-  .biohack-input-area {
-    padding: 8px;
-  }
-
-  .biohack-cursor {
-    width: 6px;
-    height: 6px;
-  }
-
-  .biohack-input {
-    font-size: 12px !important;
-  }
+  .biohack-terminal { font-size: 10px; border-radius: 8px; }
+  .biohack-header { padding: 8px 12px; }
+  .biohack-title { font-size: 9px; letter-spacing: 0.15em; }
+  .biohack-orb { width: 8px; height: 8px; }
+  .biohack-terminal pre { font-size: 10px; line-height: 1.4; padding: 8px; }
+  .biohack-terminal .terminal-uuid { max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
+  .biohack-terminal .terminal-table-row { display: flex; flex-direction: column; gap: 2px; padding: 4px 0; border-bottom: 1px solid hsl(var(--neon-cyan) / 0.1); }
+  .biohack-terminal .terminal-table-cell { display: block; padding: 2px 0; }
+  .biohack-terminal .terminal-table-cell::before { content: attr(data-label) ": "; color: hsl(var(--neon-purple) / 0.7); font-weight: 500; }
+  .biohack-suggestions { max-height: 150px; }
+  .biohack-suggestion-item { padding: 6px 8px; font-size: 10px; }
+  .biohack-input-area { padding: 8px; }
+  .biohack-cursor { width: 6px; height: 6px; }
+  .biohack-input { font-size: 12px !important; }
 }
 
-/* Tablet breakpoint: 480px - 767px (standard mode) */
 @media (min-width: 480px) and (max-width: 767px) {
-  .biohack-terminal {
-    font-size: 11px;
-  }
-
-  .biohack-terminal pre {
-    font-size: 11px;
-    line-height: 1.45;
-  }
-
-  .biohack-title {
-    font-size: 10px;
-  }
-
-  /* Truncate UUIDs to show more but not all */
-  .biohack-terminal .terminal-uuid {
-    max-width: 120px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .biohack-terminal { font-size: 11px; }
+  .biohack-terminal pre { font-size: 11px; line-height: 1.45; }
+  .biohack-title { font-size: 10px; }
+  .biohack-terminal .terminal-uuid { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
 }
 
-/* Desktop: 768px+ (full mode) */
 @media (min-width: 768px) {
-  .biohack-terminal {
-    font-size: 13px;
-  }
-
-  .biohack-terminal pre {
-    font-size: 12px;
-    line-height: 1.5;
-    padding: 12px;
-  }
-
-  .biohack-title {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-  }
-
-  /* Full UUIDs on desktop */
-  .biohack-terminal .terminal-uuid {
-    max-width: none;
-  }
+  .biohack-terminal { font-size: 13px; }
+  .biohack-terminal pre { font-size: 12px; line-height: 1.5; padding: 12px; }
+  .biohack-title { font-size: 11px; letter-spacing: 0.2em; }
+  .biohack-terminal .terminal-uuid { max-width: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   ACCESSIBILITY ENHANCEMENTS
+   ACCESSIBILITY
    ═══════════════════════════════════════════════════════════ */
 
-/* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   .biohack-terminal,
   .biohack-terminal * {
@@ -908,46 +878,18 @@
   }
 }
 
-/* High contrast mode */
 @media (prefers-contrast: high) {
-  .biohack-terminal {
-    border-width: 2px;
-    border-color: hsl(180 100% 60%);
-  }
-
-  .biohack-command-text {
-    color: hsl(180 100% 90%);
-  }
-
-  .biohack-output-success {
-    color: hsl(140 100% 70%);
-  }
-
-  .biohack-output-error {
-    color: hsl(0 100% 70%);
-  }
+  .biohack-terminal { border-width: 2px; border-color: hsl(var(--neon-cyan)); }
+  .biohack-command-text { color: hsl(var(--neon-cyan)); }
+  .biohack-output-success { color: hsl(var(--neon-green)); }
+  .biohack-output-error { color: hsl(0 100% 70%); }
 }
 
-/* Focus visibility for keyboard navigation */
-.biohack-input:focus {
-  outline: 2px solid hsl(180 100% 60%);
-  outline-offset: 2px;
-}
+.biohack-input:focus { outline: 2px solid hsl(var(--neon-cyan)); outline-offset: 2px; }
+.biohack-suggestion-item:focus { outline: 2px solid hsl(var(--neon-purple)); outline-offset: -2px; }
 
-.biohack-suggestion-item:focus {
-  outline: 2px solid hsl(280 100% 60%);
-  outline-offset: -2px;
-}
-
-/* Screen reader only content */
 .biohack-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
 }

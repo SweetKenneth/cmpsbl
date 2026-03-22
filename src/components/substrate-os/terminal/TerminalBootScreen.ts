@@ -1,17 +1,7 @@
 /**
- * Terminal Boot Screen
+ * Terminal Boot Screen v2.0
+ * Cinematic boot sequence matching site neon palette
  * 40-Node / 12-Sector Field-Based Topology
- * Mobile-friendly with no mid-word line breaks
- * 
- * Architecture:
- * - 40 active nodes across 12 sectors (CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell)
- * - 300 synergy pipelines, 125 executors, 142 S-tier discoveries
- * - 675+ capabilities, 100 engines (76 base + 24 meta)
- * - 7 infrastructure systems: cron, rate-limit, snapshots, analytics, streaming, files, NL
- * - 500+ commands across all 40 nodes + infrastructure
- * - CLM across all modules
- * - Enhanced mobile boot sequence
- * - Improved visual hierarchy
  */
 
 import { getMetric } from '@/stores/publicMetricsStore';
@@ -22,245 +12,150 @@ export interface BootConfig {
 }
 
 /**
- * DNA Helix-style module visualization
- */
-const DNA_HELIX = `
-    ╭─────╮                              ╭─────╮
-   ╱ CORE  ╲════════════════════════════╱CORTEX╲
-  ╱─────────╲                          ╱─────────╲
-  ╲ ▓░▓░▓░▓ ╱═══╗                ╔═══╱ ▓░▓░▓░▓ ╱
-   ╲───────╱    ║                ║    ╲───────╱
-      ║        ╭─────╮      ╭─────╮        ║
-      ╠════════│BRAIN│══════│DREAM│════════╣
-      ║        ╰─────╯      ╰─────╯        ║
-   ╭───────╮    ║                ║    ╭───────╮
-  ╱ ░▓░▓░▓░ ╲═══╝                ╚═══╱ ░▓░▓░▓░ ╲
-  ╲─────────╱                          ╲─────────╱
-   ╲RIPPLE ╱════════════════════════════╲VISION ╱
-    ╰─────╯                              ╰─────╯
-`;
-
-/**
- * Module status indicators (compact for mobile)
- */
-const MODULE_STATUS = [
-  '  ├─ CORE Kernel ────────────────────────',
-  '  │  ◉ core                               ',
-  '  ├─ SYSTEM Layer ───────────────────────',
-  '  │  ◉ system                             ',
-  '  ├─ CCR (Cognitive Core Reality) ────────',
-  '  │  ◉ brain     ◉ memory     ◉ dream    ',
-  '  ├─ OCG (Operational Compliance Grid) ──',
-  '  │  ◉ ripple    ◉ access     ◉ identity ',
-  '  │  ◉ relay     ◉ audit                  ',
-  '  ├─ Execution Sector ───────────────────',
-  '  │  ◉ decode    ◉ encode     ◉ vision   ',
-  '  │  ◉ cortex    ◉ nexus      ◉ economy  ',
-  '  │  ◉ sandbox   ◉ inclusive  ◉ medic    ',
-  '  │  ◉ nerve     ◉ integration            ',
-  '  ├─ ESZ (Sovereignty Zone) ─────────────',
-  '  │  ◉ sovereign ◉ oracle     ◉ conscience',
-  '  │  ◉ treaty                              ',
-  '  ├─ EPZ (Perception Zone) ──────────────',
-  '  │  ◉ compass   ◉ echo       ◉ reflex   ',
-  '  ├─ EMZ (Manufacturing Zone) ───────────',
-  '  │  ◉ forge     ◉ lingua     ◉ phantom  ',
-  '  │  ◉ harvest                             ',
-  '  ├─ Fields (Transformation Fabric) ─────',
-  '  │  ◉ evolution ◉ immunity   ◉ intent   ',
-  '  ├─ Overlay Plane ──────────────────────',
-  '  │  ◉ governance                          ',
-  '  ├─ DEFENSE Shell ──────────────────────',
-  '  │  ◉ defense                             ',
-  '  └─────────────────────────────────────',
-];
-
-/**
- * Full-width module grid (desktop)
- */
-const MODULE_GRID_DESKTOP = `
-  ╔═══════════════════════════════════════════════════════════╗
-   ║              CMPSBL® OS — 40-Node Matrix                ║
-   ║             12-Sector Cognitive Topology                  ║
-   ╠═══════════════════════════════════════════════════════════╣
-   ║                                                           ║
-   ║  ┏━━━━━━━━━━━━ CORE + SYSTEM ━━━━━━━━━━━━┓               ║
-   ║  ┃  ⬢ CORE (kernel)    ◇ SYSTEM (lifecycle) ┃             ║
-   ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛             ║
-   ║        ╲                           ╱                       ║
-   ║  ┏━━━━━━━ CCR (Cognitive Core) ━━━━━━━━━━┓               ║
-   ║  ┃  ◈ BRAIN     ◈ MEMORY     ◈ DREAM     ┃               ║
-   ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
-   ║  ┏━━━━ OCG (Operational Compliance) ━━━━━┓               ║
-   ║  ┃  ◆ RIPPLE  ◆ ACCESS  ◆ IDENTITY       ┃               ║
-   ║  ┃  ◆ RELAY   ◆ AUDIT   ◆ NERVE          ┃               ║
-   ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
-  ║        ╲                           ╱                       ║
-  ║  ┏━━━━━━━ EXECUTION (10 nodes) ━━━━━━━━━━┓               ║
-  ║  ┃  ★ DECODE  ★ ENCODE  ★ VISION  ★ CORTEX┃              ║
-  ║  ┃  ★ NEXUS   ★ ECONOMY ★ SANDBOX         ┃              ║
-  ║  ┃  ★ INCLUSIVE ★ MEDIC  ★ NERVE           ┃              ║
-  ║  ┃  ★ INTEGRATION                          ┃              ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛              ║
-  ║        ╲                           ╱                       ║
-  ║  ┏━ ESZ (Sovereignty) ━┓ ┏━ EPZ (Perception) ━┓          ║
-  ║  ┃ ◎ SOVEREIGN ◎ ORACLE┃ ┃ ◎ COMPASS ◎ ECHO   ┃          ║
-  ║  ┃ ◎ CONSCIENCE◎TREATY ┃ ┃ ◎ REFLEX            ┃          ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━┛ ┗━━━━━━━━━━━━━━━━━━━━┛          ║
-  ║  ┏━ EMZ (Manufacturing) ━━━━━━━━━━━━━━━━━━━━━┓           ║
-  ║  ┃ ◎ FORGE  ◎ LINGUA  ◎ PHANTOM  ◎ HARVEST   ┃           ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛           ║
-  ║        ╲                           ╱                       ║
-  ║  ┏━━━━━━ FIELDS + PLANE + SHELL ━━━━━━━━━┓               ║
-  ║  ┃  ≋ EVOLUTION  ≋ IMMUNITY  ≋ INTENT     ┃               ║
-  ║  ┃  ◉ GOVERNANCE (Plane)                   ┃               ║
-  ║  ┃  ◉ DEFENSE (Shell)                      ┃               ║
-  ║  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛               ║
-  ║                                                           ║
-  ╚═══════════════════════════════════════════════════════════╝
-`;
-
-/**
  * Compact mobile-friendly boot screen
  */
 export function generateMobileBootScreen(): string[] {
+  const epoch = getMetric('epoch') || 'MINDGAMES';
   return [
     '',
-    '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
-    '  ▓     CMPSBL® Memory Stream       ▓',
-    `  ▓     ${getMetric('epoch')} Epoch`.padEnd(35) + '▓',
-    '  ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓',
+    '  ╔══════════════════════════════════╗',
+    '  ║     C M P S B L ®  O S          ║',
+    `  ║     ${epoch} Epoch`.padEnd(35) + '║',
+    '  ║     Memory Stream Terminal       ║',
+    '  ╚══════════════════════════════════╝',
     '',
-    '  ┌─ 40-NODE MATRIX ───────────────┐',
-    '  │                                │',
-    '  │  ⬢ CORE Kernel                 │',
-    '  │    core                         │',
-    '  │  ◇ SYSTEM Layer                │',
-    '  │    system                       │',
-    '  │                                │',
-    '  │  ◈ CCR (Cognitive Core)        │',
-    '  │    brain  memory  dream        │',
-    '  │  ◆ OCG (Compliance Grid)       │',
-    '  │    ripple access identity      │',
-    '  │    relay  audit  nerve         │',
-    '  │                                │',
-    '  │  ★ Execution (10 nodes)        │',
-    '  │    decode encode vision cortex │',
-    '  │    nexus economy sandbox       │',
-    '  │    inclusive medic             │',
-    '  │    integration                 │',
-    '  │                                │',
-    '  │  ◎ ESZ (Sovereignty)           │',
-    '  │    sovereign oracle            │',
-    '  │    conscience treaty           │',
-    '  │  ◎ EPZ (Perception)            │',
-    '  │    compass echo reflex         │',
-    '  │  ◎ EMZ (Manufacturing)         │',
-    '  │    forge lingua harvest        │',
-    '  │  ◎ CSZ (Covert Systems)        │',
-    '  │    evolution shadow phantom    │',
-    '  │                                │',
-    '  │  ≋ Fields                      │',
-    '  │    immunity intent             │',
-    '  │  ◉ Plane: governance           │',
-    '  │  ◉ Shell: defense              │',
-    '  │                                │',
-    '  └────────────────────────────────┘',
+    '  ▸ Initializing substrate...',
+    '  ▸ Loading 40-node matrix...',
+    '  ▸ Mapping 12-sector topology...',
     '',
-    '  ◉ 40 nodes | 12 sectors',
-    '  ◉ 500+ commands available',
-    '  ◉ 300 synergies | 125 executors',
-    '  ◉ 675+ capabilities | 100 engines',
-    '  ◉ 7 infrastructure systems',
-    '  ◉ CLM: all modules reporting',
-    '  ◉ Health: 100%',
+    '  ┌─ NODE MATRIX ─────────────────┐',
+    '  │                               │',
+    '  │  ⬢ CORE    ◇ SYSTEM           │',
+    '  │                               │',
+    '  │  ◈ CCR — Cognitive Core       │',
+    '  │    brain  memory  dream       │',
+    '  │                               │',
+    '  │  ◆ OCG — Compliance Grid      │',
+    '  │    ripple access identity     │',
+    '  │    relay  audit  nerve        │',
+    '  │                               │',
+    '  │  ★ EXECUTION                  │',
+    '  │    decode encode vision       │',
+    '  │    cortex nexus economy       │',
+    '  │    sandbox inclusive medic    │',
+    '  │    integration                │',
+    '  │                               │',
+    '  │  ◎ ESZ  sovereign oracle      │',
+    '  │         conscience treaty     │',
+    '  │  ◎ EPZ  compass echo reflex   │',
+    '  │  ◎ EMZ  forge lingua harvest  │',
+    '  │  ◎ CSZ  evolution shadow      │',
+    '  │         phantom               │',
+    '  │                               │',
+    '  │  ≋ FLD  immunity intent       │',
+    '  │  ◉ PLN  governance            │',
+    '  │  ◉ SHL  defense               │',
+    '  │                               │',
+    '  └───────────────────────────────┘',
     '',
-    '  Type \'help\' for commands',
+    '  ◉ 40 nodes · 12 sectors · 500+ cmds',
+    '  ◉ 675+ capabilities · 100 engines',
+    '  ◉ Health: ████████████████ 100%',
+    '',
+    '  ▸ Stream substrate: ONLINE',
+    '  ▸ Signal pathways: READY',
+    '',
+    "  Type 'help' for commands",
     '',
   ];
 }
 
 /**
- * Full desktop boot screen with DNA helix aesthetic
+ * Full desktop boot screen — cinematic neon aesthetic
  */
 export function generateDesktopBootScreen(): string[] {
+  const epoch = getMetric('epoch') || 'MINDGAMES';
   return [
     '',
-    '  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░',
-    '  ░                                                       ░',
-    '  ░    ██████╗ ███╗   ███╗██████╗ ███████╗██████╗ ██╗      ░',
-    '  ░   ██╔════╝ ████╗ ████║██╔══██╗██╔════╝██╔══██╗██║      ░',
-    '  ░   ██║      ██╔████╔██║██████╔╝███████╗██████╔╝██║      ░',
-    '  ░   ██║      ██║╚██╔╝██║██╔═══╝ ╚════██║██╔══██╗██║      ░',
-    '  ░   ╚██████╗ ██║ ╚═╝ ██║██║     ███████║██████╔╝███████╗ ░',
-    '  ░    ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝ ╚══════╝ ░',
-    '  ░                                                       ░',
-    '  ░   ███████╗██╗   ██╗██████╗ ███████╗████████╗██████╗   ░',
-    '  ░   ██╔════╝██║   ██║██╔══██╗██╔════╝╚══██╔══╝██╔══██╗  ░',
-    '  ░   ███████╗██║   ██║██████╔╝███████╗   ██║   ██████╔╝  ░',
-    '  ░   ╚════██║██║   ██║██╔══██╗╚════██║   ██║   ██╔══██╗  ░',
-    '  ░   ███████║╚██████╔╝██████╔╝███████║   ██║   ██║  ██║  ░',
-    '  ░   ╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝  ░',
-    '  ░                                                       ░',
-  `  ░   CMPSBL® OS — ${getMetric('epoch')} Epoch`.padEnd(58) + '░',
-    '  ░   Memory Stream Terminal                              ░',
-    '  ░   "Signal → Silicon"                                  ░',
-    '  ░                                                       ░',
-    '  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░',
+    '  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓',
+    '  ┃                                                               ┃',
+    '  ┃     ██████╗ ███╗   ███╗██████╗ ███████╗██████╗ ██╗            ┃',
+    '  ┃    ██╔════╝ ████╗ ████║██╔══██╗██╔════╝██╔══██╗██║            ┃',
+    '  ┃    ██║      ██╔████╔██║██████╔╝███████╗██████╔╝██║            ┃',
+    '  ┃    ██║      ██║╚██╔╝██║██╔═══╝ ╚════██║██╔══██╗██║            ┃',
+    '  ┃    ╚██████╗ ██║ ╚═╝ ██║██║     ███████║██████╔╝███████╗       ┃',
+    '  ┃     ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝ ╚══════╝       ┃',
+    '  ┃                                                               ┃',
+    `  ┃    ${epoch} Epoch · Memory Stream Terminal`.padEnd(64) + '┃',
+    '  ┃    "Signal → Silicon"                                         ┃',
+    '  ┃                                                               ┃',
+    '  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛',
     '',
-    '  ┌─ 40-NODE / 12-SECTOR TOPOLOGY ────────────────────────┐',
-    '  │                                                       │',
-    '  │  ⬢ CORE KERNEL ───────────────────────────────────    │',
-    '  │    ◉ core (boots first, cascade authority)             │',
-    '  │                                                       │',
-    '  │  ◇ SYSTEM LAYER ──────────────────────────────────    │',
-    '  │    ◉ system (lifecycle, diagnostics, config)           │',
-    '  │                                                       │',
-    '  │  ◈ CCR — Cognitive Core Reality ──────────────────    │',
-    '  │    ◉ brain      ◉ memory       ◉ dream                │',
-    '  │                                                       │',
-    '  │  ◆ OCG — Operational Compliance Grid ─────────────    │',
-    '  │    ◉ ripple     ◉ access       ◉ identity             │',
-    '  │    ◉ relay      ◉ audit        ◉ nerve                │',
-    '  │                                                       │',
-    '  │  ★ EXECUTION SECTOR (10 nodes) ───────────────────    │',
-    '  │    ◉ decode     ◉ encode       ◉ vision               │',
-    '  │    ◉ cortex     ◉ nexus        ◉ economy              │',
-    '  │    ◉ sandbox    ◉ inclusive     ◉ medic                │',
-    '  │    ◉ integration                                       │',
-    '  │                                                       │',
-    '  │  ◎ ESZ — Expansion Sovereignty Zone ──────────────    │',
-    '  │    ◉ sovereign  ◉ oracle       ◉ conscience           │',
-    '  │    ◉ treaty                                            │',
-    '  │                                                       │',
-    '  │  ◎ EPZ — Expansion Perception Zone ───────────────    │',
-    '  │    ◉ compass    ◉ echo         ◉ reflex               │',
-    '  │                                                       │',
-    '  │  ◎ EMZ — Expansion Manufacturing Zone ────────────    │',
-    '  │    ◉ forge      ◉ lingua       ◉ harvest              │',
-    '  │                                                       │',
-    '  │  ◎ CSZ — Covert Systems Zone ─────────────────────    │',
-    '  │    ◉ evolution  ◉ shadow       ◉ phantom              │',
-    '  │                                                       │',
-    '  │  ≋ FIELDS — Transformation Fabric ────────────────    │',
-    '  │    ◉ immunity   ◉ intent                              │',
-    '  │                                                       │',
-    '  │  ◉ OVERLAY PLANE: governance                          │',
-    '  │  ◉ DEFENSE SHELL: defense                             │',
-    '  │                                                       │',
-    '  └───────────────────────────────────────────────────────┘',
+    '  ▸ Booting substrate kernel...',
+    '  ▸ Initializing 40-node cognitive matrix...',
+    '  ▸ Mapping 12-sector topology...',
+    '  ▸ Calibrating signal pathways...',
     '',
-    '  ╔═══════════════════════════════════════════════════════╗',
-    '  ║  40 NODES │ 12 SECTORS │ 500+ CMDS │ 675+ CAPS       ║',
-    '  ║  Memory Stream Active │ Quality Floor: 68+            ║',
-    '  ║  Type \'help\' for commands • \'cortex.status\' for mode  ║',
-    '  ╚═══════════════════════════════════════════════════════╝',
+    '  ┌─ 40-NODE / 12-SECTOR TOPOLOGY ──────────────────────────────┐',
+    '  │                                                              │',
+    '  │  ⬢ CORE KERNEL ─────────────────────────────────────────     │',
+    '  │    ◉ core (cascade authority, bootstrap)                     │',
+    '  │                                                              │',
+    '  │  ◇ SYSTEM LAYER ────────────────────────────────────────     │',
+    '  │    ◉ system (lifecycle, diagnostics, config)                  │',
+    '  │                                                              │',
+    '  │  ◈ CCR — Cognitive Core Reality ────────────────────────     │',
+    '  │    ◉ brain      ◉ memory       ◉ dream                       │',
+    '  │                                                              │',
+    '  │  ◆ OCG — Operational Compliance Grid ───────────────────     │',
+    '  │    ◉ ripple     ◉ access       ◉ identity                    │',
+    '  │    ◉ relay      ◉ audit        ◉ nerve                       │',
+    '  │                                                              │',
+    '  │  ★ EXECUTION SECTOR (10 nodes) ─────────────────────────     │',
+    '  │    ◉ decode     ◉ encode       ◉ vision      ◉ cortex       │',
+    '  │    ◉ nexus      ◉ economy      ◉ sandbox                     │',
+    '  │    ◉ inclusive   ◉ medic        ◉ integration                 │',
+    '  │                                                              │',
+    '  │  ◎ ESZ — Expansion Sovereignty Zone ────────────────────     │',
+    '  │    ◉ sovereign  ◉ oracle       ◉ conscience  ◉ treaty       │',
+    '  │                                                              │',
+    '  │  ◎ EPZ — Expansion Perception Zone ─────────────────────     │',
+    '  │    ◉ compass    ◉ echo         ◉ reflex                      │',
+    '  │                                                              │',
+    '  │  ◎ EMZ — Expansion Manufacturing Zone ──────────────────     │',
+    '  │    ◉ forge      ◉ lingua       ◉ harvest                     │',
+    '  │                                                              │',
+    '  │  ◎ CSZ — Covert Systems Zone ───────────────────────────     │',
+    '  │    ◉ evolution  ◉ shadow       ◉ phantom                     │',
+    '  │                                                              │',
+    '  │  ≋ FIELDS — Transformation Fabric ──────────────────────     │',
+    '  │    ◉ immunity   ◉ intent                                     │',
+    '  │                                                              │',
+    '  │  ◉ OVERLAY PLANE: governance                                 │',
+    '  │  ◉ DEFENSE SHELL: defense                                    │',
+    '  │                                                              │',
+    '  └──────────────────────────────────────────────────────────────┘',
+    '',
+    '  ▸ Matrix integrity:  ████████████████████ 100%',
+    '  ▸ Signal strength:   ████████████████████ 100%',
+    '  ▸ Stream bandwidth:  ████████████████████ 100%',
+    '',
+    '  ╔══════════════════════════════════════════════════════════════╗',
+    '  ║  40 NODES  │  12 SECTORS  │  500+ CMDS  │  675+ CAPS       ║',
+    '  ║  300 Synergy Pipelines  │  125 Executors  │  100 Engines    ║',
+    '  ║  Memory Stream: ACTIVE  │  Quality Floor: 68+               ║',
+    "  ║  Type 'help' for commands  ·  'cortex.status' for mode      ║",
+    '  ╚══════════════════════════════════════════════════════════════╝',
+    '',
+    '  ◉ Stream substrate: ONLINE',
+    '  ◉ Signal pathways: READY',
+    '  ◉ Awaiting crystallization input...',
     '',
   ];
 }
 
 /**
- * Generate animated boot sequence (returns lines one at a time)
+ * Generate boot sequence
  */
 export function generateBootSequence(isMobile: boolean = false): string[] {
   if (isMobile) {
@@ -271,13 +166,8 @@ export function generateBootSequence(isMobile: boolean = false): string[] {
 
 /**
  * Get boot messages for terminal initialization
- * Detects viewport size and returns appropriate boot screen
  */
 export function getBootMessages(viewportWidth?: number): string[] {
-  // Default to mobile-first if no width provided
   const isMobile = !viewportWidth || viewportWidth < 768;
   return generateBootSequence(isMobile);
 }
-
-// Export the DNA helix for special effects
-export { DNA_HELIX, MODULE_STATUS, MODULE_GRID_DESKTOP };
