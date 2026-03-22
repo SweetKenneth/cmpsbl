@@ -148,8 +148,8 @@ const reply = await session.send({
     layer: "Cognitive",
     title: "NEXUS Routing",
     description: "Intelligent AI provider selection",
-    color: "text-green-500",
-    gradient: "from-green-500 to-emerald-600",
+    color: "text-[hsl(var(--neon-green))]",
+    gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Auto-route to optimal provider
 const response = await cmpsbl.nexus.route({
   task: "complex_reasoning",
