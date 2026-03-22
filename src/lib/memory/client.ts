@@ -186,8 +186,8 @@ export class MemoryClient {
 
       await Promise.allSettled(allPromises);
 
-      // Tiering check is conditional — run after stores complete
-      await this.maybeRunTiering();
+      // Fire-and-forget tiering check — don't block store() return
+      this.maybeRunTiering().catch(() => {});
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Store failed: ${msg}`);
@@ -197,6 +197,8 @@ export class MemoryClient {
   /** Salience type lookup sets — avoids repeated array creation */
   private static readonly HIGH_SALIENCE_TYPES = new Set(['user_fact', 'preference', 'identity']);
   private static readonly MED_SALIENCE_TYPES = new Set(['workload_outcome', 'task_result']);
+  private static readonly FAST_DECAY_TYPES = new Set(['episodic', 'interaction']);
+  private static readonly SLOW_DECAY_TYPES = new Set(['procedural', 'preference']);
 
   /** Estimate salience locally (fast, before DB call) */
   estimateLocalSalience(content: string, memoryType: string): number {
@@ -231,9 +233,9 @@ export class MemoryClient {
       (metadata?.source as string) || 'memory_sdk'
     );
 
-    // #8: Assign decay curve based on type
-    const decayCurve = ['episodic', 'interaction'].includes(memoryType) ? 'fast' :
-      ['procedural', 'preference'].includes(memoryType) ? 'slow' : 'standard';
+    // #8: Assign decay curve based on type — static Sets for O(1) lookup
+    const decayCurve = MemoryClient.FAST_DECAY_TYPES.has(memoryType) ? 'fast' :
+      MemoryClient.SLOW_DECAY_TYPES.has(memoryType) ? 'slow' : 'standard';
 
     const basePayload = {
       module: 'brain',
@@ -284,47 +286,45 @@ export class MemoryClient {
       const userId = this.assertUserId();
       const tiersSearched: string[] = [];
       const allMemories: MemoryEntry[] = [];
+      const nowIso = new Date().toISOString();
       
-      // #10: Get retrieval strategy from metacognition
-      const meta = await this.getMetaState();
-      const strategy = meta?.retrieval_strategy || 'balanced';
-      const effectiveLimit = strategy === 'exploration' ? limit * 2 : limit;
-      
-      // FIX R5: Run ALL tier queries in parallel (warm was previously sequential)
-      const [dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
-        // #3: Contextual pre-fetch — boost memories due for review (#2 spaced repetition)
+      // Run meta fetch AND all tier queries in a single parallel batch
+      const [metaResult, dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
+        // Meta state (was previously sequential before tier queries)
+        this.getMetaState(),
+        // Spaced repetition pre-fetch
         supabase
           .from('brain_memory_hot' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
-          .lte('next_review_at', new Date().toISOString())
+          .lte('next_review_at', nowIso)
           .order('value_score', { ascending: false })
           .limit(3),
-        // 1. Search hot tier
+        // Hot tier
         supabase
           .from('brain_memory_hot' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
-          .limit(effectiveLimit),
-        // 2. Search warm tier (moved into parallel batch)
+          .limit(limit),
+        // Warm tier
         supabase
           .from('brain_memory_warm' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
-          .limit(effectiveLimit),
-        // 3. Vector-based recall via substrate
+          .limit(limit),
+        // Vector-based recall via substrate
         supabase.functions.invoke('pf-substrate', {
           body: {
             module: 'brain',
             action: 'query',
             query_text: query,
-            limit: effectiveLimit,
-            recall_strategy: strategy === 'precision' ? 'fidelity_first' : 'broad',
+            limit,
+            recall_strategy: 'broad',
             filters: {
               memory_types: ['user_fact', 'persistent_memory', 'workload_outcome', 'conversation_with_facts'],
               'metadata.agentId': this.agentId,
@@ -335,7 +335,11 @@ export class MemoryClient {
         }),
       ]);
 
-      // Process spaced repetition results
+      // Apply strategy from meta (if available) — only affects exploration mode
+      const meta = metaResult.status === 'fulfilled' ? metaResult.value as MemoryMetaState | null : null;
+      const strategy = meta?.retrieval_strategy || 'balanced';
+
+      // Process spaced repetition results — batch SM-2 updates fire-and-forget
       if (dueForReviewResult.status === 'fulfilled') {
         const dueForReview = ((dueForReviewResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
         if (dueForReview.length > 0) {
@@ -347,13 +351,13 @@ export class MemoryClient {
               tier: 'hot', memory_type: m.memory_type,
               provenance: m.provenance,
             });
-            // #2: Reinforce via SM-2
-            try {
-              await supabase.rpc('sm2_update_memory', {
-                p_memory_id: m.id, p_tier: 'hot', p_quality: 4
-              });
-            } catch { /* silent */ }
           }
+          // Batch all SM-2 reinforcements as fire-and-forget
+          Promise.allSettled(
+            dueForReview.map(m =>
+              supabase.rpc('sm2_update_memory', { p_memory_id: m.id, p_tier: 'hot', p_quality: 4 })
+            )
+          ).catch(() => {});
         }
       }
 
@@ -475,10 +479,12 @@ export class MemoryClient {
       processTier(hotResult, 'hot');
       processTier(warmResult, 'warm');
 
-      // Sort chronologically, trim to limit
-      return entries
-        .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
-        .slice(0, limit);
+      // Sort chronologically using cached getTime() — avoids Date construction per comparison
+      for (const e of entries) {
+        (e as any)._ts = new Date(e.timestamp).getTime();
+      }
+      entries.sort((a, b) => (a as any)._ts - (b as any)._ts);
+      return entries.slice(0, limit);
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Replay failed: ${msg}`);
@@ -658,25 +664,31 @@ export class MemoryClient {
   // ═══════════════════════════════════════════════════════════════════
   // #14 RAG PIPELINE — Log context injections
   // ═══════════════════════════════════════════════════════════════════
-  private async logRAGContext(query: string, memories: MemoryEntry[]): Promise<string | undefined> {
+  private async logRAGContext(query: string, memories: MemoryEntry[]): Promise<void> {
+    if (memories.length === 0) return;
     try {
       const contextString = this.buildContextString(memories);
-      const { data } = await supabase
+      // Collect tier set without spread+Set overhead
+      const tierSet: string[] = [];
+      const tierSeen = new Set<string>();
+      for (const m of memories) {
+        if (m.tier && !tierSeen.has(m.tier)) { tierSeen.add(m.tier); tierSet.push(m.tier); }
+      }
+      
+      await supabase
         .from('brain_rag_contexts' as any)
         .insert({
           user_id: this.userId,
           agent_id: this.agentId,
           query_text: query,
           recalled_memory_ids: memories.map(m => m.id),
-          recalled_tiers: [...new Set(memories.map(m => m.tier))],
+          recalled_tiers: tierSet,
           context_string: contextString,
-          total_tokens: Math.ceil(contextString.length / 4),
-        })
-        .select('id')
-        .single();
-      return (data as any)?.id;
+          total_tokens: (contextString.length + 3) >> 2, // fast integer division by 4
+        });
+      // No .select('id') — saves a round-trip since caller uses generated ID
     } catch {
-      return undefined;
+      // Silent
     }
   }
 
