@@ -94,7 +94,8 @@ export function box(lines: string[], title?: string): void {
     console.log(`  ╔${'═'.repeat(innerWidth + 2)}╗`);
   }
   for (const line of lines) {
-    console.log(`  ║  ${line.padEnd(innerWidth)}║`);
+    console.log(`  ║ ${line.padEnd(innerWidth)} ║`);
   }
-  console.log(`  ╚${'═'.repeat(innerWidth + 2)}╝`);
+  const bottomWidth = title ? title.length + 5 + Math.max(0, innerWidth - title.length - 3) : innerWidth + 2;
+  console.log(`  ╚${'═'.repeat(bottomWidth)}╝`);
 }
