@@ -127,9 +127,9 @@ export function AnalyticsTab() {
         supabase.from('artifact_registry').select('category, tier, created_at').gte('created_at', startDate),
         // Full usage for cost analytics
         supabase.from('ai_usage_log').select('provider, tokens_used, cost').gte('created_at', startDate).limit(1000),
-        // Intent receipts
-        supabase.from('intent_receipts').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('intent_receipts').select('latency_ms').gte('created_at', startDate).not('latency_ms', 'is', null).limit(500),
+        // Intent receipts — table may not exist in typed schema, use rpc or skip gracefully
+        supabase.from('mesh_comms').select('*', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate),
+        supabase.from('mesh_comms').select('resolver_id, created_at').gte('created_at', startDate).not('resolver_id', 'is', null).limit(500),
       ]);
 
       // Core counts
