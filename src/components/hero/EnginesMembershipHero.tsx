@@ -28,21 +28,21 @@ import { getPublicMetrics } from "@/stores/publicMetricsStore";
 const getFreeTools = () => {
   const metrics = getPublicMetrics();
   return [
-    { name: "Templates", icon: Package, count: "200+", color: "text-cyan-500" },
-    { name: "Memories", icon: Layers, count: String(metrics.synergyPipelinesCount), color: "text-violet-500" },
-    { name: "Capabilities", icon: Zap, count: String(metrics.capabilitiesCount), color: "text-amber-500" },
-    { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
-    { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
+    { name: "Templates", icon: Package, count: "200+", color: "text-[hsl(var(--neon-cyan))]" },
+    { name: "Memories", icon: Layers, count: String(metrics.synergyPipelinesCount), color: "text-[hsl(var(--neon-purple))]" },
+    { name: "Capabilities", icon: Zap, count: String(metrics.capabilitiesCount), color: "text-primary" },
+    { name: "Memory", icon: Brain, count: "∞", color: "text-[hsl(var(--neon-magenta))]" },
+    { name: "CodeLab", icon: Code, count: "Live", color: "text-[hsl(var(--neon-cyan))]" },
   ];
 };
 
 // Legacy static export for initial render
 const freeTools = [
-  { name: "Templates", icon: Package, count: "200+", color: "text-cyan-500" },
-  { name: "Memories", icon: Layers, count: "300+", color: "text-violet-500" },
-  { name: "Capabilities", icon: Zap, count: "525+", color: "text-amber-500" },
-  { name: "Memory", icon: Brain, count: "∞", color: "text-rose-500" },
-  { name: "CodeLab", icon: Code, count: "Live", color: "text-emerald-500" },
+  { name: "Templates", icon: Package, count: "200+", color: "text-[hsl(var(--neon-cyan))]" },
+  { name: "Memories", icon: Layers, count: "300+", color: "text-[hsl(var(--neon-purple))]" },
+  { name: "Capabilities", icon: Zap, count: "525+", color: "text-primary" },
+  { name: "Memory", icon: Brain, count: "∞", color: "text-[hsl(var(--neon-magenta))]" },
+  { name: "CodeLab", icon: Code, count: "Live", color: "text-[hsl(var(--neon-cyan))]" },
 ];
 
 // Premium engine tiers
@@ -108,15 +108,15 @@ function FreeToolsSection() {
       {/* Central FREE badge */}
       <div className="flex justify-center mb-5">
         <motion.div
-          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex flex-col items-center justify-center shadow-xl shadow-emerald-500/30"
+          className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-primary flex flex-col items-center justify-center shadow-xl shadow-primary/30"
           animate={{
             scale: [1, 1.02, 1],
           }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Gift className="w-7 h-7 sm:w-8 sm:h-8 text-white mb-0.5" />
-          <span className="text-white font-black text-base sm:text-lg tracking-tight">FREE</span>
-          <span className="text-emerald-100 text-[9px] sm:text-[10px] font-medium">Dev Tools</span>
+          <Gift className="w-7 h-7 sm:w-8 sm:h-8 text-primary-foreground mb-0.5" />
+          <span className="text-primary-foreground font-black text-base sm:text-lg tracking-tight">FREE</span>
+          <span className="text-primary-foreground/80 text-[9px] sm:text-[10px] font-medium">Dev Tools</span>
         </motion.div>
       </div>
       
@@ -201,7 +201,7 @@ function EnginesShowcase() {
     <div className="relative w-full">
       {/* Section header */}
       <div className="text-center mb-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-violet-500/10 to-primary/10 border border-primary/30 mb-2">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 mb-2">
           <Crown className="w-3.5 h-3.5 text-primary" />
           <span className="text-xs font-bold text-foreground">Engine Subscriptions</span>
         </div>
@@ -235,7 +235,7 @@ function EnginesShowcase() {
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-xs font-bold text-foreground">{tier.name}</span>
                 {tier.price === "Free" ? (
-                  <Unlock className="w-3 h-3 text-emerald-500" />
+                  <Unlock className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
                 ) : (
                   <Lock className="w-3 h-3 text-muted-foreground" />
                 )}
@@ -329,9 +329,9 @@ export function EnginesMembershipHero() {
           {/* Divider */}
           <div className="relative flex items-center gap-3">
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-              <Check className="w-3 h-3 text-emerald-500" />
-              <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 uppercase tracking-wide">Free Tier</span>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[hsl(var(--neon-cyan))]/10 border border-[hsl(var(--neon-cyan))]/20">
+              <Check className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wide">Free Tier</span>
             </div>
             <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent" />
           </div>
