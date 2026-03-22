@@ -92,7 +92,7 @@ export function ArtifactPacksSection() {
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             {tiers.map((tier) => (
-              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-primary/20 hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
+              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-[hsl(var(--neon-purple)/0.3)] hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
                 <div className={cn("text-3xl sm:text-4xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
                   {tier.slots}
                 </div>
