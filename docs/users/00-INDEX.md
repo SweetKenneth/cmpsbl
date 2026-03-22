@@ -6,7 +6,7 @@
 
 ## Purpose
 
-This library is for developers building on CMPSBL and users operating the platform. It covers API integration, module usage, memory management, agent deployment, and operational patterns.
+This library is for developers building on CMPSBL and users operating the platform. It covers API integration, module usage, memory management, and operational patterns.
 
 ---
 
