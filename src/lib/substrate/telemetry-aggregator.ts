@@ -419,7 +419,7 @@ async function aggregateBrainEvents(): Promise<BrainTelemetry> {
 
   if (!data || data.length === 0) return defaultBrain();
 
-  const successCount = data.filter(d => d.outcome === 'succeeded').length;
+  const successCount = data.filter(d => d.outcome === 'success' || d.outcome === 'completed').length;
   const moduleCounts: Record<string, number> = {};
   data.forEach(d => { moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1; });
   const topModule = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
