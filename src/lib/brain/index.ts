@@ -174,7 +174,7 @@ export async function recall(
     tiers?: ('hot' | 'warm' | 'cold')[];
   }
 ): Promise<Memory[]> {
-  return searchMemories(context, {
+  return searchMemoriesFn(context, {
     tiers: options?.tiers,
     limit: options?.limit,
     minValueScore: options?.min_score,
