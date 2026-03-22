@@ -573,7 +573,7 @@ export function AnalyticsTab() {
                           </div>
                         </div>
                         <div className="h-1.5 rounded-full bg-muted/30 overflow-hidden">
-                          <motion.div className="h-full rounded-full bg-gradient-to-r from-emerald-500/70 to-teal-500/50" initial={{ width: 0 }} animate={{ width: `${(p.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
+                          <motion.div className="h-full rounded-full bg-gradient-to-r from-neon-green/70 to-neon-cyan/50" initial={{ width: 0 }} animate={{ width: `${(p.count / maxCount) * 100}%` }} transition={{ delay: 0.2 + idx * 0.03 }} />
                         </div>
                       </div>
                     );
