@@ -9,6 +9,7 @@
  */
 
 import { emit } from '../events/emit';
+import { generateHonestyDisclaimer } from '../../export/bridge-execution-honesty';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
