@@ -21,13 +21,13 @@ export interface DecayConfig {
 }
 
 export const DEFAULT_DECAY_CONFIG: DecayConfig = {
-  hot_max_age_hours: 24,          // Tightened from 48
-  warm_max_age_days: 7,           // Tightened from 14
-  cold_max_age_days: 30,          // Tightened from 90
-  hot_max_entries: 200,           // Tightened from 500
-  warm_max_entries: 1000,         // Tightened from 2000
-  min_access_count_to_protect: 5, // Tightened from 10
-  decay_rate: 0.15,               // Aggressive from 0.05
+  hot_max_age_hours: 24,          // Entries idle >24h decay
+  warm_max_age_days: 7,           // Entries idle >7d decay
+  cold_max_age_days: 30,          // Entries >30d archived/purged
+  hot_max_entries: 500,           // Aligned with auto-tiering & pruner (500)
+  warm_max_entries: 10_000,       // Aligned with auto-tiering & pruner (10K)
+  min_access_count_to_protect: 3, // High-value entries immune to decay
+  decay_rate: 0.12,               // Balanced decay per cycle
 };
 
 export interface GCResult {
