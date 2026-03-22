@@ -69,6 +69,9 @@ import ch37Img from "@/assets/blog/ai-governance-namespace-unified.jpg";
 import ch38Img from "@/assets/blog/sparta-epoch-rebuild-journey.jpg";
 import ch39Img from "@/assets/blog/defense-ai-security.jpg";
 import ch40Img from "@/assets/blog/signal-to-silicon-narrative.jpg";
+import ch41Img from "@/assets/blog/following-the-thread-dream-signal.jpg";
+import ch42Img from "@/assets/blog/contact-substrate-reaches-out.jpg";
+import ch43Img from "@/assets/blog/the-contact-epoch-new-era.jpg";
 
 // AutoBlog images
 import autoblog1 from '@/assets/autoblog/autoblog-1.jpg';
