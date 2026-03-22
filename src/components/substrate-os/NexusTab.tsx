@@ -297,7 +297,7 @@ export function NexusTab() {
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <Zap className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm text-emerald-400">100% Free-Tier Stack</h3>
