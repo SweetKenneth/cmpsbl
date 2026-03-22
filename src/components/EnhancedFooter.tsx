@@ -96,12 +96,12 @@ export function EnhancedFooter() {
   return (
     <>
       <footer className="relative z-20 border-t border-border/50 bg-gradient-to-b from-background via-background to-muted/20" role="contentinfo">
-        {/* Memory Stream flowing accent bar at top of footer */}
-        <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-70" />
-        <div className="absolute inset-x-0 top-[2px] h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon-purple)/0.15)] to-transparent" />
-        <div className="absolute inset-x-0 top-[3px] h-8 bg-gradient-to-b from-[hsl(var(--neon-purple)/0.02)] to-transparent pointer-events-none" />
-        {/* Subtle background texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--neon-cyan)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
+        {/* Memory Stream flowing accent bar at top of footer — enhanced width */}
+        <div className="absolute inset-x-0 top-0 h-[3px] memory-stream-bar opacity-80" />
+        <div className="absolute inset-x-0 top-[3px] h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon-purple)/0.2)] to-transparent" />
+        <div className="absolute inset-x-0 top-[4px] h-10 bg-gradient-to-b from-[hsl(var(--neon-purple)/0.03)] to-transparent pointer-events-none" />
+        {/* Subtle background texture — enhanced */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--neon-cyan)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
           {/* Main grid: brand + 4 link columns */}
