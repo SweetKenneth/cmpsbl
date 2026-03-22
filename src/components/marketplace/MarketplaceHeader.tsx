@@ -87,15 +87,11 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
           transition={{ delay: 0.1 }}
           className="text-center mb-8"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-4 tracking-tight">
-            <span className="bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent">
-              AI Templates That
-            </span>
-            <br />
-            <span className="bg-gradient-to-r from-primary via-violet-500 to-cyan-400 bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-              Never Forget
-            </span>
-          </h1>
+           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
+             <span className="text-foreground">AI Templates That</span>
+             <br />
+             <span className="text-primary">Never Forget</span>
+           </h1>
         <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4 leading-relaxed">
             {TEMPLATES.length}+ production-ready cognitive templates with built-in memory,
             drift prevention & self-improvement. 

@@ -242,13 +242,13 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <Button 
-              size="lg" 
-              className="gap-2 px-8 py-6 text-lg font-bold bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 hover:opacity-90 transition-opacity text-white"
-              onClick={() => document.getElementById('ai-generator')?.scrollIntoView({ behavior: 'smooth' })}
-            >
-              <Sparkles className="w-5 h-5" />
-              Generate Unique Template — $39
+             <Button 
+               size="lg" 
+               className="gap-2 px-8 py-6 text-lg font-bold bg-primary hover:bg-primary/90 text-primary-foreground"
+               onClick={() => document.getElementById('ai-generator')?.scrollIntoView({ behavior: 'smooth' })}
+             >
+               <Sparkles className="w-5 h-5" />
+               Generate Unique Template — $39
             </Button>
             <Button 
               variant="outline" 
