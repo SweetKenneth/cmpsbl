@@ -376,70 +376,66 @@ export async function runTierMigration(): Promise<MigrationResult> {
   };
 
   try {
-    // Phase 1: Promote frequently accessed warm → hot (batched)
-    const { data: warmCandidates } = await supabase
-      .from('brain_memory_warm')
-      .select('id, content, context, value_score, tags, metadata, source_module, category')
-      .gte('access_count', 10)
-      .gte('value_score', 0.7)
-      .limit(50);
+    // Phase 1 & 2 run in parallel (promote warm→hot + demote hot→warm)
+    const staleCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+    const [warmCandidatesRes, hotCandidatesRes] = await Promise.all([
+      supabase
+        .from('brain_memory_warm')
+        .select('id, content, context, value_score, tags, metadata, source_module, category')
+        .gte('access_count', 10)
+        .gte('value_score', 0.7)
+        .limit(50),
+      supabase
+        .from('brain_memory_hot')
+        .select('id, content, context, value_score, tags, metadata, source_module, category')
+        .lt('last_used', staleCutoff)
+        .lt('value_score', 0.5)
+        .limit(50),
+    ]);
+
+    const warmCandidates = warmCandidatesRes.data;
+    const hotCandidates = hotCandidatesRes.data;
+
+    const phase1and2: Promise<void>[] = [];
 
     if (warmCandidates && warmCandidates.length > 0) {
-      const hotInserts = warmCandidates.map(m => ({
-        content: m.content,
-        context: m.context,
-        value_score: m.value_score,
-        tags: m.tags,
-        metadata: m.metadata,
-        source_module: m.source_module || 'general',
-        category: m.category || m.context || 'uncategorized',
-      }));
-
-      const { error: insertError } = await supabase
-        .from('brain_memory_hot')
-        .insert(hotInserts);
-
-      if (!insertError) {
-        const ids = warmCandidates.map(m => m.id);
-        await supabase.from('brain_memory_warm').delete().in('id', ids);
-        result.movedUp += warmCandidates.length;
-      } else {
-        result.errors.push(insertError.message);
-      }
+      phase1and2.push((async () => {
+        const hotInserts = warmCandidates.map(m => ({
+          content: m.content, context: m.context, value_score: m.value_score,
+          tags: m.tags, metadata: m.metadata,
+          source_module: m.source_module || 'general',
+          category: m.category || m.context || 'uncategorized',
+        }));
+        const { error: insertError } = await supabase.from('brain_memory_hot').insert(hotInserts);
+        if (!insertError) {
+          await supabase.from('brain_memory_warm').delete().in('id', warmCandidates.map(m => m.id));
+          result.movedUp += warmCandidates.length;
+        } else {
+          result.errors.push(insertError.message);
+        }
+      })());
     }
-
-    // Phase 2: Demote stale hot → warm (batched)
-    const staleCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    const { data: hotCandidates } = await supabase
-      .from('brain_memory_hot')
-      .select('id, content, context, value_score, tags, metadata, source_module, category')
-      .lt('last_used', staleCutoff)
-      .lt('value_score', 0.5)
-      .limit(50);
 
     if (hotCandidates && hotCandidates.length > 0) {
-      const warmInserts = hotCandidates.map(m => ({
-        content: m.content,
-        context: m.context,
-        value_score: m.value_score,
-        tags: m.tags,
-        metadata: m.metadata,
-        source_module: m.source_module || 'general',
-        category: m.category || m.context || 'uncategorized',
-      }));
-
-      const { error: insertError } = await supabase
-        .from('brain_memory_warm')
-        .insert(warmInserts);
-
-      if (!insertError) {
-        const ids = hotCandidates.map(m => m.id);
-        await supabase.from('brain_memory_hot').delete().in('id', ids);
-        result.movedDown += hotCandidates.length;
-      } else {
-        result.errors.push(insertError.message);
-      }
+      phase1and2.push((async () => {
+        const warmInserts = hotCandidates.map(m => ({
+          content: m.content, context: m.context, value_score: m.value_score,
+          tags: m.tags, metadata: m.metadata,
+          source_module: m.source_module || 'general',
+          category: m.category || m.context || 'uncategorized',
+        }));
+        const { error: insertError } = await supabase.from('brain_memory_warm').insert(warmInserts);
+        if (!insertError) {
+          await supabase.from('brain_memory_hot').delete().in('id', hotCandidates.map(m => m.id));
+          result.movedDown += hotCandidates.length;
+        } else {
+          result.errors.push(insertError.message);
+        }
+      })());
     }
+
+    await Promise.all(phase1and2);
 
     // Phase 3: Demote stale warm → cold
     const warmStaleCutoff = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
