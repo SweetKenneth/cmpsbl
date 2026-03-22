@@ -83,16 +83,18 @@ export function table(headers: string[], rows: string[][], padding = 2): void {
 }
 
 export function box(lines: string[], title?: string): void {
-  const maxLen = Math.max(...lines.map(l => l.length), (title ?? '').length + 4);
-  const width = maxLen + 4;
+  const titleLen = title ? title.length + 4 : 0; // "═ TITLE ═" padding
+  const maxLen = Math.max(...lines.map(l => l.length), titleLen);
+  const innerWidth = maxLen + 2; // padding inside box
 
   if (title) {
-    console.log(`  ╔═ ${title} ${'═'.repeat(Math.max(0, width - title.length - 5))}╗`);
+    const fillLen = Math.max(0, innerWidth - title.length - 3); // "═ " prefix + " " suffix
+    console.log(`  ╔═ ${title} ${'═'.repeat(fillLen)}╗`);
   } else {
-    console.log(`  ╔${'═'.repeat(width)}╗`);
+    console.log(`  ╔${'═'.repeat(innerWidth + 2)}╗`);
   }
   for (const line of lines) {
-    console.log(`  ║  ${line.padEnd(maxLen + 2)}║`);
+    console.log(`  ║  ${line.padEnd(innerWidth)}║`);
   }
-  console.log(`  ╚${'═'.repeat(width)}╝`);
+  console.log(`  ╚${'═'.repeat(innerWidth + 2)}╝`);
 }
