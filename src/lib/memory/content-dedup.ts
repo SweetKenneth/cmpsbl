@@ -2,7 +2,7 @@
  * Content Deduplication & Storage Optimization
  * 
  * Prevents duplicate storage via content hashing, normalizes metadata,
- * and provides delta compression for similar memories.
+ * and provides single-pass compression for similar memories.
  */
 
 // ═══════════════════════════════════════════════════════════════════
@@ -21,6 +21,7 @@ export function contentHash(text: string): number {
 /**
  * Generate a semantic fingerprint for near-duplicate detection.
  * Returns sorted top-frequency trigrams as a stable key.
+ * OPTIMIZED: Partial selection sort (O(5n)) instead of full sort (O(n log n))
  */
 export function semanticFingerprint(text: string): string {
   const normalized = normalizeContent(text);
@@ -29,29 +30,47 @@ export function semanticFingerprint(text: string): string {
   
   // Build trigram frequency map
   const trigrams = new Map<string, number>();
-  for (let i = 0; i < words.length - 2; i++) {
-    const tri = `${words[i]} ${words[i + 1]} ${words[i + 2]}`;
+  for (let i = 0, end = words.length - 2; i < end; i++) {
+    const tri = words[i] + ' ' + words[i + 1] + ' ' + words[i + 2];
     trigrams.set(tri, (trigrams.get(tri) || 0) + 1);
   }
   
-  // Top 5 trigrams sorted by frequency then alphabetically
-  const sorted = Array.from(trigrams.entries())
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
-    .slice(0, 5);
+  // Partial selection sort for top 5 — avoids full sort allocation
+  const entries = Array.from(trigrams.entries());
+  const k = Math.min(5, entries.length);
+  for (let i = 0; i < k; i++) {
+    let maxIdx = i;
+    for (let j = i + 1; j < entries.length; j++) {
+      if (entries[j][1] > entries[maxIdx][1] ||
+          (entries[j][1] === entries[maxIdx][1] && entries[j][0] < entries[maxIdx][0])) {
+        maxIdx = j;
+      }
+    }
+    if (maxIdx !== i) { const tmp = entries[i]; entries[i] = entries[maxIdx]; entries[maxIdx] = tmp; }
+  }
   
-  return sorted.map(([tri]) => tri).join('|');
+  let result = '';
+  for (let i = 0; i < k; i++) {
+    if (i > 0) result += '|';
+    result += entries[i][0];
+  }
+  return result;
 }
 
 // ═══════════════════════════════════════════════════════════════════
 // CONTENT NORMALIZATION — Strip noise, standardize format
 // ═══════════════════════════════════════════════════════════════════
 
+/** Pre-compiled regex for normalization */
+const WHITESPACE_RE = /\s+/g;
+const SPECIAL_CHARS_RE = /[^\w\s.,!?;:'-]/g;
+
 /** Normalize content for comparison and storage efficiency */
 export function normalizeContent(text: string): string {
   return text
     .toLowerCase()
-    .replace(/\s+/g, ' ')          // collapse whitespace
-    .replace(/[^\w\s.,!?;:'-]/g, '') // strip special chars except punctuation
+    .replace(WHITESPACE_RE, ' ')
+    .replace(SPECIAL_CHARS_RE, '')
     .trim();
 }
 
@@ -63,18 +82,15 @@ export function compactMetadata(meta: Record<string, unknown>): Record<string, u
   const result: Record<string, unknown> = {};
   
   for (const [key, value] of Object.entries(meta)) {
-    // Skip null, undefined, empty strings, empty arrays
     if (value === null || value === undefined) continue;
     if (typeof value === 'string' && value.length === 0) continue;
     if (Array.isArray(value) && value.length === 0) continue;
     
-    // Truncate verbose string fields
     if (typeof value === 'string' && value.length > 500) {
       result[key] = value.slice(0, 500);
       continue;
     }
     
-    // Recursively compact nested objects
     if (typeof value === 'object' && !Array.isArray(value)) {
       const compacted = compactMetadata(value as Record<string, unknown>);
       if (Object.keys(compacted).length > 0) {
@@ -90,7 +106,7 @@ export function compactMetadata(meta: Record<string, unknown>): Record<string, u
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// CONTENT COMPRESSION — Reduce storage size for bulk text
+// CONTENT COMPRESSION — Single-pass stop-word removal for prose
 // ═══════════════════════════════════════════════════════════════════
 
 /** Stop words to strip during compression (saves ~20% storage on prose) */
@@ -105,40 +121,52 @@ const COMPRESSION_STOP_WORDS = new Set([
   'this', 'these', 'those', 'it', 'its',
 ]);
 
+/** Pre-compiled regex for code comment stripping */
+const SINGLE_LINE_COMMENT_RE = /\/\/[^\n]*/g;
+const MULTI_LINE_COMMENT_RE = /\/\*[\s\S]*?\*\//g;
+const BLANK_LINES_RE = /^\s*\n/gm;
+const TRAILING_WS_RE = /\s+$/gm;
+const NON_ALPHA_RE = /[^a-z0-9]/g;
+
 /**
  * Compress content for cold/glacier storage.
- * Strips stop words from non-code content, preserving meaning.
- * Returns compressed text and the compression ratio.
+ * OPTIMIZED: Single-pass word scanning for prose — no intermediate arrays.
  */
 export function compressForStorage(
   content: string, 
   isCode: boolean = false
 ): { compressed: string; ratio: number } {
   if (isCode) {
-    // Code: strip comments and blank lines only
     const compressed = content
-      .replace(/\/\/[^\n]*/g, '')           // single-line comments
-      .replace(/\/\*[\s\S]*?\*\//g, '')     // multi-line comments
-      .replace(/^\s*\n/gm, '')             // blank lines
-      .replace(/\s+$/gm, '');             // trailing whitespace
-    return { 
-      compressed, 
-      ratio: content.length / Math.max(compressed.length, 1) 
-    };
+      .replace(SINGLE_LINE_COMMENT_RE, '')
+      .replace(MULTI_LINE_COMMENT_RE, '')
+      .replace(BLANK_LINES_RE, '')
+      .replace(TRAILING_WS_RE, '');
+    return { compressed, ratio: content.length / Math.max(compressed.length, 1) };
   }
 
-  // Prose: stop-word removal + whitespace normalization
-  const words = content.split(/\s+/);
-  const kept: string[] = [];
-  
-  for (const word of words) {
-    const lower = word.toLowerCase().replace(/[^a-z0-9]/g, '');
-    if (lower.length > 0 && !COMPRESSION_STOP_WORDS.has(lower)) {
-      kept.push(word);
+  // Single-pass prose compression: scan words inline, skip stop words
+  let compressed = '';
+  let wordStart = -1;
+  const len = content.length;
+
+  for (let i = 0; i <= len; i++) {
+    const ch = i < len ? content.charCodeAt(i) : 32;
+    const isSpace = ch === 32 || ch === 9 || ch === 10 || ch === 13;
+
+    if (!isSpace && wordStart === -1) {
+      wordStart = i;
+    } else if (isSpace && wordStart !== -1) {
+      const word = content.slice(wordStart, i);
+      const lower = word.toLowerCase().replace(NON_ALPHA_RE, '');
+      if (lower.length > 0 && !COMPRESSION_STOP_WORDS.has(lower)) {
+        if (compressed.length > 0) compressed += ' ';
+        compressed += word;
+      }
+      wordStart = -1;
     }
   }
-  
-  const compressed = kept.join(' ');
+
   return {
     compressed,
     ratio: content.length / Math.max(compressed.length, 1),
@@ -164,6 +192,9 @@ const HIGH_SIGNALS = [
   'principle', 'rule', 'policy', 'standard', 'convention',
 ];
 
+/** Pre-built critical type set for O(1) lookup */
+const CRITICAL_TYPES = new Set(['doctrine', 'doctrine_integrated', 'error_pattern', 'heuristic']);
+
 /**
  * Classify memory importance for retention decisions.
  * Critical & high importance memories are NEVER pruned.
@@ -174,18 +205,22 @@ export function classifyImportance(
   valueScore: number,
   accessCount: number
 ): ImportanceLevel {
+  // Type-based critical preservation — O(1) Set lookup
+  if (CRITICAL_TYPES.has(memoryType)) return 'critical';
+  
   const lower = content.toLowerCase();
   
-  // Type-based critical preservation
-  if (['doctrine', 'doctrine_integrated', 'error_pattern', 'heuristic'].includes(memoryType)) {
-    return 'critical';
+  // Signal-based classification — count matches inline
+  let criticalHits = 0;
+  for (let i = 0; i < CRITICAL_SIGNALS.length; i++) {
+    if (lower.includes(CRITICAL_SIGNALS[i])) criticalHits++;
   }
-  
-  // Signal-based classification
-  const criticalHits = CRITICAL_SIGNALS.filter(s => lower.includes(s)).length;
   if (criticalHits >= 2) return 'critical';
   
-  const highHits = HIGH_SIGNALS.filter(s => lower.includes(s)).length;
+  let highHits = 0;
+  for (let i = 0; i < HIGH_SIGNALS.length; i++) {
+    if (lower.includes(HIGH_SIGNALS[i])) highHits++;
+  }
   if (highHits >= 2 || criticalHits >= 1) return 'high';
   
   // Value/usage based
@@ -198,7 +233,6 @@ export function classifyImportance(
 
 /**
  * Check if a memory should be preserved indefinitely.
- * Critical and high importance memories are never deleted.
  */
 export function shouldPreserveIndefinitely(importance: ImportanceLevel): boolean {
   return importance === 'critical' || importance === 'high';
@@ -256,5 +290,5 @@ function fnv1a32(str: string): number {
     hash ^= str.charCodeAt(i);
     hash = (hash * 0x01000193) | 0;
   }
-  return hash >>> 0; // unsigned
+  return hash >>> 0;
 }

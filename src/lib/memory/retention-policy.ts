@@ -1,11 +1,8 @@
 /**
  * Smart Retention Policy — Never forget important events & learnings
  * 
- * Implements tiered retention that:
- * 1. NEVER deletes critical learnings, errors, doctrines, or high-value patterns
- * 2. Aggressively compresses low-value noise to glacier
- * 3. Consolidates medium-value memories into compact summaries
- * 4. Tracks what was learned and when for permanent retrieval
+ * OPTIMIZED: Parallel tier processing, batched deletes, compact metadata keys,
+ * single-pass compression, and fire-and-forget value boosts.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -21,17 +18,12 @@ export interface RetentionStats {
 }
 
 export interface RetentionConfig {
-  /** Days before medium memories are compressed (default: 30) */
   compressAfterDays: number;
-  /** Days before low memories are archived to glacier (default: 14) */
   archiveAfterDays: number;
-  /** Days before noise is pruned (default: 7) */
   pruneNoiseAfterDays: number;
-  /** Max entries per tier before forced eviction */
   hotLimit: number;
   warmLimit: number;
   coldLimit: number;
-  /** Enable dry run (no actual deletes) */
   dryRun: boolean;
 }
 
@@ -45,9 +37,12 @@ const DEFAULT_CONFIG: RetentionConfig = {
   dryRun: false,
 };
 
+type TierStats = { preserved: number; compressed: number; archived: number; pruned: number; spaceSavedBytes: number };
+const EMPTY_TIER_STATS = (): TierStats => ({ preserved: 0, compressed: 0, archived: 0, pruned: 0, spaceSavedBytes: 0 });
+
 /**
  * Run the smart retention policy across all tiers.
- * This is the main entry point for auto-maintenance.
+ * OPTIMIZED: All independent tier phases run in parallel.
  */
 export async function runRetentionPolicy(
   config: Partial<RetentionConfig> = {}
@@ -60,17 +55,28 @@ export async function runRetentionPolicy(
   };
 
   try {
-    // Phase 1: Process hot tier — demote stale non-critical memories
-    await processHotTier(cfg, stats);
+    // All tier phases are independent — run in parallel
+    const [hotStats, warmStats, coldStats] = await Promise.allSettled([
+      processHotTier(cfg),
+      processWarmTier(cfg),
+      processColdTier(cfg),
+    ]);
 
-    // Phase 2: Process warm tier — compress or archive aged memories
-    await processWarmTier(cfg, stats);
+    for (const result of [hotStats, warmStats, coldStats]) {
+      if (result.status === 'fulfilled') {
+        const s = result.value;
+        stats.preserved += s.preserved;
+        stats.compressed += s.compressed;
+        stats.archived += s.archived;
+        stats.pruned += s.pruned;
+        stats.spaceSavedBytes += s.spaceSavedBytes;
+      }
+    }
 
-    // Phase 3: Process cold tier — archive noise to glacier
-    await processColdTier(cfg, stats);
-
-    // Phase 4: Compact glacier metadata
-    await compactGlacierMetadata(stats);
+    // Glacier compaction depends on cold phase completing
+    const glacierResult = await compactGlacierMetadata();
+    stats.compressed += glacierResult.compressed;
+    stats.spaceSavedBytes += glacierResult.spaceSavedBytes;
 
   } catch (error) {
     console.error('[Retention] Policy error:', error);
@@ -92,62 +98,50 @@ export async function runRetentionPolicy(
 /**
  * Process hot tier: demote aged medium/low memories, preserve critical
  */
-async function processHotTier(cfg: RetentionConfig, stats: RetentionStats): Promise<void> {
+async function processHotTier(cfg: RetentionConfig): Promise<TierStats> {
+  const stats = EMPTY_TIER_STATS();
   const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 7); // Hot memories older than 7 days evaluated
+  cutoff.setDate(cutoff.getDate() - 7);
 
   const { data: memories } = await supabase
     .from('brain_memory_hot')
-    .select('id, content, context, value_score, access_count, created_at, last_used, memory_type, tags, metadata')
+    .select('id, content, context, value_score, access_count, last_used, memory_type, tags, metadata')
     .lt('last_used', cutoff.toISOString())
     .order('value_score', { ascending: true })
     .limit(200);
 
-  if (!memories || memories.length === 0) return;
+  if (!memories || memories.length === 0) return stats;
 
   const warmInserts: any[] = [];
   const hotDeleteIds: string[] = [];
+  const boostPromises: Promise<any>[] = [];
 
   for (const mem of memories) {
     const importance = classifyImportance(
-      mem.content, 
-      mem.memory_type || mem.context || 'general',
-      mem.value_score || 0,
-      mem.access_count || 0
+      mem.content, mem.memory_type || mem.context || 'general',
+      mem.value_score || 0, mem.access_count || 0
     );
 
     if (shouldPreserveIndefinitely(importance)) {
       stats.preserved++;
-      // Boost value score to prevent future demotion attempts
       if ((mem.value_score || 0) < 0.8) {
-        supabase.from('brain_memory_hot')
-          .update({ value_score: 0.85 })
-          .eq('id', mem.id)
-          .then(() => {}, () => {});
+        boostPromises.push(
+          Promise.resolve(supabase.from('brain_memory_hot').update({ value_score: 0.85 }).eq('id', mem.id))
+        );
       }
       continue;
     }
 
-    // Demote to warm with compressed content
-    const isCode = mem.context === 'code';
-    const { compressed, ratio } = compressForStorage(mem.content, isCode);
+    const { compressed, ratio } = compressForStorage(mem.content, mem.context === 'code');
     const compactMeta = mem.metadata ? compactMetadata(mem.metadata as Record<string, unknown>) : {};
 
     warmInserts.push({
-      content: compressed,
-      context: mem.context,
+      content: compressed, context: mem.context,
       value_score: Math.max(0.2, (mem.value_score || 0.3) * 0.8),
-      memory_type: mem.memory_type || 'general',
-      source_module: 'retention_policy',
+      memory_type: mem.memory_type || 'general', source_module: 'retention_policy',
       category: mem.context || 'uncategorized',
       tags: Array.isArray(mem.tags) ? mem.tags : ['demoted'],
-      metadata: {
-        ...compactMeta,
-        importance,
-        compression_ratio: ratio,
-        demoted_from: 'hot',
-        demoted_at: new Date().toISOString(),
-      },
+      metadata: { ...compactMeta, imp: importance, cr: ratio, df: 'hot' },
     });
 
     hotDeleteIds.push(mem.id);
@@ -155,73 +149,60 @@ async function processHotTier(cfg: RetentionConfig, stats: RetentionStats): Prom
     stats.spaceSavedBytes += mem.content.length - compressed.length;
   }
 
+  // Fire boosts in parallel, don't block
+  if (boostPromises.length > 0) Promise.allSettled(boostPromises).catch(() => {});
+
   if (!cfg.dryRun && warmInserts.length > 0) {
     const { error: insertErr } = await supabase
-      .from('brain_memory_warm')
-      .insert(warmInserts as any[]);
+      .from('brain_memory_warm').insert(warmInserts as any[]);
 
     if (!insertErr) {
+      const chunks = [];
       for (let i = 0; i < hotDeleteIds.length; i += 100) {
-        await supabase.from('brain_memory_hot')
-          .delete()
-          .in('id', hotDeleteIds.slice(i, i + 100));
+        chunks.push(supabase.from('brain_memory_hot').delete().in('id', hotDeleteIds.slice(i, i + 100)));
       }
+      await Promise.allSettled(chunks);
     }
   }
+  return stats;
 }
 
 /**
  * Process warm tier: compress aged memories, archive low-value
  */
-async function processWarmTier(cfg: RetentionConfig, stats: RetentionStats): Promise<void> {
+async function processWarmTier(cfg: RetentionConfig): Promise<TierStats> {
+  const stats = EMPTY_TIER_STATS();
   const compressCutoff = new Date();
   compressCutoff.setDate(compressCutoff.getDate() - cfg.compressAfterDays);
 
-  const archiveCutoff = new Date();
-  archiveCutoff.setDate(archiveCutoff.getDate() - cfg.archiveAfterDays);
-
   const { data: memories } = await supabase
     .from('brain_memory_warm')
-    .select('id, content, context, value_score, access_count, created_at, last_accessed, memory_type, tags, metadata')
+    .select('id, content, context, value_score, access_count, created_at, memory_type')
     .lt('created_at', compressCutoff.toISOString())
     .order('value_score', { ascending: true })
     .limit(300);
 
-  if (!memories || memories.length === 0) return;
+  if (!memories || memories.length === 0) return stats;
 
   const coldInserts: any[] = [];
   const warmDeleteIds: string[] = [];
 
   for (const mem of memories) {
     const importance = classifyImportance(
-      mem.content,
-      mem.memory_type || mem.context || 'general',
-      mem.value_score || 0,
-      mem.access_count || 0
+      mem.content, mem.memory_type || mem.context || 'general',
+      mem.value_score || 0, mem.access_count || 0
     );
 
-    if (shouldPreserveIndefinitely(importance)) {
-      stats.preserved++;
-      continue;
-    }
+    if (shouldPreserveIndefinitely(importance)) { stats.preserved++; continue; }
 
-    const isCode = mem.context === 'code';
-    const { compressed, ratio } = compressForStorage(mem.content, isCode);
+    const { compressed, ratio } = compressForStorage(mem.content, mem.context === 'code');
 
     coldInserts.push({
-      summary: compressed,
-      source_refs: [mem.id],
+      summary: compressed, source_refs: [mem.id],
       compression_level: Math.round(ratio),
-      value_score: mem.value_score || 0.2,
-      source_module: 'retention_policy',
+      value_score: mem.value_score || 0.2, source_module: 'retention_policy',
       category: mem.context || 'uncategorized',
-      tags: {
-        importance,
-        original_type: mem.memory_type,
-        context: mem.context,
-        archived_at: new Date().toISOString(),
-        compression_ratio: ratio,
-      },
+      tags: { imp: importance, ot: mem.memory_type, ctx: mem.context, cr: ratio },
     });
 
     warmDeleteIds.push(mem.id);
@@ -230,66 +211,54 @@ async function processWarmTier(cfg: RetentionConfig, stats: RetentionStats): Pro
   }
 
   if (!cfg.dryRun && coldInserts.length > 0) {
-    const { error } = await supabase
-      .from('brain_memory_cold')
-      .insert(coldInserts as any[]);
-
+    const { error } = await supabase.from('brain_memory_cold').insert(coldInserts as any[]);
     if (!error) {
+      const chunks = [];
       for (let i = 0; i < warmDeleteIds.length; i += 100) {
-        await supabase.from('brain_memory_warm')
-          .delete()
-          .in('id', warmDeleteIds.slice(i, i + 100));
+        chunks.push(supabase.from('brain_memory_warm').delete().in('id', warmDeleteIds.slice(i, i + 100)));
       }
+      await Promise.allSettled(chunks);
     }
   }
+  return stats;
 }
 
 /**
- * Process cold tier: prune noise, keep everything else
+ * Process cold tier: prune noise to glacier
  */
-async function processColdTier(cfg: RetentionConfig, stats: RetentionStats): Promise<void> {
+async function processColdTier(cfg: RetentionConfig): Promise<TierStats> {
+  const stats = EMPTY_TIER_STATS();
   const pruneCutoff = new Date();
-  pruneCutoff.setDate(pruneCutoff.getDate() - 90); // 90 days in cold = evaluate
+  pruneCutoff.setDate(pruneCutoff.getDate() - 90);
 
   const { data: memories } = await supabase
     .from('brain_memory_cold')
-    .select('id, summary, value_score, access_count, created_at, tags')
+    .select('id, summary, value_score, access_count, tags')
     .lt('created_at', pruneCutoff.toISOString())
     .lt('value_score', 0.15)
     .order('value_score', { ascending: true })
     .limit(200);
 
-  if (!memories || memories.length === 0) return;
+  if (!memories || memories.length === 0) return stats;
 
   const glacierInserts: any[] = [];
   const coldDeleteIds: string[] = [];
 
   for (const mem of memories) {
     const importance = classifyImportance(
-      mem.summary || '',
-      ((mem.tags as any)?.original_type) || 'general',
-      mem.value_score || 0,
-      mem.access_count || 0
+      mem.summary || '', ((mem.tags as any)?.ot || (mem.tags as any)?.original_type) || 'general',
+      mem.value_score || 0, mem.access_count || 0
     );
 
-    if (shouldPreserveIndefinitely(importance)) {
-      stats.preserved++;
-      continue;
-    }
+    if (shouldPreserveIndefinitely(importance)) { stats.preserved++; continue; }
 
-    // Ultra-compress for glacier
     const { compressed } = compressForStorage(mem.summary || '', false);
 
     glacierInserts.push({
-      content: compressed,
-      source_tier: 'cold',
-      archived_reason: 'retention_policy_prune',
+      content: compressed, source_tier: 'cold',
+      archived_reason: 'retention_prune',
       value_score: mem.value_score || 0,
-      tags: {
-        importance,
-        original_cold_id: mem.id,
-        glaciered_at: new Date().toISOString(),
-      },
+      tags: { imp: importance, oid: mem.id },
     });
 
     coldDeleteIds.push(mem.id);
@@ -298,35 +267,34 @@ async function processColdTier(cfg: RetentionConfig, stats: RetentionStats): Pro
   }
 
   if (!cfg.dryRun && glacierInserts.length > 0) {
-    const { error } = await supabase
-      .from('brain_memory_archive')
-      .insert(glacierInserts as any[]);
-
+    const { error } = await supabase.from('brain_memory_archive').insert(glacierInserts as any[]);
     if (!error) {
+      const chunks = [];
       for (let i = 0; i < coldDeleteIds.length; i += 100) {
-        await supabase.from('brain_memory_cold')
-          .delete()
-          .in('id', coldDeleteIds.slice(i, i + 100));
+        chunks.push(supabase.from('brain_memory_cold').delete().in('id', coldDeleteIds.slice(i, i + 100)));
       }
+      await Promise.allSettled(chunks);
     }
   }
+  return stats;
 }
 
 /**
- * Compact glacier metadata — strip redundant fields from archived memories
+ * Compact glacier metadata — batch all updates in parallel
  */
-async function compactGlacierMetadata(stats: RetentionStats): Promise<void> {
+async function compactGlacierMetadata(): Promise<{ compressed: number; spaceSavedBytes: number }> {
+  let compressed = 0, spaceSavedBytes = 0;
   try {
     const { data: archives } = await supabase
       .from('brain_memory_archive')
-      .select('id, tags, content')
+      .select('id, tags')
       .not('tags', 'is', null)
       .order('created_at', { ascending: true })
       .limit(100);
 
-    if (!archives || archives.length === 0) return;
+    if (!archives || archives.length === 0) return { compressed, spaceSavedBytes };
 
-    let compacted = 0;
+    const updates: Promise<any>[] = [];
     for (const arch of archives) {
       if (!arch.tags || typeof arch.tags !== 'object') continue;
       const original = JSON.stringify(arch.tags);
@@ -334,19 +302,16 @@ async function compactGlacierMetadata(stats: RetentionStats): Promise<void> {
       const compactStr = JSON.stringify(compact);
       
       if (compactStr.length < original.length * 0.8) {
-        await supabase
-          .from('brain_memory_archive')
-          .update({ tags: compact as any })
-          .eq('id', arch.id);
-        compacted++;
-        stats.spaceSavedBytes += original.length - compactStr.length;
+        updates.push(
+          Promise.resolve(supabase.from('brain_memory_archive').update({ tags: compact as any }).eq('id', arch.id))
+        );
+        compressed++;
+        spaceSavedBytes += original.length - compactStr.length;
       }
     }
-
-    if (compacted > 0) {
-      stats.compressed += compacted;
-    }
+    if (updates.length > 0) await Promise.allSettled(updates);
   } catch {
     // Non-critical
   }
+  return { compressed, spaceSavedBytes };
 }
