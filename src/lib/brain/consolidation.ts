@@ -1,13 +1,15 @@
 /**
- * BRAIN Memory Consolidation Engine
+ * BRAIN Memory Consolidation Engine v2
  * Pattern Extraction & Deduplication
  * 
- * OPTIMIZED: Uses shared tokenize/jaccardSimilarity, reduced allocations
+ * OPTIMIZED: Uses shared tokenize/jaccardSimilarity, content-dedup for
+ * importance-aware consolidation and reduced allocations.
  */
 
 import { supabase } from '@/integrations/supabase/client';
 import type { Memory } from './memoryTiering';
 import { tokenizeToSet, jaccardSimilarity } from './shared';
+import { classifyImportance, shouldPreserveIndefinitely, compressForStorage, compactMetadata } from '@/lib/memory/content-dedup';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
