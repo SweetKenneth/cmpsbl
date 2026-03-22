@@ -137,10 +137,10 @@ export const EventStream = memo(function EventStream() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/30 bg-muted/20">
         <div className="flex items-center gap-2">
-          <Radio className={cn("w-4 h-4", isLive ? "text-green-400 animate-pulse" : "text-muted-foreground")} />
+          <Radio className={cn("w-4 h-4", isLive ? "text-neon-green animate-pulse" : "text-muted-foreground")} />
           <span className="text-sm font-medium">Event Stream</span>
           {isLive && (
-            <Badge variant="outline" className="text-[10px] h-5 font-mono text-green-400 border-green-500/30 bg-green-500/10">
+            <Badge variant="outline" className="text-[10px] h-5 font-mono text-neon-green border-neon-green/30 bg-neon-green/10">
               LIVE
             </Badge>
           )}
