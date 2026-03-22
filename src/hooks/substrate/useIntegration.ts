@@ -134,11 +134,11 @@ export function useIntegration(): UseIntegrationReturn {
   // ── Discovery (fixed: was returning useQuery from functions) ──
 
   const fetchDiscovered = useMutation({
-    mutationFn: (adapterId?: string) => integrationModule.getDiscoveredEndpoints(adapterId),
+    mutationFn: (adapterId?: string) => Promise.resolve(integrationModule.getDiscoveredEndpoints(adapterId)),
   });
 
   const fetchMappedCommands = useMutation({
-    mutationFn: (adapterId?: string) => integrationModule.getCommandMappings(adapterId),
+    mutationFn: (adapterId?: string) => Promise.resolve(integrationModule.getCommandMappings(adapterId)),
   });
 
   // ── Connection Pools ───────────────────────────────────────────
