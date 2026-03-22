@@ -8,6 +8,7 @@
  */
 
 import React, { useEffect, useState, useRef, useMemo, lazy, Suspense } from "react";
+import { CmpsblWordmark } from "./CmpsblWordmark";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
