@@ -171,8 +171,8 @@ console.log(response.provider); // "claude-3"`,
     layer: "Operational",
     title: "DEFENSE Security",
     description: "Threat detection & governance",
-    color: "text-red-500",
-    gradient: "from-red-500 to-rose-600",
+    color: "text-[hsl(var(--neon-magenta))]",
+    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Check security posture
 const posture = await cmpsbl.defense.posture();
 console.log(posture.threat_level); // "low"
