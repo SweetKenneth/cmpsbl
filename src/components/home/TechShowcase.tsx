@@ -645,15 +645,7 @@ export function TechShowcase() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}
-            <span 
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-green)), hsl(var(--neon-cyan)))",
-                backgroundSize: "200% 200%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: "gradientShift 4s ease-in-out infinite",
-              }}
-            >
+            <span className="text-[hsl(var(--neon-cyan))]">
               Cognitive SDK
             </span>
           </h2>

@@ -41,13 +41,7 @@ export function AgentsSection() {
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">
             Meta-Agents.{" "}
-            <span
-              style={{
-                background: "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
+            <span className="text-[hsl(var(--neon-cyan))]">
               Fused Power.
             </span>
           </h2>
