@@ -25,10 +25,10 @@ export interface CompressedMemory {
 }
 
 const DEFAULT_CONFIG: CompressionConfig = {
-  targetRatio: 5,
+  targetRatio: 8,        // Increased from 5 for better compression
   preserveCode: true,
   semanticClustering: true,
-  maxClusterSize: 10,
+  maxClusterSize: 15,    // Increased from 10 for bigger batches
 };
 
 /**
