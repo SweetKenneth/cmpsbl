@@ -80,8 +80,8 @@ cmpsbl.ripple.on("dream.cycle_complete", (event) => {
     layer: "Kernel",
     title: "ACCESS Identity",
     description: "API keys, metering & access control",
-    color: "text-amber-500",
-    gradient: "from-amber-500 to-yellow-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Generate a scoped API key
 const apiKey = await cmpsbl.access.createKey({
   name: "mobile-app-prod",
