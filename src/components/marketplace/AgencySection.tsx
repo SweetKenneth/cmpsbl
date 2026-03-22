@@ -70,7 +70,7 @@ export function AgencySection({ onCheckout, isLoading }: AgencySectionProps) {
               )}
             >
               Annual
-              <Badge className="bg-emerald-500/20 text-emerald-600 border-0 text-[10px]">
+              <Badge className="bg-[hsl(var(--neon-green)/0.2)] text-[hsl(var(--neon-green))] border-0 text-[10px]">
                 Save 25%
               </Badge>
             </button>
