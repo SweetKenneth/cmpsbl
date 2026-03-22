@@ -94,7 +94,7 @@ export async function generateDefenseLearningSummary(
       blocked,
       challenged,
       actions: Object.fromEntries(actionCounts),
-      threatTypes: Object.fromEntries(threatTypes),
+      reasons: Object.fromEntries(reasonCounts),
       sampleEvents: events.slice(0, 5),
     };
 
