@@ -53,8 +53,8 @@ export function SocialProof() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-12"
         >
-          <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
-            <Users className="w-3 h-3 text-primary" />
+          <Badge variant="outline" className="mb-4 gap-1.5 border-[hsl(var(--neon-cyan)/0.3)] px-4 py-1.5">
+            <Users className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
             <span className="text-xs font-semibold">Builders on the Substrate</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
