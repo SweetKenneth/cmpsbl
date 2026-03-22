@@ -101,6 +101,7 @@ export function useDefense(): UseDefenseReturn {
     limits,
     rules,
     analyze,
+    report,
     reputation,
     ipIntel,
     anomaly,
