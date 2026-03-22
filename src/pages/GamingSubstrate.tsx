@@ -508,7 +508,7 @@ export default function GamingSubstrate() {
                   <p className="text-white/70 text-sm sm:text-base mb-6">Complete Gaming AI Infrastructure</p>
                   
                   <div className="mb-6">
-                    <span className="text-5xl sm:text-6xl font-black">$2,995</span>
+                    <span className="text-4xl sm:text-5xl font-black">$2,995</span>
                     <span className="text-white/60 text-sm sm:text-base ml-2">one-time</span>
                   </div>
 
