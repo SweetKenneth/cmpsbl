@@ -120,6 +120,8 @@ export class MemoryClient {
     /\bi\s+(?:live\s+in|am\s+from|come\s+from)\s+(.+?)(?:\.|$|,|\band\b)/gi,
     /\b(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)(.+?)(?:\.|$)/gi,
   ];
+  /** Pre-compiled cleanup regex for fact extraction */
+  private static readonly FACT_CLEANUP_RE = /^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i;
 
   /** Extract discrete facts from text */
   extractFacts(text: string): string[] {
@@ -129,9 +131,10 @@ export class MemoryClient {
       let match;
       pattern.lastIndex = 0;
       while ((match = pattern.exec(text)) !== null) {
-        let fact = match[0].trim()
-          .replace(/^(?:remember\s+(?:that\s+)?|don'?t\s+forget\s+(?:that\s+)?)/i, '')
-          .trim();
+        const raw = match[0].trim();
+        const fact = MemoryClient.FACT_CLEANUP_RE.test(raw)
+          ? raw.replace(MemoryClient.FACT_CLEANUP_RE, '').trim()
+          : raw;
         if (fact.length > 3 && fact.length < 200 && !seen.has(fact)) {
           seen.add(fact);
           facts.push(fact);
