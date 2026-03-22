@@ -52,7 +52,7 @@ export function FoundryHero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-base sm:text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
+          className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
         >
           A recursive discovery engine that surfaces production-grade software memories
           directly from silicon.{' '}
