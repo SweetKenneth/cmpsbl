@@ -286,47 +286,45 @@ export class MemoryClient {
       const userId = this.assertUserId();
       const tiersSearched: string[] = [];
       const allMemories: MemoryEntry[] = [];
+      const nowIso = new Date().toISOString();
       
-      // #10: Get retrieval strategy from metacognition
-      const meta = await this.getMetaState();
-      const strategy = meta?.retrieval_strategy || 'balanced';
-      const effectiveLimit = strategy === 'exploration' ? limit * 2 : limit;
-      
-      // FIX R5: Run ALL tier queries in parallel (warm was previously sequential)
-      const [dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
-        // #3: Contextual pre-fetch — boost memories due for review (#2 spaced repetition)
+      // Run meta fetch AND all tier queries in a single parallel batch
+      const [metaResult, dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
+        // Meta state (was previously sequential before tier queries)
+        this.getMetaState(),
+        // Spaced repetition pre-fetch
         supabase
           .from('brain_memory_hot' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
-          .lte('next_review_at', new Date().toISOString())
+          .lte('next_review_at', nowIso)
           .order('value_score', { ascending: false })
           .limit(3),
-        // 1. Search hot tier
+        // Hot tier
         supabase
           .from('brain_memory_hot' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
-          .limit(effectiveLimit),
-        // 2. Search warm tier (moved into parallel batch)
+          .limit(limit),
+        // Warm tier
         supabase
           .from('brain_memory_warm' as any)
           .select('id, content, created_at, value_score, memory_type, provenance')
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
-          .limit(effectiveLimit),
-        // 3. Vector-based recall via substrate
+          .limit(limit),
+        // Vector-based recall via substrate
         supabase.functions.invoke('pf-substrate', {
           body: {
             module: 'brain',
             action: 'query',
             query_text: query,
-            limit: effectiveLimit,
-            recall_strategy: strategy === 'precision' ? 'fidelity_first' : 'broad',
+            limit,
+            recall_strategy: 'broad',
             filters: {
               memory_types: ['user_fact', 'persistent_memory', 'workload_outcome', 'conversation_with_facts'],
               'metadata.agentId': this.agentId,
@@ -336,6 +334,10 @@ export class MemoryClient {
           }
         }),
       ]);
+
+      // Apply strategy from meta (if available) — only affects exploration mode
+      const meta = metaResult.status === 'fulfilled' ? metaResult.value as MemoryMetaState | null : null;
+      const strategy = meta?.retrieval_strategy || 'balanced';
 
       // Process spaced repetition results
       if (dueForReviewResult.status === 'fulfilled') {
