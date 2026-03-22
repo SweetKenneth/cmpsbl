@@ -271,8 +271,8 @@ export function useEncode(): UseEncodeReturn {
   });
 
   const auditTrail = useMutation({
-    mutationFn: (params?: { limit?: number }) =>
-      Promise.resolve(getExecutionAuditTrail(params?.limit)),
+    mutationFn: (params?: { taskId?: string }) =>
+      Promise.resolve(getExecutionAuditTrail(params?.taskId)),
   });
 
   const learningMetrics = useQuery({
