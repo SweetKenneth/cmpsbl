@@ -394,7 +394,7 @@ export function SiteAnalyticsSection() {
                 return (
                   <div key={day.date} className="flex-1 group relative">
                     <motion.div
-                      className="w-full rounded-t-md bg-gradient-to-t from-green-500/60 to-blue-400/30 hover:from-green-500/80 hover:to-blue-400/50 transition-all cursor-pointer"
+                      className="w-full rounded-t-md bg-gradient-to-t from-neon-green/60 to-neon-blue/30 hover:from-neon-green/80 hover:to-neon-blue/50 transition-all cursor-pointer"
                       style={{ height: `${Math.max(height, 4)}%` }}
                       initial={{ scaleY: 0 }}
                       animate={{ scaleY: 1 }}
