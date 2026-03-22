@@ -74,7 +74,7 @@ const phaseIcons = {
 const phaseColors: Record<string, string> = {
   pending: 'text-muted-foreground',
   running: 'text-primary animate-pulse',
-  completed: 'text-emerald-400',
+  completed: 'text-neon-green',
   failed: 'text-destructive',
   skipped: 'text-muted-foreground/50',
 };
