@@ -191,7 +191,7 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Ingest outcome for reinforcement learning',
   },
   {
-    patterns: [/cortex.*summary/i, /agency.*summary/i, /cascade.*summary/i, /proposal.*loop/i],
+    patterns: [/cortex.*summary/i, /orchestrat.*summary/i, /cascade.*summary/i, /proposal.*loop/i],
     command: 'cortex.summary',
     explanation: 'Human-readable Cortex context dump',
   },
