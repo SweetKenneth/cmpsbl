@@ -254,28 +254,29 @@ export class MemoryClient {
       MemoryClient.SLOW_DECAY_TYPES.has(memoryType) ? 'slow' : 'standard';
 
     if (salience >= 0.7) {
-      // Hot tier via substrate
+      // Hot tier via substrate — lean metadata (no redundant userId/agentId in nested meta)
       const meta: Record<string, unknown> = {
-        agentId: this.agentId,
-        userId: this.userId,
-        scope: this.scope,
-        salience_score: salience,
-        source: 'memory_sdk',
-        decay_curve: decayCurve,
-        provenance,
+        s: salience,        // shortened key
+        dc: decayCurve,     // shortened key
+        src: source,
       };
-      if (this.scope === 'session') meta.sessionId = this.sessionId;
+      if (this.scope === 'session') meta.sid = this.sessionId;
       if (metadata) Object.assign(meta, metadata);
 
       await supabase.functions.invoke('pf-substrate', {
         body: {
           module: 'brain', action: 'remember',
           content, memory_type: memoryType, confidence: salience,
-          metadata: meta,
+          metadata: {
+            agentId: this.agentId,
+            userId: this.userId,
+            scope: this.scope,
+            ...meta,
+          },
         }
       });
     } else {
-      // Warm tier direct insert
+      // Warm tier direct insert — minimal metadata, no provenance bloat
       await supabase.from('brain_memory_warm' as any).insert({
         content,
         context: memoryType,
@@ -285,8 +286,7 @@ export class MemoryClient {
         salience_score: salience,
         value_score: salience * 0.8,
         decay_curve: decayCurve,
-        provenance,
-        metadata: { agentId: this.agentId, userId: this.userId, scope: this.scope, ...metadata },
+        metadata: metadata ? compactMetadata({ ...metadata, src: source }) : { src: source },
         tags: ['memory_sdk'],
       });
     }
