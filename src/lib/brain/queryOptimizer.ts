@@ -60,12 +60,13 @@
   * Evict oldest entries when cache is full
   */
  function evictOldestEntries(): void {
-   if (queryCache.size >= MAX_CACHE_SIZE) {
-     const entries = Array.from(queryCache.entries())
-       .sort((a, b) => a[1].timestamp - b[1].timestamp);
-     
-     const toEvict = entries.slice(0, Math.floor(MAX_CACHE_SIZE * 0.2));
-     toEvict.forEach(([key]) => queryCache.delete(key));
+   if (queryCache.size < MAX_CACHE_SIZE) return;
+   // Evict 20% oldest entries — Map preserves insertion order
+   const toEvict = Math.floor(MAX_CACHE_SIZE * 0.2);
+   const keys = queryCache.keys();
+   for (let i = 0; i < toEvict; i++) {
+     const { value } = keys.next();
+     if (value) queryCache.delete(value);
    }
  }
  

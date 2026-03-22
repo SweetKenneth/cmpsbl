@@ -173,22 +173,15 @@ export function calculateSalience(
      combinedContext = `${query} ${focusContexts}`;
    }
  
-    try {
-      // Fetch from hot and warm tiers in parallel
-      const [{ data: hotMemories }, { data: warmMemories }] = await Promise.all([
-        supabase
-          .from('brain_memory_hot')
-          .select('id, content, value_score, access_count, created_at')
-          .order('value_score', { ascending: false })
-          .limit(50),
-        supabase
-          .from('brain_memory_warm')
-          .select('id, content, value_score, access_count, created_at')
-          .order('value_score', { ascending: false })
-          .limit(30),
-      ]);
+     try {
+       // Fetch from hot tier only — warm is secondary and adds latency
+       const { data: hotMemories } = await supabase
+         .from('brain_memory_hot')
+         .select('id, content, value_score, access_count, created_at')
+         .order('value_score', { ascending: false })
+         .limit(limit * 3);
 
-      const allMemories = [...(hotMemories || []), ...(warmMemories || [])];
+      const allMemories = hotMemories || [];
 
       // Calculate salience for each memory
       const scored = allMemories.map(m => ({

@@ -220,25 +220,27 @@ async function removeDuplicates(
   cluster: DuplicateCluster,
   preserveHighValue: boolean
 ): Promise<number> {
+  // Filter duplicates to remove
+  const toRemove = cluster.duplicates.filter(dup => {
+    if (preserveHighValue && (dup as any).value_score >= 0.8) return false;
+    return true;
+  });
+
+  if (toRemove.length === 0) return 0;
+
+  // Batch delete by tier
+  const hotIds = toRemove.filter(d => (d as any).tier === 'hot').map(d => d.id);
+  const warmIds = toRemove.filter(d => (d as any).tier !== 'hot').map(d => d.id);
+
   let removed = 0;
-  
-  for (const dup of cluster.duplicates) {
-    // Skip high-value memories if preservation enabled
-    if (preserveHighValue && (dup as any).value_score >= 0.8) {
-      continue;
-    }
 
-    const tier = (dup as any).tier || 'warm';
-    const table = tier === 'hot' ? 'brain_memory_hot' : 'brain_memory_warm';
-    
-    const { error } = await supabase
-      .from(table)
-      .delete()
-      .eq('id', dup.id);
-
-    if (!error) {
-      removed++;
-    }
+  if (hotIds.length > 0) {
+    const { error } = await supabase.from('brain_memory_hot').delete().in('id', hotIds);
+    if (!error) removed += hotIds.length;
+  }
+  if (warmIds.length > 0) {
+    const { error } = await supabase.from('brain_memory_warm').delete().in('id', warmIds);
+    if (!error) removed += warmIds.length;
   }
 
   return removed;
