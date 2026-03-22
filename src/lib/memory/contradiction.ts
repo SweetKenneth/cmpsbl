@@ -51,6 +51,7 @@ export function detectContradiction(
   }
 
   // 2. Antonym detection — if existing has one side, new has the other
+  const newWordSet = new Set(newWordsLong);
   for (const [a, b] of ANTONYM_PAIRS) {
     const existingHasA = existingLower.includes(a);
     const existingHasB = existingLower.includes(b);
@@ -58,10 +59,11 @@ export function detectContradiction(
     const newHasB = newLower.includes(b);
 
     if ((existingHasA && newHasB) || (existingHasB && newHasA)) {
-      // Ensure they share a common subject (at least 2 overlapping content words)
-      const newWords = newLower.split(/\s+/).filter(w => w.length > 3);
-      const overlap = existingWords.filter(w => newWords.includes(w) && w !== a && w !== b);
-      if (overlap.length >= 1) {
+      let overlapCount = 0;
+      for (const w of existingWords) {
+        if (w !== a && w !== b && newWordSet.has(w)) { overlapCount++; break; }
+      }
+      if (overlapCount >= 1) {
         contradictionSignals++;
         reasons.push(`antonym: "${a}" vs "${b}"`);
       }
