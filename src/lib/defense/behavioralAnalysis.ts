@@ -231,12 +231,18 @@
      resolved: false,
    };
    
-   anomalies.push(anomaly);
-   
-   // Limit history
-   if (anomalies.length > MAX_ANOMALIES) {
-     anomalies.shift();
-   }
+    anomalies.push(anomaly);
+    unresolvedCounts.set(entityId, (unresolvedCounts.get(entityId) || 0) + 1);
+    
+    // Limit history — decrement index for evicted entry
+    if (anomalies.length > MAX_ANOMALIES) {
+      const evicted = anomalies.shift()!;
+      if (!evicted.resolved) {
+        const c = unresolvedCounts.get(evicted.entityId) || 1;
+        if (c <= 1) unresolvedCounts.delete(evicted.entityId);
+        else unresolvedCounts.set(evicted.entityId, c - 1);
+      }
+    }
    
    // Log to database
    logAnomaly(anomaly);
