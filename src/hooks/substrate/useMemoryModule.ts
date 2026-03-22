@@ -163,8 +163,7 @@ export function useMemoryModule(): UseMemoryModuleReturn {
   });
 
   const gc = useMutation({
-    mutationFn: (params?: { aggressiveness?: 'light' | 'standard' | 'aggressive' }) =>
-      runMemoryGC(params),
+    mutationFn: () => runMemoryGC(),
     onSuccess: invalidateMemory,
   });
 
