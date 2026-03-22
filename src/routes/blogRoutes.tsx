@@ -93,6 +93,9 @@ export const blogRoutes = (
     <Route path="/blog/what-we-got-wrong" element={<WhatWeGotWrong />} />
     <Route path="/blog/the-scanner" element={<TheScanner />} />
     <Route path="/blog/where-we-are-now" element={<WhereWeAreNow />} />
+    <Route path="/blog/following-the-thread" element={<FollowingTheThread />} />
+    <Route path="/blog/contact" element={<ContactChapter />} />
+    <Route path="/blog/the-contact-epoch" element={<TheContactEpoch />} />
 
     {/* ═══ LEGACY SLUG REDIRECTS ═══ */}
     {/* Memory Stream / Signal series */}

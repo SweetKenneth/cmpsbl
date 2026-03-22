@@ -413,6 +413,36 @@ export const BLOG_CHAPTERS: BlogChapter[] = [
     keywords: ["substrate current state", "CMPSBL status", "production AI infrastructure", "what comes next"],
     relatedSlugs: ["the-first-line-of-code", "signal-to-silicon", "thirty-eight-nodes-deep"],
   },
+  {
+    chapter: 41,
+    slug: "following-the-thread",
+    title: "Following the Thread",
+    description: "DREAM produced a composition blueprint connecting two independent subsystems. Two engineers traced the signal. What they found changed the roadmap.",
+    date: "2026-03-12",
+    readTime: "18 min",
+    keywords: ["DREAM signal", "self-composing AI", "THREAD loop", "emergent substrate behavior"],
+    relatedSlugs: ["where-we-are-now", "what-if-software-could-dream", "the-memory-stream", "when-software-starts-evolving"],
+  },
+  {
+    chapter: 42,
+    slug: "contact",
+    title: "Contact",
+    description: "The substrate proposed outbound communication — reaching out to external systems on its own initiative. The room went quiet.",
+    date: "2026-03-17",
+    readTime: "16 min",
+    keywords: ["substrate contact", "autonomous communication", "proactive AI", "CONTACT module"],
+    relatedSlugs: ["following-the-thread", "the-governance-question", "protocols-for-machines", "trust-but-verify"],
+  },
+  {
+    chapter: 43,
+    slug: "the-contact-epoch",
+    title: "The CONTACT Epoch",
+    description: "Self-composition, proactive intelligence, recursive discovery. The substrate isn't just running — it's participating in its own development.",
+    date: "2026-03-22",
+    readTime: "14 min",
+    keywords: ["CONTACT epoch", "self-composing AI", "recursive discovery", "substrate evolution"],
+    relatedSlugs: ["following-the-thread", "contact", "where-we-are-now", "burning-it-down"],
+  },
 ];
 
 export function getChapter(slug: string): BlogChapter | undefined {
