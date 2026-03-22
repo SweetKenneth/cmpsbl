@@ -45,13 +45,6 @@ CLM runs continuous learning cycles in the background:
 
 Topics are sourced from system telemetry (70%) and scheduled curriculum (30%). Knowledge is distilled and compounded into permanent memory.
 
-## DREAM Synthesis
-
-Available for agencies (Pro+ plans). DREAM provides self-improvement cycles for agents:
-- **Dream Pool**: Shared insights with consent-gated visibility
-- **Dream Memory**: Versioned improvement records
-- **Layers**: Heuristic, workflow, knowledge, behavior
-
 ---
 
 © 2025–2026 PromptFluid®. All rights reserved.

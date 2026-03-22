@@ -6,7 +6,7 @@
  * Tier Gating: free | studio | creator | architect | governor
  *   free      = Status, pulse, read-only queries
  *   studio    = SDK, templates, memory ($29/mo)
- *   creator   = Engines, agents, actions ($49/mo)
+ *   creator   = Engines, actions ($49/mo)
  *   architect = Evolution, advanced ops ($79/mo)
  *   governor  = System restore, dangerous ops, admin-only (CMPSBL)
  */
@@ -336,7 +336,7 @@ export const INTEGRATION_COMMANDS: CommandDefinition[] = [
   { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, requiredTier: 'architect', args: '<adapter_id> <operation> [params]' },
 ];
 
-// CORTEX module v2.0 — Agency-class orchestrator with lifecycle, panic, dispatch, evolution
+// CORTEX module v2.0 — Orchestrator with lifecycle, panic, dispatch, evolution
 export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.status', description: 'Full status + capabilities + circuits', category: 'cortex', icon: Wand2, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.health', description: 'Health + connected modules + circuits', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
@@ -412,7 +412,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help dream', description: 'Dream module commands', category: 'meta', icon: Moon, requiresOperator: false },
   { command: 'help system', description: 'System module commands', category: 'meta', icon: Cpu, requiresOperator: false },
   { command: 'help evolution', description: 'EVOLUTION module commands', category: 'meta', icon: Sparkles, requiresOperator: false },
-  { command: 'help cortex', description: 'Cortex (Agency) module commands', category: 'meta', icon: Wand2, requiresOperator: false },
+  { command: 'help cortex', description: 'Cortex orchestrator commands', category: 'meta', icon: Wand2, requiresOperator: false },
   { command: 'help core', description: 'Core kernel commands', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
@@ -422,7 +422,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help seba', description: 'Self-Evolving Bounded Agent commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help autoblog', description: 'AutoBlog primitive commands', category: 'meta', icon: PenTool, requiresOperator: false },
   { command: 'help engine', description: 'Cognitive Engine System commands', category: 'meta', icon: Cpu, requiresOperator: false },
-  { command: 'help encoded', description: 'Encoded agent commands', category: 'meta', icon: PenTool, requiresOperator: false },
+  { command: 'help encoded', description: 'Encoded system commands', category: 'meta', icon: PenTool, requiresOperator: false },
   { command: 'help infra', description: 'Infrastructure commands (cron, snapshots, etc)', category: 'meta', icon: Server, requiresOperator: false },
   { command: 'help patch', description: 'Patch dispatch commands', category: 'meta', icon: Send, requiresOperator: false },
   // Infrastructure Six + ENCODE module help

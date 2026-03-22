@@ -159,7 +159,7 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Check evolution status',
   },
   
-  // Cortex (Agency module, resurrected from Cascade)
+  // Cortex (Orchestrator module)
   {
     patterns: [/propose/i, /suggest.*improvement/i, /generate.*proposal/i, /improvement.*idea/i, /new.*proposal/i],
     command: 'cortex.propose',
@@ -176,9 +176,9 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Apply approved proposal changes',
   },
   {
-    patterns: [/cortex.*status/i, /agency.*status/i, /cascade.*status/i, /proposal.*status/i],
+    patterns: [/cortex.*status/i, /orchestrat.*status/i, /cascade.*status/i, /proposal.*status/i],
     command: 'cortex.status',
-    explanation: 'Cortex agency module status',
+    explanation: 'Cortex orchestrator status',
   },
   {
     patterns: [/cortex.*audit/i, /proposal.*audit/i, /decision.*log/i, /cortex.*history/i],
@@ -191,7 +191,7 @@ const INTENT_PATTERNS: Array<{
     explanation: 'Ingest outcome for reinforcement learning',
   },
   {
-    patterns: [/cortex.*summary/i, /agency.*summary/i, /cascade.*summary/i, /proposal.*loop/i],
+    patterns: [/cortex.*summary/i, /orchestrat.*summary/i, /cascade.*summary/i, /proposal.*loop/i],
     command: 'cortex.summary',
     explanation: 'Human-readable Cortex context dump',
   },
