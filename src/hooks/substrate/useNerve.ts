@@ -2,6 +2,7 @@
  * useNerve — React hook for the NERVE inter-node signaling node
  * 
  * Exposes: heartbeats, circuits, backpressure, topology, stats, CLM, hardening
+ * Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -78,13 +79,15 @@ const NERVE_KEYS = {
 
 export function useNerve(): UseNerveReturn {
   const qc = useQueryClient();
-  const polling = debugMode.allowModulePolling() ? 15000 : undefined;
+  const pollingEnabled = debugMode.allowModulePolling();
+  const polling = pollingEnabled ? 15000 : undefined;
 
   const statsQ = useQuery({
     queryKey: NERVE_KEYS.stats,
     queryFn: getNerveStats,
     refetchInterval: polling,
     staleTime: 8000,
+    enabled: pollingEnabled,
   });
 
   const heartbeatsQ = useQuery({
@@ -92,6 +95,7 @@ export function useNerve(): UseNerveReturn {
     queryFn: getHeartbeats,
     refetchInterval: polling,
     staleTime: 8000,
+    enabled: pollingEnabled,
   });
 
   const circuitsQ = useQuery({
@@ -99,6 +103,7 @@ export function useNerve(): UseNerveReturn {
     queryFn: getAllCircuits,
     refetchInterval: polling,
     staleTime: 8000,
+    enabled: pollingEnabled,
   });
 
   const bpQ = useQuery({
@@ -106,30 +111,35 @@ export function useNerve(): UseNerveReturn {
     queryFn: getAllBackpressure,
     refetchInterval: polling,
     staleTime: 8000,
+    enabled: pollingEnabled,
   });
 
   const topoQ = useQuery({
     queryKey: NERVE_KEYS.topology,
     queryFn: getTopology,
     staleTime: 10000,
+    enabled: pollingEnabled,
   });
 
   const topoSumQ = useQuery({
     queryKey: NERVE_KEYS.topologySummary,
     queryFn: getTopologySummary,
     staleTime: 10000,
+    enabled: pollingEnabled,
   });
 
   const hardenQ = useQuery({
     queryKey: NERVE_KEYS.hardening,
     queryFn: getHardeningReport,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 
   const dedupQ = useQuery({
     queryKey: NERVE_KEYS.dedup,
     queryFn: getDedupCacheSize,
     staleTime: 5000,
+    enabled: pollingEnabled,
   });
 
   const invalidateAll = () => {
