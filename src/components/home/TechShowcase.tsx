@@ -214,8 +214,8 @@ const metrics = await cmpsbl.vision.query({
     layer: "Operational",
     title: "DREAM Evolution",
     description: "Offline learning & pattern extraction",
-    color: "text-violet-500",
-    gradient: "from-violet-500 to-purple-600",
+    color: "text-[hsl(var(--neon-purple))]",
+    gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Trigger a dream cycle
 const dreamResult = await cmpsbl.dream.cycle({
   entity_ids: ["npc_merchant", "npc_guard"],
