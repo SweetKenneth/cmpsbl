@@ -255,19 +255,6 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
   totalCycles++;
   todayCycles++;
 
-  // Store learning in memory
-  if (success && learningGain > 0) {
-    try {
-      await memoryCore.ingest(
-        `CLM learning: ${topic.label}${extraction ? ` — ${extraction.substring(0, 200)}` : ''}`,
-        {
-          source: `clm-${topic.category}`,
-          confidence: Math.min(0.55, learningGain + 0.3), // Cap to warm tier
-        },
-      );
-    } catch { /* memory storage optional */ }
-  }
-
   const result: CLMCycleResult = {
     topic: { ...topic },
     success,
@@ -276,19 +263,39 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
     timestamp: Date.now(),
   };
 
-  emit({
-    module: 'clm',
-    event_type: 'cycle.completed',
-    outcome: success ? 'succeeded' : 'failed',
-    data: {
-      topic_id: topic.id,
-      mastery: topic.mastery,
-      learning_gain: learningGain,
-      total_cycles: totalCycles,
-      today_cycles: todayCycles,
-      used_real_ai: success,
-    },
-  });
+  // Fire memory storage + telemetry in parallel (both non-blocking)
+  const promises: Promise<unknown>[] = [];
+
+  if (success && learningGain > 0) {
+    promises.push(
+      memoryCore.ingest(
+        `CLM learning: ${topic.label}${extraction ? ` — ${extraction.substring(0, 200)}` : ''}`,
+        {
+          source: `clm-${topic.category}`,
+          confidence: Math.min(0.55, learningGain + 0.3),
+        },
+      ).catch(() => {})
+    );
+  }
+
+  // Emit telemetry in parallel with memory storage
+  promises.push(
+    Promise.resolve(emit({
+      module: 'clm',
+      event_type: 'cycle.completed',
+      outcome: success ? 'succeeded' : 'failed',
+      data: {
+        topic_id: topic.id,
+        mastery: topic.mastery,
+        learning_gain: learningGain,
+        total_cycles: totalCycles,
+        today_cycles: todayCycles,
+        used_real_ai: success,
+      },
+    }))
+  );
+
+  await Promise.all(promises);
 
   return result;
 }
