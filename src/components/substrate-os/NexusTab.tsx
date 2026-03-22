@@ -38,12 +38,6 @@ interface NexusStatus {
   version: string;
   totalRequestsToday: number;
   providers: ProviderHealth[];
-  imageGeneration: {
-    usedToday: number;
-    remainingToday: number;
-    dailyLimit: number;
-    status: 'available' | 'limited' | 'exhausted';
-  };
 }
 
 interface CostLog {
