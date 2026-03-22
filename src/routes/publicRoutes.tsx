@@ -53,6 +53,7 @@ const Packs = lazy(() => import("@/pages/Packs"));
 const CapabilityMap = lazy(() => import("@/pages/CapabilityMap"));
 const ScanResult = lazy(() => import("@/pages/ScanResult"));
 const Scanner = lazy(() => import("@/pages/Scanner"));
+const SDKPlayground = lazy(() => import("@/pages/SDKPlayground"));
 const Status = lazy(() => import("@/pages/Status"));
 const SystemIntegrity = lazy(() => import("@/pages/SystemIntegrity"));
 const ComposableCognitives = lazy(() => import("@/pages/ComposableCognitives"));
