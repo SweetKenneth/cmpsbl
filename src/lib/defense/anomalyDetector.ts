@@ -173,10 +173,7 @@
      };
  
      activeSignals.set(signal.id, signal);
-     if (activeSignals.size > MAX_ACTIVE_SIGNALS) {
-       const oldest = activeSignals.keys().next().value;
-       if (oldest) activeSignals.delete(oldest);
-     }
+     boundSignals();
      return signal;
    }
  

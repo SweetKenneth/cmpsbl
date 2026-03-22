@@ -351,8 +351,11 @@
   */
  export function resolveAnomaly(anomalyId: string): boolean {
    const anomaly = anomalies.find(a => a.id === anomalyId);
-   if (anomaly) {
+   if (anomaly && !anomaly.resolved) {
      anomaly.resolved = true;
+     const c = unresolvedCounts.get(anomaly.entityId) || 1;
+     if (c <= 1) unresolvedCounts.delete(anomaly.entityId);
+     else unresolvedCounts.set(anomaly.entityId, c - 1);
      return true;
    }
    return false;

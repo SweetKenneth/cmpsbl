@@ -283,47 +283,53 @@ export async function getDefenseStats(range: '1h' | '24h' | '7d' | '30d' = '24h'
   const startTime = new Date();
   startTime.setHours(startTime.getHours() - hours);
 
+  // Select only needed columns instead of *
   const { data: events } = await supabase
     .from('defense_events')
-    .select('*')
+    .select('ip, action, risk_score, metadata')
     .gte('detected_at', startTime.toISOString());
 
   if (!events || events.length === 0) return null;
 
-  const threatsBlocked = events.filter(e => e.action === 'block').length;
-  const challengesIssued = events.filter(e => e.action === 'challenge').length;
-  const avgRisk = events.reduce((sum, e) => sum + (e.risk_score || 0), 0) / events.length;
-
+  // Single-pass aggregation instead of 6 separate .filter() passes
+  let threatsBlocked = 0;
+  let challengesIssued = 0;
+  let allowCount = 0;
+  let monitorCount = 0;
+  let automatedCount = 0;
+  let riskSum = 0;
   const ipCounts: Record<string, number> = {};
-  events.forEach(e => {
+
+  for (const e of events) {
+    riskSum += e.risk_score || 0;
     ipCounts[e.ip] = (ipCounts[e.ip] || 0) + 1;
-  });
+
+    switch (e.action) {
+      case 'block': threatsBlocked++; break;
+      case 'challenge': challengesIssued++; break;
+      case 'allow': allowCount++; break;
+      case 'monitor': monitorCount++; break;
+    }
+
+    if ((e.metadata as any)?.detection_source === 'core_engine') {
+      automatedCount++;
+    }
+  }
+
   const topIPs = Object.entries(ipCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10)
     .map(([ip, count]) => ({ ip, count }));
 
-  const actionDist = {
-    allow: events.filter(e => e.action === 'allow').length,
-    block: threatsBlocked,
-    challenge: challengesIssued,
-    monitor: events.filter(e => e.action === 'monitor').length,
-  };
-
-  // CLM#38: Enhanced stats with behavioral summary
-  const automatedCount = events.filter(e =>
-    (e.metadata as any)?.detection_source === 'core_engine'
-  ).length;
-
   return {
     total_events: events.length,
     threats_blocked: threatsBlocked,
     challenges_issued: challengesIssued,
-    avg_risk_score: Math.round(avgRisk),
+    avg_risk_score: Math.round(riskSum / events.length),
     false_positives: 0,
     timeRange: range,
     top_ips: topIPs,
-    action_distribution: actionDist,
+    action_distribution: { allow: allowCount, block: threatsBlocked, challenge: challengesIssued, monitor: monitorCount },
     automated_detections: automatedCount,
     tracked_ips: velocityTracker.size,
   };

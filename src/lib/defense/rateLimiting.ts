@@ -110,40 +110,53 @@ export async function getConsolidatedLimits(): Promise<{
 /**
  * Calculate adaptive threshold based on system load
  */
+// Cache adaptive thresholds for 30s to avoid per-request DB queries
+const adaptiveCache = new Map<string, { result: AdaptiveThreshold; expiresAt: number }>();
+const ADAPTIVE_CACHE_TTL = 30_000;
+
 export async function calculateAdaptiveThreshold(
   endpoint: string
 ): Promise<AdaptiveThreshold> {
   const baseConfig = DEFAULT_LIMITS[endpoint] || { maxRequests: 100 };
+
+  // Return cached if fresh
+  const cached = adaptiveCache.get(endpoint);
+  if (cached && Date.now() < cached.expiresAt) {
+    return cached.result;
+  }
   
-  // ── Guardrail: Absolute bounds & delta cap ────────────────────
-  const ABSOLUTE_MIN_MULTIPLIER = 0.5;  // Never drop below 50% of base
-  const ABSOLUTE_MAX_MULTIPLIER = 2.0;  // Never exceed 200% of base
-  const MAX_ADJUSTMENT_MAGNITUDE = 0.3; // Max ±30% per calculation
+  const ABSOLUTE_MIN_MULTIPLIER = 0.5;
+  const ABSOLUTE_MAX_MULTIPLIER = 2.0;
+  const MAX_ADJUSTMENT_MAGNITUDE = 0.3;
   
   try {
-    // Get recent error rates
-    const { data: errors } = await supabase
+    const since = new Date(Date.now() - 300000).toISOString();
+
+    // Single query instead of two separate ones
+    const { data: logs } = await supabase
       .from('ai_usage_log')
-      .select('success')
-      .gte('created_at', new Date(Date.now() - 300000).toISOString())
+      .select('success, response_time_ms')
+      .gte('created_at', since)
       .limit(100);
     
-    const errorRate = errors?.length 
-      ? errors.filter(e => !e.success).length / errors.length 
-      : 0;
+    let errorCount = 0;
+    let timeSum = 0;
+    let timeCount = 0;
+
+    if (logs) {
+      for (const row of logs) {
+        if (!row.success) errorCount++;
+        if (row.response_time_ms != null) {
+          timeSum += row.response_time_ms;
+          timeCount++;
+        }
+      }
+    }
+
+    const total = logs?.length || 0;
+    const errorRate = total > 0 ? errorCount / total : 0;
+    const avgTime = timeCount > 0 ? timeSum / timeCount : 0;
     
-    // Get average response time
-    const { data: timings } = await supabase
-      .from('ai_usage_log')
-      .select('response_time_ms')
-      .gte('created_at', new Date(Date.now() - 300000).toISOString())
-      .limit(50);
-    
-    const avgTime = timings?.length
-      ? timings.reduce((s, t) => s + (t.response_time_ms || 0), 0) / timings.length
-      : 0;
-    
-    // Calculate adjustment
     let adjustment = 0;
     let reason = 'Normal operating conditions';
     
@@ -161,28 +174,25 @@ export async function calculateAdaptiveThreshold(
       reason = 'Excellent system health';
     }
     
-    // ── Guardrail: Clamp adjustment magnitude ───────────────────
     adjustment = Math.max(-MAX_ADJUSTMENT_MAGNITUDE, Math.min(MAX_ADJUSTMENT_MAGNITUDE, adjustment));
     
-    // ── Guardrail: Clamp final limit to absolute bounds ─────────
     const rawLimit = Math.round(baseConfig.maxRequests * (1 + adjustment));
     const minLimit = Math.round(baseConfig.maxRequests * ABSOLUTE_MIN_MULTIPLIER);
     const maxLimit = Math.round(baseConfig.maxRequests * ABSOLUTE_MAX_MULTIPLIER);
     const currentLimit = Math.max(minLimit, Math.min(maxLimit, rawLimit));
     
-    return {
-      baseLimit: baseConfig.maxRequests,
-      currentLimit,
-      adjustment,
-      reason,
-    };
+    const result: AdaptiveThreshold = { baseLimit: baseConfig.maxRequests, currentLimit, adjustment, reason };
+    adaptiveCache.set(endpoint, { result, expiresAt: Date.now() + ADAPTIVE_CACHE_TTL });
+    return result;
   } catch (error) {
-    return {
+    const fallback: AdaptiveThreshold = {
       baseLimit: baseConfig.maxRequests,
       currentLimit: baseConfig.maxRequests,
       adjustment: 0,
       reason: 'Using default limits',
     };
+    adaptiveCache.set(endpoint, { result: fallback, expiresAt: Date.now() + ADAPTIVE_CACHE_TTL });
+    return fallback;
   }
 }
 

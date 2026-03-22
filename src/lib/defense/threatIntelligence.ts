@@ -453,29 +453,51 @@ export function getActiveThreatIndicators(): ThreatIndicator[] {
 function matchesPattern(request: { path: string; body?: string }, pattern: AttackPattern): boolean {
   if (pattern.signature === '*') return true;
   
+  // All signatures are now pre-compiled RegExp at module load
   if (pattern.signature instanceof RegExp) {
     return pattern.signature.test(request.path) || 
-           (request.body && pattern.signature.test(request.body));
+           !!(request.body && pattern.signature.test(request.body));
   }
   
-  const regex = new RegExp(pattern.signature.replace(/^[/]|[/][gimsuy]*$/g, ''), 'i');
-  return regex.test(request.path);
+  return false;
 }
 
 function countRecentRequests(ip: string, windowSeconds: number): number {
-  const requests = recentRequests.get(ip) || [];
+  const requests = recentRequests.get(ip);
+  if (!requests || requests.length === 0) return 0;
   const cutoff = Date.now() - windowSeconds * 1000;
-  return requests.filter(r => r.timestamp > cutoff).length;
+  // Binary search for cutoff since timestamps are insertion-ordered (ascending)
+  let lo = 0, hi = requests.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >>> 1;
+    if (requests[mid].timestamp <= cutoff) lo = mid + 1;
+    else hi = mid;
+  }
+  return requests.length - lo;
 }
 
 function recordRequest(ip: string, path: string): void {
-  const requests = recentRequests.get(ip) || [];
+  let requests = recentRequests.get(ip);
+  if (!requests) {
+    requests = [];
+    recentRequests.set(ip, requests);
+  }
   requests.push({ timestamp: Date.now(), path });
   
-  // Keep only last 5 minutes
-  const cutoff = Date.now() - 5 * 60 * 1000;
-  const filtered = requests.filter(r => r.timestamp > cutoff);
-  recentRequests.set(ip, filtered);
+  // Prune stale entries periodically (every 50 inserts) instead of every call
+  if (requests.length % 50 === 0) {
+    const cutoff = Date.now() - 5 * 60 * 1000;
+    // Find first valid index via binary search
+    let lo = 0, hi = requests.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >>> 1;
+      if (requests[mid].timestamp <= cutoff) lo = mid + 1;
+      else hi = mid;
+    }
+    if (lo > 0) {
+      requests.splice(0, lo);
+    }
+  }
 
   // Bound the map
   if (recentRequests.size > MAX_RECENT_REQUESTS) {
