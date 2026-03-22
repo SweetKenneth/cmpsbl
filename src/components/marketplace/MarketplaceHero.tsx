@@ -261,22 +261,22 @@ export function MarketplaceHero() {
             transition={{ duration: 0.6, delay: 1.6 }}
             className="flex flex-wrap items-center justify-center gap-6 mt-12 text-sm text-muted-foreground"
           >
-            <div className="flex items-center gap-2">
-              <Lock className="w-4 h-4 text-emerald-500" />
-              <span>Licensed capabilities</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-amber-500" />
-              <span>82,944+ unique combinations</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Globe className="w-4 h-4 text-cyan-500" />
-              <span>Multi-model compatible</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-purple-500" />
-              <span>Enterprise support</span>
-            </div>
+             <div className="flex items-center gap-2">
+               <Lock className="w-4 h-4 text-[hsl(var(--neon-cyan))]" />
+               <span>Licensed capabilities</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Star className="w-4 h-4 text-primary" />
+               <span>82,944+ unique combinations</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Globe className="w-4 h-4 text-[hsl(var(--neon-cyan))]" />
+               <span>Multi-model compatible</span>
+             </div>
+             <div className="flex items-center gap-2">
+               <Users className="w-4 h-4 text-[hsl(var(--neon-purple))]" />
+               <span>Enterprise support</span>
+             </div>
           </motion.div>
         </div>
       </div>

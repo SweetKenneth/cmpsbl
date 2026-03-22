@@ -220,8 +220,8 @@ export default function Architecture() {
                   <Layers className="w-3 h-3" />
                   40 Nodes · 12 Sectors
                 </Badge>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-6 leading-[1.05]">
-                  How CMPSBL Works
+                 <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[1.05]">
+                   How CMPSBL Works
                 </h1>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4">
                   A layered{" "}
