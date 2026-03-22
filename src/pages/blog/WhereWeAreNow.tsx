@@ -59,7 +59,7 @@ export default function WhereWeAreNow() {
 
       <p>We chose radical transparency because our audience can smell marketing from a mile away. If the substrate's story is compelling, it should be told honestly. Warts, failures, and all.</p>
 
-      <p className="text-xl font-semibold text-foreground mt-12">This story isn't over. Stay tuned.</p>
+      <p className="text-xl font-semibold text-foreground mt-12">This story isn't over. <Link to="/blog/following-the-thread" className="text-primary hover:underline">We followed the thread →</Link></p>
     </BlogArticleLayout>
   );
 }
