@@ -263,39 +263,30 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
     timestamp: Date.now(),
   };
 
-  // Fire memory storage + telemetry in parallel (both non-blocking)
-  const promises: Promise<unknown>[] = [];
-
+  // Fire memory storage + telemetry — fire-and-forget, don't await
   if (success && learningGain > 0) {
-    promises.push(
-      memoryCore.ingest(
-        `CLM learning: ${topic.label}${extraction ? ` — ${extraction.substring(0, 200)}` : ''}`,
-        {
-          source: `clm-${topic.category}`,
-          confidence: Math.min(0.55, learningGain + 0.3),
-        },
-      ).catch(() => {})
-    );
+    memoryCore.ingest(
+      `CLM learning: ${topic.label}${extraction ? ` — ${extraction.substring(0, 200)}` : ''}`,
+      {
+        source: `clm-${topic.category}`,
+        confidence: Math.min(0.55, learningGain + 0.3),
+      },
+    ).catch(() => {});
   }
 
-  // Emit telemetry in parallel with memory storage
-  promises.push(
-    Promise.resolve(emit({
-      module: 'clm',
-      event_type: 'cycle.completed',
-      outcome: success ? 'succeeded' : 'failed',
-      data: {
-        topic_id: topic.id,
-        mastery: topic.mastery,
-        learning_gain: learningGain,
-        total_cycles: totalCycles,
-        today_cycles: todayCycles,
-        used_real_ai: success,
-      },
-    }))
-  );
-
-  await Promise.all(promises);
+  emit({
+    module: 'clm',
+    event_type: 'cycle.completed',
+    outcome: success ? 'succeeded' : 'failed',
+    data: {
+      topic_id: topic.id,
+      mastery: topic.mastery,
+      learning_gain: learningGain,
+      total_cycles: totalCycles,
+      today_cycles: todayCycles,
+      used_real_ai: success,
+    },
+  });
 
   return result;
 }
