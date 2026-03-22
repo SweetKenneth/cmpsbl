@@ -45,6 +45,9 @@ const OpenStandards = lazy(() => import("@/pages/blog/OpenStandards"));
 const WhatWeGotWrong = lazy(() => import("@/pages/blog/WhatWeGotWrong"));
 const TheScanner = lazy(() => import("@/pages/blog/TheScanner"));
 const WhereWeAreNow = lazy(() => import("@/pages/blog/WhereWeAreNow"));
+const FollowingTheThread = lazy(() => import("@/pages/blog/FollowingTheThread"));
+const ContactChapter = lazy(() => import("@/pages/blog/Contact"));
+const TheContactEpoch = lazy(() => import("@/pages/blog/TheContactEpoch"));
 const AutoBlogPost = lazy(() => import("@/pages/blog/AutoBlogPost"));
 
 export const blogRoutes = (
