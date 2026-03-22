@@ -5,7 +5,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.79.0";
-import { nexusRoute } from "../_shared/nexus-route.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -59,9 +59,8 @@ serve(async (req) => {
     
     if (allInsights.length > 3) {
       try {
-        const result = await nexusRoute(allInsights.join('\n'), {
+        const result = await callFreeTierAI(allInsights.join('\n'), {
           systemPrompt: 'Summarize the following insights into 3-5 key takeaways. Be concise and actionable.',
-          taskType: 'refinement',
           temperature: 0.3,
           maxTokens: 500,
         });

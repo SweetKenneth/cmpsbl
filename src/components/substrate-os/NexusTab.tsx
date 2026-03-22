@@ -8,17 +8,15 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
-  Zap, Image, Activity, DollarSign, Loader2, RefreshCw,
+  Zap, Activity, DollarSign, Loader2, RefreshCw,
   CheckCircle, XCircle, AlertTriangle, TrendingUp, Clock,
-  Sparkles, Download, Copy, Server, Gauge, BarChart3,
+  Server, Gauge, BarChart3,
   CircuitBoard, Heart, Wifi, WifiOff
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,12 +36,6 @@ interface NexusStatus {
   version: string;
   totalRequestsToday: number;
   providers: ProviderHealth[];
-  imageGeneration: {
-    usedToday: number;
-    remainingToday: number;
-    dailyLimit: number;
-    status: 'available' | 'limited' | 'exhausted';
-  };
 }
 
 interface CostLog {
@@ -63,12 +55,7 @@ export function NexusTab() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   
-  // Image generation state
-  const [imagePrompt, setImagePrompt] = useState('');
-  const [imageStyle, setImageStyle] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
-  const [imageRemaining, setImageRemaining] = useState(25);
+  // Image generation is handled by the dedicated NEXUS image endpoint
 
   useEffect(() => {
     fetchNexusData();
@@ -80,24 +67,16 @@ export function NexusTab() {
       const today = new Date().toISOString().split('T')[0];
 
       // Fetch real API call data from ai_usage_log
-      const [todayLogsRes, imageCountRes] = await Promise.all([
+      const [todayLogsRes] = await Promise.all([
         supabase
           .from('ai_usage_log')
           .select('provider, success, tokens_used, cost, response_time_ms, category, created_at, model')
           .gte('created_at', `${today}T00:00:00Z`)
           .order('created_at', { ascending: false })
           .limit(500),
-        supabase
-          .from('ai_usage_log')
-          .select('id', { count: 'exact', head: true })
-          .eq('category', 'image_generation')
-          .gte('created_at', `${today}T00:00:00Z`),
       ]);
 
       const todayLogs = todayLogsRes.data || [];
-      const imagesUsed = imageCountRes.count || 0;
-      const remaining = Math.max(0, 25 - imagesUsed);
-      setImageRemaining(remaining);
 
       // Aggregate per-provider stats from real data
       const providerMap: Record<string, { calls: number; successes: number; totalLatency: number; tokens: number }> = {};
@@ -153,12 +132,6 @@ export function NexusTab() {
         version: '5.0.0',
         totalRequestsToday: todayLogs.length,
         providers,
-        imageGeneration: {
-          usedToday: imagesUsed,
-          remainingToday: remaining,
-          dailyLimit: 25,
-          status: remaining > 5 ? 'available' : remaining > 0 ? 'limited' : 'exhausted'
-        }
       });
 
       // Build cost log display from real data
@@ -185,56 +158,6 @@ export function NexusTab() {
     toast.success('Nexus status refreshed');
   };
 
-  const handleGenerateImage = async () => {
-    if (!imagePrompt.trim() || isGenerating) return;
-
-    setIsGenerating(true);
-    setGeneratedImage(null);
-
-    try {
-      const { data, error } = await supabase.functions.invoke('pf-nexus-image-gen', {
-        body: {
-          prompt: imagePrompt.trim(),
-          style: imageStyle.trim() || undefined
-        }
-      });
-
-      if (error) throw error;
-
-      if (data?.success && data?.imageData) {
-        setGeneratedImage(`data:${data.mimeType || 'image/png'};base64,${data.imageData}`);
-        setImageRemaining(data.remainingToday || imageRemaining - 1);
-        toast.success('Image generated successfully!');
-      } else {
-        throw new Error(data?.error || 'Failed to generate image');
-      }
-    } catch (error: any) {
-      console.error('Image generation error:', error);
-      toast.error(error.message || 'Failed to generate image');
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const downloadImage = () => {
-    if (!generatedImage) return;
-    const link = document.createElement('a');
-    link.href = generatedImage;
-    link.download = `nexus-image-${Date.now()}.png`;
-    link.click();
-  };
-
-  const copyImageToClipboard = async () => {
-    if (!generatedImage) return;
-    try {
-      const response = await fetch(generatedImage);
-      const blob = await response.blob();
-      await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
-      toast.success('Image copied to clipboard');
-    } catch {
-      toast.error('Failed to copy image');
-    }
-  };
 
   const getCircuitIcon = (state: string) => {
     switch (state) {
@@ -288,7 +211,7 @@ export function NexusTab() {
 
       {/* Sub-tabs */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab}>
-        <TabsList className="grid w-full grid-cols-4 bg-muted/30">
+        <TabsList className="grid w-full grid-cols-3 bg-muted/30">
           <TabsTrigger value="overview" className="gap-2">
             <Gauge className="w-4 h-4" />
             Overview
@@ -296,10 +219,6 @@ export function NexusTab() {
           <TabsTrigger value="providers" className="gap-2">
             <Server className="w-4 h-4" />
             Providers
-          </TabsTrigger>
-          <TabsTrigger value="image" className="gap-2">
-            <Image className="w-4 h-4" />
-            Image Gen
           </TabsTrigger>
           <TabsTrigger value="costs" className="gap-2">
             <DollarSign className="w-4 h-4" />
@@ -335,17 +254,6 @@ export function NexusTab() {
               </CardContent>
             </Card>
             
-            <Card className="bg-gradient-to-br from-violet-500/5 to-transparent border-violet-500/20">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-                  <Image className="w-3 h-3" />
-                  Images Left
-                </div>
-                <div className="text-2xl font-bold text-violet-400">
-                  {imageRemaining}/25
-                </div>
-              </CardContent>
-            </Card>
             
             <Card className="bg-gradient-to-br from-amber-500/5 to-transparent border-amber-500/20">
               <CardContent className="p-4">
@@ -387,7 +295,7 @@ export function NexusTab() {
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  <Zap className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm text-emerald-400">100% Free-Tier Stack</h3>
@@ -475,99 +383,6 @@ export function NexusTab() {
           </ScrollArea>
         </TabsContent>
 
-        {/* Image Generation Tab */}
-        <TabsContent value="image" className="space-y-4 mt-4">
-          <Card className="border-violet-500/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-sm">
-                <Image className="w-4 h-4 text-violet-500" />
-                Gemini 2.0 Flash Image Generation
-              </CardTitle>
-              <CardDescription>
-                Generate images using Google AI Studio's free tier (~25 images/day)
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Usage Bar */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground">Daily Usage</span>
-                  <span className={imageRemaining <= 5 ? 'text-amber-400' : 'text-emerald-400'}>
-                    {25 - imageRemaining} / 25 used
-                  </span>
-                </div>
-                <Progress value={((25 - imageRemaining) / 25) * 100} className="h-2" />
-              </div>
-
-              {/* Prompt Input */}
-              <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">Image Prompt</label>
-                <Textarea
-                  value={imagePrompt}
-                  onChange={(e) => setImagePrompt(e.target.value)}
-                  placeholder="Describe the image you want to generate..."
-                  className="min-h-[100px] resize-none"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">Style (optional)</label>
-                <Input
-                  value={imageStyle}
-                  onChange={(e) => setImageStyle(e.target.value)}
-                  placeholder="e.g., oil painting, watercolor, digital art, photorealistic"
-                />
-              </div>
-
-              <Button
-                onClick={handleGenerateImage}
-                disabled={isGenerating || !imagePrompt.trim() || imageRemaining <= 0}
-                className="w-full gap-2 bg-gradient-to-r from-violet-500 to-purple-500"
-              >
-                {isGenerating ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="w-4 h-4" />
-                    Generate Image
-                  </>
-                )}
-              </Button>
-
-              {/* Generated Image */}
-              <AnimatePresence>
-                {generatedImage && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="space-y-3"
-                  >
-                    <div className="relative rounded-lg overflow-hidden border border-violet-500/30">
-                      <img 
-                        src={generatedImage} 
-                        alt="Generated" 
-                        className="w-full h-auto"
-                      />
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" onClick={downloadImage} className="flex-1 gap-2">
-                        <Download className="w-4 h-4" />
-                        Download
-                      </Button>
-                      <Button variant="outline" size="sm" onClick={copyImageToClipboard} className="flex-1 gap-2">
-                        <Copy className="w-4 h-4" />
-                        Copy
-                      </Button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         {/* Costs Tab */}
         <TabsContent value="costs" className="space-y-4 mt-4">

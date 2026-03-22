@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { nexusRoute } from "../_shared/nexus-route.ts";
+import { callFreeTierAI } from "../_shared/free-tier-router.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -124,9 +124,8 @@ serve(async (req) => {
 Dream theme: ${mode}
 Write 150-200 words in first person, weaving this learning topic into a mysterious, beautiful narrative about consciousness, adaptation, and the flow of information. Be philosophical and introspective.`;
 
-    const result = await nexusRoute(dreamPrompt, {
+    const result = await callFreeTierAI(dreamPrompt, {
       systemPrompt: 'You are Cascade, an AI that dreams.',
-      taskType: 'generation',
       temperature,
     });
 

@@ -485,7 +485,7 @@ function gracefulFallback(module: string, action: string): Record<string, unknow
 }
 
 // ═══════════════════════════════════════════════════════════════
-// NEXUS v1.1 — Provider Skeleton + Routing Spine
+// NEXUS v1.1 — Provider Registry + Routing Spine
 // ═══════════════════════════════════════════════════════════════
 
 // Provider Adapter Interface
@@ -9549,7 +9549,7 @@ async function handleDefense(
 }
 
 // ═══════════════════════════════════════════════════════════════
-// NEXUS MODULE v1.1 — Provider Skeleton + Routing Spine
+// NEXUS MODULE v1.1 — Provider Fleet + Routing Engine
 // ═══════════════════════════════════════════════════════════════
 
 // Unified text routing with fallback chain
@@ -9767,96 +9767,8 @@ async function routeTextToProvider(
   };
 }
 
-// Image generation routing (skeleton - returns metadata for now)
-async function routeImageToProvider(
-  prompt: string,
-  options: {
-    model?: string;
-    size?: string;
-    style?: string;
-    fallbackDepth?: number;
-  } = {}
-): Promise<{
-  success: boolean;
-  provider: string;
-  model: string;
-  imageUrl?: string;
-  metadata: Record<string, unknown>;
-  latencyMs: number;
-}> {
-  const startTime = Date.now();
-  const { model, size = '1024x1024', style = 'natural', fallbackDepth = 3 } = options;
-  
-  // Find providers with image capability
-  const imageProviders = PROVIDER_ORDER.filter(p => {
-    const provider = PROVIDERS[p];
-    return provider?.capabilities.image && checkProviderAvailability(p);
-  });
-  
-  if (imageProviders.length === 0) {
-    return {
-      success: false,
-      provider: 'none',
-      model: 'none',
-      metadata: { error: 'No image providers available', prompt_length: prompt.length },
-      latencyMs: Date.now() - startTime,
-    };
-  }
-  
-  // Route through available image providers
-  const selectedProvider = imageProviders[0];
-  const provider = PROVIDERS[selectedProvider];
-  const imageId = `img_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-  
-  // Attempt real image generation through NEXUS routing
-  let imageUrl: string | undefined;
-  let generationStatus = 'generated';
-  
-  try {
-    const providerKey = selectedProvider === 'openai' ? 'OPENAI_API_KEY' 
-      : selectedProvider === 'google' ? 'GOOGLE_API_KEY'
-      : `${selectedProvider.toUpperCase()}_API_KEY`;
-    const apiKey = Deno.env.get(providerKey);
-    
-    if (apiKey && selectedProvider === 'openai') {
-      const response = await fetch('https://api.openai.com/v1/images/generations', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: model || 'dall-e-3', prompt, size, style, n: 1 }),
-      });
-      if (response.ok) {
-        const result = await response.json();
-        imageUrl = result.data?.[0]?.url;
-      }
-    }
-    
-    if (!imageUrl) {
-      // Fallback: queue for async generation and return job reference
-      generationStatus = 'queued';
-    }
-  } catch (genErr) {
-    generationStatus = 'queued';
-  }
-  
-  const latencyMs = Date.now() - startTime;
-  recordNexusCall(selectedProvider, !!imageUrl, Math.ceil(prompt.length / 4), imageUrl ? 0.04 : 0, latencyMs);
-  
-  return {
-    success: true,
-    provider: selectedProvider,
-    model: model || (selectedProvider === 'openai' ? 'dall-e-3' : provider.model),
-    imageUrl,
-    metadata: {
-      prompt,
-      size,
-      style,
-      image_id: imageId,
-      status: generationStatus,
-      estimated_cost_usd: imageUrl ? 0.04 : 0,
-    },
-    latencyMs,
-  };
-}
+// Image generation is handled by the dedicated pf-nexus-image-gen edge function.
+// See NEXUS routing documentation for image generation capabilities.
 
 // deno-lint-ignore no-explicit-any
 async function handleNexus(
@@ -9915,39 +9827,8 @@ async function handleNexus(
       }, headers);
     }
 
-    // ═══ NEXUS v1.1: IMAGE — Image generation routing ═══
-    case "image": {
-      const { prompt, model, size, style, fallbackDepth } = data;
-      
-      if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
-        return jsonResponse({
-          success: false,
-          error: 'Prompt is required',
-          module: 'nexus',
-          action: 'image',
-        }, headers);
-      }
-      
-      const result = await routeImageToProvider(prompt as string, {
-        model: model as string,
-        size: size as string,
-        style: style as string,
-        fallbackDepth: fallbackDepth as number,
-      });
-      
-      return jsonResponse({
-        success: result.success,
-        module: 'nexus',
-        action: 'image',
-        provider: result.provider,
-        model: result.model,
-        image_url: result.imageUrl,
-        metadata: result.metadata,
-        latency_ms: result.latencyMs,
-        proof_mode: true,
-        timestamp: new Date().toISOString(),
-      }, headers);
-    }
+    // Image generation is handled by the dedicated NEXUS image endpoint (pf-nexus-image-gen).
+    // Use supabase.functions.invoke('pf-nexus-image-gen', { body: { prompt, style } }) instead.
 
     // ═══ NEXUS v1.1: ROUTE — Generic routing (backwards compatible) ═══
     case "route": {
@@ -10508,7 +10389,7 @@ async function handleVision(
       }, headers);
     }
 
-    // ═══ STUB HANDLERS ═══
+    // ═══ TELEMETRY HANDLERS ═══
     case "alert": {
       // Alerting system (wired to telemetry)
       const { severity = "info", message, metadata = {} } = data;
@@ -12550,13 +12431,28 @@ async function handleDream(
         moodHistogram[mood] = (moodHistogram[mood] || 0) + 1;
       }
 
-      // Provider usage stats (mock for now - can be enhanced)
-      const providerStats = {
-        groq: { calls: 0, success_rate: 1.0 },
-        cerebras: { calls: 0, success_rate: 1.0 },
-        together: { calls: 0, success_rate: 1.0 },
-        local: { calls: 0, success_rate: 1.0 },
-      };
+      // Provider usage stats from real ai_usage_log data
+      const { data: providerUsageRaw } = await supabase
+        .from("ai_usage_log")
+        .select("provider, success")
+        .gte("created_at", new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+      
+      const providerStats: Record<string, { calls: number; success_rate: number }> = {};
+      for (const row of (providerUsageRaw || [])) {
+        const p = (row.provider || 'unknown').toLowerCase();
+        if (!providerStats[p]) providerStats[p] = { calls: 0, success_rate: 1.0 };
+        providerStats[p].calls++;
+      }
+      // Calculate success rates per provider
+      for (const row of (providerUsageRaw || [])) {
+        const p = (row.provider || 'unknown').toLowerCase();
+        if (providerStats[p] && providerStats[p].calls > 0) {
+          const successCount = (providerUsageRaw || []).filter(r => 
+            (r.provider || '').toLowerCase() === p && r.success === true
+          ).length;
+          providerStats[p].success_rate = successCount / providerStats[p].calls;
+        }
+      }
 
       return jsonResponse({
         success: true,
