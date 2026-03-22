@@ -499,11 +499,11 @@ export default function GamingSubstrate() {
               className="max-w-lg mx-auto mb-12 sm:mb-16"
             >
               <div className="relative rounded-3xl overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-violet-600 to-fuchsia-600" />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-magenta)))' }} />
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15)_0%,transparent_50%)]" />
                 
                 <div className="relative p-6 sm:p-10 text-center text-white">
-                  <Crown className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-amber-300" />
+                  <Crown className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 text-[hsl(var(--neon-amber))]" />
                   <h3 className="text-2xl sm:text-3xl font-black mb-2">World Engine</h3>
                   <p className="text-white/70 text-sm sm:text-base mb-6">Complete Gaming AI Infrastructure</p>
                   
