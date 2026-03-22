@@ -16,13 +16,12 @@
 
 ```json
 {
-  "event": "task.completed",
+  "event": "memory.crystallized",
   "timestamp": "2026-03-20T12:00:00Z",
   "data": {
-    "task_id": "uuid",
-    "agency_id": "uuid",
-    "status": "completed",
-    "output": {}
+    "memory_id": "uuid",
+    "pattern": "API usage optimization",
+    "status": "crystallized"
   },
   "signature": "hmac-sha256-signature"
 }
