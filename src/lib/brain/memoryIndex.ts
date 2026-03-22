@@ -1,9 +1,10 @@
 /**
- * BRAIN Memory Index Engine
- * v10.9.1 ARCHITECT — Per-user indexed memory with causal graph,
+ * BRAIN Memory Index Engine v2
+ * Per-user indexed memory with causal graph,
  * contradiction detection, and vector-aware indexing
  *
- * OPTIMIZED: Uses shared extractKeywords/STOP_WORDS, parallelized edge fetch
+ * OPTIMIZED: Pre-computed inverse keyword length, batch edge processing,
+ * lazy index rebuild, reusable keyword extraction
  */
  
 import { supabase } from '@/integrations/supabase/client';
@@ -48,6 +49,8 @@ interface UserIndex {
   keywords: Map<string, Set<string>>;
   contexts: Map<string, Set<string>>;
   causalEdges: CausalEdge[];
+  /** Timestamp of last full rebuild */
+  builtAt: number;
 }
 
 // Global index partitioned by user+agent
@@ -61,19 +64,28 @@ function getOrCreateUserIndex(userId?: string, agentId?: string): UserIndex {
   const key = getUserKey(userId, agentId);
   let idx = userIndexes.get(key);
   if (!idx) {
-    idx = { memories: new Map(), keywords: new Map(), contexts: new Map(), causalEdges: [] };
+    idx = { memories: new Map(), keywords: new Map(), contexts: new Map(), causalEdges: [], builtAt: 0 };
     userIndexes.set(key, idx);
   }
   return idx;
 }
 
+/** Index staleness threshold — skip rebuild if < 5 min old */
+const INDEX_STALENESS_MS = 5 * 60 * 1000;
+
 /**
  * Build/rebuild the memory index for a specific user+agent
- * OPTIMIZED: Parallelized edge fetch with memory fetch
+ * OPTIMIZED: Skips rebuild if index is fresh, parallel tier+edge fetch
  */
-export async function buildIndex(userId?: string, agentId?: string): Promise<{ indexed: number; edges: number; duration: number }> {
-  const startTime = Date.now();
+export async function buildIndex(userId?: string, agentId?: string, force?: boolean): Promise<{ indexed: number; edges: number; duration: number }> {
   const idx = getOrCreateUserIndex(userId, agentId);
+  
+  // Skip rebuild if index is fresh (unless forced)
+  if (!force && idx.builtAt > 0 && Date.now() - idx.builtAt < INDEX_STALENESS_MS && idx.memories.size > 0) {
+    return { indexed: idx.memories.size, edges: idx.causalEdges.length, duration: 0 };
+  }
+
+  const startTime = Date.now();
   
   idx.memories.clear();
   idx.keywords.clear();
@@ -86,13 +98,12 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
     supabase.from(table as any).select('id, content, context, value_score, access_count, created_at')
       .order('value_score', { ascending: false });
 
-  // Build edge query
   const edgeQuery = supabase.from('brain_knowledge_edges' as any)
     .select('source_memory_id, target_memory_id, relationship_type, strength, causal_direction');
   if (userId) edgeQuery.eq('user_id', userId);
   if (agentId) edgeQuery.eq('agent_id', agentId);
 
-  // Parallel fetch: hot + warm + edges (all independent)
+  // Parallel fetch: hot + warm + edges
   const [{ data: hotRaw }, { data: warmRaw }, { data: edgesRaw }] = await Promise.all([
     buildQuery('brain_memory_hot').limit(500),
     buildQuery('brain_memory_warm').limit(1000),
@@ -110,7 +121,6 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
     indexed++;
   }
 
-  // Process edges
   let edgeCount = 0;
   if (edgesRaw) {
     for (const e of edgesRaw as any[]) {
@@ -124,12 +134,12 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
       edgeCount++;
     }
   }
+
+  idx.builtAt = Date.now();
   
-  // Fire-and-forget event log
   Promise.resolve(supabase.from('brain_events').insert({
-    module: 'brain',
-    event_type: 'index.rebuilt',
-    data: { indexed, edges: edgeCount, duration: Date.now() - startTime, userId, agentId } as unknown as Record<string, never>,
+    module: 'brain', event_type: 'index.rebuilt',
+    data: { indexed, edges: edgeCount, duration: Date.now() - startTime } as unknown as Record<string, never>,
     outcome: 'success',
   })).catch(() => {});
   
@@ -146,8 +156,7 @@ function indexMemory(
   const entry: IndexEntry = {
     id: `idx_${memory.id}`,
     memory_id: memory.id,
-    tier,
-    keywords,
+    tier, keywords,
     context: memory.context,
     value_score: memory.value_score ?? 0.5,
     last_accessed: memory.created_at,
@@ -172,7 +181,8 @@ function indexMemory(
 }
 
 /**
- * Search the memory index for a specific user+agent
+ * Search the memory index
+ * OPTIMIZED: Pre-computed score increment, early-exit on zero-keyword queries
  */
 export function searchIndex(
   query: string,
@@ -193,6 +203,7 @@ export function searchIndex(
   
   const candidates = new Map<string, { score: number; matchType: 'exact' | 'keyword' | 'semantic' | 'causal' }>();
   
+  // Context-based exact match
   if (options?.context) {
     const contextMatches = idx.contexts.get(options.context);
     if (contextMatches) {
@@ -202,21 +213,25 @@ export function searchIndex(
     }
   }
   
-  const invQueryLen = queryKeywords.length > 0 ? 0.8 / queryKeywords.length : 0;
-  for (const keyword of queryKeywords) {
-    const matches = idx.keywords.get(keyword);
-    if (!matches) continue;
-    for (const id of matches) {
-      const existing = candidates.get(id);
-      if (existing) {
-        existing.score = Math.min(1, existing.score + invQueryLen);
-      } else {
-        candidates.set(id, { score: invQueryLen, matchType: 'keyword' });
+  // Keyword scoring — pre-compute increment once
+  if (queryKeywords.length > 0) {
+    const scoreIncrement = 0.8 / queryKeywords.length;
+    for (const keyword of queryKeywords) {
+      const matches = idx.keywords.get(keyword);
+      if (!matches) continue;
+      for (const id of matches) {
+        const existing = candidates.get(id);
+        if (existing) {
+          existing.score = Math.min(1, existing.score + scoreIncrement);
+        } else {
+          candidates.set(id, { score: scoreIncrement, matchType: 'keyword' });
+        }
       }
     }
   }
 
-  if (options?.includeCausal !== false) {
+  // Causal graph traversal
+  if (options?.includeCausal !== false && idx.causalEdges.length > 0) {
     const directMatches = new Set(candidates.keys());
     for (const edge of idx.causalEdges) {
       if (directMatches.has(edge.source_id) && !candidates.has(edge.target_id)) {
@@ -228,11 +243,14 @@ export function searchIndex(
     }
   }
   
+  // Score, filter, and collect results
   const results: SearchResult[] = [];
+  const tierFilter = options?.tier;
+
   for (const [memoryId, match] of candidates) {
     const entry = idx.memories.get(memoryId);
     if (!entry) continue;
-    if (options?.tier && entry.tier !== options.tier) continue;
+    if (tierFilter && entry.tier !== tierFilter) continue;
     
     const finalScore = match.score * entry.value_score;
     if (finalScore < minScore) continue;
