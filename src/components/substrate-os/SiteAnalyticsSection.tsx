@@ -508,7 +508,7 @@ export function SiteAnalyticsSection() {
                 <RankList
                   title="UTM Sources"
                   icon={TrendingUp}
-                  iconColor="text-amber-400"
+                  iconColor="text-neon-amber"
                   items={data.topUTMSources.map(u => ({ label: u.source, value: u.count }))}
                 />
               )}
