@@ -151,8 +151,8 @@ export function useDecode(): UseDecodeReturn {
 
   // ═══ Hardening & Diagnostics ═══
   const disambiguate = useMutation({
-    mutationFn: (params: { rawInput: string; candidates: Array<{ intent: string; confidence: number }> }) =>
-      Promise.resolve(disambiguateIntent(params.rawInput, params.candidates)),
+    mutationFn: (candidates: Array<{ intent: string; confidence: number }>) =>
+      Promise.resolve(disambiguateIntent(candidates)),
   });
 
   const rateLimit = useMutation({
