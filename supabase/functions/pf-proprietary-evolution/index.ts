@@ -2,16 +2,16 @@
  * pf-proprietary-evolution — Proprietary Evolution Lifecycle Engine
  * 
  * Handles:
- *   - discovery.collide: Bounce Candidate Node #41 against substrate nodes (multi-chain 2-8 depth)
+ *   - discovery.collide: Bounce Candidate Auxiliary Node against substrate nodes (multi-chain 2-8 depth)
  *   - discovery.batch: Run full collision sweep across all 40 nodes with chain exploration
  *   - ascend.lock: Lock a discovered capability into deterministic memory
  *   - ascend.batch-lock: Batch ascend all eligible discoveries
  *   - export.capability-pack: Generate capability pack from ascended memories
  * 
- * Node 41 Architecture:
+ * Auxiliary Node Architecture:
  *   The user's code is scanned to derive a CAPABILITY SURFACE — a set of 4 capability
  *   verbs and a sector assignment — making it a first-class node in the collision engine.
- *   Node 41 participates in synergy scoring identically to the 40 substrate nodes.
+ *   The Auxiliary Node participates in synergy scoring identically to the 40 substrate nodes.
  * 
  * @classification FOUNDER EYES ONLY
  */
@@ -619,10 +619,10 @@ function scoreTier(cjpi: number): string {
 }
 
 /**
- * Multi-node chain collisions where Node 41 is a REAL participant.
+ * Multi-node chain collisions where the Auxiliary Node is a REAL participant.
  * 
  * Key change: The candidate's sector and capabilities contribute to synergy
- * scoring just like any substrate node. Node 41 is no longer a label.
+ * scoring just like any substrate node. the Auxiliary Node is no longer a label.
  */
 function collideNodesMultiChain(
   candidateName: string,
@@ -649,7 +649,7 @@ function collideNodesMultiChain(
   traitBonus = Math.min(traitBonus, 5);
 
   // ─── 2-node chains (Node 41 + Target) ───
-  // Now Node 41's sector participates in synergy!
+  // Now the Auxiliary Node's sector participates in synergy!
   const targetCaps = NODE_CAPABILITIES[targetNode] || ['generic'];
   const candidateSector = surface.sector;
   const targetSector = NODE_SECTOR[targetNode] || 'unknown';
@@ -658,7 +658,7 @@ function collideNodesMultiChain(
     const nameHash = hashString(`${surface.nodeName}:${targetNode}:${cap}:v4`);
     const baseCjpi = 20 + (nameHash % 29); // 20-48 range
     
-    // NEW: Node 41's sector creates real synergy with the target
+    // NEW: the Auxiliary Node's sector creates real synergy with the target
     const sectors = [candidateSector, targetSector];
     const synergy = getSectorSynergy(sectors);
     
@@ -720,7 +720,7 @@ function collideNodesMultiChain(
 
       if (partnerChain.length < chainLen - 1) continue;
 
-      // Node 41's sector is included in sector calculations
+      // the Auxiliary Node's sector is included in sector calculations
       const sectors = [candidateSector, ...partnerChain.map(n => NODE_SECTOR[n] || 'unknown')];
       const uniqueSectors = [...new Set(sectors)];
       const synergy = getSectorSynergy(sectors);
@@ -846,7 +846,7 @@ function findArchetype(substrateNodes: string[]): { name: string; desc: string }
 // Generic chain names (NODE_X_NODE_TIER_CHAIN3) were noise that diluted real discoveries.
 
 /**
- * Generate descriptions where Node 41 is a PEER — described by its capabilities,
+ * Generate descriptions where the Auxiliary Node is a PEER — described by its capabilities,
  * not just as "your code". Shows the chain as a collaboration between equals.
  */
 function generateNode41AwareDescription(
@@ -854,7 +854,7 @@ function generateNode41AwareDescription(
 ): string {
   const chainLen = nodes.length;
   
-  // Build Node 41's capability label: "TRADE_ENGINE (execute_trade, assess_risk)"
+  // Build the Auxiliary Node's capability label: "TRADE_ENGINE (execute_trade, assess_risk)"
   const node41Label = `${surface.nodeName} (${surface.capabilities.slice(0, 2).join(', ')})`;
   
   // Build substrate node labels with their capabilities
@@ -870,7 +870,7 @@ function generateNode41AwareDescription(
   
   let desc = '';
   
-  // Open with the CHAIN as a collaboration — Node 41 is a peer
+  // Open with the CHAIN as a collaboration — the Auxiliary Node is a peer
   desc += `${node41Label} `;
   if (hasComps) {
     desc += `— retaining your ${surface.domain} logic (${userComps.join(', ')}${surface.components.length > 3 ? '…' : ''}) — `;
@@ -900,7 +900,7 @@ function generateNode41AwareDescription(
 }
 
 /**
- * Enrich archetype description with Node 41 context
+ * Enrich archetype description with Auxiliary Node context
  */
 function enrichWithNode41(archetypeDesc: string, surface: CapabilitySurface, nodes: string[]): string {
   const userComps = surface.components.slice(0, 3);

@@ -1,7 +1,7 @@
 /**
  * CMPSBL® Chain Injection System
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Allows Candidate Nodes (Node 41+) to participate in discovery chains
+ * Allows Candidate Nodes (Auxiliary Node) to participate in discovery chains
  * as first-class citizens alongside canonical substrate nodes.
  *
  * Hardened: safe naming, traceable execution, graceful failure.

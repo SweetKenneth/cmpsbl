@@ -1,7 +1,7 @@
 /**
  * CMPSBL® Governor Node Dashboard
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * Admin-only interface for managing Ascension Nodes (Node 41+).
+ * Admin-only interface for managing Ascension Nodes (Auxiliary Node).
  * Governor control surface with strong loading/error states.
  */
 
@@ -214,7 +214,7 @@ export default function GovernorNodeDashboard() {
               Ascension Nodes
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Governor control surface for Node 41+ lifecycle management
+              Governor control surface for Auxiliary Node lifecycle management
             </p>
           </div>
           <div className="flex items-center gap-3">

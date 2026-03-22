@@ -704,7 +704,7 @@ export function generateSealedRuntimeReadme(): string {
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — ASCENSION-EXTENDED SEALED RUNTIME (only for Ascension/Node 41+ exports)
+// §5 — ASCENSION-EXTENDED SEALED RUNTIME (only for Ascension/Auxiliary Node exports)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -763,7 +763,7 @@ export function clearHandlers(): void { _handlerRegistry.clear(); }
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §6 — ASCENSION-EXTENDED CHAIN EXECUTOR (only for Ascension/Node 41+ exports)
+// §6 — ASCENSION-EXTENDED CHAIN EXECUTOR (only for Ascension/Auxiliary Node exports)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
@@ -781,10 +781,10 @@ export function generateAscensionChainExecutor(): string {
   const ascensionBlock = `
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §A2 — ASCENSION DYNAMIC EFFECT REGISTRY (Node 41+ chain participation)
+// §A2 — ASCENSION DYNAMIC EFFECT REGISTRY (Auxiliary Node chain participation)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Dynamic handler registry for Ascension modules (Node 41+) */
+/** Dynamic handler registry for Ascension modules (Auxiliary Node) */
 const _dynamicEffects: Record<string, { verb: string; handler: EH }> = {};
 
 /**

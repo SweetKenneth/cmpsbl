@@ -28,7 +28,7 @@ Each phase builds on the previous, progressively transforming raw code into port
 
 ### 2.1 What Happens
 
-Your software is uploaded, analyzed, and registered as **Node 41** — a first-class participant in the substrate's 40-node cognitive matrix.
+Your software is uploaded, analyzed, and registered as the **Auxiliary Node** — a first-class participant in the substrate's 40-node cognitive matrix.
 
 ### 2.2 File Processing
 
@@ -52,7 +52,7 @@ Verilog, SystemVerilog, VHDL, Bluespec, SPICE, Chisel, Amaranth
 
 ### 2.4 Capability Surface Analysis
 
-This is where the substrate begins understanding your code. The system scans your source to build a **capability profile** for Node 41:
+This is where the substrate begins understanding your code. The system scans your source to build a **capability profile** for the Auxiliary Node:
 
 - **Domain detection:** Your code is analyzed for domain signals — security patterns, machine learning constructs, infrastructure tooling, financial logic, medical terminology, graphics primitives, language processing, and hardware interfaces
 - **Functional analysis:** The system extracts function signatures, class declarations, and module boundaries to understand what your code *does*
@@ -89,11 +89,11 @@ Daily upload limits are enforced per subscription tier:
 
 ### 3.1 What Happens
 
-Your code, now operating as Node 41, undergoes **collision cycles** against the substrate's 40 permanent nodes across 12 sectors. The engine explores how your code's capabilities combine with existing substrate capabilities to produce emergent behaviors.
+Your code, now operating as the Auxiliary Node, undergoes **collision cycles** against the substrate's 40 permanent nodes across 12 sectors. The engine explores how your code's capabilities combine with existing substrate capabilities to produce emergent behaviors.
 
 ### 3.2 Multi-Chain Exploration
 
-The discovery engine explores chains of **2 to 6 nodes**, always including your code (Node 41). Each chain represents a potential capability combination:
+The discovery engine explores chains of **2 to 6 nodes**, always including your code (the Auxiliary Node). Each chain represents a potential capability combination:
 
 - **2-node chains:** Direct interactions between your code and a single substrate node
 - **3-4 node chains:** Multi-hop capability compositions
@@ -311,7 +311,7 @@ $result = $cap->execute(['key' => 'value']);
 
 | Term | Definition |
 |------|-----------|
-| **Node 41** | Your uploaded code operating as a candidate node in the substrate |
+| **Auxiliary Node** | Your uploaded code operating as a candidate node in the substrate |
 | **CJPI** | Crown Jewel Pipeline Index — the 0–100 scoring metric for discoveries |
 | **Capability Surface** | The detected functional profile of your code |
 | **Collision Cycle** | A single exploration pass testing your code against substrate nodes |
