@@ -16,9 +16,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import {
-  Zap, Image, Activity, DollarSign, Loader2, RefreshCw,
+  Zap, Activity, DollarSign, Loader2, RefreshCw,
   CheckCircle, XCircle, AlertTriangle, TrendingUp, Clock,
-  Sparkles, Download, Copy, Server, Gauge, BarChart3,
+  Server, Gauge, BarChart3,
   CircuitBoard, Heart, Wifi, WifiOff
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
