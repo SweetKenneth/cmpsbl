@@ -216,6 +216,72 @@ export function useEncode(): UseEncodeReturn {
       signalReady(params.planId),
   });
 
+  // ── HARDENING & INTELLIGENCE ──
+  const enqueueTaskMut = useMutation({
+    mutationFn: (params: Omit<EncodeTaskPacket, 'id' | 'createdAt' | 'status'> & { priority?: number }) =>
+      Promise.resolve(enqueueTask(params)),
+    onSuccess: invalidate,
+  });
+
+  const checkSafety = useMutation({
+    mutationFn: (params: Partial<EncodeTaskPacket>) =>
+      Promise.resolve(checkTaskSafety(params)),
+  });
+
+  const forecastOutcome = useMutation({
+    mutationFn: (params: Partial<EncodeTaskPacket>) =>
+      Promise.resolve(forecastTaskOutcome(params as any)),
+  });
+
+  const generationBudget = useQuery({
+    queryKey: ['substrate', 'encode', 'generationBudget'],
+    queryFn: () => getGenerationBudget(),
+    staleTime: 10000,
+    enabled: pollingEnabled,
+  });
+
+  const calibration = useQuery({
+    queryKey: ['substrate', 'encode', 'calibration'],
+    queryFn: () => getCalibrationReport(),
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
+
+  const surfaceCapabilities = useQuery({
+    queryKey: ['substrate', 'encode', 'surfaceCapabilities'],
+    queryFn: () => getAllSurfaceCapabilities(),
+    staleTime: 60000,
+    enabled: pollingEnabled,
+  });
+
+  const concurrencyState = useQuery({
+    queryKey: ['substrate', 'encode', 'concurrency'],
+    queryFn: () => getConcurrencyState(),
+    refetchInterval: pollingEnabled ? 15000 : false,
+    staleTime: 5000,
+    enabled: pollingEnabled,
+  });
+
+  const healthComposite = useQuery({
+    queryKey: ['substrate', 'encode', 'healthComposite'],
+    queryFn: () => calculateEncodeHealth(),
+    refetchInterval: pollingEnabled ? 30000 : false,
+    staleTime: 15000,
+    enabled: pollingEnabled,
+  });
+
+  const auditTrail = useMutation({
+    mutationFn: (params?: { limit?: number }) =>
+      Promise.resolve(getExecutionAuditTrail(params?.limit)),
+  });
+
+  const learningMetrics = useQuery({
+    queryKey: ['substrate', 'encode', 'learningMetrics'],
+    queryFn: () => getLearningCycleMetrics(),
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
+
   return {
     state,
     health,
@@ -241,6 +307,16 @@ export function useEncode(): UseEncodeReturn {
     complete,
     runCLM,
     processEscalationQueue,
+    enqueueTask: enqueueTaskMut,
+    checkSafety,
+    forecastOutcome,
+    generationBudget,
+    calibration,
+    surfaceCapabilities,
+    concurrencyState,
+    healthComposite,
+    auditTrail,
+    learningMetrics,
   };
 }
 
