@@ -126,12 +126,12 @@ export async function buildIndex(userId?: string, agentId?: string): Promise<{ i
   }
   
   // Fire-and-forget event log
-  supabase.from('brain_events').insert({
+  Promise.resolve(supabase.from('brain_events').insert({
     module: 'brain',
     event_type: 'index.rebuilt',
     data: { indexed, edges: edgeCount, duration: Date.now() - startTime, userId, agentId } as unknown as Record<string, never>,
     outcome: 'success',
-  }).then(() => {}).catch(() => {});
+  })).catch(() => {});
   
   return { indexed, edges: edgeCount, duration: Date.now() - startTime };
 }
