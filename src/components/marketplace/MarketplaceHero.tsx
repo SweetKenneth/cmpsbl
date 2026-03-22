@@ -97,13 +97,10 @@ export function MarketplaceHero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-center mb-8"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[0.95] tracking-tight">
-              <span className="block bg-gradient-to-r from-rose-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%] mb-2">
-                Build AI That
-              </span>
-              <span className="block bg-gradient-to-r from-amber-400 via-emerald-400 to-blue-500 bg-clip-text text-transparent animate-gradient bg-[length:200%_200%]">
-                Thinks, Remembers, Defends
-              </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[0.95] tracking-tight">
+              <span className="text-foreground">Build AI That</span>
+              <br />
+              <span className="text-primary">Thinks, Remembers, Defends</span>
             </h1>
           </motion.div>
 
