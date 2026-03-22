@@ -339,7 +339,7 @@ export class MemoryClient {
       const meta = metaResult.status === 'fulfilled' ? metaResult.value as MemoryMetaState | null : null;
       const strategy = meta?.retrieval_strategy || 'balanced';
 
-      // Process spaced repetition results
+      // Process spaced repetition results — batch SM-2 updates fire-and-forget
       if (dueForReviewResult.status === 'fulfilled') {
         const dueForReview = ((dueForReviewResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
         if (dueForReview.length > 0) {
@@ -351,13 +351,13 @@ export class MemoryClient {
               tier: 'hot', memory_type: m.memory_type,
               provenance: m.provenance,
             });
-            // #2: Reinforce via SM-2
-            try {
-              await supabase.rpc('sm2_update_memory', {
-                p_memory_id: m.id, p_tier: 'hot', p_quality: 4
-              });
-            } catch { /* silent */ }
           }
+          // Batch all SM-2 reinforcements as fire-and-forget
+          Promise.allSettled(
+            dueForReview.map(m =>
+              supabase.rpc('sm2_update_memory', { p_memory_id: m.id, p_tier: 'hot', p_quality: 4 })
+            )
+          ).catch(() => {});
         }
       }
 
