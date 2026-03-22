@@ -674,9 +674,9 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         <div className="flex-1 flex items-center justify-center gap-2">
           {isBiohack ? (
             <>
-              <Dna className="w-4 h-4 text-[hsl(180_100%_60%)]" style={{ filter: 'drop-shadow(0 0 8px hsl(180 100% 50%))' }} />
+              <Dna className="w-4 h-4 text-neon-cyan" style={{ filter: 'drop-shadow(0 0 8px hsl(var(--neon-cyan)))' }} />
               <span className="biohack-title">stream://memory.crystallize</span>
-              <Brain className="w-4 h-4 text-[hsl(280_100%_70%)]" style={{ filter: 'drop-shadow(0 0 8px hsl(280 100% 60%))' }} />
+              <Brain className="w-4 h-4 text-neon-purple" style={{ filter: 'drop-shadow(0 0 8px hsl(var(--neon-purple)))' }} />
             </>
           ) : (
             <>
