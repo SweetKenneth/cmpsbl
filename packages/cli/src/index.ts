@@ -48,11 +48,10 @@ function header(title: string) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Global flags
+// Global flags (reset per invocation to prevent REPL flag leaking)
 // ═══════════════════════════════════════════════════════════════
 
 let JSON_MODE = false;
-let NO_COLOR = false;
 
 function jsonOut(data: unknown) {
   console.log(JSON.stringify(data, null, 2));
