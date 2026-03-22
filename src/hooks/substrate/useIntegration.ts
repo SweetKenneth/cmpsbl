@@ -167,7 +167,7 @@ export function useIntegration(): UseIntegrationReturn {
   // ── Webhook Relay (fixed: was returning useQuery from functions) ──
 
   const fetchWebhookEndpoints = useMutation({
-    mutationFn: (adapterId?: string) => integrationModule.listEndpoints(adapterId),
+    mutationFn: (adapterId?: string) => Promise.resolve(integrationModule.listEndpoints(adapterId)),
   });
 
   const webhookStats = useQuery({
