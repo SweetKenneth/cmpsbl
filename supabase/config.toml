@@ -115,3 +115,5 @@ project_id = "bxodolqqczjuahwdrswy"
     verify_jwt = false
   [functions.defense-customer-portal]
     verify_jwt = false
+  [functions.pf-webhook-dispatch]
+    verify_jwt = false

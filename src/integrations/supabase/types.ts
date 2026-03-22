@@ -17713,6 +17713,95 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_delivery_log: {
+        Row: {
+          delivered_at: string
+          event_type: string
+          id: string
+          latency_ms: number | null
+          payload: Json
+          response_body: string | null
+          response_status: number | null
+          subscription_id: string
+          success: boolean
+        }
+        Insert: {
+          delivered_at?: string
+          event_type: string
+          id?: string
+          latency_ms?: number | null
+          payload?: Json
+          response_body?: string | null
+          response_status?: number | null
+          subscription_id: string
+          success?: boolean
+        }
+        Update: {
+          delivered_at?: string
+          event_type?: string
+          id?: string
+          latency_ms?: number | null
+          payload?: Json
+          response_body?: string | null
+          response_status?: number | null
+          subscription_id?: string
+          success?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "webhook_delivery_log_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "webhook_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      webhook_subscriptions: {
+        Row: {
+          created_at: string
+          event_types: string[]
+          failure_count: number
+          id: string
+          is_active: boolean
+          last_triggered_at: string | null
+          metadata: Json | null
+          name: string
+          secret: string
+          updated_at: string
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          is_active?: boolean
+          last_triggered_at?: string | null
+          metadata?: Json | null
+          name: string
+          secret: string
+          updated_at?: string
+          url: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          event_types?: string[]
+          failure_count?: number
+          id?: string
+          is_active?: boolean
+          last_triggered_at?: string | null
+          metadata?: Json | null
+          name?: string
+          secret?: string
+          updated_at?: string
+          url?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       tsac_executor_stats: {
