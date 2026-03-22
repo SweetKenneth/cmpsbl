@@ -1,11 +1,7 @@
 /**
  * useIntegration Hook — INTEGRATION node operations
  * v11.0.0 "Conduit"
- *
- * Full-featured hook exposing adapter registry, connection pooling,
- * schema mapping, webhook relay, and hardening health.
- *
- * Part of the 40-Node / 12-Sector Architecture (Execution Zone)
+ * Hardened: debugMode polling guards, Rules-of-Hooks compliant
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -27,19 +23,19 @@ export interface UseIntegrationReturn {
   registryStatus: ReturnType<typeof useQuery>;
   adapterHealth: ReturnType<typeof useQuery>;
 
-  // Discovery
-  discovered: (adapterId?: string) => ReturnType<typeof useQuery>;
-  mappedCommands: (adapterId?: string) => ReturnType<typeof useQuery>;
+  // Discovery (mutations — fixed hook violations)
+  fetchDiscovered: ReturnType<typeof useMutation>;
+  fetchMappedCommands: ReturnType<typeof useMutation>;
 
   // Connection Pools
   poolMetrics: ReturnType<typeof useQuery>;
 
-  // Schema Mapper
-  schemaMappings: (adapterId?: string) => ReturnType<typeof useQuery>;
+  // Schema Mapper (mutations — fixed hook violations)
+  fetchSchemaMappings: ReturnType<typeof useMutation>;
   mapperStats: ReturnType<typeof useQuery>;
 
-  // Webhook Relay
-  webhookEndpoints: (adapterId?: string) => ReturnType<typeof useQuery>;
+  // Webhook Relay (mutations — fixed hook violations)
+  fetchWebhookEndpoints: ReturnType<typeof useMutation>;
   webhookStats: ReturnType<typeof useQuery>;
   deadLetterQueue: ReturnType<typeof useQuery>;
 
@@ -100,6 +96,7 @@ export function useIntegration(): UseIntegrationReturn {
     queryFn: () => integrationModule.computeConduitHealth(),
     staleTime: 30000,
     refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 
   // ── Adapter Registry ───────────────────────────────────────────
@@ -108,6 +105,7 @@ export function useIntegration(): UseIntegrationReturn {
     queryKey: ['substrate', 'integration', 'adapters'],
     queryFn: () => integration.adapters(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const connections = useQuery({
@@ -115,12 +113,14 @@ export function useIntegration(): UseIntegrationReturn {
     queryFn: () => integrationModule.listConnections(),
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 
   const registryStatus = useQuery({
     queryKey: ['substrate', 'integration', 'registryStatus'],
     queryFn: () => integrationModule.getRegistryStatus(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const adapterHealth = useQuery({
@@ -128,20 +128,17 @@ export function useIntegration(): UseIntegrationReturn {
     queryFn: () => integrationModule.getAdapterHealthSummary(),
     staleTime: 30000,
     refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 
-  // ── Discovery ──────────────────────────────────────────────────
+  // ── Discovery (fixed: was returning useQuery from functions) ──
 
-  const discovered = (adapterId?: string) => useQuery({
-    queryKey: ['substrate', 'integration', 'discovered', adapterId],
-    queryFn: () => integrationModule.getDiscoveredEndpoints(adapterId),
-    staleTime: 30000,
+  const fetchDiscovered = useMutation({
+    mutationFn: (adapterId?: string) => integrationModule.getDiscoveredEndpoints(adapterId),
   });
 
-  const mappedCommands = (adapterId?: string) => useQuery({
-    queryKey: ['substrate', 'integration', 'mappedCommands', adapterId],
-    queryFn: () => integrationModule.getCommandMappings(adapterId),
-    staleTime: 30000,
+  const fetchMappedCommands = useMutation({
+    mutationFn: (adapterId?: string) => integrationModule.getCommandMappings(adapterId),
   });
 
   // ── Connection Pools ───────────────────────────────────────────
@@ -151,28 +148,26 @@ export function useIntegration(): UseIntegrationReturn {
     queryFn: () => integrationModule.getAllPoolMetrics(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
-  // ── Schema Mapper ──────────────────────────────────────────────
+  // ── Schema Mapper (fixed: was returning useQuery from functions) ──
 
-  const schemaMappings = (adapterId?: string) => useQuery({
-    queryKey: ['substrate', 'integration', 'schemaMappings', adapterId],
-    queryFn: () => integrationModule.listSchemaMappings(adapterId),
-    staleTime: 30000,
+  const fetchSchemaMappings = useMutation({
+    mutationFn: (adapterId?: string) => integrationModule.listSchemaMappings(adapterId),
   });
 
   const mapperStats = useQuery({
     queryKey: ['substrate', 'integration', 'mapperStats'],
     queryFn: () => integrationModule.getMapperStats(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
-  // ── Webhook Relay ──────────────────────────────────────────────
+  // ── Webhook Relay (fixed: was returning useQuery from functions) ──
 
-  const webhookEndpoints = (adapterId?: string) => useQuery({
-    queryKey: ['substrate', 'integration', 'webhookEndpoints', adapterId],
-    queryFn: () => integrationModule.listEndpoints(adapterId),
-    staleTime: 30000,
+  const fetchWebhookEndpoints = useMutation({
+    mutationFn: (adapterId?: string) => integrationModule.listEndpoints(adapterId),
   });
 
   const webhookStats = useQuery({
@@ -180,12 +175,14 @@ export function useIntegration(): UseIntegrationReturn {
     queryFn: () => integrationModule.getWebhookStats(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   const deadLetterQueue = useQuery({
     queryKey: ['substrate', 'integration', 'dlq'],
     queryFn: () => integrationModule.getDeadLetterQueue(),
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 
   // ── Governance ─────────────────────────────────────────────────
@@ -194,6 +191,7 @@ export function useIntegration(): UseIntegrationReturn {
     queryKey: ['substrate', 'integration', 'policies'],
     queryFn: () => integration.policies(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   // ── Mutations — Adapters ───────────────────────────────────────
@@ -220,7 +218,7 @@ export function useIntegration(): UseIntegrationReturn {
   const discover = useMutation({
     mutationFn: (options?: { target?: string; depth?: 'shallow' | 'deep'; include_functions?: boolean }) =>
       integration.discover(options),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['substrate', 'integration', 'discovered'] }),
+    onSuccess: invalidateIntegration,
   });
 
   const mapCommand = useMutation({
@@ -230,7 +228,7 @@ export function useIntegration(): UseIntegrationReturn {
       description: string;
       parameters?: Array<{ name: string; type: string; required: boolean }>;
     }) => integration.mapCommand(options),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['substrate', 'integration', 'mappedCommands'] }),
+    onSuccess: invalidateIntegration,
   });
 
   const execute = useMutation({
@@ -271,7 +269,7 @@ export function useIntegration(): UseIntegrationReturn {
       targetAdapter: string;
       steps: integrationModule.TransformStep[];
     }) => Promise.resolve(integrationModule.createSchemaMapping(params)),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['substrate', 'integration', 'schemaMappings'] }),
+    onSuccess: invalidateIntegration,
   });
 
   const transformMutation = useMutation({
@@ -294,7 +292,7 @@ export function useIntegration(): UseIntegrationReturn {
       secret: string;
       metadata?: Record<string, unknown>;
     }) => Promise.resolve(integrationModule.registerEndpoint(params)),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['substrate', 'integration', 'webhookEndpoints'] }),
+    onSuccess: invalidateIntegration,
   });
 
   const replayDeadLetterMutation = useMutation({
@@ -325,12 +323,12 @@ export function useIntegration(): UseIntegrationReturn {
     connections,
     registryStatus,
     adapterHealth,
-    discovered,
-    mappedCommands,
+    fetchDiscovered,
+    fetchMappedCommands,
     poolMetrics,
-    schemaMappings,
+    fetchSchemaMappings,
     mapperStats,
-    webhookEndpoints,
+    fetchWebhookEndpoints,
     webhookStats,
     deadLetterQueue,
     policies,
