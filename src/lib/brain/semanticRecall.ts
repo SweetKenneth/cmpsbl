@@ -32,27 +32,26 @@ function calculateTextSimilarity(text1: string, text2: string): number {
   const words1 = normalize(text1).split(/\s+/).filter(Boolean);
   const words2 = normalize(text2).split(/\s+/).filter(Boolean);
   
-  const freq1: Record<string, number> = {};
-  const freq2: Record<string, number> = {};
+  if (words1.length === 0 || words2.length === 0) return 0;
   
-  words1.forEach(w => freq1[w] = (freq1[w] || 0) + 1);
-  words2.forEach(w => freq2[w] = (freq2[w] || 0) + 1);
+  // Build freq map for text2 only, iterate text1 for dot product
+  const freq2 = new Map<string, number>();
+  for (const w of words2) freq2.set(w, (freq2.get(w) || 0) + 1);
   
-  const allWords = new Set([...Object.keys(freq1), ...Object.keys(freq2)]);
+  const freq1 = new Map<string, number>();
+  for (const w of words1) freq1.set(w, (freq1.get(w) || 0) + 1);
   
   let dotProduct = 0;
   let mag1 = 0;
+  for (const [word, count] of freq1) {
+    mag1 += count * count;
+    const f2 = freq2.get(word);
+    if (f2) dotProduct += count * f2;
+  }
+  
   let mag2 = 0;
+  for (const count of freq2.values()) mag2 += count * count;
   
-  allWords.forEach(word => {
-    const v1 = freq1[word] || 0;
-    const v2 = freq2[word] || 0;
-    dotProduct += v1 * v2;
-    mag1 += v1 * v1;
-    mag2 += v2 * v2;
-  });
-  
-  if (mag1 === 0 || mag2 === 0) return 0;
   return dotProduct / (Math.sqrt(mag1) * Math.sqrt(mag2));
 }
 
@@ -62,7 +61,7 @@ function calculateTextSimilarity(text1: string, text2: string): number {
 function ngramSimilarity(text1: string, text2: string, n: number = 3): number {
   const getNgrams = (text: string) => {
     const clean = text.toLowerCase().replace(/\s+/g, ' ');
-    const grams: Set<string> = new Set();
+    const grams = new Set<string>();
     for (let i = 0; i <= clean.length - n; i++) {
       grams.add(clean.slice(i, i + n));
     }
@@ -72,10 +71,16 @@ function ngramSimilarity(text1: string, text2: string, n: number = 3): number {
   const grams1 = getNgrams(text1);
   const grams2 = getNgrams(text2);
   
-  const intersection = new Set([...grams1].filter(g => grams2.has(g)));
-  const union = new Set([...grams1, ...grams2]);
+  if (grams1.size === 0 || grams2.size === 0) return 0;
   
-  return union.size > 0 ? intersection.size / union.size : 0;
+  // Count intersection without creating a third Set
+  let intersectionCount = 0;
+  for (const g of grams1) {
+    if (grams2.has(g)) intersectionCount++;
+  }
+  const unionSize = grams1.size + grams2.size - intersectionCount;
+  
+  return unionSize > 0 ? intersectionCount / unionSize : 0;
 }
 
 /**

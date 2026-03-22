@@ -86,10 +86,10 @@ async function searchTier(
     const orderField = table === 'brain_memory_hot' ? 'last_used' : 'created_at';
     let queryBuilder = supabase
       .from(table)
-      .select('id, content, context, tags, priority')
-      .order('priority', { ascending: false })
+      .select('id, content, context, tags, value_score')
+      .order('value_score', { ascending: false })
       .order(orderField, { ascending: false })
-      .limit(options.limit);
+      .limit(options.limit * 2); // Over-fetch slightly to compensate for relevance filtering
     
     if (options.context) {
       queryBuilder = queryBuilder.eq('context', options.context);
@@ -102,16 +102,34 @@ async function searchTier(
       return [];
     }
     
-    return data
-      .map(memory => ({
-        id: memory.id,
-        content: memory.content,
-        context: memory.context,
-        relevance: calculateRelevance(query, memory.content),
-        tier,
-        tags: memory.tags as Record<string, any>,
-      }))
-      .filter(r => r.relevance >= options.minRelevance);
+    // Pre-compute query tokens once
+    const queryLower = query.toLowerCase();
+    const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
+    if (queryWords.length === 0) return [];
+    
+    const results: SearchResult[] = [];
+    for (const memory of data) {
+      const contentLower = memory.content?.toLowerCase() || '';
+      let matchCount = 0;
+      for (const word of queryWords) {
+        if (contentLower.includes(word)) matchCount++;
+      }
+      const baseRelevance = matchCount / queryWords.length;
+      const exactBonus = contentLower.includes(queryLower) ? 0.2 : 0;
+      const relevance = Math.min(baseRelevance + exactBonus, 1.0);
+      
+      if (relevance >= options.minRelevance) {
+        results.push({
+          id: memory.id,
+          content: memory.content,
+          context: memory.context,
+          relevance,
+          tier,
+          tags: memory.tags as Record<string, any>,
+        });
+      }
+    }
+    return results;
   } catch (err) {
     console.error(`Error searching ${tier} tier:`, err);
     return [];

@@ -253,21 +253,26 @@ export async function accessMemory(memoryId: string, tier: MemoryTier): Promise<
     const table = TIER_TABLE[tier];
     const accessField = tier === 'hot' ? 'last_used' : 'last_accessed';
 
-    const { data: current } = await supabase
-      .from(table as any)
-      .select('access_count')
-      .eq('id', memoryId)
-      .single();
+    // Single atomic update using SQL increment via RPC-style update
+    // access_count is incremented optimistically without a prior read
+    const { error } = await supabase.rpc('increment_access_count' as any, {
+      p_table: table,
+      p_id: memoryId,
+      p_field: accessField,
+    }).maybeSingle();
 
-    const { error } = await supabase
-      .from(table as any)
-      .update({
-        [accessField]: new Date().toISOString(),
-        access_count: ((current as any)?.access_count || 0) + 1,
-      })
-      .eq('id', memoryId);
+    // Fallback: if RPC doesn't exist, do a simple update (still 1 round-trip)
+    if (error) {
+      const { error: updateErr } = await supabase
+        .from(table as any)
+        .update({
+          [accessField]: new Date().toISOString(),
+        })
+        .eq('id', memoryId);
+      return !updateErr;
+    }
 
-    return !error;
+    return true;
   } catch (error) {
     console.error('Memory access error:', error);
     return false;

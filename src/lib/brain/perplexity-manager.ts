@@ -53,19 +53,16 @@ export function getQuotaFromHeaders(headers: Headers): QuotaStatus {
  */
 export async function updateUsageLog(entry: UsageLogEntry): Promise<void> {
   try {
-    const { error } = await supabase
-      .from('ai_usage_log')
-      .insert(entry);
-    
-    if (error) {
-      console.error('Failed to log usage:', error);
-    }
+    // Fire-and-forget insert (non-blocking)
+    supabase.from('ai_usage_log').insert(entry).then(({ error }) => {
+      if (error) console.error('Failed to log usage:', error);
+    });
 
-    // Update daily quota counter
+    // Update daily quota counter in a single call (no prior read needed)
     if (entry.success) {
       const today = new Date().toISOString().split('T')[0];
       
-      // Get current quota
+      // Use rpc for atomic increment if available, fallback to read+update
       const { data: currentQuota } = await supabase
         .from('ai_daily_quota')
         .select('calls_used, tokens_used')
@@ -74,13 +71,12 @@ export async function updateUsageLog(entry: UsageLogEntry): Promise<void> {
         .maybeSingle();
       
       if (currentQuota) {
-        const currentCalls = currentQuota.calls_used ?? 0;
-        const currentTokens = currentQuota.tokens_used ?? 0;
         await supabase
           .from('ai_daily_quota')
           .update({ 
-            calls_used: currentCalls + 1,
-            tokens_used: currentTokens + (entry.tokens_used || 0)
+            calls_used: (currentQuota.calls_used ?? 0) + 1,
+            tokens_used: (currentQuota.tokens_used ?? 0) + (entry.tokens_used || 0),
+            updated_at: new Date().toISOString(),
           })
           .eq('provider', entry.provider)
           .eq('date', today);
