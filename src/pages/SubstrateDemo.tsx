@@ -251,7 +251,7 @@ export default function SubstrateDemo() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                      <Activity className="w-3.5 h-3.5 text-emerald-500" />
+                      <Activity className="w-3.5 h-3.5 text-neon-green" />
                       <span>{systemHealth}%</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
