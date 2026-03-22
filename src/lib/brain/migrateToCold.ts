@@ -68,35 +68,68 @@ export async function migrateStaleMemories(
     } else if (staleWarm && staleWarm.length > 0) {
       stats.checked += staleWarm.length;
       
-      // Batch insert into cold
-      const coldInserts = staleWarm.map(memory => ({
-        summary: memory.content,
-        source_refs: [memory.id],
-        compression_level: 2,
-        source_module: memory.source_module || 'general',
-        category: memory.category || 'uncategorized',
-        tags: {
+      // Batch insert into cold — with compression + importance filtering
+      const coldInserts: any[] = [];
+      const warmDeleteIds: string[] = [];
+      const migratedAt = new Date().toISOString();
+
+      for (const memory of staleWarm) {
+        const importance = classifyImportance(
+          memory.content,
+          memory.context || 'general',
+          memory.value_score || 0,
+          0
+        );
+
+        // Skip deletion of important memories — boost them instead
+        if (shouldPreserveIndefinitely(importance)) {
+          supabase.from('brain_memory_warm')
+            .update({ value_score: Math.max(0.5, memory.value_score || 0.3) })
+            .eq('id', memory.id)
+            .then(() => {}, () => {});
+          continue;
+        }
+
+        // Compress content before storing to cold
+        const isCode = memory.context === 'code';
+        const { compressed, ratio } = compressForStorage(memory.content, isCode);
+        
+        // Compact tags to minimize metadata bloat
+        const tags = compactMetadata({
           context: memory.context,
           archived: true,
           migrated_from: 'warm',
-          migrated_at: new Date().toISOString(),
-        },
-        value_score: memory.value_score,
-      }));
+          migrated_at: migratedAt,
+          importance,
+          compression_ratio: ratio,
+        });
 
-      const { error: insertError } = await supabase
-        .from('brain_memory_cold')
-        .insert(coldInserts as any[]);
+        coldInserts.push({
+          summary: compressed,
+          source_refs: [memory.id],
+          compression_level: Math.round(ratio),
+          source_module: memory.source_module || 'general',
+          category: memory.category || 'uncategorized',
+          tags,
+          value_score: memory.value_score,
+        });
 
-      if (!insertError) {
-        const ids = staleWarm.map(m => m.id);
-        // Chunk deletes to avoid URL length limits
-        for (let i = 0; i < ids.length; i += 100) {
-          await supabase.from('brain_memory_warm').delete().in('id', ids.slice(i, i + 100));
+        warmDeleteIds.push(memory.id);
+      }
+
+      if (coldInserts.length > 0) {
+        const { error: insertError } = await supabase
+          .from('brain_memory_cold')
+          .insert(coldInserts as any[]);
+
+        if (!insertError) {
+          for (let i = 0; i < warmDeleteIds.length; i += 100) {
+            await supabase.from('brain_memory_warm').delete().in('id', warmDeleteIds.slice(i, i + 100));
+          }
+          stats.migrated += warmDeleteIds.length;
+        } else {
+          stats.errors += coldInserts.length;
         }
-        stats.migrated += staleWarm.length;
-      } else {
-        stats.errors += staleWarm.length;
       }
     }
 

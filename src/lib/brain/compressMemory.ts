@@ -1,18 +1,22 @@
 /**
- * CMPSBL® BRAIN — Memory Compression
- * Merges duplicates and compresses memories while preserving code
+ * CMPSBL® BRAIN — Memory Compression v3
+ * Merges duplicates and compresses memories with TF-IDF summarization,
+ * content dedup, and importance-aware preservation.
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { compressForStorage, contentHash, classifyImportance, shouldPreserveIndefinitely, compactMetadata } from '@/lib/memory/content-dedup';
 
 export interface CompressionResult {
   summary: string;
   sourceRefs: string[];
   compressionLevel: number;
+  importance: string;
 }
 
 /**
- * Compress multiple similar memories into a single cold memory entry
+ * Compress multiple similar memories into a single cold memory entry.
+ * v3: Uses content dedup + stop-word compression + TF-IDF summarization.
  */
 export async function compressMemories(
   memoryIds: string[],
@@ -20,10 +24,9 @@ export async function compressMemories(
 ): Promise<CompressionResult | null> {
   try {
     const table = sourceTier === 'warm' ? 'brain_memory_warm' : 'brain_memory_hot';
-    // Fetch memories from the correct source tier
     const { data: memories, error } = await supabase
       .from(table)
-      .select('id, content, context')
+      .select('id, content, context, value_score, access_count')
       .in('id', memoryIds);
     
     if (error || !memories || memories.length === 0) {
@@ -31,38 +34,60 @@ export async function compressMemories(
       return null;
     }
     
+    // Deduplicate within batch via content hash
+    const seen = new Set<number>();
+    const unique = memories.filter(m => {
+      const hash = contentHash(m.content);
+      if (seen.has(hash)) return false;
+      seen.add(hash);
+      return true;
+    });
+
     // Separate code from other content
-    const codeMemories = memories.filter(m => m.context === 'code');
-    const otherMemories = memories.filter(m => m.context !== 'code');
+    const codeMemories = unique.filter(m => m.context === 'code');
+    const otherMemories = unique.filter(m => m.context !== 'code');
     
-    // Process both types and merge results
     const parts: string[] = [];
     const sourceRefs: string[] = [];
     let totalOriginalLength = 0;
     
-    // Code is preserved raw - no compression
+    // Code is preserved with comment/whitespace stripping only
     if (codeMemories.length > 0) {
-      const codeSummary = codeMemories.map(m => m.content).join('\n\n---\n\n');
-      parts.push(codeSummary);
+      const codeTexts = codeMemories.map(m => {
+        const { compressed } = compressForStorage(m.content, true);
+        return compressed;
+      });
+      parts.push(codeTexts.join('\n\n---\n\n'));
       sourceRefs.push(...codeMemories.map(m => m.id));
-      totalOriginalLength += codeSummary.length;
+      totalOriginalLength += codeMemories.reduce((s, m) => s + m.content.length, 0);
     }
     
-    // Compress non-code content
+    // Compress non-code with TF-IDF summarization
     if (otherMemories.length > 0) {
       const combinedContent = otherMemories.map(m => m.content).join(' ');
       totalOriginalLength += combinedContent.length;
-      const summary = await generateSummary(combinedContent, otherMemories[0].context);
+      
+      // Step 1: Stop-word removal
+      const { compressed: preCompressed } = compressForStorage(combinedContent, false);
+      
+      // Step 2: TF-IDF extractive summarization
+      const summary = generateTFIDFSummary(preCompressed, otherMemories[0].context);
       parts.push(summary);
       sourceRefs.push(...otherMemories.map(m => m.id));
     }
     
     const finalSummary = parts.join('\n\n');
     
+    // Classify importance for retention protection
+    const bestScore = Math.max(...unique.map(m => m.value_score || 0));
+    const bestAccess = Math.max(...unique.map(m => m.access_count || 0));
+    const importance = classifyImportance(finalSummary, unique[0]?.context || 'general', bestScore, bestAccess);
+    
     return {
       summary: finalSummary,
       sourceRefs,
-      compressionLevel: totalOriginalLength > 0 ? Math.ceil(totalOriginalLength / finalSummary.length) : 1,
+      compressionLevel: totalOriginalLength > 0 ? Math.ceil(totalOriginalLength / Math.max(finalSummary.length, 1)) : 1,
+      importance,
     };
   } catch (err) {
     console.error('Error compressing memories:', err);
@@ -71,26 +96,58 @@ export async function compressMemories(
 }
 
 /**
- * Generate summary of combined content
+ * TF-IDF extractive summarization — scores sentences by term frequency
+ * and inverse document frequency, then selects the most informative.
  */
-async function generateSummary(content: string, context: string): Promise<string> {
-  // For now, use simple extraction - can be enhanced with AI summarization
-  const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 20);
+function generateTFIDFSummary(content: string, context: string): string {
+  const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 15);
+  if (sentences.length === 0) return content.slice(0, 300);
+  if (sentences.length <= 3) return `[${context}] ${sentences.map(s => s.trim()).join('. ')}.`;
   
-  // Take key sentences (first, last, and some middle)
-  const keyIndices = [
-    0,
-    Math.floor(sentences.length * 0.25),
-    Math.floor(sentences.length * 0.5),
-    Math.floor(sentences.length * 0.75),
-    sentences.length - 1,
-  ];
+  // Build document-level term frequencies
+  const docFreq = new Map<string, number>();
+  const sentenceTerms: Map<string, number>[] = [];
   
-  const keySentences = keyIndices
-    .filter(i => i < sentences.length)
-    .map(i => sentences[i].trim());
+  for (const sentence of sentences) {
+    const terms = new Map<string, number>();
+    const words = sentence.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    const uniqueInSentence = new Set<string>();
+    
+    for (const word of words) {
+      terms.set(word, (terms.get(word) || 0) + 1);
+      uniqueInSentence.add(word);
+    }
+    
+    sentenceTerms.push(terms);
+    for (const word of uniqueInSentence) {
+      docFreq.set(word, (docFreq.get(word) || 0) + 1);
+    }
+  }
   
-  return `[${context}] ${keySentences.join('. ')}.`;
+  // Score each sentence by sum of TF-IDF weights
+  const numDocs = sentences.length;
+  const scored = sentences.map((sentence, idx) => {
+    const terms = sentenceTerms[idx];
+    let score = 0;
+    for (const [term, tf] of terms) {
+      const df = docFreq.get(term) || 1;
+      const idf = Math.log(numDocs / df);
+      score += tf * idf;
+    }
+    // Normalize by sentence length to avoid length bias
+    const wordCount = sentence.split(/\s+/).length;
+    score /= Math.max(wordCount, 1);
+    // Position bonus: first and last sentences get a boost
+    if (idx === 0 || idx === numDocs - 1) score *= 1.3;
+    return { sentence: sentence.trim(), score, idx };
+  });
+  
+  // Select top sentences, maintain original order
+  scored.sort((a, b) => b.score - a.score);
+  const topCount = Math.min(Math.ceil(sentences.length * 0.3), 5);
+  const selected = scored.slice(0, topCount).sort((a, b) => a.idx - b.idx);
+  
+  return `[${context}] ${selected.map(s => s.sentence).join('. ')}.`;
 }
 
 /**
