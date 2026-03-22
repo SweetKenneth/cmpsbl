@@ -411,8 +411,8 @@ await cmpsbl.relay.notify({
     layer: "Infrastructure",
     title: "AUDIT Ledger",
     description: "Immutable compliance & audit trail",
-    color: "text-stone-500",
-    gradient: "from-stone-500 to-gray-600",
+    color: "text-[hsl(var(--neon-amber))]",
+    gradient: "from-[hsl(var(--neon-amber))] to-[hsl(var(--neon-amber)/0.7)]",
     code: `// Query the audit ledger
 const trail = await cmpsbl.audit.query({
   entity_type: "user",
