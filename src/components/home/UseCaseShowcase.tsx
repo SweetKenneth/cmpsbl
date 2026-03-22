@@ -45,8 +45,8 @@ const useCases = [
   },
   {
     icon: ChefHat,
-    title: "Cooking Apps That Learn",
-    description: "Recipe platforms that learn your taste preferences, adapt to ingredients, and suggest personalized meal plans.",
+    title: "Chatbots With True Memory",
+    description: "Conversational AI that retains customer context and builds long-term relationships.",
     industry: "Consumer",
     iconColor: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta)/0.15)] to-[hsl(var(--neon-cyan)/0.15)]",

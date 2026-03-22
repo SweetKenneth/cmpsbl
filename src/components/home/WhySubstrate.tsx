@@ -133,7 +133,7 @@ const nodes = [
     icon: Accessibility,
     title: "Inclusive A11y",
     node: "INCLUSIVE",
-    description: "Human-compatibility engine with WCAG 2.2 scanning and AI ethics governance.",
+    description: "Human compatibility engine with WCAG 2.2 scanning and AI ethics enforcement.",
     highlight: "Human Compatibility",
     stat: "WCAG",
     statLabel: "2.2 AA",
