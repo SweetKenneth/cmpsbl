@@ -493,7 +493,7 @@ function generateFullHelp(): string {
 │  Access Tiers:                                              │
 │    ○ BUILDER      Read-only, status, pulse                  │
 │    ◇ STUDIO       SDK, templates, memory ($29/mo)           │
-│    ◆ CREATOR      Actions, engines, agents ($49/mo)         │
+│    ◆ CREATOR      Actions, engines ($49/mo)                  │
 │    ★ ARCHITECT    Evolution, advanced ops ($79/mo)           │
 │    ◉ GOVERNOR     System restore, admin (CMPSBL only)       │
 │                                                             │
