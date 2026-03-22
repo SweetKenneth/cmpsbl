@@ -177,26 +177,26 @@ export function MeshActivityTab() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
-            <Network className="w-5 h-5 text-amber-400" />
+          <div className="w-10 h-10 rounded-xl bg-neon-amber/20 border border-neon-amber/40 flex items-center justify-center">
+            <Network className="w-5 h-5 text-neon-amber" />
           </div>
           <div>
             <h2 className="text-lg font-bold flex items-center gap-2">
               Intent Mesh
               <Badge variant="outline" className={cn("text-[10px]",
                 enabled 
-                  ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10" 
-                  : "border-red-500/50 text-red-400 bg-red-500/10"
+                  ? "border-neon-green/50 text-neon-green bg-neon-green/10" 
+                  : "border-destructive/50 text-destructive bg-destructive/10"
               )}>
                 {enabled ? 'ACTIVE' : 'DISABLED'}
               </Badge>
               
               {/* Live indicator */}
               {enabled && (
-                <span className="flex items-center gap-1 text-[10px] text-emerald-400">
+                <span className="flex items-center gap-1 text-[10px] text-neon-green">
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-green" />
                   </span>
                   LIVE
                 </span>
@@ -213,49 +213,49 @@ export function MeshActivityTab() {
             <div className="flex items-center border border-border/30 rounded-lg overflow-hidden w-max min-w-0">
               <button 
                 onClick={() => setActiveView('live')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'live' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'live' ? 'bg-neon-amber/20 text-neon-amber' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Activity className="w-3 h-3 inline mr-1" />Live
               </button>
               <button 
                 onClick={() => setActiveView('pipelines')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'pipelines' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'pipelines' ? 'bg-neon-cyan/20 text-neon-cyan' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Layers className="w-3 h-3 inline mr-1" />Memories ({savedPipelines.length})
               </button>
               <button 
                 onClick={() => setActiveView('proposals')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'proposals' ? 'bg-fuchsia-500/20 text-fuchsia-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'proposals' ? 'bg-neon-magenta/20 text-neon-magenta' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Lightbulb className="w-3 h-3 inline mr-1" />Proposals
               </button>
               <button 
                 onClick={() => setActiveView('scoring')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'scoring' ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'scoring' ? 'bg-neon-amber/20 text-neon-amber' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Trophy className="w-3 h-3 inline mr-1" />Scoring
               </button>
               <button 
                 onClick={() => setActiveView('scheduler')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'scheduler' ? 'bg-violet-500/20 text-violet-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'scheduler' ? 'bg-neon-purple/20 text-neon-purple' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Timer className="w-3 h-3 inline mr-1" />Scheduler
               </button>
               <button 
                 onClick={() => setActiveView('topology')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'topology' ? 'bg-emerald-500/20 text-emerald-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'topology' ? 'bg-neon-green/20 text-neon-green' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Network className="w-3 h-3 inline mr-1" />Topology
               </button>
               <button 
                 onClick={() => setActiveView('health')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'health' ? 'bg-red-500/20 text-red-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'health' ? 'bg-destructive/20 text-destructive' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Activity className="w-3 h-3 inline mr-1" />Health
               </button>
               <button 
                 onClick={() => setActiveView('federation')}
-                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'federation' ? 'bg-cyan-500/20 text-cyan-400' : 'text-muted-foreground hover:text-foreground')}
+                className={cn("px-3 py-1.5 text-xs font-medium transition-colors whitespace-nowrap", activeView === 'federation' ? 'bg-neon-cyan/20 text-neon-cyan' : 'text-muted-foreground hover:text-foreground')}
               >
                 <Network className="w-3 h-3 inline mr-1" />Federation
               </button>
@@ -265,7 +265,7 @@ export function MeshActivityTab() {
             <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
           </Button>
           <div className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/30 shrink-0">
-            <Power className={cn("w-4 h-4", enabled ? "text-emerald-400" : "text-red-400")} />
+            <Power className={cn("w-4 h-4", enabled ? "text-neon-green" : "text-destructive")} />
             <span className="text-xs font-medium">Kill Switch</span>
             <Switch checked={enabled} onCheckedChange={handleToggle} />
           </div>
@@ -273,7 +273,7 @@ export function MeshActivityTab() {
         {/* Mobile kill switch row */}
         <div className="flex sm:hidden items-center justify-between px-3 py-2 rounded-lg bg-muted/30 border border-border/30">
           <div className="flex items-center gap-2">
-            <Power className={cn("w-4 h-4", enabled ? "text-emerald-400" : "text-red-400")} />
+            <Power className={cn("w-4 h-4", enabled ? "text-neon-green" : "text-destructive")} />
             <span className="text-xs font-medium">Kill Switch</span>
           </div>
           <Switch checked={enabled} onCheckedChange={handleToggle} />
@@ -282,12 +282,12 @@ export function MeshActivityTab() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-        <StatCard label="Nodes" value={modules.length} icon={<Radio className="h-4 w-4 text-cyan-400" />} />
-        <StatCard label="Resolvers" value={activeResolvers} icon={<Zap className="h-4 w-4 text-amber-400" />} />
-        <StatCard label="Intents" value={stats?.totalIntents || 0} icon={<Activity className="h-4 w-4 text-fuchsia-400" />} />
-        <StatCard label="Success" value={`${((stats?.successRate || 0) * 100).toFixed(0)}%`} icon={<CheckCircle className="h-4 w-4 text-emerald-400" />} />
-        <StatCard label="Latency" value={`${stats?.avgDurationMs || 0}ms`} icon={<Eye className="h-4 w-4 text-blue-400" />} />
-        <StatCard label="Saved Pipelines" value={savedPipelines.length} icon={<Bookmark className="h-4 w-4 text-orange-400" />} />
+        <StatCard label="Nodes" value={modules.length} icon={<Radio className="h-4 w-4 text-neon-cyan" />} />
+        <StatCard label="Resolvers" value={activeResolvers} icon={<Zap className="h-4 w-4 text-neon-amber" />} />
+        <StatCard label="Intents" value={stats?.totalIntents || 0} icon={<Activity className="h-4 w-4 text-neon-magenta" />} />
+        <StatCard label="Success" value={`${((stats?.successRate || 0) * 100).toFixed(0)}%`} icon={<CheckCircle className="h-4 w-4 text-neon-green" />} />
+        <StatCard label="Latency" value={`${stats?.avgDurationMs || 0}ms`} icon={<Eye className="h-4 w-4 text-neon-blue" />} />
+        <StatCard label="Saved Pipelines" value={savedPipelines.length} icon={<Bookmark className="h-4 w-4 text-neon-amber" />} />
       </div>
 
       {activeView === 'live' ? (
@@ -296,7 +296,7 @@ export function MeshActivityTab() {
           <Card className="lg:col-span-1 border border-border/30 bg-muted/10">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Network className="w-4 h-4 text-amber-400" />
+                <Network className="w-4 h-4 text-neon-amber" />
                 Resolver Map
               </CardTitle>
             </CardHeader>
@@ -313,7 +313,7 @@ export function MeshActivityTab() {
                         </div>
                         {resolvers.map(r => (
                           <div key={r.id} className="ml-4 flex items-center gap-2 text-xs text-muted-foreground">
-                            <span className={cn("w-1.5 h-1.5 rounded-full", r.enabled ? "bg-emerald-500" : "bg-red-500")} />
+                            <span className={cn("w-1.5 h-1.5 rounded-full", r.enabled ? "bg-neon-green" : "bg-destructive")} />
                             <span className="font-mono">{r.id.split('.')[1]}</span>
                             <Badge variant="secondary" className="text-[9px] h-4 px-1">{r.risk}</Badge>
                           </div>
@@ -329,7 +329,7 @@ export function MeshActivityTab() {
           {/* Live Feed + Actions */}
           <div className="lg:col-span-2 space-y-6">
             {/* Test Broadcast */}
-            <Card className="border border-amber-500/20 bg-amber-500/5">
+            <Card className="border border-neon-amber/20 bg-neon-amber/5">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -351,7 +351,7 @@ export function MeshActivityTab() {
               <Card className="border border-border/30 bg-muted/10">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-2">
-                    <ArrowRight className="w-4 h-4 text-cyan-400" />
+                    <ArrowRight className="w-4 h-4 text-neon-cyan" />
                     Top Routes
                   </CardTitle>
                 </CardHeader>
@@ -375,14 +375,14 @@ export function MeshActivityTab() {
             <Card className="border border-border/30 bg-muted/10">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-emerald-400" />
+                  <Shield className="w-4 h-4 text-neon-green" />
                   Live Receipts
                   <Badge variant="secondary" className="text-[10px]">{receipts.length}</Badge>
                   {enabled && (
-                    <span className="ml-auto flex items-center gap-1 text-[10px] text-emerald-400">
+                    <span className="ml-auto flex items-center gap-1 text-[10px] text-neon-green">
                       <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-neon-green" />
                       </span>
                       streaming
                     </span>
@@ -404,12 +404,12 @@ export function MeshActivityTab() {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0 }}
-                            className="group flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/20 hover:border-amber-500/30 transition-colors"
+                            className="group flex items-start gap-3 p-3 rounded-lg bg-muted/20 border border-border/20 hover:border-neon-amber/30 transition-colors"
                           >
                             {receipt.success ? (
-                              <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                              <CheckCircle className="w-4 h-4 text-neon-green mt-0.5 shrink-0" />
                             ) : (
-                              <XCircle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+                              <XCircle className="w-4 h-4 text-destructive mt-0.5 shrink-0" />
                             )}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
@@ -427,7 +427,7 @@ export function MeshActivityTab() {
                                 {receipt.error_message && (
                                   <>
                                     <span>•</span>
-                                    <span className="text-red-400">{receipt.error_message}</span>
+                                    <span className="text-destructive">{receipt.error_message}</span>
                                   </>
                                 )}
                               </div>
@@ -445,7 +445,7 @@ export function MeshActivityTab() {
                                       autoFocus
                                     />
                                     <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => handleSavePipeline(receipt)}>
-                                      <Save className="w-3 h-3 text-emerald-400" />
+                                      <Save className="w-3 h-3 text-neon-green" />
                                     </Button>
                                     <Button size="sm" variant="ghost" className="h-6 w-6 p-0" onClick={() => setSavingId(null)}>
                                       <XCircle className="w-3 h-3 text-muted-foreground" />

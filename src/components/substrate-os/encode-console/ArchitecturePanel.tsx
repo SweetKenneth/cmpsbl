@@ -29,7 +29,7 @@ interface ArchitecturePanelProps {
 export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue, shadowExperiments = [], onSelectWinner, onCancelExperiment }: ArchitecturePanelProps) {
   const { snapshot, mode, isLocked, lockReason, conversation, patches } = orchestration;
 
-  const healthColor = encodeHealth >= 80 ? 'text-green-500' : encodeHealth >= 50 ? 'text-yellow-500' : 'text-destructive';
+  const healthColor = encodeHealth >= 80 ? 'text-neon-green' : encodeHealth >= 50 ? 'text-neon-amber' : 'text-destructive';
 
   return (
     <ScrollArea className="h-full">
@@ -52,7 +52,7 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue, shad
             label="Execution"
             value={isLocked ? 'LOCKED' : 'UNLOCKED'}
             icon={isLocked ? Lock : Unlock}
-            color={isLocked ? 'text-destructive' : 'text-green-500'}
+            color={isLocked ? 'text-destructive' : 'text-neon-green'}
           />
           <StatusCard
             label="Messages"
@@ -139,7 +139,7 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue, shad
                   <div key={p.id} className="flex items-center gap-2 text-[11px]">
                     <span className={cn(
                       "w-1.5 h-1.5 rounded-full shrink-0",
-                      p.applied ? 'bg-green-500' : 'bg-muted-foreground'
+                      p.applied ? 'bg-neon-green' : 'bg-muted-foreground'
                     )} />
                     <span className="text-muted-foreground truncate font-mono">{p.rationale}</span>
                   </div>

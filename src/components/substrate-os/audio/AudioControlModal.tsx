@@ -259,7 +259,7 @@ export function AudioControlModal({ isOpen, onClose }: AudioControlModalProps) {
                               className={cn(
                                 "text-[9px]",
                                 soundSettings.enabled 
-                                  ? "border-emerald-500/50 text-emerald-400"
+                                  ? "border-neon-green/50 text-neon-green"
                                   : "border-muted-foreground/30 text-muted-foreground"
                               )}
                             >

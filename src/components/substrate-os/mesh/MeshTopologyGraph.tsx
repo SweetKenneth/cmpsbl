@@ -314,7 +314,7 @@ export function MeshTopologyGraph() {
       <CardHeader className="pb-2">
         <CardTitle className="text-sm flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Network className="w-4 h-4 text-amber-400" />
+            <Network className="w-4 h-4 text-neon-amber" />
             Mesh Topology
             <Badge variant="secondary" className="text-[9px]">{stats.modules} modules • {stats.connections} connections</Badge>
           </div>

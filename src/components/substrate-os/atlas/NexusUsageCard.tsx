@@ -110,9 +110,9 @@ export function NexusUsageCard() {
   };
 
   const getStatusColor = (percent: number) => {
-    if (percent >= 90) return 'text-red-400 bg-red-500/20 border-red-500/40';
-    if (percent >= 70) return 'text-amber-400 bg-amber-500/20 border-amber-500/40';
-    return 'text-emerald-400 bg-emerald-500/20 border-emerald-500/40';
+    if (percent >= 90) return 'text-destructive bg-destructive/20 border-destructive/40';
+    if (percent >= 70) return 'text-neon-amber bg-neon-amber/20 border-neon-amber/40';
+    return 'text-neon-green bg-neon-green/20 border-neon-green/40';
   };
 
   const dailyRemaining = Math.max(0, FLEET_LIMITS.daily - (usage?.today.calls || 0));
@@ -124,14 +124,14 @@ export function NexusUsageCard() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
     >
-      <Card className="border-cyan-400/30 bg-gradient-to-br from-cyan-500/10 via-background to-transparent shadow-lg shadow-cyan-500/5 hover:shadow-cyan-500/10 transition-shadow">
+      <Card className="border-neon-cyan/30 bg-gradient-to-br from-neon-cyan/10 via-background to-transparent shadow-lg shadow-neon-cyan/5 hover:shadow-neon-cyan/10 transition-shadow">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 flex items-center justify-center border border-cyan-400/30 shadow-sm shadow-cyan-500/20">
-              <Activity className="w-4 h-4 text-cyan-300" />
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-neon-cyan/30 to-neon-cyan/20 flex items-center justify-center border border-neon-cyan/30 shadow-sm shadow-neon-cyan/20">
+              <Activity className="w-4 h-4 text-neon-cyan" />
             </div>
             <span className="text-foreground/90">Nexus Fleet Usage</span>
-            <Badge variant="outline" className="ml-1 text-[9px] text-emerald-400 bg-emerald-500/10 border-emerald-500/30">
+            <Badge variant="outline" className="ml-1 text-[9px] text-neon-green bg-neon-green/10 border-neon-green/30">
               {fleetHealth}/7 healthy
             </Badge>
             <Button
@@ -149,7 +149,7 @@ export function NexusUsageCard() {
         <CardContent className="space-y-4">
           {error ? (
             <div className="text-center py-4 text-muted-foreground text-sm">
-              <AlertTriangle className="w-5 h-5 mx-auto mb-2 text-amber-400" />
+              <AlertTriangle className="w-5 h-5 mx-auto mb-2 text-neon-amber" />
               {error}
             </div>
           ) : loading && !usage ? (
@@ -216,7 +216,7 @@ export function NexusUsageCard() {
                     <TrendingUp className="w-3 h-3" />
                     Cost
                   </div>
-                  <p className="text-lg font-bold text-emerald-400">$0.00</p>
+                  <p className="text-lg font-bold text-neon-green">$0.00</p>
                 </div>
               </div>
             </>

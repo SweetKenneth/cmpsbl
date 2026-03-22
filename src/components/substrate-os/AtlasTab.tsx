@@ -119,9 +119,9 @@ export function AtlasTab() {
 
   const statusColor = (status: string) => {
     switch (status) {
-      case 'success': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40';
-      case 'fail': return 'bg-red-500/20 text-red-400 border-red-500/40';
-      case 'blocked': return 'bg-amber-500/20 text-amber-400 border-amber-500/40';
+      case 'success': return 'bg-neon-green/20 text-neon-green border-neon-green/40';
+      case 'fail': return 'bg-destructive/20 text-destructive border-destructive/40';
+      case 'blocked': return 'bg-neon-amber/20 text-neon-amber border-neon-amber/40';
       default: return 'bg-muted text-muted-foreground';
     }
   };
@@ -131,11 +131,11 @@ export function AtlasTab() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-500/40 flex items-center justify-center">
-            <Compass className="w-5 h-5 text-cyan-400" />
+          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-purple/20 border border-neon-cyan/40 flex items-center justify-center">
+            <Compass className="w-5 h-5 text-neon-cyan" />
             {sebaStatus?.mode !== 'off' && (
               <motion.div
-                className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-emerald-400"
+                className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-neon-green"
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               />
@@ -145,7 +145,7 @@ export function AtlasTab() {
             <h2 className="text-lg font-bold flex items-center gap-2">
               Atlas Control Plane
               {sebaStatus?.mode !== 'off' && (
-                <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
+                <Badge className="bg-neon-green/20 text-neon-green border-neon-green/40 text-[10px]">
                   <Radio className="w-2.5 h-2.5 mr-1" />
                   LIVE
                 </Badge>
@@ -200,7 +200,7 @@ export function AtlasTab() {
 
         {/* Node Inbox Tab */}
         <TabsContent value="inbox" className="mt-6">
-          <Card className="border-cyan-500/20 bg-muted/5 overflow-hidden">
+          <Card className="border-neon-cyan/20 bg-muted/5 overflow-hidden">
             <NodeInboxView className="h-[600px]" />
           </Card>
         </TabsContent>
@@ -218,10 +218,10 @@ export function AtlasTab() {
         {/* Capabilities Tab */}
         <TabsContent value="capabilities" className="mt-6">
           <div className="grid lg:grid-cols-2 gap-6">
-            <Card className="border-cyan-500/20 bg-muted/5">
+            <Card className="border-neon-cyan/20 bg-muted/5">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <ToggleRight className="w-4 h-4 text-cyan-400" />
+                  <ToggleRight className="w-4 h-4 text-neon-cyan" />
                   System Capabilities
                 </CardTitle>
               </CardHeader>
@@ -248,10 +248,10 @@ export function AtlasTab() {
               </CardContent>
             </Card>
 
-            <Card className="border-purple-500/20 bg-muted/5">
+            <Card className="border-neon-purple/20 bg-muted/5">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-purple-400" />
+                  <Zap className="w-4 h-4 text-neon-purple" />
                   Quick Actions
                 </CardTitle>
               </CardHeader>
@@ -292,10 +292,10 @@ export function AtlasTab() {
 
         {/* Intel Tab */}
         <TabsContent value="intel" className="mt-6">
-          <Card className="border-emerald-500/20 bg-muted/5">
+          <Card className="border-neon-green/20 bg-muted/5">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Brain className="w-4 h-4 text-emerald-400" />
+                <Brain className="w-4 h-4 text-neon-green" />
                 Intelligence Feed
               </CardTitle>
             </CardHeader>
@@ -328,10 +328,10 @@ export function AtlasTab() {
 
         {/* Audit Tab */}
         <TabsContent value="audit" className="mt-6">
-          <Card className="border-amber-500/20 bg-muted/5">
+          <Card className="border-neon-amber/20 bg-muted/5">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2">
-                <FileText className="w-4 h-4 text-amber-400" />
+                <FileText className="w-4 h-4 text-neon-amber" />
                 Audit Log
               </CardTitle>
             </CardHeader>

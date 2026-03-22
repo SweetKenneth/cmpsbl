@@ -284,7 +284,7 @@ function ReflectionCard({ reflection }: { reflection: any }) {
                   <ul className="space-y-3">
                     {parsed.insights.map((insight, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <Lightbulb className="w-4 h-4 text-amber-500/70 mt-0.5 shrink-0" />
+                        <Lightbulb className="w-4 h-4 text-neon-amber/70 mt-0.5 shrink-0" />
                         <FormattedText 
                           text={insight} 
                           className="text-sm text-muted-foreground leading-relaxed"
@@ -391,11 +391,11 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-md bg-cyan-500/20 flex items-center justify-center">
-          <Brain className="w-3.5 h-3.5 text-cyan-500" />
+        <div className="w-6 h-6 rounded-md bg-neon-cyan/20 flex items-center justify-center">
+          <Brain className="w-3.5 h-3.5 text-neon-cyan" />
         </div>
         <h3 className="text-sm font-medium">Brain Intelligence</h3>
-        <Badge variant="outline" className="text-[10px] border-cyan-500/50 text-cyan-500">
+        <Badge variant="outline" className="text-[10px] border-neon-cyan/50 text-neon-cyan">
           COGNITIVE
         </Badge>
       </div>
@@ -405,7 +405,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
         <Card className="border-border/50">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-500" />
+              <Zap className="w-4 h-4 text-neon-amber" />
               Quick Actions
             </CardTitle>
           </CardHeader>
@@ -470,7 +470,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
         <Card className="border-border/50">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Layers className="w-4 h-4 text-cyan-500" />
+              <Layers className="w-4 h-4 text-neon-cyan" />
               Memory Tiering
             </CardTitle>
           </CardHeader>
@@ -521,7 +521,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
               type="button"
               variant="outline"
               size="sm"
-              className="w-full justify-start gap-2 h-9 text-amber-600 hover:text-amber-500 border-amber-500/30 hover:border-amber-500/50 touch-manipulation"
+              className="w-full justify-start gap-2 h-9 text-neon-amber hover:text-neon-amber border-neon-amber/30 hover:border-neon-amber/50 touch-manipulation"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -565,7 +565,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
         <Card className="border-border/50">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Lightbulb className="w-4 h-4 text-yellow-500" />
+              <Lightbulb className="w-4 h-4 text-neon-amber" />
               Deep Think
             </CardTitle>
           </CardHeader>
@@ -590,7 +590,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
               Initiate Deep Thinking
             </Button>
             {deepThinkMutation.isSuccess && (
-              <div className="flex items-center gap-1 text-xs text-green-500">
+              <div className="flex items-center gap-1 text-xs text-neon-green">
                 <CheckCircle2 className="w-3 h-3" />
                 <span>Thinking complete</span>
               </div>
@@ -602,7 +602,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
         <Card className="border-border/50">
           <CardHeader className="pb-2 pt-4 px-4">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-purple-500" />
+              <Sparkles className="w-4 h-4 text-neon-purple" />
               Curiosity Engine
             </CardTitle>
           </CardHeader>
@@ -617,7 +617,7 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
             <Button
               variant="outline"
               size="sm"
-              className="w-full h-8 text-xs border-purple-500/30 text-purple-500 hover:bg-purple-500/10"
+              className="w-full h-8 text-xs border-neon-purple/30 text-neon-purple hover:bg-neon-purple/10"
               onClick={handleExplore}
               disabled={exploreMutation.isPending || !exploreQuery.trim()}
             >
@@ -696,13 +696,13 @@ export const BrainIntelligencePanel = memo(function BrainIntelligencePanel({ ena
                       key={idx} 
                       className={cn(
                         "flex items-center gap-2 p-1.5 rounded text-xs",
-                        q.explored ? "bg-green-500/10 text-green-400" : "bg-muted/30"
+                        q.explored ? "bg-neon-green/10 text-neon-green" : "bg-muted/30"
                       )}
                     >
                       {q.explored ? (
                         <CheckCircle2 className="w-3 h-3 shrink-0" />
                       ) : (
-                        <AlertCircle className="w-3 h-3 shrink-0 text-amber-500" />
+                        <AlertCircle className="w-3 h-3 shrink-0 text-neon-amber" />
                       )}
                       <span className="truncate">{q.query}</span>
                     </div>

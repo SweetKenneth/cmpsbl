@@ -186,8 +186,8 @@ export default function GovernorPanel() {
   }, []);
 
   const getOutcomeColor = (outcome: string) => {
-    if (outcome === 'success' || outcome === 'completed') return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20';
-    if (outcome === 'error' || outcome === 'failed') return 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20';
+    if (outcome === 'success' || outcome === 'completed') return 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20';
+    if (outcome === 'error' || outcome === 'failed') return 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20';
     return 'bg-muted text-muted-foreground border-border/20';
   };
 
@@ -195,23 +195,23 @@ export default function GovernorPanel() {
     <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-red-500/15 to-amber-500/10 border border-red-500/25 flex items-center justify-center shrink-0">
-          <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 dark:text-red-400" />
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-destructive/15 to-neon-amber/10 border border-destructive/25 flex items-center justify-center shrink-0">
+          <ShieldAlert className="w-4 h-4 sm:w-5 sm:h-5 text-destructive dark:text-destructive" />
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Stream Governor</h2>
           <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">STREAM CONTROLS · KILL SWITCHES · TELEMETRY</p>
         </div>
-        <Badge className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20 shrink-0">ADMIN</Badge>
+        <Badge className="text-[9px] bg-destructive/10 text-destructive dark:text-destructive border-destructive/20 shrink-0">ADMIN</Badge>
       </div>
 
       {/* Telemetry Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
         {[
-          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, color: 'text-blue-500' },
-          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, color: 'text-cyan-500' },
-          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, color: 'text-emerald-500' },
-          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'text-red-500' : 'text-emerald-500' },
+          { label: 'Total Users', value: telemetry.totalUsers, icon: Eye, color: 'text-neon-blue' },
+          { label: 'API Calls', value: telemetry.totalApiCalls, icon: Zap, color: 'text-neon-cyan' },
+          { label: 'Usage Events', value: telemetry.totalUsageLogs, icon: BarChart3, color: 'text-neon-green' },
+          { label: 'Errors (7d)', value: telemetry.recentErrors, icon: AlertTriangle, color: telemetry.recentErrors > 0 ? 'text-destructive' : 'text-neon-green' },
         ].map(stat => (
           <Card key={stat.label} className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
             <CardContent className="p-3">
@@ -231,25 +231,25 @@ export default function GovernorPanel() {
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max sm:w-auto">
-            <TabsTrigger value="controls" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="controls" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Power className="w-3.5 h-3.5 hidden sm:block" /> Switches
             </TabsTrigger>
-            <TabsTrigger value="sovereignty" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="sovereignty" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Crown className="w-3.5 h-3.5 hidden sm:block" /> ESZ
             </TabsTrigger>
-            <TabsTrigger value="audit-feed" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="audit-feed" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Activity className="w-3.5 h-3.5 hidden sm:block" /> Audit
             </TabsTrigger>
-            <TabsTrigger value="admin" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="admin" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Settings className="w-3.5 h-3.5 hidden sm:block" /> Surfaces
             </TabsTrigger>
-            <TabsTrigger value="advisory" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="advisory" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Brain className="w-3.5 h-3.5 hidden sm:block" /> Signal
             </TabsTrigger>
-            <TabsTrigger value="metrics" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="metrics" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <BarChart3 className="w-3.5 h-3.5 hidden sm:block" /> Metrics
             </TabsTrigger>
-            <TabsTrigger value="downloads" className="data-[state=active]:bg-red-500/10 data-[state=active]:text-red-600 dark:data-[state=active]:text-red-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="downloads" className="data-[state=active]:bg-destructive/10 data-[state=active]:text-destructive dark:data-[state=active]:text-destructive text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Package className="w-3.5 h-3.5 hidden sm:block" /> Downloads
             </TabsTrigger>
           </TabsList>
@@ -257,10 +257,10 @@ export default function GovernorPanel() {
 
         {/* Kill Switches */}
         <TabsContent value="controls" className="mt-4">
-          <Card className="border-amber-500/15 dark:border-amber-500/10 bg-card/50 dark:bg-card/20">
+          <Card className="border-neon-amber/15 dark:border-neon-amber/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
-                <Power className="w-4 h-4 text-amber-500 shrink-0" />
+                <Power className="w-4 h-4 text-neon-amber shrink-0" />
                 System Kill Switches
               </CardTitle>
               <CardDescription className="text-[11px] sm:text-xs">Global toggles for critical subsystems</CardDescription>
@@ -268,13 +268,13 @@ export default function GovernorPanel() {
             <CardContent className="px-4 sm:px-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                 {[
-                  { key: 'mesh', label: 'Intent Mesh', desc: 'Cross-node routing', icon: Network, color: 'text-amber-500', checked: meshToggle.enabled, toggle: () => { meshToggle.toggle(); toast.success(meshToggle.enabled ? 'Mesh disabled' : 'Mesh enabled'); } },
-                  { key: 'defense_enabled', label: 'DEFENSE', desc: 'Threat detection', icon: Shield, color: 'text-red-500', checked: killSwitches.defense_enabled, toggle: () => toggleKs('defense_enabled') },
-                  { key: 'seba_enabled', label: 'SEBA Agent', desc: 'Autonomous evolution', icon: Zap, color: 'text-purple-500', checked: killSwitches.seba_enabled, toggle: () => toggleKs('seba_enabled') },
-                  { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-cyan-500', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },
-                  { key: 'clm_enabled', label: 'CLM Engine', desc: '24/7 continuous learning', icon: Brain, color: 'text-emerald-500', checked: killSwitches.clm_enabled, toggle: () => toggleKs('clm_enabled') },
+                  { key: 'mesh', label: 'Intent Mesh', desc: 'Cross-node routing', icon: Network, color: 'text-neon-amber', checked: meshToggle.enabled, toggle: () => { meshToggle.toggle(); toast.success(meshToggle.enabled ? 'Mesh disabled' : 'Mesh enabled'); } },
+                  { key: 'defense_enabled', label: 'DEFENSE', desc: 'Threat detection', icon: Shield, color: 'text-destructive', checked: killSwitches.defense_enabled, toggle: () => toggleKs('defense_enabled') },
+                  { key: 'seba_enabled', label: 'SEBA Agent', desc: 'Autonomous evolution', icon: Zap, color: 'text-neon-purple', checked: killSwitches.seba_enabled, toggle: () => toggleKs('seba_enabled') },
+                  { key: 'autoblog_enabled', label: 'Autoblog', desc: 'Content generation', icon: FileText, color: 'text-neon-cyan', checked: killSwitches.autoblog_enabled, toggle: () => toggleKs('autoblog_enabled') },
+                  { key: 'clm_enabled', label: 'CLM Engine', desc: '24/7 continuous learning', icon: Brain, color: 'text-neon-green', checked: killSwitches.clm_enabled, toggle: () => toggleKs('clm_enabled') },
                   { key: 'auto_training_enabled', label: 'IMMUNITY Training', desc: 'Shadow probe auto-training', icon: Shield, color: 'text-primary', checked: killSwitches.auto_training_enabled, toggle: () => toggleKs('auto_training_enabled') },
-                  { key: 'shadow_mesh_enabled', label: 'Shadow Mesh', desc: 'Adversarial shadow probes', icon: Eye, color: 'text-violet-500', checked: killSwitches.shadow_mesh_enabled, toggle: () => toggleKs('shadow_mesh_enabled') },
+                  { key: 'shadow_mesh_enabled', label: 'Shadow Mesh', desc: 'Adversarial shadow probes', icon: Eye, color: 'text-neon-purple', checked: killSwitches.shadow_mesh_enabled, toggle: () => toggleKs('shadow_mesh_enabled') },
                 ].map(sw => (
                   <div key={sw.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 dark:bg-muted/5 border border-border/15 min-h-[52px] transition-all duration-300 hover:border-primary/15 hover:bg-muted/15">
                     <div className="flex items-center gap-2.5 min-w-0 flex-1">
@@ -299,7 +299,7 @@ export default function GovernorPanel() {
               {
                 module: 'SOVEREIGN',
                 icon: Crown,
-                color: 'text-amber-500',
+                color: 'text-neon-amber',
                 desc: 'Autonomous decision authority & operational independence',
                 metrics: [
                   { label: 'Authority Level', value: killSwitches.seba_enabled ? 'Full' : 'Limited' },
@@ -310,7 +310,7 @@ export default function GovernorPanel() {
               {
                 module: 'CONSCIENCE',
                 icon: Scale,
-                color: 'text-violet-500',
+                color: 'text-neon-purple',
                 desc: 'Ethical decision boundaries & bias detection',
                 metrics: [
                   { label: 'Ethics Checks', value: killSwitches.defense_enabled ? 'Active' : 'Disabled' },
@@ -321,7 +321,7 @@ export default function GovernorPanel() {
               {
                 module: 'TREATY',
                 icon: ScrollText,
-                color: 'text-cyan-500',
+                color: 'text-neon-cyan',
                 desc: 'SLA enforcement, contract compliance, agreement tracking',
                 metrics: [
                   { label: 'Active Treaties', value: String(telemetry.totalUsers) },
@@ -335,7 +335,7 @@ export default function GovernorPanel() {
                   <div className="flex items-center gap-2">
                     <node.icon className={cn("w-4 h-4 shrink-0", node.color)} />
                     <span className="text-xs sm:text-sm font-bold font-mono">{node.module}</span>
-                    <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20">active</Badge>
+                    <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20">active</Badge>
                   </div>
                   <p className="text-[10px] sm:text-[11px] text-muted-foreground/60">{node.desc}</p>
                   <div className="space-y-1.5">
@@ -360,7 +360,7 @@ export default function GovernorPanel() {
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Shield className="w-4 h-4 text-amber-500" />
+                    <Shield className="w-4 h-4 text-neon-amber" />
                     <div>
                       <p className="text-xs sm:text-sm font-bold">Diligence Harness</p>
                       <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">Terminal & governance probe battery</p>
@@ -374,7 +374,7 @@ export default function GovernorPanel() {
                 {diligenceReport && (
                   <div className="space-y-2 pt-2 border-t border-border/10">
                     <div className="flex items-center gap-2">
-                      {diligenceReport.summary.critical === 0 ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <XCircle className="w-4 h-4 text-red-500" />}
+                      {diligenceReport.summary.critical === 0 ? <CheckCircle2 className="w-4 h-4 text-neon-green" /> : <XCircle className="w-4 h-4 text-destructive" />}
                       <span className="text-xs font-mono">{diligenceReport.summary.passed}/{diligenceReport.summary.total} PASS · {diligenceReport.summary.minor} MINOR · {diligenceReport.summary.critical} CRITICAL</span>
                     </div>
                     {diligenceReport.failed_probes.length > 0 && (
@@ -382,7 +382,7 @@ export default function GovernorPanel() {
                         <div className="space-y-1">
                           {diligenceReport.failed_probes.map(p => (
                             <div key={p.id} className="text-[10px] p-1.5 rounded bg-muted/10 border border-border/10 font-mono">
-                              <span className={p.severity === 'CRITICAL' ? 'text-red-500' : 'text-amber-500'}>[{p.severity}]</span> {p.name} — <span className="text-muted-foreground/60">{p.command}</span>
+                              <span className={p.severity === 'CRITICAL' ? 'text-destructive' : 'text-neon-amber'}>[{p.severity}]</span> {p.name} — <span className="text-muted-foreground/60">{p.command}</span>
                             </div>
                           ))}
                         </div>
@@ -397,7 +397,7 @@ export default function GovernorPanel() {
               <CardContent className="p-4 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-cyan-500" />
+                    <Activity className="w-4 h-4 text-neon-cyan" />
                     <div>
                       <p className="text-xs sm:text-sm font-bold">Full Audit Runner</p>
                       <p className="text-[9px] sm:text-[10px] text-muted-foreground/50">Structural, contract, SEO & branding audit</p>
@@ -411,7 +411,7 @@ export default function GovernorPanel() {
                 {auditReport && (
                   <div className="space-y-2 pt-2 border-t border-border/10">
                     <div className="flex items-center gap-2">
-                      {auditReport.summary.passed ? <CheckCircle2 className="w-4 h-4 text-emerald-500" /> : <AlertCircle className="w-4 h-4 text-amber-500" />}
+                      {auditReport.summary.passed ? <CheckCircle2 className="w-4 h-4 text-neon-green" /> : <AlertCircle className="w-4 h-4 text-neon-amber" />}
                       <span className="text-xs font-mono">{auditReport.summary.passed ? 'PASSED' : 'ISSUES'} · {auditReport.summary.fatal}F {auditReport.summary.error}E {auditReport.summary.warn}W {auditReport.summary.info}I · {auditReport.duration_ms}ms</span>
                     </div>
                     {auditReport.findings.filter(f => f.severity === 'fatal' || f.severity === 'error').length > 0 && (
@@ -419,7 +419,7 @@ export default function GovernorPanel() {
                         <div className="space-y-1">
                           {auditReport.findings.filter(f => f.severity === 'fatal' || f.severity === 'error').map(f => (
                             <div key={f.id} className="text-[10px] p-1.5 rounded bg-muted/10 border border-border/10 font-mono">
-                              <span className={f.severity === 'fatal' ? 'text-red-500' : 'text-amber-500'}>[{f.severity.toUpperCase()}]</span> {f.title}
+                              <span className={f.severity === 'fatal' ? 'text-destructive' : 'text-neon-amber'}>[{f.severity.toUpperCase()}]</span> {f.title}
                             </div>
                           ))}
                         </div>
@@ -474,13 +474,13 @@ export default function GovernorPanel() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             {[
               { label: 'INTEL Panel', desc: 'Aggregation & founder insights', path: '/admin/intel', icon: Eye, color: 'text-primary' },
-              { label: 'GATE Engine', desc: 'Production validation gauntlet', path: '/admin/gate', icon: Shield, color: 'text-amber-500' },
-              { label: 'S-Tier Vault', desc: 'Apex Discovery asset registry', path: '/admin/s-tier-vault', icon: Shield, color: 'text-purple-500' },
-              { label: 'Quarry', desc: 'Asset extraction & processing', path: '/admin/quarry', icon: Cpu, color: 'text-orange-500' },
-              { label: 'Immunity Mesh', desc: 'Training · Probes · Analytics', path: '/admin/immunity-mesh', icon: Network, color: 'text-cyan-500' },
-              { label: 'Governance Plane', desc: 'High-level governance controls', path: '/admin/governance', icon: Shield, color: 'text-indigo-500' },
-              { label: 'Discovery Mining', desc: 'Capability discovery console', path: '/admin/discovery-mining', icon: Zap, color: 'text-emerald-500' },
-              { label: 'EVOLUTION Mesh', desc: 'Evolution engine dashboard', path: '/admin/evolution', icon: Activity, color: 'text-rose-500' },
+              { label: 'GATE Engine', desc: 'Production validation gauntlet', path: '/admin/gate', icon: Shield, color: 'text-neon-amber' },
+              { label: 'S-Tier Vault', desc: 'Apex Discovery asset registry', path: '/admin/s-tier-vault', icon: Shield, color: 'text-neon-purple' },
+              { label: 'Quarry', desc: 'Asset extraction & processing', path: '/admin/quarry', icon: Cpu, color: 'text-neon-amber' },
+              { label: 'Immunity Mesh', desc: 'Training · Probes · Analytics', path: '/admin/immunity-mesh', icon: Network, color: 'text-neon-cyan' },
+              { label: 'Governance Plane', desc: 'High-level governance controls', path: '/admin/governance', icon: Shield, color: 'text-primary' },
+              { label: 'Discovery Mining', desc: 'Capability discovery console', path: '/admin/discovery-mining', icon: Zap, color: 'text-neon-green' },
+              { label: 'EVOLUTION Mesh', desc: 'Evolution engine dashboard', path: '/admin/evolution', icon: Activity, color: 'text-neon-magenta' },
             ].map(surface => (
               <motion.div key={surface.path} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
                 <Button
@@ -522,13 +522,13 @@ export default function GovernorPanel() {
                       <span className="text-[11px] font-mono font-bold w-24 truncate">{m.module}</span>
                       <div className="flex-1 h-1.5 bg-muted/30 rounded-full overflow-hidden">
                         <div
-                          className={cn("h-full rounded-full", m.health >= 80 ? "bg-emerald-500" : m.health >= 50 ? "bg-amber-500" : "bg-red-500")}
+                          className={cn("h-full rounded-full", m.health >= 80 ? "bg-neon-green" : m.health >= 50 ? "bg-neon-amber" : "bg-destructive")}
                           style={{ width: `${m.health}%` }}
                         />
                       </div>
                       <span className="text-[10px] font-mono tabular-nums w-10 text-right">{m.health}%</span>
                       <span className="text-[9px] text-muted-foreground/50 font-mono w-16 text-right">{m.ops} ops</span>
-                      <span className="text-[9px] text-red-400/70 font-mono w-12 text-right">{m.errors} err</span>
+                      <span className="text-[9px] text-destructive/70 font-mono w-12 text-right">{m.errors} err</span>
                     </div>
                   ))}
                 </div>

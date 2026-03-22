@@ -97,7 +97,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'core', name: 'CORE', layer: 'kernel' as const, icon: Cpu,
       description: 'Kernel orchestration & scheduling',
-      gradient: 'bg-gradient-to-r from-orange-500 to-amber-600', accentColor: 'bg-orange-500',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: coreStatus,
       metrics: [{ label: 'Status', value: coreStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity, variant: 'primary' as const }],
@@ -108,7 +108,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'ripple', name: 'RIPPLE', layer: 'kernel' as const, icon: Radio,
       description: 'Message bus & event sourcing',
-      gradient: 'bg-gradient-to-r from-cyan-500 to-blue-600', accentColor: 'bg-cyan-500',
+      gradient: 'bg-gradient-to-r from-neon-cyan to-neon-blue', accentColor: 'bg-neon-cyan',
       status: rippleStatus,
       metrics: [{ label: 'Bus', value: rippleStatus.data?.success ? 'Connected' : 'Checking' }],
       actions: [{ id: 'jobs', label: 'Jobs', icon: Activity }],
@@ -119,7 +119,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'access', name: 'ACCESS', layer: 'kernel' as const, icon: Key,
       description: 'Identity, API keys & metering',
-      gradient: 'bg-gradient-to-r from-amber-500 to-yellow-600', accentColor: 'bg-amber-500',
+      gradient: 'bg-gradient-to-r from-neon-amber to-yellow-600', accentColor: 'bg-neon-amber',
       status: accessStatus,
       metrics: [{ label: 'Identity', value: accessStatus.data?.success ? 'Verified' : 'Checking' }],
       actions: [{ id: 'products', label: 'Products', icon: Layers }],
@@ -131,7 +131,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'brain', name: 'BRAIN', layer: 'cognitive' as const, icon: Brain,
       description: 'Three-tier memory & learning',
-      gradient: 'bg-gradient-to-r from-purple-500 to-violet-600', accentColor: 'bg-purple-500',
+      gradient: 'bg-gradient-to-r from-neon-purple to-neon-purple', accentColor: 'bg-neon-purple',
       status: brainStatus,
       metrics: [{ label: 'Memory', value: brainStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [
@@ -148,7 +148,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'decode', name: 'DECODE', layer: 'cognitive' as const, icon: MessageSquare,
       description: 'Epistemic conversation engine',
-      gradient: 'bg-gradient-to-r from-fuchsia-500 to-pink-600', accentColor: 'bg-fuchsia-500',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-pink-600', accentColor: 'bg-neon-magenta',
       status: decodeStatus,
       metrics: [{ label: 'Interface', value: decodeStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -157,7 +157,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'nexus', name: 'NEXUS', layer: 'cognitive' as const, icon: Zap,
       description: 'AI provider routing',
-      gradient: 'bg-gradient-to-r from-green-500 to-emerald-600', accentColor: 'bg-green-500',
+      gradient: 'bg-gradient-to-r from-neon-green to-neon-green', accentColor: 'bg-neon-green',
       status: nexusStatus,
       metrics: [{ label: 'Router', value: nexusStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'providers', label: 'Providers', icon: Network }],
@@ -167,7 +167,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'defense', name: 'DEFENSE', layer: 'operational' as const, icon: Shield,
       description: 'Security & threat detection',
-      gradient: 'bg-gradient-to-r from-red-500 to-rose-600', accentColor: 'bg-red-500',
+      gradient: 'bg-gradient-to-r from-destructive to-neon-magenta', accentColor: 'bg-destructive',
       status: defenseStatus,
       metrics: [{ label: 'Perimeter', value: defenseStatus.data?.success ? 'Secure' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Shield, variant: 'warning' as const }],
@@ -176,7 +176,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'vision', name: 'VISION', layer: 'operational' as const, icon: Eye,
       description: 'Observability & telemetry',
-      gradient: 'bg-gradient-to-r from-blue-500 to-indigo-600', accentColor: 'bg-blue-500',
+      gradient: 'bg-gradient-to-r from-neon-blue to-primary', accentColor: 'bg-neon-blue',
       status: visionStatus,
       metrics: [{ label: 'Telemetry', value: visionStatus.data?.success ? 'Streaming' : 'Checking' }],
       actions: [{ id: 'metrics', label: 'Metrics', icon: Activity }],
@@ -185,7 +185,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'dream', name: 'DREAM', layer: 'operational' as const, icon: Moon,
       description: 'Dream-Eater consumption engine',
-      gradient: 'bg-gradient-to-r from-violet-500 to-purple-600', accentColor: 'bg-violet-500',
+      gradient: 'bg-gradient-to-r from-neon-purple to-neon-purple', accentColor: 'bg-neon-purple',
       status: dreamStatus,
       metrics: [{ label: 'Engine', value: dreamStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [
@@ -200,7 +200,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'encode', name: 'ENCODE', layer: 'operational' as const, icon: Code,
       description: 'Structural code generation',
-      gradient: 'bg-gradient-to-r from-lime-500 to-green-600', accentColor: 'bg-lime-500',
+      gradient: 'bg-gradient-to-r from-lime-500 to-neon-green', accentColor: 'bg-lime-500',
       status: encodeStatus,
       metrics: [{ label: 'Engine', value: encodeStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -210,7 +210,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'system', name: 'SYSTEM', layer: 'admin' as const, icon: Settings,
       description: 'Core administration & control',
-      gradient: 'bg-gradient-to-r from-emerald-500 to-teal-600', accentColor: 'bg-emerald-500',
+      gradient: 'bg-gradient-to-r from-neon-green to-teal-600', accentColor: 'bg-neon-green',
       status: systemStatusQuery,
       metrics: [{ label: 'Health', value: systemStatusQuery.data?.success ? 'Nominal' : 'Checking' }],
       actions: [{ id: 'heal', label: 'Heal', icon: Wrench, variant: 'success' as const }],
@@ -219,7 +219,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'admin' as const, icon: Sparkles,
       description: 'Bounded self-evolution engine',
-      gradient: 'bg-gradient-to-r from-rose-500 to-pink-600', accentColor: 'bg-rose-500',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-pink-600', accentColor: 'bg-neon-magenta',
       status: evolutionAdminStatus,
       metrics: [{ label: 'Engine', value: evolutionAdminStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'scan', label: 'Scan', icon: Activity }],
@@ -228,7 +228,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'integration', name: 'INTEGRATION', layer: 'admin' as const, icon: Plug,
       description: 'Enterprise adapters & governance',
-      gradient: 'bg-gradient-to-r from-teal-500 to-cyan-600', accentColor: 'bg-teal-500',
+      gradient: 'bg-gradient-to-r from-neon-cyan to-neon-cyan', accentColor: 'bg-neon-cyan',
       status: integrationStatus,
       metrics: [{ label: 'Adapters', value: integrationStatus.data?.success ? 'Connected' : 'Checking' }],
       actions: [{ id: 'discover', label: 'Discover', icon: Network }],
@@ -237,7 +237,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'inclusive', name: 'INCLUSIVE', layer: 'admin' as const, icon: Accessibility,
       description: 'Human compatibility layer',
-      gradient: 'bg-gradient-to-r from-pink-500 to-rose-600', accentColor: 'bg-pink-500',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: inclusiveStatus,
       metrics: [{ label: 'Scanner', value: inclusiveStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'scan', label: 'Scan', icon: Activity }],
@@ -247,7 +247,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'cortex', name: 'CORTEX', layer: 'orchestrator' as const, icon: GitBranch,
       description: 'Agency-class orchestrator',
-      gradient: 'bg-gradient-to-r from-indigo-500 to-violet-600', accentColor: 'bg-indigo-500',
+      gradient: 'bg-gradient-to-r from-primary to-neon-purple', accentColor: 'bg-primary',
       status: cortexStatus,
       metrics: [{ label: 'Orchestrator', value: cortexStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [
@@ -263,7 +263,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'memory', name: 'MEMORY', layer: 'infrastructure' as const, icon: Database,
       description: 'Vector/RAG recall & tiering',
-      gradient: 'bg-gradient-to-r from-cyan-400 to-blue-500', accentColor: 'bg-cyan-400',
+      gradient: 'bg-gradient-to-r from-neon-cyan to-neon-blue', accentColor: 'bg-neon-cyan',
       status: memoryStatus,
       metrics: [{ label: 'Module', value: memoryStatus.data?.success ? 'Online' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -272,7 +272,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'relay', name: 'RELAY', layer: 'infrastructure' as const, icon: Send,
       description: 'Outbound routing engine',
-      gradient: 'bg-gradient-to-r from-amber-400 to-orange-500', accentColor: 'bg-amber-400',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: relayStatus,
       metrics: [{ label: 'Router', value: relayStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -290,7 +290,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'identity', name: 'IDENTITY', layer: 'infrastructure' as const, icon: Fingerprint,
       description: 'Actor attribution & WebAuthn',
-      gradient: 'bg-gradient-to-r from-emerald-400 to-green-500', accentColor: 'bg-emerald-400',
+      gradient: 'bg-gradient-to-r from-neon-green to-neon-green', accentColor: 'bg-neon-green',
       status: identityStatus,
       metrics: [{ label: 'Auth', value: identityStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -299,7 +299,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'economy', name: 'ECONOMY', layer: 'infrastructure' as const, icon: DollarSign,
       description: 'Budget enforcement & costing',
-      gradient: 'bg-gradient-to-r from-yellow-400 to-amber-500', accentColor: 'bg-yellow-400',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: economyStatus,
       metrics: [{ label: 'Budget', value: economyStatus.data?.success ? 'Tracking' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -308,7 +308,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'sandbox', name: 'SANDBOX', layer: 'infrastructure' as const, icon: Box,
       description: 'Isolated execution environment',
-      gradient: 'bg-gradient-to-r from-violet-400 to-purple-500', accentColor: 'bg-violet-400',
+      gradient: 'bg-gradient-to-r from-neon-purple to-neon-purple', accentColor: 'bg-neon-purple',
       status: sandboxStatus,
       metrics: [{ label: 'Environment', value: sandboxStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -318,7 +318,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'sovereign', name: 'SOVEREIGN', layer: 'infrastructure' as const, icon: Globe,
       description: 'Jurisdiction classification & compliance',
-      gradient: 'bg-gradient-to-r from-orange-400 to-amber-500', accentColor: 'bg-orange-400',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: sovereignStatus,
       metrics: [{ label: 'Zone', value: sovereignStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -327,7 +327,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'oracle', name: 'ORACLE', layer: 'infrastructure' as const, icon: Eye,
       description: 'Predictive analytics & forecasting',
-      gradient: 'bg-gradient-to-r from-amber-400 to-yellow-500', accentColor: 'bg-amber-400',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: oracleStatus,
       metrics: [{ label: 'Engine', value: oracleStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -336,7 +336,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'conscience', name: 'CONSCIENCE', layer: 'infrastructure' as const, icon: Brain,
       description: 'Ethical framework & bias detection',
-      gradient: 'bg-gradient-to-r from-rose-400 to-pink-500', accentColor: 'bg-rose-400',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: conscienceStatus,
       metrics: [{ label: 'Ethics', value: conscienceStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -345,7 +345,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'treaty', name: 'TREATY', layer: 'infrastructure' as const, icon: ClipboardCheck,
       description: 'Contract engine & SLA compliance',
-      gradient: 'bg-gradient-to-r from-emerald-400 to-green-500', accentColor: 'bg-emerald-400',
+      gradient: 'bg-gradient-to-r from-neon-green to-neon-green', accentColor: 'bg-neon-green',
       status: treatyStatus,
       metrics: [{ label: 'Contracts', value: treatyStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -355,7 +355,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'compass', name: 'COMPASS', layer: 'infrastructure' as const, icon: Globe,
       description: 'Strategic compass & horizon scanning',
-      gradient: 'bg-gradient-to-r from-sky-400 to-blue-500', accentColor: 'bg-sky-400',
+      gradient: 'bg-gradient-to-r from-sky-400 to-neon-blue', accentColor: 'bg-sky-400',
       status: compassStatus,
       metrics: [{ label: 'Bearing', value: compassStatus.data?.success ? 'Aligned' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -364,7 +364,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'echo', name: 'ECHO', layer: 'infrastructure' as const, icon: Radio,
       description: 'What-if simulation & replay',
-      gradient: 'bg-gradient-to-r from-indigo-400 to-violet-500', accentColor: 'bg-indigo-400',
+      gradient: 'bg-gradient-to-r from-primary to-neon-purple', accentColor: 'bg-primary',
       status: echoStatus,
       metrics: [{ label: 'Simulator', value: echoStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -373,7 +373,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'reflex', name: 'REFLEX', layer: 'infrastructure' as const, icon: Zap,
       description: 'Edge compute & low-latency response',
-      gradient: 'bg-gradient-to-r from-pink-400 to-rose-500', accentColor: 'bg-pink-400',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: reflexStatus,
       metrics: [{ label: 'Edge', value: reflexStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -383,7 +383,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'forge', name: 'FORGE', layer: 'infrastructure' as const, icon: Cpu,
       description: 'Asset generation & templates',
-      gradient: 'bg-gradient-to-r from-orange-500 to-red-500', accentColor: 'bg-orange-500',
+      gradient: 'bg-gradient-to-r from-neon-amber to-destructive', accentColor: 'bg-neon-amber',
       status: forgeStatus,
       metrics: [{ label: 'Forge', value: forgeStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -392,7 +392,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'lingua', name: 'LINGUA', layer: 'infrastructure' as const, icon: Globe,
       description: 'Translation & localization engine',
-      gradient: 'bg-gradient-to-r from-teal-400 to-cyan-500', accentColor: 'bg-teal-400',
+      gradient: 'bg-gradient-to-r from-neon-cyan to-neon-cyan', accentColor: 'bg-neon-cyan',
       status: linguaStatus,
       metrics: [{ label: 'Engine', value: linguaStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -410,7 +410,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'harvest', name: 'HARVEST', layer: 'infrastructure' as const, icon: Database,
       description: 'Data ingestion & ETL',
-      gradient: 'bg-gradient-to-r from-lime-400 to-green-500', accentColor: 'bg-lime-400',
+      gradient: 'bg-gradient-to-r from-lime-400 to-neon-green', accentColor: 'bg-lime-400',
       status: harvestStatus,
       metrics: [{ label: 'Pipeline', value: harvestStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -420,7 +420,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'medic', name: 'MEDIC', layer: 'operational' as const, icon: Activity,
       description: 'Autonomous diagnostics & self-repair',
-      gradient: 'bg-gradient-to-r from-rose-400 to-pink-500', accentColor: 'bg-rose-400',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: medicStatus,
       metrics: [{ label: 'Diagnostics', value: medicStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -429,7 +429,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'nerve', name: 'NERVE', layer: 'operational' as const, icon: Zap,
       description: 'Inter-node signaling & consensus',
-      gradient: 'bg-gradient-to-r from-sky-400 to-blue-500', accentColor: 'bg-sky-400',
+      gradient: 'bg-gradient-to-r from-sky-400 to-neon-blue', accentColor: 'bg-sky-400',
       status: nerveStatus,
       metrics: [{ label: 'Signals', value: nerveStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -439,7 +439,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'orchestrator' as const, icon: Sparkles,
       description: 'Mutation pipeline & shadow runs',
-      gradient: 'bg-gradient-to-r from-rose-500 to-pink-600', accentColor: 'bg-rose-500',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-pink-600', accentColor: 'bg-neon-magenta',
       status: evolutionStatus,
       metrics: [{ label: 'Field', value: evolutionStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -457,7 +457,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'immunity', name: 'IMMUNITY', layer: 'orchestrator' as const, icon: Shield,
       description: 'Self-healing mesh & threat correlation',
-      gradient: 'bg-gradient-to-r from-rose-400 to-red-500', accentColor: 'bg-rose-400',
+      gradient: 'bg-gradient-to-r from-neon-magenta to-destructive', accentColor: 'bg-neon-magenta',
       status: immunityStatus,
       metrics: [{ label: 'Field', value: immunityStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -466,7 +466,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'intent', name: 'INTENT', layer: 'orchestrator' as const, icon: Brain,
       description: 'User intent classification & routing',
-      gradient: 'bg-gradient-to-r from-amber-400 to-orange-500', accentColor: 'bg-amber-400',
+      gradient: 'bg-gradient-to-r from-neon-amber to-neon-amber', accentColor: 'bg-neon-amber',
       status: intentStatus,
       metrics: [{ label: 'Field', value: intentStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -475,7 +475,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'governance', name: 'GOVERNANCE', layer: 'orchestrator' as const, icon: Globe,
       description: 'Policy enforcement & veto authority',
-      gradient: 'bg-gradient-to-r from-sky-500 to-blue-600', accentColor: 'bg-sky-500',
+      gradient: 'bg-gradient-to-r from-sky-500 to-neon-blue', accentColor: 'bg-sky-500',
       status: governanceStatus,
       metrics: [{ label: 'Plane', value: governanceStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -491,8 +491,8 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     >
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-fuchsia-500/20 to-cyan-500/20 border border-fuchsia-500/30 flex items-center justify-center">
-          <Layers className="w-4 h-4 text-fuchsia-400" />
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-magenta/20 to-neon-cyan/20 border border-neon-magenta/30 flex items-center justify-center">
+          <Layers className="w-4 h-4 text-neon-magenta" />
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Surface Control Panels</h3>

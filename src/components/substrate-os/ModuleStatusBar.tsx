@@ -25,42 +25,42 @@ interface ModuleConfig {
 
 const MODULES: ModuleConfig[] = [
   // Spine (Core kernel)
-  { id: 'core', name: 'CORE', shortName: 'COR', layer: 'spine', icon: Cpu, description: 'Spine — kernel orchestration & scheduling', color: 'text-orange-400', glowColor: 'bg-orange-500' },
+  { id: 'core', name: 'CORE', shortName: 'COR', layer: 'spine', icon: Cpu, description: 'Spine — kernel orchestration & scheduling', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
   // Grid (Cognitive engines)
-  { id: 'brain', name: 'BRAIN', shortName: 'BRN', layer: 'grid', icon: Brain, description: 'Grid — reasoning & cognition', color: 'text-purple-400', glowColor: 'bg-purple-500' },
-  { id: 'memory', name: 'MEMORY', shortName: 'MEM', layer: 'grid', icon: Database, description: 'Grid — tiered memory storage', color: 'text-cyan-300', glowColor: 'bg-cyan-500' },
-  { id: 'dream', name: 'DREAM', shortName: 'DRM', layer: 'grid', icon: Moon, description: 'Grid — dream synthesis engine', color: 'text-violet-400', glowColor: 'bg-violet-500' },
-  { id: 'cortex', name: 'CORTEX', shortName: 'CTX', layer: 'grid', icon: GitBranch, description: 'Grid — autonomous orchestrator', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
+  { id: 'brain', name: 'BRAIN', shortName: 'BRN', layer: 'grid', icon: Brain, description: 'Grid — reasoning & cognition', color: 'text-neon-purple', glowColor: 'bg-neon-purple' },
+  { id: 'memory', name: 'MEMORY', shortName: 'MEM', layer: 'grid', icon: Database, description: 'Grid — tiered memory storage', color: 'text-neon-cyan', glowColor: 'bg-neon-cyan' },
+  { id: 'dream', name: 'DREAM', shortName: 'DRM', layer: 'grid', icon: Moon, description: 'Grid — dream synthesis engine', color: 'text-neon-purple', glowColor: 'bg-neon-purple' },
+  { id: 'cortex', name: 'CORTEX', shortName: 'CTX', layer: 'grid', icon: GitBranch, description: 'Grid — autonomous orchestrator', color: 'text-primary', glowColor: 'bg-primary' },
   // Field (Execution surfaces / Matrix Nodes)
-  { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'field', icon: MessageSquare, description: 'Field — epistemic interpreter', color: 'text-fuchsia-400', glowColor: 'bg-fuchsia-500' },
+  { id: 'decode', name: 'DECODE', shortName: 'DEC', layer: 'field', icon: MessageSquare, description: 'Field — epistemic interpreter', color: 'text-neon-magenta', glowColor: 'bg-neon-magenta' },
   { id: 'encode', name: 'ENCODE', shortName: 'ENC', layer: 'field', icon: Code, description: 'Field — code generation engine', color: 'text-lime-400', glowColor: 'bg-lime-500' },
-  { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'field', icon: Eye, description: 'Field — observability & telemetry', color: 'text-blue-400', glowColor: 'bg-blue-500' },
-  { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'field', icon: Zap, description: 'Field — AI provider routing', color: 'text-green-400', glowColor: 'bg-green-500' },
-  { id: 'economy', name: 'ECONOMY', shortName: 'ECN', layer: 'field', icon: DollarSign, description: 'Field — metering & billing', color: 'text-yellow-400', glowColor: 'bg-yellow-500' },
+  { id: 'vision', name: 'VISION', shortName: 'VIS', layer: 'field', icon: Eye, description: 'Field — observability & telemetry', color: 'text-neon-blue', glowColor: 'bg-neon-blue' },
+  { id: 'nexus', name: 'NEXUS', shortName: 'NEX', layer: 'field', icon: Zap, description: 'Field — AI provider routing', color: 'text-neon-green', glowColor: 'bg-neon-green' },
+  { id: 'economy', name: 'ECONOMY', shortName: 'ECN', layer: 'field', icon: DollarSign, description: 'Field — metering & billing', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
   { id: 'sandbox', name: 'SANDBOX', shortName: 'SBX', layer: 'field', icon: Globe, description: 'Field — isolated execution', color: 'text-sky-400', glowColor: 'bg-sky-500' },
-  { id: 'inclusive', name: 'INCLUSIVE', shortName: 'INC', layer: 'field', icon: Accessibility, description: 'Field — WCAG compatibility', color: 'text-pink-400', glowColor: 'bg-pink-500' },
-  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'field', icon: Plug, description: 'Field — enterprise adapters', color: 'text-teal-400', glowColor: 'bg-teal-500' },
-  { id: 'ripple', name: 'RIPPLE', shortName: 'RIP', layer: 'field', icon: Radio, description: 'Field — signal & event bus', color: 'text-cyan-400', glowColor: 'bg-cyan-500' },
-  { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'field', icon: Key, description: 'Field — entitlements & API keys', color: 'text-amber-400', glowColor: 'bg-amber-500' },
-  { id: 'identity', name: 'IDENTITY', shortName: 'IDN', layer: 'field', icon: Fingerprint, description: 'Field — session & role management', color: 'text-emerald-300', glowColor: 'bg-emerald-500' },
-  { id: 'relay', name: 'RELAY', shortName: 'RLY', layer: 'field', icon: Send, description: 'Field — webhook dispatch', color: 'text-amber-300', glowColor: 'bg-amber-500' },
+  { id: 'inclusive', name: 'INCLUSIVE', shortName: 'INC', layer: 'field', icon: Accessibility, description: 'Field — WCAG compatibility', color: 'text-neon-magenta', glowColor: 'bg-neon-magenta' },
+  { id: 'integration', name: 'INTEGRATION', shortName: 'INT', layer: 'field', icon: Plug, description: 'Field — enterprise adapters', color: 'text-neon-cyan', glowColor: 'bg-neon-cyan' },
+  { id: 'ripple', name: 'RIPPLE', shortName: 'RIP', layer: 'field', icon: Radio, description: 'Field — signal & event bus', color: 'text-neon-cyan', glowColor: 'bg-neon-cyan' },
+  { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'field', icon: Key, description: 'Field — entitlements & API keys', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
+  { id: 'identity', name: 'IDENTITY', shortName: 'IDN', layer: 'field', icon: Fingerprint, description: 'Field — session & role management', color: 'text-neon-green', glowColor: 'bg-neon-green' },
+  { id: 'relay', name: 'RELAY', shortName: 'RLY', layer: 'field', icon: Send, description: 'Field — webhook dispatch', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
   { id: 'audit', name: 'AUDIT', shortName: 'AUD', layer: 'field', icon: ClipboardCheck, description: 'Field — integrity ledger', color: 'text-slate-400', glowColor: 'bg-slate-500' },
   // Plane (Governance & orchestration)
-  { id: 'governance', name: 'GOVERNANCE', shortName: 'GOV', layer: 'plane', icon: Scale, description: 'Plane — policy enforcement', color: 'text-indigo-400', glowColor: 'bg-indigo-500' },
-  { id: 'immunity', name: 'IMMUNITY', shortName: 'IMM', layer: 'plane', icon: Network, description: 'Plane — shadow training mesh', color: 'text-rose-400', glowColor: 'bg-rose-500' },
-  { id: 'evolution', name: 'EVOLUTION', shortName: 'EVO', layer: 'plane', icon: Dna, description: 'Plane — evolution lifecycle', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
-  { id: 'intent', name: 'INTENT', shortName: 'INT', layer: 'plane', icon: Target, description: 'Plane — capability discovery', color: 'text-amber-400', glowColor: 'bg-amber-500' },
+  { id: 'governance', name: 'GOVERNANCE', shortName: 'GOV', layer: 'plane', icon: Scale, description: 'Plane — policy enforcement', color: 'text-primary', glowColor: 'bg-primary' },
+  { id: 'immunity', name: 'IMMUNITY', shortName: 'IMM', layer: 'plane', icon: Network, description: 'Plane — shadow training mesh', color: 'text-neon-magenta', glowColor: 'bg-neon-magenta' },
+  { id: 'evolution', name: 'EVOLUTION', shortName: 'EVO', layer: 'plane', icon: Dna, description: 'Plane — evolution lifecycle', color: 'text-neon-green', glowColor: 'bg-neon-green' },
+  { id: 'intent', name: 'INTENT', shortName: 'INT', layer: 'plane', icon: Target, description: 'Plane — capability discovery', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
   // Shell (Security perimeter)
-  { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'shell', icon: Settings, description: 'Shell — lifecycle management', color: 'text-emerald-400', glowColor: 'bg-emerald-500' },
-  { id: 'defense', name: 'DEFENSE', shortName: 'DEF', layer: 'shell', icon: Shield, description: 'Shell — security perimeter', color: 'text-red-400', glowColor: 'bg-red-500' },
+  { id: 'system', name: 'SYSTEM', shortName: 'SYS', layer: 'shell', icon: Settings, description: 'Shell — lifecycle management', color: 'text-neon-green', glowColor: 'bg-neon-green' },
+  { id: 'defense', name: 'DEFENSE', shortName: 'DEF', layer: 'shell', icon: Shield, description: 'Shell — security perimeter', color: 'text-destructive', glowColor: 'bg-destructive' },
 ];
 
 const LAYER_CONFIG = {
-  'spine': { label: 'Spine', color: 'text-orange-400', border: 'border-orange-500/30' },
-  'grid': { label: 'Grid', color: 'text-purple-400', border: 'border-purple-500/30' },
-  'field': { label: 'Field', color: 'text-blue-400', border: 'border-blue-500/30' },
-  'plane': { label: 'Plane', color: 'text-indigo-400', border: 'border-indigo-500/30' },
-  'shell': { label: 'Shell', color: 'text-red-400', border: 'border-red-500/30' },
+  'spine': { label: 'Spine', color: 'text-neon-amber', border: 'border-neon-amber/30' },
+  'grid': { label: 'Grid', color: 'text-neon-purple', border: 'border-neon-purple/30' },
+  'field': { label: 'Field', color: 'text-neon-blue', border: 'border-neon-blue/30' },
+  'plane': { label: 'Plane', color: 'text-primary', border: 'border-primary/30' },
+  'shell': { label: 'Shell', color: 'text-destructive', border: 'border-destructive/30' },
 };
 
 function ModuleIndicator({ module, isActive, isLoading, index }: { 
@@ -104,10 +104,10 @@ function ModuleIndicator({ module, isActive, isLoading, index }: {
               <span className={cn(
                 "absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full border-2 border-background",
                 isLoading ? "bg-muted-foreground/50" :
-                isActive ? "bg-emerald-500" : "bg-red-500/70"
+                isActive ? "bg-neon-green" : "bg-destructive/70"
               )}>
                 {isActive && !isLoading && (
-                  <span className="absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-75" />
+                  <span className="absolute inset-0 rounded-full bg-neon-green animate-ping opacity-75" />
                 )}
               </span>
             </div>
@@ -130,8 +130,8 @@ function ModuleIndicator({ module, isActive, isLoading, index }: {
             </div>
             <p className="text-xs text-muted-foreground">{module.description}</p>
             <div className="flex items-center gap-2 pt-1 border-t border-border/30">
-              <span className={cn("w-2 h-2 rounded-full", isActive ? "bg-emerald-500" : "bg-red-500")} />
-              <span className={cn("text-xs font-medium", isActive ? "text-emerald-400" : "text-red-400")}>
+              <span className={cn("w-2 h-2 rounded-full", isActive ? "bg-neon-green" : "bg-destructive")} />
+              <span className={cn("text-xs font-medium", isActive ? "text-neon-green" : "text-destructive")}>
                 {isActive ? "ONLINE" : "OFFLINE"}
               </span>
             </div>
@@ -195,8 +195,8 @@ export function ModuleStatusBar() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/30 flex items-center justify-center">
-            <Layers className="w-4 h-4 text-cyan-400" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-magenta/20 border border-neon-cyan/30 flex items-center justify-center">
+            <Layers className="w-4 h-4 text-neon-cyan" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Matrix Node Status</h3>
@@ -213,14 +213,14 @@ export function ModuleStatusBar() {
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/30 border border-border/30">
             <div className={cn(
               "w-2 h-2 rounded-full",
-              activeCount === totalCount ? "bg-emerald-500" : 
-              activeCount >= totalCount * 0.7 ? "bg-amber-500" : "bg-red-500"
+              activeCount === totalCount ? "bg-neon-green" : 
+              activeCount >= totalCount * 0.7 ? "bg-neon-amber" : "bg-destructive"
             )} />
             <span className="text-xs font-mono text-muted-foreground">ACTIVE</span>
             <span className={cn(
               "text-sm font-bold font-mono",
-              activeCount === totalCount ? "text-emerald-400" : 
-              activeCount >= totalCount * 0.7 ? "text-amber-400" : "text-red-400"
+              activeCount === totalCount ? "text-neon-green" : 
+              activeCount >= totalCount * 0.7 ? "text-neon-amber" : "text-destructive"
             )}>
               {activeCount}/{totalCount}
             </span>

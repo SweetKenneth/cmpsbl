@@ -29,9 +29,9 @@ import {
 } from '@/lib/substrate/intent-mesh/mesh-federation';
 
 const PEER_STATUS_CONFIG = {
-  active: { color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30', label: 'Active' },
-  degraded: { color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', label: 'Degraded' },
-  offline: { color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', label: 'Offline' },
+  active: { color: 'text-neon-green', bg: 'bg-neon-green/10', border: 'border-neon-green/30', label: 'Active' },
+  degraded: { color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30', label: 'Degraded' },
+  offline: { color: 'text-destructive', bg: 'bg-destructive/10', border: 'border-destructive/30', label: 'Offline' },
 };
 
 export function MeshFederationPanel() {
@@ -78,14 +78,14 @@ export function MeshFederationPanel() {
   return (
     <div className="space-y-4">
       {/* Federation Config */}
-      <Card className={cn("border", config.enabled ? "border-cyan-500/30 bg-cyan-500/5" : "border-border/30 bg-muted/10")}>
+      <Card className={cn("border", config.enabled ? "border-neon-cyan/30 bg-neon-cyan/5" : "border-border/30 bg-muted/10")}>
         <CardContent className="py-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center border",
-                config.enabled ? "bg-cyan-500/20 border-cyan-500/40" : "bg-muted/30 border-border/40"
+                config.enabled ? "bg-neon-cyan/20 border-neon-cyan/40" : "bg-muted/30 border-border/40"
               )}>
-                <Globe className={cn("w-5 h-5", config.enabled ? "text-cyan-400" : "text-muted-foreground")} />
+                <Globe className={cn("w-5 h-5", config.enabled ? "text-neon-cyan" : "text-muted-foreground")} />
               </div>
               <div>
                 <h3 className="text-sm font-bold">Cross-Instance Federation</h3>
@@ -105,14 +105,14 @@ export function MeshFederationPanel() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/20">
                   <div className="flex items-center gap-2">
-                    <Unlock className="w-3.5 h-3.5 text-cyan-400" />
+                    <Unlock className="w-3.5 h-3.5 text-neon-cyan" />
                     <span className="text-xs">Publish Manifest</span>
                   </div>
                   <Switch checked={config.publishManifest} onCheckedChange={handleTogglePublish} />
                 </div>
                 <div className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/20">
                   <div className="flex items-center gap-2">
-                    <Signal className="w-3.5 h-3.5 text-emerald-400" />
+                    <Signal className="w-3.5 h-3.5 text-neon-green" />
                     <span className="text-xs">Accept Remote</span>
                   </div>
                   <Switch checked={config.acceptRemoteIntents} onCheckedChange={handleToggleAccept} />
@@ -124,7 +124,7 @@ export function MeshFederationPanel() {
                 <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Shared Domains</span>
                 <div className="flex gap-1 mt-1.5 flex-wrap">
                   {config.sharedDomains.map(d => (
-                    <Badge key={d} variant="outline" className="text-[10px] border-cyan-500/30 text-cyan-400 bg-cyan-500/10">{d}</Badge>
+                    <Badge key={d} variant="outline" className="text-[10px] border-neon-cyan/30 text-neon-cyan bg-neon-cyan/10">{d}</Badge>
                   ))}
                 </div>
                 <span className="text-[10px] font-mono text-muted-foreground/60 mt-2 block">
@@ -151,7 +151,7 @@ export function MeshFederationPanel() {
         <Card className="border border-border/30 bg-muted/10">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Server className="w-4 h-4 text-cyan-400" />
+              <Server className="w-4 h-4 text-neon-cyan" />
               Federation Peers
               <Badge variant="secondary" className="text-[10px]">{peers.length}</Badge>
             </CardTitle>

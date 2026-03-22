@@ -237,9 +237,9 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
       {/* Terminal Header */}
       <div className="flex items-center gap-2 px-4 py-2 bg-muted/20 border-b border-border/30">
         <div className="flex gap-1.5">
-          <span className="w-3 h-3 rounded-full bg-red-500/80" />
-          <span className="w-3 h-3 rounded-full bg-amber-500/80" />
-          <span className="w-3 h-3 rounded-full bg-green-500/80" />
+          <span className="w-3 h-3 rounded-full bg-destructive/80" />
+          <span className="w-3 h-3 rounded-full bg-neon-amber/80" />
+          <span className="w-3 h-3 rounded-full bg-neon-green/80" />
         </div>
         <div className="flex-1 text-center">
           <span className="text-xs text-muted-foreground">substrate://command</span>
@@ -270,8 +270,8 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
               <div className={cn(
                 "pl-5 text-xs",
                 result.status === 'pending' ? "text-muted-foreground" :
-                result.status === 'success' ? "text-green-400/80" :
-                "text-red-400/80"
+                result.status === 'success' ? "text-neon-green/80" :
+                "text-destructive/80"
               )}>
                 {result.status === 'pending' ? (
                   <div className="flex items-center gap-2">

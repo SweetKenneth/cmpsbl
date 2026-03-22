@@ -23,12 +23,12 @@ import { useMeshToggle } from '@/lib/substrate/intent-mesh/toggle';
 import { toast } from 'sonner';
 
 const INTENT_TYPES = [
-  { type: 'query', label: 'Query', handlers: ['DECODE', 'BRAIN', 'MEMORY'], color: 'bg-cyan-500/15 text-cyan-700 dark:text-cyan-400 border-cyan-500/25' },
-  { type: 'generate', label: 'Generate', handlers: ['ENCODE', 'FORGE', 'NEXUS'], color: 'bg-fuchsia-500/15 text-fuchsia-700 dark:text-fuchsia-400 border-fuchsia-500/25' },
-  { type: 'analyze', label: 'Analyze', handlers: ['VISION', 'ORACLE', 'CORTEX'], color: 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/25' },
-  { type: 'manage', label: 'Manage', handlers: ['GOVERNANCE', 'ATLAS'], color: 'bg-indigo-500/15 text-indigo-700 dark:text-indigo-400 border-indigo-500/25' },
-  { type: 'learn', label: 'Learn', handlers: ['BRAIN', 'MEMORY', 'DREAM'], color: 'bg-purple-500/15 text-purple-700 dark:text-purple-400 border-purple-500/25' },
-  { type: 'secure', label: 'Secure', handlers: ['DEFENSE', 'PHANTOM'], color: 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/25' },
+  { type: 'query', label: 'Query', handlers: ['DECODE', 'BRAIN', 'MEMORY'], color: 'bg-neon-cyan/15 text-neon-cyan dark:text-neon-cyan border-neon-cyan/25' },
+  { type: 'generate', label: 'Generate', handlers: ['ENCODE', 'FORGE', 'NEXUS'], color: 'bg-neon-magenta/15 text-fuchsia-700 dark:text-neon-magenta border-neon-magenta/25' },
+  { type: 'analyze', label: 'Analyze', handlers: ['VISION', 'ORACLE', 'CORTEX'], color: 'bg-neon-amber/15 text-amber-700 dark:text-neon-amber border-neon-amber/25' },
+  { type: 'manage', label: 'Manage', handlers: ['GOVERNANCE', 'ATLAS'], color: 'bg-primary/15 text-indigo-700 dark:text-primary border-primary/25' },
+  { type: 'learn', label: 'Learn', handlers: ['BRAIN', 'MEMORY', 'DREAM'], color: 'bg-neon-purple/15 text-purple-700 dark:text-neon-purple border-neon-purple/25' },
+  { type: 'secure', label: 'Secure', handlers: ['DEFENSE', 'PHANTOM'], color: 'bg-destructive/15 text-red-700 dark:text-destructive border-destructive/25' },
 ];
 
 const AFFINITY_PAIRS = [
@@ -122,9 +122,9 @@ export default function IntentPanel() {
   const pendingCount = messages.filter(m => m.status === 'pending').length;
 
   const urgencyColor = (u: string) => {
-    if (u === 'critical') return 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/25';
-    if (u === 'high') return 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/25';
-    if (u === 'medium') return 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/25';
+    if (u === 'critical') return 'bg-destructive/15 text-red-700 dark:text-destructive border-destructive/25';
+    if (u === 'high') return 'bg-neon-amber/15 text-amber-700 dark:text-neon-amber border-neon-amber/25';
+    if (u === 'medium') return 'bg-neon-blue/15 text-blue-700 dark:text-neon-blue border-neon-blue/25';
     return 'bg-muted/30 text-muted-foreground border-border/20';
   };
 
@@ -149,10 +149,10 @@ export default function IntentPanel() {
   };
 
   const statusBadge = (status: string) => {
-    if (status === 'approved') return 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/25';
-    if (status === 'rejected') return 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/25';
+    if (status === 'approved') return 'bg-neon-green/15 text-neon-green dark:text-neon-green border-neon-green/25';
+    if (status === 'rejected') return 'bg-destructive/15 text-destructive dark:text-destructive border-destructive/25';
     if (status === 'acknowledged') return 'bg-muted/30 text-muted-foreground border-border/20';
-    return 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/25';
+    return 'bg-neon-amber/15 text-neon-amber dark:text-neon-amber border-neon-amber/25';
   };
 
   return (
@@ -170,17 +170,17 @@ export default function IntentPanel() {
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
           {pendingCount > 0 && (
-            <Badge variant="outline" className="text-[10px] font-mono gap-1 border-amber-500/25 text-amber-600 dark:text-amber-400 bg-amber-500/5">
+            <Badge variant="outline" className="text-[10px] font-mono gap-1 border-neon-amber/25 text-neon-amber dark:text-neon-amber bg-neon-amber/5">
               {pendingCount} pending
             </Badge>
           )}
           <Badge variant="outline" className={cn(
             "text-[10px] font-mono gap-1.5 shrink-0",
             meshToggle.enabled
-              ? "border-emerald-500/25 text-emerald-600 dark:text-emerald-400 bg-emerald-500/5"
-              : "border-red-500/25 text-red-600 dark:text-red-400 bg-red-500/5"
+              ? "border-neon-green/25 text-neon-green dark:text-neon-green bg-neon-green/5"
+              : "border-destructive/25 text-destructive dark:text-destructive bg-destructive/5"
           )}>
-            <span className={cn("w-1.5 h-1.5 rounded-full", meshToggle.enabled ? "bg-emerald-500" : "bg-red-500")} />
+            <span className={cn("w-1.5 h-1.5 rounded-full", meshToggle.enabled ? "bg-neon-green" : "bg-destructive")} />
             {meshToggle.enabled ? 'MESH ACTIVE' : 'MESH DISABLED'}
           </Badge>
         </div>
@@ -192,7 +192,7 @@ export default function IntentPanel() {
             <TabsTrigger value="hub" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <MessageSquare className="w-3.5 h-3.5 hidden sm:block" /> Hub
               {pendingCount > 0 && (
-                <Badge variant="secondary" className="h-4 px-1 text-[9px] bg-amber-500/15 text-amber-600 dark:text-amber-400 border-none ml-0.5">{pendingCount}</Badge>
+                <Badge variant="secondary" className="h-4 px-1 text-[9px] bg-neon-amber/15 text-neon-amber dark:text-neon-amber border-none ml-0.5">{pendingCount}</Badge>
               )}
             </TabsTrigger>
             <TabsTrigger value="overview" className="data-[state=active]:bg-primary/10 data-[state=active]:text-primary text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
@@ -223,7 +223,7 @@ export default function IntentPanel() {
                   className={cn(
                     "rounded-lg sm:rounded-xl border bg-card/50 dark:bg-card/20 transition-colors signal-border",
                     isPending ? "border-border/20 dark:border-border/15" : "border-border/10 dark:border-border/5 opacity-75",
-                    msg.urgency === 'critical' && isPending && "border-red-500/30 dark:border-red-500/20 bg-red-500/5",
+                    msg.urgency === 'critical' && isPending && "border-destructive/30 dark:border-destructive/20 bg-destructive/5",
                   )}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -277,7 +277,7 @@ export default function IntentPanel() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 text-xs gap-1.5 border-emerald-500/25 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10"
+                                  className="h-8 text-xs gap-1.5 border-neon-green/25 text-neon-green dark:text-neon-green hover:bg-neon-green/10"
                                   onClick={() => handleAction(msg.id, 'approved')}
                                 >
                                   <ThumbsUp className="w-3.5 h-3.5" /> Approve
@@ -285,7 +285,7 @@ export default function IntentPanel() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 text-xs gap-1.5 border-red-500/25 text-red-600 dark:text-red-400 hover:bg-red-500/10"
+                                  className="h-8 text-xs gap-1.5 border-destructive/25 text-destructive dark:text-destructive hover:bg-destructive/10"
                                   onClick={() => handleAction(msg.id, 'rejected')}
                                 >
                                   <ThumbsDown className="w-3.5 h-3.5" /> Reject
@@ -296,7 +296,7 @@ export default function IntentPanel() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="h-8 text-xs gap-1.5 border-amber-500/25 text-amber-600 dark:text-amber-400 hover:bg-amber-500/10"
+                                className="h-8 text-xs gap-1.5 border-neon-amber/25 text-neon-amber dark:text-neon-amber hover:bg-neon-amber/10"
                                 onClick={() => handleAction(msg.id, 'acknowledged')}
                               >
                                 <CheckCircle2 className="w-3.5 h-3.5" /> Acknowledge
@@ -307,7 +307,7 @@ export default function IntentPanel() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 text-xs gap-1.5 border-emerald-500/25 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/10"
+                                  className="h-8 text-xs gap-1.5 border-neon-green/25 text-neon-green dark:text-neon-green hover:bg-neon-green/10"
                                   onClick={() => handleAction(msg.id, 'approved')}
                                 >
                                   <ThumbsUp className="w-3.5 h-3.5" /> Grant
@@ -315,7 +315,7 @@ export default function IntentPanel() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="h-8 text-xs gap-1.5 border-red-500/25 text-red-600 dark:text-red-400 hover:bg-red-500/10"
+                                  className="h-8 text-xs gap-1.5 border-destructive/25 text-destructive dark:text-destructive hover:bg-destructive/10"
                                   onClick={() => handleAction(msg.id, 'rejected')}
                                 >
                                   <XCircle className="w-3.5 h-3.5" /> Deny
@@ -382,10 +382,10 @@ export default function IntentPanel() {
         <TabsContent value="overview" className="mt-4 space-y-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
             {[
-              { label: 'Intent Types', value: '6', sub: 'Classification categories', icon: Brain, color: 'text-amber-500' },
-              { label: 'Affinity Pairs', value: AFFINITY_PAIRS.length.toString(), sub: 'High co-resolution', icon: Network, color: 'text-cyan-500' },
-              { label: 'Hub Messages', value: messages.length.toString(), sub: `${pendingCount} pending`, icon: MessageSquare, color: 'text-purple-500' },
-              { label: 'Mesh Status', value: meshToggle.enabled ? 'Active' : 'Off', sub: 'Cross-module routing', icon: Zap, color: meshToggle.enabled ? 'text-emerald-500' : 'text-red-500' },
+              { label: 'Intent Types', value: '6', sub: 'Classification categories', icon: Brain, color: 'text-neon-amber' },
+              { label: 'Affinity Pairs', value: AFFINITY_PAIRS.length.toString(), sub: 'High co-resolution', icon: Network, color: 'text-neon-cyan' },
+              { label: 'Hub Messages', value: messages.length.toString(), sub: `${pendingCount} pending`, icon: MessageSquare, color: 'text-neon-purple' },
+              { label: 'Mesh Status', value: meshToggle.enabled ? 'Active' : 'Off', sub: 'Cross-module routing', icon: Zap, color: meshToggle.enabled ? 'text-neon-green' : 'text-destructive' },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -467,7 +467,7 @@ export default function IntentPanel() {
                   </div>
                   <span className={cn(
                     "text-sm font-bold font-mono shrink-0 ml-2",
-                    pair.score >= 0.9 ? "text-emerald-600 dark:text-emerald-400" : pair.score >= 0.8 ? "text-cyan-600 dark:text-cyan-400" : "text-amber-600 dark:text-amber-400", "tabular-nums"
+                    pair.score >= 0.9 ? "text-neon-green dark:text-neon-green" : pair.score >= 0.8 ? "text-neon-cyan dark:text-neon-cyan" : "text-neon-amber dark:text-neon-amber", "tabular-nums"
                   )}>
                     {Math.round(pair.score * 100)}%
                   </span>

@@ -445,7 +445,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
   if (!enabled) {
     return (
-      <Card className="border border-dashed border-amber-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+      <Card className="border border-dashed border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
         <CardContent className="py-8">
           <div className="text-center">
             <Shield className="w-10 h-10 mx-auto mb-4 text-muted-foreground/30" />
@@ -463,8 +463,8 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/40 flex items-center justify-center shrink-0">
-            <Database className="w-4 h-4 text-blue-400" />
+          <div className="w-8 h-8 rounded-lg bg-neon-blue/20 border border-neon-blue/40 flex items-center justify-center shrink-0">
+            <Database className="w-4 h-4 text-neon-blue" />
           </div>
           <div className="min-w-0">
             <h2 className="text-base sm:text-lg font-semibold">Backup & Restore</h2>
@@ -487,7 +487,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             size="sm"
             onClick={() => createBackup.mutate()}
             disabled={createBackup.isPending}
-            className="h-8 gap-2 bg-blue-500/20 border border-blue-500/40 text-blue-400 hover:bg-blue-500/30"
+            className="h-8 gap-2 bg-neon-blue/20 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue/30"
           >
             {createBackup.isPending ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -501,41 +501,41 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
-        <Card className="border border-emerald-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-emerald-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-green/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-green/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Total Backups</p>
-            <p className="text-2xl font-mono font-bold tabular-nums text-emerald-400">{backups?.length || 0}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-neon-green">{backups?.length || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-cyan-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-cyan/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Latest</p>
-            <p className="text-sm font-mono text-cyan-400">
+            <p className="text-sm font-mono text-neon-cyan">
               {latestBackup ? formatRelative(latestBackup.created_at) : 'None'}
             </p>
           </CardContent>
         </Card>
-        <Card className="border border-purple-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-purple-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-purple/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-purple/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Records</p>
-            <p className="text-2xl font-mono font-bold tabular-nums text-purple-400">{totalRecords.toLocaleString()}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-neon-purple">{totalRecords.toLocaleString()}</p>
           </CardContent>
         </Card>
-        <Card className="border border-amber-500/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-amber-500/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-amber/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Permanent</p>
-            <p className="text-2xl font-mono font-bold tabular-nums text-amber-400">{permanentBackups.length}</p>
+            <p className="text-2xl font-mono font-bold tabular-nums text-neon-amber">{permanentBackups.length}</p>
           </CardContent>
         </Card>
         <Card className={cn(
           "border bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm",
-          hasFailsafe ? "border-green-500/20 hover:border-green-500/30" : "border-red-500/20 hover:border-red-500/30"
+          hasFailsafe ? "border-neon-green/20 hover:border-neon-green/30" : "border-destructive/20 hover:border-destructive/30"
         )}>
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Failsafe</p>
             <p className={cn(
               "text-sm font-mono font-bold",
-              hasFailsafe ? "text-green-400" : "text-red-400"
+              hasFailsafe ? "text-neon-green" : "text-destructive"
             )}>
               {hasFailsafe ? '✓ Protected' : '⚠ Not Set'}
             </p>
@@ -562,7 +562,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
           <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Clock className="w-4 h-4 text-blue-400" />
+                <Clock className="w-4 h-4 text-neon-blue" />
                 Backup History
               </CardTitle>
               <CardDescription className="text-xs">
@@ -585,9 +585,9 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                         className={cn(
                           "p-4 rounded-lg border transition-all",
                           backup.is_permanent
-                            ? "border-amber-500/40 bg-amber-500/5"
+                            ? "border-neon-amber/40 bg-neon-amber/5"
                             : idx === 0 
-                              ? "border-emerald-500/30 bg-emerald-500/5" 
+                              ? "border-neon-green/30 bg-neon-green/5" 
                               : "border-white/10 bg-white/5 hover:bg-white/10"
                         )}
                       >
@@ -598,18 +598,18 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                                 {backup.backup_id}
                               </code>
                               {backup.is_permanent && (
-                                <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/40 text-[10px]">
+                                <Badge className="bg-neon-amber/20 text-neon-amber border-neon-amber/40 text-[10px]">
                                   <Lock className="w-2.5 h-2.5 mr-1" />
                                   PERMANENT
                                 </Badge>
                               )}
                               {backup.backup_category === 'failsafe' && (
-                                <Badge className="bg-red-500/20 text-red-400 border-red-500/40 text-[10px]">
+                                <Badge className="bg-destructive/20 text-destructive border-destructive/40 text-[10px]">
                                   FAILSAFE
                                 </Badge>
                               )}
                               {idx === 0 && !backup.is_permanent && (
-                                <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/40 text-[10px]">
+                                <Badge className="bg-neon-green/20 text-neon-green border-neon-green/40 text-[10px]">
                                   LATEST
                                 </Badge>
                               )}
@@ -618,8 +618,8 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                                 className={cn(
                                   "text-[10px]",
                                   backup.status === 'complete' 
-                                    ? "border-emerald-500/40 text-emerald-400" 
-                                    : "border-amber-500/40 text-amber-400"
+                                    ? "border-neon-green/40 text-neon-green" 
+                                    : "border-neon-amber/40 text-neon-amber"
                                 )}
                               >
                                 {backup.status}
@@ -664,7 +664,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => setSelectedBackup(backup)}
-                                    className="h-7 gap-1 text-xs border-amber-500/30 text-amber-400 bg-amber-500/10 hover:bg-amber-500/20"
+                                    className="h-7 gap-1 text-xs border-neon-amber/30 text-neon-amber bg-neon-amber/10 hover:bg-neon-amber/20"
                                   >
                                     <RotateCcw className="w-3 h-3" />
                                     Restore
@@ -673,7 +673,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
                                     <AlertDialogTitle className="flex items-center gap-2">
-                                      <AlertTriangle className="w-5 h-5 text-amber-400" />
+                                      <AlertTriangle className="w-5 h-5 text-neon-amber" />
                                       Confirm Restore
                                     </AlertDialogTitle>
                                     <AlertDialogDescription>
@@ -706,7 +706,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                                     <AlertDialogAction
                                       onClick={() => restoreBackup.mutate(backup.backup_id)}
                                       disabled={confirmValue !== 'RESTORE' || restoreBackup.isPending}
-                                      className="bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30"
+                                      className="bg-neon-amber/20 text-neon-amber border border-neon-amber/40 hover:bg-neon-amber/30"
                                     >
                                       {restoreBackup.isPending && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
                                       Restore Backup
@@ -742,10 +742,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         <TabsContent value="export" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             {/* Export Options */}
-            <Card className="border border-blue-500/20 bg-white/5">
+            <Card className="border border-neon-blue/20 bg-white/5">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <FileDown className="w-4 h-4 text-blue-400" />
+                  <FileDown className="w-4 h-4 text-neon-blue" />
                   Export Backup
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -756,7 +756,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                 <Button
                   onClick={() => exportBackup.mutate({ includeSecrets: false })}
                   disabled={exportBackup.isPending}
-                  className="w-full justify-start gap-2 bg-blue-500/20 border border-blue-500/40 text-blue-400 hover:bg-blue-500/30"
+                  className="w-full justify-start gap-2 bg-neon-blue/20 border border-neon-blue/40 text-neon-blue hover:bg-neon-blue/30"
                 >
                   {exportBackup.isPending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -774,7 +774,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                     onClick={() => exportBackup.mutate({ includeSecrets: true })}
                     disabled={exportBackup.isPending}
                     variant="outline"
-                    className="w-full justify-start gap-2 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                    className="w-full justify-start gap-2 border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
                   >
                     {exportBackup.isPending ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -791,10 +791,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </Card>
 
             {/* Import Options */}
-            <Card className="border border-emerald-500/20 bg-white/5">
+            <Card className="border border-neon-green/20 bg-white/5">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Upload className="w-4 h-4 text-emerald-400" />
+                  <Upload className="w-4 h-4 text-neon-green" />
                   Import Backup
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -812,7 +812,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                 <Button
                   onClick={() => fileInputRef.current?.click()}
                   disabled={importBackup.isPending}
-                  className="w-full justify-start gap-2 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/30"
+                  className="w-full justify-start gap-2 bg-neon-green/20 border border-neon-green/40 text-neon-green hover:bg-neon-green/30"
                 >
                   {importBackup.isPending ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -826,8 +826,8 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                 </p>
                 
                 <div className="border-t border-white/10 pt-3">
-                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3">
-                    <p className="text-xs text-amber-400 font-medium mb-1">Important</p>
+                  <div className="bg-neon-amber/10 border border-neon-amber/30 rounded-lg p-3">
+                    <p className="text-xs text-neon-amber font-medium mb-1">Important</p>
                     <p className="text-[10px] text-muted-foreground">
                       After import, configure any missing API keys in your project secrets.
                       The import will show which secrets need to be set up.
@@ -845,11 +845,11 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             {/* Permanent Failsafe */}
             <Card className={cn(
               "border bg-white/5",
-              hasFailsafe ? "border-green-500/20" : "border-red-500/20"
+              hasFailsafe ? "border-neon-green/20" : "border-destructive/20"
             )}>
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Lock className="w-4 h-4 text-amber-400" />
+                  <Lock className="w-4 h-4 text-neon-amber" />
                   Permanent Failsafe
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -859,10 +859,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
               <CardContent className="space-y-3">
                 {hasFailsafe ? (
                   <div className="space-y-3">
-                    <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
+                    <div className="bg-neon-green/10 border border-neon-green/30 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle2 className="w-4 h-4 text-green-400" />
-                        <span className="text-sm font-medium text-green-400">Failsafe Active</span>
+                        <CheckCircle2 className="w-4 h-4 text-neon-green" />
+                        <span className="text-sm font-medium text-neon-green">Failsafe Active</span>
                       </div>
                       <p className="text-xs text-muted-foreground">
                         Your permanent failsafe backup is protected and will never be deleted.
@@ -872,16 +872,16 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                       <AlertDialogTrigger asChild>
                         <Button
                           variant="outline"
-                          className="w-full gap-2 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                          className="w-full gap-2 border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
                         >
                           <RefreshCw className="w-4 h-4" />
                           Override Failsafe
                         </Button>
                       </AlertDialogTrigger>
-                      <AlertDialogContent className="bg-background/95 backdrop-blur-xl border-amber-500/30">
+                      <AlertDialogContent className="bg-background/95 backdrop-blur-xl border-neon-amber/30">
                         <AlertDialogHeader>
                           <AlertDialogTitle className="flex items-center gap-2">
-                            <AlertTriangle className="w-5 h-5 text-amber-400" />
+                            <AlertTriangle className="w-5 h-5 text-neon-amber" />
                             Override Failsafe Backup?
                           </AlertDialogTitle>
                           <AlertDialogDescription>
@@ -894,7 +894,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                           <AlertDialogAction
                             onClick={() => createFailsafe.mutate({ override: true, notes: `Failsafe override on ${new Date().toISOString()}` })}
                             disabled={createFailsafe.isPending}
-                            className="bg-amber-500/20 text-amber-400 hover:bg-amber-500/30"
+                            className="bg-neon-amber/20 text-neon-amber hover:bg-neon-amber/30"
                           >
                             {createFailsafe.isPending ? (
                               <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -907,10 +907,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                   </div>
                 ) : (
                   <>
-                    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                    <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertTriangle className="w-4 h-4 text-red-400" />
-                        <span className="text-sm font-medium text-red-400">No Failsafe Set</span>
+                        <AlertTriangle className="w-4 h-4 text-destructive" />
+                        <span className="text-sm font-medium text-destructive">No Failsafe Set</span>
                       </div>
                       <p className="text-xs text-muted-foreground">
                         Create a permanent backup as a failsafe for disaster recovery.
@@ -919,7 +919,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                     <Button
                       onClick={() => createFailsafe.mutate({ notes: `Failsafe created on ${new Date().toISOString()}` })}
                       disabled={createFailsafe.isPending}
-                      className="w-full gap-2 bg-amber-500/20 border border-amber-500/40 text-amber-400 hover:bg-amber-500/30"
+                      className="w-full gap-2 bg-neon-amber/20 border border-neon-amber/40 text-neon-amber hover:bg-neon-amber/30"
                     >
                       {createFailsafe.isPending ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -934,10 +934,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </Card>
 
             {/* Auto-Prune */}
-            <Card className="border border-purple-500/20 bg-white/5">
+            <Card className="border border-neon-purple/20 bg-white/5">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
-                  <Trash2 className="w-4 h-4 text-purple-400" />
+                  <Trash2 className="w-4 h-4 text-neon-purple" />
                   Retention Policy
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -991,10 +991,10 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
           </div>
 
           {/* Info Card */}
-          <Card className="border border-blue-500/20 bg-blue-500/5">
+          <Card className="border border-neon-blue/20 bg-neon-blue/5">
             <CardContent className="p-4">
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-blue-400 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-neon-blue mt-0.5" />
                 <div className="text-sm">
                   <p className="text-foreground font-medium mb-1">Backup Retention</p>
                   <p className="text-muted-foreground text-xs">

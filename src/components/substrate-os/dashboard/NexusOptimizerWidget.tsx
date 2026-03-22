@@ -33,11 +33,11 @@ interface HourlySnapshot {
 }
 
 const STRATEGY_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType }> = {
-  discovery: { label: 'DISCOVERY', color: 'text-amber-400', icon: Activity },
-  balanced: { label: 'BALANCED', color: 'text-cyan-400', icon: TrendingUp },
-  aggressive: { label: 'AGGRESSIVE', color: 'text-emerald-400', icon: Zap },
-  conservative: { label: 'CONSERVATIVE', color: 'text-orange-400', icon: Shield },
-  surge: { label: 'SURGE', color: 'text-fuchsia-400', icon: Zap },
+  discovery: { label: 'DISCOVERY', color: 'text-neon-amber', icon: Activity },
+  balanced: { label: 'BALANCED', color: 'text-neon-cyan', icon: TrendingUp },
+  aggressive: { label: 'AGGRESSIVE', color: 'text-neon-green', icon: Zap },
+  conservative: { label: 'CONSERVATIVE', color: 'text-neon-amber', icon: Shield },
+  surge: { label: 'SURGE', color: 'text-neon-magenta', icon: Zap },
 };
 
 export function NexusOptimizerWidget({ className }: { className?: string }) {
@@ -129,7 +129,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
           />
           {/* CLM allocation overlay */}
           <motion.div
-            className="absolute inset-y-0 rounded-full bg-emerald-500/40"
+            className="absolute inset-y-0 rounded-full bg-neon-green/40"
             initial={{ width: 0 }}
             animate={{ 
               left: `${Math.min(100, utilization)}%`,
@@ -140,7 +140,7 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
         </div>
         <div className="flex items-center gap-3 text-[8px] text-muted-foreground/50">
           <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-primary/60" /> Used</span>
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" /> CLM</span>
+          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-neon-green/40" /> CLM</span>
           <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-muted/30" /> Reserved</span>
         </div>
       </div>
@@ -148,10 +148,10 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
       {/* Stats Grid */}
       <div className="grid grid-cols-4 gap-px bg-border/10">
         {[
-          { label: 'CLM/hr', value: snapshot.clm_calls_dispatched.toLocaleString(), icon: Zap, color: 'text-emerald-400' },
-          { label: 'Active Devs', value: snapshot.active_developer_count.toString(), icon: Users, color: 'text-cyan-400' },
-          { label: 'Reserved', value: (snapshot.reserved_for_substrate + snapshot.reserved_for_chatbots + snapshot.reserved_for_active_devs).toLocaleString(), icon: Server, color: 'text-orange-400' },
-          { label: 'Confirmed', value: `${confirmedCount}/${totalProviders}`, icon: Shield, color: 'text-fuchsia-400' },
+          { label: 'CLM/hr', value: snapshot.clm_calls_dispatched.toLocaleString(), icon: Zap, color: 'text-neon-green' },
+          { label: 'Active Devs', value: snapshot.active_developer_count.toString(), icon: Users, color: 'text-neon-cyan' },
+          { label: 'Reserved', value: (snapshot.reserved_for_substrate + snapshot.reserved_for_chatbots + snapshot.reserved_for_active_devs).toLocaleString(), icon: Server, color: 'text-neon-amber' },
+          { label: 'Confirmed', value: `${confirmedCount}/${totalProviders}`, icon: Shield, color: 'text-neon-magenta' },
         ].map(stat => (
           <div key={stat.label} className="bg-card/20 px-3 py-2.5 text-center transition-all duration-300 hover:bg-card/40">
             <stat.icon className={cn('w-3 h-3 mx-auto mb-1', stat.color)} />
@@ -173,8 +173,8 @@ export function NexusOptimizerWidget({ className }: { className?: string }) {
           <TooltipProvider>
             <div className="grid grid-cols-6 gap-1">
               {providerLimits.map(p => {
-                const phaseColor = p.discovery_phase === 'confirmed' ? 'bg-emerald-500' 
-                  : p.discovery_phase === 'testing' ? 'bg-amber-500 animate-pulse' 
+                const phaseColor = p.discovery_phase === 'confirmed' ? 'bg-neon-green' 
+                  : p.discovery_phase === 'testing' ? 'bg-neon-amber animate-pulse' 
                   : 'bg-muted/30';
                 return (
                   <Tooltip key={p.provider}>

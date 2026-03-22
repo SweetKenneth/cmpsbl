@@ -89,8 +89,8 @@ export function CapacityMonitor() {
         <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
         <div className="relative p-6">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/15 to-amber-500/15 border border-yellow-500/25 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-yellow-400" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-amber/15 to-neon-amber/15 border border-neon-amber/25 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-neon-amber" />
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">Capacity Monitor</h3>
@@ -108,17 +108,17 @@ export function CapacityMonitor() {
   if (!metrics) return null;
 
   const statusConfig = {
-    healthy: { border: 'border-emerald-500/20', text: 'text-emerald-400/80', bg: 'bg-emerald-500/5', label: 'HEALTHY' },
-    elevated: { border: 'border-amber-500/20', text: 'text-amber-400/80', bg: 'bg-amber-500/5', label: 'ELEVATED' },
-    critical: { border: 'border-red-500/20', text: 'text-red-400/80', bg: 'bg-red-500/5', label: 'CRITICAL' },
+    healthy: { border: 'border-neon-green/20', text: 'text-neon-green/80', bg: 'bg-neon-green/5', label: 'HEALTHY' },
+    elevated: { border: 'border-neon-amber/20', text: 'text-neon-amber/80', bg: 'bg-neon-amber/5', label: 'ELEVATED' },
+    critical: { border: 'border-destructive/20', text: 'text-destructive/80', bg: 'bg-destructive/5', label: 'CRITICAL' },
   };
   const sc = statusConfig[metrics.status];
 
   const cards = [
-    { icon: Users, iconColor: 'text-blue-400', label: 'Developers', value: metrics.activeDevelopers.last24h, suffix: '/ 24h', sub: `${metrics.activeDevelopers.last7d} / 7d • ${metrics.activeDevelopers.total} total`, borderClass: 'border-blue-500/15 hover:border-blue-500/30', bgFrom: 'from-blue-500', iconBg: 'bg-blue-500/10 border-blue-500/25' },
-    { icon: TrendingUp, iconColor: 'text-green-400', label: 'Requests/min', value: metrics.requestsPerMinute.current, suffix: 'RPM', sub: `Limit: ${formatNumber(metrics.requestsPerMinute.limit)}`, borderClass: 'border-green-500/15 hover:border-green-500/30', bgFrom: 'from-green-500', iconBg: 'bg-green-500/10 border-green-500/25' },
-    { icon: Brain, iconColor: 'text-purple-400', label: 'Tokens', value: formatNumber(metrics.tokenConsumption.today), suffix: 'today', sub: `${formatNumber(metrics.tokenConsumption.thisHour)} / hour`, borderClass: 'border-purple-500/15 hover:border-purple-500/30', bgFrom: 'from-purple-500', iconBg: 'bg-purple-500/10 border-purple-500/25' },
-    { icon: DollarSign, iconColor: 'text-yellow-400', label: 'Cost', value: `$${metrics.costBurnRate.daily.toFixed(2)}`, suffix: 'today', sub: `~$${metrics.costBurnRate.projected.toFixed(2)} projected`, borderClass: 'border-yellow-500/15 hover:border-yellow-500/30', bgFrom: 'from-yellow-500', iconBg: 'bg-yellow-500/10 border-yellow-500/25' },
+    { icon: Users, iconColor: 'text-neon-blue', label: 'Developers', value: metrics.activeDevelopers.last24h, suffix: '/ 24h', sub: `${metrics.activeDevelopers.last7d} / 7d • ${metrics.activeDevelopers.total} total`, borderClass: 'border-neon-blue/15 hover:border-neon-blue/30', bgFrom: 'from-neon-blue', iconBg: 'bg-neon-blue/10 border-neon-blue/25' },
+    { icon: TrendingUp, iconColor: 'text-neon-green', label: 'Requests/min', value: metrics.requestsPerMinute.current, suffix: 'RPM', sub: `Limit: ${formatNumber(metrics.requestsPerMinute.limit)}`, borderClass: 'border-neon-green/15 hover:border-neon-green/30', bgFrom: 'from-neon-green', iconBg: 'bg-neon-green/10 border-neon-green/25' },
+    { icon: Brain, iconColor: 'text-neon-purple', label: 'Tokens', value: formatNumber(metrics.tokenConsumption.today), suffix: 'today', sub: `${formatNumber(metrics.tokenConsumption.thisHour)} / hour`, borderClass: 'border-neon-purple/15 hover:border-neon-purple/30', bgFrom: 'from-neon-purple', iconBg: 'bg-neon-purple/10 border-neon-purple/25' },
+    { icon: DollarSign, iconColor: 'text-neon-amber', label: 'Cost', value: `$${metrics.costBurnRate.daily.toFixed(2)}`, suffix: 'today', sub: `~$${metrics.costBurnRate.projected.toFixed(2)} projected`, borderClass: 'border-neon-amber/15 hover:border-neon-amber/30', bgFrom: 'from-neon-amber', iconBg: 'bg-neon-amber/10 border-neon-amber/25' },
   ];
 
   return (
@@ -127,15 +127,15 @@ export function CapacityMonitor() {
       initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
     >
       <div className="absolute inset-0 bg-gradient-to-br from-card/95 via-card/60 to-card/30 backdrop-blur-2xl" />
-      <motion.div className="absolute -top-20 -right-20 w-60 h-60 bg-yellow-500/5 rounded-full blur-[100px]" 
+      <motion.div className="absolute -top-20 -right-20 w-60 h-60 bg-neon-amber/5 rounded-full blur-[100px]" 
         animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} />
 
       <div className="relative p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/15 to-amber-500/15 border border-yellow-500/25 flex items-center justify-center">
-              <Zap className="w-5 h-5 text-yellow-400" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-amber/15 to-neon-amber/15 border border-neon-amber/25 flex items-center justify-center">
+              <Zap className="w-5 h-5 text-neon-amber" />
             </div>
             <div>
               <h3 className="text-sm font-semibold text-foreground">Capacity Monitor</h3>
@@ -144,7 +144,7 @@ export function CapacityMonitor() {
           </div>
           <Badge variant="outline" className={cn("text-[9px] font-mono gap-1.5", sc.border, sc.text, sc.bg)}>
             {metrics.status === 'critical' && <AlertTriangle className="w-3 h-3" />}
-            <motion.span className={cn("w-1.5 h-1.5 rounded-full", metrics.status === 'healthy' ? 'bg-emerald-500' : metrics.status === 'elevated' ? 'bg-amber-500' : 'bg-red-500')}
+            <motion.span className={cn("w-1.5 h-1.5 rounded-full", metrics.status === 'healthy' ? 'bg-neon-green' : metrics.status === 'elevated' ? 'bg-neon-amber' : 'bg-destructive')}
               animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 1.5, repeat: Infinity }} />
             {sc.label}
           </Badge>
@@ -154,14 +154,14 @@ export function CapacityMonitor() {
         <div className="space-y-2 mb-5">
           <div className="flex justify-between text-xs font-mono">
             <span className="text-muted-foreground/60">System Load</span>
-            <span className={cn(metrics.loadPercent > 80 ? 'text-red-400' : metrics.loadPercent > 50 ? 'text-amber-400' : 'text-emerald-400')}>
+            <span className={cn(metrics.loadPercent > 80 ? 'text-destructive' : metrics.loadPercent > 50 ? 'text-neon-amber' : 'text-neon-green')}>
               {metrics.loadPercent}%
             </span>
           </div>
           <Progress value={metrics.loadPercent} className={cn("h-2 rounded-full",
-            metrics.loadPercent > 80 ? "[&>div]:bg-gradient-to-r [&>div]:from-red-500 [&>div]:to-rose-400" :
-            metrics.loadPercent > 50 ? "[&>div]:bg-gradient-to-r [&>div]:from-amber-500 [&>div]:to-yellow-400" :
-            "[&>div]:bg-gradient-to-r [&>div]:from-emerald-500 [&>div]:to-cyan-400"
+            metrics.loadPercent > 80 ? "[&>div]:bg-gradient-to-r [&>div]:from-destructive [&>div]:to-neon-magenta" :
+            metrics.loadPercent > 50 ? "[&>div]:bg-gradient-to-r [&>div]:from-neon-amber [&>div]:to-neon-amber" :
+            "[&>div]:bg-gradient-to-r [&>div]:from-neon-green [&>div]:to-neon-cyan"
           )} />
         </div>
 

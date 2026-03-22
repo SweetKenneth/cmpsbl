@@ -98,7 +98,7 @@ export function OperationsTab() {
 
   const modules = [
     {
-      id: 'decode', label: 'DECODE', icon: FileSearch, color: 'text-indigo-500',
+      id: 'decode', label: 'DECODE', icon: FileSearch, color: 'text-primary',
       desc: 'Natural language understanding & confidence scoring',
       stats: [
         { label: 'Processed', value: ops.decode.totalProcessed },
@@ -106,7 +106,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'vision', label: 'VISION', icon: Eye, color: 'text-purple-500',
+      id: 'vision', label: 'VISION', icon: Eye, color: 'text-neon-purple',
       desc: 'Visual processing, security scans, dashboard rendering',
       stats: [
         { label: 'Scans Run', value: ops.vision.scansRun },
@@ -114,7 +114,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'economy', label: 'ECONOMY', icon: DollarSign, color: 'text-emerald-500',
+      id: 'economy', label: 'ECONOMY', icon: DollarSign, color: 'text-neon-green',
       desc: 'Cost tracking, ROI calculation, budget governance',
       stats: [
         { label: 'Total Cost', value: `$${ops.economy.totalCost.toFixed(2)}` },
@@ -123,7 +123,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-orange-500',
+      id: 'sandbox', label: 'SANDBOX', icon: Box, color: 'text-neon-amber',
       desc: 'Isolated execution environment for untrusted operations',
       stats: [
         { label: 'Executions', value: ops.sandbox.executions },
@@ -131,7 +131,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-blue-500',
+      id: 'inclusive', label: 'INCLUSIVE', icon: Accessibility, color: 'text-neon-blue',
       desc: 'Accessibility compliance & WCAG enforcement',
       stats: [
         { label: 'Scans', value: ops.inclusive.scans },
@@ -140,7 +140,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'nerve', label: 'NERVE', icon: Radio, color: 'text-rose-500',
+      id: 'nerve', label: 'NERVE', icon: Radio, color: 'text-neon-magenta',
       desc: 'Inter-node signaling & operational coordination (OCG)',
       stats: [
         { label: 'Signals', value: ops.nerve.signals },
@@ -148,7 +148,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'reflex', label: 'REFLEX', icon: Zap, color: 'text-amber-500',
+      id: 'reflex', label: 'REFLEX', icon: Zap, color: 'text-neon-amber',
       desc: 'Edge compute orchestration & low-latency response (EPZ)',
       stats: [
         { label: 'Avg Latency', value: `${ops.reflex.latencyMs}ms` },
@@ -156,7 +156,7 @@ export function OperationsTab() {
       ],
     },
     {
-      id: 'medic', label: 'MEDIC', icon: HeartPulse, color: 'text-red-400',
+      id: 'medic', label: 'MEDIC', icon: HeartPulse, color: 'text-destructive',
       desc: 'Self-healing diagnostics, triage, and recovery orchestration',
       stats: [
         { label: 'Health Checks', value: ops.medic.healthChecks },
@@ -169,14 +169,14 @@ export function OperationsTab() {
     <div className="space-y-5 sm:space-y-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-indigo-500/15 to-purple-500/10 border border-indigo-500/25 flex items-center justify-center shrink-0">
-          <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 dark:text-indigo-400" />
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary/15 to-neon-purple/10 border border-primary/25 flex items-center justify-center shrink-0">
+          <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-primary dark:text-primary" />
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Operations</h2>
           <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">DECODE · VISION · ECONOMY · SANDBOX · INCLUSIVE · NERVE · REFLEX · MEDIC</p>
         </div>
-        <Badge className="text-[9px] bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20 shrink-0">8 NODES</Badge>
+        <Badge className="text-[9px] bg-primary/10 text-primary dark:text-primary border-primary/20 shrink-0">8 NODES</Badge>
       </div>
 
       {/* Module Grid */}
@@ -188,7 +188,7 @@ export function OperationsTab() {
                 <div className="flex items-center gap-2">
                   <mod.icon className={cn("w-4 h-4 shrink-0", mod.color)} />
                   <span className="text-xs sm:text-sm font-bold font-mono">{mod.label}</span>
-                  <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20">online</Badge>
+                  <Badge variant="outline" className="text-[8px] h-4 px-1.5 ml-auto bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20">online</Badge>
                 </div>
                 <p className="text-[10px] sm:text-[11px] text-muted-foreground/60 leading-relaxed">{mod.desc}</p>
                 <div className="space-y-1.5 pt-1 border-t border-border/10">
@@ -209,7 +209,7 @@ export function OperationsTab() {
       <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20 transition-all duration-300 hover:border-primary/15">
         <CardHeader className="pb-2 px-4 sm:px-6">
           <CardTitle className="text-sm flex items-center gap-2">
-            <FileSearch className="w-4 h-4 text-indigo-500 shrink-0" />
+            <FileSearch className="w-4 h-4 text-primary shrink-0" />
             DECODE — Recent Processing
           </CardTitle>
           <CardDescription className="text-[11px]">Latest NLU memory formation activity</CardDescription>
@@ -220,7 +220,7 @@ export function OperationsTab() {
               {ops.decode.recentLogs.map((log: any, i: number) => (
                 <div key={i} className="flex items-center gap-3 p-2 rounded-md bg-muted/10 dark:bg-muted/5 border border-border/10 transition-colors duration-200 hover:bg-muted/20">
                   <Badge variant="outline" className={cn("text-[8px] h-4 px-1.5 shrink-0",
-                    log.success ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-700 dark:text-red-400 border-red-500/20'
+                    log.success ? 'bg-neon-green/10 text-emerald-700 dark:text-neon-green border-neon-green/20' : 'bg-destructive/10 text-red-700 dark:text-destructive border-destructive/20'
                   )}>
                     {log.success ? '✓' : '✗'}
                   </Badge>

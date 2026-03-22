@@ -41,11 +41,11 @@ interface DefenseStats {
 }
 
 const ACTION_CONFIG: Record<string, { icon: typeof Shield; color: string; bg: string; label: string }> = {
-  block: { icon: Ban, color: "text-red-500", bg: "bg-red-500/10", label: "BLOCKED" },
-  challenge: { icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10", label: "CHALLENGED" },
-  monitor: { icon: Eye, color: "text-blue-500", bg: "bg-blue-500/10", label: "MONITORED" },
-  allow: { icon: CheckCircle2, color: "text-emerald-500", bg: "bg-emerald-500/10", label: "ALLOWED" },
-  scan_completed: { icon: Activity, color: "text-cyan-500", bg: "bg-cyan-500/10", label: "SCANNED" },
+  block: { icon: Ban, color: "text-destructive", bg: "bg-destructive/10", label: "BLOCKED" },
+  challenge: { icon: AlertTriangle, color: "text-neon-amber", bg: "bg-neon-amber/10", label: "CHALLENGED" },
+  monitor: { icon: Eye, color: "text-neon-blue", bg: "bg-neon-blue/10", label: "MONITORED" },
+  allow: { icon: CheckCircle2, color: "text-neon-green", bg: "bg-neon-green/10", label: "ALLOWED" },
+  scan_completed: { icon: Activity, color: "text-neon-cyan", bg: "bg-neon-cyan/10", label: "SCANNED" },
 };
 
 function getActionConfig(action: string) {
@@ -53,17 +53,17 @@ function getActionConfig(action: string) {
 }
 
 function riskColor(score: number): string {
-  if (score >= 80) return "text-red-500";
-  if (score >= 50) return "text-amber-500";
-  if (score >= 30) return "text-blue-500";
-  return "text-emerald-500";
+  if (score >= 80) return "text-destructive";
+  if (score >= 50) return "text-neon-amber";
+  if (score >= 30) return "text-neon-blue";
+  return "text-neon-green";
 }
 
 function riskBadge(score: number): string {
-  if (score >= 80) return "bg-red-500/10 text-red-500 border-red-500/30";
-  if (score >= 50) return "bg-amber-500/10 text-amber-500 border-amber-500/30";
-  if (score >= 30) return "bg-blue-500/10 text-blue-500 border-blue-500/30";
-  return "bg-emerald-500/10 text-emerald-500 border-emerald-500/30";
+  if (score >= 80) return "bg-destructive/10 text-destructive border-destructive/30";
+  if (score >= 50) return "bg-neon-amber/10 text-neon-amber border-neon-amber/30";
+  if (score >= 30) return "bg-neon-blue/10 text-neon-blue border-neon-blue/30";
+  return "bg-neon-green/10 text-neon-green border-neon-green/30";
 }
 
 function timeAgo(dateStr: string): string {
@@ -167,8 +167,8 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center">
-            <Shield className="w-5 h-5 text-red-500" />
+          <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center">
+            <Shield className="w-5 h-5 text-destructive" />
           </div>
           <div>
             <h2 className="text-xl font-bold">Defense Analytics</h2>
@@ -182,7 +182,7 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
             onClick={() => setLiveEnabled(!liveEnabled)}
             className="gap-2"
           >
-            <div className={`w-2 h-2 rounded-full ${liveEnabled ? 'bg-emerald-400 animate-pulse' : 'bg-muted-foreground'}`} />
+            <div className={`w-2 h-2 rounded-full ${liveEnabled ? 'bg-neon-green animate-pulse' : 'bg-muted-foreground'}`} />
             {liveEnabled ? 'LIVE' : 'Paused'}
           </Button>
           <Button variant="outline" size="sm" onClick={fetchEvents} className="gap-2">
@@ -198,16 +198,16 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
           <p className="text-2xl font-bold font-mono tabular-nums">{stats?.total || 0}</p>
           <p className="text-xs text-muted-foreground">Total Events</p>
         </Card>
-        <Card className="p-4 text-center border-red-500/20 transition-all duration-300 hover:border-red-500/30 hover:-translate-y-0.5 hover:shadow-sm">
-          <p className="text-2xl font-bold text-red-500 font-mono tabular-nums">{stats?.blocked || 0}</p>
+        <Card className="p-4 text-center border-destructive/20 transition-all duration-300 hover:border-destructive/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-destructive font-mono tabular-nums">{stats?.blocked || 0}</p>
           <p className="text-xs text-muted-foreground">Blocked</p>
         </Card>
-        <Card className="p-4 text-center border-amber-500/20 transition-all duration-300 hover:border-amber-500/30 hover:-translate-y-0.5 hover:shadow-sm">
-          <p className="text-2xl font-bold text-amber-500 font-mono tabular-nums">{stats?.challenged || 0}</p>
+        <Card className="p-4 text-center border-neon-amber/20 transition-all duration-300 hover:border-neon-amber/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-neon-amber font-mono tabular-nums">{stats?.challenged || 0}</p>
           <p className="text-xs text-muted-foreground">Challenged</p>
         </Card>
-        <Card className="p-4 text-center border-blue-500/20 transition-all duration-300 hover:border-blue-500/30 hover:-translate-y-0.5 hover:shadow-sm">
-          <p className="text-2xl font-bold text-blue-500 font-mono tabular-nums">{stats?.monitored || 0}</p>
+        <Card className="p-4 text-center border-neon-blue/20 transition-all duration-300 hover:border-neon-blue/30 hover:-translate-y-0.5 hover:shadow-sm">
+          <p className="text-2xl font-bold text-neon-blue font-mono tabular-nums">{stats?.monitored || 0}</p>
           <p className="text-xs text-muted-foreground">Monitored</p>
         </Card>
         <Card className="p-4 text-center transition-all duration-300 hover:border-primary/15 hover:-translate-y-0.5 hover:shadow-sm">
@@ -220,8 +220,8 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
       {stats && (
         <Card className="p-4 flex items-center gap-3 transition-all duration-300 hover:border-primary/15">
           <TrendingUp className={`w-5 h-5 ${
-            stats.recentTrend === 'rising' ? 'text-red-500' : 
-            stats.recentTrend === 'declining' ? 'text-emerald-500' : 'text-muted-foreground'
+            stats.recentTrend === 'rising' ? 'text-destructive' : 
+            stats.recentTrend === 'declining' ? 'text-neon-green' : 'text-muted-foreground'
           }`} />
           <span className="text-sm">
             Threat activity is <span className="font-semibold">
@@ -229,7 +229,7 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
             </span> over the last 12 hours
           </span>
           {stats.recentTrend === 'rising' && (
-            <Badge variant="outline" className="ml-auto bg-red-500/10 text-red-500 border-red-500/30">
+            <Badge variant="outline" className="ml-auto bg-destructive/10 text-destructive border-destructive/30">
               Elevated
             </Badge>
           )}
@@ -353,10 +353,10 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: "Critical (80–100)", min: 80, max: 101, color: "text-red-500", bg: "bg-red-500/60" },
-                  { label: "High (50–79)", min: 50, max: 80, color: "text-amber-500", bg: "bg-amber-500/60" },
-                  { label: "Medium (30–49)", min: 30, max: 50, color: "text-blue-500", bg: "bg-blue-500/60" },
-                  { label: "Low (0–29)", min: 0, max: 30, color: "text-emerald-500", bg: "bg-emerald-500/60" },
+                  { label: "Critical (80–100)", min: 80, max: 101, color: "text-destructive", bg: "bg-destructive/60" },
+                  { label: "High (50–79)", min: 50, max: 80, color: "text-neon-amber", bg: "bg-neon-amber/60" },
+                  { label: "Medium (30–49)", min: 30, max: 50, color: "text-neon-blue", bg: "bg-neon-blue/60" },
+                  { label: "Low (0–29)", min: 0, max: 30, color: "text-neon-green", bg: "bg-neon-green/60" },
                 ].map((band) => {
                   const count = events.filter(e => e.risk_score >= band.min && e.risk_score < band.max).length;
                   const pct = stats?.total ? Math.round((count / stats.total) * 100) : 0;
@@ -452,7 +452,7 @@ export const DefenseAnalytics = memo(function DefenseAnalytics() {
                       </div>
                       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all ${avgRisk >= 50 ? 'bg-red-500/60' : 'bg-blue-500/60'}`}
+                          className={`h-full rounded-full transition-all ${avgRisk >= 50 ? 'bg-destructive/60' : 'bg-neon-blue/60'}`}
                           style={{ width: `${pct}%` }}
                         />
                       </div>

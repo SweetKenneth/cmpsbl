@@ -22,9 +22,9 @@ import {
 } from '@/lib/substrate/intent-mesh/intent-scoring';
 
 const TREND_ICONS: Record<string, React.ReactNode> = {
-  improving: <TrendingUp className="w-3 h-3 text-emerald-400" />,
+  improving: <TrendingUp className="w-3 h-3 text-neon-green" />,
   stable: <Minus className="w-3 h-3 text-muted-foreground" />,
-  declining: <TrendingDown className="w-3 h-3 text-red-400" />,
+  declining: <TrendingDown className="w-3 h-3 text-destructive" />,
 };
 
 function ScoreBar({ score, label }: { score: number; label: string }) {
@@ -39,15 +39,15 @@ function ScoreBar({ score, label }: { score: number; label: string }) {
 
 function IntentScoreCard({ score, rank }: { score: IntentQualityScore; rank?: number }) {
   return (
-    <div className="p-3 rounded-lg bg-muted/20 border border-border/20 hover:border-amber-500/20 transition-colors space-y-2">
+    <div className="p-3 rounded-lg bg-muted/20 border border-border/20 hover:border-neon-amber/20 transition-colors space-y-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {rank != null && (
             <span className={cn(
               "w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold",
-              rank === 0 ? "bg-amber-500/20 text-amber-400" :
+              rank === 0 ? "bg-neon-amber/20 text-neon-amber" :
               rank === 1 ? "bg-zinc-400/20 text-zinc-300" :
-              rank === 2 ? "bg-orange-500/20 text-orange-400" :
+              rank === 2 ? "bg-neon-amber/20 text-neon-amber" :
               "bg-muted/30 text-muted-foreground"
             )}>
               {rank + 1}
@@ -60,9 +60,9 @@ function IntentScoreCard({ score, rank }: { score: IntentQualityScore; rank?: nu
           {TREND_ICONS[score.trend]}
           <span className={cn(
             "text-sm font-bold",
-            score.overallScore >= 70 ? "text-emerald-400" :
-            score.overallScore >= 40 ? "text-amber-400" :
-            "text-red-400"
+            score.overallScore >= 70 ? "text-neon-green" :
+            score.overallScore >= 40 ? "text-neon-amber" :
+            "text-destructive"
           )}>
             {score.overallScore}
           </span>
@@ -117,7 +117,7 @@ export function MeshScoringPanel() {
           <Card className="border border-border/30 bg-muted/10">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground text-[10px] mb-1">
-                <Trophy className="h-4 w-4 text-amber-400" />
+                <Trophy className="h-4 w-4 text-neon-amber" />
                 Top Score
               </div>
               <div className="text-xl font-bold">{leaderboard.topIntents[0]?.overallScore || '—'}</div>
@@ -126,7 +126,7 @@ export function MeshScoringPanel() {
           <Card className="border border-border/30 bg-muted/10">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground text-[10px] mb-1">
-                <Zap className="h-4 w-4 text-fuchsia-400" />
+                <Zap className="h-4 w-4 text-neon-magenta" />
                 Intents Scored
               </div>
               <div className="text-xl font-bold">{leaderboard.topIntents.length + leaderboard.worstIntents.length}</div>
@@ -135,7 +135,7 @@ export function MeshScoringPanel() {
           <Card className="border border-border/30 bg-muted/10">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground text-[10px] mb-1">
-                <TrendingUp className="h-4 w-4 text-emerald-400" />
+                <TrendingUp className="h-4 w-4 text-neon-green" />
                 Improving
               </div>
               <div className="text-xl font-bold">{leaderboard.mostImproved.length}</div>
@@ -144,7 +144,7 @@ export function MeshScoringPanel() {
           <Card className="border border-border/30 bg-muted/10">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 text-muted-foreground text-[10px] mb-1">
-                <BarChart3 className="h-4 w-4 text-cyan-400" />
+                <BarChart3 className="h-4 w-4 text-neon-cyan" />
                 Modules Ranked
               </div>
               <div className="text-xl font-bold">{leaderboard.moduleRankings.length}</div>
@@ -161,7 +161,7 @@ export function MeshScoringPanel() {
             onClick={() => setView(v.key)}
             className={cn(
               "px-3 py-1.5 text-xs font-medium transition-colors flex items-center gap-1",
-              view === v.key ? 'bg-amber-500/20 text-amber-400' : 'text-muted-foreground hover:text-foreground'
+              view === v.key ? 'bg-neon-amber/20 text-neon-amber' : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {v.icon}{v.label}
@@ -186,7 +186,7 @@ export function MeshScoringPanel() {
                   <div key={mr.module} className="flex items-center gap-3 p-3 rounded-lg bg-muted/20 border border-border/20">
                     <span className={cn(
                       "w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold",
-                      i === 0 ? "bg-amber-500/20 text-amber-400" : "bg-muted/30 text-muted-foreground"
+                      i === 0 ? "bg-neon-amber/20 text-neon-amber" : "bg-muted/30 text-muted-foreground"
                     )}>{i + 1}</span>
                     <Badge variant="outline" className="text-[10px] font-bold min-w-[70px] justify-center">{mr.module}</Badge>
                     <div className="flex-1">

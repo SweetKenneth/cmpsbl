@@ -26,10 +26,10 @@ interface Notification {
 }
 
 const LEVEL_CONFIG: Record<NotifLevel, { icon: React.ElementType; color: string; bg: string }> = {
-  info: { icon: Info, color: "text-blue-400", bg: "bg-blue-500/10" },
-  warning: { icon: AlertTriangle, color: "text-amber-400", bg: "bg-amber-500/10" },
-  error: { icon: Shield, color: "text-red-400", bg: "bg-red-500/10" },
-  success: { icon: CheckCircle2, color: "text-emerald-400", bg: "bg-emerald-500/10" },
+  info: { icon: Info, color: "text-neon-blue", bg: "bg-neon-blue/10" },
+  warning: { icon: AlertTriangle, color: "text-neon-amber", bg: "bg-neon-amber/10" },
+  error: { icon: Shield, color: "text-destructive", bg: "bg-destructive/10" },
+  success: { icon: CheckCircle2, color: "text-neon-green", bg: "bg-neon-green/10" },
 };
 
 export function NotificationCenter() {
@@ -138,7 +138,7 @@ export function NotificationCenter() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 exit={{ scale: 0 }}
-                className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white"
+                className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[9px] font-bold text-white"
               >
                 {unreadCount > 9 ? "9+" : unreadCount}
               </motion.span>

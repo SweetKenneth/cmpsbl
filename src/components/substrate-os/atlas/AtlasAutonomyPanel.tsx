@@ -170,11 +170,11 @@ export function AtlasAutonomyPanel() {
 
   const riskColor = (risk: string) => {
     switch (risk) {
-      case 'minimal': return 'text-emerald-400 bg-emerald-500/20 border-emerald-500/40';
-      case 'low': return 'text-cyan-400 bg-cyan-500/20 border-cyan-500/40';
-      case 'medium': return 'text-amber-400 bg-amber-500/20 border-amber-500/40';
-      case 'high': return 'text-orange-400 bg-orange-500/20 border-orange-500/40';
-      case 'critical': return 'text-red-400 bg-red-500/20 border-red-500/40';
+      case 'minimal': return 'text-neon-green bg-neon-green/20 border-neon-green/40';
+      case 'low': return 'text-neon-cyan bg-neon-cyan/20 border-neon-cyan/40';
+      case 'medium': return 'text-neon-amber bg-neon-amber/20 border-neon-amber/40';
+      case 'high': return 'text-neon-amber bg-neon-amber/20 border-neon-amber/40';
+      case 'critical': return 'text-destructive bg-destructive/20 border-destructive/40';
       default: return 'text-muted-foreground bg-muted';
     }
   };
@@ -187,7 +187,7 @@ export function AtlasAutonomyPanel() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="relative border-2 border-primary/40 bg-gradient-to-br from-primary/10 via-background to-cyan-500/5 overflow-hidden shadow-xl shadow-primary/5">
+        <Card className="relative border-2 border-primary/40 bg-gradient-to-br from-primary/10 via-background to-neon-cyan/5 overflow-hidden shadow-xl shadow-primary/5">
           {/* Animated background mesh */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.15),transparent_60%)]" />
@@ -214,27 +214,27 @@ export function AtlasAutonomyPanel() {
                 <div className={cn(
                   "relative w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-700",
                   systemActive 
-                    ? "bg-gradient-to-br from-emerald-500/30 via-cyan-500/20 to-emerald-500/30 border-2 border-emerald-400/60 shadow-lg shadow-emerald-500/30" 
+                    ? "bg-gradient-to-br from-neon-green/30 via-neon-cyan/20 to-neon-green/30 border-2 border-neon-green/60 shadow-lg shadow-neon-green/30" 
                     : "bg-gradient-to-br from-muted/40 to-muted/20 border-2 border-border/60"
                 )}>
                   <Radio className={cn(
                     "w-8 h-8 transition-all duration-500",
-                    systemActive ? "text-emerald-300 drop-shadow-[0_0_8px_hsl(142_76%_46%/0.8)]" : "text-muted-foreground"
+                    systemActive ? "text-neon-green drop-shadow-[0_0_8px_hsl(142_76%_46%/0.8)]" : "text-muted-foreground"
                   )} />
                   {systemActive && (
                     <>
                       <motion.div
-                        className="absolute inset-0 rounded-2xl border-2 border-emerald-400/40"
+                        className="absolute inset-0 rounded-2xl border-2 border-neon-green/40"
                         animate={{ scale: [1, 1.4, 1.4], opacity: [0.6, 0, 0] }}
                         transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut' }}
                       />
                       <motion.div
-                        className="absolute inset-0 rounded-2xl border border-cyan-400/30"
+                        className="absolute inset-0 rounded-2xl border border-neon-cyan/30"
                         animate={{ scale: [1, 1.25, 1.25], opacity: [0.4, 0, 0] }}
                         transition={{ duration: 2.5, repeat: Infinity, ease: 'easeOut', delay: 0.3 }}
                       />
                       <motion.div
-                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center shadow-lg shadow-emerald-500/50"
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-br from-neon-green to-neon-cyan flex items-center justify-center shadow-lg shadow-neon-green/50"
                         animate={{ scale: [1, 1.15, 1] }}
                         transition={{ duration: 1.5, repeat: Infinity }}
                       >
@@ -248,9 +248,9 @@ export function AtlasAutonomyPanel() {
                   <CardTitle className="flex items-center gap-3 text-xl">
                     <span className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text">Autonomous Operation</span>
                     {systemActive ? (
-                      <Badge className="bg-emerald-500/25 text-emerald-300 border border-emerald-400/50 shadow-sm shadow-emerald-500/30">
+                      <Badge className="bg-neon-green/25 text-neon-green border border-neon-green/50 shadow-sm shadow-neon-green/30">
                         <motion.span 
-                          className="w-2 h-2 rounded-full bg-emerald-400 mr-2"
+                          className="w-2 h-2 rounded-full bg-neon-green mr-2"
                           animate={{ opacity: [1, 0.4, 1], scale: [1, 0.9, 1] }}
                           transition={{ duration: 1.5, repeat: Infinity }}
                         />
@@ -284,7 +284,7 @@ export function AtlasAutonomyPanel() {
                       variant="outline"
                       onClick={runManualCycle}
                       disabled={seba.isCycleRunning}
-                      className="border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/15 hover:border-cyan-400/70 transition-all"
+                      className="border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/15 hover:border-neon-cyan/70 transition-all"
                     >
                       <RefreshCw className={cn("w-4 h-4 mr-2", seba.isCycleRunning && "animate-spin")} />
                       Run Cycle
@@ -299,8 +299,8 @@ export function AtlasAutonomyPanel() {
                   className={cn(
                     "min-w-[170px] h-12 transition-all font-semibold text-base",
                     systemActive 
-                      ? "border-red-400/50 text-red-300 hover:bg-red-500/15 hover:border-red-400/70" 
-                      : "bg-gradient-to-r from-emerald-600 via-emerald-500 to-cyan-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-cyan-500 shadow-xl shadow-emerald-500/30 border-0"
+                      ? "border-destructive/50 text-destructive hover:bg-destructive/15 hover:border-destructive/70" 
+                      : "bg-gradient-to-r from-neon-green via-neon-green to-neon-cyan hover:from-neon-green hover:via-neon-green hover:to-neon-cyan shadow-xl shadow-neon-green/30 border-0"
                   )}
                 >
                   {activating ? (
@@ -333,14 +333,14 @@ export function AtlasAutonomyPanel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <Card className="h-full border-purple-400/30 bg-gradient-to-br from-purple-500/10 via-background to-transparent shadow-lg shadow-purple-500/5 hover:shadow-purple-500/10 transition-shadow">
+          <Card className="h-full border-neon-purple/30 bg-gradient-to-br from-neon-purple/10 via-background to-transparent shadow-lg shadow-neon-purple/5 hover:shadow-neon-purple/10 transition-shadow">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500/30 to-purple-600/20 flex items-center justify-center border border-purple-400/30 shadow-sm shadow-purple-500/20">
-                  <Sparkles className="w-4 h-4 text-purple-300" />
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-neon-purple/30 to-neon-purple/20 flex items-center justify-center border border-neon-purple/30 shadow-sm shadow-neon-purple/20">
+                  <Sparkles className="w-4 h-4 text-neon-purple" />
                 </div>
                 <span className="text-foreground/90">SEBA Agent</span>
-                <Badge variant="outline" className="ml-auto text-[10px] uppercase font-mono border-purple-400/40 text-purple-300">
+                <Badge variant="outline" className="ml-auto text-[10px] uppercase font-mono border-neon-purple/40 text-neon-purple">
                   {seba.mode}
                 </Badge>
               </CardTitle>
@@ -350,10 +350,10 @@ export function AtlasAutonomyPanel() {
                 {[
                   { label: 'Phase', value: seba.phase, capitalize: true },
                   { label: 'Cycles', value: seba.state?.total_cycles || 0 },
-                  { label: 'Success', value: seba.state?.successful_cycles || 0, color: 'text-emerald-300' },
-                  { label: 'Health', value: `${seba.state?.agent_health || 100}%`, color: 'text-cyan-300' },
+                  { label: 'Success', value: seba.state?.successful_cycles || 0, color: 'text-neon-green' },
+                  { label: 'Health', value: `${seba.state?.agent_health || 100}%`, color: 'text-neon-cyan' },
                 ].map(stat => (
-                  <div key={stat.label} className="p-3 rounded-xl bg-gradient-to-br from-background/80 to-background/40 border border-border/40 hover:border-purple-500/30 transition-colors">
+                  <div key={stat.label} className="p-3 rounded-xl bg-gradient-to-br from-background/80 to-background/40 border border-border/40 hover:border-neon-purple/30 transition-colors">
                     <p className="text-[10px] text-muted-foreground uppercase font-mono tracking-wider">{stat.label}</p>
                     <p className={cn(
                       "text-lg font-bold mt-0.5",
@@ -368,9 +368,9 @@ export function AtlasAutonomyPanel() {
 
               <div className="space-y-2.5 pt-2 border-t border-border/30">
                 {[
-                  { label: 'Pending', value: seba.state?.pending_proposals || 0, color: 'text-amber-300' },
-                  { label: 'Approved', value: seba.state?.approved_proposals || 0, color: 'text-emerald-300' },
-                  { label: 'Rejected', value: seba.state?.rejected_proposals || 0, color: 'text-red-300' },
+                  { label: 'Pending', value: seba.state?.pending_proposals || 0, color: 'text-neon-amber' },
+                  { label: 'Approved', value: seba.state?.approved_proposals || 0, color: 'text-neon-green' },
+                  { label: 'Rejected', value: seba.state?.rejected_proposals || 0, color: 'text-destructive' },
                 ].map(item => (
                   <div key={item.label} className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">{item.label} Proposals</span>
@@ -388,25 +388,25 @@ export function AtlasAutonomyPanel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
         >
-          <Card className="h-full border-cyan-400/30 bg-gradient-to-br from-cyan-500/10 via-background to-transparent shadow-lg shadow-cyan-500/5 hover:shadow-cyan-500/10 transition-shadow">
+          <Card className="h-full border-neon-cyan/30 bg-gradient-to-br from-neon-cyan/10 via-background to-transparent shadow-lg shadow-neon-cyan/5 hover:shadow-neon-cyan/10 transition-shadow">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500/30 to-cyan-600/20 flex items-center justify-center border border-cyan-400/30 shadow-sm shadow-cyan-500/20">
-                  <Brain className="w-4 h-4 text-cyan-300" />
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-neon-cyan/30 to-neon-cyan/20 flex items-center justify-center border border-neon-cyan/30 shadow-sm shadow-neon-cyan/20">
+                  <Brain className="w-4 h-4 text-neon-cyan" />
                 </div>
                 <span className="text-foreground/90">CLM Status</span>
-                <Badge className="ml-auto text-[10px] bg-emerald-500/25 text-emerald-300 border border-emerald-400/40">
+                <Badge className="ml-auto text-[10px] bg-neon-green/25 text-neon-green border border-neon-green/40">
                   24/7
                 </Badge>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-2.5">
-                <div className="p-3 rounded-xl bg-gradient-to-br from-background/80 to-background/40 border border-border/40 hover:border-cyan-500/30 transition-colors">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-background/80 to-background/40 border border-border/40 hover:border-neon-cyan/30 transition-colors">
                   <p className="text-[10px] text-muted-foreground uppercase font-mono tracking-wider">Modules</p>
                   <p className="text-lg font-bold text-foreground/90 mt-0.5">{clm.moduleStates.length}</p>
                 </div>
-                <div className="p-3 rounded-xl bg-gradient-to-br from-background/80 to-background/40 border border-border/40 hover:border-cyan-500/30 transition-colors">
+                <div className="p-3 rounded-xl bg-gradient-to-br from-background/80 to-background/40 border border-border/40 hover:border-neon-cyan/30 transition-colors">
                   <p className="text-[10px] text-muted-foreground uppercase font-mono tracking-wider">Feed Items</p>
                   <p className="text-lg font-bold text-foreground/90 mt-0.5">{clm.feed.length}</p>
                 </div>
@@ -422,7 +422,7 @@ export function AtlasAutonomyPanel() {
                       className={cn(
                         "text-[9px] font-mono transition-all",
                         mod.isLearning 
-                          ? "border-cyan-400/60 text-cyan-300 bg-cyan-500/15 shadow-sm shadow-cyan-500/20" 
+                          ? "border-neon-cyan/60 text-neon-cyan bg-neon-cyan/15 shadow-sm shadow-neon-cyan/20" 
                           : "border-border/50 text-muted-foreground"
                       )}
                     >
@@ -436,7 +436,7 @@ export function AtlasAutonomyPanel() {
               <Button 
                 size="sm" 
                 variant="outline" 
-                className="w-full border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/15 hover:border-cyan-400/70 transition-all"
+                className="w-full border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/15 hover:border-neon-cyan/70 transition-all"
                 onClick={clm.runAllLearning}
                 disabled={clm.loading}
               >
@@ -453,11 +453,11 @@ export function AtlasAutonomyPanel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <Card className="h-full border-amber-400/30 bg-gradient-to-br from-amber-500/10 via-background to-transparent shadow-lg shadow-amber-500/5 hover:shadow-amber-500/10 transition-shadow">
+          <Card className="h-full border-neon-amber/30 bg-gradient-to-br from-neon-amber/10 via-background to-transparent shadow-lg shadow-neon-amber/5 hover:shadow-neon-amber/10 transition-shadow">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-500/30 to-amber-600/20 flex items-center justify-center border border-amber-400/30 shadow-sm shadow-amber-500/20">
-                  <Settings2 className="w-4 h-4 text-amber-300" />
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-neon-amber/30 to-neon-amber/20 flex items-center justify-center border border-neon-amber/30 shadow-sm shadow-neon-amber/20">
+                  <Settings2 className="w-4 h-4 text-neon-amber" />
                 </div>
                 <span className="text-foreground/90">SEBA Mode</span>
               </CardTitle>
@@ -499,7 +499,7 @@ export function AtlasAutonomyPanel() {
                     </p>
                   </div>
                   {mode === 'advisory' && (
-                    <Badge className="text-[9px] bg-emerald-500/25 text-emerald-300 border border-emerald-400/40 shrink-0">
+                    <Badge className="text-[9px] bg-neon-green/25 text-neon-green border border-neon-green/40 shrink-0">
                       RECOMMENDED
                     </Badge>
                   )}
@@ -519,18 +519,18 @@ export function AtlasAutonomyPanel() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
       >
-        <Card className="border-emerald-400/30 bg-gradient-to-br from-emerald-500/10 via-background to-transparent shadow-lg shadow-emerald-500/5">
+        <Card className="border-neon-green/30 bg-gradient-to-br from-neon-green/10 via-background to-transparent shadow-lg shadow-neon-green/5">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-sm flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500/30 to-emerald-600/20 flex items-center justify-center border border-emerald-400/30 shadow-sm shadow-emerald-500/20">
-                  <Shield className="w-4 h-4 text-emerald-300" />
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-neon-green/30 to-neon-green/20 flex items-center justify-center border border-neon-green/30 shadow-sm shadow-neon-green/20">
+                  <Shield className="w-4 h-4 text-neon-green" />
                 </div>
                 <span className="text-foreground/90">Pending Proposals</span>
                 {pendingProposals.length > 0 && (
-                  <Badge className="bg-amber-500/25 text-amber-300 border border-amber-400/50 shadow-sm">
+                  <Badge className="bg-neon-amber/25 text-neon-amber border border-neon-amber/50 shadow-sm">
                     <motion.span 
-                      className="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1.5"
+                      className="w-1.5 h-1.5 rounded-full bg-neon-amber mr-1.5"
                       animate={{ opacity: [1, 0.5, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     />
@@ -574,7 +574,7 @@ export function AtlasAutonomyPanel() {
                           exit={{ opacity: 0, x: -30, scale: 0.95 }}
                           transition={{ delay: i * 0.05 }}
                           className={cn(
-                            "p-4 rounded-xl border border-border/40 bg-gradient-to-br from-background/80 to-background/40 hover:border-emerald-500/30 hover:shadow-md transition-all",
+                            "p-4 rounded-xl border border-border/40 bg-gradient-to-br from-background/80 to-background/40 hover:border-neon-green/30 hover:shadow-md transition-all",
                             isProcessing && "opacity-50 pointer-events-none"
                           )}
                         >
@@ -586,7 +586,7 @@ export function AtlasAutonomyPanel() {
                               <Badge variant="outline" className="text-[10px] font-mono border-border/50 text-muted-foreground">
                                 {proposal.category}
                               </Badge>
-                              <Badge variant="outline" className="text-[10px] border-amber-400/40 text-amber-300">
+                              <Badge variant="outline" className="text-[10px] border-neon-amber/40 text-neon-amber">
                                 REQUIRES APPROVAL
                               </Badge>
                             </div>
@@ -617,23 +617,23 @@ export function AtlasAutonomyPanel() {
                               <div className="space-y-1.5 p-2.5 rounded-lg bg-black/30 border border-border/30 font-mono text-[10px]">
                                 {proposal.proposed_actions.map((action, actionIdx) => (
                                   <div key={actionIdx} className="flex items-start gap-2">
-                                    <span className="text-cyan-400 shrink-0">[{action.type}]</span>
+                                    <span className="text-neon-cyan shrink-0">[{action.type}]</span>
                                     <div className="flex-1 min-w-0">
-                                      <span className="text-amber-300">{action.target}</span>
+                                      <span className="text-neon-amber">{action.target}</span>
                                       {action.current !== undefined && (
-                                        <div className="text-red-400 mt-0.5">
+                                        <div className="text-destructive mt-0.5">
                                           - {typeof action.current === 'object' ? JSON.stringify(action.current) : String(action.current)}
                                         </div>
                                       )}
                                       {action.proposed !== undefined && (
-                                        <div className="text-emerald-400">
+                                        <div className="text-neon-green">
                                           + {typeof action.proposed === 'object' ? JSON.stringify(action.proposed) : String(action.proposed)}
                                         </div>
                                       )}
                                       {action.reversible !== undefined && (
                                         <span className={cn(
                                           "text-[9px] px-1.5 py-0.5 rounded ml-1",
-                                          action.reversible ? "bg-emerald-500/20 text-emerald-400" : "bg-amber-500/20 text-amber-400"
+                                          action.reversible ? "bg-neon-green/20 text-neon-green" : "bg-neon-amber/20 text-neon-amber"
                                         )}>
                                           {action.reversible ? 'reversible' : 'NOT reversible'}
                                         </span>
@@ -654,7 +654,7 @@ export function AtlasAutonomyPanel() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="flex-1 h-9 border-emerald-400/50 text-emerald-300 hover:bg-emerald-500/15 hover:border-emerald-400/70 transition-all"
+                              className="flex-1 h-9 border-neon-green/50 text-neon-green hover:bg-neon-green/15 hover:border-neon-green/70 transition-all"
                               onClick={() => handleProposalAction(proposal.id, 'approve')}
                               disabled={isProcessing}
                             >
@@ -664,7 +664,7 @@ export function AtlasAutonomyPanel() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="flex-1 h-9 border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/15 hover:border-cyan-400/70 transition-all"
+                              className="flex-1 h-9 border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/15 hover:border-neon-cyan/70 transition-all"
                               onClick={() => handleProposalAction(proposal.id, 'execute')}
                               disabled={isProcessing}
                             >
@@ -674,7 +674,7 @@ export function AtlasAutonomyPanel() {
                             <Button
                               size="sm"
                               variant="outline"
-                              className="h-9 w-9 p-0 border-red-400/50 text-red-300 hover:bg-red-500/15 hover:border-red-400/70 transition-all"
+                              className="h-9 w-9 p-0 border-destructive/50 text-destructive hover:bg-destructive/15 hover:border-destructive/70 transition-all"
                               onClick={() => handleProposalAction(proposal.id, 'reject')}
                               disabled={isProcessing}
                             >
@@ -699,14 +699,14 @@ export function AtlasAutonomyPanel() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <Card className="border-indigo-400/30 bg-gradient-to-br from-indigo-500/10 via-background to-transparent shadow-lg shadow-indigo-500/5">
+          <Card className="border-primary/30 bg-gradient-to-br from-primary/10 via-background to-transparent shadow-lg shadow-primary/5">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500/30 to-indigo-600/20 flex items-center justify-center border border-indigo-400/30 shadow-sm shadow-indigo-500/20">
-                  <Activity className="w-4 h-4 text-indigo-300" />
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/30 to-primary/20 flex items-center justify-center border border-primary/30 shadow-sm shadow-primary/20">
+                  <Activity className="w-4 h-4 text-primary" />
                 </div>
                 <span className="text-foreground/90">CLM Learning Feed</span>
-                <Badge variant="outline" className="ml-auto text-[10px] font-mono border-indigo-400/40 text-indigo-300">
+                <Badge variant="outline" className="ml-auto text-[10px] font-mono border-primary/40 text-primary">
                   {clm.feed.length} items
                 </Badge>
               </CardTitle>
@@ -720,12 +720,12 @@ export function AtlasAutonomyPanel() {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: i * 0.03 }}
-                      className="flex items-center gap-3 p-3.5 rounded-xl border border-border/30 bg-gradient-to-r from-background/60 to-transparent hover:border-indigo-500/30 transition-all"
+                      className="flex items-center gap-3 p-3.5 rounded-xl border border-border/30 bg-gradient-to-r from-background/60 to-transparent hover:border-primary/30 transition-all"
                     >
                       <div className={cn(
                         "w-2.5 h-2.5 rounded-full shadow-sm",
-                        item.priority === 'high' ? "bg-red-400 shadow-red-500/40" :
-                        item.priority === 'medium' ? "bg-amber-400 shadow-amber-500/40" : "bg-emerald-400 shadow-emerald-500/40"
+                        item.priority === 'high' ? "bg-destructive shadow-destructive/40" :
+                        item.priority === 'medium' ? "bg-neon-amber shadow-neon-amber/40" : "bg-neon-green shadow-neon-green/40"
                       )} />
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-medium truncate text-foreground/90">{item.title}</p>

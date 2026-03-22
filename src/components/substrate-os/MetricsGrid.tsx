@@ -26,52 +26,52 @@ interface MetricCardProps {
 
 const colorConfig = {
   cyan: {
-    border: 'border-cyan-500/30 hover:border-cyan-400/60',
-    bg: 'bg-cyan-500/5 hover:bg-cyan-500/10',
-    glow: 'bg-cyan-500',
-    icon: 'text-cyan-400',
-    iconBg: 'bg-cyan-500/20 border-cyan-500/40',
-    gradient: 'from-cyan-500/20 to-transparent',
+    border: 'border-neon-cyan/30 hover:border-neon-cyan/60',
+    bg: 'bg-neon-cyan/5 hover:bg-neon-cyan/10',
+    glow: 'bg-neon-cyan',
+    icon: 'text-neon-cyan',
+    iconBg: 'bg-neon-cyan/20 border-neon-cyan/40',
+    gradient: 'from-neon-cyan/20 to-transparent',
   },
   purple: {
-    border: 'border-purple-500/30 hover:border-purple-400/60',
-    bg: 'bg-purple-500/5 hover:bg-purple-500/10',
-    glow: 'bg-purple-500',
-    icon: 'text-purple-400',
-    iconBg: 'bg-purple-500/20 border-purple-500/40',
-    gradient: 'from-purple-500/20 to-transparent',
+    border: 'border-neon-purple/30 hover:border-neon-purple/60',
+    bg: 'bg-neon-purple/5 hover:bg-neon-purple/10',
+    glow: 'bg-neon-purple',
+    icon: 'text-neon-purple',
+    iconBg: 'bg-neon-purple/20 border-neon-purple/40',
+    gradient: 'from-neon-purple/20 to-transparent',
   },
   amber: {
-    border: 'border-amber-500/30 hover:border-amber-400/60',
-    bg: 'bg-amber-500/5 hover:bg-amber-500/10',
-    glow: 'bg-amber-500',
-    icon: 'text-amber-400',
-    iconBg: 'bg-amber-500/20 border-amber-500/40',
-    gradient: 'from-amber-500/20 to-transparent',
+    border: 'border-neon-amber/30 hover:border-neon-amber/60',
+    bg: 'bg-neon-amber/5 hover:bg-neon-amber/10',
+    glow: 'bg-neon-amber',
+    icon: 'text-neon-amber',
+    iconBg: 'bg-neon-amber/20 border-neon-amber/40',
+    gradient: 'from-neon-amber/20 to-transparent',
   },
   green: {
-    border: 'border-green-500/30 hover:border-green-400/60',
-    bg: 'bg-green-500/5 hover:bg-green-500/10',
-    glow: 'bg-green-500',
-    icon: 'text-green-400',
-    iconBg: 'bg-green-500/20 border-green-500/40',
-    gradient: 'from-green-500/20 to-transparent',
+    border: 'border-neon-green/30 hover:border-neon-green/60',
+    bg: 'bg-neon-green/5 hover:bg-neon-green/10',
+    glow: 'bg-neon-green',
+    icon: 'text-neon-green',
+    iconBg: 'bg-neon-green/20 border-neon-green/40',
+    gradient: 'from-neon-green/20 to-transparent',
   },
   violet: {
-    border: 'border-violet-500/30 hover:border-violet-400/60',
-    bg: 'bg-violet-500/5 hover:bg-violet-500/10',
-    glow: 'bg-violet-500',
-    icon: 'text-violet-400',
-    iconBg: 'bg-violet-500/20 border-violet-500/40',
-    gradient: 'from-violet-500/20 to-transparent',
+    border: 'border-neon-purple/30 hover:border-neon-purple/60',
+    bg: 'bg-neon-purple/5 hover:bg-neon-purple/10',
+    glow: 'bg-neon-purple',
+    icon: 'text-neon-purple',
+    iconBg: 'bg-neon-purple/20 border-neon-purple/40',
+    gradient: 'from-neon-purple/20 to-transparent',
   },
   blue: {
-    border: 'border-blue-500/30 hover:border-blue-400/60',
-    bg: 'bg-blue-500/5 hover:bg-blue-500/10',
-    glow: 'bg-blue-500',
-    icon: 'text-blue-400',
-    iconBg: 'bg-blue-500/20 border-blue-500/40',
-    gradient: 'from-blue-500/20 to-transparent',
+    border: 'border-neon-blue/30 hover:border-neon-blue/60',
+    bg: 'bg-neon-blue/5 hover:bg-neon-blue/10',
+    glow: 'bg-neon-blue',
+    icon: 'text-neon-blue',
+    iconBg: 'bg-neon-blue/20 border-neon-blue/40',
+    gradient: 'from-neon-blue/20 to-transparent',
   },
 };
 
@@ -90,8 +90,8 @@ function MiniSparkline({ trend }: { trend: 'up' | 'down' | 'stable' }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         className={cn(
-          trend === 'up' ? "text-emerald-400" :
-          trend === 'down' ? "text-red-400" :
+          trend === 'up' ? "text-neon-green" :
+          trend === 'down' ? "text-destructive" :
           "text-muted-foreground"
         )}
       />
@@ -168,8 +168,8 @@ const MetricCard = memo(function MetricCard({ label, value, icon: Icon, trend = 
           <MiniSparkline trend={trend} />
           <div className={cn(
             "flex items-center gap-1 text-[10px] font-mono",
-            trend === 'up' ? "text-emerald-400" :
-            trend === 'down' ? "text-red-400" :
+            trend === 'up' ? "text-neon-green" :
+            trend === 'down' ? "text-destructive" :
             "text-muted-foreground"
           )}>
             <TrendIcon className="w-3 h-3" />
@@ -192,16 +192,16 @@ interface StatusPanelProps {
 function StatusPanel({ title, icon: Icon, color, children, delay = 0 }: StatusPanelProps) {
   const panelColors = {
     cyan: {
-      border: 'border-cyan-500/20',
-      iconBg: 'bg-cyan-500/20 border-cyan-500/40',
-      iconText: 'text-cyan-400',
-      labelText: 'text-cyan-400',
+      border: 'border-neon-cyan/20',
+      iconBg: 'bg-neon-cyan/20 border-neon-cyan/40',
+      iconText: 'text-neon-cyan',
+      labelText: 'text-neon-cyan',
     },
     fuchsia: {
-      border: 'border-fuchsia-500/20',
-      iconBg: 'bg-fuchsia-500/20 border-fuchsia-500/40',
-      iconText: 'text-fuchsia-400',
-      labelText: 'text-fuchsia-400',
+      border: 'border-neon-magenta/20',
+      iconBg: 'bg-neon-magenta/20 border-neon-magenta/40',
+      iconText: 'text-neon-magenta',
+      labelText: 'text-neon-magenta',
     },
   };
   
@@ -315,8 +315,8 @@ export function MetricsGrid() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/30 flex items-center justify-center">
-            <Activity className="w-4 h-4 text-cyan-400" />
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neon-cyan/20 to-neon-magenta/20 border border-neon-cyan/30 flex items-center justify-center">
+            <Activity className="w-4 h-4 text-neon-cyan" />
           </div>
           <div>
             <h3 className="text-sm font-semibold text-foreground">Live Telemetry</h3>
@@ -324,16 +324,16 @@ export function MetricsGrid() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-[9px] h-5 border-indigo-500/30 text-indigo-400">
+          <Badge variant="outline" className="text-[9px] h-5 border-primary/30 text-primary">
             <GitBranch className="w-3 h-3 mr-1" />
             CMPSBL
           </Badge>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neon-green/10 border border-neon-green/30">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-green" />
             </span>
-            <span className="text-[10px] text-emerald-400 font-mono font-medium">STREAMING</span>
+            <span className="text-[10px] text-neon-green font-mono font-medium">STREAMING</span>
           </div>
         </div>
       </div>
@@ -371,8 +371,8 @@ export function MetricsGrid() {
                 <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Health</span>
                 <p className={cn(
                   "font-bold text-sm",
-                  (dashboard.orchestrator.health_score ?? 0) >= 80 ? "text-emerald-400" :
-                  (dashboard.orchestrator.health_score ?? 0) >= 50 ? "text-amber-400" : "text-red-400"
+                  (dashboard.orchestrator.health_score ?? 0) >= 80 ? "text-neon-green" :
+                  (dashboard.orchestrator.health_score ?? 0) >= 50 ? "text-neon-amber" : "text-destructive"
                 )}>
                   {dashboard.orchestrator.health_score ?? 0}%
                 </p>
@@ -395,7 +395,7 @@ export function MetricsGrid() {
               </div>
               <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
                 <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Nightmares</span>
-                <p className="font-medium text-sm text-amber-400">{dashboard.dreamEater.nightmares_consumed_today ?? 0}</p>
+                <p className="font-medium text-sm text-neon-amber">{dashboard.dreamEater.nightmares_consumed_today ?? 0}</p>
               </div>
               <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
                 <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Mutation</span>
@@ -407,27 +407,27 @@ export function MetricsGrid() {
         
         {/* SEBA Status Panel — real proposal count */}
         <motion.div 
-          className="p-4 rounded-xl border bg-gradient-to-br from-indigo-500/10 via-muted/20 to-transparent backdrop-blur-xl border-indigo-500/20"
+          className="p-4 rounded-xl border bg-gradient-to-br from-primary/10 via-muted/20 to-transparent backdrop-blur-xl border-primary/20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.4 }}
         >
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-indigo-500/20 border-indigo-500/40">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center border bg-primary/20 border-primary/40">
+              <Sparkles className="w-4 h-4 text-primary" />
             </div>
-            <span className="text-xs font-mono uppercase tracking-widest text-indigo-400">SEBA • Bounded Autonomy</span>
+            <span className="text-xs font-mono uppercase tracking-widest text-primary">SEBA • Bounded Autonomy</span>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
               <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Mode</span>
-              <p className="font-medium text-sm text-indigo-400">Autonomous</p>
+              <p className="font-medium text-sm text-primary">Autonomous</p>
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
               <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">CLM</span>
               <div className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <p className="font-medium text-sm text-emerald-400">Active</p>
+                <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
+                <p className="font-medium text-sm text-neon-green">Active</p>
               </div>
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
@@ -436,7 +436,7 @@ export function MetricsGrid() {
             </div>
             <div className="p-3 rounded-lg bg-muted/30 border border-border/30">
               <span className="text-muted-foreground text-[9px] uppercase font-mono block mb-1">Governance</span>
-              <p className="font-medium text-sm text-emerald-400">Gated</p>
+              <p className="font-medium text-sm text-neon-green">Gated</p>
             </div>
           </div>
         </motion.div>

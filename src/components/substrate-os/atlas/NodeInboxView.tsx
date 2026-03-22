@@ -20,10 +20,10 @@ import {
 } from '@/lib/substrate/intent-mesh/intent-hub';
 
 const PRIORITY_COLORS: Record<string, string> = {
-  critical: 'bg-red-500/20 text-red-300 border-red-400/40',
-  high: 'bg-orange-500/20 text-orange-300 border-orange-400/40',
-  medium: 'bg-yellow-500/20 text-yellow-300 border-yellow-400/40',
-  low: 'bg-blue-500/20 text-blue-300 border-blue-400/40',
+  critical: 'bg-destructive/20 text-destructive border-destructive/40',
+  high: 'bg-neon-amber/20 text-neon-amber border-neon-amber/40',
+  medium: 'bg-neon-amber/20 text-neon-amber border-neon-amber/40',
+  low: 'bg-neon-blue/20 text-neon-blue border-neon-blue/40',
   info: 'bg-muted text-muted-foreground border-border',
 };
 
@@ -157,9 +157,9 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
       {/* Header Stats */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
         <div className="flex items-center gap-2">
-          <Inbox className="w-5 h-5 text-cyan-400" />
+          <Inbox className="w-5 h-5 text-neon-cyan" />
           <h3 className="font-bold text-sm">Node Inbox</h3>
-          <Badge className="text-[10px] bg-cyan-500/20 text-cyan-300 border-cyan-400/40">
+          <Badge className="text-[10px] bg-neon-cyan/20 text-neon-cyan border-neon-cyan/40">
             {stats.pendingCount} pending
           </Badge>
         </div>
@@ -175,15 +175,15 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
           <div className="text-[10px] text-muted-foreground">Total</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-yellow-400">{stats.pendingCount}</div>
+          <div className="text-lg font-bold text-neon-amber">{stats.pendingCount}</div>
           <div className="text-[10px] text-muted-foreground">Pending</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-emerald-400">{stats.approvedCount}</div>
+          <div className="text-lg font-bold text-neon-green">{stats.approvedCount}</div>
           <div className="text-[10px] text-muted-foreground">Approved</div>
         </div>
         <div className="text-center">
-          <div className="text-lg font-bold text-red-400">{stats.rejectedCount}</div>
+          <div className="text-lg font-bold text-destructive">{stats.rejectedCount}</div>
           <div className="text-[10px] text-muted-foreground">Rejected</div>
         </div>
       </div>
@@ -196,7 +196,7 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
             onClick={() => setFilter(f)}
             className={cn(
               'px-3 py-1 text-[11px] rounded-md font-medium transition-colors',
-              filter === f ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/40' : 'text-muted-foreground hover:text-foreground'
+              filter === f ? 'bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40' : 'text-muted-foreground hover:text-foreground'
             )}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -222,9 +222,9 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                 exit={{ opacity: 0, y: -10 }}
                 className={cn(
                   'rounded-xl border p-3 transition-colors cursor-pointer',
-                  msg.status === 'pending' ? 'border-cyan-500/30 bg-card/80' :
-                  msg.status === 'approved' ? 'border-emerald-500/20 bg-emerald-500/5' :
-                  msg.status === 'rejected' ? 'border-red-500/20 bg-red-500/5' : 'border-border/30 bg-card/50',
+                  msg.status === 'pending' ? 'border-neon-cyan/30 bg-card/80' :
+                  msg.status === 'approved' ? 'border-neon-green/20 bg-neon-green/5' :
+                  msg.status === 'rejected' ? 'border-destructive/20 bg-destructive/5' : 'border-border/30 bg-card/50',
                 )}
                 onClick={() => setExpandedId(expandedId === msg.id ? null : msg.id)}
               >
@@ -239,7 +239,7 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                       <span className="text-[10px] text-muted-foreground ml-auto">{formatAge(msg.createdAt)}</span>
                     </div>
                     <div className="text-sm font-medium text-foreground">{msg.title}</div>
-                    <div className="text-[11px] text-cyan-400 font-mono mt-0.5">from {msg.sourceNode} ({msg.sourceCodename})</div>
+                    <div className="text-[11px] text-neon-cyan font-mono mt-0.5">from {msg.sourceNode} ({msg.sourceCodename})</div>
                   </div>
                   {expandedId === msg.id ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
                 </div>
@@ -282,14 +282,14 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                           value={replyText[msg.id] || ''}
                           onChange={e => setReplyText(prev => ({ ...prev, [msg.id]: e.target.value }))}
                           placeholder="Add a note (optional)..."
-                          className="w-full px-3 py-2 text-sm rounded-lg bg-muted/50 border border-border/50 resize-none focus:outline-none focus:ring-1 focus:ring-cyan-400/50"
+                          className="w-full px-3 py-2 text-sm rounded-lg bg-muted/50 border border-border/50 resize-none focus:outline-none focus:ring-1 focus:ring-neon-cyan/50"
                           rows={2}
                           onClick={e => e.stopPropagation()}
                         />
                         <div className="flex gap-2">
                           <Button
                             size="sm"
-                            className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs flex-1"
+                            className="bg-neon-green hover:bg-neon-green text-white text-xs flex-1"
                             onClick={e => { e.stopPropagation(); handleApprove(msg.id); }}
                           >
                             <Check className="w-3.5 h-3.5 mr-1" /> Approve
@@ -307,8 +307,8 @@ export function NodeInboxView({ className }: NodeInboxViewProps) {
                     )}
                     {msg.status !== 'pending' && (
                       <Badge className={cn('text-[10px]',
-                        msg.status === 'approved' ? 'bg-emerald-500/20 text-emerald-300' :
-                        msg.status === 'rejected' ? 'bg-red-500/20 text-red-300' :
+                        msg.status === 'approved' ? 'bg-neon-green/20 text-neon-green' :
+                        msg.status === 'rejected' ? 'bg-destructive/20 text-destructive' :
                         'bg-muted text-muted-foreground'
                       )}>
                         {msg.status.toUpperCase()}

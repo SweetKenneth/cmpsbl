@@ -28,10 +28,10 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 
 const METHOD_COLORS: Record<string, string> = {
-  introspection: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
-  gap_response: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
-  affinity_bridge: 'text-fuchsia-400 bg-fuchsia-500/10 border-fuchsia-500/30',
-  intent_learning: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  introspection: 'text-neon-amber bg-neon-amber/10 border-neon-amber/30',
+  gap_response: 'text-neon-cyan bg-neon-cyan/10 border-neon-cyan/30',
+  affinity_bridge: 'text-neon-magenta bg-neon-magenta/10 border-neon-magenta/30',
+  intent_learning: 'text-neon-green bg-neon-green/10 border-neon-green/30',
 };
 
 const METHOD_ICONS: Record<string, React.ReactNode> = {
@@ -144,11 +144,11 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
   return (
     <div className="space-y-6">
       {/* Discovery Action */}
-      <Card className="border border-fuchsia-500/20 bg-fuchsia-500/5">
+      <Card className="border border-neon-magenta/20 bg-neon-magenta/5">
         <CardContent className="py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Sparkles className="w-5 h-5 text-fuchsia-400" />
+              <Sparkles className="w-5 h-5 text-neon-magenta" />
               <div>
                 <p className="text-sm font-medium">Module Self-Discovery</p>
                 <p className="text-xs text-muted-foreground">
@@ -169,7 +169,7 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
         <Card className="border border-border/30 bg-muted/10">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm flex items-center gap-2">
-              <Brain className="w-4 h-4 text-fuchsia-400" />
+              <Brain className="w-4 h-4 text-neon-magenta" />
               Module Discovery Scores
             </CardTitle>
           </CardHeader>
@@ -193,7 +193,7 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
       <Card className="border border-border/30 bg-muted/10">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <Lightbulb className="w-4 h-4 text-amber-400" />
+            <Lightbulb className="w-4 h-4 text-neon-amber" />
             Pending Proposals
             <Badge variant="secondary" className="text-[10px]">{proposals.length}</Badge>
             <Button variant="ghost" size="sm" className="ml-auto h-6 w-6 p-0" onClick={loadProposals} disabled={loading}>
@@ -216,7 +216,7 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      className="p-4 rounded-lg bg-muted/20 border border-border/20 hover:border-fuchsia-500/30 transition-colors space-y-3"
+                      className="p-4 rounded-lg bg-muted/20 border border-border/20 hover:border-neon-magenta/30 transition-colors space-y-3"
                     >
                       {/* Header */}
                       <div className="flex items-start justify-between gap-2">
@@ -235,12 +235,12 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
 
                       {/* Details */}
                       <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
-                        <span>Confidence: <strong className={proposal.confidenceScore >= 0.7 ? 'text-emerald-400' : proposal.confidenceScore >= 0.5 ? 'text-amber-400' : 'text-red-400'}>{(proposal.confidenceScore * 100).toFixed(0)}%</strong></span>
+                        <span>Confidence: <strong className={proposal.confidenceScore >= 0.7 ? 'text-neon-green' : proposal.confidenceScore >= 0.5 ? 'text-neon-amber' : 'text-destructive'}>{(proposal.confidenceScore * 100).toFixed(0)}%</strong></span>
                         <span>Domains: {proposal.domains.join(', ')}</span>
                       </div>
 
                       {/* Reasoning */}
-                      <p className="text-[11px] text-muted-foreground/80 italic border-l-2 border-fuchsia-500/30 pl-3">{proposal.reasoning}</p>
+                      <p className="text-[11px] text-muted-foreground/80 italic border-l-2 border-neon-magenta/30 pl-3">{proposal.reasoning}</p>
 
                       {/* Schema */}
                       <div className="flex items-center gap-4 text-[10px]">
@@ -263,7 +263,7 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-7 gap-1 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/10"
+                          className="h-7 gap-1 text-neon-green border-neon-green/30 hover:bg-neon-green/10"
                           onClick={() => handleApprove(proposal)}
                           disabled={processingId === proposal.id}
                         >
@@ -273,7 +273,7 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
                         <Button
                           size="sm"
                           variant="outline"
-                          className="h-7 gap-1 text-red-400 border-red-500/30 hover:bg-red-500/10"
+                          className="h-7 gap-1 text-destructive border-destructive/30 hover:bg-destructive/10"
                           onClick={() => handleReject(proposal)}
                           disabled={processingId === proposal.id}
                         >

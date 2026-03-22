@@ -545,7 +545,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
   if (!enabled) {
     return (
       <main className="container mx-auto px-4 py-6 max-w-7xl">
-        <div className="rounded-xl border border-dashed border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-12">
+        <div className="rounded-xl border border-dashed border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-12">
           <div className="text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
             <p className="text-lg text-muted-foreground">
@@ -698,7 +698,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                         <div className={cn(
                           "rounded-lg border transition-all",
                           "bg-white/5 border-white/10",
-                          expandedPlanId === plan.id && "border-fuchsia-500/30 bg-fuchsia-500/5"
+                          expandedPlanId === plan.id && "border-neon-magenta/30 bg-neon-magenta/5"
                         )}>
                           <CollapsibleTrigger asChild>
                             <div className="p-4 cursor-pointer hover:bg-white/5 transition-colors">
@@ -715,7 +715,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                       }}
                                     >
                                       {copiedId === plan.id ? (
-                                        <Check className="w-3 h-3 text-emerald-400" />
+                                        <Check className="w-3 h-3 text-neon-green" />
                                       ) : (
                                         <Copy className="w-3 h-3" />
                                       )}
@@ -767,7 +767,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                               {/* Terminal Command Hint */}
                               <div className="p-3 rounded-lg bg-black/40 border border-white/10">
                                 <p className="text-[10px] text-muted-foreground mb-1">Terminal command:</p>
-                                <code className="text-xs font-mono text-emerald-400">
+                                <code className="text-xs font-mono text-neon-green">
                                   evolution.apply {plan.id.slice(0, 8)}
                                 </code>
                               </div>
@@ -778,7 +778,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="gap-1.5 border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10"
+                                  className="gap-1.5 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/10"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     setDiffDialog({ open: true, planId: plan.id });
@@ -794,7 +794,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                   <Button
                                     size="sm"
                                     variant="outline"
-                                    className="gap-1.5 border-amber-500/30 text-amber-400 hover:bg-amber-500/10"
+                                    className="gap-1.5 border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setValidationDialog({ open: true, planId: plan.id });
@@ -811,7 +811,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                   <Button
                                     size="sm"
                                     variant="outline"
-                                    className="gap-1.5 border-fuchsia-500/30 text-fuchsia-400 hover:bg-fuchsia-500/10"
+                                    className="gap-1.5 border-neon-magenta/30 text-neon-magenta hover:bg-neon-magenta/10"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setTestDialog({ open: true, planId: plan.id });
@@ -828,7 +828,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                   <Button 
                                     size="sm" 
                                     variant="outline" 
-                                    className="gap-1.5 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                                    className="gap-1.5 border-neon-green/30 text-neon-green hover:bg-neon-green/10"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setApplyDialog({ open: true, planId: plan.id });
@@ -844,7 +844,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                   <Button 
                                     size="sm" 
                                     variant="outline" 
-                                    className="gap-1.5 border-red-500/30 text-red-400 hover:bg-red-500/10"
+                                    className="gap-1.5 border-destructive/30 text-destructive hover:bg-destructive/10"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       setRollbackDialog({ open: true, planId: plan.id, backupId: plan.backup_id });
@@ -860,7 +860,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                   <Button 
                                     size="sm" 
                                     variant="ghost" 
-                                    className="gap-1.5 text-muted-foreground hover:text-red-400 hover:bg-red-500/10"
+                                    className="gap-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       deleteMutation.mutate({ planId: plan.id });
@@ -893,7 +893,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <FlaskConical className="w-4 h-4 text-amber-400" />
+                <FlaskConical className="w-4 h-4 text-neon-amber" />
                 Validation & Testing Workflow
               </CardTitle>
             </CardHeader>
@@ -905,8 +905,8 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               <div className="grid sm:grid-cols-3 gap-4">
                 <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                      <span className="text-sm font-bold text-cyan-400">1</span>
+                    <div className="w-8 h-8 rounded-full bg-neon-cyan/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-neon-cyan">1</span>
                     </div>
                     <p className="font-medium text-sm">Validate</p>
                   </div>
@@ -917,8 +917,8 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 
                 <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-fuchsia-500/20 flex items-center justify-center">
-                      <span className="text-sm font-bold text-fuchsia-400">2</span>
+                    <div className="w-8 h-8 rounded-full bg-neon-magenta/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-neon-magenta">2</span>
                     </div>
                     <p className="font-medium text-sm">Test Shadow</p>
                   </div>
@@ -929,8 +929,8 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 
                 <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                      <span className="text-sm font-bold text-emerald-400">3</span>
+                    <div className="w-8 h-8 rounded-full bg-neon-green/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-neon-green">3</span>
                     </div>
                     <p className="font-medium text-sm">Apply</p>
                   </div>
@@ -985,7 +985,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="h-7 px-2 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10"
+                            className="h-7 px-2 text-neon-green hover:text-neon-green hover:bg-neon-green/10"
                             onClick={() => setPromoteDialog({ open: true, planId: plan.id })}
                             title="Promote to Production (governed pipeline)"
                           >
@@ -1006,7 +1006,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Rocket className="w-4 h-4 text-emerald-400" />
+                <Rocket className="w-4 h-4 text-neon-green" />
                 Deployment Status
               </CardTitle>
             </CardHeader>
@@ -1016,10 +1016,10 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 <div className="space-y-3">
                   <p className="text-xs font-medium text-foreground">Applied Upgrades:</p>
                   {plans.filter(p => p.status === 'applied').map(plan => (
-                    <div key={plan.id} className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+                    <div key={plan.id} className="p-4 rounded-lg bg-neon-green/10 border border-neon-green/30">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-emerald-400" />
+                          <CheckCircle className="w-4 h-4 text-neon-green" />
                           <Button
                             variant="ghost"
                             size="sm"
@@ -1030,7 +1030,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                             {plan.id.slice(0, 12)}...
                           </Button>
                         </div>
-                        <Badge variant="outline" className="border-emerald-500/50 text-emerald-400 bg-emerald-500/10">
+                        <Badge variant="outline" className="border-neon-green/50 text-neon-green bg-neon-green/10">
                           LIVE
                         </Badge>
                       </div>
@@ -1045,7 +1045,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="gap-1.5 border-cyan-500/30 text-cyan-400"
+                          className="gap-1.5 border-neon-cyan/30 text-neon-cyan"
                           onClick={() => {
                             setDiffDialog({ open: true, planId: plan.id });
                             diffViewMutation.mutate(plan.id);
@@ -1058,7 +1058,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                           <Button
                             size="sm"
                             variant="outline"
-                            className="gap-1.5 border-red-500/30 text-red-400"
+                            className="gap-1.5 border-destructive/30 text-destructive"
                             onClick={() => setRollbackDialog({ open: true, planId: plan.id, backupId: plan.backup_id })}
                           >
                             <RotateCcw className="w-3 h-3" />
@@ -1088,9 +1088,9 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                     <CollapsibleContent>
                       <div className="mt-3 space-y-2">
                         {plans.filter(p => p.status === 'rolled_back').map(plan => (
-                          <div key={plan.id} className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-xs">
+                          <div key={plan.id} className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-xs">
                             <div className="flex items-center gap-2">
-                              <RotateCcw className="w-3 h-3 text-red-400" />
+                              <RotateCcw className="w-3 h-3 text-destructive" />
                               <span className="font-mono">{plan.id.slice(0, 12)}...</span>
                               <span className="text-muted-foreground">
                                 {new Date(plan.created_at).toLocaleDateString()}
@@ -1119,17 +1119,17 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                             key={plan.id} 
                             className={cn(
                               "p-3 rounded-lg border text-xs flex items-center justify-between",
-                              plan.status === 'applied' && "bg-emerald-500/10 border-emerald-500/20",
-                              plan.status === 'proposed' && "bg-amber-500/10 border-amber-500/20",
-                              plan.status === 'rolled_back' && "bg-red-500/10 border-red-500/20",
+                              plan.status === 'applied' && "bg-neon-green/10 border-neon-green/20",
+                              plan.status === 'proposed' && "bg-neon-amber/10 border-neon-amber/20",
+                              plan.status === 'rolled_back' && "bg-destructive/10 border-destructive/20",
                               plan.status === 'rejected' && "bg-gray-500/10 border-gray-500/20",
                               plan.status === 'deleted' && "bg-gray-500/10 border-gray-500/20",
                             )}
                           >
                             <div className="flex items-center gap-2">
-                              {plan.status === 'applied' && <CheckCircle className="w-3 h-3 text-emerald-400" />}
-                              {plan.status === 'proposed' && <Clock className="w-3 h-3 text-amber-400" />}
-                              {plan.status === 'rolled_back' && <RotateCcw className="w-3 h-3 text-red-400" />}
+                              {plan.status === 'applied' && <CheckCircle className="w-3 h-3 text-neon-green" />}
+                              {plan.status === 'proposed' && <Clock className="w-3 h-3 text-neon-amber" />}
+                              {plan.status === 'rolled_back' && <RotateCcw className="w-3 h-3 text-destructive" />}
                               {plan.status === 'rejected' && <XCircle className="w-3 h-3 text-gray-400" />}
                               <span className="font-mono">{plan.id.slice(0, 8)}</span>
                               <Badge variant="outline" className="text-[8px] h-4">{plan.scope}</Badge>
@@ -1152,10 +1152,10 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <TabsContent value="generate" className="space-y-4">
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Quick Scan */}
-            <Card className="border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <Card className="border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <RefreshCw className="w-4 h-4 text-fuchsia-400" />
+                  <RefreshCw className="w-4 h-4 text-neon-magenta" />
                   Quick Scan
                 </CardTitle>
               </CardHeader>
@@ -1163,7 +1163,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 <Button
                   onClick={() => scanMutation.mutate()}
                   disabled={scanMutation.isPending}
-                  className="w-full bg-gradient-to-r from-fuchsia-500/20 to-cyan-500/20 border border-fuchsia-500/40 hover:from-fuchsia-500/30 hover:to-cyan-500/30 transition-all"
+                  className="w-full bg-gradient-to-r from-neon-magenta/20 to-neon-cyan/20 border border-neon-magenta/40 hover:from-neon-magenta/30 hover:to-neon-cyan/30 transition-all"
                 >
                   {scanMutation.isPending ? (
                     <>
@@ -1183,9 +1183,9 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                     {scanMutation.data.proposals.slice(0, 3).map((proposal, idx) => (
                       <div key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-white/5 text-xs">
                         {proposal.priority === 'critical' ? (
-                          <AlertTriangle className="w-3 h-3 text-red-400 shrink-0 mt-0.5" />
+                          <AlertTriangle className="w-3 h-3 text-destructive shrink-0 mt-0.5" />
                         ) : (
-                          <Zap className="w-3 h-3 text-cyan-400 shrink-0 mt-0.5" />
+                          <Zap className="w-3 h-3 text-neon-cyan shrink-0 mt-0.5" />
                         )}
                         <span className="text-muted-foreground">{proposal.description}</span>
                       </div>
@@ -1194,19 +1194,19 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 )}
                 
                 {scanMutation.data && scanMutation.data.proposals?.length === 0 && (
-                  <div className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                    <CheckCircle className="w-4 h-4 text-emerald-400" />
-                    <span className="text-xs text-emerald-400">All systems healthy</span>
+                  <div className="mt-3 flex items-center gap-2 p-3 rounded-lg bg-neon-green/10 border border-neon-green/20">
+                    <CheckCircle className="w-4 h-4 text-neon-green" />
+                    <span className="text-xs text-neon-green">All systems healthy</span>
                   </div>
                 )}
               </CardContent>
             </Card>
 
             {/* Generate Proposal */}
-            <Card className="border border-cyan-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Play className="w-4 h-4 text-cyan-400" />
+                  <Play className="w-4 h-4 text-neon-cyan" />
                   Generate Proposal
                 </CardTitle>
               </CardHeader>
@@ -1234,7 +1234,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 <Button 
                   onClick={() => proposeMutation.mutate({ scope: selectedScope, notes })}
                   disabled={proposeMutation.isPending}
-                  className="w-full bg-gradient-to-r from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 hover:from-cyan-500/30 hover:to-fuchsia-500/30"
+                  className="w-full bg-gradient-to-r from-neon-cyan/20 to-neon-magenta/20 border border-neon-cyan/40 hover:from-neon-cyan/30 hover:to-neon-magenta/30"
                 >
                   {proposeMutation.isPending ? (
                     <>
@@ -1249,10 +1249,10 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   )}
                 </Button>
                 {proposeMutation.isSuccess && proposeMutation.data?.plan && (
-                  <div className="mt-3 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="mt-3 p-3 rounded-lg bg-neon-green/10 border border-neon-green/20">
                     <div className="flex items-center gap-2 mb-1">
-                      <CheckCircle className="w-4 h-4 text-emerald-400" />
-                      <span className="text-xs font-medium text-emerald-400">Proposal Created</span>
+                      <CheckCircle className="w-4 h-4 text-neon-green" />
+                      <span className="text-xs font-medium text-neon-green">Proposal Created</span>
                     </div>
                     <p className="text-[10px] text-muted-foreground">
                       {proposeMutation.data.plan.diff_summaries?.length || 0} changes suggested
@@ -1263,35 +1263,35 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             </Card>
 
             {/* Safety Info Card */}
-            <Card className="lg:col-span-2 border border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-transparent backdrop-blur-xl">
+            <Card className="lg:col-span-2 border border-neon-green/20 bg-gradient-to-br from-neon-green/5 to-transparent backdrop-blur-xl">
               <CardContent className="p-4">
                 <div className="flex items-start gap-3">
-                  <Shield className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                  <Shield className="w-5 h-5 text-neon-green shrink-0 mt-0.5" />
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-foreground">Safety Features Active</p>
                     <div className="grid sm:grid-cols-2 gap-2 text-[10px] text-muted-foreground">
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                         <span>Pre-upgrade backup required</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                         <span>95% health threshold gate</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                         <span>Auto-rollback on degradation</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                         <span>Human approval required</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                         <span>3 upgrades/day rate limit</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                        <CheckCircle className="w-3 h-3 text-neon-green" />
                         <span>Shadow mode by default</span>
                       </div>
                     </div>
@@ -1307,7 +1307,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   <CardHeader className="pb-3 cursor-pointer hover:bg-white/5 transition-colors">
                     <CardTitle className="text-sm font-medium flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Archive className="w-4 h-4 text-amber-400" />
+                        <Archive className="w-4 h-4 text-neon-amber" />
                         Archived Functions for Repurposing
                       </div>
                       <ChevronDown className={cn(
@@ -1339,7 +1339,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                 className={cn(
                                   "text-[9px] h-4",
                                   opp.value === 'high' 
-                                    ? "border-emerald-500/50 text-emerald-400"
+                                    ? "border-neon-green/50 text-neon-green"
                                     : "border-white/20"
                                 )}
                               >
@@ -1372,7 +1372,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <FlaskConical className="w-5 h-5 text-amber-400" />
+              <FlaskConical className="w-5 h-5 text-neon-amber" />
               Validation Results
             </DialogTitle>
             <DialogDescription>
@@ -1382,7 +1382,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           
           {validateMutation.isPending ? (
             <div className="py-8 text-center">
-              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-amber-400" />
+              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-neon-amber" />
               <p className="text-sm text-muted-foreground">Running validation checks...</p>
             </div>
           ) : validateMutation.data ? (
@@ -1430,7 +1430,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                       setPromoteDialog({ open: true, planId: validationDialog.planId });
                     }
                   }}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  className="w-full bg-neon-green hover:bg-emerald-700"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Promote to Production
@@ -1448,7 +1448,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Activity className="w-5 h-5 text-fuchsia-400" />
+              <Activity className="w-5 h-5 text-neon-magenta" />
               Shadow Test Results
             </DialogTitle>
             <DialogDescription>
@@ -1458,7 +1458,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           
           {testShadowMutation.isPending ? (
             <div className="py-8 text-center">
-              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-fuchsia-400" />
+              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-neon-magenta" />
               <p className="text-sm text-muted-foreground">Running shadow tests...</p>
             </div>
           ) : testShadowMutation.data ? (
@@ -1466,11 +1466,11 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               {/* Summary */}
               <div className="grid grid-cols-3 gap-3">
                 <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
-                  <p className="text-lg font-bold text-emerald-400">{testShadowMutation.data.summary.passed}</p>
+                  <p className="text-lg font-bold text-neon-green">{testShadowMutation.data.summary.passed}</p>
                   <p className="text-[10px] text-muted-foreground">Passed</p>
                 </div>
                 <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
-                  <p className="text-lg font-bold text-red-400">{testShadowMutation.data.summary.failed}</p>
+                  <p className="text-lg font-bold text-destructive">{testShadowMutation.data.summary.failed}</p>
                   <p className="text-[10px] text-muted-foreground">Failed</p>
                 </div>
                 <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
@@ -1486,9 +1486,9 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                     <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-white/5">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         {result.status === 'pass' ? (
-                          <CheckCircle className="w-3 h-3 text-emerald-400 shrink-0" />
+                          <CheckCircle className="w-3 h-3 text-neon-green shrink-0" />
                         ) : (
-                          <XCircle className="w-3 h-3 text-red-400 shrink-0" />
+                          <XCircle className="w-3 h-3 text-destructive shrink-0" />
                         )}
                         <span className="text-xs font-mono">{result.module}</span>
                         <span className="text-[10px] text-muted-foreground">• {result.test}</span>
@@ -1498,7 +1498,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         {result.error && (
-                          <span className="text-[9px] text-red-400 truncate max-w-[80px]">{result.error}</span>
+                          <span className="text-[9px] text-destructive truncate max-w-[80px]">{result.error}</span>
                         )}
                         {result.latency_ms && (
                           <span className="text-[10px] text-muted-foreground">{result.latency_ms}ms</span>
@@ -1517,7 +1517,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                       setPromoteDialog({ open: true, planId: testDialog.planId });
                     }
                   }}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  className="w-full bg-neon-green hover:bg-emerald-700"
                 >
                   <Rocket className="w-4 h-4 mr-2" />
                   Promote to Production
@@ -1535,7 +1535,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <GitCompare className="w-5 h-5 text-cyan-400" />
+              <GitCompare className="w-5 h-5 text-neon-cyan" />
               Diff View
             </DialogTitle>
             <DialogDescription>
@@ -1545,7 +1545,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           
           {diffViewMutation.isPending ? (
             <div className="py-8 text-center">
-              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-cyan-400" />
+              <Loader2 className="w-8 h-8 mx-auto mb-3 animate-spin text-neon-cyan" />
               <p className="text-sm text-muted-foreground">Loading diff...</p>
             </div>
           ) : diffViewMutation.data?.diff ? (
@@ -1563,7 +1563,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                     <p className="text-[10px] text-muted-foreground">Current</p>
                   </div>
                   <div>
-                    <p className="text-lg font-bold text-emerald-400">{diffViewMutation.data.diff.health_comparison.after_estimate}</p>
+                    <p className="text-lg font-bold text-neon-green">{diffViewMutation.data.diff.health_comparison.after_estimate}</p>
                     <p className="text-[10px] text-muted-foreground">After</p>
                   </div>
                 </div>
@@ -1575,9 +1575,9 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   <p className="text-xs font-medium mb-2 text-foreground">Proposed Changes</p>
                   <div className="space-y-2">
                     {diffViewMutation.data.diff.proposed_changes.map((change, idx) => (
-                      <div key={idx} className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                      <div key={idx} className="p-3 rounded-lg bg-neon-green/10 border border-neon-green/20">
                         <div className="flex items-center gap-2 mb-1">
-                          <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400">
+                          <Badge variant="outline" className="text-[9px] border-neon-green/30 text-neon-green">
                             + {change.module}
                           </Badge>
                           <Badge variant="outline" className="text-[9px]">{change.change_type}</Badge>
@@ -1595,8 +1595,8 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   <p className="text-xs font-medium mb-2 text-foreground">Patches</p>
                   <div className="space-y-2">
                     {diffViewMutation.data.diff.suggested_patches.map((patch, idx) => (
-                      <div key={idx} className="p-3 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
-                        <p className="text-xs font-mono text-cyan-400 mb-1">{patch.target}</p>
+                      <div key={idx} className="p-3 rounded-lg bg-neon-cyan/10 border border-neon-cyan/20">
+                        <p className="text-xs font-mono text-neon-cyan mb-1">{patch.target}</p>
                         <p className="text-[10px] text-muted-foreground">{patch.rationale}</p>
                       </div>
                     ))}
@@ -1656,7 +1656,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             <Button
               disabled={confirmValue !== 'CONFIRM' || applyMutation.isPending || !applyDialog.planId}
               onClick={() => applyDialog.planId && applyMutation.mutate(applyDialog.planId)}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-neon-green hover:bg-emerald-700"
             >
               {applyMutation.isPending ? (
                 <>
@@ -1743,7 +1743,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Rocket className="w-5 h-5 text-emerald-400" />
+              <Rocket className="w-5 h-5 text-neon-green" />
               Promote Shadow → Production
             </DialogTitle>
             <DialogDescription>
@@ -1756,20 +1756,20 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             {/* Pipeline Steps */}
             <div className="space-y-2">
               <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="w-6 h-6 rounded-full bg-cyan-500/20 flex items-center justify-center">
-                  <span className="text-xs font-bold text-cyan-400">1</span>
+                <div className="w-6 h-6 rounded-full bg-neon-cyan/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-neon-cyan">1</span>
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-medium">Validation Gate</p>
                   <p className="text-[10px] text-muted-foreground">Health, backup, and module checks</p>
                 </div>
                 {promoteMutation.isPending && (
-                  <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                  <Loader2 className="w-4 h-4 animate-spin text-neon-cyan" />
                 )}
               </div>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="w-6 h-6 rounded-full bg-fuchsia-500/20 flex items-center justify-center">
-                  <span className="text-xs font-bold text-fuchsia-400">2</span>
+                <div className="w-6 h-6 rounded-full bg-neon-magenta/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-neon-magenta">2</span>
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-medium">Shadow Test Gate</p>
@@ -1777,8 +1777,8 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
-                <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                  <span className="text-xs font-bold text-emerald-400">3</span>
+                <div className="w-6 h-6 rounded-full bg-neon-green/20 flex items-center justify-center">
+                  <span className="text-xs font-bold text-neon-green">3</span>
                 </div>
                 <div className="flex-1">
                   <p className="text-xs font-medium">Production Apply</p>
@@ -1788,10 +1788,10 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             </div>
 
             {/* Safety Notice */}
-            <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+            <div className="p-3 rounded-lg bg-neon-amber/10 border border-neon-amber/30">
               <div className="flex items-start gap-2">
-                <Shield className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-[10px] text-amber-400/90">
+                <Shield className="w-4 h-4 text-neon-amber shrink-0 mt-0.5" />
+                <p className="text-[10px] text-neon-amber/90">
                   Promotion will be blocked if any gate fails. A backup snapshot is taken before applying, 
                   enabling instant rollback if degradation is detected.
                 </p>
@@ -1823,7 +1823,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             <Button
               disabled={confirmValue !== 'PROMOTE' || promoteMutation.isPending || !promoteDialog.planId}
               onClick={() => promoteDialog.planId && promoteMutation.mutate(promoteDialog.planId)}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-neon-green hover:bg-emerald-700"
             >
               {promoteMutation.isPending ? (
                 <>

@@ -37,8 +37,8 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
   return (
     <div className="space-y-5 sm:space-y-6">
       <div className="flex items-center gap-3">
-         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-amber-500/15 to-red-500/10 border border-amber-500/25 flex items-center justify-center shrink-0">
-          <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" />
+         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-neon-amber/15 to-destructive/10 border border-neon-amber/25 flex items-center justify-center shrink-0">
+          <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-neon-amber dark:text-neon-amber" />
         </div>
         <div className="min-w-0">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Stream Security</h2>
@@ -49,20 +49,20 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="overflow-x-auto -mx-3 px-3 sm:-mx-4 sm:px-4 md:mx-0 md:px-0 scrollbar-none">
           <TabsList className="bg-muted/15 border border-border/15 gap-0.5 w-max min-w-full sm:w-auto">
-            <TabsTrigger value="defense" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="defense" className="data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber dark:data-[state=active]:text-neon-amber text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Shield className="w-3.5 h-3.5 hidden sm:block" /> Defense
             </TabsTrigger>
-            <TabsTrigger value="immunity" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="immunity" className="data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber dark:data-[state=active]:text-neon-amber text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Network className="w-3.5 h-3.5 hidden sm:block" /> Immunity
             </TabsTrigger>
-            <TabsTrigger value="audit" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="audit" className="data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber dark:data-[state=active]:text-neon-amber text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <FileText className="w-3.5 h-3.5 hidden sm:block" /> Audit
             </TabsTrigger>
-            <TabsTrigger value="patches" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+            <TabsTrigger value="patches" className="data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber dark:data-[state=active]:text-neon-amber text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
               <Shield className="w-3.5 h-3.5 hidden sm:block" /> Patches
             </TabsTrigger>
             {isGovernor && (
-              <TabsTrigger value="backups" className="data-[state=active]:bg-amber-500/10 data-[state=active]:text-amber-600 dark:data-[state=active]:text-amber-400 text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
+              <TabsTrigger value="backups" className="data-[state=active]:bg-neon-amber/10 data-[state=active]:text-neon-amber dark:data-[state=active]:text-neon-amber text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3">
                 <HardDrive className="w-3.5 h-3.5 hidden sm:block" /> Backups
               </TabsTrigger>
             )}
@@ -101,10 +101,10 @@ export default function SecurityPanel({ isGovernor, isOperator }: SecurityPanelP
         {isGovernor && (
           <TabsContent value="backups" className="mt-4 space-y-4">
             {/* Full System Backup — disaster recovery ZIP */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg border border-blue-500/20 bg-blue-500/5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3 sm:p-4 rounded-lg border border-neon-blue/20 bg-neon-blue/5">
               <div className="min-w-0">
                 <h3 className="text-sm font-semibold flex items-center gap-2">
-                  <Download className="w-4 h-4 text-blue-400 shrink-0" />
+                  <Download className="w-4 h-4 text-neon-blue shrink-0" />
                   Full System Backup
                 </h3>
                 <p className="text-[11px] text-muted-foreground mt-0.5">

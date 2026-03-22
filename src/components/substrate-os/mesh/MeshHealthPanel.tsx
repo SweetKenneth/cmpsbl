@@ -24,15 +24,15 @@ import {
 } from '@/lib/substrate/intent-mesh/mesh-health-monitor';
 
 const SEVERITY_CONFIG = {
-  critical: { color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', icon: ShieldAlert },
-  warning: { color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30', icon: AlertTriangle },
-  info: { color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', icon: Activity },
+  critical: { color: 'text-destructive', bg: 'bg-destructive/10', border: 'border-destructive/30', icon: ShieldAlert },
+  warning: { color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30', icon: AlertTriangle },
+  info: { color: 'text-neon-blue', bg: 'bg-neon-blue/10', border: 'border-neon-blue/30', icon: Activity },
 };
 
 const HEALTH_COLORS = {
-  healthy: { color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
-  degraded: { color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/30' },
-  critical: { color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30' },
+  healthy: { color: 'text-neon-green', bg: 'bg-neon-green/10', border: 'border-neon-green/30' },
+  degraded: { color: 'text-neon-amber', bg: 'bg-neon-amber/10', border: 'border-neon-amber/30' },
+  critical: { color: 'text-destructive', bg: 'bg-destructive/10', border: 'border-destructive/30' },
 };
 
 export function MeshHealthPanel() {
@@ -95,10 +95,10 @@ export function MeshHealthPanel() {
           </div>
           {health && (
             <div className="grid grid-cols-4 gap-3 mt-4">
-              <MiniStat label="Success Rate" value={`${(health.successRate * 100).toFixed(0)}%`} icon={<CheckCircle className="w-3 h-3 text-emerald-400" />} />
-              <MiniStat label="Avg Latency" value={`${health.avgLatencyMs}ms`} icon={<Clock className="w-3 h-3 text-cyan-400" />} />
-              <MiniStat label="Resolvers" value={health.activeResolvers} icon={<Wifi className="w-3 h-3 text-blue-400" />} />
-              <MiniStat label="Drift Alerts" value={health.driftCount} icon={<TrendingDown className="w-3 h-3 text-amber-400" />} />
+              <MiniStat label="Success Rate" value={`${(health.successRate * 100).toFixed(0)}%`} icon={<CheckCircle className="w-3 h-3 text-neon-green" />} />
+              <MiniStat label="Avg Latency" value={`${health.avgLatencyMs}ms`} icon={<Clock className="w-3 h-3 text-neon-cyan" />} />
+              <MiniStat label="Resolvers" value={health.activeResolvers} icon={<Wifi className="w-3 h-3 text-neon-blue" />} />
+              <MiniStat label="Drift Alerts" value={health.driftCount} icon={<TrendingDown className="w-3 h-3 text-neon-amber" />} />
             </div>
           )}
           {health && <Progress value={health.score} className="mt-3 h-1.5" />}
@@ -109,7 +109,7 @@ export function MeshHealthPanel() {
       <Card className="border border-border/30 bg-muted/10">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-400" />
+            <AlertTriangle className="w-4 h-4 text-neon-amber" />
             Active Alerts
             {health && health.alerts.length > 0 && (
               <Badge variant="destructive" className="text-[10px] h-4">{health.alerts.length}</Badge>
@@ -121,7 +121,7 @@ export function MeshHealthPanel() {
             <AnimatePresence>
               {(!health || health.alerts.length === 0) ? (
                 <div className="flex items-center gap-2 py-6 justify-center text-xs text-muted-foreground">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle className="w-4 h-4 text-neon-green" />
                   No active alerts — mesh is healthy
                 </div>
               ) : (

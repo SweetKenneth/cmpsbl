@@ -45,11 +45,11 @@ export function DiffViewer({ diff, mode = 'split', onModeChange }: DiffViewerPro
           <span className="text-sm font-medium">
             {files.length} file{files.length !== 1 ? 's' : ''} changed
           </span>
-          <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30">
+          <Badge variant="outline" className="bg-neon-green/10 text-neon-green border-neon-green/30">
             <Plus className="h-3 w-3 mr-1" />
             {totalAdditions}
           </Badge>
-          <Badge variant="outline" className="bg-red-500/10 text-red-400 border-red-500/30">
+          <Badge variant="outline" className="bg-destructive/10 text-destructive border-destructive/30">
             <Minus className="h-3 w-3 mr-1" />
             {totalDeletions}
           </Badge>
@@ -72,9 +72,9 @@ export function DiffViewer({ diff, mode = 'split', onModeChange }: DiffViewerPro
               <Badge 
                 variant="outline" 
                 className={
-                  file.status === 'added' ? 'bg-emerald-500/10 text-emerald-400' :
-                  file.status === 'deleted' ? 'bg-red-500/10 text-red-400' :
-                  'bg-amber-500/10 text-amber-400'
+                  file.status === 'added' ? 'bg-neon-green/10 text-neon-green' :
+                  file.status === 'deleted' ? 'bg-destructive/10 text-destructive' :
+                  'bg-neon-amber/10 text-neon-amber'
                 }
               >
                 {file.status}
@@ -121,14 +121,14 @@ function SplitView({ lines }: { lines: DiffLine[] }) {
           <div 
             key={i} 
             className={`flex ${
-              line?.type === 'remove' ? 'bg-red-500/10' : ''
+              line?.type === 'remove' ? 'bg-destructive/10' : ''
             }`}
           >
             <span className="w-10 px-2 text-right text-muted-foreground border-r border-border/30 select-none">
               {line?.oldLineNum || ''}
             </span>
             <pre className="flex-1 px-2 py-0.5 overflow-x-auto whitespace-pre">
-              {line?.type === 'remove' && <span className="text-red-400">- </span>}
+              {line?.type === 'remove' && <span className="text-destructive">- </span>}
               {line?.content || ''}
             </pre>
           </div>
@@ -140,14 +140,14 @@ function SplitView({ lines }: { lines: DiffLine[] }) {
           <div 
             key={i} 
             className={`flex ${
-              line?.type === 'add' ? 'bg-emerald-500/10' : ''
+              line?.type === 'add' ? 'bg-neon-green/10' : ''
             }`}
           >
             <span className="w-10 px-2 text-right text-muted-foreground border-r border-border/30 select-none">
               {line?.newLineNum || ''}
             </span>
             <pre className="flex-1 px-2 py-0.5 overflow-x-auto whitespace-pre">
-              {line?.type === 'add' && <span className="text-emerald-400">+ </span>}
+              {line?.type === 'add' && <span className="text-neon-green">+ </span>}
               {line?.content || ''}
             </pre>
           </div>
@@ -164,8 +164,8 @@ function UnifiedView({ lines }: { lines: DiffLine[] }) {
         <div 
           key={i} 
           className={`flex ${
-            line.type === 'add' ? 'bg-emerald-500/10' :
-            line.type === 'remove' ? 'bg-red-500/10' : ''
+            line.type === 'add' ? 'bg-neon-green/10' :
+            line.type === 'remove' ? 'bg-destructive/10' : ''
           }`}
         >
           <span className="w-10 px-2 text-right text-muted-foreground border-r border-border/30 select-none">
@@ -175,8 +175,8 @@ function UnifiedView({ lines }: { lines: DiffLine[] }) {
             {line.newLineNum || ''}
           </span>
           <pre className="flex-1 px-2 py-0.5 overflow-x-auto whitespace-pre">
-            {line.type === 'add' && <span className="text-emerald-400">+ </span>}
-            {line.type === 'remove' && <span className="text-red-400">- </span>}
+            {line.type === 'add' && <span className="text-neon-green">+ </span>}
+            {line.type === 'remove' && <span className="text-destructive">- </span>}
             {line.type === 'context' && <span className="text-muted-foreground">  </span>}
             {line.content}
           </pre>

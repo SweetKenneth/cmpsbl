@@ -17,9 +17,9 @@ export function SlotCapacityMeter({ activeCount, capacity, className }: SlotCapa
   const ratio = capacity > 0 ? activeCount / capacity : 0;
   const percentage = Math.min(100, ratio * 100);
   
-  const colorClass = ratio >= 1 ? 'text-red-400' : ratio >= 0.8 ? 'text-amber-400' : 'text-emerald-400';
-  const barColor = ratio >= 1 ? 'bg-red-500' : ratio >= 0.8 ? 'bg-amber-500' : 'bg-emerald-500';
-  const glowColor = ratio >= 1 ? 'shadow-red-500/20' : ratio >= 0.8 ? 'shadow-amber-500/20' : 'shadow-emerald-500/20';
+  const colorClass = ratio >= 1 ? 'text-destructive' : ratio >= 0.8 ? 'text-neon-amber' : 'text-neon-green';
+  const barColor = ratio >= 1 ? 'bg-destructive' : ratio >= 0.8 ? 'bg-neon-amber' : 'bg-neon-green';
+  const glowColor = ratio >= 1 ? 'shadow-destructive/20' : ratio >= 0.8 ? 'shadow-neon-amber/20' : 'shadow-neon-green/20';
 
   return (
     <div className={cn('space-y-2', className)}>
@@ -61,7 +61,7 @@ export function SlotCapacityMeter({ activeCount, capacity, className }: SlotCapa
       </div>
 
       {ratio >= 1 && (
-        <p className="text-[10px] text-red-400/80 font-mono text-center">
+        <p className="text-[10px] text-destructive/80 font-mono text-center">
           ALL SLOTS CRYSTALLIZED — Upgrade for more capacity
         </p>
       )}

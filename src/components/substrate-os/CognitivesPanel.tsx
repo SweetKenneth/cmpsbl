@@ -182,10 +182,10 @@ export function CognitivesPanel() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-6">
+      <div className="rounded-xl border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-6">
         <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
-            <Bot className="w-4 h-4 text-fuchsia-400" />
+          <div className="w-8 h-8 rounded-lg bg-neon-magenta/20 border border-neon-magenta/40 flex items-center justify-center">
+            <Bot className="w-4 h-4 text-neon-magenta" />
           </div>
           <span className="text-sm font-medium">Cognitives</span>
         </div>
@@ -200,19 +200,19 @@ export function CognitivesPanel() {
 
   return (
     <>
-      <div className="rounded-xl border border-fuchsia-500/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl overflow-hidden">
+      <div className="rounded-xl border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl overflow-hidden">
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-fuchsia-500/20 border border-fuchsia-500/40 flex items-center justify-center">
-                <Bot className="w-4 h-4 text-fuchsia-400" />
+              <div className="w-9 h-9 rounded-lg bg-neon-magenta/20 border border-neon-magenta/40 flex items-center justify-center">
+                <Bot className="w-4 h-4 text-neon-magenta" />
               </div>
               <div>
                 <h3 className="text-sm font-medium text-foreground">Cognitive Registry</h3>
                 <p className="text-[10px] text-muted-foreground font-mono">operator console</p>
               </div>
             </div>
-            <Badge variant="outline" className="text-[10px] border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10">
+            <Badge variant="outline" className="text-[10px] border-neon-magenta/40 text-neon-magenta bg-neon-magenta/10">
               {cognitives?.length || 0} minted
             </Badge>
           </div>
@@ -222,7 +222,7 @@ export function CognitivesPanel() {
             <div className="text-center py-12">
               <div className="relative w-16 h-16 mx-auto mb-4">
                 <Bot className="w-16 h-16 text-muted-foreground/30" />
-                <div className="absolute inset-0 bg-fuchsia-500/20 rounded-full blur-xl" />
+                <div className="absolute inset-0 bg-neon-magenta/20 rounded-full blur-xl" />
               </div>
               <p className="text-sm text-muted-foreground">No cognitives minted yet</p>
               <p className="text-xs text-muted-foreground/70 mt-1">
@@ -239,28 +239,28 @@ export function CognitivesPanel() {
                   const StatusIcon = statusConfig.icon;
                   
                   const colorBorderMap: Record<string, string> = {
-                    cyan: 'border-cyan-500/20 hover:border-cyan-500/40',
-                    emerald: 'border-emerald-500/20 hover:border-emerald-500/40',
-                    violet: 'border-violet-500/20 hover:border-violet-500/40',
-                    amber: 'border-amber-500/20 hover:border-amber-500/40',
-                    rose: 'border-rose-500/20 hover:border-rose-500/40',
-                    fuchsia: 'border-fuchsia-500/20 hover:border-fuchsia-500/40',
+                    cyan: 'border-neon-cyan/20 hover:border-neon-cyan/40',
+                    emerald: 'border-neon-green/20 hover:border-neon-green/40',
+                    violet: 'border-neon-purple/20 hover:border-neon-purple/40',
+                    amber: 'border-neon-amber/20 hover:border-neon-amber/40',
+                    rose: 'border-neon-magenta/20 hover:border-neon-magenta/40',
+                    fuchsia: 'border-neon-magenta/20 hover:border-neon-magenta/40',
                   };
                   const colorIconBgMap: Record<string, string> = {
-                    cyan: 'bg-cyan-500/20 border-cyan-500/40',
-                    emerald: 'bg-emerald-500/20 border-emerald-500/40',
-                    violet: 'bg-violet-500/20 border-violet-500/40',
-                    amber: 'bg-amber-500/20 border-amber-500/40',
-                    rose: 'bg-rose-500/20 border-rose-500/40',
-                    fuchsia: 'bg-fuchsia-500/20 border-fuchsia-500/40',
+                    cyan: 'bg-neon-cyan/20 border-neon-cyan/40',
+                    emerald: 'bg-neon-green/20 border-neon-green/40',
+                    violet: 'bg-neon-purple/20 border-neon-purple/40',
+                    amber: 'bg-neon-amber/20 border-neon-amber/40',
+                    rose: 'bg-neon-magenta/20 border-neon-magenta/40',
+                    fuchsia: 'bg-neon-magenta/20 border-neon-magenta/40',
                   };
                   const colorTextMap: Record<string, string> = {
-                    cyan: 'text-cyan-400',
-                    emerald: 'text-emerald-400',
-                    violet: 'text-violet-400',
-                    amber: 'text-amber-400',
-                    rose: 'text-rose-400',
-                    fuchsia: 'text-fuchsia-400',
+                    cyan: 'text-neon-cyan',
+                    emerald: 'text-neon-green',
+                    violet: 'text-neon-purple',
+                    amber: 'text-neon-amber',
+                    rose: 'text-neon-magenta',
+                    fuchsia: 'text-neon-magenta',
                   };
                   
                   return (
@@ -306,13 +306,13 @@ export function CognitivesPanel() {
                           
                           <div className="flex items-center gap-3 mt-2 text-[10px]">
                             {cognitive.dream_enabled && (
-                              <span className="flex items-center gap-1 text-fuchsia-400">
+                              <span className="flex items-center gap-1 text-neon-magenta">
                                 <Brain className="w-3 h-3" />
                                 Dream
                               </span>
                             )}
                             {cognitive.graph_enabled && (
-                              <span className="flex items-center gap-1 text-cyan-400">
+                              <span className="flex items-center gap-1 text-neon-cyan">
                                 <Activity className="w-3 h-3" />
                                 Graph
                               </span>
@@ -369,7 +369,7 @@ export function CognitivesPanel() {
                                 setSelectedCognitive(cognitive);
                                 setConfirmAction('deprecate');
                               }}
-                              className="text-amber-400"
+                              className="text-neon-amber"
                             >
                               <AlertTriangle className="w-4 h-4 mr-2" />
                               Deprecate

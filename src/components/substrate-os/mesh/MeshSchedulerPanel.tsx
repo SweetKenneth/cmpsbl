@@ -74,42 +74,42 @@ export function MeshSchedulerPanel() {
   const cycles = [
     {
       label: 'Module Discovery',
-      icon: <Sparkles className="w-4 h-4 text-fuchsia-400" />,
+      icon: <Sparkles className="w-4 h-4 text-neon-magenta" />,
       interval: state.config.moduleDiscoveryIntervalMs,
       lastRun: state.lastModuleDiscovery,
-      color: 'border-fuchsia-500/20',
+      color: 'border-neon-magenta/20',
     },
     {
       label: 'Gap Analysis',
-      icon: <Search className="w-4 h-4 text-cyan-400" />,
+      icon: <Search className="w-4 h-4 text-neon-cyan" />,
       interval: state.config.gapAnalysisIntervalMs,
       lastRun: state.lastGapAnalysis,
-      color: 'border-cyan-500/20',
+      color: 'border-neon-cyan/20',
     },
     {
       label: 'Intent Scoring',
-      icon: <BarChart3 className="w-4 h-4 text-amber-400" />,
+      icon: <BarChart3 className="w-4 h-4 text-neon-amber" />,
       interval: state.config.intentScoringIntervalMs,
       lastRun: state.lastIntentScoring,
-      color: 'border-amber-500/20',
+      color: 'border-neon-amber/20',
     },
     {
       label: 'Full Expansion',
-      icon: <Expand className="w-4 h-4 text-emerald-400" />,
+      icon: <Expand className="w-4 h-4 text-neon-green" />,
       interval: state.config.fullExpansionIntervalMs,
       lastRun: state.lastFullExpansion,
-      color: 'border-emerald-500/20',
+      color: 'border-neon-green/20',
     },
   ];
 
   return (
     <div className="space-y-6">
       {/* Scheduler Controls */}
-      <Card className="border border-violet-500/20 bg-violet-500/5">
+      <Card className="border border-neon-purple/20 bg-neon-purple/5">
         <CardContent className="py-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <Timer className="w-5 h-5 text-violet-400 shrink-0" />
+              <Timer className="w-5 h-5 text-neon-purple shrink-0" />
               <div className="min-w-0">
                 <p className="text-sm font-medium truncate">Auto-Expansion Scheduler</p>
                 <p className="text-xs text-muted-foreground truncate">
@@ -130,7 +130,7 @@ export function MeshSchedulerPanel() {
               </Button>
               <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/30 border border-border/30">
                 {state.isRunning ? (
-                  <Square className="w-4 h-4 text-emerald-400" />
+                  <Square className="w-4 h-4 text-neon-green" />
                 ) : (
                   <Play className="w-4 h-4 text-muted-foreground" />
                 )}
@@ -169,7 +169,7 @@ export function MeshSchedulerPanel() {
       <Card className="border border-border/30 bg-muted/10">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-violet-400" />
+            <BarChart3 className="w-4 h-4 text-neon-purple" />
             Lifetime Stats
           </CardTitle>
         </CardHeader>

@@ -26,32 +26,32 @@ interface SubstrateVoiceOptions {
 const VOICE_CONFIGS: Record<VoiceType, { icon: string; gradient: string; sound: SoundType }> = {
   info: {
     icon: '◉',
-    gradient: 'from-cyan-500 to-blue-600',
+    gradient: 'from-neon-cyan to-neon-blue',
     sound: 'notification',
   },
   success: {
     icon: '◈',
-    gradient: 'from-emerald-500 to-green-600',
+    gradient: 'from-neon-green to-neon-green',
     sound: 'task_complete',
   },
   warning: {
     icon: '◇',
-    gradient: 'from-amber-500 to-orange-600',
+    gradient: 'from-neon-amber to-orange-600',
     sound: 'notification',
   },
   error: {
     icon: '◆',
-    gradient: 'from-red-500 to-rose-600',
+    gradient: 'from-destructive to-neon-magenta',
     sound: 'task_error',
   },
   system: {
     icon: '⬡',
-    gradient: 'from-fuchsia-500 to-purple-600',
+    gradient: 'from-neon-magenta to-neon-purple',
     sound: 'level_up',
   },
   cortex: {
     icon: '⬢',
-    gradient: 'from-violet-500 to-indigo-600',
+    gradient: 'from-neon-purple to-primary',
     sound: 'achievement',
   },
 };

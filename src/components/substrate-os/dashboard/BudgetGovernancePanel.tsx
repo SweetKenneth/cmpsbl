@@ -65,8 +65,8 @@ export function BudgetGovernancePanel({ className }: { className?: string }) {
       {/* Header */}
       <div className="px-5 pt-5 pb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/15 flex items-center justify-center">
-            <DollarSign className="w-3.5 h-3.5 text-amber-400" />
+          <div className="w-7 h-7 rounded-lg bg-neon-amber/10 border border-neon-amber/15 flex items-center justify-center">
+            <DollarSign className="w-3.5 h-3.5 text-neon-amber" />
           </div>
           <div>
             <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider block">Stream Budget Governance</span>
@@ -117,9 +117,9 @@ export function BudgetGovernancePanel({ className }: { className?: string }) {
               {status.alerts.map((alert, i) => (
                 <div key={i} className={cn(
                   'flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-mono',
-                  alert.type === 'exceeded' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                  alert.type === 'critical' ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' :
-                  'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                  alert.type === 'exceeded' ? 'bg-destructive/10 text-destructive border border-destructive/20' :
+                  alert.type === 'critical' ? 'bg-neon-amber/10 text-neon-amber border border-neon-amber/20' :
+                  'bg-neon-amber/10 text-neon-amber border border-neon-amber/20'
                 )}>
                   <AlertTriangle className="w-3 h-3 shrink-0" />
                   {alert.message}
@@ -177,8 +177,8 @@ export function BudgetGovernancePanel({ className }: { className?: string }) {
 }
 
 function BudgetMeter({ label, spent, limit, percent }: { label: string; spent: number; limit: number; percent: number }) {
-  const color = percent >= 100 ? 'text-red-400' : percent >= 80 ? 'text-amber-400' : 'text-emerald-400';
-  const barColor = percent >= 100 ? 'bg-red-500' : percent >= 80 ? 'bg-amber-500' : 'bg-emerald-500';
+  const color = percent >= 100 ? 'text-destructive' : percent >= 80 ? 'text-neon-amber' : 'text-neon-green';
+  const barColor = percent >= 100 ? 'bg-destructive' : percent >= 80 ? 'bg-neon-amber' : 'bg-neon-green';
 
   return (
     <div className="space-y-1">

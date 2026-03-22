@@ -41,13 +41,13 @@ export interface ModuleControlCardProps {
 }
 
 const layerBadges: Record<string, { label: string; color: string }> = {
-  kernel: { label: 'KERNEL', color: 'border-orange-500/50 text-orange-400 bg-orange-500/10' },
-  cognitive: { label: 'COGNITIVE', color: 'border-purple-500/50 text-purple-400 bg-purple-500/10' },
-  operational: { label: 'OPERATIONAL', color: 'border-blue-500/50 text-blue-400 bg-blue-500/10' },
-  admin: { label: 'ADMIN', color: 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10' },
-  orchestrator: { label: 'ORCHESTRATOR', color: 'border-fuchsia-500/50 text-fuchsia-400 bg-fuchsia-500/10' },
-  infrastructure: { label: 'INFRA', color: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10' },
-  infra: { label: 'INFRA', color: 'border-cyan-500/50 text-cyan-400 bg-cyan-500/10' },
+  kernel: { label: 'KERNEL', color: 'border-neon-amber/50 text-neon-amber bg-neon-amber/10' },
+  cognitive: { label: 'COGNITIVE', color: 'border-neon-purple/50 text-neon-purple bg-neon-purple/10' },
+  operational: { label: 'OPERATIONAL', color: 'border-neon-blue/50 text-neon-blue bg-neon-blue/10' },
+  admin: { label: 'ADMIN', color: 'border-neon-green/50 text-neon-green bg-neon-green/10' },
+  orchestrator: { label: 'ORCHESTRATOR', color: 'border-neon-magenta/50 text-neon-magenta bg-neon-magenta/10' },
+  infrastructure: { label: 'INFRA', color: 'border-neon-cyan/50 text-neon-cyan bg-neon-cyan/10' },
+  infra: { label: 'INFRA', color: 'border-neon-cyan/50 text-neon-cyan bg-neon-cyan/10' },
 };
 
 export function ModuleControlCard({
@@ -156,14 +156,14 @@ export function ModuleControlCard({
               <motion.span 
                 className={cn(
                   "w-2.5 h-2.5 rounded-full",
-                  isActive ? "bg-emerald-500" : "bg-red-500"
+                  isActive ? "bg-neon-green" : "bg-destructive"
                 )}
                 animate={isActive ? { scale: [1, 1.2, 1] } : {}}
                 transition={{ duration: 2, repeat: Infinity }}
               />
               {isActive && (
                 <motion.span 
-                  className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-emerald-400"
+                  className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-neon-green"
                   animate={{ scale: [1, 2], opacity: [0.5, 0] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
                 />
@@ -211,10 +211,10 @@ export function ModuleControlCard({
                   disabled={action.disabled || isPending || isLoading}
                   className={cn(
                     "h-8 text-xs gap-1.5 flex-1 transition-all",
-                    action.variant === 'primary' && "border-cyan-500/40 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-500/60",
-                    action.variant === 'success' && "border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10 hover:border-emerald-500/60",
-                    action.variant === 'warning' && "border-amber-500/40 text-amber-400 hover:bg-amber-500/10 hover:border-amber-500/60",
-                    isSuccess && "border-emerald-500/60 bg-emerald-500/10"
+                    action.variant === 'primary' && "border-neon-cyan/40 text-neon-cyan hover:bg-neon-cyan/10 hover:border-neon-cyan/60",
+                    action.variant === 'success' && "border-neon-green/40 text-neon-green hover:bg-neon-green/10 hover:border-neon-green/60",
+                    action.variant === 'warning' && "border-neon-amber/40 text-neon-amber hover:bg-neon-amber/10 hover:border-neon-amber/60",
+                    isSuccess && "border-neon-green/60 bg-neon-green/10"
                   )}
                 >
                   {isPending ? (
@@ -225,7 +225,7 @@ export function ModuleControlCard({
                       animate={{ scale: 1 }}
                       transition={{ type: "spring" }}
                     >
-                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                      <CheckCircle2 className="w-3 h-3 text-neon-green" />
                     </motion.div>
                   ) : (
                     <ActionIcon className="w-3 h-3" />

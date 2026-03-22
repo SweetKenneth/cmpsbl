@@ -542,7 +542,7 @@ export function EncodeSystemsConsole() {
         <div className="ml-auto flex items-center gap-2">
           <Badge variant="outline" className={cn(
             "text-[9px] font-mono",
-            orchestration.isLocked ? "border-destructive/30 text-destructive" : "border-green-500/30 text-green-500"
+            orchestration.isLocked ? "border-destructive/30 text-destructive" : "border-neon-green/30 text-neon-green"
           )}>
             {orchestration.isLocked ? 'LOCKED' : 'READY'}
           </Badge>
@@ -550,7 +550,7 @@ export function EncodeSystemsConsole() {
             {orchestration.mode.toUpperCase()}
           </Badge>
           {encode.queue.length > 0 && (
-            <Badge variant="outline" className="text-[9px] font-mono border-amber-500/30 text-amber-500">
+            <Badge variant="outline" className="text-[9px] font-mono border-neon-amber/30 text-neon-amber">
               {encode.queue.length} QUEUED
             </Badge>
           )}

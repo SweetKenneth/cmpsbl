@@ -126,10 +126,10 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
 
   const statusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle2 className="w-3 h-3 text-emerald-400" />;
-      case 'failed': case 'dead': return <XCircle className="w-3 h-3 text-red-400" />;
-      case 'processing': return <RefreshCw className="w-3 h-3 text-cyan-400 animate-spin" />;
-      default: return <Clock className="w-3 h-3 text-amber-400" />;
+      case 'completed': return <CheckCircle2 className="w-3 h-3 text-neon-green" />;
+      case 'failed': case 'dead': return <XCircle className="w-3 h-3 text-destructive" />;
+      case 'processing': return <RefreshCw className="w-3 h-3 text-neon-cyan animate-spin" />;
+      default: return <Clock className="w-3 h-3 text-neon-amber" />;
     }
   };
 
@@ -145,8 +145,8 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center">
-            <Radio className="w-5 h-5 text-cyan-400" />
+          <div className="w-10 h-10 rounded-xl bg-neon-cyan/20 border border-neon-cyan/40 flex items-center justify-center">
+            <Radio className="w-5 h-5 text-neon-cyan" />
           </div>
           <div>
             <h2 className="text-lg font-semibold">RIPPLE Message Bus</h2>
@@ -157,10 +157,10 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
         </div>
         
         <div className="flex gap-2">
-          <Badge variant="outline" className="text-[10px] border-amber-500/40 text-amber-400 bg-amber-500/10">
+          <Badge variant="outline" className="text-[10px] border-neon-amber/40 text-neon-amber bg-neon-amber/10">
             {queueStats.pending} pending
           </Badge>
-          <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
+          <Badge variant="outline" className="text-[10px] border-neon-cyan/40 text-neon-cyan bg-neon-cyan/10">
             {queueStats.processing} active
           </Badge>
         </div>
@@ -168,10 +168,10 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Queue View */}
-        <Card className="lg:col-span-2 border-cyan-500/20 bg-white/5 backdrop-blur-xl">
+        <Card className="lg:col-span-2 border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Inbox className="w-4 h-4 text-cyan-400" />
+              <Inbox className="w-4 h-4 text-neon-cyan" />
               Job Queue
             </CardTitle>
           </CardHeader>
@@ -208,10 +208,10 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
 
         {/* Topics & Publish */}
         <div className="space-y-4">
-          <Card className="border-cyan-500/20 bg-white/5 backdrop-blur-xl">
+          <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Bell className="w-4 h-4 text-cyan-400" />
+                <Bell className="w-4 h-4 text-neon-cyan" />
                 Topics ({topics?.length || 0})
               </CardTitle>
             </CardHeader>
@@ -220,7 +220,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
                 <div className="space-y-1">
                   {topics?.map((t) => (
                     <div key={t.id} className="flex items-center gap-2 p-2 rounded bg-white/5 text-xs">
-                      <Radio className="w-3 h-3 text-cyan-400" />
+                      <Radio className="w-3 h-3 text-neon-cyan" />
                       <span className="font-mono">{t.name}</span>
                     </div>
                   ))}
@@ -249,10 +249,10 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
           </Card>
 
           {enabled && (
-            <Card className="border-cyan-500/20 bg-white/5 backdrop-blur-xl">
+            <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Send className="w-4 h-4 text-cyan-400" />
+                  <Send className="w-4 h-4 text-neon-cyan" />
                   Publish Event
                 </CardTitle>
               </CardHeader>
@@ -284,7 +284,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
       </div>
 
       {/* Recent Events */}
-      <Card className="border-cyan-500/20 bg-white/5 backdrop-blur-xl">
+      <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-medium">Recent Events</CardTitle>
         </CardHeader>
@@ -293,7 +293,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
             <div className="space-y-2">
               {events?.map((e) => (
                 <div key={e.id} className="flex items-center gap-3 p-2 rounded-lg bg-white/5 text-xs">
-                  <Radio className="w-3 h-3 text-cyan-400 shrink-0" />
+                  <Radio className="w-3 h-3 text-neon-cyan shrink-0" />
                   <span className="font-mono text-muted-foreground">{e.topic}</span>
                   <span className="text-foreground">{e.event_type}</span>
                   <span className="ml-auto text-[10px] text-muted-foreground/70">

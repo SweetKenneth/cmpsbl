@@ -32,24 +32,24 @@ import type { MetaEngineDefinition, MetaEngineExecutionResult } from '@/lib/subs
 
 // Category icons and colors
 const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; color: string; bgColor: string }> = {
-  cognitive: { icon: Brain, color: 'text-purple-400', bgColor: 'bg-purple-500/20 border-purple-500/40' },
-  operational: { icon: Cpu, color: 'text-blue-400', bgColor: 'bg-blue-500/20 border-blue-500/40' },
-  intelligence: { icon: Sparkles, color: 'text-cyan-400', bgColor: 'bg-cyan-500/20 border-cyan-500/40' },
-  governance: { icon: Shield, color: 'text-amber-400', bgColor: 'bg-amber-500/20 border-amber-500/40' },
-  security: { icon: Shield, color: 'text-red-400', bgColor: 'bg-red-500/20 border-red-500/40' },
-  evolution: { icon: RefreshCw, color: 'text-fuchsia-400', bgColor: 'bg-fuchsia-500/20 border-fuchsia-500/40' },
-  communication: { icon: Activity, color: 'text-emerald-400', bgColor: 'bg-emerald-500/20 border-emerald-500/40' },
-  integration: { icon: Workflow, color: 'text-orange-400', bgColor: 'bg-orange-500/20 border-orange-500/40' },
-  analytics: { icon: BarChart3, color: 'text-indigo-400', bgColor: 'bg-indigo-500/20 border-indigo-500/40' },
-  experience: { icon: Eye, color: 'text-teal-400', bgColor: 'bg-teal-500/20 border-teal-500/40' },
-  knowledge: { icon: Brain, color: 'text-violet-400', bgColor: 'bg-violet-500/20 border-violet-500/40' },
-  autonomy: { icon: Zap, color: 'text-yellow-400', bgColor: 'bg-yellow-500/20 border-yellow-500/40' },
-  creativity: { icon: Sparkles, color: 'text-pink-400', bgColor: 'bg-pink-500/20 border-pink-500/40' },
+  cognitive: { icon: Brain, color: 'text-neon-purple', bgColor: 'bg-neon-purple/20 border-neon-purple/40' },
+  operational: { icon: Cpu, color: 'text-neon-blue', bgColor: 'bg-neon-blue/20 border-neon-blue/40' },
+  intelligence: { icon: Sparkles, color: 'text-neon-cyan', bgColor: 'bg-neon-cyan/20 border-neon-cyan/40' },
+  governance: { icon: Shield, color: 'text-neon-amber', bgColor: 'bg-neon-amber/20 border-neon-amber/40' },
+  security: { icon: Shield, color: 'text-destructive', bgColor: 'bg-destructive/20 border-destructive/40' },
+  evolution: { icon: RefreshCw, color: 'text-neon-magenta', bgColor: 'bg-neon-magenta/20 border-neon-magenta/40' },
+  communication: { icon: Activity, color: 'text-neon-green', bgColor: 'bg-neon-green/20 border-neon-green/40' },
+  integration: { icon: Workflow, color: 'text-neon-amber', bgColor: 'bg-neon-amber/20 border-neon-amber/40' },
+  analytics: { icon: BarChart3, color: 'text-primary', bgColor: 'bg-primary/20 border-primary/40' },
+  experience: { icon: Eye, color: 'text-neon-cyan', bgColor: 'bg-neon-cyan/20 border-neon-cyan/40' },
+  knowledge: { icon: Brain, color: 'text-neon-purple', bgColor: 'bg-neon-purple/20 border-neon-purple/40' },
+  autonomy: { icon: Zap, color: 'text-neon-amber', bgColor: 'bg-neon-amber/20 border-neon-amber/40' },
+  creativity: { icon: Sparkles, color: 'text-neon-magenta', bgColor: 'bg-neon-magenta/20 border-neon-magenta/40' },
   perception: { icon: Eye, color: 'text-sky-400', bgColor: 'bg-sky-500/20 border-sky-500/40' },
   resource: { icon: BarChart3, color: 'text-lime-400', bgColor: 'bg-lime-500/20 border-lime-500/40' },
-  workflow: { icon: Workflow, color: 'text-rose-400', bgColor: 'bg-rose-500/20 border-rose-500/40' },
-  enhancement: { icon: Zap, color: 'text-emerald-400', bgColor: 'bg-emerald-500/20 border-emerald-500/40' },
-  orchestration: { icon: Layers, color: 'text-cyan-400', bgColor: 'bg-cyan-500/20 border-cyan-500/40' },
+  workflow: { icon: Workflow, color: 'text-neon-magenta', bgColor: 'bg-neon-magenta/20 border-neon-magenta/40' },
+  enhancement: { icon: Zap, color: 'text-neon-green', bgColor: 'bg-neon-green/20 border-neon-green/40' },
+  orchestration: { icon: Layers, color: 'text-neon-cyan', bgColor: 'bg-neon-cyan/20 border-neon-cyan/40' },
 };
 
 // Engine Card Component
@@ -244,15 +244,15 @@ function ExecutionResultCard({
       className={cn(
         "rounded-xl border p-4",
         isSuccess 
-          ? "bg-emerald-500/10 border-emerald-500/30" 
-          : "bg-red-500/10 border-red-500/30"
+          ? "bg-neon-green/10 border-neon-green/30" 
+          : "bg-destructive/10 border-destructive/30"
       )}
     >
       <div className="flex items-center gap-3 mb-3">
         {isSuccess ? (
-          <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+          <CheckCircle2 className="w-5 h-5 text-neon-green" />
         ) : (
-          <AlertCircle className="w-5 h-5 text-red-400" />
+          <AlertCircle className="w-5 h-5 text-destructive" />
         )}
         <div>
           <p className="text-sm font-semibold text-foreground">
@@ -302,8 +302,8 @@ function ExecutionResultCard({
       </div>
       
       {result.error && (
-        <div className="mt-3 p-2 rounded-lg bg-red-500/10 border border-red-500/20">
-          <p className="text-xs text-red-400 font-mono">{result.error}</p>
+        <div className="mt-3 p-2 rounded-lg bg-destructive/10 border border-destructive/20">
+          <p className="text-xs text-destructive font-mono">{result.error}</p>
         </div>
       )}
     </motion.div>
@@ -418,8 +418,8 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-fuchsia-500/20 border border-cyan-500/40 flex items-center justify-center flex-shrink-0">
-            <Layers className="w-5 h-5 text-cyan-400" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-neon-cyan/20 to-neon-magenta/20 border border-neon-cyan/40 flex items-center justify-center flex-shrink-0">
+            <Layers className="w-5 h-5 text-neon-cyan" />
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Cognitive Engines</h2>
@@ -429,10 +429,10 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           </div>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
-          <Badge variant="outline" className="text-[10px] border-cyan-500/40 text-cyan-400 bg-cyan-500/10">
+          <Badge variant="outline" className="text-[10px] border-neon-cyan/40 text-neon-cyan bg-neon-cyan/10">
             {engineSummary.totalCapabilitiesOrchestrated} capabilities
           </Badge>
-          <Badge variant="outline" className="text-[10px] border-fuchsia-500/40 text-fuchsia-400 bg-fuchsia-500/10">
+          <Badge variant="outline" className="text-[10px] border-neon-magenta/40 text-neon-magenta bg-neon-magenta/10">
             {metaSummary.averageCompoundSynergy.toFixed(1)}x avg synergy
           </Badge>
         </div>
@@ -445,7 +445,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           className={cn(
             "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
             activeSubTab === 'engines'
-              ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-sm"
+              ? "bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40 shadow-sm"
               : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
           )}
         >
@@ -457,7 +457,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           className={cn(
             "px-4 py-2.5 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
             activeSubTab === 'meta'
-              ? "bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/40 shadow-sm"
+              ? "bg-neon-magenta/20 text-neon-magenta border border-neon-magenta/40 shadow-sm"
               : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
           )}
         >
@@ -553,7 +553,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           <Card className="border border-border/50 bg-muted/10 backdrop-blur-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Zap className="w-4 h-4 text-amber-400" />
+                <Zap className="w-4 h-4 text-neon-amber" />
                 Execution Input
               </CardTitle>
             </CardHeader>
@@ -574,7 +574,7 @@ export function EnginesTab({ enabled = true }: { enabled?: boolean }) {
           <Card className="border border-border/50 bg-muted/10 backdrop-blur-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Clock className="w-4 h-4 text-cyan-400" />
+                <Clock className="w-4 h-4 text-neon-cyan" />
                 Recent Executions
               </CardTitle>
             </CardHeader>

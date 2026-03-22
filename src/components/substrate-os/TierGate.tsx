@@ -28,9 +28,9 @@ const TIER_LABELS: Record<SubstrateRole, string> = {
 
 const TIER_COLORS: Record<SubstrateRole, string> = {
   free: 'text-muted-foreground',
-  studio: 'text-violet-400',
-  creator: 'text-blue-400',
-  architect: 'text-amber-400',
+  studio: 'text-neon-purple',
+  creator: 'text-neon-blue',
+  architect: 'text-neon-amber',
   governor: 'text-primary',
 };
 
@@ -90,7 +90,7 @@ export function TierGate({ requiredTier, currentTier, children, tabLabel, descri
             </div>
             <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground/40" />
             <div className="flex items-center gap-1.5">
-              <div className={cn("w-2 h-2 rounded-full", requiredTier === 'creator' ? 'bg-blue-400' : requiredTier === 'studio' ? 'bg-violet-400' : 'bg-amber-400')} />
+              <div className={cn("w-2 h-2 rounded-full", requiredTier === 'creator' ? 'bg-neon-blue' : requiredTier === 'studio' ? 'bg-neon-purple' : 'bg-neon-amber')} />
               <span className={cn("font-medium", TIER_COLORS[requiredTier])}>{TIER_LABELS[requiredTier]}</span>
             </div>
           </div>

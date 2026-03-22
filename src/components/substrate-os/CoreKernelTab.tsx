@@ -93,20 +93,20 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
   const statusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle2 className="w-3 h-3 text-emerald-400" />;
-      case 'failed': return <XCircle className="w-3 h-3 text-red-400" />;
-      case 'running': return <RefreshCw className="w-3 h-3 text-cyan-400 animate-spin" />;
-      case 'queued': return <Clock className="w-3 h-3 text-amber-400" />;
+      case 'completed': return <CheckCircle2 className="w-3 h-3 text-neon-green" />;
+      case 'failed': return <XCircle className="w-3 h-3 text-destructive" />;
+      case 'running': return <RefreshCw className="w-3 h-3 text-neon-cyan animate-spin" />;
+      case 'queued': return <Clock className="w-3 h-3 text-neon-amber" />;
       default: return <AlertTriangle className="w-3 h-3 text-muted-foreground" />;
     }
   };
 
   const stateColor = (s: string) => {
     switch (s) {
-      case 'running': return 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10';
-      case 'degraded': return 'text-amber-400 border-amber-500/40 bg-amber-500/10';
-      case 'maintenance': return 'text-blue-400 border-blue-500/40 bg-blue-500/10';
-      case 'shutdown': return 'text-red-400 border-red-500/40 bg-red-500/10';
+      case 'running': return 'text-neon-green border-neon-green/40 bg-neon-green/10';
+      case 'degraded': return 'text-neon-amber border-neon-amber/40 bg-neon-amber/10';
+      case 'maintenance': return 'text-neon-blue border-neon-blue/40 bg-neon-blue/10';
+      case 'shutdown': return 'text-destructive border-destructive/40 bg-destructive/10';
       default: return 'text-muted-foreground border-white/20';
     }
   };
@@ -116,8 +116,8 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center">
-            <Cpu className="w-5 h-5 text-orange-400" />
+          <div className="w-10 h-10 rounded-xl bg-neon-amber/20 border border-neon-amber/40 flex items-center justify-center">
+            <Cpu className="w-5 h-5 text-neon-amber" />
           </div>
           <div>
             <h2 className="text-lg font-semibold">CORE Kernel</h2>
@@ -136,10 +136,10 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Job Queue */}
-        <Card className="lg:col-span-2 border-orange-500/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/30">
+        <Card className="lg:col-span-2 border-neon-amber/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-neon-amber/30">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Clock className="w-4 h-4 text-orange-400" />
+              <Clock className="w-4 h-4 text-neon-amber" />
               Job Queue
               <Badge variant="secondary" className="ml-auto text-[10px]">
                 {jobs?.filter(j => j.status === 'queued').length || 0} pending
@@ -159,7 +159,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
                       className={cn(
                         "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-300",
                         "bg-white/5 hover:bg-white/10 border border-transparent hover:border-primary/15",
-                        selectedJob?.id === job.id && "border-orange-500/40 bg-orange-500/10"
+                        selectedJob?.id === job.id && "border-neon-amber/40 bg-neon-amber/10"
                       )}
                     >
                       {statusIcon(job.status)}
@@ -190,10 +190,10 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
         {/* System State + Quick Actions */}
         <div className="space-y-4">
-          <Card className="border-orange-500/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-orange-500/30">
+          <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-neon-amber/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Cpu className="w-4 h-4 text-orange-400" />
+                <Cpu className="w-4 h-4 text-neon-amber" />
                 System State
               </CardTitle>
             </CardHeader>
@@ -216,7 +216,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
           </Card>
 
           {enabled && (
-            <Card className="border-orange-500/20 bg-white/5 backdrop-blur-xl">
+            <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium">Quick Schedule</CardTitle>
               </CardHeader>
