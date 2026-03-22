@@ -213,8 +213,8 @@ async function purgeStaleBrainEvents(): Promise<number> {
   let totalPurged = 0;
 
   // Phase 1: High-volume telemetry events — 3-day retention
-  const telemetryCutoff = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
-  const highVolumeTypes = ['deep_think', 'technical_learning_cycle', 'module_learning_insight', 'brain_status_check', 'clm_server_cycle'];
+  const telemetryCutoff = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString();
+  const highVolumeTypes = ['deep_think', 'technical_learning_cycle', 'module_learning_insight', 'brain_status_check', 'clm_server_cycle', 'memory_gc_cycle', 'auto_tiering_enforced'];
 
   for (let batch = 0; batch < 20; batch++) {
     try {
