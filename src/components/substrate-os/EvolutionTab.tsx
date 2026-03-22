@@ -241,7 +241,7 @@ export function EvolutionTab() {
               <Skeleton className="h-12 w-full" />
             ) : (
               <div className="text-center">
-                <p className="text-3xl font-bold text-amber-400">{status?.health_threshold || 90}%</p>
+                <p className="text-3xl font-bold text-neon-amber">{status?.health_threshold || 90}%</p>
                 <p className="text-xs text-muted-foreground">Health Threshold</p>
               </div>
             )}
