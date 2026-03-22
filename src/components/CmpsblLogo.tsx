@@ -24,9 +24,10 @@ const sizeConfig = {
 
 export function CmpsblLogo({ className, iconOnly = false, size = "md", priority = false }: CmpsblLogoProps) {
   const { className: sizeClass, width, height } = sizeConfig[size];
+  const logoSrc = size === "sm" || size === "md" ? cmpsblLogoSm : cmpsblLogo;
   return (
     <img
-      src={cmpsblLogo}
+      src={logoSrc}
       alt="CMPSBL"
       width={width}
       height={height}
