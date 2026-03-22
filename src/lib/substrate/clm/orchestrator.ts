@@ -502,6 +502,17 @@ Be concise, precise, and focused on practical utility. This learning will be sto
       /* Quota exceeded — non-critical */
     }
   }
+
+  private _persistTimer: ReturnType<typeof setTimeout> | null = null;
+
+  private debouncedPersist(): void {
+    if (!this._persistTimer) {
+      this._persistTimer = setTimeout(() => {
+        this._persistTimer = null;
+        this.persistState();
+      }, 1500);
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
