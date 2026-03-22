@@ -306,7 +306,7 @@ export function SiteAnalyticsSection() {
                 className={cn(
                   "px-3 py-1.5 rounded-md text-xs font-medium transition-all",
                   dateRange === key
-                    ? "bg-green-500/20 text-green-400 border border-green-500/40"
+                    ? "bg-neon-green/20 text-neon-green border border-neon-green/40"
                     : "text-muted-foreground hover:text-foreground"
                 )}
               >
