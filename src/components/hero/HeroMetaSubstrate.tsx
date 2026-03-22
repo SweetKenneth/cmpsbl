@@ -223,21 +223,9 @@ export function HeroMetaSubstrate() {
             </FadeIn>
             
             {/* CMPSBL wordmark */}
-            <h1 
-              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] font-black tracking-[-0.06em] leading-[0.85] mb-4 sm:mb-5"
-            >
-              <span 
-                className="inline-block clockless-river-text"
-                style={{
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                  padding: "0 0.1em 0.05em 0",
-                }}
-              >
-                CMPSBL
-              </span>
-            </h1>
+            <CmpsblWordmark 
+              className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] mb-4 sm:mb-5"
+            />
 
             {/* Tagline */}
             <FadeIn delay={0.2} className="mb-6 sm:mb-8">
