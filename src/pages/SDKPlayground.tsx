@@ -212,7 +212,7 @@ export default function SDKPlayground() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navigation />
+      <PublicNav />
 
       <main className="container max-w-7xl mx-auto px-4 pt-24 pb-16">
         {/* Header */}
