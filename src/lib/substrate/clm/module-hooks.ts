@@ -541,28 +541,25 @@ export async function runModuleLearningCycle(): Promise<{
  * Get KPIs for all modules
  */
 export async function getAllModuleKPIs(): Promise<ModuleKPIs[]> {
-  const results: ModuleKPIs[] = [];
-  
-  for (const module of getRegisteredModules()) {
-    const hook = getModuleHook(module);
-    if (hook) {
-      try {
-        const kpis = await hook.getKPIs();
-        results.push(kpis);
-      } catch {
-        results.push({
-          module,
-          success_rate: 0,
-          response_time_avg_ms: 0,
-          error_count_24h: 0,
-          throughput_24h: 0,
-          health_score: 0,
-        });
-      }
-    }
-  }
+  const modules = getRegisteredModules();
+  const results = await Promise.allSettled(
+    modules.map(async module => {
+      const hook = getModuleHook(module);
+      if (!hook) throw new Error('no hook');
+      return hook.getKPIs();
+    })
+  );
 
-  return results;
+  return results.map((r, i) =>
+    r.status === 'fulfilled' ? r.value : {
+      module: modules[i],
+      success_rate: 0,
+      response_time_avg_ms: 0,
+      error_count_24h: 0,
+      throughput_24h: 0,
+      health_score: 0,
+    }
+  );
 }
 
 /**
