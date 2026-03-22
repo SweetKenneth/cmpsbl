@@ -78,8 +78,8 @@ const useCases = [
   },
   {
     icon: Shield,
-    title: "Autonomous Security Teams",
-    description: "Defense systems that study attack patterns, dream counter-strategies, and adapt defenses in real-time.",
+    title: "Autonomous Security Systems",
+    description: "Defense platforms that learn attack patterns, simulate counter-strategies, and adapt in real time.",
     industry: "Cybersecurity",
     iconColor: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta)/0.15)] to-[hsl(var(--neon-purple)/0.15)]",
