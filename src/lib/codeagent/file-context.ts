@@ -2,8 +2,11 @@
  * CodeAgent File Context Reader — Read Before Write
  * Understands file contents, dependencies, and relationships
  * 
- * Mirrors how human agents read and understand code before editing
+ * Reads real file content via the pf-substrate edge function,
+ * with an in-memory + localStorage cache for performance.
  */
+
+import { supabase } from '@/integrations/supabase/client';
 
 // ═══════════════════════════════════════════════════════════════
 // FILE CONTEXT TYPES
@@ -66,9 +69,9 @@ export interface ComponentInfo {
 
 export interface ProjectGraph {
   files: Map<string, FileContext>;
-  dependencies: Map<string, string[]>; // file -> files it depends on
-  dependents: Map<string, string[]>; // file -> files that depend on it
-  modules: Map<string, string[]>; // module name -> files in module
+  dependencies: Map<string, string[]>;
+  dependents: Map<string, string[]>;
+  modules: Map<string, string[]>;
   lastUpdated: Date;
 }
 
@@ -80,25 +83,106 @@ let projectGraph: ProjectGraph = {
   lastUpdated: new Date(),
 };
 
+// Persistent disk cache key
+const FILE_CACHE_KEY = 'cmpsbl_file_context_cache';
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+interface CacheEntry {
+  content: string;
+  fetchedAt: number;
+}
+
+// In-memory content cache
+const contentCache = new Map<string, CacheEntry>();
+
+// Hydrate from localStorage once on load
+try {
+  const stored = localStorage.getItem(FILE_CACHE_KEY);
+  if (stored) {
+    const entries: Record<string, CacheEntry> = JSON.parse(stored);
+    const now = Date.now();
+    for (const [path, entry] of Object.entries(entries)) {
+      if (now - entry.fetchedAt < CACHE_TTL_MS) {
+        contentCache.set(path, entry);
+      }
+    }
+  }
+} catch { /* storage unavailable */ }
+
+function persistCache(): void {
+  try {
+    const obj: Record<string, CacheEntry> = {};
+    contentCache.forEach((v, k) => { obj[k] = v; });
+    localStorage.setItem(FILE_CACHE_KEY, JSON.stringify(obj));
+  } catch { /* quota exceeded or unavailable */ }
+}
+
 // ═══════════════════════════════════════════════════════════════
-// FILE READING & PARSING
+// REAL FILE READING
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Simulated file reading — in a real implementation this would use
- * the Substrate sandbox or edge functions to read actual files
+ * Fetch real file content from the substrate edge function.
+ * Falls back to brain_events data and finally to structural inference.
+ */
+async function fetchRealContent(path: string): Promise<string | null> {
+  // 1. Check in-memory cache
+  const cached = contentCache.get(path);
+  if (cached && Date.now() - cached.fetchedAt < CACHE_TTL_MS) {
+    return cached.content;
+  }
+
+  // 2. Try edge function (pf-substrate file_read resolver)
+  try {
+    const { data, error } = await supabase.functions.invoke('pf-substrate', {
+      body: {
+        resolver: 'core.file_read',
+        payload: { path },
+      },
+    });
+    if (!error && data?.content && typeof data.content === 'string') {
+      contentCache.set(path, { content: data.content, fetchedAt: Date.now() });
+      persistCache();
+      return data.content;
+    }
+  } catch { /* resolver not available — fall through */ }
+
+  // 3. Try to reconstruct from brain_events (encoded practice logs store file_path)
+  try {
+    const { data: events } = await supabase
+      .from('brain_events')
+      .select('data')
+      .eq('module', 'encoded')
+      .ilike('data->>file_path', `%${path.split('/').pop()}%`)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    const eventData = events?.[0]?.data as Record<string, unknown> | undefined;
+    if (eventData?.original_code && typeof eventData.original_code === 'string') {
+      contentCache.set(path, { content: eventData.original_code as string, fetchedAt: Date.now() });
+      persistCache();
+      return eventData.original_code as string;
+    }
+  } catch { /* no event data */ }
+
+  // 4. Return null — caller should handle missing content gracefully
+  return null;
+}
+
+/**
+ * Synchronous file context read. Uses cached content if available,
+ * otherwise returns a skeleton and triggers async fetch.
  */
 export function readFileContext(path: string): FileContext {
-  // Check cache first
   if (projectGraph.files.has(path)) {
     return projectGraph.files.get(path)!;
   }
-  
-  // Simulate file context based on path patterns
+
   const language = inferLanguage(path);
-  const exists = isKnownFile(path);
-  const content = exists ? getSimulatedContent(path) : null;
-  
+  const cachedEntry = contentCache.get(path);
+  const content = cachedEntry?.content ?? null;
+  const exists = content !== null || isKnownPath(path);
+
   const context: FileContext = {
     path,
     exists,
@@ -108,10 +192,43 @@ export function readFileContext(path: string): FileContext {
     lastModified: exists ? new Date() : undefined,
     structure: content ? parseFileStructure(content, language) : null,
   };
-  
-  // Cache it
+
   projectGraph.files.set(path, context);
-  
+
+  // If we have no content yet, fire async fetch to populate cache for next call
+  if (!content && exists) {
+    fetchRealContent(path).then(fetched => {
+      if (fetched) {
+        context.content = fetched;
+        context.size = fetched.length;
+        context.structure = parseFileStructure(fetched, language);
+        projectGraph.files.set(path, context);
+      }
+    }).catch(() => {});
+  }
+
+  return context;
+}
+
+/**
+ * Async version — waits for real content before returning.
+ */
+export async function readFileContextAsync(path: string): Promise<FileContext> {
+  const language = inferLanguage(path);
+  const content = await fetchRealContent(path);
+  const exists = content !== null;
+
+  const context: FileContext = {
+    path,
+    exists,
+    content,
+    language,
+    size: content?.length || 0,
+    lastModified: exists ? new Date() : undefined,
+    structure: content ? parseFileStructure(content, language) : null,
+  };
+
+  projectGraph.files.set(path, context);
   return context;
 }
 
@@ -126,67 +243,14 @@ function inferLanguage(path: string): FileContext['language'] {
   return 'unknown';
 }
 
-function isKnownFile(path: string): boolean {
-  const knownPaths = [
-    'src/lib/substrate.ts',
-    'src/hooks/useSubstrate.ts',
-    'src/lib/codeagent/',
-    'src/components/substrate-os/',
-    'src/pages/',
-    'supabase/functions/',
-    'src/config/',
+/**
+ * Check whether a path belongs to a known project directory.
+ */
+function isKnownPath(path: string): boolean {
+  const knownRoots = [
+    'src/', 'supabase/functions/', 'docs/', 'public/',
   ];
-  return knownPaths.some(known => path.startsWith(known) || path.includes(known));
-}
-
-function getSimulatedContent(path: string): string {
-  // Return skeleton content based on path
-  if (path.includes('substrate.ts')) {
-    return `// Substrate Core Library
-import { supabase } from '@/integrations/supabase/client';
-
-export interface SubstrateResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-}
-
-export async function callSubstrate<T>(
-  module: string,
-  action: string,
-  payload?: Record<string, unknown>
-): Promise<SubstrateResponse<T>> {
-  // Implementation
-}`;
-  }
-  
-  if (path.includes('useSubstrate')) {
-    return `// Substrate React Hooks
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { callSubstrate } from '@/lib/substrate';
-
-export function useSubstrateQuery<T>(module: string, action: string) {
-  return useQuery({
-    queryKey: ['substrate', module, action],
-    queryFn: () => callSubstrate<T>(module, action),
-  });
-}`;
-  }
-  
-  if (path.includes('circuit-breaker')) {
-    return `// Circuit Breaker Pattern
-export interface CircuitState {
-  state: 'closed' | 'open' | 'half-open';
-  failures: number;
-  lastFailure?: Date;
-}
-
-export function createCircuitBreaker(threshold: number) {
-  // Implementation
-}`;
-  }
-  
-  return `// File: ${path}\n// Content would be loaded here`;
+  return knownRoots.some(root => path.startsWith(root));
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -204,9 +268,9 @@ function parseFileStructure(content: string, language: string): FileStructure {
     constants: [],
     dependencies: [],
   };
-  
+
   const lines = content.split('\n');
-  
+
   lines.forEach((line, index) => {
     // Parse imports
     const importMatch = line.match(/import\s+(?:{([^}]+)}|(\w+))\s+from\s+['"]([^'"]+)['"]/);
@@ -219,13 +283,12 @@ function parseFileStructure(content: string, language: string): FileStructure {
         isDefault: !!defaultImport,
         isType: line.includes('import type'),
       });
-      
-      // Track external dependencies
+
       if (!importMatch[3].startsWith('.') && !importMatch[3].startsWith('@/')) {
         structure.dependencies.push(importMatch[3].split('/')[0]);
       }
     }
-    
+
     // Parse exports
     const exportMatch = line.match(/export\s+(const|function|class|type|interface|default)\s+(\w+)?/);
     if (exportMatch) {
@@ -234,7 +297,7 @@ function parseFileStructure(content: string, language: string): FileStructure {
         type: exportMatch[1] as ExportInfo['type'],
       });
     }
-    
+
     // Parse functions
     const funcMatch = line.match(/(export\s+)?(async\s+)?function\s+(\w+)\s*\(([^)]*)\)/);
     if (funcMatch) {
@@ -244,13 +307,13 @@ function parseFileStructure(content: string, language: string): FileStructure {
         exported: !!funcMatch[1],
         params: funcMatch[4].split(',').map(p => p.trim()).filter(Boolean),
         lineStart: index + 1,
-        lineEnd: index + 10, // Estimate
+        lineEnd: index + 10,
       });
     }
-    
+
     // Parse React components
     const componentMatch = line.match(/(export\s+)?(?:function|const)\s+([A-Z]\w+)/);
-    if (componentMatch && language === 'tsx') {
+    if (componentMatch && (language === 'tsx' || language === 'jsx')) {
       structure.components.push({
         name: componentMatch[2],
         type: line.includes('function') ? 'function' : 'arrow',
@@ -259,35 +322,34 @@ function parseFileStructure(content: string, language: string): FileStructure {
         exported: !!componentMatch[1],
       });
     }
-    
+
     // Parse hooks usage
     const hookMatch = line.match(/use[A-Z]\w+/g);
     if (hookMatch) {
       structure.hooks.push(...hookMatch);
     }
-    
+
     // Parse types/interfaces
     const typeMatch = line.match(/(export\s+)?(type|interface)\s+(\w+)/);
     if (typeMatch) {
       structure.types.push(typeMatch[3]);
     }
-    
+
     // Parse constants
     const constMatch = line.match(/(?:export\s+)?const\s+([A-Z_][A-Z_0-9]*)\s*=/);
     if (constMatch) {
       structure.constants.push(constMatch[1]);
     }
   });
-  
-  // Dedupe
+
   structure.hooks = [...new Set(structure.hooks)];
   structure.dependencies = [...new Set(structure.dependencies)];
-  
+
   return structure;
 }
 
 // ═══════════════════════════════════════════════════════════════
-// DEPENDENCY ANALYSIS — Understand Relationships
+// DEPENDENCY ANALYSIS
 // ═══════════════════════════════════════════════════════════════
 
 export function analyzeDependencies(filePath: string): {
@@ -297,20 +359,18 @@ export function analyzeDependencies(filePath: string): {
   circularRisk: boolean;
 } {
   const context = readFileContext(filePath);
-  
-  // Get direct dependencies from imports
+
   const directDependencies = context.structure?.imports
     .filter(imp => imp.source.startsWith('.') || imp.source.startsWith('@/'))
     .map(imp => resolvePath(filePath, imp.source)) || [];
-  
-  // Build transitive dependencies (simplified)
+
   const transitiveDependencies: string[] = [];
   const visited = new Set<string>();
-  
+
   function traverse(path: string) {
     if (visited.has(path)) return;
     visited.add(path);
-    
+
     const ctx = readFileContext(path);
     ctx.structure?.imports
       .filter(imp => imp.source.startsWith('.') || imp.source.startsWith('@/'))
@@ -322,19 +382,17 @@ export function analyzeDependencies(filePath: string): {
         traverse(resolved);
       });
   }
-  
+
   directDependencies.forEach(traverse);
-  
-  // Find files that depend on this file
+
+  // Build dependents from the graph — scan all cached files for imports of this file
   const dependents = findDependents(filePath);
-  
-  // Check for circular dependencies
+
   const circularRisk = transitiveDependencies.includes(filePath);
-  
-  // Update graph
+
   projectGraph.dependencies.set(filePath, directDependencies);
   projectGraph.dependents.set(filePath, dependents);
-  
+
   return {
     directDependencies,
     transitiveDependencies: [...new Set(transitiveDependencies)],
@@ -347,12 +405,11 @@ function resolvePath(from: string, importPath: string): string {
   if (importPath.startsWith('@/')) {
     return importPath.replace('@/', 'src/');
   }
-  
-  // Simple relative path resolution
+
   const fromDir = from.split('/').slice(0, -1).join('/');
   const parts = importPath.split('/');
   let resolved = fromDir.split('/');
-  
+
   for (const part of parts) {
     if (part === '..') {
       resolved.pop();
@@ -360,40 +417,43 @@ function resolvePath(from: string, importPath: string): string {
       resolved.push(part);
     }
   }
-  
+
   let result = resolved.join('/');
   if (!result.match(/\.\w+$/)) {
-    result += '.ts'; // Default extension
+    result += '.ts';
   }
-  
+
   return result;
 }
 
+/**
+ * Build dependents list by scanning cached project graph.
+ * Uses real import data from parsed files instead of a hardcoded map.
+ */
 function findDependents(filePath: string): string[] {
-  // In a real implementation, this would scan the project
-  // For now, return known relationships
-  const dependencyMap: Record<string, string[]> = {
-    'src/lib/substrate.ts': [
-      'src/hooks/useSubstrate.ts',
-      'src/components/substrate-os/',
-      'src/pages/',
-    ],
-    'src/lib/codeagent/circuit-breaker.ts': [
-      'src/lib/codeagent/executor.ts',
-      'src/lib/codeagent/workflow.ts',
-    ],
-    'src/hooks/useSubstrate.ts': [
-      'src/components/substrate-os/BrainTab.tsx',
-      'src/components/substrate-os/DefenseTab.tsx',
-      'src/components/substrate-os/NexusTab.tsx',
-    ],
-  };
-  
-  return dependencyMap[filePath] || [];
+  const dependents: string[] = [];
+  const normalizedTarget = filePath.replace(/\.\w+$/, '');
+
+  // Scan all files we've already parsed for imports pointing to this file
+  projectGraph.files.forEach((ctx, cachedPath) => {
+    if (cachedPath === filePath) return;
+    if (!ctx.structure) return;
+
+    const importsTarget = ctx.structure.imports.some(imp => {
+      const resolved = resolvePath(cachedPath, imp.source).replace(/\.\w+$/, '');
+      return resolved === normalizedTarget;
+    });
+
+    if (importsTarget) {
+      dependents.push(cachedPath);
+    }
+  });
+
+  return dependents;
 }
 
 // ═══════════════════════════════════════════════════════════════
-// MULTI-FILE CONTEXT — Read Related Files
+// MULTI-FILE CONTEXT
 // ═══════════════════════════════════════════════════════════════
 
 export function gatherContextForChange(
@@ -402,22 +462,19 @@ export function gatherContextForChange(
   targetPath?: string
 ): FileContext[] {
   const contexts: FileContext[] = [];
-  
-  // Module-specific files
+
   const moduleFiles = getModuleFiles(module);
   moduleFiles.forEach(path => {
     contexts.push(readFileContext(path));
   });
-  
-  // Change-type specific files
+
   const typeFiles = getChangeTypeFiles(changeType);
   typeFiles.forEach(path => {
     if (!contexts.find(c => c.path === path)) {
       contexts.push(readFileContext(path));
     }
   });
-  
-  // Target file and its dependencies
+
   if (targetPath) {
     const deps = analyzeDependencies(targetPath);
     deps.directDependencies.forEach(path => {
@@ -426,21 +483,18 @@ export function gatherContextForChange(
       }
     });
   }
-  
+
   return contexts;
 }
 
 function getModuleFiles(module: string): string[] {
-  // Use the Substrate Navigator for intelligent resolution
   try {
     const { navigateIntent } = require('./encoded/substrate-navigator');
     const result = navigateIntent(module);
     if (result.targetFiles.length > 0) {
       return result.targetFiles;
     }
-  } catch {
-    // Fallback to static map if navigator not available
-  }
+  } catch { /* fallback */ }
 
   const mapping: Record<string, string[]> = {
     brain: ['src/lib/substrate.ts', 'src/hooks/useSubstrate.ts', 'src/core/metrics/moduleAdapters/brain.adapter.ts'],
@@ -463,7 +517,7 @@ function getModuleFiles(module: string): string[] {
     system: ['src/lib/substrate.ts'],
     core: ['src/lib/codeagent/workflow.ts'],
   };
-  
+
   return mapping[module] || ['src/lib/substrate.ts'];
 }
 
@@ -480,12 +534,12 @@ function getChangeTypeFiles(changeType: string): string[] {
     auth: ['src/lib/auth/', 'src/hooks/useAuth.ts'],
     styling: ['src/index.css', 'tailwind.config.ts'],
   };
-  
+
   return mapping[changeType] || [];
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CONTEXT SUMMARY — For Prompts
+// CONTEXT SUMMARY
 // ═══════════════════════════════════════════════════════════════
 
 export function summarizeContext(contexts: FileContext[]): string {
@@ -493,7 +547,7 @@ export function summarizeContext(contexts: FileContext[]): string {
     if (!ctx.exists || !ctx.structure) {
       return `📄 ${ctx.path} — Not found or empty`;
     }
-    
+
     const parts: string[] = [];
     if (ctx.structure.exports.length) {
       parts.push(`exports: ${ctx.structure.exports.map(e => e.name).join(', ')}`);
@@ -507,10 +561,10 @@ export function summarizeContext(contexts: FileContext[]): string {
     if (ctx.structure.hooks.length) {
       parts.push(`uses hooks: ${ctx.structure.hooks.join(', ')}`);
     }
-    
+
     return `📄 ${ctx.path}\n   ${parts.join('\n   ')}`;
   }).join('\n\n');
-  
+
   return summary;
 }
 
@@ -536,4 +590,6 @@ export function clearProjectGraph(): void {
     modules: new Map(),
     lastUpdated: new Date(),
   };
+  contentCache.clear();
+  try { localStorage.removeItem(FILE_CACHE_KEY); } catch { /* ok */ }
 }

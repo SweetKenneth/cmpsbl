@@ -15,6 +15,7 @@ import { recordOutcome, getOverallMastery, type PatternOutcome } from './feedbac
 import { EXPERT_PATTERNS, getRelevantPatterns, type ExpertPattern } from './expert-patterns';
 import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { ENCODED_SKILLS } from './skills';
+import { readFileContextAsync } from '@/lib/codeagent/file-context';
 
 // ═══════════════════════════════════════════════════════════════
 // TYPES
@@ -31,21 +32,21 @@ export interface PracticeTask {
 }
 
 export type PracticeTaskType =
-  | 'refactor'      // Improve existing code structure
-  | 'add_types'     // Strengthen TypeScript types
-  | 'error_handling' // Improve error handling
-  | 'performance'   // Optimize performance
-  | 'security'      // Harden security
-  | 'documentation' // Add/improve documentation
-  | 'testing'       // Write test cases
-  | 'accessibility' // Improve a11y
-  | 'pattern_apply' // Apply a specific expert pattern;
+  | 'refactor'
+  | 'add_types'
+  | 'error_handling'
+  | 'performance'
+  | 'security'
+  | 'documentation'
+  | 'testing'
+  | 'accessibility'
+  | 'pattern_apply';
 
 export interface PracticeResult {
   task: PracticeTask;
   generated_code: string | null;
   guard_result: GuardResult | null;
-  score: number; // 0-100
+  score: number;
   passed_guard: boolean;
   patterns_applied: string[];
   lessons_learned: string[];
@@ -72,11 +73,10 @@ export interface ShadowPracticeState {
 // ═══════════════════════════════════════════════════════════════
 
 const STORAGE_KEY = 'encoded_shadow_practice_state';
-const DEFAULT_CYCLE_MS = 10 * 60 * 1000; // 10 minutes default
+const DEFAULT_CYCLE_MS = 10 * 60 * 1000;
 const MAX_RECENT_RESULTS = 20;
-const MAX_CODE_LENGTH = 5000; // Don't practice on huge files
+const MAX_CODE_LENGTH = 5000;
 
-// Files Encoded is allowed to practice on (shadow only)
 const PRACTICE_TARGETS = [
   'src/lib/substrate/',
   'src/lib/codeagent/',
@@ -87,7 +87,6 @@ const PRACTICE_TARGETS = [
   'src/components/',
 ];
 
-// Files explicitly excluded from practice
 const EXCLUDED_FILES = [
   'src/integrations/supabase/client.ts',
   'src/integrations/supabase/types.ts',
@@ -95,7 +94,6 @@ const EXCLUDED_FILES = [
   '.env',
 ];
 
-// Task type weights (higher = more likely to be selected)
 const TASK_WEIGHTS: Record<PracticeTaskType, number> = {
   refactor: 25,
   add_types: 20,
@@ -106,6 +104,80 @@ const TASK_WEIGHTS: Record<PracticeTaskType, number> = {
   testing: 15,
   accessibility: 10,
   pattern_apply: 25,
+};
+
+// ═══════════════════════════════════════════════════════════════
+// VALIDATION RULES — Applied to generated code per task type
+// ═══════════════════════════════════════════════════════════════
+
+interface ValidationRule {
+  name: string;
+  check: (original: string, generated: string) => boolean;
+  weight: number; // bonus points if passed
+}
+
+const VALIDATION_RULES: Record<PracticeTaskType, ValidationRule[]> = {
+  refactor: [
+    { name: 'reduced_nesting', check: (_o, g) => (g.match(/\{/g)?.length ?? 0) <= (_o.match(/\{/g)?.length ?? 0) + 2, weight: 5 },
+    { name: 'no_god_functions', check: (_o, g) => !g.split('\n').some((_l, i, arr) => { const fn = arr.slice(i, i + 60).join('\n'); return /^(export\s+)?(async\s+)?function/.test(fn) && fn.split('\n').length > 50; }), weight: 5 },
+    { name: 'helper_extraction', check: (o, g) => (g.match(/function\s+\w+/g)?.length ?? 0) >= (o.match(/function\s+\w+/g)?.length ?? 0), weight: 5 },
+    { name: 'consistent_naming', check: (_o, g) => !(/const\s+[a-z]+[A-Z]\w*\s*=/.test(g) && /const\s+[a-z]+_[a-z]+\s*=/.test(g)), weight: 3 },
+  ],
+  add_types: [
+    { name: 'no_any', check: (_o, g) => !g.includes(': any') && !g.includes('as any'), weight: 10 },
+    { name: 'no_unknown_cast', check: (_o, g) => !g.includes('as unknown as'), weight: 5 },
+    { name: 'has_type_guards', check: (_o, g) => /function\s+is[A-Z]\w*|:\s*\w+\s+is\s+\w+/.test(g), weight: 5 },
+    { name: 'return_types', check: (_o, g) => { const fns = g.match(/function\s+\w+\s*\([^)]*\)\s*:/g); return (fns?.length ?? 0) > 0; }, weight: 5 },
+    { name: 'generic_usage', check: (_o, g) => /<[A-Z]\w*>/.test(g), weight: 3 },
+  ],
+  error_handling: [
+    { name: 'try_catch_present', check: (_o, g) => g.includes('try') && g.includes('catch'), weight: 8 },
+    { name: 'no_empty_catch', check: (_o, g) => !/catch\s*\([^)]*\)\s*\{\s*\}/.test(g), weight: 5 },
+    { name: 'typed_errors', check: (_o, g) => /class\s+\w+Error\s+extends\s+Error|instanceof\s+\w+Error/.test(g), weight: 5 },
+    { name: 'error_context', check: (_o, g) => /new\s+Error\s*\(`[^`]*\$\{/.test(g) || /new\s+Error\s*\('[^']*'.*\+/.test(g), weight: 3 },
+    { name: 'finally_cleanup', check: (_o, g) => g.includes('finally'), weight: 3 },
+  ],
+  performance: [
+    { name: 'memoization', check: (_o, g) => /useMemo|useCallback|memo\(|\.memoize|Map\(\)/.test(g), weight: 8 },
+    { name: 'early_return', check: (o, g) => (g.match(/return\s/g)?.length ?? 0) >= (o.match(/return\s/g)?.length ?? 0), weight: 3 },
+    { name: 'no_nested_loops', check: (_o, g) => { const loops = g.match(/\b(for|while)\b/g)?.length ?? 0; return loops <= 3; }, weight: 5 },
+    { name: 'lazy_evaluation', check: (_o, g) => /lazy|defer|requestIdleCallback|queueMicrotask/.test(g), weight: 3 },
+    { name: 'batch_operations', check: (_o, g) => /Promise\.all|Promise\.allSettled|batch/.test(g), weight: 5 },
+  ],
+  security: [
+    { name: 'input_validation', check: (_o, g) => /zod|z\.string|z\.object|validate|sanitize/.test(g), weight: 10 },
+    { name: 'no_eval', check: (_o, g) => !g.includes('eval(') && !g.includes('Function('), weight: 8 },
+    { name: 'no_innerHTML', check: (_o, g) => !g.includes('innerHTML') && !g.includes('dangerouslySetInnerHTML'), weight: 5 },
+    { name: 'auth_check', check: (_o, g) => /auth\.uid|getUser|session|authenticated/.test(g), weight: 5 },
+    { name: 'no_secrets_hardcoded', check: (_o, g) => !/(?:api_key|secret|password)\s*=\s*['"][^'"]{8,}['"]/.test(g), weight: 8 },
+  ],
+  documentation: [
+    { name: 'jsdoc_present', check: (_o, g) => g.includes('/**') && g.includes('*/'), weight: 8 },
+    { name: 'param_docs', check: (_o, g) => /@param/.test(g), weight: 5 },
+    { name: 'returns_docs', check: (_o, g) => /@returns/.test(g), weight: 5 },
+    { name: 'example_docs', check: (_o, g) => /@example/.test(g), weight: 3 },
+    { name: 'module_header', check: (_o, g) => /^\/\*\*[\s\S]*?\*\//.test(g.trim()), weight: 3 },
+  ],
+  testing: [
+    { name: 'describe_block', check: (_o, g) => g.includes('describe('), weight: 8 },
+    { name: 'it_or_test', check: (_o, g) => /\bit\(|test\(/.test(g), weight: 8 },
+    { name: 'expect_assertions', check: (_o, g) => g.includes('expect('), weight: 8 },
+    { name: 'edge_cases', check: (_o, g) => /null|undefined|empty|edge|boundary|zero|negative/.test(g), weight: 5 },
+    { name: 'async_tests', check: (_o, g) => /async\s.*(?:it|test)\(/.test(g) || /await\s+expect/.test(g), weight: 3 },
+  ],
+  accessibility: [
+    { name: 'aria_attrs', check: (_o, g) => /aria-/.test(g), weight: 8 },
+    { name: 'role_attrs', check: (_o, g) => /role=/.test(g), weight: 5 },
+    { name: 'sr_only', check: (_o, g) => /sr-only|visually-hidden|screenReader/.test(g), weight: 5 },
+    { name: 'keyboard_nav', check: (_o, g) => /onKeyDown|onKeyPress|tabIndex|focus/.test(g), weight: 5 },
+    { name: 'alt_text', check: (_o, g) => /alt=/.test(g), weight: 3 },
+  ],
+  pattern_apply: [
+    { name: 'structure_improved', check: (o, g) => g.length >= o.length * 0.8, weight: 5 },
+    { name: 'no_regressions', check: (o, g) => { const oExports = o.match(/export\s+(const|function|class|type|interface)\s+\w+/g)?.length ?? 0; const gExports = g.match(/export\s+(const|function|class|type|interface)\s+\w+/g)?.length ?? 0; return gExports >= oExports; }, weight: 10 },
+    { name: 'pattern_markers', check: (_o, g) => /Pattern:|@pattern|implements|extends/.test(g), weight: 3 },
+    { name: 'composability', check: (_o, g) => /compose|pipe|chain|builder|factory/.test(g), weight: 3 },
+  ],
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -132,9 +204,6 @@ class ShadowPracticeEngine {
   // LIFECYCLE
   // ═══════════════════════════════════════════════════════════════
 
-  /**
-   * Start auto-cycling shadow practice
-   */
   start(intervalMs?: number): void {
     if (this.intervalId) {
       console.log('[Shadow Practice] Already running');
@@ -148,18 +217,13 @@ class ShadowPracticeEngine {
 
     console.log(`[Shadow Practice] 🎯 Starting auto-cycle every ${cycle / 60000} minutes`);
 
-    // Run first cycle after short delay
     setTimeout(() => this.runPracticeCycle(), 3000);
 
-    // Then auto-cycle
     this.intervalId = setInterval(() => {
       this.runPracticeCycle();
     }, cycle);
   }
 
-  /**
-   * Stop auto-cycling
-   */
   stop(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -171,24 +235,17 @@ class ShadowPracticeEngine {
     console.log('[Shadow Practice] ⏹️ Stopped');
   }
 
-  /**
-   * Update cycle interval (in minutes)
-   */
   setCycleMinutes(minutes: number): void {
-    const ms = Math.max(2, minutes) * 60 * 1000; // Minimum 2 minutes
+    const ms = Math.max(2, minutes) * 60 * 1000;
     this.state.cycleIntervalMs = ms;
     this.persistState();
 
-    // Restart if running
     if (this.intervalId) {
       this.stop();
       this.start(ms);
     }
   }
 
-  /**
-   * Get current state
-   */
   getState(): ShadowPracticeState {
     return { ...this.state };
   }
@@ -197,15 +254,6 @@ class ShadowPracticeEngine {
   // PRACTICE CYCLE
   // ═══════════════════════════════════════════════════════════════
 
-  /**
-   * Run a single practice cycle
-   * 1. Pick a real file from the substrate
-   * 2. Choose a practice task type
-   * 3. Generate improved code via Nexus
-   * 4. Run the Encoded Guard against it
-   * 5. Score the result and feed back into mastery
-   * 6. DISCARD the code — never commit
-   */
   async runPracticeCycle(): Promise<PracticeResult | null> {
     if (this.state.isRunning) {
       console.log('[Shadow Practice] Already running a cycle');
@@ -217,7 +265,7 @@ class ShadowPracticeEngine {
     const startTime = Date.now();
 
     try {
-      // 1. Pick a target file
+      // 1. Pick a target file — uses real file content
       const fileData = await this.pickTargetFile();
       if (!fileData) {
         console.log('[Shadow Practice] No suitable target file found');
@@ -251,14 +299,17 @@ class ShadowPracticeEngine {
       const guardResult = runEncodedGuard(
         task.original_code,
         generatedCode,
-        false, // Never auto-approve in practice
+        false,
         task.file_path
       );
 
-      // 6. Score the practice
-      const score = this.scorePractice(task, generatedCode, guardResult);
+      // 6. Run validation rules for the task type
+      const validationScore = this.runValidationRules(task.task_type, task.original_code, generatedCode);
 
-      // 7. Record outcome to feedback loop
+      // 7. Score the practice (guard + validation)
+      const score = this.scorePractice(task, generatedCode, guardResult, validationScore);
+
+      // 8. Record outcome to feedback loop
       const outcome: PatternOutcome = {
         pattern_id: pattern?.id || `practice_${taskType}`,
         pattern_type: taskType,
@@ -275,20 +326,20 @@ class ShadowPracticeEngine {
       };
       await recordOutcome(outcome);
 
-      // 8. Build result (code is ephemeral — NEVER stored for commit)
+      // 9. Build result (code is ephemeral — NEVER stored for commit)
       const result: PracticeResult = {
         task,
-        generated_code: null, // Intentionally null — shadow only, no persistence
+        generated_code: null,
         guard_result: guardResult,
         score,
         passed_guard: guardResult.ok,
         patterns_applied: pattern ? [pattern.id] : [],
-        lessons_learned: this.extractLessons(guardResult),
+        lessons_learned: this.extractLessons(guardResult, task.task_type, task.original_code, generatedCode),
         duration_ms: Date.now() - startTime,
         timestamp: new Date().toISOString(),
       };
 
-      // 9. Update stats
+      // 10. Update stats
       this.state.totalPractices++;
       if (guardResult.ok) this.state.totalPassed++;
       else this.state.totalBlocked++;
@@ -300,7 +351,7 @@ class ShadowPracticeEngine {
         ...this.state.recentResults.slice(0, MAX_RECENT_RESULTS - 1),
       ];
 
-      // 10. Log to brain_events for audit
+      // 11. Log to brain_events for audit
       await this.logPractice(result);
 
       const emoji = guardResult.ok ? '✅' : '🔒';
@@ -323,7 +374,7 @@ class ShadowPracticeEngine {
   }
 
   // ═══════════════════════════════════════════════════════════════
-  // FILE SELECTION
+  // FILE SELECTION — Real content via file-context async reader
   // ═══════════════════════════════════════════════════════════════
 
   private async pickTargetFile(): Promise<{ path: string; content: string } | null> {
@@ -336,7 +387,6 @@ class ShadowPracticeEngine {
         .order('created_at', { ascending: false })
         .limit(50);
 
-      // Extract unique file paths from events
       const filePaths = new Set<string>();
       events?.forEach(e => {
         const path = (e.data as any)?.file_path;
@@ -345,7 +395,7 @@ class ShadowPracticeEngine {
         }
       });
 
-      // Also add known substrate paths as synthetic targets
+      // Add known substrate paths
       const syntheticTargets = [
         'src/lib/substrate/memory-core.ts',
         'src/lib/substrate/learning-engine.ts',
@@ -360,7 +410,6 @@ class ShadowPracticeEngine {
       ];
       syntheticTargets.forEach(p => filePaths.add(p));
 
-      // Pick a random valid file
       const candidates = Array.from(filePaths).filter(p => {
         const isTarget = PRACTICE_TARGETS.some(t => p.startsWith(t));
         const isExcluded = EXCLUDED_FILES.includes(p);
@@ -369,117 +418,20 @@ class ShadowPracticeEngine {
 
       if (candidates.length === 0) return null;
 
-      // Weighted random selection (prefer files not recently practiced)
-      const picked = candidates[Math.floor(Math.random() * candidates.length)];
+      // Shuffle and try candidates until we get real content
+      const shuffled = candidates.sort(() => Math.random() - 0.5);
 
-      // For shadow practice, we generate a representative code snippet
-      // based on the file's known structure (we can't read actual files client-side)
-      const content = this.generateRepresentativeCode(picked);
+      for (const candidate of shuffled.slice(0, 5)) {
+        const ctx = await readFileContextAsync(candidate);
+        if (ctx.content && ctx.content.length > 20 && ctx.content.length <= MAX_CODE_LENGTH) {
+          return { path: candidate, content: ctx.content };
+        }
+      }
 
-      return { path: picked, content };
+      return null;
     } catch {
       return null;
     }
-  }
-
-  /**
-   * Generate representative code for a file path
-   * Since we're client-side, we create realistic practice material
-   * based on the file's known role in the substrate
-   */
-  private generateRepresentativeCode(filePath: string): string {
-    if (filePath.includes('guard')) {
-      return `/**
- * Guard module — validates changes before write
- */
-import { type ChangeClass } from './policy';
-
-export function validateChange(before: string, after: string): { ok: boolean; reasons: string[] } {
-  const reasons: string[] = [];
-  if (!before && !after) reasons.push('Empty change');
-  // TODO: Add more validation
-  return { ok: reasons.length === 0, reasons };
-}`;
-    }
-
-    if (filePath.includes('hook') || filePath.includes('use')) {
-      return `/**
- * React hook for substrate integration
- */
-import { useState, useEffect } from 'react';
-
-export function useSubstrateData(moduleId: string) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    supabase.functions.invoke('pf-nexus-router', {
-      body: { action: 'substrate_query', moduleId }
-    })
-      .then(({ data: d }) => setData(d))
-      .catch(setError)
-      .finally(() => setLoading(false));
-  }, [moduleId]);
-
-  return { data, loading, error };
-}`;
-    }
-
-    if (filePath.includes('executor') || filePath.includes('engine')) {
-      return `/**
- * Execution engine for substrate operations
- */
-export interface ExecutionResult {
-  success: boolean;
-  data?: any;
-  error?: string;
-}
-
-export async function execute(task: { id: string; type: string; payload: any }): Promise<ExecutionResult> {
-  try {
-    const result = await processTask(task);
-    return { success: true, data: result };
-  } catch (err) {
-    return { success: false, error: String(err) };
-  }
-}
-
-async function processTask(task: any): Promise<any> {
-  // Process based on type
-  switch (task.type) {
-    case 'analyze': return analyzeCode(task.payload);
-    case 'transform': return transformCode(task.payload);
-    default: throw new Error('Unknown task type: ' + task.type);
-  }
-}`;
-    }
-
-    // Generic TypeScript module
-    return `/**
- * Substrate utility module
- */
-
-export interface ModuleConfig {
-  enabled: boolean;
-  name: string;
-  version: string;
-}
-
-export function createModule(config: ModuleConfig) {
-  if (!config.name) throw new Error('Module name required');
-  
-  return {
-    ...config,
-    start: () => console.log(config.name + ' started'),
-    stop: () => console.log(config.name + ' stopped'),
-    getStatus: () => ({ running: config.enabled, name: config.name }),
-  };
-}
-
-export function validateConfig(config: any): config is ModuleConfig {
-  return config && typeof config.name === 'string' && typeof config.enabled === 'boolean';
-}`;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -490,13 +442,10 @@ export function validateConfig(config: any): config is ModuleConfig {
     const mastery = getOverallMastery();
     const types = Object.entries(TASK_WEIGHTS) as [PracticeTaskType, number][];
 
-    // Adjust weights based on mastery — practice weaknesses more
     const adjusted = types.map(([type, weight]) => {
-      // If mastery is high, focus more on advanced tasks
       if (mastery > 70 && ['security', 'performance', 'pattern_apply'].includes(type)) {
         return [type, weight * 1.5] as [PracticeTaskType, number];
       }
-      // If mastery is low, focus on fundamentals
       if (mastery < 40 && ['refactor', 'add_types', 'error_handling'].includes(type)) {
         return [type, weight * 1.5] as [PracticeTaskType, number];
       }
@@ -575,7 +524,7 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
           prompt: task.prompt,
           systemPrompt: 'You are Encoded, an elite code implementation agent. Output ONLY code, no explanations.',
           maxTokens: 2000,
-          temperature: 0.3, // Low temperature for precise code
+          temperature: 0.3,
           metadata: {
             routeKey: 'encoded-shadow-practice',
             taskId: task.id,
@@ -588,8 +537,6 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
       if (error) throw error;
 
       let code = data?.content || data?.response || '';
-
-      // Strip markdown fences if present
       code = code.replace(/^```(?:typescript|ts|tsx|javascript|js)?\n?/gm, '').replace(/```$/gm, '').trim();
 
       return code || null;
@@ -600,39 +547,57 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // VALIDATION
+  // ═══════════════════════════════════════════════════════════════
+
+  /**
+   * Run task-type-specific validation rules against generated code.
+   * Returns a bonus score (0-30) based on rule compliance.
+   */
+  private runValidationRules(taskType: PracticeTaskType, original: string, generated: string): number {
+    const rules = VALIDATION_RULES[taskType] || [];
+    let bonus = 0;
+
+    for (const rule of rules) {
+      try {
+        if (rule.check(original, generated)) {
+          bonus += rule.weight;
+        }
+      } catch {
+        // Rule threw — skip, don't penalize
+      }
+    }
+
+    return Math.min(30, bonus); // Cap at 30 bonus points
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // SCORING
   // ═══════════════════════════════════════════════════════════════
 
-  private scorePractice(task: PracticeTask, generated: string, guard: GuardResult): number {
+  private scorePractice(task: PracticeTask, generated: string, guard: GuardResult, validationBonus: number): number {
     let score = 0;
 
-    // Guard pass = 40 points base
-    if (guard.ok) score += 40;
+    // Guard pass = 30 points base
+    if (guard.ok) score += 30;
 
-    // Anchors preserved = 20 points
-    if (guard.anchorsPreserved) score += 20;
+    // Anchors preserved = 15 points
+    if (guard.anchorsPreserved) score += 15;
 
     // Low risk = 10 points
     if (guard.risk === 'minimal' || guard.risk === 'low') score += 10;
     else if (guard.risk === 'medium') score += 5;
 
     // Change classification bonus
-    if (guard.changeClass === 'additive') score += 10;
-    else if (guard.changeClass === 'localized') score += 15;
-    else if (guard.changeClass === 'comment_only') score += 5;
+    if (guard.changeClass === 'additive') score += 5;
+    else if (guard.changeClass === 'localized') score += 10;
+    else if (guard.changeClass === 'comment_only') score += 3;
 
-    // Code quality heuristics
+    // Validation rule bonus (up to 30)
+    score += validationBonus;
+
+    // Reasonable size (not bloated)
     if (generated.length > 0) {
-      // Has proper TypeScript types (not any)
-      if (!generated.includes(': any') && !generated.includes('as any')) score += 5;
-      
-      // Has error handling
-      if (generated.includes('try') && generated.includes('catch')) score += 5;
-      
-      // Has JSDoc
-      if (generated.includes('/**') && generated.includes('*/')) score += 5;
-      
-      // Reasonable size (not bloated)
       const sizeRatio = generated.length / task.original_code.length;
       if (sizeRatio >= 0.8 && sizeRatio <= 1.5) score += 5;
     }
@@ -647,7 +612,7 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
   // LESSONS
   // ═══════════════════════════════════════════════════════════════
 
-  private extractLessons(guard: GuardResult): string[] {
+  private extractLessons(guard: GuardResult, taskType: PracticeTaskType, original: string, generated: string): string[] {
     const lessons: string[] = [];
 
     if (!guard.anchorsPreserved) {
@@ -669,8 +634,19 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
       }
     }
 
-    if (guard.ok && guard.warnings.length === 0) {
-      lessons.push('Clean pass — code met all guard requirements');
+    // Add validation-based lessons
+    const rules = VALIDATION_RULES[taskType] || [];
+    for (const rule of rules) {
+      try {
+        if (!rule.check(original, generated)) {
+          const readableName = rule.name.replace(/_/g, ' ');
+          lessons.push(`Validation failed: ${readableName}`);
+        }
+      } catch { /* skip */ }
+    }
+
+    if (guard.ok && guard.warnings.length === 0 && lessons.length === 0) {
+      lessons.push('Clean pass — code met all guard and validation requirements');
     }
 
     return lessons;
@@ -737,7 +713,7 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
     try {
       const stored = secureGet<ShadowPracticeState>(STORAGE_KEY);
       if (stored) return stored;
-    } catch { /* Storage unavailable — use defaults */ }
+    } catch { /* defaults */ }
 
     return {
       enabled: false,
@@ -756,7 +732,6 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
 
   private persistState(): void {
     try {
-      // Don't persist generated code in results (shadow-only)
       const toSave = {
         ...this.state,
         recentResults: this.state.recentResults.map(r => ({
@@ -766,16 +741,13 @@ Return ONLY the improved code. No explanations, no markdown fences, just the cod
         })),
       };
       secureSet(STORAGE_KEY, toSave);
-    } catch { /* Storage pressure — practice state is recoverable */ }
+    } catch { /* recoverable */ }
   }
 
   // ═══════════════════════════════════════════════════════════════
   // STATUS
   // ═══════════════════════════════════════════════════════════════
 
-  /**
-   * Get formatted status for terminal/display
-   */
   getStatus(): string {
     const s = this.state;
     const passRate = s.totalPractices > 0
