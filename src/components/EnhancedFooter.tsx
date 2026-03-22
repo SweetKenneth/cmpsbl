@@ -116,7 +116,7 @@ export function EnhancedFooter() {
                 Composable AI Infrastructure
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
-                The Memory Stream discovers patterns in system behavior and turns them into production-ready capabilities — automatically.
+                The Memory Stream turns system behavior into production-ready capabilities — automatically.
               </p>
               <Link 
                 to="/store?tab=plans" 

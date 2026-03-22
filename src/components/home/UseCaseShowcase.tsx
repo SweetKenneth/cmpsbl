@@ -136,7 +136,7 @@ export function UseCaseShowcase() {
             <span className="text-[hsl(var(--neon-magenta))]">Tomorrow</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Production-ready applications crystallized from the Memory Stream today, and the transformative possibilities on the horizon.
+            Production-ready applications crystallized from the Memory Stream today — and entirely new categories emerging tomorrow.
           </p>
         </motion.div>
         

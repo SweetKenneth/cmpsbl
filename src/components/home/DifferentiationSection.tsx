@@ -80,7 +80,7 @@ export function DifferentiationSection() {
           </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
              Most AI platforms process and forget. CMPSBL runs continuously — your systems
-             process in the background, adapt under governance, and compound intelligence with every interaction.
+             operate in the background, adapt under governance, and compound intelligence with every interaction.
            </p>
         </motion.div>
 

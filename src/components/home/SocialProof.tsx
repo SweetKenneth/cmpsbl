@@ -26,15 +26,7 @@ const TESTIMONIALS: Testimonial[] = [
     accentColor: "hsl(var(--neon-purple))",
   },
   {
-    quote: "Building on the substrate changed everything. Our agents adapt their routing in real-time, and EVOLUTION auto-patches drift before we even notice it. We just build — the substrate handles the rest.",
-    author: "M.K.",
-    role: "Platform Engineer",
-    rating: 5,
-    highlight: "EVOLUTION",
-    accentColor: "hsl(var(--neon-cyan))",
-  },
-  {
-    quote: "Persistent memory and governed evolution gave us what we couldn't build ourselves — an AI system that remembers, adapts, and stays compliant. Every action is auditable.",
+    quote: "Persistent memory and governed evolution gave us something we couldn't build ourselves — a system that remembers, adapts, and stays compliant. Every action is auditable.",
     author: "R.S.",
     role: "CTO, Enterprise SaaS",
     rating: 5,
