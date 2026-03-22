@@ -125,8 +125,8 @@ export function UseCaseShowcase() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-14"
         >
-          <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
-            <Sparkles className="w-3 h-3 text-primary" />
+          <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-[hsl(var(--neon-magenta)/0.3)]">
+            <Sparkles className="w-3 h-3 text-[hsl(var(--neon-magenta))]" />
             <span className="text-xs font-semibold">What You Can Build</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tight">

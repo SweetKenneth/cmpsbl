@@ -53,8 +53,8 @@ export function SocialProof() {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-12"
         >
-          <Badge variant="outline" className="mb-4 gap-1.5 border-primary/30 px-4 py-1.5">
-            <Users className="w-3 h-3 text-primary" />
+          <Badge variant="outline" className="mb-4 gap-1.5 border-[hsl(var(--neon-cyan)/0.3)] px-4 py-1.5">
+            <Users className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
             <span className="text-xs font-semibold">Builders on the Substrate</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground mb-4 tracking-tight">
@@ -76,13 +76,13 @@ export function SocialProof() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="relative p-5 sm:p-7 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group shimmer-on-hover glass-edge card-lift testimonial-border"
+              className="relative p-5 sm:p-7 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-[hsl(var(--neon-purple)/0.3)] hover:shadow-xl hover:shadow-[hsl(var(--neon-purple)/0.05)] transition-all duration-500 group shimmer-on-hover glass-edge card-lift testimonial-border"
             >
               <div className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl overflow-hidden">
                 <div className="h-full memory-stream-bar opacity-0 group-hover:opacity-40 transition-opacity duration-500" />
               </div>
               
-              <Quote className="w-8 h-8 text-primary/10 absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-primary/20" />
+              <Quote className="w-8 h-8 text-[hsl(var(--neon-purple)/0.1)] absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-[hsl(var(--neon-purple)/0.2)]" />
               
               <div
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border mb-4 text-[10px] font-semibold uppercase tracking-wider group-hover:border-opacity-50 transition-all duration-300"
@@ -98,12 +98,12 @@ export function SocialProof() {
               
               <div className="flex gap-0.5 mb-3">
                 {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star key={j} className="w-3.5 h-3.5 fill-primary text-primary group-hover:drop-shadow-[0_0_4px_hsl(var(--primary)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
+                  <Star key={j} className="w-3.5 h-3.5 fill-[hsl(var(--neon-cyan))] text-[hsl(var(--neon-cyan))] group-hover:drop-shadow-[0_0_4px_hsl(var(--neon-cyan)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
                 ))}
               </div>
               <p className="text-sm text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-3 border-t border-border/30">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-[10px] font-bold text-primary">{t.author.charAt(0)}</div>
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] flex items-center justify-center text-[10px] font-bold text-[hsl(var(--neon-purple))]">{t.author.charAt(0)}</div>
                 <div>
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
                   {t.role && <span className="text-[11px] text-muted-foreground/60">{t.role}</span>}

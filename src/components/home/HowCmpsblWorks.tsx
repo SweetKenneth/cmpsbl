@@ -29,8 +29,8 @@ export function HowCmpsblWorks() {
           className="rounded-2xl border border-border/30 bg-card/40 backdrop-blur-sm p-6 sm:p-10 overflow-hidden"
         >
           <div className="text-center mb-8">
-            <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-primary/30">
-              <Lightbulb className="w-3 h-3 text-primary" />
+            <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-[hsl(var(--neon-cyan)/0.3)]">
+              <Lightbulb className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
@@ -58,18 +58,18 @@ export function HowCmpsblWorks() {
             </div>
 
             {/* CMPSBL */}
-            <div className="rounded-xl border border-primary/20 bg-primary/5 p-5">
-              <div className="text-[10px] font-bold text-primary/70 uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
+            <div className="rounded-xl border border-[hsl(var(--neon-cyan)/0.2)] bg-[hsl(var(--neon-cyan)/0.05)] p-5">
+              <div className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
               <div className="flex items-center justify-center gap-2 flex-wrap">
                 {cmpsblStack.map((item, i) => (
                   <div key={item} className="flex items-center gap-2">
                     <div className={cn(
                       "px-3 py-2 rounded-lg border text-xs font-semibold",
                       item.includes("CMPSBL")
-                        ? "border-primary/40 bg-primary/10 text-primary font-bold"
+                        ? "border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] font-bold"
                         : "border-border/30 bg-card/50 text-foreground/70"
                     )}>{item}</div>
-                    {i < cmpsblStack.length - 1 && <ArrowRight className="w-3 h-3 text-primary/50" />}
+                    {i < cmpsblStack.length - 1 && <ArrowRight className="w-3 h-3 text-[hsl(var(--neon-purple)/0.5)]" />}
                   </div>
                 ))}
               </div>
@@ -84,7 +84,7 @@ export function HowCmpsblWorks() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {explanations.map((item) => (
-              <div key={item.label} className="text-center p-3 rounded-lg border border-border/15 bg-card/30 hover:border-primary/20 hover:bg-primary/[0.02] transition-all duration-300 card-lift">
+              <div key={item.label} className="text-center p-3 rounded-lg border border-[hsl(var(--neon-purple)/0.15)] bg-[hsl(var(--neon-purple)/0.03)] hover:border-[hsl(var(--neon-purple)/0.3)] hover:bg-[hsl(var(--neon-purple)/0.05)] transition-all duration-300 card-lift">
                 <span className="text-xs font-bold text-foreground">{item.label}</span>
                 <span className="text-xs text-muted-foreground"> {item.desc}</span>
               </div>

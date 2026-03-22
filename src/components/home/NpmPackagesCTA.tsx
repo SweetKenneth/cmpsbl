@@ -104,7 +104,7 @@ export function NpmPackagesCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-xs font-bold text-primary mb-5 tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--neon-cyan)/0.1)] border border-[hsl(var(--neon-cyan)/0.2)] text-xs font-bold text-[hsl(var(--neon-cyan))] mb-5 tracking-wide uppercase">
             <Package className="w-3.5 h-3.5" />
             Now on NPM — 11 Packages
           </div>
@@ -115,7 +115,7 @@ export function NpmPackagesCTA() {
             </span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            The <code className="text-primary font-mono text-sm bg-primary/5 px-2 py-0.5 rounded">@cmpsbl</code> SDK 
+            The <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl</code> SDK 
             gives you composable intelligence — intent routing, mesh telemetry, and cognitive scoring 
             in any JavaScript or TypeScript project.
           </p>
@@ -128,8 +128,8 @@ export function NpmPackagesCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <div className="flex items-center gap-3 bg-card border-2 border-primary/20 rounded-2xl px-5 py-4 font-mono text-sm shadow-lg shadow-primary/5">
-            <Terminal className="w-5 h-5 text-primary shrink-0" />
+          <div className="flex items-center gap-3 bg-card border-2 border-[hsl(var(--neon-purple)/0.2)] rounded-2xl px-5 py-4 font-mono text-sm shadow-lg shadow-[hsl(var(--neon-purple)/0.05)]">
+            <Terminal className="w-5 h-5 text-[hsl(var(--neon-purple))] shrink-0" />
             <code className="text-foreground flex-1 text-xs sm:text-sm">npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
             <CopyButton text="npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react" />
           </div>
@@ -145,7 +145,7 @@ export function NpmPackagesCTA() {
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: 0.1 + i * 0.05 }}
             >
-              <h.icon className="w-5 h-5 text-primary" />
+              <h.icon className={cn("w-5 h-5", i % 3 === 0 ? "text-[hsl(var(--neon-cyan))]" : i % 3 === 1 ? "text-[hsl(var(--neon-purple))]" : "text-[hsl(var(--neon-magenta))]")} />
               <span className="text-sm font-semibold text-foreground">{h.title}</span>
               <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
             </motion.div>
@@ -156,13 +156,13 @@ export function NpmPackagesCTA() {
           {featured.map((pkg, i) => (
             <motion.div
               key={pkg.name}
-              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/50 hover:border-primary/30 transition-all duration-300"
+              className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-card/50 hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-300"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
             >
-              <Package className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+              <Package className="w-4 h-4 text-[hsl(var(--neon-cyan))] mt-0.5 shrink-0" />
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <code className="text-xs font-mono font-semibold text-foreground">{pkg.name}</code>

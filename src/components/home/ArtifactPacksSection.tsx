@@ -21,14 +21,14 @@ const stepColors = [
   { color: "text-[hsl(var(--neon-cyan))]", borderColor: "border-[hsl(var(--neon-cyan)/0.2)]", bg: "bg-[hsl(var(--neon-cyan)/0.05)]" },
   { color: "text-[hsl(var(--neon-purple))]", borderColor: "border-[hsl(var(--neon-purple)/0.2)]", bg: "bg-[hsl(var(--neon-purple)/0.05)]" },
   { color: "text-[hsl(var(--neon-magenta))]", borderColor: "border-[hsl(var(--neon-magenta)/0.2)]", bg: "bg-[hsl(var(--neon-magenta)/0.05)]" },
-  { color: "text-primary", borderColor: "border-primary/20", bg: "bg-primary/5" },
+  { color: "text-[hsl(var(--neon-cyan))]", borderColor: "border-[hsl(var(--neon-cyan)/0.2)]", bg: "bg-[hsl(var(--neon-cyan)/0.05)]" },
 ] as const;
 
 const tiers = [
   { name: "Builder", slots: PRODUCT_TIERS.builder.slots, price: "Free", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]" },
   { name: "Studio", slots: PRODUCT_TIERS.studio.slots, price: "$29/mo", color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))]" },
   { name: "Creator", slots: PRODUCT_TIERS.creator.slots, price: "$49/mo", color: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-purple))]" },
-  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-[hsl(var(--primary))] to-[hsl(var(--neon-cyan))]" },
+  { name: "Architect", slots: PRODUCT_TIERS.architect.slots, price: "$79/mo", color: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-magenta))]" },
 ];
 
 export function ArtifactPacksSection() {
@@ -41,8 +41,8 @@ export function ArtifactPacksSection() {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <Badge variant="outline" className="mb-4 border-primary/30 px-4 py-1.5">
-            <Package className="w-3 h-3 mr-1.5 text-primary" />
+          <Badge variant="outline" className="mb-4 border-[hsl(var(--neon-magenta)/0.3)] px-4 py-1.5">
+            <Package className="w-3 h-3 mr-1.5 text-[hsl(var(--neon-magenta))]" />
             <span className="text-xs font-semibold">{PIPELINE_PACKS_LABEL}</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
@@ -92,7 +92,7 @@ export function ArtifactPacksSection() {
         >
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             {tiers.map((tier) => (
-              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-primary/20 hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
+              <div key={tier.name} className="text-center rounded-xl border border-border/30 bg-card/50 p-5 hover:border-[hsl(var(--neon-purple)/0.3)] hover:shadow-md transition-all duration-300 group card-lift shimmer-on-hover">
                 <div className={cn("text-3xl sm:text-4xl font-black font-mono tabular-nums bg-gradient-to-r bg-clip-text text-transparent transition-transform duration-300 group-hover:scale-110", tier.color)}>
                   {tier.slots}
                 </div>
@@ -103,14 +103,14 @@ export function ArtifactPacksSection() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+            <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-bold text-sm sm:text-base shadow-lg shadow-[hsl(var(--neon-purple)/0.2)] hover:shadow-[hsl(var(--neon-purple)/0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 bg-gradient-to-r from-[hsl(var(--neon-cyan))] via-[hsl(var(--neon-purple))] to-[hsl(var(--neon-magenta))] border-0 text-white">
               <Link to="/auth">
                 <Sparkles className="w-4 h-4" />
                 Start Free — 3 Slots
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base hover:border-primary/30 transition-all duration-200">
+            <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-13 font-semibold text-sm sm:text-base text-foreground hover:border-[hsl(var(--neon-purple)/0.3)] transition-all duration-200">
               <Link to="/packs">
                 <Package className="w-4 h-4" />
                 Explore All Packs

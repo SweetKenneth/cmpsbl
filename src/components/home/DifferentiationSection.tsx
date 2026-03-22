@@ -53,10 +53,10 @@ const pillars = [
     description: "Every interaction feeds back into the system's understanding. Memories crystallize into reusable intelligence. Performance improves with usage — your infrastructure gets smarter the more you use it.",
     link: "/blog/clockless-account-setup-artifact-packs",
     linkLabel: "Start compounding",
-    color: "from-[hsl(var(--primary))] to-[hsl(var(--neon-purple))]",
-    iconBg: "bg-primary/10",
-    iconColor: "text-primary",
-    borderColor: "border-primary/20",
+    color: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-cyan))]",
+    iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
+    iconColor: "text-[hsl(var(--neon-purple))]",
+    borderColor: "border-[hsl(var(--neon-purple)/0.2)]",
   },
 ];
 
@@ -70,8 +70,8 @@ export function DifferentiationSection() {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <Badge variant="outline" className="mb-4 border-primary/30 text-primary px-4 py-1.5 gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
+          <Badge variant="outline" className="mb-4 border-[hsl(var(--neon-magenta)/0.3)] text-[hsl(var(--neon-magenta))] px-4 py-1.5 gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-magenta)/0.6)] animate-pulse" />
             <span className="text-xs font-semibold">Why Build Here</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
