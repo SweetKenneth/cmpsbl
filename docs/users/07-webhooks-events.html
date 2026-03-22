@@ -69,13 +69,12 @@ hr{border:none;border-top:1px solid var(--border);margin:2rem 0}
 </table>
 <h2>Payload Format</h2>
 <pre><code class="language-json">{
-  &quot;event&quot;: &quot;task.completed&quot;,
+  &quot;event&quot;: &quot;memory.crystallized&quot;,
   &quot;timestamp&quot;: &quot;2026-03-20T12:00:00Z&quot;,
   &quot;data&quot;: {
-    &quot;task_id&quot;: &quot;uuid&quot;,
-    &quot;agency_id&quot;: &quot;uuid&quot;,
-    &quot;status&quot;: &quot;completed&quot;,
-    &quot;output&quot;: {}
+    &quot;memory_id&quot;: &quot;uuid&quot;,
+    &quot;pattern&quot;: &quot;API usage optimization&quot;,
+    &quot;status&quot;: &quot;crystallized&quot;
   },
   &quot;signature&quot;: &quot;hmac-sha256-signature&quot;
 }
