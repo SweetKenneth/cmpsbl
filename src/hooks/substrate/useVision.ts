@@ -1,12 +1,27 @@
 /**
  * useVision Hook — VISION module operations
- * Hardened: debugMode polling guards, Rules-of-Hooks compliant
+ * Full capability surface: metrics, anomaly detection, watchdog,
+ * SLA monitoring, predictive alerts, alert management, tracing.
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import type { SubstrateModule } from '@/lib/substrate';
+import {
+  analyzeWindow,
+  getRecentAnomalies,
+  resolveAnomaly,
+  getAnomalyCounts,
+} from '@/lib/vision/anomaly';
+import { runVisionWatchdog, getVisionMode } from '@/lib/vision/watchdog';
+import {
+  recordMetric,
+  getRealtimeMetrics,
+  getDashboardMetrics,
+  checkMetricAlerts,
+  flushMetricsToDatabase,
+} from '@/lib/vision/metricAggregation';
 
 const vision = substrate.vision;
 
@@ -25,17 +40,36 @@ export interface UseVisionReturn {
   analytics: ReturnType<typeof useQuery>;
   dependencyMap: ReturnType<typeof useQuery>;
 
-  // Actions (mutations — no hook violations)
+  // Anomaly detection
+  anomalyCounts: ReturnType<typeof useQuery>;
+  visionMode: ReturnType<typeof useQuery>;
+
+  // Actions (mutations)
   fetchLogs: ReturnType<typeof useMutation>;
   fetchAudit: ReturnType<typeof useMutation>;
   alert: ReturnType<typeof useMutation>;
   trace: ReturnType<typeof useMutation>;
+
+  // Anomaly management
+  fetchAnomalies: ReturnType<typeof useMutation>;
+  analyzeAnomalies: ReturnType<typeof useMutation>;
+  resolveAnomaly: ReturnType<typeof useMutation>;
+
+  // Watchdog
+  runWatchdog: ReturnType<typeof useMutation>;
+
+  // Metrics management
+  recordMetric: ReturnType<typeof useMutation>;
+  checkAlerts: ReturnType<typeof useMutation>;
+  flushMetrics: ReturnType<typeof useMutation>;
 }
 
 export function useVision(): UseVisionReturn {
   const queryClient = useQueryClient();
   const pollingEnabled = debugMode.allowModulePolling();
+  const invalidateVision = () => queryClient.invalidateQueries({ queryKey: ['substrate', 'vision'] });
 
+  // ── Existing Queries (preserved) ──
   const health = useQuery({
     queryKey: ['substrate', 'vision', 'health'],
     queryFn: () => vision.health(),
@@ -107,7 +141,7 @@ export function useVision(): UseVisionReturn {
     enabled: pollingEnabled,
   });
 
-  const resilience = useQuery({
+  const resilienceQuery = useQuery({
     queryKey: ['substrate', 'vision', 'resilience'],
     queryFn: () => vision.resilience(),
     refetchInterval: pollingEnabled ? 60000 : false,
@@ -115,7 +149,7 @@ export function useVision(): UseVisionReturn {
     enabled: pollingEnabled,
   });
 
-  const analytics = useQuery({
+  const analyticsQuery = useQuery({
     queryKey: ['substrate', 'vision', 'analytics'],
     queryFn: () => vision.analytics(),
     refetchInterval: pollingEnabled ? 60000 : false,
@@ -130,8 +164,23 @@ export function useVision(): UseVisionReturn {
     enabled: pollingEnabled,
   });
 
-  // ── MUTATIONS (fixed: was returning useQuery from functions) ──
+  // ── New: Anomaly & Watchdog Queries ──
+  const anomalyCounts = useQuery({
+    queryKey: ['substrate', 'vision', 'anomaly_counts'],
+    queryFn: () => getAnomalyCounts(),
+    refetchInterval: pollingEnabled ? 60000 : false,
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
 
+  const visionMode = useQuery({
+    queryKey: ['substrate', 'vision', 'mode'],
+    queryFn: () => getVisionMode(),
+    staleTime: 120000,
+    enabled: pollingEnabled,
+  });
+
+  // ── Existing Mutations ──
   const fetchLogs = useMutation({
     mutationFn: (params?: { module?: SubstrateModule; limit?: number }) =>
       vision.logs(params?.module, params?.limit),
@@ -142,22 +191,59 @@ export function useVision(): UseVisionReturn {
       vision.audit(params?.entity, params?.action),
   });
 
-  const alert = useMutation({
+  const alertMut = useMutation({
     mutationFn: (params: {
       severity: 'info' | 'warn' | 'error' | 'critical';
       message: string;
       metadata?: Record<string, unknown>;
     }) => vision.alert(params.severity, params.message, params.metadata),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
-    },
+    onSuccess: invalidateVision,
   });
 
-  const trace = useMutation({
+  const traceMut = useMutation({
     mutationFn: (params: {
       traceId?: string;
       options?: { create?: boolean; module?: string; action?: string; duration_ms?: number };
     }) => vision.trace(params.traceId, params.options),
+  });
+
+  // ── New: Anomaly Management ──
+  const fetchAnomalies = useMutation({
+    mutationFn: (params?: { limit?: number; includeResolved?: boolean }) =>
+      getRecentAnomalies(params?.limit, params?.includeResolved),
+  });
+
+  const analyzeAnomalies = useMutation({
+    mutationFn: (params?: { window?: '5m' | '1h' | '24h' }) =>
+      analyzeWindow(params?.window),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'anomaly_counts'] }),
+  });
+
+  const resolveAnomalyMut = useMutation({
+    mutationFn: (params: { anomalyId: string; resolutionAction: string }) =>
+      resolveAnomaly(params.anomalyId, params.resolutionAction),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'anomaly_counts'] }),
+  });
+
+  // ── New: Watchdog ──
+  const runWatchdog = useMutation({
+    mutationFn: () => runVisionWatchdog(),
+    onSuccess: invalidateVision,
+  });
+
+  // ── New: Metrics Management ──
+  const recordMetricMut = useMutation({
+    mutationFn: (params: { name: string; value: number; module?: string; tags?: Record<string, string> }) =>
+      Promise.resolve(recordMetric(params.name, params.value, params.module, params.tags)),
+  });
+
+  const checkAlerts = useMutation({
+    mutationFn: () => Promise.resolve(checkMetricAlerts()),
+  });
+
+  const flushMetrics = useMutation({
+    mutationFn: () => flushMetricsToDatabase(),
+    onSuccess: invalidateVision,
   });
 
   return {
@@ -170,13 +256,22 @@ export function useVision(): UseVisionReturn {
     introspection,
     quota,
     monitor,
-    resilience,
-    analytics,
+    resilience: resilienceQuery,
+    analytics: analyticsQuery,
     dependencyMap,
+    anomalyCounts,
+    visionMode,
     fetchLogs,
     fetchAudit,
-    alert,
-    trace,
+    alert: alertMut,
+    trace: traceMut,
+    fetchAnomalies,
+    analyzeAnomalies,
+    resolveAnomaly: resolveAnomalyMut,
+    runWatchdog,
+    recordMetric: recordMetricMut,
+    checkAlerts,
+    flushMetrics,
   };
 }
 
