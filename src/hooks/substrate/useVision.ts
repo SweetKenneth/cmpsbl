@@ -1,12 +1,13 @@
 /**
  * useVision Hook — VISION module operations
+ * Hardened: debugMode polling guards, Rules-of-Hooks compliant
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 import type { SubstrateModule } from '@/lib/substrate';
 
-// Access vision module from substrate singleton
 const vision = substrate.vision;
 
 export interface UseVisionReturn {
@@ -19,85 +20,131 @@ export interface UseVisionReturn {
   healthSnapshot: ReturnType<typeof useQuery>;
   introspection: ReturnType<typeof useQuery>;
   quota: ReturnType<typeof useQuery>;
-  
-  // Actions
-  logs: (module?: SubstrateModule, limit?: number) => ReturnType<typeof useQuery>;
-  alert: ReturnType<typeof useMutation>;
-  audit: (entity?: string, action?: string) => ReturnType<typeof useQuery>;
-  trace: ReturnType<typeof useMutation>;
   monitor: ReturnType<typeof useQuery>;
   resilience: ReturnType<typeof useQuery>;
   analytics: ReturnType<typeof useQuery>;
   dependencyMap: ReturnType<typeof useQuery>;
+
+  // Actions (mutations — no hook violations)
+  fetchLogs: ReturnType<typeof useMutation>;
+  fetchAudit: ReturnType<typeof useMutation>;
+  alert: ReturnType<typeof useMutation>;
+  trace: ReturnType<typeof useMutation>;
 }
 
 export function useVision(): UseVisionReturn {
   const queryClient = useQueryClient();
-  
+  const pollingEnabled = debugMode.allowModulePolling();
+
   const health = useQuery({
     queryKey: ['substrate', 'vision', 'health'],
     queryFn: () => vision.health(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
   const status = useQuery({
     queryKey: ['substrate', 'vision', 'status'],
     queryFn: () => vision.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
   const pulse = useQuery({
     queryKey: ['substrate', 'vision', 'pulse'],
     queryFn: () => vision.pulse(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
   const metrics = useQuery({
     queryKey: ['substrate', 'vision', 'metrics'],
     queryFn: () => vision.metrics(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
   const dashboard = useQuery({
     queryKey: ['substrate', 'vision', 'dashboard'],
     queryFn: () => vision.dashboard(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
   const healthSnapshot = useQuery({
     queryKey: ['substrate', 'vision', 'health_snapshot'],
     queryFn: () => vision.healthSnapshot(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
   const introspection = useQuery({
     queryKey: ['substrate', 'vision', 'introspection'],
     queryFn: () => vision.introspection(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
-  
+
   const quota = useQuery({
     queryKey: ['substrate', 'vision', 'quota'],
     queryFn: () => vision.quota(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
-  
-  const logs = (module?: SubstrateModule, limit?: number) => useQuery({
-    queryKey: ['substrate', 'vision', 'logs', module, limit],
-    queryFn: () => vision.logs(module, limit),
+
+  const monitor = useQuery({
+    queryKey: ['substrate', 'vision', 'monitor'],
+    queryFn: () => vision.monitor(),
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
-  
+
+  const resilience = useQuery({
+    queryKey: ['substrate', 'vision', 'resilience'],
+    queryFn: () => vision.resilience(),
+    refetchInterval: pollingEnabled ? 60000 : false,
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
+
+  const analytics = useQuery({
+    queryKey: ['substrate', 'vision', 'analytics'],
+    queryFn: () => vision.analytics(),
+    refetchInterval: pollingEnabled ? 60000 : false,
+    staleTime: 30000,
+    enabled: pollingEnabled,
+  });
+
+  const dependencyMap = useQuery({
+    queryKey: ['substrate', 'vision', 'dependency_map'],
+    queryFn: () => vision.dependencyMap(),
+    staleTime: 120000,
+    enabled: pollingEnabled,
+  });
+
+  // ── MUTATIONS (fixed: was returning useQuery from functions) ──
+
+  const fetchLogs = useMutation({
+    mutationFn: (params?: { module?: SubstrateModule; limit?: number }) =>
+      vision.logs(params?.module, params?.limit),
+  });
+
+  const fetchAudit = useMutation({
+    mutationFn: (params?: { entity?: string; action?: string }) =>
+      vision.audit(params?.entity, params?.action),
+  });
+
   const alert = useMutation({
-    mutationFn: (params: { 
-      severity: 'info' | 'warn' | 'error' | 'critical'; 
+    mutationFn: (params: {
+      severity: 'info' | 'warn' | 'error' | 'critical';
       message: string;
       metadata?: Record<string, unknown>;
     }) => vision.alert(params.severity, params.message, params.metadata),
@@ -105,47 +152,14 @@ export function useVision(): UseVisionReturn {
       queryClient.invalidateQueries({ queryKey: ['substrate', 'vision', 'health'] });
     },
   });
-  
-  const audit = (entity?: string, action?: string) => useQuery({
-    queryKey: ['substrate', 'vision', 'audit', entity, action],
-    queryFn: () => vision.audit(entity, action),
-    staleTime: 30000,
-  });
-  
+
   const trace = useMutation({
-    mutationFn: (params: { 
-      traceId?: string; 
-      options?: { create?: boolean; module?: string; action?: string; duration_ms?: number } 
+    mutationFn: (params: {
+      traceId?: string;
+      options?: { create?: boolean; module?: string; action?: string; duration_ms?: number };
     }) => vision.trace(params.traceId, params.options),
   });
-  
-  const monitor = useQuery({
-    queryKey: ['substrate', 'vision', 'monitor'],
-    queryFn: () => vision.monitor(),
-    refetchInterval: 30000,
-    staleTime: 15000,
-  });
-  
-  const resilience = useQuery({
-    queryKey: ['substrate', 'vision', 'resilience'],
-    queryFn: () => vision.resilience(),
-    refetchInterval: 60000,
-    staleTime: 30000,
-  });
-  
-  const analytics = useQuery({
-    queryKey: ['substrate', 'vision', 'analytics'],
-    queryFn: () => vision.analytics(),
-    refetchInterval: 60000,
-    staleTime: 30000,
-  });
-  
-  const dependencyMap = useQuery({
-    queryKey: ['substrate', 'vision', 'dependency_map'],
-    queryFn: () => vision.dependencyMap(),
-    staleTime: 120000,
-  });
-  
+
   return {
     health,
     status,
@@ -155,14 +169,14 @@ export function useVision(): UseVisionReturn {
     healthSnapshot,
     introspection,
     quota,
-    logs,
-    alert,
-    audit,
-    trace,
     monitor,
     resilience,
     analytics,
     dependencyMap,
+    fetchLogs,
+    fetchAudit,
+    alert,
+    trace,
   };
 }
 
