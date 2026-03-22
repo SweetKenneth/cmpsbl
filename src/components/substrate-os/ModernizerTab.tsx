@@ -580,13 +580,13 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             className={cn(
               "text-xs",
               isHealthy 
-                ? "border-emerald-500/50 text-emerald-400 bg-emerald-500/10"
-                : "border-amber-500/50 text-amber-400 bg-amber-500/10"
+                ? "border-neon-green/50 text-neon-green bg-neon-green/10"
+                : "border-neon-amber/50 text-neon-amber bg-neon-amber/10"
             )}
           >
             {healthScore}% Health
           </Badge>
-          <Badge variant="outline" className="border-amber-500/50 text-amber-400 bg-amber-500/10">
+          <Badge variant="outline" className="border-neon-amber/50 text-neon-amber bg-neon-amber/10">
             <Shield className="w-3 h-3 mr-1" />
             SHADOW MODE
           </Badge>
