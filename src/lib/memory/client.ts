@@ -91,10 +91,13 @@ export class MemoryClient {
   private metaCacheExpiry = 0;
   private static readonly META_CACHE_TTL_MS = 30_000; // 30s
 
+  /** Hoisted DB select fields — avoids string re-creation per query */
+  private static readonly MEMORY_SELECT = 'id, content, created_at, value_score, memory_type, provenance' as const;
+  private static readonly META_SELECT = 'hot_count, warm_count, cold_count, archive_count, hot_limit, warm_limit, cold_limit, recall_hit_rate, total_stores, total_recalls, retrieval_strategy, recall_accuracy, avg_salience, contradiction_count, compression_ratio, peak_hours' as const;
+
   constructor(agentId: string, scope: 'session' | 'project' = 'project') {
     this.agentId = agentId;
     this.scope = scope;
-    // Cheaper session ID: avoids toString(36)
     this.sessionId = `${Date.now()}-${(Math.random() * 1e9 | 0).toString(16)}`;
   }
 
