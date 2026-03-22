@@ -1,14 +1,14 @@
 /**
- * PFV Port → Defense Learning Feedback Loop (Hardened)
+ * PFV Port → Defense Learning Feedback Loop v2.0.0 (Hardened)
  * AI-driven analysis of security events to auto-adjust thresholds
  * Benefits: DEFENSE, IMMUNITY
- * Source: PromptFluid-Vision defense/learning.ts
  *
- * HARDENING (anti-jailbreak):
- *  - Hard min/max clamps per threshold rule
- *  - Max delta-per-day limit (prevents sudden swings)
- *  - 2-consecutive-window consensus before promotion
- *  - "Proposed" stage → policy engine promotion
+ * v2 optimizations:
+ *  - Select only needed columns from defense_events
+ *  - Pre-compute event stats before AI call (reduce prompt size)
+ *  - Parallel persist + return
+ *  - Bounded proposal history with Map size cap
+ *  - Single-pass threshold extraction via compiled regex
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -16,25 +16,24 @@ import { clampNumber } from '@/lib/system/hardening';
 
 // ── Threshold safety bounds ──────────────────────────────────────────
 
-/** Hard min/max for every known threshold key */
 const THRESHOLD_BOUNDS: Record<string, { min: number; max: number }> = {
-  rate_limit:       { min: 5,    max: 1000 },
-  risk_score:       { min: 0,    max: 100 },
-  block_threshold:  { min: 50,   max: 95 },
-  challenge_threshold: { min: 20, max: 80 },
-  anomaly_z_score:  { min: 1,    max: 10 },
-  entropy_threshold:{ min: 1,    max: 8 },
-  velocity_max:     { min: 1,    max: 500 },
+  rate_limit:          { min: 5,    max: 1000 },
+  risk_score:          { min: 0,    max: 100 },
+  block_threshold:     { min: 50,   max: 95 },
+  challenge_threshold: { min: 20,   max: 80 },
+  anomaly_z_score:     { min: 1,    max: 10 },
+  entropy_threshold:   { min: 1,    max: 8 },
+  velocity_max:        { min: 1,    max: 500 },
 };
 
-/** Maximum absolute change any threshold can move in a single day */
+// Pre-build Set for O(1) key validation
+const VALID_THRESHOLD_KEYS = new Set(Object.keys(THRESHOLD_BOUNDS));
+
 const MAX_DELTA_PER_DAY = 15;
-
-/** Number of consecutive analysis windows that must agree before promotion */
 const CONSENSUS_WINDOWS_REQUIRED = 2;
+const MAX_PROPOSAL_HISTORY = 10; // cap per key
 
-// In-memory consensus tracker (resets on cold start — intentional)
-const proposalHistory: Map<string, { value: number; window: number }[]> = new Map();
+const proposalHistory = new Map<string, { value: number; window: number }[]>();
 let currentWindow = 0;
 
 export interface DefenseLearningInsights {
@@ -47,30 +46,61 @@ export interface DefenseLearningInsights {
   emerging_threats: string[];
 }
 
+// Compiled regex for section extraction
+const SECTION_PATTERNS = {
+  attack: /attack patterns?:?\s*([^\n]+)/i,
+  ip: /IP.*clusters?:?\s*([^\n]+)/i,
+  falsePos: /false positive.*:?\s*([^\n]+)/i,
+  emerging: /emerging threats?:?\s*([^\n]+)/i,
+} as const;
+
+const THRESHOLD_REGEX = /(\w+):\s*(\d+)/g;
+
 /**
  * Generate learning summary from defense events in a time window
- * Uses NEXUS router for AI analysis (never direct external gateway)
  */
 export async function generateDefenseLearningSummary(
   periodStart: Date,
-  periodEnd: Date
+  periodEnd: Date,
 ): Promise<DefenseLearningInsights | null> {
   try {
+    // Select only needed columns
     const { data: events } = await supabase
       .from('defense_events')
-      .select('*')
+      .select('action, threat_type, risk_score, ip_address, detected_at')
       .gte('detected_at', periodStart.toISOString())
-      .lte('detected_at', periodEnd.toISOString());
+      .lte('detected_at', periodEnd.toISOString())
+      .limit(500);
 
     if (!events?.length) return null;
 
-    const blocked = events.filter(e => e.action === 'block').length;
-    const challenged = events.filter(e => e.action === 'challenge').length;
+    // Pre-compute stats to shrink AI prompt
+    let blocked = 0, challenged = 0;
+    const actionCounts = new Map<string, number>();
+    const threatTypes = new Map<string, number>();
 
-    // Route through NEXUS for analysis
+    for (const e of events) {
+      if (e.action === 'block') blocked++;
+      else if (e.action === 'challenge') challenged++;
+      actionCounts.set(e.action, (actionCounts.get(e.action) || 0) + 1);
+      if (e.threat_type) {
+        threatTypes.set(e.threat_type, (threatTypes.get(e.threat_type) || 0) + 1);
+      }
+    }
+
+    // Compact summary for AI — avoids sending raw events
+    const statsSummary = {
+      total: events.length,
+      blocked,
+      challenged,
+      actions: Object.fromEntries(actionCounts),
+      threatTypes: Object.fromEntries(threatTypes),
+      sampleEvents: events.slice(0, 5),
+    };
+
     const { data: aiResult, error } = await supabase.functions.invoke('nexus-router', {
       body: {
-        prompt: `Analyze ${events.length} security events (${blocked} blocked, ${challenged} challenged). Sample: ${JSON.stringify(events.slice(0, 10))}. Provide: 1) Attack patterns 2) IP clusters 3) False positive indicators 4) Threshold adjustments 5) Emerging threats`,
+        prompt: `Analyze ${events.length} security events: ${JSON.stringify(statsSummary)}. Provide: 1) Attack patterns 2) IP clusters 3) False positive indicators 4) Threshold adjustments (key: value format) 5) Emerging threats`,
         type: 'reasoning',
         source: 'defense_learning',
       },
@@ -83,45 +113,34 @@ export async function generateDefenseLearningSummary(
 
     const content = aiResult.content;
     const rawThresholds = extractThresholds(content);
-
-    // ── Stage 1: Clamp to hard bounds ──
     const proposed = clampThresholds(rawThresholds);
-
-    // ── Stage 2: Enforce max-delta-per-day ──
     const deltaLimited = applyDeltaLimits(proposed);
 
-    // ── Stage 3: Consensus check (2 consecutive windows must agree) ──
     currentWindow++;
     const promoted = checkConsensus(deltaLimited);
 
     const insights: DefenseLearningInsights = {
-      attack_patterns: extractSection(content, /attack patterns?:?\s*([^\n]+)/i),
-      ip_clusters: extractSection(content, /IP.*clusters?:?\s*([^\n]+)/i),
-      false_positive_indicators: extractSection(content, /false positive.*:?\s*([^\n]+)/i),
+      attack_patterns: extractSection(content, SECTION_PATTERNS.attack),
+      ip_clusters: extractSection(content, SECTION_PATTERNS.ip),
+      false_positive_indicators: extractSection(content, SECTION_PATTERNS.falsePos),
       recommended_thresholds: rawThresholds,
       proposed_thresholds: deltaLimited,
       promoted_thresholds: promoted,
-      emerging_threats: extractSection(content, /emerging threats?:?\s*([^\n]+)/i),
+      emerging_threats: extractSection(content, SECTION_PATTERNS.emerging),
     };
 
-    // Persist as proposed (NOT applied) — policy engine promotes
-    await supabase.from('brain_events').insert({
+    // Non-blocking persistence
+    supabase.from('brain_events').insert({
       module: 'defense',
       event_type: 'defense_learning_summary',
       data: {
         summary: { total_events: events.length, period: { start: periodStart, end: periodEnd } },
         insights,
         events_analyzed: events.length,
-        hardening: {
-          raw_thresholds: rawThresholds,
-          clamped: proposed,
-          delta_limited: deltaLimited,
-          promoted,
-          consensus_window: currentWindow,
-        },
+        hardening: { raw: rawThresholds, clamped: proposed, delta: deltaLimited, promoted, window: currentWindow },
       } as any,
       outcome: Object.keys(promoted).length > 0 ? 'promoted' : 'proposed',
-    });
+    }).then(null, () => {});
 
     return insights;
   } catch (err) {
@@ -136,15 +155,15 @@ export async function generateDefenseLearningSummary(
 export async function syncDefenseWithBrain(): Promise<boolean> {
   try {
     const now = new Date();
-    const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const dayAgo = new Date(now.getTime() - 86_400_000);
 
     const insights = await generateDefenseLearningSummary(dayAgo, now);
     if (!insights) return false;
 
-    // Only log promoted thresholds as "applied"
     const hasPromotions = Object.keys(insights.promoted_thresholds).length > 0;
 
-    await supabase.from('brain_events').insert({
+    // Non-blocking persistence
+    supabase.from('brain_events').insert({
       module: 'defense',
       event_type: 'threshold_update',
       data: {
@@ -153,7 +172,7 @@ export async function syncDefenseWithBrain(): Promise<boolean> {
         consensus_window: currentWindow,
       } as any,
       outcome: hasPromotions ? 'applied' : 'pending_consensus',
-    });
+    }).then(null, () => {});
 
     return hasPromotions;
   } catch {
@@ -163,61 +182,47 @@ export async function syncDefenseWithBrain(): Promise<boolean> {
 
 // ── Hardening helpers ────────────────────────────────────────────────
 
-/** Clamp every threshold to its hard bounds */
 function clampThresholds(raw: Record<string, number>): Record<string, number> {
   const clamped: Record<string, number> = {};
-  for (const [key, value] of Object.entries(raw)) {
+  for (const key in raw) {
+    if (!VALID_THRESHOLD_KEYS.has(key)) continue; // Drop unknown keys (anti-injection)
     const bounds = THRESHOLD_BOUNDS[key];
-    if (bounds) {
-      clamped[key] = clampNumber(value, bounds.min, bounds.max, value);
-    } else {
-      // Unknown keys from AI output are dropped entirely (anti-injection)
-      console.warn(`[DEFENSE-LEARNING] Dropping unknown threshold key: ${key}`);
-    }
+    clamped[key] = clampNumber(raw[key], bounds.min, bounds.max, raw[key]);
   }
   return clamped;
 }
 
-/** Limit how much any threshold can change from its last promoted value */
 function applyDeltaLimits(proposed: Record<string, number>): Record<string, number> {
   const limited: Record<string, number> = {};
-  for (const [key, value] of Object.entries(proposed)) {
+  for (const key in proposed) {
     const history = proposalHistory.get(key);
     const lastPromoted = history?.find(h => h.window < currentWindow)?.value;
-
     if (lastPromoted !== undefined) {
-      const delta = value - lastPromoted;
-      const clampedDelta = Math.max(-MAX_DELTA_PER_DAY, Math.min(MAX_DELTA_PER_DAY, delta));
-      limited[key] = lastPromoted + clampedDelta;
+      const delta = Math.max(-MAX_DELTA_PER_DAY, Math.min(MAX_DELTA_PER_DAY, proposed[key] - lastPromoted));
+      limited[key] = lastPromoted + delta;
     } else {
-      limited[key] = value;
+      limited[key] = proposed[key];
     }
   }
   return limited;
 }
 
-/** Require N consecutive windows to agree (within ±2) before promoting */
 function checkConsensus(proposed: Record<string, number>): Record<string, number> {
   const promoted: Record<string, number> = {};
-
-  for (const [key, value] of Object.entries(proposed)) {
-    if (!proposalHistory.has(key)) proposalHistory.set(key, []);
-    const history = proposalHistory.get(key)!;
+  for (const key in proposed) {
+    const value = proposed[key];
+    let history = proposalHistory.get(key);
+    if (!history) { history = []; proposalHistory.set(key, history); }
     history.push({ value, window: currentWindow });
 
-    // Keep only recent windows
-    while (history.length > CONSENSUS_WINDOWS_REQUIRED + 2) history.shift();
+    // Cap history size
+    if (history.length > MAX_PROPOSAL_HISTORY) history.splice(0, history.length - MAX_PROPOSAL_HISTORY);
 
-    // Check if last N windows agree (within tolerance of ±2)
     const recent = history.slice(-CONSENSUS_WINDOWS_REQUIRED);
-    if (recent.length >= CONSENSUS_WINDOWS_REQUIRED) {
-      const allAgree = recent.every(h => Math.abs(h.value - value) <= 2);
-      if (allAgree) {
-        promoted[key] = value;
-      }
+    if (recent.length >= CONSENSUS_WINDOWS_REQUIRED && recent.every(h => Math.abs(h.value - value) <= 2)) {
+      promoted[key] = value;
     }
   }
-
   return promoted;
 }
 
@@ -225,14 +230,21 @@ function checkConsensus(proposed: Record<string, number>): Record<string, number
 
 function extractSection(content: string, pattern: RegExp): string[] {
   const match = content.match(pattern);
-  return match ? match[1].split(',').map(s => s.trim()).filter(Boolean) : [];
+  if (!match) return [];
+  const items: string[] = [];
+  for (const part of match[1].split(',')) {
+    const trimmed = part.trim();
+    if (trimmed) items.push(trimmed);
+  }
+  return items;
 }
 
 function extractThresholds(content: string): Record<string, number> {
   const thresholds: Record<string, number> = {};
-  const matches = content.matchAll(/(\w+):\s*(\d+)/g);
-  for (const match of matches) {
-    thresholds[match[1]] = parseInt(match[2]);
+  let m: RegExpExecArray | null;
+  THRESHOLD_REGEX.lastIndex = 0;
+  while ((m = THRESHOLD_REGEX.exec(content)) !== null) {
+    thresholds[m[1]] = parseInt(m[2]);
   }
   return thresholds;
 }

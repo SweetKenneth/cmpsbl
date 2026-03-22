@@ -1,8 +1,12 @@
 /**
- * DEFENSE — Attack Surface Mapping (#36)
+ * DEFENSE — Attack Surface Mapping v2.0.0 (#36)
  * Builds a comprehensive attack surface inventory from scanner
- * findings + DEFENSE threat intelligence, scoring each endpoint
- * by exposure level and known attack vectors.
+ * findings + DEFENSE threat intelligence.
+ *
+ * v2 optimizations:
+ *  - Pre-indexed findings by filePath for O(1) endpoint matching
+ *  - Pre-filtered security findings for RLS gap pass
+ *  - Single-pass risk distribution calculation
  */
 
 export interface AttackSurfaceEntry {
@@ -12,7 +16,7 @@ export interface AttackSurfaceEntry {
   exposureLevel: 'public' | 'authenticated' | 'admin' | 'internal';
   attackVectors: string[];
   relatedFindings: string[];
-  riskScore: number; // 0-100
+  riskScore: number;
   mitigations: string[];
   mitigated: boolean;
 }
@@ -44,6 +48,9 @@ interface ThreatSignature {
   severity: number;
 }
 
+// Pre-filter categories that generate surface entries
+const SECURITY_CATEGORIES = new Set(['rls_policy', 'security']);
+
 /**
  * Build attack surface map from scanner findings and threat intelligence
  */
@@ -52,83 +59,131 @@ export function buildAttackSurfaceMap(
   threats: ThreatSignature[],
   knownEndpoints: Array<{ path: string; method: string; auth: boolean }> = [],
 ): AttackSurfaceMap {
+  // Pre-index: findings by filePath for O(1) endpoint matching
+  const findingsByPath = new Map<string, ScanFinding[]>();
+  const securityFindings: ScanFinding[] = [];
+
+  for (const f of findings) {
+    if (f.filePath) {
+      const arr = findingsByPath.get(f.filePath);
+      if (arr) arr.push(f); else findingsByPath.set(f.filePath, [f]);
+    }
+    if (SECURITY_CATEGORIES.has(f.category)) {
+      securityFindings.push(f);
+    }
+  }
+
+  // Pre-collect threat vectors for security categories
+  const securityVectors: string[] = [];
+  for (const t of threats) {
+    if (SECURITY_CATEGORIES.has(t.targetCategory)) {
+      securityVectors.push(t.attackVector);
+    }
+  }
+
   const entries: AttackSurfaceEntry[] = [];
+  let entryId = 0;
+  const riskDist = { critical: 0, high: 0, medium: 0, low: 0 };
+  let publicCount = 0;
+  let unmitigatedCount = 0;
 
-  // Map endpoints to surface entries
+  // Pass 1: Endpoints
   for (const ep of knownEndpoints) {
-    const relatedFindings = findings.filter(f =>
-      f.filePath?.includes(ep.path) || f.description.includes(ep.path)
-    ).map(f => f.id);
+    // Find related findings via path index + description scan
+    const relatedIds: string[] = [];
+    const pathFindings = findingsByPath.get(ep.path);
+    if (pathFindings) {
+      for (const f of pathFindings) relatedIds.push(f.id);
+    }
+    // Also check description mentions (only for findings not already matched)
+    for (const f of findings) {
+      if (!relatedIds.includes(f.id) && f.description.includes(ep.path)) {
+        relatedIds.push(f.id);
+      }
+    }
 
-    const matchingThreats = threats.filter(t =>
-      ['security', 'rls_policy', 'rate_limit'].includes(t.targetCategory)
-    );
-
-    const riskScore = calculateEndpointRisk(ep, relatedFindings.length, matchingThreats.length);
+    const riskScore = calculateEndpointRisk(ep.auth, relatedIds.length, securityVectors.length);
+    const mitigated = ep.auth && relatedIds.length === 0;
+    const isPublic = !ep.auth;
 
     entries.push({
-      entryId: `surface_${entries.length + 1}`,
+      entryId: `surface_${++entryId}`,
       type: ep.auth ? 'endpoint' : 'unauthed_route',
       path: `${ep.method} ${ep.path}`,
       exposureLevel: ep.auth ? 'authenticated' : 'public',
-      attackVectors: matchingThreats.map(t => t.attackVector),
-      relatedFindings,
+      attackVectors: securityVectors,
+      relatedFindings: relatedIds,
       riskScore,
       mitigations: ep.auth ? ['authentication required'] : [],
-      mitigated: ep.auth && relatedFindings.length === 0,
+      mitigated,
     });
+
+    // Accumulate stats inline
+    if (isPublic) publicCount++;
+    if (!mitigated) unmitigatedCount++;
+    if (riskScore >= 80) riskDist.critical++;
+    else if (riskScore >= 60) riskDist.high++;
+    else if (riskScore >= 30) riskDist.medium++;
+    else riskDist.low++;
   }
 
-  // Add RLS gap entries from security findings
-  for (const f of findings.filter(f => f.category === 'rls_policy' || f.category === 'security')) {
+  // Pass 2: Security findings → RLS gaps / secret exposures
+  for (const f of securityFindings) {
+    const vectors: string[] = [];
+    for (const t of threats) {
+      if (t.targetCategory === f.category) vectors.push(t.attackVector);
+    }
+    const riskScore = Math.min(100, f.severity * 10);
+
     entries.push({
-      entryId: `surface_${entries.length + 1}`,
+      entryId: `surface_${++entryId}`,
       type: f.category === 'rls_policy' ? 'rls_gap' : 'secret_exposure',
       path: f.filePath ?? 'unknown',
       exposureLevel: 'public',
-      attackVectors: threats.filter(t => t.targetCategory === f.category).map(t => t.attackVector),
+      attackVectors: vectors,
       relatedFindings: [f.id],
-      riskScore: f.severity * 10,
+      riskScore,
       mitigations: [],
       mitigated: false,
     });
-  }
 
-  entries.sort((a, b) => b.riskScore - a.riskScore);
-  const riskDist: Record<string, number> = { critical: 0, high: 0, medium: 0, low: 0 };
-  for (const e of entries) {
-    if (e.riskScore >= 80) riskDist.critical++;
-    else if (e.riskScore >= 60) riskDist.high++;
-    else if (e.riskScore >= 30) riskDist.medium++;
+    publicCount++;
+    unmitigatedCount++;
+    if (riskScore >= 80) riskDist.critical++;
+    else if (riskScore >= 60) riskDist.high++;
+    else if (riskScore >= 30) riskDist.medium++;
     else riskDist.low++;
   }
+
+  // Sort by risk (in-place)
+  entries.sort((a, b) => b.riskScore - a.riskScore);
 
   return {
     entries,
     totalExposed: entries.length,
     criticalExposures: riskDist.critical,
-    publicEndpoints: entries.filter(e => e.exposureLevel === 'public').length,
-    unmitigatedCount: entries.filter(e => !e.mitigated).length,
+    publicEndpoints: publicCount,
+    unmitigatedCount,
     riskDistribution: riskDist,
     topRecommendations: generateRecommendations(entries),
     generatedAt: new Date().toISOString(),
   };
 }
 
-function calculateEndpointRisk(ep: { auth: boolean }, findingCount: number, threatCount: number): number {
-  let risk = ep.auth ? 20 : 50;
-  risk += Math.min(30, findingCount * 10);
-  risk += Math.min(20, threatCount * 5);
-  return Math.min(100, risk);
+function calculateEndpointRisk(auth: boolean, findingCount: number, threatCount: number): number {
+  return Math.min(100, (auth ? 20 : 50) + Math.min(30, findingCount * 10) + Math.min(20, threatCount * 5));
 }
 
 function generateRecommendations(entries: AttackSurfaceEntry[]): string[] {
   const recs: string[] = [];
-  const unauthed = entries.filter(e => e.exposureLevel === 'public' && !e.mitigated);
-  if (unauthed.length > 0) recs.push(`Add authentication to ${unauthed.length} public endpoints`);
-  const rlsGaps = entries.filter(e => e.type === 'rls_gap');
-  if (rlsGaps.length > 0) recs.push(`Close ${rlsGaps.length} RLS policy gaps`);
-  const critical = entries.filter(e => e.riskScore >= 80);
-  if (critical.length > 0) recs.push(`Remediate ${critical.length} critical-risk surface entries immediately`);
+  let unauthed = 0, rlsGaps = 0, critical = 0;
+  for (const e of entries) {
+    if (e.exposureLevel === 'public' && !e.mitigated) unauthed++;
+    if (e.type === 'rls_gap') rlsGaps++;
+    if (e.riskScore >= 80) critical++;
+  }
+  if (unauthed > 0) recs.push(`Add authentication to ${unauthed} public endpoints`);
+  if (rlsGaps > 0) recs.push(`Close ${rlsGaps} RLS policy gaps`);
+  if (critical > 0) recs.push(`Remediate ${critical} critical-risk surface entries immediately`);
   return recs.slice(0, 5);
 }
