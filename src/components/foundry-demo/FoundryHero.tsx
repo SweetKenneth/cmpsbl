@@ -42,13 +42,10 @@ export function FoundryHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-[2.5rem] sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-foreground leading-[0.9] mb-6 sm:mb-8"
+          className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-[0.95] mb-6 sm:mb-8"
         >
-          Software that
-          <br />
-          <span className="bg-gradient-to-r from-primary via-primary to-[hsl(var(--neon-cyan))] bg-clip-text text-transparent">
-            crystallizes software
-          </span>
+          Software that{' '}
+          <span className="text-primary">crystallizes software</span>
         </motion.h1>
 
         <motion.p
