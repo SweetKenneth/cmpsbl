@@ -172,8 +172,8 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
             className={cn(
               "gap-2",
               isCritical 
-                ? "bg-red-500 hover:bg-red-600 text-white" 
-                : "bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30"
+                ? "bg-destructive hover:bg-destructive/90 text-white" 
+                : "bg-neon-amber/20 hover:bg-neon-amber/30 text-neon-amber border border-neon-amber/30"
             )}
           >
             {healMutation.isPending ? (
