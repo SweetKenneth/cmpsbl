@@ -9,19 +9,20 @@
 import { readdir, readFile, writeFile } from 'fs/promises';
 import { join, extname } from 'path';
 
-const NEW_VERSION = '14.3.0';
+const NEW_VERSION = '15.0.0';
 const TARGET_DIR = 'src';
 const VALID_EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx'];
 
 // Patterns to replace
 const REPLACEMENTS = [
-  // v9.x.x / v10.x.x / v11.x.x → v12.0.0
-  { find: /v(?:9|10|11)\.\d+\.\d+/g, replace: `v${NEW_VERSION}` },
+  // v9.x.x / v10.x.x / v11.x.x / v14.x.x → v15.0.0
+  { find: /v(?:9|10|11|14)\.\d+\.\d+/g, replace: `v${NEW_VERSION}` },
   // Bare version in version contexts
-  { find: /(?<=Version\s|version[:\s='"]+)(?:9|10|11)\.\d+\.\d+/g, replace: NEW_VERSION },
-  // Epoch rename: SPARTA → CONTRACT, ARCHITECT → CONTRACT
-  { find: /\bSPARTA\b/g, replace: 'CONTRACT' },
-  { find: /\bARCHITECT\b/g, replace: 'CONTRACT' },
+  { find: /(?<=Version\s|version[:\s='"]+)(?:9|10|11|14)\.\d+\.\d+/g, replace: NEW_VERSION },
+  // Epoch rename
+  { find: /\bSPARTA\b/g, replace: 'CONTACT' },
+  { find: /\bARCHITECT\b/g, replace: 'CONTACT' },
+  { find: /\bMINDGAMES\b/g, replace: 'CONTACT' },
 ];
 
 let totalFiles = 0;
