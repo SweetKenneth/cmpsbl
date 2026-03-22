@@ -50,7 +50,7 @@ const pillars = [
     icon: TrendingUp,
     title: "SELF-IMPROVE",
     headline: "Compound intelligence over time",
-    description: "Every interaction feeds back into the system's understanding. Memories crystallize into reusable intelligence. Performance improves with usage — your infrastructure gets smarter the more you use it.",
+    description: "Every interaction feeds back into the system. Memory crystallizes into reusable intelligence. Performance improves with usage — your infrastructure gets smarter over time.",
     link: "/blog/clockless-account-setup-artifact-packs",
     linkLabel: "Start compounding",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
