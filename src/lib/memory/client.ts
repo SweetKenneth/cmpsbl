@@ -167,27 +167,26 @@ export class MemoryClient {
       const memoryType = facts.length > 0 ? 'user_fact' : 
         (metadata?.memory_type as string) || 'general';
       
-      // #13: Update user fingerprint (parallel with stores)
-      const fingerprintPromise = this.updateFingerprint(content, userId);
-      
-      // Store each extracted fact as high-salience hot memory
-      const factPromises = facts.map(fact => 
-        this.storeToTier(fact, 'user_fact', 0.95)
-      );
-      
       // Store full content — let salience gate decide tier
       const salience = this.estimateLocalSalience(content, memoryType);
-      const contentPromise = this.storeToTier(content, memoryType, salience, metadata);
-      
-      // FIX #4: Run fingerprint + stores in parallel
-      await Promise.allSettled([fingerprintPromise, ...factPromises, contentPromise]);
-      
-      // FIX R5: Run post-store bookkeeping in parallel (was sequential)
-      await Promise.allSettled([
+
+      // Run ALL stores + fingerprint + bookkeeping in ONE parallel batch
+      const allPromises: Promise<any>[] = [
+        this.updateFingerprint(content, userId),
+        this.storeToTier(content, memoryType, salience, metadata),
         this.incrementMetaStores(),
         this.trackHourlyActivity(),
-        this.maybeRunTiering(),
-      ]);
+      ];
+
+      // Add fact stores
+      for (const fact of facts) {
+        allPromises.push(this.storeToTier(fact, 'user_fact', 0.95));
+      }
+
+      await Promise.allSettled(allPromises);
+
+      // Tiering check is conditional — run after stores complete
+      await this.maybeRunTiering();
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Store failed: ${msg}`);
