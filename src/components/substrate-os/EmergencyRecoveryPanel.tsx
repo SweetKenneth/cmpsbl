@@ -155,7 +155,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
         <CardTitle className="text-base font-medium flex items-center gap-2">
           <AlertTriangle className={cn(
             "w-5 h-5",
-            isCritical ? "text-red-500" : "text-amber-500"
+            isCritical ? "text-destructive" : "text-neon-amber"
           )} />
           {isCritical ? 'Emergency Recovery' : 'System Recovery Options'}
           {isCritical && (
