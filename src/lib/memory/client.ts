@@ -8,7 +8,8 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
-import { isDuplicate, compactMetadata, classifyImportance, shouldPreserveIndefinitely } from './content-dedup';
+import { isDuplicate, compactMetadata, classifyImportance, shouldPreserveIndefinitely, contentHash } from './content-dedup';
+import { wordMatchRelevance } from '@/lib/brain/shared';
 
 export interface MemoryEntry {
   id: string;
@@ -148,24 +149,8 @@ export class MemoryClient {
     return facts;
   }
 
-  // ═══════════════════════════════════════════════════════════════════
-  // #15 PROVENANCE BUILDER — Lightweight version for storage efficiency
-  // ═══════════════════════════════════════════════════════════════════
-  private buildProvenance(source: string): MemoryProvenance {
-    return {
-      source,
-      ingested_at: new Date().toISOString(),
-      recall_count: 0,
-      reinforced_count: 0,
-      contradiction_checks: 0,
-      lineage: [], // Start empty — lineage grows only on transformations, not ingestion
-    };
-  }
-
   /**
    * Store a memory with salience gating + contradiction detection + fingerprinting
-   * FIX #1: Errors now logged with details instead of swallowed silently
-   * FIX #3: userId guard enforced
    */
   async store(content: string, metadata?: Record<string, unknown>): Promise<void> {
     try {
@@ -182,7 +167,6 @@ export class MemoryClient {
       const importance = classifyImportance(content, memoryType, 0.5, 0);
       const salienceBoost = shouldPreserveIndefinitely(importance) ? 0.2 : 0;
       
-      // Store full content — let salience gate decide tier
       const salience = Math.min(1, this.estimateLocalSalience(content, memoryType) + salienceBoost);
 
       // Compact metadata before storage to save space
@@ -203,7 +187,7 @@ export class MemoryClient {
 
       await Promise.allSettled(allPromises);
 
-      // Fire-and-forget tiering check — don't block store() return
+      // Fire-and-forget tiering check
       this.maybeRunTiering().catch(() => {});
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
@@ -211,7 +195,7 @@ export class MemoryClient {
     }
   }
 
-  /** Salience type lookup sets — avoids repeated array creation */
+  /** Salience type lookup sets */
   private static readonly HIGH_SALIENCE_TYPES = new Set(['user_fact', 'preference', 'identity']);
   private static readonly MED_SALIENCE_TYPES = new Set(['workload_outcome', 'task_result']);
   private static readonly FAST_DECAY_TYPES = new Set(['episodic', 'interaction']);
@@ -220,7 +204,6 @@ export class MemoryClient {
   /** Estimate salience locally (fast, before DB call) */
   estimateLocalSalience(content: string, memoryType: string): number {
     let salience = 0.5;
-    // Count words without allocating split array
     let wordCount = 0;
     let inWord = false;
     for (let i = 0; i < content.length; i++) {
@@ -238,28 +221,21 @@ export class MemoryClient {
     return salience > 1 ? 1 : salience < 0 ? 0 : salience;
   }
 
-  /** Route to appropriate tier based on salience */
+  /** Route to appropriate tier based on salience — no provenance object allocation */
   private async storeToTier(
     content: string, 
     memoryType: string, 
     salience: number,
     metadata?: Record<string, unknown>
   ): Promise<void> {
-    // Early return for noise — skip all object construction
     if (salience < 0.3) return;
 
     const source = (metadata?.source as string) || 'memory_sdk';
-    const provenance = this.buildProvenance(source);
     const decayCurve = MemoryClient.FAST_DECAY_TYPES.has(memoryType) ? 'fast' :
       MemoryClient.SLOW_DECAY_TYPES.has(memoryType) ? 'slow' : 'standard';
 
     if (salience >= 0.7) {
-      // Hot tier via substrate — lean metadata (no redundant userId/agentId in nested meta)
-      const meta: Record<string, unknown> = {
-        s: salience,        // shortened key
-        dc: decayCurve,     // shortened key
-        src: source,
-      };
+      const meta: Record<string, unknown> = { s: salience, dc: decayCurve, src: source };
       if (this.scope === 'session') meta.sid = this.sessionId;
       if (metadata) Object.assign(meta, metadata);
 
@@ -267,24 +243,14 @@ export class MemoryClient {
         body: {
           module: 'brain', action: 'remember',
           content, memory_type: memoryType, confidence: salience,
-          metadata: {
-            agentId: this.agentId,
-            userId: this.userId,
-            scope: this.scope,
-            ...meta,
-          },
+          metadata: { agentId: this.agentId, userId: this.userId, scope: this.scope, ...meta },
         }
       });
     } else {
-      // Warm tier direct insert — minimal metadata, no provenance bloat
       await supabase.from('brain_memory_warm' as any).insert({
-        content,
-        context: memoryType,
-        user_id: this.userId,
-        agent_id: this.agentId,
-        memory_type: memoryType,
-        salience_score: salience,
-        value_score: salience * 0.8,
+        content, context: memoryType, user_id: this.userId,
+        agent_id: this.agentId, memory_type: memoryType,
+        salience_score: salience, value_score: salience * 0.8,
         decay_curve: decayCurve,
         metadata: metadata ? compactMetadata({ ...metadata, src: source }) : { src: source },
         tags: ['memory_sdk'],
@@ -294,7 +260,7 @@ export class MemoryClient {
   
   /**
    * Recall relevant memories across ALL tiers
-   * FIX #4: Parallel tier queries instead of sequential waterfall
+   * OPTIMIZED: Query-relevance scoring + content-hash dedup + over-fetch for precision
    */
   async recall(query: string, limit: number = 5): Promise<RecallResult> {
     try {
@@ -303,8 +269,13 @@ export class MemoryClient {
       const allMemories: MemoryEntry[] = [];
       const nowIso = new Date().toISOString();
       
-      // Run meta fetch AND all tier queries in a single parallel batch
+      // Pre-compute query tokens once for relevance scoring across all tiers
+      const queryLower = query.toLowerCase();
+      const queryWords = queryLower.split(/\s+/).filter(w => w.length > 2);
+      
       const sel = MemoryClient.MEMORY_SELECT;
+      const fetchLimit = limit * 3; // Over-fetch for post-filter precision
+      
       const [metaResult, dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
         this.getMetaState(),
         supabase
@@ -321,20 +292,18 @@ export class MemoryClient {
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
-          .limit(limit),
+          .limit(fetchLimit),
         supabase
           .from('brain_memory_warm' as any)
           .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
-          .limit(limit),
+          .limit(fetchLimit),
         supabase.functions.invoke('pf-substrate', {
           body: {
-            module: 'brain',
-            action: 'query',
-            query_text: query,
-            limit,
+            module: 'brain', action: 'query',
+            query_text: query, limit,
             recall_strategy: 'broad',
             filters: {
               memory_types: ['user_fact', 'persistent_memory', 'workload_outcome', 'conversation_with_facts'],
@@ -346,11 +315,7 @@ export class MemoryClient {
         }),
       ]);
 
-      // Apply strategy from meta (if available) — only affects exploration mode
-      const meta = metaResult.status === 'fulfilled' ? metaResult.value as MemoryMetaState | null : null;
-      const strategy = meta?.retrieval_strategy || 'balanced';
-
-      // Process spaced repetition results — batch SM-2 updates fire-and-forget
+      // Process spaced repetition results
       if (dueForReviewResult.status === 'fulfilled') {
         const dueForReview = ((dueForReviewResult.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
         if (dueForReview.length > 0) {
@@ -359,11 +324,9 @@ export class MemoryClient {
             allMemories.push({
               id: m.id, content: m.content,
               timestamp: m.created_at, relevance: (m.value_score || 0.5) * 1.1,
-              tier: 'hot', memory_type: m.memory_type,
-              provenance: m.provenance,
+              tier: 'hot', memory_type: m.memory_type, provenance: m.provenance,
             });
           }
-          // Batch all SM-2 reinforcements as fire-and-forget
           Promise.allSettled(
             dueForReview.map(m =>
               supabase.rpc('sm2_update_memory', { p_memory_id: m.id, p_tier: 'hot', p_quality: 4 })
@@ -372,11 +335,12 @@ export class MemoryClient {
         }
       }
 
-      // Deduplicate via Set for O(1) lookups instead of O(n) .some()
+      // Deduplicate via ID + content-hash (compact int) instead of full string Set
       const seenIds = new Set<string>();
-      const seenContent = new Set<string>();
+      const seenContentHashes = new Set<number>();
 
-      const addEntries = (result: PromiseSettledResult<any>, tier: 'hot' | 'warm', tierLabel: string, relevanceMult: number) => {
+      /** Score and add tier results with query-relevance filtering */
+      const addEntries = (result: PromiseSettledResult<any>, tier: 'hot' | 'warm', tierLabel: string, tierMult: number) => {
         if (result.status !== 'fulfilled') return;
         const data = ((result.value as any)?.data || []) as Array<{ id: string; content: string; created_at: string; value_score: number; memory_type: string; provenance?: any }>;
         if (data.length === 0) return;
@@ -384,25 +348,38 @@ export class MemoryClient {
         for (const m of data) {
           if (seenIds.has(m.id)) continue;
           seenIds.add(m.id);
+          
+          // Query-relevance scoring: combine value_score with text match
+          const contentLower = m.content.toLowerCase();
+          const textRelevance = queryWords.length > 0
+            ? wordMatchRelevance(queryLower, queryWords, contentLower)
+            : 0.5;
+          // Weighted blend: 40% value_score, 60% query relevance
+          const relevance = ((m.value_score || 0.5) * 0.4 + textRelevance * 0.6) * tierMult;
+          
+          // Skip completely irrelevant results
+          if (textRelevance < 0.1 && queryWords.length > 0) continue;
+          
           allMemories.push({
             id: m.id, content: m.content,
-            timestamp: m.created_at, relevance: (m.value_score || 0.5) * relevanceMult,
+            timestamp: m.created_at, relevance,
             tier, memory_type: m.memory_type, provenance: m.provenance,
           });
         }
       };
 
       addEntries(hotResult, 'hot', 'hot', 1.0);
-      addEntries(warmResult, 'warm', 'warm', 0.8);
+      addEntries(warmResult, 'warm', 'warm', 0.85);
 
-      // Process substrate vector results
+      // Process substrate vector results — use content hash for dedup
       if (substrateResult.status === 'fulfilled') {
         const response = substrateResult.value as any;
         if (response?.data?.memories) {
           tiersSearched.push('substrate_vector');
           for (const m of response.data.memories) {
-            if (seenContent.has(m.content)) continue;
-            seenContent.add(m.content);
+            const hash = contentHash(m.content);
+            if (seenContentHashes.has(hash)) continue;
+            seenContentHashes.add(hash);
             allMemories.push({
               id: m.id, content: m.content,
               timestamp: m.created_at, relevance: m.relevance_score,
@@ -422,7 +399,7 @@ export class MemoryClient {
         if (finalMemories[i].memory_type === 'user_fact') { hasUserFacts = true; break; }
       }
 
-      // Fire-and-forget: recall tracking + RAG audit don't block response
+      // Fire-and-forget: recall tracking + RAG audit
       const ragContextId = `rag-${Date.now().toString(36)}`;
       this.trackRecallHit(hit).catch(() => {});
       this.logRAGContext(query, finalMemories).catch(() => {});
@@ -442,13 +419,10 @@ export class MemoryClient {
 
   // ═══════════════════════════════════════════════════════════════════
   // #5 EPISODIC REPLAY — Reconstruct interaction timelines
-  // FIX #11: Now searches BOTH hot and warm tiers
   // ═══════════════════════════════════════════════════════════════════
   async replayEpisode(timeframe: { from: string; to: string }, limit: number = 20): Promise<MemoryEntry[]> {
     try {
       const userId = this.assertUserId();
-
-      // FIX #11: Query hot AND warm in parallel — uses hoisted select constant
       const sel = MemoryClient.MEMORY_SELECT;
       const [hotResult, warmResult] = await Promise.allSettled([
         supabase
@@ -491,11 +465,9 @@ export class MemoryClient {
       processTier(hotResult, 'hot');
       processTier(warmResult, 'warm');
 
-      // Sort chronologically — pre-compute timestamps in typed array for cache-friendly sort
       if (entries.length <= 1) return entries.slice(0, limit);
       const ts = new Float64Array(entries.length);
       for (let i = 0; i < entries.length; i++) ts[i] = new Date(entries[i].timestamp).getTime();
-      // Index-sort to avoid repeated property access during comparisons
       const indices = Array.from({ length: entries.length }, (_, i) => i);
       indices.sort((a, b) => ts[a] - ts[b]);
       const sorted: MemoryEntry[] = [];
@@ -511,14 +483,12 @@ export class MemoryClient {
 
   // ═══════════════════════════════════════════════════════════════════
   // #4 CROSS-AGENT MEMORY SHARING
-  // FIX #12: Respects salience score for target tier placement
   // ═══════════════════════════════════════════════════════════════════
   async shareWithAgent(targetAgentId: string, memoryIds: string[]): Promise<number> {
     try {
       const userId = this.assertUserId();
       if (memoryIds.length === 0) return 0;
 
-      // Batch fetch all memories in one query instead of N sequential queries
       const { data: allData } = await supabase
         .from('brain_memory_hot' as any)
         .select('id, content, context, memory_type, salience_score, value_score, metadata')
@@ -531,11 +501,6 @@ export class MemoryClient {
       const hotInserts: any[] = [];
       const warmInserts: any[] = [];
 
-      // Hoist shared provenance + timestamp outside loop
-      const shareTs = new Date().toISOString();
-      const shareProvenance = this.buildProvenance('cross_agent_share');
-      shareProvenance.lineage = [`shared_from:${this.agentId}:${shareTs}`];
-
       for (const entry of allData as any[]) {
         const sourceSalience = entry.salience_score || 0.5;
         const sharedSalience = sourceSalience * 0.8;
@@ -544,21 +509,16 @@ export class MemoryClient {
           hotInserts.push(entry);
         } else {
           warmInserts.push({
-            content: entry.content,
-            context: entry.context,
-            user_id: userId,
-            agent_id: targetAgentId,
+            content: entry.content, context: entry.context,
+            user_id: userId, agent_id: targetAgentId,
             memory_type: entry.memory_type,
-            salience_score: sharedSalience,
-            value_score: sharedSalience * 0.7,
-            provenance: shareProvenance,
-            metadata: { ...entry.metadata, shared_from_agent: this.agentId },
+            salience_score: sharedSalience, value_score: sharedSalience * 0.7,
+            metadata: { ...entry.metadata, sf: this.agentId },
             tags: ['cross_agent_share'],
           });
         }
       }
 
-      // Batch operations in parallel
       const promises: Promise<any>[] = [];
       if (warmInserts.length > 0) {
         promises.push(Promise.resolve(supabase.from('brain_memory_warm' as any).insert(warmInserts)));
@@ -572,8 +532,7 @@ export class MemoryClient {
             confidence: sharedSalience,
             metadata: {
               agentId: targetAgentId, userId, scope: this.scope,
-              salience_score: sharedSalience, source: 'cross_agent_share',
-              shared_from_agent: this.agentId,
+              s: sharedSalience, src: 'cross_agent_share', sf: this.agentId,
             }
           }
         }));
@@ -605,32 +564,18 @@ export class MemoryClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // #9 DREAM CONSOLIDATION — Trigger dream cycle
+  // #9 DREAM CONSOLIDATION
   // ═══════════════════════════════════════════════════════════════════
   async triggerConsolidation(): Promise<{ merged: number; compressed: number }> {
     try {
       const userId = this.assertUserId();
-
-      // Run all consolidation RPCs in parallel
       const [compressResult] = await Promise.allSettled([
-        supabase.rpc('compress_warm_memories', {
-          p_user_id: userId,
-          p_agent_id: this.agentId,
-        }),
-        supabase.rpc('apply_confidence_decay', {
-          p_user_id: userId,
-          p_agent_id: this.agentId,
-        }),
-        supabase.rpc('run_metacognitive_assessment', {
-          p_user_id: userId,
-          p_agent_id: this.agentId,
-        }),
+        supabase.rpc('compress_warm_memories', { p_user_id: userId, p_agent_id: this.agentId }),
+        supabase.rpc('apply_confidence_decay', { p_user_id: userId, p_agent_id: this.agentId }),
+        supabase.rpc('run_metacognitive_assessment', { p_user_id: userId, p_agent_id: this.agentId }),
       ]);
-
       const compressed = compressResult.status === 'fulfilled' 
-        ? ((compressResult.value as any)?.data?.compressed || 0)
-        : 0;
-
+        ? ((compressResult.value as any)?.data?.compressed || 0) : 0;
       return { merged: 0, compressed };
     } catch {
       return { merged: 0, compressed: 0 };
@@ -639,10 +584,7 @@ export class MemoryClient {
 
   // ═══════════════════════════════════════════════════════════════════
   // #13 USER FINGERPRINTING
-  // FIX #3: userId passed explicitly, not read from nullable field
   // ═══════════════════════════════════════════════════════════════════
-  private static readonly FINGERPRINT_CLEAN_RE = /[^a-z0-9\s]/g;
-  /** Stop-words to skip during keyword extraction */
   private static readonly STOP_WORDS = new Set([
     'this', 'that', 'with', 'from', 'have', 'been', 'were', 'they', 'will',
     'would', 'could', 'should', 'about', 'their', 'which', 'there', 'these',
@@ -653,14 +595,13 @@ export class MemoryClient {
     const uid = userId || this.userId;
     if (!uid) return;
     try {
-      // Single-pass: extract keywords without intermediate .replace().split()
       const keywords: string[] = [];
       const len = content.length;
       let wordStart = -1;
       
       for (let i = 0; i <= len && keywords.length < 10; i++) {
         const ch = i < len ? content.charCodeAt(i) : 32;
-        const isAlphaNum = (ch >= 97 && ch <= 122) || (ch >= 48 && ch <= 57); // a-z, 0-9
+        const isAlphaNum = (ch >= 97 && ch <= 122) || (ch >= 48 && ch <= 57);
         const isUpper = ch >= 65 && ch <= 90;
         
         if ((isAlphaNum || isUpper) && wordStart === -1) {
@@ -677,10 +618,8 @@ export class MemoryClient {
       }
 
       await supabase.rpc('update_user_fingerprint', {
-        p_user_id: uid,
-        p_agent_id: this.agentId,
-        p_message_length: content.length,
-        p_keywords: keywords,
+        p_user_id: uid, p_agent_id: this.agentId,
+        p_message_length: content.length, p_keywords: keywords,
       });
     } catch {
       // Silent
@@ -703,13 +642,12 @@ export class MemoryClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // #14 RAG PIPELINE — Log context injections
+  // #14 RAG PIPELINE
   // ═══════════════════════════════════════════════════════════════════
   private async logRAGContext(query: string, memories: MemoryEntry[]): Promise<void> {
     if (memories.length === 0) return;
     try {
       const contextString = this.buildContextString(memories);
-      // Collect tier set without spread+Set overhead
       const tierSet: string[] = [];
       const tierSeen = new Set<string>();
       for (const m of memories) {
@@ -719,21 +657,18 @@ export class MemoryClient {
       await supabase
         .from('brain_rag_contexts' as any)
         .insert({
-          user_id: this.userId,
-          agent_id: this.agentId,
+          user_id: this.userId, agent_id: this.agentId,
           query_text: query,
           recalled_memory_ids: memories.map(m => m.id),
           recalled_tiers: tierSet,
           context_string: contextString,
-          total_tokens: (contextString.length + 3) >> 2, // fast integer division by 4
+          total_tokens: (contextString.length + 3) >> 2,
         });
-      // No .select('id') — saves a round-trip since caller uses generated ID
     } catch {
       // Silent
     }
   }
 
-  /** Rate RAG quality for feedback loop */
   async rateRAGContext(contextId: string, wasUseful: boolean, quality: number): Promise<void> {
     try {
       await supabase
@@ -745,7 +680,6 @@ export class MemoryClient {
     }
   }
   
-  /** Store workload outcomes */
   async storeWorkload(summary: string, metadata?: Record<string, unknown>): Promise<void> {
     try {
       this.assertUserId();
@@ -756,7 +690,7 @@ export class MemoryClient {
     }
   }
   
-  /** Get metacognitive state — with 30s cache to reduce DB round-trips */
+  /** Get metacognitive state — with 30s cache */
   async getMetaState(): Promise<MemoryMetaState | null> {
     try {
       if (!this.userId) return null;
@@ -778,7 +712,7 @@ export class MemoryClient {
     }
   }
 
-  /** Build context string — single string accumulation, no intermediate array */
+  /** Build context string — single string accumulation */
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
@@ -795,33 +729,24 @@ export class MemoryClient {
     return result;
   }
 
-  /** Track recall hit/miss for metacognition */
   private async trackRecallHit(hit: boolean): Promise<void> {
     try {
       if (!this.userId) return;
       await supabase.rpc('track_memory_recall', {
-        p_user_id: this.userId,
-        p_agent_id: this.agentId,
-        p_hit: hit,
+        p_user_id: this.userId, p_agent_id: this.agentId, p_hit: hit,
       });
     } catch {
-      // Silent fail
+      // Silent
     }
   }
 
-  /**
-   * FIX #2: Increment total_stores via RPC instead of broken upsert that always sets 1
-   */
   private async incrementMetaStores(): Promise<void> {
     try {
       if (!this.userId) return;
-      // Try RPC first; fall back to upsert with proper increment
       const { error } = await supabase.rpc('increment_memory_stores' as any, {
-        p_user_id: this.userId,
-        p_agent_id: this.agentId,
+        p_user_id: this.userId, p_agent_id: this.agentId,
       });
       if (error) {
-        // Fallback: read-modify-write
         const { data: existing } = await supabase
           .from('brain_memory_meta' as any)
           .select('total_stores')
@@ -833,8 +758,7 @@ export class MemoryClient {
         await supabase
           .from('brain_memory_meta' as any)
           .upsert({
-            user_id: this.userId,
-            agent_id: this.agentId,
+            user_id: this.userId, agent_id: this.agentId,
             total_stores: current + 1,
           }, { onConflict: 'user_id,agent_id' });
       }
@@ -844,10 +768,10 @@ export class MemoryClient {
   }
 
   // ═══════════════════════════════════════════════════════════════════
-  // #11 WORKLOAD-AWARE TIERING — Track hourly patterns (throttled)
+  // #11 WORKLOAD-AWARE TIERING
   // ═══════════════════════════════════════════════════════════════════
   private lastHourlyTrack = 0;
-  private static readonly HOURLY_THROTTLE_MS = 60_000; // max once per minute
+  private static readonly HOURLY_THROTTLE_MS = 60_000;
 
   private async trackHourlyActivity(): Promise<void> {
     try {
@@ -856,14 +780,12 @@ export class MemoryClient {
       if (now - this.lastHourlyTrack < MemoryClient.HOURLY_THROTTLE_MS) return;
       this.lastHourlyTrack = now;
 
-      // Single RPC call replaces read-modify-write pattern
       await supabase.rpc('track_hourly_activity' as any, {
         p_user_id: this.userId,
         p_agent_id: this.agentId,
         p_hour: new Date().getHours(),
       }).then(({ error }) => {
         if (error) {
-          // Fallback: fire-and-forget meta update
           this.trackHourlyFallback().catch(() => {});
         }
       });
@@ -885,7 +807,6 @@ export class MemoryClient {
     const hour = new Date().getHours();
     activity[hour] = (activity[hour] || 0) + 1;
     
-    // Top 3 peak hours — swap-to-end instead of O(n) splice
     const entries = Object.entries(activity) as [string, number][];
     const peaks: number[] = [];
     let activeLen = entries.length;
@@ -895,7 +816,6 @@ export class MemoryClient {
         if (entries[j][1] > entries[maxIdx][1]) maxIdx = j;
       }
       peaks.push(parseInt(entries[maxIdx][0]));
-      // Swap max to end and shrink active window — O(1) vs O(n) splice
       activeLen--;
       if (maxIdx !== activeLen) {
         const tmp = entries[maxIdx];
@@ -918,7 +838,6 @@ export class MemoryClient {
       const meta = await this.getMetaState();
       if (!meta) return;
       
-      // Only run if hot tier is >90% full
       if (meta.hot_count > meta.hot_limit * 0.9) {
         await supabase.rpc('run_memory_tiering', {
           p_user_id: this.userId,
