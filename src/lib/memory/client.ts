@@ -81,19 +81,21 @@ export interface UserFingerprint {
 }
 
 export class MemoryClient {
-  private agentId: string;
-  private scope: 'session' | 'project';
-  private sessionId: string;
+  private readonly agentId: string;
+  private readonly scope: 'session' | 'project';
+  private readonly sessionId: string;
   private userId: string | null = null;
   
+  /** Cached meta state to reduce DB round-trips */
+  private cachedMeta: MemoryMetaState | null = null;
+  private metaCacheExpiry = 0;
+  private static readonly META_CACHE_TTL_MS = 30_000; // 30s
+
   constructor(agentId: string, scope: 'session' | 'project' = 'project') {
     this.agentId = agentId;
     this.scope = scope;
-    this.sessionId = this.generateSessionId();
-  }
-  
-  private generateSessionId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+    // Cheaper session ID: avoids toString(36)
+    this.sessionId = `${Date.now()}-${(Math.random() * 1e9 | 0).toString(16)}`;
   }
 
   /** Set user context for per-user memory isolation */
@@ -165,45 +167,55 @@ export class MemoryClient {
       const memoryType = facts.length > 0 ? 'user_fact' : 
         (metadata?.memory_type as string) || 'general';
       
-      // #13: Update user fingerprint (parallel with stores)
-      const fingerprintPromise = this.updateFingerprint(content, userId);
-      
-      // Store each extracted fact as high-salience hot memory
-      const factPromises = facts.map(fact => 
-        this.storeToTier(fact, 'user_fact', 0.95)
-      );
-      
       // Store full content — let salience gate decide tier
       const salience = this.estimateLocalSalience(content, memoryType);
-      const contentPromise = this.storeToTier(content, memoryType, salience, metadata);
-      
-      // FIX #4: Run fingerprint + stores in parallel
-      await Promise.allSettled([fingerprintPromise, ...factPromises, contentPromise]);
-      
-      // FIX R5: Run post-store bookkeeping in parallel (was sequential)
-      await Promise.allSettled([
+
+      // Run ALL stores + fingerprint + bookkeeping in ONE parallel batch
+      const allPromises: Promise<any>[] = [
+        this.updateFingerprint(content, userId),
+        this.storeToTier(content, memoryType, salience, metadata),
         this.incrementMetaStores(),
         this.trackHourlyActivity(),
-        this.maybeRunTiering(),
-      ]);
+      ];
+
+      // Add fact stores
+      for (const fact of facts) {
+        allPromises.push(this.storeToTier(fact, 'user_fact', 0.95));
+      }
+
+      await Promise.allSettled(allPromises);
+
+      // Tiering check is conditional — run after stores complete
+      await this.maybeRunTiering();
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Store failed: ${msg}`);
     }
   }
 
+  /** Salience type lookup sets — avoids repeated array creation */
+  private static readonly HIGH_SALIENCE_TYPES = new Set(['user_fact', 'preference', 'identity']);
+  private static readonly MED_SALIENCE_TYPES = new Set(['workload_outcome', 'task_result']);
+
   /** Estimate salience locally (fast, before DB call) */
   estimateLocalSalience(content: string, memoryType: string): number {
     let salience = 0.5;
-    const wordCount = content.split(/\s+/).length;
+    // Count words without allocating split array
+    let wordCount = 0;
+    let inWord = false;
+    for (let i = 0; i < content.length; i++) {
+      const isSpace = content.charCodeAt(i) <= 32;
+      if (!isSpace && !inWord) { wordCount++; inWord = true; }
+      else if (isSpace) { inWord = false; }
+    }
     
     if (wordCount < 3) salience -= 0.2;
     else if (wordCount >= 5 && wordCount <= 50) salience += 0.1;
     
-    if (['user_fact', 'preference', 'identity'].includes(memoryType)) salience += 0.3;
-    else if (['workload_outcome', 'task_result'].includes(memoryType)) salience += 0.15;
+    if (MemoryClient.HIGH_SALIENCE_TYPES.has(memoryType)) salience += 0.3;
+    else if (MemoryClient.MED_SALIENCE_TYPES.has(memoryType)) salience += 0.15;
     
-    return Math.min(1, Math.max(0, salience));
+    return salience > 1 ? 1 : salience < 0 ? 0 : salience;
   }
 
   /** Route to appropriate tier based on salience */
@@ -688,37 +700,42 @@ export class MemoryClient {
     }
   }
   
-  /** Get metacognitive state — the brain knowing its own memory */
+  /** Get metacognitive state — with 30s cache to reduce DB round-trips */
   async getMetaState(): Promise<MemoryMetaState | null> {
     try {
       if (!this.userId) return null;
+      const now = Date.now();
+      if (this.cachedMeta && now < this.metaCacheExpiry) return this.cachedMeta;
+
       const { data } = await supabase
         .from('brain_memory_meta' as any)
         .select('hot_count, warm_count, cold_count, archive_count, hot_limit, warm_limit, cold_limit, recall_hit_rate, total_stores, total_recalls, retrieval_strategy, recall_accuracy, avg_salience, contradiction_count, compression_ratio, peak_hours')
         .eq('user_id', this.userId)
         .eq('agent_id', this.agentId)
-        .single();
+        .maybeSingle();
       
-      return data as unknown as MemoryMetaState | null;
+      this.cachedMeta = data as unknown as MemoryMetaState | null;
+      this.metaCacheExpiry = now + MemoryClient.META_CACHE_TTL_MS;
+      return this.cachedMeta;
     } catch {
       return null;
     }
   }
 
-  /** Build context string from recalled memories */
+  /** Build context string from recalled memories — avoids re-sorting already-sorted input */
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
-    const contextLines = memories
-      .sort((a, b) => (b.relevance || 0) - (a.relevance || 0))
-      .slice(0, 5)
-      .map(m => {
-        const tierTag = m.tier ? `[${m.tier}]` : '';
-        const typeTag = m.memory_type ? `(${m.memory_type})` : '';
-        return `- ${tierTag}${typeTag} ${m.content}`;
-      });
-    
-    return `\n\n[Relevant context from memory — strategy: adaptive]\n${contextLines.join('\n')}`;
+    // Take top 5 — memories are already sorted by relevance from recall()
+    const top = memories.length <= 5 ? memories : memories.slice(0, 5);
+    let result = '\n\n[Relevant context from memory — strategy: adaptive]\n';
+    for (const m of top) {
+      result += '- ';
+      if (m.tier) result += `[${m.tier}]`;
+      if (m.memory_type) result += `(${m.memory_type})`;
+      result += ` ${m.content}\n`;
+    }
+    return result;
   }
 
   /** Track recall hit/miss for metacognition */
