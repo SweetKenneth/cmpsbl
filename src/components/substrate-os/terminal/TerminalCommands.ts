@@ -336,7 +336,7 @@ export const INTEGRATION_COMMANDS: CommandDefinition[] = [
   { command: 'integration.customer_service', description: 'Execute customer service op', category: 'integration', icon: Users, requiresOperator: true, requiredTier: 'architect', args: '<adapter_id> <operation> [params]' },
 ];
 
-// CORTEX module v2.0 — Agency-class orchestrator with lifecycle, panic, dispatch, evolution
+// CORTEX module v2.0 — Orchestrator with lifecycle, panic, dispatch, evolution
 export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.status', description: 'Full status + capabilities + circuits', category: 'cortex', icon: Wand2, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.health', description: 'Health + connected modules + circuits', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
