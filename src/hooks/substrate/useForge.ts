@@ -148,8 +148,8 @@ export function useForge(): UseForgeReturn {
   });
 
   const retireCombo = useMutation({
-    mutationFn: (params: { moduleKey: string; category: string; reason?: string }) =>
-      Promise.resolve(forgeRetireCombo(params.moduleKey, params.category, params.reason)),
+    mutationFn: (params: { modules: string[]; category: string; totalRuns: number; totalDiscoveries: number }) =>
+      Promise.resolve(forgeRetireCombo(params.modules, params.category, params.totalRuns, params.totalDiscoveries)),
     onSuccess: invalidate,
   });
 
