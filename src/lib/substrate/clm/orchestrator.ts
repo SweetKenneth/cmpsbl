@@ -15,6 +15,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { secureGet, secureSet } from '@/lib/system/secureStorage';
 import { budgetGovernor } from './budget-governor';
 import { topicBank, type TopicSelection, type Topic } from './topic-bank';
 import { spacedRepetition, type ReviewResult } from './spaced-repetition';
