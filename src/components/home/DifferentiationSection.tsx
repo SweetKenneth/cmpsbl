@@ -38,7 +38,7 @@ const pillars = [
     icon: RefreshCw,
     title: "ADAPT",
     headline: "Governed self-modification",
-    description: "The runtime adjusts routing, cost allocation, and operational parameters based on real-world performance — within strict governance boundaries. Adaptation is a system property, not an afterthought.",
+    description: "The runtime adjusts routing, cost allocation, and operational parameters based on real-world performance — within strict governance boundaries.",
     link: "/blog/clockless-what-makes-it-different",
     linkLabel: "Why governed adaptation matters",
     iconBg: "bg-[hsl(var(--neon-magenta)/0.1)]",
