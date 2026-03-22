@@ -312,19 +312,18 @@ class BudgetGovernorClient {
     return `${this.state.dateKey}:${topic.toLowerCase().replace(/\s+/g, '_')}`;
   }
 
-  private async emitTelemetry(result: LearningJobResult): Promise<void> {
-    try {
-      await supabase.from('brain_events').insert({
-        event_type: result.success ? 'clm_job_finished' : 'clm_job_failed',
-        module: 'brain',
-        data: {
-          job_id: result.jobId, topic: result.topic, units_used: result.unitsUsed,
-          duration_ms: result.durationMs, budget_remaining_pct: this.state.remainingPct,
-          micro_learning_mode: this.state.microLearningMode, allocation_source: 'nexus_dynamic',
-        },
-        outcome: result.success ? 'success' : 'failure',
-      } as any);
-    } catch { /* Non-critical */ }
+  private emitTelemetry(result: LearningJobResult): void {
+    // Fire-and-forget — telemetry must never block CLM cycle
+    supabase.from('brain_events').insert({
+      event_type: result.success ? 'clm_job_finished' : 'clm_job_failed',
+      module: 'brain',
+      data: {
+        job_id: result.jobId, topic: result.topic, units_used: result.unitsUsed,
+        duration_ms: result.durationMs, budget_remaining_pct: this.state.remainingPct,
+        micro_learning_mode: this.state.microLearningMode, allocation_source: 'nexus_dynamic',
+      },
+      outcome: result.success ? 'success' : 'failure',
+    } as any).then(() => {}, () => {});
   }
 
   private async emitAutoDisableEvent(): Promise<void> {
