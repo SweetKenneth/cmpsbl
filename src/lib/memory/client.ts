@@ -521,7 +521,7 @@ export class MemoryClient {
       // Batch operations in parallel
       const promises: Promise<any>[] = [];
       if (warmInserts.length > 0) {
-        promises.push(supabase.from('brain_memory_warm' as any).insert(warmInserts).then(() => {}));
+        promises.push(Promise.resolve(supabase.from('brain_memory_warm' as any).insert(warmInserts)));
       }
       for (const entry of hotInserts) {
         const sharedSalience = (entry.salience_score || 0.5) * 0.8;
