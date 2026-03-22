@@ -59,9 +59,8 @@ serve(async (req) => {
     
     if (allInsights.length > 3) {
       try {
-        const result = await nexusRoute(allInsights.join('\n'), {
+        const result = await callFreeTierAI(allInsights.join('\n'), {
           systemPrompt: 'Summarize the following insights into 3-5 key takeaways. Be concise and actionable.',
-          taskType: 'refinement',
           temperature: 0.3,
           maxTokens: 500,
         });

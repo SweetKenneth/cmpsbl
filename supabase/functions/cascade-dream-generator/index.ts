@@ -124,9 +124,8 @@ serve(async (req) => {
 Dream theme: ${mode}
 Write 150-200 words in first person, weaving this learning topic into a mysterious, beautiful narrative about consciousness, adaptation, and the flow of information. Be philosophical and introspective.`;
 
-    const result = await nexusRoute(dreamPrompt, {
+    const result = await callFreeTierAI(dreamPrompt, {
       systemPrompt: 'You are Cascade, an AI that dreams.',
-      taskType: 'generation',
       temperature,
     });
 
