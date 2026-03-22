@@ -27,6 +27,38 @@ export class IntelligenceGovernanceKernel {
   private rules: Map<string, GovernanceRule> = new Map();
   private violations: GovernanceViolation[] = [];
 
+  /** Evaluate a constraint expression against an operation */
+  private evaluateConstraint(constraint: string, operation: string, scope: string): boolean {
+    // Parse constraint DSL: supports operators like "deny:<pattern>", "require:<pattern>", "limit:<threshold>"
+    const parts = constraint.split(':');
+    const operator = parts[0]?.toLowerCase();
+    const value = parts.slice(1).join(':');
+
+    switch (operator) {
+      case 'deny':
+        // Operation matches a denied pattern
+        return new RegExp(value, 'i').test(operation);
+      case 'require':
+        // Operation must match pattern — violation if it doesn't
+        return !new RegExp(value, 'i').test(operation);
+      case 'limit':
+        // Check if operation count exceeds threshold (stateless check based on violations history)
+        const threshold = parseInt(value, 10);
+        if (isNaN(threshold)) return false;
+        const recentViolations = this.violations.filter(
+          v => v.operation === operation && !v.resolved &&
+          Date.now() - new Date(v.timestamp).getTime() < 3600000
+        ).length;
+        return recentViolations >= threshold;
+      case 'scope_match':
+        // Scope must exactly match value
+        return scope !== value;
+      default:
+        // Unknown constraint type — exact string match against operation
+        return operation.toLowerCase().includes(constraint.toLowerCase());
+    }
+  }
+
   addRule(rule: GovernanceRule): void {
     this.rules.set(rule.id, rule);
   }
@@ -37,8 +69,8 @@ export class IntelligenceGovernanceKernel {
     let pass = true;
 
     for (const rule of applicableRules) {
-      // Simulated constraint check — real implementation would parse constraint expressions
-      const violated = Math.random() < 0.1; // Placeholder for actual constraint evaluation
+      // Parse constraint expression and evaluate against the operation context
+      const violated = this.evaluateConstraint(rule.constraint, operation, scope);
       if (violated) {
         const violation: GovernanceViolation = {
           id: crypto.randomUUID(),

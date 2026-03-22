@@ -37,28 +37,28 @@ const TIER_NAMES: Record<number, string> = {
   5: 'Mastery',
 };
 
-const MOCK_SKILLS: Skill[] = [
+const SKILL_DEFINITIONS: Omit<Skill, 'is_unlocked' | 'progress'>[] = [
   // Tier 1 — Foundation
-  { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize the substrate client and connect to the 40-node cognitive mesh', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'intent_routing'], icon: '📚', is_unlocked: true, progress: { xp_earned: 45, is_completed: false } },
-  { skill_key: 'memory_ops', name: 'BRAIN Memory API', description: '4-tier persistent memory: store, recall, build context, and DREAM consolidation', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['nexus_routing'], icon: '🧠', is_unlocked: false, progress: null },
-  { skill_key: 'intent_routing', name: 'Intent Mesh', description: 'broadcastIntent(), resolver routing, receipt logging, and mesh telemetry', category: 'foundation', tier: 1, xp_required: 125, prerequisites: ['sdk_basics'], unlocks: ['resolver_patterns'], icon: '🔀', is_unlocked: false, progress: null },
+  { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize the substrate client and connect to the 40-node cognitive mesh', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'intent_routing'], icon: '📚' },
+  { skill_key: 'memory_ops', name: 'BRAIN Memory API', description: '4-tier persistent memory: store, recall, build context, and DREAM consolidation', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['nexus_routing'], icon: '🧠' },
+  { skill_key: 'intent_routing', name: 'Intent Mesh', description: 'broadcastIntent(), resolver routing, receipt logging, and mesh telemetry', category: 'foundation', tier: 1, xp_required: 125, prerequisites: ['sdk_basics'], unlocks: ['resolver_patterns'], icon: '🔀' },
 
   // Tier 2 — Intermediate
-  { skill_key: 'nexus_routing', name: 'NEXUS Routing', description: 'Multi-provider AI routing with failover, budget controls, and latency optimization', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['memory_ops'], unlocks: ['defense_security'], icon: '🌐', is_unlocked: false, progress: null },
-  { skill_key: 'resolver_patterns', name: 'Resolver Patterns', description: 'Node.resolver naming, capability exposure, and cross-node communication', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['intent_routing'], unlocks: ['memory_stream'], icon: '⚡', is_unlocked: false, progress: null },
-  { skill_key: 'memory_stream', name: 'Memory Stream', description: 'Crystallization, CJPI scoring, tiering, and vault management', category: 'intermediate', tier: 2, xp_required: 225, prerequisites: ['resolver_patterns'], unlocks: ['ascension_basics'], icon: '✨', is_unlocked: false, progress: null },
+  { skill_key: 'nexus_routing', name: 'NEXUS Routing', description: 'Multi-provider AI routing with failover, budget controls, and latency optimization', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['memory_ops'], unlocks: ['defense_security'], icon: '🌐' },
+  { skill_key: 'resolver_patterns', name: 'Resolver Patterns', description: 'Node.resolver naming, capability exposure, and cross-node communication', category: 'intermediate', tier: 2, xp_required: 200, prerequisites: ['intent_routing'], unlocks: ['memory_stream'], icon: '⚡' },
+  { skill_key: 'memory_stream', name: 'Memory Stream', description: 'Crystallization, CJPI scoring, tiering, and vault management', category: 'intermediate', tier: 2, xp_required: 225, prerequisites: ['resolver_patterns'], unlocks: ['ascension_basics'], icon: '✨' },
 
   // Tier 3 — Advanced
-  { skill_key: 'defense_security', name: 'DEFENSE & Security', description: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', category: 'advanced', tier: 3, xp_required: 300, prerequisites: ['nexus_routing'], unlocks: ['cjpi_scoring'], icon: '🛡️', is_unlocked: false, progress: null },
-  { skill_key: 'ascension_basics', name: 'Ascension Lifecycle', description: 'Node 41+ ingestion, primitive extraction, quality gates, and delta measurement', category: 'advanced', tier: 3, xp_required: 350, prerequisites: ['memory_stream'], unlocks: ['production_hardening'], icon: '🚀', is_unlocked: false, progress: null },
-  { skill_key: 'cjpi_scoring', name: 'CJPI Scoring', description: 'Novelty, utility, complexity, composability — discovery evaluation framework', category: 'advanced', tier: 3, xp_required: 275, prerequisites: ['defense_security'], unlocks: ['production_hardening'], icon: '🎯', is_unlocked: false, progress: null },
+  { skill_key: 'defense_security', name: 'DEFENSE & Security', description: 'Threat scoring, anomaly detection, rate limiting, and safety patterns', category: 'advanced', tier: 3, xp_required: 300, prerequisites: ['nexus_routing'], unlocks: ['cjpi_scoring'], icon: '🛡️' },
+  { skill_key: 'ascension_basics', name: 'Ascension Lifecycle', description: 'Node 41+ ingestion, primitive extraction, quality gates, and delta measurement', category: 'advanced', tier: 3, xp_required: 350, prerequisites: ['memory_stream'], unlocks: ['production_hardening'], icon: '🚀' },
+  { skill_key: 'cjpi_scoring', name: 'CJPI Scoring', description: 'Novelty, utility, complexity, composability — discovery evaluation framework', category: 'advanced', tier: 3, xp_required: 275, prerequisites: ['defense_security'], unlocks: ['production_hardening'], icon: '🎯' },
 
   // Tier 4 — Expert
-  { skill_key: 'production_hardening', name: 'Production Patterns', description: 'Error handling, Forge protections, VOLVER handicapping, non-blocking telemetry', category: 'expert', tier: 4, xp_required: 400, prerequisites: ['ascension_basics', 'cjpi_scoring'], unlocks: ['substrate_architect'], icon: '🔧', is_unlocked: false, progress: null },
-  { skill_key: 'dream_cycles', name: 'DREAM Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙', is_unlocked: false, progress: null },
+  { skill_key: 'production_hardening', name: 'Production Patterns', description: 'Error handling, Forge protections, VOLVER handicapping, non-blocking telemetry', category: 'expert', tier: 4, xp_required: 400, prerequisites: ['ascension_basics', 'cjpi_scoring'], unlocks: ['substrate_architect'], icon: '🔧' },
+  { skill_key: 'dream_cycles', name: 'DREAM Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙' },
 
   // Tier 5 — Mastery
-  { skill_key: 'substrate_architect', name: 'Substrate Architect', description: 'Full system mastery: multi-node orchestration, governance, and capability export', category: 'mastery', tier: 5, xp_required: 500, prerequisites: ['production_hardening', 'dream_cycles'], unlocks: [], icon: '👑', is_unlocked: false, progress: null },
+  { skill_key: 'substrate_architect', name: 'Substrate Architect', description: 'Full system mastery: multi-node orchestration, governance, and capability export', category: 'mastery', tier: 5, xp_required: 500, prerequisites: ['production_hardening', 'dream_cycles'], unlocks: [], icon: '👑' },
 ];
 
 export function SkillTreeProgress() {
@@ -80,8 +80,10 @@ export function SkillTreeProgress() {
         setLevel(Math.floor(xp / 500) + 1);
       }
     } catch {
-      setSkillTree({ skills: MOCK_SKILLS });
-      setTotalXp(45);
+      // Use default skill definitions with zero progress when API is unavailable
+      const defaultSkills = SKILL_DEFINITIONS.map(s => ({ ...s, is_unlocked: s.tier === 1 && s.prerequisites.length === 0, progress: null }));
+      setSkillTree({ skills: defaultSkills });
+      setTotalXp(0);
       setLevel(1);
     }
   };
