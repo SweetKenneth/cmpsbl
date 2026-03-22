@@ -295,11 +295,19 @@ export async function runCLMCycle(): Promise<CLMCycleResult | null> {
 // STATE QUERIES
 // ═══════════════════════════════════════════════════════════════
 
+/** Cached topic array — invalidated when topics Map changes */
+let _topicArrCache: CLMTopic[] | null = null;
+let _topicArrCacheSize = -1;
+
 export function getCLMState(): CLMState {
   ensureTopics();
-  const topicArr = Array.from(topics.values());
+  // Only rebuild array if topics Map size changed (topics are mutated in-place, not replaced)
+  if (!_topicArrCache || topics.size !== _topicArrCacheSize) {
+    _topicArrCache = Array.from(topics.values());
+    _topicArrCacheSize = topics.size;
+  }
   let masteredCount = 0;
-  for (const t of topicArr) {
+  for (const t of _topicArrCache) {
     if (t.mastered) masteredCount++;
   }
   return {
@@ -307,7 +315,7 @@ export function getCLMState(): CLMState {
     totalCycles,
     todayCycles,
     activeTopic: null,
-    topicPool: topicArr,
+    topicPool: _topicArrCache,
     masteredCount,
   };
 }
