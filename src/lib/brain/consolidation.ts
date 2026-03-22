@@ -186,12 +186,13 @@ export async function findDuplicateClusters(
       if (processed.has(other.id)) continue;
       if (other.tokens.size === 0) continue;
       
-      // Fast Jaccard with pre-computed token sets
-      const intersection = [...memory.tokens].filter(t => other.tokens.has(t)).length;
-      const union = new Set([...memory.tokens, ...other.tokens]).size;
-      const sim = union > 0 ? intersection / union : 0;
-      
-      if (sim >= threshold) {
+      // Fast Jaccard with pre-computed token sets — no intermediate arrays
+      let intersection = 0;
+      for (const t of memory.tokens) {
+        if (other.tokens.has(t)) intersection++;
+      }
+      const union = memory.tokens.size + other.tokens.size - intersection;
+      if (union > 0 && intersection / union >= threshold) {
         similar.push(other);
       }
     }
