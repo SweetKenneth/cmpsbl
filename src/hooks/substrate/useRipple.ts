@@ -7,6 +7,7 @@
  * analytics, and 35-feature hardening suite.
  *
  * Part of the 40-Node / 12-Sector Architecture (Kernel Zone)
+ * Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -49,10 +50,10 @@ export interface UseRippleReturn {
   tempestHealth: ReturnType<typeof useQuery>;
   sla: ReturnType<typeof useQuery>;
 
-  // Queries — Core Bus
-  events: (options?: { topic?: string; limit?: number; status?: string }) => ReturnType<typeof useQuery>;
-  jobs: (options?: { queue?: string; status?: string; limit?: number }) => ReturnType<typeof useQuery>;
-  deadLetter: (queue?: string, limit?: number) => ReturnType<typeof useQuery>;
+  // Core Bus — converted to mutations to avoid Rules-of-Hooks violations
+  fetchEvents: ReturnType<typeof useMutation>;
+  fetchJobs: ReturnType<typeof useMutation>;
+  fetchDeadLetter: ReturnType<typeof useMutation>;
 
   // Queries — Persistent Store (Tempest)
   eventStoreStats: ReturnType<typeof useQuery>;
@@ -143,6 +144,7 @@ export function useRipple(): UseRippleReturn {
     queryKey: ['substrate', 'ripple', 'topics'],
     queryFn: () => ripple.topics(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const circuits = useQuery({
@@ -158,36 +160,31 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => calculateTempestHealth(),
     staleTime: 30000,
     refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 
   const sla = useQuery({
     queryKey: ['substrate', 'ripple', 'sla'],
     queryFn: () => getRippleSLA(),
     staleTime: 60000,
-  });
-
-  // ── Core Bus Queries ───────────────────────────────────────────
-
-  const events = (options?: { topic?: string; limit?: number; status?: string }) => useQuery({
-    queryKey: ['substrate', 'ripple', 'events', options],
-    queryFn: () => ripple.events(options),
-    refetchInterval: pollingEnabled ? 30000 : false,
-    staleTime: 15000,
     enabled: pollingEnabled,
   });
 
-  const jobs = (options?: { queue?: string; status?: string; limit?: number }) => useQuery({
-    queryKey: ['substrate', 'ripple', 'jobs', options],
-    queryFn: () => ripple.jobs(options),
-    refetchInterval: pollingEnabled ? 30000 : false,
-    staleTime: 15000,
-    enabled: pollingEnabled,
+  // ── Core Bus Queries — converted to mutations (Rules-of-Hooks fix) ──
+
+  const fetchEvents = useMutation({
+    mutationFn: (options?: { topic?: string; limit?: number; status?: string }) =>
+      ripple.events(options),
   });
 
-  const deadLetter = (queue?: string, limit?: number) => useQuery({
-    queryKey: ['substrate', 'ripple', 'dead_letter', queue, limit],
-    queryFn: () => ripple.deadLetter(queue, limit),
-    staleTime: 30000,
+  const fetchJobs = useMutation({
+    mutationFn: (options?: { queue?: string; status?: string; limit?: number }) =>
+      ripple.jobs(options),
+  });
+
+  const fetchDeadLetter = useMutation({
+    mutationFn: (params?: { queue?: string; limit?: number }) =>
+      ripple.deadLetter(params?.queue, params?.limit),
   });
 
   // ── Persistent Store (Tempest) ─────────────────────────────────
@@ -196,6 +193,7 @@ export function useRipple(): UseRippleReturn {
     queryKey: ['substrate', 'ripple', 'eventStoreStats'],
     queryFn: () => getEventStoreStats(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const consumerPositions = useQuery({
@@ -203,6 +201,7 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getAllConsumerPositions(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   // ── Ordered Delivery (Tempest) ─────────────────────────────────
@@ -212,12 +211,14 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getOrderingStats(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   const partitionStats = useQuery({
     queryKey: ['substrate', 'ripple', 'partitionStats'],
     queryFn: () => getAllPartitionStats(),
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 
   const stalePartitionsQuery = useQuery({
@@ -225,6 +226,7 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getStalePartitions(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   // ── Propagation (Tempest) ──────────────────────────────────────
@@ -234,18 +236,21 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getPropagationStats(),
     staleTime: 30000,
     refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 
   const sectorTopology = useQuery({
     queryKey: ['substrate', 'ripple', 'sectorTopology'],
     queryFn: () => getSectorTopology(),
-    staleTime: 300000, // 5 min — topology is static
+    staleTime: 300000,
+    enabled: pollingEnabled,
   });
 
   const subscribedNodesQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'subscribedNodes'],
     queryFn: () => getSubscribedNodes(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   // ── Replay Engine (Tempest) ────────────────────────────────────
@@ -254,6 +259,7 @@ export function useRipple(): UseRippleReturn {
     queryKey: ['substrate', 'ripple', 'replayStats'],
     queryFn: () => getReplayStats(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const activeSessionsQuery = useQuery({
@@ -261,6 +267,7 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getActiveSessions(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   // ── Analytics ──────────────────────────────────────────────────
@@ -269,12 +276,14 @@ export function useRipple(): UseRippleReturn {
     queryKey: ['substrate', 'ripple', 'analytics'],
     queryFn: () => getLocalAnalytics('24h'),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const eventPatternsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'eventPatterns'],
     queryFn: () => getEventPatterns(3),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   // ── Hardening Monitors ─────────────────────────────────────────
@@ -284,6 +293,7 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getBackpressureState(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   const throughputQuery = useQuery({
@@ -291,12 +301,14 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getThroughputStats(),
     staleTime: 15000,
     refetchInterval: pollingEnabled ? 30000 : false,
+    enabled: pollingEnabled,
   });
 
   const topicHeatmapQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'topicHeatmap'],
     queryFn: () => getTopicHeatmap(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const persistentStoreHealthQuery = useQuery({
@@ -304,24 +316,28 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getPersistentStoreHealth(),
     staleTime: 30000,
     refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 
   const exactlyOnceStatsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'exactlyOnceStats'],
     queryFn: () => getExactlyOnceStats(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const propagationMetricsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'propagationMetrics'],
     queryFn: () => getPropagationMetrics(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   const causalViolationsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'causalViolations'],
     queryFn: () => getCausalViolations(20),
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 
   const partitionHealthQuery = useQuery({
@@ -329,24 +345,28 @@ export function useRipple(): UseRippleReturn {
     queryFn: () => getPartitionHealth(),
     staleTime: 30000,
     refetchInterval: pollingEnabled ? 60000 : false,
+    enabled: pollingEnabled,
   });
 
   const consumerLagAlertsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'consumerLagAlerts'],
     queryFn: () => getConsumerLagAlerts(20),
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
 
   const compactionStatsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'compactionStats'],
     queryFn: () => getCompactionStats(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
 
   const sectorBroadcastsQuery = useQuery({
     queryKey: ['substrate', 'ripple', 'sectorBroadcasts'],
     queryFn: () => getSectorBroadcastStats(),
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
 
   // ── Mutations — Core Bus ───────────────────────────────────────
@@ -446,10 +466,10 @@ export function useRipple(): UseRippleReturn {
     circuits,
     tempestHealth,
     sla,
-    // Core Bus Queries
-    events,
-    jobs,
-    deadLetter,
+    // Core Bus — now mutations
+    fetchEvents,
+    fetchJobs,
+    fetchDeadLetter,
     // Persistent Store
     eventStoreStats,
     consumerPositions,
