@@ -1,9 +1,11 @@
 /**
  * useBrain Hook — BRAIN zone (Cognitive Memory) operations
+ * Respects debug mode kill-switch
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate } from '@/lib/substrate';
+import { debugMode } from '@/lib/debug-mode';
 
 // Access brain module from substrate singleton
 const brain = substrate.brain;
@@ -50,12 +52,13 @@ export interface UseBrainReturn {
   governanceCycle: ReturnType<typeof useMutation>;
   coherenceCheck: ReturnType<typeof useMutation>;
   
-  // Session
-  sessionReflection: (hours?: number) => ReturnType<typeof useQuery>;
+  // Session — now mutation-based to avoid Rules-of-Hooks violation
+  sessionReflection: ReturnType<typeof useMutation>;
 }
 
 export function useBrain(): UseBrainReturn {
   const queryClient = useQueryClient();
+  const pollingEnabled = debugMode.allowModulePolling();
   
   const invalidateBrain = () => {
     queryClient.invalidateQueries({ queryKey: ['substrate', 'brain'] });
@@ -64,33 +67,38 @@ export function useBrain(): UseBrainReturn {
   const status = useQuery({
     queryKey: ['substrate', 'brain', 'status'],
     queryFn: () => brain.status(),
-    refetchInterval: 30000,
+    refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
+    enabled: pollingEnabled,
   });
   
   const memoryState = useQuery({
     queryKey: ['substrate', 'brain', 'memory_state'],
     queryFn: () => brain.memoryState(),
-    refetchInterval: 60000,
+    refetchInterval: pollingEnabled ? 60000 : false,
     staleTime: 30000,
+    enabled: pollingEnabled,
   });
   
   const patterns = useQuery({
     queryKey: ['substrate', 'brain', 'patterns'],
     queryFn: () => brain.patterns(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const curiosity = useQuery({
     queryKey: ['substrate', 'brain', 'curiosity'],
     queryFn: () => brain.curiosity(),
     staleTime: 60000,
+    enabled: pollingEnabled,
   });
   
   const graphSummary = useQuery({
     queryKey: ['substrate', 'brain', 'graph_summary'],
     queryFn: () => brain.graphSummary(),
     staleTime: 120000,
+    enabled: pollingEnabled,
   });
   
   // Memory Operations
@@ -217,11 +225,9 @@ export function useBrain(): UseBrainReturn {
     mutationFn: (depth?: 'standard' | 'deep') => brain.coherenceCheck(depth),
   });
   
-  // Session
-  const sessionReflection = (hours = 24) => useQuery({
-    queryKey: ['substrate', 'brain', 'session_reflection', hours],
-    queryFn: () => brain.sessionReflection(hours),
-    staleTime: 60000,
+  // Session — converted to mutation to avoid Rules-of-Hooks violation
+  const sessionReflection = useMutation({
+    mutationFn: (hours?: number) => brain.sessionReflection(hours ?? 24),
   });
   
   return {
