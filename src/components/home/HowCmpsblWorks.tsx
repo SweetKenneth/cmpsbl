@@ -29,8 +29,8 @@ export function HowCmpsblWorks() {
           className="rounded-2xl border border-border/30 bg-card/40 backdrop-blur-sm p-6 sm:p-10 overflow-hidden"
         >
           <div className="text-center mb-8">
-            <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-primary/30">
-              <Lightbulb className="w-3 h-3 text-primary" />
+            <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5 border-[hsl(var(--neon-cyan)/0.3)]">
+              <Lightbulb className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
               <span className="text-xs font-semibold">Quick Mental Model</span>
             </Badge>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
