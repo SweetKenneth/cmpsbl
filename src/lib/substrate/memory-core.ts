@@ -281,23 +281,36 @@ class MemoryCoreClient {
         return { stage: 'ingest', success: false, error: 'Content is repetitive' };
       }
 
-      // ── Dedup Guard ──────────────────────────────────────────────────────
-      // Check for similar content already in hot tier (trigram or prefix match)
+      // ── Importance & Tier (computed before DB calls — zero I/O) ────────
+      const importance = this.calculateImportance(content, type, confidence);
+      let tier = this.determineTier(importance);
+
+      // ── Dedup + Capacity Guard (parallel DB queries) ──────────────────
       const contentPrefix = content.slice(0, 120);
       const sanitizedPrefix = contentPrefix.replace(/[%_\\]/g, '');
-      const { data: existing } = await supabase
-        .from('brain_memory_hot')
-        .select('id, access_count')
-        .ilike('content', `${sanitizedPrefix}%`)
-        .limit(1);
 
+      // Fire both queries in parallel — they are independent reads
+      const [dedupResult, capacityResult] = await Promise.all([
+        supabase
+          .from('brain_memory_hot')
+          .select('id, access_count')
+          .ilike('content', `${sanitizedPrefix}%`)
+          .limit(1),
+        tier === 'hot'
+          ? supabase.from('brain_memory_hot').select('id', { count: 'exact', head: true })
+          : Promise.resolve({ count: 0 }),
+      ]);
+
+      // Handle dedup hit
+      const existing = dedupResult.data;
       if (existing && existing.length > 0) {
-        // Duplicate found — boost existing instead of inserting
         const currentCount = (existing[0] as any).access_count ?? 0;
-        await supabase
+        // Fire-and-forget boost — no need to await
+        supabase
           .from('brain_memory_hot')
           .update({ access_count: currentCount + 1 })
-          .eq('id', existing[0].id);
+          .eq('id', existing[0].id)
+          .then(() => {}, () => {});
 
         return {
           stage: 'ingest',
@@ -307,22 +320,12 @@ class MemoryCoreClient {
         };
       }
 
-      // ── Capacity Guard ───────────────────────────────────────────────────
-      // Calculate initial importance based on content characteristics
-      const importance = this.calculateImportance(content, type, confidence);
-      let tier = this.determineTier(importance);
-
-      // If targeting hot, check capacity first
+      // Handle capacity overflow
       if (tier === 'hot') {
-        const { count } = await supabase
-          .from('brain_memory_hot')
-          .select('id', { count: 'exact', head: true });
-
         const HOT_CAPACITY = 500;
-        if ((count ?? 0) >= HOT_CAPACITY * 0.8) {
-          // Hot tier at/near capacity — downgrade to warm
+        const count = (capacityResult as any).count ?? 0;
+        if (count >= HOT_CAPACITY * 0.8) {
           tier = 'warm';
-          console.warn(`[MemoryCore] Hot tier at ${count}/${HOT_CAPACITY} — routing to warm`);
         }
       }
 

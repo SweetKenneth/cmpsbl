@@ -414,8 +414,8 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
     content: string,
     insights: { patterns: string[]; antiPatterns: string[]; techniques: string[] }
   ): Promise<void> {
-    // Store main learning
-    await learningEngine.input({
+    // Fire main learning intake (non-blocking — we don't need its result for pattern storage)
+    const mainPromise = learningEngine.input({
       content: `[Encoded Code Learning: ${job.topic.name}]\n\n${content}`,
       source: 'encoded_learning_engine',
       topic: job.topic.id,
@@ -429,39 +429,35 @@ Be specific and practical. Focus on immediately applicable knowledge.`;
       },
     });
 
-    // Store individual patterns as high-confidence memories
-    for (const pattern of insights.patterns) {
-      await memoryCore.ingest(
+    // Batch all pattern + anti-pattern ingestions in parallel instead of sequential awaits
+    const patternIngestions = insights.patterns.map(pattern =>
+      memoryCore.ingest(
         `[Code Pattern: ${job.topic.name}] ${pattern}`,
         {
           type: 'heuristic',
           source: 'encoded_learning',
           confidence: 0.9,
           tags: ['encoded', 'pattern', job.topic.id],
-          metadata: {
-            category: 'code_pattern',
-            topic: job.topic.name,
-          },
+          metadata: { category: 'code_pattern', topic: job.topic.name },
         }
-      );
-    }
+      )
+    );
 
-    // Store anti-patterns
-    for (const antiPattern of insights.antiPatterns) {
-      await memoryCore.ingest(
+    const antiPatternIngestions = insights.antiPatterns.map(antiPattern =>
+      memoryCore.ingest(
         `[Anti-Pattern Warning: ${job.topic.name}] ${antiPattern}`,
         {
           type: 'error_pattern',
           source: 'encoded_learning',
           confidence: 0.9,
           tags: ['encoded', 'anti-pattern', job.topic.id],
-          metadata: {
-            category: 'anti_pattern',
-            topic: job.topic.name,
-          },
+          metadata: { category: 'anti_pattern', topic: job.topic.name },
         }
-      );
-    }
+      )
+    );
+
+    // Await all in parallel — single round of promises
+    await Promise.all([mainPromise, ...patternIngestions, ...antiPatternIngestions]);
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
