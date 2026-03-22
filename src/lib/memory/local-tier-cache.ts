@@ -120,12 +120,11 @@ export class LocalTierCache<T = unknown> {
   async getMany(keys: string[]): Promise<Map<string, T>> {
     const result = new Map<string, T>();
     const centralMisses: string[] = [];
+    const now = Date.now(); // Hoist single timestamp for entire batch
 
     for (const key of keys) {
-      // Sync tiers first
       const hotEntry = this.hot.get(key);
       if (hotEntry) {
-        const now = Date.now();
         hotEntry.lastAccess = now;
         hotEntry.accessCount++;
         this.stats.hotHits++;
@@ -135,7 +134,7 @@ export class LocalTierCache<T = unknown> {
       const warmEntry = this.warm.get(key);
       if (warmEntry) {
         this.stats.warmHits++;
-        this.promote(key, warmEntry);
+        this.promote(key, warmEntry, now);
         result.set(key, warmEntry.value);
         continue;
       }
@@ -211,29 +210,14 @@ export class LocalTierCache<T = unknown> {
     }
     this.stats.demotions += demoted;
 
-    // Single merged pass: evict stale OR over-capacity warm entries
+    // Single merged pass: inline delete — no intermediate array allocation
     const warmCutoff = now - this.warmTtlMs;
-    if (this.warm.size > this.warmCapacity) {
-      // Over capacity — evict oldest (LRU by insertion order) AND stale
-      const toEvict: string[] = [];
-      let overCount = this.warm.size - this.warmCapacity;
-      for (const [key, entry] of this.warm) {
-        if (overCount > 0 || entry.lastAccess < warmCutoff) {
-          toEvict.push(key);
-          if (overCount > 0) overCount--;
-        }
-      }
-      for (const key of toEvict) {
+    let overCount = this.warm.size > this.warmCapacity ? this.warm.size - this.warmCapacity : 0;
+    for (const [key, entry] of this.warm) {
+      if (overCount > 0 || entry.lastAccess < warmCutoff) {
         this.warm.delete(key);
         evicted++;
-      }
-    } else {
-      // Under capacity — only evict stale
-      for (const [key, entry] of this.warm) {
-        if (entry.lastAccess < warmCutoff) {
-          this.warm.delete(key);
-          evicted++;
-        }
+        if (overCount > 0) overCount--;
       }
     }
     this.stats.evictions += evicted;

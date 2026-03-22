@@ -437,11 +437,12 @@ export class MemoryClient {
     try {
       const userId = this.assertUserId();
 
-      // FIX #11: Query hot AND warm in parallel
+      // FIX #11: Query hot AND warm in parallel — uses hoisted select constant
+      const sel = MemoryClient.MEMORY_SELECT;
       const [hotResult, warmResult] = await Promise.allSettled([
         supabase
           .from('brain_memory_hot' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .gte('created_at', timeframe.from)
@@ -450,7 +451,7 @@ export class MemoryClient {
           .limit(limit),
         supabase
           .from('brain_memory_warm' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .gte('created_at', timeframe.from)
@@ -479,12 +480,17 @@ export class MemoryClient {
       processTier(hotResult, 'hot');
       processTier(warmResult, 'warm');
 
-      // Sort chronologically using cached getTime() — avoids Date construction per comparison
-      for (const e of entries) {
-        (e as any)._ts = new Date(e.timestamp).getTime();
-      }
-      entries.sort((a, b) => (a as any)._ts - (b as any)._ts);
-      return entries.slice(0, limit);
+      // Sort chronologically — pre-compute timestamps in typed array for cache-friendly sort
+      if (entries.length <= 1) return entries.slice(0, limit);
+      const ts = new Float64Array(entries.length);
+      for (let i = 0; i < entries.length; i++) ts[i] = new Date(entries[i].timestamp).getTime();
+      // Index-sort to avoid repeated property access during comparisons
+      const indices = Array.from({ length: entries.length }, (_, i) => i);
+      indices.sort((a, b) => ts[a] - ts[b]);
+      const sorted: MemoryEntry[] = [];
+      const cap = Math.min(limit, indices.length);
+      for (let i = 0; i < cap; i++) sorted.push(entries[indices[i]]);
+      return sorted;
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       console.warn(`[Memory] Replay failed: ${msg}`);
@@ -761,18 +767,21 @@ export class MemoryClient {
     }
   }
 
-  /** Build context string from recalled memories — avoids re-sorting already-sorted input */
+  /** Build context string — single string accumulation, no intermediate array */
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
-    const top = memories.length <= 5 ? memories : memories.slice(0, 5);
-    const parts = ['\n\n[Relevant context from memory — strategy: adaptive]'];
-    for (const m of top) {
-      const tier = m.tier ? `[${m.tier}]` : '';
-      const type = m.memory_type ? `(${m.memory_type})` : '';
-      parts.push(`- ${tier}${type} ${m.content}`);
+    const cap = memories.length <= 5 ? memories.length : 5;
+    let result = '\n\n[Relevant context from memory — strategy: adaptive]';
+    for (let i = 0; i < cap; i++) {
+      const m = memories[i];
+      result += '\n- ';
+      if (m.tier) { result += '['; result += m.tier; result += ']'; }
+      if (m.memory_type) { result += '('; result += m.memory_type; result += ')'; }
+      result += ' ';
+      result += m.content;
     }
-    return parts.join('\n');
+    return result;
   }
 
   /** Track recall hit/miss for metacognition */
@@ -865,16 +874,23 @@ export class MemoryClient {
     const hour = new Date().getHours();
     activity[hour] = (activity[hour] || 0) + 1;
     
-    // Top 3 peak hours via partial sort (avoids full sort)
+    // Top 3 peak hours — swap-to-end instead of O(n) splice
     const entries = Object.entries(activity) as [string, number][];
     const peaks: number[] = [];
-    for (let i = 0; i < 3 && entries.length > 0; i++) {
+    let activeLen = entries.length;
+    for (let i = 0; i < 3 && activeLen > 0; i++) {
       let maxIdx = 0;
-      for (let j = 1; j < entries.length; j++) {
+      for (let j = 1; j < activeLen; j++) {
         if (entries[j][1] > entries[maxIdx][1]) maxIdx = j;
       }
       peaks.push(parseInt(entries[maxIdx][0]));
-      entries.splice(maxIdx, 1);
+      // Swap max to end and shrink active window — O(1) vs O(n) splice
+      activeLen--;
+      if (maxIdx !== activeLen) {
+        const tmp = entries[maxIdx];
+        entries[maxIdx] = entries[activeLen];
+        entries[activeLen] = tmp;
+      }
     }
 
     await supabase
