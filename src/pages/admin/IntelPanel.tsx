@@ -44,7 +44,7 @@ import { generateUnifiedProposal, type UnifiedProposal } from '@/lib/control-pla
 
 const severityStyles: Record<string, string> = {
   critical: 'border-l-destructive bg-red-50/50',
-  warn: 'border-l-neon-amber bg-amber-50/30',
+  warn: 'border-l-neon-amber bg-neon-amber/30',
   info: 'border-l-neon-blue bg-blue-50/20',
 };
 
@@ -123,7 +123,7 @@ function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
   const statusColors: Record<string, string> = {
     mastered: 'text-neon-green bg-green-50',
     progressing: 'text-neon-blue bg-blue-50',
-    stale: 'text-neon-amber bg-amber-50',
+    stale: 'text-neon-amber bg-neon-amber',
     new: 'text-gray-600 bg-gray-50',
   };
   

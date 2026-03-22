@@ -451,7 +451,7 @@ export function AnalyticsTab() {
           </motion.div>
 
           {/* ═══ IMMUNE & ENCODE ═══ */}
-          <CollapsibleSection id="immune" title="Immune System & ENCODE" icon={Shield} iconColor="red-400">
+          <CollapsibleSection id="immune" title="Immune System & ENCODE" icon={Shield} iconColor="destructive">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <MetricMini label="Immune Runs" value={fmt(data.immuneRuns)} sub="Last 6h probes" color="red" />
               <MetricMini
@@ -512,7 +512,7 @@ export function AnalyticsTab() {
           </CollapsibleSection>
 
           {/* ═══ AGENCY TELEMETRY ═══ */}
-          <CollapsibleSection id="agency" title="Agency Operations" icon={Bot} iconColor="blue-400">
+          <CollapsibleSection id="agency" title="Agency Operations" icon={Bot} iconColor="neon-blue">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <MetricMini label="Tasks Completed" value={fmt(data.agencyTasksCompleted)} sub={`${data.agencyTasksFailed} failed`} color="blue" />
               <MetricMini label="Pending" value={fmt(data.agencyTasksPending)} sub="In queue" color="amber" />
@@ -532,7 +532,7 @@ export function AnalyticsTab() {
           </CollapsibleSection>
 
           {/* ═══ AUTO-BLOG & FOUNDRY ═══ */}
-          <CollapsibleSection id="content" title="Content Pipeline & Foundry" icon={FileText} iconColor="violet-400">
+          <CollapsibleSection id="content" title="Content Pipeline & Foundry" icon={FileText} iconColor="neon-purple">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
               <MetricMini label="Published Posts" value={String(data.autoblogPublished)} sub={`${data.autoblogDraft} drafts`} color="violet" />
               <MetricMini label="Avg Confidence" value={`${(data.autoblogAvgConfidence * 100).toFixed(0)}%`} sub="Quality score" color={data.autoblogAvgConfidence >= 0.8 ? 'emerald' : 'amber'} />
@@ -551,7 +551,7 @@ export function AnalyticsTab() {
           </CollapsibleSection>
 
           {/* ═══ PROVIDER / COST BREAKDOWN ═══ */}
-          <CollapsibleSection id="cost" title="Cost & Provider Analytics" icon={DollarSign} iconColor="emerald-400">
+          <CollapsibleSection id="cost" title="Cost & Provider Analytics" icon={DollarSign} iconColor="neon-green">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
               <MetricMini label="Total Cost" value={fmtCost(data.totalCostCents)} sub={`${dateRange} window`} color="emerald" />
               <MetricMini label="Avg Cost/Call" value={`${data.avgCostPerCall}¢`} sub="Per invocation" color="emerald" />

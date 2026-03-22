@@ -116,7 +116,7 @@ const DreamArchaeology = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <Card className="mb-8 bg-gradient-to-br from-neon-purple/30 to-indigo-950/20 border-neon-purple/20">
+              <Card className="mb-8 bg-gradient-to-br from-neon-purple/30 to-primary/20 border-neon-purple/20">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Eye className="w-5 h-5 text-neon-purple" />

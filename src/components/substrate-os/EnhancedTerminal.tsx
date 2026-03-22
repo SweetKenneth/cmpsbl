@@ -1077,7 +1077,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
         <div className={cn(
           "border-t px-4 py-2",
           currentTheme.border,
-          isBiohack ? "biohack-suggestions" : isLight ? "bg-amber-50" : "bg-neon-amber/5"
+          isBiohack ? "biohack-suggestions" : isLight ? "bg-neon-amber" : "bg-neon-amber/5"
         )}>
           <div className="flex items-center gap-2">
             <SearchIcon className={cn("w-3 h-3", isBiohack ? "text-[hsl(180_100%_60%)]" : "text-neon-amber")} />

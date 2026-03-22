@@ -128,7 +128,7 @@ export const DreamStreamTicker = ({ maxItems = 5, compact = false }: DreamStream
             className={cn(
               "rounded-lg border transition-colors",
               item.stream_type === 'nightmare' 
-                ? 'bg-rose-950/20 border-neon-magenta/30' 
+                ? 'bg-destructive/20 border-neon-magenta/30' 
                 : 'bg-neon-purple/20 border-neon-purple/30',
               compact ? 'p-2' : 'p-3'
             )}
