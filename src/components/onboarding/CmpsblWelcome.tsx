@@ -21,13 +21,14 @@ interface OnboardingStep {
   body: string;
   accent: string;
   pattern: string;
+  footer?: string;
   /** Inline CTA (embedded in card body, not footer) */
   inlineCta?: { text: string; href: string };
   /** Second inline CTA */
   secondaryInlineCta?: { text: string; href: string };
-  /** Bullet list for card 4 */
+  /** Bullet list */
   bullets?: string[];
-  /** Dual entry descriptions for card 5 */
+  /** Dual entry descriptions */
   entries?: { icon: React.ElementType; label: string; desc: string }[];
 }
 
