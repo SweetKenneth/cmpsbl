@@ -41,11 +41,11 @@ interface LogEntry {
 }
 
 const LAYER_COLORS = {
-  kernel: { bg: 'bg-orange-500/20', border: 'border-orange-500/50', text: 'text-orange-400' },
-  node: { bg: 'bg-violet-500/20', border: 'border-violet-500/50', text: 'text-violet-400' },
-  'mesh-overlay': { bg: 'bg-emerald-500/20', border: 'border-emerald-500/50', text: 'text-emerald-400' },
-  'zone-ccr': { bg: 'bg-fuchsia-500/20', border: 'border-fuchsia-500/50', text: 'text-fuchsia-400' },
-  'zone-ocg': { bg: 'bg-slate-500/20', border: 'border-slate-500/50', text: 'text-slate-400' },
+  kernel: { bg: 'bg-neon-amber/20', border: 'border-neon-amber/50', text: 'text-neon-amber' },
+  node: { bg: 'bg-neon-purple/20', border: 'border-neon-purple/50', text: 'text-neon-purple' },
+  'mesh-overlay': { bg: 'bg-neon-green/20', border: 'border-neon-green/50', text: 'text-neon-green' },
+  'zone-ccr': { bg: 'bg-neon-magenta/20', border: 'border-neon-magenta/50', text: 'text-neon-magenta' },
+  'zone-ocg': { bg: 'bg-muted/20', border: 'border-muted-foreground/50', text: 'text-muted-foreground' },
 };
 
 const INITIAL_NODES: ModuleState[] = [
