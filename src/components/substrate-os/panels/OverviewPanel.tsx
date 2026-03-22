@@ -61,8 +61,8 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
   const integrity = useMemo(() => calculateIntegrity(matrixNodes), [matrixNodes]);
 
   const statusLabel = healthScore.isHealthy ? 'OPTIMAL' : healthScore.isDegraded ? 'DEGRADED' : 'CRITICAL';
-  const statusColor = healthScore.isHealthy ? 'text-emerald-600 dark:text-emerald-400' : healthScore.isDegraded ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
-  const ringColor = healthScore.isHealthy ? 'stroke-emerald-500' : healthScore.isDegraded ? 'stroke-amber-500' : 'stroke-red-500';
+  const statusColor = healthScore.isHealthy ? 'text-neon-green' : healthScore.isDegraded ? 'text-neon-amber' : 'text-destructive';
+  const ringColor = healthScore.isHealthy ? 'stroke-neon-green' : healthScore.isDegraded ? 'stroke-neon-amber' : 'stroke-destructive';
 
   const circumference = 2 * Math.PI * 42;
   const progress = (healthScore.healthScore / 100) * circumference;
