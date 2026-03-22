@@ -293,35 +293,31 @@ export class MemoryClient {
       const nowIso = new Date().toISOString();
       
       // Run meta fetch AND all tier queries in a single parallel batch
+      const sel = MemoryClient.MEMORY_SELECT;
       const [metaResult, dueForReviewResult, hotResult, warmResult, substrateResult] = await Promise.allSettled([
-        // Meta state (was previously sequential before tier queries)
         this.getMetaState(),
-        // Spaced repetition pre-fetch
         supabase
           .from('brain_memory_hot' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .lte('next_review_at', nowIso)
           .order('value_score', { ascending: false })
           .limit(3),
-        // Hot tier
         supabase
           .from('brain_memory_hot' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
           .limit(limit),
-        // Warm tier
         supabase
           .from('brain_memory_warm' as any)
-          .select('id, content, created_at, value_score, memory_type, provenance')
+          .select(sel)
           .eq('user_id', userId)
           .eq('agent_id', this.agentId)
           .order('value_score', { ascending: false })
           .limit(limit),
-        // Vector-based recall via substrate
         supabase.functions.invoke('pf-substrate', {
           body: {
             module: 'brain',
