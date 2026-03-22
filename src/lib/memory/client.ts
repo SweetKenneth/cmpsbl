@@ -81,19 +81,21 @@ export interface UserFingerprint {
 }
 
 export class MemoryClient {
-  private agentId: string;
-  private scope: 'session' | 'project';
-  private sessionId: string;
+  private readonly agentId: string;
+  private readonly scope: 'session' | 'project';
+  private readonly sessionId: string;
   private userId: string | null = null;
   
+  /** Cached meta state to reduce DB round-trips */
+  private cachedMeta: MemoryMetaState | null = null;
+  private metaCacheExpiry = 0;
+  private static readonly META_CACHE_TTL_MS = 30_000; // 30s
+
   constructor(agentId: string, scope: 'session' | 'project' = 'project') {
     this.agentId = agentId;
     this.scope = scope;
-    this.sessionId = this.generateSessionId();
-  }
-  
-  private generateSessionId(): string {
-    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
+    // Cheaper session ID: avoids toString(36)
+    this.sessionId = `${Date.now()}-${(Math.random() * 1e9 | 0).toString(16)}`;
   }
 
   /** Set user context for per-user memory isolation */
