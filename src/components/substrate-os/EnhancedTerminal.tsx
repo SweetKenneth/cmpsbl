@@ -833,7 +833,7 @@ export function EnhancedTerminal({ enabled, className, fullHeight = false }: Enh
 
           {/* Ready indicator after boot */}
           {bootComplete && history.length === 0 && (
-            <div className={cn("flex items-center gap-2 text-xs", isBiohack ? "text-[hsl(180_100%_70%)]" : "text-muted-foreground")}>
+            <div className={cn("flex items-center gap-2 text-xs", isBiohack ? "text-neon-cyan/70" : "text-muted-foreground")}>
               {isBiohack ? (
                 <div className="biohack-cursor" />
               ) : (
