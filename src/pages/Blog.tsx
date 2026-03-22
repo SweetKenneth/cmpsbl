@@ -705,7 +705,7 @@ export default function Blog() {
                   Research
                 </motion.span>
                 <motion.span
-                  className="block bg-gradient-to-r from-primary via-[hsl(var(--neon-cyan))] to-primary bg-clip-text text-transparent font-mono uppercase tracking-[-0.05em]"
+                  className="block text-primary font-mono uppercase tracking-[-0.05em]"
                   initial={{ opacity: 0, x: 30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}

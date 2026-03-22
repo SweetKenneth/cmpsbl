@@ -103,10 +103,10 @@ export default function PromptFluidHome() {
           <motion.h1
             {...fadeUp}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.05] mb-6"
           >
             <span className="text-foreground">Prompt</span>
-            <span className="bg-gradient-to-r from-primary via-cyan-400 to-primary bg-clip-text text-transparent">Fluid</span>
+            <span className="text-primary">Fluid</span>
           </motion.h1>
 
           <motion.p
