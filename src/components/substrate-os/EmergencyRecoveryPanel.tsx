@@ -148,8 +148,8 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
     <Card className={cn(
       "border transition-all",
       isCritical 
-        ? "border-red-500/50 bg-red-500/5 dark:bg-red-500/10 animate-pulse-slow" 
-        : "border-amber-500/30 bg-amber-500/5"
+        ? "border-destructive/50 bg-destructive/5 dark:bg-destructive/10 animate-pulse-slow" 
+        : "border-neon-amber/30 bg-neon-amber/5"
     )}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-medium flex items-center gap-2">
