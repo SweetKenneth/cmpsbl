@@ -152,7 +152,7 @@ Ascended Memories are crystallized capabilities that have structural dependencie
 
 A Capability Pack is the complete export artifact produced by crystallization. It contains:
 
-- Pipeline implementation
+- Memory chain implementation
 - Mini Runtime engine
 - Documentation (README, technical dossier)
 - License

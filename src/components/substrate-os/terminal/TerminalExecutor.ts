@@ -2464,7 +2464,7 @@ ${allFeatures.map(f => {
           data: scanResult,
         };
       } catch (err) {
-        // Fallback to legacy scan if new pipeline not available
+        // Fallback to legacy scan if new memory chain not available
         const depth = args[0] as 'quick' | 'standard' | 'deep' | undefined;
         result = await evolutionMod.scan({ depth: depth || 'standard' });
       }
@@ -3482,7 +3482,7 @@ ${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padSta
         output += `\n│\n└──────────────────────────────────────────────────────────────`;
         return { success: allOk, output, data: results };
       } catch (err) {
-        return { success: false, output: `▓ Pipeline error: ${err instanceof Error ? err.message : 'Unknown'}` };
+        return { success: false, output: `▓ Memory chain error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     }
     else if (base === 'cortex.synergy.modules') {

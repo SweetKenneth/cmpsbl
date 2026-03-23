@@ -150,7 +150,7 @@ export function EncodeSystemsConsole() {
     return { navigation, concerns, patterns, skills, tables, summary: lines.join('\n') };
   }, []);
 
-  // ── Generate a real plan through the pipeline ──
+  // ── Generate a real plan through the memory chain ──
   const generatePlan = useCallback(async (intent: string, modules?: string[]) => {
     try {
       addSystemMsg('info', '⏳ Generating PatchPlan through DECODE Agent memory chain...');

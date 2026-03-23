@@ -18,7 +18,7 @@ Previously, every language export (Rust, Java, PHP, Python, Go, C#, Ruby, Swift,
 
 - CJPI scoring weights and thresholds
 - Tier assignment logic
-- Pipeline composition and validation
+- Memory chain composition and validation
 - Saga orchestration with compensating transactions
 - Dependency graph traversal
 - State machine internals
@@ -39,7 +39,7 @@ The **single source of truth** is `src/lib/export/standalone-runtime.ts`. It own
 | CJPI scoring engine | §2 — standalone-runtime.ts |
 | Auto-tiering thresholds | §3 — standalone-runtime.ts |
 | Dependency graph | §6 — standalone-runtime.ts |
-| Pipeline composer | §7 — standalone-runtime.ts |
+| Memory chain composer | §7 — standalone-runtime.ts |
 | Saga orchestrator | §8 — standalone-runtime.ts |
 | Finite state machine | §5 — standalone-runtime.ts |
 | Synergy multiplier | §9 — standalone-runtime.ts |
@@ -64,7 +64,7 @@ Bridge adapters **do NOT contain**:
 - Tier threshold values
 - Saga orchestration logic
 - Dependency graph internals
-- Pipeline composition/validation
+- Memory chain composition/validation
 - Module effect resolution
 - Finite state machine internals
 

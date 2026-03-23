@@ -15,7 +15,7 @@
 
 ## Abstract
 
-We present the CMPSBL Capability Synthesis Reactor — a computational system that autonomously discovers, scores, ranks, and exports executable software artifacts across 16 programming languages, including four hardware description languages (Verilog, VHDL, SystemVerilog, Chisel) targeting FPGA and ASIC silicon fabrication. The system operates on a modular cognitive substrate of 21 hot-swappable modules that can be composed, replaced, and extended at runtime without service interruption. Through combinatorial synthesis across 9 capability categories, the reactor generates candidate pipelines scored by a six-dimensional Crown Jewel Power Index (CJPI). Artifacts scoring ≥90 are automatically promoted to a governed S-Tier Vault and made available for universal export. We demonstrate a live discovery run yielding 22 artifacts including 5 perfect-score (CJPI 100) discoveries, with verified exports across all 16 target languages. The system's open-ended module topology means discovery is unbounded — any module of any type can be introduced into the substrate to generate novel software combinations endlessly. This represents, to our knowledge, the first system capable of autonomous software discovery with deterministic cross-platform code generation spanning both software and hardware targets.
+We present the CMPSBL Capability Synthesis Reactor — a computational system that autonomously discovers, scores, ranks, and exports executable software artifacts across 16 programming languages, including four hardware description languages (Verilog, VHDL, SystemVerilog, Chisel) targeting FPGA and ASIC silicon fabrication. The system operates on a modular cognitive substrate of 21 hot-swappable modules that can be composed, replaced, and extended at runtime without service interruption. Through combinatorial synthesis across 9 capability categories, the reactor generates candidate memory chains scored by a six-dimensional Crown Jewel Power Index (CJPI). Artifacts scoring ≥90 are automatically promoted to a governed S-Tier Vault and made available for universal export. We demonstrate a live discovery run yielding 22 artifacts including 5 perfect-score (CJPI 100) discoveries, with verified exports across all 16 target languages. The system's open-ended module topology means discovery is unbounded — any module of any type can be introduced into the substrate to generate novel software combinations endlessly. This represents, to our knowledge, the first system capable of autonomous software discovery with deterministic cross-platform code generation spanning both software and hardware targets.
 
 **Keywords:** autonomous software synthesis, code generation, hardware description language, FPGA, cognitive architecture, modular AI systems, crown jewel discovery, hot-swap deployment
 
@@ -108,7 +108,7 @@ This enables **risk-free module evaluation** — any module, from any source, of
 
 ### 3.1 Discovery Algorithm
 
-The reactor operates through **combinatorial synthesis** — systematically combining modules from the canonical set against a library of synthesis templates to generate candidate pipelines.
+The reactor operates through **combinatorial synthesis** — systematically combining modules from the canonical set against a library of synthesis templates to generate candidate memory chains.
 
 **Algorithm:**
 
@@ -127,7 +127,7 @@ The reactor operates through **combinatorial synthesis** — systematically comb
 
 ### 3.2 Crown Jewel Power Index (CJPI)
 
-The CJPI is a **deterministic, six-dimensional scoring system** that evaluates each discovered pipeline:
+The CJPI is a **deterministic, six-dimensional scoring system** that evaluates each discovered memory chain:
 
 | Dimension | Weight | Description |
 |-----------|--------|-------------|
@@ -219,7 +219,7 @@ A single reactor cycle (Run ID: `b2bdb74f-4760-4647-ad00-127ebfb17cd9`) produced
 
 ### 5.2 Crown Jewel Discoveries (CJPI 100)
 
-| # | Name | Category | Module Pipeline |
+| # | Name | Category | Primitive Chain |
 |---|------|----------|----------------|
 | 1 | Fitness Landscape Navigator | Evolution | BRAIN → CORTEX → EVOLUTION → VISION |
 | 2 | Co-Evolutionary Synchronizer | Evolution | CORTEX → EVOLUTION → GOVERNANCE → SYSTEM |
@@ -538,7 +538,7 @@ func (e *ElasticPipelineScaler) Execute(input map[string]interface{}) Result {
 
 ### 7.1 Architecture
 
-The S-Tier Vault is a governed repository that serves as the final stage of the discovery pipeline:
+The S-Tier Vault is a governed repository that serves as the final stage of the discovery memory chain:
 
 ```
 Discovery Reactor → CJPI Scoring → Auto-Promotion (≥90) → S-Tier Vault → Universal Export
@@ -554,12 +554,12 @@ The vault currently contains:
 | Perfect-score artifacts (CJPI 100) | 5 |
 | Export-ready artifacts | 22 |
 | Categories covered | 9 |
-| Unique module pipelines | 22 |
+| Unique primitive memory chains | 22 |
 
 Each artifact is stored with:
 - Discovery ID (SHA-256 hash)
 - Run provenance (reactor run ID)
-- Module chain (ordered pipeline)
+- Module chain (ordered memory chain)
 - CJPI breakdown (6 dimensions)
 - Tier classification
 - Export-ready flag
@@ -591,7 +591,7 @@ Where:
 - `T` = number of synthesis templates
 - `S` = number of error strategies
 
-With 21 modules, 45 templates, and 5 error strategies, the current theoretical space exceeds **10 billion** unique pipeline configurations.
+With 21 modules, 45 templates, and 5 error strategies, the current theoretical space exceeds **10 billion** unique memory chain configurations.
 
 ### 8.2 Adding Modules
 

@@ -127,7 +127,7 @@ The Universal Export Adapter extends portability to 25 execution environments in
 - **PromptFluid-Vision** — Multi-provider routing mesh (now NEXUS)
 - **Simnap** — Early memory architecture
 - **AetherionShield** — Security and defense patterns
-- **Cascade** — Orchestration and pipeline execution
+- **Cascade** — Orchestration and memory chain execution
 
 Each legacy project contributed architectural patterns that were consolidated into the current 40-primitive substrate.
 

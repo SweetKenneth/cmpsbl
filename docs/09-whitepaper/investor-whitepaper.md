@@ -42,7 +42,7 @@ Every software company in the world faces the same constraint: **software is man
 
 ### What It Does
 
-1. **Discovers** — Autonomously combines 21 modular building blocks across 9 capability categories to synthesize novel software pipelines
+1. **Discovers** — Autonomously combines 21 modular building blocks across 9 capability categories to synthesize novel software memory chains
 2. **Scores** — Rates every discovery on a deterministic 6-dimensional index (CJPI: Crown Jewel Power Index, 0–100)
 3. **Surfaces** — Automatically promotes discoveries scoring 90–100 to a governed S-Tier Vault
 4. **Exports** — Generates working, drop-in code in 16 languages including 4 hardware description languages for silicon fabrication
@@ -67,7 +67,7 @@ Every software company in the world faces the same constraint: **software is man
 
 ### 1. Combinatorial Discovery Space
 
-With 21 modules, the system has over **10 billion** possible pipeline configurations. Every new module added multiplies this space combinatorially. This is not a feature — it is a **mathematical property** of the architecture.
+With 21 modules, the system has over **10 billion** possible memory chain configurations. Every new module added multiplies this space combinatorially. This is not a feature — it is a **mathematical property** of the architecture.
 
 ### 2. Silicon-to-Software Vertical Integration
 

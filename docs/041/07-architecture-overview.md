@@ -184,7 +184,7 @@ The substrate maintains 940+ registered capabilities organized into registries:
 | Infrastructure | Variable | Infrastructure primitives |
 | Apex Capabilities | Variable | Premium, high-value |
 | Expansion Layer | 275 | 11 expansion primitives × 25 |
-| Synergies | 200 | Cross-module pipelines |
+| Synergies | 200 | Cross-primitive memory chains |
 
 Capabilities can be invoked individually, composed into chains, or discovered through the Memory Stream.
 

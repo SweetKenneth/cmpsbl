@@ -128,7 +128,7 @@ The system currently has 21 modules. The theoretical discovery space is over 10 
 
 As new modules are added — from any industry, any domain, any specialization — the discovery space grows **combinatorially**. This means:
 
-- A **healthcare module** could discover new diagnostic pipelines
+- A **healthcare module** could discover new diagnostic memory chains
 - A **financial module** could discover new risk models
 - A **climate module** could discover new energy optimization systems
 - A **defense module** could discover new threat assessment capabilities
