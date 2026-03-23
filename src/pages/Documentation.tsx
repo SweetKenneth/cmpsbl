@@ -298,8 +298,8 @@ HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
 STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
 AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
-// Health score = Σ(module_health × weight) / Σ(weights)
-// Circuit breaker trips when module health < 0.3`}</CodeBlock>
+// Health score = Σ(primitive_health × weight) / Σ(weights)
+// Circuit breaker trips when primitive health < 0.3`}</CodeBlock>
       </div>
 
       {/* Safety switches */}

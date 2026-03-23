@@ -124,7 +124,7 @@ export default function Solutions() {
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
               <Gauge className="w-3 h-3 mr-2" />
-              40 Modules · 12 Groups · 675+ Capabilities
+              40 Primitives · Agents · Engines · Layers · Organs
             </Badge>
             
              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 text-foreground leading-tight">
