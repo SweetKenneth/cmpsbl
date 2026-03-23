@@ -470,7 +470,7 @@ export const healthAggregator = new CrossModuleHealthAggregator();`
     category: 'brain',
     difficulty: 'advanced',
     estimatedTime: '45 min',
-    features: ['NL Pipeline Creation', 'Auto-Crystallization', 'Cross-Module Routing', 'Pipeline Versioning'],
+    features: ['NL Memory Creation', 'Auto-Crystallization', 'Cross-Module Routing', 'Memory Versioning'],
     code: `import { substrate } from './lib/substrate';
 
 class IntentMeshPipelineBuilder {

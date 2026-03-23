@@ -32,7 +32,7 @@ const LEARNING_TRACKS = [
   { icon: Network, title: 'AI Routing', desc: 'Route requests across multiple AI providers with automatic failover and cost controls', difficulty: 'Beginner', modules: 4, time: '30 min', color: 'text-neon-cyan' },
   { icon: Shield, title: 'Security & Safety', desc: 'Add threat detection, rate limiting, content filtering, and audit logging', difficulty: 'Intermediate', modules: 5, time: '40 min', color: 'text-neon-green' },
   { icon: Layers, title: 'Building with Resolvers', desc: 'Learn the node → resolver pattern: naming, routing, logging, and observability', difficulty: 'Intermediate', modules: 7, time: '55 min', color: 'text-neon-purple' },
-  { icon: Zap, title: 'Advanced Pipelines', desc: 'Build multi-step processing chains with quality gates and performance tracking', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
+  { icon: Zap, title: 'Advanced Memories', desc: 'Build multi-step processing chains with quality gates and performance tracking', difficulty: 'Advanced', modules: 8, time: '60 min', color: 'text-neon-amber' },
   { icon: Target, title: 'Discovery Scoring', desc: 'Understand how capabilities are scored for novelty, usefulness, and composability', difficulty: 'Advanced', modules: 5, time: '35 min', color: 'text-neon-magenta' },
   { icon: Sparkles, title: 'Memory Stream', desc: 'Discover, crystallize, and export capabilities from the live discovery feed', difficulty: 'Intermediate', modules: 6, time: '50 min', color: 'text-primary' },
   { icon: Code, title: 'Production Ready', desc: 'Error handling, retry patterns, graceful degradation, and performance tuning', difficulty: 'Expert', modules: 9, time: '75 min', color: 'text-neon-cyan' },

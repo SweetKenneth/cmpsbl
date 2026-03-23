@@ -67,7 +67,7 @@ The substrate is valued across six pillars:
 | Memory model | 4-tier (hot/warm/cold/archive) | Lakehouse |
 | Learning | CLM — 14,400 calls/day autonomous | Batch training |
 | Compounding | Knowledge permanently distilled | Model retraining |
-| Discovery | Memory Stream — autonomous pipeline discovery | Manual feature engineering |
+| Discovery | Memory Stream — autonomous memory discovery | Manual feature engineering |
 | Retention | SM-2 spaced repetition | TTL-based |
 
 **Defensible value:** Every day the system runs, it becomes more valuable. CLM creates compound intellectual property that increases the switching cost for any user or operator.

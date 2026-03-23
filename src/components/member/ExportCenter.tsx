@@ -27,7 +27,7 @@ const EXPORT_TEMPLATES: ExportTemplate[] = [
   {
     id: 'json-full', name: 'Full JSON Export', description: 'Complete pipeline data with metadata, dependencies, and execution traces',
     format: 'JSON', icon: FileJson, minTier: 'studio',
-    fields: ['Pipeline definition', 'Execution traces', 'Dependencies', 'Metadata', 'CJPI scores'],
+    fields: ['Memory definition', 'Execution traces', 'Dependencies', 'Metadata', 'CJPI scores'],
   },
   {
     id: 'csv-metrics', name: 'Metrics CSV', description: 'Tabular export of performance metrics, usage stats, and cost data',
@@ -47,7 +47,7 @@ const EXPORT_TEMPLATES: ExportTemplate[] = [
   {
     id: 'pack-artifact', name: 'Artifact Pack', description: 'Complete artifact pack with pipeline, documentation, and license',
     format: 'ZIP', icon: Package, minTier: 'architect',
-    fields: ['Pipeline code', 'Documentation', 'License', 'Build config', 'Testbench'],
+    fields: ['Memory code', 'Documentation', 'License', 'Build config', 'Testbench'],
   },
 ];
 

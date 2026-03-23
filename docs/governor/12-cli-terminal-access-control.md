@@ -829,7 +829,7 @@ As Governor, these are your most powerful commands:
 | `@cmpsbl/mesh` | Mesh telemetry and communications | Creator |
 | `@cmpsbl/bridge` | Polyglot execution bridges (24 languages) | Studio |
 | `@cmpsbl/sdk` | Authenticated API access client | Studio |
-| `@cmpsbl/discovery` | Foundry and pipeline discovery | Architect |
+| `@cmpsbl/discovery` | Foundry and memory discovery | Architect |
 | `@cmpsbl/cli` | Command-line interface (this tool) | Free (gated per command) |
 | `@cmpsbl/react` | React hooks for substrate integration | Creator |
 | `@cmpsbl/test-harness` | Validation and testing suite | Creator |

@@ -19,7 +19,7 @@ const NPM_PACKAGES = [
   { name: "@cmpsbl/mesh", desc: "Mesh telemetry — emit and subscribe to node communication events", tier: "Core" },
   { name: "@cmpsbl/bridge", desc: "Bridge adapter — wire Python, Go, Rust runtimes to the substrate", tier: "Core" },
   { name: "@cmpsbl/sdk", desc: "Engine SDK — authenticated access to hosted CMPSBL engines", tier: "Developer" },
-  { name: "@cmpsbl/discovery", desc: "Pipeline discovery — score, crystallize, and manage capabilities", tier: "Developer" },
+  { name: "@cmpsbl/discovery", desc: "Memory discovery — score, crystallize, and manage capabilities", tier: "Developer" },
   { name: "@cmpsbl/cli", desc: "CLI tools — init, score, export, validate-manifest commands", tier: "Developer" },
   { name: "@cmpsbl/react", desc: "React hooks — useIntent, useMesh, useRuntime, useCJPI", tier: "Ecosystem" },
   { name: "@cmpsbl/test-harness", desc: "Test utilities for validating pipelines and bridge adapters", tier: "Ecosystem" },

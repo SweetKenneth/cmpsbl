@@ -1252,7 +1252,7 @@ const data = await res.json();`}</CodeBlock>
             { pkg: '@cmpsbl/mesh', desc: 'Mesh telemetry client' },
             { pkg: '@cmpsbl/bridge', desc: 'Polyglot runtime adapters' },
             { pkg: '@cmpsbl/sdk', desc: 'Authenticated engine access' },
-            { pkg: '@cmpsbl/discovery', desc: 'Pipeline crystallization' },
+            { pkg: '@cmpsbl/discovery', desc: 'Memory crystallization' },
             { pkg: '@cmpsbl/cli', desc: 'CLI dev tools' },
             { pkg: '@cmpsbl/react', desc: 'React hooks' },
             { pkg: '@cmpsbl/test-harness', desc: 'Validation suite' },

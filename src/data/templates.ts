@@ -6945,7 +6945,7 @@ export const hrAgent = new HRAgent();`
     category: 'brain',
     difficulty: 'elite',
     estimatedTime: '50 min',
-    features: ['Prospect Memory', 'Deal Pattern Learning', 'Win Rate Optimization', 'Pipeline Intelligence'],
+    features: ['Prospect Memory', 'Deal Pattern Learning', 'Win Rate Optimization', 'Memory Intelligence'],
     code: `// Sales Intelligence Agent - Elite Template
 import { substrate } from './lib/substrate';
 
@@ -9883,7 +9883,7 @@ export const writingEngine = new CreativeWritingEngine();`
   },
   {
     id: 'data-pipeline-intelligence',
-    name: 'Data Pipeline Intelligence',
+    name: 'Data Memory Intelligence',
     description: 'ETL monitoring with anomaly learning, schema memory, and self-healing data flows',
     icon: Database,
     category: 'system',
