@@ -1054,7 +1054,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
         Source: ${escapeHtml(input.source || 'Memory Stream')}<br>
         ${input.obtainedAt ? `Crystallized: ${escapeHtml(new Date(input.obtainedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }))}<br>` : ''}
         Exported: ${formattedDate}<br>
-        Systems: ${input.systemChain.join(' → ')}
+        Primitives: ${input.systemChain.map(s => labelPrimitive(s)).join(' → ')}
       </p>
     </div>
   </div>
