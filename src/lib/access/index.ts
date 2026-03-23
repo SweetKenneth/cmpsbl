@@ -481,8 +481,8 @@ export async function getUserRoles(): Promise<string[]> {
 
 // ============ Module Metadata ============
 
-export const ACCESS_VERSION = '8.0.0';
-export const ACCESS_CODENAME = 'Citadel';
+export const ACCESS_VERSION = '9.0.0';
+export const ACCESS_CODENAME = 'Gatekeeper Prime';
 
 // ============ Module Exports ============
 
@@ -509,6 +509,9 @@ export * from './abacEngine';
 
 // v8.0 Hardening: DEFENSE integration
 export * from './defenseIntegration';
+
+// v9.0 Ultimate Form: Gatekeeper Prime (10 systems)
+export * from './ultimate';
 
 export interface AccessModuleStatus {
   authenticated: boolean;
