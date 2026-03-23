@@ -247,7 +247,7 @@ export function TimelineDiagram() {
           })}
         </svg>
       </div>
-      <DiagramCaption>15-month research trajectory from the first line of BRAIN code to the 40-node MINDGAMES epoch.</DiagramCaption>
+      <DiagramCaption>15-month research trajectory from the first line of BRAIN code to the 40-primitive MINDGAMES epoch.</DiagramCaption>
     </div>
   );
 }
