@@ -244,7 +244,7 @@ export function EncodeSystemsConsole() {
         ].join('\n'));
       }
 
-      addSystemMsg('info', `⚙️ Routing to ENCODE for execution (plan: ${planId})...`);
+      addSystemMsg('info', `⚙️ Routing to ENCODE Agent for execution (plan: ${planId})...`);
       const task = await encode.routeIntent.mutateAsync({
         intent: `Execute plan ${planId}`,
         plan_id: planId,
