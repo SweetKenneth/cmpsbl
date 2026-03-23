@@ -4,6 +4,16 @@
 
 ---
 
+## 2026-03-23 · v15.8.0 (CONTACT — Wave 3 Auto-Activation + Documentation)
+
+⟨This entry describes the addition of 50 new auto-activation rules (ACT_101–ACT_150) bringing the total to 150, plus comprehensive documentation for all auto-activated capabilities and all 100 primary memory chains with full descriptions.⟩
+
+- **Wave 3 Activation Rules (ACT_101–150)** — 50 new reactive capabilities: 8 T1-Critical (Phantom counter-intel, kill-chain interrupt, signal storm dampener), 12 T2-Operational (pipeline fusion, predictive triage, sandbox escape prevention), 14 T3-Intelligence (lucid synthesis, Monte Carlo forecasts, cross-tier memory synthesis), 8 T4-Optimization (SLA renegotiation, decision tree pruning, resource reclamation), 8 T5-Autonomous (neural plasticity, genome compaction, vaccine synthesis, self-portrait).
+- **Auto-Activation Registry Doc** — `docs/system/AUTO-ACTIVATION-REGISTRY.md` — Complete reference of all 150 rules with triggers, severity thresholds, cooldowns, owners, and effect descriptions organized by wave and tier.
+- **Primary Memory Chains Doc** — `docs/system/PRIMARY-MEMORY-CHAINS.md` — All 100 chains across 9 categories with full descriptions of what each chain does, trigger conditions, node sequences, and priority classifications.
+
+---
+
 ## 2026-03-23 · v15.7.0 (CONTACT — SANDBOX Ultimate "Terrarium")
 
 ⟨This entry describes SANDBOX v9.0.0 — the substrate's Sovereign Execution Realm reaching its ultimate form with 10 new systems.⟩
