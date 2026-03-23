@@ -154,7 +154,7 @@ Each chain is:
 
 ## Category 9 — Cognitive Supremacy (Chains 76–100)
 
-*Full-spectrum substrate intelligence — chains that showcase the entire 40-node matrix working in concert.*
+*Full-spectrum substrate intelligence — chains that showcase the entire 40-primitive matrix working in concert.*
 
 | # | Chain ID | Name | Flow | Priority | Description |
 |---|----------|------|------|----------|-------------|
@@ -223,7 +223,7 @@ Trigger Signal (from source node)
 
 ## Node Coverage
 
-The 100 Primary Memory Chains collectively reference **all 40 substrate nodes**, ensuring every node participates in at least one automated reaction workflow:
+The 100 Primary Memory Chains collectively reference **all 40 substrate primitives**, ensuring every primitive participates in at least one automated reaction workflow:
 
 | Sector | Nodes Active in Chains |
 |--------|----------------------|

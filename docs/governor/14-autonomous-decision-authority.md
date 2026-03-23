@@ -8,7 +8,7 @@
 
 ## 1. Purpose
 
-The Autonomous Decision Authority (ADA) grants substrate nodes **scoped, enterprise-grade decision-making power** within their specialty domains. Instead of requiring every action to escalate through governance or governor approval, ADA enables nodes to act autonomously on routine and high-confidence decisions — while maintaining strict guardrails, audit trails, and trust calibration.
+The Autonomous Decision Authority (ADA) grants substrate primitives **scoped, enterprise-grade decision-making power** within their specialty domains. Instead of requiring every action to escalate through governance or governor approval, ADA enables nodes to act autonomously on routine and high-confidence decisions — while maintaining strict guardrails, audit trails, and trust calibration.
 
 **Core Invariants:**
 - Evolution is **ALWAYS blocked** — no node can self-modify through ADA

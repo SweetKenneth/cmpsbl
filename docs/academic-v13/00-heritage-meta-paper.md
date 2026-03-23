@@ -13,7 +13,7 @@
 
 > ### At a Glance
 >
-> **What is CMPSBL?** A 40-node cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.
+> **What is CMPSBL?** A 40-primitive cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.
 >
 > **Where did it come from?** Fifteen months of continuous R&D (January 2025 → March 2026) across 12 predecessor projects — each contributing a specific architectural pattern to the final system.
 >
@@ -33,15 +33,15 @@ This paper is organized for both **linear reading** and **targeted reference**:
 | See how each product became a substrate node | **§3 — Architectural Heritage Map** |
 | Trace a specific innovation to its origin | **§4 — Innovation Genealogy** |
 | Understand the dreaming research lineage | **§5 — The Dreaming Lineage** |
-| See how 252 functions became 40 nodes | **§8 — The Consolidation Event** |
+| See how 252 functions became 40 primitives | **§8 — The Consolidation Event** |
 | Verify the academic record | **§1.3 — Archival Records** |
 | Cite this paper | **§14 — Citation** |
 
-This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
+This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-primitive cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design — each project contributing specific architectural patterns that were refined and integrated into the final substrate.
 
-The lineage begins not with a product launch but with a question: *How does a machine learn and remember?* In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-node substrate today. From BRAIN, the author expanded into Cascade (the orchestration personality), PromptFluid Clarity (the first production-facing AI system), and the full constellation of tools and research that would eventually consolidate into CMPSBL. The lineage continues through AetherionShield's offensive-to-defensive security transformation, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer's autonomous website rebuilding, SimNap's formalized autonomous dreaming system, and culminates in the CMPSBL Substrate OS across 14 major versions and four named epochs.
+The lineage begins not with a product launch but with a question: *How does a machine learn and remember?* In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-primitive substrate today. From BRAIN, the author expanded into Cascade (the orchestration personality), PromptFluid Clarity (the first production-facing AI system), and the full constellation of tools and research that would eventually consolidate into CMPSBL. The lineage continues through AetherionShield's offensive-to-defensive security transformation, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer's autonomous website rebuilding, SimNap's formalized autonomous dreaming system, and culminates in the CMPSBL Substrate OS across 14 major versions and four named epochs.
 
-The purpose of this paper is to provide the academic community with a single, coherent narrative of the project's heritage — establishing the provenance chain from the first neural learning engine built in a founder's development environment in January 2025, to a **40-node cognitive operating system** capable of governed self-evolution, memory crystallization, and universal cross-language export.
+The purpose of this paper is to provide the academic community with a single, coherent narrative of the project's heritage — establishing the provenance chain from the first neural learning engine built in a founder's development environment in January 2025, to a **40-primitive cognitive operating system** capable of governed self-evolution, memory crystallization, and universal cross-language export.
 
 ---
 
@@ -49,7 +49,7 @@ The purpose of this paper is to provide the academic community with a single, co
 
 ### 1.1 Motivation
 
-The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the *current state* of the system without addressing the *path* that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns that were refined and integrated into the final substrate.
+The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 primitives across 4 categories. However, the published technical documentation describes the *current state* of the system without addressing the *path* that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns that were refined and integrated into the final substrate.
 
 This v2.2 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain. Crucially, it restores the Genesis period (January–June 2025) during which the foundational BRAIN engine and early Cascade orchestration work were developed — predating any public post or product launch.
 
@@ -119,10 +119,10 @@ These were not theoretical designs. They were working implementations iterated o
 The Genesis period established three foundational principles that permeate the entire CMPSBL substrate:
 
 1. **Zero-cost intelligence** — BRAIN proved that meaningful semantic operations (embedding, recall, similarity matching) could be performed without API calls, establishing the cost-free intelligence pattern that distinguishes CMPSBL from systems dependent on external embedding providers
-2. **Progressive self-activation** — Components that grow smarter as they accumulate experience, rather than requiring upfront configuration, became a design philosophy applied across the entire 40-node substrate
+2. **Progressive self-activation** — Components that grow smarter as they accumulate experience, rather than requiring upfront configuration, became a design philosophy applied across the entire 40-primitive substrate
 3. **Memory as infrastructure** — The conviction that memory and learning are not features to be added later but foundational infrastructure that everything else is built upon
 
-BRAIN is Node #3 in the current 40-node substrate, but it was the *first* node built — and it remains the cognitive core. Every other node in the system depends on BRAIN's embedding, crystallization, and recall capabilities. The `@origin(genesis-2025-01)` annotation marks it as the oldest continuous component in the architecture.
+BRAIN is Node #3 in the current 40-primitive substrate, but it was the *first* node built — and it remains the cognitive core. Every other node in the system depends on BRAIN's embedding, crystallization, and recall capabilities. The `@origin(genesis-2025-01)` annotation marks it as the oldest continuous component in the architecture.
 
 **Key Contribution to CMPSBL:** BRAIN established the entire neural substrate layer — knowledge crystallization, zero-cost embeddings, progressive self-activation, and confidence decay — that became the foundation upon which all other cognitive capabilities were built.
 
@@ -201,7 +201,7 @@ Verify sharpens Clarity → Clarity shapes Studio → Studio feeds Brain → Bra
 
 Security scan findings from Verify informed accessibility patterns in Clarity. Accessibility fixes from Clarity improved the templates in Studio. Every rebuild in Studio generated training data for Brain. Brain's improved models made all products more accurate. PromptFluid had begun thinking as one organism.
 
-**Architectural Significance:** This inter-process learning architecture directly inspired the CMPSBL Intent Mesh, where 40 nodes communicate through structured protocols to compose multi-step operations without centralized orchestration.
+**Architectural Significance:** This inter-process learning architecture directly inspired the CMPSBL Intent Mesh, where 40 primitives communicate through structured protocols to compose multi-step operations without centralized orchestration.
 
 #### 3.3 Verify — AI Plugin Certification
 
@@ -249,7 +249,7 @@ This inversion — transforming attack knowledge into defense architecture — e
 | Fingerprinting | Structural fingerprinting | From browser ID to content-addressable artifact identification |
 | Behavioral Analysis | IMMUNITY, health scoring | From traffic analysis to node health monitoring |
 | Honeypot/Deception | PHANTOM | From web traps to cognitive anonymization |
-| Bulkhead Isolation | IRONCLAD bulkheads | From proxy rotation to per-node failure isolation |
+| Bulkhead Isolation | IRONCLAD bulkheads | From proxy rotation to per-primitive failure isolation |
 | Shadow Testing | Shadow mode verification | From pre-engagement testing to governed state mutation |
 | Anti-Detection | DEFENSE | From offensive evasion to defensive boundary protection |
 | False-Positive Tracking | IMMUNITY adaptive thresholds | From detection tuning to 3-sigma adaptive rules |
@@ -346,7 +346,7 @@ This consolidation event was architecturally significant: it proved that a spraw
 | CMS recognition | DECODE | From WordPress/Wix parsing to structured data decoding |
 | Brand detection | ENCODE | From color/typography detection to content encoding |
 | Job queue orchestration | CORTEX | From task queue to multi-step cognitive orchestration |
-| Consolidation pattern | Resolver architecture | From 252 functions to 40 nodes with composable resolvers |
+| Consolidation pattern | Resolver architecture | From 252 functions to 40 primitives with composable resolvers |
 
 **Impact:** The web doesn't rot — it reincarnates. Studio proved that AI could understand, extract, and rebuild complex systems autonomously, foreshadowing the CMPSBL substrate's Universal Export capability.
 
@@ -495,7 +495,7 @@ At its peak in November 2025, the PromptFluid ecosystem encompassed 12+ integrat
 | SimNap | Autonomous dreaming | 10+ functions | DREAM, MEMORY nodes |
 | Modernizer/Studio | Website rebuilding | 5 functions | FORGE, DECODE, ENCODE nodes |
 
-The total ecosystem comprised **252+ edge functions** across 12+ product modules — all of which were consolidated, refactored, and restructured into the 40-node CMPSBL Substrate architecture.
+The total ecosystem comprised **252+ edge functions** across 12+ product modules — all of which were consolidated, refactored, and restructured into the 40-primitive CMPSBL Substrate architecture.
 
 #### 9.3 "The Firsts" — A Verified Manifesto
 
@@ -577,7 +577,7 @@ The earliest versions of the CMPSBL Substrate took the lessons from the entire P
 - Offensive→defensive inversion → IRONCLAD philosophy
 - Fingerprinting and pattern recognition → structural fingerprinting for artifacts
 - Shadow verification before production changes → shadow mode governance
-- Bulkhead isolation → per-node failure isolation in IRONCLAD
+- Bulkhead isolation → per-primitive failure isolation in IRONCLAD
 
 **From Dream Protocol & SimNap (September–December 2025):**
 - Autonomous cognitive consolidation → DREAM node
@@ -613,8 +613,8 @@ This epoch also introduced the **Intent Mesh** — the decentralized coordinatio
 
 The IRONCLAD epoch focused on **resilience hardening** and **production readiness**:
 
-- **IRONCLAD Hardening Fabric** — a unified resilience layer wrapping all nodes with circuit breakers, bulkhead isolation, rate limiting, auto-restore health polling, and shadow mode validation
-- **100% Coverage** — every node in the topology protected by the hardening fabric
+- **IRONCLAD Hardening Fabric** — a unified resilience layer wrapping all primitives with circuit breakers, bulkhead isolation, rate limiting, auto-restore health polling, and shadow mode validation
+- **100% Coverage** — every primitive in the topology protected by the hardening fabric
 - **Three-Tier Bounded Autonomy** — formalized governance model constraining system self-modification through policy evaluation, shadow verification, and immutable audit chains
 - **Universal Cross-Language Export** — translation of crystallized discoveries into 25 target languages (18 software + 7 HDL) as self-contained packages with embedded micro-substrate runtimes
 - **Memory Stream Crystallization** — the four-stage pipeline (Signal → Observation → Discovery → Crystallization) with structural fingerprinting and replay verification
@@ -623,7 +623,7 @@ The IRONCLAD epoch focused on **resilience hardening** and **production readines
 
 The current epoch represents the system at full maturity:
 
-- **40-node matrix** organized across 12 architectural sectors
+- **40-primitive matrix** organized across 12 architectural sectors
 - **12-stage deterministic boot sequence** for reliable system initialization
 - **54 specialized engines** across the node taxonomy
 - **300+ synergy pipelines** with 100 crystallized for production
@@ -742,7 +742,7 @@ Each major innovation in the CMPSBL Substrate can be traced to a specific moment
 
 **Origin:** AetherionShield's bulkhead isolation, shadow testing, and the stealth→shield inversion (September–October 2025).
 
-**Evolution:** In CMPSBL, this became the additive hardening fabric wrapping all 40 nodes with circuit breakers, rate limiters, auto-restore health polling, and shadow mode validation — without modifying core engine logic.
+**Evolution:** In CMPSBL, this became the additive hardening fabric wrapping all 40 primitives with circuit breakers, rate limiters, auto-restore health polling, and shadow mode validation — without modifying core engine logic.
 
 ### 4.6 Three-Tier Bounded Autonomy Governance
 
@@ -931,7 +931,7 @@ On November 4–5, 2025, a systematic cleanup was performed:
 
 ### 8.3 Architectural Lesson
 
-This consolidation proved a critical design principle: **sprawling specialized functions can be compressed into a smaller set of powerful, composable primitives without loss of capability**. This became the foundational axiom of the CMPSBL resolver architecture — 40 nodes with composable resolvers replaced 252+ standalone functions while gaining new capabilities through composition.
+This consolidation proved a critical design principle: **sprawling specialized functions can be compressed into a smaller set of powerful, composable primitives without loss of capability**. This became the foundational axiom of the CMPSBL resolver architecture — 40 primitives with composable resolvers replaced 252+ standalone functions while gaining new capabilities through composition.
 
 ---
 
@@ -956,7 +956,7 @@ The following Zenodo records document the formal publication history of the proj
 
 | Metric | BRAIN Genesis (Jan '25) | Clarity (Jul 2025) | PromptFluid Peak (Nov 2025) | CMPSBL v5.5 (Jan 2026) | CMPSBL v14.2 (Mar 2026) |
 |---|---|---|---|---|---|
-| Architecture model | Single engine | Plugin (7 classes) | 252+ edge functions, 12+ products | Multi-module | 40 nodes, 12 sectors |
+| Architecture model | Single engine | Plugin (7 classes) | 252+ edge functions, 12+ products | Multi-module | 40 primitives, 4 categories |
 | AI providers | None (deterministic) | 1 (Nexus) | 23-provider routing mesh | Single provider | NEXUS multi-provider routing |
 | Autonomy model | N/A | User-initiated scans | Autonomous dreaming + proactive agents | Basic governance | 3-tier bounded autonomy |
 | Memory architecture | Hash-embed-v1, crystals | Scan result storage | Episodic + long-term + meta | Multi-tier | 4-stage crystallization pipeline |
@@ -1000,7 +1000,7 @@ CMPTBL (July 2025) — the very first PromptFluid product — established that a
 
 ### 11.6 Consolidation as Architecture
 
-The Great Consolidation (November 2025) proved that compression creates capability. 252 functions became 40 nodes with composable resolvers — fewer parts, more power. This principle of *consolidation as architectural improvement* runs through every epoch of CMPSBL development.
+The Great Consolidation (November 2025) proved that compression creates capability. 252 functions became 40 primitives with composable resolvers — fewer parts, more power. This principle of *consolidation as architectural improvement* runs through every epoch of CMPSBL development.
 
 ---
 
@@ -1012,7 +1012,7 @@ As of v14.2.0 (MINDGAMES epoch, March 2026), the CMPSBL Substrate OS represents:
 - **12-stage deterministic boot sequence** for reliable system initialization
 - **54 specialized engines** across the node taxonomy
 - **300+ synergy pipelines** with 100 crystallized for production
-- **100% IRONCLAD hardening coverage** across all nodes
+- **100% IRONCLAD hardening coverage** across all primitives
 - **Three-tier governance** with immutable audit chain
 - **Universal export** to 25 target languages with Mini-Runtime™
 - **Memory crystallization** with structural fingerprinting and replay verification
@@ -1041,7 +1041,7 @@ The CMPSBL® Substrate OS is not an isolated invention. It is the culmination of
 9. **SimNap** (November–December 2025) formalized autonomous dreaming as a systematizable cognitive process
 10. **Cascade Proofs** (December 2025) documented the limits of monolithic AI agents, motivating the multi-node architecture
 11. **The Great Consolidation** (November 2025) proved that 252+ functions compress into composable primitives, inspiring the resolver architecture
-12. **CMPSBL** (2025–2026) synthesized all preceding work into a governed, resilient, self-evolving cognitive operating system with 40 nodes, 12 sectors, and 54 engines
+12. **CMPSBL** (2025–2026) synthesized all preceding work into a governed, resilient, self-evolving cognitive operating system with 40 primitives, 4 categories, and 54 engines
 
 Every node in the current substrate can trace its design rationale to a specific insight from a predecessor project. Every architectural decision reflects a lesson learned from the system's own heritage. This meta-paper establishes that provenance chain for the permanent academic record.
 

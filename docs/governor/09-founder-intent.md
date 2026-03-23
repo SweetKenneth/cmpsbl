@@ -16,7 +16,7 @@ This document records the non-negotiable principles, ethical boundaries, and fou
 2. **GOVERNANCE cannot be bypassed.** Every mutating action passes governance. No shortcuts, debug flags, or overrides skip it.
 3. **DEFENSE is terminal.** The outer boundary is enforced unconditionally. No module may override a DEFENSE block.
 4. **Data belongs to the operator.** BYOK. No data sent to, stored by, or accessible to the substrate provider.
-5. **Module names are permanent.** The 40-node topology is an architectural invariant. Modules may evolve internally but not be renamed, merged, or deleted.
+5. **Module names are permanent.** The 40-primitive topology is an architectural invariant. Modules may evolve internally but not be renamed, merged, or deleted.
 6. **Evolution must be validated.** No change reaches production without passing the 7-gate SEBA pipeline with TSAC truth preservation.
 7. **Learning is continuous.** CLM is a foundational property, not optional. The substrate must always be learning.
 8. **Agents are sealed.** Cognitive agents in isolated, source-blocked runtimes. No agent accesses data outside its Crown Jewel powers.

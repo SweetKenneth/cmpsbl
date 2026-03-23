@@ -15,7 +15,7 @@
 
 ### Why the distinction matters
 
-The **Substrate Terminal** is the full operating system console — ~600 commands spanning all 40 nodes. It has direct access to live telemetry, mesh communications, and governance controls.
+The **Substrate Terminal** is the full operating system console — ~600 commands spanning all 40 primitives. It has direct access to live telemetry, mesh communications, and governance controls.
 
 The **CLI** is a curated local tool — 66 commands designed for offline development, scoring, validation, and export. It intentionally does NOT include governance, defense, or system-critical commands because those must execute against the live substrate.
 

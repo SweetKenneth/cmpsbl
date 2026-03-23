@@ -19,7 +19,7 @@ The substrate is valued across six pillars:
 
 | Pillar | Description |
 |--------|-------------|
-| **Core Infrastructure** | The 40-node cognitive matrix and execution runtime |
+| **Core Infrastructure** | The 40-primitive cognitive matrix and execution runtime |
 | **Intellectual Property** | Crown Jewels, sealed algorithms, trade secrets |
 | **Revenue Architecture** | SaaS, marketplace, licensing, artifact export |
 | **Data Compounding** | CLM, DREAM synthesis, Memory Stream discoveries |
@@ -37,7 +37,7 @@ The substrate is valued across six pillars:
 | Property | CMPSBL | Kubernetes |
 |----------|--------|------------|
 | Orchestration target | Cognitive agents & reasoning | Containers & workloads |
-| Nodes | 40 specialized across 12 sectors | Variable worker nodes |
+| Nodes | 40 specialized across 4 categories | Variable worker nodes |
 | Governance | Architectural, immutable, 4-mode | Config-based, mutable |
 | Self-healing | Built-in circuit breakers & DREAM | Restart policies |
 | Boot integrity | Hash-chained verification | None |
@@ -155,7 +155,7 @@ The substrate is valued across six pillars:
 
 | Layer | Protection | Replication Difficulty |
 |-------|-----------|----------------------|
-| Architectural complexity | 40-node topology with weighted matrix | Years of engineering |
+| Architectural complexity | 40-primitive topology with weighted matrix | Years of engineering |
 | Algorithm IP | 54 Crown Jewels, sealed and classified | Cannot be accessed |
 | Continuous compounding | CLM grows knowledge daily | Cannot be caught up to |
 | Agent assets | 20 sealed, self-improving agents | Cannot be reverse-engineered |
@@ -190,7 +190,7 @@ The substrate is valued across six pillars:
 CMPSBL was built by a **solo founder** — Kenneth E Sweet Jr — with:
 
 - **No formal education** in AI, computer science, or software engineering
-- **No team** — every line of architecture, every node algorithm, every governance system is one person's work
+- **No team** — every line of architecture, every primitive algorithm, every governance system is one person's work
 - **Self-taught** since 2008, with a background in web design and app-related projects
 - **3,000+ hours** of development time invested in the substrate
 - **No prior AI industry pedigree** (not ex-Google, not ex-OpenAI, not a PhD)
@@ -213,9 +213,9 @@ Investors will — and should — discount for:
 |---------------|---------------|
 | **3,000+ hours = conviction** | This isn't a weekend project or a pitch deck with a prototype. The system is built, running, and discoverable. Most funded startups don't have this at Series A. |
 | **Solo = undiluted IP** | Every algorithm, every architectural decision, every Crown Jewel was created by one mind. There is no ambiguity about IP ownership, no co-founder disputes, no contractor claims. |
-| **Self-taught = first principles** | The system wasn't built by following textbooks — it was built by solving problems. The 40-node topology, SEBA pipeline, and Ascension dual-layer architecture came from original thinking, not curriculum. |
+| **Self-taught = first principles** | The system wasn't built by following textbooks — it was built by solving problems. The 40-primitive topology, SEBA pipeline, and Ascension dual-layer architecture came from original thinking, not curriculum. |
 | **Full succession plan** | Unlike most solo-founder companies, CMPSBL has a documented succession protocol, dead-man switch, credential transfer process, and minimum viable operation specification. The system is designed to survive its creator. |
-| **Working system** | The substrate boots, discovers, governs, audits, and exports. This is not a concept — it is a cognitive runtime with 60+ production tables, 675+ capabilities, and 40 active nodes. |
+| **Working system** | The substrate boots, discovers, governs, audits, and exports. This is not a concept — it is a cognitive runtime with 60+ production tables, 675+ capabilities, and 40 active primitives. |
 
 ### Historical Parallels — Solo Founders Without Pedigree
 
@@ -244,7 +244,7 @@ Applied to raw technology valuations below. This discount accounts for key-perso
 
 | Component | Raw Value | Risk-Adjusted (60–70%) |
 |-----------|-----------|----------------------|
-| 40-node runtime + governance | $8–15M | $5–11M |
+| 40-primitive runtime + governance | $8–15M | $5–11M |
 | 54 Crown Jewel algorithms | $5–10M | $3–7M |
 | 20 sealed agents with DREAM | $3–5M | $2–4M |
 | 34-page trade secret library | $2–4M | $1.2–2.8M |
@@ -312,7 +312,7 @@ Ascension is the single largest value multiplier in the system because it:
 
 ### For Seed / Series A
 
-Lead with the cognitive runtime and engineering proof. Demonstrate the 40-node matrix, governance, and Memory Stream. Show Ascension privately as the "what we're building next" — except it's already built.
+Lead with the cognitive runtime and engineering proof. Demonstrate the 40-primitive matrix, governance, and Memory Stream. Show Ascension privately as the "what we're building next" — except it's already built.
 
 ### For Series B+
 
@@ -320,7 +320,7 @@ Lead with Ascension and the mutual moat. Frame CMPSBL as the "AWS of cognitive s
 
 ### For Strategic Acquirers
 
-Lead with the IP portfolio: 54 Crown Jewels, 40-node topology, 34-page trade secret library, 25-language export. Position as an acquisition that cannot be replicated — only purchased.
+Lead with the IP portfolio: 54 Crown Jewels, 40-primitive topology, 34-page trade secret library, 25-language export. Position as an acquisition that cannot be replicated — only purchased.
 
 ---
 

@@ -44,7 +44,7 @@ As of v13.5, the substrate maintains:
 Discovery → Validation → Staging → Crystallization → Production
 ```
 
-1. **Discovery** — a module chain is observed to produce consistent, valuable outputs
+1. **Discovery** — a primitive chain is observed to produce consistent, valuable outputs
 2. **Validation** — the chain is executed against a test corpus with reproducibility verification
 3. **Staging** — the pipeline runs in shadow mode alongside existing pipelines
 4. **Crystallization** — the pipeline is frozen with a structural fingerprint and version stamp
