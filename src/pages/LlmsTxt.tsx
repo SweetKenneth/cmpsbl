@@ -57,7 +57,7 @@ function buildDynamicKeyPages(): string {
 }
 
 const LLMS_TXT_STATIC_HEADER = `# CMPSBL® — Machine-Readable AI Context
-# 40-Node / 12-Sector Cognitive Substrate
+# 40-Primitive Cognitive Substrate (Agents · Engines · Layers · Organs)
 # Standard: llms.txt (llmstxt.org)
 # Updated: ${new Date().toISOString().slice(0, 10)}
 
@@ -70,9 +70,9 @@ CMPSBL adopts and implements LLMS.txt as its primary machine context.
 
 ## About
 
-CMPSBL is the reference implementation of the AI Operating System category — a governed cognitive reality powered by the CMPSBL Substrate — 40 active nodes across 12 sectors, real-time observability, adaptive learning, and multi-provider routing.
+CMPSBL is the reference implementation of the AI Operating System category — a governed cognitive reality powered by a set of core primitives: agents, engines, layers, and organs — with real-time observability, adaptive learning, and multi-provider routing.
 
-## Architecture (40 Nodes / 12 Sectors)
+## Architecture (40 Primitives — Agents · Engines · Layers · Organs)
 
 ### CORE (Kernel)
 - CORE — Boot sequencing, safety switches, config, job scheduling
@@ -231,7 +231,7 @@ export default function LlmsTxt() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="LLMS.txt — Machine Context for AI Crawlers | CMPSBL"
-        description="CMPSBL's LLMS.txt file gives AI crawlers structured context: 40-node topology, 12 sectors, resolver catalog, API endpoints, memory tiers, and governance roles — per the llmstxt.org standard."
+        description="CMPSBL's LLMS.txt file gives AI crawlers structured context: 40 primitives (agents, engines, layers, organs), resolver catalog, API endpoints, memory tiers, and governance roles — per the llmstxt.org standard."
         keywords={['LLMS.txt', 'machine readable AI context', 'AI crawler context', 'llmstxt standard', 'substrate discovery']}
       />
 
@@ -314,7 +314,7 @@ export default function LlmsTxt() {
 
         {/* Node Grid */}
         <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Featured Nodes in CMPSBL LLMS.txt</h2>
+          <h2 className="text-lg font-semibold mb-4">Featured Primitives in CMPSBL LLMS.txt</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {nodes.map((mod) => (
               <Card key={mod.name} className="border-border/50">

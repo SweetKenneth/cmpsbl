@@ -1,6 +1,6 @@
 /**
  * CMPSBL Substrate — Command Center
- * Mobile-first, rebuilt for 40-node matrix with 675+ capabilities.
+ * Mobile-first, rebuilt for 40-primitive matrix with 675+ capabilities.
  * Enterprise in light mode, Neon Dreams in dark.
  */
 
@@ -100,7 +100,7 @@ function getTabDefs(hasAgency: boolean, isGovernor: boolean): TabDef[] {
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Agents', description: 'Sealed runtimes', governorOnly: !isGovernor && !hasAgency, minTier: hasAgency ? 'creator' as SubstrateRole : 'governor' as SubstrateRole },
     ...((hasAgency || isGovernor) ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Agents' as string, description: 'Multi-agent teams', governorOnly: !hasAgency, minTier: (hasAgency ? 'creator' : 'governor') as SubstrateRole }] : []),
     // ── Governor ──
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Orchestrate', description: 'Node mesh', governorOnly: true, minTier: 'governor' },
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Orchestrate', description: 'Intent mesh', governorOnly: true, minTier: 'governor' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Orchestrate', description: 'Memory orchestration', governorOnly: true, minTier: 'governor' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Orchestrate', description: 'Control plane', governorOnly: true, minTier: 'governor' },
     { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Operate', description: 'Engine repairs', governorOnly: true, minTier: 'governor' },
@@ -309,7 +309,7 @@ export default function SubstrateOS() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Substrate OS — Live Command Center | CMPSBL"
-        description="CMPSBL's live command center: monitor 40 nodes across 12 sectors, track Memory Stream crystallization, manage DREAM cycles, view mesh communications, and control governance settings in real time."
+        description="CMPSBL's live command center: monitor agents, engines, layers, and organs in real time — track Memory Stream crystallization, manage DREAM cycles, view mesh communications, and control governance settings."
         canonical="https://cmpsbl.com/os"
         keywords={['CMPSBL', 'Memory Stream', 'Signal to Silicon', 'cognitive orchestration']}
       />
@@ -448,7 +448,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'intent' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Node mesh governance and intent routing.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Intent mesh governance and routing.">
                 <PanelContainer id="intent"><ModuleErrorBoundary moduleName="INTENT"><Suspense fallback={<PanelLoader />}><IntentPanel /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}
@@ -478,7 +478,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'mesh' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh" description="Live capability mesh and inter-node communication.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh" description="Live capability mesh and inter-primitive communication.">
                 <PanelContainer id="mesh"><Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense></PanelContainer>
               </TierGate>
             )}

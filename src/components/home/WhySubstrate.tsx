@@ -1,5 +1,5 @@
 /**
- * Why CMPSBL — 9 Core Nodes Showcase
+ * Why CMPSBL — 9 Core Primitives Showcase
  * Premium bento grid with enhanced visuals and micro-animations
  * Color palette: Cyan / Purple / Magenta — solid colors, gradients reserved for key moments
  */
@@ -23,8 +23,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// 9 public-facing nodes — cycling through cyan, purple, magenta (solid colors)
-const nodes = [
+// 9 public-facing primitives — cycling through cyan, purple, magenta (solid colors)
+const primitives = [
   {
     icon: Brain,
     title: "Persistent Memory",
@@ -171,7 +171,7 @@ function useTilt() {
 }
 
 // Individual feature card with tilt effect
-function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
+function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number }) {
   const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt();
   const [isHovered, setIsHovered] = useState(false);
   
@@ -308,24 +308,25 @@ export function WhySubstrate() {
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
-              Nine Systems.
-              <br />
-              <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
-            </h2>
+               Four Primitives.
+               <br />
+               <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
+             </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Build apps that{" "}
-              <span className="text-foreground font-medium">think with reasoning models</span>,{" "}
-              <span className="text-foreground font-medium">remember across sessions</span>, and{" "}
-              <span className="text-foreground font-medium">improve themselves through learning cycles</span>.
-              All included in every plan.
-            </p>
+               CMPSBL is powered by a set of core primitives:{" "}
+               <span className="text-foreground font-medium">agents</span>,{" "}
+               <span className="text-foreground font-medium">engines</span>,{" "}
+               <span className="text-foreground font-medium">layers</span>, and{" "}
+               <span className="text-foreground font-medium">organs</span>.
+               All included in every plan.
+             </p>
         </motion.div>
         
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5"
           layout
         >
-          {nodes.map((item, idx) => (
+          {primitives.map((item, idx) => (
             <FeatureCard key={item.title} item={item} idx={idx} />
           ))}
         </motion.div>

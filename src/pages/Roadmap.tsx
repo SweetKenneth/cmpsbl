@@ -21,7 +21,7 @@ const PHASES = [
     capabilities: [
       "Crystallization engine with quality floor (68+)",
       "Memory scoring & provenance tracking",
-      "40-node topology with 12 sector coverage",
+      "40-primitive topology (agents, engines, layers, organs)",
       "Memory packs & slot-based activation",
     ],
     icon: Sparkles,
