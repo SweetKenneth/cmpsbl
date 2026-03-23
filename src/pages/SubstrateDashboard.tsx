@@ -131,7 +131,7 @@ const modulesByLayer = {
   operational: [
     {
       id: "nerve",
-      name: "NERVE",
+      name: "NERVE Organ",
       description: "Signal propagation, consensus repair",
       icon: Activity,
       color: "text-neon-magenta",
