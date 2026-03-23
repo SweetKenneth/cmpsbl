@@ -1414,3 +1414,24 @@ export {
 
 // System Audit & Self-Repair
 export { runSystemAudit, runSelfRepair } from './system';
+
+// Autonomous Decision Authority (ADA) v1.0.0
+export {
+  evaluateDecision,
+  reportOutcome,
+  getNodeAutonomy,
+  getAuditLog as getADAuditLog,
+  getMetrics as getADAMetrics,
+  suspendNode,
+  reinstateNode,
+  resetAll as resetADA,
+  DECISION_SCOPES,
+  getScopeForDomain,
+  getDomainsForNode,
+  isActionAllowed,
+  type DecisionDomain,
+  type DecisionRequest,
+  type DecisionVerdict,
+  type NodeAutonomy,
+  type ADAMetrics,
+} from './autonomous-decision';
