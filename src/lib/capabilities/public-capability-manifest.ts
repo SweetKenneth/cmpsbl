@@ -1152,7 +1152,7 @@ export const PUBLIC_CAPABILITY_MANIFEST: PublicCapability[] = [
     name: 'Autonomous Capacity Orchestration',
     tier: 'enterprise',
     module: 'CORTEX',
-    outcome_summary: 'Orchestrate capacity across all modules with predictive scaling and cost optimization',
+    outcome_summary: 'Orchestrate capacity across all primitives with predictive scaling and cost optimization',
     category: 'optimization',
     public_safe: true,
     is_crown_jewel: true,

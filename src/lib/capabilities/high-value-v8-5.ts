@@ -1,6 +1,6 @@
 /**
  * High-Value Capabilities v8.5.0
- * 56 new capabilities — across all 40 nodes
+ * 56 new capabilities — across all 40 primitives
  * Total: 269 (existing) + 56 = 325 capabilities (pre-expansion baseline)
  */
 

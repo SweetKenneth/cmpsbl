@@ -15,16 +15,16 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/engines", title: "54 Composable Engines", description: "Explore the META to CORE tier arsenal powering the substrate", badge: "Engines" },
     { href: "/runtime", title: "Runtime Environment", description: "See how nodes execute, scale, and self-heal in production" },
     { href: "/memory-stream", title: "Memory Stream", description: "Watch the system discover and crystallize new capabilities in real time", badge: "Discovery" },
-    { href: "/system-overview", title: "System Overview", description: "Full topology of the 40-node, 12-sector cognitive matrix" },
+    { href: "/system-overview", title: "System Overview", description: "Full topology of the 40-primitive, 4-category cognitive matrix" },
   ],
   "/engines": [
-    { href: "/architecture", title: "Substrate Architecture", description: "Understand how engines fit within the 40-node topology" },
+    { href: "/architecture", title: "Substrate Architecture", description: "Understand how engines fit within the 40-primitive topology" },
     { href: "/packs", title: "Capability Packs", description: "Activate engine groups through governed memory slots", badge: "Packs" },
     { href: "/foundry", title: "The Foundry", description: "Discover new engine combinations the system surfaces automatically" },
     { href: "/try", title: "Try It Live", description: "Test engine routing with zero signup in the interactive demo", badge: "Demo" },
   ],
   "/runtime": [
-    { href: "/architecture", title: "Substrate Architecture", description: "The 40-node topology that the runtime executes" },
+    { href: "/architecture", title: "Substrate Architecture", description: "The 40-primitive topology that the runtime executes" },
     { href: "/engines", title: "54 Composable Engines", description: "Processing units orchestrated by the runtime" },
     { href: "/status", title: "System Status", description: "Live health monitoring across all runtime services" },
     { href: "/docs/runtime-reference", title: "Runtime Reference", description: "Technical documentation for runtime APIs and hooks" },
@@ -48,14 +48,14 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/start", title: "Start Here", description: "Get your first 3 memory slots free — no credit card required" },
   ],
   "/about": [
-    { href: "/architecture", title: "Substrate Architecture", description: "Deep-dive into the 40-node cognitive topology" },
+    { href: "/architecture", title: "Substrate Architecture", description: "Deep-dive into the 40-primitive cognitive topology" },
     { href: "/investors", title: "Investor Overview", description: "Market position, traction metrics, and growth thesis" },
     { href: "/careers", title: "Join the Team", description: "Open roles building the cognitive operating system" },
     { href: "/roadmap", title: "Product Roadmap", description: "What's shipping next in the CMPSBL substrate" },
   ],
   "/investors": [
     { href: "/about", title: "About CMPSBL", description: "Mission, vision, and the team behind the substrate" },
-    { href: "/architecture", title: "Technical Architecture", description: "40-node substrate topology and engineering depth" },
+    { href: "/architecture", title: "Technical Architecture", description: "40-primitive substrate topology and engineering depth" },
     { href: "/use-cases", title: "Use Cases", description: "How enterprises deploy CMPSBL across verticals" },
     { href: "/enterprise", title: "Enterprise", description: "Dedicated infrastructure, SLAs, and custom deployment" },
   ],
@@ -91,7 +91,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/try": [
     { href: "/start", title: "Start Building", description: "Create a free account and get 3 memory slots", badge: "Free" },
-    { href: "/architecture", title: "How It Works", description: "Explore the 40-node substrate topology" },
+    { href: "/architecture", title: "How It Works", description: "Explore the 40-primitive substrate topology" },
     { href: "/engines", title: "54 Engines", description: "See the full composable engine arsenal" },
     { href: "/documentation", title: "Documentation", description: "API reference, tutorials, and integration guides" },
   ],
@@ -112,7 +112,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/roadmap": [
     { href: "/changelog", title: "Changelog", description: "What shipped recently across the substrate" },
-    { href: "/architecture", title: "Architecture", description: "Current 40-node topology and system design" },
+    { href: "/architecture", title: "Architecture", description: "Current 40-primitive topology and system design" },
     { href: "/investors", title: "Investor Overview", description: "Growth thesis and market positioning" },
     { href: "/careers", title: "Join the Team", description: "Help build what's on the roadmap" },
   ],
@@ -179,7 +179,7 @@ export function getCrossLinks(path: string): CrossLink[] {
   
   // Fallback: show core pages
   return [
-    { href: "/architecture", title: "Substrate Architecture", description: "Explore the 40-node cognitive topology" },
+    { href: "/architecture", title: "Substrate Architecture", description: "Explore the 40-primitive cognitive topology" },
     { href: "/engines", title: "54 Composable Engines", description: "Browse the full engine arsenal" },
     { href: "/try", title: "Try It Live", description: "Zero-signup interactive substrate demo", badge: "Demo" },
     { href: "/start", title: "Start Building", description: "Get 3 free memory slots — no credit card", badge: "Free" },

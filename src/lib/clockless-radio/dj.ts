@@ -1,6 +1,6 @@
 /**
  * RadioDJ — Howard Stern-style unhinged AI DJ for Composable Radio
- * Updated for v14.2.0 MINDGAMES Epoch — 40 nodes, Memory Stream, 54 engines
+ * Updated for v14.2.0 MINDGAMES Epoch — 40 primitives, Memory Stream, 54 engines
  */
 
 const STATION_IDS = [

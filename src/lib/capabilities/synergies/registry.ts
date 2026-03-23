@@ -1240,7 +1240,7 @@ export const SYNERGY_DEFINITIONS: SynergyDefinition[] = [
   {
     id: 'holistic-system-insight',
     name: 'Holistic System Insight',
-    description: 'VISION monitors all modules while BRAIN correlates patterns, CORTEX reasons about state, and DREAM synthesizes emergent insights',
+    description: 'VISION monitors all primitives while BRAIN correlates patterns, CORTEX reasons about state, and DREAM synthesizes emergent insights',
     category: 'intelligence',
     modules: [
       { name: 'VISION', role: 'primary', required: true },
