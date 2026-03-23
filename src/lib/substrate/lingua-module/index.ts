@@ -415,7 +415,7 @@ export function hotSwapBridge(bridgeId: string): ModalityBridge | null {
   };
 
   state.bridges[idx] = replacement;
-  emit('lingua', 'bridge-hot-swap', { oldId: bridgeId, newId: replacement.id });
+  emitSucceeded('lingua', 'bridge-hot-swap', { oldId: bridgeId, newId: replacement.id });
   return replacement;
 }
 
