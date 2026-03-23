@@ -1,6 +1,6 @@
 /**
  * DEFENSE — mTLS Zero-Trust Mesh Authentication v1.0.0
- * Runtime mutual authentication for node-to-node communication.
+ * Runtime mutual authentication for primitive-to-primitive communication.
  *
  * Features:
  *  - Per-node identity certificates (HMAC-based in browser)

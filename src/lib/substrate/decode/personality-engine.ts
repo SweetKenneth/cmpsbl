@@ -5,7 +5,7 @@
  * Personality profiles now sync with the backend edge function.
  * Changes made via terminal commands persist to the database.
  * 
- * Integrates with 40-node / 12-sector architecture for personality-aware responses.
+ * Integrates with 40-primitive / 4-category architecture for personality-aware responses.
  * 
  * Features:
  *   - Direct/professional baseline (no poetry/metaphors)

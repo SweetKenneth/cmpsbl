@@ -141,7 +141,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
               </div>
             </div>
 
-            {/* Powers / Modules */}
+            {/* Powers / Primitives */}
             <div>
               <h4 className="text-[9px] font-black tracking-widest text-primary/60 mb-2">⚙ CROWN JEWEL POWERS</h4>
               <div className="space-y-2">

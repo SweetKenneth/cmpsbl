@@ -7,7 +7,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
-// Canonical 40-node matrix with sector assignments
+// Canonical 40-primitive matrix with sector assignments
 const NODE_SECTORS: Record<string, string> = {
   CORE: 'Kernel', SPINE: 'Kernel', BRAIN: 'CCR', MEMORY: 'CCR', CORTEX: 'CCR',
   NERVE: 'OCG', DREAM: 'OCG', VISION: 'OCG', DECODE: 'EXE', ENCODE: 'EXE',
@@ -51,7 +51,7 @@ export interface DiscoveredPipeline {
 function calcSynergyRating(nodeChain: string[]): number {
   const sectors = new Set(nodeChain.map(n => NODE_SECTORS[n] || 'Unknown'));
   const sectorCount = sectors.size;
-  // Base synergy from sector coverage (max 12 sectors)
+  // Base synergy from sector coverage (max 4 categorys)
   const coverageRatio = sectorCount / 12;
   // Bonus for hitting critical sectors
   const criticalSectors = ['Kernel', 'CCR', 'EXE', 'ESZ'];

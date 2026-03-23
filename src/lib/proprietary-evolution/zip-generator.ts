@@ -1573,7 +1573,7 @@ function generateReadmeMd(options: ExportOptions): string {
 ## 🎯 What This Is
 
 This is a **Capability Pack** — a bundle of crystallized software capabilities discovered
-through autonomous collision testing of your code against the CMPSBL® 40-node substrate matrix.
+through autonomous collision testing of your code against the CMPSBL® 40-primitive substrate matrix.
 
 Each capability represents a unique behavioral pattern that emerged from the intersection
 of your proprietary code and the substrate's cognitive architecture.
@@ -1815,7 +1815,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   zip.file('README.md', generateReadmeMd(options));
   zip.file('README.html', generateReadmeHTML({
     name: `Capability Pack — ${humanizedPackName}`,
-    description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-node substrate matrix.`,
+    description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
       { name: 'src/', purpose: 'Executable capability implementations' },
       { name: 'src/runtime-bridge.*', purpose: 'Runtime Binding Layer — pipeline execution engine' },

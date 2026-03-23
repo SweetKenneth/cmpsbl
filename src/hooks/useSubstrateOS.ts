@@ -296,7 +296,7 @@ export function useSystemConfig(key?: string) {
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  // Layer definitions — 40-node / 12-sector topology
+  // Layer definitions — 40-primitive / 4-category topology
   const CORE_SYSTEM = ['core', 'system'] as const;
   const CCR_ZONES = ['brain', 'memory', 'dream'] as const;
   const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
@@ -389,7 +389,7 @@ export function useSubstrateHealthScore() {
   for (const m of ALL_MODULES) defaultModules[m] = true;
   const modules = batchQuery.data || defaultModules;
 
-  // Layer-weighted health calculation — 40-node / 12-sector
+  // Layer-weighted health calculation — 40-primitive / 4-category
   function layerHealth(keys: readonly string[]): number {
     if (keys.length === 0) return 100;
     const healthy = keys.filter(k => modules[k] !== false).length;

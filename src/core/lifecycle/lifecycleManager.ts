@@ -1,6 +1,6 @@
 /**
  * CORE — Module Lifecycle Manager
- * Standardized state machine for all 40 nodes:
+ * Standardized state machine for all 40 primitives:
  * init → ready → running → degraded → shutdown
  * Ultimate Form v1.0.0
  */

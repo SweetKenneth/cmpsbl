@@ -345,12 +345,12 @@ export function generateUserGuideHTML(): string {
 <!-- SUBSTRATE OS -->
 <div class="page">
   <h2 id="substrate-os">8. The Substrate OS Dashboard</h2>
-  <p>The dashboard is your command center for the entire 40-node substrate. Key surfaces:</p>
+  <p>The dashboard is your command center for the entire 40-primitive substrate. Key surfaces:</p>
   
   <div class="card-grid">
     <div class="card">
       <h4 style="color:var(--cyan);margin-top:0;">Command Center</h4>
-      <p style="font-size:13px;color:var(--text-muted);">Health ring, 4 KPI cards, and the interactive 12-sector topology map showing all node statuses.</p>
+      <p style="font-size:13px;color:var(--text-muted);">Health ring, 4 KPI cards, and the interactive 4-category topology map showing all node statuses.</p>
     </div>
     <div class="card">
       <h4 style="color:var(--amber);margin-top:0;">INTENT Hub</h4>
@@ -384,7 +384,7 @@ memory recall       # Query persistent memory
 crystallize         # Trigger a pipeline crystallization
 sdk init [template] # Initialize SDK with MEMORY, DECODE, DEFENSE, or NEXUS
 help                # List available commands for your tier
-topology            # Display 12-sector node map
+topology            # Display 4-category node map
 budget status       # View stream budget governance</code></pre>
 </div>
 
@@ -400,7 +400,7 @@ budget status       # View stream budget governance</code></pre>
   </ul>
 
   <h2 id="architecture">11. 40-Node Architecture</h2>
-  <p>The substrate operates across 40 nodes organized into 12 sectors:</p>
+  <p>The substrate operates across 40 primitives organized into 4 categorys:</p>
   
   <table>
     <thead><tr><th>Sector</th><th>Systems</th><th>Purpose</th></tr></thead>

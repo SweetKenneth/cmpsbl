@@ -1,6 +1,6 @@
 /**
  * RIPPLE Cross-Node Propagation — v1.0.0
- * Topology-aware event propagation across the 40-node substrate matrix
+ * Topology-aware event propagation across the 40-primitive substrate matrix
  * 
  * Provides:
  * - Sector-aware fan-out (events propagate within sectors first)

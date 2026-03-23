@@ -21,7 +21,7 @@ export default function BurningItDown() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What We Deleted</h2>
       <p>Duplicate utility functions — 23 different implementations of "format a timestamp." Three different logging implementations, none of which agreed on log levels. Two competing authentication flows from when we'd prototyped <Link to="/blog/identity-at-every-layer" className="text-primary hover:underline">ACCESS</Link> twice before getting it right. An entire node (PRISM, a visualization experiment) that had been "temporarily" disabled for six months and was still consuming memory at startup.</p>
-      <p>The substrate went from 40 nodes to 40 nodes — same count, but every one rewritten with consistent patterns. Shared interfaces for inter-primitive communication. A single logging library. Standardized error types. Configuration driven by environment, not hardcoded strings. The codebase shrank by 30% while gaining functionality, because we eliminated so much duplication and dead code.</p>
+      <p>The substrate went from 40 primitives to 40 primitives — same count, but every one rewritten with consistent patterns. Shared interfaces for inter-primitive communication. A single logging library. Standardized error types. Configuration driven by environment, not hardcoded strings. The codebase shrank by 30% while gaining functionality, because we eliminated so much duplication and dead code.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Layered Architecture</h2>
       <figure className="my-8">

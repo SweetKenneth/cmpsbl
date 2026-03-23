@@ -91,7 +91,7 @@ export interface LearningJobResult {
 export const DEFAULT_CLM_CONFIG: CLMConfig = {
   enabled: true,
   minSpacingMinutes: 5,        // Tighter spacing — NEXUS budget allows high throughput
-  maxConcurrent: 5,            // Higher concurrency for 40-node coverage
+  maxConcurrent: 5,            // Higher concurrency for 40-primitive coverage
   errorBackoffMultiplier: 1.5,
   maxBackoffMinutes: 45,
   quietHours: '03:00-04:30',   // Narrower quiet window — maximize learning time

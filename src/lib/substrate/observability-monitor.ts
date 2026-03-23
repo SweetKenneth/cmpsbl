@@ -3,7 +3,7 @@
  * Hardened telemetry, accurate percentiles, DLQ-aware health
  * 
  * Gaps filled:
- * 1. Bridge Invocation Tracking — Every inter-node bridge call is metered
+ * 1. Bridge Invocation Tracking — Every inter-primitive bridge call is metered
  * 2. Cross-Node Latency — Measures handoff time between modules
  * 3. DLQ Visibility — Surfaces dead letter queue depth and oldest entries
  * 4. Telemetry Summary — Aggregated view of engine health across the matrix
@@ -94,7 +94,7 @@ class ObservabilityMonitor {
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
-   * Record a bridge invocation (call from any inter-node bridge)
+   * Record a bridge invocation (call from any inter-primitive bridge)
    */
   recordBridgeInvocation(
     bridge: string,

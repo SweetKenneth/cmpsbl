@@ -240,7 +240,7 @@ export default function Status() {
     <div className="min-h-screen bg-background">
       <SEO
         title="System Status — Live Node & Service Health | CMPSBL"
-        description="Real-time operational status for CMPSBL: uptime across BRAIN, NEXUS, DEFENSE, DREAM, and all 40 nodes. Service health, incident history, and 90-day availability tracking updated live."
+        description="Real-time operational status for CMPSBL: uptime across BRAIN, NEXUS, DEFENSE, DREAM, and all 40 primitives. Service health, incident history, and 90-day availability tracking updated live."
         canonical="https://cmpsbl.com/status"
         keywords={["memory stream status", "uptime", "CMPSBL status", "stream health"]}
       />

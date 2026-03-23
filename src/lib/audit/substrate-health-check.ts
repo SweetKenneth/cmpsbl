@@ -52,7 +52,7 @@ export interface HealthCheckReport {
 
 // ─── Constants ───────────────────────────────────────────────────────
 
-/** 40-node canonical module entries (12-sector topology) */
+/** 40-primitive canonical module entries (4-category topology) */
 const EXPECTED_MODULE_DIRS: SubstrateModuleName[] = [...SUBSTRATE_MODULES];
 
 /** Terminal handler files that must exist */
@@ -191,7 +191,7 @@ function checkFilesystem(): LayerResult {
     check(
       'fs_module_count',
       EXPECTED_MODULE_DIRS.length >= 40,
-      `${EXPECTED_MODULE_DIRS.length} module entries declared (40-node / 12-sector topology)`,
+      `${EXPECTED_MODULE_DIRS.length} module entries declared (40-primitive / 4-category topology)`,
     ),
   );
 
@@ -200,7 +200,7 @@ function checkFilesystem(): LayerResult {
     check(
       'fs_canonical_registry',
       SUBSTRATE_MODULES.length >= 40,
-      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (40-node architecture)`,
+      `Canonical module registry contains ${SUBSTRATE_MODULES.length} entries (40-primitive architecture)`,
     ),
   );
 

@@ -1,6 +1,6 @@
 /**
  * Diagnostic Correlation Engine — SYSTEM v9.0.0
- * Cross-correlates metrics from all 40 nodes to identify
+ * Cross-correlates metrics from all 40 primitives to identify
  * root causes rather than symptoms.
  */
 

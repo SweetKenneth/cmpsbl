@@ -1,6 +1,6 @@
 /**
  * ENGINEER — Bottleneck Topology Analyzer
- * Graph-based critical-path analysis across the 40-node mesh.
+ * Graph-based critical-path analysis across the 40-primitive mesh.
  * Identifies cascading bottleneck chains, not just single-node hotspots.
  * @module engineer/bottleneckTopologyAnalyzer
  * @version 9.0.0 — Foundry

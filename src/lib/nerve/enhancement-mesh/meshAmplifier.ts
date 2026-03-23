@@ -84,7 +84,7 @@ export function createAmplifier(entry: {
 
 /**
  * Execute a single heartbeat for an amplifier.
- * Simulates fan-out to all 40 nodes and computes uplift delta.
+ * Simulates fan-out to all 40 primitives and computes uplift delta.
  */
 export function runMeshHeartbeat(amp: MeshAmplifier): HeartbeatTick {
   const start = performance.now();

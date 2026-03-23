@@ -1,6 +1,6 @@
 /**
  * Substrate Runtime Metrics Store
- * Real observability for all 40 nodes — replaces mock telemetry.
+ * Real observability for all 40 primitives — replaces mock telemetry.
  * 
  * Tracks operations, errors, latency, circuit breaker state,
  * and last activity per module. Zero dependencies.

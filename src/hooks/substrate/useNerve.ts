@@ -1,5 +1,5 @@
 /**
- * useNerve — React hook for the NERVE inter-node signaling node
+ * useNerve — React hook for the NERVE inter-primitive signaling node
  * 
  * Exposes: heartbeats, circuits, backpressure, topology, stats, CLM, hardening
  * Respects debug mode kill-switch

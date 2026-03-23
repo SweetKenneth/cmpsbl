@@ -1,6 +1,6 @@
 /**
  * ORACLE Ultimate #9 — Dynamic Risk Matrix
- * Real-time risk scoring across all 40 nodes.
+ * Real-time risk scoring across all 40 primitives.
  * Risk = Probability × Impact, updated from live predictions.
  */
 

@@ -205,7 +205,7 @@ export const DASHBOARD = {
     status: 'Memory Stream Active',
     nodes: (active: number, total: number) => `${active}/${total}`,
     integrity: (pct: number) => `${pct}% integrity`,
-    sectors: '40 nodes · Signal → Silicon',
+    sectors: '40 primitives · Signal → Silicon',
   },
 } as const;
 

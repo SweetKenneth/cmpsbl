@@ -225,7 +225,7 @@ export function generateImpactPreview(
   const risks = CHANGE_TYPE_RISKS[changeType] || ['Standard change risk'];
   
   // Determine if this affects multiple modules
-  const crossModuleKeywords = ['integration', 'shared', 'global', 'all modules', 'system-wide'];
+  const crossModuleKeywords = ['integration', 'shared', 'global', 'all primitives', 'system-wide'];
   const affectsMultiple = crossModuleKeywords.some(kw => description.toLowerCase().includes(kw));
   
   const filesAffected: Array<{ path: string; operation: 'create' | 'modify' | 'delete'; reason: string }> = relatedFiles.map(path => ({

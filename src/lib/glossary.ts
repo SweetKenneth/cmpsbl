@@ -53,7 +53,7 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   "ascended-memory": {
     term: "Ascended Memory",
     short: "A locked capability discovered through Ascension.",
-    detail: "An ascended capability chain — deterministic behavior that emerges only when your code interacts with the substrate's 40-node matrix. Exportable as source code, tests, and documentation.",
+    detail: "An ascended capability chain — deterministic behavior that emerges only when your code interacts with the substrate's 40-primitive matrix. Exportable as source code, tests, and documentation.",
   },
   "capability-pack": {
     term: "Capability Pack",

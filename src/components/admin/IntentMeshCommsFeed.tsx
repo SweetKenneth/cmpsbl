@@ -1,6 +1,6 @@
 /**
  * INTENT Mesh Communications Feed — v3.0 (REAL)
- * Live node-to-node dialogue backed by mesh_comms table + Supabase realtime.
+ * Live primitive-to-primitive dialogue backed by mesh_comms table + Supabase realtime.
  * Falls back to seeding a few real events on mount if the table is empty.
  */
 
@@ -153,7 +153,7 @@ export function IntentMeshCommsFeed() {
               )}
             </CardTitle>
             <CardDescription className="mt-1 text-xs">
-              Real-time node dialogue — backed by live mesh activity
+              Real-time primitive dialogue — backed by live mesh activity
             </CardDescription>
           </div>
           <div className="flex items-center gap-1 shrink-0">

@@ -2,7 +2,7 @@
  * Substrate Audit Test Suite
  * ━━━━━━━━━━━━━━━━━━━━━━━━━
  * Tests every major substrate function:
- *   - Matrix Node Registry (40-node topology, weight normalization, integrity)
+ *   - Matrix Node Registry (40-primitive topology, weight normalization, integrity)
  *   - CORE Module (boot sequence, dependencies, lifecycle)
  *   - Control Plane (hashing, canonicalization)
  *   - Merkle Audit Chain (append, verify, tamper detection)
@@ -35,7 +35,7 @@ import {
 } from '@/lib/core/matrixNodeRegistry';
 
 describe('§1 — Matrix Node Registry', () => {
-  it('has exactly 40 nodes', () => {
+  it('has exactly 40 primitives', () => {
     expect(getNodeDefinitions()).toHaveLength(40);
   });
 
@@ -43,7 +43,7 @@ describe('§1 — Matrix Node Registry', () => {
     expect(getTotalWeight()).toBe(1);
   });
 
-  it('all 12 sectors are represented', () => {
+  it('all 4 categorys are represented', () => {
     const sectors = new Set(getNodeDefinitions().map(n => n.sector));
     const expected: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
     for (const s of expected) {
@@ -285,9 +285,9 @@ import {
 } from '@/lib/substrate/capability-router';
 
 describe('§5 — Capability Router', () => {
-  it('all 40 nodes have registered capabilities', () => {
+  it('all 40 primitives have registered capabilities', () => {
     const caps = listCapabilities();
-    expect(caps.length).toBeGreaterThanOrEqual(40); // 40 nodes × ~2 caps each
+    expect(caps.length).toBeGreaterThanOrEqual(40); // 40 primitives × ~2 caps each
   });
 
   it('resolves highest priority healthy module', () => {

@@ -4,7 +4,7 @@
  * 
  * Each substrate module registers its own learning KPIs and reflection methods.
  * CLM calls these hooks during autonomous learning cycles within the
- * 40-node / 12-sector field-based topology.
+ * 40-primitive / 4-category field-based topology.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -466,7 +466,7 @@ const ALL_MODULES: SubstrateModule[] = [
   'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   'immunity', 'intent', 'governance',
   'medic', 'nerve',
-  // Expansion nodes (40-node architecture)
+  // Expansion nodes (40-primitive architecture)
   'sovereign', 'oracle', 'conscience', 'phantom', 'forge',
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ];

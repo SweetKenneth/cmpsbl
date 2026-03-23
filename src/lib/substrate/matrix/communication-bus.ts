@@ -96,7 +96,7 @@ export async function sectorBroadcast(
 }
 
 /**
- * Send a direct node-to-node signal with dependency validation.
+ * Send a direct primitive-to-primitive signal with dependency validation.
  * Returns null if the target node is unreachable (breaker open).
  */
 export async function nodeSignal(

@@ -76,10 +76,10 @@ async function substrateAuditTests(): Promise<Array<[string, TestFn]>> {
 
   return [
     // Matrix Registry
-    ['Matrix has exactly 40 nodes', () => {
+    ['Matrix has exactly 40 primitives', () => {
       assert(getNodeDefinitions().length === 40, `Expected 40, got ${getNodeDefinitions().length}`);
     }],
-    ['All 12 sectors have nodes', () => {
+    ['All 4 categorys have nodes', () => {
       const sectors = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'] as const;
       for (const s of sectors) {
         assert(getNodesBySector(s).length > 0, `Sector ${s} has no nodes`);
@@ -399,11 +399,11 @@ async function technicalDebtTests(): Promise<Array<[string, TestFn]>> {
     }],
 
     // ── ARCHITECTURE INVARIANTS ──
-    ['Matrix has exactly 40 nodes (drift check)', () => {
+    ['Matrix has exactly 40 primitives (drift check)', () => {
       const count = getNodeDefinitions().length;
-      assert(count === 40, `Expected 40 nodes, got ${count}`);
+      assert(count === 40, `Expected 40 primitives, got ${count}`);
     }],
-    ['All 12 sectors populated', () => {
+    ['All 4 categorys populated', () => {
       const required = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'] as const;
       const missing = required.filter(s => getNodesBySector(s).length === 0);
       assert(missing.length === 0, `Empty sectors: ${missing.join(', ')}`);

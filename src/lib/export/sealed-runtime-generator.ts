@@ -687,7 +687,7 @@ export function generateSealedRuntimeReadme(): string {
     '',
     '- CJPI scoring weight allocations',
     '- Auto-tiering threshold values',
-    '- Module effect deep implementations (40-node matrix)',
+    '- Module effect deep implementations (40-primitive matrix)',
     '- Synergy multiplier formulas',
     '- Discovery heuristics and synthesis templates',
     '',
@@ -798,7 +798,7 @@ export function registerChainEffect(moduleName: string, verb: string, handler: E
 // Override resolveEffect to include Ascension modules
 const _baseResolveEffect = resolveEffect;
 function resolveEffectWithAscension(mod: string): { verb: string; depth: 'deep' | 'fallback'; handler: EH } {
-  // Priority 1: Substrate nodes (40-node matrix) — handled by base
+  // Priority 1: Substrate nodes (40-primitive matrix) — handled by base
   const base = _baseResolveEffect(mod);
   if (base.depth === 'deep') return base;
   // Priority 2: Dynamically registered Ascension modules

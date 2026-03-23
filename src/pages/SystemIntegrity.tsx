@@ -251,7 +251,7 @@ export default function SystemIntegrity() {
     <div className="min-h-screen bg-background">
       <SEO
         title="System Integrity — CMPSBL Substrate"
-        description="Real-time integrity map showing health, safety switch states, and zone isolation across all 40 nodes and 12 sectors of the CMPSBL substrate."
+        description="Real-time integrity map showing health, safety switch states, and zone isolation across all 40 primitives and 4 categorys of the CMPSBL substrate."
         noindex
       />
 

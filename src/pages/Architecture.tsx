@@ -1,5 +1,5 @@
 /**
- * Architecture — Public SEO page for CMPSBL 40-node substrate topology
+ * Architecture — Public SEO page for CMPSBL 40-primitive substrate topology
  * /architecture
  */
 
@@ -30,7 +30,7 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-/* ─── Full 40-node topology, grouped by the 12 canonical sectors ─── */
+/* ─── Full 40-primitive topology, grouped by the 12 canonical sectors ─── */
 
 interface NodeDef {
   name: string;
@@ -71,7 +71,7 @@ const SECTORS: SectorDef[] = [
       { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
       { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-node message routing." },
       { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
-      { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-node coordination." },
+      { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-primitive coordination." },
     ],
   },
   {

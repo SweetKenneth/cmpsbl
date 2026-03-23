@@ -61,7 +61,7 @@ const SECTORS: SectorDef[] = [
     borderColor: 'border-amber-500/20',
     textColor: 'text-amber-400',
     nodes: [
-      { id: 'core', label: 'CORE', tagline: 'Foundation Runtime', description: 'Boot kernel, lifecycle management, event bus, and health monitoring for all 40 nodes.', icon: Cpu, slug: 'core', weight: 0.110 },
+      { id: 'core', label: 'CORE', tagline: 'Foundation Runtime', description: 'Boot kernel, lifecycle management, event bus, and health monitoring for all 40 primitives.', icon: Cpu, slug: 'core', weight: 0.110 },
     ],
   },
   {
@@ -96,7 +96,7 @@ const SECTORS: SectorDef[] = [
     key: 'ocg',
     label: 'OCG — Operational Compliance Grid',
     shortLabel: 'OCG',
-    description: 'Event bus, entitlements, auth, webhooks, ledger, and inter-node signaling',
+    description: 'Event bus, entitlements, auth, webhooks, ledger, and inter-primitive signaling',
     totalWeight: '0.150',
     color: 'bg-emerald-500/10',
     borderColor: 'border-emerald-500/20',
@@ -246,9 +246,9 @@ export default function ModulesHub() {
     <>
       <SEO
         title="All 40 Nodes — Full Matrix Architecture | CMPSBL"
-        description="Explore the complete 40-node substrate matrix across 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, and Shell."
+        description="Explore the complete 40-primitive substrate matrix across 4 categorys: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, and Shell."
         image="https://cmpsbl.com/og/systems.jpg"
-        keywords={['AI substrate architecture', '40-node matrix', 'composable AI', 'cognitive kernel', 'AI operating system']}
+        keywords={['AI substrate architecture', '40-primitive matrix', 'composable AI', 'cognitive kernel', 'AI operating system']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Modules', url: 'https://cmpsbl.com/modules' },
@@ -285,7 +285,7 @@ export default function ModulesHub() {
               </h1>
               
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-                The complete 40-node cognitive topology. Each node is an autonomous subsystem —
+                The complete 40-primitive cognitive topology. Each node is an autonomous subsystem —
                 together they form a field-based architecture that reasons, evolves, and self-heals.
               </p>
 

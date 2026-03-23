@@ -1,7 +1,7 @@
 /**
  * Lifecycle Orchestrator — SYSTEM v9.0.0
  * Manages node lifecycle transitions (boot → ready → degraded → maintenance → shutdown)
- * with dependency-aware sequencing across all 40 nodes.
+ * with dependency-aware sequencing across all 40 primitives.
  */
 
 // --- Types ---
