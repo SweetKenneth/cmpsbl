@@ -1,7 +1,7 @@
 # CMPSBL® Governor Documentation Library
 
 **Classification:** 🔒 GOVERNOR EYES ONLY  
-**Version:** v14.1.0 — MINDGAMES Epoch
+**Version:** v15.1.8 — CONTACT Epoch
 
 ---
 
