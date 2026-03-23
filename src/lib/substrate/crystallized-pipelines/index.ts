@@ -1,5 +1,5 @@
 /**
- * Crystallized Pipelines — Module Index
+ * Crystallized Memories — Module Index
  */
 export {
   CRYSTALLIZED_PIPELINES,

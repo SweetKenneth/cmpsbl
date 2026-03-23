@@ -889,7 +889,7 @@ export default function DiscoveryMiningConsole() {
                     <CardHeader className="pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                          <CardTitle className="text-base sm:text-lg">Discovered Pipelines</CardTitle>
+                          <CardTitle className="text-base sm:text-lg">Discovered Memories</CardTitle>
                           <CardDescription>{latestResult.discoveries.length} memories ranked by CJPI</CardDescription>
                         </div>
                         <Button variant="outline" size="sm" onClick={exportJson} className="gap-1 self-start">
