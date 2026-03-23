@@ -99,7 +99,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
   {
     id: "world-builder",
     name: "Dynamic Game World Engine",
-    description: "Procedurally generated game worlds with persistent NPCs, evolving storylines, and player memory. Uses Dream module for overnight world evolution.",
+    description: "Procedurally generated game worlds with persistent NPCs, evolving storylines, and player memory. Uses the DREAM Engine for overnight world evolution.",
     author: "gamedev",
     category: "gaming",
     tags: ["gaming", "procedural", "world-building", "npcs"],
