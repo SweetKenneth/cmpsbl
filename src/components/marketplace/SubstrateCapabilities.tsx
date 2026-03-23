@@ -118,7 +118,7 @@ const CAPABILITY_CATEGORIES = [
     features: [
       { name: 'Health Monitoring', description: 'Track system health in real-time', icon: HeartPulse },
       { name: 'Metrics Collection', description: 'Comprehensive performance metrics', icon: Activity },
-      { name: 'Distributed Tracing', description: 'Track requests across all nodes', icon: Workflow },
+      { name: 'Distributed Tracing', description: 'Track requests across all primitives', icon: Workflow },
       { name: 'Alert Management', description: 'Proactive issue notification', icon: AlertTriangle },
       { name: 'Dashboard Analytics', description: 'Visual insights into system state', icon: Gauge },
       { name: 'Dependency Mapping', description: 'Visualize module relationships', icon: Network },

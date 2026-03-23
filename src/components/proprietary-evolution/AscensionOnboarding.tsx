@@ -25,7 +25,7 @@ const STEPS = [
     icon: Upload,
     tag: 'Step 1',
     title: 'Ingest Your Code',
-    body: 'Drop source files in any language. Your code becomes Node #41 — a first-class participant in the substrate matrix with its own capability surface.',
+    body: 'Drop source files in any language. Your code becomes Primitive #41 — a first-class participant in the substrate matrix with its own capability surface.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },

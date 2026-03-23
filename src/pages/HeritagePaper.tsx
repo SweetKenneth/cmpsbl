@@ -355,9 +355,9 @@ const HeritagePaper = () => {
                 </tr></thead>
                 <tbody className="text-muted-foreground">
                   <tr><td className="p-2 border border-border">Fingerprinting</td><td className="p-2 border border-border">Structural fingerprinting</td><td className="p-2 border border-border">Browser ID → content-addressable artifacts</td></tr>
-                  <tr><td className="p-2 border border-border">Behavioral Analysis</td><td className="p-2 border border-border">IMMUNITY</td><td className="p-2 border border-border">Traffic analysis → node health monitoring</td></tr>
+                  <tr><td className="p-2 border border-border">Behavioral Analysis</td><td className="p-2 border border-border">IMMUNITY</td><td className="p-2 border border-border">Traffic analysis → primitive health monitoring</td></tr>
                   <tr><td className="p-2 border border-border">Honeypot/Deception</td><td className="p-2 border border-border">PHANTOM</td><td className="p-2 border border-border">Web traps → cognitive anonymization</td></tr>
-                  <tr><td className="p-2 border border-border">Bulkhead Isolation</td><td className="p-2 border border-border">IRONCLAD</td><td className="p-2 border border-border">Proxy rotation → per-node failure isolation</td></tr>
+                  <tr><td className="p-2 border border-border">Bulkhead Isolation</td><td className="p-2 border border-border">IRONCLAD</td><td className="p-2 border border-border">Proxy rotation → per-primitive failure isolation</td></tr>
                   <tr><td className="p-2 border border-border">Shadow Testing</td><td className="p-2 border border-border">SHADOW</td><td className="p-2 border border-border">Pre-engagement → governed state mutation</td></tr>
                   <tr><td className="p-2 border border-border">Anti-Detection</td><td className="p-2 border border-border">DEFENSE</td><td className="p-2 border border-border">Offensive evasion → defensive boundaries</td></tr>
                   <tr><td className="p-2 border border-border">Stealth→Shield</td><td className="p-2 border border-border">IRONCLAD philosophy</td><td className="p-2 border border-border">Attacker to guardian — additive hardening</td></tr>
