@@ -144,3 +144,6 @@ export {
   type PolicyConflict,
   type ImpactAssessment,
 } from './governance-hardening';
+
+// v9.0 Ultimate Form: Parliament Prime (10 systems)
+export * from './ultimate';
