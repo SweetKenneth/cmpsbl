@@ -134,7 +134,7 @@ export function CommandPalette({ enabled }: CommandPaletteProps) {
     }
     
     if (trimmed === 'version') {
-      addResult('version', 'success', 'Clockless — CMPSBL Substrate\nA Cognitive Reality System — 40 nodes, 12 sectors, 675+ capabilities\nWhere machines learn to persist, evolve, coordinate, compound, and dream. | 500+ commands');
+      addResult('version', 'success', 'Clockless — CMPSBL Substrate\nA Cognitive Reality System — 40 primitives · Agents · Engines · Layers · Organs · 675+ capabilities\nWhere machines learn to persist, evolve, coordinate, compound, and dream. | 500+ commands');
       return;
     }
     

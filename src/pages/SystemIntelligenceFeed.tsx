@@ -530,7 +530,7 @@ export default function SystemIntelligenceFeed() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
               {[
                 { label: "Learning Cycles", value: feed.length, icon: Activity },
-                { label: "Active Modules", value: activeModules.length, icon: Cpu },
+                { label: "Active Primitives", value: activeModules.length, icon: Cpu },
                 { label: "Mode", value: "24/7", icon: Radio },
                 { label: "Status", value: "LIVE", icon: Zap },
               ].map((stat, i) => (
@@ -571,7 +571,7 @@ export default function SystemIntelligenceFeed() {
                 <div className="sticky top-24">
                   <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                     <Orbit className="w-5 h-5 text-primary" />
-                    Module Network
+                    Primitive Network
                   </h2>
                   <ModuleOrbit activeModules={activeModules} />
                   

@@ -1,7 +1,7 @@
 /**
  * ASCENSION Phase — Discovery Engine
- * Runs multi-node chain collisions between the Auxiliary Node (user's capability surface)
- * and the 40-node substrate matrix.
+ * Runs multi-primitive chain collisions between the Auxiliary Primitive (user's capability surface)
+ * and the 40-primitive substrate matrix.
  * 
  * The Auxiliary Node is a first-class participant with its own capability verbs and sector.
  */
@@ -37,7 +37,7 @@ interface CollisionResult {
   description?: string;
 }
 
-// Canonical 40-node matrix — must match edge function VALID_NODES exactly
+// Canonical 40-primitive matrix — must match edge function VALID_NODES exactly
 const SUBSTRATE_NODES = [
   'CORE','SYSTEM','BRAIN','MEMORY','DREAM',
   'RIPPLE','ACCESS','IDENTITY','RELAY','AUDIT','NERVE',
@@ -413,7 +413,7 @@ export function DiscoveryPhase() {
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
           <div className="w-2 h-2 rounded-full bg-primary" />
           <span className="text-xs font-mono text-primary">Ψ₄₁ {node41DisplayName}</span>
-          <span className="text-[10px] text-muted-foreground">× 40 nodes × 2-8 depth</span>
+          <span className="text-[10px] text-muted-foreground">× 40 primitives × 2-8 depth</span>
         </div>
 
         <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/20">
