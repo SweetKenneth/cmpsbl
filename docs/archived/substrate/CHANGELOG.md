@@ -4,7 +4,25 @@
 
 ---
 
-## 2026-03-23 · v15.2.0 (CONTACT — RIPPLE Ultimate "Tsunami")
+## 2026-03-23 · v15.2.1 (CONTACT — ORACLE Ultimate "Omniscience")
+
+⟨This entry describes ORACLE v9.0.0 — the substrate's predictive intelligence engine reaching its ultimate form with 11 new systems.⟩
+
+- **Bayesian Prediction Network** — Multi-variable BFS belief propagation through causal DAGs with prior/posterior updates and network versioning.
+- **Trend Forecaster** — EMA + linear regression with 3-horizon forecasts (5min/1hr/24hr), Z-score anomaly detection (2.5σ), autocorrelation-based seasonality.
+- **Scenario Simulation Engine** — Monte Carlo "what-if" with Welford's online variance, 5 scenario templates, CI90/CI95/CI99, early convergence termination.
+- **Prescriptive Recommendation Engine** — Ranked actions (40% ROI + 35% confidence + 15% inverse-risk + 10% priority). Lifecycle: pending → accepted → executed. Outcome tracking.
+- **Prophecy Journal** — Immutable prediction ledger (5000 cap) with Brier score calibration and 10-bucket accuracy reports.
+- **Early Warning System** — Multi-signal convergence (3+ signals, 2+ sources). 4-tier severity: advisory → caution → warning → imminent.
+- **Capacity Planning Oracle** — Resource exhaustion projections via linear regression. R²-based confidence. 5-tier urgency with scaling recommendations.
+- **Causal Inference Engine** — Granger proxy for correlation vs causation. Causal DAG construction. Counterfactual reasoning.
+- **Dynamic Risk Matrix** — Real-time Risk = P × I across 40 nodes. 5 categories × 5 levels.
+- **Prediction Market** — Competing models with EMA credibility. Ensemble predictions. Auto-retirement below 0.2 credibility.
+- **Oracle Telemetry Nexus** — Predictions/hr, accuracy, calibration drift, adoption rate, composite health.
+
+---
+
+
 
 ⟨This entry describes RIPPLE v9.0.0 — the substrate's event bus reaching its ultimate form with 9 new systems: Priority Preemption, Adaptive Backpressure, DLQ Forensics, Signal Correlation, Topic Topology, Schema Registry, Storm Detection, Enrichment Pipeline, and Live Telemetry Feed.⟩
 
