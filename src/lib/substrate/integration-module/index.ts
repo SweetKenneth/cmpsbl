@@ -99,3 +99,7 @@ export {
   type HardeningFeature,
   type ConduitHealthReport,
 } from './integration-hardening';
+
+// ── Ultimate Systems ─────────────────────────────────────────────
+export * as IntegrationUltimate from './ultimate';
+

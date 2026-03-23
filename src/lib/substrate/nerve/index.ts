@@ -580,3 +580,7 @@ export function shutdownNerve(): void {
 export function isNerveInitialized(): boolean {
   return initialized;
 }
+
+// ── Ultimate Systems ─────────────────────────────────────────────
+export * as NerveUltimate from './ultimate';
+
