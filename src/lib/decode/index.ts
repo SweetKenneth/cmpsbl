@@ -379,8 +379,8 @@ export function validateAgainstContract(
 // ============ Module Metadata ============
 
 import { SUBSTRATE_EPOCH as _DE } from '@/lib/substrate/versions';
-export const DECODE_VERSION = _DE;
-export const DECODE_CODENAME = 'Interpreter';
+export const DECODE_VERSION = '9.0.0';
+export const DECODE_CODENAME = 'Omniscient';
 
 export interface DecodeModuleStatus {
   version: string;
@@ -396,6 +396,91 @@ export function getDecodeStatus(): DecodeModuleStatus {
     entity_types: Object.keys(ENTITY_PATTERNS),
   };
 }
- 
- // Context engine
- export * from './contextEngine';
+
+// ============ Sub-Module Exports ============
+
+// Context engine
+export * from './contextEngine';
+
+// Session memory (persistent multi-session context)
+export {
+  recordTurn,
+  getSessionMemory,
+  buildContextPayload,
+  clearSessionMemory,
+  scoreImportance,
+  compressTurns,
+} from '@/core/decode/sessionMemory';
+
+// Intent classification pipeline
+export {
+  classifyIntent,
+  quickClassify,
+} from '@/core/decode/intentClassifier';
+export type { ClassificationResult, EpistemicVerb } from '@/core/decode/intentClassifier';
+
+// Multi-turn reasoning graph
+export {
+  addReasoningNode,
+  getCausalChain,
+  getContradictions,
+  getReasoningSummary,
+  clearReasoningGraph,
+} from '@/core/decode/reasoningGraph';
+
+// Substrate router (live wiring)
+export {
+  resolveRoute,
+  routeToNode,
+  autoRoute,
+  getRouteLog,
+} from '@/core/decode/substrateRouter';
+
+// Voice calibration (adaptive depth)
+export {
+  getCalibration,
+  generateVoiceDirective,
+} from '@/core/decode/voiceCalibration';
+
+// Context window manager
+export {
+  manageContextWindow,
+  createContextItem,
+  estimateTokens,
+} from '@/core/decode/contextWindowManager';
+
+// Command executor (unified pipeline)
+export {
+  parseCommand as parseExecutableCommand,
+  isExecutableCommand,
+  executeCommand,
+  getRegisteredCommands,
+  getAvailableCommands,
+  getExecutionLog,
+} from '@/core/decode/commandExecutor';
+
+// Streaming response engine
+export {
+  createStream,
+  getStream,
+  interruptAllStreams,
+  processSSEStream,
+  DecodeStreamController,
+} from '@/core/decode/streamingEngine';
+
+// Epistemic audit trail
+export {
+  recordClaim,
+  verifyClaim,
+  getAuditSummary,
+  getSessionClaims,
+  expireOldClaims,
+} from '@/core/decode/epistemicAudit';
+
+// Multi-modal input handler
+export {
+  detectModality,
+  extractContent,
+  processMultiModalInput,
+  getModalitySummary,
+} from '@/core/decode/multiModalHandler';
