@@ -23,7 +23,7 @@ const EVENT_TYPES = [
   { value: 'brain.learning.complete', label: 'Brain Learning Complete', color: 'text-neon-green' },
   { value: 'nexus.provider.degraded', label: 'Nexus Provider Degraded', color: 'text-neon-amber' },
   { value: 'system.health.changed', label: 'System Health Changed', color: 'text-neon-blue' },
-  { value: 'pipeline.crystallized', label: 'Pipeline Crystallized', color: 'text-neon-magenta' },
+  { value: 'pipeline.crystallized', label: 'Memory Crystallized', color: 'text-neon-magenta' },
   { value: 'audit.completed', label: 'Audit Completed', color: 'text-neon-amber' },
 ] as const;
 

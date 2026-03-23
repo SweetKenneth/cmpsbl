@@ -287,7 +287,7 @@ export function MeshActivityTab() {
         <StatCard label="Intents" value={stats?.totalIntents || 0} icon={<Activity className="h-4 w-4 text-neon-magenta" />} />
         <StatCard label="Success" value={`${((stats?.successRate || 0) * 100).toFixed(0)}%`} icon={<CheckCircle className="h-4 w-4 text-neon-green" />} />
         <StatCard label="Latency" value={`${stats?.avgDurationMs || 0}ms`} icon={<Eye className="h-4 w-4 text-neon-blue" />} />
-        <StatCard label="Saved Pipelines" value={savedPipelines.length} icon={<Bookmark className="h-4 w-4 text-neon-amber" />} />
+        <StatCard label="Saved Memories" value={savedPipelines.length} icon={<Bookmark className="h-4 w-4 text-neon-amber" />} />
       </div>
 
       {activeView === 'live' ? (
@@ -432,7 +432,7 @@ export function MeshActivityTab() {
                                 )}
                               </div>
                             </div>
-                            {/* Save as Pipeline button */}
+                            {/* Save as Memory button */}
                             {receipt.success && receipt.id && (
                               <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
                                 {savingId === receipt.id ? (
@@ -440,7 +440,7 @@ export function MeshActivityTab() {
                                     <Input
                                       value={pipelineName}
                                       onChange={e => setPipelineName(e.target.value)}
-                                      placeholder="Pipeline name..."
+                                      placeholder="Memory name..."
                                       className="h-6 text-[10px] w-28"
                                       autoFocus
                                     />

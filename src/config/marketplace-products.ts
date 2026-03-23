@@ -433,7 +433,7 @@ export const NEW_PREMIUM_TEMPLATES = [
   // Data Pipeline ($299 - Elite)
   {
     id: 'data-pipeline-intelligence',
-    name: 'Data Pipeline Intelligence',
+    name: 'Data Memory Intelligence',
     description: 'ETL monitoring with anomaly learning, schema memory, and self-healing data flows',
     product_id: 'prod_TrkhDZ6X7rCDbN',
     price_id: 'price_1Su1CLQ7FtTiAL4aIOajfDAN',
@@ -587,7 +587,7 @@ export const COMPLEX_TEMPLATES = [
     amount: 29900, // $299 (normalized from $449)
     category: 'agent',
     difficulty: 'elite',
-    features: ['Prospect Memory', 'Deal Pattern Learning', 'Win Rate Optimization', 'Pipeline Intelligence'],
+    features: ['Prospect Memory', 'Deal Pattern Learning', 'Win Rate Optimization', 'Memory Intelligence'],
   },
 
   // Developer Tools ($299)
@@ -975,7 +975,7 @@ export const HIGH_VALUE_TEMPLATES = [
     amount: 29900, // $299
     category: 'brain',
     difficulty: 'elite',
-    features: ['Candidate Matching', 'Skill Assessment', 'Culture Fit Analysis', 'Pipeline Intelligence', 'Hiring Memory'],
+    features: ['Candidate Matching', 'Skill Assessment', 'Culture Fit Analysis', 'Memory Intelligence', 'Hiring Memory'],
   },
   {
     id: 'product-feedback-loop',

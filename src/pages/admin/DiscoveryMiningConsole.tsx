@@ -409,7 +409,7 @@ function TemplateComposer() {
           </div>
           <div>
             <Label className="text-xs">Description</Label>
-            <Textarea placeholder="What this pipeline does..." value={form.descriptionPattern} onChange={e => update('descriptionPattern', e.target.value)} rows={2} />
+            <Textarea placeholder="What this memory does..." value={form.descriptionPattern} onChange={e => update('descriptionPattern', e.target.value)} rows={2} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -483,7 +483,7 @@ function TemplateComposer() {
           </div>
           <div>
             <Label className="text-xs">Rationale</Label>
-            <Textarea placeholder="Why this pipeline is strategically valuable..." value={form.rationale} onChange={e => update('rationale', e.target.value)} rows={2} />
+            <Textarea placeholder="Why this memory is strategically valuable..." value={form.rationale} onChange={e => update('rationale', e.target.value)} rows={2} />
           </div>
         </CardContent>
       </Card>
@@ -838,7 +838,7 @@ export default function DiscoveryMiningConsole() {
               Discovery Mining Console
             </h1>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Capability Synthesis Reactor — one-click auto-discovery of Apex Discovery pipelines
+              Capability Synthesis Reactor — one-click auto-discovery of Apex Discovery memories
             </p>
           </div>
 
@@ -889,8 +889,8 @@ export default function DiscoveryMiningConsole() {
                     <CardHeader className="pb-3">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                         <div>
-                          <CardTitle className="text-base sm:text-lg">Discovered Pipelines</CardTitle>
-                          <CardDescription>{latestResult.discoveries.length} pipelines ranked by CJPI</CardDescription>
+                          <CardTitle className="text-base sm:text-lg">Discovered Memories</CardTitle>
+                          <CardDescription>{latestResult.discoveries.length} memories ranked by CJPI</CardDescription>
                         </div>
                         <Button variant="outline" size="sm" onClick={exportJson} className="gap-1 self-start">
                           <Download className="w-3 h-3" /> Export JSON

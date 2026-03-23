@@ -55,7 +55,7 @@ function formatEvolutionLogForTerminal(): string {
         'Simulation channel emerged'
       ],
       capabilities: [
-        'Pipelines observable',
+        'Memories observable',
         'Full proposal context',
         'Safe failure exploration'
       ]

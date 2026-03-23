@@ -1,6 +1,6 @@
 /**
- * Pipeline Details Page Generator
- * Creates a beautifully styled, print-ready HTML document for each exported pipeline.
+ * Memory Details Page Generator
+ * Creates a beautifully styled, print-ready HTML document for each exported memory.
  * Designed to look like a professional certificate/license with seal, typography, and layout.
  */
 
@@ -103,7 +103,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Performs multi-step logical reasoning over structured and unstructured inputs. It evaluates conditions, weighs trade-offs, and produces actionable decisions with confidence scores.',
     inputsAccepted: 'Structured data objects, natural-language prompts, constraint sets, and prior decision history.',
     outputProduced: 'Ranked decision trees, confidence-weighted recommendations, and reasoning traces.',
-    behaviourDetail: 'BRAIN operates as the pipeline\'s central decision-maker. When invoked, it decomposes a problem into sub-goals, evaluates each against available evidence, and converges on a recommended action. It maintains a reasoning trace that downstream primitives can audit or override.',
+    behaviourDetail: 'BRAIN operates as the memory\'s central decision-maker. When invoked, it decomposes a problem into sub-goals, evaluates each against available evidence, and converges on a recommended action. It maintains a reasoning trace that downstream primitives can audit or override.',
   },
   CORTEX: {
     name: 'CORTEX',
@@ -143,7 +143,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Monitors data flow and system operations for security violations. It enforces access policies, detects anomalous behavior, and blocks unauthorized operations in real-time.',
     inputsAccepted: 'Operation requests, access tokens, data flow graphs, and security policy definitions.',
     outputProduced: 'Allow/deny decisions, threat severity scores, violation reports, and remediation recommendations.',
-    behaviourDetail: 'DEFENSE acts as a security gate within the pipeline. Every operation passes through its policy engine before execution. It maintains a threat model that adapts based on observed attack patterns and can quarantine suspicious operations without blocking the entire pipeline.',
+    behaviourDetail: 'DEFENSE acts as a security gate within the memory. Every operation passes through its policy engine before execution. It maintains a threat model that adapts based on observed attack patterns and can quarantine suspicious operations without blocking the entire pipeline.',
   },
   GOVERNANCE: {
     name: 'GOVERNANCE',
@@ -151,15 +151,15 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Ensures all pipeline operations comply with defined policies, regulations, and operational constraints. It audits decisions and flags non-compliant outputs before they reach production.',
     inputsAccepted: 'Policy rule sets, operational constraints, audit requirements, and decision logs.',
     outputProduced: 'Compliance reports, policy violation alerts, audit trails, and remediation workflows.',
-    behaviourDetail: 'GOVERNANCE wraps the pipeline in a compliance layer. It intercepts outputs, checks them against rule sets, and either approves, flags for review, or blocks non-compliant results. It generates immutable audit trails for regulatory evidence.',
+    behaviourDetail: 'GOVERNANCE wraps the memory in a compliance layer. It intercepts outputs, checks them against rule sets, and either approves, flags for review, or blocks non-compliant results. It generates immutable audit trails for regulatory evidence.',
   },
   MEMORY: {
     name: 'MEMORY',
     role: 'Persistent State & Recall',
-    whatItDoes: 'Stores, indexes, and retrieves information across pipeline executions. It provides long-term recall that allows the pipeline to learn from its own history and avoid repeating mistakes.',
+    whatItDoes: 'Stores, indexes, and retrieves information across pipeline executions. It provides long-term recall that allows the memory to learn from its own history and avoid repeating mistakes.',
     inputsAccepted: 'Key-value pairs, structured records, execution results, and contextual embeddings.',
     outputProduced: 'Retrieved records with relevance scores, historical trend data, and cross-session context.',
-    behaviourDetail: 'MEMORY gives the pipeline a persistent identity. Without it, each execution is stateless. With it, the pipeline can recall previous inputs, results, and errors — enabling progressive improvement and contextual awareness across sessions.',
+    behaviourDetail: 'MEMORY gives the memory a persistent identity. Without it, each execution is stateless. With it, the memory can recall previous inputs, results, and errors — enabling progressive improvement and contextual awareness across sessions.',
   },
   NEXUS: {
     name: 'NEXUS',
@@ -167,7 +167,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Routes data between pipeline stages, external APIs, and downstream consumers. It handles load balancing, retry logic, and protocol translation between heterogeneous systems.',
     inputsAccepted: 'Routable signals, routing tables, priority queues, and destination registries.',
     outputProduced: 'Delivered payloads with delivery receipts, routing metrics, and fallback reports.',
-    behaviourDetail: 'NEXUS is the pipeline\'s nervous system. It ensures that data reaches the right primitive at the right time, handles failures gracefully with retry and fallback strategies, and provides delivery guarantees across unreliable networks.',
+    behaviourDetail: 'NEXUS is the memory\'s nervous system. It ensures that data reaches the right primitive at the right time, handles failures gracefully with retry and fallback strategies, and provides delivery guarantees across unreliable networks.',
   },
   RIPPLE: {
     name: 'RIPPLE',
@@ -180,10 +180,10 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
   SYSTEM: {
     name: 'SYSTEM',
     role: 'Core Orchestration & Lifecycle',
-    whatItDoes: 'Manages the pipeline\'s lifecycle — initialization, execution sequencing, health monitoring, graceful shutdown, and error recovery. It\'s the conductor that keeps all primitives working in concert.',
+    whatItDoes: 'Manages the memory\'s lifecycle — initialization, execution sequencing, health monitoring, graceful shutdown, and error recovery. It\'s the conductor that keeps all primitives working in concert.',
     inputsAccepted: 'Pipeline configuration, execution schedules, health thresholds, and recovery policies.',
     outputProduced: 'Execution status reports, health dashboards, lifecycle events, and recovery logs.',
-    behaviourDetail: 'SYSTEM is the pipeline\'s operating system. It boots primitives in dependency order, monitors their health during execution, handles failures according to recovery policies, and ensures clean shutdown with state preservation.',
+    behaviourDetail: 'SYSTEM is the memory\'s operating system. It boots primitives in dependency order, monitors their health during execution, handles failures according to recovery policies, and ensures clean shutdown with state preservation.',
   },
 };
 
@@ -250,9 +250,9 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `<h2>How to Use This Software</h2>`;
   html += `<div class="section-card">`;
   html += `<h3>Integration Pattern</h3>`;
-  html += `<p>This pipeline is distributed as a self-contained primitive. To integrate it into your application:</p>`;
+  html += `<p>This memory is distributed as a self-contained primitive. To integrate it into your application:</p>`;
   html += `<div style="background: var(--cream-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.8; white-space: pre-wrap; color: var(--ink-light);">`;
-  html += `// 1. Import the pipeline\nimport { createPipeline } from './${toSlug(name)}';\n\n`;
+  html += `// 1. Import the memory\nimport { createPipeline } from './${toSlug(name)}';\n\n`;
   html += `// 2. Initialize with your configuration\nconst pipeline = createPipeline({\n`;
   caps.forEach(cap => {
     html += `  ${cap.name.toLowerCase()}: { /* ${cap.role} config */ },\n`;
@@ -263,7 +263,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `</div>`;
 
   html += `<h3 style="margin-top: 1.5rem;">Input Requirements</h3>`;
-  html += `<p>The pipeline expects the following inputs to function correctly:</p>`;
+  html += `<p>The memory expects the following inputs to function correctly:</p>`;
   html += `<ul class="use-case-list">`;
   caps.forEach(cap => {
     html += `<li><strong>${escapeHtml(cap.name)}:</strong> ${escapeHtml(cap.inputsAccepted)}</li>`;
@@ -274,7 +274,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   // --- Expected Results ---
   html += `<h2>Expected Results</h2>`;
   html += `<div class="section-card">`;
-  html += `<p class="description-lead">When executed successfully, this pipeline produces the following outputs:</p>`;
+  html += `<p class="description-lead">When executed successfully, this memory produces the following outputs:</p>`;
   html += `<div style="margin-top: 1rem;">`;
   caps.forEach((cap, i) => {
     html += `<div style="display: flex; gap: 0.75rem; padding: 0.75rem 0; ${i < caps.length - 1 ? 'border-bottom: 1px solid var(--rule);' : ''}">`;
@@ -310,15 +310,15 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `<div class="quality-grid">`;
   html += `<div class="quality-card">`;
   html += `<h3>Execution Mode</h3>`;
-  html += `<p style="font-size: 0.88rem;">This pipeline runs <strong>${caps.length <= 2 ? 'sequentially' : 'in adaptive mode'}</strong> — ${caps.length <= 2 ? 'each stage completes before the next begins, ensuring deterministic output ordering.' : 'stages may execute in parallel where dependencies allow, with the orchestrator managing data flow between them.'}</p>`;
+  html += `<p style="font-size: 0.88rem;">This memory runs <strong>${caps.length <= 2 ? 'sequentially' : 'in adaptive mode'}</strong> — ${caps.length <= 2 ? 'each stage completes before the next begins, ensuring deterministic output ordering.' : 'stages may execute in parallel where dependencies allow, with the orchestrator managing data flow between them.'}</p>`;
   html += `</div>`;
   html += `<div class="quality-card">`;
   html += `<h3>Error Handling</h3>`;
-  html += `<p style="font-size: 0.88rem;">If any stage fails, the pipeline returns a <code>partial</code> result containing all successful stage outputs plus detailed error information for the failed stage. Critical failures (e.g., ${modules.includes('DEFENSE') ? 'security violations' : 'orchestration errors'}) halt execution immediately.</p>`;
+  html += `<p style="font-size: 0.88rem;">If any stage fails, the memory returns a <code>partial</code> result containing all successful stage outputs plus detailed error information for the failed stage. Critical failures (e.g., ${modules.includes('DEFENSE') ? 'security violations' : 'orchestration errors'}) halt execution immediately.</p>`;
   html += `</div>`;
   html += `<div class="quality-card">`;
   html += `<h3>Idempotency</h3>`;
-  html += `<p style="font-size: 0.88rem;">${modules.includes('MEMORY') || modules.includes('EVOLUTION') ? 'This pipeline is <strong>not idempotent</strong> — repeated executions with identical inputs may produce different results as MEMORY accumulates context and EVOLUTION refines strategies.' : 'This pipeline is <strong>idempotent</strong> — given identical inputs and configuration, it produces identical outputs. Safe to retry on failure.'}</p>`;
+  html += `<p style="font-size: 0.88rem;">${modules.includes('MEMORY') || modules.includes('EVOLUTION') ? 'This memory is <strong>not idempotent</strong> — repeated executions with identical inputs may produce different results as MEMORY accumulates context and EVOLUTION refines strategies.' : 'This memory is <strong>idempotent</strong> — given identical inputs and configuration, it produces identical outputs. Safe to retry on failure.'}</p>`;
   html += `</div>`;
   html += `<div class="quality-card">`;
   html += `<h3>Scalability</h3>`;
@@ -928,9 +928,9 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <div class="section-card">
     <p class="description-lead">${escapeHtml(input.description)}</p>
     <p class="provenance-note">
-      This pipeline was autonomously discovered by the Memory Stream — a recursive engine that
+      This memory was autonomously discovered by the Memory Stream — a recursive engine that
       monitors substrate system behavior and crystallizes viable software configurations into
-      production-grade pipelines. It was not designed by a human; it emerged from the interaction
+      production-grade memories. It was not designed by a human; it emerged from the interaction
       of ${input.systemChain.length} substrate primitive${input.systemChain.length !== 1 ? 's' : ''} 
       operating in concert.
     </p>
@@ -982,7 +982,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <div class="valuation-disclaimer">
     <div class="title">⚠ Heuristic Estimate — Not Financial Advice</div>
     <p>
-      The valuation below is produced by a deterministic scoring model using the pipeline's
+      The valuation below is produced by a deterministic scoring model using the memory's
       CJPI score, category, and complexity as inputs. <strong>This estimate may differ from 
       actual market value</strong> and should not be relied upon for financial, investment, or business decisions.
     </p>
@@ -1026,7 +1026,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <h2>Recommended Distribution Channels</h2>
   <div class="section-card">
     <p style="font-size: 0.88rem; margin-bottom: 1rem;">
-      Based on the pipeline's tier (${escapeHtml(tier)}), category (${escapeHtml(input.category)}), 
+      Based on the memory's tier (${escapeHtml(tier)}), category (${escapeHtml(input.category)}), 
       and valuation, the following platforms are recommended for distribution:
     </p>
     <div class="language-grid">
@@ -1034,7 +1034,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
     </div>
     <p style="font-size: 0.78rem; color: var(--ink-faint); margin-top: 1rem; font-style: italic;">
       ${valuation.total >= 100000 ? 'At this valuation tier, enterprise direct licensing or cloud marketplace listing is recommended for maximum revenue.' :
-        valuation.total >= 10000 ? 'This pipeline is well-suited for developer marketplace listing with tiered pricing (indie/standard/enterprise).' :
+        valuation.total >= 10000 ? 'This memory is well-suited for developer marketplace listing with tiered pricing (indie/standard/enterprise).' :
         'Consider listing on developer-focused platforms with competitive pricing to build traction.'}
     </p>
   </div>

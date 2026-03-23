@@ -412,9 +412,9 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       description: 'Data ingestion & ETL',
       gradient: 'bg-gradient-to-r from-lime-400 to-neon-green', accentColor: 'bg-lime-400',
       status: harvestStatus,
-      metrics: [{ label: 'Pipeline', value: harvestStatus.data?.success ? 'Active' : 'Checking' }],
+      metrics: [{ label: 'Memory Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { const r = await harvestMod.status(); toast.info(`Harvest: ${r.success ? 'Pipeline active' : 'Check failed'}`); },
+      onAction: async () => { const r = await harvestMod.status(); toast.info(`Harvest: ${r.success ? 'Memory active' : 'Check failed'}`); },
     },
     // ═══ Execution: MEDIC & NERVE ═══
     {
@@ -428,7 +428,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     {
       id: 'nerve', name: 'NERVE', layer: 'operational' as const, icon: Zap,
-      description: 'Inter-node signaling & consensus',
+      description: 'Inter-primitive signaling & consensus',
       gradient: 'bg-gradient-to-r from-sky-400 to-neon-blue', accentColor: 'bg-sky-400',
       status: nerveStatus,
       metrics: [{ label: 'Signals', value: nerveStatus.data?.success ? 'Active' : 'Checking' }],
@@ -438,12 +438,12 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     // ═══ Mesh Overlays + CSZ ═══
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'orchestrator' as const, icon: Sparkles,
-      description: 'Mutation pipeline & shadow runs',
+      description: 'Mutation memory & shadow runs',
       gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: evolutionStatus,
       metrics: [{ label: 'Field', value: evolutionStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Pipeline ready' : 'Check failed'}`); },
+      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Memory ready' : 'Check failed'}`); },
     },
     {
       id: 'shadow', name: 'SHADOW', layer: 'orchestrator' as const, icon: Eye,

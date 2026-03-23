@@ -264,7 +264,7 @@ export function LineageFlowDiagram() {
     { from: "AetherionShield", to: "DEFENSE · IMMUNITY · PHANTOM", pattern: "Stealth → shield inversion" },
     { from: "Dream Protocol", to: "DREAM", pattern: "Autonomous cognitive loops" },
     { from: "Nexus Mesh", to: "NEXUS", pattern: "Multi-provider routing" },
-    { from: "SimNap", to: "DREAM · Memory Stream", pattern: "Pipeline discovery + Foundry" },
+    { from: "SimNap", to: "DREAM · Memory Stream", pattern: "Memory discovery + Foundry" },
     { from: "Studio", to: "FORGE · DECODE · ENCODE", pattern: "Artifact generation" },
     { from: "Verify", to: "SHADOW · AUDIT", pattern: "Sandboxed verification" },
   ];

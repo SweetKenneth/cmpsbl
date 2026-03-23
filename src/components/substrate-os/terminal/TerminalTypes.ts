@@ -94,7 +94,7 @@ export const PERSONALITY_RESPONSES = {
     'stream operation executed.',
     'signal pathways confirmed.',
     'stream loop closed.',
-    'pipeline verified.',
+    'memory verified.',
   ],
   error: [
     'stream anomaly detected.',

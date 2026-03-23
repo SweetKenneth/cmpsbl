@@ -731,7 +731,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   // Per-module hardening commands — CORTEX
   { command: 'cortex.hardening', description: 'CORTEX hardening status (Conductor)', category: 'cortex', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.hardening.health', description: 'CORTEX orchestration health composite', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
-  { command: 'cortex.hardening.sla', description: 'Pipeline SLA compliance', category: 'cortex', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.hardening.sla', description: 'Memory SLA compliance', category: 'cortex', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.hardening.backpressure', description: 'Backpressure controller state', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 
   // Per-module hardening commands — ENCODE
@@ -1223,8 +1223,8 @@ export const HARVEST_COMMANDS: CommandDefinition[] = [
   { command: 'harvest.ingest', description: 'Ingest data source', category: 'harvest', icon: Database, requiresOperator: true, requiredTier: 'studio', args: '<source_ref>' },
   { command: 'harvest.transform', description: 'Transformation rules', category: 'harvest', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'harvest.quality', description: 'Data quality score', category: 'harvest', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
-  { command: 'harvest.throughput', description: 'Pipeline throughput', category: 'harvest', icon: Activity, requiresOperator: false, requiredTier: 'free' },
-  { command: 'harvest.errors', description: 'Pipeline error log', category: 'harvest', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.throughput', description: 'Memory throughput', category: 'harvest', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.errors', description: 'Memory error log', category: 'harvest', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
 ];
 
 export const SHADOW_COMMANDS: CommandDefinition[] = [
