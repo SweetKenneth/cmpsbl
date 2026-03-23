@@ -361,7 +361,7 @@ export function useSubstrateHealthScore() {
   };
 
   const batchQuery = useQuery({
-    queryKey: ['substrate', 'health', 'batch', 'v11'],
+    queryKey: ['substrate', 'health', 'batch', 'v12'],
     queryFn: async () => {
       const results = await Promise.all(
         ALL_MODULES.map(async (mod) => {
