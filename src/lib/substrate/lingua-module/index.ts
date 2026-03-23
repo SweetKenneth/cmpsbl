@@ -741,7 +741,7 @@ export function translate(
       if (bridge.emaFidelity < AUTO_DISABLE_FIDELITY) {
         bridge.enabled = false;
         bridge.status = 'disabled';
-        emit('lingua', 'bridge-auto-disabled', { bridgeId: bridge.id, fidelity: bridge.emaFidelity });
+        emitSucceeded('lingua', 'bridge-auto-disabled', { bridgeId: bridge.id, fidelity: bridge.emaFidelity });
       } else if (bridge.emaFidelity < DEGRADED_FIDELITY_FLOOR) {
         bridge.status = 'degraded';
       } else if (bridge.status === 'warming' && bridge.totalTranslations > 10) {
