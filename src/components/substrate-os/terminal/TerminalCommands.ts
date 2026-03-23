@@ -364,13 +364,13 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.run', description: 'Execute sequence in shadow mode', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'architect', args: '<sequence_id> [mode]', example: 'cortex.run abc123 shadow' },
   { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, requiredTier: 'free', args: '[--dag|--roles|--eligible]' },
   { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false, requiredTier: 'free' },
-  { command: 'cortex.synergy.status', description: 'Synergy engine overview (pipelines, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.synergy.status', description: 'Synergy engine overview (memory chains, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.synergy.list', description: 'List all 200 synergy memory chains', category: 'cortex', icon: List, requiresOperator: false, requiredTier: 'free', args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
-  { command: 'cortex.synergy.get', description: 'Get synergy pipeline details', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
-  { command: 'cortex.synergy.execute', description: 'Execute a synergy pipeline', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
+  { command: 'cortex.synergy.get', description: 'Get synergy memory chain details', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
+  { command: 'cortex.synergy.execute', description: 'Execute a synergy memory chain', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
   { command: 'cortex.synergy.dry_run', description: 'Dry-run a synergy (no side effects)', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id> [input_json]', example: 'cortex.synergy.dry_run cognitive-fusion' },
   { command: 'cortex.synergy.recommend', description: 'Get recommended synergies for context', category: 'cortex', icon: Sparkles, requiresOperator: false, requiredTier: 'free', args: '[context_json]' },
-  { command: 'cortex.synergy.pipeline', description: 'Execute chained synergy pipeline', category: 'cortex', icon: Workflow, requiresOperator: true, requiredTier: 'architect', args: '<synergy1,synergy2,...> [input_json]', example: 'cortex.synergy.pipeline smart-recall,cognitive-fusion' },
+  { command: 'cortex.synergy.pipeline', description: 'Execute chained synergy memory chain', category: 'cortex', icon: Workflow, requiresOperator: true, requiredTier: 'architect', args: '<synergy1,synergy2,...> [input_json]', example: 'cortex.synergy.pipeline smart-recall,cognitive-fusion' },
   { command: 'cortex.synergy.categories', description: 'List synergy categories with counts', category: 'cortex', icon: Box, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.synergy.modules', description: 'List synergies by module involvement', category: 'cortex', icon: Database, requiresOperator: false, requiredTier: 'free', args: '[module]', example: 'cortex.synergy.modules brain' },
 ];
@@ -423,7 +423,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
-  { command: 'help inclusive', description: 'Accessibility pipeline commands', category: 'meta', icon: Accessibility, requiresOperator: false },
+  { command: 'help inclusive', description: 'Accessibility memory chain commands', category: 'meta', icon: Accessibility, requiresOperator: false },
   { command: 'help clm', description: 'Constant Learning Mode commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help seba', description: 'Self-Evolving Bounded Agent commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help autoblog', description: 'AutoBlog primitive commands', category: 'meta', icon: PenTool, requiresOperator: false },
@@ -621,7 +621,7 @@ export const INFRA_COMMANDS: CommandDefinition[] = [
   { command: 'analytics.dead', description: 'Dead/unused capabilities', category: 'infra', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'analytics.rising', description: 'Rising capability trends', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'analytics.flush', description: 'Flush analytics to storage', category: 'infra', icon: Database, requiresOperator: true, requiredTier: 'architect' },
-  { command: 'stream.status', description: 'Streaming pipeline status', category: 'infra', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'stream.status', description: 'Streaming memory chain status', category: 'infra', icon: Radio, requiresOperator: false, requiredTier: 'free' },
   { command: 'stream.active', description: 'Active stream sessions', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'file.status', description: 'File processing memory chain status', category: 'infra', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'file.history', description: 'File processing history', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
@@ -744,7 +744,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'decode.hardening', description: 'DECODE hardening status (Cipher)', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.hardening.health', description: 'DECODE health composite', category: 'decode', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.hardening.trust', description: 'Identity trust ladder status', category: 'decode', icon: Key, requiresOperator: false, requiredTier: 'free' },
-  { command: 'decode.hardening.sanitization', description: 'Input sanitization pipeline stats', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'decode.hardening.sanitization', description: 'Input sanitization memory chain stats', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
 
   // Per-module hardening commands — VISION
   { command: 'vision.hardening', description: 'VISION hardening status (Sentinel)', category: 'vision', icon: Shield, requiresOperator: false, requiredTier: 'free' },
@@ -791,15 +791,15 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'memory.hardening.audit', description: 'Memory access audit trail', category: 'memory_mod', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.retrieval', description: 'Retrieval latency (P95) by strategy', category: 'memory_mod', icon: Clock, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — DREAM (CCR Zone)
-  { command: 'dream.hardening', description: 'DREAM hardening status (Nocturne)', category: 'dream', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'dream.hardening.health', description: 'DREAM health composite', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — DREAM Engine (CCR Zone)
+  { command: 'dream.hardening', description: 'DREAM Engine hardening status (Nocturne)', category: 'dream', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'dream.hardening.health', description: 'DREAM Engine health composite', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.coherence', description: 'Dream coherence trend', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.hallucinations', description: 'Hallucination guard rate', category: 'dream', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.energy', description: 'Dream energy budget', category: 'dream', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.queue', description: 'Dream cycle queue stats', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.patterns', description: 'Latent pattern cache stats', category: 'dream', icon: Brain, requiresOperator: false, requiredTier: 'free' },
-  { command: 'dream.hardening.insights', description: 'Insight promotion pipeline', category: 'dream', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'dream.hardening.insights', description: 'Insight promotion memory chain', category: 'dream', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.archive', description: 'Dream result archive stats', category: 'dream', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.governance', description: 'Dream governance gate stats', category: 'dream', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.temperature', description: 'Dream temperature controller', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
@@ -827,7 +827,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'immunity.hardening', description: 'IMMUNITY hardening status (Watchguard)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.health', description: 'IMMUNITY health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.quarantine', description: 'Quarantined modules list', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'immunity.hardening.healing', description: 'Healing pipeline stats', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.hardening.healing', description: 'Healing memory chain stats', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.sentinel', description: 'Sentinel watchdog pulse stats', category: 'defense', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.cascade', description: 'Cascade failure detection events', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.threats', description: 'Active threat intelligence feed', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
@@ -854,7 +854,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'evolution.hardening.receipts', description: 'Tamper-evident receipt chain', category: 'system', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.vetos', description: 'Governance veto tracker', category: 'system', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.velocity', description: 'Improvement velocity trend', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
-  { command: 'evolution.hardening.funnel', description: 'Promotion pipeline funnel', category: 'system', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.hardening.funnel', description: 'Promotion memory chain funnel', category: 'system', icon: Layers, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.cooldown', description: 'Evolution cooldown timer', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.seba', description: 'SEBA confidence scores', category: 'system', icon: Brain, requiresOperator: false, requiredTier: 'free' },
 
@@ -1044,7 +1044,7 @@ export const RIPPLE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'ripple.hardening.fanout', description: 'Fan-out limiter', category: 'ripple', icon: Radio, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.ordering', description: 'Event ordering guarantor', category: 'ripple', icon: List, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.acl', description: 'Subscription ACL stats', category: 'ripple', icon: Lock, requiresOperator: false, requiredTier: 'free' },
-  { command: 'ripple.hardening.enrichment', description: 'Event enrichment pipeline', category: 'ripple', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.enrichment', description: 'Event enrichment memory chain', category: 'ripple', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.partitions', description: 'Partition config', category: 'ripple', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.correlation', description: 'Event correlation groups', category: 'ripple', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.poison', description: 'Poison event detector', category: 'ripple', icon: Shield, requiresOperator: false, requiredTier: 'free' },
@@ -1107,7 +1107,7 @@ export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.hardening.motion', description: 'Reduced motion compliance', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.lang', description: 'Language & localization auditor', category: 'inclusive', icon: Globe, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.forms', description: 'Form accessibility checker', category: 'inclusive', icon: FileEdit, requiresOperator: false, requiredTier: 'free' },
-  { command: 'inclusive.hardening.selfscan', description: 'Self-scan pipeline stats', category: 'inclusive', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.selfscan', description: 'Self-scan memory chain stats', category: 'inclusive', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.publish', description: 'Marketplace publish gate', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
@@ -1194,7 +1194,7 @@ export const FORGE_COMMANDS: CommandDefinition[] = [
   { command: 'forge.generate', description: 'Generate asset from template', category: 'forge', icon: Sparkles, requiresOperator: true, requiredTier: 'studio', args: '<template_id>' },
   { command: 'forge.queue', description: 'Generation queue', category: 'forge', icon: Layers, requiresOperator: false, requiredTier: 'free' },
   { command: 'forge.quality', description: 'Output quality metrics', category: 'forge', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
-  { command: 'forge.pipeline', description: 'Manufacturing pipeline', category: 'forge', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.pipeline', description: 'Manufacturing memory chain', category: 'forge', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
   { command: 'forge.artifacts', description: 'Generated artifact log', category: 'forge', icon: Database, requiresOperator: false, requiredTier: 'free' },
 ];
 
@@ -1218,8 +1218,8 @@ export const PHANTOM_COMMANDS: CommandDefinition[] = [
 ];
 
 export const HARVEST_COMMANDS: CommandDefinition[] = [
-  { command: 'harvest.status', description: 'Data pipeline status', category: 'harvest', icon: Database, requiresOperator: false, requiredTier: 'free' },
-  { command: 'harvest.pipelines', description: 'Active data pipelines', category: 'harvest', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.status', description: 'Data memory chain status', category: 'harvest', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.pipelines', description: 'Active data memory chains', category: 'harvest', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
   { command: 'harvest.ingest', description: 'Ingest data source', category: 'harvest', icon: Database, requiresOperator: true, requiredTier: 'studio', args: '<source_ref>' },
   { command: 'harvest.transform', description: 'Transformation rules', category: 'harvest', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'harvest.quality', description: 'Data quality score', category: 'harvest', icon: Gauge, requiresOperator: false, requiredTier: 'free' },

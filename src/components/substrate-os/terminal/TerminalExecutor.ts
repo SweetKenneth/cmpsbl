@@ -1532,7 +1532,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
       result = await substrate.invoke({ module: 'vision', action: 'diagnostics', payload: { full } });
     }
 
-    // DREAM module
+    // DREAM Engine
     else if (base === 'dream.status') {
       result = await dream.status();
     } else if (base === 'dream.mood') {

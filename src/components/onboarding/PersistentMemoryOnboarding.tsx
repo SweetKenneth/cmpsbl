@@ -1,6 +1,6 @@
 /**
  * Persistent Memory Onboarding — First-visit explainer for /persistent-memory
- * Introduces the 4-tier memory system, DREAM consolidation, and recall
+ * Introduces the 4-tier memory system, DREAM Engine consolidation, and recall
  */
 
 import { useState, useEffect } from 'react';
@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: Brain,
     tag: 'Remember',
     title: 'Persistent Memory',
-    body: 'Give any AI agent permanent recall. 4-tier memory with automatic temperature management, DREAM consolidation, and semantic search — free for all users.',
+    body: 'Give any AI agent permanent recall. 4-tier memory with automatic temperature management, DREAM Engine consolidation, and semantic search — free for all users.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -42,8 +42,8 @@ const STEPS: OnboardingStep[] = [
   {
     icon: Moon,
     tag: 'DREAM',
-    title: 'DREAM Consolidation',
-    body: 'While your agent is idle, DREAM cycles merge fragments, strengthen connections, and surface patterns. Your agent learns continuously — even offline.',
+    title: 'DREAM Engine Consolidation',
+    body: 'While your agent is idle, DREAM Engine cycles merge fragments, strengthen connections, and surface patterns. Your agent learns continuously — even offline.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },

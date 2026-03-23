@@ -136,7 +136,7 @@ export function IndustryShowcase() {
             </span>
           </h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Build on the substrate with persistent memory, DREAM cycles, and the Memory Stream's self-optimization —
+            Build on the substrate with persistent memory, DREAM Engine cycles, and the Memory Stream's self-optimization —
             crystallizing intelligence for any vertical, from immersive games to mission-critical enterprise systems.
           </p>
         </motion.div>

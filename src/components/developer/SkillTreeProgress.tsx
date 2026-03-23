@@ -40,7 +40,7 @@ const TIER_NAMES: Record<number, string> = {
 const SKILL_DEFINITIONS: Omit<Skill, 'is_unlocked' | 'progress'>[] = [
   // Tier 1 — Foundation
   { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize the substrate client and connect to the 40-primitive cognitive mesh', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'intent_routing'], icon: '📚' },
-  { skill_key: 'memory_ops', name: 'BRAIN Memory API', description: '4-tier persistent memory: store, recall, build context, and DREAM consolidation', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['nexus_routing'], icon: '🧠' },
+  { skill_key: 'memory_ops', name: 'BRAIN Memory API', description: '4-tier persistent memory: store, recall, build context, and DREAM Engine consolidation', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['nexus_routing'], icon: '🧠' },
   { skill_key: 'intent_routing', name: 'Intent Mesh', description: 'broadcastIntent(), resolver routing, receipt logging, and mesh telemetry', category: 'foundation', tier: 1, xp_required: 125, prerequisites: ['sdk_basics'], unlocks: ['resolver_patterns'], icon: '🔀' },
 
   // Tier 2 — Intermediate
@@ -55,7 +55,7 @@ const SKILL_DEFINITIONS: Omit<Skill, 'is_unlocked' | 'progress'>[] = [
 
   // Tier 4 — Expert
   { skill_key: 'production_hardening', name: 'Production Patterns', description: 'Error handling, Forge protections, VOLVER handicapping, non-blocking telemetry', category: 'expert', tier: 4, xp_required: 400, prerequisites: ['ascension_basics', 'cjpi_scoring'], unlocks: ['substrate_architect'], icon: '🔧' },
-  { skill_key: 'dream_cycles', name: 'DREAM Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙' },
+  { skill_key: 'dream_cycles', name: 'DREAM Engine Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙' },
 
   // Tier 5 — Mastery
   { skill_key: 'substrate_architect', name: 'Substrate Architect', description: 'Full system mastery: multi-node orchestration, governance, and capability export', category: 'mastery', tier: 5, xp_required: 500, prerequisites: ['production_hardening', 'dream_cycles'], unlocks: [], icon: '👑' },

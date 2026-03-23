@@ -82,7 +82,7 @@ export function CCRTab() {
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Cognitive Core</h2>
-          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">MEMORY · DREAM — CCR</p>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">MEMORY · DREAM Engine — CCR</p>
         </div>
         <Badge className="text-[9px] bg-primary/10 text-primary border-primary/20 shrink-0">CCR</Badge>
       </div>
@@ -114,7 +114,7 @@ export function CCRTab() {
               <HardDrive className="w-3.5 h-3.5 hidden sm:block" /> MEMORY
             </TabsTrigger>
             <TabsTrigger value="dream" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
-              <Sparkles className="w-3.5 h-3.5 hidden sm:block" /> DREAM
+              <Sparkles className="w-3.5 h-3.5 hidden sm:block" /> DREAM Engine
             </TabsTrigger>
           </TabsList>
         </div>
@@ -170,7 +170,7 @@ export function CCRTab() {
           </div>
         </TabsContent>
 
-        {/* DREAM — Synthesis & Heuristics */}
+        {/* DREAM Engine — Synthesis & Heuristics */}
         <TabsContent value="dream" className="mt-4 space-y-3">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[

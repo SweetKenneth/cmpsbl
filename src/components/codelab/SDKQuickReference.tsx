@@ -181,7 +181,7 @@ const SDK_ACTIONS: SDKAction[] = [
     returns: "{ alive: boolean, uptime: number }",
     tags: ["health", "quick", "heartbeat"]
   },
-  // DREAM MODULE
+  // DREAM ENGINE
   {
     module: "dream",
     action: "cycle",

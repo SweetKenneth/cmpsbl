@@ -411,7 +411,7 @@ export function SignalForge() {
 {`// ${template.namePattern}
 import { substrate } from '@cmpsbl/sdk';
 
-const pipeline = substrate.pipeline({
+const chain = substrate.pipeline({
   modules: [${template.modulePattern.map(m => `'${m}'`).join(', ')}],
   category: '${template.category}',
   errorStrategy: '${template.errorStrategy}',

@@ -33,7 +33,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'memory_specialist',
     name: 'Memory Specialist',
-    description: 'Mastered 4-tier persistent memory: context windows, DREAM consolidation, semantic recall, and importance scoring.',
+    description: 'Mastered 4-tier persistent memory: context windows, DREAM Engine consolidation, semantic recall, and importance scoring.',
     badge_icon: '🧠', badge_level: 'silver',
     required_skills: ['memory_ops', 'nexus_routing', 'memory_stream'],
     min_xp_total: 600, is_earned: false, progress_percent: 45,
@@ -57,7 +57,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'production_engineer',
     name: 'Production Engineer',
-    description: 'Production hardening: Forge protections, VOLVER handicapping, non-blocking telemetry, and DREAM engineering.',
+    description: 'Production hardening: Forge protections, VOLVER handicapping, non-blocking telemetry, and DREAM Engine engineering.',
     badge_icon: '🔧', badge_level: 'diamond',
     required_skills: ['production_hardening', 'dream_cycles'],
     min_xp_total: 1500, is_earned: false, progress_percent: 5,

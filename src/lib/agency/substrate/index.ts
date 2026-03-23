@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Substrate Integration Module
- * Memory bridge, dream pipeline, and global pooling
+ * Memory bridge, DREAM Engine memory chain, and global pooling
  */
 
 export * from './memoryBridge';
