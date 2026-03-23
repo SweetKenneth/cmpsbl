@@ -56,7 +56,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "nexus",
-    name: "NEXUS",
+    name: "NEXUS Organ",
     icon: Zap,
     color: "text-neon-green",
     glowColor: "shadow-[0_0_30px_rgba(110,231,183,0.6)]",
