@@ -106,7 +106,7 @@ const modules: ModuleNode[] = [
   }
 ];
 
-// Connection lines between nodes
+// Connection lines between primitives
 const connections = [
   { from: "brain", to: "core" },
   { from: "decode", to: "core" },

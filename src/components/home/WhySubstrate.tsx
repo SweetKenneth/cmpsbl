@@ -132,7 +132,7 @@ const primitives = [
   {
     icon: Accessibility,
     title: "Inclusive A11y",
-    node: "INCLUSIVE",
+    node: "INCLUSIVE Layer",
     description: "Human compatibility engine with WCAG 2.2 scanning and AI ethics enforcement.",
     highlight: "Human Compatibility",
     stat: "WCAG",
