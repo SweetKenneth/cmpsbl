@@ -13,7 +13,7 @@ import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail 
 import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, formatScheduleConfirmation, getPendingCommands } from './useTerminalScheduler';
 import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
-import { labelPrimitive } from '@/lib/export/primitive-labels';
+import { labelPrimitive, labelDescription } from '@/lib/export/primitive-labels';
 import { debugMode } from '@/lib/debug-mode';
 
 // Mobile-first evolution log formatter (organism-focused, no implementation details)
@@ -3291,7 +3291,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
 ├──────────────────────────────────────────────────────────────`;
 
         for (const s of synergies.slice(0, 25)) {
-          const mods = s.modules.slice(0, 3).map(m => m.name).join('+');
+          const mods = s.modules.slice(0, 3).map(m => labelPrimitive(m.name)).join('+');
           output += `
 │  ${s.id.padEnd(30)} ${s.category.padEnd(14)} ${mods}`;
         }
@@ -3335,7 +3335,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
 │  Modules:     ${moduleList}
 │
 │  Description:
-│    ${synergy.description}
+│    ${labelDescription(synergy.description)}
 │
 └──────────────────────────────────────────────────────────────`,
           data: synergy,
@@ -3497,7 +3497,7 @@ ${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padSta
             success: true,
             output: `
 ┌─ SYNERGIES FOR MODULE: ${moduleFilter} ─────────────────────────
-│  Total: ${synergies.length} pipelines
+│  Total: ${synergies.length} memory chains
 ├──────────────────────────────────────────────────────────────
 ${synergies.slice(0, 20).map(s => `│  ${s.id.padEnd(30)} ${s.category}`).join('\n')}
 ${synergies.length > 20 ? `│  ... and ${synergies.length - 20} more` : ''}

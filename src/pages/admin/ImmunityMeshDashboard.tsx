@@ -1230,10 +1230,10 @@ function ModernizerShadowPanel() {
       setLastReport(report);
       setPerfStats(getPerformanceSummary());
       setPerfEntries(getPerformanceStats());
-      voice.success?.('EVOLUTION shadow complete');
-      toast.success(`EVOLUTION Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
+      voice.success?.('EVOLUTION Layer shadow complete');
+      toast.success(`EVOLUTION Layer Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
     } catch (err: any) {
-      toast.error(`EVOLUTION shadow failed: ${err.message}`);
+      toast.error(`EVOLUTION Layer shadow failed: ${err.message}`);
     } finally {
       setRunning(false);
     }
@@ -1319,7 +1319,7 @@ function ModernizerShadowPanel() {
           delay={0}
         />
         <MetricCard
-          label="ENCODE Assists"
+          label="ENCODE Agent Assists"
           value={`${(perfStats.encodeAssistRate * 100).toFixed(0)}%`}
           sub="of failures"
           icon={GraduationCap}
@@ -1529,11 +1529,11 @@ function ModernizerShadowPanel() {
         </CardHeader>
         <CardContent className="space-y-3">
           {[
-            { icon: '🔍', text: 'EVOLUTION scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
+            { icon: '🔍', text: 'EVOLUTION Layer scans for real system gaps — missing capabilities, anomalies, risk flags, stale primitives' },
             { icon: '🎯', text: 'Each gap becomes a shadow training task assigned to the best-matched executor' },
             { icon: '⚡', text: 'Executor attempts the fix in shadow mode — no real changes, just scored performance' },
-            { icon: '⬆️', text: 'Failures escalate to ENCODE\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },
-            { icon: '🧠', text: 'ENCODE\'s fixes become new learning rules that the executor absorbs for next time' },
+            { icon: '⬆️', text: 'Failures escalate to ENCODE Agent\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },
+            { icon: '🧠', text: 'ENCODE Agent\'s fixes become new learning rules that the executor absorbs for next time' },
             { icon: '📈', text: 'Performance tracked per executor per gap-type — watch skill growth curves over repeated runs' },
           ].map((item, i) => (
             <motion.div

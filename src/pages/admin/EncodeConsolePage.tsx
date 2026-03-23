@@ -1,5 +1,5 @@
 /**
- * ENCODE Console Page — Admin-gated wrapper
+ * ENCODE Agent Console Page — Admin-gated wrapper
  * Route: /admin/encode-console
  */
 
@@ -14,7 +14,7 @@ export default function EncodeConsolePage() {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-3">
           <Loader2 className="w-6 h-6 animate-spin mx-auto text-primary" />
-          <p className="text-xs text-muted-foreground font-mono">Loading ENCODE Console</p>
+          <p className="text-xs text-muted-foreground font-mono">Loading ENCODE Agent Console</p>
         </div>
       </div>
     }>

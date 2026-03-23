@@ -26,7 +26,7 @@ export function DecodeStatusBar() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5">
           <Icon className={`w-3 h-3 ${config.color}`} />
-          <span className="font-bold text-foreground tracking-wide">DECODE</span>
+          <span className="font-bold text-foreground tracking-wide">DECODE Agent</span>
         </div>
         <span className={`px-1.5 py-0.5 rounded ${mode === 'governor' ? 'bg-destructive/15 text-destructive' : 'bg-primary/15 text-primary'} font-semibold uppercase tracking-wider`}>
           {mode}

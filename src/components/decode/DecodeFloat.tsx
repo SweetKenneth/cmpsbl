@@ -196,7 +196,7 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "🏛️", title: "Governance", prompt: "/govern" },
     { icon: "⚡", title: "Capabilities", prompt: "/caps" },
     { icon: "🔗", title: "Mesh Comms", prompt: "/comms" },
-    { icon: "🤖", title: "NEXUS Fleet", prompt: "/nexus" },
+    { icon: "🤖", title: "NEXUS Organ Fleet", prompt: "/nexus" },
     { icon: "💰", title: "AI Budget", prompt: "/budget" },
     { icon: "📋", title: "Audit Log", prompt: "/audit" },
     { icon: "❓", title: "Gov Help", prompt: "/gov-help" },
@@ -404,7 +404,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         body: JSON.stringify({
           messages: llmMessages,
           agentId: "decode-global",
-          agentName: "DECODE",
+          agentName: "DECODE Agent",
           agentSubtitle: "Sovereign Cognitive Interface",
           agentPowers: ["Intent Interpretation", "Memory Recall", "Primitive Routing", "Personality Engine"],
           decodeMode: mode,
@@ -414,7 +414,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
       if (!resp.ok || !resp.body) {
         const errorData = resp.status === 429 || resp.status === 402 ? await resp.json() : null;
-        const errorMsg = errorData?.error || "DECODE relay offline. Retry.";
+        const errorMsg = errorData?.error || "DECODE Agent relay offline. Retry.";
         setMessages(prev => [...prev, { role: 'assistant', content: `⚠ ${errorMsg}` }]);
         setIsLoading(false);
         return;
@@ -524,7 +524,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        aria-label="DECODE — substrate voice"
+        aria-label="DECODE Agent — substrate voice"
         className={cn(
           "group cursor-grab active:cursor-grabbing touch-manipulation select-none",
           "w-[56px] h-[56px] rounded-full grid place-items-center",
