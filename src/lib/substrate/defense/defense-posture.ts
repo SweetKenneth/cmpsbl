@@ -92,7 +92,7 @@ export function calculatePosture(): SecurityPosture {
   score = Math.round(Math.min(100, Math.max(0, score)));
 
   const grade = scoreToGrade(score);
-  const recommendations = generateRecommendations(dimensions as PostureDimensions);
+  const recommendations = generateRecommendations(dimensions as unknown as PostureDimensions);
 
   // Count recent timeline activity
   const recentWindow = Date.now() - 60 * 60_000;
