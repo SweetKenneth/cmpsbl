@@ -791,15 +791,15 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'memory.hardening.audit', description: 'Memory access audit trail', category: 'memory_mod', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.retrieval', description: 'Retrieval latency (P95) by strategy', category: 'memory_mod', icon: Clock, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — DREAM (CCR Zone)
-  { command: 'dream.hardening', description: 'DREAM hardening status (Nocturne)', category: 'dream', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'dream.hardening.health', description: 'DREAM health composite', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — DREAM Engine (CCR Zone)
+  { command: 'dream.hardening', description: 'DREAM Engine hardening status (Nocturne)', category: 'dream', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'dream.hardening.health', description: 'DREAM Engine health composite', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.coherence', description: 'Dream coherence trend', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.hallucinations', description: 'Hallucination guard rate', category: 'dream', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.energy', description: 'Dream energy budget', category: 'dream', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.queue', description: 'Dream cycle queue stats', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.patterns', description: 'Latent pattern cache stats', category: 'dream', icon: Brain, requiresOperator: false, requiredTier: 'free' },
-  { command: 'dream.hardening.insights', description: 'Insight promotion pipeline', category: 'dream', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'dream.hardening.insights', description: 'Insight promotion memory chain', category: 'dream', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.archive', description: 'Dream result archive stats', category: 'dream', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.governance', description: 'Dream governance gate stats', category: 'dream', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.temperature', description: 'Dream temperature controller', category: 'dream', icon: Activity, requiresOperator: false, requiredTier: 'free' },
