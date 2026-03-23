@@ -543,9 +543,9 @@ export const MemoryRiver = memo(function MemoryRiver({
           transition={{ delay: 1.2 }}
         >
           {([
-            { type: "memory" as ParticleType, label: "MEMORY" },
-            { type: "dream" as ParticleType, label: "Dream Cycle" },
-            { type: "defense" as ParticleType, label: "DEFENSE" },
+            { type: "memory" as ParticleType, label: "MEMORY Engine" },
+            { type: "dream" as ParticleType, label: "DREAM Engine" },
+            { type: "defense" as ParticleType, label: "DEFENSE Layer" },
             { type: "crystallized" as ParticleType, label: "Crystallized" },
           ]).map(({ type, label }) => (
             <div key={type} className="flex items-center gap-1.5">

@@ -28,7 +28,7 @@ const primitives = [
   {
     icon: Brain,
     title: "Persistent Memory",
-    node: "BRAIN",
+    node: "BRAIN Engine",
     description: "Four-tier cognitive memory (hot/warm/cold/glacier) that survives sessions. Your AI never forgets.",
     highlight: "Never Forgets",
     stat: "∞",
@@ -41,7 +41,7 @@ const primitives = [
   {
     icon: MessageSquare,
     title: "Epistemic Chat",
-    node: "DECODE",
+    node: "DECODE Agent",
     description: "Memory-aware conversations with context injection and session persistence.",
     highlight: "Context-Aware",
     stat: "∞",
@@ -54,7 +54,7 @@ const primitives = [
   {
     icon: Shield,
     title: "Defense-First",
-    node: "DEFENSE",
+    node: "DEFENSE Layer",
     description: "Behavioral analysis, threat detection, rate limiting, and governance rules.",
     highlight: "Enterprise Security",
     stat: "100%",
@@ -67,7 +67,7 @@ const primitives = [
   {
     icon: Zap,
     title: "Smart Routing",
-    node: "NEXUS",
+    node: "NEXUS Organ",
     description: "Routes every request to the optimal AI provider based on task, cost, and latency.",
     highlight: "Auto-Optimized",
     stat: "<100ms",
@@ -80,7 +80,7 @@ const primitives = [
   {
     icon: Eye,
     title: "Full Observability",
-    node: "VISION",
+    node: "VISION Agent",
     description: "Full observability across every invocation — including cost tracking, latency monitoring, and confidence scoring.",
     highlight: "See Everything",
     stat: "24/7",
@@ -93,7 +93,7 @@ const primitives = [
   {
     icon: Moon,
     title: "Dream Cycles",
-    node: "DREAM",
+    node: "DREAM Engine",
     description: "Offline processing to consolidate memories, extract patterns, and evolve understanding.",
     highlight: "Learns While Idle",
     stat: "24/7",
@@ -106,8 +106,8 @@ const primitives = [
   {
     icon: Code2,
     title: "Code Intelligence",
-    node: "ENCODE",
-    description: "Code execution, generation intelligence, and DECODE → ENCODE memory formation.",
+    node: "ENCODE Agent",
+    description: "Code execution, generation intelligence, and DECODE Agent → ENCODE Agent memory formation.",
     highlight: "Code Execution",
     stat: "AI",
     statLabel: "Codegen",
@@ -119,7 +119,7 @@ const primitives = [
   {
     icon: Plug,
     title: "Enterprise Integration",
-    node: "INTEGRATION",
+    node: "INTEGRATION Organ",
     description: "Connect to enterprise systems (SAP, Oracle, Workday) with built-in LLM governance.",
     highlight: "LLM Governance",
     stat: "35+",
@@ -132,7 +132,7 @@ const primitives = [
   {
     icon: Accessibility,
     title: "Inclusive A11y",
-    node: "INCLUSIVE",
+    node: "INCLUSIVE Layer",
     description: "Human compatibility engine with WCAG 2.2 scanning and AI ethics enforcement.",
     highlight: "Human Compatibility",
     stat: "WCAG",

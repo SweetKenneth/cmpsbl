@@ -12,11 +12,11 @@ import { cn } from "@/lib/utils";
 const pillars = [
   {
     icon: Moon,
-    title: "DREAM",
+    title: "DREAM Engine",
     headline: "Process while idle",
     description: "Offline synthesis cycles consolidate memory, extract latent patterns, and generate new insights — without consuming active compute. Your system learns even when unused.",
     link: "/blog/clockless-modules-deep-dive",
-    linkLabel: "How DREAM works",
+    linkLabel: "How the DREAM Engine works",
     iconBg: "bg-[hsl(var(--neon-purple)/0.1)]",
     iconColor: "text-[hsl(var(--neon-purple))]",
     borderColor: "border-[hsl(var(--neon-purple)/0.2)]",

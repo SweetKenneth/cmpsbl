@@ -26,7 +26,7 @@ interface ModuleNode {
 const modules: ModuleNode[] = [
   {
     id: "brain",
-    name: "BRAIN",
+    name: "BRAIN Engine",
     icon: Brain,
     color: "text-neon-cyan",
     glowColor: "shadow-[0_0_30px_rgba(34,211,238,0.6)]",
@@ -36,7 +36,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "decode",
-    name: "DECODE",
+    name: "DECODE Agent",
     icon: MessageSquare,
     color: "text-neon-magenta",
     glowColor: "shadow-[0_0_30px_rgba(232,121,249,0.6)]",
@@ -46,7 +46,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "defense",
-    name: "DEFENSE",
+    name: "DEFENSE Layer",
     icon: Shield,
     color: "text-neon-amber",
     glowColor: "shadow-[0_0_30px_rgba(252,211,77,0.6)]",
@@ -56,7 +56,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "nexus",
-    name: "NEXUS",
+    name: "NEXUS Organ",
     icon: Zap,
     color: "text-neon-green",
     glowColor: "shadow-[0_0_30px_rgba(110,231,183,0.6)]",
@@ -66,7 +66,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "encode",
-    name: "ENCODE",
+    name: "ENCODE Agent",
     icon: Cpu,
     color: "text-neon-amber",
     glowColor: "shadow-[0_0_30px_rgba(253,186,116,0.6)]",
@@ -76,7 +76,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "vision",
-    name: "VISION",
+    name: "VISION Agent",
     icon: Eye,
     color: "text-sky-300",
     glowColor: "shadow-[0_0_30px_rgba(125,211,252,0.6)]",
@@ -86,7 +86,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "dream",
-    name: "DREAM",
+    name: "DREAM Engine",
     icon: Moon,
     color: "text-neon-purple",
     glowColor: "shadow-[0_0_30px_rgba(196,181,253,0.6)]",
@@ -96,7 +96,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "core",
-    name: "CORE",
+    name: "CORE Organ",
     icon: Network,
     color: "text-neon-magenta",
     glowColor: "shadow-[0_0_30px_rgba(253,164,175,0.6)]",
@@ -106,7 +106,7 @@ const modules: ModuleNode[] = [
   }
 ];
 
-// Connection lines between nodes
+// Connection lines between primitives
 const connections = [
   { from: "brain", to: "core" },
   { from: "decode", to: "core" },
