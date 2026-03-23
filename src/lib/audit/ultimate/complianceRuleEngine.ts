@@ -154,7 +154,7 @@ function evaluateRule(
       const field = rule.params.requiredField;
       if (!field) return null;
       const missing = all.filter(r => {
-        const val = (r as Record<string, unknown>)[field];
+        const val = (r as unknown as Record<string, unknown>)[field];
         return val === undefined || val === null || val === '';
       });
       if (missing.length > 0) {
