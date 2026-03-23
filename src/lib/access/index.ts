@@ -510,6 +510,9 @@ export * from './abacEngine';
 // v8.0 Hardening: DEFENSE integration
 export * from './defenseIntegration';
 
+// v9.0 Ultimate Form: Gatekeeper Prime (10 systems)
+export * from './ultimate';
+
 export interface AccessModuleStatus {
   authenticated: boolean;
   developer: Developer | null;
