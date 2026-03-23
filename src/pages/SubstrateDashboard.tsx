@@ -140,7 +140,7 @@ const modulesByLayer = {
     },
     {
       id: "nexus",
-      name: "NEXUS",
+      name: "NEXUS Organ",
       description: "Multi-provider AI routing",
       icon: Zap,
       color: "text-neon-amber",
