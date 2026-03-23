@@ -857,7 +857,7 @@ const HeritagePaper = () => {
           {/* ═══════════ FOOTER ═══════════ */}
           <footer className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t-2 border-primary/20 text-center">
             <div className="text-xs text-muted-foreground font-mono">© 2025–2026 PromptFluid®. All rights reserved.</div>
-            <div className="mt-1 text-xs text-muted-foreground font-mono">CMPSBL® Substrate OS · 40 Nodes · 12 Sectors · v14.2.0 MINDGAMES</div>
+            <div className="mt-1 text-xs text-muted-foreground font-mono">CMPSBL® Substrate OS · 40 Primitives · 4 Categories · v14.2.0 MINDGAMES</div>
             <div className="mt-2 text-[10px] text-muted-foreground/60 font-mono leading-relaxed">
               This document constitutes a defensive publication establishing prior art. It does not constitute a grant of license.
             </div>

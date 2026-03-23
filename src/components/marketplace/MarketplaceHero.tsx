@@ -187,7 +187,7 @@ export function MarketplaceHero() {
              </div>
              <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
                <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-cyan))]">13</div>
-               <div className="text-xs text-muted-foreground">Modules</div>
+               <div className="text-xs text-muted-foreground">Primitives</div>
              </div>
              <div className="text-center p-4 rounded-2xl bg-[hsl(var(--stream-slate))]/30 border border-border/50">
                <div className="text-2xl md:text-3xl font-black text-[hsl(var(--neon-purple))]">FREE</div>

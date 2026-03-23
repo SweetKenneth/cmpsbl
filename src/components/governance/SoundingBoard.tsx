@@ -166,7 +166,7 @@ export function SoundingBoard() {
       <ScrollArea className="h-[600px]">
         <div className="space-y-4 pr-4">
           {isLoading && (
-            <div className="text-center py-12 text-muted-foreground">Loading module posts…</div>
+            <div className="text-center py-12 text-muted-foreground">Loading primitive posts…</div>
           )}
           
           {!isLoading && posts.length === 0 && (

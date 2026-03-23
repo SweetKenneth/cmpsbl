@@ -17,7 +17,7 @@
 
 import { submitLearning, registerDomain, getDomain } from '@/lib/substrate/simnap-ports/domain-focused-learning';
 import { contributeRule } from '@/packages/evolution-mesh/learning/rules';
-import { recordSynergyOutcome } from '@/lib/substrate/inter-primitive-bridges/synergy-memory-bridge';
+import { recordSynergyOutcome } from '@/lib/substrate/inter-node-bridges/synergy-memory-bridge';
 import { emit } from '@/lib/substrate/events';
 import { log } from '@/lib/system/log';
 import type { ReactorCandidate } from './reactor';

@@ -469,7 +469,7 @@ Deno.serve(async (req) => {
             </p>
           </motion.div>
 
-          <CopyBlock label="40-Node Architecture — 12 Sectors" code={`┌──────────────────────────────────────────────────────────┐
+          <CopyBlock label="40-Primitive Architecture — 4 Categories" code={`┌──────────────────────────────────────────────────────────┐
 │                     Your Application                      │
 │             SDK calls  ·  REST API  ·  Webhooks           │
 ├──────────────────────────────────────────────────────────┤
@@ -479,27 +479,21 @@ Deno.serve(async (req) => {
 │  │         API Keys · Quotas · Rate Limits               │ │
 │  └───────────────────────────────────────────────────────┘ │
 │                            │                               │
-│  ── KERNEL ────────────────────────────────────────────── │
-│  │ CORE · SYSTEM · BRAIN · MEMORY · DREAM               │ │
+│  ── ORGANS (12) ──────────────────────────────────────── │
+│  │ CORE · SYSTEM · NERVE · RIPPLE · RELAY · IDENTITY    │ │
+│  │ ACCESS · NEXUS · AUDIT · INTEGRATION · BRAIN · MEMORY│ │
 │                            │                               │
-│  ── COGNITIVE (CCR) ───────────────────────────────────── │
-│  │ DECODE · NEXUS · VISION · CORTEX · ENCODE            │ │
+│  ── LAYERS (8) ──────────────────────────────────────── │
+│  │ DEFENSE · IMMUNITY · GOVERNANCE · INTENT              │ │
+│  │ EVOLUTION · INCLUSIVE · CONSCIENCE · TREATY            │ │
 │                            │                               │
-│  ── ORCHESTRATION (OCG) ──────────────────────────────── │
-│  │ RIPPLE · ACCESS · NERVE · ECONOMY                    │ │
+│  ── ENGINES (10) ────────────────────────────────────── │
+│  │ DREAM · CORTEX · ORACLE · FORGE · COMPASS            │ │
+│  │ ATLAS · ECONOMY · SANDBOX · MEDIC · REFLEX            │ │
 │                            │                               │
-│  ── EXECUTION ─────────────────────────────────────────── │
-│  │ INCLUSIVE · INTEGRATION · EVOLUTION · CLOCKLESS       │ │
-│                            │                               │
-│  ── EXPANSION (ESZ·EPZ·EMZ·CSZ) ─────────────────────── │
-│  │ SOVEREIGN · CONSCIENCE · SENTINEL · ORACLE           │ │
-│  │ REFLEX · PERCEPTION · FORGE · FOUNDRY                │ │
-│  │ PHANTOM · SHADOW · LINGUA · HARVEST · COMPASS        │ │
-│  │ MEDIC                                                 │ │
-│                            │                               │
-│  ── FIELD · PLANE · ATLAS · SHELL ─────────────────────  │
-│  │ IMMUNITY · INTENT · GOVERNANCE · DEFENSE              │ │
-│  │ ENGINEER · ATLAS · ENCODE                             │ │
+│  ── AGENTS (10) ─────────────────────────────────────── │
+│  │ ENCODE · DECODE · VISION · PHANTOM · LINGUA           │ │
+│  │ ECHO · HARVEST · SOVEREIGN · ENGINEER · OBSERVER      │ │
 │                                                            │
 ├──────────────────────────────────────────────────────────┤
 │              PostgreSQL  ·  Edge Functions                  │

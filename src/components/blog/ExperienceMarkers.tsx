@@ -16,7 +16,7 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
     { icon: Layers, label: 'Architecture', href: '/architecture', description: 'Explore the 40-primitive substrate' },
   ],
   research: [
-    { icon: Brain, label: 'SEBA Architecture', href: '/modules/seba', description: 'Our self-evolving bounded agent framework' },
+    { icon: Brain, label: 'SEBA Architecture', href: '/architecture/seba', description: 'Our self-evolving bounded agent framework' },
     { icon: BookOpen, label: 'Developer Academy', href: '/academy', description: 'Learn the patterns behind this research' },
   ],
   changelog: [

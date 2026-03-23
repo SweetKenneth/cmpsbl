@@ -149,7 +149,7 @@ export function MarketplaceHeader({ searchQuery, onSearchChange, resultCount }: 
         >
            {[
              { value: `${TEMPLATES.length}+`, label: 'Templates', accent: 'text-primary' },
-             { value: '14', label: 'Core Modules', accent: 'text-[hsl(var(--neon-purple))]' },
+             { value: '14', label: 'Core Primitives', accent: 'text-[hsl(var(--neon-purple))]' },
              { value: '0%', label: 'AI Drift', accent: 'text-[hsl(var(--neon-cyan))]' },
              { value: `${BUNDLES.length}`, label: 'Bundles', accent: 'text-[hsl(var(--neon-magenta))]' },
            ].map(({ value, label, accent }) => (

@@ -1,5 +1,5 @@
 /**
- * Modules Hub — Complete 40-Node Matrix across 12 Sectors
+ * Modules Hub — Complete 40-Primitive Matrix across 4 Categories
  * Neural Cartography view of the full substrate architecture
  */
 
@@ -25,7 +25,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════
-// 40-NODE REGISTRY — Canonical Source
+// 40-PRIMITIVE REGISTRY — Canonical Source
 // ═══════════════════════════════════════════════════════════
 
 interface NodeEntry {
@@ -107,14 +107,14 @@ const SECTORS: SectorDef[] = [
       { id: 'identity', label: 'IDENTITY', tagline: 'Actor Attribution', description: 'Human/agent/system identity, persistent signatures, and cross-system provenance.', icon: Fingerprint, slug: 'identity', weight: 0.025 },
       { id: 'relay', label: 'RELAY', tagline: 'Outbound Effects', description: 'Webhook dispatch, notification routing, retry queues, and delivery guarantees.', icon: Send, slug: 'relay', weight: 0.025 },
       { id: 'audit', label: 'AUDIT', tagline: 'Immutable Ledger', description: 'Append-only logging with SHA-256 hash chaining and compliance reporting.', icon: FileCheck, slug: 'audit', weight: 0.025 },
-      { id: 'nerve', label: 'NERVE', tagline: 'Neural Signaling', description: 'Inter-node consensus repair, signal backbone, and neural pathway management.', icon: Zap, slug: 'nerve', weight: 0.025 },
+      { id: 'nerve', label: 'NERVE', tagline: 'Neural Signaling', description: 'Inter-primitive consensus repair, signal backbone, and neural pathway management.', icon: Zap, slug: 'nerve', weight: 0.025 },
     ],
   },
   {
     key: 'execution',
-    label: 'EXECUTION SECTOR',
+    label: 'EXECUTION',
     shortLabel: 'EXEC',
-    description: 'The largest sector — 10 nodes translating intent into governed outcomes',
+    description: 'The largest group — 10 primitives translating intent into governed outcomes',
     totalWeight: '0.220',
     color: 'bg-sky-500/10',
     borderColor: 'border-sky-500/20',
