@@ -16,7 +16,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
             <Accessibility className="w-8 h-8 text-primary" />
             <div>
               <h3 className="font-semibold">Free Accessibility Scanning & Fixes</h3>
-              <p className="text-sm text-muted-foreground">Powered by the INCLUSIVE Module.</p>
+              <p className="text-sm text-muted-foreground">Powered by the INCLUSIVE Layer.</p>
             </div>
           </div>
           <Button asChild className="shadow-glow whitespace-nowrap">
