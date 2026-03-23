@@ -196,7 +196,7 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "🏛️", title: "Governance", prompt: "/govern" },
     { icon: "⚡", title: "Capabilities", prompt: "/caps" },
     { icon: "🔗", title: "Mesh Comms", prompt: "/comms" },
-    { icon: "🤖", title: "NEXUS Fleet", prompt: "/nexus" },
+    { icon: "🤖", title: "NEXUS Organ Fleet", prompt: "/nexus" },
     { icon: "💰", title: "AI Budget", prompt: "/budget" },
     { icon: "📋", title: "Audit Log", prompt: "/audit" },
     { icon: "❓", title: "Gov Help", prompt: "/gov-help" },
