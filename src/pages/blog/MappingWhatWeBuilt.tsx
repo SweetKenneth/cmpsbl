@@ -22,8 +22,8 @@ export default function MappingWhatWeBuilt() {
       chapter={24}
       head={
         <>
-          <SEO title="Mapping What We Built — The ATLAS Node" description="With twelve nodes running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time." type="article" image={heroImg} publishedTime="2025-06-14" keywords={["ATLAS node", "capability discovery", "dependency mapping"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Mapping What We Built", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
-          <BlogArticleJsonLd title="Mapping What We Built — The ATLAS Node" description="Auto-discovery and real-time dependency mapping." slug={SLUG} datePublished="2025-06-14" imageUrl={heroImg} keywords={["ATLAS", "capability map", "discovery"]} />
+          <SEO title="Mapping What We Built — The ATLAS Engine" description="With twelve primitives running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time." type="article" image={heroImg} publishedTime="2025-06-14" keywords={["ATLAS engine", "capability discovery", "dependency mapping"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-primitives" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Mapping What We Built", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+          <BlogArticleJsonLd title="Mapping What We Built — The ATLAS Engine" description="Auto-discovery and real-time dependency mapping." slug={SLUG} datePublished="2025-06-14" imageUrl={heroImg} keywords={["ATLAS", "capability map", "discovery"]} />
         </>
       }
     >
