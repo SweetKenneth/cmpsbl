@@ -436,7 +436,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'nexus' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="NEXUS" description="Multi-model fleet routing with cost/quality optimization.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="NEXUS" description="NEXUS Organ multi-model fleet routing with cost/quality optimization.">
                 <PanelContainer id="nexus"><Suspense fallback={<PanelLoader />}><NexusTab /></Suspense></PanelContainer>
               </TierGate>
             )}

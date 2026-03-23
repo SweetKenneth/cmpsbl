@@ -56,7 +56,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Capability Manifest", href: "/docs/manifest", section: "Build", icon: BookOpen },
 
   // Tools
-  { name: "DECODE", href: "/decode", section: "Tools", icon: Terminal, keywords: ["terminal", "natural language", "command"] },
+  { name: "DECODE Agent", href: "/decode", section: "Tools", icon: Terminal, keywords: ["terminal", "natural language", "command"] },
   { name: "Dream Eater", href: "/feed-dream-eater", section: "Tools", icon: Moon, keywords: ["dream", "feed", "archaeology"] },
   { name: "Dream Archaeology", href: "/dream-eater/archaeology", section: "Tools", icon: Moon, keywords: ["history", "dreams"] },
   { name: "Dream Artifacts", href: "/dream-eater/artifacts", section: "Tools", icon: Moon },

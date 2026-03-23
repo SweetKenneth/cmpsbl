@@ -455,7 +455,7 @@ const modulesByLayer = {
   shell: [
     {
       id: "defense",
-      name: "DEFENSE",
+      name: "DEFENSE Layer",
       description: "Bot detection, behavioral fingerprinting, perimeter security",
       icon: Siren,
       color: "text-neon-magenta",

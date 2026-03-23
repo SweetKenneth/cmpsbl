@@ -73,7 +73,7 @@ const PHASES = [
   },
   {
     number: 5,
-    name: "EVOLUTION",
+    name: "EVOLUTION Layer",
     tagline: "Self-Improving Architecture",
     status: "Research",
     color: "primary",
