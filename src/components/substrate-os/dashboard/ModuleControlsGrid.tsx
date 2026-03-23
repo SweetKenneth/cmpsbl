@@ -412,9 +412,9 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       description: 'Data ingestion & ETL',
       gradient: 'bg-gradient-to-r from-lime-400 to-neon-green', accentColor: 'bg-lime-400',
       status: harvestStatus,
-      metrics: [{ label: 'Pipeline', value: harvestStatus.data?.success ? 'Active' : 'Checking' }],
+      metrics: [{ label: 'Memory Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { const r = await harvestMod.status(); toast.info(`Harvest: ${r.success ? 'Pipeline active' : 'Check failed'}`); },
+      onAction: async () => { const r = await harvestMod.status(); toast.info(`Harvest: ${r.success ? 'Memory active' : 'Check failed'}`); },
     },
     // ═══ Execution: MEDIC & NERVE ═══
     {
@@ -443,7 +443,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       status: evolutionStatus,
       metrics: [{ label: 'Field', value: evolutionStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
-      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Pipeline ready' : 'Check failed'}`); },
+      onAction: async () => { const r = await evolutionMod.status(); toast.info(`Evolution: ${r.success ? 'Memory ready' : 'Check failed'}`); },
     },
     {
       id: 'shadow', name: 'SHADOW', layer: 'orchestrator' as const, icon: Eye,
