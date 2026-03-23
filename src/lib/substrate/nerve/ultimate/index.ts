@@ -1,7 +1,7 @@
 /**
- * NERVE Ultimate — v9.0.0 "Synapse Prime"
+ * NERVE Ultimate — v9.1.0 "Synapse Prime"
  * 
- * 11 Ultimate Capabilities:
+ * 13 Ultimate Capabilities:
  *   1. Signal Replay Journal        — Append-only forensic signal history
  *   2. Adaptive Backpressure Cal.   — EMA-tuned per-node pressure thresholds
  *   3. Predictive Circuit Breaker   — Degradation trend pre-emptive tripping
@@ -12,6 +12,9 @@
  *   8. Heartbeat Fingerprinter      — Zombie/degraded node detection
  *   9. Cascade Failure Detector     — Propagating failure identification
  *  10. Nerve Telemetry Nexus        — Unified MTTR/throughput/efficiency metrics
+ *  11. Primary Memory Chains        — 100 automated reaction workflows
+ *  12. Chain Orchestrator Guard      — Node locks, cascade tracking, telemetry
+ *  13. Capability Auto-Activation    — 50-rule autonomic capability trigger engine
  */
 
 // 1. Signal Replay Journal
@@ -207,3 +210,31 @@ export {
   type DeferReason,
   type GuardedTriggerResult,
 } from './chainOrchestratorGuard';
+
+// 13. Capability Auto-Activation Engine
+export {
+  processSignal,
+  governanceBlock,
+  governanceUnblock,
+  getGovernanceBlocks,
+  configureEngine,
+  getEngineConfig,
+  setEnabled as setAutoActivationEnabled,
+  getEngineHealth,
+  getRecentEvents as getRecentActivations,
+  getEventsForRule as getActivationsForRule,
+  resetEngine as resetAutoActivation,
+  ACTIVATION_RULES,
+  getRule as getActivationRule,
+  getRulesByTier,
+  getRulesForNode as getActivationRulesForNode,
+  getEnabledRules as getEnabledActivationRules,
+  getRegistryStats as getActivationRegistryStats,
+  type ActivationOutcome,
+  type ActivationEvent,
+  type EngineConfig as AutoActivationConfig,
+  type EngineHealth as AutoActivationHealth,
+  type ActivationTier,
+  type ActivationTrigger,
+  type CapabilityActivationRule,
+} from '../../../nerve/auto-activation';

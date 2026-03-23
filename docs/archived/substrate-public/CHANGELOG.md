@@ -4,6 +4,21 @@
 
 ---
 
+## v15.3.0 — 2026-03-23
+
+**Capability Auto-Activation Engine**
+
+- 🧠 **50 Auto-Activation Rules** across 5 tiers wired into NERVE signal router.
+- ⚡ **T1 Critical** — 10 rules for instant security response (threat neutralization, session kill, zero-day shield).
+- 🔧 **T2 Operational** — 10 rules for infrastructure resilience (adaptive routing, backpressure, self-heal).
+- 📊 **T3 Intelligence** — 10 rules for learning (memory promotion, anomaly prediction, shadow testing).
+- 🎯 **T4 Optimization** — 10 rules for background tuning (bottleneck analysis, SLA checks, impact analysis).
+- 🌙 **T5 Autonomous** — 10 rules for idle self-improvement (dream consolidation, forge discovery, ethics refresh).
+- 🛡️ **Guard Layer** — Governance blocks, cooldown enforcement, concurrency limiting.
+- NERVE upgraded to **v9.1.0 "Synapse Prime"** with 13 capabilities.
+
+---
+
 ## v15.2.7 — 2026-03-23
 
 **RELAY Ultimate — "Warpgate"**
