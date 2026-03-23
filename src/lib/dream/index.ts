@@ -46,8 +46,8 @@ export {
 // Insight extraction & knowledge synthesis
 export * from './insightExtraction';
  
- // Creative synthesis
- export * from './creativeSynthesis';
+// Creative synthesis
+export * from './creativeSynthesis';
 
 // Pattern mutation
 export * from './patternMutation';
@@ -66,8 +66,47 @@ export {
   clearInsightCache,
 } from './insightGenerator';
 
+// Lineage provenance tracker
+export * from './lineageTracker';
+
+// Semantic drift detection
+export * from './semanticDrift';
+
+// Dream candidate filter pipeline
+export * from './candidateFilter';
+
+// Heuristic builder
+export {
+  CONFIDENCE_DECAY_FACTOR,
+  MAX_COUNTER_EXAMPLES,
+  type DreamHeuristic,
+  buildHeuristic,
+  recordCounterExample,
+  validateHeuristic,
+  getHeuristics,
+  getHeuristicStats,
+} from './heuristicBuilder';
+
+// Consolidation orchestrator
+export * from './consolidationOrchestrator';
+
+// Lucid dreaming mode
+export * from './lucidDreaming';
+
+// Dream journal
+export * from './dreamJournal';
+
+// Subconscious priority queue
+export * from './subconsciousQueue';
+
+// Coherence validator
+export * from './coherenceValidator';
+
+// Dream metrics dashboard feed
+export * from './dreamMetricsFeed';
+
 // Version info
-export const DREAM_VERSION = '7.0.0';
+export const DREAM_VERSION = '8.0.0';
 export const DREAM_CODENAME = 'Nocturne';
 
 // Dream cycle types
