@@ -3321,7 +3321,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
           return { success: false, output: `▓ Synergy '${args[0]}' not found` };
         }
         
-        const moduleList = synergy.modules.map(m => m.name).join(' → ');
+        const moduleList = synergy.modules.map(m => labelPrimitive(m.name)).join(' → ');
         
         return {
           success: true,
