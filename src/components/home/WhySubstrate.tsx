@@ -93,7 +93,7 @@ const primitives = [
   {
     icon: Moon,
     title: "Dream Cycles",
-    node: "DREAM",
+    node: "DREAM Engine",
     description: "Offline processing to consolidate memories, extract patterns, and evolve understanding.",
     highlight: "Learns While Idle",
     stat: "24/7",
