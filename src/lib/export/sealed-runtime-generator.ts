@@ -574,7 +574,7 @@ export function generateSealedChainExecutor(): string {
   return `/**
  * CMPSBL® Portable Chain Executor — Sealed Distribution
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * 3-Layer runtime playback engine for discovered capability chains.
+ * 3-Layer runtime playback engine for discovered memory chains.
  *
  * Primitive effect implementations are sealed.
  * Full deep effects require the CMPSBL® Substrate.
