@@ -113,33 +113,26 @@ export function ConsolidationDiagram() {
           <rect x="340" y="30" width="320" height="200" rx="8" className="fill-[hsl(var(--primary))] fill-opacity-[0.06] stroke-[hsl(var(--primary))] stroke-opacity-[0.2] stroke-[1.5]" />
           <text x="500" y="25" textAnchor="middle" className="fill-[hsl(var(--primary))] text-[11px] font-mono font-bold">AFTER</text>
 
-          {/* 12 sector blocks */}
+          {/* 4 category blocks */}
           {[
-            { x: 350, y: 40, w: 70, h: 35, name: "Kernel", n: "2" },
-            { x: 425, y: 40, w: 70, h: 35, name: "CCR", n: "3" },
-            { x: 500, y: 40, w: 70, h: 35, name: "OCG", n: "6" },
-            { x: 575, y: 40, w: 75, h: 35, name: "Execution", n: "10" },
-            { x: 350, y: 85, w: 70, h: 35, name: "ESZ", n: "3" },
-            { x: 425, y: 85, w: 70, h: 35, name: "EPZ", n: "3" },
-            { x: 500, y: 85, w: 70, h: 35, name: "EMZ", n: "3" },
-            { x: 575, y: 85, w: 75, h: 35, name: "CSZ", n: "4" },
-            { x: 350, y: 130, w: 70, h: 35, name: "Fields", n: "2" },
-            { x: 425, y: 130, w: 70, h: 35, name: "Plane", n: "2" },
-            { x: 500, y: 130, w: 70, h: 35, name: "Shell", n: "1" },
+            { x: 350, y: 40, w: 145, h: 35, name: "Organs", n: "12" },
+            { x: 505, y: 40, w: 145, h: 35, name: "Layers", n: "8" },
+            { x: 350, y: 85, w: 145, h: 35, name: "Engines", n: "10" },
+            { x: 505, y: 85, w: 145, h: 35, name: "Agents", n: "10" },
           ].map((s, i) => (
             <g key={i}>
               <rect x={s.x} y={s.y} width={s.w} height={s.h} rx="4" className="fill-[hsl(var(--primary))] fill-opacity-[0.1] stroke-[hsl(var(--primary))] stroke-opacity-[0.3] stroke-[1]" />
               <text x={s.x + s.w / 2} y={s.y + 15} textAnchor="middle" className="fill-[hsl(var(--foreground))] text-[9px] font-mono font-semibold">{s.name}</text>
-              <text x={s.x + s.w / 2} y={s.y + 27} textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">{s.n} nodes</text>
+              <text x={s.x + s.w / 2} y={s.y + 27} textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">{s.n} primitives</text>
             </g>
           ))}
 
           {/* Resolver illustration */}
-          <rect x="350" y="178" width="300" height="40" rx="4" className="fill-[hsl(var(--accent))] fill-opacity-[0.08] stroke-[hsl(var(--accent))] stroke-opacity-[0.2] stroke-[1]" />
-          <text x="500" y="195" textAnchor="middle" className="fill-[hsl(var(--foreground))] text-[9px] font-mono font-semibold">node.resolver_name → composable primitives</text>
-          <text x="500" y="210" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">80+ resolvers across 40 nodes</text>
+          <rect x="350" y="138" width="300" height="40" rx="4" className="fill-[hsl(var(--accent))] fill-opacity-[0.08] stroke-[hsl(var(--accent))] stroke-opacity-[0.2] stroke-[1]" />
+          <text x="500" y="155" textAnchor="middle" className="fill-[hsl(var(--foreground))] text-[9px] font-mono font-semibold">primitive.resolver_name → composable capabilities</text>
+          <text x="500" y="170" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">80+ resolvers across 40 primitives</text>
 
-          <text x="500" y="250" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">40 nodes · 12 sectors · Σ(weight) = 1.000</text>
+          <text x="500" y="210" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">40 primitives · 4 categories · Σ(weight) = 1.000</text>
         </svg>
       </div>
       <DiagramCaption>The founding axiom: sprawling functions compress into composable primitives without loss of capability.</DiagramCaption>
