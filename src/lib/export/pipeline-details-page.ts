@@ -930,11 +930,11 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       This pipeline was autonomously discovered by the Memory Stream — a recursive engine that
       monitors substrate system behavior and crystallizes viable software configurations into
       production-grade pipelines. It was not designed by a human; it emerged from the interaction
-      of ${input.systemChain.length} substrate module${input.systemChain.length !== 1 ? 's' : ''} 
+      of ${input.systemChain.length} substrate primitive${input.systemChain.length !== 1 ? 's' : ''} 
       operating in concert.
     </p>
     <div class="module-chain">
-      ${input.systemChain.map(s => `<span class="module-tag">${escapeHtml(s)}</span>`).join('\n      ')}
+      ${input.systemChain.map(s => `<span class="module-tag">${escapeHtml(labelPrimitive(s))}</span>`).join('\n      ')}
     </div>
   </div>
 
