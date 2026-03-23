@@ -144,7 +144,7 @@ export function evaluateGate(context: GateEvalContext): GateEvalResult {
 
 /** Evaluate a single condition */
 function evaluateCondition(condition: GateCondition, ctx: GateEvalContext): boolean {
-  const value = ctx.data?.[condition.field] ?? (ctx as Record<string, unknown>)[condition.field];
+  const value = ctx.data?.[condition.field] ?? (ctx as unknown as Record<string, unknown>)[condition.field];
 
   switch (condition.operator) {
     case '==': return value === condition.value;
