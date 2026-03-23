@@ -103,7 +103,7 @@ export function DecodeChat() {
   const attemptRecovery = useCallback(async () => {
     if (connection.retryCount >= 3) {
       setConnection(prev => ({ ...prev, status: 'disconnected' }));
-      toast.error('Connection issues', { description: 'Unable to reach DECODE. Please try again later.' });
+      toast.error('Connection issues', { description: 'Unable to reach DECODE Agent. Please try again later.' });
       return;
     }
     setConnection(prev => ({ ...prev, retryCount: prev.retryCount + 1, status: 'degraded' }));
