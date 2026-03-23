@@ -227,7 +227,7 @@ const modulesByLayer = {
     },
     {
       id: "audit",
-      name: "AUDIT",
+      name: "AUDIT Organ",
       description: "Compliance templates, log compression, SOC2/GDPR",
       icon: ClipboardCheck,
       color: "text-slate-400",
