@@ -103,7 +103,7 @@ export function calculatePosture(): SecurityPosture {
     grade,
     score,
     timestamp: Date.now(),
-    dimensions: Object.freeze({ ...dimensions }) as PostureDimensions,
+    dimensions: Object.freeze({ ...dimensions }) as unknown as PostureDimensions,
     activeThreats,
     recentBlocks,
     lockdownLevel: 'NONE',
