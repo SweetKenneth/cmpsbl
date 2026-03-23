@@ -75,7 +75,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
         voice.warning('Issues found', 'Review primitive health', 'VISION');
       }
     } catch {
-      voice.error('Diagnostics failed', 'Unable to complete analysis', 'VISION');
+      voice.error('Diagnostics failed', 'Unable to complete analysis', 'VISION Agent');
     } finally {
       setDiagnosticsRunning(false);
     }
