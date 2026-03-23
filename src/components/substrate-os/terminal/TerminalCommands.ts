@@ -1218,8 +1218,8 @@ export const PHANTOM_COMMANDS: CommandDefinition[] = [
 ];
 
 export const HARVEST_COMMANDS: CommandDefinition[] = [
-  { command: 'harvest.status', description: 'Data pipeline status', category: 'harvest', icon: Database, requiresOperator: false, requiredTier: 'free' },
-  { command: 'harvest.pipelines', description: 'Active data pipelines', category: 'harvest', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.status', description: 'Data memory chain status', category: 'harvest', icon: Database, requiresOperator: false, requiredTier: 'free' },
+  { command: 'harvest.pipelines', description: 'Active data memory chains', category: 'harvest', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
   { command: 'harvest.ingest', description: 'Ingest data source', category: 'harvest', icon: Database, requiresOperator: true, requiredTier: 'studio', args: '<source_ref>' },
   { command: 'harvest.transform', description: 'Transformation rules', category: 'harvest', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'harvest.quality', description: 'Data quality score', category: 'harvest', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
