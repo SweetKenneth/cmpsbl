@@ -1,6 +1,7 @@
 /**
  * ENCODE Module — Code Execution & Generation Intelligence
  * Module #21, first-class substrate module
+ * v9.0.0 "Architect" — Ultimate Form
  * 
  * ENCODE is the substrate's code execution engine, receiving structured task packets
  * from DECODE (the human-facing intent router) and producing governed code artifacts.
