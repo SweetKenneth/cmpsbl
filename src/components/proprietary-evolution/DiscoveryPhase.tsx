@@ -1,7 +1,7 @@
 /**
  * ASCENSION Phase — Discovery Engine
- * Runs multi-node chain collisions between the Auxiliary Node (user's capability surface)
- * and the 40-node substrate matrix.
+ * Runs multi-primitive chain collisions between the Auxiliary Primitive (user's capability surface)
+ * and the 40-primitive substrate matrix.
  * 
  * The Auxiliary Node is a first-class participant with its own capability verbs and sector.
  */
