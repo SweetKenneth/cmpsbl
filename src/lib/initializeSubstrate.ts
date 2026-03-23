@@ -72,7 +72,7 @@ export async function initializeSubstrate(): Promise<void> {
     const ocgBooted = true;
     
     if (coreResult.success && ccrBooted && ocgBooted) {
-      console.log('✅ CORE + CCR + OCG active → 40-node matrix online | Health: 100%');
+      console.log('✅ CORE + CCR + OCG active → 40-primitive matrix online | Health: 100%');
     } else {
       // Fallback: ping all sectors
       let activeCount = 0;
@@ -88,7 +88,7 @@ export async function initializeSubstrate(): Promise<void> {
         if (result.success) activeCount++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/40 nodes active across 12 sectors`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/40 primitives active across 4 categorys`);
     }
     
     console.log('─────────────────────────────────────────');

@@ -85,7 +85,7 @@ const GOVERNOR_COMMANDS: Record<string, GovernorHandler> = {
     ]);
   },
 
-  /** Query mesh_comms for recent inter-node communication */
+  /** Query mesh_comms for recent inter-primitive communication */
   comms: async () => {
     const { data, error } = await supabase
       .from('mesh_comms')
