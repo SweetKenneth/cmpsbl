@@ -75,7 +75,8 @@ export function DifferentiationSection() {
             <span className="text-xs font-semibold">Why Build Here</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
-            Systems That{" "}
+            Systems That
+            <br />
             <span className="text-[hsl(var(--neon-purple))]">Dream · Adapt · Evolve</span>
           </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
