@@ -204,10 +204,10 @@ function OverviewSection() {
 │  MANUFACTURING             FORGE · TRANSLATE · INGEST   │
 │  CONTINUOUS                EVOLUTION · SHADOW · PHANTOM │
 ├─────────────────────────────────────────────────────────┤
-│  ATLAS                     Control plane (Module 40)    │
+│  ATLAS                     Control plane (Primitive 40)  │
 └─────────────────────────────────────────────────────────┘
 Cross-cutting: EVOLUTION · IMMUNITY · INTENT
-Total: 40 modules · 12 groups · Σ weights = 1.000`}</CodeBlock>
+Total: 40 primitives · 4 categories · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
