@@ -128,7 +128,7 @@ export default function CurrentProjects() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Current Projects — CMPSBL & LNCHBL Ecosystem"
-        description="Explore the CMPSBL ecosystem: the 40-node cognitive substrate, LNCHBL self-hosted deployment, RCKBL security, RNDRBL accessibility, and more. Real systems, shipped and operational."
+        description="Explore the CMPSBL ecosystem: the 40-primitive cognitive substrate, LNCHBL self-hosted deployment, RCKBL security, RNDRBL accessibility, and more. Real systems, shipped and operational."
         canonical="https://cmpsbl.com/projects"
         keywords={['CMPSBL projects', 'LNCHBL', 'AI security', 'accessibility tools', 'autonomous AI', 'self-hosted AI']}
       />
