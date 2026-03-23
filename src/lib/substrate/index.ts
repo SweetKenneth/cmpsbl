@@ -1177,18 +1177,50 @@ export {
   type CompassModuleState,
 } from './compass-module';
 
-// ECHO — Simulation & Digital Twin Engine
+// ECHO v9.0.0 — Signal Reverberation & Pattern Amplification Engine
 export {
   initEcho,
-  createTwin,
-  syncTwin,
-  runScenario,
   getEchoState,
   getEchoHealth,
   getEchoResilience,
   getEchoEngine,
   getEchoHardening,
   upgradeEchoEngine,
+  // Signal Processing
+  emitSignal,
+  recordSignalOutcome,
+  // Temporal Replay
+  replayTimeWindow,
+  replayByNode,
+  // Schema Registry
+  registerSignalSchema,
+  getSchemaForType,
+  // Routing Rules
+  addRoutingRule,
+  removeRoutingRule,
+  // Digital Twins
+  createTwin as createEchoTwin,
+  syncTwin as syncEchoTwin,
+  runScenario as runEchoScenario,
+  // Telemetry
+  getBusMetrics,
+  getResonancePatterns,
+  getCorrelations,
+  getForecasts,
+  getCompressedBursts,
+  getRoutingRules,
+  getAmplificationScores,
+  // Types
+  type SignalPriority,
+  type SignalDecayTier,
+  type EchoSignal,
+  type ResonancePattern,
+  type SignalCorrelation,
+  type CompressedBurst,
+  type SignalSchema,
+  type RoutingRule,
+  type SignalForecast,
+  type BusMetrics,
   type DigitalTwin,
   type Intervention,
   type EchoModuleState,
