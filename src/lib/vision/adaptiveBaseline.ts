@@ -130,7 +130,7 @@ function calibrate(metric: string, buffer: number[], config: BaselineConfig): vo
 /**
  * Get baseline for a metric
  */
-export function getBaseline(metric: string): MetricBaseline | undefined {
+export function getMetricBaseline(metric: string): MetricBaseline | undefined {
   return baselines.get(metric);
 }
 

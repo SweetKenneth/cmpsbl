@@ -201,7 +201,7 @@ export function scoreBehavior(
 /**
  * Get baseline for a user
  */
-export function getBaseline(userId: string): BehavioralBaseline | undefined {
+export function getBehavioralBaseline(userId: string): BehavioralBaseline | undefined {
   return baselines.get(userId);
 }
 
