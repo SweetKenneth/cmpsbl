@@ -332,7 +332,7 @@ const modulesByLayer = {
     },
     {
       id: "reflex",
-      name: "REFLEX",
+      name: "REFLEX Engine",
       description: "Rapid response, instinctive routing",
       icon: Zap,
       color: "text-neon-amber",
