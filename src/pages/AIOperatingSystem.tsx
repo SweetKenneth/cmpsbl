@@ -65,8 +65,8 @@ const pillars = [
   { icon: Network, title: "Smart Model Routing", desc: "NEXUS picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/modules/nexus" },
   { icon: Shield, title: "Built-in AI Security", desc: "DEFENSE protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/modules/defense" },
   { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the system consolidates what it learned, discovers patterns, and generates new insights — all automatically.", link: "/modules/dream" },
-  { icon: Workflow, title: "Coordinated Intelligence", desc: "CORTEX coordinates all 40 nodes so they work as one unified system. Pre-built synergies discover capabilities that no single node could achieve alone.", link: "/modules/cortex" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots all 40 nodes in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/modules/core" },
+  { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Engine coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/modules/cortex" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/modules/core" },
 ];
 
 const sectors = [
