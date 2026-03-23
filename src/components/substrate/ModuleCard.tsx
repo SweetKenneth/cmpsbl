@@ -159,7 +159,7 @@ const moduleConfig: Record<SubstrateModule, {
   intent: {
     icon: Target,
     label: 'Intent',
-    description: 'Cross-module intent routing, goal decomposition',
+    description: 'Cross-primitive intent routing, goal decomposition',
     color: 'text-neon-amber',
   },
   governance: {
