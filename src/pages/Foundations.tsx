@@ -112,11 +112,11 @@ export default function Foundations() {
 
           <Separator className="mb-20" />
 
-          {/* 12-Sector Topology */}
+          {/* Primitive Taxonomy */}
           <section className="mb-20">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">12-Sector Topology</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Primitive Taxonomy</h2>
             <p className="text-muted-foreground mb-8">
-              40 modules organized into 12 functional sectors. Each sector is a self-contained responsibility boundary.
+              40 primitives organized into 4 functional categories: Agents, Engines, Layers, and Organs. Each category is a self-contained responsibility boundary.
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {SECTORS.map((sector, i) => (

@@ -275,7 +275,7 @@ export default function Architecture() {
           </div>
         </section>
 
-        {/* ── All 12 Sectors ── */}
+        {/* ── All Categories ── */}
         {SECTORS.map((sector, sIdx) => (
           <section
             key={sector.tag}
