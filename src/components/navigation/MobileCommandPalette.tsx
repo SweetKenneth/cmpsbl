@@ -23,7 +23,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   // Infrastructure
   { name: "Home", href: "/", section: "Infrastructure", icon: Layers },
   { name: "How It Works", href: "/ai-operating-system", section: "Infrastructure", icon: Layers, keywords: ["architecture", "concepts", "operating system"] },
-  { name: "All Nodes", href: "/modules", section: "Infrastructure", icon: Layers, keywords: ["nodes", "production", "hub"] },
+  { name: "Architecture", href: "/architecture", section: "Infrastructure", icon: Layers, keywords: ["agents", "engines", "layers", "organs", "architecture"] },
   { name: "Runtime", href: "/runtime", section: "Infrastructure", icon: Code, keywords: ["execution", "environment"] },
   { name: "Dashboard", href: "/os", section: "Infrastructure", icon: Layers, keywords: ["command center", "control"] },
   { name: "Capability Map", href: "/capability-map", section: "Infrastructure", icon: Network },

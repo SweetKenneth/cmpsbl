@@ -991,9 +991,9 @@ export default function Blog() {
                   </Link>
                 </Button>
                 <Button variant="outline" size="lg" className="gap-2" asChild>
-                  <Link to="/modules">
+                  <Link to="/architecture">
                     <Layers className="w-4 h-4" />
-                    All Systems
+                    Architecture
                   </Link>
                 </Button>
               </div>

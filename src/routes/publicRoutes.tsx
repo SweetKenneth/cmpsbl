@@ -73,8 +73,8 @@ const Enterprise = lazy(() => import("@/pages/Enterprise"));
 const ApiAccess = lazy(() => import("@/pages/ApiAccess"));
 const Careers = lazy(() => import("@/pages/Careers"));
 const EvolutionControlCenter = lazy(() => import("@/pages/EvolutionControlCenter"));
-const Architecture = lazy(() => import("@/pages/Architecture"));
-const ModulesHub = lazy(() => import("@/pages/ModulesHub"));
+const ArchitectureOld = lazy(() => import("@/pages/Architecture"));
+const ArchitecturePage = lazy(() => import("@/pages/ArchitecturePage"));
 const ModuleDetail = lazy(() => import("@/pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("@/pages/AIOperatingSystem"));
 
@@ -191,7 +191,7 @@ export const publicRoutes = (
     <Route path="/promptfluid" element={<PromptFluidHome />} />
 
     {/* System pages */}
-    <Route path="/modules" element={<ModulesHub />} />
+    <Route path="/modules" element={<Navigate to="/architecture" replace />} />
     <Route path="/modules/:slug" element={<ModuleDetail />} />
     <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
     <Route path="/products/encode" element={<Navigate to="/" replace />} />
@@ -211,7 +211,7 @@ export const publicRoutes = (
 
     {/* Misc public */}
     <Route path="/evolution" element={<EvolutionControlCenter />} />
-    <Route path="/architecture" element={<Navigate to="/ai-operating-system" replace />} />
+    <Route path="/architecture" element={<ArchitecturePage />} />
     <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Navigate to="/store" replace />} />

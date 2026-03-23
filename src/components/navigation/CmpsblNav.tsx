@@ -101,7 +101,7 @@ export function CmpsblNav() {
       icon: Layers,
       items: [
         { name: "How it works", href: "/ai-operating-system", description: "Learn the core concepts", icon: Globe },
-        { name: "All modules", href: "/modules", description: "Browse every system module", icon: Layers },
+        { name: "Architecture", href: "/architecture", description: "Agents, Engines, Layers & Organs", icon: Layers },
         { name: "Runtime", href: "/runtime", description: "Where your AI executes", icon: Terminal },
         { name: "Enterprise", href: "/enterprise", description: "Scale with governance & compliance", icon: Building2 },
         { name: "Persistent memory", href: "/persistent-memory", description: "Give agents persistent memory", icon: Brain },

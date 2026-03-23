@@ -262,7 +262,7 @@ export default function Architecture() {
               <h2 className="text-3xl font-bold mb-2">Deterministic Boot Sequence</h2>
               <p className="text-muted-foreground mb-6">
                 CORE initializes all sectors in a fixed order. Fields permeate the spine,
-                the Plane overlay supervises, <Link to="/modules" className="text-primary hover:underline font-medium">ATLAS</Link> indexes, and{" "}
+                the Plane overlay supervises, <Link to="/architecture" className="text-primary hover:underline font-medium">ATLAS</Link> indexes, and{" "}
                 <Link to="/use-cases" className="text-primary hover:underline font-medium">DEFENSE</Link> seals the boundary.{" "}
                 Learn more in our <Link to="/documentation" className="text-primary hover:underline font-medium">technical documentation</Link>.
               </p>
@@ -335,9 +335,9 @@ export default function Architecture() {
               or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/modules">
+              <Link to="/architecture">
                 <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                  All 40 Nodes <ArrowRight className="w-4 h-4" />
+                  Full Architecture <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to="/documentation">
