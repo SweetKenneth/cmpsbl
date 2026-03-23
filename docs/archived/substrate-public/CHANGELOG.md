@@ -4,6 +4,34 @@
 
 ---
 
+## v15.2.0 — 2026-03-23
+
+**RIPPLE Ultimate — "Tsunami"**
+
+- 🌊 RIPPLE upgraded to **v9.0.0** with 9 new Ultimate Form systems.
+- ⚡ **Priority Preemption Engine** — 4-tier priority queue with sub-millisecond critical signal delivery. Lower-priority batches are preempted when critical signals arrive.
+- 🎛️ **Per-Subscriber Adaptive Backpressure** — Independent throttling per subscriber with EMA-tracked processing speed, p95 latency, and health scores. Fast subscribers never blocked by slow ones.
+- 🔬 **DLQ Forensics Engine** — Error fingerprinting, pattern analysis, auto-bypass routes after 10 recurring failures, and replay with payload mutation.
+- 🔗 **Signal Correlation Engine** — Causal chain tracking with temporal windowing, live dependency graphs, and hot path detection across all 40 nodes.
+- 🗺️ **Topic Topology Optimizer** — Detects dead topics (subscribed, never published), orphan topics (published, no subscribers), and suggests consolidations at 80%+ subscriber overlap.
+- 📋 **Event Schema Registry** — Type-safe contracts with runtime validation, schema versioning, and backward-compatibility checks.
+- 🌪️ **Cascade Storm Detection** — Monitors event velocity per topic. Auto-throttles at 10x baseline spike. 4-tier severity: watch → warning → storm → critical.
+- 🔧 **Event Enrichment Pipeline** — Pre/post-delivery hooks for payload enrichment (trace IDs, timestamps, context). Sequential transform chains.
+- 📊 **Live Telemetry Feed** — Real-time throughput (EMA), per-topic latency percentiles (p50/p95/p99), subscriber lag metrics, DLQ depth, and hot topic heatmap.
+
+---
+
+## v15.1.9 — 2026-03-23
+
+**100 Primary Memory Chains + UI Refinements**
+
+- 🧬 Primary Memory Chain registry expanded to **100 chains** across 9 categories including new **Cognitive Supremacy** category (chains 76–100).
+- 🎨 Homepage layout refined — header text properly split across two lines for improved readability.
+- 🔒 Analytics tab restricted to **admin-only** access with role-based gating.
+- 🐛 BRAIN telemetry 500 error in analytics tab fixed — properly handling null/missing data.
+
+---
+
 ## v15.1.8 — 2026-03-23
 
 **Discovery-Taught Chain Intelligence**

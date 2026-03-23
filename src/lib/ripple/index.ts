@@ -427,8 +427,8 @@ export const ripple = RippleEventBus.getInstance();
 export type { RippleEventBus };
 
 // Version info
-export const RIPPLE_VERSION = '8.0.0';
-export const RIPPLE_CODENAME = 'Tempest';
+export const RIPPLE_VERSION = '9.0.0';
+export const RIPPLE_CODENAME = 'Tsunami';
 
 // Batch events & replay
 export {
@@ -540,3 +540,191 @@ export {
   type ReplayProgress,
   type ReplayStats,
 } from './eventReplayEngine';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// v9.0.0 TSUNAMI — ULTIMATE FORM
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Priority Preemption Engine
+export {
+  enqueueSignal,
+  dequeueNext,
+  dequeueBatch,
+  recordDeliveryTime,
+  startBatchProcessing,
+  endBatchProcessing,
+  shouldPreempt,
+  getCurrentBatchPriority,
+  getTotalQueueDepth,
+  peekNext,
+  purgeExpired,
+  getPreemptionStats,
+  resetPreemptionState,
+  type SignalPriority,
+  type PrioritizedSignal,
+  type PreemptionStats,
+} from './ultimate/priorityPreemption';
+
+// Per-Subscriber Adaptive Backpressure
+export {
+  registerSubscriber,
+  unregisterSubscriber,
+  canDeliver,
+  getWindowSize,
+  recordDeliverySuccess,
+  recordDeliveryFailure,
+  markPending,
+  decayHealthScores,
+  getSubscriberProfile,
+  getAllProfiles,
+  getBackpressureReport,
+  updateBackpressureConfig,
+  resetBackpressureState,
+  type SubscriberProfile,
+  type ThrottleLevel,
+  type BackpressureConfig,
+  type BackpressureReport,
+} from './ultimate/subscriberBackpressure';
+
+// DLQ Forensics Engine
+export {
+  recordDLQEvent,
+  checkBypass,
+  prepareReplay,
+  removeDLQEntry,
+  createBypassRoute,
+  removeBypassRoute,
+  getDLQEntries,
+  getFailurePatterns,
+  getBypassRoutes,
+  getForensicsReport,
+  resetForensicsState,
+  type DLQEntry,
+  type FailurePattern,
+  type BypassRoute,
+  type ForensicsReport,
+} from './ultimate/dlqForensics';
+
+// Signal Correlation Engine
+export {
+  trackSignal,
+  finalizeChain,
+  finalizeStaleChains,
+  getChain,
+  getActiveChains,
+  getCompletedChains,
+  getDependencyGraph,
+  getHotPaths,
+  setTemporalWindow,
+  getCorrelationStats,
+  resetCorrelationState,
+  type CorrelatedSignal,
+  type CausalChain,
+  type DependencyEdge,
+  type CorrelationStats,
+} from './ultimate/signalCorrelation';
+
+// Topic Topology Optimizer
+export {
+  recordPublish,
+  recordSubscription,
+  recordUnsubscription,
+  recordFanOut,
+  calculateOverlaps,
+  getConsolidationSuggestions,
+  getTopicProfile,
+  getAllTopicProfiles,
+  getTopologyReport,
+  resetTopologyState,
+  type TopicProfile,
+  type TopologyReport,
+  type ConsolidationSuggestion,
+} from './ultimate/topicTopology';
+
+// Event Schema Registry
+export {
+  registerSchema,
+  getLatestSchema,
+  getSchemaVersion,
+  getSchemaHistory,
+  validatePayload,
+  checkCompatibility,
+  deprecateSchema,
+  setValidationEnabled,
+  getRegisteredEventTypes,
+  getActiveSchemas,
+  getSchemaRegistryStats,
+  resetSchemaRegistry,
+  type SchemaFieldType,
+  type SchemaField,
+  type EventSchema,
+  type ValidationResult,
+  type ValidationError,
+  type SchemaRegistryStats,
+} from './ultimate/schemaRegistry';
+
+// Cascade Storm Detection
+export {
+  recordEvent,
+  isThrottled,
+  throttleTopic,
+  releaseThrottle,
+  resolveAlert,
+  tickAll,
+  getActiveAlerts,
+  getAlertHistory,
+  getTopicVelocity,
+  getStormDetectionStats,
+  resetStormDetectionState,
+  type StormSeverity,
+  type StormAlert,
+  type TopicVelocity,
+  type StormDetectionStats,
+} from './ultimate/stormDetection';
+
+// Event Enrichment Pipeline
+export {
+  registerHook,
+  unregisterHook,
+  setHookEnabled,
+  runPreDeliveryPipeline,
+  runPostDeliveryPipeline,
+  registerSystemHooks,
+  getHook,
+  getAllHooks,
+  getEnrichmentStats,
+  resetEnrichmentState,
+  type HookPhase,
+  type EnrichmentHook,
+  type EnrichmentContext,
+  type EnrichmentResult,
+  type EnrichmentStats,
+} from './ultimate/enrichmentPipeline';
+
+// Live Telemetry Feed
+export {
+  recordPublishEvent,
+  updateSubscriberLag,
+  removeSubscriberLag,
+  getThroughputMetrics,
+  getTopicLatencies,
+  getSubscriberLags,
+  getHeatmap,
+  getTelemetrySnapshot,
+  resetTelemetryState,
+  type ThroughputMetrics,
+  type TopicLatency,
+  type SubscriberLag,
+  type HeatmapEntry,
+  type TelemetrySnapshot,
+} from './ultimate/telemetryFeed';
+
+// Ultimate Form Lifecycle API
+export {
+  init as initUltimate,
+  health as ultimateHealth,
+  runCLM as ultimateCLM,
+  resilience as ultimateResilience,
+  resetAll as resetUltimate,
+  type RippleUltimateHealth,
+} from './ultimate';

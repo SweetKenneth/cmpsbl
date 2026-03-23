@@ -10,8 +10,8 @@
  * - Replay session management
  */
 
-export const RIPPLE_HARDENING_VERSION = '3.0.0';
-export const RIPPLE_HARDENING_CODENAME = 'Tempest';
+export const RIPPLE_HARDENING_VERSION = '4.0.0';
+export const RIPPLE_HARDENING_CODENAME = 'Tsunami';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // ORIGINAL 25 HARDENING FEATURES (v2.0.0)
