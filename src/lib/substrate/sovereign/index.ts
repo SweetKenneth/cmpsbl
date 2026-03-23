@@ -34,3 +34,6 @@ export {
 
 export { sovereignCLM, runSovereignCLMCycle, type SovereignCLMInsight, type SovereignCLMReport } from './clm';
 export { sovereignHardeningReport, validateSovereignInput, SOVEREIGN_LIMITS } from './hardening';
+
+// Ultimate Form v9.0.0 "Crown Prime"
+export * from './ultimate';
