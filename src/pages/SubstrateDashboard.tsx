@@ -236,7 +236,7 @@ const modulesByLayer = {
     },
     {
       id: "identity",
-      name: "IDENTITY",
+      name: "IDENTITY Organ",
       description: "Actor reputation, passkeys, biometric portability",
       icon: Fingerprint,
       color: "text-neon-magenta",
