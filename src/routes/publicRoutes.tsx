@@ -73,8 +73,8 @@ const Enterprise = lazy(() => import("@/pages/Enterprise"));
 const ApiAccess = lazy(() => import("@/pages/ApiAccess"));
 const Careers = lazy(() => import("@/pages/Careers"));
 const EvolutionControlCenter = lazy(() => import("@/pages/EvolutionControlCenter"));
-const Architecture = lazy(() => import("@/pages/Architecture"));
-const ModulesHub = lazy(() => import("@/pages/ModulesHub"));
+const ArchitectureOld = lazy(() => import("@/pages/Architecture"));
+const ArchitecturePage = lazy(() => import("@/pages/ArchitecturePage"));
 const ModuleDetail = lazy(() => import("@/pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("@/pages/AIOperatingSystem"));
 
