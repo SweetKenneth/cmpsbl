@@ -152,7 +152,7 @@ export function OperationsTab() {
       desc: 'Edge compute orchestration & low-latency response (EPZ)',
       stats: [
         { label: 'Avg Latency', value: `${ops.reflex.latencyMs}ms` },
-        { label: 'Edge Nodes', value: ops.reflex.edgeNodes },
+        { label: 'Edge Endpoints', value: ops.reflex.edgeNodes },
       ],
     },
     {
