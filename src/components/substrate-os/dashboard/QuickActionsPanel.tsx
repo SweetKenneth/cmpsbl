@@ -72,7 +72,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
         voice.success('Diagnostics complete', 'All systems nominal', 'VISION');
         showSuccess('diagnostics');
       } else {
-        voice.warning('Issues found', 'Review module health', 'VISION');
+        voice.warning('Issues found', 'Review primitive health', 'VISION');
       }
     } catch {
       voice.error('Diagnostics failed', 'Unable to complete analysis', 'VISION');
