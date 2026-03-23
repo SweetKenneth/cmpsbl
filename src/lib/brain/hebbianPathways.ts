@@ -93,7 +93,12 @@ class HebbianEngine {
       });
     }
 
-    this.enforceCapacity();
+    // Enforce capacity
+    if (this.pathways.size > MAX_PATHWAYS) {
+      const sorted = [...this.pathways.entries()].sort((a, b) => a[1].weight - b[1].weight);
+      const excess = this.pathways.size - MAX_PATHWAYS;
+      for (let i = 0; i < excess; i++) this.pathways.delete(sorted[i][0]);
+    }
     return id;
   }
 
