@@ -1,6 +1,6 @@
 /**
  * AscensionHero — Cinematic hallmark hero for the Ascension page
- * Full-width gradient, centered text, real 40-node orbital canvas with bouncing #41, CTAs
+ * Full-width gradient, centered text, real 40-primitive orbital canvas with bouncing #41, CTAs
  */
 
 import { useEffect, useRef, useCallback } from 'react';
