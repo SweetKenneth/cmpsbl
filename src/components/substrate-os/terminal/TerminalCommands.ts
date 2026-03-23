@@ -823,9 +823,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'economy.hardening.seals', description: 'Transaction integrity seal status', category: 'economy_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.tamper', description: 'Cost record tamper detection', category: 'economy_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — IMMUNITY (Field — Outer Mesh)
-  { command: 'immunity.hardening', description: 'IMMUNITY hardening status (Watchguard)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'immunity.hardening.health', description: 'IMMUNITY health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — IMMUNITY Layer (Field — Outer Mesh)
+  { command: 'immunity.hardening', description: 'IMMUNITY Layer hardening status (Watchguard)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.hardening.health', description: 'IMMUNITY Layer health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.quarantine', description: 'Quarantined modules list', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.healing', description: 'Healing memory chain stats', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.sentinel', description: 'Sentinel watchdog pulse stats', category: 'defense', icon: Eye, requiresOperator: false, requiredTier: 'free' },
