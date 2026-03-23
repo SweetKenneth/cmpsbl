@@ -858,9 +858,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'evolution.hardening.cooldown', description: 'Evolution cooldown timer', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.seba', description: 'SEBA confidence scores', category: 'system', icon: Brain, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — INTENT (Field — Inner Mesh)
-  { command: 'intent.hardening', description: 'INTENT hardening status (Navigator v2.0)', category: 'brain', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'intent.hardening.health', description: 'INTENT health composite', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — INTENT Layer (Field — Inner Mesh)
+  { command: 'intent.hardening', description: 'INTENT Layer hardening status (Navigator v2.0)', category: 'brain', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.hardening.health', description: 'INTENT Layer health composite', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.resolution', description: 'Intent resolution audit trail', category: 'brain', icon: Search, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.goals', description: 'Goal lifecycle tracker', category: 'brain', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.amplification', description: 'Context amplification metrics', category: 'brain', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
