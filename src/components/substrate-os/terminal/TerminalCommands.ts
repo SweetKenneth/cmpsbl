@@ -1044,7 +1044,7 @@ export const RIPPLE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'ripple.hardening.fanout', description: 'Fan-out limiter', category: 'ripple', icon: Radio, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.ordering', description: 'Event ordering guarantor', category: 'ripple', icon: List, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.acl', description: 'Subscription ACL stats', category: 'ripple', icon: Lock, requiresOperator: false, requiredTier: 'free' },
-  { command: 'ripple.hardening.enrichment', description: 'Event enrichment pipeline', category: 'ripple', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'ripple.hardening.enrichment', description: 'Event enrichment memory chain', category: 'ripple', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.partitions', description: 'Partition config', category: 'ripple', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.correlation', description: 'Event correlation groups', category: 'ripple', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
   { command: 'ripple.hardening.poison', description: 'Poison event detector', category: 'ripple', icon: Shield, requiresOperator: false, requiredTier: 'free' },
