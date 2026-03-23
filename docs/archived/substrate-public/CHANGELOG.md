@@ -4,6 +4,12 @@
 
 ---
 
+## v15.6.0 — 2026-03-23
+
+- **INTEGRATION Ultimate "Babel Gate"** — 10 new systems: Protocol Translator Matrix (6 protocols → CIF), Credential Vault with auto-rotation and leak canary, Adaptive Rate Governor with predictive throttling, Contract Testing with drift detection, Webhook Orchestrator with at-least-once delivery, Circuit Breaker Mesh (cascade alerting at ≥3 trips), Schema Negotiation (multi-version adapters), Integration Health Profiler (risk scoring, SLA compliance), Event Bridge with replay, Integration Discovery with OpenAPI auto-import.
+
+---
+
 ## v15.5.0 — 2026-03-23
 
 - **Activation Arbitration** — Auto-activation engine now evaluates matched rules as a set with priority scoring, conflict detection (8 mutually exclusive action pairs), and limits (max 3 per signal, max 1 T1).
