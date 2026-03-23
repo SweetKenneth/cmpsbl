@@ -188,10 +188,10 @@ export default function Architecture() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Architecture — 12-Sector Node Topology | CMPSBL"
-        description="Explore CMPSBL's substrate architecture: 40 nodes organized into 12 sectors from CORE kernel to DEFENSE shell. Weighted matrix boot, clockless coordination, and cross-sector mesh overlays."
+        title="Architecture — Agents · Engines · Layers · Organs | CMPSBL"
+        description="Explore CMPSBL's substrate architecture: 40 primitives organized as agents, engines, layers, and organs. Weighted matrix boot, clockless coordination, and cross-category mesh overlays."
         image="https://cmpsbl.com/og/architecture.jpg"
-        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI nodes', 'cognitive substrate', 'AI infrastructure layers']}
+        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI primitives', 'cognitive substrate', 'AI infrastructure layers']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
