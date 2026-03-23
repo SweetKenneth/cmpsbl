@@ -41,7 +41,7 @@ const primitives = [
   {
     icon: MessageSquare,
     title: "Epistemic Chat",
-    node: "DECODE",
+    node: "DECODE Agent",
     description: "Memory-aware conversations with context injection and session persistence.",
     highlight: "Context-Aware",
     stat: "∞",
