@@ -448,7 +448,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'intent' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Intent mesh governance and routing.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="INTENT Layer mesh governance and routing.">
                 <PanelContainer id="intent"><ModuleErrorBoundary moduleName="INTENT"><Suspense fallback={<PanelLoader />}><IntentPanel /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}
