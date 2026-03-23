@@ -427,8 +427,8 @@ export const ripple = RippleEventBus.getInstance();
 export type { RippleEventBus };
 
 // Version info
-export const RIPPLE_VERSION = '8.0.0';
-export const RIPPLE_CODENAME = 'Tempest';
+export const RIPPLE_VERSION = '9.0.0';
+export const RIPPLE_CODENAME = 'Tsunami';
 
 // Batch events & replay
 export {
