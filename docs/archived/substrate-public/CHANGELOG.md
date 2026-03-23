@@ -4,6 +4,24 @@
 
 ---
 
+## v15.2.7 — 2026-03-23
+
+**RELAY Ultimate — "Warpgate"**
+
+- 🌐 RELAY upgraded to **v9.0.0** with 10 new Ultimate Form systems.
+- 🛤️ **Adaptive Route Optimizer** — BFS pathfinding with EMA-smoothed latency and weighted scoring.
+- 🔄 **Protocol Translator** — Lossless Module Bus ↔ Matrix Signal ↔ External API translation.
+- 🚧 **Sector Gateway** — Per-boundary policy enforcement with sensitive field sanitization.
+- 📬 **Delivery Guarantor** — At-least-once delivery with 5,000-entry dedup LRU and forensic DLQ.
+- 📦 **Message Compressor** — Delta encoding and field deduplication with adaptive thresholds.
+- ⚡ **Circuit Breaker Matrix** — Per-destination breakers with cascade detection.
+- 🚦 **Rate Governor** — Token bucket rate limiting with critical signal bypass.
+- 🏷️ **Message Enricher** — Automatic routing context injection.
+- 📊 **Route Telemetry** — Per-edge metrics with P95 latency and bottleneck detection.
+- 🛡️ **Relay Hardening** — Payload limits, integrity checksums, and poison quarantine.
+
+---
+
 ## v15.2.6 — 2026-03-23
 
 **SHADOW Ultimate — "Doppelgänger"**

@@ -1,67 +1,90 @@
-# RELAY — Cross-Node Message Routing & Protocol Translation
+# RELAY — Intelligent Message Fabric & Cross-Boundary Orchestration
 
 > **Node ID:** `relay` · **Sector:** OCG · **Generation:** 1 · **Node #9 of 40**
-> **Codename:** *Bridge* · **Classification:** FOUNDER EYES ONLY
+> **Codename:** *Warpgate* · **Classification:** FOUNDER EYES ONLY
+> **Ultimate Form:** v9.0.0 "Warpgate"
 
 ---
 
 ## Executive Summary
 
-RELAY handles cross-node message routing, protocol translation, and message transformation. While RIPPLE provides the raw pub/sub bus, RELAY adds intelligent routing — determining the optimal path between nodes, translating message formats between incompatible protocols, and ensuring message delivery guarantees across sector boundaries.
+RELAY is the substrate's intelligent message fabric and cross-boundary orchestration core. It doesn't just route messages — it optimizes paths, translates protocols, enforces sector boundaries, guarantees delivery, compresses payloads, and learns from every signal crossing the matrix. RELAY is the backbone that ensures every node can communicate reliably with every other node regardless of sector, format, or load conditions.
 
 ---
 
-## Architecture
+## Ultimate Form — v9.0.0 "Warpgate"
 
-### Message Routing
-
-RELAY maintains a routing table derived from the Matrix Communication Bus topology:
+### System Architecture
 
 ```
-routing_decision(from, to, payload):
-  1. Check direct path (same sector) → use nodeSignal
-  2. Check sector bridge (cross-sector) → use sectorBroadcast
-  3. Check matrix broadcast (all nodes) → use matrixBroadcast
-  4. If all paths fail → enqueue in DLQ with retry
+Inbound Message
+  ↓
+Rate Governor (throttle/allow)
+  ↓
+Delivery Guarantor (dedup check)
+  ↓
+Protocol Translator (normalize format)
+  ↓
+Message Enricher (inject context)
+  ↓
+Sector Gateway (boundary validation)
+  ↓
+Message Compressor (optimize payload)
+  ↓
+Adaptive Route Optimizer (select best path)
+  ↓
+Circuit Breaker Matrix (destination health check)
+  ↓
+Delivery → Success / Retry / DLQ
+  ↓
+Route Telemetry (record metrics)
+  ↓
+Relay Hardening (integrity & limits enforcement)
 ```
-
-### Protocol Translation
-
-Nodes use different message formats. RELAY translates between:
-- **Module Bus format** (internal): `{ module, event_type, data }`
-- **Matrix Signal format** (topology-aware): `{ from, to, signal, payload, sector }`
-- **External API format** (gateway): `{ action, params, auth }`
-
-### Relay Hardening
-
-The Relay Hardening layer (`relay-hardening.ts`) provides:
-- Message size limits (100KB max payload)
-- Rate limiting per source node (100 msg/sec)
-- Circuit breaker per destination (trips after 5 consecutive failures)
-- Payload sanitization (strip sensitive fields before cross-sector routing)
 
 ---
 
-## Trade Secrets
+## The 10 Ultimate Systems
 
-### 1. Shortest-Path Routing
+| # | System | Description |
+|---|--------|-------------|
+| 1 | **Adaptive Route Optimizer** | BFS shortest-path with EMA-smoothed latency. Weighted scoring: latency 50%, reliability 35%, hops 15% |
+| 2 | **Protocol Translator** | Module Bus ↔ Matrix Signal ↔ External API. Schema v2.0.0 with lossless round-trip guarantee |
+| 3 | **Sector Gateway** | Per-boundary policy enforcement. CSZ→OCG compliance validation. Sensitive field sanitization |
+| 4 | **Delivery Guarantor** | At-least-once with 5,000-entry FNV-1a dedup LRU. Exponential backoff (1s→60s). Forensic DLQ |
+| 5 | **Message Compressor** | Delta encoding for sequential updates. Field deduplication. Adaptive 85% threshold |
+| 6 | **Circuit Breaker Matrix** | Per-destination breakers (5 fails → trip, 30s recovery). Cascade detection at ≥3 open |
+| 7 | **Rate Governor** | Token bucket per source (100/sec default). Burst 1.5× allowance. Critical signals bypass |
+| 8 | **Message Enricher** | Auto-inject: source health, sector, hop count, delivery attempt, route score, relay version |
+| 9 | **Route Telemetry** | Per-edge latency/throughput/errors. P95 tracking. Bottleneck detection (500ms/20% thresholds) |
+| 10 | **Relay Hardening** | 100KB payload limits. FNV-1a checksums. 5 poison patterns quarantined. Injection prevention |
 
-RELAY computes shortest paths using the topology adjacency matrix. Cross-sector messages traverse the minimum number of sector boundaries, reducing latency and failure probability.
+---
 
-### 2. Message Deduplication
+## Capabilities
 
-RELAY uses the same idempotency key system as RIPPLE but with a separate 5,000-entry cache. This prevents duplicate messages when RIPPLE and RELAY both process the same signal (belt-and-suspenders deduplication).
-
-### 3. Sector Isolation
-
-Messages between sectors are validated at the boundary. A message from CSZ (Covert Systems Zone) to OCG (Operational Compliance Grid) must pass through RELAY's compliance check, ensuring covert operations don't leak into compliance audit trails.
+| Capability | Description |
+|---|---|
+| `optimize_route` | BFS pathfinding with health-weighted scoring |
+| `translate_protocol` | Lossless format translation between 3 protocol types |
+| `enforce_boundary` | Sector crossing validation with field sanitization |
+| `guarantee_delivery` | At-least-once delivery with dedup and DLQ |
+| `compress_message` | Delta/dedup compression for cross-sector payloads |
+| `manage_breakers` | Per-destination circuit breaker with cascade detection |
+| `govern_rate` | Token bucket rate limiting with priority bypass |
+| `enrich_message` | Automatic routing context injection |
+| `track_telemetry` | Per-edge latency, throughput, and bottleneck detection |
+| `harden_payload` | Size limits, integrity checks, poison quarantine |
 
 ---
 
 ## CLM Learning Priorities
 
-1. **Route Optimization** — Learning which routing paths have lowest latency under different load conditions
+1. **Route Optimization** — Learning which paths have lowest latency under different load conditions
 2. **Protocol Evolution** — Adapting translation rules as node message formats evolve
+3. **Compression Tuning** — Optimizing delta encoding baselines for highest compression ratios
+4. **Breaker Calibration** — Tuning failure thresholds per destination based on historical patterns
+5. **Rate Adaptation** — Dynamic rate limit adjustment based on system-wide load
 
 ---
 

@@ -1,53 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RELAY — Cross-Node Routing · CMPSBL® Node Deep Dive</title>
-<link rel="stylesheet" href="theme.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RELAY — Intelligent Message Fabric | CMPSBL® Substrate</title>
+  <link rel="stylesheet" href="theme.css">
 </head>
 <body>
-<div class="doc">
-<section class="cover">
-  <div class="classification">◆ Founder Eyes Only</div>
-  <div class="badge"><span class="dot"></span> Node Deep Dive</div>
-  <h1><span class="g">RELAY</span></h1>
-  <p class="subtitle">Cross-Node Message Routing & Protocol Translation — Intelligent routing, format translation, and sector-boundary enforcement.</p>
-  <div class="meta"><strong>Node #9</strong> · Sector: OCG · Generation 1 · Codename: <em>Bridge</em></div>
-</section>
-<div class="sep"></div>
-<h2>Routing Decision Tree</h2>
-<div class="sf">
-  <span class="sn s-active">Same Sector?</span><span class="sa">→</span>
-  <span class="sn s-active">nodeSignal</span>
-</div>
-<div class="sf">
-  <span class="sn s-warn">Cross Sector?</span><span class="sa">→</span>
-  <span class="sn s-active">sectorBroadcast</span>
-</div>
-<div class="sf">
-  <span class="sn s-error">All Nodes?</span><span class="sa">→</span>
-  <span class="sn s-active">matrixBroadcast</span>
-</div>
-<h2>Trade Secrets</h2>
-<div class="secret">
-  <div class="secret-label">◆ Sector Isolation</div>
-  <p>Messages between sectors pass through RELAY's compliance check. CSZ → OCG messages are validated to prevent covert operations from leaking into compliance audit trails.</p>
-</div>
-<div class="secret">
-  <div class="secret-label">◆ Belt-and-Suspenders Dedup</div>
-  <p>Separate 5,000-entry dedup cache from RIPPLE's. Prevents duplicate messages when both RIPPLE and RELAY process the same signal.</p>
-</div>
-<h2>Hardening</h2>
-<div class="hl">
-  <ul>
-    <li>100KB max payload per message</li>
-    <li>100 msg/sec rate limit per source node</li>
-    <li>Circuit breaker per destination (5 failures → trip)</li>
-    <li>Payload sanitization for cross-sector routing</li>
-  </ul>
-</div>
-<footer class="footer"><div class="brand">CMPSBL®</div><p>RELAY Node Deep Dive · Founder Eyes Only</p></footer>
-</div>
+  <header class="doc-header">
+    <div class="node-badge">Node #9</div>
+    <h1>RELAY</h1>
+    <p class="subtitle">Intelligent Message Fabric & Cross-Boundary Orchestration</p>
+    <div class="meta">
+      <span class="sector">OCG</span>
+      <span class="codename">Warpgate</span>
+      <span class="generation">Gen 1</span>
+      <span class="version">v9.0.0 "Warpgate"</span>
+    </div>
+  </header>
+  <main class="doc-content">
+    <section>
+      <h2>Executive Summary</h2>
+      <p>RELAY is the substrate's intelligent message fabric. It optimizes paths, translates protocols, enforces sector boundaries, guarantees delivery, compresses payloads, and learns from every signal crossing the matrix.</p>
+    </section>
+    <section>
+      <h2>The 10 Ultimate Systems</h2>
+      <div class="metrics-grid">
+        <div class="metric-card"><h4>1. Adaptive Route Optimizer</h4><p>BFS shortest-path with EMA-smoothed latency. Weighted: latency 50%, reliability 35%, hops 15%</p></div>
+        <div class="metric-card"><h4>2. Protocol Translator</h4><p>Module Bus ↔ Matrix Signal ↔ External API. Lossless round-trip guarantee</p></div>
+        <div class="metric-card"><h4>3. Sector Gateway</h4><p>Per-boundary policy enforcement. CSZ→OCG compliance. Sensitive field sanitization</p></div>
+        <div class="metric-card"><h4>4. Delivery Guarantor</h4><p>At-least-once with 5,000-entry FNV-1a dedup LRU. Exponential backoff. Forensic DLQ</p></div>
+        <div class="metric-card"><h4>5. Message Compressor</h4><p>Delta encoding for sequential updates. Adaptive 85% compression threshold</p></div>
+        <div class="metric-card"><h4>6. Circuit Breaker Matrix</h4><p>Per-destination breakers (5 fails → trip, 30s recovery). Cascade detection ≥3</p></div>
+        <div class="metric-card"><h4>7. Rate Governor</h4><p>Token bucket 100/sec per source. 1.5× burst. Critical signals bypass</p></div>
+        <div class="metric-card"><h4>8. Message Enricher</h4><p>Auto-inject source health, sector, hop count, delivery attempt, route score</p></div>
+        <div class="metric-card"><h4>9. Route Telemetry</h4><p>Per-edge latency/throughput/errors. P95 tracking. Bottleneck detection</p></div>
+        <div class="metric-card"><h4>10. Relay Hardening</h4><p>100KB limits. FNV-1a checksums. Poison pattern quarantine. Injection prevention</p></div>
+      </div>
+    </section>
+    <section>
+      <h2>Message Pipeline</h2>
+      <pre><code>Inbound → Rate Governor → Dedup → Translate → Enrich → Gateway → Compress → Route → Breaker → Deliver → Telemetry → Harden</code></pre>
+    </section>
+  </main>
+  <footer class="doc-footer">
+    <p>CMPSBL® Substrate — RELAY Node Deep Dive · Founder Eyes Only</p>
+  </footer>
 </body>
 </html>
