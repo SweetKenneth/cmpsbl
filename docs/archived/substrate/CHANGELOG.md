@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v16.2.0 (CONTACT — REFLEX Ultimate "Impulse Prime")
+
+⟨This entry describes REFLEX v9.0.0 — the substrate's edge intelligence runtime reaching its ultimate form with 10 new systems.⟩
+
+- **Edge Node Fleet Manager** — Register, monitor, and load-balance across edge processing nodes. Composite health scoring (latency, capacity, failure, heartbeat staleness). Auto-failover on stale heartbeats (>30s). 200-node fleet capacity with region-aware queries.
+- **Priority Rule Engine v2** — Tiered priority evaluation (critical→low) with short-circuit matching. Conflict detection (same-action shadows, explicit declarations). EMA-weighted execution timing. Ineffective rule detection. 500-rule capacity.
+- **Sub-10ms Decision Pipeline** — Welford's online algorithm for running P99 latency. 10ms budget enforcement with remaining-budget tracking. 8 percentile tracking (p50–p99). Budget compliance metric. 2000-decision rolling window.
+- **Edge Function Router** — 5 routing strategies (latency_first, capacity_first, round_robin, sticky, region_affinity). Composite scoring: health 40% + latency 30% + capacity 20% + region 10%. Capability-based filtering. 1000-entry routing audit log.
+- **Predictive Pre-computation Engine** — Pattern learning from trigger frequency (3-token normalization). Pre-computed responses at 95% confidence. 5-minute staleness with decay cycles. LFU eviction. Hit rate tracking.
+- **Edge State Synchronizer** — Vector clock ordering for causal consistency across distributed nodes. 3-way comparison (before/after/concurrent). Last-write-wins conflict resolution with merged clocks. Full sync API.
+- **Warm Cache Engine** — LFU + LRU eviction with per-entry TTL. Prefix invalidation. Warm-up API for pre-population. Batch expired-entry purge. 2000-entry capacity with size estimation.
+- **Throughput & Stall Detector** — 5-second rolling windows. Stall detection (<1/sec after 100+ decisions). 4 status levels (healthy/degraded/stalled/recovering). Backpressure signaling. Peak throughput tracking.
+- **Edge Telemetry Aggregator** — Per-node Welford's stats per metric. Z-score anomaly detection (warning Z≥2, critical Z≥3). 5000-point time series buffer. Multi-metric support.
+- **Edge Resilience Controller** — Per-node circuit breakers (closed→open→half_open). 5 degradation levels (L0–L4). Dead letter queue with 3-retry default. Auto-assessment from breaker ratios. Recovery orchestration via half-open probes.
+
+---
+
 ## 2026-03-23 · v16.1.0 (CONTACT — SIMULATE Ultimate "Crucible Prime")
 
 ⟨This entry describes SIMULATE v9.0.0 — the substrate's universal scenario simulation engine reaching its ultimate form with 10 new systems.⟩
