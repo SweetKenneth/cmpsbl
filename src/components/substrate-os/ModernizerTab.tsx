@@ -1216,7 +1216,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                     <SelectValue placeholder="Scope" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Modules</SelectItem>
+                    <SelectItem value="all">All Primitives</SelectItem>
                     <SelectItem value="brain">Brain</SelectItem>
                     <SelectItem value="defense">Defense</SelectItem>
                     <SelectItem value="nexus">Nexus</SelectItem>

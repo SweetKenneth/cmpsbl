@@ -413,7 +413,7 @@ export function DiscoveryPhase() {
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
           <div className="w-2 h-2 rounded-full bg-primary" />
           <span className="text-xs font-mono text-primary">Ψ₄₁ {node41DisplayName}</span>
-          <span className="text-[10px] text-muted-foreground">× 40 nodes × 2-8 depth</span>
+          <span className="text-[10px] text-muted-foreground">× 40 primitives × 2-8 depth</span>
         </div>
 
         <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/20">

@@ -266,7 +266,7 @@ export function InteractiveTutorial() {
     await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
 
     const mockOutputs = [
-      '✓ SDK initialized\n✓ Connected to cognitive mesh\n✓ 40 nodes online\n✓ Runtime: v14.4.0',
+      '✓ SDK initialized\n✓ Connected to cognitive mesh\n✓ 40 primitives online\n✓ Runtime: v14.4.0',
       '✓ Memory stored: mem_a1b2c3d4\n✓ Tier: hot (auto-managed)\n✓ Importance: 0.85\n✓ DREAM eligible: true\n✓ Indexed for semantic retrieval',
       '✓ Query executed in 23ms\n✓ Recalled 5 memories across 3 tiers\n  [0.92] User prefers dark mode with high contrast\n  [0.78] Last login: 2 days ago\n  [0.71] Timezone: PST\n✓ Context built: 1,847 / 2,000 tokens',
       '✓ Intent broadcast: analysis\n✓ Router resolved 3 resolvers\n  → brain.reasoning_context\n  → cortex.orchestration_status\n  → memory.semantic_search\n✓ Receipt: rcpt_x7f9e2\n✓ 8 mesh communication events emitted',

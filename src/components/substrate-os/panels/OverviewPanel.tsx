@@ -144,9 +144,9 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
           <div className="flex-1 w-full grid grid-cols-2 gap-2.5 sm:gap-3">
             {[
               { label: 'Status', value: statusLabel, sub: `Memory Stream Active`, color: statusColor },
-              { label: 'Matrix Nodes', value: `${healthScore.activeCount}/${healthScore.totalModules}`, sub: `${integrity.operational}% integrity`, color: 'text-primary' },
+              { label: 'Primitives', value: `${healthScore.activeCount}/${healthScore.totalModules}`, sub: `${integrity.operational}% integrity`, color: 'text-primary' },
               { label: 'Structural', value: `${integrity.structural}%`, sub: (integrity.status ?? '').replace('MATRIX ', ''), color: 'text-foreground' },
-              { label: 'Sectors', value: '12', sub: '40 nodes · Signal → Silicon', color: 'text-foreground' },
+              { label: 'Categories', value: '4', sub: '40 primitives · Signal → Silicon', color: 'text-foreground' },
             ].map((kpi, i) => (
               <motion.div
                 key={kpi.label}

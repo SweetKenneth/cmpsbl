@@ -571,7 +571,7 @@ export default function SystemIntelligenceFeed() {
                 <div className="sticky top-24">
                   <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                     <Orbit className="w-5 h-5 text-primary" />
-                    Module Network
+                    Primitive Network
                   </h2>
                   <ModuleOrbit activeModules={activeModules} />
                   
