@@ -43,7 +43,7 @@ const STEPS: OnboardingStep[] = [
     icon: Cpu,
     tag: 'Engines',
     title: 'Composable Engines',
-    body: 'Infrastructure that powers your stack. BEACON monitors, AUTOMATON orchestrates, CORTEX reasons, NEXUS routes, ARCHITECT governs. Mix and match to build exactly what you need.',
+    body: 'Infrastructure that powers your stack. BEACON monitors, AUTOMATON orchestrates, CORTEX Engine reasons, NEXUS Organ routes, ARCHITECT governs. Mix and match to build exactly what you need.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
