@@ -218,7 +218,7 @@ export default function Architecture() {
               <motion.div {...fadeUp} className="max-w-xl">
                 <Badge variant="outline" className="mb-5 border-primary/30 text-primary gap-1.5">
                   <Layers className="w-3 h-3" />
-                  40 Nodes · 12 Sectors
+                  40 Primitives · Agents · Engines · Layers · Organs
                 </Badge>
                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[1.05]">
                    How CMPSBL Works
