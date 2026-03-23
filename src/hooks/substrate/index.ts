@@ -41,7 +41,7 @@ export { useSandbox, type UseSandboxReturn } from './useSandbox';
 export { useNerve, type UseNerveReturn } from './useNerve';
 
 // ═══════════════════════════════════════════════════════════════════
-// EXPANSION NODES (40-Node Architecture)
+// EXPANSION PRIMITIVES (40-Primitive Architecture)
 // ═══════════════════════════════════════════════════════════════════
 
 // ESZ — Expansion Sovereignty Zone

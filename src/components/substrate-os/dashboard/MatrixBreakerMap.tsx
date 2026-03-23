@@ -60,7 +60,7 @@ export function MatrixBreakerMap({ nodes }: MatrixBreakerMapProps) {
         </div>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Stream Integrity Map</h3>
-          <p className="text-[10px] text-muted-foreground font-mono">Memory Stream · Breaker state per node</p>
+          <p className="text-[10px] text-muted-foreground font-mono">Memory Stream · Breaker state per primitive</p>
         </div>
       </div>
 

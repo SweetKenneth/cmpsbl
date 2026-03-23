@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Ascension Node Registry
+ * CMPSBL® Ascension Primitive Registry
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Manages all ingested Candidate Nodes (Auxiliary Node).
  * Uses structured metadata schema with migration support.

@@ -133,7 +133,7 @@ export function buildNodeEffect(node: AscensionNode): ModuleEffect {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Inject a node into a module chain at the specified position.
+ * Inject a primitive into a module chain at the specified position.
  */
 export function injectNodeIntoChain(
   existingChain: string[],

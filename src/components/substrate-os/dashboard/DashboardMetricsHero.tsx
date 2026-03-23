@@ -181,7 +181,7 @@ export function DashboardMetricsHero() {
             {/* Stat Cards Row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {[
-                { label: 'MATRIX NODES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-neon-cyan/80', border: 'border-neon-cyan/20 hover:border-neon-cyan/40', from: 'from-neon-cyan' } },
+                { label: 'PRIMITIVES', value: `${activeCount}`, suffix: `/${totalModules}`, styles: { text: 'text-neon-cyan/80', border: 'border-neon-cyan/20 hover:border-neon-cyan/40', from: 'from-neon-cyan' } },
                 { label: 'STATUS', value: statusLabel, styles: { text: statusStyles.labelText, border: `${statusStyles.border} ${statusStyles.borderHover}`, from: statusStyles.from } },
                 { label: 'VERSION', value: `v${version}`, styles: { text: 'text-neon-amber/80', border: 'border-neon-amber/20 hover:border-neon-amber/40', from: 'from-neon-amber' } },
               ].map((stat, idx) => (

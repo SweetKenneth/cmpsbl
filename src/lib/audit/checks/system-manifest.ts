@@ -58,7 +58,7 @@ export function checkSystemManifest(): AuditFinding[] {
       category: 'matrix',
       severity: nodeCount < EXPECTED_NODE_COUNT ? 'error' : 'warn',
       title: `Matrix Node count mismatch: ${nodeCount} vs expected ${EXPECTED_NODE_COUNT}`,
-      detail: `Registry has ${nodeCount} nodes but expected ${EXPECTED_NODE_COUNT}. ${nodeCount < EXPECTED_NODE_COUNT ? 'Missing nodes.' : 'Extra nodes detected.'}`,
+      detail: `Registry has ${nodeCount} primitives but expected ${EXPECTED_NODE_COUNT}. ${nodeCount < EXPECTED_NODE_COUNT ? 'Missing primitives.' : 'Extra primitives detected.'}`,
       hint: 'Update EXPECTED_NODE_COUNT or add missing node definitions.',
     });
   }

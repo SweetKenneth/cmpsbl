@@ -141,7 +141,7 @@ export function generateDesktopBootScreen(): string[] {
     '  ▸ Stream bandwidth:  ████████████████████ 100%',
     '',
     '  ╔══════════════════════════════════════════════════════════════╗',
-    '  ║  40 NODES  │  12 SECTORS  │  500+ CMDS  │  675+ CAPS       ║',
+    '  ║  40 PRIMITIVES  │  4 CATEGORIES  │  500+ CMDS  │  675+ CAPS       ║',
     '  ║  300 Synergy Pipelines  │  125 Executors  │  100 Engines    ║',
     '  ║  Memory Stream: ACTIVE  │  Quality Floor: 68+               ║',
     "  ║  Type 'help' for commands  ·  'cortex.status' for mode      ║",
