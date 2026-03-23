@@ -1109,7 +1109,7 @@ export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.hardening.forms', description: 'Form accessibility checker', category: 'inclusive', icon: FileEdit, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.selfscan', description: 'Self-scan memory chain stats', category: 'inclusive', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.publish', description: 'Marketplace publish gate', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE Layer telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
 // ═══ ESZ — Expansion Sovereignty Zone Commands ═══
