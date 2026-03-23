@@ -434,7 +434,7 @@ const modulesByLayer = {
     },
     {
       id: "engineer",
-      name: "ENGINEER",
+      name: "ENGINEER Agent",
       description: "Engine health scoring, maintenance scheduling",
       icon: Settings,
       color: "text-stone-400",
