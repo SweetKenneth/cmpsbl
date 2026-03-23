@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, Shield, Brain, AlertTriangle, CheckCircle, XCircle,
