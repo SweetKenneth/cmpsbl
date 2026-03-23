@@ -1292,7 +1292,7 @@ function ModernizerShadowPanel() {
                       ⬆️ {lastReport.summary.encodeEscalated} escalated
                     </Badge>
                     <Badge variant="outline" className="text-[10px]">
-                      🧠 {lastReport.summary.encodeFixed} ENCODE-fixed
+                      🧠 {lastReport.summary.encodeFixed} ENCODE Agent-fixed
                     </Badge>
                     <Badge variant="outline" className="text-[10px]">
                       📝 {lastReport.summary.rulesGenerated} rules
