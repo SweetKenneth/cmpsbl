@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: Zap,
     tag: 'Scale',
     title: 'Plans & Pricing',
-    body: 'Every tier runs the same 40-node substrate. Plans control capacity — how many memory slots, how deep your vault, and how many daily pulls you get.',
+    body: 'Every tier runs the same 40-primitive substrate. Plans control capacity — how many memory slots, how deep your vault, and how many daily pulls you get.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
