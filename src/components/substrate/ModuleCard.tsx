@@ -177,7 +177,7 @@ const moduleConfig: Record<SubstrateModule, {
   nerve: {
     icon: Cable,
     label: 'Nerve',
-    description: 'Inter-node signaling, consensus repair',
+    description: 'Inter-primitive signaling, consensus repair',
     color: 'text-neon-purple',
   },
   // Expansion Modules (40-Node Architecture)
