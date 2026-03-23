@@ -1,7 +1,7 @@
 /**
  * Capability Auto-Activation Registry
  * 
- * Maps 50 substrate capabilities to precise event triggers.
+ * Maps 150 substrate capabilities to precise event triggers.
  * Each entry defines: which capability activates, under what signal conditions,
  * which node owns it, and what priority/cooldown governs it.
  * 
