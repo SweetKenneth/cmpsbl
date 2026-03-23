@@ -88,35 +88,35 @@ IDENTITY Organ: User & entity resolution
 RELAY Organ: Cross-module message routing
 AUDIT Organ: Immutable logging & compliance
 NERVE Organ: Operational signaling & coordination
-DECODE: Natural language understanding & intent parsing
-ENCODE: Content generation & code synthesis
-VISION: Observability & telemetry
-CORTEX: Memory composition & agency orchestration
-NEXUS: 14-provider AI routing authority
-ECONOMY: Cost tracking & budget governance
-SANDBOX: Isolated execution environment
-INCLUSIVE: Accessibility & WCAG compliance
-MEDIC: Self-healing diagnostics
-SOVEREIGN: Jurisdictional authority & data sovereignty
-ORACLE: Predictive analytics & forecasting
-CONSCIENCE: Ethical decision boundaries
-FORGE: Artifact production & template manufacturing
-LINGUA: Multi-language processing & translation
-COMPASS: Location-aware processing & geospatial
-ECHO: Signal reflection & distributed tracing
-TREATY: Agreement & SLA enforcement
-HARVEST: Data ingestion & ETL
-REFLEX: Real-time reactive processing
-EVOLUTION: Version management & shadow-run promotion
+DECODE Agent: Natural language understanding & intent parsing
+ENCODE Agent: Content generation & code synthesis
+VISION Agent: Observability & telemetry
+CORTEX Engine: Memory composition & agency orchestration
+NEXUS Organ: 14-provider AI routing authority
+ECONOMY Engine: Cost tracking & budget governance
+SANDBOX Engine: Isolated execution environment
+INCLUSIVE Layer: Accessibility & WCAG compliance
+MEDIC Engine: Self-healing diagnostics
+SOVEREIGN Agent: Jurisdictional authority & data sovereignty
+ORACLE Engine: Predictive analytics & forecasting
+CONSCIENCE Layer: Ethical decision boundaries
+FORGE Engine: Artifact production & template manufacturing
+LINGUA Agent: Multi-language processing & translation
+COMPASS Engine: Location-aware processing & geospatial
+ECHO Agent: Signal reflection & distributed tracing
+TREATY Layer: Agreement & SLA enforcement
+HARVEST Agent: Data ingestion & ETL
+REFLEX Engine: Real-time reactive processing
+EVOLUTION Layer: Version management & shadow-run promotion
 SHADOW: Shadow testing & adversarial validation
-PHANTOM: Phantom operations & stealth probes
-IMMUNITY: Threat adaptation & resilience hardening
-INTENT: Purpose alignment & goal tracking
-GOVERNANCE: Action legitimacy & doctrine enforcement
-DEFENSE: Terminal boundary enforcement & cognitive firewall
-INTEGRATION: External service connectivity
-ATLAS: Capability mapping & topology awareness
-ENGINEER: Engine & meta-engine maintenance intelligence
+PHANTOM Agent: Phantom operations & stealth probes
+IMMUNITY Layer: Threat adaptation & resilience hardening
+INTENT Layer: Purpose alignment & goal tracking
+GOVERNANCE Layer: Action legitimacy & doctrine enforcement
+DEFENSE Layer: Terminal boundary enforcement & cognitive firewall
+INTEGRATION Organ: External service connectivity
+ATLAS Engine: Capability mapping & topology awareness
+ENGINEER Agent: Engine & meta-engine maintenance intelligence
 
 /* COLOPHON */
 
