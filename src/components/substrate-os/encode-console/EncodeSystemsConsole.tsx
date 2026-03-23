@@ -244,7 +244,7 @@ export function EncodeSystemsConsole() {
         ].join('\n'));
       }
 
-      addSystemMsg('info', `⚙️ Routing to ENCODE for execution (plan: ${planId})...`);
+      addSystemMsg('info', `⚙️ Routing to ENCODE Agent for execution (plan: ${planId})...`);
       const task = await encode.routeIntent.mutateAsync({
         intent: `Execute plan ${planId}`,
         plan_id: planId,
@@ -438,7 +438,7 @@ export function EncodeSystemsConsole() {
 
     if (trimmed.startsWith('/recall ')) {
       const query = trimmed.slice(8).trim();
-      addSystemMsg('info', `🧠 Querying BRAIN memory for: "${query}"...`);
+      addSystemMsg('info', `🧠 Querying BRAIN Organ memory for: "${query}"...`);
       // Memory recall is async but we surface what the navigator knows
       const resolved = resolveTarget(query);
       addSystemMsg('info', resolved.summary || 'No memory matches found.');
@@ -497,7 +497,7 @@ export function EncodeSystemsConsole() {
 
     // Show what ENCODE understood
     if (resolved.summary) {
-      addSystemMsg('info', `🎯 ENCODE resolved your intent:\n${resolved.summary}`);
+      addSystemMsg('info', `🎯 ENCODE Agent resolved your intent:\n${resolved.summary}`);
     }
 
     // Submit through orchestration (governance awareness)

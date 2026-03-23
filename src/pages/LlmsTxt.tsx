@@ -75,66 +75,66 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 ## Architecture (40 Primitives — Agents · Engines · Layers · Organs)
 
 ### CORE (Kernel)
-- CORE — Boot sequencing, safety switches, config, job scheduling
+- CORE Organ — Boot sequencing, safety switches, config, job scheduling
 
 ### SYSTEM
-- SYSTEM — Lifecycle administration
+- SYSTEM Organ — Lifecycle administration
 
 ### CCR — Cognitive Core Reality (3)
-- BRAIN — Reasoning, reflection, 4-tier persistent memory
-- MEMORY — Context retrieval, session state, semantic recall
-- DREAM — Synthesis, pattern consolidation
+- BRAIN Organ — Reasoning, reflection, 4-tier persistent memory
+- MEMORY Organ — Context retrieval, session state, semantic recall
+- DREAM Engine — Synthesis, pattern consolidation
 
 ### OCG — Operational Compliance Grid (6)
-- RIPPLE — Event bus, signal propagation
-- ACCESS — Entitlements, API keys
-- IDENTITY — Session, actor attribution
-- RELAY — Cross-node message routing
-- AUDIT — Compliance logging, integrity ledger
-- NERVE — Inter-node signaling, stimulus routing
+- RIPPLE Organ — Event bus, signal propagation
+- ACCESS Organ — Entitlements, API keys
+- IDENTITY Organ — Session, actor attribution
+- RELAY Organ — Cross-node message routing
+- AUDIT Organ — Compliance logging, integrity ledger
+- NERVE Organ — Inter-node signaling, stimulus routing
 
 ### Execution (10)
-- DECODE — Intent parsing, entity extraction
-- ENCODE — Code generation, transformation
-- VISION — Observability, metrics, alerting
-- CORTEX — Memory orchestration, multi-stage workflows
-- NEXUS — Multi-provider AI routing (14 providers)
-- ECONOMY — Cost attribution, budgeting
-- SANDBOX — Isolated execution environments
-- INCLUSIVE — Accessibility, WCAG compliance
-- MEDIC — Autonomous diagnostics, self-healing
-- INTEGRATION — Enterprise connectors (boots last)
+- DECODE Agent — Intent parsing, entity extraction
+- ENCODE Agent — Code generation, transformation
+- VISION Agent — Observability, metrics, alerting
+- CORTEX Engine — Memory orchestration, multi-stage workflows
+- NEXUS Organ — Multi-provider AI routing (14 providers)
+- ECONOMY Engine — Cost attribution, budgeting
+- SANDBOX Engine — Isolated execution environments
+- INCLUSIVE Layer — Accessibility, WCAG compliance
+- MEDIC Engine — Autonomous diagnostics, self-healing
+- INTEGRATION Organ — Enterprise connectors (boots last)
 
 ### ESZ — Enterprise Sovereignty Zone (4)
-- SOVEREIGN — Jurisdiction classification, deployment sovereignty
-- ORACLE — Bayesian prediction, forecasting
-- CONSCIENCE — Bias detection, ethical scoring
-- FORGE — Discovery production, template manufacturing
+- SOVEREIGN Agent — Jurisdiction classification, deployment sovereignty
+- ORACLE Engine — Bayesian prediction, forecasting
+- CONSCIENCE Layer — Bias detection, ethical scoring
+- FORGE Engine — Discovery production, template manufacturing
 
 ### EPZ — Enterprise Perception Zone (3)
-- COMPASS — Geospatial awareness, location intelligence
-- ECHO — Simulation, scenario modeling
-- LINGUA — Localization, translation processes
+- COMPASS Engine — Geospatial awareness, location intelligence
+- ECHO Agent — Simulation, scenario modeling
+- LINGUA Agent — Localization, translation processes
 
 ### EMZ — Enterprise Manufacturing Zone (3)
-- TREATY — Agreement & SLA enforcement
-- HARVEST — Data acquisition, ETL orchestration
-- REFLEX — Reactive autonomy, stimulus response
+- TREATY Layer — Agreement & SLA enforcement
+- HARVEST Agent — Data acquisition, ETL orchestration
+- REFLEX Engine — Reactive autonomy, stimulus response
 
 ### CSZ — Covert Systems Zone (3)
-- EVOLUTION — Self-improvement lifecycle (shadow mode)
+- EVOLUTION Layer — Self-improvement lifecycle (shadow mode)
 - SHADOW — Divergence testing, shadow mesh operations
-- PHANTOM — Privacy enforcement, data masking
+- PHANTOM Agent — Privacy enforcement, data masking
 
 ### Fields (2) + Plane (1) + Shell (1) — Mesh Overlays
-- IMMUNITY — Adaptive resilience, self-healing
-- INTENT — Cross-node intent routing
-- GOVERNANCE — Ethical constraints, coherence
-- DEFENSE — AI-powered security perimeter
+- IMMUNITY Layer — Adaptive resilience, self-healing
+- INTENT Layer — Cross-node intent routing
+- GOVERNANCE Layer — Ethical constraints, coherence
+- DEFENSE Layer — AI-powered security perimeter
 
 ### Mesh Extensions (2)
-- ATLAS — Capability mapping & topology awareness
-- ENGINEER — Engine & meta-engine maintenance intelligence
+- ATLAS Engine — Capability mapping & topology awareness
+- ENGINEER Agent — Engine & meta-engine maintenance intelligence
 
 ## AI Governance Reference Namespace
 

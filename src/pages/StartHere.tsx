@@ -36,7 +36,7 @@ const stagger = (delay: number) => ({
 const buildCapabilities = [
   {
     icon: Moon,
-    title: "DREAM",
+    title: "DREAM Engine",
     description: "Your systems synthesize patterns and consolidate memory while idle — learning without active compute.",
     color: "text-neon-purple",
     bg: "bg-neon-purple/10",

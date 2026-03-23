@@ -89,7 +89,7 @@ function seedSystemMessages() {
     {
       node: 'CONSCIENCE', codename: 'Arbiter', type: 'need', priority: 'medium',
       title: 'Bias detection model needs retraining data',
-      summary: 'The bias scanner has processed 2,400+ outputs but the training corpus hasn\'t been refreshed in 14 days. Requesting permission to ingest recent DECODE outputs for recalibration.',
+      summary: 'The bias scanner has processed 2,400+ outputs but the training corpus hasn\'t been refreshed in 14 days. Requesting permission to ingest recent DECODE Agent outputs for recalibration.',
       detail: 'Current model accuracy: 91.2%. Target: 95%+. Estimated retraining time: ~45 minutes.',
       impact: 'Without retraining, bias detection accuracy may drift below acceptable thresholds.',
       action: true, tags: ['bias', 'training', 'conscience'],

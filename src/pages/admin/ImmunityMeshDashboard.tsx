@@ -1292,7 +1292,7 @@ function ModernizerShadowPanel() {
                       ⬆️ {lastReport.summary.encodeEscalated} escalated
                     </Badge>
                     <Badge variant="outline" className="text-[10px]">
-                      🧠 {lastReport.summary.encodeFixed} ENCODE-fixed
+                      🧠 {lastReport.summary.encodeFixed} ENCODE Agent-fixed
                     </Badge>
                     <Badge variant="outline" className="text-[10px]">
                       📝 {lastReport.summary.rulesGenerated} rules
@@ -2225,7 +2225,7 @@ function EncodeTrainingPanel() {
       const encodeResults = reports.flatMap(r => r.results.filter(res => res.task.source === 'encode'));
       const success = encodeResults.filter(r => r.outcome === 'success' || r.outcome === 'partial_success').length;
       setLastResult({ mode: moduleId, success, total: encodeResults.length });
-      voice.success?.(`ENCODE training complete: ${success}/${encodeResults.length}`);
+      voice.success?.(`ENCODE Agent training complete: ${success}/${encodeResults.length}`);
       toast.success(`ENCODE ${moduleId} training: ${success}/${encodeResults.length} passed`);
     } catch (err: any) {
       toast.error(`Training failed: ${err.message}`);

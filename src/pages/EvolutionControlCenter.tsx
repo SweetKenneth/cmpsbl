@@ -63,7 +63,7 @@ const STEPS = [
   { 
     num: "01", 
     title: "Copy the prompt", 
-    description: "One click copies your auth-injected EVOLUTION prompt with your personal JWT baked in.",
+    description: "One click copies your auth-injected EVOLUTION Layer prompt with your personal JWT baked in.",
     icon: Copy 
   },
   { 
@@ -238,7 +238,7 @@ export default function EvolutionControlCenter() {
 
   // ── SEO data ────────────────────────────────────────────
   const seoProps = {
-    title: "EVOLUTION — Governed AI Code Improvement | CMPSBL",
+    title: "EVOLUTION Layer — Governed AI Code Improvement | CMPSBL",
     description: "Evolve your codebase safely with 7-gate SEBA assessment, dry-run previews, one-click rollback, and cryptographic audit receipts. Governed self-improvement across 40 substrate nodes.",
     image: "https://cmpsbl.com/og/evolution.jpg",
     canonical: "https://cmpsbl.com/evolution",
@@ -578,7 +578,7 @@ export default function EvolutionControlCenter() {
           name: 'How to evolve your codebase with CMPSBL EVOLUTION',
           description: 'Connect your AI coding agent and start governed evolution in 4 steps.',
           steps: [
-            { name: 'Copy the prompt', text: 'Click the copy button to get your auth-injected EVOLUTION prompt with your personal JWT.' },
+            { name: 'Copy the prompt', text: 'Click the copy button to get your auth-injected EVOLUTION Layer prompt with your personal JWT.' },
             { name: 'Paste into your agent', text: 'Drop it into Cursor, Windsurf, Cline, or any AI coding agent.' },
             { name: 'Say "Evolve CMPSBL"', text: 'Your agent scans, previews improvements with a dry-run, and asks before applying.' },
             { name: 'Watch your system improve', text: 'Health goes up, debt goes down. Every change is receipted and rollback-safe.' },

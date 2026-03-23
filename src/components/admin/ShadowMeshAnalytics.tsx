@@ -53,7 +53,7 @@ export function ShadowMeshAnalytics() {
         ranAt: new Date().toISOString(),
       });
       if (result.resolved > 0) {
-        toast.success(`ENCODE resolved ${result.resolved}/${result.processed} escalations`);
+        toast.success(`ENCODE Agent resolved ${result.resolved}/${result.processed} escalations`);
         load(); // Refresh analytics after resolution
       }
     } catch (err) {

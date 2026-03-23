@@ -81,7 +81,7 @@ export default function ApiAccess() {
     <>
       <SEO
         title="API Access — Free Key & Endpoint Docs | CMPSBL"
-        description="Get a free CMPSBL API key for persistent memory, NEXUS routing, DEFENSE scans, and DREAM triggers. One unified REST endpoint, rate limiting, usage dashboard, and full SDK documentation."
+        description="Get a free CMPSBL API key for persistent memory, NEXUS Organ routing, DEFENSE Layer scans, and DREAM Engine triggers. One unified REST endpoint, rate limiting, usage dashboard, and full SDK documentation."
         canonical="https://cmpsbl.com/api-access"
       />
       <PublicNav />

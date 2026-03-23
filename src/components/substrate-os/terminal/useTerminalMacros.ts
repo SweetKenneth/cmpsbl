@@ -61,7 +61,7 @@ export const BUILTIN_MACROS: MacroDefinition[] = [
   },
   {
     name: 'upgrade_cycle',
-    description: 'Full EVOLUTION upgrade workflow',
+    description: 'Full EVOLUTION Layer upgrade workflow',
     commands: [
       'evolution.scan deep',
       'evolution.status',

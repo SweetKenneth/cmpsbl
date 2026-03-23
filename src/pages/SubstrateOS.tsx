@@ -448,19 +448,19 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'intent' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="Intent mesh governance and routing.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="INTENT" description="INTENT Layer mesh governance and routing.">
                 <PanelContainer id="intent"><ModuleErrorBoundary moduleName="INTENT"><Suspense fallback={<PanelLoader />}><IntentPanel /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'cortex' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="Memory orchestration and multi-step execution tracing.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="CORTEX Engine memory orchestration and multi-step execution tracing.">
                 <PanelContainer id="cortex"><Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'atlas' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="Control plane configuration and capability toggles.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="ATLAS Engine control plane configuration and capability toggles.">
                 <PanelContainer id="atlas"><Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense></PanelContainer>
               </TierGate>
             )}
@@ -472,7 +472,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'encode' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="Code generation engine and memory formation.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="ENCODE Agent — code generation and memory formation.">
                 <PanelContainer id="encode"><Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense></PanelContainer>
               </TierGate>
             )}
@@ -484,7 +484,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'evolution' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="EVOLUTION Layer — self-evolution with shadow-apply verification.">
                 <PanelContainer id="evolution"><Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense></PanelContainer>
               </TierGate>
             )}
@@ -496,7 +496,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'ccr' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — memory tiers and DREAM synthesis.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — memory tiers and DREAM Engine synthesis.">
                 <PanelContainer id="ccr"><Suspense fallback={<PanelLoader />}><CCRTab /></Suspense></PanelContainer>
               </TierGate>
             )}
@@ -508,13 +508,13 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'oracle' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, COMPASS simulation, and ECHO patterns.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="ORACLE Engine predictive analytics, COMPASS Engine simulation, and ECHO Agent patterns.">
                 <PanelContainer id="oracle"><Suspense fallback={<PanelLoader />}><OracleTab /></Suspense></PanelContainer>
               </TierGate>
             )}
 
             {activeTab === 'forge' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="Artifact production with LINGUA translation and HARVEST ingestion.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="FORGE" description="FORGE Engine artifact production with LINGUA Agent translation and HARVEST Agent ingestion.">
                 <PanelContainer id="forge"><Suspense fallback={<PanelLoader />}><ForgeTab /></Suspense></PanelContainer>
               </TierGate>
             )}
@@ -532,7 +532,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'security' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE Layer perimeter, IMMUNITY Layer mesh, and AUDIT Organ trail.">
                 <PanelContainer id="security"><ModuleErrorBoundary moduleName="Security"><Suspense fallback={<PanelLoader />}><SecurityPanel isGovernor={isGovernor} isOperator={isOperator} /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}

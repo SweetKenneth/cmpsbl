@@ -71,7 +71,7 @@ console.log(captured);`,
     id: 'route',
     label: 'Route',
     icon: Zap,
-    description: 'Route a task through NEXUS',
+    description: 'Route a task through NEXUS Organ',
     code: `import { CMPSBL } from "@cmpsbl/sdk";
 
 const cmpsbl = new CMPSBL();

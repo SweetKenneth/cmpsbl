@@ -103,7 +103,7 @@ export function DecodeChat() {
   const attemptRecovery = useCallback(async () => {
     if (connection.retryCount >= 3) {
       setConnection(prev => ({ ...prev, status: 'disconnected' }));
-      toast.error('Connection issues', { description: 'Unable to reach DECODE. Please try again later.' });
+      toast.error('Connection issues', { description: 'Unable to reach DECODE Agent. Please try again later.' });
       return;
     }
     setConnection(prev => ({ ...prev, retryCount: prev.retryCount + 1, status: 'degraded' }));
@@ -323,7 +323,7 @@ export function DecodeChat() {
         onClick={() => toggle()}
         className="fixed bottom-6 right-6 rounded-full w-16 h-16 shadow-glow-lg z-50 bg-gradient-to-r from-primary via-primary-variant to-accent hover:scale-110 transition-transform"
         size="icon"
-        aria-label="Open DECODE chat"
+        aria-label="Open DECODE Agent chat"
       >
         <MessageCircle className="w-6 h-6" />
         {connection.status !== 'connected' && (

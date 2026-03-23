@@ -25,7 +25,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'substrate_fundamentals',
     name: 'Substrate Fundamentals',
-    description: 'Completed core SDK training: initialization, BRAIN memory API, intent routing, and mesh telemetry basics.',
+    description: 'Completed core SDK training: initialization, BRAIN Organ memory API, intent routing, and mesh telemetry basics.',
     badge_icon: '🎓', badge_level: 'bronze',
     required_skills: ['sdk_basics', 'memory_ops', 'intent_routing'],
     min_xp_total: 300, is_earned: true, earned_at: '2026-01-15', verification_hash: 'a1b2c3d4e5f6', progress_percent: 100,

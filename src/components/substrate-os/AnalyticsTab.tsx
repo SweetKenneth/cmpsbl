@@ -468,7 +468,7 @@ export function AnalyticsTab() {
                 color={data.immuneEscalations === 0 ? 'emerald' : 'orange'}
               />
               <MetricMini
-                label="ENCODE Resolution"
+                label="ENCODE Agent Resolution"
                 value={`${data.encodeResolved}/${data.encodeClaimed}`}
                 sub={`${data.encodeResolutionRate}% resolution rate`}
                 color="indigo"
@@ -645,7 +645,7 @@ export function AnalyticsTab() {
                 {[
                   { label: 'AI Call Success Rate', value: data.successRate, threshold: [95, 80] },
                   { label: 'Immune Repair Rate (6h)', value: data.immuneRepairRate, threshold: [80, 50] },
-                  { label: 'ENCODE Resolution Rate', value: data.encodeResolutionRate, threshold: [80, 50] },
+                  { label: 'ENCODE Agent Resolution Rate', value: data.encodeResolutionRate, threshold: [80, 50] },
                   { label: 'Agency Success Rate', value: data.agencySuccessRate, threshold: [90, 70] },
                 ].map(rate => (
                   <div key={rate.label} className="flex items-center justify-between">

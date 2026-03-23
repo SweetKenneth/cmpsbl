@@ -28,7 +28,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'AI Operating System Home', href: '/' },
   { label: 'Cognitive Infrastructure', href: '/' },
   // Priority: Key landing pages
-  { label: 'EVOLUTION', href: '/evolution' },
+  { label: 'EVOLUTION Layer', href: '/evolution' },
   { label: 'Memory Stream', href: '/foundry' },
   { label: 'Try CMPSBL Free', href: '/try' },
   // Core platform
