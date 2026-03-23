@@ -3335,7 +3335,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
 │  Modules:     ${moduleList}
 │
 │  Description:
-│    ${synergy.description}
+│    ${labelDescription(synergy.description)}
 │
 └──────────────────────────────────────────────────────────────`,
           data: synergy,

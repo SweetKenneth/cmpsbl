@@ -45,3 +45,22 @@ export function labelPrimitive(name: string): string {
 export function labelChain(chain: string[]): string {
   return chain.map(labelPrimitive).join(' → ');
 }
+
+/** All known primitive names for regex matching */
+const ALL_PRIMITIVES = new Set([
+  ...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS,
+]);
+
+const PRIMITIVE_REGEX = new RegExp(
+  `\\b(${[...ALL_PRIMITIVES].join('|')})\\b(?!\\s+(?:Organ|Layer|Engine|Agent))`,
+  'g'
+);
+
+/**
+ * Auto-label bare primitive names in a description string.
+ * e.g. "BRAIN memory lookup enhanced by DECODE context" →
+ *      "BRAIN Organ memory lookup enhanced by DECODE Agent context"
+ */
+export function labelDescription(text: string): string {
+  return text.replace(PRIMITIVE_REGEX, (match) => labelPrimitive(match));
+}
