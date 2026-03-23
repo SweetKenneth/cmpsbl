@@ -10,7 +10,7 @@
  *   - Governed (GOVERNANCE can pause/override any chain)
  *   - Audited (every execution logged)
  * 
- * 75 Primary Chains across 8 categories:
+ * 100 Primary Chains across 9 categories:
  * 
  * ── Core Response (1–8) ──
  *   1.  THREAT_RESPONSE         — VISION → DEFENSE → IDENTITY → ACCESS
