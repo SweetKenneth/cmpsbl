@@ -140,7 +140,7 @@ Failed integrity seals trigger Level 2 escalation.
 | CLM (Constant Learning Mode) | Topic mastery levels, call throughput, distillation efficiency |
 | Scanner Orchestrator | Finding priority scores, regression detection verdicts, coverage gap alerts |
 | Ironclad Hardening Fabric | Per-module rate limit utilization, auto-restore events, bulkhead pressure |
-| ENGINEER Node | Finding counts, proposal pipeline status, CLM topic health |
+| ENGINEER Node | Finding counts, proposal memory chain status, CLM topic health |
 | INTEL Aggregation | Signal volume, deduplication ratio, IntelCard generation rate |
 | Memory Tier Enforcement | Capacity utilization per tier, bulk demotion events, cascade triggers |
 | Visitor Intelligence | Session depth, bounce rate, retention cohorts (D1/D7/D14/D30), churn risk scoring |

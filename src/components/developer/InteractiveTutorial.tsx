@@ -151,7 +151,7 @@ console.log('Cost:', result.costMillicents, '¢');`,
     id: 5,
     title: "Ascension: Ingest Software",
     description: "Transform uploaded code into a first-class participant in the 41-node collision matrix.",
-    instruction: "Ingest external software through the Ascension pipeline. The extraction engine supports 25+ languages including HDL types.",
+    instruction: "Ingest external software through the Ascension memory chain. The extraction engine supports 25+ languages including HDL types.",
     starterCode: `// Ingest software into the substrate
 const ascension = await client.evolution.ingest({
   source: myUploadedCode,

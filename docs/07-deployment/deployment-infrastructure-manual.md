@@ -29,8 +29,8 @@ AI Providers (External, NEXUS-routed)
 | Function | Purpose | Status |
 |----------|---------|--------|
 | `nexus-router` | AI provider routing, consensus mode, cost ledger | Active |
-| `agency-task-executor` | Agency task execution pipeline | Active |
-| `autoblog-generate` | AutoBlog content generation with quality pipeline | Active |
+| `agency-task-executor` | Agency task execution memory chain | Active |
+| `autoblog-generate` | AutoBlog content generation with quality memory chain | Active |
 | `scanner-orchestrate` | Security/accessibility scan orchestration | Active |
 | `send-agency-email` | Agency email dispatch | Active |
 | `stripe-webhook` | Payment processing | Active |

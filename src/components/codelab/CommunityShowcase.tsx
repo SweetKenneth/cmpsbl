@@ -111,7 +111,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
     metrics: { latency: "~150ms", requests: "2k/day", uptime: "99.7%" }
   },
   {
-    id: "data-pipeline",
+    id: "data-memory-chain",
     name: "Intelligent Data Memory",
     description: "ETL memory with automatic schema detection, anomaly flagging, and self-healing capabilities. Learns optimal processing patterns over time.",
     author: "dataops",

@@ -155,7 +155,7 @@ Rate limits are enforced at both the NEXUS gateway level and per-module via Iron
 | Admin Interface (ATLAS) | Authenticated | MFA, session limits, IP allowlisting |
 | Webhook Endpoints | Public | Signature verification, replay protection |
 | Agent Runtimes | Isolated | Sealed execution, source-blocked, memory-isolated |
-| Evolution Pipeline | Internal | SEBA 7-gate validation, TSAC verification |
+| Evolution Memory Chain | Internal | SEBA 7-gate validation, TSAC verification |
 | Developer Portal | Authenticated | API key scoping, per-key rate limits, usage metering |
 | Backup Endpoint | Admin-only | Session auth required, no anonymous access |
 
@@ -211,7 +211,7 @@ The CSZ (EVOLUTION, SHADOW, PHANTOM) operates under heightened security:
 - **Isolation**: Zone-shielded from production; independent circuit breakers.
 - **SHADOW**: All shadow runs write to isolated storage only; no production mutation.
 - **PHANTOM**: Decoy operations for threat detection; isolated from real data.
-- **EVOLUTION**: 7-gate SEBA pipeline prevents unvalidated changes from reaching production.
+- **EVOLUTION**: 7-gate SEBA memory chain prevents unvalidated changes from reaching production.
 - **TSAC**: Truth Shadow Arbitration Check ensures evolution candidates preserve system truth.
 
 ## 13. Security Assumptions

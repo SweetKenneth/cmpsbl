@@ -87,7 +87,7 @@ Export limits follow vault capacity, with no per-day caps.
 
 ## 6. Access
 
-Ascension is accessed via a secured route (`/x`) with PIN authentication. This interface provides the four-phase pipeline visualization and export controls.
+Ascension is accessed via a secured route (`/x`) with PIN authentication. This interface provides the four-phase memory chain visualization and export controls.
 
 ---
 

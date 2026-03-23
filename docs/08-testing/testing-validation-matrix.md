@@ -24,7 +24,7 @@ This document defines the testing strategy, coverage expectations, and validatio
 | Module-to-Database | Data persistence and RLS | Integration tests with test database |
 | Module-to-Provider | AI provider interaction via NEXUS | Mock provider + contract verification |
 | SEBA Pipeline | Evolution shadow runs through 7 gates | End-to-end pipeline tests |
-| INTEL Pipeline | Signal ingestion → deduplication → IntelCard generation | Pipeline integration tests |
+| INTEL Memory Chain | Signal ingestion → deduplication → IntelCard generation | Memory chain integration tests |
 | Agency Workflow | Task creation → execution → deliverable | Full workflow tests |
 | Developer API | Key generation → API call → usage metering → quota enforcement | End-to-end API tests |
 | Disaster Recovery | Backup generation → archive integrity → restore validation | Full backup/restore cycle test |
@@ -117,7 +117,7 @@ The Scanner Orchestrator provides continuous quality validation:
 | Chaos test pass | Epoch releases | All scenarios handled gracefully |
 | Security scan pass | All deployments | No critical or high vulnerabilities |
 | Accessibility audit | All UI changes | WCAG 2.2 AA compliance |
-| SEBA pipeline pass | All evolution proposals | 7 gates cleared |
+| SEBA memory chain pass | All evolution proposals | 7 gates cleared |
 | Scanner baseline | Post-promotion | No regression detected |
 | Backup integrity | Monthly | Full backup/restore cycle verified |
 
@@ -126,7 +126,7 @@ The Scanner Orchestrator provides continuous quality validation:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added disaster recovery testing, memory tier overflow chaos test, developer API integration tests, backup load testing |
-| 2026-03-03 | System | Added SHADOW testing, SEBA pipeline gates, Scanner Orchestrator validation, chaos testing for Ironclad/CSZ/agents, engine coverage targets |
+| 2026-03-03 | System | Added SHADOW testing, SEBA memory chain gates, Scanner Orchestrator validation, chaos testing for Ironclad/CSZ/agents, engine coverage targets |
 | 2026-03-03 | System | Verified testing matrix for v13.1.0 |
 | 2026-03-01 | System | Initial canonical testing matrix |
 

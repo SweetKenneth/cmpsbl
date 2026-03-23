@@ -150,7 +150,7 @@ The discovery interface uses cinematic pacing to build suspense as collisions ar
 
 Top discoveries are refined into exportable capability artifacts through a three-stage pipeline.
 
-### 4.2 Pipeline Stages
+### 4.2 Memory Chain Stages
 
 1. **Sampling** — The top discoveries (up to 5 per cycle) are selected by CJPI score
 2. **Condensing** — Overlapping capabilities are merged and deduplicated

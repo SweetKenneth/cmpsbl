@@ -122,7 +122,7 @@ The Memory Stream is visible through the platform's Memory Stream dashboard, whi
 - CJPI score distributions
 - Tier breakdown
 - Node interaction heatmaps
-- Crystallization pipeline status
+- Crystallization memory chain status
 
 ---
 

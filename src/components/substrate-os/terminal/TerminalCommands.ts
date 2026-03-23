@@ -365,7 +365,7 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.world', description: 'Full module registry snapshot', category: 'cortex', icon: Globe, requiresOperator: false, requiredTier: 'free', args: '[--dag|--roles|--eligible]' },
   { command: 'cortex.inventory', description: 'Module inventory with eligibility', category: 'cortex', icon: Box, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.synergy.status', description: 'Synergy engine overview (pipelines, executors, health)', category: 'cortex', icon: Workflow, requiresOperator: false, requiredTier: 'free' },
-  { command: 'cortex.synergy.list', description: 'List all 200 synergy pipelines', category: 'cortex', icon: List, requiresOperator: false, requiredTier: 'free', args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
+  { command: 'cortex.synergy.list', description: 'List all 200 synergy memory chains', category: 'cortex', icon: List, requiresOperator: false, requiredTier: 'free', args: '[--category <cat>|--module <mod>]', example: 'cortex.synergy.list --category intelligence' },
   { command: 'cortex.synergy.get', description: 'Get synergy pipeline details', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id>', example: 'cortex.synergy.get smart-recall' },
   { command: 'cortex.synergy.execute', description: 'Execute a synergy pipeline', category: 'cortex', icon: PlayCircle, requiresOperator: true, requiredTier: 'creator', args: '<synergy_id> [input_json]', example: 'cortex.synergy.execute adaptive-routing' },
   { command: 'cortex.synergy.dry_run', description: 'Dry-run a synergy (no side effects)', category: 'cortex', icon: Eye, requiresOperator: false, requiredTier: 'free', args: '<synergy_id> [input_json]', example: 'cortex.synergy.dry_run cognitive-fusion' },
@@ -375,7 +375,7 @@ export const CORTEX_COMMANDS: CommandDefinition[] = [
   { command: 'cortex.synergy.modules', description: 'List synergies by module involvement', category: 'cortex', icon: Database, requiresOperator: false, requiredTier: 'free', args: '[module]', example: 'cortex.synergy.modules brain' },
 ];
 
-// INCLUSIVE module v1.0 — Human Compatibility Pipeline (WCAG Scanning, Repair, Validation)
+// INCLUSIVE module v1.0 — Human Compatibility Memory Chain (WCAG Scanning, Repair, Validation)
 import { Accessibility } from 'lucide-react';
 
 export const INCLUSIVE_COMMANDS: CommandDefinition[] = [
@@ -623,7 +623,7 @@ export const INFRA_COMMANDS: CommandDefinition[] = [
   { command: 'analytics.flush', description: 'Flush analytics to storage', category: 'infra', icon: Database, requiresOperator: true, requiredTier: 'architect' },
   { command: 'stream.status', description: 'Streaming pipeline status', category: 'infra', icon: Radio, requiresOperator: false, requiredTier: 'free' },
   { command: 'stream.active', description: 'Active stream sessions', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
-  { command: 'file.status', description: 'File processing pipeline status', category: 'infra', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'file.status', description: 'File processing memory chain status', category: 'infra', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'file.history', description: 'File processing history', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'file.formats', description: 'Supported file formats', category: 'infra', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
   { command: 'nl.parse', description: 'Parse natural language to command', category: 'infra', icon: MessageSquare, requiresOperator: false, requiredTier: 'free', args: '<query>', example: 'nl.parse "show me system health"' },
@@ -1261,7 +1261,7 @@ export const NERVE_COMMANDS: CommandDefinition[] = [
 
 // ═══ Mesh Overlay Commands (EVOLUTION, IMMUNITY, GOVERNANCE) ═══
 export const EVOLUTION_COMMANDS: CommandDefinition[] = [
-  { command: 'evolution.status', description: 'Mutation pipeline status', category: 'evolution', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.status', description: 'Mutation memory chain status', category: 'evolution', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.proposals', description: 'Pending mutation proposals', category: 'evolution', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.shadow', description: 'Shadow run results', category: 'evolution', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.promote', description: 'Promote mutation to production', category: 'evolution', icon: Zap, requiresOperator: true, requiredTier: 'architect', args: '<mutation_id>' },
