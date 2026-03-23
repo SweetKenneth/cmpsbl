@@ -834,6 +834,81 @@ export {
   type TieringReport,
 } from './brain-auto-tiering';
 
+// ═══ BRAIN v9.0.0 "Synaptic" — 12-Engine Cognitive Core ═══
+export {
+  // Engine 1: Multi-Strategy Reasoning
+  multiStrategyReason,
+  runDeductive,
+  runInductive,
+  runAbductive,
+  runAnalogical,
+  // Engine 2: Cognitive Load
+  updateCognitiveLoad,
+  computeLoad as computeCognitiveLoad,
+  // Engine 3: Attention
+  setAttention,
+  // Engine 4: Insights
+  crystallizeInsight,
+  getInsights,
+  searchInsights,
+  // Engine 5: Contradictions
+  detectContradiction,
+  resolveContradiction,
+  scanForContradictions,
+  // Engine 6: Causal Graph
+  addCausalEdge,
+  traceCausalChain,
+  getCausalGraph,
+  // Engine 7: Metacognition
+  recordPrediction,
+  getMetacognitiveState,
+  // Engine 8: Working Memory
+  addToWorkingMemory,
+  getWorkingMemoryState as getBrainWorkingMemory,
+  clearWorkingMemory,
+  // Engine 9: Cross-Node Fusion
+  fuseIntelligence,
+  // Engine 10: Reasoning Traces
+  createTrace as createReasoningTrace,
+  appendTraceEntry,
+  verifyTrace as verifyReasoningTrace,
+  getTraces as getReasoningTraces,
+  // Engine 11: Learning Rate
+  computeLearningRate,
+  // Engine 12: Dream Protocol
+  submitToDream,
+  receiveDreamSolution,
+  validateDreamSolution,
+  getDreamQueue as getBrainDreamQueue,
+  getPendingDreamProblems,
+  // State
+  getBrainSynapticState,
+  BRAIN_VERSION,
+  BRAIN_CODENAME,
+  BRAIN_CONSTANTS,
+  // Types
+  type ReasoningStrategy,
+  type StrategyResult,
+  type MetaReasoningResult,
+  type AttentionMode,
+  type AttentionState,
+  type CognitiveLoad,
+  type Insight as BrainInsight,
+  type Contradiction,
+  type CausalEdge,
+  type CausalGraph,
+  type MetacognitiveState,
+  type WorkingMemorySlot,
+  type WorkingMemoryState,
+  type FusionRequest,
+  type FusionResult,
+  type ReasoningTraceEntry,
+  type ReasoningTrace as BrainReasoningTrace,
+  type LearningRateState,
+  type DreamProblem,
+  type BrainSynapticState,
+} from './brain-module';
+
 // ═══ Knowledge Distillation (v11.4.0) ═══
 export {
   DISTILLATION_BUDGET,
