@@ -1828,7 +1828,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               {promoteMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Running Pipeline...
+                  Running Memory Chain...
                 </>
               ) : (
                 <>

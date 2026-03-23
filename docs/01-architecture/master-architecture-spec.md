@@ -162,7 +162,7 @@ graph TD
 | DECODE | Execution | Natural language understanding, intent parsing | CORE |
 | ENCODE | Execution | Code generation, surgical patching | CORE, DECODE |
 | VISION | Execution | Telemetry, observability, anomaly detection | CORE |
-| CORTEX | Execution | Pipeline composition, cognitive orchestration | CORE |
+| CORTEX | Execution | Memory chain composition, cognitive orchestration | CORE |
 | NEXUS | Execution | AI provider routing, fleet intelligence | CORE |
 | ECONOMY | Execution | Cost tracking, budget governance | CORE |
 | SANDBOX | Execution | Isolated execution, speculative runs | CORE |
@@ -178,7 +178,7 @@ graph TD
 | REFLEX | EPZ | Edge computing orchestration, low-latency loops | CORE, NEXUS, VISION |
 | FORGE | EMZ | Artifact synthesis, template generation | CORE, ENCODE |
 | LINGUA | EMZ | Translation, localization, multi-language | CORE, DECODE, NEXUS |
-| HARVEST | EMZ | Data acquisition, ETL pipelines | CORE, MEMORY, ECONOMY |
+| HARVEST | EMZ | Data acquisition, ETL memory chains | CORE, MEMORY, ECONOMY |
 | EVOLUTION | CSZ | Version management, shadow runs, canary deployment | Permeates all |
 | SHADOW | CSZ | Isolated shadow execution, divergence scoring | CORE, EVOLUTION |
 | PHANTOM | CSZ | Privacy protection, PII masking, decoy operations | CORE, DEFENSE, IDENTITY |
@@ -343,7 +343,7 @@ DEFENSE — encloses all sectors
 | 2026-03-22 | System | v14.2.0 — Added OBSERVER auxiliary node, expanded all node capability surfaces with standardized lifecycle (init/health/resilience/hardening/runCLM/upgradeEngine), updated node docs |
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive/4-category topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
 | 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
-| 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
+| 2026-03-03 | System | v13.1.0 — AutoBlog quality memory chain, adaptive publish governor, semantic drift, confidence governance |
 | 2026-03-03 | System | Expanded to 38-node architecture with ESZ/EPZ/EMZ/CSZ zone shielding |
 | 2026-03-01 | System | Initial canonical specification (24 primitives) |
 

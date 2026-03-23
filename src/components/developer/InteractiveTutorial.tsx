@@ -316,7 +316,7 @@ export function InteractiveTutorial() {
                 Substrate Mastery — 8 Tracks
               </h2>
               <p className="text-sm text-muted-foreground">
-                From SDK basics to production-grade Ascension pipelines
+                From SDK basics to production-grade Ascension memory chains
               </p>
             </div>
             <Badge variant="outline" className="text-base px-4 py-2 border-primary/30">

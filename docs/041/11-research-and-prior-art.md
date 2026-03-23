@@ -73,7 +73,7 @@ The Memory Stream and Foundry represent a novel approach to autonomous software 
 
 ### Governed Evolution
 
-The SEBA promotion pipeline and mandatory consent protocol draw from:
+The SEBA promotion memory chain and mandatory consent protocol draw from:
 
 - **Formal verification** practices
 - **Continuous deployment** safety patterns

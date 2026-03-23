@@ -137,7 +137,7 @@ export function PipelinesExplorer({ pipelines, enabled, onRunPipeline, runningPi
               <div>
                 <p className="text-sm font-medium">Crystallized Memories</p>
                 <p className="text-xs text-muted-foreground">
-                  {pipelines.length} saved resolver chains • Searchable by module, domain, or intent
+                  {pipelines.length} saved memory chains • Searchable by module, domain, or intent
                 </p>
               </div>
             </div>

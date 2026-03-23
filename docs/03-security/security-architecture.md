@@ -166,7 +166,7 @@ Rate limits are enforced at both the NEXUS gateway level and per-module via Iron
 - Log retention: 90 days for operational, indefinite for security incidents.
 - Forensic queries support time-range, actor, action, and resource filtering.
 - DEFENSE threat events include full request fingerprint for pattern analysis.
-- INTEL aggregation pipeline enriches security signals into IntelCards for governor review.
+- INTEL aggregation memory chain enriches security signals into IntelCards for governor review.
 - First-party analytics track visitor behavior without third-party data leakage.
 
 ## 11. Incident Response Workflow

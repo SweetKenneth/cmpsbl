@@ -33,9 +33,9 @@ Mode transitions are logged and require appropriate authorization.
 
 ---
 
-## 3. Mutation Pipeline
+## 3. Mutation Memory Chain
 
-All system mutations flow through a 13-step deterministic loop and the SEBA 7-gate promotion pipeline:
+All system mutations flow through a 13-step deterministic loop and the SEBA 7-gate promotion memory chain:
 
 ### The 7 Gates
 

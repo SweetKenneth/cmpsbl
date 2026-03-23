@@ -67,7 +67,7 @@ erDiagram
 
 ## 4. CLM (Constant Learning Mode) Data Model
 
-CLM operates as a high-velocity training pipeline generating data across existing tables:
+CLM operates as a high-velocity training memory chain generating data across existing tables:
 
 - **Topic Sourcing**: 70% from ENGINEER findings + INTEL signals, 30% from scheduled curriculum.
 - **Training Records**: Stored in `ai_learning_data` with CLM-specific metadata tags.
@@ -207,7 +207,7 @@ Creation → Validation → Storage → Active Use → Archival → Deletion
 |------|--------|--------|
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive taxonomy, added disaster recovery backup system, memory tier capacity enforcement, developer API data model, visitor analytics tables, 60+ tables |
 | 2026-03-03 | System | Added CLM data model, DREAM synthesis, INTEL retention, control plane persistence, expanded schema registry to 50+ tables |
-| 2026-03-03 | System | Added AutoBlog quality pipeline tables |
+| 2026-03-03 | System | Added AutoBlog quality memory chain tables |
 | 2026-03-01 | System | Initial canonical data and memory model |
 
 ---

@@ -190,9 +190,9 @@ Export languages are gated by CJPI score:
 
 All system mutations operate under a mandatory consent protocol.
 
-### Mutation Pipeline
+### Mutation Memory Chain
 
-Proposals flow through a 7-gate promotion pipeline:
+Proposals flow through a 7-gate promotion memory chain:
 
 ```
 Lint → Test → Review → Stage → Consent → Deploy → Prod

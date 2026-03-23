@@ -533,7 +533,7 @@ export function AnalyticsTab() {
           </CollapsibleSection>
 
           {/* ═══ AUTO-BLOG & FOUNDRY ═══ */}
-          <CollapsibleSection id="content" title="Content Pipeline & Foundry" icon={FileText} iconColor="neon-purple">
+          <CollapsibleSection id="content" title="Content Memory Chain & Foundry" icon={FileText} iconColor="neon-purple">
             <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
               <MetricMini label="Published Posts" value={String(data.autoblogPublished)} sub={`${data.autoblogDraft} drafts`} color="violet" />
               <MetricMini label="Avg Confidence" value={`${(data.autoblogAvgConfidence * 100).toFixed(0)}%`} sub="Quality score" color={data.autoblogAvgConfidence >= 0.8 ? 'emerald' : 'amber'} />

@@ -45,7 +45,7 @@
 | DECODE | Execution | Natural language understanding |
 | ENCODE | Execution | Content generation, output formatting |
 | VISION | Execution | Visual processing, dashboard rendering |
-| CORTEX | Execution | Pipeline composition, orchestration |
+| CORTEX | Execution | Memory chain composition, orchestration |
 | NEXUS | Execution | Primary routing authority, API gateway |
 | ECONOMY | Execution | Cost tracking, ROI calculation |
 | SANDBOX | Execution | Isolated execution environment |
@@ -61,7 +61,7 @@
 | EDGE | EPZ | Edge compute orchestration |
 | FORGE | EMZ | Artifact production |
 | TRANSLATE | EMZ | Multi-language processing |
-| INGEST | EMZ | Data pipeline ingestion |
+| INGEST | EMZ | Data memory chain ingestion |
 | EVOLUTION | CSZ | Version management, shadow runs |
 | SHADOW | CSZ | Shadow testing and validation |
 | PHANTOM | CSZ | Phantom operations and probes |

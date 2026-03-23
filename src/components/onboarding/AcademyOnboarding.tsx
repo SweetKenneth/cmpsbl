@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: GraduationCap,
     tag: 'Learn',
     title: 'Developer Academy',
-    body: 'Hands-on learning tracks for the cognitive substrate. From your first SDK call to production Ascension pipelines — guided, scored, and completely free.',
+    body: 'Hands-on learning tracks for the cognitive substrate. From your first SDK call to production Ascension memory chains — guided, scored, and completely free.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },

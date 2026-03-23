@@ -103,7 +103,7 @@ Nodes in the same sector as your code are prioritized for exploration, as they t
 
 ### 3.3 Scoring — CJPI
 
-Each discovered chain receives a **Crown Jewel Pipeline Index (CJPI)** score from 0 to 100, evaluating:
+Each discovered chain receives a **Crown Jewel Performance Index (CJPI)** score from 0 to 100, evaluating:
 
 - **Utility** — How practically useful is the combined capability?
 - **Novelty** — Has this combination been discovered before?
@@ -274,7 +274,7 @@ Every exported capability pack includes a **language-native Runtime Bridge** tha
 
 1. Your capability class loads the manifest and primitive chain
 2. It delegates to the **Runtime Bridge** (`runtime-bridge.php`, `runtime_bridge.py`, or `runtime-bridge.ts`)
-3. The bridge executes the primitive chain as a **sequential pipeline**
+3. The bridge executes the primitive chain as a **sequential memory chain**
 4. Each module transforms the execution context and records trace data
 5. You get back a structured result: `{ success, output, trace, metadata }`
 
@@ -302,7 +302,7 @@ $result = $cap->execute(['key' => 'value']);
 
 ### Honest Limitations
 
-- This is a **v1 execution model** — sequential pipeline only
+- This is a **v1 execution model** — sequential memory chain only
 - The runtime bridge is a **portable wrapper**, not the full substrate
 - Module handlers implement minimal behavioral contracts
 - For the full cognitive runtime, use the CMPSBL substrate directly
@@ -312,7 +312,7 @@ $result = $cap->execute(['key' => 'value']);
 | Term | Definition |
 |------|-----------|
 | **Auxiliary Node** | Your uploaded code operating as a candidate node in the substrate |
-| **CJPI** | Crown Jewel Pipeline Index — the 0–100 scoring metric for discoveries |
+| **CJPI** | Crown Jewel Performance Index — the 0–100 scoring metric for discoveries |
 | **Capability Surface** | The detected functional profile of your code |
 | **Collision Cycle** | A single exploration pass testing your code against substrate primitives |
 | **Ascended Memory** | A crystallized, exportable capability artifact |

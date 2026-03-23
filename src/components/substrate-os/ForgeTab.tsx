@@ -1,6 +1,6 @@
 /**
  * FORGE Tab — EMZ (Expansion Manufacturing Zone)
- * Sub-tabs: FORGE (Artifact Production), LINGUA (Translation), HARVEST (Data Pipeline)
+ * Sub-tabs: FORGE (Artifact Production), LINGUA (Translation), HARVEST (Data Memory Chain)
  */
 
 import { useState, useEffect } from 'react';
@@ -56,7 +56,7 @@ function useManufacturingData() {
         { id: 'security-scans', name: 'Security Scans', records: scanRes.data?.length || 0, freshness: '< 1h', status: 'active', throughput: 12 },
         { id: 'usage-telemetry', name: 'Usage Telemetry', records: 0, freshness: 'live', status: 'active', throughput: 48 },
         { id: 'learning-data', name: 'Learning Data', records: 0, freshness: '< 4h', status: 'active', throughput: 8 },
-        { id: 'blog-content', name: 'Blog Content Pipeline', records: blogs.length, freshness: '< 24h', status: blogs.length > 0 ? 'active' : 'idle', throughput: 3 },
+        { id: 'blog-content', name: 'Blog Content Chain', records: blogs.length, freshness: '< 24h', status: blogs.length > 0 ? 'active' : 'idle', throughput: 3 },
       ];
 
       const [usageCount, learningCount] = await Promise.all([
@@ -119,7 +119,7 @@ export function ForgeTab() {
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Package className="w-4 h-4 text-neon-amber shrink-0" />
-                Artifact Pipeline
+                Artifact Memory Chain
               </CardTitle>
               <CardDescription className="text-[11px]">{artifacts.length} artifacts tracked</CardDescription>
             </CardHeader>
@@ -192,13 +192,13 @@ export function ForgeTab() {
           </Card>
         </TabsContent>
 
-        {/* HARVEST — Data Pipeline */}
+        {/* HARVEST — Data Memory Chain */}
         <TabsContent value="harvest" className="mt-4 space-y-3">
           <Card className="border-border/15 dark:border-border/10 bg-card/50 dark:bg-card/20">
             <CardHeader className="pb-2 px-4 sm:px-6">
               <CardTitle className="text-sm flex items-center gap-2">
                 <Database className="w-4 h-4 text-neon-amber shrink-0" />
-                Data Pipelines
+                Data Memory Chains
               </CardTitle>
               <CardDescription className="text-[11px]">Ingestion streams feeding the substrate</CardDescription>
             </CardHeader>
