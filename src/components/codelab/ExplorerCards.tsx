@@ -1,6 +1,6 @@
 /**
  * Surface A — Explorer Cards
- * One card per substrate module with execution, parameters, and code export
+ * One card per substrate primitive with execution, parameters, and code export
  */
 
 import { useState } from "react";

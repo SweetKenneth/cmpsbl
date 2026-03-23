@@ -172,7 +172,7 @@ supabase secrets set OPENAI_API_KEY=sk-...`,
       },
       {
         title: "Configure Nexus Routing",
-        description: "The Nexus module will auto-detect available providers and route accordingly"
+        description: "The NEXUS Organ will auto-detect available providers and route accordingly"
       }
     ]
   },

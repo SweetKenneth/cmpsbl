@@ -307,7 +307,7 @@ export function CommunityShowcase() {
                 {project.description}
               </p>
 
-              {/* Modules Used */}
+              {/* Primitives Used */}
               <div className="flex gap-1 mb-3">
                 {project.modules.map(mod => (
                   <div

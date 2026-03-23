@@ -242,7 +242,7 @@ export function BlueprintForgeRitual({ onComplete }: Props) {
             </motion.div>
           </AnimatePresence>
 
-          {/* Module count ticker */}
+          {/* Primitive count ticker */}
           <motion.div className="flex justify-center gap-0.5">
             {Array.from({ length: 12 }).map((_, i) => (
               <motion.div
