@@ -111,7 +111,7 @@ const modulesByLayer = {
     },
     {
       id: "decode",
-      name: "DECODE",
+      name: "DECODE Agent",
       description: "Intent decoding, chat, oracle",
       icon: MessageSquare,
       color: "text-neon-blue",
