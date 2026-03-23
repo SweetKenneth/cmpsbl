@@ -1,6 +1,6 @@
 /**
  * Persistent Memory Onboarding — First-visit explainer for /persistent-memory
- * Introduces the 4-tier memory system, DREAM consolidation, and recall
+ * Introduces the 4-tier memory system, DREAM Engine consolidation, and recall
  */
 
 import { useState, useEffect } from 'react';
