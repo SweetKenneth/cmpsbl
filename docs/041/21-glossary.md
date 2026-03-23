@@ -50,7 +50,7 @@ Complete terminology reference for the CMPSBL cognitive substrate.
 | **Relic** | Discovery tier for CJPI 90–93. Premium, production-grade. |
 | **Resolver** | An executable capability owned by a primitive. Named as `node.resolver_name`. |
 | **Safety Switch** | Emergency isolation mechanism. Replaces "Circuit Breaker." |
-| **SEBA Pipeline** | The 7-gate promotion pipeline for system mutations: Lint → Test → Review → Stage → Consent → Deploy → Prod. |
+| **SEBA Pipeline** | The 7-gate promotion memory chain for system mutations: Lint → Test → Review → Stage → Consent → Deploy → Prod. |
 | **Signal Forge** | Blueprint synthesis engine within the FORGE node. Produces CJPI-validated architecture designs. |
 | **Substrate** | The foundational cognitive runtime beneath all CMPSBL operations. |
 | **Tier** | Quality classification for discoveries: Apex, Mythic, Relic, Prime, Mint, Raw. |

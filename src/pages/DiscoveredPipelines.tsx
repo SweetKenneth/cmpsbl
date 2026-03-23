@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Layers, Cpu, Sparkles, Network, Zap, Shield, Brain, Eye, GitBranch } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 
 const TIER_STYLES: Record<string, { bg: string; text: string; border: string; label: string }> = {
   apex: { bg: 'bg-primary/10', text: 'text-primary', border: 'border-primary/30', label: 'APEX' },
@@ -216,7 +217,7 @@ function PipelineCard({ pipeline, index, featured = false }: { pipeline: any; in
             <div className="flex flex-wrap gap-1 mt-3">
               {(pipeline.node_chain as string[]).slice(0, 12).map((node: string) => (
                 <span key={node} className="text-[9px] font-mono font-medium px-1.5 py-0.5 rounded bg-muted/50 text-muted-foreground/70 border border-border/20">
-                  {node}
+                  {labelPrimitive(node)}
                 </span>
               ))}
               {(pipeline.node_chain as string[]).length > 12 && (

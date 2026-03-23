@@ -20,7 +20,7 @@ A development team maintains a large codebase and wants to discover optimization
 
 ### How CMPSBL Helps
 
-1. **Ingest** the codebase through the Ascension pipeline
+1. **Ingest** the codebase through the Ascension memory chain
 2. The substrate runs discovery cycles, testing the code against 40 primitives
 3. The Memory Stream identifies high-value interaction patterns
 4. Discovered capabilities are crystallized and exported back to the team
@@ -91,7 +91,7 @@ A research group studying cognitive architectures wants to experiment with multi
 
 - Access to a 40-primitive cognitive matrix
 - Observable Memory Stream with CJPI scoring
-- Governed mutation pipeline for controlled experiments
+- Governed mutation memory chain for controlled experiments
 - Audit chain for reproducible research
 - Published academic papers documenting the architecture
 

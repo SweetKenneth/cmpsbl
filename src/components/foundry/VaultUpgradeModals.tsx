@@ -2,7 +2,7 @@
  * VaultUpgradeModals — Three upgrade modals for Memory Stream gating
  * 1. Vault Capacity Reached
  * 2. Daily Discovery Limit Reached
- * 3. Mythic Pipeline Discovered (vault full)
+ * 3. Mythic Memory Discovered (vault full)
  * 
  * Mobile-first: min-h touch targets, safe-area padding, full-bleed on small screens
  * Uses semantic design tokens from the design system (neon-amber, neon-purple, neon-cyan)

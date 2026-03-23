@@ -1,6 +1,6 @@
 # @cmpsbl/discovery
 
-CMPSBL® Pipeline Discovery Engine — Score, crystallize, and manage discovered pipelines.
+CMPSBL® Pipeline Discovery Engine — Score, crystallize, and manage discovered memory chains.
 
 ```bash
 npm install @cmpsbl/discovery

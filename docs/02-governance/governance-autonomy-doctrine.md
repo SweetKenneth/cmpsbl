@@ -83,7 +83,7 @@ ATLAS serves as the unified governance UI with 7 tabs:
 ```
 Level 0: Module handles autonomously
     ↓ (unresolvable)
-Level 1: CORTEX pipeline reroutes
+Level 1: CORTEX memory chain reroutes
     ↓ (policy conflict)
 Level 2: GOVERNANCE evaluates / INTENT Mesh translates
     ↓ (governance deadlock)
@@ -157,7 +157,7 @@ Manual rollback available:
 - Audit log integrity is verified via chain-of-custody checksums.
 - Retention: minimum 90 days for operational logs, indefinite for security events.
 - AUDIT Organ failure does not halt the system but triggers Level 3 escalation.
-- INTEL aggregation pipeline deduplicates and enriches audit signals into IntelCards.
+- INTEL aggregation memory chain deduplicates and enriches audit signals into IntelCards.
 
 ## 13. Human Override Protocol
 

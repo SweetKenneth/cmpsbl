@@ -106,7 +106,7 @@ Primitives never communicate directly. All interaction flows through the intent 
 
 ### Governance Gates
 
-Every mutation passes through a 7-gate promotion pipeline:
+Every mutation passes through a 7-gate promotion memory chain:
 
 1. **Lint** — Structural validation
 2. **Test** — Behavioral verification
@@ -144,7 +144,7 @@ A local caching layer provides fast access to frequently-used memories, with aut
 
 ---
 
-## 5. Discovery Pipeline
+## 5. Discovery Memory Chain
 
 ### Foundry
 
@@ -154,7 +154,7 @@ The Foundry explores combinations of primitives and resolvers to discover new ca
 2. **Cross-Sector Synergy** — Novel cross-domain combinations
 3. **Full-Spectrum Coverage** — Comprehensive sector representation
 
-### Crystallization Pipeline
+### Crystallization Memory Chain
 
 ```
 Discovery (CJPI ≥ 68)
@@ -211,7 +211,7 @@ Receipts are hash-linked into a tamper-evident audit chain. Periodic anchoring c
 The system computes health scores through a 3-phase Reality Protocol:
 
 1. **Real Reads** — Live data from 50+ system tables
-2. **Governed Writes** — 6-gate write pipeline
+2. **Governed Writes** — 6-gate write memory chain
 3. **Computed Heartbeats** — Derived health metrics
 
 ---

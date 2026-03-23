@@ -106,7 +106,7 @@ const TIERS: {
       'Dedicated memory partitions',
       'Full trace & compliance exports',
       'Export templates (PDF/CSV/JSON)',
-      'Memory Stream alerts for pipelines',
+      'Memory Stream alerts for memory chains',
       'Trace replay — visual debugging',
       'Custom memory slots you configure',
       'Priority email support',

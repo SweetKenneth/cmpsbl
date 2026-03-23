@@ -22,7 +22,7 @@ const NPM_PACKAGES = [
   { name: "@cmpsbl/discovery", desc: "Memory discovery — score, crystallize, and manage capabilities", tier: "Developer" },
   { name: "@cmpsbl/cli", desc: "CLI tools — init, score, export, validate-manifest commands", tier: "Developer" },
   { name: "@cmpsbl/react", desc: "React hooks — useIntent, useMesh, useRuntime, useCJPI", tier: "Ecosystem" },
-  { name: "@cmpsbl/test-harness", desc: "Test utilities for validating pipelines and bridge adapters", tier: "Ecosystem" },
+  { name: "@cmpsbl/test-harness", desc: "Test utilities for validating memory chains and bridge adapters", tier: "Ecosystem" },
 ] as const;
 
 const TIER_COLORS: Record<string, string> = {

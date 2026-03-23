@@ -22,7 +22,7 @@ When you build on the substrate, you gain access to:
 - 940+ registered capabilities
 - Persistent memory with vector search
 - Intent-based routing
-- Governed mutation pipeline
+- Governed mutation memory chain
 - Real-time mesh telemetry
 - Export system for portability
 

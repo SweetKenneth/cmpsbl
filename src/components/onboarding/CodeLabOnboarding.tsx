@@ -43,7 +43,7 @@ const STEPS: OnboardingStep[] = [
     icon: LayoutTemplate,
     tag: 'Templates',
     title: 'Starter Templates',
-    body: '30 production-grade templates — AI chatbots, fraud detection, data pipelines, and more. Each includes working code, tests, and documentation you can customize.',
+    body: '30 production-grade templates — AI chatbots, fraud detection, data memory chains, and more. Each includes working code, tests, and documentation you can customize.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },

@@ -14,7 +14,7 @@ This document defines Crystallized Memories — the deterministic, portable capa
 
 ## 1. What Is a Crystallized Memory?
 
-A Crystallized Memory is a standalone software artifact produced when the Memory Stream discovers a valuable execution path and converts it into a portable, deterministic capability. It is the primary output of the CMPSBL discovery and crystallization pipeline.
+A Crystallized Memory is a standalone software artifact produced when the Memory Stream discovers a valuable execution path and converts it into a portable, deterministic capability. It is the primary output of the CMPSBL discovery and crystallization memory chain.
 
 Crystallized Memories are not raw data or logs. They are working software — deterministic implementations that reproduce a discovered capability independently of the full substrate.
 
