@@ -238,8 +238,8 @@ export default function Publication() {
                 self-evolution within deterministic safety boundaries.
               </p>
               <p>
-                As of the current MINDGAMES epoch, the substrate comprises 40 matrix nodes organized across
-                twelve architectural sectors, with 300+ synergy memories, a three-tier autonomy governance model,
+                As of the current MINDGAMES epoch, the substrate comprises 40 primitives organized across
+                four categories (agents, engines, layers, and organs), with 300+ synergy memories, a three-tier autonomy governance model,
                 675+ capabilities, and full-spectrum resilience hardening across all subsystems.
               </p>
             </div>

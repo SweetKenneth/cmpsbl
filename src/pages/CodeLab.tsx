@@ -147,7 +147,7 @@ export default function CodeLab() {
               <div className="flex items-center gap-2 shrink-0">
                 <Layers className="w-4 h-4 text-neon-cyan" />
                 <span className="font-mono font-bold">{modulesCount}</span>
-                <span className="text-muted-foreground">Nodes</span>
+                <span className="text-muted-foreground">Primitives</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <Zap className="w-4 h-4 text-neon-amber" />
@@ -413,7 +413,7 @@ const response = await substrate.nexus.text(
                   Interactive API explorer for all substrate execution surfaces. Execute calls, see responses, copy code.
                 </p>
                 <Button variant="ghost" size="sm" className="gap-2 p-0" onClick={() => setActiveTab("explorer")}>
-                  Explore Nodes <ArrowRight className="w-4 h-4" />
+                  Explore Primitives <ArrowRight className="w-4 h-4" />
                 </Button>
               </Card>
 

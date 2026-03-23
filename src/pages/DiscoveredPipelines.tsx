@@ -39,7 +39,7 @@ export default function DiscoveredPipelines() {
     <>
       <Helmet>
         <title>Discovered Memories — Memory Stream Compositions | CMPSBL</title>
-        <meta name="description" content="The substrate's highest-scoring autonomous Memory Stream compositions. CJPI-scored, tier-ranked from Mint to Apex, and ready for deployment across 40 nodes. Real crystallized software." />
+        <meta name="description" content="The substrate's highest-scoring autonomous Memory Stream compositions. CJPI-scored, tier-ranked from Mint to Apex, and ready for deployment across 40 primitives. Real crystallized software." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -63,16 +63,16 @@ export default function DiscoveredPipelines() {
               <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-8">
                 The Memory Stream autonomously composed and scored these execution paths from{' '}
                 <span className="text-foreground font-medium">940+ capabilities</span> across{' '}
-                <span className="text-foreground font-medium">40 nodes</span>. Each memory chains
+                <span className="text-foreground font-medium">40 primitives</span>. Each memory chains
                 multiple Apex Discoveries into unified super-memories — ranked by synergy,
-                node diversity, and aggregate quality.
+                primitive diversity, and aggregate quality.
               </p>
 
               {/* Stats bar */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
                 {[
                   { label: 'Memories Discovered', value: pipelines?.length || 0 },
-                  { label: 'Total Node Coverage', value: totalNodes },
+                  { label: 'Primitive Coverage', value: totalNodes },
                   { label: 'Avg Memory Score', value: avgScore },
                   { label: 'Combined Value', value: `$${(totalValue / 1000).toFixed(0)}K` },
                 ].map((stat, i) => (
@@ -190,7 +190,7 @@ function PipelineCard({ pipeline, index, featured = false }: { pipeline: any; in
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] font-mono text-muted-foreground/60">
             <span className="flex items-center gap-1">
               <Cpu className="w-3 h-3" />
-              {pipeline.unique_nodes} nodes
+              {pipeline.unique_nodes} primitives
             </span>
             <span className="flex items-center gap-1">
               <Layers className="w-3 h-3" />

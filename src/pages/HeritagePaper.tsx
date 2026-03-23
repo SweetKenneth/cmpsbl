@@ -280,7 +280,7 @@ const HeritagePaper = () => {
               The Genesis period established three foundational principles: <strong className="text-foreground">zero-cost intelligence</strong> (meaningful semantic ops without API calls), <strong className="text-foreground">progressive self-activation</strong> (components that grow smarter with experience), and <strong className="text-foreground">memory as infrastructure</strong> (learning is foundational, not a feature added later).
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              BRAIN is Node #3 in the current 40-node substrate, but it was the <em>first</em> node built — and it remains the cognitive core. Every other node depends on BRAIN's embedding, crystallization, and recall capabilities. The <code className="bg-muted px-1 rounded text-xs font-mono">@origin(genesis-2025-01)</code> annotation marks it as the oldest continuous component.
+              BRAIN is Primitive #3 in the current 40-primitive substrate, but it was the <em>first</em> organ built — and it remains the cognitive core. Every other primitive depends on BRAIN's embedding, crystallization, and recall capabilities. The <code className="bg-muted px-1 rounded text-xs font-mono">@origin(genesis-2025-01)</code> annotation marks it as the oldest continuous component.
             </p>
             <ContributionBox>
               Established the entire <strong className="text-foreground">neural substrate layer</strong> — knowledge crystallization, zero-cost embeddings, progressive self-activation, and confidence decay — the foundation upon which all other cognitive capabilities were built.
@@ -355,9 +355,9 @@ const HeritagePaper = () => {
                 </tr></thead>
                 <tbody className="text-muted-foreground">
                   <tr><td className="p-2 border border-border">Fingerprinting</td><td className="p-2 border border-border">Structural fingerprinting</td><td className="p-2 border border-border">Browser ID → content-addressable artifacts</td></tr>
-                  <tr><td className="p-2 border border-border">Behavioral Analysis</td><td className="p-2 border border-border">IMMUNITY</td><td className="p-2 border border-border">Traffic analysis → node health monitoring</td></tr>
+                  <tr><td className="p-2 border border-border">Behavioral Analysis</td><td className="p-2 border border-border">IMMUNITY</td><td className="p-2 border border-border">Traffic analysis → primitive health monitoring</td></tr>
                   <tr><td className="p-2 border border-border">Honeypot/Deception</td><td className="p-2 border border-border">PHANTOM</td><td className="p-2 border border-border">Web traps → cognitive anonymization</td></tr>
-                  <tr><td className="p-2 border border-border">Bulkhead Isolation</td><td className="p-2 border border-border">IRONCLAD</td><td className="p-2 border border-border">Proxy rotation → per-node failure isolation</td></tr>
+                  <tr><td className="p-2 border border-border">Bulkhead Isolation</td><td className="p-2 border border-border">IRONCLAD</td><td className="p-2 border border-border">Proxy rotation → per-primitive failure isolation</td></tr>
                   <tr><td className="p-2 border border-border">Shadow Testing</td><td className="p-2 border border-border">SHADOW</td><td className="p-2 border border-border">Pre-engagement → governed state mutation</td></tr>
                   <tr><td className="p-2 border border-border">Anti-Detection</td><td className="p-2 border border-border">DEFENSE</td><td className="p-2 border border-border">Offensive evasion → defensive boundaries</td></tr>
                   <tr><td className="p-2 border border-border">Stealth→Shield</td><td className="p-2 border border-border">IRONCLAD philosophy</td><td className="p-2 border border-border">Attacker to guardian — additive hardening</td></tr>

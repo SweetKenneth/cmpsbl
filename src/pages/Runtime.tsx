@@ -202,7 +202,7 @@ export default function Runtime() {
               What You Get. <span className="text-primary">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Every user gets the full platform — all 40 nodes, all capabilities. No features are locked behind paywalls.
+              Every user gets the full platform — all 40 primitives, all capabilities. No features are locked behind paywalls.
               Plans only control how many memory packs you can activate at once.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">

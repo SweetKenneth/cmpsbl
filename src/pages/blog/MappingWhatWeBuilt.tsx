@@ -22,8 +22,8 @@ export default function MappingWhatWeBuilt() {
       chapter={24}
       head={
         <>
-          <SEO title="Mapping What We Built — The ATLAS Node" description="With twelve nodes running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time." type="article" image={heroImg} publishedTime="2025-06-14" keywords={["ATLAS node", "capability discovery", "dependency mapping"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-nodes" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Mapping What We Built", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
-          <BlogArticleJsonLd title="Mapping What We Built — The ATLAS Node" description="Auto-discovery and real-time dependency mapping." slug={SLUG} datePublished="2025-06-14" imageUrl={heroImg} keywords={["ATLAS", "capability map", "discovery"]} />
+          <SEO title="Mapping What We Built — The ATLAS Engine" description="With twelve primitives running, we couldn't remember what called what. ATLAS auto-discovers capabilities and maps dependencies in real time." type="article" image={heroImg} publishedTime="2025-06-14" keywords={["ATLAS engine", "capability discovery", "dependency mapping"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-primitives" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Mapping What We Built", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+          <BlogArticleJsonLd title="Mapping What We Built — The ATLAS Engine" description="Auto-discovery and real-time dependency mapping." slug={SLUG} datePublished="2025-06-14" imageUrl={heroImg} keywords={["ATLAS", "capability map", "discovery"]} />
         </>
       }
     >
@@ -34,7 +34,7 @@ export default function MappingWhatWeBuilt() {
       <h2 className="text-2xl font-bold text-foreground mt-8">Auto-Discovery</h2>
       <p>ATLAS doesn't rely on manually maintained documentation. It watches <Link to="/blog/nodes-that-talk" className="text-primary hover:underline">RIPPLE's event bus</Link> and infers capability graphs from actual usage. If NEXUS calls BRAIN 400 times per hour, ATLAS knows that dependency is real — not aspirational.</p>
 
-      <p>The inference engine uses a sliding window of event data — typically seven days — to build and continuously update the capability graph. Edges in the graph represent actual inter-node communication: RPC calls, event subscriptions, data flows. Each edge carries metadata: average latency, call frequency, error rate, and data volume. This means the graph isn't just a topology — it's a performance model. You can ask ATLAS "what's the slowest path through the substrate?" and get an answer based on real-world measurements, not architectural assumptions.</p>
+      <p>The inference engine uses a sliding window of event data — typically seven days — to build and continuously update the capability graph. Edges in the graph represent actual inter-primitive communication: RPC calls, event subscriptions, data flows. Each edge carries metadata: average latency, call frequency, error rate, and data volume. This means the graph isn't just a topology — it's a performance model. You can ask ATLAS "what's the slowest path through the substrate?" and get an answer based on real-world measurements, not architectural assumptions.</p>
 
       <p>ATLAS also detects implicit dependencies that don't show up in direct call graphs. When DECODE's output quality correlates with BRAIN's cache hit rate (even though DECODE never calls BRAIN directly), ATLAS flags it as a statistical dependency. These hidden couplings were responsible for some of our most confusing production incidents — fixing the direct caller didn't help because the real cause was an indirect dependency three hops away.</p>
 
@@ -46,7 +46,7 @@ export default function MappingWhatWeBuilt() {
       <h2 className="text-2xl font-bold text-foreground mt-8">Impact Analysis</h2>
       <p>Before ATLAS, deploying changes was guesswork. "If I update BRAIN's API, what breaks?" ATLAS answers that with certainty — it knows every consumer of every capability. Zero-surprise deployments became possible because we could finally see the blast radius of any change.</p>
 
-      <p>We integrated ATLAS into our deployment process. Before any change ships, ATLAS generates an impact report: which nodes will be affected, which API contracts might break, and what the estimated performance impact will be based on historical patterns for similar changes. The deployment either gets a green light or a warning with specific risk factors. This reduced our post-deployment incident rate by 71% in the first quarter after rollout.</p>
+      <p>We integrated ATLAS into our deployment process. Before any change ships, ATLAS generates an impact report: which primitives will be affected, which API contracts might break, and what the estimated performance impact will be based on historical patterns for similar changes. The deployment either gets a green light or a warning with specific risk factors. This reduced our post-deployment incident rate by 71% in the first quarter after rollout.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Capability Versioning</h2>
       <p>ATLAS tracks capability evolution over time. When a node adds a new function or deprecates an old one, ATLAS records the change and notifies dependent nodes. This historical record became invaluable for debugging regressions — "this started failing last Tuesday, what changed?" ATLAS can answer that question in seconds by showing the delta between two points in time.</p>
