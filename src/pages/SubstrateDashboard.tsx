@@ -91,7 +91,7 @@ const modulesByLayer = {
     },
     {
       id: "access",
-      name: "ACCESS",
+      name: "ACCESS Organ",
       description: "API keys, billing, metering",
       icon: Key,
       color: "text-neon-amber",
