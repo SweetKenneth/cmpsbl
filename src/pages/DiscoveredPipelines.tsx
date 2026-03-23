@@ -217,7 +217,7 @@ function PipelineCard({ pipeline, index, featured = false }: { pipeline: any; in
             <div className="flex flex-wrap gap-1 mt-3">
               {(pipeline.node_chain as string[]).slice(0, 12).map((node: string) => (
                 <span key={node} className="text-[9px] font-mono font-medium px-1.5 py-0.5 rounded bg-muted/50 text-muted-foreground/70 border border-border/20">
-                  {node}
+                  {labelPrimitive(node)}
                 </span>
               ))}
               {(pipeline.node_chain as string[]).length > 12 && (
