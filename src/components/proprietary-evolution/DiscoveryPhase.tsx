@@ -394,7 +394,7 @@ export function DiscoveryPhase() {
                     "text-[9px] font-mono px-1.5 py-0.5 rounded",
                     idx === 0 ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground"
                   )}>
-                    {idx === 0 ? `Ψ₄₁ ${node}` : node}
+                    {idx === 0 ? `Ψ₄₁ ${node}` : labelPrimitive(node)}
                   </span>
                   {idx < discoveryHit.chain!.length - 1 && (
                     <span className="text-muted-foreground/40 text-[8px]">→</span>
