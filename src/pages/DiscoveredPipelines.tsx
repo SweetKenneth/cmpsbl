@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Layers, Cpu, Sparkles, Network, Zap, Shield, Brain, Eye, GitBranch } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 
 const TIER_STYLES: Record<string, { bg: string; text: string; border: string; label: string }> = {
   apex: { bg: 'bg-primary/10', text: 'text-primary', border: 'border-primary/30', label: 'APEX' },
