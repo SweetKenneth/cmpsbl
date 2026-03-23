@@ -35,7 +35,7 @@ const STEPS: OnboardingStep[] = [
     icon: Users,
     tag: 'Agents',
     title: 'Runtime Agents',
-    body: 'Autonomous AI that learns and executes. Each agent ships with 4-tier memory, continuous learning, and a sealed runtime. FAILSAFE is free — higher tiers unlock AEGIS, SPECTRA, PHANTOM, and RAPTOR.',
+    body: 'Autonomous AI that learns and executes. Each agent ships with 4-tier memory, continuous learning, and a sealed runtime. FAILSAFE is free — higher tiers unlock AEGIS, SPECTRA, PHANTOM Agent, and RAPTOR.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
