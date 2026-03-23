@@ -171,7 +171,7 @@ function useTilt() {
 }
 
 // Individual feature card with tilt effect
-function FeatureCard({ item, idx }: { item: typeof nodes[0]; idx: number }) {
+function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number }) {
   const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt();
   const [isHovered, setIsHovered] = useState(false);
   
