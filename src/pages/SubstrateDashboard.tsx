@@ -82,7 +82,7 @@ const modulesByLayer = {
     },
     {
       id: "ripple",
-      name: "RIPPLE",
+      name: "RIPPLE Organ",
       description: "Message bus, pub/sub, queues",
       icon: Radio,
       color: "text-neon-cyan",
