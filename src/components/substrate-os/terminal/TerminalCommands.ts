@@ -827,7 +827,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'immunity.hardening', description: 'IMMUNITY hardening status (Watchguard)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.health', description: 'IMMUNITY health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.quarantine', description: 'Quarantined modules list', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'immunity.hardening.healing', description: 'Healing pipeline stats', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.hardening.healing', description: 'Healing memory chain stats', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.sentinel', description: 'Sentinel watchdog pulse stats', category: 'defense', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.cascade', description: 'Cascade failure detection events', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.threats', description: 'Active threat intelligence feed', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
