@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { Sparkles, Upload, Zap, Diamond, Package, ArrowRight, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-/* ═══ REAL 40-NODE REGISTRY — from matrixNodeRegistry.ts ═══ */
+/* ═══ REAL 40-PRIMITIVE REGISTRY — from matrixNodeRegistry.ts ═══ */
 const SUBSTRATE_NODES: { id: string; label: string; sector: string; short: string }[] = [
   { id: 'core', label: 'CORE', sector: 'core', short: 'Ω₀' },
   { id: 'system', label: 'SYS', sector: 'system', short: 'Σ₁' },
