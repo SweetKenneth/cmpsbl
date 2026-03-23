@@ -79,7 +79,7 @@ async function substrateAuditTests(): Promise<Array<[string, TestFn]>> {
     ['Matrix has exactly 40 primitives', () => {
       assert(getNodeDefinitions().length === 40, `Expected 40, got ${getNodeDefinitions().length}`);
     }],
-    ['All 4 categorys have nodes', () => {
+    ['All 4 categories have nodes', () => {
       const sectors = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'] as const;
       for (const s of sectors) {
         assert(getNodesBySector(s).length > 0, `Sector ${s} has no nodes`);
@@ -403,7 +403,7 @@ async function technicalDebtTests(): Promise<Array<[string, TestFn]>> {
       const count = getNodeDefinitions().length;
       assert(count === 40, `Expected 40 primitives, got ${count}`);
     }],
-    ['All 4 categorys populated', () => {
+    ['All 4 categories populated', () => {
       const required = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'] as const;
       const missing = required.filter(s => getNodesBySector(s).length === 0);
       assert(missing.length === 0, `Empty sectors: ${missing.join(', ')}`);
