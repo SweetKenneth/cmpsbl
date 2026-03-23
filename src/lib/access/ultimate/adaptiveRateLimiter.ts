@@ -33,7 +33,7 @@ export interface SlidingWindow {
 
 export type RateLimitDecision = 'allow' | 'throttle' | 'deny';
 
-export interface RateLimitResult {
+export interface AdaptiveRateLimitResult {
   decision: RateLimitDecision;
   remaining: number;
   resetMs: number;
@@ -82,7 +82,7 @@ export function configureRateLimit(keyId: string, config: Partial<RateLimitConfi
 }
 
 /** Check rate limit for a request */
-export function checkRateLimit(keyId: string, endpoint: string = '*'): RateLimitResult {
+export function checkRateLimit(keyId: string, endpoint: string = '*'): AdaptiveRateLimitResult {
   totalChecks++;
   const config = configs.get(keyId) ?? DEFAULT_CONFIG;
   const windowKey = `${keyId}:${endpoint}`;
