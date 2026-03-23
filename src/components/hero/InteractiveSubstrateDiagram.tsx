@@ -46,7 +46,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "defense",
-    name: "DEFENSE",
+    name: "DEFENSE Layer",
     icon: Shield,
     color: "text-neon-amber",
     glowColor: "shadow-[0_0_30px_rgba(252,211,77,0.6)]",
