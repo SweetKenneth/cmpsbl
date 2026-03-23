@@ -179,7 +179,7 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
 function generateChainPlaybackTest(product: ProductZipInput): string {
   const modules = product.capabilities?.length
     ? product.capabilities.slice(0, 4).map(c => c.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 10) || 'CORE')
-    : ['BRAIN', 'MEMORY', 'ORACLE', 'ECHO'];
+    : ['BRAIN Organ', 'MEMORY Organ', 'ORACLE Engine', 'ECHO Agent'];
 
   return `import { executeChain, formatReport } from '../_runtime/chain-executor';
 
