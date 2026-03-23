@@ -751,7 +751,7 @@ export function translate(
       // Regression detection
       if (detectFidelityRegression(bridge, fidelity)) {
         bridge.status = 'degraded';
-        emit('lingua', 'fidelity-regression', { bridgeId: bridge.id, counter: bridge.regressionCounter });
+        emitSucceeded('lingua', 'fidelity-regression', { bridgeId: bridge.id, counter: bridge.regressionCounter });
       }
     }
 
