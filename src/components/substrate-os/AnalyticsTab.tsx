@@ -108,41 +108,37 @@ export function AnalyticsTab() {
         artifactRes,
         usageFullRes,
         intentCountRes, intentLatencyRes,
-      ] = await Promise.all([
-        safeQuery(() => supabase.from('brain_events').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
-        safeQuery(() => supabase.from('brain_events').select('id, event_type, module, outcome, created_at').gte('created_at', startDate).order('created_at', { ascending: false }).limit(500)),
-        safeQuery(() => supabase.from('brain_metrics').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
-        safeQuery(() => supabase.from('ai_usage_log').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
-        safeQuery(() => supabase.from('ai_usage_log').select('id, provider, category, success, created_at, tokens_used, cost').gte('created_at', startDate).limit(1000)),
-        safeQuery(() => supabase.from('access_usage').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
-        safeQuery(() => supabase.from('audit_logs').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
-        safeQuery(() => supabase.from('audit_logs').select('id, action, entity_type, created_at').gte('created_at', startDate).limit(500)),
-        safeQuery(() => supabase.from('immune_metrics').select('executor, total_runs, repair_successes, escalations, safe_failures').gte('run_at', sixHoursAgo)),
-        safeQuery(() => supabase.from('immune_escalations').select('status, claimed_by').limit(1000)),
-        // Mesh comms
-        safeQuery(() => supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
-        safeQuery(() => supabase.from('mesh_comms').select('category, source_module, target_module').gte('created_at', startDate).limit(1000)),
-        // Agency tasks
-        safeQuery(() => supabase.from('agency_tasks').select('status, task_cost_cents, task_value_cents, compute_time_ms, created_at').gte('created_at', startDate).limit(1000)),
-        // Agency economics
-        safeQuery(() => supabase.from('agency_economics').select('total_cost_cents, total_value_cents, tasks_completed, avg_roi').order('period_date', { ascending: false }).limit(days)),
-        // Auto-blog
-        safeQuery(() => supabase.from('auto_blog_posts').select('status, confidence_score, created_at').gte('created_at', startDate)),
-        // Artifacts
-        safeQuery(() => supabase.from('artifact_registry').select('category, tier, created_at').gte('created_at', startDate)),
-        // Full usage for cost analytics
-        safeQuery(() => supabase.from('ai_usage_log').select('provider, tokens_used, cost').gte('created_at', startDate).limit(1000)),
-        // Intent receipts
-        safeQuery(() => supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate)),
-        safeQuery(() => supabase.from('mesh_comms').select('resolver_id, created_at').gte('created_at', startDate).not('resolver_id', 'is', null).limit(500)),
+      ] = await Promise.allSettled([
+        supabase.from('brain_events').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('brain_events').select('id, event_type, module, outcome, created_at').gte('created_at', startDate).order('created_at', { ascending: false }).limit(500),
+        supabase.from('brain_metrics').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('ai_usage_log').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('ai_usage_log').select('id, provider, category, success, created_at, tokens_used, cost').gte('created_at', startDate).limit(1000),
+        supabase.from('access_usage').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('audit_logs').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('audit_logs').select('id, action, entity_type, created_at').gte('created_at', startDate).limit(500),
+        supabase.from('immune_metrics').select('executor, total_runs, repair_successes, escalations, safe_failures').gte('run_at', sixHoursAgo),
+        supabase.from('immune_escalations').select('status, claimed_by').limit(1000),
+        supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('mesh_comms').select('category, source_module, target_module').gte('created_at', startDate).limit(1000),
+        supabase.from('agency_tasks').select('status, task_cost_cents, task_value_cents, compute_time_ms, created_at').gte('created_at', startDate).limit(1000),
+        supabase.from('agency_economics').select('total_cost_cents, total_value_cents, tasks_completed, avg_roi').order('period_date', { ascending: false }).limit(days),
+        supabase.from('auto_blog_posts').select('status, confidence_score, created_at').gte('created_at', startDate),
+        supabase.from('artifact_registry').select('category, tier, created_at').gte('created_at', startDate),
+        supabase.from('ai_usage_log').select('provider, tokens_used, cost').gte('created_at', startDate).limit(1000),
+        supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate),
+        supabase.from('mesh_comms').select('resolver_id, created_at').gte('created_at', startDate).not('resolver_id', 'is', null).limit(500),
       ]);
 
+      // Safe extractors for allSettled results
+      const val = <T,>(r: PromiseSettledResult<T>) => r.status === 'fulfilled' ? r.value : null;
+
       // Core counts
-      const brainEventsCount = brainEventsCountRes.count ?? 0;
-      const brainMetricsCount = brainMetricsCountRes.count ?? 0;
-      const usageCount = usageCountRes.count ?? 0;
-      const accessCount = accessCountRes.count ?? 0;
-      const auditCount = auditCountRes.count ?? 0;
+      const brainEventsCount = val(brainEventsCountRes)?.count ?? 0;
+      const brainMetricsCount = val(brainMetricsCountRes)?.count ?? 0;
+      const usageCount = val(usageCountRes)?.count ?? 0;
+      const accessCount = val(accessCountRes)?.count ?? 0;
+      const auditCount = val(auditCountRes)?.count ?? 0;
 
       const brainEvents = brainEventsRes.data || [];
       const usage = usageRes.data || [];
