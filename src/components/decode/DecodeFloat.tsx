@@ -404,7 +404,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         body: JSON.stringify({
           messages: llmMessages,
           agentId: "decode-global",
-          agentName: "DECODE",
+          agentName: "DECODE Agent",
           agentSubtitle: "Sovereign Cognitive Interface",
           agentPowers: ["Intent Interpretation", "Memory Recall", "Primitive Routing", "Personality Engine"],
           decodeMode: mode,
