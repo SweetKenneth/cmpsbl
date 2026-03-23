@@ -1,6 +1,6 @@
 /**
  * HARVEST — Barrel Export
- * Re-exports core module + CLM + Hardening + Discovery Primitives
+ * Re-exports core module + CLM + Hardening + Discovery Primitives + Ultimate Form
  */
 export * from '../harvest-module';
 export { runHarvestCLM, type HarvestCLMDiagnostic, type HarvestCLMReport } from './clm';
@@ -40,3 +40,9 @@ export {
   getHarvestDiscoveryReport,
   type HarvestDiscoveryReport,
 } from './discovery';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// HARVEST Ultimate Form — v9.0.0 "Leviathan"
+// ═══════════════════════════════════════════════════════════════════════════════
+import * as HarvestUltimate from '../../harvest/ultimate';
+export { HarvestUltimate };
