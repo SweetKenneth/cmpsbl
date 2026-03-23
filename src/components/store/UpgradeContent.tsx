@@ -131,7 +131,7 @@ const TIERS: {
       'Governance snapshots & audit trails',
       'Full export templates (PDF/CSV/JSON)',
       'Organization workspaces for teams',
-      'Early access to new nodes & resolvers',
+      'Early access to new agents, engines & resolvers',
       'Custom memory slots you configure',
       'White-glove onboarding call',
       'Dedicated Slack support channel',
