@@ -144,7 +144,7 @@ export default function AIOperatingSystem() {
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
         <meta
           property="og:description"
-          content="The first AI Operating System — 40-node cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization."
+          content="The first AI Operating System — 40-primitive cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/ai-operating-system" />
