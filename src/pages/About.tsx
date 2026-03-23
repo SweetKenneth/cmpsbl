@@ -63,7 +63,7 @@ const PILLARS = [
     icon: Brain,
     name: "REMEMBER",
      verb: "Memory that survives restarts",
-    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall across sessions and deployments. Free for all users.",
+    description: "4-tier persistent memory (hot, warm, cold, archive) gives every agent permanent recall across sessions and deployments. Free for all users.",
     color: "text-neon-cyan",
     bg: "bg-neon-cyan/10",
     border: "border-neon-cyan/20",

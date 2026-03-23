@@ -246,7 +246,7 @@ export default function ModulesHub() {
     <>
       <SEO
         title="All 40 Nodes — Full Matrix Architecture | CMPSBL"
-        description="Explore the complete 40-primitive substrate matrix across 4 categorys: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, and Shell."
+        description="Explore the complete 40-primitive substrate matrix across 4 categories: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, and Shell."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['AI substrate architecture', '40-primitive matrix', 'composable AI', 'cognitive kernel', 'AI operating system']}
         breadcrumbs={[

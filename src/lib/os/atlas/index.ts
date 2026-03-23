@@ -3,7 +3,7 @@
  * Single-source-of-truth substrate interface
  * 
  * The Atlas provides:
- * - Unified registry for all 40 primitives across 4 categorys (CORE·SYSTEM·CCR·OCG·Execution·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell)
+ * - Unified registry for all 40 primitives across 4 categories (CORE·SYSTEM·CCR·OCG·Execution·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell)
  * - Orchestration of 675+ capabilities, 76 engines, 24 meta-engines
  * - SEBA, Autoblog, and Test adapters
  * - Capability toggles with persistence

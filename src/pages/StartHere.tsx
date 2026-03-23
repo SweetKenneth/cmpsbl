@@ -58,7 +58,7 @@ const buildCapabilities = [
   {
     icon: Brain,
     title: "REMEMBER",
-    description: "Three-tier persistent memory (hot, warm, cold) gives every agent permanent recall across sessions and deployments.",
+    description: "4-tier persistent memory (hot, warm, cold, archive) gives every agent permanent recall across sessions and deployments.",
     color: "text-neon-cyan",
     bg: "bg-neon-cyan/10",
   },

@@ -161,7 +161,7 @@ export default function Foundations() {
                 <Layers className="w-6 h-6 text-primary mb-3" />
                 <h3 className="font-bold mb-2">Substrate Standard</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  The architectural specification — 40 primitives, 4 categorys, layered execution, mesh overlays, and synergy memories.
+                  The architectural specification — 40 primitives, 4 categories, layered execution, mesh overlays, and synergy memories.
                 </p>
                 <Link to="/ai-operating-system" className="inline-flex items-center gap-1 text-sm text-primary font-medium hover:underline">
                   Explore Platform <ArrowRight className="w-3.5 h-3.5" />

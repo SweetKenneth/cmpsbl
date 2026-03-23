@@ -171,7 +171,7 @@ export default function PromptFluidHome() {
                   <p className="text-primary font-semibold">AI Infrastructure Lab — Dallas, TX</p>
                 </div>
                 <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
-                  CMPSBL® is a cognitive operating system with 40 matrix nodes across 4 categorys spanning 200,000+ lines of production code. 
+                  CMPSBL® is a cognitive operating system with 40 matrix nodes across 4 categories spanning 200,000+ lines of production code. 
                   Our team focuses on persistent memory architectures, autonomous self-evolution, and model-agnostic AI routing. 
                   We serve as the canonical architects and technical experts for all substrate development.
                 </p>
@@ -354,17 +354,17 @@ export default function PromptFluidHome() {
                  </span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                The world's first public cognitive operating system — 10 entities, 5 mesh overlays, 
-                persistent memory, self-evolving architecture, and 175k+ lines of production code. 
+                The world's first public cognitive operating system — 40 primitives across 4 categories, 
+                persistent memory, self-evolving architecture, and 200k+ lines of production code. 
                 Free to start.
               </p>
 
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
                 {[
-                  { value: "24", label: "Primitives" },
-                  { value: "525+", label: "Capabilities" },
-                  { value: "300", label: "Memories" },
-                  { value: "100", label: "Engines" },
+                  { value: "40", label: "Primitives" },
+                  { value: "675+", label: "Capabilities" },
+                  { value: "4", label: "Categories" },
+                  { value: "Free", label: "To Start" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
                     <div className="text-2xl sm:text-3xl font-black text-white">{stat.value}</div>

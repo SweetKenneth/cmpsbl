@@ -640,7 +640,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (40 primitives across 4 categorys)
+  // Quick access module aliases (40 primitives across 4 categories)
   core,
   brain,
   decode,

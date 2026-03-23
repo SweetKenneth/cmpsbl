@@ -1024,7 +1024,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  40 primitives | 4 categorys | 500+ commands | 300 synergy memory chains | health: 100%
+│  40 primitives | 4 categories | 500+ commands | 300 synergy memory chains | health: 100%
 │  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  

@@ -88,7 +88,7 @@ export async function initializeSubstrate(): Promise<void> {
         if (result.success) activeCount++;
       }
       
-      console.log(`✅ Substrate initialized: ${activeCount + 1}/40 primitives active across 4 categorys`);
+      console.log(`✅ Substrate initialized: ${activeCount + 1}/40 primitives active across 4 categories`);
     }
     
     console.log('─────────────────────────────────────────');

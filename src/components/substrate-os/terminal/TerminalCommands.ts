@@ -1,6 +1,6 @@
 /**
  * Terminal Command Registry
- * 500+ commands across 40 primitives / 4 categorys
+ * 500+ commands across 40 primitives / 4 categories
  * Complete list of all substrate commands organized by sector
  *
  * Tier Gating: free | studio | creator | architect | governor

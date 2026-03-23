@@ -422,7 +422,7 @@ export default function SystemOverview() {
     <>
       <Helmet>
         <title>System Overview — 40-Node AI Substrate | CMPSBL®</title>
-        <meta name="description" content="From Memory to Silicon. A 40-primitive autonomous cognitive substrate across 4 categorys that crystallizes ideas into production software and hardware. For investors, builders, and the curious." />
+        <meta name="description" content="From Memory to Silicon. A 40-primitive autonomous cognitive substrate across 4 categories that crystallizes ideas into production software and hardware. For investors, builders, and the curious." />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground">
