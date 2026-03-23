@@ -2,7 +2,7 @@
  * ORACLE Node — Expansion Sovereignty Zone (ESZ)
  * Predictive modeling, Bayesian inference, Monte Carlo simulation.
  *
- * Re-exports core oracle-module and adds CLM + hardening layers.
+ * Re-exports core oracle-module and adds CLM + hardening + Ultimate Form layers.
  */
 
 export {
@@ -27,3 +27,6 @@ export {
 
 export { oracleCLM, runOracleCLMCycle, type OracleCLMInsight, type OracleCLMReport } from './clm';
 export { oracleHardeningReport, validateOracleInput, ORACLE_LIMITS } from './hardening';
+
+// ── v9.0.0 "Omniscience" — Ultimate Form ──
+export * as OracleUltimate from '../../../lib/oracle/ultimate';
