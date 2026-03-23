@@ -214,7 +214,7 @@ export function UpgradeContent() {
             { icon: Download, title: 'Exports & Artifacts', desc: 'Studio+ can export full capability packs with runtime, documentation, and implementation code. PDF/CSV/JSON templates.', color: 'text-neon-green' },
             { icon: Globe, title: 'Priority Routing', desc: 'Higher tiers get priority NEXUS routing, faster execution, and dedicated memory partitions.', color: 'text-sky-400' },
             { icon: Shield, title: 'Member Hub', desc: 'Saved Workflows, usage dashboards with ROI metrics, referral credits, export center, and priority status — all from one command center.', color: 'text-primary' },
-            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new nodes and resolvers.', color: 'text-neon-amber' },
+            { icon: Sparkles, title: 'Governance & Discovery', desc: 'Architect gets Private Discovery Pool, governance snapshots, audit trails, and early access to new agents and engines.', color: 'text-neon-amber' },
           ].map((item) => (
             <div key={item.title} className="flex items-start gap-3 text-left p-4 rounded-xl bg-card/50 border border-border/40 hover:border-primary/20 transition-colors">
               <item.icon className={cn("w-5 h-5 shrink-0 mt-0.5", item.color)} />
