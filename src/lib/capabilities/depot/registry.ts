@@ -433,7 +433,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'cognitive-fusion-synergy',
     name: 'Cognitive Fusion Synergy',
     category: 'intelligence',
-    description: 'NEXUS multi-provider reasoning fused with BRAIN memory and VISION performance data',
+    description: 'NEXUS Organ multi-provider reasoning fused with BRAIN Organ memory and VISION Agent performance data',
     requiredModules: ['NEXUS', 'BRAIN', 'VISION'],
     executorType: 'js',
     artifactFormat: 'zip',
