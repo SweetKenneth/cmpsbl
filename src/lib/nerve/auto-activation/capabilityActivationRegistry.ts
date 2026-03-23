@@ -443,6 +443,399 @@ export const ACTIVATION_RULES: CapabilityActivationRule[] = [
     cooldownMs: 1_800_000, governable: true, enabled: true,
     effect: 'Analyzes ETL pipeline bottlenecks and restructures data flow',
   },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // WAVE 2 — 50 ADDITIONAL ACTIVATION RULES (ACT_051–ACT_100)
+  // Strongest capabilities per node, reactive + scheduled
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ────────────────────────────────────────────────────────────
+  // T1 — CRITICAL (51–58): Deep security & integrity
+  // ────────────────────────────────────────────────────────────
+
+  {
+    id: 'ACT_051', name: 'Immune Response Orchestration',
+    capabilityId: 'imm_immune_response_orchestrator', ownerNode: 'IMMUNITY', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'immunity', signalType: 'pathogen_detected', minSeverity: 8 },
+    cooldownMs: 5_000, governable: false, enabled: true,
+    effect: 'Full immune response: isolate, neutralize, generate antibody rules',
+  },
+  {
+    id: 'ACT_052', name: 'Quarantine Zone Activation',
+    capabilityId: 'imm_quarantine_zone_manager', ownerNode: 'IMMUNITY', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'defense', signalType: 'infection_spreading', minSeverity: 9 },
+    cooldownMs: 3_000, governable: false, enabled: true,
+    effect: 'Isolates infected modules in quarantine zones with network fencing',
+  },
+  {
+    id: 'ACT_053', name: 'Identity Theft Response',
+    capabilityId: 'idn_identity_resolution_engine', ownerNode: 'IDENTITY', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'identity', signalType: 'identity_collision', minSeverity: 8 },
+    cooldownMs: 5_000, governable: false, enabled: true,
+    effect: 'Resolves identity conflicts and locks compromised credentials',
+  },
+  {
+    id: 'ACT_054', name: 'Tamper Detection Alert',
+    capabilityId: 'aud_tamper_detection_engine', ownerNode: 'AUDIT', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'audit', signalType: 'tamper_detected', minSeverity: 9 },
+    cooldownMs: 2_000, governable: false, enabled: true,
+    effect: 'Freezes audit chain, validates Merkle tree, preserves evidence',
+  },
+  {
+    id: 'ACT_055', name: 'Outbreak Containment',
+    capabilityId: 'imm_outbreak_containment_engine', ownerNode: 'IMMUNITY', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'immunity', signalType: 'outbreak_detected', minSeverity: 9,
+      condition: (p) => (p.affectedNodes as number) >= 3 },
+    cooldownMs: 5_000, governable: false, enabled: true,
+    effect: 'Multi-node containment with propagation blocking and sentinel coordination',
+  },
+  {
+    id: 'ACT_056', name: 'Governance Emergency Override',
+    capabilityId: 'gov_governance_escalation_router', ownerNode: 'GOVERNANCE', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'governance', signalType: 'emergency_escalation', minSeverity: 9 },
+    cooldownMs: 10_000, governable: false, enabled: true,
+    effect: 'Escalates to highest governance authority with emergency powers',
+  },
+  {
+    id: 'ACT_057', name: 'Fault Domain Isolation',
+    capabilityId: 'nrv_fault_domain_isolator', ownerNode: 'NERVE', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'nerve', signalType: 'fault_domain_breach', minSeverity: 8 },
+    cooldownMs: 5_000, governable: false, enabled: true,
+    effect: 'Isolates fault domains to prevent cross-boundary failure propagation',
+  },
+  {
+    id: 'ACT_058', name: 'Poison Message Quarantine',
+    capabilityId: 'rly_poison_message_quarantiner', ownerNode: 'RELAY', tier: 'T1_CRITICAL',
+    trigger: { sourceNode: 'relay', signalType: 'poison_message', minSeverity: 7 },
+    cooldownMs: 3_000, governable: false, enabled: true,
+    effect: 'Quarantines toxic messages, alerts origin node, preserves forensics',
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // T2 — OPERATIONAL (59–70): Infrastructure intelligence
+  // ────────────────────────────────────────────────────────────
+
+  {
+    id: 'ACT_059', name: 'Graceful Shutdown Orchestration',
+    capabilityId: 'nrv_graceful_shutdown_orchestrator', ownerNode: 'NERVE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'system', signalType: 'shutdown_requested', minSeverity: 5 },
+    cooldownMs: 30_000, governable: true, enabled: true,
+    effect: 'Drains in-flight signals, persists state, coordinates ordered node shutdown',
+  },
+  {
+    id: 'ACT_060', name: 'Relay Failover Engagement',
+    capabilityId: 'rly_relay_failover_manager', ownerNode: 'RELAY', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'relay', signalType: 'channel_down', minSeverity: 7 },
+    cooldownMs: 10_000, governable: true, enabled: true,
+    effect: 'Activates backup relay channels and reroutes message traffic',
+  },
+  {
+    id: 'ACT_061', name: 'Warm Standby Activation',
+    capabilityId: 'nrv_warm_standby_manager', ownerNode: 'NERVE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'nerve', signalType: 'primary_degraded', minSeverity: 6 },
+    cooldownMs: 30_000, governable: true, enabled: true,
+    effect: 'Promotes warm standby nodes to active and begins state sync',
+  },
+  {
+    id: 'ACT_062', name: 'Traffic Shaping Engagement',
+    capabilityId: 'nrv_traffic_shaping_engine', ownerNode: 'NERVE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'nerve', signalType: 'traffic_burst', minSeverity: 5,
+      condition: (p) => (p.burstRatio as number) > 3.0 },
+    cooldownMs: 15_000, governable: true, enabled: true,
+    effect: 'Shapes traffic with priority queuing and burst absorption',
+  },
+  {
+    id: 'ACT_063', name: 'Connection Pool Recovery',
+    capabilityId: 'nrv_connection_pool_guardian', ownerNode: 'NERVE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'nerve', signalType: 'pool_exhaustion', minSeverity: 6 },
+    cooldownMs: 20_000, governable: true, enabled: true,
+    effect: 'Evicts stale connections, expands pool, applies health checks',
+  },
+  {
+    id: 'ACT_064', name: 'Retry Budget Enforcement',
+    capabilityId: 'nrv_retry_budget_manager', ownerNode: 'NERVE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'nerve', signalType: 'retry_storm', minSeverity: 6,
+      condition: (p) => (p.retryRate as number) > 50 },
+    cooldownMs: 30_000, governable: true, enabled: true,
+    effect: 'Caps retry budgets to prevent thundering herd and cascading retries',
+  },
+  {
+    id: 'ACT_065', name: 'Fan-Out Coordination',
+    capabilityId: 'rly_fan_out_coordinator', ownerNode: 'RELAY', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'cortex', signalType: 'broadcast_requested', minSeverity: 3 },
+    cooldownMs: 10_000, governable: true, enabled: true,
+    effect: 'Coordinates multi-target message delivery with backpressure awareness',
+  },
+  {
+    id: 'ACT_066', name: 'Self-Healing Trigger',
+    capabilityId: 'imm_self_healing_trigger', ownerNode: 'IMMUNITY', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'medic', signalType: 'repair_needed', minSeverity: 5 },
+    cooldownMs: 60_000, governable: true, enabled: true,
+    effect: 'Triggers immune-system self-healing with recovery playbooks',
+  },
+  {
+    id: 'ACT_067', name: 'Consumer Group Rebalance',
+    capabilityId: 'rly_consumer_group_balancer', ownerNode: 'RELAY', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'relay', signalType: 'consumer_imbalance', minSeverity: 4 },
+    cooldownMs: 60_000, governable: true, enabled: true,
+    effect: 'Rebalances message consumer groups for even load distribution',
+  },
+  {
+    id: 'ACT_068', name: 'Engine Graceful Restart',
+    capabilityId: 'eng_restart_engine', ownerNode: 'ENGINEER', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'engineer', signalType: 'engine_unresponsive', minSeverity: 7 },
+    cooldownMs: 60_000, governable: true, enabled: true,
+    effect: 'Gracefully restarts unresponsive engine with state preservation',
+  },
+  {
+    id: 'ACT_069', name: 'Schema Evolution Management',
+    capabilityId: 'enc_schema_evolution_manager', ownerNode: 'ENCODE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'encode', signalType: 'schema_mismatch', minSeverity: 5 },
+    cooldownMs: 120_000, governable: true, enabled: true,
+    effect: 'Manages schema migration with backward compatibility validation',
+  },
+  {
+    id: 'ACT_070', name: 'Incident Response Automation',
+    capabilityId: 'incident_response_automator', ownerNode: 'DEFENSE', tier: 'T2_OPERATIONAL',
+    trigger: { sourceNode: 'defense', signalType: 'incident_declared', minSeverity: 6 },
+    cooldownMs: 30_000, governable: true, enabled: true,
+    effect: 'Executes automated incident response playbook with stakeholder notification',
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // T3 — INTELLIGENCE (71–82): Deep cognitive capabilities
+  // ────────────────────────────────────────────────────────────
+
+  {
+    id: 'ACT_071', name: 'Latent Pattern Extraction',
+    capabilityId: 'latent_pattern_extractor', ownerNode: 'DREAM', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'brain', signalType: 'pattern_cluster_found', minSeverity: 3 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Extracts latent patterns from accumulated signal clusters for new insights',
+  },
+  {
+    id: 'ACT_072', name: 'Scenario Simulation Launch',
+    capabilityId: 'scenario_simulation_engine', ownerNode: 'ORACLE', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'oracle', signalType: 'forecast_divergence', minSeverity: 4 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Runs Monte Carlo simulations on divergent forecasts to bound uncertainty',
+  },
+  {
+    id: 'ACT_073', name: 'Bias Detection Scan',
+    capabilityId: 'bias_detection_scanner', ownerNode: 'CONSCIENCE', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'conscience', signalType: 'fairness_drift', minSeverity: 4 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Scans recent decisions for systematic bias patterns and flags for review',
+  },
+  {
+    id: 'ACT_074', name: 'Threat Intelligence Aggregation',
+    capabilityId: 'imm_threat_intelligence_aggregator', ownerNode: 'IMMUNITY', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'defense', signalType: 'new_threat_intel', minSeverity: 3 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Aggregates threat intelligence from defense signals into immune memory bank',
+  },
+  {
+    id: 'ACT_075', name: 'Anomaly Root Cause Analysis',
+    capabilityId: 'anl_anomaly_root_cause_finder', ownerNode: 'ANALYTICS', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'analytics', signalType: 'anomaly_cluster', minSeverity: 5 },
+    cooldownMs: 120_000, governable: true, enabled: true,
+    effect: 'Traces anomaly clusters to root causes via causal graph traversal',
+  },
+  {
+    id: 'ACT_076', name: 'Immune Learning Cycle',
+    capabilityId: 'imm_immune_learning_engine', ownerNode: 'IMMUNITY', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'immunity', signalType: 'threat_resolved', minSeverity: 2 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Learns from resolved threats to strengthen future immune responses',
+  },
+  {
+    id: 'ACT_077', name: 'Predictive Model Recalibration',
+    capabilityId: 'predictive_model_calibrator', ownerNode: 'ORACLE', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'oracle', signalType: 'prediction_error_high', minSeverity: 4,
+      condition: (p) => (p.errorRate as number) > 0.15 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Recalibrates Bayesian prediction models using recent outcome data',
+  },
+  {
+    id: 'ACT_078', name: 'Metric Correlation Discovery',
+    capabilityId: 'anl_metric_correlation_discoverer', ownerNode: 'ANALYTICS', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'analytics', signalType: 'new_data_batch', minSeverity: 2,
+      condition: (p) => (p.batchSize as number) > 100 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Discovers hidden correlations between system metrics for new insights',
+  },
+  {
+    id: 'ACT_079', name: 'Creative Mutation Generation',
+    capabilityId: 'creative_mutation_generator', ownerNode: 'FORGE', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'evolution', signalType: 'stagnation_detected', minSeverity: 3 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Generates creative capability mutations to break evolutionary stagnation',
+  },
+  {
+    id: 'ACT_080', name: 'Data Lineage Tracking',
+    capabilityId: 'aud_data_lineage_tracker', ownerNode: 'AUDIT', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'audit', signalType: 'lineage_gap', minSeverity: 4 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Traces data provenance chains to fill lineage gaps and ensure traceability',
+  },
+  {
+    id: 'ACT_081', name: 'Forecast Confidence Scoring',
+    capabilityId: 'forecast_confidence_scorer', ownerNode: 'ORACLE', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'oracle', signalType: 'forecast_generated', minSeverity: 0 },
+    cooldownMs: 120_000, governable: true, enabled: true,
+    effect: 'Scores forecast reliability using historical accuracy and model uncertainty',
+  },
+  {
+    id: 'ACT_082', name: 'Behavioral Baseline Rebuild',
+    capabilityId: 'imm_behavioral_baseline_builder', ownerNode: 'IMMUNITY', tier: 'T3_INTELLIGENCE',
+    trigger: { sourceNode: 'immunity', signalType: 'baseline_stale', minSeverity: 2 },
+    cooldownMs: 3_600_000, governable: true, enabled: true,
+    effect: 'Rebuilds behavioral baselines from recent traffic patterns for anomaly detection',
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // T4 — OPTIMIZATION (83–92): Background performance intelligence
+  // ────────────────────────────────────────────────────────────
+
+  {
+    id: 'ACT_083', name: 'Attack Surface Mapping',
+    capabilityId: 'attack_surface_mapper', ownerNode: 'DEFENSE', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'defense', signalType: 'surface_scan_due', minSeverity: 0 },
+    cooldownMs: 3_600_000, governable: true, enabled: true,
+    effect: 'Maps complete attack surface and identifies newly exposed vectors',
+  },
+  {
+    id: 'ACT_084', name: 'Policy Conflict Detection',
+    capabilityId: 'gov_policy_conflict_detector', ownerNode: 'GOVERNANCE', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'governance', signalType: 'policy_updated', minSeverity: 2 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Scans for conflicting governance policies after updates and flags contradictions',
+  },
+  {
+    id: 'ACT_085', name: 'Permission Graph Audit',
+    capabilityId: 'idn_permission_graph_navigator', ownerNode: 'IDENTITY', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'identity', signalType: 'permission_audit_due', minSeverity: 0 },
+    cooldownMs: 3_600_000, governable: true, enabled: true,
+    effect: 'Traverses permission graph to detect over-privileged paths and orphan grants',
+  },
+  {
+    id: 'ACT_086', name: 'Relay Topology Optimization',
+    capabilityId: 'rly_relay_topology_optimizer', ownerNode: 'RELAY', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'relay', signalType: 'topology_suboptimal', minSeverity: 3 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Restructures relay topology for minimal latency and maximal throughput',
+  },
+  {
+    id: 'ACT_087', name: 'Encoding Performance Profile',
+    capabilityId: 'enc_encoding_performance_profiler', ownerNode: 'ENCODE', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'encode', signalType: 'encoding_slow', minSeverity: 4 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Profiles encoding pipeline bottlenecks and recommends codec optimizations',
+  },
+  {
+    id: 'ACT_088', name: 'Dynamic Pricing Adjustment',
+    capabilityId: 'eco_dynamic_pricing_engine', ownerNode: 'ECONOMY', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'economy', signalType: 'demand_shift', minSeverity: 3 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Adjusts pricing models based on demand elasticity and capacity utilization',
+  },
+  {
+    id: 'ACT_089', name: 'Compliance Gap Analysis',
+    capabilityId: 'gov_compliance_gap_analyzer', ownerNode: 'GOVERNANCE', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'governance', signalType: 'regulation_change', minSeverity: 3 },
+    cooldownMs: 600_000, governable: true, enabled: true,
+    effect: 'Identifies compliance gaps from regulatory changes and generates remediation plans',
+  },
+  {
+    id: 'ACT_090', name: 'Data Quality Scoring',
+    capabilityId: 'data_quality_scorer', ownerNode: 'HARVEST', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'harvest', signalType: 'ingestion_complete', minSeverity: 0 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Scores freshly ingested data for completeness, accuracy, and consistency',
+  },
+  {
+    id: 'ACT_091', name: 'Simulation Drift Correction',
+    capabilityId: 'simulation_drift_detector', ownerNode: 'ECHO', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'echo', signalType: 'simulation_drift', minSeverity: 4 },
+    cooldownMs: 300_000, governable: true, enabled: true,
+    effect: 'Detects and corrects drift between digital twin simulations and live state',
+  },
+  {
+    id: 'ACT_092', name: 'Preventive Maintenance Scheduling',
+    capabilityId: 'eng_preventive_maintenance_scheduler', ownerNode: 'ENGINEER', tier: 'T4_OPTIMIZATION',
+    trigger: { sourceNode: 'engineer', signalType: 'decay_threshold_crossed', minSeverity: 3 },
+    cooldownMs: 1_800_000, governable: true, enabled: true,
+    effect: 'Schedules preventive maintenance based on EMA decay projections',
+  },
+
+  // ────────────────────────────────────────────────────────────
+  // T5 — AUTONOMOUS (93–100): Deep self-improvement cycles
+  // ────────────────────────────────────────────────────────────
+
+  {
+    id: 'ACT_093', name: 'Nocturnal Optimization Run',
+    capabilityId: 'nocturnal_optimization_runner', ownerNode: 'DREAM', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 180_000 },
+    cooldownMs: 7_200_000, governable: true, enabled: true,
+    effect: 'Runs full nocturnal optimization: defragmentation, index rebuilds, cache warming',
+  },
+  {
+    id: 'ACT_094', name: 'Resilience Stress Testing',
+    capabilityId: 'imm_resilience_stress_tester', ownerNode: 'IMMUNITY', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 600_000 },
+    cooldownMs: 7_200_000, governable: true, enabled: true,
+    effect: 'Runs chaos-engineering stress tests against immune defenses during idle',
+  },
+  {
+    id: 'ACT_095', name: 'Orphan Account Cleanup',
+    capabilityId: 'idn_orphan_account_detector', ownerNode: 'IDENTITY', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 300_000 },
+    cooldownMs: 7_200_000, governable: true, enabled: true,
+    effect: 'Scans for orphaned accounts, expired tokens, and stale sessions for cleanup',
+  },
+  {
+    id: 'ACT_096', name: 'Artifact Recombination Discovery',
+    capabilityId: 'artifact_recombination_engine', ownerNode: 'FORGE', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 240_000 },
+    cooldownMs: 3_600_000, governable: true, enabled: true,
+    effect: 'Recombines existing artifacts to discover novel capability compositions',
+  },
+  {
+    id: 'ACT_097', name: 'Immune Strength Assessment',
+    capabilityId: 'imm_immune_strength_scorer', ownerNode: 'IMMUNITY', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 120_000 },
+    cooldownMs: 3_600_000, governable: true, enabled: true,
+    effect: 'Comprehensive immune strength assessment across all defense layers',
+  },
+  {
+    id: 'ACT_098', name: 'Control Effectiveness Audit',
+    capabilityId: 'aud_control_effectiveness_scorer', ownerNode: 'AUDIT', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 600_000 },
+    cooldownMs: 7_200_000, governable: true, enabled: true,
+    effect: 'Scores effectiveness of all security controls and flags degraded ones',
+  },
+  {
+    id: 'ACT_099', name: 'Idea Incubation Cycle',
+    capabilityId: 'idea_incubation_scheduler', ownerNode: 'DREAM', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 900_000 },
+    cooldownMs: 7_200_000, governable: true, enabled: true,
+    effect: 'Incubates promising but unvalidated ideas from the discovery pipeline',
+  },
+  {
+    id: 'ACT_100', name: 'Cross-Domain Policy Harmonization',
+    capabilityId: 'gov_cross_domain_policy_harmonizer', ownerNode: 'GOVERNANCE', tier: 'T5_AUTONOMOUS',
+    trigger: { sourceNode: 'system', signalType: 'idle_detected', minSeverity: 0,
+      condition: (p) => (p.idleDurationMs as number) > 600_000 },
+    cooldownMs: 7_200_000, governable: true, enabled: true,
+    effect: 'Harmonizes policies across governance domains to eliminate contradictions',
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════
