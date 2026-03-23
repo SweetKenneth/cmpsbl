@@ -207,3 +207,31 @@ export {
   type DeferReason,
   type GuardedTriggerResult,
 } from './chainOrchestratorGuard';
+
+// 13. Capability Auto-Activation Engine
+export {
+  processSignal,
+  governanceBlock,
+  governanceUnblock,
+  getGovernanceBlocks,
+  configureEngine,
+  getEngineConfig,
+  setEnabled as setAutoActivationEnabled,
+  getEngineHealth,
+  getRecentEvents as getRecentActivations,
+  getEventsForRule as getActivationsForRule,
+  resetEngine as resetAutoActivation,
+  ACTIVATION_RULES,
+  getRule as getActivationRule,
+  getRulesByTier,
+  getRulesForNode as getActivationRulesForNode,
+  getEnabledRules as getEnabledActivationRules,
+  getRegistryStats as getActivationRegistryStats,
+  type ActivationOutcome,
+  type ActivationEvent,
+  type EngineConfig as AutoActivationConfig,
+  type EngineHealth as AutoActivationHealth,
+  type ActivationTier,
+  type ActivationTrigger,
+  type CapabilityActivationRule,
+} from '../../../nerve/auto-activation';
