@@ -169,7 +169,7 @@ const modulesByLayer = {
     },
     {
       id: "integration",
-      name: "INTEGRATION",
+      name: "INTEGRATION Organ",
       description: "Enterprise adapters, LLM governance",
       icon: Plug,
       color: "text-neon-green",
