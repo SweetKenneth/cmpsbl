@@ -284,7 +284,7 @@ const modulesByLayer = {
     },
     {
       id: "oracle",
-      name: "ORACLE",
+      name: "ORACLE Engine",
       description: "Predictive analytics, scenario simulation",
       icon: Compass,
       color: "text-primary",
