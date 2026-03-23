@@ -39,7 +39,7 @@ const TIER_NAMES: Record<number, string> = {
 
 const SKILL_DEFINITIONS: Omit<Skill, 'is_unlocked' | 'progress'>[] = [
   // Tier 1 — Foundation
-  { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize the substrate client and connect to the 40-node cognitive mesh', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'intent_routing'], icon: '📚' },
+  { skill_key: 'sdk_basics', name: 'SDK Fundamentals', description: 'Initialize the substrate client and connect to the 40-primitive cognitive mesh', category: 'foundation', tier: 1, xp_required: 100, prerequisites: [], unlocks: ['memory_ops', 'intent_routing'], icon: '📚' },
   { skill_key: 'memory_ops', name: 'BRAIN Memory API', description: '4-tier persistent memory: store, recall, build context, and DREAM consolidation', category: 'foundation', tier: 1, xp_required: 150, prerequisites: ['sdk_basics'], unlocks: ['nexus_routing'], icon: '🧠' },
   { skill_key: 'intent_routing', name: 'Intent Mesh', description: 'broadcastIntent(), resolver routing, receipt logging, and mesh telemetry', category: 'foundation', tier: 1, xp_required: 125, prerequisites: ['sdk_basics'], unlocks: ['resolver_patterns'], icon: '🔀' },
 
