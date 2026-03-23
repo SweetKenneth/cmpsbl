@@ -485,7 +485,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'threat-learning-synergy',
     name: 'Threat Learning Synergy',
     category: 'security',
-    description: 'DEFENSE events feed BRAIN pattern recognition for VISION anomaly detection',
+    description: 'DEFENSE Layer events feed BRAIN Organ pattern recognition for VISION Agent anomaly detection',
     requiredModules: ['DEFENSE', 'BRAIN', 'VISION'],
     executorType: 'js',
     artifactFormat: 'zip',
