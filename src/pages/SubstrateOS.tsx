@@ -484,7 +484,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'evolution' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="Self-evolution engine with shadow-apply verification.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="EVOLUTION" description="EVOLUTION Layer — self-evolution with shadow-apply verification.">
                 <PanelContainer id="evolution"><Suspense fallback={<PanelLoader />}><EvolutionTab /></Suspense></PanelContainer>
               </TierGate>
             )}
