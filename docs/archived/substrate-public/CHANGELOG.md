@@ -4,6 +4,12 @@
 
 ---
 
+## v16.2.0 — 2026-03-23
+
+- **REFLEX Ultimate "Impulse Prime"** — 10 new systems: Edge Fleet Manager (200-node fleet + health scoring + auto-failover), Priority Rule Engine v2 (tiered eval + conflict detection), Sub-10ms Decision Pipeline (Welford's P99 + budget enforcement), Edge Function Router (5 strategies + composite scoring), Predictive Pre-computation (pattern learning + sub-1ms cache hits), Edge State Synchronizer (vector clocks + conflict resolution), Warm Cache Engine (LFU+LRU + TTL + warm-up), Throughput & Stall Detector (stall detection + backpressure), Edge Telemetry Aggregator (Z-score anomaly detection), Edge Resilience Controller (circuit breakers + L0-L4 degradation).
+
+---
+
 ## v16.1.0 — 2026-03-23
 
 - **SIMULATE Ultimate "Crucible Prime"** — 10 new systems: Monte Carlo Core (Welford's + convergence detection), Multi-Dimensional Scenario Engine (11 templates + compound composition), Digital Twin Forker (state forking + branching + diff), Temporal Projector (event injection + decay/recovery), Cost & Resource Projector (exhaustion dates + budget runway), A/B Comparator (Cohen's d effect size), Blast Radius Projector (35-edge BFS dependency graph), Chaos Library (10 calibrated scenarios), Prediction Accuracy Tracker (Hebbian calibration), Simulation Telemetry (full audit trail).
