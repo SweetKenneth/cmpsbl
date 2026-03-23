@@ -51,7 +51,7 @@ Code Change → PR Review → Automated Tests → Build → Staging Deploy → S
 | Staging Deploy | Successful deployment | Block production |
 | Smoke Tests | Critical paths verified | Block production |
 | Production Deploy | Zero-downtime deploy | Rollback |
-| Health Check | Integrity seals pass (40-node) | Rollback |
+| Health Check | Integrity seals pass (40-primitive) | Rollback |
 | Ironclad Monitor | Rate limits, bulkheads, auto-restore | Alert |
 
 ## 5. Environment Separation
@@ -80,7 +80,7 @@ Code Change → PR Review → Automated Tests → Build → Staging Deploy → S
 2. Initiate rollback via SYSTEM control plane or one-click rollback in Evolution CC.
 3. Restore previous edge function version.
 4. Apply database rollback migration if schema changed.
-5. Verify integrity seals post-rollback (40-node weighted sum = 1.000).
+5. Verify integrity seals post-rollback (40-primitive weighted sum = 1.000).
 6. Document incident in AUDIT.
 7. Scanner Orchestrator adds regression test for the failure.
 
@@ -143,7 +143,7 @@ The substrate client supports Progressive Web App deployment:
 
 | System | Monitored By | Frequency |
 |--------|-------------|-----------|
-| 40-node health matrix | CORE integrity seal | Continuous |
+| 40-primitive health matrix | CORE integrity seal | Continuous |
 | Circuit breaker states | Ironclad fabric | Every 30s |
 | NEXUS provider health | NEXUS cost ledger | Per-request |
 | Database performance | Analytics snapshots | Every 5 min |
@@ -158,7 +158,7 @@ The substrate client supports Progressive Web App deployment:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added full-backup edge function, disaster recovery backup documentation, memory/visitor/developer monitoring, 60+ tables |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added full-backup edge function, disaster recovery backup documentation, memory/visitor/developer monitoring, 60+ tables |
 | 2026-03-03 | System | Added edge function fleet, PWA support, Ironclad monitoring, Evolution CC rollback, Scanner integration, CLM/ENGINEER monitoring |
 | 2026-03-03 | System | Verified deployment topology for v13.1.0 |
 | 2026-03-01 | System | Initial canonical deployment manual |

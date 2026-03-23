@@ -130,7 +130,7 @@ Each export includes:
 
 - **Structural fingerprint** — Hash-based integrity seal
 - **CJPI provenance** — Scoring details and tier classification
-- **Node chain** — The substrate nodes involved in the capability
+- **Primitive chain** — The substrate primitives involved in the capability
 - **Timestamp** — When the capability was crystallized and exported
 - **Manifest version** — Export adapter version used
 

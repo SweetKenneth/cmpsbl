@@ -21,7 +21,7 @@ A development team maintains a large codebase and wants to discover optimization
 ### How CMPSBL Helps
 
 1. **Ingest** the codebase through the Ascension pipeline
-2. The substrate runs discovery cycles, testing the code against 40 nodes
+2. The substrate runs discovery cycles, testing the code against 40 primitives
 3. The Memory Stream identifies high-value interaction patterns
 4. Discovered capabilities are crystallized and exported back to the team
 5. Recursive re-ingestion compounds discovery over time
@@ -71,8 +71,8 @@ An independent developer has built a utility library and wants to understand wha
 ### How CMPSBL Helps
 
 1. Upload the library through Ascension
-2. The substrate treats it as a Candidate Node
-3. Discovery cycles reveal interaction chains with existing nodes
+2. The substrate treats it as a Candidate Primitive
+3. Discovery cycles reveal interaction chains with existing primitives
 4. The developer receives Ascended Memories — crystallized capabilities that combine their code with substrate primitives
 
 ### Outcome
@@ -89,7 +89,7 @@ A research group studying cognitive architectures wants to experiment with multi
 
 ### How CMPSBL Helps
 
-- Access to a 40-node cognitive matrix
+- Access to a 40-primitive cognitive matrix
 - Observable Memory Stream with CJPI scoring
 - Governed mutation pipeline for controlled experiments
 - Audit chain for reproducible research

@@ -4,7 +4,7 @@
 
 | Term | Definition |
 |------|-----------|
-| **Substrate** | The complete runtime system comprising all modules, layers, and control planes. |
+| **Substrate** | The complete runtime system comprising all primitives, layers, and control planes. |
 | **Module** | A discrete functional unit within the substrate (e.g., NEXUS, DECODE, DEFENSE). |
 | **Spine** | The vertical core of the architecture: CORE → SYSTEM → CCR. |
 | **OCG** | Operational Compliance Grid — boundary enforcement layer (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT). |
@@ -12,7 +12,7 @@
 | **Field** | Cross-cutting transformation fabric that permeates all layers (EVOLUTION, IMMUNITY, INTENT). |
 | **Plane** | Supervisory overlay (GOVERNANCE). |
 | **Shell** | Outer containment boundary (DEFENSE). |
-| **Matrix Node** | A weighted registry entry representing a module's role and health contribution. |
+| **Matrix Primitive** | A weighted registry entry representing a primitive.s role and health contribution. |
 | **Circuit Breaker** | Isolation mechanism that prevents cascading failures across modules. |
 | **Epoch** | A major version boundary with architectural significance. |
 | **Crown Jewel** | A capability classified as admin-only, excluded from all external API tiers. |

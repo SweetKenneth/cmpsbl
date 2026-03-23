@@ -116,7 +116,7 @@ CLM operates as a high-velocity training pipeline generating data across existin
 - Warm → Cold: After retention policy threshold (varies by data category).
 - Cold → Warm: On-demand retrieval with caching for repeated access.
 - Cold → Deletion: After retention period expires (automated cleanup).
-- CLM Distillation: Warm learning data → compressed Cold knowledge → MEMORY module integration.
+- CLM Distillation: Warm learning data → compressed Cold knowledge → MEMORY Organ integration.
 - **Emergency cascade**: When any tier exceeds 2x capacity, bulk demotion activates automatically.
 
 ## 8. DREAM Synthesis Data Model
@@ -205,7 +205,7 @@ Creation → Validation → Storage → Active Use → Archival → Deletion
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added disaster recovery backup system, memory tier capacity enforcement, developer API data model, visitor analytics tables, 60+ tables |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive taxonomy, added disaster recovery backup system, memory tier capacity enforcement, developer API data model, visitor analytics tables, 60+ tables |
 | 2026-03-03 | System | Added CLM data model, DREAM synthesis, INTEL retention, control plane persistence, expanded schema registry to 50+ tables |
 | 2026-03-03 | System | Added AutoBlog quality pipeline tables |
 | 2026-03-01 | System | Initial canonical data and memory model |

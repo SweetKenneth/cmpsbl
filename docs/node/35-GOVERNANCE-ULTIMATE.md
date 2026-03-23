@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-GOVERNANCE v9.0.0 "Parliament Prime" is the substrate's supreme supervisory plane — every mutation, tier change, scope escalation, and high-risk action flows through GOVERNANCE for policy evaluation, approval, compliance verification, and decision recording. It provides 10 Ultimate Form systems spanning composable policy DSL, multi-party approval workflows, cascading veto propagation, formal governance state machine, drift detection with auto-correction, production compliance evaluation, hash-chained decision audit, governance intelligence with CLM, cross-node policy enforcement, and unified telemetry.
+GOVERNANCE v9.0.0 "Parliament Prime" is the substrate's supreme supervisory plane — every mutation, tier change, scope escalation, and high-risk action flows through GOVERNANCE for policy evaluation, approval, compliance verification, and decision recording. It provides 10 Ultimate Form systems spanning composable policy DSL, multi-party approval workflows, cascading veto propagation, formal governance state machine, drift detection with auto-correction, production compliance evaluation, hash-chained decision audit, governance intelligence with CLM, cross-primitive policy enforcement, and unified telemetry.
 
 ---
 
@@ -21,7 +21,7 @@ External Action / Mutation Request
 [4] Governance State Machine     ← Mode determines default decision (allow/deny)
         │
         ▼
-[9] Cross-Node Policy Gate       ← Per-node pre-execution gates
+[9] Cross-Primitive Policy Gate       ← Per-node pre-execution gates
         │
         ▼
 [1] Policy Expression Engine     ← Composable DSL: deny/require/limit/scope_match
@@ -124,7 +124,7 @@ External Action / Mutation Request
 - **Appeal tracking**: Policies with high appeal-to-trigger ratios flagged as bottlenecks
 - **Trend analysis**: per-policy improving/stable/degrading trends
 
-## System 9: Cross-Node Policy Enforcement
+## System 9: Cross-Primitive Policy Enforcement
 
 - **Pre-execution policy gates**: Every node action must pass through GOVERNANCE gate
 - **Per-node overrides**: Force decision for all gates on a specific node
@@ -162,7 +162,7 @@ DEFENSE    ──→ GOVERNANCE (threat signals → mode escalation)
 IDENTITY   ──→ GOVERNANCE (governor verification for mode changes)
 CORTEX     ←── GOVERNANCE (orchestration policy enforcement)
 ACCESS     ──→ GOVERNANCE (tier/scope changes require approval)
-ALL NODES  ──→ GOVERNANCE (pre-execution cross-node policy gate)
+ALL NODES  ──→ GOVERNANCE (pre-execution cross-primitive policy gate)
 ```
 
 ---

@@ -17,7 +17,7 @@ This document describes Signal Forge — the blueprint synthesis engine integrat
 Signal Forge (`forge.signal_forge`) is a blueprint synthesis engine within the FORGE node. It produces production-grade architecture blueprints that are:
 
 - Scored via CJPI validation
-- Mapped to the 40-node matrix
+- Mapped to the 40-primitive matrix
 - Exportable as standalone designs
 
 The narrative framing: "The system discovered working software architectures."
@@ -75,7 +75,7 @@ Provide a seed — a description of the system or capability you want to design:
 
 Signal Forge:
 
-1. Analyzes the seed against the 40-node capability matrix
+1. Analyzes the seed against the 40-primitive capability matrix
 2. Generates candidate architectures
 3. Scores each via CJPI validation
 4. Selects the highest-scoring design
@@ -117,7 +117,7 @@ Signal Forge features a mobile-first, high-density design with:
 
 ## 7. Connection to the Substrate
 
-Signal Forge blueprints reference real substrate nodes and resolvers. A blueprint produced by Signal Forge can be implemented directly using the substrate API.
+Signal Forge blueprints reference real substrate primitives and resolvers. A blueprint produced by Signal Forge can be implemented directly using the substrate API.
 
 Blueprints are not theoretical — they map to the live capability surface.
 

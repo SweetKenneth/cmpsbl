@@ -14,7 +14,7 @@ This document explains how the CMPSBL cognitive substrate operates, from intent 
 
 ## 1. Overview
 
-CMPSBL is a cognitive operating system composed of 40 autonomous nodes across 12 sectors. It provides:
+CMPSBL is a cognitive operating system composed of 40 autonomous primitives across 4 categories. It provides:
 
 - **Intent-based execution** — All actions route through a central mesh
 - **Persistent memory** — Vector search, contradiction detection, spaced repetition
@@ -66,7 +66,7 @@ Every intent execution produces a receipt — a tamper-evident audit record cont
 
 ## 3. The Node Matrix
 
-CMPSBL's 40 nodes are organized into 12 functional sectors:
+CMPSBL's 40 primitives are organized into 4 functional categories:
 
 | Sector | Nodes | Function |
 |---|---|---|
@@ -83,7 +83,7 @@ CMPSBL's 40 nodes are organized into 12 functional sectors:
 | Adaptation | REFLEX, NERVE | Reactive behavior, sensing |
 | Encoding | ENCODE, DECODE | Transformation, interpretation |
 
-Each node operates autonomously. Nodes never call each other directly — all interaction flows through the intent mesh.
+Each primitive operates autonomously. Primitives never call each other directly — all interaction flows through the intent mesh.
 
 ---
 
@@ -152,7 +152,7 @@ Ascension is the lifecycle where external developer software enters the substrat
 ### Phases
 
 1. **INGEST** — Developer software is introduced and analyzed
-2. **ASCENSION** — The software runs as a Candidate Node through discovery cycles against the 40-node matrix
+2. **ASCENSION** — The software runs as a Candidate Primitive through discovery cycles against the 40-primitive matrix
 3. **CRYSTALLIZATION** — Successful interaction chains scoring ≥ 68 CJPI are crystallized
 4. **ASCENDED MEMORY** — The resulting artifacts are available for export
 
@@ -213,7 +213,7 @@ The substrate generates telemetry through mesh communications. Telemetry is alwa
 Key telemetry surfaces:
 
 - **Intent Mesh** — Real-time visualization of intent routing
-- **Node Health** — Status of all 40 nodes
+- **Primitive Health** — Status of all 40 primitives
 - **Memory Stream** — Discovery activity feed
 - **Resolver Activity** — Execution metrics per resolver
 

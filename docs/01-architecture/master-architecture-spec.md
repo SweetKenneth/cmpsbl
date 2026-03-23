@@ -6,15 +6,15 @@ This document defines the complete architectural specification for the CMPSBL su
 
 ## 2. System Thesis
 
-The CMPSBL substrate is a field-based cognitive kernel that operates as a self-governing AI orchestration layer. It organizes **40 nodes** across a **12-sector** Spine / Grid / Zone / Field / Plane / Shell topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance. The system is designed for autonomous operation under human oversight, with every action subject to legitimacy checks, audit logging, and rollback capability.
+The CMPSBL substrate is a field-based cognitive kernel that operates as a self-governing AI orchestration layer. It organizes **40 primitives** across a **4-category** Organs / Layers / Engines / Agents taxonomy, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance. The system is designed for autonomous operation under human oversight, with every action subject to legitimacy checks, audit logging, and rollback capability.
 
 The substrate is not an application — it is infrastructure. It provides the execution surface on which cognitive agents, memory systems, and compliance grids operate.
 
 ## 3. Architectural Principles
 
-- **Dependency-ordered boot**: Modules initialize in strict topological order.
-- **Weighted integrity**: System health is a deterministic weighted sum across all 40 nodes (Σ = 1.000).
-- **Circuit-breaker isolation**: Every module has independent failure tracking; open breakers force health to 0.
+- **Dependency-ordered boot**: Primitives initialize in strict topological order.
+- **Weighted integrity**: System health is a deterministic weighted sum across all 40 primitives (Σ = 1.000).
+- **Circuit-breaker isolation**: Every primitive has independent failure tracking; open breakers force health to 0.
 - **Field permeation**: Fields (IMMUNITY, INTENT) cross-cut all layers rather than stacking.
 - **GOVERNANCE supervision**: Every mutating action requires legitimacy approval.
 - **DEFENSE terminal enforcement**: The outermost boundary is non-negotiable.
@@ -225,22 +225,22 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 1. External request arrives at DEFENSE (Shell).
 2. DEFENSE performs threat assessment (IP reputation, behavioral analysis, payload inspection).
 3. Approved requests route to NEXUS for provider/model selection.
-4. NEXUS delegates to appropriate Execution module (DECODE, ENCODE, CORTEX, etc.).
-5. Execution module processes request, consulting CCR (BRAIN, MEMORY, DREAM) as needed.
+4. NEXUS delegates to appropriate Execution primitive (DECODE, ENCODE, CORTEX, etc.).
+5. Execution primitive processes request, consulting CCR (BRAIN, MEMORY, DREAM) as needed.
 6. OCG modules enforce compliance boundaries throughout execution.
 7. Expansion zones (ESZ, EPZ, EMZ) provide specialized capabilities when invoked.
 8. Response returns through NEXUS → DEFENSE → Client.
 
 ### State Transitions
-- **Boot** → CORE initializes → layers cascade → all 40 nodes online.
+- **Boot** → CORE initializes → layers cascade → all 40 primitives online.
 - **Steady State** → Request processing, health monitoring, periodic persistence.
-- **Degraded** → Circuit breaker open on one or more nodes; system continues with reduced capability.
+- **Degraded** → Circuit breaker open on one or more primitives; system continues with reduced capability.
 - **Zone Isolated** → Entire expansion zone (ESZ/EPZ/EMZ/CSZ) degraded; core operations continue.
 - **Recovery** → Breaker reset, state reconciliation, audit verification.
 
 ## 9. Isolation Boundaries
 
-- Each of the 40 nodes operates within its own circuit-breaker boundary.
+- Each of the 40 primitives operates within its own circuit-breaker boundary.
 - Expansion zones (ESZ, EPZ, EMZ, CSZ) provide zone-level isolation — an entire zone can degrade gracefully.
 - Module failure does not propagate unless RIPPLE detects a cascade chain.
 - SANDBOX provides execution isolation for untrusted code.
@@ -251,9 +251,9 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 
 | Domain | Scope | Impact | Recovery |
 |--------|-------|--------|----------|
-| Module Failure | Single node | Degraded capability | Circuit breaker reset |
-| Zone Failure | ESZ/EPZ/EMZ/CSZ (3-4 nodes) | Zone capabilities offline | Zone-level recovery |
-| Cascade Chain | Multiple nodes | Significant degradation | Origin arrest, staged recovery |
+| Primitive Failure | Single primitive | Degraded capability | Circuit breaker reset |
+| Category Failure | ESZ/EPZ/EMZ/CSZ (3-4 primitives) | Zone capabilities offline | Zone-level recovery |
+| Cascade Chain | Multiple primitives | Significant degradation | Origin arrest, staged recovery |
 | Persistence Failure | Storage layer | Runtime continues, durability lost | WAL replay, snapshot restore |
 | Governance Conflict | Decision layer | Action blocked | Evaluation, manual override |
 | CORE Failure | System-critical | Full system halt | Restart from boot sequence |
@@ -341,11 +341,11 @@ DEFENSE — encloses all sectors
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-22 | System | v14.2.0 — Added OBSERVER auxiliary node, expanded all node capability surfaces with standardized lifecycle (init/health/resilience/hardening/runCLM/upgradeEngine), updated node docs |
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node/12-sector topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive/4-category topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
 | 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
 | 2026-03-03 | System | v13.1.0 — AutoBlog quality pipeline, adaptive publish governor, semantic drift, confidence governance |
 | 2026-03-03 | System | Expanded to 38-node architecture with ESZ/EPZ/EMZ/CSZ zone shielding |
-| 2026-03-01 | System | Initial canonical specification (24 nodes) |
+| 2026-03-01 | System | Initial canonical specification (24 primitives) |
 
 ## 16. Related Documents
 
@@ -355,7 +355,7 @@ DEFENSE — encloses all sectors
 - [Evolution & Versioning Framework](../05-evolution-versioning/evolution-and-versioning-framework.md)
 - [Observability & Telemetry Handbook](../06-observability/observability-telemetry-handbook.md)
 - [Engineering Proof & Scale](../14-engineering-proof/engineering-proof-and-scale.md)
-- [Internal: Topology & Module Registry](../internal/01-topology-and-module-registry.md)
+- [Internal: Topology Topology & Module Registry Primitive Registry](../internal/01-topology-and-module-registry.md)
 - [Internal: Ironclad Hardening Fabric](../internal/30-ironclad-hardening-fabric.md)
 
 ---

@@ -111,9 +111,9 @@ updateBaseline(signal):
      - Requires 10+ normal observations to re-include
 ```
 
-### 2. Cross-Node Correlation
+### 2. Cross-Primitive Correlation
 
-IMMUNITY correlates signals across nodes to detect coordinated attacks:
+IMMUNITY correlates signals across primitives to detect coordinated attacks:
 
 ```
 correlateSignals(signals[]):

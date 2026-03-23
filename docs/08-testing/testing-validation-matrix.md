@@ -125,7 +125,7 @@ The Scanner Orchestrator provides continuous quality validation:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added disaster recovery testing, memory tier overflow chaos test, developer API integration tests, backup load testing |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added disaster recovery testing, memory tier overflow chaos test, developer API integration tests, backup load testing |
 | 2026-03-03 | System | Added SHADOW testing, SEBA pipeline gates, Scanner Orchestrator validation, chaos testing for Ironclad/CSZ/agents, engine coverage targets |
 | 2026-03-03 | System | Verified testing matrix for v13.1.0 |
 | 2026-03-01 | System | Initial canonical testing matrix |

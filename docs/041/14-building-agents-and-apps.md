@@ -59,7 +59,7 @@ User Activity
 
 ### Workflow Automation
 
-A multi-step process orchestrated across substrate nodes.
+A multi-step process orchestrated across substrate primitives.
 
 ```
 Trigger Event

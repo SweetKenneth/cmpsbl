@@ -110,7 +110,7 @@ Decision Request
 
 ## System 6: Edge State Synchronizer
 
-- **Vector Clock Ordering**: Lamport-style vector clocks for causal ordering across nodes
+- **Vector Clock Ordering**: Lamport-style vector clocks for causal ordering across primitives
 - **3-Way Clock Comparison**: before, after, concurrent — determines sync direction
 - **Conflict Resolution**: Last-write-wins with merged vector clocks
 - **Full Sync**: Synchronize all keys between two nodes in one operation

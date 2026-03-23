@@ -14,7 +14,7 @@ This document describes Ascension — the proprietary evolution lifecycle where 
 
 ## 1. What Is Ascension?
 
-Ascension is the process where external developer software is introduced into the CMPSBL cognitive substrate as a Candidate Node. The substrate runs discovery cycles, testing interaction patterns between the developer's code and the 40-node matrix. Successful chains are crystallized into Ascended Memories — portable capability artifacts with structural dependencies on both the developer's code and the substrate.
+Ascension is the process where external developer software is introduced into the CMPSBL cognitive substrate as a Candidate Primitive. The substrate runs discovery cycles, testing interaction patterns between the developer's code and the 40-primitive matrix. Successful chains are crystallized into Ascended Memories — portable capability artifacts with structural dependencies on both the developer's code and the substrate.
 
 ---
 
@@ -35,9 +35,9 @@ Developer software is uploaded and analyzed. The system identifies entry points,
 
 ### Phase 2: ASCENSION
 
-The ingested code operates as a Candidate Node within the substrate. Discovery cycles run, testing the code's interactions against all 40 substrate nodes across 12 sectors.
+The ingested code operates as a Candidate Primitive within the substrate. Discovery cycles run, testing the code's interactions against all 40 substrate primitives across 4 categories.
 
-This phase is visualized through a cinematic orbital canvas showing collision cycles between the candidate and substrate nodes.
+This phase is visualized through a cinematic orbital canvas showing collision cycles between the candidate and substrate primitives.
 
 ### Phase 3: CRYSTALLIZATION
 

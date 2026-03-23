@@ -21,7 +21,7 @@ These gaps make AI systems unsuitable for production infrastructure, enterprise 
 
 ## 3. System Thesis
 
-The CMPSBL substrate solves these problems by providing a **40-node cognitive kernel** organized into a weighted topology across 12 sectors:
+The CMPSBL substrate solves these problems by providing a **40-primitive cognitive kernel** organized into a weighted topology across 4 categories:
 
 - A **Spine** for core reasoning and memory (CORE, SYSTEM, CCR).
 - An **Operational Compliance Grid** (OCG) for boundary enforcement (6 nodes: ACCESS, IDENTITY, AUDIT, NERVE, RELAY, RIPPLE).
@@ -108,7 +108,7 @@ This positions CMPSBL uniquely among AI orchestration platforms: it is the only 
 | Plane | 1 | Governance supervision |
 | Shell | 1 | Security boundary |
 
-**Total: 40 nodes across 12 sectors, Σ(weight) = 1.000**
+**Total: 40 primitives across 4 categories, Σ(weight) = 1.000**
 
 The architecture is **BYOK** (Bring Your Own Keys): operators supply their own AI provider keys, database, and infrastructure. No data leaves the operator's environment.
 
@@ -120,7 +120,7 @@ The substrate includes a first-class control plane:
 - **ENGINEER**: Internal maintenance node scanning 76 engines + 24 meta-engines, generating findings and proposals.
 - **INTENT Mesh**: Affinity matrix tracking module co-resolution success; translates technical signals to governance requests.
 - **Ironclad Fabric**: Unified resilience layer with per-module rate limiting, bulkhead isolation, and 30-second auto-restore health loop.
-- **ATLAS**: Capability mapping and topology awareness across all 40 nodes.
+- **ATLAS**: Capability mapping and topology awareness across all 40 primitives.
 
 ## 8. Competitive Framing
 
@@ -130,7 +130,7 @@ The substrate includes a first-class control plane:
 | Governance | Architectural, immutable, 4-mode | Optional, configurable |
 | Evolution | 7-gate SEBA with TSAC | Manual deployment |
 | Multi-agent | 20 agents, sealed runtime, DREAM synthesis | Task distribution only |
-| Security | Defense-in-depth, 40-node zone-shielded, Ironclad | Perimeter only |
+| Security | Defense-in-depth, 40-primitive zone-shielded, Ironclad | Perimeter only |
 | Observability | Weighted health matrix, INTEL pipeline | Logs and metrics |
 | Audit | Tamper-evident, chain-of-custody | Append-only logs |
 | Learning | CLM — 14,400 calls/day continuous | None |

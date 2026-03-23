@@ -18,7 +18,7 @@ CMPSBL is not only for importing software through Ascension. It is a platform fo
 
 When you build on the substrate, you gain access to:
 
-- 40-node cognitive matrix
+- 40-primitive cognitive matrix
 - 940+ registered capabilities
 - Persistent memory with vector search
 - Intent-based routing
@@ -192,7 +192,7 @@ Discover capabilities through the Memory Stream, crystallize them, and export th
 
 1. **Design around intents** — Express actions as intents, not direct function calls
 2. **Use semantic memory** — Store meaningful context, not raw data dumps
-3. **Leverage existing nodes** — Check available capabilities before building custom logic
+3. **Leverage existing primitives** — Check available capabilities before building custom logic
 4. **Respect governance** — Design for consent gates in mutation workflows
 5. **Monitor telemetry** — Use mesh communications for observability
 6. **Handle receipts** — Log and verify operation receipts for audit compliance

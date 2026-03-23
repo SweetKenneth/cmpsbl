@@ -14,7 +14,7 @@ This document describes the Memory Stream — CMPSBL's continuous discovery engi
 
 ## 1. What Is the Memory Stream?
 
-The Memory Stream is the substrate's autonomous discovery system. It continuously monitors execution patterns across the 40-node matrix, identifies valuable interaction chains, and converts them into deterministic capability artifacts.
+The Memory Stream is the substrate's autonomous discovery system. It continuously monitors execution patterns across the 40-primitive matrix, identifies valuable interaction chains, and converts them into deterministic capability artifacts.
 
 Unlike traditional logging or analytics, the Memory Stream actively generates new software. It discovers execution paths that produce useful outcomes, scores them, and — when they meet the quality threshold — crystallizes them into exportable capabilities.
 
@@ -28,7 +28,7 @@ The Memory Stream monitors all system activity flowing through the intent mesh. 
 
 ### Pattern Recognition
 
-The system identifies recurring or novel execution paths across nodes. When a chain of resolver interactions produces a valuable outcome, it is flagged as a potential discovery.
+The system identifies recurring or novel execution paths across primitives. When a chain of resolver interactions produces a valuable outcome, it is flagged as a potential discovery.
 
 ### Scoring
 
@@ -108,7 +108,7 @@ The resulting Crystallized Memory is a standalone, deterministic artifact that c
 
 ## 6. Interaction with Ascension
 
-When developer software enters the substrate through Ascension, the Memory Stream treats it as a new signal source. The Candidate Node's interactions with existing nodes create novel execution paths that may be discovered, scored, and crystallized.
+When developer software enters the substrate through Ascension, the Memory Stream treats it as a new signal source. The Candidate Primitive's interactions with existing primitives create novel execution paths that may be discovered, scored, and crystallized.
 
 These Ascension-derived crystallized memories are called **Ascended Memories**.
 

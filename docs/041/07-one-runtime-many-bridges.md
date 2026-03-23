@@ -44,14 +44,14 @@ The **single source of truth** is `src/lib/export/standalone-runtime.ts`. It own
 | Finite state machine | §5 — standalone-runtime.ts |
 | Synergy multiplier | §9 — standalone-runtime.ts |
 | Chain executor | chain-executor.ts |
-| Module effects | module-effects.ts |
+| Primitive effects | primitive-effects.ts |
 | Primitive executor bridge | primitive-executor-bridge.ts |
 
 ### Bridge Adapters (All Other Languages)
 
 Every non-TypeScript export is a **thin bridge adapter** that:
 
-1. **Embeds capability metadata** (name, module chain, CJPI score, tier)
+1. **Embeds capability metadata** (name, primitive chain, CJPI score, tier)
 2. **Routes execution** to the canonical runtime when available (network/hybrid mode)
 3. **Falls back** to deterministic local output when offline
 4. **Preserves** the trace, output, and metadata contract shape
@@ -239,7 +239,7 @@ Enforced by architecture tests in `src/lib/export/__tests__/anti-drift.test.ts`:
 6. All bridge manifests must include `integrityContract` with `capabilityHash` and `moduleChainHash`
 7. Result shapes must include `validated`, `validationErrors`, `degraded`, `executionId`, and `envelope`
 8. Health tracker exports `RuntimeHealthTracker`, `getHealthScore()`, `getHealthSnapshot()`
-9. Capability hash and module chain hash are deterministic and independently verifiable
+9. Capability hash and primitive chain hash are deterministic and independently verifiable
 10. Legacy results without integrity fields are normalized with warnings, not rejected
 
 ---

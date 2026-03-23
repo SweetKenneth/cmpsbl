@@ -16,9 +16,9 @@ Complete terminology reference for the CMPSBL cognitive substrate.
 |---|---|
 | **Apex Discovery** | A discovery scoring 96–100 CJPI. The highest tier. Replaces the deprecated term "Crown Jewel." |
 | **Ascended Memory** | A crystallized memory produced through the Ascension process, with dual provenance (developer code + substrate). |
-| **Ascension** | The lifecycle where developer software enters the substrate as a Candidate Node and participates in discovery cycles. |
+| **Ascension** | The lifecycle where developer software enters the substrate as a Candidate Primitive and participates in discovery cycles. |
 | **Audit Chain** | Hash-linked sequence of operation receipts providing tamper-evident audit trail. |
-| **Candidate Node** | Developer software temporarily operating within the substrate during Ascension. |
+| **Candidate Primitive** | Developer software temporarily operating within the substrate during Ascension. |
 | **Capability** | A discrete, invocable function registered in the substrate's capability registry. Replaces "Artifact" or "Resolver" in product-facing text. |
 | **Capability Pack** | The complete export bundle from crystallization: code, runtime, docs, license, tests, manifest. Replaces "Artifact Pack." |
 | **Chain** | A sequence of resolver interactions forming a discovered execution path. Replaces "Pipeline" in product-facing text. |
@@ -43,12 +43,12 @@ Complete terminology reference for the CMPSBL cognitive substrate.
 | **Mint** | Discovery tier for CJPI 68–79. Quality baseline for export eligibility. |
 | **Mutual Moat** | The structural dependency pattern in Ascended Memories, creating mutual value between developer and substrate. |
 | **Mythic** | Discovery tier for CJPI 94–95. Exceptional quality. |
-| **Node** | An autonomous subsystem inside the substrate. 40 nodes across 12 sectors. Replaces "module" in product text. |
+| **Node** | An autonomous subsystem inside the substrate. 40 primitives across 4 categories. Replaces "module" in product text. |
 | **Prime** | Discovery tier for CJPI 80–89. High quality, broadly useful. |
 | **Raw** | Discovery tier for CJPI below 68. Below export threshold. |
 | **Receipt** | A tamper-evident audit record of an intent execution. |
 | **Relic** | Discovery tier for CJPI 90–93. Premium, production-grade. |
-| **Resolver** | An executable capability owned by a node. Named as `node.resolver_name`. |
+| **Resolver** | An executable capability owned by a primitive. Named as `node.resolver_name`. |
 | **Safety Switch** | Emergency isolation mechanism. Replaces "Circuit Breaker." |
 | **SEBA Pipeline** | The 7-gate promotion pipeline for system mutations: Lint → Test → Review → Stage → Consent → Deploy → Prod. |
 | **Signal Forge** | Blueprint synthesis engine within the FORGE node. Produces CJPI-validated architecture designs. |
