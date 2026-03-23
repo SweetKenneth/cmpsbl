@@ -116,7 +116,7 @@ CLM operates as a high-velocity training pipeline generating data across existin
 - Warm → Cold: After retention policy threshold (varies by data category).
 - Cold → Warm: On-demand retrieval with caching for repeated access.
 - Cold → Deletion: After retention period expires (automated cleanup).
-- CLM Distillation: Warm learning data → compressed Cold knowledge → MEMORY module integration.
+- CLM Distillation: Warm learning data → compressed Cold knowledge → MEMORY Organ integration.
 - **Emergency cascade**: When any tier exceeds 2x capacity, bulk demotion activates automatically.
 
 ## 8. DREAM Synthesis Data Model

@@ -76,7 +76,7 @@ graph LR
 | Session Token | Browser/interactive access | 1 hour (refresh available) |
 | Admin Credential | Operator access | 30 minutes (no refresh) |
 | Agent JWT | Agent Connect (Evolution CC) | Per-session, scoped to agent |
-| Developer Portal Key | External developer API access | Until revoked, scoped per module |
+| Developer Portal Key | External developer API access | Until revoked, scoped per primitive |
 
 ## 4. Authorization Model (RBAC Matrix)
 
@@ -178,7 +178,7 @@ Rate limits are enforced at both the NEXUS gateway level and per-module via Iron
 
 2. Containment
    → Immediate blocking of source (Ironclad rate limit + IP block)
-   → Circuit breaker activation if module compromised
+   → Circuit breaker activation if primitive compromised
    → Bulkhead isolation prevents lateral spread
 
 3. Assessment
@@ -220,7 +220,7 @@ The CSZ (EVOLUTION, SHADOW, PHANTOM) operates under heightened security:
 - TLS termination is handled correctly by the infrastructure layer.
 - Operator credentials are stored securely outside the substrate.
 - AI provider responses may be adversarial and must be validated.
-- Clock synchronization across nodes is within acceptable bounds.
+- Clock synchronization across primitives is within acceptable bounds.
 - Sealed agent runtimes are correctly isolated by the runtime environment.
 
 ## 14. Residual Risk Statement
@@ -238,7 +238,7 @@ The CSZ (EVOLUTION, SHADOW, PHANTOM) operates under heightened security:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added ATLAS/ENGINEER to trust zones, developer portal security, backup endpoint security, first-party analytics |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added ATLAS/ENGINEER to trust zones, developer portal security, backup endpoint security, first-party analytics |
 | 2026-03-03 | System | Added Ironclad fabric, CSZ security, agent isolation, INTEL/Scanner integration, consensus routing |
 | 2026-03-03 | System | Verified against 38-node topology and zone-shielded architecture |
 | 2026-03-01 | System | Initial canonical security architecture |

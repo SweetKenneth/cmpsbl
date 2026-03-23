@@ -6,7 +6,7 @@ This document defines the governance model, autonomy boundaries, and escalation 
 
 ## 2. Scope
 
-This doctrine applies to all 40 nodes across 12 sectors, all control planes, and all execution paths within the substrate. It governs both automated and human-initiated actions.
+This doctrine applies to all 40 primitives across 4 categories, all control planes, and all execution paths within the substrate. It governs both automated and human-initiated actions.
 
 ## 3. Autonomy Model
 
@@ -26,7 +26,7 @@ ATLAS serves as the unified governance UI with 7 tabs:
 
 | Tab | Purpose |
 |-----|---------|
-| Topology | 40-node matrix visualization and health |
+| Topology | 40-primitive matrix visualization and health |
 | Node Inbox | Approval queue for ENGINEER proposals and INTENT requests |
 | Evolution | SEBA pipeline, shadow runs, promotion history |
 | Scanner | Finding priority, regression detection, coverage gaps |
@@ -48,7 +48,7 @@ ATLAS serves as the unified governance UI with 7 tabs:
 - Process incoming requests through established routing paths.
 - Monitor and report system health via ENGINEER node scans.
 - Open circuit breakers on failing modules.
-- Execute shadow runs for proposed changes (SHADOW module, CSZ).
+- Execute shadow runs for proposed changes (SHADOW Engine, CSZ).
 - Collect and store telemetry data.
 - Enforce rate limits and quota boundaries (Ironclad fabric).
 - Generate proposals for EVOLUTION changes.
@@ -104,7 +104,7 @@ Level 4: Emergency shutdown (CORE kill switch)
 
 - Every module has an independent circuit breaker (managed by Ironclad fabric).
 - Breaker opens after **3 consecutive failures** within a 60-second window.
-- Open breaker forces module health to **0.000**.
+- Open breaker forces primitive health to **0.000**.
 - Half-open state allows **1 test request** after 30-second cooldown.
 - Breaker resets to closed after **2 consecutive successes** in half-open state.
 - CORE breaker is system-critical: CORE failure halts the entire substrate.
@@ -113,7 +113,7 @@ Level 4: Emergency shutdown (CORE kill switch)
 
 ## 9. Shadow Execution Rules
 
-- All proposed changes must complete a shadow run before production promotion (SHADOW module, CSZ).
+- All proposed changes must complete a shadow run before production promotion (SHADOW Engine, CSZ).
 - Shadow runs execute against real inputs but write to isolated storage.
 - Shadow results are compared against current production behavior.
 - Minimum **10 shadow cycles** required before promotion eligibility.
@@ -140,7 +140,7 @@ Automatic rollback triggers:
 
 - Error rate exceeds **5%** within 5 minutes of promotion.
 - CORE integrity score drops below **0.700**.
-- Any Tier 1 module (Spine) enters circuit-breaker open state.
+- Any Tier 1 primitive (Spine) enters circuit-breaker open state.
 - GOVERNANCE vetoes a promoted action post-deployment.
 - Ironclad detects bulkhead pressure exceeding threshold.
 
@@ -156,7 +156,7 @@ Manual rollback available:
 - Audit records are append-only and immutable.
 - Audit log integrity is verified via chain-of-custody checksums.
 - Retention: minimum 90 days for operational logs, indefinite for security events.
-- AUDIT module failure does not halt the system but triggers Level 3 escalation.
+- AUDIT Organ failure does not halt the system but triggers Level 3 escalation.
 - INTEL aggregation pipeline deduplicates and enriches audit signals into IntelCards.
 
 ## 13. Human Override Protocol
@@ -210,7 +210,7 @@ The ENGINEER node (Mechanist) operates with guided autonomy:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node topology, added disaster recovery governance, developer API metering, memory tier enforcement, visitor analytics |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added disaster recovery governance, developer API metering, memory tier enforcement, visitor analytics |
 | 2026-03-03 | System | Added ATLAS governance hub, 7-gate SEBA pipeline, ENGINEER governance, Ironclad references, INTENT/INTEL/SHADOW integration |
 | 2026-03-03 | System | Updated to 38-node topology; added AutoBlog autonomous governance |
 | 2026-03-01 | System | Initial canonical doctrine |
