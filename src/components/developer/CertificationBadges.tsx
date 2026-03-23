@@ -33,7 +33,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'memory_specialist',
     name: 'Memory Specialist',
-    description: 'Mastered 4-tier persistent memory: context windows, DREAM consolidation, semantic recall, and importance scoring.',
+    description: 'Mastered 4-tier persistent memory: context windows, DREAM Engine consolidation, semantic recall, and importance scoring.',
     badge_icon: '🧠', badge_level: 'silver',
     required_skills: ['memory_ops', 'nexus_routing', 'memory_stream'],
     min_xp_total: 600, is_earned: false, progress_percent: 45,
