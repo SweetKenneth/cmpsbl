@@ -183,3 +183,27 @@ export {
   type ChainMetrics,
   type ChainRegistrySummary,
 } from './primaryMemoryChains';
+
+// 12. Chain Orchestrator Guard Layer
+export {
+  configureGuard,
+  getGuardConfig,
+  guardedEvaluateTriggers,
+  guardedExecuteChain,
+  getActiveNodeLocks,
+  clearAllNodeLocks,
+  getCascadeRelationships,
+  getCascadeFrequencyMap,
+  clearCascadeTracking,
+  getChainActivitySummary,
+  getChainActivity,
+  clearActivityTelemetry,
+  resetGuardLayer,
+  type GuardConfig,
+  type CascadeRelationship,
+  type CascadeContext,
+  type ChainActivity,
+  type ChainActivitySummary,
+  type DeferReason,
+  type GuardedTriggerResult,
+} from './chainOrchestratorGuard';
