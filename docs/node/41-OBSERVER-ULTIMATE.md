@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-OBSERVER is the substrate's **passive intelligence and anomaly detection node**. It watches system behavior without influencing it, detecting patterns, regressions, and anomalies that active nodes might miss. OBSERVER serves as the substrate's "security camera" — always watching, never interfering unless escalated.
+OBSERVER is the substrate's **passive intelligence and anomaly detection primitive**. It watches system behavior without influencing it, detecting patterns, regressions, and anomalies that active primitives might miss. OBSERVER serves as the substrate's "security camera" — always watching, never interfering unless escalated.
 
 ---
 

@@ -25,10 +25,10 @@ Z-score trend analysis for preemptive circuit breaking before cascading failures
 Failed signals stored with exponential backoff retry (max 5 attempts).
 
 ### 6. Cascade Failure Detector
-Topology-edge monitoring for correlated failure detection across module boundaries.
+Topology-edge monitoring for correlated failure detection across primitive boundaries.
 
 ### 7. Heartbeat Fingerprinter
-Behavioral fingerprinting for zombie node detection — identifies nodes that respond but don't process.
+Behavioral fingerprinting for zombie primitive detection — identifies primitives that respond but don't process.
 
 ### 8. Per-Edge Latency Tracker
 Granular latency measurement per source→target signal edge.

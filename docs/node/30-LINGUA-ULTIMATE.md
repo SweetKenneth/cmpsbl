@@ -11,7 +11,7 @@
 
 ## 1. Purpose
 
-LINGUA is the substrate's **universal translation and protocol bridging engine**. It owns cross-modal translation (text↔code↔image↔audio↔structured_data↔embedding↔graph), schema mapping between data formats, fidelity scoring, modality bridge management, and cross-primitive format negotiation. When two nodes speak different "languages," LINGUA bridges them with measured quality.
+LINGUA is the substrate's **universal translation and protocol bridging engine**. It owns cross-modal translation (text↔code↔image↔audio↔structured_data↔embedding↔graph), schema mapping between data formats, fidelity scoring, modality bridge management, and cross-primitive format negotiation. When two primitives speak different "languages," LINGUA bridges them with measured quality.
 
 ---
 
@@ -47,9 +47,9 @@ LINGUA is the substrate's **universal translation and protocol bridging engine**
 
 ### 2.5 Cross-Primitive Format Negotiation
 - **Format capability registry** — each node advertises supported formats, preferred format, and fallback chain
-- **Auto-negotiation** — `negotiateFormat()` finds highest-fidelity bridge between two nodes' format sets
+- **Auto-negotiation** — `negotiateFormat()` finds highest-fidelity bridge between two primitives' format sets
 - **Fallback chains** — cascading format alternatives when preferred format fails
-- **Direct match optimization** — skips translation entirely when both nodes share a common format
+- **Direct match optimization** — skips translation entirely when both primitives share a common format
 
 ### 2.6 Anomaly Detection & Telemetry
 - **EMA-smoothed baselines** — tracks rolling average latency and fidelity (α=0.05)
@@ -161,7 +161,7 @@ LINGUA operates within the `protocol-translation` domain:
 ### Queries (Hook)
 | Query | Interval | Description |
 |---|---|---|
-| `state` | 30s | Full module state |
+| `state` | 30s | Full primitive state |
 | `health` | 30s | Health score (0–100) |
 | `resilience` | 60s | Circuit breaker + resilience posture |
 | `hardening` | 60s | Hardening configuration |
@@ -188,7 +188,7 @@ LINGUA operates within the `protocol-translation` domain:
 | `inferMapping` | Auto-infer schema mapping |
 | `migrateSchema` | Generate schema version migration |
 | `registerFormats` | Register node format capabilities |
-| `negotiate` | Auto-negotiate format between nodes |
+| `negotiate` | Auto-negotiate format between primitives |
 
 ### Sync Utilities
 | Function | Description |

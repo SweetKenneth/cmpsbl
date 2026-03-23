@@ -23,7 +23,7 @@ CORE boots in a strict order enforced by the `initializeSubstrate()` entry point
 2. **CCR.boot** — Layer 0 meta-engine (SYSTEM, BRAIN, MEMORY, DREAM zones)
 3. **OCG** — Operational Compliance Grid (served by substrate nodes directly)
 4. **Execution Layer** — 11 nodes: DECODE, ENCODE, VISION, CORTEX, NEXUS, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION
-5. **ESZ/EPZ/EMZ/CSZ** — Expansion zones boot last
+5. **ESZ/EPZ/EMZ/CSZ** — expansion categories boot last
 6. **Mesh Overlays** — GOVERNANCE, INTENT, IMMUNITY, DEFENSE
 
 ### Triple-Deferred Initialization

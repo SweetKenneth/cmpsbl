@@ -14,9 +14,9 @@ The substrate organizes **40 primitives** across a **4-category** topology, prov
 
 ## 2. The 40-Node Matrix
 
-### Sector Map
+### Category Map
 
-| Sector | Nodes | Weight | What It Does |
+| Category | Primitives | Weight | What It Does |
 |--------|-------|--------|-------------|
 | **Spine: CORE** | CORE | 0.110 | Kernel boot, matrix integrity calculation |
 | **Spine: SYSTEM** | SYSTEM | 0.035 | Lifecycle, configuration, environment |
@@ -72,7 +72,7 @@ Client → DEFENSE (threat assessment)
 
 ## 5. Zone Shielding
 
-Expansion zones have independent circuit breakers. If an entire zone fails, core operations continue:
+expansion categories have independent circuit breakers. If an entire zone fails, core operations continue:
 
 | Zone | Impact If Down |
 |------|---------------|

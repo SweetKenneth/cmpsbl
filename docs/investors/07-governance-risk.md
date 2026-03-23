@@ -47,7 +47,7 @@ CMPSBL operates under **supervised autonomy** — the system acts independently 
 ## 3. Security Posture
 
 - **Zero trust** at every boundary
-- **Defense-in-depth** with 40-node zone shielding
+- **Defense-in-depth** with 40-primitive zone shielding
 - **Ironclad hardening fabric** for multi-layer rate limiting
 - **Tamper-evident audit** with Merkle chain verification
 - **Tenant isolation** via Row-Level Security

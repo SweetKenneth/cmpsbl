@@ -24,7 +24,7 @@ CMPSBL addresses all four gaps simultaneously.
 | Governance | Architectural, immutable, 4-mode | Optional, configurable |
 | Evolution | 7-gate SEBA with TSAC truth preservation | Manual deployment |
 | Multi-agent | 20 agents, sealed runtime, DREAM synthesis | Task distribution only |
-| Security | Defense-in-depth, 40-node zone-shielded | Perimeter only |
+| Security | Defense-in-depth, 40-primitive zone-shielded | Perimeter only |
 | Observability | Weighted health matrix, INTEL pipeline | Basic logs and metrics |
 | Audit | Tamper-evident Merkle chains | Append-only logs |
 | Learning | CLM — 14,400 calls/day continuous | None |
@@ -38,7 +38,7 @@ CMPSBL addresses all four gaps simultaneously.
 ## 3. Defensible Moat
 
 ### Structural Complexity
-40-node topology with 12-sector zone shielding, weighted health matrix, and deterministic boot sequence. This is not something competitors can replicate from documentation alone.
+40-primitive topology with 4-category zone shielding, weighted health matrix, and deterministic boot sequence. This is not something competitors can replicate from documentation alone.
 
 ### Crown Jewel Isolation
 54 capabilities classified as Crown Jewels — excluded from all external tiers, not visible in API catalogs. These represent the system's most valuable algorithms and patterns.

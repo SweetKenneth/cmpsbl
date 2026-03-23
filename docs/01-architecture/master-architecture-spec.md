@@ -123,9 +123,9 @@ graph TD
     DEFENSE --- GOVERNANCE
 ```
 
-## 5. Sector Definitions
+## 5. Category Definitions
 
-| Sector | Nodes | Weight | Responsibility Boundary |
+| Category | Primitives | Weight | Responsibility Boundary |
 |--------|-------|--------|------------------------|
 | Spine: CORE | CORE | 0.110 | Kernel boot, matrix ownership, integrity calculation |
 | Spine: SYSTEM | SYSTEM | 0.035 | Lifecycle, configuration, environment management |
@@ -146,7 +146,7 @@ graph TD
 
 ## 6. Component Registry
 
-| Component | Category | Sector | Responsibility | Dependencies |
+| Component | Category | Category | Responsibility | Dependencies |
 |-----------|----------|--------|---------------|-------------|
 | CORE | Organ | Spine | Boot sequencing, integrity scoring | None (root) |
 | SYSTEM | Organ | Spine | Configuration, lifecycle hooks | CORE |
@@ -228,7 +228,7 @@ CORE Organ → SYSTEM Organ → CCR (BRAIN Organ, MEMORY Organ, DREAM Engine) �
 4. NEXUS Organ delegates to appropriate Execution primitive (DECODE Agent, ENCODE Agent, CORTEX Engine, etc.).
 5. Execution primitive processes request, consulting CCR (BRAIN Organ, MEMORY Organ, DREAM Engine) as needed.
 6. OCG modules enforce compliance boundaries throughout execution.
-7. Expansion zones (ESZ, EPZ, EMZ) provide specialized capabilities when invoked.
+7. expansion categories (ESZ, EPZ, EMZ) provide specialized capabilities when invoked.
 8. Response returns through NEXUS Organ → DEFENSE Layer → Client.
 
 ### State Transitions
@@ -241,7 +241,7 @@ CORE Organ → SYSTEM Organ → CCR (BRAIN Organ, MEMORY Organ, DREAM Engine) �
 ## 9. Isolation Boundaries
 
 - Each of the 40 primitives operates within its own circuit-breaker boundary.
-- Expansion zones (ESZ, EPZ, EMZ, CSZ) provide zone-level isolation — an entire zone can degrade gracefully.
+- expansion categories (ESZ, EPZ, EMZ, CSZ) provide zone-level isolation — an entire zone can degrade gracefully.
 - Module failure does not propagate unless RIPPLE Organ detects a cascade chain.
 - SANDBOX Engine provides execution isolation for untrusted code.
 - DEFENSE Layer enforces the outermost trust boundary.
@@ -341,10 +341,10 @@ DEFENSE Layer — encloses all sectors
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-22 | System | v14.2.0 — Added OBSERVER auxiliary node, expanded all node capability surfaces with standardized lifecycle (init/health/resilience/hardening/runCLM/upgradeEngine), updated node docs |
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive/4-category topology (added ATLAS, ENGINEER as Meta sector), disaster recovery backup, updated weights |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive/4-category topology (added ATLAS, ENGINEER as Meta category), disaster recovery backup, updated weights |
 | 2026-03-03 | System | v13.1.0 — Fixed NERVE→OCG, PHANTOM→CSZ, EVOLUTION→CSZ, added CSZ sector, 38/12 topology validated |
 | 2026-03-03 | System | v13.1.0 — AutoBlog quality memory chain, adaptive publish governor, semantic drift, confidence governance |
-| 2026-03-03 | System | Expanded to 38-node architecture with ESZ/EPZ/EMZ/CSZ zone shielding |
+| 2026-03-03 | System | Expanded to 38-primitive architecture with ESZ/EPZ/EMZ/CSZ zone shielding |
 | 2026-03-01 | System | Initial canonical specification (24 primitives) |
 
 ## 16. Related Documents
@@ -355,7 +355,7 @@ DEFENSE Layer — encloses all sectors
 - [Evolution & Versioning Framework](../05-evolution-versioning/evolution-and-versioning-framework.md)
 - [Observability & Telemetry Handbook](../06-observability/observability-telemetry-handbook.md)
 - [Engineering Proof & Scale](../14-engineering-proof/engineering-proof-and-scale.md)
-- [Internal: Topology Topology & Module Registry Primitive Registry](../internal/01-topology-and-module-registry.md)
+- [Internal: Topology Topology & Primitive Registry Primitive Registry](../internal/01-topology-and-module-registry.md)
 - [Internal: Ironclad Hardening Fabric](../internal/30-ironclad-hardening-fabric.md)
 
 ---

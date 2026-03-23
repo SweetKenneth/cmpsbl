@@ -1,4 +1,4 @@
-# 01 — Topology & Module Registry
+# 01 — Topology & Primitive Registry
 
 **Classification:** 🔒 INTERNAL  
 **Version:** v14.2.0 — MINDGAMES Epoch
@@ -7,7 +7,7 @@
 
 ## 1. Purpose
 
-This document defines the complete 40-node architecture of the CMPSBL Substrate (including expansion nodes ENGINEER #39 and ATLAS #40), organized into 12 canonical sectors, with every node's sector assignment, boot order, dependencies, and responsibility boundary.
+This document defines the complete 40-primitive architecture of the CMPSBL Substrate (including expansion nodes ENGINEER #39 and ATLAS #40), organized into 12 canonical sectors, with every node's category assignment, boot order, dependencies, and responsibility boundary.
 
 ## 2. System Topology
 
@@ -238,7 +238,7 @@ Production module count validation target: **38 nodes across 12 sectors**.
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-01 | System | Initial internal library creation |
-| 2026-03-03 | System | 38-node / 12-sector rewrite — NERVE→OCG, CSZ created, SHADOW promoted |
+| 2026-03-03 | System | 38-primitive / 4-category rewrite — NERVE→OCG, CSZ created, SHADOW promoted |
 
 ---
 

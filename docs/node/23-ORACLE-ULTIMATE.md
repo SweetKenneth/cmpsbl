@@ -17,7 +17,7 @@ ORACLE v9.0.0 "Omniscience" provides predictive intelligence with:
 - **Scenario Simulation** — Monte Carlo-style what-if analysis
 - **Temporal Forecasting** — Time-series prediction with seasonal decomposition
 - **Anomaly Prediction** — Pre-emptive anomaly flagging before occurrence
-- **Cross-Primitive Intelligence Feed** — Prediction distribution to subscribing nodes
+- **Cross-Primitive Intelligence Feed** — Prediction distribution to subscribing primitives
 - **Prediction Audit Trail** — Accuracy tracking for continuous model improvement
 
 See also: `docs/node/23-ORACLE.md` for base node documentation.

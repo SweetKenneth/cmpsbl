@@ -16,7 +16,7 @@ This library provides investors, advisors, and potential partners with a compreh
 | # | Document | Description |
 |---|----------|-------------|
 | 01 | [Executive Summary](01-executive-summary.md) | What CMPSBL is, the problem it solves, and why it matters |
-| 02 | [Technology Architecture](02-technology-architecture.md) | 40-node topology, how the system works, key differentiators |
+| 02 | [Technology Architecture](02-technology-architecture.md) | 40-primitive topology, how the system works, key differentiators |
 | 03 | [Competitive Positioning](03-competitive-positioning.md) | Market landscape, defensible moat, competitive advantages |
 | 04 | [Commercial Model](04-commercial-model.md) | Pricing tiers, revenue streams, marketplace economics |
 | 05 | [Engineering Proof](05-engineering-proof.md) | Why this is not vibe-coded — audit engines, scale metrics, verification |

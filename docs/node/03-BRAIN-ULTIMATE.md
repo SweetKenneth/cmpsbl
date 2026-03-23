@@ -68,7 +68,7 @@ BRAIN is the substrate's **cognitive reasoning and intelligence core**. It doesn
 - Evicts lowest-relevance items when over max effective capacity (20)
 
 ### 2.9 Cross-Primitive Intelligence Fusion
-- BRAIN requests and **fuses** specialized knowledge from up to **6 nodes** simultaneously
+- BRAIN requests and **fuses** specialized knowledge from up to **6 primitives** simultaneously
 - Authority-weighted blending: DEFENSE (0.9), MEMORY (0.9), ORACLE (0.85), CORTEX (0.8)
 - Produces confidence-weighted composite results
 - Fusion strategy: authority-weighted-blend
@@ -134,7 +134,7 @@ BRAIN operates within the `cognitive-reasoning` domain:
 | Insight crystallization | < 5ms |
 | Causal chain trace | < 20ms (depth 10) |
 | Trace verification | < 2ms |
-| Fusion latency (6 nodes) | < 100ms |
+| Fusion latency (6 primitives) | < 100ms |
 | Working memory compression ratio | ≥ 2:1 |
 
 ---

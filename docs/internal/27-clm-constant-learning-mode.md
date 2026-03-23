@@ -35,7 +35,7 @@ Node Health Scan → Topic Selection → NEXUS-CLM Bridge → AI Provider → Kn
 
 CLM covers all **40 substrate nodes** across all sectors:
 
-| Sector | Nodes |
+| Category | Primitives |
 |--------|-------|
 | CORE + SYSTEM | core, system |
 | CCR Zone | brain, memory, dream |
@@ -163,7 +163,7 @@ A Knowledge Distillation Engine runs on a 4-hour staggered schedule:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-22 | System | v6.0.0 — Full 40-node coverage, raised caps, auto-maintenance |
+| 2026-03-22 | System | v6.0.0 — Full 40-primitive coverage, raised caps, auto-maintenance |
 | 2026-03-03 | System | Initial CLM internal documentation — v13.1.0 |
 
 ---

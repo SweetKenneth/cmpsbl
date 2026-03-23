@@ -413,7 +413,7 @@ VISION           ██ 2
 | A-124 | Chaos Harness Orchestrator | DEFENSE | 73 | Automated failure scenario execution |
 | A-125 | Brain Auto-Tiering Classifier | BRAIN | 73 | Knowledge importance ranking |
 | A-126 | Health Heatmap Generator | VISION | 73 | Visual system health mapping |
-| A-127 | Cross-Sector Correlation Analyzer | NERVE | 73 | Multi-sector signal linking |
+| A-127 | Cross-Category Correlation Analyzer | NERVE | 73 | Multi-sector signal linking |
 | A-128 | Pattern Scoring Algorithm (v2) | MEMORY | 72 | Advanced quality evaluation |
 | A-129 | Capability Analytics Dashboard Engine | CORTEX | 72 | Usage intelligence pipeline |
 | A-130 | NEXUS Streaming Pipeline (SSE) | NEXUS | 72 | Real-time response streaming |

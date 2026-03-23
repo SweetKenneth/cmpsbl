@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-REFLEX v9.0.0 "Impulse Prime" is the substrate's edge intelligence runtime — the fastest node, purpose-built for sub-10ms decision loops. It manages a fleet of edge processing nodes, evaluates priority-ordered rules, routes decisions intelligently, pre-computes anticipated responses, synchronizes state across distributed nodes, caches warm results, monitors throughput, aggregates telemetry, and controls resilience through circuit breakers and graceful degradation.
+REFLEX v9.0.0 "Impulse Prime" is the substrate's edge intelligence runtime — the fastest primitive, purpose-built for sub-10ms decision loops. It manages a fleet of edge processing nodes, evaluates priority-ordered rules, routes decisions intelligently, pre-computes anticipated responses, synchronizes state across distributed nodes, caches warm results, monitors throughput, aggregates telemetry, and controls resilience through circuit breakers and graceful degradation.
 
 ---
 
@@ -113,7 +113,7 @@ Decision Request
 - **Vector Clock Ordering**: Lamport-style vector clocks for causal ordering across primitives
 - **3-Way Clock Comparison**: before, after, concurrent — determines sync direction
 - **Conflict Resolution**: Last-write-wins with merged vector clocks
-- **Full Sync**: Synchronize all keys between two nodes in one operation
+- **Full Sync**: Synchronize all keys between two primitives in one operation
 - **State Versioning**: Every state update tracked with vector clock and timestamp
 - **Conflict History**: 300-entry rolling log of detected and resolved conflicts
 

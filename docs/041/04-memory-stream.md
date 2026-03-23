@@ -64,7 +64,7 @@ Discoveries are composed using three strategies:
 
 Optimizes for the highest possible CJPI score by combining high-performing resolvers.
 
-### Cross-Sector Synergy
+### Cross-Category Synergy
 
 Combines capabilities from different sectors of the node matrix (e.g., Cognition + Security + Memory) to produce novel cross-domain capabilities.
 

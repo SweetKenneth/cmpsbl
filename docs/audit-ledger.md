@@ -71,11 +71,11 @@
 - **Validation**: Same fix pattern used in circuit-breaker module.
 - **Rollback**: Revert to inline `setTimeout` without cleanup.
 
-### Finding 2.3 — Sector Kill-Switch Missing Expansion Zones
+### Finding 2.3 — Sector Kill-Switch Missing expansion categories
 - **Severity**: Medium
 - **Module**: `src/lib/substrate/sector-killswitch/index.ts`
-- **Issue**: `ALL_SECTORS` only listed 8 original sectors, omitting ESZ, EPZ, EMZ, CSZ expansion zones added in the 38-node topology. `killAllNonEssential` also only targeted 2 sectors.
-- **Fix**: Added all 4 expansion zones to `ALL_SECTORS` and `killAllNonEssential`.
+- **Issue**: `ALL_SECTORS` only listed 8 original sectors, omitting ESZ, EPZ, EMZ, CSZ expansion categories added in the 38-primitive topology. `killAllNonEssential` also only targeted 2 sectors.
+- **Fix**: Added all 4 expansion categories to `ALL_SECTORS` and `killAllNonEssential`.
 - **Validation**: `getKilledSectors()` and `reviveAll()` now cover the full topology.
 - **Rollback**: Remove expansion zone entries from array.
 

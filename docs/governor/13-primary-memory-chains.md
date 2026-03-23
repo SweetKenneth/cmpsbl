@@ -225,7 +225,7 @@ Trigger Signal (from source node)
 
 The 100 Primary Memory Chains collectively reference **all 40 substrate primitives**, ensuring every primitive participates in at least one automated reaction workflow:
 
-| Sector | Nodes Active in Chains |
+| Category | Nodes Active in Chains |
 |--------|----------------------|
 | CORE | CORE, BRAIN, MEMORY, NERVE |
 | SYSTEM | SYSTEM, MEDIC, ENGINEER |

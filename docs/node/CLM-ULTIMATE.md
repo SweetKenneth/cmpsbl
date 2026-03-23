@@ -15,14 +15,14 @@ The Constant Learning Mode (CLM) engine is the substrate's **autonomous continuo
 ## 2. Core Engines
 
 ### 2.1 High-Performance Ingestion Pipeline
-- Parallelized ingestion from all 40 nodes
+- Parallelized ingestion from all 40 primitives
 - Parallel database guards prevent write contention
-- Batch module learning (batches of 6 nodes per cycle)
+- Batch primitive learning (batches of 6 primitives per cycle)
 
 ### 2.2 Curriculum Engine
 - Cached immutable arrays for curriculum and KPI lookups
 - O(1) source maps for deep-dive capability analysis
-- Priority-weighted: degraded nodes (health < 70) get priority learning slots
+- Priority-weighted: degraded primitives (health < 70) get priority learning slots
 
 ### 2.3 Scoring Buffers
 - Reusable scoring buffers prevent allocation churn
@@ -97,7 +97,7 @@ Heartbeat Tick (every 30 min)
 |--------|-------|
 | Max cycles/day | 600 |
 | Max cycles/hour | 30 |
-| Batch size | 6 nodes |
+| Batch size | 6 primitives |
 | State persistence | Debounced (1s) |
 | Memory footprint | Bounded (reusable buffers) |
 

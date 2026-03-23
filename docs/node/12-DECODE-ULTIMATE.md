@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-DECODE is the substrate's **natural language understanding and command interpretation engine**. It serves as the primary interface between human governors and the substrate, parsing natural language into executable intents, intercepting slash commands, and routing directives to the appropriate nodes.
+DECODE is the substrate's **natural language understanding and command interpretation engine**. It serves as the primary interface between human governors and the substrate, parsing natural language into executable intents, intercepting slash commands, and routing directives to the appropriate primitives.
 
 ---
 

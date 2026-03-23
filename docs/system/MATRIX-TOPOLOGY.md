@@ -7,7 +7,7 @@
 
 ## Sector Organization
 
-The 40-node substrate is organized into **12 sectors**:
+The 40-primitive substrate is organized into **12 sectors**:
 
 ### CORE — System Kernel
 | # | Node | Weight | Role |
@@ -115,7 +115,7 @@ When all nodes are at 100% health: `matrixIntegrity = 1.000`
 
 ## Zone Shielding
 
-| Zone | Nodes | Combined Weight | Failure Impact |
+| Zone | Primitives | Combined Weight | Failure Impact |
 |------|-------|----------------|----------------|
 | CORE + SYSTEM | 2 | 0.090 | **Critical** — system unusable |
 | CCR | 4 | 0.130 | **Severe** — cognitive degradation |

@@ -61,7 +61,7 @@ type MemoryType =
 
 All persistent storage MUST flow through MEMORY. This is enforced at the architectural level:
 
-> *"The use of separate, standalone persistence subsystems (e.g., 'PERSISTENT', 'STORAGE_ENGINE') is strictly prohibited to ensure centralized memory management and cognitive consistency across the 40-node matrix."*
+> *"The use of separate, standalone persistence subsystems (e.g., 'PERSISTENT', 'STORAGE_ENGINE') is strictly prohibited to ensure centralized memory management and cognitive consistency across the 40-primitive matrix."*
 
 This means ECONOMY's ledger, SEBA's receipt store, and every other node's state ultimately flows through MEMORY's governance.
 

@@ -31,7 +31,7 @@
 
 ## 1. Identity & Archetype
 
-ENCODE is the substrate's **code execution engine** — Node #21 in the 40-node / 12-sector matrix. It is a first-class substrate module responsible for receiving structured task packets from DECODE and producing governed, audited code artifacts.
+ENCODE is the substrate's **code execution engine** — Node #21 in the 40-primitive / 4-category matrix. It is a first-class substrate module responsible for receiving structured task packets from DECODE and producing governed, audited code artifacts.
 
 ### Archetype: The Precision Forge
 

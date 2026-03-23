@@ -60,7 +60,7 @@ MEDIC and NERVE capabilities emerged across Waves 2–5 but are orphaned — ass
 
 > **Note:** This proposal was accepted and later expanded to the current 37-node / 11-sector topology.
 
-| Module | Boot Order | Sector | Weight | Role |
+| Module | Boot Order | Category | Weight | Role |
 |--------|-----------|--------|--------|------|
 | **MEDIC** | 23 | Execution | 0.020 | Autonomous diagnostics, self-repair coordination, health scoring |
 | **NERVE** | 24 | Execution | 0.020 | Inter-node signaling, consensus repair, distributed heartbeat |
@@ -82,7 +82,7 @@ If 24 remains the hard target:
 
 ### Recommendation
 
-**Go to 26 nodes.** The 24-node count was a design target, not an invariant. MEDIC and NERVE have accumulated 28 S+A artifacts across 4 waves — more than RELAY (8), IDENTITY (7), or ATLAS (5). They've earned module status. *(Subsequently expanded to 37 nodes with the addition of ESZ, EPZ, EMZ expansion zones.)*
+**Go to 26 nodes.** The 24-node count was a design target, not an invariant. MEDIC and NERVE have accumulated 28 S+A artifacts across 4 waves — more than RELAY (8), IDENTITY (7), or ATLAS (5). They've earned module status. *(Subsequently expanded to 37 nodes with the addition of ESZ, EPZ, EMZ expansion categories.)*
 
 ---
 

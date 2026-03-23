@@ -8,13 +8,13 @@
 
 ## Purpose
 
-This library is the single source of truth for all internal knowledge required to operate, maintain, and govern the CMPSBL Substrate. It covers every algorithm, every trade secret, every maintenance procedure, and every governance protocol that a system governor must know. Current version: **v14.2.0 — MINDGAMES Epoch** · **40-node matrix** · **12 canonical sectors**.
+This library is the single source of truth for all internal knowledge required to operate, maintain, and govern the CMPSBL Substrate. It covers every algorithm, every trade secret, every maintenance procedure, and every governance protocol that a system governor must know. Current version: **v14.2.0 — MINDGAMES Epoch** · **40-primitive matrix** · **12 canonical sectors**.
 
 ## Library Pages
 
 | Page | Document | Scope |
 |------|----------|-------|
-| 01 | [Topology & Module Registry](./01-topology-and-module-registry.md) | 40-node / 12-sector architecture, layer definitions, boot order, dependency graph |
+| 01 | [Topology & Primitive Registry](./01-topology-and-module-registry.md) | 40-primitive / 4-category architecture, layer definitions, boot order, dependency graph |
 | 02 | [Proprietary Algorithms](./02-proprietary-algorithms.md) | All scoring, routing, integrity, and learning algorithms |
 | 03 | [Trade Secrets & Competitive Moat](./03-trade-secrets-and-moat.md) | Crown jewels, strategic differentiators, IP protection |
 | 04 | [Control Plane & Persistence](./04-control-plane-and-persistence.md) | Durability layer, WAL, snapshots, leader election, rehydration |
@@ -60,7 +60,7 @@ This library is the single source of truth for all internal knowledge required t
 ## Terminology
 
 - Module names are always written in ALL CAPS (e.g., NEXUS, CORE, DEFENSE).
-- The system is called "Clockless" — a Cognitive Reality System powered by the CMPSBL Substrate (40-node matrix, 12 sectors).
+- The system is called "Clockless" — a Cognitive Reality System powered by the CMPSBL Substrate (40-primitive matrix, 12 sectors).
 
 ---
 

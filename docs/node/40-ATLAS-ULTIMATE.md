@@ -32,7 +32,7 @@ ATLAS is the substrate's **governance hub, capability map, and system navigator*
 - 7-strategy resolution cascade for maximum accuracy
 
 ### 2.4 Governance Dashboard Backend
-- Aggregates telemetry from all 40 nodes into governor-facing summaries
+- Aggregates telemetry from all 40 primitives into governor-facing summaries
 - Health scores, boot status, degradation levels, and governance mode
 - Real-time sync with the OS Dashboard
 

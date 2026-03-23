@@ -6,16 +6,16 @@
 
 ## 1. System Design
 
-CMPSBL is a **field-based cognitive kernel** — a 40-node weighted matrix organized into 12 sectors. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
+CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 12 sectors. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
 
 ### Topology
 
-| Sector | Nodes | Weight | Purpose |
+| Category | Primitives | Weight | Purpose |
 |--------|-------|--------|---------|
 | Spine (CORE, SYSTEM, CCR) | 5 | 0.260 | Kernel, lifecycle, reasoning, memory, synthesis |
 | Operational Grid (OCG) | 6 | 0.140 | Auth, compliance, audit, event routing |
 | Execution Layer | 10 | 0.240 | Public AI capabilities (routing, generation, orchestration) |
-| Expansion Zones (ESZ+EPZ+EMZ) | 10 | 0.175 | Ethics, prediction, simulation, manufacturing, translation |
+| expansion categories (ESZ+EPZ+EMZ) | 10 | 0.175 | Ethics, prediction, simulation, manufacturing, translation |
 | Covert Systems (CSZ) | 3 | 0.045 | Evolution, shadow testing, phantom ops |
 | Fields + Meta + Plane + Shell | 6 | 0.140 | Cross-cutting immunity, governance, defense |
 
@@ -63,7 +63,7 @@ The substrate implements production-grade infrastructure patterns:
 
 ## 4. Zone Shielding
 
-Expansion zones have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
+expansion categories have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
 
 ---
 

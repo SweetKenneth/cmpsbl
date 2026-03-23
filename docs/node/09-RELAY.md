@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-RELAY is the substrate's intelligent message fabric and cross-boundary orchestration core. It doesn't just route messages — it optimizes paths, translates protocols, enforces sector boundaries, guarantees delivery, compresses payloads, and learns from every signal crossing the matrix. RELAY is the backbone that ensures every node can communicate reliably with every other node regardless of sector, format, or load conditions.
+RELAY is the substrate's intelligent message fabric and cross-boundary orchestration core. It doesn't just route messages — it optimizes paths, translates protocols, enforces category boundaries, guarantees delivery, compresses payloads, and learns from every signal crossing the matrix. RELAY is the backbone that ensures every node can communicate reliably with every other node regardless of sector, format, or load conditions.
 
 ---
 
@@ -69,7 +69,7 @@ Relay Hardening (integrity & limits enforcement)
 | `translate_protocol` | Lossless format translation between 3 protocol types |
 | `enforce_boundary` | Sector crossing validation with field sanitization |
 | `guarantee_delivery` | At-least-once delivery with dedup and DLQ |
-| `compress_message` | Delta/dedup compression for cross-sector payloads |
+| `compress_message` | Delta/dedup compression for cross-category payloads |
 | `manage_breakers` | Per-destination circuit breaker with cascade detection |
 | `govern_rate` | Token bucket rate limiting with priority bypass |
 | `enrich_message` | Automatic routing context injection |

@@ -17,7 +17,7 @@ MEDIC v9.0.0 "Surgeon" is the substrate's centralized diagnostic core featuring:
 - **Parameterized Recovery Playbooks** — Symptom fingerprint → recovery strategy mapping
 - **Hierarchical Health Aggregation** — Node to Global health scoring
 - **Predictive Degradation Model** — 30-60 minute failure lead time forecasting
-- **Automated Quarantine Manager** — Unhealthy module isolation
+- **Automated Quarantine Manager** — Unhealthy primitive isolation
 - **Self-Repair Feedback Loop** — EMA-weighted healing outcome optimization
 
 ---

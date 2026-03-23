@@ -16,7 +16,7 @@ This document covers the internal architecture of the Discovery Engine — the r
 The discovery reactor operates as a bounded recursive search:
 
 ```
-Input:  40-node topology graph
+Input:  40-primitive topology graph
 Output: Scored, tiered, deduplicated capability manifest
 
 1. Generate candidate pool from module combinations (depth 2–5)
@@ -136,7 +136,7 @@ Portable version of the reactor:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | System | Initial discovery engine internals — v13.1.0 |
-| 2026-03-12 | System | Updated to 40-node matrix, MINDGAMES epoch — v14.2.0 |
+| 2026-03-12 | System | Updated to 40-primitive matrix, MINDGAMES epoch — v14.2.0 |
 
 ---
 

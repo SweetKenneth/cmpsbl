@@ -240,7 +240,7 @@ The CSZ (EVOLUTION, SHADOW, PHANTOM) operates under heightened security:
 |------|--------|--------|
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added ATLAS/ENGINEER to trust zones, developer portal security, backup endpoint security, first-party analytics |
 | 2026-03-03 | System | Added Ironclad fabric, CSZ security, agent isolation, INTEL/Scanner integration, consensus routing |
-| 2026-03-03 | System | Verified against 38-node topology and zone-shielded architecture |
+| 2026-03-03 | System | Verified against 38-primitive topology and zone-shielded architecture |
 | 2026-03-01 | System | Initial canonical security architecture |
 
 ---

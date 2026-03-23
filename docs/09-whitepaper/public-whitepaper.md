@@ -30,12 +30,12 @@ The CMPSBL substrate solves these problems by providing a **40-primitive cogniti
 - **Expansion Perception Zone** (EPZ) for simulation, geospatial awareness, and edge computing.
 - **Expansion Manufacturing Zone** (EMZ) for artifact production, translation, and data ingestion.
 - **Covert Systems Zone** (CSZ) for evolution, shadow testing, and phantom operations.
-- **Meta sector** (ATLAS, ENGINEER) for capability mapping and maintenance intelligence.
+- **Meta category** (ATLAS, ENGINEER) for capability mapping and maintenance intelligence.
 - **Fields** that permeate all layers for immunity and intent alignment.
 - A **Governance Plane** that supervises every action.
 - A **Defense Shell** that enforces the outermost trust boundary.
 
-Every module has independent health monitoring, circuit-breaker isolation, and audit logging. The system health is a deterministic weighted sum — not a heuristic. Expansion zones are zone-shielded, allowing independent degradation without affecting the substrate core.
+Every module has independent health monitoring, circuit-breaker isolation, and audit logging. The system health is a deterministic weighted sum — not a heuristic. expansion categories are zone-shielded, allowing independent degradation without affecting the substrate core.
 
 ## 4. Key Differentiators
 
@@ -92,7 +92,7 @@ This positions CMPSBL uniquely among AI orchestration platforms: it is the only 
 
 ## 6. Architecture Overview
 
-| Layer | Nodes | Purpose |
+| Layer | Primitives | Purpose |
 |-------|-------|---------|
 | Spine: CORE | 1 | Kernel boot, integrity calculation |
 | Spine: SYSTEM | 1 | Lifecycle, configuration |
