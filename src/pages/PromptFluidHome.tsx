@@ -361,7 +361,7 @@ export default function PromptFluidHome() {
 
               <div className="flex flex-wrap justify-center gap-6 sm:gap-10 mb-10">
                 {[
-                  { value: "24", label: "Nodes" },
+                  { value: "24", label: "Primitives" },
                   { value: "525+", label: "Capabilities" },
                   { value: "300", label: "Memories" },
                   { value: "100", label: "Engines" },

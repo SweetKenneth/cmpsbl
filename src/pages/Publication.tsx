@@ -66,7 +66,7 @@ const priorArtDocs = [
 ];
 
 const systemMetrics = [
-  { label: "Modules", value: "40", icon: Layers },
+  { label: "Primitives", value: "40", icon: Layers },
   { label: "Functional Groups", value: "12", icon: GitBranch },
   { label: "Capabilities", value: "300+", icon: Zap },
   { label: "Autonomy Tiers", value: "3", icon: Shield },

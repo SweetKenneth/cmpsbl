@@ -65,7 +65,7 @@ const STEPS: OnboardingStep[] = [
     nextSteps: [
       'Compare capability slots, vault depth, and daily pulls',
       'Start free with Builder — upgrade anytime',
-      'All plans include the full 40-node runtime',
+      'All plans include the full 40-primitive runtime',
     ],
   },
 ];

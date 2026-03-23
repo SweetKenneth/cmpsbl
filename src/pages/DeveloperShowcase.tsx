@@ -122,7 +122,7 @@ export default function DeveloperShowcase() {
   ];
 
   const techCapabilities = [
-    { icon: Database, label: "40", sublabel: "Modules", description: "Specialized subsystems" },
+    { icon: Database, label: "40", sublabel: "Primitives", description: "Agents, engines, layers & organs" },
     { icon: Clock, label: "12", sublabel: "Groups", description: "Organized by function" },
     { icon: Network, label: "675+", sublabel: "Capabilities", description: "Ready to use" },
     { icon: GitBranch, label: "REST + SDK", sublabel: "Access", description: "Multiple options" },

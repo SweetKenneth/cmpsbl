@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 
 // Human-readable overrides for path segments
 const LABEL_MAP: Record<string, string> = {
-  "modules": "Modules",
+  "modules": "Architecture",
   "documentation": "Docs",
   "docs": "Docs",
   "substrate": "Substrate",

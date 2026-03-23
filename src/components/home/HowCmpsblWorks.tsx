@@ -12,10 +12,10 @@ const traditionalStack = ["Models", "Applications"];
 const cmpsblStack = ["Models", "CMPSBL AI Platform", "Applications"];
 
 const explanations = [
-  { label: "Modules", desc: "handle specialized tasks" },
-  { label: "Memories", desc: "capture proven solutions" },
-  { label: "Persistent Memory", desc: "remembers across sessions" },
-  { label: "Self-Improvement", desc: "gets smarter over time" },
+  { label: "Agents", desc: "act autonomously on your behalf" },
+  { label: "Engines", desc: "process and transform data" },
+  { label: "Layers", desc: "protect and govern everything" },
+  { label: "Organs", desc: "keep the system alive" },
 ];
 
 export function HowCmpsblWorks() {

@@ -329,8 +329,8 @@ export default function AIOperatingSystem() {
             {/* Stats strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               {[
-                { value: "40", label: "Nodes" },
-                { value: "12", label: "Sectors" },
+                { value: "40", label: "Primitives" },
+                { value: "4", label: "Categories" },
                 { value: "1.000", label: "Σ Weight" },
                 { value: "379", label: "Capabilities" },
               ].map((stat, i) => (

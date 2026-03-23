@@ -64,7 +64,7 @@ const STEPS: OnboardingStep[] = [
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
     nextSteps: [
       'Pick an SDK template to scaffold your first project',
-      'Open the terminal and run "status" to see your nodes',
+      'Open the terminal and run "status" to see your primitives',
       'Try "memory.store" to save your first persistent memory',
     ],
   },
