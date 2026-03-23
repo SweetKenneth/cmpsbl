@@ -39,51 +39,51 @@ const NODE_GROUPS = [
   {
     layer: "Kernel",
     nodes: [
-      { name: "BRAIN", capabilities: 3, desc: "Reasoning, prediction, cross-primitive insight" },
-      { name: "MEMORY", capabilities: 4, desc: "Semantic search, pattern matching, learning context" },
-      { name: "CORTEX", capabilities: 3, desc: "Orchestration, bottleneck analysis, workflow coordination" },
+      { name: "BRAIN Organ", capabilities: 3, desc: "Reasoning, prediction, cross-primitive insight" },
+      { name: "MEMORY Organ", capabilities: 4, desc: "Semantic search, pattern matching, learning context" },
+      { name: "CORTEX Engine", capabilities: 3, desc: "Orchestration, bottleneck analysis, workflow coordination" },
     ],
   },
   {
     layer: "Cognitive",
     nodes: [
-      { name: "DECODE", capabilities: 2, desc: "Intent analysis, context enrichment" },
-      { name: "ENCODE", capabilities: 2, desc: "Code analysis, generation context" },
-      { name: "DREAM", capabilities: 2, desc: "Synthesis context, exploration insights" },
+      { name: "DECODE Agent", capabilities: 2, desc: "Intent analysis, context enrichment" },
+      { name: "ENCODE Agent", capabilities: 2, desc: "Code analysis, generation context" },
+      { name: "DREAM Engine", capabilities: 2, desc: "Synthesis context, exploration insights" },
     ],
   },
   {
     layer: "Operational",
     nodes: [
-      { name: "DEFENSE", capabilities: 7, desc: "Threat scoring, IP reputation, anomaly detection, geo analysis" },
-      { name: "IDENTITY", capabilities: 4, desc: "Actor resolution, trust scoring, auth strength" },
-      { name: "VISION", capabilities: 4, desc: "Session analytics, usage patterns, anomaly scoring" },
+      { name: "DEFENSE Layer", capabilities: 7, desc: "Threat scoring, IP reputation, anomaly detection, geo analysis" },
+      { name: "IDENTITY Organ", capabilities: 4, desc: "Actor resolution, trust scoring, auth strength" },
+      { name: "VISION Agent", capabilities: 4, desc: "Session analytics, usage patterns, anomaly scoring" },
     ],
   },
   {
     layer: "Administrative",
     nodes: [
-      { name: "ECONOMY", capabilities: 4, desc: "Cost forecasting, budget checks, quota status" },
-      { name: "AUDIT", capabilities: 3, desc: "Compliance scoring, change velocity, forensics" },
-      { name: "ACCESS", capabilities: 2, desc: "Developer profiles, permission auditing" },
+      { name: "ECONOMY Engine", capabilities: 4, desc: "Cost forecasting, budget checks, quota status" },
+      { name: "AUDIT Organ", capabilities: 3, desc: "Compliance scoring, change velocity, forensics" },
+      { name: "ACCESS Organ", capabilities: 2, desc: "Developer profiles, permission auditing" },
     ],
   },
   {
     layer: "Orchestrator",
     nodes: [
-      { name: "NEXUS", capabilities: 2, desc: "Provider health, optimal AI model routing" },
-      { name: "RELAY", capabilities: 3, desc: "Email resolution, delivery history, engagement scoring" },
-      { name: "SANDBOX", capabilities: 2, desc: "Safe evaluation, safety assessment" },
+      { name: "NEXUS Organ", capabilities: 2, desc: "Provider health, optimal AI model routing" },
+      { name: "RELAY Organ", capabilities: 3, desc: "Email resolution, delivery history, engagement scoring" },
+      { name: "SANDBOX Engine", capabilities: 2, desc: "Safe evaluation, safety assessment" },
     ],
   },
   {
     layer: "Infrastructure",
     nodes: [
-      { name: "SYSTEM", capabilities: 2, desc: "Health checks, incident analysis" },
-      { name: "EVOLUTION", capabilities: 2, desc: "Evolution status, upgrade readiness" },
-      { name: "INCLUSIVE", capabilities: 2, desc: "Accessibility scoring, usability assessment" },
-      { name: "RIPPLE", capabilities: 2, desc: "Webhook health, event propagation" },
-      { name: "INTEGRATION", capabilities: 2, desc: "Connector status, schema mapping" },
+      { name: "SYSTEM Organ", capabilities: 2, desc: "Health checks, incident analysis" },
+      { name: "EVOLUTION Layer", capabilities: 2, desc: "Evolution status, upgrade readiness" },
+      { name: "INCLUSIVE Layer", capabilities: 2, desc: "Accessibility scoring, usability assessment" },
+      { name: "RIPPLE Organ", capabilities: 2, desc: "Webhook health, event propagation" },
+      { name: "INTEGRATION Organ", capabilities: 2, desc: "Connector status, schema mapping" },
     ],
   },
 ];

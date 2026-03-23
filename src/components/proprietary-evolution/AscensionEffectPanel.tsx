@@ -187,7 +187,7 @@ export function AscensionEffectPanel() {
           Ascension Effect Monitor
         </h3>
         <span className="text-[10px] font-mono text-muted-foreground ml-auto">
-          VISION · v2
+          VISION Agent · v2
         </span>
       </div>
 
