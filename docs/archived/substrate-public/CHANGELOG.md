@@ -4,6 +4,20 @@
 
 ---
 
+## v15.3.1 — 2026-03-23
+
+**Auto-Activation Wave 2 — 100 Rules Total**
+
+- 🧠 **50 new rules** (ACT_051–ACT_100) targeting strongest per-node capabilities.
+- 🛡️ **T1 Critical** — Immune orchestration, quarantine zones, tamper detection, outbreak containment.
+- 🔧 **T2 Operational** — Graceful shutdown, relay failover, traffic shaping, schema evolution, incident response.
+- 📊 **T3 Intelligence** — Latent pattern extraction, scenario simulation, bias detection, immune learning.
+- 🎯 **T4 Optimization** — Attack surface mapping, permission graph audit, dynamic pricing, preventive maintenance.
+- 🌙 **T5 Autonomous** — Nocturnal optimization, resilience stress testing, artifact recombination, idea incubation.
+- **100 total rules** across 25+ nodes covering the full substrate.
+
+---
+
 ## v15.3.0 — 2026-03-23
 
 **Capability Auto-Activation Engine**

@@ -4,17 +4,21 @@
 
 ---
 
+## 2026-03-23 · v15.3.1 (CONTACT — Auto-Activation Wave 2)
+
+⟨This entry describes the expansion of the Capability Auto-Activation Engine from 50 to 100 rules, covering the strongest capabilities of every major node.⟩
+
+- **Wave 2 Expansion** — 50 additional rules (ACT_051–ACT_100) targeting strongest per-node capabilities.
+- **T1 Critical (51–58)** — Immune response orchestration, quarantine zones, identity theft response, tamper detection, outbreak containment, governance emergency override, fault domain isolation, poison message quarantine.
+- **T2 Operational (59–70)** — Graceful shutdown, relay failover, warm standby, traffic shaping, connection pool recovery, retry budget enforcement, fan-out coordination, self-healing, consumer rebalance, engine restart, schema evolution, incident response.
+- **T3 Intelligence (71–82)** — Latent pattern extraction, scenario simulation, bias detection, threat intel aggregation, root cause analysis, immune learning, model recalibration, metric correlation discovery, creative mutation, data lineage, forecast confidence, behavioral baseline rebuild.
+- **T4 Optimization (83–92)** — Attack surface mapping, policy conflict detection, permission graph audit, relay topology, encoding profiling, dynamic pricing, compliance gap analysis, data quality scoring, simulation drift correction, preventive maintenance.
+- **T5 Autonomous (93–100)** — Nocturnal optimization, resilience stress testing, orphan account cleanup, artifact recombination, immune strength assessment, control effectiveness audit, idea incubation, cross-domain policy harmonization.
+- **Total** — 100 auto-activation rules across all 5 tiers, covering 25+ nodes.
+
+---
+
 ## 2026-03-23 · v15.3.0 (CONTACT — Capability Auto-Activation Engine)
-
-⟨This entry describes the Capability Auto-Activation Engine — the substrate's autonomic nervous system that transforms 50 idle capabilities into event-reactive behaviors.⟩
-
-- **Auto-Activation Registry** — 50 rules across 5 tiers (T1 Critical → T5 Autonomous) mapping capabilities to precise event triggers.
-- **Signal Pattern Matcher** — sourceNode + signalType + severity + custom predicate matching against all enabled rules.
-- **5-Tier Priority System** — T1 Critical (immediate, security), T2 Operational (fast infra), T3 Intelligence (learning), T4 Optimization (background tuning), T5 Autonomous (idle self-improvement).
-- **Guard Layer** — Governance blocks (per-rule override), cooldown enforcement (configurable multiplier), concurrency limiting (default 5 max).
-- **Governance Interface** — `governanceBlock()`/`governanceUnblock()` for runtime rule suppression. Non-governable rules (T1 security) cannot be blocked.
-- **Telemetry** — 200-entry event log, per-tier stats (activations/blocked/errors), engine health summary.
-- **NERVE Integration** — Wired as capability #13 in NERVE Ultimate v9.1.0 "Synapse Prime".
 
 ---
 
