@@ -34,7 +34,7 @@ export interface QualityGateConfig {
   minConfidence: number;
   /** Minimum complexity threshold. Default: 1 */
   minComplexity: number;
-  /** Maximum primitives to keep per node (top-N by quality). Default: 80 */
+  /** Maximum primitives to keep per primitive (top-N by quality). Default: 80 */
   maxPrimitivesPerNode: number;
   /** Weight for confidence in quality score. Default: 0.30 */
   weightConfidence: number;

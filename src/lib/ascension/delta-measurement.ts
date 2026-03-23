@@ -4,7 +4,7 @@
  * Measures the before/after computational impact of injecting
  * an Ascension Node into a discovery chain.
  *
- * Critical for proving whether a node meaningfully changed computation.
+ * Critical for proving whether a primitive meaningfully changed computation.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -92,7 +92,7 @@ export function compareDelta(
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Build a complete delta report for a node injection comparison.
+ * Build a complete delta report for a primitive injection comparison.
  */
 export function buildDeltaReport(
   node: AscensionNode,

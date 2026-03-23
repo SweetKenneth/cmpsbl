@@ -1,5 +1,5 @@
 /**
- * Audit Check: Matrix Node Health
+ * Audit Check: Matrix Primitive Health
  * Validates Matrix Node health reporting & weighted integrity
  */
 
