@@ -128,12 +128,12 @@ export const INTEGRATION_ADAPTERS_COUNT = 35;
  * Approximate lines of code in the substrate
  * Last verified: 2026-03
  */
-export const LINES_OF_CODE = 175_000;
+export const LINES_OF_CODE = 200_000;
 
 /**
- * Display-friendly version (175k+ for marketing)
+ * Display-friendly version (200k+ for marketing)
  */
-export const LINES_OF_CODE_DISPLAY = '175k+';
+export const LINES_OF_CODE_DISPLAY = '200k+';
 
 // =============================================================================
 // VERSION INFO
