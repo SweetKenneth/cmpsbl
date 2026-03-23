@@ -198,7 +198,7 @@ const modulesByLayer = {
   orchestrator: [
     {
       id: "cortex",
-      name: "CORTEX",
+      name: "CORTEX Engine",
       description: "Agency orchestrator, evolution, governance",
       icon: Wand2,
       color: "text-neon-purple",
