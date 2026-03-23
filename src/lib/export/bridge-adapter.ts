@@ -111,7 +111,7 @@ export function generateBridgeHeader(opts: BridgeHeaderOptions): string {
     `${opts.comment} CMPSBL® Bridge Adapter — ${opts.name}`,
     `${opts.comment} Language: ${opts.language} | Bridge Type: ${opts.bridgeType}`,
     `${opts.comment} CJPI: ${opts.cjpi} | Category: ${opts.category}`,
-    `${opts.comment} Primitive Chain: ${opts.moduleChain.join(' → ')}`,
+    `${opts.comment} Primitive Chain: ${labelChain(opts.moduleChain)}`,
     `${opts.comment}`,
     `${opts.comment} This is a BRIDGE ADAPTER, not a standalone runtime.`,
     `${opts.comment} Runtime logic lives in the canonical TypeScript Mini-Runtime™.`,
