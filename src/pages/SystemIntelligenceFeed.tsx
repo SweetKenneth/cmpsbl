@@ -530,7 +530,7 @@ export default function SystemIntelligenceFeed() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
               {[
                 { label: "Learning Cycles", value: feed.length, icon: Activity },
-                { label: "Active Modules", value: activeModules.length, icon: Cpu },
+                { label: "Active Primitives", value: activeModules.length, icon: Cpu },
                 { label: "Mode", value: "24/7", icon: Radio },
                 { label: "Status", value: "LIVE", icon: Zap },
               ].map((stat, i) => (
