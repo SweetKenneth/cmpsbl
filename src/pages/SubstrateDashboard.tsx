@@ -263,7 +263,7 @@ const modulesByLayer = {
     },
     {
       id: "encode",
-      name: "ENCODE",
+      name: "ENCODE Agent",
       description: "Structural generation, filesystem-aware, error patterns",
       icon: FileCode,
       color: "text-neon-cyan",
