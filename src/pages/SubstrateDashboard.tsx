@@ -353,7 +353,7 @@ const modulesByLayer = {
     },
     {
       id: "lingua",
-      name: "LINGUA",
+      name: "LINGUA Agent",
       description: "Translation, localization, semantic bridging",
       icon: Languages,
       color: "text-neon-purple",
