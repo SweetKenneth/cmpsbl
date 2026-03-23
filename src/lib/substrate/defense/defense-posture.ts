@@ -204,9 +204,9 @@ export function getAttackTimeline(limit = 50): readonly AttackTimelineEntry[] {
 /**
  * Get posture history.
  */
-export function getPostureHistory(limit = 50): readonly Array<{ timestamp: number; score: number; grade: PostureGrade }> {
+export function getPostureHistory(limit = 50) {
   const start = Math.max(0, postureHistory.length - limit);
-  return Object.freeze(postureHistory.slice(start));
+  return postureHistory.slice(start);
 }
 
 /**
