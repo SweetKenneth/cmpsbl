@@ -840,9 +840,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'immunity.hardening.fatigue', description: 'Immune fatigue detector', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.response_time', description: 'Immune response time (P95/P99)', category: 'defense', icon: Clock, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — EVOLUTION (Field — Middle Mesh)
-  { command: 'evolution.hardening', description: 'EVOLUTION hardening status (Chrysalis)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'evolution.hardening.health', description: 'EVOLUTION health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — EVOLUTION Layer (Field — Middle Mesh)
+  { command: 'evolution.hardening', description: 'EVOLUTION Layer hardening status (Chrysalis)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.hardening.health', description: 'EVOLUTION Layer health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.cycle', description: 'Current evolution cycle state', category: 'system', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.risk', description: 'Risk budget status', category: 'system', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.snapshots', description: 'Snapshot inventory & age', category: 'system', icon: Database, requiresOperator: false, requiredTier: 'free' },
