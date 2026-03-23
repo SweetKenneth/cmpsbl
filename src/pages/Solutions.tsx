@@ -80,7 +80,7 @@ const solutions = [
     tagline: "Your Infrastructure, Full Control",
     description: "Deploy the complete CMPSBL platform on your own servers. Air-gapped, sovereign, and fully compliant. Contact enterprise@CMPSBL.com for pricing.",
     features: ["Full platform deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
-    metrics: ["Self-Hosted", "Sovereign", "40 Modules"],
+    metrics: ["Self-Hosted", "Sovereign", "40 Primitives"],
     link: "/enterprise",
     color: "from-neon-green to-neon-green",
   },
