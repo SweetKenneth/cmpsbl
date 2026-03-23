@@ -333,29 +333,31 @@ export function useSubstrateHealthScore() {
     economy: () => economyMod.status(),
     sandbox: () => sandboxMod.status(),
     encode: () => encodeMod.status(),
-    // Expansion zones — graceful proxies
-    sovereign: () => cortex.status(),
-    oracle: () => cortex.status(),
-    conscience: () => cortex.status(),
-    treaty: () => cortex.status(),
-    compass: () => cortex.status(),
-    echo: () => cortex.status(),
-    reflex: () => cortex.status(),
-    forge: () => cortex.status(),
-    lingua: () => cortex.status(),
-    phantom: () => cortex.status(),
-    harvest: () => cortex.status(),
-    medic: () => core.status(),
+    // Expansion zones — use dedicated module objects
+    sovereign: () => sovereignMod.status(),
+    oracle: () => oracleMod.status(),
+    conscience: () => conscienceMod.status(),
+    treaty: () => treatyMod.status(),
+    compass: () => compassMod.status(),
+    echo: () => echoMod.status(),
+    reflex: () => reflexMod.status(),
+    forge: () => forgeMod.status(),
+    lingua: () => linguaMod.status(),
+    phantom: () => phantomMod.status(),
+    harvest: () => harvestMod.status(),
+    medic: () => medicMod.status(),
     // CSZ — Covert Systems Zone
-    shadow: () => defense.status(),
+    shadow: () => shadowMod.status(),
     // Mesh overlays
-    immunity: () => defense.status(),
+    immunity: () => immunityMod.status(),
     evolution: () => evolutionMod.status(),
-    intent: () => cortex.status(),
-    governance: () => cortex.status(),
+    intent: () => intentMod.status(),
+    governance: () => governanceMod.status(),
     // Meta — Plane
     atlas: () => cortex.status(),
     engineer: () => cortex.status(),
+    // NERVE — dedicated module
+    nerve: () => nerveMod.status(),
   };
 
   const batchQuery = useQuery({
