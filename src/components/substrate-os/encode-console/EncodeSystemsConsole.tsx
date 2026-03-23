@@ -438,7 +438,7 @@ export function EncodeSystemsConsole() {
 
     if (trimmed.startsWith('/recall ')) {
       const query = trimmed.slice(8).trim();
-      addSystemMsg('info', `🧠 Querying BRAIN memory for: "${query}"...`);
+      addSystemMsg('info', `🧠 Querying BRAIN Organ memory for: "${query}"...`);
       // Memory recall is async but we surface what the navigator knows
       const resolved = resolveTarget(query);
       addSystemMsg('info', resolved.summary || 'No memory matches found.');
