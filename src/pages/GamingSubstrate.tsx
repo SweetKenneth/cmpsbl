@@ -360,7 +360,7 @@ export default function GamingSubstrate() {
   const techCapabilities = [
     { icon: Database, label: "60+", sublabel: "Tables", description: "Full persistence layer" },
     { icon: Clock, label: "<100ms", sublabel: "Latency", description: "Response time" },
-    { icon: Network, label: "9", sublabel: "Nodes", description: "Production infrastructure" },
+    { icon: Network, label: "9", sublabel: "Primitives", description: "Production infrastructure" },
     { icon: Shield, label: "Enterprise", sublabel: "Security", description: "Production-ready" },
   ];
 

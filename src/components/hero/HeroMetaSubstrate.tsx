@@ -369,26 +369,45 @@ export function HeroMetaSubstrate() {
           ))}
         </FadeIn>
 
-        {/* Architecture strip */}
+        {/* Primitives flow strip */}
         <FadeIn delay={0.65} className="mb-6 sm:mb-10">
-          <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {[
-              "Signal",
-              "Memory Stream",
-              "Governed Runtime",
-              "Capability Packs",
-              "Sealed Engines",
-              "Applications",
-            ].map((step, i, arr) => (
-              <div key={step} className="flex items-center shrink-0">
-                <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
-                  <span className="text-[9px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+          <div className="flex flex-col items-start sm:items-center gap-2">
+            <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+              {[
+                "Signal",
+                "Memory Stream",
+                "Governed Runtime",
+                "Capability Packs",
+                "Sealed Engines",
+                "Applications",
+              ].map((step, i, arr) => (
+                <div key={step} className="flex items-center shrink-0">
+                  <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
+                    <span className="text-[9px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+                  </div>
+                  {i < arr.length - 1 && (
+                    <span className="text-muted-foreground/30 text-[10px] sm:text-xs font-bold px-1 sm:px-1.5">→</span>
+                  )}
                 </div>
-                {i < arr.length - 1 && (
-                  <span className="text-muted-foreground/30 text-[10px] sm:text-xs font-bold px-1 sm:px-1.5">→</span>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
+            <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+              {[
+                { label: "Layers", color: "--neon-magenta" },
+                { label: "Organs", color: "--neon-cyan" },
+                { label: "Engines", color: "--neon-purple" },
+                { label: "Agents", color: "--neon-amber" },
+              ].map((p, i, arr) => (
+                <div key={p.label} className="flex items-center shrink-0">
+                  <div className="px-2.5 sm:px-3 py-1 rounded-full border border-border/20 bg-card/20">
+                    <span className="text-[9px] sm:text-[11px] font-bold whitespace-nowrap" style={{ color: `hsl(var(${p.color}))` }}>{p.label}</span>
+                  </div>
+                  {i < arr.length - 1 && (
+                    <span className="text-muted-foreground/20 text-[10px] font-bold px-1">→</span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </FadeIn>
         

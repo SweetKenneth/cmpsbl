@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: Zap,
     tag: 'Scale',
     title: 'Plans & Pricing',
-    body: 'Every tier runs the same 40-node substrate. Plans control capacity — how many memory slots, how deep your vault, and how many daily pulls you get.',
+    body: 'Every tier runs the same 40-primitive substrate. Plans control capacity — how many memory slots, how deep your vault, and how many daily pulls you get.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -51,7 +51,7 @@ const STEPS: OnboardingStep[] = [
     icon: Sparkles,
     tag: 'Discover',
     title: 'Deeper Discoveries',
-    body: 'Paid plans access Mythic and Apex-tier crystallizations, longer collision chains, and more complex multi-node compositions that the substrate discovers.',
+    body: 'Paid plans access Mythic and Apex-tier crystallizations, longer collision chains, and more complex multi-primitive compositions that the substrate discovers.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
@@ -65,7 +65,7 @@ const STEPS: OnboardingStep[] = [
     nextSteps: [
       'Compare capability slots, vault depth, and daily pulls',
       'Start free with Builder — upgrade anytime',
-      'All plans include the full 40-node runtime',
+      'All plans include the full 40-primitive runtime',
     ],
   },
 ];

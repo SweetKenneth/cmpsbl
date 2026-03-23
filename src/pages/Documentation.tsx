@@ -267,7 +267,7 @@ function ArchitectureSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Layer Hierarchy</h3>
         <DocTable
-          headers={["Sector", "Role", "Nodes"]}
+          headers={["Category", "Role", "Primitives"]}
           rows={[
             ["Spine", "Startup and lifecycle management", "CORE, SYSTEM"],
             ["Cognitive Core", "Reasoning, memory, and self-improvement", "BRAIN, MEMORY, DREAM"],

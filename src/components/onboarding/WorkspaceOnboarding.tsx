@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: Terminal,
     tag: 'Build',
     title: 'Builder Workspace',
-    body: 'Your development environment inside the substrate. SDK templates, a tiered terminal, and direct access to 40 cognitive nodes — all in one place.',
+    body: 'Your development environment inside the substrate. SDK templates, a tiered terminal, and direct access to 40 primitives — agents, engines, layers, and organs — all in one place.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
@@ -64,7 +64,7 @@ const STEPS: OnboardingStep[] = [
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-amber) / 0.1) 0%, transparent 50%)',
     nextSteps: [
       'Pick an SDK template to scaffold your first project',
-      'Open the terminal and run "status" to see your nodes',
+      'Open the terminal and run "status" to see your primitives',
       'Try "memory.store" to save your first persistent memory',
     ],
   },
