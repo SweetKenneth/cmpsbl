@@ -100,7 +100,7 @@ function getTabDefs(hasAgency: boolean, isGovernor: boolean): TabDef[] {
     { id: 'cognitives', label: 'Cognitives', icon: Sparkles, group: 'Agents', description: 'Sealed runtimes', governorOnly: !isGovernor && !hasAgency, minTier: hasAgency ? 'creator' as SubstrateRole : 'governor' as SubstrateRole },
     ...((hasAgency || isGovernor) ? [{ id: 'agency', label: 'Agency', icon: Building2, group: 'Agents' as string, description: 'Multi-agent teams', governorOnly: !hasAgency, minTier: (hasAgency ? 'creator' : 'governor') as SubstrateRole }] : []),
     // ── Governor ──
-    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Orchestrate', description: 'Node mesh', governorOnly: true, minTier: 'governor' },
+    { id: 'intent', label: 'INTENT', icon: Brain, group: 'Orchestrate', description: 'Intent mesh', governorOnly: true, minTier: 'governor' },
     { id: 'cortex', label: 'CORTEX', icon: GitBranch, group: 'Orchestrate', description: 'Memory orchestration', governorOnly: true, minTier: 'governor' },
     { id: 'atlas', label: 'ATLAS', icon: Gauge, group: 'Orchestrate', description: 'Control plane', governorOnly: true, minTier: 'governor' },
     { id: 'engines', label: 'Maintenance', icon: Wrench, group: 'Operate', description: 'Engine repairs', governorOnly: true, minTier: 'governor' },
