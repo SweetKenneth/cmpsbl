@@ -944,7 +944,7 @@ export {
   type EvolutionSignal,
   type SynergyOutcome,
   type SynergyStats,
-} from './inter-primitive-bridges';
+} from './inter-node-bridges';
 
 // ═══ CORE Kernel Hardening v2.0.0 (25 Enterprise Upgrades) ═══
 export {
