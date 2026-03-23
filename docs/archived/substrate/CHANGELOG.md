@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v16.5.0 (CONTACT — GOVERNANCE Ultimate "Parliament Prime")
+
+⟨This entry describes GOVERNANCE v9.0.0 — the substrate's supervisory overlay plane reaching its ultimate form with 10 new systems.⟩
+
+- **Policy Expression Engine** — Composable DSL with 4 operators (deny/require/limit/scope_match) and boolean combinators (AND/OR/NOT). Hot-reloadable versioned policies with lineage tracking. Framework-organized (ethical_ai, data_protection, operational_safety). Priority-ordered evaluation with short-circuit.
+- **Multi-Party Approval Workflow** — 3 quorum types (any_of/all_of/majority). TTL auto-deny (default 1 hour). FNV-1a cryptographic attestation per vote. Duplicate prevention. 1,000-request capacity.
+- **Veto Cascade Engine** — BFS cascade propagation with coupling strength threshold (≥0.3). Escalation priority: `(severity × 0.5) + (affected × 0.3) + (recurrence × 0.2)`. Appeal process with cascading overturn. 2,000-veto capacity.
+- **Governance State Machine** — 5 formal modes (PERMISSIVE → STANDARD → STRICT → LOCKDOWN → EMERGENCY). Strictness multipliers 0.5–2.5. Valid-transition enforcement. Approval-gated mode changes.
+- **Drift Detection & Correction** — Jaccard distance baseline comparison. Drift velocity tracking. Auto-generated correction proposals (add/remove/restore). Severity thresholds none→critical.
+- **Compliance Rule Engine** — 4 operators (DENY/REQUIRE/LIMIT/SCOPE_MATCH). 9 default rules across 3 frameworks. Real-time pass/fail/warn scoring. Rule toggling. 500-rule capacity.
+- **Decision Audit Chain** — Dual FNV-1a hash-chained entries with tamper detection. Entry includes decision, rationale, policy refs, context snapshot, actor. Chain attestation for external audit. 5,000-entry chain.
+- **Governance Intelligence (CLM)** — EMA-weighted effectiveness scoring (α=0.15). False positive detection (>30%). 3 pattern types (false_positive, frequent_trigger, approval_bottleneck). Auto-generated refinement recommendations.
+- **Cross-Node Policy Enforcement** — Pre-execution gates for all 40 nodes. Per-node overrides. 4 gate decisions (allow/deny/defer/require_approval). Most-restrictive-wins evaluation. 500-gate capacity.
+- **Governance Telemetry Nexus** — Weighted health composite: approval latency (15%) + veto rate (20%) + drift (20%) + compliance (25%) + chain integrity (20%). Critical alerts for 6 failure conditions. Trend analysis over 200-snapshot buffer.
+
+---
+
 ## 2026-03-23 · v16.4.0 (CONTACT — ACCESS Ultimate "Gatekeeper Prime")
 
 ⟨This entry describes ACCESS v9.0.0 — the substrate's API gateway node reaching its ultimate form with 10 new systems.⟩

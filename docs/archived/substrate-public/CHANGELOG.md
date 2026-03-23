@@ -4,6 +4,12 @@
 
 ---
 
+## v16.5.0 — 2026-03-23
+
+- **GOVERNANCE Ultimate "Parliament Prime"** — 10 new systems: Policy Expression Engine (composable DSL + hot-reload + versioning), Multi-Party Approval Workflow (3 quorum types + TTL + attestation), Veto Cascade Engine (BFS propagation + appeal process + escalation priority), Governance State Machine (5 modes + strictness multipliers + valid transitions), Drift Detection & Correction (Jaccard distance + velocity + auto-proposals), Compliance Rule Engine (DENY/REQUIRE/LIMIT/SCOPE_MATCH + 9 defaults + 3 frameworks), Decision Audit Chain (dual FNV-1a hash-chain + tamper detection + attestation), Governance Intelligence CLM (EMA effectiveness + false positive detection + recommendations), Cross-Node Policy Enforcement (per-node gates + overrides + most-restrictive-wins), Governance Telemetry Nexus (weighted health composite + critical alerts).
+
+---
+
 ## v16.4.0 — 2026-03-23
 
 - **ACCESS Ultimate "Gatekeeper Prime"** — 10 new systems: Cryptographic Key Vault (SHA-256 + rotation + lineage), Adaptive Rate Limiter (sliding windows + burst detection + EMA auto-tuning), Scope Enforcement Engine (hierarchical tree + wildcard + escalation + audit), Usage Metering Pipeline (millicent cost attribution + overage detection), Subscription Lifecycle Manager (4 tiers + grace + rollover), Developer Identity Registry (reputation scoring + auto-suspension), Abuse Detection Engine (credential stuffing + scraping + Z-score + quarantine), Entitlement Resolution Cache (O(1) + TTL + warm-up), Gateway Circuit Breaker (per-dev breakers + L0-L4 degradation), Access Telemetry Dashboard (unified health composite).
