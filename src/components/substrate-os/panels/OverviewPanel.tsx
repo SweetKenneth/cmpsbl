@@ -215,10 +215,10 @@ export default function OverviewPanel({ isOperator, isGovernor, onOpenTerminal, 
           </div>
         </div>
 
-        {/* Sector Topology */}
+        {/* Primitive Taxonomy */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between mb-3 px-1">
-            <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em]">Sector Topology</h3>
+            <h3 className="text-[11px] font-semibold text-muted-foreground/60 uppercase tracking-[0.15em]">Primitive Taxonomy</h3>
             <Button variant="ghost" size="sm" className="h-7 px-2 text-[10px]" onClick={() => healthScore.refetch()} disabled={healthScore.isLoading}>
               <RefreshCw className={cn("w-3 h-3 mr-1", healthScore.isLoading && "animate-spin")} />
               Refresh

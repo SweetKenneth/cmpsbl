@@ -260,8 +260,8 @@ export default function SystemIntegrity() {
           className="grid grid-cols-2 sm:grid-cols-4 gap-3"
         >
           {[
-            { label: 'Total Nodes', value: '40', color: 'cyan' },
-            { label: 'Sectors', value: '12', color: 'violet' },
+            { label: 'Total Primitives', value: '40', color: 'cyan' },
+            { label: 'Categories', value: '4', color: 'violet' },
             { label: 'Breakers Open', value: String(breakerSummary.open), color: breakerSummary.open > 0 ? 'red' : 'emerald' },
             { label: 'Integrity', value: `${health.isDown ? '0' : '100'}%`, color: health.isDown ? 'red' : 'emerald' },
           ].map(item => {
