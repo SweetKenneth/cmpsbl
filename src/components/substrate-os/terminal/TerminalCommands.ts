@@ -621,7 +621,7 @@ export const INFRA_COMMANDS: CommandDefinition[] = [
   { command: 'analytics.dead', description: 'Dead/unused capabilities', category: 'infra', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'analytics.rising', description: 'Rising capability trends', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'analytics.flush', description: 'Flush analytics to storage', category: 'infra', icon: Database, requiresOperator: true, requiredTier: 'architect' },
-  { command: 'stream.status', description: 'Streaming pipeline status', category: 'infra', icon: Radio, requiresOperator: false, requiredTier: 'free' },
+  { command: 'stream.status', description: 'Streaming memory chain status', category: 'infra', icon: Radio, requiresOperator: false, requiredTier: 'free' },
   { command: 'stream.active', description: 'Active stream sessions', category: 'infra', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'file.status', description: 'File processing memory chain status', category: 'infra', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'file.history', description: 'File processing history', category: 'infra', icon: Clock, requiresOperator: false, requiredTier: 'free' },
