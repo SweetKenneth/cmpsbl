@@ -3441,7 +3441,7 @@ ${result.plan.map((step, i) => `│    ${i + 1}. ${step}`).join('\n')}
           output: `
 ┌─ SYNERGY CATEGORIES ─────────────────────────────────────────
 │
-${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padStart(2)} pipelines`).join('\n')}
+${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padStart(2)} memory chains`).join('\n')}
 │
 └──────────────────────────────────────────────────────────────`,
           data: categories,
@@ -3520,7 +3520,7 @@ ${synergies.length > 20 ? `│  ... and ${synergies.length - 20} more` : ''}
           output: `
 ┌─ SYNERGIES BY MODULE ────────────────────────────────────────
 │
-${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipelines`).join('\n')}
+${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} memory chains`).join('\n')}
 │
 │  Filter: cortex.synergy.modules <MODULE>
 └──────────────────────────────────────────────────────────────`,

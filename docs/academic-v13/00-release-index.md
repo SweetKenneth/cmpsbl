@@ -63,7 +63,7 @@ All documents in this set carry one of the following classifications:
 | 01 | Release Abstract | Overview of the system and purpose of publication |
 | 02 | System Overview | CMPSBL as cognitive substrate infrastructure |
 | 03 | Memory Stream & Foundry | Signal → discovery → crystallization architecture |
-| 04 | Pipeline Crystallization Model | Pipeline, artifact, structural fingerprint, replay verification |
+| 04 | Memory Chain Crystallization Model | Pipeline, artifact, structural fingerprint, replay verification |
 | 05 | Universal Export Architecture | Cross-language export and portable runtime packaging |
 | 06 | Governance & Safety | Shadow verification, bounded autonomy, auditability |
 | 07 | Resilience / IRONCLAD Hardening | Circuit breakers, subsystem healing, safe-mode operations |
@@ -75,7 +75,7 @@ All documents in this set carry one of the following classifications:
 
 | # | Document | Description |
 |---|---|---|
-| 11 | Pipeline Economy Roadmap | Revenue mechanics and unit economics model |
+| 11 | Memory Chain Economy Roadmap | Revenue mechanics and unit economics model |
 | 12 | Engine Stacking Strategy | Composable engine layers and stacking economics |
 | 13 | Domain Expansion Strategy | System expansion through industry domain nodes |
 | 14 | Governance & Risk Positioning | Risk framework and governance posture |

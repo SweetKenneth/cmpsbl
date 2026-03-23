@@ -53,7 +53,7 @@ interface TelemetryData {
   agencyCostCents: number;
   agencyValueCents: number;
   agencyROI: number;
-  // v2: Auto-blog pipeline
+  // v2: Auto-blog memory chain
   autoblogPublished: number;
   autoblogDraft: number;
   autoblogAvgConfidence: number;
