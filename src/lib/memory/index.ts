@@ -31,3 +31,33 @@ export { isDuplicate, clearDedupCache, contentHash, semanticFingerprint, normali
 
 // Smart retention policy
 export { runRetentionPolicy, type RetentionStats, type RetentionConfig } from './retention-policy';
+
+// Emotional valence tagging
+export { getValenceEngine, resetValenceEngine, type EmotionalValence, type EmotionTag, type ValenceStats } from './emotional-valence';
+
+// Contextual retrieval augmentation
+export { getContextualRetrieval, resetContextualRetrieval, type SituationalContext, type SituationMatch } from './contextual-retrieval';
+
+// Memory interference detection
+export { getInterferenceDetector, resetInterferenceDetector, type InterferenceEvent, type InterferenceReport, type MitigationSuggestion } from './interference-detection';
+
+// Tiered compression codebook
+export { getCompressionCodebook, resetCompressionCodebook, type CompressionResult, type CodebookStats } from './compression-codebook';
+
+// Episodic memory timeline
+export { getEpisodicTimeline, resetEpisodicTimeline, type Episode, type EpisodePhase, type EpisodeMemory } from './episodic-timeline';
+
+// Forgetting curve calibration
+export { getForgettingCurveEngine, resetForgettingCurve, type DomainCalibration, type CalibrationStats } from './forgetting-curve';
+
+// Memory provenance chain
+export { getProvenanceEngine, resetProvenanceEngine, type ProvenanceEvent, type ProvenanceEventType, type ProvenanceChain } from './provenance-chain';
+
+// Cross-tier semantic index
+export { getCrossTierIndex, resetCrossTierIndex, type CrossTierSearchResult, type CrossTierStats } from './cross-tier-index';
+
+// Retrieval-induced strengthening
+export { getRetrievalEngine, resetRetrievalEngine, type RetrievalEvent, type StrengthAdjustment, type RetrievalStats } from './retrieval-strengthening';
+
+// Memory budget forecasting
+export { getBudgetForecaster, resetBudgetForecaster, type TierCapacity, type BudgetForecast, type BudgetRecommendation } from './budget-forecasting';
