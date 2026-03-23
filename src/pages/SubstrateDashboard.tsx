@@ -314,7 +314,7 @@ const modulesByLayer = {
   epz: [
     {
       id: "compass",
-      name: "COMPASS",
+      name: "COMPASS Engine",
       description: "Navigation heuristics, path optimization",
       icon: Compass,
       color: "text-neon-cyan",
