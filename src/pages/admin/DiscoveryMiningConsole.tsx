@@ -405,7 +405,7 @@ function TemplateComposer() {
         </CardHeader>
         <CardContent className="space-y-3">
           <div>
-            <Label className="text-xs">Pipeline Name</Label>
+            <Label className="text-xs">Memory Chain Name</Label>
             <Input placeholder="e.g. Recursive Thought Evaluator" value={form.namePattern} onChange={e => update('namePattern', e.target.value)} />
           </div>
           <div>
