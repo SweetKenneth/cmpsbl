@@ -8,6 +8,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
