@@ -1,7 +1,7 @@
 /**
  * NERVE Ultimate — v9.0.0 "Synapse Prime"
  * 
- * 10 Ultimate Capabilities:
+ * 11 Ultimate Capabilities:
  *   1. Signal Replay Journal        — Append-only forensic signal history
  *   2. Adaptive Backpressure Cal.   — EMA-tuned per-node pressure thresholds
  *   3. Predictive Circuit Breaker   — Degradation trend pre-emptive tripping
