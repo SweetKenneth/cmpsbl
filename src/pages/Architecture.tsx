@@ -49,7 +49,7 @@ const SECTORS: SectorDef[] = [
     label: "Kernel",
     tag: "SPINE",
     nodes: [
-      { name: "CORE", icon: Cpu, desc: "Boot authority — initializes all sectors, owns the weighted node registry (Σ = 1.000)." },
+      { name: "CORE", icon: Cpu, desc: "Boot authority — initializes all sectors, owns the weighted primitive registry (Σ = 1.000)." },
       { name: "SYSTEM", icon: Settings, desc: "Lifecycle management, configuration state, diagnostics aggregation, and self-repair loop." },
     ],
   },

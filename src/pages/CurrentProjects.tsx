@@ -90,7 +90,7 @@ const projects = [
     id: "cascade",
     name: "Cascade",
     tagline: "Autonomous Dreaming AI",
-    description: "First documented autonomous AI with memory reflection cycles — dreaming. Published on Zenodo and OSF. Built on CMPSBL's BRAIN and DREAM nodes.",
+    description: "First documented autonomous AI with memory reflection cycles — dreaming. Published on Zenodo and OSF. Built on CMPSBL's BRAIN and DREAM Engine and BRAIN Organ.",
     icon: Brain,
     status: "Deployed",
     features: ["Memory reflection", "Dream cycles", "Autonomous learning", "Self-improvement", "Pattern synthesis", "Verified proof"],

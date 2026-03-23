@@ -108,7 +108,7 @@ export default function DeveloperShowcase() {
     },
     {
       icon: Layers, title: "Event-Driven Architecture",
-      description: "Decouple your app with pub/sub messaging. Events flow through the system, nodes react, and state propagates automatically.",
+      description: "Decouple your app with pub/sub messaging. Events flow through the system, primitives react, and state propagates automatically.",
       features: ["Pub/sub messaging", "Event sourcing", "Replay capability", "Webhook integration"],
       color: "text-neon-amber", gradient: "from-neon-amber to-neon-amber",
     },

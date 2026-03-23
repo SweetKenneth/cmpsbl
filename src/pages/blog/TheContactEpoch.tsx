@@ -43,7 +43,7 @@ export default function TheContactEpoch() {
       <h2 className="text-2xl font-bold text-foreground mt-8">The New Primitives</h2>
       <p>The CONTACT epoch introduces three new primitives to the substrate's vocabulary:</p>
 
-      <p><strong>Self-Composition.</strong> The ability for DREAM to observe implicit couplings between subsystems and propose explicit connections. THREAD is the first instance, but the pattern is general. Any two nodes with correlated behavior are candidates for composition.</p>
+      <p><strong>Self-Composition.</strong> The ability for DREAM to observe implicit couplings between subsystems and propose explicit connections. THREAD is the first instance, but the pattern is general. Any two primitives with correlated behavior are candidates for composition.</p>
 
       <p><strong>Proactive Intelligence.</strong> The ability for the substrate to identify opportunities and propose actions, rather than waiting for input. CONTACT is the first instance. The substrate can now say "I found something useful and I know who needs it" — even if no one asked.</p>
 

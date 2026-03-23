@@ -27,7 +27,7 @@ export default function IdentityAtEveryLayer() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Rate Limiting That Learns</h2>
       <p>Static rate limits are frustrating for customers. A developer building an integration hits the limit during a burst of testing and has to wait. ACCESS uses adaptive rate limiting: the baseline limit applies, but short bursts are allowed up to 3x the rate for 30 seconds. If the burst is sustained, it clamps back down. This feels fair to developers while still protecting the system from abuse.</p>
-      <p>We also implemented per-node rate limits, not just per-key. A customer might be allowed 1000 requests per minute total, but only 100 per minute to BRAIN (which is expensive) and 500 per minute to NEXUS (which is cheap). This granularity prevents customers from accidentally spending their entire quota on expensive operations.</p>
+      <p>We also implemented per-primitive rate limits, not just per-key. A customer might be allowed 1000 requests per minute total, but only 100 per minute to BRAIN Organ (which is expensive) and 500 per minute to NEXUS Organ (which is cheap). This granularity prevents customers from accidentally spending their entire quota on expensive operations.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Usage as Data</h2>
       <p>Every request, tagged by customer, tier, node, cost, and latency. We could see which primitives were most popular, which tiers were hitting their limits, and where customers were struggling. This data later became essential for <Link to="/blog/the-governance-question" className="text-primary hover:underline">AUDIT's cryptographic logging</Link> — every usage record feeds the compliance chain.</p>
