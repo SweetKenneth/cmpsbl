@@ -76,7 +76,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "vision",
-    name: "VISION",
+    name: "VISION Agent",
     icon: Eye,
     color: "text-sky-300",
     glowColor: "shadow-[0_0_30px_rgba(125,211,252,0.6)]",
