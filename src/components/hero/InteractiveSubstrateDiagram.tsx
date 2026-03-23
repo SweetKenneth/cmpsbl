@@ -66,7 +66,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "encode",
-    name: "ENCODE",
+    name: "ENCODE Agent",
     icon: Cpu,
     color: "text-neon-amber",
     glowColor: "shadow-[0_0_30px_rgba(253,186,116,0.6)]",
