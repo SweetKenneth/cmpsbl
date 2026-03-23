@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v16.1.0 (CONTACT — SIMULATE Ultimate "Crucible Prime")
+
+⟨This entry describes SIMULATE v9.0.0 — the substrate's universal scenario simulation engine reaching its ultimate form with 10 new systems.⟩
+
+- **Monte Carlo Simulation Core** — Welford's online variance algorithm with convergence detection (CoV-based early termination). Seeded RNG for reproducibility. 8 percentiles, 3 confidence intervals, 25-bucket histograms. Configurable 100–100K iterations.
+- **Multi-Dimensional Scenario Engine** — 11 scenario templates (node_failure, traffic_spike, security_breach, etc.) with composable compound scenarios. Parameter sweeps across dimension ranges. Template-specific impact formulas producing 0-100 scores.
+- **Digital Twin Forker** — Deep-clone state forking with mutation application, branching exploration, and fork-to-fork comparison (unique diffs, conflicts, divergence scoring). Parent-child lineage tracking.
+- **Temporal Simulation Projector** — Time-series projection with event injection at specific timestamps. 6 event types. Per-metric decay/recovery curves. Peak degradation and recovery time calculation.
+- **Cost & Resource Projection Engine** — 6 resource types with daily cost projection, exhaustion dates, budget runway analysis. Change impact simulation with break-even calculation. Cost trend classification (stable/linear/exponential/declining).
+- **A/B Scenario Comparator** — Side-by-side intervention comparison with Cohen's d effect size (negligible/small/medium/large). Per-metric winner determination with confidence scoring. Stochastic noise for realistic outcomes.
+- **Blast Radius Projector** — BFS propagation over 35-edge dependency graph with 4 edge types. Cumulative weight decay per hop. Risk heat map and propagation path visualization. safe/review/dangerous recommendations.
+- **Chaos Scenario Library** — 10 pre-built calibrated scenarios across 6 categories (infrastructure, security, performance, data, network, human_error). Real-world examples and recovery playbooks.
+- **Prediction Accuracy Tracker** — Predicted vs actual outcome comparison. Hebbian learning on model calibration (+0.06 strengthen, -0.03 weaken). Systematic bias detection. EMA-weighted (α=0.15) accuracy tracking.
+- **Simulation Telemetry & Audit** — 8 simulation types tracked. Full audit trail with parameters, outcomes, compute time. Analytics engine (by-type, top requesters, simulations/hour, success rate). 2000-entry rolling log.
+
+---
+
 ## 2026-03-23 · v16.0.0 (CONTACT — INCLUSIVE Ultimate "Clarity Prime")
 
 ⟨This entry describes INCLUSIVE v9.0.0 — the substrate's Human Compatibility Engine reaching its ultimate form with 10 new systems.⟩
