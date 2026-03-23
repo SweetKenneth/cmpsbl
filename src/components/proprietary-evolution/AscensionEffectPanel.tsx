@@ -7,7 +7,7 @@
  *  - Investor-understandable at a glance
  *
  * Reads from artifact_registry metadata where effect
- * summaries are stored during the Ascension pipeline.
+ * summaries are stored during the Ascension memory chain.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -65,7 +65,7 @@ const STRATEGY_LABELS: Record<ExecutionStrategy, string> = {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function parseEffectFromMetadata(meta: Record<string, unknown>): { effect: EffectUIContract | null; summary: EffectSummary | null } {
-  // Effect data is stored under _effect_summary_ASCENSION_MODULENAME in pipeline ctx.data
+  // Effect data is stored under _effect_summary_ASCENSION_MODULENAME in memory chain ctx.data
   // or under effect_summary in metadata during node registration
   const effectSummary = meta.effect_summary as EffectSummary | undefined;
   if (effectSummary?.uiContract) {

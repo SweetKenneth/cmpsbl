@@ -45,9 +45,9 @@ The substrate consolidates 675+ individual capabilities into **76 compound engin
 
 ### Constant Learning Mode (CLM)
 
-CLM operates as a high-velocity training pipeline running up to 14,400 AI calls per day. Topics are sourced 70% from system telemetry (ENGINEER findings, INTEL signals) and 30% from scheduled curriculum. Knowledge is distilled and compounded into permanent memory.
+CLM operates as a high-velocity training memory chain running up to 14,400 AI calls per day. Topics are sourced 70% from system telemetry (ENGINEER findings, INTEL signals) and 30% from scheduled curriculum. Knowledge is distilled and compounded into permanent memory.
 
-### 7-Gate Evolution Pipeline (SEBA)
+### 7-Gate Evolution Memory Chain (SEBA)
 
 Every change to production behavior passes through 7 validation gates including the **Truth Shadow Arbitration Check** (TSAC) — ensuring evolution candidates preserve system truth. Shadow runs execute against real inputs in isolated storage with divergence scoring.
 
@@ -55,7 +55,7 @@ Every change to production behavior passes through 7 validation gates including 
 
 20 sealed-runtime cognitive agents organized into 5 categories, each with 3–5 Crown Jewel powers and autonomous DREAM synthesis for self-improvement. Agents are source-blocked, memory-isolated, and version-stamped.
 
-### AutoBlog Quality Pipeline
+### AutoBlog Quality Memory Chain
 
 Autonomous content generation with confidence scoring, contradiction detection, semantic drift monitoring, and split-brain evaluation (Reader vs. Skeptic). An adaptive publish governor controls output cadence.
 
@@ -116,7 +116,7 @@ The architecture is **BYOK** (Bring Your Own Keys): operators supply their own A
 
 The substrate includes a first-class control plane:
 
-- **INTEL**: Aggregation pipeline with signal deduplication and IntelCard generation for governor review.
+- **INTEL**: Aggregation memory chain with signal deduplication and IntelCard generation for governor review.
 - **ENGINEER**: Internal maintenance node scanning 76 engines + 24 meta-engines, generating findings and proposals.
 - **INTENT Mesh**: Affinity matrix tracking module co-resolution success; translates technical signals to governance requests.
 - **Ironclad Fabric**: Unified resilience layer with per-module rate limiting, bulkhead isolation, and 30-second auto-restore health loop.
@@ -131,11 +131,11 @@ The substrate includes a first-class control plane:
 | Evolution | 7-gate SEBA with TSAC | Manual deployment |
 | Multi-agent | 20 agents, sealed runtime, DREAM synthesis | Task distribution only |
 | Security | Defense-in-depth, 40-primitive zone-shielded, Ironclad | Perimeter only |
-| Observability | Weighted health matrix, INTEL pipeline | Logs and metrics |
+| Observability | Weighted health matrix, INTEL memory chain | Logs and metrics |
 | Audit | Tamper-evident, chain-of-custody | Append-only logs |
 | Learning | CLM — 14,400 calls/day continuous | None |
 | Export | 25 target languages, standalone runtime | None |
-| Content | AutoBlog with quality pipeline | None |
+| Content | AutoBlog with quality memory chain | None |
 | Analytics | First-party visitor intelligence, developer adoption | Third-party dependent |
 | Disaster Recovery | One-click full backup with AI-ready restoration | Manual or none |
 

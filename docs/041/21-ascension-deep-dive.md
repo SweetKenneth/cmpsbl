@@ -148,7 +148,7 @@ The discovery interface uses cinematic pacing to build suspense as collisions ar
 
 ### 4.1 What Happens
 
-Top discoveries are refined into exportable capability artifacts through a three-stage pipeline.
+Top discoveries are refined into exportable capability artifacts through a three-stage memory chain.
 
 ### 4.2 Memory Chain Stages
 

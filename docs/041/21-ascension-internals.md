@@ -8,13 +8,13 @@
 
 ## Purpose
 
-This document describes the internal architecture of the Ascension subsystem — the pipeline that transforms developer software into first-class substrate primitives (Auxiliary Node).
+This document describes the internal architecture of the Ascension subsystem — the memory chain that transforms developer software into first-class substrate primitives (Auxiliary Node).
 
 ---
 
 ## 1. System Overview
 
-The Ascension subsystem converts arbitrary source code into managed nodes that participate in the CMPSBL discovery engine. The pipeline follows this flow:
+The Ascension subsystem converts arbitrary source code into managed nodes that participate in the CMPSBL discovery engine. The memory chain follows this flow:
 
 ```
 Upload → Language Detection → Regex Extraction → Language Post-Processing
@@ -32,7 +32,7 @@ All operations are user-scoped via RLS on `artifact_registry`.
 
 The extraction engine uses regex patterns to identify functions, classes, modules, and keywords across 25 languages (18 software + 7 HDL). Each pattern has a unique ID for traceability.
 
-**Pipeline stages:**
+**Memory chain stages:**
 1. **Regex extraction** — Pattern matching with per-file isolation
 2. **Language post-processing** — Framework boilerplate filtering, trust classification
 3. **Semantic deduplication** — Canonical name normalization, Jaccard similarity merge

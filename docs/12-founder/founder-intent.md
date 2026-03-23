@@ -11,7 +11,7 @@ This document records the non-negotiable principles, ethical boundaries, and fou
 3. **DEFENSE is terminal.** The outer security boundary is enforced unconditionally. No internal module may override a DEFENSE block decision.
 4. **Data belongs to the operator.** The substrate is BYOK. No data is sent to, stored by, or accessible to the substrate provider. Operators own their keys, their data, and their infrastructure.
 5. **Module names are permanent.** The 38-node topology and naming are architectural invariants. Modules may evolve internally but not be renamed, merged, or deleted.
-6. **Evolution must be validated.** No change reaches production without passing the SEBA pipeline. The 7-gate validation ensures truth preservation (TSAC) and behavioral equivalence.
+6. **Evolution must be validated.** No change reaches production without passing the SEBA memory chain. The 7-gate validation ensures truth preservation (TSAC) and behavioral equivalence.
 7. **Learning is continuous.** CLM (Constant Learning Mode) is a foundational system property, not an optional feature. The substrate must always be learning and compounding knowledge.
 8. **Agents are sealed.** Cognitive agents operate in isolated, source-blocked runtimes. No agent may access data or capabilities outside its designated Crown Jewel powers.
 
@@ -48,7 +48,7 @@ The system is not a product, not a chatbot, and not a demo. It is production inf
 | Crown Jewel isolation | 54 capabilities excluded from all external access |
 | Boot sequence protection | Self-modification of boot logic is forbidden |
 | Field permeation | IMMUNITY, EVOLUTION, and INTENT cannot be disabled |
-| Evolution validation | 7-gate SEBA pipeline with TSAC truth arbitration |
+| Evolution validation | 7-gate SEBA memory chain with TSAC truth arbitration |
 | Agent containment | Sealed runtime, source-blocked, memory-isolated |
 | Rate limit enforcement | Ironclad fabric — no bypass path exists |
 

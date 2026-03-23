@@ -508,7 +508,7 @@ export function InclusiveTab({ enabled }: InclusiveTabProps) {
         <CardHeader>
           <CardTitle className="text-sm font-medium flex items-center gap-2">
             <Users className="w-4 h-4 text-neon-cyan" />
-            Human Compatibility Pipeline
+            Human Compatibility Memory Chain
           </CardTitle>
           <CardDescription className="text-xs">End-to-end accessibility workflow</CardDescription>
         </CardHeader>

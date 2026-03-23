@@ -136,7 +136,7 @@ Failed integrity seals trigger Level 2 escalation.
 
 | System | Observability Integration |
 |--------|--------------------------|
-| AutoBlog Quality Pipeline | Confidence scores, contradiction scores, drift metrics tracked per post |
+| AutoBlog Quality Memory Chain | Confidence scores, contradiction scores, drift metrics tracked per post |
 | CLM (Constant Learning Mode) | Topic mastery levels, call throughput, distillation efficiency |
 | Scanner Orchestrator | Finding priority scores, regression detection verdicts, coverage gap alerts |
 | Ironclad Hardening Fabric | Per-module rate limit utilization, auto-restore events, bulkhead pressure |

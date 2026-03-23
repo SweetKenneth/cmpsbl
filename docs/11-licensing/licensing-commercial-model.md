@@ -23,7 +23,7 @@ This document defines the licensing tiers, feature boundaries, usage limits, and
 | MEMORY | Session only | Persistent (warm) | Persistent (hot+warm+cold) | Full |
 | BRAIN | — | Basic reasoning | Full reasoning | Full |
 | DREAM | — | — | Full | Full |
-| CORTEX | — | Basic pipelines | Full orchestration | Full |
+| CORTEX | — | Basic memory chains | Full orchestration | Full |
 | VISION | — | Basic | Full | Full |
 | ECONOMY | Usage view | Full analytics | Full + export | Full |
 | SANDBOX | — | Limited | Full | Full |
@@ -35,7 +35,7 @@ This document defines the licensing tiers, feature boundaries, usage limits, and
 | GOVERNANCE controls | — | — | Full (4 modes) | Full |
 | Crown Jewel capabilities | — | — | — | Admin only |
 | CLM (Constant Learning) | — | Basic (100 calls/day) | Full (14,400 calls/day) | Full |
-| AutoBlog | — | Manual only | Full pipeline + publish governor | Full |
+| AutoBlog | — | Manual only | Full memory chain + publish governor | Full |
 | Scanner Orchestrator | — | Basic scans | Full regression detection | Full |
 | Universal Export | — | — | Standard formats | All 25 languages |
 | Evolution Control Center | — | View only | Full (dry-run, rollback) | Full |
