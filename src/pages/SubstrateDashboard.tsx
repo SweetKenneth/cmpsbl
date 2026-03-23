@@ -302,7 +302,7 @@ const modulesByLayer = {
     },
     {
       id: "treaty",
-      name: "TREATY",
+      name: "TREATY Layer",
       description: "Inter-system agreements, trust federation",
       icon: ClipboardCheck,
       color: "text-neon-blue",
