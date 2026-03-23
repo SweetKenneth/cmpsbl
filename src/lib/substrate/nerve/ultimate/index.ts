@@ -1,7 +1,7 @@
 /**
  * NERVE Ultimate — v9.0.0 "Synapse Prime"
  * 
- * 10 Ultimate Capabilities:
+ * 11 Ultimate Capabilities:
  *   1. Signal Replay Journal        — Append-only forensic signal history
  *   2. Adaptive Backpressure Cal.   — EMA-tuned per-node pressure thresholds
  *   3. Predictive Circuit Breaker   — Degradation trend pre-emptive tripping
@@ -156,3 +156,30 @@ export {
   type NerveMTTRMetrics,
   type NerveOperationalSummary,
 } from './nerveTelemetryNexus';
+
+// 11. Primary Memory Chains
+export {
+  evaluateTriggers,
+  executeChain as executeReactionChain,
+  pauseChain,
+  resumeChain,
+  disableChain,
+  abortExecution,
+  getChain as getReactionChain,
+  getAllChains as getAllReactionChains,
+  getChainMetrics as getReactionChainMetrics,
+  getChainHistory as getReactionChainHistory,
+  getRecentExecutions as getRecentReactionExecutions,
+  getRegistrySummary as getReactionRegistrySummary,
+  getChainsByPriority,
+  getChainsForNode as getReactionChainsForNode,
+  type ChainId,
+  type ChainStatus,
+  type ChainTrigger,
+  type ChainStage,
+  type PrimaryChainDefinition,
+  type ChainExecution,
+  type StageResult,
+  type ChainMetrics,
+  type ChainRegistrySummary,
+} from './primaryMemoryChains';
