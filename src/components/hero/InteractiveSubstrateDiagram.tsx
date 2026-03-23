@@ -26,7 +26,7 @@ interface ModuleNode {
 const modules: ModuleNode[] = [
   {
     id: "brain",
-    name: "BRAIN",
+    name: "BRAIN Engine",
     icon: Brain,
     color: "text-neon-cyan",
     glowColor: "shadow-[0_0_30px_rgba(34,211,238,0.6)]",
