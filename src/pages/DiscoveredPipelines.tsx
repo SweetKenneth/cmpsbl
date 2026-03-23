@@ -63,9 +63,9 @@ export default function DiscoveredPipelines() {
               <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-8">
                 The Memory Stream autonomously composed and scored these execution paths from{' '}
                 <span className="text-foreground font-medium">940+ capabilities</span> across{' '}
-                <span className="text-foreground font-medium">40 nodes</span>. Each memory chains
+                <span className="text-foreground font-medium">40 primitives</span>. Each memory chains
                 multiple Apex Discoveries into unified super-memories — ranked by synergy,
-                node diversity, and aggregate quality.
+                primitive diversity, and aggregate quality.
               </p>
 
               {/* Stats bar */}
