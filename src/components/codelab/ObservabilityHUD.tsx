@@ -325,7 +325,7 @@ export function ObservabilityHUD() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">
-                <th className="text-left py-2 px-3 font-medium">Module</th>
+                <th className="text-left py-2 px-3 font-medium">Primitive</th>
                 <th className="text-left py-2 px-3 font-medium">Status</th>
                 <th className="text-left py-2 px-3 font-medium">Latency</th>
                 <th className="text-left py-2 px-3 font-medium">Last Check</th>

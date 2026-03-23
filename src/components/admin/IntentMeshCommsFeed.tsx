@@ -153,7 +153,7 @@ export function IntentMeshCommsFeed() {
               )}
             </CardTitle>
             <CardDescription className="mt-1 text-xs">
-              Real-time node dialogue — backed by live mesh activity
+              Real-time primitive dialogue — backed by live mesh activity
             </CardDescription>
           </div>
           <div className="flex items-center gap-1 shrink-0">
