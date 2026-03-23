@@ -1194,7 +1194,7 @@ export const FORGE_COMMANDS: CommandDefinition[] = [
   { command: 'forge.generate', description: 'Generate asset from template', category: 'forge', icon: Sparkles, requiresOperator: true, requiredTier: 'studio', args: '<template_id>' },
   { command: 'forge.queue', description: 'Generation queue', category: 'forge', icon: Layers, requiresOperator: false, requiredTier: 'free' },
   { command: 'forge.quality', description: 'Output quality metrics', category: 'forge', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
-  { command: 'forge.pipeline', description: 'Manufacturing pipeline', category: 'forge', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
+  { command: 'forge.pipeline', description: 'Manufacturing memory chain', category: 'forge', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
   { command: 'forge.artifacts', description: 'Generated artifact log', category: 'forge', icon: Database, requiresOperator: false, requiredTier: 'free' },
 ];
 
