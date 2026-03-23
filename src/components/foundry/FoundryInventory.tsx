@@ -3,6 +3,7 @@
  * Uses internal valuation formula (pipeline-valuation.ts) for all pricing display
  */
 import { useState, useCallback } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
