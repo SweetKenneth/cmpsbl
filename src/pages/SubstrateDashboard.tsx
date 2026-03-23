@@ -404,7 +404,7 @@ const modulesByLayer = {
   fields: [
     {
       id: "immunity",
-      name: "IMMUNITY",
+      name: "IMMUNITY Layer",
       description: "Cascade breaking, anomaly signature training",
       icon: Shield,
       color: "text-destructive",
