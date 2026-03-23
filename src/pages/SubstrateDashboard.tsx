@@ -425,7 +425,7 @@ const modulesByLayer = {
   plane: [
     {
       id: "governance",
-      name: "GOVERNANCE",
+      name: "GOVERNANCE Layer",
       description: "Policy mesh, veto precision, compliance",
       icon: Gauge,
       color: "text-neon-amber",
