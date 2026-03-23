@@ -34,7 +34,7 @@ export function EnhancedFooter() {
       title: "Infrastructure",
       links: [
         { name: "How it works", href: "/ai-operating-system" },
-        { name: "All modules", href: "/modules" },
+        { name: "Architecture", href: "/architecture" },
         { name: "Runtime", href: "/runtime" },
         { name: "Enterprise", href: "/enterprise" },
         { name: "Persistent memory", href: "/persistent-memory" },

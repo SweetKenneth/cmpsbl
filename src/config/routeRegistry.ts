@@ -44,7 +44,8 @@ export const routeRegistry: RouteEntry[] = [
   // ── Core ──
   { path: "/", label: "Homepage", section: "core", priority: 1.0, changefreq: "weekly", description: "CMPSBL cognitive substrate homepage" },
   { path: "/ai-operating-system", label: "How It Works", section: "core", priority: 0.95, changefreq: "monthly", description: "Architecture & concepts of the AI Operating System" },
-  { path: "/modules", label: "All Nodes", section: "core", priority: 0.92, changefreq: "weekly", description: "Browse every substrate node" },
+  { path: "/architecture", label: "Architecture", section: "core", priority: 0.92, changefreq: "weekly", description: "Agents, Engines, Layers & Organs — full substrate taxonomy" },
+  { path: "/modules", label: "All Nodes", section: "core", priority: 0, changefreq: "monthly", redirect: true },
   { path: "/runtime", label: "Runtime", section: "core", priority: 0.85, changefreq: "monthly", description: "Execution environment" },
   { path: "/foundations", label: "Foundations", section: "core", priority: 0, changefreq: "monthly", redirect: true },
   { path: "/os", label: "Substrate OS", section: "core", priority: 0.88, changefreq: "weekly", description: "Authenticated substrate command center" },

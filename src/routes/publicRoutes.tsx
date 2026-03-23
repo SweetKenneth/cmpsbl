@@ -211,7 +211,7 @@ export const publicRoutes = (
 
     {/* Misc public */}
     <Route path="/evolution" element={<EvolutionControlCenter />} />
-    <Route path="/architecture" element={<Navigate to="/ai-operating-system" replace />} />
+    <Route path="/architecture" element={<ArchitecturePage />} />
     <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Navigate to="/store" replace />} />
