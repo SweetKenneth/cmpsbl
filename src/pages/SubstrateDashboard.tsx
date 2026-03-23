@@ -73,7 +73,7 @@ const modulesByLayer = {
   kernel: [
     {
       id: "core",
-      name: "CORE",
+      name: "CORE Organ",
       description: "Kernel scheduler, lifecycle, orchestration",
       icon: Cpu,
       color: "text-neon-amber",

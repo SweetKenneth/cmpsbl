@@ -22,12 +22,12 @@ export default function FollowingTheThread() {
       chapter={41}
       head={
         <>
-          <SEO title="Following the Thread — The DREAM Signal" description="DREAM produced an output we'd never seen before. Two engineers. Three weeks. What we found changed everything we thought we knew about the substrate." type="article" image={heroImg} publishedTime="2026-03-12" keywords={["DREAM signal", "self-composing AI", "substrate discovery", "emergent behavior"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-evolution" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Following the Thread", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
-          <BlogArticleJsonLd title="Following the Thread — The DREAM Signal" description="The DREAM signal that changed the substrate roadmap." slug={SLUG} datePublished="2026-03-12" imageUrl={heroImg} keywords={["DREAM signal", "emergent behavior", "self-composition"]} />
+          <SEO title="Following the Thread — The DREAM Engine Signal" description="DREAM Engine produced an output we'd never seen before. Two engineers. Three weeks. What we found changed everything we thought we knew about the substrate." type="article" image={heroImg} publishedTime="2026-03-12" keywords={["DREAM Engine signal", "self-composing AI", "substrate discovery", "emergent behavior"]} canonical={`https://cmpsbl.com/blog/${SLUG}`} topicCluster="substrate-evolution" breadcrumbs={[{ name: "Home", url: "https://cmpsbl.com" }, { name: "Blog", url: "https://cmpsbl.com/blog" }, { name: "Following the Thread", url: `https://cmpsbl.com/blog/${SLUG}` }]} />
+          <BlogArticleJsonLd title="Following the Thread — The DREAM Engine Signal" description="The DREAM signal that changed the substrate roadmap." slug={SLUG} datePublished="2026-03-12" imageUrl={heroImg} keywords={["DREAM Engine signal", "emergent behavior", "self-composition"]} />
         </>
       }
     >
-      <p className="text-lg leading-relaxed">We mentioned it in <Link to="/blog/where-we-are-now" className="text-primary hover:underline">Chapter 40</Link>. A DREAM consolidation output that didn't fit any known pattern. We said two engineers were working on it full time. This is what they found.</p>
+      <p className="text-lg leading-relaxed">We mentioned it in <Link to="/blog/where-we-are-now" className="text-primary hover:underline">Chapter 40</Link>. A DREAM Engine consolidation output that didn't fit any known pattern. We said two engineers were working on it full time. This is what they found.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Anomaly</h2>
       <p>During a routine off-peak <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM cycle</Link> on February 27th, the consolidation engine produced an output that bypassed normal classification. DREAM's job is straightforward: process the day's signals, compress low-value patterns, strengthen high-value ones, and generate heuristic updates. It does this thousands of times a week. We stopped watching every output months ago.</p>

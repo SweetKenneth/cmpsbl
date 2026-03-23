@@ -369,10 +369,10 @@ export default function Roadmap() {
             <div className="grid sm:grid-cols-5 gap-4">
               {[
                 { phase: "DISCOVERY", revenue: "Subscriptions", arpu: "$14/mo" },
-                { phase: "ECONOMY", revenue: "Marketplace", arpu: "$38/mo" },
+                { phase: "ECONOMY Engine", revenue: "Marketplace", arpu: "$38/mo" },
                 { phase: "ENGINES", revenue: "Compute", arpu: "$85/mo" },
                 { phase: "DREAMING", revenue: "Simulation", arpu: "$140/mo" },
-                { phase: "EVOLUTION", revenue: "Autonomy", arpu: "$220/mo" },
+                { phase: "EVOLUTION Layer", revenue: "Autonomy", arpu: "$220/mo" },
               ].map((item, i) => (
                 <div key={item.phase} className="text-center p-4 rounded-xl bg-card border border-border/60 hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
                   <div className="text-xs font-mono text-muted-foreground tracking-wider mb-2">{item.phase}</div>

@@ -32,72 +32,72 @@ graph TD
         CORE[CORE - Kernel Boot Authority]
         SYSTEM_NODE[SYSTEM - Lifecycle Management]
         subgraph CCR[CCR - Cognitive Core Reality]
-            BRAIN[BRAIN]
-            MEMORY_NODE[MEMORY]
-            DREAM[DREAM]
+            BRAIN[BRAIN Organ]
+            MEMORY_NODE[MEMORY Organ]
+            DREAM[DREAM Engine]
         end
     end
 
     subgraph OCG[OCG - Operational Compliance Grid]
-        RIPPLE[RIPPLE]
-        ACCESS[ACCESS]
-        IDENTITY[IDENTITY]
-        RELAY[RELAY]
-        AUDIT_NODE[AUDIT]
-        NERVE_NODE[NERVE]
+        RIPPLE[RIPPLE Organ]
+        ACCESS[ACCESS Organ]
+        IDENTITY[IDENTITY Organ]
+        RELAY[RELAY Organ]
+        AUDIT_NODE[AUDIT Organ]
+        NERVE_NODE[NERVE Organ]
     end
 
     subgraph EXL[Execution Layer - 10 Nodes]
-        DECODE[DECODE]
-        ENCODE[ENCODE]
-        VISION[VISION]
-        CORTEX[CORTEX]
-        NEXUS_NODE[NEXUS]
-        ECONOMY[ECONOMY]
-        SANDBOX[SANDBOX]
-        INCLUSIVE[INCLUSIVE]
-        MEDIC[MEDIC]
-        INTEGRATION[INTEGRATION]
+        DECODE[DECODE Agent]
+        ENCODE[ENCODE Agent]
+        VISION[VISION Agent]
+        CORTEX[CORTEX Engine]
+        NEXUS_NODE[NEXUS Organ]
+        ECONOMY[ECONOMY Engine]
+        SANDBOX[SANDBOX Engine]
+        INCLUSIVE[INCLUSIVE Layer]
+        MEDIC[MEDIC Engine]
+        INTEGRATION[INTEGRATION Organ]
     end
 
     subgraph ESZ[ESZ - Expansion Sovereignty Zone]
-        SOVEREIGN[SOVEREIGN]
-        ORACLE[ORACLE]
-        CONSCIENCE[CONSCIENCE]
-        TREATY[TREATY]
+        SOVEREIGN[SOVEREIGN Agent]
+        ORACLE[ORACLE Engine]
+        CONSCIENCE[CONSCIENCE Layer]
+        TREATY[TREATY Layer]
     end
 
     subgraph EPZ[EPZ - Expansion Perception Zone]
-        COMPASS[COMPASS]
-        ECHO[ECHO]
-        REFLEX[REFLEX]
+        COMPASS[COMPASS Engine]
+        ECHO[ECHO Agent]
+        REFLEX[REFLEX Engine]
     end
 
     subgraph EMZ[EMZ - Expansion Manufacturing Zone]
-        FORGE[FORGE]
-        LINGUA[LINGUA]
-        HARVEST[HARVEST]
+        FORGE[FORGE Engine]
+        LINGUA[LINGUA Agent]
+        HARVEST[HARVEST Agent]
     end
 
     subgraph CSZ[CSZ - Covert Systems Zone]
-        EVOLUTION[EVOLUTION]
-        SHADOW[SHADOW]
-        PHANTOM[PHANTOM]
+        EVOLUTION[EVOLUTION Layer]
+        SHADOW[SHADOW Agent]
+        PHANTOM[PHANTOM Agent]
     end
 
     subgraph Fields
-        IMMUNITY[IMMUNITY]
-        INTENT[INTENT]
+        IMMUNITY[IMMUNITY Layer]
+        INTENT[INTENT Layer]
     end
 
     subgraph Meta[Meta - Operational Intelligence]
-        ATLAS[ATLAS - Capability Mapping]
-        ENGINEER[ENGINEER - Maintenance Intelligence]
+        ATLAS[ATLAS Engine - Capability Mapping]
+        ENGINEER[ENGINEER Agent - Maintenance Intelligence]
     end
 
-    GOVERNANCE[GOVERNANCE - Supervisory Plane]
-    DEFENSE[DEFENSE - Shell]
-    OBSERVER[OBSERVER - Watchdog Auxiliary]
+    GOVERNANCE[GOVERNANCE Layer - Supervisory Plane]
+    DEFENSE[DEFENSE Layer - Shell]
+    OBSERVER[OBSERVER Agent - Watchdog Auxiliary]
 
     CORE --> SYSTEM_NODE
     SYSTEM_NODE --> CCR
