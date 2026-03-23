@@ -1230,10 +1230,10 @@ function ModernizerShadowPanel() {
       setLastReport(report);
       setPerfStats(getPerformanceSummary());
       setPerfEntries(getPerformanceStats());
-      voice.success?.('EVOLUTION shadow complete');
-      toast.success(`EVOLUTION Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
+      voice.success?.('EVOLUTION Layer shadow complete');
+      toast.success(`EVOLUTION Layer Shadow: ${report.summary.executorFixed} fixed, ${report.summary.encodeEscalated} escalated, ${report.summary.rulesGenerated} rules generated`);
     } catch (err: any) {
-      toast.error(`EVOLUTION shadow failed: ${err.message}`);
+      toast.error(`EVOLUTION Layer shadow failed: ${err.message}`);
     } finally {
       setRunning(false);
     }
