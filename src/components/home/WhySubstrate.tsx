@@ -23,8 +23,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-// 9 public-facing nodes — cycling through cyan, purple, magenta (solid colors)
-const nodes = [
+// 9 public-facing primitives — cycling through cyan, purple, magenta (solid colors)
+const primitives = [
   {
     icon: Brain,
     title: "Persistent Memory",
