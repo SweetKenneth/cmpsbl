@@ -160,7 +160,7 @@ const modulesByLayer = {
   admin: [
     {
       id: "system",
-      name: "SYSTEM",
+      name: "SYSTEM Organ",
       description: "Administration, configuration",
       icon: Settings,
       color: "text-gray-400",
