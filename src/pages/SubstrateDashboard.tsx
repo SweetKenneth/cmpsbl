@@ -344,7 +344,7 @@ const modulesByLayer = {
   emz: [
     {
       id: "forge",
-      name: "FORGE",
+      name: "FORGE Engine",
       description: "Artifact production, template smithing",
       icon: Hammer,
       color: "text-neon-amber",
