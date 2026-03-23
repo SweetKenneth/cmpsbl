@@ -116,8 +116,8 @@ const SELF_IMPROVEMENT_FEATURES = [
   },
   {
     icon: Radar,
-    title: "Cross-Node Affinity",
-    desc: "The mesh learns which nodes work best together, discovering collaboration clusters and optimizing routing over time.",
+    title: "Cross-Primitive Affinity",
+    desc: "The mesh learns which primitives work best together, discovering collaboration clusters and optimizing routing over time.",
   },
   {
     icon: Route,
