@@ -472,7 +472,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'encode' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="Code generation engine and memory formation.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ENCODE" description="ENCODE Agent — code generation and memory formation.">
                 <PanelContainer id="encode"><Suspense fallback={<PanelLoader />}><CodeAgentTab enabled={isOperator} /></Suspense></PanelContainer>
               </TierGate>
             )}
