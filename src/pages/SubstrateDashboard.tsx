@@ -120,7 +120,7 @@ const modulesByLayer = {
     },
     {
       id: "dream",
-      name: "DREAM",
+      name: "DREAM Engine",
       description: "Dream-Eater operations, nightly processing",
       icon: Moon,
       color: "text-primary",
