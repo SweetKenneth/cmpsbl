@@ -65,7 +65,7 @@ const navSections: NavSection[] = [
       { name: "Vision Control", href: "/admin/vision", icon: Brain },
       { name: "Defense Shield", href: "/admin/defense", icon: Shield },
       { name: "Projects", href: "/admin/projects", icon: Briefcase },
-      { name: "INCLUSIVE", href: "/cluster/inclusive-module-accessibility", icon: Eye },
+      { name: "INCLUSIVE", href: "/cluster/inclusive-layer-accessibility", icon: Eye },
     ],
   },
   {

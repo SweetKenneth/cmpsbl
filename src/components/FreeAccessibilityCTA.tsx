@@ -61,7 +61,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/blog/inclusive-module-accessibility-mission">
+              <Link to="/blog/inclusive-layer-accessibility-mission">
                 Read Our Mission
               </Link>
             </Button>

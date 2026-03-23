@@ -167,7 +167,7 @@ export function DecodeChat() {
           agentId: "decode-global",
           agentName: "DECODE",
           agentSubtitle: "Sovereign Cognitive Interface",
-          agentPowers: ["Intent Interpretation", "Memory Recall", "Module Routing", "Personality Engine"],
+          agentPowers: ["Intent Interpretation", "Memory Recall", "Primitive Routing", "Personality Engine"],
           decodeMode: mode,
           identityRole: identityRole,
         }),
