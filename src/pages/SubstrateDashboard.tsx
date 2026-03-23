@@ -443,7 +443,7 @@ const modulesByLayer = {
     },
     {
       id: "atlas",
-      name: "ATLAS",
+      name: "ATLAS Engine",
       description: "Capability discovery, dependency mapping",
       icon: Globe,
       color: "text-neon-cyan",
