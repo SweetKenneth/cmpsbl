@@ -92,6 +92,11 @@ export function AnalyticsTab() {
       const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
+      // Use individual safe queries to prevent one failure from crashing all telemetry
+      const safeQuery = async <T,>(fn: () => Promise<T>): Promise<T | null> => {
+        try { return await fn(); } catch { return null; }
+      };
+
       const [
         brainEventsCountRes, brainEventsRes, brainMetricsCountRes,
         usageCountRes, usageRes,
@@ -104,32 +109,32 @@ export function AnalyticsTab() {
         usageFullRes,
         intentCountRes, intentLatencyRes,
       ] = await Promise.all([
-        supabase.from('brain_events').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('brain_events').select('id, event_type, module, outcome, created_at').gte('created_at', startDate).order('created_at', { ascending: false }).limit(1000),
-        supabase.from('brain_metrics').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('ai_usage_log').select('id, provider, category, success, created_at, tokens_used, cost').gte('created_at', startDate).limit(1000),
-        supabase.from('access_usage').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('audit_logs').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('audit_logs').select('id, action, entity_type, created_at').gte('created_at', startDate).limit(500),
-        supabase.from('immune_metrics').select('executor, total_runs, repair_successes, escalations, safe_failures').gte('run_at', sixHoursAgo),
-        supabase.from('immune_escalations').select('status, claimed_by').limit(1000),
+        safeQuery(() => supabase.from('brain_events').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
+        safeQuery(() => supabase.from('brain_events').select('id, event_type, module, outcome, created_at').gte('created_at', startDate).order('created_at', { ascending: false }).limit(500)),
+        safeQuery(() => supabase.from('brain_metrics').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
+        safeQuery(() => supabase.from('ai_usage_log').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
+        safeQuery(() => supabase.from('ai_usage_log').select('id, provider, category, success, created_at, tokens_used, cost').gte('created_at', startDate).limit(1000)),
+        safeQuery(() => supabase.from('access_usage').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
+        safeQuery(() => supabase.from('audit_logs').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
+        safeQuery(() => supabase.from('audit_logs').select('id, action, entity_type, created_at').gte('created_at', startDate).limit(500)),
+        safeQuery(() => supabase.from('immune_metrics').select('executor, total_runs, repair_successes, escalations, safe_failures').gte('run_at', sixHoursAgo)),
+        safeQuery(() => supabase.from('immune_escalations').select('status, claimed_by').limit(1000)),
         // Mesh comms
-        supabase.from('mesh_comms').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('mesh_comms').select('category, source_module, target_module').gte('created_at', startDate).limit(1000),
+        safeQuery(() => supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).gte('created_at', startDate)),
+        safeQuery(() => supabase.from('mesh_comms').select('category, source_module, target_module').gte('created_at', startDate).limit(1000)),
         // Agency tasks
-        supabase.from('agency_tasks').select('status, task_cost_cents, task_value_cents, compute_time_ms, created_at').gte('created_at', startDate).limit(1000),
+        safeQuery(() => supabase.from('agency_tasks').select('status, task_cost_cents, task_value_cents, compute_time_ms, created_at').gte('created_at', startDate).limit(1000)),
         // Agency economics
-        supabase.from('agency_economics').select('total_cost_cents, total_value_cents, tasks_completed, avg_roi').order('period_date', { ascending: false }).limit(days),
+        safeQuery(() => supabase.from('agency_economics').select('total_cost_cents, total_value_cents, tasks_completed, avg_roi').order('period_date', { ascending: false }).limit(days)),
         // Auto-blog
-        supabase.from('auto_blog_posts').select('status, confidence_score, created_at').gte('created_at', startDate),
+        safeQuery(() => supabase.from('auto_blog_posts').select('status, confidence_score, created_at').gte('created_at', startDate)),
         // Artifacts
-        supabase.from('artifact_registry').select('category, tier, created_at').gte('created_at', startDate),
+        safeQuery(() => supabase.from('artifact_registry').select('category, tier, created_at').gte('created_at', startDate)),
         // Full usage for cost analytics
-        supabase.from('ai_usage_log').select('provider, tokens_used, cost').gte('created_at', startDate).limit(1000),
-        // Intent receipts — table may not exist in typed schema, use rpc or skip gracefully
-        supabase.from('mesh_comms').select('*', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate),
-        supabase.from('mesh_comms').select('resolver_id, created_at').gte('created_at', startDate).not('resolver_id', 'is', null).limit(500),
+        safeQuery(() => supabase.from('ai_usage_log').select('provider, tokens_used, cost').gte('created_at', startDate).limit(1000)),
+        // Intent receipts
+        safeQuery(() => supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate)),
+        safeQuery(() => supabase.from('mesh_comms').select('resolver_id, created_at').gte('created_at', startDate).not('resolver_id', 'is', null).limit(500)),
       ]);
 
       // Core counts
