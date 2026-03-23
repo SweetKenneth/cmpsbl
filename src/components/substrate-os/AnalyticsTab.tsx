@@ -140,11 +140,11 @@ export function AnalyticsTab() {
       const accessCount = val(accessCountRes)?.count ?? 0;
       const auditCount = val(auditCountRes)?.count ?? 0;
 
-      const brainEvents = brainEventsRes.data || [];
-      const usage = usageRes.data || [];
-      const audit = auditRes.data || [];
-      const immuneRows = (immuneRes.data || []) as any[];
-      const escalationRows = (escalationsRes.data || []) as any[];
+      const brainEvents = val(brainEventsRes)?.data || [];
+      const usage = val(usageRes)?.data || [];
+      const audit = val(auditRes)?.data || [];
+      const immuneRows = (val(immuneRes)?.data || []) as any[];
+      const escalationRows = (val(escalationsRes)?.data || []) as any[];
 
       // Time series
       const dayCounts = new Map<string, number>();
@@ -196,8 +196,8 @@ export function AnalyticsTab() {
       const encodeResolutionRate = encodeClaimed > 0 ? Math.round((encodeResolved / encodeClaimed) * 1000) / 10 : 0;
 
       // ─── MESH COMMS ───
-      const meshCommsTotal = meshCountRes.count ?? 0;
-      const meshCatData = (meshCatRes.data || []) as any[];
+      const meshCommsTotal = val(meshCountRes)?.count ?? 0;
+      const meshCatData = (val(meshCatRes)?.data || []) as any[];
       const catMap = new Map<string, number>();
       const routeMap = new Map<string, number>();
       meshCatData.forEach((m: any) => {
@@ -209,33 +209,33 @@ export function AnalyticsTab() {
       const meshTopRoutes = Array.from(routeMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([route, count]) => ({ route, count }));
 
       // ─── AGENCY ───
-      const agencyTasks = (agencyTasksRes.data || []) as any[];
+      const agencyTasks = (val(agencyTasksRes)?.data || []) as any[];
       const agencyTasksCompleted = agencyTasks.filter(t => t.status === 'completed').length;
       const agencyTasksFailed = agencyTasks.filter(t => t.status === 'failed').length;
       const agencyTasksPending = agencyTasks.filter(t => !['completed', 'failed'].includes(t.status)).length;
       const agencySuccessRate = (agencyTasksCompleted + agencyTasksFailed) > 0
         ? Math.round((agencyTasksCompleted / (agencyTasksCompleted + agencyTasksFailed)) * 1000) / 10 : 0;
-      const econRows = (agencyEconRes.data || []) as any[];
+      const econRows = (val(agencyEconRes)?.data || []) as any[];
       const agencyCostCents = econRows.reduce((s: number, r: any) => s + (r.total_cost_cents || 0), 0);
       const agencyValueCents = econRows.reduce((s: number, r: any) => s + (r.total_value_cents || 0), 0);
       const agencyROI = agencyCostCents > 0 ? Math.round((agencyValueCents / agencyCostCents) * 100) / 100 : 0;
 
       // ─── AUTO-BLOG ───
-      const blogRows = (autoblogRes.data || []) as any[];
+      const blogRows = (val(autoblogRes)?.data || []) as any[];
       const autoblogPublished = blogRows.filter(b => b.status === 'published').length;
       const autoblogDraft = blogRows.filter(b => b.status === 'draft').length;
       const confScores = blogRows.filter(b => b.confidence_score != null).map(b => b.confidence_score as number);
       const autoblogAvgConfidence = confScores.length > 0 ? Math.round((confScores.reduce((s, v) => s + v, 0) / confScores.length) * 100) / 100 : 0;
 
       // ─── FOUNDRY ───
-      const artRows = (artifactRes.data || []) as any[];
+      const artRows = (val(artifactRes)?.data || []) as any[];
       const foundryArtifacts = artRows.length;
       const artCatMap = new Map<string, number>();
       artRows.forEach(a => artCatMap.set(a.category || 'unknown', (artCatMap.get(a.category || 'unknown') || 0) + 1));
       const foundryCategories = Array.from(artCatMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([category, count]) => ({ category, count }));
 
       // ─── COST ANALYTICS ───
-      const usageFull = (usageFullRes.data || []) as any[];
+      const usageFull = (val(usageFullRes)?.data || []) as any[];
       const totalCostCents = Math.round(usageFull.reduce((s, u) => s + (u.cost || 0), 0) * 100);
       const totalTokensUsed = usageFull.reduce((s, u) => s + (u.tokens_used || 0), 0);
       const avgCostPerCall = usageFull.length > 0 ? Math.round((totalCostCents / usageFull.length)) : 0;
@@ -250,8 +250,8 @@ export function AnalyticsTab() {
       const providerBreakdown = Array.from(provMap.entries()).sort((a, b) => b[1].count - a[1].count).map(([provider, d]) => ({ provider, count: d.count, tokens: d.tokens }));
 
       // ─── INTENT APPROXIMATION (from mesh_comms processing signals) ───
-      const intentTotal = intentCountRes.count ?? 0;
-      const resolverRows = (intentLatencyRes.data || []) as any[];
+      const intentTotal = val(intentCountRes)?.count ?? 0;
+      const resolverRows = (val(intentLatencyRes)?.data || []) as any[];
       // Approximate latency from timestamp deltas isn't possible, so use count-only
       const intentAvgLatency = 0; // No direct latency column; shown as "N/A" in UI
 
