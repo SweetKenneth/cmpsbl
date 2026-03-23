@@ -15,11 +15,11 @@ The substrate is not an application — it is infrastructure. It provides the ex
 - **Dependency-ordered boot**: Primitives initialize in strict topological order.
 - **Weighted integrity**: System health is a deterministic weighted sum across all 40 primitives (Σ = 1.000).
 - **Circuit-breaker isolation**: Every primitive has independent failure tracking; open breakers force health to 0.
-- **Field permeation**: Fields (IMMUNITY, INTENT) cross-cut all layers rather than stacking.
-- **GOVERNANCE supervision**: Every mutating action requires legitimacy approval.
-- **DEFENSE terminal enforcement**: The outermost boundary is non-negotiable.
-- **NEXUS routing authority**: All external requests route through NEXUS.
-- **Immutable audit trail**: AUDIT provides tamper-evident logging for all security-relevant events.
+- **Field permeation**: Fields (IMMUNITY Layer, INTENT Layer) cross-cut all layers rather than stacking.
+- **GOVERNANCE Layer supervision**: Every mutating action requires legitimacy approval.
+- **DEFENSE Layer terminal enforcement**: The outermost boundary is non-negotiable.
+- **NEXUS Organ routing authority**: All external requests route through NEXUS Organ.
+- **Immutable audit trail**: AUDIT Organ provides tamper-evident logging for all security-relevant events.
 - **BYOK sovereignty**: Operators own their keys, data, and infrastructure.
 - **Zone shielding**: Expansion modules are grouped into shielded zones (ESZ, EPZ, EMZ) with independent circuit breakers.
 - **Disaster recovery**: One-click full backup captures entire system state for portable restoration.
