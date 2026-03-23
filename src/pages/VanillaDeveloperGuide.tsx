@@ -140,7 +140,7 @@ export default function VanillaDeveloperGuide() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {MODULES.map((mod, i) => (
+            {PRIMITIVES.map((mod, i) => (
               <motion.div
                 key={mod.name}
                 initial={{ opacity: 0, y: 15 }}
