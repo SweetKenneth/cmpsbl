@@ -199,18 +199,32 @@ export function getProposals(status?: CorrectionProposal['status']): CorrectionP
 
 export function getDriftCorrectionStats(): DriftCorrectionStats {
   const latest = measurements[measurements.length - 1];
-  const severities = measurements.map(m => m.severity);
-  const mostCommon = severities.length > 0
-    ? severities.sort((a, b) => severities.filter(v => v === b).length - severities.filter(v => v === a).length)[0]
-    : 'none';
+
+  // O(n) frequency count instead of O(n³) sort-with-filter
+  let mostCommon: DriftMeasurement['severity'] = 'none';
+  if (measurements.length > 0) {
+    const freq: Record<string, number> = {};
+    let maxCount = 0;
+    for (const m of measurements) {
+      const c = (freq[m.severity] = (freq[m.severity] || 0) + 1);
+      if (c > maxCount) { maxCount = c; mostCommon = m.severity; }
+    }
+  }
+
+  // Single-pass proposal counting
+  let pending = 0, applied = 0;
+  for (const p of proposals) {
+    if (p.status === 'proposed') pending++;
+    else if (p.status === 'applied') applied++;
+  }
 
   return {
     totalBaselines: baselines.size,
     totalMeasurements: measurements.length,
     currentDriftScore: latest?.jaccardDistance ?? 0,
     driftVelocity: latest?.velocity ?? 0,
-    proposalsPending: proposals.filter(p => p.status === 'proposed').length,
-    proposalsApplied: proposals.filter(p => p.status === 'applied').length,
+    proposalsPending: pending,
+    proposalsApplied: applied,
     avgDriftSeverity: mostCommon,
   };
 }
