@@ -52,7 +52,8 @@ export { useOracle, type UseOracleReturn } from './useOracle';
 
 // EPZ — Expansion Perception Zone
 export { useCompass, type UseCompassReturn } from './useCompass';
-export { useEcho, type UseEchoReturn } from './useEcho';
+export { useEcho } from './useEcho';
+export type { UseEchoReturn } from './useEcho';
 export { useReflex, type UseReflexReturn } from './useReflex';
 
 // EMZ — Expansion Manufacturing Zone (FORGE, LINGUA, HARVEST)
