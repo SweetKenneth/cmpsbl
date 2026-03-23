@@ -454,7 +454,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'cortex' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="Memory orchestration and multi-step execution tracing.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="CORTEX" description="CORTEX Engine memory orchestration and multi-step execution tracing.">
                 <PanelContainer id="cortex"><Suspense fallback={<PanelLoader />}><CortexTab enabled={isOperator} /></Suspense></PanelContainer>
               </TierGate>
             )}
