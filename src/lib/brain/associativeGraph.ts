@@ -280,18 +280,20 @@ class AssociativeGraphEngine {
     const strongLinks = [...this.links.values()].filter(l => l.strength >= 0.2);
     if (strongLinks.length === 0) return 0;
 
-    const edges = strongLinks.slice(0, 100).map(l => ({
-      source_id: l.sourceId,
-      target_id: l.targetId,
-      relation: `associative:${l.linkType}`,
-      relation_type: l.linkType,
-      weight: l.strength,
-      confidence: Math.min(1, l.coActivations / 10),
-    }));
-
+    // Persist via knowledge graph edges table if available
     try {
-      await supabase.from('knowledge_graph_edges').upsert(edges, { onConflict: 'source_id,target_id,relation' });
-      this.dirty = false;
+      const edges = strongLinks.slice(0, 100).map(l => ({
+        source_id: l.sourceId,
+        target_id: l.targetId,
+        relation: `associative:${l.linkType}`,
+        relation_type: l.linkType,
+        weight: l.strength,
+        confidence: Math.min(1, l.coActivations / 10),
+      }));
+
+      // Fire-and-forget to knowledge_graph_edges (may not exist in all envs)
+      const { error } = await supabase.from('knowledge_graph_edges' as any).upsert(edges as any, { onConflict: 'source_id,target_id,relation' });
+      if (!error) this.dirty = false;
       return edges.length;
     } catch {
       return 0;
