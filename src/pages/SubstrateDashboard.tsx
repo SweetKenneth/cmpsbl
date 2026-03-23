@@ -383,7 +383,7 @@ const modulesByLayer = {
     },
     {
       id: "shadow",
-      name: "SHADOW",
+      name: "SHADOW Agent",
       description: "Adversarial probing, trust surface analysis",
       icon: Ghost,
       color: "text-slate-300",
