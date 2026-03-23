@@ -337,8 +337,8 @@ export function AscensionHero() {
             transition={{ delay: 0.3 }}
             className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground/90 max-w-2xl mx-auto mb-3 sm:mb-4 leading-snug"
           >
-            Your code becomes Node #41 — collided against a living{' '}
-            <span className="text-primary">40-node cognitive substrate</span>.
+            Your code becomes Primitive #41 — collided against a living{' '}
+            <span className="text-primary">40-primitive cognitive substrate</span>.
           </motion.p>
 
           {/* Clear explanatory paragraph */}
