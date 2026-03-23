@@ -511,7 +511,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'autonomous-evolution-synergy',
     name: 'Autonomous Evolution Synergy',
     category: 'automation',
-    description: 'CORTEX evolution proposals enhanced by BRAIN learning history and EVOLUTION impact simulation',
+    description: 'CORTEX Engine evolution proposals enhanced by BRAIN Organ learning history and EVOLUTION Layer impact simulation',
     requiredModules: ['CORTEX', 'BRAIN', 'EVOLUTION', 'SEBA'],
     executorType: 'js',
     artifactFormat: 'zip',
