@@ -125,7 +125,7 @@ export default function AIOperatingSystem() {
     "@type": "SoftwareApplication",
     name: "CMPSBL Substrate",
     description:
-      "The world's first AI Operating System — 40 integrated nodes across 12 sectors providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
+      "The world's first AI Operating System — 40 integrated primitives (agents, engines, layers, organs) providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
     url: "https://cmpsbl.com/ai-operating-system",
     applicationCategory: "AI Operating System",
     operatingSystem: "Cloud",
