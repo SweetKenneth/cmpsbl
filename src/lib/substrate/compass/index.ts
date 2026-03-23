@@ -3,7 +3,7 @@
  * Spatial-temporal reasoning, 2-opt route optimization,
  * time-series decomposition with decaying confidence, pattern detection.
  *
- * Re-exports core compass-module and adds CLM + hardening layers.
+ * Re-exports core compass-module and adds CLM + hardening layers + Ultimate Form.
  */
 
 export {
@@ -29,3 +29,9 @@ export {
 
 export { compassCLM, runCompassCLMCycle, type CompassCLMInsight, type CompassCLMReport } from './clm';
 export { compassHardeningReport, validateCompassInput, COMPASS_LIMITS } from './hardening';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// COMPASS Ultimate Form — v9.0.0 "Meridian"
+// ═══════════════════════════════════════════════════════════════════════════════
+import * as CompassUltimate from '../../compass/ultimate';
+export { CompassUltimate };
