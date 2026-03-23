@@ -1319,7 +1319,7 @@ function ModernizerShadowPanel() {
           delay={0}
         />
         <MetricCard
-          label="ENCODE Assists"
+          label="ENCODE Agent Assists"
           value={`${(perfStats.encodeAssistRate * 100).toFixed(0)}%`}
           sub="of failures"
           icon={GraduationCap}
