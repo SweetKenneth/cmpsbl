@@ -187,7 +187,7 @@ const modulesByLayer = {
     },
     {
       id: "medic",
-      name: "MEDIC",
+      name: "MEDIC Engine",
       description: "Self-healing diagnostics & recovery",
       icon: HeartPulse,
       color: "text-destructive",
