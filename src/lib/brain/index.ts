@@ -93,6 +93,36 @@ export * from './memoryIndex';
 // Re-export attention mechanism
 export * from './attentionMechanism';
 
+// Re-export BM25 ranking engine
+export * from './bm25Engine';
+
+// Re-export associative memory graph
+export * from './associativeGraph';
+
+// Re-export Hebbian pathway strengthening
+export * from './hebbianPathways';
+
+// Re-export predictive pre-fetch
+export * from './predictivePrefetch';
+
+// Re-export contradiction detection
+export * from './contradictionDetector';
+
+// Re-export working memory
+export * from './workingMemory';
+
+// Re-export dream synthesis
+export * from './dreamSynthesis';
+
+// Re-export sparse distributed representations
+export * from './sparseDistributedRep';
+
+// Re-export neural plasticity governor
+export * from './neuralPlasticity';
+
+// Re-export memory consolidation cycles
+export * from './memoryConsolidationCycle';
+
 import { supabase } from '@/integrations/supabase/client';
 import type { TierStats, Memory } from './memoryTiering';
 import { getTierStats, searchMemories as searchMemoriesFn } from './memoryTiering';
