@@ -66,8 +66,8 @@ export {
 // SLA monitoring & capacity forecasting
 export * from './slaMonitoring';
  
- // Alert management
- export * from './alertManagement';
+// Alert management
+export * from './alertManagement';
 
 // Predictive alerts
 export * from './predictiveAlerts';
@@ -75,6 +75,36 @@ export * from './predictiveAlerts';
 // Vision hardening layer
 export * from './vision-hardening';
 
+// Session replay & journey reconstruction
+export * from './sessionReplay';
+
+// Behavioral anomaly scoring (5-factor weighted deviation)
+export * from './behavioralAnomaly';
+
+// Feature adoption heatmap
+export * from './featureAdoption';
+
+// Clockless session fingerprinting (SHA-256)
+export * from './sessionFingerprint';
+
+// Cross-signal correlation engine
+export * from './crossSignalCorrelation';
+
+// Intelligent alert deduplication & storm suppression
+export * from './alertDeduplication';
+
+// Adaptive baseline engine (self-calibrating)
+export * from './adaptiveBaseline';
+
+// Observability score (unified health number)
+export * from './observabilityScore';
+
+// Anomaly-driven authentication bridge (VISION → DEFENSE)
+export * from './defenseBridge';
+
+// Metric topology mapping (dependency graph)
+export * from './metricTopology';
+
 // Vision module version
-export const VISION_VERSION = '2.0.0';
+export const VISION_VERSION = '3.0.0';
 export const VISION_CODENAME = 'Vee';
