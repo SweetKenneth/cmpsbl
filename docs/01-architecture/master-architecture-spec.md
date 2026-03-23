@@ -15,11 +15,11 @@ The substrate is not an application — it is infrastructure. It provides the ex
 - **Dependency-ordered boot**: Primitives initialize in strict topological order.
 - **Weighted integrity**: System health is a deterministic weighted sum across all 40 primitives (Σ = 1.000).
 - **Circuit-breaker isolation**: Every primitive has independent failure tracking; open breakers force health to 0.
-- **Field permeation**: Fields (IMMUNITY, INTENT) cross-cut all layers rather than stacking.
-- **GOVERNANCE supervision**: Every mutating action requires legitimacy approval.
-- **DEFENSE terminal enforcement**: The outermost boundary is non-negotiable.
-- **NEXUS routing authority**: All external requests route through NEXUS.
-- **Immutable audit trail**: AUDIT provides tamper-evident logging for all security-relevant events.
+- **Field permeation**: Fields (IMMUNITY Layer, INTENT Layer) cross-cut all layers rather than stacking.
+- **GOVERNANCE Layer supervision**: Every mutating action requires legitimacy approval.
+- **DEFENSE Layer terminal enforcement**: The outermost boundary is non-negotiable.
+- **NEXUS Organ routing authority**: All external requests route through NEXUS Organ.
+- **Immutable audit trail**: AUDIT Organ provides tamper-evident logging for all security-relevant events.
 - **BYOK sovereignty**: Operators own their keys, data, and infrastructure.
 - **Zone shielding**: Expansion modules are grouped into shielded zones (ESZ, EPZ, EMZ) with independent circuit breakers.
 - **Disaster recovery**: One-click full backup captures entire system state for portable restoration.
@@ -146,28 +146,28 @@ graph TD
 
 ## 6. Component Registry
 
-| Component | Sector | Responsibility | Dependencies |
-|-----------|--------|---------------|-------------|
-| CORE | Spine | Boot sequencing, integrity scoring | None (root) |
-| SYSTEM | Spine | Configuration, lifecycle hooks | CORE |
-| BRAIN | CCR | Reasoning, pattern recognition | SYSTEM |
-| MEMORY | CCR | State persistence, retrieval, tier enforcement | SYSTEM |
-| DREAM | CCR | Heuristic generation, synthesis | BRAIN, MEMORY |
-| RIPPLE | OCG | Event propagation, cascade detection | CORE |
-| ACCESS | OCG | Auth, billing, API key management | CORE |
-| IDENTITY | OCG | Entity resolution, session management | CORE |
-| RELAY | OCG | Cross-module messaging, webhooks | CORE |
-| AUDIT | OCG | Immutable logging, tamper detection | CORE |
-| NERVE | OCG | Inter-node signaling, consensus repair | CORE, RIPPLE |
-| DECODE | Execution | Natural language understanding, intent parsing | CORE |
-| ENCODE | Execution | Code generation, surgical patching | CORE, DECODE |
-| VISION | Execution | Telemetry, observability, anomaly detection | CORE |
-| CORTEX | Execution | Memory chain composition, cognitive orchestration | CORE |
-| NEXUS | Execution | AI provider routing, fleet intelligence | CORE |
-| ECONOMY | Execution | Cost tracking, budget governance | CORE |
-| SANDBOX | Execution | Isolated execution, speculative runs | CORE |
-| INCLUSIVE | Execution | WCAG compliance, accessibility scanning | CORE |
-| MEDIC | Execution | Autonomous diagnostics, predictive failure | CORE, VISION |
+| Component | Category | Sector | Responsibility | Dependencies |
+|-----------|----------|--------|---------------|-------------|
+| CORE | Organ | Spine | Boot sequencing, integrity scoring | None (root) |
+| SYSTEM | Organ | Spine | Configuration, lifecycle hooks | CORE |
+| BRAIN | Organ | CCR | Reasoning, pattern recognition | SYSTEM |
+| MEMORY | Organ | CCR | State persistence, retrieval, tier enforcement | SYSTEM |
+| DREAM | Engine | CCR | Heuristic generation, synthesis | BRAIN, MEMORY |
+| RIPPLE | Organ | OCG | Event propagation, cascade detection | CORE |
+| ACCESS | Organ | OCG | Auth, billing, API key management | CORE |
+| IDENTITY | Organ | OCG | Entity resolution, session management | CORE |
+| RELAY | Organ | OCG | Cross-module messaging, webhooks | CORE |
+| AUDIT | Organ | OCG | Immutable logging, tamper detection | CORE |
+| NERVE | Organ | OCG | Inter-node signaling, consensus repair | CORE, RIPPLE |
+| DECODE | Agent | Execution | Natural language understanding, intent parsing | CORE |
+| ENCODE | Agent | Execution | Code generation, surgical patching | CORE, DECODE |
+| VISION | Agent | Execution | Telemetry, observability, anomaly detection | CORE |
+| CORTEX | Engine | Execution | Memory chain composition, cognitive orchestration | CORE |
+| NEXUS | Organ | Execution | AI provider routing, fleet intelligence | CORE |
+| ECONOMY | Engine | Execution | Cost tracking, budget governance | CORE |
+| SANDBOX | Engine | Execution | Isolated execution, speculative runs | CORE |
+| INCLUSIVE | Layer | Execution | WCAG compliance, accessibility scanning | CORE |
+| MEDIC | Engine | Execution | Autonomous diagnostics, predictive failure | CORE, VISION |
 | INTEGRATION | Execution | External connectivity, adapters (boots last) | CORE |
 | SOVEREIGN | ESZ | Data sovereignty, jurisdictional compliance | CORE, DEFENSE, ACCESS |
 | ORACLE | ESZ | Predictive modeling, Bayesian inference | CORE, BRAIN, VISION |

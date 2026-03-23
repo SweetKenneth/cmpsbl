@@ -682,12 +682,12 @@ export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
 // ENCODE MODULE — Code generation & transformation
 export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'encode.status', description: 'Code generation engine status', category: 'cortex', icon: PenTool, requiresOperator: false },
-  { command: 'encode.queue', description: 'View pending task packets from DECODE', category: 'cortex', icon: List, requiresOperator: false },
-  { command: 'encode.receipts', description: 'Completion receipts with BRAIN refs', category: 'cortex', icon: FileCheck, requiresOperator: false, args: '[limit]' },
-  { command: 'encode.health', description: 'ENCODE module health score', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'encode.queue', description: 'View pending task packets from DECODE Agent', category: 'cortex', icon: List, requiresOperator: false },
+  { command: 'encode.receipts', description: 'Completion receipts with BRAIN Organ refs', category: 'cortex', icon: FileCheck, requiresOperator: false, args: '[limit]' },
+  { command: 'encode.health', description: 'ENCODE Agent health score', category: 'cortex', icon: Activity, requiresOperator: false },
   { command: 'encode.navigate', description: 'Resolve intent to file targets & conventions', category: 'cortex', icon: Search, requiresOperator: false, args: '<intent>' },
-  { command: 'encode.whereis', description: 'Quick module/concept location lookup', category: 'cortex', icon: Search, requiresOperator: false, args: '<query>' },
-  { command: 'encode.help', description: 'ENCODE module command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
+  { command: 'encode.whereis', description: 'Quick primitive/concept location lookup', category: 'cortex', icon: Search, requiresOperator: false, args: '<query>' },
+  { command: 'encode.help', description: 'ENCODE Agent command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
 ];
 
 // PATCH — Distribution Patch Dispatch
@@ -728,42 +728,42 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'system.hardening.boot_timing', description: 'Boot timing profiler', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'system.hardening.readiness', description: 'Operational readiness checks', category: 'system', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening commands — CORTEX
-  { command: 'cortex.hardening', description: 'CORTEX hardening status (Conductor)', category: 'cortex', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'cortex.hardening.health', description: 'CORTEX orchestration health composite', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening commands — CORTEX Engine
+  { command: 'cortex.hardening', description: 'CORTEX Engine hardening status (Conductor)', category: 'cortex', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'cortex.hardening.health', description: 'CORTEX Engine orchestration health composite', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.hardening.sla', description: 'Memory SLA compliance', category: 'cortex', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'cortex.hardening.backpressure', description: 'Backpressure controller state', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening commands — ENCODE
-  { command: 'encode.hardening', description: 'ENCODE hardening status (Forge)', category: 'cortex', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'encode.hardening.health', description: 'ENCODE health composite', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening commands — ENCODE Agent
+  { command: 'encode.hardening', description: 'ENCODE Agent hardening status (Forge)', category: 'cortex', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'encode.hardening.health', description: 'ENCODE Agent health composite', category: 'cortex', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'encode.hardening.budget', description: 'Generation budget status', category: 'cortex', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'encode.hardening.quality', description: 'Code quality gate scores', category: 'cortex', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening commands — DECODE
-  { command: 'decode.hardening', description: 'DECODE hardening status (Cipher)', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'decode.hardening.health', description: 'DECODE health composite', category: 'decode', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening commands — DECODE Agent
+  { command: 'decode.hardening', description: 'DECODE Agent hardening status (Cipher)', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'decode.hardening.health', description: 'DECODE Agent health composite', category: 'decode', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.hardening.trust', description: 'Identity trust ladder status', category: 'decode', icon: Key, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.hardening.sanitization', description: 'Input sanitization memory chain stats', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening commands — VISION
-  { command: 'vision.hardening', description: 'VISION hardening status (Sentinel)', category: 'vision', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'vision.hardening.health', description: 'VISION health composite', category: 'vision', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening commands — VISION Agent
+  { command: 'vision.hardening', description: 'VISION Agent hardening status (Sentinel)', category: 'vision', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'vision.hardening.health', description: 'VISION Agent health composite', category: 'vision', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'vision.hardening.anomalies', description: 'Anomaly detection integrity', category: 'vision', icon: Eye, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening commands — DEFENSE
-  { command: 'defense.hardening', description: 'DEFENSE hardening status (Fortress)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'defense.hardening.health', description: 'DEFENSE health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening commands — DEFENSE Layer
+  { command: 'defense.hardening', description: 'DEFENSE Layer hardening status (Fortress)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'defense.hardening.health', description: 'DEFENSE Layer health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'defense.hardening.fingerprint', description: 'Behavioral fingerprint engine stats', category: 'defense', icon: Lock, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening commands — GOVERNANCE
-  { command: 'governance.hardening', description: 'GOVERNANCE hardening status (Magistrate)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'governance.hardening.health', description: 'GOVERNANCE health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening commands — GOVERNANCE Layer
+  { command: 'governance.hardening', description: 'GOVERNANCE Layer hardening status (Magistrate)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'governance.hardening.health', description: 'GOVERNANCE Layer health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'governance.hardening.decisions', description: 'Decision chain audit', category: 'system', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — BRAIN (CCR Zone)
-  { command: 'brain.hardening', description: 'BRAIN hardening status (Memoria)', category: 'brain', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'brain.hardening.health', description: 'BRAIN health composite', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — BRAIN Organ (CCR Zone)
+  { command: 'brain.hardening', description: 'BRAIN Organ hardening status (Memoria)', category: 'brain', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'brain.hardening.health', description: 'BRAIN Organ health composite', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'brain.hardening.beliefs', description: 'Belief revision tracker', category: 'brain', icon: Brain, requiresOperator: false, requiredTier: 'free' },
   { command: 'brain.hardening.biases', description: 'Cognitive bias detector alerts', category: 'brain', icon: Eye, requiresOperator: false, requiredTier: 'free' },
   { command: 'brain.hardening.cache', description: 'Reasoning result cache stats', category: 'brain', icon: Database, requiresOperator: false, requiredTier: 'free' },
@@ -776,9 +776,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'brain.hardening.timeouts', description: 'Reasoning timeout enforcer stats', category: 'brain', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'brain.hardening.snapshots', description: 'Cognitive state snapshots', category: 'brain', icon: Database, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — MEMORY (CCR Zone)
-  { command: 'memory.hardening', description: 'MEMORY hardening status (Vault)', category: 'memory_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'memory.hardening.health', description: 'MEMORY health composite', category: 'memory_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — MEMORY Organ (CCR Zone)
+  { command: 'memory.hardening', description: 'MEMORY Organ hardening status (Vault)', category: 'memory_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'memory.hardening.health', description: 'MEMORY Organ health composite', category: 'memory_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.tiering', description: 'Hot/warm/cold tier distribution', category: 'memory_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.capacity', description: 'Memory capacity utilization', category: 'memory_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.recall', description: 'Recall accuracy (precision/recall/F1)', category: 'memory_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
@@ -806,9 +806,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'dream.hardening.idle', description: 'Idle cycle detector state', category: 'dream', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.synthesis', description: 'Synthesis audit trail', category: 'dream', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — ECONOMY
-  { command: 'economy.hardening', description: 'ECONOMY hardening status (Ledger)', category: 'economy_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'economy.hardening.health', description: 'ECONOMY health composite', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — ECONOMY Engine
+  { command: 'economy.hardening', description: 'ECONOMY Engine hardening status (Ledger)', category: 'economy_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'economy.hardening.health', description: 'ECONOMY Engine health composite', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.budget', description: 'Budget breach circuit breaker', category: 'economy_mod', icon: Zap, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.velocity', description: 'Spend velocity limiter', category: 'economy_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.anomalies', description: 'Cost anomaly detector (Z-score)', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
@@ -823,9 +823,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'economy.hardening.seals', description: 'Transaction integrity seal status', category: 'economy_mod', icon: Lock, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.tamper', description: 'Cost record tamper detection', category: 'economy_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — IMMUNITY (Field — Outer Mesh)
-  { command: 'immunity.hardening', description: 'IMMUNITY hardening status (Watchguard)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'immunity.hardening.health', description: 'IMMUNITY health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — IMMUNITY Layer (Field — Outer Mesh)
+  { command: 'immunity.hardening', description: 'IMMUNITY Layer hardening status (Watchguard)', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'immunity.hardening.health', description: 'IMMUNITY Layer health composite', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.quarantine', description: 'Quarantined modules list', category: 'defense', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.healing', description: 'Healing memory chain stats', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.sentinel', description: 'Sentinel watchdog pulse stats', category: 'defense', icon: Eye, requiresOperator: false, requiredTier: 'free' },
@@ -840,9 +840,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'immunity.hardening.fatigue', description: 'Immune fatigue detector', category: 'defense', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'immunity.hardening.response_time', description: 'Immune response time (P95/P99)', category: 'defense', icon: Clock, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — EVOLUTION (Field — Middle Mesh)
-  { command: 'evolution.hardening', description: 'EVOLUTION hardening status (Chrysalis)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'evolution.hardening.health', description: 'EVOLUTION health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — EVOLUTION Layer (Field — Middle Mesh)
+  { command: 'evolution.hardening', description: 'EVOLUTION Layer hardening status (Chrysalis)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.hardening.health', description: 'EVOLUTION Layer health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.cycle', description: 'Current evolution cycle state', category: 'system', icon: GitBranch, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.risk', description: 'Risk budget status', category: 'system', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.snapshots', description: 'Snapshot inventory & age', category: 'system', icon: Database, requiresOperator: false, requiredTier: 'free' },
@@ -858,9 +858,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'evolution.hardening.cooldown', description: 'Evolution cooldown timer', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.seba', description: 'SEBA confidence scores', category: 'system', icon: Brain, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — INTENT (Field — Inner Mesh)
-  { command: 'intent.hardening', description: 'INTENT hardening status (Navigator v2.0)', category: 'brain', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'intent.hardening.health', description: 'INTENT health composite', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — INTENT Layer (Field — Inner Mesh)
+  { command: 'intent.hardening', description: 'INTENT Layer hardening status (Navigator v2.0)', category: 'brain', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'intent.hardening.health', description: 'INTENT Layer health composite', category: 'brain', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.resolution', description: 'Intent resolution audit trail', category: 'brain', icon: Search, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.goals', description: 'Goal lifecycle tracker', category: 'brain', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'intent.hardening.amplification', description: 'Context amplification metrics', category: 'brain', icon: Sparkles, requiresOperator: false, requiredTier: 'free' },
@@ -1096,8 +1096,8 @@ export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.hardening.criteria', description: 'Top violated WCAG criteria', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.depth', description: 'Scan depth distribution', category: 'inclusive', icon: Layers, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.gates', description: 'Compliance gate results', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'inclusive.hardening.escalations', description: 'DEFENSE escalation tracker', category: 'inclusive', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
-  { command: 'inclusive.hardening.proposals', description: 'EVOLUTION proposal tracker', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.escalations', description: 'DEFENSE Layer escalation tracker', category: 'inclusive', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.proposals', description: 'EVOLUTION Layer proposal tracker', category: 'inclusive', icon: FileText, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.score_history', description: 'Accessibility score history', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.autofix', description: 'Auto-fix queue status', category: 'inclusive', icon: Wand2, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.contrast', description: 'Color contrast analyzer', category: 'inclusive', icon: Eye, requiresOperator: false, requiredTier: 'free' },
@@ -1109,7 +1109,7 @@ export const INCLUSIVE_HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'inclusive.hardening.forms', description: 'Form accessibility checker', category: 'inclusive', icon: FileEdit, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.selfscan', description: 'Self-scan memory chain stats', category: 'inclusive', icon: RefreshCw, requiresOperator: false, requiredTier: 'free' },
   { command: 'inclusive.hardening.publish', description: 'Marketplace publish gate', category: 'inclusive', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  { command: 'inclusive.hardening.telemetry', description: 'INCLUSIVE Layer telemetry summary', category: 'inclusive', icon: Activity, requiresOperator: false, requiredTier: 'free' },
 ];
 
 // ═══ ESZ — Expansion Sovereignty Zone Commands ═══

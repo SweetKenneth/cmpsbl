@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Zap, Shield, Brain, AlertTriangle, CheckCircle, XCircle,
@@ -42,15 +43,15 @@ const riskColors: Record<string, { bg: string; text: string; border: string }> =
 
 // Module icon mapping
 const moduleIcons: Record<string, React.ElementType> = {
-  BRAIN: Brain,
-  DEFENSE: Shield,
-  SYSTEM: Activity,
-  EVOLUTION: Sparkles,
-  CORTEX: Zap,
-  DECODE: Eye,
+  'BRAIN Organ': Brain,
+  'DEFENSE Layer': Shield,
+  'SYSTEM Organ': Activity,
+  'EVOLUTION Layer': Sparkles,
+  'CORTEX Engine': Zap,
+  'DECODE Agent': Eye,
   'DREAM Engine': Sparkles,
-  VISION: Eye,
-  CORE: Power,
+  'VISION Agent': Eye,
+  'CORE Organ': Power,
 };
 
 interface CapabilityCardProps {
@@ -62,7 +63,7 @@ interface CapabilityCardProps {
 
 function CapabilityCard({ capability, enabled, onToggle, lastToggled }: CapabilityCardProps) {
   const risk = riskColors[capability.risk] || riskColors.low;
-  const ModuleIcon = moduleIcons[capability.modules[0]] || Zap;
+  const ModuleIcon = moduleIcons[labelPrimitive(capability.modules[0])] || Zap;
   
   return (
     <motion.div

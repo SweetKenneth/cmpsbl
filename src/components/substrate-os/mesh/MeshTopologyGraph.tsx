@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -28,27 +29,27 @@ interface GraphEdge {
 }
 
 const MODULE_COLORS: Record<string, string> = {
-  DEFENSE: 'hsl(0, 80%, 60%)',
-  BRAIN: 'hsl(270, 70%, 65%)',
-  CORTEX: 'hsl(200, 80%, 60%)',
-  VISION: 'hsl(45, 90%, 55%)',
-  IDENTITY: 'hsl(160, 70%, 50%)',
-  MEMORY: 'hsl(300, 60%, 60%)',
-  NEXUS: 'hsl(30, 85%, 55%)',
-  RELAY: 'hsl(180, 70%, 50%)',
-  AUDIT: 'hsl(220, 65%, 55%)',
-  ECONOMY: 'hsl(120, 60%, 50%)',
-  SANDBOX: 'hsl(340, 65%, 55%)',
-  INCLUSIVE: 'hsl(90, 65%, 50%)',
-  DECODE: 'hsl(250, 75%, 65%)',
+  'DEFENSE Layer': 'hsl(0, 80%, 60%)',
+  'BRAIN Organ': 'hsl(270, 70%, 65%)',
+  'CORTEX Engine': 'hsl(200, 80%, 60%)',
+  'VISION Agent': 'hsl(45, 90%, 55%)',
+  'IDENTITY Organ': 'hsl(160, 70%, 50%)',
+  'MEMORY Organ': 'hsl(300, 60%, 60%)',
+  'NEXUS Organ': 'hsl(30, 85%, 55%)',
+  'RELAY Organ': 'hsl(180, 70%, 50%)',
+  'AUDIT Organ': 'hsl(220, 65%, 55%)',
+  'ECONOMY Engine': 'hsl(120, 60%, 50%)',
+  'SANDBOX Engine': 'hsl(340, 65%, 55%)',
+  'INCLUSIVE Layer': 'hsl(90, 65%, 50%)',
+  'DECODE Agent': 'hsl(250, 75%, 65%)',
   'DREAM Engine': 'hsl(280, 80%, 65%)',
-  SYSTEM: 'hsl(210, 50%, 55%)',
-  ENCODE: 'hsl(330, 70%, 60%)',
-  EVOLUTION: 'hsl(15, 75%, 55%)',
-  RIPPLE: 'hsl(195, 75%, 55%)',
-  ACCESS: 'hsl(150, 60%, 50%)',
-  INTEGRATION: 'hsl(60, 65%, 50%)',
-  CORE: 'hsl(0, 0%, 70%)',
+  'SYSTEM Organ': 'hsl(210, 50%, 55%)',
+  'ENCODE Agent': 'hsl(330, 70%, 60%)',
+  'EVOLUTION Layer': 'hsl(15, 75%, 55%)',
+  'RIPPLE Organ': 'hsl(195, 75%, 55%)',
+  'ACCESS Organ': 'hsl(150, 60%, 50%)',
+  'INTEGRATION Organ': 'hsl(60, 65%, 50%)',
+  'CORE Organ': 'hsl(0, 0%, 70%)',
 };
 
 export function MeshTopologyGraph() {
@@ -85,7 +86,7 @@ export function MeshTopologyGraph() {
           vx: 0,
           vy: 0,
           resolverCount,
-          color: MODULE_COLORS[mod] || 'hsl(0, 0%, 60%)',
+          color: MODULE_COLORS[labelPrimitive(mod)] || 'hsl(0, 0%, 60%)',
         };
       });
 
