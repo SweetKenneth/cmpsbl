@@ -176,30 +176,30 @@ const BOOT_SEQUENCE = `CORE (Kernel Boot Authority)
   ← Shell wraps: DEFENSE (outermost)`;
 
 const KEY_PROPERTIES = [
-  { title: "Weight Invariant", desc: "Every node carries a governance weight. The sum across all 40 nodes is exactly 1.000 — no single node can dominate decisions." },
-  { title: "Clockless Coordination", desc: "Nodes share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
-  { title: "Safety Switch Isolation", desc: "Every node has independent failure tracking with automatic safety switches. Degradation never cascades across sectors." },
-  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION proposes, SHADOW validates, GOVERNANCE approves." },
+  { title: "Weight Invariant", desc: "Every primitive carries a governance weight. The sum across all 40 primitives is exactly 1.000 — no single primitive can dominate decisions." },
+  { title: "Clockless Coordination", desc: "Primitives share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
+  { title: "Safety Switch Isolation", desc: "Every primitive has independent failure tracking with automatic safety switches. Degradation never cascades across categories." },
+  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION Engine proposes, SHADOW validates, GOVERNANCE Layer approves." },
   { title: "Tamper-Evident Audit", desc: "Every mutation is recorded in a hash-chained receipt ledger. The chain is verifiable at any point — no operation goes unlogged." },
-  { title: "Graceful Degradation", desc: "When individual nodes fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
+  { title: "Graceful Degradation", desc: "When individual primitives fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
 ];
 
 export default function Architecture() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Architecture — 12-Sector Node Topology | CMPSBL"
-        description="Explore CMPSBL's substrate architecture: 40 nodes organized into 12 sectors from CORE kernel to DEFENSE shell. Weighted matrix boot, clockless coordination, and cross-sector mesh overlays."
+        title="Architecture — Agents · Engines · Layers · Organs | CMPSBL"
+        description="Explore CMPSBL's substrate architecture: 40 primitives organized as agents, engines, layers, and organs. Weighted matrix boot, clockless coordination, and cross-category mesh overlays."
         image="https://cmpsbl.com/og/architecture.jpg"
-        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI nodes', 'cognitive substrate', 'AI infrastructure layers']}
+        keywords={['AI orchestration architecture', 'CMPSBL architecture', 'composable AI primitives', 'cognitive substrate', 'AI infrastructure layers']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-node substrate organized into 12 sectors. CORE boots all sectors in a deterministic sequence and maintains a weighted node registry where all weights sum to exactly 1.000.' },
-          { question: 'What are the 12 sectors?', answer: 'Kernel (SPINE), CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Atlas, and Shell. Each sector groups related nodes with distinct operational responsibilities.' },
-          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION proposes changes, SHADOW validates them in isolation, and GOVERNANCE approves or vetoes before promotion to production.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into 4 categories: Agents, Engines, Layers, and Organs. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
+          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like BRAIN, MEMORY, DREAM), and Agents (autonomous actors like ENCODE, DECODE, VISION).' },
+          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Engine proposes changes, SHADOW validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
         ]}
       />
 
@@ -218,7 +218,7 @@ export default function Architecture() {
               <motion.div {...fadeUp} className="max-w-xl">
                 <Badge variant="outline" className="mb-5 border-primary/30 text-primary gap-1.5">
                   <Layers className="w-3 h-3" />
-                  40 Nodes · 12 Sectors
+                  40 Primitives · Agents · Engines · Layers · Organs
                 </Badge>
                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[1.05]">
                    How CMPSBL Works
@@ -231,9 +231,9 @@ export default function Architecture() {
                   <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">tamper-evident audit chain</a>.
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
-                  40 nodes across 12 sectors powering{" "}
+                  40 primitives across 4 categories powering{" "}
                   <Link to="/store" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
-                  Every node carries a governance weight (Σ&nbsp;=&nbsp;1.000).
+                  Every primitive carries a governance weight (Σ&nbsp;=&nbsp;1.000).
                   No single node can dominate system-level decisions without proportional representation.{" "}
                   <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}
                   or use our hosted substrate.
@@ -275,7 +275,7 @@ export default function Architecture() {
           </div>
         </section>
 
-        {/* ── All 12 Sectors ── */}
+        {/* ── All Categories ── */}
         {SECTORS.map((sector, sIdx) => (
           <section
             key={sector.tag}

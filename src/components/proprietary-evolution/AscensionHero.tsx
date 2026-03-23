@@ -1,6 +1,6 @@
 /**
  * AscensionHero — Cinematic hallmark hero for the Ascension page
- * Full-width gradient, centered text, real 40-node orbital canvas with bouncing #41, CTAs
+ * Full-width gradient, centered text, real 40-primitive orbital canvas with bouncing #41, CTAs
  */
 
 import { useEffect, useRef, useCallback } from 'react';
@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { Sparkles, Upload, Zap, Diamond, Package, ArrowRight, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-/* ═══ REAL 40-NODE REGISTRY — from matrixNodeRegistry.ts ═══ */
+/* ═══ REAL 40-PRIMITIVE REGISTRY — from matrixNodeRegistry.ts ═══ */
 const SUBSTRATE_NODES: { id: string; label: string; sector: string; short: string }[] = [
   { id: 'core', label: 'CORE', sector: 'core', short: 'Ω₀' },
   { id: 'system', label: 'SYS', sector: 'system', short: 'Σ₁' },
@@ -98,7 +98,7 @@ function OrbitalCanvas() {
     const orbitR = Math.min(w, h) * 0.42;
     const innerR = orbitR * 0.35; // Bounds for #41 bouncing
 
-    // Pre-compute orbital positions for 40 nodes
+    // Pre-compute orbital positions for 40 primitives
     const nodePositions: { x: number; y: number; color: { h: number; s: number; l: number }; node: typeof SUBSTRATE_NODES[0] }[] = [];
 
     const N = SUBSTRATE_NODES.length;
@@ -261,7 +261,7 @@ function OrbitalCanvas() {
     ctx.fillStyle = 'hsla(185, 80%, 70%, 0.6)';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('40-NODE SUBSTRATE MATRIX', cx, labelY);
+    ctx.fillText('40-PRIMITIVE SUBSTRATE MATRIX', cx, labelY);
     ctx.font = `${isMobile ? 7.5 : 6.5}px monospace`;
     ctx.fillStyle = 'hsla(185, 80%, 70%, 0.4)';
     ctx.fillText('CANDIDATE #41 ACTIVE', cx, labelY + (isMobile ? 14 : 12));
@@ -337,8 +337,8 @@ export function AscensionHero() {
             transition={{ delay: 0.3 }}
             className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground/90 max-w-2xl mx-auto mb-3 sm:mb-4 leading-snug"
           >
-            Your code becomes Node #41 — collided against a living{' '}
-            <span className="text-primary">40-node cognitive substrate</span>.
+            Your code becomes Primitive #41 — collided against a living{' '}
+            <span className="text-primary">40-primitive cognitive substrate</span>.
           </motion.p>
 
           {/* Clear explanatory paragraph */}
@@ -439,7 +439,7 @@ export function AscensionHero() {
               <p className="text-sm font-semibold text-foreground mb-1">What is an Ascended Memory?</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 An ascended capability chain — deterministic behavior that emerges{' '}
-                <em>only</em> when your code interacts with the substrate's 40-node matrix.
+                <em>only</em> when your code interacts with the substrate's 40-primitive matrix.
                 Each Memory encodes the exact interaction path and is fully exportable as a
                 portable Capability Pack: source code, tests, docs, and the Mini-Runtime™ engine.
               </p>

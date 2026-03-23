@@ -1,6 +1,6 @@
 /**
  * System Overview — Unified investor/user/public page
- * 40-node cognitive substrate overview
+ * 40-primitive cognitive substrate overview
  */
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -33,7 +33,7 @@ function Hero() {
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-10">
             An autonomous cognitive substrate that captures ideas, crystallizes them into production-grade software, 
-            and crosses the silicon boundary into hardware — all governed by a self-evolving 40-node intelligence layer.
+            and crosses the silicon boundary into hardware — all governed by a self-evolving 40-primitive intelligence layer.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/foundry/demo" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
@@ -56,13 +56,13 @@ function WhatIs() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">What is CMPSBL?</h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-            CMPSBL is a <strong className="text-foreground">cognitive operating substrate</strong> — a 40-node intelligence architecture 
-            organized into 12 sectors that processes signals, forms memories, and autonomously produces real software. It's not a chatbot. It's not a code generator. 
+            CMPSBL is a <strong className="text-foreground">cognitive operating substrate</strong> — a 40-primitive intelligence architecture 
+            composed of agents, engines, layers, and organs that processes signals, forms memories, and autonomously produces real software. It's not a chatbot. It's not a code generator. 
             It's an always-running system that <em>discovers</em> software the way a research lab discovers compounds.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
             {[
-              { icon: Brain, title: '40 Active Nodes', desc: 'CORE, NEXUS, MEMORY, DEFENSE, DECODE, BRAIN, ATLAS, ENGINEER, and 32 more — each with distinct responsibilities across 12 sectors.' },
+              { icon: Brain, title: '40 Active Primitives', desc: 'CORE, NEXUS, MEMORY, DEFENSE, DECODE, BRAIN, ATLAS, ENGINEER, and 32 more — each with distinct responsibilities across agents, engines, layers & organs.' },
               { icon: Layers, title: '675+ Capabilities', desc: 'From natural language understanding to threat detection, each capability is runtime-addressable via the unified API.' },
               { icon: Shield, title: 'Self-Governing', desc: 'Governance is built in. NERVE enforces compliance. DEFENSE isolates threats. EVOLUTION adapts safely within policy boundaries.' },
             ].map((item, i) => (

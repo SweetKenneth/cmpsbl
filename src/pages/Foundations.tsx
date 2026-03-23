@@ -50,7 +50,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Foundations — Architecture & Standards | CMPSBL®"
-        description="CMPSBL's foundational reference: 40-node architecture, 12-sector topology, governed autonomy model, Memory Stream crystallization protocol, AIGVRN namespace, and LLMS.txt machine context."
+        description="CMPSBL's foundational reference: 40-primitive architecture, agents/engines/layers/organs taxonomy, governed autonomy model, Memory Stream crystallization protocol, AIGVRN namespace, and LLMS.txt machine context."
         keywords={['CMPSBL foundations', 'architecture reference', 'AIGVRN standard', 'governed autonomy', 'substrate topology']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
@@ -68,7 +68,7 @@ export default function Foundations() {
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
                 <Layers className="w-4 h-4 text-primary" />
-                <span className="text-sm font-mono text-primary">40 Nodes · 12 Sectors · 3 Standards</span>
+                <span className="text-sm font-mono text-primary">40 Primitives · 4 Categories · 3 Standards</span>
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-6 leading-[0.95]">
                 Foundations
@@ -112,11 +112,11 @@ export default function Foundations() {
 
           <Separator className="mb-20" />
 
-          {/* 12-Sector Topology */}
+          {/* Primitive Taxonomy */}
           <section className="mb-20">
-            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">12-Sector Topology</h2>
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-2">Primitive Taxonomy</h2>
             <p className="text-muted-foreground mb-8">
-              40 modules organized into 12 functional sectors. Each sector is a self-contained responsibility boundary.
+              40 primitives organized into 4 functional categories: Agents, Engines, Layers, and Organs. Each category is a self-contained responsibility boundary.
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {SECTORS.map((sector, i) => (
