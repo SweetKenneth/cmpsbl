@@ -197,7 +197,7 @@ export function createDependencyGraph() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §7 — PIPELINE COMPOSER (interface-compatible)
+// §7 — MEMORY CHAIN COMPOSER (interface-compatible)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export interface PipelineStage { id: string; name: string; moduleId: string; handler: string; inputSchema: Record<string, string>; outputSchema: Record<string, string>; timeoutMs: number; retries: number; }
@@ -207,8 +207,8 @@ export function createPipelineComposer() {
   const sr = new Map<string, PipelineStage>(), ps = new Map<string, ComposedPipeline>();
   return {
     registerStage: (s: PipelineStage) => { sr.set(s.id, s); return s; },
-    compose: (name: string, ids: string[], mode: ComposedPipeline['mode'] = 'sequential') => { const stages = ids.map(i => sr.get(i)).filter(Boolean) as PipelineStage[]; if (stages.length !== ids.length) return null; const p: ComposedPipeline = { id: \`pipeline-\${Date.now()}-\${djb2Hash(name)}\`, name, stages, mode, status: 'draft', createdAt: Date.now(), lastRunAt: null, runCount: 0 }; ps.set(p.id, p); return p; },
-    validate: (id: string) => { const p = ps.get(id); if (!p) return { valid: false, errors: ['Pipeline not found'] }; const e: string[] = []; if (p.mode === 'sequential') { for (let i = 1; i < p.stages.length; i++) { const prev = p.stages[i-1], cur = p.stages[i]; const m = Object.keys(cur.inputSchema).filter(k => !Object.keys(prev.outputSchema).includes(k)); if (m.length) e.push(\`Stage \${cur.id} missing inputs: \${m.join(', ')}\`); } } if (!e.length) p.status = 'validated'; return { valid: !e.length, errors: e }; },
+    compose: (name: string, ids: string[], mode: ComposedPipeline['mode'] = 'sequential') => { const stages = ids.map(i => sr.get(i)).filter(Boolean) as PipelineStage[]; if (stages.length !== ids.length) return null; const p: ComposedPipeline = { id: \`chain-\${Date.now()}-\${djb2Hash(name)}\`, name, stages, mode, status: 'draft', createdAt: Date.now(), lastRunAt: null, runCount: 0 }; ps.set(p.id, p); return p; },
+    validate: (id: string) => { const p = ps.get(id); if (!p) return { valid: false, errors: ['Memory chain not found'] }; const e: string[] = []; if (p.mode === 'sequential') { for (let i = 1; i < p.stages.length; i++) { const prev = p.stages[i-1], cur = p.stages[i]; const m = Object.keys(cur.inputSchema).filter(k => !Object.keys(prev.outputSchema).includes(k)); if (m.length) e.push(\`Stage \${cur.id} missing inputs: \${m.join(', ')}\`); } } if (!e.length) p.status = 'validated'; return { valid: !e.length, errors: e }; },
     getPipelines: () => Array.from(ps.values()), getStages: () => Array.from(sr.values()), get: (id: string) => ps.get(id),
   };
 }
