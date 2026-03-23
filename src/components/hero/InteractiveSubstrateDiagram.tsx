@@ -96,7 +96,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "core",
-    name: "CORE",
+    name: "CORE Organ",
     icon: Network,
     color: "text-neon-magenta",
     glowColor: "shadow-[0_0_30px_rgba(253,164,175,0.6)]",
