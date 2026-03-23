@@ -138,7 +138,7 @@ export default function AIOperatingSystem() {
         <title>What Is an AI Operating System? | CMPSBL</title>
         <meta
           name="description"
-          content="CMPSBL defines the AI Operating System category: one unified runtime replacing fragmented AI tools. Persistent memory, NEXUS routing, DREAM synthesis, and governed evolution across 40 nodes."
+          content="CMPSBL defines the AI Operating System category: one unified runtime replacing fragmented AI tools. Persistent memory, NEXUS routing, DREAM synthesis, and governed evolution across 40 primitives."
         />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
