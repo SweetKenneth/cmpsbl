@@ -245,7 +245,7 @@ const modulesByLayer = {
     },
     {
       id: "economy",
-      name: "ECONOMY",
+      name: "ECONOMY Engine",
       description: "Predictive cost forecasting, per-capability attribution",
       icon: Coins,
       color: "text-neon-amber",
