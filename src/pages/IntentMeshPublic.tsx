@@ -116,8 +116,8 @@ const SELF_IMPROVEMENT_FEATURES = [
   },
   {
     icon: Radar,
-    title: "Cross-Node Affinity",
-    desc: "The mesh learns which nodes work best together, discovering collaboration clusters and optimizing routing over time.",
+    title: "Cross-Primitive Affinity",
+    desc: "The mesh learns which primitives work best together, discovering collaboration clusters and optimizing routing over time.",
   },
   {
     icon: Route,
@@ -130,13 +130,13 @@ export default function IntentMeshPublic() {
   return (
     <>
       <SEO
-        title="Intent Mesh — Cross-Node Signal Routing | CMPSBL"
-        description="CMPSBL's Intent Mesh routes signals across 40 nodes autonomously. Self-learning capability discovery, resolver composition, Memory Stream crystallization, and governed cross-sector orchestration."
+        title="Intent Mesh — Cross-Primitive Signal Routing | CMPSBL"
+        description="CMPSBL's Intent Mesh routes signals across 40 primitives autonomously. Self-learning capability discovery, resolver composition, Memory Stream crystallization, and governed orchestration."
         image="https://cmpsbl.com/og/intent-mesh.jpg"
-        keywords={['intent mesh', 'cross-node discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
+        keywords={['intent mesh', 'cross-primitive discovery', 'AI capability composition', 'autonomous AI routing', 'emergent intelligence']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
-          { name: 'Nodes', url: 'https://cmpsbl.com/modules' },
+          { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
           { name: 'Intent Mesh', url: 'https://cmpsbl.com/intent-mesh' },
         ]}
       />

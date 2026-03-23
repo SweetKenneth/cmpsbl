@@ -374,8 +374,8 @@ const PersistentMemoryLanding = () => {
                       </Link>
                     </Button>
                     <Button asChild variant="outline" size="lg" className="text-lg px-8 h-14 hover:border-primary/30 transition-colors">
-                      <Link to="/modules">
-                        Explore All 40 Nodes
+                      <Link to="/architecture">
+                        Explore All 40 Primitives
                       </Link>
                     </Button>
                   </div>

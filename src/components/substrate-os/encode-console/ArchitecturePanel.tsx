@@ -85,7 +85,7 @@ export function ArchitecturePanel({ orchestration, encodeHealth, taskQueue, shad
           <CardContent className="px-3 pb-3">
             {snapshot ? (
               <div className="space-y-2">
-                <InfoRow label="Modules" value={`${snapshot.module_registry.length}`} />
+                <InfoRow label="Primitives" value={`${snapshot.module_registry.length}`} />
                 <InfoRow label="Dependencies" value={`${snapshot.dependency_graph.length} edges`} />
                 <InfoRow label="Utilities" value={`${snapshot.shared_utilities_index.length}`} />
                 <InfoRow label="Timestamp" value={new Date(snapshot.created_at).toLocaleTimeString()} />

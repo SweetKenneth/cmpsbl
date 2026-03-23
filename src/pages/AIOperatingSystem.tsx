@@ -1,7 +1,7 @@
 /**
  * AI Operating System — Definitional SEO landing page
  * Route: /ai-operating-system — owns the "AI Operating System" keyword
- * MINDGAMES epoch · 40-node · Memory Stream narrative
+ * MINDGAMES epoch · 40-primitive · Memory Stream narrative
  */
 
 import { Link } from "react-router-dom";
@@ -65,8 +65,8 @@ const pillars = [
   { icon: Network, title: "Smart Model Routing", desc: "NEXUS picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/modules/nexus" },
   { icon: Shield, title: "Built-in AI Security", desc: "DEFENSE protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/modules/defense" },
   { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the system consolidates what it learned, discovers patterns, and generates new insights — all automatically.", link: "/modules/dream" },
-  { icon: Workflow, title: "Coordinated Intelligence", desc: "CORTEX coordinates all 40 nodes so they work as one unified system. Pre-built synergies discover capabilities that no single node could achieve alone.", link: "/modules/cortex" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "CORE boots all 40 nodes in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/modules/core" },
+  { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Engine coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/modules/cortex" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/modules/core" },
 ];
 
 const sectors = [
@@ -88,7 +88,7 @@ const comparisonRows = [
   { feature: "Persistent Memory", framework: "DIY (vector DB)", aiOs: "Built-in 4-tier + auto-consolidation" },
   { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS — picks best model per task" },
   { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE — built into the platform" },
-  { feature: "Monitoring", framework: "Separate APM tool", aiOs: "Built-in across all 40 nodes" },
+  { feature: "Monitoring", framework: "Separate APM tool", aiOs: "Built-in across all 40 primitives" },
   { feature: "Self-Improvement", framework: "None", aiOs: "Automatic optimization cycles" },
   { feature: "Shared Context", framework: "None", aiOs: "Real-time event propagation" },
 ];
@@ -125,7 +125,7 @@ export default function AIOperatingSystem() {
     "@type": "SoftwareApplication",
     name: "CMPSBL Substrate",
     description:
-      "The world's first AI Operating System — 40 integrated nodes across 12 sectors providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
+      "The world's first AI Operating System — 40 integrated primitives (agents, engines, layers, organs) providing persistent memory, intelligent routing, AI security, autonomous optimization, and meta-orchestration for production AI systems.",
     url: "https://cmpsbl.com/ai-operating-system",
     applicationCategory: "AI Operating System",
     operatingSystem: "Cloud",
@@ -138,13 +138,13 @@ export default function AIOperatingSystem() {
         <title>What Is an AI Operating System? | CMPSBL</title>
         <meta
           name="description"
-          content="CMPSBL defines the AI Operating System category: one unified runtime replacing fragmented AI tools. Persistent memory, NEXUS routing, DREAM synthesis, and governed evolution across 40 nodes."
+          content="CMPSBL defines the AI Operating System category: one unified runtime replacing fragmented AI tools. Persistent memory, NEXUS routing, DREAM synthesis, and governed evolution across 40 primitives."
         />
         <link rel="canonical" href="https://cmpsbl.com/ai-operating-system" />
         <meta property="og:title" content="What is an AI Operating System? | CMPSBL" />
         <meta
           property="og:description"
-          content="The first AI Operating System — 40-node cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization."
+          content="The first AI Operating System — 40-primitive cognitive infrastructure for persistent memory, intelligent routing, AI security, and autonomous optimization."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/ai-operating-system" />
@@ -296,17 +296,17 @@ export default function AIOperatingSystem() {
           </div>
         </section>
 
-        {/* ═══════════════════ 40-NODE ARCHITECTURE ═══════════════════ */}
+        {/* ═══════════════════ 40-PRIMITIVE ARCHITECTURE ═══════════════════ */}
         <section className="py-12 sm:py-20 border-t border-border/30 bg-muted/20">
           <div className="container mx-auto max-w-5xl px-3 sm:px-4">
             <motion.div {...fadeUp()} className="mb-8 sm:mb-12">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
                 <Activity className="w-6 h-6 text-primary shrink-0" />
-                40 Modules · 12 Capability Groups
+                40 Primitives · Agents · Engines · Layers · Organs
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                The CMPSBL platform organizes 40 specialized modules across 12 capability groups. Each module holds a weight in the system matrix (Σ = 1.000),
-                managed by CORE. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
+                The CMPSBL platform organizes 40 specialized primitives across four categories: agents, engines, layers, and organs. Each holds a weight in the system matrix (Σ = 1.000),
+                managed by the CORE Organ. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
               </p>
             </motion.div>
 

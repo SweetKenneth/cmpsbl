@@ -186,7 +186,7 @@ function layerResult(layer: LayerId, label: string, checks: CheckResult[]): Laye
 function checkFilesystem(): LayerResult {
   const checks: CheckResult[] = [];
 
-  // Verify module constants include all 40 nodes across 12 sectors
+  // Verify module constants include all 40 primitives
   checks.push(
     check(
       'fs_module_count',

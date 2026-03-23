@@ -32,7 +32,7 @@ const capabilities = [
   {
     icon: Layers,
     title: "Custom Configuration",
-    description: "Build the exact stack your organization needs. Activate the nodes and capabilities that matter, skip what doesn't — zero bloat. You choose which capabilities to deploy.",
+    description: "Build the exact stack your organization needs. Activate the agents, engines, and capabilities that matter, skip what doesn't — zero bloat. You choose which primitives to deploy.",
   },
   {
     icon: Shield,

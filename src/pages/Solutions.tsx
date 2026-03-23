@@ -1,6 +1,6 @@
 /**
  * Solutions — CMPSBL Product Suite
- * Complete rewrite with updated 40-node architecture info
+ * Complete rewrite with updated 40-primitive architecture info
  */
 
 import { Link } from "react-router-dom";

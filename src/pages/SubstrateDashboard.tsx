@@ -537,10 +537,10 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Dashboard — Node Health & Stream Metrics | CMPSBL"
-        description="CMPSBL substrate dashboard: real-time node health across 12 sectors, Memory Stream crystallization metrics, mesh communication logs, governance status, and per-node telemetry at a glance."
+        title="Dashboard — Primitive Health & Stream Metrics | CMPSBL"
+        description="CMPSBL substrate dashboard: real-time primitive health across agents, engines, layers, and organs — Memory Stream crystallization metrics, mesh communication logs, governance status, and per-primitive telemetry at a glance."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "node architecture", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "primitive architecture", "cortex"]}
       />
 
       <PublicNav />
@@ -558,12 +558,12 @@ export default function SubstrateDashboard() {
             </div>
             <div>
               <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
-              <p className="text-sm md:text-base text-muted-foreground">40-Node Cognitive Architecture · 12 Sectors · Clockless Coordination</p>
+              <p className="text-sm md:text-base text-muted-foreground">40-Primitive Cognitive Architecture · Agents · Engines · Layers · Organs</p>
             </div>
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            The complete cognitive operating system — 40 nodes across 12 sectors, coordinated by a weighted matrix where Σ = 1.000. CORE boots every node in dependency order, DEFENSE wraps the outer shell, and DREAM synthesizes improvements autonomously. Every node name, weight, and breaker state is visible here.
+            The complete cognitive operating system — 40 primitives coordinated by a weighted matrix where Σ = 1.000. The CORE Organ boots every primitive in dependency order, the DEFENSE Layer wraps the outer shell, and the DREAM Engine synthesizes improvements autonomously.
           </p>
           
           <div className="flex gap-3">
@@ -841,7 +841,7 @@ export default function SubstrateDashboard() {
                   </code>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2 text-sm md:text-base">40-Node Architecture ({allModules.length} modules)</h3>
+                  <h3 className="font-semibold mb-2 text-sm md:text-base">40-Primitive Architecture ({allModules.length} primitives)</h3>
                   <pre className="bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
 {`{
   "module": "core" | "ripple" | "access" |       // Kernel
