@@ -92,6 +92,11 @@ export function AnalyticsTab() {
       const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
       const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
 
+      // Use individual safe queries to prevent one failure from crashing all telemetry
+      const safeQuery = async <T,>(fn: () => Promise<T>): Promise<T | null> => {
+        try { return await fn(); } catch { return null; }
+      };
+
       const [
         brainEventsCountRes, brainEventsRes, brainMetricsCountRes,
         usageCountRes, usageRes,
@@ -103,47 +108,43 @@ export function AnalyticsTab() {
         artifactRes,
         usageFullRes,
         intentCountRes, intentLatencyRes,
-      ] = await Promise.all([
-        supabase.from('brain_events').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('brain_events').select('id, event_type, module, outcome, created_at').gte('created_at', startDate).order('created_at', { ascending: false }).limit(1000),
-        supabase.from('brain_metrics').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('ai_usage_log').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
+      ] = await Promise.allSettled([
+        supabase.from('brain_events').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('brain_events').select('id, event_type, module, outcome, created_at').gte('created_at', startDate).order('created_at', { ascending: false }).limit(500),
+        supabase.from('brain_metrics').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('ai_usage_log').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
         supabase.from('ai_usage_log').select('id, provider, category, success, created_at, tokens_used, cost').gte('created_at', startDate).limit(1000),
-        supabase.from('access_usage').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
-        supabase.from('audit_logs').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('access_usage').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('audit_logs').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
         supabase.from('audit_logs').select('id, action, entity_type, created_at').gte('created_at', startDate).limit(500),
         supabase.from('immune_metrics').select('executor, total_runs, repair_successes, escalations, safe_failures').gte('run_at', sixHoursAgo),
         supabase.from('immune_escalations').select('status, claimed_by').limit(1000),
-        // Mesh comms
-        supabase.from('mesh_comms').select('*', { count: 'exact', head: true }).gte('created_at', startDate),
+        supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).gte('created_at', startDate),
         supabase.from('mesh_comms').select('category, source_module, target_module').gte('created_at', startDate).limit(1000),
-        // Agency tasks
         supabase.from('agency_tasks').select('status, task_cost_cents, task_value_cents, compute_time_ms, created_at').gte('created_at', startDate).limit(1000),
-        // Agency economics
         supabase.from('agency_economics').select('total_cost_cents, total_value_cents, tasks_completed, avg_roi').order('period_date', { ascending: false }).limit(days),
-        // Auto-blog
         supabase.from('auto_blog_posts').select('status, confidence_score, created_at').gte('created_at', startDate),
-        // Artifacts
         supabase.from('artifact_registry').select('category, tier, created_at').gte('created_at', startDate),
-        // Full usage for cost analytics
         supabase.from('ai_usage_log').select('provider, tokens_used, cost').gte('created_at', startDate).limit(1000),
-        // Intent receipts — table may not exist in typed schema, use rpc or skip gracefully
-        supabase.from('mesh_comms').select('*', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate),
+        supabase.from('mesh_comms').select('id', { count: 'exact', head: true }).eq('category', 'processing').gte('created_at', startDate),
         supabase.from('mesh_comms').select('resolver_id, created_at').gte('created_at', startDate).not('resolver_id', 'is', null).limit(500),
       ]);
 
-      // Core counts
-      const brainEventsCount = brainEventsCountRes.count ?? 0;
-      const brainMetricsCount = brainMetricsCountRes.count ?? 0;
-      const usageCount = usageCountRes.count ?? 0;
-      const accessCount = accessCountRes.count ?? 0;
-      const auditCount = auditCountRes.count ?? 0;
+      // Safe extractors for allSettled results
+      const val = <T,>(r: PromiseSettledResult<T>) => r.status === 'fulfilled' ? r.value : null;
 
-      const brainEvents = brainEventsRes.data || [];
-      const usage = usageRes.data || [];
-      const audit = auditRes.data || [];
-      const immuneRows = (immuneRes.data || []) as any[];
-      const escalationRows = (escalationsRes.data || []) as any[];
+      // Core counts
+      const brainEventsCount = val(brainEventsCountRes)?.count ?? 0;
+      const brainMetricsCount = val(brainMetricsCountRes)?.count ?? 0;
+      const usageCount = val(usageCountRes)?.count ?? 0;
+      const accessCount = val(accessCountRes)?.count ?? 0;
+      const auditCount = val(auditCountRes)?.count ?? 0;
+
+      const brainEvents = val(brainEventsRes)?.data || [];
+      const usage = val(usageRes)?.data || [];
+      const audit = val(auditRes)?.data || [];
+      const immuneRows = (val(immuneRes)?.data || []) as any[];
+      const escalationRows = (val(escalationsRes)?.data || []) as any[];
 
       // Time series
       const dayCounts = new Map<string, number>();
@@ -195,8 +196,8 @@ export function AnalyticsTab() {
       const encodeResolutionRate = encodeClaimed > 0 ? Math.round((encodeResolved / encodeClaimed) * 1000) / 10 : 0;
 
       // ─── MESH COMMS ───
-      const meshCommsTotal = meshCountRes.count ?? 0;
-      const meshCatData = (meshCatRes.data || []) as any[];
+      const meshCommsTotal = val(meshCountRes)?.count ?? 0;
+      const meshCatData = (val(meshCatRes)?.data || []) as any[];
       const catMap = new Map<string, number>();
       const routeMap = new Map<string, number>();
       meshCatData.forEach((m: any) => {
@@ -208,33 +209,33 @@ export function AnalyticsTab() {
       const meshTopRoutes = Array.from(routeMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([route, count]) => ({ route, count }));
 
       // ─── AGENCY ───
-      const agencyTasks = (agencyTasksRes.data || []) as any[];
+      const agencyTasks = (val(agencyTasksRes)?.data || []) as any[];
       const agencyTasksCompleted = agencyTasks.filter(t => t.status === 'completed').length;
       const agencyTasksFailed = agencyTasks.filter(t => t.status === 'failed').length;
       const agencyTasksPending = agencyTasks.filter(t => !['completed', 'failed'].includes(t.status)).length;
       const agencySuccessRate = (agencyTasksCompleted + agencyTasksFailed) > 0
         ? Math.round((agencyTasksCompleted / (agencyTasksCompleted + agencyTasksFailed)) * 1000) / 10 : 0;
-      const econRows = (agencyEconRes.data || []) as any[];
+      const econRows = (val(agencyEconRes)?.data || []) as any[];
       const agencyCostCents = econRows.reduce((s: number, r: any) => s + (r.total_cost_cents || 0), 0);
       const agencyValueCents = econRows.reduce((s: number, r: any) => s + (r.total_value_cents || 0), 0);
       const agencyROI = agencyCostCents > 0 ? Math.round((agencyValueCents / agencyCostCents) * 100) / 100 : 0;
 
       // ─── AUTO-BLOG ───
-      const blogRows = (autoblogRes.data || []) as any[];
+      const blogRows = (val(autoblogRes)?.data || []) as any[];
       const autoblogPublished = blogRows.filter(b => b.status === 'published').length;
       const autoblogDraft = blogRows.filter(b => b.status === 'draft').length;
       const confScores = blogRows.filter(b => b.confidence_score != null).map(b => b.confidence_score as number);
       const autoblogAvgConfidence = confScores.length > 0 ? Math.round((confScores.reduce((s, v) => s + v, 0) / confScores.length) * 100) / 100 : 0;
 
       // ─── FOUNDRY ───
-      const artRows = (artifactRes.data || []) as any[];
+      const artRows = (val(artifactRes)?.data || []) as any[];
       const foundryArtifacts = artRows.length;
       const artCatMap = new Map<string, number>();
       artRows.forEach(a => artCatMap.set(a.category || 'unknown', (artCatMap.get(a.category || 'unknown') || 0) + 1));
       const foundryCategories = Array.from(artCatMap.entries()).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([category, count]) => ({ category, count }));
 
       // ─── COST ANALYTICS ───
-      const usageFull = (usageFullRes.data || []) as any[];
+      const usageFull = (val(usageFullRes)?.data || []) as any[];
       const totalCostCents = Math.round(usageFull.reduce((s, u) => s + (u.cost || 0), 0) * 100);
       const totalTokensUsed = usageFull.reduce((s, u) => s + (u.tokens_used || 0), 0);
       const avgCostPerCall = usageFull.length > 0 ? Math.round((totalCostCents / usageFull.length)) : 0;
@@ -249,8 +250,8 @@ export function AnalyticsTab() {
       const providerBreakdown = Array.from(provMap.entries()).sort((a, b) => b[1].count - a[1].count).map(([provider, d]) => ({ provider, count: d.count, tokens: d.tokens }));
 
       // ─── INTENT APPROXIMATION (from mesh_comms processing signals) ───
-      const intentTotal = intentCountRes.count ?? 0;
-      const resolverRows = (intentLatencyRes.data || []) as any[];
+      const intentTotal = val(intentCountRes)?.count ?? 0;
+      const resolverRows = (val(intentLatencyRes)?.data || []) as any[];
       // Approximate latency from timestamp deltas isn't possible, so use count-only
       const intentAvgLatency = 0; // No direct latency column; shown as "N/A" in UI
 
