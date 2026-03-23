@@ -296,7 +296,9 @@ export function generateProductDetailsHTML(input: ProductDetailsInput): string {
     <p>
       This ${input.kind} includes the <strong>CMPSBL® Mini-Runtime™ Engine</strong> — a zero-dependency, 
       pure TypeScript in-memory runtime providing CJPI scoring, auto-tiering, Saga orchestration, 
-      and finite state machine capabilities.
+      memory chain composition, and finite state machine capabilities. It supports the full 
+      40-primitive taxonomy: Organs (infrastructure), Layers (governance), Engines (processing), 
+      and Agents (autonomous actors).
     </p>
     <p style="font-size: 0.82rem; color: var(--ink-muted); font-style: italic;">
       The runtime is delivered as a sealed distribution to protect proprietary cognitive logic. 

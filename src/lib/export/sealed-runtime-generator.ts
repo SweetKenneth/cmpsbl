@@ -630,9 +630,9 @@ export async function executeChain(manifest: ChainManifest, input: Record<string
 }
 
 export function formatReport(result: ChainResult): string {
-  const lines = ['═══ CMPSBL® Chain Execution Report ═══', '', \`Status: \${result.success ? '✓ SUCCESS' : '✗ FAILED'}\`, \`Duration: \${result.totalDurationMs.toFixed(1)}ms\`, \`Confidence: \${(result.confidence * 100).toFixed(1)}%\`, '', '── Module Chain ──'];
+  const lines = ['═══ CMPSBL® Memory Chain Execution Report ═══', '', \`Status: \${result.success ? '✓ SUCCESS' : '✗ FAILED'}\`, \`Duration: \${result.totalDurationMs.toFixed(1)}ms\`, \`Confidence: \${(result.confidence * 100).toFixed(1)}%\`, '', '── Primitive Chain ──'];
   for (const t of result.trace) lines.push(\`  \${t.depth === 'deep' ? '◆' : '○'} \${t.module} [\${t.effect}] \${t.status === 'success' ? '✓' : '⟳'} \${t.durationMs.toFixed(1)}ms\`);
-  lines.push('═══════════════════════════════════════');
+  lines.push('═══════════════════════════════════════════════');
   return lines.join('\\n');
 }
 `;
