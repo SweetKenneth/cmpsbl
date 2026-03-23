@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.7.0 (CONTACT — SANDBOX Ultimate "Terrarium")
+
+⟨This entry describes SANDBOX v9.0.0 — the substrate's Sovereign Execution Realm reaching its ultimate form with 10 new systems.⟩
+
+- **Isolation Boundary Engine** — Hermetically sealed namespaces with zero-trust defaults. Capability allow-lists, 7 denied syscalls, stack/recursion limits, parent-child inheritance (child never exceeds parent).
+- **Resource Metering & Quotas** — 5-tier budget system (builder→system). CPU/memory/IO/wall-clock tracking. Warning at 80%, burst allowance (1.2–2.0×), kill at burst limit. Cost attribution per entity.
+- **Execution Timeline Recorder** — Deterministic replay with auto-checkpoints every 500 events. Timeline scrubbing, checkpoint diffing. 10K event ring buffer per sandbox.
+- **Escape Detection & Containment** — 5 attempt types with graduated threat scoring (5–9). Auto-freeze at threat ≥7. Triple containment: freeze + DEFENSE alert + forensic snapshot.
+- **Network Policy Controller** — Default deny. Domain allow-lists with subdomain matching. Per-sandbox rate limiting. TLS 1.2+ enforcement. DNS restriction modes.
+- **Experiment Orchestrator** — 5-phase lifecycle (DESIGN→CONCLUDE). Max 4 variants. Percentage traffic splitting. Simplified z-test significance. Variant promotion.
+- **Builder Project Runtime** — Project-scoped sandboxes with capability token injection. Hot-reload. Build artifact isolation. 3-tier access (builder/pro/governor).
+- **Forensic Snapshot Engine** — Immutable merkle-chained captures on crash/escape/exhaustion. Full state: memory, stack, filesystem, network, timeline. 30-day retention, critical=permanent.
+- **Sandbox Fleet Manager** — Pre-warmed pool (5 sandboxes). 5-state lifecycle. GC after 5-min grace. Max 100 fleet, 40% resource ceiling. Priority preemption.
+- **Sandbox Telemetry Hub** — Per-sandbox CPU/memory/IO/capability metrics. Fleet aggregates: escape rate, provisioning P95, resource efficiency, experiment success rate.
+
+---
+
 ## 2026-03-23 · v15.6.0 (CONTACT — INTEGRATION Ultimate "Babel Gate")
 
 ⟨This entry describes INTEGRATION v9.0.0 — the substrate's Universal Protocol Fabric reaching its ultimate form with 10 new systems.⟩
