@@ -303,17 +303,17 @@ export default function AIOperatingSystem() {
             </motion.div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 mb-8 sm:mb-10">
-              {sectors.map((sector, i) => (
+              {categories.map((cat, i) => (
                 <motion.div
-                  key={sector.label}
+                  key={cat.label}
                   {...fadeUp(i * 0.03)}
-                  className={`p-3 sm:p-4 rounded-xl border border-border/40 bg-gradient-to-br ${sector.color} hover:border-primary/20 transition-all duration-300 card-lift`}
+                  className={`p-3 sm:p-4 rounded-xl border border-border/40 bg-gradient-to-br ${cat.color} hover:border-primary/20 transition-all duration-300 card-lift`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
-                    <h3 className="text-xs sm:text-sm font-bold text-foreground">{sector.label}</h3>
-                    <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground tabular-nums">{sector.count}</span>
+                    <h3 className="text-xs sm:text-sm font-bold text-foreground">{cat.label}</h3>
+                    <span className="text-[9px] sm:text-[10px] font-mono text-muted-foreground tabular-nums">{cat.count}</span>
                   </div>
-                  <p className="text-[10px] sm:text-xs font-mono text-muted-foreground leading-relaxed break-words">{sector.nodes}</p>
+                  <p className="text-[10px] sm:text-xs font-mono text-muted-foreground leading-relaxed break-words">{cat.primitives}</p>
                 </motion.div>
               ))}
             </div>
