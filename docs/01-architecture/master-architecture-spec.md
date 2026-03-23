@@ -209,30 +209,30 @@ Houses evolution, shadow testing, and phantom operations. CSZ is zone-shielded f
 
 ### Boot Sequence
 ```
-CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE)
-  → Execution (DECODE..INTEGRATION)
-  → ESZ (SOVEREIGN, ORACLE, CONSCIENCE, TREATY)
-  → EPZ (COMPASS, ECHO, REFLEX)
-  → EMZ (FORGE, LINGUA, HARVEST)
-  → CSZ (EVOLUTION, SHADOW, PHANTOM)
-  → Fields (IMMUNITY, INTENT) permeate
-  → Meta (ATLAS, ENGINEER) observe
-  → Plane (GOVERNANCE) supervises
-  → Shell (DEFENSE) encloses
+CORE Organ → SYSTEM Organ → CCR (BRAIN Organ, MEMORY Organ, DREAM Engine) → OCG (RIPPLE Organ, ACCESS Organ, IDENTITY Organ, RELAY Organ, AUDIT Organ, NERVE Organ)
+  → Execution (DECODE Agent..INTEGRATION Organ)
+  → ESZ (SOVEREIGN Agent, ORACLE Engine, CONSCIENCE Layer, TREATY Layer)
+  → EPZ (COMPASS Engine, ECHO Agent, REFLEX Engine)
+  → EMZ (FORGE Engine, LINGUA Agent, HARVEST Agent)
+  → CSZ (EVOLUTION Layer, SHADOW Agent, PHANTOM Agent)
+  → Fields (IMMUNITY Layer, INTENT Layer) permeate
+  → Meta (ATLAS Engine, ENGINEER Agent) observe
+  → Plane (GOVERNANCE Layer) supervises
+  → Shell (DEFENSE Layer) encloses
 ```
 
 ### Request Flow
-1. External request arrives at DEFENSE (Shell).
-2. DEFENSE performs threat assessment (IP reputation, behavioral analysis, payload inspection).
-3. Approved requests route to NEXUS for provider/model selection.
-4. NEXUS delegates to appropriate Execution primitive (DECODE, ENCODE, CORTEX, etc.).
-5. Execution primitive processes request, consulting CCR (BRAIN, MEMORY, DREAM) as needed.
+1. External request arrives at DEFENSE Layer (Shell).
+2. DEFENSE Layer performs threat assessment (IP reputation, behavioral analysis, payload inspection).
+3. Approved requests route to NEXUS Organ for provider/model selection.
+4. NEXUS Organ delegates to appropriate Execution primitive (DECODE Agent, ENCODE Agent, CORTEX Engine, etc.).
+5. Execution primitive processes request, consulting CCR (BRAIN Organ, MEMORY Organ, DREAM Engine) as needed.
 6. OCG modules enforce compliance boundaries throughout execution.
 7. Expansion zones (ESZ, EPZ, EMZ) provide specialized capabilities when invoked.
-8. Response returns through NEXUS → DEFENSE → Client.
+8. Response returns through NEXUS Organ → DEFENSE Layer → Client.
 
 ### State Transitions
-- **Boot** → CORE initializes → layers cascade → all 40 primitives online.
+- **Boot** → CORE Organ initializes → layers cascade → all 40 primitives online.
 - **Steady State** → Request processing, health monitoring, periodic persistence.
 - **Degraded** → Circuit breaker open on one or more primitives; system continues with reduced capability.
 - **Zone Isolated** → Entire expansion zone (ESZ/EPZ/EMZ/CSZ) degraded; core operations continue.
@@ -242,9 +242,9 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 
 - Each of the 40 primitives operates within its own circuit-breaker boundary.
 - Expansion zones (ESZ, EPZ, EMZ, CSZ) provide zone-level isolation — an entire zone can degrade gracefully.
-- Module failure does not propagate unless RIPPLE detects a cascade chain.
-- SANDBOX provides execution isolation for untrusted code.
-- DEFENSE enforces the outermost trust boundary.
+- Module failure does not propagate unless RIPPLE Organ detects a cascade chain.
+- SANDBOX Engine provides execution isolation for untrusted code.
+- DEFENSE Layer enforces the outermost trust boundary.
 - Row-Level Security enforces per-user data isolation at the database layer.
 
 ## 10. Failure Domains
@@ -263,61 +263,61 @@ CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM) → OCG (RIPPLE, ACCESS, IDENTITY
 
 | Control Plane | Owner | Scope |
 |--------------|-------|-------|
-| Boot Control | CORE | Initialization sequence |
-| Lifecycle Control | SYSTEM | Configuration, environment |
-| Routing Control | NEXUS | API dispatch, provider selection |
+| Boot Control | CORE Organ | Initialization sequence |
+| Lifecycle Control | SYSTEM Organ | Configuration, environment |
+| Routing Control | NEXUS Organ | API dispatch, provider selection |
 | Compliance Control | OCG | Boundary enforcement |
-| Governance Control | GOVERNANCE | Action legitimacy |
-| Security Control | DEFENSE | Threat response |
-| Evolution Control | EVOLUTION | Version management |
+| Governance Control | GOVERNANCE Layer | Action legitimacy |
+| Security Control | DEFENSE Layer | Threat response |
+| Evolution Control | EVOLUTION Layer | Version management |
 | Sovereignty Control | ESZ | Jurisdictional compliance |
 | Perception Control | EPZ | Predictive awareness |
 | Manufacturing Control | EMZ | Artifact production |
-| Topology Control | ATLAS | Capability mapping, node discovery |
-| Maintenance Control | ENGINEER | Engine health, proposal generation |
+| Topology Control | ATLAS Engine | Capability mapping, node discovery |
+| Maintenance Control | ENGINEER Agent | Engine health, proposal generation |
 
 ## 12. Dependency Graph
 
 ```
 CORE (root)
 ├── SYSTEM
-│   ├── BRAIN (CCR)
-│   ├── MEMORY (CCR)
-│   └── DREAM (CCR)
-├── RIPPLE (OCG)
-├── ACCESS (OCG)
-├── IDENTITY (OCG)
-├── RELAY (OCG)
-├── AUDIT (OCG)
-├── NERVE (OCG) → RIPPLE
-├── DECODE (Execution)
-├── ENCODE (Execution) → DECODE
-├── VISION (Execution)
-├── CORTEX (Execution)
-├── NEXUS (Execution)
-├── ECONOMY (Execution)
-├── SANDBOX (Execution)
-├── INCLUSIVE (Execution)
-├── MEDIC (Execution) → VISION
-├── INTEGRATION (Execution, boots last)
-├── SOVEREIGN (ESZ) → DEFENSE, ACCESS
-├── ORACLE (ESZ) → BRAIN, VISION
-├── CONSCIENCE (ESZ) → DEFENSE
-├── TREATY (ESZ) → ACCESS
-├── COMPASS (EPZ) → VISION, BRAIN
-├── ECHO (EPZ) → MEMORY
-├── REFLEX (EPZ) → NEXUS, VISION
-├── FORGE (EMZ) → ENCODE
-├── LINGUA (EMZ) → DECODE, NEXUS
-├── HARVEST (EMZ) → MEMORY, ECONOMY
-├── EVOLUTION (CSZ) — permeates all
-├── SHADOW (CSZ) → EVOLUTION
-├── PHANTOM (CSZ) → DEFENSE, IDENTITY
-├── ATLAS (Meta) → VISION
-├── ENGINEER (Meta) → BRAIN
-Fields (IMMUNITY, INTENT) — permeate all sectors
-GOVERNANCE — supervises all sectors
-DEFENSE — encloses all sectors
+│   ├── BRAIN Organ (CCR)
+│   ├── MEMORY Organ (CCR)
+│   └── DREAM Engine (CCR)
+├── RIPPLE Organ (OCG)
+├── ACCESS Organ (OCG)
+├── IDENTITY Organ (OCG)
+├── RELAY Organ (OCG)
+├── AUDIT Organ (OCG)
+├── NERVE Organ (OCG) → RIPPLE Organ
+├── DECODE Agent (Execution)
+├── ENCODE Agent (Execution) → DECODE Agent
+├── VISION Agent (Execution)
+├── CORTEX Engine (Execution)
+├── NEXUS Organ (Execution)
+├── ECONOMY Engine (Execution)
+├── SANDBOX Engine (Execution)
+├── INCLUSIVE Layer (Execution)
+├── MEDIC Engine (Execution) → VISION Agent
+├── INTEGRATION Organ (Execution, boots last)
+├── SOVEREIGN Agent (ESZ) → DEFENSE Layer, ACCESS Organ
+├── ORACLE Engine (ESZ) → BRAIN Organ, VISION Agent
+├── CONSCIENCE Layer (ESZ) → DEFENSE Layer
+├── TREATY Layer (ESZ) → ACCESS Organ
+├── COMPASS Engine (EPZ) → VISION Agent, BRAIN Organ
+├── ECHO Agent (EPZ) → MEMORY Organ
+├── REFLEX Engine (EPZ) → NEXUS Organ, VISION Agent
+├── FORGE Engine (EMZ) → ENCODE Agent
+├── LINGUA Agent (EMZ) → DECODE Agent, NEXUS Organ
+├── HARVEST Agent (EMZ) → MEMORY Organ, ECONOMY Engine
+├── EVOLUTION Layer (CSZ) — permeates all
+├── SHADOW Agent (CSZ) → EVOLUTION Layer
+├── PHANTOM Agent (CSZ) → DEFENSE Layer, IDENTITY Organ
+├── ATLAS Engine (Meta) → VISION Agent
+├── ENGINEER Agent (Meta) → BRAIN Organ
+Fields (IMMUNITY Layer, INTENT Layer) — permeate all sectors
+GOVERNANCE Layer — supervises all sectors
+DEFENSE Layer — encloses all sectors
 ```
 
 ## 13. Versioning Compatibility Model

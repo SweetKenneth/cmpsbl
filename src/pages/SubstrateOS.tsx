@@ -490,7 +490,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'shadow' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="SHADOW" description="Adversarial probes and TSAC divergence detection.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="SHADOW Agent" description="Adversarial probes and TSAC divergence detection.">
                 <PanelContainer id="shadow"><Suspense fallback={<PanelLoader />}><ShadowTab /></Suspense></PanelContainer>
               </TierGate>
             )}
