@@ -460,7 +460,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'atlas' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="Control plane configuration and capability toggles.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ATLAS" description="ATLAS Engine control plane configuration and capability toggles.">
                 <PanelContainer id="atlas"><Suspense fallback={<PanelLoader />}><AtlasTab /></Suspense></PanelContainer>
               </TierGate>
             )}
