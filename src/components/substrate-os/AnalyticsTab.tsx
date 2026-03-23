@@ -468,7 +468,7 @@ export function AnalyticsTab() {
                 color={data.immuneEscalations === 0 ? 'emerald' : 'orange'}
               />
               <MetricMini
-                label="ENCODE Resolution"
+                label="ENCODE Agent Resolution"
                 value={`${data.encodeResolved}/${data.encodeClaimed}`}
                 sub={`${data.encodeResolutionRate}% resolution rate`}
                 color="indigo"
