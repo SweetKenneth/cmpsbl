@@ -35,3 +35,9 @@ export {
 
 export { phantomCLM, runPhantomCLMCycle, type PhantomCLMInsight, type PhantomCLMReport } from './clm';
 export { phantomHardeningReport, validatePhantomInput, PHANTOM_LIMITS } from './hardening';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PHANTOM Ultimate Form — v9.0.0 "Specter"
+// ═══════════════════════════════════════════════════════════════════════════════
+import * as PhantomUltimate from '../../phantom/ultimate';
+export { PhantomUltimate };
