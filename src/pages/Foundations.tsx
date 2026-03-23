@@ -50,7 +50,7 @@ export default function Foundations() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Foundations — Architecture & Standards | CMPSBL®"
-        description="CMPSBL's foundational reference: 40-node architecture, 12-sector topology, governed autonomy model, Memory Stream crystallization protocol, AIGVRN namespace, and LLMS.txt machine context."
+        description="CMPSBL's foundational reference: 40-primitive architecture, agents/engines/layers/organs taxonomy, governed autonomy model, Memory Stream crystallization protocol, AIGVRN namespace, and LLMS.txt machine context."
         keywords={['CMPSBL foundations', 'architecture reference', 'AIGVRN standard', 'governed autonomy', 'substrate topology']}
         breadcrumbs={[
           { name: 'Home', url: 'https://cmpsbl.com' },
