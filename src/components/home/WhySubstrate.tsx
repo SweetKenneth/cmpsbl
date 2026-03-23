@@ -308,9 +308,10 @@ export function WhySubstrate() {
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
-             Nine Systems.{" "}
-             <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
-           </h2>
+              Nine Systems.
+              <br />
+              <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
+            </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Build apps that{" "}
               <span className="text-foreground font-medium">think with reasoning models</span>,{" "}
