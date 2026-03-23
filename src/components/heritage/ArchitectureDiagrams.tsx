@@ -186,7 +186,7 @@ export function SectorTopologyDiagram() {
           })}
           {/* Weight invariant */}
           <text x="345" y="420" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">
-            Σ(module_weight) = 1.000 · Clockless Coordination · Deterministic Boot Sequence
+            Σ(primitive_weight) = 1.000 · Clockless Coordination · Deterministic Boot Sequence
           </text>
         </svg>
       </div>
