@@ -54,7 +54,7 @@ const primitives = [
   {
     icon: Shield,
     title: "Defense-First",
-    node: "DEFENSE",
+    node: "DEFENSE Layer",
     description: "Behavioral analysis, threat detection, rate limiting, and governance rules.",
     highlight: "Enterprise Security",
     stat: "100%",
