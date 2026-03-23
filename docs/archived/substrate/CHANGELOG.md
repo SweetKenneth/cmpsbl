@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v16.4.0 (CONTACT — ACCESS Ultimate "Gatekeeper Prime")
+
+⟨This entry describes ACCESS v9.0.0 — the substrate's API gateway node reaching its ultimate form with 10 new systems.⟩
+
+- **Cryptographic Key Vault** — HMAC-SHA256 key generation with `pf_live_`/`pf_test_` prefixes. Zero-plaintext storage. Key rotation with configurable grace periods (default 5 min). Lineage tracking. 5,000-key capacity.
+- **Adaptive Rate Limiter** — Sliding window counters (60 one-second + 24 one-hour slots). Burst detection with allowance threshold. Per-endpoint rate shaping. EMA-smoothed auto-tuning per developer.
+- **Scope Enforcement Engine** — Hierarchical scope tree with 21 default scopes across 7 modules. Wildcard matching. Scope intersection. Dynamic escalation with governance approval. Full audit trail (3,000-entry buffer).
+- **Usage Metering Pipeline** — Per-call cost: `(base × complexity) + (tokens × rate)` in millicents. 8 default cost rules. Real-time hourly/daily aggregation. Overage detection (75% warn / 90% throttle / 100% block).
+- **Subscription Lifecycle Manager** — 4 tiers (Free/Starter/Pro/Enterprise). Entitlement diffing on transitions. 7-day grace periods. 10% quota rollover.
+- **Developer Identity Registry** — Status lifecycle (pending → active → suspended → banned). Composite reputation scoring (consistency 30% + errors 25% + payments 25% + abuse 20%). Auto-suspension after 3 abuse flags.
+- **Abuse Detection Engine** — Credential stuffing (high endpoint diversity), scraping (uniform intervals < 50ms stddev), Z-score anomaly scoring. Action escalation: flag → throttle → quarantine → ban. IMMUNITY integration for critical signals.
+- **Entitlement Resolution Cache** — O(1) lookups with TTL (default 5 min). Auto-invalidation on tier/scope/rotation changes. Batch warm-up. Per-request audit snapshots. 2,000-entry LFU cache.
+- **Gateway Circuit Breaker** — Per-developer 3-state breakers (closed/open/half_open). Global degradation levels (none → L1-L4). Jittered retry-after generation. Half-open probe recovery (3 successes to close).
+- **Access Telemetry Dashboard** — Unified health composite from all 9 subsystems. Vault (15%) + rate limiter (20%) + scope (15%) + breakers (15%) + abuse (20%) + cache (15%). Trend analysis over 200-snapshot buffer.
+
+---
+
 ## 2026-03-23 · v16.3.0 (CONTACT — COMPASS Ultimate "Navigator Prime")
 
 ⟨This entry describes COMPASS v10.0.0 — the substrate's spatial-temporal node reaching its ultimate geospatial form with 10 new systems (20 total).⟩

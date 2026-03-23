@@ -4,6 +4,12 @@
 
 ---
 
+## v16.4.0 — 2026-03-23
+
+- **ACCESS Ultimate "Gatekeeper Prime"** — 10 new systems: Cryptographic Key Vault (SHA-256 + rotation + lineage), Adaptive Rate Limiter (sliding windows + burst detection + EMA auto-tuning), Scope Enforcement Engine (hierarchical tree + wildcard + escalation + audit), Usage Metering Pipeline (millicent cost attribution + overage detection), Subscription Lifecycle Manager (4 tiers + grace + rollover), Developer Identity Registry (reputation scoring + auto-suspension), Abuse Detection Engine (credential stuffing + scraping + Z-score + quarantine), Entitlement Resolution Cache (O(1) + TTL + warm-up), Gateway Circuit Breaker (per-dev breakers + L0-L4 degradation), Access Telemetry Dashboard (unified health composite).
+
+---
+
 ## v16.3.0 — 2026-03-23
 
 - **COMPASS Ultimate "Navigator Prime"** — 10 new geospatial systems (20 total): R-Tree Spatial Index (O(log n) queries + 10K capacity), Multi-Projection Engine (WGS84/Mercator/UTM + Haversine), Geofence Engine (circle/polygon + enter/exit/dwell events), Trajectory Analyzer (speed/heading/stops + DBSCAN clustering), Isochrone Generator (4 travel modes + grid reachability), Temporal Fusion Engine (spatiotemporal co-occurrence + hotspots), Spatial Anomaly Detector (Z-score density deviation), Route Corridor Optimizer (priority waypoints + time windows), Coordinate Gravity Model (N-body attraction/repulsion), Spatial Telemetry Dashboard (unified health composite).
