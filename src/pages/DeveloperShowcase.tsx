@@ -1,6 +1,6 @@
 /**
  * Developer Showcase — CMPSBL for Software Developers
- * Updated to reflect 40-node / 12-sector architecture
+ * Updated to reflect 40-primitive architecture
  */
 
 import { Link } from "react-router-dom";
