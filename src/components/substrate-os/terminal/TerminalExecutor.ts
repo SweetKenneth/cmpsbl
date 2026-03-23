@@ -13,6 +13,7 @@ import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail 
 import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, formatScheduleConfirmation, getPendingCommands } from './useTerminalScheduler';
 import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { debugMode } from '@/lib/debug-mode';
 
 // Mobile-first evolution log formatter (organism-focused, no implementation details)
@@ -3320,7 +3321,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
           return { success: false, output: `▓ Synergy '${args[0]}' not found` };
         }
         
-        const moduleList = synergy.modules.map(m => m.name).join(' → ');
+        const moduleList = synergy.modules.map(m => labelPrimitive(m.name)).join(' → ');
         
         return {
           success: true,

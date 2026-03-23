@@ -5,6 +5,7 @@
  */
 import { useEffect, useState, useCallback } from 'react';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useDiscoveryReactor } from '@/hooks/admin/useDiscoveryReactor';
 import { useAutoMiner, type MinerConfig } from '@/hooks/admin/useAutoMiner';
@@ -455,7 +456,7 @@ function TemplateComposer() {
           </div>
           {form.modulePattern.length > 0 && (
             <div className="mt-2 text-xs text-muted-foreground break-words">
-              Chain: {form.modulePattern.join(' → ')}
+              Chain: {form.modulePattern.map(m => labelPrimitive(m)).join(' → ')}
             </div>
           )}
         </CardContent>
@@ -619,7 +620,7 @@ function AutoMinerTab() {
               <div className="flex flex-wrap gap-1">
                 {state.activeTemplates.slice(0, 8).map((t, i) => (
                   <Badge key={i} variant="outline" className="text-[9px] px-1.5 py-0 break-words whitespace-normal max-w-full">
-                    {t.modulePattern.join(' → ')}
+                    {t.modulePattern.map(m => labelPrimitive(m)).join(' → ')}
                   </Badge>
                 ))}
                 {state.activeTemplates.length > 8 && (
