@@ -33,7 +33,7 @@ const STEPS = [
     icon: Zap,
     tag: 'Step 2',
     title: 'Collision Cycles',
-    body: 'Node #41 collides against all 40 substrate nodes in chains 2-8 nodes deep. Each collision tests for emergent capabilities scored by CJPI.',
+    body: 'Primitive #41 collides against all 40 substrate primitives in chains 2-8 primitives deep. Each collision tests for emergent capabilities scored by CJPI.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },

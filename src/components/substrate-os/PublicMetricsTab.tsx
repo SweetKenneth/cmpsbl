@@ -43,7 +43,7 @@ const METRIC_FIELDS: MetricField[] = [
   { key: 'epoch', label: 'Epoch', description: 'Current epoch name', type: 'string', icon: Settings, category: 'version' },
   
   // Architecture
-  { key: 'modulesCount', label: 'Nodes', description: 'Total substrate nodes', type: 'number', icon: Layers, category: 'architecture' },
+  { key: 'modulesCount', label: 'Primitives', description: 'Total substrate primitives', type: 'number', icon: Layers, category: 'architecture' },
   { key: 'layersCount', label: 'Layers', description: 'Architectural layers', type: 'number', icon: Layers, category: 'architecture' },
   
   // Synergy

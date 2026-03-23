@@ -116,7 +116,7 @@ function OrbitalCanvas() {
       nodePositions.push({ x, y, color, node });
     }
 
-    // Node #41 — bounces inside the inner circle
+    // Primitive #41 — bounces inside the inner circle
     const bounce41 = {
       x: cx + Math.sin(time * 1.8) * innerR * 0.7 + Math.cos(time * 2.3) * innerR * 0.3,
       y: cy + Math.cos(time * 1.4) * innerR * 0.6 + Math.sin(time * 2.7) * innerR * 0.4,
@@ -285,8 +285,8 @@ function OrbitalCanvas() {
 
 /* ═══ LIFECYCLE PIPELINE DIAGRAM ═══ */
 const LIFECYCLE_STEPS = [
-  { step: '01', title: 'INGEST', desc: 'Your code enters as Auxiliary Node', icon: Upload, color: 'neon-cyan' },
-  { step: '02', title: 'ASCENSION', desc: 'Collision cycles against all 40 substrate nodes (2-8 depth)', icon: Zap, color: 'neon-purple' },
+  { step: '01', title: 'INGEST', desc: 'Your code enters as Auxiliary Primitive', icon: Upload, color: 'neon-cyan' },
+  { step: '02', title: 'ASCENSION', desc: 'Collision cycles against all 40 substrate primitives (2-8 depth)', icon: Zap, color: 'neon-purple' },
   { step: '03', title: 'ASCEND', desc: 'Lock successful chains into deterministic memories', icon: Diamond, color: 'neon-magenta' },
   { step: '04', title: 'EXPORT', desc: 'Portable Ascended Memories delivered to your stack', icon: Package, color: 'neon-amber' },
 ] as const;
