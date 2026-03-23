@@ -309,7 +309,7 @@ export default function SubstrateOS() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Substrate OS — Live Command Center | CMPSBL"
-        description="CMPSBL's live command center: monitor 40 nodes across 12 sectors, track Memory Stream crystallization, manage DREAM cycles, view mesh communications, and control governance settings in real time."
+        description="CMPSBL's live command center: monitor agents, engines, layers, and organs in real time — track Memory Stream crystallization, manage DREAM cycles, view mesh communications, and control governance settings."
         canonical="https://cmpsbl.com/os"
         keywords={['CMPSBL', 'Memory Stream', 'Signal to Silicon', 'cognitive orchestration']}
       />
