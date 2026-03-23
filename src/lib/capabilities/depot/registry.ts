@@ -381,7 +381,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'adaptive-routing-synergy',
     name: 'Adaptive Routing Synergy',
     category: 'optimization',
-    description: 'NEXUS provider selection optimized by VISION latency metrics and CORTEX cost analysis',
+    description: 'NEXUS Organ provider selection optimized by VISION Agent latency metrics and CORTEX Engine cost analysis',
     requiredModules: ['NEXUS', 'VISION', 'CORTEX'],
     executorType: 'js',
     artifactFormat: 'zip',
