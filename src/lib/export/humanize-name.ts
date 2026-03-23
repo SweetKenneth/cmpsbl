@@ -105,7 +105,7 @@ function extractBaseName(raw: string): string {
 }
 
 /**
- * Build a short, evocative capability label from the module chain.
+ * Build a short, evocative capability label from the primitive chain.
  * ["BRAIN", "DEFENSE", "CORTEX"] → "Cognitive Shield"
  * Takes at most 2 labels to keep it concise.
  */

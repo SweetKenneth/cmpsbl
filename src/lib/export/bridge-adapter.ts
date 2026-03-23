@@ -38,7 +38,7 @@ import {
 // §1 — MODULE VERB MAPPING (shared across all bridge generators)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-/** Map a module name to its canonical operation verb and description */
+/** Map a primitive name to its canonical operation verb and description */
 export function moduleOps(mod: string): { verb: string; desc: string } {
   const MAP: Record<string, { verb: string; desc: string }> = {
     BRAIN: { verb: 'analyze', desc: 'cognitive processing' },
@@ -111,7 +111,7 @@ export function generateBridgeHeader(opts: BridgeHeaderOptions): string {
     `${opts.comment} CMPSBL® Bridge Adapter — ${opts.name}`,
     `${opts.comment} Language: ${opts.language} | Bridge Type: ${opts.bridgeType}`,
     `${opts.comment} CJPI: ${opts.cjpi} | Category: ${opts.category}`,
-    `${opts.comment} Module Chain: ${opts.moduleChain.join(' → ')}`,
+    `${opts.comment} Primitive Chain: ${opts.moduleChain.join(' → ')}`,
     `${opts.comment}`,
     `${opts.comment} This is a BRIDGE ADAPTER, not a standalone runtime.`,
     `${opts.comment} Runtime logic lives in the canonical TypeScript Mini-Runtime™.`,
@@ -194,7 +194,7 @@ export interface BridgeStage {
   desc: string;
 }
 
-/** Build the stage dispatch table for a module chain */
+/** Build the stage dispatch table for a primitive chain */
 export function buildStageTable(modules: string[]): BridgeStage[] {
   return modules.map((m, i) => ({
     index: i,

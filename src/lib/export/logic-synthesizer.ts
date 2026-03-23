@@ -44,7 +44,7 @@ export function synthesizeTypeScript(ctx: SynthesisContext): string {
  * ${ctx.name}
  * ${ctx.description}
  * 
- * Module Chain: ${modules.join(' → ')}
+ * Primitive Chain: ${modules.join(' → ')}
  * Category: ${ctx.category} | CJPI: ${ctx.cjpi}
  * Entry: ${ctx.entryCapability} → Exit: ${ctx.exitCapability}
  * Error Strategy: ${ctx.errorStrategy}
@@ -230,7 +230,7 @@ export function synthesizePython(ctx: SynthesisContext): string {
 ${ctx.name} — CMPSBL® Bridge Adapter (Python)
 ${ctx.description}
 
-Module Chain: ${modules.join(' → ')}
+Primitive Chain: ${modules.join(' → ')}
 Category: ${ctx.category} | CJPI: ${ctx.cjpi}
 
 This is a BRIDGE ADAPTER, not a standalone runtime.
@@ -649,7 +649,7 @@ export function synthesizeGo(ctx: SynthesisContext): string {
   return `// ${ctx.name} — CMPSBL® Bridge Adapter (Go)
 // ${ctx.description}
 //
-// Module Chain: ${modules.join(' → ')}
+// Primitive Chain: ${modules.join(' → ')}
 // Category: ${ctx.category} | CJPI: ${ctx.cjpi}
 //
 // This is a BRIDGE ADAPTER, not a standalone runtime.

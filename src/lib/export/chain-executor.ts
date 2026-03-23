@@ -3,9 +3,9 @@
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Layer 1 — Universal Playback Engine
  * 
- * Executes discovered module chains through a deterministic pipeline:
+ * Executes discovered primitive chains through a deterministic pipeline:
  *   1. Load manifest
- *   2. Resolve module chain
+ *   2. Resolve primitive chain
  *   3. Build context
  *   4. Run stages sequentially (with effect handlers)
  *   5. Return output + full trace
@@ -14,7 +14,7 @@
  *   - success / failure
  *   - output data
  *   - ordered trace
- *   - module effect log
+ *   - primitive effect log
  *   - timing
  *   - transformation notes
  *
@@ -42,7 +42,7 @@ export interface ChainManifest {
   name: string;
   /** Description of the discovered capability */
   description: string;
-  /** Ordered module chain (e.g. ['BRAIN', 'ORACLE', 'MEMORY', 'ECHO']) */
+  /** Ordered primitive chain (e.g. ['BRAIN', 'ORACLE', 'MEMORY', 'ECHO']) */
   modules: string[];
   /** CJPI score */
   cjpiScore: number;
@@ -145,7 +145,7 @@ function cloneData(data: Record<string, unknown>): Record<string, unknown> {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Execute a discovered module chain.
+ * Execute a discovered primitive chain.
  * This is the primary entry point for runtime playback.
  *
  * @param manifest - The chain manifest (from discovery)

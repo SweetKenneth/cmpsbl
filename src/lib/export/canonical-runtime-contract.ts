@@ -23,7 +23,7 @@
  * Conceptually identical across substrate, portable, and sealed modes.
  */
 export interface RuntimeContract {
-  /** Execute a discovered module chain through the runtime */
+  /** Execute a discovered primitive chain through the runtime */
   executeChain(manifest: ChainManifestContract, input: Record<string, unknown>, options?: ExecutionOptions): Promise<ChainResult>;
   /** Execute a single primitive through the resolution hierarchy */
   executePrimitive(name: string, data: Record<string, unknown>, confidence: number, options?: PrimitiveOptions): Promise<PrimitiveResult>;
@@ -199,7 +199,7 @@ export interface ExecutionIntegrityPayload {
   executionMode: RuntimeMode;
   /** Stable hash of (name + module_chain + category + tier? + sourceLanguage?) */
   capabilityHash: string;
-  /** Separate hash of module chain for independent tamper detection */
+  /** Separate hash of primitive chain for independent tamper detection */
   moduleChainHash: string;
   /** Expected CJPI score from bridge metadata */
   expectedCJPI: number;
@@ -221,7 +221,7 @@ export interface IntegrityValidationResult {
   validationWarnings: string[];
   /** Recomputed capability hash from canonical side */
   recomputedCapabilityHash: string;
-  /** Recomputed module chain hash from canonical side */
+  /** Recomputed primitive chain hash from canonical side */
   recomputedModuleChainHash: string;
   /** Runtime version that performed validation */
   canonicalVersion: string;
@@ -440,7 +440,7 @@ export function computeCapabilityHash(
 }
 
 /**
- * Compute a separate module chain hash for independent tamper detection.
+ * Compute a separate primitive chain hash for independent tamper detection.
  */
 export function computeModuleChainHash(moduleChain: string[]): string {
   return djb2(moduleChain.map(m => m.toUpperCase()).join(','));
