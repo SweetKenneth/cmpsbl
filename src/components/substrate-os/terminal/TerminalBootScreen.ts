@@ -1,4 +1,4 @@
-import { getMetric } from '@/lib/substrate/telemetry';
+import { getMetric } from '@/stores/publicMetricsStore';
 
 /**
  * Mobile boot screen — compact version for <768px viewports
