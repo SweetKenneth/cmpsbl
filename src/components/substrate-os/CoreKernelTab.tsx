@@ -1,6 +1,6 @@
 /**
  * CORE Kernel Tab — Job Scheduler, System State, Lifecycle
- * 40-node / 12-sector field-based topology
+ * 40-primitive architecture
  */
 
 import { useState } from 'react';

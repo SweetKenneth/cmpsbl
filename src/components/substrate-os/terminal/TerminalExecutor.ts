@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * 40 nodes / 12 sectors | 500+ commands | 300 synergy pipelines
+ * 40 primitives | 500+ commands | 300 synergy pipelines
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, evolutionClient as evolutionMod, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
@@ -268,7 +268,7 @@ function formatPersonalityInterpret(result: {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// SYSTEM-WIDE 40-NODE RESPONSE FORMATTERS
+// SYSTEM-WIDE 40-PRIMITIVE RESPONSE FORMATTERS
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const ALL_EXECUTION_SURFACES = [
@@ -333,7 +333,7 @@ function formatSystemStatus(data: any): string {
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
-║  Nodes:     40/40 (12 sectors — CORE·SYSTEM·CCR·OCG·Exec·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell) ║
+║  Primitives: 40/40 (Agents·Engines·Layers·Organs)                            ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
   const layers = ['Kernel', 'System', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Field', 'Plane', 'Shell'];
@@ -374,9 +374,9 @@ function formatSystemHealth(data: any): string {
 ║  Overall Health:  ${'█'.repeat(Math.round(Number(overallPct) / 10))}${'░'.repeat(10 - Math.round(Number(overallPct) / 10))} ${overallPct}%                      ║
 ║  Circuit:         ${circuitState === 'closed' ? '🟢 CLOSED (ready)' : '🔴 OPEN (blocking)'}                     ║
 ║  Threat Level:    ${threatLevel.toUpperCase().padEnd(10)}                                ║
-║  Modules:         40/40 reporting                             ║
+║  Primitives:      40/40 reporting                             ║
 ╠══════════════════════════════════════════════════════════════╣
-║  MODULE HEALTH REPORT                                        ║
+║  PRIMITIVE HEALTH REPORT                                     ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
   for (const mod of ALL_EXECUTION_SURFACES) {
@@ -487,8 +487,8 @@ function generateFullHelp(): string {
 ┌─────────────────────────────────────────────────────────────┐
 │          CMPSBL® OS — COMMAND REFERENCE                     │
 ├─────────────────────────────────────────────────────────────┤
-│  Total commands: ${totalCommands.toString().padEnd(5)}    Nodes: 40 / 12 Sectors           │
-│  Architecture: 40-node matrix │ 675+ caps │ 300 Synergies  │
+│  Total commands: ${totalCommands.toString().padEnd(5)}    Primitives: 40 · 4 Categories    │
+│  Architecture: 40-primitive matrix │ 675+ caps │ 300 Synergies│
 │                                                             │
 │  Access Tiers:                                              │
 │    ○ BUILDER      Read-only, status, pulse                  │

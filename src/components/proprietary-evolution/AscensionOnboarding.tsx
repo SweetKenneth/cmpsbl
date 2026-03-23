@@ -17,7 +17,7 @@ const STEPS = [
     icon: Sparkles,
     tag: 'Software Evolution Engine',
     title: 'Welcome to Ascension',
-    body: 'Ascension takes your code and collides it against a living 40-node cognitive substrate. New capabilities emerge from interaction — things your code couldn\'t do alone.',
+    body: 'Ascension takes your code and collides it against a living 40-primitive cognitive substrate. New capabilities emerge from interaction — things your code couldn\'t do alone.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },

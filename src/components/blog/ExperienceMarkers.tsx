@@ -13,7 +13,7 @@ interface ExperienceMarkersProps {
 const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; href: string; description: string }[]> = {
   insight: [
     { icon: Brain, label: 'Persistent Memory', href: '/persistent-memory', description: 'Built from our production memory architecture' },
-    { icon: Layers, label: 'Module Architecture', href: '/modules', description: 'Explore the 40-node substrate' },
+    { icon: Layers, label: 'Architecture', href: '/architecture', description: 'Explore the 40-primitive substrate' },
   ],
   research: [
     { icon: Brain, label: 'SEBA Architecture', href: '/modules/seba', description: 'Our self-evolving bounded agent framework' },
@@ -21,10 +21,10 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
   ],
   changelog: [
     { icon: Zap, label: 'Explore', href: '/explore', description: 'Browse templates and capabilities' },
-    { icon: Layers, label: 'Nodes', href: '/modules', description: 'Full substrate architecture' },
+    { icon: Layers, label: 'Architecture', href: '/architecture', description: 'Full substrate architecture' },
   ],
   release: [
-    { icon: Layers, label: 'All Nodes', href: '/modules', description: 'See the full substrate architecture' },
+    { icon: Layers, label: 'Architecture', href: '/architecture', description: 'See the full substrate architecture' },
     { icon: Shield, label: 'Enterprise Solutions', href: '/solutions', description: 'How enterprises deploy these releases' },
   ],
   update: [
@@ -35,7 +35,7 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
 
 const DEFAULT_LINKS = [
   { icon: Brain, label: 'AI Operating System', href: '/ai-operating-system', description: 'The definitive guide to cognitive infrastructure' },
-  { icon: Layers, label: 'Platform Overview', href: '/modules', description: 'Explore the 40-node substrate' },
+  { icon: Layers, label: 'Platform Overview', href: '/architecture', description: 'Explore the 40-primitive substrate' },
 ];
 
 export function ExperienceMarkers({ category }: ExperienceMarkersProps) {

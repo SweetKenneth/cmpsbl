@@ -24,10 +24,10 @@ const projects = [
     id: "cmpsbl",
     name: "CMPSBL",
     tagline: "Cognitive Infrastructure for AI",
-    description: "The 40-node cognitive orchestration substrate. Persistent memory, DREAM cycles, NEXUS routing, governed evolution, and 675+ capabilities across 12 sectors. The platform everything else runs on.",
+    description: "The 40-primitive cognitive orchestration substrate. Persistent memory, DREAM Engine cycles, NEXUS Organ routing, governed evolution, and 675+ capabilities across agents, engines, layers & organs. The platform everything else runs on.",
     icon: Brain,
     status: "Live",
-    features: ["40 nodes · 12 sectors", "Persistent memory", "DREAM cycles", "NEXUS routing", "Governed evolution", "175,000+ lines"],
+    features: ["40 primitives · 4 categories", "Persistent memory", "DREAM Engine", "NEXUS Organ", "Governed evolution", "175,000+ lines"],
     href: "/ai-operating-system",
     external: false
   },
@@ -128,7 +128,7 @@ export default function CurrentProjects() {
     <div className="min-h-screen bg-background">
       <SEO 
         title="Current Projects — CMPSBL & LNCHBL Ecosystem"
-        description="Explore the CMPSBL ecosystem: the 40-node cognitive substrate, LNCHBL self-hosted deployment, RCKBL security, RNDRBL accessibility, and more. Real systems, shipped and operational."
+        description="Explore the CMPSBL ecosystem: the 40-primitive cognitive substrate, LNCHBL self-hosted deployment, RCKBL security, RNDRBL accessibility, and more. Real systems, shipped and operational."
         canonical="https://cmpsbl.com/projects"
         keywords={['CMPSBL projects', 'LNCHBL', 'AI security', 'accessibility tools', 'autonomous AI', 'self-hosted AI']}
       />
