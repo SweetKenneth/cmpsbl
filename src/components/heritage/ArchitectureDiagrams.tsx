@@ -88,7 +88,7 @@ export function ConsolidationDiagram() {
     <div className="my-6">
       <DiagramTitle>Figure 2 — The Great Consolidation (November 4–5, 2025)</DiagramTitle>
       <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-        <svg viewBox="0 0 680 280" className="w-full max-w-[680px] mx-auto" role="img" aria-label="Great Consolidation diagram showing 252 functions compressed to 40 nodes">
+        <svg viewBox="0 0 680 280" className="w-full max-w-[680px] mx-auto" role="img" aria-label="Great Consolidation diagram showing 252 functions compressed to 40 primitives">
           {/* Left: sprawl */}
           <rect x="20" y="30" width="200" height="200" rx="8" className="fill-[hsl(var(--destructive))] fill-opacity-[0.06] stroke-[hsl(var(--destructive))] stroke-opacity-[0.2] stroke-[1.5]" />
           <text x="120" y="25" textAnchor="middle" className="fill-[hsl(var(--destructive))] text-[11px] font-mono font-bold">BEFORE</text>
@@ -113,33 +113,26 @@ export function ConsolidationDiagram() {
           <rect x="340" y="30" width="320" height="200" rx="8" className="fill-[hsl(var(--primary))] fill-opacity-[0.06] stroke-[hsl(var(--primary))] stroke-opacity-[0.2] stroke-[1.5]" />
           <text x="500" y="25" textAnchor="middle" className="fill-[hsl(var(--primary))] text-[11px] font-mono font-bold">AFTER</text>
 
-          {/* 12 sector blocks */}
+          {/* 4 category blocks */}
           {[
-            { x: 350, y: 40, w: 70, h: 35, name: "Kernel", n: "2" },
-            { x: 425, y: 40, w: 70, h: 35, name: "CCR", n: "3" },
-            { x: 500, y: 40, w: 70, h: 35, name: "OCG", n: "6" },
-            { x: 575, y: 40, w: 75, h: 35, name: "Execution", n: "10" },
-            { x: 350, y: 85, w: 70, h: 35, name: "ESZ", n: "3" },
-            { x: 425, y: 85, w: 70, h: 35, name: "EPZ", n: "3" },
-            { x: 500, y: 85, w: 70, h: 35, name: "EMZ", n: "3" },
-            { x: 575, y: 85, w: 75, h: 35, name: "CSZ", n: "4" },
-            { x: 350, y: 130, w: 70, h: 35, name: "Fields", n: "2" },
-            { x: 425, y: 130, w: 70, h: 35, name: "Plane", n: "2" },
-            { x: 500, y: 130, w: 70, h: 35, name: "Shell", n: "1" },
+            { x: 350, y: 40, w: 145, h: 35, name: "Organs", n: "12" },
+            { x: 505, y: 40, w: 145, h: 35, name: "Layers", n: "8" },
+            { x: 350, y: 85, w: 145, h: 35, name: "Engines", n: "10" },
+            { x: 505, y: 85, w: 145, h: 35, name: "Agents", n: "10" },
           ].map((s, i) => (
             <g key={i}>
               <rect x={s.x} y={s.y} width={s.w} height={s.h} rx="4" className="fill-[hsl(var(--primary))] fill-opacity-[0.1] stroke-[hsl(var(--primary))] stroke-opacity-[0.3] stroke-[1]" />
               <text x={s.x + s.w / 2} y={s.y + 15} textAnchor="middle" className="fill-[hsl(var(--foreground))] text-[9px] font-mono font-semibold">{s.name}</text>
-              <text x={s.x + s.w / 2} y={s.y + 27} textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">{s.n} nodes</text>
+              <text x={s.x + s.w / 2} y={s.y + 27} textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">{s.n} primitives</text>
             </g>
           ))}
 
           {/* Resolver illustration */}
-          <rect x="350" y="178" width="300" height="40" rx="4" className="fill-[hsl(var(--accent))] fill-opacity-[0.08] stroke-[hsl(var(--accent))] stroke-opacity-[0.2] stroke-[1]" />
-          <text x="500" y="195" textAnchor="middle" className="fill-[hsl(var(--foreground))] text-[9px] font-mono font-semibold">node.resolver_name → composable primitives</text>
-          <text x="500" y="210" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">80+ resolvers across 40 nodes</text>
+          <rect x="350" y="138" width="300" height="40" rx="4" className="fill-[hsl(var(--accent))] fill-opacity-[0.08] stroke-[hsl(var(--accent))] stroke-opacity-[0.2] stroke-[1]" />
+          <text x="500" y="155" textAnchor="middle" className="fill-[hsl(var(--foreground))] text-[9px] font-mono font-semibold">primitive.resolver_name → composable capabilities</text>
+          <text x="500" y="170" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[8px] font-mono">80+ resolvers across 40 primitives</text>
 
-          <text x="500" y="250" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">40 nodes · 12 sectors · Σ(weight) = 1.000</text>
+          <text x="500" y="210" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">40 primitives · 4 categories · Σ(weight) = 1.000</text>
         </svg>
       </div>
       <DiagramCaption>The founding axiom: sprawling functions compress into composable primitives without loss of capability.</DiagramCaption>
@@ -168,9 +161,9 @@ export function SectorTopologyDiagram() {
 
   return (
     <div className="my-6">
-      <DiagramTitle>Figure 3 — CMPSBL® 40-Node Sector Topology (v14.2.0 MINDGAMES)</DiagramTitle>
+      <DiagramTitle>Figure 3 — CMPSBL® 40-Primitive Taxonomy (v14.2.0 MINDGAMES)</DiagramTitle>
       <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-        <svg viewBox="0 0 690 430" className="w-full max-w-[690px] mx-auto" role="img" aria-label="CMPSBL 40-node sector topology showing 12 sectors">
+        <svg viewBox="0 0 690 430" className="w-full max-w-[690px] mx-auto" role="img" aria-label="CMPSBL 40-primitive taxonomy showing 4 categories">
           {sectors.map((sector, si) => {
             const nodeH = 18;
             const sectorH = 40 + sector.nodes.length * (nodeH + 2);
@@ -193,11 +186,11 @@ export function SectorTopologyDiagram() {
           })}
           {/* Weight invariant */}
           <text x="345" y="420" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">
-            Σ(module_weight) = 1.000 · Clockless Coordination · Deterministic Boot Sequence
+            Σ(primitive_weight) = 1.000 · Clockless Coordination · Deterministic Boot Sequence
           </text>
         </svg>
       </div>
-      <DiagramCaption>The 40-node matrix organized into 12 canonical sectors with weighted governance.</DiagramCaption>
+      <DiagramCaption>The 40-primitive matrix organized into 4 canonical categories with weighted governance.</DiagramCaption>
     </div>
   );
 }
@@ -254,7 +247,7 @@ export function TimelineDiagram() {
           })}
         </svg>
       </div>
-      <DiagramCaption>15-month research trajectory from the first line of BRAIN code to the 40-node MINDGAMES epoch.</DiagramCaption>
+      <DiagramCaption>15-month research trajectory from the first line of BRAIN code to the 40-primitive MINDGAMES epoch.</DiagramCaption>
     </div>
   );
 }

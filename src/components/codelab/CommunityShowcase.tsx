@@ -41,7 +41,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
   {
     id: "memory-assistant",
     name: "Memory-Enhanced Personal Assistant",
-    description: "A personal AI assistant that learns from every interaction, remembers preferences, and evolves its responses over time. Uses the Dream module for overnight consolidation.",
+    description: "A personal AI assistant that learns from every interaction, remembers preferences, and evolves its responses over time. Uses the DREAM Engine for overnight consolidation.",
     author: "cmpsbl",
     category: "ai-assistant",
     tags: ["ai", "memory", "learning", "personal"],
@@ -99,7 +99,7 @@ const SHOWCASE_PROJECTS: ShowcaseProject[] = [
   {
     id: "world-builder",
     name: "Dynamic Game World Engine",
-    description: "Procedurally generated game worlds with persistent NPCs, evolving storylines, and player memory. Uses Dream module for overnight world evolution.",
+    description: "Procedurally generated game worlds with persistent NPCs, evolving storylines, and player memory. Uses the DREAM Engine for overnight world evolution.",
     author: "gamedev",
     category: "gaming",
     tags: ["gaming", "procedural", "world-building", "npcs"],
@@ -307,7 +307,7 @@ export function CommunityShowcase() {
                 {project.description}
               </p>
 
-              {/* Modules Used */}
+              {/* Primitives Used */}
               <div className="flex gap-1 mb-3">
                 {project.modules.map(mod => (
                   <div

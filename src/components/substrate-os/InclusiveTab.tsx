@@ -2,7 +2,7 @@
  * INCLUSIVE Node Tab — Human Compatibility System
  * WCAG Scanning, Repair, Validation, Profiling, Reporting
  * 
- * Full glue layer integration across 40 nodes:
+ * Full glue layer integration across 40 primitives:
  * - SYSTEM: self_scan → system.audit
  * - VISION: score → vision.health metrics  
  * - DEFENSE: severity → defense risk chain

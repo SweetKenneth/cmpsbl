@@ -14,7 +14,7 @@ interface Props {
 }
 
 const PHASES = [
-  { text: 'Indexing module space…', icon: '⬡' },
+  { text: 'Indexing primitive space…', icon: '⬡' },
   { text: 'Mapping valid topologies…', icon: '◇' },
   { text: 'Evaluating CJPI integrity…', icon: '△' },
   { text: 'Scoring architecture viability…', icon: '◈' },
@@ -242,7 +242,7 @@ export function BlueprintForgeRitual({ onComplete }: Props) {
             </motion.div>
           </AnimatePresence>
 
-          {/* Module count ticker */}
+          {/* Primitive count ticker */}
           <motion.div className="flex justify-center gap-0.5">
             {Array.from({ length: 12 }).map((_, i) => (
               <motion.div

@@ -9,7 +9,7 @@ const NAV_COLUMNS = [
     title: 'Platform',
     links: [
       { label: 'How it works', to: '/ai-operating-system' },
-      { label: 'All modules', to: '/modules' },
+      { label: 'Architecture', to: '/architecture' },
       { label: 'Runtime', to: '/runtime' },
       { label: 'Persistent memory', to: '/persistent-memory' },
     ],
