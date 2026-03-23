@@ -290,7 +290,7 @@ export function getVaultPrimitiveCount(): number {
   return loadedCount;
 }
 
-/** Get distribution across nodes */
+/** Get distribution across primitives */
 export function getVaultDistribution(): Record<string, number> {
   const dist: Record<string, number> = {};
   for (const [node, prims] of primitivesByNode) {

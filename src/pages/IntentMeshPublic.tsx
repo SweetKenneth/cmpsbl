@@ -39,7 +39,7 @@ const NODE_GROUPS = [
   {
     layer: "Kernel",
     nodes: [
-      { name: "BRAIN", capabilities: 3, desc: "Reasoning, prediction, cross-node insight" },
+      { name: "BRAIN", capabilities: 3, desc: "Reasoning, prediction, cross-primitive insight" },
       { name: "MEMORY", capabilities: 4, desc: "Semantic search, pattern matching, learning context" },
       { name: "CORTEX", capabilities: 3, desc: "Orchestration, bottleneck analysis, workflow coordination" },
     ],
@@ -158,7 +158,7 @@ export default function IntentMeshPublic() {
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-                Emergent cross-node intelligence. Execution surfaces broadcast intents, discover capabilities autonomously, and learn from every interaction.
+                Emergent cross-primitive intelligence. Execution surfaces broadcast intents, discover capabilities autonomously, and learn from every interaction.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {Object.entries(CAPABILITY_STATS).map(([key, value]) => (
@@ -219,7 +219,7 @@ export default function IntentMeshPublic() {
   ▼
 Mesh discovers capable responders
   ▼
-Parallel resolution across nodes
+Parallel resolution across primitives
   ▼
 Composed enriched result
   ▼
@@ -340,7 +340,7 @@ Learning feedback → improved future routing`}</pre>
               name: "Intent Mesh",
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Cloud",
-              description: "Emergent cross-node intelligence layer for autonomous capability discovery across AI substrate execution surfaces.",
+              description: "Emergent cross-primitive intelligence layer for autonomous capability discovery across AI substrate execution surfaces.",
               author: {
                 "@type": "Organization",
                 name: "CMPSBL Research Team",

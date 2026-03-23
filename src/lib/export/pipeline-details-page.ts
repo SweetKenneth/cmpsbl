@@ -321,7 +321,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `</div>`;
   html += `<div class="quality-card">`;
   html += `<h3>Scalability</h3>`;
-  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple nodes. NEXUS handles cross-node routing and RIPPLE ensures state consistency.' : 'single-node deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
+  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple nodes. NEXUS handles cross-primitive routing and RIPPLE ensures state consistency.' : 'single-node deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
   html += `</div>`;
   html += `</div>`;
 

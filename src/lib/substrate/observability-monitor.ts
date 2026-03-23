@@ -168,7 +168,7 @@ class ObservabilityMonitor {
   // ═══════════════════════════════════════════════════════════════════════════
 
   /**
-   * Record a cross-node handoff latency
+   * Record a cross-primitive handoff latency
    */
   recordLatency(sourceNode: string, targetNode: string, latencyMs: number): void {
     const key = `${sourceNode}→${targetNode}`;
@@ -188,7 +188,7 @@ class ObservabilityMonitor {
   }
 
   /**
-   * Get all cross-node latency metrics
+   * Get all cross-primitive latency metrics
    */
   getLatencies(): CrossNodeLatency[] {
     const results: CrossNodeLatency[] = [];

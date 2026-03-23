@@ -252,7 +252,7 @@ function ProvenanceDemo() {
   const [complete, setComplete] = useState(false);
 
   const chain: ProvenanceNode[] = [
-    { id: 'user', label: 'User Intent', type: 'input', detail: '"Rate limit the BRAIN module to 100 calls/min"' },
+    { id: 'user', label: 'User Intent', type: 'input', detail: '"Rate limit the BRAIN Organ to 100 calls/min"' },
     { id: 'decode', label: 'DECODE Parser', type: 'engine', detail: 'Entity: BRAIN | Action: rate_limit | Value: 100/min', confidence: 0.97 },
     { id: 'brain-mem', label: 'BRAIN Memory', type: 'memory', detail: 'Prior: BRAIN rate limit was 500/min (set 2026-01-15)' },
     { id: 'governance', label: 'Governance Guard', type: 'engine', detail: 'Risk: MEDIUM — reducing by 5x may cause throttling', confidence: 0.88 },

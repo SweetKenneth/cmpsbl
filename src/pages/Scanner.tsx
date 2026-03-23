@@ -35,7 +35,7 @@ const EVOLUTION_PHASES = [
     name: 'Detect',
     icon: Bug,
     tagline: 'Find the rot before it spreads',
-    description: 'Scans edge functions, database schema, module wiring, and dependency graphs. Surfaces orphaned code, missing guards, and architectural drift you didn\'t know existed.',
+    description: 'Scans edge functions, database schema, primitive wiring, and dependency graphs. Surfaces orphaned code, missing guards, and architectural drift you didn\'t know existed.',
     color: 'from-destructive/20 to-neon-amber/10',
     accent: 'text-destructive',
     border: 'border-destructive/20',

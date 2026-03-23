@@ -2,7 +2,7 @@
  * SIMULATE Ultimate — System 10: Simulation Telemetry & Audit
  * 
  * Complete audit trail for every simulation. Tracks simulation types,
- * durations, outcomes, and cross-node usage. Provides simulation
+ * durations, outcomes, and cross-primitive usage. Provides simulation
  * analytics for capacity planning.
  * 
  * @module simulate/ultimate/simulationTelemetry

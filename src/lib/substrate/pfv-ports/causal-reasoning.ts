@@ -1,6 +1,6 @@
 /**
  * PFV Port → Causal Link Extraction & Reasoning
- * Origin → affects chain tracking for causal reasoning across nodes
+ * Origin → affects chain tracking for causal reasoning across primitives
  * Benefits: BRAIN, ORACLE, GOVERNANCE
  * Source: PromptFluid-Vision brain/contextClassifier.ts (causal extraction)
  */
