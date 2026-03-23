@@ -74,7 +74,7 @@ export function EcosystemDiagram() {
           <text x="340" y="405" textAnchor="middle" className="fill-[hsl(var(--muted-foreground))] text-[10px] font-mono">12+ Products · 252+ Edge Functions · 23 AI Providers</text>
         </svg>
       </div>
-      <DiagramCaption>The PromptFluid ecosystem at peak scale (November 2025). All products fed learning data back to BRAIN.</DiagramCaption>
+      <DiagramCaption>The PromptFluid ecosystem at peak scale (November 2025). All products fed learning data back to BRAIN Organ.</DiagramCaption>
     </div>
   );
 }
