@@ -159,3 +159,9 @@ export function upgradeShadowEngine(v: string) {
   }
   return moduleEngine;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SHADOW Ultimate Form — v9.0.0 "Doppelgänger"
+// ═══════════════════════════════════════════════════════════════════════════════
+import * as ShadowUltimate from '../../shadow/ultimate';
+export { ShadowUltimate };

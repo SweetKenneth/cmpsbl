@@ -3,92 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SHADOW — Isolated Testing & Divergence Analysis | CMPSBL® Substrate</title>
+  <title>SHADOW — Parallel Reality Engine | CMPSBL® Substrate</title>
   <link rel="stylesheet" href="theme.css">
 </head>
 <body>
   <header class="doc-header">
     <div class="node-badge">Node #33</div>
     <h1>SHADOW</h1>
-    <p class="subtitle">Isolated Testing & Divergence Analysis</p>
+    <p class="subtitle">Parallel Reality Engine & Behavioral Verification</p>
     <div class="meta">
       <span class="sector">CSZ</span>
       <span class="codename">Doppelgänger</span>
       <span class="generation">Gen 1</span>
+      <span class="version">v9.0.0 "Doppelgänger"</span>
     </div>
   </header>
-
   <main class="doc-content">
     <section>
       <h2>Executive Summary</h2>
-      <p>SHADOW is the substrate's isolated testing ground. It runs proposed mutations against production traffic in complete isolation, measures divergence, and reports results to the SEBA promotion pipeline. SHADOW is Gate 3 — mandatory and non-bypassable.</p>
+      <p>SHADOW is the substrate's parallel reality engine. It runs proposed changes against production reality in full isolation and proves safety before live deployment.</p>
     </section>
-
     <section>
-      <h2>Shadow Run Lifecycle</h2>
+      <h2>The 10 Ultimate Systems</h2>
       <div class="metrics-grid">
-        <div class="metric-card"><h4>INIT</h4><p>Provision environment, apply mutation</p></div>
-        <div class="metric-card"><h4>MIRROR</h4><p>Traffic flows to shadow alongside prod</p></div>
-        <div class="metric-card"><h4>EXECUTE</h4><p>Both process identical inputs</p></div>
-        <div class="metric-card"><h4>COMPARE</h4><p>Outputs compared for divergence</p></div>
-        <div class="metric-card"><h4>SCORE</h4><p>Divergence metrics computed</p></div>
-        <div class="metric-card"><h4>TEARDOWN</h4><p>Shadow environment destroyed</p></div>
+        <div class="metric-card"><h4>1. Execution Chamber</h4><p>Isolated environment, 5 concurrent sessions, resource budgets</p></div>
+        <div class="metric-card"><h4>2. Divergence Analyzer</h4><p>Weighted composite: output 50%, latency 30%, errors 20%</p></div>
+        <div class="metric-card"><h4>3. Traffic Mirror</h4><p>1–100% configurable production replay with timing preservation</p></div>
+        <div class="metric-card"><h4>4. A/B Verdict Engine</h4><p>Quality 40%, Divergence 25%, Latency 15%, Errors 10%, Resources 10%</p></div>
+        <div class="metric-card"><h4>5. Behavioral Fingerprinter</h4><p>10-bucket histograms, p50/p90/p99, cosine similarity drift</p></div>
+        <div class="metric-card"><h4>6. Chaos Injection</h4><p>6 fault types with intensity control and survival tracking</p></div>
+        <div class="metric-card"><h4>7. Convergence Tracker</h4><p>≥10 cycles, ≥0.95 confidence × 3 consecutive</p></div>
+        <div class="metric-card"><h4>8. Snapshot Manager</h4><p>Immutable FNV-1a hashed state with deep-clone restore</p></div>
+        <div class="metric-card"><h4>9. Leakage Detector</h4><p>5 leakage types, 3-tier severity, fatal = auto-kill</p></div>
+        <div class="metric-card"><h4>10. Shadow Telemetry</h4><p>Composite health across all shadow systems</p></div>
       </div>
     </section>
-
-    <section>
-      <h2>Divergence Scoring</h2>
-      <pre><code>divergence_score = 0.50 × output_div 
-                 + 0.30 × latency_div 
-                 + 0.20 × error_div
-
-Promotion thresholds:
-  - Output divergence:  < 5%
-  - Latency divergence: < 10% degradation
-  - Error divergence:   < 1% increase
-  - Total score:        < 0.05 for promotion</code></pre>
-    </section>
-
-    <section class="trade-secrets">
-      <h2>Trade Secrets</h2>
-      
-      <h3>1. Zero Production Write Access</h3>
-      <p>Shadow execution has <strong>zero</strong> write access to production state. All side effects are captured in an ephemeral store destroyed on teardown.</p>
-
-      <h3>2. Time-Bounded Execution</h3>
-      <p>Shadow environments have a configurable TTL (default: 1 hour). Automatic teardown prevents resource leaks.</p>
-
-      <h3>3. Network Interception</h3>
-      <p>All outbound network calls from shadow can be intercepted, recorded, or blocked — preventing external system contamination.</p>
-
-      <h3>4. TSAC (Truth Shadow Arbitration Check)</h3>
-      <ul>
-        <li><strong>Truth assertion</strong>: Verify shadow outputs are factually consistent</li>
-        <li><strong>Shadow verdict</strong>: Pass/warn/fail based on thresholds</li>
-        <li><strong>Arbitration</strong>: Resolve conflicts between multiple shadow runs</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Run Types</h2>
-      <table>
-        <tr><th>Type</th><th>Description</th><th>Traffic Source</th></tr>
-        <tr><td>Full shadow</td><td>100% production traffic</td><td>RELAY mirror tap</td></tr>
-        <tr><td>Sampled</td><td>1–50% configurable</td><td>Probabilistic sampling</td></tr>
-        <tr><td>Synthetic</td><td>Generated test inputs</td><td>ORACLE scenarios</td></tr>
-        <tr><td>Replay</td><td>Historical traffic</td><td>ECHO temporal replay</td></tr>
-      </table>
-    </section>
-
-    <section>
-      <h2>CLM Learning Priorities</h2>
-      <ol>
-        <li><strong>Divergence Pattern Recognition</strong> — Learning which divergence types indicate real problems</li>
-        <li><strong>Optimal Sample Size</strong> — Finding minimum traffic sample for statistical significance</li>
-      </ol>
-    </section>
   </main>
-
   <footer class="doc-footer">
     <p>CMPSBL® Substrate — SHADOW Node Deep Dive · Founder Eyes Only</p>
   </footer>
