@@ -187,4 +187,4 @@ getWalRange(from: number, to: number): Promise<WalEvent[]>
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

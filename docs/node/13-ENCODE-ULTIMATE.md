@@ -1,6 +1,6 @@
 # ENCODE Ultimate — "Architect" v9.0.0
 
-> **Node #13** · Sector: EXEC · **Codename:** Architect · **Ultimate Form:** v9.0.0 "Architect"  
+> **Primitive #13** · Category: EXEC · **Codename:** Architect · **Ultimate Form:** v9.0.0 "Architect"  
 > **Role:** Governed mutation engine — AST-aware code transformation  
 > **Personality:** The Architect · **Icon:** 🏗️  
 > **Classification:** FOUNDER EYES ONLY

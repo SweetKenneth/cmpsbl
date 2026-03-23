@@ -1,7 +1,7 @@
 # CONSCIENCE — Ultimate Architecture (v9.0.0 "Ethicist")
 
-**Node:** #24 — CONSCIENCE  
-**Sector:** OCG (Observability & Control Group)  
+**Primitive:** #24 — CONSCIENCE  
+**Category:** OCG (Observability & Control Group)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ CONSCIENCE operates within the `governance-enforcement` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

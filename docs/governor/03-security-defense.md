@@ -144,4 +144,4 @@ Module-specific: REFLEX 500/s, NEXUS 200/s, DECODE 100/s, EVOLUTION 5/s, GOVERNA
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

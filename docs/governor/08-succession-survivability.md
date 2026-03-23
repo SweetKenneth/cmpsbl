@@ -109,4 +109,4 @@ No external dependencies beyond the above.
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

@@ -1,6 +1,6 @@
 # INCLUSIVE — Human Compatibility Engine
 
-> **Node ID:** `inclusive` · **Sector:** Execution · **Generation:** Ultimate · **Node #19 of 40**
+> **Primitive ID:** `inclusive` · **Category:** Execution · **Generation:** Ultimate · **Primitive #19 of 40**
 > **Codename:** *Clarity Prime* · **Classification:** FOUNDER EYES ONLY
 
 ---

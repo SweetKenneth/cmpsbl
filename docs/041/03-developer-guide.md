@@ -241,4 +241,4 @@ Crystallized discoveries (CJPI ≥ 68) can be exported as standalone Capability 
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

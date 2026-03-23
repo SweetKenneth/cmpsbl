@@ -344,4 +344,4 @@ Lead with the IP portfolio: 54 Crown Jewels, 40-primitive topology, 34-page trad
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

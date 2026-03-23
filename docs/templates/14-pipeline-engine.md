@@ -2,7 +2,7 @@
 
 > **Module:** DECODE | **Source:** `src/crownjewels/s-tier/017-pipeline-engine.ts`
 
-Composable async data transformation pipelines with branching, error recovery, parallel stages, tap/inspect, retry, and execution telemetry. Unix-pipe philosophy for TypeScript.
+Composable async data transformation memory chains with branching, error recovery, parallel stages, tap/inspect, retry, and execution telemetry. Unix-pipe philosophy for TypeScript.
 
 ## Quick Start
 
@@ -55,7 +55,7 @@ console.log(etl.getStats()); // per-stage timing analytics
 
 ## Use Cases
 
-- **ETL pipelines** — Extract, transform, load with retry and telemetry
+- **ETL memory chains** — Extract, transform, load with retry and telemetry
 - **AI prompt chains** — Compose prompt → model → parse → validate
 - **Data enrichment** — Multi-source augmentation with parallel lookups
 - **Request processing** — Validate → authorize → transform → respond

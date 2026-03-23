@@ -135,4 +135,4 @@ The Memory Stream is visible through the platform's Memory Stream dashboard, whi
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

@@ -1,7 +1,7 @@
 # BRAIN — Ultimate Architecture (v9.0.0 "Synaptic")
 
-**Node:** #03 — BRAIN  
-**Sector:** CCR (Cognitive Core Ring)  
+**Primitive:** #03 — BRAIN  
+**Category:** CCR (Cognitive Core Ring)  
 **Weight:** 0.065  
 **Classification:** 🔒 FOUNDER EYES ONLY  
 **Last Updated:** 2026-03-23

@@ -68,4 +68,4 @@ CMPSBL operates under **supervised autonomy** — the system acts independently 
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

@@ -1,6 +1,6 @@
 # REFLEX — Edge Intelligence Runtime
 
-> **Node ID:** `reflex` · **Sector:** EPZ (Expansion Perception Zone) · **Generation:** Ultimate · **Node #28 of 40**
+> **Primitive ID:** `reflex` · **Category:** EPZ (Expansion Perception Zone) · **Generation:** Ultimate · **Primitive #28 of 40**
 > **Codename:** *Impulse Prime* · **Classification:** FOUNDER EYES ONLY
 
 ---

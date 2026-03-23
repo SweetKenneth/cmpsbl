@@ -1,7 +1,7 @@
 # IDENTITY — Ultimate Architecture (v9.0.0 "Authenticator")
 
-**Node:** #8 — IDENTITY  
-**Sector:** ESZ (Execution Safety Zone)  
+**Primitive:** #8 — IDENTITY  
+**Category:** ESZ (Execution Safety Zone)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ IDENTITY operates within the `access-control` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

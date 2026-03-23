@@ -36,7 +36,7 @@ The substrate is production-ready with:
 - **Self-assembling agent teams** — agencies that form and dissolve based on task requirements
 - **Cross-substrate knowledge exchange** — governed knowledge sharing between instances
 - **Hardware description language deployment** — from software to silicon
-- **Autonomous research pipelines** — end-to-end scientific discovery workflows
+- **Autonomous research memory chains** — end-to-end scientific discovery workflows
 
 ---
 
@@ -64,4 +64,4 @@ No matter where the roadmap goes, these remain constant:
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

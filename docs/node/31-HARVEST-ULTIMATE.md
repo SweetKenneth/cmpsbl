@@ -1,7 +1,7 @@
 # HARVEST — Ultimate Architecture (v9.0.0 "Cultivator")
 
-**Node:** #31 — HARVEST  
-**Sector:** FIELDS (Field Intelligence)  
+**Primitive:** #31 — HARVEST  
+**Category:** FIELDS (Field Intelligence)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ HARVEST operates within the `pattern-detection` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

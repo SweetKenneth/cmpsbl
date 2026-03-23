@@ -292,7 +292,7 @@ AUDIT        ██ 2
 | A-23 | Memory Hot/Warm/Cold Tiering | MEMORY | 74 | Storage optimization |
 | A-24 | 8-Layer Structural Health Check | SYSTEM | 74 | System diagnostics |
 | A-25 | Dry-Run Impact Projector | EVOLUTION | 74 | Pre-mutation forecasting |
-| A-26 | Synergy Pipeline Executor | CORTEX | 73 | Cross-module pipelines |
+| A-26 | Synergy Pipeline Executor | CORTEX | 73 | Cross-module memory chains |
 | A-27 | NEXUS Anomaly Detector | NEXUS | 73 | Provider health monitoring |
 | A-28 | Black-Box Artifact Sealer | GOVERNANCE | 73 | IP protection enforcement |
 | A-29 | Boot Dependency Resolver | CORE | 72 | Initialization sequencing |
@@ -447,7 +447,7 @@ The combination of CLM (S-08), Topic Mastery (B-01), Tiered Curriculum (A-20), a
 | Metric | Value |
 |--------|-------|
 | Total registered capabilities in substrate | 269+ |
-| Total synergy pipelines | 200 |
+| Total synergy memory chains | 200 |
 | Total executors | 125 |
 | **Artifacts mined in this report** | **100** |
 | % of registered capabilities represented | ~37% |
@@ -517,4 +517,4 @@ The following artifacts, if reverse-engineered, would cause the most damage:
 
 **Classification:** This document is classified INTERNAL — RESTRICTED. Distribution outside the substrate governance team is prohibited. All artifacts described herein are subject to Black-Box enforcement protocol.
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

@@ -17,7 +17,7 @@ This document inventories every hardened module in the substrate, its hardening 
 | CORE | v2.0.0 | Foundation | Boot integrity seals (SHA), timing profiler, shutdown deadline, DLQ, bulkhead isolation, module quarantine, request deduplication, priority queuing, adaptive timeouts, Core Watchdog |
 | SYSTEM | v2.0.0 | Bastion | Boot integrity seals (hash-chained), lifecycle state machine, module dependency validation, shutdown coordinator, resource quota enforcement, diagnostic snapshot engine |
 | MEMORY | v2.0.0 | Vault | Content hash seals (tamper detection), WAL for crash recovery, retrieval latency (P95) monitoring, SM-2 health monitoring |
-| DREAM | v2.0.0 | Nocturne | Hallucination guards, energy budgets, latent pattern caching, insight promotion pipelines |
+| DREAM | v2.0.0 | Nocturne | Hallucination guards, energy budgets, latent pattern caching, insight promotion memory chains |
 
 ### Tier 2 — Security & Governance
 
@@ -110,4 +110,4 @@ Total available commands: **500+** across all modules.
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

@@ -238,7 +238,7 @@ Every node exposes a canonical triad plus specialized commands:
 | `cortex status` | Free | Orchestrator state |
 | `cortex health` | Free | Pipeline diagnostics |
 | `cortex help` | Free | CORTEX command reference |
-| `cortex pipelines` | Creator | View active pipelines |
+| `cortex memory chains` | Creator | View active memory chains |
 | `cortex bottlenecks` | Architect | Bottleneck analysis (throughput/queue depth) |
 | `cortex cascade` | Architect | Cascade failure prevention status |
 | `cortex sla` | Governor | SLA monitoring dashboard |
@@ -626,7 +626,7 @@ npx @cmpsbl/cli [command]
 | `cmpsbl encode analyze [target]` | Code analysis |
 | `cmpsbl encode build [spec]` | Execute build |
 | `cmpsbl telemetry stream` | Live telemetry stream |
-| `cmpsbl cortex pipelines` | View active pipelines |
+| `cmpsbl cortex memory chains` | View active memory chains |
 | `cmpsbl cortex bottlenecks` | Bottleneck analysis |
 | `cmpsbl nexus providers` | View provider fleet |
 | `cmpsbl nexus fallback` | View fallback chain |
@@ -879,4 +879,4 @@ access developers
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

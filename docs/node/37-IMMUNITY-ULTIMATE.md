@@ -1,6 +1,6 @@
 # IMMUNITY Ultimate — "Sentinel Prime" v9.0.0
 
-> **Node #37** · Sector: FIELDS · **Codename:** Sentinel · **Ultimate Form:** v9.0.0 "Sentinel Prime"  
+> **Primitive #37** · Category: FIELDS · **Codename:** Sentinel · **Ultimate Form:** v9.0.0 "Sentinel Prime"  
 > **Role:** Adaptive immune system for substrate-wide resilience  
 > **Personality:** The Sentinel · **Icon:** 🛡️  
 > **Classification:** FOUNDER EYES ONLY

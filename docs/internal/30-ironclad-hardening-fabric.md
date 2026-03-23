@@ -129,4 +129,4 @@ All 38 nodes are protected:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

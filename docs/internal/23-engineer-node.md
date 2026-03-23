@@ -120,4 +120,4 @@ All ENGINEER proposals are also dispatched to the INTENT Hub for translation int
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

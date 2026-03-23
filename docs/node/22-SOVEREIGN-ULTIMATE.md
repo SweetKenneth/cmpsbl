@@ -1,6 +1,6 @@
 # SOVEREIGN Ultimate — "Crown Prime" v9.0.0
 
-> **Node #22** · Sector: ESZ (Expansion Sovereignty Zone) · Generation: 1  
+> **Primitive #22** · Category: ESZ (Expansion Sovereignty Zone) · Generation: 1  
 > **Codename:** Chancellor · **Ultimate Form:** v9.0.0 "Crown Prime"  
 > **Role:** Living regulatory intelligence engine — data sovereignty, jurisdictional compliance, breach response  
 > **Personality:** The Voice · **Icon:** 👑  

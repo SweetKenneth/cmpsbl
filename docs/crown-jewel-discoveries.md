@@ -7,9 +7,9 @@
 
 ## Table of Contents
 
-1. [Wave 7 Crystallized Pipelines (76)](#wave-7)
-2. [Wave 8 Pipelines (50)](#wave-8)
-3. [Wave 9 Pipelines (50)](#wave-9)
+1. [Wave 7 Crystallized memory chains (76)](#wave-7)
+2. [Wave 8 memory chains (50)](#wave-8)
+3. [Wave 9 memory chains (50)](#wave-9)
 4. [Crown Jewel Capabilities (S-Tier Registry)](#crown-jewel-capabilities)
 5. [Meta-Engines](#meta-engines)
 6. [Discovery Statistics](#discovery-statistics)
@@ -18,15 +18,15 @@
 
 ## Wave 7
 
-All Wave 7 pipelines scoring **CJPI ≥ 80**, auto-tiered and crystallized.
+All Wave 7 memory chains scoring **CJPI ≥ 80**, auto-tiered and crystallized.
 
 ### CMPSBL-Only Tier (CJPI 95–100)
 
-_Internal-only. Apex-grade pipelines._
+_Internal-only. Apex-grade memory chains._
 
 | # | Pipeline | Description | CJPI | Category | Module Chain |
 |---|----------|-------------|------|----------|-------------|
-| 1 | Capability Synthesis Reactor | One-click auto-discovery engine that generates, scores, tiers, and ranks new Crown Jewel pipelines by composing capabilities across all canonical modules. | 95.3 | evolution | EVOLUTION → DREAM → CORTEX → BRAIN |
+| 1 | Capability Synthesis Reactor | One-click auto-discovery engine that generates, scores, tiers, and ranks new Crown Jewel memory chains by composing capabilities across all canonical modules. | 95.3 | evolution | EVOLUTION → DREAM → CORTEX → BRAIN |
 
 ### Enterprise Tier (CJPI 85–94)
 
@@ -113,7 +113,7 @@ _Internal-only. Apex-grade pipelines._
 | 35 | Transparency Report Generator | Automated generation of transparency reports covering system decisions and data usage. | 80.0 | governance | GOVERNANCE → ANALYTICS → AUDIT |
 | 36 | Empathic Interaction Chain | Detects user emotional state and adapts interaction style, tone, and complexity. | 80.0 | cognitive | DECODE → BRAIN → CORTEX → NEXUS |
 
-**Total Crystallized Wave 7: 76 pipelines**
+**Total Crystallized Wave 7: 76 memory chains**
 
 ---
 
@@ -172,7 +172,7 @@ Mined from deep synergy analysis. All 50 score **CJPI ≥ 80**.
 | 35 | Operational Wisdom Extractor | Extracts operational wisdom from audit logs and post-mortems into reusable playbooks. | 83.4 | learning | AUDIT → BRAIN → DREAM → EVOLUTION |
 | 36 | Health-Aware Load Balancer | Routes traffic away from degraded providers using health prediction and capacity scoring. | 83.1 | routing | MEDIC → NEXUS → VISION → SYSTEM |
 | 37 | Automated Compliance Prover | Generates formal proofs of compliance for regulatory requirements. | 82.8 | governance | GOVERNANCE → AUDIT → DEFENSE → ANALYTICS |
-| 38 | Cross-Pipeline State Reconciler | Reconciles state across concurrent pipelines sharing resources. | 82.5 | orchestration | CORTEX → MEMORY → SYSTEM → NERVE |
+| 38 | Cross-Pipeline State Reconciler | Reconciles state across concurrent memory chains sharing resources. | 82.5 | orchestration | CORTEX → MEMORY → SYSTEM → NERVE |
 | 39 | Embedding Drift Detector | Monitors embedding spaces for distribution drift indicating model degradation. | 82.2 | observability | BRAIN → VISION → ANALYTICS → EVOLUTION |
 | 40 | Semantic Version Reconciler | Reconciles semantic versioning across integration endpoints with compatibility matrices. | 81.9 | integration | INTEGRATION → SYSTEM → GOVERNANCE → VISION |
 | 41 | Cognitive Warm-Up Accelerator | Pre-loads context, memories, and skill models during session initialization. | 81.6 | learning | MEMORY → BRAIN → CORTEX → DECODE |
@@ -186,7 +186,7 @@ Mined from deep synergy analysis. All 50 score **CJPI ≥ 80**.
 | 49 | Economic Signal Propagator | Propagates economic signals across the module mesh in real-time. | 80.1 | routing | ECONOMY → ANALYTICS → NEXUS → CORTEX |
 | 50 | Entropy-Aware Garbage Collector | Identifies and removes high-entropy artifacts based on value scoring. | 80.0 | evolution | SYSTEM → VISION → EVOLUTION → MEMORY |
 
-**Total Wave 8 Crystallized: 50 pipelines** (3 Apex, 26 Enterprise, 21 Architect)
+**Total Wave 8 Crystallized: 50 memory chains** (3 Apex, 26 Enterprise, 21 Architect)
 
 ---
 
@@ -259,7 +259,7 @@ Deep topology mining across under-explored module intersections. All 50 score **
 | 49 | Cross-Instance State Merger | Merges state from multiple instances using CRDTs for seamless federation. | 80.0 | integration | NERVE → SYSTEM → MEMORY → GOVERNANCE |
 | 50 | Autonomous Capacity Planner | Plans infrastructure capacity using demand forecasting, seasonality analysis, and cost optimization. | 80.0 | routing | ANALYTICS → ECONOMY → NEXUS → SYSTEM |
 
-**Total Wave 9 Crystallized: 50 pipelines** (3 Apex, 20 Enterprise, 27 Architect)
+**Total Wave 9 Crystallized: 50 memory chains** (3 Apex, 20 Enterprise, 27 Architect)
 
 ---
 
@@ -331,7 +331,7 @@ Ranked by Crown Jewel Power Index. Top 10 are "Apex" jewels with portable zero-d
 
 | Metric | Value |
 |--------|-------|
-| **Total Pipelines Registered** | 200 |
+| **Total memory chains Registered** | 200 |
 | **Crystallized (CJPI ≥ 80)** | 176 |
 | **CJPI ≥ 95 (Apex)** | 7 |
 | **CJPI ≥ 85 (Enterprise)** | 92 |
@@ -353,13 +353,13 @@ Ranked by Crown Jewel Power Index. Top 10 are "Apex" jewels with portable zero-d
 
 | Asset Class | Count | Source |
 |-------------|-------|-------|
-| Crystallized Pipelines | 200 | Wave 7 (100) + Wave 8 (50) + Wave 9 (50) |
+| Crystallized memory chains | 200 | Wave 7 (100) + Wave 8 (50) + Wave 9 (50) |
 | S-Tier Crown Jewels | 142 | Registry |
 | Meta-Engines | 26 | Synergy Mining |
 | Total Capabilities | 479+ | Aggregate |
 | Canonical Modules | 30 | Substrate |
 
-> **Population Estimate:** Based on the current module topology (30 canonical modules, ~15 cross-cutting categories), the theoretical population of viable CJPI ≥ 80 pipelines is estimated at **300–400**. The current 200 crystallized pipelines represent approximately 55% of the viable topology.
+> **Population Estimate:** Based on the current module topology (30 canonical modules, ~15 cross-cutting categories), the theoretical population of viable CJPI ≥ 80 memory chains is estimated at **300–400**. The current 200 crystallized memory chains represent approximately 55% of the viable topology.
 
 ---
 

@@ -73,4 +73,4 @@ curl -X POST https://api.cmpsbl.ai/api/v1/economy/usage \
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

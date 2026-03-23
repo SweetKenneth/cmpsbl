@@ -117,4 +117,4 @@ Built on PostgreSQL with Row-Level Security (RLS). Per-user data isolation, real
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

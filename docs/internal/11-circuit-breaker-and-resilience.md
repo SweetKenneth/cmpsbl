@@ -188,7 +188,7 @@ Proactively inject failures to verify resilience:
 | Subsystem | Recovery Function | Action |
 |-----------|------------------|--------|
 | CLM | `healCLM()` | Resets budgets and kill-switches |
-| Evolution Mesh | `healEvolutionMesh()` | Flushes stale mutation pipelines |
+| Evolution Mesh | `healEvolutionMesh()` | Flushes stale mutation memory chains |
 | Immunity Mesh | `healImmunityMesh()` | Resets OCG capability gates |
 | Module (any) | `system.heal { module }` | Module-specific recovery sequence |
 
@@ -213,4 +213,4 @@ Proactively inject failures to verify resilience:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

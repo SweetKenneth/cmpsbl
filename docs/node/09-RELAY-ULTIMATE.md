@@ -1,7 +1,7 @@
 # RELAY — Ultimate Architecture (v9.0.0 "Courier")
 
-**Node:** #9 — RELAY  
-**Sector:** EMZ (External Messaging Zone)  
+**Primitive:** #9 — RELAY  
+**Category:** EMZ (External Messaging Zone)  
 **Weight:** 0.015  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ RELAY operates within the `communication` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

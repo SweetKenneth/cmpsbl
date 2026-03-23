@@ -1,6 +1,6 @@
 # COMPASS — Universal Spatial-Temporal Intelligence
 
-> **Node ID:** `compass` · **Sector:** EPZ (Expansion Perception Zone) · **Generation:** Ultimate · **Node #26 of 40**
+> **Primitive ID:** `compass` · **Category:** EPZ (Expansion Perception Zone) · **Generation:** Ultimate · **Primitive #26 of 40**
 > **Codename:** *Navigator Prime* · **Classification:** FOUNDER EYES ONLY
 > **Ultimate Form:** v10.0.0 "Navigator Prime"
 

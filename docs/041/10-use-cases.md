@@ -221,4 +221,4 @@ A developer wants to experiment with node combinations and synthesize new capabi
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

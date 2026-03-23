@@ -34,7 +34,7 @@ X-RateLimit-Reset: 1709312400
 1. **Check headers** — monitor `X-RateLimit-Remaining` to avoid hitting limits
 2. **Implement backoff** — exponential backoff on 429 responses
 3. **Cache responses** — reduce duplicate calls for identical queries
-4. **Batch requests** — use CORTEX pipelines to combine multiple operations
+4. **Batch requests** — use CORTEX memory chains to combine multiple operations
 5. **Monitor usage** — check `/api/v1/economy/usage` regularly
 
 ## Grace Period
@@ -43,4 +43,4 @@ All tiers get a **10% buffer** for burst usage. This does not roll over. Crown J
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

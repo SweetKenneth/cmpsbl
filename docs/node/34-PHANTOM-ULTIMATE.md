@@ -1,7 +1,7 @@
 # PHANTOM — Ultimate Architecture (v9.0.0 "Specter")
 
-**Node:** #34 — PHANTOM  
-**Sector:** SHELL (Outer Boundary Shell)  
+**Primitive:** #34 — PHANTOM  
+**Category:** SHELL (Outer Boundary Shell)  
 **Weight:** 0.015  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ PHANTOM operates within the `edge-compute` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

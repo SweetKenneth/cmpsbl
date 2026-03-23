@@ -489,7 +489,7 @@ Capability Class → Runtime Bridge → Module Handler Registry → Pipeline Exe
 ### Deliberate Limitations (v1)
 
 - No async orchestration — sequential only
-- No parallel pipelines
+- No parallel memory chains
 - Module handlers implement **minimal behavioral contracts**, not full node logic
 - No substrate connection — offline execution only
 

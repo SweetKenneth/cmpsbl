@@ -92,7 +92,7 @@ Specialized processing modules:
 |--------|-----------|--------------|------|
 | FORGE | 32 | CORE, ENCODE | Content generation, artifact manufacturing. |
 | LINGUA | 33 | CORE, DECODE, NEXUS | Translation, multilingual processing. |
-| HARVEST | 34 | CORE, MEMORY, ECONOMY | Data collection, ETL pipelines. |
+| HARVEST | 34 | CORE, MEMORY, ECONOMY | Data collection, ETL memory chains. |
 
 ### 2.8 CSZ — Covert Systems Zone
 
@@ -228,7 +228,7 @@ Production module count validation target: **38 nodes across 12 sectors**.
 | OCG | Operational compliance (events, auth, audit, signaling) | Loss of boundary enforcement |
 | ESZ | Sovereignty, prediction, ethics, contracts | Reduced governance reach |
 | EPZ | Perception, simulation, edge compute | Reduced foresight |
-| EMZ | Manufacturing, translation, data pipelines | Reduced production capacity |
+| EMZ | Manufacturing, translation, data memory chains | Reduced production capacity |
 | CSZ | Evolution, shadow testing, privacy | Reduced mutation and covert ops |
 
 ---
@@ -242,4 +242,4 @@ Production module count validation target: **38 nodes across 12 sectors**.
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

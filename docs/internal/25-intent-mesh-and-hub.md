@@ -40,7 +40,7 @@ src/lib/substrate/intent-mesh/
 ├── manifest.ts           — Intent mesh manifest
 ├── mesh-federation.ts    — Cross-instance mesh coordination
 ├── mesh-health-monitor.ts — Mesh health monitoring
-├── pipelines.ts          — Intent pipeline orchestration
+├── memory chains.ts          — Intent pipeline orchestration
 ├── refinement.ts         — Intent refinement and clarification
 ├── toggle.ts             — Intent mesh enable/disable
 └── intent-hardening.ts   — Security hardening
@@ -160,4 +160,4 @@ This is the same mechanism that powers the Autonomous Software Foundry's module-
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

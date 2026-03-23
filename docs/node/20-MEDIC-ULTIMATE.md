@@ -1,6 +1,6 @@
 # MEDIC Ultimate — "Surgeon" v9.0.0
 
-> **Node #20** · Sector: EXEC · **Codename:** Surgeon · **Ultimate Form:** v9.0.0 "Surgeon"  
+> **Primitive #20** · Category: EXEC · **Codename:** Surgeon · **Ultimate Form:** v9.0.0 "Surgeon"  
 > **Role:** Centralized diagnostic and self-healing core  
 > **Personality:** The Healer · **Icon:** 🏥  
 > **Classification:** FOUNDER EYES ONLY

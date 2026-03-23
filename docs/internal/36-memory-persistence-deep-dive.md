@@ -317,7 +317,7 @@ Memory is not isolated to the MEMORY module. Multiple modules interact with the 
 | **CLM** | Constant Learning Mode — ingests external knowledge into memory |
 | **DECODE** | Retrieves context for natural language understanding |
 | **NEXUS** | Uses neural recall for context-augmented routing decisions |
-| **CORTEX** | Orchestrates memory across cognitive pipelines |
+| **CORTEX** | Orchestrates memory across cognitive memory chains |
 | **ECHO** | Cross-session memory replay |
 | **VISION** | Stores scan results and findings as memories |
 
@@ -408,4 +408,4 @@ Memory is not isolated to the MEMORY module. Multiple modules interact with the 
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

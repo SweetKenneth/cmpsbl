@@ -1,6 +1,6 @@
 # AUDIT Ultimate — "Sentinel" v9.0.0
 
-> **Node #10** · Sector: OCG · **Codename:** Sentinel · **Ultimate Form:** v9.0.0 "Sentinel"  
+> **Primitive #10** · Category: OCG · **Codename:** Sentinel · **Ultimate Form:** v9.0.0 "Sentinel"  
 > **Role:** Forensic intelligence and governance-grade compliance  
 > **Personality:** The Chronicler · **Icon:** 📜  
 > **Classification:** FOUNDER EYES ONLY

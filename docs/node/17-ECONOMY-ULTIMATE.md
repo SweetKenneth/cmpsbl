@@ -1,7 +1,7 @@
 # ECONOMY — Ultimate Architecture (v9.0.0 "Treasury")
 
-**Node:** #17 — ECONOMY  
-**Sector:** EPZ (External Publishing Zone)  
+**Primitive:** #17 — ECONOMY  
+**Category:** EPZ (External Publishing Zone)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -62,4 +62,4 @@ ECONOMY is the substrate's **financial engine and monetization layer**. It manag
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

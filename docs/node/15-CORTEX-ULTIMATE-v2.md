@@ -1,7 +1,7 @@
 # CORTEX — Ultimate Architecture (v9.0.0 "Orchestrator Prime")
 
-**Node:** #15 — CORTEX  
-**Sector:** EXEC (Execution Ring)  
+**Primitive:** #15 — CORTEX  
+**Category:** EXEC (Execution Ring)  
 **Weight:** 0.030  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ CORTEX operates within the `operational` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

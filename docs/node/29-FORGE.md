@@ -1,4 +1,4 @@
-# FORGE — Artifact Synthesis & Build Pipelines
+# FORGE — Artifact Synthesis & Build memory chains
 
 > **Node ID:** `forge` · **Sector:** EMZ (Expansion Manufacturing Zone) · **Generation:** 1 · **Node #29 of 40**
 > **Codename:** *The Blacksmith* · **Classification:** FOUNDER EYES ONLY

@@ -182,7 +182,7 @@ System Event → Signal Match → Arbitration → Confidence Gate → Guard Laye
 | ACT_096 | Artifact Recombination Discovery | FORGE | `system.idle_detected` (>240s) | ≥0 | 1hr | Recombines existing artifacts to discover novel compositions |
 | ACT_097 | Immune Strength Assessment | IMMUNITY | `system.idle_detected` (>120s) | ≥0 | 1hr | Comprehensive immune strength assessment across all layers |
 | ACT_098 | Control Effectiveness Audit | AUDIT | `system.idle_detected` (>600s) | ≥0 | 2hr | Scores effectiveness of all security controls |
-| ACT_099 | Idea Incubation Cycle | DREAM | `system.idle_detected` (>900s) | ≥0 | 2hr | Incubates promising but unvalidated ideas from discovery pipeline |
+| ACT_099 | Idea Incubation Cycle | DREAM | `system.idle_detected` (>900s) | ≥0 | 2hr | Incubates promising but unvalidated ideas from discovery memory chain |
 | ACT_100 | Cross-Domain Policy Harmonization | GOVERNANCE | `system.idle_detected` (>600s) | ≥0 | 2hr | Harmonizes policies across governance domains |
 
 ---
@@ -206,7 +206,7 @@ System Event → Signal Match → Arbitration → Confidence Gate → Guard Laye
 
 | ID | Name | Owner | Trigger | Severity | Cooldown | Effect |
 |----|------|-------|---------|----------|----------|--------|
-| ACT_109 | Cortex Pipeline Fusion | CORTEX | `cortex.pipeline_redundancy` (>3) | ≥4 | 120s | Merges redundant pipelines into optimized fusion, reducing overhead 40%+ |
+| ACT_109 | Cortex Pipeline Fusion | CORTEX | `cortex.pipeline_redundancy` (>3) | ≥4 | 120s | Merges redundant memory chains into optimized fusion, reducing overhead 40%+ |
 | ACT_110 | Medic Predictive Triage | MEDIC | `medic.degradation_trend` | ≥5 | 60s | Predicts node failures 15 min ahead using EMA decay analysis |
 | ACT_111 | Nexus Smart Routing | NEXUS | `nexus.route_suboptimal` | ≥4 | 30s | Re-evaluates provider routing using real-time latency and cost scoring |
 | ACT_112 | Economy Cost Anomaly Alert | ECONOMY | `economy.cost_anomaly` (>50% deviation) | ≥6 | 60s | Detects sudden cost spikes and throttles expensive operations |
@@ -324,4 +324,4 @@ System Event → Signal Match → Arbitration → Confidence Gate → Guard Laye
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.
