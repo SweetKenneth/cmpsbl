@@ -806,9 +806,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'dream.hardening.idle', description: 'Idle cycle detector state', category: 'dream', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'dream.hardening.synthesis', description: 'Synthesis audit trail', category: 'dream', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — ECONOMY
-  { command: 'economy.hardening', description: 'ECONOMY hardening status (Ledger)', category: 'economy_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'economy.hardening.health', description: 'ECONOMY health composite', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — ECONOMY Engine
+  { command: 'economy.hardening', description: 'ECONOMY Engine hardening status (Ledger)', category: 'economy_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'economy.hardening.health', description: 'ECONOMY Engine health composite', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.budget', description: 'Budget breach circuit breaker', category: 'economy_mod', icon: Zap, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.velocity', description: 'Spend velocity limiter', category: 'economy_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'economy.hardening.anomalies', description: 'Cost anomaly detector (Z-score)', category: 'economy_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
