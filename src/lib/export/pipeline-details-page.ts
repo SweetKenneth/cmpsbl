@@ -456,7 +456,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(input.name)} — Pipeline Certificate</title>
+  <title>${escapeHtml(input.name)} — Memory Chain Certificate</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
