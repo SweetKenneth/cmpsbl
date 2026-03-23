@@ -10,7 +10,7 @@
  *   - Governed (GOVERNANCE can pause/override any chain)
  *   - Audited (every execution logged)
  * 
- * 50 Primary Chains across 7 categories:
+ * 75 Primary Chains across 8 categories:
  * 
  * ── Core Response (1–8) ──
  *   1.  THREAT_RESPONSE         — VISION → DEFENSE → IDENTITY → ACCESS
@@ -75,6 +75,33 @@
  *   48. COMPASS_REALIGN         — COMPASS → BRAIN → ORACLE → ATLAS
  *   49. SHADOW_DETECTION        — SHADOW → DEFENSE → PHANTOM → AUDIT
  *   50. IMMUNITY_UPDATE         — IMMUNITY → DEFENSE → EVOLUTION → NERVE
+ *
+ * ── Discovery-Derived (51–75) — Learned from vault_promotions + pipeline_vault ──
+ *   51. HYBRID_OBSERVATION      — BRAIN → VISION → NERVE → ANALYTICS
+ *   52. AUTONOMOUS_SCAN         — NERVE → GOVERNANCE → ACCESS → NEXUS
+ *   53. FEDERATED_RECALL        — DECODE → BRAIN → MEMORY → NEXUS
+ *   54. PREDICTIVE_SEQUENCING   — SYSTEM → NERVE → CORTEX → NEXUS
+ *   55. SOVEREIGN_LOCKDOWN      — SOVEREIGN → GOVERNANCE → ACCESS → IDENTITY
+ *   56. CAUSAL_SYNTHESIS        — FORGE → BRAIN → DREAM → CORTEX
+ *   57. ELASTIC_CORRECTION      — ECHO → BRAIN → MEMORY → CORTEX
+ *   58. ADVERSARIAL_EVOLUTION   — CORTEX → DREAM → ANALYTICS → HARVEST
+ *   59. COMPOSITIONAL_FIREWALL  — DEFENSE → AUDIT → GOVERNANCE → PHANTOM
+ *   60. PROBABILISTIC_VALIDATION — CONSCIENCE → BRAIN → AUDIT → GOVERNANCE
+ *   61. SPECTRAL_ROUTING        — GOVERNANCE → ANALYTICS → CORTEX → NEXUS
+ *   62. CONTEXT_AWARE_SIMULATION — VISION → PHANTOM → SOVEREIGN → CORTEX
+ *   63. ADAPTIVE_BRIDGE         — INTEGRATION → LINGUA → TREATY → BRAIN
+ *   64. BAYESIAN_DETECTION      — VISION → BRAIN → CORTEX → NERVE
+ *   65. DYNAMIC_EDGE_RESPONSE   — REFLEX → NERVE → CORTEX → ANALYTICS
+ *   66. DISTRIBUTED_TUNING      — BRAIN → ECHO → MEMORY → EVOLUTION
+ *   67. TEMPORAL_ACQUISITION    — HARVEST → VISION → ANALYTICS → INTEGRATION
+ *   68. LATENT_PRIVACY_MASK     — IDENTITY → SOVEREIGN → DEFENSE → ACCESS
+ *   69. CAUSAL_LOCALIZATION     — COMPASS → LINGUA → DECODE → BRAIN
+ *   70. PROACTIVE_CRAFT         — DREAM → CORTEX → MEMORY → INCLUSIVE
+ *   71. MULTI_MODAL_ENFORCEMENT — TREATY → AUDIT → ACCESS → SOVEREIGN
+ *   72. SPECTRAL_CARTOGRAPHY    — COMPASS → FORGE → ORACLE → BRAIN
+ *   73. AUTONOMOUS_REPLICATION  — REFLEX → VISION → ORACLE → ECHO
+ *   74. EMERGENT_ORCHESTRATION  — EVOLUTION → CORTEX → NERVE → NEXUS
+ *   75. RECURSIVE_STEWARDSHIP   — AUDIT → MEMORY → SOVEREIGN → ACCESS
  */
 
 // ═══════════════════════════════════════════════════════════════
@@ -138,7 +165,33 @@ export type ChainId =
   | 'REFLEX_CALIBRATION'
   | 'COMPASS_REALIGN'
   | 'SHADOW_DETECTION'
-  | 'IMMUNITY_UPDATE';
+  | 'IMMUNITY_UPDATE'
+  // Discovery-Derived (51–75) — Learned from vault_promotions + pipeline_vault
+  | 'HYBRID_OBSERVATION'
+  | 'AUTONOMOUS_SCAN'
+  | 'FEDERATED_RECALL'
+  | 'PREDICTIVE_SEQUENCING'
+  | 'SOVEREIGN_LOCKDOWN'
+  | 'CAUSAL_SYNTHESIS'
+  | 'ELASTIC_CORRECTION'
+  | 'ADVERSARIAL_EVOLUTION'
+  | 'COMPOSITIONAL_FIREWALL'
+  | 'PROBABILISTIC_VALIDATION'
+  | 'SPECTRAL_ROUTING'
+  | 'CONTEXT_AWARE_SIMULATION'
+  | 'ADAPTIVE_BRIDGE'
+  | 'BAYESIAN_DETECTION'
+  | 'DYNAMIC_EDGE_RESPONSE'
+  | 'DISTRIBUTED_TUNING'
+  | 'TEMPORAL_ACQUISITION'
+  | 'LATENT_PRIVACY_MASK'
+  | 'CAUSAL_LOCALIZATION'
+  | 'PROACTIVE_CRAFT'
+  | 'MULTI_MODAL_ENFORCEMENT'
+  | 'SPECTRAL_CARTOGRAPHY'
+  | 'AUTONOMOUS_REPLICATION'
+  | 'EMERGENT_ORCHESTRATION'
+  | 'RECURSIVE_STEWARDSHIP';
 export type ChainStatus = 'active' | 'paused' | 'disabled';
 export type StageOutcome = 'pending' | 'running' | 'success' | 'failed' | 'skipped';
 
@@ -1549,10 +1602,662 @@ const PRIMARY_CHAINS: PrimaryChainDefinition[] = [
     governanceOverridable: true,
     status: 'active',
   },
-];
 
-// ═══════════════════════════════════════════════════════════════
-// STATE
+  // ═══════════════════════════════════════════════════════════
+  // DISCOVERY-DERIVED CHAINS (51–75)
+  // Learned from vault_promotions (CJPI 100) + pipeline_vault (CJPI 92–98)
+  // ═══════════════════════════════════════════════════════════
+
+  // ── 51. HYBRID OBSERVATION ── (from: Hybrid Dashboarder, Elastic Explainer)
+  {
+    id: 'HYBRID_OBSERVATION',
+    name: 'Hybrid Observation Sweep',
+    description: 'Cross-module observability sweep → anomaly detect → mesh health → analytics record',
+    trigger: {
+      sourceNode: 'brain',
+      signalType: 'observation_gap',
+      condition: (p) => typeof p.coveragePercent === 'number' && (p.coveragePercent as number) < 60,
+      description: 'BRAIN detects observability coverage below 60%',
+    },
+    stages: [
+      { order: 1, node: 'brain', action: 'scan_blind_spots', description: 'Identify unmonitored node surfaces and telemetry gaps', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'vision', action: 'anomaly_sweep', description: 'Run broad anomaly detection across uncovered surfaces', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ blindSpots: prev.blindSpots, surfaces: prev.surfaces }) },
+      { order: 3, node: 'nerve', action: 'verify_mesh_health', description: 'Verify signal path health for newly monitored surfaces', timeoutMs: 5_000, optional: true,
+        transform: (prev) => ({ detectedAnomalies: prev.anomalies, coverage: prev.newCoverage }) },
+      { order: 4, node: 'analytics', action: 'record_coverage', description: 'Record coverage improvement and baseline metrics', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ meshHealth: prev.health, anomalies: prev.anomalies }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 52. AUTONOMOUS SCAN ── (from: Autonomous Scanner)
+  {
+    id: 'AUTONOMOUS_SCAN',
+    name: 'Autonomous Security Scan',
+    description: 'Autonomous correlation sweep → governance policy check → access audit → nexus routing update',
+    trigger: {
+      sourceNode: 'nerve',
+      signalType: 'security_sweep_due',
+      condition: (p) => p.sweepType === 'scheduled' || p.sweepType === 'triggered',
+      description: 'NERVE signals scheduled or triggered security sweep',
+    },
+    stages: [
+      { order: 1, node: 'nerve', action: 'correlate_signals', description: 'Correlate recent mesh signals for threat patterns', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'governance', action: 'policy_audit', description: 'Verify active policies against current threat landscape', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ correlations: prev.correlations, patterns: prev.patterns }) },
+      { order: 3, node: 'access', action: 'verify_permissions', description: 'Verify all active permissions against policy', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ policyFindings: prev.findings, riskLevel: prev.risk }) },
+      { order: 4, node: 'nexus', action: 'update_routing_rules', description: 'Update routing rules based on scan findings', timeoutMs: 5_000, optional: true,
+        transform: (prev) => ({ permissionIssues: prev.issues, adjustments: prev.adjustments }) },
+    ],
+    cooldownMs: 180_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 53. FEDERATED RECALL ── (from: Federated Abstractor)
+  {
+    id: 'FEDERATED_RECALL',
+    name: 'Federated Memory Recall',
+    description: 'Decode context → cognitive analysis → memory retrieval → nexus distribution',
+    trigger: {
+      sourceNode: 'decode',
+      signalType: 'deep_recall_needed',
+      condition: (p) => typeof p.queryComplexity === 'number' && (p.queryComplexity as number) > 75,
+      description: 'DECODE detects high-complexity recall query (> 75)',
+    },
+    stages: [
+      { order: 1, node: 'decode', action: 'decompose_query', description: 'Decompose complex recall query into semantic fragments', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'brain', action: 'reason_fragments', description: 'Apply reasoning to connect semantic fragments', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ fragments: prev.fragments, context: prev.context }) },
+      { order: 3, node: 'memory', action: 'cross_tier_search', description: 'Search across all memory tiers for matching knowledge', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ reasonedQuery: prev.query, connections: prev.connections }) },
+      { order: 4, node: 'nexus', action: 'distribute_recall', description: 'Route recalled knowledge to requesting consumers', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ results: prev.results, confidence: prev.confidence }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 54. PREDICTIVE SEQUENCING ── (from: Predictive Sequencer)
+  {
+    id: 'PREDICTIVE_SEQUENCING',
+    name: 'Predictive Pipeline Sequencing',
+    description: 'System load predict → nerve priority → cortex reorder → nexus optimize',
+    trigger: {
+      sourceNode: 'system',
+      signalType: 'load_prediction',
+      condition: (p) => typeof p.predictedLoad === 'number' && (p.predictedLoad as number) > 80,
+      description: 'SYSTEM predicts load will exceed 80% within forecast window',
+    },
+    stages: [
+      { order: 1, node: 'system', action: 'forecast_capacity', description: 'Generate capacity forecast for upcoming period', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'nerve', action: 'priority_sort', description: 'Sort active signal queue by predicted importance', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ forecast: prev.forecast, bottlenecks: prev.bottlenecks }) },
+      { order: 3, node: 'cortex', action: 'reorder_pipelines', description: 'Reorder pipeline execution to front-load critical work', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ sortedQueue: prev.queue, priorities: prev.priorities }) },
+      { order: 4, node: 'nexus', action: 'optimize_routing', description: 'Optimize intent routing for predicted load pattern', timeoutMs: 5_000, optional: true,
+        transform: (prev) => ({ newOrder: prev.order, expectedGain: prev.gain }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 55. SOVEREIGN LOCKDOWN ── (from: Bayesian Vault, Latent Mask)
+  {
+    id: 'SOVEREIGN_LOCKDOWN',
+    name: 'Sovereign Lockdown Protocol',
+    description: 'Sovereignty boundary breach → governance escalation → access freeze → identity verification',
+    trigger: {
+      sourceNode: 'sovereign',
+      signalType: 'boundary_breach',
+      condition: (p) => p.breachType === 'data_residency' || p.breachType === 'jurisdiction',
+      description: 'SOVEREIGN detects data residency or jurisdiction breach',
+    },
+    stages: [
+      { order: 1, node: 'sovereign', action: 'assess_breach_scope', description: 'Determine scope and severity of sovereignty breach', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'governance', action: 'emergency_policy', description: 'Activate emergency data governance policy', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ scope: prev.scope, affectedData: prev.data, jurisdiction: prev.jurisdiction }) },
+      { order: 3, node: 'access', action: 'freeze_cross_border', description: 'Freeze all cross-border data access immediately', timeoutMs: 3_000, optional: false,
+        transform: (prev) => ({ policyId: prev.policyId, restrictions: prev.restrictions }) },
+      { order: 4, node: 'identity', action: 'reverify_actors', description: 'Re-verify all actors with cross-border access', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ frozenAccess: prev.frozenAccess, affectedActors: prev.actors }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 56. CAUSAL SYNTHESIS ── (from: Causal Fabricator, Causal Constructor)
+  {
+    id: 'CAUSAL_SYNTHESIS',
+    name: 'Causal Knowledge Synthesis',
+    description: 'Forge discovery → brain reasoning → dream simulation → cortex integration',
+    trigger: {
+      sourceNode: 'forge',
+      signalType: 'synthesis_opportunity',
+      condition: (p) => typeof p.componentCount === 'number' && (p.componentCount as number) >= 3,
+      description: 'FORGE identifies synthesis opportunity with 3+ components',
+    },
+    stages: [
+      { order: 1, node: 'forge', action: 'prepare_synthesis', description: 'Prepare component graph for causal synthesis', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'brain', action: 'causal_reasoning', description: 'Apply causal reasoning to identify synthesis pathways', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ components: prev.components, graph: prev.graph }) },
+      { order: 3, node: 'dream', action: 'simulate_synthesis', description: 'Run synthesis in dream simulation before commit', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ pathways: prev.pathways, causalLinks: prev.links }) },
+      { order: 4, node: 'cortex', action: 'integrate_result', description: 'Integrate validated synthesis into active pipeline inventory', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ simulationResult: prev.result, confidence: prev.confidence }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 57. ELASTIC CORRECTION ── (from: Elastic Corrector)
+  {
+    id: 'ELASTIC_CORRECTION',
+    name: 'Elastic Learning Correction',
+    description: 'Echo detects learning drift → brain analysis → memory correction → cortex recalibration',
+    trigger: {
+      sourceNode: 'echo',
+      signalType: 'learning_drift',
+      condition: (p) => typeof p.driftMagnitude === 'number' && (p.driftMagnitude as number) > 15,
+      description: 'ECHO detects learning drift magnitude > 15%',
+    },
+    stages: [
+      { order: 1, node: 'echo', action: 'isolate_drift', description: 'Isolate drifting learning vectors and source modules', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'brain', action: 'analyze_correction', description: 'Determine correction vectors and validate approach', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ driftVectors: prev.vectors, affectedModules: prev.modules }) },
+      { order: 3, node: 'memory', action: 'apply_correction', description: 'Apply correction to affected memory tiers', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ corrections: prev.corrections, validationResult: prev.validation }) },
+      { order: 4, node: 'cortex', action: 'recalibrate_pipelines', description: 'Recalibrate pipelines using corrected learning state', timeoutMs: 8_000, optional: true,
+        transform: (prev) => ({ correctedTiers: prev.tiers, newBaseline: prev.baseline }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 58. ADVERSARIAL EVOLUTION ── (from: Adversarial Navigator, Hybrid Optimizer)
+  {
+    id: 'ADVERSARIAL_EVOLUTION',
+    name: 'Adversarial Evolution Probe',
+    description: 'Cortex triggers adversarial test → dream simulation → analytics scoring → harvest results',
+    trigger: {
+      sourceNode: 'cortex',
+      signalType: 'evolution_stagnation',
+      condition: (p) => typeof p.stagnationCycles === 'number' && (p.stagnationCycles as number) > 5,
+      description: 'CORTEX detects evolution stagnation for 5+ cycles',
+    },
+    stages: [
+      { order: 1, node: 'cortex', action: 'generate_adversarial', description: 'Generate adversarial test scenarios for stagnant pipelines', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'dream', action: 'adversarial_simulation', description: 'Run adversarial scenarios in dream sandbox', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ scenarios: prev.scenarios, targetPipelines: prev.pipelines }) },
+      { order: 3, node: 'analytics', action: 'score_outcomes', description: 'Score adversarial outcomes and identify breakpoints', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ simResults: prev.results, breakpoints: prev.breakpoints }) },
+      { order: 4, node: 'harvest', action: 'collect_improvements', description: 'Collect improvement candidates from adversarial findings', timeoutMs: 8_000, optional: true,
+        transform: (prev) => ({ scores: prev.scores, improvements: prev.improvements }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 59. COMPOSITIONAL FIREWALL ── (from: Compositional Firewall)
+  {
+    id: 'COMPOSITIONAL_FIREWALL',
+    name: 'Compositional Firewall Activation',
+    description: 'Multi-vector threat → audit trail → governance enforcement → phantom sweep',
+    trigger: {
+      sourceNode: 'defense',
+      signalType: 'multi_vector_attack',
+      condition: (p) => typeof p.vectorCount === 'number' && (p.vectorCount as number) >= 3,
+      description: 'DEFENSE detects multi-vector attack with 3+ simultaneous vectors',
+    },
+    stages: [
+      { order: 1, node: 'defense', action: 'activate_composite_shield', description: 'Activate layered defense across all attack vectors', timeoutMs: 3_000, optional: false },
+      { order: 2, node: 'audit', action: 'multi_vector_trail', description: 'Create correlated audit trail across all attack vectors', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ shieldId: prev.shieldId, vectors: prev.vectors }) },
+      { order: 3, node: 'governance', action: 'enforce_lockdown', description: 'Enforce elevated security posture across substrate', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ auditTrailId: prev.trailId, severity: 'critical' }) },
+      { order: 4, node: 'phantom', action: 'deep_sweep', description: 'Run deep sweep for hidden attack surfaces', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ lockdownId: prev.lockdownId, posture: prev.posture }) },
+    ],
+    cooldownMs: 15_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 60. PROBABILISTIC VALIDATION ── (from: Probabilistic Validator)
+  {
+    id: 'PROBABILISTIC_VALIDATION',
+    name: 'Probabilistic Compliance Validation',
+    description: 'Ethics flag → brain reasoning → audit verification → governance ruling',
+    trigger: {
+      sourceNode: 'conscience',
+      signalType: 'compliance_uncertainty',
+      condition: (p) => typeof p.uncertaintyScore === 'number' && (p.uncertaintyScore as number) > 40,
+      description: 'CONSCIENCE reports compliance uncertainty > 40%',
+    },
+    stages: [
+      { order: 1, node: 'conscience', action: 'quantify_risk', description: 'Quantify compliance risk with probabilistic model', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'brain', action: 'reason_compliance', description: 'Apply regulatory reasoning to uncertain areas', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ riskProfile: prev.profile, uncertainAreas: prev.areas }) },
+      { order: 3, node: 'audit', action: 'verify_evidence', description: 'Verify evidence chain for each uncertain compliance area', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ reasoning: prev.reasoning, recommendations: prev.recommendations }) },
+      { order: 4, node: 'governance', action: 'issue_ruling', description: 'Issue formal governance ruling with confidence level', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ evidence: prev.evidence, verified: prev.verified }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 61. SPECTRAL ROUTING ── (from: Spectral Scheduler)
+  {
+    id: 'SPECTRAL_ROUTING',
+    name: 'Spectral Route Optimization',
+    description: 'Governance detects routing inefficiency → analytics profile → cortex rebalance → nexus apply',
+    trigger: {
+      sourceNode: 'governance',
+      signalType: 'routing_inefficiency',
+      condition: (p) => typeof p.wastedHops === 'number' && (p.wastedHops as number) > 3,
+      description: 'GOVERNANCE detects routing with 3+ wasted hops',
+    },
+    stages: [
+      { order: 1, node: 'governance', action: 'identify_waste', description: 'Identify wasted routing hops and redundant paths', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'analytics', action: 'profile_traffic', description: 'Profile traffic patterns to find optimal routes', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ wastedPaths: prev.paths, trafficVolume: prev.volume }) },
+      { order: 3, node: 'cortex', action: 'compute_optimal', description: 'Compute optimal routing topology', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ trafficProfile: prev.profile, hotPaths: prev.hotPaths }) },
+      { order: 4, node: 'nexus', action: 'apply_routing', description: 'Apply optimized routing rules across mesh', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ optimalRoutes: prev.routes, expectedImprovement: prev.improvement }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 62. CONTEXT-AWARE SIMULATION ── (from: Context-Aware Sandbox)
+  {
+    id: 'CONTEXT_AWARE_SIMULATION',
+    name: 'Context-Aware Threat Simulation',
+    description: 'Vision detects unusual pattern → phantom recon → sovereign assess → cortex model',
+    trigger: {
+      sourceNode: 'vision',
+      signalType: 'unusual_pattern',
+      condition: (p) => typeof p.noveltyScore === 'number' && (p.noveltyScore as number) > 65,
+      description: 'VISION detects unusual pattern with novelty > 65',
+    },
+    stages: [
+      { order: 1, node: 'vision', action: 'capture_context', description: 'Capture full environmental context around unusual pattern', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'phantom', action: 'simulate_threat', description: 'Simulate pattern as potential threat in sandboxed environment', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ context: prev.context, pattern: prev.pattern }) },
+      { order: 3, node: 'sovereign', action: 'assess_sovereignty', description: 'Assess sovereignty implications if pattern is hostile', timeoutMs: 8_000, optional: true,
+        transform: (prev) => ({ simResult: prev.result, threatProbability: prev.probability }) },
+      { order: 4, node: 'cortex', action: 'model_response', description: 'Model optimal response strategy based on simulation', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ sovereigntyImpact: prev.impact, simResult: prev.result }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 63. ADAPTIVE BRIDGE ── (from: Adaptive Bridge)
+  {
+    id: 'ADAPTIVE_BRIDGE',
+    name: 'Adaptive Integration Bridge',
+    description: 'Integration detects format mismatch → lingua translate → treaty validate → brain learn',
+    trigger: {
+      sourceNode: 'integration',
+      signalType: 'format_mismatch',
+      condition: (p) => p.mismatchType === 'schema' || p.mismatchType === 'protocol',
+      description: 'INTEGRATION detects schema or protocol format mismatch',
+    },
+    stages: [
+      { order: 1, node: 'integration', action: 'analyze_mismatch', description: 'Analyze format mismatch and identify transformation path', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'lingua', action: 'translate_format', description: 'Translate between mismatched formats', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ sourceFormat: prev.source, targetFormat: prev.target, data: prev.data }) },
+      { order: 3, node: 'treaty', action: 'validate_contract', description: 'Validate translation against integration contract', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ translated: prev.translated, fidelityScore: prev.fidelity }) },
+      { order: 4, node: 'brain', action: 'learn_mapping', description: 'Learn format mapping for future auto-bridging', timeoutMs: 5_000, optional: true,
+        transform: (prev) => ({ mapping: prev.mapping, validated: prev.validated }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 64. BAYESIAN DETECTION ── (from: Bayesian Detector pipeline, CJPI 96)
+  {
+    id: 'BAYESIAN_DETECTION',
+    name: 'Bayesian Anomaly Detection',
+    description: 'Vision statistical anomaly → brain Bayesian update → cortex prioritize → nerve alert',
+    trigger: {
+      sourceNode: 'vision',
+      signalType: 'statistical_anomaly',
+      condition: (p) => typeof p.bayesianPosterior === 'number' && (p.bayesianPosterior as number) > 0.85,
+      description: 'VISION Bayesian posterior probability exceeds 0.85',
+    },
+    stages: [
+      { order: 1, node: 'vision', action: 'collect_evidence', description: 'Collect statistical evidence for Bayesian update', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'brain', action: 'bayesian_update', description: 'Run Bayesian inference to update threat belief', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ evidence: prev.evidence, priors: prev.priors }) },
+      { order: 3, node: 'cortex', action: 'prioritize_response', description: 'Prioritize system response based on posterior', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ posterior: prev.posterior, belief: prev.belief }) },
+      { order: 4, node: 'nerve', action: 'targeted_alert', description: 'Send targeted alert to relevant mesh segments', timeoutMs: 3_000, optional: false,
+        transform: (prev) => ({ priority: prev.priority, responseType: prev.responseType }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 65. DYNAMIC EDGE RESPONSE ── (from: Dynamic Processor, Meta-Cognitive Responder)
+  {
+    id: 'DYNAMIC_EDGE_RESPONSE',
+    name: 'Dynamic Edge Response',
+    description: 'Reflex triggers edge event → nerve propagate → cortex classify → analytics record',
+    trigger: {
+      sourceNode: 'reflex',
+      signalType: 'edge_event',
+      condition: (p) => typeof p.responseTimeMs === 'number' && (p.responseTimeMs as number) > 200,
+      description: 'REFLEX edge response exceeds 200ms threshold',
+    },
+    stages: [
+      { order: 1, node: 'reflex', action: 'capture_edge_state', description: 'Capture edge node state and latency profile', timeoutMs: 3_000, optional: false },
+      { order: 2, node: 'nerve', action: 'propagate_awareness', description: 'Propagate edge degradation awareness across mesh', timeoutMs: 3_000, optional: false,
+        transform: (prev) => ({ edgeState: prev.state, latencyProfile: prev.profile }) },
+      { order: 3, node: 'cortex', action: 'classify_response', description: 'Classify appropriate response level and action', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ propagation: prev.propagation, affectedEdges: prev.edges }) },
+      { order: 4, node: 'analytics', action: 'record_edge_event', description: 'Record edge event for trend analysis', timeoutMs: 5_000, optional: true,
+        transform: (prev) => ({ classification: prev.classification, response: prev.response }) },
+    ],
+    cooldownMs: 15_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 66. DISTRIBUTED TUNING ── (from: Distributed Tuner)
+  {
+    id: 'DISTRIBUTED_TUNING',
+    name: 'Distributed Parameter Tuning',
+    description: 'Brain detects parameter suboptimality → echo validate → memory persist → evolution adapt',
+    trigger: {
+      sourceNode: 'brain',
+      signalType: 'parameter_suboptimal',
+      condition: (p) => typeof p.efficiencyGap === 'number' && (p.efficiencyGap as number) > 20,
+      description: 'BRAIN detects parameter efficiency gap > 20%',
+    },
+    stages: [
+      { order: 1, node: 'brain', action: 'propose_tuning', description: 'Propose parameter tuning adjustments', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'echo', action: 'validate_tuning', description: 'Validate tuning against historical echo patterns', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ proposals: prev.proposals, affectedParams: prev.params }) },
+      { order: 3, node: 'memory', action: 'persist_tuning', description: 'Persist validated tuning to appropriate memory tier', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ validated: prev.validated, confidence: prev.confidence }) },
+      { order: 4, node: 'evolution', action: 'apply_tuning', description: 'Apply tuning through evolution adaptation pipeline', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ persistedRef: prev.ref, tuningSet: prev.tuningSet }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 67. TEMPORAL ACQUISITION ── (from: Temporal Collector, Structural Ingester)
+  {
+    id: 'TEMPORAL_ACQUISITION',
+    name: 'Temporal Data Acquisition',
+    description: 'Harvest detects temporal data → vision validate → analytics enrich → integration store',
+    trigger: {
+      sourceNode: 'harvest',
+      signalType: 'temporal_data_available',
+      condition: (p) => typeof p.dataPoints === 'number' && (p.dataPoints as number) > 100,
+      description: 'HARVEST detects temporal dataset with 100+ data points',
+    },
+    stages: [
+      { order: 1, node: 'harvest', action: 'acquire_temporal', description: 'Acquire and timestamp temporal data batch', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'vision', action: 'validate_integrity', description: 'Validate temporal data integrity and ordering', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ batch: prev.batch, timeRange: prev.timeRange }) },
+      { order: 3, node: 'analytics', action: 'enrich_temporal', description: 'Enrich temporal data with analytics metadata', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ validatedBatch: prev.batch, integrityScore: prev.score }) },
+      { order: 4, node: 'integration', action: 'store_temporal', description: 'Store enriched temporal data in integration layer', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ enrichedData: prev.data, metadata: prev.metadata }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 68. LATENT PRIVACY MASK ── (from: Latent Mask, Federated Guardian)
+  {
+    id: 'LATENT_PRIVACY_MASK',
+    name: 'Latent Privacy Mask Activation',
+    description: 'Identity detects PII exposure → sovereign classify → defense mask → access restrict',
+    trigger: {
+      sourceNode: 'identity',
+      signalType: 'pii_exposure',
+      condition: (p) => p.piiType === 'sensitive' || p.piiType === 'critical',
+      description: 'IDENTITY detects sensitive or critical PII exposure',
+    },
+    stages: [
+      { order: 1, node: 'identity', action: 'locate_exposure', description: 'Locate all surfaces where PII is exposed', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'sovereign', action: 'classify_jurisdiction', description: 'Classify PII under applicable jurisdiction rules', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ exposedSurfaces: prev.surfaces, piiType: prev.piiType }) },
+      { order: 3, node: 'defense', action: 'apply_mask', description: 'Apply data masking to all exposed PII surfaces', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ jurisdiction: prev.jurisdiction, maskingRules: prev.rules }) },
+      { order: 4, node: 'access', action: 'restrict_pii_access', description: 'Restrict access to unmasked PII to authorized roles', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ maskedSurfaces: prev.surfaces, maskId: prev.maskId }) },
+    ],
+    cooldownMs: 15_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 69. CAUSAL LOCALIZATION ── (from: Causal Transformer, Probabilistic Harmonizer)
+  {
+    id: 'CAUSAL_LOCALIZATION',
+    name: 'Causal Localization Pipeline',
+    description: 'Compass detects locale gap → lingua analyze → decode translate → brain learn',
+    trigger: {
+      sourceNode: 'compass',
+      signalType: 'locale_gap',
+      condition: (p) => typeof p.gapSeverity === 'number' && (p.gapSeverity as number) > 30,
+      description: 'COMPASS detects localization gap severity > 30',
+    },
+    stages: [
+      { order: 1, node: 'compass', action: 'map_gap', description: 'Map localization gap geography and affected content', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'lingua', action: 'analyze_translations', description: 'Analyze existing translations for consistency', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ gapMap: prev.map, affectedLocales: prev.locales }) },
+      { order: 3, node: 'decode', action: 'generate_translations', description: 'Generate missing translations from source content', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ analysis: prev.analysis, sourceContent: prev.content }) },
+      { order: 4, node: 'brain', action: 'learn_locale_patterns', description: 'Learn locale patterns for future auto-localization', timeoutMs: 5_000, optional: true,
+        transform: (prev) => ({ translations: prev.translations, quality: prev.quality }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 70. PROACTIVE CRAFT ── (from: Proactive Crafter)
+  {
+    id: 'PROACTIVE_CRAFT',
+    name: 'Proactive Accessibility Craft',
+    description: 'Dream identifies accessibility improvement → cortex plan → memory store → inclusive apply',
+    trigger: {
+      sourceNode: 'dream',
+      signalType: 'accessibility_insight',
+      condition: (p) => typeof p.impactScore === 'number' && (p.impactScore as number) > 50,
+      description: 'DREAM identifies accessibility improvement with impact > 50',
+    },
+    stages: [
+      { order: 1, node: 'dream', action: 'formalize_insight', description: 'Formalize accessibility insight into actionable spec', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'cortex', action: 'plan_implementation', description: 'Plan implementation steps for accessibility improvement', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ spec: prev.spec, affectedSurfaces: prev.surfaces }) },
+      { order: 3, node: 'memory', action: 'store_pattern', description: 'Store accessibility pattern for future reference', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ plan: prev.plan, priority: prev.priority }) },
+      { order: 4, node: 'inclusive', action: 'apply_improvement', description: 'Apply accessibility improvement to affected surfaces', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ memoryRef: prev.ref, plan: prev.plan }) },
+    ],
+    cooldownMs: 180_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 71. MULTI-MODAL ENFORCEMENT ── (from: Multi-Modal Enforcer)
+  {
+    id: 'MULTI_MODAL_ENFORCEMENT',
+    name: 'Multi-Modal Contract Enforcement',
+    description: 'Treaty breach → audit evidence → access restriction → sovereign notification',
+    trigger: {
+      sourceNode: 'treaty',
+      signalType: 'contract_breach',
+      condition: (p) => p.breachSeverity === 'material' || p.breachSeverity === 'critical',
+      description: 'TREATY detects material or critical contract breach',
+    },
+    stages: [
+      { order: 1, node: 'treaty', action: 'document_breach', description: 'Document contract breach with clause references', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'audit', action: 'evidence_chain', description: 'Build tamper-proof evidence chain for breach', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ breach: prev.breach, clauses: prev.clauses }) },
+      { order: 3, node: 'access', action: 'enforce_penalties', description: 'Enforce contractual penalties on breaching party', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ evidenceId: prev.evidenceId, breach: prev.breach }) },
+      { order: 4, node: 'sovereign', action: 'notify_stakeholders', description: 'Notify sovereign stakeholders of enforcement action', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ enforcement: prev.enforcement, penalties: prev.penalties }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 72. SPECTRAL CARTOGRAPHY ── (from: Spectral Cartographer)
+  {
+    id: 'SPECTRAL_CARTOGRAPHY',
+    name: 'Spectral Capability Cartography',
+    description: 'Compass detects unmapped territory → forge explore → oracle predict → brain map',
+    trigger: {
+      sourceNode: 'compass',
+      signalType: 'unmapped_territory',
+      condition: (p) => typeof p.unknownSurface === 'number' && (p.unknownSurface as number) > 5,
+      description: 'COMPASS detects 5+ unmapped capability surfaces',
+    },
+    stages: [
+      { order: 1, node: 'compass', action: 'survey_territory', description: 'Survey unknown capability territory and boundaries', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'forge', action: 'explore_capabilities', description: 'Explore potential capabilities in unmapped territory', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ territory: prev.territory, boundaries: prev.boundaries }) },
+      { order: 3, node: 'oracle', action: 'predict_value', description: 'Predict value and risk of discovered capabilities', timeoutMs: 10_000, optional: true,
+        transform: (prev) => ({ discoveries: prev.discoveries, explorationDepth: prev.depth }) },
+      { order: 4, node: 'brain', action: 'update_map', description: 'Update cognitive map with new capability territory', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ predictions: prev.predictions, discoveries: prev.discoveries }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 73. AUTONOMOUS REPLICATION ── (from: Autonomous Replicator)
+  {
+    id: 'AUTONOMOUS_REPLICATION',
+    name: 'Autonomous Simulation Replication',
+    description: 'Reflex detects replicable pattern → vision validate → oracle forecast → echo store',
+    trigger: {
+      sourceNode: 'reflex',
+      signalType: 'replicable_pattern',
+      condition: (p) => typeof p.replicationScore === 'number' && (p.replicationScore as number) > 70,
+      description: 'REFLEX identifies replicable pattern with score > 70',
+    },
+    stages: [
+      { order: 1, node: 'reflex', action: 'extract_pattern', description: 'Extract replicable behavioral pattern from reflex data', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'vision', action: 'validate_replication', description: 'Validate pattern can be safely replicated', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ pattern: prev.pattern, sourceContext: prev.context }) },
+      { order: 3, node: 'oracle', action: 'forecast_replication', description: 'Forecast outcome of pattern replication', timeoutMs: 10_000, optional: true,
+        transform: (prev) => ({ validatedPattern: prev.pattern, safetyScore: prev.safety }) },
+      { order: 4, node: 'echo', action: 'register_replica', description: 'Register replicated pattern in echo memory', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ forecast: prev.forecast, pattern: prev.pattern }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 74. EMERGENT ORCHESTRATION ── (from: Emergent Orchestrator)
+  {
+    id: 'EMERGENT_ORCHESTRATION',
+    name: 'Emergent Pipeline Orchestration',
+    description: 'Evolution detects emergent behavior → cortex classify → nerve coordinate → nexus deploy',
+    trigger: {
+      sourceNode: 'evolution',
+      signalType: 'emergent_behavior',
+      condition: (p) => typeof p.emergenceStrength === 'number' && (p.emergenceStrength as number) > 60,
+      description: 'EVOLUTION detects emergent behavior with strength > 60',
+    },
+    stages: [
+      { order: 1, node: 'evolution', action: 'characterize_emergence', description: 'Characterize emergent behavior pattern and origin', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'cortex', action: 'classify_emergence', description: 'Classify emergent behavior as beneficial or harmful', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ emergence: prev.emergence, origin: prev.origin }) },
+      { order: 3, node: 'nerve', action: 'coordinate_response', description: 'Coordinate mesh response to emergent behavior', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ classification: prev.classification, beneficial: prev.beneficial }) },
+      { order: 4, node: 'nexus', action: 'deploy_adaptation', description: 'Deploy pipeline adaptation for beneficial emergence', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ coordination: prev.coordination, meshState: prev.state }) },
+    ],
+    cooldownMs: 180_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 75. RECURSIVE STEWARDSHIP ── (from: Recursive Steward)
+  {
+    id: 'RECURSIVE_STEWARDSHIP',
+    name: 'Recursive Data Stewardship',
+    description: 'Audit detects stewardship gap → memory assess → sovereign classify → access enforce',
+    trigger: {
+      sourceNode: 'audit',
+      signalType: 'stewardship_gap',
+      condition: (p) => typeof p.gapCount === 'number' && (p.gapCount as number) > 0,
+      description: 'AUDIT detects one or more data stewardship gaps',
+    },
+    stages: [
+      { order: 1, node: 'audit', action: 'catalog_gaps', description: 'Catalog all data stewardship gaps and affected records', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'memory', action: 'assess_impact', description: 'Assess impact of stewardship gaps on data integrity', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ gaps: prev.gaps, affectedRecords: prev.records }) },
+      { order: 3, node: 'sovereign', action: 'classify_obligation', description: 'Classify stewardship obligations by jurisdiction', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ impact: prev.impact, integrityRisk: prev.risk }) },
+      { order: 4, node: 'access', action: 'enforce_stewardship', description: 'Enforce stewardship policies on affected data', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ obligations: prev.obligations, jurisdiction: prev.jurisdiction }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+];
 // ═══════════════════════════════════════════════════════════════
 
 const chainRegistry = new Map<ChainId, PrimaryChainDefinition>();
