@@ -4,7 +4,25 @@
 
 ---
 
-## v15.2.1 — 2026-03-23
+## v15.2.2 — 2026-03-23
+
+**FORGE Ultimate — "Crucible"**
+
+- 🔨 FORGE upgraded to **v9.0.0** with 10 new Ultimate Form systems.
+- 🧬 **Blueprint Genome Engine** — Structured DNA with Jaccard similarity and crossover mutation breeding for novel architectures.
+- 🏗️ **Multi-Stage Fabrication Pipeline** — 5-stage quality forge: Draft → Temper → Anneal → Quench → Polish with progressive score gates.
+- 🧪 **Material Science Engine** — Dependency compatibility analysis with EMA strength tracking and conflict detection.
+- 📚 **Pattern Library** — 5 built-in architectural patterns with auto-matching and CJPI-tracked effectiveness.
+- 🎯 **Artifact Foundry** — 17-language multi-target compiler with hash-chained build provenance.
+- ✅ **Quality Assurance Furnace** — 4-phase QA: test generation, mutation testing, perf profiling, security audit.
+- 🤝 **Collaborative Forge** — Multi-agent blueprint construction with 3 merge strategies and conflict resolution.
+- 🧠 **Forge Memory** — Institutional knowledge with anti-pattern detection and success correlation analysis.
+- 🌡️ **Thermal Budget Governor** — 4-zone rate limiter with pre-forge cost estimation and thermal impact projection.
+- 📊 **Forge Telemetry Hearth** — Forges/hr, success rate, CJPI tracking, bottleneck analysis, and composite health scoring.
+
+---
+
+
 
 **ORACLE Ultimate — "Omniscience"**
 

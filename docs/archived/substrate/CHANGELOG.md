@@ -4,7 +4,24 @@
 
 ---
 
-## 2026-03-23 · v15.2.1 (CONTACT — ORACLE Ultimate "Omniscience")
+## 2026-03-23 · v15.2.2 (CONTACT — FORGE Ultimate "Crucible")
+
+⟨This entry describes FORGE v9.0.0 — the substrate's artifact synthesis engine reaching its ultimate form with 10 new systems.⟩
+
+- **Blueprint Genome Engine** — Structured DNA for blueprints with Jaccard similarity detection and crossover mutation breeding.
+- **Multi-Stage Fabrication Pipeline** — 5-stage forge (Draft→Temper→Anneal→Quench→Polish) with progressive quality gates (30→50→65→75→85).
+- **Material Science Engine** — Dependency compatibility analysis with EMA strength scoring, conflict registration, and deprecation tracking.
+- **Pattern Library & Template Vault** — 5 built-in architectural patterns with auto-matching and CJPI-tracked effectiveness.
+- **Artifact Foundry** — 17-language multi-target compiler with hash-chained build provenance.
+- **Quality Assurance Furnace** — 4-phase QA: test generation, mutation testing, performance profiling, security audit.
+- **Collaborative Forge** — Multi-agent smithing with 3 merge strategies and automatic conflict detection.
+- **Forge Memory** — Institutional knowledge (10K cap) with anti-pattern detection after 3+ failures.
+- **Thermal Budget Governor** — 4-zone rate limiter (cool→warm→hot→critical) with pre-forge cost estimation.
+- **Forge Telemetry Hearth** — Forges/hr, CJPI, stage bottleneck, material heatmap, thermal zone, composite health.
+
+---
+
+
 
 ⟨This entry describes ORACLE v9.0.0 — the substrate's predictive intelligence engine reaching its ultimate form with 11 new systems.⟩
 
