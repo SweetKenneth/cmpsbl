@@ -50,7 +50,7 @@ const OBSERVER_FEATURES = [
   {
     icon: Layers,
     title: "Architecture Overview",
-    description: "Understand the layered kernel architecture — 40 nodes across 12 sectors.",
+    description: "Understand the primitive architecture — agents, engines, layers, and organs.",
     gradient: "from-neon-blue to-primary",
   },
 ];
