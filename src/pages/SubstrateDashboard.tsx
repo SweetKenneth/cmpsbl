@@ -413,7 +413,7 @@ const modulesByLayer = {
     },
     {
       id: "intent",
-      name: "INTENT",
+      name: "INTENT Layer",
       description: "Goal decomposition, capability mesh routing",
       icon: Orbit,
       color: "text-neon-blue",
