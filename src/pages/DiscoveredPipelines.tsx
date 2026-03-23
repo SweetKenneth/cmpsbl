@@ -72,7 +72,7 @@ export default function DiscoveredPipelines() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
                 {[
                   { label: 'Memories Discovered', value: pipelines?.length || 0 },
-                  { label: 'Total Node Coverage', value: totalNodes },
+                  { label: 'Primitive Coverage', value: totalNodes },
                   { label: 'Avg Memory Score', value: avgScore },
                   { label: 'Combined Value', value: `$${(totalValue / 1000).toFixed(0)}K` },
                 ].map((stat, i) => (
