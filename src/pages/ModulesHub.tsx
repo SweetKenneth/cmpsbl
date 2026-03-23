@@ -1,5 +1,5 @@
 /**
- * Modules Hub — Complete 40-Node Matrix across 12 Sectors
+ * Modules Hub — Complete 40-Primitive Matrix across 4 Categories
  * Neural Cartography view of the full substrate architecture
  */
 
