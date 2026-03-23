@@ -216,7 +216,7 @@ function checkConsensus(obs: SentinelObservation): void {
   if (agreeingNodes.size >= CONSENSUS_REQUIRED) {
     const alert: ConsensusAlert = {
       id: `cons_${now.toString(36)}_${Math.random().toString(36).slice(2, 8)}`,
-      agreeing Sentinels: Array.from(agreeingNodes),
+      agreeSentinels: Array.from(agreeingNodes),
       observation: obs,
       consensusAt: now,
       escalated: true,
