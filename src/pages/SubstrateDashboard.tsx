@@ -563,7 +563,7 @@ export default function SubstrateDashboard() {
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            The complete cognitive operating system — 40 nodes across 12 sectors, coordinated by a weighted matrix where Σ = 1.000. CORE boots every node in dependency order, DEFENSE wraps the outer shell, and DREAM synthesizes improvements autonomously. Every node name, weight, and breaker state is visible here.
+            The complete cognitive operating system — 40 primitives coordinated by a weighted matrix where Σ = 1.000. The CORE Organ boots every primitive in dependency order, the DEFENSE Layer wraps the outer shell, and the DREAM Engine synthesizes improvements autonomously.
           </p>
           
           <div className="flex gap-3">
