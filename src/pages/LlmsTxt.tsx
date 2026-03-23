@@ -219,7 +219,7 @@ export default function LlmsTxt() {
   };
 
   const featuredPrimitives = [
-    { name: "BRAIN Engine", icon: Brain, color: "text-neon-cyan", desc: "Memory & learning" },
+    { name: "BRAIN Organ", icon: Brain, color: "text-neon-cyan", desc: "Memory & learning" },
     { name: "DECODE Agent", icon: MessageSquare, color: "text-neon-purple", desc: "Epistemic interpreter" },
     { name: "DEFENSE Layer", icon: Shield, color: "text-neon-amber", desc: "Security perimeter" },
     { name: "NEXUS Organ", icon: Zap, color: "text-neon-green", desc: "AI routing" },
