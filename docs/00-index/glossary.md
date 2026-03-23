@@ -10,8 +10,8 @@
 | **OCG** | Operational Compliance Grid — boundary enforcement layer (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT). |
 | **CCR** | Cognitive Core Reality — reasoning and synthesis layer (BRAIN, MEMORY, DREAM). |
 | **Field** | Cross-cutting transformation fabric that permeates all layers (EVOLUTION, IMMUNITY, INTENT). |
-| **Plane** | Supervisory overlay (GOVERNANCE). |
-| **Shell** | Outer containment boundary (DEFENSE). |
+| **Plane** | Supervisory overlay (GOVERNANCE Layer). |
+| **Shell** | Outer containment boundary (DEFENSE Layer). |
 | **Matrix Primitive** | A weighted registry entry representing a primitive.s role and health contribution. |
 | **Circuit Breaker** | Isolation mechanism that prevents cascading failures across modules. |
 | **Epoch** | A major version boundary with architectural significance. |

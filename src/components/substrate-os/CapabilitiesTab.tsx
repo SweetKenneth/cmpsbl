@@ -42,15 +42,15 @@ const riskColors: Record<string, { bg: string; text: string; border: string }> =
 
 // Module icon mapping
 const moduleIcons: Record<string, React.ElementType> = {
-  BRAIN: Brain,
-  DEFENSE: Shield,
-  SYSTEM: Activity,
-  EVOLUTION: Sparkles,
-  CORTEX: Zap,
-  DECODE: Eye,
+  'BRAIN Organ': Brain,
+  'DEFENSE Layer': Shield,
+  'SYSTEM Organ': Activity,
+  'EVOLUTION Layer': Sparkles,
+  'CORTEX Engine': Zap,
+  'DECODE Agent': Eye,
   'DREAM Engine': Sparkles,
-  VISION: Eye,
-  CORE: Power,
+  'VISION Agent': Eye,
+  'CORE Organ': Power,
 };
 
 interface CapabilityCardProps {
