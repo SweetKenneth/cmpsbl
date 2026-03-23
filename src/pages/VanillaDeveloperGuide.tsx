@@ -54,13 +54,13 @@ function CopyBlock({ code, label }: { code: string; label?: string }) {
   );
 }
 
-const MODULES = [
-  { name: "BRAIN", icon: Brain, desc: "Store, recall, and search knowledge that persists across sessions.", actions: ["remember", "query", "recall", "reflect", "coherenceCheck"] },
-  { name: "DECODE", icon: MessageSquare, desc: "Understand user intent, extract entities, and generate contextual responses.", actions: ["chat", "intent", "propose", "learn"] },
-  { name: "NEXUS", icon: Network, desc: "Route AI requests across 13+ providers with automatic failover and cost controls.", actions: ["route", "providers", "text", "image"] },
-  { name: "DEFENSE", icon: Shield, desc: "Detect bots, score threats, analyze IPs, and flag anomalies in real time.", actions: ["analyze", "reputation", "anomaly", "posture"] },
-  { name: "VISION", icon: Eye, desc: "Monitor system health with metrics, logs, dashboards, and distributed tracing.", actions: ["health", "metrics", "logs", "trace", "dashboard"] },
-  { name: "DREAM", icon: Zap, desc: "Run self-improvement cycles that consolidate memory and extract patterns.", actions: ["cycle", "mutate", "reflect", "mood"] },
+const PRIMITIVES = [
+  { name: "BRAIN", icon: Brain, desc: "Store, recall, and search knowledge that persists across sessions.", actions: ["remember", "query", "recall", "reflect", "coherenceCheck"], category: "Engine" },
+  { name: "DECODE", icon: MessageSquare, desc: "Understand user intent, extract entities, and generate contextual responses.", actions: ["chat", "intent", "propose", "learn"], category: "Agent" },
+  { name: "NEXUS", icon: Network, desc: "Route AI requests across 13+ providers with automatic failover and cost controls.", actions: ["route", "providers", "text", "image"], category: "Organ" },
+  { name: "DEFENSE", icon: Shield, desc: "Detect bots, score threats, analyze IPs, and flag anomalies in real time.", actions: ["analyze", "reputation", "anomaly", "posture"], category: "Layer" },
+  { name: "VISION", icon: Eye, desc: "Monitor system health with metrics, logs, dashboards, and distributed tracing.", actions: ["health", "metrics", "logs", "trace", "dashboard"], category: "Agent" },
+  { name: "DREAM", icon: Zap, desc: "Run self-improvement cycles that consolidate memory and extract patterns.", actions: ["cycle", "mutate", "reflect", "mood"], category: "Engine" },
 ];
 
 const INSTALL_STEPS = [
