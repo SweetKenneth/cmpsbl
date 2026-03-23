@@ -4,6 +4,18 @@
 
 ---
 
+## 2026-03-23 · v15.5.0 (CONTACT — Activation Arbitration + Confidence Gating)
+
+⟨This entry describes the upgrade of the Auto-Activation Engine from v1.0.0 to v2.0.0, introducing two new decision layers between rule matching and execution.⟩
+
+- **Activation Arbitration Layer** — Pre-execution decision engine evaluates matched rules as a set, not individually. Priority scoring: `tierBase + (severity × 10) + healthBonus − loadPenalty`. Conflict detection via capability keyword matching against 8 mutually exclusive action pairs. Enforces max 3 activations per signal, max 1 T1 override. Outputs `selectedRules[]` + `suppressedRules[]` with suppression reasons.
+- **Confidence-Based Activation** — Replaces deterministic firing with probabilistic gating. Confidence score (0–1) computed from 4 weighted components: severity (0.35), Bayesian success rate (0.30), node health (0.20), recency bonus with 1-hour half-life decay (0.15). Dynamic thresholds per tier: T1=always, T2=0.60, T3=0.65, T4=0.70, T5=0.80.
+- **Per-Rule Stats Tracking** — Records success/failure counts per rule after execution completes. Feeds back into confidence computation via Bayesian prior (2 successes + 1 failure baseline).
+- **New Outcome Types** — `low_confidence` (below threshold), `suppressed` (arbitration conflict/limit). Events now carry `confidence` score for observability.
+- **Engine v2.0.0** — New config flags: `arbitrationEnabled`, `confidenceGatingEnabled`. Health endpoint now includes `confidenceStats` and `lowConfidence` per-tier counters.
+
+---
+
 ## 2026-03-23 · v15.4.0 (CONTACT — IMMUNITY Ultimate "Pathogen Zero")
 
 ⟨This entry describes IMMUNITY v9.0.0 — the substrate's adaptive immune intelligence system reaching its ultimate form with 10 new systems.⟩
