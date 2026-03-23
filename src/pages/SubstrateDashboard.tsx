@@ -149,7 +149,7 @@ const modulesByLayer = {
     },
     {
       id: "vision",
-      name: "VISION",
+      name: "VISION Agent",
       description: "Observability, metrics, health",
       icon: Eye,
       color: "text-neon-green",
