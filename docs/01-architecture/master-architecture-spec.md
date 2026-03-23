@@ -146,28 +146,28 @@ graph TD
 
 ## 6. Component Registry
 
-| Component | Sector | Responsibility | Dependencies |
-|-----------|--------|---------------|-------------|
-| CORE | Spine | Boot sequencing, integrity scoring | None (root) |
-| SYSTEM | Spine | Configuration, lifecycle hooks | CORE |
-| BRAIN | CCR | Reasoning, pattern recognition | SYSTEM |
-| MEMORY | CCR | State persistence, retrieval, tier enforcement | SYSTEM |
-| DREAM | CCR | Heuristic generation, synthesis | BRAIN, MEMORY |
-| RIPPLE | OCG | Event propagation, cascade detection | CORE |
-| ACCESS | OCG | Auth, billing, API key management | CORE |
-| IDENTITY | OCG | Entity resolution, session management | CORE |
-| RELAY | OCG | Cross-module messaging, webhooks | CORE |
-| AUDIT | OCG | Immutable logging, tamper detection | CORE |
-| NERVE | OCG | Inter-node signaling, consensus repair | CORE, RIPPLE |
-| DECODE | Execution | Natural language understanding, intent parsing | CORE |
-| ENCODE | Execution | Code generation, surgical patching | CORE, DECODE |
-| VISION | Execution | Telemetry, observability, anomaly detection | CORE |
-| CORTEX | Execution | Memory chain composition, cognitive orchestration | CORE |
-| NEXUS | Execution | AI provider routing, fleet intelligence | CORE |
-| ECONOMY | Execution | Cost tracking, budget governance | CORE |
-| SANDBOX | Execution | Isolated execution, speculative runs | CORE |
-| INCLUSIVE | Execution | WCAG compliance, accessibility scanning | CORE |
-| MEDIC | Execution | Autonomous diagnostics, predictive failure | CORE, VISION |
+| Component | Category | Sector | Responsibility | Dependencies |
+|-----------|----------|--------|---------------|-------------|
+| CORE | Organ | Spine | Boot sequencing, integrity scoring | None (root) |
+| SYSTEM | Organ | Spine | Configuration, lifecycle hooks | CORE |
+| BRAIN | Organ | CCR | Reasoning, pattern recognition | SYSTEM |
+| MEMORY | Organ | CCR | State persistence, retrieval, tier enforcement | SYSTEM |
+| DREAM | Engine | CCR | Heuristic generation, synthesis | BRAIN, MEMORY |
+| RIPPLE | Organ | OCG | Event propagation, cascade detection | CORE |
+| ACCESS | Organ | OCG | Auth, billing, API key management | CORE |
+| IDENTITY | Organ | OCG | Entity resolution, session management | CORE |
+| RELAY | Organ | OCG | Cross-module messaging, webhooks | CORE |
+| AUDIT | Organ | OCG | Immutable logging, tamper detection | CORE |
+| NERVE | Organ | OCG | Inter-node signaling, consensus repair | CORE, RIPPLE |
+| DECODE | Agent | Execution | Natural language understanding, intent parsing | CORE |
+| ENCODE | Agent | Execution | Code generation, surgical patching | CORE, DECODE |
+| VISION | Agent | Execution | Telemetry, observability, anomaly detection | CORE |
+| CORTEX | Engine | Execution | Memory chain composition, cognitive orchestration | CORE |
+| NEXUS | Organ | Execution | AI provider routing, fleet intelligence | CORE |
+| ECONOMY | Engine | Execution | Cost tracking, budget governance | CORE |
+| SANDBOX | Engine | Execution | Isolated execution, speculative runs | CORE |
+| INCLUSIVE | Layer | Execution | WCAG compliance, accessibility scanning | CORE |
+| MEDIC | Engine | Execution | Autonomous diagnostics, predictive failure | CORE, VISION |
 | INTEGRATION | Execution | External connectivity, adapters (boots last) | CORE |
 | SOVEREIGN | ESZ | Data sovereignty, jurisdictional compliance | CORE, DEFENSE, ACCESS |
 | ORACLE | ESZ | Predictive modeling, Bayesian inference | CORE, BRAIN, VISION |
