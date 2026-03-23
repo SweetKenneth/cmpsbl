@@ -27,7 +27,7 @@ const STEPS: OnboardingStep[] = [
     icon: Brain,
     tag: 'Remember',
     title: 'Persistent Memory',
-    body: 'Give any AI agent permanent recall. 4-tier memory with automatic temperature management, DREAM consolidation, and semantic search — free for all users.',
+    body: 'Give any AI agent permanent recall. 4-tier memory with automatic temperature management, DREAM Engine consolidation, and semantic search — free for all users.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
   },
