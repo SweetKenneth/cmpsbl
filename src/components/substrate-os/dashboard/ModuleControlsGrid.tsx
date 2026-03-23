@@ -428,7 +428,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     },
     {
       id: 'nerve', name: 'NERVE', layer: 'operational' as const, icon: Zap,
-      description: 'Inter-node signaling & consensus',
+      description: 'Inter-primitive signaling & consensus',
       gradient: 'bg-gradient-to-r from-sky-400 to-neon-blue', accentColor: 'bg-sky-400',
       status: nerveStatus,
       metrics: [{ label: 'Signals', value: nerveStatus.data?.success ? 'Active' : 'Checking' }],
@@ -438,7 +438,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     // ═══ Mesh Overlays + CSZ ═══
     {
       id: 'evolution', name: 'EVOLUTION', layer: 'orchestrator' as const, icon: Sparkles,
-      description: 'Mutation pipeline & shadow runs',
+      description: 'Mutation memory & shadow runs',
       gradient: 'bg-gradient-to-r from-neon-magenta to-neon-magenta', accentColor: 'bg-neon-magenta',
       status: evolutionStatus,
       metrics: [{ label: 'Field', value: evolutionStatus.data?.success ? 'Active' : 'Checking' }],
