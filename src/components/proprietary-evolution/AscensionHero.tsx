@@ -261,7 +261,7 @@ function OrbitalCanvas() {
     ctx.fillStyle = 'hsla(185, 80%, 70%, 0.6)';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('40-NODE SUBSTRATE MATRIX', cx, labelY);
+    ctx.fillText('40-PRIMITIVE SUBSTRATE MATRIX', cx, labelY);
     ctx.font = `${isMobile ? 7.5 : 6.5}px monospace`;
     ctx.fillStyle = 'hsla(185, 80%, 70%, 0.4)';
     ctx.fillText('CANDIDATE #41 ACTIVE', cx, labelY + (isMobile ? 14 : 12));
