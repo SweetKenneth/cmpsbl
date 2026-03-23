@@ -8,6 +8,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -516,7 +517,7 @@ export function ExportPhase() {
                       <span className="text-[9px] font-mono text-muted-foreground/60">Chain:</span>
                       {c.chain.map((node, idx) => (
                         <span key={idx} className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-primary/5 text-primary/70">
-                          {node}
+                          {labelPrimitive(node)}
                         </span>
                       ))}
                     </div>

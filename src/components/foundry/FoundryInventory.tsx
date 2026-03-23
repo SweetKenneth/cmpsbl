@@ -3,6 +3,7 @@
  * Uses internal valuation formula (pipeline-valuation.ts) for all pricing display
  */
 import { useState, useCallback } from 'react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Download, Fingerprint, Loader2, Trash2, Lock, ArrowUpRight, DollarSign, Store, TrendingUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -310,7 +311,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                           </div>
                           {item.systemChain && item.systemChain.length > 0 && (
                             <div className="text-muted-foreground/70 leading-relaxed mt-1">
-                              Chain: {item.systemChain.join(' → ')}
+                              Chain: {item.systemChain.map(s => labelPrimitive(s)).join(' → ')}
                             </div>
                           )}
                         </div>

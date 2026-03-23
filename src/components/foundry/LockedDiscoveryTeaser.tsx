@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Lock, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -83,7 +84,7 @@ export function LockedDiscoveryTeaser({ tier = 'starter', pullsUsed, pullsMax, c
             <div className="flex gap-1.5 mt-2">
               {discovery.nodes.map(node => (
                 <span key={node} className="text-[10px] px-1.5 py-0.5 bg-muted/20 rounded text-muted-foreground font-mono">
-                  {node}
+                  {labelPrimitive(node)}
                 </span>
               ))}
             </div>

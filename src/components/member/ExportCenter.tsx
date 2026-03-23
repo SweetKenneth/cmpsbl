@@ -1,5 +1,5 @@
 /**
- * Export Center — Pre-built export formats for pipeline artifacts (Studio+)
+ * Export Center — Pre-built export formats for memory chain artifacts (Studio+)
  */
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -25,7 +25,7 @@ interface ExportTemplate {
 
 const EXPORT_TEMPLATES: ExportTemplate[] = [
   {
-    id: 'json-full', name: 'Full JSON Export', description: 'Complete pipeline data with metadata, dependencies, and execution traces',
+    id: 'json-full', name: 'Full JSON Export', description: 'Complete memory chain data with metadata, dependencies, and execution traces',
     format: 'JSON', icon: FileJson, minTier: 'studio',
     fields: ['Memory definition', 'Execution traces', 'Dependencies', 'Metadata', 'CJPI scores'],
   },
@@ -45,7 +45,7 @@ const EXPORT_TEMPLATES: ExportTemplate[] = [
     fields: ['Mini-runtime', 'Bridge adapter', 'Type definitions', 'Test harness'],
   },
   {
-    id: 'pack-artifact', name: 'Artifact Pack', description: 'Complete artifact pack with pipeline, documentation, and license',
+    id: 'pack-artifact', name: 'Artifact Pack', description: 'Complete artifact pack with memory chain, documentation, and license',
     format: 'ZIP', icon: Package, minTier: 'architect',
     fields: ['Memory code', 'Documentation', 'License', 'Build config', 'Testbench'],
   },
@@ -78,7 +78,7 @@ export function ExportCenter({ tier }: { tier: string }) {
       </div>
 
       <p className="text-sm text-muted-foreground">
-        Pre-built export templates for your pipeline artifacts and system data.
+        Pre-built export templates for your memory chain artifacts and system data.
       </p>
 
       <div className="space-y-3">

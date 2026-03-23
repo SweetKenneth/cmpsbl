@@ -1,7 +1,7 @@
 /**
  * Terminal Command Executor
  * Handles parsing and execution of all substrate commands
- * 40 primitives | 500+ commands | 300 synergy pipelines
+ * 40 primitives | 500+ commands | 300 synergy memory chains
  */
 
 import { substrate, brain, decode, defense, nexus, vision, dream, system, evolutionClient as evolutionMod, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod } from '@/lib/substrate';
@@ -352,7 +352,7 @@ function formatSystemStatus(data: any): string {
 
   output += `
 ╠══════════════════════════════════════════════════════════════╣
-║  500+ commands | 300 synergy pipelines | 100 engines         ║
+║  500+ commands | 300 synergy memory chains | 100 engines         ║
 ║  675+ capabilities | 76 base + 24 meta-engines               ║
 ╚══════════════════════════════════════════════════════════════╝`;
 
@@ -561,7 +561,7 @@ function generateFullHelp(): string {
 │    harvest      (${COMMAND_CATEGORIES.harvest.commands.length.toString().padStart(2)} cmds)  Data collection & ETL              │
 │                                                             │
 │  🔱 EXPANSION — CSZ (help csz)                                │
-│    evolution    (${COMMAND_CATEGORIES.evolution.commands.length.toString().padStart(2)} cmds)  Mutation pipeline & upgrades       │
+│    evolution    (${COMMAND_CATEGORIES.evolution.commands.length.toString().padStart(2)} cmds)  Mutation memory chain & upgrades       │
 │    shadow       (${COMMAND_CATEGORIES.shadow.commands.length.toString().padStart(2)} cmds)  Shadow environment & staging       │
 │    phantom      (${COMMAND_CATEGORIES.phantom.commands.length.toString().padStart(2)} cmds)  Privacy engineering                │
 │                                                             │
@@ -660,12 +660,12 @@ function generateFullHelp(): string {
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 
-┌─ SYNERGY ENGINE (200 Pipelines) ─────────────────────────────┐
+┌─ SYNERGY ENGINE (200 Memory Chains) ─────────────────────────────┐
 │                                                             │
 │  cortex.synergy.status    Engine overview                   │
-│  cortex.synergy.list      List all 200 pipelines            │
-│  cortex.synergy.get <id>  Get pipeline details              │
-│  cortex.synergy.execute   Execute a pipeline                │
+│  cortex.synergy.list      List all 200 memory chains            │
+│  cortex.synergy.get <id>  Get memory chain details              │
+│  cortex.synergy.execute   Execute a memory chain                │
 │  cortex.synergy.dry_run   Preview execution (no effects)    │
 │  cortex.synergy.recommend Get recommended synergies         │
 │  cortex.synergy.categories  List categories                 │
@@ -704,8 +704,8 @@ function generateFullHelp(): string {
 │  └───────────────────────────────────────────────────────┘   │
 │                                                             │
 │  ┌─ STREAMING + FILES + NL ─────────────────────────────┐   │
-│  │  stream.status          SSE pipeline status           │   │
-│  │  file.status            File processing pipeline      │   │
+│  │  stream.status          SSE memory chain status           │   │
+│  │  file.status            File processing memory chain      │   │
 │  │  file.formats           Supported formats             │   │
 │  │  nl.parse <query>       Natural language → command     │   │
 │  │  nl.intents             Known NL intents              │   │
@@ -1023,7 +1023,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  40 primitives | 4 categorys | 500+ commands | 300 synergy pipelines | health: 100%
+│  40 primitives | 4 categorys | 500+ commands | 300 synergy memory chains | health: 100%
 │  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
@@ -3246,7 +3246,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
         payload: { eligible } 
       });
     }
-    // Cross-Module Synergy Engine (200 Pipelines, 125 Executors)
+    // Cross-Module Synergy Engine (200 Memory Chains, 125 Executors)
     else if (base === 'cortex.synergy.status') {
       try {
         const { listSynergies } = await import('@/lib/capabilities/synergies');
@@ -3257,14 +3257,14 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
           output: `
 ┌─ SYNERGY ENGINE ──────────────────────────────────────────────
 │
-│  Pipelines:  200 total
+│  Memory Chains:  200 total
 │  Executors:  125 custom
 │  Categories: 8
 │
 ├─ COMMANDS ──────────────────────────────────────────────────
-│  cortex.synergy.list      List all pipelines
-│  cortex.synergy.get <id>  Get pipeline details
-│  cortex.synergy.execute   Execute pipeline
+│  cortex.synergy.list      List all memory chains
+│  cortex.synergy.get <id>  Get memory chain details
+│  cortex.synergy.execute   Execute memory chain
 │  cortex.synergy.dry_run   Preview execution
 │
 └──────────────────────────────────────────────────────────────`,
@@ -3531,7 +3531,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
       }
     }
 
-    // INCLUSIVE module (Human Compatibility Pipeline)
+    // INCLUSIVE module (Human Compatibility Memory Chain)
     else if (base === 'inclusive.status') {
       result = await inclusive.status();
     } else if (base === 'inclusive.health') {
@@ -5246,7 +5246,7 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} pipel
 │
 │  CAPABILITY COVERAGE
 │  Total Orchestrated:   ${engineSummary.totalCapabilitiesOrchestrated}
-│  Synergy Pipelines:    ${engineSummary.totalSynergyPipelines}
+│  Synergy Memory Chains:    ${engineSummary.totalSynergyPipelines}
 │  World-First:          ${engineSummary.totalWorldFirstEnhancements}
 │
 └───────────────────────────────────────────────────────────────`,

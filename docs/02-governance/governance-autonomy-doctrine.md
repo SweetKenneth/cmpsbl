@@ -28,7 +28,7 @@ ATLAS serves as the unified governance UI with 7 tabs:
 |-----|---------|
 | Topology | 40-primitive matrix visualization and health |
 | Node Inbox | Approval queue for ENGINEER proposals and INTENT requests |
-| Evolution | SEBA pipeline, shadow runs, promotion history |
+| Evolution | SEBA memory chain, shadow runs, promotion history |
 | Scanner | Finding priority, regression detection, coverage gaps |
 | Agents | Marketplace, sealed runtime management |
 | Analytics | System economics, cost tracking, developer adoption metrics |
@@ -69,7 +69,7 @@ ATLAS serves as the unified governance UI with 7 tabs:
 - Disabling or bypassing AUDIT logging.
 - Overriding DEFENSE block decisions.
 - Accessing data outside the requesting user's RLS scope.
-- Promoting changes without EVOLUTION validation gates (7-gate SEBA pipeline).
+- Promoting changes without EVOLUTION validation gates (7-gate SEBA memory chain).
 - Executing code outside SANDBOX isolation.
 - Sharing cross-tenant data without explicit consent.
 - Deleting audit records.
@@ -211,7 +211,7 @@ The ENGINEER node (Mechanist) operates with guided autonomy:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added disaster recovery governance, developer API metering, memory tier enforcement, visitor analytics |
-| 2026-03-03 | System | Added ATLAS governance hub, 7-gate SEBA pipeline, ENGINEER governance, Ironclad references, INTENT/INTEL/SHADOW integration |
+| 2026-03-03 | System | Added ATLAS governance hub, 7-gate SEBA memory chain, ENGINEER governance, Ironclad references, INTENT/INTEL/SHADOW integration |
 | 2026-03-03 | System | Updated to 38-node topology; added AutoBlog autonomous governance |
 | 2026-03-01 | System | Initial canonical doctrine |
 

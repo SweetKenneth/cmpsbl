@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { Flame, Lock, CheckCircle2, Loader2, ShieldCheck, Sparkles, Trash2 } from 'lucide-react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
@@ -224,7 +225,7 @@ export function CrystallizationPhase() {
               <p className="text-xs text-foreground font-medium truncate">{d.name}</p>
               <p className="text-[10px] text-muted-foreground font-mono">
                 {d.chain.length > 0
-                  ? d.chain.join(' → ')
+                  ? d.chain.map(n => labelPrimitive(n)).join(' → ')
                   : `${d.nodeA} × ${d.nodeB}`} • {d.tier}
               </p>
               {d.description && (

@@ -106,9 +106,9 @@ export function MeshProposalsPanel({ onPipelineChange }: { onPipelineChange?: ()
     try {
       const success = await approveProposal(proposal.id);
       if (success) {
-        toast.success(`✅ Crystallized: ${proposal.proposedResolverId} → saved as permanent pipeline`);
+        toast.success(`✅ Crystallized: ${proposal.proposedResolverId} → saved as permanent memory chain`);
         setProposals(prev => prev.filter(p => p.id !== proposal.id));
-        // Notify parent to refresh pipelines list
+        // Notify parent to refresh memory chains list
         onPipelineChange?.();
       } else {
         toast.error('Proposal not found or already processed');

@@ -58,7 +58,7 @@ erDiagram
 | Analytics | `analytics_events`, `analytics_snapshots`, `analytics_excluded_fingerprints` | System telemetry, visitor analytics, owner exclusion |
 | Audit | `audit_logs`, `audit_chain_anchors`, `activation_audit_log` | Immutable event logging, tamper-evident chains |
 | AutoBlog Core | `auto_blog_posts`, `auto_blog_schedule` | Automated content generation |
-| AutoBlog Quality | `autoblog_queue`, `autoblog_drafts`, `autoblog_assumptions`, `autoblog_memory_reports`, `autoblog_split_brain_audits`, `autoblog_confidence_weights`, `autoblog_topic_seeds`, `autoblog_publish_cycle`, `autoblog_publish_governor_state`, `autoblog_publish_governor_logs` | Quality pipeline, confidence engine, contradiction engine, semantic drift detection, adaptive governance |
+| AutoBlog Quality | `autoblog_queue`, `autoblog_drafts`, `autoblog_assumptions`, `autoblog_memory_reports`, `autoblog_split_brain_audits`, `autoblog_confidence_weights`, `autoblog_topic_seeds`, `autoblog_publish_cycle`, `autoblog_publish_governor_state`, `autoblog_publish_governor_logs` | Quality memory chain, confidence engine, contradiction engine, semantic drift detection, adaptive governance |
 | Cognitive | `cognitive_registry`, `agent_competency` | Agent identity and skill tracking |
 | Capabilities | `atlas_capabilities` | Feature flag and capability registry |
 | Scanning | `accessibility_scans` | Accessibility scanning |
@@ -97,7 +97,7 @@ CLM operates as a high-velocity training memory chain generating data across exi
 | Learning data (CLM) | 12 months | Model improvement, distillation |
 | AutoBlog drafts | 90 days | Editorial review |
 | AutoBlog quality audits | 6 months | Confidence calibration |
-| INTEL signals | 30 days | Aggregation pipeline throughput |
+| INTEL signals | 30 days | Aggregation memory chain throughput |
 | Scanner findings | 12 months | Regression detection baseline |
 | Visitor analytics | 6 months | Behavioral intelligence |
 | Developer usage metrics | 12 months | API adoption tracking |

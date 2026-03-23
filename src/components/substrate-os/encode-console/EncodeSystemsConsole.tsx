@@ -141,7 +141,7 @@ export function EncodeSystemsConsole() {
       lines.push(`⚡ Skills: ${skills.slice(0, 3).map(s => `${s.name} ${s.proficiency}%`).join(', ')}`);
     }
 
-    // Check for existing pipelines/tables
+    // Check for existing memory chains/tables
     const tables = navigation.modules.flatMap(m => getModuleTables(m.id));
     if (tables.length > 0) {
       lines.push(`🗄️ Tables: ${tables.slice(0, 5).join(', ')}`);
@@ -153,7 +153,7 @@ export function EncodeSystemsConsole() {
   // ── Generate a real plan through the pipeline ──
   const generatePlan = useCallback(async (intent: string, modules?: string[]) => {
     try {
-      addSystemMsg('info', '⏳ Generating PatchPlan through DECODE pipeline...');
+      addSystemMsg('info', '⏳ Generating PatchPlan through DECODE Agent memory chain...');
       const plan = await encode.generatePlan.mutateAsync({
         intent,
         modules,
@@ -201,7 +201,7 @@ export function EncodeSystemsConsole() {
       addSystemMsg('success', [
         `✅ Plan ${latestPlan.plan_id} approved`,
         '',
-        '🔄 Execution pipeline:',
+        '🔄 Execution memory chain:',
         '   1. ✅ Plan approved',
         '   2. 🧠 Architecture recall',
         '   3. 🧩 Pattern selection',
@@ -466,7 +466,7 @@ export function EncodeSystemsConsole() {
         addSystemMsg('info', `Architecture context:\n${resolved.summary}`);
       }
 
-      // Check for existing patterns/pipelines
+      // Check for existing patterns/memory chains
       if (resolved.patterns.length > 0) {
         addSystemMsg('info', [
           '🔍 Existing patterns detected:',
@@ -477,7 +477,7 @@ export function EncodeSystemsConsole() {
         ].join('\n'));
       }
 
-      // Submit through governance pipeline AND generate real plan
+      // Submit through governance memory chain AND generate real plan
       orchestration.submitIntent(intent);
       generatePlan(intent, resolved.navigation.modules.map(m => m.id));
       return;

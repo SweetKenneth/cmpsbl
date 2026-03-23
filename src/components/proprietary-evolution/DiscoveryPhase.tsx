@@ -8,6 +8,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu, Trash2, CheckCircle2 } from 'lucide-react';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
@@ -393,7 +394,7 @@ export function DiscoveryPhase() {
                     "text-[9px] font-mono px-1.5 py-0.5 rounded",
                     idx === 0 ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground"
                   )}>
-                    {idx === 0 ? `Ψ₄₁ ${node}` : node}
+                    {idx === 0 ? `Ψ₄₁ ${node}` : labelPrimitive(node)}
                   </span>
                   {idx < discoveryHit.chain!.length - 1 && (
                     <span className="text-muted-foreground/40 text-[8px]">→</span>
@@ -542,7 +543,7 @@ export function DiscoveryPhase() {
                               "text-[9px] font-mono px-1.5 py-0.5 rounded",
                               idx === 0 ? "bg-primary/20 text-primary" : "bg-muted/30 text-foreground/70"
                             )}>
-                              {idx === 0 ? `Ψ₄₁ ${node}` : node}
+                              {idx === 0 ? `Ψ₄₁ ${node}` : labelPrimitive(node)}
                             </span>
                             {idx < r.chain!.length - 1 && (
                               <span className="text-muted-foreground/40 text-[8px]">→</span>

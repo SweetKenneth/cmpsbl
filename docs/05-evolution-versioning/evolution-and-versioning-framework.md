@@ -2,7 +2,7 @@
 
 ## 1. Evolution Philosophy
 
-The substrate evolves through validated, auditable transitions rather than ad-hoc changes. Every modification to production behavior must pass through the EVOLUTION module's shadow-run pipeline before promotion. This ensures that changes are tested against real conditions, scored for confidence, and reversible.
+The substrate evolves through validated, auditable transitions rather than ad-hoc changes. Every modification to production behavior must pass through the EVOLUTION module's shadow-run memory chain before promotion. This ensures that changes are tested against real conditions, scored for confidence, and reversible.
 
 Evolution is a system property, not a deployment event.
 
@@ -34,7 +34,7 @@ Evolution operates within the **Covert Systems Zone** (CSZ) containing three nod
 
 | Node | Role |
 |------|------|
-| **EVOLUTION** | Proposal intake, SEBA pipeline orchestration, promotion execution |
+| **EVOLUTION** | Proposal intake, SEBA memory chain orchestration, promotion execution |
 | **SHADOW** | Isolated shadow runs, divergence scoring, behavioral comparison |
 | **PHANTOM** | Decoy operations, threat detection, A/B variant testing |
 
@@ -70,7 +70,7 @@ divergence = 0.50 × output_divergence + 0.30 × latency_divergence + 0.20 × er
 - Divergence 0.05–0.15: Review required
 - Divergence > 0.15: Fail
 
-## 5. 7-Gate SEBA Validation Pipeline
+## 5. 7-Gate SEBA Validation Memory Chain
 
 | Gate | Check | Threshold | Owner |
 |------|-------|-----------|-------|
@@ -129,7 +129,7 @@ The Evolution Control Center (`/evolution`) provides mission-control UI:
 
 | Feature | Description |
 |---------|-------------|
-| **Pipeline View** | Real-time SEBA gate status for all active proposals |
+| **Memory Chain View** | Real-time SEBA gate status for all active proposals |
 | **Shadow Run Dashboard** | Divergence scores, cycle counts, pass/fail history |
 | **Dry-Run Preview** | Impact analysis before promotion — shows affected modules and dependencies |
 | **One-Click Rollback** | Restore previous state from snapshot + WAL replay |
@@ -143,7 +143,7 @@ The ENGINEER node generates evolution proposals based on:
 - CLM topic mastery signals indicating capability readiness.
 - INTEL enriched signals flagging optimization opportunities.
 
-ENGINEER proposals enter the SEBA pipeline at Gate 1 and follow the same validation path as manual proposals.
+ENGINEER proposals enter the SEBA memory chain at Gate 1 and follow the same validation path as manual proposals.
 
 ## 9. Promotion Workflow Diagram
 
@@ -243,8 +243,8 @@ The Scanner Orchestrator provides continuous evolution quality monitoring:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated epoch history, compatibility matrix, revision stamp example to MINDGAMES epoch, 40-primitive references |
-| 2026-03-03 | System | Added 7-gate SEBA pipeline, TSAC, CSZ architecture, Evolution Control Center, ENGINEER integration, Scanner Orchestrator, Ironclad references |
-| 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality pipeline, adaptive publish governor |
+| 2026-03-03 | System | Added 7-gate SEBA memory chain, TSAC, CSZ architecture, Evolution Control Center, ENGINEER integration, Scanner Orchestrator, Ironclad references |
+| 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality memory chain, adaptive publish governor |
 | 2026-03-01 | System | Initial canonical evolution and versioning framework |
 
 ---
