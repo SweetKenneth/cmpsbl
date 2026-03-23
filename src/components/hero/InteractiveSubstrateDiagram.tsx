@@ -86,7 +86,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "dream",
-    name: "DREAM",
+    name: "DREAM Engine",
     icon: Moon,
     color: "text-neon-purple",
     glowColor: "shadow-[0_0_30px_rgba(196,181,253,0.6)]",
