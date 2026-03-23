@@ -362,7 +362,7 @@ const modulesByLayer = {
     },
     {
       id: "harvest",
-      name: "HARVEST",
+      name: "HARVEST Agent",
       description: "Data ingestion, ETL processes, enrichment",
       icon: Wheat,
       color: "text-neon-green",
