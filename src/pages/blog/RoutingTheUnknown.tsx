@@ -43,7 +43,7 @@ export default function RoutingTheUnknown() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The First Real Node</h2>
       <p>By the end of January, NEXUS was the first thing in the system that felt like it was making decisions. It wasn't just passing data — it was evaluating, choosing, optimizing. That's when we realized what we were building wasn't just infrastructure. It was infrastructure that thinks.</p>
-      <p>NEXUS became the template for every node that followed. Independent. Stateful. Decision-capable. The pattern was set — and it held through all 40 nodes, even through the <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA rebuild</Link>.</p>
+      <p>NEXUS became the template for every primitive that followed. Independent. Stateful. Decision-capable. The pattern was set — and it held through all 40 primitives, even through the <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA rebuild</Link>.</p>
     </BlogArticleLayout>
   );
 }
