@@ -275,9 +275,9 @@ export default function SubstrateDemo() {
                         currentStep={currentStep}
                       />
                       
-                      {/* 8 Public Nodes */}
+                      {/* 8 Public Primitives */}
                       <LayerRow 
-                        label="Nodes" 
+                        label="Primitives" 
                         modules={groupedModules.node} 
                         layerKey="node"
                         isRunning={isRunning}

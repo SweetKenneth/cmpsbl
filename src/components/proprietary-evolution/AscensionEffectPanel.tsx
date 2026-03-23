@@ -193,7 +193,7 @@ export function AscensionEffectPanel() {
 
       {/* Aggregate Stats */}
       <div className="grid grid-cols-4 gap-2">
-        <StatCard label="Nodes" value={stats.total} icon={Activity} />
+        <StatCard label="Primitives" value={stats.total} icon={Activity} />
         <StatCard label="Executed" value={stats.executed} icon={Zap} color="text-neon-green" />
         <StatCard label="Degraded" value={stats.degraded} icon={AlertTriangle} color="text-neon-amber" />
         <StatCard
