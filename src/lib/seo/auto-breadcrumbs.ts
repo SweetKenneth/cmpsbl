@@ -12,7 +12,7 @@ const ROUTE_LABELS: Record<string, string> = {
   '': 'Home',
   'os': 'Substrate OS',
   'ai-operating-system': 'AI Operating System',
-  'modules': 'Nodes',
+  'modules': 'Architecture',
   'store': 'Artifact Store',
   'composable-cognitives': 'Cognitives',
   'engines': 'Engines',

@@ -388,7 +388,7 @@ export function generateComplianceReport(framework: ComplianceFramework, periodD
       severity: 'warning',
       title: `Low module coverage (${Math.round(moduleCoverage * 100)}%)`,
       description: `Only ${modulesAudited.length} of ${state.modulesMonitored.length} modules have audit entries.`,
-      recommendation: 'Ensure all modules emit audit events for critical operations.',
+      recommendation: 'Ensure all primitives emit audit events for critical operations.',
       relatedEntries: [],
     });
   }

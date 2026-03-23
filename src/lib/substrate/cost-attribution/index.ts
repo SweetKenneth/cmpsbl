@@ -239,7 +239,7 @@ export async function getModuleCostSummary(module: ModuleName): Promise<ModuleCo
 }
 
 /**
- * Get cost summary across all modules
+ * Get cost summary across all primitives
  */
 export async function getGlobalCostSummary(): Promise<{
   total_tokens_today: number;

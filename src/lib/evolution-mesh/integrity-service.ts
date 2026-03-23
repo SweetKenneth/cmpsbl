@@ -521,7 +521,7 @@ function generateSystemImprovements(): ScanFinding[] {
     {
       category: 'observability',
       severity: 'info',
-      message: 'Telemetry coverage gap detected — not all modules emit structured logs',
+      message: 'Telemetry coverage gap detected — not all primitives emit structured logs',
       suggestedFix: 'Add telemetry hooks to MEMORY, CORTEX, and DREAM modules',
       evolutionType: 'feature',
       priority: 4,

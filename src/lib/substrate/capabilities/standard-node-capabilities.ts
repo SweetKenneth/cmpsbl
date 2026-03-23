@@ -698,7 +698,7 @@ export const STANDARD_NODE_CAPABILITIES: Record<string, StandardCapDef> = {
 
   eco_cost_track: {
     id: 'eco_cost_track', name: 'Cost Tracker',
-    description: 'Tracks per-operation costs across all modules in real-time',
+    description: 'Tracks per-operation costs across all primitives in real-time',
     modules: ['ECONOMY', 'ANALYTICS'], layer: 'Operational',
     userBenefit: 'Know exactly what every operation costs',
     status: 'active', emergentFrom: 'economy-core-v1', riskLevel: 'low', executionMode: 'async',

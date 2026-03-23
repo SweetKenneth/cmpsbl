@@ -36,7 +36,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'AI Operating System', href: '/ai-operating-system' },
   { label: 'Runtime Environment', href: '/runtime' },
   { label: 'Architecture', href: '/architecture' },
-  { label: 'All Nodes', href: '/modules' },
+  { label: 'Architecture', href: '/modules' },
   { label: '54 Composable Engines', href: '/engines' },
   { label: 'Memory Stream Discovery', href: '/foundry' },
   // Products

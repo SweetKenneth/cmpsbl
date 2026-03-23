@@ -471,7 +471,7 @@ const ALL_MODULES: SubstrateModule[] = [
   'lingua', 'compass', 'echo', 'treaty', 'harvest', 'reflex',
 ];
 
-// Register default hooks for all modules
+// Register default hooks for all primitives
 for (const mod of ALL_MODULES) {
   registerModuleHooks({
     module: mod,
@@ -488,7 +488,7 @@ for (const mod of ALL_MODULES) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Run learning cycle for all modules
+ * Run learning cycle for all primitives
  */
 export async function runModuleLearningCycle(): Promise<{
   modulesProcessed: number;
@@ -553,7 +553,7 @@ export async function runModuleLearningCycle(): Promise<{
 }
 
 /**
- * Get KPIs for all modules
+ * Get KPIs for all primitives
  */
 export async function getAllModuleKPIs(): Promise<ModuleKPIs[]> {
   const modules = getRegisteredModules();

@@ -226,7 +226,7 @@ describe('${product.name} — Chain Playback', () => {
     const manifest = {
       id: 'footprint-test',
       name: 'Footprint Verification',
-      description: 'Verifies all modules participate',
+      description: 'Verifies all primitives participate',
       modules: ${JSON.stringify(modules)},
       cjpiScore: 70,
       tier: 'architect',

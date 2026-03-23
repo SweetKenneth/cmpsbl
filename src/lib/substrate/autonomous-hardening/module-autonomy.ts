@@ -172,7 +172,7 @@ const MODULE_ACTIONS: Record<string, AutonomousAction[]> = {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 /**
- * Initialize autonomy for all modules with pre-approved actions.
+ * Initialize autonomy for all primitives with pre-approved actions.
  */
 export function initializeModuleAutonomy(): void {
   for (const [module, actions] of Object.entries(MODULE_ACTIONS)) {
@@ -252,7 +252,7 @@ export function applyModuleCooldown(module: string, durationMs: number): void {
 }
 
 /**
- * Get the full autonomy status for all modules.
+ * Get the full autonomy status for all primitives.
  */
 export function getAutonomyStatus(): Array<{
   module: string;
