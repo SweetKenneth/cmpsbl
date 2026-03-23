@@ -1,5 +1,5 @@
 /**
- * Why CMPSBL — 9 Core Nodes Showcase
+ * Why CMPSBL — 9 Core Primitives Showcase
  * Premium bento grid with enhanced visuals and micro-animations
  * Color palette: Cyan / Purple / Magenta — solid colors, gradients reserved for key moments
  */
