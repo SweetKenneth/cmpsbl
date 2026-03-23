@@ -4,7 +4,26 @@
 
 ---
 
-## v15.2.0 — 2026-03-23
+## v15.2.1 — 2026-03-23
+
+**ORACLE Ultimate — "Omniscience"**
+
+- 🔮 ORACLE upgraded to **v9.0.0** with 11 new Ultimate Form systems.
+- 🧠 **Bayesian Prediction Network** — Multi-variable belief propagation through causal DAGs with prior/posterior updates.
+- 📈 **Trend Forecaster** — EMA + linear regression with 3-horizon forecasts, Z-score anomaly detection, and seasonal pattern detection.
+- 🎲 **Scenario Simulation Engine** — Monte Carlo "what-if" analysis with convergence detection and full probability distributions.
+- 💡 **Prescriptive Recommendation Engine** — Ranked action recommendations with ROI scoring and outcome tracking.
+- 📖 **Prophecy Journal** — Immutable prediction ledger with Brier score calibration and accuracy reports.
+- ⚠️ **Early Warning System** — Multi-signal convergence detection with 4-tier severity and horizon estimation.
+- 📊 **Capacity Planning Oracle** — Resource exhaustion projections with urgency tiers and scaling recommendations.
+- 🔗 **Causal Inference Engine** — Distinguishes correlation from causation with counterfactual reasoning.
+- 🎯 **Dynamic Risk Matrix** — Real-time risk scoring across all 40 nodes with category breakdowns.
+- 🏆 **Prediction Market** — Competing models with credibility tracking and ensemble predictions.
+- 📡 **Oracle Telemetry Nexus** — Predictions/hr, accuracy rate, calibration drift, and composite health scoring.
+
+---
+
+
 
 **RIPPLE Ultimate — "Tsunami"**
 
