@@ -407,7 +407,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'graceful-degradation-synergy',
     name: 'Graceful Degradation Synergy',
     category: 'resilience',
-    description: 'CORE fallback chain with DEFENSE circuit breakers and VISION health monitoring',
+    description: 'CORE Organ fallback chain with DEFENSE Layer circuit breakers and VISION Agent health monitoring',
     requiredModules: ['CORE', 'DEFENSE', 'VISION'],
     executorType: 'js',
     artifactFormat: 'zip',
