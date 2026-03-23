@@ -51,21 +51,19 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 8px;
     }
-    .header .subtitle {
-      font-size: 10pt;
+    .subtitle {
+      font-size: 11pt;
       color: var(--text-muted);
-      font-family: var(--font-mono);
+      margin-top: 6px;
     }
-    .header .meta {
+    .meta {
       display: flex;
       gap: 24px;
       margin-top: 12px;
       font-size: 9pt;
       color: var(--text-muted);
     }
-    .header .meta span { font-family: var(--font-mono); }
     .badge {
       display: inline-block;
       padding: 2px 10px;
@@ -74,80 +72,78 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      font-family: var(--font-mono);
     }
-    .badge-governor { background: var(--cyan); color: var(--bg); }
+    .badge-governor { background: var(--purple); color: #fff; }
 
-    /* Section */
-    .section { margin-bottom: 40px; }
-    .section h2 {
-      font-size: 14pt;
-      font-weight: 700;
-      color: var(--cyan);
-      margin-bottom: 6px;
-      border-left: 3px solid var(--purple);
-      padding-left: 12px;
-    }
-    .section .section-desc {
-      font-size: 9pt;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      padding-left: 15px;
-    }
-
-    /* Purpose box */
+    /* Purpose */
     .purpose {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 20px 24px;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
       font-size: 10pt;
-      line-height: 1.7;
+      color: var(--text-muted);
     }
-    .purpose strong { color: var(--cyan); }
-    .purpose ul { margin: 10px 0 0 20px; }
+    .purpose ul { margin-top: 12px; padding-left: 20px; }
     .purpose li { margin-bottom: 4px; }
 
-    /* Table */
+    /* Sections */
+    .section {
+      margin-bottom: 36px;
+    }
+    .section h2 {
+      font-size: 14pt;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-bottom: 8px;
+      border-left: 3px solid var(--purple);
+      padding-left: 12px;
+    }
+    .section-desc {
+      font-size: 9pt;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      padding-left: 15px;
+    }
+
+    /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 9pt;
       margin-bottom: 8px;
-      font-size: 9.5pt;
     }
     th {
       background: var(--surface);
       color: var(--cyan);
-      font-weight: 700;
+      font-weight: 600;
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 2px solid var(--border);
       font-size: 8pt;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      padding: 10px 12px;
-      text-align: left;
-      border-bottom: 2px solid var(--border);
+      letter-spacing: 0.5px;
     }
     td {
-      padding: 10px 12px;
+      padding: 6px 10px;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
     }
-    tr:hover td { background: rgba(0, 229, 255, 0.03); }
-
+    tr:hover { background: rgba(0,229,255,0.03); }
     .chain-id {
       font-family: var(--font-mono);
-      font-size: 8.5pt;
+      font-size: 8pt;
       color: var(--purple);
       font-weight: 600;
     }
     .flow {
       font-family: var(--font-mono);
-      font-size: 8.5pt;
-      color: var(--text-muted);
+      font-size: 8pt;
+      color: var(--text);
       white-space: nowrap;
     }
-    .flow .arrow { color: var(--cyan); margin: 0 2px; }
-
+    .arrow { color: var(--cyan); font-weight: 700; }
     .priority-critical { color: var(--critical); font-weight: 700; }
     .priority-high { color: var(--high); font-weight: 600; }
     .priority-normal { color: var(--normal); }
@@ -158,22 +154,29 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 24px;
-      margin-top: 40px;
+      margin-bottom: 32px;
     }
     .exec-model h2 {
-      border-left: none;
-      padding-left: 0;
+      font-size: 14pt;
+      color: var(--cyan);
       margin-bottom: 16px;
     }
     .exec-flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
       font-family: var(--font-mono);
       font-size: 9pt;
-      color: var(--text-muted);
-      line-height: 2;
-      padding: 0 16px;
     }
-    .exec-flow .step { color: var(--text); }
-    .exec-flow .arrow-down { color: var(--cyan); display: block; padding-left: 24px; }
+    .step {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 16px;
+      text-align: center;
+    }
+    .arrow-down { color: var(--cyan); font-size: 14pt; }
 
     /* Footer */
     .footer {
@@ -183,7 +186,6 @@
       font-size: 8pt;
       color: var(--text-muted);
       text-align: center;
-      font-family: var(--font-mono);
     }
 
     /* Print */
@@ -196,7 +198,6 @@
         --text-muted: #64748b;
         --cyan: #0891b2;
         --purple: #7c3aed;
-        --magenta: #db2777;
         --critical: #dc2626;
         --high: #d97706;
         --normal: #16a34a;
@@ -221,8 +222,8 @@
     <div class="subtitle">CMPSBL® Substrate — Multi-Node Reaction Chain Registry</div>
     <div class="meta">
       <span><span class="badge badge-governor">Governor Eyes Only</span></span>
-      <span>v15.1.8 — CONTACT Epoch</span>
-      <span>75 Chains · 8 Categories</span>
+      <span>v15.1.9 — CONTACT Epoch</span>
+      <span>100 Chains · 9 Categories</span>
       <span>2026-03-23</span>
     </div>
   </div>
@@ -385,6 +386,40 @@
     </table>
   </div>
 
+  <!-- CATEGORY 9 -->
+  <div class="section">
+    <h2>Category 9 — Cognitive Supremacy</h2>
+    <div class="section-desc">Full-spectrum substrate intelligence — chains that showcase the entire 40-node matrix working at peak capability.</div>
+    <table>
+      <tr><th>#</th><th>Chain ID</th><th>Name</th><th>Flow</th><th>Priority</th></tr>
+      <tr><td>76</td><td class="chain-id">NEURAL_GENESIS</td><td>Neural Genesis</td><td class="flow">BRAIN <span class="arrow">→</span> DREAM <span class="arrow">→</span> FORGE <span class="arrow">→</span> EVOLUTION</td><td class="priority-high">High</td></tr>
+      <tr><td>77</td><td class="chain-id">PHANTOM_STRIKE</td><td>Phantom Strike</td><td class="flow">SHADOW <span class="arrow">→</span> PHANTOM <span class="arrow">→</span> DEFENSE <span class="arrow">→</span> GOVERNANCE</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>78</td><td class="chain-id">TEMPORAL_PARADOX</td><td>Temporal Paradox Resolution</td><td class="flow">ORACLE <span class="arrow">→</span> COMPASS <span class="arrow">→</span> ECHO <span class="arrow">→</span> BRAIN</td><td class="priority-high">High</td></tr>
+      <tr><td>79</td><td class="chain-id">IMMUNE_SWARM</td><td>Immune Swarm Response</td><td class="flow">IMMUNITY <span class="arrow">→</span> DEFENSE <span class="arrow">→</span> NERVE <span class="arrow">→</span> MEDIC</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>80</td><td class="chain-id">COGNITIVE_FUSION</td><td>Cognitive Fusion</td><td class="flow">BRAIN <span class="arrow">→</span> DECODE <span class="arrow">→</span> ENCODE <span class="arrow">→</span> CORTEX</td><td class="priority-high">High</td></tr>
+      <tr><td>81</td><td class="chain-id">SOVEREIGN_EXODUS</td><td>Sovereign Data Exodus</td><td class="flow">SOVEREIGN <span class="arrow">→</span> PHANTOM <span class="arrow">→</span> MEMORY <span class="arrow">→</span> ATLAS</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>82</td><td class="chain-id">FORGE_ASCENSION</td><td>Forge Ascension</td><td class="flow">FORGE <span class="arrow">→</span> EVOLUTION <span class="arrow">→</span> ORACLE <span class="arrow">→</span> ATLAS</td><td class="priority-high">High</td></tr>
+      <tr><td>83</td><td class="chain-id">CONSCIENCE_TRIBUNAL</td><td>Conscience Tribunal</td><td class="flow">CONSCIENCE <span class="arrow">→</span> ORACLE <span class="arrow">→</span> GOVERNANCE <span class="arrow">→</span> AUDIT</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>84</td><td class="chain-id">DREAM_ARCHITECT</td><td>Dream Architect</td><td class="flow">DREAM <span class="arrow">→</span> ENCODE <span class="arrow">→</span> FORGE <span class="arrow">→</span> CONSCIENCE</td><td class="priority-normal">Normal</td></tr>
+      <tr><td>85</td><td class="chain-id">NERVE_STORM</td><td>Nerve Storm</td><td class="flow">NERVE <span class="arrow">→</span> REFLEX <span class="arrow">→</span> CORTEX <span class="arrow">→</span> DEFENSE</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>86</td><td class="chain-id">ECHO_PROPHECY</td><td>Echo Prophecy</td><td class="flow">ECHO <span class="arrow">→</span> ORACLE <span class="arrow">→</span> BRAIN <span class="arrow">→</span> GOVERNANCE</td><td class="priority-high">High</td></tr>
+      <tr><td>87</td><td class="chain-id">HARVEST_INTELLIGENCE</td><td>Harvest Intelligence</td><td class="flow">HARVEST <span class="arrow">→</span> BRAIN <span class="arrow">→</span> ORACLE <span class="arrow">→</span> MEMORY</td><td class="priority-normal">Normal</td></tr>
+      <tr><td>88</td><td class="chain-id">SHADOW_PROTOCOL</td><td>Shadow Protocol</td><td class="flow">SHADOW <span class="arrow">→</span> IDENTITY <span class="arrow">→</span> PHANTOM <span class="arrow">→</span> DEFENSE</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>89</td><td class="chain-id">ATLAS_EXPANSION</td><td>Atlas Expansion</td><td class="flow">ATLAS <span class="arrow">→</span> COMPASS <span class="arrow">→</span> FORGE <span class="arrow">→</span> EVOLUTION</td><td class="priority-normal">Normal</td></tr>
+      <tr><td>90</td><td class="chain-id">LINGUA_SYNTHESIS</td><td>Lingua Synthesis</td><td class="flow">LINGUA <span class="arrow">→</span> BRAIN <span class="arrow">→</span> DREAM <span class="arrow">→</span> MEMORY</td><td class="priority-normal">Normal</td></tr>
+      <tr><td>91</td><td class="chain-id">TREATY_ARBITRATION</td><td>Treaty Arbitration</td><td class="flow">TREATY <span class="arrow">→</span> CONSCIENCE <span class="arrow">→</span> GOVERNANCE <span class="arrow">→</span> SOVEREIGN</td><td class="priority-high">High</td></tr>
+      <tr><td>92</td><td class="chain-id">MEDIC_RESURRECTION</td><td>Medic Resurrection</td><td class="flow">MEDIC <span class="arrow">→</span> SYSTEM <span class="arrow">→</span> IMMUNITY <span class="arrow">→</span> EVOLUTION</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>93</td><td class="chain-id">ENGINEER_SINGULARITY</td><td>Engineer Singularity</td><td class="flow">ENGINEER <span class="arrow">→</span> CORTEX <span class="arrow">→</span> ORACLE <span class="arrow">→</span> ENCODE</td><td class="priority-high">High</td></tr>
+      <tr><td>94</td><td class="chain-id">IDENTITY_METAMORPHOSIS</td><td>Identity Metamorphosis</td><td class="flow">IDENTITY <span class="arrow">→</span> BRAIN <span class="arrow">→</span> EVOLUTION <span class="arrow">→</span> ACCESS</td><td class="priority-normal">Normal</td></tr>
+      <tr><td>95</td><td class="chain-id">CORTEX_SUPERNOVA</td><td>Cortex Supernova</td><td class="flow">CORTEX <span class="arrow">→</span> NERVE <span class="arrow">→</span> BRAIN <span class="arrow">→</span> EVOLUTION</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>96</td><td class="chain-id">DEFENSE_OMNISCIENCE</td><td>Defense Omniscience</td><td class="flow">DEFENSE <span class="arrow">→</span> VISION <span class="arrow">→</span> ORACLE <span class="arrow">→</span> BRAIN</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>97</td><td class="chain-id">MEMORY_TRANSCENDENCE</td><td>Memory Transcendence</td><td class="flow">MEMORY <span class="arrow">→</span> BRAIN <span class="arrow">→</span> DREAM <span class="arrow">→</span> FORGE</td><td class="priority-normal">Normal</td></tr>
+      <tr><td>98</td><td class="chain-id">GOVERNANCE_SINGULARITY</td><td>Governance Singularity</td><td class="flow">GOVERNANCE <span class="arrow">→</span> CONSCIENCE <span class="arrow">→</span> ORACLE <span class="arrow">→</span> AUDIT</td><td class="priority-critical">Critical</td></tr>
+      <tr><td>99</td><td class="chain-id">SYSTEM_RENAISSANCE</td><td>System Renaissance</td><td class="flow">SYSTEM <span class="arrow">→</span> MEDIC <span class="arrow">→</span> ENGINEER <span class="arrow">→</span> EVOLUTION</td><td class="priority-high">High</td></tr>
+      <tr><td>100</td><td class="chain-id">SUBSTRATE_CONVERGENCE</td><td>Substrate Convergence</td><td class="flow">BRAIN <span class="arrow">→</span> CORTEX <span class="arrow">→</span> GOVERNANCE <span class="arrow">→</span> ATLAS</td><td class="priority-high">High</td></tr>
+    </table>
+  </div>
+
   <!-- EXECUTION MODEL -->
   <div class="exec-model">
     <h2>Chain Execution Model</h2>
@@ -409,7 +444,7 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    © 2025–2026 PromptFluid®. Governor Eyes Only. — v15.1.8 CONTACT Epoch
+    © 2025–2026 PromptFluid®. Governor Eyes Only. — v15.1.9 CONTACT Epoch · 100 Primary Memory Chains
   </div>
 
 </div>
