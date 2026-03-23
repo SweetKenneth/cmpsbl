@@ -4,6 +4,24 @@
 
 ---
 
+## v15.2.3 — 2026-03-23
+
+**HARVEST Ultimate — "Leviathan"**
+
+- 🌊 HARVEST upgraded to **v9.0.0** with 10 new Ultimate Form systems.
+- 🧬 **Source Genome Registry** — DNA-profiles every data source with EMA-tracked reliability, freshness, and auto-retirement.
+- 🕷️ **Adaptive Crawler Swarm** — Thermal-aware virtual crawler pool with independent rate limits and politeness profiles.
+- 🗺️ **Schema Cartographer** — Schema drift detection with auto-generated migration transforms.
+- 🔄 **Deduplication Forge** — Multi-layer dedup: bloom filter → MinHash near-duplicate detection.
+- ⏱️ **Freshness Oracle** — Decay-curve re-fetch scheduling optimized per source churn pattern.
+- ✅ **Quality Furnace** — 4-dimension batch scoring with automatic quarantine for low-quality data.
+- 📋 **Pipeline Choreographer** — DAG-based ETL with parallel execution, checkpoint/resume, and exponential backoff retry.
+- 🔗 **Provenance Ledger** — Hash-chained audit trail with tamper-evident integrity verification.
+- 🔮 **Anticipatory Prefetch** — Intent-pattern learning that pre-fetches data before nodes request it.
+- 📊 **Harvest Telemetry** — Real-time source heatmaps, quality trends, and composite health scoring.
+
+---
+
 ## v15.2.2 — 2026-03-23
 
 **FORGE Ultimate — "Crucible"**

@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.2.3 (CONTACT — HARVEST Ultimate "Leviathan")
+
+⟨This entry describes HARVEST v9.0.0 — the substrate's data acquisition engine reaching its ultimate form with 10 new systems.⟩
+
+- **Source Genome Registry** — DNA-profiles every data source with EMA-tracked reliability, freshness, schema stability, and cost. Auto-retires degraded sources below 20% reliability.
+- **Adaptive Crawler Swarm** — Pool of virtual crawlers with independent rate limits, politeness profiles, and thermal-aware scaling (cool=100%, critical=minimum).
+- **Schema Cartographer** — Maps schema evolution over time, detects drift severity (none→breaking), auto-generates migration transforms.
+- **Deduplication Forge** — Multi-layer dedup: bloom filter (100K capacity) → MinHash signatures (64-hash, Jaccard ≥ 0.7) → near-duplicate catch.
+- **Freshness Oracle** — Decay-curve re-fetch scheduling: linear (high-churn), exponential (medium), logarithmic (stable). Confidence-gated predictions.
+- **Quality Furnace** — 4-dimension batch scoring: completeness (30%), consistency (25%), accuracy (25%), timeliness (20%). Quarantine threshold: 40%.
+- **Pipeline Choreographer** — DAG-based ETL with parallel stage execution, checkpoint/resume, exponential backoff retry (3×), cascade skip.
+- **Provenance Ledger** — Hash-chained audit trail (5K entries). Tracks source, transforms, consumers. Tamper-evident chain integrity verification.
+- **Anticipatory Prefetch** — Intent-pattern learning from BRAIN/ORACLE/CORTEX. Pre-fetches 10s before predicted need. Cache TTL: 5min.
+- **Harvest Telemetry** — Real-time observability: ingestion rates, source heatmaps, pipeline throughput, quality trends, cost-per-record, composite health.
+
+---
+
 ## 2026-03-23 · v15.2.2 (CONTACT — FORGE Ultimate "Crucible")
 
 ⟨This entry describes FORGE v9.0.0 — the substrate's artifact synthesis engine reaching its ultimate form with 10 new systems.⟩
