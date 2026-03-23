@@ -1,5 +1,5 @@
 /**
- * Operations Tab — Remaining execution & infrastructure nodes
+ * Operations Tab — Remaining execution & infrastructure primitives
  * Sub-tabs: DECODE, VISION, ECONOMY, SANDBOX, INCLUSIVE, NERVE, REFLEX
  */
 
