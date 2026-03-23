@@ -98,7 +98,7 @@ function OrbitalCanvas() {
     const orbitR = Math.min(w, h) * 0.42;
     const innerR = orbitR * 0.35; // Bounds for #41 bouncing
 
-    // Pre-compute orbital positions for 40 nodes
+    // Pre-compute orbital positions for 40 primitives
     const nodePositions: { x: number; y: number; color: { h: number; s: number; l: number }; node: typeof SUBSTRATE_NODES[0] }[] = [];
 
     const N = SUBSTRATE_NODES.length;
