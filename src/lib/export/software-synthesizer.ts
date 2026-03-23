@@ -23,6 +23,7 @@
 import type { SynthesisContext } from './logic-synthesizer';
 import { moduleOps, generateBridgeHeader, buildStageTable } from './bridge-adapter';
 import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT } from './canonical-runtime-contract';
+import { labelChain } from './primitive-labels';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Rust Bridge Adapter
