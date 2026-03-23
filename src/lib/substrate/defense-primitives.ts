@@ -17,3 +17,9 @@ export * from '@/crownjewels/s-tier/167-cascade-prevention';
 
 // Enterprise Virus Protection Suite (namespaced to avoid collisions)
 export * as VirusProtection from './defense/virus-protection';
+
+// DEFENSE Orchestrator — active runtime enforcement wrapper
+export * as DefenseOrchestrator from './defense/defense-orchestrator';
+
+// DEFENSE Event Bus — UI-safe alert stream
+export * as DefenseEvents from './defense/defense-events';
