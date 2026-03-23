@@ -25,7 +25,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 
 // ═══════════════════════════════════════════════════════════
-// 40-NODE REGISTRY — Canonical Source
+// 40-PRIMITIVE REGISTRY — Canonical Source
 // ═══════════════════════════════════════════════════════════
 
 interface NodeEntry {
