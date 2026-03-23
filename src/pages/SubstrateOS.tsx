@@ -496,7 +496,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'ccr' && (
-              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — memory tiers and DREAM synthesis.">
+              <TierGate requiredTier="creator" currentTier={role} tabLabel="CCR" description="Cognitive Core Reality — memory tiers and DREAM Engine synthesis.">
                 <PanelContainer id="ccr"><Suspense fallback={<PanelLoader />}><CCRTab /></Suspense></PanelContainer>
               </TierGate>
             )}
