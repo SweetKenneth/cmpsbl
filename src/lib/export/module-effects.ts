@@ -12,7 +12,7 @@
  *   - score output        (confidence annotation)
  *   - route next step     (conditional branching)
  *
- * All 40 matrix nodes have deep implementations.
+ * All 40 matrix primitives have deep implementations.
  * Safe fallback exists for any unknown/future modules.
  *
  * Zero dependencies. Pure TypeScript.
@@ -939,7 +939,7 @@ const meshEffect: ModuleEffect = {
       bandwidth: Math.round(signalCount / Math.max(1, ctx.trace.reduce((s, t) => s + t.durationMs, 0) / 1000) * 100) / 100,
     };
     ctx.annotations['mesh.topology'] = topology;
-    ctx.transformationNotes.push(`[MESH] Fabric: ${topology} — ${ctx.chainModules.length} nodes, ${signalCount} signals transmitted`);
+    ctx.transformationNotes.push(`[MESH] Fabric: ${topology} — ${ctx.chainModules.length} primitives, ${signalCount} signals transmitted`);
     return ctx;
   },
 };
