@@ -52,11 +52,11 @@ const faqItems = [
   },
   {
     question: "Can CMPSBL work with existing AI models?",
-    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS node automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
+    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS Organ automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
     question: "What is the platform architecture?",
-    answer: "40 specialized modules organized across 12 capability groups — Kernel (core system), Cognition (reasoning, memory, learning), Operations (access, networking, audit), Execution (routing, parsing, code analysis, orchestration), Safety & Compliance, Simulation, Manufacturing, Evolution, Fields (adaptation, immunity, intent), Governance, Discovery, and Security Shell. All modules are weighted and coordinated by the core runtime.",
+    answer: "40 specialized primitives organized across 4 categories — Organs (core infrastructure like CORE, SYSTEM, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like BRAIN, MEMORY, DREAM, CORTEX), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA). All primitives are weighted and coordinated by the core runtime.",
   },
 ];
 
@@ -192,9 +192,9 @@ export default function AIOperatingSystem() {
 
             <motion.div {...fadeUp(0.22)} className="flex flex-col sm:flex-row gap-3 mt-8 sm:mt-10">
               <Button asChild size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                <Link to="/modules">
+                <Link to="/architecture">
                   <Activity className="w-5 h-5" />
-                  Explore All 40 Modules
+                  Explore Architecture
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </Button>
@@ -427,9 +427,9 @@ export default function AIOperatingSystem() {
                   </Link>
                 </Button>
                 <Button asChild variant="outline" size="lg" className="gap-2 px-6 sm:px-8 h-12 sm:h-14 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-primary/30 transition-colors">
-                  <Link to="/modules">
+                  <Link to="/architecture">
                     <Activity className="w-5 h-5" />
-                    Explore All 40 Modules
+                    Explore Architecture
                   </Link>
                 </Button>
               </div>

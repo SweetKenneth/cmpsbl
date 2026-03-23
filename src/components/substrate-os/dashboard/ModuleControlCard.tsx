@@ -83,7 +83,7 @@ export function ModuleControlCard({
       setRecentSuccess(actionId);
       setTimeout(() => setRecentSuccess(null), 2000);
     } catch (e) {
-      voice.error(`${name} action failed`, 'Check module health status', name.toUpperCase());
+      voice.error(`${name} action failed`, 'Check primitive health status', name.toUpperCase());
     } finally {
       setPendingAction(null);
     }

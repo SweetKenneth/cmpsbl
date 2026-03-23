@@ -10,10 +10,10 @@ export interface GlossaryEntry {
 }
 
 export const GLOSSARY: Record<string, GlossaryEntry> = {
-  "node": {
-    term: "Module",
+  "primitive": {
+    term: "Primitive",
     short: "A specialized subsystem inside the CMPSBL platform.",
-    detail: "Modules expose resolvers and communicate through the INTENT mesh. CMPSBL has 40 modules across 12 groups.",
+    detail: "Primitives expose resolvers and communicate through the INTENT mesh. CMPSBL has 40 primitives across 4 categories: Agents, Engines, Layers, and Organs.",
   },
   "memory-stream": {
     term: "Memory Stream",
@@ -62,7 +62,7 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   },
   "mesh": {
     term: "Mesh Communications",
-    short: "Node-to-node signals that power observability.",
+    short: "Primitive-to-primitive signals that power observability.",
     detail: "Signals are persisted and translated into readable dialogue. Categories include acknowledgement, discovery, escalation, and heartbeat.",
   },
   "substrate": {

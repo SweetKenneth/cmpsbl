@@ -54,13 +54,13 @@ function CopyBlock({ code, label }: { code: string; label?: string }) {
   );
 }
 
-const MODULES = [
-  { name: "BRAIN", icon: Brain, desc: "Store, recall, and search knowledge that persists across sessions.", actions: ["remember", "query", "recall", "reflect", "coherenceCheck"] },
-  { name: "DECODE", icon: MessageSquare, desc: "Understand user intent, extract entities, and generate contextual responses.", actions: ["chat", "intent", "propose", "learn"] },
-  { name: "NEXUS", icon: Network, desc: "Route AI requests across 13+ providers with automatic failover and cost controls.", actions: ["route", "providers", "text", "image"] },
-  { name: "DEFENSE", icon: Shield, desc: "Detect bots, score threats, analyze IPs, and flag anomalies in real time.", actions: ["analyze", "reputation", "anomaly", "posture"] },
-  { name: "VISION", icon: Eye, desc: "Monitor system health with metrics, logs, dashboards, and distributed tracing.", actions: ["health", "metrics", "logs", "trace", "dashboard"] },
-  { name: "DREAM", icon: Zap, desc: "Run self-improvement cycles that consolidate memory and extract patterns.", actions: ["cycle", "mutate", "reflect", "mood"] },
+const PRIMITIVES = [
+  { name: "BRAIN", icon: Brain, desc: "Store, recall, and search knowledge that persists across sessions.", actions: ["remember", "query", "recall", "reflect", "coherenceCheck"], category: "Engine" },
+  { name: "DECODE", icon: MessageSquare, desc: "Understand user intent, extract entities, and generate contextual responses.", actions: ["chat", "intent", "propose", "learn"], category: "Agent" },
+  { name: "NEXUS", icon: Network, desc: "Route AI requests across 13+ providers with automatic failover and cost controls.", actions: ["route", "providers", "text", "image"], category: "Organ" },
+  { name: "DEFENSE", icon: Shield, desc: "Detect bots, score threats, analyze IPs, and flag anomalies in real time.", actions: ["analyze", "reputation", "anomaly", "posture"], category: "Layer" },
+  { name: "VISION", icon: Eye, desc: "Monitor system health with metrics, logs, dashboards, and distributed tracing.", actions: ["health", "metrics", "logs", "trace", "dashboard"], category: "Agent" },
+  { name: "DREAM", icon: Zap, desc: "Run self-improvement cycles that consolidate memory and extract patterns.", actions: ["cycle", "mutate", "reflect", "mood"], category: "Engine" },
 ];
 
 const INSTALL_STEPS = [
@@ -140,7 +140,7 @@ export default function VanillaDeveloperGuide() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {MODULES.map((mod, i) => (
+            {PRIMITIVES.map((mod, i) => (
               <motion.div
                 key={mod.name}
                 initial={{ opacity: 0, y: 15 }}
@@ -552,7 +552,7 @@ const usage = await substrate.keys.usage('openai', 30);`} />
               Request & Response Format
             </h2>
             <p className="text-muted-foreground text-center max-w-xl mx-auto mb-10">
-              If you prefer raw HTTP over the SDK, every module is accessible via a single POST endpoint.
+              If you prefer raw HTTP over the SDK, every primitive is accessible via a single POST endpoint.
             </p>
           </motion.div>
 

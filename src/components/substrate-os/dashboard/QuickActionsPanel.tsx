@@ -72,7 +72,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
         voice.success('Diagnostics complete', 'All systems nominal', 'VISION');
         showSuccess('diagnostics');
       } else {
-        voice.warning('Issues found', 'Review module health', 'VISION');
+        voice.warning('Issues found', 'Review primitive health', 'VISION');
       }
     } catch {
       voice.error('Diagnostics failed', 'Unable to complete analysis', 'VISION');
@@ -84,7 +84,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
   const actions = [
     {
       id: 'heal', label: 'Auto-Heal', icon: Wrench,
-      description: 'Repair unhealthy modules',
+      description: 'Repair unhealthy primitives',
       borderClass: 'border-neon-green/15 hover:border-neon-green/40',
       bgGradient: 'from-neon-green/[0.06]', glowBg: 'bg-neon-green/10',
       iconGradient: 'bg-gradient-to-br from-neon-green to-neon-green',

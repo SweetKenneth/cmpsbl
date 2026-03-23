@@ -204,10 +204,10 @@ function OverviewSection() {
 │  MANUFACTURING             FORGE · TRANSLATE · INGEST   │
 │  CONTINUOUS                EVOLUTION · SHADOW · PHANTOM │
 ├─────────────────────────────────────────────────────────┤
-│  ATLAS                     Control plane (Module 40)    │
+│  ATLAS                     Control plane (Primitive 40)  │
 └─────────────────────────────────────────────────────────┘
 Cross-cutting: EVOLUTION · IMMUNITY · INTENT
-Total: 40 modules · 12 groups · Σ weights = 1.000`}</CodeBlock>
+Total: 40 primitives · 4 categories · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
@@ -298,8 +298,8 @@ HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
 STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
 AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
 
-// Health score = Σ(module_health × weight) / Σ(weights)
-// Circuit breaker trips when module health < 0.3`}</CodeBlock>
+// Health score = Σ(primitive_health × weight) / Σ(weights)
+// Circuit breaker trips when primitive health < 0.3`}</CodeBlock>
       </div>
 
       {/* Safety switches */}

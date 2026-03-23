@@ -84,7 +84,7 @@ const routed = await cmpsbl.route({
 console.log(routed);`,
     module: 'nexus',
     action: 'text',
-    payload: { prompt: 'Summarize the current state of the cognitive substrate. Include: active modules, recent memory chains, health status, and any notable patterns discovered in the last cycle.' },
+    payload: { prompt: 'Summarize the current state of the cognitive substrate. Include: active primitives, recent memory chains, health status, and any notable patterns discovered in the last cycle.' },
   },
   {
     id: 'health',

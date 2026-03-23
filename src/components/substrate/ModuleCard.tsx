@@ -1,6 +1,6 @@
 /**
- * CMPSBL® Module Card Component
- * Displays status for a single substrate module
+ * CMPSBL® Primitive Card Component
+ * Displays status for a single substrate primitive
  */
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -159,7 +159,7 @@ const moduleConfig: Record<SubstrateModule, {
   intent: {
     icon: Target,
     label: 'Intent',
-    description: 'Cross-module intent routing, goal decomposition',
+    description: 'Cross-primitive intent routing, goal decomposition',
     color: 'text-neon-amber',
   },
   governance: {
@@ -177,10 +177,10 @@ const moduleConfig: Record<SubstrateModule, {
   nerve: {
     icon: Cable,
     label: 'Nerve',
-    description: 'Inter-node signaling, consensus repair',
+    description: 'Inter-primitive signaling, consensus repair',
     color: 'text-neon-purple',
   },
-  // Expansion Modules (40-Node Architecture)
+  // Expansion Primitives (40-Primitive Architecture)
   sovereign: {
     icon: Crown,
     label: 'SOVEREIGN',
@@ -253,7 +253,7 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Covert execution & shadow mesh operations',
     color: 'text-gray-500',
   },
-  // Plane additions — Nodes 39 & 40
+  // Plane additions — Primitives 39 & 40
   engineer: {
     icon: Settings,
     label: 'ENGINEER',

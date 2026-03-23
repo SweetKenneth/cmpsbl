@@ -225,7 +225,7 @@ export function ObservabilityHUD() {
         </div>
       </Card>
 
-      {/* Module Status Grid - 4 Layer Architecture */}
+      {/* Primitive Status Grid - 4 Category Architecture */}
       <div className="space-y-4">
         {/* Layer Groups */}
         {["Kernel", "Cognitive", "Operational", "Admin"].map((layer) => {

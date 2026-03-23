@@ -151,7 +151,7 @@ export default function Terms() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Terms of Service — Usage & Licensing | CMPSBL®"
-        description="CMPSBL terms of service: usage rights for the 40-node substrate, Memory Stream artifact ownership, engine licensing, cognitive agent IP, tier-specific SLAs, and acceptable use policies."
+        description="CMPSBL terms of service: usage rights for the 40-primitive substrate, Memory Stream artifact ownership, engine licensing, cognitive agent IP, tier-specific SLAs, and acceptable use policies."
         keywords={['CMPSBL terms of service', 'AI platform terms', 'engine licensing', 'memory stream ownership']}
       />
       <PublicNav />

@@ -80,7 +80,7 @@ const solutions = [
     tagline: "Your Infrastructure, Full Control",
     description: "Deploy the complete CMPSBL platform on your own servers. Air-gapped, sovereign, and fully compliant. Contact enterprise@CMPSBL.com for pricing.",
     features: ["Full platform deployment", "Air-gapped security option", "Data sovereignty guaranteed", "Compliance-ready configuration", "Dedicated memory partitions", "Organization workspaces"],
-    metrics: ["Self-Hosted", "Sovereign", "40 Modules"],
+    metrics: ["Self-Hosted", "Sovereign", "40 Primitives"],
     link: "/enterprise",
     color: "from-neon-green to-neon-green",
   },
@@ -124,7 +124,7 @@ export default function Solutions() {
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
               <Gauge className="w-3 h-3 mr-2" />
-              40 Modules · 12 Groups · 675+ Capabilities
+              40 Primitives · Agents · Engines · Layers · Organs
             </Badge>
             
              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 sm:mb-6 text-foreground leading-tight">
