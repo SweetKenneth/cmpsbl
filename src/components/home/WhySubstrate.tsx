@@ -119,7 +119,7 @@ const primitives = [
   {
     icon: Plug,
     title: "Enterprise Integration",
-    node: "INTEGRATION",
+    node: "INTEGRATION Organ",
     description: "Connect to enterprise systems (SAP, Oracle, Workday) with built-in LLM governance.",
     highlight: "LLM Governance",
     stat: "35+",
