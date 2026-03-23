@@ -80,7 +80,7 @@ const primitives = [
   {
     icon: Eye,
     title: "Full Observability",
-    node: "VISION",
+    node: "VISION Agent",
     description: "Full observability across every invocation — including cost tracking, latency monitoring, and confidence scoring.",
     highlight: "See Everything",
     stat: "24/7",
