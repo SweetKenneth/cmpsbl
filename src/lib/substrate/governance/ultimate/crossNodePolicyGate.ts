@@ -127,8 +127,8 @@ export function evaluateGate(context: GateEvalContext): GateEvalResult {
   // Determine final decision (most restrictive wins)
   let finalDecision: GateDecision = 'allow';
   for (const match of matchedGates) {
-    if (match.decision === 'deny') { finalDecision = 'deny'; break; }
-    if (match.decision === 'require_approval' && finalDecision !== 'deny') finalDecision = 'require_approval';
+    if (match.decision === 'deny') { finalDecision = 'deny' as GateDecision; break; }
+    if (match.decision === 'require_approval' && finalDecision === 'allow') finalDecision = 'require_approval';
     if (match.decision === 'defer' && finalDecision === 'allow') finalDecision = 'defer';
   }
 
