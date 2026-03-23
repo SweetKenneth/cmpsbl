@@ -1,7 +1,7 @@
 # ATLAS — Ultimate Architecture (v9.0.0 "Cartographer")
 
-**Node:** #40 — ATLAS  
-**Sector:** PLANE (Engineering Plane)  
+**Primitive:** #40 — ATLAS  
+**Category:** PLANE (Engineering Plane)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ ATLAS operates within the `operational` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

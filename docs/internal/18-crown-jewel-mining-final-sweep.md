@@ -605,7 +605,7 @@ GOVERNANCE      █ 1
 | **Composability** | 14/15 — Registry supports typed entries with metadata |
 | **Governance Influence** | 10/10 — Registry mutations governed |
 | **Moat Sensitivity** | 10/10 — Registry structure reveals complete architecture |
-| **Behavior** | The foundational registry that tracks every entity in the substrate: modules, capabilities, pipelines, executors, connectors, and configuration. Supports: (1) Registration — typed entity registration with metadata and health hooks; (2) Discovery — query entities by type, tag, status, or capability; (3) Lifecycle — entity state management (registered → active → degraded → decommissioned); (4) Versioning — entity version tracking with backward compatibility checks; (5) Dependency resolution — entity dependency graph maintenance. The registry is the kernel's primary data structure. |
+| **Behavior** | The foundational registry that tracks every entity in the substrate: modules, capabilities, memory chains, executors, connectors, and configuration. Supports: (1) Registration — typed entity registration with metadata and health hooks; (2) Discovery — query entities by type, tag, status, or capability; (3) Lifecycle — entity state management (registered → active → degraded → decommissioned); (4) Versioning — entity version tracking with backward compatibility checks; (5) Dependency resolution — entity dependency graph maintenance. The registry is the kernel's primary data structure. |
 
 ### S-130: MEMORY Cross-Session Persistence Layer
 
@@ -793,11 +793,11 @@ GOVERNANCE      █ 1
 | **Category** | Execution Intelligence |
 | **Strategic Leverage** | 27/30 — Optimizes pipeline execution paths at runtime |
 | **Recursion Potential** | 19/20 — Optimization strategies improve from execution timing data |
-| **Cross-Node Impact** | 14/15 — Optimizes pipelines across all module boundaries |
+| **Cross-Node Impact** | 14/15 — Optimizes memory chains across all module boundaries |
 | **Composability** | 14/15 — Optimization strategies composable per pipeline type |
 | **Governance Influence** | 8/10 — Optimization changes logged for governance review |
 | **Moat Sensitivity** | 9/10 — Pipeline optimization algorithms are core IP |
-| **Behavior** | Runtime pipeline optimization: (1) Step reordering — rearranges independent steps for parallel execution; (2) Step elimination — removes steps whose outputs are already cached; (3) Step fusion — merges adjacent steps that share data dependencies; (4) Early termination — short-circuits pipelines when final result is determinable; (5) Adaptive timeout — adjusts step timeouts based on historical execution times; (6) Resource pre-allocation — reserves resources for upcoming steps based on execution prediction. Produces optimization reports showing time saved per pipeline. |
+| **Behavior** | Runtime pipeline optimization: (1) Step reordering — rearranges independent steps for parallel execution; (2) Step elimination — removes steps whose outputs are already cached; (3) Step fusion — merges adjacent steps that share data dependencies; (4) Early termination — short-circuits memory chains when final result is determinable; (5) Adaptive timeout — adjusts step timeouts based on historical execution times; (6) Resource pre-allocation — reserves resources for upcoming steps based on execution prediction. Produces optimization reports showing time saved per pipeline. |
 
 ### S-142: VISION Root Cause Analysis Engine
 
@@ -913,4 +913,4 @@ The Crown Jewel Mining program transitions from **Discovery Mode** to **Maintena
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

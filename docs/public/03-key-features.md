@@ -22,7 +22,7 @@
 | Feature | Description |
 |---------|-------------|
 | **Multi-Provider Routing** | NEXUS routes to optimal AI providers with automatic failover |
-| **Cognitive Orchestration** | CORTEX composes multi-step AI pipelines |
+| **Cognitive Orchestration** | CORTEX composes multi-step AI memory chains |
 | **Natural Language Processing** | DECODE understands, ENCODE generates |
 | **Predictive Modeling** | ORACLE runs Bayesian inference and scenario simulation |
 | **Ethical Assessment** | CONSCIENCE performs bias detection and ethical evaluation |
@@ -70,8 +70,8 @@
 |---------|-------------|
 | **Universal Export** | Export to 25 target languages (18 software, 7 HDL) |
 | **Mini-Runtime Engine** | Standalone execution environment for exported artifacts |
-| **Artifact Packs** | Discovered pipelines bundled with documentation and test harnesses |
+| **Artifact Packs** | Discovered memory chains bundled with documentation and test harnesses |
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

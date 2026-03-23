@@ -87,4 +87,4 @@ Every autonomous change recorded in SHA-256 hash chains. Call `verifyChain()` to
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

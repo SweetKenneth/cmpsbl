@@ -226,4 +226,4 @@ All tables are RLS-protected. Service-role write access prevents unauthorized kn
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

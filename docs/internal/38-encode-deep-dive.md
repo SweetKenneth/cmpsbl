@@ -719,4 +719,4 @@ The customer-facing version of ENCODE is called **VOLVER** — a deliberately li
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

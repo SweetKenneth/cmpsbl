@@ -1,6 +1,6 @@
 # DEFENSE Ultimate — "Fortress" v9.0.0
 
-> **Node #38** · Sector: FIELDS · **Codename:** Fortress · **Ultimate Form:** v9.0.0 "Fortress"  
+> **Primitive #38** · Category: FIELDS · **Codename:** Fortress · **Ultimate Form:** v9.0.0 "Fortress"  
 > **Role:** Security operations — threat evaluation, virus protection, incident response  
 > **Personality:** The Guardian · **Icon:** 🏰  
 > **Classification:** FOUNDER EYES ONLY

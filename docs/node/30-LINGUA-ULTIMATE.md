@@ -1,7 +1,7 @@
 # LINGUA v9.0.0 "Polyglot" — Ultimate Architecture
 
-**Node:** #30 — LINGUA  
-**Sector:** EMZ (Expansion Manufacturing Zone)  
+**Primitive:** #30 — LINGUA  
+**Category:** EMZ (Expansion Manufacturing Zone)  
 **Weight:** 0.015  
 **Classification:** 🔒 FOUNDER EYES ONLY  
 **Last Updated:** 2026-03-23  
@@ -235,4 +235,4 @@ Uses EMA-smoothed baselines (α=0.05) that adapt to normal operating conditions.
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

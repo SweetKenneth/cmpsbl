@@ -1,6 +1,6 @@
 # NERVE Ultimate — "Synapse Prime" v9.0.0
 
-> **Node #11** · Sector: SYSTEM · **Codename:** Synapse · **Ultimate Form:** v9.0.0 "Synapse Prime"  
+> **Primitive #11** · Category: SYSTEM · **Codename:** Synapse · **Ultimate Form:** v9.0.0 "Synapse Prime"  
 > **Role:** Advanced signaling, forensics, and resilience layer  
 > **Personality:** The Pulse · **Icon:** ⚡  
 > **Classification:** FOUNDER EYES ONLY

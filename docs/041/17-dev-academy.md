@@ -133,4 +133,4 @@ Exercises are designed to be non-destructive and operate within controlled scope
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

@@ -116,4 +116,4 @@ Generates governance proposals from high-severity signals:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

@@ -47,4 +47,4 @@ Topics are sourced from system telemetry (70%) and scheduled curriculum (30%). K
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

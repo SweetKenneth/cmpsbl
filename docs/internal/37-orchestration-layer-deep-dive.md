@@ -8,7 +8,7 @@
 
 The substrate's 38 nodes don't call each other directly. All inter-module communication flows through a layered bus architecture that provides topology awareness, priority routing, auto-routing tables, circuit-breaker-aware delivery, and persistent audit trails.
 
-This document covers the complete orchestration stack: from the low-level Module Bus through the Matrix Communication Bus, up to the Orchestrator Engine that composes cognitive pipelines.
+This document covers the complete orchestration stack: from the low-level Module Bus through the Matrix Communication Bus, up to the Orchestrator Engine that composes cognitive memory chains.
 
 ---
 
@@ -17,7 +17,7 @@ This document covers the complete orchestration stack: from the low-level Module
 ```
 ┌────────────────────────────────────────────────────────────┐
 │  Layer 3: ORCHESTRATOR ENGINE                              │
-│  Declarative cognitive pipelines                           │
+│  Declarative cognitive memory chains                           │
 │  ingest → learn → imagine → reason → govern → synthesize   │
 ├────────────────────────────────────────────────────────────┤
 │  Layer 2: MATRIX COMMUNICATION BUS                         │
@@ -218,7 +218,7 @@ The Matrix Bus defines 13 signal types specific to matrix operations:
 
 **Source:** `src/lib/substrate/orchestrator-engine.ts`
 
-The Orchestrator Engine is the highest-level composition layer. It chains cognitive engines into declarative pipelines and provides lifecycle hooks for monitoring.
+The Orchestrator Engine is the highest-level composition layer. It chains cognitive engines into declarative memory chains and provides lifecycle hooks for monitoring.
 
 ### 5.1 — Cognitive Engines
 
@@ -232,7 +232,7 @@ The Orchestrator coordinates five engines:
 | **Reasoning Engine** | `reasoning-engine.ts` | Causal mapping, hypothesis generation |
 | **Governance Guard** | `governance-guard.ts` | Coherence checks, ethics validation |
 
-### 5.2 — Preset Pipelines
+### 5.2 — Preset memory chains
 
 Five built-in pipeline configurations:
 
@@ -468,7 +468,7 @@ Signal priority controls:
 | `getBusStats()` | Total signals, subscriptions, by-type/module breakdown, unacked count |
 | `getRecentSignals(filters)` | Filtered view of signal history |
 | `getConnectivityMap()` | Which nodes can reach which dependencies |
-| `getOrchestratorState()` | Active/completed/failed pipelines, avg cycle time, engine health |
+| `getOrchestratorState()` | Active/completed/failed memory chains, avg cycle time, engine health |
 | `getAllPlaneStates()` | Status of all 4 control planes |
 | `takeSnapshot()` | Point-in-time state of all 38 nodes |
 
@@ -482,4 +482,4 @@ Signal priority controls:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

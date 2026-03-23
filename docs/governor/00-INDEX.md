@@ -40,4 +40,4 @@ This library contains everything the system governor needs to operate, protect, 
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

@@ -187,4 +187,4 @@ Nodes expanded during the audit: GOVERNANCE (+7), ATLAS (+13), FORGE (+11), LING
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

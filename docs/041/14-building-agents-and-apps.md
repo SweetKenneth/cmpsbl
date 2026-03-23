@@ -254,4 +254,4 @@ const result = await fetch('https://api.cmpsbl.com/v1/engine', {
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

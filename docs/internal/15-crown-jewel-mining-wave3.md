@@ -570,7 +570,7 @@ Across 12 artifacts spanning S and A tiers, the Intent Mesh functions as the sub
 
 | Metric | Value |
 |--------|-------|
-| Total capability space (capabilities + pipelines + infra) | ~650 |
+| Total capability space (capabilities + memory chains + infra) | ~650 |
 | Artifacts mined (3 waves) | 330 |
 | % mined | ~50.8% |
 | Estimated remaining CJPI ≥ 70 (S+A) candidates | 15–30 |
@@ -653,4 +653,4 @@ Across 12 artifacts spanning S and A tiers, the Intent Mesh functions as the sub
 
 **Classification:** This document is classified INTERNAL — RESTRICTED. Distribution outside the substrate governance team is prohibited.
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

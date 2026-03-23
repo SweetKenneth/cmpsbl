@@ -1,6 +1,6 @@
 # SYSTEM Ultimate — "Sentinel" v9.0.0
 
-> **Node #02** · Sector: CORE · **Codename:** Sentinel · **Ultimate Form:** v9.0.0 "Sentinel"  
+> **Primitive #02** · Category: CORE · **Codename:** Sentinel · **Ultimate Form:** v9.0.0 "Sentinel"  
 > **Role:** Self-healing core — predictive failure, repair optimization, resource management  
 > **Personality:** The Sentinel · **Icon:** ⚙️  
 > **Classification:** FOUNDER EYES ONLY

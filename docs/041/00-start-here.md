@@ -114,8 +114,8 @@ The process where external developer software enters the substrate, participates
 | Publisher | PromptFluid® |
 | System Version | v14.2.0 — MINDGAMES Epoch |
 | Documentation Epoch | 041 |
-| License | © 2025–2026 PromptFluid®. All rights reserved. |
+| License | © 2025–2026 CMPSBL®. All rights reserved. |
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

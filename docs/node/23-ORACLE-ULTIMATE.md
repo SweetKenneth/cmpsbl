@@ -1,6 +1,6 @@
 # ORACLE Ultimate — "Omniscience" v9.0.0
 
-> **Node #23** · Sector: ESZ · **Codename:** Prophet · **Ultimate Form:** v9.0.0 "Omniscience"  
+> **Primitive #23** · Category: ESZ · **Codename:** Prophet · **Ultimate Form:** v9.0.0 "Omniscience"  
 > **Role:** Predictive modeling and probabilistic reasoning  
 > **Personality:** The Prophet · **Icon:** 🔮  
 > **Classification:** FOUNDER EYES ONLY

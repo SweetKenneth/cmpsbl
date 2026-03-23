@@ -124,4 +124,4 @@ When all nodes are at 100% health: `matrixIntegrity = 1.000`
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

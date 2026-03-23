@@ -71,10 +71,10 @@ ENCODE       ██ 2
 | **Strategic Leverage** | 30/30 — Prevents data corruption across all multi-step operations |
 | **Recursion Potential** | 18/20 — Compensation graphs self-optimize based on failure patterns |
 | **Cross-Node Impact** | 15/15 — Every cross-module operation depends on saga integrity |
-| **Composability** | 15/15 — Underpins all crystallized pipelines and synergy chains |
+| **Composability** | 15/15 — Underpins all crystallized memory chains and synergy chains |
 | **Governance Influence** | 10/10 — Can unwind any operation system-wide |
 | **Moat Sensitivity** | 9/10 — Compensation topology is proprietary |
-| **Behavior** | Maintains a directed acyclic graph of compensating transactions. Each saga step registers both a forward action and its inverse. Failure at any point triggers cascading compensation in reverse topological order. Handles nested sagas, partial completion, and timeout-based expiry. The graph self-prunes completed branches and caches common compensation patterns for O(1) rollback of frequently used pipelines. |
+| **Behavior** | Maintains a directed acyclic graph of compensating transactions. Each saga step registers both a forward action and its inverse. Failure at any point triggers cascading compensation in reverse topological order. Handles nested sagas, partial completion, and timeout-based expiry. The graph self-prunes completed branches and caches common compensation patterns for O(1) rollback of frequently used memory chains. |
 
 ### S-16: Boot Gate Sequencer with Dependency Resolution
 | Field | Value |
@@ -209,12 +209,12 @@ ENCODE       ██ 2
 | **Module** | CORTEX |
 | **Category** | Runtime Pipeline Assembly |
 | **Strategic Leverage** | 27/30 — Enables capabilities that don't exist until runtime |
-| **Recursion Potential** | 19/20 — Composed pipelines can compose further pipelines |
-| **Cross-Node Impact** | 14/15 — Can assemble pipelines spanning any node combination |
+| **Recursion Potential** | 19/20 — Composed memory chains can compose further memory chains |
+| **Cross-Node Impact** | 14/15 — Can assemble memory chains spanning any node combination |
 | **Composability** | 15/15 — The compositor itself is the highest-composability artifact |
 | **Governance Influence** | 7/10 — Subject to governance approval for new compositions |
 | **Moat Sensitivity** | 6/10 — Pattern is known; execution details are unique |
-| **Behavior** | Accepts a declarative pipeline specification at runtime and assembles an executable pipeline from registered capability fragments. Validates type compatibility between stages, injects error handlers at join points, and applies backpressure between stages. Supports conditional branching, parallel fan-out, and aggregation stages. Memoizes frequently-composed pipelines for sub-millisecond reuse. |
+| **Behavior** | Accepts a declarative pipeline specification at runtime and assembles an executable pipeline from registered capability fragments. Validates type compatibility between stages, injects error handlers at join points, and applies backpressure between stages. Supports conditional branching, parallel fan-out, and aggregation stages. Memoizes frequently-composed memory chains for sub-millisecond reuse. |
 
 ### S-26: Predictive Failure Engine
 | Field | Value |
@@ -547,7 +547,7 @@ Cascade Detector (S-17) × Sector Killswitch (S-20) × Immutable Incidents (A-55
 | Metric | Value |
 |--------|-------|
 | Total registered capabilities | 269+ |
-| Total synergy pipelines | 200 |
+| Total synergy memory chains | 200 |
 | Total infrastructure primitives | ~180 |
 | **Artifacts mined (cumulative)** | **230** |
 | % of registered capabilities | ~85% |
@@ -630,4 +630,4 @@ Cascade Detector (S-17) × Sector Killswitch (S-20) × Immutable Incidents (A-55
 
 **Classification:** This document is classified INTERNAL — RESTRICTED. Distribution outside the substrate governance team is prohibited. All artifacts described herein are subject to Black-Box enforcement protocol.
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

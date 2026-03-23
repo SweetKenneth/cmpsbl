@@ -122,4 +122,4 @@ Expansion zones have independent circuit breakers. If an entire zone fails, core
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

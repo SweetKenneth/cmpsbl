@@ -26,4 +26,4 @@ This library provides investors, advisors, and potential partners with a compreh
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

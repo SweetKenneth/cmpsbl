@@ -24,7 +24,7 @@ For the **Top 10**, full standalone TypeScript code is provided — each is a se
 
 **CJPI: 98 | Module: CORE | Category: System Foundation**
 
-The single source of truth for all registered entities in a distributed system. Tracks modules, capabilities, pipelines, and configuration with lifecycle management, dependency resolution, and typed metadata.
+The single source of truth for all registered entities in a distributed system. Tracks modules, capabilities, memory chains, and configuration with lifecycle management, dependency resolution, and typed metadata.
 
 **Why it matters:** Without a registry, you have chaos. Every service mesh, microservice architecture, and plugin system needs one. This is the kernel's primary data structure — the phone book of the entire system.
 
@@ -1918,7 +1918,7 @@ All 10 standalone implementations are zero-dependency TypeScript. They can be pu
 The next ~30 items (ranks 11–40) could be exported with a lightweight "substrate shim" — a ~200-line event bus + registry that provides the `emit()`, `register()`, and `discover()` primitives they need.
 
 ### Architecture-Only (Never Export)
-Ranks 72–142 are deeply recursive or governance-dependent. They reference internal topology, CLM cycles, and evolution pipelines that have no meaning outside the substrate. These remain **permanently sealed**.
+Ranks 72–142 are deeply recursive or governance-dependent. They reference internal topology, CLM cycles, and evolution memory chains that have no meaning outside the substrate. These remain **permanently sealed**.
 
 ---
 

@@ -143,10 +143,10 @@ If 24 remains the hard target:
 | **Strategic Leverage** | 28/30 — Enables arbitrary capability composition at runtime |
 | **Recursion Potential** | 19/20 — Pipeline patterns learned from execution history |
 | **Cross-Node Impact** | 15/15 — Orchestrates across all execution modules |
-| **Composability** | 15/15 — Pipelines are first-class composable objects |
+| **Composability** | 15/15 — memory chains are first-class composable objects |
 | **Governance Influence** | 8/10 — Pipeline policies enforced by GOVERNANCE |
 | **Moat Sensitivity** | 9/10 — Core orchestration IP |
-| **Behavior** | Composes multi-step execution pipelines from registered capabilities. Supports: sequential chains, parallel fan-out/fan-in, conditional branching, retry with backoff, circuit-breaker integration per step, and streaming intermediate results. Pipelines are defined declaratively and optimized at compile-time for minimal inter-node hops. |
+| **Behavior** | Composes multi-step execution memory chains from registered capabilities. Supports: sequential chains, parallel fan-out/fan-in, conditional branching, retry with backoff, circuit-breaker integration per step, and streaming intermediate results. memory chains are defined declaratively and optimized at compile-time for minimal inter-node hops. |
 
 ### S-73: DREAM Nocturne Consolidation Cycle
 
@@ -640,4 +640,4 @@ Compliance is fully autonomous: policies are versioned, actions are chain-logged
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

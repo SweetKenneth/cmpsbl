@@ -106,4 +106,4 @@ CodeLab operates on the live substrate with the developer's own API key. Operati
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

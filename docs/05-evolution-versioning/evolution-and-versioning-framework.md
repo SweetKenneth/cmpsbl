@@ -249,4 +249,4 @@ The Scanner Orchestrator provides continuous evolution quality monitoring:
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

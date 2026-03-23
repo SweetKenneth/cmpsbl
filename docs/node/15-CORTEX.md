@@ -26,7 +26,7 @@ CORTEX is the substrate's orchestration brain. It coordinates multi-step workflo
 
 ### Pipeline Orchestration
 
-CORTEX manages execution pipelines as directed acyclic graphs (DAGs):
+CORTEX manages execution memory chains as directed acyclic graphs (DAGs):
 
 ```
 orchestrate(workflow):

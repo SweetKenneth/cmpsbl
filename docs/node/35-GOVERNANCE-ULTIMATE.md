@@ -1,6 +1,6 @@
 # GOVERNANCE — Policy Enforcement & Decision Authority (Ultimate Form)
 
-> **Node ID:** `governance` · **Sector:** Mesh Overlay · **Generation:** Ultimate · **Node #35 of 40**
+> **Primitive ID:** `governance` · **Category:** Mesh Overlay · **Generation:** Ultimate · **Primitive #35 of 40**
 > **Codename:** *Parliament Prime* · **Classification:** FOUNDER EYES ONLY
 > **Ultimate Form:** v9.0.0 "Parliament Prime"
 

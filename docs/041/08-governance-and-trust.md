@@ -211,4 +211,4 @@ For enterprise deployments, CMPSBL provides:
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

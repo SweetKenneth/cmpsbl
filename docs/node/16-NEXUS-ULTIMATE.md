@@ -1,7 +1,7 @@
 # NEXUS — Ultimate Architecture (v9.0.0 "Router Prime")
 
-**Node:** #16 — NEXUS  
-**Sector:** EXEC (Execution Ring)  
+**Primitive:** #16 — NEXUS  
+**Category:** EXEC (Execution Ring)  
 **Weight:** 0.030  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -77,4 +77,4 @@ NEXUS is the substrate's **multi-provider AI routing engine**. It manages intell
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

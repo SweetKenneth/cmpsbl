@@ -9,7 +9,7 @@ Routes AI requests across multiple providers (OpenAI, Google, Anthropic, etc.) u
 ## Use Cases
 
 - **Multi-model AI applications** — Route to the best provider per task type
-- **Cost-controlled AI pipelines** — Hard daily budgets with critical reserves
+- **Cost-controlled AI memory chains** — Hard daily budgets with critical reserves
 - **High-availability AI services** — Automatic failover with circuit breaking
 - **A/B model testing** — Score and compare providers in real-time
 

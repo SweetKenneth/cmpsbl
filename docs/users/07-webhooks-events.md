@@ -7,7 +7,7 @@
 | Event | Trigger |
 |-------|---------|
 | `memory.crystallized` | Memory stream crystallization complete |
-| `discovery.found` | New pipeline discovery detected |
+| `discovery.found` | New memory chain discovery detected |
 | `quota.warning` | Quota at 80% utilization |
 | `quota.exceeded` | Quota exhausted |
 | `security.incident` | DEFENSE detected threat |
@@ -55,4 +55,4 @@ function verifyWebhook(payload, signature, secret) {
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

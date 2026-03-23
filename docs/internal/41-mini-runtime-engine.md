@@ -15,7 +15,7 @@ The Mini-Runtime™ exists because exported discoveries must be **fully standalo
 
 1. Run it in any TypeScript/Node environment
 2. Re-score discoveries using the same CJPI algorithm
-3. Orchestrate multi-step pipelines without the substrate
+3. Orchestrate multi-step memory chains without the substrate
 4. Store and retrieve data using pluggable adapters
 
 **Zero external dependencies. Pure TypeScript. Drop-in ready.**

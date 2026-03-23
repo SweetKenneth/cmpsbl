@@ -1,6 +1,6 @@
 # EVOLUTION Ultimate — "Phoenix" v9.0.0
 
-> **Node #32** · Sector: CSZ · **Codename:** Phoenix · **Ultimate Form:** v9.0.0 "Phoenix"  
+> **Primitive #32** · Category: CSZ · **Codename:** Phoenix · **Ultimate Form:** v9.0.0 "Phoenix"  
 > **Role:** Governed mutation lifecycle — proposals, promotions, rollbacks  
 > **Personality:** The Transformer · **Icon:** 🔥  
 > **Classification:** FOUNDER EYES ONLY

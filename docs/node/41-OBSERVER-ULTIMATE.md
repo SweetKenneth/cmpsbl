@@ -1,7 +1,7 @@
 # OBSERVER — Ultimate Architecture (v9.0.0 "Sentinel Eye")
 
-**Node:** #41 — OBSERVER (Auxiliary)  
-**Sector:** FIELDS (Field Intelligence)  
+**Primitive:** #41 — OBSERVER (Auxiliary)  
+**Category:** FIELDS (Field Intelligence)  
 **Weight:** 0.015  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -61,4 +61,4 @@ OBSERVER operates within the `pattern-detection` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

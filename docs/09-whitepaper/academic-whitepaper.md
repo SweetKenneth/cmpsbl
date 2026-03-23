@@ -9,7 +9,7 @@
 **Date:** March 2026  
 **Version:** 1.0.0  
 **DOI:** Pending (Zenodo / OSF)  
-**License:** © 2025–2026 PromptFluid®. All rights reserved.
+**License:** © 2025–2026 CMPSBL®. All rights reserved.
 
 ---
 
@@ -659,5 +659,5 @@ This work builds on the CMPSBL Substrate OS v7.0.0 (SEBA Foundations), the AI Go
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.  
+© 2025–2026 CMPSBL®. All rights reserved.  
 CMPSBL® is a registered trademark of PromptFluid®.

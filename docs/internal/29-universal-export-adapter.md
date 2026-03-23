@@ -120,4 +120,4 @@ Zero external dependencies — runs in any TypeScript/Node environment. See inte
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

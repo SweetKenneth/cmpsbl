@@ -93,7 +93,7 @@ Universal event ingestion and transformation layer.
 - **Filter chain:** Configurable include/exclude rules per field
 - **Field mapping:** External events → substrate signal format
 - **Enrichment:** Augments events with substrate context before NERVE routing
-- **Replay:** Re-process historical events through updated pipelines
+- **Replay:** Re-process historical events through updated memory chains
 
 ### 10. Integration Discovery & Auto-Connect
 Self-discovers and configures new integrations.

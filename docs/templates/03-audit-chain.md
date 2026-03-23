@@ -12,7 +12,7 @@ Provides an immutable, hash-chained audit log with write-ahead log (WAL) durabil
 - **Financial systems** — Tamper-evident transaction records
 - **Change tracking** — Who did what, when, with proof of integrity
 - **Disaster recovery** — Replay committed transactions to rebuild state
-- **Data pipelines** — Transactional writes with rollback on failure
+- **Data memory chains** — Transactional writes with rollback on failure
 
 ## Drop-In Instructions
 

@@ -1,6 +1,6 @@
 # CORTEX Ultimate — "Conductor" v9.0.0
 
-> **Node #15** · Sector: EXEC · **Codename:** Conductor · **Ultimate Form:** v9.0.0 "Conductor"  
+> **Primitive #15** · Category: EXEC · **Codename:** Conductor · **Ultimate Form:** v9.0.0 "Conductor"  
 > **Role:** High-performance orchestration kernel  
 > **Personality:** The Orchestrator · **Icon:** 🎼  
 > **Classification:** FOUNDER EYES ONLY

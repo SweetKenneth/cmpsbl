@@ -152,4 +152,4 @@ All ENGINEER proposals enter SEBA at Gate 1 — same pipeline as manual proposal
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

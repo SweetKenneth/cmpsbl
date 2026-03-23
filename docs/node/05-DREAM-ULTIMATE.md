@@ -1,7 +1,7 @@
 # DREAM — Ultimate Architecture (v8.0.0 "Nocturne")
 
-**Node:** #5 — DREAM  
-**Sector:** CCR (Cognitive Core Ring)  
+**Primitive:** #5 — DREAM  
+**Category:** CCR (Cognitive Core Ring)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -92,4 +92,4 @@ DREAM operates within the `data-synthesis` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

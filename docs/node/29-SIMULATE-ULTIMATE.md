@@ -1,6 +1,6 @@
 # SIMULATE — Universal Scenario Simulation Engine
 
-> **Node ID:** `simulate` · **Sector:** EPZ (Execution Projection Zone) · **Generation:** Ultimate · **Node #29 of 40**
+> **Primitive ID:** `simulate` · **Category:** EPZ (Execution Projection Zone) · **Generation:** Ultimate · **Primitive #29 of 40**
 > **Codename:** *Crucible Prime* · **Classification:** FOUNDER EYES ONLY
 
 ---

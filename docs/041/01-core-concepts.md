@@ -222,4 +222,4 @@ The specific formula and weight allocations are sealed as proprietary trade secr
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

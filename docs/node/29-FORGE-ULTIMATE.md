@@ -1,7 +1,7 @@
 # FORGE — Ultimate Architecture (v9.0.0 "Anvil")
 
-**Node:** #29 — FORGE  
-**Sector:** EXEC (Execution Ring)  
+**Primitive:** #29 — FORGE  
+**Category:** EXEC (Execution Ring)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -10,14 +10,14 @@
 
 ## 1. Purpose
 
-FORGE is the substrate's **artifact creation, sealing, and capability packaging engine**. It manages the pipeline discovery process, crystallizes discovered capabilities into deployable artifacts, and enforces intellectual property protection through FNV-1a hash-chain sealing.
+FORGE is the substrate's **artifact creation, sealing, and capability packaging engine**. It manages the memory chain discovery process, crystallizes discovered capabilities into deployable artifacts, and enforces intellectual property protection through FNV-1a hash-chain sealing.
 
 ---
 
 ## 2. Core Engines
 
 ### 2.1 Artifact Crystallizer
-- Converts discovered pipelines into deployable artifact packs
+- Converts discovered memory chains into deployable artifact packs
 - Includes: implementation, mini-runtime, documentation, license, testbench, build config
 - Supports multiple execution environments (software + HDL)
 
@@ -61,4 +61,4 @@ FORGE operates within the `operational` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

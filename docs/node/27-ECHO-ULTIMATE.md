@@ -1,7 +1,7 @@
 # ECHO v9.0.0 "Resonance" — Ultimate Architecture
 
-**Node:** #27 — ECHO  
-**Sector:** EPZ (Expansion Perception Zone)  
+**Primitive:** #27 — ECHO  
+**Category:** EPZ (Expansion Perception Zone)  
 **Weight:** 0.015  
 **Classification:** 🔒 FOUNDER EYES ONLY  
 **Last Updated:** 2026-03-23  
@@ -54,4 +54,4 @@ ECHO is the substrate's **signal reverberation and pattern amplification engine*
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

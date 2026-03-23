@@ -222,4 +222,4 @@ All ascension primitive module names follow the format: `Ψ₄₁_NODENAME`
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

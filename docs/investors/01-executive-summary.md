@@ -66,7 +66,7 @@ CMPSBL is the **only AI orchestration system** where:
 | Agent Marketplace | 20 agents across 4 price tiers ($0–$159/agent) |
 | Engine Marketplace | 54 premium engines across META, APEX, ELITE, CORE tiers |
 | Self-Hosted Licenses | Full-control perpetual licenses |
-| Artifact Packs | Exportable discovered pipelines |
+| Artifact Packs | Exportable discovered memory chains |
 
 ---
 
@@ -77,4 +77,4 @@ ORCID: [0009-0001-4237-1243](https://orcid.org/0009-0001-4237-1243)
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

@@ -139,4 +139,4 @@ When you exercise override authority:
 
 ---
 
-© 2025–2026 PromptFluid®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Governor Eyes Only.

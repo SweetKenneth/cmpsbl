@@ -1,7 +1,7 @@
 # VISION — Ultimate Architecture (v9.0.0 "Seer")
 
-**Node:** #14 — VISION  
-**Sector:** OCG (Observability & Control Group)  
+**Primitive:** #14 — VISION  
+**Category:** OCG (Observability & Control Group)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -62,4 +62,4 @@ VISION is the substrate's **visual intelligence and perception engine**. It proc
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

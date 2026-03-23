@@ -1,7 +1,7 @@
 # DECODE — Ultimate Architecture (v9.0.0 "Interpreter")
 
-**Node:** #12 — DECODE  
-**Sector:** CCR (Cognitive Core Ring)  
+**Primitive:** #12 — DECODE  
+**Category:** CCR (Cognitive Core Ring)  
 **Weight:** 0.025  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -67,4 +67,4 @@ DECODE does not have a dedicated ADA domain — it serves as the **input gateway
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

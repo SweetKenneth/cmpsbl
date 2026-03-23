@@ -208,4 +208,4 @@ Discover capabilities through the Memory Stream, crystallize them, and export th
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

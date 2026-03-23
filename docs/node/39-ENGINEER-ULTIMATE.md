@@ -1,7 +1,7 @@
 # ENGINEER — Ultimate Architecture (v9.0.0 "Foundry")
 
-**Node:** #39 — ENGINEER  
-**Sector:** PLANE (Engineering Plane)  
+**Primitive:** #39 — ENGINEER  
+**Category:** PLANE (Engineering Plane)  
 **Weight:** 0.020  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -88,4 +88,4 @@ ENGINEER operates within the `resource-allocation` domain:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

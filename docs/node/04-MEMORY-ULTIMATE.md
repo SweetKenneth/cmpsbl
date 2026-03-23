@@ -1,7 +1,7 @@
 # MEMORY — Ultimate Architecture (v9.0.0 "Archive Prime")
 
-**Node:** #04 — MEMORY  
-**Sector:** CCR (Cognitive Core Ring)  
+**Primitive:** #04 — MEMORY  
+**Category:** CCR (Cognitive Core Ring)  
 **Weight:** 0.050  
 **Classification:** 🔒 FOUNDER EYES ONLY  
 **Last Updated:** 2026-03-23

@@ -11,7 +11,7 @@
 | **SaaS Subscriptions** | Monthly/Annual | 4 tiers: Free, Pro, Enterprise, Self-Hosted |
 | **Agent Marketplace** | One-time purchase | 20 cognitive agents at $0–$159 each |
 | **Engine Marketplace** | Tiered pricing | 54 premium engines across META, APEX, ELITE, CORE |
-| **Artifact Packs** | Per-pack | Exportable discovered pipelines with runtime |
+| **Artifact Packs** | Per-pack | Exportable discovered memory chains with runtime |
 | **Self-Hosted Licenses** | License fee + BYOK | Full control, perpetual |
 
 ---
@@ -81,4 +81,4 @@ All agents include sealed runtime isolation, DREAM synthesis, and version-stampe
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

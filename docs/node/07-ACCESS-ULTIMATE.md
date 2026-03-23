@@ -1,6 +1,6 @@
 # ACCESS — API Gateway & Developer Portal (Ultimate Form)
 
-> **Node ID:** `access` · **Sector:** OCG · **Generation:** Ultimate · **Node #7 of 40**
+> **Primitive ID:** `access` · **Category:** OCG · **Generation:** Ultimate · **Primitive #7 of 40**
 > **Codename:** *Gatekeeper Prime* · **Classification:** FOUNDER EYES ONLY
 > **Ultimate Form:** v9.0.0 "Gatekeeper Prime"
 

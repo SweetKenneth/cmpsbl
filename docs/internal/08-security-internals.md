@@ -156,4 +156,4 @@ High-value artifacts are protected by the 10-point enforcement interface (see do
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

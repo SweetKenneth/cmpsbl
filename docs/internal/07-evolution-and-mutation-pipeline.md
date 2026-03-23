@@ -179,4 +179,4 @@ The Evolution Log is styled as a geological record:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

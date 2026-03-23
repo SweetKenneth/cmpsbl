@@ -36,7 +36,7 @@
 ### CORTEX pipeline fails mid-execution
 - Check each step independently
 - Verify all referenced modules are within your plan's access
-- Check for timeout — complex pipelines may need higher `timeout_ms`
+- Check for timeout — complex memory chains may need higher `timeout_ms`
 
 ## Getting Help
 
@@ -48,4 +48,4 @@ Always include your `request_id` when reporting issues.
 
 ---
 
-© 2025–2026 PromptFluid®. All rights reserved.
+© 2025–2026 CMPSBL®. All rights reserved.

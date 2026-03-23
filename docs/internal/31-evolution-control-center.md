@@ -132,4 +132,4 @@ A 4-step onboarding walkthrough guides new users:
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.

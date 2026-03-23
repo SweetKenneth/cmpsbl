@@ -1,7 +1,7 @@
 # RIPPLE — Ultimate Architecture (v9.0.0 "Wave")
 
-**Node:** #6 — RIPPLE  
-**Sector:** EPZ (External Publishing Zone)  
+**Primitive:** #6 — RIPPLE  
+**Category:** EPZ (External Publishing Zone)  
 **Weight:** 0.015  
 **Classification:** 🔒 INTERNAL  
 **Last Updated:** 2026-03-23
@@ -57,4 +57,4 @@ RIPPLE does not have a dedicated ADA domain — it operates through the `communi
 
 ---
 
-© 2025–2026 PromptFluid®. Confidential.
+© 2025–2026 CMPSBL®. Confidential.
