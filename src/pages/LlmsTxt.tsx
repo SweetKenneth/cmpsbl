@@ -314,7 +314,7 @@ export default function LlmsTxt() {
 
         {/* Node Grid */}
         <section className="mb-8">
-          <h2 className="text-lg font-semibold mb-4">Featured Nodes in CMPSBL LLMS.txt</h2>
+          <h2 className="text-lg font-semibold mb-4">Featured Primitives in CMPSBL LLMS.txt</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {nodes.map((mod) => (
               <Card key={mod.name} className="border-border/50">
