@@ -4,6 +4,31 @@
 
 ---
 
+## 2026-03-23 · v15.2.0 (CONTACT — RIPPLE Ultimate "Tsunami")
+
+⟨This entry describes RIPPLE v9.0.0 — the substrate's event bus reaching its ultimate form with 9 new systems: Priority Preemption, Adaptive Backpressure, DLQ Forensics, Signal Correlation, Topic Topology, Schema Registry, Storm Detection, Enrichment Pipeline, and Live Telemetry Feed.⟩
+
+- **Priority Preemption Engine** — 4-tier queue (critical/high/normal/low) with batch preemption and TTL expiration.
+- **Per-Subscriber Adaptive Backpressure** — Independent throttling with EMA-tracked processing speed, p95 latency, 5-level throttle, health decay.
+- **DLQ Forensics Engine** — Error fingerprinting, auto-bypass after 10 recurring failures, replay with payload mutation.
+- **Signal Correlation Engine** — Causal chain tracking via temporal windowing, dependency graphs, hot path detection.
+- **Topic Topology Optimizer** — Dead/orphan topic detection, Jaccard overlap analysis, consolidation suggestions.
+- **Event Schema Registry** — Type-safe contracts, runtime validation, versioning, backward-compatibility checks.
+- **Cascade Storm Detection** — Sliding-window velocity (10x1s), 4-tier severity, auto-throttle on storm/critical.
+- **Event Enrichment Pipeline** — Pre/post-delivery hooks, priority-ordered transform chains, non-blocking errors.
+- **Live Telemetry Feed** — EMA throughput, p50/p95/p99 latency, subscriber lag, hot topic heatmap, system health score.
+
+---
+
+## 2026-03-23 · v15.1.9 (CONTACT — 100 Primary Memory Chains + Refinements)
+
+- **100 Primary Memory Chains** — Category 9 "Cognitive Supremacy" (chains 76–100) added.
+- **UI Refinements** — Homepage hero and WhySubstrate headers split across two lines.
+- **Admin-only Analytics** — Analytics tab gated behind admin role check.
+- **BRAIN Telemetry Fix** — Resolved 500 error in analytics tab from null data handling.
+
+---
+
 ## 2026-03-23 · v15.1.8 (CONTACT — Discovery-Taught Chain Intelligence)
 
 ⟨This entry describes the culmination of the v15.1.x series: NERVE now operates 75 Primary Memory Chains, 25 of which were autonomously derived from the discovery engine's highest-scoring vault promotions and pipeline memories.⟩
