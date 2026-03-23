@@ -604,7 +604,7 @@ export function AnalyticsTab() {
                       </div>
                     </div>
                   );
-                }) : <p className="text-xs text-muted-foreground text-center py-4">No module data in this period</p>}
+                }) : <p className="text-xs text-muted-foreground text-center py-4">No primitive data in this period</p>}
               </div>
             </motion.div>
 

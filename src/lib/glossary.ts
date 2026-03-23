@@ -62,7 +62,7 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
   },
   "mesh": {
     term: "Mesh Communications",
-    short: "Node-to-node signals that power observability.",
+    short: "Primitive-to-primitive signals that power observability.",
     detail: "Signals are persisted and translated into readable dialogue. Categories include acknowledgement, discovery, escalation, and heartbeat.",
   },
   "substrate": {

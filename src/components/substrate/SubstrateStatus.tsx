@@ -34,7 +34,7 @@ export function SubstrateStatus({ compact = false }: SubstrateStatusProps) {
         <AlertCircle className="h-4 w-4 text-destructive" />
       )}
       <span className="text-muted-foreground">
-        Substrate: {activeCount}/{totalEntities} nodes · {Math.round(overallHealth)}%
+        Substrate: {activeCount}/{totalEntities} primitives · {Math.round(overallHealth)}%
       </span>
     </div>
   );
