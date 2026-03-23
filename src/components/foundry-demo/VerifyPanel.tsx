@@ -54,7 +54,7 @@ const PRESETS: QueryPreset[] = [
       const { data } = await supabase.from('discoveries').select('name, cjpi, tier, category, module_chain').order('cjpi', { ascending: false }).limit(10);
       return data || [];
     },
-    format: (d) => d.map((r: any, i: number) => `  ${i + 1}. ${r.name} — CJPI ${r.cjpi} [${r.tier === 'cmpsbl-only' ? 'APEX' : r.tier.toUpperCase()}]\n     ${r.category} · ${(r.module_chain || []).join(' → ')}`).join('\n'),
+    format: (d) => d.map((r: any, i: number) => `  ${i + 1}. ${r.name} — CJPI ${r.cjpi} [${r.tier === 'cmpsbl-only' ? 'APEX' : r.tier.toUpperCase()}]\n     ${r.category} · ${(r.module_chain || []).map((m: string) => labelPrimitive(m)).join(' → ')}`).join('\n'),
   },
   {
     id: 'systems', label: 'System Frequency', description: "Analyze which substrate systems appear most frequently",

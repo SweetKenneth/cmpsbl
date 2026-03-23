@@ -311,7 +311,7 @@ export function FoundryInventory({ inventory, onRemove, onReprice, onRepriceAll,
                           </div>
                           {item.systemChain && item.systemChain.length > 0 && (
                             <div className="text-muted-foreground/70 leading-relaxed mt-1">
-                              Chain: {item.systemChain.join(' → ')}
+                              Chain: {item.systemChain.map(s => labelPrimitive(s)).join(' → ')}
                             </div>
                           )}
                         </div>
