@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.2.7 (CONTACT — RELAY Ultimate "Warpgate")
+
+⟨This entry describes RELAY v9.0.0 — the substrate's intelligent message fabric reaching its ultimate form with 10 new systems.⟩
+
+- **Adaptive Route Optimizer** — BFS shortest-path routing with EMA-smoothed latency. Weighted scoring: latency 50%, reliability 35%, hops 15%.
+- **Protocol Translator** — Module Bus ↔ Matrix Signal ↔ External API translation with lossless round-trip guarantee (schema v2.0.0).
+- **Sector Gateway** — Per-boundary policy enforcement. CSZ→OCG compliance validation. Sensitive field sanitization before cross-sector delivery.
+- **Delivery Guarantor** — At-least-once delivery with 5,000-entry FNV-1a dedup LRU. Exponential backoff (1s→60s, 5 max). Forensic DLQ.
+- **Message Compressor** — Delta encoding for sequential updates. Field deduplication. Adaptive 85% benefit threshold.
+- **Circuit Breaker Matrix** — Per-destination breakers (5 failures → trip, 30s half-open probe). Cascade detection at ≥3 open breakers.
+- **Rate Governor** — Token bucket per source node (100/sec default). 1.5× burst allowance. Critical signals bypass rate limits.
+- **Message Enricher** — Auto-inject source health, sector metadata, hop count, delivery attempt, route score, relay version.
+- **Route Telemetry** — Per-edge latency/throughput/errors with P95 tracking. Bottleneck detection at 500ms latency / 20% error thresholds.
+- **Relay Hardening** — 100KB payload limits. FNV-1a integrity checksums. 5 poison patterns quarantined. Injection prevention.
+
+---
+
 ## 2026-03-23 · v15.2.6 (CONTACT — SHADOW Ultimate "Doppelgänger")
 
 ⟨This entry describes SHADOW v9.0.0 — the substrate's parallel reality engine reaching its ultimate form with 10 new systems.⟩
