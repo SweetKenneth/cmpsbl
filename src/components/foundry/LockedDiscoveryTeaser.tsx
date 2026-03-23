@@ -4,6 +4,7 @@
  */
 
 import { motion } from 'framer-motion';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Lock, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
