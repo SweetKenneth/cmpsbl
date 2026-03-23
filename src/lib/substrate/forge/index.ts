@@ -2,7 +2,7 @@
  * FORGE Node — Expansion Manufacturing Zone (EMZ)
  * Artifact synthesis, blueprint management, build pipelines.
  *
- * Re-exports the core forge-module and adds CLM + hardening layers.
+ * Re-exports the core forge-module and adds CLM + hardening + Ultimate Form layers.
  */
 
 export {
@@ -37,3 +37,6 @@ export {
   type ForgeSignalRequest,
   type ForgeSignalResult,
 } from './signal-forge';
+
+// ── v9.0.0 "Crucible" — Ultimate Form ──
+export * as ForgeUltimate from '../../../lib/forge/ultimate';
