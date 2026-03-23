@@ -52,12 +52,13 @@ export { useOracle, type UseOracleReturn } from './useOracle';
 
 // EPZ — Expansion Perception Zone
 export { useCompass, type UseCompassReturn } from './useCompass';
-export { useEcho, type UseEchoReturn } from './useEcho';
+export { useEcho } from './useEcho';
+export type { UseEchoReturn } from './useEcho';
 export { useReflex, type UseReflexReturn } from './useReflex';
 
 // EMZ — Expansion Manufacturing Zone (FORGE, LINGUA, HARVEST)
 export { useForge, type UseForgeReturn } from './useForge';
-export { useLingua, type UseLinguaReturn } from './useLingua';
+export { useLingua } from './useLingua';
 export { useHarvest, type UseHarvestReturn } from './useHarvest';
 
 // CSZ — Covert Systems Zone (EVOLUTION, SHADOW, PHANTOM)
