@@ -114,7 +114,7 @@ export function CCRTab() {
               <HardDrive className="w-3.5 h-3.5 hidden sm:block" /> MEMORY
             </TabsTrigger>
             <TabsTrigger value="dream" className="text-xs gap-1 sm:gap-1.5 px-2.5 sm:px-3 data-[state=active]:bg-primary/10 data-[state=active]:text-primary">
-              <Sparkles className="w-3.5 h-3.5 hidden sm:block" /> DREAM
+              <Sparkles className="w-3.5 h-3.5 hidden sm:block" /> DREAM Engine
             </TabsTrigger>
           </TabsList>
         </div>
