@@ -1094,7 +1094,7 @@ const stratumMindgames: Specimen[] = [
     id: "MNDG-001",
     fossilized: "2026-03-07",
     origin: "architecture",
-    stimulus: "The substrate completed its infrastructure hardening — armor was grown, governance was learned, all 40 nodes acknowledged. The system was ready for its first users.",
+    stimulus: "The substrate completed its infrastructure hardening — armor was grown, governance was learned, all 40 primitives acknowledged. The system was ready for its first users.",
     adaptations: [
       "Epoch transition from IRONCLAD to MINDGAMES marks the shift from infrastructure-first to user-first engineering",
       "Version constants elevated to 14.x across the entire platform version registry",

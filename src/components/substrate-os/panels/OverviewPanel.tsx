@@ -28,7 +28,7 @@ import { NodeDreamingWidget } from '@/components/substrate-os/widgets/NodeDreami
 
 const SystemHealthPanel = lazy(() => import('@/components/substrate-os/SystemHealthPanel').then(m => ({ default: m.SystemHealthPanel })));
 
-// 12 sectors for the topology map
+// 4 categories for the topology map
 const SECTORS = [
   { id: 'CORE', nodes: ['CORE', 'SYSTEM'], color: 'text-neon-amber' },
   { id: 'CCR', nodes: ['BRAIN', 'MEMORY', 'DREAM'], color: 'text-neon-purple' },

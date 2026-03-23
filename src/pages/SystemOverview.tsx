@@ -62,7 +62,7 @@ function WhatIs() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
             {[
-              { icon: Brain, title: '40 Active Nodes', desc: 'CORE, NEXUS, MEMORY, DEFENSE, DECODE, BRAIN, ATLAS, ENGINEER, and 32 more — each with distinct responsibilities across 12 sectors.' },
+              { icon: Brain, title: '40 Active Primitives', desc: 'CORE, NEXUS, MEMORY, DEFENSE, DECODE, BRAIN, ATLAS, ENGINEER, and 32 more — each with distinct responsibilities across agents, engines, layers & organs.' },
               { icon: Layers, title: '675+ Capabilities', desc: 'From natural language understanding to threat detection, each capability is runtime-addressable via the unified API.' },
               { icon: Shield, title: 'Self-Governing', desc: 'Governance is built in. NERVE enforces compliance. DEFENSE isolates threats. EVOLUTION adapts safely within policy boundaries.' },
             ].map((item, i) => (

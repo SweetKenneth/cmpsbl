@@ -439,7 +439,7 @@ export function AscensionHero() {
               <p className="text-sm font-semibold text-foreground mb-1">What is an Ascended Memory?</p>
               <p className="text-xs text-muted-foreground leading-relaxed">
                 An ascended capability chain — deterministic behavior that emerges{' '}
-                <em>only</em> when your code interacts with the substrate's 40-node matrix.
+                <em>only</em> when your code interacts with the substrate's 40-primitive matrix.
                 Each Memory encodes the exact interaction path and is fully exportable as a
                 portable Capability Pack: source code, tests, docs, and the Mini-Runtime™ engine.
               </p>
