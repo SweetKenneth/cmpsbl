@@ -508,7 +508,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'oracle' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="Predictive analytics, COMPASS simulation, and ECHO patterns.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="ORACLE" description="ORACLE Engine predictive analytics, COMPASS Engine simulation, and ECHO Agent patterns.">
                 <PanelContainer id="oracle"><Suspense fallback={<PanelLoader />}><OracleTab /></Suspense></PanelContainer>
               </TierGate>
             )}
