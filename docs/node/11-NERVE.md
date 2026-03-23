@@ -147,10 +147,52 @@ The hardening layer (`hardening.ts`) provides:
 
 ---
 
+## Capability Auto-Activation Engine (v1.0.0)
+
+NERVE v9.1.0 includes the **Capability Auto-Activation Engine** — the substrate's autonomic nervous system that transforms 50 idle capabilities into event-reactive behaviors.
+
+### Architecture
+
+```
+System Event/Signal
+  → NERVE Signal Router (pattern match)
+  → Activation Registry (50 rules, 5 tiers)
+  → Guard Layer (governance / cooldown / concurrency)
+  → Auto-Execute Capability
+  → Telemetry / Audit
+```
+
+### Tier Breakdown
+
+| Tier | Count | Latency Budget | Scope |
+|------|-------|---------------|-------|
+| T1 Critical | 10 | <100ms | Security, integrity, privacy |
+| T2 Operational | 10 | <500ms | Infrastructure, failover, healing |
+| T3 Intelligence | 10 | <2s | Learning, prediction, enrichment |
+| T4 Optimization | 10 | <5s | Tuning, analysis, compliance |
+| T5 Autonomous | 10 | Idle | Self-improvement, consolidation |
+
+### Guard Layer
+
+- **Governance blocks** — Per-rule override via `governanceBlock(ruleId)`. T1 security rules are non-governable.
+- **Cooldown enforcement** — Configurable multiplier, per-rule cooldowns (1s–7200s).
+- **Concurrency limiting** — Max 5 concurrent activations (configurable).
+
+### Key Capabilities Auto-Activated
+
+- `ACT_001` — Threat Neutralization (DEFENSE, on threat severity ≥7)
+- `ACT_003` — Session Kill on Leakage (SHADOW, on data leakage severity ≥9)
+- `ACT_011` — Adaptive Route Optimization (RELAY, on latency >500ms)
+- `ACT_021` — Memory Tier Promotion (MEMORY, on access frequency spike)
+- `ACT_041` — Dream Consolidation Cycle (DREAM, on system idle)
+
+---
+
 ## CLM Learning Priorities
 
 1. **Signal Routing Optimization** — Learning which paths have lowest latency under different load conditions
 2. **Backpressure Prediction** — Anticipating downstream overload before it reaches critical thresholds
+3. **Auto-Activation Tuning** — Optimizing cooldown timings and severity thresholds from execution outcomes
 
 ---
 
