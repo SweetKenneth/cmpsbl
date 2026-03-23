@@ -428,8 +428,8 @@ export const ephemeralEnv = new EphemeralEnvironment();`
   // === ADDITIONAL CROSS-MODULE TEMPLATES ===
   {
     id: 'cross-module-health-aggregator',
-    name: 'Cross-Module Health Aggregator',
-    description: 'Unified health score computed from all 40 node telemetry feeds with degradation alerts',
+    name: 'Cross-Primitive Health Aggregator',
+    description: 'Unified health score computed from all 40 primitive telemetry feeds with degradation alerts',
     icon: Activity,
     category: 'vision',
     difficulty: 'intermediate',

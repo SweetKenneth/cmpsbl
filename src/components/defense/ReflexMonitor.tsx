@@ -150,7 +150,7 @@ export function ReflexMonitor() {
               {stats?.active_protection_modules || 5}/5
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              Active Modules
+              Active Layers
             </div>
           </div>
 
