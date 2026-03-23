@@ -4,6 +4,12 @@
 
 ---
 
+## v16.6.0 — 2026-03-23
+
+- **Enhancement Mesh "Ambient Intelligence Fabric"** — 30 always-on capabilities across 6 categories (cognitive, resilience, operational, governance, evolution, observability). Heartbeat-driven (60s–300s). Fan-out to all 40 nodes. Governance-immune. EMA-weighted uplift scoring. Weighted health composite. Alert system with warning/critical thresholds.
+
+---
+
 ## v16.5.0 — 2026-03-23
 
 - **GOVERNANCE Ultimate "Parliament Prime"** — 10 new systems: Policy Expression Engine (composable DSL + hot-reload + versioning), Multi-Party Approval Workflow (3 quorum types + TTL + attestation), Veto Cascade Engine (BFS propagation + appeal process + escalation priority), Governance State Machine (5 modes + strictness multipliers + valid transitions), Drift Detection & Correction (Jaccard distance + velocity + auto-proposals), Compliance Rule Engine (DENY/REQUIRE/LIMIT/SCOPE_MATCH + 9 defaults + 3 frameworks), Decision Audit Chain (dual FNV-1a hash-chain + tamper detection + attestation), Governance Intelligence CLM (EMA effectiveness + false positive detection + recommendations), Cross-Node Policy Enforcement (per-node gates + overrides + most-restrictive-wins), Governance Telemetry Nexus (weighted health composite + critical alerts).
