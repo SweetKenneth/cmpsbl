@@ -3,7 +3,7 @@
  * 
  * Always-on substrate amplification layer.
  * 30 capabilities that run continuously on heartbeat intervals,
- * providing passive technological uplift to all 40 nodes.
+ * providing passive technological uplift to all 40 primitives.
  * 
  * Unlike activation rules (event-triggered), mesh amplifiers are
  * structurally always-active and cannot be disabled by governance modes.
@@ -35,7 +35,7 @@ export interface EnhancementMeshEntry {
   heartbeatIntervalMs: number;
   priority: number;       // 1 (highest) – 10 (lowest)
   alwaysOn: true;
-  fanOutNodes: 'all';     // Always fans out to all 40 nodes
+  fanOutNodes: 'all';     // Always fans out to all 40 primitives
   description: string;
 }
 
@@ -402,7 +402,7 @@ export function initEnhancementMesh(): () => void {
 
   console.log(
     `[EnhancementMesh] v1.0.0 "Ambient Intelligence Fabric" — ${amplifiers.length} amplifiers active, ` +
-    `${intervalGroups.size} heartbeat groups, fan-out: all 40 nodes`
+    `${intervalGroups.size} heartbeat groups, fan-out: all 40 primitives`
   );
 
   // Return teardown

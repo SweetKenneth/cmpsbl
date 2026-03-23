@@ -69,7 +69,7 @@ export const BOOT_MESSAGES = [
   '  │                                       │',
   '  └───────────────────────────────────────┘',
   '',
-  '  ◉ 40 nodes operational | 12 sectors',
+  '  ◉ 40 primitives operational | 4 categorys',
   '  ◉ 500+ commands available',
   '  ◉ 675+ capabilities | Σw = 1.000',
   '  ◉ Health: 100%',

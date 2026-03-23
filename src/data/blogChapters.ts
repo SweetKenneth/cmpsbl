@@ -70,7 +70,7 @@ export const BLOG_CHAPTERS: BlogChapter[] = [
     description: "When five nodes needed to coordinate, point-to-point calls broke down. RIPPLE introduced pub/sub event propagation across the substrate.",
     date: "2025-04-02",
     readTime: "12 min",
-    keywords: ["event-driven AI", "RIPPLE node", "pub/sub architecture", "inter-node communication", "event sourcing AI"],
+    keywords: ["event-driven AI", "RIPPLE node", "pub/sub architecture", "inter-primitive communication", "event sourcing AI"],
     relatedSlugs: ["routing-the-unknown", "seeing-everything-at-once", "protocols-for-machines"],
   },
   {
@@ -207,7 +207,7 @@ export const BLOG_CHAPTERS: BlogChapter[] = [
     chapter: 20,
     slug: "signal-to-silicon",
     title: "Signal to Silicon",
-    description: "From behavioral signals through 40-node cognitive processing to deployable software. The substrate's complete signal-to-silicon pipeline explained.",
+    description: "From behavioral signals through 40-primitive cognitive processing to deployable software. The substrate's complete signal-to-silicon pipeline explained.",
     date: "2026-03-04",
     readTime: "22 min",
     keywords: ["signal to silicon", "cognitive pipeline", "autonomous software discovery", "deployable AI pipeline", "substrate architecture"],
@@ -330,7 +330,7 @@ export const BLOG_CHAPTERS: BlogChapter[] = [
     description: "From one function to thirty-eight interconnected nodes. A technical map of the complete substrate architecture and how it all fits together.",
     date: "2025-12-15",
     readTime: "18 min",
-    keywords: ["substrate architecture", "40-node system", "cognitive infrastructure map", "system design"],
+    keywords: ["substrate architecture", "40-primitive system", "cognitive infrastructure map", "system design"],
     relatedSlugs: ["the-first-line-of-code", "mapping-what-we-built", "signal-to-silicon"],
   },
   {

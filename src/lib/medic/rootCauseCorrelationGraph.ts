@@ -1,6 +1,6 @@
 /**
  * MEDIC — Root Cause Correlation Graph
- * Builds a causal DAG from symptom signals across the 40-node mesh.
+ * Builds a causal DAG from symptom signals across the 40-primitive mesh.
  * Uses temporal correlation and dependency-chain analysis.
  * @module medic/rootCauseCorrelationGraph
  * @version 9.0.0 — Surgeon

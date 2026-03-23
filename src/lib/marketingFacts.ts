@@ -17,10 +17,10 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 40 active nodes across 12 sectors */
+/** 40 active nodes across 4 categorys */
 export const NODES_COUNT = 40;
 
-/** 12 sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
+/** 4 categorys: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
 export const SECTORS_COUNT = 12;
 
 /** @deprecated Use NODES_COUNT — kept for backward compatibility */
@@ -106,7 +106,7 @@ export const ARCHIVED_CAPABILITIES_COUNT = 136;
 // =============================================================================
 
 /**
- * Total terminal commands across all 40 nodes
+ * Total terminal commands across all 40 primitives
  * Derived from TerminalCommands.ts ALL_COMMANDS array
  */
 export const TERMINAL_COMMANDS_COUNT = 500;

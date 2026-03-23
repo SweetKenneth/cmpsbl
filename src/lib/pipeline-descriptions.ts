@@ -41,7 +41,7 @@ const MODULE_CAPABILITIES: Record<string, { verb: string; noun: string; domain: 
   ATLAS: { verb: 'maps', noun: 'governance topology', domain: 'governance' },
   ECONOMY: { verb: 'attributes', noun: 'cost streams', domain: 'economics' },
   SANDBOX: { verb: 'isolates', noun: 'speculative executions', domain: 'simulation' },
-  NERVE: { verb: 'signals', noun: 'inter-node consensus', domain: 'coordination' },
+  NERVE: { verb: 'signals', noun: 'inter-primitive consensus', domain: 'coordination' },
   SENTINEL: { verb: 'monitors', noun: 'perimeter threats', domain: 'security' },
   WITNESS: { verb: 'attests', noun: 'immutable proofs', domain: 'compliance' },
   HARMONY: { verb: 'balances', noun: 'resource equilibria', domain: 'optimization' },
