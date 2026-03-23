@@ -1,7 +1,7 @@
 /**
  * AI Operating System — Definitional SEO landing page
  * Route: /ai-operating-system — owns the "AI Operating System" keyword
- * MINDGAMES epoch · 40-node · Memory Stream narrative
+ * MINDGAMES epoch · 40-primitive · Memory Stream narrative
  */
 
 import { Link } from "react-router-dom";
