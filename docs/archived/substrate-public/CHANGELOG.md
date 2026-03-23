@@ -4,6 +4,12 @@
 
 ---
 
+## v15.7.0 — 2026-03-23
+
+- **SANDBOX Ultimate "Terrarium"** — 10 new systems: Isolation Boundary Engine (zero-trust namespaces), Resource Metering (5-tier budgets with burst), Execution Timeline Recorder (deterministic replay), Escape Detection (auto-freeze at threat ≥7), Network Policy Controller (default deny + TLS), Experiment Orchestrator (A/B with significance testing), Builder Project Runtime (capability tokens + hot-reload), Forensic Snapshot Engine (merkle-chained captures), Fleet Manager (pre-warmed pool + priority preemption), Telemetry Hub (fleet aggregates).
+
+---
+
 ## v15.6.0 — 2026-03-23
 
 - **INTEGRATION Ultimate "Babel Gate"** — 10 new systems: Protocol Translator Matrix (6 protocols → CIF), Credential Vault with auto-rotation and leak canary, Adaptive Rate Governor with predictive throttling, Contract Testing with drift detection, Webhook Orchestrator with at-least-once delivery, Circuit Breaker Mesh (cascade alerting at ≥3 trips), Schema Negotiation (multi-version adapters), Integration Health Profiler (risk scoring, SLA compliance), Event Bridge with replay, Integration Discovery with OpenAPI auto-import.
