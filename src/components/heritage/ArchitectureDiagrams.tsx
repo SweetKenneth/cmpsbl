@@ -190,7 +190,7 @@ export function SectorTopologyDiagram() {
           </text>
         </svg>
       </div>
-      <DiagramCaption>The 40-node matrix organized into 12 canonical sectors with weighted governance.</DiagramCaption>
+      <DiagramCaption>The 40-primitive matrix organized into 4 canonical categories with weighted governance.</DiagramCaption>
     </div>
   );
 }
