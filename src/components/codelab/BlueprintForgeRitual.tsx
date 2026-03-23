@@ -14,7 +14,7 @@ interface Props {
 }
 
 const PHASES = [
-  { text: 'Indexing module space…', icon: '⬡' },
+  { text: 'Indexing primitive space…', icon: '⬡' },
   { text: 'Mapping valid topologies…', icon: '◇' },
   { text: 'Evaluating CJPI integrity…', icon: '△' },
   { text: 'Scoring architecture viability…', icon: '◈' },
