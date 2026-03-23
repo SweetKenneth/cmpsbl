@@ -170,7 +170,7 @@ export function CCRTab() {
           </div>
         </TabsContent>
 
-        {/* DREAM — Synthesis & Heuristics */}
+        {/* DREAM Engine — Synthesis & Heuristics */}
         <TabsContent value="dream" className="mt-4 space-y-3">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[

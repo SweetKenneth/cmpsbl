@@ -55,7 +55,7 @@ const SKILL_DEFINITIONS: Omit<Skill, 'is_unlocked' | 'progress'>[] = [
 
   // Tier 4 — Expert
   { skill_key: 'production_hardening', name: 'Production Patterns', description: 'Error handling, Forge protections, VOLVER handicapping, non-blocking telemetry', category: 'expert', tier: 4, xp_required: 400, prerequisites: ['ascension_basics', 'cjpi_scoring'], unlocks: ['substrate_architect'], icon: '🔧' },
-  { skill_key: 'dream_cycles', name: 'DREAM Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙' },
+  { skill_key: 'dream_cycles', name: 'DREAM Engine Engineering', description: 'Memory consolidation cycles, heuristic sharing, and continuous learning patterns', category: 'expert', tier: 4, xp_required: 375, prerequisites: ['ascension_basics'], unlocks: ['substrate_architect'], icon: '🌙' },
 
   // Tier 5 — Mastery
   { skill_key: 'substrate_architect', name: 'Substrate Architect', description: 'Full system mastery: multi-node orchestration, governance, and capability export', category: 'mastery', tier: 5, xp_required: 500, prerequisites: ['production_hardening', 'dream_cycles'], unlocks: [], icon: '👑' },

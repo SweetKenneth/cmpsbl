@@ -57,7 +57,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'production_engineer',
     name: 'Production Engineer',
-    description: 'Production hardening: Forge protections, VOLVER handicapping, non-blocking telemetry, and DREAM engineering.',
+    description: 'Production hardening: Forge protections, VOLVER handicapping, non-blocking telemetry, and DREAM Engine engineering.',
     badge_icon: '🔧', badge_level: 'diamond',
     required_skills: ['production_hardening', 'dream_cycles'],
     min_xp_total: 1500, is_earned: false, progress_percent: 5,
