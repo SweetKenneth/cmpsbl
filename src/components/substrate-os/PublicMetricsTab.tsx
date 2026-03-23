@@ -63,7 +63,7 @@ const METRIC_FIELDS: MetricField[] = [
   // Other
   { key: 'integrationAdaptersCount', label: 'Integration Adapters', description: 'Enterprise connectors', type: 'number', icon: Users, category: 'other' },
   { key: 'linesOfCode', label: 'Lines of Code', description: 'Total codebase size', type: 'number', icon: Code2, category: 'other' },
-  { key: 'linesOfCodeDisplay', label: 'LOC Display', description: 'Display string (e.g., 175k+)', type: 'string', icon: Code2, category: 'other' },
+  { key: 'linesOfCodeDisplay', label: 'LOC Display', description: 'Display string (e.g., 200k+)', type: 'string', icon: Code2, category: 'other' },
   { key: 'routingLatencyClaim', label: 'Routing Latency', description: 'Performance claim', type: 'string', icon: Eye, category: 'other' },
   { key: 'wcagLevel', label: 'WCAG Level', description: 'Accessibility standard', type: 'string', icon: Users, category: 'other' },
   { key: 'providersCount', label: 'AI Providers', description: 'Supported providers', type: 'number', icon: Zap, category: 'other' },
