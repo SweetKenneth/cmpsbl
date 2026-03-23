@@ -392,7 +392,7 @@ const modulesByLayer = {
     },
     {
       id: "phantom",
-      name: "PHANTOM",
+      name: "PHANTOM Agent",
       description: "Simulation doubles, canary deployment",
       icon: Ghost,
       color: "text-neon-purple",
