@@ -4,6 +4,12 @@
 
 ---
 
+## v16.7.0 — 2026-03-23
+
+- **SOVEREIGN Ultimate "Crown Prime"** — 10 new systems: Jurisdictional Intelligence Engine (dynamic knowledge graph + conflict resolution + adequacy scoring), Cross-Border Transfer Arbiter (TIA + SCC/BCR validation + auto-blocking), Consent Lifecycle Manager (7-state machine + withdrawal cascade + FNV-1a receipts), Data Classification Automator (11 regex patterns + 5-tier + confidence scoring), Retention Policy Engine (framework minimums + legal holds + conflict resolution), Privacy Impact Assessment Engine (risk scoring + DPIA triggers + governance gates), Breach Response Orchestrator (6-phase + notification windows + penalty estimation), Sovereignty Audit Chain (FNV-1a hash-chain + tamper detection + 11 decision types), Regulatory Genome Mapper Enhanced (GDPR/HIPAA genomes + cross-framework overlaps + gap analysis), Sovereignty Telemetry Nexus (weighted health composite + alerts).
+
+---
+
 ## v16.6.0 — 2026-03-23
 
 - **Enhancement Mesh "Ambient Intelligence Fabric"** — 30 always-on capabilities across 6 categories (cognitive, resilience, operational, governance, evolution, observability). Heartbeat-driven (60s–300s). Fan-out to all 40 nodes. Governance-immune. EMA-weighted uplift scoring. Weighted health composite. Alert system with warning/critical thresholds.
