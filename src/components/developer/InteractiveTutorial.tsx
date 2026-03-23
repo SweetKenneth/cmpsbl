@@ -36,9 +36,9 @@ const client = substrate.init({
 
 // Verify connection to the mesh
 const status = await client.health();
-console.log('Connected:', status.nodes, 'nodes');
-console.log('Runtime:', status.version);`,
-    expectedOutput: "Connected: 40 nodes\nRuntime: v14.4.0",
+console.log('Connected:', status.primitives, 'primitives');
+console.log('Runtime:', status.version);\`,
+    expectedOutput: "Connected: 40 primitives\\nRuntime: v14.4.0",
     hint: "The runtime version ensures you get the latest resolver capabilities and CJPI scoring.",
     xpReward: 25,
     track: 'foundation',
