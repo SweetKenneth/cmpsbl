@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
 const PILLARS = [
   {
     icon: Moon,
-    name: "DREAM",
+    name: "DREAM Engine",
      verb: "Learn while idle",
     description: "During quiet periods, the system consolidates what it knows, finds cross-domain patterns, and generates new insights — without active compute.",
     color: "text-neon-purple",
