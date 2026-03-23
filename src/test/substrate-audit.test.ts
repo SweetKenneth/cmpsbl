@@ -43,7 +43,7 @@ describe('§1 — Matrix Node Registry', () => {
     expect(getTotalWeight()).toBe(1);
   });
 
-  it('all 4 categorys are represented', () => {
+  it('all 4 categories are represented', () => {
     const sectors = new Set(getNodeDefinitions().map(n => n.sector));
     const expected: MatrixSector[] = ['core', 'system', 'ccr', 'ocg', 'execution', 'esz', 'epz', 'emz', 'csz', 'field', 'plane', 'shell'];
     for (const s of expected) {

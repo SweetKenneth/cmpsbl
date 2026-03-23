@@ -51,7 +51,7 @@ export interface DiscoveredPipeline {
 function calcSynergyRating(nodeChain: string[]): number {
   const sectors = new Set(nodeChain.map(n => NODE_SECTORS[n] || 'Unknown'));
   const sectorCount = sectors.size;
-  // Base synergy from sector coverage (max 4 categorys)
+  // Base synergy from sector coverage (max 4 categories)
   const coverageRatio = sectorCount / 12;
   // Bonus for hitting critical sectors
   const criticalSectors = ['Kernel', 'CCR', 'EXE', 'ESZ'];
