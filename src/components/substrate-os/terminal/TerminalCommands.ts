@@ -776,9 +776,9 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'brain.hardening.timeouts', description: 'Reasoning timeout enforcer stats', category: 'brain', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'brain.hardening.snapshots', description: 'Cognitive state snapshots', category: 'brain', icon: Database, requiresOperator: false, requiredTier: 'free' },
 
-  // Per-module hardening — MEMORY (CCR Zone)
-  { command: 'memory.hardening', description: 'MEMORY hardening status (Vault)', category: 'memory_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
-  { command: 'memory.hardening.health', description: 'MEMORY health composite', category: 'memory_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
+  // Per-module hardening — MEMORY Organ (CCR Zone)
+  { command: 'memory.hardening', description: 'MEMORY Organ hardening status (Vault)', category: 'memory_mod', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'memory.hardening.health', description: 'MEMORY Organ health composite', category: 'memory_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.tiering', description: 'Hot/warm/cold tier distribution', category: 'memory_mod', icon: Database, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.capacity', description: 'Memory capacity utilization', category: 'memory_mod', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'memory.hardening.recall', description: 'Recall accuracy (precision/recall/F1)', category: 'memory_mod', icon: Activity, requiresOperator: false, requiredTier: 'free' },
