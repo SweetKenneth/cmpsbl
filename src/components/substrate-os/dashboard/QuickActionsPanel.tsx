@@ -69,7 +69,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
     try {
       const result = await system.diagnostics();
       if (result?.success) {
-        voice.success('Diagnostics complete', 'All systems nominal', 'VISION');
+        voice.success('Diagnostics complete', 'All systems nominal', 'VISION Agent');
         showSuccess('diagnostics');
       } else {
         voice.warning('Issues found', 'Review primitive health', 'VISION');
