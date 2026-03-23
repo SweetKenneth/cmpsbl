@@ -181,16 +181,16 @@ export {
 // UNIFIED HEALTH
 // ═══════════════════════════════════════════════════════════════
 
-import { getAntibodyGeneratorHealth } from './adaptiveAntibodyGenerator';
-import { getImmuneMemoryHealth } from './immuneMemoryBank';
-import { getSentinelNetworkHealth } from './tCellSentinelNetwork';
-import { getCytokineStormHealth } from './cytokineStormPreventer';
-import { getEvolutionTrackerHealth } from './pathogenEvolutionTracker';
-import { getStrengthProfilerHealth } from './immuneStrengthProfiler';
-import { getCampaignHealth } from './vaccinationCampaignEngine';
-import { getAutoimmuneDetectorHealth } from './autoimmuneDisorderDetector';
-import { getConvalescenceHealth } from './convalescenceManager';
-import { getImmuneTelemetryHealth } from './immuneTelemetryNexus';
+import { getAntibodyGeneratorHealth, type AntibodyGeneratorHealth } from './adaptiveAntibodyGenerator';
+import { getImmuneMemoryHealth, type ImmuneMemoryHealth } from './immuneMemoryBank';
+import { getSentinelNetworkHealth, type SentinelNetworkHealth } from './tCellSentinelNetwork';
+import { getCytokineStormHealth, type CytokineStormHealth } from './cytokineStormPreventer';
+import { getEvolutionTrackerHealth, type EvolutionTrackerHealth } from './pathogenEvolutionTracker';
+import { getStrengthProfilerHealth, type StrengthProfilerHealth } from './immuneStrengthProfiler';
+import { getCampaignHealth, type CampaignHealth } from './vaccinationCampaignEngine';
+import { getAutoimmuneDetectorHealth, type AutoimmuneDetectorHealth } from './autoimmuneDisorderDetector';
+import { getConvalescenceHealth, type ConvalescenceHealth } from './convalescenceManager';
+import { getImmuneTelemetryHealth, type ImmuneTelemetryHealth } from './immuneTelemetryNexus';
 
 export interface ImmunityUltimateHealth {
   version: '9.0.0';
