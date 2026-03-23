@@ -319,7 +319,7 @@ export function ObservabilityHUD() {
       <Card className="p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
           <Network className="w-5 h-5" />
-          Module Activity Matrix
+          Primitive Activity Matrix
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
