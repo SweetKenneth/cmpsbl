@@ -744,7 +744,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'decode.hardening', description: 'DECODE hardening status (Cipher)', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.hardening.health', description: 'DECODE health composite', category: 'decode', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'decode.hardening.trust', description: 'Identity trust ladder status', category: 'decode', icon: Key, requiresOperator: false, requiredTier: 'free' },
-  { command: 'decode.hardening.sanitization', description: 'Input sanitization pipeline stats', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
+  { command: 'decode.hardening.sanitization', description: 'Input sanitization memory chain stats', category: 'decode', icon: Shield, requiresOperator: false, requiredTier: 'free' },
 
   // Per-module hardening commands — VISION
   { command: 'vision.hardening', description: 'VISION hardening status (Sentinel)', category: 'vision', icon: Shield, requiresOperator: false, requiredTier: 'free' },
