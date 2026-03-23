@@ -1,6 +1,6 @@
 /**
  * System Overview — Unified investor/user/public page
- * 40-node cognitive substrate overview
+ * 40-primitive cognitive substrate overview
  */
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
