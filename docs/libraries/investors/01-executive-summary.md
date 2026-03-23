@@ -31,7 +31,7 @@ CMPSBL is a **cognitive orchestration substrate** — a runtime infrastructure l
 
 | Metric | Value |
 |--------|-------|
-| Matrix nodes | 40 across 12 sectors |
+| Matrix primitives | 40 across 4 categories |
 | Registered capabilities | 675+ |
 | Premium engines | 54 across 4 price tiers |
 | Database tables | 60+ production tables |
@@ -49,7 +49,7 @@ CMPSBL is a **cognitive orchestration substrate** — a runtime infrastructure l
 CMPSBL is the **only AI orchestration system** where:
 
 1. **Governance is architectural** — enforced by code, not policy
-2. **Evolution is validated** — 7-gate pipeline with truth preservation
+2. **Evolution is validated** — 7-gate memory chain with truth preservation
 3. **Memory is persistent and tiered** — 4-tier, capacity-enforced
 4. **Agents are sealed** — source-blocked, memory-isolated runtimes
 5. **Audit is tamper-evident** — Merkle chain integrity verification

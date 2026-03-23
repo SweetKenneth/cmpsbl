@@ -6,7 +6,7 @@
 
 ## 1. System Design
 
-CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 12 sectors. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
+CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 12 categorys. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
 
 ### Topology
 
@@ -27,9 +27,9 @@ CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix 
 675+ capabilities consolidated into **76 compound engines** and **24 meta-engines**. Engines provide 2–8x synergy amplification. 54 premium engines available across four price tiers.
 
 ### Constant Learning Mode (CLM)
-High-velocity training pipeline: up to 14,400 AI calls/day. Topics sourced 70% from system telemetry, 30% scheduled curriculum. Knowledge distilled and compounded into permanent memory.
+High-velocity training memory chain: up to 14,400 AI calls/day. Topics sourced 70% from system telemetry, 30% scheduled curriculum. Knowledge distilled and compounded into permanent memory.
 
-### 7-Gate SEBA Evolution Pipeline
+### 7-Gate SEBA Evolution Memory Chain
 Every production change passes 7 validation gates including **Truth Shadow Arbitration Check (TSAC)**. Shadow runs against real inputs in isolated storage. Minimum 10 cycles, ≥95% behavioral equivalence required.
 
 ### Sealed Agent Marketplace
@@ -72,7 +72,7 @@ expansion categories have independent circuit breakers. If an entire zone fails,
 ```
 Client → DEFENSE (threat assessment)
   → NEXUS (provider routing)
-  → Execution module
+  → Execution primitive
   → CCR (reasoning/memory)
   → OCG (compliance enforcement)
   → Response returns
