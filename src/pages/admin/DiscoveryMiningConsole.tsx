@@ -620,7 +620,7 @@ function AutoMinerTab() {
               <div className="flex flex-wrap gap-1">
                 {state.activeTemplates.slice(0, 8).map((t, i) => (
                   <Badge key={i} variant="outline" className="text-[9px] px-1.5 py-0 break-words whitespace-normal max-w-full">
-                    {t.modulePattern.join(' → ')}
+                    {t.modulePattern.map(m => labelPrimitive(m)).join(' → ')}
                   </Badge>
                 ))}
                 {state.activeTemplates.length > 8 && (
