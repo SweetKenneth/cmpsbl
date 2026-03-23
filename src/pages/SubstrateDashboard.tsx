@@ -82,7 +82,7 @@ const modulesByLayer = {
     },
     {
       id: "ripple",
-      name: "RIPPLE",
+      name: "RIPPLE Organ",
       description: "Message bus, pub/sub, queues",
       icon: Radio,
       color: "text-neon-cyan",
@@ -91,7 +91,7 @@ const modulesByLayer = {
     },
     {
       id: "access",
-      name: "ACCESS",
+      name: "ACCESS Organ",
       description: "API keys, billing, metering",
       icon: Key,
       color: "text-neon-amber",
@@ -102,7 +102,7 @@ const modulesByLayer = {
   cognitive: [
     {
       id: "brain",
-      name: "BRAIN",
+      name: "BRAIN Organ",
       description: "Memory, learning cycles, reflection",
       icon: Brain,
       color: "text-neon-purple",
@@ -111,7 +111,7 @@ const modulesByLayer = {
     },
     {
       id: "decode",
-      name: "DECODE",
+      name: "DECODE Agent",
       description: "Intent decoding, chat, oracle",
       icon: MessageSquare,
       color: "text-neon-blue",
@@ -120,7 +120,7 @@ const modulesByLayer = {
     },
     {
       id: "dream",
-      name: "DREAM",
+      name: "DREAM Engine",
       description: "Dream-Eater operations, nightly processing",
       icon: Moon,
       color: "text-primary",
@@ -131,7 +131,7 @@ const modulesByLayer = {
   operational: [
     {
       id: "nerve",
-      name: "NERVE",
+      name: "NERVE Organ",
       description: "Signal propagation, consensus repair",
       icon: Activity,
       color: "text-neon-magenta",
@@ -140,7 +140,7 @@ const modulesByLayer = {
     },
     {
       id: "nexus",
-      name: "NEXUS",
+      name: "NEXUS Organ",
       description: "Multi-provider AI routing",
       icon: Zap,
       color: "text-neon-amber",
@@ -149,7 +149,7 @@ const modulesByLayer = {
     },
     {
       id: "vision",
-      name: "VISION",
+      name: "VISION Agent",
       description: "Observability, metrics, health",
       icon: Eye,
       color: "text-neon-green",
@@ -160,7 +160,7 @@ const modulesByLayer = {
   admin: [
     {
       id: "system",
-      name: "SYSTEM",
+      name: "SYSTEM Organ",
       description: "Administration, configuration",
       icon: Settings,
       color: "text-gray-400",
@@ -169,7 +169,7 @@ const modulesByLayer = {
     },
     {
       id: "integration",
-      name: "INTEGRATION",
+      name: "INTEGRATION Organ",
       description: "Enterprise adapters, LLM governance",
       icon: Plug,
       color: "text-neon-green",
@@ -178,7 +178,7 @@ const modulesByLayer = {
     },
     {
       id: "inclusive",
-      name: "INCLUSIVE",
+      name: "INCLUSIVE Layer",
       description: "Human compatibility, WCAG, a11y",
       icon: Accessibility,
       color: "text-neon-magenta",
@@ -187,7 +187,7 @@ const modulesByLayer = {
     },
     {
       id: "medic",
-      name: "MEDIC",
+      name: "MEDIC Engine",
       description: "Self-healing diagnostics & recovery",
       icon: HeartPulse,
       color: "text-destructive",
@@ -198,7 +198,7 @@ const modulesByLayer = {
   orchestrator: [
     {
       id: "cortex",
-      name: "CORTEX",
+      name: "CORTEX Engine",
       description: "Agency orchestrator, evolution, governance",
       icon: Wand2,
       color: "text-neon-purple",
@@ -209,7 +209,7 @@ const modulesByLayer = {
   infrastructure: [
     {
       id: "memory",
-      name: "MEMORY",
+      name: "MEMORY Organ",
       description: "Embedding store, staleness detection, relevance feedback",
       icon: Database,
       color: "text-neon-cyan",
@@ -218,7 +218,7 @@ const modulesByLayer = {
     },
     {
       id: "relay",
-      name: "RELAY",
+      name: "RELAY Organ",
       description: "HMAC verification, adaptive retry, webhook dispatch",
       icon: Network,
       color: "text-sky-500",
@@ -227,7 +227,7 @@ const modulesByLayer = {
     },
     {
       id: "audit",
-      name: "AUDIT",
+      name: "AUDIT Organ",
       description: "Compliance templates, log compression, SOC2/GDPR",
       icon: ClipboardCheck,
       color: "text-slate-400",
@@ -236,7 +236,7 @@ const modulesByLayer = {
     },
     {
       id: "identity",
-      name: "IDENTITY",
+      name: "IDENTITY Organ",
       description: "Actor reputation, passkeys, biometric portability",
       icon: Fingerprint,
       color: "text-neon-magenta",
@@ -245,7 +245,7 @@ const modulesByLayer = {
     },
     {
       id: "economy",
-      name: "ECONOMY",
+      name: "ECONOMY Engine",
       description: "Predictive cost forecasting, per-capability attribution",
       icon: Coins,
       color: "text-neon-amber",
@@ -254,7 +254,7 @@ const modulesByLayer = {
     },
     {
       id: "sandbox",
-      name: "SANDBOX",
+      name: "SANDBOX Engine",
       description: "Resource limits, state snapshots, isolated execution",
       icon: Box,
       color: "text-lime-500",
@@ -263,7 +263,7 @@ const modulesByLayer = {
     },
     {
       id: "encode",
-      name: "ENCODE",
+      name: "ENCODE Agent",
       description: "Structural generation, filesystem-aware, error patterns",
       icon: FileCode,
       color: "text-neon-cyan",
@@ -275,7 +275,7 @@ const modulesByLayer = {
   esz: [
     {
       id: "sovereign",
-      name: "SOVEREIGN",
+      name: "SOVEREIGN Agent",
       description: "Ethical policy engine, consent enforcement",
       icon: Scale,
       color: "text-neon-amber",
@@ -284,7 +284,7 @@ const modulesByLayer = {
     },
     {
       id: "oracle",
-      name: "ORACLE",
+      name: "ORACLE Engine",
       description: "Predictive analytics, scenario simulation",
       icon: Compass,
       color: "text-primary",
@@ -293,7 +293,7 @@ const modulesByLayer = {
     },
     {
       id: "conscience",
-      name: "CONSCIENCE",
+      name: "CONSCIENCE Layer",
       description: "Moral reasoning, value alignment verification",
       icon: Globe,
       color: "text-neon-green",
@@ -302,7 +302,7 @@ const modulesByLayer = {
     },
     {
       id: "treaty",
-      name: "TREATY",
+      name: "TREATY Layer",
       description: "Inter-system agreements, trust federation",
       icon: ClipboardCheck,
       color: "text-neon-blue",
@@ -314,7 +314,7 @@ const modulesByLayer = {
   epz: [
     {
       id: "compass",
-      name: "COMPASS",
+      name: "COMPASS Engine",
       description: "Navigation heuristics, path optimization",
       icon: Compass,
       color: "text-neon-cyan",
@@ -323,7 +323,7 @@ const modulesByLayer = {
     },
     {
       id: "echo",
-      name: "ECHO",
+      name: "ECHO Agent",
       description: "Pattern detection, signal amplification",
       icon: AudioLines,
       color: "text-sky-300",
@@ -332,7 +332,7 @@ const modulesByLayer = {
     },
     {
       id: "reflex",
-      name: "REFLEX",
+      name: "REFLEX Engine",
       description: "Rapid response, instinctive routing",
       icon: Zap,
       color: "text-neon-amber",
@@ -344,7 +344,7 @@ const modulesByLayer = {
   emz: [
     {
       id: "forge",
-      name: "FORGE",
+      name: "FORGE Engine",
       description: "Artifact production, template smithing",
       icon: Hammer,
       color: "text-neon-amber",
@@ -353,7 +353,7 @@ const modulesByLayer = {
     },
     {
       id: "lingua",
-      name: "LINGUA",
+      name: "LINGUA Agent",
       description: "Translation, localization, semantic bridging",
       icon: Languages,
       color: "text-neon-purple",
@@ -362,7 +362,7 @@ const modulesByLayer = {
     },
     {
       id: "harvest",
-      name: "HARVEST",
+      name: "HARVEST Agent",
       description: "Data ingestion, ETL processes, enrichment",
       icon: Wheat,
       color: "text-neon-green",
@@ -374,7 +374,7 @@ const modulesByLayer = {
   csz: [
     {
       id: "evolution",
-      name: "EVOLUTION",
+      name: "EVOLUTION Layer",
       description: "Self-improvement lifecycle, mutation process",
       icon: Dna,
       color: "text-neon-magenta",
@@ -392,7 +392,7 @@ const modulesByLayer = {
     },
     {
       id: "phantom",
-      name: "PHANTOM",
+      name: "PHANTOM Agent",
       description: "Simulation doubles, canary deployment",
       icon: Ghost,
       color: "text-neon-purple",
@@ -404,7 +404,7 @@ const modulesByLayer = {
   fields: [
     {
       id: "immunity",
-      name: "IMMUNITY",
+      name: "IMMUNITY Layer",
       description: "Cascade breaking, anomaly signature training",
       icon: Shield,
       color: "text-destructive",
@@ -413,7 +413,7 @@ const modulesByLayer = {
     },
     {
       id: "intent",
-      name: "INTENT",
+      name: "INTENT Layer",
       description: "Goal decomposition, capability mesh routing",
       icon: Orbit,
       color: "text-neon-blue",
@@ -425,7 +425,7 @@ const modulesByLayer = {
   plane: [
     {
       id: "governance",
-      name: "GOVERNANCE",
+      name: "GOVERNANCE Layer",
       description: "Policy mesh, veto precision, compliance",
       icon: Gauge,
       color: "text-neon-amber",
@@ -434,7 +434,7 @@ const modulesByLayer = {
     },
     {
       id: "engineer",
-      name: "ENGINEER",
+      name: "ENGINEER Agent",
       description: "Engine health scoring, maintenance scheduling",
       icon: Settings,
       color: "text-stone-400",
@@ -443,7 +443,7 @@ const modulesByLayer = {
     },
     {
       id: "atlas",
-      name: "ATLAS",
+      name: "ATLAS Engine",
       description: "Capability discovery, dependency mapping",
       icon: Globe,
       color: "text-neon-cyan",
@@ -455,7 +455,7 @@ const modulesByLayer = {
   shell: [
     {
       id: "defense",
-      name: "DEFENSE",
+      name: "DEFENSE Layer",
       description: "Bot detection, behavioral fingerprinting, perimeter security",
       icon: Siren,
       color: "text-neon-magenta",

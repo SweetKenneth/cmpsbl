@@ -389,7 +389,7 @@ export default function UseCases() {
     { icon: Moon, label: "Offline Learning", description: "Pattern extraction between sessions" },
     { icon: Zap, label: "NEXUS Router", description: "Optimal AI provider selection" },
     { icon: Shield, label: "DEFENSE Shell", description: "Adaptive security & governance" },
-    { icon: MessageSquare, label: "DECODE", description: "Context-aware conversation" },
+    { icon: MessageSquare, label: "DECODE Agent", description: "Context-aware conversation" },
     { icon: Plug, label: "Integration", description: "Enterprise adapters & API governance" },
   ];
 

@@ -27,12 +27,12 @@ const fadeUp = {
 };
 
 const MODULES = [
-  { icon: Brain, name: "BRAIN", desc: "Give your agents permanent memory — store, recall, and search across sessions" },
-  { icon: MessageSquare, name: "DECODE", desc: "Extract user intent and power conversational AI" },
-  { icon: Network, name: "NEXUS", desc: "Route to the best AI model automatically with built-in failover" },
-  { icon: Shield, name: "DEFENSE", desc: "Detect threats, block bad actors, and filter malicious inputs" },
-  { icon: Eye, name: "VISION", desc: "Monitor system health, view metrics, and trace requests" },
-  { icon: Zap, name: "EVOLUTION", desc: "Automatic self-improvement cycles that make your system smarter over time" },
+  { icon: Brain, name: "BRAIN Organ", desc: "Give your agents permanent memory — store, recall, and search across sessions" },
+  { icon: MessageSquare, name: "DECODE Agent", desc: "Extract user intent and power conversational AI" },
+  { icon: Network, name: "NEXUS Organ", desc: "Route to the best AI model automatically with built-in failover" },
+  { icon: Shield, name: "DEFENSE Layer", desc: "Detect threats, block bad actors, and filter malicious inputs" },
+  { icon: Eye, name: "VISION Agent", desc: "Monitor system health, view metrics, and trace requests" },
+  { icon: Zap, name: "EVOLUTION Layer", desc: "Automatic self-improvement cycles that make your system smarter over time" },
 ];
 
 export default function ApiAccess() {

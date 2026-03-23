@@ -28,7 +28,7 @@ const PHASES = [
   },
   {
     number: 2,
-    name: "ECONOMY",
+    name: "ECONOMY Engine",
     tagline: "Tokenization & Trade",
     status: "In Progress",
     color: "primary",
@@ -73,7 +73,7 @@ const PHASES = [
   },
   {
     number: 5,
-    name: "EVOLUTION",
+    name: "EVOLUTION Layer",
     tagline: "Self-Improving Architecture",
     status: "Research",
     color: "primary",

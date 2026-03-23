@@ -84,12 +84,12 @@ export default function InvestorsPublic() {
   ];
 
   const products = [
-    { icon: Brain, name: "BRAIN", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
-    { icon: Eye, name: "VISION", subtitle: "Monitoring", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 modules." },
-    { icon: Shield, name: "DEFENSE", subtitle: "Security", description: "Bot protection, threat detection, and governance guardrails — outermost security layer." },
-    { icon: Server, name: "NEXUS", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
-    { icon: Code, name: "ENCODE", subtitle: "Governed Execution", description: "Natural-language-to-code with graduated autonomy (Novice → Master) safety thresholds." },
-    { icon: Sparkles, name: "INTENT", subtitle: "Capability Discovery", description: "Systems advertise, compose, and discover cross-system capabilities autonomously." },
+    { icon: Brain, name: "BRAIN Organ", subtitle: "Persistent Memory", description: "Multi-tier memory architecture with autonomous learning, staleness detection, and hot/warm/cold tiering." },
+    { icon: Eye, name: "VISION Agent", subtitle: "Monitoring", description: "Real-time introspection, metrics collection, and system-wide transparency across all 40 modules." },
+    { icon: Shield, name: "DEFENSE Layer", subtitle: "Security", description: "Bot protection, threat detection, and governance guardrails — outermost security layer." },
+    { icon: Server, name: "NEXUS Organ", subtitle: "Multi-Provider Routing", description: "Health-weighted routing across 5+ providers with task-type affinity mapping." },
+    { icon: Code, name: "ENCODE Agent", subtitle: "Governed Execution", description: "Natural-language-to-code with graduated autonomy (Novice → Master) safety thresholds." },
+    { icon: Sparkles, name: "INTENT Layer", subtitle: "Capability Discovery", description: "Systems advertise, compose, and discover cross-system capabilities autonomously." },
   ];
 
   const highlights = [
