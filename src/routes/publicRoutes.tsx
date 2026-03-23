@@ -191,7 +191,7 @@ export const publicRoutes = (
     <Route path="/promptfluid" element={<PromptFluidHome />} />
 
     {/* System pages */}
-    <Route path="/modules" element={<ModulesHub />} />
+    <Route path="/modules" element={<Navigate to="/architecture" replace />} />
     <Route path="/modules/:slug" element={<ModuleDetail />} />
     <Route path="/ai-operating-system" element={<AIOperatingSystem />} />
     <Route path="/products/encode" element={<Navigate to="/" replace />} />
