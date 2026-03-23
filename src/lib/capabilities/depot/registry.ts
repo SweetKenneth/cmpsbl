@@ -459,7 +459,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'self-healing-synergy',
     name: 'Self-Healing Synergy',
     category: 'resilience',
-    description: 'SYSTEM diagnostics trigger EVOLUTION auto-fixes validated by VISION regression checks',
+    description: 'SYSTEM Organ diagnostics trigger EVOLUTION Layer auto-fixes validated by VISION Agent regression checks',
     requiredModules: ['SYSTEM', 'EVOLUTION', 'VISION'],
     executorType: 'js',
     artifactFormat: 'zip',
