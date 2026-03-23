@@ -275,7 +275,7 @@ const modulesByLayer = {
   esz: [
     {
       id: "sovereign",
-      name: "SOVEREIGN",
+      name: "SOVEREIGN Agent",
       description: "Ethical policy engine, consent enforcement",
       icon: Scale,
       color: "text-neon-amber",
