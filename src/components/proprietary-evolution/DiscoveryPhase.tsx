@@ -37,7 +37,7 @@ interface CollisionResult {
   description?: string;
 }
 
-// Canonical 40-node matrix — must match edge function VALID_NODES exactly
+// Canonical 40-primitive matrix — must match edge function VALID_NODES exactly
 const SUBSTRATE_NODES = [
   'CORE','SYSTEM','BRAIN','MEMORY','DREAM',
   'RIPPLE','ACCESS','IDENTITY','RELAY','AUDIT','NERVE',
