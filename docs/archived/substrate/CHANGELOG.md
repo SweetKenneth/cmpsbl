@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.6.0 (CONTACT — INTEGRATION Ultimate "Babel Gate")
+
+⟨This entry describes INTEGRATION v9.0.0 — the substrate's Universal Protocol Fabric reaching its ultimate form with 10 new systems.⟩
+
+- **Protocol Translator Matrix** — Auto-translates REST/GraphQL/gRPC/WebSocket/MQTT/SSE to Canonical Internal Format (CIF). Schema inference from live traffic. Protocol capability probing.
+- **Credential Vault & Rotation Engine** — Centralized credential store with auto-rotation (30/60/90 day schedules), leak canary scanning, emergency revoke, and credential health scoring.
+- **Adaptive Rate Governor** — Header-based limit detection (`X-RateLimit-*`), 60s sliding window counters, predictive throttling at 80% usage, T1 priority bypass, burst budgets with exponential cooldown.
+- **Contract Testing Engine** — Schema snapshot capture, drift detection (field removal = critical, type change = high, new field = info), dependency mapping to substrate features, auto-alert to NERVE.
+- **Webhook Orchestrator** — Inbound: HMAC-SHA256 + nonce replay protection (5-min window). Outbound: at-least-once delivery, 8-attempt exponential retry, dead letter queue. Fan-out support.
+- **Circuit Breaker Mesh** — CLOSED/OPEN/HALF_OPEN state machine. 50% failure rate trips over 10-request window. 30s open duration. Cascade alert at ≥3 simultaneous trips. Per-integration fallbacks.
+- **Schema Negotiation Engine** — Content negotiation (JSON/MessagePack/Protobuf). Multi-version adapters. Declarative field mapping (rename/reshape/merge/split/cast). Schema evolution tracking.
+- **Integration Health Profiler** — Per-integration availability (7d rolling), P50/P95/P99 latency, error taxonomy, cost-per-call tracking, dependency risk score (0–100), SLA compliance.
+- **Event Bridge & Transformation Pipeline** — Multi-source ingestion (webhook/polling/SSE/WebSocket). Filter chains, field mapping, enrichment, and historical event replay.
+- **Integration Discovery & Auto-Connect** — OpenAPI auto-import, capability matching with confidence scoring, connectivity pre-checks, searchable integration catalog.
+
+---
+
 ## 2026-03-23 · v15.5.0 (CONTACT — Activation Arbitration + Confidence Gating)
 
 ⟨This entry describes the upgrade of the Auto-Activation Engine from v1.0.0 to v2.0.0, introducing two new decision layers between rule matching and execution.⟩
