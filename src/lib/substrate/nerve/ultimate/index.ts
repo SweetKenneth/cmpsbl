@@ -156,3 +156,30 @@ export {
   type NerveMTTRMetrics,
   type NerveOperationalSummary,
 } from './nerveTelemetryNexus';
+
+// 11. Primary Memory Chains
+export {
+  evaluateTriggers,
+  executeChain as executeReactionChain,
+  pauseChain,
+  resumeChain,
+  disableChain,
+  abortExecution,
+  getChain as getReactionChain,
+  getAllChains as getAllReactionChains,
+  getChainMetrics as getReactionChainMetrics,
+  getChainHistory as getReactionChainHistory,
+  getRecentExecutions as getRecentReactionExecutions,
+  getRegistrySummary as getReactionRegistrySummary,
+  getChainsByPriority,
+  getChainsForNode as getReactionChainsForNode,
+  type ChainId,
+  type ChainStatus,
+  type ChainTrigger,
+  type ChainStage,
+  type PrimaryChainDefinition,
+  type ChainExecution,
+  type StageResult,
+  type ChainMetrics,
+  type ChainRegistrySummary,
+} from './primaryMemoryChains';
