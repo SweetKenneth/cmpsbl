@@ -147,7 +147,7 @@ export default function CodeLab() {
               <div className="flex items-center gap-2 shrink-0">
                 <Layers className="w-4 h-4 text-neon-cyan" />
                 <span className="font-mono font-bold">{modulesCount}</span>
-                <span className="text-muted-foreground">Nodes</span>
+                <span className="text-muted-foreground">Primitives</span>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <Zap className="w-4 h-4 text-neon-amber" />
