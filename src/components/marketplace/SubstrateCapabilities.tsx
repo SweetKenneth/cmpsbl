@@ -121,7 +121,7 @@ const CAPABILITY_CATEGORIES = [
       { name: 'Distributed Tracing', description: 'Track requests across all primitives', icon: Workflow },
       { name: 'Alert Management', description: 'Proactive issue notification', icon: AlertTriangle },
       { name: 'Dashboard Analytics', description: 'Visual insights into system state', icon: Gauge },
-      { name: 'Dependency Mapping', description: 'Visualize module relationships', icon: Network },
+      { name: 'Dependency Mapping', description: 'Visualize primitive relationships', icon: Network },
     ],
   },
   {

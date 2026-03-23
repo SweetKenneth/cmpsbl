@@ -362,7 +362,7 @@ export function LiveDebugger() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-xs text-muted-foreground">Module</p>
+                    <p className="text-xs text-muted-foreground">Primitive</p>
                     <Badge className={MODULE_COLORS[selectedTraceData.module] || ""}>
                       {selectedTraceData.module}
                     </Badge>
