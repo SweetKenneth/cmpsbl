@@ -218,7 +218,7 @@ const modulesByLayer = {
     },
     {
       id: "relay",
-      name: "RELAY",
+      name: "RELAY Organ",
       description: "HMAC verification, adaptive retry, webhook dispatch",
       icon: Network,
       color: "text-sky-500",
