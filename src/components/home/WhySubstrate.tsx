@@ -67,7 +67,7 @@ const primitives = [
   {
     icon: Zap,
     title: "Smart Routing",
-    node: "NEXUS",
+    node: "NEXUS Organ",
     description: "Routes every request to the optimal AI provider based on task, cost, and latency.",
     highlight: "Auto-Optimized",
     stat: "<100ms",
