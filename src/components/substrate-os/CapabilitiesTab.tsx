@@ -48,7 +48,7 @@ const moduleIcons: Record<string, React.ElementType> = {
   EVOLUTION: Sparkles,
   CORTEX: Zap,
   DECODE: Eye,
-  DREAM: Sparkles,
+  'DREAM Engine': Sparkles,
   VISION: Eye,
   CORE: Power,
 };

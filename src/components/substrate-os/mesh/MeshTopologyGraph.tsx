@@ -41,7 +41,7 @@ const MODULE_COLORS: Record<string, string> = {
   SANDBOX: 'hsl(340, 65%, 55%)',
   INCLUSIVE: 'hsl(90, 65%, 50%)',
   DECODE: 'hsl(250, 75%, 65%)',
-  DREAM: 'hsl(280, 80%, 65%)',
+  'DREAM Engine': 'hsl(280, 80%, 65%)',
   SYSTEM: 'hsl(210, 50%, 55%)',
   ENCODE: 'hsl(330, 70%, 60%)',
   EVOLUTION: 'hsl(15, 75%, 55%)',

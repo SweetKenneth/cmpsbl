@@ -61,8 +61,8 @@ const memory = await client.brain.remember({
 
 console.log('Memory ID:', memory.id);
 console.log('Tier:', memory.currentTier);
-console.log('DREAM eligible:', memory.dreamEligible);`,
-    expectedOutput: "Memory ID: mem_a1b2c3d4\nTier: hot\nDREAM eligible: true",
+console.log('DREAM Engine eligible:', memory.dreamEligible);`,
+    expectedOutput: "Memory ID: mem_a1b2c3d4\nTier: hot\nDREAM Engine eligible: true",
     hint: "Memories with importance > 0.7 are eligible for DREAM consolidation during idle cycles.",
     xpReward: 35,
     track: 'brain',
