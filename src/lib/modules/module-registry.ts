@@ -46,7 +46,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   // ══════════════════════════════════════════
   {
     slug: "core",
-    name: "CORE",
+    name: "CORE Organ",
     tagline: "Foundation Runtime",
     description: "The boot kernel that initializes all substrate surfaces, manages lifecycle, and provides the event bus for inter-surface communication.",
     layer: "Kernel",
@@ -71,7 +71,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   // ══════════════════════════════════════════
   {
     slug: "decode",
-    name: "DECODE",
+    name: "DECODE Agent",
     tagline: "Personality & Interpretation Engine",
     description: "Configurable personality layer that shapes how your AI communicates — tone, style, formality, and domain expertise.",
     layer: "Module",
@@ -92,7 +92,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "encode",
-    name: "ENCODE",
+    name: "ENCODE Agent",
     tagline: "Code Execution & Generation Intelligence",
     description: "The substrate's code execution engine — receives structured task packets from DECODE, generates governed code artifacts with BRAIN recall/writeback, and learns through CLM.",
     layer: "Module",
@@ -113,7 +113,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "vision",
-    name: "VISION",
+    name: "VISION Agent",
     tagline: "Unified Observability Dashboard",
     description: "Real-time monitoring, analytics, and visualization for every execution surface in the substrate.",
     layer: "Module",
@@ -134,7 +134,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "cortex",
-    name: "CORTEX",
+    name: "CORTEX Engine",
     tagline: "Meta-Orchestration Intelligence",
     description: "The orchestrator of orchestrators — CORTEX coordinates all surfaces, manages synergy pipelines, and optimizes cross-surface workflows.",
     layer: "Module",
@@ -155,7 +155,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "nexus",
-    name: "NEXUS",
+    name: "NEXUS Organ",
     tagline: "Intelligent AI Router",
     description: "Routes requests to the optimal AI provider based on task complexity, cost, latency, and capability requirements.",
     layer: "Module",
@@ -176,7 +176,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "economy",
-    name: "ECONOMY",
+    name: "ECONOMY Engine",
     tagline: "Cost Attribution & Budget Engine",
     description: "Real-time cost attribution, budget enforcement, capability usage accounting, token/credit systems, and marketplace-ready pricing signals.",
     layer: "Module",
@@ -197,7 +197,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "sandbox",
-    name: "SANDBOX",
+    name: "SANDBOX Engine",
     tagline: "Isolated Execution Environments",
     description: "Provides isolated execution environments for speculative runs, untrusted code, evolution testing, and user experimentation with full containment guarantees.",
     layer: "Module",
@@ -218,7 +218,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "inclusive",
-    name: "INCLUSIVE",
+    name: "INCLUSIVE Layer",
     tagline: "AI Accessibility & Compliance",
     description: "Automated accessibility scanning, WCAG compliance checking, and AI-powered fixes for web applications.",
     layer: "Module",
@@ -239,7 +239,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "integration",
-    name: "INTEGRATION",
+    name: "INTEGRATION Organ",
     tagline: "Universal Adapter Bridge",
     description: "Connect the substrate to any external system — CRMs, databases, APIs, webhooks, and third-party services.",
     layer: "Module",
@@ -264,7 +264,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   // ══════════════════════════════════════════
   {
     slug: "defense",
-    name: "DEFENSE",
+    name: "DEFENSE Layer",
     tagline: "AI Security & Threat Intelligence",
     description: "Real-time threat detection, prompt injection defense, and automated security response for AI systems. Outermost mesh overlay.",
     layer: "Mesh",
@@ -285,7 +285,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "immunity",
-    name: "IMMUNITY",
+    name: "IMMUNITY Layer",
     tagline: "Adaptive Resilience & Self-Healing",
     description: "Adaptive resilience mesh with executor shadow training, self-healing patterns, and autonomous recovery from novel failures.",
     layer: "Mesh",
@@ -306,7 +306,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "evolution",
-    name: "EVOLUTION",
+    name: "EVOLUTION Layer",
     tagline: "Bounded Self-Evolution Engine",
     description: "Identifies optimization opportunities, generates evolution proposals, evaluates them for safety, and applies approved changes under strict governance.",
     layer: "Mesh",
@@ -327,7 +327,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "intent-mesh",
-    name: "INTENT",
+    name: "INTENT Layer",
     tagline: "Cross-Surface Intent Resolution",
     description: "Autonomous intent resolution layer that translates goals into orchestrated multi-surface operations with emergent capability discovery.",
     layer: "Mesh",
@@ -348,7 +348,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "governance",
-    name: "GOVERNANCE",
+    name: "GOVERNANCE Layer",
     tagline: "Ethical Constraints & Coherence",
     description: "Innermost mesh overlay enforcing ethical constraints, veto authority, and coherence across all substrate operations.",
     layer: "Mesh",
@@ -373,7 +373,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   // ══════════════════════════════════════════
   {
     slug: "system",
-    name: "SYSTEM",
+    name: "SYSTEM Organ",
     tagline: "Production Operations Control",
     description: "Deployment management, environment configuration, audit logging, and operational controls. CCR Zone — hidden from public surface registry.",
     layer: "CCR",
@@ -394,7 +394,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "brain",
-    name: "BRAIN",
+    name: "BRAIN Organ",
     tagline: "Adaptive Memory Engine",
     description: "Persistent, contextual memory that learns from every interaction and adapts behavior over time. CCR Zone — hidden from public surface registry.",
     layer: "CCR",
@@ -415,7 +415,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "memory",
-    name: "MEMORY",
+    name: "MEMORY Organ",
     tagline: "Vector & RAG Orchestration",
     description: "Dedicated vector embeddings, RAG orchestration, external knowledge ingestion, and long-term semantic recall. CCR Zone.",
     layer: "CCR",
@@ -436,7 +436,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "dream",
-    name: "DREAM",
+    name: "DREAM Engine",
     tagline: "Autonomous Reflection & Optimization",
     description: "Off-peak autonomous processing that analyzes patterns, consolidates learning, and optimizes system performance. CCR Zone.",
     layer: "CCR",
@@ -461,7 +461,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   // ══════════════════════════════════════════
   {
     slug: "ripple",
-    name: "RIPPLE",
+    name: "RIPPLE Organ",
     tagline: "Cascade Event Network",
     description: "Propagates state changes across surfaces with intelligent fan-out, deduplication, and priority routing. CCL Zone.",
     layer: "CCL",
@@ -482,7 +482,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "access",
-    name: "ACCESS",
+    name: "ACCESS Organ",
     tagline: "Identity & Metering Gateway",
     description: "Manages API keys, rate limiting, usage metering, entitlements, and subscription billing. CCL Zone.",
     layer: "CCL",
@@ -503,7 +503,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "identity",
-    name: "IDENTITY",
+    name: "IDENTITY Organ",
     tagline: "Universal Actor Attribution",
     description: "Manages human, agent, and system identity with persistent signatures, action attribution, and cross-system provenance. CCL Zone.",
     layer: "CCL",
@@ -524,7 +524,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "relay",
-    name: "RELAY",
+    name: "RELAY Organ",
     tagline: "Outbound Effects Hub",
     description: "Centralized hub for outbound webhooks, notifications, side-effects, retry queues, and delivery guarantees. CCL Zone.",
     layer: "CCL",
@@ -545,7 +545,7 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
   },
   {
     slug: "audit",
-    name: "AUDIT",
+    name: "AUDIT Organ",
     tagline: "Immutable Compliance Ledger",
     description: "Append-only event logging with cryptographic hash chaining and compliance-grade traceability. CCL Zone.",
     layer: "CCL",
