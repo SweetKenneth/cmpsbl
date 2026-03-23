@@ -478,7 +478,7 @@ function generateModuleHelp(module: keyof typeof COMMAND_CATEGORIES): string {
   return output;
 }
 
-// Generate full help text with all modules
+// Generate full help text with all primitives
 function generateFullHelp(): string {
   const modules = Object.keys(COMMAND_CATEGORIES) as Array<keyof typeof COMMAND_CATEGORIES>;
   const totalCommands = ALL_COMMANDS.length;
@@ -1023,7 +1023,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 │  └────────────────────────────────────────────────────────────
 │  
 │  Terminal: aliases, macros, NLP, watch mode, audit
-│  40 nodes | 12 sectors | 500+ commands | 300 synergy pipelines | health: 100%
+│  40 primitives | 4 categorys | 500+ commands | 300 synergy pipelines | health: 100%
 │  675+ capabilities | 100 engines (76 base + 24 meta)
 │  CMPSBL® — where dreams come to adapt
 │  
@@ -1655,7 +1655,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
         return { success: false, output: `▓ Doctor error: ${err instanceof Error ? err.message : 'Unknown'}` };
       }
     } else if (base === 'system.verify') {
-      // Non-destructive verification of all 40 nodes
+      // Non-destructive verification of all 40 primitives
       const verbose = args.includes('--verbose');
       try {
         const moduleChecks = ALL_EXECUTION_SURFACES.map(async (mod) => {
@@ -1716,7 +1716,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
           const { runSelfRepair } = await import('@/lib/substrate/system/selfRepairLoop');
           const { resetBreaker } = await import('@/lib/substrate/circuit-breaker');
           
-          // 1. Reset all 40 node circuit breakers
+          // 1. Reset all 40 primitive circuit breakers
           const breakerResets: string[] = [];
           for (const mod of ALL_EXECUTION_SURFACES) {
             try {
@@ -2044,7 +2044,7 @@ ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}
 ║                                                              ║
 ║  Batches (cumulative — each adds to previous):               ║
 ║    1: polling-intervals (basic poll loops)                   ║
-║    2: + module-status-polling (40 node status calls)          ║
+║    2: + module-status-polling (40 primitive status calls)          ║
 ║    3: + auto-refresh (dashboard auto-update)                 ║
 ║    4: + realtime-subscriptions (backend channels)            ║
 ║                                                              ║
@@ -3505,7 +3505,7 @@ ${synergies.length > 20 ? `│  ... and ${synergies.length - 20} more` : ''}
           };
         }
         
-        // Show all modules with counts
+        // Show all primitives with counts
         const all = listSynergies();
         const moduleCounts: Record<string, number> = {};
         for (const s of all) {

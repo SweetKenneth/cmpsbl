@@ -521,7 +521,7 @@ await cmpsbl.encode.apply(result.id);`,
   },
 ];
 
-// Syntax highlighting helper - extended for all modules including Cortex
+// Syntax highlighting helper - extended for all primitives including Cortex
 function highlightCode(code: string): string {
   // Escape HTML first to prevent issues
   let escaped = code

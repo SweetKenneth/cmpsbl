@@ -1,6 +1,6 @@
 /**
  * Terminal Command Registry
- * 500+ commands across 40 nodes / 12 sectors
+ * 500+ commands across 40 primitives / 4 categorys
  * Complete list of all substrate commands organized by sector
  *
  * Tier Gating: free | studio | creator | architect | governor
@@ -556,7 +556,7 @@ export const SEBA_COMMANDS: CommandDefinition[] = [
 export const MODULE_CLM_COMMANDS: CommandDefinition[] = [
   { command: 'mclm.status', description: 'View all module CLM states', category: 'clm', icon: Brain, requiresOperator: false },
   { command: 'mclm.run', description: 'Run CLM for a specific module', category: 'clm', icon: Sparkles, requiresOperator: true, args: '<module>', example: 'mclm.run brain' },
-  { command: 'mclm.run.all', description: 'Run CLM for all modules', category: 'clm', icon: Sparkles, requiresOperator: true },
+  { command: 'mclm.run.all', description: 'Run CLM for all primitives', category: 'clm', icon: Sparkles, requiresOperator: true },
   { command: 'mclm.feed', description: 'View latest intelligence feed', category: 'clm', icon: Activity, requiresOperator: false, args: '[limit]', example: 'mclm.feed 10' },
 ];
 
@@ -707,7 +707,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   // Unified hardening overview
   { command: 'hardening.status', description: 'All hardened modules overview (grades + scores)', category: 'system', icon: Shield, requiresOperator: false, requiredTier: 'free' },
   { command: 'hardening.health', description: 'Aggregated hardening health composite', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
-  { command: 'hardening.grades', description: 'A–F grade summary for all modules', category: 'system', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
+  { command: 'hardening.grades', description: 'A–F grade summary for all primitives', category: 'system', icon: Gauge, requiresOperator: false, requiredTier: 'free' },
   { command: 'hardening.audit', description: 'Cross-module hardening audit chain verification', category: 'system', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
   { command: 'hardening.versions', description: 'Hardening module & codename registry', category: 'system', icon: Cpu, requiresOperator: false, requiredTier: 'free' },
 
