@@ -4,6 +4,12 @@
 
 ---
 
+## v16.1.0 — 2026-03-23
+
+- **SIMULATE Ultimate "Crucible Prime"** — 10 new systems: Monte Carlo Core (Welford's + convergence detection), Multi-Dimensional Scenario Engine (11 templates + compound composition), Digital Twin Forker (state forking + branching + diff), Temporal Projector (event injection + decay/recovery), Cost & Resource Projector (exhaustion dates + budget runway), A/B Comparator (Cohen's d effect size), Blast Radius Projector (35-edge BFS dependency graph), Chaos Library (10 calibrated scenarios), Prediction Accuracy Tracker (Hebbian calibration), Simulation Telemetry (full audit trail).
+
+---
+
 ## v16.0.0 — 2026-03-23
 
 - **INCLUSIVE Ultimate "Clarity Prime"** — 10 new systems: Deep WCAG 2.2 Scanner (87 criteria), Intelligent Auto-Repair (EMA-weighted strategy learning), Contrast Intelligence (luminance math + palette suggestion), ARIA Compliance Validator (36 roles), Keyboard Navigation Auditor (focus graph + trap detection), Regression Guardian (content hash drift detection), Adaptive Interface Engine (8 user prefs + device adaptation), Inclusive Testing Orchestrator (6 interaction modes), Compliance Report Generator (VPAT-style), Accessibility Telemetry (Hebbian learning loop).
