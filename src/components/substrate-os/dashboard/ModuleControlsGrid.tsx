@@ -412,7 +412,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
       description: 'Data ingestion & ETL',
       gradient: 'bg-gradient-to-r from-lime-400 to-neon-green', accentColor: 'bg-lime-400',
       status: harvestStatus,
-      metrics: [{ label: 'Memory Active' : 'Checking' }],
+      metrics: [{ label: 'Memory Active', value: 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
       onAction: async () => { const r = await harvestMod.status(); toast.info(`Harvest: ${r.success ? 'Memory active' : 'Check failed'}`); },
     },
