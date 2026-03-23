@@ -355,7 +355,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     slug: 'smart-recall-synergy',
     name: 'Smart Recall Synergy',
     category: 'intelligence',
-    description: 'BRAIN memory lookup enhanced by DECODE context understanding and DREAM pattern matching',
+    description: 'BRAIN Organ memory lookup enhanced by DECODE Agent context understanding and DREAM Engine pattern matching',
     requiredModules: ['BRAIN', 'DECODE', 'DREAM'],
     executorType: 'js',
     artifactFormat: 'zip',
