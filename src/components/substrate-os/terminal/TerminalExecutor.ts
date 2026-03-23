@@ -13,7 +13,7 @@ import { getMacro, createMacro, deleteMacro, formatMacroHelp, formatMacroDetail 
 import { scheduleCommand, cancelScheduled, clearScheduled, formatScheduledList, formatScheduleConfirmation, getPendingCommands } from './useTerminalScheduler';
 import { getLocalAuditLog, formatAuditLog, getSessionStats, exportAuditLog } from './useTerminalAudit';
 import { renderForMobile, getOptimalCharWidth } from './TerminalMobileRenderer';
-import { labelPrimitive } from '@/lib/export/primitive-labels';
+import { labelPrimitive, labelDescription } from '@/lib/export/primitive-labels';
 import { debugMode } from '@/lib/debug-mode';
 
 // Mobile-first evolution log formatter (organism-focused, no implementation details)
