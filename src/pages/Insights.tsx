@@ -32,7 +32,7 @@ const OBSERVER_FEATURES = [
   {
     icon: FileText,
     title: "Documentation Access",
-    description: "Full access to the architecture library covering all 40 nodes across 12 sectors.",
+    description: "Full access to the architecture library covering all 40 primitives — agents, engines, layers, and organs.",
     gradient: "from-neon-purple to-neon-purple",
   },
   {
