@@ -163,7 +163,7 @@ const WORLD_ENGINE_INCLUDES = [
   {
     icon: Brain,
     title: "Persistent NPC Memory System",
-    description: "3-tier hot/warm/cold memory architecture. NPCs remember every player interaction across sessions, form opinions, track relationships, and recall specific events with emotional weighting.",
+    description: "4-tier hot/warm/cold/archive memory architecture. NPCs remember every player interaction across sessions, form opinions, track relationships, and recall specific events with emotional weighting.",
   },
   {
     icon: Moon,
@@ -247,7 +247,7 @@ export default function GamingSubstrate() {
       title: "NPC Memory System",
       description: "Give your NPCs persistent memory that survives sessions. They remember player interactions, form opinions, and learn preferences.",
       features: [
-        "3-tier memory (hot/warm/cold)",
+        "4-tier memory (hot/warm/cold/archive)",
         "Relationship tracking",
         "Emotional state persistence",
         "Cross-session recall",
