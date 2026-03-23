@@ -895,7 +895,7 @@ export {
   type CognitiveLoad,
   type Insight as BrainInsight,
   type Contradiction,
-  type CausalEdge,
+  type CausalEdge as BrainCausalEdge,
   type CausalGraph,
   type MetacognitiveState,
   type WorkingMemorySlot,
