@@ -1,6 +1,6 @@
 /**
  * SDKQuickReference — Interactive searchable SDK cheatsheet
- * Quick access to all module actions with copy-paste snippets
+ * Quick access to all primitive actions with copy-paste snippets
  */
 
 import { useState, useMemo } from "react";

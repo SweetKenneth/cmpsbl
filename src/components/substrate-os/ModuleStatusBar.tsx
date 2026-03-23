@@ -1,6 +1,6 @@
 /**
- * Module Status Bar — Matrix Nodes, Zones, Overlays
- * Layer-grouped status indicators
+ * Primitive Status Bar — Agents, Engines, Layers, Organs
+ * Category-grouped status indicators
  */
 
 import { useState, useEffect } from 'react';

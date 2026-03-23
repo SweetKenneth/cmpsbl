@@ -253,7 +253,7 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Covert execution & shadow mesh operations',
     color: 'text-gray-500',
   },
-  // Plane additions — Nodes 39 & 40
+  // Plane additions — Primitives 39 & 40
   engineer: {
     icon: Settings,
     label: 'ENGINEER',
