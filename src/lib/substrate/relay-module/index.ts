@@ -626,3 +626,9 @@ export function getRelayResilience() {
 export function getRelayEngine() {
   return moduleEngine;
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// RELAY Ultimate Form — v9.0.0 "Warpgate"
+// ═══════════════════════════════════════════════════════════════════════════════
+import * as RelayUltimate from '../../relay/ultimate';
+export { RelayUltimate };
