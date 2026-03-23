@@ -209,7 +209,7 @@ const modulesByLayer = {
   infrastructure: [
     {
       id: "memory",
-      name: "MEMORY",
+      name: "MEMORY Organ",
       description: "Embedding store, staleness detection, relevance feedback",
       icon: Database,
       color: "text-neon-cyan",
