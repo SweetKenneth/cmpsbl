@@ -7,7 +7,7 @@
  *   - Tier thresholds → opaque tiering function
  *   - Synergy formulas → opaque multiplier
  *   - Discovery templates → REMOVED entirely
- *   - Module effect handlers → sealed delegation stubs
+ *   - Primitive effect handlers → sealed delegation stubs
  *   - Algorithm internals → replaced with interface-only contracts
  *
  * ARCHITECTURE: This sealed runtime is the TypeScript canonical runtime in obfuscated form.
@@ -576,7 +576,7 @@ export function generateSealedChainExecutor(): string {
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * 3-Layer runtime playback engine for discovered capability chains.
  *
- * Module effect implementations are sealed.
+ * Primitive effect implementations are sealed.
  * Full deep effects require the CMPSBL® Substrate.
  *
  * © CMPSBL® — All rights reserved.
@@ -687,13 +687,13 @@ export function generateSealedRuntimeReadme(): string {
     '',
     '- CJPI scoring weight allocations',
     '- Auto-tiering threshold values',
-    '- Module effect deep implementations (40-primitive matrix)',
+    '- Primitive effect deep implementations (40-primitive matrix)',
     '- Synergy multiplier formulas',
     '- Discovery heuristics and synthesis templates',
     '',
     '## Full Capabilities',
     '',
-    'For discovery, memory, and deep module effects, use the',
+    'For discovery, memory, and deep primitive effects, use the',
     'full CMPSBL® Substrate at https://cmpsbl.com',
     '',
     '---',

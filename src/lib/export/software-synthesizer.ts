@@ -23,6 +23,7 @@
 import type { SynthesisContext } from './logic-synthesizer';
 import { moduleOps, generateBridgeHeader, buildStageTable } from './bridge-adapter';
 import { CANONICAL_RUNTIME_VERSION, CANONICAL_ENDPOINT } from './canonical-runtime-contract';
+import { labelChain } from './primitive-labels';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Rust Bridge Adapter
@@ -37,7 +38,7 @@ export function synthesizeRust(ctx: SynthesisContext): string {
   return `//! ${ctx.name} — CMPSBL® Bridge Adapter (Rust)
 //! ${ctx.description}
 //!
-//! Module Chain: ${modules.join(' → ')}
+//! Primitive Chain: ${labelChain(modules)}
 //! Category: ${ctx.category} | CJPI: ${ctx.cjpi}
 //! Bridge Type: hybrid | Canonical Runtime: v${CANONICAL_RUNTIME_VERSION}
 //!

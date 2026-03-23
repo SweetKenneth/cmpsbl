@@ -154,7 +154,7 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
   runtime.file('standalone-runtime.ts', generateSealedRuntime());
   runtime.file('README.md', generateSealedRuntimeReadme());
 
-  // ── Sealed Chain Executor (module effects obfuscated) ──
+  // ── Sealed Chain Executor (primitive effects obfuscated) ──
   runtime.file('chain-executor.ts', generateSealedChainExecutor());
 
   // ── Playback demo / test harness ──

@@ -1,7 +1,7 @@
 /**
  * Hardware Synthesizer — Generates REAL silicon processing logic
  * for HDL targets (Verilog, VHDL, SystemVerilog, Chisel, Amaranth, SPICE)
- * based on module chain and category metadata.
+ * based on primitive chain and category metadata.
  *
  * Each module maps to a concrete hardware primitive:
  *   BRAIN    → entropy accumulator + comparator tree

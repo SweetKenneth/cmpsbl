@@ -5,6 +5,7 @@
  */
 
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import {
   estimateMarketValue,
   formatMarketValue,
@@ -102,7 +103,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Performs multi-step logical reasoning over structured and unstructured inputs. It evaluates conditions, weighs trade-offs, and produces actionable decisions with confidence scores.',
     inputsAccepted: 'Structured data objects, natural-language prompts, constraint sets, and prior decision history.',
     outputProduced: 'Ranked decision trees, confidence-weighted recommendations, and reasoning traces.',
-    behaviourDetail: 'BRAIN operates as the pipeline\'s central decision-maker. When invoked, it decomposes a problem into sub-goals, evaluates each against available evidence, and converges on a recommended action. It maintains a reasoning trace that downstream modules can audit or override.',
+    behaviourDetail: 'BRAIN operates as the pipeline\'s central decision-maker. When invoked, it decomposes a problem into sub-goals, evaluates each against available evidence, and converges on a recommended action. It maintains a reasoning trace that downstream primitives can audit or override.',
   },
   CORTEX: {
     name: 'CORTEX',
@@ -166,7 +167,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Routes data between pipeline stages, external APIs, and downstream consumers. It handles load balancing, retry logic, and protocol translation between heterogeneous systems.',
     inputsAccepted: 'Routable signals, routing tables, priority queues, and destination registries.',
     outputProduced: 'Delivered payloads with delivery receipts, routing metrics, and fallback reports.',
-    behaviourDetail: 'NEXUS is the pipeline\'s nervous system. It ensures that data reaches the right module at the right time, handles failures gracefully with retry and fallback strategies, and provides delivery guarantees across unreliable networks.',
+    behaviourDetail: 'NEXUS is the pipeline\'s nervous system. It ensures that data reaches the right primitive at the right time, handles failures gracefully with retry and fallback strategies, and provides delivery guarantees across unreliable networks.',
   },
   RIPPLE: {
     name: 'RIPPLE',
@@ -174,7 +175,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'When one part of the system changes, RIPPLE propagates that change to all dependent components. It manages cascading updates, ensures consistency, and prevents stale state.',
     inputsAccepted: 'State change events, dependency graphs, propagation rules, and update priorities.',
     outputProduced: 'Propagation confirmations, consistency reports, and cascade impact assessments.',
-    behaviourDetail: 'RIPPLE ensures that a change in one module doesn\'t leave the rest of the system out of sync. It traverses the dependency graph, updates affected components in topological order, and reports any propagation failures for manual resolution.',
+    behaviourDetail: 'RIPPLE ensures that a change in one primitive doesn\'t leave the rest of the system out of sync. It traverses the dependency graph, updates affected components in topological order, and reports any propagation failures for manual resolution.',
   },
   SYSTEM: {
     name: 'SYSTEM',
@@ -182,7 +183,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
     whatItDoes: 'Manages the pipeline\'s lifecycle — initialization, execution sequencing, health monitoring, graceful shutdown, and error recovery. It\'s the conductor that keeps all primitives working in concert.',
     inputsAccepted: 'Pipeline configuration, execution schedules, health thresholds, and recovery policies.',
     outputProduced: 'Execution status reports, health dashboards, lifecycle events, and recovery logs.',
-    behaviourDetail: 'SYSTEM is the pipeline\'s operating system. It boots modules in dependency order, monitors their health during execution, handles failures according to recovery policies, and ensures clean shutdown with state preservation.',
+    behaviourDetail: 'SYSTEM is the pipeline\'s operating system. It boots primitives in dependency order, monitors their health during execution, handles failures according to recovery policies, and ensures clean shutdown with state preservation.',
   },
 };
 
@@ -207,7 +208,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   }
   html += `</p>`;
 
-  // Per-module breakdown
+  // Per-primitive breakdown
   html += `<div style="margin-top: 1.5rem;">`;
   html += `<h3>Stage-by-Stage Breakdown</h3>`;
   caps.forEach((cap, i) => {
@@ -227,7 +228,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   if (caps.length > 1) {
     html += `<h2>How the Pipeline Executes</h2>`;
     html += `<div class="section-card">`;
-    html += `<p>When invoked, ${escapeHtml(name)} executes its modules in sequence. Each stage transforms or enriches the data before passing it to the next:</p>`;
+    html += `<p>When invoked, ${escapeHtml(name)} executes its primitives in sequence. Each stage transforms or enriches the data before passing it to the next:</p>`;
     html += `<div style="margin: 1.25rem 0;">`;
     caps.forEach((cap, i) => {
       const isLast = i === caps.length - 1;
@@ -249,7 +250,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `<h2>How to Use This Software</h2>`;
   html += `<div class="section-card">`;
   html += `<h3>Integration Pattern</h3>`;
-  html += `<p>This pipeline is distributed as a self-contained module. To integrate it into your application:</p>`;
+  html += `<p>This pipeline is distributed as a self-contained primitive. To integrate it into your application:</p>`;
   html += `<div style="background: var(--cream-warm); border: 1px solid var(--rule); border-radius: 4px; padding: 1.25rem; margin: 1rem 0; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; line-height: 1.8; white-space: pre-wrap; color: var(--ink-light);">`;
   html += `// 1. Import the pipeline\nimport { createPipeline } from './${toSlug(name)}';\n\n`;
   html += `// 2. Initialize with your configuration\nconst pipeline = createPipeline({\n`;
@@ -321,7 +322,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `</div>`;
   html += `<div class="quality-card">`;
   html += `<h3>Scalability</h3>`;
-  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple nodes. NEXUS handles cross-primitive routing and RIPPLE ensures state consistency.' : 'single-node deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
+  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple primitives. NEXUS handles cross-primitive routing and RIPPLE ensures state consistency.' : 'single-primitive deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
   html += `</div>`;
   html += `</div>`;
 
@@ -930,11 +931,11 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
       This pipeline was autonomously discovered by the Memory Stream — a recursive engine that
       monitors substrate system behavior and crystallizes viable software configurations into
       production-grade pipelines. It was not designed by a human; it emerged from the interaction
-      of ${input.systemChain.length} substrate module${input.systemChain.length !== 1 ? 's' : ''} 
+      of ${input.systemChain.length} substrate primitive${input.systemChain.length !== 1 ? 's' : ''} 
       operating in concert.
     </p>
     <div class="module-chain">
-      ${input.systemChain.map(s => `<span class="module-tag">${escapeHtml(s)}</span>`).join('\n      ')}
+      ${input.systemChain.map(s => `<span class="module-tag">${escapeHtml(labelPrimitive(s))}</span>`).join('\n      ')}
     </div>
   </div>
 

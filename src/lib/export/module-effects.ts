@@ -1,5 +1,5 @@
 /**
- * CMPSBL® Module Effect Registry — Full 40-Node Coverage
+ * CMPSBL® Primitive Effect Registry — Full 40-Primitive Coverage
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * Layer 2 + Layer 3 of the runtime playback model.
  *
