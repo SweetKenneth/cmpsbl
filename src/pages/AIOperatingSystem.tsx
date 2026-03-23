@@ -296,17 +296,17 @@ export default function AIOperatingSystem() {
           </div>
         </section>
 
-        {/* ═══════════════════ 40-NODE ARCHITECTURE ═══════════════════ */}
+        {/* ═══════════════════ 40-PRIMITIVE ARCHITECTURE ═══════════════════ */}
         <section className="py-12 sm:py-20 border-t border-border/30 bg-muted/20">
           <div className="container mx-auto max-w-5xl px-3 sm:px-4">
             <motion.div {...fadeUp()} className="mb-8 sm:mb-12">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
                 <Activity className="w-6 h-6 text-primary shrink-0" />
-                40 Modules · 12 Capability Groups
+                40 Primitives · Agents · Engines · Layers · Organs
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                The CMPSBL platform organizes 40 specialized modules across 12 capability groups. Each module holds a weight in the system matrix (Σ = 1.000),
-                managed by CORE. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
+                The CMPSBL platform organizes 40 specialized primitives across four categories: agents, engines, layers, and organs. Each holds a weight in the system matrix (Σ = 1.000),
+                managed by the CORE Organ. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
               </p>
             </motion.div>
 

@@ -98,7 +98,7 @@ export default function Insights() {
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               <Badge variant="outline" className="border-primary/20">Production</Badge>
-              <Badge variant="outline" className="border-primary/20">40 Nodes</Badge>
+              <Badge variant="outline" className="border-primary/20">40 Primitives</Badge>
               <Badge variant="outline" className="border-primary/20">Read-Only</Badge>
             </div>
           </motion.div>

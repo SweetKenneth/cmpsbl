@@ -103,7 +103,7 @@ const DEMO_SCENARIOS = [
   {
     name: 'Full Orchestration',
     sequence: ['core', 'system', 'brain', 'memory', 'dream', 'ripple', 'access', 'identity', 'relay', 'audit', 'nerve', 'decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration', 'sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest', 'evolution', 'shadow', 'phantom', 'governance', 'intent', 'immunity', 'defense'],
-    description: '40 nodes across 12 sectors — full substrate orchestration',
+    description: '40 primitives across all categories — full substrate orchestration',
     icon: Sparkles,
   },
 ];

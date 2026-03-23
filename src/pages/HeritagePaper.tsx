@@ -139,7 +139,7 @@ const HeritagePaper = () => {
               <dl className="space-y-3 text-sm text-muted-foreground">
                 <div>
                   <dt className="font-semibold text-foreground inline">What is CMPSBL? </dt>
-                  <dd className="inline">A 40-node cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.</dd>
+                  <dd className="inline">A 40-primitive cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.</dd>
                 </div>
                 <div>
                   <dt className="font-semibold text-foreground inline">Where did it come from? </dt>

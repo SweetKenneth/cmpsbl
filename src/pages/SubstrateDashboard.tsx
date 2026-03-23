@@ -841,7 +841,7 @@ export default function SubstrateDashboard() {
                   </code>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-2 text-sm md:text-base">40-Node Architecture ({allModules.length} modules)</h3>
+                  <h3 className="font-semibold mb-2 text-sm md:text-base">40-Primitive Architecture ({allModules.length} primitives)</h3>
                   <pre className="bg-muted/30 p-3 md:p-4 rounded-lg text-xs md:text-sm overflow-x-auto">
 {`{
   "module": "core" | "ripple" | "access" |       // Kernel
