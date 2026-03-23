@@ -3291,7 +3291,7 @@ ${status.blocking_reasons.length > 0 ? `║  Blockers: ${status.blocking_reasons
 ├──────────────────────────────────────────────────────────────`;
 
         for (const s of synergies.slice(0, 25)) {
-          const mods = s.modules.slice(0, 3).map(m => m.name).join('+');
+          const mods = s.modules.slice(0, 3).map(m => labelPrimitive(m.name)).join('+');
           output += `
 │  ${s.id.padEnd(30)} ${s.category.padEnd(14)} ${mods}`;
         }
