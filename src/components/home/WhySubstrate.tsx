@@ -28,7 +28,7 @@ const primitives = [
   {
     icon: Brain,
     title: "Persistent Memory",
-    node: "BRAIN Engine",
+    node: "BRAIN Organ",
     description: "Four-tier cognitive memory (hot/warm/cold/glacier) that survives sessions. Your AI never forgets.",
     highlight: "Never Forgets",
     stat: "∞",

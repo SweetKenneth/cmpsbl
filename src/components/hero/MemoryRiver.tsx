@@ -543,7 +543,7 @@ export const MemoryRiver = memo(function MemoryRiver({
           transition={{ delay: 1.2 }}
         >
           {([
-            { type: "memory" as ParticleType, label: "MEMORY Engine" },
+            { type: "memory" as ParticleType, label: "MEMORY Organ" },
             { type: "dream" as ParticleType, label: "DREAM Engine" },
             { type: "defense" as ParticleType, label: "DEFENSE Layer" },
             { type: "crystallized" as ParticleType, label: "Crystallized" },
