@@ -314,7 +314,7 @@ export default function Status() {
           </CardContent>
         </Card>
 
-        {/* Modules by Layer */}
+        {/* Primitives by Layer */}
         <div className="space-y-6">
           {layerOrder.map((layer) => {
             const layerModules = groupedByLayer[layer];

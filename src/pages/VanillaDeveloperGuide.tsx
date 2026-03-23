@@ -552,7 +552,7 @@ const usage = await substrate.keys.usage('openai', 30);`} />
               Request & Response Format
             </h2>
             <p className="text-muted-foreground text-center max-w-xl mx-auto mb-10">
-              If you prefer raw HTTP over the SDK, every module is accessible via a single POST endpoint.
+              If you prefer raw HTTP over the SDK, every primitive is accessible via a single POST endpoint.
             </p>
           </motion.div>
 
