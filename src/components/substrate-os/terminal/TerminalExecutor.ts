@@ -333,7 +333,7 @@ function formatSystemStatus(data: any): string {
 ╠══════════════════════════════════════════════════════════════╣
 ║  Overall:   ${overall === 'operational' ? '🟢 OPERATIONAL' : overall === 'degraded' ? '🟡 DEGRADED' : '🔴 DOWN'}                                     ║
 ║  Uptime:    ${String(uptime).padEnd(20)}                          ║
-║  Nodes:     40/40 (12 sectors — CORE·SYSTEM·CCR·OCG·Exec·ESZ·EPZ·EMZ·CSZ·Fields·Plane·Shell) ║
+║  Primitives: 40/40 (Agents·Engines·Layers·Organs)                            ║
 ╠══════════════════════════════════════════════════════════════╣`;
 
   const layers = ['Kernel', 'System', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Field', 'Plane', 'Shell'];
