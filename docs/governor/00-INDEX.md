@@ -1,7 +1,7 @@
 # CMPSBL® Governor Documentation Library
 
 **Classification:** 🔒 GOVERNOR EYES ONLY  
-**Version:** v14.1.0 — MINDGAMES Epoch
+**Version:** v15.1.8 — CONTACT Epoch
 
 ---
 
@@ -27,7 +27,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 10 | [Emergency Procedures](10-emergency-procedures.md) | P0–P3 response, cascade arrest, credential compromise, full recovery |
 | 11 | [Defensible Valuation](11-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium, positioning |
 | 12 | [CLI, Terminal & Access Control](12-cli-terminal-access-control.md) | Full command map (~600 terminal + 66 CLI), 5-tier permissions, rate limits, NPM ecosystem |
-| 13 | [Primary Memory Chains](13-primary-memory-chains.md) | 50 multi-node reaction chains across 7 categories, execution model, governance controls |
+| 13 | [Primary Memory Chains](13-primary-memory-chains.md) | 75 multi-node reaction chains across 8 categories, guard layer, discovery-derived intelligence |
 
 ---
 

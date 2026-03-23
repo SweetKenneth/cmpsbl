@@ -1,8 +1,8 @@
 # CMPSBL® Primary Memory Chains Registry
 
 **Classification:** 🔒 GOVERNOR EYES ONLY  
-**Version:** v14.1.0 — MINDGAMES Epoch  
-**Total Chains:** 50
+**Version:** v15.1.8 — CONTACT Epoch  
+**Total Chains:** 75
 
 ---
 
@@ -15,6 +15,7 @@ Each chain is:
 - **Tracked** — success rate, avg duration, EMA confidence scoring
 - **Governed** — GOVERNANCE can pause or override any chain
 - **Audited** — every execution logged with tamper-evident receipts
+- **Guarded** — Node Lock Guard prevents conflicting actions; Cascade Tracker prevents runaway reactions
 
 ---
 
@@ -117,6 +118,40 @@ Each chain is:
 
 ---
 
+## Category 8 — Discovery-Derived (Chains 51–75)
+
+*Learned from vault_promotions (CJPI 100) and pipeline_vault (CJPI 92–98)*
+
+| # | Chain ID | Name | Flow | Priority | Source Discovery |
+|---|----------|------|------|----------|-----------------|
+| 51 | `HYBRID_OBSERVATION` | Hybrid Observation Sweep | BRAIN → VISION → NERVE → ANALYTICS | Normal | Hybrid Dashboarder, Elastic Explainer |
+| 52 | `AUTONOMOUS_SCAN` | Autonomous Security Scan | NERVE → GOVERNANCE → ACCESS → NEXUS | High | Autonomous Scanner |
+| 53 | `FEDERATED_RECALL` | Federated Memory Recall | DECODE → BRAIN → MEMORY → NEXUS | Normal | Federated Abstractor |
+| 54 | `PREDICTIVE_SEQUENCING` | Predictive Pipeline Sequencing | SYSTEM → NERVE → CORTEX → NEXUS | High | Predictive Sequencer |
+| 55 | `SOVEREIGN_LOCKDOWN` | Sovereign Lockdown Protocol | SOVEREIGN → GOVERNANCE → ACCESS → IDENTITY | Critical | Bayesian Vault, Latent Mask |
+| 56 | `CAUSAL_SYNTHESIS` | Causal Knowledge Synthesis | FORGE → BRAIN → DREAM → CORTEX | Normal | Causal Fabricator/Constructor |
+| 57 | `ELASTIC_CORRECTION` | Elastic Learning Correction | ECHO → BRAIN → MEMORY → CORTEX | Normal | Elastic Corrector |
+| 58 | `ADVERSARIAL_EVOLUTION` | Adversarial Evolution Probe | CORTEX → DREAM → ANALYTICS → HARVEST | Normal | Adversarial Navigator |
+| 59 | `COMPOSITIONAL_FIREWALL` | Compositional Firewall Activation | DEFENSE → AUDIT → GOVERNANCE → PHANTOM | Critical | Compositional Firewall |
+| 60 | `PROBABILISTIC_VALIDATION` | Probabilistic Compliance Validation | CONSCIENCE → BRAIN → AUDIT → GOVERNANCE | High | Probabilistic Validator |
+| 61 | `SPECTRAL_ROUTING` | Spectral Route Optimization | GOVERNANCE → ANALYTICS → CORTEX → NEXUS | Normal | Spectral Scheduler |
+| 62 | `CONTEXT_AWARE_SIMULATION` | Context-Aware Threat Simulation | VISION → PHANTOM → SOVEREIGN → CORTEX | High | Context-Aware Sandbox |
+| 63 | `ADAPTIVE_BRIDGE` | Adaptive Integration Bridge | INTEGRATION → LINGUA → TREATY → BRAIN | Normal | Adaptive Bridge |
+| 64 | `BAYESIAN_DETECTION` | Bayesian Anomaly Detection | VISION → BRAIN → CORTEX → NERVE | High | Bayesian Detector (CJPI 96) |
+| 65 | `DYNAMIC_EDGE_RESPONSE` | Dynamic Edge Response | REFLEX → NERVE → CORTEX → ANALYTICS | High | Dynamic Processor |
+| 66 | `DISTRIBUTED_TUNING` | Distributed Parameter Tuning | BRAIN → ECHO → MEMORY → EVOLUTION | Normal | Distributed Tuner |
+| 67 | `TEMPORAL_ACQUISITION` | Temporal Data Acquisition | HARVEST → VISION → ANALYTICS → INTEGRATION | Normal | Temporal Collector |
+| 68 | `LATENT_PRIVACY_MASK` | Latent Privacy Mask Activation | IDENTITY → SOVEREIGN → DEFENSE → ACCESS | Critical | Latent Mask, Federated Guardian |
+| 69 | `CAUSAL_LOCALIZATION` | Causal Localization Pipeline | COMPASS → LINGUA → DECODE → BRAIN | Normal | Causal Transformer |
+| 70 | `PROACTIVE_CRAFT` | Proactive Accessibility Craft | DREAM → CORTEX → MEMORY → INCLUSIVE | Normal | Proactive Crafter |
+| 71 | `MULTI_MODAL_ENFORCEMENT` | Multi-Modal Contract Enforcement | TREATY → AUDIT → ACCESS → SOVEREIGN | High | Multi-Modal Enforcer |
+| 72 | `SPECTRAL_CARTOGRAPHY` | Spectral Capability Cartography | COMPASS → FORGE → ORACLE → BRAIN | Normal | Spectral Cartographer |
+| 73 | `AUTONOMOUS_REPLICATION` | Autonomous Simulation Replication | REFLEX → VISION → ORACLE → ECHO | Normal | Autonomous Replicator |
+| 74 | `EMERGENT_ORCHESTRATION` | Emergent Pipeline Orchestration | EVOLUTION → CORTEX → NERVE → NEXUS | High | Emergent Orchestrator |
+| 75 | `RECURSIVE_STEWARDSHIP` | Recursive Data Stewardship | AUDIT → MEMORY → SOVEREIGN → ACCESS | Normal | Recursive Steward |
+
+---
+
 ## Chain Execution Model
 
 ```
@@ -126,17 +161,29 @@ Trigger Signal (from source node)
       ↓
   Cooldown Gate (prevent re-fire)
       ↓
+  Node Lock Guard (prevent conflicting actions)
+      ↓
+  Cascade Depth Check (max depth: 3)
+      ↓
   Stage 1 → transform → Stage 2 → transform → Stage N
+      ↓
+  Cascade Relationship Record
       ↓
   Metrics Update (EMA success rate, duration, confidence)
       ↓
   Audit Receipt (tamper-evident log)
 ```
 
+### Guard Layer
+
+- **Node Lock Guard** — Per-node TTL locks (8s) prevent simultaneous conflicting actions. Higher-priority safety constraint than cooldowns.
+- **Cascade Tracker** — Records chainA → chainB temporal relationships. Blocks execution at depth > 3.
+- **Activity Telemetry** — `getChainActivitySummary()` surfaces hot, slow, and failing chains.
+
 ### Governance Controls
 
 - Any chain with `governanceOverridable: true` can be paused or redirected by the GOVERNANCE node at runtime.
-- Chains with `governanceOverridable: false` (e.g., DATA_BREACH) execute unconditionally — they represent non-negotiable safety responses.
+- Chains with `governanceOverridable: false` (e.g., DATA_BREACH, COMPOSITIONAL_FIREWALL, SOVEREIGN_LOCKDOWN) execute unconditionally — they represent non-negotiable safety responses.
 
 ---
 
@@ -155,7 +202,10 @@ Trigger Signal (from source node)
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-23 | SYSTEM | Initial registry — 50 primary chains across 7 categories |
+| 2026-03-23 | SYSTEM | v15.1.8 — 25 discovery-derived chains added (51–75), guard layer documented |
+| 2026-03-23 | SYSTEM | v15.1.7 — Chain Orchestrator Guard Layer added |
+| 2026-03-23 | SYSTEM | v15.1.6 — Expanded to 50 chains across 7 categories |
+| 2026-03-23 | SYSTEM | v15.1.5 — Initial registry — 8 primary chains |
 
 ---
 

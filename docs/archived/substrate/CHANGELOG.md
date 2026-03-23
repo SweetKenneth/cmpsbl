@@ -4,7 +4,159 @@
 
 ---
 
-## 2026-03-22 · v15.0.0 (CONTACT Epoch — NPM Distribution & Developer Touchpoints)
+## 2026-03-23 · v15.1.8 (CONTACT — Discovery-Taught Chain Intelligence)
+
+⟨This entry describes the culmination of the v15.1.x series: NERVE now operates 75 Primary Memory Chains, 25 of which were autonomously derived from the discovery engine's highest-scoring vault promotions and pipeline memories.⟩
+
+### Discovery-Derived Chain Learning
+
+- **Vault Scan** — Top 50 vault_promotions (CJPI 100) and top 12 pipeline_vault memories (CJPI 92–98) were analyzed for recurring multi-node coordination patterns.
+- **25 New Chains (51–75)** — Synthesized from real discovery data: Hybrid Observation, Autonomous Scan, Federated Recall, Predictive Sequencing, Sovereign Lockdown, Causal Synthesis, Elastic Correction, Adversarial Evolution, Compositional Firewall, Probabilistic Validation, Spectral Routing, Context-Aware Simulation, Adaptive Bridge, Bayesian Detection, Dynamic Edge Response, Distributed Tuning, Temporal Acquisition, Latent Privacy Mask, Causal Localization, Proactive Craft, Multi-Modal Enforcement, Spectral Cartography, Autonomous Replication, Emergent Orchestration, Recursive Stewardship.
+- **Source Lineage** — Every chain traces to specific vault discoveries (e.g., BAYESIAN_DETECTION from "Bayesian Detector" CJPI 96, COMPOSITIONAL_FIREWALL from "Compositional Firewall" CJPI 100).
+
+### Governor Documentation
+
+- **Document 13** — Primary Memory Chains registry updated to 75 chains across 8 categories (.md + printable .html).
+
+---
+
+## 2026-03-23 · v15.1.7 (CONTACT — Chain Orchestrator Guard Layer)
+
+⟨This entry describes the three-layer safety and observability wrapper around Primary Memory Chain execution.⟩
+
+### Chain Orchestrator Guard Layer
+
+- **Node Lock Guard** — Per-node TTL locks (8s default) prevent conflicting actions (double quarantine, competing reroutes). Higher priority than cooldowns.
+- **Cascade Relationship Tracker** — Records chainA → chainB temporal relationships within 5s window. Blocks execution when cascade depth exceeds 3 to prevent runaway chain reactions.
+- **Activity Telemetry** — Per-chain counters (executions, successes, failures, deferrals), EMA-weighted avgDuration, success ratio. `getChainActivitySummary()` surfaces hot, slow, and failing chains.
+- **Guarded Wrappers** — `guardedEvaluateTriggers()` and `guardedExecuteChain()` wrap raw functions with all three guards. Non-blocking: defer or skip, never crash.
+
+---
+
+## 2026-03-23 · v15.1.6 (CONTACT — 50 Primary Memory Chains Expanded)
+
+⟨This entry describes the expansion of the Primary Memory Chain registry from 8 to 50 chains.⟩
+
+### Primary Memory Chain Expansion
+
+- **42 New Chains** — Added chains 9–50 across 6 additional categories: Security & Defense (8), Intelligence & Learning (8), Operations & Infrastructure (8), Governance & Compliance (6), Data & Processing (6), Advanced Autonomous (6).
+- **Category Coverage** — Security chains cover identity theft, privilege escalation, session hijack, brute force, insider threat, zero-day, DDoS, exfiltration. Intelligence chains cover pattern recognition, anomaly learning, knowledge synthesis, predictive alerting.
+
+---
+
+## 2026-03-23 · v15.1.5 (CONTACT — Primary Memory Chain Registry)
+
+⟨This entry describes the initial Primary Memory Chain system — 8 core reaction chains enabling multi-node coordination.⟩
+
+### Primary Memory Chains
+
+- **Chain Orchestration Primitive** — Declarative, multi-node reaction workflows that fire automatically when trigger conditions are met. Each chain defines stages, payload transforms, cooldowns, and priority levels.
+- **8 Core Chains** — THREAT_RESPONSE, SELF_HEAL, DATA_BREACH, CASCADE_CONTAINMENT, COMPLIANCE_ALERT, PERFORMANCE_DEGRADE, MEMORY_PRESSURE, DISCOVERY_VALIDATION.
+- **Execution Engine** — Sequential stage execution with per-stage timeouts, optional stages, and EMA-weighted success/duration metrics.
+- **Governance Controls** — Chains can be paused, resumed, or disabled. Non-overridable chains (e.g., DATA_BREACH) execute unconditionally.
+
+---
+
+## 2026-03-23 · v15.1.4 (CONTACT — AUDIT Ultimate "Sentinel Ledger")
+
+⟨This entry describes AUDIT v9.0.0 — the substrate's tamper-evident, cryptographic audit infrastructure.⟩
+
+### AUDIT Ultimate
+
+- **Merkle Audit Chain** — SHA-256 hash chain producing tamper-evident receipts with prev_hash linking.
+- **Compliance Policy Engine** — Declarative compliance rules with automated violation detection and severity scoring.
+- **Forensic Timeline Reconstructor** — Reassembles entity activity across time for incident response.
+- **Anomaly Detection** — Statistical scoring for frequency, velocity, timing, and pattern anomalies.
+- **Retention Policy Manager** — Configurable retention tiers (hot/warm/cold/archive) with automated lifecycle transitions.
+- **Integrity Verifier** — Full chain verification with gap detection and tampering alerts.
+
+---
+
+## 2026-03-23 · v15.1.3 (CONTACT — NERVE Ultimate "Synapse Prime")
+
+⟨This entry describes NERVE v9.0.0 — the substrate's advanced signaling, forensics, and resilience layer.⟩
+
+### NERVE Ultimate (11 Capabilities)
+
+- **Signal Replay Journal** — Append-only forensic signal history with replay and filtering.
+- **Adaptive Backpressure Calibrator** — EMA-tuned per-node pressure thresholds.
+- **Predictive Circuit Breaker** — Z-score trend analysis for pre-emptive tripping.
+- **Signal Correlation Engine** — Causal chain reconstruction (request → response → side-effect).
+- **Per-Edge Latency Tracker** — Individual edge monitoring with degradation alerts.
+- **Dead Letter Queue** — Failed signal capture with exponential backoff retry.
+- **Dynamic Priority Rebalancer** — Load-adaptive priority adjustment.
+- **Heartbeat Fingerprinter** — Zombie and degraded node detection.
+- **Cascade Failure Detector** — Propagating failure identification across topology.
+- **Nerve Telemetry Nexus** — Unified MTTR/throughput/efficiency metrics.
+
+---
+
+## 2026-03-23 · v15.1.2 (CONTACT — MEDIC & ENGINEER Ultimate)
+
+⟨This entry describes MEDIC v9.0.0 "Regenerator" and ENGINEER v9.0.0 "Mechanist" — the substrate's self-healing and maintenance layers.⟩
+
+### MEDIC Ultimate "Regenerator"
+
+- **Predictive Diagnostics** — Multi-symptom overlap scoring with confidence tracking.
+- **Repair Strategy Optimizer** — EMA-weighted success rate evaluation for repair selection.
+- **Tissue Regeneration Engine** — Deep repair with healing protocols and progress tracking.
+- **Triage Queue** — Priority-sorted patient queue (RED/YELLOW/GREEN/BLUE triage codes).
+- **Post-Mortem Analyzer** — Root cause analysis with timeline reconstruction.
+
+### ENGINEER Ultimate "Mechanist"
+
+- **Maintenance Window Scheduler** — Priority-sorted maintenance with cooldown and conflict detection.
+- **Capacity Planner** — Resource budget forecasting with runway estimation.
+- **Dependency Graph Analyzer** — Impact analysis for change propagation assessment.
+- **Hot-Swap Module Manager** — Live module replacement with rollback capability.
+- **Performance Benchmark Suite** — Automated benchmarking with historical comparison.
+
+---
+
+## 2026-03-23 · v15.1.1 (CONTACT — EVOLUTION & SYSTEM Ultimate)
+
+⟨This entry describes EVOLUTION v9.0.0 "Phoenix Prime" and SYSTEM v9.0.0 "Sentinel" — the substrate's evolution and core infrastructure.⟩
+
+### EVOLUTION Ultimate "Phoenix Prime"
+
+- **Mutation Pipeline** — 5-stage mutation lifecycle (proposed → validated → shadow → canary → promoted).
+- **Rollback Orchestrator** — Deterministic state rollback with snapshot management.
+- **Fitness Landscape Tracker** — Multi-dimensional fitness scoring with EMA trends.
+- **Lineage Graph** — Full evolutionary ancestry tracking.
+- **Shadow Environment Manager** — Isolated test environments for mutation validation.
+
+### SYSTEM Ultimate "Sentinel"
+
+- **Predictive Failure Engine** — Symptom overlap scoring for failure prediction.
+- **Repair Strategy Optimizer** — EMA-weighted repair approach selection.
+- **Configuration State Machine** — Deterministic state transitions with rollback.
+- **Lifecycle Orchestrator** — 40-node lifecycle management with transition validation.
+- **Merkle Audit Chain Verifier** — Integrity verification for system state.
+- **Resource Budget Manager** — CPU/Memory enforcement with graceful degradation (L0–L4).
+
+---
+
+## 2026-03-23 · v15.1.0 (CONTACT — CORTEX & NEXUS Ultimate)
+
+⟨This entry describes CORTEX v9.0.0 and NEXUS v9.0.0 — the substrate's orchestration and routing intelligence reaching their ultimate form.⟩
+
+### CORTEX Ultimate
+
+- **Pipeline DAG Scheduler** — Directed acyclic graph execution with topological sorting and parallel stage execution.
+- **Load Balancer** — Weighted round-robin with health-aware routing.
+- **Orchestration Replay Journal** — Complete execution replay for debugging and forensics.
+- **Resource Quota Manager** — Per-node budget enforcement with soft/hard limits.
+- **Pipeline Template Registry** — Reusable pipeline templates with parameterization.
+
+### NEXUS Ultimate
+
+- **Semantic Intent Classifier** — Multi-strategy intent classification with keyword, pattern, and context matching.
+- **Provider Affinity Engine** — Learning-based provider selection with EMA success tracking.
+- **Routing Policy Engine** — Configurable routing rules with priority, filtering, and transformation.
+- **Circuit Breaker Mesh** — Per-provider circuit breakers with half-open recovery.
+- **Request Deduplication** — Content-hash deduplication with configurable TTL windows.
+
+---
 
 ⟨This entry describes the epoch transition from MINDGAMES to CONTACT, the creation of 11 @cmpsbl NPM packages across four tiers, the unified First Contact System, and the substrate's first programmatic distribution channel.⟩
 

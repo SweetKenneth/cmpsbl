@@ -1,530 +1,104 @@
-# promptfluid® Substrate Changelog
+# CMPSBL® Substrate Public Changelog
 
-> ⟨Entries on this page are recorded in the Decode interpreter's epistemic voice. They describe observed behavior of the substrate, not guarantees. No imperatives, no identity claims, no agency assertions.⟩
-
----
-
-## 2026-01-30 · v6.3.1 (FNDTN Patch 0.7.9)
-
-⟨This entry describes the scan intelligence fix and mobile-first terminal rendering.⟩
-
-### Modernizer (Patch 0.7.9)
-
-- **Scan Always Produces Plans** — `modernizer.scan` now ALWAYS returns a valid, inspectable plan object. Blocked plans have `status='blocked'` with explicit blockers array. No more `INTERNAL_ERROR - invalid input` failures.
-- **3-Source Synthesis** — Scan integrates archived edge function analysis, system state inspection, and LLM improvement synthesis into a unified proposal pipeline.
-- **Mobile-First Terminal Rendering** — Terminal output auto-detects viewport (compact/standard/full). Words never break mid-token. UUIDs, timestamps, and command names are atomic units.
-- **Plan Status Model** — Plans now have explicit status: `ready`, `blocked`, or `pending_review`. Blocked plans are still created and can be inspected via `modernizer.plans`.
+> What's new in the substrate. Updated with every release.
 
 ---
 
-## 2026-01-29 · v6.3.1 (FNDTN Patch 0.7.8 Hotfix)
+## v15.1.8 — 2026-03-23
 
-⟨This entry describes the UUID schema fix for plan creation.⟩
+**Discovery-Taught Chain Intelligence**
 
-### Modernizer (Patch 0.7.8 Hotfix)
-
-- **UUID Schema Fix** — `plan_id` and `action_id` now use `crypto.randomUUID()` for database compatibility.
-
----
-
-## 2026-01-29 · v6.3.1 (FNDTN Patch 0.7.8)
-
-⟨This entry describes the Scan → Plan Normalization Layer hardening patch.⟩
-
-### Modernizer (Patch 0.7.8)
-
-- **Proposal Normalization Layer** — Deterministic transformation of raw scan proposals into typed, executable actions. Only normalized actions can become evolution plans.
-- **Strict Plan Creation Contract** — Plan constructor accepts ONLY normalized proposals. Explicit rejection codes: `INVALID_ACTION_TYPE`, `MISSING_SCOPE`, `CONFIDENCE_TOO_LOW`, `UNSUPPORTED_RISK_LEVEL`.
-- **Terminal Truthfulness** — Updated messaging: "✅ PLAN READY — N actions normalized" or "⚠️ PLAN BLOCKED — proposals could not be normalized".
-- **Evolve Safety Guarantee** — `modernizer.evolve` refuses any plan not marked `normalized=true`. Rejection logged with receipt entry.
-- **Normalization Rules** — Every proposal must resolve to: `action_type` (enum), `target_scope` (module|system|edge|api), `risk_level` (low|medium only), `confidence_score` (0–1).
-- **No Silent Failures** — If normalization fails, NO plan is created. System remains healthy. Scan results preserved for review.
-
-### Terminal
-
-- **`--dry-run` Flag** — Runs normalization but does NOT create a plan.
-- **`--llm-report` Flag** — Shows LLM reasoning only, NOT executable intent.
-- **Rejection Details** — `--explain` flag now shows rejected proposals with rejection codes.
-
-### Tests
-
-- **Normalization Test Suite** — Coverage for: proposals → normalization succeeds → plan created; proposals → normalization fails → plan blocked; LLM output only → no executable plan; mixed proposals → partial normalization; evolve rejects unnormalized plans.
-
-### Documentation
-
-- **MODERNIZER Module Doc** — Updated for normalization layer: "Scan produces proposals, not plans" and "Evolve consumes normalized plans only".
-- **New Section** — "Why some scans do not produce plans".
+- 🧠 NERVE now operates **75 Primary Memory Chains** — 25 new chains were autonomously derived from the discovery engine's highest-scoring vault memories (CJPI 100) and pipeline discoveries (CJPI 92–98).
+- 📋 New chain categories include Bayesian Detection, Sovereign Lockdown, Compositional Firewall, Causal Synthesis, Adaptive Bridge, Emergent Orchestration, and 19 more.
+- 📄 Governor documentation updated to reflect full 75-chain registry.
 
 ---
 
-## 2026-01-29 · v6.3.0 (FNDTN Patch 0.7.7)
+## v15.1.7 — 2026-03-23
 
-⟨This entry describes the Modernizer cognitive scan pipeline upgrade, LLM-governed reasoning, and production hardening.⟩
+**Chain Orchestrator Guard Layer**
 
-### Modernizer (Patch 0.7.7)
-
-- **Cognitive 4-Phase Scan Pipeline** — Parallel architecture: Phase A (Edge Function Introspection), Phase B (System State Scan), Phase C (Code Health Snapshot), Phase D (LLM-Governed Reasoning via Nexus).
-- **LLM-Governed Reasoning** — L7 Systems Engineer pass through `pf-nexus-router` for architectural analysis. Strict prompt contract prevents hallucinated fixes.
-- **Real Plan Generation** — Proposals become plan items only if supported by ≥2 data sources (telemetry + reasoning), confidence ≥80%, and circuit=closed.
-- **Evolution Lifecycle** — Six-stage workflow: Scan → Planning → Shadow Applied → Production Applied → Verified (or Aborted/Failed).
-- **Circuit Breaker** — `modernizer.circuit status|reset|open <reason>` for evolution safety.
-- **Governed Autonomy** — `modernizer.autonomy set <off|advisory|governed>` for autonomy control.
-- **Audit Trail** — `modernizer.receipts` and `modernizer.receipt <run_id>` for immutable evolution receipts.
-
-### Terminal
-
-- **Updated Commands** — `modernizer.scan --explain`, `modernizer.scan --llm-report`, `modernizer.scan --dry-run`.
-- **Nexus Routing** — All LLM reasoning routes through `pf-nexus-router` (no external AI gateway).
-- **Full Command Parity** — Terminal and API return identical 200 OK responses.
-
-### Documentation
-
-- **All Library Docs** — Updated to v6.3.0 headers/footers.
-- **MODERNIZER Deep Dive** — Rewritten for Patch 0.7.7 cognitive scan pipeline.
-- **Evolution Lifecycle Docs** — New detailed phase diagrams.
+- 🔒 **Node Lock Guard** — Prevents conflicting actions on the same node (e.g., double quarantine). Short-TTL locks with automatic expiration.
+- 🔗 **Cascade Relationship Tracker** — Detects and blocks runaway chain reactions (depth limit: 3). Records chain→chain temporal relationships for analysis.
+- 📊 **Activity Telemetry** — Per-chain execution tracking with hot/slow/failing chain detection via `getChainActivitySummary()`.
 
 ---
 
-## 2026-01-29 · v6.2.0 (Intelligence Compression Phase 3)
+## v15.1.6 — 2026-03-23
 
-⟨This entry describes the Reasoning Engine and Governance Guard compression.⟩
+**50 Primary Memory Chains**
 
-### BRAIN Cognitive Compression
-
-- **Reasoning Engine** (`brain.reasoning_engine`) — Unifies `causal`, `systems_reason`, and `hypothesis_test` into 5-stage lifecycle: causal_mapping → dependency_analysis → hypothesis_generation → hypothesis_validation → impact_projection.
-- **Governance Guard** (`brain.governance_guard`) — Merges `ethical` and `coherence_check` into 3-stage lifecycle: coherence_validation → ethical_constraint_check → governance_signal_emission.
-- **Backward Compatibility** — Legacy command aliases preserved in SubstrateClient.
-
-### Architecture
-
-- **Engine Bus Routing** — Phase 4A telemetry and state contracts for engine orchestration.
-- **14-Module Canonical Model** — All modules verified operational with 260+ commands.
+- ⚡ Expanded from 8 to **50 chains** across 7 categories: Core Response, Security & Defense, Intelligence & Learning, Operations & Infrastructure, Governance & Compliance, Data & Processing, and Advanced Autonomous.
+- 🛡️ Security chains cover identity theft, privilege escalation, session hijack, brute force, insider threat, zero-day response, DDoS mitigation, and data exfiltration blocking.
 
 ---
 
-## 2026-01-28 · v6.1.0 (Intelligence Compression Phase 2)
+## v15.1.5 — 2026-03-23
 
-⟨This entry describes the Learning Engine and Imagination Engine unification.⟩
+**Primary Memory Chain Registry**
 
-### BRAIN Cognitive Compression
-
-- **Learning Engine** (`brain.learning_engine`) — Consolidates `training`, `optimization`, and `reinforcement` into 5-stage loop: input → feedback → adjustment → reinforcement → stabilization.
-- **Imagination Engine** (`brain.imagination_engine`) — Merges `dreaming`, `synthesis`, and `pattern_fusion` into 4-stage generative lifecycle: latent_extraction → recombination → simulation → synthesis.
-- **Backward Compatibility** — All legacy cognitive commands resolve to new engines via SubstrateClient aliases.
-
-### Architecture
-
-- **Memory Core Unification** — Phase 1 memory consolidation complete.
-- **Terminal Synchronization** — Terminal commands aligned with engine architecture.
+- 🧬 Introduced **Primary Memory Chains** — multi-node reaction workflows that fire automatically when trigger conditions are met.
+- 🔄 8 core chains: Threat Response, Self-Heal, Data Breach, Cascade Containment, Compliance Alert, Performance Degradation, Memory Pressure, Discovery Validation.
+- 📐 Declarative chain definitions with staged execution, payload transforms, cooldowns, and governance overrides.
 
 ---
 
-## 2026-01-28 · v6.0.0 (FNDTN)
+## v15.1.4 — 2026-03-23
 
-⟨This entry describes the canonical v6.0.0 release establishing the 14-module architecture, FNDTN standards package, and Human Compatibility Era.⟩
+**AUDIT Ultimate — "Sentinel Ledger"**
 
-### Architecture
-
-- **Zone Architecture** — CORE kernel + 8 public modules + INTEGRATION (boots last), wrapped by 5 mesh overlays (DEFENSE outermost → GOVERNANCE innermost), with 9 hot-swappable zones across CCR (4) and CCL (5).
-- **INCLUSIVE Module** — First-class human compatibility pipeline with WCAG 2.2 scanning, auto-repair, validation, and accessibility profiles.
-- **CORTEX Module** — Agency-class orchestrator operating in manual mode (no auto-apply without human approval).
-- **360+ Terminal Commands** — Full command registry across all modules and zones.
-
-### BRAIN Cognitive Skills
-
-- **20+ Specialized Actions** — pattern_fusion, systems_reason, causal, ethical, lesson_compress, deep_think, reflexive_plan, context_recall, mood_analysis, relationship_map integrated from archived logic.
-- **Aggressive Tiering Controls** — Hot tier (500 max), Warm (2,000 max), Cold (10,000 max) with automated pruning.
-
-### Experimentation Lab
-
-- **5 Live Demos** at `/lab` — Persistent Chatbot (context), Dream Processor (mood), Knowledge Graph (relationships), Sentiment Analysis (emotions), Adaptive Learning (mastery).
-- **Full Template Code Preview** — Transparency for marketplace conversion.
-
-### Standards & Documentation
-
-- **FNDTN v6 Foundations Paper** — Three-surface standard stack: CMPSBL FNDTN v6 (substrate), AIGVRN (governance), LLMS.txt (machine context).
-- **Documentation Library** — 26 documents updated to v6.0.0 in `/docs/library/`.
-- **Substrate Capabilities SDK** — New `/docs/substrate/capabilities` page with code examples.
-
-### Marketplace
-
-- **109+ Templates** — Production-ready patterns with enchanted naming and rarity badges.
-- **AI Template Generator** — $87 feature generating from 82,944+ combinations.
-- **Tiered Infrastructure Licensing** — Developer ($15k), Research ($80k), Enterprise ($180k), Strategic (custom).
-
-### Website
-
-- **Standards Section** — `/foundations`, `/namespace`, `/llmstxt` pages with download surfaces.
-- **Substrate Capabilities** — Expandable cards on Marketplace showing 48+ features built into every template.
+- 🔐 Merkle audit chain with SHA-256 hash linking for tamper-evident receipts.
+- 📜 Compliance policy engine with automated violation detection.
+- 🔍 Forensic timeline reconstructor for incident response.
+- 📈 Statistical anomaly detection for frequency, velocity, and timing.
+- 🗂️ Retention policy manager with automated lifecycle transitions.
 
 ---
 
-## 2026-01-24 · v4.2.0
+## v15.1.3 — 2026-03-23
 
-⟨This entry describes the addition of the 12th module: Integration, providing enterprise adapters, auto-discovery, and LLM governance.⟩
+**NERVE Ultimate — "Synapse Prime"**
 
-### Integration (New Module)
-
-- **35+ Enterprise Adapters** deployed across categories: ERP (SAP, Oracle, NetSuite, Dynamics), Payroll (ADP, Gusto, Workday, BambooHR), Gaming (Unity, Unreal, Godot), CRM (Salesforce, Zendesk, Intercom), DevOps (GitHub, GitLab, Jira, Linear), Payments (Stripe, Shopify, Square).
-- **Auto-Discovery** (`integration.discover`) scans connected systems to find available API endpoints automatically.
-- **Command Mapping** (`integration.map_command`) creates terminal shortcuts for enterprise operations.
-- **LLM Governance** controls what AI agents can do with connected systems (read-only, supervised, automated policies).
-- **Full Audit Trail** logs every action through connected adapters.
-
-### Architecture
-
-- Total modules: **12** (added Integration to Operational layer)
-- Total deployed actions: **96+** (previously 84)
-- `pf-substrate` orchestrator updated to route Integration module requests.
-
-### Website & Documentation
-
-- All marketing pages updated to reflect 12 modules.
-- New deep-dive documentation: `docs/os/21-INTEGRATION-DEEP-DIVE.md`
-- MODULE-ACTIONS-REGISTRY.md updated with Integration actions.
-- USER-MANUAL.md updated with Integration module section.
-
-### SDK
-
-- `substrate.integration.adapters()` — List available adapters
-- `substrate.integration.connect()` — Connect enterprise adapter
-- `substrate.integration.discover()` — Auto-discover endpoints
-- `substrate.integration.execute()` — Execute governed action
+- 📡 11 new capabilities: Signal Replay Journal, Adaptive Backpressure, Predictive Circuit Breaker, Signal Correlation Engine, Per-Edge Latency Tracker, Dead Letter Queue, Dynamic Priority Rebalancer, Heartbeat Fingerprinter, Cascade Failure Detector, Nerve Telemetry Nexus.
+- 🧠 Causal chain reconstruction and Z-score trend analysis for pre-emptive failure prevention.
 
 ---
 
-## 2026-01-23 · v4.1.1
+## v15.1.2 — 2026-03-23
 
-⟨This entry describes the completion of Brain v2.0, a three-tier memory architecture, knowledge graph v2, and full system hardening.⟩
+**MEDIC & ENGINEER Ultimate**
 
-### Brain
-
-- **Three-Tier Memory System** deployed: Hot (≤500 high-value), Warm (≤2000 intermediate), Cold (≤10000 archived). Automatic tiering based on value_score, access_count, and recency.
-- **brain/memory_tiering** action added for on-demand rebalancing.
-- **brain/memory_prune** action added for noise removal (diagnostics, heartbeats, duplicates).
-- **Knowledge Graph v2** with typed relations (semantic, causal, temporal, hierarchical), node clustering, and centrality scoring.
-- Batch tiering function (`pf-brain-batch-tiering`) handles 20,000+ memory migration without timeout.
-- `brain_memory_pruned` table provides 30-day soft-delete recovery.
-
-### Modernizer
-
-- Shadow mode upgrade workflow now clears old proposals after processing.
-- Improved substrate scan recommendations based on memory health metrics.
-
-### System
-
-- Full v4.1.1 version bump across all 11 modules.
-- All documentation, SDK, and public-facing pages updated.
-- SubstrateProvider now checks all 11 modules (core, ripple, access, brain, decode, defense, nexus, vision, dream, system, modernizer).
-
-### SDK
-
-- `brain.tiering()`, `brain.prune()` methods added to substrate client.
-- Knowledge graph client library (`src/lib/brain/knowledgeGraph.ts`) with type-safe graph operations.
-- Memory tiering client library (`src/lib/brain/memoryTiering.ts`) with search across tiers.
-
-### Website
-
-- Landing page (Explore) updated: 11 modules displayed, 124+ actions documented.
-- Module cards reflect full kernel architecture (Core, Ripple, Access visible).
-- DevPortal SDK documentation updated for v4.1.1.
+- 🏥 MEDIC "Regenerator" — Predictive diagnostics, repair strategy optimizer, tissue regeneration, triage queue, post-mortem analyzer.
+- 🔧 ENGINEER "Mechanist" — Maintenance window scheduler, capacity planner, dependency graph analyzer, hot-swap module manager, performance benchmark suite.
 
 ---
 
-## 2026-01-17 · v3.11.0
+## v15.1.1 — 2026-03-23
 
-⟨This entry describes the observed addition of three internal substrate capabilities prioritizing observability, defense intelligence, and memory coherence. No UI surfaces were modified; these actions are opt-in and proof-compatible.⟩
+**EVOLUTION & SYSTEM Ultimate**
 
-### Vision
-
-- **vision/dependency_map** appears to analyze module dependency relationships and health correlations. Output includes module health matrix, logical dependency graph, cascade risk scoring, and 24h activity patterns. Returns risk status classification (low/moderate/elevated). Marked read-only and proof-compatible.
-
-### Defense
-
-- **defense/ip_intel** appears to provide IP intelligence with reputation scoring. Aggregates 7-day activity, action distribution, threat indicators, endpoint analysis, and recommendation (block/challenge/monitor/allow). Optional history inclusion. Marked read-only and proof-compatible.
-
-### Brain
-
-- **brain/coherence_check** appears to validate memory coherence across hot and cold tiers. Analyzes tag overlap, graph density, compression ratios, and reflection recency. Returns coherence score (0-100), issues found, and recommendations. Marked read-only and proof-compatible.
-
-### TypeScript Helpers
-
-- `vision.dependencyMap()` helper added to substrate client.
-- `defense.ipIntel(ip_address, include_history?)` helper added to substrate client.
-- `brain.coherenceCheck(depth?)` helper added to substrate client.
+- 🦅 EVOLUTION "Phoenix Prime" — 5-stage mutation pipeline, rollback orchestrator, fitness landscape tracker, lineage graph, shadow environments.
+- 🏛️ SYSTEM "Sentinel" — Predictive failure engine, configuration state machine, lifecycle orchestrator for 40 nodes, resource budget manager with graceful degradation (L0–L4).
 
 ---
 
-## 2026-01-17 · v3.10.0
-- Updated homepage SEO: title="PromptFluid — The Cognitive Substrate OS", description="Compose cognition as software. Modules for memory, agents, governance, observability, and execution."
-- Removed investor-facing language from homepage.
+## v15.1.0 — 2026-03-23
+
+**CORTEX & NEXUS Ultimate**
+
+- 🧠 CORTEX — Pipeline DAG scheduler, weighted load balancer, orchestration replay journal, resource quota manager, pipeline template registry.
+- 🌐 NEXUS — Semantic intent classifier, provider affinity engine, routing policy engine, circuit breaker mesh, request deduplication.
 
 ---
 
-## 2026-01-17 · v3.9.0
+## v15.0.0 — 2026-03-22
 
-⟨This entry describes the observed addition of 7 new cognitive substrate modules and a site-wide SEO refactor from investor-facing to substrate SDK positioning.⟩
+**CONTACT Epoch — NPM Distribution & Developer Touchpoints**
 
-### New Substrate Modules
-
-- **Coherence Reconciler** (brain, advanced) — Reconcile conflicting memory and embeddings into coherent substrate knowledge. Memory merging, coherence scoring, knowledge reconciliation.
-- **Preference Engine** (brain, intermediate) — Learn user preferences and value weights from interactions. Preference learning, value weights, reinforcement signals.
-- **Multi-Agent Bus** (system, advanced) — Message bus for substrate agent-to-agent or module-to-module communication. Message passing, event routing, multi-agent coordination.
-- **Governance Policy Engine** (defense, advanced) — Centralized policy and rule enforcement across substrate execution. Policy rules, override logic, constraint enforcement.
-- **Social Graph Modeling** (brain, advanced) — Build knowledge graphs of actors, relationships, and affinity. Relationship graph, affinity mapping, actor modeling.
-- **Substrate Composer** (nexus, advanced) — Composition layer for wiring substrate modules into directed graphs. Module chaining, graph execution, workflow composition.
-- **Substrate Evaluator** (vision, advanced) — Measure substrate performance on coherence, latency, cost, accuracy. Performance metrics, evaluation suite, execution audits.
-
-### SEO Refactor
-
-- Reframed site from investor-facing SaaS to cognitive substrate SDK positioning.
-- Navigation updated: "Products" → "Substrate", "Developers" → "SDK", "Company" → "About".
-- Removed investor-facing links from navigation.
-- Footer restructured: "Product" → "Substrate", "Company" → "SDK".
-- DevPortal title updated: "Substrate Modules — promptfluid® Cognitive SDK".
-- Keywords updated to substrate-focused terminology.
-
-### Template Count
-
-- Total substrate modules: 72 (previously 65)
+- 📦 11 @cmpsbl NPM packages across Foundation, Core, Developer, and Ecosystem tiers.
+- 🤝 First Contact System — unified initialization, CLI entry point (`npx cmpsbl init`), SDK client.
+- 🔒 Live discovery mode enforced — simulated outputs architecturally blocked.
 
 ---
 
-## 2026-01-16 · v3.8.0
-
-⟨This entry describes the observed addition of AI quota observability and routing analytics capabilities.⟩
-
-### Vision
-
-- **vision/quota** appears to provide AI usage quota observability including daily call counts, token usage, cost estimates, and quota pressure scoring. Aggregates data from ai_daily_quota and ai_usage_log tables, computing utilization percentages per provider and overall status classification (healthy/moderate/high). Marked read-only and proof-compatible.
-
-### Nexus
-
-- **nexus/route_stats** appears to provide 24h AI routing analytics from nexus_logs including per-provider call counts, success rates, average latency, token totals, and cost breakdowns. Enables visibility into routing efficiency and cost distribution. Marked read-only and proof-compatible.
-
-### TypeScript Helpers
-
-- `vision.quota()` helper added to substrate client.
-- `nexus.routeStats()` helper added to substrate client.
-
----
-
-## 2026-01-16 · v3.7.0
-
-⟨This entry describes the observed addition of zero-query heartbeat and consolidated security posture capabilities.⟩
-
-### Vision
-
-- **vision/pulse** appears to provide an ultra-lightweight heartbeat requiring zero database queries. Returns in-memory substrate state including uptime, module health summary, circuit breaker status, request/error counts, and heal statistics. Designed for high-frequency uptime monitoring with minimal overhead. Marked read-only and proof-compatible.
-
-### Defense
-
-- **defense/posture** appears to consolidate security status into a single posture score (0-100) with status classification (secure/guarded/elevated/critical). Aggregates 24h activity, risk distribution, block rates, active rules, unresolved anomalies, rate limit pressure, and weekly trend. Provides actionable security snapshot. Marked read-only and proof-compatible.
-
-### TypeScript Helpers
-
-- `vision.pulse()` helper added to substrate client.
-- `defense.posture()` helper added to substrate client.
-
----
-
-## 2026-01-16 · v3.6.0
-
-⟨This entry describes the observed addition of deep introspection, knowledge graph summarization, and unified rate limit observability capabilities.⟩
-
-### Vision
-
-- **vision/introspection** appears to provide deep self-analysis of substrate internals including uptime, error rates, module health matrix, orchestrator state, cognition metrics (exploration rate, curiosity threshold, pending actions), AI provider statistics, and circuit breaker configuration. Marked read-only and proof-compatible.
-
-### Brain
-
-- **brain/graph_summary** appears to return knowledge graph structure including node count, edge count, density calculation, relation type distribution, weight statistics, strongest connections, and recent edge additions. Provides connectivity status classification (well_connected/sparse/minimal). Marked read-only and proof-compatible.
-
-### Defense
-
-- **defense/limits** appears to aggregate rate limit status across edge functions and Dream API, computing pressure score, enforcement statistics (blocks in last hour), and top consumers. Provides status classification (normal/moderate/high_pressure). Marked read-only and proof-compatible.
-
-### TypeScript Helpers
-
-- `vision.introspection()` helper added to substrate client.
-- `brain.graphSummary()` helper added to substrate client.
-- `defense.limits()` helper added to substrate client.
-
----
-
-## 2026-01-16 · v3.5.0
-
-⟨This entry describes the observed addition of cross-module session reflection and provider introspection capabilities, surfaced for Observer-role visibility.⟩
-
-### Brain
-
-- **brain/session_reflection** appears to aggregate activity across brain events, conversations, dreams, and defense events over a configurable lookback period (1–168 hours). Output includes event type counts, dream mood distribution, defense posture metrics, top learning patterns, and recent insights. Marked Observer-eligible and proof-compatible.
-
-### Nexus
-
-- **nexus/providers** appears to return a detailed provider availability matrix including model names, capability sets, availability status, and routing priority order. Provides summary counts and routing health status. Marked Observer-eligible and proof-compatible.
-
-### TypeScript Helpers
-
-- `brain.sessionReflection(hours?)` helper added to substrate client.
-- `nexus.providers()` helper added to substrate client.
-
----
-
-## 2026-01-16 · v3.4.0
-
-⟨This entry describes the observed addition of statistical anomaly detection and consolidated health observability, surfaced for Observer-role visibility in the substrate control panel.⟩
-
-### Defense
-
-- **defense/anomaly_probe** appears to perform z-score based statistical anomaly detection on defense events over configurable lookback periods (1–168 hours). Each detected anomaly includes risk z-score, fingerprint frequency factor, behavioral anomaly factor, combined anomaly score, and confidence level. Baseline statistics are computed and returned.
-
-### Vision
-
-- **vision/health_snapshot** appears to produce a consolidated health snapshot including orchestrator state, memory tier counts (hot/cold), defense event totals, unresolved anomaly counts, and per-module circuit breaker status. Output is structured for quick Observer-level visibility.
-
-### Control Panel
-
-- New actions are marked as Observer-eligible and surfaced in the substrate control panel data surfaces.
-- All new actions are read-only and do not mutate substrate state.
-
-### TypeScript Helpers
-
-- `defense.anomalyProbe(lookbackHours?)` helper added to substrate client.
-- `vision.healthSnapshot()` helper added to substrate client.
-
----
-
-## 2026-01-16 · v3.3.0
-
-⟨This entry describes the observed expansion of the substrate's observability capabilities, not a guarantee of behavior.⟩
-
-### Vision
-
-- **vision/monitor** appears to provide a comprehensive ecosystem health scan across orchestrator, memory tiers (hot/cold), learning pipeline, AI quotas, anomaly status, and dream system. Each subsystem receives a health score and status classification.
-- **vision/resilience** appears to analyze recent error events in the brain_events table, identifying patterns (quota, timeout, auth, connection) and proposing structured fixes with confidence scores. Fixes above 95% confidence are marked as auto-applicable.
-- **vision/analytics** appears to aggregate 24h of defense events, producing threat statistics including block/challenge counts, detection accuracy, risk distribution, and top offending IPs.
-
-### Proof Mode
-
-- New vision actions are observable in Proof Mode where their outputs are routed through the existing proof surface.
-- All three actions are read-only and do not mutate substrate state beyond logging their invocation.
-
-### TypeScript Helpers
-
-- `vision.monitor()` helper added to substrate client.
-- `vision.resilience()` helper added to substrate client.
-- `vision.analytics()` helper added to substrate client.
-
----
-
-## 2026-01-16 · v3.2.0
-
-⟨This entry describes the observed expansion of the substrate's tracing and backup capabilities.⟩
-
-### Vision
-
-- **vision/trace** appears to implement distributed tracing for request flows, creating trace IDs and querying associated events across brain_events and audit_logs.
-
-### System
-
-- **system/backup** appears to create validated backup snapshots with SHA-256 checksums, module health states, orchestrator status, and optional data export.
-- **system/restore** appears to restore from a backup_id, validating checksum integrity before applying module states.
-
-### Decode
-
-- **decode/intent** appears to extract structured intent from user messages, identifying primary intent, confidence, matched keywords, entities (URLs, emails, numbers), and sentiment.
-
----
-
-## 2026-01-15 · v3.1.0
-
-⟨This entry describes the observed hardening of the substrate's healing and observability systems.⟩
-
-### System
-
-- **system/heal** appears to perform full health restoration, setting all modules to 100% health and updating brain_orchestrator_state.health_score to 1.0.
-- **system/diagnostics** appears to provide comprehensive substrate health including module statuses, circuit breaker states, provider availability, data counts, and recent errors.
-
-### Vision
-
-- **vision/dashboard** appears to produce real-time data including orchestrator status, module metrics (memories, conversations, dreams, defense events), and AI token usage.
-
-### Defense
-
-- **defense/anomaly** appears to perform real-time pattern analysis of defense_events, calculating an anomaly_score and identifying specific threat patterns (high_block_rate, high_risk_volume, ip_concentration).
-
----
-
-## 2026-01-14 · v3.0.0
-
-⟨This entry describes the observed resilience architecture introduced in the hardened edition.⟩
-
-### Resilience Infrastructure
-
-- Circuit breaker pattern appears to be implemented per module, with configurable failure/success thresholds.
-- Auto-heal appears to trigger when module health falls below 40%.
-- Graceful fallback responses appear to be returned when circuits are open.
-- Health scoring (0-100) appears to be tracked per module instance.
-- Request timeout protection (25s) appears to be enforced.
-
-### Module Health
-
-- Each module maintains `healthScore`, `consecutiveFailures`, `consecutiveSuccesses`, `circuitState` (closed/open/half-open), and `status` (healthy/degraded/down).
-
----
-
-## 2026-01-23 · v4.0.0
-
-⟨This entry describes the major architecture upgrade to a kernel-mediated operating system model.⟩
-
-### New Kernel-Level Modules
-
-- **CORE (Kernel)** — Execution scheduler, lifecycle management, state machine, request routing. Actions: `boot`, `schedule`, `authorize`, `route`, `meter`, `integrate`, `config`, `shutdown`, `status`, `pulse`.
-
-- **RIPPLE (Message Bus)** — Async job processing, pub/sub messaging, event sourcing. Actions: `enqueue`, `dequeue`, `publish`, `subscribe`, `status`, `retry`, `dead_letter`, `pulse`.
-
-- **ACCESS (Identity & Billing)** — API key management, usage metering, quotas, billing integration. Actions: `create_key`, `validate_key`, `revoke_key`, `list_keys`, `get_usage`, `check_quota`, `create_checkout`, `webhook`, `portal`, `pulse`.
-
-### Architecture Shift
-
-- Transitioned from peer-to-peer module mesh to 4-layer kernel-mediated model.
-- All 200+ legacy edge functions consolidated into single `pf-substrate` orchestrator.
-- Legacy functions now return `410 Gone` with migration instructions.
-- Database tables added: `core_jobs`, `core_state`, `ripple_jobs`, `ripple_events`, `access_usage`.
-
-### Dashboard Integration
-
-- New CORE tab displaying system state and job queues.
-- New RIPPLE tab displaying message bus and event sourcing.
-- New ACCESS tab displaying API key management and usage.
-- Enhanced boot sequence animation with 11-module verification.
-
-### Terminal Commands
-
-- 30+ new commands for kernel operations (`core.*`, `ripple.*`, `access.*`).
-- Updated `whoami` to display 4-layer architecture identity.
-- `/help` supports module-specific queries (e.g., `/help core`).
-
-### SDK Enhancements
-
-- `substrate.core.schedule()`, `substrate.core.boot()`, `substrate.core.shutdown()`
-- `substrate.ripple.publish()`, `substrate.ripple.enqueue()`, `substrate.ripple.subscribe()`
-- `substrate.access.createKey()`, `substrate.access.validateKey()`, `substrate.access.getUsage()`
-
----
-
-## Document Metadata
-
-| Field | Value |
-|-------|-------|
-| Document ID | PF-CHANGELOG-001 |
-| Voice | Decode Interpreter (Epistemic) |
-| Status | PUBLIC |
-| Last Updated | 2026-01-23 |
-| Substrate Version | 4.1.1 |
-
----
-
-**promptfluid® — Cognitive Orchestration Substrate**  
-**Copyright © 2025-2026 promptfluid. All rights reserved.**
+© 2025–2026 PromptFluid®. All rights reserved.
