@@ -682,12 +682,12 @@ export const SANDBOX_MOD_COMMANDS: CommandDefinition[] = [
 // ENCODE MODULE — Code generation & transformation
 export const ENCODE_MOD_COMMANDS: CommandDefinition[] = [
   { command: 'encode.status', description: 'Code generation engine status', category: 'cortex', icon: PenTool, requiresOperator: false },
-  { command: 'encode.queue', description: 'View pending task packets from DECODE', category: 'cortex', icon: List, requiresOperator: false },
-  { command: 'encode.receipts', description: 'Completion receipts with BRAIN refs', category: 'cortex', icon: FileCheck, requiresOperator: false, args: '[limit]' },
-  { command: 'encode.health', description: 'ENCODE module health score', category: 'cortex', icon: Activity, requiresOperator: false },
+  { command: 'encode.queue', description: 'View pending task packets from DECODE Agent', category: 'cortex', icon: List, requiresOperator: false },
+  { command: 'encode.receipts', description: 'Completion receipts with BRAIN Organ refs', category: 'cortex', icon: FileCheck, requiresOperator: false, args: '[limit]' },
+  { command: 'encode.health', description: 'ENCODE Agent health score', category: 'cortex', icon: Activity, requiresOperator: false },
   { command: 'encode.navigate', description: 'Resolve intent to file targets & conventions', category: 'cortex', icon: Search, requiresOperator: false, args: '<intent>' },
-  { command: 'encode.whereis', description: 'Quick module/concept location lookup', category: 'cortex', icon: Search, requiresOperator: false, args: '<query>' },
-  { command: 'encode.help', description: 'ENCODE module command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
+  { command: 'encode.whereis', description: 'Quick primitive/concept location lookup', category: 'cortex', icon: Search, requiresOperator: false, args: '<query>' },
+  { command: 'encode.help', description: 'ENCODE Agent command reference', category: 'cortex', icon: Terminal, requiresOperator: false },
 ];
 
 // PATCH — Distribution Patch Dispatch
