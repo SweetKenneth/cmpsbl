@@ -291,3 +291,172 @@ export {
   type SystemGrade,
   type SystemHealthComposite,
 } from './system-hardening';
+
+// ── SYSTEM v9.0.0 "Sentinel" — Ultimate Form Modules ──
+
+// Predictive Failure Engine
+export {
+  ingestFinding,
+  predictFailures,
+  getPatterns as getFailurePatterns,
+  getPatternCount,
+  decayAllConfidence,
+  clearPredictiveState,
+  type FailurePattern,
+  type PredictionResult,
+  type AuditFinding as PredictiveAuditFinding,
+} from './predictiveFailureEngine';
+
+// Repair Strategy Optimizer
+export {
+  recordOutcome as recordRepairOutcome,
+  rankStrategies,
+  getBestStrategy,
+  getStrategyStats,
+  getAllRecords as getAllStrategyRecords,
+  getOutcomeHistory,
+  clearOptimizerState,
+  type RepairStrategyId,
+  type StrategyRecord,
+  type RepairOutcome,
+} from './repairStrategyOptimizer';
+
+// Configuration State Machine
+export {
+  getConfigPhase,
+  getConfigState as getConfigFSMState,
+  detectConflicts,
+  prepareConfigChange,
+  validateAndApply,
+  rollbackToLastSnapshot,
+  rollbackToSnapshot,
+  setConfigDirect,
+  getSnapshots as getConfigSnapshots_v9,
+  getTransitions as getConfigTransitions,
+  getConfigHash,
+  clearConfigFSM,
+  type ConfigPhase,
+  type ConfigSnapshot as ConfigFSMSnapshot,
+  type ConfigTransition,
+  type ConfigConflict,
+} from './configStateMachine';
+
+// Lifecycle Orchestrator
+export {
+  registerNode,
+  transitionNode,
+  bootSequence,
+  shutdownSequence,
+  getNodeState as getNodeLifecycleState,
+  getAllNodeStates,
+  getNodesByState,
+  getEvents as getLifecycleEvents,
+  updateNodeHealth,
+  clearLifecycleState,
+  type NodeLifecycleState,
+  type NodeLifecycleEntry,
+  type LifecycleTransitionEvent,
+} from './lifecycleOrchestrator';
+
+// Diagnostic Correlation Engine
+export {
+  ingestSignal,
+  correlateSignals,
+  generateIncidentReport,
+  getRecentReports,
+  getSignalCount,
+  clearCorrelationState,
+  type DiagnosticSignal,
+  type CorrelationCluster,
+  type IncidentReport,
+} from './diagnosticCorrelation';
+
+// Audit Chain Integrity Verifier
+export {
+  verifyChain,
+  buildReceiptChain,
+  createAnchor,
+  detectGaps,
+  type ChainReceipt,
+  type ChainAnchor,
+  type ChainVerificationResult,
+  type ChainGap,
+  type BrokenLink,
+  type AnchorStatus,
+} from './auditChainVerifier';
+
+// Graceful Degradation Controller
+export {
+  getDegradationState,
+  getDegradationLevel,
+  setPolicy as setDegradationPolicy,
+  evaluateHealth,
+  forceLevel,
+  isOperationAllowed,
+  isWriteAllowed,
+  isFeatureAllowed,
+  getHistory as getDegradationHistory,
+  clearDegradationState,
+  type DegradationLevel,
+  type DegradationState,
+  type DegradationEvent,
+  type DegradationPolicy,
+} from './gracefulDegradation';
+
+// Resource Budget Manager
+export {
+  setBudget,
+  updateUsage,
+  getBudget,
+  getNodeBudgets,
+  getAllBudgets,
+  isOverBudget,
+  getUtilization,
+  rebalanceBudgets,
+  getAlerts as getBudgetAlerts,
+  getViolationCount,
+  clearBudgetState,
+  type ResourceType,
+  type ResourceBudget,
+  type BudgetAlert,
+  type RebalanceResult,
+} from './resourceBudgetManager';
+
+// Maintenance Window Scheduler
+export {
+  setSchedulerConfig,
+  recordActivity,
+  getIdleDuration,
+  isSystemIdle,
+  submitRepairTask,
+  scheduleMaintenanceWindow as scheduleWindow,
+  executeWindow,
+  getPendingTasks,
+  getCriticalTasks,
+  getTask as getRepairTask,
+  getWindows,
+  getActiveWindow,
+  cancelWindow,
+  clearSchedulerState,
+  type RepairPriority,
+  type RepairTask,
+  type MaintenanceWindow,
+  type SchedulerConfig,
+} from './maintenanceScheduler';
+
+// System Telemetry Nexus
+export {
+  emit as emitSystemTelemetry,
+  subscribe as subscribeSystemTelemetry,
+  takeSnapshot as takeSystemSnapshot,
+  getRecentEvents as getSystemEvents,
+  getEventsByType as getSystemEventsByType,
+  getSnapshots as getSystemSnapshots,
+  getLatestSnapshot as getLatestSystemSnapshot,
+  getEventRate as getSystemEventRate,
+  getEventCount as getSystemEventCount,
+  clearTelemetryState as clearSystemTelemetryState,
+  type TelemetryEventType as SystemTelemetryEventType,
+  type SystemTelemetryEvent,
+  type TelemetrySnapshot as SystemTelemetrySnapshot,
+} from './systemTelemetryNexus';
