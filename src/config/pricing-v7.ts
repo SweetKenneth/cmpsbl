@@ -197,12 +197,12 @@ export const STUDIO_PRICING = {
     },
     name: 'Studio Professional',
     includes: [
-      'World Engine Core',
-      'NPC Memory System',
-      'Dream Cycles',
+      'Cognitive Substrate Core',
+      'Persistent Memory System',
+      'DREAM Engine Cycles',
       'Persistent World State',
-      'Physics Integration',
-      'BYOK Routing',
+      'NEXUS Organ Routing',
+      'BYOK Configuration',
     ],
   },
   enterprise: {

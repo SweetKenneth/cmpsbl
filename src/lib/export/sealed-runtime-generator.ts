@@ -197,7 +197,7 @@ export function createDependencyGraph() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §7 — PIPELINE COMPOSER (interface-compatible)
+// §7 — MEMORY CHAIN COMPOSER (interface-compatible)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export interface PipelineStage { id: string; name: string; moduleId: string; handler: string; inputSchema: Record<string, string>; outputSchema: Record<string, string>; timeoutMs: number; retries: number; }
@@ -207,8 +207,8 @@ export function createPipelineComposer() {
   const sr = new Map<string, PipelineStage>(), ps = new Map<string, ComposedPipeline>();
   return {
     registerStage: (s: PipelineStage) => { sr.set(s.id, s); return s; },
-    compose: (name: string, ids: string[], mode: ComposedPipeline['mode'] = 'sequential') => { const stages = ids.map(i => sr.get(i)).filter(Boolean) as PipelineStage[]; if (stages.length !== ids.length) return null; const p: ComposedPipeline = { id: \`pipeline-\${Date.now()}-\${djb2Hash(name)}\`, name, stages, mode, status: 'draft', createdAt: Date.now(), lastRunAt: null, runCount: 0 }; ps.set(p.id, p); return p; },
-    validate: (id: string) => { const p = ps.get(id); if (!p) return { valid: false, errors: ['Pipeline not found'] }; const e: string[] = []; if (p.mode === 'sequential') { for (let i = 1; i < p.stages.length; i++) { const prev = p.stages[i-1], cur = p.stages[i]; const m = Object.keys(cur.inputSchema).filter(k => !Object.keys(prev.outputSchema).includes(k)); if (m.length) e.push(\`Stage \${cur.id} missing inputs: \${m.join(', ')}\`); } } if (!e.length) p.status = 'validated'; return { valid: !e.length, errors: e }; },
+    compose: (name: string, ids: string[], mode: ComposedPipeline['mode'] = 'sequential') => { const stages = ids.map(i => sr.get(i)).filter(Boolean) as PipelineStage[]; if (stages.length !== ids.length) return null; const p: ComposedPipeline = { id: \`chain-\${Date.now()}-\${djb2Hash(name)}\`, name, stages, mode, status: 'draft', createdAt: Date.now(), lastRunAt: null, runCount: 0 }; ps.set(p.id, p); return p; },
+    validate: (id: string) => { const p = ps.get(id); if (!p) return { valid: false, errors: ['Memory chain not found'] }; const e: string[] = []; if (p.mode === 'sequential') { for (let i = 1; i < p.stages.length; i++) { const prev = p.stages[i-1], cur = p.stages[i]; const m = Object.keys(cur.inputSchema).filter(k => !Object.keys(prev.outputSchema).includes(k)); if (m.length) e.push(\`Stage \${cur.id} missing inputs: \${m.join(', ')}\`); } } if (!e.length) p.status = 'validated'; return { valid: !e.length, errors: e }; },
     getPipelines: () => Array.from(ps.values()), getStages: () => Array.from(sr.values()), get: (id: string) => ps.get(id),
   };
 }
@@ -574,7 +574,7 @@ export function generateSealedChainExecutor(): string {
   return `/**
  * CMPSBL® Portable Chain Executor — Sealed Distribution
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * 3-Layer runtime playback engine for discovered capability chains.
+ * 3-Layer runtime playback engine for discovered memory chains.
  *
  * Primitive effect implementations are sealed.
  * Full deep effects require the CMPSBL® Substrate.
@@ -630,9 +630,9 @@ export async function executeChain(manifest: ChainManifest, input: Record<string
 }
 
 export function formatReport(result: ChainResult): string {
-  const lines = ['═══ CMPSBL® Chain Execution Report ═══', '', \`Status: \${result.success ? '✓ SUCCESS' : '✗ FAILED'}\`, \`Duration: \${result.totalDurationMs.toFixed(1)}ms\`, \`Confidence: \${(result.confidence * 100).toFixed(1)}%\`, '', '── Module Chain ──'];
+  const lines = ['═══ CMPSBL® Memory Chain Execution Report ═══', '', \`Status: \${result.success ? '✓ SUCCESS' : '✗ FAILED'}\`, \`Duration: \${result.totalDurationMs.toFixed(1)}ms\`, \`Confidence: \${(result.confidence * 100).toFixed(1)}%\`, '', '── Primitive Chain ──'];
   for (const t of result.trace) lines.push(\`  \${t.depth === 'deep' ? '◆' : '○'} \${t.module} [\${t.effect}] \${t.status === 'success' ? '✓' : '⟳'} \${t.durationMs.toFixed(1)}ms\`);
-  lines.push('═══════════════════════════════════════');
+  lines.push('═══════════════════════════════════════════════');
   return lines.join('\\n');
 }
 `;
@@ -674,8 +674,8 @@ export function generateSealedRuntimeReadme(): string {
     '',
     '## Included Components',
     '',
-    '- **standalone-runtime.ts** — Sealed Mini-Runtime™: CJPI scoring, state machine, pipeline orchestration, network bridge',
-    '- **chain-executor.ts** — Sealed Chain Executor: module chain playback',
+     '- **standalone-runtime.ts** — Sealed Mini-Runtime™: CJPI scoring, state machine, memory chain orchestration, network bridge',
+     '- **chain-executor.ts** — Sealed Chain Executor: memory chain playback with labeled primitives (Organs, Layers, Engines, Agents)',
     '',
     '## NOT Included',
     '',
