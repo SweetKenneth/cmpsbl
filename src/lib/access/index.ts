@@ -481,8 +481,8 @@ export async function getUserRoles(): Promise<string[]> {
 
 // ============ Module Metadata ============
 
-export const ACCESS_VERSION = '8.0.0';
-export const ACCESS_CODENAME = 'Citadel';
+export const ACCESS_VERSION = '9.0.0';
+export const ACCESS_CODENAME = 'Gatekeeper Prime';
 
 // ============ Module Exports ============
 
