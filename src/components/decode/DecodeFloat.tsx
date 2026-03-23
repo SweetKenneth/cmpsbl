@@ -414,7 +414,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
 
       if (!resp.ok || !resp.body) {
         const errorData = resp.status === 429 || resp.status === 402 ? await resp.json() : null;
-        const errorMsg = errorData?.error || "DECODE relay offline. Retry.";
+        const errorMsg = errorData?.error || "DECODE Agent relay offline. Retry.";
         setMessages(prev => [...prev, { role: 'assistant', content: `⚠ ${errorMsg}` }]);
         setIsLoading(false);
         return;
