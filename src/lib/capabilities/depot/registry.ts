@@ -349,7 +349,7 @@ const CORE_CAPABILITIES: CapabilityArtifact[] = [
     setupTimeMinutes: 180,
   },
 
-  // === SYNERGY PIPELINE CAPABILITIES ===
+  // === SYNERGY MEMORY CHAIN CAPABILITIES ===
   {
     id: 'syn-smart-recall',
     slug: 'smart-recall-synergy',
