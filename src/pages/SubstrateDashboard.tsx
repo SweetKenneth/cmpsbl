@@ -293,7 +293,7 @@ const modulesByLayer = {
     },
     {
       id: "conscience",
-      name: "CONSCIENCE",
+      name: "CONSCIENCE Layer",
       description: "Moral reasoning, value alignment verification",
       icon: Globe,
       color: "text-neon-green",
