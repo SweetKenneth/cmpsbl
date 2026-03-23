@@ -102,7 +102,7 @@ const modulesByLayer = {
   cognitive: [
     {
       id: "brain",
-      name: "BRAIN",
+      name: "BRAIN Organ",
       description: "Memory, learning cycles, reflection",
       icon: Brain,
       color: "text-neon-purple",
