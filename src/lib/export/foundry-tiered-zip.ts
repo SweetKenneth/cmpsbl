@@ -168,7 +168,7 @@ export async function downloadTieredFoundryZip(options: {
 
     artifactFolder.file('README.md', bundle.readme);
 
-    // Pipeline Details page — in-depth HTML report with valuation
+    // Memory Chain Details page — in-depth HTML report with valuation
     const displayName = humanizeCapabilityName(item.name, item.systemChain || ['SYSTEM'], item.category);
     const detailsHTML = generatePipelineDetailsHTML({
       name: displayName,
@@ -182,7 +182,7 @@ export async function downloadTieredFoundryZip(options: {
       obtainedAt: item.obtainedAt,
       source: item.source,
     });
-    artifactFolder.file('PIPELINE-DETAILS.html', detailsHTML);
+    artifactFolder.file('MEMORY-CHAIN-DETAILS.html', detailsHTML);
 
     artifactFolder.file(
       'export-tier.json',
