@@ -55,7 +55,7 @@ const MAX_HISTORY = 100;
 let timelineSeq = 0;
 
 // Dimension scores (updated by subsystem integrations)
-const dimensions: PostureDimensions & Record<string, number> = {
+const dimensions: Record<string, number> = {
   authentication: 80,
   rateProtection: 75,
   threatDetection: 70,
