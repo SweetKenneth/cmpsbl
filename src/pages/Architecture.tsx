@@ -335,9 +335,9 @@ export default function Architecture() {
               or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/modules">
+              <Link to="/architecture">
                 <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                  All 40 Nodes <ArrowRight className="w-4 h-4" />
+                  Full Architecture <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
               <Link to="/documentation">
