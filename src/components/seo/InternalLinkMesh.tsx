@@ -1,7 +1,7 @@
 /**
  * Internal Link Mesh — programmatic internal linking component
  * Builds contextual internal link clusters for crawl depth + authority distribution.
- * Priority nodes (home, evolution) appear more frequently via boosted tag overlap.
+ * Priority primitives (home, evolution) appear more frequently via boosted tag overlap.
  */
 
 import { Link } from 'react-router-dom';
@@ -68,7 +68,7 @@ const LINK_GRAPH: LinkNode[] = [
 
 /**
  * Find related pages by tag overlap, excluding the current page.
- * Priority nodes get a score boost so they surface more often.
+ * Priority primitives get a score boost so they surface more often.
  */
 function findRelated(currentPath: string, tags: string[], limit = 5): LinkNode[] {
   const tagSet = new Set(tags);

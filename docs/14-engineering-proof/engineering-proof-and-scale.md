@@ -54,7 +54,7 @@ Vibe-coded systems work in demos. They fail in production. They accumulate debt 
 
 ### 3.2 Substrate node count
 
-The runtime kernel tracks **38 named matrix nodes** across twelve architectural sectors:
+The runtime kernel tracks **38 named matrix primitives** across twelve architectural sectors:
 
 | Sector | Nodes | Weight |
 |--------|-------|--------|
@@ -106,7 +106,7 @@ The system ships with a built-in audit runner (`src/lib/audit/audit-runner.ts`) 
 |--------|-------------------|
 | `system-manifest` | Boot integrity, version consistency, required fields present |
 | `routes` | Route registry completeness, no orphaned paths |
-| `modules` | All 38 matrix nodes responding to health checks |
+| `modules` | All 38 matrix primitives responding to health checks |
 | `hooks` | React hook contracts — no rules-of-hooks violations |
 | `branding` | Zero unauthorized third-party branding in rendered output |
 | `provider-branding` | Provider attribution compliance |
@@ -249,7 +249,7 @@ A system is clean when:
 2. **Diligence passes** — all 26 probes return structured, non-crashing responses
 3. **Boot integrity verified** — hash chain unbroken from CORE through DEFENSE
 4. **Entropy trending down** — the evolution ledger shows decreasing disorder over time
-5. **No orphaned modules** — all 24 matrix nodes respond to pulse
+5. **No orphaned modules** — all 24 matrix primitives respond to pulse
 6. **Type coverage complete** — no `any` types in production paths
 7. **Dependency graph acyclic** — zero circular dependencies detected
 8. **Evolution receipts valid** — Merkle chain verification returns `brokenAt: -1`
@@ -303,8 +303,8 @@ This is what it looks like when software is engineered, not generated.
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-node/12-sector topology, 675+ capabilities, 60+ tables, added disaster recovery, developer portal, visitor intelligence, engine marketplace |
-| 2026-03-03 | System | v13.1.0 — Updated to 38-node/12-sector topology, 675+ capabilities, 50+ tables |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive/4-category topology, 675+ capabilities, 60+ tables, added disaster recovery, developer portal, visitor intelligence, engine marketplace |
+| 2026-03-03 | System | v13.1.0 — Updated to 38-node/4-category topology, 675+ capabilities, 50+ tables |
 | 2026-03-01 | Kenneth E Sweet Jr | Initial publication |
 
 ## 9. Related documents

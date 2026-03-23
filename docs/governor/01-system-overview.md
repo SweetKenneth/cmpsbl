@@ -8,7 +8,7 @@
 
 CMPSBL is a **field-based cognitive kernel** — a self-governing AI orchestration layer. It is not an application. It is infrastructure: the execution surface on which cognitive agents, memory systems, and compliance grids operate.
 
-The substrate organizes **40 nodes** across a **12-sector** topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance under human oversight.
+The substrate organizes **40 primitives** across a **4-category** topology, providing weighted health monitoring, circuit-breaker isolation, and deterministic governance under human oversight.
 
 ---
 
@@ -32,7 +32,7 @@ The substrate organizes **40 nodes** across a **12-sector** topology, providing 
 | **Plane** | GOVERNANCE | 0.030 | Supervisory legitimacy checks |
 | **Shell** | DEFENSE | 0.030 | Terminal containment boundary |
 
-**Total: 40 nodes, 12 sectors, Σ(weight) = 1.000**
+**Total: 40 primitives, 4 categories, Σ(weight) = 1.000**
 
 System health = weighted sum of all node health scores. Healthy range: **≥ 80**.
 
@@ -99,7 +99,7 @@ Expansion zones have independent circuit breakers. If an entire zone fails, core
 
 | State | Description |
 |-------|-------------|
-| **Boot** | CORE initializes → layers cascade → 40 nodes online |
+| **Boot** | CORE initializes → layers cascade → 40 primitives online |
 | **Steady State** | Request processing, health monitoring, periodic persistence |
 | **Degraded** | Circuit breaker open on one or more nodes; reduced capability |
 | **Zone Isolated** | Entire expansion zone offline; core continues |

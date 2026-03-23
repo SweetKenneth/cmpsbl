@@ -218,7 +218,7 @@ export function SignalForge() {
               and <span className="text-foreground font-medium">Signal Forge</span> — 
               the autonomous blueprint synthesis engine that discovers working architectures 
               across {' '}
-              <span className="text-foreground font-medium">31 nodes × 20 categories</span>.
+              <span className="text-foreground font-medium">31 primitives × 20 categories</span>.
             </motion.p>
 
             {/* What you get — 4 pillars */}

@@ -95,7 +95,7 @@ Every export includes auto-generated tests that:
 ## 7. Export Process
 
 1. Read discovery manifest from the crystallized artifact store
-2. Map module chain to target language primitives
+2. Map primitive chain to target language primitives
 3. Generate language-specific scaffold with CJPI metadata
 4. Generate test harness
 5. Include standalone micro-runtime

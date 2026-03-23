@@ -44,7 +44,7 @@ When an intent is published to the mesh:
 
 1. **Discovery** — the mesh identifies modules that can fulfill the intent
 2. **Negotiation** — candidate modules evaluate whether they can meet quality and deadline constraints
-3. **Routing** — the best-fit module (or module chain) is selected
+3. **Routing** — the best-fit module (or primitive chain) is selected
 4. **Execution** — the intent is fulfilled through the selected route
 5. **Verification** — the output is validated against the intent's quality constraints
 

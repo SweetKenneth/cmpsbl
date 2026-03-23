@@ -82,7 +82,7 @@
 | 1 | Restore from one-click disaster recovery backup |
 | 2 | Follow `RESTORE.md` in the backup archive |
 | 3 | Verify AUDIT chain integrity: `audit.verify` |
-| 4 | Verify all 40 nodes boot successfully |
+| 4 | Verify all 40 primitives boot successfully |
 | 5 | Monitor for stability before resuming normal operations |
 
 ---

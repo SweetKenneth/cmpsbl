@@ -15,7 +15,7 @@ This library contains everything the system governor needs to operate, protect, 
 
 | # | Document | Description |
 |---|----------|-------------|
-| 01 | [System Overview & Architecture](01-system-overview.md) | Complete 40-node topology, sectors, boot sequence, and execution flow |
+| 01 | [System Overview & Architecture](01-system-overview.md) | Complete 40-primitive topology, sectors, boot sequence, and execution flow |
 | 02 | [Governance & Authority](02-governance-authority.md) | Decision matrix, autonomy levels, governance modes, red lines, escalation |
 | 03 | [Security & Defense](03-security-defense.md) | Threat model, trust zones, RBAC, encryption, incident response |
 | 04 | [Evolution & SEBA Pipeline](04-evolution-seba.md) | 7-gate validation, shadow runs, TSAC, promotion, rollback |

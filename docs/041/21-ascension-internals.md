@@ -213,12 +213,12 @@ Admin-only interface providing:
 
 ## 12. Naming Convention
 
-All ascension node module names follow the format: `Ψ₄₁_NODENAME`
+All ascension primitive module names follow the format: `Ψ₄₁_NODENAME`
 
 - Names are uppercased and sanitized (alphanumeric + underscore only)
 - Maximum 30 characters for the name portion
 - Canonical substrate module names are guarded — collisions produce `Ψ₄₁_X_NODENAME`
-- The `isAscensionModule()` helper distinguishes ascension nodes from canonical modules
+- The `isAscensionModule()` helper distinguishes ascension primitives from canonical modules
 
 ---
 

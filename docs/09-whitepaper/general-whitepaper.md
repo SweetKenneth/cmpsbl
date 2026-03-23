@@ -109,7 +109,7 @@ You might be thinking: "How do I know this is real?" Here's the evidence:
 Every discovery has been exported as working code with proper structure in all 16 languages. The code samples in this document are real — with core logic redacted to protect the intellectual property.
 
 ### The Vault Exists
-22 artifacts are stored in a production database with unique IDs, timestamps, scoring breakdowns, and module chains. Every entry has a SHA-256 cryptographic signature.
+22 artifacts are stored in a production database with unique IDs, timestamps, scoring breakdowns, and primitive chains. Every entry has a SHA-256 cryptographic signature.
 
 ### The Discovery Run Is Recorded
 Run ID `b2bdb74f-4760-4647-ad00-127ebfb17cd9` is a permanent, auditable record of the discovery cycle.

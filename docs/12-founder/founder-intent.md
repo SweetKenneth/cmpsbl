@@ -71,7 +71,7 @@ The following actions are unconditionally prohibited:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated topology reference to 40-node architecture, added disaster recovery as non-negotiable operational capability |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated topology reference to 40-primitive architecture, added disaster recovery as non-negotiable operational capability |
 | 2026-03-03 | System | Added non-negotiables for SEBA validation, CLM continuous learning, agent sealing; expanded red lines and guardrails |
 | 2026-03-03 | System | Updated topology reference to 38-node architecture |
 | 2026-03-01 | Kenneth E Sweet Jr | Initial founder intent document |
