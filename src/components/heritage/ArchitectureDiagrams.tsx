@@ -325,7 +325,7 @@ export function IntentMeshDiagram() {
           {[
             { x: 10, y: 80, w: 85, label: "User Action", sub: "" },
             { x: 115, y: 80, w: 100, label: "broadcastIntent()", sub: "NL / Structured" },
-            { x: 235, y: 80, w: 85, label: "INTENT Router", sub: "DAG Planning" },
+            { x: 235, y: 80, w: 85, label: "INTENT Layer Router", sub: "DAG Planning" },
             { x: 340, y: 80, w: 95, label: "Resolver Exec", sub: "node.resolver" },
             { x: 455, y: 80, w: 90, label: "Mesh Comms", sub: "Signal Events" },
             { x: 565, y: 80, w: 100, label: "Telemetry", sub: "Dashboards" },

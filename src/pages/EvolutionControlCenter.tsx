@@ -578,7 +578,7 @@ export default function EvolutionControlCenter() {
           name: 'How to evolve your codebase with CMPSBL EVOLUTION',
           description: 'Connect your AI coding agent and start governed evolution in 4 steps.',
           steps: [
-            { name: 'Copy the prompt', text: 'Click the copy button to get your auth-injected EVOLUTION prompt with your personal JWT.' },
+            { name: 'Copy the prompt', text: 'Click the copy button to get your auth-injected EVOLUTION Layer prompt with your personal JWT.' },
             { name: 'Paste into your agent', text: 'Drop it into Cursor, Windsurf, Cline, or any AI coding agent.' },
             { name: 'Say "Evolve CMPSBL"', text: 'Your agent scans, previews improvements with a dry-run, and asks before applying.' },
             { name: 'Watch your system improve', text: 'Health goes up, debt goes down. Every change is receipted and rollback-safe.' },

@@ -323,7 +323,7 @@ export function DecodeChat() {
         onClick={() => toggle()}
         className="fixed bottom-6 right-6 rounded-full w-16 h-16 shadow-glow-lg z-50 bg-gradient-to-r from-primary via-primary-variant to-accent hover:scale-110 transition-transform"
         size="icon"
-        aria-label="Open DECODE chat"
+        aria-label="Open DECODE Agent chat"
       >
         <MessageCircle className="w-6 h-6" />
         {connection.status !== 'connected' && (

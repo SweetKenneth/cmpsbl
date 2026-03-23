@@ -77,17 +77,17 @@ We believe in:
 
 /* SUBSTRATE NODES (40 Nodes / 12 Sectors) */
 
-CORE: Kernel boot sequencing & lifecycle authority
-SYSTEM: Configuration management & diagnostics
-BRAIN: 4-tier persistent memory & learning cycles
-MEMORY: Context retrieval & session state
-DREAM: Memory consolidation & heuristic synthesis
-RIPPLE: Event bus & pub/sub messaging
-ACCESS: Authentication & API keys
-IDENTITY: User & entity resolution
-RELAY: Cross-module message routing
-AUDIT: Immutable logging & compliance
-NERVE: Operational signaling & coordination
+CORE Organ: Kernel boot sequencing & lifecycle authority
+SYSTEM Organ: Configuration management & diagnostics
+BRAIN Organ: 4-tier persistent memory & learning cycles
+MEMORY Organ: Context retrieval & session state
+DREAM Engine: Memory consolidation & heuristic synthesis
+RIPPLE Organ: Event bus & pub/sub messaging
+ACCESS Organ: Authentication & API keys
+IDENTITY Organ: User & entity resolution
+RELAY Organ: Cross-module message routing
+AUDIT Organ: Immutable logging & compliance
+NERVE Organ: Operational signaling & coordination
 DECODE: Natural language understanding & intent parsing
 ENCODE: Content generation & code synthesis
 VISION: Observability & telemetry

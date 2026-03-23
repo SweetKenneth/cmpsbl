@@ -103,7 +103,7 @@ export function CortexTab({ enabled }: CortexTabProps) {
     },
     onSuccess: (_, action) => {
       queryClient.invalidateQueries({ queryKey: ['cortex-status'] });
-      toast.success(action === 'freeze' ? 'CORTEX frozen — writes halted' : 'CORTEX resumed — normal operation');
+      toast.success(action === 'freeze' ? 'CORTEX Engine frozen — writes halted' : 'CORTEX Engine resumed — normal operation');
     },
     onError: (error) => {
       toast.error('Panic action failed', { description: error instanceof Error ? error.message : 'Unknown error' });

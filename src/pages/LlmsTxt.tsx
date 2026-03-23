@@ -94,15 +94,15 @@ CMPSBL is the reference implementation of the AI Operating System category — a
 - NERVE — Inter-node signaling, stimulus routing
 
 ### Execution (10)
-- DECODE — Intent parsing, entity extraction
-- ENCODE — Code generation, transformation
-- VISION — Observability, metrics, alerting
-- CORTEX — Memory orchestration, multi-stage workflows
-- NEXUS — Multi-provider AI routing (14 providers)
-- ECONOMY — Cost attribution, budgeting
-- SANDBOX — Isolated execution environments
-- INCLUSIVE — Accessibility, WCAG compliance
-- MEDIC — Autonomous diagnostics, self-healing
+- DECODE Agent — Intent parsing, entity extraction
+- ENCODE Agent — Code generation, transformation
+- VISION Agent — Observability, metrics, alerting
+- CORTEX Engine — Memory orchestration, multi-stage workflows
+- NEXUS Organ — Multi-provider AI routing (14 providers)
+- ECONOMY Engine — Cost attribution, budgeting
+- SANDBOX Engine — Isolated execution environments
+- INCLUSIVE Layer — Accessibility, WCAG compliance
+- MEDIC Engine — Autonomous diagnostics, self-healing
 - INTEGRATION — Enterprise connectors (boots last)
 
 ### ESZ — Enterprise Sovereignty Zone (4)

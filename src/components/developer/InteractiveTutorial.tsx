@@ -123,7 +123,7 @@ console.log('Mesh events:', receipt.meshEvents);`,
   },
   {
     id: 4,
-    title: "NEXUS Multi-Provider Routing",
+    title: "NEXUS Organ Multi-Provider Routing",
     description: "Route AI calls across multiple providers with automatic failover, budget controls, and latency optimization.",
     instruction: "Use NEXUS to route a request to the optimal provider based on task type and budget constraints.",
     starterCode: `// Route to best provider for the task

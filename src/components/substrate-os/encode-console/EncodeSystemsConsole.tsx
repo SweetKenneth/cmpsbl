@@ -497,7 +497,7 @@ export function EncodeSystemsConsole() {
 
     // Show what ENCODE understood
     if (resolved.summary) {
-      addSystemMsg('info', `🎯 ENCODE resolved your intent:\n${resolved.summary}`);
+      addSystemMsg('info', `🎯 ENCODE Agent resolved your intent:\n${resolved.summary}`);
     }
 
     // Submit through orchestration (governance awareness)

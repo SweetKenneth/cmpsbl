@@ -532,7 +532,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'security' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE perimeter, immunity mesh, and audit trail.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Security" description="DEFENSE Layer perimeter, IMMUNITY Layer mesh, and AUDIT Organ trail.">
                 <PanelContainer id="security"><ModuleErrorBoundary moduleName="Security"><Suspense fallback={<PanelLoader />}><SecurityPanel isGovernor={isGovernor} isOperator={isOperator} /></Suspense></ModuleErrorBoundary></PanelContainer>
               </TierGate>
             )}

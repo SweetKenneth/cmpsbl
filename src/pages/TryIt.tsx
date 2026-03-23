@@ -25,7 +25,7 @@ export default function TryIt() {
     <div className="min-h-screen bg-background">
       <SEO
         title="Try CMPSBL — Live AI Demo"
-        description="Talk to the CMPSBL substrate live. No signup required. Experience NEXUS routing, persistent memory, and cognitive infrastructure in action."
+        description="Talk to the CMPSBL substrate live. No signup required. Experience NEXUS Organ routing, persistent memory, and cognitive infrastructure in action."
         keywords={["AI demo", "try CMPSBL", "NEXUS routing demo", "persistent memory demo"]}
       />
       <PublicNav />

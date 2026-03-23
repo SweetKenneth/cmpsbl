@@ -95,7 +95,7 @@ export function EncodeCommandInput({ onSubmit, disabled, isLocked }: EncodeComma
           onKeyDown={handleKeyDown}
           onFocus={() => value.startsWith('/') && setShowSuggestions(true)}
           onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
-          placeholder={isLocked ? 'Run /audit first to unlock · Natural language or /commands' : 'Tell ENCODE what to build, or use / for commands...'}
+          placeholder={isLocked ? 'Run /audit first to unlock · Natural language or /commands' : 'Tell ENCODE Agent what to build, or use / for commands...'}
           disabled={disabled}
           className="flex-1 bg-transparent border-0 outline-none text-sm font-mono text-foreground placeholder:text-muted-foreground/40"
           autoComplete="off"
