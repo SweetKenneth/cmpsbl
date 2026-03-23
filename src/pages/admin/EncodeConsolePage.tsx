@@ -1,5 +1,5 @@
 /**
- * ENCODE Console Page — Admin-gated wrapper
+ * ENCODE Agent Console Page — Admin-gated wrapper
  * Route: /admin/encode-console
  */
 
