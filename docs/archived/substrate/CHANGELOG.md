@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.2.4 (CONTACT — COMPASS Ultimate "Meridian")
+
+⟨This entry describes COMPASS v9.0.0 — the substrate's cognitive navigation engine reaching its ultimate form with 10 new systems.⟩
+
+- **Coordinate Registry** — Universal N-dimensional addressing (8D default) with k-NN queries and 5K-entity capacity.
+- **Contextual Waypoint Engine** — Journey tracking with loop detection (3× in 10 steps), dead-end detection (30s gap), stall alerts (5min).
+- **Semantic Proximity Graph** — Cosine similarity on embeddings with sparse graph (0.3 threshold, 20-connection cap).
+- **Temporal Cartography** — Timeline reasoning with causal chain tracing (50 depth), gap/burst/retrograde anomaly detection.
+- **Route Optimizer** — Dijkstra pathfinding with composite weights: latency (40%), cost (30%), reliability (30%), EMA-updated.
+- **Drift Compass** — 3-type drift detection (conceptual, performance, priority) with EMA smoothing and 3-tier severity.
+- **Landmark Registry** — 7 landmark types with impact levels and temporal proximity search.
+- **Exploration Frontier** — Capability space coverage tracking with time-decaying depth and high-potential recommendations.
+- **Bearing Calculator** — Substrate GPS: current→goal state heading with per-step risk assessment and confidence scoring.
+- **Compass Telemetry** — Real-time navigation patterns, route efficiency, drift alerts, frontier coverage, composite health.
+
+---
+
 ## 2026-03-23 · v15.2.3 (CONTACT — HARVEST Ultimate "Leviathan")
 
 ⟨This entry describes HARVEST v9.0.0 — the substrate's data acquisition engine reaching its ultimate form with 10 new systems.⟩

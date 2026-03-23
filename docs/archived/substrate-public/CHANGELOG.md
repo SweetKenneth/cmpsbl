@@ -4,6 +4,24 @@
 
 ---
 
+## v15.2.4 — 2026-03-23
+
+**COMPASS Ultimate — "Meridian"**
+
+- 🧭 COMPASS upgraded to **v9.0.0** with 10 new Ultimate Form systems.
+- 📍 **Coordinate Registry** — Universal N-dimensional positioning for every substrate entity.
+- 🗺️ **Contextual Waypoint Engine** — Journey tracking with loop, dead-end, and stall detection.
+- 🔗 **Semantic Proximity Graph** — Cosine similarity "what's near X?" across all domains.
+- ⏳ **Temporal Cartography** — Causal timeline reasoning with anomaly detection.
+- 🛤️ **Route Optimizer** — Dijkstra pathfinding with dynamic latency/cost/reliability weights.
+- 🔄 **Drift Compass** — 3-type behavioral drift detection with EMA-smoothed severity alerts.
+- 🏔️ **Landmark Registry** — Significant event cataloging for temporal navigation.
+- 🌐 **Exploration Frontier** — Capability coverage tracking with decay and discovery guidance.
+- 🧮 **Bearing Calculator** — Substrate GPS computing optimal heading from current to goal state.
+- 📊 **Compass Telemetry** — Real-time navigation observability and composite health scoring.
+
+---
+
 ## v15.2.3 — 2026-03-23
 
 **HARVEST Ultimate — "Leviathan"**
