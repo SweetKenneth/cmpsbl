@@ -1,6 +1,6 @@
 /**
- * CMPSBL® Module Card Component
- * Displays status for a single substrate module
+ * CMPSBL® Primitive Card Component
+ * Displays status for a single substrate primitive
  */
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
