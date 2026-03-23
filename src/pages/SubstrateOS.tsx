@@ -478,7 +478,7 @@ export default function SubstrateOS() {
             )}
 
             {activeTab === 'mesh' && isGovernor && (
-              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh" description="Live capability mesh and inter-node communication.">
+              <TierGate requiredTier="governor" currentTier={role} tabLabel="Mesh" description="Live capability mesh and inter-primitive communication.">
                 <PanelContainer id="mesh"><Suspense fallback={<PanelLoader />}><MeshActivityTab /></Suspense></PanelContainer>
               </TierGate>
             )}

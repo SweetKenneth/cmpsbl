@@ -231,7 +231,7 @@ export default function LlmsTxt() {
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="LLMS.txt — Machine Context for AI Crawlers | CMPSBL"
-        description="CMPSBL's LLMS.txt file gives AI crawlers structured context: 40-node topology, 12 sectors, resolver catalog, API endpoints, memory tiers, and governance roles — per the llmstxt.org standard."
+        description="CMPSBL's LLMS.txt file gives AI crawlers structured context: 40 primitives (agents, engines, layers, organs), resolver catalog, API endpoints, memory tiers, and governance roles — per the llmstxt.org standard."
         keywords={['LLMS.txt', 'machine readable AI context', 'AI crawler context', 'llmstxt standard', 'substrate discovery']}
       />
 
