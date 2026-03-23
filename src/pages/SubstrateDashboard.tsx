@@ -537,10 +537,10 @@ export default function SubstrateDashboard() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Dashboard — Node Health & Stream Metrics | CMPSBL"
-        description="CMPSBL substrate dashboard: real-time node health across 12 sectors, Memory Stream crystallization metrics, mesh communication logs, governance status, and per-node telemetry at a glance."
+        title="Dashboard — Primitive Health & Stream Metrics | CMPSBL"
+        description="CMPSBL substrate dashboard: real-time primitive health across agents, engines, layers, and organs — Memory Stream crystallization metrics, mesh communication logs, governance status, and per-primitive telemetry at a glance."
         canonical="https://cmpsbl.com/substrate"
-        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "node architecture", "cortex"]}
+        keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "primitive architecture", "cortex"]}
       />
 
       <PublicNav />
