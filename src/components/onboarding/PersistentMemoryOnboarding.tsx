@@ -42,8 +42,8 @@ const STEPS: OnboardingStep[] = [
   {
     icon: Moon,
     tag: 'DREAM',
-    title: 'DREAM Consolidation',
-    body: 'While your agent is idle, DREAM cycles merge fragments, strengthen connections, and surface patterns. Your agent learns continuously — even offline.',
+    title: 'DREAM Engine Consolidation',
+    body: 'While your agent is idle, DREAM Engine cycles merge fragments, strengthen connections, and surface patterns. Your agent learns continuously — even offline.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
