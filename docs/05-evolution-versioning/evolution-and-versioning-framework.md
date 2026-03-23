@@ -242,7 +242,7 @@ The Scanner Orchestrator provides continuous evolution quality monitoring:
 
 | Date | Author | Change |
 |------|--------|--------|
-| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated epoch history, compatibility matrix, revision stamp example to MINDGAMES epoch, 40-node references |
+| 2026-03-12 | System | v14.1.0 MINDGAMES — Updated epoch history, compatibility matrix, revision stamp example to MINDGAMES epoch, 40-primitive references |
 | 2026-03-03 | System | Added 7-gate SEBA pipeline, TSAC, CSZ architecture, Evolution Control Center, ENGINEER integration, Scanner Orchestrator, Ironclad references |
 | 2026-03-03 | System | Updated to v13.1.0 — AutoBlog quality pipeline, adaptive publish governor |
 | 2026-03-01 | System | Initial canonical evolution and versioning framework |
