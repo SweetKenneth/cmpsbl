@@ -4,6 +4,24 @@
 
 ---
 
+## v15.4.0 — 2026-03-23
+
+**IMMUNITY Ultimate — "Pathogen Zero"**
+
+- 🦠 IMMUNITY upgraded to **v9.0.0** with 10 new Ultimate Form systems.
+- 🧬 **Adaptive Antibody Generator** — Auto-synthesizes threat detection rules from resolved incidents.
+- 🧠 **Immune Memory Bank** — Persistent threat taxonomy with seasonal pattern detection.
+- 🛡️ **T-Cell Sentinel Network** — Distributed Mahalanobis anomaly detection with consensus escalation.
+- ⚖️ **Cytokine Storm Preventer** — Prevents immune overreaction with proportionality scoring.
+- 🔬 **Pathogen Evolution Tracker** — Mutation trees and predictive variant generation.
+- 📊 **Immune Strength Profiler** — Per-node ISI (0–100) immune fitness scoring.
+- 💉 **Vaccination Campaign Engine** — Proactive fleet-wide node hardening.
+- 🏥 **Autoimmune Disorder Detector** — False positive detection with auto-whitelist proposals.
+- 🩹 **Convalescence Manager** — Post-incident recovery orchestration.
+- 📡 **Immune Telemetry Nexus** — TDR, MTTI, and composite immune health scoring.
+
+---
+
 ## v15.3.1 — 2026-03-23
 
 **Auto-Activation Wave 2 — 100 Rules Total**

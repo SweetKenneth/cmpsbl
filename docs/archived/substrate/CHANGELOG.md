@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.4.0 (CONTACT — IMMUNITY Ultimate "Pathogen Zero")
+
+⟨This entry describes IMMUNITY v9.0.0 — the substrate's adaptive immune intelligence system reaching its ultimate form with 10 new systems.⟩
+
+- **Adaptive Antibody Generator** — Auto-synthesizes detection rules from resolved threats. 0.85 confidence threshold. 180-day TTL decay. Family-level generalization.
+- **Immune Memory Bank** — Persistent searchable threat taxonomy (category → family → variant). Seasonal pattern detection. Per-node vaccination records.
+- **T-Cell Sentinel Network** — Distributed sentinels with Mahalanobis distance anomaly detection. Consensus escalation at ≥2 agreeing sentinels.
+- **Cytokine Storm Preventer** — Immune overreaction prevention. Proportionality engine (≤1.5× threat). Blast radius scoring. Auto-dampening. Max 5 concurrent responses.
+- **Pathogen Evolution Tracker** — Mutation tree modeling. Predictive variant generation. Evasion technique catalog. Arms race velocity scoring.
+- **Immune Strength Profiler** — Per-node ISI (Immune Strength Index, 0–100). Coverage, latency P95, false positive rate, vaccination gap analysis.
+- **Vaccination Campaign Engine** — Proactive fleet hardening. Vaccine synthesis from antibody library. Rollout scheduling. Breakthrough tracking.
+- **Autoimmune Disorder Detector** — False positive correlation. Healthy traffic fingerprinting. Auto-whitelist proposals at ≥3 FPs.
+- **Convalescence Manager** — Post-incident recovery plans. State integrity verification. Performance baseline restoration. Immune strengthening.
+- **Immune Telemetry Nexus** — TDR, MTTI, response efficiency, vaccination coverage, arms race velocity. Composite immune health 0–100.
+
+---
+
 ## 2026-03-23 · v15.3.1 (CONTACT — Auto-Activation Wave 2)
 
 ⟨This entry describes the expansion of the Capability Auto-Activation Engine from 50 to 100 rules, covering the strongest capabilities of every major node.⟩
