@@ -1,6 +1,7 @@
 /**
  * ENCODE Module — Code Execution & Generation Intelligence
  * Module #21, first-class substrate module
+ * v9.0.0 "Architect" — Ultimate Form
  * 
  * ENCODE is the substrate's code execution engine, receiving structured task packets
  * from DECODE (the human-facing intent router) and producing governed code artifacts.
@@ -291,3 +292,18 @@ export {
   type SurfaceCapability, type EncodeHealthReport, type DiffImpact,
   type ConventionRule, type ResilienceCheck, type TimeoutTier,
 } from './encode-hardening';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ULTIMATE FORM ENGINES (v9.0.0)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+export { validatePatchPlan, quickValidate, type PatchPlan, type ValidationResult } from './patchPlanValidator';
+export { scoreCodeQuality, quickGrade, type QualityReport } from './codeQualityScorer';
+export { simulateDiff, type DiffSimulation, type BlastRadius, type RiskAssessment } from './diffSimulation';
+export { recordPatchApplication, rollback, rollbackToPoint, getLedger, getLedgerSummary, verifyLedgerIntegrity, type RollbackLedgerEntry } from './rollbackLedger';
+export { recordOutcome, trySynthesis, getTemplates, findMatchingTemplate, type SynthesizedTemplate } from './templateSynthesis';
+export { createOrchestrationPlan, executeOrchestration, getDependencyOrder, type OrchestrationPlan, type OrchestrationResult } from './multiFileOrchestrator';
+export { recordSkillOutcome, getSkillProfile, getAllProfiles, identifyGaps, getProficiencySummary, type SkillProfile, type SkillGap } from './skillProficiency';
+export { recordShadowOutcome, getRecommendedStrategy, getVerdictSummary, getPatternVerdicts, type ShadowOutcome, type VerdictSummary } from './shadowVerdictAnalyzer';
+export { parseAST, applyASTPatch, findNode, addImport, type ASTNode, type ASTParseResult, type PatchOperation } from './astPatchEngine';
+export { checkCompliance, setGovernanceMode, getGovernanceMode, isCompliant, overrideCompliance, type ComplianceResult, type GovernanceMode as EncodeGovernanceMode } from './governanceCompliance';
