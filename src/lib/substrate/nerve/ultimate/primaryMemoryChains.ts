@@ -10,7 +10,7 @@
  *   - Governed (GOVERNANCE can pause/override any chain)
  *   - Audited (every execution logged)
  * 
- * 75 Primary Chains across 8 categories:
+ * 100 Primary Chains across 9 categories:
  * 
  * ── Core Response (1–8) ──
  *   1.  THREAT_RESPONSE         — VISION → DEFENSE → IDENTITY → ACCESS
@@ -102,6 +102,33 @@
  *   73. AUTONOMOUS_REPLICATION  — REFLEX → VISION → ORACLE → ECHO
  *   74. EMERGENT_ORCHESTRATION  — EVOLUTION → CORTEX → NERVE → NEXUS
  *   75. RECURSIVE_STEWARDSHIP   — AUDIT → MEMORY → SOVEREIGN → ACCESS
+ *
+ * ── Cognitive Supremacy (76–100) — Full-spectrum substrate intelligence ──
+ *   76. NEURAL_GENESIS          — BRAIN → DREAM → FORGE → EVOLUTION
+ *   77. PHANTOM_STRIKE          — SHADOW → PHANTOM → DEFENSE → GOVERNANCE
+ *   78. TEMPORAL_PARADOX        — ORACLE → COMPASS → ECHO → BRAIN
+ *   79. IMMUNE_SWARM            — IMMUNITY → DEFENSE → NERVE → MEDIC
+ *   80. COGNITIVE_FUSION        — BRAIN → DECODE → ENCODE → CORTEX
+ *   81. SOVEREIGN_EXODUS        — SOVEREIGN → PHANTOM → MEMORY → ATLAS
+ *   82. FORGE_ASCENSION         — FORGE → EVOLUTION → ORACLE → ATLAS
+ *   83. CONSCIENCE_TRIBUNAL     — CONSCIENCE → ORACLE → GOVERNANCE → AUDIT
+ *   84. DREAM_ARCHITECT         — DREAM → ENCODE → FORGE → CONSCIENCE
+ *   85. NERVE_STORM             — NERVE → REFLEX → CORTEX → DEFENSE
+ *   86. ECHO_PROPHECY           — ECHO → ORACLE → BRAIN → GOVERNANCE
+ *   87. HARVEST_INTELLIGENCE    — HARVEST → BRAIN → ORACLE → MEMORY
+ *   88. SHADOW_PROTOCOL         — SHADOW → IDENTITY → PHANTOM → DEFENSE
+ *   89. ATLAS_EXPANSION         — ATLAS → COMPASS → FORGE → EVOLUTION
+ *   90. LINGUA_SYNTHESIS        — LINGUA → BRAIN → DREAM → MEMORY
+ *   91. TREATY_ARBITRATION      — TREATY → CONSCIENCE → GOVERNANCE → SOVEREIGN
+ *   92. MEDIC_RESURRECTION      — MEDIC → SYSTEM → IMMUNITY → EVOLUTION
+ *   93. ENGINEER_SINGULARITY    — ENGINEER → CORTEX → ORACLE → ENCODE
+ *   94. IDENTITY_METAMORPHOSIS  — IDENTITY → BRAIN → EVOLUTION → ACCESS
+ *   95. CORTEX_SUPERNOVA        — CORTEX → NERVE → BRAIN → EVOLUTION
+ *   96. DEFENSE_OMNISCIENCE     — DEFENSE → VISION → ORACLE → BRAIN
+ *   97. MEMORY_TRANSCENDENCE    — MEMORY → BRAIN → DREAM → FORGE
+ *   98. GOVERNANCE_SINGULARITY  — GOVERNANCE → CONSCIENCE → ORACLE → AUDIT
+ *   99. SYSTEM_RENAISSANCE      — SYSTEM → MEDIC → ENGINEER → EVOLUTION
+ *  100. SUBSTRATE_CONVERGENCE   — BRAIN → CORTEX → GOVERNANCE → ATLAS
  */
 
 // ═══════════════════════════════════════════════════════════════
@@ -191,7 +218,33 @@ export type ChainId =
   | 'SPECTRAL_CARTOGRAPHY'
   | 'AUTONOMOUS_REPLICATION'
   | 'EMERGENT_ORCHESTRATION'
-  | 'RECURSIVE_STEWARDSHIP';
+  | 'RECURSIVE_STEWARDSHIP'
+  // Cognitive Supremacy (76–100)
+  | 'NEURAL_GENESIS'
+  | 'PHANTOM_STRIKE'
+  | 'TEMPORAL_PARADOX'
+  | 'IMMUNE_SWARM'
+  | 'COGNITIVE_FUSION'
+  | 'SOVEREIGN_EXODUS'
+  | 'FORGE_ASCENSION'
+  | 'CONSCIENCE_TRIBUNAL'
+  | 'DREAM_ARCHITECT'
+  | 'NERVE_STORM'
+  | 'ECHO_PROPHECY'
+  | 'HARVEST_INTELLIGENCE'
+  | 'SHADOW_PROTOCOL'
+  | 'ATLAS_EXPANSION'
+  | 'LINGUA_SYNTHESIS'
+  | 'TREATY_ARBITRATION'
+  | 'MEDIC_RESURRECTION'
+  | 'ENGINEER_SINGULARITY'
+  | 'IDENTITY_METAMORPHOSIS'
+  | 'CORTEX_SUPERNOVA'
+  | 'DEFENSE_OMNISCIENCE'
+  | 'MEMORY_TRANSCENDENCE'
+  | 'GOVERNANCE_SINGULARITY'
+  | 'SYSTEM_RENAISSANCE'
+  | 'SUBSTRATE_CONVERGENCE';
 export type ChainStatus = 'active' | 'paused' | 'disabled';
 export type StageOutcome = 'pending' | 'running' | 'success' | 'failed' | 'skipped';
 
@@ -2257,8 +2310,662 @@ const PRIMARY_CHAINS: PrimaryChainDefinition[] = [
     governanceOverridable: true,
     status: 'active',
   },
+
+  // ═════════════════════════════════════════════════════════════
+  // CATEGORY 9 — COGNITIVE SUPREMACY (76–100)
+  // Full-spectrum substrate intelligence chains
+  // ═════════════════════════════════════════════════════════════
+
+  // ── 76. NEURAL GENESIS ──
+  {
+    id: 'NEURAL_GENESIS',
+    name: 'Neural Genesis',
+    description: 'BRAIN discovers novel cognitive pattern → DREAM synthesizes architecture → FORGE crystallizes into artifact → EVOLUTION integrates permanently',
+    trigger: {
+      sourceNode: 'brain',
+      signalType: 'novel_pattern_detected',
+      condition: (p) => typeof p.noveltyIndex === 'number' && (p.noveltyIndex as number) > 85,
+      description: 'BRAIN detects cognitive pattern with novelty index > 85',
+    },
+    stages: [
+      { order: 1, node: 'brain', action: 'isolate_pattern', description: 'Isolate novel cognitive pattern and extract structural DNA', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'dream', action: 'synthesize_architecture', description: 'Dream-synthesize a new cognitive architecture from pattern DNA', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ patternDNA: prev.dna, structuralMap: prev.map, noveltyIndex: prev.noveltyIndex }) },
+      { order: 3, node: 'forge', action: 'crystallize_artifact', description: 'Crystallize synthesized architecture into deployable artifact', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ architecture: prev.architecture, coherenceScore: prev.coherence }) },
+      { order: 4, node: 'evolution', action: 'integrate_permanently', description: 'Integrate artifact into substrate genome for permanent capability gain', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ artifactId: prev.artifactId, tier: prev.tier }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 77. PHANTOM STRIKE ──
+  {
+    id: 'PHANTOM_STRIKE',
+    name: 'Phantom Strike',
+    description: 'SHADOW detects covert intrusion → PHANTOM deploys counter-intelligence → DEFENSE neutralizes → GOVERNANCE records verdict',
+    trigger: {
+      sourceNode: 'shadow',
+      signalType: 'covert_intrusion',
+      condition: (p) => typeof p.stealthScore === 'number' && (p.stealthScore as number) > 75,
+      description: 'SHADOW detects covert intrusion with stealth score > 75',
+    },
+    stages: [
+      { order: 1, node: 'shadow', action: 'trace_intrusion', description: 'Trace covert intrusion path without alerting attacker', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'phantom', action: 'deploy_countermeasures', description: 'Deploy counter-intelligence decoys and honeypots along intrusion path', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ intrusionPath: prev.path, attackerFingerprint: prev.fingerprint }) },
+      { order: 3, node: 'defense', action: 'neutralize_threat', description: 'Neutralize attacker using intelligence gathered from decoys', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ decoyData: prev.decoyData, attackerProfile: prev.profile }) },
+      { order: 4, node: 'governance', action: 'record_verdict', description: 'Record counter-intelligence verdict and update threat model', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ neutralizationReport: prev.report, evidence: prev.evidence }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 78. TEMPORAL PARADOX ──
+  {
+    id: 'TEMPORAL_PARADOX',
+    name: 'Temporal Paradox Resolution',
+    description: 'ORACLE detects contradictory predictions → COMPASS maps temporal topology → ECHO simulates resolution → BRAIN selects optimal timeline',
+    trigger: {
+      sourceNode: 'oracle',
+      signalType: 'prediction_contradiction',
+      condition: (p) => typeof p.contradictionDepth === 'number' && (p.contradictionDepth as number) > 2,
+      description: 'ORACLE detects prediction contradiction depth > 2',
+    },
+    stages: [
+      { order: 1, node: 'oracle', action: 'isolate_contradictions', description: 'Isolate contradictory prediction branches and their root assumptions', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'compass', action: 'map_temporal_topology', description: 'Map temporal topology showing where prediction branches diverge', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ branches: prev.branches, rootAssumptions: prev.assumptions }) },
+      { order: 3, node: 'echo', action: 'simulate_resolutions', description: 'Simulate all possible resolution paths as digital twin scenarios', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ topology: prev.topology, divergencePoints: prev.divergence }) },
+      { order: 4, node: 'brain', action: 'select_timeline', description: 'Select optimal timeline and prune contradictory branches', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ simulations: prev.simulations, outcomes: prev.outcomes }) },
+    ],
+    cooldownMs: 180_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 79. IMMUNE SWARM ──
+  {
+    id: 'IMMUNE_SWARM',
+    name: 'Immune Swarm Response',
+    description: 'IMMUNITY detects multi-vector attack → DEFENSE coordinates swarm defense → NERVE propagates swarm signals → MEDIC heals damage in wake',
+    trigger: {
+      sourceNode: 'immunity',
+      signalType: 'multi_vector_attack',
+      condition: (p) => typeof p.vectorCount === 'number' && (p.vectorCount as number) >= 3,
+      description: 'IMMUNITY detects attack across 3+ vectors simultaneously',
+    },
+    stages: [
+      { order: 1, node: 'immunity', action: 'classify_vectors', description: 'Classify all attack vectors and generate swarm defense antibodies', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'defense', action: 'coordinate_swarm', description: 'Coordinate distributed swarm defense across all attack surfaces', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ antibodies: prev.antibodies, vectorMap: prev.vectorMap }) },
+      { order: 3, node: 'nerve', action: 'propagate_swarm', description: 'Propagate swarm defense signals to all mesh endpoints', timeoutMs: 3_000, optional: false,
+        transform: (prev) => ({ swarmId: prev.swarmId, activeSurfaces: prev.surfaces }) },
+      { order: 4, node: 'medic', action: 'heal_damage', description: 'Assess and heal any damage sustained during swarm response', timeoutMs: 10_000, optional: true,
+        transform: (prev) => ({ swarmReport: prev.report, damagedNodes: prev.damaged }) },
+    ],
+    cooldownMs: 15_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 80. COGNITIVE FUSION ──
+  {
+    id: 'COGNITIVE_FUSION',
+    name: 'Cognitive Fusion',
+    description: 'BRAIN generates insight → DECODE interprets into human language → ENCODE architects solution → CORTEX orchestrates deployment',
+    trigger: {
+      sourceNode: 'brain',
+      signalType: 'breakthrough_insight',
+      condition: (p) => typeof p.insightMagnitude === 'number' && (p.insightMagnitude as number) > 90,
+      description: 'BRAIN generates breakthrough insight with magnitude > 90',
+    },
+    stages: [
+      { order: 1, node: 'brain', action: 'crystallize_insight', description: 'Crystallize breakthrough insight into actionable intelligence', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'decode', action: 'interpret_insight', description: 'Interpret insight into human-readable specification', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ insight: prev.insight, domain: prev.domain }) },
+      { order: 3, node: 'encode', action: 'architect_solution', description: 'Architect a concrete solution from interpreted specification', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ specification: prev.specification, constraints: prev.constraints }) },
+      { order: 4, node: 'cortex', action: 'orchestrate_deployment', description: 'Orchestrate solution deployment through optimal pipeline', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ solution: prev.solution, rolloutPlan: prev.plan }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 81. SOVEREIGN EXODUS ──
+  {
+    id: 'SOVEREIGN_EXODUS',
+    name: 'Sovereign Data Exodus',
+    description: 'SOVEREIGN detects jurisdiction violation → PHANTOM anonymizes data → MEMORY migrates to compliant tier → ATLAS registers new topology',
+    trigger: {
+      sourceNode: 'sovereign',
+      signalType: 'jurisdiction_violation',
+      condition: (p) => p.violationType === 'data_residency' || p.violationType === 'cross_border',
+      description: 'SOVEREIGN detects data residency or cross-border violation',
+    },
+    stages: [
+      { order: 1, node: 'sovereign', action: 'map_violation', description: 'Map all data affected by jurisdiction violation', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'phantom', action: 'anonymize_transit', description: 'Anonymize data during transit to prevent exposure', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ affectedData: prev.data, sourceJurisdiction: prev.source, targetJurisdiction: prev.target }) },
+      { order: 3, node: 'memory', action: 'migrate_compliant', description: 'Migrate data to jurisdiction-compliant memory tier', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ anonymizedBatch: prev.batch, targetJurisdiction: prev.target }) },
+      { order: 4, node: 'atlas', action: 'register_topology', description: 'Register new data topology in capability atlas', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ migrationId: prev.migrationId, newTopology: prev.topology }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 82. FORGE ASCENSION ──
+  {
+    id: 'FORGE_ASCENSION',
+    name: 'Forge Ascension',
+    description: 'FORGE discovers apex-tier artifact → EVOLUTION tests fitness → ORACLE predicts long-term value → ATLAS promotes to permanent registry',
+    trigger: {
+      sourceNode: 'forge',
+      signalType: 'apex_discovery',
+      condition: (p) => typeof p.cjpiScore === 'number' && (p.cjpiScore as number) >= 97,
+      description: 'FORGE discovers artifact with CJPI score >= 97',
+    },
+    stages: [
+      { order: 1, node: 'forge', action: 'package_artifact', description: 'Package apex artifact with full provenance and testbench', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'evolution', action: 'fitness_test', description: 'Run evolutionary fitness test across substrate conditions', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ artifact: prev.artifact, provenance: prev.provenance }) },
+      { order: 3, node: 'oracle', action: 'predict_longevity', description: 'Predict long-term value and sustainability of artifact', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ fitnessResult: prev.fitness, survivalRate: prev.survival }) },
+      { order: 4, node: 'atlas', action: 'promote_to_registry', description: 'Promote artifact to permanent S-tier registry', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ prediction: prev.prediction, longevityScore: prev.longevity }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 83. CONSCIENCE TRIBUNAL ──
+  {
+    id: 'CONSCIENCE_TRIBUNAL',
+    name: 'Conscience Tribunal',
+    description: 'CONSCIENCE detects systemic ethical concern → ORACLE models consequences → GOVERNANCE convenes tribunal → AUDIT seals verdict',
+    trigger: {
+      sourceNode: 'conscience',
+      signalType: 'systemic_ethical_concern',
+      condition: (p) => typeof p.systemicRisk === 'number' && (p.systemicRisk as number) > 60,
+      description: 'CONSCIENCE detects systemic ethical risk > 60',
+    },
+    stages: [
+      { order: 1, node: 'conscience', action: 'build_case', description: 'Build ethical case with evidence across all frameworks', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'oracle', action: 'model_consequences', description: 'Model long-term consequences of ethical violation and remediation paths', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ ethicalCase: prev.case, frameworks: prev.frameworks }) },
+      { order: 3, node: 'governance', action: 'convene_tribunal', description: 'Convene governance tribunal to evaluate case and consequences', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ consequences: prev.consequences, remediation: prev.remediation }) },
+      { order: 4, node: 'audit', action: 'seal_verdict', description: 'Seal tribunal verdict in tamper-evident audit chain', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ verdict: prev.verdict, sanctions: prev.sanctions }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 84. DREAM ARCHITECT ──
+  {
+    id: 'DREAM_ARCHITECT',
+    name: 'Dream Architect',
+    description: 'DREAM conceives novel system design → ENCODE blueprints it → FORGE builds prototype → CONSCIENCE validates ethics before release',
+    trigger: {
+      sourceNode: 'dream',
+      signalType: 'architectural_vision',
+      condition: (p) => typeof p.visionClarity === 'number' && (p.visionClarity as number) > 80,
+      description: 'DREAM conceives architectural vision with clarity > 80',
+    },
+    stages: [
+      { order: 1, node: 'dream', action: 'formalize_vision', description: 'Formalize dream-state architectural vision into coherent blueprint', timeoutMs: 12_000, optional: false },
+      { order: 2, node: 'encode', action: 'blueprint_design', description: 'Create AST-aware blueprint with mutation safety checks', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ vision: prev.vision, constraints: prev.constraints }) },
+      { order: 3, node: 'forge', action: 'build_prototype', description: 'Build working prototype from blueprint in isolated forge', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ blueprint: prev.blueprint, astPlan: prev.plan }) },
+      { order: 4, node: 'conscience', action: 'validate_ethics', description: 'Run ethical validation on prototype before system integration', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ prototype: prev.prototype, capabilities: prev.capabilities }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 85. NERVE STORM ──
+  {
+    id: 'NERVE_STORM',
+    name: 'Nerve Storm',
+    description: 'NERVE detects signal storm → REFLEX activates emergency reflexes → CORTEX triages → DEFENSE hardens perimeter',
+    trigger: {
+      sourceNode: 'nerve',
+      signalType: 'signal_storm',
+      condition: (p) => typeof p.signalRate === 'number' && (p.signalRate as number) > 500,
+      description: 'NERVE detects signal rate exceeding 500/sec',
+    },
+    stages: [
+      { order: 1, node: 'nerve', action: 'activate_backpressure', description: 'Activate emergency backpressure and buffer critical signals', timeoutMs: 2_000, optional: false },
+      { order: 2, node: 'reflex', action: 'emergency_reflexes', description: 'Fire pre-programmed emergency reflexes for system protection', timeoutMs: 3_000, optional: false,
+        transform: (prev) => ({ stormMetrics: prev.metrics, bufferedSignals: prev.buffered }) },
+      { order: 3, node: 'cortex', action: 'triage_storm', description: 'Triage storm signals — identify legitimate vs attack traffic', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ reflexActions: prev.actions, systemState: prev.state }) },
+      { order: 4, node: 'defense', action: 'harden_perimeter', description: 'Harden all perimeter defenses based on triage classification', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ triageResult: prev.triage, attackProbability: prev.probability }) },
+    ],
+    cooldownMs: 10_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 86. ECHO PROPHECY ──
+  {
+    id: 'ECHO_PROPHECY',
+    name: 'Echo Prophecy',
+    description: 'ECHO digital twin detects future state anomaly → ORACLE validates forecast → BRAIN formulates strategy → GOVERNANCE authorizes preemptive action',
+    trigger: {
+      sourceNode: 'echo',
+      signalType: 'future_state_anomaly',
+      condition: (p) => typeof p.temporalDistance === 'number' && (p.temporalDistance as number) < 24,
+      description: 'ECHO detects anomaly in predicted state < 24 hours away',
+    },
+    stages: [
+      { order: 1, node: 'echo', action: 'capture_future_state', description: 'Capture detailed future state from digital twin simulation', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'oracle', action: 'validate_forecast', description: 'Cross-validate forecast against Bayesian network predictions', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ futureState: prev.state, anomalySignature: prev.signature }) },
+      { order: 3, node: 'brain', action: 'formulate_strategy', description: 'Formulate preemptive strategy to prevent predicted anomaly', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ validatedForecast: prev.forecast, confidence: prev.confidence }) },
+      { order: 4, node: 'governance', action: 'authorize_preemption', description: 'Authorize preemptive action with full audit trail', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ strategy: prev.strategy, riskAssessment: prev.risk }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 87. HARVEST INTELLIGENCE ──
+  {
+    id: 'HARVEST_INTELLIGENCE',
+    name: 'Harvest Intelligence',
+    description: 'HARVEST ingests high-value data → BRAIN extracts intelligence → ORACLE builds predictive model → MEMORY archives for permanent recall',
+    trigger: {
+      sourceNode: 'harvest',
+      signalType: 'high_value_data',
+      condition: (p) => typeof p.intelligenceValue === 'number' && (p.intelligenceValue as number) > 80,
+      description: 'HARVEST identifies data with intelligence value > 80',
+    },
+    stages: [
+      { order: 1, node: 'harvest', action: 'extract_payload', description: 'Extract and sanitize high-value data payload', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'brain', action: 'extract_intelligence', description: 'Apply BM25 + SDR analysis to extract actionable intelligence', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ payload: prev.payload, source: prev.source }) },
+      { order: 3, node: 'oracle', action: 'build_model', description: 'Build predictive model from extracted intelligence', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ intelligence: prev.intelligence, patterns: prev.patterns }) },
+      { order: 4, node: 'memory', action: 'archive_permanent', description: 'Archive intelligence and model in permanent cold storage', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ model: prev.model, predictions: prev.predictions }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 88. SHADOW PROTOCOL ──
+  {
+    id: 'SHADOW_PROTOCOL',
+    name: 'Shadow Protocol',
+    description: 'SHADOW detects identity spoofing → IDENTITY verifies biometrics → PHANTOM deploys canary tokens → DEFENSE quarantines impersonator',
+    trigger: {
+      sourceNode: 'shadow',
+      signalType: 'identity_spoofing',
+      condition: (p) => typeof p.spoofConfidence === 'number' && (p.spoofConfidence as number) > 70,
+      description: 'SHADOW detects identity spoofing with confidence > 70',
+    },
+    stages: [
+      { order: 1, node: 'shadow', action: 'collect_spoof_evidence', description: 'Collect evidence of identity spoofing attempt', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'identity', action: 'verify_authentic', description: 'Verify authentic identity against behavioral biometric baseline', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ evidence: prev.evidence, suspectSession: prev.session }) },
+      { order: 3, node: 'phantom', action: 'deploy_canaries', description: 'Deploy canary tokens to track impersonator actions', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ verified: prev.verified, impersonatorId: prev.impersonatorId }) },
+      { order: 4, node: 'defense', action: 'quarantine_impersonator', description: 'Quarantine impersonator and revoke all assumed permissions', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ canaryIds: prev.canaryIds, trackingData: prev.tracking }) },
+    ],
+    cooldownMs: 15_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 89. ATLAS EXPANSION ──
+  {
+    id: 'ATLAS_EXPANSION',
+    name: 'Atlas Expansion',
+    description: 'ATLAS detects capability gap → COMPASS surveys landscape → FORGE builds missing capability → EVOLUTION integrates',
+    trigger: {
+      sourceNode: 'atlas',
+      signalType: 'capability_gap',
+      condition: (p) => typeof p.gapCriticality === 'number' && (p.gapCriticality as number) > 50,
+      description: 'ATLAS detects capability gap with criticality > 50',
+    },
+    stages: [
+      { order: 1, node: 'atlas', action: 'define_requirements', description: 'Define requirements for missing capability', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'compass', action: 'survey_landscape', description: 'Survey existing landscape for partial solutions or composable primitives', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ requirements: prev.requirements, gapDomain: prev.domain }) },
+      { order: 3, node: 'forge', action: 'build_capability', description: 'Build missing capability from discovered primitives', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ partials: prev.partials, composables: prev.composables }) },
+      { order: 4, node: 'evolution', action: 'integrate_capability', description: 'Integrate new capability into substrate genome', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ capability: prev.capability, testResults: prev.tests }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 90. LINGUA SYNTHESIS ──
+  {
+    id: 'LINGUA_SYNTHESIS',
+    name: 'Lingua Synthesis',
+    description: 'LINGUA detects semantic gap across modalities → BRAIN unifies meaning → DREAM extrapolates missing context → MEMORY crystallizes universal representation',
+    trigger: {
+      sourceNode: 'lingua',
+      signalType: 'semantic_gap',
+      condition: (p) => typeof p.gapBreadth === 'number' && (p.gapBreadth as number) > 3,
+      description: 'LINGUA detects semantic gap spanning 3+ modalities',
+    },
+    stages: [
+      { order: 1, node: 'lingua', action: 'map_semantic_gap', description: 'Map semantic gap across language modalities and domains', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'brain', action: 'unify_meaning', description: 'Unify meaning across disparate semantic representations', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ gapMap: prev.map, modalities: prev.modalities }) },
+      { order: 3, node: 'dream', action: 'extrapolate_context', description: 'Dream-extrapolate missing contextual bridges between modalities', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ unifiedMeaning: prev.unified, residualGaps: prev.gaps }) },
+      { order: 4, node: 'memory', action: 'crystallize_representation', description: 'Crystallize universal cross-modal representation into permanent storage', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ bridges: prev.bridges, fullRepresentation: prev.representation }) },
+    ],
+    cooldownMs: 180_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 91. TREATY ARBITRATION ──
+  {
+    id: 'TREATY_ARBITRATION',
+    name: 'Treaty Arbitration',
+    description: 'TREATY detects conflicting obligations → CONSCIENCE evaluates ethical priority → GOVERNANCE arbitrates → SOVEREIGN enforces ruling',
+    trigger: {
+      sourceNode: 'treaty',
+      signalType: 'obligation_conflict',
+      condition: (p) => typeof p.conflictingParties === 'number' && (p.conflictingParties as number) >= 2,
+      description: 'TREATY detects obligations conflict between 2+ parties',
+    },
+    stages: [
+      { order: 1, node: 'treaty', action: 'present_conflict', description: 'Present conflicting obligations with full clause analysis', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'conscience', action: 'evaluate_priority', description: 'Evaluate ethical priority of competing obligations', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ conflict: prev.conflict, clauses: prev.clauses }) },
+      { order: 3, node: 'governance', action: 'arbitrate', description: 'Arbitrate conflict with binding governance decision', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ ethicalPriority: prev.priority, recommendation: prev.recommendation }) },
+      { order: 4, node: 'sovereign', action: 'enforce_ruling', description: 'Enforce arbitration ruling across all affected jurisdictions', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ ruling: prev.ruling, bindingDecision: prev.decision }) },
+    ],
+    cooldownMs: 120_000,
+    priority: 'high',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 92. MEDIC RESURRECTION ──
+  {
+    id: 'MEDIC_RESURRECTION',
+    name: 'Medic Resurrection',
+    description: 'MEDIC declares node clinically dead → SYSTEM preserves state snapshot → IMMUNITY builds repair antibodies → EVOLUTION resurrects with upgrades',
+    trigger: {
+      sourceNode: 'medic',
+      signalType: 'triage_black',
+      condition: (p) => p.triageCode === 'BLACK' && p.resurrectable === true,
+      description: 'MEDIC declares BLACK triage with resurrection potential',
+    },
+    stages: [
+      { order: 1, node: 'medic', action: 'declare_death', description: 'Formally declare node death and document cause of failure', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'system', action: 'preserve_snapshot', description: 'Preserve complete state snapshot before decomposition', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ deadNode: prev.nodeId, causeOfDeath: prev.cause }) },
+      { order: 3, node: 'immunity', action: 'build_repair_antibodies', description: 'Build targeted repair antibodies from failure signature', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ snapshot: prev.snapshot, failureSignature: prev.signature }) },
+      { order: 4, node: 'evolution', action: 'resurrect_with_upgrades', description: 'Resurrect node from snapshot with immunity-hardened upgrades', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ antibodies: prev.antibodies, snapshot: prev.snapshot }) },
+    ],
+    cooldownMs: 60_000,
+    priority: 'critical',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 93. ENGINEER SINGULARITY ──
+  {
+    id: 'ENGINEER_SINGULARITY',
+    name: 'Engineer Singularity',
+    description: 'ENGINEER detects optimization plateau → CORTEX models alternative architectures → ORACLE predicts best path → ENCODE implements transformative refactor',
+    trigger: {
+      sourceNode: 'engineer',
+      signalType: 'optimization_plateau',
+      condition: (p) => typeof p.plateauDuration === 'number' && (p.plateauDuration as number) > 48,
+      description: 'ENGINEER detects optimization plateau lasting > 48 hours',
+    },
+    stages: [
+      { order: 1, node: 'engineer', action: 'analyze_plateau', description: 'Analyze optimization plateau and identify theoretical limits', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'cortex', action: 'model_alternatives', description: 'Model alternative architectures that transcend current limits', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ limits: prev.limits, currentArchitecture: prev.architecture }) },
+      { order: 3, node: 'oracle', action: 'predict_best_path', description: 'Predict success probability for each alternative architecture', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ alternatives: prev.alternatives, riskProfiles: prev.risks }) },
+      { order: 4, node: 'encode', action: 'implement_transformation', description: 'Implement transformative refactor via AST-aware patch engine', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ bestPath: prev.bestPath, successProbability: prev.probability }) },
+    ],
+    cooldownMs: 600_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 94. IDENTITY METAMORPHOSIS ──
+  {
+    id: 'IDENTITY_METAMORPHOSIS',
+    name: 'Identity Metamorphosis',
+    description: 'IDENTITY detects user behavior evolution → BRAIN models new persona → EVOLUTION adapts system profile → ACCESS recalibrates permissions',
+    trigger: {
+      sourceNode: 'identity',
+      signalType: 'behavior_evolution',
+      condition: (p) => typeof p.evolutionDelta === 'number' && (p.evolutionDelta as number) > 40,
+      description: 'IDENTITY detects user behavior evolution delta > 40%',
+    },
+    stages: [
+      { order: 1, node: 'identity', action: 'capture_evolution', description: 'Capture behavioral evolution trajectory and new patterns', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'brain', action: 'model_persona', description: 'Model evolved user persona using associative memory graphs', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ trajectory: prev.trajectory, newPatterns: prev.patterns }) },
+      { order: 3, node: 'evolution', action: 'adapt_profile', description: 'Adapt system profile to match evolved user persona', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ persona: prev.persona, confidenceScore: prev.confidence }) },
+      { order: 4, node: 'access', action: 'recalibrate_permissions', description: 'Recalibrate permission set to match evolved role', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ adaptedProfile: prev.profile, roleChanges: prev.changes }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 95. CORTEX SUPERNOVA ──
+  {
+    id: 'CORTEX_SUPERNOVA',
+    name: 'Cortex Supernova',
+    description: 'CORTEX detects maximum orchestration capacity → NERVE activates emergency channels → BRAIN compresses cognitive load → EVOLUTION spawns parallel cortex',
+    trigger: {
+      sourceNode: 'cortex',
+      signalType: 'capacity_critical',
+      condition: (p) => typeof p.utilizationPercent === 'number' && (p.utilizationPercent as number) > 95,
+      description: 'CORTEX utilization exceeds 95%',
+    },
+    stages: [
+      { order: 1, node: 'cortex', action: 'emergency_shed', description: 'Emergency load shedding of non-critical orchestration tasks', timeoutMs: 3_000, optional: false },
+      { order: 2, node: 'nerve', action: 'activate_emergency_channels', description: 'Activate emergency signal channels bypassing normal routing', timeoutMs: 3_000, optional: false,
+        transform: (prev) => ({ shedTasks: prev.shedTasks, criticalLoad: prev.criticalLoad }) },
+      { order: 3, node: 'brain', action: 'compress_cognitive_load', description: 'Compress cognitive workload by merging related pipelines', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ channels: prev.channels, activeLoad: prev.load }) },
+      { order: 4, node: 'evolution', action: 'spawn_parallel', description: 'Spawn parallel cortex instance to handle overflow', timeoutMs: 10_000, optional: true,
+        transform: (prev) => ({ compressedLoad: prev.compressed, mergedPipelines: prev.merged }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'critical',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 96. DEFENSE OMNISCIENCE ──
+  {
+    id: 'DEFENSE_OMNISCIENCE',
+    name: 'Defense Omniscience',
+    description: 'DEFENSE detects unknown threat class → VISION provides full environmental scan → ORACLE predicts attack trajectory → BRAIN generates novel defense strategy',
+    trigger: {
+      sourceNode: 'defense',
+      signalType: 'unknown_threat_class',
+      condition: (p) => typeof p.classificationConfidence === 'number' && (p.classificationConfidence as number) < 30,
+      description: 'DEFENSE encounters threat with classification confidence < 30%',
+    },
+    stages: [
+      { order: 1, node: 'defense', action: 'quarantine_unknown', description: 'Quarantine unknown threat and preserve attack artifacts', timeoutMs: 5_000, optional: false },
+      { order: 2, node: 'vision', action: 'full_environment_scan', description: 'Full environmental scan of all surfaces touched by unknown threat', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ quarantineId: prev.quarantineId, artifacts: prev.artifacts }) },
+      { order: 3, node: 'oracle', action: 'predict_trajectory', description: 'Predict attack trajectory using Monte Carlo simulation', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ environmentScan: prev.scan, touchedSurfaces: prev.surfaces }) },
+      { order: 4, node: 'brain', action: 'generate_novel_defense', description: 'Generate novel defense strategy for previously unknown threat class', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ trajectory: prev.trajectory, simulationResults: prev.results }) },
+    ],
+    cooldownMs: 30_000,
+    priority: 'critical',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 97. MEMORY TRANSCENDENCE ──
+  {
+    id: 'MEMORY_TRANSCENDENCE',
+    name: 'Memory Transcendence',
+    description: 'MEMORY detects knowledge crystallization opportunity → BRAIN synthesizes cross-domain connections → DREAM extracts meta-patterns → FORGE exports as artifact',
+    trigger: {
+      sourceNode: 'memory',
+      signalType: 'crystallization_opportunity',
+      condition: (p) => typeof p.crossDomainDensity === 'number' && (p.crossDomainDensity as number) > 75,
+      description: 'MEMORY detects cross-domain knowledge density > 75%',
+    },
+    stages: [
+      { order: 1, node: 'memory', action: 'prepare_crystallization', description: 'Prepare cross-domain knowledge clusters for crystallization', timeoutMs: 10_000, optional: false },
+      { order: 2, node: 'brain', action: 'synthesize_connections', description: 'Synthesize hidden connections between knowledge domains', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ clusters: prev.clusters, domains: prev.domains }) },
+      { order: 3, node: 'dream', action: 'extract_meta_patterns', description: 'Dream-extract meta-patterns that transcend individual domains', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ connections: prev.connections, synthesisMap: prev.map }) },
+      { order: 4, node: 'forge', action: 'export_transcendent_artifact', description: 'Export transcendent knowledge as permanent substrate artifact', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ metaPatterns: prev.patterns, transcendenceScore: prev.score }) },
+    ],
+    cooldownMs: 600_000,
+    priority: 'normal',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 98. GOVERNANCE SINGULARITY ──
+  {
+    id: 'GOVERNANCE_SINGULARITY',
+    name: 'Governance Singularity',
+    description: 'GOVERNANCE detects decision paradox → CONSCIENCE provides ethical framework → ORACLE models decision space → AUDIT seals resolution for precedent',
+    trigger: {
+      sourceNode: 'governance',
+      signalType: 'decision_paradox',
+      condition: (p) => typeof p.paradoxComplexity === 'number' && (p.paradoxComplexity as number) > 80,
+      description: 'GOVERNANCE encounters decision paradox with complexity > 80',
+    },
+    stages: [
+      { order: 1, node: 'governance', action: 'frame_paradox', description: 'Frame decision paradox with all competing constraints', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'conscience', action: 'provide_framework', description: 'Provide multi-framework ethical analysis of paradox', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ paradox: prev.paradox, constraints: prev.constraints }) },
+      { order: 3, node: 'oracle', action: 'model_decision_space', description: 'Model full decision space with probabilistic outcome mapping', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ ethicalAnalysis: prev.analysis, frameworks: prev.frameworks }) },
+      { order: 4, node: 'audit', action: 'seal_precedent', description: 'Seal resolution as binding precedent for future paradoxes', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ optimalDecision: prev.decision, outcomeMap: prev.outcomes }) },
+    ],
+    cooldownMs: 300_000,
+    priority: 'critical',
+    governanceOverridable: false,
+    status: 'active',
+  },
+
+  // ── 99. SYSTEM RENAISSANCE ──
+  {
+    id: 'SYSTEM_RENAISSANCE',
+    name: 'System Renaissance',
+    description: 'SYSTEM detects stagnation across multiple nodes → MEDIC diagnoses root cause → ENGINEER redesigns affected subsystems → EVOLUTION deploys renaissance',
+    trigger: {
+      sourceNode: 'system',
+      signalType: 'system_stagnation',
+      condition: (p) => typeof p.stagnantNodes === 'number' && (p.stagnantNodes as number) >= 5,
+      description: 'SYSTEM detects stagnation in 5+ nodes simultaneously',
+    },
+    stages: [
+      { order: 1, node: 'system', action: 'catalog_stagnation', description: 'Catalog all stagnant nodes and their interconnections', timeoutMs: 8_000, optional: false },
+      { order: 2, node: 'medic', action: 'diagnose_root_cause', description: 'Diagnose systemic root cause of multi-node stagnation', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ stagnantNodes: prev.nodes, interconnections: prev.connections }) },
+      { order: 3, node: 'engineer', action: 'redesign_subsystems', description: 'Redesign affected subsystems with fresh architectural patterns', timeoutMs: 15_000, optional: false,
+        transform: (prev) => ({ rootCause: prev.cause, affectedSystems: prev.systems }) },
+      { order: 4, node: 'evolution', action: 'deploy_renaissance', description: 'Deploy renaissance update to revitalize stagnant nodes', timeoutMs: 10_000, optional: false,
+        transform: (prev) => ({ redesign: prev.redesign, migrationPlan: prev.plan }) },
+    ],
+    cooldownMs: 600_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
+
+  // ── 100. SUBSTRATE CONVERGENCE ──
+  {
+    id: 'SUBSTRATE_CONVERGENCE',
+    name: 'Substrate Convergence',
+    description: 'BRAIN achieves cross-node insight convergence → CORTEX orchestrates unified response → GOVERNANCE validates system-wide action → ATLAS records evolutionary milestone',
+    trigger: {
+      sourceNode: 'brain',
+      signalType: 'convergence_event',
+      condition: (p) => typeof p.convergingNodes === 'number' && (p.convergingNodes as number) >= 10,
+      description: 'BRAIN detects insight convergence across 10+ nodes',
+    },
+    stages: [
+      { order: 1, node: 'brain', action: 'synthesize_convergence', description: 'Synthesize convergent insights from 10+ nodes into unified intelligence', timeoutMs: 15_000, optional: false },
+      { order: 2, node: 'cortex', action: 'orchestrate_unified', description: 'Orchestrate unified substrate response leveraging all converging nodes', timeoutMs: 12_000, optional: false,
+        transform: (prev) => ({ unifiedIntelligence: prev.intelligence, convergenceMap: prev.map }) },
+      { order: 3, node: 'governance', action: 'validate_system_action', description: 'Validate system-wide convergence action against all governance constraints', timeoutMs: 8_000, optional: false,
+        transform: (prev) => ({ orchestration: prev.orchestration, impactRadius: prev.radius }) },
+      { order: 4, node: 'atlas', action: 'record_milestone', description: 'Record convergence event as evolutionary milestone in substrate history', timeoutMs: 5_000, optional: false,
+        transform: (prev) => ({ validation: prev.validation, milestone: prev.milestone }) },
+    ],
+    cooldownMs: 600_000,
+    priority: 'high',
+    governanceOverridable: true,
+    status: 'active',
+  },
 ];
-// ═══════════════════════════════════════════════════════════════
 
 const chainRegistry = new Map<ChainId, PrimaryChainDefinition>();
 const chainMetrics = new Map<ChainId, ChainMetrics>();
