@@ -15,7 +15,7 @@ ENGINEER is the substrate's performance optimization engine. It owns runtime tun
 
 | Capability | Description |
 |---|---|
-| `profile` | Collect performance metrics across nodes |
+| `profile` | Collect performance metrics across primitives |
 | `tune` | Adjust runtime parameters for optimization |
 | `diagnose` | Identify bottlenecks and inefficiencies |
 | `allocate` | Distribute resources across competing demands |

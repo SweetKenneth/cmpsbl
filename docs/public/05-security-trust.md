@@ -16,7 +16,7 @@ CMPSBL operates on a **zero trust** principle — nothing is implicitly trusted.
 | **Encryption at rest** | AES-256 encryption on all stored data |
 | **Encryption in transit** | TLS 1.3 for all network communication |
 | **BYOK** | You own your keys and data — nothing is shared with or accessible to the platform |
-| **Secrets vault** | AES-GCM encrypted, per-module scoped |
+| **Secrets vault** | AES-GCM encrypted, per-primitive scoped |
 | **Agent isolation** | Cognitive agents run in sealed, memory-isolated environments |
 
 ---
@@ -36,7 +36,7 @@ CMPSBL operates on a **zero trust** principle — nothing is implicitly trusted.
 
 | Protection | What It Prevents |
 |-----------|-----------------|
-| **Ironclad rate limiting** | Per-key, per-IP, per-module limits prevent abuse |
+| **Ironclad rate limiting** | Per-key, per-IP, per-primitive limits prevent abuse |
 | **Behavioral analysis** | Detects credential stuffing and automated attacks |
 | **RBAC enforcement** | Role-based access prevents privilege escalation |
 | **Crown Jewel isolation** | Most sensitive capabilities locked to admin-only access |

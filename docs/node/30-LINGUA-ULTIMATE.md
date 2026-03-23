@@ -11,7 +11,7 @@
 
 ## 1. Purpose
 
-LINGUA is the substrate's **universal translation and protocol bridging engine**. It owns cross-modal translation (text↔code↔image↔audio↔structured_data↔embedding↔graph), schema mapping between data formats, fidelity scoring, modality bridge management, and cross-node format negotiation. When two nodes speak different "languages," LINGUA bridges them with measured quality.
+LINGUA is the substrate's **universal translation and protocol bridging engine**. It owns cross-modal translation (text↔code↔image↔audio↔structured_data↔embedding↔graph), schema mapping between data formats, fidelity scoring, modality bridge management, and cross-primitive format negotiation. When two nodes speak different "languages," LINGUA bridges them with measured quality.
 
 ---
 
@@ -45,7 +45,7 @@ LINGUA is the substrate's **universal translation and protocol bridging engine**
 - **Partial translation** — when full fidelity isn't possible, translates what it can and marks untranslated fields
 - **Ring buffer** — 1,000-entry translation history (up from 500)
 
-### 2.5 Cross-Node Format Negotiation
+### 2.5 Cross-Primitive Format Negotiation
 - **Format capability registry** — each node advertises supported formats, preferred format, and fallback chain
 - **Auto-negotiation** — `negotiateFormat()` finds highest-fidelity bridge between two nodes' format sets
 - **Fallback chains** — cascading format alternatives when preferred format fails

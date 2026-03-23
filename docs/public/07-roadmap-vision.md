@@ -5,7 +5,7 @@
 ## Current State (v15.0.0 — CONTACT Epoch)
 
 The substrate is production-ready with:
-- 40-node cognitive kernel across 12 sectors
+- 40-primitive cognitive kernel across 4 categories
 - 675+ registered capabilities and 54 premium engines
 - 20 sealed-runtime cognitive agents
 - 7-gate validated evolution pipeline

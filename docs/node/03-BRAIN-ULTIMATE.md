@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-BRAIN is the substrate's **cognitive reasoning and intelligence core**. It doesn't just retrieve and rank — it *thinks* across multiple strategies, monitors its own reasoning accuracy, detects contradictions, builds causal models, compresses working memory via chunking, and collaborates with the entire substrate mid-thought via cross-node intelligence fusion.
+BRAIN is the substrate's **cognitive reasoning and intelligence core**. It doesn't just retrieve and rank — it *thinks* across multiple strategies, monitors its own reasoning accuracy, detects contradictions, builds causal models, compresses working memory via chunking, and collaborates with the entire substrate mid-thought via cross-primitive intelligence fusion.
 
 ---
 
@@ -67,7 +67,7 @@ BRAIN is the substrate's **cognitive reasoning and intelligence core**. It doesn
 - Time-decay relevance: `relevance × e^(-age × 0.01)`
 - Evicts lowest-relevance items when over max effective capacity (20)
 
-### 2.9 Cross-Node Intelligence Fusion
+### 2.9 Cross-Primitive Intelligence Fusion
 - BRAIN requests and **fuses** specialized knowledge from up to **6 nodes** simultaneously
 - Authority-weighted blending: DEFENSE (0.9), MEMORY (0.9), ORACLE (0.85), CORTEX (0.8)
 - Produces confidence-weighted composite results
@@ -166,7 +166,7 @@ BRAIN operates within the `cognitive-reasoning` domain:
 │  └────────────────┘  └────────────────┘  └────────────────┘ │
 │                                                              │
 │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐ │
-│  │  Metacognitive  │  │  WM Compress   │  │  Cross-Node    │ │
+│  │  Metacognitive  │  │  WM Compress   │  │  Cross-Primitive    │ │
 │  │  Monitor        │  │  & Chunking    │  │  Intelligence  │ │
 │  │  (Brier <0.15)  │  │  (7→20 slots)  │  │  Fusion (×6)   │ │
 │  └────────────────┘  └────────────────┘  └────────────────┘ │

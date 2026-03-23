@@ -42,13 +42,13 @@ Every step is governed, audited, and observable.
 
 ## Health & Reliability
 
-Each of the 40 modules has its own **circuit breaker**. If one module has problems:
+Each of the 40 primitives has its own **circuit breaker**. If one primitive has problems:
 - It isolates automatically
 - The rest of the system continues working
 - Auto-healing attempts to restore it
 - You're notified if manual intervention is needed
 
-System health is a **deterministic score** — a weighted sum of all 40 modules, not a guess.
+System health is a **deterministic score** — a weighted sum of all 40 primitives, not a guess.
 
 ---
 

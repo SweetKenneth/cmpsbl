@@ -6,13 +6,13 @@
 
 | Feature | Description |
 |---------|-------------|
-| **40-Node Architecture** | Specialized modules for every function — reasoning, memory, security, ethics, evolution |
+| **40-Primitive Architecture** | Specialized primitives for every function — reasoning, memory, security, ethics, evolution |
 | **4-Tier Persistent Memory** | Hot/Warm/Cold/Glacier tiers with automatic management |
 | **Constant Learning (CLM)** | Up to 14,400 learning cycles/day, compounding knowledge continuously |
 | **Governed Autonomy** | 4 governance modes (Active, Observe, Lockdown, Evolve) |
 | **7-Gate Evolution** | SEBA validation pipeline with truth preservation |
 | **One-Click Disaster Recovery** | Full system backup as a portable archive |
-| **675+ Capabilities** | Registered operations across all modules |
+| **675+ Capabilities** | Registered operations across all primitives |
 | **500+ Terminal Commands** | Direct system control interface |
 
 ---
@@ -48,7 +48,7 @@
 |---------|-------------|
 | **Zero Trust Architecture** | Every action verified, nothing implicitly trusted |
 | **Tamper-Evident Audit** | Merkle chain logging with cryptographic verification |
-| **Ironclad Rate Limiting** | Multi-layer protection with per-module bulkheads |
+| **Ironclad Rate Limiting** | Multi-layer protection with per-primitive bulkheads |
 | **Row-Level Security** | Per-user data isolation at the database level |
 | **BYOK Model** | Your keys, your data, your infrastructure |
 

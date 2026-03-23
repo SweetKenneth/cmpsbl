@@ -20,7 +20,7 @@ ECHO is the substrate's **signal reverberation and pattern amplification engine*
 1. **Resonance Pattern Engine** — co-occurrence mining across 4 time windows (1s/10s/60s/300s)
 2. **Signal Decay & Half-Life** — priority-weighted fade (critical=1hr, warning=15min, info=5min, heartbeat=60s)
 3. **Echo Chamber Detection** — anti-feedback loop with max 5 bounces
-4. **Cross-Node Signal Correlation** — 2/3-gram causal chain discovery
+4. **Cross-Primitive Signal Correlation** — 2/3-gram causal chain discovery
 5. **Signal Compression** — burst deduplication (≥5 duplicates in 10s → summary)
 6. **Selective Amplification** — EMA-weighted impact scoring (0.1x–3.0x)
 7. **Temporal Replay** — time-windowed forensic reconstruction

@@ -154,7 +154,7 @@ Unified health dashboard across all 9 sovereignty systems.
 
 ---
 
-## Cross-Node Integration
+## Cross-Primitive Integration
 
 | Target Node | Integration |
 |------------|-------------|

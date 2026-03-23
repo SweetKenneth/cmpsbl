@@ -198,7 +198,7 @@ CORTEX (orchestration) ──→ SIMULATE (pipeline simulation)
 
 ---
 
-## Cross-Node Data Flow
+## Cross-Primitive Data Flow
 
 | Source | Data | Purpose |
 |--------|------|---------|

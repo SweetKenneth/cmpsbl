@@ -140,7 +140,7 @@ When `drift_score > 0.15`, BRAIN emits a `DRIFT_DETECTED` signal to EVOLUTION fo
 ## CLM Learning Priorities
 
 1. **Embedding Quality Optimization** — Learning which hash seeds produce the best recall accuracy for different content types
-2. **Cross-Node Knowledge Synthesis** — Combining crystals from multiple nodes to discover emergent patterns
+2. **Cross-Primitive Knowledge Synthesis** — Combining crystals from multiple nodes to discover emergent patterns
 
 ---
 

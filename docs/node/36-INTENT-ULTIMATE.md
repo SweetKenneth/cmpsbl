@@ -44,7 +44,7 @@
 [5] Priority Arbitrator      → Urgency scoring + starvation prevention
     │
     ▼
-[9] Cross-Node Orchestrator  → Capacity-aware routing
+[9] Cross-Primitive Orchestrator  → Capacity-aware routing
     │
     ▼
 [6] Rollback Planner         → Compensating/checkpoint/idempotent strategies
@@ -154,7 +154,7 @@ routed → executing → executed → verified | failed | rolled_back</code></pr
     </section>
 
     <section>
-      <h2>System 9: Cross-Node Orchestration Protocol</h2>
+      <h2>System 9: Cross-Primitive Orchestration Protocol</h2>
       <p>Capacity-aware intent routing across 26 substrate nodes:</p>
       <ul>
         <li><strong>Node Capability Map</strong>: Maps 26 nodes to 52 capability domains</li>
