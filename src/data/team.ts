@@ -40,7 +40,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: "Founder & Chief Architect",
     department: "Executive",
     photo: founderPhoto,
-    bio: "Kenneth E Sweet Jr is the founder of CMPSBL and the architect behind the cognitive orchestration substrate — a 40-primitive AI operating system organized across 4 categories with 675+ capabilities spanning 175,000+ lines of production code. He has been shipping software since 2009 and leads the company's vision for persistent memory, governed orchestration, and autonomous self-improvement in enterprise AI.",
+    bio: "Kenneth E Sweet Jr is the founder of CMPSBL and the architect behind the cognitive orchestration substrate — a 40-primitive AI operating system organized across 4 categories with 675+ capabilities spanning 200,000+ lines of production code. He has been shipping software since 2009 and leads the company's vision for persistent memory, governed orchestration, and autonomous self-improvement in enterprise AI.",
     email: "founder@CMPSBL.com",
     expertise: ["AI Architecture", "Persistent Memory", "Cognitive Systems", "Multi-Provider Routing", "Self-Evolving Code"],
     isFounder: true,
