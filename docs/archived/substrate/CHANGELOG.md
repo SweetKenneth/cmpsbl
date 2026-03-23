@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v15.9.0 (CONTACT — INTENT Ultimate "Compass Prime")
+
+⟨This entry describes INTENT v9.0.0 — the substrate's Executive Function reaching its ultimate form with 10 new systems.⟩
+
+- **Polyvalent Intent Classifier** — 4-strategy weighted voting (keyword 15%, semantic 35%, contextual 30%, behavioral 20%). Handles ambiguous, compound, and implicit intents with ranked alternatives.
+- **Goal Decomposition Engine (DAG)** — Kahn's topological sort for dependency-ordered action plans. Detects parallelizable sub-goals, sequential deps, conditional branches. Critical path estimation.
+- **Ambiguity Resolution Protocol** — Surfaces structured disambiguation reports when confidence < 0.7. 4 ambiguity types. EMA-weighted pattern learning with auto-resolve after 3+ successful resolutions.
+- **Intent Memory & Pattern Recognition** — Hebbian learning on intent→resolver-chain edges. Strengthening (0.1), weakening (0.05), exponential temporal decay. Predicts best chain per intent type.
+- **Priority Arbitration Matrix** — 5-level urgency scoring (critical→background). Wait bonus, starvation prevention (30s threshold), resource budgets (5 concurrent, 20 units), dependency ordering.
+- **Rollback Planning Engine** — 4 strategies: compensating, checkpoint, idempotent, none. Reverse-order execution. Checkpoint state capture and restoration.
+- **Contextual Amplification Layer** — Enriches input from 6 sources: MEMORY, BRAIN, DECODE, IDENTITY, COMPASS, Session. Relevance filtering (>0.2), max 15 signals.
+- **Execution Telemetry & Feedback Loop** — 11-phase lifecycle tracking (received→verified). Per-phase duration, P95 snapshots, success rate. Feeds back into classifier.
+- **Cross-Node Orchestration Protocol** — 26-node capability map with composite scoring (capability match + health - load). Fallback chains, parallel grouping, real-time capacity integration.
+- **Speculative Pre-Resolution** — 2-gram and 3-gram sequence learning. Confidence-gated pre-staging (>0.5). 60s TTL. Hit rate tracking and pipeline pre-warming.
+
+---
+
 ## 2026-03-23 · v15.8.0 (CONTACT — Wave 3 Auto-Activation + Documentation)
 
 ⟨This entry describes the addition of 50 new auto-activation rules (ACT_101–ACT_150) bringing the total to 150, plus comprehensive documentation for all auto-activated capabilities and all 100 primary memory chains with full descriptions.⟩

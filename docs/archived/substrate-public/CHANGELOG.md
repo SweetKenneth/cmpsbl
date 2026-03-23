@@ -4,6 +4,18 @@
 
 ---
 
+## v15.9.0 — 2026-03-23
+
+- **INTENT Ultimate "Compass Prime"** — 10 new systems: Polyvalent Classifier (4-strategy weighted voting), Goal Decomposition Engine (Kahn's DAG), Ambiguity Resolution (pattern learning + auto-resolve), Intent Memory (Hebbian edge learning), Priority Arbitration (urgency + starvation prevention), Rollback Planner (compensating/checkpoint/idempotent), Contextual Amplifier (6 sources), Execution Telemetry (11-phase lifecycle), Cross-Node Orchestrator (26-node capacity-aware routing), Speculative Pre-Resolver (n-gram prediction + pre-staging).
+
+---
+
+## v15.8.0 — 2026-03-23
+
+- **Wave 3 Auto-Activation** — 50 new reactive capability rules (ACT_101–150), bringing total to 150. Full auto-activation registry and primary memory chains documentation.
+
+---
+
 ## v15.7.0 — 2026-03-23
 
 - **SANDBOX Ultimate "Terrarium"** — 10 new systems: Isolation Boundary Engine (zero-trust namespaces), Resource Metering (5-tier budgets with burst), Execution Timeline Recorder (deterministic replay), Escape Detection (auto-freeze at threat ≥7), Network Policy Controller (default deny + TLS), Experiment Orchestrator (A/B with significance testing), Builder Project Runtime (capability tokens + hot-reload), Forensic Snapshot Engine (merkle-chained captures), Fleet Manager (pre-warmed pool + priority preemption), Telemetry Hub (fleet aggregates).
