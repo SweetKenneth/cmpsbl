@@ -323,7 +323,7 @@ const modulesByLayer = {
     },
     {
       id: "echo",
-      name: "ECHO",
+      name: "ECHO Agent",
       description: "Pattern detection, signal amplification",
       icon: AudioLines,
       color: "text-sky-300",
