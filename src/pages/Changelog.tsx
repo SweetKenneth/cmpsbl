@@ -81,7 +81,7 @@ const stratumIronclad: Specimen[] = [
       "Memory self-maintenance scales linearly regardless of tier size",
       "Infrastructure queries that previously scanned full tables now resolve through indexed lookups",
     ],
-    affectedNodes: ["SYSTEM", "BRAIN", "MEMORY", "OBSERVER"],
+    affectedNodes: ["SYSTEM Organ", "BRAIN Organ", "MEMORY Organ", "OBSERVER Agent"],
   },
   {
     id: "IRNC-015",
@@ -102,7 +102,7 @@ const stratumIronclad: Specimen[] = [
       "Visual rhythm is consistent across all subpages through section dividers, accent gradients, and shimmer effects",
       "The substrate's public surface feels like a living system with depth, not a static documentation site",
     ],
-    affectedNodes: ["SYSTEM"],
+    affectedNodes: ["SYSTEM Organ"],
   },
   {
     id: "IRNC-014",
@@ -121,7 +121,7 @@ const stratumIronclad: Specimen[] = [
       "Empty states are informative and visually engaging rather than generic placeholder text",
       "Crystallization feels like a premium interaction with deliberate animation feedback",
     ],
-    affectedNodes: ["SYSTEM"],
+    affectedNodes: ["SYSTEM Organ"],
   },
   {
     id: "IRNC-013",
@@ -137,7 +137,7 @@ const stratumIronclad: Specimen[] = [
       "Lost users are guided toward productive paths — onboarding and the Memory Stream — rather than diagnostic pages",
       "Button hierarchy communicates the most important action through visual weight",
     ],
-    affectedNodes: ["SYSTEM"],
+    affectedNodes: ["SYSTEM Organ"],
   },
   {
     id: "IRNC-012",
@@ -155,7 +155,7 @@ const stratumIronclad: Specimen[] = [
       "Bulk operations at the database level replaced row-by-row processing, reducing cleanup time from hours to seconds",
       "Memory pressure is self-regulating: the system detects overload severity and escalates enforcement accordingly",
     ],
-    affectedNodes: ["BRAIN", "MEMORY", "SYSTEM"],
+    affectedNodes: ["BRAIN Organ", "MEMORY Organ", "SYSTEM Organ"],
   },
   {
     id: "IRNC-011",
@@ -172,7 +172,7 @@ const stratumIronclad: Specimen[] = [
       "Competitive moat protected — architectural trade secrets no longer leak through public documentation",
       "Epoch-based language creates a more compelling evolutionary narrative for external audiences",
     ],
-    affectedNodes: ["GOVERNANCE", "AUTOBLOG"],
+    affectedNodes: ["GOVERNANCE Layer", "AUTOBLOG"],
   },
   {
     id: "IRNC-010",
@@ -190,7 +190,7 @@ const stratumIronclad: Specimen[] = [
       "Visual language is consistent and premium — glass, glow, and gradient accents create a unified aesthetic",
       "The site feels like a living system, not a static page",
     ],
-    affectedNodes: ["SYSTEM"],
+    affectedNodes: ["SYSTEM Organ"],
   },
   {
     id: "IRNC-009",
@@ -208,7 +208,7 @@ const stratumIronclad: Specimen[] = [
       "Semantic drift is bounded: raw observations are weighted heavily over derived abstractions",
       "The substrate's dreaming is collaborative, not siloed",
     ],
-    affectedNodes: ["BRAIN", "MEMORY", "DREAM"],
+    affectedNodes: ["BRAIN Organ", "MEMORY Organ", "DREAM Engine"],
   },
   {
     id: "IRNC-008",
@@ -226,7 +226,7 @@ const stratumIronclad: Specimen[] = [
       "The substrate knows how fast it heals — and optimizes recovery strategies based on MTTR",
       "Every state change is anchored in a tamper-evident chain that survives restarts",
     ],
-    affectedNodes: ["CORE", "AUDIT", "SYSTEM"],
+    affectedNodes: ["CORE Organ", "AUDIT Organ", "SYSTEM Organ"],
   },
   {
     id: "IRNC-007",
@@ -243,7 +243,7 @@ const stratumIronclad: Specimen[] = [
       "Recovery is structured and repeatable — not ad-hoc patching",
       "Operators receive clear summaries of what was broken, what was fixed, and current stability",
     ],
-    affectedNodes: ["SYSTEM", "CORE", "MEDIC"],
+    affectedNodes: ["SYSTEM Organ", "CORE Organ", "MEDIC Engine"],
   },
   {
     id: "IRNC-006",
@@ -260,7 +260,7 @@ const stratumIronclad: Specimen[] = [
       "Load spikes are absorbed gracefully: old data evicts before new data is rejected",
       "Safety caps are structural, not configurable — they cannot be accidentally removed",
     ],
-    affectedNodes: ["CORE", "DEFENSE", "SYSTEM"],
+    affectedNodes: ["CORE Organ", "DEFENSE Layer", "SYSTEM Organ"],
   },
   {
     id: "IRNC-005",
@@ -278,7 +278,7 @@ const stratumIronclad: Specimen[] = [
       "Publish frequency self-adjusts: more when quality is strong, less when the system detects uncertainty",
       "Full decision transparency — every defer and every publish has an auditable rationale",
     ],
-    affectedNodes: ["AUTOBLOG", "GOVERNANCE"],
+    affectedNodes: ["AUTOBLOG", "GOVERNANCE Layer"],
   },
   {
     id: "IRNC-004",
@@ -296,7 +296,7 @@ const stratumIronclad: Specimen[] = [
       "Quality parameters evolve over time based on real outcomes — no manual tuning required",
       "Epistemic calibration without censorship: drift awareness informs but never vetoes",
     ],
-    affectedNodes: ["AUTOBLOG", "MEMORY", "BRAIN"],
+    affectedNodes: ["AUTOBLOG", "MEMORY Organ", "BRAIN Organ"],
   },
   {
     id: "IRNC-003",
@@ -314,7 +314,7 @@ const stratumIronclad: Specimen[] = [
       "Topic discovery is slow and deliberate — the substrate absorbs before it acts",
       "Content quality is architecturally enforced, not editorially negotiated",
     ],
-    affectedNodes: ["AUTOBLOG", "INTEGRATION"],
+    affectedNodes: ["AUTOBLOG", "INTEGRATION Organ"],
   },
   {
     id: "IRNC-002",
@@ -333,7 +333,7 @@ const stratumIronclad: Specimen[] = [
       "Content assumptions are tracked over time — broken assumptions trigger recalibration",
       "The system develops institutional memory about its own publishing quality",
     ],
-    affectedNodes: ["AUTOBLOG", "BRAIN", "MEMORY"],
+    affectedNodes: ["AUTOBLOG", "BRAIN Organ", "MEMORY Organ"],
   },
   {
     id: "IRNC-001",
@@ -378,7 +378,7 @@ const stratumSparta: Specimen[] = [
       "Architecture is uniform regardless of deployment location",
       "All cognitive maintenance is fully autonomous across distributions",
     ],
-    affectedNodes: ["BRAIN", "SYSTEM", "INTEGRATION"],
+    affectedNodes: ["BRAIN Organ", "SYSTEM Organ", "INTEGRATION Organ"],
   },
   {
     id: "SPRT-006",
@@ -394,7 +394,7 @@ const stratumSparta: Specimen[] = [
       "Downstream nodes receive brain learnings automatically without running their own learning cycles",
       "Knowledge flows downhill — the parent learns, the children absorb",
     ],
-    affectedNodes: ["BRAIN", "MEMORY", "INTEGRATION"],
+    affectedNodes: ["BRAIN Organ", "MEMORY Organ", "INTEGRATION Organ"],
   },
   {
     id: "SPRT-005",
@@ -427,7 +427,7 @@ const stratumSparta: Specimen[] = [
       "Continuous learning runs at full intensity with no artificial throttling",
       "Version synchronization confirmed operational across all distribution nodes",
     ],
-    affectedNodes: ["BRAIN", "SYSTEM"],
+    affectedNodes: ["BRAIN Organ", "SYSTEM Organ"],
   },
   {
     id: "SPRT-003",
@@ -444,7 +444,7 @@ const stratumSparta: Specimen[] = [
       "Fault isolation identifies the exact zone at fault — no more blaming entire layers",
       "Architecture correctly reflects a multi-node cognitive mesh across defined sectors",
     ],
-    affectedNodes: ["SYSTEM", "BRAIN", "MEMORY", "DREAM"],
+    affectedNodes: ["SYSTEM Organ", "BRAIN Organ", "MEMORY Organ", "DREAM Engine"],
   },
   {
     id: "SPRT-002",
@@ -459,7 +459,7 @@ const stratumSparta: Specimen[] = [
       "No upgrade reaches production without passing both validation and shadow tests",
       "Shadow-proven changes promote safely with instant rollback safety net",
     ],
-    affectedNodes: ["EVOLUTION", "GOVERNANCE"],
+    affectedNodes: ["EVOLUTION Layer", "GOVERNANCE Layer"],
   },
   {
     id: "SPRT-001",
@@ -513,7 +513,7 @@ const stratumInfra: Specimen[] = [
       "Authority conflicts resolve deterministically — no ambiguity in governance decisions",
       "Advisory capabilities are bounded — they inform but cannot act unilaterally",
     ],
-    affectedNodes: ["DECODE", "GOVERNANCE"],
+    affectedNodes: ["DECODE Agent", "GOVERNANCE Layer"],
   },
   {
     id: "INFR-008",
@@ -544,7 +544,7 @@ const stratumInfra: Specimen[] = [
       "Capabilities are tiered: discoverable by all, accessible by entitlement",
       "Significant increase in governed capabilities in a single cycle",
     ],
-    affectedNodes: ["ALL NODES", "GOVERNANCE"],
+    affectedNodes: ["ALL NODES", "GOVERNANCE Layer"],
   },
   {
     id: "INFR-004",
@@ -563,7 +563,7 @@ const stratumInfra: Specimen[] = [
       "Tripped circuits self-heal — zero manual intervention required",
       "The substrate learns from its own failures and avoids repeating them",
     ],
-    affectedNodes: ["BRAIN", "EVOLUTION", "CORE", "ENCODE"],
+    affectedNodes: ["BRAIN Organ", "EVOLUTION Layer", "CORE Organ", "ENCODE Agent"],
   },
   {
     id: "INFR-003",
@@ -583,7 +583,7 @@ const stratumInfra: Specimen[] = [
       "Compliance audits generate on-demand across multiple governance frameworks",
       "Cost trend forecasting enables proactive budget governance",
     ],
-    affectedNodes: ["MEMORY", "RELAY", "AUDIT", "ECONOMY", "IDENTITY", "SANDBOX"],
+    affectedNodes: ["MEMORY Organ", "RELAY Organ", "AUDIT Organ", "ECONOMY Engine", "IDENTITY Organ", "SANDBOX Engine"],
   },
   {
     id: "INFR-002",
@@ -600,7 +600,7 @@ const stratumInfra: Specimen[] = [
       "Brain knowledge flows to specialized nodes for domain-specific recall",
       "Memory tiers self-manage — no manual intervention for promotion or pruning",
     ],
-    affectedNodes: ["BRAIN", "MEMORY", "NEXUS"],
+    affectedNodes: ["BRAIN Organ", "MEMORY Organ", "NEXUS Organ"],
   },
   {
     id: "INFR-001",
@@ -616,7 +616,7 @@ const stratumInfra: Specimen[] = [
       "Multi-provider fleet with automatic failover — no single point of AI failure",
       "Complex tasks route to high-capability providers; simple tasks route to efficient ones",
     ],
-    affectedNodes: ["NEXUS", "CORTEX"],
+    affectedNodes: ["NEXUS Organ", "CORTEX Engine"],
   },
 ];
 
@@ -672,7 +672,7 @@ const stratumContact: Specimen[] = [
       "External systems can now discover, capture, and export reusable intelligence without ever opening the platform UI",
       "The NPM ecosystem is the substrate's first programmatic distribution channel",
     ],
-    affectedNodes: ["INTEGRATION", "FORGE", "MEMORY", "DECODE", "ENCODE", "CORTEX"],
+    affectedNodes: ["INTEGRATION Organ", "FORGE Engine", "MEMORY Organ", "DECODE Agent", "ENCODE Agent", "CORTEX Engine"],
   },
   {
     id: "CNTC-002",
@@ -690,7 +690,7 @@ const stratumContact: Specimen[] = [
       "v15 signals a major distribution milestone, not just incremental improvement",
       "The epoch hierarchy now traces a complete arc: formation → infrastructure → governance → users → developers",
     ],
-    affectedNodes: ["CORE", "EVOLUTION", "GOVERNANCE"],
+    affectedNodes: ["CORE Organ", "EVOLUTION Layer", "GOVERNANCE Layer"],
   },
 ];
 
@@ -711,7 +711,7 @@ const stratumMindgames: Specimen[] = [
       "Users reach the tier cards faster with clearer context about what they're actually buying",
       "The subscription page respects attention — every section earns its place or gets removed",
     ],
-    affectedNodes: ["SYSTEM", "ECONOMY"],
+    affectedNodes: ["SYSTEM Organ", "ECONOMY Engine"],
   },
   {
     id: "MNDG-024",
@@ -729,7 +729,7 @@ const stratumMindgames: Specimen[] = [
       "Every product is individually indexable by search engines with structured data",
       "Free products are gated behind authentication, not given away to anonymous visitors",
     ],
-    affectedNodes: ["NEXUS", "FORGE", "ECONOMY"],
+    affectedNodes: ["NEXUS Organ", "FORGE Engine", "ECONOMY Engine"],
   },
   {
     id: "MNDG-023",
@@ -747,7 +747,7 @@ const stratumMindgames: Specimen[] = [
       "FAILSAFE is the first engine to ship as a complete downloadable sealed runtime",
       "The engine detail page is a standalone SEO surface — discoverable independently from the store",
     ],
-    affectedNodes: ["CORE", "FORGE", "DEFENSE"],
+    affectedNodes: ["CORE Organ", "FORGE Engine", "DEFENSE Layer"],
   },
   {
     id: "MNDG-022",
@@ -765,7 +765,7 @@ const stratumMindgames: Specimen[] = [
       "Agent discovery happens through search engines, not just the store browse experience",
       "The substrate's AI workforce is individually addressable on the public web",
     ],
-    affectedNodes: ["CORTEX", "NEXUS", "DECODE"],
+    affectedNodes: ["CORTEX Engine", "NEXUS Organ", "DECODE Agent"],
   },
   {
     id: "MNDG-021",
@@ -781,7 +781,7 @@ const stratumMindgames: Specimen[] = [
       "The Governor sees exactly what users see — no information hidden behind ellipsis",
       "Admin and public download experiences are structurally identical",
     ],
-    affectedNodes: ["GOVERNANCE", "FORGE"],
+    affectedNodes: ["GOVERNANCE Layer", "FORGE Engine"],
   },
   {
     id: "MNDG-020",
@@ -797,7 +797,7 @@ const stratumMindgames: Specimen[] = [
       "Every engine in the substrate has its own landing page — optimized for both users and search crawlers",
       "The acquisition experience adapts to the engine's pricing tier without any page navigation",
     ],
-    affectedNodes: ["FORGE", "NEXUS"],
+    affectedNodes: ["FORGE Engine", "NEXUS Organ"],
   },
   {
     id: "MNDG-019",
@@ -815,7 +815,7 @@ const stratumMindgames: Specimen[] = [
       "Authentication gates prevent anonymous harvesting of substrate assets",
       "The download experience is premium: manifest, docs, runtime, and tests in every bundle",
     ],
-    affectedNodes: ["NEXUS", "FORGE", "IDENTITY"],
+    affectedNodes: ["NEXUS Organ", "FORGE Engine", "IDENTITY Organ"],
   },
   {
     id: "MNDG-018",
@@ -833,7 +833,7 @@ const stratumMindgames: Specimen[] = [
       "Disaster recovery shifted from a multi-day manual process to a one-click operation",
       "Any AI coding agent can restore the entire system by following the included step-by-step guide",
     ],
-    affectedNodes: ["CORE", "SYSTEM", "AUDIT"],
+    affectedNodes: ["CORE Organ", "SYSTEM Organ", "AUDIT Organ"],
   },
   {
     id: "MNDG-017",
@@ -849,7 +849,7 @@ const stratumMindgames: Specimen[] = [
       "System preservation is a first-class admin capability — visible and accessible alongside daily reports",
       "Operators never have to leave their command surface to initiate or monitor a full system backup",
     ],
-    affectedNodes: ["GOVERNANCE", "SYSTEM"],
+    affectedNodes: ["GOVERNANCE Layer", "SYSTEM Organ"],
   },
   {
     id: "MNDG-016",
@@ -865,7 +865,7 @@ const stratumMindgames: Specimen[] = [
       "The platform can now observe its own developer ecosystem in real time",
       "API adoption patterns are visible per developer, per module, per time window",
     ],
-    affectedNodes: ["DECODE", "ANALYTICS"],
+    affectedNodes: ["DECODE Agent", "ANALYTICS"],
   },
   {
     id: "MNDG-015",
@@ -882,7 +882,7 @@ const stratumMindgames: Specimen[] = [
       "Every session tells a story: where the user entered, what they explored, and whether they converted",
       "Bounce rate and depth metrics expose friction points without digging into raw events",
     ],
-    affectedNodes: ["DECODE", "ANALYTICS"],
+    affectedNodes: ["DECODE Agent", "ANALYTICS"],
   },
   {
     id: "MNDG-014",
@@ -898,7 +898,7 @@ const stratumMindgames: Specimen[] = [
       "The pricing engine respects its own prior decisions — it prices once, not repeatedly",
       "Batch operations are intelligent: they find gaps instead of redoing work",
     ],
-    affectedNodes: ["FORGE", "ECONOMY"],
+    affectedNodes: ["FORGE Engine", "ECONOMY Engine"],
   },
   {
     id: "MNDG-013",
@@ -914,7 +914,7 @@ const stratumMindgames: Specimen[] = [
       "Clean module graph — no legacy identifiers leaking through public APIs",
       "Audit test suite passes without false positives from stale references",
     ],
-    affectedNodes: ["EVOLUTION", "ENGINEER"],
+    affectedNodes: ["EVOLUTION Layer", "ENGINEER Agent"],
   },
   {
     id: "MNDG-012",
@@ -928,7 +928,7 @@ const stratumMindgames: Specimen[] = [
     phenotype: [
       "Mobile navigation is clean and unambiguous — one action, one button",
     ],
-    affectedNodes: ["SYSTEM"],
+    affectedNodes: ["SYSTEM Organ"],
   },
   {
     id: "MNDG-011",
@@ -946,7 +946,7 @@ const stratumMindgames: Specimen[] = [
       "Page flows reveal the natural paths users create through the system",
       "Feature adoption data shows what the platform does that people actually care about",
     ],
-    affectedNodes: ["DECODE", "ANALYTICS"],
+    affectedNodes: ["DECODE Agent", "ANALYTICS"],
   },
   {
     id: "MNDG-010",
@@ -962,7 +962,7 @@ const stratumMindgames: Specimen[] = [
       "Analytics reflect real visitor behavior — the owner is invisible to the system's observation layer",
       "Data integrity is maintained without manual filtering",
     ],
-    affectedNodes: ["DECODE", "ANALYTICS"],
+    affectedNodes: ["DECODE Agent", "ANALYTICS"],
   },
   {
     id: "MNDG-009",
@@ -978,7 +978,7 @@ const stratumMindgames: Specimen[] = [
       "External developers can self-serve — register, generate keys, and start calling the API immediately",
       "Every API call is metered and attributed to a specific developer and key",
     ],
-    affectedNodes: ["NEXUS", "IDENTITY"],
+    affectedNodes: ["NEXUS Organ", "IDENTITY Organ"],
   },
   {
     id: "MNDG-008",
@@ -994,7 +994,7 @@ const stratumMindgames: Specimen[] = [
       "Every artifact in the vault has an economic identity — priced, categorized, and market-positioned",
       "The platform understands the commercial value of its own capabilities",
     ],
-    affectedNodes: ["FORGE", "ECONOMY"],
+    affectedNodes: ["FORGE Engine", "ECONOMY Engine"],
   },
   {
     id: "MNDG-007",
@@ -1010,7 +1010,7 @@ const stratumMindgames: Specimen[] = [
       "The platform observes its own traffic — no third-party analytics, no data leakage",
       "Real-time visitor intelligence is a native system capability",
     ],
-    affectedNodes: ["DECODE", "HARVEST"],
+    affectedNodes: ["DECODE Agent", "HARVEST Agent"],
   },
   {
     id: "MNDG-006",
@@ -1024,7 +1024,7 @@ const stratumMindgames: Specimen[] = [
     phenotype: [
       "The platform's evolution capability has one name everywhere — consistent identity across all surfaces",
     ],
-    affectedNodes: ["EVOLUTION"],
+    affectedNodes: ["EVOLUTION Layer"],
   },
   {
     id: "MNDG-005",
@@ -1040,7 +1040,7 @@ const stratumMindgames: Specimen[] = [
       "System evolution is visible and controllable through a dedicated mission-control interface",
       "Every mutation can be previewed, approved, or rolled back without touching the terminal",
     ],
-    affectedNodes: ["EVOLUTION", "GOVERNANCE"],
+    affectedNodes: ["EVOLUTION Layer", "GOVERNANCE Layer"],
   },
   {
     id: "MNDG-004",
@@ -1056,7 +1056,7 @@ const stratumMindgames: Specimen[] = [
       "The platform remembers what it learned — knowledge persists across restarts and sessions",
       "Memory recall is intelligent, not exhaustive — it surfaces what matters when it matters",
     ],
-    affectedNodes: ["MEMORY", "BRAIN"],
+    affectedNodes: ["MEMORY Organ", "BRAIN Organ"],
   },
   {
     id: "MNDG-003",
@@ -1072,7 +1072,7 @@ const stratumMindgames: Specimen[] = [
       "Users can assemble cognitive teams from a visual interface — no code, no configuration files",
       "Task routing is automatic — the right cognitive handles the right work",
     ],
-    affectedNodes: ["CORTEX", "NEXUS"],
+    affectedNodes: ["CORTEX Engine", "NEXUS Organ"],
   },
   {
     id: "MNDG-002",
@@ -1088,7 +1088,7 @@ const stratumMindgames: Specimen[] = [
       "The full 40-module system is discoverable from a single interface",
       "Users can understand the platform's architecture without reading documentation",
     ],
-    affectedNodes: ["ATLAS", "DECODE"],
+    affectedNodes: ["ATLAS", "DECODE Agent"],
   },
   {
     id: "MNDG-001",
@@ -1109,7 +1109,7 @@ const stratumMindgames: Specimen[] = [
       "Complete learning architecture with governed capability installation",
       "Generation-tagged module topology enabling evolutionary lineage tracking",
     ],
-    affectedNodes: ["CORE", "ENGINEER", "MEMORY", "DECODE", "GOVERNANCE"],
+    affectedNodes: ["CORE Organ", "ENGINEER Agent", "MEMORY Organ", "DECODE Agent", "GOVERNANCE Layer"],
   },
 ];
 
