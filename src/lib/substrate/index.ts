@@ -1106,7 +1106,7 @@ export {
   type ForgeModuleState,
 } from './forge-module';
 
-// LINGUA — Universal Translation & Cross-Modal Communication
+// LINGUA v9.0.0 — Universal Translation & Protocol Bridge Engine
 export {
   initLingua,
   translate,
@@ -1117,10 +1117,41 @@ export {
   getLinguaEngine,
   getLinguaHardening,
   upgradeLinguaEngine,
+  // Adaptive Fidelity
+  getCoercionSafety,
+  // Schema Intelligence
+  generateSchemaMigration,
+  inferSchemaMapping,
+  // Protocol Bridge Mesh
+  findTransitivePath,
+  verifyBridgeRoundTrip,
+  hotSwapBridge,
+  // Multi-Modal Pipeline
+  streamTranslate,
+  queueBatchTranslation,
+  processBatchQueue,
+  partialTranslate,
+  // Format Negotiation
+  registerNodeFormats,
+  negotiateFormat,
+  getFallbackChain,
+  // Telemetry
+  getAnomalyAlerts,
+  getBridgeStats,
+  getFidelityHeatMap,
+  getSchemaStats,
+  // Types
   type Modality,
   type TranslationQuality,
+  type BridgeStatus,
   type Translation,
+  type ModalityBridge,
+  type SchemaMapping,
   type FieldMapping,
+  type FidelityProfile,
+  type FormatCapability,
+  type TransitivePath,
+  type BatchTranslation,
   type LinguaModuleState,
 } from './lingua-module';
 
