@@ -102,7 +102,7 @@ const SELF_IMPROVEMENT_FEATURES = [
   {
     icon: RefreshCw,
     title: "Continuous Learning",
-    desc: "Insights from every resolution automatically feed back into the system, making each node progressively more capable.",
+    desc: "Insights from every resolution automatically feed back into the system, making each primitive progressively more capable.",
   },
   {
     icon: Zap,
