@@ -254,7 +254,7 @@ const modulesByLayer = {
     },
     {
       id: "sandbox",
-      name: "SANDBOX",
+      name: "SANDBOX Engine",
       description: "Resource limits, state snapshots, isolated execution",
       icon: Box,
       color: "text-lime-500",
