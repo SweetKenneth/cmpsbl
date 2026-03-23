@@ -3497,7 +3497,7 @@ ${categories.map(c => `│  ${c.category.padEnd(15)} ${c.count.toString().padSta
             success: true,
             output: `
 ┌─ SYNERGIES FOR MODULE: ${moduleFilter} ─────────────────────────
-│  Total: ${synergies.length} pipelines
+│  Total: ${synergies.length} memory chains
 ├──────────────────────────────────────────────────────────────
 ${synergies.slice(0, 20).map(s => `│  ${s.id.padEnd(30)} ${s.category}`).join('\n')}
 ${synergies.length > 20 ? `│  ... and ${synergies.length - 20} more` : ''}
