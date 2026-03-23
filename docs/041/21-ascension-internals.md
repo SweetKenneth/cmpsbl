@@ -8,7 +8,7 @@
 
 ## Purpose
 
-This document describes the internal architecture of the Ascension subsystem — the pipeline that transforms developer software into first-class substrate nodes (Auxiliary Node).
+This document describes the internal architecture of the Ascension subsystem — the pipeline that transforms developer software into first-class substrate primitives (Auxiliary Node).
 
 ---
 
@@ -121,7 +121,7 @@ Legacy v1 flat metadata is auto-migrated on read via `migrateMetadata()`.
 
 Ascension nodes participate in discovery chains as `ModuleEffect` instances:
 - Module names use collision-safe format: `Ψ₄₁_NODENAME`
-- Reserved canonical names (40 substrate nodes) are guarded
+- Reserved canonical names (40 substrate primitives) are guarded
 - Individual primitive execution failures are isolated — do not poison the chain
 - Each injection annotates context with execution trace and primitive count
 

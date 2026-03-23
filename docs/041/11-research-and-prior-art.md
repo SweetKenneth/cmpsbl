@@ -14,7 +14,7 @@ This document describes the conceptual lineage and academic foundations of the C
 
 ## 1. Research Trajectory
 
-CMPSBL represents a 15-month research and development trajectory that began in January 2025 with the creation of the BRAIN module (Node #3). The system has evolved through multiple architectural generations, consolidating from 252 discrete edge functions into a unified 40-node cognitive operating system.
+CMPSBL represents a 15-month research and development trajectory that began in January 2025 with the creation of the BRAIN module (Node #3). The system has evolved through multiple architectural generations, consolidating from 252 discrete edge functions into a unified 40-primitive cognitive operating system.
 
 ---
 
@@ -31,7 +31,7 @@ This publication traces the system's conceptual and technical lineage from its o
 - Key architectural transitions
 - Legacy project integrations (PromptFluid-Vision, Simnap, AetherionShield, Cascade)
 - The PromptFluid Clarity/CMPTBL layer (July 2025)
-- The Great Consolidation (252 edge functions → 40 nodes)
+- The Great Consolidation (252 edge functions → 40 primitives)
 - Six architectural diagrams illustrating system evolution
 
 ### CMPSBL Architecture Paper
@@ -118,7 +118,7 @@ The Universal Export Adapter extends portability to 25 execution environments in
 | Feb–Apr 2025 | Early Nodes | Core node architecture established |
 | May–Jun 2025 | PromptFluid-Vision | Multi-provider AI routing (23 providers) |
 | Jul 2025 | Clarity Layer | PromptFluid/CMPTBL abstraction |
-| Aug–Oct 2025 | Consolidation | 252 edge functions → 40-node matrix |
+| Aug–Oct 2025 | Consolidation | 252 edge functions → 40-primitive matrix |
 | Nov–Dec 2025 | Hardening | Governance, audit chain, safety switches |
 | Jan–Mar 2026 | MINDGAMES Epoch | v14.x — Current production version |
 
@@ -129,7 +129,7 @@ The Universal Export Adapter extends portability to 25 execution environments in
 - **AetherionShield** — Security and defense patterns
 - **Cascade** — Orchestration and pipeline execution
 
-Each legacy project contributed architectural patterns that were consolidated into the current 40-node substrate.
+Each legacy project contributed architectural patterns that were consolidated into the current 40-primitive substrate.
 
 ---
 
@@ -138,7 +138,7 @@ Each legacy project contributed architectural patterns that were consolidated in
 | Version | Epoch Name | Key Features |
 |---|---|---|
 | v13.x | IRONCLAD | Governance hardening, sealed mechanisms |
-| v14.0 | MINDGAMES | 40-node matrix, 12-sector organization |
+| v14.0 | MINDGAMES | 40-primitive matrix, 4-category organization |
 | v14.1 | MINDGAMES | Memory Stream bridge, engine catalog |
 | v14.2 | MINDGAMES | Failsafe recovery, Mini Runtime |
 

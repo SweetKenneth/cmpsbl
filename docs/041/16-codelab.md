@@ -46,7 +46,7 @@ CMPSBL Platform
 └── Signal Forge → Blueprint synthesis
 ```
 
-CodeLab connects directly to the live substrate. Resolver invocations, memory operations, and discovery queries executed in CodeLab interact with the same 40-node matrix used in production.
+CodeLab connects directly to the live substrate. Resolver invocations, memory operations, and discovery queries executed in CodeLab interact with the same 40-primitive matrix used in production.
 
 ---
 
@@ -54,7 +54,7 @@ CodeLab connects directly to the live substrate. Resolver invocations, memory op
 
 ### Resolver Explorer
 
-Browse and invoke resolvers from any of the 40 nodes. See input schemas, execute with test data, and inspect responses.
+Browse and invoke resolvers from any of the 40 primitives. See input schemas, execute with test data, and inspect responses.
 
 ### Intent Playground
 

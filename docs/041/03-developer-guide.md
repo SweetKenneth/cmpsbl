@@ -22,7 +22,7 @@ Build applications, agents, chatbots, or workflows directly on the substrate, us
 
 ### Pathway 2: Ascension
 
-Introduce external software into the substrate as a Candidate Node. The system runs discovery cycles against the 40-node matrix, and successful interaction chains are crystallized into exportable Ascended Memories.
+Introduce external software into the substrate as a Candidate Primitive. The system runs discovery cycles against the 40-primitive matrix, and successful interaction chains are crystallized into exportable Ascended Memories.
 
 Both pathways use the same substrate infrastructure. They are complementary, not exclusive.
 
@@ -170,8 +170,8 @@ async function handleMessage(userMessage: string, sessionId: string) {
 ```
 External Software
     → Ingest into substrate
-    → Candidate Node
-    → Ascension Cycle (discovery against 40-node matrix)
+    → Candidate Primitive
+    → Ascension Cycle (discovery against 40-primitive matrix)
     → Capability Discovery (CJPI scoring)
     → Crystallization (score ≥ 68)
     → Ascended Memory
@@ -193,7 +193,7 @@ Upload limits are tier-gated:
 
 ### Step 2: Ascension Cycles
 
-Once ingested, your code operates as a Candidate Node. The substrate runs discovery cycles, testing interactions between your code and its 40-node matrix.
+Once ingested, your code operates as a Candidate Primitive. The substrate runs discovery cycles, testing interactions between your code and its 40-primitive matrix.
 
 This process is automated and visualized through the Ascension interface's orbital canvas.
 
@@ -203,7 +203,7 @@ Discoveries are scored via CJPI. You can review:
 
 - Discovered capability chains
 - CJPI scores and tier classifications
-- Interaction patterns between your code and substrate nodes
+- Interaction patterns between your code and substrate primitives
 
 ### Step 4: Export
 

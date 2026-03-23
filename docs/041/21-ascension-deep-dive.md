@@ -28,7 +28,7 @@ Each phase builds on the previous, progressively transforming raw code into port
 
 ### 2.1 What Happens
 
-Your software is uploaded, analyzed, and registered as the **Auxiliary Node** — a first-class participant in the substrate's 40-node cognitive matrix.
+Your software is uploaded, analyzed, and registered as the **Auxiliary Node** — a first-class participant in the substrate's 40-primitive cognitive matrix.
 
 ### 2.2 File Processing
 
@@ -58,7 +58,7 @@ This is where the substrate begins understanding your code. The system scans you
 - **Functional analysis:** The system extracts function signatures, class declarations, and module boundaries to understand what your code *does*
 - **Sector assignment:** Based on the detected domain, your code is placed into the most relevant substrate sector (e.g., security code → DEFENSE sector, ML code → CORTEX sector)
 
-This capability profile determines which substrate nodes your code will interact with most productively during discovery.
+This capability profile determines which substrate primitives your code will interact with most productively during discovery.
 
 ### 2.5 Persistence
 
@@ -89,7 +89,7 @@ Daily upload limits are enforced per subscription tier:
 
 ### 3.1 What Happens
 
-Your code, now operating as the Auxiliary Node, undergoes **collision cycles** against the substrate's 40 permanent nodes across 12 sectors. The engine explores how your code's capabilities combine with existing substrate capabilities to produce emergent behaviors.
+Your code, now operating as the Auxiliary Node, undergoes **collision cycles** against the substrate's 40 permanent nodes across 4 categories. The engine explores how your code's capabilities combine with existing substrate capabilities to produce emergent behaviors.
 
 ### 3.2 Multi-Chain Exploration
 
@@ -272,9 +272,9 @@ Every exported capability pack includes a **language-native Runtime Bridge** tha
 
 ### How It Works
 
-1. Your capability class loads the manifest and module chain
+1. Your capability class loads the manifest and primitive chain
 2. It delegates to the **Runtime Bridge** (`runtime-bridge.php`, `runtime_bridge.py`, or `runtime-bridge.ts`)
-3. The bridge executes the module chain as a **sequential pipeline**
+3. The bridge executes the primitive chain as a **sequential pipeline**
 4. Each module transforms the execution context and records trace data
 5. You get back a structured result: `{ success, output, trace, metadata }`
 
@@ -314,7 +314,7 @@ $result = $cap->execute(['key' => 'value']);
 | **Auxiliary Node** | Your uploaded code operating as a candidate node in the substrate |
 | **CJPI** | Crown Jewel Pipeline Index — the 0–100 scoring metric for discoveries |
 | **Capability Surface** | The detected functional profile of your code |
-| **Collision Cycle** | A single exploration pass testing your code against substrate nodes |
+| **Collision Cycle** | A single exploration pass testing your code against substrate primitives |
 | **Ascended Memory** | A crystallized, exportable capability artifact |
 | **Archetype** | A recognized emergent pattern from specific node combinations |
 | **Ascension Loop** | Re-ingesting exported code for deeper capability discovery |

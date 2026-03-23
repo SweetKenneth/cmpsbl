@@ -99,7 +99,7 @@ The process where external developer software enters the substrate, participates
 
 ## Conventions Used in This Library
 
-- **ALL CAPS** names refer to system nodes (e.g., BRAIN, DEFENSE, MEMORY)
+- **ALL CAPS** names refer to system primitives (e.g., BRAIN, DEFENSE, MEMORY)
 - Code examples use TypeScript unless otherwise noted
 - API endpoints reference the unified substrate gateway
 - Architecture diagrams use Mermaid syntax

@@ -38,7 +38,7 @@ User-facing applications, agents, chatbots, copilots, and API consumers interact
 
 ### Substrate Layer
 
-The 40-node matrix, intent routing mesh, governance enforcement, and capability registry form the core cognitive runtime.
+The 40-primitive matrix, intent routing mesh, governance enforcement, and capability registry form the core cognitive runtime.
 
 ### Memory Layer
 
@@ -52,7 +52,7 @@ Database storage, authentication, file storage, telemetry collection, and audit 
 
 ## 2. Node Matrix
 
-The 40-node matrix is organized into 12 functional sectors. Each node is an autonomous subsystem that exposes capabilities through resolvers.
+The 40-primitive matrix is organized into 4 functional categories. Each primitive is an autonomous subsystem that exposes capabilities through resolvers.
 
 ### Node Interaction Model
 
@@ -69,7 +69,7 @@ Node A                    Node B
                          Response
 ```
 
-Nodes never communicate directly. All interaction flows through the intent router, which:
+Primitives never communicate directly. All interaction flows through the intent router, which:
 
 1. Receives an intent from the source
 2. Determines which resolvers should execute
@@ -148,7 +148,7 @@ A local caching layer provides fast access to frequently-used memories, with aut
 
 ### Foundry
 
-The Foundry explores combinations of nodes and resolvers to discover new capabilities. It operates using three composition strategies:
+The Foundry explores combinations of primitives and resolvers to discover new capabilities. It operates using three composition strategies:
 
 1. **Value Maximization** — Highest possible CJPI
 2. **Cross-Sector Synergy** — Novel cross-domain combinations
@@ -181,9 +181,9 @@ The substrate maintains 940+ registered capabilities organized into registries:
 | Registry | Count | Scope |
 |---|---|---|
 | Core Capabilities | ~270 | Base system functions |
-| Infrastructure | Variable | Infrastructure nodes |
+| Infrastructure | Variable | Infrastructure primitives |
 | Apex Capabilities | Variable | Premium, high-value |
-| Expansion Layer | 275 | 11 expansion nodes × 25 |
+| Expansion Layer | 275 | 11 expansion primitives × 25 |
 | Synergies | 200 | Cross-module pipelines |
 
 Capabilities can be invoked individually, composed into chains, or discovered through the Memory Stream.

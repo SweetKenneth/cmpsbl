@@ -36,15 +36,15 @@ Three primary differentiators:
 
 ### What is a node?
 
-An autonomous subsystem within the substrate. Each node specializes in a capability area (reasoning, memory, defense, evolution, etc.). There are 40 nodes organized into 12 sectors.
+An autonomous subsystem within the substrate. Each primitive specializes in a capability area (reasoning, memory, defense, evolution, etc.). There are 40 primitives organized into 4 categories.
 
 ### How do nodes communicate?
 
-Nodes never communicate directly. All interaction flows through the INTENT routing protocol. An intent is broadcast, the router selects appropriate resolvers, and responses are aggregated.
+Primitives never communicate directly. All interaction flows through the INTENT routing protocol. An intent is broadcast, the router selects appropriate resolvers, and responses are aggregated.
 
 ### What is a resolver?
 
-An executable capability owned by a node. Named as `node.resolver_name` (e.g., `brain.reasoning_context`). Resolvers are the only execution surface for nodes.
+An executable capability owned by a primitive. Named as `node.resolver_name` (e.g., `brain.reasoning_context`). Resolvers are the only execution surface for primitives.
 
 ---
 
@@ -72,11 +72,11 @@ CMPSBL persistent memory includes vector search, spaced repetition, contradictio
 
 ### What is Ascension?
 
-The process where external developer software enters the CMPSBL substrate as a Candidate Node and participates in discovery cycles against the 40-node matrix.
+The process where external developer software enters the CMPSBL substrate as a Candidate Primitive and participates in discovery cycles against the 40-primitive matrix.
 
 ### What happens to my code during Ascension?
 
-Your code is analyzed and treated as a Candidate Node. The substrate tests interaction patterns between your code and its existing nodes. Successful chains are scored and potentially crystallized.
+Your code is analyzed and treated as a Candidate Primitive. The substrate tests interaction patterns between your code and its existing primitives. Successful chains are scored and potentially crystallized.
 
 ### Do I lose ownership of my code?
 
@@ -151,7 +151,7 @@ A structured learning environment that provides guided exercises, warm-up sequen
 
 ### What is Signal Forge?
 
-A blueprint synthesis engine that produces production-grade architecture blueprints scored via CJPI and mapped to the 40-node matrix.
+A blueprint synthesis engine that produces production-grade architecture blueprints scored via CJPI and mapped to the 40-primitive matrix.
 
 ---
 

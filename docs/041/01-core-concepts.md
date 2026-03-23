@@ -16,17 +16,17 @@ This document defines the foundational vocabulary and mental model for the CMPSB
 
 The substrate is the foundational cognitive runtime beneath all CMPSBL operations. It is a self-evolving operating system layer between AI models and applications, managing memory, orchestration, governance, and capability execution.
 
-The substrate is not a traditional application framework. It is an operating system composed of autonomous nodes, resolvers, routing protocols, and telemetry systems.
+The substrate is not a traditional application framework. It is an operating system composed of autonomous primitives, resolvers, routing protocols, and telemetry systems.
 
 ---
 
 ## 2. Nodes
 
-A node is an autonomous subsystem inside the CMPSBL operating system. Each node represents a specialized system capability — reasoning, memory, defense, orchestration, evolution, and others.
+A primitive is an autonomous subsystem inside the CMPSBL operating system. Each primitive represents a specialized system capability — reasoning, memory, defense, orchestration, evolution, and others.
 
-CMPSBL operates a 40-node matrix across 12 sectors. Nodes do not call each other directly. All interaction occurs through resolvers and the intent routing protocol.
+CMPSBL operates a 40-primitive matrix across 4 categories. Primitives do not call each other directly. All interaction occurs through resolvers and the intent routing protocol.
 
-Examples of nodes:
+Examples of primitives:
 
 | Node | Personality | Role |
 |---|---|---|
@@ -45,7 +45,7 @@ Examples of nodes:
 
 ## 3. Resolvers
 
-A resolver is an executable capability owned by a node. Resolvers are the only execution surface for nodes.
+A resolver is an executable capability owned by a primitive. Resolvers are the only execution surface for primitives.
 
 Resolvers follow a strict naming convention:
 
@@ -77,7 +77,7 @@ No component bypasses the router. All system operations flow through the intent 
 
 ## 5. Capabilities
 
-A capability is a discrete, invocable function registered in the substrate's capability registry. The CMPSBL substrate maintains a pool of 940+ capabilities across its 40-node matrix.
+A capability is a discrete, invocable function registered in the substrate's capability registry. The CMPSBL substrate maintains a pool of 940+ capabilities across its 40-primitive matrix.
 
 Capabilities can be:
 
@@ -139,8 +139,8 @@ Ascension is the process where external developer software enters the CMPSBL cog
 
 During Ascension:
 
-1. Developer software is introduced as a **Candidate Node**
-2. Discovery cycles run across the substrate's 40-node matrix
+1. Developer software is introduced as a **Candidate Primitive**
+2. Discovery cycles run across the substrate's 40-primitive matrix
 3. Successful interaction chains are crystallized
 4. Resulting capabilities become **Ascended Memories**
 
@@ -186,7 +186,7 @@ Mesh communications are node-to-node signals that power system observability. Si
 
 Signal categories include acknowledgement, discovery, escalation, processing, completion, warning, and heartbeat.
 
-Each node has a personality voice used for human-readable signal translation. These personalities are presentation-only and do not affect system logic.
+Each primitive has a personality voice used for human-readable signal translation. These personalities are presentation-only and do not affect system logic.
 
 ---
 
