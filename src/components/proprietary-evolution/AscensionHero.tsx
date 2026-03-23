@@ -349,7 +349,7 @@ export function AscensionHero() {
             className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed"
           >
             Upload pieces of your stack's code — or code discovered in the Memory Stream — and watch
-            new capabilities emerge when it collides with the nodes from the CMPSBL Substrate.
+            new capabilities emerge when it collides with the primitives of the CMPSBL Substrate.
             Successful interaction chains are ascended into portable{' '}
             <span className="text-primary font-medium">Ascended Memories</span>{' '}
             you can export as source code, tests, and documentation.{' '}

@@ -192,7 +192,7 @@ function getQuickActions(mode: DecodeMode) {
     { icon: "👤", title: "Talk to a Human", prompt: "I'd like to escalate this to a human support agent." },
   ];
   if (mode === 'governor') return [
-    { icon: "📡", title: "Node Health", prompt: "/health" },
+    { icon: "📡", title: "Primitive Health", prompt: "/health" },
     { icon: "🏛️", title: "Governance", prompt: "/govern" },
     { icon: "⚡", title: "Capabilities", prompt: "/caps" },
     { icon: "🔗", title: "Mesh Comms", prompt: "/comms" },

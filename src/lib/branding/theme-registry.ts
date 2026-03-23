@@ -191,7 +191,7 @@ export const DASHBOARD = {
   // Panel section headers
   sectionHeaders: {
     streamControls: { title: 'Stream Controls', subtitle: 'MEMORY STREAM · SIGNAL → SILICON' },
-    sectorTopology: { title: 'Sector Topology', subtitle: '12 SECTORS · 40 NODES' },
+    sectorTopology: { title: 'Primitive Taxonomy', subtitle: '4 CATEGORIES · 40 PRIMITIVES' },
     streamEvents: { title: 'Stream Events', subtitle: 'LIVE CRYSTALLIZATION FEED' },
     systemHealth: { title: 'System Health', subtitle: 'MATRIX INTEGRITY' },
     streamSecurity: { title: 'Stream Security', subtitle: 'PERIMETER · THREAT DETECTION' },

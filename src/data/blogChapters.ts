@@ -57,7 +57,7 @@ export const BLOG_CHAPTERS: BlogChapter[] = [
     chapter: 5,
     slug: "seeing-everything-at-once",
     title: "Seeing Everything at Once",
-    description: "When we couldn't debug our own system, we built VISION — real-time observability across every node, every request, every cost.",
+    description: "When we couldn't debug our own system, we built VISION — real-time observability across every primitive, every request, every cost.",
     date: "2025-03-20",
     readTime: "11 min",
     keywords: ["AI observability", "VISION node", "real-time monitoring", "substrate telemetry", "cost tracking AI"],
