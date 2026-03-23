@@ -106,8 +106,8 @@ const primitives = [
   {
     icon: Code2,
     title: "Code Intelligence",
-    node: "ENCODE",
-    description: "Code execution, generation intelligence, and DECODE → ENCODE memory formation.",
+    node: "ENCODE Agent",
+    description: "Code execution, generation intelligence, and DECODE Agent → ENCODE Agent memory formation.",
     highlight: "Code Execution",
     stat: "AI",
     statLabel: "Codegen",
