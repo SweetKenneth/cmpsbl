@@ -4,6 +4,23 @@
 
 ---
 
+## 2026-03-23 · v16.0.0 (CONTACT — INCLUSIVE Ultimate "Clarity Prime")
+
+⟨This entry describes INCLUSIVE v9.0.0 — the substrate's Human Compatibility Engine reaching its ultimate form with 10 new systems.⟩
+
+- **Deep WCAG 2.2 Scanner Engine** — Full registry of all 87 WCAG 2.2 success criteria across 4 principles (perceivable/operable/understandable/robust). Per-criterion pass/fail/warning with evidence snapshots. Grade A-F scoring at A/AA/AAA levels.
+- **Intelligent Auto-Repair Pipeline** — 13 issue types × 8 repair strategies. EMA-weighted (α=0.2) success tracking per issue-strategy pair. Auto-selects best strategy. Regression risk estimation from historical profiles.
+- **Contrast Intelligence Engine** — Full WCAG luminance math (sRGB linearization). Contrast ratio evaluation against 4 thresholds (AA/AAA normal/large). Binary search palette suggestion on HSL lightness to meet target ratios.
+- **ARIA Compliance Validator** — 36 WAI-ARIA 1.2 roles with required properties, children, parents. 9 violation types including orphaned labels, conflicting states, redundant implicit roles.
+- **Keyboard Navigation Auditor** — Focus graph construction, trap detection, dead-end identification, skip-link verification, tab order logic vs visual position. Navigability score with severity-weighted deductions.
+- **Accessibility Regression Guardian** — Content hashing + scan-over-scan comparison. Regression threshold ≥5 points. Severity classification (critical/serious/moderate/minor). EVOLUTION proposal generation for critical regressions.
+- **Adaptive Interface Engine** — Runtime adaptation for 8 user preferences (high contrast, reduced motion, font scale, dyslexia font, large targets, screen reader, reading guide, color blind modes) + device capabilities.
+- **Inclusive Testing Orchestrator** — 6 interaction mode simulation (keyboard, screen reader, voice, switch access, touch, pointer) with scenario templates. Coverage reports with uncovered mode recommendations.
+- **Compliance Report Generator** — VPAT-style reports with executive summary, per-criterion conformance, priority-ordered remediation roadmap, trend analysis, and markdown export.
+- **Accessibility Telemetry & Learning Loop** — 6-phase cycle tracking (scan→classify→repair→validate→report→monitor). Hebbian fix→outcome learning (+0.08 strengthen, -0.04 weaken). Best strategy recommendation per issue type.
+
+---
+
 ## 2026-03-23 · v15.9.0 (CONTACT — INTENT Ultimate "Compass Prime")
 
 ⟨This entry describes INTENT v9.0.0 — the substrate's Executive Function reaching its ultimate form with 10 new systems.⟩

@@ -4,6 +4,12 @@
 
 ---
 
+## v16.0.0 — 2026-03-23
+
+- **INCLUSIVE Ultimate "Clarity Prime"** — 10 new systems: Deep WCAG 2.2 Scanner (87 criteria), Intelligent Auto-Repair (EMA-weighted strategy learning), Contrast Intelligence (luminance math + palette suggestion), ARIA Compliance Validator (36 roles), Keyboard Navigation Auditor (focus graph + trap detection), Regression Guardian (content hash drift detection), Adaptive Interface Engine (8 user prefs + device adaptation), Inclusive Testing Orchestrator (6 interaction modes), Compliance Report Generator (VPAT-style), Accessibility Telemetry (Hebbian learning loop).
+
+---
+
 ## v15.9.0 — 2026-03-23
 
 - **INTENT Ultimate "Compass Prime"** — 10 new systems: Polyvalent Classifier (4-strategy weighted voting), Goal Decomposition Engine (Kahn's DAG), Ambiguity Resolution (pattern learning + auto-resolve), Intent Memory (Hebbian edge learning), Priority Arbitration (urgency + starvation prevention), Rollback Planner (compensating/checkpoint/idempotent), Contextual Amplifier (6 sources), Execution Telemetry (11-phase lifecycle), Cross-Node Orchestrator (26-node capacity-aware routing), Speculative Pre-Resolver (n-gram prediction + pre-staging).
