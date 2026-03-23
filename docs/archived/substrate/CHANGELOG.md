@@ -4,6 +4,20 @@
 
 ---
 
+## 2026-03-23 · v15.3.0 (CONTACT — Capability Auto-Activation Engine)
+
+⟨This entry describes the Capability Auto-Activation Engine — the substrate's autonomic nervous system that transforms 50 idle capabilities into event-reactive behaviors.⟩
+
+- **Auto-Activation Registry** — 50 rules across 5 tiers (T1 Critical → T5 Autonomous) mapping capabilities to precise event triggers.
+- **Signal Pattern Matcher** — sourceNode + signalType + severity + custom predicate matching against all enabled rules.
+- **5-Tier Priority System** — T1 Critical (immediate, security), T2 Operational (fast infra), T3 Intelligence (learning), T4 Optimization (background tuning), T5 Autonomous (idle self-improvement).
+- **Guard Layer** — Governance blocks (per-rule override), cooldown enforcement (configurable multiplier), concurrency limiting (default 5 max).
+- **Governance Interface** — `governanceBlock()`/`governanceUnblock()` for runtime rule suppression. Non-governable rules (T1 security) cannot be blocked.
+- **Telemetry** — 200-entry event log, per-tier stats (activations/blocked/errors), engine health summary.
+- **NERVE Integration** — Wired as capability #13 in NERVE Ultimate v9.1.0 "Synapse Prime".
+
+---
+
 ## 2026-03-23 · v15.2.7 (CONTACT — RELAY Ultimate "Warpgate")
 
 ⟨This entry describes RELAY v9.0.0 — the substrate's intelligent message fabric reaching its ultimate form with 10 new systems.⟩
