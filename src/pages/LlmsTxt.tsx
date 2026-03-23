@@ -57,7 +57,7 @@ function buildDynamicKeyPages(): string {
 }
 
 const LLMS_TXT_STATIC_HEADER = `# CMPSBL® — Machine-Readable AI Context
-# 40-Node / 12-Sector Cognitive Substrate
+# 40-Primitive Cognitive Substrate (Agents · Engines · Layers · Organs)
 # Standard: llms.txt (llmstxt.org)
 # Updated: ${new Date().toISOString().slice(0, 10)}
 
