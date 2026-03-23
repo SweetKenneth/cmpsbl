@@ -30,7 +30,7 @@ const TESTIMONIALS: Testimonial[] = [
     author: "R.S.",
     role: "CTO, Enterprise SaaS",
     rating: 5,
-    highlight: "Governance",
+    highlight: "GOVERNANCE Layer",
     accentColor: "hsl(var(--neon-magenta))",
   },
 ];
