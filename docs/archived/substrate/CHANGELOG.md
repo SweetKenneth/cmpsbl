@@ -4,6 +4,14 @@
 
 ---
 
+## 2026-03-23 · v16.6.0 (CONTACT — Enhancement Mesh "Ambient Intelligence Fabric")
+
+⟨This entry describes the Enhancement Mesh v1.0.0 — a new always-on amplification layer providing passive technological uplift to all 40 nodes via 30 heartbeat-driven capabilities.⟩
+
+- **Enhancement Mesh v1.0.0** — 30 always-on capabilities across 6 amplifier categories (cognitive/7, resilience/6, operational/5, governance/4, evolution/4, observability/4). Heartbeat-driven at 60s–300s intervals. Fan-out to all 40 nodes. Governance-immune (cannot be disabled). EMA-weighted uplift scoring per amplifier. Weighted health composite: cognitive(25%) + resilience(25%) + operational(20%) + governance(15%) + evolution(10%) + observability(5%). Alert system with warning/critical thresholds. 500-tick telemetry buffer.
+
+---
+
 ## 2026-03-23 · v16.5.0 (CONTACT — GOVERNANCE Ultimate "Parliament Prime")
 
 ⟨This entry describes GOVERNANCE v9.0.0 — the substrate's supervisory overlay plane reaching its ultimate form with 10 new systems.⟩
