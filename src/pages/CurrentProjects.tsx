@@ -24,7 +24,7 @@ const projects = [
     id: "cmpsbl",
     name: "CMPSBL",
     tagline: "Cognitive Infrastructure for AI",
-    description: "The 40-node cognitive orchestration substrate. Persistent memory, DREAM cycles, NEXUS routing, governed evolution, and 675+ capabilities across 12 sectors. The platform everything else runs on.",
+    description: "The 40-primitive cognitive orchestration substrate. Persistent memory, DREAM Engine cycles, NEXUS Organ routing, governed evolution, and 675+ capabilities across agents, engines, layers & organs. The platform everything else runs on.",
     icon: Brain,
     status: "Live",
     features: ["40 nodes · 12 sectors", "Persistent memory", "DREAM cycles", "NEXUS routing", "Governed evolution", "175,000+ lines"],
