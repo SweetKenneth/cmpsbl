@@ -1,7 +1,7 @@
 /**
  * Tech Showcase — Interactive demonstration of all CMPSBL execution surfaces
  * Premium terminal-style code display with syntax highlighting
- * 40 nodes across 12 sectors
+ * 40 primitives across 4 categories
  */
 
 import { useState, useEffect, useMemo } from "react";

@@ -80,8 +80,8 @@ function seedSystemMessages() {
     },
     {
       node: 'ENGINEER', codename: 'Mechanist', type: 'proposal', priority: 'high',
-      title: 'SHADOW module health score below threshold',
-      summary: 'SHADOW module health dropped to 67% due to 4 consecutive verification timeouts. Recommend resetting the divergence scoring engine and flushing stale TSAC proofs.',
+      title: 'SHADOW Engine health score below threshold',
+      summary: 'SHADOW Engine health dropped to 67% due to 4 consecutive verification timeouts. Recommend resetting the divergence scoring engine and flushing stale TSAC proofs.',
       detail: 'Engine: shadow_divergence_engine. Failure type: timeout (>5000ms). Last success: 3h ago.',
       impact: 'If unaddressed, SHADOW verification pipeline will enter degraded mode within 6 hours.',
       action: true, tags: ['engine-maintenance', 'repair', 'shadow'],
