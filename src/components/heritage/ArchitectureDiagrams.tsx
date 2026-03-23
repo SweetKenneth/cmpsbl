@@ -88,7 +88,7 @@ export function ConsolidationDiagram() {
     <div className="my-6">
       <DiagramTitle>Figure 2 — The Great Consolidation (November 4–5, 2025)</DiagramTitle>
       <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-        <svg viewBox="0 0 680 280" className="w-full max-w-[680px] mx-auto" role="img" aria-label="Great Consolidation diagram showing 252 functions compressed to 40 nodes">
+        <svg viewBox="0 0 680 280" className="w-full max-w-[680px] mx-auto" role="img" aria-label="Great Consolidation diagram showing 252 functions compressed to 40 primitives">
           {/* Left: sprawl */}
           <rect x="20" y="30" width="200" height="200" rx="8" className="fill-[hsl(var(--destructive))] fill-opacity-[0.06] stroke-[hsl(var(--destructive))] stroke-opacity-[0.2] stroke-[1.5]" />
           <text x="120" y="25" textAnchor="middle" className="fill-[hsl(var(--destructive))] text-[11px] font-mono font-bold">BEFORE</text>
