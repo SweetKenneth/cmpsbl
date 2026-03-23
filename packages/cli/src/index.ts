@@ -31,7 +31,7 @@ import { printSuggestions, printErrorRecovery } from './suggestions';
 
 const V = {
   boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Signal mesh initializing...', '◈ Cognitive loop established.'],
-  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Pipeline verified.', '✔ Mesh acknowledged.', '✔ Operation executed.'],
+  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Mesh acknowledged.', '✔ Operation executed.'],
   err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Mesh routing error.'],
   think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving mesh topology'],
   idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Signal mesh stable.', '◇ Awaiting intent...'],
@@ -217,13 +217,13 @@ function printHelp() {
 
   ── System ───────────────────────────────────────
     status                  Show full substrate status
-    health                  Health check across all nodes
-    nodes [filter]          List nodes (filter by sector/status)
-    ping <node>             Ping a specific node
-    inspect <node>          Deep-inspect a node's state
-    topology                Display sector topology map
+    health                  Health check across all primitives
+    nodes [filter]          List primitives (filter by category/status)
+    ping <node>             Ping a specific primitive
+    inspect <node>          Deep-inspect a primitive's state
+    topology                Display category topology map
     route <intent>          Trace intent routing path
-    benchmark               Benchmark latency across all nodes
+    benchmark               Benchmark latency across all primitives
 
   ── Diagnostics ──────────────────────────────────
     doctor                  Run full diagnostic suite
