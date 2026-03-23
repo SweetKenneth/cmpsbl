@@ -33,7 +33,7 @@ function Hero() {
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-10">
             An autonomous cognitive substrate that captures ideas, crystallizes them into production-grade software, 
-            and crosses the silicon boundary into hardware — all governed by a self-evolving 40-node intelligence layer.
+            and crosses the silicon boundary into hardware — all governed by a self-evolving 40-primitive intelligence layer.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link to="/foundry/demo" className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity">
