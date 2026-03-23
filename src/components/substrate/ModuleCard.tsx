@@ -180,7 +180,7 @@ const moduleConfig: Record<SubstrateModule, {
     description: 'Inter-primitive signaling, consensus repair',
     color: 'text-neon-purple',
   },
-  // Expansion Modules (40-Node Architecture)
+  // Expansion Primitives (40-Primitive Architecture)
   sovereign: {
     icon: Crown,
     label: 'SOVEREIGN',
