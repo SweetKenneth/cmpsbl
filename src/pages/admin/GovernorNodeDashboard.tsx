@@ -288,7 +288,7 @@ export default function GovernorNodeDashboard() {
               ) : nodes.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={9} className="h-24 text-center text-muted-foreground">
-                    No ascension nodes found
+                    No ascension primitives found
                   </TableCell>
                 </TableRow>
               ) : (

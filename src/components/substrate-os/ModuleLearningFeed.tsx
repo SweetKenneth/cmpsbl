@@ -1,6 +1,6 @@
 /**
  * Node Learning Feed
- * Real-time feed of what all nodes are learning about
+ * Real-time feed of what all primitives are learning about
  */
 
 import { useState, useEffect } from 'react';

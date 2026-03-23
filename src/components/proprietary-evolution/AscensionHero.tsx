@@ -67,7 +67,7 @@ const SECTOR_COLORS: Record<string, { h: number; s: number; l: number }> = {
   shell: { h: 0, s: 70, l: 55 },
 };
 
-/* ═══ ORBITAL CANVAS — 40 real nodes + bouncing #41 ═══ */
+/* ═══ ORBITAL CANVAS — 40 real primitives + bouncing #41 ═══ */
 function OrbitalCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef(0);
@@ -168,7 +168,7 @@ function OrbitalCanvas() {
       }
     }
 
-    // ── Draw 40 outer nodes — larger with labels ──
+    // ── Draw 40 outer primitives — larger with labels ──
     for (let i = 0; i < N; i++) {
       const { x, y, color, node } = nodePositions[i];
       const pulse = Math.sin(time * 2 + i * 0.5) * 0.15 + 0.85;
@@ -254,7 +254,7 @@ function OrbitalCanvas() {
     ctx.fillStyle = 'hsla(185, 100%, 90%, 0.8)';
     ctx.fillText('YOUR CODE', bounce41.x, bounce41.y + (isMobile ? 9 : 8));
 
-    // ── Status label — centered in the lower section of the circle, above bottom nodes ──
+    // ── Status label — centered in the lower section of the circle, above bottom primitives ──
     const labelY = cy + orbitR * 0.62;
     ctx.save();
     ctx.font = `bold ${isMobile ? 9 : 8}px monospace`;

@@ -186,7 +186,7 @@ export function DiscoveryPhase() {
         setPermutations(prev => prev + 1);
         setProgress(Math.round(((i + 1) / shuffledNodes.length) * 100));
 
-        // Shorter delays — first 3 nodes get 2-4s, rest get 100-400ms
+        // Shorter delays — first 3 primitives get 2-4s, rest get 100-400ms
         const interNodeDelay = i < 3
           ? Math.floor(Math.random() * 2000) + 2000
           : Math.floor(Math.random() * 300) + 100;
@@ -252,7 +252,7 @@ export function DiscoveryPhase() {
 
       toast({
         title: 'Collision sweep complete',
-        description: `Tested ${shuffledNodes.length} nodes. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
+        description: `Tested ${shuffledNodes.length} primitives. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
       });
     } catch (err) {
       console.error('Discovery error:', err);

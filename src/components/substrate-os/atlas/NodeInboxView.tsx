@@ -1,6 +1,6 @@
 /**
  * Node Inbox View — ATLAS Dashboard
- * Shows what all nodes are saying, wanting, needing, and proposing
+ * Shows what all primitives are saying, wanting, needing, and proposing
  * in plain human-readable language with approval/rejection actions.
  */
 
@@ -49,7 +49,7 @@ function seedSystemMessages() {
     {
       node: 'ENGINEER', codename: 'Mechanist', type: 'proposal', priority: 'medium',
       title: 'Consolidate redundant safety switch instances',
-      summary: 'Three nodes share identical safety switch configs. Merging them into a shared switch pool would reduce memory usage by ~12% and simplify maintenance.',
+      summary: 'Three primitives share identical safety switch configs. Merging them into a shared switch pool would reduce memory usage by ~12% and simplify maintenance.',
       detail: 'Nodes: DEFENSE, NEXUS, CORTEX — identical thresholds (5 failures / 60s). Propose shared SafetySwitchPool.',
       impact: 'Reduces memory footprint and centralizes failure tracking for better observability.',
       action: true, tags: ['engine-maintenance', 'optimization'],

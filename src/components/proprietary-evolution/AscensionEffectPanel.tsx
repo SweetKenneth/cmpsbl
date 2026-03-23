@@ -211,7 +211,7 @@ export function AscensionEffectPanel() {
         </div>
       ) : entries.length === 0 ? (
         <div className="text-center py-6 text-xs text-muted-foreground">
-          No ascension nodes yet. Upload code in the Ingest phase.
+          No ascension primitives yet. Upload code in the Ingest phase.
         </div>
       ) : (
         <div className="space-y-1.5">
