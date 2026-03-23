@@ -456,7 +456,7 @@ function TemplateComposer() {
           </div>
           {form.modulePattern.length > 0 && (
             <div className="mt-2 text-xs text-muted-foreground break-words">
-              Chain: {form.modulePattern.join(' → ')}
+              Chain: {form.modulePattern.map(m => labelPrimitive(m)).join(' → ')}
             </div>
           )}
         </CardContent>
