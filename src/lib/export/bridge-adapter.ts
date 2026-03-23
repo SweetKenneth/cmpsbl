@@ -33,6 +33,7 @@ import {
   LATENCY_TIMEOUT_THRESHOLD,
   computeCapabilityHash, computeModuleChainHash, generateExecutionId,
 } from './canonical-runtime-contract';
+import { labelChain } from './primitive-labels';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // §1 — MODULE VERB MAPPING (shared across all bridge generators)

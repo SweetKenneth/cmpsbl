@@ -5,6 +5,7 @@
  */
 
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { labelPrimitive } from '@/lib/export/primitive-labels';
 import {
   estimateMarketValue,
   formatMarketValue,
