@@ -86,7 +86,7 @@ export function MeshTopologyGraph() {
           vx: 0,
           vy: 0,
           resolverCount,
-          color: MODULE_COLORS[mod] || 'hsl(0, 0%, 60%)',
+          color: MODULE_COLORS[labelPrimitive(mod)] || 'hsl(0, 0%, 60%)',
         };
       });
 

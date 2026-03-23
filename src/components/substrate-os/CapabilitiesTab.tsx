@@ -63,7 +63,7 @@ interface CapabilityCardProps {
 
 function CapabilityCard({ capability, enabled, onToggle, lastToggled }: CapabilityCardProps) {
   const risk = riskColors[capability.risk] || riskColors.low;
-  const ModuleIcon = moduleIcons[capability.modules[0]] || Zap;
+  const ModuleIcon = moduleIcons[labelPrimitive(capability.modules[0])] || Zap;
   
   return (
     <motion.div
