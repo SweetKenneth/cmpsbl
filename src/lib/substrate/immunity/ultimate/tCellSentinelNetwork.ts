@@ -46,7 +46,7 @@ export interface SentinelObservation {
 
 export interface ConsensusAlert {
   id: string;
-  agreeing Sentinels: string[];
+  agreeSentinels: string[];
   observation: SentinelObservation;
   consensusAt: number;
   escalated: boolean;
