@@ -17,10 +17,10 @@
 // VERIFIED COUNTS (derived from source registries)
 // =============================================================================
 
-/** 40 active nodes across 4 categorys */
+/** 40 active nodes across 4 categories */
 export const NODES_COUNT = 40;
 
-/** 4 categorys: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
+/** 4 categories: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell */
 export const SECTORS_COUNT = 12;
 
 /** @deprecated Use NODES_COUNT — kept for backward compatibility */

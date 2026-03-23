@@ -34,7 +34,7 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 40 substrate nodes in boot order (4 categorys)
+// All 40 substrate nodes in boot order (4 categories)
 const SUBSTRATE_MODULES = [
   // CORE + SYSTEM
   'core', 'system',

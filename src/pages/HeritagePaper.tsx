@@ -208,7 +208,7 @@ const HeritagePaper = () => {
 
             <h3 className="text-base sm:text-lg font-semibold text-foreground mt-6 mb-3">1.1 Motivation</h3>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 primitives across 4 categorys. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns refined and integrated into the final substrate.
+              The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 primitives across 4 categories. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns refined and integrated into the final substrate.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
               This v2.2 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain. Crucially, it restores the Genesis period (January–June 2025) during which the foundational BRAIN engine and early Cascade orchestration work were developed.
@@ -566,7 +566,7 @@ const HeritagePaper = () => {
               </div>
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">MINDGAMES Epoch (v14.0–v14.2.0)</h4>
-                <p className="text-xs text-muted-foreground">40-primitive matrix. 4 categorys. 54 engines. Mini-Runtime™. 3-phase Reality Protocol. 42-page knowledge base.</p>
+                <p className="text-xs text-muted-foreground">40-primitive matrix. 4 categories. 54 engines. Mini-Runtime™. 3-phase Reality Protocol. 42-page knowledge base.</p>
               </div>
             </div>
           </section>
@@ -741,7 +741,7 @@ const HeritagePaper = () => {
                   <th className="text-left p-2 border border-border font-semibold text-foreground">v14.2 (Mar '26)</th>
                 </tr></thead>
                 <tbody className="text-muted-foreground">
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 primitives, 4 categorys</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 primitives, 4 categories</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">AI Providers</td><td className="p-2 border border-border">None (deterministic)</td><td className="p-2 border border-border">1 (Nexus)</td><td className="p-2 border border-border">23-provider mesh</td><td className="p-2 border border-border">Single</td><td className="p-2 border border-border font-medium text-foreground">NEXUS multi-provider</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">Autonomy</td><td className="p-2 border border-border">N/A</td><td className="p-2 border border-border">User-initiated</td><td className="p-2 border border-border">Dreaming + proactive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">3-tier bounded</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">Memory</td><td className="p-2 border border-border">Hash-embed, crystals</td><td className="p-2 border border-border">Scan storage</td><td className="p-2 border border-border">Episodic + LT + meta</td><td className="p-2 border border-border">Multi-tier</td><td className="p-2 border border-border font-medium text-foreground">4-stage crystallization</td></tr>
@@ -794,7 +794,7 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">SimNap</strong> (Nov–Dec 2025) — formalized autonomous dreaming</li>
               <li><strong className="text-foreground">Cascade Proofs</strong> (December 2025) — documented limits → multi-node architecture</li>
               <li><strong className="text-foreground">The Great Consolidation</strong> (November 2025) — 252+ → composable primitives</li>
-              <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 primitives, 4 categorys, 54 engines, governed self-evolution</li>
+              <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 primitives, 4 categories, 54 engines, governed self-evolution</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
               Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. The first line of code — BRAIN — is still running. This paper establishes that provenance chain for the permanent academic record.

@@ -261,6 +261,6 @@ export function getSubstrateSummary(sessionId?: string): string | { error: strin
   return [
     `Substrate Status: ${activeCount}/40 primitives active | ${degradedCount} degraded | Avg health: ${avgHealth}%`,
     `Total operations this session: ${totalOps.toLocaleString()}`,
-    `All 4 categorys operational. DEFENSE perimeter holding. GOVERNANCE constraints enforced.`,
+    `All 4 categories operational. DEFENSE perimeter holding. GOVERNANCE constraints enforced.`,
   ].join('\n');
 }

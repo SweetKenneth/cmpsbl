@@ -400,7 +400,7 @@ budget status       # View stream budget governance</code></pre>
   </ul>
 
   <h2 id="architecture">11. 40-Node Architecture</h2>
-  <p>The substrate operates across 40 primitives organized into 4 categorys:</p>
+  <p>The substrate operates across 40 primitives organized into 4 categories:</p>
   
   <table>
     <thead><tr><th>Sector</th><th>Systems</th><th>Purpose</th></tr></thead>
