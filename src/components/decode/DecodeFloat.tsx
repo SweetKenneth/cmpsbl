@@ -524,7 +524,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        aria-label="DECODE — substrate voice"
+        aria-label="DECODE Agent — substrate voice"
         className={cn(
           "group cursor-grab active:cursor-grabbing touch-manipulation select-none",
           "w-[56px] h-[56px] rounded-full grid place-items-center",

@@ -1529,11 +1529,11 @@ function ModernizerShadowPanel() {
         </CardHeader>
         <CardContent className="space-y-3">
           {[
-            { icon: '🔍', text: 'EVOLUTION scans for real system gaps — missing capabilities, anomalies, risk flags, stale modules' },
+            { icon: '🔍', text: 'EVOLUTION Layer scans for real system gaps — missing capabilities, anomalies, risk flags, stale primitives' },
             { icon: '🎯', text: 'Each gap becomes a shadow training task assigned to the best-matched executor' },
             { icon: '⚡', text: 'Executor attempts the fix in shadow mode — no real changes, just scored performance' },
-            { icon: '⬆️', text: 'Failures escalate to ENCODE\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },
-            { icon: '🧠', text: 'ENCODE\'s fixes become new learning rules that the executor absorbs for next time' },
+            { icon: '⬆️', text: 'Failures escalate to ENCODE Agent\'s 7-strategy cascade — deterministic repair, learning rules, pattern matching' },
+            { icon: '🧠', text: 'ENCODE Agent\'s fixes become new learning rules that the executor absorbs for next time' },
             { icon: '📈', text: 'Performance tracked per executor per gap-type — watch skill growth curves over repeated runs' },
           ].map((item, i) => (
             <motion.div
