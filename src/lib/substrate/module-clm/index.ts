@@ -422,14 +422,14 @@ Provide specific examples of patterns I should learn and anti-patterns to avoid.
   },
 
   // ═══════════════════════════════════════════════════════════════════════════════
-  // EXPANSION NODES (17 additional nodes to complete 40-node matrix)
+  // EXPANSION NODES (17 additional nodes to complete 40-primitive matrix)
   // ═══════════════════════════════════════════════════════════════════════════════
 
   nerve: {
     moduleId: 'nerve', displayName: 'NERVE',
     learningTopics: ['Signal propagation optimization', 'Consensus repair protocols', 'Backpressure management', 'Topology-aware routing'],
     kpis: ['signal_latency_ms', 'consensus_success_rate', 'throughput_signals_per_sec'],
-    selfReflectionPrompt: 'As the NERVE module, how can I reduce inter-node signal latency and improve consensus repair?',
+    selfReflectionPrompt: 'As the NERVE module, how can I reduce inter-primitive signal latency and improve consensus repair?',
   },
   medic: {
     moduleId: 'medic', displayName: 'MEDIC',

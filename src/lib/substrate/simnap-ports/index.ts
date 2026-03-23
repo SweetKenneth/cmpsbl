@@ -2,7 +2,7 @@
  * SimNap Ports — Barrel Export
  * ━━━━━━━━━━━━━━━━━━━━━━━━━━━
  * All architectural patterns ported from the SimNap (mind-reconstruction-lab)
- * project, adapted for the substrate's 40-node matrix.
+ * project, adapted for the substrate's 40-primitive matrix.
  * 
  * 7 core patterns serving 28+ nodes.
  */

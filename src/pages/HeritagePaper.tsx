@@ -173,7 +173,7 @@ const HeritagePaper = () => {
                   <tr><td className="p-2 border border-border">See how each product became a substrate node</td><td className="p-2 border border-border font-mono text-primary">§3 — Heritage Map</td></tr>
                   <tr><td className="p-2 border border-border">Trace a specific innovation to its origin</td><td className="p-2 border border-border font-mono text-primary">§4 — Innovation Genealogy</td></tr>
                   <tr><td className="p-2 border border-border">Understand the dreaming research lineage</td><td className="p-2 border border-border font-mono text-primary">§5 — Dreaming Lineage</td></tr>
-                  <tr><td className="p-2 border border-border">See how 252 functions became 40 nodes</td><td className="p-2 border border-border font-mono text-primary">§7 — Consolidation Event</td></tr>
+                  <tr><td className="p-2 border border-border">See how 252 functions became 40 primitives</td><td className="p-2 border border-border font-mono text-primary">§7 — Consolidation Event</td></tr>
                   <tr><td className="p-2 border border-border">Verify the academic record</td><td className="p-2 border border-border font-mono text-primary">§1.3 — Archival Records</td></tr>
                   <tr><td className="p-2 border border-border">Cite this paper</td><td className="p-2 border border-border font-mono text-primary">§11 — Citation</td></tr>
                 </tbody>
@@ -186,13 +186,13 @@ const HeritagePaper = () => {
             <SectionTitle num="0" title="Abstract" />
             <div className="text-sm leading-relaxed text-muted-foreground bg-muted/30 rounded-lg p-4 sm:p-5 border border-border/50">
               <p className="mb-3">
-                This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-node cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design.
+                This meta-paper traces the complete architectural and intellectual lineage of the CMPSBL® Substrate OS — a 40-primitive cognitive orchestration system for persistent, self-governing artificial intelligence. The system did not emerge in isolation. It is the product of a continuous fifteen-month research trajectory spanning January 2025 through March 2026, during which the author designed, built, and iterated through neural learning infrastructure, AI-powered accessibility repair, autonomous AI dreaming, adversarial security research, multi-model orchestration, website modernization, and cognitive runtime design.
               </p>
               <p className="mb-3">
-                The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-node substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 14 major versions and four named epochs.
+                The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-primitive substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 14 major versions and four named epochs.
               </p>
               <p>
-                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-node cognitive operating system</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
+                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-primitive cognitive operating system</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
               </p>
             </div>
           </section>
@@ -208,7 +208,7 @@ const HeritagePaper = () => {
 
             <h3 className="text-base sm:text-lg font-semibold text-foreground mt-6 mb-3">1.1 Motivation</h3>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 nodes across 12 sectors. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns refined and integrated into the final substrate.
+              The CMPSBL® Substrate OS, as documented in its v14.2.0 MINDGAMES epoch academic protection set, represents a mature cognitive orchestration architecture comprising 40 primitives across 4 categorys. However, the published technical documentation describes the <em>current state</em> of the system without addressing the <em>path</em> that produced it. For the academic record, it is essential to document how the system's core innovations — clockless orchestration, memory crystallization, governed self-evolution, autonomous dreaming — emerged from a series of predecessor projects, each contributing specific architectural patterns refined and integrated into the final substrate.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
               This v2.2 edition corrects timeline inaccuracies present in earlier versions (caused by a project remix in 2025 that erased early development history) by cross-referencing the PromptFluid-Vision project archives, "The Firsts" manifesto chronicle, and the full Zenodo publication chain. Crucially, it restores the Genesis period (January–June 2025) during which the foundational BRAIN engine and early Cascade orchestration work were developed.
@@ -420,7 +420,7 @@ const HeritagePaper = () => {
                   <tr><td className="p-2 border border-border">Theme generation</td><td className="p-2 border border-border">FORGE</td><td className="p-2 border border-border">Templates → artifact generation</td></tr>
                   <tr><td className="p-2 border border-border">CMS recognition</td><td className="p-2 border border-border">DECODE</td><td className="p-2 border border-border">WP/Wix parsing → structured decoding</td></tr>
                   <tr><td className="p-2 border border-border">Job queue</td><td className="p-2 border border-border">CORTEX</td><td className="p-2 border border-border">Task queue → cognitive orchestration</td></tr>
-                  <tr><td className="p-2 border border-border">252→composable</td><td className="p-2 border border-border">Resolver architecture</td><td className="p-2 border border-border">252 functions → 40 nodes with resolvers</td></tr>
+                  <tr><td className="p-2 border border-border">252→composable</td><td className="p-2 border border-border">Resolver architecture</td><td className="p-2 border border-border">252 functions → 40 primitives with resolvers</td></tr>
                 </tbody>
               </table>
             </div>
@@ -566,7 +566,7 @@ const HeritagePaper = () => {
               </div>
               <div className="bg-muted/30 rounded-lg p-3 sm:p-4 border border-border/50">
                 <h4 className="text-sm font-semibold text-foreground mb-1">MINDGAMES Epoch (v14.0–v14.2.0)</h4>
-                <p className="text-xs text-muted-foreground">40-node matrix. 12 sectors. 54 engines. Mini-Runtime™. 3-phase Reality Protocol. 42-page knowledge base.</p>
+                <p className="text-xs text-muted-foreground">40-primitive matrix. 4 categorys. 54 engines. Mini-Runtime™. 3-phase Reality Protocol. 42-page knowledge base.</p>
               </div>
             </div>
           </section>
@@ -643,7 +643,7 @@ const HeritagePaper = () => {
               { title: "Memory Stream Crystallization", origin: "SimNap's Memory Core with episodic, long-term, and meta-memory tiers.", evolution: "Four-stage pipeline (Signal → Observation → Discovery → Crystallization) with CJPI scoring." },
               { title: "Structural Fingerprinting", origin: "AetherionShield's browser fingerprinting + Cascade's chain-of-custody proofs.", evolution: "Content-addressable identification for deduplication, lineage tracking, and replay verification." },
               { title: "Universal Cross-Language Export", origin: "SimNap's morning reports — packaging cognitive outputs as deliverables.", evolution: "25-language export with embedded Mini-Runtime™ engines and auto-generated test harnesses." },
-              { title: "IRONCLAD Resilience Fabric", origin: "AetherionShield's bulkhead isolation and stealth→shield inversion.", evolution: "Additive hardening wrapping all 40 nodes without modifying core engine logic." },
+              { title: "IRONCLAD Resilience Fabric", origin: "AetherionShield's bulkhead isolation and stealth→shield inversion.", evolution: "Additive hardening wrapping all 40 primitives without modifying core engine logic." },
               { title: "Three-Tier Bounded Autonomy", origin: "SimNap's sandboxed dream mode + Dream Privacy.", evolution: "Supervised → Bounded → Full with policy evaluation, shadow verification, and audit chains." },
               { title: "Intent Mesh", origin: "Cascade's orchestration layer + Conversational Administrator.", evolution: "Decentralized coordination with DAG-based action plans and 3-phase reality protocol." },
               { title: "Governed Self-Evolution", origin: "Cascade's autonomous reasoning + CMPTBL's remediation + Verify's sandbox.", evolution: "EVOLUTION node with SEBA 7-gate pipeline, fitness scoring, and governed mutation." },
@@ -721,7 +721,7 @@ const HeritagePaper = () => {
               On November 4–5, 2025: <strong className="text-foreground">175 edge functions deleted</strong> in a single session. 30+ duplicate Brain functions, 7 deprecated Defense functions, 23 Marketing functions, and 5 Modernizer functions consolidated. 21 orphaned config entries cleaned.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
-              This proved: <strong className="text-foreground">sprawling specialized functions compress into composable primitives without loss of capability</strong> — the founding axiom of the CMPSBL resolver architecture. 40 nodes with composable resolvers replaced 252+ standalone functions while gaining new capabilities through composition.
+              This proved: <strong className="text-foreground">sprawling specialized functions compress into composable primitives without loss of capability</strong> — the founding axiom of the CMPSBL resolver architecture. 40 primitives with composable resolvers replaced 252+ standalone functions while gaining new capabilities through composition.
             </p>
           </section>
 
@@ -741,7 +741,7 @@ const HeritagePaper = () => {
                   <th className="text-left p-2 border border-border font-semibold text-foreground">v14.2 (Mar '26)</th>
                 </tr></thead>
                 <tbody className="text-muted-foreground">
-                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 nodes, 12 sectors</td></tr>
+                  <tr><td className="p-2 border border-border font-medium text-foreground">Architecture</td><td className="p-2 border border-border">Single engine</td><td className="p-2 border border-border">Plugin (7 classes)</td><td className="p-2 border border-border">252+ functions</td><td className="p-2 border border-border">Multi-module</td><td className="p-2 border border-border font-medium text-foreground">40 primitives, 4 categorys</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">AI Providers</td><td className="p-2 border border-border">None (deterministic)</td><td className="p-2 border border-border">1 (Nexus)</td><td className="p-2 border border-border">23-provider mesh</td><td className="p-2 border border-border">Single</td><td className="p-2 border border-border font-medium text-foreground">NEXUS multi-provider</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">Autonomy</td><td className="p-2 border border-border">N/A</td><td className="p-2 border border-border">User-initiated</td><td className="p-2 border border-border">Dreaming + proactive</td><td className="p-2 border border-border">Basic</td><td className="p-2 border border-border font-medium text-foreground">3-tier bounded</td></tr>
                   <tr><td className="p-2 border border-border font-medium text-foreground">Memory</td><td className="p-2 border border-border">Hash-embed, crystals</td><td className="p-2 border border-border">Scan storage</td><td className="p-2 border border-border">Episodic + LT + meta</td><td className="p-2 border border-border">Multi-tier</td><td className="p-2 border border-border font-medium text-foreground">4-stage crystallization</td></tr>
@@ -764,7 +764,7 @@ const HeritagePaper = () => {
               { title: "Additive Hardening", text: "AetherionShield's stealth→shield inversion established that security should be additive — each layer strengthens without modifying existing layers. IRONCLAD wraps node logic without modification." },
               { title: "Discovery as First-Class Output", text: "SimNap's morning reports were the first expression of a cognitive system producing its own deliverables. In CMPSBL, this evolved into the Foundry, CJPI scoring, and 25-language universal export." },
               { title: "Human Compatibility as Substrate Primitive", text: "CMPTBL — the very first product — established accessibility as a core capability. The INCLUSIVE node operates as a first-class primitive with 17 modules, carrying @origin(cmptbl)." },
-              { title: "Consolidation as Architecture", text: "The Great Consolidation proved that compression creates capability. 252 functions became 40 nodes with composable resolvers — fewer parts, more power." },
+              { title: "Consolidation as Architecture", text: "The Great Consolidation proved that compression creates capability. 252 functions became 40 primitives with composable resolvers — fewer parts, more power." },
             ].map((item, i) => (
               <div key={i} className="mb-4">
                 <h3 className="text-sm sm:text-base font-semibold text-foreground mb-1">9.{i + 1} {item.title}</h3>
@@ -794,7 +794,7 @@ const HeritagePaper = () => {
               <li><strong className="text-foreground">SimNap</strong> (Nov–Dec 2025) — formalized autonomous dreaming</li>
               <li><strong className="text-foreground">Cascade Proofs</strong> (December 2025) — documented limits → multi-node architecture</li>
               <li><strong className="text-foreground">The Great Consolidation</strong> (November 2025) — 252+ → composable primitives</li>
-              <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 nodes, 12 sectors, 54 engines, governed self-evolution</li>
+              <li><strong className="text-foreground">CMPSBL</strong> (2025–2026) — 40 primitives, 4 categorys, 54 engines, governed self-evolution</li>
             </ol>
             <p className="text-sm leading-relaxed text-muted-foreground mb-4">
               Every node can trace its design to a predecessor insight. Every decision reflects a lesson from the system's own heritage. The first line of code — BRAIN — is still running. This paper establishes that provenance chain for the permanent academic record.

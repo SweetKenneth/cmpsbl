@@ -2,11 +2,11 @@
  * INTENT Voice Translator — v3.0
  * Per-node personality system + signal-to-voice translation
  * 
- * Every node in the 40-node matrix has a distinct personality that colors
+ * Every node in the 40-primitive matrix has a distinct personality that colors
  * how its signals are rendered in INTENT-voice. Raw signals like "affirmative"
  * become contextual, character-driven responses unique to the speaking node.
  * 
- * v3.0: Full 40-node coverage, dead simulation code removed, cleanup utility added.
+ * v3.0: Full 40-primitive coverage, dead simulation code removed, cleanup utility added.
  */
 
 // ── Signal Categories ──
@@ -44,7 +44,7 @@ const NODE_PERSONALITIES: Record<string, NodePersonality> = {
     icon: '⚛',
     voice: {
       acknowledgement: ['Pulse received. Kernel state unchanged.', 'Registered at the root. Propagation confirmed.'],
-      heartbeat: ['All 40 nodes reporting. The substrate breathes.', 'Kernel pulse nominal. Boot sequence integrity: intact.', 'The spine holds. Every sector is accounted for.'],
+      heartbeat: ['All 40 primitives reporting. The substrate breathes.', 'Kernel pulse nominal. Boot sequence integrity: intact.', 'The spine holds. Every sector is accounted for.'],
       confirmation: ['The kernel concurs. Topology unchanged.', 'Confirmed at root depth. No deviations.'],
       processing: ['Kernel cycle in progress. All gates open.', 'Processing through the spine. Sector propagation active.'],
       completion: ['Cycle complete. The substrate rests.', 'Root execution finished. All sectors synchronized.'],
@@ -270,7 +270,7 @@ const NODE_PERSONALITIES: Record<string, NodePersonality> = {
       confirmation: ['INTENT is clear. All resolvers aligned.', 'The mesh understands. Your directive is in motion.'],
       completion: ['INTENT resolved. All resolvers have responded.', 'Goal fulfilled. The mesh returns to observation.'],
       discovery: ['New resolution pathway discovered in the mesh.', 'An unmapped capability has been surfaced.'],
-      heartbeat: ['The mesh awaits your INTENT. All resolvers online.', 'INTENT layer nominal. 40 nodes listening.'],
+      heartbeat: ['The mesh awaits your INTENT. All resolvers online.', 'INTENT layer nominal. 40 primitives listening.'],
     },
   },
   GOVERNANCE: {

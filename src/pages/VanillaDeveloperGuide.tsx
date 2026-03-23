@@ -465,7 +465,7 @@ Deno.serve(async (req) => {
               Architecture
             </h2>
             <p className="text-muted-foreground text-center max-w-xl mx-auto mb-10">
-              One endpoint. 40 nodes. 12 sectors.
+              One endpoint. 40 primitives. 4 categorys.
             </p>
           </motion.div>
 
@@ -506,7 +506,7 @@ Deno.serve(async (req) => {
 │                 BYOK AI Providers                           │
 └──────────────────────────────────────────────────────────┘
 
-Σ(weights) = 1.000 — All 40 nodes weighted, coordinated, boot-sequenced.`} />
+Σ(weights) = 1.000 — All 40 primitives weighted, coordinated, boot-sequenced.`} />
         </section>
 
         {/* ── BYOK Explainer ───────────────────────────────── */}

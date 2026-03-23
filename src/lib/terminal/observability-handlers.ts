@@ -109,7 +109,7 @@ export function registerObservabilityHandlers(): void {
 
     if (latencies.length === 0) {
       lines.push('  No latency measurements recorded.');
-      lines.push('  Latency is tracked on inter-node handoffs (DECODE→ENCODE, BRAIN→MEMORY, etc.)');
+      lines.push('  Latency is tracked on inter-primitive handoffs (DECODE→ENCODE, BRAIN→MEMORY, etc.)');
     } else {
       lines.push('  Path                          │ Avg(ms) │ P95(ms) │ Samples');
       lines.push('  ──────────────────────────────┼─────────┼─────────┼────────');

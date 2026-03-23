@@ -1,7 +1,7 @@
 /**
  * GOVERNANCE Ultimate — System 9: Cross-Node Policy Enforcement
  * 
- * Pre-execution policy gates for all 40 nodes, per-node overrides,
+ * Pre-execution policy gates for all 40 primitives, per-node overrides,
  * integration with EVOLUTION SEBA pipeline and ENCODE governance.
  * 
  * @module governance/ultimate/crossNodePolicyGate

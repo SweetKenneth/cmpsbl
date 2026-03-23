@@ -1940,7 +1940,7 @@ export const matrix = {
   },
 };
 
-// Quick access — 40 nodes across 12 sectors
+// Quick access — 40 primitives across 4 categorys
 export const core = substrate.core;
 export const brain = substrate.brain;
 export const decode = substrate.decode;

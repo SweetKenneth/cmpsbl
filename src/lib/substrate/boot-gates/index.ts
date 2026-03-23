@@ -18,7 +18,7 @@ export type ModuleName =
   | 'system' | 'evolution' | 'integration' | 'inclusive'
   | 'cortex' | 'atlas' | 'medic'
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
-  | 'nerve'   // OCG — inter-node signaling
+  | 'nerve'   // OCG — inter-primitive signaling
   | 'shadow'  // CSZ — shadow mesh operations
   // Expansion Nodes (40-Node Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'

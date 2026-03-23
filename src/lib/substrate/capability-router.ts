@@ -188,6 +188,6 @@ registerCapability('atlas', 'entitlement_resolution', 90);
 registerCapability('atlas', 'capability_gating', 85);
 registerCapability('atlas', 'capability_discovery', 85);
 
-// ─── CLM-Priority Capabilities (40 nodes × 2 = 80 capabilities) ────────────
+// ─── CLM-Priority Capabilities (40 primitives × 2 = 80 capabilities) ────────────
 import { registerCLMPriorities } from './clm/node-priorities';
 registerCLMPriorities(registerCapability);

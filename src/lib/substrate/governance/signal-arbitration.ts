@@ -37,7 +37,7 @@ export interface ArbitrationResult {
 }
 
 // Modules that can only emit signals (advisory)
-// All 40 nodes except the 3 veto authorities (audit, defense, system)
+// All 40 primitives except the 3 veto authorities (audit, defense, system)
 const ADVISORY_MODULES = new Set([
   // CCR
   'brain', 'memory', 'dream',

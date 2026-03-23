@@ -640,7 +640,7 @@ export {
 // Re-export substrate client from lib
 export { 
   substrate, 
-  // Quick access module aliases (40 nodes across 12 sectors)
+  // Quick access module aliases (40 primitives across 4 categorys)
   core,
   brain,
   decode,
@@ -944,7 +944,7 @@ export {
   type EvolutionSignal,
   type SynergyOutcome,
   type SynergyStats,
-} from './inter-node-bridges';
+} from './inter-primitive-bridges';
 
 // ═══ CORE Kernel Hardening v2.0.0 (25 Enterprise Upgrades) ═══
 export {
@@ -1466,7 +1466,7 @@ export {
 } from './autonomous-hardening/barrel';
 
 // ═══════════════════════════════════════════════════════════════
-// S-Tier Runtime Primitives — 233 capabilities across 40 nodes
+// S-Tier Runtime Primitives — 233 capabilities across 40 primitives
 // ═══════════════════════════════════════════════════════════════
 
 // Kernel & Infrastructure

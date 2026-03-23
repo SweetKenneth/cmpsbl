@@ -1,6 +1,6 @@
 /**
  * Module Parity Checker
- * All 40 nodes at full parity
+ * All 40 primitives at full parity
  * 
  * Validates: exports, hooks, terminal commands, event emission, documentation
  */
@@ -34,7 +34,7 @@ export interface ParityReport {
   errors: string[];
 }
 
-// All 40 substrate nodes in boot order (12 sectors)
+// All 40 substrate nodes in boot order (4 categorys)
 const SUBSTRATE_MODULES = [
   // CORE + SYSTEM
   'core', 'system',
@@ -152,7 +152,7 @@ const PARITY_REQUIREMENTS: ParityRequirement[] = [
   {
     name: 'index.ts exports exist',
     check: (module) => {
-      // All 40 nodes have index exports in their respective directories
+      // All 40 primitives have index exports in their respective directories
       return SUBSTRATE_MODULES.includes(module as SubstrateModuleName);
     },
     severity: 'error',

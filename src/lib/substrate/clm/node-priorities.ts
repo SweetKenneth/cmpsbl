@@ -117,7 +117,7 @@ export const NODE_CLM_PRIORITIES: CLMPriority[] = [
   {
     node: 'nerve', displayName: 'NERVE', sector: 'OCG',
     priorities: [
-      { capability: 'clm_signal_propagation_optimization', description: 'Minimize inter-node signal latency and hops', priority: 91 },
+      { capability: 'clm_signal_propagation_optimization', description: 'Minimize inter-primitive signal latency and hops', priority: 91 },
       { capability: 'clm_consensus_repair_protocol', description: 'Quorum-based consensus repair for split-brain scenarios', priority: 87 },
     ],
     acknowledged: true, generation: 2,
@@ -371,7 +371,7 @@ export const NODE_CLM_PRIORITIES: CLMPriority[] = [
     node: 'atlas', displayName: 'ATLAS', sector: 'Plane',
     priorities: [
       { capability: 'clm_capability_discovery', description: 'Auto-discover and catalog node capabilities in real-time', priority: 90 },
-      { capability: 'clm_dependency_mapping', description: 'Live dependency graph maintenance across all 40 nodes', priority: 87 },
+      { capability: 'clm_dependency_mapping', description: 'Live dependency graph maintenance across all 40 primitives', priority: 87 },
     ],
     acknowledged: true, generation: 2,
   },
@@ -382,7 +382,7 @@ export const NODE_CLM_PRIORITIES: CLMPriority[] = [
 let _registered = false;
 
 /**
- * Register all CLM-priority capabilities (40 nodes × 2 each)
+ * Register all CLM-priority capabilities (40 primitives × 2 each)
  * into the capability router.
  * 
  * NOTE: These are registered for routing resolution only.

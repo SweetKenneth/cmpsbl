@@ -997,7 +997,7 @@ export const MESH_MANIFEST: MeshResolver[] = [
   {
     id: 'core.topology_snapshot',
     module: 'CORE',
-    description: 'Snapshot of the 40-node matrix topology and sector assignments',
+    description: 'Snapshot of the 40-primitive matrix topology and sector assignments',
     domains: ['topology', 'architecture', 'kernel'],
     accepts: ['sector', 'depth'],
     produces: ['node_count', 'sector_map', 'weight_distribution', 'activation_order'],
