@@ -27,7 +27,7 @@ const projects = [
     description: "The 40-primitive cognitive orchestration substrate. Persistent memory, DREAM Engine cycles, NEXUS Organ routing, governed evolution, and 675+ capabilities across agents, engines, layers & organs. The platform everything else runs on.",
     icon: Brain,
     status: "Live",
-    features: ["40 primitives · 4 categories", "Persistent memory", "DREAM Engine", "NEXUS Organ", "Governed evolution", "175,000+ lines"],
+    features: ["40 primitives · 4 categories", "Persistent memory", "DREAM Engine", "NEXUS Organ", "Governed evolution", "200,000+ lines"],
     href: "/ai-operating-system",
     external: false
   },

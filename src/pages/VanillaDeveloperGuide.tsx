@@ -465,7 +465,7 @@ Deno.serve(async (req) => {
               Architecture
             </h2>
             <p className="text-muted-foreground text-center max-w-xl mx-auto mb-10">
-              One endpoint. 40 primitives. 4 categorys.
+              One endpoint. 40 primitives. 4 categories.
             </p>
           </motion.div>
 
