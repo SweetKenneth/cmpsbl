@@ -35,7 +35,7 @@ const STEPS: OnboardingStep[] = [
     icon: BookOpen,
     tag: 'Tracks',
     title: '8 Learning Tracks',
-    body: 'Memory systems, NEXUS routing, DREAM Engine cycles, Ascension lifecycle, CJPI scoring, resolver patterns, intent mesh, and production hardening. Each track builds on the last.',
+    body: 'Memory systems, NEXUS Organ routing, DREAM Engine cycles, Ascension lifecycle, CJPI scoring, resolver patterns, intent mesh, and production hardening. Each track builds on the last.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },

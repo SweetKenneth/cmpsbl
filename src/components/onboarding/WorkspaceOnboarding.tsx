@@ -35,7 +35,7 @@ const STEPS: OnboardingStep[] = [
     icon: Code,
     tag: 'SDK',
     title: 'Starter Templates',
-    body: 'Memory Agent, DECODE Bot, DEFENSE Scanner, NEXUS Router — pick a template and start coding. Every template includes working, runnable code.',
+    body: 'Memory Agent, DECODE Agent Bot, DEFENSE Layer Scanner, NEXUS Organ Router — pick a template and start coding. Every template includes working, runnable code.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
