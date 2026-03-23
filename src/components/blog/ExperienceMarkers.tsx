@@ -21,7 +21,7 @@ const CATEGORY_LINKS: Record<string, { icon: React.ElementType; label: string; h
   ],
   changelog: [
     { icon: Zap, label: 'Explore', href: '/explore', description: 'Browse templates and capabilities' },
-    { icon: Layers, label: 'Nodes', href: '/modules', description: 'Full substrate architecture' },
+    { icon: Layers, label: 'Architecture', href: '/architecture', description: 'Full substrate architecture' },
   ],
   release: [
     { icon: Layers, label: 'All Nodes', href: '/modules', description: 'See the full substrate architecture' },
