@@ -36,7 +36,7 @@ const modules: ModuleNode[] = [
   },
   {
     id: "decode",
-    name: "DECODE",
+    name: "DECODE Agent",
     icon: MessageSquare,
     color: "text-neon-magenta",
     glowColor: "shadow-[0_0_30px_rgba(232,121,249,0.6)]",
