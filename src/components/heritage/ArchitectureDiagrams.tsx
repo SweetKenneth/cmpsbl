@@ -161,7 +161,7 @@ export function SectorTopologyDiagram() {
 
   return (
     <div className="my-6">
-      <DiagramTitle>Figure 3 — CMPSBL® 40-Node Sector Topology (v14.2.0 MINDGAMES)</DiagramTitle>
+      <DiagramTitle>Figure 3 — CMPSBL® 40-Primitive Taxonomy (v14.2.0 MINDGAMES)</DiagramTitle>
       <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
         <svg viewBox="0 0 690 430" className="w-full max-w-[690px] mx-auto" role="img" aria-label="CMPSBL 40-node sector topology showing 12 sectors">
           {sectors.map((sector, si) => {
