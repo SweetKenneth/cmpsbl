@@ -82,7 +82,7 @@ export function CCRTab() {
         </div>
         <div className="min-w-0 flex-1">
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Cognitive Core</h2>
-          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">MEMORY · DREAM — CCR</p>
+          <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">MEMORY · DREAM Engine — CCR</p>
         </div>
         <Badge className="text-[9px] bg-primary/10 text-primary border-primary/20 shrink-0">CCR</Badge>
       </div>
