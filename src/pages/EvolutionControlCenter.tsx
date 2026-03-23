@@ -63,7 +63,7 @@ const STEPS = [
   { 
     num: "01", 
     title: "Copy the prompt", 
-    description: "One click copies your auth-injected EVOLUTION prompt with your personal JWT baked in.",
+    description: "One click copies your auth-injected EVOLUTION Layer prompt with your personal JWT baked in.",
     icon: Copy 
   },
   { 
