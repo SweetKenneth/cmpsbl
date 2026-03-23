@@ -438,8 +438,8 @@ function TemplateComposer() {
       {/* Node Chain */}
       <Card>
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Node Chain</CardTitle>
-          <CardDescription className="text-xs">Select 2–5 nodes (order matters)</CardDescription>
+          <CardTitle className="text-base">Primitive Chain</CardTitle>
+          <CardDescription className="text-xs">Select 2–5 primitives (order matters)</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-1.5">
