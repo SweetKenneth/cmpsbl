@@ -71,7 +71,7 @@ export interface ChainExecutionResult {
   output: Record<string, unknown>;
   /** Ordered execution trace — one entry per module */
   trace: StageTrace[];
-  /** Module effect log — what each module did */
+  /** Primitive effect log — what each module did */
   effectLog: EffectLogEntry[];
   /** Total execution time in ms */
   totalDurationMs: number;

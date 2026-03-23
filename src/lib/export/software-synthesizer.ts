@@ -38,7 +38,7 @@ export function synthesizeRust(ctx: SynthesisContext): string {
   return `//! ${ctx.name} — CMPSBL® Bridge Adapter (Rust)
 //! ${ctx.description}
 //!
-//! Primitive Chain: ${modules.join(' → ')}
+//! Primitive Chain: ${labelChain(modules)}
 //! Category: ${ctx.category} | CJPI: ${ctx.cjpi}
 //! Bridge Type: hybrid | Canonical Runtime: v${CANONICAL_RUNTIME_VERSION}
 //!
