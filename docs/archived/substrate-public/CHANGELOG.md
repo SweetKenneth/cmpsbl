@@ -4,6 +4,15 @@
 
 ---
 
+## v15.5.0 — 2026-03-23
+
+- **Activation Arbitration** — Auto-activation engine now evaluates matched rules as a set with priority scoring, conflict detection (8 mutually exclusive action pairs), and limits (max 3 per signal, max 1 T1).
+- **Confidence Gating** — Probabilistic firing replaces deterministic execution. 4-component confidence score with tier-specific thresholds. T1 always fires; T2–T5 require confidence ≥ 0.60–0.80.
+- **Per-Rule Stats** — Success/failure tracking feeds back into confidence computation via Bayesian prior.
+- **Engine v2.0.0** — New outcome types (`low_confidence`, `suppressed`), arbitration plan observability, per-tier lowConfidence counters.
+
+---
+
 ## v15.4.0 — 2026-03-23
 
 **IMMUNITY Ultimate — "Pathogen Zero"**
