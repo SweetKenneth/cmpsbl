@@ -178,7 +178,7 @@ const modulesByLayer = {
     },
     {
       id: "inclusive",
-      name: "INCLUSIVE",
+      name: "INCLUSIVE Layer",
       description: "Human compatibility, WCAG, a11y",
       icon: Accessibility,
       color: "text-neon-magenta",
