@@ -354,8 +354,8 @@ export default function PromptFluidHome() {
                  </span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                The world's first public cognitive operating system — 10 entities, 5 mesh overlays, 
-                persistent memory, self-evolving architecture, and 175k+ lines of production code. 
+                The world's first public cognitive operating system — 40 primitives across 4 categories, 
+                persistent memory, self-evolving architecture, and 200k+ lines of production code. 
                 Free to start.
               </p>
 
