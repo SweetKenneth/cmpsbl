@@ -352,8 +352,8 @@ export const ENGINES: Engine[] = [
     priceStandalone: 99900, priceBundled: 59900, priceDisplay: "$999", bundleDisplay: "$599",
     priceId: "price_1T9hKFQ7FtTiAL4aZXdi4Vht", icon: Brain, color: "180 75% 40%", tier: "APEX",
     edition: "S-TIER Edition — Memory Supremacy",
-    briefing: "LEVIATHAN merges Context Threading, Immune Memory Persistence, Predictive State Modeling, Gossip Protocol Engine, and State Synchronization into a distributed deep-memory fabric. Perfect recall, cross-node memory coherence, and predictive state pre-loading across entire clusters.",
-    capabilities: ["Context Threading — maintains conversation coherence across sessions", "Immune Memory Persistence — remembers and adapts to past threats", "Predictive State Modeling — pre-loads state before it's needed", "Gossip Protocol Engine — epidemic memory propagation across nodes", "State Synchronization — conflict-free replicated state across clusters"],
+    briefing: "LEVIATHAN merges Context Threading, Immune Memory Persistence, Predictive State Modeling, Gossip Protocol Engine, and State Synchronization into a distributed deep-memory fabric. Perfect recall, cross-primitive memory coherence, and predictive state pre-loading across entire clusters.",
+    capabilities: ["Context Threading — maintains conversation coherence across sessions", "Immune Memory Persistence — remembers and adapts to past threats", "Predictive State Modeling — pre-loads state before it's needed", "Gossip Protocol Engine — epidemic memory propagation across primitives", "State Synchronization — conflict-free replicated state across clusters"],
     threatLevel: "SUPREME — MEMORY OPS", clearance: "LEVEL 10 — S-TIER",
   },
   {

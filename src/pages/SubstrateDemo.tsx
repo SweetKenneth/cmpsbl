@@ -279,7 +279,7 @@ export default function SubstrateDemo() {
                       <LayerRow 
                         label="Primitives" 
                         modules={groupedModules.node} 
-                        layerKey="node"
+                        layerKey="organ"
                         isRunning={isRunning}
                         activeSequence={DEMO_SCENARIOS[currentScenario].sequence}
                         currentStep={currentStep}

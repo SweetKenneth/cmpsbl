@@ -2944,7 +2944,7 @@ const PRIMARY_CHAINS: PrimaryChainDefinition[] = [
   {
     id: 'SUBSTRATE_CONVERGENCE',
     name: 'Substrate Convergence',
-    description: 'BRAIN achieves cross-node insight convergence → CORTEX orchestrates unified response → GOVERNANCE validates system-wide action → ATLAS records evolutionary milestone',
+    description: 'BRAIN achieves cross-primitive insight convergence → CORTEX orchestrates unified response → GOVERNANCE validates system-wide action → ATLAS records evolutionary milestone',
     trigger: {
       sourceNode: 'brain',
       signalType: 'convergence_event',

@@ -14,7 +14,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // #26 — ENTROPY ACCUMULATOR
-// Tracks system-wide entropy across all modules to detect chaos drift.
+// Tracks system-wide entropy across all primitives to detect chaos drift.
 interface EntropyReading { module: string; entropy: number; ts: number; }
 const entropyLog: EntropyReading[] = [];
 

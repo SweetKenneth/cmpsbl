@@ -1041,7 +1041,7 @@ export async function reportTransferFeedback(feedback: TransferFeedback): Promis
 }
 
 /**
- * Auto-prune low-performing patterns across all modules.
+ * Auto-prune low-performing patterns across all primitives.
  * Removes hot entries with priority ≤2 and 3+ negative feedbacks.
  */
 export async function pruneUnhelpfulPatterns(): Promise<{ pruned: number }> {

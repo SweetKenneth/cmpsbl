@@ -1,7 +1,7 @@
 /**
  * COMPASS Ultimate — Temporal Cartography
  * Timeline reasoning engine. Tracks event sequences, detects temporal anomalies,
- * and builds causal timelines across nodes.
+ * and builds causal timelines across primitives.
  */
 
 export interface TemporalEvent {

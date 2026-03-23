@@ -9,7 +9,7 @@
  *   obs.summary          — Full observability overview
  *   obs.bridges          — Bridge invocation activity & success rates
  *   obs.latency          — Cross-node handoff latency (avg, p95)
- *   obs.hotspots         — Error hotspot detection across nodes
+ *   obs.hotspots         — Error hotspot detection across primitives
  *   obs.telemetry        — Telemetry engine state & recent events
  *   obs.telemetry.errors — Recent error/critical telemetry events
  *   obs.telemetry.gov    — Governance blocks & overrides
@@ -302,7 +302,7 @@ export function registerObservabilityHandlers(): void {
         '  obs.summary            Full observability overview',
         '  obs.bridges            Inter-node bridge activity & success rates',
         '  obs.latency            Cross-node handoff latency (avg, p95)',
-        '  obs.hotspots           Error hotspot detection across nodes',
+        '  obs.hotspots           Error hotspot detection across primitives',
         '  obs.telemetry          Telemetry engine state & counters',
         '  obs.telemetry.errors   Recent error/critical events',
         '  obs.telemetry.gov      Governance blocks & overrides',

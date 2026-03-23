@@ -41,7 +41,7 @@ const CERTIFICATIONS: Certification[] = [
   {
     certification_key: 'mesh_engineer',
     name: 'Mesh Engineer',
-    description: 'Expert in resolver patterns, intent routing, NEXUS multi-provider routing, and cross-node orchestration.',
+    description: 'Expert in resolver patterns, intent routing, NEXUS multi-provider routing, and cross-primitive orchestration.',
     badge_icon: '⚡', badge_level: 'gold',
     required_skills: ['resolver_patterns', 'nexus_routing', 'defense_security'],
     min_xp_total: 800, is_earned: false, progress_percent: 20,

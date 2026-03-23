@@ -179,7 +179,7 @@ const MODULE_CAPABILITIES: Record<string, ModuleCapability> = {
   SYSTEM: {
     name: 'SYSTEM',
     role: 'Core Orchestration & Lifecycle',
-    whatItDoes: 'Manages the pipeline\'s lifecycle — initialization, execution sequencing, health monitoring, graceful shutdown, and error recovery. It\'s the conductor that keeps all modules working in concert.',
+    whatItDoes: 'Manages the pipeline\'s lifecycle — initialization, execution sequencing, health monitoring, graceful shutdown, and error recovery. It\'s the conductor that keeps all primitives working in concert.',
     inputsAccepted: 'Pipeline configuration, execution schedules, health thresholds, and recovery policies.',
     outputProduced: 'Execution status reports, health dashboards, lifecycle events, and recovery logs.',
     behaviourDetail: 'SYSTEM is the pipeline\'s operating system. It boots modules in dependency order, monitors their health during execution, handles failures according to recovery policies, and ensures clean shutdown with state preservation.',
@@ -321,7 +321,7 @@ function getDeepFunctionalExplanation(name: string, systemChain: string[]): stri
   html += `</div>`;
   html += `<div class="quality-card">`;
   html += `<h3>Scalability</h3>`;
-  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple nodes. NEXUS handles cross-node routing and RIPPLE ensures state consistency.' : 'single-node deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
+  html += `<p style="font-size: 0.88rem;">Designed for ${modules.includes('NEXUS') || modules.includes('RIPPLE') ? 'distributed deployment across multiple nodes. NEXUS handles cross-primitive routing and RIPPLE ensures state consistency.' : 'single-node deployment. Can be containerized and scaled horizontally behind a load balancer.'}</p>`;
   html += `</div>`;
   html += `</div>`;
 

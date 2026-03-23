@@ -72,7 +72,7 @@ const capabilities = [
 ];
 
 const enterpriseFeatures = [
-  "Full platform with 40 integrated modules and real-time health monitoring",
+  "Full platform with 40 integrated primitives and real-time health monitoring",
   "12 capability groups covering core logic, cognition, execution, compliance, and more",
   "Persistent memory included free — 4-tier architecture",
   "Configurable self-improvement cycles with custom schedules",
@@ -111,7 +111,7 @@ export default function Enterprise() {
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
               The complete CMPSBL platform —{" "}
-              <Link to="/modules" className="text-primary hover:underline font-medium">40 integrated modules</Link>{" "}
+              <Link to="/modules" className="text-primary hover:underline font-medium">40 integrated primitives</Link>{" "}
               — deployed on your servers. Self-improvement cycles, governed adaptation,{" "}
               <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
               built-in security, and smart routing — configured for your compliance requirements.

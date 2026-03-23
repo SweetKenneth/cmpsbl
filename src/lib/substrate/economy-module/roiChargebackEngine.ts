@@ -143,7 +143,7 @@ export function getModuleROI(module: string): {
 }
 
 /**
- * Get global ROI across all modules
+ * Get global ROI across all primitives
  */
 export function getGlobalROI(): {
   avgROI: number;

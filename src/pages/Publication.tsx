@@ -54,7 +54,7 @@ const citations = {
 
 const priorArtDocs = [
   { title: "Release Abstract", desc: "System overview and publication purpose", icon: FileText, slug: "release-abstract", num: "01" },
-  { title: "System Overview", desc: "Platform architecture and module topology", icon: Layers, slug: "system-overview", num: "02" },
+  { title: "System Overview", desc: "Platform architecture and primitive topology", icon: Layers, slug: "system-overview", num: "02" },
   { title: "Memory Stream & Foundry", desc: "Discovery and capability composition pipeline", icon: Brain, slug: "memory-stream", num: "03" },
   { title: "Memory Crystallization", desc: "Structural fingerprinting and replay verification", icon: Zap, slug: "pipeline-crystallization", num: "04" },
   { title: "Universal Export", desc: "Cross-language export and portable runtime", icon: Globe, slug: "universal-export", num: "05" },

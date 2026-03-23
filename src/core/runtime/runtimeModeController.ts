@@ -54,7 +54,7 @@ export function evaluateMode(healthScore: number, degradedModules: string[] = []
 
   if (healthScore >= NETWORK_MIN_HEALTH && degradedModules.length === 0) {
     targetMode = 'network';
-    reason = 'Full health — all modules operational';
+    reason = 'Full health — all primitives operational';
   } else if (healthScore >= HYBRID_MIN_HEALTH) {
     targetMode = 'hybrid';
     reason = `Degraded health (${healthScore}) or ${degradedModules.length} module(s) degraded`;

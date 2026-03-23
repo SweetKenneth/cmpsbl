@@ -92,7 +92,7 @@ const TEMPLATE_DEFAULTS: Record<ScenarioTemplate, {
     baseParameters: { severity: 5, detectionMs: 2000, exfiltratedRecords: 0 },
   },
   upgrade_rollout: {
-    description: 'Simulates a rolling upgrade across nodes',
+    description: 'Simulates a rolling upgrade across primitives',
     dimensions: [
       { name: 'Batch Size', parameter: 'batchSize', range: { min: 1, max: 10, step: 1 }, distribution: 'uniform' },
       { name: 'Rollback Probability', parameter: 'rollbackProb', range: { min: 0, max: 0.5, step: 0.05 }, distribution: 'uniform' },

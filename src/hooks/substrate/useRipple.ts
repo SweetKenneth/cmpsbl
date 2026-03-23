@@ -3,7 +3,7 @@
  * v8.0.0 "Tempest"
  *
  * Full-featured hook exposing core bus, persistent event store,
- * ordered delivery, cross-node propagation, replay engine,
+ * ordered delivery, cross-primitive propagation, replay engine,
  * analytics, and 35-feature hardening suite.
  *
  * Part of the 40-Node / 12-Sector Architecture (Kernel Zone)

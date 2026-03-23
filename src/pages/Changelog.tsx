@@ -196,7 +196,7 @@ const stratumIronclad: Specimen[] = [
     id: "IRNC-009",
     fossilized: "2026-03-04",
     origin: "cognition",
-    stimulus: "Node-level dreaming operated without cross-node synthesis — each node dreamed in isolation, missing patterns that span multiple nodes",
+    stimulus: "Node-level dreaming operated without cross-primitive synthesis — each primitive dreamed in isolation, missing patterns that span multiple nodes",
     adaptations: [
       "Synapse engine introduced to facilitate lateral insight sharing between dreaming nodes",
       "Generation-capped synthesis prevents semantic drift from compounding across dream cycles",
@@ -1081,7 +1081,7 @@ const stratumMindgames: Specimen[] = [
     stimulus: "The platform's 40 modules existed without a unified discovery surface — users couldn't explore what the system actually contained",
     adaptations: [
       "Interactive module explorer with group-organized topology view",
-      "Each module displays its generation tag, group assignment, and real-time health status",
+      "Each primitive displays its generation tag, group assignment, and real-time health status",
       "Search and filter across all 40 modules by name, group, or capability",
     ],
     phenotype: [
