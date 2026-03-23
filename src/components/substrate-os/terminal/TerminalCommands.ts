@@ -854,7 +854,7 @@ export const HARDENING_COMMANDS: CommandDefinition[] = [
   { command: 'evolution.hardening.receipts', description: 'Tamper-evident receipt chain', category: 'system', icon: FileCheck, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.vetos', description: 'Governance veto tracker', category: 'system', icon: XCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.velocity', description: 'Improvement velocity trend', category: 'system', icon: Activity, requiresOperator: false, requiredTier: 'free' },
-  { command: 'evolution.hardening.funnel', description: 'Promotion pipeline funnel', category: 'system', icon: Layers, requiresOperator: false, requiredTier: 'free' },
+  { command: 'evolution.hardening.funnel', description: 'Promotion memory chain funnel', category: 'system', icon: Layers, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.cooldown', description: 'Evolution cooldown timer', category: 'system', icon: Clock, requiresOperator: false, requiredTier: 'free' },
   { command: 'evolution.hardening.seba', description: 'SEBA confidence scores', category: 'system', icon: Brain, requiresOperator: false, requiredTier: 'free' },
 
