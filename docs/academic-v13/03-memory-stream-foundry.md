@@ -60,19 +60,19 @@ The Foundry is the subsystem responsible for transforming raw discoveries into p
 1. **Intake** — discovery enters the Foundry queue with metadata and provenance chain
 2. **Validation** — discovery is tested against consistency constraints and prior knowledge
 3. **Enrichment** — cross-references are resolved, related discoveries are linked
-4. **Scoring** — the Crown Jewel Pipeline Index (CJPI) assigns a composite quality score
+4. **Scoring** — the Crown Jewel Performance Index (CJPI) assigns a composite quality score
 5. **Tiering** — discoveries are assigned to S/A/B/C/D tiers based on CJPI score
 6. **Crystallization** — top-tier discoveries are fingerprinted and stored permanently
 7. **Audit** — the complete processing chain is logged to the AUDIT module
 
-### 3.3 Crown Jewel Pipeline Index
+### 3.3 Crown Jewel Performance Index
 
 The CJPI is a composite scoring system that evaluates discoveries across multiple dimensions. The scoring formula and specific weight allocations are withheld (see Sealed Mechanisms §17), but the evaluated dimensions include:
 
 - Novelty relative to existing knowledge base
 - Reproducibility and verification status
 - Cross-module applicability
-- Potential for downstream pipeline generation
+- Potential for downstream memory chain generation
 - Structural coherence
 
 ### 3.4 Structural Fingerprinting

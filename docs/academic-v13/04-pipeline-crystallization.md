@@ -1,4 +1,4 @@
-# 04 — Pipeline Crystallization Model
+# 04 — Memory Chain Crystallization Model
 
 **Classification:** 📖 OPEN ACCESS / PRIOR ART  
 **Version:** v13.5 — IRONCLAD Epoch  
@@ -8,17 +8,17 @@
 
 ## 1. Purpose
 
-This document describes the pipeline crystallization model: the mechanism by which multi-module synergy chains are identified, validated, and frozen into replayable production pipelines.
+This document describes the memory chain crystallization model: the mechanism by which multi-module synergy chains are identified, validated, and frozen into replayable production memory chains.
 
-## 2. Synergy Pipelines
+## 2. Synergy Memory Chains
 
 ### 2.1 Definition
 
-A synergy pipeline is a validated sequence of module invocations that produces a deterministic, auditable output from a given input class. Pipelines are the substrate's primary unit of compound capability — they represent emergent functionality that arises from module collaboration rather than single-module execution.
+A synergy memory chain is a validated sequence of module invocations that produces a deterministic, auditable output from a given input class. Pipelines are the substrate's primary unit of compound capability — they represent emergent functionality that arises from module collaboration rather than single-module execution.
 
-### 2.2 Pipeline Composition
+### 2.2 Memory Chain Composition
 
-Each pipeline specifies:
+Each memory chain specifies:
 
 | Component | Description |
 |---|---|
@@ -32,13 +32,13 @@ Each pipeline specifies:
 
 As of v13.5, the substrate maintains:
 
-- **300+** identified synergy pipelines
+- **300+** identified synergy memory chains
 - **100** crystallized (frozen, production-verified) pipelines
-- **7** sectors contributing to pipeline discovery
+- **7** sectors contributing to memory chain discovery
 
 ## 3. Crystallization Process
 
-### 3.1 Pipeline Lifecycle
+### 3.1 Memory Chain Lifecycle
 
 ```
 Discovery → Validation → Staging → Crystallization → Production
@@ -46,24 +46,24 @@ Discovery → Validation → Staging → Crystallization → Production
 
 1. **Discovery** — a primitive chain is observed to produce consistent, valuable outputs
 2. **Validation** — the chain is executed against a test corpus with reproducibility verification
-3. **Staging** — the pipeline runs in shadow mode alongside existing pipelines
-4. **Crystallization** — the pipeline is frozen with a structural fingerprint and version stamp
-5. **Production** — the crystallized pipeline is available for invocation
+3. **Staging** — the memory chain runs in shadow mode alongside existing pipelines
+4. **Crystallization** — the memory chain is frozen with a structural fingerprint and version stamp
+5. **Production** — the crystallized memory chain is available for invocation
 
 ### 3.2 Structural Fingerprint
 
-Each crystallized pipeline receives a fingerprint derived from:
+Each crystallized memory chain receives a fingerprint derived from:
 
 - Module chain composition
 - Input/output contract schemas
 - Quality gate definitions
 - Governance constraints
 
-The fingerprint enables drift detection — if any component of the pipeline changes, the fingerprint invalidates, triggering re-validation.
+The fingerprint enables drift detection — if any component of the memory chain changes, the fingerprint invalidates, triggering re-validation.
 
 ### 3.3 Replay Verification
 
-Crystallized pipelines support replay verification: given the same inputs, the pipeline must produce semantically equivalent outputs. This is verified through:
+Crystallized memory chains support replay verification: given the same inputs, the memory chain must produce semantically equivalent outputs. This is verified through:
 
 - Deterministic module execution paths
 - Pinned model versions for AI-dependent stages
@@ -71,9 +71,9 @@ Crystallized pipelines support replay verification: given the same inputs, the p
 
 ## 4. Artifact Model
 
-### 4.1 Pipeline Artifacts
+### 4.1 Memory Chain Artifacts
 
-Each crystallized pipeline produces typed artifacts:
+Each crystallized memory chain produces typed artifacts:
 
 | Artifact Type | Description |
 |---|---|
@@ -94,9 +94,9 @@ Artifacts are stored in the substrate's persistence layer with:
 
 Pipeline crystallization is a governed operation:
 
-- New pipeline discovery requires at least **Bounded Autonomy** tier
+- New memory chain discovery requires at least **Bounded Autonomy** tier
 - Crystallization (freezing) requires **governance approval**
-- Production deployment of crystallized pipelines is logged to AUDIT
+- Production deployment of crystallized memory chains is logged to AUDIT
 - Pipeline modification after crystallization is prohibited — new versions create new fingerprints
 
 ## 6. Disclosure Boundary
@@ -114,7 +114,7 @@ The following are withheld:
 
 | Date | Author | Change |
 |---|---|---|
-| 2026-03-06 | Kenneth E. Sweet Jr. | Initial pipeline crystallization documentation — v13.5 |
+| 2026-03-06 | Kenneth E. Sweet Jr. | Initial memory chain crystallization documentation — v13.5 |
 
 ---
 

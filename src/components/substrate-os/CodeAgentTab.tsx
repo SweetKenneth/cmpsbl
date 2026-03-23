@@ -1,6 +1,6 @@
 /**
  * ENCODE Tab — Substrate Execution & Generation Interface
- * USER → DECODE → ENCODE pipeline
+ * USER → DECODE Agent → ENCODE Agent memory chain
  * DECODE handles conversational intent parsing; ENCODE handles code execution + sandbox preview
  * Part of the 40-primitive / 4-category cognitive architecture
  */
@@ -1263,13 +1263,13 @@ export function CodeAgentTab({ enabled }: { enabled: boolean }) {
         <div className="mt-6">
           <PRQueuePanel
             onDeploy={async (pr) => {
-              // Run deployment pipeline for the PR
+              // Run deployment memory chain for the PR
               const pipeline = await runDeploymentPipeline({
                 functionName: pr.filesChanged[0] || 'unknown',
                 code: pr.diff,
                 autoValidate: true
               }, (stage, status) => {
-                console.log(`Pipeline: ${stage} → ${status}`);
+                console.log(`Memory Chain: ${stage} → ${status}`);
               });
               setDeployPipeline(pipeline);
               if (!pipeline.result?.success) {

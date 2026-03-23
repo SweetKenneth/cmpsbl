@@ -431,7 +431,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
     },
   });
 
-  // Promote from shadow to production mutation (governed pipeline)
+  // Promote from shadow to production mutation (governed memory chain)
   const promoteMutation = useMutation({
     mutationFn: async (planId: string) => {
       // Step 1: Run validation first
@@ -987,7 +987,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                             variant="ghost"
                             className="h-7 px-2 text-neon-green hover:text-neon-green hover:bg-neon-green/10"
                             onClick={() => setPromoteDialog({ open: true, planId: plan.id })}
-                            title="Promote to Production (governed pipeline)"
+                            title="Promote to Production (governed memory chain)"
                           >
                             <Rocket className="w-3 h-3" />
                           </Button>
@@ -1747,7 +1747,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               Promote Shadow → Production
             </DialogTitle>
             <DialogDescription>
-              This will run the full governed promotion pipeline: Validate → Shadow Test → Apply.
+              This will run the full governed promotion memory chain: Validate → Shadow Test → Apply.
               All gates must pass before changes reach production.
             </DialogDescription>
           </DialogHeader>

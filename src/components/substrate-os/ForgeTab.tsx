@@ -177,7 +177,7 @@ export function ForgeTab() {
                 <Languages className="w-4 h-4 text-neon-amber shrink-0" />
                 Universal Export Adapter
               </CardTitle>
-              <CardDescription className="text-[11px]">25 target language support via UEA pipeline</CardDescription>
+              <CardDescription className="text-[11px]">25 target language support via UEA memory chain</CardDescription>
             </CardHeader>
             <CardContent className="px-4 sm:px-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 sm:gap-2">

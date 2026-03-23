@@ -12,7 +12,7 @@ The CMPSBL® Substrate OS is a cognitive orchestration system designed for persi
 
 The system implements a clockless architecture — modules operate without shared global clocks, coordinating instead through event-driven signal propagation and weighted integrity scoring. This design enables autonomous learning, offline cognitive consolidation, and governed self-evolution within deterministic safety boundaries.
 
-As of version 13.5 (IRONCLAD epoch), the substrate comprises 38 matrix nodes organized across seven architectural sectors, with 300+ synergy pipelines, a three-tier autonomy governance model, and full-spectrum resilience hardening across all subsystems.
+As of version 13.5 (IRONCLAD epoch), the substrate comprises 38 matrix nodes organized across seven architectural sectors, with 300+ synergy memory chains, a three-tier autonomy governance model, and full-spectrum resilience hardening across all subsystems.
 
 ## Purpose of Publication
 
@@ -33,7 +33,7 @@ This document set is published as a **defensive publication** to establish times
 |---|---|
 | Architecture nodes | 38 |
 | Architectural sectors | 7 |
-| Synergy pipelines | 300+ (100 crystallized) |
+| Synergy memory chains | 300+ (100 crystallized) |
 | Autonomy tiers | 3 (Supervised, Bounded, Full) |
 | Hardening coverage | 100% of nodes |
 | Export targets | 25 languages (18 software + 7 HDL) |

@@ -30,10 +30,10 @@ export const GATED_ROUTES: GatedRoute[] = [
   // Phase 2 — Platform Whisper
   { path: '/licensing', unlocksAt: 2, label: 'Infrastructure Licensing', teaser: 'Download and deploy the CMPSBL Substrate within your own infrastructure. Self-hosted SDK access coming soon.', waitlist: true },
   { path: '/substrate/licensing/success', unlocksAt: 2, label: 'Licensing Success', teaser: 'Licensing checkout confirmation.', waitlist: false },
-  { path: '/marketplace', unlocksAt: 2, label: 'Artifact Marketplace', teaser: 'Browse, purchase, and deploy capabilities, templates, and synergy pipelines.', waitlist: true },
+  { path: '/marketplace', unlocksAt: 2, label: 'Artifact Marketplace', teaser: 'Browse, purchase, and deploy capabilities, templates, and synergy memory chains.', waitlist: true },
   { path: '/store', unlocksAt: 2, label: 'Composable Artifacts Store', teaser: 'A curated marketplace of substrate-powered building blocks.', waitlist: true },
   { path: '/capabilities', unlocksAt: 2, label: 'Capability Depot', teaser: 'Atomic, stateless building blocks for any workflow.', waitlist: true },
-  { path: '/synergies', unlocksAt: 2, label: 'Synergy Pipelines', teaser: '300+ cross-module orchestration pipelines.', waitlist: true },
+  { path: '/synergies', unlocksAt: 2, label: 'Synergy Memory Chains', teaser: '300+ cross-module orchestration memory chains.', waitlist: true },
   { path: '/artifacts', unlocksAt: 2, label: 'Artifacts', teaser: 'Downloadable substrate artifacts and templates.', waitlist: true },
   { path: '/engines', unlocksAt: 2, label: 'Engine Marketplace', teaser: 'Production-grade orchestration engines with governance and SLA guarantees.', waitlist: true },
   
