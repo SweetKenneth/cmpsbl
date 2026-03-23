@@ -190,7 +190,7 @@ function PipelineCard({ pipeline, index, featured = false }: { pipeline: any; in
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[10px] font-mono text-muted-foreground/60">
             <span className="flex items-center gap-1">
               <Cpu className="w-3 h-3" />
-              {pipeline.unique_nodes} nodes
+              {pipeline.unique_nodes} primitives
             </span>
             <span className="flex items-center gap-1">
               <Layers className="w-3 h-3" />

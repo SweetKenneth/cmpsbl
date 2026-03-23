@@ -291,7 +291,7 @@ export function SubstrateCapabilities({ compact = false }: SubstrateCapabilities
           </div>
           <div className="text-center">
             <p className="text-2xl sm:text-3xl font-bold text-primary">14</p>
-            <p className="text-xs sm:text-sm text-muted-foreground">Nodes</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Primitives</p>
           </div>
         </div>
       </div>

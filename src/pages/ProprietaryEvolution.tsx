@@ -24,8 +24,8 @@ import { AscensionEffectPanel } from '@/components/proprietary-evolution/Ascensi
 const PHASE_LABELS = ['Ingest', 'Discovery', 'Ascend', 'Export'] as const;
 
 const PHASE_DESCRIPTIONS = [
-  'Upload source files — your code becomes Node #41',
-  'Collide against 40 substrate nodes to discover capabilities',
+  'Upload source files — your code becomes Primitive #41',
+  'Collide against 40 substrate primitives to discover capabilities',
   'Ascend discovered capabilities into permanent memories',
   'Export portable Ascended Memory packs',
 ] as const;

@@ -176,7 +176,7 @@ export function OperationsTab() {
           <h2 className="text-base sm:text-lg font-bold tracking-tight">Operations</h2>
           <p className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-mono tracking-wider truncate">DECODE · VISION · ECONOMY · SANDBOX · INCLUSIVE · NERVE · REFLEX · MEDIC</p>
         </div>
-        <Badge className="text-[9px] bg-primary/10 text-primary dark:text-primary border-primary/20 shrink-0">8 NODES</Badge>
+        <Badge className="text-[9px] bg-primary/10 text-primary dark:text-primary border-primary/20 shrink-0">8 PRIMITIVES</Badge>
       </div>
 
       {/* Module Grid */}
