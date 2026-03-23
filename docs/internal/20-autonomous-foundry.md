@@ -13,7 +13,7 @@ This document describes the Autonomous Software Foundry — the substrate's recu
 
 The Foundry is a closed-loop reactor that:
 
-1. **Discovers** latent capabilities by combinatorially exploring the 40-node topology
+1. **Discovers** latent capabilities by combinatorially exploring the 40-primitive topology
 2. **Scores** each discovered capability using CJPI (Crown Jewel Pipeline Index)
 3. **Tiers** discoveries into S/A/B/C/D quality bands
 4. **Ranks** discoveries within each tier by composite score
@@ -72,7 +72,7 @@ Each module autonomously discovers its own latent capabilities through introspec
 
 ## 4. S-Tier Vault (`/admin/s-tier-vault`)
 
-The S-Tier Vault is the admin-only repository of validated Apex Discoveries (294 entries across the 40-node matrix).
+The S-Tier Vault is the admin-only repository of validated Apex Discoveries (294 entries across the 40-primitive matrix).
 
 ### 4.1 Features
 
@@ -158,7 +158,7 @@ The `/foundry` page is a cinematic presentation layer showing proof metrics only
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | System | Initial foundry internal documentation — v13.1.0 |
-| 2026-03-12 | System | Updated to 40-node matrix, 294 vault entries, Mini-Runtime™ branding, Engines catalog — v14.2.0 |
+| 2026-03-12 | System | Updated to 40-primitive matrix, 294 vault entries, Mini-Runtime™ branding, Engines catalog — v14.2.0 |
 
 ---
 

@@ -23,7 +23,7 @@ This document covers the complete orchestration stack: from the low-level Module
 │  Layer 2: MATRIX COMMUNICATION BUS                         │
 │  Topology-aware routing + sector broadcasts                │
 │  Breaker-aware node-to-node signaling                      │
-│  38-node dependency validation                             │
+│  38-primitive dependency validation                             │
 ├────────────────────────────────────────────────────────────┤
 │  Layer 1: MODULE BUS (Inter-Module Communication Bus)      │
 │  In-memory pub/sub + auto-routing table                    │
@@ -135,7 +135,7 @@ alertRegression(from, details)             // → critical priority, persisted
 
 **Source:** `src/lib/substrate/matrix/communication-bus.ts`
 
-The Matrix Communication Bus extends Layer 1 with topology awareness. It knows about the 38-node matrix, the 12-sector organization, and node dependencies.
+The Matrix Communication Bus extends Layer 1 with topology awareness. It knows about the 38-primitive matrix, the 12-category organization, and node dependencies.
 
 ### 4.1 — Sector Broadcast
 
@@ -147,7 +147,7 @@ Delivers a signal to **every node in a specific sector** (excluding the sender).
 
 The 12 sectors:
 
-| Sector | Example Nodes |
+| Category | Example Nodes |
 |---|---|
 | CORE | core |
 | SYSTEM | system |
@@ -443,7 +443,7 @@ Modules never import and call each other directly. All communication flows throu
 
 ### 9.2 — Topology-Aware Routing
 
-The Matrix Bus knows the sector organization and dependency graph. This enables:
+The Matrix Bus knows the category organization and dependency graph. This enables:
 - **Sector isolation:** Problems in one sector can be contained
 - **Dependency validation:** Signals to broken dependencies are dropped early
 - **Health aggregation:** Sector-level health queries

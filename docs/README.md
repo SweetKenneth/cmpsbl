@@ -67,7 +67,7 @@ Technical proof and scale documentation.
 
 ### Module Deep Dives
 
-Sector-based module documentation.
+Sector-based primitive documentation.
 
 | Pages | Path | Scope |
 |-------|------|-------|

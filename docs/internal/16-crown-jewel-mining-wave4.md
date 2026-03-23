@@ -474,7 +474,7 @@ NERVE            ██ 2
 | A-236 | IMMUNE Rule Effectiveness Scorer | IMMUNE | 71 | Per-rule outcome analysis |
 | A-237 | MESH Circuit Breaker (Mesh-Level) | MESH | 71 | Mesh-wide fault isolation |
 | A-238 | RELAY Webhook Signature Validator | RELAY | 70 | Cryptographic delivery verification |
-| A-239 | NERVE Cross-Sector Signal Router | NERVE | 70 | Multi-sector signal distribution |
+| A-239 | NERVE Cross-Category Signal Router | NERVE | 70 | Multi-sector signal distribution |
 
 ---
 

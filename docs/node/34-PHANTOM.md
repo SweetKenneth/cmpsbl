@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-PHANTOM is the substrate's privacy engineering engine. It ensures data can be processed, shared, and learned from without ever exposing sensitive information. PHANTOM provides mathematical privacy guarantees, synthetic data generation, consent management, leak forensics, and cross-jurisdiction compliance across the entire 40-node matrix.
+PHANTOM is the substrate's privacy engineering engine. It ensures data can be processed, shared, and learned from without ever exposing sensitive information. PHANTOM provides mathematical privacy guarantees, synthetic data generation, consent management, leak forensics, and cross-jurisdiction compliance across the entire 40-primitive matrix.
 
 ---
 

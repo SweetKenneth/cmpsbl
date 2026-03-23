@@ -63,7 +63,7 @@ Integrity seals are deterministic checks that confirm system state validity:
 - **Matrix seal**: Weighted sum equals 1.000 ± 0.001.
 - **Primitive count seal**: Exactly 40 registered matrix primitives across 4 categories.
 - **Boot seal**: All Spine modules initialized before Execution.
-- **Sector seal**: Zone shielding verified — expansion zones independently circuit-broken.
+- **Sector seal**: Zone shielding verified — expansion categories independently circuit-broken.
 - **Config seal**: Runtime configuration matches declared state.
 - **Memory seal**: Tier capacity limits enforced — no tier exceeds 2x capacity.
 
@@ -182,7 +182,7 @@ Nodes expanded during the audit: GOVERNANCE (+7), ATLAS (+13), FORGE (+11), LING
 | 2026-03-22 | System | v14.2.0 — Added OBSERVER node integration, documented node capability audit results, updated capability counts |
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added memory tier enforcement, visitor intelligence, developer adoption, disaster recovery observability |
 | 2026-03-03 | System | Added recent feature observability, updated node count seal to 38 nodes |
-| 2026-03-03 | System | Verified health scoring model matches 38-node weighted topology |
+| 2026-03-03 | System | Verified health scoring model matches 38-primitive weighted topology |
 | 2026-03-01 | System | Initial canonical observability handbook |
 
 ---

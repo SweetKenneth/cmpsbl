@@ -56,7 +56,7 @@ This is where the substrate begins understanding your code. The system scans you
 
 - **Domain detection:** Your code is analyzed for domain signals — security patterns, machine learning constructs, infrastructure tooling, financial logic, medical terminology, graphics primitives, language processing, and hardware interfaces
 - **Functional analysis:** The system extracts function signatures, class declarations, and module boundaries to understand what your code *does*
-- **Sector assignment:** Based on the detected domain, your code is placed into the most relevant substrate sector (e.g., security code → DEFENSE sector, ML code → CORTEX sector)
+- **Sector assignment:** Based on the detected domain, your code is placed into the most relevant substrate category (e.g., security code → DEFENSE sector, ML code → CORTEX sector)
 
 This capability profile determines which substrate primitives your code will interact with most productively during discovery.
 
@@ -99,7 +99,7 @@ The discovery engine explores chains of **2 to 6 nodes**, always including your 
 - **3-4 node chains:** Multi-hop capability compositions
 - **5-6 node chains:** Deep emergent behaviors that only arise from complex interactions
 
-Nodes in the same sector as your code are prioritized for exploration, as they tend to produce the highest-value synergies. Adjacent sectors are also weighted for cross-domain discovery.
+Nodes in the same category as your code are prioritized for exploration, as they tend to produce the highest-value synergies. Adjacent categories are also weighted for cross-domain discovery.
 
 ### 3.3 Scoring — CJPI
 

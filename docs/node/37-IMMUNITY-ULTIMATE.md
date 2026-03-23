@@ -16,7 +16,7 @@ Dynamic countermeasure generation tailored to detected threat patterns.
 Identifies self-targeting false positives where defense mechanisms attack healthy modules.
 
 ### 3. Convalescence Manager
-Post-recovery rehabilitation: gradual load restoration after module healing.
+Post-recovery rehabilitation: gradual load restoration after primitive healing.
 
 ### 4. Cytokine Storm Preventer
 Prevents cascading overreaction by throttling immune responses that exceed safe thresholds.
@@ -34,7 +34,7 @@ Unified health dashboard across all immunity systems.
 Monitors how threat patterns evolve over time to stay ahead of mutations.
 
 ### 9. T-Cell Sentinel Network
-Distributed monitoring agents positioned at module boundaries for early threat detection.
+Distributed monitoring agents positioned at primitive boundaries for early threat detection.
 
 ### 10. Vaccination Campaign Engine
 Proactive hardening campaigns that pre-immunize modules against known threat categories.

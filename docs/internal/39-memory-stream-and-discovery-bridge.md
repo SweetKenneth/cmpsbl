@@ -16,7 +16,7 @@ This document describes the Memory Stream — the substrate's real-time discover
 The Memory Stream is not a database table — it is an **event-driven observation pipeline** that monitors all substrate activity and surfaces high-value behavioral signals for the Discovery Engine to evaluate.
 
 ```
-System Activity (40-node matrix)
+System Activity (40-primitive matrix)
        ↓
   RIPPLE Event Bus
        ↓
@@ -33,7 +33,7 @@ System Activity (40-node matrix)
 
 The Memory Stream ingests signals from all 12 canonical sectors:
 
-| Sector | Signal Types |
+| Category | Signal Types |
 |--------|-------------|
 | Kernel (SPINE) | Boot events, health pulses, integrity changes |
 | CCR | Knowledge crystallization, embedding drift, memory tier moves |
@@ -109,7 +109,7 @@ Discoveries are classified into five learning domains:
 | Intelligence | BRAIN, MEMORY, ORACLE | "Predictive knowledge crystallization" |
 | Compliance | GOVERNANCE, AUDIT, CONSCIENCE | "Autonomous policy verification chain" |
 | Infrastructure | NEXUS, CORTEX, SYSTEM | "Fleet-wide failover orchestration" |
-| Synthesis | Any cross-sector combination | "DECODE→ORACLE→FORGE creative reasoning" |
+| Synthesis | Any cross-category combination | "DECODE→ORACLE→FORGE creative reasoning" |
 
 ### 3.4 High-Value Discovery Handling (CJPI ≥ 85)
 

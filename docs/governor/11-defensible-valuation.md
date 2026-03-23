@@ -37,7 +37,7 @@ The substrate is valued across six pillars:
 | Property | CMPSBL | Kubernetes |
 |----------|--------|------------|
 | Orchestration target | Cognitive agents & reasoning | Containers & workloads |
-| Nodes | 40 specialized across 4 categories | Variable worker nodes |
+| Primitives | 40 specialized across 4 categories | Variable worker nodes |
 | Governance | Architectural, immutable, 4-mode | Config-based, mutable |
 | Self-healing | Built-in circuit breakers & DREAM | Restart policies |
 | Boot integrity | Hash-chained verification | None |

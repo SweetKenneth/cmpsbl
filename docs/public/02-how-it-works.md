@@ -11,7 +11,7 @@ CMPSBL is built from **40 specialized modules** organized into layers:
   📋 GOVERNANCE (Supervisory Plane — approves every action)
     🧠 BRAIN, MEMORY, DREAM (Cognitive Core — reasoning & learning)
       ⚙️ 10 Execution Modules (AI capabilities — routing, generation, orchestration)
-        🔒 Expansion Zones (Ethics, prediction, manufacturing, evolution)
+        🔒 expansion categories (Ethics, prediction, manufacturing, evolution)
 ```
 
 ### What Each Layer Does

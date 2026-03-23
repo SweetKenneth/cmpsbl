@@ -19,7 +19,7 @@ ENGINEER is the substrate's **autonomous diagnostics and self-tuning node**. It 
 ### 2.1 Predictive Maintenance Scheduler
 - Uses EMA decay to forecast maintenance windows
 - Schedules repairs during low-activity periods
-- Priority-weighted: critical nodes get shorter maintenance intervals
+- Priority-weighted: critical primitives get shorter maintenance intervals
 
 ### 2.2 Auto-Tuning Parameter Engine
 - Closed-loop adjustment of system parameters
@@ -33,8 +33,8 @@ ENGINEER is the substrate's **autonomous diagnostics and self-tuning node**. It 
 
 ### 2.4 Resource Contention Arbitrator
 - Priority-weighted resource floors prevent starvation
-- Resolves CPU/memory contention between competing nodes
-- Uses fair-share scheduling with priority boosts for degraded nodes
+- Resolves CPU/memory contention between competing primitives
+- Uses fair-share scheduling with priority boosts for degraded primitives
 
 ### 2.5 Performance Regression Detector (CUSUM)
 - Cumulative Sum algorithm for detecting subtle performance shifts

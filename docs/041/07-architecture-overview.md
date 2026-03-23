@@ -151,8 +151,8 @@ A local caching layer provides fast access to frequently-used memories, with aut
 The Foundry explores combinations of primitives and resolvers to discover new capabilities. It operates using three composition strategies:
 
 1. **Value Maximization** — Highest possible CJPI
-2. **Cross-Sector Synergy** — Novel cross-domain combinations
-3. **Full-Spectrum Coverage** — Comprehensive sector representation
+2. **Cross-Category Synergy** — Novel cross-domain combinations
+3. **Full-Spectrum Coverage** — Comprehensive category representation
 
 ### Crystallization Memory Chain
 

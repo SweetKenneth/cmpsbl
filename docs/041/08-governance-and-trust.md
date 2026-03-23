@@ -133,7 +133,7 @@ CMPSBL maintains a clear boundary between publicly documented architecture and s
 ### Publicly Documented
 
 - System architecture and component relationships
-- Node matrix structure and sector organization
+- Node matrix structure and category organization
 - Intent routing protocol
 - Governance model and gate definitions
 - Capability registry structure

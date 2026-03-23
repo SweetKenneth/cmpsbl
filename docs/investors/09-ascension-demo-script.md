@@ -211,7 +211,7 @@ Pause.
 - ❌ Don't promise specific CJPI scores or discovery counts
 - ❌ Don't say "any file" if you haven't tested edge cases recently
 - ❌ Don't demo with a file you haven't uploaded at least once before
-- ❌ Don't explain the 40-node matrix in detail unless asked — "40 specialized modules" is enough
+- ❌ Don't explain the 40-primitive matrix in detail unless asked — "40 specialized modules" is enough
 
 ## What TO Say
 

@@ -19,7 +19,7 @@ VISION is the substrate's **visual intelligence and perception engine**. It proc
 ### 2.1 Visual Analysis Pipeline
 - Processes images and screenshots through multi-stage analysis
 - Extracts: layout structure, color palettes, typography, component hierarchy
-- Outputs structured descriptions for non-visual nodes
+- Outputs structured descriptions for non-visual primitives
 
 ### 2.2 Accessibility Scanner
 - WCAG 2.1 compliance checking (AA and AAA levels)

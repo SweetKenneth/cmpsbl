@@ -212,7 +212,7 @@ The ENGINEER node (Mechanist) operates with guided autonomy:
 |------|--------|--------|
 | 2026-03-12 | System | v14.1.0 MINDGAMES — Updated to 40-primitive topology, added disaster recovery governance, developer API metering, memory tier enforcement, visitor analytics |
 | 2026-03-03 | System | Added ATLAS governance hub, 7-gate SEBA memory chain, ENGINEER governance, Ironclad references, INTENT/INTEL/SHADOW integration |
-| 2026-03-03 | System | Updated to 38-node topology; added AutoBlog autonomous governance |
+| 2026-03-03 | System | Updated to 38-primitive topology; added AutoBlog autonomous governance |
 | 2026-03-01 | System | Initial canonical doctrine |
 
 ---

@@ -41,7 +41,7 @@ Classified documents covering:
 
 | Layer | Protection |
 |-------|-----------|
-| **Architectural complexity** | 40-node topology with weighted matrix — not replicable from documentation |
+| **Architectural complexity** | 40-primitive topology with weighted matrix — not replicable from documentation |
 | **Continuous compounding** | CLM means the system's knowledge grows daily |
 | **Agent IP** | Each agent captures learned state with version provenance |
 | **Sealed runtimes** | Source-blocked execution prevents reverse engineering |

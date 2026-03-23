@@ -17,7 +17,7 @@ The Ironclad Hardening Fabric is the unified resilience layer protecting all 38 
 createModuleHardening(module: string, config: HardeningConfig): HardenedModule
 ```
 
-Every module in the 38-node topology is wrapped by this function, which adds:
+Every module in the 38-primitive topology is wrapped by this function, which adds:
 
 | Feature | Description |
 |---------|-------------|
@@ -104,7 +104,7 @@ Each module runs in its own bulkhead:
 
 All 38 nodes are protected:
 
-| Sector | Nodes | Hardening Status |
+| Category | Primitives | Hardening Status |
 |--------|-------|-----------------|
 | CORE + SYSTEM | 2 | Ironclad v2.0.0 |
 | CCR | 3 | Ironclad v2.0.0 |

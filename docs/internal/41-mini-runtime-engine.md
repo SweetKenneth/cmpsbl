@@ -182,7 +182,7 @@ The Mini-Runtime™ version tracks the substrate version:
 | Concern | Mitigation |
 |---------|-----------|
 | Algorithm exposure | CJPI formula is public (published in academic papers). Weights are the trade secret — but they ship in the runtime for functional correctness. Acceptable risk. |
-| Reverse engineering | The runtime is functional code, not obfuscated. But it represents <1% of substrate value. The 40-node matrix, NEXUS routing, INTENT mesh, and CLM are the real moat. |
+| Reverse engineering | The runtime is functional code, not obfuscated. But it represents <1% of substrate value. The 40-primitive matrix, NEXUS routing, INTENT mesh, and CLM are the real moat. |
 | Customer modification | Customers may modify the runtime. Modified runtimes lose CMPSBL® certification and warranty. |
 
 ---

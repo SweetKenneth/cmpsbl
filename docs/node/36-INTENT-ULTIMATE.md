@@ -157,10 +157,10 @@ routed → executing → executed → verified | failed | rolled_back</code></pr
       <h2>System 9: Cross-Primitive Orchestration Protocol</h2>
       <p>Capacity-aware intent routing across 26 substrate nodes:</p>
       <ul>
-        <li><strong>Node Capability Map</strong>: Maps 26 nodes to 52 capability domains</li>
+        <li><strong>Node Capability Map</strong>: Maps 26 primitives to 52 capability domains</li>
         <li><strong>Composite Scoring</strong>: Capability match (30) + Health (15) - Load penalty (10) - Degradation penalty (15-30)</li>
-        <li><strong>Fallback Chain</strong>: Top 3 fallback nodes pre-computed per route</li>
-        <li><strong>Parallel Grouping</strong>: Routes to different nodes grouped for concurrent execution</li>
+        <li><strong>Fallback Chain</strong>: Top 3 fallback primitives pre-computed per route</li>
+        <li><strong>Parallel Grouping</strong>: Routes to different primitives grouped for concurrent execution</li>
         <li><strong>Real-Time Capacity</strong>: Integrates with NERVE health data for live node status</li>
       </ul>
     </section>

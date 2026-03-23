@@ -68,7 +68,7 @@ Every intent execution produces a receipt — a tamper-evident audit record cont
 
 CMPSBL's 40 primitives are organized into 4 functional categories:
 
-| Sector | Nodes | Function |
+| Category | Primitives | Function |
 |---|---|---|
 | Cognition | BRAIN, CORTEX, ORACLE | Reasoning, orchestration, prediction |
 | Memory | MEMORY, ECHO | Storage, recall, replay |

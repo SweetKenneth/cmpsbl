@@ -7,7 +7,7 @@
 
 ## 1. Purpose
 
-This document is the exhaustive internal reference for the Ascension pipeline — the proprietary process where external developer software enters the CMPSBL cognitive substrate as a Candidate Node (Auxiliary Node), undergoes collision-based discovery against the 40-node matrix, and produces Ascended Memories exportable in the developer's original language.
+This document is the exhaustive internal reference for the Ascension pipeline — the proprietary process where external developer software enters the CMPSBL cognitive substrate as a Candidate Node (Auxiliary Node), undergoes collision-based discovery against the 40-primitive matrix, and produces Ascended Memories exportable in the developer's original language.
 
 ---
 
@@ -150,7 +150,7 @@ Discovery is executed server-side in the `pf-proprietary-evolution` edge functio
 
 1. Fetch candidate from `artifact_registry` by ID + user_id
 2. Extract capability surface from metadata
-3. Load the full 40-node matrix from `matrixNodeRegistry`
+3. Load the full 40-primitive matrix from `matrixNodeRegistry`
 4. Execute multi-chain collision exploration
 
 ### 4.2 Multi-Chain Collision Algorithm
@@ -178,7 +178,7 @@ for chain_length in [2, 3, 4, 5, 6]:
 | 5 | 300 |
 | 6 | 100 |
 
-Permutations are selected using **weighted random sampling** — nodes in the same sector as Auxiliary Node are 3x more likely to be selected, adjacent sectors 1.5x.
+Permutations are selected using **weighted random sampling** — nodes in the same category as Auxiliary Node are 3x more likely to be selected, adjacent sectors 1.5x.
 
 ### 4.3 Synergy Scoring — CJPI (Crown Jewel Pipeline Index)
 

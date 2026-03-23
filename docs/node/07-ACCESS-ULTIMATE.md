@@ -81,7 +81,7 @@ External API Request
 
 - **Per-call cost computation**: `(base_cost × complexity_multiplier) + (tokens × per_token_rate)` in millicents
 - **8 default cost rules**: brain.query (10mc), brain.reasoning (50mc), encode.mutation (100mc), evolution.apply (200mc)
-- **Real-time aggregation**: Hourly and daily buckets per key with module and product attribution
+- **Real-time aggregation**: Hourly and daily buckets per key with primitive and product attribution
 - **Overage detection**: 75% warn → 90% throttle → 100% block with configurable monthly limits
 - **Cost attribution**: Per-product-code breakdown for chargeback and ROI analysis
 

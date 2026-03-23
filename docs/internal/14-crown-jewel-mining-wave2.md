@@ -333,7 +333,7 @@ ENCODE       ██ 2
 | A-49 | Correlation ID Propagation Engine | CORE | 80 | Distributed tracing backbone |
 | A-50 | Secret Rotation Scheduler | DEFENSE | 79 | Automated credential lifecycle |
 | A-51 | Node Canary Health Probe | SYSTEM | 79 | Pre-failure detection per node |
-| A-52 | Cross-Sector Correlation Engine | NERVE | 79 | Multi-sector anomaly linking |
+| A-52 | Cross-Category Correlation Engine | NERVE | 79 | Multi-sector anomaly linking |
 | A-53 | Persistent Rate Limiter (DB-backed) | DEFENSE | 78 | Durable throughput enforcement |
 | A-54 | Load Shedding Priority Engine | CORE | 78 | Intelligent request dropping |
 | A-55 | Immutable Incident Record System | DEFENSE | 78 | Tamper-proof incident logging |

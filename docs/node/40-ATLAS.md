@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-ATLAS is the substrate's system map and capability registry. It owns node discovery, capability enumeration, topology visualization, and system-wide metadata. ATLAS is the authoritative source for "what exists and what can it do" — the final node in the 40-node architecture, providing the global view.
+ATLAS is the substrate's system map and capability registry. It owns node discovery, capability enumeration, topology visualization, and system-wide metadata. ATLAS is the authoritative source for "what exists and what can it do" — the final node in the 40-primitive architecture, providing the global view.
 
 ---
 
@@ -172,7 +172,7 @@ Capability distribution:
   - Cognitive (BRAIN, MEMORY, DREAM): 8 capabilities
   - Compliance (OCG): 12 capabilities
   - Execution (11 nodes): 22 capabilities
-  - Expansion zones (10 nodes): 20 capabilities
+  - expansion categories (10 nodes): 20 capabilities
   - Mesh overlays (4 nodes): 8 capabilities
   - Plane (2 nodes): 4 capabilities
   
@@ -224,7 +224,7 @@ Capability distribution:
 
 ## Document Set Complete
 
-This concludes the 40-node deep dive documentation series. All nodes have been documented with:
+This concludes the 40-primitive deep dive documentation series. All nodes have been documented with:
 - Executive summaries
 - Capability tables
 - Architecture diagrams

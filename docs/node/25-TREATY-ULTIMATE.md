@@ -10,7 +10,7 @@
 
 ## 1. Purpose
 
-TREATY is the substrate's **inter-system agreement and boundary enforcement engine**. It manages contracts between nodes, cross-substrate protocols, API agreements, and SLA enforcement. TREATY ensures that all parties honor their commitments and that boundary violations are detected and resolved.
+TREATY is the substrate's **inter-system agreement and boundary enforcement engine**. It manages contracts between primitives, cross-substrate protocols, API agreements, and SLA enforcement. TREATY ensures that all parties honor their commitments and that boundary violations are detected and resolved.
 
 ---
 

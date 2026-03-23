@@ -22,7 +22,7 @@ PHANTOM is the substrate's **ghost execution and stealth operations engine**. It
 - Results are delivered only to authorized consumers
 
 ### 2.2 Stealth Diagnostic Engine
-- Runs invisible health checks on nodes under observation
+- Runs invisible health checks on primitives under observation
 - No observable side effects from target node's perspective
 - Used by DEFENSE for covert threat assessment
 

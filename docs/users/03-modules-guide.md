@@ -27,7 +27,7 @@
 | **MEDIC** | Diagnostics, self-repair | `diagnose`, `repair` |
 | **INTEGRATION** | External connectivity | Adapters, webhooks |
 
-## Expansion Zones
+## expansion categories
 
 | Module | Zone | Purpose |
 |--------|------|---------|

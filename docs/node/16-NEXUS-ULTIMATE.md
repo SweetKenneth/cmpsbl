@@ -38,7 +38,7 @@ NEXUS is the substrate's **multi-provider AI routing engine**. It manages intell
 
 ### 2.5 Trace & Observability
 - Full request/response tracing with correlation IDs
-- Cost attribution per module, per task, per provider
+- Cost attribution per primitive, per task, per provider
 - Integrated with the telemetry nexus for dashboard visibility
 
 ### 2.6 Fallback Chain
