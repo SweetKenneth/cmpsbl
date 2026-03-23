@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>LINGUA — Protocol Translation & Schema Bridging · CMPSBL® Node Deep Dive</title>
+<title>LINGUA v9.0.0 — Universal Translation & Protocol Bridge · CMPSBL® Node Deep Dive</title>
 <link rel="stylesheet" href="theme.css" />
 </head>
 <body>
@@ -12,56 +12,104 @@
 <section class="cover">
   <div class="classification">◆ Founder Eyes Only</div>
   <div class="badge"><span class="dot"></span> Node Deep Dive</div>
-  <h1><span class="g">LINGUA</span></h1>
-  <p class="subtitle">Protocol Translation & Schema Bridging — Fidelity-scored translation, dynamic schema inference, modality bridges, and auto-disable for degraded paths.</p>
+  <h1><span class="g">LINGUA</span> <small>v9.0.0</small></h1>
+  <p class="subtitle">Universal Translation & Protocol Bridge Engine — Adaptive fidelity, semantic schema intelligence, transitive bridging, streaming/batch pipelines, cross-node format negotiation, and anomaly detection.</p>
   <div class="meta">
-    <strong>Node #30</strong> · Sector: EMZ · Generation 1<br>
-    Codename: <em>Polyglot</em> · Capabilities: 3
+    <strong>Node #30</strong> · Sector: EMZ · Generation 9<br>
+    Codename: <em>Polyglot</em> · Capabilities: 6 Engines
   </div>
 </section>
 
 <div class="sep"></div>
 
 <div class="metrics">
-  <div class="metric"><div class="mv">500</div><div class="ml">Translation Ring Cap</div></div>
-  <div class="metric"><div class="mv">100</div><div class="ml">Schema Ring Cap</div></div>
-  <div class="metric"><div class="mv">50ms</div><div class="ml">Latency Spike Threshold</div></div>
-  <div class="metric"><div class="mv">70%</div><div class="ml">Fidelity Floor</div></div>
+  <div class="metric"><div class="mv">1,000</div><div class="ml">Translation Ring Cap</div></div>
+  <div class="metric"><div class="mv">200</div><div class="ml">Schema Ring Cap</div></div>
+  <div class="metric"><div class="mv">42</div><div class="ml">Modality Bridges</div></div>
+  <div class="metric"><div class="mv">3</div><div class="ml">Max Transitive Depth</div></div>
 </div>
+
+<h2>6 Core Engines</h2>
+<table>
+  <thead><tr><th>Engine</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Adaptive Fidelity</strong></td><td>EMA-weighted profiles, CUSUM regression detection, auto-disable</td></tr>
+    <tr><td><strong>Schema Intelligence</strong></td><td>Semantic field matching, type coercion graph, versioned migrations</td></tr>
+    <tr><td><strong>Protocol Bridge Mesh</strong></td><td>Transitive BFS bridging, round-trip verification, hot-swap</td></tr>
+    <tr><td><strong>Multi-Modal Pipeline</strong></td><td>Streaming (64KB), batch (50 items), priority lanes, partial translation</td></tr>
+    <tr><td><strong>Format Negotiation</strong></td><td>Node capability registry, auto-negotiation, fallback chains</td></tr>
+    <tr><td><strong>Anomaly Detection</strong></td><td>EMA baselines, fidelity/latency alerts, heat maps</td></tr>
+  </tbody>
+</table>
 
 <h2>Fidelity Scoring</h2>
 <table>
-  <thead><tr><th>Fidelity</th><th>Quality</th><th>Meaning</th></tr></thead>
+  <thead><tr><th>Fidelity</th><th>Quality</th><th>Action</th></tr></thead>
   <tbody>
-    <tr><td>≥ 0.9</td><td>Excellent</td><td>Lossless</td></tr>
-    <tr><td>≥ 0.7</td><td>Good</td><td>Minor adjustments</td></tr>
-    <tr><td>≥ 0.5</td><td>Acceptable</td><td>Some coercion</td></tr>
-    <tr><td>&lt; 0.5</td><td>Poor</td><td>Potential data loss</td></tr>
+    <tr><td>&ge; 0.9</td><td>Excellent</td><td>Lossless</td></tr>
+    <tr><td>&ge; 0.7</td><td>Good</td><td>Minor adjustments</td></tr>
+    <tr><td>&ge; 0.5</td><td>Acceptable</td><td>Some coercion</td></tr>
+    <tr><td>&lt; 0.5</td><td>Poor</td><td>Bridge degraded</td></tr>
+    <tr><td>&lt; 0.35</td><td>Critical</td><td>Bridge auto-disabled</td></tr>
   </tbody>
 </table>
+
+<h2>Type Coercion Safety</h2>
+<table>
+  <thead><tr><th>Conversion</th><th>Safety</th></tr></thead>
+  <tbody>
+    <tr><td>number &rarr; string</td><td>Safe</td></tr>
+    <tr><td>boolean &rarr; string</td><td>Safe</td></tr>
+    <tr><td>date &rarr; string</td><td>Safe</td></tr>
+    <tr><td>string &rarr; number</td><td>Lossy</td></tr>
+    <tr><td>number &rarr; boolean</td><td>Lossy</td></tr>
+    <tr><td>array &rarr; string</td><td>Lossy</td></tr>
+  </tbody>
+</table>
+
+<h2>Bridge Lifecycle</h2>
+<div class="box">
+  <pre>warming &rarr; active &rarr; degraded &rarr; disabled
+                &uarr;           |
+                hot-swap ------+</pre>
+</div>
 
 <h2>CLM Health Formula</h2>
 <div class="box">
   <pre>score = 100 - deductions
-  Low fidelity: -15
-  Latency spikes: -10
-  Disabled bridges: -3 each (max -20)
+  Low fidelity (&lt;70%): -15
+  Latency spikes (&gt;20%): -10
+  Disabled bridges: -5 each
+  Degraded bridges: -2 each
   Low schema conf: -2 each (max -10)
-  Capacity warnings: -5 to -15</pre>
+  Capacity warnings: -5 to -15
+  Critical anomalies (5min): -3 each</pre>
+</div>
+
+<h2>ADA Integration</h2>
+<div class="box">
+  <div class="box-title">◆ protocol-translation domain</div>
+  <p>Autonomy: 75% · Rate: 100/hr · DREAM: allowed</p>
+  <p>Can: select-bridge, disable-degraded, compose-transitive, hot-swap, switch-quality</p>
+  <p>Cannot: delete-bridge, modify-schema-permanently, evolve</p>
 </div>
 
 <h2>Trade Secrets</h2>
 <div class="box">
   <div class="box-title">◆ Dynamic Schema Inference</div>
-  <p>No bridge? Analyze field name semantics + type compatibility for ad-hoc mapping without manual configuration.</p>
+  <p>Alias groups + Levenshtein distance for ad-hoc mapping without manual configuration.</p>
 </div>
 <div class="box">
-  <div class="box-title">◆ Bridge Auto-Disable</div>
-  <p>Fidelity &lt; 50% across 50+ translations → auto-disable. Prevents low-quality translations from propagating.</p>
+  <div class="box-title">◆ Transitive Bridge Composition</div>
+  <p>BFS path finding (max 3 hops) with 0.9x fidelity penalty per hop.</p>
+</div>
+<div class="box">
+  <div class="box-title">◆ Hot-Swap Recovery</div>
+  <p>Degraded bridges replaced with fresh instances in warming status, preserving format pair.</p>
 </div>
 
 <div class="sep"></div>
-<footer>CMPSBL® Substrate — LINGUA Node Deep Dive · Founder Eyes Only</footer>
+<footer>CMPSBL® Substrate — LINGUA v9.0.0 "Polyglot" Node Deep Dive · Founder Eyes Only</footer>
 </div>
 </body>
 </html>
