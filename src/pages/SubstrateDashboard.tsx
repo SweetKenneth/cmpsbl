@@ -374,7 +374,7 @@ const modulesByLayer = {
   csz: [
     {
       id: "evolution",
-      name: "EVOLUTION",
+      name: "EVOLUTION Layer",
       description: "Self-improvement lifecycle, mutation process",
       icon: Dna,
       color: "text-neon-magenta",
