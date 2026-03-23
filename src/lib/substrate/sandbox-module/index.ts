@@ -601,3 +601,7 @@ function simpleHash(str: string): string {
   }
   return hash.toString(36);
 }
+
+// ── Ultimate Systems ─────────────────────────────────────────────
+export * as SandboxUltimate from './ultimate';
+

@@ -184,3 +184,7 @@ export function getReflexResilience() { return getModuleResilienceReport('reflex
 export function getReflexEngine() { return moduleEngine; }
 export function getReflexHardening() { return hardening?.getHardeningReport() ?? null; }
 export function upgradeReflexEngine(v: string) { if (moduleEngine && hardening) { hardening.snapshot(state); moduleEngine = hardening.upgradeEngine(moduleEngine, v); } return moduleEngine; }
+
+// ── Ultimate Systems ─────────────────────────────────────────────
+export * as ReflexUltimate from './ultimate';
+
