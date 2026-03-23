@@ -423,7 +423,7 @@ export const META_COMMANDS: CommandDefinition[] = [
   { command: 'help ripple', description: 'Message bus commands', category: 'meta', icon: Radio, requiresOperator: false },
   { command: 'help access', description: 'Identity/billing commands', category: 'meta', icon: Key, requiresOperator: false },
   { command: 'help integration', description: 'Enterprise integration commands', category: 'meta', icon: Plug, requiresOperator: false },
-  { command: 'help inclusive', description: 'Accessibility pipeline commands', category: 'meta', icon: Accessibility, requiresOperator: false },
+  { command: 'help inclusive', description: 'Accessibility memory chain commands', category: 'meta', icon: Accessibility, requiresOperator: false },
   { command: 'help clm', description: 'Constant Learning Mode commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help seba', description: 'Self-Evolving Bounded Agent commands', category: 'meta', icon: Brain, requiresOperator: false },
   { command: 'help autoblog', description: 'AutoBlog primitive commands', category: 'meta', icon: PenTool, requiresOperator: false },
