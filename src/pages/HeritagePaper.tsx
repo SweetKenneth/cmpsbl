@@ -280,7 +280,7 @@ const HeritagePaper = () => {
               The Genesis period established three foundational principles: <strong className="text-foreground">zero-cost intelligence</strong> (meaningful semantic ops without API calls), <strong className="text-foreground">progressive self-activation</strong> (components that grow smarter with experience), and <strong className="text-foreground">memory as infrastructure</strong> (learning is foundational, not a feature added later).
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              BRAIN is Node #3 in the current 40-node substrate, but it was the <em>first</em> node built — and it remains the cognitive core. Every other node depends on BRAIN's embedding, crystallization, and recall capabilities. The <code className="bg-muted px-1 rounded text-xs font-mono">@origin(genesis-2025-01)</code> annotation marks it as the oldest continuous component.
+              BRAIN is Primitive #3 in the current 40-primitive substrate, but it was the <em>first</em> organ built — and it remains the cognitive core. Every other primitive depends on BRAIN's embedding, crystallization, and recall capabilities. The <code className="bg-muted px-1 rounded text-xs font-mono">@origin(genesis-2025-01)</code> annotation marks it as the oldest continuous component.
             </p>
             <ContributionBox>
               Established the entire <strong className="text-foreground">neural substrate layer</strong> — knowledge crystallization, zero-cost embeddings, progressive self-activation, and confidence decay — the foundation upon which all other cognitive capabilities were built.
