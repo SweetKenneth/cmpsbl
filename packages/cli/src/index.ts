@@ -6,6 +6,9 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { execSync } from 'child_process';
+import * as os from 'os';
+
 import { computeCJPI, parseManifest, generateManifest } from '@cmpsbl/runtime';
 import {
   initFirstContact,
@@ -58,6 +61,120 @@ function jsonOut(data: unknown) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Persistent Credentials (~/.cmpsbl/credentials)
+// ═══════════════════════════════════════════════════════════════
+
+const CREDS_DIR = path.join(os.homedir(), '.cmpsbl');
+const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
+
+function loadStoredKey(): string | undefined {
+  try {
+    if (fs.existsSync(CREDS_FILE)) {
+      const data = JSON.parse(fs.readFileSync(CREDS_FILE, 'utf-8'));
+      return data.apiKey;
+    }
+  } catch { /* ignore corrupt file */ }
+  return undefined;
+}
+
+function saveStoredKey(key: string): void {
+  if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
+  fs.writeFileSync(CREDS_FILE, JSON.stringify({ apiKey: key, savedAt: new Date().toISOString() }, null, 2));
+  fs.chmodSync(CREDS_FILE, 0o600); // owner-only read/write
+}
+
+function clearStoredKey(): void {
+  try { if (fs.existsSync(CREDS_FILE)) fs.unlinkSync(CREDS_FILE); } catch { /* ignore */ }
+}
+
+/** Resolve API key: env var > stored credentials */
+function resolveApiKey(): string | undefined {
+  return process.env.CMPSBL_API_KEY || loadStoredKey();
+}
+
+/** Open a URL in the user's default browser */
+function openBrowser(url: string): void {
+  try {
+    const platform = process.platform;
+    if (platform === 'win32') execSync(`start "" "${url}"`);
+    else if (platform === 'darwin') execSync(`open "${url}"`);
+    else execSync(`xdg-open "${url}"`);
+  } catch {
+    say(`  Could not open browser. Visit manually:`);
+    say(`  ${url}`);
+  }
+}
+
+const DEV_PORTAL_URL = 'https://cmpsbl.com/api-access';
+
+/**
+ * Mandatory API key gate.
+ * Called before any command that requires substrate access.
+ * Returns the validated API key or exits.
+ */
+async function requireApiKey(): Promise<string> {
+  const existing = resolveApiKey();
+  if (existing) return existing;
+
+  // No key found — interactive auth flow
+  if (JSON_MODE) {
+    jsonOut({ error: 'authentication_required', message: 'Set CMPSBL_API_KEY or run cmpsbl login' });
+    process.exit(1);
+  }
+
+  blank();
+  box([
+    '⚠  AUTHENTICATION REQUIRED',
+    '',
+    'The CMPSBL Substrate requires a developer API key.',
+    'You can get one free at the Developer Portal.',
+  ], 'ACCESS');
+  blank();
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  // Step 1: Open browser
+  await new Promise<void>((resolve) => {
+    rl.question('  Press ENTER to open the Developer Portal in your browser...', () => {
+      openBrowser(DEV_PORTAL_URL);
+      blank();
+      say('  ✓ Browser opened → ' + DEV_PORTAL_URL);
+      say('  Register as a developer and generate your API key.');
+      blank();
+      resolve();
+    });
+  });
+
+  // Step 2: Paste key
+  const key = await new Promise<string>((resolve) => {
+    rl.question('  Paste your API key: ', (answer) => {
+      resolve(answer.trim());
+    });
+  });
+
+  rl.close();
+
+  if (!key || key.length < 10) {
+    say(pick(V.err));
+    say('Invalid API key. Run `cmpsbl login` to try again.');
+    blank();
+    process.exit(1);
+  }
+
+  // Step 3: Save persistently
+  saveStoredKey(key);
+  blank();
+  say('  ✓ API key saved to ~/.cmpsbl/credentials');
+  say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
+  blank();
+
+  // Update config for this session
+  CLI_CONFIG.apiKey = key;
+
+  return key;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
@@ -67,7 +184,7 @@ const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
   domain: 'cli',
   endpoint: process.env.CMPSBL_ENDPOINT ?? 'https://api.cmpsbl.com/v1/substrate',
-  apiKey: process.env.CMPSBL_API_KEY,
+  apiKey: resolveApiKey(),
   autoDiscover: true,
   onBoot: (msg) => { if (!JSON_MODE) say(msg); },
   onCeremony: (event) => {
@@ -258,8 +375,10 @@ function printHelp() {
     --no-color              Disable colored output
 
   Environment:
-    CMPSBL_API_KEY          API key for Memory Stream access
+    CMPSBL_API_KEY          API key (overrides ~/.cmpsbl/credentials)
     CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
+
+  Get your API key at https://cmpsbl.com/api-access
 `);
 }
 
@@ -284,6 +403,11 @@ async function cmdOnboarding() {
     await sleep(60);
   }
   await sleep(300);
+  blank();
+
+  // ── Mandatory API key gate ──
+  const apiKey = await requireApiKey();
+  CLI_CONFIG.apiKey = apiKey;
   blank();
 
   // ── Run the shared First Contact Ceremony ──
@@ -419,6 +543,10 @@ async function cmdShell() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdInit(_args: string[]) {
+  // ── Mandatory API key gate ──
+  const apiKey = await requireApiKey();
+  CLI_CONFIG.apiKey = apiKey;
+
   if (!JSON_MODE) {
     // ── ASCII Logo ──
     blank();
@@ -575,12 +703,15 @@ async function cmdWhoami() {
     version: CLI_VERSION,
   };
 
+  const apiKey = resolveApiKey();
+  const hasKey = !!apiKey;
   if (JSON_MODE) { jsonOut(data); return; }
   header('Identity');
-  say(`API Key:    ${hasKey ? `● Configured (***${process.env.CMPSBL_API_KEY?.slice(-4) ?? ''})` : '○ Not set'}`);
+  say(`API Key:    ${hasKey ? `● Configured (***${apiKey?.slice(-4) ?? ''})` : '○ Not set'}`);
+  say(`Source:     ${process.env.CMPSBL_API_KEY ? 'Environment variable' : hasKey ? '~/.cmpsbl/credentials' : 'None'}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
-  say(`Memory:     ${data.memoryBound ? '● Bound' : '○ Local'}`);
+  say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
   say(`Package:    @cmpsbl/cli v${CLI_VERSION}`);
   div();
   say(pick(V.idle));
@@ -588,40 +719,29 @@ async function cmdWhoami() {
 }
 
 async function cmdLogin() {
-  if (process.env.CMPSBL_API_KEY) {
-    if (JSON_MODE) { jsonOut({ authenticated: true }); return; }
-    say('● Already authenticated via CMPSBL_API_KEY');
+  const existing = resolveApiKey();
+  if (existing) {
+    if (JSON_MODE) { jsonOut({ authenticated: true, source: process.env.CMPSBL_API_KEY ? 'env' : 'credentials' }); return; }
+    say(`● Already authenticated (***${existing.slice(-4)})`);
+    say(`  Source: ${process.env.CMPSBL_API_KEY ? 'CMPSBL_API_KEY env var' : '~/.cmpsbl/credentials'}`);
     say(pick(V.ok));
     blank();
     return;
   }
 
-  if (JSON_MODE) { jsonOut({ authenticated: false, message: 'Set CMPSBL_API_KEY' }); return; }
-  header('Authentication');
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise<void>((resolve) => {
-    rl.question('  Enter API key: ', (key) => {
-      rl.close();
-      if (!key.trim()) {
-        say(pick(V.err));
-        say('No key provided.');
-      } else {
-        say(pick(V.ok));
-        say('Key validated. Export for persistence:');
-        blank();
-        say(`  export CMPSBL_API_KEY="${key.trim()}"`);
-      }
-      blank();
-      resolve();
-    });
-  });
+  // Delegate to the shared auth gate
+  await requireApiKey();
+  say(pick(V.ok));
+  blank();
 }
 
 async function cmdLogout() {
   endFirstContactSession();
-  if (JSON_MODE) { jsonOut({ disconnected: true }); return; }
+  clearStoredKey();
+  if (JSON_MODE) { jsonOut({ disconnected: true, credentialsCleared: true }); return; }
   say(pick(V.ok));
-  say('Session terminated. Memory stream disconnected.');
+  say('Session terminated. Credentials cleared.');
+  say('Memory stream disconnected.');
   blank();
 }
 
