@@ -6,6 +6,9 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { execSync } from 'child_process';
+import * as os from 'os';
+
 import { computeCJPI, parseManifest, generateManifest } from '@cmpsbl/runtime';
 import {
   initFirstContact,
