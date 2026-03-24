@@ -148,7 +148,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/roadmap", title: "Product Roadmap", description: "What's shipping next" },
   ],
   "/scanner": [
-    { href: "/engines", title: "54 Engines", description: "The processing arsenal behind every scan" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents in the store", badge: "Store" },
     { href: "/try", title: "Try the Substrate", description: "Interactive demo beyond scanning", badge: "Demo" },
     { href: "/start", title: "Start Building", description: "Get full access with 3 free memory slots" },
   ],
