@@ -380,7 +380,7 @@ const results = await cmpsbl.memory.search({
   {
     id: "relay",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Organs",
     title: "RELAY Webhooks",
     description: "Outbound notifications & event delivery",
     color: "text-[hsl(var(--neon-green))]",
