@@ -33,7 +33,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/foundry", title: "The Foundry", description: "Where memory stream discoveries are explored and scored" },
     { href: "/packs", title: "Capability Packs", description: "Crystallized discoveries packaged for activation", badge: "Packs" },
     { href: "/architecture", title: "Substrate Architecture", description: "The node topology feeding the memory stream" },
-    { href: "/engines", title: "54 Engines", description: "The processing arsenal that generates stream signals" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents in the store", badge: "Store" },
   ],
   "/foundry": [
     { href: "/memory-stream", title: "Memory Stream", description: "The discovery substrate the Foundry samples from", badge: "Discovery" },
