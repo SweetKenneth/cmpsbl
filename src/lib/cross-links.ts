@@ -12,37 +12,37 @@ export interface CrossLink {
 
 const LINK_DB: Record<string, CrossLink[]> = {
   "/architecture": [
-    { href: "/engines", title: "54 Composable Engines", description: "Explore the META to CORE tier arsenal powering the substrate", badge: "Engines" },
+    { href: "/store", title: "Store & Plans", description: "Browse memory packs, agents, and engines in the store", badge: "Store" },
     { href: "/runtime", title: "Runtime Environment", description: "See how nodes execute, scale, and self-heal in production" },
     { href: "/memory-stream", title: "Memory Stream", description: "Watch the system discover and crystallize new capabilities in real time", badge: "Discovery" },
     { href: "/system-overview", title: "System Overview", description: "Full topology of the 40-primitive, 4-category cognitive matrix" },
   ],
   "/engines": [
     { href: "/architecture", title: "Substrate Architecture", description: "Understand how engines fit within the 40-primitive topology" },
-    { href: "/packs", title: "Capability Packs", description: "Activate engine groups through governed memory slots", badge: "Packs" },
-    { href: "/foundry", title: "The Foundry", description: "Discover new engine combinations the system surfaces automatically" },
-    { href: "/try", title: "Try It Live", description: "Test engine routing with zero signup in the interactive demo", badge: "Demo" },
+    { href: "/store", title: "Store & Plans", description: "Browse and activate memory packs and agents", badge: "Store" },
+    { href: "/runtime", title: "Runtime Environment", description: "See how primitives execute and self-heal in production" },
+    { href: "/docs", title: "Documentation", description: "Developer reference and integration guides" },
   ],
   "/runtime": [
     { href: "/architecture", title: "Substrate Architecture", description: "The 40-primitive topology that the runtime executes" },
-    { href: "/engines", title: "54 Composable Engines", description: "Processing units orchestrated by the runtime" },
+    { href: "/store", title: "Store & Plans", description: "Browse memory packs, agents, and subscription plans", badge: "Store" },
     { href: "/status", title: "System Status", description: "Live health monitoring across all runtime services" },
-    { href: "/docs/runtime-reference", title: "Runtime Reference", description: "Technical documentation for runtime APIs and hooks" },
+    { href: "/docs", title: "Documentation", description: "Developer reference, guides, and API documentation" },
   ],
   "/memory-stream": [
     { href: "/foundry", title: "The Foundry", description: "Where memory stream discoveries are explored and scored" },
     { href: "/packs", title: "Capability Packs", description: "Crystallized discoveries packaged for activation", badge: "Packs" },
     { href: "/architecture", title: "Substrate Architecture", description: "The node topology feeding the memory stream" },
-    { href: "/engines", title: "54 Engines", description: "The processing arsenal that generates stream signals" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents in the store", badge: "Store" },
   ],
   "/foundry": [
     { href: "/memory-stream", title: "Memory Stream", description: "The discovery substrate the Foundry samples from", badge: "Discovery" },
-    { href: "/engines", title: "54 Composable Engines", description: "Engine combinations the Foundry explores" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents in the store", badge: "Store" },
     { href: "/packs", title: "Capability Packs", description: "How discoveries become activatable capability packs" },
     { href: "/showcase", title: "Cognitive Showcase", description: "See top-tier discoveries and system achievements" },
   ],
   "/packs": [
-    { href: "/engines", title: "54 Composable Engines", description: "The engines each pack activates" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and memory packs in the store", badge: "Store" },
     { href: "/upgrade", title: "Upgrade Plan", description: "Unlock more memory slots and premium capability tiers", badge: "Upgrade" },
     { href: "/foundry", title: "The Foundry", description: "How new packs are discovered through the memory stream" },
     { href: "/start", title: "Start Here", description: "Get your first 3 memory slots free — no credit card required" },
@@ -67,7 +67,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/use-cases": [
     { href: "/enterprise", title: "Enterprise", description: "Dedicated substrate infrastructure for large teams", badge: "Enterprise" },
-    { href: "/engines", title: "54 Engines", description: "The composable arsenal powering every use case" },
+    { href: "/store", title: "Store & Plans", description: "Browse the composable engine and agent catalog", badge: "Store" },
     { href: "/solutions", title: "Solutions", description: "Pre-configured substrate deployments by industry" },
     { href: "/try", title: "Try It Live", description: "Experience the substrate with zero signup", badge: "Demo" },
   ],
@@ -86,13 +86,13 @@ const LINK_DB: Record<string, CrossLink[]> = {
   "/solutions": [
     { href: "/use-cases", title: "Use Cases", description: "Specific deployment examples across verticals" },
     { href: "/enterprise", title: "Enterprise", description: "Custom deployment and dedicated infrastructure" },
-    { href: "/engines", title: "54 Engines", description: "The composable arsenal behind every solution" },
+    { href: "/store", title: "Store & Plans", description: "Browse the composable engine and agent catalog", badge: "Store" },
     { href: "/contact", title: "Contact Sales", description: "Discuss a custom solution for your team" },
   ],
   "/try": [
     { href: "/start", title: "Start Building", description: "Create a free account and get 3 memory slots", badge: "Free" },
     { href: "/architecture", title: "How It Works", description: "Explore the 40-primitive substrate topology" },
-    { href: "/engines", title: "54 Engines", description: "See the full composable engine arsenal" },
+    { href: "/store", title: "Store & Plans", description: "Browse the full engine and agent catalog", badge: "Store" },
     { href: "/documentation", title: "Documentation", description: "API reference, tutorials, and integration guides" },
   ],
   "/privacy": [
@@ -130,11 +130,11 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/try", title: "Try It First", description: "Zero-signup interactive demo of the substrate", badge: "Demo" },
     { href: "/documentation", title: "Documentation", description: "API reference and integration quickstart" },
     { href: "/packs", title: "Capability Packs", description: "Choose your first capabilities across 6 domains" },
-    { href: "/engines", title: "54 Engines", description: "Browse the full composable engine arsenal" },
+    { href: "/store", title: "Store & Plans", description: "Browse the full composable engine and agent catalog", badge: "Store" },
   ],
   "/upgrade": [
     { href: "/packs", title: "Capability Packs", description: "See all 24 packs across 6 strategic domains" },
-    { href: "/engines", title: "54 Engines", description: "What you unlock with higher-tier plans" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and upgrade your plan", badge: "Store" },
     { href: "/enterprise", title: "Enterprise", description: "Custom plans with dedicated infrastructure", badge: "Enterprise" },
   ],
   "/status": [
@@ -148,18 +148,18 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/roadmap", title: "Product Roadmap", description: "What's shipping next" },
   ],
   "/scanner": [
-    { href: "/engines", title: "54 Engines", description: "The processing arsenal behind every scan" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents in the store", badge: "Store" },
     { href: "/try", title: "Try the Substrate", description: "Interactive demo beyond scanning", badge: "Demo" },
     { href: "/start", title: "Start Building", description: "Get full access with 3 free memory slots" },
   ],
   "/showcase": [
     { href: "/foundry", title: "The Foundry", description: "Where showcased discoveries originate" },
     { href: "/memory-stream", title: "Memory Stream", description: "The discovery substrate feeding the showcase" },
-    { href: "/engines", title: "54 Engines", description: "The composable arsenal behind each showcase entry" },
+    { href: "/store", title: "Store & Plans", description: "Browse the composable engine catalog", badge: "Store" },
   ],
   "/lab": [
     { href: "/foundry", title: "The Foundry", description: "Explore system-discovered capabilities" },
-    { href: "/engines", title: "54 Engines", description: "The engine arsenal available for experiments" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents available for experiments", badge: "Store" },
     { href: "/documentation", title: "Documentation", description: "API reference for lab integrations" },
   ],
   "/academy": [
@@ -180,8 +180,8 @@ export function getCrossLinks(path: string): CrossLink[] {
   // Fallback: show core pages
   return [
     { href: "/architecture", title: "Substrate Architecture", description: "Explore the 40-primitive cognitive topology" },
-    { href: "/engines", title: "54 Composable Engines", description: "Browse the full engine arsenal" },
-    { href: "/try", title: "Try It Live", description: "Zero-signup interactive substrate demo", badge: "Demo" },
-    { href: "/start", title: "Start Building", description: "Get 3 free memory slots — no credit card", badge: "Free" },
+    { href: "/store", title: "Store & Plans", description: "Browse the full engine, agent, and memory pack catalog", badge: "Store" },
+    { href: "/docs", title: "Documentation", description: "Developer reference, guides, and API documentation" },
+    { href: "/runtime", title: "Runtime Environment", description: "See how the substrate executes and self-heals" },
   ];
 }

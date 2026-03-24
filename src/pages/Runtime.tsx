@@ -203,7 +203,7 @@ export default function Runtime() {
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
               Every user gets the full substrate — all 40 primitives, all capabilities. No features are locked behind paywalls.
-              Plans only control how many memory packs you can activate at once.
+              Plans include memory packs, priority routing, and expanded capacity.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
               <Button asChild>
