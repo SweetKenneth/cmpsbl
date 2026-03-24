@@ -560,30 +560,42 @@ function NexusSection() {
 5. On failure → auto-failover to next-best provider`}</CodeBlock>
       </div>
 
-      <CodeBlock title="Route with constraints">{`// Basic routing (NEXUS picks the best provider)
-const response = await substrate.nexus.route({
-  messages: [{ role: "user", content: "Analyze this dataset" }],
-  task_type: "analysis"
+      <CodeBlock title="Route with constraints via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Basic routing (NEXUS picks the best provider)
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'NEXUS',
+    action: 'route',
+    payload: {
+      messages: [{ role: "user", content: "Analyze this dataset" }],
+      task_type: "analysis"
+    }
+  }),
 });
 
 // Route with specific constraints
-const response = await substrate.nexus.route({
-  messages: [{ role: "user", content: "Generate a haiku" }],
-  task_type: "creative",
-  constraints: {
-    max_latency_ms: 3000,
-    max_cost_cents: 5,
-    preferred_providers: ["anthropic", "openai"],
-    fallback: true,                // auto-failover on error
-    exclude_providers: ["cohere"]  // skip specific providers
-  }
-});
-
-// Stream a response
-const stream = await substrate.nexus.stream({
-  messages: messages,
-  task_type: "chat",
-  on_token: (token) => process.stdout.write(token)
+const constrained = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'NEXUS',
+    action: 'route',
+    payload: {
+      messages: [{ role: "user", content: "Generate a haiku" }],
+      task_type: "creative",
+      constraints: {
+        max_latency_ms: 3000,
+        max_cost_cents: 5,
+        preferred_providers: ["anthropic", "openai"],
+        fallback: true
+      }
+    }
+  }),
 });`}</CodeBlock>
 
       {/* Task types */}
