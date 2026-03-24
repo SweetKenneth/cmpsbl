@@ -307,6 +307,30 @@ serve(async (req) => {
       );
     }
 
+    // Handle engine calls (SDK Engine class)
+    if (route.module === "engine") {
+      const { engine, action, input, context, options } = body as Record<string, unknown>;
+      if (!engine || !action || !input) {
+        return json({ success: false, error: "Missing engine, action, or input" }, 400);
+      }
+      // Proxy to pf-substrate with engine routing
+      const { data: engineData, error: engineError } = await supabase.functions.invoke("pf-substrate", {
+        body: { module: String(engine), action: String(action), payload: { input, context, options } },
+      });
+      if (engineError) {
+        return json({
+          success: false, engine: String(engine), action: String(action),
+          error: engineError.message,
+        }, 500);
+      }
+      return json({
+        success: true, engine: String(engine), action: String(action),
+        result: engineData?.result ?? engineData?.data ?? "Processed",
+        confidence: engineData?.confidence ?? 0.85,
+        pipeline: engineData?.pipeline ?? { stages: [], total_tokens: 0, total_latency_ms: 0, depth: "standard" },
+      });
+    }
+
     // Handle memory endpoints directly (lightweight, no substrate proxy)
     if (route.module === "memory") {
       switch (route.action) {
