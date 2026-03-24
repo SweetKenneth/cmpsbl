@@ -350,6 +350,8 @@ export default function Workspace() {
         </div>
       </div>
 
+      <RelatedCapabilities />
+      <PageSEOBlock path="/workspace" title="Builder Workspace" />
       <EnhancedFooter />
     </>
   );
