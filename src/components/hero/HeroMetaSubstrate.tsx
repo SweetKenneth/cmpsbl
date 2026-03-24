@@ -371,8 +371,8 @@ export function HeroMetaSubstrate() {
 
         {/* Primitives flow strip */}
         <FadeIn delay={0.65} className="mb-6 sm:mb-10">
-          <div className="flex flex-col items-start sm:items-center gap-2">
-            <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center justify-center gap-0 overflow-x-auto scrollbar-hide py-2 -mx-4 px-4 sm:mx-0 sm:px-0">
               {[
                 "Signal",
                 "Memory Stream",
@@ -391,7 +391,7 @@ export function HeroMetaSubstrate() {
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex items-center justify-center gap-0 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
               {[
                 { label: "Layers", color: "--neon-magenta" },
                 { label: "Organs", color: "--neon-cyan" },
