@@ -67,7 +67,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/use-cases": [
     { href: "/enterprise", title: "Enterprise", description: "Dedicated substrate infrastructure for large teams", badge: "Enterprise" },
-    { href: "/engines", title: "54 Engines", description: "The composable arsenal powering every use case" },
+    { href: "/store", title: "Store & Plans", description: "Browse the composable engine and agent catalog", badge: "Store" },
     { href: "/solutions", title: "Solutions", description: "Pre-configured substrate deployments by industry" },
     { href: "/try", title: "Try It Live", description: "Experience the substrate with zero signup", badge: "Demo" },
   ],
