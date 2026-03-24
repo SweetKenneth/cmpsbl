@@ -219,9 +219,9 @@ export default function Runtime() {
         {/* ═══ ARCHITECTURE — horizontal scroll row ═══ */}
         <section className="mb-20">
           <div className="container mx-auto px-4 mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold">Unified Architecture</h2>
+         <h2 className="text-2xl md:text-3xl font-bold">Unified Substrate</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              One runtime. Every tier. No stripped-down versions.
+              One substrate. Every tier. No stripped-down versions.
             </p>
           </div>
           <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))] pb-4 no-scrollbar">
