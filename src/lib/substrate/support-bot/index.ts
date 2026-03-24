@@ -705,22 +705,22 @@ export class SupportBotEngine {
 
   private async fetchResolution(resolutionId: string): Promise<Resolution | null> {
     try {
-      // Query memory for verified resolutions
-      const recall = await this.recallRelevantMemories(`resolution:${resolutionId}`, { category: 'resolution' as IntentCategory, confidence: 1, keywords: [resolutionId] });
-      if (recall.memories.length > 0) {
-        const memory = recall.memories[0];
-        const parsed = typeof memory.content === 'string' ? JSON.parse(memory.content) : memory.content;
+      const intent: DetectedIntent = { primary: 'resolution', category: 'general', confidence: 1, keywords: [resolutionId] };
+      const recall = await this.recallRelevantMemories(`resolution:${resolutionId}`, intent);
+      if (recall.matches.length > 0) {
+        const match = recall.matches[0];
+        const content = match.memory.answer;
         return {
           id: resolutionId,
-          ticket_id: parsed.ticket_id ?? resolutionId,
-          answer: parsed.answer ?? memory.content,
-          explanation: parsed.explanation ?? '',
-          confidence: memory.confidence ?? parsed.confidence ?? 0,
-          sources: parsed.sources ?? [],
-          resolved_by: parsed.resolved_by ?? 'system',
-          verification: parsed.verification ?? 'unverified',
-          learning_applied: parsed.learning_applied ?? false,
-          created_at: memory.created_at ?? new Date().toISOString(),
+          ticket_id: resolutionId,
+          answer: content,
+          explanation: '',
+          confidence: match.similarity,
+          sources: [],
+          resolved_by: 'system',
+          verification: match.memory.verified ? 'verified' : 'unverified',
+          learning_applied: false,
+          created_at: match.memory.created_at,
         };
       }
       return null;
