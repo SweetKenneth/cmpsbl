@@ -4151,33 +4151,6 @@ export type Database = {
         }
         Relationships: []
       }
-      brain_proxy_logs: {
-        Row: {
-          created_at: string | null
-          domain_name: string
-          id: string
-          metadata: Json | null
-          response_time_ms: number | null
-          success: boolean | null
-        }
-        Insert: {
-          created_at?: string | null
-          domain_name: string
-          id?: string
-          metadata?: Json | null
-          response_time_ms?: number | null
-          success?: boolean | null
-        }
-        Update: {
-          created_at?: string | null
-          domain_name?: string
-          id?: string
-          metadata?: Json | null
-          response_time_ms?: number | null
-          success?: boolean | null
-        }
-        Relationships: []
-      }
       brain_rag_contexts: {
         Row: {
           agent_id: string | null
@@ -4419,36 +4392,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      brain_sensory_events: {
-        Row: {
-          anomaly_score: number | null
-          auto_fix_applied: boolean | null
-          created_at: string | null
-          event_type: string
-          fix_confidence: number | null
-          id: string
-          sensory_data: Json
-        }
-        Insert: {
-          anomaly_score?: number | null
-          auto_fix_applied?: boolean | null
-          created_at?: string | null
-          event_type: string
-          fix_confidence?: number | null
-          id?: string
-          sensory_data: Json
-        }
-        Update: {
-          anomaly_score?: number | null
-          auto_fix_applied?: boolean | null
-          created_at?: string | null
-          event_type?: string
-          fix_confidence?: number | null
-          id?: string
-          sensory_data?: Json
-        }
-        Relationships: []
       }
       brain_tiering_config: {
         Row: {
