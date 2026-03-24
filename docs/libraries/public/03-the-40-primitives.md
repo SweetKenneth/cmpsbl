@@ -46,7 +46,7 @@ Layers are always-on systems that permeate the substrate. They protect, govern, 
 
 ---
 
-## Engines — Processing Powerhouses (7)
+## Engines — Processing Powerhouses (8)
 
 Engines are invoked on demand for complex processing, orchestration, and synthesis tasks.
 
@@ -59,6 +59,7 @@ Engines are invoked on demand for complex processing, orchestration, and synthes
 | 29 | **ECHO** | Reverb | Digital twin simulation, scenario replay |
 | 30 | **PHANTOM** | Ghost | Decoy operations, canary tokens, counter-intelligence |
 | 31 | **SANDBOX** | Playground | Isolated execution, safe experimentation, test harness |
+| 32 | **RIPPLE** | Tsunami | Event cascade, priority fan-out, backpressure handling |
 
 ---
 
