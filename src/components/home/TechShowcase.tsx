@@ -191,9 +191,9 @@ if (analysis.risk_score > 0.7) {
   {
     id: "vision",
     icon: Eye,
-    layer: "Operational",
-    title: "VISION Telemetry",
-    description: "Observability & system monitoring",
+    layer: "Layers",
+    title: "VISION Observability",
+    description: "System monitoring & health scoring",
     color: "text-[hsl(var(--neon-blue))]",
     gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--neon-blue)/0.7)]",
     code: `// Get real-time system health
