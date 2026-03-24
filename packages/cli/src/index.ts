@@ -272,7 +272,7 @@ export async function run(args: string[]): Promise<void> {
 
   try {
     switch (command) {
-      case 'init':         await cmdInit(args.slice(1)); break;
+      case 'init':         await cmdInit(args.slice(1), {}); break;
       case 'discover':     await cmdDiscover(args.slice(1)); break;
       case 'stream':       await cmdStream(); break;
       case 'score':        cmdScore(args.slice(1)); break;
