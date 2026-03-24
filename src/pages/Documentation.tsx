@@ -365,26 +365,36 @@ function BYOKSection() {
         </InfoCard>
       </div>
 
-      <CodeBlock title="Register & use your keys">{`// Register a provider key
-await substrate.keys.register('openai', 'sk-...', {
-  name: 'Production GPT-4o Key',
-  scopes: ['nexus.route', 'brain.query'],
-  rate_limit: { per_minute: 60, per_day: 5000 },
-  budget_cents: 10000  // $100 monthly budget
+      <CodeBlock title="Register & use your keys via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+
+// Register a provider key
+const res = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    module: 'ACCESS',
+    action: 'register_key',
+    payload: {
+      provider: 'openai',
+      key: 'sk-...',
+      name: 'Production GPT-4o Key',
+      scopes: ['nexus.route', 'brain.query'],
+      rate_limit: { per_minute: 60, per_day: 5000 },
+      budget_cents: 10000
+    }
+  }),
 });
 
-// Make an AI call — billed to YOUR account
-const response = await substrate.ai.chat(
-  [{ role: 'user', content: 'Hello!' }],
-  { provider: 'openai', model: 'gpt-4o' }
-);
-
 // Check usage
-const usage = await substrate.keys.usage('openai', 30);
-// → { tokens: 142850, cost_cents: 428, requests: 1203 }
-
-// Rotate a key
-await substrate.keys.rotate('openai', 'sk-new-key-...');`}</CodeBlock>
+const usage = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY', 'Content-Type': 'application/json' },
+  body: JSON.stringify({ module: 'ACCESS', action: 'usage', payload: { provider: 'openai', days: 30 } }),
+});
+// → { tokens: 142850, cost_cents: 428, requests: 1203 }`}</CodeBlock>
 
       <div>
         <h3 className="font-semibold text-foreground mb-3">Supported Providers</h3>
