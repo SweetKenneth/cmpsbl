@@ -110,14 +110,13 @@ export default function Enterprise() {
               Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
-              The complete CMPSBL platform —{" "}
-              <Link to="/modules" className="text-primary hover:underline font-medium">40 integrated primitives</Link>{" "}
-              — deployed on your servers. Self-improvement cycles, governed adaptation,{" "}
-              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
-              built-in security, and smart routing — configured for your compliance requirements.
+              The complete CMPSBL substrate —{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">40 integrated primitives</Link>{" "}
+              — deployed on your servers. DREAM Engine synthesis, governed adaptation via the EVOLUTION Layer,{" "}
+              persistent memory, DEFENSE Layer security, and NEXUS Organ routing — configured for your compliance requirements.
             </p>
             <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-8">
-              Persistent memory is free for everyone. Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
+              Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
               See <Link to="/solutions" className="text-primary hover:underline font-medium">all solutions</Link>{" "}
               or explore <Link to="/use-cases" className="text-primary hover:underline font-medium">real-world use cases</Link>.
             </p>
