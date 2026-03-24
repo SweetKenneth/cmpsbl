@@ -1045,14 +1045,14 @@ export class CMPSBL {
   }
 
   /**
-   * Get the sector topology map showing all nodes grouped by sector.
+   * Get the category topology map showing all primitives grouped by category.
    */
-  topology(): SDKResponse<Record<string, NodeInfo[]>> {
+  topology(): SDKResponse<Record<string, PrimitiveInfo[]>> {
     const start = Date.now();
-    const map: Record<string, NodeInfo[]> = {};
-    for (const node of NODE_REGISTRY) {
-      if (!map[node.sector]) map[node.sector] = [];
-      map[node.sector].push({ ...node });
+    const map: Record<string, PrimitiveInfo[]> = {};
+    for (const prim of PRIMITIVE_REGISTRY) {
+      if (!map[prim.sector]) map[prim.sector] = [];
+      map[prim.sector].push({ ...prim });
     }
     return new SDKResponse(map, { method: 'topology', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
