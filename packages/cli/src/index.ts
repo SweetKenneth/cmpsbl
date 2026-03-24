@@ -360,10 +360,36 @@ function printHelp() {
     login                   Authenticate with CMPSBL API
     logout                  End current session
 
+  ── Cognitive ────────────────────────────────────
+    think <prompt>          BRAIN deep reasoning cycle
+    reflect [topic]         ECHO resonance & pattern replay
+    remember <input>        MEMORY store & semantic retrieval
+    forget <chain-id>       MEMORY prune a chain
+
   ── Discovery ────────────────────────────────────
     discover <input>        Start live discovery on an input
     stream                  View Memory Stream (live chains)
     score <n> <u> <c> <m>   Score with CJPI algorithm
+
+  ── Engines ──────────────────────────────────────
+    forge [topic]           Signal Forge blueprint synthesis
+    harvest <url>           HARVEST data extraction
+    translate <text>        LINGUA language processing
+    sandbox <script>        SANDBOX safe code execution
+
+  ── Agents ───────────────────────────────────────
+    scan <url>              INCLUSIVE accessibility scan (WCAG 2.2)
+    predict <scenario>      ORACLE forecasting & what-if analysis
+    audit [scope]           AUDIT compliance report
+    cost [period]           ECONOMY usage & cost report
+
+  ── Defense ──────────────────────────────────────
+    threat <input>          DEFENSE threat scoring
+    immune [check]          IMMUNITY system health & anomalies
+
+  ── Governance ───────────────────────────────────
+    govern [policy]         GOVERNANCE policy check & mode
+    treaty [status]         TREATY trust contracts
 
   ── System ───────────────────────────────────────
     status                  Show full substrate status
@@ -402,6 +428,7 @@ function printHelp() {
     CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
 
   Get your API key at https://cmpsbl.com/api-access
+  42 commands · 40 primitives · cmpsbl.com
 `);
 }
 
