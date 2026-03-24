@@ -59,7 +59,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
               "transition-shadow duration-500",
               "[grid-area:1/1]"
             )}
-            style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
+            style={{ pointerEvents: flipped ? "none" : "auto", backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}
           >
             {/* Top gradient bar */}
             <div className={cn("h-1 w-full bg-gradient-to-r", agent.gradient)} />
