@@ -211,8 +211,8 @@ const metrics = await cmpsbl.vision.query({
   {
     id: "dream",
     icon: Moon,
-    layer: "Operational",
-    title: "DREAM Engine Evolution",
+    layer: "Engines",
+    title: "DREAM Engine",
     description: "Offline learning & pattern extraction",
     color: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
