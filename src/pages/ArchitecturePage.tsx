@@ -118,6 +118,7 @@ const TAXONOMY: TaxonomyCategory[] = [
       { id: 'echo', label: 'ECHO', tagline: 'Broadcaster', description: 'Multi-channel communication, voice translation, protocol bridging, and broadcast orchestration.', icon: Radio, slug: 'echo' },
       { id: 'phantom', label: 'PHANTOM', tagline: 'Ghost Operator', description: 'Anonymization, stealth execution, data masking, and privacy-preserving computation.', icon: Ghost, slug: 'phantom' },
       { id: 'sandbox', label: 'SANDBOX', tagline: 'Isolation Chamber', description: 'Hermetically sealed environments for speculative runs, evolution testing, and experimentation.', icon: FlaskConical, slug: 'sandbox' },
+      { id: 'ripple', label: 'RIPPLE', tagline: 'Event Cascade', description: 'Intelligent fan-out, priority routing, deduplication, and backpressure handling.', icon: Waves, slug: 'ripple' },
     ],
   },
   {
@@ -133,7 +134,6 @@ const TAXONOMY: TaxonomyCategory[] = [
     entries: [
       { id: 'encode', label: 'ENCODE', tagline: 'Code Architect', description: 'AST-aware patches, DAG-ordered orchestration, immutable rollback ledger, and 71-skill proficiency.', icon: Code2, slug: 'encode' },
       { id: 'decode', label: 'DECODE', tagline: 'Interpreter', description: 'Multi-modal input, NLU intent classification, epistemic audit trail, and streaming responses.', icon: Languages, slug: 'decode' },
-      { id: 'ripple', label: 'RIPPLE', tagline: 'Event Cascade', description: 'Intelligent fan-out, priority routing, deduplication, and backpressure handling.', icon: Waves, slug: 'ripple' },
       { id: 'audit', label: 'AUDIT', tagline: 'Immutable Ledger', description: 'Append-only logging with SHA-256 hash chaining and compliance reporting.', icon: FileCheck, slug: 'audit' },
       { id: 'economy', label: 'ECONOMY', tagline: 'Cost Engine', description: 'Real-time cost attribution, budget enforcement, token systems, and marketplace pricing.', icon: Coins, slug: 'economy' },
       { id: 'inclusive', label: 'INCLUSIVE', tagline: 'Accessibility', description: 'WCAG 2.2 scanning, AI-powered fixes, continuous monitoring, and compliance reporting.', icon: Accessibility, slug: 'inclusive' },
@@ -154,6 +154,7 @@ const ASCII_DIAGRAM = `
 ┌──────────────────────────────────────────────────────────────────┐
 │                    CMPSBL® SUBSTRATE v9.0.0                     │
 │                   40-Primitive Architecture                      │
+│                      12 · 12 · 8 · 8                             │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  ┌─── LAYERS (12 — Ambient Overlays) ──────────────────────────┐  │
@@ -162,14 +163,14 @@ const ASCII_DIAGRAM = `
 │  │  INTENT    ACCESS      VISION      SHADOW                   │  │
 │  │  "Always on, always watching, always enforcing"            │  │
 │  │                                                              │  │
-│  │  ┌─── AGENTS (9 — Autonomous Actors) ────────────────────┐  │  │
-│  │  │  ENCODE  DECODE  RIPPLE  AUDIT  ECONOMY               │  │  │
+│  │  ┌─── AGENTS (8 — Autonomous Actors) ────────────────────┐  │  │
+│  │  │  ENCODE  DECODE  AUDIT  ECONOMY                       │  │  │
 │  │  │  INCLUSIVE  CORTEX  ORACLE  ENGINEER                   │  │  │
 │  │  │  "They decide, act, and learn on their own"            │  │  │
 │  │  │                                                        │  │  │
-│  │  │  ┌─── ENGINES (7 — Processing Power) ───────────────┐  │  │  │
+│  │  │  ┌─── ENGINES (8 — Processing Power) ───────────────┐  │  │  │
 │  │  │  │  DREAM  HARVEST  FORGE  LINGUA                   │  │  │  │
-│  │  │  │  ECHO   PHANTOM  SANDBOX                         │  │  │  │
+│  │  │  │  ECHO   PHANTOM  SANDBOX  RIPPLE                 │  │  │  │
 │  │  │  │  "Turn the key, they deliver power"              │  │  │  │
 │  │  │  │                                                   │  │  │  │
 │  │  │  │  ┌─── ORGANS (12 — Vital Core) ───────────────┐  │  │  │  │

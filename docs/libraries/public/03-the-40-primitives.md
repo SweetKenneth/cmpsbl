@@ -46,7 +46,7 @@ Layers are always-on systems that permeate the substrate. They protect, govern, 
 
 ---
 
-## Engines — Processing Powerhouses (7)
+## Engines — Processing Powerhouses (8)
 
 Engines are invoked on demand for complex processing, orchestration, and synthesis tasks.
 
@@ -59,18 +59,18 @@ Engines are invoked on demand for complex processing, orchestration, and synthes
 | 29 | **ECHO** | Reverb | Digital twin simulation, scenario replay |
 | 30 | **PHANTOM** | Ghost | Decoy operations, canary tokens, counter-intelligence |
 | 31 | **SANDBOX** | Playground | Isolated execution, safe experimentation, test harness |
+| 32 | **RIPPLE** | Tsunami | Event cascade, priority fan-out, backpressure handling |
 
 ---
 
-## Agents — Autonomous Actors (9)
+## Agents — Autonomous Actors (8)
 
 Agents are specialized AI workers that perform domain-specific tasks autonomously.
 
 | # | Primitive | Codename | Role |
 |---|-----------|----------|------|
-| 32 | **ENCODE** | Builder | Code generation, AST analysis, build planning |
-| 33 | **DECODE** | Parser | Natural language understanding, intent classification |
-| 34 | **RIPPLE** | Cascade | Task orchestration, event propagation, dead letter queue |
+| 33 | **ENCODE** | Builder | Code generation, AST analysis, build planning |
+| 34 | **DECODE** | Parser | Natural language understanding, intent classification |
 | 35 | **AUDIT** | Chronicler | Tamper-evident logging, Merkle chain integrity |
 | 36 | **ECONOMY** | Treasurer | Cost tracking, budget management, usage metering |
 | 37 | **INCLUSIVE** | Advocate | Accessibility scanning, WCAG compliance |
