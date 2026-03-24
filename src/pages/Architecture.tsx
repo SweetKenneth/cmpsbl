@@ -48,21 +48,21 @@ interface CategoryDef {
 const CATEGORIES: CategoryDef[] = [
   {
     label: "Organs",
-    tag: "Infrastructure",
+    tag: "Vital Infrastructure",
     color: "border-neon-amber/30 bg-neon-amber/5",
     primitives: [
       { name: "CORE", icon: Cpu, desc: "Kernel boot authority — initializes all primitives, owns the weighted registry (Σ = 1.000)." },
       { name: "SYSTEM", icon: Settings, desc: "Lifecycle management, configuration state, diagnostics aggregation, and self-repair loop." },
       { name: "BRAIN", icon: Brain, desc: "Reasoning organ — reflection cycles, pattern recognition, 384-dim hash-embed learning." },
-      { name: "MEMORY", icon: Brain, desc: "Tiered persistent storage — hot/warm/cold recall with vector retrieval and SM-2 spaced repetition." },
+      { name: "MEMORY", icon: Brain, desc: "Tiered persistent storage — hot/warm/cold/glacier recall with vector retrieval and SM-2 spaced repetition." },
       { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-primitive coordination." },
-      { name: "RIPPLE", icon: Radio, desc: "Signal & event bus — inter-primitive communication, cascade detection." },
-      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-primitive message routing." },
-      { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
-      { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
       { name: "NEXUS", icon: Zap, desc: "AI provider routing gateway — model selection, fallback chains, cost tracking." },
-      { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
-      { name: "INTEGRATION", icon: Plug, desc: "Dependency resolver — cross-surface binding, boots last in sequence." },
+      { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
+      { name: "SOVEREIGN", icon: Globe, desc: "Data sovereignty — jurisdictional compliance, consent management." },
+      { name: "ATLAS", icon: Map, desc: "System map & capability registry — the global view of what exists." },
+      { name: "MEDIC", icon: Stethoscope, desc: "Autonomous diagnostics — self-repair probes, real-state health assessment." },
+      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-primitive message routing." },
+      { name: "CONSCIENCE", icon: Scale, desc: "Ethical assessment — 5-type bias detection, decision boundaries." },
     ],
   },
   {
@@ -73,11 +73,15 @@ const CATEGORIES: CategoryDef[] = [
       { name: "DEFENSE", icon: Shield, desc: "Terminal boundary enforcement — outermost containment shell, threat filtering." },
       { name: "IMMUNITY", icon: HeartPulse, desc: "Adaptive resilience — anomaly signatures, 3-sigma drift baselines, cascade detection." },
       { name: "GOVERNANCE", icon: Scale, desc: "Policy enforcement overlay — action legitimacy supervision, veto authority." },
-      { name: "INTENT", icon: Target, desc: "Purpose alignment — DAG-based action planning, goal lifecycle management." },
-      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate process, fitness scoring, shadow A/B testing." },
-      { name: "INCLUSIVE", icon: Accessibility, desc: "Accessibility layer — WCAG scanning, compliance reporting." },
-      { name: "CONSCIENCE", icon: Scale, desc: "Ethical assessment — 5-type bias detection, decision boundaries." },
       { name: "TREATY", icon: Gavel, desc: "Contract negotiation & SLA enforcement." },
+      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate process, fitness scoring, shadow A/B testing." },
+      { name: "REFLEX", icon: Zap, desc: "Edge computing orchestration & low-latency response." },
+      { name: "COMPASS", icon: Compass, desc: "Geospatial analysis & location-aware processing." },
+      { name: "INTEGRATION", icon: Plug, desc: "Dependency resolver — cross-surface binding, boots last in sequence." },
+      { name: "INTENT", icon: Target, desc: "Purpose alignment — DAG-based action planning, goal lifecycle management." },
+      { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
+      { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
+      { name: "SHADOW", icon: Ghost, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
     ],
   },
   {
@@ -86,15 +90,13 @@ const CATEGORIES: CategoryDef[] = [
     color: "border-neon-green/30 bg-neon-green/5",
     primitives: [
       { name: "DREAM", icon: Moon, desc: "Synthesis engine — creative combination, heuristic generation, SimNap offline cycles." },
-      { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
-      { name: "ORACLE", icon: Compass, desc: "Predictive modeling — Bayesian networks, 10K Monte Carlo iterations." },
+      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL processes." },
       { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing engine." },
-      { name: "COMPASS", icon: Compass, desc: "Geospatial analysis & location-aware processing." },
-      { name: "ATLAS", icon: Map, desc: "System map & capability registry — the global view of what exists." },
-      { name: "ECONOMY", icon: Coins, desc: "Value & cost tracking — ROI calculation, usage metering." },
+      { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing engine." },
+      { name: "ECHO", icon: Copy, desc: "Digital twin simulation & scenario replay engine." },
+      { name: "PHANTOM", icon: Ghost, desc: "Privacy protection — 3-hop proxy anonymization engine." },
       { name: "SANDBOX", icon: FlaskConical, desc: "Isolated execution environment — safe experimentation, staged deployments." },
-      { name: "MEDIC", icon: Stethoscope, desc: "Autonomous diagnostics — self-repair engine, real-state probes." },
-      { name: "REFLEX", icon: Zap, desc: "Edge computing orchestration & low-latency response." },
+      { name: "RIPPLE", icon: Radio, desc: "Event-driven signal bus — inter-primitive communication, cascade orchestration." },
     ],
   },
   {
@@ -104,14 +106,12 @@ const CATEGORIES: CategoryDef[] = [
     primitives: [
       { name: "ENCODE", icon: Code2, desc: "Code generation agent — 7-stage execution chain, output formatting." },
       { name: "DECODE", icon: Brain, desc: "Epistemic interpreter — prompt parsing, intent extraction, 25-feature hardening." },
-      { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
-      { name: "PHANTOM", icon: Ghost, desc: "Privacy protection — 3-hop proxy anonymization." },
-      { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing." },
-      { name: "ECHO", icon: Copy, desc: "Digital twin simulation & scenario replay." },
-      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL processes." },
-      { name: "SOVEREIGN", icon: Globe, desc: "Data sovereignty — jurisdictional compliance, consent management." },
+      { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
+      { name: "ECONOMY", icon: Coins, desc: "Value & cost tracking — ROI calculation, usage metering." },
+      { name: "INCLUSIVE", icon: Accessibility, desc: "Accessibility agent — WCAG scanning, compliance reporting." },
+      { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
+      { name: "ORACLE", icon: Compass, desc: "Predictive modeling — Bayesian networks, 10K Monte Carlo iterations." },
       { name: "ENGINEER", icon: Wrench, desc: "Infrastructure automation — P95 latency tracking, deployment orchestration." },
-      { name: "OBSERVER", icon: Eye, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
     ],
   },
 ];
@@ -119,15 +119,15 @@ const CATEGORIES: CategoryDef[] = [
 const BOOT_SEQUENCE = `CORE Organ (Kernel Boot Authority)
   → SYSTEM Organ (Lifecycle & Config)
   → BRAIN Organ + MEMORY Organ + NERVE Organ
-  → RIPPLE Organ + ACCESS Organ + IDENTITY Organ + RELAY Organ + AUDIT Organ
-  → NEXUS Organ (AI Provider Gateway)
-  → Engines: DREAM, CORTEX, ORACLE, FORGE, COMPASS,
-             ATLAS, ECONOMY, SANDBOX, MEDIC, REFLEX
-  → INTEGRATION Organ (boots last — dependency resolver)
-  → Agents: ENCODE, DECODE, VISION, PHANTOM, LINGUA,
-            ECHO, HARVEST, SOVEREIGN, ENGINEER, OBSERVER
+  → NEXUS Organ + IDENTITY Organ + SOVEREIGN Organ
+  → ATLAS Organ + MEDIC Organ + RELAY Organ + CONSCIENCE Organ
+  → Engines: DREAM, HARVEST, FORGE, LINGUA,
+             ECHO, PHANTOM, SANDBOX, RIPPLE
+  → Agents: ENCODE, DECODE, AUDIT, ECONOMY,
+            INCLUSIVE, CORTEX, ORACLE, ENGINEER
   ← Layers permeate: IMMUNITY, INTENT, EVOLUTION,
-                      INCLUSIVE, CONSCIENCE, TREATY
+                      REFLEX, COMPASS, INTEGRATION,
+                      ACCESS, VISION, SHADOW, TREATY
   ← GOVERNANCE Layer (policy overlay)
   ← DEFENSE Layer (outermost shell)`;
 
@@ -135,7 +135,7 @@ const KEY_PROPERTIES = [
   { title: "Weight Invariant", desc: "Every primitive carries a governance weight. The sum across all 40 primitives is exactly 1.000 — no single primitive can dominate decisions." },
   { title: "Clockless Coordination", desc: "Primitives share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
   { title: "Safety Switch Isolation", desc: "Every primitive has independent failure tracking with automatic safety switches. Degradation never cascades across categories." },
-  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION Engine proposes, SHADOW validates, GOVERNANCE Layer approves." },
+  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION Layer proposes, SHADOW Layer validates, GOVERNANCE Layer approves." },
   { title: "Tamper-Evident Audit", desc: "Every mutation is recorded in a hash-chained receipt ledger. The chain is verifiable at any point — no operation goes unlogged." },
   { title: "Graceful Degradation", desc: "When individual primitives fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
 ];
@@ -153,9 +153,9 @@ export default function Architecture() {
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into 4 categories: Agents, Engines, Layers, and Organs. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
-          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA).' },
-          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Engine proposes changes, SHADOW validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into a symmetric 12·12·8·8 matrix across 4 categories: Organs, Layers, Engines, and Agents. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
+          { question: 'What are the 4 categories?', answer: 'Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER).' },
+          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Layer proposes changes, SHADOW Layer validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
         ]}
       />
 
@@ -174,7 +174,7 @@ export default function Architecture() {
               <motion.div {...fadeUp} className="max-w-xl">
                 <Badge variant="outline" className="mb-5 border-primary/30 text-primary gap-1.5">
                   <Layers className="w-3 h-3" />
-                  40 Primitives · Agents · Engines · Layers · Organs
+                  12 Organs · 12 Layers · 8 Engines · 8 Agents
                 </Badge>
                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6 leading-[1.05]">
                    How CMPSBL Works
@@ -187,8 +187,7 @@ export default function Architecture() {
                   <a href="https://en.wikipedia.org/wiki/Merkle_tree" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">tamper-evident audit chain</a>.
                 </p>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed mb-6">
-                  40 primitives across 4 categories powering{" "}
-                  <Link to="/store" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
+                  40 primitives across 4 categories — a symmetric 12·12·8·8 matrix.{" "}
                   Every primitive carries a governance weight (Σ&nbsp;=&nbsp;1.000).
                   No single primitive can dominate system-level decisions without proportional representation.{" "}
                   <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}
