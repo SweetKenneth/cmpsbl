@@ -189,8 +189,8 @@ const CLI_CONFIG: FirstContactConfig = {
   endpoint: process.env.CMPSBL_ENDPOINT ?? `https://${process.env.CMPSBL_PROJECT_REF ?? 'bxodolqqczjuahwdrswy'}.supabase.co/functions/v1/substrate-api`,
   apiKey: resolveApiKey(),
   autoDiscover: true,
-  onBoot: (msg) => { if (!JSON_MODE) say(msg); },
-  onCeremony: (event) => {
+  onBoot: (msg: string) => { if (!JSON_MODE) say(msg); },
+  onCeremony: (event: CeremonyEvent) => {
     if (JSON_MODE) { jsonOut({ event: 'ceremony', ...event }); return; }
     if (event.phase === 'sector_boot') {
       const bar = progressBar(event.nodesOnline ?? 0, event.totalNodes ?? 40, 20);
