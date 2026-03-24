@@ -10,18 +10,18 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const ENGINE_HIGHLIGHTS = [
-  { name: "ARCHITECT", desc: "Unified mega-engine", tier: "APEX" },
-  { name: "SENTINEL", desc: "AI security ops", tier: "APEX" },
-  { name: "GENESIS", desc: "Autonomous triage", tier: "APEX" },
-  { name: "NEXUS", desc: "Multi-model router", tier: "APEX" },
-  { name: "CORTEX", desc: "Agent orchestration", tier: "ELITE" },
-  { name: "MIRAGE", desc: "Fleet intelligence", tier: "ELITE" },
+  { name: "DREAM", desc: "Offline learning cycles", tier: "Engine" },
+  { name: "HARVEST", desc: "Intelligence compounding", tier: "Engine" },
+  { name: "FORGE", desc: "Capability crystallization", tier: "Engine" },
+  { name: "LINGUA", desc: "Multilingual processing", tier: "Engine" },
+  { name: "ECHO", desc: "Signal replay & analysis", tier: "Engine" },
+  { name: "PHANTOM", desc: "Shadow testing runtime", tier: "Engine" },
+  { name: "SANDBOX", desc: "Isolated execution", tier: "Engine" },
+  { name: "RIPPLE", desc: "Event-driven orchestration", tier: "Engine" },
 ];
 
 const TIER_DOT: Record<string, string> = {
-  APEX: "bg-[hsl(var(--neon-magenta))]",
-  ELITE: "bg-[hsl(var(--neon-purple))]",
-  CORE: "bg-[hsl(var(--neon-cyan))]",
+  Engine: "bg-[hsl(var(--neon-cyan))]",
 };
 
 export function EnginesCTA() {
