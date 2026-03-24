@@ -117,18 +117,18 @@ export default function Workspace() {
               Your Builder Space
             </h1>
              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Create, test, and deploy with the full power of 40 integrated modules. 
-              Free tier includes persistent memory, SDK templates, and {counts.free} terminal commands.
-            </p>
+               Create, test, and deploy with the full power of the 12·12·8·8 substrate matrix. 
+               Includes persistent memory, SDK templates, and {counts.free} terminal commands.
+             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
               <Badge variant="outline" className="border-neon-green/30 text-neon-green font-mono text-xs">
-                {counts.free} Free Commands
+                {counts.free} Builder Commands
               </Badge>
               <Badge variant="outline" className="border-muted text-muted-foreground font-mono text-xs">
                 {counts.governor} Total Commands
               </Badge>
               <Badge variant="outline" className="border-sky-500/30 text-sky-400 font-mono text-xs">
-                Persistent Memory Included
+                MEMORY Organ Active
               </Badge>
             </div>
           </div>
