@@ -908,15 +908,15 @@ export class CMPSBL {
   }
 
   /**
-   * Get a health report across all 40 nodes.
+   * Get a health report across all 40 primitives.
    */
   health(): SDKResponse<HealthReport> {
     const start = Date.now();
-    const nodes = NODE_REGISTRY.map(n => ({ id: n.id, health: n.health, status: n.status }));
-    const critical = nodes.filter(n => n.health < 90).map(n => n.id);
+    const items = PRIMITIVE_REGISTRY.map(n => ({ id: n.id, health: n.health, status: n.status }));
+    const critical = items.filter(n => n.health < 90).map(n => n.id);
     const data: HealthReport = {
-      overall: Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length),
-      nodes: nodes.sort((a, b) => a.health - b.health),
+      overall: Math.round(items.reduce((s, n) => s + n.health, 0) / items.length),
+      primitives: items.sort((a, b) => a.health - b.health),
       critical,
       timestamp: new Date().toISOString(),
     };
