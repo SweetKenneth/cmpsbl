@@ -48,7 +48,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Academy", href: "/academy", section: "Build", icon: Code, keywords: ["tutorials", "learning", "courses"] },
   { name: "Developers Playground", href: "/codelab", section: "Build", icon: Terminal, keywords: ["execute", "test", "sandbox", "playground"] },
   { name: "API Access", href: "/api-access", section: "Build", icon: Code, keywords: ["keys", "quotas", "tokens"] },
-  { name: "DevTools", href: "/devtools", section: "Build", icon: Terminal },
+  { name: "Developer Tools", href: "/devtools", section: "Build", icon: Terminal },
   { name: "Developer Guide", href: "/developers/guide", section: "Build", icon: BookOpen },
   { name: "Capabilities Docs", href: "/docs/substrate/capabilities", section: "Build", icon: BookOpen },
   { name: "Memory Docs", href: "/docs/persistent-memory", section: "Build", icon: BookOpen },

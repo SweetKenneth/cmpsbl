@@ -58,7 +58,7 @@ export const adminNavConfig: NavGroup[] = [
       { id: "cognitive-forge", label: "Cognitive Forge", path: "/forge", icon: Hammer, isNew: true },
       { id: "sdk-playground", label: "SDK Playground", path: "/sdk-playground", icon: Terminal, isNew: true },
       { id: "codelab", label: "Developers Playground", path: "/codelab", icon: Terminal },
-      { id: "devtools", label: "DevTools", path: "/devtools", icon: Terminal },
+      { id: "devtools", label: "Developer Tools", path: "/devtools", icon: Terminal },
       { id: "capabilities", label: "Capabilities", path: "/docs/substrate/capabilities", icon: Sparkles },
       { id: "explore", label: "Explore", path: "/explore", icon: Network },
     ],

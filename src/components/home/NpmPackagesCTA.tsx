@@ -46,7 +46,7 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-/** Full version — used on DevTools and Developer pages */
+/** Full version — used on Developer Tools and Developer pages */
 export function NpmPackagesGrid() {
   return (
     <div className="space-y-6">

@@ -27,7 +27,7 @@ const LABEL_MAP: Record<string, string> = {
   "intelligence": "Intelligence",
   "forge": "Forge",
   "codelab": "Developers Playground",
-  "devtools": "DevTools",
+  "devtools": "Developer Tools",
   "explore": "Explore",
   "showcase": "Showcase",
   "library": "Library",
