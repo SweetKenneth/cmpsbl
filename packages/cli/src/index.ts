@@ -72,35 +72,174 @@ const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
 
 type ApiKeySource = 'env' | 'credentials' | 'none';
 
-function loadStoredKey(): string | undefined {
+type StoredCredentials = {
+  apiKey: string;
+  savedAt?: string;
+  displayName?: string;
+};
+
+function normalizeApiKey(value: unknown): string | undefined {
+  if (typeof value !== 'string') return undefined;
+  const normalized = value.trim();
+  if (normalized.length < 10) return undefined;
+  if (['undefined', 'null', 'false'].includes(normalized.toLowerCase())) return undefined;
+  return normalized;
+}
+
+function extractDisplayName(record: Record<string, unknown>): string | undefined {
+  const developer = typeof record.developer === 'object' && record.developer !== null
+    ? record.developer as Record<string, unknown>
+    : undefined;
+
+  const candidate = [
+    record.displayName,
+    record.display_name,
+    record.name,
+    record.developerName,
+    developer?.displayName,
+    developer?.display_name,
+    developer?.name,
+  ].find((value) => typeof value === 'string' && value.trim().length > 0);
+
+  return typeof candidate === 'string' ? candidate.trim() : undefined;
+}
+
+function parseStoredCredentials(raw: string): StoredCredentials | undefined {
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+
+  const fromValue = (value: unknown, metadata?: Record<string, unknown>): StoredCredentials | undefined => {
+    const apiKey = normalizeApiKey(value);
+    if (!apiKey) return undefined;
+    return {
+      apiKey,
+      savedAt: typeof metadata?.savedAt === 'string' ? metadata.savedAt : undefined,
+      displayName: metadata ? extractDisplayName(metadata) : undefined,
+    };
+  };
+
+  if (!trimmed.startsWith('{')) return fromValue(trimmed);
+
   try {
-    if (fs.existsSync(CREDS_FILE)) {
-      const data = JSON.parse(fs.readFileSync(CREDS_FILE, 'utf-8'));
-      return data.apiKey;
-    }
-  } catch { /* ignore corrupt file */ }
-  return undefined;
+    const parsed = JSON.parse(trimmed) as unknown;
+    if (typeof parsed === 'string') return fromValue(parsed);
+    if (!parsed || typeof parsed !== 'object') return undefined;
+
+    const record = parsed as Record<string, unknown>;
+    const nestedCredentials = typeof record.credentials === 'object' && record.credentials !== null
+      ? record.credentials as Record<string, unknown>
+      : undefined;
+
+    return fromValue(
+      record.apiKey
+        ?? record.api_key
+        ?? record.key
+        ?? record.token
+        ?? nestedCredentials?.apiKey
+        ?? nestedCredentials?.api_key
+        ?? nestedCredentials?.key
+        ?? nestedCredentials?.token,
+      record,
+    );
+  } catch {
+    return fromValue(trimmed);
+  }
+}
+
+function loadStoredCredentials(): StoredCredentials | undefined {
+  try {
+    if (!fs.existsSync(CREDS_FILE)) return undefined;
+    return parseStoredCredentials(fs.readFileSync(CREDS_FILE, 'utf-8'));
+  } catch {
+    return undefined;
+  }
+}
+
+function loadStoredKey(): string | undefined {
+  return loadStoredCredentials()?.apiKey;
 }
 
 function saveStoredKey(key: string): void {
+  const apiKey = normalizeApiKey(key);
+  if (!apiKey) throw new Error('Invalid API key');
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
-  fs.writeFileSync(CREDS_FILE, JSON.stringify({ apiKey: key, savedAt: new Date().toISOString() }, null, 2));
-  fs.chmodSync(CREDS_FILE, 0o600); // owner-only read/write
+  fs.writeFileSync(CREDS_FILE, JSON.stringify({ apiKey, api_key: apiKey, savedAt: new Date().toISOString() }, null, 2));
+  try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* ignore platform-specific chmod failures */ }
 }
 
-function clearStoredKey(): void {
-  try { if (fs.existsSync(CREDS_FILE)) fs.unlinkSync(CREDS_FILE); } catch { /* ignore */ }
+function scrubCredentialFields(filePath: string): boolean {
+  try {
+    if (!fs.existsSync(filePath)) return false;
+    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8')) as unknown;
+    if (!parsed || typeof parsed !== 'object') return false;
+
+    const record = parsed as Record<string, unknown>;
+    let changed = false;
+
+    for (const field of ['apiKey', 'api_key', 'key', 'token']) {
+      if (field in record) {
+        delete record[field];
+        changed = true;
+      }
+    }
+
+    if (typeof record.credentials === 'object' && record.credentials !== null) {
+      const nested = record.credentials as Record<string, unknown>;
+      for (const field of ['apiKey', 'api_key', 'key', 'token']) {
+        if (field in nested) {
+          delete nested[field];
+          changed = true;
+        }
+      }
+    }
+
+    if (changed) fs.writeFileSync(filePath, JSON.stringify(record, null, 2));
+    return changed;
+  } catch {
+    return false;
+  }
+}
+
+function clearStoredKey(): { removed: string[]; scrubbed: string[] } {
+  const removed: string[] = [];
+  const scrubbed: string[] = [];
+
+  try {
+    if (fs.existsSync(CREDS_FILE)) {
+      fs.unlinkSync(CREDS_FILE);
+      removed.push(CREDS_FILE);
+    }
+  } catch { /* ignore */ }
+
+  for (const filePath of [path.join(CREDS_DIR, 'config.json'), path.resolve('.cmpsbl/config.json')]) {
+    if (scrubCredentialFields(filePath)) scrubbed.push(filePath);
+  }
+
+  return { removed, scrubbed };
 }
 
 /** Resolve API key: env var > stored credentials */
 function resolveApiKey(): string | undefined {
-  return process.env.CMPSBL_API_KEY || loadStoredKey();
+  return normalizeApiKey(process.env.CMPSBL_API_KEY) || loadStoredKey();
 }
 
 function getApiKeySource(): ApiKeySource {
-  if (process.env.CMPSBL_API_KEY) return 'env';
+  if (normalizeApiKey(process.env.CMPSBL_API_KEY)) return 'env';
   if (loadStoredKey()) return 'credentials';
   return 'none';
+}
+
+function maskApiKey(apiKey: string | undefined): string | null {
+  if (!apiKey) return null;
+  return `***${apiKey.slice(-4)}`;
+}
+
+function getSafeFirstContactSession(): FirstContactSession | null {
+  try {
+    return getFirstContactSession();
+  } catch {
+    return null;
+  }
 }
 
 /** Open a URL in the user's default browser */
@@ -189,7 +328,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '2.2.1' as const;
+const CLI_VERSION = '2.2.2' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -834,12 +973,14 @@ async function cmdConfig(args: string[]) {
 }
 
 async function cmdWhoami() {
-  const session = getFirstContactSession();
+  const session = getSafeFirstContactSession();
+  const storedCredentials = loadStoredCredentials();
   const apiKey = resolveApiKey();
   const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
   const data = {
-    apiKey: hasKey ? `***${(apiKey ?? '').slice(-4)}` : null,
+    apiKey: maskApiKey(apiKey),
+    developer: storedCredentials?.displayName ?? null,
     endpoint: process.env.CMPSBL_ENDPOINT ?? 'substrate-api (live)',
     session: session?.sessionId ?? null,
     memoryBound: session?.memoryBound ?? false,
@@ -848,8 +989,9 @@ async function cmdWhoami() {
 
   if (JSON_MODE) { jsonOut(data); return; }
   header('Identity');
-  say(`API Key:    ${hasKey ? `● Configured (***${(apiKey ?? '').slice(-4)})` : '○ Not set'}`);
+  say(`API Key:    ${hasKey ? `● Configured (${maskApiKey(apiKey)})` : '○ Not set'}`);
   say(`Source:     ${apiKeySource === 'env' ? 'Environment variable' : apiKeySource === 'credentials' ? '~/.cmpsbl/credentials' : 'None'}`);
+  say(`Developer:  ${data.developer ?? 'Unknown'}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
   say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
@@ -859,13 +1001,21 @@ async function cmdWhoami() {
   blank();
 }
 
-async function cmdLogin() {
-  const existing = resolveApiKey();
+async function cmdLogin(args: string[] = []) {
+  const force = args.includes('--force') || args.includes('-f');
+  if (force) {
+    clearStoredKey();
+    if (!normalizeApiKey(process.env.CMPSBL_API_KEY)) CLI_CONFIG.apiKey = undefined;
+  }
+
+  const existing = force ? normalizeApiKey(process.env.CMPSBL_API_KEY) : resolveApiKey();
   const apiKeySource = getApiKeySource();
   if (existing) {
     if (JSON_MODE) { jsonOut({ authenticated: true, source: apiKeySource === 'none' ? null : apiKeySource }); return; }
-    say(`● Already authenticated (***${existing.slice(-4)})`);
+    say(`● Already authenticated (${maskApiKey(existing)})`);
     say(`  Source: ${apiKeySource === 'env' ? 'CMPSBL_API_KEY env var' : '~/.cmpsbl/credentials'}`);
+    if (apiKeySource === 'credentials') say('  Run `cmpsbl logout` to clear local credentials, then `cmpsbl login` to re-sync.');
+    if (apiKeySource === 'env') say('  Your key is coming from the current shell environment. Update or unset CMPSBL_API_KEY to replace it.');
     say(pick(V.ok));
     blank();
     return;
@@ -879,10 +1029,21 @@ async function cmdLogin() {
 
 async function cmdLogout() {
   endFirstContactSession();
-  clearStoredKey();
-  if (JSON_MODE) { jsonOut({ disconnected: true, credentialsCleared: true }); return; }
+  const cleared = clearStoredKey();
+  CLI_CONFIG.apiKey = normalizeApiKey(process.env.CMPSBL_API_KEY);
+  const envVarStillActive = !!normalizeApiKey(process.env.CMPSBL_API_KEY);
+  if (JSON_MODE) {
+    jsonOut({
+      disconnected: true,
+      credentialsCleared: cleared.removed.length > 0 || cleared.scrubbed.length > 0,
+      envVarActive: envVarStillActive,
+    });
+    return;
+  }
   say(pick(V.ok));
-  say('Session terminated. Credentials cleared.');
+  say('Session terminated. Saved credentials cleared.');
+  if (cleared.scrubbed.length > 0) say(`Legacy credential fields removed from ${cleared.scrubbed.length} config file(s).`);
+  if (envVarStillActive) sayMuted('CMPSBL_API_KEY is still set in this shell, so it will continue to override local credentials.');
   say('Memory stream disconnected.');
   blank();
 }
@@ -1423,8 +1584,12 @@ function pickRouteNodes(intent: string) {
 async function cmdDoctor() {
   if (!JSON_MODE) header('Diagnostic Suite');
 
+  const apiKey = resolveApiKey();
+  const apiKeySource = getApiKeySource();
+  const hasUnreadableCredentialFile = fs.existsSync(CREDS_FILE) && !loadStoredCredentials();
+
   const checks = [
-    { name: 'API Key configured', check: () => !!resolveApiKey() },
+    { name: 'API Key configured', check: () => !!apiKey },
     { name: 'Endpoint reachable', check: () => true },
     { name: 'Manifest exists', check: () => fs.existsSync(path.resolve('cmpsbl-manifest.json')) },
     { name: 'Config directory', check: () => fs.existsSync(path.resolve('.cmpsbl')) },
@@ -1447,6 +1612,8 @@ async function cmdDoctor() {
   }
   div();
   say(`${passed}/${results.length} checks passed`);
+  sayMuted(`Auth source: ${apiKeySource === 'env' ? 'CMPSBL_API_KEY' : apiKeySource === 'credentials' ? '~/.cmpsbl/credentials' : 'none'}`);
+  if (hasUnreadableCredentialFile) sayMuted('Stored credentials were detected but could not be parsed. Run `cmpsbl logout` and then `cmpsbl login` to re-sync.');
   blank();
   if (passed === results.length) { say('◉ Substrate is fully operational.'); say(pick(V.ok)); }
   else say(`⚠ ${results.length - passed} issue(s). Review above.`);
@@ -2590,7 +2757,7 @@ const ECOSYSTEM_PACKAGES = {
     { name: '@cmpsbl/failsafe',  version: '3.2.0',  deps: [] as string[] },
   ],
   tier2: [
-    { name: '@cmpsbl/cli',          version: '2.2.0',  deps: ['@cmpsbl/runtime'] },
+    { name: '@cmpsbl/cli',          version: '2.2.2',  deps: ['@cmpsbl/runtime'] },
     { name: '@cmpsbl/test-harness', version: '1.2.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
     { name: '@cmpsbl/react',        version: '1.2.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
   ],
