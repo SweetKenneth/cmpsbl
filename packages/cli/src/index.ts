@@ -541,6 +541,10 @@ async function cmdShell() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdInit(_args: string[]) {
+  // ── Mandatory API key gate ──
+  const apiKey = await requireApiKey();
+  CLI_CONFIG.apiKey = apiKey;
+
   if (!JSON_MODE) {
     // ── ASCII Logo ──
     blank();
