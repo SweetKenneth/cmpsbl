@@ -19,9 +19,9 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/engines": [
     { href: "/architecture", title: "Substrate Architecture", description: "Understand how engines fit within the 40-primitive topology" },
-    { href: "/packs", title: "Capability Packs", description: "Activate engine groups through governed memory slots", badge: "Packs" },
-    { href: "/foundry", title: "The Foundry", description: "Discover new engine combinations the system surfaces automatically" },
-    { href: "/try", title: "Try It Live", description: "Test engine routing with zero signup in the interactive demo", badge: "Demo" },
+    { href: "/store", title: "Store & Plans", description: "Browse and activate memory packs and agents", badge: "Store" },
+    { href: "/runtime", title: "Runtime Environment", description: "See how primitives execute and self-heal in production" },
+    { href: "/docs", title: "Documentation", description: "Developer reference and integration guides" },
   ],
   "/runtime": [
     { href: "/architecture", title: "Substrate Architecture", description: "The 40-primitive topology that the runtime executes" },
