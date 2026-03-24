@@ -692,12 +692,15 @@ async function cmdWhoami() {
     version: CLI_VERSION,
   };
 
+  const apiKey = resolveApiKey();
+  const hasKey = !!apiKey;
   if (JSON_MODE) { jsonOut(data); return; }
   header('Identity');
-  say(`API Key:    ${hasKey ? `● Configured (***${process.env.CMPSBL_API_KEY?.slice(-4) ?? ''})` : '○ Not set'}`);
+  say(`API Key:    ${hasKey ? `● Configured (***${apiKey?.slice(-4) ?? ''})` : '○ Not set'}`);
+  say(`Source:     ${process.env.CMPSBL_API_KEY ? 'Environment variable' : hasKey ? '~/.cmpsbl/credentials' : 'None'}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
-  say(`Memory:     ${data.memoryBound ? '● Bound' : '○ Local'}`);
+  say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
   say(`Package:    @cmpsbl/cli v${CLI_VERSION}`);
   div();
   say(pick(V.idle));
@@ -705,40 +708,29 @@ async function cmdWhoami() {
 }
 
 async function cmdLogin() {
-  if (process.env.CMPSBL_API_KEY) {
-    if (JSON_MODE) { jsonOut({ authenticated: true }); return; }
-    say('● Already authenticated via CMPSBL_API_KEY');
+  const existing = resolveApiKey();
+  if (existing) {
+    if (JSON_MODE) { jsonOut({ authenticated: true, source: process.env.CMPSBL_API_KEY ? 'env' : 'credentials' }); return; }
+    say(`● Already authenticated (***${existing.slice(-4)})`);
+    say(`  Source: ${process.env.CMPSBL_API_KEY ? 'CMPSBL_API_KEY env var' : '~/.cmpsbl/credentials'}`);
     say(pick(V.ok));
     blank();
     return;
   }
 
-  if (JSON_MODE) { jsonOut({ authenticated: false, message: 'Set CMPSBL_API_KEY' }); return; }
-  header('Authentication');
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise<void>((resolve) => {
-    rl.question('  Enter API key: ', (key) => {
-      rl.close();
-      if (!key.trim()) {
-        say(pick(V.err));
-        say('No key provided.');
-      } else {
-        say(pick(V.ok));
-        say('Key validated. Export for persistence:');
-        blank();
-        say(`  export CMPSBL_API_KEY="${key.trim()}"`);
-      }
-      blank();
-      resolve();
-    });
-  });
+  // Delegate to the shared auth gate
+  await requireApiKey();
+  say(pick(V.ok));
+  blank();
 }
 
 async function cmdLogout() {
   endFirstContactSession();
-  if (JSON_MODE) { jsonOut({ disconnected: true }); return; }
+  clearStoredKey();
+  if (JSON_MODE) { jsonOut({ disconnected: true, credentialsCleared: true }); return; }
   say(pick(V.ok));
-  say('Session terminated. Memory stream disconnected.');
+  say('Session terminated. Credentials cleared.');
+  say('Memory stream disconnected.');
   blank();
 }
 
