@@ -835,29 +835,32 @@ Each phase produces a Merkle-signed receipt in the audit chain.`}</CodeBlock>
         </InfoCard>
       </div>
 
-      <CodeBlock title="Evolution API">{`// Scan current system state
-const scan = await substrate.evolution.scan();
+      <CodeBlock title="EVOLUTION Layer API via REST">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Scan current system state
+const scan = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({ module: 'EVOLUTION', action: 'scan' }),
+}).then(r => r.json());
 // → { health_score: 94.2, improvements: [...], debt_items: 3 }
 
 // Run a dry-run of proposed changes
-const preview = await substrate.evolution.dryRun({
-  changes: scan.improvements,
-  target_modules: ["brain", "nexus"]
-});
-// → { projected_health: 96.1, delta: +1.9, blast_radius: ["brain", "nexus", "dream"] }
-
-// Apply changes (requires governor approval)
-const receipt = await substrate.evolution.apply({
-  changes: preview.changes,
-  approval_token: "gov_tok_...",
-  rollback_on_decline: true    // auto-rollback if health drops
-});
-
-// List available rollback snapshots
-const snapshots = await substrate.evolution.snapshots();
-// → [{ id: "snap_...", timestamp: "...", health: 94.2 }, ...]
-
-// Restore a snapshot
+const preview = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'EVOLUTION',
+    action: 'dry_run',
+    payload: {
+      changes: scan.data.improvements,
+      target_primitives: ["BRAIN", "NEXUS"]
+    }
+  }),
+}).then(r => r.json());
+// → { projected_health: 96.1, delta: +1.9 }`}</CodeBlock>
 await substrate.evolution.rollback("snap_...");`}</CodeBlock>
 
       {/* Integrity enforcement */}
