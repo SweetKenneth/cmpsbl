@@ -73,15 +73,15 @@ const engine = new Engine('your-api-key');
 const result = await engine.call('BRAIN', 'reason', 'Analyze trends');`;
 
 const MODULES = [
-  { id: 'core', name: 'CORE', icon: Cpu, color: 'text-neon-amber', desc: 'Scheduling & orchestration' },
-  { id: 'ripple', name: 'RIPPLE', icon: Zap, color: 'text-neon-cyan', desc: 'Event bus & messaging' },
-  { id: 'access', name: 'ACCESS', icon: Shield, color: 'text-neon-amber', desc: 'Identity & API keys' },
-  { id: 'brain', name: 'BRAIN', icon: Brain, color: 'text-neon-purple', desc: 'Persistent memory & recall' },
-  { id: 'decode', name: 'DECODE', icon: MessageSquare, color: 'text-neon-cyan', desc: 'Intent parsing & conversation' },
-  { id: 'nexus', name: 'NEXUS', icon: Zap, color: 'text-neon-green', desc: 'Multi-provider AI routing' },
-  { id: 'defense', name: 'DEFENSE', icon: Shield, color: 'text-destructive', desc: 'Adaptive security & threat detection' },
-  { id: 'vision', name: 'VISION', icon: Eye, color: 'text-neon-blue', desc: 'Observability & monitoring' },
-  { id: 'dream', name: 'DREAM', icon: Moon, color: 'text-neon-purple', desc: 'Offline learning & synthesis' },
+  { id: 'core', name: 'CORE Organ', icon: Cpu, color: 'text-neon-amber', desc: 'Kernel boot & system integrity' },
+  { id: 'brain', name: 'BRAIN Organ', icon: Brain, color: 'text-neon-purple', desc: 'Reasoning & pattern recognition' },
+  { id: 'memory', name: 'MEMORY Organ', icon: Brain, color: 'text-neon-cyan', desc: 'State persistence & retrieval' },
+  { id: 'nexus', name: 'NEXUS Organ', icon: Zap, color: 'text-neon-green', desc: 'AI provider routing' },
+  { id: 'defense', name: 'DEFENSE Layer', icon: Shield, color: 'text-destructive', desc: 'Terminal security boundary' },
+  { id: 'decode', name: 'DECODE Agent', icon: MessageSquare, color: 'text-neon-cyan', desc: 'Natural language understanding' },
+  { id: 'dream', name: 'DREAM Engine', icon: Moon, color: 'text-neon-purple', desc: 'Heuristic synthesis' },
+  { id: 'vision', name: 'VISION Layer', icon: Eye, color: 'text-neon-blue', desc: 'Telemetry & anomaly detection' },
+  { id: 'cortex', name: 'CORTEX Agent', icon: Settings, color: 'text-neon-amber', desc: 'Memory chain orchestration' },
 ];
 
 const TABS = [
