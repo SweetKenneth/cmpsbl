@@ -3,6 +3,7 @@
  * 
  * Technical integration guide fulfilling the "under an hour" promise.
  * Minimal, copy-paste friendly, focused on getting started fast.
+ * Uses the real REST API gateway — not a hallucinated SDK.
  */
 
 import React from 'react';
@@ -53,8 +54,8 @@ const PersistentMemoryDocs = () => {
     <>
       <SEO 
         title="Persistent Memory Quickstart | CMPSBL Docs"
-        description="Add persistent memory to your agent or React app in under an hour. Step-by-step integration guide."
-        keywords={['AI memory integration', 'agent memory SDK', 'React AI memory', 'persistent memory quickstart']}
+        description="Add persistent memory to your agent or app in under an hour via the substrate REST API. Step-by-step integration guide."
+        keywords={['AI memory integration', 'agent memory API', 'persistent memory quickstart', 'CMPSBL substrate API']}
       />
       <PublicNav />
       
@@ -84,7 +85,7 @@ const PersistentMemoryDocs = () => {
                 Persistent Memory Quickstart
               </h1>
               <p className="text-lg text-muted-foreground">
-                This guide shows how to add persistent memory to an existing agent or React app in under an hour.
+                This guide shows how to add persistent memory to an existing agent or app via the substrate REST API.
                 No rewrite. No vector DB setup. No prompt hacks.
               </p>
             </div>
@@ -92,21 +93,23 @@ const PersistentMemoryDocs = () => {
         </div>
 
         <div className="container mx-auto px-4 py-12 max-w-4xl">
-          {/* Step 1: Install */}
+          {/* Step 1: Get API Key */}
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
                 1
               </div>
-              <h2 className="text-2xl font-bold">Install the Package</h2>
+              <h2 className="text-2xl font-bold">Get Your API Key</h2>
             </div>
             
             <Card>
               <CardContent className="pt-6 space-y-4">
                 <p className="text-muted-foreground">
-                  Import the memory SDK directly from the substrate:
+                  Generate a developer API key from your CMPSBL account. All memory operations go through the unified substrate gateway.
                 </p>
-                <CodeBlock code="import { withPersistentMemory } from '@cmpsbl/memory';" />
+                <CodeBlock code={`// Generate your key at cmpsbl.com/api-access
+const API_KEY = process.env.CMPSBL_API_KEY;
+const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';`} />
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-neon-green" />
                   No additional infrastructure required. No vector database setup.
@@ -115,54 +118,61 @@ const PersistentMemoryDocs = () => {
             </Card>
           </section>
 
-          {/* Step 2: Agent Wrapper */}
+          {/* Step 2: Store & Recall */}
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
                 2
               </div>
-              <h2 className="text-2xl font-bold">Wrap Your Agent</h2>
+              <h2 className="text-2xl font-bold">Store & Recall Memories</h2>
             </div>
 
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Terminal className="w-5 h-5" />
-                  Node.js / Server-side Agent
+                  Store a Memory
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <CodeBlock code={`import { withPersistentMemory } from '@cmpsbl/memory';
-
-// Create a memory-enabled agent
-const agent = withPersistentMemory({
-  agentId: 'my-support-agent',  // Unique identifier for this agent
-  scope: 'project'               // 'project' = persistent, 'session' = temporary
+                <CodeBlock code={`// Store a memory via the substrate gateway
+const response = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': \`Bearer \${API_KEY}\`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'store',
+    input: {
+      content: 'User prefers concise answers and dark mode',
+      agentId: 'my-support-agent',
+      metadata: { type: 'user_preference' }
+    }
+  })
 });
 
-// The wrapper provides:
-// - agent.respond(input)     → Get response with automatic memory recall
-// - agent.remember(note)     → Manually store important information
-// - agent.getContext(input)  → Get memory context for custom integration`} />
+const { memoryId, importanceScore, tier } = await response.json();`} />
                 
                 <div className="bg-muted/50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">What the wrapper does automatically:</h4>
+                  <h4 className="font-semibold mb-2">What the MEMORY Organ does automatically:</h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Auto-extracts facts from user messages (names, preferences, etc.)
+                      Scores importance and assigns a memory tier (hot/warm/cold)
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Recalls exact stored facts without hallucination
+                      Deduplicates against existing memories (FNV-1a hashing)
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Remembers previous workloads and task outcomes
+                      Tags with emotional valence and semantic metadata
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Persists salient outcomes post-response
+                      Rebalances tiers automatically over time
                     </li>
                   </ul>
                 </div>
@@ -173,115 +183,117 @@ const agent = withPersistentMemory({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Code className="w-5 h-5" />
-                  Full Integration Example
+                  Recall Context for Prompts
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <CodeBlock code={`import { withPersistentMemory } from '@cmpsbl/memory';
-import OpenAI from 'openai';
+                <CodeBlock code={`// Recall relevant memories for a user message
+const recall = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': \`Bearer \${API_KEY}\`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'recall',
+    input: {
+      query: userMessage,
+      agentId: 'my-support-agent'
+    }
+  })
+});
 
-const openai = new OpenAI();
-const memory = withPersistentMemory({ agentId: 'support-bot' });
+const { results, contextString, totalFound } = await recall.json();
 
-async function handleUserMessage(userMessage: string) {
-  // 1. Get memory context automatically
-  //    Facts like "my name is Alex" are auto-extracted & stored
-  const context = await memory.getContext(userMessage);
-  
-  // 2. Build memory-enriched prompt
-  const messages = [
-    { role: 'system', content: 'You are a helpful support agent.' },
-    { role: 'user', content: userMessage + context.contextString }
-  ];
-  
-  // 3. Call your LLM as usual
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4',
-    messages
-  });
-  
-  // 4. Memory stores interactions automatically
-  return response.choices[0].message.content;
-}
+// Append context to your LLM prompt
+const messages = [
+  { role: 'system', content: 'You are a helpful support agent.' },
+  { role: 'user', content: userMessage + contextString }
+];
 
-// After completing a task, log the workload so the agent remembers
-await memory.logWorkload('Resolved billing issue for user #42 — applied $10 credit');`} />
+// Call your LLM as usual — OpenAI, Anthropic, Gemini, etc.
+const completion = await openai.chat.completions.create({
+  model: 'gpt-4',
+  messages
+});`} />
               </CardContent>
             </Card>
           </section>
 
-          {/* Step 3: React Hook */}
+          {/* Step 3: Full Integration Example */}
           <section className="mb-16">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold">
                 3
               </div>
-              <h2 className="text-2xl font-bold">React Hook (Optional)</h2>
+              <h2 className="text-2xl font-bold">Full Integration Example</h2>
             </div>
 
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Zap className="w-5 h-5" />
-                  usePersistentAgent Hook
+                  Complete Agent with Memory
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground">
-                  For React apps, use the hook for seamless integration. No provider setup required.
-                </p>
-                <CodeBlock code={`import { usePersistentAgent } from '@cmpsbl/memory';
+                <CodeBlock code={`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const API_KEY = process.env.CMPSBL_API_KEY;
 
-function ChatComponent() {
-  const { respond, remember, isLoading, error } = usePersistentAgent('my-agent');
-  
-  const handleSend = async (message: string) => {
-    // Automatically recalls relevant memories
-    const context = await respond(message);
-    
-    // context.memories    → Array of relevant past memories
-    // context.confidence  → Recall confidence (0-1)
-    // context.contextString → Pre-built string for prompts
-    
-    // Use context in your LLM call
-    const prompt = \`\${message}\${context.contextString}\`;
-    const response = await callYourLLM(prompt);
-    
-    // Optionally remember important outcomes
-    if (shouldRemember(response)) {
-      await remember(\`Important: \${response}\`);
-    }
-    
-    return response;
-  };
-  
-  return (
-    <div>
-      {isLoading && <Spinner />}
-      {error && <ErrorMessage error={error} />}
-      {/* Your chat UI */}
-    </div>
-  );
+async function handleUserMessage(userMessage: string) {
+  // 1. Store the user input
+  await fetch(GATEWAY, {
+    method: 'POST',
+    headers: {
+      'Authorization': \`Bearer \${API_KEY}\`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      module: 'MEMORY',
+      action: 'store',
+      input: { content: userMessage, agentId: 'my-agent' }
+    })
+  });
+
+  // 2. Recall relevant context
+  const recallRes = await fetch(GATEWAY, {
+    method: 'POST',
+    headers: {
+      'Authorization': \`Bearer \${API_KEY}\`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      module: 'MEMORY',
+      action: 'recall',
+      input: { query: userMessage, agentId: 'my-agent' }
+    })
+  });
+  const { contextString } = await recallRes.json();
+
+  // 3. Call your LLM with memory-enriched context
+  const response = await callYourLLM(userMessage + contextString);
+  return response;
 }`} />
 
                 <div className="bg-muted/50 p-4 rounded-lg">
-                  <h4 className="font-semibold mb-2">Hook features:</h4>
+                  <h4 className="font-semibold mb-2">Works with any stack:</h4>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Works inside existing components
+                      Any language with HTTP — Node.js, Python, Go, Rust
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      No provider boilerplate required
+                      Any agent framework — LangChain, CrewAI, AutoGen, custom
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Built-in loading and error states
+                      Any LLM — OpenAI, Anthropic, Gemini, local models
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-neon-green" />
-                      Graceful degradation on failures
+                      Graceful degradation — if memory is unavailable, your agent keeps working
                     </li>
                   </ul>
                 </div>
@@ -289,11 +301,11 @@ function ChatComponent() {
             </Card>
           </section>
 
-          {/* What You Get Free */}
+          {/* What's Included */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <CheckCircle className="w-6 h-6 text-neon-green" />
-              What you get for free
+              What's included
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
               {[
@@ -331,12 +343,12 @@ function ChatComponent() {
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <Shield className="w-6 h-6 text-primary" />
-              When engines are required
+              Advanced capabilities
             </h2>
             <Card className="border-dashed">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground mb-4">
-                  Advanced memory capabilities are available through Memory Engines:
+                  Advanced memory capabilities available on higher plans:
                 </p>
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-3">
@@ -390,44 +402,63 @@ function ChatComponent() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="font-mono text-lg">withPersistentMemory(config)</CardTitle>
+                  <CardTitle className="font-mono text-lg">POST /v1/substrate — MEMORY.store</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CodeBlock code={`interface MemoryConfig {
-  agentId: string;              // Required: Unique identifier
-  scope?: 'session' | 'project'; // Default: 'project'
-  handler?: (input, context) => Promise<string>; // Optional custom handler
+                  <CodeBlock code={`// Request
+{
+  "module": "MEMORY",
+  "action": "store",
+  "input": {
+    "content": "string",      // Required: the memory content
+    "agentId": "string",      // Required: unique agent identifier
+    "metadata": {              // Optional
+      "type": "user_input" | "manual_note" | "interaction",
+      "tags": ["string"],
+      "important": boolean
+    }
+  }
 }
 
-// Returns
-interface PersistentMemoryAgent {
-  respond: (input: string) => Promise<string>;
-  remember: (note: string) => Promise<void>;
-  getContext: (input: string) => Promise<MemoryContext>;
-  logWorkload: (summary: string) => Promise<void>;  // Track task outcomes
+// Response
+{
+  "memoryId": "uuid",
+  "importanceScore": 0.75,
+  "tier": "hot" | "warm" | "cold"
 }`} />
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="font-mono text-lg">usePersistentAgent(agentId, scope?)</CardTitle>
+                  <CardTitle className="font-mono text-lg">POST /v1/substrate — MEMORY.recall</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CodeBlock code={`// Returns
-interface PersistentAgentResult {
-  respond: (input: string) => Promise<MemoryContext>;
-  remember: (note: string) => Promise<void>;
-  logWorkload: (summary: string) => Promise<void>;  // Track task outcomes
-  isLoading: boolean;
-  error: Error | null;
-  clearError: () => void;
+                  <CodeBlock code={`// Request
+{
+  "module": "MEMORY",
+  "action": "recall",
+  "input": {
+    "query": "string",        // Required: what to search for
+    "agentId": "string",      // Required: unique agent identifier
+    "limit": 5                 // Optional: max results (default 5)
+  }
 }
 
-interface MemoryContext {
-  memories: string[];     // Recalled memory contents
-  confidence: number;     // Recall confidence (0-1)
-  contextString: string;  // Pre-built string for prompts
+// Response
+{
+  "results": [
+    {
+      "id": "uuid",
+      "content": "string",
+      "relevanceScore": 0.92,
+      "importanceScore": 0.75,
+      "tier": "hot",
+      "createdAt": "ISO-8601"
+    }
+  ],
+  "totalFound": 3,
+  "contextString": "[Recalled 3 memories]: ..."
 }`} />
                 </CardContent>
               </Card>
@@ -440,7 +471,7 @@ interface MemoryContext {
               <CardContent className="pt-8 pb-8">
                 <h2 className="text-2xl font-bold mb-4">Ready to Add Memory?</h2>
                 <p className="text-muted-foreground mb-6">
-                  Start with the free tier. Upgrade when you need advanced features.
+                  Generate your API key and start integrating persistent memory today.
                 </p>
                 <div className="flex gap-4 justify-center flex-wrap">
                   <Link to="/store">
