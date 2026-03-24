@@ -890,7 +890,7 @@ async function offerFirstDream() {
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
-    rl.question('  Ready to dream? (Y/n) ', async (answer) => {
+    rl.question('  Ready to dream? (Y/n) ', async (answer: string) => {
       rl.close();
       if (answer.trim().toLowerCase() === 'n') {
         say('  No problem. Run `cmpsbl dream` anytime.');
