@@ -51,8 +51,8 @@ const capabilities = [
   },
   {
     icon: Lock,
-    title: "Governance & Audit Trail",
-    description: "Every action is supervised, logged immutably, and enforced by policy. Role-based access, full audit trails, and governance controls — enterprise-ready from day one.",
+    title: "GOVERNANCE Layer & Audit Trail",
+    description: "Every action is supervised, logged immutably, and enforced by the GOVERNANCE Layer. Role-based access via ACCESS Layer, full audit trails via AUDIT Agent, and 4-mode governance controls — enterprise-ready from day one.",
   },
   {
     icon: Users,
