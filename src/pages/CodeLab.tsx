@@ -1,5 +1,5 @@
 /**
- * CodeLab — Free Developer Playground for CMPSBL
+ * Developers Playground — Free Developer Playground for CMPSBL
  * A unique space for devs to explore, build, and launch with free templates
  */
 
