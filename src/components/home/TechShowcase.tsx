@@ -31,11 +31,11 @@ import { cn } from "@/lib/utils";
 
 // All execution surfaces organized by architecture layer
 const codeExamples = [
-  // KERNEL LAYER
+  // ORGANS
   {
     id: "core",
     icon: Cpu,
-    layer: "Kernel",
+    layer: "Organs",
     title: "CORE Scheduling",
     description: "Kernel orchestration & task scheduling",
     color: "text-[hsl(var(--neon-amber))]",
