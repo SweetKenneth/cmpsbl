@@ -181,7 +181,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '2.1.1' as const;
+const CLI_VERSION = '2.2.0' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -189,17 +189,9 @@ const CLI_CONFIG: FirstContactConfig = {
   endpoint: process.env.CMPSBL_ENDPOINT ?? `https://${process.env.CMPSBL_PROJECT_REF ?? 'bxodolqqczjuahwdrswy'}.supabase.co/functions/v1/substrate-api`,
   apiKey: resolveApiKey(),
   autoDiscover: true,
+  silent: true,
   onBoot: () => {},
-  onCeremony: (event: CeremonyEvent) => {
-    if (JSON_MODE) { jsonOut({ event: 'ceremony', ...event }); return; }
-    if (event.phase === 'sector_boot') {
-      const bar = progressBar(event.nodesOnline ?? 0, event.totalNodes ?? 40, 20);
-      say(`${event.message.padEnd(55)} ${bar}`);
-    } else {
-      say(event.message);
-      if (event.detail) say(`  ${event.detail}`);
-    }
-  },
+  onCeremony: () => {},
   onDiscovery: (chain: MemoryChain) => {
     if (JSON_MODE) { jsonOut({ event: 'discovery', chain }); return; }
     blank();
@@ -208,8 +200,8 @@ const CLI_CONFIG: FirstContactConfig = {
   },
 };
 
-function supportsInteractiveTerminalFlow(): boolean {
-  return Boolean(process.stdin.isTTY && process.stdout.isTTY && supportsAnimatedOutput());
+function isInteractiveTTY(): boolean {
+  return Boolean(process.stdin.isTTY && process.stdout.isTTY);
 }
 
 const NODES = [
@@ -528,7 +520,7 @@ async function cmdOnboarding() {
   await sleep(300);
   blank();
 
-  await initFirstContact(CLI_CONFIG);
+  await initFirstContact({ ...CLI_CONFIG, silent: true });
 
   // ── Identity flash ──
   blank();
@@ -544,6 +536,12 @@ async function cmdOnboarding() {
   blank();
 
   // ── Project prompt ──
+  if (!isInteractiveTTY()) {
+    say('Run `cmpsbl init` to initialize a project.');
+    blank();
+    return;
+  }
+
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
     rl.question('  Initialize a new project here? (y/n) ', async (answer: string) => {
@@ -716,7 +714,7 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
   try {
     session = opts?.skipCeremony
       ? (getFirstContactSession() ?? await initFirstContact(CLI_CONFIG))
-      : await initFirstContact(CLI_CONFIG);
+      : await initFirstContact({ ...CLI_CONFIG, silent: true });
   } catch (fcErr) {
     // First Contact ceremony failed — create a local-only session
     if (!JSON_MODE) {
@@ -782,7 +780,7 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
     );
 
     if (result.detected && result.memory) {
-      if (supportsInteractiveTerminalFlow()) {
+      if (isInteractiveTTY()) {
         await promptInteraction(result.memory);
       } else {
         sayMuted('Discovery prompt skipped for terminal compatibility.');
@@ -792,7 +790,7 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
     }
   } catch {
     say(pick(V.idle));
-    sayMuted('Discovery will activate on next interaction.');
+    sayMuted('  Discovery will activate on next interaction.');
   }
 }
 
@@ -884,6 +882,12 @@ async function cmdLogout() {
 // ═══════════════════════════════════════════════════════════════
 
 async function offerFirstDream() {
+  if (!isInteractiveTTY()) {
+    say('  Run `cmpsbl dream` to start your first dream cycle.');
+    blank();
+    return;
+  }
+
   blank();
   box([
     '◈ FIRST DREAM',
@@ -1004,8 +1008,12 @@ async function runFirstDream() {
   blank();
 }
 
-function scaffoldFirstDream(heuristic: { pattern: string; confidence: number; insight: string }) {
+function scaffoldFirstDream(heuristic: { pattern: string; confidence: number; insight: string }): void {
   const projectDir = path.resolve('first-dream');
+  if (fs.existsSync(path.join(projectDir, 'dream.ts'))) {
+    sayMuted('  first-dream/ already exists — skipping scaffold');
+    return;
+  }
   if (!fs.existsSync(projectDir)) fs.mkdirSync(projectDir, { recursive: true });
 
   // dream.ts — minimal script
@@ -1128,7 +1136,7 @@ async function cmdDiscover(args: string[]) {
   const input = args.join(' ') || 'general system analysis';
   if (!JSON_MODE) header('Live Discovery');
 
-  await initFirstContact(CLI_CONFIG);
+  await initFirstContact({ ...CLI_CONFIG, silent: true });
 
   const s = !JSON_MODE ? spinner(pick(V.think)) : null;
   await sleep(1200);
@@ -1140,7 +1148,7 @@ async function cmdDiscover(args: string[]) {
 
   if (result.detected && result.memory) {
     if (JSON_MODE) { jsonOut({ detected: true, memory: result.memory }); return; }
-    if (supportsInteractiveTerminalFlow()) {
+    if (isInteractiveTTY()) {
       await promptInteraction(result.memory);
     } else {
       say('Discovery recorded.');
@@ -2572,7 +2580,7 @@ const ECOSYSTEM_PACKAGES = {
     { name: '@cmpsbl/failsafe',  version: '3.2.0',  deps: [] as string[] },
   ],
   tier2: [
-    { name: '@cmpsbl/cli',          version: '2.1.1',  deps: ['@cmpsbl/runtime'] },
+    { name: '@cmpsbl/cli',          version: '2.2.0',  deps: ['@cmpsbl/runtime'] },
     { name: '@cmpsbl/test-harness', version: '1.2.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
     { name: '@cmpsbl/react',        version: '1.2.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
   ],
