@@ -952,9 +952,9 @@ export class CMPSBL {
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'ping', primitive: prim.id }),
       });
-      const body = await res.json().catch(() => ({}));
+      const body = await res.json().catch(() => ({})) as Record<string, unknown>;
       const latencyMs = Date.now() - start;
-      const data: PingResult = { primitive: prim.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? prim.health, timestamp: new Date().toISOString() };
+      const data: PingResult = { primitive: prim.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: (body.health as number) ?? prim.health, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     } catch {
       const latencyMs = Date.now() - start;
