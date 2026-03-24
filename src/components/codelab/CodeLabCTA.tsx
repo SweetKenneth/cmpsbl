@@ -1,5 +1,5 @@
 /**
- * CodeLab CTA — Cinematic promotional block for homepage
+ * Developers Playground CTA — Cinematic promotional block for homepage
  * Premium glass card with animated background
  */
 
