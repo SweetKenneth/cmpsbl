@@ -205,17 +205,15 @@ export default function Workspace() {
               <div className="grid gap-3 sm:grid-cols-3 mt-8">
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/persistent-memory')}>
                   <Brain className="w-5 h-5 text-neon-purple mb-2" />
-                  <h4 className="font-mono text-sm font-semibold">Persistent Memory</h4>
-                  <p className="text-xs text-muted-foreground mt-1">Free for all tiers. Add memory to any agent.</p>
-                  <Badge variant="outline" className="mt-2 text-[10px] border-neon-green/30 text-neon-green">FREE</Badge>
+                  <h4 className="font-mono text-sm font-semibold">MEMORY Organ</h4>
+                  <p className="text-xs text-muted-foreground mt-1">4-tier cognitive storage. Add memory to any agent.</p>
                 </Card>
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/foundry')}>
                   <Sparkles className="w-5 h-5 text-sky-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Memory Stream</h4>
-                  <p className="text-xs text-muted-foreground mt-1">Crystallize memories. Rare finds on every tier.</p>
-                  <Badge variant="outline" className="mt-2 text-[10px] border-neon-green/30 text-neon-green">FREE</Badge>
+                  <p className="text-xs text-muted-foreground mt-1">Crystallize memories into deployable artifacts.</p>
                 </Card>
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/documentation')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/docs')}>
                   <BookOpen className="w-5 h-5 text-neon-amber mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Documentation</h4>
                   <p className="text-xs text-muted-foreground mt-1">Full API reference and integration guides.</p>
