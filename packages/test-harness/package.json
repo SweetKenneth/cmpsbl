@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/test-harness",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "CMPSBL® Test Harness — Utilities for validating exported pipelines and bridge adapters",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
