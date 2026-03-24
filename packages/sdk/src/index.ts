@@ -180,10 +180,10 @@ export interface RouteTrace {
   resolvedAt: string;
 }
 
-/** Health report across all nodes */
+/** Health report across all primitives */
 export interface HealthReport {
   overall: number;
-  nodes: Array<{ id: string; health: number; status: string }>;
+  primitives: Array<{ id: string; health: number; status: string }>;
   critical: string[];
   timestamp: string;
 }
