@@ -56,7 +56,7 @@ const faqItems = [
   },
   {
     question: "What is the platform architecture?",
-    answer: "40 specialized primitives organized across 4 categories — Organs (core infrastructure like CORE, SYSTEM, NERVE, NEXUS, BRAIN, MEMORY), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA). All primitives are weighted and coordinated by the core runtime.",
+    answer: "40 specialized primitives organized into a symmetric 12·12·8·8 matrix across 4 categories — Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER). All primitives are weighted and coordinated by the CORE Organ.",
   },
 ];
 
