@@ -11,7 +11,7 @@ const ORGANS = new Set([
 
 const LAYERS = new Set([
   'DEFENSE', 'IMMUNITY', 'GOVERNANCE', 'INTENT', 'EVOLUTION',
-  'INCLUSIVE', 'CONSCIENCE', 'TREATY',
+  'INCLUSIVE', 'CONSCIENCE', 'TREATY', 'VISION', 'SHADOW',
 ]);
 
 const ENGINES = new Set([
@@ -20,8 +20,8 @@ const ENGINES = new Set([
 ]);
 
 const AGENTS = new Set([
-  'ENCODE', 'DECODE', 'VISION', 'PHANTOM', 'LINGUA', 'ECHO',
-  'HARVEST', 'SOVEREIGN', 'ENGINEER', 'OBSERVER',
+  'ENCODE', 'DECODE', 'PHANTOM', 'LINGUA', 'ECHO',
+  'HARVEST', 'SOVEREIGN', 'ENGINEER',
 ]);
 
 export type PrimitiveCategory = 'Organ' | 'Layer' | 'Engine' | 'Agent';
