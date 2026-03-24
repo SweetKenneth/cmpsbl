@@ -33,10 +33,10 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Try CMPSBL Free', href: '/try' },
   // Core platform
   { label: 'Substrate Overview', href: '/substrate' },
-  { label: 'AI Operating System', href: '/ai-operating-system' },
+  { label: 'How it Works', href: '/ai-operating-system' },
   { label: 'Runtime Environment', href: '/runtime' },
   { label: 'Architecture', href: '/architecture' },
-  { label: 'Architecture', href: '/modules' },
+  { label: 'Store & Plans', href: '/store' },
   { label: 'Store & Plans', href: '/store' },
   { label: 'Memory Stream Discovery', href: '/foundry' },
   // Products
