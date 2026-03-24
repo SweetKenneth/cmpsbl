@@ -25,7 +25,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box } from './ui';
+import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 
 // ═══════════════════════════════════════════════════════════════
