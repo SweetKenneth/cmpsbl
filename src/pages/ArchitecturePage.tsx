@@ -153,37 +153,38 @@ const TOTAL = TAXONOMY.reduce((s, c) => s + c.entries.length, 0);
 const ASCII_DIAGRAM = `
 ┌──────────────────────────────────────────────────────────────────┐
 │                    CMPSBL® SUBSTRATE v9.0.0                     │
-│                   40-Component Architecture                      │
+│                   40-Primitive Architecture                      │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  ┌─── AGENTS (Autonomous) ────────────────────────────────────┐  │
-│  │  ENCODE   DECODE   VISION   PHANTOM   LINGUA               │  │
-│  │  ECHO     HARVEST  SOVEREIGN ENGINEER  SHADOW              │  │
-│  │  "They decide, act, and learn on their own"                │  │
-│  └────────────────────────┬───────────────────────────────────┘  │
-│                           │ invoke                               │
-│  ┌─── ENGINES (Invoked) ──▼───────────────────────────────────┐  │
-│  │  BRAIN    MEMORY   DREAM    CORTEX    ORACLE               │  │
-│  │  FORGE    COMPASS  ATLAS    ECONOMY   SANDBOX              │  │
-│  │  MEDIC    REFLEX                                           │  │
-│  │  "Turn the key, they deliver power"                        │  │
-│  └────────────────────────┬───────────────────────────────────┘  │
-│                           │ permeate                             │
-│  ┌─── LAYERS (Ambient) ──▼────────────────────────────────────┐  │
-│  │  DEFENSE  IMMUNITY  GOVERNANCE  INTENT                     │  │
-│  │  EVOLUTION  INCLUSIVE  CONSCIENCE  TREATY                   │  │
+│  ┌─── LAYERS (12 — Ambient Overlays) ──────────────────────────┐  │
+│  │  DEFENSE   IMMUNITY    GOVERNANCE  TREATY                   │  │
+│  │  EVOLUTION REFLEX      COMPASS     INTEGRATION              │  │
+│  │  INTENT    ACCESS      VISION      SHADOW                   │  │
 │  │  "Always on, always watching, always enforcing"            │  │
-│  └────────────────────────┬───────────────────────────────────┘  │
-│                           │ run on                               │
-│  ┌─── ORGANS (Hidden) ───▼────────────────────────────────────┐  │
-│  │  CORE   SYSTEM   NERVE   RIPPLE   RELAY                   │  │
-│  │  IDENTITY  ACCESS  NEXUS  AUDIT  INTEGRATION              │  │
-│  │  "Invisible plumbing — nothing works without them"         │  │
-│  └────────────────────────────────────────────────────────────┘  │
+│  │                                                              │  │
+│  │  ┌─── AGENTS (9 — Autonomous Actors) ────────────────────┐  │  │
+│  │  │  ENCODE  DECODE  RIPPLE  AUDIT  ECONOMY               │  │  │
+│  │  │  INCLUSIVE  CORTEX  ORACLE  ENGINEER                   │  │  │
+│  │  │  "They decide, act, and learn on their own"            │  │  │
+│  │  │                                                        │  │  │
+│  │  │  ┌─── ENGINES (7 — Processing Power) ───────────────┐  │  │  │
+│  │  │  │  DREAM  HARVEST  FORGE  LINGUA                   │  │  │  │
+│  │  │  │  ECHO   PHANTOM  SANDBOX                         │  │  │  │
+│  │  │  │  "Turn the key, they deliver power"              │  │  │  │
+│  │  │  │                                                   │  │  │  │
+│  │  │  │  ┌─── ORGANS (12 — Vital Core) ───────────────┐  │  │  │  │
+│  │  │  │  │  CORE  SYSTEM  BRAIN  MEMORY  NERVE        │  │  │  │  │
+│  │  │  │  │  NEXUS IDENTITY SOVEREIGN ATLAS            │  │  │  │  │
+│  │  │  │  │  MEDIC RELAY  CONSCIENCE                   │  │  │  │  │
+│  │  │  │  │  "The heartbeat — nothing works without"   │  │  │  │  │
+│  │  │  │  └────────────────────────────────────────────┘  │  │  │  │
+│  │  │  └──────────────────────────────────────────────────┘  │  │  │
+│  │  └────────────────────────────────────────────────────────┘  │  │
+│  └──────────────────────────────────────────────────────────────┘  │
 │                                                                  │
 ├──────────────────────────────────────────────────────────────────┤
-│  FLOW:  User ─→ Agent ─→ Engine ─→ Layer validates ─→ Organ     │
-│         routes ─→ Result ─→ Agent learns ─→ Dream consolidates  │
+│  FLOW:  User ─→ Layer validates ─→ Agent decides ─→ Engine      │
+│         processes ─→ Organ routes ─→ Result ─→ Dream consolidates│
 └──────────────────────────────────────────────────────────────────┘`;
 
 // ═══════════════════════════════════════════════════════════
