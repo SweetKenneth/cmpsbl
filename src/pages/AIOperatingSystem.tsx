@@ -52,7 +52,7 @@ const faqItems = [
   },
   {
     question: "Can CMPSBL work with existing AI models?",
-    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS Organ automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
+    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS Organ automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. It includes a 12-step free-tier fallback chain so your agents never hit a dead end. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
     question: "What is the platform architecture?",
