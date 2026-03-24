@@ -53,7 +53,7 @@ const audiences = [
       { icon: Brain, text: "Memory persistence" },
       { icon: Eye, text: "Full observability" },
     ],
-    stats: { value: "200+", label: "Templates" },
+    stats: { value: "40", label: "Primitives" },
     cta: "Start Building",
     href: "/developers",
     accentColor: "hsl(var(--neon-cyan))",

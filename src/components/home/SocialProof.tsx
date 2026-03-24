@@ -22,7 +22,7 @@ const TESTIMONIALS: Testimonial[] = [
     author: "M.K.",
     role: "Platform Engineer",
     rating: 5,
-    highlight: "EVOLUTION Layer",
+    highlight: "EVOLUTION Engine",
     accentColor: "hsl(var(--neon-purple))",
   },
   {

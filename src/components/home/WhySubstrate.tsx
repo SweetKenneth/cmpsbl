@@ -308,10 +308,10 @@ export function WhySubstrate() {
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
-               Four Primitives.
-               <br />
-               <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
-             </h2>
+                Four Categories.
+                <br />
+                <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
+              </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                CMPSBL is powered by a set of core primitives:{" "}
                <span className="text-foreground font-medium">agents</span>,{" "}

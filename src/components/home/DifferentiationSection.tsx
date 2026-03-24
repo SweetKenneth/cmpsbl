@@ -24,7 +24,7 @@ const pillars = [
   },
   {
     icon: Brain,
-    title: "REMEMBER",
+    title: "MEMORY Organ",
     headline: "Memory that survives restarts",
     description: "Four-tier cognitive memory (hot, warm, cold, glacier) with a central neural network gives every agent permanent recall. Context persists across sessions, deployments, and infrastructure changes. Nothing resets.",
     link: "/persistent-memory",
