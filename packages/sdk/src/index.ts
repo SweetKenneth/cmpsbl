@@ -938,27 +938,27 @@ export class CMPSBL {
   }
 
   /**
-   * Ping a specific node and measure latency.
-   * @param nodeId - Node identifier (e.g., 'BRAIN', 'CORTEX')
+   * Ping a specific primitive and measure latency.
+   * @param primitiveId - Primitive identifier (e.g., 'BRAIN', 'CORTEX')
    */
-  async ping(nodeId: string): Promise<SDKResponse<PingResult>> {
+  async ping(primitiveId: string): Promise<SDKResponse<PingResult>> {
     const start = Date.now();
-    const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
-    if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
+    const prim = PRIMITIVE_REGISTRY.find(n => n.id === primitiveId.toUpperCase());
+    if (!prim) throw new Error(`Primitive "${primitiveId}" not found in registry`);
 
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-        body: JSON.stringify({ action: 'ping', node: node.id }),
+        body: JSON.stringify({ action: 'ping', primitive: prim.id }),
       });
       const body = await res.json().catch(() => ({}));
       const latencyMs = Date.now() - start;
-      const data: PingResult = { node: node.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? node.health, timestamp: new Date().toISOString() };
+      const data: PingResult = { primitive: prim.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? prim.health, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     } catch {
       const latencyMs = Date.now() - start;
-      const data: PingResult = { node: node.id, latencyMs, status: 'offline', health: 0, timestamp: new Date().toISOString() };
+      const data: PingResult = { primitive: prim.id, latencyMs, status: 'offline', health: 0, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     }
   }
