@@ -22,13 +22,14 @@ npm install @cmpsbl/core
 ```
 
 ```typescript
-import { substrate } from '@cmpsbl/core';
+import { createEngineClient } from '@cmpsbl/sdk';
 
-// Initialize with your API key from cmpsbl.com
-await substrate.init({ apiKey: 'your-key' });
+const client = createEngineClient({
+  engineKey: 'your-key', // from cmpsbl.com/api-access
+});
 
 // Make your machine dream
-const dream = await substrate.dream.cycle();
+const dream = await client.request('dream.cycle', {});
 console.log(dream.heuristic);   // discovered pattern
 console.log(dream.confidence);  // 0.87
 ```
