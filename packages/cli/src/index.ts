@@ -434,7 +434,7 @@ export async function run(args: string[]): Promise<void> {
       case 'inspect':      await cmdInspect(args.slice(1)); break;
       case 'config':       await cmdConfig(args.slice(1)); break;
       case 'whoami':       await cmdWhoami(); break;
-      case 'login':        await cmdLogin(); break;
+      case 'login':        await cmdLogin(args.slice(1)); break;
       case 'logout':       await cmdLogout(); break;
       case 'watch':        await cmdWatch(args.slice(1)); break;
       case 'logs':         await cmdLogs(args.slice(1)); break;
