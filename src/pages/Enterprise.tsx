@@ -212,7 +212,6 @@ export default function Enterprise() {
         { question: "Does CMPSBL offer enterprise deployment?", answer: "Yes. Enterprise plans include dedicated substrate infrastructure, custom SLAs, SOC 2 compliance, SSO, and priority support with a dedicated success manager." },
         { question: "Can CMPSBL be deployed on-premise?", answer: "CMPSBL supports hybrid and dedicated cloud deployments. Contact our enterprise team for custom infrastructure requirements." },
       ]} />
-      <AuthorityLinkBlock currentPath="/enterprise" />
       <EnhancedFooter />
     </>
   );
