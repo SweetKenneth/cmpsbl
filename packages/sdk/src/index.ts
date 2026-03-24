@@ -780,9 +780,19 @@ export class CMPSBL {
     const start = Date.now();
     const entries: BenchmarkEntry[] = [];
 
+    // Real sequential pings — measure actual round-trip latency
     for (const node of NODE_REGISTRY) {
-      await new Promise(r => setTimeout(r, 10));
-      entries.push({ node: node.id, sector: node.sector, latencyMs: Math.round(1 + Math.random() * 15), rank: 0 });
+      const pingStart = Date.now();
+      try {
+        await fetch(`${this.config.endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+          body: JSON.stringify({ action: 'ping', node: node.id }),
+        });
+        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+      } catch {
+        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+      }
     }
 
     entries.sort((a, b) => a.latencyMs - b.latencyMs);
