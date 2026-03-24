@@ -266,13 +266,13 @@ export default function CodeLab() {
                   <div className="space-y-3">
                     <div className="relative">
                       <pre className="bg-muted/80 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-border/50">
-                        <code>import {"{ substrate }"} from '@cmpsbl/sdk';</code>
+                        <code>npm install @cmpsbl/sdk</code>
                       </pre>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="absolute top-2 right-2"
-                        onClick={() => copyCode("import { substrate } from '@cmpsbl/sdk';", "sdk")}
+                        onClick={() => copyCode("npm install @cmpsbl/sdk", "sdk")}
                       >
                         {copiedId === "sdk" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                       </Button>
