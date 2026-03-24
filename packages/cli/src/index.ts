@@ -542,7 +542,7 @@ async function cmdOnboarding() {
   // ── Project prompt ──
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
-    rl.question('  Initialize a new project here? (y/n) ', async (answer) => {
+    rl.question('  Initialize a new project here? (y/n) ', async (answer: string) => {
       rl.close();
       if (answer.trim().toLowerCase() === 'y' || answer.trim() === '') {
         await cmdInit([], { skipCeremony: true });
