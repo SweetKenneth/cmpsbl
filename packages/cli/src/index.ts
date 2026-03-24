@@ -150,7 +150,7 @@ async function requireApiKey(): Promise<string> {
 
   // Step 2: Paste key
   const key = await new Promise<string>((resolve) => {
-    rl.question('  Paste your API key: ', (answer) => {
+    rl.question('  Paste your API key: ', (answer: string) => {
       resolve(answer.trim());
     });
   });
