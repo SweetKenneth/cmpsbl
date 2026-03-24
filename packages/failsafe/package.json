@@ -13,5 +13,8 @@
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
   "repository": { "type": "git", "url": "https://github.com/cmpsbl/failsafe" },
-  "homepage": "https://cmpsbl.com/engines/failsafe"
+  "homepage": "https://cmpsbl.com/engines/failsafe",
+  "dependencies": {
+    "@cmpsbl/types": "^1.0.0"
+  }
 }
