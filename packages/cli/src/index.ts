@@ -1009,7 +1009,7 @@ function scaffoldFirstDream(heuristic: { pattern: string; confidence: number; in
  * Usage: npx ts-node dream.ts
  */
 
-import { createEngineClient } from '@cmpsbl/sdk';
+import { CMPSBL, Engine } from '@cmpsbl/sdk';
 
 async function main() {
   // Connect to the substrate (uses ~/.cmpsbl/credentials or CMPSBL_API_KEY)
