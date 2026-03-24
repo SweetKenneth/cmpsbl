@@ -282,6 +282,7 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
                 "[grid-area:1/1]"
               )}
               style={{
+                pointerEvents: flipped ? "auto" : "none",
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",
                 transform: "rotateY(180deg)",

@@ -131,7 +131,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
               focused && `shadow-2xl ${tier.glow} ring-1 ${tier.ring}`,
               "[grid-area:1/1]"
             )}
-            style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+            style={{ pointerEvents: flipped ? "auto" : "none", backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
           >
             {/* Top gradient bar */}
             <div className={cn("h-1 w-full bg-gradient-to-r", agent.gradient)} />
