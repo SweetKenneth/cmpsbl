@@ -755,32 +755,26 @@ function DefenseSection() {
         </div>
       </div>
 
-      <CodeBlock title="Defense configuration">{`// Run a security scan
-const scan = await substrate.defense.scan({
-  target: "example.com",
-  scan_type: "full",         // "quick" | "full" | "compliance"
-  wcag_level: "AA"           // accessibility compliance level
-});
-// → { score: 87, issues: [...], recommendations: [...] }
+      <CodeBlock title="DEFENSE Layer configuration via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
 
-// Configure rate limits
-await substrate.defense.configure({
-  rate_limits: {
-    global: { per_minute: 1000, per_day: 50000 },
-    per_key: { per_minute: 60, per_day: 5000 },
-    per_ip: { per_minute: 30, per_day: 1000 }
-  },
-  bot_detection: {
-    enabled: true,
-    challenge_threshold: 0.7,   // confidence threshold
-    block_threshold: 0.95
-  },
-  input_sanitization: {
-    prompt_injection: true,
-    sql_injection: true,
-    xss_prevention: true
-  }
-});`}</CodeBlock>
+// Run a security scan
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'DEFENSE',
+    action: 'scan',
+    payload: {
+      target: "example.com",
+      scan_type: "full",
+      wcag_level: "AA"
+    }
+  }),
+});
+// → { score: 87, issues: [...], recommendations: [...] }`}</CodeBlock>
 
       {/* Compliance */}
       <div>
