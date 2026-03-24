@@ -307,7 +307,7 @@ export async function capture(chainId: string, config: FirstContactConfig): Prom
   const session = activeSession;
   if (!session) throw new Error('First contact not initialized.');
 
-  const chain = session.chains.find(c => c.id === chainId);
+  const chain = session.chains.find((c: MemoryChain) => c.id === chainId);
   if (!chain) return { success: false, chainId, message: 'Memory chain not found' };
 
   // Persist via API if available
