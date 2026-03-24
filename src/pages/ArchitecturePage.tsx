@@ -154,6 +154,7 @@ const ASCII_DIAGRAM = `
 ┌──────────────────────────────────────────────────────────────────┐
 │                    CMPSBL® SUBSTRATE v9.0.0                     │
 │                   40-Primitive Architecture                      │
+│                      12 · 12 · 8 · 8                             │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │  ┌─── LAYERS (12 — Ambient Overlays) ──────────────────────────┐  │
@@ -162,14 +163,14 @@ const ASCII_DIAGRAM = `
 │  │  INTENT    ACCESS      VISION      SHADOW                   │  │
 │  │  "Always on, always watching, always enforcing"            │  │
 │  │                                                              │  │
-│  │  ┌─── AGENTS (9 — Autonomous Actors) ────────────────────┐  │  │
-│  │  │  ENCODE  DECODE  RIPPLE  AUDIT  ECONOMY               │  │  │
+│  │  ┌─── AGENTS (8 — Autonomous Actors) ────────────────────┐  │  │
+│  │  │  ENCODE  DECODE  AUDIT  ECONOMY                       │  │  │
 │  │  │  INCLUSIVE  CORTEX  ORACLE  ENGINEER                   │  │  │
 │  │  │  "They decide, act, and learn on their own"            │  │  │
 │  │  │                                                        │  │  │
-│  │  │  ┌─── ENGINES (7 — Processing Power) ───────────────┐  │  │  │
+│  │  │  ┌─── ENGINES (8 — Processing Power) ───────────────┐  │  │  │
 │  │  │  │  DREAM  HARVEST  FORGE  LINGUA                   │  │  │  │
-│  │  │  │  ECHO   PHANTOM  SANDBOX                         │  │  │  │
+│  │  │  │  ECHO   PHANTOM  SANDBOX  RIPPLE                 │  │  │  │
 │  │  │  │  "Turn the key, they deliver power"              │  │  │  │
 │  │  │  │                                                   │  │  │  │
 │  │  │  │  ┌─── ORGANS (12 — Vital Core) ───────────────┐  │  │  │  │

@@ -16,11 +16,11 @@ const LAYERS = new Set([
 ]);
 
 const ENGINES = new Set([
-  'DREAM', 'HARVEST', 'FORGE', 'LINGUA', 'ECHO', 'PHANTOM', 'SANDBOX',
+  'DREAM', 'HARVEST', 'FORGE', 'LINGUA', 'ECHO', 'PHANTOM', 'SANDBOX', 'RIPPLE',
 ]);
 
 const AGENTS = new Set([
-  'ENCODE', 'DECODE', 'RIPPLE', 'AUDIT', 'ECONOMY',
+  'ENCODE', 'DECODE', 'AUDIT', 'ECONOMY',
   'INCLUSIVE', 'CORTEX', 'ORACLE', 'ENGINEER',
 ]);
 
