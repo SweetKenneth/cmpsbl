@@ -613,7 +613,7 @@ async function discoverMemory(
         body: JSON.stringify({ userId: session.userId, sessionId: session.sessionId, input: input.input, context: input.context, domain: input.domain ?? config.domain }),
       });
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json() as Record<string, any>;
         if (data.detected && data.memory) {
           const chain: MemoryChain = {
             id: data.memory.id, pattern: data.memory.pattern, adoption: data.memory.adoption,
