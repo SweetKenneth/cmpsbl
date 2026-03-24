@@ -10,18 +10,18 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const ENGINE_HIGHLIGHTS = [
-  { name: "ARCHITECT", desc: "Unified mega-engine", tier: "APEX" },
-  { name: "SENTINEL", desc: "AI security ops", tier: "APEX" },
-  { name: "GENESIS", desc: "Autonomous triage", tier: "APEX" },
-  { name: "NEXUS", desc: "Multi-model router", tier: "APEX" },
-  { name: "CORTEX", desc: "Agent orchestration", tier: "ELITE" },
-  { name: "MIRAGE", desc: "Fleet intelligence", tier: "ELITE" },
+  { name: "DREAM", desc: "Offline learning cycles", tier: "Engine" },
+  { name: "HARVEST", desc: "Intelligence compounding", tier: "Engine" },
+  { name: "FORGE", desc: "Capability crystallization", tier: "Engine" },
+  { name: "LINGUA", desc: "Multilingual processing", tier: "Engine" },
+  { name: "ECHO", desc: "Signal replay & analysis", tier: "Engine" },
+  { name: "PHANTOM", desc: "Shadow testing runtime", tier: "Engine" },
+  { name: "SANDBOX", desc: "Isolated execution", tier: "Engine" },
+  { name: "RIPPLE", desc: "Event-driven orchestration", tier: "Engine" },
 ];
 
 const TIER_DOT: Record<string, string> = {
-  APEX: "bg-[hsl(var(--neon-magenta))]",
-  ELITE: "bg-[hsl(var(--neon-purple))]",
-  CORE: "bg-[hsl(var(--neon-cyan))]",
+  Engine: "bg-[hsl(var(--neon-cyan))]",
 };
 
 export function EnginesCTA() {
@@ -76,24 +76,16 @@ export function EnginesCTA() {
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[hsl(var(--neon-cyan)/0.2)] bg-[hsl(var(--neon-cyan)/0.05)] mb-3"
                 >
                   <Lock className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
-                  <span className="text-[10px] font-mono tracking-widest text-[hsl(var(--neon-cyan))] uppercase">Substrate Engines · Memory Stream</span>
+                  <span className="text-[10px] font-mono tracking-widest text-[hsl(var(--neon-cyan))] uppercase">Substrate Engines · Processing Powerhouses</span>
                 </motion.div>
 
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">
-                  20 Sealed <span className="text-[hsl(var(--neon-cyan))]">Engines</span>
+                  8 Composable <span className="text-[hsl(var(--neon-cyan))]">Engines</span>
                 </h2>
                 <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
-                  Production-grade runtimes crystallized from the Memory Stream's highest-scoring memories.
-                  Each engine is tamper-proof, zero-dependency, and built for a single mission.
+                  Processing powerhouses invoked for complex tasks — offline learning, capability discovery, 
+                  event orchestration, and isolated execution. Each Engine is sealed and purpose-built.
                 </p>
-              </div>
-
-              <div className="flex flex-col items-start sm:items-end gap-1.5">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-black text-[hsl(var(--neon-cyan))]">40% off</span>
-                  <span className="text-sm text-muted-foreground">bundled w/ agent</span>
-                </div>
-                <span className="text-[10px] sm:text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199+ standalone · Lifetime license</span>
               </div>
             </div>
 
@@ -120,9 +112,9 @@ export function EnginesCTA() {
             {/* Stats row */}
             <div className="flex flex-wrap justify-center gap-6 sm:gap-14">
               {[
-                { icon: Shield, value: "20", label: "Sealed Engines", color: "text-[hsl(var(--neon-magenta))]" },
-                { icon: Cpu, value: "3", label: "Clearance Tiers", color: "text-[hsl(var(--neon-purple))]" },
-                { icon: Zap, value: "120+", label: "Capabilities", color: "text-[hsl(var(--neon-cyan))]" },
+                { icon: Shield, value: "8", label: "Engines", color: "text-[hsl(var(--neon-magenta))]" },
+                { icon: Cpu, value: "40", label: "Total Primitives", color: "text-[hsl(var(--neon-purple))]" },
+                { icon: Zap, value: "4", label: "Categories", color: "text-[hsl(var(--neon-cyan))]" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center group/stat hover:-translate-y-0.5 transition-transform duration-300">
                   <stat.icon className={cn("w-5 h-5 mx-auto mb-1.5 group-hover/stat:scale-110 transition-transform duration-300", stat.color)} />
@@ -151,9 +143,9 @@ export function EnginesCTA() {
                 size="lg"
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-[hsl(var(--neon-cyan)/0.4)] hover:bg-[hsl(var(--neon-cyan)/0.03)] transition-all"
               >
-                <Link to="/engines/architect">
+                <Link to="/documentation">
                   <Cpu className="w-4 h-4" />
-                  ARCHITECT — The Mega-Engine
+                  Explore All 40 Primitives
                 </Link>
               </Button>
             </div>

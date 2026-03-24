@@ -31,11 +31,11 @@ import { cn } from "@/lib/utils";
 
 // All execution surfaces organized by architecture layer
 const codeExamples = [
-  // KERNEL LAYER
+  // ORGANS
   {
     id: "core",
     icon: Cpu,
-    layer: "Kernel",
+    layer: "Organs",
     title: "CORE Scheduling",
     description: "Kernel orchestration & task scheduling",
     color: "text-[hsl(var(--neon-amber))]",
@@ -56,9 +56,9 @@ console.log(scheduled.tasks);
   {
     id: "ripple",
     icon: Radio,
-    layer: "Kernel",
+    layer: "Engines",
     title: "RIPPLE Events",
-    description: "Message bus & cross-system communication",
+    description: "Event-driven orchestration & cross-system communication",
     color: "text-[hsl(var(--neon-cyan))]",
     gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-cyan)/0.7)]",
     code: `// Publish an event to the message bus
@@ -77,7 +77,7 @@ cmpsbl.ripple.on("dream.cycle_complete", (event) => {
   {
     id: "access",
     icon: Key,
-    layer: "Kernel",
+    layer: "Layers",
     title: "ACCESS Identity",
     description: "API keys, metering & access control",
     color: "text-[hsl(var(--neon-amber))]",
@@ -94,13 +94,13 @@ const apiKey = await cmpsbl.access.createKey({
 const usage = await cmpsbl.access.usage(apiKey.id);
 console.log(usage.calls_today, usage.quota_remaining);`,
   },
-  // COGNITIVE LAYER
+  // ORGANS
   {
     id: "brain",
     icon: Brain,
-    layer: "Cognitive",
+    layer: "Organs",
     title: "BRAIN Memory",
-    description: "3-tier persistent memory system",
+    description: "4-tier persistent memory system",
     color: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Store a memory with semantic context
@@ -124,7 +124,7 @@ const context = await cmpsbl.brain.recall({
   {
     id: "decode",
     icon: MessageSquare,
-    layer: "Cognitive",
+    layer: "Agents",
     title: "DECODE Chat",
     description: "Epistemic conversation engine",
     color: "text-[hsl(var(--neon-magenta))]",
@@ -145,9 +145,9 @@ const reply = await session.send({
   {
     id: "nexus",
     icon: Zap,
-    layer: "Cognitive",
+    layer: "Organs",
     title: "NEXUS Routing",
-    description: "Intelligent AI provider selection",
+    description: "Intelligent AI provider fleet management",
     color: "text-[hsl(var(--neon-green))]",
     gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Auto-route to optimal provider
@@ -168,9 +168,9 @@ console.log(response.provider); // "claude-3"`,
   {
     id: "defense",
     icon: Shield,
-    layer: "Operational",
+    layer: "Layers",
     title: "DEFENSE Security",
-    description: "Threat detection & governance",
+    description: "Threat detection & behavioral analysis",
     color: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Check security posture
@@ -191,9 +191,9 @@ if (analysis.risk_score > 0.7) {
   {
     id: "vision",
     icon: Eye,
-    layer: "Operational",
-    title: "VISION Telemetry",
-    description: "Observability & system monitoring",
+    layer: "Layers",
+    title: "VISION Observability",
+    description: "System monitoring & health scoring",
     color: "text-[hsl(var(--neon-blue))]",
     gradient: "from-[hsl(var(--neon-blue))] to-[hsl(var(--neon-blue)/0.7)]",
     code: `// Get real-time system health
@@ -211,8 +211,8 @@ const metrics = await cmpsbl.vision.query({
   {
     id: "dream",
     icon: Moon,
-    layer: "Operational",
-    title: "DREAM Engine Evolution",
+    layer: "Engines",
+    title: "DREAM Engine",
     description: "Offline learning & pattern extraction",
     color: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
@@ -230,11 +230,10 @@ const dreamResult = await cmpsbl.dream.cycle({
 console.log(dreamResult.patterns_extracted);
 // ["player_prefers_stealth", "avoids_combat"]`,
   },
-  // ADMIN LAYER
   {
     id: "system",
     icon: Settings,
-    layer: "Admin",
+    layer: "Organs",
     title: "SYSTEM Control",
     description: "Core administration & backups",
     color: "text-[hsl(var(--neon-green))]",
@@ -255,9 +254,9 @@ await cmpsbl.system.restore({
   {
     id: "evolution",
     icon: Sparkles,
-    layer: "Overlay",
+    layer: "Layers",
     title: "EVOLUTION Lifecycle",
-    description: "Self-improvement & shadow mode",
+    description: "Self-improvement & shadow testing",
     color: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Scan for improvement opportunities
@@ -276,7 +275,7 @@ await cmpsbl.evolution.apply({
   {
     id: "integration",
     icon: Plug,
-    layer: "Admin",
+    layer: "Layers",
     title: "INTEGRATION Enterprise",
     description: "Enterprise adapters & LLM governance",
     color: "text-[hsl(var(--neon-cyan))]",
@@ -301,11 +300,10 @@ await cmpsbl.integration.execute({
   payload: { vendor: "V001", amount: 5000 }
 });`,
   },
-  // HUMAN COMPATIBILITY
   {
     id: "inclusive",
     icon: Code,
-    layer: "Admin",
+    layer: "Agents",
     title: "INCLUSIVE A11y",
     description: "Human compatibility & accessibility engine",
     color: "text-[hsl(var(--neon-magenta))]",
@@ -327,12 +325,11 @@ const repairs = await cmpsbl.inclusive.repair({
 // Self-scan the substrate's own interfaces
 const selfCheck = await cmpsbl.inclusive.selfScan();`,
   },
-  // ORCHESTRATOR LAYER
   {
     id: "cortex",
     icon: Layers,
-    layer: "Orchestrator",
-    title: "CORTEX Evolution",
+    layer: "Agents",
+    title: "CORTEX Orchestrator",
     description: "Agency-class autonomous orchestrator",
     color: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
@@ -355,11 +352,10 @@ const proposal = await cmpsbl.cortex.dispatch({
   auto_apply: false // Require approval
 });`,
   },
-  // INFRASTRUCTURE LAYER (6 modules)
   {
     id: "memory",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Organs",
     title: "MEMORY Vectors",
     description: "Vector embeddings & RAG orchestration",
     color: "text-[hsl(var(--neon-blue))]",
@@ -384,7 +380,7 @@ const results = await cmpsbl.memory.search({
   {
     id: "relay",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Organs",
     title: "RELAY Webhooks",
     description: "Outbound notifications & event delivery",
     color: "text-[hsl(var(--neon-green))]",
@@ -408,7 +404,7 @@ await cmpsbl.relay.notify({
   {
     id: "audit",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Agents",
     title: "AUDIT Ledger",
     description: "Immutable compliance & audit trail",
     color: "text-[hsl(var(--neon-amber))]",
@@ -431,7 +427,7 @@ const report = await cmpsbl.audit.export({
   {
     id: "identity",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Organs",
     title: "IDENTITY Attribution",
     description: "Actor signatures & provenance tracking",
     color: "text-[hsl(var(--neon-magenta))]",
@@ -453,7 +449,7 @@ console.log(chain.origin, chain.transformations);`,
   {
     id: "economy",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Agents",
     title: "ECONOMY Budgets",
     description: "Cost attribution & budget enforcement",
     color: "text-[hsl(var(--neon-amber))]",
@@ -475,7 +471,7 @@ console.log(costs.total, costs.by_module);`,
   {
     id: "sandbox",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Engines",
     title: "SANDBOX Isolation",
     description: "Isolated execution environments",
     color: "text-[hsl(var(--neon-cyan))]",
@@ -499,7 +495,7 @@ console.log(result.output, result.metrics);`,
   {
     id: "encode",
     icon: Layers,
-    layer: "Cognitive",
+    layer: "Agents",
     title: "ENCODE Execution",
     description: "Code generation & execution intelligence",
     color: "text-[hsl(var(--neon-amber))]",
@@ -543,13 +539,10 @@ function highlightCode(code: string): string {
 
 // Layer configuration for grouping modules
 const LAYER_CONFIG = {
-  Kernel: { color: 'text-[hsl(var(--neon-amber))]', bgGlow: 'from-[hsl(var(--neon-amber)/0.2)]' },
-  Cognitive: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
-  Operational: { color: 'text-[hsl(var(--neon-cyan))]', bgGlow: 'from-[hsl(var(--neon-cyan)/0.2)]' },
-  Admin: { color: 'text-[hsl(var(--neon-green))]', bgGlow: 'from-[hsl(var(--neon-green)/0.2)]' },
-  Infrastructure: { color: 'text-[hsl(var(--neon-blue))]', bgGlow: 'from-[hsl(var(--neon-blue)/0.2)]' },
-  Orchestrator: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
-  Overlay: { color: 'text-[hsl(var(--neon-magenta))]', bgGlow: 'from-[hsl(var(--neon-magenta)/0.2)]' },
+  Organs: { color: 'text-[hsl(var(--neon-cyan))]', bgGlow: 'from-[hsl(var(--neon-cyan)/0.2)]' },
+  Layers: { color: 'text-[hsl(var(--neon-magenta))]', bgGlow: 'from-[hsl(var(--neon-magenta)/0.2)]' },
+  Engines: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
+  Agents: { color: 'text-[hsl(var(--neon-amber))]', bgGlow: 'from-[hsl(var(--neon-amber)/0.2)]' },
 } as const;
 
 export function TechShowcase() {
@@ -641,7 +634,7 @@ export function TechShowcase() {
           </div>
           <Badge variant="outline" className="mb-4 gap-1.5 px-4 py-1.5">
             <Layers className="w-3 h-3 text-primary" />
-            <span className="text-xs">40 Primitives • Agents · Engines · Layers · Organs</span>
+            <span className="text-xs">40 Primitives • Organs · Layers · Engines · Agents</span>
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-5 tracking-tight">
             Complete{" "}
