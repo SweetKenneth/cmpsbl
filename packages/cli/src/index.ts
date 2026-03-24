@@ -274,6 +274,7 @@ export async function run(args: string[]): Promise<void> {
     switch (command) {
       case 'init':         await cmdInit(args.slice(1), {}); break;
       case 'dream':        await cmdDream(args.slice(1)); break;
+      case 'discover':     await cmdDiscover(args.slice(1)); break;
       case 'stream':       await cmdStream(); break;
       case 'score':        cmdScore(args.slice(1)); break;
       case 'validate':     cmdValidate(args.slice(1)); break;
@@ -296,6 +297,27 @@ export async function run(args: string[]): Promise<void> {
       case 'diff':         cmdDiff(args.slice(1)); break;
       case 'changelog':    cmdChangelog(); break;
       case 'shell':        await cmdShell(); break;
+      // ── Cognitive ──
+      case 'think':        await cmdThink(args.slice(1)); break;
+      case 'reflect':      await cmdReflect(args.slice(1)); break;
+      case 'remember':     await cmdRemember(args.slice(1)); break;
+      case 'forget':       await cmdForget(args.slice(1)); break;
+      // ── Engines ──
+      case 'forge':        await cmdForge(args.slice(1)); break;
+      case 'harvest':      await cmdHarvest(args.slice(1)); break;
+      case 'translate':    await cmdTranslate(args.slice(1)); break;
+      case 'sandbox':      await cmdSandbox(args.slice(1)); break;
+      // ── Agents ──
+      case 'scan':         await cmdScan(args.slice(1)); break;
+      case 'predict':      await cmdPredict(args.slice(1)); break;
+      case 'audit':        await cmdAudit(args.slice(1)); break;
+      case 'cost':         await cmdCost(args.slice(1)); break;
+      // ── Defense ──
+      case 'threat':       await cmdThreat(args.slice(1)); break;
+      case 'immune':       await cmdImmune(args.slice(1)); break;
+      // ── Governance ──
+      case 'govern':       await cmdGovern(args.slice(1)); break;
+      case 'treaty':       await cmdTreaty(args.slice(1)); break;
       case 'version':
       case '--version':
       case '-v':
