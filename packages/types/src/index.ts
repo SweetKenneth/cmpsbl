@@ -211,17 +211,26 @@ export interface DiscoveryPipeline {
 // Node Types
 // ═══════════════════════════════════════════════════════════════
 
-export type SubstrateNode =
-  | 'CORE' | 'BRAIN' | 'MEMORY' | 'NERVE' | 'DECODE' | 'ENCODE'
-  | 'CORTEX' | 'DEFENSE' | 'ORACLE' | 'CONSCIENCE' | 'PHANTOM'
-  | 'HARVEST' | 'EVOLUTION' | 'SHADOW' | 'IMMUNITY' | 'INTENT'
-  | 'GOVERNANCE' | 'ATLAS' | 'FORGE' | 'LINGUA' | 'ECHO'
-  | 'SOVEREIGN' | 'REFLEX' | 'TREATY' | 'ENGINEER' | 'COMPASS'
-  | 'OBSERVER';
+export type SubstratePrimitive =
+  | 'CORE' | 'SYSTEM' | 'BRAIN' | 'MEMORY' | 'NERVE' | 'NEXUS'
+  | 'IDENTITY' | 'SOVEREIGN' | 'ATLAS' | 'MEDIC' | 'RELAY' | 'CONSCIENCE'
+  | 'DEFENSE' | 'IMMUNITY' | 'GOVERNANCE' | 'TREATY' | 'EVOLUTION'
+  | 'REFLEX' | 'COMPASS' | 'INTEGRATION' | 'INTENT' | 'ACCESS' | 'VISION' | 'SHADOW'
+  | 'DREAM' | 'HARVEST' | 'FORGE' | 'LINGUA' | 'ECHO' | 'PHANTOM' | 'SANDBOX' | 'RIPPLE'
+  | 'ENCODE' | 'DECODE' | 'AUDIT' | 'ECONOMY' | 'INCLUSIVE' | 'CORTEX' | 'ORACLE' | 'ENGINEER';
 
-export interface NodeHealth {
-  node: SubstrateNode;
+/** @deprecated Use SubstratePrimitive instead */
+export type SubstrateNode = SubstratePrimitive;
+
+export interface PrimitiveHealth {
+  primitive: SubstratePrimitive;
   status: 'online' | 'degraded' | 'offline';
+  resolverCount: number;
+  lastHeartbeat: string;
+}
+
+/** @deprecated Use PrimitiveHealth instead */
+export type NodeHealth = PrimitiveHealth;
   resolverCount: number;
   lastHeartbeat: string;
 }

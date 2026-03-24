@@ -181,7 +181,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '1.6.0' as const;
+const CLI_VERSION = '2.0.0' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -245,7 +245,7 @@ const NODES = [
   { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
   { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
   { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'OBSERVER', sector: 'SHL', status: 'online', health: 97, role: 'monitoring' },
+  { id: 'ATLAS', sector: 'PLN', status: 'online', health: 99, role: 'mapping' },
   { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
   { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
   { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
@@ -1579,7 +1579,7 @@ function cmdChangelog() {
         'X-Engine-Key authentication across all API calls',
         'Engine routing via substrate-api/engine endpoint',
         'Resilient init — graceful fallback when API is unreachable',
-        'Fixed duplicate SHADOW node in registry (now OBSERVER)',
+        'Removed deprecated OBSERVER — SHADOW Layer is the canonical verification primitive',
         'Interactive REPL shell with tab completion',
         'Animated spinners for all async operations',
         '--json flag for CI/CD integration',
@@ -1598,7 +1598,7 @@ function cmdChangelog() {
     '● X-Engine-Key authentication across all API calls',
     '● Engine routing via substrate-api/engine endpoint',
     '● Resilient init — graceful fallback when API is unreachable',
-    '● Fixed duplicate SHADOW node in registry (OBSERVER restored)',
+    '● Removed deprecated OBSERVER — SHADOW Layer is canonical',
     '● Interactive REPL shell (`cmpsbl shell`) with tab completion',
     '● Animated spinners replace static pauses',
     '● `--json` flag outputs structured JSON for CI/CD',
@@ -1699,7 +1699,7 @@ const PRIMITIVE_CATALOG: Record<string, { category: string; role: string; descri
   CORTEX:      { category: 'Agent', role: 'Orchestration', description: 'DAG execution engine, deterministic pipeline state machine, resource allocation across 40 primitives', commands: ['route', 'topology'] },
   ORACLE:      { category: 'Agent', role: 'Prediction', description: 'Bayesian prediction networks, Monte Carlo scenario simulator, prescriptive recommendations', commands: ['predict'] },
   ENGINEER:    { category: 'Agent', role: 'Infrastructure', description: 'Infrastructure automation, deployment orchestration, environment provisioning', commands: ['doctor', 'benchmark'] },
-  OBSERVER:    { category: 'Agent', role: 'Monitoring', description: 'System observability agent — real-time signal monitoring, anomaly alerting, activity replay', commands: ['watch', 'logs'] },
+  
 };
 
 function cmdExplain(args: string[]) {

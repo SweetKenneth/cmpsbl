@@ -135,8 +135,8 @@ export interface DomainPattern {
 // SDK-Specific Types
 // ═══════════════════════════════════════════════════════════════
 
-/** Information about a single node in the 40-node mesh */
-export interface NodeInfo {
+/** Information about a single primitive in the 40-primitive mesh */
+export interface PrimitiveInfo {
   id: string;
   sector: string;
   status: 'online' | 'degraded' | 'offline';
@@ -146,18 +146,18 @@ export interface NodeInfo {
 
 /** Snapshot of the entire substrate's operational state */
 export interface SubstrateStatus {
-  nodes: number;
-  nodesOnline: number;
-  sectors: number;
+  primitives: number;
+  primitivesOnline: number;
+  categories: number;
   averageHealth: number;
   runtimeVersion: string;
   memoryChains: number;
   sessionId: string | null;
 }
 
-/** Result of pinging a specific node */
+/** Result of pinging a specific primitive */
 export interface PingResult {
-  node: string;
+  primitive: string;
   latencyMs: number;
   status: string;
   health: number;
@@ -166,7 +166,7 @@ export interface PingResult {
 
 /** A single hop in an intent routing trace */
 export interface RouteHop {
-  node: string;
+  primitive: string;
   role: string;
   sector: string;
   latencyMs: number;
@@ -180,18 +180,18 @@ export interface RouteTrace {
   resolvedAt: string;
 }
 
-/** Health report across all nodes */
+/** Health report across all primitives */
 export interface HealthReport {
   overall: number;
-  nodes: Array<{ id: string; health: number; status: string }>;
+  primitives: Array<{ id: string; health: number; status: string }>;
   critical: string[];
   timestamp: string;
 }
 
-/** Deep inspection result for a single node */
+/** Deep inspection result for a single primitive */
 export interface InspectResult {
-  node: string;
-  sector: string;
+  primitive: string;
+  category: string;
   role: string;
   status: string;
   health: number;
@@ -207,14 +207,14 @@ export interface InspectResult {
 export interface LogEntry {
   timestamp: string;
   level: 'INFO' | 'DEBUG' | 'WARN' | 'ERROR';
-  node: string;
+  primitive: string;
   message: string;
 }
 
-/** Benchmark result for a single node */
+/** Benchmark result for a single primitive */
 export interface BenchmarkEntry {
-  node: string;
-  sector: string;
+  primitive: string;
+  category: string;
   latencyMs: number;
   rank: number;
 }
@@ -433,7 +433,7 @@ export class Engine {
 // Node Registry
 // ═══════════════════════════════════════════════════════════════
 
-const NODE_REGISTRY: NodeInfo[] = [
+const PRIMITIVE_REGISTRY: PrimitiveInfo[] = [
   { id: 'BRAIN', sector: 'CCR', status: 'online', health: 98, role: 'reasoning' },
   { id: 'MEMORY', sector: 'CCR', status: 'online', health: 100, role: 'persistence' },
   { id: 'DREAM', sector: 'CCR', status: 'online', health: 95, role: 'synthesis' },
@@ -464,13 +464,13 @@ const NODE_REGISTRY: NodeInfo[] = [
   { id: 'LINGUA', sector: 'EMZ', status: 'online', health: 100, role: 'language' },
   { id: 'HARVEST', sector: 'EMZ', status: 'online', health: 98, role: 'extraction' },
   { id: 'EVOLUTION', sector: 'CSZ', status: 'online', health: 95, role: 'adaptation' },
-  { id: 'SHADOW', sector: 'CSZ', status: 'online', health: 92, role: 'stealth' },
+  { id: 'SHADOW', sector: 'CSZ', status: 'online', health: 92, role: 'verification' },
   { id: 'PHANTOM', sector: 'CSZ', status: 'online', health: 91, role: 'speculation' },
   { id: 'IMMUNITY', sector: 'FLD', status: 'online', health: 100, role: 'defense' },
   { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
   { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
+  { id: 'ATLAS', sector: 'PLN', status: 'online', health: 99, role: 'mapping' },
   { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'OBSERVER', sector: 'SHL', status: 'online', health: 97, role: 'monitoring' },
   { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
   { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
   { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
@@ -510,7 +510,7 @@ const CEREMONY_SECTORS = [
   { sector: 'SHELL',  nodes: ['DEFENSE', 'VISION', 'ENGINEER'] },
 ] as const;
 
-const TOTAL_NODES = 40;
+const TOTAL_PRIMITIVES = 40;
 
 const PACKAGE_GREETINGS: Record<string, string> = {
   '@cmpsbl/cli':          'Terminal bridge established. You speak, the mesh listens.',
@@ -550,21 +550,21 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   });
   await delay(200);
 
-  let nodesOnline = 0;
+  let primitivesOnline = 0;
   for (const { sector, nodes } of CEREMONY_SECTORS) {
-    nodesOnline += nodes.length;
-    const progress = 15 + Math.round((nodesOnline / TOTAL_NODES) * 60);
-    emit({ phase: 'sector_boot', message: `▸ Sector ${sector} — ${nodes.join(' · ')}`, sector, nodesOnline, totalNodes: TOTAL_NODES, progress });
+    primitivesOnline += nodes.length;
+    const progress = 15 + Math.round((primitivesOnline / TOTAL_PRIMITIVES) * 60);
+    emit({ phase: 'sector_boot', message: `▸ Category ${sector} — ${nodes.join(' · ')}`, sector, nodesOnline: primitivesOnline, totalNodes: TOTAL_PRIMITIVES, progress });
     await delay(120);
   }
 
-  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 sectors · 4 categories', progress: 80, nodesOnline: TOTAL_NODES, totalNodes: TOTAL_NODES });
+  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 categories · 4 types', progress: 80, nodesOnline: TOTAL_PRIMITIVES, totalNodes: TOTAL_PRIMITIVES });
   await delay(250);
   emit({ phase: 'memory_sync', message: config.apiKey ? '◈ Memory Stream connected — chains persisting' : '◈ Memory Stream local — connect API key to persist', progress: 90 });
   await delay(200);
   emit({ phase: 'discovery_arm', message: '◈ Discovery engine armed. Every interaction leaves a trace.', progress: 95 });
   await delay(150);
-  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, nodesOnline: TOTAL_NODES, totalNodes: TOTAL_NODES });
+  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, nodesOnline: TOTAL_PRIMITIVES, totalNodes: TOTAL_PRIMITIVES });
 }
 
 async function initFirstContact(config: FirstContactConfig): Promise<FirstContactSession> {
@@ -893,13 +893,13 @@ export class CMPSBL {
   status(): SDKResponse<SubstrateStatus> {
     const start = Date.now();
     const session = getFirstContactSession();
-    const online = NODE_REGISTRY.filter(n => n.status === 'online');
-    const sectors = new Set(NODE_REGISTRY.map(n => n.sector));
+    const online = PRIMITIVE_REGISTRY.filter(n => n.status === 'online');
+    const categories = new Set(PRIMITIVE_REGISTRY.map(n => n.sector));
     const data: SubstrateStatus = {
-      nodes: NODE_REGISTRY.length,
-      nodesOnline: online.length,
-      sectors: sectors.size,
-      averageHealth: Math.round(NODE_REGISTRY.reduce((s, n) => s + n.health, 0) / NODE_REGISTRY.length),
+      primitives: PRIMITIVE_REGISTRY.length,
+      primitivesOnline: online.length,
+      categories: categories.size,
+      averageHealth: Math.round(PRIMITIVE_REGISTRY.reduce((s, n) => s + n.health, 0) / PRIMITIVE_REGISTRY.length),
       runtimeVersion: '14.4.1',
       memoryChains: this.stream.length,
       sessionId: session?.sessionId ?? null,
@@ -908,15 +908,15 @@ export class CMPSBL {
   }
 
   /**
-   * Get a health report across all 40 nodes.
+   * Get a health report across all 40 primitives.
    */
   health(): SDKResponse<HealthReport> {
     const start = Date.now();
-    const nodes = NODE_REGISTRY.map(n => ({ id: n.id, health: n.health, status: n.status }));
-    const critical = nodes.filter(n => n.health < 90).map(n => n.id);
+    const items = PRIMITIVE_REGISTRY.map(n => ({ id: n.id, health: n.health, status: n.status }));
+    const critical = items.filter(n => n.health < 90).map(n => n.id);
     const data: HealthReport = {
-      overall: Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length),
-      nodes: nodes.sort((a, b) => a.health - b.health),
+      overall: Math.round(items.reduce((s, n) => s + n.health, 0) / items.length),
+      primitives: items.sort((a, b) => a.health - b.health),
       critical,
       timestamp: new Date().toISOString(),
     };
@@ -924,75 +924,75 @@ export class CMPSBL {
   }
 
   /**
-   * List all nodes in the mesh, optionally filtered by sector or role.
+   * List all primitives in the mesh, optionally filtered by category or role.
    * @param filter - Optional filter string
    */
-  nodes(filter?: string): SDKResponse<NodeInfo[]> {
+  primitives(filter?: string): SDKResponse<PrimitiveInfo[]> {
     const start = Date.now();
-    let data = [...NODE_REGISTRY];
+    let data = [...PRIMITIVE_REGISTRY];
     if (filter) {
       const f = filter.toUpperCase();
       data = data.filter(n => n.sector === f || n.id.includes(f) || n.role.includes(f.toLowerCase()));
     }
-    return new SDKResponse(data, { method: 'nodes', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    return new SDKResponse(data, { method: 'primitives', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
   /**
-   * Ping a specific node and measure latency.
-   * @param nodeId - Node identifier (e.g., 'BRAIN', 'CORTEX')
+   * Ping a specific primitive and measure latency.
+   * @param primitiveId - Primitive identifier (e.g., 'BRAIN', 'CORTEX')
    */
-  async ping(nodeId: string): Promise<SDKResponse<PingResult>> {
+  async ping(primitiveId: string): Promise<SDKResponse<PingResult>> {
     const start = Date.now();
-    const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
-    if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
+    const prim = PRIMITIVE_REGISTRY.find(n => n.id === primitiveId.toUpperCase());
+    if (!prim) throw new Error(`Primitive "${primitiveId}" not found in registry`);
 
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-        body: JSON.stringify({ action: 'ping', node: node.id }),
+        body: JSON.stringify({ action: 'ping', primitive: prim.id }),
       });
       const body = await res.json().catch(() => ({}));
       const latencyMs = Date.now() - start;
-      const data: PingResult = { node: node.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? node.health, timestamp: new Date().toISOString() };
+      const data: PingResult = { primitive: prim.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? prim.health, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     } catch {
       const latencyMs = Date.now() - start;
-      const data: PingResult = { node: node.id, latencyMs, status: 'offline', health: 0, timestamp: new Date().toISOString() };
+      const data: PingResult = { primitive: prim.id, latencyMs, status: 'offline', health: 0, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     }
   }
 
   /**
-   * Deep-inspect a node's state including resolvers, uptime, and mesh links.
-   * @param nodeId - Node identifier
+   * Deep-inspect a primitive's state including resolvers, uptime, and mesh links.
+   * @param primitiveId - Primitive identifier
    */
-  async inspect(nodeId: string): Promise<SDKResponse<InspectResult>> {
+  async inspect(primitiveId: string): Promise<SDKResponse<InspectResult>> {
     const start = Date.now();
-    const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
-    if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
+    const prim = PRIMITIVE_REGISTRY.find(n => n.id === primitiveId.toUpperCase());
+    if (!prim) throw new Error(`Primitive "${primitiveId}" not found in registry`);
 
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-        body: JSON.stringify({ action: 'inspect', node: node.id }),
+        body: JSON.stringify({ action: 'inspect', primitive: prim.id }),
       });
       const body = await res.json().catch(() => ({}));
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        node: node.id, sector: body.sector ?? node.sector, role: body.role ?? node.role,
-        status: res.ok ? (body.status ?? node.status) : 'degraded', health: body.health ?? node.health,
+        primitive: prim.id, category: body.sector ?? prim.sector, role: body.role ?? prim.role,
+        status: res.ok ? (body.status ?? prim.status) : 'degraded', health: body.health ?? prim.health,
         uptime: body.uptime ?? 0, resolverCount: body.resolverCount ?? 0, intentsProcessed: body.intentsProcessed ?? 0,
         avgLatencyMs: body.avgLatencyMs ?? durationMs,
-        meshLinks: body.meshLinks ?? NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+        meshLinks: body.meshLinks ?? PRIMITIVE_REGISTRY.filter(n => n.sector === prim.sector && n.id !== prim.id).map(n => n.id),
         lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
     } catch {
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        node: node.id, sector: node.sector, role: node.role, status: 'offline', health: 0, uptime: 0,
+        primitive: prim.id, category: prim.sector, role: prim.role, status: 'offline', health: 0, uptime: 0,
         resolverCount: 0, intentsProcessed: 0, avgLatencyMs: durationMs, meshLinks: [], lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
@@ -1027,14 +1027,14 @@ export class CMPSBL {
    * Get recent log entries from the system.
    * @param options - Filter by node and limit count
    */
-  async logs(options?: { node?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
+  async logs(options?: { primitive?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
     const start = Date.now();
     const count = Math.min(options?.count ?? 10, 50);
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-        body: JSON.stringify({ action: 'logs', node: options?.node?.toUpperCase(), count }),
+        body: JSON.stringify({ action: 'logs', primitive: options?.primitive?.toUpperCase(), count }),
       });
       const body = await res.json().catch(() => ({ entries: [] }));
       const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
@@ -1045,35 +1045,35 @@ export class CMPSBL {
   }
 
   /**
-   * Get the sector topology map showing all nodes grouped by sector.
+   * Get the category topology map showing all primitives grouped by category.
    */
-  topology(): SDKResponse<Record<string, NodeInfo[]>> {
+  topology(): SDKResponse<Record<string, PrimitiveInfo[]>> {
     const start = Date.now();
-    const map: Record<string, NodeInfo[]> = {};
-    for (const node of NODE_REGISTRY) {
-      if (!map[node.sector]) map[node.sector] = [];
-      map[node.sector].push({ ...node });
+    const map: Record<string, PrimitiveInfo[]> = {};
+    for (const prim of PRIMITIVE_REGISTRY) {
+      if (!map[prim.sector]) map[prim.sector] = [];
+      map[prim.sector].push({ ...prim });
     }
     return new SDKResponse(map, { method: 'topology', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
   /**
-   * Run a latency benchmark across all nodes.
+   * Run a latency benchmark across all primitives.
    */
   async benchmark(): Promise<SDKResponse<BenchmarkReport>> {
     const start = Date.now();
     const entries: BenchmarkEntry[] = [];
-    for (const node of NODE_REGISTRY) {
+    for (const prim of PRIMITIVE_REGISTRY) {
       const pingStart = Date.now();
       try {
         await fetch(`${this.config.endpoint}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-          body: JSON.stringify({ action: 'ping', node: node.id }),
+          body: JSON.stringify({ action: 'ping', primitive: prim.id }),
         });
-        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+        entries.push({ primitive: prim.id, category: prim.sector, latencyMs: Date.now() - pingStart, rank: 0 });
       } catch {
-        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+        entries.push({ primitive: prim.id, category: prim.sector, latencyMs: Date.now() - pingStart, rank: 0 });
       }
     }
     entries.sort((a, b) => a.latencyMs - b.latencyMs);
@@ -1094,9 +1094,9 @@ export class CMPSBL {
       { name: 'SDK initialized', passed: this.initialized },
       { name: 'API key configured', passed: !!this.config.apiKey },
       { name: 'Endpoint set', passed: !!this.config.endpoint },
-      { name: 'All 40 nodes present', passed: NODE_REGISTRY.length === 40 },
-      { name: 'All nodes online', passed: NODE_REGISTRY.every(n => n.status === 'online') },
-      { name: 'Health > 90% all nodes', passed: NODE_REGISTRY.every(n => n.health >= 90) },
+      { name: 'All 40 primitives present', passed: PRIMITIVE_REGISTRY.length === 40 },
+      { name: 'All primitives online', passed: PRIMITIVE_REGISTRY.every(n => n.status === 'online') },
+      { name: 'Health > 90% all primitives', passed: PRIMITIVE_REGISTRY.every(n => n.health >= 90) },
       { name: 'Memory stream accessible', passed: true },
       { name: 'Event system ready', passed: true },
       { name: 'Middleware chain valid', passed: true },
@@ -1135,8 +1135,8 @@ export class CMPSBL {
 
   // ── Helpers ───────────────────────────────────────────────
 
-  private makeHop(nodeId: string): RouteHop {
-    const node = NODE_REGISTRY.find(n => n.id === nodeId);
-    return { node: node?.id ?? nodeId, role: node?.role ?? 'unknown', sector: node?.sector ?? 'unknown', latencyMs: 0 };
+  private makeHop(primitiveId: string): RouteHop {
+    const prim = PRIMITIVE_REGISTRY.find(n => n.id === primitiveId);
+    return { primitive: prim?.id ?? primitiveId, role: prim?.role ?? 'unknown', sector: prim?.sector ?? 'unknown', latencyMs: 0 };
   }
 }
