@@ -391,7 +391,7 @@ export function HeroMetaSubstrate() {
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-start sm:justify-center gap-0 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+            <div className="flex items-center justify-center gap-0 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
               {[
                 { label: "Layers", color: "--neon-magenta" },
                 { label: "Organs", color: "--neon-cyan" },

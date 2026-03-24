@@ -58,16 +58,16 @@ export function HowCmpsblWorks() {
             {/* CMPSBL */}
             <div className="rounded-xl border border-[hsl(var(--neon-cyan)/0.2)] bg-[hsl(var(--neon-cyan)/0.05)] p-5">
               <div className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
-              <div className="flex items-center justify-center gap-2 flex-wrap">
+              <div className="flex flex-col items-center gap-2">
                 {cmpsblStack.map((item, i) => (
-                  <div key={item} className="flex items-center gap-2">
+                  <div key={item} className="flex flex-col items-center gap-2">
                     <div className={cn(
-                      "px-3 py-2 rounded-lg border text-xs font-semibold",
+                      "px-4 py-2 rounded-lg border text-xs font-semibold text-center",
                       item.includes("CMPSBL")
                         ? "border-[hsl(var(--neon-purple)/0.4)] bg-[hsl(var(--neon-purple)/0.1)] text-[hsl(var(--neon-purple))] font-bold"
                         : "border-border/30 bg-card/50 text-foreground/70"
                     )}>{item}</div>
-                    {i < cmpsblStack.length - 1 && <ArrowRight className="w-3 h-3 text-[hsl(var(--neon-purple)/0.5)]" />}
+                    {i < cmpsblStack.length - 1 && <ArrowRight className="w-3 h-3 text-[hsl(var(--neon-purple)/0.5)] rotate-90" />}
                   </div>
                 ))}
               </div>
