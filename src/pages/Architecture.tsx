@@ -233,26 +233,27 @@ export default function Architecture() {
         </section>
 
         {/* ── All Categories ── */}
-        {SECTORS.map((sector, sIdx) => (
+        {CATEGORIES.map((cat, sIdx) => (
           <section
-            key={sector.tag}
+            key={cat.tag}
             className={`border-t border-border ${sIdx % 2 === 0 ? 'bg-muted/20' : ''}`}
           >
             <div className="container mx-auto max-w-5xl px-4 py-14">
               <motion.div {...fadeUp}>
                 <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-2xl font-bold">{sector.label}</h2>
-                  <Badge variant="outline" className="text-xs font-mono">{sector.tag}</Badge>
-                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'primitive' : 'primitives'}</Badge>
+                  <h2 className="text-2xl font-bold">{cat.label}</h2>
+                  <Badge variant="outline" className="text-xs font-mono">{cat.tag}</Badge>
+                  <Badge variant="secondary" className="text-xs">{cat.primitives.length} primitives</Badge>
                 </div>
-                <div className={`grid gap-3 ${sector.nodes.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : sector.nodes.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
-                  {sector.nodes.map((node) => (
-                    <Card key={node.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
+                <div className={`grid gap-3 ${cat.primitives.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : cat.primitives.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
+                  {cat.primitives.map((prim) => (
+                    <Card key={prim.name} className={`hover:border-primary/30 transition-all duration-300 card-lift border ${cat.color}`}>
                       <CardContent className="p-5 flex items-start gap-3">
-                        <node.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <prim.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <div>
-                          <span className="font-bold font-mono text-sm">{node.name}</span>
-                          <p className="text-xs text-muted-foreground mt-1">{node.desc}</p>
+                          <span className="font-bold font-mono text-sm">{prim.name}</span>
+                          <span className="text-[10px] font-mono text-muted-foreground/50 ml-2">{cat.label.slice(0, -1)}</span>
+                          <p className="text-xs text-muted-foreground mt-1">{prim.desc}</p>
                         </div>
                       </CardContent>
                     </Card>
