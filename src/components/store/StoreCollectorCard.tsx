@@ -5,7 +5,8 @@
  * Free items require auth and trigger a real ZIP download with cinematic ceremony.
  * Tier-specific glow halos. Production-ready polish.
  * 
- * Uses CSS grid stacking for robust 3D flip on all browsers/platforms.
+ * Both faces are absolutely positioned inside a preserve-3d container
+ * with explicit aspect-ratio so backfaceVisibility works cross-browser.
  */
 
 import { useState } from "react";
@@ -131,6 +132,17 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
     }
   };
 
+  /* ─── shared face styles ─── */
+  const faceBase: React.CSSProperties = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+  };
+
   return (
     <>
       {overlayElement}
@@ -141,9 +153,10 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
         )}
         style={{ perspective: "1200px" }}
       >
+        {/* 3D flip container — explicit aspect-ratio, both children absolute */}
         <motion.div
           className="relative w-full"
-          style={{ transformStyle: "preserve-3d" }}
+          style={{ transformStyle: "preserve-3d", aspectRatio: "3/4" }}
           animate={{ rotateY: flipped ? 180 : 0 }}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
@@ -158,8 +171,7 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
               "transition-all duration-500",
             )}
             style={{
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
+              ...faceBase,
               boxShadow: focused
                 ? `0 0 40px ${item.glowColor}, 0 25px 50px -12px rgba(0,0,0,0.5)`
                 : `0 0 20px ${item.glowColor}, 0 20px 40px -12px rgba(0,0,0,0.4)`
@@ -167,10 +179,10 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
             onClick={onToggleFocus}
           >
             {/* Top gradient bar */}
-            <div className={cn("h-1 w-full bg-gradient-to-r", item.gradient)} />
+            <div className={cn("h-1 w-full bg-gradient-to-r shrink-0", item.gradient)} />
 
             {/* Visual area */}
-            <div className="relative aspect-[4/3] overflow-hidden bg-background/50">
+            <div className="relative flex-1 min-h-0 overflow-hidden bg-background/50">
               {item.image ? (
                 <img
                   src={item.image}
@@ -210,19 +222,19 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
             </div>
 
             {/* Identity */}
-            <div className="relative z-10 px-5 sm:px-6 pb-5 sm:pb-6 -mt-8">
+            <div className="relative z-10 px-5 sm:px-6 pb-4 sm:pb-5 -mt-8 shrink-0">
               <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight leading-none">
                 {item.name}
               </h3>
               <p className="text-[10px] font-mono tracking-wider text-muted-foreground/40 mt-1 uppercase">
                 {item.subtitle}
               </p>
-              <p className="text-xs sm:text-[13px] text-muted-foreground/70 leading-relaxed mt-3">
+              <p className="text-xs sm:text-[13px] text-muted-foreground/70 leading-relaxed mt-2 line-clamp-2">
                 {item.bio}
               </p>
 
               {/* Stats row */}
-              <div className="flex items-center justify-between mt-4 pt-3 border-t border-border/20">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-border/20">
                 <div className="flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-primary/50" />
                   <span className="text-[10px] font-mono tabular-nums text-muted-foreground/50 tracking-wider">
@@ -249,7 +261,7 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
               </div>
 
               {/* Price + flip trigger */}
-              <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center justify-between mt-2">
                 <span className={cn("text-base sm:text-lg font-black tracking-tight", tier.color)}>
                   {item.priceDisplay}
                 </span>
@@ -271,19 +283,18 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
           {/* ═══ BACK ═══ */}
           <div
             className={cn(
-              "absolute inset-0 rounded-2xl overflow-hidden",
+              "rounded-2xl overflow-hidden",
               "border bg-card/98 backdrop-blur-md flex flex-col",
               tier.border,
               focused && "shadow-2xl",
             )}
             style={{
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
+              ...faceBase,
               transform: "rotateY(180deg)",
               boxShadow: `0 0 30px ${item.glowColor}, 0 20px 40px -12px rgba(0,0,0,0.4)`
             }}
           >
-            <div className={cn("h-1 w-full bg-gradient-to-r", item.gradient)} />
+            <div className={cn("h-1 w-full bg-gradient-to-r shrink-0", item.gradient)} />
 
             <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
               {/* Header */}
@@ -339,7 +350,7 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
             </div>
 
             {/* Footer actions */}
-            <div className="p-4 sm:p-5 border-t border-border/20 space-y-2">
+            <div className="p-4 sm:p-5 border-t border-border/20 space-y-2 shrink-0">
               <Button
                 size="sm"
                 className={cn(

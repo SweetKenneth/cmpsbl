@@ -1,12 +1,12 @@
 /**
  * AgentCollectorCard — Flip card with front (identity) and back (powers).
  * Collector-style with tier rarity glow, CJPI stats, and sealed runtime badge.
- * Uses CSS grid stacking for robust 3D flip on all browsers.
+ * Both faces absolutely positioned inside preserve-3d container for cross-browser flip.
  */
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, Zap, MessageSquare, ShoppingCart } from "lucide-react";
+import { Lock, Zap, MessageSquare, ShoppingCart, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { AgentWithPowers } from "@/lib/agents/crownJewelPowers";
@@ -30,6 +30,16 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
   const [flipped, setFlipped] = useState(false);
   const tier = tierConfig(agent);
 
+  const faceBase: React.CSSProperties = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backfaceVisibility: "hidden",
+    WebkitBackfaceVisibility: "hidden",
+  };
+
   return (
     <div
       className={cn(
@@ -40,7 +50,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
     >
       <motion.div
         className="relative w-full"
-        style={{ transformStyle: "preserve-3d" }}
+        style={{ transformStyle: "preserve-3d", aspectRatio: "3/4" }}
         animate={{ rotateY: flipped ? 180 : 0 }}
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
       >
@@ -55,11 +65,11 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
             !focused && "shadow-lg hover:shadow-xl",
             "transition-shadow duration-500",
           )}
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", aspectRatio: "3/4" }}
+          style={faceBase}
           onClick={onToggleFocus}
         >
           {/* Top gradient bar */}
-          <div className={cn("h-1 w-full bg-gradient-to-r", agent.gradient)} />
+          <div className={cn("h-1 w-full bg-gradient-to-r shrink-0", agent.gradient)} />
 
           {/* Agent image */}
           <div className="relative flex-1 min-h-0 overflow-hidden">
@@ -84,7 +94,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
           </div>
 
           {/* Identity strip */}
-          <div className="relative z-10 px-4 pb-4 -mt-12">
+          <div className="relative z-10 px-4 pb-4 -mt-12 shrink-0">
             <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">{agent.name}</h3>
             <p className="text-[10px] font-mono text-muted-foreground/50 mt-0.5">{agent.subtitle}</p>
             <p className="text-[11px] text-muted-foreground/70 leading-relaxed mt-1.5 line-clamp-2">{agent.bio}</p>
@@ -110,9 +120,9 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
               <span className={cn("text-xs font-black", tier.text)}>{tier.price}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); setFlipped(true); }}
-                className="text-[9px] font-bold text-primary/70 hover:text-primary transition-colors px-2 py-1 rounded-lg hover:bg-primary/5"
+                className="text-[9px] font-bold text-primary/70 hover:text-primary transition-colors px-2 py-1 rounded-lg hover:bg-primary/5 flex items-center gap-1"
               >
-                FLIP TO INSPECT →
+                INSPECT <RotateCcw className="w-2.5 h-2.5" />
               </button>
             </div>
           </div>
@@ -121,16 +131,19 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
         {/* ═══ BACK ═══ */}
         <div
           className={cn(
-            "absolute inset-0 rounded-2xl overflow-hidden",
+            "rounded-2xl overflow-hidden",
             "border bg-card/90 backdrop-blur-sm",
             "flex flex-col",
             tier.border,
             focused && `shadow-2xl ${tier.glow} ring-1 ${tier.ring}`,
           )}
-          style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
+          style={{
+            ...faceBase,
+            transform: "rotateY(180deg)",
+          }}
         >
           {/* Top gradient bar */}
-          <div className={cn("h-1 w-full bg-gradient-to-r", agent.gradient)} />
+          <div className={cn("h-1 w-full bg-gradient-to-r shrink-0", agent.gradient)} />
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {/* Header */}
@@ -173,7 +186,7 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
           </div>
 
           {/* Bottom actions */}
-          <div className="p-4 border-t border-border/30 space-y-2">
+          <div className="p-4 border-t border-border/30 space-y-2 shrink-0">
             <Button
               size="sm"
               className={cn("w-full gap-2 text-xs font-black bg-gradient-to-r", agent.gradient, "text-white hover:opacity-90")}
@@ -195,10 +208,11 @@ export function AgentCollectorCard({ agent, focused, onToggleFocus, onChat }: Ag
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-[10px] font-bold"
+                className="text-[10px] font-bold gap-1"
                 onClick={(e) => { e.stopPropagation(); setFlipped(false); }}
               >
-                ← FLIP
+                <RotateCcw className="w-3 h-3" />
+                FLIP
               </Button>
             </div>
           </div>
