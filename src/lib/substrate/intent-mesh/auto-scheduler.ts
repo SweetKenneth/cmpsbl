@@ -242,7 +242,7 @@ class MeshAutoScheduler {
         exploratoryMode: true,
         scoringVersion: 'CDM-1.0',
         injectedTemplates: templates,
-      }, user.id);
+      }, userId);
 
       this.state.lastCdmReactor = new Date().toISOString();
       this.state.totalCyclesRun++;
