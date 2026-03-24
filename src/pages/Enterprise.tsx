@@ -72,15 +72,15 @@ const capabilities = [
 ];
 
 const enterpriseFeatures = [
-  "Full platform with 40 integrated primitives and real-time health monitoring",
-  "12 capability groups covering core logic, cognition, execution, compliance, and more",
-  "Persistent memory included free — 4-tier architecture",
-  "Configurable self-improvement cycles with custom schedules",
-  "Built-in security with bot detection & prompt injection defense",
-  "Smart routing across 14+ AI providers with your own keys",
-  "Circuit breakers prevent cascading failures across modules",
-  "Immutable audit logging with cryptographic verification",
-  "Governance controls with 4 operational modes",
+  "Full substrate with all 40 primitives across the 12·12·8·8 matrix",
+  "Real-time health monitoring via VISION Layer and MEDIC Organ",
+  "Persistent 4-tier memory architecture (hot / warm / cold / glacier)",
+  "DREAM Engine synthesis with custom schedules",
+  "DEFENSE Layer security with bot detection & prompt injection shielding",
+  "NEXUS Organ routing across 14+ AI providers with your own keys",
+  "Circuit breakers prevent cascading failures across primitives",
+  "Immutable audit logging with cryptographic verification via AUDIT Agent",
+  "GOVERNANCE Layer controls with 4 operational modes",
   "Zero-downtime updates and hot reload",
 ];
 
