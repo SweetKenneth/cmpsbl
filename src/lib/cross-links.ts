@@ -25,9 +25,9 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/runtime": [
     { href: "/architecture", title: "Substrate Architecture", description: "The 40-primitive topology that the runtime executes" },
-    { href: "/engines", title: "54 Composable Engines", description: "Processing units orchestrated by the runtime" },
+    { href: "/store", title: "Store & Plans", description: "Browse memory packs, agents, and subscription plans", badge: "Store" },
     { href: "/status", title: "System Status", description: "Live health monitoring across all runtime services" },
-    { href: "/docs/runtime-reference", title: "Runtime Reference", description: "Technical documentation for runtime APIs and hooks" },
+    { href: "/docs", title: "Documentation", description: "Developer reference, guides, and API documentation" },
   ],
   "/memory-stream": [
     { href: "/foundry", title: "The Foundry", description: "Where memory stream discoveries are explored and scored" },

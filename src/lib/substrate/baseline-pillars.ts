@@ -125,7 +125,7 @@ export const BASELINE_PILLARS: BaselinePillar[] = [
     id: 'cognition',
     name: 'Cognitive Stack',
     icon: 'Lightbulb',
-    summary: 'Intent classification, natural language understanding, creative synthesis, and meta-learning — the thinking layer powered by BRAIN, DECODE, and DREAM.',
+    summary: 'Intent classification, natural language understanding, creative synthesis, and meta-learning — the thinking layer powered by BRAIN Organ, DECODE Agent, and DREAM Engine.',
     highlights: [
       'DECODE Agent intent classification & extraction',
       'BRAIN Organ reasoning & pattern recognition',

@@ -37,7 +37,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Runtime Environment', href: '/runtime' },
   { label: 'Architecture', href: '/architecture' },
   { label: 'Architecture', href: '/modules' },
-  { label: '54 Composable Engines', href: '/engines' },
+  { label: 'Store & Plans', href: '/store' },
   { label: 'Memory Stream Discovery', href: '/foundry' },
   // Products
   { label: 'Persistent Memory', href: '/persistent-memory' },
