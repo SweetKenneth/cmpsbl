@@ -553,30 +553,52 @@ async function cmdOnboarding() {
 
 async function cmdShell() {
   header('Interactive Shell');
-  say('Type commands without the `cmpsbl` prefix. Type `exit` or `quit` to leave.');
-  say('Tab-completion hints: status, health, nodes, ping, discover, stream, inspect');
+  say(`Type commands without the ${c.cyan('cmpsbl')} prefix. Tab-complete commands ${c.bold('and')} node names.`);
+  say(`Type ${c.cyan('exit')} or ${c.cyan('quit')} to leave.`);
   blank();
-  say(pick(V.idle));
+  sayMuted(pick(V.idle));
   blank();
+
+  // All node names for contextual autocomplete
+  const nodeNames = NODES.map(n => n.id);
+  const allCmds = [
+    'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
+    'status', 'health', 'nodes', 'ping', 'inspect', 'config',
+    'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
+    'topology', 'route', 'benchmark', 'diff', 'changelog',
+    'think', 'reflect', 'remember', 'forget',
+    'forge', 'harvest', 'translate', 'sandbox',
+    'scan', 'predict', 'audit', 'cost',
+    'threat', 'immune', 'govern', 'treaty',
+    'demo', 'explain',
+    'help', 'version', 'exit', 'quit',
+  ];
+  // Commands that accept node names as args
+  const nodeArgCmds = ['ping', 'inspect', 'explain', 'watch', 'logs', 'nodes'];
+
+  // Build context-aware prompt
+  const online = NODES.filter(n => n.status === 'online').length;
+  const chains = getMemoryStream().length;
+  const promptStr = `  ${c.muted('cmpsbl')} ${c.cyan(`[${online}/40`)} ${c.green('●')} ${c.muted(`${chains}ch`)}${c.cyan(']')}${c.bold(c.cyan('>'))} `;
 
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: '  cmpsbl> ',
+    prompt: promptStr,
     completer: (line: string) => {
-      const cmds = [
-        'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
-        'status', 'health', 'nodes', 'ping', 'inspect', 'config',
-        'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
-        'topology', 'route', 'benchmark', 'diff', 'changelog',
-        'think', 'reflect', 'remember', 'forget',
-        'forge', 'harvest', 'translate', 'sandbox',
-        'scan', 'predict', 'audit', 'cost',
-        'threat', 'immune', 'govern', 'treaty',
-        'help', 'version', 'exit', 'quit',
-      ];
-      const hits = cmds.filter(c => c.startsWith(line.trim().toLowerCase()));
-      return [hits.length ? hits : cmds, line];
+      const parts = line.trim().split(/\s+/);
+      const cmd = parts[0]?.toLowerCase() ?? '';
+
+      // If typing second arg and command takes node names, complete node names
+      if (parts.length >= 2 && nodeArgCmds.includes(cmd)) {
+        const partial = parts[parts.length - 1].toUpperCase();
+        const hits = nodeNames.filter(n => n.startsWith(partial));
+        return [hits.length ? hits : nodeNames, parts[parts.length - 1]];
+      }
+
+      // First arg: complete commands
+      const hits = allCmds.filter(c => c.startsWith(cmd));
+      return [hits.length ? hits : allCmds, line];
     },
   });
 
@@ -587,7 +609,7 @@ async function cmdShell() {
       const trimmed = line.trim();
       if (!trimmed) { rl.prompt(); return; }
       if (trimmed === 'exit' || trimmed === 'quit') {
-        say(pick(V.ok));
+        sayOk(pick(V.ok));
         say('Session ended.');
         blank();
         rl.close();
