@@ -20,7 +20,7 @@ import {
   endFirstContactSession,
 } from '@cmpsbl/runtime';
 import { DOMAIN_PATTERNS } from '@cmpsbl/types';
-import type { FirstContactConfig, FirstContactSession, MemoryChain } from '@cmpsbl/types';
+import type { FirstContactConfig, FirstContactSession, MemoryChain, CeremonyEvent } from '@cmpsbl/types';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
@@ -189,8 +189,8 @@ const CLI_CONFIG: FirstContactConfig = {
   endpoint: process.env.CMPSBL_ENDPOINT ?? `https://${process.env.CMPSBL_PROJECT_REF ?? 'bxodolqqczjuahwdrswy'}.supabase.co/functions/v1/substrate-api`,
   apiKey: resolveApiKey(),
   autoDiscover: true,
-  onBoot: (msg) => { if (!JSON_MODE) say(msg); },
-  onCeremony: (event) => {
+  onBoot: (msg: string) => { if (!JSON_MODE) say(msg); },
+  onCeremony: (event: CeremonyEvent) => {
     if (JSON_MODE) { jsonOut({ event: 'ceremony', ...event }); return; }
     if (event.phase === 'sector_boot') {
       const bar = progressBar(event.nodesOnline ?? 0, event.totalNodes ?? 40, 20);
@@ -200,7 +200,7 @@ const CLI_CONFIG: FirstContactConfig = {
       if (event.detail) say(`  ${event.detail}`);
     }
   },
-  onDiscovery: (chain) => {
+  onDiscovery: (chain: MemoryChain) => {
     if (JSON_MODE) { jsonOut({ event: 'discovery', chain }); return; }
     blank();
     box(['⬢ High-value memory chain detected', '', `Pattern:  ${chain.pattern}`, `Adoption: ${chain.adoption}`, `Status:   Now in Memory Stream`], 'DISCOVERY');

@@ -181,7 +181,7 @@ export async function testBridge(bridge: BridgeAdapter): Promise<TestSuiteResult
 // First Contact Test Suite
 // ═══════════════════════════════════════════════════════════════
 
-export async function testFirstContact(domain: keyof typeof DOMAIN_PATTERNS): Promise<TestSuiteResult> {
+export async function testFirstContact(domain: string & keyof typeof DOMAIN_PATTERNS): Promise<TestSuiteResult> {
   const start = Date.now();
   const results: TestResult[] = [];
 

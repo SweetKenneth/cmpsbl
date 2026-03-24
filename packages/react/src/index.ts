@@ -56,7 +56,7 @@ export function useResolver(intentType: string, handler: ResolverHandler): void 
   handlerRef.current = handler;
 
   useEffect(() => {
-    return registerResolver(intentType, (input) => handlerRef.current(input));
+    return registerResolver(intentType, (input: Record<string, unknown>) => handlerRef.current(input));
   }, [intentType]);
 }
 
@@ -75,7 +75,7 @@ export function useMesh(filter?: MeshFilter, maxEvents = 100): UseMeshReturn {
 
   useEffect(() => {
     setEvents(getEventLog(filter).slice(-maxEvents));
-    return subscribe((event) => {
+    return subscribe((event: MeshCommEvent) => {
       setEvents(prev => [...prev.slice(-(maxEvents - 1)), event]);
     }, filter);
   }, [filter?.source, filter?.target, filter?.category, maxEvents]);
@@ -125,7 +125,7 @@ export function useFirstContact(apiKey?: string): UseFirstContactReturn {
     apiKey,
     endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
-    onDiscovery: (chain) => {
+    onDiscovery: (chain: MemoryChain) => {
       setChains(prev => [...prev, chain]);
     },
   });

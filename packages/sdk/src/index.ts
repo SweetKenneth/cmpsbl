@@ -376,11 +376,11 @@ export class Engine {
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-      throw new EngineAPIError(err.error || `Request failed: ${res.status}`, res.status);
+      const errBody = await res.json().catch(() => ({ error: `HTTP ${res.status}` })) as Record<string, string>;
+      throw new EngineAPIError(errBody.error || `Request failed: ${res.status}`, res.status);
     }
 
-    return res.json();
+    return res.json() as Promise<EngineResult>;
   }
 
   /** Get a typed engine handle by slug */
@@ -613,7 +613,7 @@ async function discoverMemory(
         body: JSON.stringify({ userId: session.userId, sessionId: session.sessionId, input: input.input, context: input.context, domain: input.domain ?? config.domain }),
       });
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json() as Record<string, any>;
         if (data.detected && data.memory) {
           const chain: MemoryChain = {
             id: data.memory.id, pattern: data.memory.pattern, adoption: data.memory.adoption,
@@ -952,9 +952,9 @@ export class CMPSBL {
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'ping', primitive: prim.id }),
       });
-      const body = await res.json().catch(() => ({}));
+      const body = await res.json().catch(() => ({})) as Record<string, unknown>;
       const latencyMs = Date.now() - start;
-      const data: PingResult = { primitive: prim.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? prim.health, timestamp: new Date().toISOString() };
+      const data: PingResult = { primitive: prim.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: (body.health as number) ?? prim.health, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     } catch {
       const latencyMs = Date.now() - start;
@@ -978,14 +978,14 @@ export class CMPSBL {
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'inspect', primitive: prim.id }),
       });
-      const body = await res.json().catch(() => ({}));
+      const body = await res.json().catch(() => ({})) as Record<string, unknown>;
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        primitive: prim.id, category: body.sector ?? prim.sector, role: body.role ?? prim.role,
-        status: res.ok ? (body.status ?? prim.status) : 'degraded', health: body.health ?? prim.health,
-        uptime: body.uptime ?? 0, resolverCount: body.resolverCount ?? 0, intentsProcessed: body.intentsProcessed ?? 0,
-        avgLatencyMs: body.avgLatencyMs ?? durationMs,
-        meshLinks: body.meshLinks ?? PRIMITIVE_REGISTRY.filter(n => n.sector === prim.sector && n.id !== prim.id).map(n => n.id),
+        primitive: prim.id, category: (body.sector as string) ?? prim.sector, role: (body.role as string) ?? prim.role,
+        status: res.ok ? ((body.status as string) ?? prim.status) : 'degraded', health: (body.health as number) ?? prim.health,
+        uptime: (body.uptime as number) ?? 0, resolverCount: (body.resolverCount as number) ?? 0, intentsProcessed: (body.intentsProcessed as number) ?? 0,
+        avgLatencyMs: (body.avgLatencyMs as number) ?? durationMs,
+        meshLinks: (body.meshLinks as string[]) ?? PRIMITIVE_REGISTRY.filter(n => n.sector === prim.sector && n.id !== prim.id).map(n => n.id),
         lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
@@ -1036,8 +1036,8 @@ export class CMPSBL {
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'logs', primitive: options?.primitive?.toUpperCase(), count }),
       });
-      const body = await res.json().catch(() => ({ entries: [] }));
-      const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
+      const body = await res.json().catch(() => ({ entries: [] })) as Record<string, unknown>;
+      const entries: LogEntry[] = ((body.entries as LogEntry[]) ?? []).slice(0, count);
       return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
     } catch {
       return new SDKResponse([] as LogEntry[], { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
