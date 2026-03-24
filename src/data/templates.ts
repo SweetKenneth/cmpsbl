@@ -1,5 +1,5 @@
 /**
- * CodeLab Templates — 200+ Templates for the CMPSBL Substrate
+ * Developers Playground Templates — 200+ Templates for the CMPSBL Substrate
  * Migrated from DevPortal.tsx for use in CodeLab
  * Includes 20 High-Value Templates + 24 Expansion Templates (Feb 2026)
  */
