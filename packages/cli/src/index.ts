@@ -18,9 +18,9 @@ import {
   getMemoryStream,
   getFirstContactSession,
   endFirstContactSession,
+  DOMAIN_PATTERNS,
 } from '@cmpsbl/runtime';
-import { DOMAIN_PATTERNS } from '@cmpsbl/types';
-import type { FirstContactConfig, FirstContactSession, MemoryChain, CeremonyEvent } from '@cmpsbl/types';
+import type { FirstContactConfig, FirstContactSession, MemoryChain, CeremonyEvent } from '@cmpsbl/runtime';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
