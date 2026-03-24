@@ -409,9 +409,9 @@ export default function IntelPanel() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Evolution Control Plane</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">INTEL Panel</h1>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Bounded Proposals · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span> · Schema v3.3
+              System Integrity · Bounded Proposals · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span>
             </p>
           </div>
           
