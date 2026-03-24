@@ -861,7 +861,7 @@ const preview = await fetch(GATEWAY, {
   }),
 }).then(r => r.json());
 // → { projected_health: 96.1, delta: +1.9 }`}</CodeBlock>
-await substrate.evolution.rollback("snap_...");`}</CodeBlock>
+
 
       {/* Integrity enforcement */}
       <div>
