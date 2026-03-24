@@ -230,11 +230,10 @@ const dreamResult = await cmpsbl.dream.cycle({
 console.log(dreamResult.patterns_extracted);
 // ["player_prefers_stealth", "avoids_combat"]`,
   },
-  // ADMIN LAYER
   {
     id: "system",
     icon: Settings,
-    layer: "Admin",
+    layer: "Organs",
     title: "SYSTEM Control",
     description: "Core administration & backups",
     color: "text-[hsl(var(--neon-green))]",
