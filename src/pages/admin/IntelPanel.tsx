@@ -1,13 +1,12 @@
 /**
- * Evolution Control Plane — Portable, OS-grade admin surface.
- * 
+ * INTEL Panel — Substrate observability & evolution surface.
+ *
  * Sections:
- *   1. System Integrity (Structural + Production Audit + Compliance)
- *   2. Bounded Action Plan (max 5 proposals)
- *   3. Governance Receipts (receipt_id, diff_hash, verification_hash, snapshot_id)
- *   4. Install Mode (endpoint /evolution/export)
- * 
- * Light theme only. No substrate-specific branding.
+ *   1. System Integrity  (Structural + Production Audit + Compliance)
+ *   2. Bounded Action Plan  (max 5 proposals per run)
+ *   3. Governance Receipts  (receipt_id, diff_hash, verification_hash, snapshot_id)
+ *   4. Install Mode  (endpoint /evolution/export)
+ *
  * External-AI execution barrier enforced.
  */
 
