@@ -78,8 +78,8 @@ const categories = [
 
 const comparisonRows = [
   { feature: "Persistent Memory", framework: "DIY (vector DB)", aiOs: "Built-in 4-tier + auto-consolidation" },
-  { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS — picks best model per task" },
-  { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE — built into the platform" },
+  { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS Organ — picks best model per task" },
+  { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE Layer — built into the platform" },
   { feature: "Monitoring", framework: "Separate APM tool", aiOs: "Built-in across all 40 primitives" },
   { feature: "Self-Improvement", framework: "None", aiOs: "Automatic optimization cycles" },
   { feature: "Shared Context", framework: "None", aiOs: "Real-time event propagation" },
