@@ -118,6 +118,7 @@ const TAXONOMY: TaxonomyCategory[] = [
       { id: 'echo', label: 'ECHO', tagline: 'Broadcaster', description: 'Multi-channel communication, voice translation, protocol bridging, and broadcast orchestration.', icon: Radio, slug: 'echo' },
       { id: 'phantom', label: 'PHANTOM', tagline: 'Ghost Operator', description: 'Anonymization, stealth execution, data masking, and privacy-preserving computation.', icon: Ghost, slug: 'phantom' },
       { id: 'sandbox', label: 'SANDBOX', tagline: 'Isolation Chamber', description: 'Hermetically sealed environments for speculative runs, evolution testing, and experimentation.', icon: FlaskConical, slug: 'sandbox' },
+      { id: 'ripple', label: 'RIPPLE', tagline: 'Event Cascade', description: 'Intelligent fan-out, priority routing, deduplication, and backpressure handling.', icon: Waves, slug: 'ripple' },
     ],
   },
   {
