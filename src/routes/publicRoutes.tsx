@@ -148,6 +148,7 @@ export const publicRoutes = (
     <Route path="/substrate/licensing/success" element={<PhaseGateRoute><SubstrateLicensingSuccess /></PhaseGateRoute>} />
     <Route path="/lab" element={<PhaseGateRoute><ExperimentationLab /></PhaseGateRoute>} />
     <Route path="/clockless-world-engine" element={<PhaseGateRoute><ClocklessWorldEngine /></PhaseGateRoute>} />
+    <Route path="/docs" element={<Navigate to="/documentation" replace />} />
     <Route path="/docs/substrate/capabilities" element={<SubstrateCapabilitiesDocs />} />
     <Route path="/docs/persistent-memory" element={<PersistentMemoryDocs />} />
     <Route path="/docs/runtime" element={<RuntimeReference />} />
