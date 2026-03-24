@@ -325,12 +325,11 @@ const repairs = await cmpsbl.inclusive.repair({
 // Self-scan the substrate's own interfaces
 const selfCheck = await cmpsbl.inclusive.selfScan();`,
   },
-  // ORCHESTRATOR LAYER
   {
     id: "cortex",
     icon: Layers,
-    layer: "Orchestrator",
-    title: "CORTEX Evolution",
+    layer: "Agents",
+    title: "CORTEX Orchestrator",
     description: "Agency-class autonomous orchestrator",
     color: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
