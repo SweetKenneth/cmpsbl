@@ -159,7 +159,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/lab": [
     { href: "/foundry", title: "The Foundry", description: "Explore system-discovered capabilities" },
-    { href: "/engines", title: "54 Engines", description: "The engine arsenal available for experiments" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and agents available for experiments", badge: "Store" },
     { href: "/documentation", title: "Documentation", description: "API reference for lab integrations" },
   ],
   "/academy": [
