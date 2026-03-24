@@ -510,7 +510,7 @@ const CEREMONY_SECTORS = [
   { sector: 'SHELL',  nodes: ['DEFENSE', 'VISION', 'ENGINEER'] },
 ] as const;
 
-const TOTAL_NODES = 40;
+const TOTAL_PRIMITIVES = 40;
 
 const PACKAGE_GREETINGS: Record<string, string> = {
   '@cmpsbl/cli':          'Terminal bridge established. You speak, the mesh listens.',
