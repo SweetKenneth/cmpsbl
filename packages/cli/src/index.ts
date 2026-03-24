@@ -616,7 +616,7 @@ async function cmdShell() {
   rl.prompt();
 
   return new Promise<void>((resolve) => {
-    rl.on('line', async (line) => {
+    rl.on('line', async (line: string) => {
       const trimmed = line.trim();
       if (!trimmed) { rl.prompt(); return; }
       if (trimmed === 'exit' || trimmed === 'quit') {
