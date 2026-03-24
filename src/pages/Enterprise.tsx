@@ -62,7 +62,7 @@ const capabilities = [
   {
     icon: Building2,
     title: "White-Label Ready",
-    description: "Embed CMPSBL's capabilities into your own products. Your brand, your customers, our platform running invisibly underneath. Full API access included.",
+    description: "Embed CMPSBL's capabilities into your own products. Your brand, your customers, the substrate running invisibly underneath. Full API access included.",
   },
   {
     icon: Cpu,
