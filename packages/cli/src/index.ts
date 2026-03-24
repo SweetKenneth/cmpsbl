@@ -70,6 +70,16 @@ const CLI_CONFIG: FirstContactConfig = {
   apiKey: process.env.CMPSBL_API_KEY,
   autoDiscover: true,
   onBoot: (msg) => { if (!JSON_MODE) say(msg); },
+  onCeremony: (event) => {
+    if (JSON_MODE) { jsonOut({ event: 'ceremony', ...event }); return; }
+    if (event.phase === 'sector_boot') {
+      const bar = progressBar(event.nodesOnline ?? 0, event.totalNodes ?? 40, 20);
+      say(`${event.message.padEnd(55)} ${bar}`);
+    } else {
+      say(event.message);
+      if (event.detail) say(`  ${event.detail}`);
+    }
+  },
   onDiscovery: (chain) => {
     if (JSON_MODE) { jsonOut({ event: 'discovery', chain }); return; }
     blank();
