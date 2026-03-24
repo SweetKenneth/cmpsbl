@@ -41,8 +41,8 @@ const capabilities = [
   },
   {
     icon: Brain,
-    title: "Dedicated Learning Cycles",
-    description: "Configure autonomous improvement cycles for your deployment. The system consolidates knowledge, generates insights, and surfaces patterns — tuned to your compliance and data residency rules.",
+    title: "DREAM Engine Synthesis",
+    description: "Configure autonomous synthesis cycles for your deployment. The DREAM Engine consolidates knowledge, generates heuristics, and surfaces patterns — tuned to your compliance and data residency rules.",
   },
   {
     icon: Globe,
@@ -51,8 +51,8 @@ const capabilities = [
   },
   {
     icon: Lock,
-    title: "Governance & Audit Trail",
-    description: "Every action is supervised, logged immutably, and enforced by policy. Role-based access, full audit trails, and governance controls — enterprise-ready from day one.",
+    title: "GOVERNANCE Layer & Audit Trail",
+    description: "Every action is supervised, logged immutably, and enforced by the GOVERNANCE Layer. Role-based access via ACCESS Layer, full audit trails via AUDIT Agent, and 4-mode governance controls — enterprise-ready from day one.",
   },
   {
     icon: Users,
@@ -62,7 +62,7 @@ const capabilities = [
   {
     icon: Building2,
     title: "White-Label Ready",
-    description: "Embed CMPSBL's capabilities into your own products. Your brand, your customers, our platform running invisibly underneath. Full API access included.",
+    description: "Embed CMPSBL's capabilities into your own products. Your brand, your customers, the substrate running invisibly underneath. Full API access included.",
   },
   {
     icon: Cpu,
@@ -72,15 +72,15 @@ const capabilities = [
 ];
 
 const enterpriseFeatures = [
-  "Full platform with 40 integrated primitives and real-time health monitoring",
-  "12 capability groups covering core logic, cognition, execution, compliance, and more",
-  "Persistent memory included free — 4-tier architecture",
-  "Configurable self-improvement cycles with custom schedules",
-  "Built-in security with bot detection & prompt injection defense",
-  "Smart routing across 14+ AI providers with your own keys",
-  "Circuit breakers prevent cascading failures across modules",
-  "Immutable audit logging with cryptographic verification",
-  "Governance controls with 4 operational modes",
+  "Full substrate with all 40 primitives across the 12·12·8·8 matrix",
+  "Real-time health monitoring via VISION Layer and MEDIC Organ",
+  "Persistent 4-tier memory architecture (hot / warm / cold / glacier)",
+  "DREAM Engine synthesis with custom schedules",
+  "DEFENSE Layer security with bot detection & prompt injection shielding",
+  "NEXUS Organ routing across 14+ AI providers with your own keys",
+  "Circuit breakers prevent cascading failures across primitives",
+  "Immutable audit logging with cryptographic verification via AUDIT Agent",
+  "GOVERNANCE Layer controls with 4 operational modes",
   "Zero-downtime updates and hot reload",
 ];
 
@@ -110,14 +110,13 @@ export default function Enterprise() {
               Your AI.<br />Your Infrastructure.<br />Your Rules.
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
-              The complete CMPSBL platform —{" "}
-              <Link to="/modules" className="text-primary hover:underline font-medium">40 integrated primitives</Link>{" "}
-              — deployed on your servers. Self-improvement cycles, governed adaptation,{" "}
-              <Link to="/persistent-memory" className="text-primary hover:underline font-medium">persistent memory</Link>,{" "}
-              built-in security, and smart routing — configured for your compliance requirements.
+              The complete CMPSBL substrate —{" "}
+              <Link to="/architecture" className="text-primary hover:underline font-medium">40 integrated primitives</Link>{" "}
+              — deployed on your servers. DREAM Engine synthesis, governed adaptation via the EVOLUTION Layer,{" "}
+              persistent memory, DEFENSE Layer security, and NEXUS Organ routing — configured for your compliance requirements.
             </p>
             <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-8">
-              Persistent memory is free for everyone. Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
+              Enterprise adds private deployment, dedicated support, SLA guarantees, and custom configuration.{" "}
               See <Link to="/solutions" className="text-primary hover:underline font-medium">all solutions</Link>{" "}
               or explore <Link to="/use-cases" className="text-primary hover:underline font-medium">real-world use cases</Link>.
             </p>
@@ -185,9 +184,8 @@ export default function Enterprise() {
             <Activity className="w-8 h-8 text-primary mx-auto mb-4" />
             <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's design your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-4 max-w-xl mx-auto">
-              Custom capacity, dedicated instances, SOC2 compliance,{" "}
-              self-improvement scheduling, multi-region routing, and white-glove onboarding — tailored to your organization.{" "}
-              Read our <Link to="/documentation" className="text-primary hover:underline font-medium">technical docs</Link> for API details.
+              Custom capacity, dedicated instances, SOC2 compliance, DREAM Engine scheduling, multi-region routing, and white-glove onboarding — tailored to your organization.{" "}
+              Read our <Link to="/docs" className="text-primary hover:underline font-medium">technical docs</Link> for API details.
             </p>
             <p className="text-base font-bold text-foreground mb-6">
               Contact us at{" "}
