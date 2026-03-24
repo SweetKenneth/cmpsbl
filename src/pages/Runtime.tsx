@@ -163,7 +163,7 @@ const ARCH_CARDS = [
   {
     icon: Layers,
     title: 'One Runtime for All',
-    description: 'Every plan runs the same full platform. No stripped-down versions, no feature fragmentation.',
+    description: 'Every plan runs the same full substrate — all 40 primitives active. No stripped-down versions, no feature fragmentation.',
   },
   {
     icon: Package,
