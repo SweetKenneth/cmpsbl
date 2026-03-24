@@ -495,7 +495,7 @@ console.log(result.output, result.metrics);`,
   {
     id: "encode",
     icon: Layers,
-    layer: "Cognitive",
+    layer: "Agents",
     title: "ENCODE Execution",
     description: "Code generation & execution intelligence",
     color: "text-[hsl(var(--neon-amber))]",
