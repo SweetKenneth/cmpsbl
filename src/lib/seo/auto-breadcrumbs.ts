@@ -38,7 +38,7 @@ const ROUTE_LABELS: Record<string, string> = {
   'namespace': 'Namespace',
   'architecture': 'Architecture',
   'lab': 'Lab',
-  'codelab': 'CodeLab',
+  'codelab': 'Developers Playground',
   'system-feed': 'System Feed',
   'insights': 'Insights',
   'intent-mesh': 'Intent Mesh',

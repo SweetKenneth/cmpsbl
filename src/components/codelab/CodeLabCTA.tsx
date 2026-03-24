@@ -77,7 +77,7 @@ export function CodeLabCTA() {
                   <Button asChild size="lg" className="px-8 h-13 text-base font-bold gap-2.5 shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.02]">
                     <Link to="/codelab">
                       <Sparkles className="w-5 h-5" />
-                      Enter CodeLab
+                      Enter Playground
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   </Button>

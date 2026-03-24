@@ -282,7 +282,7 @@ export default function MarketplaceSuccess() {
                       <Button className="flex-1 gap-2" asChild>
                         <Link to="/codelab">
                           <Sparkles className="w-4 h-4" />
-                          Open CodeLab
+                          Open Playground
                         </Link>
                       </Button>
                       <Button variant="outline" className="flex-1 gap-2" asChild>

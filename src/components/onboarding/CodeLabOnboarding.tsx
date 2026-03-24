@@ -131,7 +131,7 @@ export function CodeLabOnboarding() {
           <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-neon-green/40 to-transparent" />
 
           <div className="relative flex items-center justify-between px-5 pt-4">
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50">CODELAB</span>
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/50">PLAYGROUND</span>
             <div className="flex items-center gap-3">
               <span className="text-[10px] font-mono text-muted-foreground/40 tabular-nums">{String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
               <button onClick={dismiss} className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors" aria-label="Skip"><X className="w-4 h-4" /></button>

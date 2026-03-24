@@ -212,9 +212,9 @@ export const seoMap: Record<string, PageSEO> = {
     primaryKeyword: 'cognitive experiment sandbox',
   },
   '/codelab': {
-    title: 'CodeLab — Live Code Editor | CMPSBL',
+    title: 'Developers Playground — Live Code Editor | CMPSBL',
     description: 'Write, execute, and iterate on substrate operations in a live coding environment with real-time feedback and inline API reference.',
-    ogTitle: 'CodeLab — Live Code Editor',
+    ogTitle: 'Developers Playground — Live Code Editor',
     ogDescription: 'Live coding with real-time execution and inline API reference.',
     ogImage: OG_DOCS,
     keywords: ['live code editor', 'substrate coding environment', 'real-time execution', 'inline API reference', 'developer playground'],

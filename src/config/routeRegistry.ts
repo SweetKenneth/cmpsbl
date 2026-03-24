@@ -79,7 +79,7 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/documentation", label: "Documentation", section: "developer", priority: 0.92, changefreq: "weekly", description: "API reference & guides" },
   { path: "/api-access", label: "API Access", section: "developer", priority: 0.88, changefreq: "monthly", description: "Keys, quotas & usage" },
   { path: "/workspace", label: "Builder Workspace", section: "developer", priority: 0.88, changefreq: "weekly", description: "SDK, terminal & build tools" },
-  { path: "/codelab", label: "CodeLab", section: "developer", priority: 0.88, changefreq: "weekly", description: "Execute and test in real-time" },
+  { path: "/codelab", label: "Developers Playground", section: "developer", priority: 0.88, changefreq: "weekly", description: "Execute and test in real-time" },
   { path: "/academy", label: "Academy", section: "developer", priority: 0.85, changefreq: "weekly", description: "Tutorials, learning tracks & certification" },
   { path: "/developers", label: "Developer Showcase", section: "developer", priority: 0.85, changefreq: "weekly", description: "Community & integrations" },
   { path: "/developers/guide", label: "Developer Guide", section: "developer", priority: 0.82, changefreq: "monthly", description: "SDK setup & integration" },

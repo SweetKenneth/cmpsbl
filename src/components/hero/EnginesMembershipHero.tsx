@@ -42,7 +42,7 @@ const freeTools = [
   { name: "Memories", icon: Layers, count: "300+", color: "text-[hsl(var(--neon-purple))]" },
   { name: "Capabilities", icon: Zap, count: "525+", color: "text-primary" },
   { name: "Memory", icon: Brain, count: "∞", color: "text-[hsl(var(--neon-magenta))]" },
-  { name: "CodeLab", icon: Code, count: "Live", color: "text-[hsl(var(--neon-cyan))]" },
+  { name: "Playground", icon: Code, count: "Live", color: "text-[hsl(var(--neon-cyan))]" },
 ];
 
 // Premium engine tiers

@@ -185,7 +185,7 @@ export function SignalForge() {
               </Badge>
             </motion.div>
 
-            {/* Title — CodeLab is the star */}
+            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -193,7 +193,7 @@ export function SignalForge() {
               className="text-[2rem] leading-[1.08] sm:text-4xl md:text-5xl lg:text-[3.75rem] font-black tracking-tight mb-3 sm:mb-4"
             >
               <span className="bg-gradient-to-r from-primary via-neon-cyan to-primary bg-clip-text text-transparent">
-                CodeLab
+                Developers Playground
               </span>
             </motion.h1>
 
