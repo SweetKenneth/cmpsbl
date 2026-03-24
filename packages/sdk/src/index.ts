@@ -564,7 +564,7 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   await delay(200);
   emit({ phase: 'discovery_arm', message: '◈ Discovery engine armed. Every interaction leaves a trace.', progress: 95 });
   await delay(150);
-  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, nodesOnline: TOTAL_NODES, totalNodes: TOTAL_NODES });
+  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, nodesOnline: TOTAL_PRIMITIVES, totalNodes: TOTAL_PRIMITIVES });
 }
 
 async function initFirstContact(config: FirstContactConfig): Promise<FirstContactSession> {
