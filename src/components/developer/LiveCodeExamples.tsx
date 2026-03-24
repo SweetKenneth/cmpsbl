@@ -24,7 +24,7 @@ interface CodeExample {
 const examples: CodeExample[] = [
   {
     id: 'react-memory',
-    title: 'React + Memory SDK',
+    title: 'React + Substrate API',
     description: 'Add persistent memory to a React chat component',
     framework: 'react',
     embedUrl: 'https://stackblitz.com/edit/react-ts-memory-demo?embed=1&file=src%2FApp.tsx&hideNavigation=1&theme=dark',
@@ -33,15 +33,15 @@ const examples: CodeExample[] = [
   {
     id: 'node-agent',
     title: 'Node.js Agent',
-    description: 'Build a memory-enabled agent with Express',
+    description: 'Build a Substrate-powered agent with Express',
     framework: 'node',
     embedUrl: 'https://codesandbox.io/embed/node-memory-agent-demo?fontsize=14&hidenavigation=1&theme=dark&view=editor',
     sourceUrl: 'https://codesandbox.io/s/node-memory-agent-demo',
   },
   {
-    id: 'langchain-integration',
-    title: 'LangChain Integration',
-    description: 'Add memory to existing LangChain agents',
+    id: 'python-integration',
+    title: 'Python Integration',
+    description: 'Call the Substrate API from Python with httpx',
     framework: 'python',
     embedUrl: 'https://codesandbox.io/embed/langchain-memory-demo?fontsize=14&hidenavigation=1&theme=dark&view=editor',
     sourceUrl: 'https://codesandbox.io/s/langchain-memory-demo',
