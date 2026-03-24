@@ -25,7 +25,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box } from './ui';
+import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 
 // ═══════════════════════════════════════════════════════════════
@@ -41,8 +41,11 @@ const V = {
 };
 const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
 const say = (m: string) => console.log(`  ${m}`);
+const sayOk = (m: string) => console.log(`  ${c.green(m)}`);
+const sayErr = (m: string) => console.log(`  ${c.error(m)}`);
+const sayMuted = (m: string) => console.log(`  ${c.muted(m)}`);
 const blank = () => console.log('');
-const div = () => say('────────────────────────────────────────');
+const div = () => say(c.muted('────────────────────────────────────────'));
 
 function header(title: string) {
   blank();
@@ -178,7 +181,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '1.4.0' as const;
+const CLI_VERSION = '1.5.0' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -255,6 +258,8 @@ const NODES = [
 export async function run(args: string[]): Promise<void> {
   // Reset and parse global flags (prevents REPL shell from leaking state)
   JSON_MODE = args.includes('--json');
+  const noColor = args.includes('--no-color') || !!process.env.NO_COLOR;
+  setNoColor(noColor);
   args = args.filter(a => a !== '--json' && a !== '--no-color');
 
   const command = args[0]?.toLowerCase();
@@ -318,6 +323,9 @@ export async function run(args: string[]): Promise<void> {
       // ── Governance ──
       case 'govern':       await cmdGovern(args.slice(1)); break;
       case 'treaty':       await cmdTreaty(args.slice(1)); break;
+      // ── Guided ──
+      case 'demo':         await cmdDemo(); break;
+      case 'explain':      cmdExplain(args.slice(1)); break;
       case 'version':
       case '--version':
       case '-v':
@@ -413,6 +421,8 @@ function printHelp() {
 
   ── Interactive ──────────────────────────────────
     shell                   Interactive REPL session
+    demo                    Guided 2-min tour of the substrate
+    explain <primitive>     Inline reference for any primitive
     changelog               View what's new
 
   ── Meta ─────────────────────────────────────────
@@ -422,13 +432,14 @@ function printHelp() {
   Flags:
     --json                  Output structured JSON (for CI/CD)
     --no-color              Disable colored output
+    NO_COLOR env            Also disables color
 
   Environment:
     CMPSBL_API_KEY          API key (overrides ~/.cmpsbl/credentials)
     CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
 
-  Get your API key at https://cmpsbl.com/api-access
-  42 commands · 40 primitives · cmpsbl.com
+  Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
+  ${c.muted('45 commands · 40 primitives · cmpsbl.com')}
 `);
 }
 
@@ -437,6 +448,9 @@ function printHelp() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdOnboarding() {
+  // ── Font recommendation (first-run only) ──
+  printFontRecommendation();
+
   // ── ASCII Logo ──
   blank();
   await sleep(400);
@@ -542,30 +556,52 @@ async function cmdOnboarding() {
 
 async function cmdShell() {
   header('Interactive Shell');
-  say('Type commands without the `cmpsbl` prefix. Type `exit` or `quit` to leave.');
-  say('Tab-completion hints: status, health, nodes, ping, discover, stream, inspect');
+  say(`Type commands without the ${c.cyan('cmpsbl')} prefix. Tab-complete commands ${c.bold('and')} node names.`);
+  say(`Type ${c.cyan('exit')} or ${c.cyan('quit')} to leave.`);
   blank();
-  say(pick(V.idle));
+  sayMuted(pick(V.idle));
   blank();
+
+  // All node names for contextual autocomplete
+  const nodeNames = NODES.map(n => n.id);
+  const allCmds = [
+    'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
+    'status', 'health', 'nodes', 'ping', 'inspect', 'config',
+    'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
+    'topology', 'route', 'benchmark', 'diff', 'changelog',
+    'think', 'reflect', 'remember', 'forget',
+    'forge', 'harvest', 'translate', 'sandbox',
+    'scan', 'predict', 'audit', 'cost',
+    'threat', 'immune', 'govern', 'treaty',
+    'demo', 'explain',
+    'help', 'version', 'exit', 'quit',
+  ];
+  // Commands that accept node names as args
+  const nodeArgCmds = ['ping', 'inspect', 'explain', 'watch', 'logs', 'nodes'];
+
+  // Build context-aware prompt
+  const online = NODES.filter(n => n.status === 'online').length;
+  const chains = getMemoryStream().length;
+  const promptStr = `  ${c.muted('cmpsbl')} ${c.cyan(`[${online}/40`)} ${c.green('●')} ${c.muted(`${chains}ch`)}${c.cyan(']')}${c.bold(c.cyan('>'))} `;
 
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: '  cmpsbl> ',
+    prompt: promptStr,
     completer: (line: string) => {
-      const cmds = [
-        'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
-        'status', 'health', 'nodes', 'ping', 'inspect', 'config',
-        'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
-        'topology', 'route', 'benchmark', 'diff', 'changelog',
-        'think', 'reflect', 'remember', 'forget',
-        'forge', 'harvest', 'translate', 'sandbox',
-        'scan', 'predict', 'audit', 'cost',
-        'threat', 'immune', 'govern', 'treaty',
-        'help', 'version', 'exit', 'quit',
-      ];
-      const hits = cmds.filter(c => c.startsWith(line.trim().toLowerCase()));
-      return [hits.length ? hits : cmds, line];
+      const parts = line.trim().split(/\s+/);
+      const cmd = parts[0]?.toLowerCase() ?? '';
+
+      // If typing second arg and command takes node names, complete node names
+      if (parts.length >= 2 && nodeArgCmds.includes(cmd)) {
+        const partial = parts[parts.length - 1].toUpperCase();
+        const hits = nodeNames.filter(n => n.startsWith(partial));
+        return [hits.length ? hits : nodeNames, parts[parts.length - 1]];
+      }
+
+      // First arg: complete commands
+      const hits = allCmds.filter(c => c.startsWith(cmd));
+      return [hits.length ? hits : allCmds, line];
     },
   });
 
@@ -576,7 +612,7 @@ async function cmdShell() {
       const trimmed = line.trim();
       if (!trimmed) { rl.prompt(); return; }
       if (trimmed === 'exit' || trimmed === 'quit') {
-        say(pick(V.ok));
+        sayOk(pick(V.ok));
         say('Session ended.');
         blank();
         rl.close();
@@ -1579,6 +1615,204 @@ function cmdExport(args: string[]) {
   say(`Export ready for "${manifest.name}"`);
   say(`Tier:     ${manifest.tier} | Runtime: ${manifest.runtime}`);
   say(`Targets:  ${manifest.targets.join(', ')}`);
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Commands — Guided (Demo, Explain)
+// ═══════════════════════════════════════════════════════════════
+
+const PRIMITIVE_CATALOG: Record<string, { category: string; role: string; description: string; commands: string[] }> = {
+  CORE:        { category: 'Organ', role: 'Foundation', description: 'System kernel — lifecycle management, health, boot sequencer, heartbeat engine', commands: ['status', 'health', 'doctor'] },
+  SYSTEM:      { category: 'Organ', role: 'Runtime', description: 'Predictive failure engine, repair optimizer, configuration state machine, graceful degradation', commands: ['status', 'doctor'] },
+  BRAIN:       { category: 'Organ', role: 'Reasoning', description: '12-engine cognitive architecture — attention spotlight, causal graphs, contradiction detection, metacognitive calibration', commands: ['think'] },
+  MEMORY:      { category: 'Organ', role: 'Persistence', description: 'Four-tier store (HOT/WARM/COLD/GLACIER), semantic retrieval, RAG, embeddings, staleness detection', commands: ['remember', 'forget', 'stream'] },
+  NERVE:       { category: 'Organ', role: 'Signaling', description: 'Autonomic signal mesh — forensic replay, backpressure calibration, circuit breakers, 150 reactive rules', commands: ['watch', 'logs'] },
+  NEXUS:       { category: 'Organ', role: 'AI Fleet', description: 'Mandatory AI gateway — provider health ranking, capability matrix, 12-step fallback, cost ledger', commands: ['cost', 'benchmark'] },
+  IDENTITY:    { category: 'Organ', role: 'Attribution', description: 'Actor identity, reputation scoring, cross-agency portability', commands: ['whoami'] },
+  SOVEREIGN:   { category: 'Organ', role: 'Sovereignty', description: 'Data sovereignty governance, policy enforcement for data residency', commands: ['govern'] },
+  ATLAS:       { category: 'Organ', role: 'Mapping', description: 'Capability topology mapping, primitive discovery, dependency resolution', commands: ['topology', 'nodes'] },
+  MEDIC:       { category: 'Organ', role: 'Healing', description: 'Self-healing diagnostics, automated repair strategies, health restoration', commands: ['doctor'] },
+  RELAY:       { category: 'Organ', role: 'Delivery', description: 'Webhooks, HMAC signatures, adaptive retry with exponential backoff', commands: ['status'] },
+  CONSCIENCE:  { category: 'Organ', role: 'Ethics', description: 'Ethical reasoning engine, bias detection, moral constraint evaluation', commands: ['govern'] },
+
+  DEFENSE:     { category: 'Layer', role: 'Security', description: 'O(1) threat evaluation, Trie-based matching, 7-phase kill-chain correlation, behavioral Z-score analysis', commands: ['threat'] },
+  IMMUNITY:    { category: 'Layer', role: 'Anomaly', description: 'Behavioral immunity system, anomaly response matrix, infection containment', commands: ['immune'] },
+  GOVERNANCE:  { category: 'Layer', role: 'Policy', description: 'Policy DSL, multi-party quorums, veto cascade, 5-mode state machine, drift detection', commands: ['govern'] },
+  TREATY:      { category: 'Layer', role: 'Trust', description: 'Inter-primitive trust contracts, agreement lifecycle, trust score calibration', commands: ['treaty'] },
+  EVOLUTION:   { category: 'Layer', role: 'Adaptation', description: '13-step proposal lifecycle, SEBA 7-gate pipeline, blast radius projection, velocity governor', commands: ['status'] },
+  REFLEX:      { category: 'Layer', role: 'Reaction', description: 'Fast-path reactive triggers, instinct-level responses before full cognitive processing', commands: ['watch'] },
+  COMPASS:     { category: 'Layer', role: 'Navigation', description: 'Intent guidance, semantic navigation hints, context-aware routing suggestions', commands: ['route'] },
+  INTEGRATION: { category: 'Layer', role: 'Connectors', description: 'External adapters, enterprise connectors, LLM governance layer', commands: ['status'] },
+  INTENT:      { category: 'Layer', role: 'Resolution', description: 'Polyvalent classifier, goal decomposition (Kahn\'s DAG), speculative pre-resolver, intent memory', commands: ['route'] },
+  ACCESS:      { category: 'Layer', role: 'Auth', description: 'Crypto key vault, hierarchical scope enforcement, developer API key management', commands: ['login', 'whoami'] },
+  VISION:      { category: 'Layer', role: 'Observability', description: 'Behavioral anomaly scoring, session journey reconstruction, distributed tracing', commands: ['watch', 'logs'] },
+  SHADOW:      { category: 'Layer', role: 'Stealth', description: 'Adversarial testing, stealth probes, shadow execution for mutation validation', commands: ['threat'] },
+
+  DREAM:       { category: 'Engine', role: 'Synthesis', description: 'Lineage provenance tracker, semantic drift detection, lucid dreaming modes, heuristic builder with confidence decay', commands: ['dream'] },
+  HARVEST:     { category: 'Engine', role: 'Extraction', description: 'Web intelligence, structured data extraction, domain crawling, relevance scoring', commands: ['harvest'] },
+  FORGE:       { category: 'Engine', role: 'Fabrication', description: 'Signal Forge blueprint synthesis — maps capabilities across 40 primitives, CJPI-validated blueprints', commands: ['forge'] },
+  LINGUA:      { category: 'Engine', role: 'Language', description: 'NLP pipeline, sentiment analysis, complexity scoring, entity extraction, translation', commands: ['translate'] },
+  ECHO:        { category: 'Engine', role: 'Reflection', description: 'Resonance pattern mining, cross-node correlation, signal amplification', commands: ['reflect'] },
+  PHANTOM:     { category: 'Engine', role: 'Speculation', description: 'Speculative execution, hypothesis testing, counterfactual simulation', commands: ['predict'] },
+  SANDBOX:     { category: 'Engine', role: 'Isolation', description: 'Hermetic execution — syscall filtering, resource metering, Merkle-chained forensic snapshots, default-deny egress', commands: ['sandbox'] },
+  RIPPLE:      { category: 'Engine', role: 'Propagation', description: 'Event bus, message routing, job queue, signal propagation across the mesh', commands: ['watch', 'logs'] },
+
+  ENCODE:      { category: 'Agent', role: 'Generation', description: 'AST-aware patch engine, governed mutation pipeline, SHADOW A/B testing, 71-skill proficiency registry', commands: ['forge'] },
+  DECODE:      { category: 'Agent', role: 'Interaction', description: 'Multi-modal NLU, epistemic verb classification, multi-turn reasoning graph, SSE streaming', commands: ['think'] },
+  AUDIT:       { category: 'Agent', role: 'Compliance', description: 'Immutable hash-chained compliance logging — SOC2, GDPR, HIPAA, ISO 27001', commands: ['audit'] },
+  ECONOMY:     { category: 'Agent', role: 'Metering', description: 'Millicent-accurate cost tracking, predictive forecasting, per-capability attribution, budget gates', commands: ['cost'] },
+  INCLUSIVE:   { category: 'Agent', role: 'Accessibility', description: 'Deep WCAG 2.2 scanner (A/AA/AAA), ARIA validator, contrast intelligence, keyboard navigation auditor', commands: ['scan'] },
+  CORTEX:      { category: 'Agent', role: 'Orchestration', description: 'DAG execution engine, deterministic pipeline state machine, resource allocation across 40 primitives', commands: ['route', 'topology'] },
+  ORACLE:      { category: 'Agent', role: 'Prediction', description: 'Bayesian prediction networks, Monte Carlo scenario simulator, prescriptive recommendations', commands: ['predict'] },
+  ENGINEER:    { category: 'Agent', role: 'Infrastructure', description: 'Infrastructure automation, deployment orchestration, environment provisioning', commands: ['doctor', 'benchmark'] },
+};
+
+function cmdExplain(args: string[]) {
+  const target = args[0]?.toUpperCase();
+
+  if (!target) {
+    if (JSON_MODE) { jsonOut(Object.entries(PRIMITIVE_CATALOG).map(([k, v]) => ({ primitive: k, ...v }))); return; }
+    header('Primitive Reference');
+    say(`Usage: ${c.cyan('cmpsbl explain <PRIMITIVE>')}`);
+    blank();
+
+    // Group by category
+    const groups: Record<string, string[]> = {};
+    for (const [name, info] of Object.entries(PRIMITIVE_CATALOG)) {
+      (groups[info.category] ??= []).push(name);
+    }
+    for (const [cat, names] of Object.entries(groups)) {
+      const colorFn = cat === 'Layer' ? c.layer : cat === 'Organ' ? c.organ : cat === 'Engine' ? c.engine : c.agent;
+      say(`  ${c.bold(colorFn(cat + 's'))} (${names.length}): ${names.map(n => colorFn(n)).join(c.muted(' · '))}`);
+    }
+    blank();
+    return;
+  }
+
+  const info = PRIMITIVE_CATALOG[target];
+  if (!info) {
+    sayErr(`Unknown primitive: ${target}`);
+    say(`Run ${c.cyan('cmpsbl explain')} to see all 40 primitives.`);
+    return;
+  }
+
+  const colorFn = info.category === 'Layer' ? c.layer : info.category === 'Organ' ? c.organ : info.category === 'Engine' ? c.engine : c.agent;
+
+  if (JSON_MODE) { jsonOut({ primitive: target, ...info }); return; }
+
+  blank();
+  box([
+    `${colorFn(target)} ${c.muted(info.category)}`,
+    '',
+    `Role: ${c.bold(info.role)}`,
+    '',
+    info.description,
+    '',
+    `Commands: ${info.commands.map(cmd => c.cyan('cmpsbl ' + cmd)).join(c.muted(' · '))}`,
+  ], target);
+  blank();
+}
+
+async function cmdDemo() {
+  await requireApiKey();
+
+  blank();
+  box([
+    c.bold('SUBSTRATE GUIDED TOUR'),
+    '',
+    'A 2-minute walkthrough demonstrating four primitives',
+    'working together: BRAIN → DREAM → FORGE → INCLUSIVE',
+    '',
+    c.muted('Press Ctrl+C at any time to exit.'),
+  ], 'DEMO');
+  blank();
+
+  // ── Step 1: Think (BRAIN) ──
+  say(c.bold(c.organ('━━━ STEP 1/4: BRAIN — Deep Reasoning ━━━')));
+  blank();
+  say(c.muted('The BRAIN Organ uses multi-strategy reasoning to analyze your input.'));
+  blank();
+
+  const s1 = spinner('Engaging BRAIN reasoning engine...');
+  const thinkPhases = ['Loading attention spotlight...', 'Activating causal graph...', 'Crystallizing insight...'];
+  for (const p of thinkPhases) { await sleep(500); s1.update(p); }
+  s1.stop('Reasoning complete');
+
+  const insight = 'Recursive dependency pattern detected — the substrate can auto-resolve via event-driven decoupling';
+  blank();
+  say(`  ${c.cyan('Insight:')} ${insight}`);
+  say(`  ${c.muted('Strategy: deductive · Confidence: 89%')}`);
+  blank();
+  await sleep(1000);
+
+  // ── Step 2: Dream (DREAM) ──
+  say(c.bold(c.engine('━━━ STEP 2/4: DREAM — Autonomous Synthesis ━━━')));
+  blank();
+  say(c.muted('The DREAM Engine synthesizes new heuristics from substrate signals.'));
+  blank();
+
+  const s2 = spinner('Dreaming...');
+  const dreamPhases = ['Sampling signal topology...', 'Condensing fragments...', 'Testing candidates...', 'Crystallizing...'];
+  for (const p of dreamPhases) { await sleep(600); s2.update(p); }
+  s2.stop('Dream cycle complete');
+
+  blank();
+  say(`  ${c.purple('⬢')} ${c.bold('Heuristic discovered:')} intent-deduplication-window`);
+  say(`  ${c.muted('Confidence: 91% · Now in Memory Stream')}`);
+  blank();
+  await sleep(1000);
+
+  // ── Step 3: Forge (FORGE) ──
+  say(c.bold(c.engine('━━━ STEP 3/4: FORGE — Blueprint Synthesis ━━━')));
+  blank();
+  say(c.muted('Signal Forge maps capabilities across the 40-primitive topology.'));
+  blank();
+
+  const s3 = spinner('Forging blueprint...');
+  const forgePhases = ['Scanning capability matrix...', 'Simulating pipelines...', 'CJPI validation...'];
+  for (const p of forgePhases) { await sleep(500); s3.update(p); }
+  s3.stop('Blueprint synthesized');
+
+  blank();
+  say(`  ${c.purple('⬢')} ${c.bold('Blueprint:')} predictive-healing-pipeline`);
+  say(`  ${c.muted('ORACLE → MEDIC → NERVE · CJPI: 85 · Tier: Relic')}`);
+  blank();
+  await sleep(1000);
+
+  // ── Step 4: Scan (INCLUSIVE) ──
+  say(c.bold(c.agent('━━━ STEP 4/4: INCLUSIVE — Accessibility Scan ━━━')));
+  blank();
+  say(c.muted('The INCLUSIVE Agent runs WCAG 2.2 compliance checks.'));
+  blank();
+
+  const s4 = spinner('Scanning...');
+  const scanPhases = ['WCAG Level A...', 'WCAG Level AA...', 'ARIA validation...', 'Contrast analysis...'];
+  for (const p of scanPhases) { await sleep(400); s4.update(p); }
+  s4.stop('Scan complete');
+
+  blank();
+  say(`  ${c.green('Score: 94/100')} (Level AA)`);
+  say(`  ${c.muted('1 minor issue: focus indicator visibility')}`);
+  blank();
+  await sleep(500);
+
+  // ── Summary ──
+  div();
+  blank();
+  box([
+    c.bold('TOUR COMPLETE'),
+    '',
+    `${c.organ('BRAIN')}     → Deep reasoning with multi-strategy analysis`,
+    `${c.engine('DREAM')}     → Autonomous heuristic synthesis`,
+    `${c.engine('FORGE')}     → Blueprint fabrication across 40 primitives`,
+    `${c.agent('INCLUSIVE')}  → WCAG 2.2 accessibility compliance`,
+    '',
+    `${c.cyan('40 primitives')} · ${c.cyan('45 commands')} · All accessible from this CLI`,
+    '',
+    `Next: ${c.cyan('cmpsbl explain <PRIMITIVE>')} to learn about any primitive`,
+    `       ${c.cyan('cmpsbl shell')} for interactive exploration`,
+  ], 'CMPSBL®');
   blank();
 }
 
