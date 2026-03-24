@@ -539,13 +539,10 @@ function highlightCode(code: string): string {
 
 // Layer configuration for grouping modules
 const LAYER_CONFIG = {
-  Kernel: { color: 'text-[hsl(var(--neon-amber))]', bgGlow: 'from-[hsl(var(--neon-amber)/0.2)]' },
-  Cognitive: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
-  Operational: { color: 'text-[hsl(var(--neon-cyan))]', bgGlow: 'from-[hsl(var(--neon-cyan)/0.2)]' },
-  Admin: { color: 'text-[hsl(var(--neon-green))]', bgGlow: 'from-[hsl(var(--neon-green)/0.2)]' },
-  Infrastructure: { color: 'text-[hsl(var(--neon-blue))]', bgGlow: 'from-[hsl(var(--neon-blue)/0.2)]' },
-  Orchestrator: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
-  Overlay: { color: 'text-[hsl(var(--neon-magenta))]', bgGlow: 'from-[hsl(var(--neon-magenta)/0.2)]' },
+  Organs: { color: 'text-[hsl(var(--neon-cyan))]', bgGlow: 'from-[hsl(var(--neon-cyan)/0.2)]' },
+  Layers: { color: 'text-[hsl(var(--neon-magenta))]', bgGlow: 'from-[hsl(var(--neon-magenta)/0.2)]' },
+  Engines: { color: 'text-[hsl(var(--neon-purple))]', bgGlow: 'from-[hsl(var(--neon-purple)/0.2)]' },
+  Agents: { color: 'text-[hsl(var(--neon-amber))]', bgGlow: 'from-[hsl(var(--neon-amber)/0.2)]' },
 } as const;
 
 export function TechShowcase() {
