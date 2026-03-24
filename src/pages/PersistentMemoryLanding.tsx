@@ -1,6 +1,6 @@
 /**
  * Persistent Memory Marketing Landing Page
- * Hero-driven conversion page — FREE for all users
+ * Powered by the MEMORY Organ — 4-tier cognitive storage
  */
 
 import React from 'react';
@@ -11,7 +11,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
   Brain, Zap, Clock, ArrowRight, CheckCircle, Code,
-  Layers, RefreshCw, Target, Shield, Sparkles, Gift,
+  Layers, RefreshCw, Target, Shield, Sparkles,
   Database, Activity, Lock, Users
 } from 'lucide-react';
 import { PublicNav } from '@/components/PublicNav';
@@ -25,10 +25,10 @@ const PersistentMemoryLanding = () => {
   return (
     <>
       <SEO 
-        title="Persistent Memory — Free 4-Tier AI Recall | CMPSBL"
-        description="Add persistent memory to any AI agent free. CMPSBL's 4-tier system (hot, warm, cold, archive) with automatic consolidation, recall, and cross-session context. No credit card, no expiration."
+        title="Persistent Memory — 4-Tier Cognitive Recall | CMPSBL"
+        description="Add persistent memory to any AI agent. CMPSBL's MEMORY Organ provides a 4-tier system (hot, warm, cold, glacier) with automatic consolidation, semantic recall, and cross-session context."
         image="https://cmpsbl.com/og/persistent-memory.jpg"
-        keywords={['persistent memory AI', 'agent memory API', 'AI memory system', 'free AI memory', 'context engineering', 'episodic memory AI']}
+        keywords={['persistent memory AI', 'agent memory API', 'AI memory system', 'MEMORY Organ', 'context engineering', 'episodic memory AI']}
         howTo={{
           name: 'Add Persistent Memory to Your AI Agent',
           description: 'Three steps to give your agent persistent memory that survives across sessions.',
@@ -52,9 +52,9 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <Badge className="mb-6 px-4 py-2 text-sm bg-neon-green/10 text-neon-green border-neon-green/30">
-                  <Gift className="w-4 h-4 mr-2" />
-                  Free for All Users — No Credit Card Required
+                <Badge variant="outline" className="mb-6 px-4 py-2 text-sm border-primary/30">
+                  <Brain className="w-4 h-4 mr-2" />
+                  Powered by the MEMORY Organ
                 </Badge>
               </motion.div>
               
@@ -68,22 +68,13 @@ const PersistentMemoryLanding = () => {
               </motion.h1>
               
               <motion.p 
-                className="text-xl md:text-2xl text-muted-foreground mb-4 max-w-2xl mx-auto"
+                className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 Your agent remembers users, learns preferences, and gets smarter over time — 
                 with a 4-tier memory system you can add in under an hour.
-              </motion.p>
-
-              <motion.p
-                className="text-lg text-neon-green font-semibold mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
-              >
-                100% free. No credit card. No expiration.
               </motion.p>
               
               <motion.div 
@@ -94,7 +85,7 @@ const PersistentMemoryLanding = () => {
               >
                 <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/docs/persistent-memory">
-                    Get Started Free
+                    Get Started
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </Link>
                 </Button>
@@ -168,16 +159,16 @@ const PersistentMemoryLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <Badge className="mb-4 bg-neon-green/10 text-neon-green border-neon-green/30">FREE FOR ALL USERS</Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">How the memory system works</h2>
+                <Badge variant="outline" className="mb-4 border-primary/30">MEMORY Organ · 4-Tier Architecture</Badge>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">How the MEMORY Organ works</h2>
                 <p className="text-lg text-muted-foreground">Four temperature tiers that manage themselves automatically</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {[
-                  { icon: Database, title: "4 tiers: Hot → Warm → Cold → Archive", description: "Recent memories load instantly (<10ms). Older knowledge moves to cheaper storage automatically. Nothing is lost — it just moves deeper." },
-                  { icon: Brain, title: "Smart recall without extra code", description: "When your agent needs context, relevant memories surface automatically based on meaning — not keywords. No retrieval logic to write." },
-                  { icon: Sparkles, title: "Self-improvement while idle", description: "During quiet periods, the system compresses duplicates, finds patterns, and prunes stale data. Your agent literally gets smarter overnight." },
+                  { icon: Database, title: "4 tiers: Hot → Warm → Cold → Glacier", description: "Recent memories load instantly (<10ms). Older knowledge moves to deeper storage automatically. Nothing is lost — it just moves to a cooler tier." },
+                  { icon: Brain, title: "Semantic recall without extra code", description: "When your agent needs context, the MEMORY Organ surfaces relevant memories based on meaning — not keywords. No retrieval logic to write." },
+                  { icon: Sparkles, title: "DREAM Engine synthesis while idle", description: "During quiet periods, the DREAM Engine compresses duplicates, finds patterns, and prunes stale data. Your agent literally gets smarter overnight." },
                   { icon: Shield, title: "Critical memories never fade", description: "Identity rules, safety constraints, and compliance directives are permanently locked. They can't decay or get accidentally deleted." },
                   { icon: Lock, title: "Complete isolation per agent", description: "Each agent's memory is fully separated. Multiple agents can run on the same account with zero data leakage between them." },
                   { icon: Activity, title: "Fails gracefully, never crashes", description: "If memory is temporarily unavailable, your agent keeps working without it. No errors, no downtime — just seamless fallback." },
@@ -214,7 +205,7 @@ const PersistentMemoryLanding = () => {
                 {[
                   { icon: CheckCircle, title: "Keep your agent framework", description: "LangChain, CrewAI, AutoGen, or your own custom setup — it all works. No lock-in." },
                   { icon: CheckCircle, title: "Keep your tech stack", description: "React, Node.js, Python, or anything with HTTP. Drop it in, no infrastructure to manage." },
-                  { icon: CheckCircle, title: "We just add memory", description: "Your agent stops forgetting. Under an hour to integrate. Free forever on the base tier." }
+                  { icon: CheckCircle, title: "We just add memory", description: "Your agent stops forgetting. Under an hour to integrate. The MEMORY Organ handles the rest." }
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
@@ -275,33 +266,33 @@ const PersistentMemoryLanding = () => {
           </div>
         </section>
 
-        {/* ═══ FREE TIER DETAILS ═══ */}
+        {/* ═══ WHAT'S INCLUDED ═══ */}
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                <Badge className="mb-4 bg-neon-green/10 text-neon-green border-neon-green/30 text-base px-5 py-2">
-                  <Gift className="w-5 h-5 mr-2" />
-                  $0 / month — forever
+                <Badge variant="outline" className="mb-4 border-primary/30">
+                  <Layers className="w-4 h-4 mr-2" />
+                  Included with Every Plan
                 </Badge>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">What's included for free</h2>
-                <p className="text-lg text-muted-foreground">No credit card. No trial. No strings attached.</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">What's included</h2>
+                <p className="text-lg text-muted-foreground">Every plan includes the full MEMORY Organ. Plans scale capacity, not capability.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {[
-                  { icon: Brain, title: "All 4 memory tiers", description: "Hot, warm, cold, and archive — all included. Memories move between tiers automatically." },
-                  { icon: Sparkles, title: "Automatic optimization", description: "Off-peak cycles compress duplicates, find patterns, and clean up stale entries on their own." },
+                  { icon: Brain, title: "All 4 memory tiers", description: "Hot, warm, cold, and glacier — all included. Memories move between tiers automatically via adaptive salience scoring." },
+                  { icon: Sparkles, title: "DREAM Engine synthesis", description: "Off-peak synthesis cycles compress duplicates, find patterns, and clean up stale entries — powered by the DREAM Engine." },
                   { icon: Shield, title: "Protected memories", description: "Mark critical rules as permanent — they'll never decay, expire, or get accidentally removed." },
-                  { icon: Zap, title: "Meaning-based search", description: "Find relevant memories by meaning, not just keywords. Works across all tiers instantly." },
+                  { icon: Zap, title: "Semantic recall", description: "Find relevant memories by meaning via cross-tier semantic indexing. O(1) hash lookups across all tiers." },
                   { icon: Lock, title: "Agent isolation", description: "Each agent's data is completely separated. Safe for multi-tenant apps out of the box." },
-                  { icon: Activity, title: "Never crashes your app", description: "If memory is unavailable, your agent keeps running normally. Silent, graceful fallback." },
+                  { icon: Activity, title: "Graceful degradation", description: "If memory is unavailable, your agent keeps running normally. Silent, seamless fallback — never crashes your app." },
                 ].map((item, i) => (
                   <motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
                     <Card className="h-full hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
                       <CardContent className="pt-6 flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-neon-green/10 flex items-center justify-center shrink-0">
-                          <item.icon className="w-5 h-5 text-neon-green" />
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                          <item.icon className="w-5 h-5 text-primary" />
                         </div>
                         <div>
                           <h3 className="font-semibold mb-1">{item.title}</h3>
@@ -331,7 +322,7 @@ const PersistentMemoryLanding = () => {
           </div>
         </section>
 
-        {/* ═══ SOCIAL PROOF ═══ */}
+        {/* ═══ STATS ═══ */}
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
@@ -339,7 +330,7 @@ const PersistentMemoryLanding = () => {
                 {[
                   { value: "4", label: "Memory Tiers" },
                   { value: "<10ms", label: "Hot Tier Latency" },
-                  { value: "$0", label: "Free Forever" },
+                  { value: "8×", label: "Compression Ratio" },
                 ].map((stat, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <div className="text-3xl font-bold text-primary font-mono tabular-nums">{stat.value}</div>
@@ -357,11 +348,11 @@ const PersistentMemoryLanding = () => {
             <motion.div className="max-w-3xl mx-auto text-center" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               <Card className="bg-gradient-to-br from-primary/10 via-background to-primary/5 border-primary/20">
                 <CardContent className="pt-12 pb-12">
-                  <Gift className="w-10 h-10 text-neon-green mx-auto mb-4" />
+                  <Brain className="w-10 h-10 text-primary mx-auto mb-4" />
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">Stop reinventing memory infrastructure</h2>
                   <p className="text-lg text-muted-foreground mb-2">
-                    Persistent memory is <span className="text-neon-green font-bold">free for everyone</span>. 
-                    No credit card. No trial that expires. Just memory that works.
+                    The MEMORY Organ gives your agent persistent, semantic, self-optimizing recall — 
+                    so you can focus on what your agent does, not how it remembers.
                   </p>
                   <p className="text-sm text-muted-foreground mb-8">
                     Your agent remembers users, learns their preferences, and improves with every interaction.
@@ -369,7 +360,7 @@ const PersistentMemoryLanding = () => {
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                       <Link to="/docs/persistent-memory">
-                        Get Started Free
+                        Get Started
                         <ArrowRight className="w-5 h-5 ml-2" />
                       </Link>
                     </Button>
