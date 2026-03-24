@@ -77,17 +77,17 @@ npm install -g @cmpsbl/cli
 
 | Package | Version | Tier | Dependencies |
 |---------|---------|------|-------------|
-| `@cmpsbl/types` | 1.1.0 | 1 | None |
-| `@cmpsbl/runtime` | 1.1.0 | 1 | None |
-| `@cmpsbl/sdk` | 2.0.0 | 1 | None |
-| `@cmpsbl/intent` | 1.2.0 | 1 | None |
-| `@cmpsbl/mesh` | 1.2.0 | 1 | None |
-| `@cmpsbl/bridge` | 1.2.0 | 1 | None |
-| `@cmpsbl/discovery` | 1.2.0 | 1 | None |
-| `@cmpsbl/failsafe` | 3.2.0 | 1 | None |
-| `@cmpsbl/cli` | 2.0.0 | 2 | runtime |
-| `@cmpsbl/test-harness` | 1.2.0 | 2 | runtime, bridge |
-| `@cmpsbl/react` | 1.2.0 | 2 | intent, mesh, runtime, react |
+| `@cmpsbl/types` | 1.2.0 | 1 | None |
+| `@cmpsbl/runtime` | 1.2.0 | 1 | None |
+| `@cmpsbl/sdk` | 2.1.0 | 1 | None |
+| `@cmpsbl/intent` | 1.3.0 | 1 | None |
+| `@cmpsbl/mesh` | 1.3.0 | 1 | None |
+| `@cmpsbl/bridge` | 1.3.0 | 1 | None |
+| `@cmpsbl/discovery` | 1.3.0 | 1 | None |
+| `@cmpsbl/failsafe` | 3.3.0 | 1 | None |
+| `@cmpsbl/cli` | 2.1.0 | 2 | runtime |
+| `@cmpsbl/test-harness` | 1.3.0 | 2 | runtime, bridge |
+| `@cmpsbl/react` | 1.3.0 | 2 | intent, mesh, runtime, react |
 
 ## License
 
