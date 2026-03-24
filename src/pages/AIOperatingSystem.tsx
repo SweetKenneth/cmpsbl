@@ -61,7 +61,7 @@ const faqItems = [
 ];
 
 const pillars = [
-  { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. The MEMORY Organ provides 4-tier storage (hot → warm → cold → legacy) for fast recall of recent context and long-term historical knowledge.", link: "/persistent-memory" },
+  { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. The MEMORY Organ provides 4-tier storage (hot → warm → cold → glacier) for fast recall of recent context and long-term historical knowledge.", link: "/persistent-memory" },
   { icon: Network, title: "Smart Model Routing", desc: "The NEXUS Organ picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/architecture" },
   { icon: Shield, title: "Built-in AI Security", desc: "The DEFENSE Layer protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/architecture" },
   { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the DREAM Engine consolidates what the system learned, discovers patterns, and generates new insights — all automatically.", link: "/architecture" },
