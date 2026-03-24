@@ -384,7 +384,7 @@ export default function IntelPanel() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center space-y-3">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
-            <p className="text-muted-foreground text-sm">Running maintenance battery…</p>
+            <p className="text-muted-foreground text-sm">Scanning substrate integrity…</p>
           </div>
         </div>
       </AdminLayout>
