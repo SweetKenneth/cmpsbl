@@ -970,41 +970,44 @@ function AgentsSection() {
         />
       </div>
 
-      <CodeBlock title="Create & orchestrate agents">{`// Create specialized agents
-const researcher = await substrate.agents.create({
-  name: 'ResearchAgent',
-  system_prompt: 'You are a research specialist. Find and synthesize information.',
-  provider: 'anthropic',
-  model: 'claude-sonnet',
-  memory_scope: 'agent'    // agent-private memory
-});
+      <CodeBlock title="Create & orchestrate agents via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
 
-const analyst = await substrate.agents.create({
-  name: 'AnalystAgent',
-  system_prompt: 'You analyze data and provide structured insights.',
-  provider: 'openai',
-  model: 'gpt-4o',
-  memory_scope: 'shared'   // shared memory pool
-});
+// Create a specialized agent
+const researcher = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'CORTEX',
+    action: 'create_agent',
+    payload: {
+      name: 'ResearchAgent',
+      system_prompt: 'You are a research specialist.',
+      provider: 'anthropic',
+      model: 'claude-sonnet',
+      memory_scope: 'agent'
+    }
+  }),
+}).then(r => r.json());
 
-// Run with debate pattern
-const result = await substrate.agents.run(
-  [researcher.id, analyst.id],
-  'Evaluate the ROI of implementing persistent memory',
-  {
-    pattern: 'debate',
-    max_rounds: 3,
-    consensus_threshold: 0.8
-  }
-);
-// → { consensus: true, conclusion: "...", rounds: 2, agent_positions: [...] }
-
-// Run with chain pattern
-const chain = await substrate.agents.run(
-  [researcher.id, analyst.id],
-  'Research quantum computing trends, then analyze market impact',
-  { pattern: 'chain' }
-);`}</CodeBlock>
+// Run agents with debate pattern
+const result = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'CORTEX',
+    action: 'run',
+    payload: {
+      agent_ids: [researcher.data.id, analyst_id],
+      prompt: 'Evaluate the ROI of implementing persistent memory',
+      pattern: 'debate',
+      max_rounds: 3,
+      consensus_threshold: 0.8
+    }
+  }),
+}).then(r => r.json());
+// → { consensus: true, conclusion: "...", rounds: 2 }`}</CodeBlock>
 
       {/* Agent capabilities */}
       <div>
