@@ -472,42 +472,43 @@ function BrainSection() {
         </div>
       </div>
 
-      <CodeBlock title="Store, query, and manage memories">{`// Store a memory with metadata
-await substrate.brain.store({
-  content: "User prefers dark mode and minimal notifications",
-  tags: ["preference", "ui", "notifications"],
-  tier: "hot",
-  category: "preference",
-  confidence: 0.95
+      <CodeBlock title="Store, query, and manage memories via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Store a memory with metadata
+await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'store',
+    payload: {
+      content: "User prefers dark mode and minimal notifications",
+      tags: ["preference", "ui"],
+      tier: "hot",
+      confidence: 0.95
+    }
+  }),
 });
 
 // Semantic search across all tiers
-const results = await substrate.brain.query({
-  query: "user interface preferences",
-  limit: 10,
-  tier: "all",              // "hot" | "warm" | "cold" | "legacy" | "all"
-  min_confidence: 0.5,
-  tags: ["preference"]      // optional tag filter
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'recall',
+    payload: {
+      query: "user interface preferences",
+      limit: 10,
+      tier: "all",
+      min_confidence: 0.5
+    }
+  }),
 });
-// → { memories: [...], total: 3, search_time_ms: 12 }
-
-// Store a protected memory (never decays)
-await substrate.brain.store({
-  content: "Never share PII with third-party APIs",
-  category: "safety_rule",  // protected type
-  tier: "hot"
-});
-
-// Compress memories manually
-await substrate.brain.compress({
-  source_tier: "warm",
-  target_tier: "cold",
-  strategy: "semantic"      // "semantic" | "temporal" | "frequency"
-});
-
-// Get memory statistics
-const stats = await substrate.brain.stats();
-// → { hot: 342, warm: 8120, cold: 6543, legacy: 24100, protected: 18 }`}</CodeBlock>
+const { data } = await res.json();
+// → { memories: [...], total: 3, search_time_ms: 12 }`}</CodeBlock>
 
       {/* Memory scoring */}
       <div>
