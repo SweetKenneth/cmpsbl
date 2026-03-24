@@ -50,11 +50,16 @@ class VectorSimilarityIndex {
     avgQueryTimeMs: 0,
   };
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
+  private loadingPromise: Promise<number> | null = null;
 
   /**
-   * Load vectors from database into memory
+   * Load vectors from database into memory (deduplicated)
    */
   async load(): Promise<number> {
+    // Prevent duplicate concurrent loads
+    if (this.loadingPromise) return this.loadingPromise;
+    this.loadingPromise = this._doLoad();
+    try { return await this.loadingPromise; } finally { this.loadingPromise = null; }
     try {
       const { data, error } = await supabase
         .from('brain_embeddings')
