@@ -1,40 +1,24 @@
 /**
  * Brain System Initialization Utility
- * Auto-initializes the Brain on app load
+ * Initializes the Neural Substrate Layer on app boot
  * 
- * Performance: Lazy-loads supabase, uses requestIdleCallback
+ * Performance: Uses requestIdleCallback, no external API calls
  */
 
 let initializationAttempted = false;
-let supabaseClient: typeof import('@/integrations/supabase/client') | null = null;
-
-// Lazy load supabase only when needed
-async function getSupabase() {
-  if (!supabaseClient) {
-    supabaseClient = await import('@/integrations/supabase/client');
-  }
-  return supabaseClient.supabase;
-}
 
 export async function initializeBrainSystem() {
-  // Only attempt once per session
   if (initializationAttempted) return;
   initializationAttempted = true;
 
   try {
     console.log('🧠 Initializing CMPSBL® BRAIN...');
     
-    const supabase = await getSupabase();
-    const { data, error } = await supabase.functions.invoke('pf-brain-initialize');
+    // Initialize the neural substrate layer (in-memory, no API calls)
+    const { initializeNeuralSubstrate } = await import('@/lib/substrate/neural');
+    await initializeNeuralSubstrate();
     
-    if (error) {
-      console.error('❌ Brain initialization error:', error);
-      return;
-    }
-    
-    if (data?.success) {
-      console.log('✅ Brain initialized successfully:', data.status);
-    }
+    console.log('✅ Brain initialized successfully');
   } catch (err) {
     console.error('❌ Brain initialization failed:', err);
   }
