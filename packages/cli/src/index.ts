@@ -2582,12 +2582,12 @@ function cmdDeps(): void {
   }
   say(c.cyan('  └──────────────────────────────────────────────────────────┘'));
   say('');
-  say(c.yellow('  ┌─ TIER 2 — Requires Tier 1 peer deps ────────────────────┐'));
+  say(c.amber('  ┌─ TIER 2 — Requires Tier 1 peer deps ────────────────────┐'));
   for (const pkg of ECOSYSTEM_PACKAGES.tier2) {
     const depList = pkg.deps.join(', ');
-    say(`  │  ${c.yellow('●')} ${pkg.name.padEnd(22)} ${c.dim(`v${pkg.version}`)}  ← ${c.dim(depList)}  │`);
+    say(`  │  ${c.amber('●')} ${pkg.name.padEnd(22)} ${c.dim(`v${pkg.version}`)}  ← ${c.dim(depList)}  │`);
   }
-  say(c.yellow('  └──────────────────────────────────────────────────────────┘'));
+  say(c.amber('  └──────────────────────────────────────────────────────────┘'));
   say('');
 }
 
@@ -2609,10 +2609,10 @@ function cmdPublishOrder(): void {
     say(`    ${c.green('▸')} ${pkg.name} ${c.dim(`v${pkg.version}`)}`);
   }
   say('');
-  say(c.yellow('  Step 2: Publish Tier 2 (after Tier 1 is on npm)'));
+  say(c.amber('  Step 2: Publish Tier 2 (after Tier 1 is on npm)'));
   say('');
   for (const pkg of ECOSYSTEM_PACKAGES.tier2) {
-    say(`    ${c.yellow('▸')} ${pkg.name} ${c.dim(`v${pkg.version}`)}  ${c.dim(`← needs: ${pkg.deps.join(', ')}`)}`);
+    say(`    ${c.amber('▸')} ${pkg.name} ${c.dim(`v${pkg.version}`)}  ${c.dim(`← needs: ${pkg.deps.join(', ')}`)}`);
   }
   say('');
   say(c.dim('  Script:'));
