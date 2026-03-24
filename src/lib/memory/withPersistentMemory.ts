@@ -5,7 +5,7 @@
  * 
  * Usage:
  * ```typescript
- * import { withPersistentMemory } from '@cmpsbl/memory';
+ * import { withPersistentMemory } from '@/lib/memory';
  * 
  * const agent = withPersistentMemory({
  *   agentId: 'my-support-agent',

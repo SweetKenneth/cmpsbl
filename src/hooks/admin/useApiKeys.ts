@@ -46,9 +46,9 @@ export function useApiKeys() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["admin-api-keys"] });
       if (data?.api_key) {
-        toast.success("API key generated — copy it now, it won't be shown again", {
+        toast.warning("⚠️ This API key will NOT be shown again. Store it securely now.", {
           description: data.api_key,
-          duration: 15000,
+          duration: 30000,
         });
       } else {
         toast.success("API key generated");
