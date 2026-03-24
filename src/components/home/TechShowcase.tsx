@@ -300,11 +300,10 @@ await cmpsbl.integration.execute({
   payload: { vendor: "V001", amount: 5000 }
 });`,
   },
-  // HUMAN COMPATIBILITY
   {
     id: "inclusive",
     icon: Code,
-    layer: "Admin",
+    layer: "Agents",
     title: "INCLUSIVE A11y",
     description: "Human compatibility & accessibility engine",
     color: "text-[hsl(var(--neon-magenta))]",
