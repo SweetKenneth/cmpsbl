@@ -1,7 +1,7 @@
 /**
  * AI Operating System — Definitional SEO landing page
  * Route: /ai-operating-system — owns the "AI Operating System" keyword
- * MINDGAMES epoch · 40-primitive · Memory Stream narrative
+ * CONTACT epoch · 40-primitive · Memory Stream narrative
  */
 
 import { Link } from "react-router-dom";
@@ -44,7 +44,7 @@ const faqItems = [
   },
   {
     question: "What problems does CMPSBL solve?",
-    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated modules that share context, propagate events in real time, and self-optimize automatically.",
+    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated primitives that share context, propagate events in real time, and self-optimize automatically.",
   },
   {
     question: "Who needs an AI Operating System?",
@@ -56,7 +56,7 @@ const faqItems = [
   },
   {
     question: "What is the platform architecture?",
-    answer: "40 specialized primitives organized across 4 categories — Organs (core infrastructure like CORE, SYSTEM, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like BRAIN, MEMORY, DREAM, CORTEX), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA). All primitives are weighted and coordinated by the core runtime.",
+    answer: "40 specialized primitives organized across 4 categories — Organs (core infrastructure like CORE, SYSTEM, NERVE, NEXUS, BRAIN, MEMORY), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA). All primitives are weighted and coordinated by the core runtime.",
   },
 ];
 
@@ -216,7 +216,7 @@ export default function AIOperatingSystem() {
               <Card className="border-primary/15 bg-primary/[0.03] glass-edge">
                 <CardContent className="p-4 sm:p-6">
                   <p className="text-sm sm:text-base text-foreground font-medium leading-relaxed">
-                    An AI Operating System eliminates this fragmentation. Every node shares context, events flow through the system in real time,
+                    An AI Operating System eliminates this fragmentation. Every primitive shares context, events flow through the system in real time,
                     and the platform self-improves as a unified whole — automatically.
                   </p>
                 </CardContent>
