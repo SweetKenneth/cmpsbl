@@ -4,79 +4,79 @@ CMPSBL's substrate is composed of 40 specialized primitives, each with a distinc
 
 ---
 
-## Organs — Internal Infrastructure
+## Organs — Vital Internal Infrastructure (12)
 
 Organs are the substrate's vital systems. They boot, reason, remember, route events, and enforce compliance.
 
 | # | Primitive | Codename | Role |
 |---|-----------|----------|------|
 | 1 | **CORE** | Genesis | Kernel boot, matrix integrity, system heartbeat |
-| 2 | **SYSTEM** | Lifecycle | Configuration, environment management, lifecycle |
+| 2 | **SYSTEM** | Sentinel | Configuration, environment management, lifecycle |
 | 3 | **BRAIN** | Thinker | Reasoning, pattern recognition, cognitive load |
 | 4 | **MEMORY** | Archive Prime | 4-tier persistent state, semantic search, retention |
 | 5 | **NERVE** | Conductor | Signal bus, 4-gate emission, event orchestration |
-| 6 | **RELAY** | Courier | Message relay, webhook delivery, signal forwarding |
-| 7 | **RIPPLE** | Cascade | Task orchestration, event propagation, dead letter queue |
-| 8 | **ACCESS** | Gatekeeper | Authentication, API keys, quota enforcement |
-| 9 | **IDENTITY** | Sentinel | Identity resolution, session management, fingerprinting |
-| 10 | **AUDIT** | Chronicler | Tamper-evident logging, Merkle chain integrity |
+| 6 | **NEXUS** | Fleet Admiral | AI provider routing, multi-model consensus, failover |
+| 7 | **IDENTITY** | Sentinel | Identity resolution, session management, fingerprinting |
+| 8 | **SOVEREIGN** | Guardian | Data sovereignty, GDPR/HIPAA, jurisdiction enforcement |
+| 9 | **ATLAS** | Prometheus | Governance hub, capability mapping, marketplace |
+| 10 | **MEDIC** | Surgeon | Diagnostics, self-healing, root cause analysis |
+| 11 | **RELAY** | Courier | Message relay, webhook delivery, signal forwarding |
+| 12 | **CONSCIENCE** | Judge | Ethical assessment, 5-type bias detection |
 
 ---
 
-## Layers — Ambient Overlays
+## Layers — Ambient Overlays (12)
 
 Layers are always-on systems that permeate the substrate. They protect, govern, evolve, and observe.
 
 | # | Primitive | Codename | Role |
 |---|-----------|----------|------|
-| 11 | **DEFENSE** | Bulwark | Terminal security boundary, threat assessment |
-| 12 | **IMMUNITY** | Antibody | Cross-cutting resilience, adaptive threat patterns |
-| 13 | **GOVERNANCE** | Chancellor | Supervisory legitimacy, policy enforcement, 4-mode control |
-| 14 | **INTENT** | Translator | Cross-primitive signal translation, goal decomposition |
-| 15 | **EVOLUTION** | Genome | SEBA pipeline, version management, shadow promotion |
-| 16 | **SHADOW** | Mirror | Isolated shadow runs, divergence scoring, A/B testing |
-| 17 | **PHANTOM** | Ghost | Decoy operations, canary tokens, counter-intelligence |
+| 13 | **DEFENSE** | Bulwark | Terminal security boundary, threat assessment |
+| 14 | **IMMUNITY** | Antibody | Cross-cutting resilience, adaptive threat patterns |
+| 15 | **GOVERNANCE** | Chancellor | Supervisory legitimacy, policy enforcement, 4-mode control |
+| 16 | **TREATY** | Diplomat | SLA management, contract negotiation, compliance |
+| 17 | **EVOLUTION** | Phoenix | SEBA pipeline, version management, shadow promotion |
+| 18 | **REFLEX** | Watchdog | Edge computing, low-latency response, anomaly alerting |
+| 19 | **COMPASS** | Navigator | Geospatial analysis, route optimization, trend detection |
+| 20 | **INTEGRATION** | Bridge | External connectivity, adapters, webhooks |
+| 21 | **INTENT** | Translator | Cross-primitive signal translation, goal decomposition |
+| 22 | **ACCESS** | Gatekeeper | Authentication, API keys, quota enforcement |
+| 23 | **VISION** | Observer | Telemetry analysis, anomaly detection, visual processing |
+| 24 | **SHADOW** | Mirror | Isolated shadow runs, divergence scoring, A/B testing |
 
 ---
 
-## Engines — Processing Powerhouses
+## Engines — Processing Powerhouses (7)
 
 Engines are invoked on demand for complex processing, orchestration, and synthesis tasks.
 
 | # | Primitive | Codename | Role |
 |---|-----------|----------|------|
-| 18 | **DREAM** | Weaver | Heuristic synthesis, autonomous learning cycles |
-| 19 | **CORTEX** | Orchestrator | Multi-step pipeline orchestration, SLA monitoring |
-| 20 | **NEXUS** | Router | AI provider routing, multi-model consensus, failover |
-| 21 | **ORACLE** | Prophet | Bayesian inference, Monte Carlo simulation, forecasting |
-| 22 | **FORGE** | Architect | Artifact manufacturing, cognitive minting, template synthesis |
-| 23 | **ECHO** | Reverb | Digital twin simulation, scenario replay |
-| 24 | **ECONOMY** | Treasurer | Cost tracking, budget management, usage metering |
-| 25 | **ENGINEER** | Mechanic | Maintenance intelligence, health scanning, proposals |
-| 26 | **ATLAS** | Prometheus | Governance hub, capability mapping, marketplace |
-| 27 | **CLM** | Scholar | Constant Learning Mode, knowledge distillation |
+| 25 | **DREAM** | Weaver | Heuristic synthesis, autonomous learning cycles |
+| 26 | **HARVEST** | Collector | Data acquisition, crawling, ETL, deduplication |
+| 27 | **FORGE** | Architect | Artifact manufacturing, cognitive minting, template synthesis |
+| 28 | **LINGUA** | Polyglot | Translation, localization, sentiment analysis |
+| 29 | **ECHO** | Reverb | Digital twin simulation, scenario replay |
+| 30 | **PHANTOM** | Ghost | Decoy operations, canary tokens, counter-intelligence |
+| 31 | **SANDBOX** | Playground | Isolated execution, safe experimentation, test harness |
 
 ---
 
-## Agents — Autonomous Actors
+## Agents — Autonomous Actors (9)
 
 Agents are specialized AI workers that perform domain-specific tasks autonomously.
 
 | # | Primitive | Codename | Role |
 |---|-----------|----------|------|
-| 28 | **DECODE** | Parser | Natural language understanding, intent classification |
-| 29 | **ENCODE** | Builder | Code generation, AST analysis, build planning |
-| 30 | **VISION** | Observer | Telemetry analysis, anomaly detection, visual processing |
-| 31 | **HARVEST** | Collector | Data acquisition, crawling, ETL, deduplication |
-| 32 | **LINGUA** | Polyglot | Translation, localization, sentiment analysis |
-| 33 | **COMPASS** | Navigator | Geospatial analysis, route optimization, trend detection |
-| 34 | **CONSCIENCE** | Judge | Ethical assessment, 5-type bias detection |
-| 35 | **TREATY** | Diplomat | SLA management, contract negotiation, compliance |
-| 36 | **SOVEREIGN** | Guardian | Data sovereignty, GDPR/HIPAA, jurisdiction enforcement |
-| 37 | **MEDIC** | Surgeon | Diagnostics, self-healing, root cause analysis |
-| 38 | **INCLUSIVE** | Advocate | Accessibility scanning, WCAG compliance |
-| 39 | **INTEGRATION** | Bridge | External connectivity, adapters, webhooks |
-| 40 | **REFLEX** | Watchdog | Edge computing, low-latency response, anomaly alerting |
+| 32 | **ENCODE** | Builder | Code generation, AST analysis, build planning |
+| 33 | **DECODE** | Parser | Natural language understanding, intent classification |
+| 34 | **RIPPLE** | Cascade | Task orchestration, event propagation, dead letter queue |
+| 35 | **AUDIT** | Chronicler | Tamper-evident logging, Merkle chain integrity |
+| 36 | **ECONOMY** | Treasurer | Cost tracking, budget management, usage metering |
+| 37 | **INCLUSIVE** | Advocate | Accessibility scanning, WCAG compliance |
+| 38 | **CORTEX** | Orchestrator | Multi-step pipeline orchestration, SLA monitoring |
+| 39 | **ORACLE** | Prophet | Bayesian inference, Monte Carlo simulation, forecasting |
+| 40 | **ENGINEER** | Mechanic | Maintenance intelligence, health scanning, proposals |
 
 ---
 
