@@ -1027,14 +1027,14 @@ export class CMPSBL {
    * Get recent log entries from the system.
    * @param options - Filter by node and limit count
    */
-  async logs(options?: { node?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
+  async logs(options?: { primitive?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
     const start = Date.now();
     const count = Math.min(options?.count ?? 10, 50);
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-        body: JSON.stringify({ action: 'logs', node: options?.node?.toUpperCase(), count }),
+        body: JSON.stringify({ action: 'logs', primitive: options?.primitive?.toUpperCase(), count }),
       });
       const body = await res.json().catch(() => ({ entries: [] }));
       const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
