@@ -75,7 +75,7 @@ export function useMesh(filter?: MeshFilter, maxEvents = 100): UseMeshReturn {
 
   useEffect(() => {
     setEvents(getEventLog(filter).slice(-maxEvents));
-    return subscribe((event) => {
+    return subscribe((event: MeshCommEvent) => {
       setEvents(prev => [...prev.slice(-(maxEvents - 1)), event]);
     }, filter);
   }, [filter?.source, filter?.target, filter?.category, maxEvents]);
