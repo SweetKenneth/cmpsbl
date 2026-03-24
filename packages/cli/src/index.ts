@@ -258,6 +258,8 @@ const NODES = [
 export async function run(args: string[]): Promise<void> {
   // Reset and parse global flags (prevents REPL shell from leaking state)
   JSON_MODE = args.includes('--json');
+  const noColor = args.includes('--no-color') || !!process.env.NO_COLOR;
+  setNoColor(noColor);
   args = args.filter(a => a !== '--json' && a !== '--no-color');
 
   const command = args[0]?.toLowerCase();
