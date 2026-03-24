@@ -20,7 +20,7 @@ import {
   endFirstContactSession,
 } from '@cmpsbl/runtime';
 import { DOMAIN_PATTERNS } from '@cmpsbl/types';
-import type { FirstContactConfig, MemoryChain } from '@cmpsbl/types';
+import type { FirstContactConfig, FirstContactSession, MemoryChain } from '@cmpsbl/types';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
@@ -347,6 +347,11 @@ export async function run(args: string[]): Promise<void> {
     } else {
       say(pick(V.err));
       printErrorRecovery(err instanceof Error ? err : String(err));
+      // Show actual error for debugging
+      if (process.env.CMPSBL_DEBUG) {
+        sayMuted(`  Debug: ${err instanceof Error ? err.message : String(err)}`);
+        if (err instanceof Error && err.stack) sayMuted(`  ${err.stack.split('\n')[1]?.trim()}`);
+      }
     }
     process.exitCode = 1;
   }
@@ -700,9 +705,27 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
   }
 
   // Run First Contact (only if not already done by onboarding)
-  const session = opts?.skipCeremony
-    ? (getFirstContactSession() ?? await initFirstContact(CLI_CONFIG))
-    : await initFirstContact(CLI_CONFIG);
+  let session: FirstContactSession;
+  try {
+    session = opts?.skipCeremony
+      ? (getFirstContactSession() ?? await initFirstContact(CLI_CONFIG))
+      : await initFirstContact(CLI_CONFIG);
+  } catch (fcErr) {
+    // First Contact ceremony failed — create a local-only session
+    if (!JSON_MODE) {
+      sayMuted('  Memory Stream unreachable — running in local mode');
+    }
+    session = {
+      userId: CLI_CONFIG.apiKey ?? 'local',
+      sessionId: `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      package: CLI_CONFIG.package,
+      domain: CLI_CONFIG.domain,
+      startedAt: new Date().toISOString(),
+      memoryBound: false,
+      discoveryActive: true,
+      chains: [],
+    };
+  }
 
   if (!JSON_MODE && !opts?.skipCeremony) {
     blank();
@@ -739,21 +762,27 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
   say(`Memory:   ${session.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
   div();
 
-  const s2 = spinner(pick(V.think));
-  await sleep(1500);
-  s2.stop('Discovery scan complete');
+  // Discovery scan — non-fatal
+  try {
+    const s2 = spinner(pick(V.think));
+    await sleep(1500);
+    s2.stop('Discovery scan complete');
 
-  const result = await discoverMemory(
-    { input: 'project initialization and environment setup' },
-    CLI_CONFIG,
-    DOMAIN_PATTERNS.cli,
-  );
+    const result = await discoverMemory(
+      { input: 'project initialization and environment setup' },
+      CLI_CONFIG,
+      DOMAIN_PATTERNS.cli,
+    );
 
-  if (result.detected && result.memory) {
-    CLI_CONFIG.onDiscovery?.(result.memory);
-    await promptInteraction(result.memory);
-  } else {
+    if (result.detected && result.memory) {
+      CLI_CONFIG.onDiscovery?.(result.memory);
+      await promptInteraction(result.memory);
+    } else {
+      say(pick(V.idle));
+    }
+  } catch {
     say(pick(V.idle));
+    sayMuted('Discovery will activate on next interaction.');
   }
 }
 
