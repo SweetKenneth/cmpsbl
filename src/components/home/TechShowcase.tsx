@@ -427,7 +427,7 @@ const report = await cmpsbl.audit.export({
   {
     id: "identity",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Organs",
     title: "IDENTITY Attribution",
     description: "Actor signatures & provenance tracking",
     color: "text-[hsl(var(--neon-magenta))]",
