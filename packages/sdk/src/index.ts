@@ -207,7 +207,7 @@ export interface InspectResult {
 export interface LogEntry {
   timestamp: string;
   level: 'INFO' | 'DEBUG' | 'WARN' | 'ERROR';
-  node: string;
+  primitive: string;
   message: string;
 }
 
