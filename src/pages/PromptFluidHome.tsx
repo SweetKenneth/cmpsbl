@@ -46,18 +46,18 @@ const stagger = {
 const milestones = [
   { year: "2009", title: "CMPSBL Founded", description: "Started as a vision for intelligent, composable software systems." },
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
-  { year: "2024", title: "Cognitive Platform Launched", description: "Launched the composable AI platform — 40 modules across 12 functional groups, powered by persistent memory." },
-  { year: "2025", title: "200k+ Lines of Code", description: "Grew to 675+ capabilities, 14-provider AI routing, and composable AI infrastructure." },
-  { year: "2026", title: "Modular Architecture", description: "Hot-swappable modules with circuit-breaker isolation, 4 shielded expansion zones, and autonomous evolution." },
+  { year: "2024", title: "Cognitive Platform Launched", description: "Launched the composable AI platform — 40 primitives across 4 categories, powered by persistent memory." },
+  { year: "2025", title: "200k+ Lines of Code", description: "Grew to a full cognitive runtime with multi-provider AI routing and composable infrastructure." },
+  { year: "2026", title: "CONTACT Epoch Complete", description: "All 40 primitives upgraded to Ultimate architecture. Hot-swappable with circuit-breaker isolation and autonomous evolution." },
 ];
 
 const capabilities = [
-  { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and tiered memory architecture." },
-  { icon: Cpu, title: "Multi-Provider Routing", description: "14-provider AI routing with health-weighted selection and automatic failover. Never locked into a single vendor." },
-  { icon: Layers, title: "Modular Architecture", description: "40 modules across 12 groups with 4 shielded expansion zones and circuit-breaker isolation." },
-  { icon: Shield, title: "Self-Evolving Platform", description: "Autonomous scanning, proposals, and patching — the platform continuously improves itself." },
-  { icon: Zap, title: "675+ Capabilities", description: "Production-ready engines, reusable workflows, and a full capabilities marketplace — all accessible via unified API." },
-  { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, and more — automatically routes to the best model for every task." },
+  { icon: Brain, title: "Persistent Memory", description: "AI systems that remember across sessions — vector recall, knowledge graphs, and four-tier memory architecture (hot/warm/cold/glacier)." },
+  { icon: Cpu, title: "Multi-Provider Routing", description: "Health-weighted AI provider selection with a 12-step free-tier fallback chain via the NEXUS Organ. Never locked into a single vendor." },
+  { icon: Layers, title: "40 Primitives", description: "12 Organs, 12 Layers, 8 Engines, and 8 Agents with circuit-breaker isolation — the canonical substrate matrix." },
+  { icon: Shield, title: "Self-Evolving Platform", description: "The EVOLUTION Layer scans, proposes, and patches — the platform continuously improves itself under GOVERNANCE Layer oversight." },
+  { icon: Zap, title: "Governed Runtime", description: "Every operation passes through governance checks. Budget, safety, and scope constraints enforced at the runtime level." },
+  { icon: Globe, title: "Model Agnostic", description: "OpenAI, Anthropic, Google AI, and open-source models — automatically routes to the best provider for every task via NEXUS." },
 ];
 
 const services = [
