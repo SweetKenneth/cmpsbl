@@ -272,7 +272,7 @@ export async function run(args: string[]): Promise<void> {
 
   try {
     switch (command) {
-      case 'init':         await cmdInit(args.slice(1)); break;
+      case 'init':         await cmdInit(args.slice(1), {}); break;
       case 'discover':     await cmdDiscover(args.slice(1)); break;
       case 'stream':       await cmdStream(); break;
       case 'score':        cmdScore(args.slice(1)); break;
@@ -473,7 +473,7 @@ async function cmdOnboarding() {
     rl.question('  Initialize a new project here? (y/n) ', async (answer) => {
       rl.close();
       if (answer.trim().toLowerCase() === 'y' || answer.trim() === '') {
-        await cmdInit([]);
+        await cmdInit([], { skipCeremony: true });
       } else {
         say('No problem. Run `cmpsbl init` when you\'re ready.');
         say(pick(V.idle));
@@ -542,12 +542,14 @@ async function cmdShell() {
 // Commands — Project
 // ═══════════════════════════════════════════════════════════════
 
-async function cmdInit(_args: string[]) {
-  // ── Mandatory API key gate ──
-  const apiKey = await requireApiKey();
-  CLI_CONFIG.apiKey = apiKey;
+async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
+  if (!opts?.skipCeremony) {
+    // ── Mandatory API key gate ──
+    const apiKey = await requireApiKey();
+    CLI_CONFIG.apiKey = apiKey;
+  }
 
-  if (!JSON_MODE) {
+  if (!JSON_MODE && !opts?.skipCeremony) {
     // ── ASCII Logo ──
     blank();
     const logo = [
@@ -605,10 +607,12 @@ async function cmdInit(_args: string[]) {
     blank();
   }
 
-  // Run ceremony FIRST — no spinner interference
-  const session = await initFirstContact(CLI_CONFIG);
+  // Run First Contact (only if not already done by onboarding)
+  const session = opts?.skipCeremony
+    ? (getFirstContactSession() ?? await initFirstContact(CLI_CONFIG))
+    : await initFirstContact(CLI_CONFIG);
 
-  if (!JSON_MODE) {
+  if (!JSON_MODE && !opts?.skipCeremony) {
     blank();
     box([
       'Cognitive Substrate v' + CLI_VERSION,
