@@ -80,20 +80,12 @@ export function EnginesCTA() {
                 </motion.div>
 
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">
-                  20 Sealed <span className="text-[hsl(var(--neon-cyan))]">Engines</span>
+                  8 Composable <span className="text-[hsl(var(--neon-cyan))]">Engines</span>
                 </h2>
                 <p className="text-sm sm:text-base text-muted-foreground max-w-lg leading-relaxed">
-                  Production-grade runtimes crystallized from the Memory Stream's highest-scoring memories.
-                  Each engine is tamper-proof, zero-dependency, and built for a single mission.
+                  Processing powerhouses invoked for complex tasks — offline learning, capability discovery, 
+                  event orchestration, and isolated execution. Each Engine is sealed and purpose-built.
                 </p>
-              </div>
-
-              <div className="flex flex-col items-start sm:items-end gap-1.5">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-3xl sm:text-4xl font-black text-[hsl(var(--neon-cyan))]">40% off</span>
-                  <span className="text-sm text-muted-foreground">bundled w/ agent</span>
-                </div>
-                <span className="text-[10px] sm:text-xs text-muted-foreground/60 font-mono">From $119 bundled · $199+ standalone · Lifetime license</span>
               </div>
             </div>
 
