@@ -893,13 +893,13 @@ export class CMPSBL {
   status(): SDKResponse<SubstrateStatus> {
     const start = Date.now();
     const session = getFirstContactSession();
-    const online = NODE_REGISTRY.filter(n => n.status === 'online');
-    const sectors = new Set(NODE_REGISTRY.map(n => n.sector));
+    const online = PRIMITIVE_REGISTRY.filter(n => n.status === 'online');
+    const categories = new Set(PRIMITIVE_REGISTRY.map(n => n.sector));
     const data: SubstrateStatus = {
-      nodes: NODE_REGISTRY.length,
-      nodesOnline: online.length,
-      sectors: sectors.size,
-      averageHealth: Math.round(NODE_REGISTRY.reduce((s, n) => s + n.health, 0) / NODE_REGISTRY.length),
+      primitives: PRIMITIVE_REGISTRY.length,
+      primitivesOnline: online.length,
+      categories: categories.size,
+      averageHealth: Math.round(PRIMITIVE_REGISTRY.reduce((s, n) => s + n.health, 0) / PRIMITIVE_REGISTRY.length),
       runtimeVersion: '14.4.1',
       memoryChains: this.stream.length,
       sessionId: session?.sessionId ?? null,
