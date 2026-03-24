@@ -71,8 +71,9 @@ interface RouteTarget {
 }
 
 function resolveRoute(pathname: string): RouteTarget | null {
-  // Strip common prefixes
+  // Strip common prefixes (edge function path, api versioning)
   const clean = pathname
+    .replace(/^\/substrate-api/, "")
     .replace(/^\/api\/v1\/substrate/, "")
     .replace(/^\/v1\/substrate/, "")
     .replace(/^\//, "");
