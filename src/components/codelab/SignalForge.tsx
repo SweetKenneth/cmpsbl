@@ -168,7 +168,7 @@ export function SignalForge() {
         {showRitual && <BlueprintForgeRitual onComplete={handleRitualComplete} />}
       </AnimatePresence>
 
-      {/* CodeLab Hero */}
+      {/* Developers Playground Hero */}
       <div className="relative border-b border-border/50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] md:w-[700px] h-[250px] md:h-[350px] rounded-full bg-primary/5 blur-[120px]" />
