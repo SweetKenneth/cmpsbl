@@ -347,6 +347,11 @@ export async function run(args: string[]): Promise<void> {
     } else {
       say(pick(V.err));
       printErrorRecovery(err instanceof Error ? err : String(err));
+      // Show actual error for debugging
+      if (process.env.CMPSBL_DEBUG) {
+        sayMuted(`  Debug: ${err instanceof Error ? err.message : String(err)}`);
+        if (err instanceof Error && err.stack) sayMuted(`  ${err.stack.split('\n')[1]?.trim()}`);
+      }
     }
     process.exitCode = 1;
   }
