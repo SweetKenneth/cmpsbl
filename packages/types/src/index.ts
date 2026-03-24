@@ -222,9 +222,15 @@ export type SubstratePrimitive =
 /** @deprecated Use SubstratePrimitive instead */
 export type SubstrateNode = SubstratePrimitive;
 
-export interface NodeHealth {
-  node: SubstrateNode;
+export interface PrimitiveHealth {
+  primitive: SubstratePrimitive;
   status: 'online' | 'degraded' | 'offline';
+  resolverCount: number;
+  lastHeartbeat: string;
+}
+
+/** @deprecated Use PrimitiveHealth instead */
+export type NodeHealth = PrimitiveHealth;
   resolverCount: number;
   lastHeartbeat: string;
 }
