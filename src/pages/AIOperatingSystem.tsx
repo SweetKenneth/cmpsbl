@@ -216,7 +216,7 @@ export default function AIOperatingSystem() {
               <Card className="border-primary/15 bg-primary/[0.03] glass-edge">
                 <CardContent className="p-4 sm:p-6">
                   <p className="text-sm sm:text-base text-foreground font-medium leading-relaxed">
-                    An AI Operating System eliminates this fragmentation. Every node shares context, events flow through the system in real time,
+                    An AI Operating System eliminates this fragmentation. Every primitive shares context, events flow through the system in real time,
                     and the platform self-improves as a unified whole — automatically.
                   </p>
                 </CardContent>
