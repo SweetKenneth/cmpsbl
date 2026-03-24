@@ -531,7 +531,7 @@ function defaultBrain(): BrainTelemetry {
 }
 
 function defaultImmune(): ImmuneTelemetry {
-  return { totalRuns: 0, repairSuccesses: 0, escalations: 0, safeFailures: 0, honestRepairRate: 0, topExecutor: null };
+  return { totalRuns: 0, repairSuccesses: 0, escalations: 0, safeFailures: 0, honestRepairRate: 1, topExecutor: null };
 }
 
 function defaultEncode(): EncodeTelemetry {
