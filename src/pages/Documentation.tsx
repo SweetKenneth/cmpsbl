@@ -725,7 +725,7 @@ function DefenseSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Module</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Layer</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Enterprise-grade security built into the platform core. DEFENSE is the outermost boundary —
           the security layer that every request must pass through before reaching any other module.
