@@ -374,7 +374,7 @@ export default function DevTools() {
                       { title: "Getting Started", href: "/documentation", desc: "Setup and configuration" },
                       { title: "API Reference", href: "/documentation#api", desc: "Full SDK API docs" },
                       { title: "Explore", href: "/explore", desc: "Browse capabilities and templates" },
-                      { title: "CodeLab", href: "/codelab", desc: "Live API playground" },
+                      { title: "Developers Playground", href: "/codelab", desc: "Live API playground" },
                       { title: "Changelog", href: "/changelog", desc: "System evolution" },
                     ].map((link) => (
                       <Link
