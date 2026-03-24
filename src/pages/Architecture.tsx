@@ -116,21 +116,20 @@ const CATEGORIES: CategoryDef[] = [
   },
 ];
 
-const BOOT_SEQUENCE = `CORE (Kernel Boot Authority)
-  → SYSTEM (Spine — Lifecycle & Config)
-  → CCR: BRAIN + MEMORY + DREAM
-  → OCG: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT + NERVE
-  → Execution: DECODE, ENCODE, VISION, CORTEX, NEXUS,
-               ECONOMY, SANDBOX, INCLUSIVE, MEDIC
-  → INTEGRATION (boots last — dependency resolver)
-  → ESZ: SOVEREIGN + ORACLE + CONSCIENCE + TREATY
-  → EPZ: COMPASS + ECHO + REFLEX
-  → EMZ: FORGE + LINGUA + HARVEST
-  → CSZ: EVOLUTION + SHADOW + PHANTOM
-  ← Fields permeate: IMMUNITY + INTENT
-  ← Plane overlay: GOVERNANCE + ENGINEER
-  ← Atlas maps: ATLAS
-  ← Shell wraps: DEFENSE (outermost)`;
+const BOOT_SEQUENCE = `CORE Organ (Kernel Boot Authority)
+  → SYSTEM Organ (Lifecycle & Config)
+  → BRAIN Organ + MEMORY Organ + NERVE Organ
+  → RIPPLE Organ + ACCESS Organ + IDENTITY Organ + RELAY Organ + AUDIT Organ
+  → NEXUS Organ (AI Provider Gateway)
+  → Engines: DREAM, CORTEX, ORACLE, FORGE, COMPASS,
+             ATLAS, ECONOMY, SANDBOX, MEDIC, REFLEX
+  → INTEGRATION Organ (boots last — dependency resolver)
+  → Agents: ENCODE, DECODE, VISION, PHANTOM, LINGUA,
+            ECHO, HARVEST, SOVEREIGN, ENGINEER, OBSERVER
+  ← Layers permeate: IMMUNITY, INTENT, EVOLUTION,
+                      INCLUSIVE, CONSCIENCE, TREATY
+  ← GOVERNANCE Layer (policy overlay)
+  ← DEFENSE Layer (outermost shell)`;
 
 const KEY_PROPERTIES = [
   { title: "Weight Invariant", desc: "Every primitive carries a governance weight. The sum across all 40 primitives is exactly 1.000 — no single primitive can dominate decisions." },
