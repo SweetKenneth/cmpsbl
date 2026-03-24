@@ -12,7 +12,7 @@ export interface CrossLink {
 
 const LINK_DB: Record<string, CrossLink[]> = {
   "/architecture": [
-    { href: "/engines", title: "54 Composable Engines", description: "Explore the META to CORE tier arsenal powering the substrate", badge: "Engines" },
+    { href: "/store", title: "Store & Plans", description: "Browse memory packs, agents, and engines in the store", badge: "Store" },
     { href: "/runtime", title: "Runtime Environment", description: "See how nodes execute, scale, and self-heal in production" },
     { href: "/memory-stream", title: "Memory Stream", description: "Watch the system discover and crystallize new capabilities in real time", badge: "Discovery" },
     { href: "/system-overview", title: "System Overview", description: "Full topology of the 40-primitive, 4-category cognitive matrix" },
