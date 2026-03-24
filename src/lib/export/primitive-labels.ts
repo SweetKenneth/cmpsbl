@@ -20,8 +20,8 @@ const ENGINES = new Set([
 ]);
 
 const AGENTS = new Set([
-  'ENCODE', 'DECODE', 'VISION', 'PHANTOM', 'LINGUA', 'ECHO',
-  'HARVEST', 'SOVEREIGN', 'ENGINEER', 'OBSERVER',
+  'ENCODE', 'DECODE', 'PHANTOM', 'LINGUA', 'ECHO',
+  'HARVEST', 'SOVEREIGN', 'ENGINEER',
 ]);
 
 export type PrimitiveCategory = 'Organ' | 'Layer' | 'Engine' | 'Agent';
