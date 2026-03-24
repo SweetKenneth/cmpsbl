@@ -448,6 +448,9 @@ function printHelp() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdOnboarding() {
+  // ── Font recommendation (first-run only) ──
+  printFontRecommendation();
+
   // ── ASCII Logo ──
   blank();
   await sleep(400);
