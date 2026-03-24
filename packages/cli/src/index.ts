@@ -150,7 +150,7 @@ async function requireApiKey(): Promise<string> {
 
   // Step 2: Paste key
   const key = await new Promise<string>((resolve) => {
-    rl.question('  Paste your API key: ', (answer) => {
+    rl.question('  Paste your API key: ', (answer: string) => {
       resolve(answer.trim());
     });
   });
@@ -542,7 +542,7 @@ async function cmdOnboarding() {
   // ── Project prompt ──
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
-    rl.question('  Initialize a new project here? (y/n) ', async (answer) => {
+    rl.question('  Initialize a new project here? (y/n) ', async (answer: string) => {
       rl.close();
       if (answer.trim().toLowerCase() === 'y' || answer.trim() === '') {
         await cmdInit([], { skipCeremony: true });
@@ -616,7 +616,7 @@ async function cmdShell() {
   rl.prompt();
 
   return new Promise<void>((resolve) => {
-    rl.on('line', async (line) => {
+    rl.on('line', async (line: string) => {
       const trimmed = line.trim();
       if (!trimmed) { rl.prompt(); return; }
       if (trimmed === 'exit' || trimmed === 'quit') {
@@ -890,7 +890,7 @@ async function offerFirstDream() {
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
-    rl.question('  Ready to dream? (Y/n) ', async (answer) => {
+    rl.question('  Ready to dream? (Y/n) ', async (answer: string) => {
       rl.close();
       if (answer.trim().toLowerCase() === 'n') {
         say('  No problem. Run `cmpsbl dream` anytime.');
@@ -2519,7 +2519,7 @@ async function promptInteraction(chain: MemoryChain) {
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
-    rl.question('  > ', async (answer) => {
+    rl.question('  > ', async (answer: string) => {
       rl.close();
       switch (answer.trim()) {
         case '1': { const r = await captureMemory(chain.id, CLI_CONFIG); say(pick(V.ok)); say(r.message); break; }
