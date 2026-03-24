@@ -254,28 +254,22 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is built from 40 specialized modules organized into 12 functional groups. Each module has a priority weight 
-          managed by the CORE module, which coordinates startup and overall system health.
+          CMPSBL is built from 40 Core Primitives organized into a symmetric 12·12·8·8 matrix across
+          4 categories. Each primitive has a priority weight managed by the CORE Organ, which coordinates
+          startup and overall system health.
         </p>
       </div>
 
-      {/* Layer breakdown */}
+      {/* Category breakdown */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Layer Hierarchy</h3>
+        <h3 className="font-semibold text-foreground mb-4">Primitive Categories</h3>
         <DocTable
-          headers={["Category", "Role", "Primitives"]}
+          headers={["Category", "Count", "Role", "Primitives"]}
           rows={[
-            ["Spine", "Startup and lifecycle management", "CORE, SYSTEM"],
-            ["Cognitive Core", "Reasoning, memory, and self-improvement", "BRAIN, MEMORY, DREAM"],
-            ["Operations", "Access control, auditing, and coordination", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
-            ["Execution", "User-facing features and AI orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
-            ["Safety & Compliance", "Compliance, prediction, and ethics", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
-            ["Performance", "Simulation and edge computing", "SIMULATE, GEOSPATIAL, EDGE"],
-            ["Manufacturing", "Data ingestion, translation, and generation", "FORGE, TRANSLATE, INGEST"],
-            ["Continuous Improvement", "Evolution, testing, and anomaly detection", "EVOLUTION, SHADOW, PHANTOM"],
-            ["Cross-Cutting", "Systems that span all layers", "EVOLUTION, IMMUNITY, INTENT"],
-            ["Governance", "Supervisory oversight and policy enforcement", "GOVERNANCE"],
-            ["Defense", "Outer security boundary", "DEFENSE"],
+            ["Organs", "12", "Vital internal infrastructure", "CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE"],
+            ["Layers", "12", "Ambient overlays and protection", "DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW"],
+            ["Engines", "8", "Invoked processing powerhouses", "DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE"],
+            ["Agents", "8", "Autonomous self-directed actors", "ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER"],
           ]}
         />
       </div>
@@ -284,15 +278,15 @@ function ArchitectureSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Priority Weights</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Every module has a priority weight that determines how much it affects overall system health.
-          Higher-weight modules (like CORE and DEFENSE) trigger faster alerts when degraded. Weights are 
-          recalculated during startup and after system updates.
+          Every primitive has a priority weight that determines how much it affects overall system health.
+          Higher-weight primitives (like CORE Organ and DEFENSE Layer) trigger faster alerts when degraded.
+          Weights are recalculated during startup and after system updates.
         </p>
-        <CodeBlock title="Module weight categories">{`// Weight categories (higher = more critical)
-CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
-HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
-STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
-AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
+        <CodeBlock title="Primitive weight categories">{`// Weight categories (higher = more critical)
+CRITICAL:    CORE Organ, DEFENSE Layer, GOVERNANCE Layer  (weight ≥ 8)
+HIGH:        BRAIN Organ, NEXUS Organ, AUDIT Agent, ACCESS Layer  (weight 5-7)
+STANDARD:    DECODE Agent, ENCODE Agent, VISION Layer, etc.  (weight 3-4)
+AUXILIARY:   SANDBOX Engine, RIPPLE Engine, etc.  (weight 1-2)
 
 // Health score = Σ(primitive_health × weight) / Σ(weights)
 // Circuit breaker trips when primitive health < 0.3`}</CodeBlock>
@@ -302,14 +296,14 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Circuit breakers prevent failures from spreading across modules. When a module's health drops below threshold,
-          it's automatically isolated. The MEDIC module then runs self-healing diagnostics to restore it.
+          Circuit breakers prevent failures from spreading across primitives. When a primitive's health drops below threshold,
+          it's automatically isolated. The MEDIC Organ then runs self-healing diagnostics to restore it.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-destructive/30 bg-destructive/5" },
+            { label: "Open", desc: "Primitive isolated — all traffic rejected. MEDIC Organ healing active.", color: "border-destructive/30 bg-destructive/5" },
             { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-neon-amber/30 bg-neon-amber/5" },
-            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-neon-green/30 bg-neon-green/5" },
+            { label: "Closed", desc: "Normal operation — full traffic flows through primitive.", color: "border-neon-green/30 bg-neon-green/5" },
           ].map(s => (
             <div key={s.label} className={cn("p-4 rounded-xl border", s.color)}>
               <h4 className="font-semibold text-sm mb-1">{s.label}</h4>
@@ -323,7 +317,7 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Governance Modes</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The platform operates in one of four modes, controlled by the GOVERNANCE module.
+          The platform operates in one of four modes, controlled by the GOVERNANCE Layer.
           Switching modes requires authorization and is logged for auditability.
         </p>
         <DocTable
