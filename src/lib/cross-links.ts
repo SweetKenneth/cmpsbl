@@ -130,7 +130,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/try", title: "Try It First", description: "Zero-signup interactive demo of the substrate", badge: "Demo" },
     { href: "/documentation", title: "Documentation", description: "API reference and integration quickstart" },
     { href: "/packs", title: "Capability Packs", description: "Choose your first capabilities across 6 domains" },
-    { href: "/engines", title: "54 Engines", description: "Browse the full composable engine arsenal" },
+    { href: "/store", title: "Store & Plans", description: "Browse the full composable engine and agent catalog", badge: "Store" },
   ],
   "/upgrade": [
     { href: "/packs", title: "Capability Packs", description: "See all 24 packs across 6 strategic domains" },
