@@ -127,19 +127,53 @@ All packages follow the **First Contact System** — live discovery, persistent 
 
 ---
 
-## CLI Commands
+## CLI Commands (42)
 
 ```bash
+# ── Project ──
 cmpsbl init              # Initialize project + First Contact + First Dream
-cmpsbl dream             # Trigger a dream cycle
+cmpsbl dream             # Trigger a DREAM Engine cycle
+cmpsbl config            # View/set configuration
+cmpsbl login / logout    # Authenticate with CMPSBL API
+
+# ── Cognitive ──
+cmpsbl think <prompt>    # BRAIN deep reasoning cycle
+cmpsbl reflect [topic]   # ECHO resonance & pattern replay
+cmpsbl remember <input>  # MEMORY store & semantic retrieval
+cmpsbl forget <chain-id> # MEMORY prune a chain
+
+# ── Discovery ──
 cmpsbl discover <input>  # Live discovery on an input
 cmpsbl stream            # View Memory Stream
+cmpsbl score <n> <u> <c> <m>  # CJPI scoring
+
+# ── Engines ──
+cmpsbl forge [topic]     # Signal Forge blueprint synthesis
+cmpsbl harvest <url>     # HARVEST data extraction
+cmpsbl translate <text>  # LINGUA language processing
+cmpsbl sandbox <script>  # SANDBOX safe code execution
+
+# ── Agents ──
+cmpsbl scan <url>        # INCLUSIVE accessibility scan (WCAG 2.2)
+cmpsbl predict <scenario># ORACLE forecasting & what-if
+cmpsbl audit [scope]     # AUDIT compliance report
+cmpsbl cost [period]     # ECONOMY usage & cost report
+
+# ── Defense ──
+cmpsbl threat <input>    # DEFENSE threat scoring
+cmpsbl immune            # IMMUNITY health & anomalies
+
+# ── Governance ──
+cmpsbl govern            # GOVERNANCE policy check & mode
+cmpsbl treaty            # TREATY trust contracts
+
+# ── System ──
 cmpsbl status            # Full substrate status
 cmpsbl health            # Health check across all primitives
-cmpsbl nodes             # List all 40 primitives
+cmpsbl nodes [filter]    # List all 40 primitives
 cmpsbl ping <node>       # Ping a specific primitive
 cmpsbl inspect <node>    # Deep-inspect a primitive
-cmpsbl topology          # Display category topology map
+cmpsbl topology          # Category topology map
 cmpsbl route <intent>    # Trace intent routing path
 cmpsbl benchmark         # Latency benchmark
 cmpsbl doctor            # Full diagnostic suite
