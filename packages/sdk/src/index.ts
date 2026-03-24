@@ -135,8 +135,8 @@ export interface DomainPattern {
 // SDK-Specific Types
 // ═══════════════════════════════════════════════════════════════
 
-/** Information about a single node in the 40-node mesh */
-export interface NodeInfo {
+/** Information about a single primitive in the 40-primitive mesh */
+export interface PrimitiveInfo {
   id: string;
   sector: string;
   status: 'online' | 'degraded' | 'offline';
