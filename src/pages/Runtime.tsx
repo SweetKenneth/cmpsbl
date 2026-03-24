@@ -196,13 +196,13 @@ export default function Runtime() {
           >
             <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
               <Layers className="w-3 h-3 mr-1.5 inline" />
-              Baseline Runtime
+              12 Organs · 12 Layers · 8 Engines · 8 Agents
             </Badge>
              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               What You Get. <span className="text-primary">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Every user gets the full platform — all 40 primitives, all capabilities. No features are locked behind paywalls.
+              Every user gets the full substrate — all 40 primitives, all capabilities. No features are locked behind paywalls.
               Plans only control how many memory packs you can activate at once.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
