@@ -722,7 +722,7 @@ export default function IntelPanel() {
                 <MasteryItem key={i} item={item} />
               ))}
               {topicMastery.length === 0 && (
-                <p className="text-xs sm:text-sm text-muted-foreground py-4 text-center">Topic system not yet initialized.</p>
+                <p className="text-xs sm:text-sm text-muted-foreground py-4 text-center">Cognitive mastery tracking not yet initialized.</p>
               )}
             </CardContent>
           </Card>
