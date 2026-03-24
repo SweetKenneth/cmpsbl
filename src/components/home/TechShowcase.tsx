@@ -145,9 +145,9 @@ const reply = await session.send({
   {
     id: "nexus",
     icon: Zap,
-    layer: "Cognitive",
+    layer: "Organs",
     title: "NEXUS Routing",
-    description: "Intelligent AI provider selection",
+    description: "Intelligent AI provider fleet management",
     color: "text-[hsl(var(--neon-green))]",
     gradient: "from-[hsl(var(--neon-green))] to-[hsl(var(--neon-green)/0.7)]",
     code: `// Auto-route to optimal provider
