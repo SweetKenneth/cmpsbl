@@ -198,7 +198,7 @@ export default function Architecture() {
         ]}
         faq={[
           { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into 4 categories: Agents, Engines, Layers, and Organs. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
-          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like BRAIN, MEMORY, DREAM), and Agents (autonomous actors like ENCODE, DECODE, VISION).' },
+          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA).' },
           { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Engine proposes changes, SHADOW validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
         ]}
       />
