@@ -58,8 +58,11 @@ class VectorSimilarityIndex {
   async load(): Promise<number> {
     // Prevent duplicate concurrent loads
     if (this.loadingPromise) return this.loadingPromise;
-    this.loadingPromise = this._doLoad();
+    this.loadingPromise = this.doLoad();
     try { return await this.loadingPromise; } finally { this.loadingPromise = null; }
+  }
+
+  private async doLoad(): Promise<number> {
     try {
       const { data, error } = await supabase
         .from('brain_embeddings')
