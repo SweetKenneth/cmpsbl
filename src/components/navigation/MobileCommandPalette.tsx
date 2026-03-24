@@ -46,7 +46,7 @@ const ALL_ROUTES: SearchableRoute[] = [
   { name: "Documentation", href: "/documentation", section: "Build", icon: BookOpen, keywords: ["API", "reference", "guides", "docs"] },
   { name: "Builder Workspace", href: "/workspace", section: "Build", icon: Terminal, keywords: ["SDK", "terminal", "build tools"] },
   { name: "Academy", href: "/academy", section: "Build", icon: Code, keywords: ["tutorials", "learning", "courses"] },
-  { name: "CodeLab", href: "/codelab", section: "Build", icon: Terminal, keywords: ["execute", "test", "sandbox", "playground"] },
+  { name: "Developers Playground", href: "/codelab", section: "Build", icon: Terminal, keywords: ["execute", "test", "sandbox", "playground"] },
   { name: "API Access", href: "/api-access", section: "Build", icon: Code, keywords: ["keys", "quotas", "tokens"] },
   { name: "DevTools", href: "/devtools", section: "Build", icon: Terminal },
   { name: "Developer Guide", href: "/developers/guide", section: "Build", icon: BookOpen },
