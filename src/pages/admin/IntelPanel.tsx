@@ -684,7 +684,7 @@ export default function IntelPanel() {
                 <IntelCardView key={card.id} card={card} />
               ))}
               {cards.length === 0 && (
-                <p className="text-xs sm:text-sm text-muted-foreground py-8 text-center">No signals collected yet. Run a maintenance battery to populate.</p>
+                <p className="text-xs sm:text-sm text-muted-foreground py-8 text-center">No signals collected yet. Generate a proposal to populate.</p>
               )}
             </div>
           </ScrollArea>
