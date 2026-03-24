@@ -790,20 +790,19 @@ async function cmdConfig(args: string[]) {
 
 async function cmdWhoami() {
   const session = getFirstContactSession();
-  const hasKey = !!process.env.CMPSBL_API_KEY;
+  const apiKey = resolveApiKey();
+  const hasKey = !!apiKey;
   const data = {
-    apiKey: hasKey ? `***${process.env.CMPSBL_API_KEY?.slice(-4) ?? ''}` : null,
+    apiKey: hasKey ? `***${(apiKey ?? '').slice(-4)}` : null,
     endpoint: process.env.CMPSBL_ENDPOINT ?? 'api.cmpsbl.com',
     session: session?.sessionId ?? null,
     memoryBound: session?.memoryBound ?? false,
     version: CLI_VERSION,
   };
 
-  const apiKey = resolveApiKey();
-  const hasKey = !!apiKey;
   if (JSON_MODE) { jsonOut(data); return; }
   header('Identity');
-  say(`API Key:    ${hasKey ? `● Configured (***${apiKey?.slice(-4) ?? ''})` : '○ Not set'}`);
+  say(`API Key:    ${hasKey ? `● Configured (***${(apiKey ?? '').slice(-4)})` : '○ Not set'}`);
   say(`Source:     ${process.env.CMPSBL_API_KEY ? 'Environment variable' : hasKey ? '~/.cmpsbl/credentials' : 'None'}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
