@@ -471,7 +471,7 @@ console.log(costs.total, costs.by_module);`,
   {
     id: "sandbox",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Engines",
     title: "SANDBOX Isolation",
     description: "Isolated execution environments",
     color: "text-[hsl(var(--neon-cyan))]",
