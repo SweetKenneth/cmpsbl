@@ -173,7 +173,7 @@ const ARCH_CARDS = [
   {
     icon: Zap,
     title: 'Plans Scale Capacity',
-    description: 'Higher plans let you activate more packs simultaneously — the platform itself never changes.',
+    description: 'Higher plans let you activate more packs simultaneously — the substrate itself never changes.',
   },
 ];
 
