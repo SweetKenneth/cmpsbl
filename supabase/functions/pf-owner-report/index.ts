@@ -53,6 +53,8 @@ serve(async (req: Request) => {
       newUsersRes,
       // DECODE subjects studied (deduplicated)
       decodeSubjectsRes,
+      // Count of successful AI calls in 3h (for accurate health calculation)
+      aiSuccessCountRes3h,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -84,6 +86,8 @@ serve(async (req: Request) => {
       supabase.from("profiles").select("id, created_at", { count: "exact" }).gte("created_at", iso3h),
       // DECODE: all subjects/topics being studied (for dedup display)
       supabase.from("brain_events").select("data, module").in("event_type", ["technical_learning_cycle", "clm_server_cycle", "module_learning_insight", "learning"]).gte("created_at", iso3h).limit(200),
+      // FIX: Count successful AI calls separately using exact count (not data.length)
+      supabase.from("ai_usage_log").select("id", { count: "exact", head: true }).eq("success", true).gte("created_at", iso3h),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
