@@ -286,7 +286,7 @@ export default function Architecture() {
                 <div className="flex items-center gap-3 mb-6">
                   <h2 className="text-2xl font-bold">{sector.label}</h2>
                   <Badge variant="outline" className="text-xs font-mono">{sector.tag}</Badge>
-                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'node' : 'nodes'}</Badge>
+                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'primitive' : 'primitives'}</Badge>
                 </div>
                 <div className={`grid gap-3 ${sector.nodes.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : sector.nodes.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
                   {sector.nodes.map((node) => (
