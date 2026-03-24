@@ -1058,22 +1058,22 @@ export class CMPSBL {
   }
 
   /**
-   * Run a latency benchmark across all nodes.
+   * Run a latency benchmark across all primitives.
    */
   async benchmark(): Promise<SDKResponse<BenchmarkReport>> {
     const start = Date.now();
     const entries: BenchmarkEntry[] = [];
-    for (const node of NODE_REGISTRY) {
+    for (const prim of PRIMITIVE_REGISTRY) {
       const pingStart = Date.now();
       try {
         await fetch(`${this.config.endpoint}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-          body: JSON.stringify({ action: 'ping', node: node.id }),
+          body: JSON.stringify({ action: 'ping', primitive: prim.id }),
         });
-        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+        entries.push({ primitive: prim.id, category: prim.sector, latencyMs: Date.now() - pingStart, rank: 0 });
       } catch {
-        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+        entries.push({ primitive: prim.id, category: prim.sector, latencyMs: Date.now() - pingStart, rank: 0 });
       }
     }
     entries.sort((a, b) => a.latencyMs - b.latencyMs);
