@@ -70,6 +70,16 @@ const CLI_CONFIG: FirstContactConfig = {
   apiKey: process.env.CMPSBL_API_KEY,
   autoDiscover: true,
   onBoot: (msg) => { if (!JSON_MODE) say(msg); },
+  onCeremony: (event) => {
+    if (JSON_MODE) { jsonOut({ event: 'ceremony', ...event }); return; }
+    if (event.phase === 'sector_boot') {
+      const bar = progressBar(event.nodesOnline ?? 0, event.totalNodes ?? 40, 20);
+      say(`${event.message.padEnd(55)} ${bar}`);
+    } else {
+      say(event.message);
+      if (event.detail) say(`  ${event.detail}`);
+    }
+  },
   onDiscovery: (chain) => {
     if (JSON_MODE) { jsonOut({ event: 'discovery', chain }); return; }
     blank();
@@ -258,11 +268,9 @@ function printHelp() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdOnboarding() {
-  // ── Phase 1: Silent dramatic pause ──
+  // ── ASCII Logo ──
   blank();
   await sleep(400);
-
-  // ── Phase 2: System awakening — character-by-character title ──
   const logo = [
     '   ██████╗ ███╗   ███╗██████╗ ███████╗██████╗ ██╗     ®',
     '  ██╔════╝ ████╗ ████║██╔══██╗██╔════╝██╔══██╗██║      ',
@@ -276,55 +284,18 @@ async function cmdOnboarding() {
     await sleep(60);
   }
   await sleep(300);
-
-  // ── Phase 3: Boot heartbeat ──
-  const heartbeat = pulseSpinner('Substrate heartbeat detected');
-  await sleep(1200);
-  heartbeat.stop('Heartbeat locked');
-
-  // ── Phase 4: Staged sector boot ──
-  const sectors = [
-    { name: 'CORE',     nodes: ['CORE', 'SYSTEM'],                         delay: 400 },
-    { name: 'CCR',      nodes: ['BRAIN', 'MEMORY', 'DREAM'],               delay: 350 },
-    { name: 'OCG',      nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY'],  delay: 300 },
-    { name: 'EXEC',     nodes: ['ENCODE', 'DECODE', 'CORTEX', 'NEXUS'],    delay: 300 },
-    { name: 'ESZ',      nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE'],       delay: 250 },
-    { name: 'EPZ',      nodes: ['COMPASS', 'ECHO', 'REFLEX'],              delay: 250 },
-    { name: 'EMZ',      nodes: ['FORGE', 'LINGUA', 'HARVEST'],             delay: 250 },
-    { name: 'CSZ',      nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'],         delay: 300 },
-    { name: 'FIELDS',   nodes: ['IMMUNITY', 'INTENT'],                     delay: 200 },
-    { name: 'PLANE',    nodes: ['GOVERNANCE'],                              delay: 200 },
-    { name: 'SHELL',    nodes: ['DEFENSE', 'ENGINEER'],                    delay: 250 },
-  ];
-
   blank();
+
+  // ── Run the shared First Contact Ceremony ──
+  // The ceremony emits phases via onCeremony callback in CLI_CONFIG
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
-  say('  BOOT SEQUENCE — 40-NODE MESH INITIALIZATION');
+  say('  FIRST CONTACT — COGNITIVE SUBSTRATE CEREMONY');
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
   blank();
 
-  let totalBooted = 0;
-  for (const sector of sectors) {
-    const s = meshSpinner(`Sector ${sector.name}`);
-    await sleep(sector.delay);
-    totalBooted += sector.nodes.length;
-    s.stop(`${sector.name.padEnd(8)} ── ${sector.nodes.join(' · ').padEnd(40)} ${progressBar(totalBooted, 40, 20)}`);
-  }
+  await initFirstContact(CLI_CONFIG);
 
-  blank();
-  say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
-
-  // ── Phase 5: Mesh handshake ──
-  blank();
-  const mesh = spinner('Establishing mesh handshake');
-  await sleep(800);
-  mesh.update('Binding signal pathways');
-  await sleep(600);
-  mesh.update('Memory stream online');
-  await sleep(400);
-  mesh.stop('Cognitive loop established');
-
-  // ── Phase 6: Identity flash ──
+  // ── Identity flash ──
   blank();
   box([
     'Cognitive Substrate v' + CLI_VERSION,
@@ -337,20 +308,7 @@ async function cmdOnboarding() {
   ], 'CMPSBL®');
   blank();
 
-  // ── Phase 7: API key check ──
-  const hasKey = !!process.env.CMPSBL_API_KEY;
-  if (hasKey) {
-    say('◈ API key detected — persistent memory enabled.');
-  } else {
-    say('◇ No CMPSBL_API_KEY detected.');
-    say('  Local discovery mode (no persistence).');
-    blank();
-    say('  To connect:');
-    say('    export CMPSBL_API_KEY="pf_live_xxxxxxxxxxxxx"');
-  }
-  blank();
-
-  // ── Phase 8: Prompt ──
+  // ── Project prompt ──
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
     rl.question('  Initialize a new project here? (y/n) ', async (answer) => {

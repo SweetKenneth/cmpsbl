@@ -41,6 +41,25 @@ export interface FirstContactSession {
   chains: MemoryChain[];
 }
 
+export type CeremonyPhase =
+  | 'awakening'       // Initial substrate detection
+  | 'handshake'       // Package identity exchange
+  | 'sector_boot'     // 12-sector staged boot
+  | 'mesh_bind'       // Mesh signal pathway binding
+  | 'memory_sync'     // Memory Stream connection
+  | 'discovery_arm'   // Discovery engine armed
+  | 'ceremony_complete'; // Full ceremony done
+
+export interface CeremonyEvent {
+  phase: CeremonyPhase;
+  message: string;
+  detail?: string;
+  progress?: number;       // 0–100
+  sector?: string;
+  nodesOnline?: number;
+  totalNodes?: number;
+}
+
 export interface FirstContactConfig {
   /** Package identifier (e.g., '@cmpsbl/sdk') */
   package: string;
@@ -54,8 +73,12 @@ export interface FirstContactConfig {
   autoDiscover?: boolean;
   /** Callback for discovered chains */
   onDiscovery?: (chain: MemoryChain) => void;
-  /** Callback for boot sequence messages */
+  /** Callback for boot sequence messages (legacy) */
   onBoot?: (message: string) => void;
+  /** Callback for cinematic ceremony events */
+  onCeremony?: (event: CeremonyEvent) => void;
+  /** Skip ceremony for CI/headless environments */
+  silent?: boolean;
 }
 
 // ═══════════════════════════════════════════════════════════════

@@ -1,7 +1,7 @@
 /**
- * @cmpsbl/runtime — First Contact Engine
- * Core first-contact logic shared across all @cmpsbl packages.
- * Connects to the real Memory Stream and generates actual memory chains.
+ * @cmpsbl/runtime — First Contact Ceremony Engine
+ * Cinematic boot sequence shared across all 11 @cmpsbl packages.
+ * When a developer first connects, they experience the substrate waking up.
  *
  * © CMPSBL® — All rights reserved.
  */
@@ -17,6 +17,8 @@ import type {
   ExportResult,
   PackageDomain,
   DOMAIN_PATTERNS,
+  CeremonyEvent,
+  CeremonyPhase,
 } from '@cmpsbl/types';
 
 // ═══════════════════════════════════════════════════════════════
@@ -36,16 +38,140 @@ function generateSessionId(): string {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Boot Sequence
+// Ceremony — Cinematic Boot Sequence
 // ═══════════════════════════════════════════════════════════════
 
-const BOOT_MESSAGES = [
-  '✔ Initializing cognitive environment...',
-  '✔ Connecting to Memory Stream...',
-  '✔ Binding user memory...',
-  '✔ Syncing discovery engine...',
-  '✔ Ready',
-];
+const CEREMONY_SECTORS = [
+  { sector: 'CORE',   nodes: ['CORE', 'SYSTEM'] },
+  { sector: 'CCR',    nodes: ['BRAIN', 'MEMORY', 'DREAM'] },
+  { sector: 'OCG',    nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT', 'NERVE'] },
+  { sector: 'EXEC',   nodes: ['ENCODE', 'DECODE', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'INTEGRATION'] },
+  { sector: 'ESZ',    nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'] },
+  { sector: 'EPZ',    nodes: ['COMPASS', 'ECHO', 'REFLEX'] },
+  { sector: 'EMZ',    nodes: ['FORGE', 'LINGUA', 'HARVEST'] },
+  { sector: 'CSZ',    nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'] },
+  { sector: 'FIELDS', nodes: ['IMMUNITY', 'INTENT'] },
+  { sector: 'PLANE',  nodes: ['GOVERNANCE'] },
+  { sector: 'SHELL',  nodes: ['DEFENSE', 'VISION', 'ENGINEER'] },
+] as const;
+
+const TOTAL_NODES = 40;
+
+const PACKAGE_GREETINGS: Record<string, string> = {
+  '@cmpsbl/cli':          'Terminal bridge established. You speak, the mesh listens.',
+  '@cmpsbl/sdk':          'SDK bound. Full cognitive surface available.',
+  '@cmpsbl/runtime':      'Runtime initialized. Mini-Runtime™ active.',
+  '@cmpsbl/react':        'React hooks connected. UI ↔ Substrate bridge live.',
+  '@cmpsbl/intent':       'Intent router online. Every action finds its resolver.',
+  '@cmpsbl/mesh':         'Mesh layer active. 40 primitives signaling.',
+  '@cmpsbl/bridge':       'Polyglot bridge ready. One runtime, many languages.',
+  '@cmpsbl/discovery':    'Discovery engine armed. Memory chains forming.',
+  '@cmpsbl/failsafe':     'FAILSAFE standing by. Recovery pathways mapped.',
+  '@cmpsbl/test-harness': 'Test harness loaded. Validation surface ready.',
+  '@cmpsbl/types':        'Type contracts enforced. Schema integrity locked.',
+};
+
+async function runCeremony(config: FirstContactConfig): Promise<void> {
+  if (config.silent) return;
+
+  const emit = (event: CeremonyEvent) => {
+    config.onCeremony?.(event);
+    // Legacy support: also fire onBoot with the message
+    config.onBoot?.(event.message);
+  };
+
+  // ── Phase 1: Awakening ──
+  emit({
+    phase: 'awakening',
+    message: '◈ Substrate heartbeat detected...',
+    progress: 0,
+  });
+  await delay(300);
+
+  emit({
+    phase: 'awakening',
+    message: '◈ Cognitive runtime responding...',
+    progress: 5,
+  });
+  await delay(250);
+
+  // ── Phase 2: Handshake — identify which package is connecting ──
+  const greeting = PACKAGE_GREETINGS[config.package] ?? `${config.package} connected to substrate.`;
+  emit({
+    phase: 'handshake',
+    message: `◈ Package: ${config.package}`,
+    detail: greeting,
+    progress: 10,
+  });
+  await delay(300);
+
+  emit({
+    phase: 'handshake',
+    message: `◈ Domain: ${config.domain}`,
+    detail: config.apiKey ? 'Authenticated — persistent memory enabled' : 'Local mode — ephemeral memory',
+    progress: 15,
+  });
+  await delay(200);
+
+  // ── Phase 3: Sector Boot — walk through all 12 sectors ──
+  let nodesOnline = 0;
+  for (const { sector, nodes } of CEREMONY_SECTORS) {
+    nodesOnline += nodes.length;
+    const progress = 15 + Math.round((nodesOnline / TOTAL_NODES) * 60);
+    emit({
+      phase: 'sector_boot',
+      message: `▸ Sector ${sector} — ${nodes.join(' · ')}`,
+      sector,
+      nodesOnline,
+      totalNodes: TOTAL_NODES,
+      progress,
+    });
+    await delay(120);
+  }
+
+  // ── Phase 4: Mesh Bind ──
+  emit({
+    phase: 'mesh_bind',
+    message: '◈ Signal mesh binding...',
+    detail: '40 primitives · 12 sectors · 4 categories',
+    progress: 80,
+    nodesOnline: TOTAL_NODES,
+    totalNodes: TOTAL_NODES,
+  });
+  await delay(250);
+
+  // ── Phase 5: Memory Sync ──
+  emit({
+    phase: 'memory_sync',
+    message: config.apiKey
+      ? '◈ Memory Stream connected — chains persisting'
+      : '◈ Memory Stream local — connect API key to persist',
+    progress: 90,
+  });
+  await delay(200);
+
+  // ── Phase 6: Discovery Armed ──
+  emit({
+    phase: 'discovery_arm',
+    message: '◈ Discovery engine armed. Every interaction leaves a trace.',
+    progress: 95,
+  });
+  await delay(150);
+
+  // ── Phase 7: Complete ──
+  emit({
+    phase: 'ceremony_complete',
+    message: `✔ ${greeting}`,
+    detail: 'The mesh is alive.',
+    progress: 100,
+    nodesOnline: TOTAL_NODES,
+    totalNodes: TOTAL_NODES,
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Initialization
+// ═══════════════════════════════════════════════════════════════
 
 export async function initFirstContact(config: FirstContactConfig): Promise<FirstContactSession> {
   const session: FirstContactSession = {
@@ -59,11 +185,8 @@ export async function initFirstContact(config: FirstContactConfig): Promise<Firs
     chains: [],
   };
 
-  // Boot sequence — emit messages
-  for (const msg of BOOT_MESSAGES) {
-    config.onBoot?.(msg);
-    await delay(150);
-  }
+  // Run cinematic ceremony
+  await runCeremony(config);
 
   // Bind user memory
   if (config.apiKey && config.endpoint) {
