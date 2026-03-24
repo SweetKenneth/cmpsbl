@@ -211,10 +211,10 @@ export interface LogEntry {
   message: string;
 }
 
-/** Benchmark result for a single node */
+/** Benchmark result for a single primitive */
 export interface BenchmarkEntry {
-  node: string;
-  sector: string;
+  primitive: string;
+  category: string;
   latencyMs: number;
   rank: number;
 }
