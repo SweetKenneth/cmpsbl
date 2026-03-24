@@ -184,7 +184,7 @@ const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
   domain: 'cli',
   endpoint: process.env.CMPSBL_ENDPOINT ?? 'https://api.cmpsbl.com/v1/substrate',
-  apiKey: process.env.CMPSBL_API_KEY,
+  apiKey: resolveApiKey(),
   autoDiscover: true,
   onBoot: (msg) => { if (!JSON_MODE) say(msg); },
   onCeremony: (event) => {
