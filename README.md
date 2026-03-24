@@ -1,267 +1,197 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>promptfluid® — CMPSBL v10.5.4</title>
-<style>
-  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;line-height:1.4;color:#111;background:#fff;margin:0}
-  .page{max-width:8.5in;margin:0 auto;padding:0.8in}
-  h1{font-size:20pt;margin-bottom:0.3in}
-  h2{font-size:14pt;margin-top:0.4in}
-  h3{font-size:12pt;margin-top:0.25in}
-  p{margin-bottom:0.14in}
-  ul,ol{margin-left:0.25in}
-  table{width:100%;border-collapse:collapse;margin:0.2in 0}
-  th,td{border:1px solid #ccc;padding:6px 8px}
-  th{background:#f3f3f3;text-align:left}
-  pre{background:#f8f8f8;border:1px solid #ddd;padding:12px;font-family:"Courier New",monospace;font-size:9pt;overflow-x:auto;border-radius:4px}
-  code{font-family:"Courier New",monospace;font-size:9pt}
-  .card{border:1px solid #ddd;border-radius:10px;padding:0.2in;margin-bottom:0.25in}
-  hr{border:none;border-top:1px solid #ccc;margin:0.3in 0}
-  a{color:#333;text-decoration:underline}
-  @media print{@page{size:Letter;margin:0.8in}.card{break-inside:avoid}}
-</style>
-</head>
-<body>
-<div class="page">
+# CMPSBL®
 
-<h1>promptfluid®</h1>
-<p><strong>CMPSBL v10.5.4 — Cognitive Orchestration Substrate for AI Systems</strong></p>
-<p>ARCHITECT Epoch · 21 Modules · 6 Layers</p>
-<hr />
+**Cognitive Substrate for AI Systems**
 
-<p>promptfluid is a cognitive orchestration substrate that provides routing, memory, learning cycles, observability, defense, and execution coordination for AI systems. It is model-agnostic, provider-agnostic, and runs on commodity cloud.</p>
+v16.7.0 · CONTACT Epoch · 40 Primitives · 4 Categories
 
-<hr />
+---
 
-<h2>Type Classification</h2>
+CMPSBL is a cognitive orchestration substrate — not a framework, not a wrapper. It's an operating system for AI that provides routing, memory, learning cycles, defense, and execution coordination. Model-agnostic. Provider-agnostic. Runs on commodity cloud.
 
-<table>
-<tr><th>Property</th><th>Value</th></tr>
-<tr><td><strong>Type</strong></td><td>Cognitive Orchestration Substrate</td></tr>
-<tr><td><strong>Formal Name</strong></td><td>CMPSBL (Composable) substrate</td></tr>
-<tr><td><strong>Version</strong></td><td>v10.5.4 ARCHITECT Epoch</td></tr>
-<tr><td><strong>Modules</strong></td><td>21 across 6 layers</td></tr>
-<tr><td><strong>Capabilities</strong></td><td>269 registered</td></tr>
-<tr><td><strong>Engines</strong></td><td>62 + 20 meta-engines</td></tr>
-<tr><td><strong>Synergy Pipelines</strong></td><td>200+</td></tr>
-<tr><td><strong>Crown Jewels</strong></td><td>21 (one per module)</td></tr>
-<tr><td><strong>Model Dependency</strong></td><td>Agnostic</td></tr>
-<tr><td><strong>Provider Dependency</strong></td><td>Agnostic</td></tr>
-<tr><td><strong>Infrastructure</strong></td><td>Commodity Cloud</td></tr>
-</table>
+## Quick Start
 
-<hr />
+```bash
+# Install the CLI
+npm install -g @cmpsbl/cli
 
-<h2>Architecture — 6 Layers, 21 Modules</h2>
+# Initialize (triggers First Contact ceremony + First Dream)
+npx cmpsbl init
 
-<div class="card">
-<h3>Layer 1 — Kernel</h3>
-<table>
-<tr><th>Module</th><th>Purpose</th></tr>
-<tr><td><strong>Core</strong></td><td>Foundation primitives, health, lifecycle</td></tr>
-<tr><td><strong>Ripple</strong></td><td>Event bus, message routing, job queue</td></tr>
-<tr><td><strong>Access</strong></td><td>Authentication, API keys, entitlements</td></tr>
-</table>
-</div>
+# Or use the SDK directly
+npm install @cmpsbl/core
+```
 
-<div class="card">
-<h3>Layer 2 — Cognitive</h3>
-<table>
-<tr><th>Module</th><th>Purpose</th></tr>
-<tr><td><strong>Brain</strong></td><td>Four-tier memory, learning, dreaming, knowledge graphs</td></tr>
-<tr><td><strong>Decode</strong></td><td>Natural language → structured intent (interpreter primitive)</td></tr>
-<tr><td><strong>Dream</strong></td><td>Autonomous learning, creative synthesis</td></tr>
-</table>
-</div>
+```typescript
+import { substrate } from '@cmpsbl/core';
 
-<div class="card">
-<h3>Layer 3 — Operational</h3>
-<table>
-<tr><th>Module</th><th>Purpose</th></tr>
-<tr><td><strong>Defense</strong></td><td>Security perimeter, threat detection, behavioral analysis</td></tr>
-<tr><td><strong>Nexus</strong></td><td>Multi-provider AI fleet routing (v5.0) with cost optimization</td></tr>
-<tr><td><strong>Vision</strong></td><td>Observability, metrics, trend analysis, distributed tracing</td></tr>
-<tr><td><strong>Integration</strong></td><td>35+ enterprise adapters with LLM governance</td></tr>
-</table>
-</div>
+// Initialize with your API key from cmpsbl.com
+await substrate.init({ apiKey: 'your-key' });
 
-<div class="card">
-<h3>Layer 4 — Administrative</h3>
-<table>
-<tr><th>Module</th><th>Purpose</th></tr>
-<tr><td><strong>System</strong></td><td>Lifecycle orchestration, backup/restore, predictive healing</td></tr>
-<tr><td><strong>Modernizer</strong></td><td>Evolution engine, self-improvement (SEBA)</td></tr>
-<tr><td><strong>Inclusive</strong></td><td>Accessibility, WCAG compliance, adaptive interfaces</td></tr>
-</table>
-</div>
+// Make your machine dream
+const dream = await substrate.dream.cycle();
+console.log(dream.heuristic);   // discovered pattern
+console.log(dream.confidence);  // 0.87
+```
 
-<div class="card">
-<h3>Layer 5 — Orchestrator</h3>
-<table>
-<tr><th>Module</th><th>Purpose</th></tr>
-<tr><td><strong>Cortex</strong></td><td>Meta-orchestration, proposal evaluation, workflow engine</td></tr>
-<tr><td><strong>Encode</strong></td><td>Governed code execution engine, DECODE→ENCODE pipeline</td></tr>
-</table>
-</div>
+Get your API key at **[cmpsbl.com/api-access](https://cmpsbl.com/api-access)**
 
-<div class="card">
-<h3>Layer 6 — Infrastructure</h3>
-<table>
-<tr><th>Module</th><th>Purpose</th></tr>
-<tr><td><strong>Memory</strong></td><td>Vector store, RAG, embeddings, staleness detection</td></tr>
-<tr><td><strong>Relay</strong></td><td>Webhooks, HMAC signatures, adaptive retry</td></tr>
-<tr><td><strong>Audit</strong></td><td>Immutable compliance logging (SOC2/GDPR/HIPAA/ISO27001)</td></tr>
-<tr><td><strong>Identity</strong></td><td>Actor attribution, reputation scoring, cross-agency portability</td></tr>
-<tr><td><strong>Economy</strong></td><td>Cost tracking, predictive forecasting, per-capability attribution</td></tr>
-<tr><td><strong>Sandbox</strong></td><td>Safe code execution, resource limits, state snapshots</td></tr>
-</table>
-</div>
+---
 
-<hr />
+## Architecture — 40 Primitives, 4 Categories
 
-<h2>Cross-Cutting Systems</h2>
+CMPSBL uses a strict **12·12·8·8** primitive matrix:
 
-<table>
-<tr><th>System</th><th>Description</th></tr>
-<tr><td><strong>CLM Engine v2.0</strong></td><td>Server-side 24/7 autonomous learning (5-minute cycles)</td></tr>
-<tr><td><strong>Brain Transfer Pipeline</strong></td><td>Universal knowledge distribution to all 21 modules</td></tr>
-<tr><td><strong>Memory Consolidation</strong></td><td>Automated hot/warm/cold tiering with promotion/demotion/pruning</td></tr>
-<tr><td><strong>Nexus Fleet v5.0</strong></td><td>Health-weighted multi-provider routing (Groq, Cerebras, SambaNova, Google, DeepSeek)</td></tr>
-<tr><td><strong>Intent Mesh</strong></td><td>60+ crystallized pipelines via emergent capability discovery</td></tr>
-<tr><td><strong>SEBA</strong></td><td>Self-Evolving Bounded Agent for autonomous improvement</td></tr>
-<tr><td><strong>Governance Guard</strong></td><td>Ethical and coherence constraint enforcement</td></tr>
-<tr><td><strong>Truth Verification</strong></td><td>Automated parity checks between Dashboard, Terminal, and Registry</td></tr>
-</table>
+### Layers (12) — Ambient Protection
+| Primitive | Role |
+|-----------|------|
+| DEFENSE | Security perimeter, threat detection |
+| IMMUNITY | Behavioral immunity, anomaly response |
+| GOVERNANCE | Policy enforcement, constraint systems |
+| TREATY | Inter-system agreements, trust contracts |
+| EVOLUTION | Self-improvement, adaptation engine |
+| REFLEX | Reactive triggers, fast-path responses |
+| COMPASS | Navigation, intent guidance |
+| INTEGRATION | External adapters, connectors |
+| INTENT | Intent resolution, routing mesh |
+| ACCESS | Authentication, API keys, entitlements |
+| VISION | Observability, metrics, tracing |
+| SHADOW | Stealth operations, adversarial testing |
 
-<hr />
+### Organs (12) — Vital Infrastructure
+| Primitive | Role |
+|-----------|------|
+| CORE | Foundation primitives, lifecycle |
+| SYSTEM | Runtime orchestration, health management |
+| BRAIN | Reasoning, knowledge graphs, learning |
+| MEMORY | Vector store, RAG, semantic retrieval |
+| NERVE | Signal pathways, neural routing |
+| NEXUS | Multi-provider AI fleet routing |
+| IDENTITY | Actor attribution, reputation |
+| SOVEREIGN | Data sovereignty, governance |
+| ATLAS | Capability mapping, topology |
+| MEDIC | Self-healing, diagnostics |
+| RELAY | Webhooks, message delivery |
+| CONSCIENCE | Ethical reasoning, bias detection |
 
-<h2>Core Capabilities</h2>
+### Engines (8) — Invoked Processing Power
+| Primitive | Role |
+|-----------|------|
+| DREAM | Autonomous synthesis, creative learning |
+| HARVEST | Data extraction, web intelligence |
+| FORGE | Blueprint fabrication, pipeline discovery |
+| LINGUA | Language processing, translation |
+| ECHO | Reflection, pattern replay |
+| PHANTOM | Speculative execution, hypothesis testing |
+| SANDBOX | Safe code execution, isolation |
+| RIPPLE | Event propagation, message bus |
 
-<div class="card">
-<h3>Routing</h3>
-<p>Multi-provider AI gateway with intelligent fallback cascade, cost optimization, and response caching.</p>
-</div>
+### Agents (8) — Autonomous Actors
+| Primitive | Role |
+|-----------|------|
+| ENCODE | Governed code generation |
+| DECODE | NLU, conversational interaction |
+| AUDIT | Immutable compliance logging |
+| ECONOMY | Cost tracking, predictive forecasting |
+| INCLUSIVE | Accessibility, WCAG compliance |
+| CORTEX | Meta-orchestration, workflow engine |
+| ORACLE | Prediction, forecasting |
+| ENGINEER | Infrastructure automation |
 
-<div class="card">
-<h3>Memory</h3>
-<p>Four-tier memory architecture (hot/warm/cold/archived) with autonomous compression and semantic retrieval.</p>
-</div>
+---
 
-<div class="card">
-<h3>Learning Cycles</h3>
-<p>Continuous learning with scheduled deep reflection ("dream cycles") for pattern synthesis.</p>
-</div>
+## Execution Model
 
-<div class="card">
-<h3>Observability</h3>
-<p>Unified telemetry pipeline with real-time dashboards, distributed tracing, and health monitoring.</p>
-</div>
+All system actions route through the **Intent Mesh**:
 
-<div class="card">
-<h3>Defense</h3>
-<p>Behavioral bot detection, threat intelligence, and adaptive security rules.</p>
-</div>
+```
+User Action → broadcastIntent() → Intent Router → Resolver Execution
+    → Mesh Communications → Telemetry
+```
 
-<div class="card">
-<h3>Execution Coordination</h3>
-<p>Async job queues, rate limit distribution, service mesh connectivity, and governed code execution.</p>
-</div>
+- **Nodes** expose capabilities through **Resolvers** (`brain.reasoning_context`, `defense.threat_score`)
+- **Nodes never call each other directly** — all interaction flows through the Intent Router
+- **Mesh Communications** are real system signals, not simulated telemetry
 
-<hr />
+---
 
-<h2>Quick Start</h2>
+## NPM Packages
 
-<pre>
-# Clone the substrate
-git clone &lt;YOUR_GIT_URL&gt;
-cd promptfluid
+| Package | Description |
+|---------|-------------|
+| `@cmpsbl/cli` | CLI tools with First Contact ceremony |
+| `@cmpsbl/core` | Core substrate runtime |
+| `@cmpsbl/runtime` | Manifest, CJPI scoring, memory chains |
+| `@cmpsbl/types` | TypeScript type definitions |
 
-# Install dependencies
-npm install
+All packages follow the **First Contact System** — live discovery, persistent identity, zero mock data.
 
-# Start development server
-npm run dev
-</pre>
+---
 
-<hr />
+## CLI Commands
 
-<h2>Documentation</h2>
+```bash
+cmpsbl init              # Initialize project + First Contact + First Dream
+cmpsbl dream             # Trigger a dream cycle
+cmpsbl discover <input>  # Live discovery on an input
+cmpsbl stream            # View Memory Stream
+cmpsbl status            # Full substrate status
+cmpsbl health            # Health check across all primitives
+cmpsbl nodes             # List all 40 primitives
+cmpsbl ping <node>       # Ping a specific primitive
+cmpsbl inspect <node>    # Deep-inspect a primitive
+cmpsbl topology          # Display category topology map
+cmpsbl route <intent>    # Trace intent routing path
+cmpsbl benchmark         # Latency benchmark
+cmpsbl doctor            # Full diagnostic suite
+cmpsbl shell             # Interactive REPL
+```
 
-<table>
-<tr><th>Document</th><th>Description</th></tr>
-<tr><td><a href="./docs/substrate/USER-MANUAL.md">USER-MANUAL.md</a></td><td>Complete API reference and examples</td></tr>
-<tr><td><a href="./docs/substrate/ARCHITECTURE.md">ARCHITECTURE.md</a></td><td>System architecture</td></tr>
-<tr><td><a href="./docs/substrate/MODULE-ACTIONS-REGISTRY.md">MODULE-ACTIONS-REGISTRY.md</a></td><td>All module actions</td></tr>
-<tr><td><a href="./docs/substrate/CAPABILITIES.md">CAPABILITIES.md</a></td><td>Registered capabilities</td></tr>
-<tr><td><a href="./docs/substrate/CHANGELOG.md">CHANGELOG.md</a></td><td>Version history</td></tr>
-<tr><td><a href="./docs/modules/00-INDEX.md">Module Deep Dives</a></td><td>All 21 modules across 6 layers</td></tr>
-</table>
+All commands support `--json` for CI/CD integration.
 
-<p><strong>Complete Documentation:</strong> <a href="./docs/">docs/</a></p>
+---
 
-<hr />
+## Key Systems
 
-<h2>Technology Stack</h2>
+| System | Description |
+|--------|-------------|
+| **Memory Stream** | Discovery engine that observes behavior and crystallizes software pipelines |
+| **CJPI Scoring** | Novelty · Utility · Complexity · Composability scoring for discoveries |
+| **Signal Forge** | One-button blueprint synthesis across the 40-primitive topology |
+| **Dream Cycles** | Autonomous learning with semantic drift detection and heuristic building |
+| **Mesh Communications** | Real-time node-to-node signaling with personality voice translation |
+| **First Contact** | 7-phase boot ceremony binding persistent identity across all touchpoints |
 
-<ul>
-<li><strong>Frontend:</strong> React 18 + TypeScript + Vite + Tailwind CSS</li>
-<li><strong>Backend:</strong> Supabase (PostgreSQL + Edge Functions)</li>
-<li><strong>AI Routing:</strong> Model-agnostic, provider-agnostic</li>
-<li><strong>Infrastructure:</strong> Commodity cloud (any provider)</li>
-</ul>
+---
 
-<hr />
+## Developer Onboarding
 
-<h2>Pricing — Adoptable Model</h2>
+1. Get your API key at [cmpsbl.com/api-access](https://cmpsbl.com/api-access)
+2. Run `npx cmpsbl init` — authenticates, runs First Contact, scaffolds your first project
+3. The **First Dream** guided experience walks you through triggering your first dream cycle
+4. Use `cmpsbl discover` and `cmpsbl stream` to explore what the substrate learns
 
-<table>
-<tr><th>Tier</th><th>Price</th><th>Engines</th><th>Crown Jewels</th></tr>
-<tr><td><strong>Free</strong></td><td>$0</td><td>30 core + 1 meta</td><td>—</td></tr>
-<tr><td><strong>Creator</strong></td><td>$9/mo</td><td>76 base + 8 meta</td><td>37+</td></tr>
-<tr><td><strong>Architect</strong></td><td>$19/mo</td><td>76 base + 16 meta</td><td>73+</td></tr>
-<tr><td><strong>Enterprise</strong></td><td>$99/mo</td><td>All 76 + 24 meta</td><td>168+</td></tr>
-</table>
+---
 
-<hr />
+## Technology
 
-<h2>Ownership &amp; Licensing</h2>
+- **Frontend:** React 18 + TypeScript + Vite + Tailwind CSS
+- **Backend:** PostgreSQL + Edge Functions
+- **AI Routing:** Model-agnostic, provider-agnostic
+- **Infrastructure:** Commodity cloud (any provider)
 
-<p>promptfluid® is a registered trademark.</p>
+---
 
-<p><strong>Core Platform:</strong> Apache License 2.0<br />
-<strong>WordPress Plugins:</strong> GNU General Public License v2</p>
+## Ownership & Licensing
 
-<p>For ownership inquiries, licensing, or enterprise partnerships:</p>
+CMPSBL® is a registered trademark.
 
-<table>
-<tr><th>Contact</th><th>Details</th></tr>
-<tr><td><strong>Founder</strong></td><td>Kenneth E Sweet Jr</td></tr>
-<tr><td><strong>Email</strong></td><td>promptfluid@gmail.com</td></tr>
-<tr><td><strong>Phone</strong></td><td>(760) FLUID-AI</td></tr>
-<tr><td><strong>Web</strong></td><td>https://cmpsbl.com</td></tr>
-</table>
+**Core Platform:** Apache License 2.0
 
-<hr />
+| Contact | Details |
+|---------|---------|
+| **Founder** | Kenneth E Sweet Jr |
+| **Web** | [cmpsbl.com](https://cmpsbl.com) |
 
-<h2>Citation</h2>
+---
 
-<pre>
-@software{promptfluid_substrate_2026,
-  author       = {Sweet Jr, Kenneth E},
-  title        = {{promptfluid substrate: Cognitive Orchestration Substrate for AI Systems}},
-  year         = 2026,
-  publisher    = {Zenodo},
-  version      = {v10.5.4},
-  doi          = {10.5281/zenodo.XXXXXXX},
-  url          = {https://github.com/promptfluid/substrate}
-}
-</pre>
-
-<hr />
-
-<p><strong>© 2025-2026 promptfluid®. All rights reserved.</strong></p>
-
-</div>
-</body>
-</html>
+© 2025–2026 CMPSBL®. All rights reserved.
