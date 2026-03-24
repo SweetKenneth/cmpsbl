@@ -403,6 +403,11 @@ async function cmdOnboarding() {
   await sleep(300);
   blank();
 
+  // ── Mandatory API key gate ──
+  const apiKey = await requireApiKey();
+  CLI_CONFIG.apiKey = apiKey;
+  blank();
+
   // ── Run the shared First Contact Ceremony ──
   // The ceremony emits phases via onCeremony callback in CLI_CONFIG
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
