@@ -155,9 +155,9 @@ export interface SubstrateStatus {
   sessionId: string | null;
 }
 
-/** Result of pinging a specific node */
+/** Result of pinging a specific primitive */
 export interface PingResult {
-  node: string;
+  primitive: string;
   latencyMs: number;
   status: string;
   health: number;
