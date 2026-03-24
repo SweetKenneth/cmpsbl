@@ -6217,7 +6217,21 @@ class DriftPreventionEngine {
   }
   
   private calculateDelta(a: any, b: any): number {
-    return Math.random() * 0.2; // Simplified - real impl uses vector similarity
+    // Cosine-inspired key overlap similarity
+    const keysA = Object.keys(a ?? {});
+    const keysB = Object.keys(b ?? {});
+    if (keysA.length === 0 && keysB.length === 0) return 0;
+    const allKeys = new Set([...keysA, ...keysB]);
+    let dotProduct = 0, magA = 0, magB = 0;
+    for (const k of allKeys) {
+      const va = typeof a?.[k] === 'number' ? a[k] : (a?.[k] ? 1 : 0);
+      const vb = typeof b?.[k] === 'number' ? b[k] : (b?.[k] ? 1 : 0);
+      dotProduct += va * vb;
+      magA += va * va;
+      magB += vb * vb;
+    }
+    const magnitude = Math.sqrt(magA) * Math.sqrt(magB);
+    return magnitude > 0 ? 1 - (dotProduct / magnitude) : 0;
   }
 }
 
