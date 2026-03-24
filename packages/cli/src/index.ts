@@ -258,29 +258,100 @@ function printHelp() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdOnboarding() {
-  header('Welcome to CMPSBL®');
-  
-  await animatedList([
-    '◈ This is the Cognitive Substrate CLI.',
-    '◈ It connects to a 40-node mesh intelligence runtime.',
-    '◈ Every interaction forms memory chains that crystallize into reusable patterns.',
-    '',
-    'Let\'s get you set up.',
-  ], 150);
+  // ── Phase 1: Silent dramatic pause ──
+  blank();
+  await sleep(400);
+
+  // ── Phase 2: System awakening — character-by-character title ──
+  const logo = [
+    '   ██████╗ ███╗   ███╗██████╗ ███████╗██████╗ ██╗     ®',
+    '  ██╔════╝ ████╗ ████║██╔══██╗██╔════╝██╔══██╗██║      ',
+    '  ██║      ██╔████╔██║██████╔╝███████╗██████╔╝██║      ',
+    '  ██║      ██║╚██╔╝██║██╔═══╝ ╚════██║██╔══██╗██║      ',
+    '  ╚██████╗ ██║ ╚═╝ ██║██║     ███████║██████╔╝███████╗ ',
+    '   ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝ ╚══════╝ ',
+  ];
+  for (const line of logo) {
+    console.log(line);
+    await sleep(60);
+  }
+  await sleep(300);
+
+  // ── Phase 3: Boot heartbeat ──
+  const heartbeat = pulseSpinner('Substrate heartbeat detected');
+  await sleep(1200);
+  heartbeat.stop('Heartbeat locked');
+
+  // ── Phase 4: Staged sector boot ──
+  const sectors = [
+    { name: 'CORE',     nodes: ['CORE', 'SYSTEM'],                         delay: 400 },
+    { name: 'CCR',      nodes: ['BRAIN', 'MEMORY', 'DREAM'],               delay: 350 },
+    { name: 'OCG',      nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY'],  delay: 300 },
+    { name: 'EXEC',     nodes: ['ENCODE', 'DECODE', 'CORTEX', 'NEXUS'],    delay: 300 },
+    { name: 'ESZ',      nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE'],       delay: 250 },
+    { name: 'EPZ',      nodes: ['COMPASS', 'ECHO', 'REFLEX'],              delay: 250 },
+    { name: 'EMZ',      nodes: ['FORGE', 'LINGUA', 'HARVEST'],             delay: 250 },
+    { name: 'CSZ',      nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'],         delay: 300 },
+    { name: 'FIELDS',   nodes: ['IMMUNITY', 'INTENT'],                     delay: 200 },
+    { name: 'PLANE',    nodes: ['GOVERNANCE'],                              delay: 200 },
+    { name: 'SHELL',    nodes: ['DEFENSE', 'ENGINEER'],                    delay: 250 },
+  ];
 
   blank();
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+  say('  BOOT SEQUENCE — 40-NODE MESH INITIALIZATION');
+  say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+  blank();
 
-  const hasKey = !!process.env.CMPSBL_API_KEY;
-  if (!hasKey) {
-    say('No CMPSBL_API_KEY detected.');
-    say('You can still use local discovery (no persistence).');
-    blank();
-    say('To add an API key later:');
-    say('  export CMPSBL_API_KEY="your-key"');
-    blank();
+  let totalBooted = 0;
+  for (const sector of sectors) {
+    const s = meshSpinner(`Sector ${sector.name}`);
+    await sleep(sector.delay);
+    totalBooted += sector.nodes.length;
+    s.stop(`${sector.name.padEnd(8)} ── ${sector.nodes.join(' · ').padEnd(40)} ${progressBar(totalBooted, 40, 20)}`);
   }
 
+  blank();
+  say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+
+  // ── Phase 5: Mesh handshake ──
+  blank();
+  const mesh = spinner('Establishing mesh handshake');
+  await sleep(800);
+  mesh.update('Binding signal pathways');
+  await sleep(600);
+  mesh.update('Memory stream online');
+  await sleep(400);
+  mesh.stop('Cognitive loop established');
+
+  // ── Phase 6: Identity flash ──
+  blank();
+  box([
+    'Cognitive Substrate v' + CLI_VERSION,
+    '',
+    '40 primitives  ·  12 sectors  ·  4 categories',
+    'Organs · Layers · Engines · Agents',
+    '',
+    'The mesh is alive. Every command leaves a trace.',
+    'Every trace becomes memory. Memory becomes capability.',
+  ], 'CMPSBL®');
+  blank();
+
+  // ── Phase 7: API key check ──
+  const hasKey = !!process.env.CMPSBL_API_KEY;
+  if (hasKey) {
+    say('◈ API key detected — persistent memory enabled.');
+  } else {
+    say('◇ No CMPSBL_API_KEY detected.');
+    say('  Local discovery mode (no persistence).');
+    blank();
+    say('  To connect:');
+    say('    export CMPSBL_API_KEY="pf_live_xxxxxxxxxxxxx"');
+  }
+  blank();
+
+  // ── Phase 8: Prompt ──
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
     rl.question('  Initialize a new project here? (y/n) ', async (answer) => {
       rl.close();
