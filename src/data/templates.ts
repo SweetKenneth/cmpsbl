@@ -6370,7 +6370,8 @@ class BehaviorAnchorSystem {
     if (!this.anchor) return { compliant: true, drift: 0 };
     
     const anchorMemory = await substrate.brain.query('behavior_anchor', 1);
-    const drift = Math.random() * 0.25; // Real impl: vector similarity
+    const anchorData = anchorMemory.data?.memories?.[0]?.content;
+    const drift = anchorData ? this.calculateDelta(JSON.parse(anchorData), currentBehavior) : 0;
     
     return {
       compliant: drift < this.anchor.threshold,
