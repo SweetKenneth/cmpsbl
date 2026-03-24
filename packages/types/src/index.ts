@@ -235,6 +235,8 @@ export type {
   MemoryStreamEntry,
   FirstContactSession,
   FirstContactConfig,
+  CeremonyPhase,
+  CeremonyEvent,
   DiscoveryInput,
   DiscoveryResult,
   CaptureResult,
