@@ -78,7 +78,7 @@ export default function Workspace() {
     } else if (cmd === 'status') {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Substrate: ONLINE\nPrimitives: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
     } else if (cmd === 'modules') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 primitives across the 12·12·8·8 matrix:\nKernel: CORE, SYSTEM\nCognition: BRAIN, MEMORY, DREAM\nOperations: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION\nEvolution: EVOLUTION, SHADOW, PHANTOM\nSafety: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE\nManufacturing: FORGE, FOUNDRY, PERCEPTION, REFLEX\nFields: IMMUNITY, INTENT\nGovernance: GOVERNANCE\nSecurity: DEFENSE, ENGINEER, ENCODE' }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 primitives across the 12·12·8·8 matrix:\nOrgans (12): CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE\nLayers (12): DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW\nEngines (8): DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE\nAgents (8): ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER' }]);
     } else if (matched) {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `[${matched.category.toUpperCase()}] ${matched.description}\n→ Executing ${matched.command}...\n✓ Complete`, tier: matched.tier }]);
     } else {
