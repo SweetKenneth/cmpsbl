@@ -449,7 +449,7 @@ console.log(chain.origin, chain.transformations);`,
   {
     id: "economy",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Agents",
     title: "ECONOMY Budgets",
     description: "Cost attribution & budget enforcement",
     color: "text-[hsl(var(--neon-amber))]",
