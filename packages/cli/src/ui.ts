@@ -23,6 +23,15 @@ let NO_COLOR = false;
 
 export function setNoColor(v: boolean) { NO_COLOR = v; }
 
+export function supportsAnimatedOutput(): boolean {
+  const isTTY = Boolean(process.stdout.isTTY);
+  const isGitBashOnWindows = process.platform === 'win32' && Boolean(
+    process.env.MSYSTEM || process.env.SHELL?.toLowerCase().includes('bash')
+  );
+
+  return isTTY && !isGitBashOnWindows;
+}
+
 function ansi(code: string, text: string): string {
   if (NO_COLOR) return text;
   return `\x1b[${code}m${text}\x1b[0m`;
@@ -79,6 +88,18 @@ export interface SpinnerHandle {
 export function spinner(message: string, frames = SPINNER_FRAMES): SpinnerHandle {
   let i = 0;
   let current = message;
+
+  if (!supportsAnimatedOutput()) {
+    return {
+      stop(finalMessage?: string) {
+        if (finalMessage) console.log(`  ${c.green('✔')} ${finalMessage}`);
+      },
+      update(msg: string) {
+        current = msg;
+      },
+    };
+  }
+
   const interval = setInterval(() => {
     const frame = c.cyan(frames[i % frames.length]);
     process.stdout.write(`\r  ${frame} ${c.muted(current)}${' '.repeat(10)}`);

@@ -25,7 +25,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation } from './ui';
+import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 
 // ═══════════════════════════════════════════════════════════════
@@ -181,7 +181,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '2.0.0' as const;
+const CLI_VERSION = '2.1.1' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -189,7 +189,7 @@ const CLI_CONFIG: FirstContactConfig = {
   endpoint: process.env.CMPSBL_ENDPOINT ?? `https://${process.env.CMPSBL_PROJECT_REF ?? 'bxodolqqczjuahwdrswy'}.supabase.co/functions/v1/substrate-api`,
   apiKey: resolveApiKey(),
   autoDiscover: true,
-  onBoot: (msg: string) => { if (!JSON_MODE) say(msg); },
+  onBoot: () => {},
   onCeremony: (event: CeremonyEvent) => {
     if (JSON_MODE) { jsonOut({ event: 'ceremony', ...event }); return; }
     if (event.phase === 'sector_boot') {
@@ -207,6 +207,10 @@ const CLI_CONFIG: FirstContactConfig = {
     blank();
   },
 };
+
+function supportsInteractiveTerminalFlow(): boolean {
+  return Boolean(process.stdin.isTTY && process.stdout.isTTY && supportsAnimatedOutput());
+}
 
 const NODES = [
   { id: 'BRAIN', sector: 'CCR', status: 'online', health: 98, role: 'reasoning' },
@@ -778,8 +782,11 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
     );
 
     if (result.detected && result.memory) {
-      CLI_CONFIG.onDiscovery?.(result.memory);
-      await promptInteraction(result.memory);
+      if (supportsInteractiveTerminalFlow()) {
+        await promptInteraction(result.memory);
+      } else {
+        sayMuted('Discovery prompt skipped for terminal compatibility.');
+      }
     } else {
       say(pick(V.idle));
     }
@@ -1133,8 +1140,12 @@ async function cmdDiscover(args: string[]) {
 
   if (result.detected && result.memory) {
     if (JSON_MODE) { jsonOut({ detected: true, memory: result.memory }); return; }
-    CLI_CONFIG.onDiscovery?.(result.memory);
-    await promptInteraction(result.memory);
+    if (supportsInteractiveTerminalFlow()) {
+      await promptInteraction(result.memory);
+    } else {
+      say('Discovery recorded.');
+      sayMuted('Interactive follow-up skipped for terminal compatibility.');
+    }
   } else {
     if (JSON_MODE) { jsonOut({ detected: false }); return; }
     say('No chains detected yet. Continue interacting to form patterns.');
@@ -2561,7 +2572,7 @@ const ECOSYSTEM_PACKAGES = {
     { name: '@cmpsbl/failsafe',  version: '3.2.0',  deps: [] as string[] },
   ],
   tier2: [
-    { name: '@cmpsbl/cli',          version: '2.0.0',  deps: ['@cmpsbl/runtime'] },
+    { name: '@cmpsbl/cli',          version: '2.1.1',  deps: ['@cmpsbl/runtime'] },
     { name: '@cmpsbl/test-harness', version: '1.2.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
     { name: '@cmpsbl/react',        version: '1.2.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
   ],
