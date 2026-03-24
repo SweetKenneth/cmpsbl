@@ -323,6 +323,9 @@ export async function run(args: string[]): Promise<void> {
       // ── Governance ──
       case 'govern':       await cmdGovern(args.slice(1)); break;
       case 'treaty':       await cmdTreaty(args.slice(1)); break;
+      // ── Guided ──
+      case 'demo':         await cmdDemo(); break;
+      case 'explain':      cmdExplain(args.slice(1)); break;
       case 'version':
       case '--version':
       case '-v':
