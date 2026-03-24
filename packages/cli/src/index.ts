@@ -948,23 +948,25 @@ function scaffoldFirstDream(heuristic: { pattern: string; confidence: number; in
 import { createEngineClient } from '@cmpsbl/sdk';
 
 async function main() {
-  // Connect to the substrate (uses ~/.cmpsbl/credentials)
-  await substrate.init();
+  // Connect to the substrate (uses ~/.cmpsbl/credentials or CMPSBL_API_KEY)
+  const client = createEngineClient({
+    engineKey: process.env.CMPSBL_API_KEY,
+  });
 
   console.log('◈ Initiating dream cycle...');
 
-  // Trigger a DREAM Engine cycle
-  const dream = await substrate.dream.cycle();
+  // Trigger a DREAM Engine cycle via the substrate gateway
+  const dream = await client.request('dream.cycle', {});
 
   console.log('◈ Dream complete.');
   console.log(\`  Pattern:    \${dream.heuristic}\`);
   console.log(\`  Confidence: \${(dream.confidence * 100).toFixed(0)}%\`);
 
   // Check the Memory Stream for accumulated discoveries
-  const stream = await substrate.memory.stream();
-  console.log(\`\\n◈ Memory Stream: \${stream.length} chain(s)\\n\`);
+  const stream = await client.request('memory.stream', {});
+  console.log(\`\\n◈ Memory Stream: \${stream.chains?.length ?? 0} chain(s)\\n\`);
 
-  for (const chain of stream) {
+  for (const chain of stream.chains ?? []) {
     console.log(\`  ⬢ \${chain.pattern} [\${chain.adoption}]\`);
   }
 }
