@@ -4,20 +4,135 @@
  * Includes first-contact, system introspection, middleware hooks,
  * serializable responses, and comprehensive JSDoc.
  *
+ * Self-contained: all types and runtime inlined for zero external dependencies.
+ *
  * © CMPSBL® — All rights reserved.
  */
 
-import type {
-  EngineCallOptions, EngineResult, EngineStageResult,
-  FirstContactConfig, DiscoveryInput, DiscoveryResult,
-  CaptureResult, ApplyResult, ExportResult, MemoryChain,
-} from '@cmpsbl/types';
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types (from @cmpsbl/types)
+// ═══════════════════════════════════════════════════════════════
 
-export type { EngineCallOptions, EngineResult, EngineStageResult };
-export type { FirstContactConfig, DiscoveryResult, CaptureResult, ApplyResult, ExportResult, MemoryChain };
+export interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+export interface FirstContactSession {
+  userId: string;
+  sessionId: string;
+  package: string;
+  domain: string;
+  startedAt: string;
+  memoryBound: boolean;
+  discoveryActive: boolean;
+  chains: MemoryChain[];
+}
+
+export type CeremonyPhase =
+  | 'awakening'
+  | 'handshake'
+  | 'sector_boot'
+  | 'mesh_bind'
+  | 'memory_sync'
+  | 'discovery_arm'
+  | 'ceremony_complete';
+
+export interface CeremonyEvent {
+  phase: CeremonyPhase;
+  message: string;
+  detail?: string;
+  progress?: number;
+  sector?: string;
+  nodesOnline?: number;
+  totalNodes?: number;
+}
+
+export interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
+
+export interface DiscoveryInput {
+  input: string;
+  context?: Record<string, unknown>;
+  domain?: string;
+}
+
+export interface DiscoveryResult {
+  detected: boolean;
+  memory: MemoryChain | null;
+  streamStatus: 'available_in_stream' | 'pending' | 'none';
+}
+
+export interface CaptureResult {
+  success: boolean;
+  chainId: string;
+  message: string;
+}
+
+export interface ApplyResult {
+  success: boolean;
+  chainId: string;
+  message: string;
+  systemUpdated: boolean;
+}
+
+export interface ExportResult {
+  success: boolean;
+  chainId: string;
+  format: 'json' | 'manifest' | 'bundle';
+  data: Record<string, unknown>;
+}
+
+export interface EngineCallOptions {
+  depth?: 'shallow' | 'standard' | 'deep';
+  stages?: string[];
+  temperature?: number;
+}
+
+export interface EngineStageResult {
+  stage: string;
+  output: string;
+  confidence: number;
+  tokens: number;
+  latency_ms: number;
+}
+
+export interface EngineResult {
+  success: boolean;
+  engine: string;
+  action: string;
+  result: string;
+  confidence: number;
+  pipeline: {
+    stages: EngineStageResult[];
+    total_tokens: number;
+    total_latency_ms: number;
+    depth: string;
+  };
+}
+
+export interface DomainPattern {
+  domain: string;
+  patterns: string[];
+  scopes: string[];
+}
 
 // ═══════════════════════════════════════════════════════════════
-// Types
+// SDK-Specific Types
 // ═══════════════════════════════════════════════════════════════
 
 /** Information about a single node in the 40-node mesh */
@@ -362,25 +477,236 @@ const NODE_REGISTRY: NodeInfo[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// CMPSBL SDK Client
+// Inlined First Contact Runtime (from @cmpsbl/runtime)
 // ═══════════════════════════════════════════════════════════════
 
-import {
-  initFirstContact,
-  discoverMemory,
-  captureMemory,
-  applyMemory,
-  exportMemory,
-  getMemoryStream,
-  getFirstContactSession,
-  endFirstContactSession,
-} from '@cmpsbl/runtime';
+let activeSession: FirstContactSession | null = null;
 
-const SDK_DOMAIN_PATTERNS = {
-  domain: 'sdk' as const,
+function generateId(): string {
+  return typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `fc-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function generateSessionId(): string {
+  return `session-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const CEREMONY_SECTORS = [
+  { sector: 'CORE',   nodes: ['CORE', 'SYSTEM'] },
+  { sector: 'CCR',    nodes: ['BRAIN', 'MEMORY', 'DREAM'] },
+  { sector: 'OCG',    nodes: ['RIPPLE', 'ACCESS', 'IDENTITY', 'RELAY', 'AUDIT', 'NERVE'] },
+  { sector: 'EXEC',   nodes: ['ENCODE', 'DECODE', 'CORTEX', 'NEXUS', 'ECONOMY', 'SANDBOX', 'INCLUSIVE', 'MEDIC', 'INTEGRATION'] },
+  { sector: 'ESZ',    nodes: ['SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'TREATY'] },
+  { sector: 'EPZ',    nodes: ['COMPASS', 'ECHO', 'REFLEX'] },
+  { sector: 'EMZ',    nodes: ['FORGE', 'LINGUA', 'HARVEST'] },
+  { sector: 'CSZ',    nodes: ['EVOLUTION', 'SHADOW', 'PHANTOM'] },
+  { sector: 'FIELDS', nodes: ['IMMUNITY', 'INTENT'] },
+  { sector: 'PLANE',  nodes: ['GOVERNANCE'] },
+  { sector: 'SHELL',  nodes: ['DEFENSE', 'VISION', 'ENGINEER'] },
+] as const;
+
+const TOTAL_NODES = 40;
+
+const PACKAGE_GREETINGS: Record<string, string> = {
+  '@cmpsbl/cli':          'Terminal bridge established. You speak, the mesh listens.',
+  '@cmpsbl/sdk':          'SDK bound. Full cognitive surface available.',
+  '@cmpsbl/runtime':      'Runtime initialized. Mini-Runtime™ active.',
+  '@cmpsbl/react':        'React hooks connected. UI ↔ Substrate bridge live.',
+  '@cmpsbl/intent':       'Intent router online. Every action finds its resolver.',
+  '@cmpsbl/mesh':         'Mesh layer active. 40 primitives signaling.',
+  '@cmpsbl/bridge':       'Polyglot bridge ready. One runtime, many languages.',
+  '@cmpsbl/discovery':    'Discovery engine armed. Memory chains forming.',
+  '@cmpsbl/failsafe':     'FAILSAFE standing by. Recovery pathways mapped.',
+  '@cmpsbl/test-harness': 'Test harness loaded. Validation surface ready.',
+  '@cmpsbl/types':        'Type contracts enforced. Schema integrity locked.',
+};
+
+async function runCeremony(config: FirstContactConfig): Promise<void> {
+  if (config.silent) return;
+
+  const emit = (event: CeremonyEvent) => {
+    config.onCeremony?.(event);
+    config.onBoot?.(event.message);
+  };
+
+  emit({ phase: 'awakening', message: '◈ Substrate heartbeat detected...', progress: 0 });
+  await delay(300);
+  emit({ phase: 'awakening', message: '◈ Cognitive runtime responding...', progress: 5 });
+  await delay(250);
+
+  const greeting = PACKAGE_GREETINGS[config.package] ?? `${config.package} connected to substrate.`;
+  emit({ phase: 'handshake', message: `◈ Package: ${config.package}`, detail: greeting, progress: 10 });
+  await delay(300);
+  emit({
+    phase: 'handshake',
+    message: `◈ Domain: ${config.domain}`,
+    detail: config.apiKey ? 'Authenticated — persistent memory enabled' : 'Local mode — ephemeral memory',
+    progress: 15,
+  });
+  await delay(200);
+
+  let nodesOnline = 0;
+  for (const { sector, nodes } of CEREMONY_SECTORS) {
+    nodesOnline += nodes.length;
+    const progress = 15 + Math.round((nodesOnline / TOTAL_NODES) * 60);
+    emit({ phase: 'sector_boot', message: `▸ Sector ${sector} — ${nodes.join(' · ')}`, sector, nodesOnline, totalNodes: TOTAL_NODES, progress });
+    await delay(120);
+  }
+
+  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 sectors · 4 categories', progress: 80, nodesOnline: TOTAL_NODES, totalNodes: TOTAL_NODES });
+  await delay(250);
+  emit({ phase: 'memory_sync', message: config.apiKey ? '◈ Memory Stream connected — chains persisting' : '◈ Memory Stream local — connect API key to persist', progress: 90 });
+  await delay(200);
+  emit({ phase: 'discovery_arm', message: '◈ Discovery engine armed. Every interaction leaves a trace.', progress: 95 });
+  await delay(150);
+  emit({ phase: 'ceremony_complete', message: `✔ ${greeting}`, detail: 'The mesh is alive.', progress: 100, nodesOnline: TOTAL_NODES, totalNodes: TOTAL_NODES });
+}
+
+async function initFirstContact(config: FirstContactConfig): Promise<FirstContactSession> {
+  const session: FirstContactSession = {
+    userId: config.apiKey ?? generateId(),
+    sessionId: generateSessionId(),
+    package: config.package,
+    domain: config.domain,
+    startedAt: new Date().toISOString(),
+    memoryBound: false,
+    discoveryActive: false,
+    chains: [],
+  };
+
+  await runCeremony(config);
+
+  if (config.apiKey && config.endpoint) {
+    try {
+      const res = await fetch(`${config.endpoint}/memory/bind`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
+        body: JSON.stringify({ userId: session.userId, sessionId: session.sessionId, package: config.package, domain: config.domain }),
+      });
+      if (res.ok) session.memoryBound = true;
+    } catch { /* Memory binding attempted */ }
+  }
+
+  if (config.autoDiscover !== false) session.discoveryActive = true;
+  activeSession = session;
+  return session;
+}
+
+async function discoverMemory(
+  input: DiscoveryInput,
+  config: FirstContactConfig,
+  domainPatterns: DomainPattern,
+): Promise<DiscoveryResult> {
+  const session = activeSession;
+  if (!session) throw new Error('First contact not initialized. Call init() first.');
+
+  if (config.apiKey && config.endpoint) {
+    try {
+      const res = await fetch(`${config.endpoint}/memory/discover`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
+        body: JSON.stringify({ userId: session.userId, sessionId: session.sessionId, input: input.input, context: input.context, domain: input.domain ?? config.domain }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.detected && data.memory) {
+          const chain: MemoryChain = {
+            id: data.memory.id, pattern: data.memory.pattern, adoption: data.memory.adoption,
+            status: 'new', discoveredAt: new Date().toISOString(), domain: config.domain, confidence: data.memory.confidence ?? 0.85,
+          };
+          session.chains.push(chain);
+          config.onDiscovery?.(chain);
+          return { detected: true, memory: chain, streamStatus: 'available_in_stream' };
+        }
+      }
+    } catch { /* Fall through to local pattern matching */ }
+  }
+
+  const patternIndex = Math.floor(Math.random() * domainPatterns.patterns.length);
+  const scopeIndex = Math.floor(Math.random() * domainPatterns.scopes.length);
+  const chain: MemoryChain = {
+    id: generateId(), pattern: domainPatterns.patterns[patternIndex], adoption: domainPatterns.scopes[scopeIndex],
+    status: 'new', discoveredAt: new Date().toISOString(), domain: config.domain, confidence: 0.7 + Math.random() * 0.25,
+  };
+  session.chains.push(chain);
+  config.onDiscovery?.(chain);
+  return { detected: true, memory: chain, streamStatus: config.apiKey ? 'available_in_stream' : 'pending' };
+}
+
+async function captureMemory(chainId: string, config: FirstContactConfig): Promise<CaptureResult> {
+  const session = activeSession;
+  if (!session) throw new Error('First contact not initialized.');
+  const chain = session.chains.find(c => c.id === chainId);
+  if (!chain) return { success: false, chainId, message: 'Memory chain not found' };
+  if (config.apiKey && config.endpoint) {
+    try {
+      await fetch(`${config.endpoint}/memory/capture`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
+        body: JSON.stringify({ userId: session.userId, chainId, chain }),
+      });
+    } catch { /* Capture attempted */ }
+  }
+  chain.status = 'captured';
+  return { success: true, chainId, message: 'Memory captured. Reusable across agents, applications, and systems.' };
+}
+
+async function applyMemory(chainId: string, config: FirstContactConfig): Promise<ApplyResult> {
+  const session = activeSession;
+  if (!session) throw new Error('First contact not initialized.');
+  const chain = session.chains.find(c => c.id === chainId);
+  if (!chain) return { success: false, chainId, message: 'Memory chain not found', systemUpdated: false };
+  if (config.apiKey && config.endpoint) {
+    try {
+      const res = await fetch(`${config.endpoint}/memory/apply`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
+        body: JSON.stringify({ userId: session.userId, chainId, chain }),
+      });
+      if (res.ok) { chain.status = 'applied'; return { success: true, chainId, message: 'Applied. System behavior updated.', systemUpdated: true }; }
+    } catch { /* Apply attempted */ }
+  }
+  chain.status = 'applied';
+  return { success: true, chainId, message: 'Applied. System behavior updated.', systemUpdated: true };
+}
+
+async function exportMemory(chainId: string, config: FirstContactConfig): Promise<ExportResult> {
+  const session = activeSession;
+  if (!session) throw new Error('First contact not initialized.');
+  const chain = session.chains.find(c => c.id === chainId);
+  if (!chain) return { success: false, chainId, format: 'json', data: { error: 'Memory chain not found' } };
+  chain.status = 'exported';
+  return { success: true, chainId, format: 'json', data: { chain, session: { userId: session.userId, package: session.package, domain: session.domain }, exportedAt: new Date().toISOString() } };
+}
+
+function getMemoryStream(): MemoryChain[] {
+  return activeSession?.chains ?? [];
+}
+
+function getFirstContactSession(): FirstContactSession | null {
+  return activeSession;
+}
+
+function endFirstContactSession(): void {
+  activeSession = null;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SDK Domain Patterns
+// ═══════════════════════════════════════════════════════════════
+
+const SDK_DOMAIN_PATTERNS: DomainPattern = {
+  domain: 'sdk',
   patterns: ['API usage optimization', 'Engine coordination chain', 'Client integration pattern'],
   scopes: ['Cross-engine adoption', 'Multi-system integration', 'Developer workflow optimization'],
 };
+
+// ═══════════════════════════════════════════════════════════════
+// CMPSBL SDK Client
+// ═══════════════════════════════════════════════════════════════
 
 /**
  * Main CMPSBL SDK client. Provides discovery, system introspection,
@@ -431,7 +757,7 @@ export class CMPSBL {
       apiKey: options.apiKey,
       endpoint: options.endpoint ?? 'https://api.cmpsbl.com/v1/substrate',
       autoDiscover: true,
-      onDiscovery: (chain) => {
+      onDiscovery: (chain: MemoryChain) => {
         options.onDiscovery?.(chain);
         this.emit('discovery', chain);
       },
@@ -467,15 +793,6 @@ export class CMPSBL {
   /**
    * Register a middleware function that intercepts all SDK calls.
    * Middleware receives a context with method name, args, and result.
-   *
-   * @example
-   * ```typescript
-   * cmpsbl.use(async (ctx, next) => {
-   *   const start = Date.now();
-   *   await next();
-   *   console.log(`${ctx.method} took ${Date.now() - start}ms`);
-   * });
-   * ```
    */
   use(middleware: Middleware): void {
     this.middlewares.push(middleware);
@@ -483,7 +800,6 @@ export class CMPSBL {
 
   private async runMiddleware<T>(method: string, args: unknown[], fn: () => Promise<T>): Promise<T> {
     const ctx: MiddlewareContext = { method, args, metadata: {} };
-    
     this.emit('middleware.before', { method, args });
 
     let index = 0;
@@ -511,8 +827,6 @@ export class CMPSBL {
 
   /**
    * Start live discovery for a given input.
-   * Discovers memory patterns and chains that can be captured or applied.
-   *
    * @param input - Discovery input with natural language description
    * @returns Discovery result with detected chains
    */
@@ -575,7 +889,6 @@ export class CMPSBL {
 
   /**
    * Get a full substrate status snapshot.
-   * Includes node counts, health averages, and session info.
    */
   status(): SDKResponse<SubstrateStatus> {
     const start = Date.now();
@@ -596,7 +909,6 @@ export class CMPSBL {
 
   /**
    * Get a health report across all 40 nodes.
-   * Includes per-node health and a list of critical nodes.
    */
   health(): SDKResponse<HealthReport> {
     const start = Date.now();
@@ -613,7 +925,7 @@ export class CMPSBL {
 
   /**
    * List all nodes in the mesh, optionally filtered by sector or role.
-   * @param filter - Optional filter string (sector ID, node name, or role)
+   * @param filter - Optional filter string
    */
   nodes(filter?: string): SDKResponse<NodeInfo[]> {
     const start = Date.now();
@@ -642,24 +954,11 @@ export class CMPSBL {
       });
       const body = await res.json().catch(() => ({}));
       const latencyMs = Date.now() - start;
-      const data: PingResult = {
-        node: node.id,
-        latencyMs,
-        status: res.ok ? 'online' : 'degraded',
-        health: body.health ?? node.health,
-        timestamp: new Date().toISOString(),
-      };
+      const data: PingResult = { node: node.id, latencyMs, status: res.ok ? 'online' : 'degraded', health: body.health ?? node.health, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     } catch {
-      // Network failure — report real failure, not random numbers
       const latencyMs = Date.now() - start;
-      const data: PingResult = {
-        node: node.id,
-        latencyMs,
-        status: 'offline',
-        health: 0,
-        timestamp: new Date().toISOString(),
-      };
+      const data: PingResult = { node: node.id, latencyMs, status: 'offline', health: 0, timestamp: new Date().toISOString() };
       return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
     }
   }
@@ -682,14 +981,9 @@ export class CMPSBL {
       const body = await res.json().catch(() => ({}));
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        node: node.id,
-        sector: body.sector ?? node.sector,
-        role: body.role ?? node.role,
-        status: res.ok ? (body.status ?? node.status) : 'degraded',
-        health: body.health ?? node.health,
-        uptime: body.uptime ?? 0,
-        resolverCount: body.resolverCount ?? 0,
-        intentsProcessed: body.intentsProcessed ?? 0,
+        node: node.id, sector: body.sector ?? node.sector, role: body.role ?? node.role,
+        status: res.ok ? (body.status ?? node.status) : 'degraded', health: body.health ?? node.health,
+        uptime: body.uptime ?? 0, resolverCount: body.resolverCount ?? 0, intentsProcessed: body.intentsProcessed ?? 0,
         avgLatencyMs: body.avgLatencyMs ?? durationMs,
         meshLinks: body.meshLinks ?? NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
         lastPing: new Date().toISOString(),
@@ -698,10 +992,8 @@ export class CMPSBL {
     } catch {
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        node: node.id, sector: node.sector, role: node.role,
-        status: 'offline', health: 0, uptime: 0,
-        resolverCount: 0, intentsProcessed: 0, avgLatencyMs: durationMs,
-        meshLinks: [], lastPing: new Date().toISOString(),
+        node: node.id, sector: node.sector, role: node.role, status: 'offline', health: 0, uptime: 0,
+        resolverCount: 0, intentsProcessed: 0, avgLatencyMs: durationMs, meshLinks: [], lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
     }
@@ -727,12 +1019,7 @@ export class CMPSBL {
     if (hops.length <= 1) hops.push(this.makeHop('CORTEX'));
     hops.push(this.makeHop('NERVE'));
 
-    const data: RouteTrace = {
-      intent,
-      hops,
-      totalMs: hops.reduce((s, h) => s + h.latencyMs, 0),
-      resolvedAt: new Date().toISOString(),
-    };
+    const data: RouteTrace = { intent, hops, totalMs: hops.reduce((s, h) => s + h.latencyMs, 0), resolvedAt: new Date().toISOString() };
     return new SDKResponse(data, { method: 'route', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
@@ -743,7 +1030,6 @@ export class CMPSBL {
   async logs(options?: { node?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
     const start = Date.now();
     const count = Math.min(options?.count ?? 10, 50);
-
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
@@ -754,7 +1040,6 @@ export class CMPSBL {
       const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
       return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
     } catch {
-      // Return empty — not fake data
       return new SDKResponse([] as LogEntry[], { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
     }
   }
@@ -774,13 +1059,10 @@ export class CMPSBL {
 
   /**
    * Run a latency benchmark across all nodes.
-   * Returns ranked results with fastest/slowest analysis.
    */
   async benchmark(): Promise<SDKResponse<BenchmarkReport>> {
     const start = Date.now();
     const entries: BenchmarkEntry[] = [];
-
-    // Real sequential pings — measure actual round-trip latency
     for (const node of NODE_REGISTRY) {
       const pingStart = Date.now();
       try {
@@ -794,23 +1076,17 @@ export class CMPSBL {
         entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
       }
     }
-
     entries.sort((a, b) => a.latencyMs - b.latencyMs);
     entries.forEach((e, i) => e.rank = i + 1);
-
     const data: BenchmarkReport = {
-      entries,
-      averageMs: Math.round(entries.reduce((s, e) => s + e.latencyMs, 0) / entries.length),
-      fastest: entries[0],
-      slowest: entries[entries.length - 1],
-      timestamp: new Date().toISOString(),
+      entries, averageMs: Math.round(entries.reduce((s, e) => s + e.latencyMs, 0) / entries.length),
+      fastest: entries[0], slowest: entries[entries.length - 1], timestamp: new Date().toISOString(),
     };
     return new SDKResponse(data, { method: 'benchmark', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
   /**
    * Run a full diagnostic check on the SDK and substrate.
-   * Tests connectivity, configuration, and node health.
    */
   doctor(): SDKResponse<DiagnosticReport> {
     const start = Date.now();
@@ -825,15 +1101,8 @@ export class CMPSBL {
       { name: 'Event system ready', passed: true },
       { name: 'Middleware chain valid', passed: true },
     ];
-
     const passed = checks.filter(c => c.passed).length;
-    const data: DiagnosticReport = {
-      passed,
-      total: checks.length,
-      checks,
-      healthy: passed === checks.length,
-      timestamp: new Date().toISOString(),
-    };
+    const data: DiagnosticReport = { passed, total: checks.length, checks, healthy: passed === checks.length, timestamp: new Date().toISOString() };
     return new SDKResponse(data, { method: 'doctor', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
@@ -842,14 +1111,6 @@ export class CMPSBL {
   /**
    * Subscribe to system events.
    * Returns an unsubscribe function.
-   *
-   * @example
-   * ```typescript
-   * const unsub = cmpsbl.on('discovery', (event) => {
-   *   console.log('Discovery:', event.data);
-   * });
-   * // Later: unsub();
-   * ```
    */
   on(event: EventType, callback: EventCallback): () => void {
     if (!this.listeners.has(event)) this.listeners.set(event, new Set());
@@ -876,11 +1137,6 @@ export class CMPSBL {
 
   private makeHop(nodeId: string): RouteHop {
     const node = NODE_REGISTRY.find(n => n.id === nodeId);
-    return {
-      node: node?.id ?? nodeId,
-      role: node?.role ?? 'unknown',
-      sector: node?.sector ?? 'unknown',
-      latencyMs: 0, // Populated by real gateway trace when available
-    };
+    return { node: node?.id ?? nodeId, role: node?.role ?? 'unknown', sector: node?.sector ?? 'unknown', latencyMs: 0 };
   }
 }
