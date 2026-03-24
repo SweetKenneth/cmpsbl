@@ -78,6 +78,11 @@ function resolveRoute(pathname: string): RouteTarget | null {
     .replace(/^\/v1\/substrate/, "")
     .replace(/^\//, "");
 
+  // Engine API route (SDK Engine class)
+  if (clean === "engine" || clean.startsWith("engine/")) {
+    return { module: "engine", action: "call" };
+  }
+
   const map: Record<string, RouteTarget> = {
     // Memory Stream endpoints (used by CLI/SDK first-contact)
     "memory/bind": { module: "memory", action: "bind" },
