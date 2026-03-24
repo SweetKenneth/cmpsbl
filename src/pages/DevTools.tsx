@@ -29,40 +29,48 @@ import { MockUsageDashboard } from "@/components/developer/MockUsageDashboard";
 import { LiveCodeExamples } from "@/components/developer/LiveCodeExamples";
 import { IntegrationBadges } from "@/components/home/IntegrationBadges";
 
-// SDK Installation - Current method via local import
-const SDK_INSTALL_LOCAL = `// Current installation — import from local SDK
-import { SubstrateClient } from '@/lib/substrate';
+// SDK Installation - REST API gateway
+const SDK_INSTALL_LOCAL = `// Install the official SDK
+npm install @cmpsbl/sdk
 
-const substrate = new SubstrateClient();`;
+// Or use the REST API directly
+const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';`;
 
-const SDK_USAGE = `// Initialize the Substrate client
-import { SubstrateClient } from '@/lib/substrate';
+const SDK_USAGE = `const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
 
-const substrate = new SubstrateClient();
+// MEMORY Organ — store a memory
+await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': \`Bearer \${API_KEY}\`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'store',
+    input: { content: 'User prefers dark mode', agentId: 'my-agent' }
+  })
+});
 
-// Brain module - persistent memory
-await substrate.brain.remember('User prefers dark mode', 'preference');
-const memories = await substrate.brain.query('user preferences', 5);
+// MEMORY Organ — recall memories
+const res = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': \`Bearer \${API_KEY}\`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'recall',
+    input: { query: 'user preferences', agentId: 'my-agent' }
+  })
+});
+const { contextString } = await res.json();
 
-// Decode module - intent understanding
-const intent = await substrate.decode.intent('Book a flight to Tokyo');
-const chat = await substrate.decode.chat('Hello!', 'session-123');
-
-// Defense module - threat protection
-const threat = await substrate.defense.analyze({ fingerprint });
-const reputation = await substrate.defense.reputation(clientIp);
-
-// Nexus module - AI routing
-const response = await substrate.nexus.route('Explain quantum computing');
-const image = await substrate.nexus.image('A futuristic city at sunset');
-
-// Vision module - observability
-const health = await substrate.vision.healthSnapshot();
-await substrate.vision.alert('warn', 'High latency detected');
-
-// Dream module - cognitive synthesis
-await substrate.dream.feed('I was floating through space...', 'dream');
-const interpretation = await substrate.dream.interpret(dreamText);`;
+// Or use the @cmpsbl/sdk
+import { Engine } from '@cmpsbl/sdk';
+const engine = new Engine('your-api-key');
+const result = await engine.call('BRAIN', 'reason', 'Analyze trends');`;
 
 const MODULES = [
   { id: 'core', name: 'CORE', icon: Cpu, color: 'text-neon-amber', desc: 'Scheduling & orchestration' },
