@@ -710,11 +710,11 @@ export default function IntelPanel() {
           )}
         </section>
         
-        {/* CLM Topic Mastery */}
+        {/* Cognitive Topic Mastery */}
         <section>
           <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2">
             <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-            Topic Mastery
+            Cognitive Mastery
           </h2>
           <Card>
             <CardContent className="p-3 sm:pt-4 sm:px-4 divide-y divide-border">
