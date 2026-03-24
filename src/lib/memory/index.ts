@@ -1,5 +1,5 @@
 /**
- * @cmpsbl/memory - Persistent Memory SDK
+ * Persistent Memory — Internal Runtime Library
  * 
  * Add persistent memory to any agent or React app.
  * Full cognitive stack: Vector search, spaced repetition, contradiction detection,

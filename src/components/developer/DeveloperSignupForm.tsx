@@ -150,13 +150,22 @@ export function DeveloperSignupForm({ className }: { className?: string }) {
             >
               {result.apiKey ? (
                 <>
+                  {/* Critical warning */}
+                  <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-center">
+                    <p className="text-sm font-bold text-destructive">
+                      ⚠️ This API key will NOT be shown again.
+                    </p>
+                    <p className="text-xs text-destructive/80 mt-1">
+                      Copy and store it in a secure location immediately.
+                    </p>
+                  </div>
+
                   <div className="bg-neon-green/5 border border-neon-green/20 rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <Badge className="bg-neon-green/10 text-neon-green border-neon-green/20">
                         <CheckCircle2 className="w-3 h-3 mr-1" />
                         Generated
                       </Badge>
-                      <span className="text-[10px] text-muted-foreground">Save this now!</span>
                     </div>
                     <div className="flex gap-2">
                       <code className="flex-1 px-3 py-2 bg-background rounded text-xs font-mono break-all">

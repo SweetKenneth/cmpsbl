@@ -31,7 +31,7 @@ const templates: Template[] = [
     color: 'bg-foreground/10 text-foreground border-foreground/20',
     files: {
       'package.json': JSON.stringify({
-        name: 'nextjs-memory-starter',
+        name: 'nextjs-substrate-starter',
         version: '1.0.0',
         scripts: {
           dev: 'next dev',
@@ -42,66 +42,86 @@ const templates: Template[] = [
           next: '^14.0.0',
           react: '^18.2.0',
           'react-dom': '^18.2.0',
-          '@cmpsbl/memory': '^1.0.0',
         },
       }, null, 2),
-      'src/lib/memory.ts': `import { withPersistentMemory } from '@cmpsbl/memory';
+      'src/lib/substrate.ts': `const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
 
-// Initialize the memory agent
-export const memoryAgent = withPersistentMemory({
-  apiKey: process.env.CMPSBL_API_KEY!,
-  agentId: 'my-nextjs-agent',
-  scope: 'project',
-});
-
-// Helper functions
-export async function storeMemory(content: string) {
-  return memoryAgent.store(content);
+// Store a memory via the Substrate API
+export async function storeMemory(apiKey: string, content: string) {
+  const res = await fetch(GATEWAY, {
+    method: 'POST',
+    headers: {
+      'Authorization': \`Bearer \${apiKey}\`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      module: 'MEMORY',
+      action: 'store',
+      payload: { content },
+    }),
+  });
+  return res.json();
 }
 
-export async function recallMemories(query: string) {
-  return memoryAgent.recall(query);
+// Recall memories via the Substrate API
+export async function recallMemories(apiKey: string, query: string) {
+  const res = await fetch(GATEWAY, {
+    method: 'POST',
+    headers: {
+      'Authorization': \`Bearer \${apiKey}\`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      module: 'MEMORY',
+      action: 'recall',
+      payload: { query },
+    }),
+  });
+  return res.json();
 }
 `,
-      'src/app/page.tsx': `import { storeMemory, recallMemories } from '@/lib/memory';
+      'src/app/page.tsx': `import { recallMemories } from '@/lib/substrate';
 
 export default async function Home() {
   // Example: recall recent context
-  const context = await recallMemories('user preferences');
+  const context = await recallMemories(
+    process.env.CMPSBL_API_KEY!,
+    'user preferences'
+  );
   
   return (
     <main className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Memory-Enabled App</h1>
-      <p>Context: {context.contextString || 'No memories yet'}</p>
+      <h1 className="text-2xl font-bold mb-4">Substrate-Enabled App</h1>
+      <p>Context: {JSON.stringify(context)}</p>
     </main>
   );
 }
 `,
-      '.env.example': `# Get your API key at https://cmpsbl.com/persistent-memory
+      '.env.example': `# Get your API key at https://cmpsbl.com/devtools
 CMPSBL_API_KEY=cmpsbl_your_api_key_here
 `,
-      'README.md': `# Next.js + CMPSBL Memory Starter
+      'README.md': `# Next.js + CMPSBL Substrate Starter
 
 ## Quick Start
 
 1. Install dependencies:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    npm install
-   \`\`\`
+   \\\`\\\`\\\`
 
-2. Copy \`.env.example\` to \`.env.local\` and add your API key:
-   \`\`\`bash
+2. Copy \\\`.env.example\\\` to \\\`.env.local\\\` and add your API key:
+   \\\`\\\`\\\`bash
    cp .env.example .env.local
-   \`\`\`
+   \\\`\\\`\\\`
 
 3. Run the development server:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    npm run dev
-   \`\`\`
+   \\\`\\\`\\\`
 
 ## Get Your API Key
 
-Visit https://cmpsbl.com/persistent-memory to get your free API key.
+Visit https://cmpsbl.com/devtools to get your free API key.
 
 ## Documentation
 
@@ -112,12 +132,12 @@ Full documentation: https://cmpsbl.com/docs/persistent-memory
   {
     id: 'express-agent',
     name: 'Express.js Agent',
-    description: 'Backend agent with memory integration',
+    description: 'Backend agent with Substrate API integration',
     framework: 'Express 4',
     color: 'bg-neon-green/10 text-neon-green border-neon-green/20',
     files: {
       'package.json': JSON.stringify({
-        name: 'express-memory-agent',
+        name: 'express-substrate-agent',
         version: '1.0.0',
         type: 'module',
         scripts: {
@@ -126,12 +146,10 @@ Full documentation: https://cmpsbl.com/docs/persistent-memory
         },
         dependencies: {
           express: '^4.18.0',
-          '@cmpsbl/memory': '^1.0.0',
           dotenv: '^16.0.0',
         },
       }, null, 2),
       'index.js': `import express from 'express';
-import { withPersistentMemory } from '@cmpsbl/memory';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -139,17 +157,26 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Initialize memory agent
-const agent = withPersistentMemory({
-  apiKey: process.env.CMPSBL_API_KEY,
-  agentId: 'express-agent',
-});
+const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const API_KEY = process.env.CMPSBL_API_KEY;
+
+async function callSubstrate(module, action, payload) {
+  const res = await fetch(GATEWAY, {
+    method: 'POST',
+    headers: {
+      'Authorization': \\\`Bearer \\\${API_KEY}\\\`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ module, action, payload }),
+  });
+  return res.json();
+}
 
 // Store memory endpoint
 app.post('/memory', async (req, res) => {
   try {
     const { content } = req.body;
-    const result = await agent.store(content);
+    const result = await callSubstrate('MEMORY', 'store', { content });
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -160,18 +187,8 @@ app.post('/memory', async (req, res) => {
 app.get('/memory', async (req, res) => {
   try {
     const { query } = req.query;
-    const result = await agent.recall(query);
+    const result = await callSubstrate('MEMORY', 'recall', { query });
     res.json(result);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// Memory status endpoint
-app.get('/memory/status', async (req, res) => {
-  try {
-    const status = await agent.status();
-    res.json(status);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -179,77 +196,80 @@ app.get('/memory/status', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(\`Agent running on port \${PORT}\`);
+  console.log(\\\`Agent running on port \\\${PORT}\\\`);
 });
 `,
       '.env.example': `CMPSBL_API_KEY=cmpsbl_your_api_key_here
 PORT=3000
 `,
-      'README.md': `# Express.js Memory Agent
+      'README.md': `# Express.js Substrate Agent
 
 ## Quick Start
 
 1. Install dependencies:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    npm install
-   \`\`\`
+   \\\`\\\`\\\`
 
-2. Copy \`.env.example\` to \`.env\` and add your API key
+2. Copy \\\`.env.example\\\` to \\\`.env\\\` and add your API key
 
 3. Start the server:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    npm start
-   \`\`\`
+   \\\`\\\`\\\`
 
 ## API Endpoints
 
 - POST /memory - Store a memory
 - GET /memory?query=xxx - Recall memories
-- GET /memory/status - Check memory status
 `,
     },
   },
   {
     id: 'python-agent',
     name: 'Python Agent',
-    description: 'LangChain-compatible memory agent',
+    description: 'FastAPI agent with Substrate integration',
     framework: 'Python 3.11',
     color: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20',
     files: {
-      'requirements.txt': `cmpsbl-memory>=1.0.0
-python-dotenv>=1.0.0
+      'requirements.txt': `python-dotenv>=1.0.0
 fastapi>=0.100.0
 uvicorn>=0.23.0
+httpx>=0.25.0
 `,
       'main.py': `from fastapi import FastAPI
-from cmpsbl_memory import PersistentMemory
 from dotenv import load_dotenv
+import httpx
 import os
 
 load_dotenv()
 
 app = FastAPI()
 
-# Initialize memory
-memory = PersistentMemory(
-    api_key=os.getenv("CMPSBL_API_KEY"),
-    agent_id="python-agent"
-)
+GATEWAY = "https://api.cmpsbl.com/v1/substrate"
+API_KEY = os.getenv("CMPSBL_API_KEY")
+
+async def call_substrate(module: str, action: str, payload: dict):
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            GATEWAY,
+            headers={
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={"module": module, "action": action, "payload": payload},
+        )
+        return resp.json()
 
 @app.post("/memory")
 async def store_memory(content: str):
     """Store a new memory"""
-    return await memory.store(content)
+    return await call_substrate("MEMORY", "store", {"content": content})
 
 @app.get("/memory")
 async def recall_memories(query: str):
     """Recall memories by query"""
-    return await memory.recall(query)
-
-@app.get("/memory/status")
-async def memory_status():
-    """Get memory system status"""
-    return await memory.status()
+    return await call_substrate("MEMORY", "recall", {"query": query})
 
 if __name__ == "__main__":
     import uvicorn
@@ -257,36 +277,27 @@ if __name__ == "__main__":
 `,
       '.env.example': `CMPSBL_API_KEY=cmpsbl_your_api_key_here
 `,
-      'README.md': `# Python Memory Agent
+      'README.md': `# Python Substrate Agent
 
 ## Quick Start
 
 1. Create a virtual environment:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    python -m venv venv
-   source venv/bin/activate  # or venv\\Scripts\\activate on Windows
-   \`\`\`
+   source venv/bin/activate
+   \\\`\\\`\\\`
 
 2. Install dependencies:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    pip install -r requirements.txt
-   \`\`\`
+   \\\`\\\`\\\`
 
-3. Copy \`.env.example\` to \`.env\` and add your API key
+3. Copy \\\`.env.example\\\` to \\\`.env\\\` and add your API key
 
 4. Run the server:
-   \`\`\`bash
+   \\\`\\\`\\\`bash
    python main.py
-   \`\`\`
-
-## LangChain Integration
-
-\`\`\`python
-from cmpsbl_memory import LangChainMemory
-
-memory = LangChainMemory(api_key="your_key")
-chain = ConversationChain(memory=memory)
-\`\`\`
+   \\\`\\\`\\\`
 `,
     },
   },

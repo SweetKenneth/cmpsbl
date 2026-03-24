@@ -6,7 +6,7 @@
  * 
  * Usage:
  * ```tsx
- * import { usePersistentAgent } from '@cmpsbl/memory';
+ * import { usePersistentAgent } from '@/lib/memory';
  * 
  * function ChatComponent() {
  *   const { respond, remember, isLoading } = usePersistentAgent('my-agent');
