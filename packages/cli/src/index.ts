@@ -375,8 +375,10 @@ function printHelp() {
     --no-color              Disable colored output
 
   Environment:
-    CMPSBL_API_KEY          API key for Memory Stream access
+    CMPSBL_API_KEY          API key (overrides ~/.cmpsbl/credentials)
     CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
+
+  Get your API key at https://cmpsbl.com/api-access
 `);
 }
 
