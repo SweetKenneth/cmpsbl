@@ -86,7 +86,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   "/solutions": [
     { href: "/use-cases", title: "Use Cases", description: "Specific deployment examples across verticals" },
     { href: "/enterprise", title: "Enterprise", description: "Custom deployment and dedicated infrastructure" },
-    { href: "/engines", title: "54 Engines", description: "The composable arsenal behind every solution" },
+    { href: "/store", title: "Store & Plans", description: "Browse the composable engine and agent catalog", badge: "Store" },
     { href: "/contact", title: "Contact Sales", description: "Discuss a custom solution for your team" },
   ],
   "/try": [
