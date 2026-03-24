@@ -706,7 +706,7 @@ export class SupportBotEngine {
   private async fetchResolution(resolutionId: string): Promise<Resolution | null> {
     try {
       // Query memory for verified resolutions
-      const recall = await this.recall(`resolution:${resolutionId}`, 1);
+      const recall = await this.recallRelevantMemories(`resolution:${resolutionId}`, { category: 'resolution' as IntentCategory, confidence: 1, keywords: [resolutionId] });
       if (recall.memories.length > 0) {
         const memory = recall.memories[0];
         const parsed = typeof memory.content === 'string' ? JSON.parse(memory.content) : memory.content;
