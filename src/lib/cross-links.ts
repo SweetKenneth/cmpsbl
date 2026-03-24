@@ -180,8 +180,8 @@ export function getCrossLinks(path: string): CrossLink[] {
   // Fallback: show core pages
   return [
     { href: "/architecture", title: "Substrate Architecture", description: "Explore the 40-primitive cognitive topology" },
-    { href: "/engines", title: "54 Composable Engines", description: "Browse the full engine arsenal" },
-    { href: "/try", title: "Try It Live", description: "Zero-signup interactive substrate demo", badge: "Demo" },
-    { href: "/start", title: "Start Building", description: "Get 3 free memory slots — no credit card", badge: "Free" },
+    { href: "/store", title: "Store & Plans", description: "Browse the full engine, agent, and memory pack catalog", badge: "Store" },
+    { href: "/docs", title: "Documentation", description: "Developer reference, guides, and API documentation" },
+    { href: "/runtime", title: "Runtime Environment", description: "See how the substrate executes and self-heals" },
   ];
 }
