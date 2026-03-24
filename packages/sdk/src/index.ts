@@ -740,31 +740,23 @@ export class CMPSBL {
    * Get recent log entries from the system.
    * @param options - Filter by node and limit count
    */
-  logs(options?: { node?: string; count?: number }): SDKResponse<LogEntry[]> {
+  async logs(options?: { node?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
     const start = Date.now();
     const count = Math.min(options?.count ?? 10, 50);
-    const targetNodes = options?.node
-      ? NODE_REGISTRY.filter(n => n.id === options.node!.toUpperCase())
-      : NODE_REGISTRY;
 
-    const levels: LogEntry['level'][] = ['INFO', 'DEBUG', 'WARN', 'INFO', 'INFO'];
-    const messages = [
-      'resolver executed successfully', 'health check passed', 'mesh signal propagated',
-      'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
-      'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
-    ];
-
-    const entries: LogEntry[] = [];
-    for (let i = 0; i < count; i++) {
-      const node = targetNodes[Math.floor(Math.random() * targetNodes.length)];
-      entries.push({
-        timestamp: new Date(Date.now() - (count - i) * 30000).toISOString(),
-        level: levels[Math.floor(Math.random() * levels.length)],
-        node: node?.id ?? 'SYSTEM',
-        message: messages[Math.floor(Math.random() * messages.length)],
+    try {
+      const res = await fetch(`${this.config.endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        body: JSON.stringify({ action: 'logs', node: options?.node?.toUpperCase(), count }),
       });
+      const body = await res.json().catch(() => ({ entries: [] }));
+      const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
+      return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    } catch {
+      // Return empty — not fake data
+      return new SDKResponse([] as LogEntry[], { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
     }
-    return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
   /**
