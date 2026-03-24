@@ -235,9 +235,9 @@ const PersistentMemoryLanding = () => {
 
               <div className="space-y-8">
                 {[
-                  { step: "1", title: "Import the memory SDK", code: "import { withPersistentMemory } from '@cmpsbl/memory';", note: "No additional infrastructure required" },
-                  { step: "2", title: "Wrap your existing agent", code: `const agent = withPersistentMemory({\n  agentId: 'my-agent',\n  scope: 'project'\n});`, note: "Works with your existing agent logic" },
-                  { step: "3", title: "Run your app like normal", code: `// Memory recall happens automatically\nconst context = await agent.getContext(userMessage);\n\n// Use context in your prompts\nconst prompt = userMessage + context.contextString;`, note: "No vector database setup required" }
+                  { step: "1", title: "Get your API key", code: `// Generate a key at cmpsbl.com/api-access\nconst API_KEY = process.env.CMPSBL_API_KEY;`, note: "No additional infrastructure required" },
+                  { step: "2", title: "Store a memory via REST", code: `const res = await fetch('https://api.cmpsbl.com/v1/substrate', {\n  method: 'POST',\n  headers: {\n    'Authorization': \`Bearer \${API_KEY}\`,\n    'Content-Type': 'application/json'\n  },\n  body: JSON.stringify({\n    module: 'MEMORY',\n    action: 'store',\n    input: { content: 'User prefers dark mode', agentId: 'my-agent' }\n  })\n});`, note: "Works with any language or framework" },
+                  { step: "3", title: "Recall context for prompts", code: `const recall = await fetch('https://api.cmpsbl.com/v1/substrate', {\n  method: 'POST',\n  headers: {\n    'Authorization': \`Bearer \${API_KEY}\`,\n    'Content-Type': 'application/json'\n  },\n  body: JSON.stringify({\n    module: 'MEMORY',\n    action: 'recall',\n    input: { query: userMessage, agentId: 'my-agent' }\n  })\n});\nconst { contextString } = await recall.json();`, note: "No vector database setup required" }
                 ].map((item, i) => (
                   <motion.div key={item.step} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
                     <Card className="hover:border-primary/20 transition-colors">
