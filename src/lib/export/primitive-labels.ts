@@ -11,7 +11,7 @@ const ORGANS = new Set([
 
 const LAYERS = new Set([
   'DEFENSE', 'IMMUNITY', 'GOVERNANCE', 'INTENT', 'EVOLUTION',
-  'INCLUSIVE', 'CONSCIENCE', 'TREATY',
+  'INCLUSIVE', 'CONSCIENCE', 'TREATY', 'VISION', 'SHADOW',
 ]);
 
 const ENGINES = new Set([
