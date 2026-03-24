@@ -128,7 +128,7 @@ const STORE_ENGINES: StoreItem[] = [
   {
     id: "engine-cortex",
     kind: "engine",
-    name: "CORTEX Engine",
+    name: "CORTEX",
     subtitle: "Agent Runtime & Orchestration",
     bio: "Gives your AI agents a brain. Multi-agent orchestration, task delegation, memory coordination, and cognitive load balancing — agents think together.",
     description: "CORTEX provides multi-agent task delegation, cognitive load balancing, shared memory coordination, agent competency tracking, automatic skill routing, and collaborative reasoning.",
