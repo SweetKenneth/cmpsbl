@@ -664,35 +664,39 @@ function DreamSection() {
         </div>
       </div>
 
-      <CodeBlock title="Dream cycle API">{`// Trigger a simnap (quick consolidation)
-const result = await substrate.dream.trigger({ mode: "simnap" });
+      <CodeBlock title="DREAM Engine API via REST">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Trigger a simnap (quick consolidation)
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'DREAM',
+    action: 'trigger',
+    payload: { mode: "simnap" }
+  }),
+});
 // → { memories_compressed: 42, duplicates_pruned: 7, duration_ms: 28400 }
 
-// Trigger a deep dream cycle
-const result = await substrate.dream.trigger({
-  mode: "deep",
-  options: {
-    cross_reference: true,     // find patterns across categories
-    generate_heuristics: true, // create new heuristic rules
-    prune_threshold: 0.1       // remove memories below this score
-  }
+// Trigger a deep processing cycle
+const deep = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'DREAM',
+    action: 'trigger',
+    payload: {
+      mode: "deep",
+      cross_reference: true,
+      generate_heuristics: true,
+      prune_threshold: 0.1
+    }
+  }),
 });
 // → { memories_consolidated: 847, heuristics_generated: 3,
-//    patterns_discovered: 12, pruned: 156, duration_ms: 187000 }
-
-// Check dream status and history
-const status = await substrate.dream.status();
-// → { last_simnap: "2026-03-05T02:30:00Z",
-//    last_deep: "2026-03-05T04:00:00Z",
-//    total_cycles: 1847,
-//    memories_consolidated_lifetime: 284000 }
-
-// Schedule dream cycles
-await substrate.dream.schedule({
-  simnap_interval_minutes: 15,
-  deep_dream_time: "04:00",       // UTC
-  deep_dream_timezone: "America/Los_Angeles"
-});`}</CodeBlock>
+//    patterns_discovered: 12, pruned: 156, duration_ms: 187000 }`}</CodeBlock>
 
       {/* What dreams produce */}
       <div>
