@@ -554,10 +554,14 @@ async function cmdShell() {
     prompt: '  cmpsbl> ',
     completer: (line: string) => {
       const cmds = [
-        'init', 'discover', 'stream', 'score', 'validate', 'export',
+        'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
         'status', 'health', 'nodes', 'ping', 'inspect', 'config',
         'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
         'topology', 'route', 'benchmark', 'diff', 'changelog',
+        'think', 'reflect', 'remember', 'forget',
+        'forge', 'harvest', 'translate', 'sandbox',
+        'scan', 'predict', 'audit', 'cost',
+        'threat', 'immune', 'govern', 'treaty',
         'help', 'version', 'exit', 'quit',
       ];
       const hits = cmds.filter(c => c.startsWith(line.trim().toLowerCase()));
