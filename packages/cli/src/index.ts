@@ -474,6 +474,8 @@ async function cmdOnboarding() {
       rl.close();
       if (answer.trim().toLowerCase() === 'y' || answer.trim() === '') {
         await cmdInit([], { skipCeremony: true });
+        // After init, offer the First Dream
+        await offerFirstDream();
       } else {
         say('No problem. Run `cmpsbl init` when you\'re ready.');
         say(pick(V.idle));
