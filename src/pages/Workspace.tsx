@@ -12,6 +12,8 @@ import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { WorkspaceOnboarding } from '@/components/onboarding/WorkspaceOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { RelatedCapabilities } from '@/components/RelatedCapabilities';
+import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -35,7 +37,7 @@ const SDK_TEMPLATES = [
 ];
 
 const TIER_LABELS: Record<CommandTier, { label: string; color: string; price: string }> = {
-  free: { label: 'Builder', color: 'bg-neon-green/10 text-neon-green border-neon-green/20', price: '$0' },
+  free: { label: 'Builder', color: 'bg-neon-green/10 text-neon-green border-neon-green/20', price: 'Included' },
   studio: { label: 'Studio', color: 'bg-neon-purple/10 text-neon-purple border-neon-purple/20', price: '$29/mo' },
   creator: { label: 'Creator', color: 'bg-sky-500/10 text-sky-400 border-sky-500/20', price: '$49/mo' },
   architect: { label: 'Architect', color: 'bg-neon-amber/10 text-neon-amber border-neon-amber/20', price: '$79/mo' },
@@ -74,9 +76,9 @@ export default function Workspace() {
     } else if (cmd === 'whoami') {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `Identity: ${user?.email || 'anonymous'}\nTier: ${TIER_LABELS[userTier].label} (${TIER_LABELS[userTier].price})\nCommands: ${availableCommands.length} available` }]);
     } else if (cmd === 'status') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Platform: ONLINE\nModules: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Substrate: ONLINE\nPrimitives: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
     } else if (cmd === 'modules') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 modules across 12 groups:\nKernel: CORE, SYSTEM\nCognition: BRAIN, MEMORY, DREAM\nOperations: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION\nEvolution: EVOLUTION, SHADOW, PHANTOM\nSafety: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE\nManufacturing: FORGE, FOUNDRY, PERCEPTION, REFLEX\nFields: IMMUNITY, INTENT\nGovernance: GOVERNANCE\nSecurity: DEFENSE, ENGINEER, ENCODE' }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 primitives across the 12·12·8·8 matrix:\nKernel: CORE, SYSTEM\nCognition: BRAIN, MEMORY, DREAM\nOperations: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION\nEvolution: EVOLUTION, SHADOW, PHANTOM\nSafety: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE\nManufacturing: FORGE, FOUNDRY, PERCEPTION, REFLEX\nFields: IMMUNITY, INTENT\nGovernance: GOVERNANCE\nSecurity: DEFENSE, ENGINEER, ENCODE' }]);
     } else if (matched) {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `[${matched.category.toUpperCase()}] ${matched.description}\n→ Executing ${matched.command}...\n✓ Complete`, tier: matched.tier }]);
     } else {
@@ -97,7 +99,7 @@ export default function Workspace() {
     <>
       <SEO
         title="Workspace — Your Personal Builder Hub | CMPSBL"
-        description="Your CMPSBL builder workspace: manage active Memory Packs, view vault inventory, track crystallization stats, access SDK keys, and configure capability slots. Free tier included."
+        description="Your CMPSBL builder workspace: manage active Memory Packs, view vault inventory, track crystallization stats, access SDK keys, and configure capability slots."
         canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />
@@ -115,18 +117,18 @@ export default function Workspace() {
               Your Builder Space
             </h1>
              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Create, test, and deploy with the full power of 40 integrated modules. 
-              Free tier includes persistent memory, SDK templates, and {counts.free} terminal commands.
-            </p>
+               Create, test, and deploy with the full power of the 12·12·8·8 substrate matrix. 
+               Includes persistent memory, SDK templates, and {counts.free} terminal commands.
+             </p>
             <div className="flex items-center justify-center gap-3 mt-6 flex-wrap">
               <Badge variant="outline" className="border-neon-green/30 text-neon-green font-mono text-xs">
-                {counts.free} Free Commands
+                {counts.free} Builder Commands
               </Badge>
               <Badge variant="outline" className="border-muted text-muted-foreground font-mono text-xs">
                 {counts.governor} Total Commands
               </Badge>
               <Badge variant="outline" className="border-sky-500/30 text-sky-400 font-mono text-xs">
-                Persistent Memory Included
+                MEMORY Organ Active
               </Badge>
             </div>
           </div>
@@ -203,17 +205,15 @@ export default function Workspace() {
               <div className="grid gap-3 sm:grid-cols-3 mt-8">
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/persistent-memory')}>
                   <Brain className="w-5 h-5 text-neon-purple mb-2" />
-                  <h4 className="font-mono text-sm font-semibold">Persistent Memory</h4>
-                  <p className="text-xs text-muted-foreground mt-1">Free for all tiers. Add memory to any agent.</p>
-                  <Badge variant="outline" className="mt-2 text-[10px] border-neon-green/30 text-neon-green">FREE</Badge>
+                  <h4 className="font-mono text-sm font-semibold">MEMORY Organ</h4>
+                  <p className="text-xs text-muted-foreground mt-1">4-tier cognitive storage. Add memory to any agent.</p>
                 </Card>
                 <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/foundry')}>
                   <Sparkles className="w-5 h-5 text-sky-400 mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Memory Stream</h4>
-                  <p className="text-xs text-muted-foreground mt-1">Crystallize memories. Rare finds on every tier.</p>
-                  <Badge variant="outline" className="mt-2 text-[10px] border-neon-green/30 text-neon-green">FREE</Badge>
+                  <p className="text-xs text-muted-foreground mt-1">Crystallize memories into deployable artifacts.</p>
                 </Card>
-                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/documentation')}>
+                <Card className="p-4 bg-card/50 border-border/50 cursor-pointer hover:border-primary/30 transition-all duration-300 card-lift shimmer-on-hover glass-edge" onClick={() => navigate('/docs')}>
                   <BookOpen className="w-5 h-5 text-neon-amber mb-2" />
                   <h4 className="font-mono text-sm font-semibold">Documentation</h4>
                   <p className="text-xs text-muted-foreground mt-1">Full API reference and integration guides.</p>
@@ -275,7 +275,7 @@ export default function Workspace() {
 
               {!user && (
                 <div className="text-center mt-6">
-                  <p className="text-muted-foreground text-sm mb-3">Sign in to access the terminal — free tier includes 12 commands.</p>
+                  <p className="text-muted-foreground text-sm mb-3">Sign in to access the terminal — Builder tier includes {counts.free} commands.</p>
                   <Button onClick={() => navigate('/auth')} className="font-mono text-sm shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                     Sign In <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -350,6 +350,8 @@ export default function Workspace() {
         </div>
       </div>
 
+      <RelatedCapabilities />
+      <PageSEOBlock path="/workspace" title="Builder Workspace" />
       <EnhancedFooter />
     </>
   );
