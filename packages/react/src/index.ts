@@ -8,9 +8,70 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { broadcastIntent, registerResolver, type IntentResolution, type ResolverHandler } from '@cmpsbl/intent';
 import { subscribe, emit, getEventLog, createSignal, type MeshEventHandler, type MeshFilter } from '@cmpsbl/mesh';
-import { createRuntime, computeCJPI, type MiniRuntime, initFirstContact, discoverMemory, captureMemory, applyMemory, exportMemory, getMemoryStream, getFirstContactSession } from '@cmpsbl/runtime';
-import type { MeshCommEvent, CJPIInput, CJPIScoreBreakdown, MeshIntent, FirstContactConfig, MemoryChain, DiscoveryInput, DiscoveryResult } from '@cmpsbl/types';
-import { DOMAIN_PATTERNS } from '@cmpsbl/types';
+import { createRuntime, computeCJPI, type MiniRuntime, initFirstContact, discoverMemory, captureMemory, applyMemory, exportMemory, getMemoryStream, getFirstContactSession, DOMAIN_PATTERNS } from '@cmpsbl/runtime';
+import type { MeshCommEvent } from '@cmpsbl/mesh';
+import type { MeshIntent } from '@cmpsbl/intent';
+
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types (subset — no @cmpsbl/types import needed)
+// ═══════════════════════════════════════════════════════════════
+
+interface CJPIInput {
+  novelty: number;
+  utility: number;
+  complexity: number;
+  composability: number;
+}
+
+interface CJPIScoreBreakdown {
+  novelty: number;
+  utility: number;
+  complexity: number;
+  composability: number;
+  total: number;
+  tier: string;
+}
+
+interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+interface CeremonyEvent {
+  phase: string;
+  message: string;
+  detail?: string;
+  progress?: number;
+}
+
+interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
+
+interface DiscoveryInput {
+  input: string;
+  context?: Record<string, unknown>;
+  domain?: string;
+}
+
+interface DiscoveryResult {
+  detected: boolean;
+  memory: MemoryChain | null;
+  streamStatus: 'available_in_stream' | 'pending' | 'none';
+}
 
 // ═══════════════════════════════════════════════════════════════
 // useIntent

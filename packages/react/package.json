@@ -10,11 +10,10 @@
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
   "homepage": "https://cmpsbl.com",
-  "peerDependencies": { "react": ">=17.0.0" },
-  "dependencies": {
-    "@cmpsbl/types": "^1.0.0",
-    "@cmpsbl/runtime": "^1.0.0",
-    "@cmpsbl/intent": "^1.0.0",
-    "@cmpsbl/mesh": "^1.0.0"
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "@cmpsbl/intent": ">=1.0.0",
+    "@cmpsbl/mesh": ">=1.0.0",
+    "@cmpsbl/runtime": ">=1.0.0"
   }
 }

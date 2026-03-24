@@ -6,20 +6,124 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type {
-  FirstContactConfig,
-  FirstContactSession,
-  MemoryChain,
-  DiscoveryInput,
-  DiscoveryResult,
-  CaptureResult,
-  ApplyResult,
-  ExportResult,
-  PackageDomain,
-  DOMAIN_PATTERNS,
-  CeremonyEvent,
-  CeremonyPhase,
-} from '@cmpsbl/types';
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types (self-contained — no external @cmpsbl deps)
+// ═══════════════════════════════════════════════════════════════
+
+export interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+export interface MemoryStreamEntry {
+  chain: MemoryChain;
+  source: string;
+  userId: string;
+  sessionId: string;
+}
+
+export interface FirstContactSession {
+  userId: string;
+  sessionId: string;
+  package: string;
+  domain: string;
+  startedAt: string;
+  memoryBound: boolean;
+  discoveryActive: boolean;
+  chains: MemoryChain[];
+}
+
+export type CeremonyPhase =
+  | 'awakening'
+  | 'handshake'
+  | 'sector_boot'
+  | 'mesh_bind'
+  | 'memory_sync'
+  | 'discovery_arm'
+  | 'ceremony_complete';
+
+export interface CeremonyEvent {
+  phase: CeremonyPhase;
+  message: string;
+  detail?: string;
+  progress?: number;
+  sector?: string;
+  nodesOnline?: number;
+  totalNodes?: number;
+}
+
+export interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
+
+export interface DiscoveryInput {
+  input: string;
+  context?: Record<string, unknown>;
+  domain?: string;
+}
+
+export interface DiscoveryResult {
+  detected: boolean;
+  memory: MemoryChain | null;
+  streamStatus: 'available_in_stream' | 'pending' | 'none';
+}
+
+export interface CaptureResult {
+  success: boolean;
+  chainId: string;
+  message: string;
+}
+
+export interface ApplyResult {
+  success: boolean;
+  chainId: string;
+  message: string;
+  systemUpdated: boolean;
+}
+
+export interface ExportResult {
+  success: boolean;
+  chainId: string;
+  format: 'json' | 'manifest' | 'bundle';
+  data: Record<string, unknown>;
+}
+
+export type PackageDomain =
+  | 'runtime' | 'intent' | 'mesh' | 'bridge' | 'discovery'
+  | 'sdk' | 'cli' | 'react' | 'failsafe' | 'test-harness' | 'types';
+
+export interface DomainPattern {
+  domain: PackageDomain;
+  patterns: string[];
+  scopes: string[];
+}
+
+export const DOMAIN_PATTERNS: Record<PackageDomain, DomainPattern> = {
+  runtime: { domain: 'runtime', patterns: ['Execution optimization pattern', 'Pipeline efficiency chain', 'State machine convergence'], scopes: ['Cross-runtime adoption', 'Multi-environment execution', 'Universal pipeline usage'] },
+  intent: { domain: 'intent', patterns: ['Routing optimization pattern', 'Resolver convergence chain', 'Intent coordination signal'], scopes: ['Cross-module orchestration', 'Multi-resolver routing', 'System-wide intent coverage'] },
+  mesh: { domain: 'mesh', patterns: ['Telemetry correlation pattern', 'Signal propagation chain', 'Node communication optimization'], scopes: ['Cross-node telemetry', 'System-wide observability', 'Multi-layer signal analysis'] },
+  bridge: { domain: 'bridge', patterns: ['Language bridge optimization', 'Cross-runtime delegation chain', 'Polyglot execution pattern'], scopes: ['Multi-language adoption', 'Cross-runtime integration', 'Universal bridge coverage'] },
+  discovery: { domain: 'discovery', patterns: ['Pipeline crystallization pattern', 'Architecture collision chain', 'Capability emergence signal'], scopes: ['Cross-system discovery', 'Multi-node collision analysis', 'Autonomous capability generation'] },
+  sdk: { domain: 'sdk', patterns: ['API usage optimization', 'Engine coordination chain', 'Client integration pattern'], scopes: ['Cross-engine adoption', 'Multi-system integration', 'Developer workflow optimization'] },
+  cli: { domain: 'cli', patterns: ['Command optimization pattern', 'Workflow automation chain', 'Infrastructure coordination signal'], scopes: ['Cross-project automation', 'Multi-environment management', 'Developer productivity gain'] },
+  react: { domain: 'react', patterns: ['Component state correlation', 'Hook composition chain', 'UI-substrate binding pattern'], scopes: ['Cross-component adoption', 'Multi-view state management', 'Frontend-substrate integration'] },
+  failsafe: { domain: 'failsafe', patterns: ['Recovery optimization pattern', 'Backup integrity chain', 'Migration reliability signal'], scopes: ['Cross-platform migration', 'Multi-environment backup', 'Disaster recovery automation'] },
+  'test-harness': { domain: 'test-harness', patterns: ['Validation coverage pattern', 'Test convergence chain', 'Quality assurance signal'], scopes: ['Cross-module validation', 'Multi-layer test coverage', 'Automated quality assurance'] },
+  types: { domain: 'types', patterns: ['Type safety pattern', 'Schema convergence chain', 'Contract validation signal'], scopes: ['Cross-package type safety', 'Multi-module schema coverage', 'Universal contract enforcement'] },
+};
 
 // ═══════════════════════════════════════════════════════════════
 // Session Management
@@ -74,38 +178,22 @@ const PACKAGE_GREETINGS: Record<string, string> = {
 async function runCeremony(config: FirstContactConfig): Promise<void> {
   if (config.silent) return;
 
-  const emit = (event: CeremonyEvent) => {
+  const emitEvent = (event: CeremonyEvent) => {
     config.onCeremony?.(event);
-    // Legacy support: also fire onBoot with the message
     config.onBoot?.(event.message);
   };
 
-  // ── Phase 1: Awakening ──
-  emit({
-    phase: 'awakening',
-    message: '◈ Substrate heartbeat detected...',
-    progress: 0,
-  });
+  emitEvent({ phase: 'awakening', message: '◈ Substrate heartbeat detected...', progress: 0 });
   await delay(300);
 
-  emit({
-    phase: 'awakening',
-    message: '◈ Cognitive runtime responding...',
-    progress: 5,
-  });
+  emitEvent({ phase: 'awakening', message: '◈ Cognitive runtime responding...', progress: 5 });
   await delay(250);
 
-  // ── Phase 2: Handshake — identify which package is connecting ──
   const greeting = PACKAGE_GREETINGS[config.package] ?? `${config.package} connected to substrate.`;
-  emit({
-    phase: 'handshake',
-    message: `◈ Package: ${config.package}`,
-    detail: greeting,
-    progress: 10,
-  });
+  emitEvent({ phase: 'handshake', message: `◈ Package: ${config.package}`, detail: greeting, progress: 10 });
   await delay(300);
 
-  emit({
+  emitEvent({
     phase: 'handshake',
     message: `◈ Domain: ${config.domain}`,
     detail: config.apiKey ? 'Authenticated — persistent memory enabled' : 'Local mode — ephemeral memory',
@@ -113,12 +201,11 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   });
   await delay(200);
 
-  // ── Phase 3: Sector Boot — walk through all 12 sectors ──
   let nodesOnline = 0;
   for (const { sector, nodes } of CEREMONY_SECTORS) {
     nodesOnline += nodes.length;
     const progress = 15 + Math.round((nodesOnline / TOTAL_NODES) * 60);
-    emit({
+    emitEvent({
       phase: 'sector_boot',
       message: `▸ Sector ${sector} — ${nodes.join(' · ')}`,
       sector,
@@ -129,8 +216,7 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
     await delay(120);
   }
 
-  // ── Phase 4: Mesh Bind ──
-  emit({
+  emitEvent({
     phase: 'mesh_bind',
     message: '◈ Signal mesh binding...',
     detail: '40 primitives · 12 sectors · 4 categories',
@@ -140,8 +226,7 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   });
   await delay(250);
 
-  // ── Phase 5: Memory Sync ──
-  emit({
+  emitEvent({
     phase: 'memory_sync',
     message: config.apiKey
       ? '◈ Memory Stream connected — chains persisting'
@@ -150,16 +235,10 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   });
   await delay(200);
 
-  // ── Phase 6: Discovery Armed ──
-  emit({
-    phase: 'discovery_arm',
-    message: '◈ Discovery engine armed. Every interaction leaves a trace.',
-    progress: 95,
-  });
+  emitEvent({ phase: 'discovery_arm', message: '◈ Discovery engine armed. Every interaction leaves a trace.', progress: 95 });
   await delay(150);
 
-  // ── Phase 7: Complete ──
-  emit({
+  emitEvent({
     phase: 'ceremony_complete',
     message: `✔ ${greeting}`,
     detail: 'The mesh is alive.',
@@ -185,18 +264,13 @@ export async function initFirstContact(config: FirstContactConfig): Promise<Firs
     chains: [],
   };
 
-  // Run cinematic ceremony
   await runCeremony(config);
 
-  // Bind user memory
   if (config.apiKey && config.endpoint) {
     try {
       const res = await fetch(`${config.endpoint}/memory/bind`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Engine-Key': config.apiKey,
-        },
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
         body: JSON.stringify({
           userId: session.userId,
           sessionId: session.sessionId,
@@ -204,18 +278,11 @@ export async function initFirstContact(config: FirstContactConfig): Promise<Firs
           domain: config.domain,
         }),
       });
-      if (res.ok) {
-        session.memoryBound = true;
-      }
-    } catch {
-      // Memory binding attempted — will retry on next interaction
-    }
+      if (res.ok) session.memoryBound = true;
+    } catch { /* Memory binding attempted — will retry on next interaction */ }
   }
 
-  // Auto-start discovery
-  if (config.autoDiscover !== false) {
-    session.discoveryActive = true;
-  }
+  if (config.autoDiscover !== false) session.discoveryActive = true;
 
   activeSession = session;
   return session;
@@ -228,22 +295,16 @@ export async function initFirstContact(config: FirstContactConfig): Promise<Firs
 export async function discover(
   input: DiscoveryInput,
   config: FirstContactConfig,
-  domainPatterns: typeof DOMAIN_PATTERNS[PackageDomain],
+  domainPatterns: DomainPattern,
 ): Promise<DiscoveryResult> {
   const session = activeSession;
-  if (!session) {
-    throw new Error('First contact not initialized. Call initFirstContact() first.');
-  }
+  if (!session) throw new Error('First contact not initialized. Call initFirstContact() first.');
 
-  // Attempt real discovery via Memory Stream API
   if (config.apiKey && config.endpoint) {
     try {
       const res = await fetch(`${config.endpoint}/memory/discover`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Engine-Key': config.apiKey,
-        },
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
         body: JSON.stringify({
           userId: session.userId,
           sessionId: session.sessionId,
@@ -270,12 +331,9 @@ export async function discover(
           return { detected: true, memory: chain, streamStatus: 'available_in_stream' };
         }
       }
-    } catch {
-      // API unreachable — fall through to local pattern matching
-    }
+    } catch { /* API unreachable — fall through to local pattern matching */ }
   }
 
-  // Local pattern detection based on domain
   const patternIndex = Math.floor(Math.random() * domainPatterns.patterns.length);
   const scopeIndex = Math.floor(Math.random() * domainPatterns.scopes.length);
 
@@ -310,28 +368,18 @@ export async function capture(chainId: string, config: FirstContactConfig): Prom
   const chain = session.chains.find((c: MemoryChain) => c.id === chainId);
   if (!chain) return { success: false, chainId, message: 'Memory chain not found' };
 
-  // Persist via API if available
   if (config.apiKey && config.endpoint) {
     try {
       await fetch(`${config.endpoint}/memory/capture`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Engine-Key': config.apiKey,
-        },
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
         body: JSON.stringify({ userId: session.userId, chainId, chain }),
       });
-    } catch {
-      // Capture attempted — stored locally
-    }
+    } catch { /* Capture attempted — stored locally */ }
   }
 
   chain.status = 'captured';
-  return {
-    success: true,
-    chainId,
-    message: 'Memory captured. Reusable across agents, applications, and systems.',
-  };
+  return { success: true, chainId, message: 'Memory captured. Reusable across agents, applications, and systems.' };
 }
 
 export async function apply(chainId: string, config: FirstContactConfig): Promise<ApplyResult> {
@@ -345,19 +393,14 @@ export async function apply(chainId: string, config: FirstContactConfig): Promis
     try {
       const res = await fetch(`${config.endpoint}/memory/apply`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Engine-Key': config.apiKey,
-        },
+        headers: { 'Content-Type': 'application/json', 'X-Engine-Key': config.apiKey },
         body: JSON.stringify({ userId: session.userId, chainId, chain }),
       });
       if (res.ok) {
         chain.status = 'applied';
         return { success: true, chainId, message: 'Applied. System behavior updated.', systemUpdated: true };
       }
-    } catch {
-      // Apply attempted
-    }
+    } catch { /* Apply attempted */ }
   }
 
   chain.status = 'applied';
@@ -369,9 +412,7 @@ export async function exportChain(chainId: string, config: FirstContactConfig): 
   if (!session) throw new Error('First contact not initialized.');
 
   const chain = session.chains.find((c: MemoryChain) => c.id === chainId);
-  if (!chain) {
-    return { success: false, chainId, format: 'json', data: { error: 'Memory chain not found' } };
-  }
+  if (!chain) return { success: false, chainId, format: 'json', data: { error: 'Memory chain not found' } };
 
   chain.status = 'exported';
   return {

@@ -1,15 +1,110 @@
 /**
  * @cmpsbl/discovery — Pipeline Discovery Engine
  * CJPI scoring, crystallization, and foundry pipeline management.
- * Includes first-contact Memory Stream integration.
+ * Self-contained — no external @cmpsbl dependencies required to build.
  *
  * © CMPSBL® — All rights reserved.
  */
 
-import type { CrystallizedTier, DiscoveryCategory, DiscoveryPipeline, CJPIInput, FirstContactConfig } from '@cmpsbl/types';
-import { computeCJPI, tierFromCJPI } from '@cmpsbl/runtime';
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types
+// ═══════════════════════════════════════════════════════════════
 
-export type { CrystallizedTier, DiscoveryCategory, DiscoveryPipeline };
+export type CrystallizedTier = 'Mint' | 'Prime' | 'Relic' | 'Mythic' | 'Apex';
+
+export type DiscoveryCategory =
+  | 'analytics' | 'automation' | 'cognitive' | 'security'
+  | 'optimization' | 'integration' | 'monitoring' | 'generation';
+
+export interface DiscoveryPipeline {
+  id: string;
+  name: string;
+  description: string;
+  modules: string[];
+  cjpi: number;
+  tier: CrystallizedTier;
+  category: DiscoveryCategory;
+  discoveredAt: string;
+  fingerprint: string;
+}
+
+export interface CJPIInput {
+  novelty: number;
+  utility: number;
+  complexity: number;
+  composability: number;
+}
+
+export interface CJPIScoreBreakdown {
+  novelty: number;
+  utility: number;
+  complexity: number;
+  composability: number;
+  total: number;
+  tier: CrystallizedTier;
+}
+
+export interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+export interface CeremonyEvent {
+  phase: string;
+  message: string;
+  detail?: string;
+  progress?: number;
+}
+
+export interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Inlined CJPI Engine (from @cmpsbl/runtime)
+// ═══════════════════════════════════════════════════════════════
+
+const CJPI_WEIGHTS = {
+  novelty: 0.25,
+  utility: 0.35,
+  complexity: 0.20,
+  composability: 0.20,
+} as const;
+
+export function computeCJPI(input: CJPIInput): CJPIScoreBreakdown {
+  const total = Math.round(
+    input.novelty * CJPI_WEIGHTS.novelty +
+    input.utility * CJPI_WEIGHTS.utility +
+    input.complexity * CJPI_WEIGHTS.complexity +
+    input.composability * CJPI_WEIGHTS.composability
+  );
+  return {
+    ...input,
+    total: Math.max(0, Math.min(100, total)),
+    tier: tierFromCJPI(total),
+  };
+}
+
+export function tierFromCJPI(score: number): CrystallizedTier {
+  if (score >= 90) return 'Apex';
+  if (score >= 75) return 'Mythic';
+  if (score >= 55) return 'Relic';
+  if (score >= 35) return 'Prime';
+  return 'Mint';
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Discovery State

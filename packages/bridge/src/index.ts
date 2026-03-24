@@ -6,9 +6,78 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type { RuntimeMode, BridgeType, ChainManifest, ChainResult, PrimitiveResult, ExecutionOptions, FirstContactConfig } from '@cmpsbl/types';
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types (from @cmpsbl/types — self-contained for builds)
+// ═══════════════════════════════════════════════════════════════
 
-export type { RuntimeMode, BridgeType };
+export type RuntimeMode = 'offline' | 'hybrid' | 'network';
+export type BridgeType = 'network' | 'hybrid' | 'offline-fallback';
+
+export interface ChainManifest {
+  id: string;
+  name: string;
+  description: string;
+  modules: string[];
+  cjpiScore: number;
+  tier: string;
+  category: string;
+  sourceLanguage?: string;
+  discoveredAt: string;
+}
+
+export interface ExecutionOptions {
+  stageTimeoutMs?: number;
+  continueOnFailure?: boolean;
+  telemetry?: boolean;
+}
+
+export interface ChainResult {
+  success: boolean;
+  output: Record<string, unknown>;
+  confidence: number;
+  totalDurationMs: number;
+  stagesCompleted: number;
+  totalStages: number;
+  runtimeMode: RuntimeMode;
+  bridgeType: BridgeType;
+}
+
+export interface PrimitiveResult {
+  success: boolean;
+  output: unknown;
+  confidence: number;
+  durationMs: number;
+  handler: string;
+}
+
+export interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+export interface CeremonyEvent {
+  phase: string;
+  message: string;
+  detail?: string;
+  progress?: number;
+}
+
+export interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Bridge Contract
