@@ -384,12 +384,48 @@ async function cmdShell() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdInit(_args: string[]) {
-  if (!JSON_MODE) header('Initializing Cognitive Environment');
+  if (!JSON_MODE) {
+    // ── ASCII Logo ──
+    blank();
+    const logo = [
+      '   ██████╗ ███╗   ███╗██████╗ ███████╗██████╗ ██╗     ®',
+      '  ██╔════╝ ████╗ ████║██╔══██╗██╔════╝██╔══██╗██║      ',
+      '  ██║      ██╔████╔██║██████╔╝███████╗██████╔╝██║      ',
+      '  ██║      ██║╚██╔╝██║██╔═══╝ ╚════██║██╔══██╗██║      ',
+      '  ╚██████╗ ██║ ╚═╝ ██║██║     ███████║██████╔╝███████╗ ',
+      '   ╚═════╝ ╚═╝     ╚═╝╚═╝     ╚══════╝╚═════╝ ╚══════╝ ',
+    ];
+    for (const line of logo) {
+      console.log(line);
+      await sleep(60);
+    }
+    await sleep(300);
+    blank();
+    say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+    say('  FIRST CONTACT — COGNITIVE SUBSTRATE CEREMONY');
+    say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+    blank();
+  }
 
-  const s = !JSON_MODE ? spinner('Binding substrate...') : null;
-
+  // Run ceremony FIRST — no spinner interference
   const session = await initFirstContact(CLI_CONFIG);
-  s?.update('Generating manifest...');
+
+  if (!JSON_MODE) {
+    blank();
+    box([
+      'Cognitive Substrate v' + CLI_VERSION,
+      '',
+      '40 primitives  ·  12 sectors  ·  4 categories',
+      'Organs · Layers · Engines · Agents',
+      '',
+      'The mesh is alive. Every command leaves a trace.',
+      'Every trace becomes memory. Memory becomes capability.',
+    ], 'CMPSBL®');
+    blank();
+  }
+
+  // NOW generate manifest with spinner
+  const s = !JSON_MODE ? spinner('Generating manifest...') : null;
   await sleep(300);
 
   const manifest = generateManifest({ name: 'my-cmpsbl-project', modules: ['SYSTEM'], version: '1.0.0' });
