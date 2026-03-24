@@ -56,7 +56,7 @@ export function useResolver(intentType: string, handler: ResolverHandler): void 
   handlerRef.current = handler;
 
   useEffect(() => {
-    return registerResolver(intentType, (input) => handlerRef.current(input));
+    return registerResolver(intentType, (input: Record<string, unknown>) => handlerRef.current(input));
   }, [intentType]);
 }
 
