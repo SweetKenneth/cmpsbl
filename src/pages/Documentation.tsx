@@ -162,14 +162,15 @@ function OverviewSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Platform Overview</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is a modular AI platform with 40 specialized modules organized into 12 functional groups — covering routing, memory, 
-          self-improvement, monitoring, security, and orchestration for AI applications.{" "}
+          CMPSBL is a cognitive AI operating system with 40 Core Primitives organized into 4 categories —
+          Organs, Layers, Engines, and Agents — covering routing, memory, self-improvement, monitoring, security,
+          and orchestration for AI applications.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> ready to use.
         </p>
       </div>
 
       <Callout type="tip">
-        <strong>New to CMPSBL?</strong> Start with the <Link to="/documentation" className="text-primary underline">Quick Start Guide</Link> to
+        <strong>New to CMPSBL?</strong> Start with the <Link to="/developers/guide" className="text-primary underline">Developer Guide</Link> to
         get persistent memory running in under an hour — no framework changes needed.
       </Callout>
 
@@ -177,53 +178,48 @@ function OverviewSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Architecture at a Glance</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The platform is organized into layers, each with a clear job. The <strong className="text-foreground">Spine</strong> handles startup and lifecycle, 
-          the <strong className="text-foreground">Cognitive Core</strong> powers reasoning and memory, and the <strong className="text-foreground">Execution tier</strong> runs 
-          all user-facing features. Cross-cutting systems like <strong className="text-foreground">Evolution, Security, and Routing</strong> span every layer.
+          The platform is organized into four primitive categories following a symmetric 12·12·8·8 matrix.
+          <strong className="text-foreground"> Organs</strong> provide vital internal infrastructure,
+          <strong className="text-foreground"> Layers</strong> supply ambient overlays and protection,
+          <strong className="text-foreground"> Engines</strong> are invoked processing powerhouses, and
+          <strong className="text-foreground"> Agents</strong> are autonomous self-directed actors.
         </p>
-        <CodeBlock title="40-module / 12-group platform topology">{`┌─────────────────────────────────────────────────────────┐
-│  GOVERNANCE                Policy enforcement & oversight│
+        <CodeBlock title="40-primitive / 4-category platform topology">{`┌─────────────────────────────────────────────────────────┐
+│  ORGANS (12)     Vital internal infrastructure          │
+│  CORE · SYSTEM · BRAIN · MEMORY · NERVE · NEXUS        │
+│  IDENTITY · SOVEREIGN · ATLAS · MEDIC · RELAY ·         │
+│  CONSCIENCE                                             │
 ├─────────────────────────────────────────────────────────┤
-│  DEFENSE                   Security boundary layer      │
+│  LAYERS (12)     Ambient overlays & protection          │
+│  DEFENSE · IMMUNITY · GOVERNANCE · TREATY · EVOLUTION   │
+│  REFLEX · COMPASS · INTEGRATION · INTENT · ACCESS ·     │
+│  VISION · SHADOW                                        │
 ├─────────────────────────────────────────────────────────┤
-│  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
-│                            VISION · CORTEX · ECONOMY    │
-│                            SANDBOX · INCLUSIVE · MEDIC  │
-│                            INTEGRATION                  │
+│  ENGINES (8)     Invoked processing powerhouses         │
+│  DREAM · HARVEST · FORGE · LINGUA · ECHO · PHANTOM ·    │
+│  SANDBOX · RIPPLE                                       │
 ├─────────────────────────────────────────────────────────┤
-│  OPERATIONS                RIPPLE · ACCESS · IDENTITY   │
-│                            RELAY · AUDIT · NERVE        │
-├─────────────────────────────────────────────────────────┤
-│  COGNITIVE CORE            BRAIN · MEMORY · DREAM       │
-├─────────────────────────────────────────────────────────┤
-│  SPINE                     CORE → SYSTEM                │
-├─────────────────────────────────────────────────────────┤
-│  SAFETY                    COMPLIANCE · PREDICT ·       │
-│                            ETHICS · CONTRACT            │
-│  PERFORMANCE               SIMULATE · GEOSPATIAL · EDGE │
-│  MANUFACTURING             FORGE · TRANSLATE · INGEST   │
-│  CONTINUOUS                EVOLUTION · SHADOW · PHANTOM │
-├─────────────────────────────────────────────────────────┤
-│  ATLAS                     Control plane (Primitive 40)  │
+│  AGENTS (8)      Autonomous self-directed actors        │
+│  ENCODE · DECODE · AUDIT · ECONOMY · INCLUSIVE ·         │
+│  CORTEX · ORACLE · ENGINEER                             │
 └─────────────────────────────────────────────────────────┘
-Cross-cutting: EVOLUTION · IMMUNITY · INTENT
 Total: 40 primitives · 4 categories · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Core Modules</h3>
+        <h3 className="font-semibold text-foreground mb-4">Key Primitives</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
-            { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
-            { icon: Brain,   name: "BRAIN",      desc: "Persistent memory with automatic temperature tiering and self-improvement consolidation" },
-            { icon: Zap,     name: "NEXUS",      desc: "Smart AI routing across 13+ providers with automatic failover and cost controls" },
-            { icon: Moon,    name: "DREAM",      desc: "Background self-improvement — consolidates memory, extracts patterns, generates insights" },
-            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input filtering, and authentication" },
-            { icon: Eye,     name: "VISION",     desc: "System health monitoring, metrics dashboards, and performance tracking" },
-            { icon: Scroll,  name: "AUDIT",      desc: "Tamper-proof activity log with cryptographic verification" },
-            { icon: Code,    name: "DECODE",     desc: "Natural language understanding, intent detection, and response generation" },
-            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent teams with 5 built-in coordination patterns" },
+            { icon: Key,     name: "BYOK",            desc: "Bring your own API keys — zero compute costs to operators" },
+            { icon: Brain,   name: "BRAIN Organ",     desc: "Persistent memory with automatic temperature tiering and self-improvement consolidation" },
+            { icon: Zap,     name: "NEXUS Organ",     desc: "Smart AI routing across 14+ providers with automatic failover and cost controls" },
+            { icon: Moon,    name: "DREAM Engine",    desc: "Background self-improvement — consolidates memory, extracts patterns, generates insights" },
+            { icon: Shield,  name: "DEFENSE Layer",   desc: "Bot detection, rate limiting, input filtering, and authentication" },
+            { icon: Eye,     name: "VISION Layer",    desc: "System health monitoring, metrics dashboards, and performance tracking" },
+            { icon: Scroll,  name: "AUDIT Agent",     desc: "Tamper-proof activity log with cryptographic verification" },
+            { icon: Code,    name: "DECODE Agent",    desc: "Natural language understanding, intent detection, and response generation" },
+            { icon: Bot,     name: "CORTEX Agent",    desc: "Multi-agent orchestration with 5 built-in coordination patterns" },
           ].map((s, i) => (
             <motion.div
               key={s.name}
@@ -258,28 +254,22 @@ function ArchitectureSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Architecture</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is built from 40 specialized modules organized into 12 functional groups. Each module has a priority weight 
-          managed by the CORE module, which coordinates startup and overall system health.
+          CMPSBL is built from 40 Core Primitives organized into a symmetric 12·12·8·8 matrix across
+          4 categories. Each primitive has a priority weight managed by the CORE Organ, which coordinates
+          startup and overall system health.
         </p>
       </div>
 
-      {/* Layer breakdown */}
+      {/* Category breakdown */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Layer Hierarchy</h3>
+        <h3 className="font-semibold text-foreground mb-4">Primitive Categories</h3>
         <DocTable
-          headers={["Category", "Role", "Primitives"]}
+          headers={["Category", "Count", "Role", "Primitives"]}
           rows={[
-            ["Spine", "Startup and lifecycle management", "CORE, SYSTEM"],
-            ["Cognitive Core", "Reasoning, memory, and self-improvement", "BRAIN, MEMORY, DREAM"],
-            ["Operations", "Access control, auditing, and coordination", "RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE"],
-            ["Execution", "User-facing features and AI orchestration", "NEXUS, DECODE, ENCODE, VISION, CORTEX, ECONOMY, SANDBOX, INCLUSIVE, MEDIC, INTEGRATION"],
-            ["Safety & Compliance", "Compliance, prediction, and ethics", "COMPLIANCE, PREDICT, ETHICS, CONTRACT"],
-            ["Performance", "Simulation and edge computing", "SIMULATE, GEOSPATIAL, EDGE"],
-            ["Manufacturing", "Data ingestion, translation, and generation", "FORGE, TRANSLATE, INGEST"],
-            ["Continuous Improvement", "Evolution, testing, and anomaly detection", "EVOLUTION, SHADOW, PHANTOM"],
-            ["Cross-Cutting", "Systems that span all layers", "EVOLUTION, IMMUNITY, INTENT"],
-            ["Governance", "Supervisory oversight and policy enforcement", "GOVERNANCE"],
-            ["Defense", "Outer security boundary", "DEFENSE"],
+            ["Organs", "12", "Vital internal infrastructure", "CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE"],
+            ["Layers", "12", "Ambient overlays and protection", "DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW"],
+            ["Engines", "8", "Invoked processing powerhouses", "DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE"],
+            ["Agents", "8", "Autonomous self-directed actors", "ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER"],
           ]}
         />
       </div>
@@ -288,15 +278,15 @@ function ArchitectureSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Priority Weights</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Every module has a priority weight that determines how much it affects overall system health.
-          Higher-weight modules (like CORE and DEFENSE) trigger faster alerts when degraded. Weights are 
-          recalculated during startup and after system updates.
+          Every primitive has a priority weight that determines how much it affects overall system health.
+          Higher-weight primitives (like CORE Organ and DEFENSE Layer) trigger faster alerts when degraded.
+          Weights are recalculated during startup and after system updates.
         </p>
-        <CodeBlock title="Module weight categories">{`// Weight categories (higher = more critical)
-CRITICAL:    CORE, DEFENSE, GOVERNANCE    (weight ≥ 8)
-HIGH:        BRAIN, NEXUS, AUDIT, ACCESS  (weight 5-7)
-STANDARD:    DECODE, ENCODE, VISION, etc. (weight 3-4)
-AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
+        <CodeBlock title="Primitive weight categories">{`// Weight categories (higher = more critical)
+CRITICAL:    CORE Organ, DEFENSE Layer, GOVERNANCE Layer  (weight ≥ 8)
+HIGH:        BRAIN Organ, NEXUS Organ, AUDIT Agent, ACCESS Layer  (weight 5-7)
+STANDARD:    DECODE Agent, ENCODE Agent, VISION Layer, etc.  (weight 3-4)
+AUXILIARY:   SANDBOX Engine, RIPPLE Engine, etc.  (weight 1-2)
 
 // Health score = Σ(primitive_health × weight) / Σ(weights)
 // Circuit breaker trips when primitive health < 0.3`}</CodeBlock>
@@ -306,14 +296,14 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Circuit Breakers</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          Circuit breakers prevent failures from spreading across modules. When a module's health drops below threshold,
-          it's automatically isolated. The MEDIC module then runs self-healing diagnostics to restore it.
+          Circuit breakers prevent failures from spreading across primitives. When a primitive's health drops below threshold,
+          it's automatically isolated. The MEDIC Organ then runs self-healing diagnostics to restore it.
         </p>
         <div className="grid gap-3 sm:grid-cols-3">
           {[
-            { label: "Open", desc: "Module isolated — all traffic rejected. MEDIC healing active.", color: "border-destructive/30 bg-destructive/5" },
+            { label: "Open", desc: "Primitive isolated — all traffic rejected. MEDIC Organ healing active.", color: "border-destructive/30 bg-destructive/5" },
             { label: "Half-Open", desc: "Probe traffic allowed to test recovery. Metrics monitored.", color: "border-neon-amber/30 bg-neon-amber/5" },
-            { label: "Closed", desc: "Normal operation — full traffic flows through module.", color: "border-neon-green/30 bg-neon-green/5" },
+            { label: "Closed", desc: "Normal operation — full traffic flows through primitive.", color: "border-neon-green/30 bg-neon-green/5" },
           ].map(s => (
             <div key={s.label} className={cn("p-4 rounded-xl border", s.color)}>
               <h4 className="font-semibold text-sm mb-1">{s.label}</h4>
@@ -327,7 +317,7 @@ AUXILIARY:   SIMULATE, GEOSPATIAL, etc.   (weight 1-2)
       <div>
         <h3 className="font-semibold text-foreground mb-4">Governance Modes</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The platform operates in one of four modes, controlled by the GOVERNANCE module.
+          The platform operates in one of four modes, controlled by the GOVERNANCE Layer.
           Switching modes requires authorization and is logged for auditability.
         </p>
         <DocTable
@@ -375,26 +365,36 @@ function BYOKSection() {
         </InfoCard>
       </div>
 
-      <CodeBlock title="Register & use your keys">{`// Register a provider key
-await substrate.keys.register('openai', 'sk-...', {
-  name: 'Production GPT-4o Key',
-  scopes: ['nexus.route', 'brain.query'],
-  rate_limit: { per_minute: 60, per_day: 5000 },
-  budget_cents: 10000  // $100 monthly budget
+      <CodeBlock title="Register & use your keys via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+
+// Register a provider key
+const res = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    module: 'ACCESS',
+    action: 'register_key',
+    payload: {
+      provider: 'openai',
+      key: 'sk-...',
+      name: 'Production GPT-4o Key',
+      scopes: ['nexus.route', 'brain.query'],
+      rate_limit: { per_minute: 60, per_day: 5000 },
+      budget_cents: 10000
+    }
+  }),
 });
 
-// Make an AI call — billed to YOUR account
-const response = await substrate.ai.chat(
-  [{ role: 'user', content: 'Hello!' }],
-  { provider: 'openai', model: 'gpt-4o' }
-);
-
 // Check usage
-const usage = await substrate.keys.usage('openai', 30);
-// → { tokens: 142850, cost_cents: 428, requests: 1203 }
-
-// Rotate a key
-await substrate.keys.rotate('openai', 'sk-new-key-...');`}</CodeBlock>
+const usage = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: { 'Authorization': 'Bearer YOUR_API_KEY', 'Content-Type': 'application/json' },
+  body: JSON.stringify({ module: 'ACCESS', action: 'usage', payload: { provider: 'openai', days: 30 } }),
+});
+// → { tokens: 142850, cost_cents: 428, requests: 1203 }`}</CodeBlock>
 
       <div>
         <h3 className="font-semibold text-foreground mb-3">Supported Providers</h3>
@@ -429,7 +429,7 @@ function BrainSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Module</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Organ</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           The cognitive core — a four-tier memory system with automatic demotion, compression,
           and background consolidation. Protected memory types are locked at 1.0 value with zero decay.
@@ -472,42 +472,43 @@ function BrainSection() {
         </div>
       </div>
 
-      <CodeBlock title="Store, query, and manage memories">{`// Store a memory with metadata
-await substrate.brain.store({
-  content: "User prefers dark mode and minimal notifications",
-  tags: ["preference", "ui", "notifications"],
-  tier: "hot",
-  category: "preference",
-  confidence: 0.95
+      <CodeBlock title="Store, query, and manage memories via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Store a memory with metadata
+await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'store',
+    payload: {
+      content: "User prefers dark mode and minimal notifications",
+      tags: ["preference", "ui"],
+      tier: "hot",
+      confidence: 0.95
+    }
+  }),
 });
 
 // Semantic search across all tiers
-const results = await substrate.brain.query({
-  query: "user interface preferences",
-  limit: 10,
-  tier: "all",              // "hot" | "warm" | "cold" | "legacy" | "all"
-  min_confidence: 0.5,
-  tags: ["preference"]      // optional tag filter
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'recall',
+    payload: {
+      query: "user interface preferences",
+      limit: 10,
+      tier: "all",
+      min_confidence: 0.5
+    }
+  }),
 });
-// → { memories: [...], total: 3, search_time_ms: 12 }
-
-// Store a protected memory (never decays)
-await substrate.brain.store({
-  content: "Never share PII with third-party APIs",
-  category: "safety_rule",  // protected type
-  tier: "hot"
-});
-
-// Compress memories manually
-await substrate.brain.compress({
-  source_tier: "warm",
-  target_tier: "cold",
-  strategy: "semantic"      // "semantic" | "temporal" | "frequency"
-});
-
-// Get memory statistics
-const stats = await substrate.brain.stats();
-// → { hot: 342, warm: 8120, cold: 6543, legacy: 24100, protected: 18 }`}</CodeBlock>
+const { data } = await res.json();
+// → { memories: [...], total: 3, search_time_ms: 12 }`}</CodeBlock>
 
       {/* Memory scoring */}
       <div>
@@ -533,7 +534,7 @@ function NexusSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">NEXUS Router</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">NEXUS Organ</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Intelligent multi-provider AI routing. NEXUS selects the optimal model based on task type,
           latency constraints, cost budget, and provider health — with automatic failover across 14+ providers.
@@ -559,30 +560,42 @@ function NexusSection() {
 5. On failure → auto-failover to next-best provider`}</CodeBlock>
       </div>
 
-      <CodeBlock title="Route with constraints">{`// Basic routing (NEXUS picks the best provider)
-const response = await substrate.nexus.route({
-  messages: [{ role: "user", content: "Analyze this dataset" }],
-  task_type: "analysis"
+      <CodeBlock title="Route with constraints via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Basic routing (NEXUS picks the best provider)
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'NEXUS',
+    action: 'route',
+    payload: {
+      messages: [{ role: "user", content: "Analyze this dataset" }],
+      task_type: "analysis"
+    }
+  }),
 });
 
 // Route with specific constraints
-const response = await substrate.nexus.route({
-  messages: [{ role: "user", content: "Generate a haiku" }],
-  task_type: "creative",
-  constraints: {
-    max_latency_ms: 3000,
-    max_cost_cents: 5,
-    preferred_providers: ["anthropic", "openai"],
-    fallback: true,                // auto-failover on error
-    exclude_providers: ["cohere"]  // skip specific providers
-  }
-});
-
-// Stream a response
-const stream = await substrate.nexus.stream({
-  messages: messages,
-  task_type: "chat",
-  on_token: (token) => process.stdout.write(token)
+const constrained = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'NEXUS',
+    action: 'route',
+    payload: {
+      messages: [{ role: "user", content: "Generate a haiku" }],
+      task_type: "creative",
+      constraints: {
+        max_latency_ms: 3000,
+        max_cost_cents: 5,
+        preferred_providers: ["anthropic", "openai"],
+        fallback: true
+      }
+    }
+  }),
 });`}</CodeBlock>
 
       {/* Task types */}
@@ -651,35 +664,39 @@ function DreamSection() {
         </div>
       </div>
 
-      <CodeBlock title="Dream cycle API">{`// Trigger a simnap (quick consolidation)
-const result = await substrate.dream.trigger({ mode: "simnap" });
+      <CodeBlock title="DREAM Engine API via REST">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Trigger a simnap (quick consolidation)
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'DREAM',
+    action: 'trigger',
+    payload: { mode: "simnap" }
+  }),
+});
 // → { memories_compressed: 42, duplicates_pruned: 7, duration_ms: 28400 }
 
-// Trigger a deep dream cycle
-const result = await substrate.dream.trigger({
-  mode: "deep",
-  options: {
-    cross_reference: true,     // find patterns across categories
-    generate_heuristics: true, // create new heuristic rules
-    prune_threshold: 0.1       // remove memories below this score
-  }
+// Trigger a deep processing cycle
+const deep = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'DREAM',
+    action: 'trigger',
+    payload: {
+      mode: "deep",
+      cross_reference: true,
+      generate_heuristics: true,
+      prune_threshold: 0.1
+    }
+  }),
 });
 // → { memories_consolidated: 847, heuristics_generated: 3,
-//    patterns_discovered: 12, pruned: 156, duration_ms: 187000 }
-
-// Check dream status and history
-const status = await substrate.dream.status();
-// → { last_simnap: "2026-03-05T02:30:00Z",
-//    last_deep: "2026-03-05T04:00:00Z",
-//    total_cycles: 1847,
-//    memories_consolidated_lifetime: 284000 }
-
-// Schedule dream cycles
-await substrate.dream.schedule({
-  simnap_interval_minutes: 15,
-  deep_dream_time: "04:00",       // UTC
-  deep_dream_timezone: "America/Los_Angeles"
-});`}</CodeBlock>
+//    patterns_discovered: 12, pruned: 156, duration_ms: 187000 }`}</CodeBlock>
 
       {/* What dreams produce */}
       <div>
@@ -708,7 +725,7 @@ function DefenseSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Module</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">DEFENSE Layer</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Enterprise-grade security built into the platform core. DEFENSE is the outermost boundary —
           the security layer that every request must pass through before reaching any other module.
@@ -738,32 +755,26 @@ function DefenseSection() {
         </div>
       </div>
 
-      <CodeBlock title="Defense configuration">{`// Run a security scan
-const scan = await substrate.defense.scan({
-  target: "example.com",
-  scan_type: "full",         // "quick" | "full" | "compliance"
-  wcag_level: "AA"           // accessibility compliance level
-});
-// → { score: 87, issues: [...], recommendations: [...] }
+      <CodeBlock title="DEFENSE Layer configuration via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
 
-// Configure rate limits
-await substrate.defense.configure({
-  rate_limits: {
-    global: { per_minute: 1000, per_day: 50000 },
-    per_key: { per_minute: 60, per_day: 5000 },
-    per_ip: { per_minute: 30, per_day: 1000 }
-  },
-  bot_detection: {
-    enabled: true,
-    challenge_threshold: 0.7,   // confidence threshold
-    block_threshold: 0.95
-  },
-  input_sanitization: {
-    prompt_injection: true,
-    sql_injection: true,
-    xss_prevention: true
-  }
-});`}</CodeBlock>
+// Run a security scan
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'DEFENSE',
+    action: 'scan',
+    payload: {
+      target: "example.com",
+      scan_type: "full",
+      wcag_level: "AA"
+    }
+  }),
+});
+// → { score: 87, issues: [...], recommendations: [...] }`}</CodeBlock>
 
       {/* Compliance */}
       <div>
@@ -785,7 +796,7 @@ function EvolutionSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">EVOLUTION System</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">EVOLUTION Layer</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Governed self-improvement. EVOLUTION manages version control, shadow testing, and promotion of
           system changes — ensuring the platform improves over time while maintaining integrity guarantees.
@@ -808,14 +819,14 @@ Each phase produces a Merkle-signed receipt in the audit chain.`}</CodeBlock>
       <div className="grid gap-4 sm:grid-cols-2">
         <InfoCard icon={Search} title="Dry-Run Impact Preview">
           Simulates evolution changes before application. Shows projected delta on all health metrics,
-          estimates blast radius (which modules affected), and projects confidence level. No production state is modified.
+          estimates blast radius (which primitives affected), and projects confidence level. No production state is modified.
         </InfoCard>
         <InfoCard icon={RefreshCw} title="One-Click Rollback">
           Manages restoration of immutable snapshots. Lists available snapshots with timestamps and health scores.
           Automatic post-restore health verification. All rollback events are audited.
         </InfoCard>
         <InfoCard icon={Activity} title="Scan Trend Dashboard">
-          Visualizes health over time with trend lines, technical debt reduction curves, node-by-node breakdown,
+          Visualizes health over time with trend lines, technical debt reduction curves, primitive-by-primitive breakdown,
           and alert threshold markers. Identifies patterns in evolution success rates.
         </InfoCard>
         <InfoCard icon={GitBranch} title="Shadow Testing">
@@ -824,30 +835,33 @@ Each phase produces a Merkle-signed receipt in the audit chain.`}</CodeBlock>
         </InfoCard>
       </div>
 
-      <CodeBlock title="Evolution API">{`// Scan current system state
-const scan = await substrate.evolution.scan();
+      <CodeBlock title="EVOLUTION Layer API via REST">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Scan current system state
+const scan = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({ module: 'EVOLUTION', action: 'scan' }),
+}).then(r => r.json());
 // → { health_score: 94.2, improvements: [...], debt_items: 3 }
 
 // Run a dry-run of proposed changes
-const preview = await substrate.evolution.dryRun({
-  changes: scan.improvements,
-  target_modules: ["brain", "nexus"]
-});
-// → { projected_health: 96.1, delta: +1.9, blast_radius: ["brain", "nexus", "dream"] }
+const preview = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'EVOLUTION',
+    action: 'dry_run',
+    payload: {
+      changes: scan.data.improvements,
+      target_primitives: ["BRAIN", "NEXUS"]
+    }
+  }),
+}).then(r => r.json());
+// → { projected_health: 96.1, delta: +1.9 }`}</CodeBlock>
 
-// Apply changes (requires governor approval)
-const receipt = await substrate.evolution.apply({
-  changes: preview.changes,
-  approval_token: "gov_tok_...",
-  rollback_on_decline: true    // auto-rollback if health drops
-});
-
-// List available rollback snapshots
-const snapshots = await substrate.evolution.snapshots();
-// → [{ id: "snap_...", timestamp: "...", health: 94.2 }, ...]
-
-// Restore a snapshot
-await substrate.evolution.rollback("snap_...");`}</CodeBlock>
 
       {/* Integrity enforcement */}
       <div>
@@ -892,36 +906,34 @@ function ExtensionsSection() {
         />
       </div>
 
-      <CodeBlock title="Register and manage extensions">{`// Register a pre-query brain hook
-await substrate.extensions.register({
-  name: 'pii-filter',
-  extension_type: 'brain_hook',
-  hook_point: 'pre_query',
-  endpoint_url: 'https://your-api.com/hooks/pii-filter',
-  timeout_ms: 5000,           // max execution time
-  retry_count: 1,             // retries on failure
-  fail_open: true             // continue if hook fails
-});
+      <CodeBlock title="Register extensions via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
 
-// Register a post-route nexus hook
-await substrate.extensions.register({
-  name: 'response-logger',
-  extension_type: 'nexus_hook',
-  hook_point: 'post_route',
-  endpoint_url: 'https://your-api.com/hooks/log-response',
-  headers: {
-    'Authorization': 'Bearer hook-secret'
-  }
+// Register a pre-query brain hook
+await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'INTEGRATION',
+    action: 'register_hook',
+    payload: {
+      name: 'pii-filter',
+      extension_type: 'brain_hook',
+      hook_point: 'pre_query',
+      endpoint_url: 'https://your-api.com/hooks/pii-filter',
+      timeout_ms: 5000,
+      fail_open: true
+    }
+  }),
 });
 
 // List registered extensions
-const hooks = await substrate.extensions.list();
-
-// Disable an extension without removing it
-await substrate.extensions.disable('pii-filter');
-
-// Remove an extension
-await substrate.extensions.remove('pii-filter');`}</CodeBlock>
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({ module: 'INTEGRATION', action: 'list_hooks' }),
+}).then(r => r.json());`}</CodeBlock>
 
       <Callout type="warning">
         Extensions are sandboxed with a 5-second default timeout. If a hook exceeds its timeout,
@@ -958,41 +970,44 @@ function AgentsSection() {
         />
       </div>
 
-      <CodeBlock title="Create & orchestrate agents">{`// Create specialized agents
-const researcher = await substrate.agents.create({
-  name: 'ResearchAgent',
-  system_prompt: 'You are a research specialist. Find and synthesize information.',
-  provider: 'anthropic',
-  model: 'claude-sonnet',
-  memory_scope: 'agent'    // agent-private memory
-});
+      <CodeBlock title="Create & orchestrate agents via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
 
-const analyst = await substrate.agents.create({
-  name: 'AnalystAgent',
-  system_prompt: 'You analyze data and provide structured insights.',
-  provider: 'openai',
-  model: 'gpt-4o',
-  memory_scope: 'shared'   // shared memory pool
-});
+// Create a specialized agent
+const researcher = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'CORTEX',
+    action: 'create_agent',
+    payload: {
+      name: 'ResearchAgent',
+      system_prompt: 'You are a research specialist.',
+      provider: 'anthropic',
+      model: 'claude-sonnet',
+      memory_scope: 'agent'
+    }
+  }),
+}).then(r => r.json());
 
-// Run with debate pattern
-const result = await substrate.agents.run(
-  [researcher.id, analyst.id],
-  'Evaluate the ROI of implementing persistent memory',
-  {
-    pattern: 'debate',
-    max_rounds: 3,
-    consensus_threshold: 0.8
-  }
-);
-// → { consensus: true, conclusion: "...", rounds: 2, agent_positions: [...] }
-
-// Run with chain pattern
-const chain = await substrate.agents.run(
-  [researcher.id, analyst.id],
-  'Research quantum computing trends, then analyze market impact',
-  { pattern: 'chain' }
-);`}</CodeBlock>
+// Run agents with debate pattern
+const result = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'CORTEX',
+    action: 'run',
+    payload: {
+      agent_ids: [researcher.data.id, analyst_id],
+      prompt: 'Evaluate the ROI of implementing persistent memory',
+      pattern: 'debate',
+      max_rounds: 3,
+      consensus_threshold: 0.8
+    }
+  }),
+}).then(r => r.json());
+// → { consensus: true, conclusion: "...", rounds: 2 }`}</CodeBlock>
 
       {/* Agent capabilities */}
       <div>
@@ -1045,32 +1060,40 @@ function IntegrationsSection() {
         />
       </div>
 
-      <CodeBlock title="Connect and use integrations">{`// Connect Stripe
-await substrate.integrations.connect({
-  name: 'My Stripe',
-  integration_type: 'stripe',
-  credentials: { api_key: 'sk_live_...' },
-  webhook_secret: 'whsec_...'
+      <CodeBlock title="Connect and use integrations via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Connect Stripe
+await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'INTEGRATION',
+    action: 'connect',
+    payload: {
+      name: 'My Stripe',
+      integration_type: 'stripe',
+      credentials: { api_key: 'sk_live_...' },
+      webhook_secret: 'whsec_...'
+    }
+  }),
 });
 
 // Invoke an integration action
-const customer = await substrate.integrations.call(
-  'integration-id',
-  'customers.create',
-  { email: 'user@example.com', name: 'Jane Doe' }
-);
-
-// Register a webhook listener
-await substrate.integrations.webhook({
-  integration_id: 'integration-id',
-  events: ['invoice.paid', 'subscription.canceled'],
-  endpoint_url: 'https://your-api.com/webhooks/stripe',
-  hmac_secret: 'your-verification-secret'
-});
-
-// List all connected integrations
-const connections = await substrate.integrations.list();
-// → [{ id: "...", type: "stripe", status: "active", last_used: "..." }]`}</CodeBlock>
+const customer = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'INTEGRATION',
+    action: 'call',
+    payload: {
+      integration_id: 'integration-id',
+      method: 'customers.create',
+      data: { email: 'user@example.com', name: 'Jane Doe' }
+    }
+  }),
+}).then(r => r.json());`}</CodeBlock>
 
       <Callout type="info">
         All integration credentials are encrypted at rest. API calls through integrations are logged to the
@@ -1239,23 +1262,16 @@ const data = await res.json();`}</CodeBlock>
       <div>
         <h3 className="font-semibold mb-3">NPM Packages</h3>
         <p className="text-sm text-muted-foreground mb-4">
-          11 modular packages under the <code className="text-primary font-mono">@cmpsbl</code> org on NPM. Install only what you need.
+          Published packages under the <code className="text-primary font-mono">@cmpsbl</code> org on NPM. Install only what you need.
         </p>
-        <CodeBlock title="Install Core">{`npm i @cmpsbl/types @cmpsbl/runtime @cmpsbl/intent`}</CodeBlock>
-        <CodeBlock title="Install React Hooks">{`npm i @cmpsbl/react`}</CodeBlock>
+        <CodeBlock title="Install">{`npm i @cmpsbl/sdk @cmpsbl/types @cmpsbl/runtime @cmpsbl/cli`}</CodeBlock>
         <div className="grid sm:grid-cols-2 gap-2 mt-3">
           {[
+            { pkg: '@cmpsbl/sdk', desc: 'Authenticated Substrate API client' },
             { pkg: '@cmpsbl/types', desc: 'Shared TypeScript schemas' },
             { pkg: '@cmpsbl/runtime', desc: 'Mini-Runtime™ engine' },
+            { pkg: '@cmpsbl/cli', desc: 'CLI developer tools' },
             { pkg: '@cmpsbl/failsafe', desc: 'Zero-dep migration toolkit' },
-            { pkg: '@cmpsbl/intent', desc: 'Intent router & dispatch' },
-            { pkg: '@cmpsbl/mesh', desc: 'Mesh telemetry client' },
-            { pkg: '@cmpsbl/bridge', desc: 'Polyglot runtime adapters' },
-            { pkg: '@cmpsbl/sdk', desc: 'Authenticated engine access' },
-            { pkg: '@cmpsbl/discovery', desc: 'Memory crystallization' },
-            { pkg: '@cmpsbl/cli', desc: 'CLI dev tools' },
-            { pkg: '@cmpsbl/react', desc: 'React hooks' },
-            { pkg: '@cmpsbl/test-harness', desc: 'Validation suite' },
           ].map(p => (
             <div key={p.pkg} className="flex items-center gap-2 p-2 rounded border border-border/50 bg-card/50 text-xs">
               <Package className="w-3 h-3 text-primary shrink-0" />
