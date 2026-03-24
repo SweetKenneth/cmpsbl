@@ -155,7 +155,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   "/showcase": [
     { href: "/foundry", title: "The Foundry", description: "Where showcased discoveries originate" },
     { href: "/memory-stream", title: "Memory Stream", description: "The discovery substrate feeding the showcase" },
-    { href: "/engines", title: "54 Engines", description: "The composable arsenal behind each showcase entry" },
+    { href: "/store", title: "Store & Plans", description: "Browse the composable engine catalog", badge: "Store" },
   ],
   "/lab": [
     { href: "/foundry", title: "The Foundry", description: "Explore system-discovered capabilities" },
