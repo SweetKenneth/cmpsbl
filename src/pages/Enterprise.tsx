@@ -185,7 +185,7 @@ export default function Enterprise() {
             <h2 className="text-xl sm:text-2xl font-black text-foreground mb-3">Let's design your deployment.</h2>
             <p className="text-sm sm:text-base text-muted-foreground mb-4 max-w-xl mx-auto">
               Custom capacity, dedicated instances, SOC2 compliance, DREAM Engine scheduling, multi-region routing, and white-glove onboarding — tailored to your organization.{" "}
-              Read our <Link to="/docs" className="text-primary hover:underline font-medium">technical docs</Link> for API details.
+              Read our <Link to="/developers" className="text-primary hover:underline font-medium">technical docs</Link> for API details.
             </p>
             <p className="text-base font-bold text-foreground mb-6">
               Contact us at{" "}
