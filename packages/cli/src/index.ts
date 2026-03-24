@@ -20,7 +20,7 @@ import {
   endFirstContactSession,
 } from '@cmpsbl/runtime';
 import { DOMAIN_PATTERNS } from '@cmpsbl/types';
-import type { FirstContactConfig, MemoryChain } from '@cmpsbl/types';
+import type { FirstContactConfig, FirstContactSession, MemoryChain } from '@cmpsbl/types';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
