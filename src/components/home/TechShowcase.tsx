@@ -352,11 +352,10 @@ const proposal = await cmpsbl.cortex.dispatch({
   auto_apply: false // Require approval
 });`,
   },
-  // INFRASTRUCTURE LAYER (6 modules)
   {
     id: "memory",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Organs",
     title: "MEMORY Vectors",
     description: "Vector embeddings & RAG orchestration",
     color: "text-[hsl(var(--neon-blue))]",
