@@ -166,7 +166,7 @@ export interface PingResult {
 
 /** A single hop in an intent routing trace */
 export interface RouteHop {
-  node: string;
+  primitive: string;
   role: string;
   sector: string;
   latencyMs: number;
