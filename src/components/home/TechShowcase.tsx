@@ -254,9 +254,9 @@ await cmpsbl.system.restore({
   {
     id: "evolution",
     icon: Sparkles,
-    layer: "Overlay",
+    layer: "Layers",
     title: "EVOLUTION Lifecycle",
-    description: "Self-improvement & shadow mode",
+    description: "Self-improvement & shadow testing",
     color: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Scan for improvement opportunities
