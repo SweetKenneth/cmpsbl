@@ -1068,7 +1068,7 @@ export class CMPSBL {
       try {
         await fetch(`${this.config.endpoint}`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+          headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
           body: JSON.stringify({ action: 'ping', node: node.id }),
         });
         entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
