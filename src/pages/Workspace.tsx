@@ -187,7 +187,7 @@ export default function Workspace() {
                             <Copy className="w-3 h-3 mr-1" /> Copy
                           </Button>
                           <Button size="sm" className="flex-1 text-xs font-mono h-8" onClick={() => navigate('/codelab')}>
-                            <Play className="w-3 h-3 mr-1" /> Open in CodeLab
+                            <Play className="w-3 h-3 mr-1" /> Open in Playground
                           </Button>
                         </div>
                       )}

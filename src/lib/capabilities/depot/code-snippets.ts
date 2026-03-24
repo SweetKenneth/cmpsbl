@@ -94,7 +94,7 @@ function slugToCamelCase(slug: string): string {
 }
 
 /**
- * Generate CodeLab URL for a capability
+ * Generate Playground URL for a capability
  */
 export function getCodeLabUrl(capability: CapabilityArtifact): string {
   const code = encodeURIComponent(getCodeSnippet(capability));

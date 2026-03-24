@@ -1,5 +1,5 @@
 /**
- * Display Dialects — Legacy Code Skins for CodeLab
+ * Display Dialects — Legacy Code Skins for Developers Playground
  * Display-only rendering of code in classic programming paradigms.
  * IMPORTANT: This is purely visual. Execution always uses modern JS/TS.
  */
