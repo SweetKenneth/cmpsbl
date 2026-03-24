@@ -254,7 +254,7 @@ export async function discover(
       });
 
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json() as Record<string, any>;
         if (data.detected && data.memory) {
           const chain: MemoryChain = {
             id: data.memory.id,

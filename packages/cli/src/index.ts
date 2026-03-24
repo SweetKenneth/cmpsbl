@@ -200,7 +200,7 @@ const CLI_CONFIG: FirstContactConfig = {
       if (event.detail) say(`  ${event.detail}`);
     }
   },
-  onDiscovery: (chain) => {
+  onDiscovery: (chain: MemoryChain) => {
     if (JSON_MODE) { jsonOut({ event: 'discovery', chain }); return; }
     blank();
     box(['⬢ High-value memory chain detected', '', `Pattern:  ${chain.pattern}`, `Adoption: ${chain.adoption}`, `Status:   Now in Memory Stream`], 'DISCOVERY');

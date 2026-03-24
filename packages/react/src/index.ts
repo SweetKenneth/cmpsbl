@@ -125,7 +125,7 @@ export function useFirstContact(apiKey?: string): UseFirstContactReturn {
     apiKey,
     endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
-    onDiscovery: (chain) => {
+    onDiscovery: (chain: MemoryChain) => {
       setChains(prev => [...prev, chain]);
     },
   });

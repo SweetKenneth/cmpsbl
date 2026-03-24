@@ -1036,8 +1036,8 @@ export class CMPSBL {
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'logs', primitive: options?.primitive?.toUpperCase(), count }),
       });
-      const body = await res.json().catch(() => ({ entries: [] }));
-      const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
+      const body = await res.json().catch(() => ({ entries: [] })) as Record<string, unknown>;
+      const entries: LogEntry[] = ((body.entries as LogEntry[]) ?? []).slice(0, count);
       return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
     } catch {
       return new SDKResponse([] as LogEntry[], { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });

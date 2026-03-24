@@ -247,7 +247,7 @@ async function fetchTable(url: string, key: string, table: string): Promise<unkn
     headers: { apikey: key, Authorization: `Bearer ${key}` },
   });
   if (!res.ok) throw new Error(`Failed to fetch ${table}: ${res.status}`);
-  return res.json();
+  return res.json() as Promise<unknown[]>;
 }
 
 async function testConnection(url: string, key: string): Promise<void> {
