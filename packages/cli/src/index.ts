@@ -1579,7 +1579,7 @@ function cmdChangelog() {
         'X-Engine-Key authentication across all API calls',
         'Engine routing via substrate-api/engine endpoint',
         'Resilient init — graceful fallback when API is unreachable',
-        'Fixed duplicate SHADOW node in registry (now OBSERVER)',
+        'Removed deprecated OBSERVER — SHADOW Layer is the canonical verification primitive',
         'Interactive REPL shell with tab completion',
         'Animated spinners for all async operations',
         '--json flag for CI/CD integration',
