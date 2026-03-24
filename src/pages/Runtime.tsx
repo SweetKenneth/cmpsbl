@@ -253,9 +253,9 @@ export default function Runtime() {
               <Lock className="w-3 h-3 mr-1.5 inline" />
               Always Active
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold">Always-On Capabilities</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Always-On Primitives</h2>
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-              These capabilities run for every user on every plan — no exceptions. Scroll each layer to explore.
+              These capabilities run across all 40 primitives for every user on every plan — no exceptions. Scroll each layer to explore.
             </p>
           </div>
 
