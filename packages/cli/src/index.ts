@@ -41,8 +41,11 @@ const V = {
 };
 const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
 const say = (m: string) => console.log(`  ${m}`);
+const sayOk = (m: string) => console.log(`  ${c.green(m)}`);
+const sayErr = (m: string) => console.log(`  ${c.error(m)}`);
+const sayMuted = (m: string) => console.log(`  ${c.muted(m)}`);
 const blank = () => console.log('');
-const div = () => say('────────────────────────────────────────');
+const div = () => say(c.muted('────────────────────────────────────────'));
 
 function header(title: string) {
   blank();
