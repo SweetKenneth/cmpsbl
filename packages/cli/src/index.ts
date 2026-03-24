@@ -441,7 +441,7 @@ function printHelp() {
 
   Environment:
     CMPSBL_API_KEY          API key (overrides ~/.cmpsbl/credentials)
-    CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
+    CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
   ${c.muted('45 commands · 40 primitives · cmpsbl.com')}
