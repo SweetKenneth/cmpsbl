@@ -61,6 +61,120 @@ function jsonOut(data: unknown) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Persistent Credentials (~/.cmpsbl/credentials)
+// ═══════════════════════════════════════════════════════════════
+
+const CREDS_DIR = path.join(os.homedir(), '.cmpsbl');
+const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
+
+function loadStoredKey(): string | undefined {
+  try {
+    if (fs.existsSync(CREDS_FILE)) {
+      const data = JSON.parse(fs.readFileSync(CREDS_FILE, 'utf-8'));
+      return data.apiKey;
+    }
+  } catch { /* ignore corrupt file */ }
+  return undefined;
+}
+
+function saveStoredKey(key: string): void {
+  if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
+  fs.writeFileSync(CREDS_FILE, JSON.stringify({ apiKey: key, savedAt: new Date().toISOString() }, null, 2));
+  fs.chmodSync(CREDS_FILE, 0o600); // owner-only read/write
+}
+
+function clearStoredKey(): void {
+  try { if (fs.existsSync(CREDS_FILE)) fs.unlinkSync(CREDS_FILE); } catch { /* ignore */ }
+}
+
+/** Resolve API key: env var > stored credentials */
+function resolveApiKey(): string | undefined {
+  return process.env.CMPSBL_API_KEY || loadStoredKey();
+}
+
+/** Open a URL in the user's default browser */
+function openBrowser(url: string): void {
+  try {
+    const platform = process.platform;
+    if (platform === 'win32') execSync(`start "" "${url}"`);
+    else if (platform === 'darwin') execSync(`open "${url}"`);
+    else execSync(`xdg-open "${url}"`);
+  } catch {
+    say(`  Could not open browser. Visit manually:`);
+    say(`  ${url}`);
+  }
+}
+
+const DEV_PORTAL_URL = 'https://cmpsbl.com/api-access';
+
+/**
+ * Mandatory API key gate.
+ * Called before any command that requires substrate access.
+ * Returns the validated API key or exits.
+ */
+async function requireApiKey(): Promise<string> {
+  const existing = resolveApiKey();
+  if (existing) return existing;
+
+  // No key found — interactive auth flow
+  if (JSON_MODE) {
+    jsonOut({ error: 'authentication_required', message: 'Set CMPSBL_API_KEY or run cmpsbl login' });
+    process.exit(1);
+  }
+
+  blank();
+  box([
+    '⚠  AUTHENTICATION REQUIRED',
+    '',
+    'The CMPSBL Substrate requires a developer API key.',
+    'You can get one free at the Developer Portal.',
+  ], 'ACCESS');
+  blank();
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  // Step 1: Open browser
+  await new Promise<void>((resolve) => {
+    rl.question('  Press ENTER to open the Developer Portal in your browser...', () => {
+      openBrowser(DEV_PORTAL_URL);
+      blank();
+      say('  ✓ Browser opened → ' + DEV_PORTAL_URL);
+      say('  Register as a developer and generate your API key.');
+      blank();
+      resolve();
+    });
+  });
+
+  // Step 2: Paste key
+  const key = await new Promise<string>((resolve) => {
+    rl.question('  Paste your API key: ', (answer) => {
+      resolve(answer.trim());
+    });
+  });
+
+  rl.close();
+
+  if (!key || key.length < 10) {
+    say(pick(V.err));
+    say('Invalid API key. Run `cmpsbl login` to try again.');
+    blank();
+    process.exit(1);
+  }
+
+  // Step 3: Save persistently
+  saveStoredKey(key);
+  blank();
+  say('  ✓ API key saved to ~/.cmpsbl/credentials');
+  say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
+  blank();
+
+  // Update config for this session
+  CLI_CONFIG.apiKey = key;
+
+  return key;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
