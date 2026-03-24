@@ -94,13 +94,13 @@ const apiKey = await cmpsbl.access.createKey({
 const usage = await cmpsbl.access.usage(apiKey.id);
 console.log(usage.calls_today, usage.quota_remaining);`,
   },
-  // COGNITIVE LAYER
+  // ORGANS
   {
     id: "brain",
     icon: Brain,
-    layer: "Cognitive",
+    layer: "Organs",
     title: "BRAIN Memory",
-    description: "3-tier persistent memory system",
+    description: "4-tier persistent memory system",
     color: "text-[hsl(var(--neon-purple))]",
     gradient: "from-[hsl(var(--neon-purple))] to-[hsl(var(--neon-purple)/0.7)]",
     code: `// Store a memory with semantic context
