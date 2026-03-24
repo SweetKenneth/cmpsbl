@@ -1,6 +1,6 @@
 /**
  * Documentation Reader — OS-grade docs rendered in Light theme
- * Reads markdown files from the docs/ directory structure and renders them
+ * Reads markdown files from the docs/libraries/ structure and renders them
  * with sidebar navigation using existing design tokens.
  */
 
@@ -10,73 +10,81 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Book, ChevronRight, FileText, Shield, Database, GitBranch, Eye, Server, TestTube, Globe, Code, Scale, Heart, LifeBuoy, BookOpen, Lock, Cpu, Brain, Zap, Wrench, AlertTriangle, Layers } from 'lucide-react';
+import { Book, ChevronRight, FileText, Shield, Database, GitBranch, Eye, Globe, Code, Heart, BookOpen, Lock, Cpu, Brain, Zap, Wrench, Layers, Users, BarChart3, Settings, Rocket, Package, Scale } from 'lucide-react';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
 
-// Document registry — maps slugs to raw markdown imports
+// Document registry — maps slugs to raw markdown imports from docs/libraries/
 const docRegistry: Record<string, { title: string; tier: string; icon: React.ReactNode; loader: () => Promise<string> }> = {
-  // Index
-  'style-guide': { title: 'Style Guide', tier: 'Index', icon: <BookOpen className="w-4 h-4" />, loader: () => import('../../../docs/00-index/style-guide.md?raw').then(m => m.default) },
-  'glossary': { title: 'Glossary', tier: 'Index', icon: <Book className="w-4 h-4" />, loader: () => import('../../../docs/00-index/glossary.md?raw').then(m => m.default) },
-  'navigation': { title: 'Navigation', tier: 'Index', icon: <ChevronRight className="w-4 h-4" />, loader: () => import('../../../docs/00-index/navigation.md?raw').then(m => m.default) },
-  // Tier 1
-  'master-architecture-spec': { title: 'Master Architecture Specification', tier: 'Tier 1 — Canonical Core', icon: <FileText className="w-4 h-4" />, loader: () => import('../../../docs/01-architecture/master-architecture-spec.md?raw').then(m => m.default) },
-  'governance-autonomy-doctrine': { title: 'Governance & Autonomy Doctrine', tier: 'Tier 1 — Canonical Core', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/02-governance/governance-autonomy-doctrine.md?raw').then(m => m.default) },
-  'security-architecture': { title: 'Security Architecture', tier: 'Tier 1 — Canonical Core', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/03-security/security-architecture.md?raw').then(m => m.default) },
-  'data-and-memory-model': { title: 'Data & Memory Model', tier: 'Tier 1 — Canonical Core', icon: <Database className="w-4 h-4" />, loader: () => import('../../../docs/04-data-memory/data-and-memory-model.md?raw').then(m => m.default) },
-  'evolution-and-versioning-framework': { title: 'Evolution & Versioning Framework', tier: 'Tier 1 — Canonical Core', icon: <GitBranch className="w-4 h-4" />, loader: () => import('../../../docs/05-evolution-versioning/evolution-and-versioning-framework.md?raw').then(m => m.default) },
-  // Tier 2
-  'observability-telemetry-handbook': { title: 'Observability & Telemetry Handbook', tier: 'Tier 2 — Operations', icon: <Eye className="w-4 h-4" />, loader: () => import('../../../docs/06-observability/observability-telemetry-handbook.md?raw').then(m => m.default) },
-  'deployment-infrastructure-manual': { title: 'Deployment & Infrastructure Manual', tier: 'Tier 2 — Operations', icon: <Server className="w-4 h-4" />, loader: () => import('../../../docs/07-deployment/deployment-infrastructure-manual.md?raw').then(m => m.default) },
-  'testing-validation-matrix': { title: 'Testing & Validation Matrix', tier: 'Tier 2 — Operations', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/08-testing/testing-validation-matrix.md?raw').then(m => m.default) },
-  // Tier 3
-  'public-whitepaper': { title: 'Public Whitepaper', tier: 'Tier 3 — Strategic', icon: <Globe className="w-4 h-4" />, loader: () => import('../../../docs/09-whitepaper/public-whitepaper.md?raw').then(m => m.default) },
-  'api-integration-specification': { title: 'API & Integration Specification', tier: 'Tier 3 — Strategic', icon: <Code className="w-4 h-4" />, loader: () => import('../../../docs/10-api/api-integration-specification.md?raw').then(m => m.default) },
-  'licensing-commercial-model': { title: 'Licensing & Commercial Model', tier: 'Tier 3 — Strategic', icon: <Scale className="w-4 h-4" />, loader: () => import('../../../docs/11-licensing/licensing-commercial-model.md?raw').then(m => m.default) },
-  // Tier 4
-  'founder-intent': { title: 'Founder Intent', tier: 'Tier 4 — Founder Safeguards', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/12-founder/founder-intent.md?raw').then(m => m.default) },
-  'survivability-succession-protocol': { title: 'Survivability & Succession Protocol', tier: 'Tier 4 — Founder Safeguards', icon: <LifeBuoy className="w-4 h-4" />, loader: () => import('../../../docs/13-survivability/survivability-succession-protocol.md?raw').then(m => m.default) },
+  // Public Library
+  'what-is-cmpsbl': { title: 'What Is CMPSBL', tier: 'Public', icon: <Globe className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/01-what-is-cmpsbl.md?raw').then(m => m.default) },
+  'how-it-works': { title: 'How It Works', tier: 'Public', icon: <Settings className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/02-how-it-works.md?raw').then(m => m.default) },
+  'the-40-primitives': { title: 'The 40 Primitives', tier: 'Public', icon: <Layers className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/03-the-40-primitives.md?raw').then(m => m.default) },
+  'key-features': { title: 'Key Features', tier: 'Public', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/04-key-features.md?raw').then(m => m.default) },
+  'memory-and-learning': { title: 'Memory & Learning', tier: 'Public', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/05-memory-and-learning.md?raw').then(m => m.default) },
+  'security-and-trust': { title: 'Security & Trust', tier: 'Public', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/06-security-and-trust.md?raw').then(m => m.default) },
+  'agent-marketplace': { title: 'Agent Marketplace', tier: 'Public', icon: <Package className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/07-agent-marketplace.md?raw').then(m => m.default) },
+  'ascension-engine': { title: 'Ascension Engine', tier: 'Public', icon: <Rocket className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/08-ascension-engine.md?raw').then(m => m.default) },
+  'plans-and-pricing': { title: 'Plans & Pricing', tier: 'Public', icon: <BarChart3 className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/09-plans-and-pricing.md?raw').then(m => m.default) },
+  'roadmap-and-vision': { title: 'Roadmap & Vision', tier: 'Public', icon: <Eye className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/10-roadmap-and-vision.md?raw').then(m => m.default) },
+  'glossary': { title: 'Glossary', tier: 'Public', icon: <Book className="w-4 h-4" />, loader: () => import('../../../docs/libraries/public/11-glossary.md?raw').then(m => m.default) },
+
+  // Users Library
+  'getting-started': { title: 'Getting Started', tier: 'Users', icon: <BookOpen className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/01-getting-started.md?raw').then(m => m.default) },
+  'api-reference': { title: 'API Reference', tier: 'Users', icon: <Code className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/02-api-reference.md?raw').then(m => m.default) },
+  'primitives-guide': { title: 'Primitives Guide', tier: 'Users', icon: <Layers className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/03-primitives-guide.md?raw').then(m => m.default) },
+  'user-memory-learning': { title: 'Memory & Learning', tier: 'Users', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/04-memory-and-learning.md?raw').then(m => m.default) },
+  'rate-limits': { title: 'Rate Limits', tier: 'Users', icon: <BarChart3 className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/05-rate-limits.md?raw').then(m => m.default) },
+  'webhooks-events': { title: 'Webhooks & Events', tier: 'Users', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/06-webhooks-events.md?raw').then(m => m.default) },
+  'cli-and-sdk': { title: 'CLI & SDK', tier: 'Users', icon: <Code className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/07-cli-and-sdk.md?raw').then(m => m.default) },
+  'ascension-integration': { title: 'Ascension Integration', tier: 'Users', icon: <Rocket className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/08-ascension-integration.md?raw').then(m => m.default) },
+  'agency-framework': { title: 'Agency Framework', tier: 'Users', icon: <Users className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/09-agency-framework.md?raw').then(m => m.default) },
+  'troubleshooting': { title: 'Troubleshooting', tier: 'Users', icon: <Wrench className="w-4 h-4" />, loader: () => import('../../../docs/libraries/users/10-troubleshooting.md?raw').then(m => m.default) },
+
+  // Investors Library
+  'investor-executive-summary': { title: 'Executive Summary', tier: 'Investors', icon: <FileText className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/01-executive-summary.md?raw').then(m => m.default) },
+  'technology-architecture': { title: 'Technology Architecture', tier: 'Investors', icon: <Cpu className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/02-technology-architecture.md?raw').then(m => m.default) },
+  'competitive-positioning': { title: 'Competitive Positioning', tier: 'Investors', icon: <BarChart3 className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/03-competitive-positioning.md?raw').then(m => m.default) },
+  'commercial-model': { title: 'Commercial Model', tier: 'Investors', icon: <Scale className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/04-commercial-model.md?raw').then(m => m.default) },
+  'engineering-proof': { title: 'Engineering Proof', tier: 'Investors', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/05-engineering-proof.md?raw').then(m => m.default) },
+  'ip-defensibility': { title: 'IP Defensibility', tier: 'Investors', icon: <Lock className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/06-ip-defensibility.md?raw').then(m => m.default) },
+  'governance-risk': { title: 'Governance & Risk', tier: 'Investors', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/07-governance-risk.md?raw').then(m => m.default) },
+  'survivability': { title: 'Survivability', tier: 'Investors', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/08-survivability.md?raw').then(m => m.default) },
+  'defensible-valuation': { title: 'Defensible Valuation', tier: 'Investors', icon: <BarChart3 className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/09-defensible-valuation.md?raw').then(m => m.default) },
+  'ascension-demo-script': { title: 'Ascension Demo Script', tier: 'Investors', icon: <Rocket className="w-4 h-4" />, loader: () => import('../../../docs/libraries/investors/10-ascension-demo-script.md?raw').then(m => m.default) },
+
   // Internal Library
-  'internal-topology': { title: 'Topology & Primitive Registry', tier: 'Internal — Substrate', icon: <Layers className="w-4 h-4" />, loader: () => import('../../../docs/internal/01-topology-and-module-registry.md?raw').then(m => m.default) },
-  'internal-algorithms': { title: 'Proprietary Algorithms', tier: 'Internal — Substrate', icon: <Cpu className="w-4 h-4" />, loader: () => import('../../../docs/internal/02-proprietary-algorithms.md?raw').then(m => m.default) },
-  'internal-trade-secrets': { title: 'Trade Secrets & Moat', tier: 'Internal — Substrate', icon: <Lock className="w-4 h-4" />, loader: () => import('../../../docs/internal/03-trade-secrets-and-moat.md?raw').then(m => m.default) },
-  'internal-control-plane': { title: 'Control Plane & Persistence', tier: 'Internal — Substrate', icon: <Database className="w-4 h-4" />, loader: () => import('../../../docs/internal/04-control-plane-and-persistence.md?raw').then(m => m.default) },
-  'internal-nexus': { title: 'NEXUS Routing Engine', tier: 'Internal — Substrate', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/05-nexus-routing-engine.md?raw').then(m => m.default) },
-  'internal-hardening': { title: 'Hardening Registry', tier: 'Internal — Substrate', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/internal/06-hardening-registry.md?raw').then(m => m.default) },
-  'internal-evolution': { title: 'Evolution & Mutation Process', tier: 'Internal — Operations', icon: <GitBranch className="w-4 h-4" />, loader: () => import('../../../docs/internal/07-evolution-and-mutation-pipeline.md?raw').then(m => m.default) },
-  'internal-security': { title: 'Security Internals', tier: 'Internal — Operations', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/internal/08-security-internals.md?raw').then(m => m.default) },
-  'internal-governor': { title: 'Governor Knowledge Base', tier: 'Internal — Governor', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/internal/09-governor-knowledge-base.md?raw').then(m => m.default) },
-  'internal-maintenance': { title: 'Maintenance Runbook', tier: 'Internal — Governor', icon: <Wrench className="w-4 h-4" />, loader: () => import('../../../docs/internal/10-maintenance-runbook.md?raw').then(m => m.default) },
-  'internal-resilience': { title: 'Safety Switches & Resilience', tier: 'Internal — Operations', icon: <AlertTriangle className="w-4 h-4" />, loader: () => import('../../../docs/internal/11-circuit-breaker-and-resilience.md?raw').then(m => m.default) },
-  'internal-memory': { title: 'Memory & Learning Internals', tier: 'Internal — Operations', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/internal/12-memory-and-learning-internals.md?raw').then(m => m.default) },
-  'crown-jewel-mining': { title: 'Apex Discovery Mining — Wave 1', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/13-crown-jewel-mining-report.md?raw').then(m => m.default) },
-  'crown-jewel-mining-w2': { title: 'Apex Discovery Mining — Wave 2', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/14-crown-jewel-mining-wave2.md?raw').then(m => m.default) },
-  'crown-jewel-mining-w3': { title: 'Apex Discovery Mining — Wave 3', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/15-crown-jewel-mining-wave3.md?raw').then(m => m.default) },
-  'crown-jewel-mining-w4': { title: 'Apex Discovery Mining — Wave 4', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/16-crown-jewel-mining-wave4.md?raw').then(m => m.default) },
-  'crown-jewel-mining-w5': { title: 'Apex Discovery Mining — Wave 5', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/17-crown-jewel-mining-wave5.md?raw').then(m => m.default) },
-  'crown-jewel-mining-final': { title: 'Apex Discovery Mining — Final Sweep', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/18-crown-jewel-mining-final-sweep.md?raw').then(m => m.default) },
-  'crown-jewel-master-ranking': { title: 'Apex Discovery Master Ranking', tier: 'Internal — Governor', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/internal/19-crown-jewel-master-ranking.md?raw').then(m => m.default) },
-  // Engineering Proof
-  'engineering-proof': { title: 'Engineering Proof & Scale', tier: 'Tier 3 — Strategic', icon: <TestTube className="w-4 h-4" />, loader: () => import('../../../docs/14-engineering-proof/engineering-proof-and-scale.md?raw').then(m => m.default) },
+  'internal-system-overview': { title: 'System Overview', tier: 'Internal', icon: <Layers className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/01-system-overview.md?raw').then(m => m.default) },
+  'internal-governance': { title: 'Governance Authority', tier: 'Internal', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/02-governance-authority.md?raw').then(m => m.default) },
+  'internal-security': { title: 'Security & Defense', tier: 'Internal', icon: <Shield className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/03-security-defense.md?raw').then(m => m.default) },
+  'internal-evolution': { title: 'Evolution & SEBA', tier: 'Internal', icon: <GitBranch className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/04-evolution-seba.md?raw').then(m => m.default) },
+  'internal-memory': { title: 'Memory & Data', tier: 'Internal', icon: <Database className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/05-memory-data.md?raw').then(m => m.default) },
+  'internal-operations': { title: 'Daily Operations', tier: 'Internal', icon: <Settings className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/06-daily-operations.md?raw').then(m => m.default) },
+  'internal-atlas': { title: 'ATLAS Engine Hub', tier: 'Internal', icon: <Globe className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/07-atlas-hub.md?raw').then(m => m.default) },
+  'internal-succession': { title: 'Succession & Survivability', tier: 'Internal', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/08-succession-survivability.md?raw').then(m => m.default) },
+  'internal-founder': { title: 'Founder Intent', tier: 'Internal', icon: <Heart className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/09-founder-intent.md?raw').then(m => m.default) },
+  'internal-emergency': { title: 'Emergency Procedures', tier: 'Internal', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/10-emergency-procedures.md?raw').then(m => m.default) },
+  'internal-valuation': { title: 'Defensible Valuation', tier: 'Internal', icon: <BarChart3 className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/11-defensible-valuation.md?raw').then(m => m.default) },
+  'internal-cli': { title: 'CLI & Terminal Access', tier: 'Internal', icon: <Code className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/12-cli-terminal-access-control.md?raw').then(m => m.default) },
+  'internal-memory-chains': { title: 'Primary Memory Chains', tier: 'Internal', icon: <Database className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/13-primary-memory-chains.md?raw').then(m => m.default) },
+  'internal-ada': { title: 'Autonomous Decision Authority', tier: 'Internal', icon: <Brain className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/14-autonomous-decision-authority.md?raw').then(m => m.default) },
+  'internal-primitives': { title: 'Primitive Specifications', tier: 'Internal', icon: <Cpu className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/15-primitive-specifications.md?raw').then(m => m.default) },
+  'internal-trade-secrets': { title: 'Trade Secrets', tier: 'Internal', icon: <Lock className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/16-trade-secrets.md?raw').then(m => m.default) },
+  'internal-crown-jewels': { title: 'Crown Jewel Registry', tier: 'Internal', icon: <Zap className="w-4 h-4" />, loader: () => import('../../../docs/libraries/internal/17-crown-jewel-registry.md?raw').then(m => m.default) },
 };
 
-// Group docs by tier for sidebar
+// Group docs by library for sidebar
 const tiers = [
-  { name: 'Index', slugs: ['style-guide', 'glossary', 'navigation'] },
-  { name: 'Tier 1 — Canonical Core', slugs: ['master-architecture-spec', 'governance-autonomy-doctrine', 'security-architecture', 'data-and-memory-model', 'evolution-and-versioning-framework'] },
-  { name: 'Tier 2 — Operations', slugs: ['observability-telemetry-handbook', 'deployment-infrastructure-manual', 'testing-validation-matrix'] },
-  { name: 'Tier 3 — Strategic', slugs: ['public-whitepaper', 'api-integration-specification', 'licensing-commercial-model', 'engineering-proof'] },
-  { name: 'Tier 4 — Founder Safeguards', slugs: ['founder-intent', 'survivability-succession-protocol'] },
-  { name: 'Internal — Substrate', slugs: ['internal-topology', 'internal-algorithms', 'internal-trade-secrets', 'internal-control-plane', 'internal-nexus', 'internal-hardening'] },
-  { name: 'Internal — Operations', slugs: ['internal-evolution', 'internal-security', 'internal-resilience', 'internal-memory'] },
-  { name: 'Internal — Governor', slugs: ['internal-governor', 'internal-maintenance', 'crown-jewel-mining', 'crown-jewel-mining-w2', 'crown-jewel-mining-w3', 'crown-jewel-mining-w4', 'crown-jewel-mining-w5', 'crown-jewel-mining-final', 'crown-jewel-master-ranking'] },
+  { name: 'Public', slugs: ['what-is-cmpsbl', 'how-it-works', 'the-40-primitives', 'key-features', 'memory-and-learning', 'security-and-trust', 'agent-marketplace', 'ascension-engine', 'plans-and-pricing', 'roadmap-and-vision', 'glossary'] },
+  { name: 'Users', slugs: ['getting-started', 'api-reference', 'primitives-guide', 'user-memory-learning', 'rate-limits', 'webhooks-events', 'cli-and-sdk', 'ascension-integration', 'agency-framework', 'troubleshooting'] },
+  { name: 'Investors', slugs: ['investor-executive-summary', 'technology-architecture', 'competitive-positioning', 'commercial-model', 'engineering-proof', 'ip-defensibility', 'governance-risk', 'survivability', 'defensible-valuation', 'ascension-demo-script'] },
+  { name: 'Internal', slugs: ['internal-system-overview', 'internal-governance', 'internal-security', 'internal-evolution', 'internal-memory', 'internal-operations', 'internal-atlas', 'internal-succession', 'internal-founder', 'internal-emergency', 'internal-valuation', 'internal-cli', 'internal-memory-chains', 'internal-ada', 'internal-primitives', 'internal-trade-secrets', 'internal-crown-jewels'] },
 ];
 
 export default function DocsReader() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeSlug = searchParams.get('doc') || 'master-architecture-spec';
+  const activeSlug = searchParams.get('doc') || 'what-is-cmpsbl';
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -105,7 +113,7 @@ export default function DocsReader() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SEO title={`${activeDoc?.title || 'Documentation'} — CMPSBL Docs`} description="OS-grade documentation for the CMPSBL substrate." keywords={['documentation', 'architecture', 'substrate']} />
+      <SEO title={`${activeDoc?.title || 'Documentation'} — CMPSBL Docs`} description="Comprehensive documentation for the CMPSBL Substrate OS — v16.7.0 CONTACT Epoch." keywords={['documentation', 'architecture', 'substrate', 'primitives']} />
       <CmpsblNav />
 
       <div className="max-w-[1400px] mx-auto px-4 pt-24 pb-16">
@@ -135,6 +143,7 @@ export default function DocsReader() {
                       <ul className="space-y-0.5">
                         {tier.slugs.map(slug => {
                           const doc = docRegistry[slug];
+                          if (!doc) return null;
                           return (
                             <li key={slug}>
                               <button

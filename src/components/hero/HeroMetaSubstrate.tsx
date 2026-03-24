@@ -423,7 +423,7 @@ export function HeroMetaSubstrate() {
             <AnimatedStat value={40} label="Primitives" delay={0} />
             <AnimatedStat value={24} label="Capability Packs" delay={1} />
             <AnimatedStat value={20} label="Sealed Products" delay={2} />
-            <AnimatedStat value={9} label="System Domains" delay={3} />
+            <AnimatedStat value={4} label="Primitive Categories" delay={3} />
           </div>
         </FadeIn>
       </div>
