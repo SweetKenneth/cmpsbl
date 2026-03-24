@@ -421,6 +421,8 @@ function printHelp() {
 
   ── Interactive ──────────────────────────────────
     shell                   Interactive REPL session
+    demo                    Guided 2-min tour of the substrate
+    explain <primitive>     Inline reference for any primitive
     changelog               View what's new
 
   ── Meta ─────────────────────────────────────────
@@ -430,13 +432,14 @@ function printHelp() {
   Flags:
     --json                  Output structured JSON (for CI/CD)
     --no-color              Disable colored output
+    NO_COLOR env            Also disables color
 
   Environment:
     CMPSBL_API_KEY          API key (overrides ~/.cmpsbl/credentials)
     CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
 
-  Get your API key at https://cmpsbl.com/api-access
-  42 commands · 40 primitives · cmpsbl.com
+  Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
+  ${c.muted('45 commands · 40 primitives · cmpsbl.com')}
 `);
 }
 
