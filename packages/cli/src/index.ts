@@ -1013,24 +1013,26 @@ import { CMPSBL, Engine } from '@cmpsbl/sdk';
 
 async function main() {
   // Connect to the substrate (uses ~/.cmpsbl/credentials or CMPSBL_API_KEY)
-  const client = createEngineClient({
-    engineKey: process.env.CMPSBL_API_KEY,
+  const cmpsbl = new CMPSBL({
+    apiKey: process.env.CMPSBL_API_KEY,
   });
 
+  await cmpsbl.init();
   console.log('◈ Initiating dream cycle...');
 
-  // Trigger a DREAM Engine cycle via the substrate gateway
-  const dream = await client.request('dream.cycle', {});
+  // Discover a new pattern
+  const discovery = await cmpsbl.discover({ input: 'dream cycle synthesis' });
 
-  console.log('◈ Dream complete.');
-  console.log(\`  Pattern:    \${dream.heuristic}\`);
-  console.log(\`  Confidence: \${(dream.confidence * 100).toFixed(0)}%\`);
+  if (discovery.data.detected && discovery.data.memory) {
+    console.log('◈ Dream complete.');
+    console.log(\`  Pattern:    \${discovery.data.memory.pattern}\`);
+    console.log(\`  Confidence: \${(discovery.data.memory.confidence * 100).toFixed(0)}%\`);
+  }
 
   // Check the Memory Stream for accumulated discoveries
-  const stream = await client.request('memory.stream', {});
-  console.log(\`\\n◈ Memory Stream: \${stream.chains?.length ?? 0} chain(s)\\n\`);
+  console.log(\`\\n◈ Memory Stream: \${cmpsbl.stream.length} chain(s)\\n\`);
 
-  for (const chain of stream.chains ?? []) {
+  for (const chain of cmpsbl.stream) {
     console.log(\`  ⬢ \${chain.pattern} [\${chain.adoption}]\`);
   }
 }
