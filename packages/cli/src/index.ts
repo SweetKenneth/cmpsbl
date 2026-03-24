@@ -1575,15 +1575,17 @@ function cmdChangelog() {
     jsonOut({
       version: CLI_VERSION,
       changes: [
+        'Live API gateway — all commands now hit the production substrate-api',
+        'X-Engine-Key authentication across all API calls',
+        'Engine routing via substrate-api/engine endpoint',
+        'Resilient init — graceful fallback when API is unreachable',
+        'Fixed duplicate SHADOW node in registry (now OBSERVER)',
         'Interactive REPL shell with tab completion',
         'Animated spinners for all async operations',
         '--json flag for CI/CD integration',
         'Benchmark command for latency testing',
-        'Diff command for manifest comparison',
         'First-run onboarding wizard',
         'Contextual next-step suggestions after every command',
-        'Actionable error recovery messages',
-        '--no-color flag for accessibility',
         'Doctor diagnostic suite expanded',
       ],
     });
@@ -1592,18 +1594,19 @@ function cmdChangelog() {
 
   header(`Changelog — v${CLI_VERSION}`);
   const items = [
+    '● Live API gateway — all commands hit the production substrate-api',
+    '● X-Engine-Key authentication across all API calls',
+    '● Engine routing via substrate-api/engine endpoint',
+    '● Resilient init — graceful fallback when API is unreachable',
+    '● Fixed duplicate SHADOW node in registry (OBSERVER restored)',
     '● Interactive REPL shell (`cmpsbl shell`) with tab completion',
     '● Animated spinners replace static pauses',
     '● `--json` flag outputs structured JSON for CI/CD',
     '● `--no-color` flag for accessibility',
     '● `cmpsbl benchmark` — latency test across all nodes',
     '● `cmpsbl diff` — compare two manifest files',
-    '● `cmpsbl changelog` — see what\'s new',
-    '● First-run onboarding wizard for new users',
     '● Smart next-step suggestions after every command',
-    '● Actionable error recovery with fix instructions',
     '● Formatted tables for nodes, scores, and inspections',
-    '● Box-framed headers and discovery alerts',
   ];
 
   for (const item of items) say(item);
