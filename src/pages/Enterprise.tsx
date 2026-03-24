@@ -41,8 +41,8 @@ const capabilities = [
   },
   {
     icon: Brain,
-    title: "Dedicated Learning Cycles",
-    description: "Configure autonomous improvement cycles for your deployment. The system consolidates knowledge, generates insights, and surfaces patterns — tuned to your compliance and data residency rules.",
+    title: "DREAM Engine Synthesis",
+    description: "Configure autonomous synthesis cycles for your deployment. The DREAM Engine consolidates knowledge, generates heuristics, and surfaces patterns — tuned to your compliance and data residency rules.",
   },
   {
     icon: Globe,
