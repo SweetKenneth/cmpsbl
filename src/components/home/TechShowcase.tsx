@@ -77,7 +77,7 @@ cmpsbl.ripple.on("dream.cycle_complete", (event) => {
   {
     id: "access",
     icon: Key,
-    layer: "Kernel",
+    layer: "Layers",
     title: "ACCESS Identity",
     description: "API keys, metering & access control",
     color: "text-[hsl(var(--neon-amber))]",
