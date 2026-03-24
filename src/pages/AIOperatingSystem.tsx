@@ -65,8 +65,8 @@ const pillars = [
   { icon: Network, title: "Smart Model Routing", desc: "The NEXUS Organ picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/architecture" },
   { icon: Shield, title: "Built-in AI Security", desc: "The DEFENSE Layer protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/architecture" },
   { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the DREAM Engine consolidates what the system learned, discovers patterns, and generates new insights — all automatically.", link: "/architecture" },
-  { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Engine coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/architecture" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/architecture" },
+  { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Agent coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/architecture" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in a deterministic 12-stage sequence, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/architecture" },
 ];
 
 const categories = [
