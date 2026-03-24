@@ -485,7 +485,7 @@ export default function IntelPanel() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-                    <CardTitle className="text-sm sm:text-base">Bounded Proposal v3.3</CardTitle>
+                    <CardTitle className="text-sm sm:text-base">Bounded Proposal</CardTitle>
                     <Badge variant="outline" className="text-[10px] sm:text-xs">
                       {unifiedProposal.action_plan.length}/5 steps
                     </Badge>
