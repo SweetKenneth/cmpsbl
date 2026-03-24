@@ -146,9 +146,9 @@ export interface PrimitiveInfo {
 
 /** Snapshot of the entire substrate's operational state */
 export interface SubstrateStatus {
-  nodes: number;
-  nodesOnline: number;
-  sectors: number;
+  primitives: number;
+  primitivesOnline: number;
+  categories: number;
   averageHealth: number;
   runtimeVersion: string;
   memoryChains: number;
