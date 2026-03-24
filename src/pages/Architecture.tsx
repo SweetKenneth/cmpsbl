@@ -261,7 +261,7 @@ export default function Architecture() {
             <motion.div {...fadeUp}>
               <h2 className="text-3xl font-bold mb-2">Deterministic Boot Sequence</h2>
               <p className="text-muted-foreground mb-6">
-                CORE initializes all sectors in a fixed order. Fields permeate the spine,
+                CORE initializes all primitives in a fixed order. Fields permeate the spine,
                 the Plane overlay supervises, <Link to="/architecture" className="text-primary hover:underline font-medium">ATLAS</Link> indexes, and{" "}
                 <Link to="/use-cases" className="text-primary hover:underline font-medium">DEFENSE</Link> seals the boundary.{" "}
                 Learn more in our <Link to="/documentation" className="text-primary hover:underline font-medium">technical documentation</Link>.
