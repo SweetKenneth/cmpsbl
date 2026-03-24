@@ -156,9 +156,12 @@ class MeshAutoScheduler {
     }, this.config.fullExpansionIntervalMs);
 
     // CDM — Constant Discovery Mode reactor (feeds S-Tier Vault + Memory Stream)
+    // CDM does NOT gate on document.visibilityState — it must run autonomously
+    // even when the tab is in background, as it's the primary discovery engine.
     this.timers.cdmReactor = setInterval(async () => {
       try {
-        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        if (!isMeshEnabled()) return;
+        // CDM is autonomous — runs regardless of tab visibility
         await this.runCdmReactorCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in CDM reactor interval:', err);
