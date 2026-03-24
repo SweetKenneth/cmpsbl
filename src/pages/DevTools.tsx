@@ -311,9 +311,9 @@ export default function DevTools() {
               {/* NPM Packages Grid */}
               <NpmPackagesGrid />
 
-              {/* Node Overview */}
+              {/* Primitive Overview */}
               <div>
-                <h2 className="text-xl font-semibold mb-4">Available Nodes</h2>
+                <h2 className="text-xl font-semibold mb-4">Substrate Primitives</h2>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   {MODULES.map((mod) => {
                     const Icon = mod.icon;
