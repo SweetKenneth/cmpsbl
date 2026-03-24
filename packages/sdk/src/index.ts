@@ -188,10 +188,10 @@ export interface HealthReport {
   timestamp: string;
 }
 
-/** Deep inspection result for a single node */
+/** Deep inspection result for a single primitive */
 export interface InspectResult {
-  node: string;
-  sector: string;
+  primitive: string;
+  category: string;
   role: string;
   status: string;
   health: number;
