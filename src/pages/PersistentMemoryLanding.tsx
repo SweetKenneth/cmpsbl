@@ -34,8 +34,8 @@ const PersistentMemoryLanding = () => {
           description: 'Three steps to give your agent persistent memory that survives across sessions.',
           totalTime: 'PT1H',
           steps: [
-            { name: 'Import the memory SDK', text: 'Import withPersistentMemory from the @cmpsbl/memory package.' },
-            { name: 'Wrap your existing agent', text: 'Wrap your agent with withPersistentMemory({ agentId, scope }).' },
+            { name: 'Get your API key', text: 'Generate a developer API key from your CMPSBL account at /api-access.' },
+            { name: 'Store and recall via REST', text: 'POST to the substrate gateway to store memories and recall context for your agent.' },
             { name: 'Run your app', text: 'Memory recall happens automatically. Use context in your prompts.' },
           ],
         }}
