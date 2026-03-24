@@ -76,7 +76,7 @@ export function EnginesCTA() {
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[hsl(var(--neon-cyan)/0.2)] bg-[hsl(var(--neon-cyan)/0.05)] mb-3"
                 >
                   <Lock className="w-3 h-3 text-[hsl(var(--neon-cyan))]" />
-                  <span className="text-[10px] font-mono tracking-widest text-[hsl(var(--neon-cyan))] uppercase">Substrate Engines · Memory Stream</span>
+                  <span className="text-[10px] font-mono tracking-widest text-[hsl(var(--neon-cyan))] uppercase">Substrate Engines · Processing Powerhouses</span>
                 </motion.div>
 
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight mb-2">
