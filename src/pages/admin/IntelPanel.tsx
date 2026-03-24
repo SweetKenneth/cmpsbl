@@ -358,7 +358,7 @@ export default function IntelPanel() {
       const proposal = await generateUnifiedProposal();
       setUnifiedProposal(proposal);
       navigator.clipboard.writeText(JSON.stringify(proposal, null, 2));
-      toast.success(`v3.3 proposal generated — ${proposal.action_plan.length} bounded steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
+      toast.success(`Proposal generated — ${proposal.action_plan.length} bounded steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
     } catch (err) {
       toast.error('Failed to generate proposal');
     } finally {
