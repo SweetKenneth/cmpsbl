@@ -151,12 +151,11 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
 
   useEffect(() => {
     if (!autoInit) return;
-    if (!debugMode.allowModulePolling()) return;
     if (initializedRef.current) return;
     initializedRef.current = true;
     mountedRef.current = true;
 
-    // Initialize Neural Substrate Layer (fully automated maintenance)
+    // Initialize Neural Substrate Layer — always boots (in-memory, no API calls)
     initializeNeuralSubstrate().catch(err => 
       console.warn('[SubstrateProvider] Neural substrate init deferred:', err)
     );
