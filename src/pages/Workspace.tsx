@@ -12,6 +12,8 @@ import { SEO } from '@/components/SEO';
 import { PublicNav } from '@/components/PublicNav';
 import { WorkspaceOnboarding } from '@/components/onboarding/WorkspaceOnboarding';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
+import { RelatedCapabilities } from '@/components/RelatedCapabilities';
+import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
