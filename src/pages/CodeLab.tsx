@@ -1,5 +1,5 @@
 /**
- * CodeLab — Free Developer Playground for CMPSBL
+ * Developers Playground — Free Developer Playground for CMPSBL
  * A unique space for devs to explore, build, and launch with free templates
  */
 
@@ -98,10 +98,10 @@ export default function CodeLab() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="CodeLab — Free IDE & 30 Templates | CMPSBL"
+        title="Developers Playground — Free IDE & 30 Templates | CMPSBL"
         description="CMPSBL's interactive developer playground: 30 free starter templates, live code execution, API testing sandbox, and real-time preview. Build with persistent memory and self-improving AI instantly."
         canonical="https://cmpsbl.com/codelab"
-        keywords={["AI development", "codelab", "CMPSBL", "developer tools", "free templates", "AI playground"]}
+        keywords={["AI development", "developer playground", "CMPSBL", "developer tools", "free templates", "AI playground"]}
       />
 
       <PublicNav />
@@ -266,13 +266,13 @@ export default function CodeLab() {
                   <div className="space-y-3">
                     <div className="relative">
                       <pre className="bg-muted/80 p-4 rounded-lg font-mono text-sm overflow-x-auto border border-border/50">
-                        <code>import {"{ substrate }"} from '@cmpsbl/sdk';</code>
+                        <code>npm install @cmpsbl/sdk</code>
                       </pre>
                       <Button
                         variant="ghost"
                         size="sm"
                         className="absolute top-2 right-2"
-                        onClick={() => copyCode("import { substrate } from '@cmpsbl/sdk';", "sdk")}
+                        onClick={() => copyCode("npm install @cmpsbl/sdk", "sdk")}
                       >
                         {copiedId === "sdk" ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                       </Button>
@@ -303,17 +303,21 @@ export default function CodeLab() {
                 {/* Quick Code Example - Uses dialect rendering */}
                 <div className="flex-1 lg:max-w-md">
                   <CodeViewer 
-                    code={`import { substrate } from './lib/substrate';
+                    code={`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
 
-// Query brain memories
-const memories = await substrate.brain.query(
-  "What did the user prefer?"
-);
-
-// Generate with context
-const response = await substrate.nexus.text(
-  "Summarize: " + memories.data
-);`}
+// Store a memory via REST API
+const res = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': \`Bearer \${API_KEY}\`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'recall',
+    input: { query: 'user preferences' }
+  })
+});`}
                     filename="example.ts"
                     maxHeight="max-h-48"
                   />
@@ -408,7 +412,7 @@ const response = await substrate.nexus.text(
                 <div className="w-12 h-12 rounded-xl bg-neon-purple/10 flex items-center justify-center mb-4">
                   <Layers className="w-6 h-6 text-neon-purple" />
                 </div>
-                <h3 className="font-semibold mb-2 group-hover:text-neon-purple transition-colors">Module Explorer</h3>
+                <h3 className="font-semibold mb-2 group-hover:text-neon-purple transition-colors">Primitive Explorer</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Interactive API explorer for all substrate execution surfaces. Execute calls, see responses, copy code.
                 </p>
@@ -436,7 +440,7 @@ const response = await substrate.nexus.text(
                 </div>
                 <h3 className="font-semibold mb-2 group-hover:text-neon-magenta transition-colors">Project Launchers</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Quickstart templates for Next.js, Vercel, Supabase. Get from zero to deployed in minutes.
+                  Quickstart templates to get from zero to deployed in minutes. SDK, CLI, and REST API starters included.
                 </p>
                 <Button variant="ghost" size="sm" className="gap-2 p-0" onClick={() => setActiveTab("starter")}>
                   Launch Project <ArrowRight className="w-4 h-4" />
@@ -625,18 +629,15 @@ const response = await substrate.nexus.text(
                 <Badge variant="secondary" className="text-xs font-mono">@cmpsbl</Badge>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                11 modular packages — install only what you need.
+                Official packages — install only what you need.
               </p>
               <div className="bg-muted rounded-lg p-3 font-mono text-sm mb-4 flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-primary shrink-0" />
-                <code>npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
+                <code>npm i @cmpsbl/sdk @cmpsbl/runtime @cmpsbl/cli</code>
               </div>
               <div className="grid sm:grid-cols-2 gap-2">
                 {[
-                  '@cmpsbl/types', '@cmpsbl/runtime', '@cmpsbl/failsafe',
-                  '@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/bridge',
-                  '@cmpsbl/sdk', '@cmpsbl/discovery', '@cmpsbl/cli',
-                  '@cmpsbl/react', '@cmpsbl/test-harness',
+                  '@cmpsbl/types', '@cmpsbl/runtime', '@cmpsbl/sdk', '@cmpsbl/cli',
                 ].map(pkg => (
                   <div key={pkg} className="flex items-center gap-2 p-2 rounded border border-border/50 text-xs">
                     <Package className="w-3 h-3 text-primary shrink-0" />

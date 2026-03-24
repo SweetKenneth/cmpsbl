@@ -75,19 +75,19 @@ const LINK_DB: Record<string, CrossLink[]> = {
   "/docs": [
     { href: "/api-access", title: "API Access", description: "Authentication, endpoints, and rate limits" },
     { href: "/academy", title: "Academy", description: "Tutorials, patterns, and best practices" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live in the browser" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live in the browser" },
     { href: "/architecture", title: "Architecture", description: "Understand the topology your API calls traverse" },
   ],
   "/documentation": [
     { href: "/docs", title: "Docs", description: "Public guides and reference documentation" },
     { href: "/api-access", title: "API Access", description: "Keys, quotas, and usage tracking" },
     { href: "/academy", title: "Academy", description: "Tutorials and integration patterns" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live" },
   ],
   "/api-access": [
     { href: "/docs", title: "Documentation", description: "Full reference for the substrate APIs" },
     { href: "/academy", title: "Academy", description: "Hands-on tutorials and integration patterns" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live in the browser" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live in the browser" },
     { href: "/architecture", title: "Architecture", description: "Understand the topology your API calls traverse" },
   ],
   "/blog": [
@@ -116,7 +116,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/academy": [
     { href: "/docs", title: "Documentation", description: "Full API reference and guides" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live in the browser" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live in the browser" },
     { href: "/api-access", title: "API Access", description: "Keys and integration quickstart" },
     { href: "/developers", title: "Developers", description: "Community and resources for builders" },
   ],
@@ -130,11 +130,11 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/foundry", title: "Memory Stream", description: "Explore system-discovered capabilities", badge: "Discovery" },
     { href: "/docs", title: "Documentation", description: "API reference for lab integrations" },
     { href: "/store", title: "Store & Plans", description: "Browse engines and agents", badge: "Store" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live" },
   ],
   "/developers": [
     { href: "/docs", title: "Documentation", description: "Full API reference and guides" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live in the browser" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live in the browser" },
     { href: "/academy", title: "Academy", description: "Tutorials, patterns, and courses" },
     { href: "/showcase", title: "Showcase", description: "See what developers built" },
   ],

@@ -158,11 +158,11 @@ export default function DeveloperShowcase() {
              </h1>
              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
                Add persistent memory, smart AI routing, and self-improvement capabilities 
-               to your applications. 40 specialized modules across 12 coordinated groups — all accessible via SDK or REST API.
+               to your applications. 40 specialized primitives across 4 coordinated categories — all accessible via SDK or REST API.
              </p>
              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
                <Button asChild size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-cyan hover:to-neon-blue shadow-lg shadow-neon-cyan/15 hover:scale-[1.02] active:scale-[0.98] transition-all">
-                 <Link to="/codelab"><Code className="w-5 h-5" />Open CodeLab<ArrowRight className="w-4 h-4" /></Link>
+                 <Link to="/codelab"><Code className="w-5 h-5" />Open Playground<ArrowRight className="w-4 h-4" /></Link>
                </Button>
                <Button asChild variant="outline" size="lg" className="gap-2 h-12 px-6 sm:px-8 text-sm sm:text-base">
                 <Link to="/documentation"><BookOpen className="w-5 h-5" />Documentation</Link>

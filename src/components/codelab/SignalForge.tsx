@@ -168,7 +168,7 @@ export function SignalForge() {
         {showRitual && <BlueprintForgeRitual onComplete={handleRitualComplete} />}
       </AnimatePresence>
 
-      {/* CodeLab Hero */}
+      {/* Developers Playground Hero */}
       <div className="relative border-b border-border/50 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-muted/20" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] md:w-[700px] h-[250px] md:h-[350px] rounded-full bg-primary/5 blur-[120px]" />
@@ -185,7 +185,7 @@ export function SignalForge() {
               </Badge>
             </motion.div>
 
-            {/* Title — CodeLab is the star */}
+            {/* Title */}
             <motion.h1
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -193,7 +193,7 @@ export function SignalForge() {
               className="text-[2rem] leading-[1.08] sm:text-4xl md:text-5xl lg:text-[3.75rem] font-black tracking-tight mb-3 sm:mb-4"
             >
               <span className="bg-gradient-to-r from-primary via-neon-cyan to-primary bg-clip-text text-transparent">
-                CodeLab
+                Developers Playground
               </span>
             </motion.h1>
 

@@ -112,7 +112,7 @@ export function CmpsblNav() {
       icon: Code,
       items: [
         { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal, highlight: true },
-        { name: "CodeLab", href: "/codelab", description: "Test and run code live", icon: Terminal },
+        { name: "Developers Playground", href: "/codelab", description: "Test and run code live", icon: Terminal },
         { name: "DevTools", href: "/devtools", description: "SDKs, packages, and playground", icon: Package },
         { name: "Docs", href: "/docs", description: "Public guides & reference", icon: BookOpen },
         { name: "Documentation", href: "/documentation", description: "Guides & API reference", icon: FileText },
@@ -370,7 +370,7 @@ export function CmpsblNav() {
                     <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-3 font-medium text-muted-foreground hover:text-foreground hidden lg:flex">
                       <Link to="/codelab">
                         <Terminal className="w-4 h-4 mr-1.5" />
-                        CodeLab
+                        Playground
                       </Link>
                     </Button>
                     <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground">

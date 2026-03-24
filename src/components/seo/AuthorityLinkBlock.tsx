@@ -32,7 +32,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Persistent Memory', href: '/persistent-memory' },
   // Build
   { label: 'Builder Workspace', href: '/workspace' },
-  { label: 'CodeLab', href: '/codelab' },
+  { label: 'Developers Playground', href: '/codelab' },
   { label: 'DevTools', href: '/devtools' },
   { label: 'Documentation', href: '/docs' },
   { label: 'API Access', href: '/api-access' },

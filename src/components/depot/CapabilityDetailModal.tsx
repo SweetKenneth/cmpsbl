@@ -229,11 +229,11 @@ function ModalContent({ capability, categoryConfig }: { capability: CapabilityAr
                 </pre>
               </div>
 
-              {/* Open in CodeLab CTA */}
+              {/* Open in Playground CTA */}
               <Button asChild className="w-full" variant="outline">
                 <Link to={`/codelab?capability=${capability.id}`}>
                   <ExternalLink className="w-4 h-4 mr-2" />
-                  Open in CodeLab
+                  Open in Playground
                 </Link>
               </Button>
             </>

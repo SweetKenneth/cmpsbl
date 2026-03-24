@@ -42,7 +42,7 @@ const LINK_GRAPH: LinkNode[] = [
   { path: '/documentation', label: 'Documentation', tags: ['docs', 'api', 'reference', 'sdk'] },
   { path: '/architecture', label: 'Architecture', tags: ['architecture', 'design', 'layers', 'substrate'] },
   { path: '/academy', label: 'Developer Academy', tags: ['academy', 'tutorials', 'learning', 'sdk'] },
-  { path: '/codelab', label: 'CodeLab', tags: ['codelab', 'testing', 'sdk', 'developers'] },
+  { path: '/codelab', label: 'Developers Playground', tags: ['playground', 'testing', 'sdk', 'developers'] },
   { path: '/workspace', label: 'Builder Workspace', tags: ['sdk', 'terminal', 'build', 'developers', 'workspace'] },
   { path: '/api-access', label: 'API Access', tags: ['api', 'keys', 'sdk', 'developers'] },
   { path: '/developers/guide', label: 'Developer Guide', tags: ['onboarding', 'start', 'developers', 'platform'] },
