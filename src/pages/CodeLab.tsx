@@ -303,17 +303,21 @@ export default function CodeLab() {
                 {/* Quick Code Example - Uses dialect rendering */}
                 <div className="flex-1 lg:max-w-md">
                   <CodeViewer 
-                    code={`import { substrate } from './lib/substrate';
+                    code={`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
 
-// Query brain memories
-const memories = await substrate.brain.query(
-  "What did the user prefer?"
-);
-
-// Generate with context
-const response = await substrate.nexus.text(
-  "Summarize: " + memories.data
-);`}
+// Store a memory via REST API
+const res = await fetch(GATEWAY, {
+  method: 'POST',
+  headers: {
+    'Authorization': \`Bearer \${API_KEY}\`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    module: 'MEMORY',
+    action: 'recall',
+    input: { query: 'user preferences' }
+  })
+});`}
                     filename="example.ts"
                     maxHeight="max-h-48"
                   />
