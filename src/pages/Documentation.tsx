@@ -819,7 +819,7 @@ Each phase produces a Merkle-signed receipt in the audit chain.`}</CodeBlock>
       <div className="grid gap-4 sm:grid-cols-2">
         <InfoCard icon={Search} title="Dry-Run Impact Preview">
           Simulates evolution changes before application. Shows projected delta on all health metrics,
-          estimates blast radius (which modules affected), and projects confidence level. No production state is modified.
+          estimates blast radius (which primitives affected), and projects confidence level. No production state is modified.
         </InfoCard>
         <InfoCard icon={RefreshCw} title="One-Click Rollback">
           Manages restoration of immutable snapshots. Lists available snapshots with timestamps and health scores.
