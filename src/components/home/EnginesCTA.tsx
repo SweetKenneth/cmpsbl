@@ -143,9 +143,9 @@ export function EnginesCTA() {
                 size="lg"
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-semibold rounded-xl border-border/60 hover:border-[hsl(var(--neon-cyan)/0.4)] hover:bg-[hsl(var(--neon-cyan)/0.03)] transition-all"
               >
-                <Link to="/engines/architect">
+                <Link to="/documentation">
                   <Cpu className="w-4 h-4" />
-                  ARCHITECT — The Mega-Engine
+                  Explore All 40 Primitives
                 </Link>
               </Button>
             </div>
