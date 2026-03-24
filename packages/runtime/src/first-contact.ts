@@ -338,7 +338,7 @@ export async function apply(chainId: string, config: FirstContactConfig): Promis
   const session = activeSession;
   if (!session) throw new Error('First contact not initialized.');
 
-  const chain = session.chains.find(c => c.id === chainId);
+  const chain = session.chains.find((c: MemoryChain) => c.id === chainId);
   if (!chain) return { success: false, chainId, message: 'Memory chain not found', systemUpdated: false };
 
   if (config.apiKey && config.endpoint) {
