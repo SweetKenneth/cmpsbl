@@ -154,14 +154,15 @@ export function StoreCollectorCard({ item, focused, onToggleFocus }: StoreCollec
             <div
               className={cn(
                 "rounded-2xl overflow-hidden",
-                "border bg-card/95 backdrop-blur-md flex flex-col",
-                tier.border,
-                focused && "shadow-2xl ring-1 ring-primary/20",
-                !focused && "shadow-xl hover:shadow-2xl",
-                "transition-all duration-500",
-                "[grid-area:1/1]"
-              )}
-              style={{
+              "border bg-card/95 backdrop-blur-md flex flex-col",
+              tier.border,
+              focused && "shadow-2xl ring-1 ring-primary/20",
+              !focused && "shadow-xl hover:shadow-2xl",
+              "transition-all duration-500",
+              "[grid-area:1/1]"
+            )}
+            style={{
+              pointerEvents: flipped ? "none" : "auto",
                 backfaceVisibility: "hidden",
                 WebkitBackfaceVisibility: "hidden",
                 boxShadow: focused
