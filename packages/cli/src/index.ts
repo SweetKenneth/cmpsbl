@@ -542,12 +542,14 @@ async function cmdShell() {
 // Commands — Project
 // ═══════════════════════════════════════════════════════════════
 
-async function cmdInit(_args: string[]) {
-  // ── Mandatory API key gate ──
-  const apiKey = await requireApiKey();
-  CLI_CONFIG.apiKey = apiKey;
+async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
+  if (!opts?.skipCeremony) {
+    // ── Mandatory API key gate ──
+    const apiKey = await requireApiKey();
+    CLI_CONFIG.apiKey = apiKey;
+  }
 
-  if (!JSON_MODE) {
+  if (!JSON_MODE && !opts?.skipCeremony) {
     // ── ASCII Logo ──
     blank();
     const logo = [
@@ -605,10 +607,12 @@ async function cmdInit(_args: string[]) {
     blank();
   }
 
-  // Run ceremony FIRST — no spinner interference
-  const session = await initFirstContact(CLI_CONFIG);
+  // Run First Contact (only if not already done by onboarding)
+  const session = opts?.skipCeremony
+    ? (getFirstContactSession() ?? await initFirstContact(CLI_CONFIG))
+    : await initFirstContact(CLI_CONFIG);
 
-  if (!JSON_MODE) {
+  if (!JSON_MODE && !opts?.skipCeremony) {
     blank();
     box([
       'Cognitive Substrate v' + CLI_VERSION,
