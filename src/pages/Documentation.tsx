@@ -162,14 +162,15 @@ function OverviewSection() {
       <div>
         <h2 className="text-2xl sm:text-3xl font-bold mb-3">Platform Overview</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
-          CMPSBL is a modular AI platform with 40 specialized modules organized into 12 functional groups — covering routing, memory, 
-          self-improvement, monitoring, security, and orchestration for AI applications.{" "}
+          CMPSBL is a cognitive AI operating system with 40 Core Primitives organized into 4 categories —
+          Organs, Layers, Engines, and Agents — covering routing, memory, self-improvement, monitoring, security,
+          and orchestration for AI applications.{" "}
           <span className="text-foreground font-medium">{capabilitiesCount}+ capabilities</span> ready to use.
         </p>
       </div>
 
       <Callout type="tip">
-        <strong>New to CMPSBL?</strong> Start with the <Link to="/documentation" className="text-primary underline">Quick Start Guide</Link> to
+        <strong>New to CMPSBL?</strong> Start with the <Link to="/developers/guide" className="text-primary underline">Developer Guide</Link> to
         get persistent memory running in under an hour — no framework changes needed.
       </Callout>
 
@@ -177,53 +178,48 @@ function OverviewSection() {
       <div>
         <h3 className="font-semibold text-foreground mb-4">Architecture at a Glance</h3>
         <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-          The platform is organized into layers, each with a clear job. The <strong className="text-foreground">Spine</strong> handles startup and lifecycle, 
-          the <strong className="text-foreground">Cognitive Core</strong> powers reasoning and memory, and the <strong className="text-foreground">Execution tier</strong> runs 
-          all user-facing features. Cross-cutting systems like <strong className="text-foreground">Evolution, Security, and Routing</strong> span every layer.
+          The platform is organized into four primitive categories following a symmetric 12·12·8·8 matrix.
+          <strong className="text-foreground"> Organs</strong> provide vital internal infrastructure,
+          <strong className="text-foreground"> Layers</strong> supply ambient overlays and protection,
+          <strong className="text-foreground"> Engines</strong> are invoked processing powerhouses, and
+          <strong className="text-foreground"> Agents</strong> are autonomous self-directed actors.
         </p>
-        <CodeBlock title="40-module / 12-group platform topology">{`┌─────────────────────────────────────────────────────────┐
-│  GOVERNANCE                Policy enforcement & oversight│
+        <CodeBlock title="40-primitive / 4-category platform topology">{`┌─────────────────────────────────────────────────────────┐
+│  ORGANS (12)     Vital internal infrastructure          │
+│  CORE · SYSTEM · BRAIN · MEMORY · NERVE · NEXUS        │
+│  IDENTITY · SOVEREIGN · ATLAS · MEDIC · RELAY ·         │
+│  CONSCIENCE                                             │
 ├─────────────────────────────────────────────────────────┤
-│  DEFENSE                   Security boundary layer      │
+│  LAYERS (12)     Ambient overlays & protection          │
+│  DEFENSE · IMMUNITY · GOVERNANCE · TREATY · EVOLUTION   │
+│  REFLEX · COMPASS · INTEGRATION · INTENT · ACCESS ·     │
+│  VISION · SHADOW                                        │
 ├─────────────────────────────────────────────────────────┤
-│  EXECUTION                 NEXUS · DECODE · ENCODE ·    │
-│                            VISION · CORTEX · ECONOMY    │
-│                            SANDBOX · INCLUSIVE · MEDIC  │
-│                            INTEGRATION                  │
+│  ENGINES (8)     Invoked processing powerhouses         │
+│  DREAM · HARVEST · FORGE · LINGUA · ECHO · PHANTOM ·    │
+│  SANDBOX · RIPPLE                                       │
 ├─────────────────────────────────────────────────────────┤
-│  OPERATIONS                RIPPLE · ACCESS · IDENTITY   │
-│                            RELAY · AUDIT · NERVE        │
-├─────────────────────────────────────────────────────────┤
-│  COGNITIVE CORE            BRAIN · MEMORY · DREAM       │
-├─────────────────────────────────────────────────────────┤
-│  SPINE                     CORE → SYSTEM                │
-├─────────────────────────────────────────────────────────┤
-│  SAFETY                    COMPLIANCE · PREDICT ·       │
-│                            ETHICS · CONTRACT            │
-│  PERFORMANCE               SIMULATE · GEOSPATIAL · EDGE │
-│  MANUFACTURING             FORGE · TRANSLATE · INGEST   │
-│  CONTINUOUS                EVOLUTION · SHADOW · PHANTOM │
-├─────────────────────────────────────────────────────────┤
-│  ATLAS                     Control plane (Primitive 40)  │
+│  AGENTS (8)      Autonomous self-directed actors        │
+│  ENCODE · DECODE · AUDIT · ECONOMY · INCLUSIVE ·         │
+│  CORTEX · ORACLE · ENGINEER                             │
 └─────────────────────────────────────────────────────────┘
-Cross-cutting: EVOLUTION · IMMUNITY · INTENT
 Total: 40 primitives · 4 categories · Σ weights = 1.000`}</CodeBlock>
       </div>
 
       {/* Core systems grid */}
       <div>
-        <h3 className="font-semibold text-foreground mb-4">Core Modules</h3>
+        <h3 className="font-semibold text-foreground mb-4">Key Primitives</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[
-            { icon: Key,     name: "BYOK",       desc: "Bring your own API keys — zero compute costs to operators" },
-            { icon: Brain,   name: "BRAIN",      desc: "Persistent memory with automatic temperature tiering and self-improvement consolidation" },
-            { icon: Zap,     name: "NEXUS",      desc: "Smart AI routing across 13+ providers with automatic failover and cost controls" },
-            { icon: Moon,    name: "DREAM",      desc: "Background self-improvement — consolidates memory, extracts patterns, generates insights" },
-            { icon: Shield,  name: "DEFENSE",    desc: "Bot detection, rate limiting, input filtering, and authentication" },
-            { icon: Eye,     name: "VISION",     desc: "System health monitoring, metrics dashboards, and performance tracking" },
-            { icon: Scroll,  name: "AUDIT",      desc: "Tamper-proof activity log with cryptographic verification" },
-            { icon: Code,    name: "DECODE",     desc: "Natural language understanding, intent detection, and response generation" },
-            { icon: Bot,     name: "AGENCY",     desc: "Multi-agent teams with 5 built-in coordination patterns" },
+            { icon: Key,     name: "BYOK",            desc: "Bring your own API keys — zero compute costs to operators" },
+            { icon: Brain,   name: "BRAIN Organ",     desc: "Persistent memory with automatic temperature tiering and self-improvement consolidation" },
+            { icon: Zap,     name: "NEXUS Organ",     desc: "Smart AI routing across 14+ providers with automatic failover and cost controls" },
+            { icon: Moon,    name: "DREAM Engine",    desc: "Background self-improvement — consolidates memory, extracts patterns, generates insights" },
+            { icon: Shield,  name: "DEFENSE Layer",   desc: "Bot detection, rate limiting, input filtering, and authentication" },
+            { icon: Eye,     name: "VISION Layer",    desc: "System health monitoring, metrics dashboards, and performance tracking" },
+            { icon: Scroll,  name: "AUDIT Agent",     desc: "Tamper-proof activity log with cryptographic verification" },
+            { icon: Code,    name: "DECODE Agent",    desc: "Natural language understanding, intent detection, and response generation" },
+            { icon: Bot,     name: "CORTEX Agent",    desc: "Multi-agent orchestration with 5 built-in coordination patterns" },
           ].map((s, i) => (
             <motion.div
               key={s.name}
