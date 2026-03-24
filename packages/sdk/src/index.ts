@@ -964,35 +964,35 @@ export class CMPSBL {
   }
 
   /**
-   * Deep-inspect a node's state including resolvers, uptime, and mesh links.
-   * @param nodeId - Node identifier
+   * Deep-inspect a primitive's state including resolvers, uptime, and mesh links.
+   * @param primitiveId - Primitive identifier
    */
-  async inspect(nodeId: string): Promise<SDKResponse<InspectResult>> {
+  async inspect(primitiveId: string): Promise<SDKResponse<InspectResult>> {
     const start = Date.now();
-    const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
-    if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
+    const prim = PRIMITIVE_REGISTRY.find(n => n.id === primitiveId.toUpperCase());
+    if (!prim) throw new Error(`Primitive "${primitiveId}" not found in registry`);
 
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
-        body: JSON.stringify({ action: 'inspect', node: node.id }),
+        body: JSON.stringify({ action: 'inspect', primitive: prim.id }),
       });
       const body = await res.json().catch(() => ({}));
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        node: node.id, sector: body.sector ?? node.sector, role: body.role ?? node.role,
-        status: res.ok ? (body.status ?? node.status) : 'degraded', health: body.health ?? node.health,
+        primitive: prim.id, category: body.sector ?? prim.sector, role: body.role ?? prim.role,
+        status: res.ok ? (body.status ?? prim.status) : 'degraded', health: body.health ?? prim.health,
         uptime: body.uptime ?? 0, resolverCount: body.resolverCount ?? 0, intentsProcessed: body.intentsProcessed ?? 0,
         avgLatencyMs: body.avgLatencyMs ?? durationMs,
-        meshLinks: body.meshLinks ?? NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+        meshLinks: body.meshLinks ?? PRIMITIVE_REGISTRY.filter(n => n.sector === prim.sector && n.id !== prim.id).map(n => n.id),
         lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
     } catch {
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        node: node.id, sector: node.sector, role: node.role, status: 'offline', health: 0, uptime: 0,
+        primitive: prim.id, category: prim.sector, role: prim.role, status: 'offline', health: 0, uptime: 0,
         resolverCount: 0, intentsProcessed: 0, avgLatencyMs: durationMs, meshLinks: [], lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
