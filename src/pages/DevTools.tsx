@@ -1,5 +1,5 @@
 /**
- * DevTools — Enhanced SDK Documentation & Developer Resources
+ * Developer Tools — Enhanced SDK Documentation & Developer Resources
  * Now includes interactive playground, signup, and more
  */
 

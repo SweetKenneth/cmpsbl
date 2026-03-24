@@ -33,7 +33,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   // Build
   { label: 'Builder Workspace', href: '/workspace' },
   { label: 'Developers Playground', href: '/codelab' },
-  { label: 'DevTools', href: '/devtools' },
+  { label: 'Developer Tools', href: '/devtools' },
   { label: 'Documentation', href: '/docs' },
   { label: 'API Access', href: '/api-access' },
   { label: 'Experiment Lab', href: '/lab' },

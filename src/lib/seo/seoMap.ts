@@ -304,9 +304,9 @@ export const seoMap: Record<string, PageSEO> = {
     primaryKeyword: 'interactive substrate tutorials',
   },
   '/devtools': {
-    title: 'DevTools — Runtime Diagnostics | CMPSBL',
+    title: 'Developer Tools — Runtime Diagnostics | CMPSBL',
     description: 'Debug your substrate live: module state inspector, network tracer, memory explorer, and performance profiler for development builds.',
-    ogTitle: 'DevTools — Runtime Diagnostics',
+    ogTitle: 'Developer Tools — Runtime Diagnostics',
     ogDescription: 'Live debugging with module inspector and performance profiler.',
     ogImage: OG_DOCS,
     keywords: ['runtime diagnostics', 'module state inspector', 'network tracer', 'memory explorer', 'performance profiler', 'developer debugging'],

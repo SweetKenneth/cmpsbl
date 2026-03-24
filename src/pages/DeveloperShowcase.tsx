@@ -325,7 +325,7 @@ await cmpsbl.dream.cycle({
           </div>
           <div className="flex justify-center gap-3 mt-8">
             <Button asChild size="sm" variant="outline">
-              <Link to="/devtools"><Code className="w-3.5 h-3.5 mr-1.5" />DevTools</Link>
+              <Link to="/devtools"><Code className="w-3.5 h-3.5 mr-1.5" />Developer Tools</Link>
             </Button>
             <Button asChild size="sm" variant="outline">
               <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer">
