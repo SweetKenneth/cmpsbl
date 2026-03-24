@@ -550,15 +550,15 @@ async function runCeremony(config: FirstContactConfig): Promise<void> {
   });
   await delay(200);
 
-  let nodesOnline = 0;
+  let primitivesOnline = 0;
   for (const { sector, nodes } of CEREMONY_SECTORS) {
-    nodesOnline += nodes.length;
-    const progress = 15 + Math.round((nodesOnline / TOTAL_NODES) * 60);
-    emit({ phase: 'sector_boot', message: `▸ Sector ${sector} — ${nodes.join(' · ')}`, sector, nodesOnline, totalNodes: TOTAL_NODES, progress });
+    primitivesOnline += nodes.length;
+    const progress = 15 + Math.round((primitivesOnline / TOTAL_PRIMITIVES) * 60);
+    emit({ phase: 'sector_boot', message: `▸ Category ${sector} — ${nodes.join(' · ')}`, sector, nodesOnline: primitivesOnline, totalNodes: TOTAL_PRIMITIVES, progress });
     await delay(120);
   }
 
-  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 sectors · 4 categories', progress: 80, nodesOnline: TOTAL_NODES, totalNodes: TOTAL_NODES });
+  emit({ phase: 'mesh_bind', message: '◈ Signal mesh binding...', detail: '40 primitives · 12 categories · 4 types', progress: 80, nodesOnline: TOTAL_PRIMITIVES, totalNodes: TOTAL_PRIMITIVES });
   await delay(250);
   emit({ phase: 'memory_sync', message: config.apiKey ? '◈ Memory Stream connected — chains persisting' : '◈ Memory Stream local — connect API key to persist', progress: 90 });
   await delay(200);
