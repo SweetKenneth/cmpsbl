@@ -823,7 +823,7 @@ async function cmdWhoami() {
   const hasKey = !!apiKey;
   const data = {
     apiKey: hasKey ? `***${(apiKey ?? '').slice(-4)}` : null,
-    endpoint: process.env.CMPSBL_ENDPOINT ?? 'api.cmpsbl.com',
+    endpoint: process.env.CMPSBL_ENDPOINT ?? 'substrate-api (live)',
     session: session?.sessionId ?? null,
     memoryBound: session?.memoryBound ?? false,
     version: CLI_VERSION,
