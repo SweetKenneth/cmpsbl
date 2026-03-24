@@ -53,6 +53,8 @@ serve(async (req: Request) => {
       newUsersRes,
       // DECODE subjects studied (deduplicated)
       decodeSubjectsRes,
+      // Count of successful AI calls in 3h (for accurate health calculation)
+      aiSuccessCountRes3h,
     ] = await Promise.allSettled([
       supabase.from("audit_logs").select("action, details", { count: "exact" }).gte("created_at", iso3h),
       supabase.from("audit_logs").select("action", { count: "exact" }).gte("created_at", iso24h),
@@ -84,6 +86,8 @@ serve(async (req: Request) => {
       supabase.from("profiles").select("id, created_at", { count: "exact" }).gte("created_at", iso3h),
       // DECODE: all subjects/topics being studied (for dedup display)
       supabase.from("brain_events").select("data, module").in("event_type", ["technical_learning_cycle", "clm_server_cycle", "module_learning_insight", "learning"]).gte("created_at", iso3h).limit(200),
+      // FIX: Count successful AI calls separately using exact count (not data.length)
+      supabase.from("ai_usage_log").select("id", { count: "exact", head: true }).eq("success", true).gte("created_at", iso3h),
     ]);
 
     const extract = (r: PromiseSettledResult<any>) =>
@@ -110,6 +114,7 @@ serve(async (req: Request) => {
     const auditScanErrors = extract(auditScanErrorsRes);
     const enhancementEvents = extract(enhancementEventsRes);
     const moduleHealthEvents = extract(moduleHealthEventsRes);
+    const aiSuccessCount3h = aiSuccessCountRes3h.status === "fulfilled" ? (aiSuccessCountRes3h.value.count ?? 0) : 0;
 
     // User accounts
     const totalUsersResult = totalUsersRes.status === "fulfilled" ? totalUsersRes.value : null;
@@ -253,10 +258,24 @@ serve(async (req: Request) => {
     });
 
     // ═══ COMPUTE METRICS ═══
-    // FIX: Use count from query, not data.length (which may be truncated)
+    // FIX: Use exact count queries for both total and success (not data.length which truncates)
     const aiCalls3h = aiUsage3h.count || aiUsage3h.data?.length || 0;
-    const aiSuccess3h = aiUsage3h.data?.filter((r: any) => r.success).length || 0;
-    const apiSuccessRate = aiCalls3h > 0 ? Math.round((aiSuccess3h / aiCalls3h) * 100) : 100;
+    // Use the dedicated success count query instead of filtering truncated data
+    const aiSuccess3h = aiSuccessCount3h;
+    // Rate-limited retries are expected NEXUS behavior, not system failures.
+    // Count rate-limit errors so we can exclude them from the health denominator.
+    const rateLimitErrors3h = (aiUsage3h.data || []).filter((r: any) => {
+      if (r.success) return false;
+      const meta = r.metadata || r.cost;
+      if (typeof meta === 'object' && meta !== null) {
+        const errStr = JSON.stringify(meta);
+        return errStr.includes('rate_limit') || errStr.includes('Rate limit');
+      }
+      return false;
+    }).length;
+    // Health denominator excludes rate-limited retries (they're expected routing behavior)
+    const healthDenominator = Math.max(1, aiCalls3h - rateLimitErrors3h);
+    const apiSuccessRate = Math.min(100, Math.round((aiSuccess3h / healthDenominator) * 100));
 
     const aiCalls24h = aiUsage24h.count || aiUsage24h.data?.length || 0;
 

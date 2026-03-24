@@ -246,11 +246,14 @@ export async function aggregateTelemetry(): Promise<TelemetrySnapshot> {
 
   const immunePenalty = immuneData.escalations > 5 ? 10 : immuneData.escalations > 0 ? 5 : 0;
 
+  // FIX: When no immune runs exist, treat as healthy (1.0) not broken (0.0)
+  const effectiveRepairRate = immuneData.totalRuns === 0 ? 1 : immuneData.honestRepairRate;
+
   const healthScore = Math.min(100, Math.max(0, Math.round(
     (aiData.successRate * 35) +
     (brainData.successRate * 25) +
     ((accessData.totalRequests > 0 ? 1 : 0.5) * 20) +
-    (immuneData.honestRepairRate * 20) -
+    (effectiveRepairRate * 20) -
     immunePenalty
   )));
 
@@ -484,7 +487,7 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
     repairSuccesses,
     escalations,
     safeFailures,
-    honestRepairRate: repairAttempts > 0 ? repairSuccesses / repairAttempts : 0,
+    honestRepairRate: repairAttempts > 0 ? repairSuccesses / repairAttempts : 1,
     topExecutor,
   };
 }
@@ -528,7 +531,7 @@ function defaultBrain(): BrainTelemetry {
 }
 
 function defaultImmune(): ImmuneTelemetry {
-  return { totalRuns: 0, repairSuccesses: 0, escalations: 0, safeFailures: 0, honestRepairRate: 0, topExecutor: null };
+  return { totalRuns: 0, repairSuccesses: 0, escalations: 0, safeFailures: 0, honestRepairRate: 1, topExecutor: null };
 }
 
 function defaultEncode(): EncodeTelemetry {
