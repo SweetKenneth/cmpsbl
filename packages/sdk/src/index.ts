@@ -924,17 +924,17 @@ export class CMPSBL {
   }
 
   /**
-   * List all nodes in the mesh, optionally filtered by sector or role.
+   * List all primitives in the mesh, optionally filtered by category or role.
    * @param filter - Optional filter string
    */
-  nodes(filter?: string): SDKResponse<NodeInfo[]> {
+  primitives(filter?: string): SDKResponse<PrimitiveInfo[]> {
     const start = Date.now();
-    let data = [...NODE_REGISTRY];
+    let data = [...PRIMITIVE_REGISTRY];
     if (filter) {
       const f = filter.toUpperCase();
       data = data.filter(n => n.sector === f || n.id.includes(f) || n.role.includes(f.toLowerCase()));
     }
-    return new SDKResponse(data, { method: 'nodes', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    return new SDKResponse(data, { method: 'primitives', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
   /**
