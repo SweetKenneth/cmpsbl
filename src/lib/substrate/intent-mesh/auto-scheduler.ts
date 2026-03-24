@@ -220,12 +220,10 @@ class MeshAutoScheduler {
    */
   async runCdmReactorCycle(): Promise<{ accepted: number; sTierPromoted: number }> {
     try {
-      // Get current user for reactor context
+      // Get current user for reactor context — fall back to system user ID for autonomous CDM
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        console.warn('[CDM] No authenticated user — skipping reactor cycle');
-        return { accepted: 0, sTierPromoted: 0 };
-      }
+      const userId = user?.id || 'cdm-autonomous-system';
+      // CDM is autonomous — does NOT require a logged-in user to discover
 
       // Generate fresh 2-12 node depth templates
       const templates = generateTemplateBatch({
