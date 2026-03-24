@@ -1135,8 +1135,8 @@ export class CMPSBL {
 
   // ── Helpers ───────────────────────────────────────────────
 
-  private makeHop(nodeId: string): RouteHop {
-    const node = NODE_REGISTRY.find(n => n.id === nodeId);
-    return { node: node?.id ?? nodeId, role: node?.role ?? 'unknown', sector: node?.sector ?? 'unknown', latencyMs: 0 };
+  private makeHop(primitiveId: string): RouteHop {
+    const prim = PRIMITIVE_REGISTRY.find(n => n.id === primitiveId);
+    return { primitive: prim?.id ?? primitiveId, role: prim?.role ?? 'unknown', sector: prim?.sector ?? 'unknown', latencyMs: 0 };
   }
 }
