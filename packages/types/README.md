@@ -1,6 +1,8 @@
 # @cmpsbl/types
 
-Shared TypeScript type definitions for the CMPSBL® substrate.
+> Shared TypeScript type definitions for the CMPSBL® substrate.
+
+[![npm](https://img.shields.io/npm/v/@cmpsbl/types)](https://www.npmjs.com/package/@cmpsbl/types)
 
 ## Install
 
@@ -8,23 +10,43 @@ Shared TypeScript type definitions for the CMPSBL® substrate.
 npm install @cmpsbl/types
 ```
 
+**No dependencies.** This is the foundation package — install it first.
+
+## Dependency Tier
+
+```
+Tier 1 (no deps — publish/install first)
+├── @cmpsbl/types       ← YOU ARE HERE
+├── @cmpsbl/runtime
+├── @cmpsbl/intent
+├── @cmpsbl/mesh
+├── @cmpsbl/bridge
+├── @cmpsbl/discovery
+└── @cmpsbl/failsafe
+```
+
+## What's Inside
+
+| Export | Description |
+|--------|-------------|
+| `CJPIInput` / `CJPIScoreBreakdown` | CJPI scoring interfaces |
+| `CrystallizedTier` / `ProductTier` | Tier classification types |
+| `CmpsblManifest` | Pipeline manifest schema |
+| `ChainManifest` / `ChainResult` | Chain execution contracts |
+| `MeshIntent` / `MeshReceipt` | Intent routing types |
+| `MeshCommEvent` / `MeshSignalCategory` | Mesh telemetry event shapes |
+| `ResolverDefinition` / `ResolverResponse` | Resolver contracts |
+| `SubstratePrimitive` / `PrimitiveHealth` | 40 canonical primitives |
+| `FirstContactConfig` / `MemoryChain` | First Contact ceremony types |
+| `DOMAIN_PATTERNS` | Domain pattern definitions for all 11 packages |
+
 ## Usage
 
 ```typescript
-import type { CJPIInput, CmpsblManifest, MeshIntent, SubstrateNode } from '@cmpsbl/types';
+import type { MeshIntent, SubstratePrimitive, CJPIInput } from '@cmpsbl/types';
+import { DOMAIN_PATTERNS } from '@cmpsbl/types';
 ```
-
-## What's included
-
-- **CJPI** — Crown Jewel Performance Index scoring types
-- **Manifest** — Export manifest schemas
-- **Runtime Contract** — Execution chain types
-- **Mesh / Intent** — Intent routing and mesh communication types
-- **Resolver** — Resolver definition and response types
-- **Engine SDK** — Hosted engine call/result types
-- **Discovery** — Pipeline discovery types
-- **Node** — Substrate node health and identity types
 
 ## License
 
-Apache-2.0 © Kenneth E Sweet Jr
+Apache-2.0 — © CMPSBL®

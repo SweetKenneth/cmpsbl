@@ -18,9 +18,9 @@ import {
   getMemoryStream,
   getFirstContactSession,
   endFirstContactSession,
+  DOMAIN_PATTERNS,
 } from '@cmpsbl/runtime';
-import { DOMAIN_PATTERNS } from '@cmpsbl/types';
-import type { FirstContactConfig, FirstContactSession, MemoryChain, CeremonyEvent } from '@cmpsbl/types';
+import type { FirstContactConfig, FirstContactSession, MemoryChain, CeremonyEvent } from '@cmpsbl/runtime';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
@@ -326,6 +326,9 @@ export async function run(args: string[]): Promise<void> {
       // ── Guided ──
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
+      // ── Ecosystem ──
+      case 'deps':         cmdDeps(); break;
+      case 'publish-order': cmdPublishOrder(); break;
       case 'version':
       case '--version':
       case '-v':
@@ -2540,4 +2543,84 @@ async function promptInteraction(chain: MemoryChain) {
 
 function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ═══════════════════════════════════════════════════════════════
+// §28 — Ecosystem: deps & publish-order
+// ═══════════════════════════════════════════════════════════════
+
+const ECOSYSTEM_PACKAGES = {
+  tier1: [
+    { name: '@cmpsbl/types',     version: '1.1.0',  deps: [] as string[] },
+    { name: '@cmpsbl/runtime',   version: '1.1.0',  deps: [] as string[] },
+    { name: '@cmpsbl/sdk',       version: '2.0.0',  deps: [] as string[] },
+    { name: '@cmpsbl/intent',    version: '1.2.0',  deps: [] as string[] },
+    { name: '@cmpsbl/mesh',      version: '1.2.0',  deps: [] as string[] },
+    { name: '@cmpsbl/bridge',    version: '1.2.0',  deps: [] as string[] },
+    { name: '@cmpsbl/discovery', version: '1.2.0',  deps: [] as string[] },
+    { name: '@cmpsbl/failsafe',  version: '3.2.0',  deps: [] as string[] },
+  ],
+  tier2: [
+    { name: '@cmpsbl/cli',          version: '2.0.0',  deps: ['@cmpsbl/runtime'] },
+    { name: '@cmpsbl/test-harness', version: '1.2.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
+    { name: '@cmpsbl/react',        version: '1.2.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
+  ],
+};
+
+function cmdDeps(): void {
+  if (JSON_MODE) {
+    jsonOut(ECOSYSTEM_PACKAGES);
+    return;
+  }
+
+  say('');
+  say(c.bold('  @cmpsbl — Package Dependency Graph'));
+  say('');
+  say(c.cyan('  ┌─ TIER 1 — Standalone (zero @cmpsbl deps, any order) ──────┐'));
+  for (const pkg of ECOSYSTEM_PACKAGES.tier1) {
+    say(`  │  ${c.green('●')} ${pkg.name.padEnd(22)} ${c.dim(`v${pkg.version}`)}  ${c.dim('no deps')}  │`);
+  }
+  say(c.cyan('  └──────────────────────────────────────────────────────────┘'));
+  say('');
+  say(c.yellow('  ┌─ TIER 2 — Requires Tier 1 peer deps ────────────────────┐'));
+  for (const pkg of ECOSYSTEM_PACKAGES.tier2) {
+    const depList = pkg.deps.join(', ');
+    say(`  │  ${c.yellow('●')} ${pkg.name.padEnd(22)} ${c.dim(`v${pkg.version}`)}  ← ${c.dim(depList)}  │`);
+  }
+  say(c.yellow('  └──────────────────────────────────────────────────────────┘'));
+  say('');
+}
+
+function cmdPublishOrder(): void {
+  if (JSON_MODE) {
+    jsonOut({
+      tier1: ECOSYSTEM_PACKAGES.tier1.map(p => p.name),
+      tier2: ECOSYSTEM_PACKAGES.tier2.map(p => p.name),
+    });
+    return;
+  }
+
+  say('');
+  say(c.bold('  @cmpsbl — Publish Order'));
+  say('');
+  say(c.green('  Step 1: Publish Tier 1 (any order — all standalone)'));
+  say('');
+  for (const pkg of ECOSYSTEM_PACKAGES.tier1) {
+    say(`    ${c.green('▸')} ${pkg.name} ${c.dim(`v${pkg.version}`)}`);
+  }
+  say('');
+  say(c.yellow('  Step 2: Publish Tier 2 (after Tier 1 is on npm)'));
+  say('');
+  for (const pkg of ECOSYSTEM_PACKAGES.tier2) {
+    say(`    ${c.yellow('▸')} ${pkg.name} ${c.dim(`v${pkg.version}`)}  ${c.dim(`← needs: ${pkg.deps.join(', ')}`)}`);
+  }
+  say('');
+  say(c.dim('  Script:'));
+  say(c.dim('  for pkg in types runtime sdk intent mesh bridge discovery failsafe; do'));
+  say(c.dim('    cd packages/$pkg && npm run build && npm publish --access public && cd ../..'));
+  say(c.dim('  done'));
+  say(c.dim('  for pkg in cli test-harness react; do'));
+  say(c.dim('    cd packages/$pkg && npm run build && npm publish --access public && cd ../..'));
+  say(c.dim('  done'));
+  say('');
 }
