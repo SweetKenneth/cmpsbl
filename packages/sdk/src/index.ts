@@ -978,14 +978,14 @@ export class CMPSBL {
         headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'inspect', primitive: prim.id }),
       });
-      const body = await res.json().catch(() => ({}));
+      const body = await res.json().catch(() => ({})) as Record<string, unknown>;
       const durationMs = Date.now() - start;
       const data: InspectResult = {
-        primitive: prim.id, category: body.sector ?? prim.sector, role: body.role ?? prim.role,
-        status: res.ok ? (body.status ?? prim.status) : 'degraded', health: body.health ?? prim.health,
-        uptime: body.uptime ?? 0, resolverCount: body.resolverCount ?? 0, intentsProcessed: body.intentsProcessed ?? 0,
-        avgLatencyMs: body.avgLatencyMs ?? durationMs,
-        meshLinks: body.meshLinks ?? PRIMITIVE_REGISTRY.filter(n => n.sector === prim.sector && n.id !== prim.id).map(n => n.id),
+        primitive: prim.id, category: (body.sector as string) ?? prim.sector, role: (body.role as string) ?? prim.role,
+        status: res.ok ? ((body.status as string) ?? prim.status) : 'degraded', health: (body.health as number) ?? prim.health,
+        uptime: (body.uptime as number) ?? 0, resolverCount: (body.resolverCount as number) ?? 0, intentsProcessed: (body.intentsProcessed as number) ?? 0,
+        avgLatencyMs: (body.avgLatencyMs as number) ?? durationMs,
+        meshLinks: (body.meshLinks as string[]) ?? PRIMITIVE_REGISTRY.filter(n => n.sector === prim.sector && n.id !== prim.id).map(n => n.id),
         lastPing: new Date().toISOString(),
       };
       return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
