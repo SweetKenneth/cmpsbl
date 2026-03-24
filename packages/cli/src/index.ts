@@ -444,7 +444,7 @@ function printHelp() {
     CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
-  ${c.muted('45 commands · 40 primitives · cmpsbl.com')}
+  ${c.muted('46 commands · 40 primitives · cmpsbl.com')}
 `);
 }
 
