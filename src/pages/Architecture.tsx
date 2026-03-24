@@ -153,9 +153,9 @@ export default function Architecture() {
           { name: 'Architecture', url: 'https://cmpsbl.com/architecture' },
         ]}
         faq={[
-          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into 4 categories: Agents, Engines, Layers, and Organs. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
-          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA).' },
-          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Engine proposes changes, SHADOW validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
+          { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into a symmetric 12·12·8·8 matrix across 4 categories: Organs, Layers, Engines, and Agents. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
+          { question: 'What are the 4 categories?', answer: 'Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER).' },
+          { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Layer proposes changes, SHADOW Layer validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
         ]}
       />
 
