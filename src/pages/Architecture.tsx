@@ -234,7 +234,7 @@ export default function Architecture() {
                   40 primitives across 4 categories powering{" "}
                   <Link to="/store" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
                   Every primitive carries a governance weight (Σ&nbsp;=&nbsp;1.000).
-                  No single node can dominate system-level decisions without proportional representation.{" "}
+                  No single primitive can dominate system-level decisions without proportional representation.{" "}
                   <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}
                   or use our hosted substrate.
                 </p>
