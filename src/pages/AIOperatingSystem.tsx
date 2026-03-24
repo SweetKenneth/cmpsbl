@@ -294,10 +294,10 @@ export default function AIOperatingSystem() {
             <motion.div {...fadeUp()} className="mb-8 sm:mb-12">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
                 <Activity className="w-6 h-6 text-primary shrink-0" />
-                40 Primitives · Agents · Engines · Layers · Organs
+                40 Primitives · 12 Organs · 12 Layers · 8 Engines · 8 Agents
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                The CMPSBL platform organizes 40 specialized primitives across four categories: agents, engines, layers, and organs. Each holds a weight in the system matrix (Σ = 1.000),
+                The CMPSBL platform organizes 40 specialized primitives into a symmetric 12·12·8·8 matrix across four categories. Each holds a weight in the system matrix (Σ = 1.000),
                 managed by the CORE Organ. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
               </p>
             </motion.div>
