@@ -30,7 +30,7 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-/* ─── Full 40-primitive topology, grouped by the 12 canonical sectors ─── */
+/* ─── Full 40-primitive topology, grouped by boot zones ─── */
 
 interface NodeDef {
   name: string;
@@ -69,7 +69,7 @@ const SECTORS: SectorDef[] = [
       { name: "RIPPLE", icon: Radio, desc: "Signal & event bus — inter-sector communication, cascade detection." },
       { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
       { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
-      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-node message routing." },
+      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-primitive message routing." },
       { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
       { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-primitive coordination." },
     ],
@@ -198,7 +198,7 @@ export default function Architecture() {
         ]}
         faq={[
           { question: 'How is CMPSBL structured?', answer: 'CMPSBL is a 40-primitive substrate organized into 4 categories: Agents, Engines, Layers, and Organs. CORE boots all primitives in a deterministic sequence and maintains a weighted registry where all weights sum to exactly 1.000.' },
-          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like BRAIN, MEMORY, DREAM), and Agents (autonomous actors like ENCODE, DECODE, VISION).' },
+          { question: 'What are the 4 categories?', answer: 'Organs (infrastructure like CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA).' },
           { question: 'How does the system evolve?', answer: 'Through the shadow-first mutation process: EVOLUTION Engine proposes changes, SHADOW validates them in isolation, and GOVERNANCE Layer approves or vetoes before promotion to production.' },
         ]}
       />
@@ -234,13 +234,13 @@ export default function Architecture() {
                   40 primitives across 4 categories powering{" "}
                   <Link to="/store" className="text-primary hover:underline font-medium">54 composable engines</Link>.{" "}
                   Every primitive carries a governance weight (Σ&nbsp;=&nbsp;1.000).
-                  No single node can dominate system-level decisions without proportional representation.{" "}
+                  No single primitive can dominate system-level decisions without proportional representation.{" "}
                   <Link to="/enterprise" className="text-primary hover:underline font-medium">Deploy on your own infrastructure</Link>{" "}
                   or use our hosted substrate.
                 </p>
                 <p className="text-xs text-muted-foreground/40 font-mono flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
-                  Click any node in the diagram to inspect
+                  Click any primitive in the diagram to inspect
                 </p>
               </motion.div>
 
@@ -261,7 +261,7 @@ export default function Architecture() {
             <motion.div {...fadeUp}>
               <h2 className="text-3xl font-bold mb-2">Deterministic Boot Sequence</h2>
               <p className="text-muted-foreground mb-6">
-                CORE initializes all sectors in a fixed order. Fields permeate the spine,
+                CORE initializes all primitives in a fixed order. Fields permeate the spine,
                 the Plane overlay supervises, <Link to="/architecture" className="text-primary hover:underline font-medium">ATLAS</Link> indexes, and{" "}
                 <Link to="/use-cases" className="text-primary hover:underline font-medium">DEFENSE</Link> seals the boundary.{" "}
                 Learn more in our <Link to="/documentation" className="text-primary hover:underline font-medium">technical documentation</Link>.
@@ -286,7 +286,7 @@ export default function Architecture() {
                 <div className="flex items-center gap-3 mb-6">
                   <h2 className="text-2xl font-bold">{sector.label}</h2>
                   <Badge variant="outline" className="text-xs font-mono">{sector.tag}</Badge>
-                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'node' : 'nodes'}</Badge>
+                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'primitive' : 'primitives'}</Badge>
                 </div>
                 <div className={`grid gap-3 ${sector.nodes.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : sector.nodes.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
                   {sector.nodes.map((node) => (
@@ -330,16 +330,16 @@ export default function Architecture() {
           <div className="container mx-auto max-w-4xl px-4 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              Dive deeper into individual nodes, live infrastructure, and technical documentation.{" "}
-              See real-world <Link to="/use-cases" className="text-primary hover:underline font-medium">deployment examples</Link>{" "}
-              or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/architecture">
-                <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                  Full Architecture <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+              Dive deeper into individual primitives, live infrastructure, and technical documentation.{" "}
+               See real-world <Link to="/use-cases" className="text-primary hover:underline font-medium">deployment examples</Link>{" "}
+               or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
+             </p>
+             <div className="flex flex-wrap gap-4 justify-center">
+               <Link to="/store">
+                 <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                   Explore Engines <ArrowRight className="w-4 h-4" />
+                 </Button>
+               </Link>
               <Link to="/documentation">
                 <Button variant="outline" className="hover:border-primary/30 transition-colors">Documentation</Button>
               </Link>
