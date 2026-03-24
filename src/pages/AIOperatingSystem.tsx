@@ -70,10 +70,10 @@ const pillars = [
 ];
 
 const categories = [
-  { label: "Organs", primitives: "CORE, SYSTEM, NERVE, RIPPLE, RELAY, IDENTITY, ACCESS, NEXUS, AUDIT, INTEGRATION, BRAIN, MEMORY", count: 12, color: "from-neon-blue/10 to-neon-blue/5" },
-  { label: "Layers", primitives: "DEFENSE, IMMUNITY, GOVERNANCE, INTENT, EVOLUTION, INCLUSIVE, CONSCIENCE, TREATY", count: 8, color: "from-neon-purple/10 to-neon-purple/5" },
-  { label: "Engines", primitives: "DREAM, CORTEX, ORACLE, FORGE, COMPASS, ATLAS, ECONOMY, SANDBOX, MEDIC, REFLEX", count: 10, color: "from-neon-amber/10 to-neon-amber/5" },
-  { label: "Agents", primitives: "ENCODE, DECODE, VISION, PHANTOM, LINGUA, ECHO, HARVEST, SOVEREIGN, ENGINEER, OBSERVER", count: 10, color: "from-neon-green/10 to-neon-green/5" },
+  { label: "Organs", primitives: "CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE", count: 12, color: "from-neon-blue/10 to-neon-blue/5" },
+  { label: "Layers", primitives: "DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW", count: 12, color: "from-neon-purple/10 to-neon-purple/5" },
+  { label: "Engines", primitives: "DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE", count: 8, color: "from-neon-amber/10 to-neon-amber/5" },
+  { label: "Agents", primitives: "ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER", count: 8, color: "from-neon-green/10 to-neon-green/5" },
 ];
 
 const comparisonRows = [
