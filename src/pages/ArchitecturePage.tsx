@@ -134,7 +134,6 @@ const TAXONOMY: TaxonomyCategory[] = [
     entries: [
       { id: 'encode', label: 'ENCODE', tagline: 'Code Architect', description: 'AST-aware patches, DAG-ordered orchestration, immutable rollback ledger, and 71-skill proficiency.', icon: Code2, slug: 'encode' },
       { id: 'decode', label: 'DECODE', tagline: 'Interpreter', description: 'Multi-modal input, NLU intent classification, epistemic audit trail, and streaming responses.', icon: Languages, slug: 'decode' },
-      { id: 'ripple', label: 'RIPPLE', tagline: 'Event Cascade', description: 'Intelligent fan-out, priority routing, deduplication, and backpressure handling.', icon: Waves, slug: 'ripple' },
       { id: 'audit', label: 'AUDIT', tagline: 'Immutable Ledger', description: 'Append-only logging with SHA-256 hash chaining and compliance reporting.', icon: FileCheck, slug: 'audit' },
       { id: 'economy', label: 'ECONOMY', tagline: 'Cost Engine', description: 'Real-time cost attribution, budget enforcement, token systems, and marketplace pricing.', icon: Coins, slug: 'economy' },
       { id: 'inclusive', label: 'INCLUSIVE', tagline: 'Accessibility', description: 'WCAG 2.2 scanning, AI-powered fixes, continuous monitoring, and compliance reporting.', icon: Accessibility, slug: 'inclusive' },
