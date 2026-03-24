@@ -240,7 +240,7 @@ export default function Architecture() {
                 </p>
                 <p className="text-xs text-muted-foreground/40 font-mono flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
-                  Click any node in the diagram to inspect
+                  Click any primitive in the diagram to inspect
                 </p>
               </motion.div>
 
