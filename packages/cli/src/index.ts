@@ -2519,7 +2519,7 @@ async function promptInteraction(chain: MemoryChain) {
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise<void>((resolve) => {
-    rl.question('  > ', async (answer) => {
+    rl.question('  > ', async (answer: string) => {
       rl.close();
       switch (answer.trim()) {
         case '1': { const r = await captureMemory(chain.id, CLI_CONFIG); say(pick(V.ok)); say(r.message); break; }
