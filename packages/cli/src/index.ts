@@ -186,7 +186,7 @@ const CLI_VERSION = '1.5.0' as const;
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
   domain: 'cli',
-  endpoint: process.env.CMPSBL_ENDPOINT ?? 'https://api.cmpsbl.com/v1/substrate',
+  endpoint: process.env.CMPSBL_ENDPOINT ?? `https://${process.env.CMPSBL_PROJECT_REF ?? 'bxodolqqczjuahwdrswy'}.supabase.co/functions/v1/substrate-api`,
   apiKey: resolveApiKey(),
   autoDiscover: true,
   onBoot: (msg) => { if (!JSON_MODE) say(msg); },
