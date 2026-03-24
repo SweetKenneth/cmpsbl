@@ -42,7 +42,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/showcase", title: "Cognitive Showcase", description: "See top-tier discoveries and system achievements" },
   ],
   "/packs": [
-    { href: "/engines", title: "54 Composable Engines", description: "The engines each pack activates" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and memory packs in the store", badge: "Store" },
     { href: "/upgrade", title: "Upgrade Plan", description: "Unlock more memory slots and premium capability tiers", badge: "Upgrade" },
     { href: "/foundry", title: "The Foundry", description: "How new packs are discovered through the memory stream" },
     { href: "/start", title: "Start Here", description: "Get your first 3 memory slots free — no credit card required" },
