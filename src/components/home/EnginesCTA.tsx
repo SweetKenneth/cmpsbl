@@ -112,9 +112,9 @@ export function EnginesCTA() {
             {/* Stats row */}
             <div className="flex flex-wrap justify-center gap-6 sm:gap-14">
               {[
-                { icon: Shield, value: "20", label: "Sealed Engines", color: "text-[hsl(var(--neon-magenta))]" },
-                { icon: Cpu, value: "3", label: "Clearance Tiers", color: "text-[hsl(var(--neon-purple))]" },
-                { icon: Zap, value: "120+", label: "Capabilities", color: "text-[hsl(var(--neon-cyan))]" },
+                { icon: Shield, value: "8", label: "Engines", color: "text-[hsl(var(--neon-magenta))]" },
+                { icon: Cpu, value: "40", label: "Total Primitives", color: "text-[hsl(var(--neon-purple))]" },
+                { icon: Zap, value: "4", label: "Categories", color: "text-[hsl(var(--neon-cyan))]" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center group/stat hover:-translate-y-0.5 transition-transform duration-300">
                   <stat.icon className={cn("w-5 h-5 mx-auto mb-1.5 group-hover/stat:scale-110 transition-transform duration-300", stat.color)} />
