@@ -433,7 +433,7 @@ export class Engine {
 // Node Registry
 // ═══════════════════════════════════════════════════════════════
 
-const NODE_REGISTRY: NodeInfo[] = [
+const PRIMITIVE_REGISTRY: PrimitiveInfo[] = [
   { id: 'BRAIN', sector: 'CCR', status: 'online', health: 98, role: 'reasoning' },
   { id: 'MEMORY', sector: 'CCR', status: 'online', health: 100, role: 'persistence' },
   { id: 'DREAM', sector: 'CCR', status: 'online', health: 95, role: 'synthesis' },
@@ -464,13 +464,13 @@ const NODE_REGISTRY: NodeInfo[] = [
   { id: 'LINGUA', sector: 'EMZ', status: 'online', health: 100, role: 'language' },
   { id: 'HARVEST', sector: 'EMZ', status: 'online', health: 98, role: 'extraction' },
   { id: 'EVOLUTION', sector: 'CSZ', status: 'online', health: 95, role: 'adaptation' },
-  { id: 'SHADOW', sector: 'CSZ', status: 'online', health: 92, role: 'stealth' },
+  { id: 'SHADOW', sector: 'CSZ', status: 'online', health: 92, role: 'verification' },
   { id: 'PHANTOM', sector: 'CSZ', status: 'online', health: 91, role: 'speculation' },
   { id: 'IMMUNITY', sector: 'FLD', status: 'online', health: 100, role: 'defense' },
   { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
   { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
+  { id: 'ATLAS', sector: 'PLN', status: 'online', health: 99, role: 'mapping' },
   { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'OBSERVER', sector: 'SHL', status: 'online', health: 97, role: 'monitoring' },
   { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
   { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
   { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
