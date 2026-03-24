@@ -145,26 +145,17 @@ export function SubstrateProvider({ children, autoInit = true }: SubstrateProvid
     }
   }, [checkModule]);
 
-  // Deferred init: when autoInit is false (landing page), skip neural substrate
-  // and module polling entirely. These are only relevant for authenticated users
-  // in the substrate dashboard and add 40+ API calls that destroy TTI/Speed Index.
-  // The SubstrateProvider still provides context defaults so children render fine.
-  useEffect(() => {
-    if (autoInit) return; // handled by the main effect
-    // On landing page: do NOT init neural substrate or poll modules at all.
-    // This eliminates brain_*, pf-substrate, and maintenance API calls from
-    // the critical rendering path entirely.
-    return;
-  }, [autoInit]);
+  // Deferred init path removed — substrate always boots.
+  // Neural substrate init is lightweight (in-memory only, no API calls).
+  // Module polling is gated by debugMode.allowModulePolling() internally.
 
   useEffect(() => {
     if (!autoInit) return;
-    if (!debugMode.allowModulePolling()) return;
     if (initializedRef.current) return;
     initializedRef.current = true;
     mountedRef.current = true;
 
-    // Initialize Neural Substrate Layer (fully automated maintenance)
+    // Initialize Neural Substrate Layer — always boots (in-memory, no API calls)
     initializeNeuralSubstrate().catch(err => 
       console.warn('[SubstrateProvider] Neural substrate init deferred:', err)
     );
