@@ -26,7 +26,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: FlaskConical,
     tag: 'Welcome',
-    title: 'Welcome to CodeLab',
+    title: 'Welcome to the Developers Playground',
     body: 'Your in-browser creation surface. Write code, test resolvers, forge signals, and build on the substrate — all without leaving this page.',
     accent: 'primary',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--primary) / 0.12) 0%, transparent 50%)',
