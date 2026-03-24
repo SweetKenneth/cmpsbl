@@ -9,6 +9,5 @@
   "keywords": ["cmpsbl", "bridge", "adapter", "python", "go", "rust", "polyglot"],
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
-  "homepage": "https://cmpsbl.com",
-  "dependencies": { "@cmpsbl/types": "^1.0.0", "@cmpsbl/runtime": "^1.0.0" }
+  "homepage": "https://cmpsbl.com"
 }

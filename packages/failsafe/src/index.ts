@@ -6,7 +6,38 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type { FirstContactConfig } from '@cmpsbl/types';
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types (from @cmpsbl/types — self-contained for builds)
+// ═══════════════════════════════════════════════════════════════
+
+export interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+export interface CeremonyEvent {
+  phase: string;
+  message: string;
+  detail?: string;
+  progress?: number;
+}
+
+export interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Types
@@ -51,13 +82,9 @@ export interface RestoreStep {
 }
 
 export interface RestoreConfig {
-  /** Target Supabase project URL */
   targetUrl: string;
-  /** Target Supabase service role key */
   targetKey: string;
-  /** Backup data to restore */
   backupData: Record<string, unknown[]>;
-  /** Whether to drop existing data before restore */
   cleanRestore?: boolean;
 }
 
@@ -94,7 +121,6 @@ export async function createBackup(config: BackupConfig): Promise<BackupResult> 
   let totalSize = 0;
 
   try {
-    // Discover tables
     const tables = config.tables?.length
       ? config.tables
       : await discoverTables(config.supabaseUrl, config.supabaseKey);
@@ -105,12 +131,7 @@ export async function createBackup(config: BackupConfig): Promise<BackupResult> 
         const json = JSON.stringify(data);
         const checksum = simpleHash(json);
 
-        tableBackups.push({
-          table,
-          rowCount: data.length,
-          sizeBytes: json.length,
-          checksum,
-        });
+        tableBackups.push({ table, rowCount: data.length, sizeBytes: json.length, checksum });
         totalRows += data.length;
         totalSize += json.length;
       } catch (err) {
@@ -218,7 +239,6 @@ export async function migrate(config: MigrationConfig): Promise<{ backup: Backup
     };
   }
 
-  // Build backup data map (in real implementation, this comes from the actual backup data)
   const restoreResult = await restore({
     ...config.target,
     backupData: {},

@@ -6,9 +6,68 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type { MeshCommEvent, MeshSignalCategory, SubstrateNode, FirstContactConfig } from '@cmpsbl/types';
+// ═══════════════════════════════════════════════════════════════
+// Inlined Types (from @cmpsbl/types — self-contained for builds)
+// ═══════════════════════════════════════════════════════════════
 
-export type { MeshCommEvent, MeshSignalCategory, SubstrateNode };
+export type MeshSignalCategory =
+  | 'acknowledgement' | 'approval' | 'confirmation' | 'denial'
+  | 'processing' | 'completion' | 'warning' | 'escalation'
+  | 'discovery' | 'heartbeat';
+
+export interface MeshCommEvent {
+  source_module: string;
+  target_module: string;
+  raw_signal: string;
+  translated_voice: string;
+  category: MeshSignalCategory;
+  resolver_id?: string;
+  personality_trait?: string;
+  personality_icon?: string;
+}
+
+export type SubstratePrimitive =
+  | 'CORE' | 'SYSTEM' | 'BRAIN' | 'MEMORY' | 'NERVE' | 'NEXUS'
+  | 'IDENTITY' | 'SOVEREIGN' | 'ATLAS' | 'MEDIC' | 'RELAY' | 'CONSCIENCE'
+  | 'DEFENSE' | 'IMMUNITY' | 'GOVERNANCE' | 'TREATY' | 'EVOLUTION'
+  | 'REFLEX' | 'COMPASS' | 'INTEGRATION' | 'INTENT' | 'ACCESS' | 'VISION' | 'SHADOW'
+  | 'DREAM' | 'HARVEST' | 'FORGE' | 'LINGUA' | 'ECHO' | 'PHANTOM' | 'SANDBOX' | 'RIPPLE'
+  | 'ENCODE' | 'DECODE' | 'AUDIT' | 'ECONOMY' | 'INCLUSIVE' | 'CORTEX' | 'ORACLE' | 'ENGINEER';
+
+/** @deprecated Use SubstratePrimitive */
+export type SubstrateNode = SubstratePrimitive;
+
+export interface MemoryChain {
+  id: string;
+  pattern: string;
+  adoption: string;
+  status: 'new' | 'captured' | 'applied' | 'exported';
+  discoveredAt: string;
+  domain: string;
+  confidence: number;
+}
+
+export interface CeremonyEvent {
+  phase: string;
+  message: string;
+  detail?: string;
+  progress?: number;
+  sector?: string;
+  nodesOnline?: number;
+  totalNodes?: number;
+}
+
+export interface FirstContactConfig {
+  package: string;
+  domain: string;
+  endpoint?: string;
+  apiKey?: string;
+  autoDiscover?: boolean;
+  onDiscovery?: (chain: MemoryChain) => void;
+  onBoot?: (message: string) => void;
+  onCeremony?: (event: CeremonyEvent) => void;
+  silent?: boolean;
+}
 
 // ═══════════════════════════════════════════════════════════════
 // Types
