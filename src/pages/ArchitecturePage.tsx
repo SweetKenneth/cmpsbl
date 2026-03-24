@@ -388,10 +388,10 @@ export default function ArchitecturePage() {
             <h2 className="text-xl font-bold mb-6 text-foreground">How It All Connects</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { step: '01', title: 'User sends a request', desc: 'An Agent (DECODE) interprets the intent and plans the execution.' },
-                { step: '02', title: 'Agents invoke Engines', desc: 'BRAIN reasons, CORTEX orchestrates, MEMORY retrieves — Engines do the heavy processing.' },
-                { step: '03', title: 'Layers validate everything', desc: 'DEFENSE checks for threats, GOVERNANCE enforces policy, IMMUNITY ensures resilience.' },
-                { step: '04', title: 'Organs route & persist', desc: 'CORE orchestrates lifecycle, NERVE signals, AUDIT logs, RELAY dispatches — all invisible.' },
+                { step: '01', title: 'User sends a request', desc: 'The DECODE Agent interprets the intent and plans the execution.' },
+                { step: '02', title: 'Agents invoke Engines', desc: 'BRAIN Organ reasons, CORTEX Agent orchestrates, MEMORY Organ retrieves — Engines do the heavy processing.' },
+                { step: '03', title: 'Layers validate everything', desc: 'DEFENSE Layer checks for threats, GOVERNANCE Layer enforces policy, IMMUNITY Layer ensures resilience.' },
+                { step: '04', title: 'Organs route & persist', desc: 'CORE Organ orchestrates lifecycle, NERVE Organ signals, AUDIT Agent logs, RELAY Organ dispatches — all invisible.' },
               ].map((item) => (
                 <div key={item.step} className="p-4 rounded-lg border border-border bg-muted/20">
                   <div className="text-xs font-mono text-primary font-bold mb-1">STEP {item.step}</div>
