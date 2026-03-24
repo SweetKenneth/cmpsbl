@@ -165,7 +165,7 @@ Engine Sources: ${agentSubtitle || "Sovereign Cognitive Interface"}
 Capabilities Online: ${(agentPowers || []).join(" · ") || "Standard loadout"}
 
 Memory System: 4-Tier Portable (HOT/WARM/COOL/COLD) — All tiers nominal
-Session Cache: Active | Knowledge Crystals: ${Math.floor(40 + Math.random() * 160)} loaded`;
+Session Cache: Active | Knowledge Crystals: loaded`;
 
     const fullSystemPrompt = [
       DECODE_BASE_PROMPT,

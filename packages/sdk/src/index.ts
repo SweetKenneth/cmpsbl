@@ -880,7 +880,7 @@ export class CMPSBL {
       node: node?.id ?? nodeId,
       role: node?.role ?? 'unknown',
       sector: node?.sector ?? 'unknown',
-      latencyMs: Math.round(1 + Math.random() * 6),
+      latencyMs: 0, // Populated by real gateway trace when available
     };
   }
 }

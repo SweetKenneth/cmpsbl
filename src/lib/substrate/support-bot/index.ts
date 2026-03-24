@@ -704,19 +704,29 @@ export class SupportBotEngine {
   }
 
   private async fetchResolution(resolutionId: string): Promise<Resolution | null> {
-    // Simulated - in production would query from database
-    return {
-      id: resolutionId,
-      ticket_id: 'ticket_123',
-      answer: 'Sample resolution answer',
-      explanation: 'This was the solution',
-      confidence: 0.9,
-      sources: [],
-      resolved_by: 'human',
-      verification: 'verified',
-      learning_applied: false,
-      created_at: new Date().toISOString(),
-    };
+    try {
+      // Query memory for verified resolutions
+      const recall = await this.recall(`resolution:${resolutionId}`, 1);
+      if (recall.memories.length > 0) {
+        const memory = recall.memories[0];
+        const parsed = typeof memory.content === 'string' ? JSON.parse(memory.content) : memory.content;
+        return {
+          id: resolutionId,
+          ticket_id: parsed.ticket_id ?? resolutionId,
+          answer: parsed.answer ?? memory.content,
+          explanation: parsed.explanation ?? '',
+          confidence: memory.confidence ?? parsed.confidence ?? 0,
+          sources: parsed.sources ?? [],
+          resolved_by: parsed.resolved_by ?? 'system',
+          verification: parsed.verification ?? 'unverified',
+          learning_applied: parsed.learning_applied ?? false,
+          created_at: memory.created_at ?? new Date().toISOString(),
+        };
+      }
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   // ==========================================================================

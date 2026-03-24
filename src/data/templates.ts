@@ -7976,11 +7976,13 @@ class AdaptivePersonaEngine {
       user.satisfactionScore = Math.min(1, user.satisfactionScore + 0.1);
     } else if (feedback === 'negative') {
       user.satisfactionScore = Math.max(0, user.satisfactionScore - 0.15);
-      // Swing traits in opposite direction
+      // Invert each trait proportionally to its distance from neutral (0.5)
       Object.keys(user.preferences).forEach(key => {
         const k = key as keyof PersonaTraits;
+        const current = user.preferences[k];
+        const directionFromNeutral = current - 0.5;
         user.preferences[k] = Math.max(0, Math.min(1, 
-          user.preferences[k] + (Math.random() - 0.5) * 0.2
+          current - directionFromNeutral * 0.4
         ));
       });
     }

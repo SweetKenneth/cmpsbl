@@ -232,17 +232,9 @@ export const getThreatStats = () => {
   return { total, critical, high, medium, avgConfidence };
 };
 
-// Initialize demo data if empty
+/** @deprecated Demo data seeding removed — Signal Honesty enforced. Defense data comes from real events only. */
 export const initializeDemoData = (): void => {
-  if (getBotDetections().length === 0) {
-    logBotDetection({
-      ip: '192.168.1.1',
-      type: 'human',
-      score: 15,
-      blocked: false,
-      userAgent: 'Mozilla/5.0...',
-    });
-  }
+  // No-op: removed fake data seeding per Zero-Mock policy
 };
 
 // Clear all data
