@@ -181,16 +181,17 @@ class MeshAutoScheduler {
       }
     }, 60_000); // 60s after boot — let everything settle first
 
-    // CDM reactor warm-up — first autonomous reactor run after 5 minutes
+    // CDM reactor warm-up — first autonomous reactor run after 2 minutes
+    // Runs regardless of tab visibility for autonomous discovery
     setTimeout(async () => {
       try {
-        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
-        console.log('[CDM] Initial reactor cycle starting...');
+        if (!isMeshEnabled()) return;
+        console.log('[CDM] Initial reactor cycle starting (autonomous)...');
         await this.runCdmReactorCycle();
       } catch (err) {
         console.warn('[CDM] Initial reactor cycle error (non-fatal):', err);
       }
-    }, 5 * 60_000); // 5 min after boot
+    }, 2 * 60_000); // 2 min after boot — faster warm-up
 
     console.log('[MeshScheduler] Started — CDM + continuous autonomous discovery active');
   }
