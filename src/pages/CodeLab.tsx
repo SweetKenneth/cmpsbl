@@ -440,7 +440,7 @@ const res = await fetch(GATEWAY, {
                 </div>
                 <h3 className="font-semibold mb-2 group-hover:text-neon-magenta transition-colors">Project Launchers</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Quickstart templates for Next.js, Vercel, Supabase. Get from zero to deployed in minutes.
+                  Quickstart templates to get from zero to deployed in minutes. SDK, CLI, and REST API starters included.
                 </p>
                 <Button variant="ghost" size="sm" className="gap-2 p-0" onClick={() => setActiveTab("starter")}>
                   Launch Project <ArrowRight className="w-4 h-4" />
