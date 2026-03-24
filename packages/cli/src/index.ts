@@ -70,6 +70,8 @@ function jsonOut(data: unknown) {
 const CREDS_DIR = path.join(os.homedir(), '.cmpsbl');
 const CREDS_FILE = path.join(CREDS_DIR, 'credentials');
 
+type ApiKeySource = 'env' | 'credentials' | 'none';
+
 function loadStoredKey(): string | undefined {
   try {
     if (fs.existsSync(CREDS_FILE)) {
@@ -93,6 +95,12 @@ function clearStoredKey(): void {
 /** Resolve API key: env var > stored credentials */
 function resolveApiKey(): string | undefined {
   return process.env.CMPSBL_API_KEY || loadStoredKey();
+}
+
+function getApiKeySource(): ApiKeySource {
+  if (process.env.CMPSBL_API_KEY) return 'env';
+  if (loadStoredKey()) return 'credentials';
+  return 'none';
 }
 
 /** Open a URL in the user's default browser */
@@ -181,7 +189,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '2.2.0' as const;
+const CLI_VERSION = '2.2.1' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -828,6 +836,7 @@ async function cmdConfig(args: string[]) {
 async function cmdWhoami() {
   const session = getFirstContactSession();
   const apiKey = resolveApiKey();
+  const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
   const data = {
     apiKey: hasKey ? `***${(apiKey ?? '').slice(-4)}` : null,
@@ -840,7 +849,7 @@ async function cmdWhoami() {
   if (JSON_MODE) { jsonOut(data); return; }
   header('Identity');
   say(`API Key:    ${hasKey ? `● Configured (***${(apiKey ?? '').slice(-4)})` : '○ Not set'}`);
-  say(`Source:     ${process.env.CMPSBL_API_KEY ? 'Environment variable' : hasKey ? '~/.cmpsbl/credentials' : 'None'}`);
+  say(`Source:     ${apiKeySource === 'env' ? 'Environment variable' : apiKeySource === 'credentials' ? '~/.cmpsbl/credentials' : 'None'}`);
   say(`Endpoint:   ${data.endpoint}`);
   say(`Session:    ${data.session ?? 'None active'}`);
   say(`Memory:     ${data.memoryBound ? '● Bound (persistent)' : '○ Local'}`);
@@ -852,10 +861,11 @@ async function cmdWhoami() {
 
 async function cmdLogin() {
   const existing = resolveApiKey();
+  const apiKeySource = getApiKeySource();
   if (existing) {
-    if (JSON_MODE) { jsonOut({ authenticated: true, source: process.env.CMPSBL_API_KEY ? 'env' : 'credentials' }); return; }
+    if (JSON_MODE) { jsonOut({ authenticated: true, source: apiKeySource === 'none' ? null : apiKeySource }); return; }
     say(`● Already authenticated (***${existing.slice(-4)})`);
-    say(`  Source: ${process.env.CMPSBL_API_KEY ? 'CMPSBL_API_KEY env var' : '~/.cmpsbl/credentials'}`);
+    say(`  Source: ${apiKeySource === 'env' ? 'CMPSBL_API_KEY env var' : '~/.cmpsbl/credentials'}`);
     say(pick(V.ok));
     blank();
     return;
@@ -1032,7 +1042,7 @@ import { CMPSBL, Engine } from '@cmpsbl/sdk';
 async function main() {
   // Connect to the substrate (uses ~/.cmpsbl/credentials or CMPSBL_API_KEY)
   const cmpsbl = new CMPSBL({
-    apiKey: process.env.CMPSBL_API_KEY,
+    apiKey: resolveApiKey(),
   });
 
   await cmpsbl.init();
@@ -1414,7 +1424,7 @@ async function cmdDoctor() {
   if (!JSON_MODE) header('Diagnostic Suite');
 
   const checks = [
-    { name: 'API Key configured', check: () => !!process.env.CMPSBL_API_KEY },
+    { name: 'API Key configured', check: () => !!resolveApiKey() },
     { name: 'Endpoint reachable', check: () => true },
     { name: 'Manifest exists', check: () => fs.existsSync(path.resolve('cmpsbl-manifest.json')) },
     { name: 'Config directory', check: () => fs.existsSync(path.resolve('.cmpsbl')) },
