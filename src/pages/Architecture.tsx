@@ -30,7 +30,7 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-/* ─── Full 40-primitive topology, grouped by the 12 canonical sectors ─── */
+/* ─── Full 40-primitive topology, grouped by boot zones ─── */
 
 interface NodeDef {
   name: string;
