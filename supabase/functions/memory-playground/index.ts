@@ -88,7 +88,7 @@ serve(async (req) => {
         const { data, error } = await supabase
           .from("brain_memory_hot")
           .select("id, content, importance_score, created_at, access_count, tags")
-          .or(`content.ilike.%${query}%,tags.cs.{${query}}`)
+          .ilike("content", `%${query}%`)
           .order("importance_score", { ascending: false })
           .limit(5);
 
