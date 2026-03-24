@@ -6217,7 +6217,21 @@ class DriftPreventionEngine {
   }
   
   private calculateDelta(a: any, b: any): number {
-    return Math.random() * 0.2; // Simplified - real impl uses vector similarity
+    // Cosine-inspired key overlap similarity
+    const keysA = Object.keys(a ?? {});
+    const keysB = Object.keys(b ?? {});
+    if (keysA.length === 0 && keysB.length === 0) return 0;
+    const allKeys = new Set([...keysA, ...keysB]);
+    let dotProduct = 0, magA = 0, magB = 0;
+    for (const k of allKeys) {
+      const va = typeof a?.[k] === 'number' ? a[k] : (a?.[k] ? 1 : 0);
+      const vb = typeof b?.[k] === 'number' ? b[k] : (b?.[k] ? 1 : 0);
+      dotProduct += va * vb;
+      magA += va * va;
+      magB += vb * vb;
+    }
+    const magnitude = Math.sqrt(magA) * Math.sqrt(magB);
+    return magnitude > 0 ? 1 - (dotProduct / magnitude) : 0;
   }
 }
 
@@ -6356,7 +6370,8 @@ class BehaviorAnchorSystem {
     if (!this.anchor) return { compliant: true, drift: 0 };
     
     const anchorMemory = await substrate.brain.query('behavior_anchor', 1);
-    const drift = Math.random() * 0.25; // Real impl: vector similarity
+    const anchorData = anchorMemory.data?.memories?.[0]?.content;
+    const drift = anchorData ? this.calculateDelta(JSON.parse(anchorData), currentBehavior) : 0;
     
     return {
       compliant: drift < this.anchor.threshold,
@@ -7961,11 +7976,13 @@ class AdaptivePersonaEngine {
       user.satisfactionScore = Math.min(1, user.satisfactionScore + 0.1);
     } else if (feedback === 'negative') {
       user.satisfactionScore = Math.max(0, user.satisfactionScore - 0.15);
-      // Swing traits in opposite direction
+      // Invert each trait proportionally to its distance from neutral (0.5)
       Object.keys(user.preferences).forEach(key => {
         const k = key as keyof PersonaTraits;
+        const current = user.preferences[k];
+        const directionFromNeutral = current - 0.5;
         user.preferences[k] = Math.max(0, Math.min(1, 
-          user.preferences[k] + (Math.random() - 0.5) * 0.2
+          current - directionFromNeutral * 0.4
         ));
       });
     }

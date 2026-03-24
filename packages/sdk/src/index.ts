@@ -634,15 +634,34 @@ export class CMPSBL {
     const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
     if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
 
-    await new Promise(r => setTimeout(r, 50 + Math.random() * 100));
-    const data: PingResult = {
-      node: node.id,
-      latencyMs: Math.round(2 + Math.random() * 12),
-      status: node.status,
-      health: node.health,
-      timestamp: new Date().toISOString(),
-    };
-    return new SDKResponse(data, { method: 'ping', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    try {
+      const res = await fetch(`${this.config.endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        body: JSON.stringify({ action: 'ping', node: node.id }),
+      });
+      const body = await res.json().catch(() => ({}));
+      const latencyMs = Date.now() - start;
+      const data: PingResult = {
+        node: node.id,
+        latencyMs,
+        status: res.ok ? 'online' : 'degraded',
+        health: body.health ?? node.health,
+        timestamp: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
+    } catch {
+      // Network failure — report real failure, not random numbers
+      const latencyMs = Date.now() - start;
+      const data: PingResult = {
+        node: node.id,
+        latencyMs,
+        status: 'offline',
+        health: 0,
+        timestamp: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
+    }
   }
 
   /**
@@ -654,20 +673,38 @@ export class CMPSBL {
     const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
     if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
 
-    const data: InspectResult = {
-      node: node.id,
-      sector: node.sector,
-      role: node.role,
-      status: node.status,
-      health: node.health,
-      uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
-      resolverCount: Math.round(3 + Math.random() * 12),
-      intentsProcessed: Math.round(50 + Math.random() * 500),
-      avgLatencyMs: Math.round(2 + Math.random() * 8),
-      meshLinks: NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
-      lastPing: new Date().toISOString(),
-    };
-    return new SDKResponse(data, { method: 'inspect', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    try {
+      const res = await fetch(`${this.config.endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        body: JSON.stringify({ action: 'inspect', node: node.id }),
+      });
+      const body = await res.json().catch(() => ({}));
+      const durationMs = Date.now() - start;
+      const data: InspectResult = {
+        node: node.id,
+        sector: body.sector ?? node.sector,
+        role: body.role ?? node.role,
+        status: res.ok ? (body.status ?? node.status) : 'degraded',
+        health: body.health ?? node.health,
+        uptime: body.uptime ?? 0,
+        resolverCount: body.resolverCount ?? 0,
+        intentsProcessed: body.intentsProcessed ?? 0,
+        avgLatencyMs: body.avgLatencyMs ?? durationMs,
+        meshLinks: body.meshLinks ?? NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+        lastPing: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
+    } catch {
+      const durationMs = Date.now() - start;
+      const data: InspectResult = {
+        node: node.id, sector: node.sector, role: node.role,
+        status: 'offline', health: 0, uptime: 0,
+        resolverCount: 0, intentsProcessed: 0, avgLatencyMs: durationMs,
+        meshLinks: [], lastPing: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
+    }
   }
 
   /**
@@ -703,31 +740,23 @@ export class CMPSBL {
    * Get recent log entries from the system.
    * @param options - Filter by node and limit count
    */
-  logs(options?: { node?: string; count?: number }): SDKResponse<LogEntry[]> {
+  async logs(options?: { node?: string; count?: number }): Promise<SDKResponse<LogEntry[]>> {
     const start = Date.now();
     const count = Math.min(options?.count ?? 10, 50);
-    const targetNodes = options?.node
-      ? NODE_REGISTRY.filter(n => n.id === options.node!.toUpperCase())
-      : NODE_REGISTRY;
 
-    const levels: LogEntry['level'][] = ['INFO', 'DEBUG', 'WARN', 'INFO', 'INFO'];
-    const messages = [
-      'resolver executed successfully', 'health check passed', 'mesh signal propagated',
-      'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
-      'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
-    ];
-
-    const entries: LogEntry[] = [];
-    for (let i = 0; i < count; i++) {
-      const node = targetNodes[Math.floor(Math.random() * targetNodes.length)];
-      entries.push({
-        timestamp: new Date(Date.now() - (count - i) * 30000).toISOString(),
-        level: levels[Math.floor(Math.random() * levels.length)],
-        node: node?.id ?? 'SYSTEM',
-        message: messages[Math.floor(Math.random() * messages.length)],
+    try {
+      const res = await fetch(`${this.config.endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        body: JSON.stringify({ action: 'logs', node: options?.node?.toUpperCase(), count }),
       });
+      const body = await res.json().catch(() => ({ entries: [] }));
+      const entries: LogEntry[] = (body.entries ?? []).slice(0, count);
+      return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    } catch {
+      // Return empty — not fake data
+      return new SDKResponse([] as LogEntry[], { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
     }
-    return new SDKResponse(entries, { method: 'logs', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
   }
 
   /**
@@ -751,9 +780,19 @@ export class CMPSBL {
     const start = Date.now();
     const entries: BenchmarkEntry[] = [];
 
+    // Real sequential pings — measure actual round-trip latency
     for (const node of NODE_REGISTRY) {
-      await new Promise(r => setTimeout(r, 10));
-      entries.push({ node: node.id, sector: node.sector, latencyMs: Math.round(1 + Math.random() * 15), rank: 0 });
+      const pingStart = Date.now();
+      try {
+        await fetch(`${this.config.endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+          body: JSON.stringify({ action: 'ping', node: node.id }),
+        });
+        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+      } catch {
+        entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
+      }
     }
 
     entries.sort((a, b) => a.latencyMs - b.latencyMs);
@@ -841,7 +880,7 @@ export class CMPSBL {
       node: node?.id ?? nodeId,
       role: node?.role ?? 'unknown',
       sector: node?.sector ?? 'unknown',
-      latencyMs: Math.round(1 + Math.random() * 6),
+      latencyMs: 0, // Populated by real gateway trace when available
     };
   }
 }

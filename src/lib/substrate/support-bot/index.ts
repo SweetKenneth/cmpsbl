@@ -704,19 +704,29 @@ export class SupportBotEngine {
   }
 
   private async fetchResolution(resolutionId: string): Promise<Resolution | null> {
-    // Simulated - in production would query from database
-    return {
-      id: resolutionId,
-      ticket_id: 'ticket_123',
-      answer: 'Sample resolution answer',
-      explanation: 'This was the solution',
-      confidence: 0.9,
-      sources: [],
-      resolved_by: 'human',
-      verification: 'verified',
-      learning_applied: false,
-      created_at: new Date().toISOString(),
-    };
+    try {
+      const intent: DetectedIntent = { primary: 'resolution', category: 'general', confidence: 1, keywords: [resolutionId] };
+      const recall = await this.recallRelevantMemories(`resolution:${resolutionId}`, intent);
+      if (recall.matches.length > 0) {
+        const match = recall.matches[0];
+        const content = match.memory.answer;
+        return {
+          id: resolutionId,
+          ticket_id: resolutionId,
+          answer: content,
+          explanation: '',
+          confidence: match.similarity,
+          sources: [],
+          resolved_by: 'bot',
+          verification: match.memory.verified ? 'verified' : 'pending',
+          learning_applied: false,
+          created_at: match.memory.created_at,
+        };
+      }
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   // ==========================================================================
