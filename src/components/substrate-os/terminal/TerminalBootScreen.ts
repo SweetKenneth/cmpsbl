@@ -1,10 +1,44 @@
 import { getMetric } from '@/stores/publicMetricsStore';
 
 /**
- * Mobile boot screen — compact version for <768px viewports
+ * CMPSBL® Substrate Boot Screen
+ * Canonical 40-Primitive / 4-Category / 12·12·8·8 Matrix
+ *
+ * Boot Order (deterministic):
+ *   1. LAYERS  — ambient protection must be active first
+ *   2. ORGANS  — vital infrastructure under layer protection
+ *   3. ENGINES — processing powerhouses ready
+ *   4. AGENTS  — autonomous actors activate last
  */
+
+// ── Canonical Primitive Registry ────────────────────────────────
+
+const LAYERS = [
+  'DEFENSE', 'IMMUNITY', 'GOVERNANCE', 'TREATY',
+  'EVOLUTION', 'REFLEX', 'COMPASS', 'INTEGRATION',
+  'INTENT', 'ACCESS', 'VISION', 'SHADOW',
+] as const;
+
+const ORGANS = [
+  'CORE', 'SYSTEM', 'BRAIN', 'MEMORY',
+  'NERVE', 'NEXUS', 'IDENTITY', 'SOVEREIGN',
+  'ATLAS', 'MEDIC', 'RELAY', 'CONSCIENCE',
+] as const;
+
+const ENGINES = [
+  'DREAM', 'HARVEST', 'FORGE', 'LINGUA',
+  'ECHO', 'PHANTOM', 'SANDBOX', 'RIPPLE',
+] as const;
+
+const AGENTS = [
+  'ENCODE', 'DECODE', 'AUDIT', 'ECONOMY',
+  'INCLUSIVE', 'CORTEX', 'ORACLE', 'ENGINEER',
+] as const;
+
+// ── Mobile Boot Screen ──────────────────────────────────────────
+
 export function generateMobileBootScreen(): string[] {
-  const epoch = getMetric('epoch') || 'MINDGAMES';
+  const epoch = getMetric('epoch') || 'CONTACT';
   return [
     '',
     '  ╔══════════════════════════════════╗',
@@ -12,55 +46,51 @@ export function generateMobileBootScreen(): string[] {
     `  ║  ${epoch} · Stream Terminal`.padEnd(35) + '║',
     '  ╚══════════════════════════════════╝',
     '',
-    '  ▸ Initializing substrate...',
-    '  ▸ Loading 40-primitive matrix...',
-    '  ▸ Mapping 4-category taxonomy...',
+    '  ▸ Boot sequence initiated...',
     '',
-    '  ┌─ PRIMITIVE MATRIX ──────────────┐',
-    '  │                               │',
-    '  │  ⬡ ORGANS (12)                │',
-    '  │    core  system  nerve        │',
-    '  │    ripple access identity     │',
-    '  │    relay  audit  nexus        │',
-    '  │    integration brain memory   │',
-    '  │                               │',
-    '  │  ◇ LAYERS (8)                 │',
-    '  │    defense immunity           │',
-    '  │    governance intent           │',
-    '  │    evolution inclusive         │',
-    '  │    conscience treaty           │',
-    '  │                               │',
-    '  │  ◈ ENGINES (10)               │',
-    '  │    dream cortex oracle        │',
-    '  │    forge compass atlas        │',
-    '  │    economy sandbox medic      │',
-    '  │    reflex                      │',
-    '  │                               │',
-    '  │  ★ AGENTS (10)                │',
-    '  │    encode decode vision       │',
-    '  │    phantom lingua echo        │',
-    '  │    harvest sovereign          │',
-    '  │    engineer observer          │',
-    '  │                               │',
-    '  └───────────────────────────────┘',
+    '  ┌─ STAGE 1 ─ LAYERS (12) ────────┐',
+    '  │  ◇ defense   immunity          │',
+    '  │  ◇ governance treaty           │',
+    '  │  ◇ evolution  reflex           │',
+    '  │  ◇ compass   integration       │',
+    '  │  ◇ intent    access            │',
+    '  │  ◇ vision    shadow            │',
+    '  │  ✓ Ambient protection: ACTIVE  │',
+    '  └────────────────────────────────┘',
+    '  ┌─ STAGE 2 ─ ORGANS (12) ────────┐',
+    '  │  ⬡ core     system  brain      │',
+    '  │  ⬡ memory   nerve   nexus      │',
+    '  │  ⬡ identity sovereign atlas    │',
+    '  │  ⬡ medic    relay   conscience │',
+    '  │  ✓ Vital infrastructure: UP    │',
+    '  └────────────────────────────────┘',
+    '  ┌─ STAGE 3 ─ ENGINES (8) ────────┐',
+    '  │  ◈ dream  harvest  forge       │',
+    '  │  ◈ lingua echo phantom         │',
+    '  │  ◈ sandbox ripple              │',
+    '  │  ✓ Processing power: READY     │',
+    '  └────────────────────────────────┘',
+    '  ┌─ STAGE 4 ─ AGENTS (8) ─────────┐',
+    '  │  ★ encode  decode  audit       │',
+    '  │  ★ economy inclusive cortex    │',
+    '  │  ★ oracle  engineer            │',
+    '  │  ✓ Autonomous actors: ARMED    │',
+    '  └────────────────────────────────┘',
     '',
-    '  ◉ 40 primitives · 4 categories · 500+ cmds',
-    '  ◉ 675+ capabilities · 100 engines',
+    '  ◉ 40 primitives · 12·12·8·8 matrix',
     '  ◉ Health: ████████████████ 100%',
     '',
     '  ▸ Stream substrate: ONLINE',
-    '  ▸ Signal pathways: READY',
     '',
     "  Type 'help' for commands",
     '',
   ];
 }
 
-/**
- * Full desktop boot screen — cinematic neon aesthetic
- */
+// ── Desktop Boot Screen ─────────────────────────────────────────
+
 export function generateDesktopBootScreen(): string[] {
-  const epoch = getMetric('epoch') || 'MINDGAMES';
+  const epoch = getMetric('epoch') || 'CONTACT';
   return [
     '',
     '  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓',
@@ -77,33 +107,32 @@ export function generateDesktopBootScreen(): string[] {
     '  ┃                                                               ┃',
     '  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛',
     '',
-    '  ▸ Booting substrate kernel...',
-    '  ▸ Initializing 40-primitive cognitive matrix...',
-    '  ▸ Mapping 4-category taxonomy...',
-    '  ▸ Calibrating signal pathways...',
+    '  ▸ Boot sequence initiated — 4-stage deterministic startup...',
     '',
-    '  ┌─ 40-PRIMITIVE / 4-CATEGORY TAXONOMY ─────────────────────────┐',
-    '  │                                                              │',
-    '  │  ⬡ ORGANS (12) — Internal infrastructure ────────────────     │',
-    '  │    ◉ core       ◉ system       ◉ nerve                       │',
-    '  │    ◉ ripple     ◉ access       ◉ identity                    │',
-    '  │    ◉ relay      ◉ audit        ◉ nexus                       │',
-    '  │    ◉ integration ◉ brain       ◉ memory                      │',
-    '  │                                                              │',
-    '  │  ◇ LAYERS (8) — Ambient protection & governance ─────────     │',
-    '  │    ◉ defense    ◉ immunity     ◉ governance  ◉ intent        │',
-    '  │    ◉ evolution  ◉ inclusive    ◉ conscience  ◉ treaty        │',
-    '  │                                                              │',
-    '  │  ◈ ENGINES (10) — Invoked processing powerhouses ────────     │',
-    '  │    ◉ dream      ◉ cortex      ◉ oracle      ◉ forge         │',
-    '  │    ◉ compass    ◉ atlas       ◉ economy     ◉ sandbox       │',
-    '  │    ◉ medic      ◉ reflex                                     │',
-    '  │                                                              │',
-    '  │  ★ AGENTS (10) — Autonomous actors ──────────────────────     │',
-    '  │    ◉ encode     ◉ decode      ◉ vision      ◉ phantom       │',
-    '  │    ◉ lingua     ◉ echo        ◉ harvest     ◉ sovereign     │',
-    '  │    ◉ engineer   ◉ observer                                    │',
-    '  │                                                              │',
+    '  ┌─ STAGE 1 ─ LAYERS (12) — Ambient Overlays ────────────────────┐',
+    '  │  ◇ DEFENSE    ◇ IMMUNITY    ◇ GOVERNANCE   ◇ TREATY          │',
+    '  │  ◇ EVOLUTION  ◇ REFLEX      ◇ COMPASS      ◇ INTEGRATION     │',
+    '  │  ◇ INTENT     ◇ ACCESS      ◇ VISION       ◇ SHADOW          │',
+    '  │  ✓ Protection perimeter: ACTIVE                               │',
+    '  └──────────────────────────────────────────────────────────────┘',
+    '',
+    '  ┌─ STAGE 2 ─ ORGANS (12) — Vital Infrastructure ────────────────┐',
+    '  │  ⬡ CORE       ⬡ SYSTEM      ⬡ BRAIN        ⬡ MEMORY         │',
+    '  │  ⬡ NERVE      ⬡ NEXUS       ⬡ IDENTITY     ⬡ SOVEREIGN      │',
+    '  │  ⬡ ATLAS      ⬡ MEDIC       ⬡ RELAY        ⬡ CONSCIENCE     │',
+    '  │  ✓ Vital systems: HEARTBEAT CONFIRMED                         │',
+    '  └──────────────────────────────────────────────────────────────┘',
+    '',
+    '  ┌─ STAGE 3 ─ ENGINES (8) — Processing Powerhouses ──────────────┐',
+    '  │  ◈ DREAM      ◈ HARVEST     ◈ FORGE        ◈ LINGUA          │',
+    '  │  ◈ ECHO       ◈ PHANTOM     ◈ SANDBOX      ◈ RIPPLE          │',
+    '  │  ✓ Processing cores: IGNITION COMPLETE                        │',
+    '  └──────────────────────────────────────────────────────────────┘',
+    '',
+    '  ┌─ STAGE 4 ─ AGENTS (8) — Autonomous Actors ────────────────────┐',
+    '  │  ★ ENCODE     ★ DECODE      ★ AUDIT        ★ ECONOMY         │',
+    '  │  ★ INCLUSIVE   ★ CORTEX      ★ ORACLE       ★ ENGINEER        │',
+    '  │  ✓ Autonomous actors: DEPLOYED AND ARMED                      │',
     '  └──────────────────────────────────────────────────────────────┘',
     '',
     '  ▸ Matrix integrity:  ████████████████████ 100%',
@@ -111,10 +140,10 @@ export function generateDesktopBootScreen(): string[] {
     '  ▸ Stream bandwidth:  ████████████████████ 100%',
     '',
     '  ╔══════════════════════════════════════════════════════════════╗',
-    '  ║  40 PRIMITIVES  │  4 CATEGORIES  │  500+ CMDS  │  675+ CAPS       ║',
-    '  ║  300 Synergy Memory Chains  │  125 Executors  │  100 Engines    ║',
-    '  ║  Memory Stream: ACTIVE  │  Quality Floor: 68+               ║',
-    "  ║  Type 'help' for commands  ·  'cortex.status' for mode      ║",
+    '  ║  40 PRIMITIVES  │  12·12·8·8  │  4 CATEGORIES              ║',
+    '  ║  Boot: Layers → Organs → Engines → Agents                  ║',
+    '  ║  Memory Stream: ACTIVE  │  Quality Floor: 68+              ║',
+    "  ║  Type 'help' for commands  ·  'cortex.status' for mode     ║",
     '  ╚══════════════════════════════════════════════════════════════╝',
     '',
     '  ◉ Stream substrate: ONLINE',
