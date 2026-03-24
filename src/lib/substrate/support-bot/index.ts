@@ -717,8 +717,8 @@ export class SupportBotEngine {
           explanation: '',
           confidence: match.similarity,
           sources: [],
-          resolved_by: 'system',
-          verification: match.memory.verified ? 'verified' : 'unverified',
+          resolved_by: 'bot',
+          verification: match.memory.verified ? 'verified' : 'pending',
           learning_applied: false,
           created_at: match.memory.created_at,
         };
