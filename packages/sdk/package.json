@@ -9,6 +9,5 @@
   "keywords": ["cmpsbl", "sdk", "engine", "ai", "godmind"],
   "author": "Kenneth E Sweet Jr <promptfluid@gmail.com>",
   "license": "Apache-2.0",
-  "homepage": "https://cmpsbl.com/engines",
-  "dependencies": { "@cmpsbl/types": "^1.0.0" }
+  "homepage": "https://cmpsbl.com/engines"
 }
