@@ -163,17 +163,17 @@ const ARCH_CARDS = [
   {
     icon: Layers,
     title: 'One Runtime for All',
-    description: 'Every plan runs the same full platform. No stripped-down versions, no feature fragmentation.',
+    description: 'Every plan runs the same full substrate — all 40 primitives active. No stripped-down versions, no feature fragmentation.',
   },
   {
     icon: Package,
     title: 'Memory Packs Add Power',
-    description: 'Packs bundle related capabilities into purpose-built workflows. Each pack uses 1 memory slot.',
+    description: 'Packs bundle related capabilities into purpose-built memory chains. Each pack uses 1 memory slot.',
   },
   {
     icon: Zap,
     title: 'Plans Scale Capacity',
-    description: 'Higher plans let you activate more packs simultaneously — the platform itself never changes.',
+    description: 'Higher plans let you activate more packs simultaneously — the substrate itself never changes.',
   },
 ];
 
@@ -196,13 +196,13 @@ export default function Runtime() {
           >
             <Badge variant="outline" className="px-3 py-1 text-xs border-primary/30">
               <Layers className="w-3 h-3 mr-1.5 inline" />
-              Baseline Runtime
+              12 Organs · 12 Layers · 8 Engines · 8 Agents
             </Badge>
              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               What You Get. <span className="text-primary">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Every user gets the full platform — all 40 primitives, all capabilities. No features are locked behind paywalls.
+              Every user gets the full substrate — all 40 primitives, all capabilities. No features are locked behind paywalls.
               Plans only control how many memory packs you can activate at once.
             </p>
             <div className="flex items-center justify-center gap-3 pt-4">
@@ -219,9 +219,9 @@ export default function Runtime() {
         {/* ═══ ARCHITECTURE — horizontal scroll row ═══ */}
         <section className="mb-20">
           <div className="container mx-auto px-4 mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold">Unified Architecture</h2>
+         <h2 className="text-2xl md:text-3xl font-bold">Unified Substrate</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              One runtime. Every tier. No stripped-down versions.
+              One substrate. Every tier. No stripped-down versions.
             </p>
           </div>
           <div className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth px-4 md:px-[max(1rem,calc((100vw-72rem)/2+1rem))] pb-4 no-scrollbar">
@@ -253,9 +253,9 @@ export default function Runtime() {
               <Lock className="w-3 h-3 mr-1.5 inline" />
               Always Active
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold">Always-On Capabilities</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Always-On Primitives</h2>
             <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
-              These capabilities run for every user on every plan — no exceptions. Scroll each layer to explore.
+              These capabilities run across all 40 primitives for every user on every plan — no exceptions. Scroll each layer to explore.
             </p>
           </div>
 
@@ -271,10 +271,10 @@ export default function Runtime() {
         <section className="container mx-auto px-4 mb-24">
           <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Package className="w-10 h-10 text-primary mx-auto mb-4" />
-            <h3 className="text-2xl font-bold">How Memory Packs Extend the Runtime</h3>
+            <h3 className="text-2xl font-bold">How Memory Packs Extend the Substrate</h3>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
-              Memory packs bundle multiple baseline capabilities into ready-to-use workflows.
-              They don't replace the baseline — they build on top of it.
+              Memory packs bundle multiple baseline primitives into ready-to-use memory chains.
+              They don't replace the substrate — they build on top of it.
             </p>
             <div className="flex items-center justify-center gap-3 mt-6">
               <Button asChild>
