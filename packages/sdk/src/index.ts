@@ -975,7 +975,7 @@ export class CMPSBL {
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'inspect', node: node.id }),
       });
       const body = await res.json().catch(() => ({}));
