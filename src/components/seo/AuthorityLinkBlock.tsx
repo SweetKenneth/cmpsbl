@@ -1,8 +1,7 @@
 /**
  * AuthorityLinkBlock — SEO authority link component
- * Renders contextual internal links + curated external links
- * to push PageRank toward priority pages (home & evolution).
- * Drop into any page's footer area for topical authority.
+ * Renders contextual internal links + curated external links.
+ * ALL internal links verified against nav menu and footer — no broken routes.
  */
 
 import { Link } from 'react-router-dom';
@@ -19,57 +18,46 @@ interface ExtLink {
   rel?: string;
 }
 
-// ── Internal links (40 unique) — weighted toward / and /evolution ──
+// ── Internal links — only verified working routes from nav & footer ──
 
 const INTERNAL_LINKS: InternalLink[] = [
-  // Priority: Home (triple-weighted for hub authority)
+  // Priority: Home
   { label: 'CMPSBL Home', href: '/' },
   { label: 'Composable AI Platform', href: '/' },
-  { label: 'AI Operating System Home', href: '/' },
-  { label: 'Cognitive Infrastructure', href: '/' },
-  // Priority: Key landing pages
-  { label: 'EVOLUTION Layer', href: '/evolution' },
-  { label: 'Memory Stream', href: '/foundry' },
-  { label: 'Try CMPSBL Free', href: '/try' },
-  // Core platform
-  { label: 'Substrate Overview', href: '/substrate' },
+  // Platform
   { label: 'How it Works', href: '/ai-operating-system' },
-  { label: 'Runtime Environment', href: '/runtime' },
   { label: 'Architecture', href: '/architecture' },
-  { label: 'Store & Plans', href: '/store' },
-  { label: 'Store & Plans', href: '/store' },
-  { label: 'Memory Stream', href: '/foundry' },
-  // Products
-  { label: 'Persistent Memory', href: '/persistent-memory' },
-  { label: 'Capability Packs', href: '/packs' },
-  { label: 'Collector Store', href: '/store' },
-  { label: 'Meta-Agents', href: '/composable-cognitives' },
-  { label: 'World Engine', href: '/gaming' },
+  { label: 'Runtime', href: '/runtime' },
   { label: 'Enterprise', href: '/enterprise' },
-  { label: 'Upgrade & Pricing', href: '/upgrade' },
-  // Developer
-  { label: 'Developer Guide', href: '/developers/guide' },
-  { label: 'Documentation', href: '/docs' },
-  { label: 'Builder Workspace', href: '/developers' },
-  { label: 'Academy', href: '/academy' },
+  { label: 'Persistent Memory', href: '/persistent-memory' },
+  // Build
+  { label: 'Builder Workspace', href: '/workspace' },
   { label: 'CodeLab', href: '/codelab' },
+  { label: 'DevTools', href: '/devtools' },
+  { label: 'Documentation', href: '/docs' },
   { label: 'API Access', href: '/api-access' },
-  // Discovery
-  { label: 'Evolution Scanner', href: '/scanner' },
-  { label: 'Research Blog', href: '/blog' },
+  { label: 'Experiment Lab', href: '/lab' },
+  // Marketplace
+  { label: 'Store & Plans', href: '/store' },
+  { label: 'Academy', href: '/academy' },
   { label: 'Showcase', href: '/showcase' },
-  { label: 'Use Cases', href: '/use-cases' },
-  { label: 'Roadmap', href: '/roadmap' },
+  // Explore
+  { label: 'Memory Stream', href: '/foundry' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Changelog', href: '/changelog' },
-  { label: 'System Status', href: '/status' },
-  { label: 'Experimentation Lab', href: '/lab' },
+  { label: 'Developers', href: '/developers' },
+  { label: 'EVOLUTION Layer', href: '/evolution' },
   // Company
-  { label: 'About CMPSBL', href: '/about' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
   { label: 'Solutions', href: '/solutions' },
   { label: 'Investors', href: '/investors' },
-  { label: 'Capability Map', href: '/capability-map' },
-  { label: 'Foundations', href: '/foundations' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Publication', href: '/publication' },
+  { label: 'Heritage Paper', href: '/heritage-paper' },
+  { label: 'Evolution Scanner', href: '/scanner' },
+  { label: 'System Status', href: '/status' },
+  { label: 'Support', href: '/support' },
 ];
 
 // ── External links (10) — topical authority signals ──
@@ -88,20 +76,15 @@ const EXTERNAL_LINKS: ExtLink[] = [
 ];
 
 interface AuthorityLinkBlockProps {
-  /** Current page path — links to this path are excluded */
   currentPath: string;
-  /** Max internal links to show (default 8) */
   internalLimit?: number;
-  /** Max external links to show (default 4) */
   externalLimit?: number;
-  /** Section title */
   title?: string;
   className?: string;
 }
 
 /**
  * Deterministic but varied link selection based on currentPath hash.
- * Always includes at least one home link and one evolution link.
  */
 function selectLinks<T extends { href?: string; label?: string }>(
   pool: T[],
@@ -109,7 +92,6 @@ function selectLinks<T extends { href?: string; label?: string }>(
   limit: number,
   priorityPaths?: string[],
 ): T[] {
-  // Simple hash from path string
   let hash = 0;
   for (let i = 0; i < currentPath.length; i++) {
     hash = ((hash << 5) - hash + currentPath.charCodeAt(i)) | 0;
@@ -121,7 +103,6 @@ function selectLinks<T extends { href?: string; label?: string }>(
     return href !== currentPath;
   });
 
-  // Ensure priority paths are included
   const priority: T[] = [];
   const rest: T[] = [];
   for (const link of filtered) {
@@ -133,7 +114,6 @@ function selectLinks<T extends { href?: string; label?: string }>(
     }
   }
 
-  // Shuffle rest deterministically
   const shuffled = [...rest].sort((a, b) => {
     const ha = (a as any).label?.charCodeAt(0) ?? 0;
     const hb = (b as any).label?.charCodeAt(0) ?? 0;
