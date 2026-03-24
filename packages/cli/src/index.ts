@@ -1699,7 +1699,7 @@ const PRIMITIVE_CATALOG: Record<string, { category: string; role: string; descri
   CORTEX:      { category: 'Agent', role: 'Orchestration', description: 'DAG execution engine, deterministic pipeline state machine, resource allocation across 40 primitives', commands: ['route', 'topology'] },
   ORACLE:      { category: 'Agent', role: 'Prediction', description: 'Bayesian prediction networks, Monte Carlo scenario simulator, prescriptive recommendations', commands: ['predict'] },
   ENGINEER:    { category: 'Agent', role: 'Infrastructure', description: 'Infrastructure automation, deployment orchestration, environment provisioning', commands: ['doctor', 'benchmark'] },
-  OBSERVER:    { category: 'Agent', role: 'Monitoring', description: 'System observability agent — real-time signal monitoring, anomaly alerting, activity replay', commands: ['watch', 'logs'] },
+  
 };
 
 function cmdExplain(args: string[]) {
