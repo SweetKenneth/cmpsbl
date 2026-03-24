@@ -237,8 +237,9 @@ async function discoverTables(url: string, key: string): Promise<string[]> {
     headers: { apikey: key, Authorization: `Bearer ${key}` },
   });
   if (!res.ok) throw new Error(`Failed to discover tables: ${res.status}`);
-  const data = await res.json();
-  return Object.keys(data?.definitions ?? {});
+  const data = await res.json() as Record<string, unknown>;
+  const defs = (data?.definitions ?? {}) as Record<string, unknown>;
+  return Object.keys(defs);
 }
 
 async function fetchTable(url: string, key: string, table: string): Promise<unknown[]> {
