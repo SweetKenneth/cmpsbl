@@ -1,6 +1,8 @@
 # @cmpsbl/failsafe
 
-CMPSBL® FAILSAFE — Disaster Recovery & Platform Migration Engine.
+> CMPSBL® FAILSAFE — Zero-dependency disaster recovery & platform migration engine.
+
+[![npm](https://img.shields.io/npm/v/@cmpsbl/failsafe)](https://www.npmjs.com/package/@cmpsbl/failsafe)
 
 ## Install
 
@@ -8,33 +10,25 @@ CMPSBL® FAILSAFE — Disaster Recovery & Platform Migration Engine.
 npm install @cmpsbl/failsafe
 ```
 
+**Zero dependencies.** Builds standalone.
+
+## Dependency Tier
+
+```
+Tier 1 (no deps — publish/install in any order)
+```
+
 ## Usage
 
 ```typescript
-import { createBackup, restore, migrate } from '@cmpsbl/failsafe';
+import { createBackup, restore } from '@cmpsbl/failsafe';
 
-// Backup
 const backup = await createBackup({
-  supabaseUrl: 'https://xxx.supabase.co',
+  supabaseUrl: 'https://your-project.supabase.co',
   supabaseKey: 'your-service-role-key',
-});
-
-// Restore
-const result = await restore({
-  targetUrl: 'https://yyy.supabase.co',
-  targetKey: 'target-service-role-key',
-  backupData: myBackupData,
-  cleanRestore: true,
-});
-
-// Full migration
-const migration = await migrate({
-  source: { supabaseUrl: '...', supabaseKey: '...' },
-  target: { targetUrl: '...', targetKey: '...' },
-  options: { cleanRestore: true, validateIntegrity: true },
 });
 ```
 
 ## License
 
-Apache-2.0 © Kenneth E Sweet Jr
+Apache-2.0 — © CMPSBL®
