@@ -473,7 +473,7 @@ async function cmdOnboarding() {
     rl.question('  Initialize a new project here? (y/n) ', async (answer) => {
       rl.close();
       if (answer.trim().toLowerCase() === 'y' || answer.trim() === '') {
-        await cmdInit([]);
+        await cmdInit([], { skipCeremony: true });
       } else {
         say('No problem. Run `cmpsbl init` when you\'re ready.');
         say(pick(V.idle));
