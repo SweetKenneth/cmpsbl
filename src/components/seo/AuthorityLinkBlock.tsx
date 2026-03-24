@@ -38,7 +38,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Architecture', href: '/architecture' },
   { label: 'Store & Plans', href: '/store' },
   { label: 'Store & Plans', href: '/store' },
-  { label: 'Memory Stream Discovery', href: '/foundry' },
+  { label: 'Memory Stream', href: '/foundry' },
   // Products
   { label: 'Persistent Memory', href: '/persistent-memory' },
   { label: 'Capability Packs', href: '/packs' },
