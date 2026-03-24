@@ -534,7 +534,7 @@ function NexusSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">NEXUS Router</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">NEXUS Organ</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           Intelligent multi-provider AI routing. NEXUS selects the optimal model based on task type,
           latency constraints, cost budget, and provider health — with automatic failover across 14+ providers.
