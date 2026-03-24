@@ -49,9 +49,8 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Upgrade & Pricing', href: '/upgrade' },
   // Developer
   { label: 'Developer Guide', href: '/developers/guide' },
-  { label: 'Documentation', href: '/documentation' },
-  { label: 'Developer Guide', href: '/developers/guide' },
-  { label: 'Developer Showcase', href: '/developers' },
+  { label: 'Documentation', href: '/docs' },
+  { label: 'Builder Workspace', href: '/developers' },
   { label: 'Academy', href: '/academy' },
   { label: 'CodeLab', href: '/codelab' },
   { label: 'API Access', href: '/api-access' },
