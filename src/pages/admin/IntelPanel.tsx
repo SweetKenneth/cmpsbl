@@ -1,13 +1,12 @@
 /**
- * Evolution Control Plane — Portable, OS-grade admin surface.
- * 
+ * INTEL Panel — Substrate observability & evolution surface.
+ *
  * Sections:
- *   1. System Integrity (Structural + Production Audit + Compliance)
- *   2. Bounded Action Plan (max 5 proposals)
- *   3. Governance Receipts (receipt_id, diff_hash, verification_hash, snapshot_id)
- *   4. Install Mode (endpoint /evolution/export)
- * 
- * Light theme only. No substrate-specific branding.
+ *   1. System Integrity  (Structural + Production Audit + Compliance)
+ *   2. Bounded Action Plan  (max 5 proposals per run)
+ *   3. Governance Receipts  (receipt_id, diff_hash, verification_hash, snapshot_id)
+ *   4. Install Mode  (endpoint /evolution/export)
+ *
  * External-AI execution barrier enforced.
  */
 
@@ -359,7 +358,7 @@ export default function IntelPanel() {
       const proposal = await generateUnifiedProposal();
       setUnifiedProposal(proposal);
       navigator.clipboard.writeText(JSON.stringify(proposal, null, 2));
-      toast.success(`v3.3 proposal generated — ${proposal.action_plan.length} bounded steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
+      toast.success(`Proposal generated — ${proposal.action_plan.length} bounded steps from ${proposal.metadata.sources.length} sources. Copied to clipboard.`);
     } catch (err) {
       toast.error('Failed to generate proposal');
     } finally {
@@ -373,7 +372,7 @@ export default function IntelPanel() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `evolution-proposal-v3.3-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `intel-proposal-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success('Proposal downloaded');
@@ -385,7 +384,7 @@ export default function IntelPanel() {
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center space-y-3">
             <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
-            <p className="text-muted-foreground text-sm">Running maintenance battery…</p>
+            <p className="text-muted-foreground text-sm">Scanning substrate integrity…</p>
           </div>
         </div>
       </AdminLayout>
@@ -410,9 +409,9 @@ export default function IntelPanel() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Evolution Control Plane</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">INTEL Panel</h1>
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Bounded Proposals · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span> · Schema v3.3
+              System Integrity · Bounded Proposals · Execution: <span className="font-mono font-semibold">{executionMode.mode}</span>
             </p>
           </div>
           
@@ -486,7 +485,7 @@ export default function IntelPanel() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-primary flex-shrink-0" />
-                    <CardTitle className="text-sm sm:text-base">Bounded Proposal v3.3</CardTitle>
+                    <CardTitle className="text-sm sm:text-base">Bounded Proposal</CardTitle>
                     <Badge variant="outline" className="text-[10px] sm:text-xs">
                       {unifiedProposal.action_plan.length}/5 steps
                     </Badge>
@@ -685,7 +684,7 @@ export default function IntelPanel() {
                 <IntelCardView key={card.id} card={card} />
               ))}
               {cards.length === 0 && (
-                <p className="text-xs sm:text-sm text-muted-foreground py-8 text-center">No signals collected yet. Run a maintenance battery to populate.</p>
+                <p className="text-xs sm:text-sm text-muted-foreground py-8 text-center">No signals collected yet. Generate a proposal to populate.</p>
               )}
             </div>
           </ScrollArea>
@@ -711,11 +710,11 @@ export default function IntelPanel() {
           )}
         </section>
         
-        {/* CLM Topic Mastery */}
+        {/* Cognitive Topic Mastery */}
         <section>
           <h2 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-foreground flex items-center gap-2">
             <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
-            Topic Mastery
+            Cognitive Mastery
           </h2>
           <Card>
             <CardContent className="p-3 sm:pt-4 sm:px-4 divide-y divide-border">
@@ -723,7 +722,7 @@ export default function IntelPanel() {
                 <MasteryItem key={i} item={item} />
               ))}
               {topicMastery.length === 0 && (
-                <p className="text-xs sm:text-sm text-muted-foreground py-4 text-center">Topic system not yet initialized.</p>
+                <p className="text-xs sm:text-sm text-muted-foreground py-4 text-center">Cognitive mastery tracking not yet initialized.</p>
               )}
             </CardContent>
           </Card>
