@@ -156,9 +156,12 @@ class MeshAutoScheduler {
     }, this.config.fullExpansionIntervalMs);
 
     // CDM — Constant Discovery Mode reactor (feeds S-Tier Vault + Memory Stream)
+    // CDM does NOT gate on document.visibilityState — it must run autonomously
+    // even when the tab is in background, as it's the primary discovery engine.
     this.timers.cdmReactor = setInterval(async () => {
       try {
-        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
+        if (!isMeshEnabled()) return;
+        // CDM is autonomous — runs regardless of tab visibility
         await this.runCdmReactorCycle();
       } catch (err) {
         console.warn('[MeshScheduler] Unhandled error in CDM reactor interval:', err);
@@ -178,16 +181,17 @@ class MeshAutoScheduler {
       }
     }, 60_000); // 60s after boot — let everything settle first
 
-    // CDM reactor warm-up — first autonomous reactor run after 5 minutes
+    // CDM reactor warm-up — first autonomous reactor run after 2 minutes
+    // Runs regardless of tab visibility for autonomous discovery
     setTimeout(async () => {
       try {
-        if (!isMeshEnabled() || document.visibilityState === 'hidden') return;
-        console.log('[CDM] Initial reactor cycle starting...');
+        if (!isMeshEnabled()) return;
+        console.log('[CDM] Initial reactor cycle starting (autonomous)...');
         await this.runCdmReactorCycle();
       } catch (err) {
         console.warn('[CDM] Initial reactor cycle error (non-fatal):', err);
       }
-    }, 5 * 60_000); // 5 min after boot
+    }, 2 * 60_000); // 2 min after boot — faster warm-up
 
     console.log('[MeshScheduler] Started — CDM + continuous autonomous discovery active');
   }
@@ -216,12 +220,10 @@ class MeshAutoScheduler {
    */
   async runCdmReactorCycle(): Promise<{ accepted: number; sTierPromoted: number }> {
     try {
-      // Get current user for reactor context
+      // Get current user for reactor context — fall back to system user ID for autonomous CDM
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        console.warn('[CDM] No authenticated user — skipping reactor cycle');
-        return { accepted: 0, sTierPromoted: 0 };
-      }
+      const userId = user?.id || 'cdm-autonomous-system';
+      // CDM is autonomous — does NOT require a logged-in user to discover
 
       // Generate fresh 2-12 node depth templates
       const templates = generateTemplateBatch({
@@ -240,7 +242,7 @@ class MeshAutoScheduler {
         exploratoryMode: true,
         scoringVersion: 'CDM-1.0',
         injectedTemplates: templates,
-      }, user.id);
+      }, userId);
 
       this.state.lastCdmReactor = new Date().toISOString();
       this.state.totalCyclesRun++;
