@@ -25,8 +25,8 @@ export function LiveStatsBar() {
           className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
           style={{ animationDelay: "0.15s", animationFillMode: "both" }}
         >
-          <span className="text-foreground/90 font-medium">40 primitives</span> coordinating across{' '}
-          <span className="text-foreground/90 font-medium">9 system domains</span> — persistent memory, governed routing, and self-improvement running continuously.
+        <span className="text-foreground/90 font-medium">40 primitives</span> coordinating across{' '}
+          <span className="text-foreground/90 font-medium">4 categories</span> — persistent memory, governed routing, and self-improvement running continuously.
         </p>
       </div>
     </section>
