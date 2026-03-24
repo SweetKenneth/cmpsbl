@@ -275,7 +275,7 @@ await cmpsbl.evolution.apply({
   {
     id: "integration",
     icon: Plug,
-    layer: "Admin",
+    layer: "Layers",
     title: "INTEGRATION Enterprise",
     description: "Enterprise adapters & LLM governance",
     color: "text-[hsl(var(--neon-cyan))]",
