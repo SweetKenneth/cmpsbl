@@ -1,0 +1,14 @@
+{
+  "name": "my-cmpsbl-project",
+  "tier": "Raw",
+  "cjpi": 0,
+  "modules": [
+    "SYSTEM"
+  ],
+  "exported": "2026-03-24",
+  "runtime": "cmpsbl-mini-runtime-engine",
+  "targets": [
+    "typescript"
+  ],
+  "version": "1.0.0"
+}
