@@ -330,16 +330,16 @@ export default function Architecture() {
           <div className="container mx-auto max-w-4xl px-4 py-16 text-center">
             <h2 className="text-2xl font-bold mb-4">Explore the Substrate</h2>
             <p className="text-muted-foreground mb-8">
-              Dive deeper into individual nodes, live infrastructure, and technical documentation.{" "}
-              See real-world <Link to="/use-cases" className="text-primary hover:underline font-medium">deployment examples</Link>{" "}
-              or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/architecture">
-                <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                  Full Architecture <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+              Dive deeper into individual primitives, live infrastructure, and technical documentation.{" "}
+               See real-world <Link to="/use-cases" className="text-primary hover:underline font-medium">deployment examples</Link>{" "}
+               or <Link to="/auth" className="text-primary hover:underline font-medium">start building for free</Link>.
+             </p>
+             <div className="flex flex-wrap gap-4 justify-center">
+               <Link to="/store">
+                 <Button className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+                   Explore Engines <ArrowRight className="w-4 h-4" />
+                 </Button>
+               </Link>
               <Link to="/documentation">
                 <Button variant="outline" className="hover:border-primary/30 transition-colors">Documentation</Button>
               </Link>
