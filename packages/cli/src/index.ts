@@ -326,6 +326,9 @@ export async function run(args: string[]): Promise<void> {
       // ── Guided ──
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
+      // ── Ecosystem ──
+      case 'deps':         cmdDeps(); break;
+      case 'publish-order': cmdPublishOrder(); break;
       case 'version':
       case '--version':
       case '-v':
