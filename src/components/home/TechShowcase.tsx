@@ -124,7 +124,7 @@ const context = await cmpsbl.brain.recall({
   {
     id: "decode",
     icon: MessageSquare,
-    layer: "Cognitive",
+    layer: "Agents",
     title: "DECODE Chat",
     description: "Epistemic conversation engine",
     color: "text-[hsl(var(--neon-magenta))]",
