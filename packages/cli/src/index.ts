@@ -792,7 +792,7 @@ async function cmdConfig(args: string[]) {
   if (args.length === 0) {
     const cfg = fs.existsSync(configPath)
       ? JSON.parse(fs.readFileSync(configPath, 'utf-8'))
-      : { endpoint: 'api.cmpsbl.com', domain: 'cli', auto_discover: true, theme: 'biohack' };
+      : { endpoint: 'substrate-api (live)', domain: 'cli', auto_discover: true, theme: 'biohack' };
 
     if (JSON_MODE) { jsonOut(cfg); return; }
     header('Configuration');
