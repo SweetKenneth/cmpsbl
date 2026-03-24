@@ -673,20 +673,38 @@ export class CMPSBL {
     const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
     if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
 
-    const data: InspectResult = {
-      node: node.id,
-      sector: node.sector,
-      role: node.role,
-      status: node.status,
-      health: node.health,
-      uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
-      resolverCount: Math.round(3 + Math.random() * 12),
-      intentsProcessed: Math.round(50 + Math.random() * 500),
-      avgLatencyMs: Math.round(2 + Math.random() * 8),
-      meshLinks: NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
-      lastPing: new Date().toISOString(),
-    };
-    return new SDKResponse(data, { method: 'inspect', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    try {
+      const res = await fetch(`${this.config.endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        body: JSON.stringify({ action: 'inspect', node: node.id }),
+      });
+      const body = await res.json().catch(() => ({}));
+      const durationMs = Date.now() - start;
+      const data: InspectResult = {
+        node: node.id,
+        sector: body.sector ?? node.sector,
+        role: body.role ?? node.role,
+        status: res.ok ? (body.status ?? node.status) : 'degraded',
+        health: body.health ?? node.health,
+        uptime: body.uptime ?? 0,
+        resolverCount: body.resolverCount ?? 0,
+        intentsProcessed: body.intentsProcessed ?? 0,
+        avgLatencyMs: body.avgLatencyMs ?? durationMs,
+        meshLinks: body.meshLinks ?? NODE_REGISTRY.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+        lastPing: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
+    } catch {
+      const durationMs = Date.now() - start;
+      const data: InspectResult = {
+        node: node.id, sector: node.sector, role: node.role,
+        status: 'offline', health: 0, uptime: 0,
+        resolverCount: 0, intentsProcessed: 0, avgLatencyMs: durationMs,
+        meshLinks: [], lastPing: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'inspect', durationMs, timestamp: new Date().toISOString() });
+    }
   }
 
   /**
