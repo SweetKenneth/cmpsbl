@@ -52,28 +52,28 @@ const faqItems = [
   },
   {
     question: "Can CMPSBL work with existing AI models?",
-    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS Organ automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
+    answer: "Yes. CMPSBL works with any AI model from any provider. The NEXUS Organ automatically routes to OpenAI, Google Gemini, Anthropic Claude, DeepSeek, Groq, or local models based on what works best for each task. It includes a 12-step free-tier fallback chain so your agents never hit a dead end. Bring your own API keys and your existing stack — CMPSBL handles the orchestration.",
   },
   {
     question: "What is the platform architecture?",
-    answer: "40 specialized primitives organized across 4 categories — Organs (core infrastructure like CORE, SYSTEM, NERVE, NEXUS, BRAIN, MEMORY), Layers (ambient overlays like DEFENSE, GOVERNANCE, INTENT), Engines (invoked processors like DREAM, CORTEX, ORACLE, FORGE), and Agents (autonomous actors like ENCODE, DECODE, VISION, LINGUA). All primitives are weighted and coordinated by the core runtime.",
+    answer: "40 specialized primitives organized into a symmetric 12·12·8·8 matrix across 4 categories — Organs (vital infrastructure: CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE), Layers (ambient overlays: DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW), Engines (invoked processors: DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE), and Agents (autonomous actors: ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER). All primitives are weighted and coordinated by the CORE Organ.",
   },
 ];
 
 const pillars = [
-  { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. The MEMORY Organ provides 4-tier storage (hot → warm → cold → legacy) for fast recall of recent context and long-term historical knowledge.", link: "/persistent-memory" },
+  { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. The MEMORY Organ provides 4-tier storage (hot → warm → cold → glacier) for fast recall of recent context and long-term historical knowledge.", link: "/persistent-memory" },
   { icon: Network, title: "Smart Model Routing", desc: "The NEXUS Organ picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/architecture" },
   { icon: Shield, title: "Built-in AI Security", desc: "The DEFENSE Layer protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/architecture" },
   { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the DREAM Engine consolidates what the system learned, discovers patterns, and generates new insights — all automatically.", link: "/architecture" },
-  { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Engine coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/architecture" },
-  { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in the right order, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/architecture" },
+  { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Agent coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/architecture" },
+  { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in a deterministic 12-stage sequence, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/architecture" },
 ];
 
 const categories = [
-  { label: "Organs", primitives: "CORE, SYSTEM, NERVE, RIPPLE, RELAY, IDENTITY, ACCESS, NEXUS, AUDIT, INTEGRATION, BRAIN, MEMORY", count: 12, color: "from-neon-blue/10 to-neon-blue/5" },
-  { label: "Layers", primitives: "DEFENSE, IMMUNITY, GOVERNANCE, INTENT, EVOLUTION, INCLUSIVE, CONSCIENCE, TREATY", count: 8, color: "from-neon-purple/10 to-neon-purple/5" },
-  { label: "Engines", primitives: "DREAM, CORTEX, ORACLE, FORGE, COMPASS, ATLAS, ECONOMY, SANDBOX, MEDIC, REFLEX", count: 10, color: "from-neon-amber/10 to-neon-amber/5" },
-  { label: "Agents", primitives: "ENCODE, DECODE, VISION, PHANTOM, LINGUA, ECHO, HARVEST, SOVEREIGN, ENGINEER, OBSERVER", count: 10, color: "from-neon-green/10 to-neon-green/5" },
+  { label: "Organs", primitives: "CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE", count: 12, color: "from-neon-blue/10 to-neon-blue/5" },
+  { label: "Layers", primitives: "DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW", count: 12, color: "from-neon-purple/10 to-neon-purple/5" },
+  { label: "Engines", primitives: "DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE", count: 8, color: "from-neon-amber/10 to-neon-amber/5" },
+  { label: "Agents", primitives: "ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER", count: 8, color: "from-neon-green/10 to-neon-green/5" },
 ];
 
 const comparisonRows = [
@@ -294,10 +294,10 @@ export default function AIOperatingSystem() {
             <motion.div {...fadeUp()} className="mb-8 sm:mb-12">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 flex items-center gap-2.5 tracking-tight">
                 <Activity className="w-6 h-6 text-primary shrink-0" />
-                40 Primitives · Agents · Engines · Layers · Organs
+                40 Primitives · 12 Organs · 12 Layers · 8 Engines · 8 Agents
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
-                The CMPSBL platform organizes 40 specialized primitives across four categories: agents, engines, layers, and organs. Each holds a weight in the system matrix (Σ = 1.000),
+                The CMPSBL platform organizes 40 specialized primitives into a symmetric 12·12·8·8 matrix across four categories. Each holds a weight in the system matrix (Σ = 1.000),
                 managed by the CORE Organ. Circuit breakers prevent cascading failures. Self-improvement cycles optimize autonomously.
               </p>
             </motion.div>
