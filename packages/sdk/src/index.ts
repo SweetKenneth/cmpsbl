@@ -376,11 +376,11 @@ export class Engine {
     });
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-      throw new EngineAPIError(err.error || `Request failed: ${res.status}`, res.status);
+      const errBody = await res.json().catch(() => ({ error: `HTTP ${res.status}` })) as Record<string, string>;
+      throw new EngineAPIError(errBody.error || `Request failed: ${res.status}`, res.status);
     }
 
-    return res.json();
+    return res.json() as Promise<EngineResult>;
   }
 
   /** Get a typed engine handle by slug */
