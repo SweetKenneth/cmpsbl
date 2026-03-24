@@ -119,10 +119,9 @@ const App = () => {
   const mobilePreviewSafeMode =
     (previewParams.previewSafe || (isPreviewEnv && isMobileDevice)) && !previewParams.previewFull;
 
-  // Defer substrate initialization on landing page to reduce critical request chain
-  const isLandingPage = typeof window !== 'undefined' && 
-    (window.location.pathname === '/' || window.location.pathname === '');
-  const substrateAutoInit = !isLandingPage;
+  // Always auto-init substrate — neural substrate and lifecycle must boot on all routes.
+  // Module polling is gated by debugMode internally, so landing page perf is preserved.
+  const substrateAutoInit = true;
 
   // Global safety net for unhandled promise rejections
   useEffect(() => {
