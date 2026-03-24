@@ -135,7 +135,7 @@ const KEY_PROPERTIES = [
   { title: "Weight Invariant", desc: "Every primitive carries a governance weight. The sum across all 40 primitives is exactly 1.000 — no single primitive can dominate decisions." },
   { title: "Clockless Coordination", desc: "Primitives share no global clock. Coordination occurs through event-driven signal propagation, weighted integrity scoring, and deterministic boot order." },
   { title: "Safety Switch Isolation", desc: "Every primitive has independent failure tracking with automatic safety switches. Degradation never cascades across categories." },
-  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION Engine proposes, SHADOW validates, GOVERNANCE Layer approves." },
+  { title: "Shadow-First Mutation", desc: "All self-modifications run through a shadow process before promotion. EVOLUTION Layer proposes, SHADOW Layer validates, GOVERNANCE Layer approves." },
   { title: "Tamper-Evident Audit", desc: "Every mutation is recorded in a hash-chained receipt ledger. The chain is verifiable at any point — no operation goes unlogged." },
   { title: "Graceful Degradation", desc: "When individual primitives fail, the system continues at reduced capability. The readiness index pre-assesses fitness before execution." },
 ];
