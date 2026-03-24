@@ -111,7 +111,7 @@ export function createMeshFirstContact(apiKey?: string): FirstContactConfig {
     package: '@cmpsbl/mesh',
     domain: 'mesh',
     apiKey,
-    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
   };
 }

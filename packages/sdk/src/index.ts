@@ -755,7 +755,7 @@ export class CMPSBL {
       package: '@cmpsbl/sdk',
       domain: 'sdk',
       apiKey: options.apiKey,
-      endpoint: options.endpoint ?? 'https://api.cmpsbl.com/v1/substrate',
+      endpoint: options.endpoint ?? 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
       autoDiscover: true,
       onDiscovery: (chain: MemoryChain) => {
         options.onDiscovery?.(chain);

@@ -148,7 +148,7 @@ export function createBridgeFirstContact(apiKey?: string): FirstContactConfig {
     package: '@cmpsbl/bridge',
     domain: 'bridge',
     apiKey,
-    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
   };
 }

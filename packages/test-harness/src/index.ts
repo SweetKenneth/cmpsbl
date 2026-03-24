@@ -273,7 +273,7 @@ export function createTestHarnessFirstContact(apiKey?: string): FirstContactConf
     package: '@cmpsbl/test-harness',
     domain: 'test-harness',
     apiKey,
-    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
   };
 }
