@@ -629,18 +629,15 @@ const res = await fetch(GATEWAY, {
                 <Badge variant="secondary" className="text-xs font-mono">@cmpsbl</Badge>
               </div>
               <p className="text-sm text-muted-foreground mb-4">
-                11 modular packages — install only what you need.
+                Official packages — install only what you need.
               </p>
               <div className="bg-muted rounded-lg p-3 font-mono text-sm mb-4 flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-primary shrink-0" />
-                <code>npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
+                <code>npm i @cmpsbl/sdk @cmpsbl/runtime @cmpsbl/cli</code>
               </div>
               <div className="grid sm:grid-cols-2 gap-2">
                 {[
-                  '@cmpsbl/types', '@cmpsbl/runtime', '@cmpsbl/failsafe',
-                  '@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/bridge',
-                  '@cmpsbl/sdk', '@cmpsbl/discovery', '@cmpsbl/cli',
-                  '@cmpsbl/react', '@cmpsbl/test-harness',
+                  '@cmpsbl/types', '@cmpsbl/runtime', '@cmpsbl/sdk', '@cmpsbl/cli',
                 ].map(pkg => (
                   <div key={pkg} className="flex items-center gap-2 p-2 rounded border border-border/50 text-xs">
                     <Package className="w-3 h-3 text-primary shrink-0" />
