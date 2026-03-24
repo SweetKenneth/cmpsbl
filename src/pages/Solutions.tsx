@@ -86,9 +86,9 @@ const solutions = [
   },
   {
     icon: Terminal,
-    name: "CodeLab",
+    name: "Developers Playground",
     tagline: "Interactive Development Sandbox",
-    description: "Run modules, remix templates, and test capabilities in real-time. The fastest way to prototype with CMPSBL.",
+    description: "Run primitives, remix templates, and test capabilities in real-time. The fastest way to prototype with CMPSBL.",
     features: ["Live code execution", "30 free templates", "Real-time preview", "API testing sandbox", "Export to production", "Free for all users"],
     metrics: ["FREE", "30 Templates", "Real-Time"],
     link: "/codelab",
