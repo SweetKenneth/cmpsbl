@@ -99,7 +99,7 @@ export default function Workspace() {
     <>
       <SEO
         title="Workspace — Your Personal Builder Hub | CMPSBL"
-        description="Your CMPSBL builder workspace: manage active Memory Packs, view vault inventory, track crystallization stats, access SDK keys, and configure capability slots. Free tier included."
+        description="Your CMPSBL builder workspace: manage active Memory Packs, view vault inventory, track crystallization stats, access SDK keys, and configure capability slots."
         canonical="https://cmpsbl.com/workspace"
       />
       <PublicNav />
