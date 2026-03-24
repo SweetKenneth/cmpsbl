@@ -906,36 +906,34 @@ function ExtensionsSection() {
         />
       </div>
 
-      <CodeBlock title="Register and manage extensions">{`// Register a pre-query brain hook
-await substrate.extensions.register({
-  name: 'pii-filter',
-  extension_type: 'brain_hook',
-  hook_point: 'pre_query',
-  endpoint_url: 'https://your-api.com/hooks/pii-filter',
-  timeout_ms: 5000,           // max execution time
-  retry_count: 1,             // retries on failure
-  fail_open: true             // continue if hook fails
-});
+      <CodeBlock title="Register extensions via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
 
-// Register a post-route nexus hook
-await substrate.extensions.register({
-  name: 'response-logger',
-  extension_type: 'nexus_hook',
-  hook_point: 'post_route',
-  endpoint_url: 'https://your-api.com/hooks/log-response',
-  headers: {
-    'Authorization': 'Bearer hook-secret'
-  }
+// Register a pre-query brain hook
+await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'INTEGRATION',
+    action: 'register_hook',
+    payload: {
+      name: 'pii-filter',
+      extension_type: 'brain_hook',
+      hook_point: 'pre_query',
+      endpoint_url: 'https://your-api.com/hooks/pii-filter',
+      timeout_ms: 5000,
+      fail_open: true
+    }
+  }),
 });
 
 // List registered extensions
-const hooks = await substrate.extensions.list();
-
-// Disable an extension without removing it
-await substrate.extensions.disable('pii-filter');
-
-// Remove an extension
-await substrate.extensions.remove('pii-filter');`}</CodeBlock>
+const res = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({ module: 'INTEGRATION', action: 'list_hooks' }),
+}).then(r => r.json());`}</CodeBlock>
 
       <Callout type="warning">
         Extensions are sandboxed with a 5-second default timeout. If a hook exceeds its timeout,
