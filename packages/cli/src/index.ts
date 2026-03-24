@@ -181,7 +181,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '1.5.0' as const;
+const CLI_VERSION = '1.6.0' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -245,7 +245,7 @@ const NODES = [
   { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
   { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
   { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'SHADOW', sector: 'SHL', status: 'online', health: 97, role: 'stealth-testing' },
+  { id: 'OBSERVER', sector: 'SHL', status: 'online', health: 97, role: 'monitoring' },
   { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
   { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
   { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
@@ -441,10 +441,10 @@ function printHelp() {
 
   Environment:
     CMPSBL_API_KEY          API key (overrides ~/.cmpsbl/credentials)
-    CMPSBL_ENDPOINT         Custom endpoint (default: api.cmpsbl.com)
+    CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
-  ${c.muted('45 commands · 40 primitives · cmpsbl.com')}
+  ${c.muted('46 commands · 40 primitives · cmpsbl.com')}
 `);
 }
 
@@ -792,7 +792,7 @@ async function cmdConfig(args: string[]) {
   if (args.length === 0) {
     const cfg = fs.existsSync(configPath)
       ? JSON.parse(fs.readFileSync(configPath, 'utf-8'))
-      : { endpoint: 'api.cmpsbl.com', domain: 'cli', auto_discover: true, theme: 'biohack' };
+      : { endpoint: 'substrate-api (live)', domain: 'cli', auto_discover: true, theme: 'biohack' };
 
     if (JSON_MODE) { jsonOut(cfg); return; }
     header('Configuration');
@@ -1009,28 +1009,30 @@ function scaffoldFirstDream(heuristic: { pattern: string; confidence: number; in
  * Usage: npx ts-node dream.ts
  */
 
-import { createEngineClient } from '@cmpsbl/sdk';
+import { CMPSBL, Engine } from '@cmpsbl/sdk';
 
 async function main() {
   // Connect to the substrate (uses ~/.cmpsbl/credentials or CMPSBL_API_KEY)
-  const client = createEngineClient({
-    engineKey: process.env.CMPSBL_API_KEY,
+  const cmpsbl = new CMPSBL({
+    apiKey: process.env.CMPSBL_API_KEY,
   });
 
+  await cmpsbl.init();
   console.log('◈ Initiating dream cycle...');
 
-  // Trigger a DREAM Engine cycle via the substrate gateway
-  const dream = await client.request('dream.cycle', {});
+  // Discover a new pattern
+  const discovery = await cmpsbl.discover({ input: 'dream cycle synthesis' });
 
-  console.log('◈ Dream complete.');
-  console.log(\`  Pattern:    \${dream.heuristic}\`);
-  console.log(\`  Confidence: \${(dream.confidence * 100).toFixed(0)}%\`);
+  if (discovery.data.detected && discovery.data.memory) {
+    console.log('◈ Dream complete.');
+    console.log(\`  Pattern:    \${discovery.data.memory.pattern}\`);
+    console.log(\`  Confidence: \${(discovery.data.memory.confidence * 100).toFixed(0)}%\`);
+  }
 
   // Check the Memory Stream for accumulated discoveries
-  const stream = await client.request('memory.stream', {});
-  console.log(\`\\n◈ Memory Stream: \${stream.chains?.length ?? 0} chain(s)\\n\`);
+  console.log(\`\\n◈ Memory Stream: \${cmpsbl.stream.length} chain(s)\\n\`);
 
-  for (const chain of stream.chains ?? []) {
+  for (const chain of cmpsbl.stream) {
     console.log(\`  ⬢ \${chain.pattern} [\${chain.adoption}]\`);
   }
 }
@@ -1573,15 +1575,17 @@ function cmdChangelog() {
     jsonOut({
       version: CLI_VERSION,
       changes: [
+        'Live API gateway — all commands now hit the production substrate-api',
+        'X-Engine-Key authentication across all API calls',
+        'Engine routing via substrate-api/engine endpoint',
+        'Resilient init — graceful fallback when API is unreachable',
+        'Fixed duplicate SHADOW node in registry (now OBSERVER)',
         'Interactive REPL shell with tab completion',
         'Animated spinners for all async operations',
         '--json flag for CI/CD integration',
         'Benchmark command for latency testing',
-        'Diff command for manifest comparison',
         'First-run onboarding wizard',
         'Contextual next-step suggestions after every command',
-        'Actionable error recovery messages',
-        '--no-color flag for accessibility',
         'Doctor diagnostic suite expanded',
       ],
     });
@@ -1590,18 +1594,19 @@ function cmdChangelog() {
 
   header(`Changelog — v${CLI_VERSION}`);
   const items = [
+    '● Live API gateway — all commands hit the production substrate-api',
+    '● X-Engine-Key authentication across all API calls',
+    '● Engine routing via substrate-api/engine endpoint',
+    '● Resilient init — graceful fallback when API is unreachable',
+    '● Fixed duplicate SHADOW node in registry (OBSERVER restored)',
     '● Interactive REPL shell (`cmpsbl shell`) with tab completion',
     '● Animated spinners replace static pauses',
     '● `--json` flag outputs structured JSON for CI/CD',
     '● `--no-color` flag for accessibility',
     '● `cmpsbl benchmark` — latency test across all nodes',
     '● `cmpsbl diff` — compare two manifest files',
-    '● `cmpsbl changelog` — see what\'s new',
-    '● First-run onboarding wizard for new users',
     '● Smart next-step suggestions after every command',
-    '● Actionable error recovery with fix instructions',
     '● Formatted tables for nodes, scores, and inspections',
-    '● Box-framed headers and discovery alerts',
   ];
 
   for (const item of items) say(item);
@@ -1694,6 +1699,7 @@ const PRIMITIVE_CATALOG: Record<string, { category: string; role: string; descri
   CORTEX:      { category: 'Agent', role: 'Orchestration', description: 'DAG execution engine, deterministic pipeline state machine, resource allocation across 40 primitives', commands: ['route', 'topology'] },
   ORACLE:      { category: 'Agent', role: 'Prediction', description: 'Bayesian prediction networks, Monte Carlo scenario simulator, prescriptive recommendations', commands: ['predict'] },
   ENGINEER:    { category: 'Agent', role: 'Infrastructure', description: 'Infrastructure automation, deployment orchestration, environment provisioning', commands: ['doctor', 'benchmark'] },
+  OBSERVER:    { category: 'Agent', role: 'Monitoring', description: 'System observability agent — real-time signal monitoring, anomaly alerting, activity replay', commands: ['watch', 'logs'] },
 };
 
 function cmdExplain(args: string[]) {

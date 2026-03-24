@@ -949,7 +949,7 @@ export class CMPSBL {
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'ping', node: node.id }),
       });
       const body = await res.json().catch(() => ({}));
@@ -975,7 +975,7 @@ export class CMPSBL {
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'inspect', node: node.id }),
       });
       const body = await res.json().catch(() => ({}));
@@ -1033,7 +1033,7 @@ export class CMPSBL {
     try {
       const res = await fetch(`${this.config.endpoint}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
         body: JSON.stringify({ action: 'logs', node: options?.node?.toUpperCase(), count }),
       });
       const body = await res.json().catch(() => ({ entries: [] }));
@@ -1068,7 +1068,7 @@ export class CMPSBL {
       try {
         await fetch(`${this.config.endpoint}`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+          headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { 'X-Engine-Key': this.config.apiKey } : {}) },
           body: JSON.stringify({ action: 'ping', node: node.id }),
         });
         entries.push({ node: node.id, sector: node.sector, latencyMs: Date.now() - pingStart, rank: 0 });
