@@ -151,7 +151,7 @@ const STORE_ENGINES: StoreItem[] = [
   {
     id: "engine-nexus",
     kind: "engine",
-    name: "NEXUS Organ",
+    name: "NEXUS",
     subtitle: "Multi-Model AI Router",
     bio: "Routes every AI call to the optimal model in real time. Cost-aware, latency-based, quality-scored — best answer at the best price, always.",
     description: "NEXUS provides real-time model selection, cost-aware provider optimization, latency-based failover, response quality scoring, token budget management, and multi-provider load balancing.",
