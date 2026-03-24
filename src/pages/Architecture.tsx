@@ -69,7 +69,7 @@ const SECTORS: SectorDef[] = [
       { name: "RIPPLE", icon: Radio, desc: "Signal & event bus — inter-sector communication, cascade detection." },
       { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
       { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
-      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-node message routing." },
+      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-primitive message routing." },
       { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
       { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-primitive coordination." },
     ],
