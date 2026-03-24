@@ -87,7 +87,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   "/api-access": [
     { href: "/docs", title: "Documentation", description: "Full reference for the substrate APIs" },
     { href: "/academy", title: "Academy", description: "Hands-on tutorials and integration patterns" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live in the browser" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live in the browser" },
     { href: "/architecture", title: "Architecture", description: "Understand the topology your API calls traverse" },
   ],
   "/blog": [
