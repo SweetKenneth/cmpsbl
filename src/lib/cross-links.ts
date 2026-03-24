@@ -134,7 +134,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/developers": [
     { href: "/docs", title: "Documentation", description: "Full API reference and guides" },
-    { href: "/codelab", title: "CodeLab", description: "Test and run code live in the browser" },
+    { href: "/codelab", title: "Developers Playground", description: "Test and run code live in the browser" },
     { href: "/academy", title: "Academy", description: "Tutorials, patterns, and courses" },
     { href: "/showcase", title: "Showcase", description: "See what developers built" },
   ],

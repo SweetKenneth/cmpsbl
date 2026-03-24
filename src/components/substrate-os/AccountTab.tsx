@@ -68,7 +68,7 @@ interface RecentActivity {
 const QUICK_LINKS = [
   { label: 'Memory Foundry', href: '/foundry', icon: Flame, description: 'Discover & crystallize software artifacts', color: 'from-neon-amber/15 to-neon-amber/10 border-neon-amber/20' },
   { label: 'Developer Academy', href: '/academy', icon: BookOpen, description: 'Master the substrate with guided learning', color: 'from-neon-blue/15 to-neon-cyan/10 border-neon-blue/20' },
-  { label: 'CodeLab', href: '/codelab', icon: Code2, description: 'Interactive coding playground', color: 'from-neon-green/15 to-neon-green/10 border-neon-green/20' },
+  { label: 'Developers Playground', href: '/codelab', icon: Code2, description: 'Interactive coding playground', color: 'from-neon-green/15 to-neon-green/10 border-neon-green/20' },
   { label: 'SDK Playground', href: '/sdk-playground', icon: Terminal, description: 'Test live API methods interactively', color: 'from-neon-purple/15 to-neon-purple/10 border-neon-purple/20' },
   { label: 'Documentation', href: '/documentation', icon: FileText, description: 'Full API & architecture reference', color: 'from-neon-purple/15 to-neon-purple/10 border-neon-purple/20' },
   { label: 'Substrate Overview', href: '/substrate', icon: Map, description: 'System architecture & node map', color: 'from-neon-cyan/15 to-neon-cyan/10 border-neon-cyan/20' },
