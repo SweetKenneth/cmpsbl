@@ -404,7 +404,7 @@ await cmpsbl.relay.notify({
   {
     id: "audit",
     icon: Layers,
-    layer: "Infrastructure",
+    layer: "Agents",
     title: "AUDIT Ledger",
     description: "Immutable compliance & audit trail",
     color: "text-[hsl(var(--neon-amber))]",
