@@ -231,9 +231,6 @@ export interface PrimitiveHealth {
 
 /** @deprecated Use PrimitiveHealth instead */
 export type NodeHealth = PrimitiveHealth;
-  resolverCount: number;
-  lastHeartbeat: string;
-}
 
 // ═══════════════════════════════════════════════════════════════
 // First Contact (re-exported from first-contact.ts)
