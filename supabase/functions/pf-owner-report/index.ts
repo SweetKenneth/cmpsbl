@@ -114,6 +114,7 @@ serve(async (req: Request) => {
     const auditScanErrors = extract(auditScanErrorsRes);
     const enhancementEvents = extract(enhancementEventsRes);
     const moduleHealthEvents = extract(moduleHealthEventsRes);
+    const aiSuccessCount3h = aiSuccessCountRes3h.status === "fulfilled" ? (aiSuccessCountRes3h.value.count ?? 0) : 0;
 
     // User accounts
     const totalUsersResult = totalUsersRes.status === "fulfilled" ? totalUsersRes.value : null;
