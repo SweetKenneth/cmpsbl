@@ -1,6 +1,6 @@
 /**
  * Interactive Memory Playground
- * Real backend demo for testing the memory SDK without signup
+ * Real backend demo for testing the Substrate API without signup
  */
 
 import { useState } from 'react';

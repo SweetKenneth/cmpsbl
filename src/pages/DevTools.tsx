@@ -370,7 +370,7 @@ export default function DevTools() {
                 <CardContent>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[
-                      { title: "Persistent Memory Guide", href: "/docs/persistent-memory", desc: "Complete memory SDK docs", badge: "Popular" },
+                      { title: "Persistent Memory Guide", href: "/docs/persistent-memory", desc: "Complete Substrate API docs", badge: "Popular" },
                       { title: "Getting Started", href: "/documentation", desc: "Setup and configuration" },
                       { title: "API Reference", href: "/documentation#api", desc: "Full SDK API docs" },
                       { title: "Explore", href: "/explore", desc: "Browse capabilities and templates" },

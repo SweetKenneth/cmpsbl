@@ -24,8 +24,8 @@ interface Template {
 
 const templates: Template[] = [
   {
-    id: 'nextjs-memory',
-    name: 'Next.js + Memory SDK',
+    id: 'nextjs-substrate',
+    name: 'Next.js + Substrate API',
     description: 'Full-stack template with persistent memory',
     framework: 'Next.js 14',
     color: 'bg-foreground/10 text-foreground border-foreground/20',
