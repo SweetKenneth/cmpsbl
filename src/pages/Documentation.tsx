@@ -429,7 +429,7 @@ function BrainSection() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Module</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-3">BRAIN Organ</h2>
         <p className="text-muted-foreground leading-relaxed max-w-3xl">
           The cognitive core — a four-tier memory system with automatic demotion, compression,
           and background consolidation. Protected memory types are locked at 1.0 value with zero decay.
