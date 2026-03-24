@@ -634,15 +634,34 @@ export class CMPSBL {
     const node = NODE_REGISTRY.find(n => n.id === nodeId.toUpperCase());
     if (!node) throw new Error(`Node "${nodeId}" not found in registry`);
 
-    await new Promise(r => setTimeout(r, 50 + Math.random() * 100));
-    const data: PingResult = {
-      node: node.id,
-      latencyMs: Math.round(2 + Math.random() * 12),
-      status: node.status,
-      health: node.health,
-      timestamp: new Date().toISOString(),
-    };
-    return new SDKResponse(data, { method: 'ping', durationMs: Date.now() - start, timestamp: new Date().toISOString() });
+    try {
+      const res = await fetch(`${this.config.endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(this.config.apiKey ? { Authorization: `Bearer ${this.config.apiKey}` } : {}) },
+        body: JSON.stringify({ action: 'ping', node: node.id }),
+      });
+      const body = await res.json().catch(() => ({}));
+      const latencyMs = Date.now() - start;
+      const data: PingResult = {
+        node: node.id,
+        latencyMs,
+        status: res.ok ? 'online' : 'degraded',
+        health: body.health ?? node.health,
+        timestamp: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
+    } catch {
+      // Network failure — report real failure, not random numbers
+      const latencyMs = Date.now() - start;
+      const data: PingResult = {
+        node: node.id,
+        latencyMs,
+        status: 'offline',
+        health: 0,
+        timestamp: new Date().toISOString(),
+      };
+      return new SDKResponse(data, { method: 'ping', durationMs: latencyMs, timestamp: new Date().toISOString() });
+    }
   }
 
   /**
