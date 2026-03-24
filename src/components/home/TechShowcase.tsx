@@ -168,9 +168,9 @@ console.log(response.provider); // "claude-3"`,
   {
     id: "defense",
     icon: Shield,
-    layer: "Operational",
+    layer: "Layers",
     title: "DEFENSE Security",
-    description: "Threat detection & governance",
+    description: "Threat detection & behavioral analysis",
     color: "text-[hsl(var(--neon-magenta))]",
     gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--neon-magenta)/0.7)]",
     code: `// Check security posture
