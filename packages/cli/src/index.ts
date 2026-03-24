@@ -115,7 +115,7 @@ const NODES = [
   { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
   { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
   { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'OBSERVER', sector: 'SHL', status: 'online', health: 97, role: 'monitoring' },
+  { id: 'SHADOW', sector: 'SHL', status: 'online', health: 97, role: 'stealth-testing' },
   { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
   { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
   { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
