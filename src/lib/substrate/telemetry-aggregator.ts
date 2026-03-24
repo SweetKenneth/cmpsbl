@@ -246,11 +246,14 @@ export async function aggregateTelemetry(): Promise<TelemetrySnapshot> {
 
   const immunePenalty = immuneData.escalations > 5 ? 10 : immuneData.escalations > 0 ? 5 : 0;
 
+  // FIX: When no immune runs exist, treat as healthy (1.0) not broken (0.0)
+  const effectiveRepairRate = immuneData.totalRuns === 0 ? 1 : immuneData.honestRepairRate;
+
   const healthScore = Math.min(100, Math.max(0, Math.round(
     (aiData.successRate * 35) +
     (brainData.successRate * 25) +
     ((accessData.totalRequests > 0 ? 1 : 0.5) * 20) +
-    (immuneData.honestRepairRate * 20) -
+    (effectiveRepairRate * 20) -
     immunePenalty
   )));
 
