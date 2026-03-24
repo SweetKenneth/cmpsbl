@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/react",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "CMPSBL® React Hooks — useIntent, useMesh, useRuntime for React apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
