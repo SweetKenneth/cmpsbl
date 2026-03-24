@@ -76,9 +76,9 @@ export default function Workspace() {
     } else if (cmd === 'whoami') {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `Identity: ${user?.email || 'anonymous'}\nTier: ${TIER_LABELS[userTier].label} (${TIER_LABELS[userTier].price})\nCommands: ${availableCommands.length} available` }]);
     } else if (cmd === 'status') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Platform: ONLINE\nModules: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: `CMPSBL Substrate: ONLINE\nPrimitives: 40/40 active\nHealth: 97.2%\nYour tier: ${TIER_LABELS[userTier].label}` }]);
     } else if (cmd === 'modules') {
-      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 modules across 12 groups:\nKernel: CORE, SYSTEM\nCognition: BRAIN, MEMORY, DREAM\nOperations: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION\nEvolution: EVOLUTION, SHADOW, PHANTOM\nSafety: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE\nManufacturing: FORGE, FOUNDRY, PERCEPTION, REFLEX\nFields: IMMUNITY, INTENT\nGovernance: GOVERNANCE\nSecurity: DEFENSE, ENGINEER, ENCODE' }]);
+      setTerminalHistory(prev => [...prev, { input: terminalInput, output: '40 primitives across the 12·12·8·8 matrix:\nKernel: CORE, SYSTEM\nCognition: BRAIN, MEMORY, DREAM\nOperations: RIPPLE, ACCESS, DEFENSE, NERVE\nExecution: DECODE, NEXUS, VISION, CORTEX, INCLUSIVE, INTEGRATION\nEvolution: EVOLUTION, SHADOW, PHANTOM\nSafety: SOVEREIGN, CONSCIENCE, SENTINEL, ORACLE\nManufacturing: FORGE, FOUNDRY, PERCEPTION, REFLEX\nFields: IMMUNITY, INTENT\nGovernance: GOVERNANCE\nSecurity: DEFENSE, ENGINEER, ENCODE' }]);
     } else if (matched) {
       setTerminalHistory(prev => [...prev, { input: terminalInput, output: `[${matched.category.toUpperCase()}] ${matched.description}\n→ Executing ${matched.command}...\n✓ Complete`, tier: matched.tier }]);
     } else {
