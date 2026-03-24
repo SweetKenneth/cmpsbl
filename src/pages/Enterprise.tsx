@@ -8,7 +8,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
-import { AuthorityLinkBlock } from "@/components/seo/AuthorityLinkBlock";
+
 // SEO handled via <SEO> component
 import { ArrowRight, Building2, Shield, Layers, Zap, Globe, Lock, Brain, Server, Users, Mail, CheckCircle, Activity, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
