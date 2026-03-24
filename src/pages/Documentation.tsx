@@ -1060,32 +1060,40 @@ function IntegrationsSection() {
         />
       </div>
 
-      <CodeBlock title="Connect and use integrations">{`// Connect Stripe
-await substrate.integrations.connect({
-  name: 'My Stripe',
-  integration_type: 'stripe',
-  credentials: { api_key: 'sk_live_...' },
-  webhook_secret: 'whsec_...'
+      <CodeBlock title="Connect and use integrations via REST API">{`const GATEWAY = 'https://api.cmpsbl.com/v1/substrate';
+const headers = {
+  'Authorization': 'Bearer YOUR_API_KEY',
+  'Content-Type': 'application/json',
+};
+
+// Connect Stripe
+await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'INTEGRATION',
+    action: 'connect',
+    payload: {
+      name: 'My Stripe',
+      integration_type: 'stripe',
+      credentials: { api_key: 'sk_live_...' },
+      webhook_secret: 'whsec_...'
+    }
+  }),
 });
 
 // Invoke an integration action
-const customer = await substrate.integrations.call(
-  'integration-id',
-  'customers.create',
-  { email: 'user@example.com', name: 'Jane Doe' }
-);
-
-// Register a webhook listener
-await substrate.integrations.webhook({
-  integration_id: 'integration-id',
-  events: ['invoice.paid', 'subscription.canceled'],
-  endpoint_url: 'https://your-api.com/webhooks/stripe',
-  hmac_secret: 'your-verification-secret'
-});
-
-// List all connected integrations
-const connections = await substrate.integrations.list();
-// → [{ id: "...", type: "stripe", status: "active", last_used: "..." }]`}</CodeBlock>
+const customer = await fetch(GATEWAY, {
+  method: 'POST', headers,
+  body: JSON.stringify({
+    module: 'INTEGRATION',
+    action: 'call',
+    payload: {
+      integration_id: 'integration-id',
+      method: 'customers.create',
+      data: { email: 'user@example.com', name: 'Jane Doe' }
+    }
+  }),
+}).then(r => r.json());`}</CodeBlock>
 
       <Callout type="info">
         All integration credentials are encrypted at rest. API calls through integrations are logged to the
