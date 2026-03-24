@@ -30,150 +30,106 @@ const fadeUp = {
   transition: { duration: 0.5 },
 };
 
-/* ─── Full 40-primitive topology, grouped by boot zones ─── */
+/* ─── Full 40-primitive topology, grouped by the 4 canonical categories ─── */
 
-interface NodeDef {
+interface PrimitiveDef {
   name: string;
   icon: React.ElementType;
   desc: string;
 }
 
-interface SectorDef {
+interface CategoryDef {
   label: string;
   tag: string;
-  nodes: NodeDef[];
+  color: string;
+  primitives: PrimitiveDef[];
 }
 
-const SECTORS: SectorDef[] = [
+const CATEGORIES: CategoryDef[] = [
   {
-    label: "Kernel",
-    tag: "SPINE",
-    nodes: [
-      { name: "CORE", icon: Cpu, desc: "Boot authority — initializes all sectors, owns the weighted primitive registry (Σ = 1.000)." },
+    label: "Organs",
+    tag: "Infrastructure",
+    color: "border-neon-amber/30 bg-neon-amber/5",
+    primitives: [
+      { name: "CORE", icon: Cpu, desc: "Kernel boot authority — initializes all primitives, owns the weighted registry (Σ = 1.000)." },
       { name: "SYSTEM", icon: Settings, desc: "Lifecycle management, configuration state, diagnostics aggregation, and self-repair loop." },
-    ],
-  },
-  {
-    label: "Cognitive Core Reality",
-    tag: "CCR",
-    nodes: [
-      { name: "BRAIN", icon: Brain, desc: "Reasoning engine — reflection cycles, pattern recognition, 384-dim hash-embed learning." },
-      { name: "MEMORY", icon: Brain, desc: "Tiered persistent storage — hot/warm/cold recall with SM-2 spaced repetition." },
-      { name: "DREAM", icon: Moon, desc: "Synthesis zone — creative combination, heuristic generation, SimNap offline cycles." },
-    ],
-  },
-  {
-    label: "Operational Compliance Grid",
-    tag: "OCG",
-    nodes: [
-      { name: "RIPPLE", icon: Radio, desc: "Signal & event bus — inter-sector communication, cascade detection." },
-      { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
-      { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
-      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-primitive message routing." },
-      { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
+      { name: "BRAIN", icon: Brain, desc: "Reasoning organ — reflection cycles, pattern recognition, 384-dim hash-embed learning." },
+      { name: "MEMORY", icon: Brain, desc: "Tiered persistent storage — hot/warm/cold recall with vector retrieval and SM-2 spaced repetition." },
       { name: "NERVE", icon: Activity, desc: "Operational signaling — 4-gate consensus repair, inter-primitive coordination." },
-    ],
-  },
-  {
-    label: "Execution",
-    tag: "EXE",
-    nodes: [
-      { name: "DECODE", icon: Brain, desc: "Epistemic interpreter — prompt parsing, intent extraction, 25-feature hardening." },
-      { name: "ENCODE", icon: Code2, desc: "Code generation engine — 7-stage execution chain, output formatting." },
-      { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
-      { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
+      { name: "RIPPLE", icon: Radio, desc: "Signal & event bus — inter-primitive communication, cascade detection." },
+      { name: "RELAY", icon: Send, desc: "Webhook dispatch, cross-primitive message routing." },
+      { name: "IDENTITY", icon: Fingerprint, desc: "Session management, role resolution, entity binding." },
+      { name: "ACCESS", icon: Key, desc: "API entitlements, rate limiting, billing integration." },
       { name: "NEXUS", icon: Zap, desc: "AI provider routing gateway — model selection, fallback chains, cost tracking." },
-      { name: "ECONOMY", icon: Coins, desc: "Value & cost tracking — ROI calculation, usage metering." },
-      { name: "SANDBOX", icon: FlaskConical, desc: "Isolated execution environment — safe experimentation, staged deployments." },
-      { name: "INCLUSIVE", icon: Accessibility, desc: "Accessibility engine — WCAG scanning, compliance reporting." },
-      { name: "MEDIC", icon: Stethoscope, desc: "Autonomous diagnostics — self-repair engine, real-state probes." },
+      { name: "AUDIT", icon: FileCheck, desc: "Immutable receipt chain — tamper-evident logging, chain-of-custody." },
       { name: "INTEGRATION", icon: Plug, desc: "Dependency resolver — cross-surface binding, boots last in sequence." },
     ],
   },
   {
-    label: "Expansion Sovereignty Zone",
-    tag: "ESZ",
-    nodes: [
-      { name: "SOVEREIGN", icon: Globe, desc: "Data sovereignty — jurisdictional compliance, consent management." },
-      { name: "ORACLE", icon: Compass, desc: "Predictive modeling — Bayesian networks, 10K Monte Carlo iterations." },
+    label: "Layers",
+    tag: "Ambient Overlays",
+    color: "border-neon-cyan/30 bg-neon-cyan/5",
+    primitives: [
+      { name: "DEFENSE", icon: Shield, desc: "Terminal boundary enforcement — outermost containment shell, threat filtering." },
+      { name: "IMMUNITY", icon: HeartPulse, desc: "Adaptive resilience — anomaly signatures, 3-sigma drift baselines, cascade detection." },
+      { name: "GOVERNANCE", icon: Scale, desc: "Policy enforcement overlay — action legitimacy supervision, veto authority." },
+      { name: "INTENT", icon: Target, desc: "Purpose alignment — DAG-based action planning, goal lifecycle management." },
+      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate process, fitness scoring, shadow A/B testing." },
+      { name: "INCLUSIVE", icon: Accessibility, desc: "Accessibility layer — WCAG scanning, compliance reporting." },
       { name: "CONSCIENCE", icon: Scale, desc: "Ethical assessment — 5-type bias detection, decision boundaries." },
       { name: "TREATY", icon: Gavel, desc: "Contract negotiation & SLA enforcement." },
     ],
   },
   {
-    label: "Expansion Perception Zone",
-    tag: "EPZ",
-    nodes: [
+    label: "Engines",
+    tag: "Invoked Processors",
+    color: "border-neon-green/30 bg-neon-green/5",
+    primitives: [
+      { name: "DREAM", icon: Moon, desc: "Synthesis engine — creative combination, heuristic generation, SimNap offline cycles." },
+      { name: "CORTEX", icon: Wand2, desc: "Autonomous orchestrator — multi-surface coordination, task routing." },
+      { name: "ORACLE", icon: Compass, desc: "Predictive modeling — Bayesian networks, 10K Monte Carlo iterations." },
+      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing engine." },
       { name: "COMPASS", icon: Compass, desc: "Geospatial analysis & location-aware processing." },
-      { name: "ECHO", icon: Copy, desc: "Digital twin simulation & scenario replay." },
+      { name: "ATLAS", icon: Map, desc: "System map & capability registry — the global view of what exists." },
+      { name: "ECONOMY", icon: Coins, desc: "Value & cost tracking — ROI calculation, usage metering." },
+      { name: "SANDBOX", icon: FlaskConical, desc: "Isolated execution environment — safe experimentation, staged deployments." },
+      { name: "MEDIC", icon: Stethoscope, desc: "Autonomous diagnostics — self-repair engine, real-state probes." },
       { name: "REFLEX", icon: Zap, desc: "Edge computing orchestration & low-latency response." },
     ],
   },
   {
-    label: "Expansion Manufacturing Zone",
-    tag: "EMZ",
-    nodes: [
-      { name: "FORGE", icon: Pickaxe, desc: "Artifact synthesis & manufacturing processes." },
-      { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing." },
-      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL processes." },
-    ],
-  },
-  {
-    label: "Covert Sovereignty Zone",
-    tag: "CSZ",
-    nodes: [
-      { name: "EVOLUTION", icon: Dna, desc: "Mutation lifecycle — SEBA 7-gate process, fitness scoring, shadow A/B." },
-      { name: "SHADOW", icon: Shield, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
+    label: "Agents",
+    tag: "Autonomous Actors",
+    color: "border-neon-purple/30 bg-neon-purple/5",
+    primitives: [
+      { name: "ENCODE", icon: Code2, desc: "Code generation agent — 7-stage execution chain, output formatting." },
+      { name: "DECODE", icon: Brain, desc: "Epistemic interpreter — prompt parsing, intent extraction, 25-feature hardening." },
+      { name: "VISION", icon: Eye, desc: "Observability & telemetry — health aggregation, metric visualization." },
       { name: "PHANTOM", icon: Ghost, desc: "Privacy protection — 3-hop proxy anonymization." },
-    ],
-  },
-  {
-    label: "Fields",
-    tag: "FIELD",
-    nodes: [
-      { name: "IMMUNITY", icon: HeartPulse, desc: "Adaptive resilience — anomaly signatures, 3-sigma drift baselines, cascade detection." },
-      { name: "INTENT", icon: Target, desc: "Purpose alignment — DAG-based action planning, goal lifecycle management." },
-    ],
-  },
-  {
-    label: "Plane",
-    tag: "PLANE",
-    nodes: [
-      { name: "GOVERNANCE", icon: Scale, desc: "Policy enforcement overlay — action legitimacy supervision, veto authority." },
+      { name: "LINGUA", icon: Languages, desc: "Translation & multi-language processing." },
+      { name: "ECHO", icon: Copy, desc: "Digital twin simulation & scenario replay." },
+      { name: "HARVEST", icon: Network, desc: "Data acquisition — SHA-256 bloom-filter deduplication, ETL processes." },
+      { name: "SOVEREIGN", icon: Globe, desc: "Data sovereignty — jurisdictional compliance, consent management." },
       { name: "ENGINEER", icon: Wrench, desc: "Infrastructure automation — P95 latency tracking, deployment orchestration." },
-    ],
-  },
-  {
-    label: "Atlas",
-    tag: "ATLAS",
-    nodes: [
-      { name: "ATLAS", icon: Map, desc: "System map & capability registry — 80-capability index, the global view of what exists." },
-    ],
-  },
-  {
-    label: "Shell",
-    tag: "SHELL",
-    nodes: [
-      { name: "DEFENSE", icon: Shield, desc: "Terminal boundary enforcement — outermost containment shell, threat filtering." },
+      { name: "OBSERVER", icon: Eye, desc: "Divergence testing — TSAC verification, shadow mesh operations." },
     ],
   },
 ];
 
-const BOOT_SEQUENCE = `CORE (Kernel Boot Authority)
-  → SYSTEM (Spine — Lifecycle & Config)
-  → CCR: BRAIN + MEMORY + DREAM
-  → OCG: RIPPLE + ACCESS + IDENTITY + RELAY + AUDIT + NERVE
-  → Execution: DECODE, ENCODE, VISION, CORTEX, NEXUS,
-               ECONOMY, SANDBOX, INCLUSIVE, MEDIC
-  → INTEGRATION (boots last — dependency resolver)
-  → ESZ: SOVEREIGN + ORACLE + CONSCIENCE + TREATY
-  → EPZ: COMPASS + ECHO + REFLEX
-  → EMZ: FORGE + LINGUA + HARVEST
-  → CSZ: EVOLUTION + SHADOW + PHANTOM
-  ← Fields permeate: IMMUNITY + INTENT
-  ← Plane overlay: GOVERNANCE + ENGINEER
-  ← Atlas maps: ATLAS
-  ← Shell wraps: DEFENSE (outermost)`;
+const BOOT_SEQUENCE = `CORE Organ (Kernel Boot Authority)
+  → SYSTEM Organ (Lifecycle & Config)
+  → BRAIN Organ + MEMORY Organ + NERVE Organ
+  → RIPPLE Organ + ACCESS Organ + IDENTITY Organ + RELAY Organ + AUDIT Organ
+  → NEXUS Organ (AI Provider Gateway)
+  → Engines: DREAM, CORTEX, ORACLE, FORGE, COMPASS,
+             ATLAS, ECONOMY, SANDBOX, MEDIC, REFLEX
+  → INTEGRATION Organ (boots last — dependency resolver)
+  → Agents: ENCODE, DECODE, VISION, PHANTOM, LINGUA,
+            ECHO, HARVEST, SOVEREIGN, ENGINEER, OBSERVER
+  ← Layers permeate: IMMUNITY, INTENT, EVOLUTION,
+                      INCLUSIVE, CONSCIENCE, TREATY
+  ← GOVERNANCE Layer (policy overlay)
+  ← DEFENSE Layer (outermost shell)`;
 
 const KEY_PROPERTIES = [
   { title: "Weight Invariant", desc: "Every primitive carries a governance weight. The sum across all 40 primitives is exactly 1.000 — no single primitive can dominate decisions." },
@@ -276,26 +232,27 @@ export default function Architecture() {
         </section>
 
         {/* ── All Categories ── */}
-        {SECTORS.map((sector, sIdx) => (
+        {CATEGORIES.map((cat, sIdx) => (
           <section
-            key={sector.tag}
+            key={cat.tag}
             className={`border-t border-border ${sIdx % 2 === 0 ? 'bg-muted/20' : ''}`}
           >
             <div className="container mx-auto max-w-5xl px-4 py-14">
               <motion.div {...fadeUp}>
                 <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-2xl font-bold">{sector.label}</h2>
-                  <Badge variant="outline" className="text-xs font-mono">{sector.tag}</Badge>
-                  <Badge variant="secondary" className="text-xs">{sector.nodes.length} {sector.nodes.length === 1 ? 'primitive' : 'primitives'}</Badge>
+                  <h2 className="text-2xl font-bold">{cat.label}</h2>
+                  <Badge variant="outline" className="text-xs font-mono">{cat.tag}</Badge>
+                  <Badge variant="secondary" className="text-xs">{cat.primitives.length} primitives</Badge>
                 </div>
-                <div className={`grid gap-3 ${sector.nodes.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : sector.nodes.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
-                  {sector.nodes.map((node) => (
-                    <Card key={node.name} className="hover:border-primary/30 transition-all duration-300 card-lift">
+                <div className={`grid gap-3 ${cat.primitives.length >= 4 ? 'sm:grid-cols-2 lg:grid-cols-3' : cat.primitives.length >= 2 ? 'sm:grid-cols-2' : ''}`}>
+                  {cat.primitives.map((prim) => (
+                    <Card key={prim.name} className={`hover:border-primary/30 transition-all duration-300 card-lift border ${cat.color}`}>
                       <CardContent className="p-5 flex items-start gap-3">
-                        <node.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <prim.icon className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <div>
-                          <span className="font-bold font-mono text-sm">{node.name}</span>
-                          <p className="text-xs text-muted-foreground mt-1">{node.desc}</p>
+                          <span className="font-bold font-mono text-sm">{prim.name}</span>
+                          <span className="text-[10px] font-mono text-muted-foreground/50 ml-2">{cat.label.slice(0, -1)}</span>
+                          <p className="text-xs text-muted-foreground mt-1">{prim.desc}</p>
                         </div>
                       </CardContent>
                     </Card>
