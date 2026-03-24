@@ -99,7 +99,7 @@ export function createDiscoveryFirstContact(apiKey?: string): FirstContactConfig
     package: '@cmpsbl/discovery',
     domain: 'discovery',
     apiKey,
-    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
   };
 }

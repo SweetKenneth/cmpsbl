@@ -348,7 +348,7 @@ export class Engine {
   private readonly apiKey: string;
   private readonly baseUrl: string;
 
-  constructor(apiKey: string, baseUrl = 'https://api.cmpsbl.com/v1/engine') {
+  constructor(apiKey: string, baseUrl = 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api/engine') {
     if (!apiKey) throw new Error('CMPSBL Engine SDK: API key is required');
     this.apiKey = apiKey;
     this.baseUrl = baseUrl;
@@ -755,7 +755,7 @@ export class CMPSBL {
       package: '@cmpsbl/sdk',
       domain: 'sdk',
       apiKey: options.apiKey,
-      endpoint: options.endpoint ?? 'https://api.cmpsbl.com/v1/substrate',
+      endpoint: options.endpoint ?? 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
       autoDiscover: true,
       onDiscovery: (chain: MemoryChain) => {
         options.onDiscovery?.(chain);

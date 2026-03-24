@@ -123,7 +123,7 @@ export function useFirstContact(apiKey?: string): UseFirstContactReturn {
     package: '@cmpsbl/react',
     domain: 'react',
     apiKey,
-    endpoint: 'https://api.cmpsbl.com/v1/substrate',
+    endpoint: 'https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/substrate-api',
     autoDiscover: true,
     onDiscovery: (chain) => {
       setChains(prev => [...prev, chain]);
