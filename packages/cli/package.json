@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/cli",
-  "version": "1.3.0",
+  "version": "1.5.0",
   "description": "CMPSBL® CLI — init, score, export, validate-manifest commands for local dev workflows",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
