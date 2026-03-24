@@ -168,7 +168,7 @@ const ARCH_CARDS = [
   {
     icon: Package,
     title: 'Memory Packs Add Power',
-    description: 'Packs bundle related capabilities into purpose-built workflows. Each pack uses 1 memory slot.',
+    description: 'Packs bundle related capabilities into purpose-built memory chains. Each pack uses 1 memory slot.',
   },
   {
     icon: Zap,
