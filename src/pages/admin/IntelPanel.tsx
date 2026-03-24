@@ -372,7 +372,7 @@ export default function IntelPanel() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `evolution-proposal-v3.3-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `intel-proposal-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
     toast.success('Proposal downloaded');
