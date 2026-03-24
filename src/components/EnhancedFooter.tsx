@@ -44,7 +44,7 @@ export function EnhancedFooter() {
       title: "Build",
       links: [
         { name: "Builder workspace", href: "/workspace" },
-        { name: "CodeLab", href: "/codelab" },
+        { name: "Developers Playground", href: "/codelab" },
         { name: "Documentation", href: "/documentation" },
         { name: "API access", href: "/api-access" },
         { name: "Experiment Lab", href: "/lab" },

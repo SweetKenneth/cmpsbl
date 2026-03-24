@@ -408,7 +408,7 @@ const response = await substrate.nexus.text(
                 <div className="w-12 h-12 rounded-xl bg-neon-purple/10 flex items-center justify-center mb-4">
                   <Layers className="w-6 h-6 text-neon-purple" />
                 </div>
-                <h3 className="font-semibold mb-2 group-hover:text-neon-purple transition-colors">Module Explorer</h3>
+                <h3 className="font-semibold mb-2 group-hover:text-neon-purple transition-colors">Primitive Explorer</h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   Interactive API explorer for all substrate execution surfaces. Execute calls, see responses, copy code.
                 </p>

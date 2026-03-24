@@ -288,7 +288,7 @@ const DeveloperAcademy = () => {
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
-                    <Link to="/codelab">Try CodeLab</Link>
+                    <Link to="/codelab">Try Playground</Link>
                   </Button>
                   <Button asChild variant="outline" size="lg" className="hover:border-primary/30 transition-colors">
                     <Link to="/documentation">Read Docs</Link>
