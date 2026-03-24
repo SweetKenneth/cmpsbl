@@ -293,6 +293,41 @@ async function cmdOnboarding() {
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
   blank();
 
+  // ── 4-Stage Deterministic Boot ──
+  say('  ▸ STAGE 1 — LAYERS (12) — Ambient protection...');
+  await sleep(200);
+  say('    ◇ DEFENSE · IMMUNITY · GOVERNANCE · TREATY');
+  say('    ◇ EVOLUTION · REFLEX · COMPASS · INTEGRATION');
+  say('    ◇ INTENT · ACCESS · VISION · SHADOW');
+  say('    ✓ Protection perimeter: ACTIVE');
+  await sleep(150);
+  blank();
+
+  say('  ▸ STAGE 2 — ORGANS (12) — Vital infrastructure...');
+  await sleep(200);
+  say('    ⬡ CORE · SYSTEM · BRAIN · MEMORY');
+  say('    ⬡ NERVE · NEXUS · IDENTITY · SOVEREIGN');
+  say('    ⬡ ATLAS · MEDIC · RELAY · CONSCIENCE');
+  say('    ✓ Vital systems: HEARTBEAT CONFIRMED');
+  await sleep(150);
+  blank();
+
+  say('  ▸ STAGE 3 — ENGINES (8) — Processing power...');
+  await sleep(200);
+  say('    ◈ DREAM · HARVEST · FORGE · LINGUA');
+  say('    ◈ ECHO · PHANTOM · SANDBOX · RIPPLE');
+  say('    ✓ Processing cores: IGNITION COMPLETE');
+  await sleep(150);
+  blank();
+
+  say('  ▸ STAGE 4 — AGENTS (8) — Autonomous actors...');
+  await sleep(200);
+  say('    ★ ENCODE · DECODE · AUDIT · ECONOMY');
+  say('    ★ INCLUSIVE · CORTEX · ORACLE · ENGINEER');
+  say('    ✓ Autonomous actors: DEPLOYED AND ARMED');
+  await sleep(300);
+  blank();
+
   await initFirstContact(CLI_CONFIG);
 
   // ── Identity flash ──
@@ -300,8 +335,8 @@ async function cmdOnboarding() {
   box([
     'Cognitive Substrate v' + CLI_VERSION,
     '',
-    '40 primitives  ·  12 sectors  ·  4 categories',
-    'Organs · Layers · Engines · Agents',
+    '40 primitives  ·  12·12·8·8 matrix  ·  4 categories',
+    'Layers → Organs → Engines → Agents',
     '',
     'The mesh is alive. Every command leaves a trace.',
     'Every trace becomes memory. Memory becomes capability.',
