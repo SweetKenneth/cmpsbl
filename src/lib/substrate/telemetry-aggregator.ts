@@ -487,7 +487,7 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
     repairSuccesses,
     escalations,
     safeFailures,
-    honestRepairRate: repairAttempts > 0 ? repairSuccesses / repairAttempts : 0,
+    honestRepairRate: repairAttempts > 0 ? repairSuccesses / repairAttempts : 1,
     topExecutor,
   };
 }
