@@ -134,7 +134,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
   ],
   "/upgrade": [
     { href: "/packs", title: "Capability Packs", description: "See all 24 packs across 6 strategic domains" },
-    { href: "/engines", title: "54 Engines", description: "What you unlock with higher-tier plans" },
+    { href: "/store", title: "Store & Plans", description: "Browse engines and upgrade your plan", badge: "Store" },
     { href: "/enterprise", title: "Enterprise", description: "Custom plans with dedicated infrastructure", badge: "Enterprise" },
   ],
   "/status": [
