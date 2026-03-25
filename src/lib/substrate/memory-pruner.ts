@@ -66,15 +66,15 @@ async function pruneTier(
     for (const source of clmSources) {
       if (purged >= excess) break;
       try {
-        const { data: ids } = await supabase
-          .from(table)
+        const { data: ids } = await (supabase
+          .from(table as any)
           .select('id')
           .eq('source_module', source)
           .order('created_at', { ascending: true })
-          .limit(Math.min(batchSize, excess - purged));
+          .limit(Math.min(batchSize, excess - purged)));
 
         if (ids && ids.length > 0) {
-          await supabase.from(table).delete().in('id', ids.map((r: any) => r.id));
+          await (supabase.from(table as any).delete() as any).in('id', ids.map((r: any) => r.id));
           purged += ids.length;
         }
       } catch { /* continue */ }
