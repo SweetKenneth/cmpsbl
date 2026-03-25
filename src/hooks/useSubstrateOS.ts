@@ -352,9 +352,9 @@ export function useSubstrateHealthScore() {
     },
     cdm: async () => {
       try {
-        const { getDiscoveryEngineHealth } = await import('@/lib/substrate/intent-mesh/discovery-engine');
-        const health = getDiscoveryEngineHealth();
-        return typeof health === 'number' ? health : (health?.score ?? 80);
+        const { getDiscoveryHealth } = await import('@/lib/substrate/intent-mesh/discovery-engine');
+        const health = getDiscoveryHealth();
+        return typeof health.score === 'number' ? health.score : 80;
       } catch { return 70; }
     },
     seba: async () => {
