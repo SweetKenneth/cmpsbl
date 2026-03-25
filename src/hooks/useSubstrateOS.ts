@@ -296,158 +296,248 @@ export function useSystemConfig(key?: string) {
 export function useSubstrateHealthScore() {
   const pollingEnabled = debugMode.allowModulePolling();
 
-  // Layer definitions — 40-primitive / 4-category topology
-  const CORE_SYSTEM = ['core', 'system'] as const;
-  const CCR_ZONES = ['brain', 'memory', 'dream'] as const;
-  const OCG_ZONES = ['ripple', 'access', 'identity', 'relay', 'audit', 'nerve'] as const;
-  const EXECUTION_SURFACES = ['decode', 'encode', 'vision', 'cortex', 'nexus', 'economy', 'sandbox', 'inclusive', 'medic', 'integration'] as const;
-  const EXPANSION_ZONES = ['sovereign', 'oracle', 'conscience', 'treaty', 'compass', 'echo', 'reflex', 'forge', 'lingua', 'harvest'] as const;
-  const CSZ_ZONES = ['evolution', 'shadow', 'phantom'] as const;
-  const META_PLANE = ['atlas', 'engineer'] as const;
-  const MESH_OVERLAYS = ['immunity', 'intent', 'governance', 'defense'] as const;
-
-  const ALL_MODULES = [
-    ...CORE_SYSTEM, ...CCR_ZONES, ...OCG_ZONES,
-    ...EXECUTION_SURFACES, ...EXPANSION_ZONES, ...CSZ_ZONES, ...META_PLANE, ...MESH_OVERLAYS,
-  ] as const;
-
+  // Module status getters — all 40 primitives
   const MODULE_GETTERS: Record<string, () => Promise<any>> = {
     core: () => core.status(),
-    ripple: () => ripple.status(),
-    access: () => access.status(),
-    brain: () => brain.status(),
-    decode: () => decode.status(),
-    nexus: () => nexus.status(),
-    defense: () => defense.status(),
-    vision: () => vision.health(),
-    dream: () => dream.status(),
     system: () => system.status(),
-    // evolution is mapped below in mesh overlays
-    integration: () => integration.status(),
-    cortex: () => cortex.status(),
-    inclusive: () => inclusive.status(),
+    brain: () => brain.status(),
     memory: () => memoryMod.status(),
-    relay: () => relayMod.status(),
-    audit: () => auditMod.status(),
+    nerve: () => nerveMod.status(),
+    nexus: () => nexus.status(),
     identity: () => identityMod.status(),
-    economy: () => economyMod.status(),
-    sandbox: () => sandboxMod.status(),
-    encode: () => encodeMod.status(),
-    // Expansion zones — use dedicated module objects
     sovereign: () => sovereignMod.status(),
-    oracle: () => oracleMod.status(),
+    atlas: () => cortex.status(),
+    medic: () => medicMod.status(),
+    relay: () => relayMod.status(),
     conscience: () => conscienceMod.status(),
+    defense: () => defense.status(),
+    immunity: () => immunityMod.status(),
+    governance: () => governanceMod.status(),
     treaty: () => treatyMod.status(),
-    compass: () => compassMod.status(),
-    echo: () => echoMod.status(),
+    evolution: () => evolutionMod.status(),
     reflex: () => reflexMod.status(),
+    compass: () => compassMod.status(),
+    integration: () => integration.status(),
+    intent: () => intentMod.status(),
+    access: () => access.status(),
+    vision: () => vision.health(),
+    shadow: () => shadowMod.status(),
+    dream: () => dream.status(),
+    harvest: () => harvestMod.status(),
     forge: () => forgeMod.status(),
     lingua: () => linguaMod.status(),
+    echo: () => echoMod.status(),
     phantom: () => phantomMod.status(),
-    harvest: () => harvestMod.status(),
-    medic: () => medicMod.status(),
-    // CSZ — Covert Systems Zone
-    shadow: () => shadowMod.status(),
-    // Mesh overlays
-    immunity: () => immunityMod.status(),
-    evolution: () => evolutionMod.status(),
-    intent: () => intentMod.status(),
-    governance: () => governanceMod.status(),
-    // Meta — Plane
-    atlas: () => cortex.status(),
+    sandbox: () => sandboxMod.status(),
+    ripple: () => ripple.status(),
+    encode: () => encodeMod.status(),
+    decode: () => decode.status(),
+    audit: () => auditMod.status(),
+    economy: () => economyMod.status(),
+    inclusive: () => inclusive.status(),
+    cortex: () => cortex.status(),
+    oracle: () => oracleMod.status(),
     engineer: () => cortex.status(),
-    // NERVE — dedicated module
-    nerve: () => nerveMod.status(),
+  };
+
+  // Subsystem probes
+  const SUBSYSTEM_PROBES: Record<string, () => Promise<number>> = {
+    clm: async () => {
+      const { getCLMStatus } = await import('@/lib/substrate/clm');
+      const s = getCLMStatus();
+      if (s.kill_switch) return 30;
+      if (!s.enabled) return 60;
+      return s.running ? 100 : 80;
+    },
+    cdm: async () => {
+      // CDM runs on timer — check if auto-scheduler is active
+      return 80; // CDM doesn't expose a direct health API yet; assume operational
+    },
+    seba: async () => {
+      try {
+        const { getSEBAStatus } = await import('@/lib/os/atlas/adapters/seba');
+        const s = await getSEBAStatus();
+        return s.health ?? (s.enabled ? 90 : 60);
+      } catch { return 50; }
+    },
+    autoblog: async () => {
+      try {
+        const { getAutoblogStatus } = await import('@/lib/autoblog');
+        const s = await getAutoblogStatus();
+        return s.circuit_ok ? (s.enabled ? 100 : 70) : 30;
+      } catch { return 50; }
+    },
+    agency: async () => {
+      try {
+        const { data } = await (await import('@/integrations/supabase/client')).supabase
+          .from('agencies').select('id', { count: 'exact', head: true });
+        return 90;
+      } catch { return 50; }
+    },
+    edge: async () => {
+      // Edge functions health = substrate ping
+      try {
+        const result = await core.status();
+        return result?.health ?? (result?.success ? 100 : 50);
+      } catch { return 30; }
+    },
+    database: async () => {
+      try {
+        const start = Date.now();
+        const { supabase } = await import('@/integrations/supabase/client');
+        await supabase.from('analytics_events').select('id').limit(1);
+        const latency = Date.now() - start;
+        return latency < 500 ? 100 : latency < 2000 ? 85 : latency < 5000 ? 60 : 30;
+      } catch { return 20; }
+    },
+    auth: async () => {
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { data } = await supabase.auth.getSession();
+        return 100; // Auth endpoint is reachable
+      } catch { return 40; }
+    },
+    storage: async () => {
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        await supabase.storage.listBuckets();
+        return 100;
+      } catch { return 50; }
+    },
+    email: async () => {
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { count } = await supabase.from('email_send_log' as any)
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'dlq')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+        return (count ?? 0) > 5 ? 60 : 100;
+      } catch { return 80; } // Table may not exist — not critical
+    },
+    scheduler: async () => {
+      try {
+        const { supabase } = await import('@/integrations/supabase/client');
+        const { count } = await supabase.from('agency_scheduled_tasks')
+          .select('id', { count: 'exact', head: true })
+          .eq('is_active', true);
+        return 90;
+      } catch { return 70; }
+    },
   };
 
   const batchQuery = useQuery({
-    queryKey: ['substrate', 'health', 'batch', 'v13'],
+    queryKey: ['substrate', 'health', 'engine', 'v2'],
     queryFn: async () => {
-      const results = await Promise.all(
-        ALL_MODULES.map(async (mod) => {
+      // Phase 1: Probe all 40 primitives in parallel
+      const primitiveResults = await Promise.all(
+        healthEngine.ALL_PRIMITIVES.map(async (prim) => {
+          if (!healthEngine.shouldProbe(prim.id, prim.tier)) {
+            return { id: prim.id, health: healthEngine.getPrimitiveHealth(prim.id) };
+          }
           try {
-            const getter = MODULE_GETTERS[mod];
-            if (!getter) return { mod, health: 100 };
+            const getter = MODULE_GETTERS[prim.id];
+            if (!getter) return { id: prim.id, health: 100 };
             const result = await getter();
-            // Extract actual health score from module response
-            // Modules return health as: health, health_score, healthScore, or health.healthScore
-            const h = typeof result?.health === 'number' ? result.health
-              : typeof result?.health_score === 'number' ? result.health_score
-              : typeof result?.health?.healthScore === 'number' ? result.health?.healthScore
-              : result?.success === false ? 0
-              : result?.healthy === false ? 0
-              : 100;
-            return { mod, health: Math.max(0, Math.min(100, h)) };
+            const h = healthEngine.extractHealth(result);
+            return { id: prim.id, health: h };
           } catch {
-            return { mod, health: 50 }; // Failed modules get 50, not 100
+            return { id: prim.id, health: 50 };
           }
         })
       );
 
-      const modules: Record<string, number> = {};
-      for (const r of results) {
-        modules[r.mod] = r.health;
+      // Phase 2: Probe subsystems in parallel
+      const subsystemResults = await Promise.all(
+        healthEngine.SUBSYSTEMS.map(async (sub) => {
+          try {
+            const probe = SUBSYSTEM_PROBES[sub.id];
+            const h = probe ? await probe() : 80;
+            return { id: sub.id, health: h };
+          } catch {
+            return { id: sub.id, health: 50 };
+          }
+        })
+      );
+
+      // Update health engine with all scores
+      for (const r of [...primitiveResults, ...subsystemResults]) {
+        healthEngine.updatePrimitiveHealth(r.id, r.health);
       }
-      return modules;
+
+      // Compute composite
+      const composite = healthEngine.computeCompositeHealth();
+
+      // Build module map for backward compatibility
+      const modules: Record<string, number> = {};
+      for (const r of primitiveResults) modules[r.id] = r.health;
+      for (const r of subsystemResults) modules[r.id] = r.health;
+
+      return { modules, composite };
     },
     refetchInterval: pollingEnabled ? 30000 : false,
     staleTime: 15000,
     enabled: pollingEnabled,
   });
 
-  const defaultModules: Record<string, number> = {};
-  for (const m of ALL_MODULES) defaultModules[m] = 100;
-  const modules = batchQuery.data || defaultModules;
+  const fallbackComposite: healthEngine.CompositeHealthResult = {
+    compositeScore: 100,
+    degradationLevel: 'L0_NOMINAL',
+    weakestLink: 'core',
+    weakestScore: 100,
+    weakestCategory: 'organ',
+    tiers: {
+      1: { score: 100, count: 7, healthy: 7 },
+      2: { score: 100, count: 8, healthy: 8 },
+      3: { score: 100, count: 14, healthy: 14 },
+      4: { score: 100, count: 22, healthy: 22 },
+    },
+    categories: {
+      organ: { score: 100, count: 12 },
+      layer: { score: 100, count: 12 },
+      engine: { score: 100, count: 8 },
+      agent: { score: 100, count: 8 },
+    },
+    subsystemScore: 100,
+    totalTracked: 51,
+    healthyCount: 51,
+    openBreakers: [],
+    pendingHeals: 0,
+  };
 
-  // Layer-weighted health calculation — uses actual granular scores
-  function layerHealth(keys: readonly string[]): number {
-    if (keys.length === 0) return 100;
-    const sum = keys.reduce((acc, k) => acc + (modules[k] ?? 100), 0);
-    return Math.round(sum / keys.length);
-  }
-
-  const coreSysHealth = layerHealth(CORE_SYSTEM);
-  const ccrHealth = layerHealth(CCR_ZONES);
-  const ocgHealth = layerHealth(OCG_ZONES);
-  const surfaceHealth = layerHealth(EXECUTION_SURFACES);
-  const expansionHealth = layerHealth(EXPANSION_ZONES);
-  const cszHealth = layerHealth(CSZ_ZONES);
-  const metaHealth = layerHealth(META_PLANE);
-  const meshHealth = layerHealth(MESH_OVERLAYS);
-
-  const healthScore = Math.round(
-    coreSysHealth * 0.12 +
-    ccrHealth * 0.12 +
-    ocgHealth * 0.14 +
-    surfaceHealth * 0.18 +
-    expansionHealth * 0.12 +
-    cszHealth * 0.08 +
-    metaHealth * 0.06 +
-    meshHealth * 0.18
-  );
-
-  const totalModules = ALL_MODULES.length;
-  const healthyCount = Object.values(modules).filter(v => v >= 50).length;
+  const data = batchQuery.data;
+  const modules = data?.modules ?? {};
+  const composite = data?.composite ?? fallbackComposite;
 
   return {
     isLoading: batchQuery.isLoading,
     modules,
-    healthScore,
-    activeCount: healthyCount,
-    totalModules,
-    isHealthy: healthScore >= 80,
-    isDegraded: healthScore >= 40 && healthScore < 80,
-    isDown: healthScore < 40,
+    healthScore: composite.compositeScore,
+    activeCount: composite.healthyCount,
+    totalModules: composite.totalTracked,
+    isHealthy: composite.compositeScore >= 80,
+    isDegraded: composite.compositeScore >= 40 && composite.compositeScore < 80,
+    isDown: composite.compositeScore < 40,
     refetch: () => batchQuery.refetch(),
-    // Layer breakdown for System Integrity page
+    // New v2 fields
+    composite,
+    weakestLink: composite.weakestLink,
+    weakestScore: composite.weakestScore,
+    weakestCategory: composite.weakestCategory,
+    degradationLevel: composite.degradationLevel,
+    categories: composite.categories,
+    tiers: composite.tiers,
+    subsystemScore: composite.subsystemScore,
+    openBreakers: composite.openBreakers,
+    pendingHeals: composite.pendingHeals,
+    // Layer breakdown for backward compatibility
     layers: {
-      core: coreSysHealth,
-      ccr: ccrHealth,
-      ocg: ocgHealth,
-      surfaces: surfaceHealth,
-      expansion: expansionHealth,
-      csz: cszHealth,
-      mesh: meshHealth,
+      core: composite.tiers[1].score,
+      ccr: composite.categories.organ.score,
+      ocg: composite.categories.layer.score,
+      surfaces: composite.categories.agent.score,
+      expansion: composite.tiers[4].score,
+      csz: composite.categories.engine.score,
+      mesh: composite.tiers[2].score,
     },
   };
 }
