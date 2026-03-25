@@ -338,7 +338,7 @@ export function useSubstrateHealthScore() {
     inclusive: () => inclusive.status(),
     cortex: () => cortex.status(),
     oracle: () => oracleMod.status(),
-    engineer: () => cortex.status(),
+    engineer: () => engineerMod.status(),
   };
 
   // Subsystem probes
