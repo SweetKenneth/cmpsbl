@@ -91,7 +91,7 @@ export const SystemHealthPanel = memo(function SystemHealthPanel({ enabled }: Sy
   ];
 
   const allItems = layers.flatMap(l => l.items);
-  const healthyCount = allItems.filter(m => healthScore.modules[m.key] !== false).length;
+  const healthyCount = allItems.filter(m => (healthScore.modules[m.key] ?? 100) >= 50).length;
   const totalCount = allItems.length;
 
   // Layer health from the hook
