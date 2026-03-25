@@ -64,6 +64,7 @@ export async function executeWarmUpSequence(
   initFn: (moduleId: string) => Promise<void>
 ): Promise<WarmUpReport> {
   const results: WarmUpResult[] = [];
+  const failedModules: string[] = [];
   const start = Date.now();
   let completedStages = 0;
 
