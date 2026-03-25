@@ -1,170 +1,260 @@
-# CMPSBL® — Investor Demo Roadmap
+# CMPSBL® — Investor Showcase Roadmap
 
 **Classification:** INTERNAL — Governor Eyes Only  
 **Created:** 2026-03-25  
-**Goal:** Build a pin-protected investor showcase section with real, working demonstrations of core substrate capabilities. No theatrics — only things that genuinely work.
+**Updated:** 2026-03-25  
+**Goal:** Build a pin-protected investor showcase that explains itself in layers. Not a demo — a self-narrating system.
+
+---
+
+## Guiding Principle
+
+> We are not building a demo. We are building a system that explains itself in layers.
+
+If we get this right:
+- The system answers questions for me
+- Investors explore instead of interrogate
+- Complexity becomes a strength instead of a liability
 
 ---
 
 ## Philosophy
 
-Investors will ask hard technical questions. The best defense is a live system that speaks for itself. Every demo must:
-
 1. **Actually work** — no mocked data, no simulated outputs
-2. **Be self-explanatory** — an investor should understand what they're seeing without narration
-3. **Show the "so what?"** — each demo must connect to business value
-4. **Be honest** — label what's production-ready vs. in-progress
+2. **Self-explanatory** — every demo has WHAT / WHY / VALUE blocks (mandatory, no exceptions)
+3. **Progressive disclosure** — surface = outcome, depth = architecture
+4. **Honest labeling** — production-ready vs. in-progress, clearly marked
+5. **Contained complexity** — the 40 primitives, mesh, deep system are NEVER first-load. Always behind interaction (click → expand → explore)
 
 ---
 
-## Phase 0 — Access & Shell
+## Phase 0 — Access, Shell & Orientation
 
-Build the investor showcase container before any demos.
+### 0.1 — PIN-Gated Entry
+- [ ] Simple PIN code screen (not auth, just a gate)
+- [ ] Route: `/investor-showcase` or nested under admin
+- [ ] Clean, minimal — zero admin clutter
 
-- [ ] **Pin-gated entry** — simple PIN code screen (not auth, just a gate)
-- [ ] **Investor Showcase layout** — clean, minimal, no admin clutter
-- [ ] **Navigation** — card-based grid of available demos with status badges (Live / In Progress / Planned)
-- [ ] **Route:** `/investor-showcase` or nested under existing admin
+### 0.2 — "Start Here" Orientation Block (MANDATORY — First Thing They See)
+
+Before any demo grid loads, investors see:
+
+**What this system does (1–2 sentences):**
+> CMPSBL is a cognitive operating system that discovers, improves, and exports software capabilities autonomously — using 40 specialized AI primitives that coordinate through a live mesh.
+
+**3-Step Flow:**
+```
+Discover → Improve → Export
+```
+
+**Recommended demo order:**
+1. Memory Stream — see how the system discovers
+2. Evolution — see how it improves itself
+3. Ascension — see what it exports
+
+This block is non-negotiable. Without it, the system feels like complexity instead of capability.
+
+### 0.3 — Showcase Layout
+- [ ] Demo cards organized by tier (visually separated, not just listed)
+- [ ] Tier 1 visible on first load. Tier 2 and 3 collapsed/hidden behind interaction
+- [ ] Status badges: Live / In Progress / Planned
+- [ ] No full dashboards, no internal tooling noise, no admin complexity
 
 ---
 
-## Phase 1 — Low-Hanging Fruit (Already Working)
+## Demo Tiering (MANDATORY STRUCTURE)
 
-These systems are functional today and just need a polished investor-facing view.
+All demos are split into 3 tiers. This is not optional.
 
-### 1.1 — 40-Primitive Matrix Overview
-**What it proves:** Architectural depth — this isn't a weekend project  
-**Demo:** Interactive visualization of all 40 primitives across 4 categories (12 Organs, 12 Layers, 8 Engines, 8 Agents). Click any primitive to see its role, dependencies, and health status.  
-**Existing assets:** Primitive taxonomy is fully defined, ModulesHub page exists  
-**Work needed:** Investor-focused presentation layer, not the developer view
+### Tier 1 — Core (Investor MUST understand these)
+Visible on first load. These tell the story.
 
-### 1.2 — Governance & SEBA Pipeline
-**What it proves:** This system has safety rails — it's not uncontrolled AI  
-**Demo:** Show the 7-gate promotion pipeline (Lint → Test → Security → Blast Radius → Evidence → Governance → Prod). Show real gate pass/fail history. Show that mutations can't bypass governance.  
-**Existing assets:** SEBA pipeline logic exists in Evolution module  
-**Work needed:** Visual gate flow diagram with real data from evolution cycles
+| Demo | Purpose |
+|------|---------|
+| Memory Stream & Discovery | The system discovers capabilities autonomously |
+| Evolution | The system improves its own code |
+| Ascension | External code enters, enhanced code exits |
 
-### 1.3 — DEFENSE Layer (Threat Detection)
-**What it proves:** Enterprise-grade security built into the substrate  
-**Demo:** Live threat score calculation. Feed it sample inputs and show O(1) Trie-based evaluation, behavioral anomaly detection, kill-chain correlation. Show the virus scanner capabilities.  
-**Existing assets:** DEFENSE module with full threat pipeline  
-**Work needed:** Interactive demo where investor can trigger a scan and see results
+### Tier 2 — Supporting (Reinforces credibility)
+Visible on click/scroll. These prove depth.
 
-### 1.4 — DREAM Engine (Background Learning)
-**What it proves:** The system learns when no one is watching — a genuine differentiator  
-**Demo:** Show dream cycle history, what was consolidated, what insights emerged. Show the dream pool, dream memory, and dream consent architecture.  
-**Existing assets:** Dream tables in DB, dream-eater UI exists  
-**Work needed:** Investor summary view — "Here's what the system learned last night"
+| Demo | Purpose |
+|------|---------|
+| DREAM Engine | Background learning — the system learns when idle |
+| DEFENSE Layer | Enterprise-grade security built into the substrate |
+| SEBA Pipeline | Safety rails — mutations can't bypass governance |
 
-### 1.5 — Memory Stream & Discovery
-**What it proves:** The system discovers new capabilities autonomously  
-**Demo:** Show real discovered pipelines with CJPI scores. Show the Mint → Prime → Relic → Mythic → Apex tier system. Let them browse actual crystallized capabilities.  
+### Tier 3 — Deep System (Only if they explore)
+Hidden behind explicit interaction. These impress the technical investor.
+
+| Demo | Purpose |
+|------|---------|
+| 40-Primitive Matrix | Architectural depth — not a weekend project |
+| Mesh Communications | Living system with real inter-module communication |
+| Agency System | Revenue model — AI teams as a service |
+| Audit Chain | Cryptographic accountability |
+| IMMUNITY Layer | Self-healing error correction |
+| ENCODE Agent | Graduated autonomy and competency gates |
+
+---
+
+## Demo Content Standard (EVERY Demo Must Include)
+
+```
+┌─────────────────────────────────────┐
+│  WHAT YOU'RE SEEING                 │
+│  Plain description of the demo      │
+├─────────────────────────────────────┤
+│  WHY IT MATTERS                     │
+│  Technical significance             │
+├─────────────────────────────────────┤
+│  BUSINESS VALUE                     │
+│  Revenue, defensibility, TAM, moat  │
+└─────────────────────────────────────┘
+```
+
+If a demo can't explain itself in those 3 blocks, it's not ready for investors. Do not ship it.
+
+---
+
+## Phase 1 — Tier 1 Demos (Build First)
+
+### 1.1 — Memory Stream & Discovery
+**WHAT:** The system observes its own behavior and discovers new software pipelines autonomously. Real discovered capabilities with CJPI scoring. Mint → Prime → Relic → Mythic → Apex tiering.  
+**WHY:** No other system discovers its own capabilities. This is self-improving infrastructure.  
+**VALUE:** Every discovery is a potential product. The system generates its own IP.  
 **Existing assets:** Discovery mining console, artifact registry, foundry page  
-**Work needed:** Curated investor view with the best discoveries highlighted
+**Work needed:** Curated investor view — best discoveries highlighted, clean cards, no admin noise  
 
-### 1.6 — Mesh Communications (Live System Activity)
-**What it proves:** This is a living system with real inter-module communication  
-**Demo:** Real-time feed of mesh communications between primitives. Each signal shows source, target, category, personality voice. Show that this isn't simulated.  
-**Existing assets:** mesh_comms table, IntentMesh page  
-**Work needed:** Investor-facing live feed with personality translations
+### 1.2 — Evolution: Self-Improving Software
+**WHAT:** System scans its own codebase → AI generates real code patches → SHADOW validates → SEBA scores → one-click approve/reject  
+**WHY:** Software that fixes and improves itself. The core promise.  
+**VALUE:** Reduces engineering costs, eliminates tech debt accumulation, scales without hiring.  
 
----
-
-## Phase 2 — The Flagship Demo (Evolution / Ascension)
-
-This is the centerpiece. The thing that makes investors lean forward.
-
-### 2.1 — Evolution: Self-Evolving Software
-**What it proves:** The core promise — software that improves itself  
-**Demo flow:**
-1. System scans its own codebase and identifies real improvements
-2. AI (via OpenAI GPT, routed through NEXUS) generates actual code patches
-3. SHADOW validates the patches in an isolated environment
-4. SEBA gates score the result
-5. Investor sees the proposal with diff preview
-6. One-click apply (or reject with reason)
+**UI must be extremely simple:**
+- Diff view (before/after)
+- Score badge
+- Approve / Reject buttons
+- No internal noise by default
+- Deep detail (SHADOW results, SEBA gate breakdown) only on expand
 
 **What needs building:**
 - [ ] Evolution discovery → structured prompt assembly
-- [ ] Edge function: send proposal + file context to OpenAI → receive patch
-- [ ] SHADOW dry-run validation of AI-generated patches
-- [ ] SEBA gate scoring of validated patches
-- [ ] UI: Proposal card with diff view + approve/reject
+- [ ] Edge function: proposal + file context → OpenAI → patch
+- [ ] SHADOW dry-run validation
+- [ ] SEBA gate scoring
+- [ ] Investor-facing UI: proposal card with diff + approve/reject
 
-**Cost:** ~$0.005 per proposal (well within budget)
+**Cost:** ~$0.005 per proposal
 
-### 2.2 — Ascension: Code Upload & Enhancement
-**What it proves:** External code enters the substrate and gains capabilities  
-**Demo flow:**
-1. Upload a simple script (Python/JS/etc.)
-2. 40-primitive matrix analyzes it
-3. System discovers meaningful combinations
-4. Export enhanced version with Mini-Runtime
-5. The export works standalone — prove portability
+### 1.3 — Ascension: Before → After Transformation
+**WHAT:** Upload a basic script. The 40-primitive matrix analyzes it. Download an enhanced, exportable system with runtime, docs, and tests.  
+**WHY:** This is the clearest proof of value — input basic code, output production software.  
+**VALUE:** Every developer becomes 10x. Every script becomes a product.  
+
+**UI must be extremely simple:**
+- Upload zone
+- Analysis progress (clean, not noisy)
+- Before/After comparison (side by side)
+- Export button → download ZIP
 
 **What needs building:**
 - [ ] Upload endpoint + language detection
 - [ ] Primitive-by-primitive analysis prompts (via OpenAI)
 - [ ] Discovery scoring (CJPI)
-- [ ] Export ZIP generation (original + runtime + docs + tests)
-- [ ] UI: Upload → Analysis → Results → Export flow
+- [ ] Export ZIP (original + runtime + docs + tests)
+- [ ] Before vs After comparison view
 
 **This is the "drop the mic" demo.** If an investor uploads their own code and gets back enhanced software, the product sells itself.
 
 ---
 
-## Phase 3 — Supporting Demos (Build As Time Allows)
+## Phase 2 — Tier 2 Demos (Build Second)
 
-### 3.1 — IMMUNITY Layer
-**What it proves:** Self-healing error correction  
-**Demo:** Trigger a controlled failure, show immune response (detection, repair attempt, escalation, learning). Show repair intelligence stats and shared rule registry.  
-**Existing assets:** Full immunity module with outcome tracking
+### 2.1 — DREAM Engine
+**WHAT:** The system consolidates learning during idle time — dream cycles, memory synthesis, insight generation.  
+**WHY:** Autonomous background improvement. No other system does this.  
+**VALUE:** Compound intelligence — the system gets smarter every day without intervention.  
+**Work needed:** Investor summary view — "Here's what the system learned last night"
 
-### 3.2 — ENCODE Agent (AI Code Execution)
-**What it proves:** Graduated autonomy — AI earns trust through proven competence  
-**Demo:** Show mastery levels (Novice → Master), competency scoring, the gate system that prevents unsafe code from executing.  
-**Existing assets:** ENCODE module, competency tables
+### 2.2 — DEFENSE Layer
+**WHAT:** Live threat score calculation. O(1) Trie-based evaluation, behavioral anomaly detection, kill-chain correlation.  
+**WHY:** Enterprise-grade security baked into the substrate, not bolted on.  
+**VALUE:** Security is the #1 enterprise concern. This is a prerequisite for enterprise adoption.  
+**Work needed:** Interactive scan → results flow (investor triggers, system responds)
 
-### 3.3 — LINGUA Engine (Multi-Language)
-**What it proves:** Global reach from day one  
-**Demo:** Real-time translation of system outputs across supported languages
-
-### 3.4 — Agency System
-**What it proves:** Revenue model — AI teams as a service  
-**Demo:** Show a configured agency with agents, task completion stats, economic metrics, and ROI tracking.  
-**Existing assets:** Full agency tables and UI
-
-### 3.5 — Audit Chain
-**What it proves:** Cryptographic accountability — every action is recorded  
-**Demo:** Browse the append-only audit chain, show hash anchors, verify chain integrity
+### 2.3 — SEBA Pipeline
+**WHAT:** 7-gate promotion pipeline (Lint → Test → Security → Blast Radius → Evidence → Governance → Prod). Real pass/fail history.  
+**WHY:** Proves the system has safety rails — AI mutations can't bypass governance.  
+**VALUE:** Regulatory compliance, auditability, risk mitigation. Investors need to know AI isn't uncontrolled.  
+**Work needed:** Visual gate flow diagram with real cycle data
 
 ---
 
-## Phase 4 — Investor Experience Polish
+## Phase 3 — Tier 3 Demos (Build If Time Allows)
 
-- [ ] **Metrics dashboard** — key numbers an investor wants: primitives active, discoveries made, evolution cycles run, uptime, memory consolidated
-- [ ] **"Why This Matters" cards** — each demo links to business value (TAM, defensibility, revenue potential)
-- [ ] **Comparison matrix** — CMPSBL vs. competitors (Replit, Cursor, Devin, etc.) with honest assessments
-- [ ] **Risk acknowledgment section** — show you know the risks (solo founder, pre-revenue, etc.) — this builds trust
-- [ ] **Download investor deck** — existing functionality, make sure it's current
+All behind explicit interaction. Click → expand → explore.
+
+### 3.1 — 40-Primitive Matrix
+**WHAT/WHY/VALUE:** Architectural depth visualization. 12 Organs + 12 Layers + 8 Engines + 8 Agents. Click any primitive → see role, dependencies, health. Proves this isn't a toy.
+
+### 3.2 — Mesh Communications
+**WHAT/WHY/VALUE:** Real-time feed of live inter-primitive communication. Source → target → category → personality voice. Proves the system is alive, not static.
+
+### 3.3 — Agency System
+**WHAT/WHY/VALUE:** Revenue model demo. Configured agency with agents, task completion, economic metrics, ROI tracking. AI teams as a service.
+
+### 3.4 — Audit Chain
+**WHAT/WHY/VALUE:** Append-only cryptographic audit trail. Hash anchors, chain integrity verification. Enterprise accountability.
+
+### 3.5 — IMMUNITY Layer
+**WHAT/WHY/VALUE:** Self-healing. Controlled failure → immune response → detection → repair → learning. Shows system resilience.
+
+### 3.6 — ENCODE Agent
+**WHAT/WHY/VALUE:** Graduated autonomy. Novice → Master mastery levels. Competency scoring. Gates that prevent unsafe execution. Trust through proven competence.
 
 ---
 
-## Build Order (Recommended)
+## Phase 4 — Credibility Signals & Polish
 
-| Order | Item | Why First |
-|-------|------|-----------|
-| 1 | Phase 0 — Shell + PIN gate | Container for everything else |
-| 2 | 1.1 — Primitive Matrix | Sets the stage, shows scale |
-| 3 | 1.6 — Mesh Communications | Proves the system is alive |
-| 4 | 1.4 — DREAM Engine | Unique differentiator, easy to demo |
-| 5 | 1.5 — Memory Stream | Shows autonomous discovery |
-| 6 | 1.2 — SEBA Pipeline | Sets up Evolution demo |
-| 7 | 2.1 — Evolution (flagship) | The main event |
-| 8 | 1.3 — DEFENSE Layer | Enterprise credibility |
-| 9 | 2.2 — Ascension | The "drop the mic" moment |
-| 10 | Phase 3 items | Supporting evidence |
-| 11 | Phase 4 — Polish | Final presentation layer |
+### 4.1 — Live System Stats (MANDATORY)
+Surface real, live numbers — not simulated:
+- [ ] Evolution cycles completed
+- [ ] Discoveries crystallized
+- [ ] Primitives active
+- [ ] Memory consolidated
+- [ ] System uptime
+- [ ] Clear "production vs experimental" labels
+
+### 4.2 — Before vs After Demo (Standalone)
+One explicit, repeatable transformation:
+- [ ] Input: basic script (pre-loaded example OR user upload)
+- [ ] Output: enhanced system with runtime
+- [ ] Side-by-side comparison
+- [ ] This may be integrated into Ascension (1.3) or standalone
+
+### 4.3 — Investor Experience
+- [ ] "Why This Matters" value cards per demo
+- [ ] Comparison matrix — CMPSBL vs. Replit, Cursor, Devin (honest)
+- [ ] Risk acknowledgment — solo founder, pre-revenue (builds trust)
+- [ ] Download investor deck
+
+---
+
+## Build Order
+
+| Order | Item | Why This Order |
+|-------|------|----------------|
+| 1 | Phase 0 — Shell + PIN + "Start Here" | Container + orientation before anything |
+| 2 | 1.1 — Memory Stream | First demo in recommended path |
+| 3 | 1.2 — Evolution | Core promise, needs edge function work |
+| 4 | 1.3 — Ascension + Before/After | The closer — "drop the mic" |
+| 5 | 4.1 — Live Stats | Credibility signals throughout |
+| 6 | 2.1 — DREAM | First supporting demo |
+| 7 | 2.2 — DEFENSE | Enterprise credibility |
+| 8 | 2.3 — SEBA | Governance proof |
+| 9 | Phase 3 — Deep System | Only if time allows |
+| 10 | Phase 4 — Polish | Final presentation layer |
 
 ---
 
@@ -181,13 +271,15 @@ Well within the current $1.15 OpenAI balance. Add $5 for comfortable margin.
 
 ---
 
-## What NOT To Demo
+## What NOT To Show
 
 - Anything that doesn't actually work
 - Simulated or mocked telemetry
+- Full admin dashboards
+- Internal tooling noise
 - Features that require explaining away failures
-- The full admin dashboard (too complex, too many rough edges)
-- Anything that requires the investor to sign up or authenticate
+- Anything requiring the investor to sign up or authenticate
+- All demos visible at once (progressive disclosure is mandatory)
 
 ---
 
@@ -195,11 +287,12 @@ Well within the current $1.15 OpenAI balance. Add $5 for comfortable margin.
 
 An investor should be able to:
 
-1. Enter a PIN and land on a clean showcase page
-2. Browse 6-8 working demos in any order
-3. Understand what each demo proves without explanation
+1. Enter a PIN and see the "Start Here" orientation
+2. Follow the recommended path: Memory → Evolution → Ascension
+3. Understand each demo through WHAT / WHY / VALUE blocks — no verbal explanation needed
 4. See real data, real system activity, real AI-generated improvements
-5. Walk away thinking: "This person built something real"
+5. Optionally explore deeper (DREAM, DEFENSE, primitives, mesh)
+6. Walk away thinking: **"This person built something real — and the system explains itself."**
 
 ---
 
