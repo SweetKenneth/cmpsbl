@@ -1,10 +1,10 @@
 /**
  * Investor Showcase — Mobile Layout
- * Single-column, touch-optimized, compact spacing
+ * Glass-morphism, gradient meshes, fluid typography, Believer Epoch aesthetic
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity, ArrowLeft, ChevronDown } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -16,6 +16,12 @@ import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { TIER_1_DEMOS, TIER_2_DEMOS, DEMO_ROUTE_MAP } from "./showcaseData";
 
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
+};
+
 export function ShowcaseMobile() {
   const [showTier2, setShowTier2] = useState(false);
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
@@ -25,72 +31,81 @@ export function ShowcaseMobile() {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-8">
-      {/* Compact status bar */}
-      <div className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md px-4 py-2 flex items-center justify-between text-[10px] font-mono text-muted-foreground">
-        <span className="font-semibold">CMPSBL®</span>
-        <span className="flex items-center gap-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-          Live
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Ambient gradient mesh background */}
+      <div className="fixed inset-0 pointer-events-none" style={{ background: "var(--gradient-mesh)" }} />
+
+      {/* Top bar — glass */}
+      <div className="sticky top-0 z-40 border-b border-border/40 bg-background/70 backdrop-blur-xl px-4 py-2.5 flex items-center justify-between">
+        <span className="text-xs font-mono font-bold tracking-wider text-foreground">CMPSBL<span className="text-primary">®</span></span>
+        <span className="flex items-center gap-1.5 text-[10px] font-mono text-muted-foreground">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-sm" style={{ boxShadow: "var(--shadow-glow)" }} />
+          Live System
         </span>
       </div>
 
-      <div className="px-4 py-6 space-y-8">
-        {/* ── WOW CTA ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl border-2 border-primary/20 bg-gradient-to-b from-primary/5 to-transparent p-6 text-center space-y-3"
-        >
-          <p className="text-[10px] font-mono uppercase tracking-widest text-primary">First Time?</p>
-          <h2 className="text-xl font-bold text-foreground">See it in 30 seconds</h2>
-          <p className="text-sm text-muted-foreground">
-            Watch a script become production software — instantly.
-          </p>
-          <Button size="lg" className="w-full gap-2" onClick={() => setActiveDemo("wow")}>
-            <Sparkles className="w-4 h-4" />
-            Show Me
-          </Button>
-          <p className="text-[10px] text-muted-foreground">No setup • Guaranteed result</p>
+      <div className="relative px-4 py-6 space-y-8">
+        {/* ── Hero / WOW CTA ── */}
+        <motion.div {...fadeUp} className="relative rounded-2xl border border-primary/20 overflow-hidden">
+          {/* Glow border effect */}
+          <div className="absolute inset-0 rounded-2xl" style={{ background: "var(--gradient-primary)", opacity: 0.06 }} />
+          <div className="relative p-6 text-center space-y-4">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-primary/20 bg-primary/10 text-[10px] font-mono uppercase tracking-widest text-primary">
+              <Sparkles className="w-3 h-3" />
+              Investor Preview
+            </div>
+            <h1 className="text-2xl font-black text-foreground tracking-tight leading-tight">
+              See it in<br />
+              <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>
+                30 seconds
+              </span>
+            </h1>
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
+              Watch a basic script transform into production software — instantly.
+            </p>
+            <Button size="lg" className="w-full gap-2 rounded-xl shadow-lg" style={{ boxShadow: "var(--shadow-glow)" }} onClick={() => setActiveDemo("wow")}>
+              <Sparkles className="w-4 h-4" />
+              Show Me
+            </Button>
+            <p className="text-[10px] text-muted-foreground/60 font-mono">No setup required · Guaranteed result</p>
+          </div>
         </motion.div>
 
         {/* ── What is CMPSBL ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.15 }}
-          className="space-y-3"
-        >
-          <h2 className="text-lg font-semibold text-foreground">What is CMPSBL?</h2>
+        <motion.div {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.1 }} className="space-y-4">
+          <h2 className="text-xl font-bold text-foreground tracking-tight">
+            A Cognitive <span className="text-primary">Operating System</span>
+          </h2>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            A cognitive OS that discovers, improves, and exports software autonomously — 40 AI primitives coordinating through a live mesh.
+            40 AI primitives that discover, improve, and export software capabilities autonomously — coordinating through a live mesh architecture.
           </p>
 
-          {/* Compact 3-step */}
-          <div className="flex items-center justify-between py-2 px-1">
+          {/* 3-step pipeline */}
+          <div className="flex items-center justify-between py-3">
             {["Discover", "Improve", "Export"].map((step, i) => (
               <div key={step} className="flex items-center gap-1.5">
-                <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
-                  <span className="text-[11px] font-mono text-primary font-bold">{i + 1}</span>
-                  <span className="text-[11px] font-medium text-foreground">{step}</span>
+                <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-card/60 backdrop-blur-sm border border-border/30 shadow-sm">
+                  <span className="text-xs font-mono font-bold text-primary">{i + 1}</span>
+                  <span className="text-xs font-semibold text-foreground">{step}</span>
                 </div>
-                {i < 2 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
+                {i < 2 && <ArrowRight className="w-3 h-3 text-muted-foreground/50" />}
               </div>
             ))}
           </div>
         </motion.div>
 
         {/* ── Core Demos ── */}
-        <section className="space-y-3">
-          <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Core</h2>
-            <div className="flex-1 h-px bg-border" />
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.2 }} className="space-y-4">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Core Capabilities</h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
           </div>
-          <div className="space-y-2.5">
-            {TIER_1_DEMOS.map((demo) => (
+          <div className="space-y-3">
+            {TIER_1_DEMOS.map((demo, idx) => (
               <MobileDemoCard
                 key={demo.title}
                 {...demo}
+                index={idx}
                 onClick={() => {
                   const id = DEMO_ROUTE_MAP[demo.title];
                   if (id) setActiveDemo(id);
@@ -98,19 +113,17 @@ export function ShowcaseMobile() {
               />
             ))}
           </div>
-        </section>
+        </motion.section>
 
-        {/* ── Supporting Demos (collapsible) ── */}
+        {/* ── Supporting Demos ── */}
         <section className="space-y-3">
           <button
             onClick={() => setShowTier2(!showTier2)}
-            className="flex items-center gap-2 w-full active:opacity-70"
+            className="flex items-center gap-3 w-full active:opacity-70"
           >
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-              Supporting
-            </h2>
-            <div className="flex-1 h-px bg-border" />
-            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${showTier2 ? "rotate-180" : ""}`} />
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold">Supporting</h2>
+            <div className="flex-1 h-px bg-border/50" />
+            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-300 ${showTier2 ? "rotate-180" : ""}`} />
           </button>
           <AnimatePresence>
             {showTier2 && (
@@ -118,12 +131,14 @@ export function ShowcaseMobile() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden space-y-2.5"
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                className="overflow-hidden space-y-3"
               >
-                {TIER_2_DEMOS.map((demo) => (
+                {TIER_2_DEMOS.map((demo, idx) => (
                   <MobileDemoCard
                     key={demo.title}
                     {...demo}
+                    index={idx}
                     onClick={() => {
                       const id = DEMO_ROUTE_MAP[demo.title];
                       if (id) setActiveDemo(id);
@@ -136,33 +151,38 @@ export function ShowcaseMobile() {
         </section>
 
         {/* ── Why CMPSBL Wins ── */}
-        <section className="rounded-xl border border-border bg-card p-5 space-y-3">
-          <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Why CMPSBL Wins</h2>
-          <div className="space-y-2">
-            {[
-              { label: "Self-discovering", ref: "Memory Stream" },
-              { label: "Self-improving", ref: "Evolution" },
-              { label: "Exportable intelligence", ref: "Ascension" },
-              { label: "Developer platform", ref: "Substrate" },
-              { label: "Governance + security", ref: "SEBA + DEFENSE" },
-            ].map(({ label, ref }) => (
-              <div key={label} className="flex items-center justify-between text-sm">
-                <span className="text-foreground">{label}</span>
-                <span className="text-[10px] font-mono text-muted-foreground">→ {ref}</span>
-              </div>
-            ))}
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.3 }}>
+          <div className="rounded-2xl border border-border/30 bg-card/60 backdrop-blur-sm p-5 space-y-4 shadow-sm">
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Why CMPSBL Wins</h2>
+            <div className="space-y-2.5">
+              {[
+                { label: "Self-discovering", desc: "Finds new software capabilities autonomously", color: "text-primary" },
+                { label: "Self-improving", desc: "AI patches and upgrades its own code", color: "text-neon-cyan" },
+                { label: "Exportable intelligence", desc: "Every discovery becomes a product", color: "text-neon-magenta" },
+                { label: "Developer platform", desc: "Build on the substrate, ship anywhere", color: "text-neon-purple" },
+                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "text-neon-amber" },
+              ].map(({ label, desc, color }) => (
+                <div key={label} className="flex items-start gap-3 py-1">
+                  <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-current ${color}`} />
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{label}</p>
+                    <p className="text-xs text-muted-foreground">{desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </section>
+        </motion.section>
 
-        <p className="text-center text-[10px] text-muted-foreground font-mono">
-          © 2025–2026 CMPSBL® • Live System
+        <p className="text-center text-[10px] text-muted-foreground/50 font-mono pt-4">
+          © 2025–2026 CMPSBL® · Live System · Confidential
         </p>
       </div>
     </div>
   );
 }
 
-// ─── Mobile Demo Card (compact, touch-friendly) ──────────────
+// ─── Mobile Demo Card ────────────────────────────────────────
 interface MobileDemoCardProps {
   title: string;
   subtitle: string;
@@ -170,52 +190,62 @@ interface MobileDemoCardProps {
   tier: 1 | 2 | 3;
   status: "live" | "in-progress" | "planned";
   what: string;
+  index: number;
   onClick: () => void;
 }
 
-function MobileDemoCard({ title, subtitle, icon, status, what, onClick }: MobileDemoCardProps) {
+function MobileDemoCard({ title, subtitle, icon, status, what, index, onClick }: MobileDemoCardProps) {
   return (
-    <button
+    <motion.button
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.06, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       onClick={onClick}
-      className="w-full rounded-xl border border-border bg-card p-4 text-left active:scale-[0.98] transition-transform space-y-2"
+      className="w-full rounded-xl border border-border/30 bg-card/60 backdrop-blur-sm p-4 text-left active:scale-[0.98] transition-all duration-200 space-y-2 shadow-sm hover:border-primary/20 hover:shadow-md"
+      style={{ transition: "var(--transition-smooth)" }}
     >
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+        <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-foreground text-sm truncate">{title}</h3>
-            <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded shrink-0 ${
-              status === "live" ? "bg-green-500/10 text-green-600 dark:text-green-400" : "bg-muted text-muted-foreground"
-            }`}>
-              {status}
-            </span>
+            <h3 className="font-bold text-foreground text-sm truncate">{title}</h3>
+            {status === "live" && (
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
+                live
+              </span>
+            )}
           </div>
           <p className="text-[11px] text-muted-foreground truncate">{subtitle}</p>
         </div>
-        <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0" />
+        <ArrowRight className="w-4 h-4 text-primary/50 shrink-0" />
       </div>
-      <p className="text-xs text-foreground/60 leading-relaxed line-clamp-2">{what}</p>
-    </button>
+      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{what}</p>
+    </motion.button>
   );
 }
 
 // ─── Demo Renderer ───────────────────────────────────────────
 function renderDemo(id: string, onBack: () => void) {
+  const BackBar = ({ label = "Back" }: { label?: string }) => (
+    <div className="sticky top-0 z-40 border-b border-border/40 bg-background/70 backdrop-blur-xl px-4 py-2.5 flex items-center justify-between">
+      <button onClick={onBack} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+        <ArrowLeft className="w-3.5 h-3.5" />
+        {label}
+      </button>
+      <span className="text-[10px] font-mono text-primary/70 uppercase tracking-wider">CMPSBL®</span>
+    </div>
+  );
+
   switch (id) {
     case "wow": return <WowDemo onBack={onBack} />;
     case "memory-stream":
       return (
-        <div className="min-h-screen bg-background">
-          <div className="border-b border-border bg-muted/30 px-4 py-2 flex items-center justify-between">
-            <button onClick={onBack} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back
-            </button>
-            <span className="text-[10px] font-mono text-muted-foreground">CORE</span>
-          </div>
-          <div className="px-4 py-6">
+        <div className="min-h-screen bg-background relative">
+          <div className="fixed inset-0 pointer-events-none" style={{ background: "var(--gradient-mesh)" }} />
+          <BackBar />
+          <div className="relative px-4 py-6">
             <MemoryStreamDemo />
           </div>
         </div>
