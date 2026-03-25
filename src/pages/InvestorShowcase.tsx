@@ -9,6 +9,9 @@ import { Lock, Zap, Brain, ArrowRight, Sparkles, Shield, Eye, ChevronDown, Activ
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "@/components/investor/WowDemo";
 import { MemoryStreamDemo } from "@/components/investor/MemoryStreamDemo";
+import { EvolutionDemo } from "@/components/investor/EvolutionDemo";
+import { AscensionDemo } from "@/components/investor/AscensionDemo";
+import { BuildSubstrateDemo } from "@/components/investor/BuildSubstrateDemo";
 
 const SHOWCASE_PIN = "2026";
 
@@ -209,7 +212,7 @@ const TIER_1_DEMOS: DemoCardProps[] = [
     title: "Memory Stream",
     subtitle: "Autonomous Discovery",
     icon: <Brain className="w-4 h-4 text-primary" />,
-    tier: 1, status: "planned",
+    tier: 1, status: "live",
     what: "The system observes its own behavior and discovers new software pipelines autonomously.",
     why: "No other system discovers its own capabilities. This is self-improving infrastructure.",
     value: "Every discovery is a potential product. The system generates its own IP.",
@@ -218,7 +221,7 @@ const TIER_1_DEMOS: DemoCardProps[] = [
     title: "Evolution",
     subtitle: "Self-Improving Code",
     icon: <Zap className="w-4 h-4 text-primary" />,
-    tier: 1, status: "planned",
+    tier: 1, status: "live",
     what: "System scans its codebase, AI generates real patches, validates, scores, approve/reject.",
     why: "Software that fixes and improves itself. The core promise.",
     value: "Reduces engineering costs, eliminates tech debt, scales without hiring.",
@@ -227,7 +230,7 @@ const TIER_1_DEMOS: DemoCardProps[] = [
     title: "Ascension",
     subtitle: "Before → After Transformation",
     icon: <Sparkles className="w-4 h-4 text-primary" />,
-    tier: 1, status: "planned",
+    tier: 1, status: "live",
     what: "Basic code enters. The 40-primitive matrix analyzes it. Enhanced, exportable software exits.",
     why: "The clearest proof of value — input basic code, output production software.",
     value: "Every developer becomes 10x. Every script becomes a product.",
@@ -236,7 +239,7 @@ const TIER_1_DEMOS: DemoCardProps[] = [
     title: "Build With the Substrate",
     subtitle: "Platform Proof",
     icon: <ArrowRight className="w-4 h-4 text-primary" />,
-    tier: 1, status: "planned",
+    tier: 1, status: "live",
     what: "One click generates a working app with memory, learning, and security already wired in.",
     why: "This bridges 'impressive system' to 'investable platform.' Apps export and run anywhere.",
     value: "Platform economics — every app built on the substrate is recurring revenue.",
@@ -298,6 +301,18 @@ const ShowcaseContent = () => {
         </div>
       </div>
     );
+  }
+
+  if (activeDemo === "evolution") {
+    return <EvolutionDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "ascension") {
+    return <AscensionDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "build-substrate") {
+    return <BuildSubstrateDemo onBack={() => setActiveDemo(null)} />;
   }
 
   return (
@@ -383,7 +398,14 @@ const ShowcaseContent = () => {
           <div className="space-y-3">
             {TIER_1_DEMOS.map((demo) => (
               <div key={demo.title} onClick={() => {
-                if (demo.title === "Memory Stream") setActiveDemo("memory-stream");
+                const demoMap: Record<string, string> = {
+                  "Memory Stream": "memory-stream",
+                  "Evolution": "evolution",
+                  "Ascension": "ascension",
+                  "Build With the Substrate": "build-substrate",
+                };
+                const demoId = demoMap[demo.title];
+                if (demoId) setActiveDemo(demoId);
               }}>
                 <DemoCard {...demo} />
               </div>
