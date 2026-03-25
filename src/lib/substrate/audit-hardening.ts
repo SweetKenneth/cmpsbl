@@ -53,12 +53,20 @@ export function validateChainIntegrity(): { valid: boolean; brokenAt: number; ch
 
 // ─── 2. Tamper Detection Engine ────────────────────────────────────────────
 const tamperEvents: Array<{ ts: number; index: number; severity: string }> = [];
+let tamperHead = 0;
+let tamperCount = 0;
+
 export function detectTamper(index: number): boolean {
-  // Re-verify chain at index to detect real tampering
   const integrity = validateChainIntegrity();
   if (!integrity.valid && integrity.brokenAt <= index) {
-    tamperEvents.push({ ts: Date.now(), index, severity: 'critical' });
-    if (tamperEvents.length > MAX_TAMPER_EVENTS) tamperEvents.splice(0, tamperEvents.length - MAX_TAMPER_EVENTS);
+    const entry = { ts: Date.now(), index, severity: 'critical' };
+    if (tamperCount < MAX_TAMPER_EVENTS) {
+      tamperEvents.push(entry);
+    } else {
+      tamperEvents[tamperHead] = entry;
+    }
+    tamperHead = (tamperHead + 1) % MAX_TAMPER_EVENTS;
+    tamperCount++;
     return true;
   }
   return false;
