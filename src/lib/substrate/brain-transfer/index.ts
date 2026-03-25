@@ -1171,9 +1171,6 @@ export async function getAllDependencyHealth(): Promise<DependencyHealth[]> {
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
-  const results: DependencyHealth[] = [];
-  for (const module of ALL_MODULES) {
-    results.push(await checkDependencyHealth(module));
-  }
-  return results;
+  // Parallelize all health checks
+  return Promise.all(ALL_MODULES.map(m => checkDependencyHealth(m)));
 }
