@@ -461,7 +461,7 @@ export function computeCompositeHealth(): CompositeHealthResult {
     }
   }
   
-  // Category breakdown
+  // Category breakdown — uses pre-computed weights for O(1) per category
   const categories: Record<PrimitiveCategory, { score: number; count: number }> = {
     organ: { score: 0, count: 0 },
     layer: { score: 0, count: 0 },
@@ -470,20 +470,18 @@ export function computeCompositeHealth(): CompositeHealthResult {
   };
   
   for (const cat of ['organ', 'layer', 'engine', 'agent'] as PrimitiveCategory[]) {
-    const members = ALL_PRIMITIVES.filter(p => p.category === cat);
-    const totalWeight = members.reduce((s, m) => s + m.weight, 0);
+    const cached = CATEGORY_WEIGHTS.get(cat)!;
     categories[cat] = {
-      count: members.length,
-      score: totalWeight > 0
-        ? Math.round(members.reduce((s, m) => s + (healthScores.get(m.id) ?? 100) * (m.weight / totalWeight), 0))
+      count: cached.members.length,
+      score: cached.totalWeight > 0
+        ? Math.round(cached.members.reduce((s, m) => s + (healthScores.get(m.id) ?? 100) * (m.weight / cached.totalWeight), 0))
         : 100,
     };
   }
   
-  // Subsystem aggregate
-  const subTotalWeight = SUBSYSTEMS.reduce((s, sub) => s + sub.weight, 0);
-  const subsystemScore = subTotalWeight > 0
-    ? Math.round(SUBSYSTEMS.reduce((s, sub) => s + (healthScores.get(sub.id) ?? 100) * (sub.weight / subTotalWeight), 0))
+  // Subsystem aggregate — uses pre-computed total weight
+  const subsystemScore = SUBSYSTEM_TOTAL_WEIGHT > 0
+    ? Math.round(SUBSYSTEMS.reduce((s, sub) => s + (healthScores.get(sub.id) ?? 100) * (sub.weight / SUBSYSTEM_TOTAL_WEIGHT), 0))
     : 100;
   
   // Open breakers
@@ -492,10 +490,15 @@ export function computeCompositeHealth(): CompositeHealthResult {
     if (b.state === 'open') openBreakers.push(id);
   }
   
+  // Single-pass count instead of creating a merged array + filter
   const totalTracked = ALL_PRIMITIVES.length + SUBSYSTEMS.length;
-  const healthyCount = [...ALL_PRIMITIVES, ...SUBSYSTEMS].filter(
-    e => (healthScores.get(e.id) ?? 100) >= 50
-  ).length;
+  let healthyCount = 0;
+  for (const p of ALL_PRIMITIVES) {
+    if ((healthScores.get(p.id) ?? 100) >= 50) healthyCount++;
+  }
+  for (const s of SUBSYSTEMS) {
+    if ((healthScores.get(s.id) ?? 100) >= 50) healthyCount++;
+  }
   
   return {
     compositeScore,
