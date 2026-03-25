@@ -1,6 +1,11 @@
 /**
  * Substrate — Module Dependency Health Matrix
  * Maps inter-module dependencies and detects cascading failure risks.
+ *
+ * Optimizations:
+ * - Pre-computed adjacency indexes for O(1) dependency/dependent lookups
+ * - Single-pass buildDependencyMatrix (no repeated graph scans)
+ * - Cached module ID set derived at init
  */
 
 export interface DependencyEdge {
@@ -62,59 +67,113 @@ const DEPENDENCY_GRAPH: DependencyEdge[] = [
   { from: 'evolution', to: 'brain', type: 'optional', weight: 0.4 },
 ];
 
+// ═══ Pre-computed adjacency indexes — O(1) lookups ═══════════════
+
+/** from → edges[] */
+const dependencyIndex = new Map<string, DependencyEdge[]>();
+/** to → edges[] */
+const dependentIndex = new Map<string, DependencyEdge[]>();
+/** All unique module IDs */
+const allModuleIds: string[] = [];
+/** Pre-computed cascade risk per module */
+const cascadeRiskCache = new Map<string, number>();
+
+// Build indexes once at module load
+(function buildIndexes() {
+  const moduleSet = new Set<string>();
+  for (const edge of DEPENDENCY_GRAPH) {
+    moduleSet.add(edge.from);
+    moduleSet.add(edge.to);
+
+    let deps = dependencyIndex.get(edge.from);
+    if (!deps) { deps = []; dependencyIndex.set(edge.from, deps); }
+    deps.push(edge);
+
+    let depts = dependentIndex.get(edge.to);
+    if (!depts) { depts = []; dependentIndex.set(edge.to, depts); }
+    depts.push(edge);
+  }
+  allModuleIds.push(...moduleSet);
+
+  // Pre-compute cascade risk for each module
+  for (const moduleId of allModuleIds) {
+    const dependents = dependentIndex.get(moduleId);
+    if (!dependents || dependents.length === 0) {
+      cascadeRiskCache.set(moduleId, 0);
+    } else {
+      let totalWeight = 0;
+      for (let i = 0; i < dependents.length; i++) totalWeight += dependents[i].weight;
+      cascadeRiskCache.set(moduleId, Math.min(1, totalWeight / dependents.length));
+    }
+  }
+})();
+
 /**
- * Get all dependencies for a module.
+ * Get all dependencies for a module — O(1) lookup.
  */
 export function getDependencies(moduleId: string): DependencyEdge[] {
-  return DEPENDENCY_GRAPH.filter(e => e.from === moduleId);
+  return dependencyIndex.get(moduleId) ?? [];
 }
 
 /**
- * Get all modules that depend on this module.
+ * Get all modules that depend on this module — O(1) lookup.
  */
 export function getDependents(moduleId: string): DependencyEdge[] {
-  return DEPENDENCY_GRAPH.filter(e => e.to === moduleId);
+  return dependentIndex.get(moduleId) ?? [];
 }
 
 /**
- * Calculate cascade risk: how many other modules would be affected
- * if this module fails, weighted by dependency criticality.
+ * Calculate cascade risk — O(1) from pre-computed cache.
  */
 export function calculateCascadeRisk(moduleId: string): number {
-  const dependents = getDependents(moduleId);
-  if (dependents.length === 0) return 0;
-
-  const totalWeight = dependents.reduce((s, d) => s + d.weight, 0);
-  const maxPossibleWeight = dependents.length; // max weight per edge is 1
-  return Math.min(1, totalWeight / Math.max(1, maxPossibleWeight));
+  return cascadeRiskCache.get(moduleId) ?? 0;
 }
 
 /**
- * Build the full dependency health matrix.
+ * Build the full dependency health matrix — single pass over cached module IDs.
  */
 export function buildDependencyMatrix(healthScores: Record<string, number>): DependencyHealthNode[] {
-  const moduleIds = new Set<string>();
-  DEPENDENCY_GRAPH.forEach(e => {
-    moduleIds.add(e.from);
-    moduleIds.add(e.to);
-  });
-
-  return Array.from(moduleIds).map(moduleId => ({
-    moduleId,
-    healthScore: healthScores[moduleId] ?? 100,
-    dependencies: getDependencies(moduleId).map(d => d.to),
-    dependents: getDependents(moduleId).map(d => d.from),
-    cascadeRisk: calculateCascadeRisk(moduleId),
-  }));
+  const result: DependencyHealthNode[] = new Array(allModuleIds.length);
+  for (let i = 0; i < allModuleIds.length; i++) {
+    const moduleId = allModuleIds[i];
+    const deps = dependencyIndex.get(moduleId);
+    const depts = dependentIndex.get(moduleId);
+    result[i] = {
+      moduleId,
+      healthScore: healthScores[moduleId] ?? 100,
+      dependencies: deps ? deps.map(d => d.to) : [],
+      dependents: depts ? depts.map(d => d.from) : [],
+      cascadeRisk: cascadeRiskCache.get(moduleId) ?? 0,
+    };
+  }
+  return result;
 }
 
 /**
  * Identify high-risk modules (high cascade risk + low health).
  */
 export function getHighRiskModules(healthScores: Record<string, number>): DependencyHealthNode[] {
-  return buildDependencyMatrix(healthScores)
-    .filter(n => n.cascadeRisk > 0.5 && n.healthScore < 70)
-    .sort((a, b) => b.cascadeRisk - a.cascadeRisk);
+  // Single-pass filter instead of buildDependencyMatrix + filter + sort
+  const result: DependencyHealthNode[] = [];
+  for (let i = 0; i < allModuleIds.length; i++) {
+    const moduleId = allModuleIds[i];
+    const risk = cascadeRiskCache.get(moduleId) ?? 0;
+    const health = healthScores[moduleId] ?? 100;
+    if (risk > 0.5 && health < 70) {
+      const deps = dependencyIndex.get(moduleId);
+      const depts = dependentIndex.get(moduleId);
+      result.push({
+        moduleId,
+        healthScore: health,
+        dependencies: deps ? deps.map(d => d.to) : [],
+        dependents: depts ? depts.map(d => d.from) : [],
+        cascadeRisk: risk,
+      });
+    }
+  }
+  // Sort by cascade risk descending
+  result.sort((a, b) => b.cascadeRisk - a.cascadeRisk);
+  return result;
 }
 
 /**

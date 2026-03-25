@@ -22,7 +22,11 @@ const recentFailures = new Array<FailureEvent>(MAX_FAILURES);
 let failureHead = 0;
 let failureCount = 0;
 const CASCADE_WINDOW_MS = 10_000;
-const cascadeHistory: CascadeChain[] = [];
+// Ring buffer for cascade history — no shift() eviction
+const CASCADE_CAP = 50;
+const cascadeHistory = new Array<CascadeChain>(CASCADE_CAP);
+let cascadeHead = 0;
+let cascadeCount = 0;
 const listeners = new Set<(chain: CascadeChain) => void>();
 
 function pushFailure(f: FailureEvent): void {
@@ -65,8 +69,10 @@ export function reportFailure(module: string, error: string): CascadeChain | nul
       confidence: Math.min(1, failedModules.length / 5),
       detectedAt: now,
     };
-    cascadeHistory.push(chain);
-    if (cascadeHistory.length > 50) cascadeHistory.shift();
+    // Ring buffer insertion — O(1), no shift()
+    cascadeHistory[cascadeHead] = chain;
+    cascadeHead = (cascadeHead + 1) % CASCADE_CAP;
+    if (cascadeCount < CASCADE_CAP) cascadeCount++;
     listeners.forEach(fn => fn(chain));
     return chain;
   }
@@ -80,7 +86,13 @@ export function onCascadeDetected(cb: (chain: CascadeChain) => void): () => void
 }
 
 export function getCascadeHistory(): CascadeChain[] {
-  return [...cascadeHistory];
+  // Read ring buffer in chronological order
+  const result: CascadeChain[] = new Array(cascadeCount);
+  for (let i = 0; i < cascadeCount; i++) {
+    const idx = (cascadeHead - cascadeCount + i + CASCADE_CAP) % CASCADE_CAP;
+    result[i] = cascadeHistory[idx];
+  }
+  return result;
 }
 
 export function getRecentFailureRate(windowMs = 60_000): Record<string, number> {
