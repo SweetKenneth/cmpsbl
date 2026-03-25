@@ -3068,9 +3068,9 @@ async function computeModuleHealth(
   const diagnostics: Record<string, unknown> = {};
 
   // Factor 1: Query latency (weight: 15%)
-  // Serverless-realistic thresholds: cold starts routinely hit 500-800ms
-  if (queryLatencyMs > 2000) { score -= 15; diagnostics.latency = 'critical'; }
-  else if (queryLatencyMs > 1000) { score -= 5; diagnostics.latency = 'slow'; }
+  // Serverless-realistic thresholds: cold starts routinely hit 1-3s, especially on first invocation
+  if (queryLatencyMs > 5000) { score -= 15; diagnostics.latency = 'critical'; }
+  else if (queryLatencyMs > 3000) { score -= 5; diagnostics.latency = 'slow'; }
   else { diagnostics.latency = 'nominal'; }
   diagnostics.query_latency_ms = queryLatencyMs;
 
