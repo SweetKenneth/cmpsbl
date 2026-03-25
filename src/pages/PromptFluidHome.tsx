@@ -48,7 +48,7 @@ const milestones = [
   { year: "2023", title: "AI Infrastructure Pivot", description: "Shifted focus to cognitive architecture and persistent memory systems." },
   { year: "2024", title: "Cognitive Platform Launched", description: "Launched the composable AI platform — 40 primitives across 4 categories, powered by persistent memory." },
   { year: "2025", title: "200k+ Lines of Code", description: "Grew to a full cognitive runtime with multi-provider AI routing and composable infrastructure." },
-  { year: "2026", title: "CONTACT Epoch Complete", description: "All 40 primitives upgraded to Ultimate architecture. Hot-swappable with circuit-breaker isolation and autonomous evolution." },
+  { year: "2026", title: "BELIEVER Epoch", description: "Health Engine v2, weighted monitoring across 51 entities, circuit breakers, auto-heal, and graceful degradation. The substrate believes in what it built." },
 ];
 
 const capabilities = [

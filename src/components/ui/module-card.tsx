@@ -20,7 +20,7 @@ export function ModuleCard({
 }: ModuleCardProps) {
   const statusColors = {
     active: "bg-neon-green/20 text-neon-green border-neon-green/30",
-    inactive: "bg-gray-500/20 text-gray-400 border-gray-500/30",
+    inactive: "bg-muted-foreground/20 text-muted-foreground border-muted-foreground/30",
     warning: "bg-neon-amber/20 text-neon-amber border-neon-amber/30",
   };
 
