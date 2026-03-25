@@ -147,19 +147,32 @@ const fadeUp = {
 
 export default function Roadmap() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <SEO
         title="Roadmap — 5-Phase Plan to Silicon | CMPSBL"
         description="CMPSBL's five-phase roadmap: Discovery (signal capture), Evolution (self-improvement), Specialization (domain nodes), Federation (multi-substrate), and Silicon (hardware export). What's next."
         canonical="https://cmpsbl.com/roadmap"
         keywords={["CMPSBL roadmap", "cognitive infrastructure", "AI evolution", "domain nodes", "self-improving software"]}
       />
+
+      {/* Ambient background — matches homepage */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <div
+          className="absolute -top-32 left-1/3 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+        />
+      </div>
+
       <PublicNav />
 
       {/* ── Hero ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
 
         <div className="relative container mx-auto px-4 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-4xl">

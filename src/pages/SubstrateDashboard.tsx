@@ -535,7 +535,7 @@ export default function SubstrateDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <SEO
         title="Dashboard — Primitive Health & Stream Metrics | CMPSBL"
         description="CMPSBL substrate dashboard: real-time primitive health across agents, engines, layers, and organs — Memory Stream crystallization metrics, mesh communication logs, governance status, and per-primitive telemetry at a glance."
@@ -543,9 +543,22 @@ export default function SubstrateDashboard() {
         keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "primitive architecture", "cortex"]}
       />
 
+      {/* Ambient background — matches homepage */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <div
+          className="absolute -top-48 -left-48 w-[700px] h-[700px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+        />
+      </div>
+
       <PublicNav />
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="container mx-auto px-4 py-8 md:py-12 relative z-10">
         {/* Header */}
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
@@ -557,7 +570,7 @@ export default function SubstrateDashboard() {
               <Activity className="w-6 h-6 md:w-7 md:h-7 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
+               <h1 className="text-2xl md:text-4xl font-black tracking-tight">CMPSBL Substrate</h1>
               <p className="text-sm md:text-base text-muted-foreground">40-Primitive Cognitive Architecture · Agents · Engines · Layers · Organs</p>
             </div>
           </div>
@@ -585,7 +598,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto">
 
         {/* Status Bar */}
-        <Card className="p-4 md:p-6 mb-6 md:mb-8 border-primary/20">
+        <Card className="p-4 md:p-6 mb-6 md:mb-8 border-primary/20 bg-card/60 backdrop-blur-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-3">
               {status?.healthy ? (
@@ -614,7 +627,7 @@ export default function SubstrateDashboard() {
         {/* Metrics */}
         {metrics && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 md:mb-8">
-            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
+             <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300 bg-card/60 backdrop-blur-sm shimmer-on-hover card-lift">
               <div className="flex items-center gap-3 md:gap-4">
                 <Brain className="w-6 h-6 md:w-8 md:h-8 text-neon-purple shrink-0" />
                 <div>
@@ -623,7 +636,7 @@ export default function SubstrateDashboard() {
                 </div>
               </div>
             </Card>
-            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
+             <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300 bg-card/60 backdrop-blur-sm shimmer-on-hover card-lift">
               <div className="flex items-center gap-3 md:gap-4">
                 <Shield className="w-6 h-6 md:w-8 md:h-8 text-destructive shrink-0" />
                 <div>
@@ -632,7 +645,7 @@ export default function SubstrateDashboard() {
                 </div>
               </div>
             </Card>
-            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
+            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300 bg-card/60 backdrop-blur-sm shimmer-on-hover card-lift">
               <div className="flex items-center gap-3 md:gap-4">
                 <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-neon-blue shrink-0" />
                 <div>

@@ -1368,14 +1368,28 @@ export default function Changelog() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
        <SEO
          title="Changelog — Every Update Since Day One | CMPSBL"
          description="The complete history of CMPSBL: every update, new feature, and architectural change organized by epoch. See what changed, why it changed, and what new capabilities emerged."
        />
+
+       {/* Ambient background — matches homepage */}
+       <div className="fixed inset-0 pointer-events-none z-0">
+         <div className="absolute inset-0 gradient-mesh opacity-80" />
+         <div
+           className="absolute -top-32 left-1/4 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
+           style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+         />
+         <div
+           className="absolute bottom-1/3 -right-20 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
+           style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+         />
+       </div>
+
        <PublicNav />
 
-       <main className="container mx-auto px-4 py-24 max-w-5xl">
+       <main className="container mx-auto px-4 py-24 max-w-5xl relative z-10">
          {/* Header */}
          <div className="text-center mb-20 space-y-6">
            <Badge variant="outline" className="px-4 py-1.5 border-primary/20 bg-primary/5 text-primary font-mono text-xs tracking-widest">

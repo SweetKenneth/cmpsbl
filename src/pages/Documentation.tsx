@@ -1316,7 +1316,7 @@ export default function Documentation() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <SEO
         title="Documentation — API & Module Reference | CMPSBL"
         description="Complete CMPSBL technical docs: BRAIN memory API, NEXUS routing, self-improvement cycles, DEFENSE security, EVOLUTION system, SDK guides, and full 40-module integration reference."
@@ -1324,6 +1324,19 @@ export default function Documentation() {
         image="https://cmpsbl.com/og/documentation.jpg"
         keywords={['CMPSBL documentation', 'platform docs', 'AI API reference', 'persistent memory API', 'AI module reference']}
       />
+
+      {/* Ambient background — matches homepage */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <div
+          className="absolute -top-32 right-1/4 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+        />
+        <div
+          className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+        />
+      </div>
 
       <PublicNav />
 
