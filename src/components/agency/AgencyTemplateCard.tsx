@@ -31,7 +31,7 @@ export function AgencyTemplateCard({ template, selected, onSelect }: AgencyTempl
       onClick={onSelect}
       className={cn(
         "cursor-pointer transition-all duration-300 rounded-xl p-4",
-        "backdrop-blur-xl bg-white/5 dark:bg-white/[0.03]",
+        "backdrop-blur-xl bg-muted/50 dark:bg-white/[0.03]",
         "border hover:shadow-lg",
         selected
           ? "border-neon-magenta/60 shadow-neon-magenta/20 bg-neon-magenta/10"
