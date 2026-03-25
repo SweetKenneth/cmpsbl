@@ -13,16 +13,30 @@ interface AuditEntry {
   hash: string;
 }
 
+const CHAIN_CAP = 10000;
 const chain: AuditEntry[] = [];
+let chainHead = 0;
+let chainCount = 0;
 
 async function sha256(input: string): Promise<string> {
   const encoded = new TextEncoder().encode(input);
   const buffer = await crypto.subtle.digest('SHA-256', encoded);
-  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+  const bytes = new Uint8Array(buffer);
+  // Pre-allocated hex lookup — avoids per-byte toString(16)
+  const hex: string[] = new Array(bytes.length);
+  for (let i = 0; i < bytes.length; i++) {
+    hex[i] = HEX_LUT[bytes[i]];
+  }
+  return hex.join('');
+}
+
+// Pre-computed hex lookup table
+const HEX_LUT: string[] = new Array(256);
+for (let i = 0; i < 256; i++) {
+  HEX_LUT[i] = i.toString(16).padStart(2, '0');
 }
 
 function syncHash(input: string): string {
-  // FNV-1a fallback for sync contexts
   let h = 0x811c9dc5;
   for (let i = 0; i < input.length; i++) {
     h ^= input.charCodeAt(i);
@@ -32,9 +46,11 @@ function syncHash(input: string): string {
 }
 
 export async function appendAudit(module: string, action: string, data: unknown): Promise<AuditEntry> {
-  const prevHash = chain.length > 0 ? chain[chain.length - 1].hash : '0'.repeat(64);
+  const prevHash = chainCount > 0
+    ? chain[(chainHead - 1 + (chainCount <= CHAIN_CAP ? chainCount : CHAIN_CAP)) % CHAIN_CAP]?.hash ?? '0'.repeat(64)
+    : '0'.repeat(64);
   const dataStr = typeof data === 'string' ? data : JSON.stringify(data);
-  const payload = `${chain.length}:${prevHash}:${module}:${action}:${dataStr}`;
+  const payload = `${chainCount}:${prevHash}:${module}:${action}:${dataStr}`;
 
   let hash: string;
   try {
@@ -44,7 +60,7 @@ export async function appendAudit(module: string, action: string, data: unknown)
   }
 
   const entry: AuditEntry = {
-    index: chain.length,
+    index: chainCount,
     timestamp: Date.now(),
     module,
     action,
@@ -53,8 +69,15 @@ export async function appendAudit(module: string, action: string, data: unknown)
     hash,
   };
 
-  chain.push(entry);
-  if (chain.length > 10000) chain.splice(0, 2000); // Keep bounded
+  // Ring-buffer insertion — O(1), no splice needed
+  if (chainCount < CHAIN_CAP) {
+    chain.push(entry);
+  } else {
+    chain[chainHead] = entry;
+  }
+  chainHead = (chainHead + 1) % CHAIN_CAP;
+  chainCount++;
+
   return entry;
 }
 
