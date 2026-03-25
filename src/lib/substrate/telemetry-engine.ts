@@ -153,8 +153,7 @@ class TelemetryEngineClient {
     correlationId?: string
   ): TelemetryEvent {
     // Apply sampling — drop debug/info noise during bursts
-    const { shouldSample } = require('./telemetry-sampler');
-    if (!shouldSample(severity)) {
+    if (!shouldSampleFn(severity)) {
       // Return a stub event without recording or persisting
       return {
         id: 'sampled-out',
