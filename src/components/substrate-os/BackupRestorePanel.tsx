@@ -445,7 +445,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
   if (!enabled) {
     return (
-      <Card className="border border-dashed border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+      <Card className="border border-dashed border-neon-amber/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
         <CardContent className="py-8">
           <div className="text-center">
             <Shield className="w-10 h-10 mx-auto mb-4 text-muted-foreground/30" />
@@ -478,7 +478,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             variant="outline"
             size="sm"
             onClick={() => refetch()}
-            className="h-8 gap-2 border-white/10 bg-white/5 hover:bg-white/10"
+            className="h-8 gap-2 border-border/30 bg-muted/50 hover:bg-muted/70"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Refresh
@@ -501,13 +501,13 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
-        <Card className="border border-neon-green/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-green/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-green/20 bg-muted/50 dark:bg-muted/30 transition-all duration-300 hover:border-neon-green/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Total Backups</p>
             <p className="text-2xl font-mono font-bold tabular-nums text-neon-green">{backups?.length || 0}</p>
           </CardContent>
         </Card>
-        <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-cyan/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-cyan/20 bg-muted/50 dark:bg-muted/30 transition-all duration-300 hover:border-neon-cyan/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Latest</p>
             <p className="text-sm font-mono text-neon-cyan">
@@ -515,20 +515,20 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </p>
           </CardContent>
         </Card>
-        <Card className="border border-neon-purple/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-purple/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-purple/20 bg-muted/50 dark:bg-muted/30 transition-all duration-300 hover:border-neon-purple/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Records</p>
             <p className="text-2xl font-mono font-bold tabular-nums text-neon-purple">{totalRecords.toLocaleString()}</p>
           </CardContent>
         </Card>
-        <Card className="border border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:border-neon-amber/30 hover:-translate-y-0.5 hover:shadow-sm">
+        <Card className="border border-neon-amber/20 bg-muted/50 dark:bg-muted/30 transition-all duration-300 hover:border-neon-amber/30 hover:-translate-y-0.5 hover:shadow-sm">
           <CardContent className="p-4">
             <p className="text-xs text-muted-foreground mb-1">Permanent</p>
             <p className="text-2xl font-mono font-bold tabular-nums text-neon-amber">{permanentBackups.length}</p>
           </CardContent>
         </Card>
         <Card className={cn(
-          "border bg-white/5 dark:bg-white/[0.02] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm",
+          "border bg-muted/50 dark:bg-muted/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm",
           hasFailsafe ? "border-neon-green/20 hover:border-neon-green/30" : "border-destructive/20 hover:border-destructive/30"
         )}>
           <CardContent className="p-4">
@@ -546,7 +546,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="overflow-x-auto -mx-3 px-3 sm:mx-0 sm:px-0 scrollbar-none">
-          <TabsList className="grid w-max min-w-full sm:w-full grid-cols-4 bg-white/5">
+          <TabsList className="grid w-max min-w-full sm:w-full grid-cols-4 bg-muted/50">
             <TabsTrigger value="backups" className="text-xs sm:text-sm px-2 sm:px-3">Backups</TabsTrigger>
             <TabsTrigger value="packages" className="gap-1 text-xs sm:text-sm px-2 sm:px-3">
               <ShoppingBag className="w-3 h-3 hidden sm:block" />
@@ -559,7 +559,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
         {/* Backups Tab */}
         <TabsContent value="backups" className="space-y-4">
-          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-border/30 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Clock className="w-4 h-4 text-neon-blue" />
@@ -588,7 +588,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                             ? "border-neon-amber/40 bg-neon-amber/5"
                             : idx === 0 
                               ? "border-neon-green/30 bg-neon-green/5" 
-                              : "border-white/10 bg-white/5 hover:bg-white/10"
+                              : "border-border/30 bg-muted/50 hover:bg-muted/70"
                         )}
                       >
                         <div className="flex items-start justify-between gap-4">
@@ -639,7 +639,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                             
                             <div className="flex flex-wrap gap-2 text-[10px]">
                               {backup.data_counts && Object.entries(backup.data_counts).slice(0, 4).map(([key, value]) => (
-                                <span key={key} className="px-2 py-0.5 rounded bg-white/5 text-muted-foreground">
+                                <span key={key} className="px-2 py-0.5 rounded bg-muted/50 text-muted-foreground">
                                   {key.replace(/_/g, ' ')}: <span className="text-foreground">{value}</span>
                                 </span>
                               ))}
@@ -742,7 +742,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         <TabsContent value="export" className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             {/* Export Options */}
-            <Card className="border border-neon-blue/20 bg-white/5">
+            <Card className="border border-neon-blue/20 bg-muted/50">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
                   <FileDown className="w-4 h-4 text-neon-blue" />
@@ -769,7 +769,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                   Safe for sharing or selling — recipient configures their own API keys
                 </p>
                 
-                <div className="border-t border-white/10 pt-3">
+                <div className="border-t border-border/30 pt-3">
                   <Button
                     onClick={() => exportBackup.mutate({ includeSecrets: true })}
                     disabled={exportBackup.isPending}
@@ -791,7 +791,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </Card>
 
             {/* Import Options */}
-            <Card className="border border-neon-green/20 bg-white/5">
+            <Card className="border border-neon-green/20 bg-muted/50">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Upload className="w-4 h-4 text-neon-green" />
@@ -825,7 +825,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
                   Select a .json export file from another project
                 </p>
                 
-                <div className="border-t border-white/10 pt-3">
+                <div className="border-t border-border/30 pt-3">
                   <div className="bg-neon-amber/10 border border-neon-amber/30 rounded-lg p-3">
                     <p className="text-xs text-neon-amber font-medium mb-1">Important</p>
                     <p className="text-[10px] text-muted-foreground">
@@ -844,7 +844,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
           <div className="grid md:grid-cols-2 gap-4">
             {/* Permanent Failsafe */}
             <Card className={cn(
-              "border bg-white/5",
+              "border bg-muted/50",
               hasFailsafe ? "border-neon-green/20" : "border-destructive/20"
             )}>
               <CardHeader>
@@ -934,7 +934,7 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
             </Card>
 
             {/* Auto-Prune */}
-            <Card className="border border-neon-purple/20 bg-white/5">
+            <Card className="border border-neon-purple/20 bg-muted/50">
               <CardHeader>
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Trash2 className="w-4 h-4 text-neon-purple" />

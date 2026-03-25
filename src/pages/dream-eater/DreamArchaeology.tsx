@@ -74,7 +74,7 @@ const DreamArchaeology = () => {
       curious: 'bg-neon-purple',
       agitated: 'bg-neon-amber',
       fractured: 'bg-destructive',
-      dormant: 'bg-gray-500',
+      dormant: 'bg-muted-foreground',
       feral: 'bg-neon-magenta',
     };
     return colors[mood] || 'bg-muted';

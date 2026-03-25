@@ -123,7 +123,7 @@ function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
     mastered: 'text-neon-green bg-green-50',
     progressing: 'text-neon-blue bg-blue-50',
     stale: 'text-neon-amber bg-neon-amber',
-    new: 'text-gray-600 bg-gray-50',
+    new: 'text-muted-foreground bg-muted',
   };
   
   return (
