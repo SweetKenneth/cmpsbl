@@ -19,15 +19,28 @@ const MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours TTL
 
 const deadLetters: DeadLetter[] = [];
 const MAX_DLQ_SIZE = 200;
+/** Index for O(1) lookup by ID */
+const idIndex = new Map<string, number>();
 
 /** Evict entries older than MAX_AGE_MS */
 function evictStale(): void {
   const cutoff = Date.now() - MAX_AGE_MS;
   let i = 0;
   while (i < deadLetters.length && new Date(deadLetters[i].timestamp).getTime() < cutoff) {
+    idIndex.delete(deadLetters[i].id);
     i++;
   }
-  if (i > 0) deadLetters.splice(0, i);
+  if (i > 0) {
+    deadLetters.splice(0, i);
+    rebuildIndex();
+  }
+}
+
+function rebuildIndex(): void {
+  idIndex.clear();
+  for (let i = 0; i < deadLetters.length; i++) {
+    idIndex.set(deadLetters[i].id, i);
+  }
 }
 
 /**
@@ -43,11 +56,14 @@ export function addDeadLetter(letter: Omit<DeadLetter, 'id' | 'timestamp'>): Dea
   };
 
   deadLetters.push(entry);
+  idIndex.set(entry.id, deadLetters.length - 1);
 
   // Evict oldest if over max
   while (deadLetters.length > MAX_DLQ_SIZE) {
-    deadLetters.shift();
+    const removed = deadLetters.shift()!;
+    idIndex.delete(removed.id);
   }
+  if (deadLetters.length < MAX_DLQ_SIZE * 0.9) rebuildIndex(); // Compact after bulk eviction
 
   return entry;
 }
@@ -56,11 +72,14 @@ export function addDeadLetter(letter: Omit<DeadLetter, 'id' | 'timestamp'>): Dea
  * Get all dead letters, optionally filtered by engine.
  */
 export function getDeadLetters(engine?: string, limit = 50): DeadLetter[] {
-  let result = [...deadLetters];
-  if (engine) {
-    result = result.filter(d => d.engine === engine);
+  const result: DeadLetter[] = [];
+  // Iterate in reverse for newest-first
+  for (let i = deadLetters.length - 1; i >= 0 && result.length < limit; i--) {
+    if (!engine || deadLetters[i].engine === engine) {
+      result.push(deadLetters[i]);
+    }
   }
-  return result.reverse().slice(0, limit);
+  return result;
 }
 
 /**
