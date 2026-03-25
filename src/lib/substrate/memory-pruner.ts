@@ -42,15 +42,15 @@ const CAPACITY = {
  * Generic tier pruner — eliminates code duplication across hot/warm/cold/glacier.
  */
 async function pruneTier(
-  table: 'brain_memory_hot' | 'brain_memory_warm' | 'brain_memory_cold' | 'brain_memory_archive',
+  table: string,
   tierName: string,
   capacity: number,
   clmSources?: string[],
 ): Promise<PruneResult> {
   const start = Date.now();
-  const { count: before } = await supabase
-    .from(table)
-    .select('id', { count: 'exact', head: true });
+  const { count: before } = await (supabase
+    .from(table as any)
+    .select('id', { count: 'exact', head: true }));
 
   const currentCount = before ?? 0;
   if (currentCount <= capacity) {
