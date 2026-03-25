@@ -95,9 +95,11 @@ export default function Enterprise() {
       />
       <PublicNav />
       <main className="min-h-screen bg-background pt-24 pb-16 relative">
-        {/* Ambient glow */}
+        {/* Ambient glow — matches homepage */}
         <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute top-40 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 60%)" }} />
+          <div className="absolute inset-0 gradient-mesh opacity-80" />
+          <div className="absolute top-40 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }} />
+          <div className="absolute bottom-40 left-1/4 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }} />
         </div>
 
         {/* Hero */}
