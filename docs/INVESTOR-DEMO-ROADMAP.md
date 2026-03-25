@@ -90,9 +90,10 @@ Visible on first load. These tell the story.
 
 | Demo | Purpose |
 |------|---------|
-| Memory Stream & Discovery | The system discovers capabilities autonomously |
-| Evolution | The system improves its own code |
-| Ascension | External code enters, enhanced code exits |
+| 1.1 Memory Stream & Discovery | The system discovers capabilities autonomously |
+| 1.2 Evolution | The system improves its own code |
+| 1.3 Ascension | External code enters, enhanced code exits |
+| 1.4 Build With the Substrate | Developers build apps with intelligence already wired in |
 
 ### Tier 2 — Supporting (Reinforces credibility)
 Visible on click/scroll. These prove depth.
@@ -214,6 +215,65 @@ No internal noise by default. Mechanics only on expand.
 - [ ] Export ZIP (original + runtime + docs + tests)
 - [ ] Before vs After comparison view
 
+### 1.4 — Build With the Substrate (PLATFORM PROOF)
+
+**WHAT:** A developer clicks one button and gets a working app — with memory, learning, and security already wired in — that exports and runs anywhere without the full substrate.  
+**WHY:** This is the bridge between "impressive system" and "investable platform." Without this, CMPSBL is a lab project. With this, it's an ecosystem.  
+**VALUE:** Platform economics. Every app built on the substrate = recurring revenue, network effects, and developer lock-in through capability, not dependency.  
+
+**CRITICAL: Do NOT use a real terminal.** This is a visual, guided panel — not a CLI walkthrough. Controlled, instant, zero-risk.
+
+**Demo flow (this order is mandatory):**
+
+#### Step 1 — Generate App (1 click)
+- Button: **"Generate Example App"**
+- Instantly produces a preloaded tool (no user input required)
+- Visible timing: "Scaffolded in X ms"
+
+#### Step 2 — Show Capabilities (Visual, Not Code)
+Display capability badges — NOT source code:
+- ✓ **Has Memory** — persists across runs
+- ✓ **Uses DREAM** — learns from usage
+- ✓ **Uses DEFENSE** — built-in safety
+- Capabilities first. Code second (expandable only).
+
+#### Step 3 — Run the App
+- Click **"Run"**
+- App responds to input
+- Send a second input → app **remembers the first**
+- This is the moment that proves persistence + intelligence
+
+#### Step 4 — Export
+- Click **"Export App"**
+- Show ZIP contents preview:
+  - `src/` — application code
+  - `runtime/` — mini substrate runtime
+  - `config/` — capability manifest
+  - `docs/` — generated documentation
+
+#### Step 5 — Runs Anywhere
+- Explicit callout: **"This runs outside CMPSBL — no dependency on the full system"**
+- This is the platform proof. Critical.
+
+**Optional: "Under the Hood" (collapsed by default)**
+
+Label: *"Powered by CMPSBL CLI (60+ commands)"*
+
+Contents (static, not interactive):
+```
+cmpsbl init --template memory-app
+cmpsbl capabilities add DREAM DEFENSE
+cmpsbl export --target standalone
+```
+No live terminal. No typing. No risk. Just legitimacy.
+
+**What needs building:**
+- [ ] Guided Build Panel component (5-step visual flow)
+- [ ] Preloaded app template with Memory + DREAM + DEFENSE wired
+- [ ] Interactive run simulation with persistence proof
+- [ ] ZIP preview (reuse Ascension export infrastructure)
+- [ ] Collapsed CLI reference section
+
 ---
 
 ## Phase 2 — Tier 2 Demos (Build Second)
@@ -291,6 +351,7 @@ One compressed, high-signal view — the mental anchor after exploration:
 │  Self-discovering software    → Memory Stream │
 │  Self-improving software      → Evolution     │
 │  Exportable intelligence      → Ascension     │
+│  Developer platform           → Build w/ Sub. │
 │  Built-in governance          → SEBA + DEFENSE│
 └──────────────────────────────────────────────┘
 ```
@@ -312,12 +373,13 @@ This sits at the bottom of the showcase — the summary they carry out of the ro
 | 2 | 1.1 — Memory Stream (story-first) | First demo in recommended path |
 | 3 | 1.2 — Evolution (outcome-first) | Core promise, needs edge function work |
 | 4 | 1.3 — Ascension (demo mode + upload) | The closer — guaranteed success path |
-| 5 | 4.1–4.3 — Speed, Confidence, Summary | Credibility signals throughout |
-| 6 | 2.1 — DREAM | First supporting demo |
-| 7 | 2.2 — DEFENSE | Enterprise credibility |
-| 8 | 2.3 — SEBA | Governance proof |
-| 9 | Phase 3 — Deep System | Only if time allows |
-| 10 | Phase 4.4 — Final Polish | Deck, comparisons, risk disclosure |
+| 5 | 1.4 — Build With the Substrate | Platform proof — bridges system to ecosystem |
+| 6 | 4.1–4.3 — Speed, Confidence, Summary | Credibility signals throughout |
+| 7 | 2.1 — DREAM | First supporting demo |
+| 8 | 2.2 — DEFENSE | Enterprise credibility |
+| 9 | 2.3 — SEBA | Governance proof |
+| 10 | Phase 3 — Deep System | Only if time allows |
+| 11 | Phase 4.4 — Final Polish | Deck, comparisons, risk disclosure |
 
 ---
 
@@ -355,7 +417,7 @@ An investor should be able to:
 1. Enter a PIN
 2. Click "See it in 30 seconds" → feel the WOW before thinking
 3. Read the orientation → understand the system in 10 seconds
-4. Follow Memory → Evolution → Ascension → grasp the full story
+4. Follow Memory → Evolution → Ascension → Build → grasp the full story
 5. See real data, real timing, real system health
 6. Optionally explore deeper (DREAM, DEFENSE, primitives, mesh)
 7. Land on "Why CMPSBL Wins" → carry a clear mental model out
@@ -378,6 +440,8 @@ Evolution → "It improves itself?"
   ↓
 Ascension → "I can USE this?"
   ↓
+Build With the Substrate → "Developers can build on this?"
+  ↓
 [Optional] DREAM / DEFENSE / SEBA → "This is enterprise-ready"
   ↓
 [Optional] Deep System → "This is... massive"
@@ -385,7 +449,7 @@ Ascension → "I can USE this?"
 "Why CMPSBL Wins" → ANCHOR
 ```
 
-Hook → Explain → Prove. In that order. Always.
+Hook → Explain → Prove → **Platform**. In that order. Always.
 
 ---
 
