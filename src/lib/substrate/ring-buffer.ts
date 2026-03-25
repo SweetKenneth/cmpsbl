@@ -62,9 +62,23 @@ export class RingBuffer<T> {
     }
   }
 
-  /** Find items matching a predicate */
+  /** Find items matching a predicate — single-pass, no intermediate array */
   filter(fn: (item: T) => boolean): T[] {
-    return this.toArray().filter(fn);
+    const result: T[] = [];
+    for (let i = 0; i < this._size; i++) {
+      const item = this.at(i)!;
+      if (fn(item)) result.push(item);
+    }
+    return result;
+  }
+
+  /** Count items matching a predicate — O(n) no allocation */
+  count(fn: (item: T) => boolean): number {
+    let c = 0;
+    for (let i = 0; i < this._size; i++) {
+      if (fn(this.at(i)!)) c++;
+    }
+    return c;
   }
 
   clear(): void {

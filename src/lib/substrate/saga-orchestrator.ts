@@ -40,12 +40,11 @@ export class Saga<C> {
         context = await step.execute(context);
         completed.push(step.name);
       } catch (err) {
-        // Compensate in reverse order
+        // Compensate in reverse order using index (O(1) lookup vs O(n) find)
         let compensated = true;
         for (let i = completed.length - 1; i >= 0; i--) {
-          const compStep = this.steps.find(s => s.name === completed[i]);
           try {
-            if (compStep) context = await compStep.compensate(context);
+            context = await this.steps[i].compensate(context);
           } catch {
             compensated = false;
           }

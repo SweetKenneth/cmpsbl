@@ -18,6 +18,7 @@
  */
 
 import { telemetryEngine } from './telemetry-engine';
+import { rippleDLQ } from './ripple-dlq';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
@@ -113,7 +114,8 @@ class ObservabilityMonitor {
     };
 
     this.bridgeLog.push(invocation);
-    if (this.bridgeLog.length > this.MAX_BRIDGE_LOG) {
+    // Efficient pruning: drop first half when over limit (amortized O(1))
+    if (this.bridgeLog.length > this.MAX_BRIDGE_LOG * 1.5) {
       this.bridgeLog = this.bridgeLog.slice(-this.MAX_BRIDGE_LOG);
     }
 
@@ -296,9 +298,8 @@ class ObservabilityMonitor {
     // Wire real DLQ depth via ESM-safe dynamic import
     let dlqDepth = 0;
     try {
-      const dlqModule = await import('@/lib/substrate/ripple-dlq');
-      const stats = (dlqModule as any).getDLQStats?.();
-      dlqDepth = stats?.total || 0;
+      const stats = rippleDLQ.getStats();
+      dlqDepth = stats?.totalEntries || 0;
     } catch {
       // DLQ module not available — safe fallback
     }

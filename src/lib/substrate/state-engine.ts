@@ -180,6 +180,8 @@ const SCHEMAS: Record<StateSchemaName, StateSchema> = {
 class StateEngineClient {
   private static instance: StateEngineClient;
   private stateStore: Record<StateSchemaName, Record<string, unknown>> = {} as any;
+  /** Pre-built field index for O(1) field lookups during validation */
+  private fieldIndex: Map<StateSchemaName, Map<string, StateField>> = new Map();
   private engineState: StateEngineState = {
     initialized: false,
     schemasLoaded: 0,
@@ -202,9 +204,15 @@ class StateEngineClient {
   }
 
   private initializeState(): void {
-    // Initialize all schemas with defaults
+    // Initialize all schemas with defaults and build field index
     for (const [name, schema] of Object.entries(SCHEMAS)) {
-      this.stateStore[name as StateSchemaName] = this.getDefaultState(schema);
+      const schemaName = name as StateSchemaName;
+      this.stateStore[schemaName] = this.getDefaultState(schema);
+      const fieldMap = new Map<string, StateField>();
+      for (const field of schema.fields) {
+        fieldMap.set(field.name, field);
+      }
+      this.fieldIndex.set(schemaName, fieldMap);
     }
     this.engineState.schemasLoaded = Object.keys(SCHEMAS).length;
     this.engineState.initialized = true;
@@ -353,7 +361,7 @@ class StateEngineClient {
       };
     }
 
-    const field = schema.fields.find(f => f.name === fieldName);
+    const field = this.fieldIndex.get(schemaName)?.get(fieldName);
     if (!field) {
       // Unknown field - warn but allow (backward compatibility)
       return {

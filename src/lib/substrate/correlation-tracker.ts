@@ -85,11 +85,15 @@ export function completeSpan(correlationId: string, spanId: string, success: boo
   const entry = correlations.get(correlationId);
   if (!entry) return;
 
-  const span = entry.spans.find(s => s.spanId === spanId);
-  if (span) {
-    span.completedAt = new Date().toISOString();
-    span.success = success;
-    if (metadata) span.metadata = metadata;
+  // Reverse search — most recent span is most likely target
+  const now = new Date().toISOString();
+  for (let i = entry.spans.length - 1; i >= 0; i--) {
+    if (entry.spans[i].spanId === spanId) {
+      entry.spans[i].completedAt = now;
+      entry.spans[i].success = success;
+      if (metadata) entry.spans[i].metadata = metadata;
+      return;
+    }
   }
 }
 

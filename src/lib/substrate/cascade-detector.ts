@@ -16,20 +16,37 @@ interface CascadeChain {
   detectedAt: number;
 }
 
-const recentFailures: FailureEvent[] = [];
-const CASCADE_WINDOW_MS = 10_000; // 10s correlation window
+// Use a ring-buffer style approach: write pointer + fixed array
 const MAX_FAILURES = 200;
+const recentFailures = new Array<FailureEvent>(MAX_FAILURES);
+let failureHead = 0;
+let failureCount = 0;
+const CASCADE_WINDOW_MS = 10_000;
 const cascadeHistory: CascadeChain[] = [];
 const listeners = new Set<(chain: CascadeChain) => void>();
 
+function pushFailure(f: FailureEvent): void {
+  recentFailures[failureHead] = f;
+  failureHead = (failureHead + 1) % MAX_FAILURES;
+  if (failureCount < MAX_FAILURES) failureCount++;
+}
+
+function getRecentInWindow(windowStart: number): FailureEvent[] {
+  const result: FailureEvent[] = [];
+  for (let i = 0; i < failureCount; i++) {
+    const idx = (failureHead - failureCount + i + MAX_FAILURES) % MAX_FAILURES;
+    const f = recentFailures[idx];
+    if (f && f.timestamp >= windowStart) result.push(f);
+  }
+  return result;
+}
+
 export function reportFailure(module: string, error: string): CascadeChain | null {
   const now = Date.now();
-  recentFailures.push({ module, timestamp: now, error });
-  if (recentFailures.length > MAX_FAILURES) recentFailures.splice(0, 50);
+  pushFailure({ module, timestamp: now, error });
 
-  // Check for cascade pattern
   const windowStart = now - CASCADE_WINDOW_MS;
-  const recent = recentFailures.filter(f => f.timestamp >= windowStart);
+  const recent = getRecentInWindow(windowStart);
 
   // Find distinct modules failing in sequence
   const failedModules: string[] = [];
@@ -69,8 +86,10 @@ export function getCascadeHistory(): CascadeChain[] {
 export function getRecentFailureRate(windowMs = 60_000): Record<string, number> {
   const cutoff = Date.now() - windowMs;
   const counts: Record<string, number> = {};
-  for (const f of recentFailures) {
-    if (f.timestamp >= cutoff) {
+  for (let i = 0; i < failureCount; i++) {
+    const idx = (failureHead - failureCount + i + MAX_FAILURES) % MAX_FAILURES;
+    const f = recentFailures[idx];
+    if (f && f.timestamp >= cutoff) {
       counts[f.module] = (counts[f.module] || 0) + 1;
     }
   }
@@ -78,7 +97,8 @@ export function getRecentFailureRate(windowMs = 60_000): Record<string, number> 
 }
 
 export function clearFailureHistory(): void {
-  recentFailures.length = 0;
+  failureHead = 0;
+  failureCount = 0;
 }
 
 export type { CascadeChain, FailureEvent };
