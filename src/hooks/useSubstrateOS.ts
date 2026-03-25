@@ -307,7 +307,7 @@ export function useSubstrateHealthScore() {
     nexus: () => nexus.status(),
     identity: () => identityMod.status(),
     sovereign: () => sovereignMod.status(),
-    atlas: () => cortex.status(),
+    atlas: () => atlasMod.status(),
     medic: () => medicMod.status(),
     relay: () => relayMod.status(),
     conscience: () => conscienceMod.status(),
