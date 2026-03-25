@@ -3079,11 +3079,11 @@ async function computeModuleHealth(
   else { diagnostics.data = 'populated'; }
   diagnostics.row_count = rowCount;
 
-  // Factor 3: Recent activity (weight: 20%)
-  // Modules that should have activity but don't are degraded
-  const activeModules = ['intent', 'nerve', 'audit', 'echo', 'economy', 'harvest'];
-  if (activeModules.includes(module) && recentActivity === 0) {
-    score -= 20; diagnostics.activity = 'stale';
+  // Factor 3: Recent activity (weight: 10%)
+  // Only penalize core routing modules for inactivity, not all modules
+  const highActivityModules = ['intent', 'nerve'];
+  if (highActivityModules.includes(module) && recentActivity === 0) {
+    score -= 10; diagnostics.activity = 'stale';
   } else {
     diagnostics.activity = recentActivity > 0 ? 'active' : 'idle';
   }
