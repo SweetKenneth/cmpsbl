@@ -163,15 +163,6 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     }
   }
 
-  // Check 2: Module's own recent health
-  const { data: ownEvents } = await supabase
-    .from('brain_events')
-    .select('outcome')
-    .eq('module', module)
-    .gte('created_at', new Date(Date.now() - 24 * 3600000).toISOString())
-    .order('created_at', { ascending: false })
-    .limit(20);
-
   const ownEvents = ownResult.data;
   if (ownEvents && ownEvents.length > 0) {
     let failCount = 0;
