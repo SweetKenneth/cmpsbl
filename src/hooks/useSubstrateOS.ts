@@ -351,8 +351,11 @@ export function useSubstrateHealthScore() {
       return s.running ? 100 : 80;
     },
     cdm: async () => {
-      // CDM runs on timer — check if auto-scheduler is active
-      return 80; // CDM doesn't expose a direct health API yet; assume operational
+      try {
+        const { getDiscoveryEngineHealth } = await import('@/lib/substrate/intent-mesh/discovery-engine');
+        const health = getDiscoveryEngineHealth();
+        return typeof health === 'number' ? health : (health?.score ?? 80);
+      } catch { return 70; }
     },
     seba: async () => {
       try {
