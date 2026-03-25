@@ -263,7 +263,7 @@ class LearningEngineClient {
       await supabase.from('brain_events').insert([{
         event_type: 'learning_stabilization',
         module: 'brain',
-        data: JSON.parse(JSON.stringify({ optimization: optResult, state: this.state })),
+        data: { optimization: optResult, state: this.state } as any,
       }]);
 
       return {
