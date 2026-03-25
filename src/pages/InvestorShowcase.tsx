@@ -279,6 +279,10 @@ const ShowcaseContent = () => {
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
 
   // ─── Individual demo views ───
+  if (activeDemo === "wow") {
+    return <WowDemo onBack={() => setActiveDemo(null)} />;
+  }
+
   if (activeDemo === "memory-stream") {
     return (
       <div className="min-h-screen bg-background">
