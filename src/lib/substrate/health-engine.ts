@@ -542,15 +542,15 @@ export function extractHealth(result: any): number {
 // ═══════════════════════════════════════════════════════════════
 
 export function getPrimitivesByCategory(cat: PrimitiveCategory): PrimitiveDefinition[] {
-  return ALL_PRIMITIVES.filter(p => p.category === cat);
+  return PRIMITIVES_BY_CATEGORY.get(cat) ?? [];
 }
 
 export function getPrimitivesByTier(tier: 1 | 2 | 3 | 4): PrimitiveDefinition[] {
-  return ALL_PRIMITIVES.filter(p => p.tier === tier);
+  return PRIMITIVES_BY_TIER.get(tier) ?? [];
 }
 
 export function getPrimitiveDef(id: string): PrimitiveDefinition | undefined {
-  return ALL_PRIMITIVES.find(p => p.id === id);
+  return PRIMITIVE_BY_ID.get(id);
 }
 
 export { shouldProbe };

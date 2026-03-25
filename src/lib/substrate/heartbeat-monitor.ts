@@ -55,25 +55,15 @@ export function getHeartbeat(moduleId: string): Heartbeat {
   }
 
   const elapsed = now - entry.lastBeat;
-  let status: 'alive' | 'slow' | 'silent' = 'alive';
-  if (elapsed > SILENT_THRESHOLD_MS) status = 'silent';
-  else if (elapsed > SLOW_THRESHOLD_MS) status = 'slow';
-
-  // Calculate average interval between beats
-  let avgInterval = 0;
-  if (entry.beats.length > 1) {
-    const intervals: number[] = [];
-    for (let i = 1; i < entry.beats.length; i++) {
-      intervals.push(entry.beats[i] - entry.beats[i - 1]);
-    }
-    avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-  }
+  const status: 'alive' | 'slow' | 'silent' =
+    elapsed > SILENT_THRESHOLD_MS ? 'silent' :
+    elapsed > SLOW_THRESHOLD_MS ? 'slow' : 'alive';
 
   return {
     moduleId,
     lastBeat: entry.lastBeat,
-    beatCount: entry.beats.length,
-    avgIntervalMs: Math.round(avgInterval),
+    beatCount: entry.beatCount,
+    avgIntervalMs: Math.round(entry.avgInterval),
     status,
   };
 }

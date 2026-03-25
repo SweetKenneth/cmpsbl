@@ -80,12 +80,13 @@ export function useLiveDreamSubmissions() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('dream_feeder_submissions')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    staleTime: 30000,
   });
 }
 
