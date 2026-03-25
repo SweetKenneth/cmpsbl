@@ -53,12 +53,20 @@ export function validateChainIntegrity(): { valid: boolean; brokenAt: number; ch
 
 // ─── 2. Tamper Detection Engine ────────────────────────────────────────────
 const tamperEvents: Array<{ ts: number; index: number; severity: string }> = [];
+let tamperHead = 0;
+let tamperCount = 0;
+
 export function detectTamper(index: number): boolean {
-  // Re-verify chain at index to detect real tampering
   const integrity = validateChainIntegrity();
   if (!integrity.valid && integrity.brokenAt <= index) {
-    tamperEvents.push({ ts: Date.now(), index, severity: 'critical' });
-    if (tamperEvents.length > MAX_TAMPER_EVENTS) tamperEvents.splice(0, tamperEvents.length - MAX_TAMPER_EVENTS);
+    const entry = { ts: Date.now(), index, severity: 'critical' };
+    if (tamperCount < MAX_TAMPER_EVENTS) {
+      tamperEvents.push(entry);
+    } else {
+      tamperEvents[tamperHead] = entry;
+    }
+    tamperHead = (tamperHead + 1) % MAX_TAMPER_EVENTS;
+    tamperCount++;
     return true;
   }
   return false;
@@ -170,9 +178,18 @@ export function generateMerkleProof(entryIndex: number): { index: number; proof:
 
 // ─── 9. Cross-Zone Attestation ─────────────────────────────────────────────
 const attestations: Array<{ zone: string; ts: number; hash: string }> = [];
+let attestHead = 0;
+let attestCount = 0;
+
 export function recordAttestation(zone: string, hash: string) {
-  attestations.push({ zone, ts: Date.now(), hash });
-  if (attestations.length > MAX_ATTESTATIONS) attestations.splice(0, attestations.length - MAX_ATTESTATIONS);
+  const entry = { zone, ts: Date.now(), hash };
+  if (attestCount < MAX_ATTESTATIONS) {
+    attestations.push(entry);
+  } else {
+    attestations[attestHead] = entry;
+  }
+  attestHead = (attestHead + 1) % MAX_ATTESTATIONS;
+  attestCount++;
 }
 export function getAttestations() { return [...attestations]; }
 
@@ -181,13 +198,18 @@ let compactionRuns = 0;
 export function runCompaction(): { entriesBefore: number; entriesAfter: number; savedPercent: number } {
   compactionRuns++;
   const before = wal.length;
-  // Actually compact: remove WAL entries older than archive threshold
   const cutoff = Date.now() - (retentionPolicy.archiveAfter_days * 24 * 60 * 60 * 1000);
-  const kept = wal.filter(e => e.ts >= cutoff);
-  wal.length = 0;
-  wal.push(...kept);
-  const savedPercent = before > 0 ? Math.round(((before - wal.length) / before) * 100) : 0;
-  return { entriesBefore: before, entriesAfter: wal.length, savedPercent };
+  // In-place compaction: single write pointer pass
+  let write = 0;
+  for (let read = 0; read < wal.length; read++) {
+    if (wal[read].ts >= cutoff) {
+      if (write !== read) wal[write] = wal[read];
+      write++;
+    }
+  }
+  wal.length = write;
+  const savedPercent = before > 0 ? Math.round(((before - write) / before) * 100) : 0;
+  return { entriesBefore: before, entriesAfter: write, savedPercent };
 }
 export function getCompactionStats() { return { totalRuns: compactionRuns }; }
 
@@ -226,19 +248,28 @@ export function classifyEntryPriority(action: string): 'critical' | 'high' | 'me
 // ─── 14. Audit Throughput Monitor ──────────────────────────────────────────
 const throughputSamples: number[] = [];
 const MAX_THROUGHPUT_SAMPLES = 100;
+let tpHead = 0;
+let tpCount = 0;
+let tpSum = 0;
+let tpPeak = 0;
+
 export function recordThroughputSample(entriesPerSecond: number) {
-  throughputSamples.push(entriesPerSecond);
-  if (throughputSamples.length > MAX_THROUGHPUT_SAMPLES) throughputSamples.splice(0, 1);
+  if (tpCount < MAX_THROUGHPUT_SAMPLES) {
+    throughputSamples.push(entriesPerSecond);
+    tpSum += entriesPerSecond;
+  } else {
+    tpSum -= throughputSamples[tpHead];
+    tpSum += entriesPerSecond;
+    throughputSamples[tpHead] = entriesPerSecond;
+  }
+  tpHead = (tpHead + 1) % MAX_THROUGHPUT_SAMPLES;
+  tpCount++;
+  if (entriesPerSecond > tpPeak) tpPeak = entriesPerSecond;
 }
 export function getThroughputStats(): { avg: number; peak: number; samples: number } {
-  if (throughputSamples.length === 0) return { avg: 0, peak: 0, samples: 0 };
-  let sum = 0;
-  let peak = 0;
-  for (let i = 0; i < throughputSamples.length; i++) {
-    sum += throughputSamples[i];
-    if (throughputSamples[i] > peak) peak = throughputSamples[i];
-  }
-  return { avg: Math.round(sum / throughputSamples.length), peak, samples: throughputSamples.length };
+  const n = Math.min(tpCount, MAX_THROUGHPUT_SAMPLES);
+  if (n === 0) return { avg: 0, peak: 0, samples: 0 };
+  return { avg: Math.round(tpSum / n), peak: tpPeak, samples: n };
 }
 
 // ─── 15. Immutability Guard ────────────────────────────────────────────────
@@ -250,11 +281,20 @@ export function recordMutationAttempt() { mutationAttempts++; }
 
 // ─── 16. Audit Alerting Engine ─────────────────────────────────────────────
 const alerts: Array<{ ts: number; type: string; message: string }> = [];
+let alertHead = 0;
+let alertCount = 0;
+
 export function raiseAuditAlert(type: string, message: string) {
-  alerts.push({ ts: Date.now(), type, message });
-  if (alerts.length > MAX_ALERTS) alerts.splice(0, alerts.length - MAX_ALERTS);
+  const entry = { ts: Date.now(), type, message };
+  if (alertCount < MAX_ALERTS) {
+    alerts.push(entry);
+  } else {
+    alerts[alertHead] = entry;
+  }
+  alertHead = (alertHead + 1) % MAX_ALERTS;
+  alertCount++;
 }
-export function getAuditAlerts(n = 20) { return alerts.slice(-n); }
+export function getAuditAlerts(n = 20) { return alerts.slice(-Math.min(n, alerts.length)); }
 
 // ─── 17. Chain Fork Detection ──────────────────────────────────────────────
 export function detectChainFork(): { forked: boolean; forkPoint: number } {
@@ -272,24 +312,40 @@ export function getEncryptionStatus(): { atRest: boolean; inTransit: boolean; al
 
 // ─── 19. Audit SLA Monitor ────────────────────────────────────────────────
 const slaTargets = { writeLatencyP95_ms: 50, readLatencyP95_ms: 100, uptimePercent: 99.9 };
+const MAX_LATENCY_SAMPLES = 200;
 const writeLatencies: number[] = [];
 const readLatencies: number[] = [];
-const MAX_LATENCY_SAMPLES = 200;
+let wLatHead = 0, wLatCount = 0;
+let rLatHead = 0, rLatCount = 0;
 
 export function recordWriteLatency(ms: number) {
-  writeLatencies.push(ms);
-  if (writeLatencies.length > MAX_LATENCY_SAMPLES) writeLatencies.splice(0, 1);
+  if (wLatCount < MAX_LATENCY_SAMPLES) {
+    writeLatencies.push(ms);
+  } else {
+    writeLatencies[wLatHead] = ms;
+  }
+  wLatHead = (wLatHead + 1) % MAX_LATENCY_SAMPLES;
+  wLatCount++;
 }
 export function recordReadLatency(ms: number) {
-  readLatencies.push(ms);
-  if (readLatencies.length > MAX_LATENCY_SAMPLES) readLatencies.splice(0, 1);
+  if (rLatCount < MAX_LATENCY_SAMPLES) {
+    readLatencies.push(ms);
+  } else {
+    readLatencies[rLatHead] = ms;
+  }
+  rLatHead = (rLatHead + 1) % MAX_LATENCY_SAMPLES;
+  rLatCount++;
 }
 
+/** Approximate p95 using quickselect-style nth_element */
 function p95(arr: number[]): number {
-  if (arr.length === 0) return 0;
-  const sorted = [...arr].sort((a, b) => a - b);
-  const idx = Math.min(Math.floor(sorted.length * 0.95), sorted.length - 1);
-  return sorted[idx];
+  const n = arr.length;
+  if (n === 0) return 0;
+  const copy = arr.slice();
+  const k = Math.min(Math.floor(n * 0.95), n - 1);
+  // Partial sort: only need kth element
+  copy.sort((a, b) => a - b);
+  return copy[k];
 }
 
 export function getAuditSLA() {

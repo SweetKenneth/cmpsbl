@@ -56,6 +56,9 @@ function fnvHash(input: string): string {
   return hash.toString(16).padStart(8, '0');
 }
 
+let checkHead = 0, checkCount = 0;
+let poisonHead = 0, poisonCount = 0;
+
 export function hardenMessage(
   messageId: string, payload: unknown, expectedChecksum?: string
 ): { passed: boolean; check: HardeningCheck; checksum: string } {
@@ -67,33 +70,44 @@ export function hardenMessage(
 
   // Poison detection
   let poisonDetected = false;
-  for (const pattern of POISON_PATTERNS) {
-    if (pattern.test(serialized)) {
-      poisonDetected = true;
-      break;
-    }
+  for (let i = 0; i < POISON_PATTERNS.length; i++) {
+    if (POISON_PATTERNS[i].test(serialized)) { poisonDetected = true; break; }
   }
 
   if (poisonDetected) {
+    const now = Date.now();
     const poison: PoisonMessage = {
-      id: `poison-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+      id: `poison-${now}-${Math.random().toString(36).slice(2, 6)}`,
       messageId, reason: 'Poison pattern detected in payload',
       payload: serialized.slice(0, 200),
-      quarantinedAt: Date.now(),
+      quarantinedAt: now,
     };
-    if (poisonQueue.length >= MAX_POISON) poisonQueue.shift();
-    poisonQueue.push(poison);
+    // Ring buffer insertion
+    if (poisonCount < MAX_POISON) {
+      poisonQueue.push(poison);
+    } else {
+      poisonQueue[poisonHead] = poison;
+    }
+    poisonHead = (poisonHead + 1) % MAX_POISON;
+    poisonCount++;
   }
 
   const passed = withinLimit && integrityValid && !poisonDetected;
+  const now = Date.now();
 
   const check: HardeningCheck = {
-    id: `hc-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    id: `hc-${now}-${Math.random().toString(36).slice(2, 6)}`,
     messageId, sizeBytes, withinLimit, integrityValid,
-    poisonDetected, sanitized: false, checkedAt: Date.now(),
+    poisonDetected, sanitized: false, checkedAt: now,
   };
-  if (checks.length >= MAX_CHECKS) checks.shift();
-  checks.push(check);
+  // Ring buffer insertion
+  if (checkCount < MAX_CHECKS) {
+    checks.push(check);
+  } else {
+    checks[checkHead] = check;
+  }
+  checkHead = (checkHead + 1) % MAX_CHECKS;
+  checkCount++;
 
   return { passed, check, checksum };
 }

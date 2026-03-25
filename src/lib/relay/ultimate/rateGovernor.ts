@@ -53,10 +53,14 @@ function getOrCreateBucket(sourceNode: string): RateBucket {
     burstAllowance: Math.floor(DEFAULT_MAX_TOKENS * BURST_MULTIPLIER),
   };
 
+  // Evict oldest bucket by single-pass min search instead of sort
   if (buckets.size >= MAX_BUCKETS) {
-    const oldest = [...buckets.entries()]
-      .sort((a, b) => a[1].lastRefill - b[1].lastRefill)[0];
-    if (oldest) buckets.delete(oldest[0]);
+    let oldestKey: string | null = null;
+    let oldestTime = Infinity;
+    for (const [k, b] of buckets) {
+      if (b.lastRefill < oldestTime) { oldestTime = b.lastRefill; oldestKey = k; }
+    }
+    if (oldestKey) buckets.delete(oldestKey);
   }
   buckets.set(sourceNode, bucket);
   return bucket;
