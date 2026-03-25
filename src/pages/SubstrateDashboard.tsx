@@ -598,7 +598,7 @@ export default function SubstrateDashboard() {
         <div className="max-w-6xl mx-auto">
 
         {/* Status Bar */}
-        <Card className="p-4 md:p-6 mb-6 md:mb-8 border-primary/20">
+        <Card className="p-4 md:p-6 mb-6 md:mb-8 border-primary/20 bg-card/60 backdrop-blur-sm">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-3">
               {status?.healthy ? (
