@@ -328,7 +328,7 @@ export default function Roadmap() {
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-4">
               Industry Verticals
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Domain nodes are specialized primitives that plug into every phase of the evolution timeline.
               Each vertical brings its own signal types, compliance requirements, and revenue surfaces.
             </p>
@@ -408,7 +408,7 @@ export default function Roadmap() {
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-6">
             Build on the Evolution
           </h2>
-          <p className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
             Start at DISCOVERY. Your memories carry forward through every phase — compounding capability, autonomy, and value.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

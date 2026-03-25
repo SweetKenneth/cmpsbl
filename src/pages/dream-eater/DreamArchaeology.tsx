@@ -103,7 +103,7 @@ const DreamArchaeology = () => {
                 Dream Archaeology
               </h1>
             </div>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               What the Dream-Eater has learned. Patterns extracted from the collective unconscious.
               No raw visions exposed — only the shapes that remain.
             </p>

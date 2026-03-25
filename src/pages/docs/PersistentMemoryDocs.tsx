@@ -84,7 +84,7 @@ const PersistentMemoryDocs = () => {
               <h1 className="text-3xl md:text-4xl font-bold mb-4">
                 Persistent Memory Quickstart
               </h1>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-base sm:text-lg text-muted-foreground">
                 This guide shows how to add persistent memory to an existing agent or app via the substrate REST API.
                 No rewrite. No vector DB setup. No prompt hacks.
               </p>

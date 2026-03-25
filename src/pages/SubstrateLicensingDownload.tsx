@@ -112,7 +112,7 @@ export default function SubstrateLicensingDownload() {
                 Run the full CMPSBL substrate on your own servers.
                 Download the LNCHBL distribution and deploy cognitive infrastructure in minutes.
               </p>
-              <p className="text-lg text-muted-foreground">
+              <p className="text-base sm:text-lg text-muted-foreground">
                 Free tier available. Upgrade for advanced cognitive capabilities.
               </p>
             </div>

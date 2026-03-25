@@ -201,7 +201,7 @@ export default function AgentDetail() {
                   <h1 className="text-3xl sm:text-4xl font-black tracking-tight">{agent.name}</h1>
                   <Badge variant="outline" className={cn("text-[11px] font-mono", TIER_ACCENT[tier])}>{tier}</Badge>
                 </div>
-                <p className="text-lg text-muted-foreground">{agent.subtitle}</p>
+                <p className="text-base sm:text-lg text-muted-foreground">{agent.subtitle}</p>
               </div>
             </div>
 

@@ -486,7 +486,7 @@ export default function ExperimentationLab() {
           <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Ready to Build Your Own?</h2>
-              <p className="text-lg text-muted-foreground mb-8">
+              <p className="text-base sm:text-lg text-muted-foreground mb-8">
                 Browse 100+ production-ready templates in the marketplace. Each template includes 
                 full source code, documentation, and integration guides.
               </p>

@@ -144,7 +144,7 @@ const FeedDreamEater = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-primary mb-4">
               This System Remembers
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               It changes when you speak to it. You are not feeding a model.
               <span className="block mt-1 text-foreground/80 font-medium">
                 You are feeding a mind.

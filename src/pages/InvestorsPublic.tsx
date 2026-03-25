@@ -296,7 +296,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-20 transition-all duration-1000 delay-600 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-semibold mb-4 text-foreground">Ready to Explore the Stream?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8">
             Download our investor deck, the user guide, or reach out directly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

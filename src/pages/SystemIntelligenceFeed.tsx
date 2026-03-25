@@ -371,7 +371,7 @@ function ObserverGate() {
             </span>
           </h1>
           
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8">
             Enter as an observer to watch autonomous intelligence evolve in real-time
           </p>
           

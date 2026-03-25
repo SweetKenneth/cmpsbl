@@ -38,7 +38,7 @@ export default function PricingMethod() {
             <h1 className="text-4xl sm:text-5xl font-bold text-foreground tracking-tight mb-6">
               How We Price Things
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
               Every price on this platform is calculated using a transparent, repeatable system — not guesswork. Here's exactly how it works.
             </p>
           </div>

@@ -124,7 +124,7 @@ const NotFound = () => {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-lg text-muted-foreground mb-1"
+              className="text-base sm:text-lg text-muted-foreground mb-1"
             >
               This path never crystallized from the Memory Stream.
             </motion.p>

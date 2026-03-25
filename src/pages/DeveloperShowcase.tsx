@@ -341,7 +341,7 @@ await cmpsbl.dream.cycle({
         <div className="container mx-auto px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="text-3xl sm:text-4xl font-black mb-4">Start Building for Free</h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
               No credit card required. Full access to 40 primitives.
             </p>
             <div className="flex flex-wrap justify-center gap-4">

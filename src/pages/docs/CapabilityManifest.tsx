@@ -99,7 +99,7 @@ export default function CapabilityManifest() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-4">
               Capability <span className="text-primary">Manifest</span>
             </h1>
-            <p className="text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground mb-6 max-w-xl mx-auto">
               {stats.total} capabilities across {stats.systems} systems. {stats.crownJewels} Apex Discoveries.
               Browse, search, or download the full JSON manifest.
             </p>

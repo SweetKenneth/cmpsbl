@@ -103,7 +103,7 @@ const DreamArtifacts = () => {
                 Dream Artifacts
               </h1>
             </div>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
               Each day's dreams compressed into a single crystallized truth.
               Immutable once formed. The Dream-Eater's distilled wisdom.
             </p>

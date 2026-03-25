@@ -344,7 +344,7 @@ function ProofModeContent() {
               <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
                 Proof Mode
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
                 A public, read-only surface that proves the promptfluid® substrate is real, live, 
                 and doing work — without giving the whole brain away.
               </p>
