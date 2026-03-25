@@ -211,12 +211,12 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
   let verdict: GateVerdict = 'pass';
   let reason: string | undefined;
 
-  if (depFailures.length > 0) {
+  if (depFailed) {
     verdict = 'block';
-    reason = `Dependencies unhealthy: ${depFailures.map(c => c.detail).join('; ')}`;
-  } else if (failedChecks.length > 0) {
+    reason = `Dependencies unhealthy: ${depFailDetails.join('; ')}`;
+  } else if (anyFailed) {
     verdict = 'warn';
-    reason = `Non-critical issues: ${failedChecks.map(c => c.detail).join('; ')}`;
+    reason = `Non-critical issues: ${failDetails.join('; ')}`;
   }
 
   const result: BootGateCheck = {
