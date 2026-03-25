@@ -246,6 +246,72 @@ export function useNexusRouteTest() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// HEAL ALL — Full system heal with health engine reset
+// ═══════════════════════════════════════════════════════════════
+
+export function useSystemHealAll() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (options?: { target?: string; force?: boolean }) => {
+      // Phase 1: Call system.heal on the edge function
+      const result = await system.heal(options?.target, options?.force ?? true) as any;
+
+      // Phase 2: Reset all health engine circuit breakers
+      const allBreakers = healthEngine.getBreakers();
+      for (const [id] of allBreakers) {
+        healthEngine.resetBreaker(id);
+      }
+
+      // Phase 3: Clear the auto-heal queue
+      healthEngine.clearHealQueue();
+
+      // Phase 4: Reset all primitives to 100 in health engine
+      for (const prim of healthEngine.ALL_PRIMITIVES) {
+        healthEngine.updatePrimitiveHealth(prim.id, 100);
+      }
+      for (const sub of healthEngine.SUBSYSTEMS) {
+        healthEngine.updatePrimitiveHealth(sub.id, 100);
+      }
+
+      // Phase 5: Reset core circuit breaker registry
+      try {
+        const { forceReset, getAllBreakers } = await import('@/core/resilience/circuitBreakerRegistry');
+        for (const b of getAllBreakers()) {
+          forceReset(b.moduleId);
+        }
+      } catch { /* registry may not be active */ }
+
+      // Phase 6: Reset autoblog circuit
+      try {
+        const { resetAutoblogCircuit } = await import('@/lib/autoblog/circuit');
+        await resetAutoblogCircuit();
+      } catch { /* autoblog may not be active */ }
+
+      // Phase 7: Reset discovery engine breaker
+      try {
+        const { healDiscoveryEngine } = await import('@/lib/substrate/intent-mesh/discovery-engine');
+        healDiscoveryEngine(true);
+      } catch { /* discovery engine may not be active */ }
+
+      return result;
+    },
+    onSuccess: (data) => {
+      // Invalidate everything so the dashboard refreshes with healed state
+      queryClient.invalidateQueries();
+      const { toast } = require('sonner');
+      toast.success('System heal complete', {
+        description: `All circuit breakers reset, ${data?.healed_modules?.length ?? 'all'} modules restored to 100%`,
+      });
+    },
+    onError: (error) => {
+      const { toast } = require('sonner');
+      toast.error(`Heal failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    },
+  });
+}
+
+
 // GOVERNOR HOOKS — Admin & safety controls
 // ═══════════════════════════════════════════════════════════════
 
