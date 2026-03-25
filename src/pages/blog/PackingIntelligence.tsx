@@ -27,7 +27,7 @@ export default function PackingIntelligence() {
         </>
       }
     >
-      <p className="text-lg leading-relaxed">Individual capabilities solved individual problems. But customers didn't want to assemble solutions from components — they wanted solutions. "I need a complete security posture" not "I need a bot detector, a vulnerability scanner, and an audit logger."</p>
+      <p className="text-sm sm:text-base leading-relaxed">Individual capabilities solved individual problems. But customers didn't want to assemble solutions from components — they wanted solutions. "I need a complete security posture" not "I need a bot detector, a vulnerability scanner, and an audit logger."</p>
 
       <p>We were watching the same pattern repeat across customer segments. Security teams deployed 4-6 related capabilities. Content teams deployed 3-5. Data teams deployed 5-8. Each time, they had to discover the capabilities individually, verify compatibility between them, and configure integrations manually. It was the <Link to="/blog/the-marketplace" className="text-primary hover:underline">Store</Link> working against itself — offering everything à la carte when most customers wanted the tasting menu.</p>
 

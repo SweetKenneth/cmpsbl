@@ -27,7 +27,7 @@ export default function TheContactEpoch() {
         </>
       }
     >
-      <p className="text-lg leading-relaxed">We've named our development eras after the defining capability that shaped them. The <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA epoch</Link> was about survival — stripping the substrate to its essentials and rebuilding with discipline. The ARCHITECT epoch was about scale — forty nodes, the Store, Agencies, the Scanner. Now we're entering the CONTACT epoch — and it's defined by something we didn't plan.</p>
+      <p className="text-sm sm:text-base leading-relaxed">We've named our development eras after the defining capability that shaped them. The <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA epoch</Link> was about survival — stripping the substrate to its essentials and rebuilding with discipline. The ARCHITECT epoch was about scale — forty nodes, the Store, Agencies, the Scanner. Now we're entering the CONTACT epoch — and it's defined by something we didn't plan.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What Changed</h2>
       <p>In two weeks, three things happened that individually would have been significant. Together, they changed how we think about the substrate entirely.</p>

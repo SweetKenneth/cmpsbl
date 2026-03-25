@@ -27,7 +27,7 @@ export default function MappingWhatWeBuilt() {
         </>
       }
     >
-      <p className="text-lg leading-relaxed">By June, we had twelve nodes running. New team members would ask "what does this node connect to?" and get different answers from different engineers. Our own architecture had outgrown our understanding of it.</p>
+      <p className="text-sm sm:text-base leading-relaxed">By June, we had twelve nodes running. New team members would ask "what does this node connect to?" and get different answers from different engineers. Our own architecture had outgrown our understanding of it.</p>
 
       <p>This wasn't just an onboarding problem. During incident response, we'd waste twenty minutes tracing call chains manually before we could even begin fixing the issue. We had monitoring through <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">VISION</Link>, but VISION told you what was happening — not why. Understanding "why" required knowing the architecture, and our architecture documentation was perpetually two weeks out of date.</p>
 

@@ -44,7 +44,7 @@ export default function TheFirstLineOfCode() {
         </>
       }
     >
-      <p className="text-lg leading-relaxed">In December 2024, we sat in front of a blank editor and asked a question that wouldn't leave us alone: what if AI infrastructure wasn't something you rented by the token, but something you owned — something that could think?</p>
+      <p className="text-sm sm:text-base leading-relaxed">In December 2024, we sat in front of a blank editor and asked a question that wouldn't leave us alone: what if AI infrastructure wasn't something you rented by the token, but something you owned — something that could think?</p>
 
       <p>The AI landscape at the time was clear in its limitations. You could call an API. You could get a response. But the moment the request ended, everything was gone. No memory. No learning. No continuity. Every interaction started from zero. The <a href="https://arxiv.org/abs/2307.03109" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">lost-in-the-middle</a> problem was well-documented — models couldn't even use what was in their context, let alone remember across sessions.</p>
 
