@@ -12,6 +12,9 @@ import { MemoryStreamDemo } from "@/components/investor/MemoryStreamDemo";
 import { EvolutionDemo } from "@/components/investor/EvolutionDemo";
 import { AscensionDemo } from "@/components/investor/AscensionDemo";
 import { BuildSubstrateDemo } from "@/components/investor/BuildSubstrateDemo";
+import { DreamEngineDemo } from "@/components/investor/DreamEngineDemo";
+import { DefenseLayerDemo } from "@/components/investor/DefenseLayerDemo";
+import { SebaPipelineDemo } from "@/components/investor/SebaPipelineDemo";
 
 const SHOWCASE_PIN = "2026";
 
@@ -251,7 +254,7 @@ const TIER_2_DEMOS: DemoCardProps[] = [
     title: "DREAM Engine",
     subtitle: "Background Learning",
     icon: <Eye className="w-4 h-4 text-primary" />,
-    tier: 2, status: "planned",
+    tier: 2, status: "live",
     what: "The system consolidates learning during idle time — dream cycles, memory synthesis.",
     why: "Autonomous background improvement. No other system does this.",
     value: "Compound intelligence — the system gets smarter every day without intervention.",
@@ -260,7 +263,7 @@ const TIER_2_DEMOS: DemoCardProps[] = [
     title: "DEFENSE Layer",
     subtitle: "Enterprise Security",
     icon: <Shield className="w-4 h-4 text-primary" />,
-    tier: 2, status: "planned",
+    tier: 2, status: "live",
     what: "Live threat score calculation. O(1) Trie-based evaluation, anomaly detection.",
     why: "Enterprise-grade security baked into the substrate, not bolted on.",
     value: "Security is the #1 enterprise concern. Prerequisite for adoption.",
@@ -269,7 +272,7 @@ const TIER_2_DEMOS: DemoCardProps[] = [
     title: "SEBA Pipeline",
     subtitle: "Governance Rails",
     icon: <Activity className="w-4 h-4 text-primary" />,
-    tier: 2, status: "planned",
+    tier: 2, status: "live",
     what: "7-gate promotion pipeline. Real pass/fail history.",
     why: "AI mutations can't bypass governance. Safety rails are structural.",
     value: "Regulatory compliance, auditability, risk mitigation.",
@@ -313,6 +316,18 @@ const ShowcaseContent = () => {
 
   if (activeDemo === "build-substrate") {
     return <BuildSubstrateDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "dream-engine") {
+    return <DreamEngineDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "defense-layer") {
+    return <DefenseLayerDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "seba-pipeline") {
+    return <SebaPipelineDemo onBack={() => setActiveDemo(null)} />;
   }
 
   return (
@@ -434,7 +449,17 @@ const ShowcaseContent = () => {
                 className="overflow-hidden space-y-3"
               >
                 {TIER_2_DEMOS.map((demo) => (
-                  <DemoCard key={demo.title} {...demo} />
+                  <div key={demo.title} onClick={() => {
+                    const demoMap: Record<string, string> = {
+                      "DREAM Engine": "dream-engine",
+                      "DEFENSE Layer": "defense-layer",
+                      "SEBA Pipeline": "seba-pipeline",
+                    };
+                    const demoId = demoMap[demo.title];
+                    if (demoId) setActiveDemo(demoId);
+                  }}>
+                    <DemoCard {...demo} />
+                  </div>
                 ))}
               </motion.div>
             )}
