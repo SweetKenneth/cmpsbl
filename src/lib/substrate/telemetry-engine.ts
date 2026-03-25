@@ -453,12 +453,6 @@ class TelemetryEngineClient {
     }
     return result.reverse();
   }
-    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
-      const t = this.eventLog[i].type;
-      if (t === 'governance_block' || t === 'governance_override') result.push(this.eventLog[i]);
-    }
-    return result.reverse();
-  }
 
   /**
    * Get current session ID
