@@ -8,68 +8,70 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowRight, Check, Clock, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Preloaded "before" script — simple, relatable
-const BEFORE_CODE = `// basic-auth.js
-function login(user, pass) {
-  if (user === "admin" && pass === "1234") {
-    return { ok: true };
-  }
-  return { ok: false };
+// Preloaded "before" script — simple, relatable (different from Ascension demo)
+const BEFORE_CODE = `// logger.js
+function log(msg) {
+  console.log(msg);
 }
 
-module.exports = { login };`;
+function getUser() {
+  return fetch('/api/user')
+    .then(r => r.json());
+}
+
+module.exports = { log, getUser };`;
 
 // Preloaded "after" — what the substrate produces
-const AFTER_CODE = `// auth-service.ts — Enhanced by CMPSBL Substrate
+const AFTER_CODE = `// telemetry-service.ts — Enhanced by CMPSBL Substrate
 import { MemoryBind } from '@cmpsbl/runtime';
 import { DefenseGate } from '@cmpsbl/runtime/defense';
+import { AuditTrail } from '@cmpsbl/governance';
 
-interface AuthResult {
-  success: boolean;
-  token?: string;
-  threat_score: number;
-  attempts_remaining: number;
+interface TelemetryEvent {
+  level: 'info' | 'warn' | 'error';
+  message: string;
+  context: Record<string, unknown>;
+  timestamp: number;
+  traceId: string;
 }
 
-@MemoryBind({ persist: true, ttl: '24h' })
-@DefenseGate({ maxAttempts: 5, lockoutMs: 300000 })
-export class AuthService {
-  private memory = MemoryBind.create('auth');
+@MemoryBind({ persist: true, ttl: '7d' })
+export class TelemetryService {
+  private memory = MemoryBind.create('telemetry');
+  private audit = new AuditTrail('telemetry');
 
-  async authenticate(
-    credentials: { user: string; pass: string }
-  ): Promise<AuthResult> {
-    // DEFENSE: Rate limiting + threat scoring
-    const threat = await this.assessThreat(credentials);
-    if (threat.score > 0.7) {
-      return { success: false, threat_score: threat.score, attempts_remaining: 0 };
-    }
-
-    // Validate against secure store (not hardcoded)
-    const valid = await this.validateSecure(credentials);
-
-    // MEMORY: Track auth patterns for anomaly detection
-    this.memory.record('auth_attempt', {
-      success: valid,
-      timestamp: Date.now(),
-      risk: threat.score,
+  async log(event: TelemetryEvent): Promise<void> {
+    // DEFENSE: Rate-limit log ingestion
+    await DefenseGate.evaluate({
+      actor: event.traceId,
+      action: 'log.write',
+      rateLimit: { window: '1m', max: 100 },
     });
 
-    return {
-      success: valid,
-      token: valid ? this.issueToken(credentials.user) : undefined,
-      threat_score: threat.score,
-      attempts_remaining: threat.remaining,
-    };
+    // MEMORY: Persist with TTL + anomaly baseline
+    await this.memory.append('events', event);
+    this.audit.record('event_logged', {
+      level: event.level,
+      traceId: event.traceId,
+    });
+  }
+
+  async getUser(id: string) {
+    // Cached + authenticated fetch
+    return this.memory.cachedFetch(\`user:\${id}\`, {
+      url: '/api/user',
+      ttl: '5m',
+      retry: { attempts: 3, backoff: 'exponential' },
+    });
   }
 }`;
 
 const ENHANCEMENTS = [
-  { primitive: "DEFENSE", label: "Threat scoring + rate limiting", ms: 180 },
-  { primitive: "MEMORY", label: "Persistent auth pattern tracking", ms: 240 },
-  { primitive: "ENCODE", label: "TypeScript + type safety", ms: 320 },
-  { primitive: "GOVERNANCE", label: "No hardcoded credentials", ms: 160 },
-  { primitive: "FORGE", label: "Exportable artifact with runtime", ms: 340 },
+  { primitive: "DEFENSE", label: "Rate limiting + ingestion control", ms: 180 },
+  { primitive: "MEMORY", label: "Persistent event store with TTL", ms: 240 },
+  { primitive: "ENCODE", label: "TypeScript + strict interfaces", ms: 320 },
+  { primitive: "GOVERNANCE", label: "Full audit trail on every write", ms: 160 },
+  { primitive: "FORGE", label: "Exportable service with runtime", ms: 340 },
 ];
 
 const TOTAL_MS = 1240;
@@ -116,8 +118,8 @@ export const WowDemo = ({ onBack }: { onBack: () => void }) => {
               {/* Before */}
               <div className="rounded-xl border border-border bg-card overflow-hidden">
                 <div className="px-4 py-2 border-b border-border bg-muted/30 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-muted-foreground">INPUT — basic-auth.js</span>
-                  <span className="text-[10px] font-mono text-destructive">3 vulnerabilities · 0 tests · no types</span>
+                  <span className="text-[10px] font-mono text-muted-foreground">INPUT — logger.js</span>
+                  <span className="text-[10px] font-mono text-destructive">No error handling · no types · no persistence</span>
                 </div>
                 <pre className="p-4 text-xs font-mono text-foreground/80 overflow-x-auto leading-relaxed">
                   {BEFORE_CODE}

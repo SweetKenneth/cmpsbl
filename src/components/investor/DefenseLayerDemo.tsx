@@ -3,7 +3,7 @@
  * Live threat scoring, Trie-based evaluation, anomaly detection.
  * Preloaded data for investor presentation.
  */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, Shield, AlertTriangle, CheckCircle, XCircle,
