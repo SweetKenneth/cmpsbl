@@ -365,7 +365,7 @@ export function useSubstrateHealthScore() {
       try {
         const { getAutoblogStatus } = await import('@/lib/autoblog');
         const s = await getAutoblogStatus();
-        return s.circuit_ok ? (s.enabled ? 100 : 70) : 30;
+        return s.circuit.canProceed ? (s.ok ? 100 : 70) : 30;
       } catch { return 50; }
     },
     agency: async () => {
