@@ -64,6 +64,7 @@ export async function executeWarmUpSequence(
   initFn: (moduleId: string) => Promise<void>
 ): Promise<WarmUpReport> {
   const results: WarmUpResult[] = [];
+  const failedModules: string[] = [];
   const start = Date.now();
   let completedStages = 0;
 
@@ -87,13 +88,14 @@ export async function executeWarmUpSequence(
     );
 
     for (const r of stageResults) {
-      if (r.status === 'fulfilled') results.push(r.value);
+      if (r.status === 'fulfilled') {
+        results.push(r.value);
+        if (!r.value.success) failedModules.push(r.value.module);
+      }
     }
 
     completedStages++;
   }
-
-  const failedModules = results.filter(r => !r.success).map(r => r.module);
 
   return {
     totalDurationMs: Date.now() - start,
