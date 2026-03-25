@@ -198,8 +198,11 @@ export function calculateSalience(input: SalienceInput): SalienceResult {
   if (input.query_context && input.content) {
     const queryWords = new Set(input.query_context.toLowerCase().split(/\s+/).filter(w => w.length > 2));
     if (queryWords.size > 0) {
-      const contentWords = input.content.toLowerCase().split(/\s+/);
-      const overlap = contentWords.filter(w => queryWords.has(w)).length;
+      const contentLower = input.content.toLowerCase();
+      let overlap = 0;
+      for (const w of queryWords) {
+        if (contentLower.includes(w)) overlap++;
+      }
       relevance = Math.min(1, overlap / queryWords.size);
     }
   }

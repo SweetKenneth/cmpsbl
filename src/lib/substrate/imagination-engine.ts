@@ -143,8 +143,20 @@ class ImaginationEngineClient {
       const sourceMemories: string[] = [];
 
       for (const item of latentContent) {
-        const words = item.content.split(/\s+/).filter(w => w.length > 4);
-        concepts.push(...words.slice(0, 3));
+        // Avoid creating large temporary arrays with split+filter+slice
+        let wordCount = 0;
+        let start = 0;
+        const content = item.content;
+        for (let i = 0; i <= content.length && wordCount < 3; i++) {
+          if (i === content.length || /\s/.test(content[i])) {
+            const word = content.slice(start, i);
+            if (word.length > 4) {
+              concepts.push(word);
+              wordCount++;
+            }
+            start = i + 1;
+          }
+        }
         sourceMemories.push(item.id);
       }
 

@@ -409,13 +409,12 @@ export class ReasoningEngineClient {
     const startTime = Date.now();
     const stages: ReasoningResult[] = [];
 
-    // Stage 1: Causal Mapping
-    const causalResult = await this.causalMapping(input);
-    stages.push(causalResult);
-
-    // Stage 2: Dependency Analysis
-    const depResult = await this.dependencyAnalysis(input);
-    stages.push(depResult);
+    // Stage 1+2: Causal Mapping and Dependency Analysis are independent — run in parallel
+    const [causalResult, depResult] = await Promise.all([
+      this.causalMapping(input),
+      this.dependencyAnalysis(input),
+    ]);
+    stages.push(causalResult, depResult);
 
     // Stage 3: Hypothesis Generation
     const hypResult = await this.hypothesisGeneration(input);
