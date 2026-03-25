@@ -17,9 +17,20 @@ interface Metric {
 
 const metrics = new Map<string, Metric>();
 
+/** Cache label strings to avoid re-sorting and re-joining on every call */
+const labelKeyCache = new Map<string, string>();
+
 function key(name: string, labels: Record<string, string>): string {
-  const l = Object.entries(labels).sort().map(([k, v]) => `${k}="${v}"`).join(',');
-  return l ? `${name}{${l}}` : name;
+  const labelKeys = Object.keys(labels);
+  if (labelKeys.length === 0) return name;
+  
+  // Cache the label string computation
+  const labelId = labelKeys.sort().map(k => `${k}="${labels[k]}"`).join(',');
+  const cacheKey = `${name}{${labelId}}`;
+  if (!labelKeyCache.has(cacheKey)) {
+    labelKeyCache.set(cacheKey, cacheKey);
+  }
+  return labelKeyCache.get(cacheKey)!;
 }
 
 export function counter(name: string, help: string, labels: Record<string, string> = {}): void {
@@ -60,7 +71,7 @@ export function observe(name: string, value: number): void {
   const m = metrics.get(k);
   if (m && m.type === 'histogram' && m.observations) {
     m.observations.push(value);
-    // Use ring-buffer style eviction to avoid expensive splice
+    // Ring-buffer style eviction
     if (m.observations.length > 10000) {
       m.observations.splice(0, 5000);
     }
@@ -70,6 +81,7 @@ export function observe(name: string, value: number): void {
 /** Reset all metrics (for testing / session boundaries) */
 export function resetMetrics(): void {
   metrics.clear();
+  labelKeyCache.clear();
   // Re-register defaults
   counter('substrate_invocations_total', 'Total substrate invocations');
   counter('substrate_errors_total', 'Total substrate errors');
@@ -93,12 +105,21 @@ export function exportMetrics(): string {
     const fqn = labelStr ? `${m.name}{${labelStr}}` : m.name;
 
     if (m.type === 'histogram' && m.buckets && m.observations) {
-      for (const b of m.buckets) {
-        const count = m.observations.filter(o => o <= b).length;
-        lines.push(`${m.name}_bucket{le="${b}"} ${count}`);
+      // Pre-sort once, then single-pass bucket counting
+      const sorted = m.observations.slice().sort((a, b) => a - b);
+      let sum = 0;
+      let bucketIdx = 0;
+      for (let bi = 0; bi < m.buckets.length; bi++) {
+        while (bucketIdx < sorted.length && sorted[bucketIdx] <= m.buckets[bi]) {
+          sum += sorted[bucketIdx];
+          bucketIdx++;
+        }
+        lines.push(`${m.name}_bucket{le="${m.buckets[bi]}"} ${bucketIdx}`);
       }
-      lines.push(`${m.name}_count ${m.observations.length}`);
-      lines.push(`${m.name}_sum ${m.observations.reduce((a, b) => a + b, 0)}`);
+      // Sum remaining
+      while (bucketIdx < sorted.length) { sum += sorted[bucketIdx]; bucketIdx++; }
+      lines.push(`${m.name}_count ${sorted.length}`);
+      lines.push(`${m.name}_sum ${sum}`);
     } else {
       lines.push(`${fqn} ${m.value}`);
     }

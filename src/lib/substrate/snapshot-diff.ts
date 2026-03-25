@@ -66,10 +66,13 @@ export function diffSnapshots(before: SnapshotData, after: SnapshotData): DiffRe
     }
   }
 
+  // Count changed inline — no extra filter pass
+  const changed = improved + degraded + entries.filter(e => e.direction === 'new' || e.direction === 'removed').length;
+
   return {
     timestamp: Date.now(),
     totalKeys: allKeys.size,
-    changed: entries.filter(e => e.direction !== 'unchanged').length,
+    changed,
     improved,
     degraded,
     entries,
