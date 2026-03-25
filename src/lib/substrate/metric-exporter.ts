@@ -12,7 +12,11 @@ interface Metric {
   labels: Record<string, string>;
   value: number;
   buckets?: number[]; // histogram only
-  observations?: number[]; // histogram only
+  // Ring buffer for histogram observations — bounded memory
+  observations?: number[];
+  obsHead?: number;
+  obsCount?: number;
+  obsSum?: number; // Running sum for O(1) export
 }
 
 const metrics = new Map<string, Metric>();
@@ -59,10 +63,15 @@ export function set(name: string, value: number, labels: Record<string, string> 
   if (m && m.type === 'gauge') m.value = value;
 }
 
+const HISTOGRAM_CAP = 5000;
+
 export function histogram(name: string, help: string, buckets = [5, 10, 25, 50, 100, 250, 500, 1000]): void {
   const k = key(name, {});
   if (!metrics.has(k)) {
-    metrics.set(k, { name, type: 'histogram', help, labels: {}, value: 0, buckets, observations: [] });
+    metrics.set(k, {
+      name, type: 'histogram', help, labels: {}, value: 0,
+      buckets, observations: new Array(HISTOGRAM_CAP), obsHead: 0, obsCount: 0, obsSum: 0,
+    });
   }
 }
 
@@ -70,11 +79,17 @@ export function observe(name: string, value: number): void {
   const k = key(name, {});
   const m = metrics.get(k);
   if (m && m.type === 'histogram' && m.observations) {
-    m.observations.push(value);
-    // Ring-buffer style eviction
-    if (m.observations.length > 10000) {
-      m.observations.splice(0, 5000);
+    // Ring buffer insertion — O(1), bounded memory
+    if (m.obsCount! < HISTOGRAM_CAP) {
+      m.observations[m.obsCount!] = value;
+      m.obsCount!++;
+    } else {
+      // Subtract evicted value from running sum
+      m.obsSum! -= m.observations[m.obsHead!];
+      m.observations[m.obsHead!] = value;
+      m.obsHead = (m.obsHead! + 1) % HISTOGRAM_CAP;
     }
+    m.obsSum! += value;
   }
 }
 
@@ -104,22 +119,21 @@ export function exportMetrics(): string {
     const labelStr = Object.entries(m.labels).map(([k, v]) => `${k}="${v}"`).join(',');
     const fqn = labelStr ? `${m.name}{${labelStr}}` : m.name;
 
-    if (m.type === 'histogram' && m.buckets && m.observations) {
-      // Pre-sort once, then single-pass bucket counting
-      const sorted = m.observations.slice().sort((a, b) => a - b);
-      let sum = 0;
+    if (m.type === 'histogram' && m.buckets && m.observations && m.obsCount! > 0) {
+      // Collect active observations from ring buffer
+      const count = m.obsCount!;
+      const sorted = new Array(count);
+      for (let i = 0; i < count; i++) sorted[i] = m.observations[i];
+      sorted.sort((a: number, b: number) => a - b);
+
+      // Single-pass bucket counting over sorted data
       let bucketIdx = 0;
       for (let bi = 0; bi < m.buckets.length; bi++) {
-        while (bucketIdx < sorted.length && sorted[bucketIdx] <= m.buckets[bi]) {
-          sum += sorted[bucketIdx];
-          bucketIdx++;
-        }
+        while (bucketIdx < count && sorted[bucketIdx] <= m.buckets[bi]) bucketIdx++;
         lines.push(`${m.name}_bucket{le="${m.buckets[bi]}"} ${bucketIdx}`);
       }
-      // Sum remaining
-      while (bucketIdx < sorted.length) { sum += sorted[bucketIdx]; bucketIdx++; }
-      lines.push(`${m.name}_count ${sorted.length}`);
-      lines.push(`${m.name}_sum ${sum}`);
+      lines.push(`${m.name}_count ${count}`);
+      lines.push(`${m.name}_sum ${m.obsSum}`);
     } else {
       lines.push(`${fqn} ${m.value}`);
     }

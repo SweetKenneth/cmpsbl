@@ -22,6 +22,8 @@ interface ReplaySession {
 
 let activeSession: ReplaySession | null = null;
 const sessions: ReplaySession[] = [];
+/** O(1) session lookup by ID */
+const sessionIndex = new Map<string, ReplaySession>();
 const MAX_SESSIONS = 10;
 const MAX_EVENTS_PER_SESSION = 500;
 
@@ -40,7 +42,11 @@ export function stopRecording(): ReplaySession | null {
   if (!activeSession) return null;
   const session = { ...activeSession };
   sessions.push(session);
-  if (sessions.length > MAX_SESSIONS) sessions.shift();
+  sessionIndex.set(session.id, session);
+  if (sessions.length > MAX_SESSIONS) {
+    const evicted = sessions.shift()!;
+    sessionIndex.delete(evicted.id);
+  }
   activeSession = null;
   return session;
 }
@@ -63,8 +69,9 @@ export function isRecording(): boolean {
   return activeSession !== null;
 }
 
+/** O(1) session lookup */
 export function getSession(sessionId: string): ReplaySession | undefined {
-  return sessions.find(s => s.id === sessionId);
+  return sessionIndex.get(sessionId);
 }
 
 export function getAllSessions(): ReplaySession[] {
