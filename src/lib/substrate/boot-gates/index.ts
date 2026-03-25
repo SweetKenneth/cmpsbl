@@ -114,16 +114,37 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     };
   }
 
-  // Check 1: Dependencies booted
-  for (const dep of entry.deps) {
-    const { data: depEvents } = await supabase
+  // Parallelize: fetch all dependency events + own events + critical tables at once
+  const hourAgo = new Date(Date.now() - 3600000).toISOString();
+  const dayAgo = new Date(Date.now() - 24 * 3600000).toISOString();
+
+  const depQueries = entry.deps.map(dep =>
+    supabase
       .from('brain_events')
       .select('outcome')
       .eq('module', dep)
-      .gte('created_at', new Date(Date.now() - 3600000).toISOString()) // last hour
+      .gte('created_at', hourAgo)
       .order('created_at', { ascending: false })
-      .limit(5);
+      .limit(5)
+      .then(res => ({ dep, data: res.data }))
+  );
 
+  const ownQuery = supabase
+    .from('brain_events')
+    .select('outcome')
+    .eq('module', module)
+    .gte('created_at', dayAgo)
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  const [depResults, ownResult, criticalTableCheck] = await Promise.all([
+    Promise.all(depQueries),
+    ownQuery,
+    checkCriticalTables(),
+  ]);
+
+  // Process dependency results
+  for (const { dep, data: depEvents } of depResults) {
     const hasActivity = depEvents && depEvents.length > 0;
     const hasFailures = depEvents?.some(e => e.outcome === 'failure');
 
