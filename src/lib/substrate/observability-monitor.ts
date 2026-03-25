@@ -66,6 +66,7 @@ export interface ObservabilitySummary {
 interface LatencyEntry {
   samples: number[];
   lastMeasured: string;
+  writePtr: number;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
