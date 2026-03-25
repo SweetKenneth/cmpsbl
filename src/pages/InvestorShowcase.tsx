@@ -281,7 +281,7 @@ const ShowcaseContent = () => {
         <span>CMPSBL® Investor Preview</span>
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
             System: Stable
           </span>
           <span>Live — No Simulated Data</span>
