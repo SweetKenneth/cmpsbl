@@ -360,7 +360,7 @@ const res = await fetch(GATEWAY, {
                           <Icon className={`w-5 h-5 ${meta?.color || "text-muted-foreground"}`} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold truncate group-hover:text-primary transition-colors">{template.name}</h3>
+                          <h3 className="font-semibold break-words group-hover:text-primary transition-colors">{template.name}</h3>
                           <p className="text-xs text-muted-foreground line-clamp-1">{template.description}</p>
                         </div>
                         <Badge variant="outline" className="shrink-0 text-xs capitalize">
@@ -527,7 +527,7 @@ const res = await fetch(GATEWAY, {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h3 className="font-semibold truncate">{template.name}</h3>
+                          <h3 className="font-semibold break-words">{template.name}</h3>
                           <Badge variant="outline" className="shrink-0 text-xs bg-neon-green/10 text-neon-green border-neon-green/30">
                             Free
                           </Badge>

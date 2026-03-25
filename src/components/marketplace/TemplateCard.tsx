@@ -224,7 +224,7 @@ export function TemplateCard({
           </div>
 
           {/* Dynamic Title */}
-          <h3 className="font-bold text-base sm:text-lg leading-tight line-clamp-1 group-hover:text-primary transition-colors">
+          <h3 className="font-bold text-base sm:text-lg leading-tight line-clamp-2 group-hover:text-primary transition-colors">
             {displayName}
           </h3>
           

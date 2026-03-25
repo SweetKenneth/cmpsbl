@@ -284,7 +284,7 @@ export function CommunityShowcase() {
                       Featured
                     </Badge>
                   )}
-                  <h3 className="font-semibold truncate group-hover:text-primary transition-colors">
+                  <h3 className="font-semibold break-words group-hover:text-primary transition-colors">
                     {project.name}
                   </h3>
                   <p className="text-xs text-muted-foreground">by {project.author}</p>

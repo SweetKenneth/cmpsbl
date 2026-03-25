@@ -95,10 +95,10 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                               <Icon className="w-6 h-6 text-primary" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-sm truncate">
+                              <h3 className="font-semibold text-sm break-words">
                                 {displayName}
                               </h3>
-                              <p className="text-[10px] text-muted-foreground/70 truncate">{template.name}</p>
+                              <p className="text-[10px] text-muted-foreground/70 line-clamp-2">{template.name}</p>
                               <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
                                 <Clock className="w-3 h-3" />
                                 {formatDistanceToNow(new Date(purchase.purchased_at), { addSuffix: true })}
@@ -160,10 +160,10 @@ export function UserPurchases({ onPreview, onBuy, isLoading }: UserPurchasesProp
                               <Icon className="w-5 h-5 text-foreground" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-medium text-sm truncate">
+                              <h3 className="font-medium text-sm break-words">
                                 {displayName}
                               </h3>
-                              <p className="text-[10px] text-muted-foreground/70 truncate">
+                              <p className="text-[10px] text-muted-foreground/70 line-clamp-2">
                                 {template.name}
                               </p>
                               <Badge className={cn("text-[9px] h-4 px-1.5 mt-1", rarity.bgColor, rarity.color, rarity.borderColor)}>

@@ -360,7 +360,7 @@ export function SignalForge() {
                           <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-semibold text-[13px] sm:text-sm truncate">{template.namePattern}</h3>
+                          <h3 className="font-semibold text-[13px] sm:text-sm break-words">{template.namePattern}</h3>
                           <p className="text-[10px] sm:text-[11px] text-muted-foreground capitalize">{template.category}</p>
                         </div>
                         <Badge 
