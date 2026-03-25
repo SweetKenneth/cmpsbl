@@ -402,30 +402,38 @@ class TelemetryEngineClient {
   }
 
   /**
-   * Get events by engine
+   * Get events by engine — reverse scan for limit optimization
    */
   getEventsByEngine(engine: EngineName, limit: number = 20): TelemetryEvent[] {
-    return this.eventLog
-      .filter(e => e.source.engine === engine)
-      .slice(-limit);
+    const result: TelemetryEvent[] = [];
+    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
+      if (this.eventLog[i].source.engine === engine) result.push(this.eventLog[i]);
+    }
+    return result.reverse();
   }
 
   /**
-   * Get error events
+   * Get error events — reverse scan for limit optimization
    */
   getErrors(limit: number = 50): TelemetryEvent[] {
-    return this.eventLog
-      .filter(e => e.severity === 'error' || e.severity === 'critical')
-      .slice(-limit);
+    const result: TelemetryEvent[] = [];
+    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
+      const s = this.eventLog[i].severity;
+      if (s === 'error' || s === 'critical') result.push(this.eventLog[i]);
+    }
+    return result.reverse();
   }
 
   /**
-   * Get governance events
+   * Get governance events — reverse scan for limit optimization
    */
   getGovernanceEvents(limit: number = 50): TelemetryEvent[] {
-    return this.eventLog
-      .filter(e => e.type === 'governance_block' || e.type === 'governance_override')
-      .slice(-limit);
+    const result: TelemetryEvent[] = [];
+    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
+      const t = this.eventLog[i].type;
+      if (t === 'governance_block' || t === 'governance_override') result.push(this.eventLog[i]);
+    }
+    return result.reverse();
   }
 
   /**
