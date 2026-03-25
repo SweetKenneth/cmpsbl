@@ -303,6 +303,18 @@ const ShowcaseContent = () => {
     );
   }
 
+  if (activeDemo === "evolution") {
+    return <EvolutionDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "ascension") {
+    return <AscensionDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "build-substrate") {
+    return <BuildSubstrateDemo onBack={() => setActiveDemo(null)} />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* System confidence bar */}
