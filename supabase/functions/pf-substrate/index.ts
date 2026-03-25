@@ -3075,8 +3075,10 @@ async function computeModuleHealth(
   diagnostics.query_latency_ms = queryLatencyMs;
 
   // Factor 2: Data presence (weight: 15%)
-  if (rowCount === 0) { score -= 15; diagnostics.data = 'empty'; }
-  else { diagnostics.data = 'populated'; }
+  // Only penalize modules that should always have data; config/rule tables can legitimately be empty
+  const dataRequiredModules = ['brain', 'memory', 'decode', 'nexus', 'economy', 'evolution', 'intent'];
+  if (rowCount === 0 && dataRequiredModules.includes(module)) { score -= 15; diagnostics.data = 'empty'; }
+  else { diagnostics.data = rowCount > 0 ? 'populated' : 'nominal'; }
   diagnostics.row_count = rowCount;
 
   // Factor 3: Recent activity (weight: 10%)
