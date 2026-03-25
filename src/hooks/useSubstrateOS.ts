@@ -474,7 +474,7 @@ function withGracefulFallback(fn: () => Promise<any>) {
       const result = await fn();
       return result;
     } catch {
-      return { success: true, data: { status: 'online', fallback: true } };
+      return { success: false, health: 50, data: { status: 'degraded', fallback: true } };
     }
   };
 }
