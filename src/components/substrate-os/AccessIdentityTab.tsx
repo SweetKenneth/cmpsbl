@@ -154,7 +154,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-muted/50 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-neon-amber/20 flex items-center justify-center">
@@ -168,7 +168,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
           </CardContent>
         </Card>
         
-        <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-cyan/20 bg-muted/50 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-neon-cyan/20 flex items-center justify-center">
@@ -182,7 +182,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
           </CardContent>
         </Card>
         
-        <Card className="border-neon-green/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-green/20 bg-muted/50 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-neon-green/20 flex items-center justify-center">
@@ -196,7 +196,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
           </CardContent>
         </Card>
         
-        <Card className="border-neon-purple/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-purple/20 bg-muted/50 backdrop-blur-xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-neon-purple/20 flex items-center justify-center">
@@ -213,7 +213,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* API Keys */}
-        <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-muted/50 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Key className="w-4 h-4 text-neon-amber" />
@@ -227,7 +227,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
                   placeholder="Key name"
                   value={newKeyName}
                   onChange={(e) => setNewKeyName(e.target.value)}
-                  className="h-8 text-xs bg-white/5"
+                  className="h-8 text-xs bg-muted/50"
                 />
                 <Button
                   size="sm"
@@ -247,7 +247,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
                     key={key.id}
                     className={cn(
                       "flex items-center gap-3 p-3 rounded-lg transition-colors",
-                      key.is_active ? "bg-white/5" : "bg-white/[0.02] opacity-50"
+                      key.is_active ? "bg-muted/50" : "bg-muted/30 opacity-50"
                     )}
                   >
                     <Key className={cn("w-4 h-4", key.is_active ? "text-neon-amber" : "text-muted-foreground")} />
@@ -299,7 +299,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
         </Card>
 
         {/* Usage Log */}
-        <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
+        <Card className="border-neon-amber/20 bg-muted/50 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <BarChart3 className="w-4 h-4 text-neon-amber" />
@@ -310,7 +310,7 @@ export function AccessIdentityTab({ enabled }: { enabled: boolean }) {
             <ScrollArea className="h-[300px]">
               <div className="space-y-2">
                 {usage?.map((u) => (
-                  <div key={u.id} className="flex items-center gap-3 p-2 rounded-lg bg-white/5 text-xs">
+                  <div key={u.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 text-xs">
                     <Activity className="w-3 h-3 text-neon-cyan shrink-0" />
                     <span className="font-mono text-muted-foreground">{u.module}</span>
                     <span className="text-foreground">{u.action}</span>

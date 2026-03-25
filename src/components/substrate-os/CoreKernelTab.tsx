@@ -107,7 +107,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
       case 'degraded': return 'text-neon-amber border-neon-amber/40 bg-neon-amber/10';
       case 'maintenance': return 'text-neon-blue border-neon-blue/40 bg-neon-blue/10';
       case 'shutdown': return 'text-destructive border-destructive/40 bg-destructive/10';
-      default: return 'text-muted-foreground border-white/20';
+      default: return 'text-muted-foreground border-border/40';
     }
   };
 
@@ -136,7 +136,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Job Queue */}
-        <Card className="lg:col-span-2 border-neon-amber/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-neon-amber/30">
+        <Card className="lg:col-span-2 border-neon-amber/20 bg-muted/50 backdrop-blur-xl transition-all duration-300 hover:border-neon-amber/30">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Clock className="w-4 h-4 text-neon-amber" />
@@ -158,7 +158,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
                       onClick={() => setSelectedJob(job)}
                       className={cn(
                         "flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-300",
-                        "bg-white/5 hover:bg-white/10 border border-transparent hover:border-primary/15",
+                        "bg-muted/50 hover:bg-muted/70 border border-transparent hover:border-primary/15",
                         selectedJob?.id === job.id && "border-neon-amber/40 bg-neon-amber/10"
                       )}
                     >
@@ -190,7 +190,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
 
         {/* System State + Quick Actions */}
         <div className="space-y-4">
-          <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl transition-all duration-300 hover:border-neon-amber/30">
+          <Card className="border-neon-amber/20 bg-muted/50 backdrop-blur-xl transition-all duration-300 hover:border-neon-amber/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Cpu className="w-4 h-4 text-neon-amber" />
@@ -198,13 +198,13 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 transition-all duration-300 hover:bg-white/10">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50 transition-all duration-300 hover:bg-muted/70">
                 <span className="text-xs text-muted-foreground">Kernel</span>
                 <Badge variant="outline" className={cn("text-[10px]", stateColor(state?.state || 'unknown'))}>
                   {state?.state || 'unknown'}
                 </Badge>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 transition-all duration-300 hover:bg-white/10">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50 transition-all duration-300 hover:bg-muted/70">
                 <span className="text-xs text-muted-foreground">Last Heartbeat</span>
                 <span className="font-mono text-[10px] text-foreground">
                   {state?.last_heartbeat 
@@ -216,7 +216,7 @@ export function CoreKernelTab({ enabled }: { enabled: boolean }) {
           </Card>
 
           {enabled && (
-            <Card className="border-neon-amber/20 bg-white/5 backdrop-blur-xl">
+            <Card className="border-neon-amber/20 bg-muted/50 backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium">Quick Schedule</CardTitle>
               </CardHeader>

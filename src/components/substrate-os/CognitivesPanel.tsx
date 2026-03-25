@@ -182,7 +182,7 @@ export function CognitivesPanel() {
 
   if (isLoading) {
     return (
-      <div className="rounded-xl border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-6">
+      <div className="rounded-xl border border-neon-magenta/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl p-6">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-8 h-8 rounded-lg bg-neon-magenta/20 border border-neon-magenta/40 flex items-center justify-center">
             <Bot className="w-4 h-4 text-neon-magenta" />
@@ -200,8 +200,8 @@ export function CognitivesPanel() {
 
   return (
     <>
-      <div className="rounded-xl border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl overflow-hidden">
-        <div className="p-4 border-b border-white/10">
+      <div className="rounded-xl border border-neon-magenta/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl overflow-hidden">
+        <div className="p-4 border-b border-border/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg bg-neon-magenta/20 border border-neon-magenta/40 flex items-center justify-center">
@@ -267,8 +267,8 @@ export function CognitivesPanel() {
                     <div 
                       key={cognitive.id}
                       className={cn(
-                        "p-3 sm:p-4 rounded-xl border bg-white/5 dark:bg-white/[0.02] backdrop-blur-sm transition-all duration-300",
-                        "hover:bg-white/10 hover:shadow-lg",
+                        "p-3 sm:p-4 rounded-xl border bg-muted/50 dark:bg-muted/30 backdrop-blur-sm transition-all duration-300",
+                        "hover:bg-muted/70 hover:shadow-lg",
                         "overflow-hidden",
                         colorBorderMap[classColor] || colorBorderMap.cyan
                       )}
