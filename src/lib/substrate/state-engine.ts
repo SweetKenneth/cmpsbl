@@ -353,7 +353,7 @@ class StateEngineClient {
       };
     }
 
-    const field = schema.fields.find(f => f.name === fieldName);
+    const field = this.fieldIndex.get(schemaName)?.get(fieldName);
     if (!field) {
       // Unknown field - warn but allow (backward compatibility)
       return {
