@@ -192,7 +192,7 @@ export function AgencyQuickDispatch({
                         <span className="text-base shrink-0">{task.icon}</span>
                         <div className="flex-1 min-w-0">
                           <div className="text-[11px] font-medium truncate">{task.name}</div>
-                          <div className="text-[9px] text-muted-foreground truncate">{task.description}</div>
+                          <div className="text-[9px] text-muted-foreground line-clamp-2">{task.description}</div>
                         </div>
                         <Badge variant="outline" className="text-[8px] px-1 py-0 shrink-0">
                           ~{task.estimatedMinutes}m

@@ -185,7 +185,7 @@ export function PopularSection({ onPreview, onBuy, isLoading }: PopularSectionPr
                         {/* Content */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                            <h3 className="font-semibold text-sm truncate group-hover:text-primary transition-colors">
+                            <h3 className="font-semibold text-sm break-words group-hover:text-primary transition-colors">
                               {displayName}
                             </h3>
                             <Badge className={cn("text-[9px] h-4 px-1.5 border", rarity.bgColor, rarity.color, rarity.borderColor)}>

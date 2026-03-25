@@ -86,7 +86,7 @@ export function AgencyTaskCard({
           <span className="text-base shrink-0">{taskType?.icon || '📋'}</span>
           <div className="min-w-0">
             <p className="text-sm font-medium truncate">{task.title}</p>
-            <p className="text-xs text-muted-foreground truncate">
+            <p className="text-xs text-muted-foreground line-clamp-2">
               {memberName || 'Unassigned'}
             </p>
           </div>

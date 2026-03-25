@@ -206,7 +206,7 @@ export function SavedWorkflows({ tier }: { tier: string }) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <Workflow className="w-4 h-4 text-primary shrink-0" />
-                  <h3 className="text-sm font-bold truncate">{wf.name}</h3>
+                  <h3 className="text-sm font-bold break-words">{wf.name}</h3>
                 </div>
                 {wf.description && (
                   <p className="text-[11px] text-muted-foreground mb-2 pl-6">{wf.description}</p>

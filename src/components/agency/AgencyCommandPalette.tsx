@@ -109,7 +109,7 @@ export function AgencyCommandPalette({
                     </code>
                     <span className="text-sm truncate">{cmd.label}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground truncate">{cmd.description}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{cmd.description}</p>
                 </div>
                 <ArrowRight className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>

@@ -253,7 +253,7 @@ export function AgencyGallery({ onEdit }: AgencyGalleryProps) {
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
-                  <CardTitle className="text-base truncate">{agency.name}</CardTitle>
+                  <CardTitle className="text-base break-words">{agency.name}</CardTitle>
                   <div className="flex items-center gap-2 mt-1">
                     <Badge variant="outline" className={cn("text-[10px] h-5", statusColors[agency.status])}>
                       {agency.status}
