@@ -281,11 +281,20 @@ export function recordMutationAttempt() { mutationAttempts++; }
 
 // ─── 16. Audit Alerting Engine ─────────────────────────────────────────────
 const alerts: Array<{ ts: number; type: string; message: string }> = [];
+let alertHead = 0;
+let alertCount = 0;
+
 export function raiseAuditAlert(type: string, message: string) {
-  alerts.push({ ts: Date.now(), type, message });
-  if (alerts.length > MAX_ALERTS) alerts.splice(0, alerts.length - MAX_ALERTS);
+  const entry = { ts: Date.now(), type, message };
+  if (alertCount < MAX_ALERTS) {
+    alerts.push(entry);
+  } else {
+    alerts[alertHead] = entry;
+  }
+  alertHead = (alertHead + 1) % MAX_ALERTS;
+  alertCount++;
 }
-export function getAuditAlerts(n = 20) { return alerts.slice(-n); }
+export function getAuditAlerts(n = 20) { return alerts.slice(-Math.min(n, alerts.length)); }
 
 // ─── 17. Chain Fork Detection ──────────────────────────────────────────────
 export function detectChainFork(): { forked: boolean; forkPoint: number } {
