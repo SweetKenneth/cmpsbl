@@ -311,7 +311,7 @@ export default function EngineDetail() {
                     {engine.tier}
                   </Badge>
                 </div>
-                <p className="text-lg text-muted-foreground">{engine.tagline}</p>
+                <p className="text-base sm:text-lg text-muted-foreground">{engine.tagline}</p>
               </div>
             </div>
 

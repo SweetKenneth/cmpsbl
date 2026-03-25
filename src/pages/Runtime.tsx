@@ -198,7 +198,7 @@ export default function Runtime() {
               <Layers className="w-3 h-3 mr-1.5 inline" />
               12 Organs · 12 Layers · 8 Engines · 8 Agents
             </Badge>
-             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight">
               What You Get. <span className="text-primary">Always.</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">

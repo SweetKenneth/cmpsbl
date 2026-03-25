@@ -154,7 +154,7 @@ export default function IntentMeshPublic() {
                   CMPSBL OS Substrate
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6">
                 Intent Mesh
               </h1>
               <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
@@ -190,7 +190,7 @@ export default function IntentMeshPublic() {
         {/* Architecture */}
         <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-4">Eight-Layer Architecture</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Eight-Layer Architecture</h2>
             <p className="text-muted-foreground mb-10 max-w-2xl">
               The mesh operates across eight distinct layers, each providing a specific capability class — from capability advertisement through autonomous self-improvement.
             </p>
@@ -210,7 +210,7 @@ export default function IntentMeshPublic() {
         <section className="border-y border-border bg-muted/30">
           <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-4">Seamless Intent Resolution</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Seamless Intent Resolution</h2>
               <p className="text-muted-foreground mb-8 max-w-2xl">
                 When a node needs enriched data, it broadcasts an intent. The mesh autonomously discovers capable responders, composes results from multiple nodes, and learns from every interaction.
               </p>
@@ -234,7 +234,7 @@ Learning feedback → improved future routing`}</pre>
         {/* Self-Improvement */}
         <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-4">Self-Improving Intelligence</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Self-Improving Intelligence</h2>
             <p className="text-muted-foreground mb-10 max-w-2xl">
               The mesh doesn't just route — it learns. Every interaction feeds back into the system, making it smarter over time.
             </p>
@@ -254,7 +254,7 @@ Learning feedback → improved future routing`}</pre>
         <section className="border-y border-border bg-muted/30">
           <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-4">Execution Surface Capability Registry</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Execution Surface Capability Registry</h2>
               <p className="text-muted-foreground mb-10 max-w-2xl">
                 Every node in the substrate participates in the mesh, advertising capabilities that other nodes can discover and compose dynamically.
               </p>
@@ -285,7 +285,7 @@ Learning feedback → improved future routing`}</pre>
         {/* Governance */}
         <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
           <motion.div {...fadeUp}>
-            <h2 className="text-3xl font-bold mb-4">Governance & Safety</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Governance & Safety</h2>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-card border border-border rounded-xl p-6">
                 <Shield className="w-6 h-6 text-primary mb-3" />

@@ -89,7 +89,7 @@ export default function ScanResult() {
           {scan && (
             <div className="space-y-8">
               <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
                   {scan.domain}
                 </h1>
                 <p className="text-muted-foreground">

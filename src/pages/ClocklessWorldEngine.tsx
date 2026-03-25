@@ -78,7 +78,7 @@ export default function ClocklessWorldEngine() {
 
               {/* Not AI as a feature */}
               <motion.div className="space-y-4" {...fadeUp}>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                   A Cognitive Reality learns continuously, adapts autonomously, and evolves under explicit 
                   governance rather than manual reconfiguration.
                 </p>

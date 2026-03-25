@@ -263,7 +263,7 @@ export default function ModuleDetail() {
         {/* ═══ CTA ═══ */}
         <section className="py-14 sm:py-20 bg-gradient-to-b from-primary/5 to-transparent border-t border-border/50">
           <div className="container mx-auto max-w-3xl px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to build with {mod.name}?</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Ready to build with {mod.name}?</h2>
             <p className="text-muted-foreground mb-8">Start for free. No credit card required.</p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Button asChild size="lg" className="rounded-xl gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">

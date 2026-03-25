@@ -105,7 +105,7 @@ export default function RuntimeReference() {
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
                 Substrate Capability Reference
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl">
                 Baseline capabilities, pack-enabled capabilities, usage patterns, and runtime concepts.
               </p>
               <Button onClick={handleDownload} variant="outline" className="mt-4">

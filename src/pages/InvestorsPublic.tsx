@@ -173,7 +173,7 @@ export default function InvestorsPublic() {
             {metrics.map((metric, index) => (
               <div key={index} className="text-center">
                 <metric.icon className={`w-8 h-8 mx-auto mb-3 ${metric.color}`} />
-                <div className="text-3xl font-bold mb-1 text-foreground font-mono tabular-nums">{metric.value}</div>
+                <div className="text-2xl sm:text-3xl font-bold tracking-tight mb-1 text-foreground font-mono tabular-nums">{metric.value}</div>
                 <div className="text-sm text-muted-foreground">{metric.label}</div>
               </div>
             ))}
@@ -296,7 +296,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-20 transition-all duration-1000 delay-600 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-semibold mb-4 text-foreground">Ready to Explore the Stream?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8">
             Download our investor deck, the user guide, or reach out directly.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -431,7 +431,7 @@ export default function UseCases() {
               Industry Applications
             </Badge>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">
               <span className="text-primary">One Platform,</span>
               <br />Every Industry
             </h1>

@@ -150,7 +150,7 @@ function MRIGauge({ score, status, factors }: {
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <motion.span 
-                className="text-3xl font-bold"
+                className="text-2xl sm:text-3xl font-bold tracking-tight"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}

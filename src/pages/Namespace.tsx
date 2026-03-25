@@ -136,7 +136,7 @@ export default function Namespace() {
             <span className="text-sm font-mono text-primary">Reference Namespace — v1.0</span>
           </div>
           <p className="text-sm text-muted-foreground mb-6">Published: January 2026</p>
-          <h1 className="text-4xl md:text-5xl font-light mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
             AI Governance Reference Namespace
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6">

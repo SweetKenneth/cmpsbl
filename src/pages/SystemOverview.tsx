@@ -55,7 +55,7 @@ function WhatIs() {
       <div className="max-w-4xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">What is CMPSBL?</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+          <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-6">
             CMPSBL is a <strong className="text-foreground">cognitive operating substrate</strong> — a 40-primitive intelligence architecture 
             composed of agents, engines, layers, and organs that processes signals, forms memories, and autonomously produces real software. It's not a chatbot. It's not a code generator. 
             It's an always-running system that <em>discovers</em> software the way a research lab discovers compounds.
@@ -93,7 +93,7 @@ function MemoryStreamSection() {
       <div className="max-w-5xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">The Memory Stream</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-12">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mb-12">
             A continuous substrate of evolving software systems. Every crystallization produces real, scored, exportable code — not mock-ups or templates.
           </p>
         </motion.div>
@@ -161,7 +161,7 @@ function SubstrateCapabilities() {
       <div className="max-w-5xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Novel Systems</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-10">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mb-10">
             Beyond crystallization, the substrate ships with capabilities that don't exist anywhere else — each one a standalone innovation.
           </p>
         </motion.div>
@@ -197,7 +197,7 @@ function ExportEcosystem() {
       <div className="max-w-5xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Export Ecosystem</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-10">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mb-10">
             Every crystallized memory includes a standalone Micro-Substrate runtime and functional test harness. Export languages are gated by quality score.
           </p>
         </motion.div>
@@ -262,7 +262,7 @@ function PricingSection() {
       <div className="max-w-6xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0} className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Choose Your Depth</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             The runtime runs for everyone. Plans control how <em>deep</em> your systems operate — not whether they run.
           </p>
         </motion.div>
@@ -287,7 +287,7 @@ function PricingSection() {
               )}
               <h3 className="text-xl font-bold text-foreground mb-1">{tier.name}</h3>
               <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-3xl font-bold text-foreground">{tier.price}</span>
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{tier.price}</span>
                 <span className="text-sm text-muted-foreground">{tier.interval}</span>
               </div>
               <p className="text-sm text-muted-foreground mb-5">{tier.desc}</p>
@@ -335,7 +335,7 @@ function InvestorHighlights() {
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={0}>
           <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">For Investors</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Infrastructure, Not an App</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mb-10">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mb-10">
             CMPSBL is a defensible cognitive infrastructure layer. The substrate's 40-primitive architecture, autonomous discovery engine, 
             and silicon export process represent a replacement cost of $18M–$42M in engineering effort.
           </p>
@@ -400,7 +400,7 @@ function ClosingCTA() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             The substrate is running.
           </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
             Start free. Crystallize your first memory. See real software emerge from the Memory Stream — scored, exportable, and yours.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">

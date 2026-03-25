@@ -59,7 +59,7 @@ const PersistentMemoryLanding = () => {
               </motion.div>
               
               <motion.h1 
-                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -128,7 +128,7 @@ const PersistentMemoryLanding = () => {
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Why most AI agents feel broken</h2>
-                <p className="text-lg text-muted-foreground">They start from scratch every time a user comes back.</p>
+                <p className="text-base sm:text-lg text-muted-foreground">They start from scratch every time a user comes back.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-6">
@@ -161,7 +161,7 @@ const PersistentMemoryLanding = () => {
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <Badge variant="outline" className="mb-4 border-primary/30">MEMORY Organ · 4-Tier Architecture</Badge>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">How the MEMORY Organ works</h2>
-                <p className="text-lg text-muted-foreground">Four temperature tiers that manage themselves automatically</p>
+                <p className="text-base sm:text-lg text-muted-foreground">Four temperature tiers that manage themselves automatically</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -198,7 +198,7 @@ const PersistentMemoryLanding = () => {
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Works with what you already use</h2>
-                <p className="text-lg text-muted-foreground">No rewrites. No new framework. No migration required.</p>
+                <p className="text-base sm:text-lg text-muted-foreground">No rewrites. No new framework. No migration required.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-3 gap-6">
@@ -230,7 +230,7 @@ const PersistentMemoryLanding = () => {
             <div className="max-w-4xl mx-auto">
               <motion.div className="text-center mb-12" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Add memory in 3 steps</h2>
-                <p className="text-lg text-muted-foreground">Takes under an hour. No databases to set up.</p>
+                <p className="text-base sm:text-lg text-muted-foreground">Takes under an hour. No databases to set up.</p>
               </motion.div>
 
               <div className="space-y-8">
@@ -276,7 +276,7 @@ const PersistentMemoryLanding = () => {
                   Included with Every Plan
                 </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">What's included</h2>
-                <p className="text-lg text-muted-foreground">Every plan includes the full MEMORY Organ. Plans scale capacity, not capability.</p>
+                <p className="text-base sm:text-lg text-muted-foreground">Every plan includes the full MEMORY Organ. Plans scale capacity, not capability.</p>
               </motion.div>
 
               <div className="grid md:grid-cols-2 gap-6">
@@ -313,7 +313,7 @@ const PersistentMemoryLanding = () => {
             <div className="max-w-2xl mx-auto">
               <motion.div className="text-center mb-8" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">Try it live</h2>
-                <p className="text-lg text-muted-foreground">Store, recall, and forget — no signup required</p>
+                <p className="text-base sm:text-lg text-muted-foreground">Store, recall, and forget — no signup required</p>
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
                 <InteractivePlayground />
@@ -333,7 +333,7 @@ const PersistentMemoryLanding = () => {
                   { value: "8×", label: "Compression Ratio" },
                 ].map((stat, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                    <div className="text-3xl font-bold text-primary font-mono tabular-nums">{stat.value}</div>
+                    <div className="text-2xl sm:text-3xl font-bold tracking-tight text-primary font-mono tabular-nums">{stat.value}</div>
                     <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
                   </motion.div>
                 ))}
@@ -350,7 +350,7 @@ const PersistentMemoryLanding = () => {
                 <CardContent className="pt-12 pb-12">
                   <Brain className="w-10 h-10 text-primary mx-auto mb-4" />
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">Stop reinventing memory infrastructure</h2>
-                  <p className="text-lg text-muted-foreground mb-2">
+                  <p className="text-base sm:text-lg text-muted-foreground mb-2">
                     The MEMORY Organ gives your agent persistent, semantic, self-optimizing recall — 
                     so you can focus on what your agent does, not how it remembers.
                   </p>
