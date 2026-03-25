@@ -318,6 +318,18 @@ const ShowcaseContent = () => {
     return <BuildSubstrateDemo onBack={() => setActiveDemo(null)} />;
   }
 
+  if (activeDemo === "dream-engine") {
+    return <DreamEngineDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "defense-layer") {
+    return <DefenseLayerDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "seba-pipeline") {
+    return <SebaPipelineDemo onBack={() => setActiveDemo(null)} />;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* System confidence bar */}
