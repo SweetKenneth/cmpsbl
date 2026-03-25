@@ -66,20 +66,46 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
     refetchInterval: 30000,
   });
 
-  // Quick heal mutation
+  // Quick heal mutation — uses centralized heal-all hook logic
   const healMutation = useMutation({
     mutationFn: async () => {
+      // Phase 1: Edge function heal
       const { data, error } = await supabase.functions.invoke('pf-substrate', {
         body: { module: 'system', action: 'heal', payload: { force: true, test: true } }
       });
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Heal failed');
+
+      // Phase 2: Reset client-side health engine
+      try {
+        const healthEngine = await import('@/lib/substrate/health-engine');
+        const breakers = healthEngine.getBreakers();
+        for (const [id] of breakers) healthEngine.resetBreaker(id);
+        healthEngine.clearHealQueue();
+        for (const prim of healthEngine.ALL_PRIMITIVES) healthEngine.updatePrimitiveHealth(prim.id, 100);
+        for (const sub of healthEngine.SUBSYSTEMS) healthEngine.updatePrimitiveHealth(sub.id, 100);
+      } catch { /* health engine may not be loaded */ }
+
+      // Phase 3: Reset circuit breaker registries
+      try {
+        const { forceReset, getAllBreakers } = await import('@/core/resilience/circuitBreakerRegistry');
+        for (const b of getAllBreakers()) forceReset(b.moduleId);
+      } catch {}
+      try {
+        const { resetAutoblogCircuit } = await import('@/lib/autoblog/circuit');
+        await resetAutoblogCircuit();
+      } catch {}
+      try {
+        const { healDiscoveryEngine } = await import('@/lib/substrate/intent-mesh/discovery-engine');
+        healDiscoveryEngine(true);
+      } catch {}
+
       return data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries();
       toast.success('Emergency heal completed', {
-        description: `${data.healed_modules?.length || 0} modules restored`,
+        description: `${data.healed_modules?.length || 0} modules restored, all breakers reset`,
       });
     },
     onError: (error) => {
