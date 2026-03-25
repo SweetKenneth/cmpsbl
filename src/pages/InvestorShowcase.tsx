@@ -144,7 +144,6 @@ interface DemoCardProps {
 }
 
 const DemoCard = ({ title, subtitle, icon, tier, status, what, why, value }: DemoCardProps) => {
-  const [expanded, setExpanded] = useState(false);
   const statusColors = {
     live: "bg-green-500/10 text-green-600 dark:text-green-400",
     "in-progress": "bg-amber-500/10 text-amber-600 dark:text-amber-400",
@@ -154,8 +153,7 @@ const DemoCard = ({ title, subtitle, icon, tier, status, what, why, value }: Dem
   return (
     <motion.div
       layout
-      className="rounded-xl border border-border bg-card p-5 space-y-3 hover:border-primary/30 transition-colors cursor-pointer"
-      onClick={() => setExpanded(!expanded)}
+      className="rounded-xl border border-border bg-card p-5 space-y-3 hover:border-primary/30 transition-colors cursor-pointer group"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -175,35 +173,11 @@ const DemoCard = ({ title, subtitle, icon, tier, status, what, why, value }: Dem
         </div>
       </div>
 
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="pt-3 border-t border-border space-y-3">
-              <div className="space-y-1">
-                <p className="text-[10px] font-mono uppercase tracking-wider text-primary">What You're Seeing</p>
-                <p className="text-xs text-foreground/80">{what}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-mono uppercase tracking-wider text-primary">Why It Matters</p>
-                <p className="text-xs text-foreground/80">{why}</p>
-              </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-mono uppercase tracking-wider text-primary">Business Value</p>
-                <p className="text-xs text-foreground/80">{value}</p>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <p className="text-xs text-foreground/70 leading-relaxed">{what}</p>
 
-      <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-        <ChevronDown className={`w-3 h-3 transition-transform ${expanded ? "rotate-180" : ""}`} />
-        {expanded ? "Collapse" : "Tap for details"}
+      <div className="flex items-center gap-1 text-[10px] text-primary font-medium group-hover:gap-2 transition-all">
+        <span>Open demo</span>
+        <ArrowRight className="w-3 h-3" />
       </div>
     </motion.div>
   );

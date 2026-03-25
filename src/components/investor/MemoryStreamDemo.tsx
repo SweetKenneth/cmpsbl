@@ -4,8 +4,8 @@
  * Reads real data from the discoveries table.
  */
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, ArrowRight, ChevronDown, Layers, Clock, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
+import { Brain, Zap, ArrowRight, Layers, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Discovery {
@@ -23,8 +23,10 @@ interface Discovery {
 const tierColor = (tier: string) => {
   switch (tier) {
     case "cmpsbl-only": return "text-primary";
-    case "enterprise": return "text-primary";
-    case "architect": return "text-accent-foreground";
+    case "enterprise": return "text-amber-400";
+    case "architect": return "text-purple-400";
+    case "prototype": return "text-sky-400";
+    case "experimental": return "text-emerald-400";
     default: return "text-muted-foreground";
   }
 };
@@ -32,10 +34,10 @@ const tierColor = (tier: string) => {
 const tierLabel = (tier: string) => {
   switch (tier) {
     case "cmpsbl-only": return "Apex";
-    case "enterprise": return "Enterprise";
-    case "architect": return "Architect";
-    case "prototype": return "Prototype";
-    case "experimental": return "Experimental";
+    case "enterprise": return "Relic";
+    case "architect": return "Mythic";
+    case "prototype": return "Prime";
+    case "experimental": return "Mint";
     default: return tier;
   }
 };

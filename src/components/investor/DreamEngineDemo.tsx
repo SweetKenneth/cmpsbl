@@ -3,7 +3,7 @@
  * Background learning: dream cycles, memory consolidation, pattern synthesis.
  * Preloaded data for zero-risk investor presentation.
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft, Eye, Moon, Sun, Brain, Sparkles, TrendingUp,
