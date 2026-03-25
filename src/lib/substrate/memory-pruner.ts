@@ -200,44 +200,6 @@ export async function runEmergencyPrune(): Promise<FullPruneResult> {
   return { hot, warm, cold, glacier, events_purged, total_purged, started_at, completed_at };
 }
 
-/**
- * Prune glacier tier to capacity limit.
- */
-async function pruneGlacier(capacity: number): Promise<PruneResult> {
-  const start = Date.now();
-  const { count: before } = await supabase
-    .from('brain_memory_archive')
-    .select('id', { count: 'exact', head: true });
-
-  const currentCount = before ?? 0;
-  if (currentCount <= capacity) {
-    return { tier: 'glacier', before: currentCount, after: currentCount, purged: 0, duration_ms: Date.now() - start };
-  }
-
-  let purged = 0;
-  const excess = currentCount - capacity;
-
-  while (purged < excess) {
-    try {
-      const { data: ids } = await supabase
-        .from('brain_memory_archive')
-        .select('id')
-        .order('value_score', { ascending: true })
-        .order('created_at', { ascending: true })
-        .limit(Math.min(500, excess - purged));
-
-      if (!ids || ids.length === 0) break;
-      await supabase.from('brain_memory_archive').delete().in('id', ids.map(r => r.id));
-      purged += ids.length;
-    } catch { break; }
-  }
-
-  const { count: after } = await supabase
-    .from('brain_memory_archive')
-    .select('id', { count: 'exact', head: true });
-
-  return { tier: 'glacier', before: currentCount, after: after ?? 0, purged, duration_ms: Date.now() - start };
-}
 
 /** Get current tier counts for monitoring */
 export async function getTierCounts(): Promise<{ hot: number; warm: number; cold: number; glacier: number; events: number; capacities: typeof CAPACITY }> {
