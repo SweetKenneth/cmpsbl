@@ -90,9 +90,10 @@ Visible on first load. These tell the story.
 
 | Demo | Purpose |
 |------|---------|
-| Memory Stream & Discovery | The system discovers capabilities autonomously |
-| Evolution | The system improves its own code |
-| Ascension | External code enters, enhanced code exits |
+| 1.1 Memory Stream & Discovery | The system discovers capabilities autonomously |
+| 1.2 Evolution | The system improves its own code |
+| 1.3 Ascension | External code enters, enhanced code exits |
+| 1.4 Build With the Substrate | Developers build apps with intelligence already wired in |
 
 ### Tier 2 — Supporting (Reinforces credibility)
 Visible on click/scroll. These prove depth.
