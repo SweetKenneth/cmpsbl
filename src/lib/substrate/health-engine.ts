@@ -87,6 +87,27 @@ const AGENTS: PrimitiveDefinition[] = [
 
 export const ALL_PRIMITIVES: PrimitiveDefinition[] = [...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS];
 
+// Pre-built lookup maps for O(1) access — avoids repeated .find() / .filter() calls
+const PRIMITIVE_BY_ID = new Map<string, PrimitiveDefinition>(ALL_PRIMITIVES.map(p => [p.id, p]));
+const PRIMITIVES_BY_CATEGORY = new Map<PrimitiveCategory, PrimitiveDefinition[]>();
+const PRIMITIVES_BY_TIER = new Map<number, PrimitiveDefinition[]>();
+
+for (const p of ALL_PRIMITIVES) {
+  if (!PRIMITIVES_BY_CATEGORY.has(p.category)) PRIMITIVES_BY_CATEGORY.set(p.category, []);
+  PRIMITIVES_BY_CATEGORY.get(p.category)!.push(p);
+  if (!PRIMITIVES_BY_TIER.has(p.tier)) PRIMITIVES_BY_TIER.set(p.tier, []);
+  PRIMITIVES_BY_TIER.get(p.tier)!.push(p);
+}
+
+// Pre-compute category weights for computeCompositeHealth — avoids recalculating every call
+const CATEGORY_WEIGHTS = new Map<PrimitiveCategory, { members: PrimitiveDefinition[]; totalWeight: number }>();
+for (const cat of ['organ', 'layer', 'engine', 'agent'] as PrimitiveCategory[]) {
+  const members = PRIMITIVES_BY_CATEGORY.get(cat) ?? [];
+  CATEGORY_WEIGHTS.set(cat, { members, totalWeight: members.reduce((s, m) => s + m.weight, 0) });
+}
+
+const SUBSYSTEM_TOTAL_WEIGHT = SUBSYSTEMS.reduce((s, sub) => s + sub.weight, 0);
+
 // ═══════════════════════════════════════════════════════════════
 // SUBSYSTEMS — Autonomous pipelines beyond the 40 primitives
 // ═══════════════════════════════════════════════════════════════
