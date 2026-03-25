@@ -351,6 +351,7 @@ One compressed, high-signal view — the mental anchor after exploration:
 │  Self-discovering software    → Memory Stream │
 │  Self-improving software      → Evolution     │
 │  Exportable intelligence      → Ascension     │
+│  Developer platform           → Build w/ Sub. │
 │  Built-in governance          → SEBA + DEFENSE│
 └──────────────────────────────────────────────┘
 ```
