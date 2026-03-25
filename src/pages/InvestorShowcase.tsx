@@ -1,11 +1,14 @@
 /**
  * Investor Showcase — PIN-gated entry to tiered demo experience
  * Phase 0: Access shell, 30-second WOW, orientation, demo grid
+ * Phase 1.1: Memory Stream demo
  */
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Zap, Brain, ArrowRight, Sparkles, Shield, Eye, ChevronDown, Activity } from "lucide-react";
+import { Lock, Zap, Brain, ArrowRight, Sparkles, Shield, Eye, ChevronDown, Activity, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WowDemo } from "@/components/investor/WowDemo";
+import { MemoryStreamDemo } from "@/components/investor/MemoryStreamDemo";
 
 const SHOWCASE_PIN = "2026";
 
