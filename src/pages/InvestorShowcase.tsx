@@ -12,6 +12,9 @@ import { MemoryStreamDemo } from "@/components/investor/MemoryStreamDemo";
 import { EvolutionDemo } from "@/components/investor/EvolutionDemo";
 import { AscensionDemo } from "@/components/investor/AscensionDemo";
 import { BuildSubstrateDemo } from "@/components/investor/BuildSubstrateDemo";
+import { DreamEngineDemo } from "@/components/investor/DreamEngineDemo";
+import { DefenseLayerDemo } from "@/components/investor/DefenseLayerDemo";
+import { SebaPipelineDemo } from "@/components/investor/SebaPipelineDemo";
 
 const SHOWCASE_PIN = "2026";
 
