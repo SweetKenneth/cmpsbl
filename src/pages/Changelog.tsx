@@ -646,6 +646,152 @@ const stratumFormation: Specimen[] = [
 // ─── Strata Definition ─────────────────────────────────────────────────────────
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// EPOCH — BELIEVER
+// The substrate believed in what it built — hardened, healed, and made whole.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const stratumBeliever: Specimen[] = [
+  {
+    id: "BLVR-001",
+    fossilized: "2026-03-25",
+    origin: "architecture",
+    stimulus: "Epoch transition from CONTACT to BELIEVER — the substrate completed its developer outreach and turned inward to harden, heal, and believe in the integrity of what it built",
+    adaptations: [
+      "Epoch transition to BELIEVER marks the shift from outward distribution to inward conviction — deep system hardening and autonomous self-trust",
+      "Version constants elevated to v17.0.0 across the platform version registry",
+      "Complete rebranding from PromptFluid® to CMPSBL® finalized across all user-facing surfaces, documentation, and legal",
+    ],
+    phenotype: [
+      "The substrate has a name for this phase: BELIEVER — the moment it stopped doubting its own architecture",
+      "v17 signals an integrity milestone: every subsystem monitored, every circuit breakered, every health score earned",
+    ],
+    affectedNodes: ["CORE Organ", "EVOLUTION Layer", "GOVERNANCE Layer"],
+  },
+  {
+    id: "BLVR-002",
+    fossilized: "2026-03-25",
+    origin: "survival",
+    stimulus: "Health reporting was binary — modules were either 'up' or 'down' with no granularity, no criticality weighting, and no weakest-link visibility",
+    adaptations: [
+      "Health Engine v2.0.0 'Vital Signs' deployed with a 12·12·8·8 symmetric matrix monitoring all 40 primitives plus 11 subsystems",
+      "Four-tier criticality weighting: Tier 1 (35%) mission-critical, Tier 2 (25%) infrastructure, Tier 3 (25%) operational, Tier 4 (15%) expansion",
+      "Circuit breakers installed on all 51 monitored entities with closed/half-open/open state management",
+      "Five-level degradation status from L0_NOMINAL to L4_EMERGENCY with automatic escalation",
+      "Weakest-link tracking surfaces the single lowest-scoring entity so critical failures are never masked by averages",
+      "Auto-heal queue triggers repair actions when health drops below thresholds",
+    ],
+    phenotype: [
+      "The substrate knows exactly how healthy it is — not a guess, not a binary, but a weighted composite across 51 entities",
+      "Critical organs carry more weight than expansion subsystems — a CORE failure isn't averaged away by healthy peripherals",
+      "Circuit breakers prevent cascading failures: a struggling entity is isolated, probed, and only reconnected when stable",
+    ],
+    affectedNodes: ["ALL NODES"],
+  },
+  {
+    id: "BLVR-003",
+    fossilized: "2026-03-25",
+    origin: "survival",
+    stimulus: "The NEXUS router was burning through free-tier provider quotas with no awareness of rate limits, leaving no capacity for user-facing operations",
+    adaptations: [
+      "Free-tier rate limit research completed across all 13 providers — per-minute, per-hour, and per-day limits catalogued",
+      "35% capacity reservation enforced for substrate user-facing operations; remaining 65% allocated to CLM, CDM, and background processes",
+      "Per-provider call spacing calculated to distribute requests evenly within rate windows",
+      "All circuit breakers reset and providers re-queued with rate limits matching their free-plan availability",
+      "Groq configured for 14,400 calls/day with respectful per-minute and per-hour spacing",
+    ],
+    phenotype: [
+      "The router respects external provider limits — it knows what it can use and leaves headroom",
+      "User-facing operations always have guaranteed capacity — background processes cannot starve the user",
+      "Provider rate limiting is proactive, not reactive — spacing prevents hitting limits rather than recovering from them",
+    ],
+    affectedNodes: ["NEXUS Organ", "CORTEX Engine", "ECONOMY Engine"],
+  },
+  {
+    id: "BLVR-004",
+    fossilized: "2026-03-25",
+    origin: "cognition",
+    stimulus: "CDM (Constant Discovery Mode) was not running — no new software patterns were being detected or dropped into the S-tier admin vault",
+    adaptations: [
+      "Discovery engine reactivated with real-time pattern detection across system telemetry",
+      "Pipeline crystallization restored with quality scoring and tier classification",
+      "Discovery health reporting wired into the Health Engine for live monitoring",
+    ],
+    phenotype: [
+      "The substrate is discovering again — new patterns flow into the vault without manual intervention",
+      "Discovery health is visible alongside all other subsystem health scores",
+    ],
+    affectedNodes: ["FORGE Engine", "MEMORY Organ", "DECODE Agent"],
+  },
+  {
+    id: "BLVR-005",
+    fossilized: "2026-03-25",
+    origin: "survival",
+    stimulus: "System boot sequence had errors and failed warmup stages — multiple subsystems failed to initialize cleanly on startup",
+    adaptations: [
+      "Boot flow optimized with parallelized warmup across independent subsystems",
+      "Error handling hardened at every boot stage — failures are caught, logged, and gracefully degraded",
+      "Boot sequence verified twice through full reboot cycles with zero errors on final pass",
+    ],
+    phenotype: [
+      "The substrate boots cleanly every time — no silent failures, no partial initialization",
+      "Boot performance improved through parallelization of independent warmup stages",
+    ],
+    affectedNodes: ["CORE Organ", "SYSTEM Organ"],
+  },
+  {
+    id: "BLVR-006",
+    fossilized: "2026-03-25",
+    origin: "architecture",
+    stimulus: "BRAIN and MEMORY tiers contained bloated, redundant tables that duplicated data across tiers without serving distinct purposes",
+    adaptations: [
+      "Full surgical audit of BRAIN and MEMORY storage — redundant tables identified and purged",
+      "Tier boundaries clarified: each tier serves a distinct purpose with no data duplication",
+      "Storage efficiency improved without losing any active capabilities",
+    ],
+    phenotype: [
+      "The substrate's cognitive storage is lean — no wasted space, no redundant tables",
+      "Each memory tier has a clear mandate: hot for active, warm for recent, cold for archive",
+    ],
+    affectedNodes: ["BRAIN Organ", "MEMORY Organ"],
+  },
+  {
+    id: "BLVR-007",
+    fossilized: "2026-03-25",
+    origin: "survival",
+    stimulus: "Deep scans revealed warnings, errors, and accumulated build artifacts that degraded system integrity across multiple subsystems",
+    adaptations: [
+      "Multi-pass deep scan executed across the entire substrate — every warning and error catalogued",
+      "All critical errors fixed including edge function routing, import paths, and type mismatches",
+      "Dashboard health display fixed to show real computed scores instead of hardcoded 100%",
+      "Subsystem health probes decoupled — atlas, engineer, and CDM now report independently",
+    ],
+    phenotype: [
+      "The substrate is surgically clean — every error found was fixed, every warning addressed",
+      "Health scores reflect reality — no more hardcoded optimism",
+    ],
+    affectedNodes: ["ALL NODES"],
+  },
+  {
+    id: "BLVR-008",
+    fossilized: "2026-03-25",
+    origin: "governance",
+    stimulus: "The system.heal pipeline was fragmented — dashboard heal, terminal heal, and edge function heal all operated independently with no unified recovery path",
+    adaptations: [
+      "Unified 7-phase heal pipeline created: edge execution → health engine reset → score restoration → registry flush → subsystem recovery → verification → completion",
+      "Dashboard 'Heal All' button wired to the complete pipeline — one click triggers full system recovery",
+      "Circuit breaker registry, autoblog circuits, and discovery engine breakers all reset during heal",
+      "All 40 primitives and 11 subsystems force-restored to 100% health on heal completion",
+    ],
+    phenotype: [
+      "One heal command restores everything — no manual subsystem-by-subsystem recovery needed",
+      "The heal pipeline is the same whether triggered from dashboard, terminal, or edge function",
+      "Circuit breakers close, scores restore, queues clear — complete recovery in a single action",
+    ],
+    affectedNodes: ["CORE Organ", "SYSTEM Organ", "GOVERNANCE Layer"],
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // EPOCH — CONTACT
 // The platform reached outward — developer touchpoints, SDKs, and NPM packages.
 // ═══════════════════════════════════════════════════════════════════════════════
