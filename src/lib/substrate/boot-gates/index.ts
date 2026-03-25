@@ -172,9 +172,13 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     .order('created_at', { ascending: false })
     .limit(20);
 
+  const ownEvents = ownResult.data;
   if (ownEvents && ownEvents.length > 0) {
-    const failures = ownEvents.filter(e => e.outcome === 'failure').length;
-    const successRate = (ownEvents.length - failures) / ownEvents.length;
+    let failCount = 0;
+    for (let i = 0; i < ownEvents.length; i++) {
+      if (ownEvents[i].outcome === 'failure') failCount++;
+    }
+    const successRate = (ownEvents.length - failCount) / ownEvents.length;
     
     checks.push({
       name: 'own_success_rate',
