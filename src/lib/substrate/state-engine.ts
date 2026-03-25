@@ -204,9 +204,15 @@ class StateEngineClient {
   }
 
   private initializeState(): void {
-    // Initialize all schemas with defaults
+    // Initialize all schemas with defaults and build field index
     for (const [name, schema] of Object.entries(SCHEMAS)) {
-      this.stateStore[name as StateSchemaName] = this.getDefaultState(schema);
+      const schemaName = name as StateSchemaName;
+      this.stateStore[schemaName] = this.getDefaultState(schema);
+      const fieldMap = new Map<string, StateField>();
+      for (const field of schema.fields) {
+        fieldMap.set(field.name, field);
+      }
+      this.fieldIndex.set(schemaName, fieldMap);
     }
     this.engineState.schemasLoaded = Object.keys(SCHEMAS).length;
     this.engineState.initialized = true;

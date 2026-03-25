@@ -113,7 +113,8 @@ class ObservabilityMonitor {
     };
 
     this.bridgeLog.push(invocation);
-    if (this.bridgeLog.length > this.MAX_BRIDGE_LOG) {
+    // Efficient pruning: drop first half when over limit (amortized O(1))
+    if (this.bridgeLog.length > this.MAX_BRIDGE_LOG * 1.5) {
       this.bridgeLog = this.bridgeLog.slice(-this.MAX_BRIDGE_LOG);
     }
 

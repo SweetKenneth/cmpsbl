@@ -86,8 +86,10 @@ export function getCascadeHistory(): CascadeChain[] {
 export function getRecentFailureRate(windowMs = 60_000): Record<string, number> {
   const cutoff = Date.now() - windowMs;
   const counts: Record<string, number> = {};
-  for (const f of recentFailures) {
-    if (f.timestamp >= cutoff) {
+  for (let i = 0; i < failureCount; i++) {
+    const idx = (failureHead - failureCount + i + MAX_FAILURES) % MAX_FAILURES;
+    const f = recentFailures[idx];
+    if (f && f.timestamp >= cutoff) {
       counts[f.module] = (counts[f.module] || 0) + 1;
     }
   }
@@ -95,7 +97,8 @@ export function getRecentFailureRate(windowMs = 60_000): Record<string, number> 
 }
 
 export function clearFailureHistory(): void {
-  recentFailures.length = 0;
+  failureHead = 0;
+  failureCount = 0;
 }
 
 export type { CascadeChain, FailureEvent };
