@@ -16,11 +16,12 @@ import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
 import { TIER_1_DEMOS, TIER_2_DEMOS, DEMO_ROUTE_MAP } from "./showcaseData";
 
+const ease = [0.4, 0, 0.2, 1] as const;
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: [0.4, 0, 0.2, 1] },
-};
+  transition: { duration: 0.5, ease },
+} as const;
 
 export function ShowcaseMobile() {
   const [showTier2, setShowTier2] = useState(false);
