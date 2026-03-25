@@ -1420,8 +1420,8 @@ export default function Changelog() {
                   <div className={cn("w-full border-t-2 border-dashed", stratum.borderColor)} />
                 </div>
                 <div className="relative flex justify-center gap-2">
-                  <div className={cn("px-6 py-2 rounded-full border text-sm font-mono tracking-wider", stratum.color, stratum.borderColor, "bg-background")}>
-                    STRATUM {['I', 'II', 'III', 'IV', 'V'][stratumIdx]} — {stratum.epoch}
+                   <div className={cn("px-6 py-2 rounded-full border text-sm font-mono tracking-wider", stratum.color, stratum.borderColor, "bg-background")}>
+                    STRATUM {['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'][stratumIdx]} — {stratum.epoch}
                   </div>
                   <div className={cn("px-3 py-2 rounded-full border text-xs font-mono bg-background", stratum.borderColor, stratum.color)}>
                     {stratum.specimens.length} specimens
