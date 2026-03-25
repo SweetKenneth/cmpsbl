@@ -58,7 +58,7 @@ export function XctblModal({ isOpen, onClose }: XctblModalProps) {
         variant="ghost"
         size="icon"
         onClick={onClose}
-        className="absolute right-3 top-3 z-10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+        className="absolute right-3 top-3 z-10 text-white/60 hover:text-white hover:bg-muted/70 transition-colors"
       >
         <X className="w-6 h-6" />
       </Button>
@@ -92,7 +92,7 @@ export function XctblModal({ isOpen, onClose }: XctblModalProps) {
                       <Button
                         onClick={handleReplay}
                         variant="outline"
-                        className="gap-2 border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                        className="gap-2 border-border/40 bg-muted/50 text-white hover:bg-muted/70 hover:text-white"
                       >
                         <RefreshCcw className="w-4 h-4" />
                         Replay
@@ -122,7 +122,7 @@ export function XctblModal({ isOpen, onClose }: XctblModalProps) {
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-        <DrawerContent className="z-[100000] bg-black/95 border-white/10">
+        <DrawerContent className="z-[100000] bg-black/95 border-border/30">
           <div className="relative px-2">{content}</div>
         </DrawerContent>
       </Drawer>
@@ -131,7 +131,7 @@ export function XctblModal({ isOpen, onClose }: XctblModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="z-[100000] bg-black/95 border-white/10 p-0 overflow-hidden max-w-5xl">
+      <DialogContent className="z-[100000] bg-black/95 border-border/30 p-0 overflow-hidden max-w-5xl">
         <div className="relative">{content}</div>
       </DialogContent>
     </Dialog>

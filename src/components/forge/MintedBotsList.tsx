@@ -116,7 +116,7 @@ export function MintedBotsList() {
 
   if (!bots || bots.length === 0) {
     return (
-      <div className="rounded-xl border-dashed border border-white/10 bg-white/5 backdrop-blur-xl p-12 text-center">
+      <div className="rounded-xl border-dashed border border-border/30 bg-muted/50 backdrop-blur-xl p-12 text-center">
         <div className="relative w-16 h-16 mx-auto mb-4">
           <Bot className="w-16 h-16 text-muted-foreground/30" />
           <div className="absolute inset-0 bg-gradient-to-br from-neon-cyan/20 to-neon-magenta/20 rounded-full blur-xl" />
@@ -160,8 +160,8 @@ export function MintedBotsList() {
             <div 
               key={bot.id} 
               className={cn(
-                "group rounded-xl border bg-white/5 dark:bg-white/[0.03] backdrop-blur-xl transition-all duration-300",
-                "border-white/10 hover:border-neon-cyan/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)]"
+                "group rounded-xl border bg-muted/50 dark:bg-white/[0.03] backdrop-blur-xl transition-all duration-300",
+                "border-border/30 hover:border-neon-cyan/40 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)]"
               )}
             >
               <div className="p-4">

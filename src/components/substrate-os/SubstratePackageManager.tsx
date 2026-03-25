@@ -210,7 +210,7 @@ export function SubstratePackageManager() {
 
   return (
     <>
-      <Card className="border border-neon-purple/20 bg-white/5 backdrop-blur-xl">
+      <Card className="border border-neon-purple/20 bg-muted/50 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <Package className="w-5 h-5 text-neon-purple" />
@@ -231,7 +231,7 @@ export function SubstratePackageManager() {
                   "p-4 rounded-lg border text-left transition-all",
                   selectedType === pkg.id
                     ? `border-${pkg.color}-500/50 bg-${pkg.color}-500/10`
-                    : "border-white/10 bg-white/5 hover:bg-white/10"
+                    : "border-border/30 bg-muted/50 hover:bg-muted/70"
                 )}
               >
                 <div className="flex items-center gap-3 mb-3">

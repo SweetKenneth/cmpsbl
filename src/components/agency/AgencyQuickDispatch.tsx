@@ -154,7 +154,7 @@ export function AgencyQuickDispatch({
           >
             <Card className="border-border/30 bg-black/40 overflow-hidden">
               <CollapsibleTrigger className="w-full">
-                <CardHeader className="pb-2 px-3 pt-3 cursor-pointer hover:bg-white/5 transition-colors">
+                <CardHeader className="pb-2 px-3 pt-3 cursor-pointer hover:bg-muted/50 transition-colors">
                   <CardTitle className="text-xs sm:text-sm flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <span>{categoryMeta.icon}</span>

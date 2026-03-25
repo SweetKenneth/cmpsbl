@@ -254,7 +254,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                     ? "border-neon-cyan bg-neon-cyan/20" 
                     : i < currentStep 
                       ? "border-neon-green bg-neon-green/20" 
-                      : "border-white/10 bg-white/5"
+                      : "border-border/30 bg-muted/50"
                 )}>
                   {i < currentStep ? (
                     <Check className="w-4 h-4" />
@@ -269,7 +269,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
         </div>
 
         {/* Step Content */}
-        <Card className="border border-white/10 bg-white/5 backdrop-blur-xl mb-8">
+        <Card className="border border-border/30 bg-muted/50 backdrop-blur-xl mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <step.icon className="w-5 h-5 text-neon-cyan" />
@@ -318,7 +318,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                             "p-5 rounded-xl border text-left transition-all",
                             config.industry === preset.id
                               ? "border-primary bg-primary/10"
-                              : "border-white/10 bg-white/5 hover:bg-white/10"
+                              : "border-border/30 bg-muted/50 hover:bg-muted/70"
                           )}
                         >
                           <div className="flex items-start gap-4">
@@ -420,7 +420,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                           "p-4 rounded-lg border text-left transition-all",
                           config.theme === theme.value
                             ? "border-neon-cyan bg-neon-cyan/10"
-                            : "border-white/10 bg-white/5 hover:bg-white/10"
+                            : "border-border/30 bg-muted/50 hover:bg-muted/70"
                         )}
                       >
                         <div className="flex items-center gap-3 mb-3">
@@ -434,7 +434,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                           {theme.colors.map((color, i) => (
                             <div
                               key={i}
-                              className="w-8 h-8 rounded-full border border-white/20"
+                              className="w-8 h-8 rounded-full border border-border/40"
                               style={{ backgroundColor: color }}
                             />
                           ))}
@@ -455,7 +455,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                           "w-full p-4 rounded-lg border text-left transition-all",
                           config.layout === layout.value
                             ? "border-neon-cyan bg-neon-cyan/10"
-                            : "border-white/10 bg-white/5 hover:bg-white/10"
+                            : "border-border/30 bg-muted/50 hover:bg-muted/70"
                         )}
                       >
                         <div className="flex items-center justify-between">
@@ -484,7 +484,7 @@ export function InstallWizard({ packageData, onComplete, onCancel }: InstallWiza
                             ? "border-neon-green/30 bg-neon-green/5"
                             : config.modules[module.key]
                               ? "border-neon-cyan/30 bg-neon-cyan/5"
-                              : "border-white/10 bg-white/5"
+                              : "border-border/30 bg-muted/50"
                         )}
                       >
                         <div className="flex items-center gap-3">

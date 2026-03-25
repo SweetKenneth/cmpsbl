@@ -479,7 +479,7 @@ export function AgencyMintWizard({ onComplete }: AgencyMintWizardProps) {
                       key={mode.id}
                       className={cn(
                         "flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all",
-                        "backdrop-blur-xl bg-white/5",
+                        "backdrop-blur-xl bg-muted/50",
                         dreamPoolMode === mode.id
                           ? "border-neon-cyan/50 bg-neon-cyan/10"
                           : "border-border/30 hover:border-border/50"

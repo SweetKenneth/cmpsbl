@@ -296,7 +296,7 @@ export function EnhancedBotBuilder({ onSuccess }: EnhancedBotBuilderProps) {
                 className={cn(
                   "cursor-pointer transition-all duration-300 hover:scale-[1.02]",
                   "rounded-xl p-4 backdrop-blur-xl",
-                  "bg-white/5 dark:bg-white/[0.03]",
+                  "bg-muted/50 dark:bg-white/[0.03]",
                   "border hover:shadow-lg",
                   colorClasses[cls.color as keyof typeof colorClasses] || colorClasses.cyan
                 )}
