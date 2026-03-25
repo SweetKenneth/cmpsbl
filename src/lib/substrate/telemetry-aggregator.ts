@@ -499,7 +499,12 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
   }
 
   const repairAttempts = repairSuccesses + escalations;
-  const topExecutor = Object.entries(executorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top executor without sort — single-pass max
+  let topExecutor: string | null = null;
+  let topExecCount = 0;
+  for (const ex in executorCounts) {
+    if (executorCounts[ex] > topExecCount) { topExecCount = executorCounts[ex]; topExecutor = ex; }
+  }
 
   return {
     totalRuns,
