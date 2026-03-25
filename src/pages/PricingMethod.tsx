@@ -66,7 +66,7 @@ export default function PricingMethod() {
             <div className="grid sm:grid-cols-3 gap-4">
               <Card className="border-primary/30 bg-primary/5">
                 <CardContent className="pt-6">
-                  <div className="text-3xl font-bold text-primary mb-1">55%</div>
+                  <div className="text-2xl sm:text-3xl font-bold tracking-tight text-primary mb-1">55%</div>
                   <div className="font-semibold text-foreground mb-2">Market Comparison</div>
                   <p className="text-sm text-muted-foreground">
                     Multiple AI models independently compare the capability to similar products and tools on the market. We take the middle estimate after removing outliers.
@@ -75,7 +75,7 @@ export default function PricingMethod() {
               </Card>
               <Card>
                 <CardContent className="pt-6">
-                  <div className="text-3xl font-bold text-foreground mb-1">25%</div>
+                  <div className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">25%</div>
                   <div className="font-semibold text-foreground mb-2">Technical Quality Score</div>
                   <p className="text-sm text-muted-foreground">
                     Our internal scoring system measures how sophisticated the capability is — including complexity, integration depth, and how well it works with other features. Higher scores earn a premium.
@@ -84,7 +84,7 @@ export default function PricingMethod() {
               </Card>
               <Card>
                 <CardContent className="pt-6">
-                  <div className="text-3xl font-bold text-foreground mb-1">20%</div>
+                  <div className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-1">20%</div>
                   <div className="font-semibold text-foreground mb-2">Engineering Analysis</div>
                   <p className="text-sm text-muted-foreground">
                     Our engineering team's own assessment based on component analysis, build complexity, and system depth. This keeps pricing grounded in measurable technical work.

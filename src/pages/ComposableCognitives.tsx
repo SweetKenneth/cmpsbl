@@ -220,7 +220,7 @@ export default function ComposableCognitives() {
               5 FUSED META-AGENTS • DREAM SYNTHESIS • OWN FOREVER
             </Badge>
 
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[0.95]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[0.95]">
               <span className="block">Many minds.</span>
               <span className="block glow-text mt-1">One agent.</span>
             </h1>

@@ -365,7 +365,7 @@ function ObserverGate() {
           </motion.div>
           
           {/* Main heading */}
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
             <span className="bg-gradient-to-r from-foreground via-foreground/80 to-foreground bg-clip-text">
               Witness the Substrate
             </span>

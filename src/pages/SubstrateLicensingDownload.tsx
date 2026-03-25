@@ -227,7 +227,7 @@ export default function SubstrateLicensingDownload() {
         <section className="py-16 border-t border-border/50 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Black-Box Protected Capability Packs</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Black-Box Protected Capability Packs</h2>
               <p className="text-muted-foreground">
                 Experience Apex Discoveries are delivered as sealed capability packs — you get the full power without exposing the underlying architecture. Your data stays local. Your execution stays private.
               </p>

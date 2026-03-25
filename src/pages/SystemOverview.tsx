@@ -287,7 +287,7 @@ function PricingSection() {
               )}
               <h3 className="text-xl font-bold text-foreground mb-1">{tier.name}</h3>
               <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-3xl font-bold text-foreground">{tier.price}</span>
+                <span className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{tier.price}</span>
                 <span className="text-sm text-muted-foreground">{tier.interval}</span>
               </div>
               <p className="text-sm text-muted-foreground mb-5">{tier.desc}</p>

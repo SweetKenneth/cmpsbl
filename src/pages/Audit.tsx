@@ -80,7 +80,7 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Total Events</p>
-              <p className="text-3xl font-bold text-foreground">{logs.length}</p>
+              <p className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">{logs.length}</p>
             </div>
             <FileText className="w-8 h-8 text-primary/40" />
           </div>
@@ -90,7 +90,7 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">User Actions</p>
-              <p className="text-3xl font-bold text-neon-blue">
+              <p className="text-2xl sm:text-3xl font-bold tracking-tight text-neon-blue">
                 {logs.filter(l => l.event_type.includes('user')).length}
               </p>
             </div>
@@ -102,7 +102,7 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Security Events</p>
-              <p className="text-3xl font-bold text-neon-amber">
+              <p className="text-2xl sm:text-3xl font-bold tracking-tight text-neon-amber">
                 {logs.filter(l => l.severity === 'warning' || l.severity === 'critical').length}
               </p>
             </div>
@@ -114,7 +114,7 @@ export default function Audit() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Last 24h</p>
-              <p className="text-3xl font-bold text-neon-green">
+              <p className="text-2xl sm:text-3xl font-bold tracking-tight text-neon-green">
                 {logs.filter(l => {
                   const diff = Date.now() - new Date(l.timestamp).getTime();
                   return diff < 24 * 60 * 60 * 1000;

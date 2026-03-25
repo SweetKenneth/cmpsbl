@@ -301,7 +301,7 @@ export default function EvolutionControlCenter() {
               )}
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.08]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.08]">
               <span className="text-foreground">Your system evolves.</span>
               <br />
               <span className="text-primary">

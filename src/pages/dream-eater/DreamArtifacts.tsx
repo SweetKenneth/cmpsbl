@@ -99,7 +99,7 @@ const DreamArtifacts = () => {
           >
             <div className="flex items-center justify-center gap-3 mb-4">
               <Gem className="w-8 h-8 text-neon-purple" />
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-neon-purple to-primary bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-neon-purple to-primary bg-clip-text text-transparent">
                 Dream Artifacts
               </h1>
             </div>

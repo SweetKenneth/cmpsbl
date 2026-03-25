@@ -59,7 +59,7 @@ const PersistentMemoryLanding = () => {
               </motion.div>
               
               <motion.h1 
-                className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
@@ -333,7 +333,7 @@ const PersistentMemoryLanding = () => {
                   { value: "8×", label: "Compression Ratio" },
                 ].map((stat, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                    <div className="text-3xl font-bold text-primary font-mono tabular-nums">{stat.value}</div>
+                    <div className="text-2xl sm:text-3xl font-bold tracking-tight text-primary font-mono tabular-nums">{stat.value}</div>
                     <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
                   </motion.div>
                 ))}

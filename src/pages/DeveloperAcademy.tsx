@@ -83,7 +83,7 @@ const DeveloperAcademy = () => {
                   Interactive Learning Platform
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 leading-tight animate-fade-in">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 leading-tight animate-fade-in">
                   Learn to build with <span className="text-primary">CMPSBL</span>
                 </h1>
 

@@ -99,7 +99,7 @@ export default function VanillaDeveloperGuide() {
                 <Code className="w-3 h-3 mr-1" /> TypeScript · Node.js · Deno
               </Badge>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.1]">
               <span className="text-foreground">Drop it in your stack.</span>
               <br />
               <span className="text-primary">Ship smarter systems.</span>

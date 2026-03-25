@@ -214,7 +214,7 @@ export default function Architecture() {
         <section className="border-y border-border bg-muted/30">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-2">Deterministic Boot Sequence</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">Deterministic Boot Sequence</h2>
               <p className="text-muted-foreground mb-6">
                 CORE initializes all primitives in a fixed order. Fields permeate the spine,
                 the Plane overlay supervises, <Link to="/architecture" className="text-primary hover:underline font-medium">ATLAS</Link> indexes, and{" "}
@@ -266,7 +266,7 @@ export default function Architecture() {
         <section className="border-t border-border">
           <div className="container mx-auto max-w-5xl px-4 py-16">
             <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-bold mb-8">Architectural Properties</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-8">Architectural Properties</h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {KEY_PROPERTIES.map((prop) => (
                   <Card key={prop.title} className="hover:border-primary/20 transition-all duration-300 card-lift">

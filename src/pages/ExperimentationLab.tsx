@@ -280,7 +280,7 @@ export default function ExperimentationLab() {
                 <Cpu className="w-3 h-3 mr-1" />
                 Live Demos
               </Badge>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-neon-purple bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 bg-gradient-to-r from-foreground via-primary to-neon-purple bg-clip-text text-transparent">
                 Experimentation Lab
               </h1>
               <p className="text-xl text-muted-foreground mb-8">
@@ -485,7 +485,7 @@ export default function ExperimentationLab() {
         <section className="border-t border-border/50 bg-gradient-to-br from-primary/5 via-transparent to-neon-purple/5">
           <div className="container mx-auto px-4 py-16">
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-4">Ready to Build Your Own?</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Ready to Build Your Own?</h2>
               <p className="text-lg text-muted-foreground mb-8">
                 Browse 100+ production-ready templates in the marketplace. Each template includes 
                 full source code, documentation, and integration guides.

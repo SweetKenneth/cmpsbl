@@ -26,7 +26,7 @@ export function TierUnlockSection() {
             <Package className="w-3 h-3 mr-1.5 inline" />
             Equal-Slot Capacity
           </Badge>
-          <h2 className="text-3xl font-bold mb-4">Every Pack = 1 Slot</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">Every Pack = 1 Slot</h2>
           <p className="text-muted-foreground">
             All 24 capability packs are visible to every plan. Your subscription controls how many you can activate — not which ones you can see.
           </p>

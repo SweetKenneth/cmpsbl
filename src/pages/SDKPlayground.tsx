@@ -225,7 +225,7 @@ export default function SDKPlayground() {
             <Terminal className="w-3 h-3" />
             Developer Playground
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4">
             SDK <span className="text-primary">Playground</span>
           </h1>
           <p className="text-muted-foreground max-w-2xl mx-auto">
