@@ -81,9 +81,9 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '15.1.8',
-  codename: 'CONTACT',
-  epoch: 'CONTACT',
+  version: '17.0.0',
+  codename: 'BELIEVER',
+  epoch: 'BELIEVER',
   buildDate: new Date().toISOString().split('T')[0],
   
   // Architecture Counts — 10 public entities (CORE + 9 Nodes)

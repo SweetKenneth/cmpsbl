@@ -53,7 +53,8 @@ The substrate is production-ready with:
 | **INFRASTRUCTURE** | v1.0–v12.x | The substrate grew organs |
 | **IRONCLAD** | v13.0–v13.x | The substrate grew armor |
 | **MINDGAMES** | v14.0–v14.x | The substrate opened its eyes and saw users |
-| **CONTACT** | v15.0–current | The substrate reached outward to developers |
+| **CONTACT** | v15.0–v16.x | The substrate reached outward to developers |
+| **BELIEVER** | v17.0–current | The substrate believed in what it built |
 
 ---
 
