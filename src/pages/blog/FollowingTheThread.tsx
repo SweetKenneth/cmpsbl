@@ -27,7 +27,7 @@ export default function FollowingTheThread() {
         </>
       }
     >
-      <p className="text-lg leading-relaxed">We mentioned it in <Link to="/blog/where-we-are-now" className="text-primary hover:underline">Chapter 40</Link>. A DREAM Engine consolidation output that didn't fit any known pattern. We said two engineers were working on it full time. This is what they found.</p>
+      <p className="text-sm sm:text-base leading-relaxed">We mentioned it in <Link to="/blog/where-we-are-now" className="text-primary hover:underline">Chapter 40</Link>. A DREAM Engine consolidation output that didn't fit any known pattern. We said two engineers were working on it full time. This is what they found.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Anomaly</h2>
       <p>During a routine off-peak <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM cycle</Link> on February 27th, the consolidation engine produced an output that bypassed normal classification. DREAM's job is straightforward: process the day's signals, compress low-value patterns, strengthen high-value ones, and generate heuristic updates. It does this thousands of times a week. We stopped watching every output months ago.</p>
