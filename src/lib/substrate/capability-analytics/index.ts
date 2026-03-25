@@ -97,50 +97,58 @@ class CapabilityAnalytics {
   getMetrics(capabilityId: string, periodHours = 24): CapabilityMetrics {
     this.ensureLoaded();
     const cutoff = Date.now() - (periodHours * 3600_000);
-    const relevant = [...this.records, ...this.buffer]
-      .filter(r => r.capabilityId === capabilityId && r.timestamp >= cutoff);
+    const midpoint = cutoff + (periodHours * 1800_000);
 
-    if (relevant.length === 0) {
+    // Single-pass aggregation over both records and buffer
+    let module = '';
+    let total = 0;
+    let successCount = 0;
+    let durationSum = 0;
+    let firstHalf = 0;
+    let secondHalf = 0;
+    let minTs = Infinity;
+    let maxTs = -Infinity;
+    const durations: number[] = [];
+
+    const scan = (arr: CapabilityUsageRecord[]) => {
+      for (let i = 0; i < arr.length; i++) {
+        const r = arr[i];
+        if (r.capabilityId !== capabilityId || r.timestamp < cutoff) continue;
+        total++;
+        if (!module) module = r.module;
+        if (r.success) successCount++;
+        durationSum += r.durationMs;
+        durations.push(r.durationMs);
+        if (r.timestamp < midpoint) firstHalf++; else secondHalf++;
+        if (r.timestamp < minTs) minTs = r.timestamp;
+        if (r.timestamp > maxTs) maxTs = r.timestamp;
+      }
+    };
+    scan(this.records);
+    scan(this.buffer);
+
+    if (total === 0) {
       return {
-        capabilityId,
-        module: '',
-        totalCalls: 0,
-        successCount: 0,
-        errorCount: 0,
-        avgDurationMs: 0,
-        p95DurationMs: 0,
-        lastCalledAt: null,
-        firstCalledAt: null,
-        successRate: 0,
-        callsPerHour: 0,
-        trend: 'dead',
+        capabilityId, module: '', totalCalls: 0, successCount: 0, errorCount: 0,
+        avgDurationMs: 0, p95DurationMs: 0, lastCalledAt: null, firstCalledAt: null,
+        successRate: 0, callsPerHour: 0, trend: 'dead',
       };
     }
 
-    const successes = relevant.filter(r => r.success);
-    const durations = relevant.map(r => r.durationMs).sort((a, b) => a - b);
-    const p95Index = Math.floor(durations.length * 0.95);
-
-    // Calculate trend
-    const midpoint = cutoff + (periodHours * 3600_000 / 2);
-    const firstHalf = relevant.filter(r => r.timestamp < midpoint).length;
-    const secondHalf = relevant.filter(r => r.timestamp >= midpoint).length;
+    durations.sort((a, b) => a - b);
     let trend: CapabilityMetrics['trend'] = 'stable';
     if (secondHalf > firstHalf * 1.3) trend = 'rising';
     else if (secondHalf < firstHalf * 0.7) trend = 'declining';
 
     return {
-      capabilityId,
-      module: relevant[0].module,
-      totalCalls: relevant.length,
-      successCount: successes.length,
-      errorCount: relevant.length - successes.length,
-      avgDurationMs: Math.round(durations.reduce((s, d) => s + d, 0) / durations.length),
-      p95DurationMs: durations[p95Index] || 0,
-      lastCalledAt: Math.max(...relevant.map(r => r.timestamp)),
-      firstCalledAt: Math.min(...relevant.map(r => r.timestamp)),
-      successRate: (successes.length / relevant.length) * 100,
-      callsPerHour: relevant.length / periodHours,
+      capabilityId, module, totalCalls: total, successCount,
+      errorCount: total - successCount,
+      avgDurationMs: Math.round(durationSum / total),
+      p95DurationMs: durations[Math.floor(durations.length * 0.95)] || 0,
+      lastCalledAt: maxTs === -Infinity ? null : maxTs,
+      firstCalledAt: minTs === Infinity ? null : minTs,
+      successRate: (successCount / total) * 100,
+      callsPerHour: total / periodHours,
       trend,
     };
   }
