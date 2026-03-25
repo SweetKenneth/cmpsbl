@@ -526,11 +526,15 @@ async function aggregateEncodeEscalations(): Promise<EncodeTelemetry> {
 
   if (error || !data) return defaultEncode();
 
-  type EscalationRow = { status: string; claimed_by: string | null; resolved_at: string | null };
-  const rows = data as EscalationRow[];
-  const claimed = rows.filter(d => d.claimed_by === 'ENCODE').length;
-  const resolved = rows.filter(d => d.claimed_by === 'ENCODE' && d.status === 'resolved').length;
-  const failed = rows.filter(d => d.claimed_by === 'ENCODE' && d.status !== 'resolved' && d.status !== 'open').length;
+  // Single-pass aggregation — replaces 3 separate .filter() passes
+  let claimed = 0, resolved = 0, failed = 0;
+  for (let i = 0; i < data.length; i++) {
+    const d = data[i] as { status: string; claimed_by: string | null };
+    if (d.claimed_by !== 'ENCODE') continue;
+    claimed++;
+    if (d.status === 'resolved') resolved++;
+    else if (d.status !== 'open') failed++;
+  }
 
   return {
     escalationsClaimed: claimed,

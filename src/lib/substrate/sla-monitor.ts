@@ -92,8 +92,14 @@ function checkViolations(module: string): void {
     if (breached && !target.breached) {
       target.breached = true;
       target.breachCount++;
+      // Ring-style eviction: drop first half when over limit (amortized O(1))
+      if (violations.length >= MAX_VIOLATIONS) {
+        // Shift out oldest half in one operation
+        const half = MAX_VIOLATIONS >>> 1;
+        violations.copyWithin(0, half);
+        violations.length -= half;
+      }
       violations.push({ target: target.id, value, threshold: target.threshold, at: now });
-      if (violations.length > MAX_VIOLATIONS) violations.splice(0, 50);
       for (const fn of listeners) fn(target.id, value);
     } else if (!breached) {
       target.breached = false;
