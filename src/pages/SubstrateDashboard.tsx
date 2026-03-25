@@ -163,8 +163,8 @@ const modulesByLayer = {
       name: "SYSTEM Organ",
       description: "Administration, configuration",
       icon: Settings,
-      color: "text-gray-400",
-      bg: "bg-gray-400/10",
+      color: "text-muted-foreground",
+      bg: "bg-muted-foreground/10",
       actions: ["config", "audit", "backup", "restore"],
     },
     {

@@ -182,7 +182,7 @@ export default function Explore() {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-white text-gray-900 hover:bg-white/90 font-bold shadow-2xl shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
+                <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
                   <Link to="/auth">
                     <Sparkles className="w-5 h-5 mr-2" />
                     Start Building — Free
