@@ -457,7 +457,12 @@ async function aggregateBrainEvents(): Promise<BrainTelemetry> {
     const mod = (d as any).model || 'unknown';
     moduleCounts[mod] = (moduleCounts[mod] || 0) + 1;
   }
-  const topModule = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top module without sort — single-pass max
+  let topModule: string | null = null;
+  let topModCount = 0;
+  for (const mod in moduleCounts) {
+    if (moduleCounts[mod] > topModCount) { topModCount = moduleCounts[mod]; topModule = mod; }
+  }
   const lastEventAt = (sample[0] as any)?.created_at ?? null;
 
   return {
