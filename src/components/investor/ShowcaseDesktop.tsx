@@ -1,10 +1,10 @@
 /**
  * Investor Showcase — Desktop Layout
- * Wide multi-column layout with persistent sidebar navigation
+ * Glass-morphism, gradient meshes, fluid typography, Believer Epoch aesthetic
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity, ArrowLeft } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -19,137 +19,162 @@ import { TIER_1_DEMOS, TIER_2_DEMOS, DEMO_ROUTE_MAP } from "./showcaseData";
 export function ShowcaseDesktop() {
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
 
-  // Render active demo full-width with back nav
   if (activeDemo) {
     return renderDemo(activeDemo, () => setActiveDemo(null));
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Top bar */}
-      <div className="border-b border-border bg-muted/30 px-6 py-2.5 flex items-center justify-between text-[11px] font-mono text-muted-foreground shrink-0">
-        <span className="font-semibold tracking-wider">CMPSBL® Investor Preview</span>
-        <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Ambient gradient mesh */}
+      <div className="fixed inset-0 pointer-events-none" style={{ background: "var(--gradient-mesh)" }} />
+
+      {/* Top bar — glass */}
+      <div className="sticky top-0 z-40 border-b border-border/30 bg-background/60 backdrop-blur-xl px-8 py-3 flex items-center justify-between">
+        <span className="text-sm font-mono font-bold tracking-wider text-foreground">
+          CMPSBL<span className="text-primary">®</span>
+          <span className="ml-3 text-xs font-normal text-muted-foreground">Investor Preview</span>
+        </span>
+        <div className="flex items-center gap-5 text-xs font-mono text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            System: Stable
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" style={{ boxShadow: "var(--shadow-glow)" }} />
+            System Stable
           </span>
-          <span>Live — No Simulated Data</span>
+          <span className="text-muted-foreground/50">Live Data · No Simulations</span>
         </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
-        {/* ─── Left Sidebar ─── */}
-        <aside className="w-72 border-r border-border bg-card/50 backdrop-blur-sm flex flex-col shrink-0 overflow-y-auto">
+      <div className="relative flex flex-1 min-h-[calc(100vh-49px)]">
+        {/* ─── Sidebar ─── */}
+        <aside className="w-72 border-r border-border/20 bg-card/30 backdrop-blur-sm flex flex-col shrink-0 overflow-y-auto">
           {/* WOW CTA */}
-          <div className="p-5 border-b border-border/50">
-            <div className="rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 p-4 space-y-3 text-center">
-              <p className="text-[10px] font-mono uppercase tracking-widest text-primary">First Time?</p>
-              <h3 className="text-sm font-bold text-foreground">See it in 30 seconds</h3>
-              <Button size="sm" className="w-full gap-2" onClick={() => setActiveDemo("wow")}>
-                <Sparkles className="w-3.5 h-3.5" />
-                Show Me
-              </Button>
+          <div className="p-5 border-b border-border/20">
+            <div className="relative rounded-xl overflow-hidden border border-primary/20">
+              <div className="absolute inset-0" style={{ background: "var(--gradient-primary)", opacity: 0.08 }} />
+              <div className="relative p-4 space-y-3 text-center">
+                <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-[9px] font-mono uppercase tracking-widest text-primary">
+                  <Sparkles className="w-2.5 h-2.5" />
+                  Start Here
+                </div>
+                <h3 className="text-sm font-bold text-foreground">30-Second Demo</h3>
+                <Button size="sm" className="w-full gap-2 rounded-lg" onClick={() => setActiveDemo("wow")}>
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Show Me
+                </Button>
+              </div>
             </div>
           </div>
 
-          {/* Nav: Core */}
+          {/* Core Nav */}
           <div className="p-4 space-y-1">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">Core Demos</p>
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-primary font-bold mb-3">Core</p>
             {TIER_1_DEMOS.map((demo) => {
               const demoId = DEMO_ROUTE_MAP[demo.title];
               return (
                 <button
                   key={demo.title}
                   onClick={() => demoId && setActiveDemo(demoId)}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-accent/50 transition-colors group"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-primary/5 transition-all group border border-transparent hover:border-primary/10"
                 >
                   <div className="w-7 h-7 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
                     {demo.icon}
                   </div>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">{demo.title}</p>
+                    <p className="text-sm font-semibold text-foreground truncate">{demo.title}</p>
                     <p className="text-[10px] text-muted-foreground truncate">{demo.subtitle}</p>
                   </div>
-                  <ArrowRight className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 ml-auto shrink-0 transition-opacity" />
+                  <ArrowRight className="w-3 h-3 text-primary/40 opacity-0 group-hover:opacity-100 ml-auto shrink-0 transition-opacity" />
                 </button>
               );
             })}
           </div>
 
-          {/* Nav: Supporting */}
+          {/* Supporting Nav */}
           <div className="p-4 pt-0 space-y-1">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-2">Supporting Demos</p>
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold mb-3">Supporting</p>
             {TIER_2_DEMOS.map((demo) => {
               const demoId = DEMO_ROUTE_MAP[demo.title];
               return (
                 <button
                   key={demo.title}
                   onClick={() => demoId && setActiveDemo(demoId)}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left hover:bg-accent/50 transition-colors group"
+                  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left hover:bg-accent/5 transition-all group border border-transparent hover:border-border/30"
                 >
-                  <div className="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
+                  <div className="w-7 h-7 rounded-md bg-muted/50 flex items-center justify-center shrink-0">
                     {demo.icon}
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{demo.title}</p>
                     <p className="text-[10px] text-muted-foreground truncate">{demo.subtitle}</p>
                   </div>
-                  <ArrowRight className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 ml-auto shrink-0 transition-opacity" />
                 </button>
               );
             })}
           </div>
 
-          {/* Footer */}
-          <div className="mt-auto p-4 border-t border-border/50">
-            <p className="text-[9px] text-muted-foreground font-mono text-center">
-              © 2025–2026 CMPSBL® • Internal Use Only
+          <div className="mt-auto p-4 border-t border-border/20">
+            <p className="text-[9px] text-muted-foreground/50 font-mono text-center">
+              © 2025–2026 CMPSBL® · Confidential
             </p>
           </div>
         </aside>
 
         {/* ─── Main Content ─── */}
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-5xl mx-auto px-8 py-10 space-y-10">
-            {/* Hero orientation */}
+          <div className="max-w-5xl mx-auto px-8 py-12 space-y-12">
+            {/* Hero */}
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-4"
+              transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+              className="space-y-5"
             >
-              <h1 className="text-3xl font-black text-foreground tracking-tight">
-                What is CMPSBL?
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-[10px] font-mono uppercase tracking-widest text-primary">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                Cognitive Operating System
+              </div>
+              <h1 className="text-4xl font-black text-foreground tracking-tight leading-tight">
+                Software that discovers,<br />improves, and exports{" "}
+                <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-primary)" }}>
+                  itself.
+                </span>
               </h1>
-              <p className="text-base text-muted-foreground leading-relaxed max-w-2xl">
-                A cognitive operating system that discovers, improves, and exports software capabilities autonomously — using 40 specialized AI primitives that coordinate through a live mesh.
+              <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+                40 specialized AI primitives coordinate through a live mesh to autonomously discover new capabilities, improve existing code, and export production-ready software.
               </p>
 
-              {/* 3-step flow */}
-              <div className="flex items-center gap-3 pt-2">
-                {["Discover", "Improve", "Export"].map((step, i) => (
-                  <div key={step} className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/20">
-                      <span className="text-sm font-mono text-primary font-bold">{i + 1}</span>
-                      <span className="text-sm font-medium text-foreground">{step}</span>
+              {/* Pipeline flow */}
+              <div className="flex items-center gap-4 pt-2">
+                {[
+                  { step: "Discover", desc: "Memory Stream finds patterns" },
+                  { step: "Improve", desc: "Evolution patches code" },
+                  { step: "Export", desc: "Ascension ships artifacts" },
+                ].map(({ step, desc }, i) => (
+                  <div key={step} className="flex items-center gap-4">
+                    <div className="px-4 py-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/30 shadow-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-mono font-bold text-primary">{i + 1}</span>
+                        <span className="text-sm font-bold text-foreground">{step}</span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{desc}</p>
                     </div>
-                    {i < 2 && <ArrowRight className="w-4 h-4 text-muted-foreground" />}
+                    {i < 2 && <ArrowRight className="w-4 h-4 text-muted-foreground/40" />}
                   </div>
                 ))}
               </div>
             </motion.div>
 
-            {/* ── Tier 1 Grid ── */}
-            <section className="space-y-4">
+            {/* ── Core Demos Grid ── */}
+            <section className="space-y-5">
               <div className="flex items-center gap-3">
-                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Core Demos</h2>
-                <div className="flex-1 h-px bg-border" />
+                <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Core Capabilities</h2>
+                <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                {TIER_1_DEMOS.map((demo) => (
+              <div className="grid grid-cols-2 gap-5">
+                {TIER_1_DEMOS.map((demo, i) => (
                   <DesktopDemoCard
                     key={demo.title}
                     {...demo}
+                    index={i}
                     onClick={() => {
                       const id = DEMO_ROUTE_MAP[demo.title];
                       if (id) setActiveDemo(id);
@@ -159,17 +184,18 @@ export function ShowcaseDesktop() {
               </div>
             </section>
 
-            {/* ── Tier 2 Grid ── */}
-            <section className="space-y-4">
+            {/* ── Supporting Grid ── */}
+            <section className="space-y-5">
               <div className="flex items-center gap-3">
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Supporting Demos</h2>
-                <div className="flex-1 h-px bg-border" />
+                <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground font-bold">Supporting Capabilities</h2>
+                <div className="flex-1 h-px bg-border/30" />
               </div>
               <div className="grid grid-cols-3 gap-4">
-                {TIER_2_DEMOS.map((demo) => (
+                {TIER_2_DEMOS.map((demo, i) => (
                   <DesktopDemoCard
                     key={demo.title}
                     {...demo}
+                    index={i}
                     onClick={() => {
                       const id = DEMO_ROUTE_MAP[demo.title];
                       if (id) setActiveDemo(id);
@@ -180,26 +206,33 @@ export function ShowcaseDesktop() {
             </section>
 
             {/* ── Why CMPSBL Wins ── */}
-            <section className="rounded-xl border border-border bg-card p-8 space-y-5">
-              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Why CMPSBL Wins</h2>
-              <div className="grid grid-cols-2 gap-x-10 gap-y-3">
-                {[
-                  { label: "Self-discovering software", ref: "Memory Stream" },
-                  { label: "Self-improving software", ref: "Evolution" },
-                  { label: "Exportable intelligence", ref: "Ascension" },
-                  { label: "Developer platform", ref: "Build With Substrate" },
-                  { label: "Built-in governance + security", ref: "SEBA + DEFENSE" },
-                ].map(({ label, ref }) => (
-                  <div key={label} className="flex items-center justify-between text-sm py-1.5 border-b border-border/50 last:border-0">
-                    <span className="text-foreground font-medium">{label}</span>
-                    <span className="text-xs font-mono text-muted-foreground">→ {ref}</span>
-                  </div>
-                ))}
+            <section className="relative rounded-2xl border border-border/20 overflow-hidden">
+              <div className="absolute inset-0" style={{ background: "var(--gradient-mesh)" }} />
+              <div className="relative p-8 space-y-6">
+                <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Competitive Moat</h2>
+                <div className="grid grid-cols-2 gap-6">
+                  {[
+                    { label: "Self-Discovering Software", desc: "The system finds new capabilities humans never programmed.", color: "text-primary" },
+                    { label: "Self-Improving Codebase", desc: "AI generates, validates, and applies its own patches.", color: "text-neon-cyan" },
+                    { label: "Exportable Intelligence", desc: "Every discovery becomes a standalone, sellable product.", color: "text-neon-magenta" },
+                    { label: "Platform Economics", desc: "Developers build on the substrate — recurring revenue.", color: "text-neon-purple" },
+                    { label: "Constitutional Governance", desc: "Safety rails are structural, not afterthoughts.", color: "text-neon-amber" },
+                    { label: "Enterprise Security", desc: "Defense mesh with O(1) threat scoring built in.", color: "text-neon-green" },
+                  ].map(({ label, desc, color }) => (
+                    <div key={label} className="flex items-start gap-3">
+                      <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 bg-current ${color}`} />
+                      <div>
+                        <p className="text-sm font-bold text-foreground">{label}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
 
-            <p className="text-center text-[10px] text-muted-foreground font-mono pb-6">
-              © 2025–2026 CMPSBL® • Live System • Internal Use Only
+            <p className="text-center text-[10px] text-muted-foreground/40 font-mono pb-8">
+              © 2025–2026 CMPSBL® · Live System · Internal Use Only
             </p>
           </div>
         </main>
@@ -218,58 +251,50 @@ interface DesktopDemoCardProps {
   what: string;
   why: string;
   value: string;
+  index: number;
   onClick: () => void;
 }
 
-const TierBadge = ({ tier }: { tier: 1 | 2 | 3 }) => {
-  const styles = {
-    1: "bg-primary/10 text-primary border-primary/20",
-    2: "bg-accent/10 text-accent-foreground border-accent/20",
-    3: "bg-muted text-muted-foreground border-border",
-  };
-  const labels = { 1: "Core", 2: "Supporting", 3: "Deep System" };
-  return (
-    <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded border ${styles[tier]}`}>
-      {labels[tier]}
-    </span>
-  );
-};
-
-function DesktopDemoCard({ title, subtitle, icon, tier, status, what, why, value, onClick }: DesktopDemoCardProps) {
+function DesktopDemoCard({ title, subtitle, icon, tier, status, what, why, value, index, onClick }: DesktopDemoCardProps) {
   return (
     <motion.div
-      whileHover={{ y: -2 }}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      whileHover={{ y: -3 }}
       onClick={onClick}
-      className="rounded-xl border border-border bg-card p-6 space-y-4 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-pointer group"
+      className="rounded-xl border border-border/20 bg-card/60 backdrop-blur-sm p-6 space-y-4 hover:border-primary/25 hover:shadow-lg transition-all cursor-pointer group"
+      style={{ transition: "var(--transition-smooth)" }}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
             {icon}
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">{title}</h3>
+            <h3 className="font-bold text-foreground">{title}</h3>
             <p className="text-xs text-muted-foreground">{subtitle}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <TierBadge tier={tier} />
-          <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-            status === "live" ? "bg-green-500/10 text-green-600 dark:text-green-400" : "bg-muted text-muted-foreground"
-          }`}>
-            {status}
+        {status === "live" && (
+          <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
+            live
           </span>
-        </div>
+        )}
       </div>
 
-      <p className="text-sm text-foreground/70 leading-relaxed">{what}</p>
+      <p className="text-sm text-muted-foreground leading-relaxed">{what}</p>
 
-      <div className="pt-1 border-t border-border/50 space-y-1.5">
-        <p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground/80">Why it matters:</span> {why}</p>
-        <p className="text-xs text-muted-foreground"><span className="font-semibold text-foreground/80">Value:</span> {value}</p>
+      <div className="pt-2 border-t border-border/20 space-y-1.5">
+        <p className="text-xs text-muted-foreground">
+          <span className="font-bold text-foreground/80">Why:</span> {why}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          <span className="font-bold text-foreground/80">Value:</span> {value}
+        </p>
       </div>
 
-      <div className="flex items-center gap-1.5 text-xs text-primary font-medium group-hover:gap-2.5 transition-all">
+      <div className="flex items-center gap-1.5 text-xs text-primary font-semibold group-hover:gap-2.5 transition-all">
         <span>Open demo</span>
         <ArrowRight className="w-3.5 h-3.5" />
       </div>
@@ -279,19 +304,24 @@ function DesktopDemoCard({ title, subtitle, icon, tier, status, what, why, value
 
 // ─── Demo Renderer ───────────────────────────────────────────
 function renderDemo(id: string, onBack: () => void) {
+  const BackBar = () => (
+    <div className="sticky top-0 z-40 border-b border-border/30 bg-background/60 backdrop-blur-xl px-8 py-3 flex items-center justify-between">
+      <button onClick={onBack} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Back to Showcase
+      </button>
+      <span className="text-[10px] font-mono text-primary/70 uppercase tracking-wider">CMPSBL®</span>
+    </div>
+  );
+
   switch (id) {
     case "wow": return <WowDemo onBack={onBack} />;
     case "memory-stream":
       return (
-        <div className="min-h-screen bg-background">
-          <div className="border-b border-border bg-muted/30 px-6 py-2.5 flex items-center justify-between">
-            <button onClick={onBack} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="w-3.5 h-3.5" />
-              Back to Showcase
-            </button>
-            <span className="text-[10px] font-mono text-muted-foreground">TIER 1 · CORE</span>
-          </div>
-          <div className="max-w-3xl mx-auto px-6 py-10">
+        <div className="min-h-screen bg-background relative">
+          <div className="fixed inset-0 pointer-events-none" style={{ background: "var(--gradient-mesh)" }} />
+          <BackBar />
+          <div className="relative max-w-4xl mx-auto px-8 py-10">
             <MemoryStreamDemo />
           </div>
         </div>
