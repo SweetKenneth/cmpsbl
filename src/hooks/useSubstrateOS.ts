@@ -427,7 +427,7 @@ export function useSubstrateHealthScore() {
   );
 
   const totalModules = ALL_MODULES.length;
-  const healthyCount = Object.values(modules).filter(Boolean).length;
+  const healthyCount = Object.values(modules).filter(v => v >= 50).length;
 
   return {
     isLoading: batchQuery.isLoading,

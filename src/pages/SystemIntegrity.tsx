@@ -155,7 +155,7 @@ const LayerCard = memo(function LayerCard({
 }: { 
   layer: LayerDef; 
   health: number; 
-  modules: Record<string, boolean>;
+  modules: Record<string, number>;
 }) {
   const colors = colorMap[layer.color] || colorMap.cyan;
   const Icon = layer.icon;
