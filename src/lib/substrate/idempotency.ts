@@ -14,12 +14,16 @@ interface IdempotencyEntry {
 const store = new Map<string, IdempotencyEntry>();
 const DEFAULT_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
-/** Clean expired entries */
+/** Clean expired entries — amortized: only run when store exceeds threshold */
+let lastGcSize = 0;
 function gc(): void {
+  // Skip GC if store hasn't grown since last cleanup
+  if (store.size <= lastGcSize && store.size < 50) return;
   const now = Date.now();
   for (const [key, entry] of store) {
     if (entry.expiresAt < now) store.delete(key);
   }
+  lastGcSize = store.size;
 }
 
 /** Execute with idempotency. Same key returns cached result. */
@@ -70,5 +74,9 @@ export function clearKey(key: string): void {
 
 export function getIdempotencyStats() {
   gc();
-  return { total: store.size, pending: [...store.values()].filter(e => e.status === 'pending').length };
+  let pending = 0;
+  for (const e of store.values()) {
+    if (e.status === 'pending') pending++;
+  }
+  return { total: store.size, pending };
 }

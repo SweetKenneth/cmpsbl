@@ -170,10 +170,11 @@ class LearningEngineClient {
 
       const { data: events } = await supabase
         .from('brain_events')
-        .select('*')
+        .select('data')
         .eq('event_type', 'learning_feedback')
         .gte('created_at', lookbackTime)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(500);
 
       let adjustments = 0;
       let totalDelta = 0;
@@ -262,7 +263,7 @@ class LearningEngineClient {
       await supabase.from('brain_events').insert([{
         event_type: 'learning_stabilization',
         module: 'brain',
-        data: JSON.parse(JSON.stringify({ optimization: optResult, state: this.state })),
+        data: { optimization: optResult, state: this.state } as any,
       }]);
 
       return {
@@ -328,7 +329,7 @@ class LearningEngineClient {
   async getMetrics(): Promise<{ state: LearningState; recentCycles: number; totalMemoriesProcessed: number }> {
     const { count } = await supabase
       .from('brain_events')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('event_type', 'learning_stabilization');
 
     return { state: this.state, recentCycles: this.state.total_cycles, totalMemoriesProcessed: count || 0 };

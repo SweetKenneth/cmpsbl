@@ -33,13 +33,15 @@ export function registerCapability(module: string, capability: string, priority 
   moduleIndex.get(module)!.push(entry);
 }
 
-/** Find the best module for a capability */
+/** Find the best module for a capability — O(k) where k = providers for this capability */
 export function resolve(capability: string): string | null {
   const list = registry.get(capability);
-  if (!list) return null;
-  const healthy = list.filter(e => e.healthy);
-  if (healthy.length === 0) return list[0]?.module ?? null; // Fallback to unhealthy
-  return healthy[0].module;
+  if (!list || list.length === 0) return null;
+  // List is pre-sorted by priority; find first healthy
+  for (const e of list) {
+    if (e.healthy) return e.module;
+  }
+  return list[0].module; // Fallback to unhealthy highest-priority
 }
 
 /** Get all modules that support a capability */
