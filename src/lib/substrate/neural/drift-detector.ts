@@ -80,7 +80,7 @@ class DriftDetector {
         .eq('is_active', true)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (data?.weights) {
         const w = data.weights as any;
