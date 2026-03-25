@@ -200,17 +200,18 @@ class ObservabilityMonitor {
     const now = new Date().toISOString();
 
     if (!this.latencyMap.has(key)) {
-      this.latencyMap.set(key, { samples: [], lastMeasured: now });
+      this.latencyMap.set(key, { samples: [], lastMeasured: now, writePtr: 0 });
     }
 
     const entry = this.latencyMap.get(key)!;
-    entry.samples.push(latencyMs);
     entry.lastMeasured = now;
 
-    if (entry.samples.length > this.MAX_LATENCY_SAMPLES) {
-      // Replace oldest via write pointer instead of shift() O(n)
-      entry.samples[entry.writePtr ?? 0] = latencyMs;
-      (entry as any).writePtr = ((entry as any).writePtr ?? 0 + 1) % this.MAX_LATENCY_SAMPLES;
+    if (entry.samples.length < this.MAX_LATENCY_SAMPLES) {
+      entry.samples.push(latencyMs);
+    } else {
+      // Ring-buffer overwrite — O(1) instead of shift() O(n)
+      entry.samples[entry.writePtr] = latencyMs;
+      entry.writePtr = (entry.writePtr + 1) % this.MAX_LATENCY_SAMPLES;
     }
   }
 
