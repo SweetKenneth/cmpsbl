@@ -416,7 +416,7 @@ An investor should be able to:
 1. Enter a PIN
 2. Click "See it in 30 seconds" → feel the WOW before thinking
 3. Read the orientation → understand the system in 10 seconds
-4. Follow Memory → Evolution → Ascension → grasp the full story
+4. Follow Memory → Evolution → Ascension → Build → grasp the full story
 5. See real data, real timing, real system health
 6. Optionally explore deeper (DREAM, DEFENSE, primitives, mesh)
 7. Land on "Why CMPSBL Wins" → carry a clear mental model out
@@ -439,6 +439,8 @@ Evolution → "It improves itself?"
   ↓
 Ascension → "I can USE this?"
   ↓
+Build With the Substrate → "Developers can build on this?"
+  ↓
 [Optional] DREAM / DEFENSE / SEBA → "This is enterprise-ready"
   ↓
 [Optional] Deep System → "This is... massive"
@@ -446,7 +448,7 @@ Ascension → "I can USE this?"
 "Why CMPSBL Wins" → ANCHOR
 ```
 
-Hook → Explain → Prove. In that order. Always.
+Hook → Explain → Prove → **Platform**. In that order. Always.
 
 ---
 
