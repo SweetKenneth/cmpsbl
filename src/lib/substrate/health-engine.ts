@@ -305,16 +305,18 @@ const previousScores = new Map<string, number>();
 export function updatePrimitiveHealth(id: string, health: number): void {
   const prev = healthScores.get(id) ?? 100;
   previousScores.set(id, prev);
-  healthScores.set(id, Math.max(0, Math.min(100, health)));
+  const clamped = health < 0 ? 0 : health > 100 ? 100 : health;
+  healthScores.set(id, clamped);
   
-  const def = ALL_PRIMITIVES.find(p => p.id === id);
+  // O(1) lookup instead of O(n) .find()
+  const def = PRIMITIVE_BY_ID.get(id);
   const tier = def?.tier ?? 4;
   
-  if (health >= 50) {
+  if (clamped >= 50) {
     recordHealthSuccess(id, tier);
   } else {
     recordHealthFailure(id, tier);
-    queueHealAction(id, health, prev);
+    queueHealAction(id, clamped, prev);
   }
 }
 
