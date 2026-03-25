@@ -1,11 +1,14 @@
 /**
  * Investor Showcase — PIN-gated entry to tiered demo experience
  * Phase 0: Access shell, 30-second WOW, orientation, demo grid
+ * Phase 1.1: Memory Stream demo
  */
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, Zap, Brain, ArrowRight, Sparkles, Shield, Eye, ChevronDown, Activity } from "lucide-react";
+import { Lock, Zap, Brain, ArrowRight, Sparkles, Shield, Eye, ChevronDown, Activity, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WowDemo } from "@/components/investor/WowDemo";
+import { MemoryStreamDemo } from "@/components/investor/MemoryStreamDemo";
 
 const SHOWCASE_PIN = "2026";
 
@@ -273,6 +276,29 @@ const TIER_2_DEMOS: DemoCardProps[] = [
 // ─── Main Showcase ───────────────────────────────────────────
 const ShowcaseContent = () => {
   const [showTier2, setShowTier2] = useState(false);
+  const [activeDemo, setActiveDemo] = useState<string | null>(null);
+
+  // ─── Individual demo views ───
+  if (activeDemo === "wow") {
+    return <WowDemo onBack={() => setActiveDemo(null)} />;
+  }
+
+  if (activeDemo === "memory-stream") {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="border-b border-border bg-muted/30 px-4 py-2 flex items-center justify-between">
+          <button onClick={() => setActiveDemo(null)} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to Showcase
+          </button>
+          <span className="text-[10px] font-mono text-muted-foreground">TIER 1 · CORE</span>
+        </div>
+        <div className="max-w-2xl mx-auto px-4 py-8">
+          <MemoryStreamDemo />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -302,7 +328,7 @@ const ShowcaseContent = () => {
               Watch a basic script transform into production-ready software — instantly.
             </p>
           </div>
-          <Button size="lg" className="gap-2">
+          <Button size="lg" className="gap-2" onClick={() => setActiveDemo("wow")}>
             <Sparkles className="w-4 h-4" />
             Show Me
           </Button>
@@ -356,7 +382,11 @@ const ShowcaseContent = () => {
           </div>
           <div className="space-y-3">
             {TIER_1_DEMOS.map((demo) => (
-              <DemoCard key={demo.title} {...demo} />
+              <div key={demo.title} onClick={() => {
+                if (demo.title === "Memory Stream") setActiveDemo("memory-stream");
+              }}>
+                <DemoCard {...demo} />
+              </div>
             ))}
           </div>
         </motion.div>
@@ -426,11 +456,11 @@ const ShowcaseContent = () => {
 const InvestorShowcase = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
-  return authenticated ? (
-    <ShowcaseContent />
-  ) : (
-    <PinGate onSuccess={() => setAuthenticated(true)} />
-  );
+  if (!authenticated) {
+    return <PinGate onSuccess={() => setAuthenticated(true)} />;
+  }
+
+  return <ShowcaseContent />;
 };
 
 export default InvestorShowcase;
