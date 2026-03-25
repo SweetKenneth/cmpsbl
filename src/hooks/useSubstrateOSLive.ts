@@ -16,12 +16,13 @@ export function useLiveBrainMemories() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('brain_memories')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000, // 60s — count rarely changes rapidly
+    staleTime: 30000,
   });
 }
 
