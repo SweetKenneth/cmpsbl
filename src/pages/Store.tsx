@@ -1,5 +1,7 @@
 /**
- * Store — Single responsive component, all content on all viewports
+ * Store — Unified product hub with tabs for Store, Plans, and Memories.
+ * 5 Runtime Agents + 5 Composable Engines on a single pricing ladder.
+ * Collector card style with flip, zoom, and swipe.
  */
 
 import { useState, useEffect } from "react";
@@ -42,13 +44,13 @@ const SEALED_FEATURES = [
 const TAB_CONFIG = [
   { value: "store" as const, label: "Store", icon: ShoppingBag },
   { value: "plans" as const, label: "Plans", icon: Rocket },
-  { value: "memories" as const, label: "Packs", icon: Brain },
+  { value: "memories" as const, label: "Memories", icon: Brain },
 ];
 
 const FILTER_CONFIG = [
-  { key: "all" as const, label: "All", labelLg: "All Products", icon: ShoppingBag, count: ALL_STORE_ITEMS.length },
-  { key: "agents" as const, label: "Agents", labelLg: "Runtime Agents", icon: Users, count: STORE_AGENTS.length },
-  { key: "engines" as const, label: "Engines", labelLg: "Engines", icon: Cpu, count: STORE_ENGINES.length },
+  { key: "all" as const, label: "All Products", shortLabel: "All", icon: ShoppingBag, count: ALL_STORE_ITEMS.length },
+  { key: "agents" as const, label: "Runtime Agents", shortLabel: "Agents", icon: Users, count: STORE_AGENTS.length },
+  { key: "engines" as const, label: "Engines", shortLabel: "Engines", icon: Cpu, count: STORE_ENGINES.length },
 ];
 
 export default function Store() {
@@ -87,7 +89,7 @@ export default function Store() {
         <meta name="description" content="10 sealed AI products across 5 tiers. Runtime Agents learn and execute. Composable Engines power infrastructure. Pick your tier, own it forever." />
         <link rel="canonical" href="https://cmpsbl.com/store" />
         <meta property="og:title" content="The Store — CMPSBL Runtime Agents, Engines & Plans" />
-        <meta property="og:description" content="Sealed AI software you own forever. 10 products, 5 tiers, one pricing ladder." />
+        <meta property="og:description" content="Sealed AI software you own forever. 10 products, 5 tiers, one pricing ladder. Agents learn. Engines power. Start free." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://cmpsbl.com/store" />
         <script type="application/ld+json">{JSON.stringify({
@@ -103,69 +105,70 @@ export default function Store() {
       <PublicNav />
       <StoreOnboarding />
 
-      <main className="min-h-screen pt-24 md:pt-32 pb-20 md:pb-24">
-        <div className="px-4 md:px-6 max-w-6xl mx-auto">
-          {/* Hero */}
+      <main className="min-h-screen pt-28 sm:pt-32 pb-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          {/* ═══ HERO ═══ */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center mb-8 md:mb-14"
+            className="text-center mb-10 sm:mb-14"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <Badge variant="outline" className="mb-4 md:mb-6 border-primary/30 px-3 md:px-4 py-1 md:py-1.5 inline-flex backdrop-blur-sm">
-                <ShoppingBag className="w-3 md:w-3.5 h-3 md:h-3.5 mr-1.5 md:mr-2 text-primary" />
-                <span className="text-[10px] md:text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Platform</span>
+              <Badge variant="outline" className="mb-6 border-primary/30 px-4 py-1.5 inline-flex backdrop-blur-sm">
+                <ShoppingBag className="w-3.5 h-3.5 mr-2 text-primary" />
+                <span className="text-xs font-semibold tracking-wide">10 Products · 5 Tiers · One Platform</span>
               </Badge>
             </motion.div>
 
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight mb-3 md:mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6">
               The <span className="text-primary">Store</span>
             </h1>
 
-            <p className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-sm md:max-w-xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
               Sealed AI software you own forever. Agents learn and execute.
               Engines power the infrastructure. Pick your tier.
             </p>
           </motion.div>
 
-          {/* Tabs */}
+          {/* ═══ TABS ═══ */}
           <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="flex justify-center mb-8 md:mb-12"
+              className="flex justify-center mb-10 sm:mb-12"
             >
-              <TabsList className="h-11 md:h-14 p-1 md:p-1.5 bg-card/60 backdrop-blur-md border border-border/40 rounded-xl md:rounded-2xl gap-0.5 md:gap-1 w-full max-w-sm md:w-auto md:shadow-lg md:shadow-background/50">
+              <TabsList className="h-12 sm:h-14 p-1.5 bg-card/60 backdrop-blur-md border border-border/40 rounded-2xl gap-1 shadow-lg shadow-background/50">
                 {TAB_CONFIG.map(({ value, label, icon: Icon }) => (
                   <TabsTrigger
                     key={value}
                     value={value}
                     className={cn(
-                      "flex-1 md:flex-none gap-1.5 md:gap-2 h-9 md:h-10 rounded-lg md:rounded-xl text-xs md:text-sm font-bold transition-all md:px-7 md:min-w-[100px]",
-                      "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md",
-                      "data-[state=inactive]:text-muted-foreground md:data-[state=inactive]:hover:text-foreground md:data-[state=inactive]:hover:bg-muted/50"
+                      "gap-2 px-5 sm:px-7 h-9 sm:h-10 rounded-xl text-xs sm:text-sm font-bold transition-all min-w-[100px]",
+                      "data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md data-[state=active]:shadow-primary/20",
+                      "data-[state=inactive]:text-muted-foreground data-[state=inactive]:hover:text-foreground data-[state=inactive]:hover:bg-muted/50"
                     )}
                   >
-                    <Icon className="w-3.5 md:w-4 h-3.5 md:h-4" />
+                    <Icon className="w-4 h-4" />
                     {label}
                   </TabsTrigger>
                 ))}
               </TabsList>
             </motion.div>
 
+            {/* ═══ STORE TAB ═══ */}
             <TabsContent value="store" className="mt-0">
-              {/* Tier badges — horizontal scroll on mobile, wrap on desktop */}
+              {/* Pricing ladder */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.25, duration: 0.5 }}
-                className="flex items-center gap-2 md:gap-2.5 overflow-x-auto md:overflow-visible scrollbar-hide md:flex-wrap md:justify-center pb-3 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 mb-6 md:mb-8"
+                className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 mb-8"
               >
                 {TIERS.map((t, i) => {
                   const meta = TIER_META[t];
@@ -176,9 +179,9 @@ export default function Store() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
                       className={cn(
-                        "px-3 md:px-3.5 py-1.5 rounded-full border text-[10px] md:text-[11px] font-black tracking-wider shrink-0",
-                        "transition-all duration-300 md:hover:scale-110 cursor-default",
-                        "md:backdrop-blur-sm md:shadow-sm",
+                        "px-3.5 py-1.5 rounded-full border text-[10px] sm:text-[11px] font-black tracking-wider",
+                        "transition-all duration-300 hover:scale-110 cursor-default",
+                        "backdrop-blur-sm shadow-sm",
                         meta.bg, meta.color, meta.border
                       )}
                     >
@@ -188,26 +191,26 @@ export default function Store() {
                 })}
               </motion.div>
 
-              {/* Filter buttons */}
-              <div className="flex items-center justify-center gap-2 mb-8 md:mb-10">
-                {FILTER_CONFIG.map(({ key, label, labelLg, icon: Icon, count }) => (
+              {/* Filter tabs */}
+              <div className="flex items-center justify-center gap-2 mb-10">
+                {FILTER_CONFIG.map(({ key, label, shortLabel, icon: Icon, count }) => (
                   <Button
                     key={key}
                     variant={filter === key ? "default" : "outline"}
                     size="sm"
                     className={cn(
-                      "gap-1 md:gap-1.5 text-xs font-bold h-10 md:min-h-[44px] px-3 md:px-5 rounded-xl transition-all duration-300",
+                      "gap-1.5 text-xs font-bold min-h-[44px] px-3 sm:px-5 rounded-xl transition-all duration-300",
                       filter === key
-                        ? "shadow-md md:shadow-lg shadow-primary/20 md:shadow-primary/25 md:scale-[1.02]"
-                        : "md:hover:border-primary/30 md:hover:bg-primary/5"
+                        ? "shadow-lg shadow-primary/25 scale-[1.02]"
+                        : "hover:border-primary/30 hover:bg-primary/5"
                     )}
                     onClick={() => setFilter(key)}
                   >
                     <Icon className="w-3.5 h-3.5" />
-                    <span className="md:hidden">{label}</span>
-                    <span className="hidden md:inline">{labelLg}</span>
+                    <span className="hidden sm:inline">{label}</span>
+                    <span className="sm:hidden">{shortLabel}</span>
                     <span className={cn(
-                      "text-[9px] font-mono px-1.5 py-0.5 rounded-full ml-0.5 md:ml-1",
+                      "ml-1 text-[9px] font-mono tabular-nums px-1.5 py-0.5 rounded-full",
                       filter === key
                         ? "bg-primary-foreground/20 text-primary-foreground"
                         : "bg-muted text-muted-foreground"
@@ -233,28 +236,29 @@ export default function Store() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-16 md:mt-28"
+                className="mt-20 sm:mt-28"
               >
-                <div className="relative rounded-2xl md:rounded-3xl border border-primary/15 overflow-hidden">
+                <div className="relative rounded-3xl border border-primary/15 overflow-hidden">
+                  {/* Background glow */}
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-primary/5" />
-                  <div className="hidden md:block absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
-                  <div className="relative p-5 md:p-10">
-                    <div className="flex items-start gap-3 md:gap-4 mb-6 md:mb-8">
-                      <div className="w-10 md:w-12 h-10 md:h-12 rounded-xl md:rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                        <Lock className="w-5 md:w-6 h-5 md:h-6 text-primary" />
+                  <div className="relative p-6 sm:p-10">
+                    <div className="flex flex-col sm:flex-row items-start gap-4 mb-8">
+                      <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                        <Lock className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h2 className="text-base md:text-xl font-black text-foreground tracking-tight">
+                        <h2 className="text-lg sm:text-xl font-black text-foreground tracking-tight">
                           Every Product Ships Sealed
                         </h2>
-                        <p className="text-[11px] md:text-sm text-muted-foreground mt-0.5 md:mt-1 leading-relaxed">
-                          Tamper-proof runtime · Zero maintenance · Always learning · Source-protected
-                        </p>
+                         <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
+                           Tamper-proof runtime · Zero maintenance · Always learning · Source-protected
+                         </p>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                       {SEALED_FEATURES.map((feat, i) => (
                         <motion.div
                           key={feat.label}
@@ -263,19 +267,20 @@ export default function Store() {
                           viewport={{ once: true }}
                           transition={{ delay: i * 0.06, duration: 0.4 }}
                           className={cn(
-                            "group flex items-start gap-3 rounded-xl md:rounded-2xl border border-border/30 bg-card/40 p-3.5 md:p-5",
-                            "md:hover:border-primary/30 md:hover:-translate-y-1 md:hover:shadow-lg md:hover:shadow-primary/5",
-                            "md:backdrop-blur-sm transition-all duration-400",
-                            "md:flex-col md:items-stretch"
+                            "group rounded-2xl border border-border/30 bg-card/40 backdrop-blur-sm p-4 sm:p-5",
+                            "hover:border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5",
+                            "transition-all duration-400"
                           )}
                         >
-                          <div className="flex items-center gap-3 md:mb-2.5">
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 md:border md:border-primary/15 flex items-center justify-center shrink-0 md:group-hover:bg-primary/15 transition-colors">
+                          <div className="flex items-center gap-3 mb-2.5">
+                            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
                               <feat.icon className="w-4 h-4 text-primary/80" />
                             </div>
-                            <h4 className="text-xs md:text-sm font-bold md:font-black text-foreground md:tracking-tight">{feat.label}</h4>
+                            <h4 className="text-xs sm:text-sm font-black text-foreground tracking-tight">
+                              {feat.label}
+                            </h4>
                           </div>
-                          <p className="text-[11px] md:text-xs text-muted-foreground/70 leading-relaxed md:pl-0">
+                          <p className="text-[11px] sm:text-xs text-muted-foreground/70 leading-relaxed pl-11">
                             {feat.desc}
                           </p>
                         </motion.div>
@@ -290,22 +295,27 @@ export default function Store() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                className="mt-12 md:mt-20 text-center pb-4 md:pb-8"
+                className="mt-16 sm:mt-20 text-center pb-8"
               >
-                <p className="hidden md:block text-[10px] text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
+                <p className="text-[10px] text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
                   Every agent and engine runs on the CMPSBL sealed runtime — secure, self-improving, and yours to own
                 </p>
-                <div className="flex flex-col md:flex-row md:items-center md:justify-center gap-2 md:gap-3">
+                <div className="flex items-center justify-center gap-3 flex-wrap">
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-full md:w-auto gap-2 h-11 md:min-h-[44px] rounded-xl md:hover:border-primary/40 md:hover:bg-primary/5 transition-all"
+                    className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
                     onClick={() => handleTabChange("plans")}
                   >
                     <Zap className="w-4 h-4" />
                     Compare Plans
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full md:w-auto gap-2 h-11 md:min-h-[44px] rounded-xl md:hover:border-primary/40 md:hover:bg-primary/5 transition-all" asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
+                    asChild
+                  >
                     <Link to="/foundry">
                       <Sparkles className="w-4 h-4" />
                       Explore Memory Stream
@@ -315,12 +325,14 @@ export default function Store() {
               </motion.section>
             </TabsContent>
 
+            {/* ═══ PLANS TAB ═══ */}
             <TabsContent value="plans" className="mt-0">
               <UpgradeContent />
             </TabsContent>
 
+            {/* ═══ MEMORIES TAB ═══ */}
             <TabsContent value="memories" className="mt-0">
-              <div className="md:max-w-6xl md:mx-auto">
+              <div className="max-w-6xl mx-auto">
                 <PacksContent />
               </div>
             </TabsContent>

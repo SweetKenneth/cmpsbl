@@ -123,7 +123,7 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.4 }}
-      className="snap-start shrink-0 w-[280px] sm:w-[300px] md:w-[340px] [.grid_&]:w-full"
+      className="snap-start shrink-0 w-[300px] sm:w-[340px]"
     >
       <Link to={href} className="block group h-full">
         <div className={cn(
@@ -442,12 +442,9 @@ export default function Engines() {
                   {filteredEngines.map((engine, i) => {
                     const tierConfig = TIER_CONFIG.find(t => t.id === engine.tier) || TIER_CONFIG[0];
                     return (
-                      <div key={engine.slug} className="w-full">
-                        <EngineCard engine={engine} index={i} tierConfig={tierConfig} />
-                      </div>
+                      <EngineCard key={engine.slug} engine={engine} index={i} tierConfig={tierConfig} />
                     );
                   })}
-                </div>
                 </div>
               ) : (
                 <div className="text-center py-20">
