@@ -38,12 +38,13 @@ export async function isolate<T>(
   const memBefore = cfg.trackMemory && (performance as any).memory
     ? (performance as any).memory.usedJSHeapSize : 0;
 
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     const result = await Promise.race([
       Promise.resolve(fn()),
-      new Promise<never>((_, reject) =>
-        setTimeout(() => { stats.timeouts++; reject(new Error(`Module "${moduleId}" timed out after ${cfg.timeoutMs}ms`)); }, cfg.timeoutMs)
-      ),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => { stats.timeouts++; reject(new Error(`Module "${moduleId}" timed out after ${cfg.timeoutMs}ms`)); }, cfg.timeoutMs);
+      }),
     ]);
 
     const memAfter = cfg.trackMemory && (performance as any).memory
