@@ -234,8 +234,8 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     data: {
       module,
       verdict,
-      checks_passed: checks.filter(c => c.passed).length,
-      checks_failed: failedChecks.length,
+      checks_passed: checks.length - (depFailed ? depFailDetails.length : 0) - (anyFailed ? failDetails.length : 0),
+      checks_failed: (depFailed ? depFailDetails.length : 0) + (anyFailed && !depFailed ? failDetails.length : 0),
       reason,
     } as any,
     outcome: verdict === 'block' ? 'failure' : 'success',

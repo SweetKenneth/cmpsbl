@@ -808,44 +808,48 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
   const config = MODULE_CONFIGS[module];
   let ingested = 0, patternErrors = 0;
 
-  for (const pattern of patterns) {
-    try {
-      await supabase.from('brain_memories').insert({
-        content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
-        memory_type: 'heuristic',
-        source: `${module}_expert_patterns`,
-        confidence: 0.95,
-        metadata: {
-          module,
-          title: pattern.title,
-          priority: pattern.priority,
-          ingested_at: new Date().toISOString(),
-        },
-      });
-      ingested++;
-    } catch {
-      patternErrors++;
+  // Batch insert all patterns in parallel (groups of 10 for safety)
+  const batchSize = 10;
+  for (let i = 0; i < patterns.length; i += batchSize) {
+    const batch = patterns.slice(i, i + batchSize);
+    const results = await Promise.allSettled(
+      batch.map(pattern =>
+        supabase.from('brain_memories').insert({
+          content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
+          memory_type: 'heuristic',
+          source: `${module}_expert_patterns`,
+          confidence: 0.95,
+          metadata: {
+            module,
+            title: pattern.title,
+            priority: pattern.priority,
+            ingested_at: new Date().toISOString(),
+          },
+        })
+      )
+    );
+    for (const r of results) {
+      if (r.status === 'fulfilled') ingested++;
+      else patternErrors++;
     }
   }
 
-  // Also load top patterns into hot memory
+  // Also load top patterns into hot memory (parallel)
   const hotPatterns = patterns
     .sort((a, b) => b.priority - a.priority)
     .slice(0, Math.min(patterns.length, config.hotCacheLimit / 2));
 
-  for (const pattern of hotPatterns) {
-    try {
-      await supabase.from('brain_memory_hot').insert({
+  await Promise.allSettled(
+    hotPatterns.map(pattern =>
+      supabase.from('brain_memory_hot').insert({
         content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
         context: `${config.hotCategoryPrefix}:expert`,
         priority: clampPriority(pattern.priority / 10),
         access_count: 0,
         metadata: { module, title: pattern.title },
-      });
-    } catch {
-      // Non-fatal
-    }
-  }
+      })
+    )
+  );
 
   await supabase.from('brain_events').insert([{
     module: 'brain',
