@@ -143,8 +143,20 @@ class ImaginationEngineClient {
       const sourceMemories: string[] = [];
 
       for (const item of latentContent) {
-        const words = item.content.split(/\s+/).filter(w => w.length > 4);
-        concepts.push(...words.slice(0, 3));
+        // Avoid creating large temporary arrays with split+filter+slice
+        let wordCount = 0;
+        let start = 0;
+        const content = item.content;
+        for (let i = 0; i <= content.length && wordCount < 3; i++) {
+          if (i === content.length || /\s/.test(content[i])) {
+            const word = content.slice(start, i);
+            if (word.length > 4) {
+              concepts.push(word);
+              wordCount++;
+            }
+            start = i + 1;
+          }
+        }
         sourceMemories.push(item.id);
       }
 
@@ -361,8 +373,8 @@ class ImaginationEngineClient {
     const oneDayAgo = new Date(Date.now() - 24 * 3600000).toISOString();
 
     const [{ count: dreamsCount }, { count: fusionsCount }] = await Promise.all([
-      supabase.from('brain_events').select('*', { count: 'exact', head: true }).eq('event_type', 'imagination_synthesis').gte('created_at', oneDayAgo),
-      supabase.from('brain_events').select('*', { count: 'exact', head: true }).eq('event_type', 'domains_merged').gte('created_at', oneDayAgo),
+      supabase.from('brain_events').select('id', { count: 'exact', head: true }).eq('event_type', 'imagination_synthesis').gte('created_at', oneDayAgo),
+      supabase.from('brain_events').select('id', { count: 'exact', head: true }).eq('event_type', 'domains_merged').gte('created_at', oneDayAgo),
     ]);
 
     return { state: this.state, recent_dreams: dreamsCount || 0, recent_fusions: fusionsCount || 0 };

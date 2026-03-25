@@ -720,11 +720,11 @@ class OrchestratorEngineClient {
   }
 
   private updateAverageCycleTime(durationMs: number): void {
-    const total = this.state.completedPipelines + this.state.totalCycles;
-    if (total <= 1) {
+    // EMA with alpha=0.1 for stable average without tracking total count
+    if (this.state.averageCycleTime === 0) {
       this.state.averageCycleTime = durationMs;
     } else {
-      this.state.averageCycleTime = ((this.state.averageCycleTime * (total - 1)) + durationMs) / total;
+      this.state.averageCycleTime = this.state.averageCycleTime * 0.9 + durationMs * 0.1;
     }
   }
 }
