@@ -627,7 +627,7 @@ export default function SubstrateDashboard() {
         {/* Metrics */}
         {metrics && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 md:mb-8">
-            <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300">
+             <Card className="p-4 md:p-6 hover:border-primary/20 transition-all duration-300 bg-card/60 backdrop-blur-sm shimmer-on-hover card-lift">
               <div className="flex items-center gap-3 md:gap-4">
                 <Brain className="w-6 h-6 md:w-8 md:h-8 text-neon-purple shrink-0" />
                 <div>
