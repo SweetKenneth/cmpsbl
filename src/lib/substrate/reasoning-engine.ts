@@ -91,23 +91,30 @@ export class ReasoningEngineClient {
   async getState(): Promise<ReasoningState> {
     const { data: events } = await supabase
       .from('brain_events')
-      .select('*')
+      .select('event_type, outcome, created_at')
       .eq('module', 'reasoning_engine')
       .order('created_at', { ascending: false })
       .limit(100);
 
-    const hypotheses = events?.filter(e => e.event_type === 'hypothesis_generated') || [];
-    const validated = events?.filter(e => e.event_type === 'hypothesis_validated' && e.outcome === 'success') || [];
-    const causalMaps = events?.filter(e => e.event_type === 'causal_mapped') || [];
-    const impacts = events?.filter(e => e.event_type === 'impact_projected') || [];
+    // Single-pass aggregation
+    let hypotheses = 0, validated = 0, causalMaps = 0, impacts = 0;
     const lastEvent = events?.[0];
+
+    for (const e of events || []) {
+      switch (e.event_type) {
+        case 'hypothesis_generated': hypotheses++; break;
+        case 'hypothesis_validated': if (e.outcome === 'success') validated++; break;
+        case 'causal_mapped': causalMaps++; break;
+        case 'impact_projected': impacts++; break;
+      }
+    }
 
     return {
       current_stage: 'causal_mapping',
-      active_hypotheses: hypotheses.length,
-      validated_conclusions: validated.length,
-      causal_chains: causalMaps.length,
-      impact_projections: impacts.length,
+      active_hypotheses: hypotheses,
+      validated_conclusions: validated,
+      causal_chains: causalMaps,
+      impact_projections: impacts,
       confidence_threshold: 0.7,
       last_reasoning_at: lastEvent?.created_at || null,
     };
