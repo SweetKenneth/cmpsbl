@@ -916,35 +916,37 @@ export async function ingestAllModulePatterns(): Promise<{
 export async function getModuleKnowledgeReport(module: TransferModule): Promise<ModuleKnowledgeReport> {
   const config = MODULE_CONFIGS[module];
 
-  const { count: hotCount } = await supabase
-    .from('brain_memory_hot')
-    .select('id', { count: 'exact', head: true })
-    .ilike('context', `${config.hotCategoryPrefix}%`);
+  // Parallelize all 3 queries
+  const [hotResult, memoriesResult, lastEventResult] = await Promise.all([
+    supabase
+      .from('brain_memory_hot')
+      .select('id', { count: 'exact', head: true })
+      .ilike('context', `${config.hotCategoryPrefix}%`),
+    supabase
+      .from('brain_memories')
+      .select('confidence, source')
+      .eq('source', `${module}_expert_patterns`)
+      .limit(200),
+    supabase
+      .from('brain_events')
+      .select('created_at')
+      .eq('event_type', `knowledge_transfer_${module}`)
+      .order('created_at', { ascending: false })
+      .limit(1),
+  ]);
 
-  const { data: memories } = await supabase
-    .from('brain_memories')
-    .select('confidence, source')
-    .eq('source', `${module}_expert_patterns`)
-    .limit(200);
-
-  const { data: lastEvent } = await supabase
-    .from('brain_events')
-    .select('created_at')
-    .eq('event_type', `knowledge_transfer_${module}`)
-    .order('created_at', { ascending: false })
-    .limit(1);
-
+  const memories = memoriesResult.data;
   const avgConfidence = memories && memories.length > 0
     ? memories.reduce((sum, m) => sum + (m.confidence || 0), 0) / memories.length
     : 0;
 
   return {
     module,
-    hot_patterns: hotCount || 0,
+    hot_patterns: hotResult.count || 0,
     total_memories: memories?.length || 0,
     avg_confidence: avgConfidence,
     top_categories: config.relevanceSignals.slice(0, 5),
-    last_transfer: lastEvent?.[0]?.created_at || null,
+    last_transfer: lastEventResult.data?.[0]?.created_at || null,
   };
 }
 
