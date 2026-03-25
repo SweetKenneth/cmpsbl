@@ -254,7 +254,7 @@ const TIER_2_DEMOS: DemoCardProps[] = [
     title: "DREAM Engine",
     subtitle: "Background Learning",
     icon: <Eye className="w-4 h-4 text-primary" />,
-    tier: 2, status: "planned",
+    tier: 2, status: "live",
     what: "The system consolidates learning during idle time — dream cycles, memory synthesis.",
     why: "Autonomous background improvement. No other system does this.",
     value: "Compound intelligence — the system gets smarter every day without intervention.",
