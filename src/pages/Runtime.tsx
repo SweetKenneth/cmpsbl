@@ -186,9 +186,9 @@ export default function Runtime() {
       />
       <PublicNav />
 
-      <main className="pt-28 pb-20">
+      <main className="pt-24 md:pt-28 pb-16 md:pb-20">
         {/* ═══ HERO ═══ */}
-        <section className="container mx-auto px-4 text-center mb-20">
+        <section className="container mx-auto px-4 text-center mb-12 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -217,7 +217,7 @@ export default function Runtime() {
         </section>
 
         {/* ═══ ARCHITECTURE — horizontal scroll row ═══ */}
-        <section className="mb-20">
+        <section className="mb-12 md:mb-20">
           <div className="container mx-auto px-4 mb-6">
          <h2 className="text-2xl md:text-3xl font-bold">Unified Substrate</h2>
             <p className="text-sm text-muted-foreground mt-1">
@@ -247,7 +247,7 @@ export default function Runtime() {
         </section>
 
         {/* ═══ CAPABILITY PILLARS — grouped horizontal rows ═══ */}
-        <div className="mb-20">
+        <div className="mb-12 md:mb-20">
           <div className="container mx-auto px-4 text-center mb-12">
             <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
               <Lock className="w-3 h-3 mr-1.5 inline" />
@@ -268,8 +268,8 @@ export default function Runtime() {
         </div>
 
         {/* ═══ CAPABILITY PACKS CTA ═══ */}
-        <section className="container mx-auto px-4 mb-24">
-          <div className="max-w-3xl mx-auto text-center p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
+        <section className="container mx-auto px-4 mb-16 md:mb-24">
+          <div className="max-w-3xl mx-auto text-center p-6 md:p-10 rounded-2xl border border-border/50 bg-gradient-to-b from-card/80 to-background">
             <Package className="w-10 h-10 text-primary mx-auto mb-4" />
             <h3 className="text-2xl font-bold">How Memory Packs Extend the Substrate</h3>
             <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
