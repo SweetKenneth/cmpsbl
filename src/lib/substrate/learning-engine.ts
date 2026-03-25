@@ -329,7 +329,7 @@ class LearningEngineClient {
   async getMetrics(): Promise<{ state: LearningState; recentCycles: number; totalMemoriesProcessed: number }> {
     const { count } = await supabase
       .from('brain_events')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .eq('event_type', 'learning_stabilization');
 
     return { state: this.state, recentCycles: this.state.total_cycles, totalMemoriesProcessed: count || 0 };

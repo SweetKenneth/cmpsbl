@@ -105,9 +105,11 @@ export function getDLQStats(): {
  * Replay a dead letter by ID. Returns the letter for re-dispatch.
  */
 export function replayDeadLetter(id: string): DeadLetter | null {
-  const idx = deadLetters.findIndex(d => d.id === id);
-  if (idx === -1) return null;
+  const idx = idIndex.get(id);
+  if (idx === undefined || idx < 0 || idx >= deadLetters.length) return null;
   const [letter] = deadLetters.splice(idx, 1);
+  idIndex.delete(id);
+  rebuildIndex();
   return letter;
 }
 

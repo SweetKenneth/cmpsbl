@@ -74,5 +74,9 @@ export function clearKey(key: string): void {
 
 export function getIdempotencyStats() {
   gc();
-  return { total: store.size, pending: [...store.values()].filter(e => e.status === 'pending').length };
+  let pending = 0;
+  for (const e of store.values()) {
+    if (e.status === 'pending') pending++;
+  }
+  return { total: store.size, pending };
 }
