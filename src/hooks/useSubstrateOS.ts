@@ -378,7 +378,7 @@ export function useSubstrateHealthScore() {
     edge: async () => {
       // Edge functions health = substrate ping
       try {
-        const result = await core.status();
+        const result = await core.status() as any;
         return result?.health ?? (result?.success ? 100 : 50);
       } catch { return 30; }
     },
