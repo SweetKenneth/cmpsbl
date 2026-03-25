@@ -91,8 +91,22 @@ export async function verifyChain(): Promise<{ valid: boolean; brokenAt: number 
   return { valid: true, brokenAt: -1 };
 }
 
-export function getChainLength(): number { return chain.length; }
-export function getChainTail(n = 10): AuditEntry[] { return chain.slice(-n); }
-export function getChainHead(): AuditEntry | null { return chain[0] ?? null; }
+export function getChainLength(): number { return chainCount; }
+
+export function getChainTail(n = 10): AuditEntry[] {
+  const len = Math.min(chainCount, CHAIN_CAP);
+  const count = Math.min(n, len);
+  const result: AuditEntry[] = new Array(count);
+  for (let i = 0; i < count; i++) {
+    result[i] = chain[(chainHead - count + i + CHAIN_CAP) % CHAIN_CAP];
+  }
+  return result;
+}
+
+export function getChainHead(): AuditEntry | null {
+  if (chainCount === 0) return null;
+  const len = Math.min(chainCount, CHAIN_CAP);
+  return chain[(chainHead - len + CHAIN_CAP) % CHAIN_CAP];
+}
 
 export type { AuditEntry };

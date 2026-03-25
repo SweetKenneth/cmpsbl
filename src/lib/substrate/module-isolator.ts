@@ -50,6 +50,7 @@ export async function isolate<T>(
     const memAfter = cfg.trackMemory && (performance as any).memory
       ? (performance as any).memory.usedJSHeapSize : 0;
 
+    clearTimeout(timer);
     return {
       success: true,
       result,
@@ -57,6 +58,7 @@ export async function isolate<T>(
       memoryDelta: memAfter - memBefore,
     };
   } catch (err) {
+    clearTimeout(timer);
     stats.failures++;
     if (!cfg.catchErrors) throw err;
     return {

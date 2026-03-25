@@ -21,8 +21,14 @@ interface SLASample {
 }
 
 const targets = new Map<string, SLATarget>();
+
+// Ring-buffer for samples — O(1) insertion, bounded memory
+const SAMPLE_CAP = 5000;
 const samples: SLASample[] = [];
-const MAX_SAMPLES = 5000;
+let sampleHead = 0;
+let sampleCount = 0;
+
+const MAX_VIOLATIONS = 200;
 const violations: Array<{ target: string; value: number; threshold: number; at: number }> = [];
 const listeners = new Set<(targetId: string, value: number) => void>();
 
@@ -31,8 +37,14 @@ export function defineSLA(id: string, module: string, metric: SLATarget['metric'
 }
 
 export function recordSample(module: string, latencyMs: number, success: boolean): void {
-  samples.push({ module, latencyMs, success, timestamp: Date.now() });
-  if (samples.length > MAX_SAMPLES) samples.splice(0, 1000);
+  const entry: SLASample = { module, latencyMs, success, timestamp: Date.now() };
+  if (sampleCount < SAMPLE_CAP) {
+    samples.push(entry);
+    sampleCount++;
+  } else {
+    samples[sampleHead] = entry;
+  }
+  sampleHead = (sampleHead + 1) % SAMPLE_CAP;
   checkViolations(module);
 }
 
@@ -40,22 +52,35 @@ function checkViolations(module: string): void {
   const now = Date.now();
   for (const target of targets.values()) {
     if (target.module !== module && target.module !== '*') continue;
-    const window = samples.filter(s => s.module === module && s.timestamp >= now - target.window);
-    if (window.length < 3) continue;
+
+    // Single-pass window collection with inline aggregation
+    const windowSamples: number[] = [];
+    let successCount = 0;
+    let totalInWindow = 0;
+
+    for (let i = 0; i < sampleCount; i++) {
+      const s = samples[i];
+      if (s.module !== module || s.timestamp < now - target.window) continue;
+      totalInWindow++;
+      if (s.success) successCount++;
+      if (target.metric === 'latency_p99') windowSamples.push(s.latencyMs);
+    }
+
+    if (totalInWindow < 3) continue;
 
     let value: number;
     switch (target.metric) {
       case 'latency_p99': {
-        const sorted = window.map(s => s.latencyMs).sort((a, b) => a - b);
-        value = sorted[Math.floor(sorted.length * 0.99)] || 0;
+        windowSamples.sort((a, b) => a - b);
+        value = windowSamples[Math.floor(windowSamples.length * 0.99)] || 0;
         break;
       }
       case 'availability': {
-        value = (window.filter(s => s.success).length / window.length) * 100;
+        value = (successCount / totalInWindow) * 100;
         break;
       }
       case 'error_rate': {
-        value = (window.filter(s => !s.success).length / window.length) * 100;
+        value = ((totalInWindow - successCount) / totalInWindow) * 100;
         break;
       }
     }
@@ -68,8 +93,8 @@ function checkViolations(module: string): void {
       target.breached = true;
       target.breachCount++;
       violations.push({ target: target.id, value, threshold: target.threshold, at: now });
-      if (violations.length > 200) violations.splice(0, 50);
-      listeners.forEach(fn => fn(target.id, value));
+      if (violations.length > MAX_VIOLATIONS) violations.splice(0, 50);
+      for (const fn of listeners) fn(target.id, value);
     } else if (!breached) {
       target.breached = false;
     }
@@ -86,7 +111,14 @@ export function getSLAStatus(): Array<SLATarget & { current?: number }> {
 }
 
 export function getViolations(since?: number) {
-  return since ? violations.filter(v => v.at >= since) : [...violations];
+  if (!since) return violations.slice();
+  // Reverse scan for recency bias
+  const result: typeof violations = [];
+  for (let i = violations.length - 1; i >= 0; i--) {
+    if (violations[i].at >= since) result.push(violations[i]);
+    else break; // violations are chronological
+  }
+  return result.reverse();
 }
 
 // Pre-define core SLAs
