@@ -1802,9 +1802,9 @@ All colors MUST be HSL.
   }
 }
 
-/* Small mobile (320px–474px) — budget phones */
-@media (max-width: 474px) {
-  /* Stack 2-col grids on very small screens */
+/* Small mobile (320px–374px) — very small budget phones only */
+@media (max-width: 374px) {
+  /* Stack 2-col grids on very small screens only */
   .grid-cols-2:not(.pin-grid-cols) {
     grid-template-columns: 1fr !important;
   }
