@@ -324,7 +324,7 @@ const ShowcaseContent = () => {
               Watch a basic script transform into production-ready software — instantly.
             </p>
           </div>
-          <Button size="lg" className="gap-2">
+          <Button size="lg" className="gap-2" onClick={() => setActiveDemo("wow")}>
             <Sparkles className="w-4 h-4" />
             Show Me
           </Button>
@@ -378,7 +378,11 @@ const ShowcaseContent = () => {
           </div>
           <div className="space-y-3">
             {TIER_1_DEMOS.map((demo) => (
-              <DemoCard key={demo.title} {...demo} />
+              <div key={demo.title} onClick={() => {
+                if (demo.title === "Memory Stream") setActiveDemo("memory-stream");
+              }}>
+                <DemoCard {...demo} />
+              </div>
             ))}
           </div>
         </motion.div>
