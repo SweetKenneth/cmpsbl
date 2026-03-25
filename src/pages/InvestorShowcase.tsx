@@ -278,6 +278,24 @@ const ShowcaseContent = () => {
   const [showTier2, setShowTier2] = useState(false);
   const [activeDemo, setActiveDemo] = useState<string | null>(null);
 
+  // ─── Individual demo views ───
+  if (activeDemo === "memory-stream") {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="border-b border-border bg-muted/30 px-4 py-2 flex items-center justify-between">
+          <button onClick={() => setActiveDemo(null)} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to Showcase
+          </button>
+          <span className="text-[10px] font-mono text-muted-foreground">TIER 1 · CORE</span>
+        </div>
+        <div className="max-w-2xl mx-auto px-4 py-8">
+          <MemoryStreamDemo />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* System confidence bar */}
