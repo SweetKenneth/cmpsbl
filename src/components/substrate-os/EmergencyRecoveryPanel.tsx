@@ -213,7 +213,7 @@ export function EmergencyRecoveryPanel({ showAlways = false, isCritical = false 
           <Button
             variant="outline"
             onClick={() => queryClient.invalidateQueries()}
-            className="gap-2 border-white/10"
+            className="gap-2 border-border/30"
           >
             <RefreshCw className="w-4 h-4" />
             Refresh Status
