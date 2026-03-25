@@ -385,13 +385,22 @@ async function aggregateAccessUsage(): Promise<AccessTelemetry> {
 
   if (data.length === 0) return defaultAccess();
 
-  const uniqueKeys = new Set(data.map(d => d.api_key_id).filter(Boolean)).size;
-  const totalCost = data.reduce((s, d) => s + (d.cost_millicents || 0), 0);
+  const uniqueKeys = new Set<string>();
+  let totalCost = 0;
+  const moduleCounts: Record<string, number> = {};
+  for (const d of data) {
+    if (d.api_key_id) uniqueKeys.add(d.api_key_id);
+    totalCost += d.cost_millicents || 0;
+    moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1;
+  }
   const yesterdayCost = yesterdayData.reduce((s, d) => s + (d.cost_millicents || 0), 0);
 
-  const moduleCounts: Record<string, number> = {};
-  data.forEach(d => { moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1; });
-  const topModule = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top module without sort — single-pass max
+  let topModule: string | null = null;
+  let topCount = 0;
+  for (const mod in moduleCounts) {
+    if (moduleCounts[mod] > topCount) { topCount = moduleCounts[mod]; topModule = mod; }
+  }
 
   const costTrend: AccessTelemetry['costTrend'] =
     yesterdayCost > 0 && totalCost > yesterdayCost * 1.2 ? 'up'
