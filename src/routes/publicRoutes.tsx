@@ -14,6 +14,7 @@ const DreamArchaeology = lazy(() => import("@/pages/dream-eater/DreamArchaeology
 const DreamArtifacts = lazy(() => import("@/pages/dream-eater/DreamArtifacts"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const InvestorsPublic = lazy(() => import("@/pages/InvestorsPublic"));
+const InvestorShowcase = lazy(() => import("@/pages/InvestorShowcase"));
 const SubstrateDashboard = lazy(() => import("@/pages/SubstrateDashboard"));
 const SubstrateOS = lazy(() => import("@/pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
@@ -111,6 +112,7 @@ export const publicRoutes = (
     <Route path="/dream-eater/artifacts" element={<DreamArtifacts />} />
     <Route path="/blog" element={<Blog />} />
     <Route path="/investors" element={<InvestorsPublic />} />
+    <Route path="/investor-showcase" element={<InvestorShowcase />} />
     <Route path="/substrate" element={<Navigate to="/ai-operating-system" replace />} />
     <Route path="/os" element={<SubstrateOS />} />
     <Route path="/demo" element={<Navigate to="/foundry" replace />} />
