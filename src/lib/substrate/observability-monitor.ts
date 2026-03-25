@@ -298,8 +298,8 @@ class ObservabilityMonitor {
     // Wire real DLQ depth via ESM-safe dynamic import
     let dlqDepth = 0;
     try {
-      const stats = getRippleDLQStats();
-      dlqDepth = stats?.total || 0;
+      const stats = rippleDLQ.getStats();
+      dlqDepth = stats?.totalEntries || 0;
     } catch {
       // DLQ module not available — safe fallback
     }
