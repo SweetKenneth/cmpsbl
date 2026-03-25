@@ -629,11 +629,8 @@ export async function getAllEvolutionConfidence(): Promise<EvolutionConfidence[]
     'identity', 'economy', 'sandbox',
   ];
 
-  const results: EvolutionConfidence[] = [];
-  for (const module of ALL_MODULES) {
-    results.push(await getEvolutionConfidence(module));
-  }
-  return results;
+  // Parallelize all confidence queries
+  return Promise.all(ALL_MODULES.map(m => getEvolutionConfidence(m)));
 }
 
 // ═══════════════════════════════════════════════════════════════
