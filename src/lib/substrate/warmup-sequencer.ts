@@ -93,6 +93,9 @@ export async function executeWarmUpSequence(
       }
     }
 
+    completedStages++;
+  }
+
   return {
     totalDurationMs: Date.now() - start,
     results,
