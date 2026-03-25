@@ -14,6 +14,7 @@ const DreamArchaeology = lazy(() => import("@/pages/dream-eater/DreamArchaeology
 const DreamArtifacts = lazy(() => import("@/pages/dream-eater/DreamArtifacts"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const InvestorsPublic = lazy(() => import("@/pages/InvestorsPublic"));
+const InvestorShowcase = lazy(() => import("@/pages/InvestorShowcase"));
 const SubstrateDashboard = lazy(() => import("@/pages/SubstrateDashboard"));
 const SubstrateOS = lazy(() => import("@/pages/SubstrateOS"));
 const SubstrateDemo = lazy(() => import("@/pages/SubstrateDemo"));
