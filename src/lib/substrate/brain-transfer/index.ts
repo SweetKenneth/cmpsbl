@@ -959,11 +959,8 @@ export async function getAllModuleKnowledgeReports(): Promise<ModuleKnowledgeRep
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
-  const reports: ModuleKnowledgeReport[] = [];
-  for (const module of modules) {
-    reports.push(await getModuleKnowledgeReport(module));
-  }
-  return reports;
+  // Parallelize all report queries
+  return Promise.all(modules.map(m => getModuleKnowledgeReport(m)));
 }
 
 // ═══════════════════════════════════════════════════════════════
