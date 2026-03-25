@@ -409,7 +409,7 @@ async function aggregateAccessUsage(): Promise<AccessTelemetry> {
 
   return {
     totalRequests,
-    uniqueKeys,
+    uniqueKeys: uniqueKeys.size,
     topModule,
     totalCostMillicents: totalCost,
     costTrend,
