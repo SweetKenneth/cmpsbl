@@ -170,10 +170,10 @@ export async function runEmergencyPrune(): Promise<FullPruneResult> {
   console.log('[MemoryPruner] 🚨 Starting emergency prune...');
 
   const [hot, warm, cold, glacier, events_purged] = await Promise.all([
-    pruneHot(CAPACITY.hot),
-    pruneWarm(CAPACITY.warm),
-    pruneCold(CAPACITY.cold),
-    pruneGlacier(CAPACITY.glacier),
+    pruneTier('brain_memory_hot', 'hot', CAPACITY.hot, CLM_SOURCES_HOT),
+    pruneTier('brain_memory_warm', 'warm', CAPACITY.warm, CLM_SOURCES_WARM),
+    pruneTier('brain_memory_cold', 'cold', CAPACITY.cold),
+    pruneTier('brain_memory_archive', 'glacier', CAPACITY.glacier),
     purgeStaleBrainEvents(),
   ]);
 

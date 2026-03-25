@@ -1,17 +1,35 @@
 /**
  * Request Coalescer — Deduplicates identical in-flight requests
  * If two callers request the same operation simultaneously, only one executes
+ * 
+ * Optimized: single Map with embedded timestamps, FNV-1a hash for key generation
  */
 
-const inflight = new Map<string, Promise<unknown>>();
-const inflightTimestamps = new Map<string, number>();
+interface InflightEntry {
+  promise: Promise<unknown>;
+  ts: number;
+}
+
+const inflight = new Map<string, InflightEntry>();
 const stats = { coalesced: 0, total: 0 };
-const MAX_INFLIGHT_AGE_MS = 60_000; // Safety net: evict stuck promises after 60s
+const MAX_INFLIGHT_AGE_MS = 60_000;
+
+/** FNV-1a-inspired fast string hash to avoid full JSON.stringify comparison */
+function fastHash(s: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = (h * 0x01000193) | 0;
+  }
+  return h >>> 0;
+}
 
 /** Generate a cache key from module + action + payload hash */
 function makeKey(module: string, action: string, payload?: unknown): string {
-  const p = payload ? JSON.stringify(payload) : '';
-  return `${module}:${action}:${p}`;
+  if (!payload) return `${module}:${action}`;
+  const p = JSON.stringify(payload);
+  // For short payloads, inline; for long ones, use hash to reduce Map key memory
+  return p.length < 128 ? `${module}:${action}:${p}` : `${module}:${action}:#${fastHash(p)}`;
 }
 
 /**
@@ -26,28 +44,24 @@ export async function coalesce<T>(
 ): Promise<T> {
   stats.total++;
   const key = makeKey(module, action, payload);
-
-  // Evict stale entries (safety net for stuck promises)
   const now = Date.now();
-  const staleTs = inflightTimestamps.get(key);
-  if (staleTs && now - staleTs > MAX_INFLIGHT_AGE_MS) {
-    inflight.delete(key);
-    inflightTimestamps.delete(key);
-  }
 
+  // Check existing entry — evict if stale
   const existing = inflight.get(key);
   if (existing) {
-    stats.coalesced++;
-    return existing as Promise<T>;
+    if (now - existing.ts > MAX_INFLIGHT_AGE_MS) {
+      inflight.delete(key);
+    } else {
+      stats.coalesced++;
+      return existing.promise as Promise<T>;
+    }
   }
 
   const promise = executor().finally(() => {
     inflight.delete(key);
-    inflightTimestamps.delete(key);
   });
 
-  inflight.set(key, promise);
-  inflightTimestamps.set(key, now);
+  inflight.set(key, { promise, ts: now });
   return promise;
 }
 

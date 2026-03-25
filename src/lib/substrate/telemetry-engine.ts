@@ -474,8 +474,8 @@ class TelemetryEngineClient {
   private recordEvent(event: TelemetryEvent): void {
     this.eventLog.push(event);
     
-    // Efficient trim — splice from front instead of slice+reassign
-    if (this.eventLog.length > this.MAX_EVENT_LOG) {
+    // Amortized trim — only splice when 25% over capacity to avoid frequent shifts
+    if (this.eventLog.length > this.MAX_EVENT_LOG * 1.25) {
       this.eventLog.splice(0, this.eventLog.length - this.MAX_EVENT_LOG);
     }
 

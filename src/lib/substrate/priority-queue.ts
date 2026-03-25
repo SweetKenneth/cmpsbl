@@ -93,7 +93,11 @@ export const substrateQueue = new PriorityQueue();
 
 // ── Backward-compatible named exports expected by useMatrixResilience ──
 
-const completedTasks: Array<{ id: string; data: unknown; completedAt: number }> = [];
+// Ring-buffer for completed tasks — O(1) insertion, bounded memory
+const COMPLETED_CAP = 200;
+const completedRing: Array<{ id: string; data: unknown; completedAt: number }> = [];
+let completedHead = 0;
+let completedCount = 0;
 let maxConcurrent = 5;
 
 export function enqueue(id: string, data: unknown, priority = 0, deadlineMs?: number): void {
@@ -105,8 +109,14 @@ export function dequeue(): QueueItem | null {
 }
 
 export function complete(id: string): void {
-  completedTasks.push({ id, data: null, completedAt: Date.now() });
-  if (completedTasks.length > 200) completedTasks.splice(0, 50);
+  const entry = { id, data: null, completedAt: Date.now() };
+  if (completedCount < COMPLETED_CAP) {
+    completedRing.push(entry);
+    completedCount++;
+  } else {
+    completedRing[completedHead] = entry;
+  }
+  completedHead = (completedHead + 1) % COMPLETED_CAP;
 }
 
 export function getQueueState() {
@@ -127,5 +137,10 @@ export function setMaxConcurrent(n: number): void {
 }
 
 export function getCompletedTasks() {
-  return [...completedTasks];
+  if (completedCount < COMPLETED_CAP) return completedRing.slice();
+  // Return in chronological order from ring buffer
+  return [
+    ...completedRing.slice(completedHead),
+    ...completedRing.slice(0, completedHead),
+  ];
 }
