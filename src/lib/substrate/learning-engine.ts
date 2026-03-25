@@ -170,10 +170,11 @@ class LearningEngineClient {
 
       const { data: events } = await supabase
         .from('brain_events')
-        .select('*')
+        .select('data')
         .eq('event_type', 'learning_feedback')
         .gte('created_at', lookbackTime)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(500);
 
       let adjustments = 0;
       let totalDelta = 0;
