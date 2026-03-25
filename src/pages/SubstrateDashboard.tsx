@@ -570,7 +570,7 @@ export default function SubstrateDashboard() {
               <Activity className="w-6 h-6 md:w-7 md:h-7 text-primary" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-4xl font-bold">CMPSBL Substrate</h1>
+               <h1 className="text-2xl md:text-4xl font-black tracking-tight">CMPSBL Substrate</h1>
               <p className="text-sm md:text-base text-muted-foreground">40-Primitive Cognitive Architecture · Agents · Engines · Layers · Organs</p>
             </div>
           </div>
