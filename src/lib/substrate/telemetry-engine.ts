@@ -90,7 +90,10 @@ export interface TelemetryQuery {
 
 class TelemetryEngineClient {
   private static instance: TelemetryEngineClient;
-  private eventLog: TelemetryEvent[] = [];
+  // Ring buffer for event log — O(1) insertion, bounded memory, no splice()
+  private eventRing: TelemetryEvent[];
+  private eventHead = 0;
+  private eventCount = 0;
   private readonly MAX_EVENT_LOG = 500;
   private state: TelemetryState = {
     initialized: false,
@@ -103,6 +106,7 @@ class TelemetryEngineClient {
   private currentSessionId: string;
 
   private constructor() {
+    this.eventRing = new Array(this.MAX_EVENT_LOG);
     this.currentSessionId = this.generateId();
     this.state.initialized = true;
     this.initializeCounters();
@@ -363,22 +367,26 @@ class TelemetryEngineClient {
    * Query telemetry events
    */
   query(q: TelemetryQuery = {}): TelemetryEvent[] {
-    // Fast path: no filters → just return tail
+    const limit = q.limit || this.MAX_EVENT_LOG;
+
+    // Fast path: no filters → return tail of ring buffer
     const hasFilter = q.type || q.severity || q.engine || q.module || q.since || q.correlation_id;
     if (!hasFilter) {
-      return this.eventLog.slice(-(q.limit || this.MAX_EVENT_LOG));
+      return this.readRingTail(Math.min(limit, this.eventCount));
     }
 
     // Pre-compute filter sets for O(1) lookups
     const typeSet = q.type ? new Set(Array.isArray(q.type) ? q.type : [q.type]) : null;
     const sevSet = q.severity ? new Set(Array.isArray(q.severity) ? q.severity : [q.severity]) : null;
     const sinceMs = q.since ? new Date(q.since).getTime() : 0;
-    const limit = q.limit || this.MAX_EVENT_LOG;
 
     // Single-pass filter (iterate backwards for limit optimization)
     const result: TelemetryEvent[] = [];
-    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
-      const e = this.eventLog[i];
+    for (let i = 0; i < this.eventCount && result.length < limit; i++) {
+      // Reverse order: most recent first
+      const idx = (this.eventHead - 1 - i + this.MAX_EVENT_LOG) % this.MAX_EVENT_LOG;
+      const e = this.eventRing[idx];
+      if (!e) continue;
       if (typeSet && !typeSet.has(e.type)) continue;
       if (sevSet && !sevSet.has(e.severity)) continue;
       if (q.engine && e.source.engine !== q.engine) continue;
@@ -397,7 +405,7 @@ class TelemetryEngineClient {
   getState(): TelemetryState {
     return {
       ...this.state,
-      recentEvents: this.eventLog.slice(-20),
+      recentEvents: this.readRingTail(20),
     };
   }
 
@@ -406,8 +414,10 @@ class TelemetryEngineClient {
    */
   getEventsByEngine(engine: EngineName, limit: number = 20): TelemetryEvent[] {
     const result: TelemetryEvent[] = [];
-    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
-      if (this.eventLog[i].source.engine === engine) result.push(this.eventLog[i]);
+    for (let i = 0; i < this.eventCount && result.length < limit; i++) {
+      const idx = (this.eventHead - 1 - i + this.MAX_EVENT_LOG) % this.MAX_EVENT_LOG;
+      const e = this.eventRing[idx];
+      if (e && e.source.engine === engine) result.push(e);
     }
     return result.reverse();
   }
@@ -417,9 +427,13 @@ class TelemetryEngineClient {
    */
   getErrors(limit: number = 50): TelemetryEvent[] {
     const result: TelemetryEvent[] = [];
-    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
-      const s = this.eventLog[i].severity;
-      if (s === 'error' || s === 'critical') result.push(this.eventLog[i]);
+    for (let i = 0; i < this.eventCount && result.length < limit; i++) {
+      const idx = (this.eventHead - 1 - i + this.MAX_EVENT_LOG) % this.MAX_EVENT_LOG;
+      const e = this.eventRing[idx];
+      if (e) {
+        const s = e.severity;
+        if (s === 'error' || s === 'critical') result.push(e);
+      }
     }
     return result.reverse();
   }
@@ -429,9 +443,13 @@ class TelemetryEngineClient {
    */
   getGovernanceEvents(limit: number = 50): TelemetryEvent[] {
     const result: TelemetryEvent[] = [];
-    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
-      const t = this.eventLog[i].type;
-      if (t === 'governance_block' || t === 'governance_override') result.push(this.eventLog[i]);
+    for (let i = 0; i < this.eventCount && result.length < limit; i++) {
+      const idx = (this.eventHead - 1 - i + this.MAX_EVENT_LOG) % this.MAX_EVENT_LOG;
+      const e = this.eventRing[idx];
+      if (e) {
+        const t = e.type;
+        if (t === 'governance_block' || t === 'governance_override') result.push(e);
+      }
     }
     return result.reverse();
   }
@@ -455,7 +473,9 @@ class TelemetryEngineClient {
    * Reset state (for testing)
    */
   reset(): void {
-    this.eventLog = [];
+    this.eventRing = new Array(this.MAX_EVENT_LOG);
+    this.eventHead = 0;
+    this.eventCount = 0;
     this.state.totalEvents = 0;
     this.initializeCounters();
     this.state.lastEventTimestamp = null;
@@ -472,18 +492,27 @@ class TelemetryEngineClient {
   private readonly MAX_BATCH_SIZE = 25;
 
   private recordEvent(event: TelemetryEvent): void {
-    this.eventLog.push(event);
-    
-    // Amortized trim — only splice when 25% over capacity to avoid frequent shifts
-    if (this.eventLog.length > this.MAX_EVENT_LOG * 1.25) {
-      this.eventLog.splice(0, this.eventLog.length - this.MAX_EVENT_LOG);
-    }
+    // Ring buffer insertion — O(1), no splice/shift needed
+    this.eventRing[this.eventHead] = event;
+    this.eventHead = (this.eventHead + 1) % this.MAX_EVENT_LOG;
+    if (this.eventCount < this.MAX_EVENT_LOG) this.eventCount++;
 
     // Update counters
     this.state.totalEvents++;
     this.state.eventsByType[event.type] = (this.state.eventsByType[event.type] || 0) + 1;
     this.state.eventsBySeverity[event.severity] = (this.state.eventsBySeverity[event.severity] || 0) + 1;
     this.state.lastEventTimestamp = event.timestamp;
+  }
+
+  /** Read the most recent `count` events from the ring buffer in chronological order */
+  private readRingTail(count: number): TelemetryEvent[] {
+    const n = Math.min(count, this.eventCount);
+    const result: TelemetryEvent[] = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const idx = (this.eventHead - n + i + this.MAX_EVENT_LOG) % this.MAX_EVENT_LOG;
+      result[i] = this.eventRing[idx];
+    }
+    return result;
   }
 
   /** Enqueue low-severity events for batched persistence */
