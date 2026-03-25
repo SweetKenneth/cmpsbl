@@ -248,19 +248,28 @@ export function classifyEntryPriority(action: string): 'critical' | 'high' | 'me
 // ─── 14. Audit Throughput Monitor ──────────────────────────────────────────
 const throughputSamples: number[] = [];
 const MAX_THROUGHPUT_SAMPLES = 100;
+let tpHead = 0;
+let tpCount = 0;
+let tpSum = 0;
+let tpPeak = 0;
+
 export function recordThroughputSample(entriesPerSecond: number) {
-  throughputSamples.push(entriesPerSecond);
-  if (throughputSamples.length > MAX_THROUGHPUT_SAMPLES) throughputSamples.splice(0, 1);
+  if (tpCount < MAX_THROUGHPUT_SAMPLES) {
+    throughputSamples.push(entriesPerSecond);
+    tpSum += entriesPerSecond;
+  } else {
+    tpSum -= throughputSamples[tpHead];
+    tpSum += entriesPerSecond;
+    throughputSamples[tpHead] = entriesPerSecond;
+  }
+  tpHead = (tpHead + 1) % MAX_THROUGHPUT_SAMPLES;
+  tpCount++;
+  if (entriesPerSecond > tpPeak) tpPeak = entriesPerSecond;
 }
 export function getThroughputStats(): { avg: number; peak: number; samples: number } {
-  if (throughputSamples.length === 0) return { avg: 0, peak: 0, samples: 0 };
-  let sum = 0;
-  let peak = 0;
-  for (let i = 0; i < throughputSamples.length; i++) {
-    sum += throughputSamples[i];
-    if (throughputSamples[i] > peak) peak = throughputSamples[i];
-  }
-  return { avg: Math.round(sum / throughputSamples.length), peak, samples: throughputSamples.length };
+  const n = Math.min(tpCount, MAX_THROUGHPUT_SAMPLES);
+  if (n === 0) return { avg: 0, peak: 0, samples: 0 };
+  return { avg: Math.round(tpSum / n), peak: tpPeak, samples: n };
 }
 
 // ─── 15. Immutability Guard ────────────────────────────────────────────────
