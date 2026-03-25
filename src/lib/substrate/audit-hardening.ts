@@ -178,9 +178,18 @@ export function generateMerkleProof(entryIndex: number): { index: number; proof:
 
 // ─── 9. Cross-Zone Attestation ─────────────────────────────────────────────
 const attestations: Array<{ zone: string; ts: number; hash: string }> = [];
+let attestHead = 0;
+let attestCount = 0;
+
 export function recordAttestation(zone: string, hash: string) {
-  attestations.push({ zone, ts: Date.now(), hash });
-  if (attestations.length > MAX_ATTESTATIONS) attestations.splice(0, attestations.length - MAX_ATTESTATIONS);
+  const entry = { zone, ts: Date.now(), hash };
+  if (attestCount < MAX_ATTESTATIONS) {
+    attestations.push(entry);
+  } else {
+    attestations[attestHead] = entry;
+  }
+  attestHead = (attestHead + 1) % MAX_ATTESTATIONS;
+  attestCount++;
 }
 export function getAttestations() { return [...attestations]; }
 
