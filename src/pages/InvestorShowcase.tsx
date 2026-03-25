@@ -276,6 +276,7 @@ const TIER_2_DEMOS: DemoCardProps[] = [
 // ─── Main Showcase ───────────────────────────────────────────
 const ShowcaseContent = () => {
   const [showTier2, setShowTier2] = useState(false);
+  const [activeDemo, setActiveDemo] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
