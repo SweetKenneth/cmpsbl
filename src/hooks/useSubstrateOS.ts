@@ -5,7 +5,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { substrate, vision, brain, defense, nexus, dream, system, decode, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod } from '@/lib/substrate';
+import { substrate, vision, brain, defense, nexus, dream, system, decode, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod, atlasMod, engineerMod } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import * as healthEngine from '@/lib/substrate/health-engine';
 
@@ -307,7 +307,7 @@ export function useSubstrateHealthScore() {
     nexus: () => nexus.status(),
     identity: () => identityMod.status(),
     sovereign: () => sovereignMod.status(),
-    atlas: () => cortex.status(),
+    atlas: () => atlasMod.status(),
     medic: () => medicMod.status(),
     relay: () => relayMod.status(),
     conscience: () => conscienceMod.status(),
@@ -338,7 +338,7 @@ export function useSubstrateHealthScore() {
     inclusive: () => inclusive.status(),
     cortex: () => cortex.status(),
     oracle: () => oracleMod.status(),
-    engineer: () => cortex.status(),
+    engineer: () => engineerMod.status(),
   };
 
   // Subsystem probes
@@ -351,8 +351,11 @@ export function useSubstrateHealthScore() {
       return s.running ? 100 : 80;
     },
     cdm: async () => {
-      // CDM runs on timer — check if auto-scheduler is active
-      return 80; // CDM doesn't expose a direct health API yet; assume operational
+      try {
+        const { getDiscoveryHealth } = await import('@/lib/substrate/intent-mesh/discovery-engine');
+        const health = getDiscoveryHealth();
+        return typeof health.score === 'number' ? health.score : 80;
+      } catch { return 70; }
     },
     seba: async () => {
       try {
