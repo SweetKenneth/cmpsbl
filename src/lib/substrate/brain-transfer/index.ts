@@ -565,7 +565,6 @@ export async function broadcastInsight(insight: CrossModuleInsight): Promise<{
  * Calculate evolution confidence for a module based on historical outcomes
  */
 export async function getEvolutionConfidence(module: TransferModule): Promise<EvolutionConfidence> {
-  // Get evolution history for this module
   const { data: events } = await supabase
     .from('brain_events')
     .select('*')
@@ -575,33 +574,34 @@ export async function getEvolutionConfidence(module: TransferModule): Promise<Ev
     .limit(100);
 
   const total = events?.length || 0;
-  const successes = events?.filter(e => 
-    e.outcome === 'success' || e.event_type === 'evolution_applied' || e.event_type === 'change_applied'
-  ).length || 0;
-  const failures = events?.filter(e =>
-    e.outcome === 'failed' || e.event_type === 'evolution_failed' || e.event_type === 'evolution_rolled_back' || e.event_type === 'change_failed'
-  ).length || 0;
+
+  // Single-pass: count successes, failures, impact, and trend buckets
+  let successes = 0, failures = 0;
+  let impactSum = 0, impactCount = 0;
+  let recent20Success = 0, recent20Total = 0;
+  let older20Success = 0, older20Total = 0;
+
+  if (events) {
+    for (let i = 0; i < events.length; i++) {
+      const e = events[i];
+      const isSuccess = e.outcome === 'success' || e.event_type === 'evolution_applied' || e.event_type === 'change_applied';
+      const isFail = e.outcome === 'failed' || e.event_type === 'evolution_failed' || e.event_type === 'evolution_rolled_back' || e.event_type === 'change_failed';
+      if (isSuccess) successes++;
+      if (isFail) failures++;
+      if (i < 10) {
+        const impact = (e.data as any)?.impact_score || (e.data as any)?.predicted_impact || 0.5;
+        impactSum += impact;
+        impactCount++;
+      }
+      if (i < 20) { recent20Total++; if (e.outcome === 'success') recent20Success++; }
+      else if (i < 40) { older20Total++; if (e.outcome === 'success') older20Success++; }
+    }
+  }
 
   const successRate = total > 0 ? successes / total : 0.5;
-
-  // Calculate impact from recent changes
-  const recentEvents = events?.slice(0, 10) || [];
-  const avgImpact = recentEvents.length > 0
-    ? recentEvents.reduce((sum, e) => {
-        const impact = (e.data as any)?.impact_score || (e.data as any)?.predicted_impact || 0.5;
-        return sum + impact;
-      }, 0) / recentEvents.length
-    : 0.5;
-
-  // Determine trend from last 20 vs previous 20
-  const recent20 = events?.slice(0, 20) || [];
-  const older20 = events?.slice(20, 40) || [];
-  const recentSuccessRate = recent20.length > 0
-    ? recent20.filter(e => e.outcome === 'success').length / recent20.length
-    : 0.5;
-  const olderSuccessRate = older20.length > 0
-    ? older20.filter(e => e.outcome === 'success').length / older20.length
-    : 0.5;
+  const avgImpact = impactCount > 0 ? impactSum / impactCount : 0.5;
+  const recentSuccessRate = recent20Total > 0 ? recent20Success / recent20Total : 0.5;
+  const olderSuccessRate = older20Total > 0 ? older20Success / older20Total : 0.5;
 
   let trend: 'improving' | 'stable' | 'declining' = 'stable';
   if (recentSuccessRate > olderSuccessRate + 0.1) trend = 'improving';
@@ -629,11 +629,8 @@ export async function getAllEvolutionConfidence(): Promise<EvolutionConfidence[]
     'identity', 'economy', 'sandbox',
   ];
 
-  const results: EvolutionConfidence[] = [];
-  for (const module of ALL_MODULES) {
-    results.push(await getEvolutionConfidence(module));
-  }
-  return results;
+  // Parallelize all confidence queries
+  return Promise.all(ALL_MODULES.map(m => getEvolutionConfidence(m)));
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -811,44 +808,48 @@ export async function ingestModulePatterns(module: TransferModule): Promise<{
   const config = MODULE_CONFIGS[module];
   let ingested = 0, patternErrors = 0;
 
-  for (const pattern of patterns) {
-    try {
-      await supabase.from('brain_memories').insert({
-        content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
-        memory_type: 'heuristic',
-        source: `${module}_expert_patterns`,
-        confidence: 0.95,
-        metadata: {
-          module,
-          title: pattern.title,
-          priority: pattern.priority,
-          ingested_at: new Date().toISOString(),
-        },
-      });
-      ingested++;
-    } catch {
-      patternErrors++;
+  // Batch insert all patterns in parallel (groups of 10 for safety)
+  const batchSize = 10;
+  for (let i = 0; i < patterns.length; i += batchSize) {
+    const batch = patterns.slice(i, i + batchSize);
+    const results = await Promise.allSettled(
+      batch.map(pattern =>
+        supabase.from('brain_memories').insert({
+          content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
+          memory_type: 'heuristic',
+          source: `${module}_expert_patterns`,
+          confidence: 0.95,
+          metadata: {
+            module,
+            title: pattern.title,
+            priority: pattern.priority,
+            ingested_at: new Date().toISOString(),
+          },
+        })
+      )
+    );
+    for (const r of results) {
+      if (r.status === 'fulfilled') ingested++;
+      else patternErrors++;
     }
   }
 
-  // Also load top patterns into hot memory
+  // Also load top patterns into hot memory (parallel)
   const hotPatterns = patterns
     .sort((a, b) => b.priority - a.priority)
     .slice(0, Math.min(patterns.length, config.hotCacheLimit / 2));
 
-  for (const pattern of hotPatterns) {
-    try {
-      await supabase.from('brain_memory_hot').insert({
+  await Promise.allSettled(
+    hotPatterns.map(pattern =>
+      supabase.from('brain_memory_hot').insert({
         content: `[${module.toUpperCase()}_EXPERT] ${pattern.title}: ${pattern.content}`,
         context: `${config.hotCategoryPrefix}:expert`,
         priority: clampPriority(pattern.priority / 10),
         access_count: 0,
         metadata: { module, title: pattern.title },
-      });
-    } catch {
-      // Non-fatal
-    }
-  }
+      })
+    )
+  );
 
   await supabase.from('brain_events').insert([{
     module: 'brain',
@@ -919,35 +920,37 @@ export async function ingestAllModulePatterns(): Promise<{
 export async function getModuleKnowledgeReport(module: TransferModule): Promise<ModuleKnowledgeReport> {
   const config = MODULE_CONFIGS[module];
 
-  const { count: hotCount } = await supabase
-    .from('brain_memory_hot')
-    .select('id', { count: 'exact', head: true })
-    .ilike('context', `${config.hotCategoryPrefix}%`);
+  // Parallelize all 3 queries
+  const [hotResult, memoriesResult, lastEventResult] = await Promise.all([
+    supabase
+      .from('brain_memory_hot')
+      .select('id', { count: 'exact', head: true })
+      .ilike('context', `${config.hotCategoryPrefix}%`),
+    supabase
+      .from('brain_memories')
+      .select('confidence, source')
+      .eq('source', `${module}_expert_patterns`)
+      .limit(200),
+    supabase
+      .from('brain_events')
+      .select('created_at')
+      .eq('event_type', `knowledge_transfer_${module}`)
+      .order('created_at', { ascending: false })
+      .limit(1),
+  ]);
 
-  const { data: memories } = await supabase
-    .from('brain_memories')
-    .select('confidence, source')
-    .eq('source', `${module}_expert_patterns`)
-    .limit(200);
-
-  const { data: lastEvent } = await supabase
-    .from('brain_events')
-    .select('created_at')
-    .eq('event_type', `knowledge_transfer_${module}`)
-    .order('created_at', { ascending: false })
-    .limit(1);
-
+  const memories = memoriesResult.data;
   const avgConfidence = memories && memories.length > 0
     ? memories.reduce((sum, m) => sum + (m.confidence || 0), 0) / memories.length
     : 0;
 
   return {
     module,
-    hot_patterns: hotCount || 0,
+    hot_patterns: hotResult.count || 0,
     total_memories: memories?.length || 0,
     avg_confidence: avgConfidence,
     top_categories: config.relevanceSignals.slice(0, 5),
-    last_transfer: lastEvent?.[0]?.created_at || null,
+    last_transfer: lastEventResult.data?.[0]?.created_at || null,
   };
 }
 
@@ -962,11 +965,8 @@ export async function getAllModuleKnowledgeReports(): Promise<ModuleKnowledgeRep
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
-  const reports: ModuleKnowledgeReport[] = [];
-  for (const module of modules) {
-    reports.push(await getModuleKnowledgeReport(module));
-  }
-  return reports;
+  // Parallelize all report queries
+  return Promise.all(modules.map(m => getModuleKnowledgeReport(m)));
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1177,9 +1177,6 @@ export async function getAllDependencyHealth(): Promise<DependencyHealth[]> {
     'memory', 'relay', 'audit', 'identity', 'economy', 'sandbox',
   ];
 
-  const results: DependencyHealth[] = [];
-  for (const module of ALL_MODULES) {
-    results.push(await checkDependencyHealth(module));
-  }
-  return results;
+  // Parallelize all health checks
+  return Promise.all(ALL_MODULES.map(m => checkDependencyHealth(m)));
 }

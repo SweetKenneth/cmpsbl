@@ -114,16 +114,37 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     };
   }
 
-  // Check 1: Dependencies booted
-  for (const dep of entry.deps) {
-    const { data: depEvents } = await supabase
+  // Parallelize: fetch all dependency events + own events + critical tables at once
+  const hourAgo = new Date(Date.now() - 3600000).toISOString();
+  const dayAgo = new Date(Date.now() - 24 * 3600000).toISOString();
+
+  const depQueries = entry.deps.map(dep =>
+    supabase
       .from('brain_events')
       .select('outcome')
       .eq('module', dep)
-      .gte('created_at', new Date(Date.now() - 3600000).toISOString()) // last hour
+      .gte('created_at', hourAgo)
       .order('created_at', { ascending: false })
-      .limit(5);
+      .limit(5)
+      .then(res => ({ dep, data: res.data }))
+  );
 
+  const ownQuery = supabase
+    .from('brain_events')
+    .select('outcome')
+    .eq('module', module)
+    .gte('created_at', dayAgo)
+    .order('created_at', { ascending: false })
+    .limit(20);
+
+  const [depResults, ownResult, criticalTableCheck] = await Promise.all([
+    Promise.all(depQueries),
+    ownQuery,
+    checkCriticalTables(),
+  ]);
+
+  // Process dependency results
+  for (const { dep, data: depEvents } of depResults) {
     const hasActivity = depEvents && depEvents.length > 0;
     const hasFailures = depEvents?.some(e => e.outcome === 'failure');
 
@@ -142,18 +163,13 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     }
   }
 
-  // Check 2: Module's own recent health
-  const { data: ownEvents } = await supabase
-    .from('brain_events')
-    .select('outcome')
-    .eq('module', module)
-    .gte('created_at', new Date(Date.now() - 24 * 3600000).toISOString())
-    .order('created_at', { ascending: false })
-    .limit(20);
-
+  const ownEvents = ownResult.data;
   if (ownEvents && ownEvents.length > 0) {
-    const failures = ownEvents.filter(e => e.outcome === 'failure').length;
-    const successRate = (ownEvents.length - failures) / ownEvents.length;
+    let failCount = 0;
+    for (let i = 0; i < ownEvents.length; i++) {
+      if (ownEvents[i].outcome === 'failure') failCount++;
+    }
+    const successRate = (ownEvents.length - failCount) / ownEvents.length;
     
     checks.push({
       name: 'own_success_rate',
@@ -168,23 +184,30 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     });
   }
 
-  // Check 3: Database connectivity (critical tables)
-  const criticalTableCheck = await checkCriticalTables();
   checks.push(criticalTableCheck);
 
-  // Determine verdict
-  const failedChecks = checks.filter(c => !c.passed);
-  const depFailures = failedChecks.filter(c => c.name.startsWith('dep_'));
+  // Determine verdict — single pass over checks
+  let depFailed = false;
+  let anyFailed = false;
+  const failDetails: string[] = [];
+  const depFailDetails: string[] = [];
+  for (const c of checks) {
+    if (!c.passed) {
+      anyFailed = true;
+      if (c.name.startsWith('dep_')) { depFailed = true; if (c.detail) depFailDetails.push(c.detail); }
+      else { if (c.detail) failDetails.push(c.detail); }
+    }
+  }
 
   let verdict: GateVerdict = 'pass';
   let reason: string | undefined;
 
-  if (depFailures.length > 0) {
+  if (depFailed) {
     verdict = 'block';
-    reason = `Dependencies unhealthy: ${depFailures.map(c => c.detail).join('; ')}`;
-  } else if (failedChecks.length > 0) {
+    reason = `Dependencies unhealthy: ${depFailDetails.join('; ')}`;
+  } else if (anyFailed) {
     verdict = 'warn';
-    reason = `Non-critical issues: ${failedChecks.map(c => c.detail).join('; ')}`;
+    reason = `Non-critical issues: ${failDetails.join('; ')}`;
   }
 
   const result: BootGateCheck = {
@@ -202,8 +225,8 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     data: {
       module,
       verdict,
-      checks_passed: checks.filter(c => c.passed).length,
-      checks_failed: failedChecks.length,
+      checks_passed: checks.length - (depFailed ? depFailDetails.length : 0) - (anyFailed ? failDetails.length : 0),
+      checks_failed: (depFailed ? depFailDetails.length : 0) + (anyFailed && !depFailed ? failDetails.length : 0),
       reason,
     } as any,
     outcome: verdict === 'block' ? 'failure' : 'success',
