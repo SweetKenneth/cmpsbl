@@ -3,18 +3,15 @@
 **Classification:** INTERNAL — Governor Eyes Only  
 **Created:** 2026-03-25  
 **Updated:** 2026-03-25  
-**Goal:** Build a pin-protected investor showcase that explains itself in layers. Not a demo — a self-narrating system.
+**Goal:** Build a pin-protected investor showcase that hooks emotionally first, explains itself second, and proves depth third.
 
 ---
 
 ## Guiding Principle
 
-> We are not building a demo. We are building a system that explains itself in layers.
+> We are not building a demo. We are building a system that hooks emotionally first, explains itself second, and proves depth third.
 
-If we get this right:
-- The system answers questions for me
-- Investors explore instead of interrogate
-- Complexity becomes a strength instead of a liability
+If something doesn't serve that flow, cut it.
 
 ---
 
@@ -24,7 +21,9 @@ If we get this right:
 2. **Self-explanatory** — every demo has WHAT / WHY / VALUE blocks (mandatory, no exceptions)
 3. **Progressive disclosure** — surface = outcome, depth = architecture
 4. **Honest labeling** — production-ready vs. in-progress, clearly marked
-5. **Contained complexity** — the 40 primitives, mesh, deep system are NEVER first-load. Always behind interaction (click → expand → explore)
+5. **Contained complexity** — deep system is NEVER first-load. Always behind interaction
+6. **Outcome-first** — show what changed, then how
+7. **Guaranteed success** — critical demos must never break during a session
 
 ---
 
@@ -35,9 +34,31 @@ If we get this right:
 - [ ] Route: `/investor-showcase` or nested under admin
 - [ ] Clean, minimal — zero admin clutter
 
-### 0.2 — "Start Here" Orientation Block (MANDATORY — First Thing They See)
+### 0.2 — "30-Second WOW" (MANDATORY — First Thing After PIN)
 
-Before any demo grid loads, investors see:
+Before any orientation or demo grid, one button:
+
+```
+┌─────────────────────────────────────────────┐
+│                                             │
+│         See it in 30 seconds →              │
+│                                             │
+│   (preloaded Ascension example — no         │
+│    upload required, guaranteed success)     │
+│                                             │
+│   Click → instant before/after              │
+│   transformation with visible timing        │
+│                                             │
+│   "Enhanced in 1,240ms"                     │
+│                                             │
+└─────────────────────────────────────────────┘
+```
+
+This is the hook. They should feel "what the hell did I just see?" before they think. If we lose them here, nothing else matters.
+
+### 0.3 — "Start Here" Orientation Block
+
+After the WOW moment, provide context:
 
 **What this system does (1–2 sentences):**
 > CMPSBL is a cognitive operating system that discovers, improves, and exports software capabilities autonomously — using 40 specialized AI primitives that coordinate through a live mesh.
@@ -52,9 +73,7 @@ Discover → Improve → Export
 2. Evolution — see how it improves itself
 3. Ascension — see what it exports
 
-This block is non-negotiable. Without it, the system feels like complexity instead of capability.
-
-### 0.3 — Showcase Layout
+### 0.4 — Showcase Layout
 - [ ] Demo cards organized by tier (visually separated, not just listed)
 - [ ] Tier 1 visible on first load. Tier 2 and 3 collapsed/hidden behind interaction
 - [ ] Status badges: Live / In Progress / Planned
@@ -85,7 +104,7 @@ Visible on click/scroll. These prove depth.
 | SEBA Pipeline | Safety rails — mutations can't bypass governance |
 
 ### Tier 3 — Deep System (Only if they explore)
-Hidden behind explicit interaction. These impress the technical investor.
+Hidden behind explicit interaction. Click → expand → explore.
 
 | Demo | Purpose |
 |------|---------|
@@ -119,53 +138,81 @@ If a demo can't explain itself in those 3 blocks, it's not ready for investors. 
 
 ## Phase 1 — Tier 1 Demos (Build First)
 
-### 1.1 — Memory Stream & Discovery
-**WHAT:** The system observes its own behavior and discovers new software pipelines autonomously. Real discovered capabilities with CJPI scoring. Mint → Prime → Relic → Mythic → Apex tiering.  
+### 1.1 — Memory Stream & Discovery (TELL A STORY, NOT A LIST)
+
+**WHAT:** The system observes its own behavior and discovers new software pipelines autonomously.  
 **WHY:** No other system discovers its own capabilities. This is self-improving infrastructure.  
 **VALUE:** Every discovery is a potential product. The system generates its own IP.  
-**Existing assets:** Discovery mining console, artifact registry, foundry page  
-**Work needed:** Curated investor view — best discoveries highlighted, clean cards, no admin noise  
 
-### 1.2 — Evolution: Self-Improving Software
-**WHAT:** System scans its own codebase → AI generates real code patches → SHADOW validates → SEBA scores → one-click approve/reject  
+**Critical design change:** Do NOT present as a catalog/list. Instead:
+
+- Feature ONE real discovery as a narrative:
+  - What the system **saw** (the signal)
+  - What it **built** (the pipeline)
+  - What it **became** (the artifact)
+- This featured discovery sits at top, large, story-format
+- Below it: recent discoveries as secondary cards
+- CJPI scoring and tier badges (Mint → Apex) visible but not leading
+
+**Existing assets:** Discovery mining console, artifact registry, foundry page  
+**Work needed:** Curated investor view — story-first, featured discovery, clean cards, no admin noise
+
+### 1.2 — Evolution: Self-Improving Software (OUTCOME FIRST)
+
+**WHAT:** System scans its own codebase → AI generates real code patches → validates → scores → approve/reject  
 **WHY:** Software that fixes and improves itself. The core promise.  
 **VALUE:** Reduces engineering costs, eliminates tech debt accumulation, scales without hiring.  
 
-**UI must be extremely simple:**
-- Diff view (before/after)
-- Score badge
-- Approve / Reject buttons
-- No internal noise by default
-- Deep detail (SHADOW results, SEBA gate breakdown) only on expand
+**Critical design change:** Lead with OUTCOME, not process.
+
+**UI flow (this order is mandatory):**
+1. **BEFORE → AFTER** (the result) — this is what they see first
+2. Score badge + timing ("Improved in 840ms")
+3. Approve / Reject buttons
+4. **Expandable section** (click to reveal):
+   - How it was generated (AI prompt + model)
+   - How it was validated (SHADOW dry-run results)
+   - How it was approved (SEBA gate breakdown)
+
+No internal noise by default. Mechanics only on expand.
 
 **What needs building:**
 - [ ] Evolution discovery → structured prompt assembly
 - [ ] Edge function: proposal + file context → OpenAI → patch
 - [ ] SHADOW dry-run validation
 - [ ] SEBA gate scoring
-- [ ] Investor-facing UI: proposal card with diff + approve/reject
+- [ ] Investor-facing UI: outcome-first proposal card
 
 **Cost:** ~$0.005 per proposal
 
-### 1.3 — Ascension: Before → After Transformation
-**WHAT:** Upload a basic script. The 40-primitive matrix analyzes it. Download an enhanced, exportable system with runtime, docs, and tests.  
+### 1.3 — Ascension: Before → After Transformation (GUARANTEED SUCCESS)
+
+**WHAT:** A basic script enters. The 40-primitive matrix analyzes it. An enhanced, exportable system exits.  
 **WHY:** This is the clearest proof of value — input basic code, output production software.  
 **VALUE:** Every developer becomes 10x. Every script becomes a product.  
 
+**Two modes (MANDATORY):**
+
+| Mode | Behavior | When |
+|------|----------|------|
+| **Demo Mode (DEFAULT)** | Preloaded script, guaranteed successful transformation, instant result | Always available, used first |
+| **Upload Mode (optional)** | Investor uploads their own code | Available after demo mode impresses |
+
+**Never rely on user input for the "drop the mic" moment.**
+
 **UI must be extremely simple:**
-- Upload zone
-- Analysis progress (clean, not noisy)
-- Before/After comparison (side by side)
+- Side-by-side before/after comparison
+- Visible timing ("Enhanced in X ms")
 - Export button → download ZIP
+- Upload zone appears as secondary action
 
 **What needs building:**
+- [ ] Preloaded demo script with guaranteed transformation
 - [ ] Upload endpoint + language detection
 - [ ] Primitive-by-primitive analysis prompts (via OpenAI)
 - [ ] Discovery scoring (CJPI)
 - [ ] Export ZIP (original + runtime + docs + tests)
 - [ ] Before vs After comparison view
-
-**This is the "drop the mic" demo.** If an investor uploads their own code and gets back enhanced software, the product sells itself.
 
 ---
 
@@ -217,24 +264,40 @@ All behind explicit interaction. Click → expand → explore.
 
 ## Phase 4 — Credibility Signals & Polish
 
-### 4.1 — Live System Stats (MANDATORY)
-Surface real, live numbers — not simulated:
-- [ ] Evolution cycles completed
-- [ ] Discoveries crystallized
-- [ ] Primitives active
-- [ ] Memory consolidated
-- [ ] System uptime
+### 4.1 — Visible Speed (MANDATORY on all demos)
+Surface timing on every operation — speed = capability in an investor's mind:
+- [ ] "Generated in X ms"
+- [ ] "Validated in X ms"
+- [ ] "Pipeline completed in X ms"
+- [ ] "Enhanced in X ms"
+
+### 4.2 — System Confidence Signals (MANDATORY)
+Lightweight, always-visible indicators:
+- [ ] "System Health: Stable" (from Health Engine)
+- [ ] "Last successful cycle: X minutes ago"
+- [ ] "Live system — no simulated data"
+- [ ] Evolution cycles completed count
+- [ ] Discoveries crystallized count
+- [ ] Primitives active count
 - [ ] Clear "production vs experimental" labels
 
-### 4.2 — Before vs After Demo (Standalone)
-One explicit, repeatable transformation:
-- [ ] Input: basic script (pre-loaded example OR user upload)
-- [ ] Output: enhanced system with runtime
-- [ ] Side-by-side comparison
-- [ ] This may be integrated into Ascension (1.3) or standalone
+These reduce perceived risk immediately.
 
-### 4.3 — Investor Experience
-- [ ] "Why This Matters" value cards per demo
+### 4.3 — "Why CMPSBL Wins" Summary Layer (MANDATORY)
+One compressed, high-signal view — the mental anchor after exploration:
+
+```
+┌──────────────────────────────────────────────┐
+│  Self-discovering software    → Memory Stream │
+│  Self-improving software      → Evolution     │
+│  Exportable intelligence      → Ascension     │
+│  Built-in governance          → SEBA + DEFENSE│
+└──────────────────────────────────────────────┘
+```
+
+This sits at the bottom of the showcase — the summary they carry out of the room.
+
+### 4.4 — Investor Experience
 - [ ] Comparison matrix — CMPSBL vs. Replit, Cursor, Devin (honest)
 - [ ] Risk acknowledgment — solo founder, pre-revenue (builds trust)
 - [ ] Download investor deck
@@ -245,16 +308,16 @@ One explicit, repeatable transformation:
 
 | Order | Item | Why This Order |
 |-------|------|----------------|
-| 1 | Phase 0 — Shell + PIN + "Start Here" | Container + orientation before anything |
-| 2 | 1.1 — Memory Stream | First demo in recommended path |
-| 3 | 1.2 — Evolution | Core promise, needs edge function work |
-| 4 | 1.3 — Ascension + Before/After | The closer — "drop the mic" |
-| 5 | 4.1 — Live Stats | Credibility signals throughout |
+| 1 | Phase 0 — Shell + PIN + "30-Second WOW" | Hook first, orient second |
+| 2 | 1.1 — Memory Stream (story-first) | First demo in recommended path |
+| 3 | 1.2 — Evolution (outcome-first) | Core promise, needs edge function work |
+| 4 | 1.3 — Ascension (demo mode + upload) | The closer — guaranteed success path |
+| 5 | 4.1–4.3 — Speed, Confidence, Summary | Credibility signals throughout |
 | 6 | 2.1 — DREAM | First supporting demo |
 | 7 | 2.2 — DEFENSE | Enterprise credibility |
 | 8 | 2.3 — SEBA | Governance proof |
 | 9 | Phase 3 — Deep System | Only if time allows |
-| 10 | Phase 4 — Polish | Final presentation layer |
+| 10 | Phase 4.4 — Final Polish | Deck, comparisons, risk disclosure |
 
 ---
 
@@ -280,6 +343,8 @@ Well within the current $1.15 OpenAI balance. Add $5 for comfortable margin.
 - Features that require explaining away failures
 - Anything requiring the investor to sign up or authenticate
 - All demos visible at once (progressive disclosure is mandatory)
+- Process before outcome
+- Upload-dependent demos without a guaranteed fallback
 
 ---
 
@@ -287,12 +352,40 @@ Well within the current $1.15 OpenAI balance. Add $5 for comfortable margin.
 
 An investor should be able to:
 
-1. Enter a PIN and see the "Start Here" orientation
-2. Follow the recommended path: Memory → Evolution → Ascension
-3. Understand each demo through WHAT / WHY / VALUE blocks — no verbal explanation needed
-4. See real data, real system activity, real AI-generated improvements
-5. Optionally explore deeper (DREAM, DEFENSE, primitives, mesh)
-6. Walk away thinking: **"This person built something real — and the system explains itself."**
+1. Enter a PIN
+2. Click "See it in 30 seconds" → feel the WOW before thinking
+3. Read the orientation → understand the system in 10 seconds
+4. Follow Memory → Evolution → Ascension → grasp the full story
+5. See real data, real timing, real system health
+6. Optionally explore deeper (DREAM, DEFENSE, primitives, mesh)
+7. Land on "Why CMPSBL Wins" → carry a clear mental model out
+8. Walk away thinking: **"This person built something real — and the system explains itself."**
+
+---
+
+## Experience Flow (Emotional Arc)
+
+```
+PIN Entry
+  ↓
+"See it in 30 seconds" → INSTANT WOW (Ascension preview)
+  ↓
+"Start Here" orientation → CONTEXT
+  ↓
+Memory Stream → "It discovers on its own?"
+  ↓
+Evolution → "It improves itself?"
+  ↓
+Ascension → "I can USE this?"
+  ↓
+[Optional] DREAM / DEFENSE / SEBA → "This is enterprise-ready"
+  ↓
+[Optional] Deep System → "This is... massive"
+  ↓
+"Why CMPSBL Wins" → ANCHOR
+```
+
+Hook → Explain → Prove. In that order. Always.
 
 ---
 
