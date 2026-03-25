@@ -91,7 +91,7 @@ export const SystemHealthPanel = memo(function SystemHealthPanel({ enabled }: Sy
   ];
 
   const allItems = layers.flatMap(l => l.items);
-  const healthyCount = allItems.filter(m => healthScore.modules[m.key] !== false).length;
+  const healthyCount = allItems.filter(m => (healthScore.modules[m.key] ?? 100) >= 50).length;
   const totalCount = allItems.length;
 
   // Layer health from the hook
@@ -187,7 +187,7 @@ export const SystemHealthPanel = memo(function SystemHealthPanel({ enabled }: Sy
                 <div className="text-[9px] font-mono text-muted-foreground/50 uppercase tracking-widest mb-1.5">{layer.label}</div>
                 <div className="flex flex-wrap gap-1.5">
                   {layer.items.map((mod, idx) => {
-                    const healthy = healthScore.modules[mod.key] !== false;
+                    const healthy = (healthScore.modules[mod.key] ?? 100) >= 50;
                     return (
                       <Tooltip key={mod.key}>
                         <TooltipTrigger asChild>

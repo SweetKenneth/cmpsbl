@@ -113,9 +113,9 @@ const colorMap: Record<string, { bg: string; border: string; text: string; progr
   red: { bg: 'bg-destructive/10', border: 'border-destructive/30', text: 'text-destructive', progress: '[&>div]:bg-destructive' },
 };
 
-function ZoneRow({ moduleKey, label, modules }: { moduleKey: string; label: string; modules: Record<string, boolean> }) {
+function ZoneRow({ moduleKey, label, modules }: { moduleKey: string; label: string; modules: Record<string, number> }) {
   const breaker = getBreaker(moduleKey);
-  const isHealthy = modules[moduleKey] !== false;
+  const isHealthy = (modules[moduleKey] ?? 100) >= 50;
   const stateLabel = breaker.state === 'closed' ? 'Closed' : breaker.state === 'open' ? 'Open' : 'Half-Open';
 
   return (
@@ -155,7 +155,7 @@ const LayerCard = memo(function LayerCard({
 }: { 
   layer: LayerDef; 
   health: number; 
-  modules: Record<string, boolean>;
+  modules: Record<string, number>;
 }) {
   const colors = colorMap[layer.color] || colorMap.cyan;
   const Icon = layer.icon;

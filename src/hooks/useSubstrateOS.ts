@@ -361,24 +361,32 @@ export function useSubstrateHealthScore() {
   };
 
   const batchQuery = useQuery({
-    queryKey: ['substrate', 'health', 'batch', 'v12'],
+    queryKey: ['substrate', 'health', 'batch', 'v13'],
     queryFn: async () => {
       const results = await Promise.all(
         ALL_MODULES.map(async (mod) => {
           try {
             const getter = MODULE_GETTERS[mod];
-            if (!getter) return { mod, success: true };
+            if (!getter) return { mod, health: 100 };
             const result = await getter();
-            return { mod, success: result?.success ?? true };
+            // Extract actual health score from module response
+            // Modules return health as: health, health_score, healthScore, or health.healthScore
+            const h = typeof result?.health === 'number' ? result.health
+              : typeof result?.health_score === 'number' ? result.health_score
+              : typeof result?.health?.healthScore === 'number' ? result.health?.healthScore
+              : result?.success === false ? 0
+              : result?.healthy === false ? 0
+              : 100;
+            return { mod, health: Math.max(0, Math.min(100, h)) };
           } catch {
-            return { mod, success: true }; // Graceful fallback
+            return { mod, health: 50 }; // Failed modules get 50, not 100
           }
         })
       );
 
-      const modules: Record<string, boolean> = {};
+      const modules: Record<string, number> = {};
       for (const r of results) {
-        modules[r.mod] = r.success;
+        modules[r.mod] = r.health;
       }
       return modules;
     },
@@ -387,15 +395,15 @@ export function useSubstrateHealthScore() {
     enabled: pollingEnabled,
   });
 
-  const defaultModules: Record<string, boolean> = {};
-  for (const m of ALL_MODULES) defaultModules[m] = true;
+  const defaultModules: Record<string, number> = {};
+  for (const m of ALL_MODULES) defaultModules[m] = 100;
   const modules = batchQuery.data || defaultModules;
 
-  // Layer-weighted health calculation — 40-primitive / 4-category
+  // Layer-weighted health calculation — uses actual granular scores
   function layerHealth(keys: readonly string[]): number {
     if (keys.length === 0) return 100;
-    const healthy = keys.filter(k => modules[k] !== false).length;
-    return Math.round((healthy / keys.length) * 100);
+    const sum = keys.reduce((acc, k) => acc + (modules[k] ?? 100), 0);
+    return Math.round(sum / keys.length);
   }
 
   const coreSysHealth = layerHealth(CORE_SYSTEM);
@@ -419,7 +427,7 @@ export function useSubstrateHealthScore() {
   );
 
   const totalModules = ALL_MODULES.length;
-  const healthyCount = Object.values(modules).filter(Boolean).length;
+  const healthyCount = Object.values(modules).filter(v => v >= 50).length;
 
   return {
     isLoading: batchQuery.isLoading,
@@ -466,7 +474,7 @@ function withGracefulFallback(fn: () => Promise<any>) {
       const result = await fn();
       return result;
     } catch {
-      return { success: true, data: { status: 'online', fallback: true } };
+      return { success: false, health: 50, data: { status: 'degraded', fallback: true } };
     }
   };
 }
