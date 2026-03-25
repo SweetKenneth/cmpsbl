@@ -32,12 +32,13 @@ export function useLiveDecodeConversations() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('cascade_conversations')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    staleTime: 30000,
   });
 }
 
