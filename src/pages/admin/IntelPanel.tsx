@@ -42,9 +42,9 @@ import { generateUnifiedProposal, type UnifiedProposal } from '@/lib/control-pla
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const severityStyles: Record<string, string> = {
-  critical: 'border-l-destructive bg-red-50/50',
+  critical: 'border-l-destructive bg-destructive/10',
   warn: 'border-l-neon-amber bg-neon-amber/30',
-  info: 'border-l-neon-blue bg-blue-50/20',
+  info: 'border-l-neon-blue bg-primary/10',
 };
 
 const severityIcons: Record<string, typeof AlertTriangle> = {
@@ -120,8 +120,8 @@ function IntelCardView({ card }: { card: IntelCard }) {
 
 function MasteryItem({ item }: { item: TopicMasteryHighlight }) {
   const statusColors: Record<string, string> = {
-    mastered: 'text-neon-green bg-green-50',
-    progressing: 'text-neon-blue bg-blue-50',
+    mastered: 'text-neon-green bg-neon-green/10',
+    progressing: 'text-neon-blue bg-primary/10',
     stale: 'text-neon-amber bg-neon-amber',
     new: 'text-muted-foreground bg-muted',
   };
