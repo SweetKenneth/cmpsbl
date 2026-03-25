@@ -3,7 +3,7 @@
  * Before → After transformation through the 40-primitive matrix.
  * Preloaded example for zero-risk investor presentation.
  */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowLeft, ArrowRight, Play, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
