@@ -12,22 +12,34 @@ export interface Heartbeat {
   status: 'alive' | 'slow' | 'silent';
 }
 
-const heartbeats = new Map<string, { beats: number[]; lastBeat: number }>();
+interface HeartbeatEntry {
+  lastBeat: number;
+  beatCount: number;
+  /** Running total of intervals for EMA calculation */
+  avgInterval: number;
+}
+
+const heartbeats = new Map<string, HeartbeatEntry>();
 const SLOW_THRESHOLD_MS = 5 * 60 * 1000;   // 5 minutes
 const SILENT_THRESHOLD_MS = 15 * 60 * 1000; // 15 minutes
 
 /**
  * Record a heartbeat from a module.
+ * O(1) — no arrays, uses exponential moving average for interval tracking.
  */
 export function recordHeartbeat(moduleId: string): void {
   const now = Date.now();
   const entry = heartbeats.get(moduleId);
   if (entry) {
-    entry.beats.push(now);
-    if (entry.beats.length > 100) entry.beats = entry.beats.slice(-100);
+    const interval = now - entry.lastBeat;
+    // EMA with alpha=0.1 for smooth interval tracking
+    entry.avgInterval = entry.beatCount > 0
+      ? entry.avgInterval * 0.9 + interval * 0.1
+      : interval;
     entry.lastBeat = now;
+    entry.beatCount++;
   } else {
-    heartbeats.set(moduleId, { beats: [now], lastBeat: now });
+    heartbeats.set(moduleId, { lastBeat: now, beatCount: 1, avgInterval: 0 });
   }
 }
 
