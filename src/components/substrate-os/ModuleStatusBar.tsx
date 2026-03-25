@@ -44,7 +44,7 @@ const MODULES: ModuleConfig[] = [
   { id: 'access', name: 'ACCESS', shortName: 'ACC', layer: 'field', icon: Key, description: 'Field — entitlements & API keys', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
   { id: 'identity', name: 'IDENTITY', shortName: 'IDN', layer: 'field', icon: Fingerprint, description: 'Field — session & role management', color: 'text-neon-green', glowColor: 'bg-neon-green' },
   { id: 'relay', name: 'RELAY', shortName: 'RLY', layer: 'field', icon: Send, description: 'Field — webhook dispatch', color: 'text-neon-amber', glowColor: 'bg-neon-amber' },
-  { id: 'audit', name: 'AUDIT', shortName: 'AUD', layer: 'field', icon: ClipboardCheck, description: 'Field — integrity ledger', color: 'text-slate-400', glowColor: 'bg-slate-500' },
+  { id: 'audit', name: 'AUDIT', shortName: 'AUD', layer: 'field', icon: ClipboardCheck, description: 'Field — integrity ledger', color: 'text-muted-foreground', glowColor: 'bg-muted-foreground' },
   // Plane (Governance & orchestration)
   { id: 'governance', name: 'GOVERNANCE', shortName: 'GOV', layer: 'plane', icon: Scale, description: 'Plane — policy enforcement', color: 'text-primary', glowColor: 'bg-primary' },
   { id: 'immunity', name: 'IMMUNITY', shortName: 'IMM', layer: 'plane', icon: Network, description: 'Plane — shadow training mesh', color: 'text-neon-magenta', glowColor: 'bg-neon-magenta' },

@@ -139,7 +139,7 @@ export function TemplateCard({
           
           {/* Decorative elements with animation */}
           <motion.div 
-            className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/5 blur-xl"
+            className="absolute top-4 right-4 w-20 h-20 rounded-full bg-muted/50 blur-xl"
             animate={isHovered ? { scale: 1.5, opacity: 0.8 } : { scale: 1, opacity: 0.5 }}
             transition={{ duration: 0.3 }}
           />

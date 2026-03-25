@@ -545,7 +545,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
   if (!enabled) {
     return (
       <main className="container mx-auto px-4 py-6 max-w-7xl">
-        <div className="rounded-xl border border-dashed border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl p-12">
+        <div className="rounded-xl border border-dashed border-neon-magenta/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl p-12">
           <div className="text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
             <p className="text-lg text-muted-foreground">
@@ -600,7 +600,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-magenta/40 transition-colors">
+          <Card className="border border-neon-magenta/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl hover:border-neon-magenta/40 transition-colors">
             <CardContent className="p-4 text-center">
               <TrendingUp className="w-5 h-5 mx-auto mb-2 text-neon-magenta" />
               <p className={cn(
@@ -610,14 +610,14 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               <p className="text-[10px] text-muted-foreground">System Health</p>
             </CardContent>
           </Card>
-          <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-cyan/40 transition-colors">
+          <Card className="border border-neon-cyan/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl hover:border-neon-cyan/40 transition-colors">
             <CardContent className="p-4 text-center">
               <Database className="w-5 h-5 mx-auto mb-2 text-neon-cyan" />
               <p className="text-2xl font-bold text-foreground">{plans?.filter(p => p.status === 'proposed').length ?? 0}</p>
               <p className="text-[10px] text-muted-foreground">Pending</p>
             </CardContent>
           </Card>
-          <Card className="border border-neon-green/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-green/40 transition-colors">
+          <Card className="border border-neon-green/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl hover:border-neon-green/40 transition-colors">
             <CardContent className="p-4 text-center">
               <CheckCircle className="w-5 h-5 mx-auto mb-2 text-neon-green" />
               <p className="text-2xl font-bold text-foreground">
@@ -626,7 +626,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               <p className="text-[10px] text-muted-foreground">Applied</p>
             </CardContent>
           </Card>
-          <Card className="border border-neon-amber/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl hover:border-neon-amber/40 transition-colors">
+          <Card className="border border-neon-amber/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl hover:border-neon-amber/40 transition-colors">
             <CardContent className="p-4 text-center">
               <RotateCcw className="w-5 h-5 mx-auto mb-2 text-neon-amber" />
               <p className="text-2xl font-bold text-foreground">
@@ -640,7 +640,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-4 bg-white/5 border border-white/10">
+        <TabsList className="w-full grid grid-cols-3 sm:grid-cols-4 bg-muted/50 border border-border/30">
           <TabsTrigger value="proposals" className="gap-1.5 text-xs">
             <Clock className="w-3 h-3" />
             <span className="hidden sm:inline">Proposals</span>
@@ -661,7 +661,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
 
         {/* Proposals Tab */}
         <TabsContent value="proposals" className="space-y-4">
-          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-border/30 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Clock className="w-4 h-4 text-neon-amber" />
@@ -697,11 +697,11 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                       >
                         <div className={cn(
                           "rounded-lg border transition-all",
-                          "bg-white/5 border-white/10",
+                          "bg-muted/50 border-border/30",
                           expandedPlanId === plan.id && "border-neon-magenta/30 bg-neon-magenta/5"
                         )}>
                           <CollapsibleTrigger asChild>
-                            <div className="p-4 cursor-pointer hover:bg-white/5 transition-colors">
+                            <div className="p-4 cursor-pointer hover:bg-muted/50 transition-colors">
                               <div className="flex items-start justify-between gap-2">
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -745,14 +745,14 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                           </CollapsibleTrigger>
                           
                           <CollapsibleContent>
-                            <div className="px-4 pb-4 space-y-4 border-t border-white/10">
+                            <div className="px-4 pb-4 space-y-4 border-t border-border/30">
                               {/* Diff Summary */}
                               {plan.diff_summary && plan.diff_summary.length > 0 && (
                                 <div className="pt-4">
                                   <p className="text-xs font-medium mb-2 text-foreground">Suggested Changes:</p>
                                   <div className="space-y-2">
                                     {plan.diff_summary.map((diff, idx) => (
-                                      <div key={idx} className="text-xs p-3 rounded-lg bg-white/5 border border-white/10">
+                                      <div key={idx} className="text-xs p-3 rounded-lg bg-muted/50 border border-border/30">
                                         <div className="flex items-center gap-2 mb-1">
                                           <Badge variant="outline" className="text-[9px]">{diff.module}</Badge>
                                           <Badge variant="outline" className="text-[9px]">{diff.change_type}</Badge>
@@ -765,7 +765,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                               )}
                               
                               {/* Terminal Command Hint */}
-                              <div className="p-3 rounded-lg bg-black/40 border border-white/10">
+                              <div className="p-3 rounded-lg bg-black/40 border border-border/30">
                                 <p className="text-[10px] text-muted-foreground mb-1">Terminal command:</p>
                                 <code className="text-xs font-mono text-neon-green">
                                   evolution.apply {plan.id.slice(0, 8)}
@@ -890,7 +890,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
 
         {/* Validation Tab */}
         <TabsContent value="validation" className="space-y-4">
-          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-border/30 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <FlaskConical className="w-4 h-4 text-neon-amber" />
@@ -903,7 +903,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               </p>
               
               <div className="grid sm:grid-cols-3 gap-4">
-                <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
+                <div className="p-4 rounded-lg bg-muted/50 border border-border/30 space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-neon-cyan/20 flex items-center justify-center">
                       <span className="text-sm font-bold text-neon-cyan">1</span>
@@ -915,7 +915,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   </p>
                 </div>
                 
-                <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
+                <div className="p-4 rounded-lg bg-muted/50 border border-border/30 space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-neon-magenta/20 flex items-center justify-center">
                       <span className="text-sm font-bold text-neon-magenta">2</span>
@@ -927,7 +927,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   </p>
                 </div>
                 
-                <div className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-2">
+                <div className="p-4 rounded-lg bg-muted/50 border border-border/30 space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-neon-green/20 flex items-center justify-center">
                       <span className="text-sm font-bold text-neon-green">3</span>
@@ -942,11 +942,11 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
 
               {/* Quick Actions for Proposed Plans */}
               {plans && plans.filter(p => p.status === 'proposed' || p.status === 'approved').length > 0 && (
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-border/30">
                   <p className="text-xs font-medium mb-3 text-foreground">Pending Plans:</p>
                   <div className="space-y-2">
                     {plans.filter(p => p.status === 'proposed' || p.status === 'approved').map(plan => (
-                      <div key={plan.id} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+                      <div key={plan.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border/30">
                         <div className="flex items-center gap-2">
                           <Button
                             variant="ghost"
@@ -1003,7 +1003,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
 
         {/* Deploy Tab */}
         <TabsContent value="deploy" className="space-y-4">
-          <Card className="border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+          <Card className="border border-border/30 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Rocket className="w-4 h-4 text-neon-green" />
@@ -1079,7 +1079,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
 
               {/* Rolled Back History */}
               {plans && plans.filter(p => p.status === 'rolled_back').length > 0 && (
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-border/30">
                   <Collapsible>
                     <CollapsibleTrigger className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground">
                       <ChevronRight className="w-4 h-4" />
@@ -1106,7 +1106,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               
               {/* All History Summary */}
               {plans && plans.length > 0 && (
-                <div className="pt-4 border-t border-white/10">
+                <div className="pt-4 border-t border-border/30">
                   <Collapsible>
                     <CollapsibleTrigger className="flex items-center gap-2 text-xs font-medium text-muted-foreground hover:text-foreground w-full">
                       <ChevronRight className="w-4 h-4" />
@@ -1152,7 +1152,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <TabsContent value="generate" className="space-y-4">
           <div className="grid lg:grid-cols-2 gap-6">
             {/* Quick Scan */}
-            <Card className="border border-neon-magenta/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <Card className="border border-neon-magenta/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <RefreshCw className="w-4 h-4 text-neon-magenta" />
@@ -1181,7 +1181,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                 {scanMutation.data && scanMutation.data.proposals?.length > 0 && (
                   <div className="mt-3 space-y-2">
                     {scanMutation.data.proposals.slice(0, 3).map((proposal, idx) => (
-                      <div key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-white/5 text-xs">
+                      <div key={idx} className="flex items-start gap-2 p-2 rounded-lg bg-muted/50 text-xs">
                         {proposal.priority === 'critical' ? (
                           <AlertTriangle className="w-3 h-3 text-destructive shrink-0 mt-0.5" />
                         ) : (
@@ -1203,7 +1203,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             </Card>
 
             {/* Generate Proposal */}
-            <Card className="border border-neon-cyan/20 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <Card className="border border-neon-cyan/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <Play className="w-4 h-4 text-neon-cyan" />
@@ -1212,7 +1212,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Select value={selectedScope} onValueChange={setSelectedScope}>
-                  <SelectTrigger className="bg-white/5 border-white/10">
+                  <SelectTrigger className="bg-muted/50 border-border/30">
                     <SelectValue placeholder="Scope" />
                   </SelectTrigger>
                   <SelectContent>
@@ -1229,7 +1229,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   placeholder="Notes (optional)"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  className="bg-white/5 border-white/10 min-h-[60px]"
+                  className="bg-muted/50 border-border/30 min-h-[60px]"
                 />
                 <Button 
                   onClick={() => proposeMutation.mutate({ scope: selectedScope, notes })}
@@ -1301,10 +1301,10 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             </Card>
 
             {/* Archived Functions */}
-            <Card className="lg:col-span-2 border border-white/10 bg-white/5 dark:bg-white/[0.02] backdrop-blur-xl">
+            <Card className="lg:col-span-2 border border-border/30 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl">
               <Collapsible open={showArchived} onOpenChange={setShowArchived}>
                 <CollapsibleTrigger asChild>
-                  <CardHeader className="pb-3 cursor-pointer hover:bg-white/5 transition-colors">
+                  <CardHeader className="pb-3 cursor-pointer hover:bg-muted/50 transition-colors">
                     <CardTitle className="text-sm font-medium flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Archive className="w-4 h-4 text-neon-amber" />
@@ -1328,7 +1328,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                         {archived.map((opp, idx) => (
                           <div 
                             key={idx}
-                            className="p-3 rounded-lg bg-white/5 border border-white/10 space-y-2"
+                            className="p-3 rounded-lg bg-muted/50 border border-border/30 space-y-2"
                           >
                             <div className="flex items-center justify-between">
                               <span className="font-mono text-xs text-foreground truncate">
@@ -1340,7 +1340,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                                   "text-[9px] h-4",
                                   opp.value === 'high' 
                                     ? "border-neon-green/50 text-neon-green"
-                                    : "border-white/20"
+                                    : "border-border/40"
                                 )}
                               >
                                 {opp.value}
@@ -1388,7 +1388,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           ) : validateMutation.data ? (
             <div className="space-y-4">
               {/* Summary */}
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border/30">
                 <span className="text-sm font-medium">Overall Status</span>
                 <Badge variant={validateMutation.data.ready_to_apply ? "default" : "destructive"}>
                   {validateMutation.data.validation_status.toUpperCase()}
@@ -1411,7 +1411,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               <ScrollArea className="h-[200px]">
                 <div className="space-y-2">
                   {validateMutation.data.results.map((result, idx) => (
-                    <div key={idx} className="flex items-start gap-3 p-2 rounded-lg bg-white/5">
+                    <div key={idx} className="flex items-start gap-3 p-2 rounded-lg bg-muted/50">
                       {getValidationIcon(result.status)}
                       <div className="flex-1 min-w-0">
                         <p className="text-xs font-medium">{result.check.replace(/_/g, ' ')}</p>
@@ -1465,15 +1465,15 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
             <div className="space-y-4">
               {/* Summary */}
               <div className="grid grid-cols-3 gap-3">
-                <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                <div className="p-3 rounded-lg bg-muted/50 border border-border/30 text-center">
                   <p className="text-lg font-bold text-neon-green">{testShadowMutation.data.summary.passed}</p>
                   <p className="text-[10px] text-muted-foreground">Passed</p>
                 </div>
-                <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                <div className="p-3 rounded-lg bg-muted/50 border border-border/30 text-center">
                   <p className="text-lg font-bold text-destructive">{testShadowMutation.data.summary.failed}</p>
                   <p className="text-[10px] text-muted-foreground">Failed</p>
                 </div>
-                <div className="p-3 rounded-lg bg-white/5 border border-white/10 text-center">
+                <div className="p-3 rounded-lg bg-muted/50 border border-border/30 text-center">
                   <p className="text-lg font-bold text-foreground">{testShadowMutation.data.summary.avg_latency_ms}ms</p>
                   <p className="text-[10px] text-muted-foreground">Avg Latency</p>
                 </div>
@@ -1483,7 +1483,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               <ScrollArea className="h-[250px]">
                 <div className="space-y-2">
                   {testShadowMutation.data.results.map((result, idx) => (
-                    <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-white/5">
+                    <div key={idx} className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         {result.status === 'pass' ? (
                           <CheckCircle className="w-3 h-3 text-neon-green shrink-0" />
@@ -1551,7 +1551,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           ) : diffViewMutation.data?.diff ? (
             <div className="space-y-4">
               {/* Health Comparison */}
-              <div className="p-4 rounded-lg bg-white/5 border border-white/10">
+              <div className="p-4 rounded-lg bg-muted/50 border border-border/30">
                 <p className="text-xs font-medium mb-3 text-foreground">Health Comparison</p>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
@@ -1605,7 +1605,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
               )}
               
               {/* Backup Info */}
-              <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+              <div className="p-3 rounded-lg bg-muted/50 border border-border/30">
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-muted-foreground">Backup ID</span>
                   <code className="text-xs font-mono text-foreground">
@@ -1755,7 +1755,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
           <div className="py-4 space-y-4">
             {/* Pipeline Steps */}
             <div className="space-y-2">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/30">
                 <div className="w-6 h-6 rounded-full bg-neon-cyan/20 flex items-center justify-center">
                   <span className="text-xs font-bold text-neon-cyan">1</span>
                 </div>
@@ -1767,7 +1767,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   <Loader2 className="w-4 h-4 animate-spin text-neon-cyan" />
                 )}
               </div>
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/30">
                 <div className="w-6 h-6 rounded-full bg-neon-magenta/20 flex items-center justify-center">
                   <span className="text-xs font-bold text-neon-magenta">2</span>
                 </div>
@@ -1776,7 +1776,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                   <p className="text-[10px] text-muted-foreground">All module tests must pass in shadow</p>
                 </div>
               </div>
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/30">
                 <div className="w-6 h-6 rounded-full bg-neon-green/20 flex items-center justify-center">
                   <span className="text-xs font-bold text-neon-green">3</span>
                 </div>
