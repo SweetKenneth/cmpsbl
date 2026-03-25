@@ -565,7 +565,6 @@ export async function broadcastInsight(insight: CrossModuleInsight): Promise<{
  * Calculate evolution confidence for a module based on historical outcomes
  */
 export async function getEvolutionConfidence(module: TransferModule): Promise<EvolutionConfidence> {
-  // Get evolution history for this module
   const { data: events } = await supabase
     .from('brain_events')
     .select('*')
@@ -575,33 +574,34 @@ export async function getEvolutionConfidence(module: TransferModule): Promise<Ev
     .limit(100);
 
   const total = events?.length || 0;
-  const successes = events?.filter(e => 
-    e.outcome === 'success' || e.event_type === 'evolution_applied' || e.event_type === 'change_applied'
-  ).length || 0;
-  const failures = events?.filter(e =>
-    e.outcome === 'failed' || e.event_type === 'evolution_failed' || e.event_type === 'evolution_rolled_back' || e.event_type === 'change_failed'
-  ).length || 0;
+
+  // Single-pass: count successes, failures, impact, and trend buckets
+  let successes = 0, failures = 0;
+  let impactSum = 0, impactCount = 0;
+  let recent20Success = 0, recent20Total = 0;
+  let older20Success = 0, older20Total = 0;
+
+  if (events) {
+    for (let i = 0; i < events.length; i++) {
+      const e = events[i];
+      const isSuccess = e.outcome === 'success' || e.event_type === 'evolution_applied' || e.event_type === 'change_applied';
+      const isFail = e.outcome === 'failed' || e.event_type === 'evolution_failed' || e.event_type === 'evolution_rolled_back' || e.event_type === 'change_failed';
+      if (isSuccess) successes++;
+      if (isFail) failures++;
+      if (i < 10) {
+        const impact = (e.data as any)?.impact_score || (e.data as any)?.predicted_impact || 0.5;
+        impactSum += impact;
+        impactCount++;
+      }
+      if (i < 20) { recent20Total++; if (e.outcome === 'success') recent20Success++; }
+      else if (i < 40) { older20Total++; if (e.outcome === 'success') older20Success++; }
+    }
+  }
 
   const successRate = total > 0 ? successes / total : 0.5;
-
-  // Calculate impact from recent changes
-  const recentEvents = events?.slice(0, 10) || [];
-  const avgImpact = recentEvents.length > 0
-    ? recentEvents.reduce((sum, e) => {
-        const impact = (e.data as any)?.impact_score || (e.data as any)?.predicted_impact || 0.5;
-        return sum + impact;
-      }, 0) / recentEvents.length
-    : 0.5;
-
-  // Determine trend from last 20 vs previous 20
-  const recent20 = events?.slice(0, 20) || [];
-  const older20 = events?.slice(20, 40) || [];
-  const recentSuccessRate = recent20.length > 0
-    ? recent20.filter(e => e.outcome === 'success').length / recent20.length
-    : 0.5;
-  const olderSuccessRate = older20.length > 0
-    ? older20.filter(e => e.outcome === 'success').length / older20.length
-    : 0.5;
+  const avgImpact = impactCount > 0 ? impactSum / impactCount : 0.5;
+  const recentSuccessRate = recent20Total > 0 ? recent20Success / recent20Total : 0.5;
+  const olderSuccessRate = older20Total > 0 ? older20Success / older20Total : 0.5;
 
   let trend: 'improving' | 'stable' | 'declining' = 'stable';
   if (recentSuccessRate > olderSuccessRate + 0.1) trend = 'improving';
