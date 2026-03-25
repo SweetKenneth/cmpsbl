@@ -398,7 +398,14 @@ const ShowcaseContent = () => {
           <div className="space-y-3">
             {TIER_1_DEMOS.map((demo) => (
               <div key={demo.title} onClick={() => {
-                if (demo.title === "Memory Stream") setActiveDemo("memory-stream");
+                const demoMap: Record<string, string> = {
+                  "Memory Stream": "memory-stream",
+                  "Evolution": "evolution",
+                  "Ascension": "ascension",
+                  "Build With the Substrate": "build-substrate",
+                };
+                const demoId = demoMap[demo.title];
+                if (demoId) setActiveDemo(demoId);
               }}>
                 <DemoCard {...demo} />
               </div>
