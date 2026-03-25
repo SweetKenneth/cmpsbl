@@ -340,7 +340,12 @@ async function aggregateAiUsage(): Promise<AiTelemetry> {
   const p95Index = Math.max(0, Math.min(responseTimes.length - 1, Math.ceil(responseTimes.length * 0.95) - 1));
   const p95ResponseTime = responseTimes.length > 0 ? responseTimes[p95Index] : 0;
 
-  const topProvider = Object.entries(providerCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top provider without sort — single-pass max
+  let topProvider: string | null = null;
+  let topProviderCount = 0;
+  for (const p in providerCounts) {
+    if (providerCounts[p] > topProviderCount) { topProviderCount = providerCounts[p]; topProvider = p; }
+  }
 
   return {
     totalCalls,
@@ -385,13 +390,22 @@ async function aggregateAccessUsage(): Promise<AccessTelemetry> {
 
   if (data.length === 0) return defaultAccess();
 
-  const uniqueKeys = new Set(data.map(d => d.api_key_id).filter(Boolean)).size;
-  const totalCost = data.reduce((s, d) => s + (d.cost_millicents || 0), 0);
+  const uniqueKeys = new Set<string>();
+  let totalCost = 0;
+  const moduleCounts: Record<string, number> = {};
+  for (const d of data) {
+    if (d.api_key_id) uniqueKeys.add(d.api_key_id);
+    totalCost += d.cost_millicents || 0;
+    moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1;
+  }
   const yesterdayCost = yesterdayData.reduce((s, d) => s + (d.cost_millicents || 0), 0);
 
-  const moduleCounts: Record<string, number> = {};
-  data.forEach(d => { moduleCounts[d.module] = (moduleCounts[d.module] || 0) + 1; });
-  const topModule = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top module without sort — single-pass max
+  let topModule: string | null = null;
+  let topCount = 0;
+  for (const mod in moduleCounts) {
+    if (moduleCounts[mod] > topCount) { topCount = moduleCounts[mod]; topModule = mod; }
+  }
 
   const costTrend: AccessTelemetry['costTrend'] =
     yesterdayCost > 0 && totalCost > yesterdayCost * 1.2 ? 'up'
@@ -400,7 +414,7 @@ async function aggregateAccessUsage(): Promise<AccessTelemetry> {
 
   return {
     totalRequests,
-    uniqueKeys,
+    uniqueKeys: uniqueKeys.size,
     topModule,
     totalCostMillicents: totalCost,
     costTrend,
@@ -443,7 +457,12 @@ async function aggregateBrainEvents(): Promise<BrainTelemetry> {
     const mod = (d as any).model || 'unknown';
     moduleCounts[mod] = (moduleCounts[mod] || 0) + 1;
   }
-  const topModule = Object.entries(moduleCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top module without sort — single-pass max
+  let topModule: string | null = null;
+  let topModCount = 0;
+  for (const mod in moduleCounts) {
+    if (moduleCounts[mod] > topModCount) { topModCount = moduleCounts[mod]; topModule = mod; }
+  }
   const lastEventAt = (sample[0] as any)?.created_at ?? null;
 
   return {
@@ -480,7 +499,12 @@ async function aggregateImmuneMetrics(): Promise<ImmuneTelemetry> {
   }
 
   const repairAttempts = repairSuccesses + escalations;
-  const topExecutor = Object.entries(executorCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top executor without sort — single-pass max
+  let topExecutor: string | null = null;
+  let topExecCount = 0;
+  for (const ex in executorCounts) {
+    if (executorCounts[ex] > topExecCount) { topExecCount = executorCounts[ex]; topExecutor = ex; }
+  }
 
   return {
     totalRuns,

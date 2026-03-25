@@ -72,12 +72,41 @@ export function getHeartbeat(moduleId: string): Heartbeat {
  * Get all heartbeats.
  */
 export function getAllHeartbeats(): Heartbeat[] {
-  return Array.from(heartbeats.keys()).map(getHeartbeat);
+  const now = Date.now();
+  const result: Heartbeat[] = [];
+  for (const [moduleId, entry] of heartbeats) {
+    const elapsed = now - entry.lastBeat;
+    const status: 'alive' | 'slow' | 'silent' =
+      elapsed > SILENT_THRESHOLD_MS ? 'silent' :
+      elapsed > SLOW_THRESHOLD_MS ? 'slow' : 'alive';
+    result.push({
+      moduleId,
+      lastBeat: entry.lastBeat,
+      beatCount: entry.beatCount,
+      avgIntervalMs: Math.round(entry.avgInterval),
+      status,
+    });
+  }
+  return result;
 }
 
 /**
- * Get modules that are silent or slow.
+ * Get modules that are silent or slow — single-pass, no intermediate array.
  */
 export function getUnhealthyModules(): Heartbeat[] {
-  return getAllHeartbeats().filter(h => h.status !== 'alive');
+  const now = Date.now();
+  const result: Heartbeat[] = [];
+  for (const [moduleId, entry] of heartbeats) {
+    const elapsed = now - entry.lastBeat;
+    if (elapsed > SLOW_THRESHOLD_MS) {
+      result.push({
+        moduleId,
+        lastBeat: entry.lastBeat,
+        beatCount: entry.beatCount,
+        avgIntervalMs: Math.round(entry.avgInterval),
+        status: elapsed > SILENT_THRESHOLD_MS ? 'silent' : 'slow',
+      });
+    }
+  }
+  return result;
 }
