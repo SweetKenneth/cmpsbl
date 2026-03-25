@@ -136,6 +136,8 @@ export const SUBSYSTEMS: SubsystemDefinition[] = [
   { id: 'scheduler', name: 'Scheduled Tasks',            group: 'infrastructure',  weight: 4 },
 ];
 
+const SUBSYSTEM_TOTAL_WEIGHT = SUBSYSTEMS.reduce((s, sub) => s + sub.weight, 0);
+
 // ═══════════════════════════════════════════════════════════════
 // TIER WEIGHTS — Criticality-based global distribution
 // ═══════════════════════════════════════════════════════════════
