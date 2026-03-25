@@ -66,6 +66,7 @@ export interface ObservabilitySummary {
 interface LatencyEntry {
   samples: number[];
   lastMeasured: string;
+  writePtr: number;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -74,14 +75,22 @@ interface LatencyEntry {
 
 class ObservabilityMonitor {
   private static instance: ObservabilityMonitor;
-  private bridgeLog: BridgeInvocation[] = [];
+  // Ring buffer for bridge log — O(1) insertion, bounded memory
+  private bridgeRing: BridgeInvocation[];
+  private bridgeHead = 0;
+  private bridgeCount = 0;
+  private readonly BRIDGE_CAP = 500;
+  // Running totals for O(1) avg computation
+  private bridgeDurationSum = 0;
+
   private latencyMap: Map<string, LatencyEntry> = new Map();
   private hotspotCache: { data: ErrorHotspot[]; ts: number } | null = null;
-  private readonly MAX_BRIDGE_LOG = 500;
   private readonly MAX_LATENCY_SAMPLES = 100;
   private readonly HOTSPOT_CACHE_TTL = 5000;
 
-  private constructor() {}
+  private constructor() {
+    this.bridgeRing = new Array(this.BRIDGE_CAP);
+  }
 
   static getInstance(): ObservabilityMonitor {
     if (!ObservabilityMonitor.instance) {
@@ -113,11 +122,16 @@ class ObservabilityMonitor {
       payload,
     };
 
-    this.bridgeLog.push(invocation);
-    // Efficient pruning: drop first half when over limit (amortized O(1))
-    if (this.bridgeLog.length > this.MAX_BRIDGE_LOG * 1.5) {
-      this.bridgeLog = this.bridgeLog.slice(-this.MAX_BRIDGE_LOG);
+    // Ring buffer insertion — O(1), no array growth or splicing
+    if (this.bridgeCount >= this.BRIDGE_CAP) {
+      // Subtract the evicted entry's duration from running total
+      const evicted = this.bridgeRing[this.bridgeHead];
+      if (evicted) this.bridgeDurationSum -= evicted.durationMs;
     }
+    this.bridgeRing[this.bridgeHead] = invocation;
+    this.bridgeHead = (this.bridgeHead + 1) % this.BRIDGE_CAP;
+    if (this.bridgeCount < this.BRIDGE_CAP) this.bridgeCount++;
+    this.bridgeDurationSum += durationMs;
 
     // Sanitize payload before emitting to telemetry — no raw data leakage
     const sanitizedMetadata = {
@@ -141,24 +155,33 @@ class ObservabilityMonitor {
     recent: BridgeInvocation[];
     summary: Record<string, { count: number; avgMs: number; successRate: number }>;
   } {
-    const recent = this.bridgeLog.slice(-limit);
-    const summary: Record<string, { count: number; totalMs: number; successes: number }> = {};
+    // Collect recent from ring buffer (most recent `limit` entries)
+    const recent: BridgeInvocation[] = [];
+    const recentCount = Math.min(limit, this.bridgeCount);
+    for (let i = 0; i < recentCount; i++) {
+      const idx = (this.bridgeHead - 1 - i + this.BRIDGE_CAP) % this.BRIDGE_CAP;
+      if (this.bridgeRing[idx]) recent.push(this.bridgeRing[idx]);
+    }
 
-    for (const inv of this.bridgeLog) {
-      if (!summary[inv.bridge]) {
-        summary[inv.bridge] = { count: 0, totalMs: 0, successes: 0 };
-      }
-      summary[inv.bridge].count++;
-      summary[inv.bridge].totalMs += inv.durationMs;
-      if (inv.success) summary[inv.bridge].successes++;
+    // Single-pass summary over ring buffer
+    const agg: Record<string, { count: number; totalMs: number; successes: number }> = {};
+    for (let i = 0; i < this.bridgeCount; i++) {
+      const inv = this.bridgeRing[i];
+      if (!inv) continue;
+      let entry = agg[inv.bridge];
+      if (!entry) { entry = { count: 0, totalMs: 0, successes: 0 }; agg[inv.bridge] = entry; }
+      entry.count++;
+      entry.totalMs += inv.durationMs;
+      if (inv.success) entry.successes++;
     }
 
     const result: Record<string, { count: number; avgMs: number; successRate: number }> = {};
-    for (const [bridge, stats] of Object.entries(summary)) {
+    for (const bridge in agg) {
+      const s = agg[bridge];
       result[bridge] = {
-        count: stats.count,
-        avgMs: Math.round(stats.totalMs / stats.count),
-        successRate: Math.round((stats.successes / stats.count) * 100),
+        count: s.count,
+        avgMs: Math.round(s.totalMs / s.count),
+        successRate: Math.round((s.successes / s.count) * 100),
       };
     }
 
@@ -177,15 +200,18 @@ class ObservabilityMonitor {
     const now = new Date().toISOString();
 
     if (!this.latencyMap.has(key)) {
-      this.latencyMap.set(key, { samples: [], lastMeasured: now });
+      this.latencyMap.set(key, { samples: [], lastMeasured: now, writePtr: 0 });
     }
 
     const entry = this.latencyMap.get(key)!;
-    entry.samples.push(latencyMs);
     entry.lastMeasured = now;
 
-    if (entry.samples.length > this.MAX_LATENCY_SAMPLES) {
-      entry.samples.shift();
+    if (entry.samples.length < this.MAX_LATENCY_SAMPLES) {
+      entry.samples.push(latencyMs);
+    } else {
+      // Ring-buffer overwrite — O(1) instead of shift() O(n)
+      entry.samples[entry.writePtr] = latencyMs;
+      entry.writePtr = (entry.writePtr + 1) % this.MAX_LATENCY_SAMPLES;
     }
   }
 
@@ -291,8 +317,9 @@ class ObservabilityMonitor {
       ? Math.round((totalErrors / telState.totalEvents) * 10000) / 100
       : 0;
 
-    const bridgeAvgMs = this.bridgeLog.length > 0
-      ? Math.round(this.bridgeLog.reduce((s, b) => s + b.durationMs, 0) / this.bridgeLog.length)
+    // O(1) avg from running total instead of O(n) reduce
+    const bridgeAvgMs = this.bridgeCount > 0
+      ? Math.round(this.bridgeDurationSum / this.bridgeCount)
       : 0;
 
     // Wire real DLQ depth via ESM-safe dynamic import
@@ -310,11 +337,13 @@ class ObservabilityMonitor {
     else if (errorRate > 5) healthScore -= 15;
     else if (errorRate > 1) healthScore -= 5;
 
-    const failedBridges = Object.values(bridgeActivity.summary).filter(s => s.successRate < 80).length;
-    healthScore -= failedBridges * 10;
-
-    const slowLatencies = latencies.filter(l => l.p95LatencyMs > 500).length;
-    healthScore -= slowLatencies * 5;
+    // Single-pass penalty counting — no intermediate filter arrays
+    for (const s of Object.values(bridgeActivity.summary)) {
+      if (s.successRate < 80) healthScore -= 10;
+    }
+    for (let i = 0; i < latencies.length; i++) {
+      if (latencies[i].p95LatencyMs > 500) healthScore -= 5;
+    }
 
     // DLQ depth penalty (capped at -20)
     if (dlqDepth > 0) {
@@ -324,7 +353,7 @@ class ObservabilityMonitor {
     return {
       totalTelemetryEvents: telState.totalEvents,
       errorRate,
-      bridgeInvocations: this.bridgeLog.length,
+      bridgeInvocations: this.bridgeCount,
       avgBridgeLatencyMs: bridgeAvgMs,
       activeBridges: Object.keys(bridgeActivity.summary),
       errorHotspots: hotspots,
@@ -338,7 +367,10 @@ class ObservabilityMonitor {
    * Reset all metrics (for testing)
    */
   reset(): void {
-    this.bridgeLog = [];
+    this.bridgeRing = new Array(this.BRIDGE_CAP);
+    this.bridgeHead = 0;
+    this.bridgeCount = 0;
+    this.bridgeDurationSum = 0;
     this.latencyMap.clear();
     this.hotspotCache = null;
   }

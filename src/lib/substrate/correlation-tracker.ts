@@ -2,6 +2,11 @@
  * Substrate — Correlation Tracker
  * Links related events, dispatches, and errors by correlation ID.
  * Enables end-to-end request tracing across all substrate layers.
+ *
+ * Optimizations:
+ * - O(1) span lookup via spanIndex Map
+ * - Single-pass getActiveCorrelations (no intermediate array + filter)
+ * - Partition-aware getRecentCorrelations (avoid full sort)
  */
 
 export interface CorrelationEntry {
@@ -24,6 +29,8 @@ export interface CorrelationSpan {
 }
 
 const correlations = new Map<string, CorrelationEntry>();
+/** O(1) span lookup: spanId → correlationId */
+const spanIndex = new Map<string, string>();
 const MAX_CORRELATIONS = 500;
 
 /**
@@ -31,10 +38,11 @@ const MAX_CORRELATIONS = 500;
  */
 export function startCorrelation(correlationId: string, module: string, action: string): CorrelationEntry {
   const now = new Date().toISOString();
+  const spanId = crypto.randomUUID();
   const entry: CorrelationEntry = {
     correlationId,
     spans: [{
-      spanId: crypto.randomUUID(),
+      spanId,
       module,
       action,
       startedAt: now,
@@ -48,11 +56,18 @@ export function startCorrelation(correlationId: string, module: string, action: 
   };
 
   correlations.set(correlationId, entry);
+  spanIndex.set(spanId, correlationId);
 
   // Evict oldest
   if (correlations.size > MAX_CORRELATIONS) {
     const firstKey = correlations.keys().next().value;
-    if (firstKey) correlations.delete(firstKey);
+    if (firstKey) {
+      const evicted = correlations.get(firstKey);
+      if (evicted) {
+        for (const s of evicted.spans) spanIndex.delete(s.spanId);
+      }
+      correlations.delete(firstKey);
+    }
   }
 
   return entry;
@@ -74,16 +89,21 @@ export function addSpan(correlationId: string, module: string, action: string): 
     completedAt: null,
     success: null,
   });
+  spanIndex.set(spanId, correlationId);
 
   return spanId;
 }
 
 /**
- * Complete a span.
+ * Complete a span — O(1) via spanIndex.
  */
 export function completeSpan(correlationId: string, spanId: string, success: boolean, metadata?: Record<string, unknown>): void {
   const entry = correlations.get(correlationId);
   if (!entry) return;
+
+  // O(1) verification that span belongs to this correlation
+  const owner = spanIndex.get(spanId);
+  if (owner !== correlationId) return;
 
   // Reverse search — most recent span is most likely target
   const now = new Date().toISOString();
@@ -117,18 +137,50 @@ export function getCorrelation(correlationId: string): CorrelationEntry | null {
 }
 
 /**
- * Get active correlations.
+ * Get active correlations — single-pass, no filter + toArray.
  */
 export function getActiveCorrelations(): CorrelationEntry[] {
-  return Array.from(correlations.values()).filter(c => c.status === 'active');
+  const result: CorrelationEntry[] = [];
+  for (const c of correlations.values()) {
+    if (c.status === 'active') result.push(c);
+  }
+  return result;
 }
 
 /**
  * Get recent completed correlations.
+ * Uses single-pass insertion into a bounded sorted array (O(n·k) where k=limit)
+ * instead of full array copy + filter + sort (O(n log n)).
  */
 export function getRecentCorrelations(limit = 20): CorrelationEntry[] {
-  return Array.from(correlations.values())
-    .filter(c => c.status !== 'active')
-    .sort((a, b) => (b.completedAt ?? '').localeCompare(a.completedAt ?? ''))
-    .slice(0, limit);
+  const result: CorrelationEntry[] = [];
+
+  for (const c of correlations.values()) {
+    if (c.status === 'active') continue;
+    const ts = c.completedAt ?? '';
+
+    // Insert into bounded sorted array
+    if (result.length < limit) {
+      result.push(c);
+      // Bubble into position
+      let j = result.length - 1;
+      while (j > 0 && (result[j - 1].completedAt ?? '') < ts) {
+        result[j] = result[j - 1];
+        j--;
+      }
+      result[j] = c;
+    } else if (ts > (result[result.length - 1].completedAt ?? '')) {
+      // Replace smallest and bubble up
+      result[result.length - 1] = c;
+      let j = result.length - 1;
+      while (j > 0 && (result[j - 1].completedAt ?? '') < ts) {
+        const tmp = result[j];
+        result[j] = result[j - 1];
+        result[j - 1] = tmp;
+        j--;
+      }
+    }
+  }
+
+  return result;
 }
