@@ -167,17 +167,20 @@ export function configureForecast(cfg: Partial<ForecastConfig>): ForecastConfig 
 }
 
 export function getForecastSummary() {
-  const active = forecasts.filter(f => f.status === 'active');
-  const confirmed = forecasts.filter(f => f.status === 'confirmed');
-  const prevented = forecasts.filter(f => f.status === 'prevented');
-
+  let activeN = 0, confirmedN = 0, preventedN = 0;
+  for (let i = 0; i < forecasts.length; i++) {
+    const s = forecasts[i].status;
+    if (s === 'active') activeN++;
+    else if (s === 'confirmed') confirmedN++;
+    else if (s === 'prevented') preventedN++;
+  }
   return {
-    active: active.length,
+    active: activeN,
     totalGenerated: forecasts.length,
-    confirmed: confirmed.length,
-    prevented: prevented.length,
-    accuracy: (confirmed.length + prevented.length) > 0
-      ? Math.round((confirmed.length / (confirmed.length + prevented.length)) * 100)
+    confirmed: confirmedN,
+    prevented: preventedN,
+    accuracy: (confirmedN + preventedN) > 0
+      ? Math.round((confirmedN / (confirmedN + preventedN)) * 100)
       : 0,
     patternsTracked: failurePatterns.size,
     enabled: forecastConfig.enabled,

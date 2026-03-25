@@ -35,9 +35,18 @@ const MAX_EVENTS = 5000;
 
 // ── Core ──
 
+let eventHead = 0;
+let eventCount = 0;
+
 export function recordForgeEvent(type: TelemetryEvent['type'], durationMs: number, success: boolean, cjpiScore?: number): void {
-  events.push({ type, timestamp: Date.now(), durationMs, success, cjpiScore });
-  if (events.length > MAX_EVENTS) events.splice(0, events.length - MAX_EVENTS);
+  const entry = { type, timestamp: Date.now(), durationMs, success, cjpiScore };
+  if (eventCount < MAX_EVENTS) {
+    events.push(entry);
+  } else {
+    events[eventHead] = entry;
+  }
+  eventHead = (eventHead + 1) % MAX_EVENTS;
+  eventCount++;
 }
 
 export function getHearthSnapshot(externalMetrics: {
@@ -50,22 +59,31 @@ export function getHearthSnapshot(externalMetrics: {
 } = {}): ForgeTelemetrySnapshot {
   const now = Date.now();
   const hourAgo = now - 3600_000;
-  const recentForges = events.filter(e => e.type === 'forge' && e.timestamp > hourAgo);
-  const allForges = events.filter(e => e.type === 'forge');
 
-  const successRate = allForges.length > 0
-    ? Math.round(allForges.filter(e => e.success).length / allForges.length * 1000) / 1000
+  // Single-pass aggregation over all events
+  let recentForgeCount = 0;
+  let forgeTotal = 0;
+  let forgeSuccess = 0;
+  let cjpiSum = 0;
+  let cjpiCount = 0;
+
+  for (let i = 0; i < events.length; i++) {
+    const e = events[i];
+    if (e.type !== 'forge') continue;
+    forgeTotal++;
+    if (e.success) forgeSuccess++;
+    if (e.cjpiScore !== undefined) { cjpiSum += e.cjpiScore; cjpiCount++; }
+    if (e.timestamp > hourAgo) recentForgeCount++;
+  }
+
+  const successRate = forgeTotal > 0
+    ? Math.round(forgeSuccess / forgeTotal * 1000) / 1000
     : 0;
-
-  const scoredForges = allForges.filter(e => e.cjpiScore !== undefined);
-  const avgCJPI = scoredForges.length > 0
-    ? Math.round(scoredForges.reduce((s, e) => s + (e.cjpiScore ?? 0), 0) / scoredForges.length)
-    : 0;
-
+  const avgCJPI = cjpiCount > 0 ? Math.round(cjpiSum / cjpiCount) : 0;
   const health = Math.round(successRate * 50 + Math.min(50, avgCJPI / 2));
 
   return {
-    forgesPerHour: recentForges.length,
+    forgesPerHour: recentForgeCount,
     successRate,
     avgCJPI,
     stageBottleneck: externalMetrics.stageBottleneck ?? null,

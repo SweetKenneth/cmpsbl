@@ -157,37 +157,55 @@ class CapabilityAnalytics {
   summary(periodHours = 24): AnalyticsSummary {
     this.ensureLoaded();
     const cutoff = Date.now() - (periodHours * 3600_000);
-    const all = [...this.records, ...this.buffer].filter(r => r.timestamp >= cutoff);
 
-    // Get unique capability IDs
-    const capIds = [...new Set(all.map(r => r.capabilityId))];
-    const metrics = capIds.map(id => this.getMetrics(id, periodHours));
-    
-    const sorted = [...metrics].sort((a, b) => b.totalCalls - a.totalCalls);
-    const dead = metrics.filter(m => m.trend === 'dead' || m.totalCalls === 0);
+    // Single-pass: collect unique capIds and module breakdown simultaneously
+    const capIdSet = new Set<string>();
+    const modData = new Map<string, { calls: number; successes: number; durationSum: number }>();
+    let totalSuccess = 0;
+    let totalCount = 0;
 
-    // Module breakdown
-    const moduleBreakdown: AnalyticsSummary['moduleBreakdown'] = {};
-    for (const r of all) {
-      if (!moduleBreakdown[r.module]) {
-        moduleBreakdown[r.module] = { calls: 0, successRate: 0, avgMs: 0 };
+    const scan = (arr: CapabilityUsageRecord[]) => {
+      for (let i = 0; i < arr.length; i++) {
+        const r = arr[i];
+        if (r.timestamp < cutoff) continue;
+        totalCount++;
+        capIdSet.add(r.capabilityId);
+        if (r.success) totalSuccess++;
+        let md = modData.get(r.module);
+        if (!md) { md = { calls: 0, successes: 0, durationSum: 0 }; modData.set(r.module, md); }
+        md.calls++;
+        if (r.success) md.successes++;
+        md.durationSum += r.durationMs;
       }
-      moduleBreakdown[r.module].calls++;
-    }
-    for (const [mod, data] of Object.entries(moduleBreakdown)) {
-      const modRecords = all.filter(r => r.module === mod);
-      data.successRate = (modRecords.filter(r => r.success).length / modRecords.length) * 100;
-      data.avgMs = Math.round(modRecords.reduce((s, r) => s + r.durationMs, 0) / modRecords.length);
+    };
+    scan(this.records);
+    scan(this.buffer);
+
+    const capIds = Array.from(capIdSet);
+    const metrics = capIds.map(id => this.getMetrics(id, periodHours));
+    const sorted = metrics.sort((a, b) => b.totalCalls - a.totalCalls);
+    let deadCount = 0;
+    let activeCount = 0;
+    for (const m of metrics) {
+      if (m.trend === 'dead' || m.totalCalls === 0) deadCount++;
+      if (m.totalCalls > 0) activeCount++;
     }
 
-    const totalSuccess = all.filter(r => r.success).length;
+    const moduleBreakdown: AnalyticsSummary['moduleBreakdown'] = {};
+    for (const [mod, d] of modData) {
+      moduleBreakdown[mod] = {
+        calls: d.calls,
+        successRate: (d.successes / d.calls) * 100,
+        avgMs: Math.round(d.durationSum / d.calls),
+      };
+    }
 
     return {
       totalCapabilities: capIds.length,
-      activeCapabilities: metrics.filter(m => m.totalCalls > 0).length,
-      deadCapabilities: dead.length,
-      totalCalls: all.length,
-      overallSuccessRate: all.length > 0 ? (totalSuccess / all.length) * 100 : 100,
+      activeCapabilities: activeCount,
+      deadCapabilities: deadCount,
+      totalCalls: totalCount,
+      overallSuccessRate: totalCount > 0 ? (totalSuccess / totalCount) * 100 : 100,
       topCapabilities: sorted.slice(0, 10),
       bottomCapabilities: sorted.slice(-10).reverse(),
       moduleBreakdown,

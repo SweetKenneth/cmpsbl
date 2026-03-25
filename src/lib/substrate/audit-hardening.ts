@@ -312,24 +312,40 @@ export function getEncryptionStatus(): { atRest: boolean; inTransit: boolean; al
 
 // ─── 19. Audit SLA Monitor ────────────────────────────────────────────────
 const slaTargets = { writeLatencyP95_ms: 50, readLatencyP95_ms: 100, uptimePercent: 99.9 };
+const MAX_LATENCY_SAMPLES = 200;
 const writeLatencies: number[] = [];
 const readLatencies: number[] = [];
-const MAX_LATENCY_SAMPLES = 200;
+let wLatHead = 0, wLatCount = 0;
+let rLatHead = 0, rLatCount = 0;
 
 export function recordWriteLatency(ms: number) {
-  writeLatencies.push(ms);
-  if (writeLatencies.length > MAX_LATENCY_SAMPLES) writeLatencies.splice(0, 1);
+  if (wLatCount < MAX_LATENCY_SAMPLES) {
+    writeLatencies.push(ms);
+  } else {
+    writeLatencies[wLatHead] = ms;
+  }
+  wLatHead = (wLatHead + 1) % MAX_LATENCY_SAMPLES;
+  wLatCount++;
 }
 export function recordReadLatency(ms: number) {
-  readLatencies.push(ms);
-  if (readLatencies.length > MAX_LATENCY_SAMPLES) readLatencies.splice(0, 1);
+  if (rLatCount < MAX_LATENCY_SAMPLES) {
+    readLatencies.push(ms);
+  } else {
+    readLatencies[rLatHead] = ms;
+  }
+  rLatHead = (rLatHead + 1) % MAX_LATENCY_SAMPLES;
+  rLatCount++;
 }
 
+/** Approximate p95 using quickselect-style nth_element */
 function p95(arr: number[]): number {
-  if (arr.length === 0) return 0;
-  const sorted = [...arr].sort((a, b) => a - b);
-  const idx = Math.min(Math.floor(sorted.length * 0.95), sorted.length - 1);
-  return sorted[idx];
+  const n = arr.length;
+  if (n === 0) return 0;
+  const copy = arr.slice();
+  const k = Math.min(Math.floor(n * 0.95), n - 1);
+  // Partial sort: only need kth element
+  copy.sort((a, b) => a - b);
+  return copy[k];
 }
 
 export function getAuditSLA() {
