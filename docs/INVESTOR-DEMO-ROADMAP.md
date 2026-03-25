@@ -372,12 +372,13 @@ This sits at the bottom of the showcase — the summary they carry out of the ro
 | 2 | 1.1 — Memory Stream (story-first) | First demo in recommended path |
 | 3 | 1.2 — Evolution (outcome-first) | Core promise, needs edge function work |
 | 4 | 1.3 — Ascension (demo mode + upload) | The closer — guaranteed success path |
-| 5 | 4.1–4.3 — Speed, Confidence, Summary | Credibility signals throughout |
-| 6 | 2.1 — DREAM | First supporting demo |
-| 7 | 2.2 — DEFENSE | Enterprise credibility |
-| 8 | 2.3 — SEBA | Governance proof |
-| 9 | Phase 3 — Deep System | Only if time allows |
-| 10 | Phase 4.4 — Final Polish | Deck, comparisons, risk disclosure |
+| 5 | 1.4 — Build With the Substrate | Platform proof — bridges system to ecosystem |
+| 6 | 4.1–4.3 — Speed, Confidence, Summary | Credibility signals throughout |
+| 7 | 2.1 — DREAM | First supporting demo |
+| 8 | 2.2 — DEFENSE | Enterprise credibility |
+| 9 | 2.3 — SEBA | Governance proof |
+| 10 | Phase 3 — Deep System | Only if time allows |
+| 11 | Phase 4.4 — Final Polish | Deck, comparisons, risk disclosure |
 
 ---
 
