@@ -106,7 +106,7 @@ for (const cat of ['organ', 'layer', 'engine', 'agent'] as PrimitiveCategory[]) 
   CATEGORY_WEIGHTS.set(cat, { members, totalWeight: members.reduce((s, m) => s + m.weight, 0) });
 }
 
-const SUBSYSTEM_TOTAL_WEIGHT = SUBSYSTEMS.reduce((s, sub) => s + sub.weight, 0);
+
 
 // ═══════════════════════════════════════════════════════════════
 // SUBSYSTEMS — Autonomous pipelines beyond the 40 primitives
