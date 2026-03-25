@@ -180,6 +180,8 @@ const SCHEMAS: Record<StateSchemaName, StateSchema> = {
 class StateEngineClient {
   private static instance: StateEngineClient;
   private stateStore: Record<StateSchemaName, Record<string, unknown>> = {} as any;
+  /** Pre-built field index for O(1) field lookups during validation */
+  private fieldIndex: Map<StateSchemaName, Map<string, StateField>> = new Map();
   private engineState: StateEngineState = {
     initialized: false,
     schemasLoaded: 0,
