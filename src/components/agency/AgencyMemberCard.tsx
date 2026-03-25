@@ -75,7 +75,7 @@ export function AgencyMemberCard({
   return (
     <div className={cn(
       "p-3 rounded-xl border backdrop-blur-xl",
-      "bg-white/5 dark:bg-white/[0.03]",
+      "bg-muted/50 dark:bg-muted/30",
       "border-border/30"
     )}>
       <div className="flex items-start justify-between gap-2 mb-2">

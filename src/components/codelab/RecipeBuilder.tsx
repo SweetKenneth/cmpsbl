@@ -132,7 +132,7 @@ const MODULE_COLORS: Record<string, string> = {
   dream: "text-neon-magenta",
   system: "text-destructive",
   access: "text-neon-amber",
-  core: "text-slate-500",
+  core: "text-muted-foreground",
   evolution: "text-neon-green",
 };
 

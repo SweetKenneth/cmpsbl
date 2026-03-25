@@ -281,7 +281,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'audit', name: 'AUDIT', layer: 'infrastructure' as const, icon: ClipboardCheck,
       description: 'Immutable compliance logging',
-      gradient: 'bg-gradient-to-r from-slate-500 to-gray-600', accentColor: 'bg-slate-500',
+      gradient: 'bg-gradient-to-r from-muted-foreground to-muted-foreground', accentColor: 'bg-muted-foreground',
       status: auditStatus,
       metrics: [{ label: 'Logger', value: auditStatus.data?.success ? 'Recording' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -401,7 +401,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'phantom', name: 'PHANTOM', layer: 'infrastructure' as const, icon: Shield,
       description: 'Privacy engine & data anonymization',
-      gradient: 'bg-gradient-to-r from-slate-500 to-zinc-600', accentColor: 'bg-slate-500',
+      gradient: 'bg-gradient-to-r from-muted-foreground to-muted-foreground', accentColor: 'bg-muted-foreground',
       status: phantomStatus,
       metrics: [{ label: 'Privacy', value: phantomStatus.data?.success ? 'Active' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],
@@ -448,7 +448,7 @@ export function ModuleControlsGrid({ enabled }: ModuleControlsGridProps) {
     {
       id: 'shadow', name: 'SHADOW', layer: 'orchestrator' as const, icon: Eye,
       description: 'Shadow validation & A/B testing',
-      gradient: 'bg-gradient-to-r from-slate-500 to-gray-600', accentColor: 'bg-slate-500',
+      gradient: 'bg-gradient-to-r from-muted-foreground to-muted-foreground', accentColor: 'bg-muted-foreground',
       status: shadowStatus,
       metrics: [{ label: 'Validator', value: shadowStatus.data?.success ? 'Ready' : 'Checking' }],
       actions: [{ id: 'status', label: 'Status', icon: Activity }],

@@ -68,7 +68,7 @@ export function AgencySwitcher({
         <Button
           variant="ghost"
           className={cn(
-            "h-auto py-1.5 px-2 gap-2 hover:bg-white/10",
+            "h-auto py-1.5 px-2 gap-2 hover:bg-muted/70",
             className
           )}
         >
@@ -104,7 +104,7 @@ export function AgencySwitcher({
               "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
               agency.id === currentAgencyId
                 ? "bg-primary/30 border border-primary/50"
-                : "bg-white/5 border border-white/10"
+                : "bg-muted/50 border border-border/30"
             )}>
               <Building2 className={cn(
                 "w-4 h-4",
@@ -132,7 +132,7 @@ export function AgencySwitcher({
           onClick={() => navigate('/os')}
           className="flex items-center gap-3 py-2 cursor-pointer text-muted-foreground hover:text-foreground"
         >
-          <div className="w-8 h-8 rounded-lg bg-white/5 border border-dashed border-white/20 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-muted/50 border border-dashed border-border/40 flex items-center justify-center">
             <Plus className="w-4 h-4" />
           </div>
           <span className="text-sm">Create New Agency</span>

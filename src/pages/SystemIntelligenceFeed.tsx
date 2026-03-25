@@ -97,9 +97,9 @@ const MODULE_COLORS: Record<ModuleName, string> = {
   forge: 'from-neon-amber/20 to-neon-amber/5 border-neon-amber/30',
   lingua: 'from-primary/20 to-primary/5 border-primary/30',
   harvest: 'from-lime-600/20 to-lime-700/5 border-lime-600/30',
-  phantom: 'from-gray-600/20 to-gray-700/5 border-gray-600/30',
+  phantom: 'from-muted-foreground/20 to-muted-foreground/5 border-muted-foreground/30',
   evolution: 'from-neon-green/20 to-neon-green/5 border-neon-green/30',
-  shadow: 'from-slate-600/20 to-slate-700/5 border-slate-600/30',
+  shadow: 'from-muted-foreground/20 to-muted-foreground/5 border-muted-foreground/30',
   immunity: 'from-neon-magenta/20 to-neon-magenta/5 border-neon-magenta/30',
   intent: 'from-neon-purple/20 to-neon-purple/5 border-neon-purple/30',
   governance: 'from-stone-600/20 to-stone-700/5 border-stone-600/30',
@@ -107,10 +107,10 @@ const MODULE_COLORS: Record<ModuleName, string> = {
 };
 
 const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
-  core: 'text-slate-400', brain: 'text-neon-purple', cortex: 'text-neon-blue',
+  core: 'text-muted-foreground', brain: 'text-neon-purple', cortex: 'text-neon-blue',
   defense: 'text-destructive', nexus: 'text-neon-green', vision: 'text-neon-amber',
   ripple: 'text-neon-cyan', access: 'text-neon-amber', inclusive: 'text-neon-magenta',
-  system: 'text-gray-400', decode: 'text-primary',
+  system: 'text-muted-foreground', decode: 'text-primary',
   dream: 'text-neon-purple', integration: 'text-neon-magenta', encode: 'text-neon-amber',
   memory: 'text-sky-400', relay: 'text-lime-400', audit: 'text-stone-400',
   identity: 'text-neon-magenta', economy: 'text-neon-amber', sandbox: 'text-neon-cyan',
@@ -118,7 +118,7 @@ const MODULE_TEXT_COLORS: Record<ModuleName, string> = {
   oracle: 'text-neon-purple', conscience: 'text-neon-magenta', treaty: 'text-neon-amber',
   compass: 'text-neon-green', echo: 'text-neon-blue', reflex: 'text-destructive',
   forge: 'text-neon-amber', lingua: 'text-primary', harvest: 'text-lime-500',
-  phantom: 'text-gray-500', evolution: 'text-neon-green', shadow: 'text-slate-500',
+  phantom: 'text-muted-foreground', evolution: 'text-neon-green', shadow: 'text-muted-foreground',
   immunity: 'text-neon-magenta', intent: 'text-neon-purple', governance: 'text-stone-500',
   engineer: 'text-sky-500',
 };

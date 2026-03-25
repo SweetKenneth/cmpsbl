@@ -65,7 +65,7 @@ const categories = [
   { id: "nexus", name: "Nexus", icon: Zap, count: 12, color: "text-neon-green" },
   { id: "vision", name: "Vision", icon: Eye, count: 10, color: "text-neon-blue" },
   { id: "dream", name: "Dream", icon: Moon, count: 10, color: "text-neon-purple" },
-  { id: "system", name: "System", icon: Settings, count: 7, color: "text-slate-500" },
+  { id: "system", name: "System", icon: Settings, count: 7, color: "text-muted-foreground" },
 ];
 
 export function TemplateGenerator() {

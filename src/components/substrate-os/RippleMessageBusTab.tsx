@@ -168,7 +168,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
 
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Queue View */}
-        <Card className="lg:col-span-2 border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
+        <Card className="lg:col-span-2 border-neon-cyan/20 bg-muted/50 backdrop-blur-xl">
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Inbox className="w-4 h-4 text-neon-cyan" />
@@ -182,7 +182,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
                   {jobs.map((job) => (
                     <div
                       key={job.id}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors"
                     >
                       {statusIcon(job.status)}
                       <div className="flex-1 min-w-0">
@@ -208,7 +208,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
 
         {/* Topics & Publish */}
         <div className="space-y-4">
-          <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
+          <Card className="border-neon-cyan/20 bg-muted/50 backdrop-blur-xl">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Bell className="w-4 h-4 text-neon-cyan" />
@@ -219,7 +219,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
               <ScrollArea className="h-[120px] mb-3">
                 <div className="space-y-1">
                   {topics?.map((t) => (
-                    <div key={t.id} className="flex items-center gap-2 p-2 rounded bg-white/5 text-xs">
+                    <div key={t.id} className="flex items-center gap-2 p-2 rounded bg-muted/50 text-xs">
                       <Radio className="w-3 h-3 text-neon-cyan" />
                       <span className="font-mono">{t.name}</span>
                     </div>
@@ -232,7 +232,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
                     placeholder="topic.name"
                     value={newTopic}
                     onChange={(e) => setNewTopic(e.target.value)}
-                    className="h-8 text-xs font-mono bg-white/5"
+                    className="h-8 text-xs font-mono bg-muted/50"
                   />
                   <Button
                     size="sm"
@@ -249,7 +249,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
           </Card>
 
           {enabled && (
-            <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
+            <Card className="border-neon-cyan/20 bg-muted/50 backdrop-blur-xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <Send className="w-4 h-4 text-neon-cyan" />
@@ -261,13 +261,13 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
                   placeholder="topic"
                   value={publishTopic}
                   onChange={(e) => setPublishTopic(e.target.value)}
-                  className="h-8 text-xs font-mono bg-white/5"
+                  className="h-8 text-xs font-mono bg-muted/50"
                 />
                 <Input
                   placeholder="event_type"
                   value={publishEvent}
                   onChange={(e) => setPublishEvent(e.target.value)}
-                  className="h-8 text-xs font-mono bg-white/5"
+                  className="h-8 text-xs font-mono bg-muted/50"
                 />
                 <Button
                   size="sm"
@@ -284,7 +284,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
       </div>
 
       {/* Recent Events */}
-      <Card className="border-neon-cyan/20 bg-white/5 backdrop-blur-xl">
+      <Card className="border-neon-cyan/20 bg-muted/50 backdrop-blur-xl">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm font-medium">Recent Events</CardTitle>
         </CardHeader>
@@ -292,7 +292,7 @@ export function RippleMessageBusTab({ enabled }: { enabled: boolean }) {
           <ScrollArea className="h-[150px]">
             <div className="space-y-2">
               {events?.map((e) => (
-                <div key={e.id} className="flex items-center gap-3 p-2 rounded-lg bg-white/5 text-xs">
+                <div key={e.id} className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 text-xs">
                   <Radio className="w-3 h-3 text-neon-cyan shrink-0" />
                   <span className="font-mono text-muted-foreground">{e.topic}</span>
                   <span className="text-foreground">{e.event_type}</span>

@@ -34,7 +34,7 @@ export function AgentAvatar({
   };
   
   const statusColors = {
-    idle: 'bg-slate-400',
+    idle: 'bg-muted-foreground',
     working: 'bg-neon-green',
     thinking: 'bg-neon-amber',
     success: 'bg-neon-green',

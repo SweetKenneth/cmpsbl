@@ -64,7 +64,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Settings,
     label: 'System',
     description: 'Administration, config',
-    color: 'text-gray-500',
+    color: 'text-muted-foreground',
   },
   core: {
     icon: Cpu,
@@ -166,7 +166,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Scale,
     label: 'Governance',
     description: 'Ethical constraints, veto authority, coherence',
-    color: 'text-slate-500',
+    color: 'text-muted-foreground',
   },
   medic: {
     icon: Stethoscope,
@@ -203,7 +203,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Ghost,
     label: 'PHANTOM',
     description: 'Privacy engineering & data masking',
-    color: 'text-slate-600',
+    color: 'text-muted-foreground',
   },
   forge: {
     icon: Hammer,
@@ -251,7 +251,7 @@ const moduleConfig: Record<SubstrateModule, {
     icon: Activity,
     label: 'SHADOW',
     description: 'Covert execution & shadow mesh operations',
-    color: 'text-gray-500',
+    color: 'text-muted-foreground',
   },
   // Plane additions — Primitives 39 & 40
   engineer: {
