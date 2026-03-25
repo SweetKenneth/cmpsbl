@@ -1680,3 +1680,198 @@ All colors MUST be HSL.
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* =========================================
+ * VIEWPORT-ADAPTIVE UTILITIES 2026
+ * Fluid scaling that works across ALL viewports
+ * without per-page refactoring
+ * ========================================= */
+
+/* ── Fluid Typography ── */
+/* These use clamp() so text scales smoothly between 320px and 1536px viewports */
+@layer utilities {
+  .text-fluid-xs   { font-size: clamp(0.625rem, 0.55rem + 0.25vw, 0.75rem); }
+  .text-fluid-sm   { font-size: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem); }
+  .text-fluid-base { font-size: clamp(0.875rem, 0.82rem + 0.2vw, 1rem); }
+  .text-fluid-lg   { font-size: clamp(1rem, 0.9rem + 0.35vw, 1.25rem); }
+  .text-fluid-xl   { font-size: clamp(1.125rem, 0.95rem + 0.6vw, 1.5rem); }
+  .text-fluid-2xl  { font-size: clamp(1.25rem, 1rem + 0.9vw, 2rem); }
+  .text-fluid-3xl  { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.5rem); }
+  .text-fluid-4xl  { font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem); }
+  .text-fluid-5xl  { font-size: clamp(2rem, 1.2rem + 2.8vw, 3.75rem); }
+  .text-fluid-6xl  { font-size: clamp(2.25rem, 1.2rem + 3.6vw, 4.5rem); }
+  .text-fluid-hero { font-size: clamp(2.5rem, 1rem + 5vw, 5rem); line-height: 1.05; }
+
+  /* ── Fluid Spacing ── */
+  .gap-fluid       { gap: clamp(0.75rem, 0.5rem + 1vw, 2rem); }
+  .gap-fluid-sm    { gap: clamp(0.5rem, 0.25rem + 0.5vw, 1rem); }
+  .gap-fluid-lg    { gap: clamp(1rem, 0.5rem + 1.5vw, 3rem); }
+  .p-fluid         { padding: clamp(1rem, 0.5rem + 1.5vw, 2.5rem); }
+  .px-fluid        { padding-left: clamp(1rem, 0.5rem + 2vw, 3rem); padding-right: clamp(1rem, 0.5rem + 2vw, 3rem); }
+  .py-fluid        { padding-top: clamp(2rem, 1rem + 2vw, 4rem); padding-bottom: clamp(2rem, 1rem + 2vw, 4rem); }
+  .py-fluid-sm     { padding-top: clamp(1rem, 0.5rem + 1vw, 2rem); padding-bottom: clamp(1rem, 0.5rem + 1vw, 2rem); }
+  .py-fluid-lg     { padding-top: clamp(3rem, 1.5rem + 3vw, 7rem); padding-bottom: clamp(3rem, 1.5rem + 3vw, 7rem); }
+  .space-y-fluid > * + * { margin-top: clamp(1rem, 0.5rem + 1vw, 2rem); }
+  .space-y-fluid-lg > * + * { margin-top: clamp(1.5rem, 0.75rem + 2vw, 4rem); }
+}
+
+/* ── Global Responsive Hardening ── */
+/* Prevent ANY element from causing horizontal overflow */
+@layer base {
+  img, video, canvas, svg, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Tables: horizontal scroll wrapper when they overflow */
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+  }
+
+  /* Prevent long URLs/strings from breaking layouts */
+  a, p, span, li, td, th, label, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+}
+
+/* ── Viewport-Aware Container ── */
+/* Fluid container that works from 320px to 2560px+ */
+@layer utilities {
+  .container-fluid {
+    width: 100%;
+    max-width: min(100% - 2rem, 1400px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 0.5rem + 2vw, 3rem);
+    padding-right: clamp(1rem, 0.5rem + 2vw, 3rem);
+  }
+
+  .container-narrow {
+    width: 100%;
+    max-width: min(100% - 2rem, 900px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 0.5rem + 2vw, 2rem);
+    padding-right: clamp(1rem, 0.5rem + 2vw, 2rem);
+  }
+
+  .container-wide {
+    width: 100%;
+    max-width: min(100% - 2rem, 1800px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 0.5rem + 2vw, 4rem);
+    padding-right: clamp(1rem, 0.5rem + 2vw, 4rem);
+  }
+}
+
+/* ── Responsive Grid Auto-Fit ── */
+/* Auto-fitting grids that work at every viewport without explicit breakpoints */
+@layer utilities {
+  .grid-auto-fit-xs  { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); }
+  .grid-auto-fit-sm  { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); }
+  .grid-auto-fit     { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+  .grid-auto-fit-lg  { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .grid-auto-fit-xl  { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 28rem), 1fr)); }
+  .grid-auto-fill-sm { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr)); }
+  .grid-auto-fill    { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); }
+}
+
+/* ── Intermediate Breakpoint Fixes ── */
+/* Tablet landscape (769px–1024px) — the most commonly broken range */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Reduce overly wide containers */
+  .container {
+    max-width: 100% !important;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Fix grids that jump from 1-col to 3+ cols, skipping 2 */
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Tone down large hero text that can overflow on tablets */
+  .text-5xl, .text-6xl {
+    font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  }
+}
+
+/* Small mobile (320px–474px) — budget phones */
+@media (max-width: 474px) {
+  /* Stack 2-col grids on very small screens */
+  .grid-cols-2:not(.pin-grid-cols) {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce padding to recover screen real estate */
+  .px-6, .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Prevent cards from being too tall on tiny screens */
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+}
+
+/* Ultrawide (1537px+) — prevent content from stretching */
+@media (min-width: 1537px) {
+  .container {
+    max-width: 1400px;
+  }
+
+  /* Center content areas that might stretch */
+  main > section {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ── Dynamic Viewport Height ── */
+/* Use dvh where available for mobile browsers with address bar */
+@supports (height: 100dvh) {
+  .min-h-screen {
+    min-height: 100dvh;
+  }
+
+  .h-screen {
+    height: 100dvh;
+  }
+}
+
+/* ── Reduced Motion: Respect user preference globally ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Print Optimization ── */
+@media print {
+  nav, footer, .fab, .mobile-nav-bar, [class*="fixed"] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+}
