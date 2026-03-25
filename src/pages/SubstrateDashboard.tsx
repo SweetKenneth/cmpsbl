@@ -535,7 +535,7 @@ export default function SubstrateDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <SEO
         title="Dashboard — Primitive Health & Stream Metrics | CMPSBL"
         description="CMPSBL substrate dashboard: real-time primitive health across agents, engines, layers, and organs — Memory Stream crystallization metrics, mesh communication logs, governance status, and per-primitive telemetry at a glance."
@@ -543,9 +543,22 @@ export default function SubstrateDashboard() {
         keywords={["cognitive orchestration", "AI substrate", "CMPSBL dashboard", "primitive architecture", "cortex"]}
       />
 
+      {/* Ambient background — matches homepage */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-80" />
+        <div
+          className="absolute -top-48 -left-48 w-[700px] h-[700px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
+        />
+      </div>
+
       <PublicNav />
 
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="container mx-auto px-4 py-8 md:py-12 relative z-10">
         {/* Header */}
         <div className="max-w-6xl mx-auto mb-8 md:mb-12">
           <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
