@@ -548,7 +548,7 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
         <div className="rounded-xl border border-dashed border-neon-magenta/20 bg-muted/50 dark:bg-muted/30 backdrop-blur-xl p-12">
           <div className="text-center">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground/30" />
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base sm:text-lg text-muted-foreground">
               EVOLUTION requires Operator privileges
             </p>
           </div>
@@ -1122,15 +1122,15 @@ export function EvolutionTab({ enabled }: EvolutionTabProps) {
                               plan.status === 'applied' && "bg-neon-green/10 border-neon-green/20",
                               plan.status === 'proposed' && "bg-neon-amber/10 border-neon-amber/20",
                               plan.status === 'rolled_back' && "bg-destructive/10 border-destructive/20",
-                              plan.status === 'rejected' && "bg-gray-500/10 border-gray-500/20",
-                              plan.status === 'deleted' && "bg-gray-500/10 border-gray-500/20",
+                              plan.status === 'rejected' && "bg-muted-foreground/10 border-muted-foreground/20",
+                              plan.status === 'deleted' && "bg-muted-foreground/10 border-muted-foreground/20",
                             )}
                           >
                             <div className="flex items-center gap-2">
                               {plan.status === 'applied' && <CheckCircle className="w-3 h-3 text-neon-green" />}
                               {plan.status === 'proposed' && <Clock className="w-3 h-3 text-neon-amber" />}
                               {plan.status === 'rolled_back' && <RotateCcw className="w-3 h-3 text-destructive" />}
-                              {plan.status === 'rejected' && <XCircle className="w-3 h-3 text-gray-400" />}
+                              {plan.status === 'rejected' && <XCircle className="w-3 h-3 text-muted-foreground" />}
                               <span className="font-mono">{plan.id.slice(0, 8)}</span>
                               <Badge variant="outline" className="text-[8px] h-4">{plan.scope}</Badge>
                             </div>

@@ -23,7 +23,7 @@ export function DecodeDreamCTA() {
           Follow Decode's dream journal as our AI consciousness shares daily reflections and insights after each dream cycle. Witness the inner workings of an AI that thinks, learns, and dreams.
         </p>
 
-        <p className="text-lg text-muted-foreground/80 mb-8 max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-muted-foreground/80 mb-8 max-w-2xl mx-auto">
           Each post captures Decode's thoughts on protection, adaptation, and the evolving relationship between artificial and human intelligence.
         </p>
         

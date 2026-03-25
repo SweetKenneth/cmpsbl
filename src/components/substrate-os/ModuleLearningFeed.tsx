@@ -71,7 +71,7 @@ const MODULE_COLORS: Record<string, string> = {
   access: 'text-neon-amber border-neon-amber/30',
   inclusive: 'text-neon-magenta border-neon-magenta/30',
   evolution: 'text-neon-green border-neon-green/30',
-  system: 'text-gray-400 border-gray-500/30',
+  system: 'text-muted-foreground border-muted-foreground/30',
   decode: 'text-primary border-primary/30',
   autoblog: 'text-neon-purple border-neon-purple/30',
   encoded: 'text-neon-magenta border-neon-magenta/30',

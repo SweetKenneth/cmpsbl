@@ -53,7 +53,7 @@ const MODULES_CONFIG = [
   { id: 'harvest', label: 'HARVEST', icon: Database, color: 'text-lime-300', hsl: '84, 81%, 55%' },
   // CSZ — Covert Systems Zone (3 nodes)
   { id: 'evolution', label: 'EVOLUTION', icon: Sparkles, color: 'text-neon-magenta', hsl: '350, 89%, 60%' },
-  { id: 'shadow', label: 'SHADOW', icon: Shield, color: 'text-gray-400', hsl: '220, 9%, 46%' },
+  { id: 'shadow', label: 'SHADOW', icon: Shield, color: 'text-muted-foreground', hsl: '220, 9%, 46%' },
   { id: 'phantom', label: 'PHANTOM', icon: Shield, color: 'text-slate-300', hsl: '215, 16%, 60%' },
   // Fields + Meta + Plane + Shell
   { id: 'immunity', label: 'IMMUNITY', icon: Shield, color: 'text-neon-magenta', hsl: '350, 80%, 70%' },
