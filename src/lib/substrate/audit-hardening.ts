@@ -198,13 +198,18 @@ let compactionRuns = 0;
 export function runCompaction(): { entriesBefore: number; entriesAfter: number; savedPercent: number } {
   compactionRuns++;
   const before = wal.length;
-  // Actually compact: remove WAL entries older than archive threshold
   const cutoff = Date.now() - (retentionPolicy.archiveAfter_days * 24 * 60 * 60 * 1000);
-  const kept = wal.filter(e => e.ts >= cutoff);
-  wal.length = 0;
-  wal.push(...kept);
-  const savedPercent = before > 0 ? Math.round(((before - wal.length) / before) * 100) : 0;
-  return { entriesBefore: before, entriesAfter: wal.length, savedPercent };
+  // In-place compaction: single write pointer pass
+  let write = 0;
+  for (let read = 0; read < wal.length; read++) {
+    if (wal[read].ts >= cutoff) {
+      if (write !== read) wal[write] = wal[read];
+      write++;
+    }
+  }
+  wal.length = write;
+  const savedPercent = before > 0 ? Math.round(((before - write) / before) * 100) : 0;
+  return { entriesBefore: before, entriesAfter: write, savedPercent };
 }
 export function getCompactionStats() { return { totalRuns: compactionRuns }; }
 
