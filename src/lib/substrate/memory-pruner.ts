@@ -84,22 +84,22 @@ async function pruneTier(
   // Phase 2: Delete lowest value_score entries
   while (purged < excess) {
     try {
-      const { data: ids } = await supabase
-        .from(table)
+      const { data: ids } = await (supabase
+        .from(table as any)
         .select('id')
         .order('value_score', { ascending: true })
         .order('created_at', { ascending: true })
-        .limit(Math.min(batchSize, excess - purged));
+        .limit(Math.min(batchSize, excess - purged)));
 
       if (!ids || ids.length === 0) break;
-      await supabase.from(table).delete().in('id', ids.map((r: any) => r.id));
+      await (supabase.from(table as any).delete() as any).in('id', ids.map((r: any) => r.id));
       purged += ids.length;
     } catch { break; }
   }
 
-  const { count: after } = await supabase
-    .from(table)
-    .select('id', { count: 'exact', head: true });
+  const { count: after } = await (supabase
+    .from(table as any)
+    .select('id', { count: 'exact', head: true }));
 
   return { tier: tierName, before: currentCount, after: after ?? 0, purged, duration_ms: Date.now() - start };
 }
