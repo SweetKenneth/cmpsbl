@@ -340,7 +340,12 @@ async function aggregateAiUsage(): Promise<AiTelemetry> {
   const p95Index = Math.max(0, Math.min(responseTimes.length - 1, Math.ceil(responseTimes.length * 0.95) - 1));
   const p95ResponseTime = responseTimes.length > 0 ? responseTimes[p95Index] : 0;
 
-  const topProvider = Object.entries(providerCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  // Find top provider without sort — single-pass max
+  let topProvider: string | null = null;
+  let topProviderCount = 0;
+  for (const p in providerCounts) {
+    if (providerCounts[p] > topProviderCount) { topProviderCount = providerCounts[p]; topProvider = p; }
+  }
 
   return {
     totalCalls,
