@@ -16,6 +16,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { shouldSample as shouldSampleFn } from './telemetry-sampler';
 import type { EngineName, DispatchResult, DispatchErrorCode } from './engine-bus';
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -153,8 +154,7 @@ class TelemetryEngineClient {
     correlationId?: string
   ): TelemetryEvent {
     // Apply sampling — drop debug/info noise during bursts
-    const { shouldSample } = require('./telemetry-sampler');
-    if (!shouldSample(severity)) {
+    if (!shouldSampleFn(severity)) {
       // Return a stub event without recording or persisting
       return {
         id: 'sampled-out',
@@ -362,41 +362,33 @@ class TelemetryEngineClient {
   /**
    * Query telemetry events
    */
-  query(query: TelemetryQuery = {}): TelemetryEvent[] {
-    let events = [...this.eventLog];
-
-    if (query.type) {
-      const types = Array.isArray(query.type) ? query.type : [query.type];
-      events = events.filter(e => types.includes(e.type));
+  query(q: TelemetryQuery = {}): TelemetryEvent[] {
+    // Fast path: no filters → just return tail
+    const hasFilter = q.type || q.severity || q.engine || q.module || q.since || q.correlation_id;
+    if (!hasFilter) {
+      return this.eventLog.slice(-(q.limit || this.MAX_EVENT_LOG));
     }
 
-    if (query.severity) {
-      const severities = Array.isArray(query.severity) ? query.severity : [query.severity];
-      events = events.filter(e => severities.includes(e.severity));
+    // Pre-compute filter sets for O(1) lookups
+    const typeSet = q.type ? new Set(Array.isArray(q.type) ? q.type : [q.type]) : null;
+    const sevSet = q.severity ? new Set(Array.isArray(q.severity) ? q.severity : [q.severity]) : null;
+    const sinceMs = q.since ? new Date(q.since).getTime() : 0;
+    const limit = q.limit || this.MAX_EVENT_LOG;
+
+    // Single-pass filter (iterate backwards for limit optimization)
+    const result: TelemetryEvent[] = [];
+    for (let i = this.eventLog.length - 1; i >= 0 && result.length < limit; i--) {
+      const e = this.eventLog[i];
+      if (typeSet && !typeSet.has(e.type)) continue;
+      if (sevSet && !sevSet.has(e.severity)) continue;
+      if (q.engine && e.source.engine !== q.engine) continue;
+      if (q.module && e.source.module !== q.module) continue;
+      if (sinceMs && new Date(e.timestamp).getTime() < sinceMs) continue;
+      if (q.correlation_id && e.correlation_id !== q.correlation_id) continue;
+      result.push(e);
     }
 
-    if (query.engine) {
-      events = events.filter(e => e.source.engine === query.engine);
-    }
-
-    if (query.module) {
-      events = events.filter(e => e.source.module === query.module);
-    }
-
-    if (query.since) {
-      const sinceDate = new Date(query.since);
-      events = events.filter(e => new Date(e.timestamp) >= sinceDate);
-    }
-
-    if (query.correlation_id) {
-      events = events.filter(e => e.correlation_id === query.correlation_id);
-    }
-
-    if (query.limit) {
-      events = events.slice(-query.limit);
-    }
-
-    return events;
+    return result.reverse();
   }
 
   /**

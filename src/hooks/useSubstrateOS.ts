@@ -8,6 +8,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { substrate, vision, brain, defense, nexus, dream, system, decode, core, ripple, access, integration, cortex, inclusive, memoryMod, relayMod, auditMod, identityMod, economyMod, sandboxMod, encodeMod, sovereignMod, oracleMod, conscienceMod, treatyMod, compassMod, echoMod, reflexMod, forgeMod, linguaMod, harvestMod, evolutionMod, shadowMod, phantomMod, immunityMod, intentMod, governanceMod, medicMod, nerveMod, atlasMod, engineerMod } from '@/lib/substrate';
 import { debugMode } from '@/lib/debug-mode';
 import * as healthEngine from '@/lib/substrate/health-engine';
+import { toast } from 'sonner';
 
 // ═══════════════════════════════════════════════════════════════
 // OBSERVER HOOKS — Read-only telemetry (respects debug mode)
@@ -339,8 +340,8 @@ export function useLiveAuditFeed(limit: number = 15) {
       if (error) throw error;
       return data || [];
     },
-    refetchInterval: pollingEnabled ? 5000 : false, // Live updates every 5s
-    staleTime: 2000,
+    refetchInterval: pollingEnabled ? 15000 : false, // 15s — reduced from 5s to cut query pressure 66%
+    staleTime: 10000,
     enabled: pollingEnabled,
   });
 }

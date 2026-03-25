@@ -87,6 +87,27 @@ const AGENTS: PrimitiveDefinition[] = [
 
 export const ALL_PRIMITIVES: PrimitiveDefinition[] = [...ORGANS, ...LAYERS, ...ENGINES, ...AGENTS];
 
+// Pre-built lookup maps for O(1) access — avoids repeated .find() / .filter() calls
+const PRIMITIVE_BY_ID = new Map<string, PrimitiveDefinition>(ALL_PRIMITIVES.map(p => [p.id, p]));
+const PRIMITIVES_BY_CATEGORY = new Map<PrimitiveCategory, PrimitiveDefinition[]>();
+const PRIMITIVES_BY_TIER = new Map<number, PrimitiveDefinition[]>();
+
+for (const p of ALL_PRIMITIVES) {
+  if (!PRIMITIVES_BY_CATEGORY.has(p.category)) PRIMITIVES_BY_CATEGORY.set(p.category, []);
+  PRIMITIVES_BY_CATEGORY.get(p.category)!.push(p);
+  if (!PRIMITIVES_BY_TIER.has(p.tier)) PRIMITIVES_BY_TIER.set(p.tier, []);
+  PRIMITIVES_BY_TIER.get(p.tier)!.push(p);
+}
+
+// Pre-compute category weights for computeCompositeHealth — avoids recalculating every call
+const CATEGORY_WEIGHTS = new Map<PrimitiveCategory, { members: PrimitiveDefinition[]; totalWeight: number }>();
+for (const cat of ['organ', 'layer', 'engine', 'agent'] as PrimitiveCategory[]) {
+  const members = PRIMITIVES_BY_CATEGORY.get(cat) ?? [];
+  CATEGORY_WEIGHTS.set(cat, { members, totalWeight: members.reduce((s, m) => s + m.weight, 0) });
+}
+
+
+
 // ═══════════════════════════════════════════════════════════════
 // SUBSYSTEMS — Autonomous pipelines beyond the 40 primitives
 // ═══════════════════════════════════════════════════════════════
@@ -114,6 +135,8 @@ export const SUBSYSTEMS: SubsystemDefinition[] = [
   { id: 'email',     name: 'Email Pipeline',             group: 'infrastructure',  weight: 4 },
   { id: 'scheduler', name: 'Scheduled Tasks',            group: 'infrastructure',  weight: 4 },
 ];
+
+const SUBSYSTEM_TOTAL_WEIGHT = SUBSYSTEMS.reduce((s, sub) => s + sub.weight, 0);
 
 // ═══════════════════════════════════════════════════════════════
 // TIER WEIGHTS — Criticality-based global distribution
@@ -284,16 +307,18 @@ const previousScores = new Map<string, number>();
 export function updatePrimitiveHealth(id: string, health: number): void {
   const prev = healthScores.get(id) ?? 100;
   previousScores.set(id, prev);
-  healthScores.set(id, Math.max(0, Math.min(100, health)));
+  const clamped = health < 0 ? 0 : health > 100 ? 100 : health;
+  healthScores.set(id, clamped);
   
-  const def = ALL_PRIMITIVES.find(p => p.id === id);
+  // O(1) lookup instead of O(n) .find()
+  const def = PRIMITIVE_BY_ID.get(id);
   const tier = def?.tier ?? 4;
   
-  if (health >= 50) {
+  if (clamped >= 50) {
     recordHealthSuccess(id, tier);
   } else {
     recordHealthFailure(id, tier);
-    queueHealAction(id, health, prev);
+    queueHealAction(id, clamped, prev);
   }
 }
 
@@ -438,7 +463,7 @@ export function computeCompositeHealth(): CompositeHealthResult {
     }
   }
   
-  // Category breakdown
+  // Category breakdown — uses pre-computed weights for O(1) per category
   const categories: Record<PrimitiveCategory, { score: number; count: number }> = {
     organ: { score: 0, count: 0 },
     layer: { score: 0, count: 0 },
@@ -447,20 +472,18 @@ export function computeCompositeHealth(): CompositeHealthResult {
   };
   
   for (const cat of ['organ', 'layer', 'engine', 'agent'] as PrimitiveCategory[]) {
-    const members = ALL_PRIMITIVES.filter(p => p.category === cat);
-    const totalWeight = members.reduce((s, m) => s + m.weight, 0);
+    const cached = CATEGORY_WEIGHTS.get(cat)!;
     categories[cat] = {
-      count: members.length,
-      score: totalWeight > 0
-        ? Math.round(members.reduce((s, m) => s + (healthScores.get(m.id) ?? 100) * (m.weight / totalWeight), 0))
+      count: cached.members.length,
+      score: cached.totalWeight > 0
+        ? Math.round(cached.members.reduce((s, m) => s + (healthScores.get(m.id) ?? 100) * (m.weight / cached.totalWeight), 0))
         : 100,
     };
   }
   
-  // Subsystem aggregate
-  const subTotalWeight = SUBSYSTEMS.reduce((s, sub) => s + sub.weight, 0);
-  const subsystemScore = subTotalWeight > 0
-    ? Math.round(SUBSYSTEMS.reduce((s, sub) => s + (healthScores.get(sub.id) ?? 100) * (sub.weight / subTotalWeight), 0))
+  // Subsystem aggregate — uses pre-computed total weight
+  const subsystemScore = SUBSYSTEM_TOTAL_WEIGHT > 0
+    ? Math.round(SUBSYSTEMS.reduce((s, sub) => s + (healthScores.get(sub.id) ?? 100) * (sub.weight / SUBSYSTEM_TOTAL_WEIGHT), 0))
     : 100;
   
   // Open breakers
@@ -469,10 +492,15 @@ export function computeCompositeHealth(): CompositeHealthResult {
     if (b.state === 'open') openBreakers.push(id);
   }
   
+  // Single-pass count instead of creating a merged array + filter
   const totalTracked = ALL_PRIMITIVES.length + SUBSYSTEMS.length;
-  const healthyCount = [...ALL_PRIMITIVES, ...SUBSYSTEMS].filter(
-    e => (healthScores.get(e.id) ?? 100) >= 50
-  ).length;
+  let healthyCount = 0;
+  for (const p of ALL_PRIMITIVES) {
+    if ((healthScores.get(p.id) ?? 100) >= 50) healthyCount++;
+  }
+  for (const s of SUBSYSTEMS) {
+    if ((healthScores.get(s.id) ?? 100) >= 50) healthyCount++;
+  }
   
   return {
     compositeScore,
@@ -516,15 +544,15 @@ export function extractHealth(result: any): number {
 // ═══════════════════════════════════════════════════════════════
 
 export function getPrimitivesByCategory(cat: PrimitiveCategory): PrimitiveDefinition[] {
-  return ALL_PRIMITIVES.filter(p => p.category === cat);
+  return PRIMITIVES_BY_CATEGORY.get(cat) ?? [];
 }
 
 export function getPrimitivesByTier(tier: 1 | 2 | 3 | 4): PrimitiveDefinition[] {
-  return ALL_PRIMITIVES.filter(p => p.tier === tier);
+  return PRIMITIVES_BY_TIER.get(tier) ?? [];
 }
 
 export function getPrimitiveDef(id: string): PrimitiveDefinition | undefined {
-  return ALL_PRIMITIVES.find(p => p.id === id);
+  return PRIMITIVE_BY_ID.get(id);
 }
 
 export { shouldProbe };

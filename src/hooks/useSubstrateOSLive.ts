@@ -16,12 +16,13 @@ export function useLiveBrainMemories() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('brain_memories')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000, // 60s — count rarely changes rapidly
+    staleTime: 30000,
   });
 }
 
@@ -31,12 +32,13 @@ export function useLiveDecodeConversations() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('cascade_conversations')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    staleTime: 30000,
   });
 }
 
@@ -46,12 +48,13 @@ export function useLiveDefenseEvents() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('defense_events')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    staleTime: 30000,
   });
 }
 
@@ -61,12 +64,13 @@ export function useLiveNexusRoutes() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('nexus_logs')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    staleTime: 30000,
   });
 }
 
@@ -76,12 +80,13 @@ export function useLiveDreamSubmissions() {
     queryFn: async () => {
       const { count, error } = await supabase
         .from('dream_feeder_submissions')
-        .select('*', { count: 'exact', head: true });
+        .select('id', { count: 'exact', head: true });
       
       if (error) throw error;
       return { count: count ?? 0 };
     },
-    refetchInterval: 30000,
+    refetchInterval: 60000,
+    staleTime: 30000,
   });
 }
 
