@@ -84,9 +84,9 @@ class CapabilityAnalytics {
     this.records.push(...this.buffer);
     this.buffer = [];
 
-    // Enforce max records
-    while (this.records.length > MAX_RECORDS) {
-      this.records.shift();
+    // Enforce max records — trim in bulk instead of shift loop
+    if (this.records.length > MAX_RECORDS) {
+      this.records = this.records.slice(this.records.length - MAX_RECORDS);
     }
 
     this.persist();
