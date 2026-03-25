@@ -410,9 +410,10 @@ export function HeroMetaSubstrate() {
                   )}
                 </div>
               ))}
+              ))}
+              </div>
             </div>
           </div>
-        </FadeIn>
         
         {/* Stats bar */}
         <FadeIn delay={0.7}>
