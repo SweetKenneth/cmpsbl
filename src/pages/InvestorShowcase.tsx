@@ -449,7 +449,17 @@ const ShowcaseContent = () => {
                 className="overflow-hidden space-y-3"
               >
                 {TIER_2_DEMOS.map((demo) => (
-                  <DemoCard key={demo.title} {...demo} />
+                  <div key={demo.title} onClick={() => {
+                    const demoMap: Record<string, string> = {
+                      "DREAM Engine": "dream-engine",
+                      "DEFENSE Layer": "defense-layer",
+                      "SEBA Pipeline": "seba-pipeline",
+                    };
+                    const demoId = demoMap[demo.title];
+                    if (demoId) setActiveDemo(demoId);
+                  }}>
+                    <DemoCard {...demo} />
+                  </div>
                 ))}
               </motion.div>
             )}
