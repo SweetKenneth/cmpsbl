@@ -69,7 +69,7 @@ export function ReflexMonitor() {
       case 'block': return 'bg-destructive/20 text-destructive border-destructive/50';
       case 'challenge': return 'bg-neon-amber/20 text-neon-amber border-neon-amber/50';
       case 'allow': return 'bg-neon-green/20 text-neon-green border-neon-green/50';
-      default: return 'bg-gray-500/20 text-gray-400 border-gray-500/50';
+      default: return 'bg-muted-foreground/20 text-muted-foreground border-muted-foreground/50';
     }
   };
 

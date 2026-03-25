@@ -149,7 +149,7 @@ export default function AIOperatingSystem() {
 
       <main className="min-h-screen bg-background">
         {/* ═══════════════════ HERO ═══════════════════ */}
-        <section className="relative py-20 sm:py-28 md:py-36 overflow-hidden">
+        <section className="relative py-20 sm:py-28 md:py-28 overflow-hidden">
           {/* Background effects */}
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-[120px]" />

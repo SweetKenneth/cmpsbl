@@ -185,7 +185,7 @@ export default function InvestorsPublic() {
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-300 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex items-center gap-3 mb-2">
           <Award className="w-7 h-7 text-neon-amber" />
-          <h2 className="text-3xl font-semibold text-foreground">14 Documented World Firsts</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">14 Documented World Firsts</h2>
         </div>
         <p className="text-muted-foreground mb-8 text-sm italic max-w-3xl">
           To the best of our knowledge, the following are industry firsts achieved by CMPSBL® through the Memory Stream substrate. We welcome any evidence of prior art.
@@ -233,7 +233,7 @@ export default function InvestorsPublic() {
 
       {/* Product Portfolio */}
       <section className={`relative z-10 container mx-auto px-6 py-16 transition-all duration-1000 delay-400 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <h2 className="text-3xl font-semibold mb-4 text-foreground">The Memory Stream</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-foreground">The Memory Stream</h2>
         <p className="text-muted-foreground mb-10 text-lg max-w-2xl">
           40 primitives across 4 categories. A continuous substrate of evolving software — production-ready cognitive infrastructure.
         </p>
@@ -255,7 +255,7 @@ export default function InvestorsPublic() {
       {/* Investment Highlights */}
       <section className={`relative z-10 py-16 transition-all duration-1000 delay-500 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl font-semibold text-center mb-12 text-foreground">Investment Highlights</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-center mb-12 text-foreground">Investment Highlights</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {highlights.map((highlight, index) => (
               <Card key={index} className="p-6 bg-card/60 backdrop-blur border-border/50 hover:border-primary/20 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300">
@@ -295,7 +295,7 @@ export default function InvestorsPublic() {
       {/* CTA */}
       <section className={`relative z-10 container mx-auto px-6 py-20 transition-all duration-1000 delay-600 ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-semibold mb-4 text-foreground">Ready to Explore the Stream?</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4 text-foreground">Ready to Explore the Stream?</h2>
           <p className="text-base sm:text-lg text-muted-foreground mb-8">
             Download our investor deck, the user guide, or reach out directly.
           </p>

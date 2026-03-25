@@ -380,7 +380,7 @@ export default function GamingSubstrate() {
       <PublicNav />
 
       {/* Hero Section */}
-      <section className="relative py-20 sm:py-24 md:py-36 overflow-hidden">
+      <section className="relative py-20 sm:py-24 md:py-28 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-b from-neon-purple/5 via-transparent to-transparent" />
           <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px]" />

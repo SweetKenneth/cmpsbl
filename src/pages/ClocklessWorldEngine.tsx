@@ -49,7 +49,7 @@ export default function ClocklessWorldEngine() {
 
       <main className="min-h-screen bg-background">
         {/* Hero */}
-        <section className="relative py-20 md:py-32 overflow-hidden">
+        <section className="relative py-20 md:py-28 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="container mx-auto px-4 relative">
             <motion.div className="max-w-3xl mx-auto text-center" {...fadeUp}>

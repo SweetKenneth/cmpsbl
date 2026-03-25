@@ -46,7 +46,7 @@ export function FreeAccessibilityCTA({ variant = "full" }: FreeAccessibilityCTAP
             </span>
           </h2>
 
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
             We believe accessibility is a fundamental right, not a premium feature. 
             Scan your website, get AI-powered fixes, and make the web work for everyone — 
             100% free, forever.
