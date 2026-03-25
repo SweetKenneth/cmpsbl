@@ -2,7 +2,7 @@
 
 ---
 
-## Current State (v16.7.0 — CONTACT Epoch)
+## Current State (v17.0.0 — BELIEVER Epoch)
 
 The substrate is production-ready with:
 
@@ -18,6 +18,9 @@ The substrate is production-ready with:
 - Ascension software evolution engine
 - First-party analytics and developer portal
 - 11 @cmpsbl NPM packages across 4 tiers
+- Health Engine v2 with 51-entity weighted monitoring and circuit breakers
+- NEXUS router with free-tier rate limiting and 35% user reservation
+- CDM (Constant Discovery Mode) with autonomous pattern detection
 
 ---
 
