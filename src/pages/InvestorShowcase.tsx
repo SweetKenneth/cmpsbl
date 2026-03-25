@@ -9,6 +9,9 @@ import { Lock, Zap, Brain, ArrowRight, Sparkles, Shield, Eye, ChevronDown, Activ
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "@/components/investor/WowDemo";
 import { MemoryStreamDemo } from "@/components/investor/MemoryStreamDemo";
+import { EvolutionDemo } from "@/components/investor/EvolutionDemo";
+import { AscensionDemo } from "@/components/investor/AscensionDemo";
+import { BuildSubstrateDemo } from "@/components/investor/BuildSubstrateDemo";
 
 const SHOWCASE_PIN = "2026";
 
