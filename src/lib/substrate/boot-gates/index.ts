@@ -193,13 +193,20 @@ export async function checkBootGate(module: ModuleName): Promise<BootGateCheck> 
     });
   }
 
-  // Check 3: Database connectivity (critical tables)
-  const criticalTableCheck = await checkCriticalTables();
   checks.push(criticalTableCheck);
 
-  // Determine verdict
-  const failedChecks = checks.filter(c => !c.passed);
-  const depFailures = failedChecks.filter(c => c.name.startsWith('dep_'));
+  // Determine verdict — single pass over checks
+  let depFailed = false;
+  let anyFailed = false;
+  const failDetails: string[] = [];
+  const depFailDetails: string[] = [];
+  for (const c of checks) {
+    if (!c.passed) {
+      anyFailed = true;
+      if (c.name.startsWith('dep_')) { depFailed = true; if (c.detail) depFailDetails.push(c.detail); }
+      else { if (c.detail) failDetails.push(c.detail); }
+    }
+  }
 
   let verdict: GateVerdict = 'pass';
   let reason: string | undefined;
