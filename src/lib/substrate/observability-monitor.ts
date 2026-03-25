@@ -18,6 +18,7 @@
  */
 
 import { telemetryEngine } from './telemetry-engine';
+import { getDLQStats as getRippleDLQStats } from './ripple-dlq';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // TYPES
