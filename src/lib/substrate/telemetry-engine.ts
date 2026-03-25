@@ -16,6 +16,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { shouldSample as shouldSampleFn } from './telemetry-sampler';
 import type { EngineName, DispatchResult, DispatchErrorCode } from './engine-bus';
 
 // ═══════════════════════════════════════════════════════════════════════════════
