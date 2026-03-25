@@ -451,14 +451,9 @@ const ShowcaseContent = () => {
 // ─── Root Component ──────────────────────────────────────────
 const InvestorShowcase = () => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [showWow, setShowWow] = useState(false);
 
   if (!authenticated) {
     return <PinGate onSuccess={() => setAuthenticated(true)} />;
-  }
-
-  if (showWow) {
-    return <WowDemo onBack={() => setShowWow(false)} />;
   }
 
   return <ShowcaseContent />;
