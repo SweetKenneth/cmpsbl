@@ -219,3 +219,16 @@ export {
   type EffectSummary,
   type EffectTraceEntry,
 } from './effect-injection';
+
+// Capability Affinity System
+export {
+  detectArchetype,
+  classifyAndSelect,
+  selectCapabilities,
+  SUBSTRATE_CAPABILITIES,
+  type SoftwareArchetype,
+  type CapabilityStyle,
+  type SubstrateCapability,
+  type ArchetypeDetectionResult,
+  type AffinitySelection,
+} from './capability-affinity';
