@@ -6,7 +6,7 @@
  * PERF: Pure CSS animations — no framer-motion dependency.
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { PinGate } from '@/components/gates/PinGate';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -67,10 +67,6 @@ export default function ProprietaryEvolution() {
     <ExportPhase key="export" />,
   ];
 
-  // CSS class for phase transition
-  const phaseClass = transitioning
-    ? (direction > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right')
-    : (direction !== 0 ? (direction > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left') : 'ascension-phase-idle');
 
   return (
     <PinGate pin="041041" storageKey="gate-x-proprietary">
@@ -85,12 +81,11 @@ export default function ProprietaryEvolution() {
         <AscensionOnboarding />
 
         {/* ═══ COMPACT HERO (only on step 0) ═══ */}
-        <div
-          className={activeStep === 0 ? 'ascension-hero-enter' : 'ascension-hero-exit'}
-          style={{ overflow: 'hidden' }}
-        >
-          {activeStep === 0 && <AscensionHero />}
-        </div>
+        {showHero && (
+          <div className="ascension-hero-enter" style={{ overflow: 'hidden' }}>
+            <AscensionHero />
+          </div>
+        )}
 
         {/* ═══ WIZARD SECTION ═══ */}
         <section className="flex-1 flex flex-col">
@@ -114,7 +109,7 @@ export default function ProprietaryEvolution() {
           {/* Phase content — CSS animated transitions */}
           <main className="flex-1">
             <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
-              <div ref={phaseRef} className={phaseClass}>
+              <div className={phaseAnimClass}>
                 {phases[displayedStep]}
               </div>
 
