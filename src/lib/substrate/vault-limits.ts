@@ -33,7 +33,13 @@ export const VAULT_TIER_LIMITS: Record<ProductTier, VaultTierConfig> = {
   },
   architect: {
     pullsPerDay: 12,
-    vaultCapacity: -1, // unlimited
+    vaultCapacity: -1,
+    exportEnabled: true,
+    customPipelineSlotsEnabled: true,
+  },
+  enterprise: {
+    pullsPerDay: 50,
+    vaultCapacity: -1,
     exportEnabled: true,
     customPipelineSlotsEnabled: true,
   },
