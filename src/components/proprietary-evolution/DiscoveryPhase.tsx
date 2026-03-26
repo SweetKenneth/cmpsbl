@@ -253,9 +253,12 @@ export function DiscoveryPhase() {
         }
       }
 
+      // Auto-select all discovered capabilities
+      setSelectedCapabilities(new Set(results.map(r => r.capability)));
+
       toast({
         title: 'Collision sweep complete',
-        description: `Tested ${shuffledNodes.length} primitives. ${results.length > 0 ? 'Review discoveries in the vault below.' : 'No archetype matches — try richer code.'}`,
+        description: `Tested ${shuffledNodes.length} primitives. ${results.length > 0 ? 'Select capabilities in the marketplace below.' : 'No archetype matches — try richer code.'}`,
       });
     } catch (err) {
       console.error('Discovery error:', err);
