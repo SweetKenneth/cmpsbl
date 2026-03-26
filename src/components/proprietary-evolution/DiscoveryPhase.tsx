@@ -400,10 +400,11 @@ export function DiscoveryPhase() {
 
   if (!candidateNode) {
     return (
-      <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
+      <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30 space-y-3">
         <Zap className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No candidate node registered</p>
         <p className="text-xs text-muted-foreground mt-1">Complete the Ingest phase first to register a candidate</p>
+        <p className="text-[10px] text-primary font-mono">← Go to Step 1 (Ingest) to upload your code</p>
       </div>
     );
   }
