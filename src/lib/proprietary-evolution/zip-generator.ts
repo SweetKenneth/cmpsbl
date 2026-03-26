@@ -19,6 +19,7 @@ import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page'
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
+import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 
 export interface CapabilityForExport {
   id: string;
@@ -1583,10 +1584,10 @@ of your proprietary code and the substrate's cognitive architecture.
 
 | File | Purpose |
 |------|---------|
-| \`src/\` | Executable capability implementations (callable classes/functions) |
-| \`src/runtime-bridge.*\` | **Runtime Binding Layer** — connects capabilities to pipeline execution |
+| \`cmpsbl.*\` | **Single-file distribution** — Runtime + Effects + Bridge + API (drop-in) |
+| \`src/\` | Per-capability source files with dual-layer architecture |
 | \`test/\` | Auto-generated test harnesses |
-| \`_runtime/\` | CMPSBL® Mini-Runtime™ Engine (sealed, zero dependencies) |
+| \`original/\` | Your original source files (unchanged) |
 | \`manifest.json\` | Pack metadata and capability registry |
 | \`LICENSE\` | CMPSBL® Software License (plain text) |
 | \`LICENSE.html\` | CMPSBL® Software License (styled, printable) |
@@ -1596,22 +1597,24 @@ of your proprietary code and the substrate's cognitive architecture.
 ## ⚡ Quick Start
 
 \`\`\`
-// Each capability is a REAL execution entrypoint.
-// 1. Load the capability class
-// 2. Call execute(input) — runs the module chain pipeline
-// 3. Get structured output with trace and metadata
+// ONE FILE. Drop in, import, use.
+// cmpsbl.ts contains everything: Runtime, Effects, Bridge, and your capabilities.
+
+import { execute, executeChain, listCapabilities } from './cmpsbl';
+
+// Execute a specific capability
+const result = execute('my-capability', { query: 'hello' });
+
+// Or run a raw module chain
+const pipeline = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
 \`\`\`
 
 **How it works:**
 
-1. The capability class loads manifest metadata
-2. It delegates to the **Runtime Bridge** (\`runtime-bridge.*\`)
-3. The bridge executes the module chain as a sequential pipeline
-4. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
-5. You get back: \`{ success, output, trace, metadata }\`
-
-> This is **deterministic pipeline execution** — not a simulation.
-> Every module modifies context, adds trace data, and reflects its behavioral intent.
+1. The single file contains the **Mini-Runtime™**, all **Module Effects**, and the **Pipeline Bridge**
+2. Call \`execute(name, input)\` — it runs YOUR code first, then the cognitive pipeline
+3. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
+4. You get back: \`{ _original, _enriched, _pipeline, _cmpsbl }\`
 
 ## 🏆 Capabilities (${capabilities.length})
 
@@ -1628,28 +1631,14 @@ ${capabilities.map(c => {
 - Chain: \`${topTier.chain.join(' → ')}\`
 - Fingerprint: \`${topTier.fingerprint.slice(0, 12).toUpperCase()}\`
 
-## 🔗 Runtime Binding Layer (NEW)
+## 🚀 Single-File Architecture
 
-This pack includes a **language-native Runtime Bridge** that makes capabilities executable:
+Everything is in **one file** (\`cmpsbl.*\`):
 
-- **Pipeline Execution** — Sequential module chain processing with context passing
-- **Module Handlers** — Each substrate module has a real handler that modifies execution context
-- **Trace & Observability** — Every execution produces per-stage timing, status, and signal data
-- **Error Recovery** — Exceptions are caught per-stage with full error trace
-
-The bridge is a wrapper, not the full substrate. Capability execution happens through
-the deterministic pipeline model. For the full cognitive runtime, use the CMPSBL substrate directly.
-
-## 🚀 Mini-Runtime™ Engine (Sealed)
-
-This pack includes the **CMPSBL® Mini-Runtime™ Engine** as a sealed distribution:
-
-- **CJPI Scorer** — Crown Jewel Pipeline Index computation
-- **Saga Orchestrator** — Multi-step execution with compensation
-- **FSM Engine** — Finite state machines with guards and actions
-- **Discovery Engine** — Portable discovery reactor
-- **Manifest Parser** — Capability metadata parsing
-- **Structural Fingerprint** — SHA-256 identity verification
+- **§1 Mini-Runtime™** — CJPI scorer, Saga orchestrator, FSM engine, manifest parser, fingerprinting
+- **§2 Module Effects** — 40 primitive handlers, each transforms pipeline context
+- **§3 Runtime Bridge** — Pipeline executor with dependency ordering, trace & observability
+- **§4 Capability API** — \`execute()\`, \`executeChain()\`, \`validate()\`, \`selfTest()\`
 
 > ⚠️ The Mini-Runtime™ is a sealed proprietary component. Redistribution as a standalone
 > product is prohibited under the CMPSBL® Software License.
@@ -1711,17 +1700,14 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-capability-pack-${candidateName.toLowerCase()}-${timestamp}`;
 
-  // ═══ Cherry-Picked Capabilities — Only the primitives acquired ═══
-  const allChains = capabilities.map(c => c.chain);
-  const capabilitiesCode = generateCherryPickedCapabilities(allChains, targetLanguage, packName);
-  const capabilitiesExt = LANG_EXT[targetLanguage] || '.ts';
-  const capabilitiesFilename = targetLanguage === 'php' ? 'capabilities.php'
-    : targetLanguage === 'python' ? 'capabilities.py'
-    : `capabilities${capabilitiesExt}`;
+  // ═══ Unified Single-File Distribution ═══
+  // ONE file containing: Mini-Runtime™ + Module Effects + Runtime Bridge + Capability API
+  const unifiedCode = generateUnifiedCapabilityFile(capabilities, packName, targetLanguage, userSourceFiles);
+  const unifiedFilename = getUnifiedFilename(targetLanguage);
+  zip.file(unifiedFilename, unifiedCode);
 
-  // src/ — Single capabilities file + per-capability source files
+  // src/ — Per-capability source files (for granular access)
   const srcFolder = zip.folder('src')!;
-  srcFolder.file(capabilitiesFilename, capabilitiesCode);
   for (const cap of capabilities) {
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
   }
@@ -1796,7 +1782,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
-      { name: `src/${capabilitiesFilename}`, purpose: 'Acquired capabilities — plain functions, zero dependencies' },
+      { name: unifiedFilename, purpose: 'Single-file distribution — Runtime + Effects + Bridge + API (drop-in)' },
       { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
@@ -1805,10 +1791,10 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       { name: 'export-tier.json', purpose: 'Valuation summary' },
     ],
     quickStart: targetLanguage === 'php'
-      ? `require_once 'src/capabilities.php';\\n$result = CMPSBLCapabilities::runChain(['DEFENSE', 'BRAIN'], ['key' => 'value']);`
+      ? `require_once '${unifiedFilename}';\\n$result = cmpsbl_execute('my-capability', ['key' => 'value']);`
       : targetLanguage === 'python'
-      ? `from src.capabilities import run_chain\\nresult = await run_chain(['DEFENSE', 'BRAIN'], {"key": "value"})`
-      : `import { runChain, invoke } from './src/capabilities';\\nconst result = await runChain(['DEFENSE', 'BRAIN'], { key: 'value' });\\n// Or call one: await invoke('DEFENSE', { key: 'value' });`,
+      ? `from cmpsbl import execute\\nresult = execute('my-capability', {"key": "value"})`
+      : `import { execute, executeChain } from './${unifiedFilename.replace(/\\.ts$/, '')}';\\nconst result = execute('my-capability', { key: 'value' });`,
     category: 'proprietary-evolution',
     modules: [...new Set(capabilities.flatMap(c => c.chain))],
     version: '1.0.0',
