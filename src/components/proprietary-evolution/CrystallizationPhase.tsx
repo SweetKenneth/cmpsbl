@@ -47,17 +47,29 @@ export function CrystallizationPhase() {
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setLoading(false); return; }
+    // Fetch ascended memories (no limit) + top discoveries by CJPI
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data } = await (supabase as any)
+    const { data: ascendedData } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier, description')
       .eq('user_id', user.id)
-      .in('category', ['proprietary-discovery', 'proprietary-ascended'])
+      .eq('category', 'proprietary-ascended');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: discoveryData } = await (supabase as any)
+      .from('artifact_registry')
+      .select('id, name, metadata, tier, description')
+      .eq('user_id', user.id)
+      .eq('category', 'proprietary-discovery')
       .order('created_at', { ascending: false })
       .limit(500);
 
+    // Combine ascended + top 10 unascended by CJPI score
+    const allDiscoveries = [...(ascendedData || []), ...(discoveryData || [])];
+    const data = allDiscoveries;
+
     if (data) {
-      setDiscoveries((data as any[]).map((d: any) => {
+      const mapped = (data as any[]).map((d: any) => {
         const meta = d.metadata || {};
         return {
           id: d.id,
@@ -72,7 +84,16 @@ export function CrystallizationPhase() {
           archetypeName: meta.archetype_name || null,
           impactTier: meta.impact_tier || null,
         };
-      }));
+      });
+
+      // Keep all ascended + only top 10 unascended by CJPI
+      const ascended = mapped.filter(d => d.ascended);
+      const unascended = mapped
+        .filter(d => !d.ascended)
+        .sort((a, b) => b.cjpiScore - a.cjpiScore)
+        .slice(0, 10);
+
+      setDiscoveries([...ascended, ...unascended]);
     }
     setLoading(false);
   };
