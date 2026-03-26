@@ -6,7 +6,7 @@
  * The Auxiliary Node is a first-class participant with its own capability verbs and sector.
  */
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Layers, Cpu, Trash2 } from 'lucide-react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { CapabilityMarketplace, type CollisionResult as MarketplaceResult } from './CapabilityMarketplace';
