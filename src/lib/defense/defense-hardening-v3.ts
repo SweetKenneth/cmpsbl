@@ -164,11 +164,6 @@ export function recordKeyRotation(keyPrefix: string): void {
     record.rotationCount++;
     keyRotations.set(keyPrefix, record);
   }
-}ix);
-  if (record) {
-    record.lastRotatedAt = Date.now();
-    record.rotationCount++;
-  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -452,21 +452,6 @@ function getApplicableRule(resourceType: QuotaRule['resource_type'], action?: Qu
   // A more sophisticated system might return all applicable rules to be evaluated or the most restrictive one.
   return rules[0];
 }
-      // The `default` case in the `switch` statement already handles this and logs an error.
-      // This duplicate block is redundant and should be removed.
-      periodEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, -1); // Default to end of day
-  }
-  periodEnd.setMilliseconds(999); // Set to last millisecond of the current second to ensure full period coverage.
-
-  return {
-    resource_type: resourceType,
-    current_value: 0,
-    period_start: now.toISOString(),
-    period_end: periodEnd.toISOString(),
-    limit: limit,
-    percent_used: 0,
-  };
-}
 
 function isPeriodExpired(meter: UsageMeter): boolean {
   // For simplicity, relying on meter.period_end being accurately set by createNewMeter.

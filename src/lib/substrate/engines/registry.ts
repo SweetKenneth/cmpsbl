@@ -178,8 +178,7 @@ const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     executionMode: 'parallel',
     averageLatencyMs: 120,
     cacheable: true,
-  }
-    } // Added missing closing brace for the last engine definitionS'],
+  },
     layer: 'Orchestrator',
     synergyMultiplier: 2.6,
     complexityScore: 9,
