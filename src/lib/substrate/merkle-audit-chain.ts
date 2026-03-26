@@ -47,7 +47,7 @@ function syncHash(input: string): string {
 
 export async function appendAudit(module: string, action: string, data: unknown): Promise<AuditEntry> {
   const prevHash = chainCount > 0
-    ? chain[(chainHead - 1 + (chainCount <= CHAIN_CAP ? chainCount : CHAIN_CAP)) % CHAIN_CAP]?.hash ?? '0'.repeat(64)
+    ? chain[(chainHead - 1 + CHAIN_CAP) % CHAIN_CAP]?.hash ?? '0'.repeat(64)
     : '0'.repeat(64);
   const dataStr = typeof data === 'string' ? data : JSON.stringify(data);
   const payload = `${chainCount}:${prevHash}:${module}:${action}:${dataStr}`;
