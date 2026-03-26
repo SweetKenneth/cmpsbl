@@ -1,6 +1,6 @@
 /**
  * AI Patch Generator — NEXUS-powered code patch proposals
- * Routes through Lovable AI supported models for patch generation
+ * Routes through NEXUS free-tier fleet (≤$0.05/run, zero Lovable AI)
  * Part of the Evolution pipeline: Discovery → Generation → SEBA → Approval
  */
 
@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 // ── Types ──────────────────────────────────────────────────
 
-export type PatchCategory = 'fix' | 'refactor' | 'optimize' | 'security' | 'feature';
+export type PatchCategory = 'fix' | 'refactor' | 'optimize' | 'security' | 'feature' | 'suggest';
 
 export interface PatchCandidate {
   id: string;
@@ -50,12 +50,16 @@ export interface GeneratedPatch {
 
 // ── Model Selection ────────────────────────────────────────
 
+/** Cost ceiling: ≤$0.05 per evolution run. All models route through NEXUS free-tier fleet. */
+export const EVOLUTION_COST_CEILING = 0.05;
+
 const MODEL_MAP: Record<PatchCategory, { primary: string; fallback: string; temperature: number }> = {
-  security: { primary: 'openai/gpt-5', fallback: 'google/gemini-2.5-pro', temperature: 0.05 },
-  fix:      { primary: 'openai/gpt-5', fallback: 'google/gemini-2.5-flash', temperature: 0.10 },
-  refactor: { primary: 'google/gemini-2.5-pro', fallback: 'openai/gpt-5', temperature: 0.20 },
-  optimize: { primary: 'google/gemini-2.5-flash', fallback: 'openai/gpt-5-mini', temperature: 0.15 },
-  feature:  { primary: 'openai/gpt-5', fallback: 'google/gemini-2.5-pro', temperature: 0.30 },
+  security: { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'cerebras/llama3.1-8b',          temperature: 0.05 },
+  fix:      { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'groq/llama-3.1-8b-instant',     temperature: 0.10 },
+  refactor: { primary: 'cerebras/llama3.1-8b',           fallback: 'groq/llama-3.1-8b-instant',     temperature: 0.15 },
+  optimize: { primary: 'groq/llama-3.1-8b-instant',      fallback: 'cerebras/llama3.1-8b',          temperature: 0.10 },
+  feature:  { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'deepseek/deepseek-chat',        temperature: 0.25 },
+  suggest:  { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'cerebras/llama3.1-8b',          temperature: 0.35 },
 };
 
 function selectModel(category: PatchCategory) {

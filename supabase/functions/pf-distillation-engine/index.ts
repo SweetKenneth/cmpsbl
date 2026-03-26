@@ -55,9 +55,8 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL");
     const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-    const lovableKey = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (!supabaseUrl || !supabaseKey || !lovableKey) {
+    // NEXUS fleet routing — no external AI gateway keys needed
+    if (!supabaseUrl || !supabaseKey) {
       return new Response(
         JSON.stringify({ error: "Service unavailable — missing config" }),
         { status: 503, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -108,17 +107,17 @@ Deno.serve(async (req) => {
 
     // ─── 1. Memory Crystallization ─────────────────────────────────
     if ((action === "all" || action === "crystallize") && usedToday.crystallization < BUDGET.crystallization) {
-      results.crystallization = await runCrystallization(supabase, lovableKey, BATCH.crystallization);
+      results.crystallization = await runCrystallization(supabase, BATCH.crystallization);
     }
 
     // ─── 2. Teacher-Student Routing ────────────────────────────────
     if ((action === "all" || action === "teacher_student") && usedToday.teacher_student < BUDGET.teacher_student) {
-      results.teacher_student = await runTeacherStudent(supabase, lovableKey, BATCH.teacher_student);
+      results.teacher_student = await runTeacherStudent(supabase, BATCH.teacher_student);
     }
 
     // ─── 3. Cross-Module Transfer ──────────────────────────────────
     if ((action === "all" || action === "cross_module") && usedToday.cross_module < BUDGET.cross_module) {
-      results.cross_module = await runCrossModuleTransfer(supabase, lovableKey, BATCH.cross_module);
+      results.cross_module = await runCrossModuleTransfer(supabase, BATCH.cross_module);
     }
 
     const elapsed = Date.now() - startTime;
@@ -149,7 +148,7 @@ Deno.serve(async (req) => {
 // 1. MEMORY CRYSTALLIZATION
 // ════════════════════════════════════════════════════════════════════
 
-async function runCrystallization(supabase: any, apiKey: string, batchSize: number) {
+async function runCrystallization(supabase: any, batchSize: number) {
   const runStart = Date.now();
   let callsUsed = 0;
   let crystalsCreated = 0;
@@ -217,7 +216,7 @@ Confidence: <0.0-1.0>
 Key Tags: <comma-separated>`;
 
       try {
-        const response = await callTeacher(apiKey, prompt);
+        const response = await callTeacher(prompt);
         callsUsed++;
 
         if (response) {
@@ -273,7 +272,7 @@ Key Tags: <comma-separated>`;
 // 2. TEACHER-STUDENT ROUTING
 // ════════════════════════════════════════════════════════════════════
 
-async function runTeacherStudent(supabase: any, apiKey: string, batchSize: number) {
+async function runTeacherStudent(supabase: any, batchSize: number) {
   const runStart = Date.now();
   let callsUsed = 0;
   let tracesCreated = 0;
@@ -337,7 +336,7 @@ Pattern Confidence: <0.0-1.0>
 Token Savings Estimate: <percentage of tokens saved vs full reasoning>`;
 
       try {
-        const response = await callTeacher(apiKey, prompt);
+        const response = await callTeacher(prompt);
         callsUsed++;
 
         if (response) {
@@ -382,7 +381,7 @@ Token Savings Estimate: <percentage of tokens saved vs full reasoning>`;
 // 3. CROSS-MODULE TRANSFER
 // ════════════════════════════════════════════════════════════════════
 
-async function runCrossModuleTransfer(supabase: any, apiKey: string, batchSize: number) {
+async function runCrossModuleTransfer(supabase: any, batchSize: number) {
   const runStart = Date.now();
   let callsUsed = 0;
   let heuristicsCreated = 0;
