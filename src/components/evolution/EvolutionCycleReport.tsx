@@ -457,6 +457,8 @@ export default function EvolutionCycleReport() {
             { label: "B4 P4 (25, GPT)", rate: 8, color: "text-destructive" },
             { label: "B5 P1 (13, ENCODE)", rate: 62, color: "text-cyan-400" },
             { label: "B5 P2 (12, ENCODE)", rate: 67, color: "text-cyan-400" },
+            { label: "B6 ENCODE (25, H2H)", rate: 100, color: "text-emerald-400" },
+            { label: "B6 GPT (25, H2H)", rate: 0, color: "text-destructive" },
           ].map((p, i) => (
             <div key={i} className="space-y-1">
               <div className="flex items-center justify-between text-xs gap-2">
