@@ -62,6 +62,8 @@ export function CrystallizationPhase() {
           ascended: meta.ascended === true,
           description: d.description || '',
           chain: (meta.chain as string[]) || [meta.node_a, meta.node_b].filter(Boolean),
+          archetypeName: meta.archetype_name || null,
+          impactTier: meta.impact_tier || null,
         };
       }));
     }
