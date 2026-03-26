@@ -86,11 +86,11 @@ async function gatherSystemContext(): Promise<string> {
   try {
     const { data: runs } = await supabase
       .from('evolution_runs')
-      .select('title, status, created_at')
+      .select('id, status, created_at')
       .order('created_at', { ascending: false })
       .limit(10);
     if (runs?.length) {
-      contextParts.push(`Recent evolution runs:\n${runs.map(r => `- ${r.title} (${r.status})`).join('\n')}`);
+      contextParts.push(`Recent evolution runs:\n${runs.map(r => `- ${r.id.slice(0, 8)} (${r.status})`).join('\n')}`);
     }
   } catch { /* non-critical */ }
 
