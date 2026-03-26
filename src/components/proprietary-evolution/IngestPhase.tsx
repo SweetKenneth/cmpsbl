@@ -237,6 +237,11 @@ export function IngestPhase() {
     if (files.length === 0) return;
     setParsing(true);
 
+    // Snap to animation area
+    setTimeout(() => {
+      document.getElementById('ingest-orbital')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+
     try {
       const analysis = await analyzeUploadedFiles(files);
       setParsedNode(analysis);
@@ -452,7 +457,7 @@ export function IngestPhase() {
               return (
                 <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/20 text-xs">
                   <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
-                  <span className="text-foreground/80 truncate font-mono">{f.name}</span>
+                  <span className="text-foreground/80 break-words font-mono">{f.name}</span>
                   {lang && <span className="text-[9px] text-primary/60 font-mono shrink-0">{lang}</span>}
                   <span className="ml-auto text-muted-foreground shrink-0">{(f.size / 1024).toFixed(1)}KB</span>
                 </div>
@@ -465,6 +470,7 @@ export function IngestPhase() {
 
       {/* ═══ ORBITAL ASSEMBLY VISUALIZATION ═══ */}
       {(files.length > 0 || parsedNode) && (
+        <div id="ingest-orbital">
         <OrbitalAssembly
           state={
             parsing ? 'scanning'
@@ -475,6 +481,7 @@ export function IngestPhase() {
           capabilities={capSurface?.capabilities}
           nodeName={capSurface?.nodeName}
         />
+        </div>
       )}
 
       {/* Parsed Node Card */}

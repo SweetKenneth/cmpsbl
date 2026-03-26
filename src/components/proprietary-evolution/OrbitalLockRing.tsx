@@ -232,8 +232,8 @@ export function OrbitalLockRing({
               )}>
                 {d.cjpiScore}
               </span>
-              <span className="text-[8px] text-foreground/80 truncate leading-tight">
-                {d.name.replace(/_/g, ' ').slice(0, 14)}
+              <span className="text-[8px] text-foreground/80 break-words leading-tight text-left">
+                {d.name.replace(/_/g, ' ')}
               </span>
             </button>
           );
