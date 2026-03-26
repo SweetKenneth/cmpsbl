@@ -154,18 +154,18 @@ export function ShowcaseMobile() {
 
         {/* ── Why CMPSBL Wins ── */}
         <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.3 }}>
-          <div className="rounded-2xl border border-border/30 bg-card/60 backdrop-blur-sm p-5 space-y-4 shadow-sm">
+          <div className="rounded-2xl border border-primary/20 bg-card/60 backdrop-blur-sm p-5 space-y-4 shadow-sm" style={{ background: "linear-gradient(135deg, hsl(var(--card) / 0.6), hsl(var(--primary) / 0.03))" }}>
             <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Why CMPSBL Wins</h2>
             <div className="space-y-2.5">
               {[
-                { label: "Self-discovering", desc: "Finds new software capabilities autonomously", color: "text-primary" },
-                { label: "Self-improving", desc: "AI patches and upgrades its own code", color: "text-neon-cyan" },
-                { label: "Exportable intelligence", desc: "Every discovery becomes a product", color: "text-neon-magenta" },
-                { label: "Developer platform", desc: "Build on the substrate, ship anywhere", color: "text-neon-purple" },
-                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "text-neon-amber" },
+                { label: "Self-discovering", desc: "Finds new software capabilities autonomously", color: "bg-primary" },
+                { label: "Self-improving", desc: "AI patches and upgrades its own code", color: "bg-[hsl(var(--neon-cyan))]" },
+                { label: "25-language export", desc: "Single-file, zero-dependency distributions", color: "bg-[hsl(var(--neon-magenta))]" },
+                { label: "IP-protected", desc: "Hex-encoded proprietary logic in every export", color: "bg-[hsl(var(--neon-purple))]" },
+                { label: "Governed & secure", desc: "Constitutional AI with enterprise security", color: "bg-[hsl(var(--neon-amber))]" },
               ].map(({ label, desc, color }) => (
                 <div key={label} className="flex items-start gap-3 py-1">
-                  <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 bg-current ${color}`} />
+                  <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${color}`} />
                   <div>
                     <p className="text-sm font-semibold text-foreground">{label}</p>
                     <p className="text-xs text-muted-foreground">{desc}</p>
