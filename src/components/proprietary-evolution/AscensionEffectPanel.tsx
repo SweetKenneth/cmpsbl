@@ -240,7 +240,7 @@ function StatCard({
   color?: string;
 }) {
   return (
-    <div className="rounded-lg border border-border/40 bg-card/50 p-2.5 text-center">
+    <div className="rounded-lg border border-border/40 bg-card/50 backdrop-blur-sm p-2.5 text-center transition-colors hover:border-border/60">
       <Icon className={cn('w-3.5 h-3.5 mx-auto mb-1', color || 'text-muted-foreground')} />
       <div className="text-sm font-bold tabular-nums text-foreground">{value}</div>
       <div className="text-[10px] text-muted-foreground">{label}</div>
@@ -267,10 +267,10 @@ function EffectRow({ entry }: { entry: AscensionEffectEntry }) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-bold truncate">{entry.nodeName}</span>
+          <span className="text-xs font-bold break-words">{entry.nodeName}</span>
           <span className="text-[10px] font-mono opacity-60">{entry.language}</span>
         </div>
-        <p className="text-[11px] opacity-80 truncate mt-0.5">
+        <p className="text-[11px] opacity-80 break-words leading-relaxed mt-0.5">
           {summary?.shortSummary ?? `${entry.nodeName} — awaiting effect injection`}
         </p>
       </div>
