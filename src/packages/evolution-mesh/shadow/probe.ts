@@ -21,20 +21,36 @@ export async function shadow<TInput extends Record<string, unknown>, TOutput>(
   input: TInput,
 ): Promise<ShadowResult<TOutput>> {
   const baselineStart = performance.now();
-  const baselineResult = await baseline(input);
-  const baselineDuration = performance.now() - baselineStart;
-
-  let candidateResult: TOutput | null = null;
-  let candidateError: string | undefined;
   const candidateStart = performance.now();
 
-  try {
-    candidateResult = await candidate(input);
-  } catch (err) {
-    candidateError = err instanceof Error ? err.message : 'unknown';
+  const baselineRun = baseline(input).then((result) => ({
+    result,
+    duration: performance.now() - baselineStart,
+  }));
+
+  const candidateRun = candidate(input)
+    .then((result) => ({
+      result,
+      error: undefined,
+      duration: performance.now() - candidateStart,
+    }))
+    .catch((err) => ({
+      result: null,
+      error: err instanceof Error ? err.message : 'unknown',
+      duration: performance.now() - candidateStart,
+    }));
+
+  const [baselineOutcome, candidateOutcome] = await Promise.allSettled([baselineRun, candidateRun]);
+
+  if (baselineOutcome.status === 'rejected') {
+    throw baselineOutcome.reason;
   }
 
-  const candidateDuration = performance.now() - candidateStart;
+  const baselineResult = baselineOutcome.value.result;
+  const baselineDuration = baselineOutcome.value.duration;
+  const candidateResult = candidateOutcome.status === 'fulfilled' ? candidateOutcome.value.result : null;
+  const candidateError = candidateOutcome.status === 'fulfilled' ? candidateOutcome.value.error : 'unknown';
+  const candidateDuration = candidateOutcome.status === 'fulfilled' ? candidateOutcome.value.duration : performance.now() - candidateStart;
 
   // Simple equality check (deep comparison would be a premium feature)
   let match = false;
