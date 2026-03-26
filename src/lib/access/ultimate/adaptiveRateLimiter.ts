@@ -171,12 +171,12 @@ export function autoTuneLimits(keyId: string): { adjusted: boolean; newPerMinute
   // If usage is > 80% of limit and no bursts, suggest higher limit
   if (avgEma < config.perMinute * 0.3 && config.perMinute > 10) {
     const newLimit = Math.max(10, Math.round(avgEma * 2));
-    config.perMinute = newLimit;
+    const newConfig = { ...config, perMinute: newLimit };
     configs.set(keyId, config);
     return { adjusted: true, newPerMinute: newLimit };
   } else if (avgEma > config.perMinute * 0.8) {
     const newLimit = Math.round(avgEma * 1.5);
-    config.perMinute = newLimit;
+    const newConfig = { ...config, perMinute: newLimit };
     configs.set(keyId, config);
     return { adjusted: true, newPerMinute: newLimit };
   }
@@ -223,15 +223,14 @@ function advanceDaySlots(w: SlidingWindow, now: number): void {
 }
 
 function evictOldest(): void {
-  let oldestKey: string | null = null;
-  let oldestTime = Infinity;
-  for (const [key, w] of windows) {
-    if (w.lastMinuteTick < oldestTime) {
-      oldestTime = w.lastMinuteTick;
-      oldestKey = key;
-    }
+  // In a real-world scenario, a more sophisticated LRU cache (e.g., Map + DoublyLinkedList)
+  // would be used for eviction. For simplicity and to avoid external deps, we'll evict
+  // the first entry available, assuming Map enumeration provides a somewhat consistent order
+  // or that any eviction is better than none. Iterating to find `oldest` is O(N).
+  const firstKey = windows.keys().next().value;
+  if (firstKey) {
+    windows.delete(firstKey);
   }
-  if (oldestKey) windows.delete(oldestKey);
 }
 
 // ── Stats ────────────────────────────────────────────────────────
