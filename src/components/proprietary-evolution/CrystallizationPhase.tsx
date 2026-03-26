@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { getImpactTierStyle, type ImpactTier } from '@/lib/discovery/chain-archetypes';
 
 interface Discovery {
   id: string;
@@ -21,6 +22,8 @@ interface Discovery {
   ascended: boolean;
   description: string;
   chain: string[];
+  archetypeName: string | null;
+  impactTier: ImpactTier | null;
 }
 
 export function CrystallizationPhase() {
