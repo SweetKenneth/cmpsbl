@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   FileText, Printer, ArrowLeft, ChevronRight, Download, 
   BookOpen, Shield, BarChart3, Zap, Brain, Users, AlertTriangle, 
-  Sparkles, Target
+  Sparkles, Target, GitBranch
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -280,6 +280,107 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       {
         heading: "Risk-Adjusted Range",
         content: "<strong>Floor:</strong> $13–29M (infrastructure + IP only, 30–40% founder discount). <strong>Mid-Range:</strong> $42–60M (+ revenue architecture, marketplace). <strong>Ceiling:</strong> $132–268M (+ Ascension, category creation, compounding data moat). The founder discount decreases toward 0% with each milestone: first customer, first hire, $100K ARR, institutional investment."
+      },
+    ]
+  },
+  {
+    id: "evolution-engine",
+    number: "11",
+    title: "Evolution Engine",
+    icon: <GitBranch className="w-4 h-4" />,
+    accentColor: "hsl(var(--neon-green))",
+    sections: [
+      {
+        heading: "Self-Improving Software",
+        content: "CMPSBL's Evolution Engine autonomously detects improvement opportunities, generates patches, validates them through a governance pipeline, applies them to production, and learns from the result. Over 340 controlled cycles, it found and fixed <strong>166 real production bugs</strong> for a total cost of <strong>$0.06</strong>."
+      },
+      {
+        heading: "Engine Benchmark (Deduped)",
+        content: "",
+        table: {
+          headers: ["Engine", "Unique Runs", "Applied", "True Apply Rate"],
+          rows: [
+            ["ENCODE (cognitive pipeline)", "50", "41", "82%"],
+            ["Free-Tier (Cerebras/Groq)", "100", "56", "56% — deprecated"],
+            ["GPT + File Context", "65", "36", "55%"],
+            ["GPT Blind (no context)", "35", "6", "17%"],
+            ["GPT Direct (H2H test)", "25", "0", "0%"],
+          ]
+        }
+      },
+      {
+        heading: "Controlled Head-to-Head",
+        content: "25 identical substrate files processed by both ENCODE and raw GPT-4o-mini. <strong>ENCODE: 100% (25/25). GPT Direct: 0% (0/25).</strong> Same model, same files. The cognitive pipeline — not the LLM — is the differentiator."
+      },
+      {
+        heading: "166 Bugs by Category",
+        content: "",
+        table: {
+          headers: ["Category", "Count", "Examples"],
+          rows: [
+            ["Crash-Level Defects", "23", "Division by zero, null pointer, recursive stack overflow, missing WHERE clause"],
+            ["Security & Validation", "31", "Unclamped confidence, missing auth, invalid state transitions"],
+            ["Error Handling", "48", "Missing try/catch, empty fallbacks, fragile resets"],
+            ["Performance", "34", "O(n)→O(1) lookups, memoization, early returns"],
+            ["Observability", "30", "Missing metrics, silent failures, untracked regressions"],
+          ]
+        }
+      },
+      {
+        heading: "Cost Analysis",
+        content: "",
+        table: {
+          headers: ["Metric", "Value"],
+          rows: [
+            ["Total Cycles", "340"],
+            ["Total Cost", "$0.06"],
+            ["Cost per Bug", "$0.00036"],
+            ["Equivalent Human Cost", "$6,225 (senior engineer, $150/hr)"],
+            ["Cost Reduction", "99.999%"],
+          ]
+        }
+      },
+      {
+        heading: "Market Opportunity",
+        content: "",
+        table: {
+          headers: ["Segment", "TAM by 2028", "CMPSBL Advantage"],
+          rows: [
+            ["DevOps/CI-CD", "$15.5B", "Plugs into existing pipelines"],
+            ["AppSec Testing", "$12.9B", "Finds AND fixes — not just reports"],
+            ["AI Code Assistants", "$6.5B", "Autonomous, no human in the loop"],
+            ["Tech Debt Mgmt", "Emerging", "First to quantify and resolve autonomously"],
+          ]
+        }
+      },
+      {
+        heading: "Competitive Landscape",
+        content: "",
+        table: {
+          headers: ["Competitor", "Approach", "CMPSBL Advantage"],
+          rows: [
+            ["GitHub Copilot", "AI suggestion", "Fully autonomous loop — no human needed"],
+            ["Cursor", "AI editor", "System improves itself without developer"],
+            ["Snyk / SonarQube", "Static analysis", "Finds AND fixes; validation eliminates false positives"],
+            ["Devin (Cognition)", "AI engineer", "Purpose-built substrate with 40-node cognitive mesh"],
+            ["Kodex AI", "Auto PRs", "Brain memory compounds — each cycle is smarter"],
+          ]
+        }
+      },
+      {
+        heading: "Why This Can't Be Replicated",
+        content: "<strong>The substrate is the product AND the testbed</strong> — every improvement to the evolution engine improves the thing running it. <strong>Brain memory compounds</strong> — 166 successful patches = 166 learned examples; competitors start from zero. <strong>Pipeline is the moat</strong> — Batch 6 proves it: same model, same files, ENCODE 100%, raw GPT 0%. <strong>Cost is inarguable</strong> — $0.06 for 166 fixes eliminates all economic objection."
+      },
+      {
+        heading: "Real-World Savings",
+        content: "",
+        table: {
+          headers: ["Company Size", "Manual Cost", "CMPSBL Cost", "Annual Savings"],
+          rows: [
+            ["Series B (500K lines)", "$75,000/yr", "<$10/yr", "$75,000+"],
+            ["Enterprise (5M+ lines)", "$800,000+/yr", "<$100/yr", "$800,000+"],
+          ]
+        }
       },
     ]
   },
