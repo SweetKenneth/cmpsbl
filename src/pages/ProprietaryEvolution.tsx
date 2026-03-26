@@ -34,22 +34,28 @@ const PHASE_DESCRIPTIONS = [
 export default function ProprietaryEvolution() {
   const [activeStep, setActiveStep] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
   const [displayedStep, setDisplayedStep] = useState(0);
-  const phaseRef = useRef<HTMLDivElement>(null);
+  const [phaseAnimClass, setPhaseAnimClass] = useState('ascension-phase-idle');
+  const [showHero, setShowHero] = useState(true);
 
   const goTo = useCallback((step: number) => {
-    if (step === activeStep || transitioning) return;
-    setDirection(step > activeStep ? 1 : -1);
-    setTransitioning(true);
-    // Start exit animation
+    if (step === activeStep) return;
+    const dir = step > activeStep ? 1 : -1;
+    setDirection(dir);
+
+    // Exit animation
+    setPhaseAnimClass(dir > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right');
+
     setTimeout(() => {
       setDisplayedStep(step);
       setActiveStep(step);
-      // Enter animation starts via CSS
-      setTimeout(() => setTransitioning(false), 300);
+      setShowHero(step === 0);
+      // Enter animation
+      setPhaseAnimClass(dir > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left');
+
+      setTimeout(() => setPhaseAnimClass('ascension-phase-idle'), 350);
     }, 250);
-  }, [activeStep, transitioning]);
+  }, [activeStep]);
 
   const next = () => { if (activeStep < 3) goTo(activeStep + 1); };
   const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
