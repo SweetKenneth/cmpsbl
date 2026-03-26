@@ -1617,7 +1617,7 @@ const pipeline = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
 
 **How it works:**
 
-1. The single file contains the **Mini-Runtime™**, all **Module Effects**, and the **Pipeline Bridge**
+1. **Everything is built into one file** — Mini-Runtime™, Module Effects, Pipeline Bridge are all embedded. No external runtime to install.
 2. Call \`execute(name, input)\` — it runs YOUR code first, then the cognitive pipeline
 3. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
 4. You get back: \`{ _original, _enriched, _pipeline, _cmpsbl }\`
@@ -1639,15 +1639,15 @@ ${capabilities.map(c => {
 
 ## 🚀 Single-File Architecture
 
-Everything is in **one file** (\`cmpsbl.*\`):
+Everything is **built into one file** (\`cmpsbl.*\`) — no external dependencies or runtime installation required:
 
-- **§1 Mini-Runtime™** — CJPI scorer, Saga orchestrator, FSM engine, manifest parser, fingerprinting
-- **§2 Module Effects** — 40 primitive handlers, each transforms pipeline context
-- **§3 Runtime Bridge** — Pipeline executor with dependency ordering, trace & observability
+- **§1 Mini-Runtime™** — CJPI scorer, Saga orchestrator, FSM engine, manifest parser, fingerprinting (BUILT-IN)
+- **§2 Module Effects** — 40 primitive handlers, each transforms pipeline context (BUILT-IN)
+- **§3 Runtime Bridge** — Pipeline executor with dependency ordering, trace & observability (BUILT-IN)
 - **§4 Capability API** — \`execute()\`, \`executeChain()\`, \`validate()\`, \`selfTest()\`
 
-> ⚠️ The Mini-Runtime™ is a sealed proprietary component. Redistribution as a standalone
-> product is prohibited under the CMPSBL® Software License.
+> ⚠️ The Mini-Runtime™ is a sealed proprietary component embedded in this file.
+> Extraction, redistribution, or decompilation is prohibited under the CMPSBL® Software License.
 
 ## 🔁 Recursive Evolution
 
