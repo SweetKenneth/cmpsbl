@@ -57,7 +57,7 @@ export interface ParsedCommand {
 export interface CommandResult {
   success: boolean;
   message: string;
-  data?: Record<string, unknown> | unknown[];
+  data?: unknown;
   suggestions?: string[];
 }
 
