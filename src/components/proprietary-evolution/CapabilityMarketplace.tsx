@@ -2,17 +2,25 @@
  * Capability Marketplace — Dynamic Bundle Clustering with Drill-Down
  * 
  * Bundles EMERGE from actual discovery results rather than mapping to static categories.
- * Different code produces different bundle shapes. No pre-defined groups.
+ * Each bundle generates a dynamic system identity based on its dominant nodes and depth.
  */
 
 import { useState, useMemo, useCallback } from 'react';
 import {
   Check, Minus, Package, ChevronDown, ChevronRight, Link2, Trash2, Loader2,
-  Zap, Layers,
+  Zap, Layers, Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
+import {
+  resolveArchetypeName,
+  generateBundleIdentity,
+  generateMatchRationale,
+  getImpactTier,
+  getImpactTierStyle,
+  type ImpactTier,
+} from '@/lib/discovery/chain-archetypes';
 
 // ═══ TYPES ═══
 
@@ -31,40 +39,23 @@ export interface CollisionResult {
 
 interface DynamicBundle {
   id: string;
-  /** The primary substrate node that anchors this cluster */
   anchorNode: string;
-  /** Human-readable label for the cluster */
+  /** Dynamic system identity — generated, not predefined */
   label: string;
-  /** Short description derived from the capabilities within */
+  /** Archetype name if resolved */
+  archetypeName: string | null;
+  /** Impact classification */
+  impactTier: ImpactTier;
   summary: string;
   capabilities: CollisionResult[];
   avgCjpi: number;
   maxCjpi: number;
   topTier: string;
-  /** How many unique substrate nodes participate */
   nodeSpan: number;
+  avgDepth: number;
+  /** Dominant nodes driving this bundle's identity */
+  dominantNodes: string[];
 }
-
-// ═══ NODE LABELS — for dynamic naming ═══
-
-const NODE_LABEL: Record<string, string> = {
-  CORE: 'System Orchestration', SYSTEM: 'Lifecycle Management', BRAIN: 'Autonomous Reasoning',
-  MEMORY: 'Persistent Recall', DREAM: 'Generative Synthesis',
-  RIPPLE: 'Event Propagation', ACCESS: 'Entitlement Control', IDENTITY: 'Entity Resolution',
-  RELAY: 'Webhook Dispatch', AUDIT: 'Integrity Ledger', NERVE: 'Signal Consensus',
-  DECODE: 'Intent Parsing', ENCODE: 'Code Generation', VISION: 'Observability Rendering',
-  CORTEX: 'Workflow Orchestration', NEXUS: 'AI Routing', ECONOMY: 'Cost Metering',
-  SANDBOX: 'Isolated Execution', INCLUSIVE: 'Accessibility Compliance', MEDIC: 'Diagnostic Repair',
-  INTEGRATION: 'Dependency Resolution',
-  SOVEREIGN: 'Data Sovereignty', ORACLE: 'Predictive Forecasting', CONSCIENCE: 'Bias Detection',
-  TREATY: 'Compliance Negotiation',
-  COMPASS: 'Navigation Mapping', ECHO: 'Temporal Replay', REFLEX: 'Edge Reaction',
-  FORGE: 'Artifact Scaffolding', LINGUA: 'Language Translation', HARVEST: 'Data Acquisition',
-  EVOLUTION: 'Adaptive Optimization', SHADOW: 'Divergence Testing', PHANTOM: 'Stealth Anonymization',
-  IMMUNITY: 'Resilience Hardening', INTENT: 'Action Planning',
-  GOVERNANCE: 'Policy Enforcement', ATLAS: 'Capability Governance', ENGINEER: 'Performance Optimization',
-  DEFENSE: 'Threat Detection',
-};
 
 // ═══ TIER HELPERS ═══
 
@@ -83,36 +74,31 @@ const tierRank = (tier: string): number => {
 
 // ═══ DYNAMIC CLUSTERING ═══
 
-/**
- * Clusters discoveries by their primary substrate interaction node (nodeB / chain[1]).
- * Merges small clusters (≤1 item) into their strongest neighbor.
- * Result: bundles that genuinely reflect what was discovered, not predefined groups.
- */
 function clusterCapabilities(results: CollisionResult[]): DynamicBundle[] {
-  // Step 1: Group by primary substrate node + depth tier
-  // Depth tiers: shallow (2N), mid (3-4N), deep (5N+)
-  const depthLabel = (d: number) => d <= 2 ? 'shallow' : d <= 4 ? 'mid' : 'deep';
-  const depthTitle = (d: string) => d === 'shallow' ? 'Direct' : d === 'mid' ? 'Chain' : 'Deep Chain';
+  // Group by primary substrate node + depth tier
+  const depthBucket = (d: number) => d <= 2 ? 'shallow' : d <= 4 ? 'mid' : 'deep';
 
   const compositeGroups = new Map<string, CollisionResult[]>();
 
   for (const r of results) {
     const primaryNode = r.nodeB || (r.chain && r.chain.length > 1 ? r.chain[1] : 'UNKNOWN');
-    const depth = depthLabel(r.chainDepth || 2);
+    const depth = depthBucket(r.chainDepth || 2);
     const key = `${primaryNode}::${depth}`;
     const existing = compositeGroups.get(key) || [];
     existing.push(r);
     compositeGroups.set(key, existing);
   }
 
-  // Step 2: Build initial bundles
+  // Build initial bundles
   const bundles: DynamicBundle[] = [];
   for (const [compositeKey, caps] of compositeGroups) {
-    const [node, depth] = compositeKey.split('::');
+    const [node] = compositeKey.split('::');
     const avgCjpi = Math.round(caps.reduce((s, c) => s + c.cjpiScore, 0) / caps.length);
     const maxCjpi = Math.max(...caps.map(c => c.cjpiScore));
+    const avgDepth = caps.reduce((s, c) => s + (c.chainDepth || 2), 0) / caps.length;
     const sortedCaps = [...caps].sort((a, b) => b.cjpiScore - a.cjpiScore);
 
+    // Collect all participating nodes (excluding the user's candidate)
     const allNodes = new Set<string>();
     for (const c of caps) {
       if (c.chain) c.chain.forEach(n => allNodes.add(n));
@@ -120,8 +106,25 @@ function clusterCapabilities(results: CollisionResult[]): DynamicBundle[] {
     }
     if (caps[0]?.nodeA) allNodes.delete(caps[0].nodeA);
 
+    // Determine dominant nodes by frequency
+    const nodeFreq = new Map<string, number>();
+    for (const c of caps) {
+      const nodes = c.chain ? c.chain.filter(n => n !== c.nodeA) : [c.nodeB];
+      for (const n of nodes) {
+        nodeFreq.set(n, (nodeFreq.get(n) || 0) + 1);
+      }
+    }
+    const dominantNodes = [...nodeFreq.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([n]) => n);
+
     const topTier = sortedCaps[0]?.tier || 'mint';
-    const nodeLabel = NODE_LABEL[node] || node;
+    const impactTier = getImpactTier(Math.round(avgDepth));
+    const label = generateBundleIdentity(dominantNodes, avgDepth);
+    const archetypeName = dominantNodes.length >= 2
+      ? resolveArchetypeName(dominantNodes.slice(0, 2))
+      : null;
 
     const capNames = sortedCaps.slice(0, 3).map(c =>
       c.capability.replace(/_Plus_\w+/g, '').replace(/_With_\w+/g, '').replace(/_/g, ' ')
@@ -133,17 +136,21 @@ function clusterCapabilities(results: CollisionResult[]): DynamicBundle[] {
     bundles.push({
       id: compositeKey,
       anchorNode: node,
-      label: `${depthTitle(depth)} ${nodeLabel}`,
+      label,
+      archetypeName,
+      impactTier,
       summary,
       capabilities: sortedCaps,
       avgCjpi,
       maxCjpi,
       topTier,
       nodeSpan: allNodes.size,
+      avgDepth,
+      dominantNodes,
     });
   }
 
-  // Step 3: Merge micro-clusters (1 capability) into their best neighbor
+  // Merge micro-clusters (1 capability) into strongest neighbor
   const MIN_CLUSTER_SIZE = 2;
   const merged: DynamicBundle[] = [];
   const microClusters: DynamicBundle[] = [];
@@ -156,14 +163,11 @@ function clusterCapabilities(results: CollisionResult[]): DynamicBundle[] {
     }
   }
 
-  // If we have nowhere to merge, keep micro-clusters as-is
   if (merged.length === 0) {
     return bundles.sort((a, b) => b.maxCjpi - a.maxCjpi);
   }
 
-  // Merge each micro-cluster into the bundle with the highest affinity
   for (const micro of microClusters) {
-    // Find the bundle sharing the most chain nodes
     let bestBundle = merged[0];
     let bestOverlap = 0;
 
@@ -231,7 +235,6 @@ export function CapabilityMarketplace({
   const [expandedBundle, setExpandedBundle] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'bundles' | 'individual'>('bundles');
 
-  // Dynamically cluster based on actual results
   const bundles = useMemo(() => clusterCapabilities(results), [results]);
 
   const toggleCapability = useCallback((capName: string) => {
@@ -276,7 +279,7 @@ export function CapabilityMarketplace({
         <div className="flex items-center gap-2">
           <Package className="w-4 h-4 text-primary" />
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Discovered Capabilities — {bundles.length} {bundles.length === 1 ? 'cluster' : 'clusters'}
+            Capability Systems — {bundles.length} discovered
           </h3>
         </div>
 
@@ -289,7 +292,7 @@ export function CapabilityMarketplace({
                 viewMode === 'bundles' ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >
-              Clusters
+              Systems
             </button>
             <button
               onClick={() => setViewMode('individual')}
@@ -323,6 +326,7 @@ export function CapabilityMarketplace({
           {bundles.map(bundle => {
             const isExpanded = expandedBundle === bundle.id;
             const selState = getBundleState(bundle);
+            const impactStyle = getImpactTierStyle(bundle.impactTier);
 
             return (
               <div
@@ -353,18 +357,23 @@ export function CapabilityMarketplace({
                   </button>
 
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-semibold text-foreground">{bundle.label}</span>
+                      <span className={cn(
+                        "text-[8px] font-mono px-1.5 py-0.5 rounded-full border font-bold uppercase tracking-wider",
+                        impactStyle
+                      )}>
+                        {bundle.impactTier}
+                      </span>
                       <span className="text-[9px] font-mono text-muted-foreground px-1.5 py-0.5 rounded bg-muted/30">
                         {bundle.capabilities.length}
                       </span>
-                      {bundle.nodeSpan > 1 && (
-                        <span className="flex items-center gap-0.5 text-[9px] font-mono text-muted-foreground">
-                          <Layers className="w-2.5 h-2.5" />
-                          {bundle.nodeSpan} nodes
-                        </span>
-                      )}
                     </div>
+                    {bundle.archetypeName && (
+                      <p className="text-[10px] font-mono text-primary/60 mt-0.5">
+                        {bundle.archetypeName}
+                      </p>
+                    )}
                     <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1 font-mono">
                       {bundle.summary}
                     </p>
@@ -451,6 +460,15 @@ function CapabilityRow({
   onToggle: () => void;
   onDiscard: () => void;
 }) {
+  const chainDepth = cap.chainDepth || 2;
+  const impactTier = getImpactTier(chainDepth);
+  const impactStyle = getImpactTierStyle(impactTier);
+  const rationale = generateMatchRationale(
+    cap.chain || [cap.nodeA, cap.nodeB],
+    cap.cjpiScore,
+    cap.synergyBonus,
+  );
+
   return (
     <div className={cn(
       "rounded-lg border px-3 py-2 transition-colors",
@@ -473,11 +491,12 @@ function CapabilityRow({
 
         <span className="text-xs text-foreground/80 truncate flex-1">{cap.capability.replace(/_/g, ' ')}</span>
 
-        {(cap.chainDepth || 2) > 2 && (
-          <span className="flex items-center gap-0.5 text-[9px] font-mono text-muted-foreground shrink-0">
-            <Link2 className="w-2.5 h-2.5" />{cap.chainDepth}N
-          </span>
-        )}
+        <span className={cn(
+          "text-[8px] font-mono px-1.5 py-0.5 rounded-full border font-semibold shrink-0",
+          impactStyle
+        )}>
+          {chainDepth}N · {impactTier === 'Enhancement' ? 'ENH' : impactTier === 'System Upgrade' ? 'SYS' : 'ARCH'}
+        </span>
 
         <span className={cn(
           "text-xs font-mono font-bold shrink-0",
@@ -501,6 +520,7 @@ function CapabilityRow({
         </Button>
       </div>
 
+      {/* Chain visualization */}
       {cap.chain && cap.chain.length > 0 && (
         <div className="flex items-center gap-1 flex-wrap mt-1.5 ml-6">
           {cap.chain.map((node, idx) => (
@@ -519,8 +539,16 @@ function CapabilityRow({
         </div>
       )}
 
+      {/* Match rationale — why this matched */}
+      <div className="flex items-start gap-1.5 mt-1.5 ml-6">
+        <Info className="w-2.5 h-2.5 text-muted-foreground/40 shrink-0 mt-0.5" />
+        <p className="text-[10px] text-muted-foreground/60 leading-relaxed italic">
+          {rationale}
+        </p>
+      </div>
+
       {cap.description && (
-        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1.5 ml-6 line-clamp-2">
+        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1 ml-6 line-clamp-2">
           {cap.description}
         </p>
       )}

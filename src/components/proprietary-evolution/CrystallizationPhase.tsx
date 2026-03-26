@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { getImpactTierStyle, type ImpactTier } from '@/lib/discovery/chain-archetypes';
 
 interface Discovery {
   id: string;
@@ -21,6 +22,8 @@ interface Discovery {
   ascended: boolean;
   description: string;
   chain: string[];
+  archetypeName: string | null;
+  impactTier: ImpactTier | null;
 }
 
 export function CrystallizationPhase() {
@@ -59,6 +62,8 @@ export function CrystallizationPhase() {
           ascended: meta.ascended === true,
           description: d.description || '',
           chain: (meta.chain as string[]) || [meta.node_a, meta.node_b].filter(Boolean),
+          archetypeName: meta.archetype_name || null,
+          impactTier: meta.impact_tier || null,
         };
       }));
     }
@@ -222,7 +227,20 @@ export function CrystallizationPhase() {
             )}
 
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-foreground font-medium truncate">{d.name}</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <p className="text-xs text-foreground font-medium truncate">{d.name}</p>
+                {d.impactTier && (
+                  <span className={cn(
+                    "text-[8px] font-mono px-1.5 py-0.5 rounded-full border font-bold uppercase tracking-wider",
+                    getImpactTierStyle(d.impactTier)
+                  )}>
+                    {d.impactTier}
+                  </span>
+                )}
+              </div>
+              {d.archetypeName && (
+                <p className="text-[10px] font-mono text-primary/60 mt-0.5">{d.archetypeName}</p>
+              )}
               <p className="text-[10px] text-muted-foreground font-mono">
                 {d.chain.length > 0
                   ? d.chain.map(n => labelPrimitive(n)).join(' → ')
