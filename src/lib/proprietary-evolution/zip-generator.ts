@@ -18,6 +18,7 @@ import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-ht
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
+import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 
 export interface CapabilityForExport {
   id: string;
@@ -1710,41 +1711,19 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-capability-pack-${candidateName.toLowerCase()}-${timestamp}`;
 
-  // Load the real Mini-Runtime™ files
-  const runtimeFiles = await loadMiniRuntime();
+  // ═══ Cherry-Picked Capabilities — Only the primitives acquired ═══
+  const allChains = capabilities.map(c => c.chain);
+  const capabilitiesCode = generateCherryPickedCapabilities(allChains, targetLanguage, packName);
+  const capabilitiesExt = LANG_EXT[targetLanguage] || '.ts';
+  const capabilitiesFilename = targetLanguage === 'php' ? 'capabilities.php'
+    : targetLanguage === 'python' ? 'capabilities.py'
+    : `capabilities${capabilitiesExt}`;
 
-  // _runtime/ — Sealed Mini-Runtime™ Engine
-  const runtimeFolder = zip.folder('_runtime')!;
-  runtimeFolder.file('standalone-runtime.ts', runtimeFiles.runtime);
-  runtimeFolder.file('README.md', [
-    '# CMPSBL® Mini-Runtime™ Engine — Sealed Distribution',
-    '',
-    'The official CMPSBL® portable runtime — included with all exported capability packs.',
-    '',
-    '## Components',
-    '',
-    '- **standalone-runtime.ts** — CJPI scoring, Saga orchestrator, FSM engine, pipeline orchestration',
-    '',
-    '## ⚠️ Sealed Runtime',
-    '',
-    'This is a sealed proprietary distribution. Redistribution as a standalone product is prohibited.',
-    'The Discovery Engine is NOT included — discovery is a substrate-only capability.',
-    'See LICENSE for full terms.',
-    '',
-    '---',
-    '© 2025–2026 CMPSBL® — All rights reserved.',
-  ].join('\n'));
-
-  // src/ — Capability source files
+  // src/ — Single capabilities file + per-capability source files
   const srcFolder = zip.folder('src')!;
+  srcFolder.file(capabilitiesFilename, capabilitiesCode);
   for (const cap of capabilities) {
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
-  }
-
-  // src/ — Runtime Bridge (Runtime Binding Layer)
-  const bridgeCode = generateRuntimeBridge(targetLanguage, capabilities);
-  if (bridgeCode) {
-    srcFolder.file(getRuntimeBridgeFilename(targetLanguage), bridgeCode);
   }
 
   const testFolder = zip.folder('test')!;
@@ -1817,20 +1796,19 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
-      { name: 'src/', purpose: 'Executable capability implementations' },
-      { name: 'src/runtime-bridge.*', purpose: 'Runtime Binding Layer — pipeline execution engine' },
+      { name: `src/${capabilitiesFilename}`, purpose: 'Acquired capabilities — plain functions, zero dependencies' },
+      { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
-      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine (sealed)' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
       { name: 'LICENSE.html', purpose: 'Commercial distribution license' },
       { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability valuation dossier' },
       { name: 'export-tier.json', purpose: 'Valuation summary' },
     ],
     quickStart: targetLanguage === 'php'
-      ? `require_once 'src/runtime-bridge.php';\\nrequire_once 'src/${(capabilities[0]?.name || 'capability').toLowerCase()}.php';\\n$cap = new CMPSBLCapability();\\n$result = $cap->execute(['key' => 'value']);`
+      ? `require_once 'src/capabilities.php';\\n$result = CMPSBLCapabilities::runChain(['DEFENSE', 'BRAIN'], ['key' => 'value']);`
       : targetLanguage === 'python'
-      ? `from src.${(capabilities[0]?.name || 'capability').toLowerCase()} import CMPSBLCapability\\ncap = CMPSBLCapability()\\nresult = cap.execute({"key": "value"})`
-      : `import { CMPSBLRuntimeBridge } from './src/runtime-bridge';\\nimport { execute } from './src/${(capabilities[0]?.name || 'capability').toLowerCase()}';`,
+      ? `from src.capabilities import run_chain\\nresult = await run_chain(['DEFENSE', 'BRAIN'], {"key": "value"})`
+      : `import { runChain, invoke } from './src/capabilities';\\nconst result = await runChain(['DEFENSE', 'BRAIN'], { key: 'value' });\\n// Or call one: await invoke('DEFENSE', { key: 'value' });`,
     category: 'proprietary-evolution',
     modules: [...new Set(capabilities.flatMap(c => c.chain))],
     version: '1.0.0',
