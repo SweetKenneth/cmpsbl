@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
