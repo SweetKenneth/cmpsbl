@@ -277,7 +277,8 @@ export function DiscoveryPhase() {
         if (abortRef.current) break;
 
         const batch = shuffledNodes.slice(batchStart, batchStart + BATCH_SIZE);
-        setCurrentTarget(batch.join(' · '));
+        // Set currentTarget to the first node in the batch so CollisionGraph can resolve its position
+        setCurrentTarget(batch[0]);
         setProgress(Math.round(((batchStart + batch.length) / shuffledNodes.length) * 100));
 
         // First batch gets suspense delay, rest are immediate
@@ -378,15 +379,15 @@ export function DiscoveryPhase() {
     return colors[tier] || 'border-border/20 bg-muted/10';
   };
 
-  const collisionEvents = results.map(r => ({
+  const collisionEvents = useMemo(() => results.map(r => ({
     targetNode: r.nodeB,
     cjpiScore: r.cjpiScore,
     tier: r.tier,
     active: false,
-  }));
+  })), [results]);
 
-  const apexCount = results.filter(r => r.cjpiScore >= 92).length;
-  const maxChainDepth = results.length > 0 ? Math.max(...results.map(r => r.chainDepth || 2)) : 0;
+  const apexCount = useMemo(() => results.filter(r => r.cjpiScore >= 92).length, [results]);
+  const maxChainDepth = useMemo(() => results.length > 0 ? Math.max(...results.map(r => r.chainDepth || 2)) : 0, [results]);
 
   const node41DisplayName = candidateSurface?.nodeName || candidateNode || '#41';
 

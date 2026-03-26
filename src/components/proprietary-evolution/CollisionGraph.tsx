@@ -76,7 +76,8 @@ interface Ripple {
   alpha: number; color: string;
 }
 
-const SIZE = 440;
+// Canvas uses a logical size and scales for DPR — CSS sizes it responsively
+const SIZE = 400;
 const CX = SIZE / 2;
 const CY = SIZE / 2;
 const RING_R = SIZE * 0.37;
@@ -113,9 +114,12 @@ export function CollisionGraph({ candidateNode, collisions, running, currentTarg
     return map;
   }, [collisions]);
 
-  // Spawn particles on new collision
+  // Spawn particles on new collision — handle both single targets and batch strings
   useEffect(() => {
-    if (currentTarget && currentTarget !== prevTargetRef.current && NODE_POSITIONS[currentTarget]) {
+    // Resolve to first valid node name from potentially multi-node target string
+    const resolvedTarget = currentTarget?.split(' · ').find(n => NODE_POSITIONS[n]) || null;
+    if (resolvedTarget && resolvedTarget !== prevTargetRef.current && NODE_POSITIONS[resolvedTarget]) {
+      const currentTarget = resolvedTarget; // shadow for block scope
       const pos = NODE_POSITIONS[currentTarget];
       const col = collisionMap[currentTarget];
       const color = col ? (TIER_COLORS[col.tier] || '#6b7280') : '#8b5cf6';
@@ -156,7 +160,8 @@ export function CollisionGraph({ candidateNode, collisions, running, currentTarg
         });
       }
     }
-    prevTargetRef.current = currentTarget;
+    }
+    prevTargetRef.current = resolvedTarget;
   }, [currentTarget, collisionMap]);
 
   useEffect(() => {
@@ -248,8 +253,10 @@ export function CollisionGraph({ candidateNode, collisions, running, currentTarg
       }
 
       // ═══ ACTIVE COLLISION BEAM ═══
-      if (currentTarget && NODE_POSITIONS[currentTarget]) {
-        const pos = NODE_POSITIONS[currentTarget];
+      // Resolve batch target strings to first valid node
+      const resolvedBeamTarget = currentTarget?.split(' · ').find(n => NODE_POSITIONS[n]) || null;
+      if (resolvedBeamTarget && NODE_POSITIONS[resolvedBeamTarget]) {
+        const pos = NODE_POSITIONS[resolvedBeamTarget];
         const pulse = Math.sin(t * 10) * 0.3 + 0.7;
 
         // Glow beam

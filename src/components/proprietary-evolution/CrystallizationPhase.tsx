@@ -92,12 +92,15 @@ export function CrystallizationPhase() {
       if (!data?.success) throw new Error(data?.error || 'Ascension failed');
 
       // Delay state update to let lock animation complete
+      // Use functional update to avoid stale closure on discoveries
       setTimeout(() => {
-        setDiscoveries(prev =>
-          prev.map(d => d.id === discoveryId ? { ...d, ascended: true } : d)
-        );
-        const disc = discoveries.find(d => d.id === discoveryId);
-        toast({ title: 'Memory locked', description: `${disc?.name || 'Capability'} is now permanent` });
+        setDiscoveries(prev => {
+          const disc = prev.find(d => d.id === discoveryId);
+          if (disc) {
+            toast({ title: 'Memory locked', description: `${disc.name || 'Capability'} is now permanent` });
+          }
+          return prev.map(d => d.id === discoveryId ? { ...d, ascended: true } : d);
+        });
         setAscending(null);
       }, 1300);
     } catch (err) {

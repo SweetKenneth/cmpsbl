@@ -5,6 +5,8 @@
  * a spiral-inward animation, growing the core's brightness.
  * 
  * Uses framer-motion for orbital rotation, lock spirals, and pulse effects.
+ * 
+ * PERF: Rotation driven by useRef + rAF to avoid 60fps React re-renders.
  */
 
 import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
@@ -34,7 +36,6 @@ interface OrbitalLockRingProps {
 function scoreToRadius(score: number, ringSize: number): number {
   const minR = ringSize * 0.28;
   const maxR = ringSize * 0.44;
-  // Higher score = closer (smaller radius)
   const t = Math.min(1, Math.max(0, (score - 20) / 80));
   return maxR - t * (maxR - minR);
 }
@@ -64,7 +65,9 @@ export function OrbitalLockRing({
   totalCount,
   ascendedCount,
 }: OrbitalLockRingProps) {
-  const [rotationOffset, setRotationOffset] = useState(0);
+  // PERF: Rotation stored in ref, only trigger re-render at ~20fps via forceUpdate counter
+  const rotationRef = useRef(0);
+  const [renderTick, setRenderTick] = useState(0);
   const [lockFlash, setLockFlash] = useState(false);
   const [recentlyLocked, setRecentlyLocked] = useState<string | null>(null);
   const animFrameRef = useRef<number>();
@@ -75,23 +78,30 @@ export function OrbitalLockRing({
   );
 
   const progress = totalCount > 0 ? ascendedCount / totalCount : 0;
-  const ringSize = 280; // px — fits 440px viewport with padding
+  const ringSize = 280;
   const center = ringSize / 2;
 
-  // Slow continuous rotation
+  // Slow continuous rotation — update ref at 60fps but only re-render at ~20fps
   useEffect(() => {
+    if (unascended.length === 0) return; // Don't animate when nothing orbits
     let last = performance.now();
+    let frameCount = 0;
     const tick = (now: number) => {
       const dt = (now - last) / 1000;
       last = now;
-      setRotationOffset(prev => prev + dt * 0.15); // ~0.15 rad/s
+      rotationRef.current += dt * 0.15;
+      frameCount++;
+      // Re-render every 3 frames (~20fps) instead of every frame (~60fps)
+      if (frameCount % 3 === 0) {
+        setRenderTick(prev => prev + 1);
+      }
       animFrameRef.current = requestAnimationFrame(tick);
     };
     animFrameRef.current = requestAnimationFrame(tick);
     return () => {
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     };
-  }, []);
+  }, [unascended.length]);
 
   const handleAscend = useCallback((id: string) => {
     setRecentlyLocked(id);
@@ -110,6 +120,11 @@ export function OrbitalLockRing({
   const circumference = 2 * Math.PI * ringRadius;
   const strokeDashoffset = circumference * (1 - progress);
 
+  // Read rotation from ref (triggered by renderTick)
+  const rotationOffset = rotationRef.current;
+  // Suppress unused var lint
+  void renderTick;
+
   return (
     <div className="flex flex-col items-center gap-6">
       {/* ═══ ORBITAL FIELD ═══ */}
@@ -124,7 +139,6 @@ export function OrbitalLockRing({
           height={ringSize}
           viewBox={`0 0 ${ringSize} ${ringSize}`}
         >
-          {/* Track */}
           <circle
             cx={center}
             cy={center}
@@ -133,7 +147,6 @@ export function OrbitalLockRing({
             stroke="hsl(var(--border) / 0.15)"
             strokeWidth={2}
           />
-          {/* Fill */}
           <circle
             cx={center}
             cy={center}
@@ -167,14 +180,11 @@ export function OrbitalLockRing({
             ease: 'easeInOut',
           }}
         >
-          {/* Outer glow */}
           <div
             className="absolute inset-0 rounded-full bg-primary/20 blur-xl transition-all duration-700"
             style={{ transform: `scale(${1.2 + progress * 0.8})` }}
           />
-          {/* Inner core */}
           <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/60 to-primary/30 border border-primary/40" />
-          {/* Center pip */}
           <div className="absolute inset-2 rounded-full bg-primary/80 blur-sm" />
         </motion.div>
 
@@ -224,7 +234,6 @@ export function OrbitalLockRing({
                 }}
                 onClick={() => !ascending && handleAscend(d.id)}
                 disabled={!!ascending}
-                // Lock spiral animation: move to center then vanish
                 animate={isLocking ? {
                   x: -pos.x,
                   y: -pos.y,
