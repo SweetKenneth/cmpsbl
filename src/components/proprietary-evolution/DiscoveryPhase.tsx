@@ -382,6 +382,12 @@ export function DiscoveryPhase() {
     return colors[tier] || 'border-border/20 bg-muted/10';
   };
 
+  // Sort all results by CJPI descending, surface only top 10
+  const rankedResults = useMemo(() =>
+    [...results].sort((a, b) => b.cjpiScore - a.cjpiScore),
+  [results]);
+  const topResults = useMemo(() => rankedResults.slice(0, TOP_N), [rankedResults]);
+
   const collisionEvents = useMemo(() => results.map(r => ({
     targetNode: r.nodeB,
     cjpiScore: r.cjpiScore,
@@ -389,8 +395,8 @@ export function DiscoveryPhase() {
     active: false,
   })), [results]);
 
-  const apexCount = useMemo(() => results.filter(r => r.cjpiScore >= 92).length, [results]);
-  const maxChainDepth = useMemo(() => results.length > 0 ? Math.max(...results.map(r => r.chainDepth || 2)) : 0, [results]);
+  const apexCount = useMemo(() => topResults.filter(r => r.cjpiScore >= 92).length, [topResults]);
+  const maxChainDepth = useMemo(() => topResults.length > 0 ? Math.max(...topResults.map(r => r.chainDepth || 2)) : 0, [topResults]);
 
   const node41DisplayName = candidateSurface?.nodeName || candidateNode || '#41';
 
