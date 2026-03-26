@@ -276,7 +276,7 @@ describe('Phase 4 — Rust Export (Polyglot)', () => {
     expect(output).toContain('pub struct');
     expect(output).toContain('pub fn');
     expect(output).toContain('HashMap');
-    expect(output).toContain('impl');
+    expect(output).toContain('match');
   });
 
   it('contains all 4 sections', () => {
