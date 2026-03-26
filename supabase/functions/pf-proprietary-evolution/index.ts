@@ -1150,6 +1150,10 @@ serve(async (req: Request) => {
         return jsonResponse({
           success: true,
           capabilities: results.map(r => ({ ...r, candidate_surface: undefined })),
+          archetype: {
+            detected: resolvedArchetype,
+            confidence: archetypeProfile.confidence,
+          },
           candidate_surface: surface ? {
             nodeName: surface.nodeName,
             capabilities: surface.capabilities,
