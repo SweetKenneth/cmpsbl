@@ -12,7 +12,6 @@ import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ExportWarpTunnel, type WarpState } from './ExportWarpTunnel';
-import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
