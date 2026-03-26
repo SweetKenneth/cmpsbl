@@ -172,8 +172,8 @@ export function ShowcaseMobile() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <h3 className="font-bold text-foreground text-sm">Investor Library</h3>
-                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
-                    8 docs
+                   <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
+                    12 docs
                   </span>
                 </div>
                 <p className="text-[11px] text-muted-foreground">Read & print due-diligence materials</p>

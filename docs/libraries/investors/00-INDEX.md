@@ -26,6 +26,7 @@ This library provides investors, advisors, and potential partners with a compreh
 | 09 | [Defensible Valuation](09-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium |
 | 10 | [Ascension Demo Script](10-ascension-demo-script.md) | Step-by-step narration for live Ascension demonstrations |
 | 11 | [Evolution Engine](11-evolution-engine.md) | Self-improving software: 166 bugs fixed for $0.06, engine benchmarks, market opportunity |
+| 12 | [Why Invest Now](12-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
 
 ---
 
