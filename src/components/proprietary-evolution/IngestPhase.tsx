@@ -14,13 +14,14 @@
  * POST-INGEST: Displays the derived Capability Surface (Auxiliary Primitive identity)
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import {
   Upload, FileCode2, CheckCircle2, AlertCircle, Loader2,
   Code2, Layers, Lock, ShieldCheck, RefreshCw, AlertTriangle,
   Cpu, Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { OrbitalAssembly, type AssemblyState } from './OrbitalAssembly';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -460,6 +461,20 @@ export function IngestPhase() {
             {files.length > 20 && <p className="text-[10px] text-muted-foreground text-center">+{files.length - 20} more</p>}
           </div>
         </div>
+      )}
+
+      {/* ═══ ORBITAL ASSEMBLY VISUALIZATION ═══ */}
+      {(files.length > 0 || parsedNode) && (
+        <OrbitalAssembly
+          state={
+            parsing ? 'scanning'
+              : (parsedNode && capSurface) ? 'complete'
+              : 'idle'
+          }
+          fileCount={files.length || 1}
+          capabilities={capSurface?.capabilities}
+          nodeName={capSurface?.nodeName}
+        />
       )}
 
       {/* Parsed Node Card */}
