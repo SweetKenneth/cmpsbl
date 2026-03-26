@@ -7,6 +7,7 @@
  */
 
 import { useState, useCallback } from 'react';
+import { PinGate } from '@/components/gates/PinGate';
 import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -91,6 +92,7 @@ export default function ProprietaryEvolution() {
   ];
 
   return (
+    <PinGate pin="041041" storageKey="gate-x-proprietary">
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
         title="Ascension — Software Evolution | CMPSBL"
@@ -185,5 +187,6 @@ export default function ProprietaryEvolution() {
 
       <EnhancedFooter />
     </div>
+    </PinGate>
   );
 }

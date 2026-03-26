@@ -179,11 +179,11 @@
 
 @keyframes ascensionHeroIn {
   0% { opacity: 0; max-height: 0; }
-  100% { opacity: 1; max-height: 500px; }
+  100% { opacity: 1; max-height: 3000px; }
 }
 
 @keyframes ascensionHeroOut {
-  0% { opacity: 1; max-height: 500px; }
+  0% { opacity: 1; max-height: 3000px; }
   100% { opacity: 0; max-height: 0; }
 }
 
