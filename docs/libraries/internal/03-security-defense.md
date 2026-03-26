@@ -68,10 +68,12 @@ RESTRICTED:    GOVERNANCE Plane, INTEL Aggregation, Secrets Vault
 
 | Tier | Req/Minute | Req/Day | Burst |
 |------|-----------|---------|-------|
-| Free | 10 | 100 | 2x for 10s |
-| Pro | 60 | 5,000 | 3x for 30s |
+| Builder | 10 | 100 | 2x for 10s |
+| Studio | 30 | 2,000 | 2x for 15s |
+| Creator | 60 | 5,000 | 3x for 30s |
+| Architect | 120 | 15,000 | 4x for 45s |
 | Enterprise | 300 | 50,000 | 5x for 60s |
-| Admin/Governor | 600 | Unlimited | No limit |
+| Governor (role) | 600 | Unlimited | No limit |
 
 Module-specific: REFLEX 500/s, NEXUS 200/s, DECODE 100/s, EVOLUTION 5/s, GOVERNANCE 10/s.
 

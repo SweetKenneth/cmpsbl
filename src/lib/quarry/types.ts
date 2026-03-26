@@ -7,8 +7,8 @@ export type QuarryTier = 'free' | 'creator' | 'architect' | 'enterprise' | 'inte
 export type QuarryVisibility = 'hidden' | 'tier_exposed' | 'public_curated' | 'baseline';
 export type QuarryAssetType = 'capability' | 'engine' | 'meta_engine' | 'pipeline' | 'template' | 'agent' | 'deployment_right' | 'governance_tool' | 'artifact_pack';
 
-/** Product tiers — Builder / Studio / Creator / Architect */
-export type ProductTier = 'builder' | 'studio' | 'creator' | 'architect';
+/** Product tiers — Builder / Studio / Creator / Architect / Enterprise */
+export type ProductTier = 'builder' | 'studio' | 'creator' | 'architect' | 'enterprise';
 
 export interface ArtifactSlotConfig {
   tier: ProductTier;
@@ -43,6 +43,13 @@ export const PRODUCT_TIERS: Record<ProductTier, ArtifactSlotConfig> = {
   architect: {
     tier: 'architect',
     slots: 12,
+    memoryDepth: 'dedicated',
+    deploymentRights: true,
+    governanceScope: 'full',
+  },
+  enterprise: {
+    tier: 'enterprise',
+    slots: 25,
     memoryDepth: 'dedicated',
     deploymentRights: true,
     governanceScope: 'full',
@@ -154,6 +161,7 @@ export const PRODUCT_TIER_LABELS: Record<ProductTier, string> = {
   studio: 'Studio',
   creator: 'Creator',
   architect: 'Architect',
+  enterprise: 'Enterprise',
 };
 
 export const ASSET_TYPE_LABELS: Record<QuarryAssetType, string> = {
