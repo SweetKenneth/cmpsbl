@@ -306,47 +306,35 @@ export function AscensionHero() {
         {/* ═══ CENTERED TEXT BLOCK ═══ */}
         <div className="text-center max-w-3xl mx-auto">
           {/* Eyebrow badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/[0.06] mb-5 sm:mb-7"
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/[0.06] mb-5 sm:mb-7 ascension-stagger-1"
           >
             <Crown className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] sm:text-[11px] font-mono text-primary uppercase tracking-[0.2em]">
               Proprietary Evolution Engine
             </span>
-          </motion.div>
+          </div>
 
           {/* H1 */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 sm:mb-5"
+          <h1
+            className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4 sm:mb-5 ascension-stagger-2"
           >
             <span className="text-primary">
               Ascend Your Software
             </span>
-          </motion.h1>
+          </h1>
 
           {/* Strong subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground/90 max-w-2xl mx-auto mb-3 sm:mb-4 leading-snug"
+          <p
+            className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground/90 max-w-2xl mx-auto mb-3 sm:mb-4 leading-snug ascension-stagger-3"
           >
             Your code becomes Primitive #41 — collided against a living{' '}
             <span className="text-primary">40-primitive cognitive substrate</span>.
-          </motion.p>
+          </p>
 
           {/* Clear explanatory paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed"
+          <p
+            className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed ascension-stagger-4"
           >
             Upload pieces of your stack's code — or code discovered in the Memory Stream — and watch
             new capabilities emerge when it collides with the primitives of the CMPSBL Substrate.
@@ -354,14 +342,11 @@ export function AscensionHero() {
             <span className="text-primary font-medium">Ascended Memories</span>{' '}
             you can export as source code, tests, and documentation.{' '}
             <span className="text-foreground/80 font-medium">Endless possibilities. Recursive by design.</span>
-          </motion.p>
+          </p>
 
           {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10"
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 ascension-stagger-5"
           >
             <Button
               size="lg"
@@ -383,28 +368,21 @@ export function AscensionHero() {
               <Sparkles className="w-4 h-4" />
               Upgrade for More
             </Button>
-          </motion.div>
+          </div>
         </div>
 
         {/* ═══ ORBITAL DIAGRAM — 3x size on mobile, fills viewport ═══ */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
-          className="relative mx-auto w-full aspect-square"
+        <div
+          className="relative mx-auto w-full aspect-square ascension-scale-in"
           style={{ maxWidth: 'min(90vw, 600px)' }}
         >
-          {/* Outer glow ring */}
           <div className="absolute inset-[-15%] rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-cyan)/0.06)_0%,_transparent_65%)]" />
           <OrbitalCanvas />
-        </motion.div>
+        </div>
 
         {/* ═══ LIFECYCLE PIPELINE — 4 steps ═══ */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4"
+        <div
+          className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 ascension-stagger-7"
           id="ascension-phases"
         >
           {LIFECYCLE_STEPS.map((item, i) => (
@@ -424,14 +402,11 @@ export function AscensionHero() {
               )}
             </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* ═══ ASCENDED MEMORY CALLOUT ═══ */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
-          className="mt-8 sm:mt-10 max-w-2xl mx-auto"
+        <div
+          className="mt-8 sm:mt-10 max-w-2xl mx-auto ascension-stagger-8"
         >
           <div className="flex items-start gap-3 rounded-xl border border-primary/15 bg-gradient-to-r from-primary/[0.04] to-neon-purple/[0.04] px-5 py-4">
             <Sparkles className="w-5 h-5 text-primary mt-0.5 shrink-0" />
@@ -445,7 +420,7 @@ export function AscensionHero() {
               </p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
