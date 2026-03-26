@@ -1794,7 +1794,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
-      { name: `src/${capabilitiesFilename}`, purpose: 'Acquired capabilities — plain functions, zero dependencies' },
+      { name: unifiedFilename, purpose: 'Single-file distribution — Runtime + Effects + Bridge + API (drop-in)' },
       { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
@@ -1803,10 +1803,10 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       { name: 'export-tier.json', purpose: 'Valuation summary' },
     ],
     quickStart: targetLanguage === 'php'
-      ? `require_once 'src/capabilities.php';\\n$result = CMPSBLCapabilities::runChain(['DEFENSE', 'BRAIN'], ['key' => 'value']);`
+      ? `require_once '${unifiedFilename}';\\n$result = cmpsbl_execute('my-capability', ['key' => 'value']);`
       : targetLanguage === 'python'
-      ? `from src.capabilities import run_chain\\nresult = await run_chain(['DEFENSE', 'BRAIN'], {"key": "value"})`
-      : `import { runChain, invoke } from './src/capabilities';\\nconst result = await runChain(['DEFENSE', 'BRAIN'], { key: 'value' });\\n// Or call one: await invoke('DEFENSE', { key: 'value' });`,
+      ? `from cmpsbl import execute\\nresult = execute('my-capability', {"key": "value"})`
+      : `import { execute, executeChain } from './${unifiedFilename.replace(/\\.ts$/, '')}';\\nconst result = execute('my-capability', { key: 'value' });`,
     category: 'proprietary-evolution',
     modules: [...new Set(capabilities.flatMap(c => c.chain))],
     version: '1.0.0',
