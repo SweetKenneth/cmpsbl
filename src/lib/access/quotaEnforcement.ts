@@ -361,8 +361,7 @@ function createNewMeter(developerId: string, resourceType: QuotaRule['resource_t
   // to return a strong default when no custom rule is defined.
   // For now, these fallbacks are acceptable, but it's a point of future improvement.
   const limit = rule?.limit_value !== undefined ? rule.limit_value : 10000; // Fallback default limit
-  const period = rule?.period !== undefined ? rule.period : 'day'; // Fallback default period
-  const period = rule?.period || 'day'; // Fallback default period
+  const period = rule?.period !== undefined ? rule.period : 'day';
 
   let periodEnd: Date;
   switch (period) {

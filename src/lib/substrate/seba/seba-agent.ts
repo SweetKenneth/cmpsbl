@@ -100,7 +100,7 @@ class SEBAAgent {
       return this.createResult(false, [], 'idle', 'SEBA mode is off');
     }
 
-    const cycleId = crypto.randomBytes(16).toString('hex');
+    const cycleId = `seba-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
     const startTime = Date.now();
     const auditLog: SEBAAuditEntry[] = [];
     const phasesCompleted: SEBAPhase[] = [];

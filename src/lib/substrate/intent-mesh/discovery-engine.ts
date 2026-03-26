@@ -213,7 +213,7 @@ function resetBreaker(): void {
 }
 
 /** Get breaker state for diagnostics */
-export function getDiscoveryBreakerState(): DiscoveryCircuitBreakerdonly<DiscoveryCircuitBreaker> {
+export function getDiscoveryBreakerState(): Readonly<DiscoveryCircuitBreaker> {
   if (breaker.state === 'open' && Date.now() - breaker.lastFailure >= BREAKER_RECOVERY_MS) {
     breaker.state = 'half_open';
   }

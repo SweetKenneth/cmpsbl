@@ -64,6 +64,7 @@
      }
    }
    
+   const nowISO = new Date().toISOString();
    const session: SessionInfo = {
      id: `sess_${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
      user_id: userId,
@@ -113,19 +114,16 @@
  /**
   * Terminate a session
   */
- export function terminateSession(sessionId: string, currentUserId?: string): boolean { // Added currentUserId for ACL
+ export function terminateSession(sessionId: string, currentUserId?: string): boolean {
    const session = activeSessions.get(sessionId);
    if (!session) return false;
 
-   // Only allow termination by the session owner or an administrator
    if (currentUserId && session.user_id !== currentUserId && !isAdmin(currentUserId)) {
-     return false; // Unauthorized attempt to terminate session
+     return false;
    }
-   const session = activeSessions.get(sessionId);
-   if (!session) return false;
    
    session.is_active = false;
-   activeSessions.delete(sessionId); // Explicitly remove from the map
+   activeSessions.delete(sessionId);
    return true;
  }
  
@@ -181,16 +179,13 @@
  /**
   * Check if a session is valid
   */
- export function isSessionValid(sessionId: string, currentUserId: string): boolean { // Added currentUserId for ACL
-   const session = activeSessions.get(sessionId);
-   if (!session) return false;
-
-   // A user can only validate their own sessions
-   if (session.user_id !== currentUserId) {
-     return false; // Unauthorized
-   }
+ export function isSessionValid(sessionId: string, currentUserId?: string): boolean {
    const session = activeSessions.get(sessionId);
    if (!session || !session.is_active) return false;
+
+   if (currentUserId && session.user_id !== currentUserId) {
+     return false;
+   }
    
    // Check expiration
    if (new Date(session.expires_at) < new Date()) {
