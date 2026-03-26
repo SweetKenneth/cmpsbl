@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, ArrowLeft, ChevronDown, Activity, Shield, Eye, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -151,6 +151,38 @@ export function ShowcaseMobile() {
             )}
           </AnimatePresence>
         </section>
+
+        {/* ── Investor Documents ── */}
+        <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.25 }} className="space-y-3">
+          <div className="flex items-center gap-3">
+            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Investor Documents</h2>
+            <div className="flex-1 h-px bg-gradient-to-r from-primary/30 to-transparent" />
+          </div>
+          <motion.button
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.4, ease: EASE }}
+            onClick={() => setActiveDemo("doc-library")}
+            className="w-full rounded-xl border border-primary/20 bg-card/60 backdrop-blur-sm p-4 text-left active:scale-[0.98] transition-all duration-200 space-y-2 shadow-sm hover:border-primary/30 hover:shadow-md"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/15 flex items-center justify-center shrink-0">
+                <BookOpen className="w-4 h-4 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-foreground text-sm">Investor Library</h3>
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
+                    8 docs
+                  </span>
+                </div>
+                <p className="text-[11px] text-muted-foreground">Read & print due-diligence materials</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-primary/50 shrink-0" />
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">Executive summary, architecture, IP defensibility, valuation, and more — printable.</p>
+          </motion.button>
+        </motion.section>
 
         {/* ── Why CMPSBL Wins ── */}
         <motion.section {...fadeUp} transition={{ ...fadeUp.transition, delay: 0.3 }}>
