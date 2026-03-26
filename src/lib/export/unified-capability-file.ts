@@ -13,6 +13,7 @@
  */
 
 import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
+import { blackboxFile } from './blackbox';
 
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
