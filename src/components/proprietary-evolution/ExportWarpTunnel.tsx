@@ -17,7 +17,7 @@ interface ExportWarpTunnelProps {
   exportedCount?: number;
 }
 
-const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const DPR = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
 const W = 360;
 const H = 240;
 const CX = W / 2;
@@ -122,7 +122,7 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
     if (currentState === 'idle') targetSpeed = 0.5;
     else if (currentState === 'launching') targetSpeed = 12;
     else targetSpeed = 1;
-    warpSpeedRef.current += (targetSpeed - warpSpeedRef.current) * 0.02;
+    warpSpeedRef.current += (targetSpeed - warpSpeedRef.current) * 0.012; // slower ramp for cinematic warp buildup
     const ws = warpSpeedRef.current;
 
     // ── Tunnel vignette (subtle radial darkening) ──
@@ -193,7 +193,7 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
       const orb = orbs[i];
 
       if (currentState === 'launching' && !orb.absorbed) {
-        const absorbAt = 300 + i * 200;
+        const absorbAt = 600 + i * 400; // slower stagger — cinematic pacing
         if (launchElapsed > absorbAt) {
           orb.absorbed = true;
           orb.absorbTime = t;
@@ -220,7 +220,7 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
       }
 
       if (orb.absorbed) {
-        const since = (t - orb.absorbTime) / 500;
+        const since = (t - orb.absorbTime) / 1000; // 1s absorption — slow cinematic spiral
         const p = Math.min(1, since);
         const ease = 1 - Math.pow(1 - p, 3);
         drawRadius = orb.radius * (1 - ease);
@@ -275,9 +275,9 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
     for (const orb of orbs) {
       if (!orb.absorbed) continue;
       const since = t - orb.absorbTime;
-      if (since > 0 && since < 350) {
-        const p = since / 350;
-        const flashR = 5 + p * 20;
+      if (since > 0 && since < 600) {
+        const p = since / 600;
+        const flashR = 5 + p * 25;
         const flashA = (1 - p) * 0.5;
         const [cr, cg, cb] = orb.color;
         ctx.fillStyle = `rgba(${cr}, ${cg}, ${cb}, ${flashA})`;

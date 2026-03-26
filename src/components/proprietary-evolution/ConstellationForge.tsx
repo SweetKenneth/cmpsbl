@@ -105,9 +105,9 @@ interface BurstParticle {
   size: number;
 }
 
-const BUILD_DURATION = 0.5;   // seconds — dramatic glow buildup
-const LINE_DRAW_DURATION = 0.35; // seconds — line animates from center to node
-const BURST_COUNT = 14;
+const BUILD_DURATION = 1.0;   // seconds — dramatic glow buildup (slow cinematic)
+const LINE_DRAW_DURATION = 0.7; // seconds — line animates from center to node
+const BURST_COUNT = 18;
 
 function generateBackgroundStars(count: number): BackgroundStar[] {
   const stars: BackgroundStar[] = [];

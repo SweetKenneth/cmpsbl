@@ -138,12 +138,13 @@
 }
 
 @keyframes orbitalLockFlash {
-  0% { transform: scale(0.5); opacity: 0.8; }
-  100% { transform: scale(3); opacity: 0; }
+  0% { transform: scale(0.5); opacity: 0.9; }
+  40% { transform: scale(2); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
 }
 
 .orbital-lock-flash {
-  animation: orbitalLockFlash 0.6s ease-out forwards;
+  animation: orbitalLockFlash 0.9s ease-out forwards;
 }
 
 /* Staggered fade-in for ascended hero elements */

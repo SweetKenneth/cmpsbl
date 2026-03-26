@@ -19,17 +19,15 @@ interface OrbitalAssemblyProps {
 }
 
 /* ═══ CONSTANTS ═══ */
-const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const DPR = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
 const W = 360;
 const H = 280;
 const CX = W / 2;
 const CY = H / 2;
 
-/* ═══ COLORS (theme-aware via CSS vars would be ideal, using HSL constants for canvas) ═══ */
-const COL_BG = 'rgba(0,0,0,0)'; // transparent — container provides bg
+/* ═══ COLORS ═══ */
 const COL_FRAGMENT = [140, 180, 220]; // soft blue-grey
 const COL_CORE = [120, 200, 255];    // bright cyan
-const COL_RING = [180, 140, 255];    // violet
 const COL_STAR = [200, 210, 230];    // faint stars
 const COL_CAPABILITY_RING = [
   [120, 200, 255],  // cyan
@@ -173,7 +171,7 @@ export function OrbitalAssembly({ state, fileCount, capabilities = [], nodeName 
 
     // ── Fragment orbiting / absorption ──
     const scanElapsed = currentState !== 'idle' ? (t - scanStartRef.current) : 0;
-    const absorbInterval = Math.max(120, 2000 / Math.max(frags.length, 1)); // stagger absorptions
+    const absorbInterval = Math.max(350, 4000 / Math.max(frags.length, 1)); // stagger absorptions — slower for cinematic feel
 
     for (let i = 0; i < frags.length; i++) {
       const frag = frags[i];
@@ -205,7 +203,7 @@ export function OrbitalAssembly({ state, fileCount, capabilities = [], nodeName 
       let drawSize = frag.size;
 
       if (frag.absorbed) {
-        const since = (t - frag.absorbTime) / 600; // 0→1 over 600ms
+        const since = (t - frag.absorbTime) / 1200; // 0→1 over 1.2s — slow cinematic spiral
         const progress = Math.min(1, since);
         const ease = 1 - Math.pow(1 - progress, 3); // ease-out cubic
         drawRadius = frag.radius * (1 - ease);
@@ -242,9 +240,9 @@ export function OrbitalAssembly({ state, fileCount, capabilities = [], nodeName 
       for (const frag of frags) {
         if (!frag.absorbed) continue;
         const since = (t - frag.absorbTime);
-        if (since > 0 && since < 400) {
-          const p = since / 400;
-          const burstR = 5 + p * 15;
+        if (since > 0 && since < 800) {
+          const p = since / 800;
+          const burstR = 5 + p * 20;
           const burstA = (1 - p) * 0.6;
           ctx.fillStyle = `rgba(${COL_CORE[0]}, ${COL_CORE[1]}, ${COL_CORE[2]}, ${burstA})`;
           ctx.beginPath();
