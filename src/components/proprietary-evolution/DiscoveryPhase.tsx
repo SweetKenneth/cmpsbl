@@ -15,7 +15,7 @@ import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import { CollisionGraph } from './CollisionGraph';
+import { ConstellationForge } from './ConstellationForge';
 
 interface CandidateSurface {
   nodeName: string;
@@ -528,9 +528,9 @@ export function DiscoveryPhase() {
         </div>
       )}
 
-      {/* Collision Graph */}
+      {/* Constellation Forge */}
       {(running || results.length > 0) && (
-        <CollisionGraph
+        <ConstellationForge
           candidateNode={node41DisplayName}
           collisions={collisionEvents}
           running={running}
