@@ -213,7 +213,11 @@ export const publicRoutes = (
     <Route path="/member" element={<MemberHub />} />
 
     {/* Misc public */}
-    <Route path="/evolution" element={<EvolutionControlCenter />} />
+    <Route path="/evolution" element={
+      <PinGate pin="2026" storageKey="evo_cc_unlock" debugBypassKey="evo_debug_bypass">
+        <EvolutionControlCenter />
+      </PinGate>
+    } />
     <Route path="/architecture" element={<ArchitecturePage />} />
     <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
