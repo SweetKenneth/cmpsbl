@@ -463,6 +463,20 @@ export function IngestPhase() {
         </div>
       )}
 
+      {/* ═══ ORBITAL ASSEMBLY VISUALIZATION ═══ */}
+      {(files.length > 0 || parsedNode) && (
+        <OrbitalAssembly
+          state={
+            parsing ? 'scanning'
+              : (parsedNode && capSurface) ? 'complete'
+              : 'idle'
+          }
+          fileCount={files.length || 1}
+          capabilities={capSurface?.capabilities}
+          nodeName={capSurface?.nodeName}
+        />
+      )}
+
       {/* Parsed Node Card */}
       {parsedNode && (
         <div className="border border-border/30 rounded-xl p-5 bg-card/40 space-y-4">
