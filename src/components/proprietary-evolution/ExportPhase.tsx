@@ -359,6 +359,19 @@ export function ExportPhase() {
         </span>
       </div>
 
+      {/* ═══ WARP TUNNEL VISUALIZATION ═══ */}
+      {eligible.length > 0 && (
+        <ExportWarpTunnel
+          state={
+            exporting ? 'launching'
+              : exportResult ? 'complete'
+              : 'idle'
+          }
+          capabilityCount={eligible.length}
+          exportedCount={exportResult?.count}
+        />
+      )}
+
       {/* Export Language — Locked to Source */}
       <div className={cn(
         "border rounded-xl p-5 space-y-4",
