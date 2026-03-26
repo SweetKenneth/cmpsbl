@@ -12,8 +12,19 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import type { CapabilityForExport } from '@/lib/proprietary-evolution/zip-generator';
-
+// Re-use the CapabilityForExport interface shape
+export interface UnifiedCapabilityInput {
+  id: string;
+  name: string;
+  cjpiScore: number;
+  tier: string;
+  chain: string[];
+  fingerprint: string;
+  moatSignature: string;
+  capabilityType: string;
+  description?: string;
+  category?: string;
+}
 interface UserSourceFile {
   name: string;
   extension: string;
