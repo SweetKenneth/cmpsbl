@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
+// Pure CSS animations — no framer-motion
 import { Sparkles, Upload, Zap, Diamond, Package, ArrowRight, Crown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 

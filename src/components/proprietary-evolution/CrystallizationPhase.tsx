@@ -5,10 +5,10 @@
  * spiral inward, absorbed into your permanent memory core.
  * 
  * Post-lock: ascended memories reveal their full identity below.
+ * PERF: Pure CSS animations — no framer-motion dependency.
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Flame, Lock, CheckCircle2, Loader2, ShieldCheck, Sparkles, Trash2, ChevronDown } from 'lucide-react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { Button } from '@/components/ui/button';
@@ -91,8 +91,6 @@ export function CrystallizationPhase() {
       if (error) throw error;
       if (!data?.success) throw new Error(data?.error || 'Ascension failed');
 
-      // Delay state update to let lock animation complete
-      // Use functional update to avoid stale closure on discoveries
       setTimeout(() => {
         setDiscoveries(prev => {
           const disc = prev.find(d => d.id === discoveryId);
@@ -154,7 +152,6 @@ export function CrystallizationPhase() {
   const unascendedList = useMemo(() => discoveries.filter(d => !d.ascended), [discoveries]);
   const sTier = discoveries.filter(d => d.cjpiScore >= 85);
 
-  // Map for orbital component
   const orbitalData: OrbitalDiscovery[] = useMemo(() =>
     discoveries.map(d => ({
       id: d.id,
@@ -225,25 +222,19 @@ export function CrystallizationPhase() {
         </div>
       )}
 
-      {/* ═══ ALL LOCKED — VICTORY STATE ═══ */}
+      {/* ═══ ALL LOCKED — VICTORY STATE (CSS animation) ═══ */}
       {unascendedList.length === 0 && ascendedList.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center py-6 space-y-3"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-primary/40 to-primary/20 border border-primary/30 flex items-center justify-center"
+        <div className="text-center py-6 space-y-3 animate-scale-in">
+          <div className="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-primary/40 to-primary/20 border border-primary/30 flex items-center justify-center orbital-nucleus-pulse"
+            style={{ '--nucleus-scale': 1, '--nucleus-opacity': 1 } as React.CSSProperties}
           >
             <ShieldCheck className="w-7 h-7 text-primary" />
-          </motion.div>
+          </div>
           <p className="text-sm font-semibold text-foreground">All memories locked</p>
           <p className="text-xs text-muted-foreground">
             {ascendedList.length} capabilities permanently ascended — proceed to Export
           </p>
-        </motion.div>
+        </div>
       )}
 
       {/* ═══ ACTIONS ═══ */}
@@ -280,7 +271,7 @@ export function CrystallizationPhase() {
         </div>
       </div>
 
-      {/* ═══ LOCKED MEMORIES — Post-Lock Reveal ═══ */}
+      {/* ═══ LOCKED MEMORIES — Post-Lock Reveal (CSS animations) ═══ */}
       {ascendedList.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider flex items-center gap-2">
@@ -288,111 +279,101 @@ export function CrystallizationPhase() {
             Locked Memories ({ascendedList.length})
           </h3>
           <div className="space-y-1.5 max-h-[24rem] overflow-y-auto pr-1">
-            <AnimatePresence>
-              {ascendedList.map((d, i) => {
-                const isExpanded = expandedLocked === d.id;
-                const impact = d.impactTier || getImpactTier(d.chain.length || 2);
-                const impactStyle = getImpactTierStyle(impact);
+            {ascendedList.map((d, i) => {
+              const isExpanded = expandedLocked === d.id;
+              const impact = d.impactTier || getImpactTier(d.chain.length || 2);
+              const impactStyle = getImpactTierStyle(impact);
 
-                return (
-                  <motion.div
-                    key={d.id}
-                    initial={{ opacity: 0, y: -8, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ delay: i * 0.05, duration: 0.35, ease: 'easeOut' }}
-                    className="rounded-xl border border-primary/20 bg-primary/[0.03] overflow-hidden"
+              return (
+                <div
+                  key={d.id}
+                  className="rounded-xl border border-primary/20 bg-primary/[0.03] overflow-hidden animate-fade-in"
+                  style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
+                >
+                  {/* Header row */}
+                  <button
+                    className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left"
+                    onClick={() => setExpandedLocked(isExpanded ? null : d.id)}
                   >
-                    {/* Header row */}
-                    <button
-                      className="w-full flex items-center gap-2.5 px-3 py-2.5 text-left"
-                      onClick={() => setExpandedLocked(isExpanded ? null : d.id)}
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
-                      <span className="text-xs text-foreground font-medium truncate flex-1">
-                        {d.name.replace(/_/g, ' ')}
-                      </span>
-                      <span className={cn(
-                        "text-[8px] font-mono px-1.5 py-0.5 rounded-full border font-bold uppercase tracking-wider shrink-0",
-                        impactStyle
-                      )}>
-                        {impact === 'Enhancement' ? 'ENH' : impact === 'System Upgrade' ? 'SYS' : 'ARCH'}
-                      </span>
-                      <span className={cn(
-                        "text-xs font-mono font-bold shrink-0",
-                        d.cjpiScore >= 85 ? "text-neon-amber" :
-                        d.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
-                      )}>
-                        {d.cjpiScore}
-                      </span>
-                      <ChevronDown className={cn(
-                        "w-3 h-3 text-muted-foreground transition-transform shrink-0",
-                        isExpanded && "rotate-180"
-                      )} />
-                    </button>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                    <span className="text-xs text-foreground font-medium truncate flex-1">
+                      {d.name.replace(/_/g, ' ')}
+                    </span>
+                    <span className={cn(
+                      "text-[8px] font-mono px-1.5 py-0.5 rounded-full border font-bold uppercase tracking-wider shrink-0",
+                      impactStyle
+                    )}>
+                      {impact === 'Enhancement' ? 'ENH' : impact === 'System Upgrade' ? 'SYS' : 'ARCH'}
+                    </span>
+                    <span className={cn(
+                      "text-xs font-mono font-bold shrink-0",
+                      d.cjpiScore >= 85 ? "text-neon-amber" :
+                      d.cjpiScore >= 60 ? "text-primary" : "text-muted-foreground"
+                    )}>
+                      {d.cjpiScore}
+                    </span>
+                    <ChevronDown className={cn(
+                      "w-3 h-3 text-muted-foreground transition-transform shrink-0",
+                      isExpanded && "rotate-180"
+                    )} />
+                  </button>
 
-                    {/* ═══ EXPANDED REVEAL ═══ */}
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25, ease: 'easeInOut' }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-3 pb-3 pt-1 space-y-2.5 border-t border-primary/10">
-                            {/* Archetype identity */}
-                            {d.archetypeName && (
-                              <div className="flex items-center gap-2">
-                                <Sparkles className="w-3 h-3 text-primary/60 shrink-0" />
-                                <span className="text-[11px] font-mono text-primary/70">{d.archetypeName}</span>
-                              </div>
-                            )}
-
-                            {/* Chain visualization */}
-                            {d.chain.length > 0 && (
-                              <div className="flex items-center gap-1 flex-wrap">
-                                {d.chain.map((node, idx) => (
-                                  <span key={idx} className="flex items-center gap-0.5">
-                                    <span className={cn(
-                                      "text-[9px] font-mono px-1.5 py-0.5 rounded",
-                                      idx === 0
-                                        ? "bg-primary/15 text-primary border border-primary/20"
-                                        : "bg-muted/30 text-foreground/60"
-                                    )}>
-                                      {idx === 0 ? `Ψ₄₁ ${node}` : labelPrimitive(node)}
-                                    </span>
-                                    {idx < d.chain.length - 1 && (
-                                      <span className="text-muted-foreground/30 text-[7px]">→</span>
-                                    )}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
-
-                            {/* Description */}
-                            {d.description && (
-                              <p className="text-[11px] text-muted-foreground leading-relaxed">
-                                {d.description}
-                              </p>
-                            )}
-
-                            {/* Metadata row */}
-                            <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground/60">
-                              <span>Tier: <span className="text-foreground/70 uppercase">{d.tier}</span></span>
-                              <span>Depth: {d.chain.length}N</span>
-                              <span className="flex items-center gap-1">
-                                <ShieldCheck className="w-2.5 h-2.5" /> Permanent
-                              </span>
-                            </div>
+                  {/* ═══ EXPANDED REVEAL — CSS grid transition ═══ */}
+                  <div
+                    className="overflow-hidden transition-[grid-template-rows] duration-250 ease-in-out"
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: isExpanded ? '1fr' : '0fr',
+                    }}
+                  >
+                    <div className="min-h-0">
+                      <div className="px-3 pb-3 pt-1 space-y-2.5 border-t border-primary/10">
+                        {d.archetypeName && (
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="w-3 h-3 text-primary/60 shrink-0" />
+                            <span className="text-[11px] font-mono text-primary/70">{d.archetypeName}</span>
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                );
-              })}
-            </AnimatePresence>
+                        )}
+
+                        {d.chain.length > 0 && (
+                          <div className="flex items-center gap-1 flex-wrap">
+                            {d.chain.map((node, idx) => (
+                              <span key={idx} className="flex items-center gap-0.5">
+                                <span className={cn(
+                                  "text-[9px] font-mono px-1.5 py-0.5 rounded",
+                                  idx === 0
+                                    ? "bg-primary/15 text-primary border border-primary/20"
+                                    : "bg-muted/30 text-foreground/60"
+                                )}>
+                                  {idx === 0 ? `Ψ₄₁ ${node}` : labelPrimitive(node)}
+                                </span>
+                                {idx < d.chain.length - 1 && (
+                                  <span className="text-muted-foreground/30 text-[7px]">→</span>
+                                )}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {d.description && (
+                          <p className="text-[11px] text-muted-foreground leading-relaxed">
+                            {d.description}
+                          </p>
+                        )}
+
+                        <div className="flex items-center gap-3 text-[9px] font-mono text-muted-foreground/60">
+                          <span>Tier: <span className="text-foreground/70 uppercase">{d.tier}</span></span>
+                          <span>Depth: {d.chain.length}N</span>
+                          <span className="flex items-center gap-1">
+                            <ShieldCheck className="w-2.5 h-2.5" /> Permanent
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
