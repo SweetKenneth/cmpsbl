@@ -100,7 +100,7 @@ class SEBAAgent {
       return this.createResult(false, [], 'idle', 'SEBA mode is off');
     }
 
-    const cycleId = crypto.randomUUID();
+    const cycleId = crypto.randomBytes(16).toString('hex');
     const startTime = Date.now();
     const auditLog: SEBAAuditEntry[] = [];
     const phasesCompleted: SEBAPhase[] = [];
@@ -149,7 +149,7 @@ class SEBAAgent {
       let proposalsRejected = 0;
       let evolutionsApplied = 0;
       let finalProposal: ImprovementProposal | undefined;
-      let finalExecution: EvolutionExecution | undefined;
+      let finalExecution: EvolutionExecution;
 
       for (const proposal of proposals) {
         finalProposal = proposal;
@@ -160,7 +160,7 @@ class SEBAAgent {
         
         this.state.current_phase = 'gating';
         const gate = new GovernanceGate(this.config, cycleId);
-        const decision = await gate.evaluate(proposal);
+        const decision: GovernanceDecision = await gate.evaluate(proposal);
         proposal.governance_decision = decision;
         phasesCompleted.push('gating');
         this.log(auditLog, 'gating', 'Governance decision', { 

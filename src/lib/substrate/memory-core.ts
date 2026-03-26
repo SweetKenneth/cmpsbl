@@ -176,11 +176,24 @@ export function calculateSalience(input: SalienceInput): SalienceResult {
   const recency = Math.exp(-ageDays / 30);
 
   // 3. Frequency — logarithmic (diminishing returns past ~50 accesses)
-  const frequency = Math.min(1, Math.log(Math.max(1, input.access_count) + 1) / Math.log(51));
+  const frequency = Math.min(1, Math.log(Math.max(1, Math.abs(input.access_count)) + 1) / Math.log(51));
 
   // 4. User reinforcement — SM-2 repetition signal with diminishing returns
   const reps = input.reinforcement_count ?? 0;
-  const reinforcement = Math.min(1, reps > 0 ? 0.3 + 0.7 * (1 - Math.exp(-reps / 5)) : 0);
+  const reinforcement = Math.min(1, reps > 0 ? 0.3 + 0.7 * Math.log(reps + 1) / Math.log(51) : 0);
+  return {
+    score: confidence * SALIENCE_WEIGHTS.confidence + recency * SALIENCE_WEIGHTS.recency + frequency * SALIENCE_WEIGHTS.frequency + reinforcement * SALIENCE_WEIGHTS.reinforcement,
+    factors: {
+      confidence,
+      recency,
+      frequency,
+      reinforcement,
+      cross_module: 0,
+      type_weight: 0,
+      attention: 0,
+      relevance: 0,
+    },
+  };7 * (1 - Math.exp(-reps / 5)) : 0);
 
   // 5. Cross-module consensus — how many modules have independently referenced this?
   //    2+ modules agreeing is a strong signal; 4+ is near-certainty

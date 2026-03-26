@@ -36,7 +36,7 @@ export interface ExpertPattern {
   antiPatterns: string[];
   qualitySignals: string[];
   whenToUse: string;
-  complexity: number; // 1-10
+  complexity: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -77,7 +77,7 @@ function handleResult<T>(result: Result<T>): T {
 type UserId = Brand<string, 'UserId'>;
 type ProjectId = Brand<string, 'ProjectId'>;
 
-function createUserId(id: string): UserId { return id as UserId; }
+function createUserId(id: string): UserId { if (!isValidUserId(id)) throw new Error('Invalid UserId'); return id as UserId; }
 function getUser(id: UserId): Promise<User> { /* type-safe: can't pass ProjectId */ }`,
     antiPatterns: ['Using plain string for all IDs', 'Mixing up ID types at call sites'],
     qualitySignals: ['Compiler prevents wrong ID types', 'Self-documenting function signatures'],
@@ -94,8 +94,8 @@ function getUser(id: UserId): Promise<User> { /* type-safe: can't pass ProjectId
   private params: Partial<T> = {};
   
   where<K extends string, V>(key: K, value: V): QueryBuilder<T & Record<K, V>> {
-    (this.params as any)[key] = value;
-    return this as any;
+    (this.params as Record<string, unknown>)[key] = value;
+    return this;
   }
   
   build(): T { return this.params as T; }

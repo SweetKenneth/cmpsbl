@@ -12,7 +12,7 @@ import type { EngineId, EngineDefinition, EngineCategory } from './types';
 // ENGINE DEFINITIONS — 20 TOTAL ENGINES
 // ============================================================================
 
-export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
+const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   // ═══════════════════════════════════════════════════════════════════════════
   // COGNITIVE ENGINES (4)
   // ═══════════════════════════════════════════════════════════════════════════
@@ -170,7 +170,16 @@ export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
       'intelligent_task_delegation',
       'goal_alignment_validator',
     ],
-    primaryModules: ['CORTEX', 'RIPPLE', 'NEXUS'],
+    primaryModules: ['CORTEX', 'RIPPLE', 'N'],
+    layer: 'Operational',
+    synergyMultiplier: 2.1,
+    complexityScore: 7,
+    autonomyLevel: 'autonomous',
+    executionMode: 'parallel',
+    averageLatencyMs: 120,
+    cacheable: true,
+  }
+    } // Added missing closing brace for the last engine definitionS'],
     layer: 'Orchestrator',
     synergyMultiplier: 2.6,
     complexityScore: 9,

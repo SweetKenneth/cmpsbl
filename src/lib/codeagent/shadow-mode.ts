@@ -34,7 +34,7 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
-    const { action, payload } = await req.json();
+    const { action, payload } = await req.json(); if (typeof action !== 'string' || !payload || typeof payload !== 'object') throw new Error('Invalid input');
     
     // {{description}}
     const result = await processAction(action, payload, supabaseClient);

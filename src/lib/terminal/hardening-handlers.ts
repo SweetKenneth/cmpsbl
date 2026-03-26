@@ -49,8 +49,8 @@ export function registerHardeningHandlers(): void {
 
   registerHandler('hardening.audit', async () => {
     const audits: Record<string, { valid: boolean }> = {};
-    try { const { verifyBootChain } = await import('@/lib/system/system-hardening'); audits.system_boot = verifyBootChain(); } catch { /* skip */ }
-    try { const { verifyConfigAuditChain } = await import('@/lib/system/system-hardening'); audits.system_config = verifyConfigAuditChain(); } catch { /* skip */ }
+    let verifyBootChain: () => { valid: boolean }; let verifyConfigAuditChain: () => { valid: boolean }; try { ({ verifyBootChain } = await import('@/lib/system/system-hardening')); audits.system_boot = verifyBootChain(); } catch { /* skip */ }
+    try { ({ verifyConfigAuditChain } = await import('@/lib/system/system-hardening')); audits.system_config = verifyConfigAuditChain(); } catch { /* skip */ }
     return { success: true, data: { chains: audits, allValid: Object.values(audits).every(a => a.valid) } };
   });
 

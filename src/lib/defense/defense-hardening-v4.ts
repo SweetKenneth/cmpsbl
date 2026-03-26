@@ -121,14 +121,14 @@ const T4_CATEGORY_WEIGHTS: Record<string, number> = {
 };
 
 export function classifyT4Anomaly(
-  signals: Array<{ type: string; score: number }>
+  signals: Array<{ type: keyof typeof T4_CATEGORY_WEIGHTS; score: number }>
 ): T4Classification {
   let totalWeight = 0;
   let weightedScore = 0;
   const contributing: string[] = [];
 
   for (const s of signals) {
-    const w = T4_CATEGORY_WEIGHTS[s.type] ?? 0.5;
+    const w = T4_CATEGORY_WEIGHTS[s.type] || 0.5;
     totalWeight += w;
     weightedScore += s.score * w;
     contributing.push(s.type);

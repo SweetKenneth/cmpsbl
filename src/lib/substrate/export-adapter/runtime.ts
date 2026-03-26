@@ -56,7 +56,7 @@ function steps(manifest: ExportManifest): string[] {
   return manifest.pipelineSteps.length > 0 ? manifest.pipelineSteps : manifest.sourceModules;
 }
 
-function readmeFile(manifest: ExportManifest, lang: string, buildCmd: string, testCmd: string): ExportFile {
+function readmeFile(manifest: ExportManifest, lang: ExportLanguage, buildCmd: string, testCmd: string): ExportFile {
   return {
     path: 'README.md',
     type: 'readme',
@@ -131,13 +131,13 @@ function scaffoldTS(manifest: ExportManifest): ExportFile[] {
         ``,
         `export interface PipelineResult {`,
         `  success: boolean;`,
-        `  output: unknown;`,
+        `  output: Record<string, unknown>;`,
         `  stagesCompleted: number;`,
         `  totalStages: number;`,
         `  durationMs: number;`,
         `}`,
         ``,
-        `export async function runPipeline(config: PipelineConfig, input: unknown): Promise<PipelineResult> {`,
+        `export async function runPipeline(config: PipelineConfig, input: unknown): Promise<PipelineResult> { if (typeof input !== 'object' || input === null) throw new Error('Invalid input: expected an object');`,
         `  const start = Date.now();`,
         `  let current = input;`,
         `  let completed = 0;`,
@@ -184,7 +184,7 @@ function scaffoldTS(manifest: ExportManifest): ExportFile[] {
         `});`,
         ``,
         `test('pipeline handles partial config', async () => {`,
-        `  const result = await runPipeline({} as PipelineConfig, {});`,
+        `  const result = await runPipeline({} as PipelineConfig, {});;`,
         `  expect(result.stagesCompleted).toBe(0);`,
         `});`,
       ].join('\n'),
