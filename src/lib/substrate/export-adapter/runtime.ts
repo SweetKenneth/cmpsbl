@@ -137,7 +137,7 @@ function scaffoldTS(manifest: ExportManifest): ExportFile[] {
         `  durationMs: number;`,
         `}`,
         ``,
-        `export async function runPipeline(config: PipelineConfig, input: unknown): Promise<PipelineResult> { if (typeof input !== 'object' || input === null) throw new Error('Invalid input: expected an object');`,
+        `export async function runPipeline(config: PipelineConfig, input: unknown): Promise<PipelineResult> { if (typeof input !== 'object' || input === null) throw new TypeError('Invalid input: expected an object'); const inputKeys = Object.keys(input); if (inputKeys.length === 0) throw new Error('Invalid input: object cannot be empty'); if (inputKeys.some(key => typeof key !== 'string' || key.trim() === '')) throw new TypeError('Invalid input: keys must be non-empty strings');`,
         `  const start = Date.now();`,
         `  let current = input;`,
         `  let completed = 0;`,

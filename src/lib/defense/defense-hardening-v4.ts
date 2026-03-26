@@ -128,7 +128,7 @@ export function classifyT4Anomaly(
   const contributing: string[] = [];
 
   for (const s of signals) {
-    const w = T4_CATEGORY_WEIGHTS[s.type] || 0.5;
+    const w = T4_CATEGORY_WEIGHTS[s.type] ?? 0.5;
     totalWeight += w;
     weightedScore += s.score * w;
     contributing.push(s.type);

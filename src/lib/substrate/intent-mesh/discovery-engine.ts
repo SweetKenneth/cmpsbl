@@ -192,6 +192,26 @@ function recordFailure(): void {
   breaker.lastFailure = Date.now();
   if (breaker.failures >= BREAKER_THRESHOLD) {
     breaker.state = 'open';
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
   }
 }
 

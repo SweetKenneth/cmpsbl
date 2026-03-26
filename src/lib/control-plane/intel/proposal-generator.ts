@@ -61,8 +61,18 @@ export interface FailedProbeDetail {
   name: string;
   command: string;
   severity: 'MINOR' | 'CRITICAL';
-  expected: string | undefined;
-  actual: string | undefined;
+  expected: string;
+  actual: string;
+  hint: string;
+  source: string;
+  timestamp?: string;
+}
+  id: string;
+  name: string;
+  command: string;
+  severity: 'MINOR' | 'CRITICAL';
+  expected: string;
+  actual: string;
   hint: string;
   source: string;
 }
