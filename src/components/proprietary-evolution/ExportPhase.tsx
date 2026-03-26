@@ -348,7 +348,7 @@ export function ExportPhase() {
   return (
     <div className="space-y-6">
       {/* Tier Status Bar */}
-      <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-muted/20 border border-border/20">
+      <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20">
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Export Quota</span>
           {isBuilderTier ? (
@@ -381,8 +381,8 @@ export function ExportPhase() {
 
       {/* Export Language — Locked to Source */}
       <div className={cn(
-        "border rounded-xl p-5 space-y-4",
-        isBuilderTier ? "border-border/20 bg-card/20 opacity-75" : "border-border/30 bg-card/40"
+        "border rounded-2xl p-5 sm:p-6 space-y-5",
+        isBuilderTier ? "border-border/20 bg-card/20 opacity-75" : "border-border/25 bg-card/60 backdrop-blur-sm shadow-sm"
       )}>
         <div className="flex items-center gap-2">
           <Code2 className="w-4 h-4 text-primary" />

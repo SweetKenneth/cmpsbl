@@ -191,18 +191,18 @@ export function CrystallizationPhase() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       {/* ═══ STATS BAR ═══ */}
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2.5">
         {[
           { label: 'Discoveries', value: discoveries.length, icon: Sparkles, color: 'text-muted-foreground' },
           { label: 'S-Tier', value: sTier.length, icon: Flame, color: 'text-neon-amber' },
           { label: 'Locked', value: ascendedList.length, icon: Lock, color: 'text-primary' },
         ].map(s => (
-          <div key={s.label} className="px-3 py-2.5 rounded-xl bg-card/40 border border-border/20 text-center">
+          <div key={s.label} className="px-3 py-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20 text-center transition-colors hover:border-border/30">
             <s.icon className={cn("w-3.5 h-3.5 mx-auto mb-1", s.color)} />
-            <p className="text-lg font-bold text-foreground leading-none">{s.value}</p>
-            <p className="text-[9px] font-mono text-muted-foreground mt-0.5">{s.label}</p>
+            <p className="text-xl font-bold text-foreground leading-none">{s.value}</p>
+            <p className="text-[9px] font-mono text-muted-foreground mt-1">{s.label}</p>
           </div>
         ))}
       </div>
