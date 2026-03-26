@@ -39,6 +39,31 @@ export default function ProprietaryEvolution() {
   const [displayedStep, setDisplayedStep] = useState(0);
   const [phaseAnimClass, setPhaseAnimClass] = useState('ascension-phase-idle');
   const [showHero, setShowHero] = useState(true);
+  const [cycleKey, setCycleKey] = useState(0);
+  const [resetting, setResetting] = useState(false);
+  const { toast } = useToast();
+
+  const resetCycle = useCallback(async () => {
+    setResetting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any)
+        .from('artifact_registry')
+        .delete()
+        .eq('user_id', user.id)
+        .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
+      // Force remount all phases to clear local state
+      setCycleKey(k => k + 1);
+      goTo(0);
+      toast({ title: 'Cycle reset', description: 'All discoveries and ascensions cleared. Ready for a fresh upload.' });
+    } catch (err) {
+      toast({ title: 'Reset failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setResetting(false);
+    }
+  }, [toast]);
 
   const goTo = useCallback((step: number) => {
     if (step === activeStep) return;
