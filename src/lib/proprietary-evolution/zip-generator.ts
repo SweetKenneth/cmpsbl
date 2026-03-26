@@ -312,7 +312,9 @@ ${line}  Your original code is in the ../original/ folder.
 ${line}  This file wraps it with the CMPSBL cognitive layer.
 ${line} ═══════════════════════════════════════════════════════
 
-import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/standalone-runtime';
+// Runtime is BUILT INTO the single-file distribution (cmpsbl.ts)
+// No external runtime import needed — use the unified file directly.
+// import { execute, executeChain } from '../cmpsbl';
 
 ${line} ═══════════════════════════════════════════════════════
 ${line}  Layer 1 — Original Source Imports (auto-wired from ../original/)
@@ -496,7 +498,9 @@ function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: Sou
  *    $native = $cap->executeNative(['key' => 'value']);
  */
 
-require_once __DIR__ . '/runtime-bridge.php';
+// Runtime is BUILT INTO the single-file distribution (cmpsbl.php)
+// No external require needed — use the unified file directly.
+// require_once __DIR__ . '/../cmpsbl.php';
 
 // ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
 ${requireLines}
@@ -680,7 +684,9 @@ function generatePythonCapabilitySource(cap: CapabilityForExport, sourceFiles?: 
 import json
 import os
 import time
-from runtime_bridge import CMPSBLRuntimeBridge
+# Runtime is BUILT INTO the single-file distribution (cmpsbl.py)
+# No external import needed — use the unified file directly.
+# from cmpsbl import execute, execute_chain
 
 # ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
 ${importLines}
@@ -1611,7 +1617,7 @@ const pipeline = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
 
 **How it works:**
 
-1. The single file contains the **Mini-Runtime™**, all **Module Effects**, and the **Pipeline Bridge**
+1. **Everything is built into one file** — Mini-Runtime™, Module Effects, Pipeline Bridge are all embedded. No external runtime to install.
 2. Call \`execute(name, input)\` — it runs YOUR code first, then the cognitive pipeline
 3. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
 4. You get back: \`{ _original, _enriched, _pipeline, _cmpsbl }\`
@@ -1633,15 +1639,15 @@ ${capabilities.map(c => {
 
 ## 🚀 Single-File Architecture
 
-Everything is in **one file** (\`cmpsbl.*\`):
+Everything is **built into one file** (\`cmpsbl.*\`) — no external dependencies or runtime installation required:
 
-- **§1 Mini-Runtime™** — CJPI scorer, Saga orchestrator, FSM engine, manifest parser, fingerprinting
-- **§2 Module Effects** — 40 primitive handlers, each transforms pipeline context
-- **§3 Runtime Bridge** — Pipeline executor with dependency ordering, trace & observability
+- **§1 Mini-Runtime™** — CJPI scorer, Saga orchestrator, FSM engine, manifest parser, fingerprinting (BUILT-IN)
+- **§2 Module Effects** — 40 primitive handlers, each transforms pipeline context (BUILT-IN)
+- **§3 Runtime Bridge** — Pipeline executor with dependency ordering, trace & observability (BUILT-IN)
 - **§4 Capability API** — \`execute()\`, \`executeChain()\`, \`validate()\`, \`selfTest()\`
 
-> ⚠️ The Mini-Runtime™ is a sealed proprietary component. Redistribution as a standalone
-> product is prohibited under the CMPSBL® Software License.
+> ⚠️ The Mini-Runtime™ is a sealed proprietary component embedded in this file.
+> Extraction, redistribution, or decompilation is prohibited under the CMPSBL® Software License.
 
 ## 🔁 Recursive Evolution
 
