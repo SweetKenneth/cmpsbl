@@ -493,105 +493,38 @@ export function DiscoveryPhase() {
         ))}
       </div>
 
-      {/* Results List — Discovery Vault */}
-      {results.length > 0 && (
+      {/* ═══ Capability Marketplace ═══ */}
+      {results.length > 0 && !running && (
+        <CapabilityMarketplace
+          results={results}
+          selectedCapabilities={selectedCapabilities}
+          onSelectionChange={setSelectedCapabilities}
+          onDiscard={discardDiscovery}
+          discardingId={discardingId}
+        />
+      )}
+
+      {/* Legacy flat list during active scan */}
+      {results.length > 0 && running && (
         <div className="space-y-2">
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
-            Discovery Vault ({results.length}) — Keep or discard before ascension
+            Live Discoveries ({results.length})
           </h3>
-          <div className="space-y-1.5 max-h-[28rem] overflow-y-auto">
-            {results.map((r, i) => (
-              <div
-                key={i}
-                className={cn("rounded-lg transition-colors border", tierBorder(r.tier))}
-              >
-                <div
-                  className="flex items-center gap-2 px-3 py-2 cursor-pointer"
-                  onClick={() => setExpandedIdx(expandedIdx === i ? null : i)}
-                >
-                  <span className={cn("text-[10px] font-mono font-bold uppercase shrink-0", tierColor(r.tier))}>
-                    {r.tier}
-                  </span>
-                  <span className="text-xs text-foreground/80 truncate flex-1">{r.capability}</span>
-                  
-                  {(r.chainDepth || 2) > 2 && (
-                    <span className="flex items-center gap-0.5 text-[9px] font-mono text-muted-foreground shrink-0">
-                      <Link2 className="w-2.5 h-2.5" />
-                      {r.chainDepth}N
-                    </span>
-                  )}
-                  
-                  {(r.sectorsCrossed || 1) > 1 && (
-                    <span className="text-[9px] font-mono text-muted-foreground shrink-0">
-                      {r.sectorsCrossed}S
-                    </span>
-                  )}
-
-                  <span className={cn(
-                    "text-xs font-mono font-bold shrink-0",
-                    r.cjpiScore >= 85 ? "text-neon-amber" : r.cjpiScore >= 65 ? "text-neon-purple" : r.cjpiScore >= 45 ? "text-primary" : "text-muted-foreground"
-                  )}>
-                    {r.cjpiScore}
-                  </span>
-                </div>
-
-                {expandedIdx === i && (
-                  <div className="px-3 pb-3 space-y-2 border-t border-border/10 pt-2">
-                    {r.chain && r.chain.length > 0 && (
-                      <div className="flex items-center gap-1 flex-wrap">
-                        {r.chain.map((node, idx) => (
-                          <span key={idx} className="flex items-center gap-1">
-                            <span className={cn(
-                              "text-[9px] font-mono px-1.5 py-0.5 rounded",
-                              idx === 0 ? "bg-primary/20 text-primary" : "bg-muted/30 text-foreground/70"
-                            )}>
-                              {idx === 0 ? `Ψ₄₁ ${node}` : labelPrimitive(node)}
-                            </span>
-                            {idx < r.chain!.length - 1 && (
-                              <span className="text-muted-foreground/40 text-[8px]">→</span>
-                            )}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    
-                    <div className="flex gap-3 text-[9px] font-mono text-muted-foreground">
-                      <span>CJPI: {r.cjpiScore}</span>
-                      <span>Depth: {r.chainDepth || 2}</span>
-                      <span>Sectors: {r.sectorsCrossed || 1}</span>
-                      {(r.synergyBonus || 0) > 0 && <span>Synergy: +{r.synergyBonus}</span>}
-                    </div>
-
-                    {r.description && (
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        {r.description}
-                      </p>
-                    )}
-
-                    {/* Keep / Discard actions */}
-                    <div className="flex items-center gap-2 pt-1">
-                      <div className="flex items-center gap-1 text-[9px] font-mono text-primary/70">
-                        <CheckCircle2 className="w-3 h-3" />
-                        <span>Kept — will appear in Ascension</span>
-                      </div>
-                      <div className="flex-1" />
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="h-6 text-[10px] gap-1 text-destructive hover:text-destructive hover:bg-destructive/10"
-                        disabled={discardingId === `${i}`}
-                        onClick={(e) => { e.stopPropagation(); discardDiscovery(r, i); }}
-                      >
-                        {discardingId === `${i}` ? (
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                        ) : (
-                          <Trash2 className="w-3 h-3" />
-                        )}
-                        Discard
-                      </Button>
-                    </div>
-                  </div>
-                )}
+          <div className="space-y-1.5 max-h-[16rem] overflow-y-auto">
+            {results.slice(0, 10).map((r, i) => (
+              <div key={i} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border/20 bg-card/30">
+                <span className={cn("text-[10px] font-mono font-bold uppercase shrink-0", 
+                  r.tier === 'apex' ? 'text-neon-amber' : r.tier === 'mythic' ? 'text-neon-purple' : 'text-muted-foreground'
+                )}>
+                  {r.tier}
+                </span>
+                <span className="text-xs text-foreground/80 truncate flex-1">{r.capability}</span>
+                <span className={cn(
+                  "text-xs font-mono font-bold shrink-0",
+                  r.cjpiScore >= 85 ? "text-neon-amber" : r.cjpiScore >= 65 ? "text-neon-purple" : "text-muted-foreground"
+                )}>
+                  {r.cjpiScore}
+                </span>
               </div>
             ))}
           </div>
