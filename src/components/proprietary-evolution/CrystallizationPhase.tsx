@@ -47,14 +47,26 @@ export function CrystallizationPhase() {
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { setLoading(false); return; }
+    // Fetch ascended memories (no limit) + top discoveries by CJPI
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data } = await (supabase as any)
+    const { data: ascendedData } = await (supabase as any)
       .from('artifact_registry')
       .select('id, name, metadata, tier, description')
       .eq('user_id', user.id)
-      .in('category', ['proprietary-discovery', 'proprietary-ascended'])
+      .eq('category', 'proprietary-ascended');
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { data: discoveryData } = await (supabase as any)
+      .from('artifact_registry')
+      .select('id, name, metadata, tier, description')
+      .eq('user_id', user.id)
+      .eq('category', 'proprietary-discovery')
       .order('created_at', { ascending: false })
       .limit(500);
+
+    // Combine ascended + top 10 unascended by CJPI score
+    const allDiscoveries = [...(ascendedData || []), ...(discoveryData || [])];
+    const data = allDiscoveries;
 
     if (data) {
       setDiscoveries((data as any[]).map((d: any) => {
