@@ -200,6 +200,11 @@ export function ExportPhase() {
     if (targets.length === 0) return;
     
     setExporting(exportScope);
+
+    // Snap to warp tunnel
+    setTimeout(() => {
+      document.getElementById('export-warp')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
@@ -361,6 +366,7 @@ export function ExportPhase() {
 
       {/* ═══ WARP TUNNEL VISUALIZATION ═══ */}
       {eligible.length > 0 && (
+        <div id="export-warp">
         <ExportWarpTunnel
           state={
             exporting ? 'launching'
@@ -370,6 +376,7 @@ export function ExportPhase() {
           capabilityCount={eligible.length}
           exportedCount={exportResult?.count}
         />
+        </div>
       )}
 
       {/* Export Language — Locked to Source */}

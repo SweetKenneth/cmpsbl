@@ -237,6 +237,11 @@ export function IngestPhase() {
     if (files.length === 0) return;
     setParsing(true);
 
+    // Snap to animation area
+    setTimeout(() => {
+      document.getElementById('ingest-orbital')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+
     try {
       const analysis = await analyzeUploadedFiles(files);
       setParsedNode(analysis);
@@ -465,6 +470,7 @@ export function IngestPhase() {
 
       {/* ═══ ORBITAL ASSEMBLY VISUALIZATION ═══ */}
       {(files.length > 0 || parsedNode) && (
+        <div id="ingest-orbital">
         <OrbitalAssembly
           state={
             parsing ? 'scanning'
@@ -475,6 +481,7 @@ export function IngestPhase() {
           capabilities={capSurface?.capabilities}
           nodeName={capSurface?.nodeName}
         />
+        </div>
       )}
 
       {/* Parsed Node Card */}

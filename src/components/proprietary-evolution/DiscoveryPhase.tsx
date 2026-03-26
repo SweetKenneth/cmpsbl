@@ -179,6 +179,11 @@ export function DiscoveryPhase() {
     abortRef.current = false;
     accumulatedResultsRef.current = [];
 
+    // Snap to animation area
+    setTimeout(() => {
+      document.getElementById('discovery-constellation')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
     const BATCH_SIZE = 3; // Parallel collision batches
 
@@ -539,12 +544,14 @@ export function DiscoveryPhase() {
 
       {/* Constellation Forge */}
       {(running || results.length > 0) && (
+        <div id="discovery-constellation">
         <ConstellationForge
           candidateNode={node41DisplayName}
           collisions={collisionEvents}
           running={running}
           currentTarget={currentTarget}
         />
+        </div>
       )}
 
       {/* Stats */}

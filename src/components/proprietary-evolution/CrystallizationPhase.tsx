@@ -79,6 +79,10 @@ export function CrystallizationPhase() {
 
   const ascend = async (discoveryId: string) => {
     setAscending(discoveryId);
+    // Snap to orbital ring
+    setTimeout(() => {
+      document.getElementById('crystallization-ring')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
     try {
       const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
         body: {
@@ -212,6 +216,7 @@ export function CrystallizationPhase() {
             </p>
           </div>
 
+          <div id="crystallization-ring">
           <OrbitalLockRing
             discoveries={orbitalData}
             onAscend={ascend}
@@ -219,6 +224,7 @@ export function CrystallizationPhase() {
             totalCount={discoveries.length}
             ascendedCount={ascendedList.length}
           />
+          </div>
         </div>
       )}
 
