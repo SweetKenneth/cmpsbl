@@ -113,37 +113,44 @@ function simpleHash(str: string): number {
 
 /**
  * Resolve an archetype name for a given set of primitive nodes.
- * Returns null if no archetype matches.
  */
 export function resolveArchetypeName(moduleChain: string[]): string | null {
   if (!moduleChain || moduleChain.length === 0) return null;
-
-  // Try exact match first
   const key = canonicalKey(moduleChain);
   const exact = CHAIN_ARCHETYPES[key];
-  if (exact && exact.length > 0) {
-    return exact[simpleHash(key) % exact.length].name;
-  }
-
-  // Try all pairs within the chain
+  if (exact && exact.length > 0) return exact[simpleHash(key) % exact.length].name;
   if (moduleChain.length >= 2) {
     for (let i = 0; i < moduleChain.length - 1; i++) {
       for (let j = i + 1; j < moduleChain.length; j++) {
         const pairKey = canonicalKey([moduleChain[i], moduleChain[j]]);
         const pair = CHAIN_ARCHETYPES[pairKey];
-        if (pair && pair.length > 0) {
-          return pair[simpleHash(pairKey) % pair.length].name;
-        }
+        if (pair && pair.length > 0) return pair[simpleHash(pairKey) % pair.length].name;
       }
     }
   }
-
   return null;
 }
 
-/**
- * Get the depth tier label for a chain based on primitive count.
- */
+/** Resolve archetype description for "why this matched" rationale. */
+export function resolveArchetypeDesc(moduleChain: string[]): string | null {
+  if (!moduleChain || moduleChain.length === 0) return null;
+  const key = canonicalKey(moduleChain);
+  const exact = CHAIN_ARCHETYPES[key];
+  if (exact && exact.length > 0) return exact[simpleHash(key) % exact.length].desc;
+  if (moduleChain.length >= 2) {
+    for (let i = 0; i < moduleChain.length - 1; i++) {
+      for (let j = i + 1; j < moduleChain.length; j++) {
+        const pairKey = canonicalKey([moduleChain[i], moduleChain[j]]);
+        const pair = CHAIN_ARCHETYPES[pairKey];
+        if (pair && pair.length > 0) return pair[simpleHash(pairKey) % pair.length].desc;
+      }
+    }
+  }
+  return null;
+}
+
+// ═══ DEPTH TIERS ═══
+
 export type DepthTier = 'Short' | 'Medium' | 'Deep';
 
 export function getDepthTier(chainLength: number): DepthTier {
@@ -152,13 +159,92 @@ export function getDepthTier(chainLength: number): DepthTier {
   return 'Deep';
 }
 
-/**
- * Get depth tier styling classes
- */
 export function getDepthTierStyle(tier: DepthTier): string {
   switch (tier) {
     case 'Short': return 'bg-sky-500/10 text-sky-400 border-sky-500/30';
     case 'Medium': return 'bg-neon-amber/10 text-neon-amber border-neon-amber/30';
     case 'Deep': return 'bg-primary/10 text-primary border-primary/30';
   }
+}
+
+// ═══ IMPACT TIERS ═══
+
+export type ImpactTier = 'Enhancement' | 'System Upgrade' | 'Architectural Shift';
+
+export function getImpactTier(chainDepth: number): ImpactTier {
+  if (chainDepth <= 2) return 'Enhancement';
+  if (chainDepth <= 4) return 'System Upgrade';
+  return 'Architectural Shift';
+}
+
+export function getImpactTierStyle(tier: ImpactTier): string {
+  switch (tier) {
+    case 'Enhancement': return 'bg-sky-500/10 text-sky-400 border-sky-500/30';
+    case 'System Upgrade': return 'bg-neon-amber/10 text-neon-amber border-neon-amber/30';
+    case 'Architectural Shift': return 'bg-primary/10 text-primary border-primary/30';
+  }
+}
+
+// ═══ DYNAMIC BUNDLE IDENTITY ═══
+
+const FUNCTION_NOUNS: Record<string, string> = {
+  BRAIN: 'Intelligence', ORACLE: 'Prediction', DEFENSE: 'Security',
+  MEMORY: 'Memory', CORTEX: 'Orchestration', FORGE: 'Manufacturing',
+  EVOLUTION: 'Optimization', HARVEST: 'Acquisition', DREAM: 'Synthesis',
+  ENCODE: 'Generation', DECODE: 'Comprehension', PHANTOM: 'Stealth',
+  IMMUNITY: 'Resilience', SHADOW: 'Verification', REFLEX: 'Response',
+  CONSCIENCE: 'Ethics', TREATY: 'Compliance', GOVERNANCE: 'Governance',
+  ECONOMY: 'Economics', NERVE: 'Consensus', ECHO: 'Replay',
+  SANDBOX: 'Isolation', LINGUA: 'Translation', ATLAS: 'Discovery',
+  IDENTITY: 'Identity', ACCESS: 'Entitlement', RELAY: 'Dispatch',
+  AUDIT: 'Forensics', VISION: 'Observability', NEXUS: 'Routing',
+  MEDIC: 'Diagnostics', ENGINEER: 'Performance', INTEGRATION: 'Integration',
+  SOVEREIGN: 'Sovereignty', COMPASS: 'Navigation', RIPPLE: 'Propagation',
+  INTENT: 'Planning', INCLUSIVE: 'Accessibility', CORE: 'Foundation',
+  SYSTEM: 'Lifecycle',
+};
+
+const DEPTH_ADJECTIVES: Record<ImpactTier, string[]> = {
+  'Enhancement': ['Targeted', 'Focused', 'Direct', 'Lean'],
+  'System Upgrade': ['Adaptive', 'Integrated', 'Multi-Layer', 'Autonomous'],
+  'Architectural Shift': ['Deep', 'Self-Evolving', 'Full-Stack', 'Emergent'],
+};
+
+/** Generate a dynamic system identity name for a bundle */
+export function generateBundleIdentity(dominantNodes: string[], avgDepth: number): string {
+  const impact = getImpactTier(avgDepth);
+  const adjectives = DEPTH_ADJECTIVES[impact];
+  const adjective = adjectives[simpleHash(dominantNodes.join('')) % adjectives.length];
+  const primary = dominantNodes[0];
+  const noun = FUNCTION_NOUNS[primary] || 'System';
+
+  if (dominantNodes.length >= 2) {
+    const secondaryNoun = FUNCTION_NOUNS[dominantNodes[1]] || 'Layer';
+    return `${adjective} ${noun} ${secondaryNoun}`;
+  }
+
+  const suffix = impact === 'Enhancement' ? 'Module' : impact === 'System Upgrade' ? 'System' : 'Engine';
+  return `${adjective} ${noun} ${suffix}`;
+}
+
+/** Generate a "why this matched" rationale for a capability */
+export function generateMatchRationale(
+  chain: string[],
+  cjpiScore: number,
+  synergyBonus?: number,
+): string {
+  const archDesc = resolveArchetypeDesc(chain);
+  if (archDesc) return archDesc;
+
+  const depth = chain.length;
+  const nodes = chain.filter(n => n !== chain[0]).slice(0, 2);
+  const nodeNames = nodes.map(n => FUNCTION_NOUNS[n] || n.toLowerCase()).join(' + ');
+
+  if (synergyBonus && synergyBonus > 0) {
+    return `High affinity between ${nodeNames} — cross-sector synergy boost of +${synergyBonus}`;
+  }
+  if (depth > 4) {
+    return `Deep ${depth}-node chain through ${nodeNames} — architectural-level transformation`;
+  }
+  return `${nodeNames} pairing detected with CJPI ${cjpiScore}`;
 }
