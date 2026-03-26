@@ -30,6 +30,7 @@ const ScanTrendDashboard = lazy(() => import('@/components/evolution/ScanTrendDa
 const FalsePositiveFeedback = lazy(() => import('@/components/evolution/FalsePositiveFeedback').then(m => ({ default: m.FalsePositiveFeedback })));
 const AgentConnectGuide = lazy(() => import('@/components/evolution/AgentConnectGuide').then(m => ({ default: m.AgentConnectGuide })));
 const AIPatchQueue = lazy(() => import('@/components/evolution/AIPatchQueue').then(m => ({ default: m.AIPatchQueue })));
+const FeatureSuggestions = lazy(() => import('@/components/evolution/FeatureSuggestions').then(m => ({ default: m.FeatureSuggestions })));
 
 // ── Case studies ────────────────────────────────────────────
 const CASE_STUDIES = [
@@ -640,6 +641,10 @@ export default function EvolutionControlCenter() {
                   <Brain className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">AI Patches</span>
                 </TabsTrigger>
+                <TabsTrigger value="suggestions" className="flex items-center gap-1.5 text-[11px] sm:text-sm py-2.5 px-2.5 sm:px-3 rounded-lg data-[state=active]:bg-primary/10 data-[state=active]:text-primary whitespace-nowrap shrink-0 min-w-0">
+                  <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">Suggest</span>
+                </TabsTrigger>
               </TabsList>
 
               <Suspense fallback={<div className="min-h-[200px] flex items-center justify-center text-muted-foreground">Loading...</div>}>
@@ -649,6 +654,7 @@ export default function EvolutionControlCenter() {
                 <TabsContent value="trends"><ScanTrendDashboard /></TabsContent>
                 <TabsContent value="feedback"><FalsePositiveFeedback /></TabsContent>
                 <TabsContent value="ai-patches"><AIPatchQueue /></TabsContent>
+                <TabsContent value="suggestions"><FeatureSuggestions /></TabsContent>
               </Suspense>
             </Tabs>
           </div>
