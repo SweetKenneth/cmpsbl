@@ -153,7 +153,7 @@ export function generateCherryPickedCapabilities(
   packName: string = 'capability-pack',
 ): string {
   // Deduplicate all modules across all chains
-  const uniqueModules = [...new Set(chains.flat().map(m => m.toUpperCase()))];
+  const uniqueModules = Array.from(new Set(chains.flat().map(m => m.toUpperCase())));
   const blueprints = uniqueModules
     .map(m => EFFECT_BLUEPRINTS[m])
     .filter(Boolean) as EffectBlueprint[];
