@@ -25,8 +25,7 @@ const EvolutionCycleReport = lazy(() => import("@/components/evolution/Evolution
 export const adminRoutes = (
   <>
     <Route path="/admin/patches" element={<Navigate to="/" replace />} />
-    <Route path="/admin/evolution-report" element={<Navigate to="/docs/reports/evolution" replace />} />
-    <Route path="/docs/reports/evolution" element={<AdminRoute><EvolutionCycleReport /></AdminRoute>} />
+    <Route path="/admin/evolution-report" element={<AdminRoute><EvolutionCycleReport /></AdminRoute>} />
     <Route path="/admin/shadow-mesh" element={<AdminRoute><ShadowMeshPage /></AdminRoute>} />
     <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
     <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
