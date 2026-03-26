@@ -5,6 +5,7 @@ import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 import { PhaseGateRoute } from "@/components/gates/PhaseGateRoute";
 import { PackGate } from "@/components/slots/PackGate";
+import { PinGate } from "@/components/gates/PinGate";
 
 // Core pages
 const DiscoveredPipelines = lazy(() => import("@/pages/DiscoveredPipelines"));
