@@ -194,8 +194,9 @@ describe('Ascension Page Components', () => {
   describe('ExportPhase', () => {
     it('renders empty state when no capabilities', async () => {
       render(<ExportPhase />, { wrapper });
-      const emptyMsg = await screen.findByText(/No export-ready capabilities/i);
-      expect(emptyMsg).toBeTruthy();
+      await waitFor(() => {
+        expect(screen.getByText(/No export-ready capabilities/i)).toBeTruthy();
+      }, { timeout: 3000 });
     });
   });
 });
