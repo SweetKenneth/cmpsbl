@@ -193,7 +193,7 @@ export function calculateSalience(input: SalienceInput): SalienceResult {
       attention: 0,
       relevance: 0,
     },
-  };7 * (1 - Math.exp(-reps / 5)) : 0);
+  };
 
   // 5. Cross-module consensus — how many modules have independently referenced this?
   //    2+ modules agreeing is a strong signal; 4+ is near-certainty
