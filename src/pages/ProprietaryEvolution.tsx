@@ -2,12 +2,13 @@
  * Ascension — /x
  * PIN-gated software evolution lifecycle within the CMPSBL cognitive substrate.
  * Full-page step-by-step wizard: INGEST → ASCENSION → CRYSTALLIZATION → EXPORT
+ *
+ * PERF: Pure CSS animations — no framer-motion dependency.
  */
 
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { PinGate } from '@/components/gates/PinGate';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
@@ -32,21 +33,26 @@ const PHASE_DESCRIPTIONS = [
 
 export default function ProprietaryEvolution() {
   const [activeStep, setActiveStep] = useState(0);
-  const [direction, setDirection] = useState(0); // -1 = back, 1 = forward
+  const [direction, setDirection] = useState(0);
+  const [transitioning, setTransitioning] = useState(false);
+  const [displayedStep, setDisplayedStep] = useState(0);
+  const phaseRef = useRef<HTMLDivElement>(null);
 
-  const goTo = (step: number) => {
-    if (step === activeStep) return;
+  const goTo = useCallback((step: number) => {
+    if (step === activeStep || transitioning) return;
     setDirection(step > activeStep ? 1 : -1);
-    setActiveStep(step);
-  };
+    setTransitioning(true);
+    // Start exit animation
+    setTimeout(() => {
+      setDisplayedStep(step);
+      setActiveStep(step);
+      // Enter animation starts via CSS
+      setTimeout(() => setTransitioning(false), 300);
+    }, 250);
+  }, [activeStep, transitioning]);
 
-  const next = () => {
-    if (activeStep < 3) goTo(activeStep + 1);
-  };
-
-  const back = () => {
-    if (activeStep > 0) goTo(activeStep - 1);
-  };
+  const next = () => { if (activeStep < 3) goTo(activeStep + 1); };
+  const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
 
   const phases = [
     <IngestPhase key="ingest" />,
@@ -54,6 +60,11 @@ export default function ProprietaryEvolution() {
     <CrystallizationPhase key="crystallize" />,
     <ExportPhase key="export" />,
   ];
+
+  // CSS class for phase transition
+  const phaseClass = transitioning
+    ? (direction > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right')
+    : (direction !== 0 ? (direction > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left') : 'ascension-phase-idle');
 
   return (
     <PinGate pin="041041" storageKey="gate-x-proprietary">
@@ -68,19 +79,12 @@ export default function ProprietaryEvolution() {
         <AscensionOnboarding />
 
         {/* ═══ COMPACT HERO (only on step 0) ═══ */}
-        <AnimatePresence mode="wait">
-          {activeStep === 0 && (
-            <motion.div
-              key="hero"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35 }}
-            >
-              <AscensionHero />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div
+          className={activeStep === 0 ? 'ascension-hero-enter' : 'ascension-hero-exit'}
+          style={{ overflow: 'hidden' }}
+        >
+          {activeStep === 0 && <AscensionHero />}
+        </div>
 
         {/* ═══ WIZARD SECTION ═══ */}
         <section className="flex-1 flex flex-col">
@@ -101,20 +105,12 @@ export default function ProprietaryEvolution() {
             </div>
           </div>
 
-          {/* Phase content — animated transitions */}
+          {/* Phase content — CSS animated transitions */}
           <main className="flex-1">
             <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={activeStep}
-                  initial={{ opacity: 0, x: direction * 40 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: direction * -40 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                >
-                  {phases[activeStep]}
-                </motion.div>
-              </AnimatePresence>
+              <div ref={phaseRef} className={phaseClass}>
+                {phases[displayedStep]}
+              </div>
 
               {/* ═══ VISION: Effect Monitor (always visible) ═══ */}
               <div className="mt-8 pt-6 border-t border-border/10">
