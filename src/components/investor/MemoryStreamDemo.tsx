@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Brain, Zap, ArrowRight, Layers, Sparkles, Shield, Activity, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveArchetypeName, getDepthTier, getDepthTierStyle } from "@/lib/discovery/chain-archetypes";
 
 // ─── Curated Discovery Descriptions ─────────────────────────
 // Hand-picked investor-friendly explanations for top discoveries
