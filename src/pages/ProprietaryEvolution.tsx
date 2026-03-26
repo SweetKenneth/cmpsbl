@@ -7,7 +7,6 @@
  */
 
 import { useState, useCallback } from 'react';
-import { PinGate } from '@/components/gates/PinGate';
 import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -92,100 +91,99 @@ export default function ProprietaryEvolution() {
   ];
 
   return (
-    <PinGate pin="041041" storageKey="gate-x-proprietary">
-      <div className="min-h-screen bg-background flex flex-col">
-        <SEO
-          title="Ascension — Software Evolution | CMPSBL"
-          description="Bring your software into the CMPSBL cognitive substrate. New capabilities emerge from interaction — crystallized into portable, exportable Ascended Memories."
-          canonical="https://cmpsbl.com/x"
-        />
+    <div className="min-h-screen bg-background flex flex-col">
+      <SEO
+        title="Ascension — Software Evolution | CMPSBL"
+        description="Bring your software into the CMPSBL cognitive substrate. New capabilities emerge from interaction — crystallized into portable, exportable Ascended Memories."
+        canonical="https://cmpsbl.com/x"
+      />
 
-        <PublicNav />
-        <AscensionOnboarding />
+      <PublicNav />
+      <AscensionOnboarding />
 
-        {/* ═══ COMPACT HERO (only on step 0) ═══ */}
-        {showHero && (
-          <div className="ascension-hero-enter" style={{ overflow: 'hidden' }}>
-            <AscensionHero />
-          </div>
-        )}
+      {/* ═══ COMPACT HERO (only on step 0) ═══ */}
+      {showHero && (
+        <div className="ascension-hero-enter" style={{ overflow: 'hidden' }}>
+          <AscensionHero />
+        </div>
+      )}
 
-        {/* ═══ WIZARD SECTION ═══ */}
-        <section className="flex-1 flex flex-col mt-10 sm:mt-14">
-          {/* Stepper + phase header */}
-          <div className="bg-background/90 backdrop-blur-xl border-b border-border/10">
-            <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
-              <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
+      {/* ═══ WIZARD SECTION ═══ */}
+      <section className="flex-1 flex flex-col mt-10 sm:mt-14">
+        {/* Stepper + phase header */}
+        <div className="bg-background/90 backdrop-blur-xl border-b border-border/10">
+          <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
+            <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
 
-              <div className="text-center">
-                <h2 className="text-base sm:text-lg font-bold text-foreground">
-                  {PHASE_LABELS[activeStep]}
-                </h2>
-                <p className="text-xs text-muted-foreground font-mono mt-0.5">
-                  {PHASE_DESCRIPTIONS[activeStep]}
-                </p>
-              </div>
+            <div className="text-center">
+              <h2 className="text-base sm:text-lg font-bold text-foreground">
+                {PHASE_LABELS[activeStep]}
+              </h2>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5">
+                {PHASE_DESCRIPTIONS[activeStep]}
+              </p>
             </div>
           </div>
 
-          {/* Phase content */}
-          <main className="flex-1">
-            <div className="max-w-4xl mx-auto px-4 py-5 sm:py-8">
-              <div className={phaseAnimClass}>
-                {phases[displayedStep]}
-              </div>
+        </div>
 
-              <div className="mt-8 pt-6 border-t border-border/10">
-                <AscensionEffectPanel />
-              </div>
+        {/* Phase content */}
+        <main className="flex-1">
+          <div className="max-w-4xl mx-auto px-4 py-5 sm:py-8">
+            <div className={phaseAnimClass}>
+              {phases[displayedStep]}
             </div>
-          </main>
 
-          {/* Bottom navigation — improved touch targets & layout */}
-          <div className="sticky bottom-0 z-30 bg-background/95 backdrop-blur-xl border-t border-border/10">
-            <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
+            <div className="mt-8 pt-6 border-t border-border/10">
+              <AscensionEffectPanel />
+            </div>
+          </div>
+        </main>
+
+        {/* Bottom navigation — improved touch targets & layout */}
+        <div className="sticky bottom-0 z-30 bg-background/95 backdrop-blur-xl border-t border-border/10">
+          <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={back}
+              disabled={activeStep === 0}
+              className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={back}
-                disabled={activeStep === 0}
-                className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
+                onClick={resetCycle}
+                disabled={resetting}
+                className="gap-1 text-[10px] h-8 min-h-[36px] text-destructive hover:text-destructive hover:bg-destructive/10"
               >
-                <ArrowLeft className="w-4 h-4" />
-                Back
+                <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
+                Reset
               </Button>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={resetCycle}
-                  disabled={resetting}
-                  className="gap-1 text-[10px] h-8 min-h-[36px] text-destructive hover:text-destructive hover:bg-destructive/10"
-                >
-                  <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
-                  Reset
-                </Button>
-                <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
-                  Step {activeStep + 1}/4
-                </span>
-              </div>
-
-              <Button
-                size="sm"
-                onClick={next}
-                disabled={activeStep === 3}
-                className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
-              >
-                Next
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+              <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
+                Step {activeStep + 1}/4
+              </span>
             </div>
-          </div>
-        </section>
 
-        <EnhancedFooter />
-      </div>
-    </PinGate>
+            <Button
+              size="sm"
+              onClick={next}
+              disabled={activeStep === 3}
+              className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
+            >
+              Next
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <EnhancedFooter />
+    </div>
   );
 }
