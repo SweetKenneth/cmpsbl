@@ -838,7 +838,8 @@ function collideNodesMultiChain(
       const diversityBonus = (uniqueSectors.length - 1) * 2;
       const variance = ((chainHash >> 8) % 13) - 6;
       
-      let cjpi = baseScore + synergy + depthBonus + diversityBonus + traitBonus + variance;
+      const chainAffinityBoost = softwareArchetype ? partnerChain.reduce((sum, n) => sum + getArchetypeBoost(softwareArchetype, n), 0) : 0;
+      let cjpi = baseScore + synergy + depthBonus + diversityBonus + traitBonus + variance + chainAffinityBoost;
       
       const maxForDepth = chainLen === 3 ? 78 : chainLen === 4 ? 86 : chainLen === 5 ? 92 : chainLen === 6 ? 96 : chainLen === 7 ? 98 : 99;
       cjpi = Math.max(30, Math.min(cjpi, maxForDepth));
