@@ -75,19 +75,16 @@ export async function generateAIPatch(candidate: PatchCandidate): Promise<Genera
   const prompt = buildPatchPrompt(candidate);
 
   try {
-    // Call through NEXUS router edge function
+    // Call through NEXUS router edge function (uses prompt/systemPrompt format)
     const { data, error } = await supabase.functions.invoke('pf-nexus-router', {
       body: {
-        action: 'generate',
-        model: modelConfig.primary,
-        messages: [
-          { role: 'system', content: PATCH_SYSTEM_PROMPT },
-          { role: 'user', content: prompt },
-        ],
+        prompt,
+        systemPrompt: PATCH_SYSTEM_PROMPT,
         temperature: modelConfig.temperature,
-        max_tokens: 4096,
+        maxTokens: 4096,
         metadata: {
           category: 'evolution',
+          taskType: 'code',
           candidateId: candidate.id,
           patchId,
         },
@@ -104,8 +101,8 @@ export async function generateAIPatch(candidate: PatchCandidate): Promise<Genera
       category: candidate.category,
       title: candidate.title,
       changes: parsed.changes,
-      model: modelConfig.primary,
-      tokensUsed: data?.usage?.total_tokens || 0,
+      model: data?.model || data?.provider || 'nexus-fleet',
+      tokensUsed: data?.tokensUsed || 0,
       confidence: parsed.confidence,
       estimatedImpact: parsed.impact,
       reasoning: parsed.reasoning,

@@ -140,17 +140,14 @@ Suggest 3-5 new functions, features, or capabilities that would meaningfully imp
   try {
     const { data, error } = await supabase.functions.invoke('pf-nexus-router', {
       body: {
-        action: 'generate',
-        model: 'openai/gpt-5-nano',
-        messages: [
-          { role: 'system', content: SUGGESTION_SYSTEM_PROMPT },
-          { role: 'user', content: userPrompt },
-        ],
+        prompt: userPrompt,
+        systemPrompt: SUGGESTION_SYSTEM_PROMPT,
         temperature: 0.35,
-        max_tokens: 2500,
+        maxTokens: 2500,
         metadata: {
           category: 'evolution',
-          subtype: 'feature_suggestion',
+          taskType: 'reasoning',
+          routeKey: 'feature_suggestion',
         },
       },
     });
@@ -196,7 +193,7 @@ function parseSuggestions(raw: string): FeatureSuggestion[] {
         dependencies: Array.isArray(s.dependencies) ? s.dependencies : [],
         generatedAt: new Date().toISOString(),
         status: 'new' as const,
-        model: 'openai/gpt-5-nano',
+        model: 'nexus-fleet',
       };
     }).sort((a: FeatureSuggestion, b: FeatureSuggestion) => b.compositeScore - a.compositeScore);
   } catch {
