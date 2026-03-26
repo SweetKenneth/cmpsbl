@@ -1102,7 +1102,13 @@ serve(async (req: Request) => {
         }
 
         const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
-        const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth);
+        // Classify archetype for affinity-aware collision scoring
+        const sourceFiles = (candidateMeta.source_files as Array<{ content: string }>) || [];
+        const allContent = sourceFiles.map(f => f.content || '').join('\n');
+        const clientArchetype = validateString(input.archetype, 20) as SoftwareArchetype | null;
+        const archetypeProfile = classifyArchetype(allContent, String(candidateMeta.domain || 'software'), String(candidateMeta.language || 'unknown'));
+        const resolvedArchetype: SoftwareArchetype = (clientArchetype && ['active', 'passive', 'hybrid'].includes(clientArchetype)) ? clientArchetype : archetypeProfile.archetype;
+        const results = collideNodesMultiChain(candidate_node, candidateMeta, target_node, permutation_depth, resolvedArchetype);
 
         // Only persist the TOP 1 weighted result per collision run
         // All results are returned to the client for display, but we avoid DB bloat
