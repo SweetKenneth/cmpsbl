@@ -63,7 +63,7 @@ export function EnhancedFooter() {
     {
       title: "Company",
       links: [
-        { name: "About", href: "/about" },
+        { name: "Roadmap", href: "/roadmap" },
         { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
         { name: "Publication", href: "/publication" },
