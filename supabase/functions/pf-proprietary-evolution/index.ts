@@ -734,6 +734,7 @@ function collideNodesMultiChain(
   candidateMeta: Record<string, unknown>,
   targetNode: string,
   permutationDepth: number,
+  archetype?: SoftwareArchetype,
 ): CollisionResult[] {
   // ═══ DERIVE NODE 41's CAPABILITY SURFACE ═══
   const surface = deriveCapabilitySurface(candidateName, candidateMeta);
