@@ -480,6 +480,111 @@ function extractVerbsFromCode(content: string): string[] {
     .map(([v]) => v);
 }
 
+// ═══ ARCHETYPE CLASSIFICATION — Active / Passive / Hybrid ═══
+type SoftwareArchetype = 'active' | 'passive' | 'hybrid';
+
+interface ArchetypeProfile {
+  archetype: SoftwareArchetype;
+  confidence: number;
+  signals: string[];
+}
+
+/**
+ * Classify uploaded code into an archetype for affinity filtering.
+ * Active = agents, bots, daemons, workers (long-running, event-driven)
+ * Passive = UIs, static sites, libraries (render-focused, no runtime loop)
+ * Hybrid = APIs, services, CLI tools (request/response, mixed concerns)
+ */
+function classifyArchetype(content: string, domain: string, language: string): ArchetypeProfile {
+  const lower = content.toLowerCase();
+  const signals: string[] = [];
+  let activeScore = 0;
+  let passiveScore = 0;
+
+  // Active signals: long-running processes, event loops, state machines
+  const activePatterns: [string, number][] = [
+    ['setinterval', 3], ['settimeout', 2], ['event_loop', 4], ['while true', 4],
+    ['cron', 3], ['schedule', 3], ['worker', 3], ['daemon', 4], ['agent', 3],
+    ['queue', 2], ['consume', 2], ['subscribe', 3], ['websocket', 3],
+    ['mqtt', 3], ['polling', 3], ['spawn', 2], ['async fn main', 3],
+    ['tokio::spawn', 4], ['go func', 3], ['goroutine', 3],
+    ['state_machine', 3], ['fsm', 2], ['transition', 2],
+  ];
+  for (const [pat, weight] of activePatterns) {
+    if (lower.includes(pat)) { activeScore += weight; signals.push(`active:${pat}`); }
+  }
+
+  // Passive signals: rendering, UI frameworks, static content
+  const passivePatterns: [string, number][] = [
+    ['react', 3], ['component', 2], ['render', 3], ['<div', 3], ['<html', 4],
+    ['css', 2], ['stylesheet', 3], ['dom', 2], ['usestate', 3], ['useeffect', 2],
+    ['vue', 3], ['svelte', 3], ['template', 2], ['static', 2],
+    ['export default', 1], ['display:', 2], ['font-size', 2],
+  ];
+  for (const [pat, weight] of passivePatterns) {
+    if (lower.includes(pat)) { passiveScore += weight; signals.push(`passive:${pat}`); }
+  }
+
+  // Domain-level hints
+  if (['web', 'game'].includes(domain)) passiveScore += 4;
+  if (['automation', 'iot', 'ml'].includes(domain)) activeScore += 4;
+  if (['api', 'data', 'security'].includes(domain)) { activeScore += 2; passiveScore += 2; }
+
+  // Language hints
+  const langLower = language.toLowerCase();
+  if (['verilog', 'vhdl', 'systemverilog', 'chisel', 'spice'].some(l => langLower.includes(l))) {
+    activeScore += 5; // HDL is inherently active (always-running circuits)
+  }
+
+  const total = activeScore + passiveScore;
+  if (total === 0) return { archetype: 'hybrid', confidence: 0.5, signals };
+
+  const activeRatio = activeScore / total;
+  if (activeRatio > 0.65) return { archetype: 'active', confidence: activeRatio, signals };
+  if (activeRatio < 0.35) return { archetype: 'passive', confidence: 1 - activeRatio, signals };
+  return { archetype: 'hybrid', confidence: 0.5 + Math.abs(activeRatio - 0.5), signals };
+}
+
+// ═══ NODE AFFINITY — Hard-filter incompatible nodes, soft-weight borderline ═══
+
+// Nodes that are INCOMPATIBLE with passive code (UI/static — no runtime loop)
+const ACTIVE_ONLY_NODES = new Set(['DREAM', 'NEXUS', 'CORTEX', 'HARVEST', 'EVOLUTION', 'SANDBOX', 'PHANTOM', 'ECHO', 'REFLEX']);
+
+// Nodes that are INCOMPATIBLE with active code (agents/daemons — no UI)
+const PASSIVE_ONLY_NODES = new Set(['VISION', 'INCLUSIVE']);
+
+// Nodes that get a synergy BOOST for specific archetypes
+const ARCHETYPE_BOOST: Record<SoftwareArchetype, Record<string, number>> = {
+  active: {
+    DREAM: 3, CORTEX: 3, NEXUS: 2, HARVEST: 2, EVOLUTION: 3,
+    REFLEX: 2, ECHO: 2, PHANTOM: 2, SANDBOX: 2, NERVE: 2,
+  },
+  passive: {
+    VISION: 3, INCLUSIVE: 3, IDENTITY: 2, RELAY: 2, FORGE: 2,
+    COMPASS: 2, LINGUA: 2, ACCESS: 2,
+  },
+  hybrid: {
+    DEFENSE: 2, MEMORY: 2, BRAIN: 2, ORACLE: 2, AUDIT: 2,
+    GOVERNANCE: 2, INTEGRATION: 2, INTENT: 2,
+  },
+};
+
+/**
+ * Filter substrate nodes based on archetype. Returns filtered list for batch collisions.
+ * Hard filter: skip obviously incompatible nodes.
+ * The remaining nodes get soft-weighted via ARCHETYPE_BOOST in scoring.
+ */
+function filterNodesByArchetype(archetype: SoftwareArchetype): string[] {
+  if (archetype === 'hybrid') return SUBSTRATE_NODES; // Hybrid gets everything
+
+  const excludeSet = archetype === 'active' ? PASSIVE_ONLY_NODES : ACTIVE_ONLY_NODES;
+  return SUBSTRATE_NODES.filter(n => !excludeSet.has(n));
+}
+
+function getArchetypeBoost(archetype: SoftwareArchetype, node: string): number {
+  return ARCHETYPE_BOOST[archetype]?.[node] || 0;
+}
+
 function deriveCapabilitySurface(candidateName: string, candidateMeta: Record<string, unknown>): CapabilitySurface {
   const sourceFiles = (candidateMeta.source_files as Array<{ name: string; content: string; language: string }>) || [];
   const language = String(candidateMeta.language || 'Unknown');
