@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
