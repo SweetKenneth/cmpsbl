@@ -1796,10 +1796,9 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
-      { name: 'src/', purpose: 'Executable capability implementations' },
-      { name: 'src/runtime-bridge.*', purpose: 'Runtime Binding Layer — pipeline execution engine' },
+      { name: `src/${capabilitiesFilename}`, purpose: 'Acquired capabilities — plain functions, zero dependencies' },
+      { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
-      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine (sealed)' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
       { name: 'LICENSE.html', purpose: 'Commercial distribution license' },
       { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability valuation dossier' },
