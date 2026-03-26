@@ -53,7 +53,8 @@ const SUBSTRATE_NODES = [
   'DEFENSE',
 ];
 
-// No CJPI threshold — all discoveries are surfaced for the user to curate
+// Only the top 10 discoveries (by CJPI score) are surfaced for ascension
+const TOP_N = 10;
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
@@ -309,13 +310,15 @@ export function DiscoveryPhase() {
         }
       }
 
-      // Auto-select all discovered capabilities using ref (not stale state)
+      // Auto-select top 10 discovered capabilities by CJPI
       const allAccumulated = accumulatedResultsRef.current;
-      setSelectedCapabilities(new Set(allAccumulated.map(r => r.capability)));
+      const top10 = [...allAccumulated].sort((a, b) => b.cjpiScore - a.cjpiScore).slice(0, TOP_N);
+      setSelectedCapabilities(new Set(top10.map(r => r.capability)));
 
+      const surfaced = Math.min(allAccumulated.length, TOP_N);
       toast({
         title: 'Collision sweep complete',
-        description: `Tested ${shuffledNodes.length} primitives. ${allAccumulated.length > 0 ? `${allAccumulated.length} discoveries found. Select capabilities in the marketplace below.` : 'No archetype matches — try richer code.'}`,
+        description: `Tested ${shuffledNodes.length} primitives. ${allAccumulated.length > 0 ? `${allAccumulated.length} total discoveries — top ${surfaced} surfaced for ascension.` : 'No archetype matches — try richer code.'}`,
       });
     } catch (err) {
       console.error('Discovery error:', err);
@@ -379,6 +382,12 @@ export function DiscoveryPhase() {
     return colors[tier] || 'border-border/20 bg-muted/10';
   };
 
+  // Sort all results by CJPI descending, surface only top 10
+  const rankedResults = useMemo(() =>
+    [...results].sort((a, b) => b.cjpiScore - a.cjpiScore),
+  [results]);
+  const topResults = useMemo(() => rankedResults.slice(0, TOP_N), [rankedResults]);
+
   const collisionEvents = useMemo(() => results.map(r => ({
     targetNode: r.nodeB,
     cjpiScore: r.cjpiScore,
@@ -386,8 +395,8 @@ export function DiscoveryPhase() {
     active: false,
   })), [results]);
 
-  const apexCount = useMemo(() => results.filter(r => r.cjpiScore >= 92).length, [results]);
-  const maxChainDepth = useMemo(() => results.length > 0 ? Math.max(...results.map(r => r.chainDepth || 2)) : 0, [results]);
+  const apexCount = useMemo(() => topResults.filter(r => r.cjpiScore >= 92).length, [topResults]);
+  const maxChainDepth = useMemo(() => topResults.length > 0 ? Math.max(...topResults.map(r => r.chainDepth || 2)) : 0, [topResults]);
 
   const node41DisplayName = candidateSurface?.nodeName || candidateNode || '#41';
 
@@ -481,7 +490,7 @@ export function DiscoveryPhase() {
         </div>
 
         <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-muted/20">
-          <span className="text-[9px] font-mono text-muted-foreground">All CJPI levels eligible</span>
+          <span className="text-[9px] font-mono text-muted-foreground">Top {TOP_N} by CJPI → Ascend</span>
         </div>
 
         <div className="flex-1" />
@@ -542,8 +551,8 @@ export function DiscoveryPhase() {
       <div className="grid grid-cols-4 gap-2">
         {[
           { label: 'Permutations', value: permutations, icon: Activity },
-          { label: 'Discoveries', value: results.length, icon: Zap },
-          { label: 'Apex Chains', value: apexCount, icon: TrendingUp },
+          { label: 'Total Found', value: results.length, icon: Zap },
+          { label: 'Top 10 Apex', value: apexCount, icon: TrendingUp },
           { label: 'Max Depth', value: maxChainDepth > 0 ? `${maxChainDepth}N` : '—', icon: Layers },
         ].map(s => (
           <div key={s.label} className="px-2 py-3 rounded-xl bg-card/40 border border-border/20 text-center">
@@ -556,13 +565,20 @@ export function DiscoveryPhase() {
 
       {/* ═══ Capability Marketplace ═══ */}
       {results.length > 0 && !running && (
-        <CapabilityMarketplace
-          results={results}
-          selectedCapabilities={selectedCapabilities}
-          onSelectionChange={setSelectedCapabilities}
-          onDiscard={discardDiscovery}
-          discardingId={discardingId}
-        />
+        <>
+          {results.length > TOP_N && (
+            <p className="text-[10px] font-mono text-muted-foreground text-center">
+              Showing top {TOP_N} of {results.length} discoveries — ranked by CJPI score
+            </p>
+          )}
+          <CapabilityMarketplace
+            results={topResults}
+            selectedCapabilities={selectedCapabilities}
+            onSelectionChange={setSelectedCapabilities}
+            onDiscard={discardDiscovery}
+            discardingId={discardingId}
+          />
+        </>
       )}
 
       {/* Legacy flat list during active scan */}
