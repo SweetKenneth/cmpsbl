@@ -88,9 +88,9 @@ export default function ProprietaryEvolution() {
         )}
 
         {/* ═══ WIZARD SECTION ═══ */}
-        <section className="flex-1 flex flex-col">
-          {/* Sticky stepper + phase header */}
-          <div className="sticky top-0 z-30 bg-background/90 backdrop-blur-xl border-b border-border/10">
+        <section className="flex-1 flex flex-col mt-6 sm:mt-10">
+          {/* Stepper + phase header */}
+          <div className="bg-background/90 backdrop-blur-xl border-b border-border/10">
             <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
               <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
 
