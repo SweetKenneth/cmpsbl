@@ -845,11 +845,6 @@ Everything is **built into one file** (\`cmpsbl.*\`) — no external dependencie
 > ⚠️ The Mini-Runtime™ is a sealed proprietary component embedded in this file.
 > Extraction, redistribution, or decompilation is prohibited under the CMPSBL® Software License.
 
-## 🔁 Recursive Evolution
-
-Re-ingest this enhanced codebase into the Proprietary Evolution Lifecycle
-to discover deeper capability chains. Each cycle compounds exclusivity.
-
 ## ⚠️ Honest Limitations
 
 - This is a **v1 execution model** — sequential pipeline only, no async orchestration

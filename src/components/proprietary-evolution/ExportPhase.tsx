@@ -9,7 +9,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
-import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, RefreshCw, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
+import { Package, Download, Loader2, FileCode2, Shield, CheckCircle2, Lock, AlertTriangle, Trash2, Code2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ExportWarpTunnel, type WarpState } from './ExportWarpTunnel';
 import { supabase } from '@/integrations/supabase/client';
@@ -79,7 +79,7 @@ export function ExportPhase() {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
-  const [reingesting, setReingesting] = useState(false);
+  
   const [showRetirementDialog, setShowRetirementDialog] = useState(false);
   const [exportScope, setExportScope] = useState<'all' | string>('all');
   const [discarding, setDiscarding] = useState<string | null>(null);
@@ -271,56 +271,6 @@ export function ExportPhase() {
     }
   };
 
-  const handleReingest = async () => {
-    if (capabilities.length === 0) return;
-    setReingesting(true);
-    try {
-      const { data: authData } = await supabase.auth.getUser();
-      const currentUser = authData.user;
-      if (!currentUser) throw new Error('Authentication required');
-
-      const combinedName = `EVOLVED_${capabilities[0]?.chain[0] || 'PACK'}_V${Date.now().toString(36).slice(-4).toUpperCase()}`;
-      const totalResolvers = capabilities.length * 3;
-
-      // Build derived surface from best capability chain
-      const bestCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
-      const evolvedSurface = {
-        nodeName: bestCap.chain[0] || combinedName,
-        capabilities: [...new Set(capabilities.flatMap(c => c.chain))].slice(0, 4),
-        sector: 'execution',
-        domain: 'evolved',
-      };
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error } = await (supabase as any).from('artifact_registry').insert({
-        user_id: currentUser.id,
-        name: `CANDIDATE_${combinedName}`,
-        slug: `candidate-${combinedName.toLowerCase().replace(/_/g, '-')}-${Date.now().toString(36)}`,
-        tier: 'candidate',
-        category: 'proprietary-evolution',
-        description: `Re-ingested Auxiliary Node — Evolved from ${capabilities.length} ascended capabilities`,
-        metadata: {
-          phase: 'ingest', language: sourceLanguageLabel || 'TypeScript/Evolved', file_count: capabilities.length,
-          // Propagate source_export_language so export lock persists across recursive cycles
-          source_export_language: exportLanguage,
-          resolver_count: totalResolvers, size_kb: capabilities.length * 15,
-          ingested_at: new Date().toISOString(), evolution_cycle: 2,
-          parent_capabilities: capabilities.map(c => c.id),
-          parent_avg_cjpi: Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length),
-          source_files: userSourceFiles, // Carry forward user source files
-          // Propagate derived surface so discovery identity card works after re-ingest
-          derived_surface: evolvedSurface,
-        },
-      });
-
-      if (error) throw error;
-      toast({ title: 'Re-ingested as evolved candidate', description: `${combinedName} registered — return to Discovery to run deeper collision chains` });
-    } catch (err) {
-      toast({ title: 'Re-ingest failed', description: String(err), variant: 'destructive' });
-    } finally {
-      setReingesting(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -607,31 +557,6 @@ export function ExportPhase() {
         </div>
       </div>
 
-      {/* Recursive Loop CTA */}
-      <div className="border border-primary/20 rounded-xl p-5 bg-primary/5 space-y-3">
-        <div className="flex items-center gap-2">
-          <RefreshCw className="w-4 h-4 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Recursive Ascension Loop</span>
-        </div>
-        <p className="text-xs text-muted-foreground">
-          Re-ingest your enhanced capabilities as a new candidate node.
-          The Discovery engine will find <strong className="text-foreground">deeper collision chains</strong> —
-          each cycle compounds exclusivity and raises the CJPI floor.
-        </p>
-        <Button
-          variant="outline"
-          onClick={handleReingest}
-          disabled={reingesting}
-          className="w-full gap-2 border-primary/30 text-primary hover:bg-primary/10 whitespace-normal text-left leading-snug py-3 h-auto"
-        >
-          {reingesting ? (
-            <Loader2 className="w-4 h-4 animate-spin shrink-0" />
-          ) : (
-            <RefreshCw className="w-4 h-4 shrink-0" />
-          )}
-          <span>Re-ingest as Evolved Candidate → Start New Ascension Cycle</span>
-        </Button>
-      </div>
     </div>
   );
 }
