@@ -1595,6 +1595,7 @@ serve(async (req: Request) => {
               moat_signature: crypto.randomUUID(),
               structural_fingerprint: fingerprint,
               lock_version: 1,
+              selection_state: 'selected',
             },
           }).eq('id', d.id).eq('user_id', userId);
 
