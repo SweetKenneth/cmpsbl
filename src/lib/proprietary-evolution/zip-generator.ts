@@ -1805,10 +1805,10 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       { name: 'export-tier.json', purpose: 'Valuation summary' },
     ],
     quickStart: targetLanguage === 'php'
-      ? `require_once 'src/runtime-bridge.php';\\nrequire_once 'src/${(capabilities[0]?.name || 'capability').toLowerCase()}.php';\\n$cap = new CMPSBLCapability();\\n$result = $cap->execute(['key' => 'value']);`
+      ? `require_once 'src/capabilities.php';\\n$result = CMPSBLCapabilities::runChain(['DEFENSE', 'BRAIN'], ['key' => 'value']);`
       : targetLanguage === 'python'
-      ? `from src.${(capabilities[0]?.name || 'capability').toLowerCase()} import CMPSBLCapability\\ncap = CMPSBLCapability()\\nresult = cap.execute({"key": "value"})`
-      : `import { CMPSBLRuntimeBridge } from './src/runtime-bridge';\\nimport { execute } from './src/${(capabilities[0]?.name || 'capability').toLowerCase()}';`,
+      ? `from src.capabilities import run_chain\\nresult = await run_chain(['DEFENSE', 'BRAIN'], {"key": "value"})`
+      : `import { runChain, invoke } from './src/capabilities';\\nconst result = await runChain(['DEFENSE', 'BRAIN'], { key: 'value' });\\n// Or call one: await invoke('DEFENSE', { key: 'value' });`,
     category: 'proprietary-evolution',
     modules: [...new Set(capabilities.flatMap(c => c.chain))],
     version: '1.0.0',
