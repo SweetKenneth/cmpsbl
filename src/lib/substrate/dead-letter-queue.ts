@@ -108,7 +108,7 @@ export function replayDeadLetter(id: string): DeadLetter | null {
   // Null out the slot and remove from index
   ring[idx] = null;
   idIndex.delete(id);
-  // Note: count stays the same (slot is just nulled); compaction happens on wrap-around via addDeadLetter
+  count = Math.max(0, count - 1);
 
   return letter;
 }

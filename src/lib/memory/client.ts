@@ -712,14 +712,16 @@ export class MemoryClient {
     }
   }
 
-  /** Build context string — single string accumulation */
+  /** Build context string — single string accumulation, sorted by relevance desc */
   buildContextString(memories: MemoryEntry[]): string {
     if (memories.length === 0) return '';
     
-    const cap = memories.length <= 5 ? memories.length : 5;
+    // Sort by relevance descending so highest-relevance memories appear first
+    const sorted = [...memories].sort((a, b) => (b.relevance ?? 0) - (a.relevance ?? 0));
+    const cap = sorted.length <= 5 ? sorted.length : 5;
     let result = '\n\n[Relevant context from memory — strategy: adaptive]';
     for (let i = 0; i < cap; i++) {
-      const m = memories[i];
+      const m = sorted[i];
       result += '\n- ';
       if (m.tier) { result += '['; result += m.tier; result += ']'; }
       if (m.memory_type) { result += '('; result += m.memory_type; result += ')'; }
