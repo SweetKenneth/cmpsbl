@@ -193,7 +193,7 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
       const orb = orbs[i];
 
       if (currentState === 'launching' && !orb.absorbed) {
-        const absorbAt = 600 + i * 400; // slower stagger — cinematic pacing
+        const absorbAt = 1200 + i * 700; // slower stagger — extended cinematic pacing (+~4s total)
         if (launchElapsed > absorbAt) {
           orb.absorbed = true;
           orb.absorbTime = t;
@@ -220,7 +220,7 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
       }
 
       if (orb.absorbed) {
-        const since = (t - orb.absorbTime) / 1000; // 1s absorption — slow cinematic spiral
+        const since = (t - orb.absorbTime) / 1500; // 1.5s absorption — extended cinematic spiral
         const p = Math.min(1, since);
         const ease = 1 - Math.pow(1 - p, 3);
         drawRadius = orb.radius * (1 - ease);
