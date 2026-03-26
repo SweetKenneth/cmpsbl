@@ -8,54 +8,54 @@
 
 | Stream | Model | Description |
 |--------|-------|-------------|
-| **SaaS Subscriptions** | Monthly/Annual | 4 tiers: Free, Pro, Enterprise, Self-Hosted |
-| **Agent Marketplace** | One-time purchase | 20 cognitive agents at $0–$159 each |
+| **Platform Subscriptions** | Monthly/Annual | 5 tiers: Builder → Studio → Creator → Architect → Governor |
+| **Agent Marketplace** | One-time purchase | 20 cognitive agents at $79–$249 each |
 | **Engine Marketplace** | Tiered pricing | 54 premium engines across META, APEX, ELITE, CORE |
-| **Artifact Packs** | Per-pack | Exportable discovered memory chains with runtime |
+| **Ascension Exports** | Per-export | Single-file, zero-dependency capability artifacts in 25 languages |
 | **Self-Hosted Licenses** | License fee + BYOK | Full control, perpetual |
 
 ---
 
-## 2. Subscription Tiers
+## 2. Platform Subscription Tiers
 
-| Feature | Free | Pro | Enterprise | Self-Hosted |
-|---------|------|-----|-----------|------------|
-| API calls/day | 100 | 5,000 | 50,000 | Unlimited |
-| Tokens/day | 10K | 500K | 5M | Unlimited |
-| Memory | Session only | Persistent (warm) | Full (hot+warm+cold) | Full |
-| BRAIN reasoning | — | Basic | Full | Full |
-| DREAM synthesis | — | — | Full | Full |
-| CLM calls/day | 0 | 100 | 14,400 | Full |
-| Agencies | 0 | 1 | Unlimited | Unlimited |
-| Team members | 1 | 5 | Unlimited | Unlimited |
-| ATLAS governance | — | — | Full (7-tab) | Full |
-| Evolution Control | — | View only | Full | Full |
-| Universal Export | — | — | Standard | All 25 languages |
-| AutoBlog posts/week | 0 | 2 | Unlimited | Full |
+| Feature | Builder (Included) | Studio ($29) | Creator ($49) | Architect ($79) | Governor (Admin) |
+|---------|-------------------|--------------|---------------|-----------------|-----------------|
+| Active slots | 1 | 3 | 10 | 25 | Unlimited |
+| Memory | Session only | Persistent (warm) | Full 4-tier | Full 4-tier | Full |
+| Discovery rate | View only | Standard | Accelerated | Priority | Full |
+| CLM calls/day | 0 | 100 | 1,000 | 14,400 | Unlimited |
+| Export languages | — | 3 | 10 | 25 | All |
+| Governance | — | View only | Supervised | Full | Full |
+| DREAM synthesis | — | — | Basic | Full | Full |
+| Priority routing | — | — | — | ✅ | ✅ |
 
 ---
 
-## 3. Agent Marketplace
+## 3. Standalone Product Tiers (Engines & Agents)
 
-| Tier | Price | Example Agents | Powers |
-|------|-------|---------------|--------|
-| Free | $0 | HYBRID, EDUCATOR, WRITER | 3 each |
-| Starter | $79 | Standard agents | 3–4 |
-| Professional | $129 | MEMORY, GUARDIAN, ROUTER | 4 |
-| Elite | $159 | CODING, ANALYST, SECURITY | 5 |
+| Tier | Price | Quality Level |
+|------|-------|---------------|
+| **Starter** | $79 | Functional, limited customization |
+| **Pro** | $129 | Full-featured, production-ready |
+| **Elite** | $159 | Advanced capabilities, priority support |
+| **Apex** | $249 | Maximum capability, custom integration |
 
-All agents include sealed runtime isolation, DREAM synthesis, and version-stamped identity. **Purchases are perpetual** — no ongoing subscription per agent.
+All products include sealed runtime isolation, DREAM synthesis, and version-stamped identity. **Purchases are perpetual** — no ongoing subscription per agent.
 
 ---
 
-## 4. SLA Guarantees
+## 4. Ascension Export Model
 
-| Metric | Free | Pro | Enterprise |
-|--------|------|-----|-----------|
-| Availability | Best effort | 99.5% | 99.9% |
-| Support | Community | 24h response | 4h response |
-| Escalation | — | Email | Dedicated channel |
-| Data backup | — | Daily | Continuous + export |
+The Ascension pipeline produces single-file, zero-dependency "drop-in" distributions:
+
+| Property | Detail |
+|----------|--------|
+| **Format** | Single file (e.g., `cmpsbl.ts`, `cmpsbl.py`, `cmpsbl.rs`) |
+| **Contents** | Mini-Runtime™ + Module Effects + Runtime Bridge + Public API |
+| **Languages** | 25 (18 software + 7 HDL) |
+| **Dependencies** | Zero — drops into any project |
+| **IP protection** | Black-boxed — CJPI weights hex-encoded, internal comments stripped |
+| **Export model** | One-way — final production artifact, not re-ingested |
 
 ---
 
@@ -65,6 +65,7 @@ All agents include sealed runtime isolation, DREAM synthesis, and version-stampe
 - **Grace period** — 10% buffer on quotas for burst usage
 - **Hard limits** — Crown Jewel capabilities and admin functions have no grace
 - **Upgrade path** — clear self-service upgrade from any tier
+- "Builder tier" or "Included" — never "free"
 
 ---
 
@@ -78,6 +79,7 @@ All agents include sealed runtime isolation, DREAM synthesis, and version-stampe
 | Self-hosted licenses | High-margin, low-touch revenue |
 | Engine marketplace | Productized IP with minimal support burden |
 | DREAM synthesis | Agents self-improve, reducing support costs |
+| Ascension exports | High-margin digital products with IP protection |
 
 ---
 

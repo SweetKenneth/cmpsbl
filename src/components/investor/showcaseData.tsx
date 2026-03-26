@@ -1,7 +1,7 @@
 /**
  * Shared demo data for Investor Showcase layouts
  */
-import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, Eye, Shield, Activity, BookOpen } from "lucide-react";
 
 export interface DemoCardData {
   title: string;
@@ -35,12 +35,12 @@ export const TIER_1_DEMOS: DemoCardData[] = [
   },
   {
     title: "Ascension",
-    subtitle: "Before → After Transformation",
+    subtitle: "Single-File Export Engine",
     icon: <Sparkles className="w-4 h-4 text-primary" />,
     tier: 1, status: "live",
-    what: "Basic code enters. The 40-primitive matrix analyzes it. Enhanced, exportable software exits.",
-    why: "The clearest proof of value — input basic code, output production software.",
-    value: "Every developer becomes 10x. Every script becomes a product.",
+    what: "Upload code → classify archetype → filter capabilities → export as a single-file, zero-dependency distribution in 25 languages.",
+    why: "The clearest proof of value — input basic code, output IP-protected production software.",
+    value: "Every developer becomes 10x. Every script becomes a portable, sellable product.",
   },
   {
     title: "Build With the Substrate",
@@ -81,6 +81,15 @@ export const TIER_2_DEMOS: DemoCardData[] = [
     why: "AI mutations can't bypass governance. Safety rails are structural.",
     value: "Regulatory compliance, auditability, risk mitigation.",
   },
+  {
+    title: "Investor Library",
+    subtitle: "Printable Documentation",
+    icon: <BookOpen className="w-4 h-4 text-primary" />,
+    tier: 2, status: "live",
+    what: "Browse, read, and print the complete investor documentation — executive summary, architecture, IP, valuation.",
+    why: "Professional due diligence materials ready for download and distribution.",
+    value: "Self-serve investor education that scales without meetings.",
+  },
 ];
 
 export const DEMO_ROUTE_MAP: Record<string, string> = {
@@ -91,4 +100,5 @@ export const DEMO_ROUTE_MAP: Record<string, string> = {
   "DREAM Engine": "dream-engine",
   "DEFENSE Layer": "defense-layer",
   "SEBA Pipeline": "seba-pipeline",
+  "Investor Library": "doc-library",
 };
