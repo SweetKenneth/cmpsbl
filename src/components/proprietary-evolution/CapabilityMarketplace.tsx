@@ -347,38 +347,41 @@ export function CapabilityMarketplace({
       </div>
 
       {/* ═══ SORT / FILTER CONTROLS ═══ */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">Sort</span>
-        {(['cjpi', 'depth', 'tier'] as SortKey[]).map(key => (
-          <button
-            key={key}
-            onClick={() => setSortBy(key)}
-            className={cn(
-              "px-2 py-1 text-[10px] font-mono rounded-md border transition-colors",
-              sortBy === key
-                ? "bg-primary/15 text-primary border-primary/30"
-                : "text-muted-foreground border-border/20 hover:text-foreground hover:border-border/40"
-            )}
-          >
-            {key === 'cjpi' ? 'CJPI ↓' : key === 'depth' ? 'Depth ↓' : 'Tier ↓'}
-          </button>
-        ))}
-        <span className="w-px h-4 bg-border/20 mx-1" />
-        <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">Filter</span>
-        {(['all', 'Enhancement', 'System Upgrade', 'Architectural Shift'] as FilterImpact[]).map(key => (
-          <button
-            key={key}
-            onClick={() => setFilterImpact(key)}
-            className={cn(
-              "px-2 py-1 text-[10px] font-mono rounded-md border transition-colors",
-              filterImpact === key
-                ? "bg-primary/15 text-primary border-primary/30"
-                : "text-muted-foreground border-border/20 hover:text-foreground hover:border-border/40"
-            )}
-          >
-            {key === 'all' ? 'All' : key === 'Enhancement' ? 'ENH' : key === 'System Upgrade' ? 'SYS' : 'ARCH'}
-          </button>
-        ))}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">Sort</span>
+          {(['cjpi', 'depth', 'tier'] as SortKey[]).map(key => (
+            <button
+              key={key}
+              onClick={() => setSortBy(key)}
+              className={cn(
+                "px-2.5 py-1.5 text-[10px] font-mono rounded-md border transition-colors min-h-[32px]",
+                sortBy === key
+                  ? "bg-primary/15 text-primary border-primary/30"
+                  : "text-muted-foreground border-border/20 hover:text-foreground hover:border-border/40"
+              )}
+            >
+              {key === 'cjpi' ? 'CJPI ↓' : key === 'depth' ? 'Depth ↓' : 'Tier ↓'}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">Filter</span>
+          {(['all', 'Enhancement', 'System Upgrade', 'Architectural Shift'] as FilterImpact[]).map(key => (
+            <button
+              key={key}
+              onClick={() => setFilterImpact(key)}
+              className={cn(
+                "px-2.5 py-1.5 text-[10px] font-mono rounded-md border transition-colors min-h-[32px]",
+                filterImpact === key
+                  ? "bg-primary/15 text-primary border-primary/30"
+                  : "text-muted-foreground border-border/20 hover:text-foreground hover:border-border/40"
+              )}
+            >
+              {key === 'all' ? 'All' : key === 'Enhancement' ? 'ENH' : key === 'System Upgrade' ? 'SYS' : 'ARCH'}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Selection summary + Coherence panel */}

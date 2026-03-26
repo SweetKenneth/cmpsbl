@@ -69,6 +69,8 @@ export function OrbitalLockRing({
   const [recentlyLocked, setRecentlyLocked] = useState<string | null>(null);
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
   const animFrameRef = useRef<number>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ringSize, setRingSize] = useState(320);
 
   const unascended = useMemo(
     () => discoveries.filter(d => !d.ascended && !removedIds.has(d.id)),
@@ -76,7 +78,20 @@ export function OrbitalLockRing({
   );
 
   const progress = totalCount > 0 ? ascendedCount / totalCount : 0;
-  const ringSize = 280;
+
+  // Responsive ring sizing
+  useEffect(() => {
+    const measure = () => {
+      if (containerRef.current) {
+        const w = containerRef.current.clientWidth;
+        setRingSize(Math.min(380, Math.max(260, w - 24)));
+      }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
   const center = ringSize / 2;
 
   // Slow continuous rotation
@@ -104,12 +119,11 @@ export function OrbitalLockRing({
     setRecentlyLocked(id);
     setLockFlash(true);
     onAscend(id);
-    setTimeout(() => setLockFlash(false), 900); // longer flash burst
-    // Remove from orbit after spiral animation completes
+    setTimeout(() => setLockFlash(false), 900);
     setTimeout(() => {
       setRecentlyLocked(null);
       setRemovedIds(prev => new Set(prev).add(id));
-    }, 2000); // slower spiral-in for cinematic feel
+    }, 2000);
   }, [onAscend]);
 
   const coreScale = 0.6 + progress * 0.5;
@@ -122,8 +136,12 @@ export function OrbitalLockRing({
   const rotationOffset = rotationRef.current;
   void renderTick;
 
+  // Dynamic card width based on ring size
+  const cardW = Math.max(96, Math.min(120, ringSize * 0.32));
+  const cardH = 32;
+
   return (
-    <div className="flex flex-col items-center gap-6">
+    <div ref={containerRef} className="flex flex-col items-center gap-6 w-full">
       {/* ═══ ORBITAL FIELD ═══ */}
       <div
         className="relative mx-auto"
@@ -178,7 +196,7 @@ export function OrbitalLockRing({
           <div className="absolute inset-2 rounded-full bg-primary/80 blur-sm" />
         </div>
 
-        {/* Lock flash burst — CSS animation */}
+        {/* Lock flash burst */}
         {lockFlash && (
           <div
             className="absolute rounded-full bg-primary/30 orbital-lock-flash"
@@ -191,7 +209,7 @@ export function OrbitalLockRing({
           />
         )}
 
-        {/* ═══ ORBITING CARDS — CSS transitions ═══ */}
+        {/* ═══ ORBITING CARDS ═══ */}
         {unascended.map((d, i) => {
           const radius = scoreToRadius(d.cjpiScore, ringSize);
           const pos = getOrbitalPosition(i, unascended.length, radius, rotationOffset);
@@ -201,10 +219,11 @@ export function OrbitalLockRing({
             <button
               key={d.id}
               className={cn(
-                "absolute flex items-center gap-1 px-2 py-1 rounded-lg",
-                "border bg-card/80 backdrop-blur-sm cursor-pointer",
+                "absolute flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg",
+                "border bg-card/90 backdrop-blur-sm cursor-pointer",
                 "hover:bg-card hover:border-primary/40",
                 "transition-all duration-300 ease-out",
+                "min-h-[36px]",
                 isLocking && "orbital-card-lock",
                 TIER_GLOW[d.tier] || '',
                 d.tier === 'apex' ? 'border-neon-amber/30' :
@@ -212,9 +231,9 @@ export function OrbitalLockRing({
                 'border-border/30'
               )}
               style={{
-                left: center + (isLocking ? 0 : pos.x) - 44,
-                top: center + (isLocking ? 0 : pos.y) - 14,
-                width: 88,
+                left: center + (isLocking ? 0 : pos.x) - cardW / 2,
+                top: center + (isLocking ? 0 : pos.y) - cardH / 2,
+                width: cardW,
                 zIndex: isLocking ? 20 : 5,
                 transform: isLocking ? 'scale(0.3)' : 'scale(1)',
                 opacity: isLocking ? 0 : 1,
@@ -225,14 +244,14 @@ export function OrbitalLockRing({
               disabled={!!ascending}
             >
               <span className={cn(
-                "text-[8px] font-mono font-bold uppercase shrink-0",
+                "text-[9px] font-mono font-bold shrink-0",
                 d.cjpiScore >= 85 ? 'text-neon-amber' :
                 d.cjpiScore >= 60 ? 'text-primary' :
                 'text-muted-foreground'
               )}>
                 {d.cjpiScore}
               </span>
-              <span className="text-[8px] text-foreground/80 break-words leading-tight text-left">
+              <span className="text-[9px] text-foreground/80 break-words leading-snug text-left flex-1">
                 {d.name.replace(/_/g, ' ')}
               </span>
             </button>
