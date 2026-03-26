@@ -1588,9 +1588,14 @@ export function generateUnifiedCapabilityFile(
   lang: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
-  if (lang === 'typescript') return generateUnifiedTypeScript(capabilities, packName, userSourceFiles);
+  if (lang === 'typescript' || lang === 'javascript') return generateUnifiedTypeScript(capabilities, packName, userSourceFiles);
   if (lang === 'python') return generateUnifiedPython(capabilities, packName, userSourceFiles);
   if (lang === 'php') return generateUnifiedPhp(capabilities, packName, userSourceFiles);
+
+  // Try polyglot template engine for all other languages
+  const { hasPolyglotGenerator, generatePolyglotFile } = require('./polyglot-templates');
+  if (hasPolyglotGenerator(lang)) return generatePolyglotFile(lang, capabilities, packName);
+
   return generateUnifiedGeneric(capabilities, packName, lang);
 }
 
