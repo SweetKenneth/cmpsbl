@@ -8,8 +8,11 @@
 
 import { useState, useCallback } from 'react';
 import { PinGate } from '@/components/gates/PinGate';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { SEO } from '@/components/SEO';
@@ -37,6 +40,31 @@ export default function ProprietaryEvolution() {
   const [displayedStep, setDisplayedStep] = useState(0);
   const [phaseAnimClass, setPhaseAnimClass] = useState('ascension-phase-idle');
   const [showHero, setShowHero] = useState(true);
+  const [cycleKey, setCycleKey] = useState(0);
+  const [resetting, setResetting] = useState(false);
+  const { toast } = useToast();
+
+  const resetCycle = useCallback(async () => {
+    setResetting(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any)
+        .from('artifact_registry')
+        .delete()
+        .eq('user_id', user.id)
+        .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
+      // Force remount all phases to clear local state
+      setCycleKey(k => k + 1);
+      goTo(0);
+      toast({ title: 'Cycle reset', description: 'All discoveries and ascensions cleared. Ready for a fresh upload.' });
+    } catch (err) {
+      toast({ title: 'Reset failed', description: String(err), variant: 'destructive' });
+    } finally {
+      setResetting(false);
+    }
+  }, [toast]);
 
   const goTo = useCallback((step: number) => {
     if (step === activeStep) return;
@@ -61,10 +89,10 @@ export default function ProprietaryEvolution() {
   const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
 
   const phases = [
-    <IngestPhase key="ingest" />,
-    <DiscoveryPhase key="discovery" />,
-    <CrystallizationPhase key="crystallize" />,
-    <ExportPhase key="export" />,
+    <IngestPhase key={`ingest-${cycleKey}`} />,
+    <DiscoveryPhase key={`discovery-${cycleKey}`} />,
+    <CrystallizationPhase key={`crystallize-${cycleKey}`} />,
+    <ExportPhase key={`export-${cycleKey}`} />,
   ];
 
 
@@ -134,9 +162,21 @@ export default function ProprietaryEvolution() {
                 Back
               </Button>
 
-              <span className="text-[10px] font-mono text-muted-foreground">
-                Step {activeStep + 1} of 4
-              </span>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={resetCycle}
+                  disabled={resetting}
+                  className="gap-1.5 text-[10px] h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
+                  Reset Cycle
+                </Button>
+                <span className="text-[10px] font-mono text-muted-foreground">
+                  Step {activeStep + 1} of 4
+                </span>
+              </div>
 
               <Button
                 size="sm"

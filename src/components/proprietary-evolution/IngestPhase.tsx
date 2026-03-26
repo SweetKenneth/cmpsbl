@@ -302,6 +302,18 @@ export function IngestPhase() {
     setRegistering(true);
 
     try {
+      // Auto-clear previous cycle's discoveries & ascensions before registering new candidate
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any)
+          .from('artifact_registry')
+          .delete()
+          .eq('user_id', user.id)
+          .in('category', ['proprietary-discovery', 'proprietary-ascended']);
+      } catch {
+        // Non-fatal — proceed even if cleanup fails
+      }
+
       await withRetry(async () => {
         const payload = {
           user_id: user.id,
