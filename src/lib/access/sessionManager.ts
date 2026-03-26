@@ -3,7 +3,7 @@
  * Secure session lifecycle and tracking
  */
  
- import { supabase } from '@/integrations/supabase/client';
+ // import { supabase } from '@/integrations/supabase/client'; // Not used in this file
  
  // Session types
  export interface SessionInfo {
@@ -73,12 +73,13 @@
    // Check concurrent session limit
    const userSessions = getUserSessions(userId);
    if (userSessions.length >= sessionConfig.concurrent_sessions_limit) {
-     // Terminate oldest session
-     const oldest = userSessions.sort((a, b) => 
-       new Date(a.started_at).getTime() - new Date(b.started_at).getTime()
-     )[0];
-     if (oldest) {
-       terminateSession(oldest.id);
+     // Terminate oldest existing session to make room for the new one
+     const oldestActiveSession = userSessions
+       .filter(s => s.id !== session.id) // Exclude the new session if it somehow gets included prematurely or accidentally for other reasons
+       .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime())[0];
+
+     if (oldestActiveSession) {
+       terminateSession(oldestActiveSession.id); // Use the existing termination logic
      }
    }
    
@@ -111,6 +112,7 @@
    if (!session) return false;
    
    session.is_active = false;
+   activeSessions.delete(sessionId); // Explicitly remove from the map
    return true;
  }
  
@@ -120,13 +122,18 @@
  export function terminateUserSessions(userId: string): number {
    let count = 0;
    
-   for (const session of activeSessions.values()) {
+   const sessionIdsToTerminate: string[] = [];
+   for (const [sessionId, session] of activeSessions.entries()) {
      if (session.user_id === userId && session.is_active) {
-       session.is_active = false;
+       sessionIdsToTerminate.push(sessionId);
+     }
+   }
+   for (const sessionId of sessionIdsToTerminate) {
+     if (terminateSession(sessionId)) { // Use the robust termination logic
        count++;
      }
    }
-   
+
    return count;
  }
  
@@ -164,7 +171,7 @@
    const maxIdleMs = sessionConfig.idle_timeout_minutes * 60 * 1000;
    
    if (idleMs > maxIdleMs) {
-     session.is_active = false;
+     terminateSession(sessionId); // Use unified termination logic
      return false;
    }
    
@@ -178,9 +185,15 @@
    let cleaned = 0;
    const now = new Date();
    
+   const sessionIdsToClean: string[] = [];
    for (const [sessionId, session] of activeSessions.entries()) {
+     // A session is 'cleanable' if it's explicitly inactive or past its expiry date
      if (!session.is_active || new Date(session.expires_at) < now) {
-       activeSessions.delete(sessionId);
+        sessionIdsToClean.push(sessionId);
+     }
+   }
+   for (const sessionId of sessionIdsToClean) {
+     if (terminateSession(sessionId)) { // Use the unified termination logic
        cleaned++;
      }
    }
@@ -212,7 +225,7 @@
    return {
      total_active: active.length,
      by_device: byDevice,
-     avg_duration_minutes: active.length > 0 ? Math.round(totalDuration / active.length) : 0,
+     avg_duration_minutes: active.length > 0 ? Math.round(totalDuration / active.length) : 0.0, // Explicitly 0.0 for consistency, or just 0 is fine
    };
  }
  

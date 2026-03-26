@@ -19,6 +19,7 @@ export interface QuotaRule {
 }
 
 export interface QuotaViolation {
+  developer_id: string; // Added developerId for better traceability in logs and in-memory violations
   rule_id: string;
   rule_name: string;
   current_usage: number;
@@ -62,6 +63,10 @@ DEFAULT_RULES.forEach(rule => quotaRules.set(rule.id, rule));
  * Register a new quota rule
  */
 export function registerQuotaRule(rule: QuotaRule): void {
+  if (rule.grace_percent < 0) {
+    console.warn(`QuotaRule '${rule.id}' has a negative grace_percent (${rule.grace_percent}). Coercing to 0.`);
+    rule = { ...rule, grace_percent: 0 }; // Create a new object for immutability
+  }
   quotaRules.set(rule.id, rule);
 }
 
@@ -95,29 +100,39 @@ export async function recordUsage(
   resourceType: QuotaRule['resource_type'],
   amount: number
 ): Promise<{ allowed: boolean; violation?: QuotaViolation }> {
+  if (amount === 0) {
+    return { allowed: true };
+  }
   const meterKey = `${developerId}:${resourceType}`;
   
   // Get or create meter
   let meter = usageMeters.get(meterKey);
-  if (!meter || isPeriodExpired(meter)) {
-    // Evict expired meters when at cap
+  if (meter && isPeriodExpired(meter)) {
+    usageMeters.delete(meterKey);
+    meter = undefined;
+  }
+
+  if (!meter) {
     if (usageMeters.size >= MAX_METERS) {
-      for (const [k, m] of usageMeters) {
-        if (isPeriodExpired(m)) usageMeters.delete(k);
-      }
-      // If still at cap, evict oldest
-      if (usageMeters.size >= MAX_METERS) {
+      // Evict oldest meter to make space
+      const oldestKey = usageMeters.keys().next().value; // This will be the first inserted key due to Map's iteration order
+      if (oldestKey) {
+        usageMeters.delete(oldestKey);
+      } else if (usageMeters.size > 0) {
+        // Fallback for unexpected empty map state when size > 0
         const firstKey = usageMeters.keys().next().value;
         if (firstKey) usageMeters.delete(firstKey);
       }
     }
-    meter = createNewMeter(resourceType);
+    // createNewMeter now requires the developerId to find specific rules.
+    // Passed in createNewMeter logic to find the specific rule for THIS developer, if it exists.
+    meter = createNewMeter(developerId, resourceType);
     usageMeters.set(meterKey, meter);
   }
   
   // Update usage
   meter.current_value += amount;
-  meter.percent_used = (meter.current_value / meter.limit) * 100;
+  meter.percent_used = (meter.limit > 0) ? (meter.current_value / meter.limit) * 100 : 0;
   
   // Check against rules
   const applicableRules = Array.from(quotaRules.values())
@@ -125,21 +140,23 @@ export async function recordUsage(
   
   for (const rule of applicableRules) {
     const thresholdPercent = 100 + rule.grace_percent;
-    const usagePercent = (meter.current_value / rule.limit_value) * 100;
+    const usagePercent = (rule.limit_value > 0) ? (meter.current_value / rule.limit_value) * 100 : 0;
     
     if (usagePercent >= thresholdPercent) {
       const violation: QuotaViolation = {
+        developer_id: developerId, // Populate the developerId
         rule_id: rule.id,
         rule_name: rule.name,
         current_usage: meter.current_value,
         limit: rule.limit_value,
         overage_percent: usagePercent - 100,
+        developer_id: developerId, // Ensure developer_id is set
         action_taken: rule.action_on_exceed,
         timestamp: new Date().toISOString(),
       };
       
       violations.push(violation);
-      if (violations.length > MAX_VIOLATIONS) violations.splice(0, Math.floor(MAX_VIOLATIONS * 0.3));
+      if (violations.length > MAX_VIOLATIONS) violations.splice(0, violations.length - Math.floor(MAX_VIOLATIONS * 0.7)); // Retain 70% of max, remove oldest
       
       // Log to database
       await logViolation(developerId, violation);
@@ -180,13 +197,18 @@ export async function checkQuota(
   const meter = usageMeters.get(meterKey);
   
   if (!meter) {
-    return { allowed: true, remaining: DEFAULT_RULES.find(r => r.resource_type === resourceType)?.limit_value || 1000 };
+    // If no meter exists, assume allowed for now, remaining is based on potential 'block' rule if it exists or a high default.
+    // Find the most relevant 'block' rule for the developer and resource type, or use a high default.
+    const developerSpecificBlockRule = getApplicableRule(resourceType, 'block', developerId);
+    const defaultLimit = developerSpecificBlockRule?.limit_value || 1_000_000; // Provide a large default if no specific blocking rule exists
+    return { allowed: true, remaining: defaultLimit - requestedAmount };
   }
   
   const applicableRule = Array.from(quotaRules.values())
     .find(r => r.enabled && r.resource_type === resourceType && r.action_on_exceed === 'block');
   
   if (!applicableRule) {
+    // If no specific blocking rule, assume allowed based on the meter's current limit (which might be a default or generalized rule)
     return { allowed: true, remaining: meter.limit - meter.current_value };
   }
   
@@ -221,6 +243,10 @@ export function getViolations(options?: {
     filtered = filtered.filter(v => new Date(v.timestamp) >= sinceDate);
   }
   
+  if (options?.developerId) {
+    filtered = filtered.filter(v => v.developer_id === options.developerId);
+  }
+
   if (options?.ruleId) {
     filtered = filtered.filter(v => v.rule_id === options.ruleId);
   }
@@ -271,7 +297,9 @@ export function getQuotaUtilization(): {
   max_utilization: number;
   violations_count: number;
 }[] {
-  const resourceTypes: QuotaRule['resource_type'][] = ['api_calls', 'tokens', 'compute_ms', 'storage_bytes'];
+  const resourceTypes: QuotaRule['resource_type'][] = Array.from(quotaRules.values())
+    .map(rule => rule.resource_type)
+    .filter((value, index, self) => self.indexOf(value) === index); // Get unique resource types
   
   return resourceTypes.map(type => {
     const typeMeters = Array.from(usageMeters.values()).filter(m => m.resource_type === type);
@@ -294,25 +322,58 @@ export function getQuotaUtilization(): {
 
 // ============ Helpers ============
 
-function createNewMeter(resourceType: QuotaRule['resource_type']): UsageMeter {
+function createNewMeter(developerId: string, resourceType: QuotaRule['resource_type']): UsageMeter {
   const now = new Date();
-  const endOfDay = new Date(now);
-  endOfDay.setHours(23, 59, 59, 999);
-  
-  const rule = DEFAULT_RULES.find(r => r.resource_type === resourceType);
-  
+
+  // Find the most specific and relevant rule for this developer and resource type.
+  // This would ideally involve a rule lookup mechanism that considers developer tiers/plans,
+  // but for now, we'll use the existing global rule lookup.
+  const rule = getApplicableRule(resourceType, undefined, developerId);
+
+  const limit = rule?.limit_value || 10000; // Fallback default limit
+  const period = rule?.period || 'day'; // Fallback default period
+
+  let periodEnd: Date;
+  switch (period) {
+    case 'minute':
+      periodEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes() + 1, 0, -1);
+      break;
+    case 'hour':
+      periodEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, -1);
+      break;
+    case 'day':
+      periodEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, -1); // End of current day
+      break;
+    case 'month':
+      periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999); // End of current month
+      break;
+    default:
+      periodEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, -1); // Default to end of day
+  }
+  periodEnd.setMilliseconds(999); // Set to last millisecond of the current second to ensure full period coverage.
+
   return {
     resource_type: resourceType,
     current_value: 0,
     period_start: now.toISOString(),
-    period_end: endOfDay.toISOString(),
-    limit: rule?.limit_value || 10000,
+    period_end: periodEnd.toISOString(),
+    limit: limit,
     percent_used: 0,
   };
 }
 
 function isPeriodExpired(meter: UsageMeter): boolean {
-  return new Date() > new Date(meter.period_end);
+  // For simplicity, relying on meter.period_end being accurately set by createNewMeter.
+  return new Date().getTime() > new Date(meter.period_end).getTime();
+}
+
+function getApplicableRule(resourceType: QuotaRule['resource_type'], actionType?: QuotaRule['action_on_exceed'], developerId?: string): QuotaRule | undefined {
+  // This function would ideally implement more sophisticated rule matching (e.g., developer-specific rules).
+  // For now, it filters global rules based on resourceType and optional actionType.
+  // DeveloperId is currently unused as there's no developer-specific rule storage.
+  return Array.from(quotaRules.values())
+    .filter(r => r.enabled && r.resource_type === resourceType)
+    .find(r => !actionType || r.action_on_exceed === actionType);
 }
 
 async function logViolation(developerId: string, violation: QuotaViolation): Promise<void> {
@@ -322,10 +383,36 @@ async function logViolation(developerId: string, violation: QuotaViolation): Pro
       event_type: 'quota_violation',
       data: {
         developer_id: developerId,
-        ...violation,
+        rule_id: violation.rule_id,
+        rule_name: violation.rule_name,
+        current_usage: violation.current_usage,
+        limit: violation.limit,
+        overage_percent: violation.overage_percent,
+        action_taken: violation.action_taken,
+        timestamp: violation.timestamp
       },
-      outcome: 'logged',
+      outcome: 'logged'
     }]);
+
+    const { error } = await supabase.from('brain_events').insert([{
+      module: 'access',
+      event_type: 'quota_violation',
+      data: {
+        developer_id: developerId,
+        rule_id: violation.rule_id,
+        rule_name: violation.rule_name,
+        current_usage: violation.current_usage,
+        limit: violation.limit,
+        overage_percent: violation.overage_percent,
+        action_taken: violation.action_on_exceed, // Use action_on_exceed from violation directly
+        timestamp: violation.timestamp
+      },
+      outcome: 'logged'
+    }]);
+
+    if (error) {
+      console.error('Supabase error logging quota violation:', error);
+    }
   } catch (error) {
     console.error('Failed to log quota violation:', error);
   }
