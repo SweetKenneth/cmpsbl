@@ -25,6 +25,7 @@ This library provides investors, advisors, and potential partners with a compreh
 | 08 | [Survivability & Continuity](08-survivability.md) | Succession protocol, minimum viable operation, self-sufficiency |
 | 09 | [Defensible Valuation](09-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium |
 | 10 | [Ascension Demo Script](10-ascension-demo-script.md) | Step-by-step narration for live Ascension demonstrations |
+| 11 | [Evolution Engine](11-evolution-engine.md) | Self-improving software: 166 bugs fixed for $0.06, engine benchmarks, market opportunity |
 
 ---
 
