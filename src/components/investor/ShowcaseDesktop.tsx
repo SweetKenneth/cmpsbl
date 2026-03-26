@@ -4,7 +4,7 @@
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye } from "lucide-react";
+import { Brain, Zap, Sparkles, ArrowRight, Shield, Activity, ArrowLeft, Eye, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WowDemo } from "./WowDemo";
 import { MemoryStreamDemo } from "./MemoryStreamDemo";
@@ -14,6 +14,7 @@ import { BuildSubstrateDemo } from "./BuildSubstrateDemo";
 import { DreamEngineDemo } from "./DreamEngineDemo";
 import { DefenseLayerDemo } from "./DefenseLayerDemo";
 import { SebaPipelineDemo } from "./SebaPipelineDemo";
+import { InvestorDocLibrary } from "./InvestorDocLibrary";
 import { TIER_1_DEMOS, TIER_2_DEMOS, DEMO_ROUTE_MAP } from "./showcaseData";
 
 export function ShowcaseDesktop() {
@@ -332,6 +333,7 @@ function renderDemo(id: string, onBack: () => void) {
     case "dream-engine": return <DreamEngineDemo onBack={onBack} />;
     case "defense-layer": return <DefenseLayerDemo onBack={onBack} />;
     case "seba-pipeline": return <SebaPipelineDemo onBack={onBack} />;
+    case "doc-library": return <InvestorDocLibrary onBack={onBack} />;
     default: return null;
   }
 }
