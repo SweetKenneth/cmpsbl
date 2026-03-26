@@ -61,7 +61,7 @@ interface ConfigRule {
   required?: boolean;
   min?: number;
   max?: number;
-  pattern?: string;
+  pattern?: RegExp;
 }
 
 const configSchemas = new Map<string, ConfigRule[]>();

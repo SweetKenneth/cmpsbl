@@ -56,7 +56,7 @@ function steps(manifest: ExportManifest): string[] {
   return manifest.pipelineSteps.length > 0 ? manifest.pipelineSteps : manifest.sourceModules;
 }
 
-function readmeFile(manifest: ExportManifest, lang: ExportLanguage, buildCmd: string, testCmd: string): ExportFile {
+function readmeFile(manifest: ExportManifest, lang: string, buildCmd: string, testCmd: string): ExportFile {
   return {
     path: 'README.md',
     type: 'readme',

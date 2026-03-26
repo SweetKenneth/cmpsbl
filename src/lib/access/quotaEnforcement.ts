@@ -32,8 +32,8 @@ export interface QuotaViolation {
 export interface UsageMeter {
   resource_type: QuotaRule['resource_type'];
   current_value: number;
-  period_start: Date; // Store as Date object internally for consistency and ease of comparison
-  period_end: Date; // Store as Date object internally for consistency and ease of comparison
+  period_start: string;
+  period_end: string;
   limit: number;
   percent_used: number;
 }
