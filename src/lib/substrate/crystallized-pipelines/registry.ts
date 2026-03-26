@@ -153,9 +153,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
     tier: 'cmpsbl',
     category: 'intelligence',
     isSealed: true,
-    discoveredFrom: 'mesh-receipt-alpha-011'''',
-  },
-];eipt-alpha-011',
+    discoveredFrom: 'mesh-receipt-alpha-011',
   },
   {
     id: 'cp-consciousness-continuity-bridge',

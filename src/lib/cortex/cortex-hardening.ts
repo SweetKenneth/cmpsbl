@@ -33,7 +33,7 @@ export function sealPipelineStep(
   output: unknown
 ): PipelineSeal {
   const outputHash = fnv1aHash(JSON.stringify(output !== null ? output : 'null'));
-  const chain = pipelineSeals.get(pipelineId) ?? [];
+  const chain = pipelineSeals.get(pipelineId) || [];
   const prevHash = chain.length > 0 ? chain[chain.length - 1].chainHash : 0;
   const chainHash = fnv1aHash(`${prevHash}:${outputHash}:${stepIndex}`);
 

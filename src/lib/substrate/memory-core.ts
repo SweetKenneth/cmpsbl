@@ -168,9 +168,9 @@ const TYPE_IMPORTANCE: Record<MemoryType, number> = {
  */
 export function calculateSalience(input: SalienceInput): SalienceResult {
   // 1. Confidence (direct pass-through, clamped)
-  const confidence = Math.min(1, Math.max(0, input.confidence));
+  const confidence = Math.min(1, Math.max(0, input.confidence !== undefined ? input.confidence : 0));
 
-  // 2. Recency decay — exponential decay with 30-day half-life
+  const recency = input.last_accessed ? (Date.now() - new Date(input.last_accessed).getTime()) / 1000 : 0;sed ? Math.exp(-((Date.now() - new Date(input.last_accessed).getTime()) / (30 * 24 * 60 * 60 * 1000))) : 0;
   const ageMs = Date.now() - new Date(input.created_at).getTime();
   const ageDays = ageMs / (1000 * 60 * 60 * 24);
   const recency = Math.exp(-ageDays / 30);
@@ -193,7 +193,7 @@ export function calculateSalience(input: SalienceInput): SalienceResult {
       attention: 0,
       relevance: 0,
     },
-  };7 * (1 - Math.exp(-reps / 5)) : 0);
+  };
 
   // 5. Cross-module consensus — how many modules have independently referenced this?
   //    2+ modules agreeing is a strong signal; 4+ is near-certainty

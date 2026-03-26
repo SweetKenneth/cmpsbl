@@ -12,7 +12,7 @@ import type { EngineId, EngineDefinition, EngineCategory } from './types';
 // ENGINE DEFINITIONS — 20 TOTAL ENGINES
 // ============================================================================
 
-const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
+export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   // ═══════════════════════════════════════════════════════════════════════════
   // COGNITIVE ENGINES (4)
   // ═══════════════════════════════════════════════════════════════════════════
@@ -178,15 +178,6 @@ const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     executionMode: 'parallel',
     averageLatencyMs: 120,
     cacheable: true,
-  }
-    } // Added missing closing brace for the last engine definitionS'],
-    layer: 'Orchestrator',
-    synergyMultiplier: 2.6,
-    complexityScore: 9,
-    autonomyLevel: 'supervised',
-    executionMode: 'adaptive',
-    averageLatencyMs: 120,
-    cacheable: false,
   },
   
   scheduling_engine: {

@@ -61,7 +61,7 @@ interface ConfigRule {
   required?: boolean;
   min?: number;
   max?: number;
-  pattern?: string;
+  pattern?: RegExp;
 }
 
 const configSchemas = new Map<string, ConfigRule[]>();
@@ -180,7 +180,7 @@ export function captureDiagnosticSnapshot(
   alerts: string[]
 ): DiagnosticSnapshot {
   const memoryEstimate = typeof performance !== 'undefined' && 'memory' in performance
-    ? (performance.memory?.usedJSHeapSize ?? 0)
+    ? ((performance as any).memory?.usedJSHeapSize ?? 0)
     : 0;
 
   const snapshot: DiagnosticSnapshot = {

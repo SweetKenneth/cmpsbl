@@ -192,6 +192,26 @@ function recordFailure(): void {
   breaker.lastFailure = Date.now();
   if (breaker.failures >= BREAKER_THRESHOLD) {
     breaker.state = 'open';
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
+    setTimeout(() => {
+        breaker.state = 'half_open';
+    }, BREAKER_RECOVERY_MS);
+
   }
 }
 
@@ -213,7 +233,7 @@ function resetBreaker(): void {
 }
 
 /** Get breaker state for diagnostics */
-export function getDiscoveryBreakerState(): DiscoveryCircuitBreakerdonly<DiscoveryCircuitBreaker> {
+export function getDiscoveryBreakerState(): Readonly<DiscoveryCircuitBreaker> {
   if (breaker.state === 'open' && Date.now() - breaker.lastFailure >= BREAKER_RECOVERY_MS) {
     breaker.state = 'half_open';
   }

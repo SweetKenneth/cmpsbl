@@ -151,10 +151,7 @@ export function initSlidingWindow(module: string, windowMs = 60_000, threshold =
   slidingWindows.set(module, { events: [], windowMs, threshold });
 }
 
-export function recordSlidingEvent(module: string, success: boolean): { failureRate: number; breached: boolean; } {
-  failureRate: number;
-  breached: boolean;
-} {
+export function recordSlidingEvent(module: string, success: boolean): { failureRate: number; breached: boolean } {
   let win = slidingWindows.get(module);
   if (!win) {
     initSlidingWindow(module);
@@ -170,7 +167,7 @@ export function recordSlidingEvent(module: string, success: boolean): { failureR
 
   const total = win.events.length;
   const failures = win.events.filter(e => !e.success).length;
-  const failureRate = total > 0 ? failures / total : 0;
+  const failureRate = total > 0 ? failures / total : 0;l > 0 ? failures / total : 0;l > 0 ? failures / total : 0;l > 0 ? failures / total : 0;l > 0 ? failures / total : 0;l > 0 ? failures / total : 0;
 
   return { failureRate, breached: failureRate >= win.threshold };
 }

@@ -132,7 +132,7 @@ export class CognitiveAnalyzer {
 
     try {
       // ═══ FETCH BACKEND STATS FIRST (v2.1.0 — bypasses RLS) ═══
-      this.backendStats = await fetchBackendStats().catch(() => null);
+      this.backendStats = await fetchBackendStats().catch((error) => { console.error('[SEBA] Error fetching backend stats:', error); throw new Error('Failed to fetch backend stats'); }); if (!this.backendStats) throw new Error('Backend stats are null');
       console.log('[SEBA] Backend stats loaded:', {
         brain_healthy: this.backendStats.brain?.healthy,
         brain_memories: this.backendStats.brain?.metrics?.total_memories || 0,
