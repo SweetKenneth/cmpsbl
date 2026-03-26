@@ -397,70 +397,11 @@ function createNewMeter(developerId: string, resourceType: QuotaRule['resource_t
   };
 }
 
-/**
- * Determines if a meter's period has expired.
- */
 function isPeriodExpired(meter: UsageMeter): boolean {
-  // If meter.period_end is stored as a Date object:
-  return new Date().getTime() > meter.period_end.getTime();
-  // If meter.period_end remains a string, the original conversion is necessary but incurs repeated parsing overhead.
-  // This patch assumes meter.period_end is updated to type `Date` as per suggested issue #7.
-}
-
-/**
- * Placeholder for a logging function for violations. Implements interaction with external systems like Supabase.
- */
-async function logViolation(developerId: string, violation: QuotaViolation): Promise<void> {
-  // In a real application, this would securely log to a persistent store like Supabase.
-  // For this example, we're just logging to console.
-  console.warn(`Quota Violation for ${developerId}: ${violation.rule_name} - Action: ${violation.action_taken}`);
-
-  // Example of how to log to Supabase (assuming 'violations' table exists):
-  // const { data, error } = await supabase.from('violations').insert([{
-  //   developer_id: violation.developer_id,
-  //   rule_id: violation.rule_id,
-  //   rule_name: violation.rule_name,
-  //   current_usage: violation.current_usage,
-  //   limit: violation.limit,
-  //   overage_percent: violation.overage_percent,
-  //   action_taken: violation.action_taken,
-  //   timestamp: violation.timestamp,
-  // }]);
-  // if (error) {
-  //   console.error('Error logging violation to Supabase:', error);
-  //   // Depending on criticality, might throw error or retry
-  // }
-}
-
-/**
- * Placeholder for a function to retrieve relevant quota rules for a given resource type and action, potentially developer-specific.
- */
-function getApplicableRule(resourceType: QuotaRule['resource_type'], action?: QuotaRule['action_on_exceed'], developerId?: string): QuotaRule | undefined {
-  // For simplicity, this currently just finds the first matching rule from the global `quotaRules`. 
-  // In a real system, this would involve a more complex lookup: 
-  // 1. Developer-specific rules (e.g., from a database based on `developerId`)
-  // 2. Plan-specific rules
-  // 3. Global default rules
-  
-  let rules = Array.from(quotaRules.values()).filter(r => r.enabled && r.resource_type === resourceType);
-  if (action) {
-    rules = rules.filter(r => r.action_on_exceed === action);
-  }
-
-  // Prioritize rules. For now, just return the first one found.
-  // A more sophisticated system might return all applicable rules to be evaluated or the most restrictive one.
-  return rules[0];
-}
-
-function isPeriodExpired(meter: UsageMeter): boolean {
-  // For simplicity, relying on meter.period_end being accurately set by createNewMeter.
   return new Date().getTime() > new Date(meter.period_end).getTime();
 }
 
 function getApplicableRule(resourceType: QuotaRule['resource_type'], actionType?: QuotaRule['action_on_exceed'], developerId?: string): QuotaRule | undefined {
-  // This function would ideally implement more sophisticated rule matching (e.g., developer-specific rules).
-  // For now, it filters global rules based on resourceType and optional actionType.
-  // DeveloperId is currently unused as there's no developer-specific rule storage.
   return Array.from(quotaRules.values())
     .filter(r => r.enabled && r.resource_type === resourceType)
     .find(r => !actionType || r.action_on_exceed === actionType);
@@ -468,22 +409,6 @@ function getApplicableRule(resourceType: QuotaRule['resource_type'], actionType?
 
 async function logViolation(developerId: string, violation: QuotaViolation): Promise<void> {
   try {
-    await supabase.from('brain_events').insert([{
-      module: 'access',
-      event_type: 'quota_violation',
-      data: {
-        developer_id: developerId,
-        rule_id: violation.rule_id,
-        rule_name: violation.rule_name,
-        current_usage: violation.current_usage,
-        limit: violation.limit,
-        overage_percent: violation.overage_percent,
-        action_taken: violation.action_taken,
-        timestamp: violation.timestamp
-      },
-      outcome: 'logged'
-    }]);
-
     const { error } = await supabase.from('brain_events').insert([{
       module: 'access',
       event_type: 'quota_violation',
@@ -494,7 +419,7 @@ async function logViolation(developerId: string, violation: QuotaViolation): Pro
         current_usage: violation.current_usage,
         limit: violation.limit,
         overage_percent: violation.overage_percent,
-        action_taken: violation.action_on_exceed, // Use action_on_exceed from violation directly
+        action_taken: violation.action_taken,
         timestamp: violation.timestamp
       },
       outcome: 'logged'

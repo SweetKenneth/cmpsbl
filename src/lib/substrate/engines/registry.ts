@@ -12,7 +12,7 @@ import type { EngineId, EngineDefinition, EngineCategory } from './types';
 // ENGINE DEFINITIONS — 20 TOTAL ENGINES
 // ============================================================================
 
-const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
+export const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
   // ═══════════════════════════════════════════════════════════════════════════
   // COGNITIVE ENGINES (4)
   // ═══════════════════════════════════════════════════════════════════════════
