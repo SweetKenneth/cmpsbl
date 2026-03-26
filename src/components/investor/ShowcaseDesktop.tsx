@@ -207,21 +207,21 @@ export function ShowcaseDesktop() {
             </section>
 
             {/* ── Why CMPSBL Wins ── */}
-            <section className="relative rounded-2xl border border-border/20 overflow-hidden">
-              <div className="absolute inset-0" style={{ background: "var(--gradient-mesh)" }} />
+            <section className="relative rounded-2xl border border-primary/20 overflow-hidden">
+              <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, hsl(var(--primary) / 0.06), hsl(var(--neon-purple) / 0.04), hsl(var(--neon-cyan) / 0.03))" }} />
               <div className="relative p-8 space-y-6">
                 <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-primary font-bold">Competitive Moat</h2>
                 <div className="grid grid-cols-2 gap-6">
                   {[
-                    { label: "Self-Discovering Software", desc: "The system finds new capabilities humans never programmed.", color: "text-primary" },
-                    { label: "Self-Improving Codebase", desc: "AI generates, validates, and applies its own patches.", color: "text-neon-cyan" },
-                    { label: "Exportable Intelligence", desc: "Every discovery becomes a standalone, sellable product.", color: "text-neon-magenta" },
-                    { label: "Platform Economics", desc: "Developers build on the substrate — recurring revenue.", color: "text-neon-purple" },
-                    { label: "Constitutional Governance", desc: "Safety rails are structural, not afterthoughts.", color: "text-neon-amber" },
-                    { label: "Enterprise Security", desc: "Defense mesh with O(1) threat scoring built in.", color: "text-neon-green" },
+                    { label: "Self-Discovering Software", desc: "Finds new capabilities humans never programmed.", color: "bg-primary" },
+                    { label: "Self-Improving Codebase", desc: "AI generates, validates, and applies its own patches.", color: "bg-[hsl(var(--neon-cyan))]" },
+                    { label: "25-Language Portable Export", desc: "Single-file, zero-dependency distributions in any stack.", color: "bg-[hsl(var(--neon-magenta))]" },
+                    { label: "IP-Protected Artifacts", desc: "Hex-encoded proprietary logic in every export.", color: "bg-[hsl(var(--neon-purple))]" },
+                    { label: "Constitutional Governance", desc: "Safety rails are structural, not afterthoughts.", color: "bg-[hsl(var(--neon-amber))]" },
+                    { label: "Enterprise Security", desc: "Defense mesh with O(1) threat scoring built in.", color: "bg-[hsl(var(--neon-green))]" },
                   ].map(({ label, desc, color }) => (
                     <div key={label} className="flex items-start gap-3">
-                      <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 bg-current ${color}`} />
+                      <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${color}`} />
                       <div>
                         <p className="text-sm font-bold text-foreground">{label}</p>
                         <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
