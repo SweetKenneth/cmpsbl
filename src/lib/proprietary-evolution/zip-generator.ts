@@ -349,7 +349,7 @@ class CMPSBLCapability
             }
         }
 
-        $this->bridge = new CMPSBLRuntimeBridge($this->meta);
+        // Runtime is built into cmpsbl.php — use cmpsbl_execute_chain() directly
     }
 
     /**
@@ -399,8 +399,9 @@ ${executeBody}
 
         $executionMs = round((microtime(true) - $start) * 1000, 3);
 
-        // Layer 2: CMPSBL cognitive overlay via pipeline
-        $pipelineResult = $this->bridge->executePipeline(
+        // Layer 2: CMPSBL cognitive overlay via built-in pipeline
+        $pipelineResult = cmpsbl_execute_chain(
+            $this->meta['chain'] ?? [],
             is_array($originalResult) ? $originalResult : ['_original_result' => $originalResult]
         );
 
@@ -424,7 +425,10 @@ ${executeBody}
 
     public function validate(): bool
     {
-        return $this->bridge->validateIntegrity();
+        $chain = $this->meta['chain'] ?? [];
+        $cjpi = $this->meta['cjpi'] ?? 0;
+        $fp = $this->meta['fingerprint'] ?? '';
+        return !empty($chain) && $cjpi > 0 && $cjpi <= 100 && strlen($fp) > 0;
     }
 
     public function getMeta(): array
@@ -528,7 +532,7 @@ class CMPSBLCapability:
             self.meta["modules"] = manifest.get("modules", self.meta["chain"])
             self.meta["version"] = manifest.get("version", "1.0.0")
             self.meta["exported"] = manifest.get("exported", "")
-        self.bridge = CMPSBLRuntimeBridge(self.meta)
+        # Runtime is built into cmpsbl.py — use execute_chain() directly
 
     def execute_original(self, input_data: dict = None) -> any:
         """
@@ -560,9 +564,9 @@ ${executeBody}
 
         execution_ms = round((time.time() - start) * 1000, 3)
 
-        # Layer 2: CMPSBL cognitive overlay via pipeline
+        # Layer 2: CMPSBL cognitive overlay via built-in pipeline
         pipeline_input = original_result if isinstance(original_result, dict) else {"_original_result": original_result}
-        pipeline_result = self.bridge.execute_pipeline(pipeline_input)
+        pipeline_result = execute_chain(self.meta.get("chain", []), pipeline_input)
 
         # Merge: original result is authoritative, pipeline adds cognition
         base = original_result if isinstance(original_result, dict) else {"_original_result": original_result}
@@ -583,7 +587,10 @@ ${executeBody}
         }
 
     def validate(self) -> bool:
-        return self.bridge.validate_integrity()
+        chain = self.meta.get("chain", [])
+        cjpi = self.meta.get("cjpi", 0)
+        fp = self.meta.get("fingerprint", "")
+        return bool(chain) and 0 < cjpi <= 100 and len(fp) > 0
 
     def get_meta(self) -> dict:
         return self.meta
