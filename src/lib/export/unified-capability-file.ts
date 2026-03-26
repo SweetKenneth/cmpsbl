@@ -1591,14 +1591,22 @@ export function generateUnifiedCapabilityFile(
   lang: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
-  if (lang === 'typescript' || lang === 'javascript') return generateUnifiedTypeScript(capabilities, packName, userSourceFiles);
-  if (lang === 'python') return generateUnifiedPython(capabilities, packName, userSourceFiles);
-  if (lang === 'php') return generateUnifiedPhp(capabilities, packName, userSourceFiles);
+  let raw: string;
 
-  // Try polyglot template engine for all other languages
-  if (hasPolyglotGenerator(lang)) return generatePolyglotFile(lang, capabilities, packName);
+  if (lang === 'typescript' || lang === 'javascript') {
+    raw = generateUnifiedTypeScript(capabilities, packName, userSourceFiles);
+  } else if (lang === 'python') {
+    raw = generateUnifiedPython(capabilities, packName, userSourceFiles);
+  } else if (lang === 'php') {
+    raw = generateUnifiedPhp(capabilities, packName, userSourceFiles);
+  } else if (hasPolyglotGenerator(lang)) {
+    raw = generatePolyglotFile(lang, capabilities, packName);
+  } else {
+    raw = generateUnifiedGeneric(capabilities, packName, lang);
+  }
 
-  return generateUnifiedGeneric(capabilities, packName, lang);
+  // Apply black-box obfuscation to protect IP
+  return blackboxFile(raw, lang);
 }
 
 export function getUnifiedFilename(lang: string): string {
