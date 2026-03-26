@@ -69,6 +69,7 @@ export function DiscoveryPhase() {
   const [discardingId, setDiscardingId] = useState<string | null>(null);
   const [selectedCapabilities, setSelectedCapabilities] = useState<Set<string>>(new Set());
   const abortRef = useRef(false);
+  const accumulatedResultsRef = useRef<CollisionResult[]>([]);
   const { toast } = useToast();
 
   // Load registered candidate node + derived surface (user-scoped)
@@ -173,6 +174,7 @@ export function DiscoveryPhase() {
     setDiscoveryHit(null);
     setExpandedIdx(null);
     abortRef.current = false;
+    accumulatedResultsRef.current = [];
 
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
 
@@ -244,6 +246,7 @@ export function DiscoveryPhase() {
                 description: bestCap.description || '',
               };
               
+              accumulatedResultsRef.current.push(topResult);
               setResults(prev => [topResult, ...prev]);
               setDiscoveryHit(prev => (!prev || topResult.cjpiScore > prev.cjpiScore) ? topResult : prev);
             }
@@ -254,12 +257,13 @@ export function DiscoveryPhase() {
         }
       }
 
-      // Auto-select all discovered capabilities
-      setSelectedCapabilities(new Set(results.map(r => r.capability)));
+      // Auto-select all discovered capabilities using ref (not stale state)
+      const allAccumulated = accumulatedResultsRef.current;
+      setSelectedCapabilities(new Set(allAccumulated.map(r => r.capability)));
 
       toast({
         title: 'Collision sweep complete',
-        description: `Tested ${shuffledNodes.length} primitives. ${results.length > 0 ? 'Select capabilities in the marketplace below.' : 'No archetype matches — try richer code.'}`,
+        description: `Tested ${shuffledNodes.length} primitives. ${allAccumulated.length > 0 ? `${allAccumulated.length} discoveries found. Select capabilities in the marketplace below.` : 'No archetype matches — try richer code.'}`,
       });
     } catch (err) {
       console.error('Discovery error:', err);
