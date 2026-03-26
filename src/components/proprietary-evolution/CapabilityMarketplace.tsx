@@ -89,53 +89,51 @@ const tierRank = (tier: string): number => {
  * Result: bundles that genuinely reflect what was discovered, not predefined groups.
  */
 function clusterCapabilities(results: CollisionResult[]): DynamicBundle[] {
-  // Step 1: Group by primary substrate node (the first non-candidate node in the chain)
-  const nodeGroups = new Map<string, CollisionResult[]>();
+  // Step 1: Group by primary substrate node + depth tier
+  // Depth tiers: shallow (2N), mid (3-4N), deep (5N+)
+  const depthLabel = (d: number) => d <= 2 ? 'shallow' : d <= 4 ? 'mid' : 'deep';
+  const depthTitle = (d: string) => d === 'shallow' ? 'Direct' : d === 'mid' ? 'Chain' : 'Deep Chain';
+
+  const compositeGroups = new Map<string, CollisionResult[]>();
 
   for (const r of results) {
-    // Primary interaction node = nodeB (the substrate node that was collided with)
     const primaryNode = r.nodeB || (r.chain && r.chain.length > 1 ? r.chain[1] : 'UNKNOWN');
-    const existing = nodeGroups.get(primaryNode) || [];
+    const depth = depthLabel(r.chainDepth || 2);
+    const key = `${primaryNode}::${depth}`;
+    const existing = compositeGroups.get(key) || [];
     existing.push(r);
-    nodeGroups.set(primaryNode, existing);
+    compositeGroups.set(key, existing);
   }
 
   // Step 2: Build initial bundles
   const bundles: DynamicBundle[] = [];
-  for (const [node, caps] of nodeGroups) {
+  for (const [compositeKey, caps] of compositeGroups) {
+    const [node, depth] = compositeKey.split('::');
     const avgCjpi = Math.round(caps.reduce((s, c) => s + c.cjpiScore, 0) / caps.length);
     const maxCjpi = Math.max(...caps.map(c => c.cjpiScore));
     const sortedCaps = [...caps].sort((a, b) => b.cjpiScore - a.cjpiScore);
 
-    // Count unique substrate nodes across all chains in this cluster
     const allNodes = new Set<string>();
     for (const c of caps) {
       if (c.chain) c.chain.forEach(n => allNodes.add(n));
       allNodes.add(c.nodeB);
     }
-    // Remove candidate node from count
     if (caps[0]?.nodeA) allNodes.delete(caps[0].nodeA);
 
     const topTier = sortedCaps[0]?.tier || 'mint';
     const nodeLabel = NODE_LABEL[node] || node;
 
-    // Generate a summary from the actual capability names
-    const capNames = sortedCaps.slice(0, 3).map(c => {
-      // Extract the meaningful part of the capability name
-      const clean = c.capability
-        .replace(/_Plus_\w+/g, '')
-        .replace(/_With_\w+/g, '')
-        .replace(/_/g, ' ');
-      return clean;
-    });
-    const summary = capNames.length > 2
+    const capNames = sortedCaps.slice(0, 3).map(c =>
+      c.capability.replace(/_Plus_\w+/g, '').replace(/_With_\w+/g, '').replace(/_/g, ' ')
+    );
+    const summary = caps.length > 3
       ? `${capNames.slice(0, 2).join(', ')} + ${caps.length - 2} more`
       : capNames.join(', ');
 
     bundles.push({
-      id: node,
+      id: compositeKey,
       anchorNode: node,
-      label: `${nodeLabel} Cluster`,
+      label: `${depthTitle(depth)} ${nodeLabel}`,
       summary,
       capabilities: sortedCaps,
       avgCjpi,
