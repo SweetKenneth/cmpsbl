@@ -496,8 +496,8 @@ export function ExportPhase() {
             <p className="text-xs text-neon-green dark:text-neon-green font-medium">
               Pack downloaded — {exportResult.count} capabilities exported & retired
             </p>
-            <p className="text-[10px] text-neon-green/70 dark:text-neon-green/70 font-mono truncate">
-              Pack ID: {exportResult.packId.slice(0, 8)}…
+            <p className="text-[10px] text-neon-green/70 dark:text-neon-green/70 font-mono break-words">
+              Pack ID: {exportResult.packId}
             </p>
           </div>
         </div>
@@ -521,7 +521,7 @@ export function ExportPhase() {
             >
               <div className="flex items-center gap-3 px-4 py-2.5">
                 <FileCode2 className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-                <span className="text-xs text-foreground font-medium truncate flex-1">{c.name}</span>
+                <span className="text-xs text-foreground font-medium break-words flex-1">{c.name}</span>
                 <span className={cn(
                   "text-[10px] font-mono font-bold uppercase",
                   c.cjpiScore >= 90 ? "text-neon-amber" :

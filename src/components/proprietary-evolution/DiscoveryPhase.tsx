@@ -452,7 +452,7 @@ export function DiscoveryPhase() {
               <p className="text-sm font-semibold text-foreground">
                 {(discoveryHit.chainDepth || 2) > 2 ? 'Multi-Chain ' : ''}Capability Discovered — CJPI {discoveryHit.cjpiScore}
               </p>
-              <p className="text-xs text-muted-foreground font-mono mt-0.5 truncate">{discoveryHit.capability}</p>
+              <p className="text-xs text-muted-foreground font-mono mt-0.5 break-words">{discoveryHit.capability}</p>
             </div>
             <span className={cn("text-xs font-mono font-bold uppercase", tierColor(discoveryHit.tier))}>
               {discoveryHit.tier}
@@ -595,7 +595,7 @@ export function DiscoveryPhase() {
                 )}>
                   {r.tier}
                 </span>
-                <span className="text-xs text-foreground/80 truncate flex-1">{r.capability}</span>
+                <span className="text-xs text-foreground/80 break-words flex-1">{r.capability}</span>
                 <span className={cn(
                   "text-xs font-mono font-bold shrink-0",
                   r.cjpiScore >= 85 ? "text-neon-amber" : r.cjpiScore >= 65 ? "text-neon-purple" : "text-muted-foreground"

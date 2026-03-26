@@ -296,7 +296,7 @@ export function CrystallizationPhase() {
                     onClick={() => setExpandedLocked(isExpanded ? null : d.id)}
                   >
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
-                    <span className="text-xs text-foreground font-medium truncate flex-1">
+                    <span className="text-xs text-foreground font-medium break-words flex-1">
                       {d.name.replace(/_/g, ' ')}
                     </span>
                     <span className={cn(

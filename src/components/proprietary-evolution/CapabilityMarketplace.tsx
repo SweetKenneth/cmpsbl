@@ -482,7 +482,7 @@ export function CapabilityMarketplace({
                         {bundle.archetypeName}
                       </p>
                     )}
-                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-1 font-mono">
+                    <p className="text-[11px] text-muted-foreground mt-0.5 break-words font-mono">
                       {bundle.summary}
                     </p>
                   </div>
@@ -597,7 +597,7 @@ function CapabilityRow({
           {cap.tier}
         </span>
 
-        <span className="text-xs text-foreground/80 truncate flex-1">{cap.capability.replace(/_/g, ' ')}</span>
+        <span className="text-xs text-foreground/80 break-words flex-1">{cap.capability.replace(/_/g, ' ')}</span>
 
         <span className={cn(
           "text-[8px] font-mono px-1.5 py-0.5 rounded-full border font-semibold shrink-0",
@@ -656,7 +656,7 @@ function CapabilityRow({
       </div>
 
       {cap.description && (
-        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1 ml-6 line-clamp-2">
+        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1 ml-6">
           {cap.description}
         </p>
       )}
