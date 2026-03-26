@@ -1186,10 +1186,20 @@ serve(async (req: Request) => {
         }
 
         const candidateMeta = (candidateData.metadata as Record<string, unknown>) || {};
+        
+        // ═══ ARCHETYPE-AWARE NODE FILTERING ═══
+        // Classify the uploaded code, then hard-filter incompatible nodes
+        const batchSourceFiles = (candidateMeta.source_files as Array<{ content: string }>) || [];
+        const batchContent = batchSourceFiles.map(f => f.content || '').join('\n');
+        const batchClientArchetype = validateString(input.archetype, 20) as SoftwareArchetype | null;
+        const batchArchetypeProfile = classifyArchetype(batchContent, String(candidateMeta.domain || 'software'), String(candidateMeta.language || 'unknown'));
+        const batchArchetype: SoftwareArchetype = (batchClientArchetype && ['active', 'passive', 'hybrid'].includes(batchClientArchetype)) ? batchClientArchetype : batchArchetypeProfile.archetype;
+        const filteredNodes = filterNodesByArchetype(batchArchetype);
+        
         const allResults: CollisionResult[] = [];
 
-        for (const node of SUBSTRATE_NODES) {
-          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth);
+        for (const node of filteredNodes) {
+          const results = collideNodesMultiChain(candidate_node, candidateMeta, node, permutation_depth, batchArchetype);
           allResults.push(...results);
         }
 
