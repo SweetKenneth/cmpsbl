@@ -7,8 +7,8 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import {
-  Check, Minus, Package, ChevronDown, ChevronRight, Link2, Trash2, Loader2,
-  Zap, Layers, Info,
+  Check, Minus, Package, ChevronDown, ChevronRight, Trash2, Loader2,
+  Info,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';

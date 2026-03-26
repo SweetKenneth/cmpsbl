@@ -35,23 +35,32 @@ const TIER_GLOW: Record<string, string> = {
   mint: 'rgba(107, 114, 128, 0.1)',
 };
 
+// Must match SUBSTRATE_NODES in DiscoveryPhase exactly
 const NODE_LIST = [
-  'CORE','BRAIN','MEMORY','NERVE','DECODE','ENCODE','CORTEX','DEFENSE','ORACLE',
-  'CONSCIENCE','PHANTOM','HARVEST','EVOLUTION','SHADOW','IMMUNITY','INTENT',
-  'GOVERNANCE','ATLAS','FORGE','LINGUA','ECHO','SOVEREIGN','REFLEX','TREATY',
-  'ENGINEER','COMPASS','OBSERVER','GENESIS','ANCHOR','PRISM','SENTRY','MEDIC',
-  'SIGNAL','TENSOR','ARBITER','FLUX','VECTOR','SYNTH','RELAY','NEXUS',
+  'CORE','SYSTEM','BRAIN','MEMORY','DREAM',
+  'RIPPLE','ACCESS','IDENTITY','RELAY','AUDIT','NERVE',
+  'DECODE','ENCODE','VISION','CORTEX','NEXUS','ECONOMY','SANDBOX','INCLUSIVE','MEDIC','INTEGRATION',
+  'SOVEREIGN','ORACLE','CONSCIENCE','TREATY',
+  'COMPASS','ECHO','REFLEX',
+  'FORGE','LINGUA','HARVEST',
+  'EVOLUTION','SHADOW','PHANTOM',
+  'IMMUNITY','INTENT',
+  'GOVERNANCE','ATLAS','ENGINEER',
+  'DEFENSE',
 ];
 
 const GREEK_LABELS: Record<string, string> = {
-  CORE:'Ω₀',BRAIN:'Ψ₂',MEMORY:'Μ₃',NERVE:'Ν₄',DECODE:'Δ₅',ENCODE:'Ε₆',
-  CORTEX:'Κ₇',DEFENSE:'Θ₈',ORACLE:'Φ₉',CONSCIENCE:'Χ₁₀',PHANTOM:'Π₁₁',
-  HARVEST:'Η₁₂',EVOLUTION:'Ξ₁₃',SHADOW:'Σ₁₄',IMMUNITY:'Ι₁₅',INTENT:'Λ₁₆',
-  GOVERNANCE:'Γ₁₇',ATLAS:'Α₁₈',FORGE:'Ζ₁₉',LINGUA:'Λ₂₀',ECHO:'Ε₂₁',
-  SOVEREIGN:'Σ₂₂',REFLEX:'Ρ₂₃',TREATY:'Τ₂₄',ENGINEER:'Ε₂₅',COMPASS:'Κ₂₆',
-  OBSERVER:'Ο₂₇',GENESIS:'Γ₂₈',ANCHOR:'Α₂₉',PRISM:'Π₃₀',SENTRY:'Σ₃₁',
-  MEDIC:'Μ₃₂',SIGNAL:'Σ₃₃',TENSOR:'Τ₃₄',ARBITER:'Α₃₅',FLUX:'Φ₃₆',
-  VECTOR:'Β₃₇',SYNTH:'Σ₃₈',RELAY:'Ρ₃₉',NEXUS:'Ν₄₀',
+  CORE:'Ω₁',SYSTEM:'Σ₂',BRAIN:'Ψ₃',MEMORY:'Μ₄',DREAM:'Δ₅',
+  RIPPLE:'Ρ₆',ACCESS:'Α₇',IDENTITY:'Ι₈',RELAY:'Ρ₉',AUDIT:'Α₁₀',NERVE:'Ν₁₁',
+  DECODE:'Δ₁₂',ENCODE:'Ε₁₃',VISION:'Β₁₄',CORTEX:'Κ₁₅',NEXUS:'Ν₁₆',ECONOMY:'Ε₁₇',
+  SANDBOX:'Σ₁₈',INCLUSIVE:'Ι₁₉',MEDIC:'Μ₂₀',INTEGRATION:'Ι₂₁',
+  SOVEREIGN:'Σ₂₂',ORACLE:'Φ₂₃',CONSCIENCE:'Χ₂₄',TREATY:'Τ₂₅',
+  COMPASS:'Κ₂₆',ECHO:'Ε₂₇',REFLEX:'Ρ₂₈',
+  FORGE:'Ζ₂₉',LINGUA:'Λ₃₀',HARVEST:'Η₃₁',
+  EVOLUTION:'Ξ₃₂',SHADOW:'Σ₃₃',PHANTOM:'Π₃₄',
+  IMMUNITY:'Ι₃₅',INTENT:'Λ₃₆',
+  GOVERNANCE:'Γ₃₇',ATLAS:'Α₃₈',ENGINEER:'Ε₃₉',
+  DEFENSE:'Θ₄₀',
 };
 
 interface Particle {

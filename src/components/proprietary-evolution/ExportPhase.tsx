@@ -95,10 +95,7 @@ export function ExportPhase() {
 
   const isBuilderTier = productTier === 'builder';
 
-  const capabilities = useMemo(
-    () => allCapabilities,
-    [allCapabilities]
-  );
+  const capabilities = allCapabilities;
 
   const eligible = capabilities.filter(c => !c.exported && !c.retired);
   const bestScore = useMemo(
@@ -484,7 +481,6 @@ export function ExportPhase() {
                 <span className="text-xs text-foreground font-medium truncate flex-1">{c.name}</span>
                 <span className={cn(
                   "text-[10px] font-mono font-bold uppercase",
-                  c.cjpiScore >= 94 ? "text-neon-amber" :
                   c.cjpiScore >= 90 ? "text-neon-amber" :
                   c.cjpiScore >= 80 ? "text-neon-blue" :
                   "text-muted-foreground"
@@ -493,7 +489,6 @@ export function ExportPhase() {
                 </span>
                 <span className={cn(
                   "text-[10px] font-mono tabular-nums",
-                  c.cjpiScore >= 94 ? "text-neon-amber" :
                   c.cjpiScore >= 90 ? "text-neon-amber" :
                   c.cjpiScore >= 80 ? "text-neon-blue" :
                   "text-muted-foreground"
