@@ -1,0 +1,1 @@
+ALTER TABLE public.discovery_lock DROP CONSTRAINT discovery_lock_locked_by_fkey;
