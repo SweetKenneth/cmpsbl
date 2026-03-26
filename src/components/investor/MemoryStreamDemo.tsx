@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Brain, Zap, ArrowRight, Layers, Sparkles, Shield, Activity, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { resolveArchetypeName, getDepthTier, getDepthTierStyle } from "@/lib/discovery/chain-archetypes";
 
 // ─── Curated Discovery Descriptions ─────────────────────────
 // Hand-picked investor-friendly explanations for top discoveries
@@ -111,6 +112,9 @@ const categoryIcon = (category: string) => {
 // ─── Featured Discovery Card ────────────────────────────────
 function FeaturedDiscovery({ discovery }: { discovery: Discovery }) {
   const curated = CURATED_DESCRIPTIONS[discovery.name];
+  const archetypeName = resolveArchetypeName(discovery.module_chain);
+  const depthTier = getDepthTier(discovery.module_chain.length);
+  const depthStyle = getDepthTierStyle(depthTier);
   
   return (
     <motion.div
@@ -125,16 +129,24 @@ function FeaturedDiscovery({ discovery }: { discovery: Discovery }) {
           <Sparkles className="w-3 h-3 text-primary" />
           <span className="text-[10px] font-mono uppercase tracking-widest text-primary font-bold">Featured Discovery</span>
         </div>
-        <div className="bg-background/90 rounded-full px-3 py-1">
-          <span className={`text-[10px] font-mono font-bold ${tierColor(discovery.tier)}`}>
-            {tierLabel(discovery.tier)} · CJPI {discovery.cjpi}/100
+        <div className="flex items-center gap-2">
+          <span className={`text-[9px] font-mono px-2 py-0.5 rounded-full border ${depthStyle} font-semibold`}>
+            {depthTier} · {discovery.module_chain.length}N
           </span>
+          <div className="bg-background/90 rounded-full px-3 py-1">
+            <span className={`text-[10px] font-mono font-bold ${tierColor(discovery.tier)}`}>
+              {tierLabel(discovery.tier)} · CJPI {discovery.cjpi}/100
+            </span>
+          </div>
         </div>
       </div>
 
       <div className="p-5 sm:p-6 space-y-5">
-        {/* Title + headline */}
+        {/* Title + headline + archetype */}
         <div>
+          {archetypeName && (
+            <p className="text-[10px] font-mono text-primary/70 tracking-wide mb-1">{archetypeName}</p>
+          )}
           <h3 className="text-xl font-black text-foreground tracking-tight">{discovery.name}</h3>
           {curated && (
             <p className="text-sm font-semibold text-primary mt-1">{curated.headline}</p>
@@ -181,6 +193,9 @@ function FeaturedDiscovery({ discovery }: { discovery: Discovery }) {
 // ─── Discovery Row Card ─────────────────────────────────────
 function DiscoveryRow({ discovery, index }: { discovery: Discovery; index: number }) {
   const curated = CURATED_DESCRIPTIONS[discovery.name];
+  const archetypeName = resolveArchetypeName(discovery.module_chain);
+  const depthTier = getDepthTier(discovery.module_chain.length);
+  const depthStyle = getDepthTierStyle(depthTier);
   
   return (
     <motion.div
@@ -203,7 +218,13 @@ function DiscoveryRow({ discovery, index }: { discovery: Discovery; index: numbe
             }`}>
               {tierLabel(discovery.tier)}
             </span>
+            <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-full border ${depthStyle} font-semibold`}>
+              {depthTier} · {discovery.module_chain.length}N
+            </span>
           </div>
+          {archetypeName && (
+            <p className="text-[10px] font-mono text-primary/60 tracking-wide">{archetypeName}</p>
+          )}
           <p className="text-xs text-muted-foreground leading-relaxed">
             {curated?.headline || discovery.description || `${discovery.module_chain.join(" → ")} · ${discovery.category}`}
           </p>

@@ -20,9 +20,13 @@ const TIER_STYLES: Record<string, string> = {
 };
 
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
+import { resolveArchetypeName, getDepthTier, getDepthTierStyle } from '@/lib/discovery/chain-archetypes';
 
 function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: number }) {
   const tierStyle = TIER_STYLES[discovery.tier] || TIER_STYLES['architect'];
+  const archetypeName = resolveArchetypeName(discovery.module_chain);
+  const depthTier = getDepthTier(discovery.module_chain.length);
+  const depthStyle = getDepthTierStyle(depthTier);
 
   return (
     <motion.div
@@ -38,14 +42,21 @@ function DiscoveryCard({ discovery, index }: { discovery: Discovery; index: numb
             <span className={`text-[11px] sm:text-xs font-mono px-2 py-0.5 rounded-md border ${tierStyle} uppercase tracking-wider font-bold`}>
               {discovery.tier === 'cmpsbl-only' ? 'APEX' : discovery.tier}
             </span>
+            <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-md border ${depthStyle} uppercase tracking-wider font-semibold`}>
+              {depthTier} · {discovery.module_chain.length}N
+            </span>
             <span className="text-[11px] sm:text-xs text-muted-foreground/50 uppercase tracking-wider">
               {discovery.category}
             </span>
           </div>
+          {archetypeName && (
+            <div className="text-[10px] font-mono text-primary/70 mb-0.5 tracking-wide">
+              {archetypeName}
+            </div>
+          )}
           <div className="font-mono text-sm sm:text-base font-bold text-foreground">
             {discovery.name}
           </div>
-          {/* Functional description — no truncation */}
           <p className="text-xs text-muted-foreground/60 leading-relaxed mt-1.5">
             {getFunctionalDescription(discovery.name, discovery.module_chain)}
           </p>
