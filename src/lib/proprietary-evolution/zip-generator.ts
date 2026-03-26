@@ -133,9 +133,7 @@ ${line}  Your original code is in the ../original/ folder.
 ${line}  This file wraps it with the CMPSBL cognitive layer.
 ${line} ═══════════════════════════════════════════════════════
 
-// Runtime is BUILT INTO the single-file distribution (cmpsbl.ts)
-// No external runtime import needed — use the unified file directly.
-// import { execute, executeChain } from '../cmpsbl';
+import { execute, executeChain, computeCJPI, tierFromCJPI, type CJPIInput } from '../cmpsbl';
 
 ${line} ═══════════════════════════════════════════════════════
 ${line}  Layer 1 — Original Source Imports (auto-wired from ../original/)
@@ -246,10 +244,8 @@ ${line}  DUAL-LAYER ARCHITECTURE:
 ${line}    Layer 1 — Native Execution: Your original code (in ../original/)
 ${line}    Layer 2 — Cognitive Overlay: CMPSBL enrichment pipeline
 ${line}
-${line}  To use: Import your original code, call it first,
-${line}  then pipe the result through the runtime bridge for enrichment.
-${line}
-${line}  See runtime-bridge${LANG_EXT[lang] || '.ts'} for the cognitive layer.
+${line}  Runtime, Bridge, and Effects are ALL BUILT INTO the unified file (cmpsbl.*).
+${line}  Import from cmpsbl.* directly — no separate runtime installation needed.
 `;
 }
 
@@ -319,17 +315,16 @@ function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: Sou
  *    $native = $cap->executeNative(['key' => 'value']);
  */
 
-// Runtime is BUILT INTO the single-file distribution (cmpsbl.php)
-// No external require needed — use the unified file directly.
-// require_once __DIR__ . '/../cmpsbl.php';
+// Runtime is BUILT INTO the single-file distribution (cmpsbl.php).
+// Use: require_once __DIR__ . '/../cmpsbl.php';
+require_once __DIR__ . '/../cmpsbl.php';
 
 // ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
-${requireLines}
+\${requireLines}
 
 class CMPSBLCapability
 {
     private array $meta;
-    private CMPSBLRuntimeBridge $bridge;
 
     public function __construct(?string $manifestPath = null)
     {
@@ -505,9 +500,10 @@ function generatePythonCapabilitySource(cap: CapabilityForExport, sourceFiles?: 
 import json
 import os
 import time
-# Runtime is BUILT INTO the single-file distribution (cmpsbl.py)
-# No external import needed — use the unified file directly.
-# from cmpsbl import execute, execute_chain
+# Runtime is BUILT INTO the single-file distribution (cmpsbl.py).
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from cmpsbl import execute as cmpsbl_execute, execute_chain, compute_cjpi
 
 # ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
 ${importLines}
@@ -649,7 +645,7 @@ describe('${cap.name}', () => {
 // Test Harness for ${cap.name}
 // Run: php test/${cap.name.toLowerCase()}_test.php
 
-require_once __DIR__ . '/../src/runtime-bridge.php';
+require_once __DIR__ . '/../cmpsbl.php';
 require_once __DIR__ . '/../src/${cap.name.toLowerCase()}.php';
 
 function assert_true($condition, $msg) {
@@ -694,9 +690,9 @@ echo "\\n✅ All tests passed for ${cap.name}\\n";
     return `"""Test Harness for ${cap.name}"""
 import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
-from runtime_bridge import CMPSBLRuntimeBridge
-from ${cap.name.toLowerCase()} import CMPSBLCapability
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from cmpsbl import execute as cmpsbl_execute, compute_cjpi
+from src.${cap.name.toLowerCase()} import CMPSBLCapability
 
 
 def test_metadata():
