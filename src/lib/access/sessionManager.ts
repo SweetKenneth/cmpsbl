@@ -37,13 +37,19 @@
  const activeSessions = new Map<string, SessionInfo>();
  let sessionConfig = { ...DEFAULT_SESSION_CONFIG };
  
+ // Simple admin check placeholder. Replace with real auth integration.
+ function isAdmin(userId: string): boolean {
+   return userId === 'admin';
+ }
+ 
  /**
   * Create a new session
   */
- export function createSession(userId: string, metadata?: {
-   ip_address?: string;
-   user_agent?: string;
- }): SessionInfo {
+ export function createSession(userId: string, currentUserId: string, metadata?: { ip_address?: string; user_agent?: string }): SessionInfo {
+  // ACL: only allow the user or an admin to create sessions for a given user
+  if (userId !== currentUserId && !isAdmin(currentUserId)) {
+    throw new Error('Unauthorized: Cannot create session for another user.');
+  }
    const now = new Date();
    const expiresAt = new Date(now.getTime() + sessionConfig.max_session_duration_hours * 60 * 60 * 1000);
    
@@ -59,10 +65,10 @@
    }
    
    const session: SessionInfo = {
-     id: `sess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+     id: `sess_${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
      user_id: userId,
-     started_at: now.toISOString(),
-     last_activity: now.toISOString(),
+     started_at: nowISO,
+     last_activity: nowISO,
      ip_address: metadata?.ip_address,
      user_agent: metadata?.user_agent,
      device_type: deviceType,
@@ -71,7 +77,7 @@
    };
    
    // Check concurrent session limit
-   const userSessions = getUserSessions(userId);
+   const userSessions = getUserSessions(userId, currentUserId);
    if (userSessions.length >= sessionConfig.concurrent_sessions_limit) {
      // Terminate oldest existing session to make room for the new one
      const oldestActiveSession = userSessions
@@ -107,7 +113,14 @@
  /**
   * Terminate a session
   */
- export function terminateSession(sessionId: string): boolean {
+ export function terminateSession(sessionId: string, currentUserId?: string): boolean { // Added currentUserId for ACL
+   const session = activeSessions.get(sessionId);
+   if (!session) return false;
+
+   // Only allow termination by the session owner or an administrator
+   if (currentUserId && session.user_id !== currentUserId && !isAdmin(currentUserId)) {
+     return false; // Unauthorized attempt to terminate session
+   }
    const session = activeSessions.get(sessionId);
    if (!session) return false;
    
@@ -119,7 +132,11 @@
  /**
   * Terminate all sessions for a user
   */
- export function terminateUserSessions(userId: string): number {
+ export function terminateUserSessions(userId: string, currentUserId: string): number { // Added currentUserId for ACL
+   // Only allow a user to terminate their own sessions or an admin to terminate any user's sessions
+   if (userId !== currentUserId && !isAdmin(currentUserId)) {
+     throw new Error('Unauthorized: Cannot terminate sessions for another user.');
+   }
    let count = 0;
    
    const sessionIdsToTerminate: string[] = [];
@@ -140,14 +157,23 @@
  /**
   * Get session by ID
   */
- export function getSession(sessionId: string): SessionInfo | undefined {
-   return activeSessions.get(sessionId);
+ export function getSession(sessionId: string, currentUserId: string): SessionInfo | undefined { // Added currentUserId for ACL
+   const session = activeSessions.get(sessionId);
+   // Only allow access to the session if it belongs to the current user or if current user is an admin
+   if (session && (session.user_id === currentUserId || isAdmin(currentUserId))) {
+     return session;
+   }
+   return undefined;
  }
  
  /**
   * Get all sessions for a user
   */
- export function getUserSessions(userId: string): SessionInfo[] {
+ export function getUserSessions(userId: string, currentUserId: string): SessionInfo[] { // Added currentUserId for ACL
+   // A user can only view their own sessions, unless they are an admin
+   if (userId !== currentUserId && !isAdmin(currentUserId)) {
+     return []; // Unauthorized to view other users' sessions
+   }
    return Array.from(activeSessions.values())
      .filter(s => s.user_id === userId && s.is_active);
  }
@@ -155,7 +181,14 @@
  /**
   * Check if a session is valid
   */
- export function isSessionValid(sessionId: string): boolean {
+ export function isSessionValid(sessionId: string, currentUserId: string): boolean { // Added currentUserId for ACL
+   const session = activeSessions.get(sessionId);
+   if (!session) return false;
+
+   // A user can only validate their own sessions
+   if (session.user_id !== currentUserId) {
+     return false; // Unauthorized
+   }
    const session = activeSessions.get(sessionId);
    if (!session || !session.is_active) return false;
    
@@ -232,7 +265,10 @@
  /**
   * Update session configuration
   */
- export function updateSessionConfig(updates: Partial<SessionConfig>): SessionConfig {
+ export function updateSessionConfig(updates: Partial<SessionConfig>, currentUserId: string): SessionConfig { // Added currentUserId for ACL
+   if (!isAdmin(currentUserId)) {
+     throw new Error('Unauthorized: Only administrators can update session configuration.');
+   }
    sessionConfig = { ...sessionConfig, ...updates };
    return sessionConfig;
  }
