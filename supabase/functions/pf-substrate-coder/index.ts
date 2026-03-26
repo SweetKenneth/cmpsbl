@@ -10,9 +10,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { callFreeTierAI, ROUTER_VERSION as FREE_TIER_VERSION } from "../_shared/free-tier-router.ts";
-
-const CODER_VERSION = "1.1.0";
+const CODER_VERSION = "1.2.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -62,7 +60,7 @@ serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
   );
 
-  // Using free-tier router exclusively (no Lovable AI)
+  // Using GPT-only evolution routing.
 
   try {
     const body: CoderRequest = await req.json();
@@ -87,7 +85,11 @@ serve(async (req) => {
         return jsonResponse({
           success: true,
           version: CODER_VERSION,
-          free_tier_router: FREE_TIER_VERSION,
+          model_policy: {
+            provider: 'openai',
+            model: 'gpt-4o-mini',
+            locked: true,
+          },
           learned_patterns: learnedPatterns || 0,
           generated_today: generatedToday || 0,
           capabilities: [
@@ -98,9 +100,7 @@ serve(async (req) => {
             'utility_ts',
           ],
           rate_limits: {
-            groq: '800/day',
-            cerebras: '11,520/day',
-            total: '12,352+/day'
+            policy: 'GPT-only for evolution'
           }
         }, corsHeaders);
       }
@@ -141,14 +141,26 @@ serve(async (req) => {
         const systemPrompt = buildCoderSystemPrompt(improvement.module);
         const userPrompt = buildGenerationPrompt(improvement, brainPatterns, context);
 
-        // 3. Generate code via Free-Tier Router (Groq → Cerebras → SambaNova → etc)
+        // 3. Generate code via GPT-only evolution path
         const startTime = Date.now();
-        const aiResult = await callFreeTierAI(userPrompt, {
-          systemPrompt,
-          temperature: 0.3,
-          maxTokens: 4000,
-          priority: 'reliability',
+        const { data: aiResult, error: aiError } = await supabase.functions.invoke('pf-evolution-patch', {
+          body: {
+            prompt: userPrompt,
+            systemPrompt,
+            model: 'gpt-4o-mini',
+            temperature: 0.3,
+            maxTokens: 4000,
+            metadata: {
+              routeKey: 'substrate_coder',
+              taskType: 'code_generation',
+              module: improvement.module,
+              changeType: improvement.change_type,
+            },
+          },
         });
+        if (aiError || !aiResult?.content) {
+          throw new Error(aiError?.message || 'GPT evolution generation failed');
+        }
         const generatedCode = aiResult.content;
         const latency = Date.now() - startTime;
 
