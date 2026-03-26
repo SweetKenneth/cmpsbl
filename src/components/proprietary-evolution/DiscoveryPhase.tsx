@@ -53,7 +53,8 @@ const SUBSTRATE_NODES = [
   'DEFENSE',
 ];
 
-// No CJPI threshold — all discoveries are surfaced for the user to curate
+// Only the top 10 discoveries (by CJPI score) are surfaced for ascension
+const TOP_N = 10;
 
 export function DiscoveryPhase() {
   const [candidateNode, setCandidateNode] = useState<string | null>(null);
