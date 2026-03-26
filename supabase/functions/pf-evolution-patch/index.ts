@@ -53,6 +53,8 @@ serve(async (req) => {
       throw new Error("prompt is required");
     }
 
+    const enforcedModel = DEFAULT_MODEL;
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -60,7 +62,7 @@ serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model,
+        model: enforcedModel,
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: systemPrompt },
@@ -82,12 +84,12 @@ serve(async (req) => {
     const promptTokens = data.usage?.prompt_tokens ?? 0;
     const completionTokens = data.usage?.completion_tokens ?? 0;
     const tokensUsed = data.usage?.total_tokens ?? (promptTokens + completionTokens);
-    const estimatedCostUsd = estimateCostUsd(model, promptTokens, completionTokens);
+    const estimatedCostUsd = estimateCostUsd(enforcedModel, promptTokens, completionTokens);
 
     try {
       await supabase.from("ai_usage_log").insert({
         provider: "openai",
-        model,
+        model: enforcedModel,
         category: metadata?.routeKey || "evolution_patch",
         response_time_ms: null,
         success: true,
@@ -95,6 +97,8 @@ serve(async (req) => {
         cost: estimatedCostUsd ?? 0,
         metadata: {
           ...metadata,
+          requested_model: model,
+          enforced_model: enforcedModel,
           prompt_tokens: promptTokens,
           completion_tokens: completionTokens,
           within_budget: estimatedCostUsd === null ? null : estimatedCostUsd <= COST_CEILING_USD,
@@ -106,7 +110,8 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({
       content,
-      model,
+      provider: "openai",
+      model: enforcedModel,
       tokensUsed,
       promptTokens,
       completionTokens,

@@ -1,6 +1,6 @@
 /**
  * Feature Suggestion Engine — Autonomous discovery of new functions & features
- * Routes through NEXUS free-tier fleet (≤$0.05/run)
+ * Locked to GPT-only evolution routing.
  * 
  * Analyzes codebase patterns, telemetry gaps, and substrate topology
  * to propose new functions, resolvers, hooks, and UI features.
@@ -138,10 +138,11 @@ ${focusArea ? `## Focus Area\n${focusArea}\n` : ''}
 Suggest 3-5 new functions, features, or capabilities that would meaningfully improve this system. Prioritize practical, implementable additions over speculative ideas.`;
 
   try {
-    const { data, error } = await supabase.functions.invoke('pf-nexus-router', {
+    const { data, error } = await supabase.functions.invoke('pf-evolution-patch', {
       body: {
         prompt: userPrompt,
         systemPrompt: SUGGESTION_SYSTEM_PROMPT,
+        model: 'gpt-4o-mini',
         temperature: 0.35,
         maxTokens: 2500,
         metadata: {
@@ -193,7 +194,7 @@ function parseSuggestions(raw: string): FeatureSuggestion[] {
         dependencies: Array.isArray(s.dependencies) ? s.dependencies : [],
         generatedAt: new Date().toISOString(),
         status: 'new' as const,
-        model: 'nexus-fleet',
+        model: 'gpt-4o-mini',
       };
     }).sort((a: FeatureSuggestion, b: FeatureSuggestion) => b.compositeScore - a.compositeScore);
   } catch {

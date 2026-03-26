@@ -56,7 +56,7 @@ export interface GeneratedPatch {
 /** Cost ceiling: ≤$0.05 per evolution patch run. */
 export const EVOLUTION_COST_CEILING = 0.05;
 
-const MODEL_MAP: Record<PatchCategory, { primary: string; fallback: string; temperature: number }> = {
+const MODEL_MAP: Record<PatchCategory, { primary: 'gpt-4o-mini'; fallback: 'gpt-4o-mini'; temperature: number }> = {
   security: { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.05 },
   fix:      { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.10 },
   refactor: { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.15 },
