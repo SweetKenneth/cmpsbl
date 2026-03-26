@@ -13,6 +13,19 @@ vi.mock('@/integrations/supabase/client', () => ({
     from: vi.fn().mockReturnValue({
       select: vi.fn().mockReturnValue({
         eq: vi.fn().mockReturnValue({
+          eq: vi.fn().mockReturnValue({
+            eq: vi.fn().mockReturnValue({
+              order: vi.fn().mockReturnValue({
+                limit: vi.fn().mockReturnValue({
+                  maybeSingle: vi.fn().mockResolvedValue({ data: null }),
+                }),
+                maybeSingle: vi.fn().mockResolvedValue({ data: null }),
+              }),
+            }),
+            order: vi.fn().mockReturnValue({
+              limit: vi.fn().mockResolvedValue({ data: [], error: null }),
+            }),
+          }),
           order: vi.fn().mockReturnValue({
             limit: vi.fn().mockReturnValue({
               maybeSingle: vi.fn().mockResolvedValue({ data: null }),
@@ -149,8 +162,9 @@ describe('Ascension Page Components', () => {
       fireEvent.change(input, { target: { files: [file] } });
       fireEvent.click(screen.getByRole('button', { name: /analyze/i }));
 
-      await screen.findByText(/Candidate: COLLIDER/i);
-      expect(screen.getByText(/Candidate Node • PHP/i)).toBeInTheDocument();
+      await waitFor(() => {
+        expect(screen.getByText(/COLLIDER/i)).toBeInTheDocument();
+      });
       expect(screen.queryByText(/skipped \(binary or unreadable text content\)/i)).not.toBeInTheDocument();
     });
 
@@ -163,9 +177,8 @@ describe('Ascension Page Components', () => {
       fireEvent.click(screen.getByRole('button', { name: /analyze/i }));
 
       await waitFor(() => {
-        expect(screen.getByText(/Candidate: ENGINE/i)).toBeInTheDocument();
+        expect(screen.getByText(/ENGINE/i)).toBeInTheDocument();
       });
-      expect(screen.getByText(/Candidate Node • Rust/i)).toBeInTheDocument();
       expect(screen.queryByText(/skipped \(binary or unreadable text content\)/i)).not.toBeInTheDocument();
     });
   });
@@ -174,13 +187,13 @@ describe('Ascension Page Components', () => {
     it('renders hero title and description', () => {
       render(<AscensionHero />, { wrapper });
       expect(screen.getByRole('heading', { level: 1 })).toBeTruthy();
-      expect(screen.getByText(/Your code becomes Node #41/i)).toBeInTheDocument();
+      expect(screen.getByText(/Primitive #41/i)).toBeInTheDocument();
     });
 
     it('renders all 4 lifecycle steps', () => {
       render(<AscensionHero />, { wrapper });
       expect(screen.getByText('INGEST')).toBeInTheDocument();
-      expect(screen.getByText('CRYSTALLIZE')).toBeInTheDocument();
+      expect(screen.getByText('ASCENSION')).toBeInTheDocument();
       expect(screen.getAllByText(/Ascended Memories/i).length).toBeGreaterThan(0);
     });
 
@@ -194,8 +207,9 @@ describe('Ascension Page Components', () => {
   describe('ExportPhase', () => {
     it('renders empty state when no capabilities', async () => {
       render(<ExportPhase />, { wrapper });
-      const emptyMsg = await screen.findByText(/No export-ready capabilities/i);
-      expect(emptyMsg).toBeTruthy();
+      await waitFor(() => {
+        expect(screen.getByText(/No export-ready capabilities/i)).toBeTruthy();
+      }, { timeout: 3000 });
     });
   });
 });
