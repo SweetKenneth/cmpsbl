@@ -161,9 +161,21 @@ export default function ProprietaryEvolution() {
                 Back
               </Button>
 
-              <span className="text-[10px] font-mono text-muted-foreground">
-                Step {activeStep + 1} of 4
-              </span>
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={resetCycle}
+                  disabled={resetting}
+                  className="gap-1.5 text-[10px] h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
+                  Reset Cycle
+                </Button>
+                <span className="text-[10px] font-mono text-muted-foreground">
+                  Step {activeStep + 1} of 4
+                </span>
+              </div>
 
               <Button
                 size="sm"
