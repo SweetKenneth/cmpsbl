@@ -50,16 +50,16 @@ export interface GeneratedPatch {
 
 // ── Model Selection ────────────────────────────────────────
 
-/** Cost ceiling: ≤$0.05 per evolution run. All models route through NEXUS free-tier fleet. */
+/** Cost ceiling: ≤$0.05 per evolution run. GPT-nano is the cheapest GPT tier. */
 export const EVOLUTION_COST_CEILING = 0.05;
 
 const MODEL_MAP: Record<PatchCategory, { primary: string; fallback: string; temperature: number }> = {
-  security: { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'cerebras/llama3.1-8b',          temperature: 0.05 },
-  fix:      { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'groq/llama-3.1-8b-instant',     temperature: 0.10 },
-  refactor: { primary: 'cerebras/llama3.1-8b',           fallback: 'groq/llama-3.1-8b-instant',     temperature: 0.15 },
-  optimize: { primary: 'groq/llama-3.1-8b-instant',      fallback: 'cerebras/llama3.1-8b',          temperature: 0.10 },
-  feature:  { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'deepseek/deepseek-chat',        temperature: 0.25 },
-  suggest:  { primary: 'groq/llama-3.3-70b-versatile',   fallback: 'cerebras/llama3.1-8b',          temperature: 0.35 },
+  security: { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.05 },
+  fix:      { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.10 },
+  refactor: { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.15 },
+  optimize: { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-nano',   temperature: 0.10 },
+  feature:  { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.25 },
+  suggest:  { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.35 },
 };
 
 function selectModel(category: PatchCategory) {

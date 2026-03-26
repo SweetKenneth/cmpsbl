@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-The substrate self-evolves through an **AI-Proposed, Human-Approved** model. Autonomous discovery identifies technical debt, optimization opportunities, and architectural improvements. The execution layer generates code patches via NEXUS (routing to AI models like GPT-5, Gemini), which are validated in SHADOW environments before requiring human-in-the-loop approval.
+The substrate self-evolves through an **AI-Proposed, Human-Approved** model. Autonomous discovery identifies technical debt, optimization opportunities, and architectural improvements. The execution layer generates code patches via NEXUS (routing to **GPT-5 Nano** at ≤$0.05/run), which are validated in SHADOW environments before requiring human-in-the-loop approval. The system also autonomously **suggests new functions and features** via the Feature Suggestion Engine.
 
 ```
 Discovery (CDM/CLM/Scanner)
@@ -58,7 +58,7 @@ Candidates scoring ≥ 0.70 are eligible for AI patch generation.
 Candidate (from Discovery)
   → Patch Request Builder
   → NEXUS Model Router
-  → AI Model (GPT-5 / Gemini 2.5 Pro)
+  → GPT-5 Nano (≤$0.05/run) | GPT-5 Mini (fallback)
   → Structured Patch Response
   → Patch Validator
   → SEBA Pipeline Entry
@@ -113,13 +113,14 @@ interface PatchResponse {
 
 ### Model Selection Strategy
 
-| Category | Primary Model | Fallback | Temperature |
-|----------|--------------|----------|-------------|
-| Security fix | GPT-5 | Gemini 2.5 Pro | 0.05 |
-| Bug fix | GPT-5 | Gemini 2.5 Flash | 0.10 |
-| Refactor | Gemini 2.5 Pro | GPT-5 | 0.20 |
-| Optimization | Gemini 2.5 Flash | GPT-5 Mini | 0.15 |
-| Feature addition | GPT-5 | Gemini 2.5 Pro | 0.30 |
+| Category | Primary Model | Fallback | Temperature | Max Cost/Run |
+|----------|--------------|----------|-------------|-------------|
+| Security fix | GPT-5 Nano | GPT-5 Mini | 0.05 | $0.05 |
+| Bug fix | GPT-5 Nano | GPT-5 Mini | 0.10 | $0.05 |
+| Refactor | GPT-5 Nano | GPT-5 Mini | 0.15 | $0.05 |
+| Optimization | GPT-5 Nano | GPT-5 Nano | 0.10 | $0.05 |
+| Feature addition | GPT-5 Nano | GPT-5 Mini | 0.25 | $0.05 |
+| Feature suggestion | GPT-5 Nano | GPT-5 Mini | 0.35 | $0.05 |
 
 ---
 
