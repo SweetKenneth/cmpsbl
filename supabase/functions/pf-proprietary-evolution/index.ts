@@ -1365,6 +1365,9 @@ serve(async (req: Request) => {
               fingerprint,
               discovered_at: new Date().toISOString(),
               ascended: false,
+              // Composition metadata — propagates through crystallization → export
+              archetype_name: resolvedArchetype || null,
+              impact_tier: topResult.chain_depth <= 2 ? 'Enhancement' : topResult.chain_depth <= 4 ? 'System Upgrade' : 'Architectural Shift',
               candidate_surface: surface ? {
                 nodeName: surface.nodeName,
                 capabilities: surface.capabilities,
@@ -1539,6 +1542,8 @@ serve(async (req: Request) => {
               moat_signature: moatSignature,
               structural_fingerprint: fingerprint,
               lock_version: 1,
+              // Preserve and augment composition metadata
+              selection_state: 'selected',
             },
           })
           .eq('id', discovery_id)
