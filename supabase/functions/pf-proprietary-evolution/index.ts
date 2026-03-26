@@ -581,6 +581,58 @@ const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
   'MEDIC+IMMUNITY+NERVE': [
     { name: 'Self_Healing_Distributed_Core', desc: 'Diagnoses faults across distributed nodes, builds adaptive immunity, and achieves consensus on remediation — self-healing at infrastructure scale.' },
   ],
+  // ═══ Additional archetypes for low-coverage nodes (DREAM, DECODE, INTENT) ═══
+  'DREAM+MEMORY': [
+    { name: 'Imaginative_Memory_Synthesizer', desc: 'Generates novel hypothetical scenarios from consolidated memory patterns — dreams up solutions by recombining past experiences in creative ways.' },
+  ],
+  'DREAM+EVOLUTION': [
+    { name: 'Generative_Mutation_Engine', desc: 'Synthesizes new evolutionary candidates through heuristic imagination rather than random mutation — guided evolution that dreams of better designs.' },
+  ],
+  'DREAM+FORGE': [
+    { name: 'Creative_Artifact_Designer', desc: 'Imagines novel software architectures and scaffolds them into working artifacts — generative design that produces implementations, not just ideas.' },
+  ],
+  'DREAM+PHANTOM': [
+    { name: 'Stealth_Scenario_Generator', desc: 'Synthesizes adversarial test scenarios through anonymized imagination — stress-tests systems with creative attack patterns no rule engine would generate.' },
+  ],
+  'DREAM+CORTEX': [
+    { name: 'Imaginative_Workflow_Planner', desc: 'Synthesizes novel workflow strategies by imagining task decompositions that linear planning would never discover — creative orchestration at scale.' },
+  ],
+  'DECODE+LINGUA': [
+    { name: 'Universal_Intent_Translator', desc: 'Parses intent from any language input and translates across linguistic boundaries — multilingual NLP extraction that understands meaning, not just words.' },
+  ],
+  'DECODE+HARVEST': [
+    { name: 'Structured_Data_Extractor', desc: 'Crawls raw data sources and applies NLP extraction to produce structured schemas — turns unstructured information into queryable intelligence.' },
+  ],
+  'DECODE+CORTEX': [
+    { name: 'Intent_Driven_Orchestrator', desc: 'Parses complex user intents and decomposes them into orchestrated multi-step workflows — natural language becomes executable task graphs.' },
+  ],
+  'DECODE+IDENTITY': [
+    { name: 'Behavioral_Identity_Parser', desc: 'Extracts behavioral signals from interaction patterns to resolve ambiguous identities — intent-aware entity recognition that goes beyond static credentials.' },
+  ],
+  'DECODE+REFLEX': [
+    { name: 'Real_Time_Intent_Reactor', desc: 'Parses intent at edge speed and triggers reflexive actions — sub-millisecond response to natural language commands in latency-critical environments.' },
+  ],
+  'INTENT+CORTEX': [
+    { name: 'Intelligent_Action_Orchestrator', desc: 'Plans and routes complex action DAGs through orchestrated workflows — combines strategic intent planning with tactical execution coordination.' },
+  ],
+  'INTENT+EVOLUTION': [
+    { name: 'Self_Improving_Intent_Router', desc: 'Evolves intent routing strategies based on execution outcomes — the action planner that gets smarter with every resolved intent.' },
+  ],
+  'INTENT+FORGE': [
+    { name: 'Intent_To_Artifact_Compiler', desc: 'Transforms high-level intents directly into scaffolded software artifacts — from "I need X" to deployed code without intermediate specification.' },
+  ],
+  'INTENT+DEFENSE': [
+    { name: 'Threat_Aware_Intent_Gateway', desc: 'Evaluates intent legitimacy before routing to execution — blocks malicious action requests by scoring intent patterns against threat models.' },
+  ],
+  'INTENT+MEMORY': [
+    { name: 'Context_Enriched_Intent_Planner', desc: 'Recalls past intent resolutions to predict optimal action plans — historical context makes every intent routing decision more accurate.' },
+  ],
+  'DREAM+DECODE+FORGE': [
+    { name: 'Imaginative_Code_From_Language', desc: 'Parses natural language descriptions, imagines creative solutions, and scaffolds them into working code — from human thought to software artifact in one pipeline.' },
+  ],
+  'INTENT+DECODE+BRAIN': [
+    { name: 'Deep_Intent_Comprehension_Pipeline', desc: 'Extracts, reasons about, and plans execution for complex multi-layered intents — understands not just what you said, but what you meant and how to achieve it.' },
+  ],
 };
 
 function chainKey(nodes: string[]): string {
