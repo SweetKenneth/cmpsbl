@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Link2, Layers, Cpu, Trash2, CheckCircle2 } from 'lucide-react';
+import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Cpu, Trash2 } from 'lucide-react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { CapabilityMarketplace, type CollisionResult as MarketplaceResult } from './CapabilityMarketplace';
 import { Button } from '@/components/ui/button';
@@ -98,6 +98,7 @@ export function DiscoveryPhase() {
       }
       setLoading(false);
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Load existing discovery results (user-scoped)
@@ -144,6 +145,7 @@ export function DiscoveryPhase() {
         }
       }
     })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /** Clear all discoveries from the database */
