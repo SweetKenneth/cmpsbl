@@ -88,10 +88,10 @@ export default function ProprietaryEvolution() {
   const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
 
   const phases = [
-    <IngestPhase key="ingest" />,
-    <DiscoveryPhase key="discovery" />,
-    <CrystallizationPhase key="crystallize" />,
-    <ExportPhase key="export" />,
+    <IngestPhase key={`ingest-${cycleKey}`} />,
+    <DiscoveryPhase key={`discovery-${cycleKey}`} />,
+    <CrystallizationPhase key={`crystallize-${cycleKey}`} />,
+    <ExportPhase key={`export-${cycleKey}`} />,
   ];
 
 
