@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-The substrate self-evolves through an **AI-Proposed, Human-Approved** model. Autonomous discovery identifies technical debt, optimization opportunities, and architectural improvements. The execution layer generates code patches via NEXUS (routing to **GPT-5 Nano** at ≤$0.05/run), which are validated in SHADOW environments before requiring human-in-the-loop approval. The system also autonomously **suggests new functions and features** via the Feature Suggestion Engine.
+The substrate self-evolves through an **AI-Proposed, Human-Approved** model. Autonomous discovery identifies technical debt, optimization opportunities, and architectural improvements. The execution layer generates code patches via the **NEXUS free-tier fleet** (Groq, Cerebras, SambaNova, DeepSeek, etc. — ≤$0.05/run, zero cost), which are validated in SHADOW environments before requiring human-in-the-loop approval. The system also autonomously **suggests new functions and features** via the Feature Suggestion Engine.
 
 ```
 Discovery (CDM/CLM/Scanner)
@@ -57,8 +57,8 @@ Candidates scoring ≥ 0.70 are eligible for AI patch generation.
 ```
 Candidate (from Discovery)
   → Patch Request Builder
-  → NEXUS Model Router
-  → GPT-5 Nano (≤$0.05/run) | GPT-5 Mini (fallback)
+  → NEXUS Free-Tier Fleet Router
+  → Groq / Cerebras / SambaNova / DeepSeek (failover chain)
   → Structured Patch Response
   → Patch Validator
   → SEBA Pipeline Entry
@@ -113,14 +113,14 @@ interface PatchResponse {
 
 ### Model Selection Strategy
 
-| Category | Primary Model | Fallback | Temperature | Max Cost/Run |
-|----------|--------------|----------|-------------|-------------|
-| Security fix | GPT-5 Nano | GPT-5 Mini | 0.05 | $0.05 |
-| Bug fix | GPT-5 Nano | GPT-5 Mini | 0.10 | $0.05 |
-| Refactor | GPT-5 Nano | GPT-5 Mini | 0.15 | $0.05 |
-| Optimization | GPT-5 Nano | GPT-5 Nano | 0.10 | $0.05 |
-| Feature addition | GPT-5 Nano | GPT-5 Mini | 0.25 | $0.05 |
-| Feature suggestion | GPT-5 Nano | GPT-5 Mini | 0.35 | $0.05 |
+| Category | Primary Fleet | Temperature | Max Cost/Run |
+|----------|--------------|-------------|-------------|
+| Security fix | NEXUS fleet (Groq → Cerebras → fallback) | 0.05 | $0.00 (free tier) |
+| Bug fix | NEXUS fleet | 0.10 | $0.00 |
+| Refactor | NEXUS fleet | 0.15 | $0.00 |
+| Optimization | NEXUS fleet | 0.10 | $0.00 |
+| Feature addition | NEXUS fleet | 0.25 | $0.00 |
+| Feature suggestion | NEXUS fleet | 0.35 | $0.00 |
 
 ---
 
