@@ -6,7 +6,7 @@
  * PERF: Pure CSS animations — no framer-motion dependency.
  */
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { PinGate } from '@/components/gates/PinGate';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -34,22 +34,28 @@ const PHASE_DESCRIPTIONS = [
 export default function ProprietaryEvolution() {
   const [activeStep, setActiveStep] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
   const [displayedStep, setDisplayedStep] = useState(0);
-  const phaseRef = useRef<HTMLDivElement>(null);
+  const [phaseAnimClass, setPhaseAnimClass] = useState('ascension-phase-idle');
+  const [showHero, setShowHero] = useState(true);
 
   const goTo = useCallback((step: number) => {
-    if (step === activeStep || transitioning) return;
-    setDirection(step > activeStep ? 1 : -1);
-    setTransitioning(true);
-    // Start exit animation
+    if (step === activeStep) return;
+    const dir = step > activeStep ? 1 : -1;
+    setDirection(dir);
+
+    // Exit animation
+    setPhaseAnimClass(dir > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right');
+
     setTimeout(() => {
       setDisplayedStep(step);
       setActiveStep(step);
-      // Enter animation starts via CSS
-      setTimeout(() => setTransitioning(false), 300);
+      setShowHero(step === 0);
+      // Enter animation
+      setPhaseAnimClass(dir > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left');
+
+      setTimeout(() => setPhaseAnimClass('ascension-phase-idle'), 350);
     }, 250);
-  }, [activeStep, transitioning]);
+  }, [activeStep]);
 
   const next = () => { if (activeStep < 3) goTo(activeStep + 1); };
   const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
@@ -61,10 +67,6 @@ export default function ProprietaryEvolution() {
     <ExportPhase key="export" />,
   ];
 
-  // CSS class for phase transition
-  const phaseClass = transitioning
-    ? (direction > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right')
-    : (direction !== 0 ? (direction > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left') : 'ascension-phase-idle');
 
   return (
     <PinGate pin="041041" storageKey="gate-x-proprietary">
@@ -79,12 +81,11 @@ export default function ProprietaryEvolution() {
         <AscensionOnboarding />
 
         {/* ═══ COMPACT HERO (only on step 0) ═══ */}
-        <div
-          className={activeStep === 0 ? 'ascension-hero-enter' : 'ascension-hero-exit'}
-          style={{ overflow: 'hidden' }}
-        >
-          {activeStep === 0 && <AscensionHero />}
-        </div>
+        {showHero && (
+          <div className="ascension-hero-enter" style={{ overflow: 'hidden' }}>
+            <AscensionHero />
+          </div>
+        )}
 
         {/* ═══ WIZARD SECTION ═══ */}
         <section className="flex-1 flex flex-col">
@@ -108,7 +109,7 @@ export default function ProprietaryEvolution() {
           {/* Phase content — CSS animated transitions */}
           <main className="flex-1">
             <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
-              <div ref={phaseRef} className={phaseClass}>
+              <div className={phaseAnimClass}>
                 {phases[displayedStep]}
               </div>
 
