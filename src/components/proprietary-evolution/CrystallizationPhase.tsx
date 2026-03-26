@@ -69,7 +69,7 @@ export function CrystallizationPhase() {
     const data = allDiscoveries;
 
     if (data) {
-      setDiscoveries((data as any[]).map((d: any) => {
+      const mapped = (data as any[]).map((d: any) => {
         const meta = d.metadata || {};
         return {
           id: d.id,
@@ -84,7 +84,16 @@ export function CrystallizationPhase() {
           archetypeName: meta.archetype_name || null,
           impactTier: meta.impact_tier || null,
         };
-      }));
+      });
+
+      // Keep all ascended + only top 10 unascended by CJPI
+      const ascended = mapped.filter(d => d.ascended);
+      const unascended = mapped
+        .filter(d => !d.ascended)
+        .sort((a, b) => b.cjpiScore - a.cjpiScore)
+        .slice(0, 10);
+
+      setDiscoveries([...ascended, ...unascended]);
     }
     setLoading(false);
   };
