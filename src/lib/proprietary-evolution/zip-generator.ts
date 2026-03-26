@@ -1,14 +1,13 @@
 /**
  * Proprietary Evolution — ZIP Bundle Generator
  * Generates downloadable Capability Pack ZIPs with:
- * - Mini-Runtime™ Engine (from standalone-runtime.ts + standalone-discovery-engine.ts)
+ * - Unified Single-File Distribution (cmpsbl.*) — Runtime + Effects + Bridge + API built-in
  * - License in HTML + MD
  * - README in HTML + MD
  * - Pipeline Details HTML (per capability)
  * - Valuation data
  * - Source code, test harnesses, manifest
- * 
- * Mini-Runtime is included as a SEALED binary — obfuscated to protect IP.
+ * - Black-box obfuscation for IP protection
  */
 
 import JSZip from 'jszip';
