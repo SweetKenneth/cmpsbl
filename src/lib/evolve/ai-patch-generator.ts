@@ -1,6 +1,6 @@
 /**
- * AI Patch Generator — NEXUS-powered code patch proposals
- * Routes through NEXUS free-tier fleet (≤$0.05/run, zero Lovable AI)
+ * AI Patch Generator — GPT-powered code patch proposals
+ * Uses a dedicated OpenAI-backed evolution path for patch quality and reliability.
  * Part of the Evolution pipeline: Discovery → Generation → SEBA → Approval
  */
 
@@ -17,6 +17,8 @@ export interface PatchCandidate {
   description: string;
   targetModule: string;
   targetFiles: string[];
+  contextFiles?: Array<{ filePath: string; content: string }>;
+  constraints?: string[];
   severity: number;       // 0-1
   confidence: number;     // 0-1
   sourceScanner: string;  // CDM, CLM, Scanner, ENGINEER, etc.
@@ -37,6 +39,7 @@ export interface GeneratedPatch {
   changes: PatchChange[];
   model: string;
   tokensUsed: number;
+  estimatedCostUsd?: number;
   confidence: number;
   estimatedImpact: {
     healthDelta: number;
@@ -50,16 +53,16 @@ export interface GeneratedPatch {
 
 // ── Model Selection ────────────────────────────────────────
 
-/** Cost ceiling: ≤$0.05 per evolution run. GPT-nano is the cheapest GPT tier. */
+/** Cost ceiling: ≤$0.05 per evolution patch run. */
 export const EVOLUTION_COST_CEILING = 0.05;
 
 const MODEL_MAP: Record<PatchCategory, { primary: string; fallback: string; temperature: number }> = {
-  security: { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.05 },
-  fix:      { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.10 },
-  refactor: { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.15 },
-  optimize: { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-nano',   temperature: 0.10 },
-  feature:  { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.25 },
-  suggest:  { primary: 'openai/gpt-5-nano',   fallback: 'openai/gpt-5-mini',   temperature: 0.35 },
+  security: { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.05 },
+  fix:      { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.10 },
+  refactor: { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.15 },
+  optimize: { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.10 },
+  feature:  { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.20 },
+  suggest:  { primary: 'gpt-4o-mini', fallback: 'gpt-4o-mini', temperature: 0.25 },
 };
 
 function selectModel(category: PatchCategory) {
@@ -75,16 +78,16 @@ export async function generateAIPatch(candidate: PatchCandidate): Promise<Genera
   const prompt = buildPatchPrompt(candidate);
 
   try {
-    // Call through NEXUS router edge function (uses prompt/systemPrompt format)
-    const { data, error } = await supabase.functions.invoke('pf-nexus-router', {
+    const { data, error } = await supabase.functions.invoke('pf-evolution-patch', {
       body: {
         prompt,
         systemPrompt: PATCH_SYSTEM_PROMPT,
+        model: modelConfig.primary,
         temperature: modelConfig.temperature,
-        maxTokens: 4096,
+        maxTokens: 2200,
         metadata: {
           category: 'evolution',
-          taskType: 'code',
+          taskType: 'code_patch',
           candidateId: candidate.id,
           patchId,
         },
@@ -101,8 +104,9 @@ export async function generateAIPatch(candidate: PatchCandidate): Promise<Genera
       category: candidate.category,
       title: candidate.title,
       changes: parsed.changes,
-      model: data?.model || data?.provider || 'nexus-fleet',
+      model: data?.model || modelConfig.primary,
       tokensUsed: data?.tokensUsed || 0,
+      estimatedCostUsd: typeof data?.estimatedCostUsd === 'number' ? data.estimatedCostUsd : undefined,
       confidence: parsed.confidence,
       estimatedImpact: parsed.impact,
       reasoning: parsed.reasoning,
@@ -120,6 +124,7 @@ export async function generateAIPatch(candidate: PatchCandidate): Promise<Genera
       changes: [],
       model: modelConfig.primary,
       tokensUsed: 0,
+      estimatedCostUsd: 0,
       confidence: 0,
       estimatedImpact: { healthDelta: 0, debtReduction: 0, riskLevel: 'high' },
       reasoning: `Generation failed: ${err instanceof Error ? err.message : 'Unknown error'}`,
@@ -186,6 +191,20 @@ Respond in this exact JSON format:
 }`;
 
 function buildPatchPrompt(candidate: PatchCandidate): string {
+  const contextBlock = candidate.contextFiles?.length
+    ? `\n\n## File Context\n${candidate.contextFiles
+        .map(({ filePath, content }) => `### ${filePath}\n\n\
+\
+\
+
+${content}`)
+        .join('\n\n')}`
+    : '';
+
+  const constraintsBlock = candidate.constraints?.length
+    ? `\n\n## Constraints\n${candidate.constraints.map((item) => `- ${item}`).join('\n')}`
+    : '';
+
   return `## Patch Request
 
 **Category:** ${candidate.category}
@@ -196,7 +215,7 @@ function buildPatchPrompt(candidate: PatchCandidate): string {
 **Severity:** ${candidate.severity}
 **Source:** ${candidate.sourceScanner}
 
-Generate a minimal, safe patch that addresses this issue. Focus on correctness and minimal blast radius.`;
+Generate a minimal, safe patch that addresses this issue. Focus on correctness and minimal blast radius.${constraintsBlock}${contextBlock}`;
 }
 
 // ── Response Parsing ───────────────────────────────────────

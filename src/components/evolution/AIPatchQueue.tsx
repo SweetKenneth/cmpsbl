@@ -1,5 +1,5 @@
 /**
- * AIPatchQueue — AI-generated patch review interface for the Evolution Control Center
+ * AIPatchQueue — GPT-generated patch review interface for the Evolution Control Center
  * Governor reviews diffs, AI reasoning, and approves/rejects patches
  */
 
@@ -104,8 +104,8 @@ function PatchCard({ patch, onAction }: { patch: GeneratedPatch; onAction: (id: 
               <RiskBadge level={patch.estimatedImpact.riskLevel} />
             </div>
             <CardTitle className="text-sm">{patch.title}</CardTitle>
-            <p className="text-xs text-muted-foreground font-mono">
-              {patch.model} • {patch.tokensUsed} tokens • {patch.changes.length} file(s)
+              <p className="text-xs text-muted-foreground font-mono">
+                {patch.model} • {patch.tokensUsed} tokens{typeof patch.estimatedCostUsd === 'number' ? ` • $${patch.estimatedCostUsd.toFixed(4)}` : ''} • {patch.changes.length} file(s)
             </p>
           </div>
           <Button variant="ghost" size="sm" onClick={() => setExpanded(!expanded)}>
@@ -207,7 +207,7 @@ export function AIPatchQueue() {
     if (!candidate) return;
 
     setGenerating(true);
-    toast.info(`Generating patch via NEXUS for: ${candidate.title}`);
+    toast.info(`Generating patch via GPT for: ${candidate.title}`);
 
     try {
       const patch = await generateAIPatch(candidate);
@@ -252,7 +252,7 @@ export function AIPatchQueue() {
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-xs text-muted-foreground">
-            Select a discovery candidate to generate an AI code patch via NEXUS.
+            Select a discovery candidate to generate a GPT-backed code patch for evolution review.
           </p>
 
           <div className="space-y-2">
