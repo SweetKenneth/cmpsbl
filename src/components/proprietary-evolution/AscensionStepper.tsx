@@ -37,9 +37,9 @@ export function AscensionStepper({ activeStep, onStepClick }: Props) {
             >
               <div
                 className={cn(
-                  "w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all duration-500",
+                  "w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 transition-all duration-300",
                   isActive
-                    ? "border-primary bg-primary/15 shadow-[0_0_16px_hsl(var(--primary)/0.25)] stepper-active-pulse"
+                    ? "border-primary bg-primary/15 shadow-[0_0_16px_hsl(var(--primary)/0.25)]"
                     : isComplete
                       ? "border-primary/50 bg-primary/10"
                       : "border-border/40 bg-muted/20"

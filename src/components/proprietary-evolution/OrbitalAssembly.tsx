@@ -297,12 +297,12 @@ export function OrbitalAssembly({ state, fileCount, capabilities = [], nodeName 
   }, [draw]);
 
   return (
-    <div className="flex items-center justify-center canvas-container-glow">
+    <div className="flex items-center justify-center">
       <canvas
         ref={canvasRef}
         width={W * DPR}
         height={H * DPR}
-        style={{ width: '100%', maxWidth: W, height: 'auto', aspectRatio: `${W}/${H}` }}
+        style={{ width: W, height: H }}
         className="rounded-xl"
       />
     </div>

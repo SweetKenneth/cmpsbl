@@ -126,7 +126,7 @@ export function OrbitalLockRing({
     <div className="flex flex-col items-center gap-6">
       {/* ═══ ORBITAL FIELD ═══ */}
       <div
-        className="relative mx-auto canvas-container-glow"
+        className="relative mx-auto"
         style={{ width: ringSize, height: ringSize }}
       >
         {/* Progress ring */}

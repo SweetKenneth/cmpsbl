@@ -505,40 +505,33 @@ export function ConstellationForge({ candidateNode, collisions, running, current
   }, [collisionMap, running, currentTarget, candidateNode]);
 
   return (
-    <div className="relative border border-border/20 rounded-2xl bg-gradient-to-b from-[rgba(8,5,20,0.6)] to-card/10 p-3 sm:p-4 overflow-hidden canvas-container-glow">
+    <div className="relative border border-border/20 rounded-2xl bg-gradient-to-b from-[rgba(8,5,20,0.6)] to-card/10 p-3 overflow-hidden">
       {/* Deep space ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/[0.04] blur-3xl" />
-        <div className="absolute top-1/4 left-1/3 w-32 h-32 rounded-full bg-neon-purple/[0.03] blur-2xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full bg-primary/[0.03] blur-3xl" />
       </div>
 
       <canvas
         ref={canvasRef}
-        className="w-full max-w-[480px] mx-auto aspect-square relative z-10"
+        className="w-full max-w-[440px] mx-auto aspect-square relative z-10"
       />
 
       {/* Scan status */}
       {running && currentTarget && (
-        <div className="flex items-center justify-center gap-2 mt-3 mb-1 relative z-10">
+        <div className="flex items-center justify-center gap-2 mt-2 mb-1 relative z-10">
           <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[10px] font-mono text-primary/80 tracking-wide">
+          <span className="text-[10px] font-mono text-primary/80">
             Scanning {GREEK_LABELS[currentTarget] || ''} {currentTarget}
           </span>
         </div>
       )}
 
       {/* Tier legend */}
-      <div className="flex items-center justify-center gap-3 sm:gap-4 mt-3 mb-1 relative z-10">
+      <div className="flex items-center justify-center gap-3 mt-2 mb-1 relative z-10">
         {Object.entries(TIER_COLORS).map(([tier, rgb]) => (
-          <div key={tier} className="flex items-center gap-1.5">
-            <div
-              className="w-2 h-2 rounded-full"
-              style={{
-                backgroundColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
-                boxShadow: `0 0 6px rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.4)`,
-              }}
-            />
-            <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">{tier}</span>
+          <div key={tier} className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})` }} />
+            <span className="text-[9px] font-mono text-muted-foreground uppercase">{tier}</span>
           </div>
         ))}
       </div>
