@@ -85,7 +85,7 @@ The export contains:
 2. **Use descriptive file names** — helps the discovery engine understand context
 3. **Start with familiar code** — verify discoveries against known behavior
 4. **Check execution traces** — understand exactly what the substrate found
-5. **Re-ingest exports** — Ascended Memories can be uploaded again for deeper discovery
+5. **Review exported capabilities** — verify the augmented code matches your expectations
 
 ---
 

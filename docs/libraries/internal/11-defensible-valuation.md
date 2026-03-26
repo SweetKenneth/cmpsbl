@@ -116,8 +116,7 @@ The substrate is valued across six pillars:
 2. **Dual-layer architecture** — native execution + cognitive overlay
 3. **Universal language support** — 18 software + 7 HDL = 25 targets
 4. **Mutual dependency (The Moat)** — exported capabilities depend on both the developer's code AND the substrate's primitives
-5. **Recursive ingestion** — Ascended Memories can be re-ingested for deeper discovery
-6. **Portable output** — exports survive platform loss with Mini Runtime
+5. **Portable output** — exports survive platform loss with Mini Runtime
 
 **Defensible value:** Ascension transforms CMPSBL from a cognitive orchestration platform into a universal software augmentation layer. This is a new category. The mutual dependency creates a structural flywheel — every upload increases the substrate's discovery corpus while every export ties the developer to the platform's runtime.
 
@@ -296,8 +295,7 @@ Ascension is the single largest value multiplier in the system because it:
 
 1. **Creates a new category** — no competitor offers software evolution with dual-layer preservation
 2. **Generates mutual dependency** — the structural flywheel that retains developers
-3. **Enables recursive compounding** — Ascended Memories re-ingest for deeper discovery
-4. **Extends to hardware** — 7 HDL targets (VHDL, Verilog, SystemVerilog, etc.) opens the semiconductor market
+3. **Extends to hardware** — 7 HDL targets (VHDL, Verilog, SystemVerilog, etc.) opens the semiconductor market
 5. **Produces portable assets** — Mini Runtime ensures exports are products, not demos
 6. **Feeds both vaults** — discoveries flow to Memory Stream (users) and S-Tier (governor)
 7. **Runs autonomously** — CDM means the system evolves without operator input
