@@ -558,9 +558,7 @@ export default function EvolutionCycleReport() {
               </div>
             ))}
             <div className="mt-2">
-              <button onClick={() => toggle('encode-applied')} className="text-xs font-medium text-cyan-400 hover:underline">
-                {expandedSection === 'encode-applied' ? '▼' : '▶'} 16 files patched
-              </button>
+              <p className="text-xs font-medium text-cyan-400">16 files patched</p>
             </div>
             <div className="p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/20">
               <p className="text-xs font-medium text-cyan-400">Why ENCODE Outperforms</p>
