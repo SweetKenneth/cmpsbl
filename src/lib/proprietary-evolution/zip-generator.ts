@@ -1631,28 +1631,14 @@ ${capabilities.map(c => {
 - Chain: \`${topTier.chain.join(' → ')}\`
 - Fingerprint: \`${topTier.fingerprint.slice(0, 12).toUpperCase()}\`
 
-## 🔗 Runtime Binding Layer (NEW)
+## 🚀 Single-File Architecture
 
-This pack includes a **language-native Runtime Bridge** that makes capabilities executable:
+Everything is in **one file** (\`cmpsbl.*\`):
 
-- **Pipeline Execution** — Sequential module chain processing with context passing
-- **Module Handlers** — Each substrate module has a real handler that modifies execution context
-- **Trace & Observability** — Every execution produces per-stage timing, status, and signal data
-- **Error Recovery** — Exceptions are caught per-stage with full error trace
-
-The bridge is a wrapper, not the full substrate. Capability execution happens through
-the deterministic pipeline model. For the full cognitive runtime, use the CMPSBL substrate directly.
-
-## 🚀 Mini-Runtime™ Engine (Sealed)
-
-This pack includes the **CMPSBL® Mini-Runtime™ Engine** as a sealed distribution:
-
-- **CJPI Scorer** — Crown Jewel Pipeline Index computation
-- **Saga Orchestrator** — Multi-step execution with compensation
-- **FSM Engine** — Finite state machines with guards and actions
-- **Discovery Engine** — Portable discovery reactor
-- **Manifest Parser** — Capability metadata parsing
-- **Structural Fingerprint** — SHA-256 identity verification
+- **§1 Mini-Runtime™** — CJPI scorer, Saga orchestrator, FSM engine, manifest parser, fingerprinting
+- **§2 Module Effects** — 40 primitive handlers, each transforms pipeline context
+- **§3 Runtime Bridge** — Pipeline executor with dependency ordering, trace & observability
+- **§4 Capability API** — \`execute()\`, \`executeChain()\`, \`validate()\`, \`selfTest()\`
 
 > ⚠️ The Mini-Runtime™ is a sealed proprietary component. Redistribution as a standalone
 > product is prohibited under the CMPSBL® Software License.
