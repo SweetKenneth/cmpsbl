@@ -5,6 +5,7 @@
  *
  * Discovers new software pipelines, scores them (CJPI), promotes S-Tier
  * to vault, and feeds Memory Stream — all without a browser tab.
+ * Uses a synthetic system identity (not in auth.users) for lock/run ownership.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";

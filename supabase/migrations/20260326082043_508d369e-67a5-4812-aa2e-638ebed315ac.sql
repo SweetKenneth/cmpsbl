@@ -1,0 +1,1 @@
+ALTER TABLE public.discovery_runs DROP CONSTRAINT IF EXISTS discovery_runs_created_by_fkey;
