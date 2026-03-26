@@ -130,6 +130,7 @@ export function DiscoveryPhase() {
           };
         });
         setResults(mapped);
+        setSelectedCapabilities(new Set(mapped.map((r: CollisionResult) => r.capability)));
         const bestExisting = mapped.reduce((best: CollisionResult | null, r: CollisionResult) => (!best || r.cjpiScore > best.cjpiScore) ? r : best, null as CollisionResult | null);
         if (bestExisting) setDiscoveryHit(bestExisting);
 
