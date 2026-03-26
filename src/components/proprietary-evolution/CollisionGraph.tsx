@@ -160,7 +160,6 @@ export function CollisionGraph({ candidateNode, collisions, running, currentTarg
         });
       }
     }
-    }
     prevTargetRef.current = resolvedTarget;
   }, [currentTarget, collisionMap]);
 
