@@ -147,7 +147,7 @@ export const SUBSTRATE_CAPABILITIES: SubstrateCapability[] = [
     description: 'Bayesian prediction network anticipates likely next tasks and pre-fetches resources, reducing latency by 40-60%.',
     styles: ['action'],
     baseWeight: 82,
-    investorValue: 'Agents anticipate what's needed next — faster response, lower cost.',
+    investorValue: 'Agents anticipate what is needed next — faster response, lower cost.',
   },
   {
     id: 'cortex-orchestration',
