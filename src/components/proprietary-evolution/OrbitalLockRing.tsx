@@ -104,12 +104,12 @@ export function OrbitalLockRing({
     setRecentlyLocked(id);
     setLockFlash(true);
     onAscend(id);
-    setTimeout(() => setLockFlash(false), 600);
+    setTimeout(() => setLockFlash(false), 900); // longer flash burst
     // Remove from orbit after spiral animation completes
     setTimeout(() => {
       setRecentlyLocked(null);
       setRemovedIds(prev => new Set(prev).add(id));
-    }, 1400);
+    }, 2000); // slower spiral-in for cinematic feel
   }, [onAscend]);
 
   const coreScale = 0.6 + progress * 0.5;
@@ -218,8 +218,8 @@ export function OrbitalLockRing({
                 zIndex: isLocking ? 20 : 5,
                 transform: isLocking ? 'scale(0.3)' : 'scale(1)',
                 opacity: isLocking ? 0 : 1,
-                transitionDuration: isLocking ? '1.2s' : '0.3s',
-                transitionTimingFunction: isLocking ? 'cubic-bezier(0.4, 0, 0.2, 1)' : 'ease-out',
+                transitionDuration: isLocking ? '1.8s' : '0.3s',
+                transitionTimingFunction: isLocking ? 'cubic-bezier(0.25, 0.1, 0.25, 1)' : 'ease-out',
               }}
               onClick={() => !ascending && handleAscend(d.id)}
               disabled={!!ascending}
