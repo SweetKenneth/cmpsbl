@@ -12,7 +12,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-// Re-use the CapabilityForExport interface shape
+// Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
   id: string;
   name: string;
@@ -37,7 +37,7 @@ interface UserSourceFile {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateUnifiedTypeScript(
-  capabilities: CapabilityForExport[],
+  capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
@@ -793,7 +793,7 @@ export function selfTest(): { passed: number; failed: number; results: Record<st
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateUnifiedPython(
-  capabilities: CapabilityForExport[],
+  capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
@@ -1145,7 +1145,7 @@ if __name__ == "__main__":
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateUnifiedPhp(
-  capabilities: CapabilityForExport[],
+  capabilities: UnifiedCapabilityInput[],
   packName: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
@@ -1531,7 +1531,7 @@ function cmpsbl_self_test(): array
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateUnifiedGeneric(
-  capabilities: CapabilityForExport[],
+  capabilities: UnifiedCapabilityInput[],
   packName: string,
   lang: string,
 ): string {
@@ -1583,7 +1583,7 @@ ${line} ════════════════════════
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export function generateUnifiedCapabilityFile(
-  capabilities: CapabilityForExport[],
+  capabilities: UnifiedCapabilityInput[],
   packName: string,
   lang: string,
   userSourceFiles?: UserSourceFile[],
