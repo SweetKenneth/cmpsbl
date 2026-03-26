@@ -326,12 +326,13 @@ export function ExportPhase() {
 
   if (capabilities.length === 0) {
     return (
-      <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
+      <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30 space-y-3">
         <Package className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No export-ready capabilities</p>
         <p className="text-xs text-muted-foreground mt-1">
           Ascend discoveries first to make them available for export.
         </p>
+        <p className="text-[10px] text-primary font-mono">← Go to Step 3 (Ascend) to lock capabilities into memory</p>
       </div>
     );
   }
@@ -396,6 +397,34 @@ export function ExportPhase() {
             Includes Mini-Runtime™ Engine • License • README • Memory Chain Details • Valuation • Manifest
           </span>
         </div>
+
+        {/* ═══ EXPORT PREVIEW SUMMARY ═══ */}
+        {eligible.length > 0 && (
+          <div className="rounded-lg border border-border/20 bg-muted/10 p-3 space-y-2">
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Export Preview</p>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Capabilities</span>
+                <span className="font-mono font-bold text-foreground">{eligible.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Source files</span>
+                <span className="font-mono font-bold text-foreground">{userSourceFiles.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Best CJPI</span>
+                <span className="font-mono font-bold text-neon-amber">{bestScore}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Est. files in ZIP</span>
+                <span className="font-mono font-bold text-foreground">{eligible.length * 3 + userSourceFiles.length + 4}</span>
+              </div>
+            </div>
+            <p className="text-[9px] text-muted-foreground">
+              Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
+            </p>
+          </div>
+        )}
 
         {/* Download All Button */}
         {eligible.length > 1 && (

@@ -149,12 +149,13 @@ export function CrystallizationPhase() {
 
   if (discoveries.length === 0) {
     return (
-      <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30">
+      <div className="border border-border/30 rounded-xl p-8 text-center bg-card/30 space-y-3">
         <Flame className="w-8 h-8 mx-auto text-muted-foreground mb-3" />
         <p className="text-sm text-foreground font-medium">No discoveries to ascend</p>
         <p className="text-xs text-muted-foreground mt-1">
-          Run the Discovery phase first to find capabilities
+          Run the Discovery phase first to find capabilities worth locking into memory.
         </p>
+        <p className="text-[10px] text-primary font-mono">← Go to Step 2 (Discovery) to start a collision cycle</p>
       </div>
     );
   }
