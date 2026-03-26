@@ -193,7 +193,7 @@ function parseSuggestions(raw: string): FeatureSuggestion[] {
         dependencies: Array.isArray(s.dependencies) ? s.dependencies : [],
         generatedAt: new Date().toISOString(),
         status: 'new' as const,
-        model: 'openai/gpt-5-nano',
+        model: 'nexus-fleet',
       };
     }).sort((a: FeatureSuggestion, b: FeatureSuggestion) => b.compositeScore - a.compositeScore);
   } catch {
