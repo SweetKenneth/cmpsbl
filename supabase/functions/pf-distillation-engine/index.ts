@@ -451,7 +451,7 @@ Confidence: <0.0-1.0>
 ---`;
 
       try {
-        const response = await callTeacher(apiKey, prompt);
+        const response = await callTeacher(prompt);
         callsUsed++;
 
         if (response) {
@@ -500,7 +500,7 @@ Confidence: <0.0-1.0>
 // HELPERS
 // ════════════════════════════════════════════════════════════════════
 
-async function callTeacher(_apiKey: string, prompt: string): Promise<string> {
+async function callTeacher(prompt: string): Promise<string> {
   // Route through NEXUS fleet intelligence — no direct gateway calls
   const { nexusRoute } = await import("../_shared/nexus-route.ts");
 
