@@ -326,12 +326,12 @@ export function ExportWarpTunnel({ state, capabilityCount, exportedCount = 0 }: 
   }, [draw]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center canvas-container-glow">
       <canvas
         ref={canvasRef}
         width={W * DPR}
         height={H * DPR}
-        style={{ width: W, height: H }}
+        style={{ width: '100%', maxWidth: W, height: 'auto', aspectRatio: `${W}/${H}` }}
         className="rounded-xl"
       />
     </div>
