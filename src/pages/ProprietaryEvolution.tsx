@@ -111,7 +111,7 @@ export default function ProprietaryEvolution() {
         )}
 
         {/* ═══ WIZARD SECTION ═══ */}
-        <section className="flex-1 flex flex-col mt-4 sm:mt-10">
+        <section className="flex-1 flex flex-col mt-10 sm:mt-14">
           {/* Stepper + phase header */}
           <div className="bg-background/90 backdrop-blur-xl border-b border-border/10">
             <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
