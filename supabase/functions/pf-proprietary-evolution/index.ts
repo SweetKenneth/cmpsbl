@@ -1242,7 +1242,14 @@ serve(async (req: Request) => {
 
         return jsonResponse({
           success: true,
-          total_collisions: SUBSTRATE_NODES.length,
+          total_collisions: filteredNodes.length,
+          total_nodes_available: SUBSTRATE_NODES.length,
+          nodes_filtered: SUBSTRATE_NODES.length - filteredNodes.length,
+          archetype: {
+            detected: batchArchetype,
+            confidence: batchArchetypeProfile.confidence,
+            hard_filtered_nodes: SUBSTRATE_NODES.filter(n => !filteredNodes.includes(n)),
+          },
           total_capabilities: allResults.length,
           top_capabilities: topResults.map(r => ({ ...r, candidate_surface: undefined })),
           candidate_surface: surface ? {
