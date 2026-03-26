@@ -769,7 +769,8 @@ function collideNodesMultiChain(
     const synergy = getSectorSynergy(sectors);
     
     const variance = ((nameHash >> 8) % 9) - 4;
-    let cjpi = baseCjpi + traitBonus + synergy + variance;
+    const affinityBoost = softwareArchetype ? getArchetypeBoost(softwareArchetype, targetNode) : 0;
+    let cjpi = baseCjpi + traitBonus + synergy + variance + affinityBoost;
     cjpi = Math.max(25, Math.min(cjpi, 72)); // 2-node cap slightly higher now that synergy is real
 
     if (cjpi >= 30) {
