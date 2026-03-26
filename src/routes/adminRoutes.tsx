@@ -20,10 +20,12 @@ const AnalyticsDashboard = lazy(() => import("@/pages/admin/AnalyticsDashboard")
 const AuditCenterPage = lazy(() => import("@/pages/admin/AuditCenterPage"));
 const EmailListPanel = lazy(() => import("@/pages/admin/EmailListPanel"));
 const GovernorNodeDashboard = lazy(() => import("@/pages/admin/GovernorNodeDashboard"));
+const EvolutionCycleReport = lazy(() => import("@/components/evolution/EvolutionCycleReport"));
 
 export const adminRoutes = (
   <>
     <Route path="/admin/patches" element={<Navigate to="/" replace />} />
+    <Route path="/admin/evolution-report" element={<AdminRoute><EvolutionCycleReport /></AdminRoute>} />
     <Route path="/admin/shadow-mesh" element={<AdminRoute><ShadowMeshPage /></AdminRoute>} />
     <Route path="/admin/immunity-mesh" element={<AdminRoute><ImmunityMeshDashboard /></AdminRoute>} />
     <Route path="/admin/owner-reports" element={<AdminRoute><OwnerReports /></AdminRoute>} />
