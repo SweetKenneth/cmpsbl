@@ -295,7 +295,6 @@ export function CrystallizationPhase() {
                   key={d.id}
                   className="rounded-xl border border-primary/20 bg-primary/[0.03] overflow-hidden animate-fade-in"
                   style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
-                  style={{ animationDelay: `${i * 50}ms`, animationFillMode: 'both' }}
                 >
                   {/* Header row */}
                   <button
