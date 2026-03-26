@@ -575,28 +575,28 @@ export function ExportPhase() {
                   <Button
                     size="sm"
                     variant="outline"
-                    className="h-7 text-[10px] gap-1 flex-1"
+                    className="h-10 min-h-[44px] text-xs gap-1.5 flex-1"
                     disabled={!!exporting || isBuilderTier || !canExport}
                     onClick={() => initiateExport(c.id)}
                   >
                     {exporting === c.id ? (
-                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
-                      <Download className="w-3 h-3" />
+                      <Download className="w-3.5 h-3.5" />
                     )}
                     Export this capability
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="h-7 text-[10px] gap-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+                    className="h-10 min-h-[44px] text-xs gap-1.5 text-destructive hover:text-destructive hover:bg-destructive/10"
                     disabled={discarding === c.id}
                     onClick={() => handleDiscard(c.id)}
                   >
                     {discarding === c.id ? (
-                      <Loader2 className="w-3 h-3 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
                     ) : (
-                      <Trash2 className="w-3 h-3" />
+                      <Trash2 className="w-3.5 h-3.5" />
                     )}
                     Discard
                   </Button>

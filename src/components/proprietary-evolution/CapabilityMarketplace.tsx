@@ -312,7 +312,7 @@ export function CapabilityMarketplace({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 flex-wrap">
+      <div className="space-y-2">
         <div className="flex items-center gap-2">
           <Package className="w-4 h-4 text-primary" />
           <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
@@ -320,12 +320,12 @@ export function CapabilityMarketplace({
           </h3>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <div className="flex items-center rounded-lg border border-border/20 overflow-hidden">
             <button
               onClick={() => setViewMode('bundles')}
               className={cn(
-                "px-2.5 py-1 text-[10px] font-mono transition-colors",
+                "px-3 py-2 text-[10px] font-mono transition-colors min-h-[36px]",
                 viewMode === 'bundles' ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >
@@ -334,15 +334,15 @@ export function CapabilityMarketplace({
             <button
               onClick={() => setViewMode('individual')}
               className={cn(
-                "px-2.5 py-1 text-[10px] font-mono transition-colors",
+                "px-3 py-2 text-[10px] font-mono transition-colors min-h-[36px]",
                 viewMode === 'individual' ? "bg-primary/15 text-primary" : "text-muted-foreground hover:text-foreground"
               )}
             >
               All
             </button>
           </div>
-          <Button size="sm" variant="ghost" onClick={selectAll} className="h-7 text-[10px]">Select All</Button>
-          <Button size="sm" variant="ghost" onClick={deselectAll} className="h-7 text-[10px]">Clear</Button>
+          <Button size="sm" variant="ghost" onClick={selectAll} className="h-9 min-h-[36px] text-[10px]">Select All</Button>
+          <Button size="sm" variant="ghost" onClick={deselectAll} className="h-9 min-h-[36px] text-[10px]">Clear</Button>
         </div>
       </div>
 
