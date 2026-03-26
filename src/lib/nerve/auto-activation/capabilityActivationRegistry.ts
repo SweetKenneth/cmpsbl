@@ -25,7 +25,7 @@ export interface ActivationTrigger {
   /** Signal type to match (e.g. 'threat_detected', 'latency_spike') */
   signalType: string;
   /** Severity minimum to activate (0–10 scale, 0 = any) */
-  minSeverity: number;
+  minSeverity: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10; // Ensure this value is between 0 and 10
   /** Optional payload predicate for fine-grained matching */
   condition?: (payload: Record<string, unknown>) => boolean;
 }

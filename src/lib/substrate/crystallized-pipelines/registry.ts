@@ -119,7 +119,7 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
     tier: 'cmpsbl',
     category: 'security',
     isSealed: true,
-    discoveredFrom: 'mesh-receipt-alpha-008',
+    discoveredFrom: 'REDACTED',
   },
   {
     id: 'cp-autonomous-triage-cascade',
@@ -153,7 +153,9 @@ const CMPSBL_PIPELINES: CrystallizedPipeline[] = [
     tier: 'cmpsbl',
     category: 'intelligence',
     isSealed: true,
-    discoveredFrom: 'mesh-receipt-alpha-011',
+    discoveredFrom: 'mesh-receipt-alpha-011'''',
+  },
+];eipt-alpha-011',
   },
   {
     id: 'cp-consciousness-continuity-bridge',

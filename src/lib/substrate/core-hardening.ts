@@ -151,7 +151,7 @@ export function initSlidingWindow(module: string, windowMs = 60_000, threshold =
   slidingWindows.set(module, { events: [], windowMs, threshold });
 }
 
-export function recordSlidingEvent(module: string, success: boolean): {
+export function recordSlidingEvent(module: string, success: boolean): { failureRate: number; breached: boolean; } {
   failureRate: number;
   breached: boolean;
 } {

@@ -61,7 +61,7 @@ interface ConfigRule {
   required?: boolean;
   min?: number;
   max?: number;
-  pattern?: RegExp;
+  pattern?: string;
 }
 
 const configSchemas = new Map<string, ConfigRule[]>();
@@ -79,7 +79,7 @@ export function validateConfig(
 
   const errors: string[] = [];
   for (const rule of rules) {
-    const val = config[rule.key];
+    const val = Object.prototype.hasOwnProperty.call(config, rule.key) ? config[rule.key] : undefined;
     if (rule.required && (val === undefined || val === null)) {
       errors.push(`Missing required key: ${rule.key}`);
       continue;
@@ -180,7 +180,7 @@ export function captureDiagnosticSnapshot(
   alerts: string[]
 ): DiagnosticSnapshot {
   const memoryEstimate = typeof performance !== 'undefined' && 'memory' in performance
-    ? (performance as any).memory?.usedJSHeapSize ?? 0
+    ? (performance.memory?.usedJSHeapSize ?? 0)
     : 0;
 
   const snapshot: DiagnosticSnapshot = {
@@ -190,7 +190,7 @@ export function captureDiagnosticSnapshot(
     metrics,
     alerts,
     memoryEstimate,
-    hash: fnv1aHash(JSON.stringify({ modules, metrics, alerts })),
+    hash: fnv1aHash(JSON.stringify({ modules, metrics, alerts: alerts || [] })),
   };
   snapshots.push(snapshot);
   if (snapshots.length > MAX_SNAPSHOTS) snapshots.splice(0, snapshots.length - MAX_SNAPSHOTS);

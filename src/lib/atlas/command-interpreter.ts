@@ -57,7 +57,7 @@ export interface ParsedCommand {
 export interface CommandResult {
   success: boolean;
   message: string;
-  data?: unknown;
+  data?: Record<string, unknown>;
   suggestions?: string[];
 }
 
@@ -68,7 +68,7 @@ export interface CommandResult {
 const COMMAND_PATTERNS: Array<{
   patterns: RegExp[];
   category: CommandCategory;
-  extractEntities: (match: RegExpMatchArray, input: string) => ParsedCommand['entities'];
+  extractEntities: (match: RegExpMatchArray): ParsedCommand['entities'] => {
 }> = [
   // SEBA Control
   {

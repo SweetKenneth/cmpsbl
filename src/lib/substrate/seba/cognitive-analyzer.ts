@@ -114,7 +114,7 @@ export class CognitiveAnalyzer {
   private backendStats: BackendStats | null = null;
 
   constructor(correlationId?: string) {
-    this.correlationId = correlationId || crypto.randomUUID();
+    this.correlationId = correlationId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(correlationId) ? correlationId : crypto.randomUUID();
   }
 
   /**
@@ -132,10 +132,10 @@ export class CognitiveAnalyzer {
 
     try {
       // ═══ FETCH BACKEND STATS FIRST (v2.1.0 — bypasses RLS) ═══
-      this.backendStats = await fetchBackendStats();
+      this.backendStats = await fetchBackendStats().catch(() => null);
       console.log('[SEBA] Backend stats loaded:', {
         brain_healthy: this.backendStats.brain?.healthy,
-        brain_memories: this.backendStats.brain?.metrics?.total_memories,
+        brain_memories: this.backendStats.brain?.metrics?.total_memories || 0,
         brain_hot: this.backendStats.brain?.tiers?.hot?.current,
         evolution_health: this.backendStats.evolution?.system_health?.score,
       });

@@ -107,9 +107,9 @@ async function crystallizePipeline(cluster: CapabilityCluster): Promise<void> {
   try {
     await supabase
       .from('mesh_saved_pipelines')
-      .insert([pipeline as any]);
+      .insert([pipeline]);
   } catch (err) {
-    console.warn('[Foundry] Pipeline crystallization failed', err);
+    console.warn('[Foundry] Pipeline crystallization failed:', err);
   }
 }
 
@@ -213,7 +213,7 @@ function resetBreaker(): void {
 }
 
 /** Get breaker state for diagnostics */
-export function getDiscoveryBreakerState(): Readonly<DiscoveryCircuitBreaker> {
+export function getDiscoveryBreakerState(): DiscoveryCircuitBreakerdonly<DiscoveryCircuitBreaker> {
   if (breaker.state === 'open' && Date.now() - breaker.lastFailure >= BREAKER_RECOVERY_MS) {
     breaker.state = 'half_open';
   }

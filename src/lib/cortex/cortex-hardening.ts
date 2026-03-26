@@ -32,7 +32,7 @@ export function sealPipelineStep(
   stepIndex: number,
   output: unknown
 ): PipelineSeal {
-  const outputHash = fnv1aHash(JSON.stringify(output ?? 'null'));
+  const outputHash = fnv1aHash(JSON.stringify(output !== null ? output : 'null'));
   const chain = pipelineSeals.get(pipelineId) ?? [];
   const prevHash = chain.length > 0 ? chain[chain.length - 1].chainHash : 0;
   const chainHash = fnv1aHash(`${prevHash}:${outputHash}:${stepIndex}`);
@@ -155,7 +155,7 @@ export function validateStepDependencies(
     adj.set(step.id, []);
     for (const dep of step.dependsOn ?? []) {
       if (!ids.has(dep)) missingRefs.push(dep);
-      else adj.get(step.id)!.push(dep);
+      else if (adj.get(step.id)) adj.get(step.id)!.push(dep);
     }
   }
 
