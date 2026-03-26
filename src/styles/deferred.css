@@ -165,3 +165,66 @@
 .ascension-scale-in {
   animation: ascensionScaleIn 0.8s ease-out 0.5s both;
 }
+
+/* ── Ascension Page Transitions (pure CSS, no framer-motion) ──────────── */
+
+/* Hero show/hide */
+.ascension-hero-enter {
+  animation: ascensionHeroIn 0.4s ease-out both;
+}
+
+.ascension-hero-exit {
+  animation: ascensionHeroOut 0.3s ease-in both;
+}
+
+@keyframes ascensionHeroIn {
+  0% { opacity: 0; max-height: 0; }
+  100% { opacity: 1; max-height: 500px; }
+}
+
+@keyframes ascensionHeroOut {
+  0% { opacity: 1; max-height: 500px; }
+  100% { opacity: 0; max-height: 0; }
+}
+
+/* Phase slide transitions */
+.ascension-phase-idle {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.ascension-phase-exit-left {
+  animation: phaseExitLeft 0.25s ease-in both;
+}
+
+.ascension-phase-exit-right {
+  animation: phaseExitRight 0.25s ease-in both;
+}
+
+.ascension-phase-enter-right {
+  animation: phaseEnterRight 0.3s ease-out both;
+}
+
+.ascension-phase-enter-left {
+  animation: phaseEnterLeft 0.3s ease-out both;
+}
+
+@keyframes phaseExitLeft {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(-40px); }
+}
+
+@keyframes phaseExitRight {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(40px); }
+}
+
+@keyframes phaseEnterRight {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes phaseEnterLeft {
+  0% { opacity: 0; transform: translateX(-40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
