@@ -1712,17 +1712,14 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
   const packName = `cmpsbl-capability-pack-${candidateName.toLowerCase()}-${timestamp}`;
 
-  // ═══ Cherry-Picked Capabilities — Only the primitives acquired ═══
-  const allChains = capabilities.map(c => c.chain);
-  const capabilitiesCode = generateCherryPickedCapabilities(allChains, targetLanguage, packName);
-  const capabilitiesExt = LANG_EXT[targetLanguage] || '.ts';
-  const capabilitiesFilename = targetLanguage === 'php' ? 'capabilities.php'
-    : targetLanguage === 'python' ? 'capabilities.py'
-    : `capabilities${capabilitiesExt}`;
+  // ═══ Unified Single-File Distribution ═══
+  // ONE file containing: Mini-Runtime™ + Module Effects + Runtime Bridge + Capability API
+  const unifiedCode = generateUnifiedCapabilityFile(capabilities, packName, targetLanguage, userSourceFiles);
+  const unifiedFilename = getUnifiedFilename(targetLanguage);
+  zip.file(unifiedFilename, unifiedCode);
 
-  // src/ — Single capabilities file + per-capability source files
+  // src/ — Per-capability source files (for granular access)
   const srcFolder = zip.folder('src')!;
-  srcFolder.file(capabilitiesFilename, capabilitiesCode);
   for (const cap of capabilities) {
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
   }
