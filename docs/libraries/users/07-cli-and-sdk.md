@@ -101,11 +101,11 @@ Governor ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 
 | Tier | Terminal Commands | CLI Commands | Key Capabilities |
 |------|-------------------|-------------|-----------------|
-| **Builder** ($0) | ~45 (read-only) | 12 | Dashboard view, status, basic recall |
+| **Builder** (Included) | ~45 (read-only) | 12 | Dashboard view, status, basic recall |
 | **Studio** ($29) | ~120 | 24 | Terminal access, SDK templates, crystallization |
 | **Creator** ($49) | ~280 | 38 | Ascension, agent deployment, DECODE Agent channel |
 | **Architect** ($79) | ~450 | 52 | EVOLUTION Layer proposals, SHADOW Layer runs, mesh telemetry |
-| **Governor** (Admin) | All ~600 | All 66 | Full system control, governance modes |
+| **Enterprise** (Custom) | ~550 | 60 | Federated substrates, multi-agency, full mesh control |
 
 ---
 

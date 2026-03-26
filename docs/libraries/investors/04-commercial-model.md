@@ -18,16 +18,19 @@
 
 ## 2. Platform Subscription Tiers
 
-| Feature | Builder (Included) | Studio ($29) | Creator ($49) | Architect ($79) | Governor (Admin) |
-|---------|-------------------|--------------|---------------|-----------------|-----------------|
-| Active slots | 1 | 3 | 10 | 25 | Unlimited |
-| Memory | Session only | Persistent (warm) | Full 4-tier | Full 4-tier | Full |
+| Feature | Builder (Included) | Studio ($29) | Creator ($49) | Architect ($79) | Enterprise (Custom) |
+|---------|-------------------|--------------|---------------|-----------------|---------------------|
+| Active slots | 3 | 6 | 9 | 12 | 25 |
+| Memory | Session only | Persistent (warm) | Full 4-tier | Full 4-tier | Dedicated |
 | Discovery rate | View only | Standard | Accelerated | Priority | Full |
 | CLM calls/day | 0 | 100 | 1,000 | 14,400 | Unlimited |
 | Export languages | — | 3 | 10 | 25 | All |
 | Governance | — | View only | Supervised | Full | Full |
 | DREAM synthesis | — | — | Basic | Full | Full |
 | Priority routing | — | — | — | ✅ | ✅ |
+| Federated local substrate | — | — | — | — | ✅ |
+
+> **Note:** "Governor" is not a pricing tier. It is a reserved super-admin role for a single system operator with God Mode access. Governor status is granted by role assignment, not subscription.
 
 ---
 

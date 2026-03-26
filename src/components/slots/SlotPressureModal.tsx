@@ -23,7 +23,7 @@ interface SlotPressureModalProps {
   packName?: string;
 }
 
-const TIER_ORDER: ProductTier[] = ['builder', 'studio', 'architect'];
+const TIER_ORDER: ProductTier[] = ['builder', 'studio', 'creator', 'architect', 'enterprise'];
 
 export function SlotPressureModal({
   open,

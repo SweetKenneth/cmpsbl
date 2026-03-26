@@ -17,9 +17,11 @@ Access to the CMPSBL cognitive operating system with tiered capacity.
 | **Studio** | $29/mo | Solo developers, small projects |
 | **Creator** | $49/mo | Active developers, growing projects |
 | **Architect** | $79/mo | Teams, production workloads |
-| **Governor** | Admin | System operators with full authority |
+| **Enterprise** | Custom pricing | Organizations requiring federated local substrates |
 
 Tiers scale by: active slots, memory capacity, discovery rate, priority routing, and expanded capabilities (memory packs, etc.).
+
+> **Governor** is NOT a pricing tier. It is a reserved super-admin role for a single system operator (the founder or designated successor) with God Mode access across the entire substrate.
 
 ### Channel 2 — Standalone Products (Engines & Agents)
 Individual primitives sold as sealed, zero-dependency artifacts through the Ascension system.

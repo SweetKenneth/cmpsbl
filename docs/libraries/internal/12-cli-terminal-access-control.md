@@ -31,11 +31,13 @@ Governor ⊇ Architect ⊇ Creator ⊇ Studio ⊇ Builder
 
 | Tier | Monthly | Role in DB | Terminal Commands | CLI Commands | Key Capabilities |
 |------|---------|-----------|-------------------|-------------|-----------------|
-| **Builder** | $0 | `user` | ~45 (read-only + help) | 12 | Dashboard view, `help`, `glossary`, `status`, basic memory recall |
+| **Builder** | Included | `user` | ~45 (read-only + help) | 12 | Dashboard view, `help`, `glossary`, `status`, basic memory recall |
 | **Studio** | $29 | (subscription) | ~120 | 24 | Terminal access, SDK templates, memory crystallization, basic analytics |
 | **Creator** | $49 | `operator` | ~280 | 38 | Ascension exports, engine access, agent deployment (1 agency), DECODE channel |
 | **Architect** | $79 | `moderator` | ~450 | 52 | Evolution proposals, mesh telemetry, multi-agency, SHADOW runs, ENCODE console |
-| **Governor** | Admin | `admin` | **All ~600** | **All 66** | Full system control, governance modes, credential rotation, minting, red-line override |
+| **Enterprise** | Custom | `enterprise` | ~550 | 60 | Federated substrates, full mesh control, dedicated infrastructure |
+
+> **Governor** is a super-admin role (not a tier). It grants God Mode (`admin` in DB) with access to all ~600 commands. Reserved for the system owner only.
 
 ### How tier is determined
 

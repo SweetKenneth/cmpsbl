@@ -84,6 +84,18 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     radioMinutesPerDay: 60,
     evolutionUploadsPerDay: 12,
   },
+  enterprise: {
+    maxMemoryNamespaces: 50,
+    memoryDepth: 'dedicated',
+    allowBackgroundOptimization: true,
+    allowAutomationScheduling: true,
+    nexusRoutingPriority: 'highest',
+    safeEvolutionAccess: true,
+    exportTraceAccess: true,
+    crystallizedAssetCap: 200,
+    radioMinutesPerDay: -1,
+    evolutionUploadsPerDay: 50,
+  },
 };
 
 /**
@@ -119,8 +131,9 @@ const GOD_MODE_LIMITS: ProductLimits = {
  */
 export function resolveToProductTier(subscriptionTier?: string): ProductTier {
   if (!subscriptionTier) return 'builder';
-  if (subscriptionTier === 'governor') return 'architect'; // governor maps to highest product tier
-  if (subscriptionTier === 'enterprise') return 'architect';
+  // Governor is a role, not a tier — maps to enterprise for product limits
+  if (subscriptionTier === 'governor') return 'enterprise';
+  if (subscriptionTier === 'enterprise') return 'enterprise';
   if (['architect', 'pro'].includes(subscriptionTier)) return 'architect';
   if (['creator'].includes(subscriptionTier)) return 'creator';
   if (['studio', 'operator'].includes(subscriptionTier)) return 'studio';

@@ -19,6 +19,7 @@ const CANONICAL_PRICING = {
   studio: '$29',
   creator: '$49',
   architect: '$79',
+  enterprise: 'custom',
 };
 
 export function checkBrandingContracts(): AuditFinding[] {

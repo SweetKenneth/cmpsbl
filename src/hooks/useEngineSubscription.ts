@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 
-export type SubscriptionTier = 'free' | 'starter' | 'builder' | 'studio' | 'creator' | 'pro' | 'architect' | 'enterprise' | 'governor';
+export type SubscriptionTier = 'free' | 'starter' | 'builder' | 'studio' | 'creator' | 'pro' | 'architect' | 'enterprise';
 
 interface EngineSubscriptionState {
   subscribed: boolean;
@@ -105,18 +105,16 @@ export function useEngineSubscription() {
   }, []);
 
   const canAccessTier = useCallback((requiredTier: SubscriptionTier): boolean => {
-    // Governor = God Mode — always has access
-    if (state.tier === 'governor') return true;
+    // Governor role is checked separately via useUserRole — not a pricing tier
     const tierPriority: Record<SubscriptionTier, number> = {
       free: 0,
       starter: 0,
-      creator: 1,
       builder: 1,
       studio: 2,
-      architect: 3,
+      creator: 3,
       pro: 3,
-      enterprise: 4,
-      governor: 5,
+      architect: 4,
+      enterprise: 5,
     };
     return (tierPriority[state.tier] ?? 0) >= (tierPriority[requiredTier] ?? 0);
   }, [state.tier]);
