@@ -1584,10 +1584,10 @@ of your proprietary code and the substrate's cognitive architecture.
 
 | File | Purpose |
 |------|---------|
-| \`src/\` | Executable capability implementations (callable classes/functions) |
-| \`src/runtime-bridge.*\` | **Runtime Binding Layer** — connects capabilities to pipeline execution |
+| \`cmpsbl.*\` | **Single-file distribution** — Runtime + Effects + Bridge + API (drop-in) |
+| \`src/\` | Per-capability source files with dual-layer architecture |
 | \`test/\` | Auto-generated test harnesses |
-| \`_runtime/\` | CMPSBL® Mini-Runtime™ Engine (sealed, zero dependencies) |
+| \`original/\` | Your original source files (unchanged) |
 | \`manifest.json\` | Pack metadata and capability registry |
 | \`LICENSE\` | CMPSBL® Software License (plain text) |
 | \`LICENSE.html\` | CMPSBL® Software License (styled, printable) |
@@ -1597,22 +1597,24 @@ of your proprietary code and the substrate's cognitive architecture.
 ## ⚡ Quick Start
 
 \`\`\`
-// Each capability is a REAL execution entrypoint.
-// 1. Load the capability class
-// 2. Call execute(input) — runs the module chain pipeline
-// 3. Get structured output with trace and metadata
+// ONE FILE. Drop in, import, use.
+// cmpsbl.ts contains everything: Runtime, Effects, Bridge, and your capabilities.
+
+import { execute, executeChain, listCapabilities } from './cmpsbl';
+
+// Execute a specific capability
+const result = execute('my-capability', { query: 'hello' });
+
+// Or run a raw module chain
+const pipeline = executeChain(['DEFENSE', 'BRAIN', 'ORACLE'], { data: 123 });
 \`\`\`
 
 **How it works:**
 
-1. The capability class loads manifest metadata
-2. It delegates to the **Runtime Bridge** (\`runtime-bridge.*\`)
-3. The bridge executes the module chain as a sequential pipeline
-4. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
-5. You get back: \`{ success, output, trace, metadata }\`
-
-> This is **deterministic pipeline execution** — not a simulation.
-> Every module modifies context, adds trace data, and reflects its behavioral intent.
+1. The single file contains the **Mini-Runtime™**, all **Module Effects**, and the **Pipeline Bridge**
+2. Call \`execute(name, input)\` — it runs YOUR code first, then the cognitive pipeline
+3. Each module (${[...new Set(capabilities.flatMap(c => c.chain))].join(', ')}) transforms the execution context
+4. You get back: \`{ _original, _enriched, _pipeline, _cmpsbl }\`
 
 ## 🏆 Capabilities (${capabilities.length})
 
