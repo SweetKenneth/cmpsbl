@@ -179,83 +179,132 @@ export function DiscoveryPhase() {
     accumulatedResultsRef.current = [];
 
     const shuffledNodes = [...SUBSTRATE_NODES].sort(() => Math.random() - 0.5);
+    const BATCH_SIZE = 3; // Parallel collision batches
 
     // Shorter initial suspense
-    const suspenseDelay = Math.floor(Math.random() * 4000) + 2000;
+    const suspenseDelay = Math.floor(Math.random() * 3000) + 1500;
     await new Promise(r => setTimeout(r, suspenseDelay));
     if (abortRef.current) { setRunning(false); return; }
 
-    try {
-      for (let i = 0; i < shuffledNodes.length; i++) {
-        if (abortRef.current) break;
+    /** Persist a single discovery result to DB incrementally */
+    const persistResult = async (result: CollisionResult) => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase as any).from('artifact_registry').insert({
+          user_id: user.id,
+          name: result.capability,
+          slug: `discovery-${result.capability.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString(36)}`,
+          tier: result.tier,
+          category: 'proprietary-discovery',
+          description: result.description || '',
+          metadata: {
+            node_a: result.nodeA,
+            node_b: result.nodeB,
+            cjpi_score: result.cjpiScore,
+            chain: result.chain,
+            chain_depth: result.chainDepth,
+            sectors_crossed: result.sectorsCrossed,
+            synergy_bonus: result.synergyBonus,
+            candidate_surface: candidateSurface || null,
+            persisted_at: new Date().toISOString(),
+          },
+        });
+      } catch {
+        // Non-blocking — UI still shows the result even if persist fails
+      }
+    };
 
-        const targetNode = shuffledNodes[i];
-        setCurrentTarget(targetNode);
-        setPermutations(prev => prev + 1);
-        setProgress(Math.round(((i + 1) / shuffledNodes.length) * 100));
-
-        // Shorter delays — first 3 primitives get 2-4s, rest get 100-400ms
-        const interNodeDelay = i < 3
-          ? Math.floor(Math.random() * 2000) + 2000
-          : Math.floor(Math.random() * 300) + 100;
-        await new Promise(r => setTimeout(r, interNodeDelay));
-        if (abortRef.current) break;
-
-        try {
-          const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
-            body: {
-              module: 'discovery',
-              action: 'collide',
-              input: {
-                candidate_node: candidateNode,
-                target_node: targetNode,
-                permutation_depth: 7,
-              },
+    /** Process a single collision target */
+    const processCollision = async (targetNode: string): Promise<CollisionResult | null> => {
+      try {
+        const { data, error } = await supabase.functions.invoke('pf-proprietary-evolution', {
+          body: {
+            module: 'discovery',
+            action: 'collide',
+            input: {
+              candidate_node: candidateNode,
+              target_node: targetNode,
+              permutation_depth: 7,
             },
-          });
+          },
+        });
 
-          if (!error && data) {
-            if (data.candidate_surface && !candidateSurface) {
-              setCandidateSurface(data.candidate_surface as CandidateSurface);
-            }
-
-            if (data.capabilities && (data.capabilities as any[]).length > 0) {
-              // Only take the top-1 weighted result from this collision
-              const allCaps = (data.capabilities as Array<{
-                name: string;
-                cjpi_score: number;
-                tier: string;
-                chain?: string[];
-                chain_depth?: number;
-                sectors_crossed?: number;
-                synergy_bonus?: number;
-                description?: string;
-              }>);
-              
-              const bestCap = allCaps.reduce((best, cap) => 
-                !best || cap.cjpi_score > best.cjpi_score ? cap : best, allCaps[0]);
-              
-              const topResult: CollisionResult = {
-                nodeA: candidateSurface?.nodeName || candidateNode,
-                nodeB: targetNode,
-                capability: bestCap.name,
-                cjpiScore: bestCap.cjpi_score,
-                tier: bestCap.tier,
-                chain: bestCap.chain || [candidateNode, targetNode],
-                chainDepth: bestCap.chain_depth || 2,
-                sectorsCrossed: bestCap.sectors_crossed || 1,
-                synergyBonus: bestCap.synergy_bonus || 0,
-                description: bestCap.description || '',
-              };
-              
-              accumulatedResultsRef.current.push(topResult);
-              setResults(prev => [topResult, ...prev]);
-              setDiscoveryHit(prev => (!prev || topResult.cjpiScore > prev.cjpiScore) ? topResult : prev);
-            }
+        if (!error && data) {
+          if (data.candidate_surface && !candidateSurface) {
+            setCandidateSurface(data.candidate_surface as CandidateSurface);
           }
-        } catch (fnErr) {
-          // Single node failure — continue to next node
-          console.warn(`Collision with ${targetNode} failed:`, fnErr);
+
+          if (data.capabilities && (data.capabilities as any[]).length > 0) {
+            const allCaps = (data.capabilities as Array<{
+              name: string;
+              cjpi_score: number;
+              tier: string;
+              chain?: string[];
+              chain_depth?: number;
+              sectors_crossed?: number;
+              synergy_bonus?: number;
+              description?: string;
+            }>);
+            
+            const bestCap = allCaps.reduce((best, cap) => 
+              !best || cap.cjpi_score > best.cjpi_score ? cap : best, allCaps[0]);
+            
+            return {
+              nodeA: candidateSurface?.nodeName || candidateNode,
+              nodeB: targetNode,
+              capability: bestCap.name,
+              cjpiScore: bestCap.cjpi_score,
+              tier: bestCap.tier,
+              chain: bestCap.chain || [candidateNode, targetNode],
+              chainDepth: bestCap.chain_depth || 2,
+              sectorsCrossed: bestCap.sectors_crossed || 1,
+              synergyBonus: bestCap.synergy_bonus || 0,
+              description: bestCap.description || '',
+            };
+          }
+        }
+      } catch (fnErr) {
+        console.warn(`Collision with ${targetNode} failed:`, fnErr);
+      }
+      return null;
+    };
+
+    try {
+      // Process in batches of BATCH_SIZE for parallelism
+      for (let batchStart = 0; batchStart < shuffledNodes.length; batchStart += BATCH_SIZE) {
+        if (abortRef.current) break;
+
+        const batch = shuffledNodes.slice(batchStart, batchStart + BATCH_SIZE);
+        setCurrentTarget(batch.join(' · '));
+        setProgress(Math.round(((batchStart + batch.length) / shuffledNodes.length) * 100));
+
+        // First batch gets suspense delay, rest are immediate
+        if (batchStart === 0) {
+          const delay = Math.floor(Math.random() * 1500) + 1000;
+          await new Promise(r => setTimeout(r, delay));
+          if (abortRef.current) break;
+        }
+
+        // Fire batch in parallel
+        const batchResults = await Promise.allSettled(batch.map(processCollision));
+        setPermutations(prev => prev + batch.length);
+
+        for (const settled of batchResults) {
+          if (settled.status === 'fulfilled' && settled.value) {
+            const topResult = settled.value;
+            accumulatedResultsRef.current.push(topResult);
+            setResults(prev => [topResult, ...prev]);
+            setDiscoveryHit(prev => (!prev || topResult.cjpiScore > prev.cjpiScore) ? topResult : prev);
+            // Persist incrementally (non-blocking)
+            persistResult(topResult);
+          }
+        }
+
+        // Small inter-batch delay for visual pacing
+        if (batchStart + BATCH_SIZE < shuffledNodes.length && !abortRef.current) {
+          await new Promise(r => setTimeout(r, 150));
         }
       }
 

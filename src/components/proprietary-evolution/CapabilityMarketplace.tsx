@@ -225,6 +225,9 @@ interface CapabilityMarketplaceProps {
   discardingId: string | null;
 }
 
+type SortKey = 'cjpi' | 'depth' | 'tier';
+type FilterImpact = 'all' | 'Enhancement' | 'System Upgrade' | 'Architectural Shift';
+
 export function CapabilityMarketplace({
   results,
   selectedCapabilities,
@@ -234,8 +237,42 @@ export function CapabilityMarketplace({
 }: CapabilityMarketplaceProps) {
   const [expandedBundle, setExpandedBundle] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'bundles' | 'individual'>('bundles');
+  const [sortBy, setSortBy] = useState<SortKey>('cjpi');
+  const [filterImpact, setFilterImpact] = useState<FilterImpact>('all');
 
-  const bundles = useMemo(() => clusterCapabilities(results), [results]);
+  const allBundles = useMemo(() => clusterCapabilities(results), [results]);
+
+  const bundles = useMemo(() => {
+    let filtered = allBundles;
+    if (filterImpact !== 'all') {
+      filtered = filtered.filter(b => b.impactTier === filterImpact);
+    }
+    const sorted = [...filtered];
+    if (sortBy === 'cjpi') sorted.sort((a, b) => b.maxCjpi - a.maxCjpi);
+    else if (sortBy === 'depth') sorted.sort((a, b) => b.avgDepth - a.avgDepth);
+    else if (sortBy === 'tier') sorted.sort((a, b) => tierRank(b.topTier) - tierRank(a.topTier));
+    return sorted;
+  }, [allBundles, sortBy, filterImpact]);
+
+  // ═══ COMPOSITION COHERENCE ═══
+  const coherenceStats = useMemo(() => {
+    const selected = results.filter(r => selectedCapabilities.has(r.capability));
+    if (selected.length === 0) return null;
+    const avgDepth = selected.reduce((s, r) => s + (r.chainDepth || 2), 0) / selected.length;
+    const deepCount = selected.filter(r => (r.chainDepth || 2) >= 5).length;
+    const uniqueNodes = new Set<string>();
+    selected.forEach(r => r.chain?.forEach(n => uniqueNodes.add(n)));
+    const coherence = Math.max(0, Math.min(100,
+      100 - (deepCount > 3 ? (deepCount - 3) * 15 : 0) - (uniqueNodes.size > 15 ? (uniqueNodes.size - 15) * 3 : 0)
+    ));
+    return {
+      count: selected.length,
+      avgDepth: Math.round(avgDepth * 10) / 10,
+      deepCount,
+      uniqueNodes: uniqueNodes.size,
+      coherence: Math.round(coherence),
+    };
+  }, [results, selectedCapabilities]);
 
   const toggleCapability = useCallback((capName: string) => {
     const next = new Set(selectedCapabilities);
@@ -309,15 +346,86 @@ export function CapabilityMarketplace({
         </div>
       </div>
 
-      {/* Selection summary */}
-      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10">
-        <Check className="w-3.5 h-3.5 text-primary" />
-        <span className="text-xs text-foreground font-medium">
-          {selectedCount} of {results.length} selected
-        </span>
-        <span className="text-[10px] text-muted-foreground">
-          — selected capabilities lock during Ascension
-        </span>
+      {/* ═══ SORT / FILTER CONTROLS ═══ */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">Sort</span>
+        {(['cjpi', 'depth', 'tier'] as SortKey[]).map(key => (
+          <button
+            key={key}
+            onClick={() => setSortBy(key)}
+            className={cn(
+              "px-2 py-1 text-[10px] font-mono rounded-md border transition-colors",
+              sortBy === key
+                ? "bg-primary/15 text-primary border-primary/30"
+                : "text-muted-foreground border-border/20 hover:text-foreground hover:border-border/40"
+            )}
+          >
+            {key === 'cjpi' ? 'CJPI ↓' : key === 'depth' ? 'Depth ↓' : 'Tier ↓'}
+          </button>
+        ))}
+        <span className="w-px h-4 bg-border/20 mx-1" />
+        <span className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">Filter</span>
+        {(['all', 'Enhancement', 'System Upgrade', 'Architectural Shift'] as FilterImpact[]).map(key => (
+          <button
+            key={key}
+            onClick={() => setFilterImpact(key)}
+            className={cn(
+              "px-2 py-1 text-[10px] font-mono rounded-md border transition-colors",
+              filterImpact === key
+                ? "bg-primary/15 text-primary border-primary/30"
+                : "text-muted-foreground border-border/20 hover:text-foreground hover:border-border/40"
+            )}
+          >
+            {key === 'all' ? 'All' : key === 'Enhancement' ? 'ENH' : key === 'System Upgrade' ? 'SYS' : 'ARCH'}
+          </button>
+        ))}
+      </div>
+
+      {/* Selection summary + Coherence panel */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10">
+          <Check className="w-3.5 h-3.5 text-primary" />
+          <span className="text-xs text-foreground font-medium">
+            {selectedCount} of {results.length} selected
+          </span>
+          <span className="text-[10px] text-muted-foreground">
+            — selected capabilities lock during Ascension
+          </span>
+        </div>
+
+        {/* ═══ COMPOSITION COHERENCE PANEL ═══ */}
+        {coherenceStats && coherenceStats.count > 0 && (
+          <div className={cn(
+            "px-3 py-2.5 rounded-lg border space-y-2",
+            coherenceStats.coherence >= 70 ? "bg-neon-green/5 border-neon-green/20" :
+            coherenceStats.coherence >= 40 ? "bg-neon-amber/5 border-neon-amber/20" :
+            "bg-destructive/5 border-destructive/20"
+          )}>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Composition Coherence</span>
+              <span className={cn(
+                "text-sm font-mono font-bold",
+                coherenceStats.coherence >= 70 ? "text-neon-green" :
+                coherenceStats.coherence >= 40 ? "text-neon-amber" :
+                "text-destructive"
+              )}>
+                {coherenceStats.coherence}%
+              </span>
+            </div>
+            <div className="flex items-center gap-3 text-[10px] text-muted-foreground font-mono">
+              <span>Avg depth: {coherenceStats.avgDepth}N</span>
+              <span>Nodes: {coherenceStats.uniqueNodes}</span>
+              <span>Deep chains: {coherenceStats.deepCount}</span>
+            </div>
+            {coherenceStats.coherence < 70 && (
+              <p className="text-[10px] text-neon-amber leading-relaxed">
+                ⚠ {coherenceStats.deepCount > 3
+                  ? `${coherenceStats.deepCount} deep chains selected — consider removing some to maintain export coherence.`
+                  : 'Wide node span may reduce pack coherence. Consider focusing on fewer systems.'}
+              </p>
+            )}
+          </div>
+        )}
       </div>
 
       {/* ═══ DYNAMIC BUNDLE VIEW ═══ */}
