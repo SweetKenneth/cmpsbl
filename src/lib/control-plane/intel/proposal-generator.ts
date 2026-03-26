@@ -67,15 +67,6 @@ export interface FailedProbeDetail {
   source: string;
   timestamp?: string;
 }
-  id: string;
-  name: string;
-  command: string;
-  severity: 'MINOR' | 'CRITICAL';
-  expected: string;
-  actual: string;
-  hint: string;
-  source: string;
-}
 
 export interface UnifiedProposal {
   schema_version: '3.3';

@@ -170,7 +170,6 @@ export function calculateSalience(input: SalienceInput): SalienceResult {
   // 1. Confidence (direct pass-through, clamped)
   const confidence = Math.min(1, Math.max(0, input.confidence !== undefined ? input.confidence : 0));
 
-  const recency = input.last_accessed ? (Date.now() - new Date(input.last_accessed).getTime()) / 1000 : 0;sed ? Math.exp(-((Date.now() - new Date(input.last_accessed).getTime()) / (30 * 24 * 60 * 60 * 1000))) : 0;
   const ageMs = Date.now() - new Date(input.created_at).getTime();
   const ageDays = ageMs / (1000 * 60 * 60 * 24);
   const recency = Math.exp(-ageDays / 30);
