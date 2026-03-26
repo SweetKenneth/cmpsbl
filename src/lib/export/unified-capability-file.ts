@@ -12,6 +12,8 @@
  * © CMPSBL® — All rights reserved.
  */
 
+import { hasPolyglotGenerator, generatePolyglotFile } from './polyglot-templates';
+
 // Re-use the UnifiedCapabilityInput interface shape
 export interface UnifiedCapabilityInput {
   id: string;
@@ -1593,7 +1595,6 @@ export function generateUnifiedCapabilityFile(
   if (lang === 'php') return generateUnifiedPhp(capabilities, packName, userSourceFiles);
 
   // Try polyglot template engine for all other languages
-  const { hasPolyglotGenerator, generatePolyglotFile } = require('./polyglot-templates');
   if (hasPolyglotGenerator(lang)) return generatePolyglotFile(lang, capabilities, packName);
 
   return generateUnifiedGeneric(capabilities, packName, lang);
