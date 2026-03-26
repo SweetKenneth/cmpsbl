@@ -29,6 +29,7 @@ const RollbackPanel = lazy(() => import('@/components/evolution/RollbackPanel').
 const ScanTrendDashboard = lazy(() => import('@/components/evolution/ScanTrendDashboard').then(m => ({ default: m.ScanTrendDashboard })));
 const FalsePositiveFeedback = lazy(() => import('@/components/evolution/FalsePositiveFeedback').then(m => ({ default: m.FalsePositiveFeedback })));
 const AgentConnectGuide = lazy(() => import('@/components/evolution/AgentConnectGuide').then(m => ({ default: m.AgentConnectGuide })));
+const AIPatchQueue = lazy(() => import('@/components/evolution/AIPatchQueue').then(m => ({ default: m.AIPatchQueue })));
 
 // ── Case studies ────────────────────────────────────────────
 const CASE_STUDIES = [
@@ -635,6 +636,10 @@ export default function EvolutionControlCenter() {
                   <MessageSquareWarning className="w-3.5 h-3.5 shrink-0" />
                   <span className="truncate">Feedback</span>
                 </TabsTrigger>
+                <TabsTrigger value="ai-patches" className="flex items-center gap-1.5 text-[11px] sm:text-sm py-2.5 px-2.5 sm:px-3 rounded-lg data-[state=active]:bg-primary/10 data-[state=active]:text-primary whitespace-nowrap shrink-0 min-w-0">
+                  <Brain className="w-3.5 h-3.5 shrink-0" />
+                  <span className="truncate">AI Patches</span>
+                </TabsTrigger>
               </TabsList>
 
               <Suspense fallback={<div className="min-h-[200px] flex items-center justify-center text-muted-foreground">Loading...</div>}>
@@ -643,6 +648,7 @@ export default function EvolutionControlCenter() {
                 <TabsContent value="rollback"><RollbackPanel /></TabsContent>
                 <TabsContent value="trends"><ScanTrendDashboard /></TabsContent>
                 <TabsContent value="feedback"><FalsePositiveFeedback /></TabsContent>
+                <TabsContent value="ai-patches"><AIPatchQueue /></TabsContent>
               </Suspense>
             </Tabs>
           </div>

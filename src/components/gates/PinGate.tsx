@@ -1,6 +1,9 @@
 /**
  * PinGate — 6-digit numeric PIN lock for hidden pages
  * Stores unlock state in sessionStorage (clears on tab close)
+ * 
+ * debugBypassKey: optional URL param or sessionStorage key that allows
+ * automated/AI access without the PIN (e.g. ?evo_debug_bypass=1)
  */
 
 import { useState, useRef, useEffect } from 'react';
@@ -11,11 +14,27 @@ interface PinGateProps {
   pin: string;
   storageKey: string;
   children: React.ReactNode;
+  /** When set, check URL param OR sessionStorage for this key to auto-bypass */
+  debugBypassKey?: string;
 }
 
-export function PinGate({ pin, storageKey, children }: PinGateProps) {
+function checkDebugBypass(key?: string): boolean {
+  if (!key) return false;
+  // Check URL search params
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get(key) === '1') {
+      sessionStorage.setItem(key, '1');
+      return true;
+    }
+  } catch { /* SSR guard */ }
+  // Check sessionStorage
+  return sessionStorage.getItem(key) === '1';
+}
+
+export function PinGate({ pin, storageKey, children, debugBypassKey }: PinGateProps) {
   const [unlocked, setUnlocked] = useState(() =>
-    sessionStorage.getItem(storageKey) === 'unlocked'
+    sessionStorage.getItem(storageKey) === 'unlocked' || checkDebugBypass(debugBypassKey)
   );
   const [digits, setDigits] = useState<string[]>(Array(6).fill(''));
   const [error, setError] = useState(false);
@@ -23,8 +42,8 @@ export function PinGate({ pin, storageKey, children }: PinGateProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    inputRefs.current[0]?.focus();
-  }, []);
+    if (!unlocked) inputRefs.current[0]?.focus();
+  }, [unlocked]);
 
   const handleChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;

@@ -5,6 +5,7 @@ import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 import { PhaseGateRoute } from "@/components/gates/PhaseGateRoute";
 import { PackGate } from "@/components/slots/PackGate";
+import { PinGate } from "@/components/gates/PinGate";
 
 // Core pages
 const DiscoveredPipelines = lazy(() => import("@/pages/DiscoveredPipelines"));
@@ -213,7 +214,11 @@ export const publicRoutes = (
     <Route path="/member" element={<MemberHub />} />
 
     {/* Misc public */}
-    <Route path="/evolution" element={<EvolutionControlCenter />} />
+    <Route path="/evolution" element={
+      <PinGate pin="2026" storageKey="evo_cc_unlock" debugBypassKey="evo_debug_bypass">
+        <EvolutionControlCenter />
+      </PinGate>
+    } />
     <Route path="/architecture" element={<ArchitecturePage />} />
     <Route path="/pricing" element={<Navigate to="/" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
