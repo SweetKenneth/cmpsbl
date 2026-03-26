@@ -405,6 +405,182 @@ const CHAIN_ARCHETYPES: Record<string, { name: string; desc: string }[]> = {
   'CORTEX+EVOLUTION': [
     { name: 'Self_Optimizing_Orchestrator', desc: 'Applies evolutionary fitness scoring to workflow configurations — orchestration strategies mutate, compete, and the most efficient patterns survive.' },
   ],
+  // ═══ EXPANDED CROSS-NODE ARCHETYPES (non-BRAIN, non-ORACLE pairs) ═══
+  'HARVEST+LINGUA': [
+    { name: 'Multilingual_Data_Harvester', desc: 'Crawls multilingual sources and translates them into a unified schema — breaks language barriers in data acquisition at scale.' },
+  ],
+  'HARVEST+DEFENSE': [
+    { name: 'Threat_Intelligence_Collector', desc: 'Acquires threat feeds from diverse sources, deduplicates and enriches them — proactive intelligence gathering for security operations.' },
+  ],
+  'HARVEST+ECONOMY': [
+    { name: 'Revenue_Data_Pipeline', desc: 'Crawls financial data streams, normalizes pricing, and feeds cost models — automated economic intelligence from raw market data.' },
+  ],
+  'HARVEST+EVOLUTION': [
+    { name: 'Adaptive_Data_Forager', desc: 'Evolves crawling strategies based on data quality fitness — acquisition patterns that improve themselves with every harvest cycle.' },
+  ],
+  'FORGE+EVOLUTION': [
+    { name: 'Evolutionary_Code_Factory', desc: 'Generates software variants, scores their fitness, and breeds the strongest — Darwinian code manufacturing that produces increasingly optimal artifacts.' },
+  ],
+  'FORGE+DEFENSE': [
+    { name: 'Hardened_Artifact_Generator', desc: 'Scaffolds software with built-in security patterns — every generated artifact ships with threat detection and input validation baked in.' },
+  ],
+  'FORGE+LINGUA': [
+    { name: 'Polyglot_Code_Generator', desc: 'Generates code artifacts in any target language from a single specification — universal software manufacturing across the language barrier.' },
+  ],
+  'LINGUA+IDENTITY': [
+    { name: 'Cross_Cultural_Identity_Resolver', desc: 'Resolves user identities across language-variant naming systems — handles transliteration, cultural name ordering, and script differences.' },
+  ],
+  'LINGUA+INCLUSIVE': [
+    { name: 'Universal_Accessibility_Localizer', desc: 'Translates and adapts interfaces for both language and accessibility requirements simultaneously — inclusive localization at scale.' },
+  ],
+  'ECHO+EVOLUTION': [
+    { name: 'Temporal_Fitness_Tracker', desc: 'Replays evolutionary history to identify which mutations succeeded over time — temporal analysis that guides future evolution strategies.' },
+  ],
+  'ECHO+DEFENSE': [
+    { name: 'Attack_Replay_Analyzer', desc: 'Reconstructs and replays past security incidents to discover missed indicators — forensic time-travel for threat analysis.' },
+  ],
+  'ECHO+SHADOW': [
+    { name: 'Divergence_Replay_Engine', desc: 'Replays system states through shadow environments to detect behavioral drift — catches regressions that real-time monitoring misses.' },
+  ],
+  'REFLEX+DEFENSE': [
+    { name: 'Edge_Threat_Interceptor', desc: 'Deploys threat detection at the edge with sub-millisecond response — blocks attacks before they reach the core system.' },
+  ],
+  'REFLEX+NERVE': [
+    { name: 'Reactive_Signal_Mesh', desc: 'Combines edge-speed reaction with signal consensus — distributed real-time decision-making that acts faster than centralized systems.' },
+  ],
+  'REFLEX+RIPPLE': [
+    { name: 'Cascading_Edge_Reactor', desc: 'Edge reactions that propagate through event chains — one detection triggers a cascade of coordinated responses across the system.' },
+  ],
+  'RELAY+HARVEST': [
+    { name: 'Webhook_Data_Aggregator', desc: 'Dispatches crawl results through webhook pipelines with retry logic — reliable data delivery from acquisition to consumption.' },
+  ],
+  'RELAY+ECONOMY': [
+    { name: 'Billing_Event_Dispatcher', desc: 'Transforms usage events into billing webhooks with guaranteed delivery — metering data that never drops a charge.' },
+  ],
+  'RELAY+AUDIT': [
+    { name: 'Audited_Webhook_Pipeline', desc: 'Every dispatched webhook is immutably logged with chain-of-custody — compliance-grade event delivery with forensic traceability.' },
+  ],
+  'IDENTITY+ACCESS': [
+    { name: 'Unified_Entitlement_Engine', desc: 'Resolves identities and maps entitlements in a single pass — who you are determines what you can do, evaluated in real-time.' },
+  ],
+  'IDENTITY+SOVEREIGN': [
+    { name: 'Jurisdictional_Identity_Layer', desc: 'Maps user identities to data residency zones — ensures identity data never crosses sovereignty boundaries.' },
+  ],
+  'ACCESS+ECONOMY': [
+    { name: 'Usage_Gated_Entitlement', desc: 'Entitlements that adapt based on metered consumption — access tiers that shift dynamically with usage patterns.' },
+  ],
+  'ACCESS+TREATY': [
+    { name: 'Contract_Enforced_Access', desc: 'Access controls derived directly from SLA contracts — compliance-grade entitlements that enforce negotiated terms automatically.' },
+  ],
+  'SANDBOX+EVOLUTION': [
+    { name: 'Isolated_Mutation_Lab', desc: 'Runs evolutionary mutations in contained sandboxes — dangerous experiments execute safely, and only the fittest survive to production.' },
+  ],
+  'SANDBOX+FORGE': [
+    { name: 'Contained_Build_Environment', desc: 'Scaffolds and compiles artifacts in isolated environments — build contamination is impossible, every artifact is clean-room generated.' },
+  ],
+  'SANDBOX+PHANTOM': [
+    { name: 'Anonymous_Execution_Vault', desc: 'Runs code in isolated containers with anonymized I/O — computation that leaves no trace of its inputs or operators.' },
+  ],
+  'ECONOMY+GOVERNANCE': [
+    { name: 'Governed_Cost_Controller', desc: 'Applies policy rules to spending decisions — automated budget governance that prevents cost overruns before they happen.' },
+  ],
+  'ECONOMY+ENGINEER': [
+    { name: 'Performance_Cost_Optimizer', desc: 'Balances performance benchmarks against cost metrics — finds the optimal price-performance curve for every workload.' },
+  ],
+  'NERVE+RIPPLE': [
+    { name: 'Consensus_Event_Network', desc: 'Achieves distributed consensus through event propagation — decentralized agreement without a single coordinator.' },
+  ],
+  'NERVE+IMMUNITY': [
+    { name: 'Adaptive_Health_Signal', desc: 'Health signals that evolve their sensitivity thresholds based on system resilience patterns — self-tuning monitoring.' },
+  ],
+  'IMMUNITY+EVOLUTION': [
+    { name: 'Self_Hardening_Defense', desc: 'Resilience patterns that evolve with every incident — the system builds stronger immunity from each attack it survives.' },
+  ],
+  'IMMUNITY+MEDIC': [
+    { name: 'Autonomous_Repair_System', desc: 'Detects degradation, diagnoses root cause, and self-repairs — a biological immune system for software infrastructure.' },
+  ],
+  'SHADOW+PHANTOM': [
+    { name: 'Ghost_Verification_Mesh', desc: 'Runs shadow verification through anonymized channels — validates system behavior without revealing what is being tested.' },
+  ],
+  'SHADOW+ENGINEER': [
+    { name: 'Performance_Shadow_Tester', desc: 'Benchmarks code changes in shadow environments before production deployment — catches performance regressions invisibly.' },
+  ],
+  'CONSCIENCE+INCLUSIVE': [
+    { name: 'Ethical_Accessibility_Auditor', desc: 'Evaluates both bias and accessibility in a single pass — ensures systems are fair AND usable for all populations.' },
+  ],
+  'CONSCIENCE+GOVERNANCE': [
+    { name: 'Ethics_Policy_Engine', desc: 'Translates ethical principles into enforceable governance rules — automated moral reasoning that scales with policy complexity.' },
+  ],
+  'TREATY+SOVEREIGN': [
+    { name: 'Cross_Border_Compliance_Engine', desc: 'Negotiates data handling terms across jurisdictions — automated treaty compliance for multinational data operations.' },
+  ],
+  'TREATY+ECONOMY': [
+    { name: 'SLA_Billing_Enforcer', desc: 'Ties billing directly to contractual SLA terms — penalties and credits calculated automatically from metered compliance data.' },
+  ],
+  'ATLAS+GOVERNANCE': [
+    { name: 'Capability_Policy_Controller', desc: 'Maps governance policies to the capability registry — ensures every capability operates within its authorized boundaries.' },
+  ],
+  'ATLAS+ENGINEER': [
+    { name: 'Capability_Performance_Map', desc: 'Overlays performance benchmarks onto the capability surface — identifies which capabilities are bottlenecks and which are underutilized.' },
+  ],
+  'ATLAS+INTEGRATION': [
+    { name: 'Dependency_Capability_Graph', desc: 'Maps capability dependencies across integration points — visualizes which capabilities break when upstream services change.' },
+  ],
+  'MEDIC+ENGINEER': [
+    { name: 'Self_Optimizing_Health_Core', desc: 'Diagnoses performance issues and automatically tunes system parameters — combines health monitoring with performance engineering.' },
+  ],
+  'MEDIC+VISION': [
+    { name: 'Diagnostic_Dashboard_Engine', desc: 'Transforms diagnostic data into actionable visual health narratives — dashboards that tell you what is wrong, not just what is measured.' },
+  ],
+  'INTEGRATION+RELAY': [
+    { name: 'Dependency_Aware_Dispatcher', desc: 'Routes webhooks based on dependency graph topology — dispatches events only to services that are healthy and connected.' },
+  ],
+  'INTEGRATION+FORGE': [
+    { name: 'Scaffold_Integration_Bridge', desc: 'Generates integration adapters and scaffolds binding code automatically — connects systems without manual glue code.' },
+  ],
+  'VISION+ECONOMY': [
+    { name: 'Cost_Observability_Lens', desc: 'Overlays real-time cost data onto telemetry dashboards — see exactly what each request costs as it flows through the system.' },
+  ],
+  'VISION+NERVE': [
+    { name: 'Signal_Visualization_Mesh', desc: 'Renders system signal consensus in real-time — watch distributed agreement emerge across the node mesh.' },
+  ],
+  'NEXUS+ECONOMY': [
+    { name: 'AI_Cost_Optimizer', desc: 'Routes AI requests to minimize cost while maintaining quality — real-time provider arbitrage based on metered performance data.' },
+  ],
+  'NEXUS+FORGE': [
+    { name: 'AI_Powered_Code_Generator', desc: 'Routes code generation tasks to the optimal AI model based on language and complexity — intelligent model selection for software manufacturing.' },
+  ],
+  'COMPASS+ATLAS': [
+    { name: 'Capability_Navigation_System', desc: 'Navigates the capability surface to find optimal paths between system states — GPS for software architecture decisions.' },
+  ],
+  'COMPASS+INTEGRATION': [
+    { name: 'Dependency_Navigator', desc: 'Maps and navigates complex dependency graphs — finds shortest paths through integration topology for optimal routing.' },
+  ],
+  // ═══ 3-node combos (non-BRAIN/ORACLE anchored) ═══
+  'HARVEST+LINGUA+FORGE': [
+    { name: 'Multilingual_Software_Factory', desc: 'Crawls multilingual sources, translates specifications, and generates code artifacts — end-to-end software manufacturing from international requirements.' },
+  ],
+  'DEFENSE+SHADOW+EVOLUTION': [
+    { name: 'Adversarial_Evolution_Engine', desc: 'Evolves defense strategies by testing mutations against shadow-deployed attacks — security that strengthens through simulated adversarial pressure.' },
+  ],
+  'REFLEX+NERVE+IMMUNITY': [
+    { name: 'Autonomous_Edge_Immune_System', desc: 'Edge-speed detection, distributed signal consensus, and adaptive immunity in one loop — a biological immune response for distributed infrastructure.' },
+  ],
+  'ECONOMY+TREATY+GOVERNANCE': [
+    { name: 'Regulated_Cost_Governance', desc: 'Enforces cost policies derived from contractual SLAs through governance workflows — automated financial compliance for regulated industries.' },
+  ],
+  'FORGE+ENCODE+SANDBOX': [
+    { name: 'Safe_Code_Manufacturing_Pipeline', desc: 'Generates, compiles, and validates code in isolated sandboxes — every artifact is clean-room built and verified before release.' },
+  ],
+  'IDENTITY+ACCESS+SOVEREIGN': [
+    { name: 'Sovereign_Identity_Gateway', desc: 'Resolves identities, evaluates entitlements, and enforces data residency in a single authorization flow — jurisdiction-aware access control.' },
+  ],
+  'ECHO+COMPASS+MEMORY': [
+    { name: 'Spatio_Temporal_Memory_Engine', desc: 'Recalls past states, navigates optimal paths, and replays scenarios — complete spatial-temporal awareness with historical context.' },
+  ],
+  'MEDIC+IMMUNITY+NERVE': [
+    { name: 'Self_Healing_Distributed_Core', desc: 'Diagnoses faults across distributed nodes, builds adaptive immunity, and achieves consensus on remediation — self-healing at infrastructure scale.' },
+  ],
 };
 
 function chainKey(nodes: string[]): string {
