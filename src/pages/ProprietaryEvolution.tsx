@@ -111,17 +111,17 @@ export default function ProprietaryEvolution() {
       )}
 
       {/* ═══ WIZARD SECTION ═══ */}
-      <section className="flex-1 flex flex-col mt-10 sm:mt-14">
+      <section className="flex-1 flex flex-col mt-12 sm:mt-16">
         {/* Stepper + phase header */}
-        <div className="bg-background/90 backdrop-blur-xl border-b border-border/10">
-          <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
+        <div className="bg-background/80 backdrop-blur-2xl border-b border-border/10 shadow-[0_1px_12px_hsl(var(--primary)/0.04)]">
+          <div className="max-w-4xl mx-auto px-4 pt-5 pb-4 space-y-4">
             <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
 
             <div className="text-center">
-              <h2 className="text-base sm:text-lg font-bold text-foreground">
+              <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
                 {PHASE_LABELS[activeStep]}
               </h2>
-              <p className="text-xs text-muted-foreground font-mono mt-0.5">
+              <p className="text-xs sm:text-sm text-muted-foreground font-mono mt-1 leading-relaxed">
                 {PHASE_DESCRIPTIONS[activeStep]}
               </p>
             </div>
@@ -131,26 +131,26 @@ export default function ProprietaryEvolution() {
 
         {/* Phase content */}
         <main className="flex-1">
-          <div className="max-w-4xl mx-auto px-4 py-5 sm:py-8">
+          <div className="max-w-4xl mx-auto px-4 py-6 sm:py-10">
             <div className={phaseAnimClass}>
               {phases[displayedStep]}
             </div>
 
-            <div className="mt-8 pt-6 border-t border-border/10">
+            <div className="mt-10 pt-8 border-t border-border/10">
               <AscensionEffectPanel />
             </div>
           </div>
         </main>
 
         {/* Bottom navigation — improved touch targets & layout */}
-        <div className="sticky bottom-0 z-30 bg-background/95 backdrop-blur-xl border-t border-border/10">
-          <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
+        <div className="sticky bottom-0 z-30 bg-background/80 backdrop-blur-2xl border-t border-border/10 shadow-[0_-1px_12px_hsl(var(--primary)/0.04)]">
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={back}
               disabled={activeStep === 0}
-              className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
+              className="gap-1.5 text-xs h-11 min-w-[80px] min-h-[44px] rounded-xl"
             >
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -162,7 +162,7 @@ export default function ProprietaryEvolution() {
                 size="sm"
                 onClick={resetCycle}
                 disabled={resetting}
-                className="gap-1 text-[10px] h-8 min-h-[36px] text-destructive hover:text-destructive hover:bg-destructive/10"
+                className="gap-1 text-[10px] h-8 min-h-[36px] text-destructive hover:text-destructive hover:bg-destructive/10 rounded-lg"
               >
                 <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
                 Reset
@@ -176,7 +176,7 @@ export default function ProprietaryEvolution() {
               size="sm"
               onClick={next}
               disabled={activeStep === 3}
-              className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
+              className="gap-1.5 text-xs h-11 min-w-[80px] min-h-[44px] rounded-xl shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
             >
               Next
               <ArrowRight className="w-4 h-4" />

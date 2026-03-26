@@ -344,13 +344,11 @@ export function AscensionHero() {
             <span className="text-foreground/80 font-medium">Endless possibilities. Recursive by design.</span>
           </p>
 
-          {/* CTAs */}
-          <div
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 ascension-stagger-5"
-          >
+          {/* CTAs — glass-bordered, generous spacing */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-12 ascension-stagger-5">
             <Button
               size="lg"
-              className="w-full sm:w-auto gap-2 text-base px-8 h-12 bg-gradient-to-r from-primary to-neon-purple hover:opacity-90 transition-opacity shadow-[0_0_30px_hsl(var(--primary)/0.3)] min-h-[48px]"
+              className="w-full sm:w-auto gap-2 text-base px-10 h-13 bg-gradient-to-r from-primary to-neon-purple hover:opacity-90 transition-all shadow-[0_0_30px_hsl(var(--primary)/0.3)] hover:shadow-[0_0_40px_hsl(var(--primary)/0.45)] min-h-[52px] rounded-xl"
               onClick={() => {
                 const el = document.getElementById('ascension-phases');
                 el?.scrollIntoView({ behavior: 'smooth' });
@@ -362,7 +360,7 @@ export function AscensionHero() {
             <Button
               size="lg"
               variant="outline"
-              className="w-full sm:w-auto gap-2 text-base px-8 h-12 border-primary/30 hover:bg-primary/5 min-h-[48px]"
+              className="w-full sm:w-auto gap-2 text-base px-10 h-13 border-primary/30 hover:bg-primary/5 min-h-[52px] rounded-xl backdrop-blur-sm"
               onClick={() => window.open('/pricing', '_self')}
             >
               <Sparkles className="w-4 h-4" />
@@ -371,23 +369,23 @@ export function AscensionHero() {
           </div>
         </div>
 
-        {/* ═══ ORBITAL DIAGRAM — 3x size on mobile, fills viewport ═══ */}
+        {/* ═══ ORBITAL DIAGRAM — responsive scaling ═══ */}
         <div
-          className="relative mx-auto w-full aspect-square ascension-scale-in"
-          style={{ maxWidth: 'min(90vw, 600px)' }}
+          className="relative mx-auto w-full aspect-square ascension-scale-in mt-2"
+          style={{ maxWidth: 'min(80vw, 520px)' }}
         >
-          <div className="absolute inset-[-15%] rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-cyan)/0.06)_0%,_transparent_65%)]" />
+          <div className="absolute inset-[-10%] rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-cyan)/0.08)_0%,_transparent_60%)]" />
           <OrbitalCanvas />
         </div>
 
         {/* ═══ LIFECYCLE PIPELINE — 4 steps ═══ */}
         <div
-          className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 ascension-stagger-7"
+          className="mt-10 sm:mt-14 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 ascension-stagger-7"
           id="ascension-phases"
         >
           {LIFECYCLE_STEPS.map((item, i) => (
             <div key={item.step} className="relative group">
-              <div className="rounded-xl border border-border/20 bg-card/30 backdrop-blur-sm p-4 sm:p-5 h-full transition-all hover:border-primary/30 hover:bg-primary/[0.04] hover:shadow-[0_0_20px_hsl(var(--primary)/0.08)]">
+              <div className="rounded-xl border border-border/20 bg-card/50 backdrop-blur-md p-4 sm:p-5 h-full transition-all duration-300 hover:border-primary/30 hover:bg-primary/[0.06] hover:shadow-[0_0_24px_hsl(var(--primary)/0.1)] hover:-translate-y-0.5">
                 <div className="flex items-center gap-2 mb-2.5">
                   <span className="text-[10px] font-mono text-primary/60 font-bold">{item.step}</span>
                   <div className={`w-7 h-7 rounded-md bg-${item.color}/10 flex items-center justify-center`}>
@@ -406,9 +404,9 @@ export function AscensionHero() {
 
         {/* ═══ ASCENDED MEMORY CALLOUT ═══ */}
         <div
-          className="mt-8 sm:mt-10 max-w-2xl mx-auto ascension-stagger-8"
+          className="mt-10 sm:mt-12 max-w-2xl mx-auto ascension-stagger-8"
         >
-          <div className="flex items-start gap-3 rounded-xl border border-primary/15 bg-gradient-to-r from-primary/[0.04] to-neon-purple/[0.04] px-5 py-4">
+          <div className="flex items-start gap-3 rounded-xl border border-primary/15 bg-gradient-to-r from-primary/[0.04] to-neon-purple/[0.04] px-5 py-4 backdrop-blur-sm">
             <Sparkles className="w-5 h-5 text-primary mt-0.5 shrink-0" />
             <div>
               <p className="text-sm font-semibold text-foreground mb-1">What is an Ascended Memory?</p>

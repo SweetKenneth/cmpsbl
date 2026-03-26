@@ -179,11 +179,13 @@ export function AscensionEffectPanel() {
   if (!user) return null;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {/* Header */}
-      <div className="flex items-center gap-2">
-        <Eye className="w-4 h-4 text-neon-blue" />
-        <h3 className="text-sm font-bold text-foreground tracking-tight">
+      <div className="flex items-center gap-2.5">
+        <div className="w-7 h-7 rounded-lg bg-neon-blue/10 border border-neon-blue/20 flex items-center justify-center">
+          <Eye className="w-3.5 h-3.5 text-neon-blue" />
+        </div>
+        <h3 className="text-sm font-bold text-foreground tracking-tight flex-1">
           Ascension Effect Monitor
         </h3>
         <span className="text-[10px] font-mono text-muted-foreground ml-auto">
@@ -192,7 +194,7 @@ export function AscensionEffectPanel() {
       </div>
 
       {/* Aggregate Stats */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2.5">
         <StatCard label="Primitives" value={stats.total} icon={Activity} />
         <StatCard label="Executed" value={stats.executed} icon={Zap} color="text-neon-green" />
         <StatCard label="Degraded" value={stats.degraded} icon={AlertTriangle} color="text-neon-amber" />
@@ -240,10 +242,10 @@ function StatCard({
   color?: string;
 }) {
   return (
-    <div className="rounded-lg border border-border/40 bg-card/50 p-2.5 text-center">
-      <Icon className={cn('w-3.5 h-3.5 mx-auto mb-1', color || 'text-muted-foreground')} />
-      <div className="text-sm font-bold tabular-nums text-foreground">{value}</div>
-      <div className="text-[10px] text-muted-foreground">{label}</div>
+    <div className="rounded-xl border border-border/30 bg-card/60 backdrop-blur-sm p-3 text-center transition-colors hover:border-border/40">
+      <Icon className={cn('w-3.5 h-3.5 mx-auto mb-1.5', color || 'text-muted-foreground')} />
+      <div className="text-base font-bold tabular-nums text-foreground leading-none">{value}</div>
+      <div className="text-[10px] text-muted-foreground mt-1">{label}</div>
     </div>
   );
 }
@@ -257,7 +259,7 @@ function EffectRow({ entry }: { entry: AscensionEffectEntry }) {
   return (
     <div
       className={cn(
-        'flex items-center gap-3 rounded-lg border px-3 py-2.5 transition-colors',
+        'flex items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-200 hover:shadow-sm',
         config.color
       )}
     >

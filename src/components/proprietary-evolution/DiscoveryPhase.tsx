@@ -425,10 +425,10 @@ export function DiscoveryPhase() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       {/* ═══ Candidate Surface Identity Card ═══ */}
       {candidateSurface && (
-        <div className="rounded-xl border border-primary/20 bg-primary/[0.03] p-3 space-y-2">
+        <div className="rounded-xl border border-primary/20 bg-primary/[0.04] backdrop-blur-sm p-4 space-y-2.5">
           <div className="flex items-center gap-2">
             <Cpu className="w-3.5 h-3.5 text-primary" />
             <span className="text-xs font-mono text-primary font-bold">
@@ -450,7 +450,7 @@ export function DiscoveryPhase() {
 
       {/* Discovery Hit Banner */}
       {discoveryHit && !running && (
-        <div className={cn("rounded-xl p-4 flex flex-col gap-2 border", tierBorder(discoveryHit.tier))}>
+        <div className={cn("rounded-2xl p-5 flex flex-col gap-2.5 border backdrop-blur-sm shadow-sm", tierBorder(discoveryHit.tier))}>
           <div className="flex items-center gap-3">
             <Trophy className="w-6 h-6 text-neon-amber shrink-0" />
             <div className="flex-1 min-w-0">
@@ -558,17 +558,17 @@ export function DiscoveryPhase() {
       )}
 
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2.5">
         {[
           { label: 'Permutations', value: permutations, icon: Activity },
           { label: 'Total Found', value: results.length, icon: Zap },
           { label: 'Top 10 Apex', value: apexCount, icon: TrendingUp },
           { label: 'Max Depth', value: maxChainDepth > 0 ? `${maxChainDepth}N` : '—', icon: Layers },
         ].map(s => (
-          <div key={s.label} className="px-2 py-3 rounded-xl bg-card/40 border border-border/20 text-center">
-            <s.icon className="w-3.5 h-3.5 mx-auto text-muted-foreground mb-1" />
-            <p className="text-lg font-bold text-foreground">{s.value}</p>
-            <p className="text-[9px] font-mono text-muted-foreground">{s.label}</p>
+          <div key={s.label} className="px-2 py-3.5 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20 text-center transition-colors hover:border-border/30">
+            <s.icon className="w-3.5 h-3.5 mx-auto text-muted-foreground mb-1.5" />
+            <p className="text-lg font-bold text-foreground leading-none">{s.value}</p>
+            <p className="text-[9px] font-mono text-muted-foreground mt-1">{s.label}</p>
           </div>
         ))}
       </div>
