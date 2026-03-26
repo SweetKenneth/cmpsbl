@@ -171,12 +171,17 @@ async function acquireLock(supabase: ReturnType<typeof createClient>): Promise<b
     return false;
   }
 
-  const { error } = await supabase
+  const { error, count } = await supabase
     .from('discovery_lock')
     .update({ locked_by: CDM_SYSTEM_ID, locked_at: nowIso, expires_at: expiryIso })
     .eq('id', 'global');
 
-  return !error;
+  if (error) {
+    console.log(`[CDM] Lock update error: ${error.message} (code: ${error.code})`);
+    return false;
+  }
+  console.log(`[CDM] Lock acquired successfully`);
+  return true;
 }
 
 async function releaseLock(supabase: ReturnType<typeof createClient>): Promise<void> {
