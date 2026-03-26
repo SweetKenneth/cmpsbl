@@ -55,7 +55,6 @@ export default function ProprietaryEvolution() {
         .delete()
         .eq('user_id', user.id)
         .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
-      // Force remount all phases to clear local state
       setCycleKey(k => k + 1);
       goTo(0);
       toast({ title: 'Cycle reset', description: 'All discoveries and ascensions cleared. Ready for a fresh upload.' });
@@ -71,16 +70,13 @@ export default function ProprietaryEvolution() {
     const dir = step > activeStep ? 1 : -1;
     setDirection(dir);
 
-    // Exit animation
     setPhaseAnimClass(dir > 0 ? 'ascension-phase-exit-left' : 'ascension-phase-exit-right');
 
     setTimeout(() => {
       setDisplayedStep(step);
       setActiveStep(step);
       setShowHero(step === 0);
-      // Enter animation
       setPhaseAnimClass(dir > 0 ? 'ascension-phase-enter-right' : 'ascension-phase-enter-left');
-
       setTimeout(() => setPhaseAnimClass('ascension-phase-idle'), 350);
     }, 250);
   }, [activeStep]);
@@ -94,7 +90,6 @@ export default function ProprietaryEvolution() {
     <CrystallizationPhase key={`crystallize-${cycleKey}`} />,
     <ExportPhase key={`export-${cycleKey}`} />,
   ];
-
 
   return (
     <PinGate pin="041041" storageKey="gate-x-proprietary">
@@ -116,13 +111,12 @@ export default function ProprietaryEvolution() {
         )}
 
         {/* ═══ WIZARD SECTION ═══ */}
-        <section className="flex-1 flex flex-col mt-6 sm:mt-10">
+        <section className="flex-1 flex flex-col mt-4 sm:mt-10">
           {/* Stepper + phase header */}
           <div className="bg-background/90 backdrop-blur-xl border-b border-border/10">
             <div className="max-w-4xl mx-auto px-4 pt-4 pb-3 space-y-3">
               <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
 
-              {/* Phase title + description */}
               <div className="text-center">
                 <h2 className="text-base sm:text-lg font-bold text-foreground">
                   {PHASE_LABELS[activeStep]}
@@ -134,47 +128,46 @@ export default function ProprietaryEvolution() {
             </div>
           </div>
 
-          {/* Phase content — CSS animated transitions */}
+          {/* Phase content */}
           <main className="flex-1">
-            <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8">
+            <div className="max-w-4xl mx-auto px-4 py-5 sm:py-8">
               <div className={phaseAnimClass}>
                 {phases[displayedStep]}
               </div>
 
-              {/* ═══ VISION: Effect Monitor (always visible) ═══ */}
               <div className="mt-8 pt-6 border-t border-border/10">
                 <AscensionEffectPanel />
               </div>
             </div>
           </main>
 
-          {/* Bottom navigation */}
-          <div className="sticky bottom-0 z-30 bg-background/90 backdrop-blur-xl border-t border-border/10">
-            <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+          {/* Bottom navigation — improved touch targets & layout */}
+          <div className="sticky bottom-0 z-30 bg-background/95 backdrop-blur-xl border-t border-border/10">
+            <div className="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={back}
                 disabled={activeStep === 0}
-                className="gap-1.5 text-xs h-9"
+                className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
               >
-                <ArrowLeft className="w-3.5 h-3.5" />
+                <ArrowLeft className="w-4 h-4" />
                 Back
               </Button>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={resetCycle}
                   disabled={resetting}
-                  className="gap-1.5 text-[10px] h-7 text-destructive hover:text-destructive hover:bg-destructive/10"
+                  className="gap-1 text-[10px] h-8 min-h-[36px] text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
                   <RotateCcw className={cn("w-3 h-3", resetting && "animate-spin")} />
-                  Reset Cycle
+                  Reset
                 </Button>
-                <span className="text-[10px] font-mono text-muted-foreground">
-                  Step {activeStep + 1} of 4
+                <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
+                  Step {activeStep + 1}/4
                 </span>
               </div>
 
@@ -182,10 +175,10 @@ export default function ProprietaryEvolution() {
                 size="sm"
                 onClick={next}
                 disabled={activeStep === 3}
-                className="gap-1.5 text-xs h-9"
+                className="gap-1.5 text-xs h-11 min-w-[72px] min-h-[44px]"
               >
                 Next
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
           </div>

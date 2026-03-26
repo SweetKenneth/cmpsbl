@@ -455,10 +455,10 @@ export function IngestPhase() {
       {/* File List */}
       {files.length > 0 && (
         <div className="space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <p className="text-xs font-mono text-muted-foreground">{files.length} file{files.length !== 1 ? 's' : ''} selected</p>
-            <Button size="sm" onClick={handleParse} disabled={parsing} className="h-8 min-h-[44px] text-xs gap-1.5">
-              {parsing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Code2 className="w-3 h-3" />}
+            <Button size="sm" onClick={handleParse} disabled={parsing} className="h-10 min-h-[44px] text-xs gap-1.5 px-5">
+              {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Code2 className="w-4 h-4" />}
               Analyze
             </Button>
           </div>

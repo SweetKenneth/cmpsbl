@@ -244,7 +244,7 @@ export function CrystallizationPhase() {
       )}
 
       {/* ═══ ACTIONS ═══ */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-3 flex-wrap">
         <p className="text-xs text-muted-foreground font-mono">
           {unascendedList.length} awaiting ascension
         </p>
@@ -254,9 +254,9 @@ export function CrystallizationPhase() {
             variant="destructive"
             onClick={clearAll}
             disabled={!!ascending}
-            className="h-7 text-xs gap-1.5"
+            className="h-10 min-h-[44px] text-xs gap-1.5 px-4"
           >
-            <Trash2 className="w-3 h-3" />
+            <Trash2 className="w-3.5 h-3.5" />
             Clear
           </Button>
           {unascendedList.length > 1 && (
@@ -264,12 +264,12 @@ export function CrystallizationPhase() {
               size="sm"
               onClick={ascendAll}
               disabled={!!ascending}
-              className="h-7 text-xs gap-1.5"
+              className="h-10 min-h-[44px] text-xs gap-1.5 px-4"
             >
               {ascending === 'batch' ? (
-                <Loader2 className="w-3 h-3 animate-spin" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
-                <Flame className="w-3 h-3" />
+                <Flame className="w-3.5 h-3.5" />
               )}
               Ascend All
             </Button>
