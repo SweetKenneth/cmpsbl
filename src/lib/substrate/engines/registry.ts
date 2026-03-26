@@ -179,14 +179,6 @@ const ENGINE_REGISTRY: Record<EngineId, EngineDefinition> = {
     averageLatencyMs: 120,
     cacheable: true,
   },
-    layer: 'Orchestrator',
-    synergyMultiplier: 2.6,
-    complexityScore: 9,
-    autonomyLevel: 'supervised',
-    executionMode: 'adaptive',
-    averageLatencyMs: 120,
-    cacheable: false,
-  },
   
   scheduling_engine: {
     id: 'scheduling_engine',
