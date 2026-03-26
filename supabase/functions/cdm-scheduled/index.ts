@@ -150,15 +150,26 @@ async function acquireLock(supabase: ReturnType<typeof createClient>): Promise<b
     .maybeSingle();
 
   if (!current) {
-    await supabase.from('discovery_lock').insert({ id: 'global', locked_by: null, locked_at: null, expires_at: null });
+    const { error: initErr } = await supabase.from('discovery_lock').insert({ id: 'global', locked_by: null, locked_at: null, expires_at: null });
+    if (initErr) {
+      console.log('[CDM] Lock init failed:', initErr.message);
+      return false;
+    }
   }
 
-  const isLocked = !!current?.locked_by
-    && current.locked_by !== CDM_SYSTEM_ID
-    && !!current.expires_at
-    && new Date(current.expires_at) > new Date();
+  // Check if lock is held by someone else and not expired
+  const lockedBy = current?.locked_by;
+  const expiresAt = current?.expires_at;
+  const isLocked = !!lockedBy
+    && lockedBy.trim() !== ''
+    && lockedBy !== CDM_SYSTEM_ID
+    && !!expiresAt
+    && new Date(expiresAt) > new Date();
 
-  if (isLocked) return false;
+  if (isLocked) {
+    console.log(`[CDM] Lock held by ${lockedBy}, expires ${expiresAt}`);
+    return false;
+  }
 
   const { error } = await supabase
     .from('discovery_lock')
