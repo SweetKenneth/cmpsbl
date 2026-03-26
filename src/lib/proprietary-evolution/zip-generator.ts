@@ -312,7 +312,9 @@ ${line}  Your original code is in the ../original/ folder.
 ${line}  This file wraps it with the CMPSBL cognitive layer.
 ${line} ═══════════════════════════════════════════════════════
 
-import { computeCJPI, tierFromCJPI, type CJPIInput } from './_runtime/standalone-runtime';
+// Runtime is BUILT INTO the single-file distribution (cmpsbl.ts)
+// No external runtime import needed — use the unified file directly.
+// import { execute, executeChain } from '../cmpsbl';
 
 ${line} ═══════════════════════════════════════════════════════
 ${line}  Layer 1 — Original Source Imports (auto-wired from ../original/)
@@ -496,7 +498,9 @@ function generatePhpCapabilitySource(cap: CapabilityForExport, sourceFiles?: Sou
  *    $native = $cap->executeNative(['key' => 'value']);
  */
 
-require_once __DIR__ . '/runtime-bridge.php';
+// Runtime is BUILT INTO the single-file distribution (cmpsbl.php)
+// No external require needed — use the unified file directly.
+// require_once __DIR__ . '/../cmpsbl.php';
 
 // ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
 ${requireLines}
@@ -680,7 +684,9 @@ function generatePythonCapabilitySource(cap: CapabilityForExport, sourceFiles?: 
 import json
 import os
 import time
-from runtime_bridge import CMPSBLRuntimeBridge
+# Runtime is BUILT INTO the single-file distribution (cmpsbl.py)
+# No external import needed — use the unified file directly.
+# from cmpsbl import execute, execute_chain
 
 # ═══ Layer 1 — Original Source Imports (auto-wired from ../original/) ═══
 ${importLines}
