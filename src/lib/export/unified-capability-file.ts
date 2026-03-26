@@ -41,7 +41,7 @@ export function generateUnifiedTypeScript(
   packName: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
-  const allModules = [...new Set(capabilities.flatMap(c => c.chain))];
+  const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
@@ -797,7 +797,7 @@ export function generateUnifiedPython(
   packName: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
-  const allModules = [...new Set(capabilities.flatMap(c => c.chain))];
+  const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
@@ -1149,7 +1149,7 @@ export function generateUnifiedPhp(
   packName: string,
   userSourceFiles?: UserSourceFile[],
 ): string {
-  const allModules = [...new Set(capabilities.flatMap(c => c.chain))];
+  const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
   const topCap = capabilities.reduce((a, b) => a.cjpiScore > b.cjpiScore ? a : b);
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
 
@@ -1541,7 +1541,7 @@ export function generateUnifiedGeneric(
     lua: '--', dart: '//', scala: '//', elixir: '#', haskell: '--', zig: '//',
   };
   const line = LANG_COMMENT[lang] || '//';
-  const allModules = [...new Set(capabilities.flatMap(c => c.chain))];
+  const allModules = [...Array.from(new Set(capabilities.flatMap(c => c.chain)))];
 
   return `${line} ═══════════════════════════════════════════════════════════════════════════════
 ${line}  CMPSBL® Capability Pack — ${packName}
