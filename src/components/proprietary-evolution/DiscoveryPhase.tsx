@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Cpu, Trash2 } from 'lucide-react';
+import { Zap, Play, Pause, RotateCcw, Activity, TrendingUp, Loader2, Trophy, Layers, Cpu, Trash2 } from 'lucide-react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
 import { CapabilityMarketplace, type CollisionResult as MarketplaceResult } from './CapabilityMarketplace';
 import { Button } from '@/components/ui/button';
