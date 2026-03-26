@@ -14,13 +14,14 @@
  * POST-INGEST: Displays the derived Capability Surface (Auxiliary Primitive identity)
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import {
   Upload, FileCode2, CheckCircle2, AlertCircle, Loader2,
   Code2, Layers, Lock, ShieldCheck, RefreshCw, AlertTriangle,
   Cpu, Zap,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { OrbitalAssembly, type AssemblyState } from './OrbitalAssembly';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
