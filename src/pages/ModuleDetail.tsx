@@ -84,7 +84,7 @@ export default function ModuleDetail() {
               {/* Breadcrumb */}
               <Link to="/modules" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
                 <ArrowLeft className="w-4 h-4" />
-                All Nodes
+                All Primitives
               </Link>
 
               <div className="flex items-center gap-3 mb-6">
@@ -270,7 +270,7 @@ export default function ModuleDetail() {
                 <Link to="/developers">Get Started Free <ArrowRight className="w-4 h-4" /></Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl hover:border-primary/30 transition-all">
-                <Link to="/modules">Explore All Nodes</Link>
+                <Link to="/modules">Explore All Primitives</Link>
               </Button>
             </div>
           </div>

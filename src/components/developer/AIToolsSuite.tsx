@@ -341,7 +341,7 @@ function generateFallbackResponse(tool: ToolType, context: string, code: string)
 Based on: "${contextPreview}..."
 
 \`\`\`typescript
-import { substrate } from '@cmpsbl/substrate';
+import { substrate } from '@cmpsbl/sdk';
 
 const client = substrate.init({
   apiKey: process.env.CMPSBL_API_KEY
@@ -428,7 +428,7 @@ This module handles persistent memory storage and retrieval using the CMPSBL Wor
 **Request:** "${context || 'store user data'}"
 
 \`\`\`typescript
-import { substrate } from '@cmpsbl/substrate';
+import { substrate } from '@cmpsbl/sdk';
 
 const client = substrate.init({ 
   apiKey: process.env.CMPSBL_API_KEY 

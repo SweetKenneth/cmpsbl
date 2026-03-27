@@ -341,19 +341,19 @@ const stratumIronclad: Specimen[] = [
     origin: "survival",
     stimulus: "Nodes ran without containment — a single fault could cascade through the entire cognitive mesh",
     adaptations: [
-      "Every node grew a hardened containment shell with enterprise-grade fault isolation",
-      "Safety switches, rate limiters, anomaly detectors, and integrity validators installed across all nodes",
+      "Every primitive grew a hardened containment shell with enterprise-grade fault isolation",
+      "Safety switches, rate limiters, anomaly detectors, and integrity validators installed across all primitives",
       "The control plane gained new operational capabilities for maintenance, message routing, and governance mode switching",
       "Terminal surface expanded to full operational coverage for diagnostics and containment",
       "Unified health aggregation provides a single-pane view of system integrity",
     ],
     phenotype: [
       "The substrate can isolate a failing node without affecting its neighbors — surgical fault containment",
-      "Every node is independently observable, rate-limited, and self-healing",
+      "Every primitive is independently observable, rate-limited, and self-healing",
       "Governance modes allow the entire system to shift posture: from fully autonomous to total lockdown",
-      "Operators can diagnose any node from the terminal without touching code",
+      "Operators can diagnose any primitive from the terminal without touching code",
     ],
-    affectedNodes: ["ALL NODES"],
+    affectedNodes: ["ALL PRIMITIVES"],
   },
 ];
 
@@ -402,17 +402,17 @@ const stratumSparta: Specimen[] = [
     origin: "cognition",
     stimulus: "Dozens of high-value enhancement requests from nodes sat at 'pending' — the system was asking to improve but nothing was granted",
     adaptations: [
-      "Mass enhancement grant: all nodes received their top requested improvements simultaneously",
+      "Mass enhancement grant: all primitives received their top requested improvements simultaneously",
       "Security capabilities strengthened across behavioral analysis, verification, and anomaly detection",
       "Resilience capabilities improved with predictive failure analysis and automated recovery patterns",
       "Performance capabilities enhanced with boot optimization, memory management, and routing acceleration",
     ],
     phenotype: [
-      "Largest single enhancement grant in substrate history — capabilities activated simultaneously across all nodes",
+      "Largest single enhancement grant in substrate history — capabilities activated simultaneously across all primitives",
       "The substrate's own nodes requested improvements, and the substrate delivered",
       "Bidirectional feedback loop: nodes propose → substrate delivers → nodes acknowledge",
     ],
-    affectedNodes: ["ALL NODES"],
+    affectedNodes: ["ALL PRIMITIVES"],
   },
   {
     id: "SPRT-004",
@@ -540,11 +540,11 @@ const stratumInfra: Specimen[] = [
       "Tier-gated access ensures capabilities are discoverable but access-controlled",
     ],
     phenotype: [
-      "Every node has governed apex discovery capabilities — full competitive coverage",
+      "Every primitive has governed apex discovery capabilities — full competitive coverage",
       "Capabilities are tiered: discoverable by all, accessible by entitlement",
       "Significant increase in governed capabilities in a single cycle",
     ],
-    affectedNodes: ["ALL NODES", "GOVERNANCE Layer"],
+    affectedNodes: ["ALL PRIMITIVES", "GOVERNANCE Layer"],
   },
   {
     id: "INFR-004",
@@ -685,7 +685,7 @@ const stratumBeliever: Specimen[] = [
       "Critical organs carry more weight than expansion subsystems — a CORE failure isn't averaged away by healthy peripherals",
       "Circuit breakers prevent cascading failures: a struggling entity is isolated, probed, and only reconnected when stable",
     ],
-    affectedNodes: ["ALL NODES"],
+    affectedNodes: ["ALL PRIMITIVES"],
   },
   {
     id: "BLVR-003",
@@ -769,7 +769,7 @@ const stratumBeliever: Specimen[] = [
       "The substrate is surgically clean — every error found was fixed, every warning addressed",
       "Health scores reflect reality — no more hardcoded optimism",
     ],
-    affectedNodes: ["ALL NODES"],
+    affectedNodes: ["ALL PRIMITIVES"],
   },
   {
     id: "BLVR-008",

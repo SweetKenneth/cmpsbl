@@ -82,7 +82,7 @@ function generateBotCode(config: ExportConfig): string {
  * Version: ${config.version}
  */
 
-import { substrate, brain, nexus, dream } from '@cmpsbl/substrate';
+import { substrate, brain, nexus, dream } from '@cmpsbl/sdk';
 
 interface CognitiveMemory {
   store: (key: string, value: unknown) => Promise<void>;
@@ -406,7 +406,7 @@ function generatePackageJson(config: ExportConfig): string {
       deploy: 'npm run build && npx substrate deploy',
     },
     dependencies: {
-      '@cmpsbl/substrate': '^2026.01',
+      '@cmpsbl/sdk': '^2026.01',
     },
     devDependencies: {
       typescript: '^5.0.0',
