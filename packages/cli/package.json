@@ -1,6 +1,6 @@
 {
   "name": "@cmpsbl/cli",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "CMPSBL® CLI — The cognitive substrate in your terminal. One install, zero setup.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
