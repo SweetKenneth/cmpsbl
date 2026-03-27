@@ -33,7 +33,8 @@ export default defineConfig(({ mode }) => ({
           skipWaiting: true,
           clientsClaim: true,
           cleanupOutdatedCaches: true,
-          navigateFallbackDenylist: [/^\/~oauth/],
+          navigateFallback: '/index.html',
+          navigateFallbackDenylist: [/^\/~oauth/, /^\/api\//],
           runtimeCaching: [
             {
               urlPattern: /^https:\/\/bxodolqqczjuahwdrswy\.supabase\.co\/rest\/v1\/.*/i,
@@ -42,6 +43,15 @@ export default defineConfig(({ mode }) => ({
                 cacheName: 'supabase-api-cache',
                 expiration: { maxEntries: 100, maxAgeSeconds: 3600 },
                 networkTimeoutSeconds: 5,
+              },
+            },
+            {
+              urlPattern: /\/(index\.html)?$/i,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'html-cache-v20260327',
+                expiration: { maxEntries: 50, maxAgeSeconds: 86400 },
+                networkTimeoutSeconds: 3,
               },
             },
           ],
