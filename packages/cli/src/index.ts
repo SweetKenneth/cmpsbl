@@ -331,10 +331,12 @@ async function inlineRegister(): Promise<string | null> {
       body: JSON.stringify({
         module: 'access',
         action: 'create_key',
-        email,
-        display_name: name || email.split('@')[0],
-        name: `CLI Key — ${email.split('@')[0]}`,
-        scopes: ['substrate.read', 'substrate.write', 'brain.query'],
+        payload: {
+          email,
+          display_name: name || email.split('@')[0],
+          name: `CLI Key — ${email.split('@')[0]}`,
+          scopes: ['substrate.read', 'substrate.write', 'brain.query'],
+        },
       }),
     });
 
