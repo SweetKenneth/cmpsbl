@@ -781,26 +781,77 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     title: "Ascension: The Software Product Factory",
     subtitle: "Upload code → export IP-protected artifacts in 25 languages",
     icon: <Sparkles className="w-4 h-4" />,
-    accentClass: "text-primary border-primary/20 bg-primary/5",
+    accentClass: "text-amber-600 border-amber-200 bg-amber-50",
     sections: [
       {
         heading: "What It Does",
-        content: "Upload any code → classify its archetype → filter and score capabilities via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 25 languages. Already built. Already functional.",
+        content: "Upload any code → classify its archetype → filter and score capabilities via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 25 languages. Already built. Already functional. This is the substrate's commercial output engine — every export is a revenue event.",
       },
       {
-        heading: "Why It's Irreplicable",
-        content: "Hex-encoded CJPI weights, stripped comments, genericized naming, and sealed discovery heuristics mean decompilation reveals nothing. The export protects the IP of both CMPSBL and the customer. No competitor offers 25-language single-file IP-protected artifact export.",
+        heading: "Transformation Pipeline",
+        table: {
+          headers: ["Stage", "Process", "Output"],
+          rows: [
+            ["1. Upload", "Raw code ingested by ENCODE Agent", "Parsed AST + metadata"],
+            ["2. Classify", "Archetype detection (Active / Passive / Hybrid)", "Functional classification"],
+            ["3. Filter", "Capability Affinity System — 76+ capabilities scored", "Compatibility matrix"],
+            ["4. Score", "CJPI scoring with hex-encoded weights", "Quality tier assignment"],
+            ["5. Export", "Single-file generation in target language", "Zero-dependency artifact"],
+            ["6. Protect", "IP obfuscation — stripped comments, genericized naming", "Sealed distribution"],
+          ],
+        },
+      },
+      {
+        heading: "Capability Affinity System",
+        content: "Code is classified into three functional archetypes — Active (agents/bots), Passive (UIs/static apps), or Hybrid (APIs) — and matched against 76+ capabilities categorized by compatibility styles (Action, Passive, or Universal). Hard Filtering skips incompatible primitives (~30% waste reduction). Soft Weighting applies a CJPI score boost (+2–3 points) to high-affinity pairings.",
+        table: {
+          headers: ["Archetype", "Description", "Example Use Cases"],
+          rows: [
+            ["Active", "Autonomous agents, bots, workers", "Discord bots, monitoring agents, scrapers"],
+            ["Passive", "Static apps, UIs, dashboards", "Landing pages, admin panels, portfolios"],
+            ["Hybrid", "APIs, middleware, bridges", "REST services, GraphQL layers, integrations"],
+          ],
+        },
+      },
+      {
+        heading: "Export Languages (25)",
+        table: {
+          headers: ["Category", "Languages", "Count"],
+          rows: [
+            ["Software", "TypeScript, JavaScript, Python, Rust, Go, C, C++, Java, Kotlin, Swift, Ruby, PHP, Lua, Elixir, Haskell, Scala, Dart, Zig", "18"],
+            ["HDL (Hardware)", "VHDL, Verilog, SystemVerilog, Chisel, SpinalHDL, Amaranth, FIRRTL", "7"],
+          ],
+        },
+      },
+      {
+        heading: "IP Protection Mechanisms",
+        table: {
+          headers: ["Mechanism", "What It Does", "Why It Matters"],
+          rows: [
+            ["Hex-encoded CJPI weights", "Proprietary scoring thresholds stored as hex arrays", "Decompilation reveals nothing usable"],
+            ["Stripped comments", "All internal documentation removed from exports", "No architectural leakage"],
+            ["Genericized naming", "Internal variable/function names replaced", "Reverse engineering blocked"],
+            ["Sealed discovery heuristics", "Discovery logic never included in exports", "Core IP permanently black-boxed"],
+            ["Single-file distribution", "No external dependencies to inspect", "Attack surface minimized"],
+          ],
+        },
       },
       {
         heading: "Commercial Model",
-        content: "Included in Architect tier ($79/mo) and above. Near-zero marginal cost per export. Every export is a revenue event for the customer — a standalone sellable product produced by a $79/mo subscription. Value ratio: a single CJPI 93 APEX export represents up to $992K in developer replacement cost.",
+        table: {
+          headers: ["Metric", "Value"],
+          rows: [
+            ["Access tier", "Architect ($79/mo) and above"],
+            ["Marginal cost per export", "Near-zero"],
+            ["Value per APEX export", "Up to $992K developer replacement cost"],
+            ["Revenue model", "Every export is a sellable product for the customer"],
+            ["Delivery", "Single-file, zero-dependency, instant download"],
+          ],
+        },
       },
       {
         heading: "Market Position",
-        content: "<strong>Comparable:</strong> Unity cross-platform export ($13B valuation). Ascension does for software capabilities what Unity does for game builds — universal export with zero platform dependency. No direct competitor exists.",
-      },
-      {
-        heading: "Key Insight",
+        content: "Comparable: Unity cross-platform export ($13B valuation at peak). Ascension does for software capabilities what Unity does for game builds — universal export with zero platform dependency. No direct competitor offers 25-language single-file IP-protected artifact export.",
         callout: {
           label: "The Takeaway",
           text: "Ascension transforms CMPSBL from a platform into a software product factory. Every developer becomes 10x. Every script becomes a portable, sellable product.",
@@ -815,11 +866,24 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     title: "Memory Stream: The Discovery Engine",
     subtitle: "Autonomous pipeline crystallization every 8 hours",
     icon: <Brain className="w-4 h-4" />,
-    accentClass: "text-primary border-primary/20 bg-primary/5",
+    accentClass: "text-purple-600 border-purple-200 bg-purple-50",
     sections: [
       {
         heading: "What It Does",
         content: "Autonomous pipeline crystallization engine running every 8 hours without human intervention. Observes system behavior, identifies viable software pipelines, scores them via CJPI, and crystallizes discoveries into exportable memories. The system finds what humans can't.",
+      },
+      {
+        heading: "Discovery Pipeline",
+        table: {
+          headers: ["Stage", "Process", "Output"],
+          rows: [
+            ["1. Observe", "System behavior monitoring across all 40 primitives", "Raw behavioral signals"],
+            ["2. Identify", "Pattern recognition across resolver interactions", "Candidate pipelines"],
+            ["3. Score", "CJPI scoring — Novelty, Utility, Complexity, Composability", "Quantified value assessment"],
+            ["4. Crystallize", "Pipeline frozen into exportable artifact with metadata", "Permanent memory"],
+            ["5. Catalog", "Tiered classification and marketplace registration", "Sellable product"],
+          ],
+        },
       },
       {
         heading: "Discovery Tiers",
@@ -835,15 +899,39 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         },
       },
       {
+        heading: "CJPI Scoring Dimensions",
+        table: {
+          headers: ["Dimension", "Weight", "What It Measures"],
+          rows: [
+            ["Novelty", "30%", "Has this combination been seen before?"],
+            ["Utility", "30%", "Does it solve a real production problem?"],
+            ["Complexity", "20%", "How sophisticated is the pipeline architecture?"],
+            ["Composability", "20%", "Can it combine with other pipelines for compound value?"],
+          ],
+        },
+      },
+      {
+        heading: "Export Capabilities",
+        content: "Discoveries are exportable to all 25 Ascension languages including VHDL, Verilog, and SystemVerilog — software that becomes silicon. APEX and MYTHIC tier discoveries valued at up to $2.9M each by ensemble LLM consensus.",
+        bullets: [
+          "Each discovery includes full metadata, CJPI score breakdown, and provenance chain",
+          "Discoveries can be bundled into Crown Jewel packs for agent augmentation",
+          "Export includes Mini-Runtime™ for standalone execution",
+          "Hardware exports enable FPGA/ASIC deployment paths",
+        ],
+      },
+      {
         heading: "Why It's Irreplicable",
         content: "The discovery corpus accumulated to date is irreproducible. A competitor rebuilding the architecture starts from zero discoveries. Memory Stream's corpus represents months of autonomous observation that compounds daily. Every 8-hour cycle adds new pipeline discoveries that can never be replicated by starting fresh.",
       },
       {
         heading: "Commercial Significance",
-        content: "Every Memory Stream discovery is a potential product. The system autonomously expands CMPSBL's sellable catalog without engineering labor. Discovery corpus is a proprietary data moat that widens every 8 hours.",
-      },
-      {
-        heading: "Key Insight",
+        bullets: [
+          "Every discovery is a potential product — the system autonomously expands CMPSBL's sellable catalog",
+          "No engineering labor required — discoveries happen without human direction",
+          "Discovery corpus is a proprietary data moat that widens every 8 hours",
+          "APEX-tier discoveries represent up to $2.9M in developer replacement cost — each",
+        ],
         callout: {
           label: "The Takeaway",
           text: "Memory Stream doesn't just find bugs — it finds value. Every 8 hours, the system crystallizes new pipelines worth up to $2.9M each in developer replacement cost. The catalog writes itself.",
@@ -858,27 +946,53 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     title: "DREAM Engine: Compounding Intelligence",
     subtitle: "Autonomous idle-time knowledge consolidation",
     icon: <Eye className="w-4 h-4" />,
-    accentClass: "text-primary border-primary/20 bg-primary/5",
+    accentClass: "text-cyan-600 border-cyan-200 bg-cyan-50",
     sections: [
       {
         heading: "What It Does",
         content: "Autonomous idle-time knowledge consolidation engine. During low-activity periods, DREAM synthesizes memories across agents, consolidates learned patterns, and distributes insights to the full agent fleet. Every agent gets smarter from every other agent's experience.",
       },
       {
+        heading: "Consolidation Pipeline",
+        table: {
+          headers: ["Stage", "Process", "Output"],
+          rows: [
+            ["1. Detect Idle", "System monitors activity levels across all primitives", "Idle window identified"],
+            ["2. Harvest", "Collect recent learning events from all 20 agents", "Raw experience data"],
+            ["3. Synthesize", "Cross-agent pattern recognition and insight extraction", "Consolidated learnings"],
+            ["4. Validate", "Quality check — reject noise, retain signal", "Verified insights"],
+            ["5. Distribute", "Push validated insights to full agent fleet", "Fleet-wide intelligence upgrade"],
+          ],
+        },
+      },
+      {
         heading: "Why It's Unique",
         content: "No other platform performs background cognitive compounding at the architectural level. DREAM runs without human direction, without API calls during active sessions, and without any operator input. It is the substrate teaching itself.",
+        table: {
+          headers: ["Property", "DREAM", "Typical AI System"],
+          rows: [
+            ["Learning mode", "Autonomous, idle-time", "Manual retraining"],
+            ["Scope", "Cross-agent fleet-wide", "Single model"],
+            ["Human input needed", "None", "Data labeling, fine-tuning"],
+            ["API cost during consolidation", "$0 (free-tier fleet)", "Training compute costs"],
+            ["Knowledge retention", "Permanent, distributed", "Lost between sessions"],
+          ],
+        },
       },
       {
         heading: "Compounding Effect",
+        content: "DREAM creates a multiplicative intelligence gain across the fleet. Each agent's experience becomes every agent's advantage.",
         bullets: [
           "Agent A learns a pattern → DREAM synthesizes it during idle cycle",
           "Agents B through T inherit the insight automatically",
           "20 agents compounding across every idle cycle",
           "Fleet collective intelligence grows faster than any individual agent could alone",
+          "Knowledge survives agent restarts — insights are persistent, not session-bound",
         ],
       },
       {
-        heading: "Moat Contribution",
+        heading: "Three Compounding Engines",
+        content: "DREAM is one of three autonomous compounding engines running in parallel — none requiring human intervention. This is why the CMPSBL moat widens while investors sleep.",
         table: {
           headers: ["Engine", "Cycle", "Output"],
           rows: [
@@ -889,7 +1003,17 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         },
       },
       {
-        heading: "Key Insight",
+        heading: "Privacy & Consent",
+        table: {
+          headers: ["Control", "Options", "Default"],
+          rows: [
+            ["Global pooling", "Allow/deny cross-agency insight sharing", "Agency-scoped only"],
+            ["Heuristic sharing", "Allow/deny sharing of learned heuristics", "Enabled within agency"],
+            ["Template sharing", "Allow/deny sharing of workflow templates", "Enabled within agency"],
+            ["Domain exclusions", "Specify domains excluded from synthesis", "None"],
+            ["Privacy level", "Strict / Standard / Open", "Standard"],
+          ],
+        },
         callout: {
           label: "The Takeaway",
           text: "DREAM is the substrate teaching itself. No operator required. No API cost during consolidation. Pure compounding intelligence — the moat widens every time the system rests.",
@@ -904,20 +1028,20 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     title: "DEFENSE: Cognitive Security Mesh",
     subtitle: "Zero-trust, defense-in-depth autonomous security",
     icon: <Shield className="w-4 h-4" />,
-    accentClass: "text-primary border-primary/20 bg-primary/5",
+    accentClass: "text-red-600 border-red-200 bg-red-50",
     sections: [
       {
         heading: "What It Does",
-        content: "DEFENSE is CMPSBL's autonomous security layer — a cognitive firewall that assesses every inbound request for threat level, enforces zero-trust boundaries across all 40 primitives, and provides defense-in-depth protection without manual security configuration.",
+        content: "DEFENSE is CMPSBL's autonomous security layer — a cognitive firewall that assesses every inbound request for threat level, enforces zero-trust boundaries across all 40 primitives, and provides defense-in-depth protection without manual security configuration. Every API call, every agent action, every evolution mutation passes through DEFENSE before execution.",
       },
       {
-        heading: "Security Architecture",
+        heading: "Security Architecture (6 Layers)",
         table: {
           headers: ["Layer", "Protection", "Mechanism"],
           rows: [
             ["Perimeter", "Inbound threat assessment", "Real-time scoring of every request before routing"],
-            ["Zone", "40-primitive zone shielding", "Independent circuit breakers per zone"],
-            ["Tenant", "Data isolation", "Row-Level Security (RLS) at the database level"],
+            ["Zone", "40-primitive zone shielding", "Independent circuit breakers per zone — zone failure doesn't cascade"],
+            ["Tenant", "Data isolation", "Row-Level Security (RLS) at the database level — cross-tenant access impossible"],
             ["Agent", "Runtime isolation", "Source-blocked, memory-isolated sealed runtimes"],
             ["Audit", "Tamper-evident provenance", "Merkle chain SHA-256 — every action cryptographically chained"],
             ["Encryption", "Data protection", "AES-256 at rest, TLS 1.3 in transit, AES-GCM for secrets"],
@@ -925,15 +1049,20 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         },
       },
       {
-        heading: "What DEFENSE Prevents",
-        bullets: [
-          "Prompt injection — cognitive firewall scores and blocks adversarial inputs",
-          "Privilege escalation — Crown Jewel capabilities structurally isolated from all external tiers",
-          "Data exfiltration — tenant isolation enforced at database level, not application level",
-          "Agent escape — sealed runtimes with source blocking prevent agents from accessing system internals",
-          "Audit tampering — Merkle chain integrity means retroactive modification is cryptographically detectable",
-          "Cascade failure — Ironclad hardening fabric with zone-independent circuit breakers",
-        ],
+        heading: "Threat Prevention Matrix",
+        table: {
+          headers: ["Threat", "Prevention", "Enforcement Level"],
+          rows: [
+            ["Prompt injection", "Cognitive firewall scores and blocks adversarial inputs", "Perimeter"],
+            ["Privilege escalation", "Crown Jewel capabilities structurally isolated", "Agent + Zone"],
+            ["Data exfiltration", "Tenant isolation at database level, not app level", "Tenant"],
+            ["Agent escape", "Sealed runtimes with source blocking", "Agent"],
+            ["Audit tampering", "Merkle chain — retroactive modification detectable", "Audit"],
+            ["Cascade failure", "Ironclad hardening fabric, zone-independent breakers", "Zone"],
+            ["Secret exposure", "AES-GCM encryption, env-only storage", "Encryption"],
+            ["Cross-tenant access", "Row-Level Security at every table", "Tenant"],
+          ],
+        },
       },
       {
         heading: "Competitive Differentiation",
@@ -945,8 +1074,20 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Tenant isolation", "Database-level RLS", "Application-level (bypassable)"],
             ["Agent containment", "Sealed runtime, source-blocked", "Sandboxed but visible"],
             ["Audit integrity", "Merkle chain, tamper-evident", "Append-only logs"],
+            ["Zone resilience", "Independent circuit breakers per zone", "Single failure domain"],
+            ["Encryption standard", "AES-256 + TLS 1.3 + AES-GCM", "TLS only"],
           ],
         },
+      },
+      {
+        heading: "Enterprise Compliance Readiness",
+        bullets: [
+          "EU AI Act — architectural governance satisfies transparency and auditability requirements",
+          "SOC 2 alignment — tamper-evident audit chains provide continuous compliance evidence",
+          "GDPR readiness — tenant isolation and data encryption at rest/in transit",
+          "Zero-trust architecture — every request authenticated and scored, no implicit trust",
+          "Incident response — zone-level circuit breakers enable surgical failure containment",
+        ],
       },
       {
         heading: "Key Insight",
@@ -964,7 +1105,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     title: "NEXUS: Intelligent Multi-Provider Routing",
     subtitle: "14+ AI providers, automatic failover, zero vendor lock-in",
     icon: <Cpu className="w-4 h-4" />,
-    accentClass: "text-primary border-primary/20 bg-primary/5",
+    accentClass: "text-emerald-600 border-emerald-200 bg-emerald-50",
     sections: [
       {
         heading: "What It Does",
@@ -980,20 +1121,58 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["Latency management", "Routes to fastest available provider under load"],
             ["BYOK support", "Customers bring their own API keys; CMPSBL never holds provider credentials"],
             ["Automatic failover", "Provider outage triggers instant rerouting with no downtime"],
+            ["Provider-agnostic architecture", "Swap, add, or remove providers without substrate changes"],
             ["Free-tier fallback fleet", "14+ free-tier providers ensure near-zero cost operation at baseline"],
+          ],
+        },
+      },
+      {
+        heading: "Resource Allocation Protocol",
+        content: "NEXUS enforces a mandatory resource reservation protocol to ensure autonomous substrate operations always have capacity.",
+        table: {
+          headers: ["Allocation", "Percentage", "Purpose"],
+          rows: [
+            ["User operations", "35%", "Direct user requests, API calls, agent tasks"],
+            ["Autonomous operations", "65%", "CLM training, CDM discovery, Memory Stream, DREAM synthesis"],
           ],
         },
       },
       {
         heading: "Enterprise Relevance",
         content: "NEXUS directly eliminates the most common enterprise objection to AI infrastructure: vendor dependency. A customer using CMPSBL is not betting on OpenAI, Anthropic, or any single provider. They are betting on the substrate — which routes intelligently across all of them.",
+        bullets: [
+          "No vendor lock-in — provider-agnostic at the architectural level",
+          "No single point of failure — automatic failover across 14+ providers",
+          "No runaway costs — BYOK + free-tier fleet means predictable economics",
+          "No credential risk — CMPSBL never holds customer API keys",
+        ],
+      },
+      {
+        heading: "Risk Mitigation",
+        table: {
+          headers: ["Risk", "Severity", "NEXUS Mitigation"],
+          rows: [
+            ["Provider outage", "Medium", "Instant rerouting to alternative providers — zero downtime"],
+            ["Price increase", "Medium", "Dynamic cost optimization routes around expensive providers"],
+            ["API deprecation", "Low", "Provider-agnostic architecture — swap without substrate changes"],
+            ["Rate limiting", "Low", "Distributed requests across 14+ providers"],
+            ["Vendor dependency", "Eliminated", "BYOK + multi-provider + free-tier fleet"],
+          ],
+        },
       },
       {
         heading: "Cost Efficiency",
         content: "BYOK model means near-zero AI provider costs for CMPSBL at scale. Free-tier fallback fleet means the Evolution Engine, CLM, and Memory Stream run continuous cycles at effectively $0 provider cost. The $0.06 for 166 bug fixes was possible because NEXUS routed intelligently to free-tier providers.",
-      },
-      {
-        heading: "Key Insight",
+        table: {
+          headers: ["Metric", "Value"],
+          rows: [
+            ["Cost of 166 bug fixes", "$0.06"],
+            ["Cost per bug fix", "$0.00036"],
+            ["Provider cost for CLM cycles", "Near $0 (free-tier fleet)"],
+            ["Provider cost for Memory Stream", "Near $0 (free-tier fleet)"],
+            ["Provider cost for DREAM synthesis", "$0 (no API calls during consolidation)"],
+          ],
+        },
         callout: {
           label: "The Takeaway",
           text: "NEXUS means CMPSBL is never one provider outage away from failure. The substrate routes around problems automatically — no human intervention, no downtime, no vendor dependency.",
@@ -1008,20 +1187,20 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     title: "@cmpsbl NPM Ecosystem",
     subtitle: "11 published packages — cognitive infrastructure for developers",
     icon: <Layers className="w-4 h-4" />,
-    accentClass: "text-primary border-primary/20 bg-primary/5",
+    accentClass: "text-pink-600 border-pink-200 bg-pink-50",
     sections: [
       {
         heading: "What It Is",
-        content: "11 published NPM packages offering capabilities that have never existed in the developer ecosystem before. Cognitive memory, governed evolution, sealed agents, and autonomous learning — available via a single <code>npm install</code>. Every package is a distribution wedge and a moat-widening event.",
+        content: "11 published NPM packages offering capabilities that have never existed in the developer ecosystem before. Cognitive memory, governed evolution, sealed agents, and autonomous learning — available via a single npm install. Every package is a distribution wedge and a moat-widening event.",
       },
       {
         heading: "Tier 1 — Core Infrastructure",
         table: {
           headers: ["Package", "Capability", "What's New to NPM"],
           rows: [
-            ["@cmpsbl/types", "Schemas, interfaces, type definitions", "First governed cognitive type system — 40-primitive topology types"],
+            ["@cmpsbl/types", "Schemas, interfaces, type definitions for the full substrate", "First governed cognitive type system — 40-primitive topology types"],
             ["@cmpsbl/runtime", "Mini-Runtime™ execution engine", "First embeddable cognitive runtime with CJPI scoring"],
-            ["@cmpsbl/sdk", "Unified substrate interface", "First single-import cognitive orchestration SDK"],
+            ["@cmpsbl/sdk", "Unified interface to the full substrate", "First single-import cognitive orchestration SDK"],
           ],
         },
       },
@@ -1030,31 +1209,69 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         table: {
           headers: ["Package", "Capability", "What's New to NPM"],
           rows: [
-            ["@cmpsbl/intent", "Intent resolution and routing", "First architectural intent mesh — broadcastIntent()"],
-            ["@cmpsbl/mesh", "Primitive-to-primitive comms", "First inter-primitive cognitive signaling protocol"],
+            ["@cmpsbl/intent", "Intent resolution and routing", "First architectural intent mesh — broadcastIntent() for cognitive systems"],
+            ["@cmpsbl/mesh", "Primitive-to-primitive communications", "First inter-primitive cognitive signaling protocol"],
             ["@cmpsbl/bridge", "Polyglot execution bridge", "First 25-language cognitive bridge — software to HDL"],
           ],
         },
       },
       {
-        heading: "Tier 3 & 4 — Intelligence & Operations",
+        heading: "Tier 3 — Intelligence Layer",
         table: {
           headers: ["Package", "Capability", "What's New to NPM"],
           rows: [
-            ["@cmpsbl/discovery", "Constant Discovery Mode (CDM)", "First autonomous pipeline crystallization engine"],
-            ["@cmpsbl/react", "React hooks for substrate", "First React bindings for cognitive memory & governance"],
-            ["@cmpsbl/cli", "Infrastructure management CLI", "First cognitive substrate CLI — init, evolve, discover, export"],
-            ["@cmpsbl/failsafe", "Disaster recovery", "First one-click cognitive system backup/restore"],
-            ["@cmpsbl/test-harness", "Verification probes", "First 26-probe deterministic cognitive system verification"],
+            ["@cmpsbl/discovery", "Constant Discovery Mode (CDM)", "First autonomous pipeline crystallization engine via NPM"],
+            ["@cmpsbl/react", "React hooks for substrate integration", "First React bindings for cognitive memory, governance, and agents"],
           ],
         },
       },
       {
-        heading: "Traction",
-        content: "~2,000 downloads in under a week with zero paid marketing. 100% organic. Developer discovery without a brand agency, without a sales team, without advertising.",
+        heading: "Tier 4 — Operations",
+        table: {
+          headers: ["Package", "Capability", "What's New to NPM"],
+          rows: [
+            ["@cmpsbl/cli", "Infrastructure management CLI", "First cognitive substrate CLI — init, evolve, discover, export"],
+            ["@cmpsbl/failsafe", "Disaster recovery and resilience", "First one-click cognitive system backup/restore via NPM"],
+            ["@cmpsbl/test-harness", "Verification and diligence probes", "First 26-probe deterministic cognitive system verification"],
+          ],
+        },
       },
       {
-        heading: "Key Insight",
+        heading: "Developer Acquisition Funnel",
+        table: {
+          headers: ["Stage", "Mechanism", "Conversion Path"],
+          rows: [
+            ["1. Discovery", "npm search / GitHub / word of mouth", "Developer finds @cmpsbl package"],
+            ["2. Install", "npm install @cmpsbl/sdk", "Zero-friction entry point"],
+            ["3. Build", "Import cognitive capabilities into project", "Developer experiences substrate value"],
+            ["4. Explore", "Discover additional packages and platform", "Ecosystem expansion"],
+            ["5. Convert", "Builder → Studio → Creator → Architect", "Paid tier subscription"],
+          ],
+        },
+      },
+      {
+        heading: "Why NPM Is a Moat",
+        bullets: [
+          "Any developer who builds on @cmpsbl inherits the full substrate — memory, governance, evolution, security",
+          "SDK inheritance means CMPSBL capabilities embed into third-party products automatically",
+          "Crown Jewel packs bundle automatically on import",
+          "Network effects compound — every developer build is a distribution event",
+          "11 packages create 11 entry points into the CMPSBL ecosystem",
+        ],
+      },
+      {
+        heading: "Traction",
+        content: "~2,000 downloads in under a week with zero paid marketing. 100% organic. Developer discovery without a brand agency, without a sales team, without advertising. This is the baseline — the floor before any GTM investment.",
+        table: {
+          headers: ["Metric", "Value"],
+          rows: [
+            ["Downloads (first week)", "~2,000"],
+            ["Marketing spend", "$0"],
+            ["Acquisition method", "100% organic — developer discovery"],
+            ["Target (18-month funded)", "50,000+ downloads"],
+            ["Cost per acquisition", "$0 (current rate)"],
+          ],
+        },
         callout: {
           label: "The Takeaway",
           text: "2,000 downloads in under a week with no marketing budget. Every download is a developer who found CMPSBL because the capabilities don't exist anywhere else. That's not traction — that's product-market fit signaling.",
