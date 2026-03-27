@@ -58,9 +58,9 @@ export const seoMap: Record<string, PageSEO> = {
   // CORE PUBLIC
   // ═══════════════════════════════════════════════════
   '/': {
-    title: 'CMPSBL — AI Infrastructure for Autonomous Software Discovery',
+    title: 'CMPSBL — Autonomous Software Discovery Platform',
     description: 'CMPSBL is a cognitive infrastructure platform where autonomous systems discover, crystallize, and export deployable software pipelines & hardware architectures.',
-    ogTitle: 'CMPSBL — AI Infrastructure for Autonomous Software Discovery',
+    ogTitle: 'CMPSBL — Autonomous Software Discovery Platform',
     ogDescription: 'Autonomous systems that discover, crystallize, and export deployable software pipelines & hardware architectures.',
     ogImage: OG_HOME,
     keywords: ['autonomous software discovery', 'cognitive infrastructure platform', 'deployable pipeline export', 'hardware architecture AI', 'signal crystallization', 'governed runtime', 'self-assembling pipelines', 'AI substrate'],
@@ -70,11 +70,11 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/os': {
     title: 'Substrate Runtime — Live Orchestration | CMPSBL',
-    description: 'Real-time cognitive orchestration engine with telemetry dashboards, autonomous workload scheduling, and multi-sector execution control.',
+    description: 'Real-time cognitive orchestration engine with telemetry dashboards, autonomous workload scheduling, and multi-category execution control.',
     ogTitle: 'Substrate Runtime — Live Orchestration',
     ogDescription: 'Real-time cognitive orchestration with telemetry and workload scheduling.',
     ogImage: OG_SUBSTRATE,
-    keywords: ['cognitive orchestration engine', 'workload scheduling AI', 'runtime telemetry', 'execution control', 'sector management', 'live orchestration'],
+    keywords: ['cognitive orchestration engine', 'workload scheduling AI', 'runtime telemetry', 'execution control', 'category management', 'live orchestration'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'cognitive orchestration engine',
@@ -92,11 +92,11 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/modules': {
     title: 'Substrate Nodes — Layered Architecture | CMPSBL',
-    description: 'Browse kernel, cognitive, operational, and expansion nodes organized by sector. Each node is independently deployable and composable.',
+    description: 'Browse kernel, cognitive, operational, and expansion nodes organized by category. Each node is independently deployable and composable.',
     ogTitle: 'Substrate Nodes — Layered Architecture',
-    ogDescription: 'Independently deployable cognitive nodes organized by sector.',
+    ogDescription: 'Independently deployable cognitive nodes organized by category.',
     ogImage: OG_FEATURE,
-    keywords: ['substrate nodes', 'layered AI architecture', 'deployable nodes', 'sector topology', 'composable building blocks', 'kernel nodes'],
+    keywords: ['substrate primitives', 'layered AI architecture', 'deployable primitives', 'category topology', 'composable building blocks', 'kernel primitives'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'substrate node architecture',
@@ -235,9 +235,9 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/system-feed': {
     title: 'System Feed — Real-Time Intelligence | CMPSBL',
-    description: 'Live stream of cognitive events, anomaly detections, and learning breakthroughs flowing across all active substrate sectors.',
+    description: 'Live stream of cognitive events, anomaly detections, and learning breakthroughs flowing across all active substrate categories.',
     ogTitle: 'System Feed — Real-Time Intelligence',
-    ogDescription: 'Live cognitive events and anomaly detections across sectors.',
+    ogDescription: 'Live cognitive events and anomaly detections across categories.',
     ogImage: OG_FEATURE,
     keywords: ['real-time intelligence feed', 'cognitive event stream', 'anomaly detection feed', 'sector telemetry', 'live AI monitoring'],
     schema: 'feature',
@@ -294,7 +294,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/academy': {
     title: 'Academy — Interactive AI Tutorials | CMPSBL',
-    description: 'Learn substrate development through interactive tutorials. From first-agent walkthroughs to advanced multi-sector orchestration patterns.',
+    description: 'Learn substrate development through interactive tutorials. From first-agent walkthroughs to advanced multi-category orchestration patterns.',
     ogTitle: 'Academy — Interactive AI Tutorials',
     ogDescription: 'Interactive tutorials from first agent to advanced orchestration.',
     ogImage: OG_ACADEMY,
@@ -497,11 +497,11 @@ export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
   '/namespace': {
     title: 'Namespace — Canonical AI Vocabulary | CMPSBL',
-    description: 'The CMPSBL namespace defines canonical vocabulary for cognitive infrastructure — standardized terms used across all substrate sectors.',
+    description: 'The CMPSBL namespace defines canonical vocabulary for cognitive infrastructure — standardized terms used across all substrate categories.',
     ogTitle: 'Namespace — Canonical AI Vocabulary',
-    ogDescription: 'Standardized vocabulary for cognitive infrastructure sectors.',
+    ogDescription: 'Standardized vocabulary for cognitive infrastructure categories.',
     ogImage: OG_DOCS,
-    keywords: ['canonical AI vocabulary', 'cognitive terminology standard', 'substrate namespace', 'unified glossary', 'sector terminology'],
+    keywords: ['canonical AI vocabulary', 'cognitive terminology standard', 'substrate namespace', 'unified glossary', 'category terminology'],
     schema: 'docs',
     intent: 'Docs/Developer',
     primaryKeyword: 'canonical cognitive vocabulary',
@@ -519,11 +519,11 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/roadmap': {
     title: 'Roadmap — Architecture Evolution | CMPSBL',
-    description: 'Ongoing architectural evolution of the cognitive substrate: sector expansion, capability growth, and infrastructure deepening over time.',
+    description: 'Ongoing architectural evolution of the cognitive substrate: category expansion, capability growth, and infrastructure deepening over time.',
     ogTitle: 'Roadmap — Architecture Evolution',
     ogDescription: 'Sector expansion and capability growth over time.',
     ogImage: OG_DOCS,
-    keywords: ['architecture evolution', 'sector expansion roadmap', 'capability growth', 'infrastructure deepening', 'substrate trajectory'],
+    keywords: ['architecture evolution', 'category expansion roadmap', 'capability growth', 'infrastructure deepening', 'substrate trajectory'],
     schema: 'docs',
     intent: 'Blog/Changelog/Updates',
     primaryKeyword: 'substrate architecture evolution',
@@ -608,11 +608,11 @@ export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
   '/architecture': {
     title: 'Cognitive Architecture — Kernel Design | CMPSBL',
-    description: 'Technical overview of the layered cognitive kernel: execution zones, mesh overlays, convergence surfaces, and sector orchestration.',
+    description: 'Technical overview of the layered cognitive kernel: execution zones, mesh overlays, convergence surfaces, and category orchestration.',
     ogTitle: 'Cognitive Architecture — Kernel Design',
     ogDescription: 'Layered kernel with execution zones and mesh overlays.',
     ogImage: OG_ARCHITECTURE,
-    keywords: ['cognitive kernel design', 'execution zones', 'mesh overlays', 'convergence surfaces', 'sector orchestration', 'layered architecture'],
+    keywords: ['cognitive kernel design', 'execution zones', 'mesh overlays', 'convergence surfaces', 'category orchestration', 'layered architecture'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'cognitive kernel architecture design',
@@ -739,7 +739,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/dashboard': {
     title: 'Substrate Dashboard | CMPSBL',
-    description: 'Monitor and manage cognitive workloads, sector health, and autonomous discovery pipelines from the centralized command dashboard.',
+    description: 'Monitor and manage cognitive workloads, category health, and autonomous discovery pipelines from the centralized command dashboard.',
     ogTitle: 'Dashboard — CMPSBL',
     ogDescription: 'Centralized command for cognitive workloads.',
     ogImage: OG_SUBSTRATE,
@@ -1075,7 +1075,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/blog/promptfluid-ripple-network-integration': {
     title: 'RIPPLE: Distributed Event Propagation',
-    description: 'Distributed coordination and multi-agent communication patterns powering cross-module event propagation across substrate sectors.',
+    description: 'Distributed coordination and multi-agent communication patterns powering cross-module event propagation across substrate categories.',
     ogTitle: 'RIPPLE — Event Propagation',
     ogDescription: 'Distributed coordination and event propagation for agents.',
     ogImage: OG_BLOG,
@@ -1600,11 +1600,11 @@ export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
   '/substrate': {
     title: 'Substrate Dashboard — Live Control | CMPSBL',
-    description: 'Monitor and control every node across all sectors. Real-time health, node actions, and telemetry for the cognitive substrate.',
+    description: 'Monitor and control every node across all categories. Real-time health, node actions, and telemetry for the cognitive substrate.',
     ogTitle: 'Substrate Dashboard — Live Control',
     ogDescription: 'Real-time node control, health, and telemetry.',
     ogImage: OG_SUBSTRATE,
-    keywords: ['substrate dashboard', 'cognitive telemetry', 'node health', 'sector monitoring', 'live control'],
+    keywords: ['substrate dashboard', 'cognitive telemetry', 'node health', 'category monitoring', 'live control'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'substrate live dashboard control',
@@ -1622,7 +1622,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/status': {
     title: 'System Status — Live Health | CMPSBL',
-    description: 'Live operational status for all substrate nodes, edge functions, API endpoints, and infrastructure services across every sector.',
+    description: 'Live operational status for all substrate nodes, edge functions, API endpoints, and infrastructure services across every category.',
     ogTitle: 'System Status — Live Health',
     ogDescription: 'Live operational status for all substrate services.',
     ogImage: OG_SUBSTRATE,
@@ -1656,11 +1656,11 @@ export function getSEO(path: string): PageSEO {
   if (path.startsWith('/modules/')) {
     return {
       title: 'Node Detail — Substrate Architecture | CMPSBL',
-      description: 'Explore this substrate node: sector placement, capabilities, synergies, and integration guides for autonomous discovery pipelines.',
+      description: 'Explore this substrate node: category placement, capabilities, synergies, and integration guides for autonomous discovery pipelines.',
       ogTitle: 'Substrate Node — CMPSBL',
       ogDescription: 'Node architecture, capabilities, and integration guides.',
       ogImage: OG_FEATURE,
-      keywords: ['substrate node', 'sector architecture', 'node integration'],
+      keywords: ['substrate node', 'category architecture', 'node integration'],
       schema: 'feature',
       intent: 'Feature/Capability',
       primaryKeyword: 'substrate node detail',
