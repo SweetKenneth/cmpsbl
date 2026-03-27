@@ -1,6 +1,6 @@
 /**
  * Execution Surface Registry
- * 40-Node Matrix across 12 Sectors
+ * 40-Primitive Matrix across 4 Categories
  * 
  * visibility:
  *   'public'  → shown on architecture page (Primitives)

@@ -171,7 +171,7 @@ const COMMANDS: Record<string, CommandHandler> = {
     'CMPSBL® Substrate OS',
     'MINDGAMES Epoch',
     'The Era of Users & Memory Stream',
-    '40 Nodes · 12 Sectors',
+    '40 Primitives · 4 Categories',
   ]),
 };
 

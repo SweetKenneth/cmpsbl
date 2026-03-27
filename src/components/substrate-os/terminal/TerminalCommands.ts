@@ -1256,7 +1256,7 @@ export const NERVE_COMMANDS: CommandDefinition[] = [
   { command: 'nerve.consensus', description: 'Consensus repair status', category: 'nerve', icon: CheckCircle, requiresOperator: false, requiredTier: 'free' },
   { command: 'nerve.heartbeat', description: 'Distributed heartbeat log', category: 'nerve', icon: Activity, requiresOperator: false, requiredTier: 'free' },
   { command: 'nerve.partitions', description: 'Network partition detector', category: 'nerve', icon: AlertTriangle, requiresOperator: false, requiredTier: 'free' },
-  { command: 'nerve.broadcast', description: 'Broadcast signal to all nodes', category: 'nerve', icon: Radio, requiresOperator: true, requiredTier: 'architect', args: '<signal>' },
+  { command: 'nerve.broadcast', description: 'Broadcast signal to all primitives', category: 'nerve', icon: Radio, requiresOperator: true, requiredTier: 'architect', args: '<signal>' },
 ];
 
 // ═══ Mesh Overlay Commands (EVOLUTION, IMMUNITY, GOVERNANCE) ═══
