@@ -202,7 +202,7 @@ export default function About() {
             {[
               { label: codename || "—", sub: "Epoch" },
               { label: linesOfCodeDisplay || "—", sub: "Lines" },
-              { label: "8", sub: "Systems" },
+              { label: "40", sub: "Primitives" },
               { label: "Free", sub: "To Start" },
             ].map((s) => (
               <div

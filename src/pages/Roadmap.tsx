@@ -194,7 +194,7 @@ const SUBSTRATE_AREAS = [
   },
   {
     area: "Infrastructure & Manufacturing",
-    primitives: ["ENGINEER", "MEDIC", "FORGE", "HARVEST", "FORGE", "INTEGRATION"],
+    primitives: ["ENGINEER", "MEDIC", "FORGE", "HARVEST", "LINGUA", "INTEGRATION"],
     description: "Self-tuning, diagnostics, artifact manufacturing, data acquisition, and external connectivity.",
     phase: "Phase 6–7 — In Progress",
     icon: Cog,
