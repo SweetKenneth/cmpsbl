@@ -186,8 +186,8 @@ export default function EngineDocsPage() {
                   <Copy className="w-3 h-3" /> Copy
                 </Button>
                 <pre className="text-foreground whitespace-pre-wrap">
-{`import { ${engine.codename.toLowerCase()} } from '@cmpsbl/engines/${engine.slug}';
-
+{`import { ${engine.codename.toLowerCase()} } from '@cmpsbl/sdk/engines/${engine.slug}';
+`}
 const engine = ${engine.codename.toLowerCase()}.init({
   mode: 'production',
   persistence: true,
