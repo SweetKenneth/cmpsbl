@@ -1,6 +1,7 @@
 # 02 — Technology Architecture
 
-**Classification:** CONFIDENTIAL — Investor Use
+**Classification:** CONFIDENTIAL — Investor Use  
+**Document 2 of 15**
 
 ---
 
@@ -24,7 +25,10 @@ CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix 
 ## 2. Key Technical Differentiators
 
 ### Cognitive Engine System
-675+ capabilities consolidated into **76 compound engines** and **24 meta-engines**. Engines provide 2–8x synergy amplification. 54 premium engines available across four price tiers.
+675+ capabilities — each representing a discrete, testable unit of system behavior (e.g., memory retrieval, threat scoring, code analysis, CJPI evaluation) — consolidated into **76 compound engines** and **24 meta-engines**. Engines provide 2–8x synergy amplification. 54 premium engines available across four price tiers.
+
+### Ascension Engine
+Upload any code → classify → filter via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 25 languages. Already built and functional.
 
 ### Constant Learning Mode (CLM)
 High-velocity training memory chain: up to 14,400 AI calls/day. Topics sourced 70% from system telemetry, 30% scheduled curriculum. Knowledge distilled and compounded into permanent memory.
@@ -61,13 +65,26 @@ The substrate implements production-grade infrastructure patterns:
 
 ---
 
-## 4. Zone Shielding
+## 4. Defending the Six Properties
+
+| Property | Concrete Proof |
+|----------|---------------|
+| **Architectural governance** | 4-mode GOVERNANCE Layer, immutable at runtime, enforced by code not config |
+| **Persistent tiered memory** | 4-tier Hot/Warm/Cold/Glacier with SM-2 spaced repetition, survives restarts and deployments |
+| **Validated evolution with truth preservation** | 7-gate SEBA pipeline, TSAC truth arbitration, shadow testing before any production promotion |
+| **Sealed multi-agent coordination** | 20 source-blocked agents, memory-isolated runtimes, consent-gated DREAM pooling |
+| **Tamper-evident audit provenance** | Merkle chain SHA-256, every action cryptographically chained, cannot be altered retroactively |
+| **Continuous autonomous learning** | CLM 14,400 calls/day, 70% system telemetry, 30% scheduled curriculum, knowledge permanently distilled |
+
+---
+
+## 5. Zone Shielding
 
 expansion categories have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
 
 ---
 
-## 5. Execution Flow
+## 6. Execution Flow
 
 ```
 Client → DEFENSE (threat assessment)
@@ -81,5 +98,7 @@ Client → DEFENSE (threat assessment)
 Every step is audited, governed, and observable.
 
 ---
+
+> **Prior Art:** Core architectural mechanisms documented as prior art: Zenodo DOI 10.5281/zenodo.18895141
 
 © 2025–2026 CMPSBL®. Confidential.

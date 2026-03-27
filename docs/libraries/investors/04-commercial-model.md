@@ -1,6 +1,7 @@
 # 04 — Commercial Model
 
-**Classification:** CONFIDENTIAL — Investor Use
+**Classification:** CONFIDENTIAL — Investor Use  
+**Document 4 of 15**
 
 ---
 
@@ -18,8 +19,8 @@
 
 ## 2. Platform Subscription Tiers
 
-| Feature | Builder (Included) | Studio ($29) | Creator ($49) | Architect ($79) | Enterprise (Custom) |
-|---------|-------------------|--------------|---------------|-----------------|---------------------|
+| Feature | Builder (Included) | Studio ($29) | Creator ($49) | Architect ($79) | Governor (Enterprise Custom) |
+|---------|-------------------|--------------|---------------|-----------------|------------------------------|
 | Active slots | 3 | 6 | 9 | 12 | 25 |
 | Memory | Session only | Persistent (warm) | Full 4-tier | Full 4-tier | Dedicated |
 | Discovery rate | View only | Standard | Accelerated | Priority | Full |
@@ -30,7 +31,11 @@
 | Priority routing | — | — | — | ✅ | ✅ |
 | Federated local substrate | — | — | — | — | ✅ |
 
-> **Note:** "Governor" is not a pricing tier. It is a reserved super-admin role for a single system operator with God Mode access. Governor status is granted by role assignment, not subscription.
+> **Note:** Governor is an enterprise tier with custom pricing — contact sales for details.
+
+Ascension is included in Architect tier and above. Exports produce IP-protected artifacts valued by ensemble LLM consensus at up to $992K in developer replacement cost per export.
+
+> At $79/mo, Architect tier provides access to a software product factory. The value of a single Ascension export can exceed the annual subscription cost by 1,000x.
 
 ---
 
@@ -62,13 +67,15 @@ The Ascension pipeline produces single-file, zero-dependency "drop-in" distribut
 
 ---
 
-## 5. Enforcement Model
+## 5. Revenue Projection
 
-- **No silent degradation** — users always receive clear feedback at limits
-- **Grace period** — 10% buffer on quotas for burst usage
-- **Hard limits** — Crown Jewel capabilities and admin functions have no grace
-- **Upgrade path** — clear self-service upgrade from any tier
-- "Builder tier" or "Included" — never "free"
+**Conservative projection (subscription-only):**
+
+- **Blended ARPU:** ~$50/mo
+- **Year 1 target:** 1,000 paying subscribers → **$600K ARR**
+- **Year 2 target:** 3,000 paying subscribers → **$1.8M ARR**
+
+> **Note:** Agent marketplace revenue (~$79–$249 per purchase) and Ascension export revenue are **excluded from projections**, making these figures conservative by definition. These revenue streams represent pure upside above projected ARR.
 
 ---
 
@@ -83,6 +90,17 @@ The Ascension pipeline produces single-file, zero-dependency "drop-in" distribut
 | Engine marketplace | Productized IP with minimal support burden |
 | DREAM synthesis | Agents self-improve, reducing support costs |
 | Ascension exports | High-margin digital products with IP protection |
+| Memory Stream discovery | Autonomous pipeline artifacts valued at up to $2.9M each — already in service, running every 8 hours |
+
+---
+
+## 7. Enforcement Model
+
+- **No silent degradation** — users always receive clear feedback at limits
+- **Grace period** — 10% buffer on quotas for burst usage
+- **Hard limits** — Crown Jewel capabilities and admin functions have no grace
+- **Upgrade path** — clear self-service upgrade from any tier
+- "Builder tier" or "Included" — never "free"
 
 ---
 

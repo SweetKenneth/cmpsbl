@@ -1,6 +1,7 @@
 # 07 — Governance & Risk
 
-**Classification:** CONFIDENTIAL — Investor Use
+**Classification:** CONFIDENTIAL — Investor Use  
+**Document 7 of 15**
 
 ---
 
@@ -41,6 +42,11 @@ CMPSBL operates under **supervised autonomy** — the system acts independently 
 | Evolution regression | Medium | Low | Scanner regression detection, auto-rollback |
 | Agent runtime escape | High | Very Low | Sealed runtime, source blocking, memory isolation |
 | Full infrastructure loss | Critical | Very Low | One-click disaster recovery backup |
+| Pre-revenue market risk | Medium | Medium | Paying subscribers active on Stripe; ~2,000 npm downloads in under a week; production system live and accessible |
+| Solo execution | Medium | Low | Complete succession documentation across 5 libraries, 80+ pages; any senior engineer can onboard to full operational capability within 3 weeks |
+| Competitive response | High | Medium | 40-primitive topology + CLM compounding + sealed Crown Jewels + 25-language export — 2–3 year replication minimum; no current direct competitor |
+| Funding / Runway | High | Medium | Current raise is designed to fund 18-month runway. Platform generates revenue from day one of customer acquisition. Founder has operated at zero burn on personal capital to date — demonstrating capital efficiency |
+| Data privacy / tenant isolation | Medium | Low | Tenant-isolated runtimes, BYOK architecture, no cross-tenant data sharing, self-hosted license option for sensitive deployments |
 
 ---
 
@@ -65,6 +71,7 @@ CMPSBL operates under **supervised autonomy** — the system acts independently 
 | Incident response | 6-phase workflow with automated containment |
 | Data retention | Configurable per-category retention policies |
 | Right to deletion | Tenant deletion cascades through all related tables |
+| **EU AI Act** | CMPSBL operates as a General Purpose AI System provider under the EU AI Act. The four-mode GOVERNANCE layer satisfies Article 9 risk management requirements for high-risk AI system deployment. |
 
 ---
 
