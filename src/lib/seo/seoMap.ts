@@ -239,7 +239,7 @@ export const seoMap: Record<string, PageSEO> = {
     ogTitle: 'System Feed — Real-Time Intelligence',
     ogDescription: 'Live cognitive events and anomaly detections across categories.',
     ogImage: OG_FEATURE,
-    keywords: ['real-time intelligence feed', 'cognitive event stream', 'anomaly detection feed', 'sector telemetry', 'live AI monitoring'],
+    keywords: ['real-time intelligence feed', 'cognitive event stream', 'anomaly detection feed', 'category telemetry', 'live AI monitoring'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'real-time cognitive intelligence feed',
