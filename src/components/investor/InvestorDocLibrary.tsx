@@ -529,6 +529,11 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         heading: "Ascension Premium",
         content: "Ascension exports represent a unique value multiplier. Each exported artifact is a standalone, zero-dependency software product in any of 25 languages — with built-in IP protection via hex-encoding. This transforms CMPSBL from a platform into a software product factory, where every discovered capability becomes a sellable product with near-zero marginal cost.",
       },
+      {
+        heading: "Data Compounding Moat",
+        content: "Unlike traditional software that depreciates, CMPSBL appreciates. Every day the substrate runs, the BRAIN accumulates new patterns via CLM, the Memory Stream discovers new pipelines, the Evolution Engine learns from validated patches, and DREAM synthesizes cross-agent knowledge. This creates an exponentially widening moat that cannot be replicated by building similar architecture — the data and learned behaviors are the moat.",
+        callout: { label: "Key Insight", text: "A competitor could theoretically rebuild the 40-primitive architecture in 2–3 years. They cannot replicate the accumulated learning, discovery corpus, and evolution history. The moat grows every day.", variant: "success" },
+      },
     ],
   },
   {
