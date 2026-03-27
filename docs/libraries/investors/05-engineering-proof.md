@@ -91,7 +91,7 @@ Every autonomous change recorded in SHA-256 hash chains. Call `verifyChain()` to
 2. Diligence passes — all 26 probes non-crashing
 3. Boot integrity verified — hash chain unbroken
 4. Entropy trending down — evolution ledger shows decreasing disorder
-5. No orphaned primitives — all 40 nodes respond to pulse
+5. No orphaned primitives — all 40 primitives respond to pulse
 6. Type coverage complete — no `any` in production paths
 7. Dependency graph acyclic — zero circular dependencies
 8. Evolution receipts valid — Merkle chain `brokenAt: -1`

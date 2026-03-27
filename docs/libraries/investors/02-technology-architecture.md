@@ -78,7 +78,7 @@ The substrate implements production-grade infrastructure patterns:
 
 ## 5. Zone Shielding
 
-expansion categories have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
+Expansion categories have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
 
 ---
 
