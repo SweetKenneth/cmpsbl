@@ -245,8 +245,8 @@ export default function ModulesHub() {
   return (
     <>
       <SEO
-        title="All 40 Nodes — Full Matrix Architecture | CMPSBL"
-        description="Explore the complete 40-primitive substrate matrix across 4 categories: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, and Shell."
+        title="All 40 Primitives — Full Matrix Architecture | CMPSBL"
+        description="Explore the complete 40-primitive substrate matrix across 4 categories — Organs, Layers, Engines, and Agents — organized into 12 operational zones."
         image="https://cmpsbl.com/og/systems.jpg"
         keywords={['AI substrate architecture', '40-primitive matrix', 'composable AI', 'cognitive kernel', 'AI operating system']}
         breadcrumbs={[
@@ -276,7 +276,7 @@ export default function ModulesHub() {
             >
               <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-muted-foreground mb-4 border border-border rounded-full px-4 py-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                {TOTAL_NODES} Nodes · 12 Sectors · Σ(w) = 1.000
+                {TOTAL_NODES} Primitives · 12 Zones · Σ(w) = 1.000
               </div>
               
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
@@ -285,7 +285,7 @@ export default function ModulesHub() {
               </h1>
               
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-                The complete 40-primitive cognitive topology. Each node is an autonomous subsystem —
+                The complete 40-primitive cognitive topology. Each primitive is an autonomous subsystem —
                 together they form a field-based architecture that reasons, evolves, and self-heals.
               </p>
 

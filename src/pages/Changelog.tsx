@@ -807,7 +807,7 @@ const stratumContact: Specimen[] = [
       "Unified First Contact System implemented — every package binds real persistent user identity at initialization and connects to the live Memory Stream",
       "CLI entry point established: 'npx cmpsbl init' bootstraps cognitive environment, connects Memory Stream, binds user identity, and starts live discovery",
       "SDK client class (CMPSBL) exposes discover(), capture(), apply(), and export() methods for programmatic Memory Stream interaction",
-      "Domain-specific pattern detection wired for @cmpsbl/security (threat detection), @cmpsbl/commerce (checkout optimization), @cmpsbl/health (patient timeline correlation), and @cmpsbl/dev (code optimization)",
+      "Domain-specific pattern detection designed for security (threat detection), commerce (checkout optimization), health (patient timeline correlation), and development (code optimization) verticals",
       "All packages enforce live discovery mode — mock data and simulated outputs are architecturally blocked",
       "Dependency-ordered build and publish pipeline created via unified 'npm run sdk:publish' script",
       "Package READMEs standardized with First Contact examples showing real memory chain detection and capture",

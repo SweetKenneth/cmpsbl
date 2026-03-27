@@ -25,7 +25,7 @@ module.exports = { log, getUser };`;
 const AFTER_CODE = `// telemetry-service.ts — Enhanced by CMPSBL Substrate
 import { MemoryBind } from '@cmpsbl/runtime';
 import { DefenseGate } from '@cmpsbl/runtime/defense';
-import { AuditTrail } from '@cmpsbl/governance';
+import { AuditTrail } from '@cmpsbl/runtime/audit';
 
 interface TelemetryEvent {
   level: 'info' | 'warn' | 'error';
