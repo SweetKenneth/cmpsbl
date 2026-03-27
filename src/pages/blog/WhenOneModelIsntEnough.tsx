@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogArticleLayout } from "@/components/blog/BlogArticleLayout";
-import heroImg from "@/assets/blog/cortex-ai-adaptive-intelligence.jpg";
-import imgCascade from "@/assets/blog/how-promptfluid-works-cortex.jpg";
+import heroImg from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import imgCascade from "@/assets/blog/how-promptfluid-works-cascade.jpg";
 
 const SLUG = "when-one-model-isnt-enough";
 
