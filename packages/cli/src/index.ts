@@ -256,6 +256,116 @@ function openBrowser(url: string): void {
 }
 
 const DEV_PORTAL_URL = 'https://cmpsbl.com/api-access';
+const SUBSTRATE_ENDPOINT = CLI_CONFIG.endpoint ?? `https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate`;
+
+/**
+ * Live Mesh Demo — shows primitives communicating before any auth.
+ * This gives users a "wow moment" so they see value before registering.
+ */
+async function liveMeshDemo(): Promise<void> {
+  if (!supportsAnimatedOutput()) return;
+
+  blank();
+  say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+  say('  MESH INTERCEPT — LIVE PRIMITIVE COMMUNICATIONS');
+  say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
+  blank();
+
+  const meshSignals = [
+    { from: 'DEFENSE Layer',   to: 'IMMUNITY Layer',   signal: 'Perimeter scan complete. No threats detected.', icon: '🛡' },
+    { from: 'BRAIN Organ',     to: 'MEMORY Organ',     signal: 'New operator detected. Binding memory stream...', icon: '🧠' },
+    { from: 'INTENT Layer',    to: 'CORTEX Agent',     signal: 'Routing intent: operator.first_contact', icon: '⚡' },
+    { from: 'NEXUS Organ',     to: 'DREAM Engine',     signal: '14 providers online. Discovery pathways open.', icon: '🔮' },
+    { from: 'EVOLUTION Layer', to: 'FORGE Engine',     signal: 'Mutation engine armed. Awaiting first crystallization.', icon: '🧬' },
+    { from: 'CORTEX Agent',    to: 'DECODE Agent',     signal: 'Operator identity unbound. Requesting authentication.', icon: '🌀' },
+  ];
+
+  for (const sig of meshSignals) {
+    say(`  ${sig.icon} ${c.cyan(sig.from)} → ${c.green(sig.to)}`);
+    say(`     ${c.muted('"' + sig.signal + '"')}`);
+    await sleep(350);
+  }
+
+  blank();
+  say(`  ${c.dim('── 40 primitives active · 12·12·8·8 matrix ──')}`);
+  blank();
+}
+
+/**
+ * Inline registration — registers developer + creates API key without browser.
+ * Calls pf-substrate directly with module=access, action=create_key using email.
+ */
+async function inlineRegister(): Promise<string | null> {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+  say(c.bold('  DEVELOPER REGISTRATION'));
+  blank();
+  say('  The substrate needs to know who you are.');
+  say('  No passwords. No accounts. Just your email → instant API key.');
+  blank();
+
+  const email = await new Promise<string>((resolve) => {
+    rl.question('  Your email: ', (answer: string) => resolve(answer.trim()));
+  });
+
+  if (!email || !email.includes('@') || email.length < 5) {
+    say(c.error('  Invalid email. Run `cmpsbl login` to try again.'));
+    rl.close();
+    return null;
+  }
+
+  const name = await new Promise<string>((resolve) => {
+    rl.question('  Display name (optional, press ENTER to skip): ', (answer: string) => resolve(answer.trim()));
+  });
+
+  rl.close();
+
+  const s = spinner('Registering with the substrate...');
+
+  try {
+    const res = await fetch(SUBSTRATE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        module: 'access',
+        action: 'create_key',
+        email,
+        display_name: name || email.split('@')[0],
+        name: `CLI Key — ${email.split('@')[0]}`,
+        scopes: ['substrate.read', 'substrate.write', 'brain.query'],
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success || !data.api_key) {
+      s.stop('Registration failed');
+      say(c.error(`  ${data.error || 'Unknown error'}`));
+      say(`  You can also register at ${c.cyan(DEV_PORTAL_URL)}`);
+      return null;
+    }
+
+    s.stop('Registered successfully');
+    blank();
+    sayOk('  ✓ Developer profile created');
+    sayOk(`  ✓ API key generated: ${data.key_prefix}...`);
+    blank();
+
+    // Auto-save the key
+    saveStoredKey(data.api_key);
+    say('  ✓ Key saved to ~/.cmpsbl/credentials');
+    say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
+    blank();
+
+    CLI_CONFIG.apiKey = data.api_key;
+    return data.api_key;
+  } catch (err) {
+    s.stop('Connection failed');
+    say(c.error('  Could not reach the substrate.'));
+    say(`  Register manually at ${c.cyan(DEV_PORTAL_URL)}`);
+    return null;
+  }
+}
 
 /**
  * Mandatory API key gate.
@@ -277,32 +387,45 @@ async function requireApiKey(): Promise<string> {
     '⚠  AUTHENTICATION REQUIRED',
     '',
     'The CMPSBL Substrate requires a developer API key.',
-    'You can get one free at the Developer Portal.',
+    'Register now — it takes 10 seconds.',
   ], 'ACCESS');
   blank();
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-  // Step 1: Open browser
-  await new Promise<void>((resolve) => {
-    rl.question('  Press ENTER to open the Developer Portal in your browser...', () => {
-      openBrowser(DEV_PORTAL_URL);
-      blank();
-      say('  ✓ Browser opened → ' + DEV_PORTAL_URL);
-      say('  Register as a developer and generate your API key.');
-      blank();
-      resolve();
-    });
-  });
-
-  // Step 2: Paste key
-  const key = await new Promise<string>((resolve) => {
-    rl.question('  Paste your API key: ', (answer: string) => {
+  const choice = await new Promise<string>((resolve) => {
+    say('  [1] Register now (email → instant key)');
+    say(`  [2] I have a key already`);
+    say(`  [3] Open Developer Portal in browser`);
+    blank();
+    rl.question('  Choose (1/2/3): ', (answer: string) => {
       resolve(answer.trim());
     });
   });
-
   rl.close();
+
+  if (choice === '1' || choice === '') {
+    // Inline registration
+    const key = await inlineRegister();
+    if (key) return key;
+    // Fall through to manual paste if registration failed
+  }
+
+  if (choice === '3') {
+    openBrowser(DEV_PORTAL_URL);
+    say('  ✓ Browser opened → ' + DEV_PORTAL_URL);
+    say('  Register and generate your API key, then paste it below.');
+    blank();
+  }
+
+  // Manual key paste (choice 2 or fallback)
+  const rl2 = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const key = await new Promise<string>((resolve) => {
+    rl2.question('  Paste your API key: ', (answer: string) => {
+      resolve(answer.trim());
+    });
+  });
+  rl2.close();
 
   if (!key || key.length < 10) {
     say(pick(V.err));
@@ -311,16 +434,14 @@ async function requireApiKey(): Promise<string> {
     process.exit(1);
   }
 
-  // Step 3: Save persistently
+  // Save persistently
   saveStoredKey(key);
   blank();
   say('  ✓ API key saved to ~/.cmpsbl/credentials');
   say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
   blank();
 
-  // Update config for this session
   CLI_CONFIG.apiKey = key;
-
   return key;
 }
 
