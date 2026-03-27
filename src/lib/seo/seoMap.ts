@@ -48,7 +48,7 @@ const OG_ENGINES = `${OG_BASE}/og/engines.jpg`;
 const OG_MEMORY = `${OG_BASE}/og/persistent-memory.jpg`;
 const OG_DECODE = `${OG_BASE}/og/decode.jpg`;
 const OG_DREAM = `${OG_BASE}/og/dream-feeder.jpg`;
-const OG_PROOF = `${OG_BASE}/og/proof.jpg`;
+const OG_AUDIT = `${OG_BASE}/og/proof.jpg`;
 const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
 const OG_ARCHITECTURE = `${OG_BASE}/og/architecture.jpg`;
 const OG_INTENT = `${OG_BASE}/og/intent-mesh.jpg`;
@@ -172,7 +172,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'Tamper-evident cryptographic records of every cognitive operation. Built for regulatory compliance, forensic audit, and governed AI.',
     ogTitle: 'Proof Mode — Cryptographic Audit Trail',
     ogDescription: 'Tamper-evident records for compliance and forensic audit.',
-    ogImage: OG_PROOF,
+    ogImage: OG_AUDIT,
     keywords: ['cryptographic audit trail', 'tamper-evident AI', 'regulatory compliance AI', 'forensic audit', 'governed execution', 'provenance chain'],
     schema: 'feature',
     intent: 'Feature/Capability',
@@ -1377,7 +1377,7 @@ export const seoMap: Record<string, PageSEO> = {
   '/blog/when-one-model-isnt-enough': {
     title: 'When One Model Isn\'t Enough — CORTEX Agent',
     description: 'A single LLM can\'t handle everything. CORTEX chains multiple models into adaptive pipelines matching complexity to capability.',
-    ogTitle: 'When One Model Isn\'t Enough — CASCADE',
+    ogTitle: 'When One Model Isn\'t Enough — CORTEX',
     ogDescription: 'Multi-model adaptive pipelines for complex AI tasks.',
     ogImage: OG_BLOG,
     keywords: ['CORTEX agent', 'multi-model pipelines', 'adaptive AI orchestration', 'model chaining'],
@@ -1443,7 +1443,7 @@ export const seoMap: Record<string, PageSEO> = {
   '/blog/interfaces-that-think': {
     title: 'Interfaces That Think — The FORGE Engine',
     description: 'Static UIs can\'t keep up with cognitive systems. FORGE generates and adapts interfaces based on context, capability, and user intent.',
-    ogTitle: 'Interfaces That Think — MORPH',
+    ogTitle: 'Interfaces That Think — FORGE',
     ogDescription: 'Dynamic context-aware interface generation.',
     ogImage: OG_BLOG,
     keywords: ['FORGE engine', 'adaptive UI', 'dynamic interfaces', 'context-aware design'],
