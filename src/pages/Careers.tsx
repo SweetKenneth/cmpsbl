@@ -278,7 +278,7 @@ export default function Careers() {
                 <div
                   className={`w-10 h-10 rounded-xl bg-gradient-to-br ${val.gradient} flex items-center justify-center mb-4 shadow-md`}
                 >
-                  <val.icon className="w-5 h-5 text-white" />
+                  <val.icon className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <h3 className="font-bold text-foreground mb-2">{val.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">

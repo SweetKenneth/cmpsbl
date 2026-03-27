@@ -163,7 +163,7 @@ export default function Solutions() {
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
                        <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br ${solution.color} flex items-center justify-center mb-3 sm:mb-4 shadow-lg`}>
-                         <solution.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                         <solution.icon className="w-6 h-6 sm:w-7 sm:h-7 text-primary-foreground" />
                       </div>
                       <h2 className="text-xl sm:text-2xl font-black mb-2 text-foreground">{solution.name}</h2>
                       <p className="text-base sm:text-lg text-primary font-medium mb-4">{solution.tagline}</p>
@@ -184,7 +184,7 @@ export default function Solutions() {
                       <ul className="space-y-3">
                         {solution.features.map((feature) => (
                           <li key={feature} className="flex items-start gap-2">
-                            <CheckCircle className="w-5 h-5 text-[hsl(var(--system-green))] flex-shrink-0 mt-0.5" />
+                            <CheckCircle className="w-5 h-5 text-neon-green flex-shrink-0 mt-0.5" />
                             <span className="text-muted-foreground">{feature}</span>
                           </li>
                         ))}

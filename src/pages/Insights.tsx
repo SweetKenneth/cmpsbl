@@ -125,7 +125,7 @@ export default function Insights() {
                   className="group p-5 rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm card-lift shimmer-on-hover glass-edge"
                 >
                   <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-3 shadow-md`}>
-                    <feature.icon className="w-4 h-4 text-white" />
+                    <feature.icon className="w-4 h-4 text-primary-foreground" />
                   </div>
                   <h3 className="font-bold mb-1.5">{feature.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{feature.description}</p>

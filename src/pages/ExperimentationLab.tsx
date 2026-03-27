@@ -345,7 +345,7 @@ export default function ExperimentationLab() {
                 >
                   <CardHeader className="pb-3">
                     <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${template.color} flex items-center justify-center mb-3`}>
-                      <Icon className="w-6 h-6 text-white" />
+                      <Icon className="w-6 h-6 text-primary-foreground" />
                     </div>
                     <div className="space-y-1.5">
                       <CardTitle className="text-base md:text-sm leading-tight">{template.name}</CardTitle>
