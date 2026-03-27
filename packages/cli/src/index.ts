@@ -1158,13 +1158,25 @@ async function cmdLogout() {
       disconnected: true,
       credentialsCleared: cleared.removed.length > 0 || cleared.scrubbed.length > 0,
       envVarActive: envVarStillActive,
+      envVarHint: envVarStillActive ? 'Run: unset CMPSBL_API_KEY' : null,
     });
     return;
   }
   say(pick(V.ok));
   say('Session terminated. Saved credentials cleared.');
   if (cleared.scrubbed.length > 0) say(`Legacy credential fields removed from ${cleared.scrubbed.length} config file(s).`);
-  if (envVarStillActive) sayMuted('CMPSBL_API_KEY is still set in this shell, so it will continue to override local credentials.');
+  if (envVarStillActive) {
+    blank();
+    box([
+      '⚠  CMPSBL_API_KEY is still set in this shell.',
+      '',
+      'Your old key will keep overriding until you run:',
+      '',
+      '  unset CMPSBL_API_KEY',
+      '',
+      'Then run `cmpsbl login` to re-authenticate.',
+    ], 'IMPORTANT');
+  }
   say('Memory stream disconnected.');
   blank();
 }
