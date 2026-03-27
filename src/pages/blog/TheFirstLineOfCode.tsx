@@ -59,8 +59,8 @@ export default function TheFirstLineOfCode() {
       <p>We decided to build the missing layer. Not another model. Not another wrapper. Infrastructure — cognitive infrastructure that could persist state, route intelligently, secure itself, and learn from every interaction. What would eventually become the <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">NEXUS routing node</Link> started here as a simple failover function.</p>
 
       <figure className="my-8">
-        <img src={imgEcosystem} alt="The emerging CMPSBL substrate ecosystem — nodes working together as composable cognitive infrastructure" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
-        <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The substrate ecosystem as it would eventually look — composable nodes forming cognitive infrastructure.</figcaption>
+        <img src={imgEcosystem} alt="The emerging CMPSBL substrate ecosystem — primitives working together as composable cognitive infrastructure" className="w-full rounded-xl aspect-video object-cover" loading="lazy" />
+        <figcaption className="text-sm text-muted-foreground/70 mt-2 text-center">The substrate ecosystem as it would eventually look — composable primitives forming cognitive infrastructure.</figcaption>
       </figure>
 
       <p>That first function was embarrassingly simple. A try/catch that called OpenAI, and if it failed, called Anthropic. No health scoring. No latency-weighted selection. No cost optimization. Just "if this breaks, try that." But it worked. And more importantly, it proved the architectural hypothesis: if you could abstract the model layer, everything above it could be model-agnostic.</p>

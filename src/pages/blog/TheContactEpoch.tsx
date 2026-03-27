@@ -27,7 +27,7 @@ export default function TheContactEpoch() {
         </>
       }
     >
-      <p className="text-sm sm:text-base leading-relaxed">We've named our development eras after the defining capability that shaped them. The <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA epoch</Link> was about survival — stripping the substrate to its essentials and rebuilding with discipline. The ARCHITECT epoch was about scale — forty nodes, the Store, Agencies, the Scanner. Now we're entering the CONTACT epoch — and it's defined by something we didn't plan.</p>
+      <p className="text-sm sm:text-base leading-relaxed">We've named our development eras after the defining capability that shaped them. The <Link to="/blog/burning-it-down" className="text-primary hover:underline">SPARTA epoch</Link> was about survival — stripping the substrate to its essentials and rebuilding with discipline. The ARCHITECT epoch was about scale — forty primitives, the Store, Agencies, the Scanner. Now we're entering the CONTACT epoch — and it's defined by something we didn't plan.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What Changed</h2>
       <p>In two weeks, three things happened that individually would have been significant. Together, they changed how we think about the substrate entirely.</p>
@@ -50,7 +50,7 @@ export default function TheContactEpoch() {
       <p><strong>Recursive Discovery.</strong> The THREAD loop itself — a cycle where discoveries fuel evolution, and evolution creates conditions for new discoveries. This is the mechanism that makes the substrate compound its own improvements over time.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What We're Watching</h2>
-      <p>We have dashboards for everything. <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">CORTEX</Link> monitors all forty-plus nodes. <Link to="/blog/mapping-what-we-built" className="text-primary hover:underline">ATLAS</Link> maps every resolver and dependency. <Link to="/blog/the-governance-question" className="text-primary hover:underline">GOVERNANCE</Link> enforces policy boundaries. But the CONTACT epoch requires a new kind of monitoring: watching for what the substrate proposes next.</p>
+      <p>We have dashboards for everything. <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">CORTEX</Link> monitors all forty-plus primitives. <Link to="/blog/mapping-what-we-built" className="text-primary hover:underline">ATLAS</Link> maps every resolver and dependency. <Link to="/blog/the-governance-question" className="text-primary hover:underline">GOVERNANCE</Link> enforces policy boundaries. But the CONTACT epoch requires a new kind of monitoring: watching for what the substrate proposes next.</p>
 
       <p>We built a "Composition Watch" dashboard that tracks DREAM's consolidation outputs specifically for composition patterns. It monitors signal correlation strength, proposal frequency, and the substrate's apparent "areas of interest" — domains where it's generating the most composition candidates. Right now, the hottest areas are security-accessibility crossover (DEFENSE + the Scanner), gaming NPC memory (BRAIN + game integration), and cost optimization (NEXUS + <Link to="/blog/the-economics-of-intelligence" className="text-primary hover:underline">the economics layer</Link>).</p>
 
