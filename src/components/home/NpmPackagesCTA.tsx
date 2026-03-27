@@ -16,7 +16,7 @@ const NPM_PACKAGES = [
   { name: "@cmpsbl/runtime", desc: "CJPI scoring, tiering, memory chain orchestration, and pipeline execution", tier: "Foundation" },
   { name: "@cmpsbl/failsafe", desc: "Zero-dep migration engine for platform portability", tier: "Foundation" },
   { name: "@cmpsbl/intent", desc: "Intent router — broadcast + resolver dispatch for any app", tier: "Core" },
-  { name: "@cmpsbl/mesh", desc: "Mesh telemetry — emit and subscribe to node communication events", tier: "Core" },
+  { name: "@cmpsbl/mesh", desc: "Mesh telemetry — emit and subscribe to primitive-to-primitive communication events", tier: "Core" },
   { name: "@cmpsbl/bridge", desc: "Bridge adapter — wire Python, Go, Rust runtimes to the substrate", tier: "Core" },
   { name: "@cmpsbl/sdk", desc: "Engine SDK — authenticated access to hosted CMPSBL engines", tier: "Developer" },
   { name: "@cmpsbl/discovery", desc: "Memory discovery — score, crystallize, and manage capabilities", tier: "Developer" },
