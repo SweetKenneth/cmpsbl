@@ -187,7 +187,7 @@ export default function EngineDocsPage() {
                 </Button>
                 <pre className="text-foreground whitespace-pre-wrap">
 {`import { ${engine.codename.toLowerCase()} } from '@cmpsbl/sdk/engines/${engine.slug}';
-`}
+
 const engine = ${engine.codename.toLowerCase()}.init({
   mode: 'production',
   persistence: true,
