@@ -27,7 +27,7 @@ export default function MappingWhatWeBuilt() {
         </>
       }
     >
-      <p className="text-sm sm:text-base leading-relaxed">By June, we had twelve nodes running. New team members would ask "what does this node connect to?" and get different answers from different engineers. Our own architecture had outgrown our understanding of it.</p>
+      <p className="text-sm sm:text-base leading-relaxed">By June, we had twelve nodes running. New team members would ask "what does this primitive connect to?" and get different answers from different engineers. Our own architecture had outgrown our understanding of it.</p>
 
       <p>This wasn't just an onboarding problem. During incident response, we'd waste twenty minutes tracing call chains manually before we could even begin fixing the issue. We had monitoring through <Link to="/blog/seeing-everything-at-once" className="text-primary hover:underline">VISION</Link>, but VISION told you what was happening — not why. Understanding "why" required knowing the architecture, and our architecture documentation was perpetually two weeks out of date.</p>
 
@@ -39,7 +39,7 @@ export default function MappingWhatWeBuilt() {
       <p>ATLAS also detects implicit dependencies that don't show up in direct call graphs. When DECODE's output quality correlates with BRAIN's cache hit rate (even though DECODE never calls BRAIN directly), ATLAS flags it as a statistical dependency. These hidden couplings were responsible for some of our most confusing production incidents — fixing the direct caller didn't help because the real cause was an indirect dependency three hops away.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Living Map</h2>
-      <p>ATLAS produces a real-time capability map. Every node's health, throughput, latency, and dependency graph — always current, never stale. This map became the foundation for our <Link to="/blog/thirty-eight-nodes-deep" className="text-primary hover:underline">architecture documentation</Link> and the public <a href="https://cmpsbl.com/architecture" className="text-primary hover:underline">architecture page</a>.</p>
+      <p>ATLAS produces a real-time capability map. Every primitive's health, throughput, latency, and dependency graph — always current, never stale. This map became the foundation for our <Link to="/blog/thirty-eight-nodes-deep" className="text-primary hover:underline">architecture documentation</Link> and the public <a href="https://cmpsbl.com/architecture" className="text-primary hover:underline">architecture page</a>.</p>
 
       <p>The map updates every 60 seconds. When a new node comes online, ATLAS discovers it within one cycle. When a dependency pattern changes — say, a code deployment shifts traffic from one model provider to another — the map reflects it in real time. We stopped maintaining architecture diagrams in wikis. The diagram is the system itself, observed by ATLAS.</p>
 
@@ -51,7 +51,7 @@ export default function MappingWhatWeBuilt() {
       <h2 className="text-2xl font-bold text-foreground mt-8">Capability Versioning</h2>
       <p>ATLAS tracks capability evolution over time. When a primitive adds a new function or deprecates an old one, ATLAS records the change and notifies dependent primitives. This historical record became invaluable for debugging regressions — "this started failing last Tuesday, what changed?" ATLAS can answer that question in seconds by showing the delta between two points in time.</p>
 
-      <p>ATLAS was unglamorous infrastructure. Nobody demos a dependency graph to investors. But without it, the substrate would have collapsed under its own complexity long before we reached <Link to="/blog/thirty-eight-nodes-deep" className="text-primary hover:underline">forty nodes</Link>. It's the kind of tool that proves its value by preventing problems you never see.</p>
+      <p>ATLAS was unglamorous infrastructure. Nobody demos a dependency graph to investors. But without it, the substrate would have collapsed under its own complexity long before we reached <Link to="/blog/thirty-eight-nodes-deep" className="text-primary hover:underline">forty primitives</Link>. It's the kind of tool that proves its value by preventing problems you never see.</p>
     </BlogArticleLayout>
   );
 }
