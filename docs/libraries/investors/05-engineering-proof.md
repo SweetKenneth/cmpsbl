@@ -32,7 +32,7 @@ Built by one person. Verified by automated audit, not manual review.
 | Terminal commands | 500+ |
 | Documentation pages | 80+ across 5 tiers |
 
-> ¹ A **capability** is a discrete, testable unit of system behavior — e.g., memory retrieval, threat scoring, code analysis, CJPI evaluation, provider failover routing. Each capability maps to a specific resolver within a node and is individually addressable through the intent mesh.
+> ¹ A **capability** is a discrete, testable unit of system behavior — e.g., memory retrieval, threat scoring, code analysis, CJPI evaluation, provider failover routing. Each capability maps to a specific resolver within a primitive and is individually addressable through the intent mesh.
 
 ---
 

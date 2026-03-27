@@ -79,7 +79,7 @@ The global cost of poor software quality reached **$2.41 trillion** in 2024 (CIS
 CMPSBL is the **only AI orchestration system** where:
 
 1. **Governance is architectural** — enforced by code, not policy
-2. **Evolution is validated** — 7-gate SEBA pipeline with TSAC truth preservation
+2. **Evolution is validated** — 7-gate SEBA Memory Chain with TSAC truth preservation
 3. **Memory is persistent and tiered** — 4-tier, capacity-enforced
 4. **Agents are sealed** — source-blocked, memory-isolated runtimes
 5. **Audit is tamper-evident** — Merkle chain integrity verification
