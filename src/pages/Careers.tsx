@@ -23,20 +23,20 @@ const fadeUp = {
 const values = [
   {
     icon: Brain,
-    title: "Think in Systems",
-    description: "We build cognitive architecture, not features. Every contribution shapes how machines understand the world.",
+    title: "Think in Primitives",
+    description: "We build cognitive architecture — 40 primitives across Organs, Layers, Engines, and Agents. Every contribution shapes the substrate.",
     gradient: "from-neon-purple to-neon-purple",
   },
   {
     icon: Heart,
     title: "Care Deeply",
-    description: "About the craft, about each other, about the humans who use what we build. Quality is non-negotiable.",
+    description: "About the craft, about each other, about the humans who build on our platform. Quality is non-negotiable — from the Memory Stream to the npm packages.",
     gradient: "from-neon-magenta to-neon-magenta",
   },
   {
     icon: Sparkles,
     title: "Dream Boldly",
-    description: "CMPSBL exists because someone believed machines could learn to improve themselves. We hire people who believe in the impossible.",
+    description: "CMPSBL exists because someone believed machines could learn during downtime, evolve under governance, and discover new capabilities autonomously.",
     gradient: "from-neon-amber to-neon-amber",
   },
   {
@@ -75,7 +75,7 @@ export default function Careers() {
               Build What <span className="text-primary">Matters</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
-              We're building the cognitive substrate — systems that dream, adapt, evolve, and remember. Join a team where your work shapes the future of AI infrastructure.
+              We're building a 40-primitive cognitive substrate, the Memory Stream discovery engine, and 11 open-source npm packages. Join the team shaping the future of AI infrastructure.
             </p>
             <Button asChild size="lg" className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
               <Link to="/contact">

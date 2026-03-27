@@ -18,24 +18,24 @@ const sections = [
   {
     id: "acceptance",
     title: "1. Acceptance of Terms",
-    content: "By accessing or using CMPSBL's services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.",
+    content: "By accessing or using CMPSBL's services — including the 40-primitive substrate, Memory Stream, npm packages, API endpoints, and all associated tools — you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.",
   },
   {
     id: "services",
     title: "2. Description of Services",
-    content: "CMPSBL® provides cognitive orchestration infrastructure including but not limited to:",
+    content: "CMPSBL® provides composable cognitive infrastructure including but not limited to:",
     list: [
-      "CMPSBL Substrate — Layered cognitive orchestration with persistent memory",
-      "Composable Minds — Downloadable AI agents with persistent memory",
-      "Capability Packs — Capabilities, templates, and memories via the unified store",
-      "NEXUS — Multi-provider AI routing with BYOK architecture",
-      "DEFENSE — Enterprise-grade threat detection and bot protection overlay",
-      "DECODE — Conversational AI interface with memory-backed context",
-      "VISION — Full observability and system introspection",
-      "INCLUSIVE — Human compatibility system with WCAG scanning and AI remediation",
-      "Persistent Memory — Drop-in memory layer for any AI agent",
-      "Evolution Mesh — Self-learning immune system for software",
-      "Composable Cognitive Infrastructure — Templates, capabilities, and orchestration chains",
+      "CMPSBL Substrate — 40 specialized primitives organized across Organs, Layers, Engines, and Agents",
+      "Memory Stream — Continuous discovery engine with crystallization scoring and artifact export",
+      "NEXUS Organ — 14-provider AI routing with BYOK key management and automatic failover",
+      "DEFENSE Layer — Adaptive threat detection, rate limiting, and behavioral analysis",
+      "DREAM Engine — Autonomous learning synthesis during idle periods",
+      "VISION Agent — Real-time observability, telemetry dashboards, and health scoring",
+      "INCLUSIVE Agent — WCAG 2.2 accessibility scanning and AI-powered remediation",
+      "Composable Cognitives — Downloadable AI agents with persistent 4-tier memory",
+      "Capability Packs — Pre-configured execution bundles via the unified store",
+      "@cmpsbl npm Ecosystem — 11 open-source packages for substrate integration",
+      "DECODE Agent — Conversational AI interface with memory-backed context",
     ],
   },
   {
@@ -44,9 +44,9 @@ const sections = [
     content: "To access certain features, you may need to create an account. You agree to:",
     list: [
       "Provide accurate and complete information",
-      "Maintain the security of your account credentials",
+      "Maintain the security of your account credentials and API keys",
       "Notify us immediately of any unauthorized access",
-      "Accept responsibility for all activities under your account",
+      "Accept responsibility for all activities under your account, including API usage and Memory Stream interactions",
     ],
   },
   {
@@ -57,67 +57,74 @@ const sections = [
       "Violate any applicable laws or regulations",
       "Infringe on intellectual property rights",
       "Transmit malware or harmful code",
-      "Attempt to gain unauthorized access to systems",
+      "Attempt to gain unauthorized access to the substrate, primitives, or other users' data",
       "Engage in fraudulent or deceptive activities",
       "Harass, abuse, or harm others",
-      "Reverse-engineer, decompile, or attempt to extract source code from any engine or cognitive",
-      "Redistribute, sublicense, or resell purchased cognitives or engines without written permission",
+      "Reverse-engineer, decompile, or attempt to extract source code from any primitive, engine, or cognitive runtime",
+      "Redistribute, sublicense, or resell purchased cognitives, engines, or capability packs without written permission",
+      "Circumvent GOVERNANCE Layer enforcement, rate limits, or security controls",
     ],
   },
   {
     id: "ip",
     title: "5. Intellectual Property",
-    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, orchestration systems, capability packs, and composable Minds — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. You may not copy, modify, distribute, or create derivative works without express written permission.",
+    content: "All content, features, and functionality of our services — including but not limited to the CMPSBL platform architecture, 40-primitive substrate, Memory Stream discovery engine, orchestration systems, and Composable Cognitives — are owned by CMPSBL and protected by intellectual property laws. CMPSBL® is a registered trademark. The @cmpsbl npm packages are released under Apache-2.0 and governed by their respective license terms. You may not copy, modify, distribute, or create derivative works of proprietary components without express written permission.",
   },
   {
     id: "purchases",
-    title: "6. Composable Cognitives & Engine Purchases",
-    content: "Composable Cognitives and engines are delivered as downloadable capability packs. Upon purchase:",
+    title: "6. Cognitives & Capability Pack Purchases",
+    content: "Composable Cognitives and capability packs are delivered as downloadable execution bundles. Upon purchase:",
     list: [
       "You receive a perpetual, non-transferable license for personal or organizational use",
       "You may not redistribute, sublicense, or resell purchased capability packs",
+      "Memory Stream discoveries generated by your instance remain your intellectual property",
       "Refunds are handled according to our refund policy",
-      "CMPSBL retains all intellectual property rights in the underlying technology",
+      "CMPSBL retains all intellectual property rights in the underlying platform technology",
     ],
   },
   {
+    id: "npm",
+    title: "7. npm Package Terms",
+    content: "The @cmpsbl npm ecosystem (11 packages) is distributed under Apache-2.0. You may use, modify, and distribute these packages in accordance with the Apache-2.0 license. Contributions to the open-source packages are governed by the Contributor License Agreement. Commercial support and enterprise features beyond the open-source scope require a paid subscription.",
+  },
+  {
     id: "payment",
-    title: "7. Subscription & Payment Terms",
-    content: "For paid subscription tiers (Creator, Architect, Enterprise), you agree to pay all applicable fees at the published rate. We reserve the right to modify pricing with 30 days written notice. One-time purchases (Template Generator, Composable Cognitives) are non-recurring and governed by the license terms at time of purchase.",
+    title: "8. Subscription & Payment Terms",
+    content: "For paid subscription tiers (Creator, Architect, Enterprise), you agree to pay all applicable fees at the published rate. We reserve the right to modify pricing with 30 days written notice. One-time purchases (Composable Cognitives, capability packs) are non-recurring and governed by the license terms at time of purchase.",
   },
   {
     id: "availability",
-    title: "8. Service Availability",
-    content: "We strive to maintain high availability but do not guarantee uninterrupted access. We may modify, suspend, or discontinue services with reasonable notice when possible.",
+    title: "9. Service Availability",
+    content: "We strive to maintain high availability but do not guarantee uninterrupted access. The MEDIC Organ provides self-healing diagnostics, and the SYSTEM Organ manages configuration recovery. We may modify, suspend, or discontinue services with reasonable notice when possible.",
   },
   {
     id: "liability",
-    title: "9. Limitation of Liability",
-    content: "To the maximum extent permitted by law, CMPSBL shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services.",
+    title: "10. Limitation of Liability",
+    content: "To the maximum extent permitted by law, CMPSBL shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of our services, including but not limited to Memory Stream discoveries, AI routing decisions, or cognitive agent outputs.",
   },
   {
     id: "indemnification",
-    title: "10. Indemnification",
+    title: "11. Indemnification",
     content: "You agree to indemnify and hold harmless CMPSBL and its affiliates from any claims, losses, or damages arising from your use of our services or violation of these terms.",
   },
   {
     id: "termination",
-    title: "11. Termination",
-    content: "We may terminate or suspend your access to our services at our sole discretion, without notice, for conduct that we believe violates these terms or is harmful to other users.",
+    title: "12. Termination",
+    content: "We may terminate or suspend your access to our services at our sole discretion, without notice, for conduct that we believe violates these terms or is harmful to other users. Upon termination, you may request export of your Memory Stream data and stored artifacts.",
   },
   {
     id: "governing-law",
-    title: "12. Governing Law",
+    title: "13. Governing Law",
     content: "These terms shall be governed by the laws of the State of Texas, United States, without regard to conflict of law principles. Any disputes arising under these terms shall be resolved in the courts located in Dallas County, Texas.",
   },
   {
     id: "changes",
-    title: "13. Changes to Terms",
-    content: "We reserve the right to modify these terms at any time. We will provide notice of material changes. Continued use of our services after changes constitutes acceptance of the modified terms.",
+    title: "14. Changes to Terms",
+    content: "We reserve the right to modify these terms at any time. We will provide notice of material changes via email or platform notification. Continued use of our services after changes constitutes acceptance of the modified terms.",
   },
   {
     id: "contact",
-    title: "14. Contact Information",
+    title: "15. Contact Information",
     content: "For questions about these Terms of Service, please contact us at:",
     contact: true,
   },
@@ -174,7 +181,7 @@ export default function Terms() {
               <span className="text-xs font-semibold">Legal</span>
             </Badge>
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">Terms of Service</h1>
-            <p className="text-muted-foreground text-sm">Last updated: February 24, 2026</p>
+            <p className="text-muted-foreground text-sm">Last updated: March 27, 2026</p>
           </div>
 
           <div className="flex gap-8">

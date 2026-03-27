@@ -72,14 +72,14 @@ const PILLARS = [
 ];
 
 const SYSTEMS = [
-  { icon: Brain, name: "MEMORY", desc: "Multi-tier persistent recall" },
-  { icon: Moon, name: "DREAM", desc: "Offline synthesis cycles" },
-  { icon: Zap, name: "NEXUS", desc: "Intelligent multi-model router" },
-  { icon: Shield, name: "DEFENSE", desc: "Adaptive threat detection" },
-  { icon: Eye, name: "VISION", desc: "Real-time observability" },
-  { icon: GitBranch, name: "EVOLUTION", desc: "Governed self-improvement" },
-  { icon: Accessibility, name: "INCLUSIVE", desc: "WCAG 2.2 compliance" },
-  { icon: Sparkles, name: "STREAM", desc: "Crystallized software output" },
+  { icon: Brain, name: "MEMORY Organ", desc: "Multi-tier persistent recall" },
+  { icon: Moon, name: "DREAM Engine", desc: "Autonomous synthesis cycles" },
+  { icon: Zap, name: "NEXUS Organ", desc: "14-provider AI router" },
+  { icon: Shield, name: "DEFENSE Layer", desc: "Adaptive threat detection" },
+  { icon: Eye, name: "VISION Agent", desc: "Real-time observability" },
+  { icon: GitBranch, name: "EVOLUTION Layer", desc: "Governed self-improvement" },
+  { icon: Accessibility, name: "INCLUSIVE Agent", desc: "WCAG 2.2 compliance" },
+  { icon: Sparkles, name: "Memory Stream", desc: "Crystallized discovery output" },
 ];
 
 const DEPARTMENTS = [
