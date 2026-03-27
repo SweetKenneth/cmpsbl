@@ -88,6 +88,24 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           "No existing platform combines governance, evolution, and multi-agent coordination",
         ],
       },
+      {
+        heading: "What Makes CMPSBL Different",
+        content: "CMPSBL is not another AI wrapper, chatbot framework, or model fine-tuning service. It is the infrastructure layer beneath all of those — the cognitive operating system that provides memory, governance, security, evolution, and export capabilities to any AI application built on top of it. The closest analogy: AWS provides compute infrastructure; Stripe provides payment infrastructure; CMPSBL provides cognitive infrastructure.",
+      },
+      {
+        heading: "Proprietary Technology Stack",
+        bullets: [
+          "Memory Stream — autonomous discovery engine that finds new software capabilities without human direction",
+          "Ascension — single-file export engine producing IP-protected artifacts in 25 languages",
+          "Evolution Engine — self-improving codebase that fixed 166 production bugs for $0.06",
+          "DREAM Engine — background learning during idle time; the system gets smarter while you sleep",
+          "BRAIN Organ — 4-tier persistent memory with Constant Learning Mode (up to 14,400 AI calls/day)",
+          "DEFENSE Layer — enterprise-grade security with O(1) threat scoring built into the architecture",
+          "11 @cmpsbl NPM packages — cognitive capabilities packaged for the developer ecosystem",
+          "20 sealed-runtime Meta-Agents — autonomous cognitive workers with source-blocked IP protection",
+          "54 premium Meta-Engines — compound capability amplifiers with 2–8x synergy gains",
+        ],
+      },
     ],
   },
   {
