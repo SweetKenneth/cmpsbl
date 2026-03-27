@@ -1,7 +1,7 @@
 # 11 — Evolution Engine
 
 **Classification:** CONFIDENTIAL — Investor Use  
-**Document 11 of 15**
+**Document 11 of 18**
 
 ---
 
@@ -136,7 +136,7 @@ At current rates, 1,000 evolution cycles cost approximately $0.18. Continuous su
 | Series B (500K lines) | $75,000/yr | <$10/yr | **$75,000+** |
 | Enterprise (5M+ lines) | $800,000+/yr | <$100/yr | **$800,000+** |
 
-> Manual cost estimates based on $150/hr senior engineer rate, industry-average defect density of 15–50 bugs per 1,000 lines, and quarterly remediation cycles.
+> Manual cost estimates based on $150/hr senior engineer rate, industry-average defect density of 18–50 bugs per 1,000 lines, and quarterly remediation cycles.
 
 ---
 

@@ -1,7 +1,7 @@
 # 09 — Defensible Valuation of the CMPSBL Substrate
 
 **Classification:** CONFIDENTIAL — Investor Use  
-**Document 9 of 15**  
+**Document 9 of 18**  
 **Version:** v17.0.0 — BELIEVER Epoch  
 **Last Updated:** 2026-03-27
 
