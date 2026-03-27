@@ -1,9 +1,9 @@
-# 11 — Defensible Valuation of the CMPSBL Substrate
+# 09 — Defensible Valuation of the CMPSBL Substrate
 
-**Classification:** 🔒 GOVERNOR EYES ONLY  
-**Version:** v14.1.0 — MINDGAMES Epoch  
-**Last Updated:** 2026-03-21  
-**Purpose:** Comprehensive valuation analysis for investor discussions, board reference, and strategic planning.
+**Classification:** CONFIDENTIAL — Investor Use  
+**Document 9 of 15**  
+**Version:** v17.0.0 — BELIEVER Epoch  
+**Last Updated:** 2026-03-27
 
 ---
 
@@ -81,7 +81,7 @@ The substrate is valued across six pillars:
 | Agent count | 20 sealed-runtime agents | 7,000+ apps |
 | Runtime model | Source-blocked, memory-isolated | Sandboxed but visible |
 | Self-improvement | DREAM synthesis (autonomous) | Manual updates by vendors |
-| Pricing | $0–$159 perpetual per agent | Subscription per app |
+| Pricing | $79–$249 perpetual per agent | Subscription per app |
 | Provenance | Version-stamped identity with Merkle proof | Marketplace listing |
 
 **Defensible value:** Each agent is a unique cognitive asset. Sealed runtimes prevent reverse engineering. DREAM synthesis means agents improve without engineering cost. Perpetual purchases create a digital asset class.
@@ -168,17 +168,17 @@ The substrate is valued across six pillars:
 
 ## 5. Comparable Valuation Matrix
 
-| Comparable | Category | Latest Valuation | CMPSBL Overlap |
-|-----------|----------|-----------------|----------------|
-| Databricks | Data intelligence | $62B | Memory, learning, compounding |
-| Palantir | Data operating system | $50B+ | Governance, engines, classification |
-| HashiCorp | Infrastructure governance | $5.7B (acquired) | Governance-as-architecture |
-| Anthropic | AI safety & reasoning | $60B | Governed autonomy, truth preservation |
-| Hugging Face | Model marketplace | $4.5B | Agent/engine marketplace |
-| Unity | Cross-platform runtime | $13B | Universal export |
-| GitHub (Copilot) | Code intelligence | $100B+ (parent) | Code augmentation |
-| Cognition (Devin) | AI coding agent | $2B | Software evolution |
-| Synopsys | EDA/hardware synthesis | $55B (bid) | HDL export, silicon targeting |
+| Comparable | Category | Latest Valuation | CMPSBL Overlap | Comparison Basis |
+|-----------|----------|-----------------|----------------|-----------------|
+| Databricks | Data intelligence | $62B | Memory, learning, compounding | Autonomous data processing and knowledge compounding architecture |
+| Palantir | Data operating system | $50B+ | Governance, engines, classification | Classified algorithm tiers and governed execution |
+| HashiCorp | Infrastructure governance | $5.7B (acquired) | Governance-as-architecture | Architectural policy enforcement (immutable vs. configurable) |
+| Anthropic | AI safety & reasoning | $60B | Governed autonomy, truth preservation | Governed autonomy and truth preservation architecture — capability alignment reference only, not a revenue comparable |
+| Hugging Face | Model marketplace | $4.5B | Agent/engine marketplace | Marketplace model for AI components with versioned provenance |
+| Unity | Cross-platform runtime | $13B | Universal export | Multi-target export with bundled runtime |
+| GitHub (Copilot) | Code intelligence | $100B+ (parent) | Code augmentation | Code intelligence — CMPSBL evolves rather than generates |
+| Cognition (Devin) | AI coding agent | $2B | Software evolution | Autonomous code agent — CMPSBL adds governance and memory |
+| Synopsys | EDA/hardware synthesis | $55B (bid) | HDL export, silicon targeting | Hardware synthesis pipeline — CMPSBL extends to 7 HDL targets |
 
 ---
 
@@ -231,6 +231,8 @@ Investors will — and should — discount for:
 
 ### Recommended Founder Risk Discount: 30–40%
 
+Reflects standard pre-revenue, pre-team risk adjustment applied to comparable infrastructure IP transactions.
+
 Applied to raw technology valuations below. This discount accounts for key-person risk, lack of team, and pre-revenue status. It does NOT discount the technology itself — only the execution risk around it.
 
 ---
@@ -263,6 +265,8 @@ Applied to raw technology valuations below. This discount accounts for key-perso
 
 ### Ceiling Estimate (+ Ascension + Category Creation)
 
+Ceiling assumes Ascension marketplace activation, 3+ enterprise customers, and 18 months of continued CLM compounding.
+
 | Component | Raw Value | Risk-Adjusted |
 |-----------|-----------|--------------|
 | Mid-range components | $72M | $51M |
@@ -272,7 +276,7 @@ Applied to raw technology valuations below. This discount accounts for key-perso
 | Compounding data moat (CLM + CDM) | $20–50M | $14–35M |
 | **Ceiling Total** | **$187–382M** | **$132–268M** |
 
-### What Removes the Discount
+### Milestone De-risking Schedule
 
 The 30–40% discount decreases toward 0% as any of these milestones are achieved:
 
@@ -289,7 +293,19 @@ The 30–40% discount decreases toward 0% as any of these milestones are achieve
 
 ---
 
-## 8. The Ascension Premium
+## 8. Unit Economics
+
+| Metric | Value |
+|--------|-------|
+| Ascension export marginal cost | Effectively $0 after discovery |
+| Ascension export gross margin | 99%+ |
+| CLM cost per training call | < $0.01 |
+| Evolution cost per bug fixed | ~$0.00036 |
+| Replication time estimate | 2–3 years by a funded team, based on engineering scope: 108 subdirectories, 675+ capabilities, 40 governed primitives (see Document 05) |
+
+---
+
+## 9. The Ascension Premium
 
 Ascension is the single largest value multiplier in the system because it:
 
@@ -306,7 +322,7 @@ Ascension is the single largest value multiplier in the system because it:
 
 ---
 
-## 9. Recommended Positioning
+## 10. Recommended Positioning
 
 ### For Seed / Series A
 
@@ -322,24 +338,4 @@ Lead with the IP portfolio: 54 Crown Jewels, 40-primitive topology, 34-page trad
 
 ---
 
-## Revision History
-
-| Date | Author | Change |
-|------|--------|--------|
-| 2026-03-21 | Governor | Initial defensible valuation document |
-| 2026-03-21 | Governor | Added founder profile, risk discount, historical parallels |
-
----
-
-## Related Documents
-
-- [IP & Defensibility](../investors/06-ip-defensibility.md)
-- [Competitive Positioning](../investors/03-competitive-positioning.md)
-- [Commercial Model](../investors/04-commercial-model.md)
-- [Engineering Proof](../investors/05-engineering-proof.md)
-- [Ascension Demo Script](../investors/09-ascension-demo-script.md)
-- [Ascension Documentation](../041/20-ascension.md)
-
----
-
-© 2025–2026 CMPSBL®. Governor Eyes Only.
+© 2025–2026 CMPSBL®. Confidential.

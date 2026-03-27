@@ -24,18 +24,29 @@ This library provides investors, advisors, and potential partners with a compreh
 | 07 | [Governance & Risk](07-governance-risk.md) | Risk classification, mitigation, governance model |
 | 08 | [Survivability & Continuity](08-survivability.md) | Succession protocol, minimum viable operation, self-sufficiency |
 | 09 | [Defensible Valuation](09-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium |
-| 10 | [Use of Funds & GTM](10-use-of-funds-gtm.md) | Capital allocation, go-to-market strategy, hiring plan, 18-month execution roadmap |
+| 10 | [Ascension Demo Script](10-ascension-demo-script.md) | Step-by-step narration for live Ascension demonstrations |
 | 11 | [Evolution Engine](11-evolution-engine.md) | Self-improving software: 166 bugs fixed for $0.06, engine benchmarks, market opportunity |
-| 12 | [Why Invest Now](12-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
+| 12 | [Ascension: The Software Product Factory](12-ascension-product-factory.md) | Upload → classify → score → export as IP-protected artifact in 25 languages |
+| 13 | [Memory Stream: The Discovery Engine](13-memory-stream.md) | Autonomous pipeline crystallization every 8 hours |
+| 14 | [DREAM Engine: The Compounding Intelligence Layer](14-dream-engine.md) | Cross-agent knowledge consolidation during idle cycles |
+| 15 | [Why Invest Now](15-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
 
 ---
 
 ## Recent Updates (v17.0.0)
 
-- **Use of Funds & GTM** — New document replacing Ascension Demo Script; covers capital allocation, hiring, IP protection, and phased GTM
-- **Commercial Model** — Updated to reflect 5-tier pricing (Builder/Studio/Creator/Architect/Governor)
-- **IP & Defensibility** — Added black-box hex-encoding details for exported artifacts
-- **Executive Summary** — Aligned revenue streams with current pricing and export model
+- **Deck expanded** from 12 to 15 documents — added Ascension Product Factory, Memory Stream, and DREAM Engine
+- **Executive Summary** — Restructured with lead problem statement, AWS/Stripe analogy, traction section, Ascension-first stack ordering
+- **Technology Architecture** — Added Ascension Engine, capability definition, "Defending the Six Properties" table, prior art footnote
+- **Competitive Positioning** — Added named competitor table with hyperscaler row and Ascension export column
+- **Commercial Model** — Revenue projections, Governor pricing clarified, Ascension/Memory Stream value callouts
+- **Engineering Proof** — Architectural constraints lead, interpretive headers, verification timestamps, single-engineer attribution
+- **IP & Defensibility** — Protection status column, export comparison snippet, patent strategy, Crown Jewel/Engine distinction
+- **Governance & Risk** — New risk rows (funding, privacy, competitive), EU AI Act classification, traction-based mitigations
+- **Survivability** — Expanded succession narrative, dead-man switch details, autonomous runtime duration, IP recovery times
+- **Defensible Valuation** — Comparison basis column, milestone de-risking schedule, margin context, rebuild time basis
+- **Evolution Engine** — Cycle gap explanation, cost methodology, TAM sources, total row, documentation-grade language
+- **Why Invest Now** — Pre-scale revenue framing, Memory Stream inclusion, hiring plan alignment, concrete compounding data, contact block
 
 ---
 

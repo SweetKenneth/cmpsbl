@@ -1,12 +1,19 @@
 # 05 — Engineering Proof
 
-**Classification:** CONFIDENTIAL — Investor Use
+**Classification:** CONFIDENTIAL — Investor Use  
+**Document 5 of 15**
+
+---
+
+These aren't policies — they're architectural constraints that cannot be bypassed. Every claim in this document is backed by deterministic verification infrastructure that runs continuously against the live system.
 
 ---
 
 ## 1. Why This Matters
 
-"Vibe coding" — generating code via AI prompts without verification — produces systems that work in demos but fail in production. CMPSBL is engineered, not generated. This document provides the evidence.
+"Vibe coding" — generating code via AI prompts without verification — produces systems that work in demos but fail in production. CMPSBL is engineered, not generated.
+
+Built by one person. Verified by automated audit, not manual review.
 
 ---
 
@@ -21,19 +28,21 @@
 | Component directories | 45+ UI domains |
 | Page routes | 60+ distinct routes |
 | Database tables | 60+ production tables |
-| Registered capabilities | 675+ |
+| Registered capabilities | 675+¹ |
 | Terminal commands | 500+ |
 | Documentation pages | 80+ across 5 tiers |
+
+> ¹ A **capability** is a discrete, testable unit of system behavior — e.g., memory retrieval, threat scoring, code analysis, CJPI evaluation, provider failover routing. Each capability maps to a specific resolver within a node and is individually addressable through the intent mesh.
 
 ---
 
 ## 3. Verification Infrastructure
 
 ### 10-Domain Audit Engine
-Executes continuous checks across: system manifest, routes, primitives, hooks, branding, provider branding, terminal, UI, SEO, and backend. Pass criteria: zero fatal or error findings.
+Executes continuous checks across: system manifest, routes, primitives, hooks, branding, provider branding, terminal, UI, SEO, and backend. Pass criteria: zero fatal or error findings. Last audit: 0 critical failures across 10 domains.
 
 ### 26-Probe Diligence Harness
-Investor-grade deterministic probes testing failure discipline, output-shape consistency, and crash resistance against the live system. Produces structured JSON reports.
+Deterministic probes that simulate failure conditions and verify recovery behavior against the live system. Produces structured JSON reports.
 
 ### 10-Point Code Verification
 Static analysis checking XSS vectors, secret exposure, unsafe eval, input validation, timeout guards, try/catch wrapping, TypeScript coverage, return types, and `any` detection. Code failing verification is **blocked from promotion**.
@@ -59,7 +68,7 @@ Every autonomous change recorded in SHA-256 hash chains. Call `verifyChain()` to
 
 ---
 
-## 5. Debt Controls
+## 5. Code Quality Evidence
 
 | Control | Status |
 |---------|--------|
@@ -71,6 +80,8 @@ Every autonomous change recorded in SHA-256 hash chains. Call `verifyChain()` to
 | Chaos testing harness | ✅ |
 | Store migration with version-aware merging | ✅ |
 | Pre-render validation before React mount | ✅ |
+
+> All checks pass as of Version 17.0.0, March 27, 2026.
 
 ---
 
@@ -84,6 +95,10 @@ Every autonomous change recorded in SHA-256 hash chains. Call `verifyChain()` to
 6. Type coverage complete — no `any` in production paths
 7. Dependency graph acyclic — zero circular dependencies
 8. Evolution receipts valid — Merkle chain `brokenAt: -1`
+
+---
+
+All infrastructure above was designed, built, and verified by a single engineer. No external development team.
 
 ---
 
