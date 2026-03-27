@@ -560,7 +560,7 @@ export const seoMap: Record<string, PageSEO> = {
     ogTitle: 'STUDIO — Autonomous Site Generator',
     ogDescription: 'Production-ready web apps via cognitive pipelines and design AI.',
     ogImage: OG_FEATURE,
-    keywords: ['autonomous site generator', 'cognitive web builder', 'design intelligence', 'continuous deployment', 'STUDIO module'],
+    keywords: ['autonomous site generator', 'cognitive web builder', 'design intelligence', 'continuous deployment', 'STUDIO primitive'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'autonomous site generation module',
@@ -571,7 +571,7 @@ export const seoMap: Record<string, PageSEO> = {
     ogTitle: 'VERIFY — Plugin Safety Certification',
     ogDescription: 'Certify plugin safety, performance, and compatibility.',
     ogImage: OG_FEATURE,
-    keywords: ['plugin certification', 'safety validation', 'performance benchmarks', 'compatibility testing', 'VERIFY module'],
+    keywords: ['plugin certification', 'safety validation', 'performance benchmarks', 'compatibility testing', 'VERIFY primitive'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'AI plugin safety certification',
@@ -582,7 +582,7 @@ export const seoMap: Record<string, PageSEO> = {
     ogTitle: 'INCLUSIVE — Accessibility Automation',
     ogDescription: 'Automated WCAG compliance and AI-powered remediation.',
     ogImage: OG_FEATURE,
-    keywords: ['accessibility automation', 'WCAG compliance AI', 'real-time accessibility audit', 'remediation engine', 'INCLUSIVE module'],
+    keywords: ['accessibility automation', 'WCAG compliance AI', 'real-time accessibility audit', 'remediation engine', 'INCLUSIVE primitive'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'automated accessibility compliance',
@@ -597,7 +597,7 @@ export const seoMap: Record<string, PageSEO> = {
     ogTitle: 'ENCODE — Substrate Code Agent',
     ogDescription: 'Code intelligence with full substrate awareness.',
     ogImage: OG_FEATURE,
-    keywords: ['code intelligence agent', 'autonomous refactoring', 'system-aware coding', 'substrate code generation', 'ENCODE module'],
+    keywords: ['code intelligence agent', 'autonomous refactoring', 'system-aware coding', 'substrate code generation', 'ENCODE primitive'],
     schema: 'product',
     intent: 'Feature/Capability',
     primaryKeyword: 'substrate code intelligence agent',
@@ -1075,7 +1075,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/blog/promptfluid-ripple-network-integration': {
     title: 'RIPPLE: Distributed Event Propagation',
-    description: 'Distributed coordination and multi-agent communication patterns powering cross-module event propagation across substrate categories.',
+    description: 'Distributed coordination and multi-agent communication patterns powering cross-primitive event propagation across substrate categories.',
     ogTitle: 'RIPPLE — Event Propagation',
     ogDescription: 'Distributed coordination and event propagation for agents.',
     ogImage: OG_BLOG,
@@ -1600,11 +1600,11 @@ export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
   '/substrate': {
     title: 'Substrate Dashboard — Live Control | CMPSBL',
-    description: 'Monitor and control every node across all categories. Real-time health, node actions, and telemetry for the cognitive substrate.',
+    description: 'Monitor and control every primitive across all categories. Real-time health, primitive actions, and telemetry for the cognitive substrate.',
     ogTitle: 'Substrate Dashboard — Live Control',
-    ogDescription: 'Real-time node control, health, and telemetry.',
+    ogDescription: 'Real-time primitive control, health, and telemetry.',
     ogImage: OG_SUBSTRATE,
-    keywords: ['substrate dashboard', 'cognitive telemetry', 'node health', 'category monitoring', 'live control'],
+    keywords: ['substrate dashboard', 'cognitive telemetry', 'primitive health', 'category monitoring', 'live control'],
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'substrate live dashboard control',
@@ -1622,7 +1622,7 @@ export const seoMap: Record<string, PageSEO> = {
   },
   '/status': {
     title: 'System Status — Live Health | CMPSBL',
-    description: 'Live operational status for all substrate nodes, edge functions, API endpoints, and infrastructure services across every category.',
+    description: 'Live operational status for all substrate primitives, edge functions, API endpoints, and infrastructure services across every category.',
     ogTitle: 'System Status — Live Health',
     ogDescription: 'Live operational status for all substrate services.',
     ogImage: OG_SUBSTRATE,
@@ -1655,15 +1655,15 @@ export function getSEO(path: string): PageSEO {
 
   if (path.startsWith('/modules/')) {
     return {
-      title: 'Node Detail — Substrate Architecture | CMPSBL',
-      description: 'Explore this substrate node: category placement, capabilities, synergies, and integration guides for autonomous discovery pipelines.',
-      ogTitle: 'Substrate Node — CMPSBL',
-      ogDescription: 'Node architecture, capabilities, and integration guides.',
+      title: 'Primitive Detail — Substrate Architecture | CMPSBL',
+      description: 'Explore this substrate primitive: category placement, capabilities, synergies, and integration guides for autonomous discovery pipelines.',
+      ogTitle: 'Substrate Primitive — CMPSBL',
+      ogDescription: 'Primitive architecture, capabilities, and integration guides.',
       ogImage: OG_FEATURE,
-      keywords: ['substrate node', 'category architecture', 'node integration'],
+      keywords: ['substrate primitive', 'category architecture', 'primitive integration'],
       schema: 'feature',
       intent: 'Feature/Capability',
-      primaryKeyword: 'substrate node detail',
+      primaryKeyword: 'substrate primitive detail',
     };
   }
 
