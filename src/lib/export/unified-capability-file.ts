@@ -1415,14 +1415,7 @@ function cmpsbl_execute_pipeline(array $input, array $chain, array $meta): array
 // ║  §4 — CAPABILITY API                                                         ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-define('CMPSBL_PACK_META', ${JSON.stringify({
-    name: packName,
-    capabilities: capabilities.map(c => ({
-      name: c.name, cjpi: c.cjpiScore, tier: c.tier, chain: c.chain,
-      fingerprint: c.fingerprint.slice(0, 12).toUpperCase(),
-    })),
-    modules: allModules,
-  }, null, 4)});
+${generatePhpPackMeta(capabilities, allModules, packName)}
 
 class CMPSBLCapability
 {
