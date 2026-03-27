@@ -8,7 +8,7 @@ import {
   ArrowLeft, ChevronRight, Printer, BookOpen,
   Target, Brain, BarChart3, Users, Zap, Shield,
   AlertTriangle, Sparkles, GitBranch, Globe, Cpu,
-  Lock, FileText, Layers
+  Lock, FileText, Layers, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -776,8 +776,296 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     ],
   },
   {
-    id: "why-invest",
+    id: "ascension-factory",
     number: "12",
+    title: "Ascension: The Software Product Factory",
+    subtitle: "Upload code → export IP-protected artifacts in 25 languages",
+    icon: <Sparkles className="w-4 h-4" />,
+    accentClass: "text-primary border-primary/20 bg-primary/5",
+    sections: [
+      {
+        heading: "What It Does",
+        content: "Upload any code → classify its archetype → filter and score capabilities via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 25 languages. Already built. Already functional.",
+      },
+      {
+        heading: "Why It's Irreplicable",
+        content: "Hex-encoded CJPI weights, stripped comments, genericized naming, and sealed discovery heuristics mean decompilation reveals nothing. The export protects the IP of both CMPSBL and the customer. No competitor offers 25-language single-file IP-protected artifact export.",
+      },
+      {
+        heading: "Commercial Model",
+        content: "Included in Architect tier ($79/mo) and above. Near-zero marginal cost per export. Every export is a revenue event for the customer — a standalone sellable product produced by a $79/mo subscription. Value ratio: a single CJPI 93 APEX export represents up to $992K in developer replacement cost.",
+      },
+      {
+        heading: "Market Position",
+        content: "<strong>Comparable:</strong> Unity cross-platform export ($13B valuation). Ascension does for software capabilities what Unity does for game builds — universal export with zero platform dependency. No direct competitor exists.",
+      },
+      {
+        heading: "Key Insight",
+        callout: {
+          label: "The Takeaway",
+          text: "Ascension transforms CMPSBL from a platform into a software product factory. Every developer becomes 10x. Every script becomes a portable, sellable product.",
+          variant: "primary",
+        },
+      },
+    ],
+  },
+  {
+    id: "memory-stream",
+    number: "13",
+    title: "Memory Stream: The Discovery Engine",
+    subtitle: "Autonomous pipeline crystallization every 8 hours",
+    icon: <Brain className="w-4 h-4" />,
+    accentClass: "text-primary border-primary/20 bg-primary/5",
+    sections: [
+      {
+        heading: "What It Does",
+        content: "Autonomous pipeline crystallization engine running every 8 hours without human intervention. Observes system behavior, identifies viable software pipelines, scores them via CJPI, and crystallizes discoveries into exportable memories. The system finds what humans can't.",
+      },
+      {
+        heading: "Discovery Tiers",
+        table: {
+          headers: ["Tier", "CJPI Range", "Discovery Value", "Status"],
+          rows: [
+            ["Mint", "30–49", "Functional, basic utility", "Active"],
+            ["Prime", "50–64", "Production-viable", "Active"],
+            ["Relic", "65–79", "High-value, compound potential", "Active"],
+            ["Mythic", "80–89", "Rare, multi-domain synthesis", "Active"],
+            ["Apex", "90–100", "Maximum value — up to $2.9M each", "Active"],
+          ],
+        },
+      },
+      {
+        heading: "Why It's Irreplicable",
+        content: "The discovery corpus accumulated to date is irreproducible. A competitor rebuilding the architecture starts from zero discoveries. Memory Stream's corpus represents months of autonomous observation that compounds daily. Every 8-hour cycle adds new pipeline discoveries that can never be replicated by starting fresh.",
+      },
+      {
+        heading: "Commercial Significance",
+        content: "Every Memory Stream discovery is a potential product. The system autonomously expands CMPSBL's sellable catalog without engineering labor. Discovery corpus is a proprietary data moat that widens every 8 hours.",
+      },
+      {
+        heading: "Key Insight",
+        callout: {
+          label: "The Takeaway",
+          text: "Memory Stream doesn't just find bugs — it finds value. Every 8 hours, the system crystallizes new pipelines worth up to $2.9M each in developer replacement cost. The catalog writes itself.",
+          variant: "success",
+        },
+      },
+    ],
+  },
+  {
+    id: "dream-engine",
+    number: "14",
+    title: "DREAM Engine: Compounding Intelligence",
+    subtitle: "Autonomous idle-time knowledge consolidation",
+    icon: <Eye className="w-4 h-4" />,
+    accentClass: "text-primary border-primary/20 bg-primary/5",
+    sections: [
+      {
+        heading: "What It Does",
+        content: "Autonomous idle-time knowledge consolidation engine. During low-activity periods, DREAM synthesizes memories across agents, consolidates learned patterns, and distributes insights to the full agent fleet. Every agent gets smarter from every other agent's experience.",
+      },
+      {
+        heading: "Why It's Unique",
+        content: "No other platform performs background cognitive compounding at the architectural level. DREAM runs without human direction, without API calls during active sessions, and without any operator input. It is the substrate teaching itself.",
+      },
+      {
+        heading: "Compounding Effect",
+        bullets: [
+          "Agent A learns a pattern → DREAM synthesizes it during idle cycle",
+          "Agents B through T inherit the insight automatically",
+          "20 agents compounding across every idle cycle",
+          "Fleet collective intelligence grows faster than any individual agent could alone",
+        ],
+      },
+      {
+        heading: "Moat Contribution",
+        table: {
+          headers: ["Engine", "Cycle", "Output"],
+          rows: [
+            ["CLM", "14,400 training calls/day", "Permanent knowledge distillation"],
+            ["Memory Stream", "Every 8 hours", "New pipeline discoveries"],
+            ["DREAM", "Every idle cycle", "Cross-agent intelligence synthesis"],
+          ],
+        },
+      },
+      {
+        heading: "Key Insight",
+        callout: {
+          label: "The Takeaway",
+          text: "DREAM is the substrate teaching itself. No operator required. No API cost during consolidation. Pure compounding intelligence — the moat widens every time the system rests.",
+          variant: "success",
+        },
+      },
+    ],
+  },
+  {
+    id: "defense",
+    number: "15",
+    title: "DEFENSE: Cognitive Security Mesh",
+    subtitle: "Zero-trust, defense-in-depth autonomous security",
+    icon: <Shield className="w-4 h-4" />,
+    accentClass: "text-primary border-primary/20 bg-primary/5",
+    sections: [
+      {
+        heading: "What It Does",
+        content: "DEFENSE is CMPSBL's autonomous security layer — a cognitive firewall that assesses every inbound request for threat level, enforces zero-trust boundaries across all 40 primitives, and provides defense-in-depth protection without manual security configuration.",
+      },
+      {
+        heading: "Security Architecture",
+        table: {
+          headers: ["Layer", "Protection", "Mechanism"],
+          rows: [
+            ["Perimeter", "Inbound threat assessment", "Real-time scoring of every request before routing"],
+            ["Zone", "40-primitive zone shielding", "Independent circuit breakers per zone"],
+            ["Tenant", "Data isolation", "Row-Level Security (RLS) at the database level"],
+            ["Agent", "Runtime isolation", "Source-blocked, memory-isolated sealed runtimes"],
+            ["Audit", "Tamper-evident provenance", "Merkle chain SHA-256 — every action cryptographically chained"],
+            ["Encryption", "Data protection", "AES-256 at rest, TLS 1.3 in transit, AES-GCM for secrets"],
+          ],
+        },
+      },
+      {
+        heading: "What DEFENSE Prevents",
+        bullets: [
+          "Prompt injection — cognitive firewall scores and blocks adversarial inputs",
+          "Privilege escalation — Crown Jewel capabilities structurally isolated from all external tiers",
+          "Data exfiltration — tenant isolation enforced at database level, not application level",
+          "Agent escape — sealed runtimes with source blocking prevent agents from accessing system internals",
+          "Audit tampering — Merkle chain integrity means retroactive modification is cryptographically detectable",
+          "Cascade failure — Ironclad hardening fabric with zone-independent circuit breakers",
+        ],
+      },
+      {
+        heading: "Competitive Differentiation",
+        table: {
+          headers: ["Capability", "CMPSBL DEFENSE", "Typical AI Platform"],
+          rows: [
+            ["Security model", "Zero-trust, defense-in-depth", "Perimeter only"],
+            ["Threat assessment", "Per-request, real-time scoring", "None or rate-limiting only"],
+            ["Tenant isolation", "Database-level RLS", "Application-level (bypassable)"],
+            ["Agent containment", "Sealed runtime, source-blocked", "Sandboxed but visible"],
+            ["Audit integrity", "Merkle chain, tamper-evident", "Append-only logs"],
+          ],
+        },
+      },
+      {
+        heading: "Key Insight",
+        callout: {
+          label: "The Takeaway",
+          text: "DEFENSE is not a feature bolted onto the substrate — it is the substrate's immune system. Every request is scored, every zone is shielded, every action is chained. Security is architectural, not configurable.",
+          variant: "warning",
+        },
+      },
+    ],
+  },
+  {
+    id: "nexus",
+    number: "16",
+    title: "NEXUS: Intelligent Multi-Provider Routing",
+    subtitle: "14+ AI providers, automatic failover, zero vendor lock-in",
+    icon: <Cpu className="w-4 h-4" />,
+    accentClass: "text-primary border-primary/20 bg-primary/5",
+    sections: [
+      {
+        heading: "What It Does",
+        content: "NEXUS is CMPSBL's intelligent AI routing infrastructure. Every API call passes through NEXUS, which dynamically selects the optimal provider across 14+ integrated AI models based on cost, latency, capability, and availability. No vendor lock-in. No single point of failure. No runaway API costs.",
+      },
+      {
+        heading: "Routing Capabilities",
+        table: {
+          headers: ["Capability", "Detail"],
+          rows: [
+            ["Integrated providers", "14+ — OpenAI, Anthropic, Groq, Cerebras, and more"],
+            ["Dynamic cost optimization", "Routes to lowest-cost capable provider per request type"],
+            ["Latency management", "Routes to fastest available provider under load"],
+            ["BYOK support", "Customers bring their own API keys; CMPSBL never holds provider credentials"],
+            ["Automatic failover", "Provider outage triggers instant rerouting with no downtime"],
+            ["Free-tier fallback fleet", "14+ free-tier providers ensure near-zero cost operation at baseline"],
+          ],
+        },
+      },
+      {
+        heading: "Enterprise Relevance",
+        content: "NEXUS directly eliminates the most common enterprise objection to AI infrastructure: vendor dependency. A customer using CMPSBL is not betting on OpenAI, Anthropic, or any single provider. They are betting on the substrate — which routes intelligently across all of them.",
+      },
+      {
+        heading: "Cost Efficiency",
+        content: "BYOK model means near-zero AI provider costs for CMPSBL at scale. Free-tier fallback fleet means the Evolution Engine, CLM, and Memory Stream run continuous cycles at effectively $0 provider cost. The $0.06 for 166 bug fixes was possible because NEXUS routed intelligently to free-tier providers.",
+      },
+      {
+        heading: "Key Insight",
+        callout: {
+          label: "The Takeaway",
+          text: "NEXUS means CMPSBL is never one provider outage away from failure. The substrate routes around problems automatically — no human intervention, no downtime, no vendor dependency.",
+          variant: "primary",
+        },
+      },
+    ],
+  },
+  {
+    id: "npm-ecosystem",
+    number: "17",
+    title: "@cmpsbl NPM Ecosystem",
+    subtitle: "11 published packages — cognitive infrastructure for developers",
+    icon: <Layers className="w-4 h-4" />,
+    accentClass: "text-primary border-primary/20 bg-primary/5",
+    sections: [
+      {
+        heading: "What It Is",
+        content: "11 published NPM packages offering capabilities that have never existed in the developer ecosystem before. Cognitive memory, governed evolution, sealed agents, and autonomous learning — available via a single <code>npm install</code>. Every package is a distribution wedge and a moat-widening event.",
+      },
+      {
+        heading: "Tier 1 — Core Infrastructure",
+        table: {
+          headers: ["Package", "Capability", "What's New to NPM"],
+          rows: [
+            ["@cmpsbl/types", "Schemas, interfaces, type definitions", "First governed cognitive type system — 40-primitive topology types"],
+            ["@cmpsbl/runtime", "Mini-Runtime™ execution engine", "First embeddable cognitive runtime with CJPI scoring"],
+            ["@cmpsbl/sdk", "Unified substrate interface", "First single-import cognitive orchestration SDK"],
+          ],
+        },
+      },
+      {
+        heading: "Tier 2 — Cognitive Primitives",
+        table: {
+          headers: ["Package", "Capability", "What's New to NPM"],
+          rows: [
+            ["@cmpsbl/intent", "Intent resolution and routing", "First architectural intent mesh — broadcastIntent()"],
+            ["@cmpsbl/mesh", "Primitive-to-primitive comms", "First inter-primitive cognitive signaling protocol"],
+            ["@cmpsbl/bridge", "Polyglot execution bridge", "First 25-language cognitive bridge — software to HDL"],
+          ],
+        },
+      },
+      {
+        heading: "Tier 3 & 4 — Intelligence & Operations",
+        table: {
+          headers: ["Package", "Capability", "What's New to NPM"],
+          rows: [
+            ["@cmpsbl/discovery", "Constant Discovery Mode (CDM)", "First autonomous pipeline crystallization engine"],
+            ["@cmpsbl/react", "React hooks for substrate", "First React bindings for cognitive memory & governance"],
+            ["@cmpsbl/cli", "Infrastructure management CLI", "First cognitive substrate CLI — init, evolve, discover, export"],
+            ["@cmpsbl/failsafe", "Disaster recovery", "First one-click cognitive system backup/restore"],
+            ["@cmpsbl/test-harness", "Verification probes", "First 26-probe deterministic cognitive system verification"],
+          ],
+        },
+      },
+      {
+        heading: "Traction",
+        content: "~2,000 downloads in under a week with zero paid marketing. 100% organic. Developer discovery without a brand agency, without a sales team, without advertising.",
+      },
+      {
+        heading: "Key Insight",
+        callout: {
+          label: "The Takeaway",
+          text: "2,000 downloads in under a week with no marketing budget. Every download is a developer who found CMPSBL because the capabilities don't exist anywhere else. That's not traction — that's product-market fit signaling.",
+          variant: "success",
+        },
+      },
+    ],
+  },
+  {
+    id: "why-invest",
+    number: "18",
     title: "Why Invest Now",
     subtitle: "The case for early participation in CMPSBL",
     icon: <Globe className="w-4 h-4" />,
@@ -785,14 +1073,14 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     sections: [
       {
         heading: "The Opportunity",
-        content: "CMPSBL is pre-revenue with a fully built, production-running platform. This is the earliest possible entry point for investors — maximum upside with technology risk already eliminated. The substrate runs, the evolution engine works, the marketplace is priced, and the export system produces real artifacts.",
+        content: "CMPSBL is pre-scale revenue with paying subscribers already in checkout. The platform is fully built, production-running, and discoverable. This is the earliest possible entry point for investors — maximum upside with technology risk already eliminated. Memory Stream produces pipeline artifacts valued at up to $2.9M per discovery, already in service, running every 8 hours.",
       },
       {
         heading: "What's Built vs. What's Planned",
         table: {
           headers: ["Status", "Items", "Significance"],
           rows: [
-            ["✅ Built & Running", "40-node substrate, 675+ capabilities, evolution engine, marketplace, 25-language export, governance, security mesh", "Core product is complete"],
+            ["✅ Built & Running", "40-primitive substrate, 675+ capabilities, evolution engine, marketplace, 25-language export, governance, security mesh, Memory Stream", "Core product is complete"],
             ["✅ Validated", "166 bugs auto-fixed for $0.06, ENCODE 100% apply rate, CLM training pipeline", "Technology works in production"],
             ["🔄 In Progress", "Federation (multi-substrate), additional agent development", "Growth expansion"],
             ["📋 Planned", "Silicon export (FPGA/ASIC), enterprise partnerships", "Long-term differentiation"],
@@ -813,14 +1101,14 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "What We Need",
-        content: "Seed funding to accelerate go-to-market, hire the first 3 engineers, and onboard pilot enterprise customers. The technology is built. The documentation is complete. The moat is widening daily through CLM and evolution. What's needed is fuel for distribution.",
+        content: "Seed funding to accelerate go-to-market, hire the first two key roles and engage a brand agency. The technology is built. The documentation is complete. The moat is widening daily through CLM and evolution. What's needed is fuel for distribution.",
       },
       {
         heading: "First Mover Advantage",
-        callout: { 
-          label: "The Window", 
-          text: "Every day CMPSBL runs, the Brain learns more, the evolution engine fixes more bugs, and the Memory Stream discovers more capabilities. Early investors benefit from a moat that literally grows while you sleep.", 
-          variant: "success" 
+        callout: {
+          label: "The Window",
+          text: "CLM runs 14,400 training calls per day. Memory Stream crystallizes new pipelines every 8 hours. The compounding gap between CMPSBL and any future competitor widens measurably every 24 hours. Early investors benefit from a moat that literally grows while you sleep.",
+          variant: "success",
         },
       },
     ],
