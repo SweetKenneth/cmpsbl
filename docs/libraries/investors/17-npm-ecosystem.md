@@ -26,7 +26,7 @@
 | Package | Capability | What's New to NPM |
 |---------|-----------|-------------------|
 | `@cmpsbl/intent` | Intent resolution and routing | First architectural intent mesh — broadcastIntent() for cognitive systems |
-| `@cmpsbl/mesh` | Node-to-node communications | First inter-node cognitive signaling protocol |
+| `@cmpsbl/mesh` | Primitive-to-primitive communications | First inter-primitive cognitive signaling protocol |
 | `@cmpsbl/bridge` | Polyglot execution bridge | First 25-language cognitive bridge — software to HDL |
 
 ### Tier 3 — Intelligence Layer

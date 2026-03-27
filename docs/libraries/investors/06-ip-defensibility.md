@@ -17,7 +17,7 @@ Based on public documentation and competitive analysis as of March 2026, no othe
 | Convergence & synthesis formulas | Trade Secret / Common Law IP |
 | Discovery heuristics | Trade Secret / Common Law IP |
 | Memory compounding engines | Trade Secret / Common Law IP |
-| Evolution mutation pipeline | Trade Secret / Common Law IP |
+| Evolution mutation memory chain | Trade Secret / Common Law IP |
 | Agent cognitive architecture | Trade Secret / Common Law IP |
 
 - **Excluded** from all external access tiers
@@ -85,7 +85,7 @@ const CJPI_WEIGHTS = {
   novelty: 30,      // Discovery uniqueness score
   utility: 30,      // Practical application weight
   complexity: 20,   // Implementation depth factor
-  composability: 20 // Cross-node synergy potential
+  composability: 20 // Cross-primitive synergy potential
 };
 
 // EXPORTED (hex-encoded artifact)

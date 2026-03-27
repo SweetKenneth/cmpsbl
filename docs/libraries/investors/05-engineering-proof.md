@@ -32,7 +32,7 @@ Built by one person. Verified by automated audit, not manual review.
 | Terminal commands | 500+ |
 | Documentation pages | 80+ across 5 tiers |
 
-> ¹ A **capability** is a discrete, testable unit of system behavior — e.g., memory retrieval, threat scoring, code analysis, CJPI evaluation, provider failover routing. Each capability maps to a specific resolver within a node and is individually addressable through the intent mesh.
+> ¹ A **capability** is a discrete, testable unit of system behavior — e.g., memory retrieval, threat scoring, code analysis, CJPI evaluation, provider failover routing. Each capability maps to a specific resolver within a primitive and is individually addressable through the intent mesh.
 
 ---
 
@@ -91,7 +91,7 @@ Every autonomous change recorded in SHA-256 hash chains. Call `verifyChain()` to
 2. Diligence passes — all 26 probes non-crashing
 3. Boot integrity verified — hash chain unbroken
 4. Entropy trending down — evolution ledger shows decreasing disorder
-5. No orphaned primitives — all 40 nodes respond to pulse
+5. No orphaned primitives — all 40 primitives respond to pulse
 6. Type coverage complete — no `any` in production paths
 7. Dependency graph acyclic — zero circular dependencies
 8. Evolution receipts valid — Merkle chain `brokenAt: -1`

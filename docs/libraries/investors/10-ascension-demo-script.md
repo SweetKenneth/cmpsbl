@@ -101,7 +101,7 @@ Point to the "After Ascension" summary.
 
 ### Act 6 — The Export Insight (1 minute)
 
-> "What comes out is a single file — `cmpsbl.ts` or `cmpsbl.py` or `cmpsbl.rs` — containing four sections: a Mini-Runtime for scoring, the module effects, a bridge executor, and the public API. Zero dependencies. Zero external calls."
+> "What comes out is a single file — `cmpsbl.ts` or `cmpsbl.py` or `cmpsbl.rs` — containing four sections: a Mini-Runtime for scoring, the primitive effects, a bridge executor, and the public API. Zero dependencies. Zero external calls."
 
 > "The proprietary logic — our CJPI weights, tier thresholds — is hex-encoded. The file works perfectly, but reveals nothing about how we discover or score capabilities internally."
 

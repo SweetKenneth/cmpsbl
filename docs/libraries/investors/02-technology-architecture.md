@@ -7,18 +7,16 @@
 
 ## 1. System Design
 
-CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 12 categorys. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
+CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 4 categories using a symmetric 12·12·8·8 architecture. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
 
 ### Topology
 
-| Category | Primitives | Weight | Purpose |
-|--------|-------|--------|---------|
-| Spine (CORE, SYSTEM, CCR) | 5 | 0.260 | Kernel, lifecycle, reasoning, memory, synthesis |
-| Operational Grid (OCG) | 6 | 0.140 | Auth, compliance, audit, event routing |
-| Execution Layer | 10 | 0.240 | Public AI capabilities (routing, generation, orchestration) |
-| expansion categories (ESZ+EPZ+EMZ) | 10 | 0.175 | Ethics, prediction, simulation, manufacturing, translation |
-| Covert Systems (CSZ) | 3 | 0.045 | Evolution, shadow testing, phantom ops |
-| Fields + Meta + Plane + Shell | 6 | 0.140 | Cross-cutting immunity, governance, defense |
+| Category | Count | Primitives | Purpose |
+|----------|-------|-----------|---------|
+| **Organs** | 12 | CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE | Core infrastructure — kernel, lifecycle, memory, routing, identity, medical |
+| **Layers** | 12 | DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW | Cross-cutting concerns — security, governance, evolution, access control |
+| **Engines** | 8 | DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE | Active processing — synthesis, discovery, manufacturing, translation |
+| **Agents** | 8 | ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER | Autonomous actors — code generation, analysis, orchestration, maintenance |
 
 ---
 
@@ -71,7 +69,7 @@ The substrate implements production-grade infrastructure patterns:
 |----------|---------------|
 | **Architectural governance** | 4-mode GOVERNANCE Layer, immutable at runtime, enforced by code not config |
 | **Persistent tiered memory** | 4-tier Hot/Warm/Cold/Glacier with SM-2 spaced repetition, survives restarts and deployments |
-| **Validated evolution with truth preservation** | 7-gate SEBA pipeline, TSAC truth arbitration, shadow testing before any production promotion |
+| **Validated evolution with truth preservation** | 7-gate SEBA Memory Chain, TSAC truth arbitration, shadow testing before any production promotion |
 | **Sealed multi-agent coordination** | 20 source-blocked agents, memory-isolated runtimes, consent-gated DREAM pooling |
 | **Tamper-evident audit provenance** | Merkle chain SHA-256, every action cryptographically chained, cannot be altered retroactively |
 | **Continuous autonomous learning** | CLM 14,400 calls/day, 70% system telemetry, 30% scheduled curriculum, knowledge permanently distilled |
@@ -80,7 +78,7 @@ The substrate implements production-grade infrastructure patterns:
 
 ## 5. Zone Shielding
 
-expansion categories have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
+Expansion categories have independent circuit breakers. If an entire zone fails, the core substrate continues operating. This provides graceful degradation — not catastrophic failure.
 
 ---
 

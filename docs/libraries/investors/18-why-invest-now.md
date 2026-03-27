@@ -15,7 +15,7 @@ CMPSBL is pre-scale revenue with paying subscribers already in checkout. The pla
 
 | Status | Items | Significance |
 |--------|-------|-------------|
-| ✅ Built & Running | 40-node substrate, 675+ capabilities, evolution engine, marketplace, 25-language export, governance, security mesh, Memory Stream ($2.9M per discovery, already in service, running every 8 hours) | Core product is complete |
+| ✅ Built & Running | 40-primitive substrate, 675+ capabilities, evolution engine, marketplace, 25-language export, governance, security mesh, Memory Stream ($2.9M per discovery, already in service, running every 8 hours) | Core product is complete |
 | ✅ Validated | 166 bugs auto-fixed for $0.06, ENCODE 100% apply rate, CLM training pipeline | Technology works in production |
 | 🔄 In Progress | Federation (multi-substrate), additional agent development | Growth expansion |
 | 📋 Planned | Silicon export (FPGA/ASIC), enterprise partnerships | Long-term differentiation |

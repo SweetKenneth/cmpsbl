@@ -80,9 +80,9 @@ The ENCODE engine is not a better prompt. It is a multi-stage cognitive pipeline
 
 | Stage | Role |
 |-------|------|
-| **BRAIN Node** | Queries accumulated memory patterns from prior successful patches |
-| **DECODE Node** | Produces structured improvement specification before code generation |
-| **ENCODE Node** | Generates code within governance constraints and architectural rules |
+| **BRAIN Organ** | Queries accumulated memory patterns from prior successful patches |
+| **DECODE Agent** | Produces structured improvement specification before code generation |
+| **ENCODE Agent** | Generates code within governance constraints and architectural rules |
 | **Validation Gate** | Checks format compliance, deduplication, and quality |
 
 Batch 6 proved this is the differentiator: same model (GPT-4o-mini), same files — ENCODE achieved 100%, raw GPT achieved 0%. The pipeline is the product.
@@ -147,7 +147,7 @@ At current rates, 1,000 evolution cycles cost approximately $0.18. Continuous su
 | **GitHub Copilot** | AI suggestion | Human accepts/rejects each suggestion | Fully autonomous loop |
 | **Cursor** | AI editor | Developer-in-the-loop required | No human required |
 | **Snyk / SonarQube** | Static analysis | Reports issues, doesn't fix them | Finds AND fixes |
-| **Devin (Cognition)** | AI engineer | No substrate, no memory | 40-node cognitive mesh |
+| **Devin (Cognition)** | AI engineer | No substrate, no memory | 40-primitive cognitive mesh |
 | **Kodex AI** | Auto PRs | No memory, no learning | Brain accumulates learnings |
 
 ### Why This Can't Be Replicated

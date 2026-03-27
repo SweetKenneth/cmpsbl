@@ -72,7 +72,7 @@ No external dependencies beyond the above. Standard, commodity infrastructure.
 
 - Substrate IP held by legal entity, not individuals
 - Founder Intent document survives ownership changes
-- Module names are permanent architectural invariants
+- Primitive names are permanent architectural invariants
 - Crown Jewel IP: Source code + hex-encoding documentation + algorithm specifications in Internal Library — recoverable within days given repository access
 - 80+ page documentation across 5 libraries documents all trade secrets
 - Agent purchases are perpetual — no ongoing dependency

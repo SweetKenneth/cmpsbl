@@ -59,7 +59,7 @@ The Ascension pipeline produces single-file, zero-dependency "drop-in" distribut
 | Property | Detail |
 |----------|--------|
 | **Format** | Single file (e.g., `cmpsbl.ts`, `cmpsbl.py`, `cmpsbl.rs`) |
-| **Contents** | Mini-Runtime™ + Module Effects + Runtime Bridge + Public API |
+| **Contents** | Mini-Runtime™ + Primitive Effects + Runtime Bridge + Public API |
 | **Languages** | 25 (18 software + 7 HDL) |
 | **Dependencies** | Zero — drops into any project |
 | **IP protection** | Black-boxed — CJPI weights hex-encoded, internal comments stripped |
