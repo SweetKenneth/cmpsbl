@@ -29,13 +29,16 @@ This library provides investors, advisors, and potential partners with a compreh
 | 12 | [Ascension: The Software Product Factory](12-ascension-product-factory.md) | Upload → classify → score → export as IP-protected artifact in 25 languages |
 | 13 | [Memory Stream: The Discovery Engine](13-memory-stream.md) | Autonomous pipeline crystallization every 8 hours |
 | 14 | [DREAM Engine: The Compounding Intelligence Layer](14-dream-engine.md) | Cross-agent knowledge consolidation during idle cycles |
-| 15 | [Why Invest Now](15-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
+| 15 | [DEFENSE: Cognitive Security Mesh](15-defense.md) | Zero-trust security architecture, zone shielding, tamper-evident audit |
+| 16 | [NEXUS: Intelligent Multi-Provider Routing](16-nexus.md) | 14+ provider routing, automatic failover, BYOK, zero vendor lock-in |
+| 17 | [@cmpsbl NPM Ecosystem](17-npm-ecosystem.md) | 11 published packages — cognitive infrastructure for developers |
+| 18 | [Why Invest Now](18-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
 
 ---
 
 ## Recent Updates (v17.0.0)
 
-- **Deck expanded** from 12 to 15 documents — added Ascension Product Factory, Memory Stream, and DREAM Engine
+- **Deck expanded** from 12 to 18 documents — added Ascension Product Factory, Memory Stream, DREAM Engine, DEFENSE, NEXUS, and @cmpsbl NPM Ecosystem
 - **Executive Summary** — Restructured with lead problem statement, AWS/Stripe analogy, traction section, Ascension-first stack ordering
 - **Technology Architecture** — Added Ascension Engine, capability definition, "Defending the Six Properties" table, prior art footnote
 - **Competitive Positioning** — Added named competitor table with hyperscaler row and Ascension export column
