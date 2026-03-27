@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogArticleLayout } from "@/components/blog/BlogArticleLayout";
-import heroImg from "@/assets/blog/cortex-ai-brain-cycles.jpg";
+import heroImg from "@/assets/blog/cascade-ai-brain-cycles.jpg";
 
 const SLUG = "gaming-the-substrate";
 
