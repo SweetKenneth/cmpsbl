@@ -285,7 +285,7 @@ export default function ModulesHub() {
               </h1>
               
               <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-                The complete 40-primitive cognitive topology. Each node is an autonomous subsystem —
+                The complete 40-primitive cognitive topology. Each primitive is an autonomous subsystem —
                 together they form a field-based architecture that reasons, evolves, and self-heals.
               </p>
 
