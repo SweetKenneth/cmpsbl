@@ -75,7 +75,7 @@ We believe in:
 - Security through behavioral analysis
 - Persistent memory and dream cycles
 
-/* SUBSTRATE NODES (40 Nodes / 12 Sectors) */
+/* SUBSTRATE PRIMITIVES (40 Primitives / 4 Categories) */
 
 CORE Organ: Kernel boot sequencing & lifecycle authority
 SYSTEM Organ: Configuration management & diagnostics
@@ -121,8 +121,8 @@ ENGINEER Agent: Engine & meta-engine maintenance intelligence
 /* COLOPHON */
 
 CMPSBL — A Cognitive Reality System · powered by the CMPSBL Substrate
-40 Nodes • 12 Sectors • 675+ Capabilities
-WCAG 2.2 Accessibility via INCLUSIVE Node
+40 Primitives • 4 Categories • 675+ Capabilities
+WCAG 2.2 Accessibility via INCLUSIVE Layer
 
 CMPSBL® — Where Machines Learn To Dream.
 
