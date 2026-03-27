@@ -190,7 +190,7 @@ export function blackboxFile(source: string, lang: string): string {
   result += `\n${commentPrefix} ═══ SEALED RUNTIME INTEGRITY ═══\n`;
   result += `${commentPrefix} Hash: ${integrityHash}\n`;
   result += `${commentPrefix} Sealed: ${new Date().toISOString().slice(0, 10)}\n`;
-  result += `${commentPrefix} CMPSBL® Mini-Runtime™ — Redistribution as standalone product prohibited.\n`;
+  result += `${commentPrefix} CMPSBL® runtime — built into this file. Redistribution as standalone product prohibited.\n`;
   result += `${commentPrefix} Decompilation, extraction, or reverse engineering of scoring parameters is prohibited.\n`;
 
   return result;
