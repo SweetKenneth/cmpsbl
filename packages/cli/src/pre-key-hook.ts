@@ -8,7 +8,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { c, spinner, supportsAnimatedOutput } from './ui';
+import { c, spinner } from './ui';
 
 // ═══════════════════════════════════════════════════════════════
 // Helpers
