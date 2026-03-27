@@ -25,7 +25,7 @@ const TIER_CONFIG = [
   {
     id: "META" as const,
     label: "META",
-    subtitle: "Recursive super-memories",
+    subtitle: "Compound super-engines",
     price: "$1,999",
     bg: "bg-neon-amber/10",
     text: "text-neon-amber",
@@ -250,7 +250,7 @@ export default function Engines() {
     <>
       <Helmet>
         <title>54 Engines — META to CORE Tier Arsenal | CMPSBL</title>
-        <meta name="description" content="Browse CMPSBL's 54 composable engines across 4 tiers: META recursive super-memories like GODMIND, 30 S-tier sealed runtimes, APEX and ELITE units. 154 primitives, 40% agent bundle discount." />
+        <meta name="description" content="Browse CMPSBL's 54 composable engines across 4 tiers: META compound super-engines like GODMIND, APEX and ELITE sealed runtimes, and CORE building blocks. 40 primitives, 40% agent bundle discount." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -490,8 +490,8 @@ export default function Engines() {
 
         <RelatedCapabilities />
         <PageSEOBlock path="/engines" title="54 Composable Engines" faq={[
-          { question: "What are CMPSBL engines?", answer: "Engines are composable processing units within the CMPSBL substrate. 54 engines across 4 tiers (META, CORE, FLUX, SPEC) handle specific AI workloads from reasoning to code generation." },
-          { question: "How do engine tiers work?", answer: "Engines are organized into META (recursive super-memories), CORE (foundation processing), FLUX (adaptive routing), and SPEC (specialized workloads). Higher tiers unlock more advanced capabilities." },
+          { question: "What are CMPSBL engines?", answer: "Engines are sealed cognitive runtimes within the CMPSBL substrate. 54 engines across 4 tiers (META, APEX, ELITE, CORE) handle specific AI workloads from reasoning to code generation." },
+          { question: "How do engine tiers work?", answer: "Engines are organized into META (compound super-engines), APEX (flagship sealed runtimes), ELITE (professional-grade engines), and CORE (essential building blocks). Higher tiers unlock more advanced capabilities." },
           { question: "Can I use engines without a paid plan?", answer: "Yes. The free Builder tier includes 3 memory slots and access to baseline engine capabilities. Premium engine tiers unlock with Studio, Creator, and Architect plans." },
         ]} />
         <EnhancedFooter />
