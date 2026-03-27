@@ -928,7 +928,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <div class="section-card">
     <p class="description-lead">${escapeHtml(input.description)}</p>
     <p class="provenance-note">
-      This memory was autonomously discovered by the Memory Stream — a recursive engine that
+      This memory was autonomously discovered by the Memory Stream — an engine that
       monitors substrate system behavior and crystallizes viable software configurations into
       production-grade memories. It was not designed by a human; it emerged from the interaction
       of ${input.systemChain.length} substrate primitive${input.systemChain.length !== 1 ? 's' : ''} 
