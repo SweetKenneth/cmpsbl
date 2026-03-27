@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogArticleLayout } from "@/components/blog/BlogArticleLayout";
-import heroImg from "@/assets/blog/cortex-ai-adaptive-intelligence.jpg";
-import imgCascade from "@/assets/blog/how-promptfluid-works-cortex.jpg";
+import heroImg from "@/assets/blog/cascade-ai-adaptive-intelligence.jpg";
+import imgCascade from "@/assets/blog/how-promptfluid-works-cascade.jpg";
 
 const SLUG = "when-one-model-isnt-enough";
 
@@ -30,7 +30,7 @@ export default function WhenOneModelIsntEnough() {
       <p>The complexity classifier itself is a lightweight model — fine-tuned on six months of NEXUS routing data. It looks at token count, domain keywords, structural patterns (does the prompt contain multiple questions? code blocks? tabular data?), and historical performance data for similar requests. Classification adds about 15ms of latency but saves an average of $0.003 per request at scale. When you're processing hundreds of thousands of requests daily, that's the difference between a profitable product and an expensive hobby.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Error Propagation</h2>
-      <p>Pipelines amplify errors. If stage one gets it wrong, stage two builds on a bad foundation. CORTEX validates between stages — each intermediate output gets a confidence score. Below threshold, the pipeline retries or falls back. This validation layer later evolved into <Link to="/blog/trust-but-verify" className="text-primary hover:underline">PROOF</Link>.</p>
+      <p>Pipelines amplify errors. If stage one gets it wrong, stage two builds on a bad foundation. CORTEX validates between stages — each intermediate output gets a confidence score. Below threshold, the pipeline retries or falls back. This validation layer later evolved into <Link to="/blog/trust-but-verify" className="text-primary hover:underline">AUDIT</Link>.</p>
       <p>We learned this the hard way. In our first week of testing, a three-stage pipeline for financial analysis produced a report that cited statistics from a hallucinated study. Stage one generated the analysis. Stage two summarized it — including the hallucinated citation. Stage three formatted it into a professional report, making the hallucination look even more authoritative. The confidence of the final output was high because each individual stage performed well. But garbage in, confident garbage out. Inter-stage validation wasn't optional — it was the difference between a product you could trust and one you couldn't.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Model Selection Strategy</h2>

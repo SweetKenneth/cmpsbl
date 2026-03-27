@@ -493,7 +493,7 @@ Deno.serve(async (req) => {
 │                            │                               │
 │  ── AGENTS (10) ─────────────────────────────────────── │
 │  │ ENCODE · DECODE · VISION · PHANTOM · LINGUA           │ │
-│  │ ECHO · HARVEST · SOVEREIGN · ENGINEER · OBSERVER      │ │
+│  │ ECHO · HARVEST · SOVEREIGN · ENGINEER · SHADOW      │ │
 │                                                            │
 ├──────────────────────────────────────────────────────────┤
 │              PostgreSQL  ·  Edge Functions                  │
