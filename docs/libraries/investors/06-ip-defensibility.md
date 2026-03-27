@@ -1,7 +1,7 @@
 # 06 — IP & Defensibility
 
 **Classification:** CONFIDENTIAL — Investor Use  
-**Document 6 of 15**
+**Document 6 of 18**
 
 ---
 
