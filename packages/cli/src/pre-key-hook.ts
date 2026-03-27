@@ -8,7 +8,7 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import { c, spinner, supportsAnimatedOutput } from './ui';
+import { c, spinner } from './ui';
 
 // ═══════════════════════════════════════════════════════════════
 // Helpers
@@ -167,8 +167,6 @@ function phaseTheAsk(): void {
  * Skipped in non-TTY environments and JSON mode.
  */
 export async function preKeyHook(): Promise<void> {
-  if (!supportsAnimatedOutput()) return;
-
   await phaseEnvironmentScan();
   await sleep(400);
   await phaseMemoryDemo();
