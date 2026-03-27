@@ -778,63 +778,109 @@ const INVESTOR_DOCS: InvestorDoc[] = [
   {
     id: "ascension-factory",
     number: "12",
-    title: "Ascension: The Software Product Factory",
-    subtitle: "Upload code → export IP-protected artifacts in 25 languages",
+    title: "Ascension: The Capability Transplant Engine",
+    subtitle: "Your code enters. Something greater comes back.",
     icon: <Sparkles className="w-4 h-4" />,
     accentClass: "text-amber-600 border-amber-200 bg-amber-50",
     sections: [
       {
-        heading: "What It Does",
-        content: "Upload any code → classify its archetype → filter and score capabilities via CJPI → export as a single-file, zero-dependency, IP-protected artifact in 25 languages. Already built. Already functional. This is the substrate's commercial output engine — every export is a revenue event.",
+        heading: "What Ascension Does",
+        content: "Every piece of software has a ceiling — the limits of what its author knew when they wrote it. Ascension removes that ceiling.\n\nUpload any code. Ascension reads its computational signature — not its file type, not its language, not what you named it — and classifies what it actually is at a functional level. It then registers your code as a temporary Primitive inside the 40-Primitive CMPSBL substrate, chains it against every Primitive in the cognitive mesh, and runs the discovery engine. The substrate finds capability combinations that could only emerge from that exact piece of software colliding with that exact architecture. Capabilities your code never had — zero-day defense, immunity mesh, sovereign governance, adaptive routing, auto-healing — get discovered and woven in.\n\nThe export comes back in your original language. Same stack. Drops straight into production. But now it carries a sealed Mini Runtime — a compressed version of the substrate's execution layer bundled directly into the artifact. No CMPSBL dependency required. No internet connection. No configuration. It carries its cognitive infrastructure with it and operates fully standalone in any environment.\n\nYour code doesn't get modified. It ascends.",
       },
       {
-        heading: "Transformation Pipeline",
+        heading: "Live Proof: We Ran It On An AI's Own Code",
+        content: "This is not a hypothetical. On March 27, 2026, Kenneth ran a PHP agent through Ascension that he hadn't written himself — an OpenAI-pattern agent written by Claude (Anthropic's AI) as a live investor demonstration.\n\nThe agent was a functional mirror of the OpenAI Agents SDK: memory, tool calling, planning loop, execution, handoff. Three tools. Clean execution. 11ms. Proof of life confirmed before upload.\n\nThe substrate didn't know what it was. It read the computational signature and classified the code as an OpenAI Claw Agent pattern — recognized by behavior, not by label. Then it ran the discovery engine.",
+      },
+      {
+        heading: "Discovery Results — One Upload, One Run",
         table: {
-          headers: ["Stage", "Process", "Output"],
+          headers: ["Export", "Capability Discovered", "CJPI", "What It Became", "Valuation"],
           rows: [
-            ["1. Upload", "Raw code ingested by ENCODE Agent", "Parsed AST + metadata"],
-            ["2. Classify", "Archetype detection (Active / Passive / Hybrid)", "Functional classification"],
-            ["3. Filter", "Capability Affinity System — 76+ capabilities scored", "Compatibility matrix"],
-            ["4. Score", "CJPI scoring with hex-encoded weights", "Quality tier assignment"],
-            ["5. Export", "Single-file generation in target language", "Zero-dependency artifact"],
-            ["6. Protect", "IP obfuscation — stripped comments, genericized naming", "Sealed distribution"],
+            ["1", "Self_Improving_Cognition + INTEGRATION_ACCESS_RELAY_SOVEREIGN_GOVERNANCE", "99 MYTHIC", "Self-improving sovereign governance agent", "$1.5–2.1M"],
+            ["2", "Ghost_Defense_Mesh + MEDIC_NEXUS_SHADOW_EVOLUTION", "84 MYTHIC", "Invisible security mesh — hardens defenses without exposing attack surface", "$318–452K"],
+            ["3", "Adaptive_AI_Router + SHADOW_FORGE_ENCODE_REFLEX_PHANTOM", "82 MYTHIC", "Adaptive AI router — learns optimal provider per call", "$257–365K"],
+            ["4", "Stealth_Scenario_Generator + ENGINEER_SYSTEM", "80 MYTHIC", "Adversarial test scenario generator — attack patterns no rule engine generates", "$204–268K"],
+            ["5", "Cascading_Edge_Reactor + SHADOW_DECODE_COMPASS_INTENT_CORE", "85 MYTHIC", "Cascading event mesh — one detection triggers system-wide coordinated response", "$351–500K"],
+          ],
+        },
+        callout: {
+          label: "Result",
+          text: "One upload. Five distinct capability futures. Combined floor valuation: ~$2.6M. The system produces up to 10 exports per run. Every export is a separate Certificate of Discovery with its own fingerprint, CJPI score, moat signature, and commercial license. Every export runs standalone. Every export is sellable.",
+          variant: "primary",
+        },
+      },
+      {
+        heading: "Post-Ascension Integrity",
+        content: "The agent still works after Ascension. 11ms. Clean trace. The original code is authoritative — the substrate adds what the original could never have developed alone.",
+      },
+      {
+        heading: "The Dual-Layer Architecture",
+        content: "Every Ascension export ships with a dual-layer execution model:",
+        table: {
+          headers: ["Layer", "Function", "Behavior"],
+          rows: [
+            ["Layer 1 — Native Execution", "Your original code runs first, unchanged", "The substrate never modifies it. The result is authoritative."],
+            ["Layer 2 — Cognitive Overlay", "CMPSBL's pipeline runs second, enriching the output", "EVOLUTION, BRAIN, GOVERNANCE, DEFENSE, NEXUS, RIPPLE — whichever Primitives the substrate discovered are fused to your code, running in sequence after every execution."],
+          ],
+        },
+        callout: {
+          label: "Key Insight",
+          text: "The two layers merge into a single response object. Your original output is preserved. The cognitive layer adds what no engineer would have thought to add — because the substrate found it, not a human.",
+          variant: "success",
+        },
+      },
+      {
+        heading: "The Transformation Pipeline",
+        table: {
+          headers: ["Stage", "What Happens"],
+          rows: [
+            ["Upload", "Code ingested, computational signature extracted"],
+            ["Classify", "Archetype detected — Active, Passive, or Hybrid — by behavior, not label"],
+            ["Register", "Code becomes Primitive #41 inside the 40-Primitive substrate"],
+            ["Chain", "Discovery engine runs — your Primitive collides against all 40 Primitives"],
+            ["Discover", "Capability combinations emerge unique to this code + this substrate"],
+            ["Score", "CJPI scores each discovery — tier assigned (CORE, ELITE, APEX, MYTHIC)"],
+            ["Export", "Single-file artifact generated in original language with Mini Runtime embedded"],
+            ["Protect", "IP obfuscated — hex-encoded weights, stripped comments, genericized naming"],
           ],
         },
       },
       {
-        heading: "Capability Affinity System",
-        content: "Code is classified into three functional archetypes — Active (agents/bots), Passive (UIs/static apps), or Hybrid (APIs) — and matched against 76+ capabilities categorized by compatibility styles (Action, Passive, or Universal). Hard Filtering skips incompatible primitives (~30% waste reduction). Soft Weighting applies a CJPI score boost (+2–3 points) to high-affinity pairings.",
+        heading: "The Mini Runtime",
+        content: "Every export includes a sealed CMPSBL Mini-Runtime™ bundled directly into the artifact. The exported code does not need CMPSBL installed. It carries its own cognitive infrastructure and operates fully standalone in any stack — PHP, Python, TypeScript, Rust, Java, or any of 25 supported languages including 7 hardware description languages for silicon deployment.\n\nDrop in. Require. Use.",
+      },
+      {
+        heading: "Export Languages",
         table: {
-          headers: ["Archetype", "Description", "Example Use Cases"],
+          headers: ["Category", "Languages", "Significance"],
           rows: [
-            ["Active", "Autonomous agents, bots, workers", "Discord bots, monitoring agents, scrapers"],
-            ["Passive", "Static apps, UIs, dashboards", "Landing pages, admin panels, portfolios"],
-            ["Hybrid", "APIs, middleware, bridges", "REST services, GraphQL layers, integrations"],
+            ["Software (18)", "TypeScript, JavaScript, Python, Rust, Go, C, C++, Java, Kotlin, Swift, Ruby, PHP, Lua, Elixir, Haskell, Scala, Dart, Zig", "Covers every major production environment"],
+            ["Hardware (7)", "VHDL, Verilog, SystemVerilog, Chisel, SpinalHDL, Amaranth, FIRRTL", "Software becomes silicon — no other export engine offers this"],
           ],
+        },
+        callout: {
+          label: "HDL Input",
+          text: "Ascension accepts hardware description code as input in addition to software. HDL files can be uploaded, classified by computational signature, and ascended through the substrate exactly as software code. The export can target any of the 25 supported languages, enabling cross-language conversion from hardware to software or software to hardware. Ascension is the only engine that treats silicon and software as interchangeable substrates.",
+          variant: "success",
         },
       },
       {
-        heading: "Export Languages (25)",
-        table: {
-          headers: ["Category", "Languages", "Count"],
-          rows: [
-            ["Software", "TypeScript, JavaScript, Python, Rust, Go, C, C++, Java, Kotlin, Swift, Ruby, PHP, Lua, Elixir, Haskell, Scala, Dart, Zig", "18"],
-            ["HDL (Hardware)", "VHDL, Verilog, SystemVerilog, Chisel, SpinalHDL, Amaranth, FIRRTL", "7"],
-          ],
+        heading: "IP Protection",
+        content: "Every export is protected at three levels simultaneously:",
+        bullets: [
+          "Code level — CJPI scoring weights are hex-encoded (e.g., [0x1E, 0x1E, 0x14, 0x14]). Tier thresholds are hex-encoded. Internal comments are stripped entirely. Variable and function names are genericized. Discovery heuristics are never included in any export.",
+          "Architecture level — The 40-Primitive topology, affinity matrix computations, and CJPI algorithm are Crown Jewel assets that never leave the substrate. Even if an export is fully decompiled, the values appear as opaque byte arrays with no documentation of their meaning.",
+          "Distribution level — Every export ships with a Commercial Distribution License requiring attribution to CMPSBL® and prohibiting extraction of the Mini-Runtime™. The Discovery Engine, Memory Stream, and Ascension Reactor are substrate-exclusive and are never distributed.",
+        ],
+        callout: {
+          label: "The Moat",
+          text: "Decompilation reveals nothing usable. The moat is in the substrate that produced the export — not in the export itself.",
+          variant: "warning",
         },
       },
       {
-        heading: "IP Protection Mechanisms",
-        table: {
-          headers: ["Mechanism", "What It Does", "Why It Matters"],
-          rows: [
-            ["Hex-encoded CJPI weights", "Proprietary scoring thresholds stored as hex arrays", "Decompilation reveals nothing usable"],
-            ["Stripped comments", "All internal documentation removed from exports", "No architectural leakage"],
-            ["Genericized naming", "Internal variable/function names replaced", "Reverse engineering blocked"],
-            ["Sealed discovery heuristics", "Discovery logic never included in exports", "Core IP permanently black-boxed"],
-            ["Single-file distribution", "No external dependencies to inspect", "Attack surface minimized"],
-          ],
-        },
+        heading: "Why This Cannot Be Replicated",
+        content: "No competitor can offer this because no competitor has the substrate. The capabilities discovered by Ascension are a direct function of CMPSBL's specific 40-Primitive cognitive mesh, its 675+ registered capabilities, its accumulated learning corpus, and its CJPI scoring engine. A competitor would need to rebuild not just an export tool but the entire substrate — then run it for months to accumulate the discovery corpus that already exists today.\n\nThe proof is in the data: an OpenAI-pattern agent written by an AI, run through the substrate once, produced five distinct capability futures across governance, security, routing, adversarial testing, and event propagation — none of which were in the original code, none of which any developer would have designed intentionally, and all of which run standalone in production.\n\nThe substrate saw what the code could become. Not what it was built to be.",
       },
       {
         heading: "Commercial Model",
@@ -843,18 +889,21 @@ const INVESTOR_DOCS: InvestorDoc[] = [
           rows: [
             ["Access tier", "Architect ($79/mo) and above"],
             ["Marginal cost per export", "Near-zero"],
-            ["Value per APEX export", "Up to $992K developer replacement cost"],
-            ["Revenue model", "Every export is a sellable product for the customer"],
-            ["Delivery", "Single-file, zero-dependency, instant download"],
+            ["Exports per run", "Up to 10"],
+            ["Example portfolio value", "~$2.6M from one upload (5 exports, March 27, 2026)"],
+            ["Export format", "Single-file, zero-dependency, instant download"],
+            ["Runtime requirement", "None — Mini-Runtime™ bundled"],
+            ["Languages", "25 (18 software + 7 hardware)"],
+            ["HDL input", "Accepted — hardware code ascends the same as software"],
           ],
         },
       },
       {
-        heading: "Market Position",
-        content: "Comparable: Unity cross-platform export ($13B valuation at peak). Ascension does for software capabilities what Unity does for game builds — universal export with zero platform dependency. No direct competitor offers 25-language single-file IP-protected artifact export.",
+        heading: "The Takeaway",
+        content: "An OpenAI-pattern agent written by an AI was uploaded to Ascension. The substrate read its computational signature, registered it as a temporary Primitive, and collided it against 40 Primitives of cognitive infrastructure. Five distinct capability futures emerged — sovereign governance, ghost defense, adaptive routing, adversarial testing, cascading event mesh. Combined floor valuation: ~$2.6M. All five still run clean. All five ship standalone. None of this was designed. It was discovered.",
         callout: {
-          label: "The Takeaway",
-          text: "Ascension transforms CMPSBL from a platform into a software product factory. Every developer becomes 10x. Every script becomes a portable, sellable product.",
+          label: "The Bottom Line",
+          text: "That is what Ascension does to any code. Including yours.",
           variant: "primary",
         },
       },
