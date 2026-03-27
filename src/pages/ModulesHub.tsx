@@ -197,7 +197,7 @@ const SECTORS: SectorDef[] = [
     key: 'field',
     label: 'FIELDS — Transformation Fabric',
     shortLabel: 'FIELDS',
-    description: 'Cross-cutting fields that permeate all sectors',
+    description: 'Cross-cutting fields that permeate all categories',
     totalWeight: '0.060',
     color: 'bg-purple-500/10',
     borderColor: 'border-purple-500/20',
@@ -218,7 +218,7 @@ const SECTORS: SectorDef[] = [
     textColor: 'text-blue-400',
     nodes: [
       { id: 'governance', label: 'GOVERNANCE', tagline: 'Policy Engine', description: 'Ethical constraints, veto authority, coherence enforcement, and policy-as-code.', icon: Scale, slug: 'governance', weight: 0.020 },
-      { id: 'atlas', label: 'ATLAS', tagline: 'Control Authority', description: 'Governance authority, system control plane, and cross-sector oversight.', icon: Map, slug: 'atlas', weight: 0.015 },
+      { id: 'atlas', label: 'ATLAS', tagline: 'Control Authority', description: 'Governance authority, system control plane, and cross-category oversight.', icon: Map, slug: 'atlas', weight: 0.015 },
       { id: 'engineer', label: 'ENGINEER', tagline: 'Meta-Engine', description: 'Engine maintenance intelligence, optimization research, and architectural oversight.', icon: Cog, slug: 'engineer', weight: 0.015 },
     ],
   },
