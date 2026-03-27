@@ -275,7 +275,12 @@ export const AscensionDemo = ({ onBack }: AscensionDemoProps) => {
               <Sparkles className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">Ascension Engine</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">Ascension Engine</h1>
+                <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-destructive/10 text-destructive border border-destructive/20 shrink-0 uppercase tracking-wider">
+                  Confidential
+                </span>
+              </div>
               <p className="text-xs text-muted-foreground">Upload code → Classify → Filter → Wrap with matched capabilities</p>
             </div>
           </div>

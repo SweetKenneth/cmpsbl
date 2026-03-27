@@ -277,11 +277,15 @@ function DesktopDemoCard({ title, subtitle, icon, tier, status, what, why, value
             <p className="text-xs text-muted-foreground">{subtitle}</p>
           </div>
         </div>
-        {status === "live" && (
+        {title === "Ascension" ? (
+          <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 shrink-0">
+            unreleased
+          </span>
+        ) : status === "live" ? (
           <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
             live
           </span>
-        )}
+        ) : null}
       </div>
 
       <p className="text-sm text-muted-foreground leading-relaxed">{what}</p>
