@@ -37,7 +37,7 @@ function generateEngineDoc(engine: Engine): string {
     ``,
     `── INTEGRATION GUIDE ─────────────────────────────────`,
     ``,
-    `  import { ${engine.codename.toLowerCase()} } from '@cmpsbl/engines/${engine.slug}';`,
+    `  import { ${engine.codename.toLowerCase()} } from '@cmpsbl/sdk/engines/${engine.slug}';`,
     ``,
     `  // Initialize the sealed runtime`,
     `  const engine = ${engine.codename.toLowerCase()}.init({`,
@@ -93,7 +93,7 @@ export default function EngineDocsPage() {
   };
 
   const handleCopySnippet = () => {
-    const snippet = `import { ${engine.codename.toLowerCase()} } from '@cmpsbl/engines/${engine.slug}';\n\nconst engine = ${engine.codename.toLowerCase()}.init({ mode: 'production' });`;
+    const snippet = `import { ${engine.codename.toLowerCase()} } from '@cmpsbl/sdk/engines/${engine.slug}';\n\nconst engine = ${engine.codename.toLowerCase()}.init({ mode: 'production' });`;
     navigator.clipboard.writeText(snippet);
     toast.success('Code snippet copied');
   };
