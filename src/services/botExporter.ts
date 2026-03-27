@@ -166,7 +166,7 @@ console.log(result);
 
 ### Via Substrate
 \`\`\`typescript
-import { substrate } from '@cmpsbl/substrate';
+import { substrate } from '@cmpsbl/sdk';
 
 const response = await substrate.invoke('forge', 'run', {
   bot_id: '${config.id}',
@@ -355,7 +355,7 @@ function generateBotSourceCode(config: BotExportConfig): string {
  * Version: ${config.version}
  */
 
-import { substrate, brain, nexus } from '@cmpsbl/substrate';
+import { substrate, brain, nexus } from '@cmpsbl/sdk';
 
 interface BotMemory {
   store: (key: string, value: unknown) => Promise<void>;
@@ -457,7 +457,7 @@ function generatePackageJson(config: BotExportConfig): string {
       'test:watch': 'vitest',
     },
     dependencies: {
-      '@cmpsbl/substrate': '^2026.01',
+      '@cmpsbl/sdk': '^2026.01',
     },
     devDependencies: {
       'typescript': '^5.0.0',

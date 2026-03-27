@@ -62,7 +62,7 @@ const INITIAL_NODES: ModuleState[] = [
   { id: 'inclusive', name: 'INCLUSIVE', icon: Accessibility, layer: 'node', status: 'idle', color: 'rose', description: 'Accessibility' },
   // INTEGRATION (node — boots last)
   { id: 'integration', name: 'INTEGRATION', icon: Code, layer: 'node', status: 'idle', color: 'indigo', description: 'External APIs — Boots Last' },
-  // MESH OVERLAYS (Fields + Plane + Shell — protective layers wrapping all sectors)
+  // MESH OVERLAYS (Layers — protective overlays wrapping all categories)
   { id: 'defense', name: 'DEFENSE', icon: Shield, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Outermost — Security Shield' },
   { id: 'immunity', name: 'IMMUNITY', icon: Activity, layer: 'mesh-overlay', status: 'idle', color: 'emerald', description: 'Resilience Layer' },
   { id: 'evolution', name: 'EVOLUTION', icon: Sparkles, layer: 'mesh-overlay', status: 'idle', color: 'pink', description: 'Self-Improvement Layer' },

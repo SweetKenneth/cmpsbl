@@ -605,7 +605,7 @@ const HeritagePaper = () => {
 ┌─────────────────────────────────────────────────────────┐
 │               CMPSBL® Substrate OS                      │
 │          (2025–2026, v1.0 – v14.2.0)                   │
-│            40 Nodes · 12 Sectors                        │
+│          40 Primitives · 4 Categories                   │
 │                                                         │
 │ From Clarity/CMPTBL:       From AetherionShield:        │
 │ ├─ INCLUSIVE (@origin)     ├─ DEFENSE (boundary)        │

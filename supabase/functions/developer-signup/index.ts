@@ -122,8 +122,8 @@ serve(async (req) => {
         keyPrefix,
         message: "🎉 Your API key has been generated! Save it now - you won't see it again.",
         quickstart: {
-          install: "npm install @cmpsbl/memory",
-          usage: `import { withPersistentMemory } from '@cmpsbl/memory';
+          install: "npm install @cmpsbl/sdk",
+          usage: `import { withPersistentMemory } from '@cmpsbl/sdk';
 
 const agent = withPersistentMemory({
   apiKey: '${apiKey}',

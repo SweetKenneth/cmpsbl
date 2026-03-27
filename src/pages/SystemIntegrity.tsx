@@ -242,7 +242,7 @@ export default function SystemIntegrity() {
             <div>
               <h1 className="text-lg sm:text-xl font-bold tracking-tight">System Integrity</h1>
               <p className="text-[10px] text-muted-foreground/60 font-mono uppercase tracking-widest">
-                40 Nodes · 12 Sectors · {breakerSummary.totalTrips} total trips
+                40 Primitives · 4 Categories · {breakerSummary.totalTrips} total trips
               </p>
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function SystemIntegrity() {
 
         {/* Footer Note */}
         <div className="text-center text-[9px] text-muted-foreground/30 font-mono uppercase tracking-widest pb-8">
-          System Integrity Map · 40 Nodes · 12 Sectors · Read-Only · No Mutation Endpoints
+          System Integrity Map · 40 Primitives · 4 Categories · Read-Only · No Mutation Endpoints
         </div>
       </div>
 

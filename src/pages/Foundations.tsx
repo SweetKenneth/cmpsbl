@@ -17,18 +17,10 @@ import {
 } from "lucide-react";
 
 const SECTORS = [
-  { name: "SPINE", modules: ["CORE", "GOVERNANCE", "AUDIT"], desc: "Boot authority, policy enforcement, immutable logging", icon: Cpu },
-  { name: "CCR", modules: ["CORTEX", "CONTEXT", "REFLEX"], desc: "Orchestration, context management, fast-path routing", icon: Brain },
-  { name: "OCG", modules: ["NEXUS", "DECODE", "ENCODE"], desc: "AI routing, intent parsing, code generation", icon: Zap },
-  { name: "EXECUTION", modules: ["SANDBOX", "RUNTIME", "DEPLOY"], desc: "Isolated execution, persistent runtime, deployment", icon: Terminal },
-  { name: "FIELDS", modules: ["DEFENSE", "IMMUNITY", "EVOLUTION"], desc: "Security perimeter, adaptive resilience, self-improvement", icon: Shield },
-  { name: "PLANE", modules: ["INTENT", "SHADOW", "ATLAS"], desc: "Goal decomposition, shadow runs, capability mapping", icon: Network },
-  { name: "SHELL", modules: ["VISION", "INCLUSIVE", "INTEGRATION"], desc: "Observability, accessibility, external connectors", icon: Eye },
-  { name: "ESZ", modules: ["ECONOMY", "SIGNAL", "ZERO"], desc: "Cost tracking, event propagation, zero-trust validation", icon: DollarSign },
-  { name: "EPZ", modules: ["ENGINEER", "INTEL", "BRAIN"], desc: "Autonomous foundry, intelligence gathering, cognitive processing", icon: Code },
-  { name: "EMZ", modules: ["MEMORY", "DREAM", "PERSIST"], desc: "Tiered memory, DREAM Engine synthesis, durable persistence", icon: Fingerprint },
-  { name: "CSZ", modules: ["SCANNER", "EXPORT", "BLOG"], desc: "Vulnerability scanning, format adaptation, autonomous publishing", icon: Radio },
-  { name: "NERVE", modules: ["NERVE", "MEDIC"], desc: "Health monitoring, self-healing diagnostics", icon: Landmark },
+  { name: "ORGANS", modules: ["CORE", "SYSTEM", "BRAIN", "MEMORY", "NERVE", "NEXUS", "IDENTITY", "SOVEREIGN", "ATLAS", "MEDIC", "RELAY", "CONSCIENCE"], desc: "Internal infrastructure — the substrate's vital systems", icon: Cpu },
+  { name: "LAYERS", modules: ["DEFENSE", "IMMUNITY", "GOVERNANCE", "TREATY", "EVOLUTION", "REFLEX", "COMPASS", "INTEGRATION", "INTENT", "ACCESS", "VISION", "SHADOW"], desc: "Ambient overlays — always-on protection and governance", icon: Shield },
+  { name: "ENGINES", modules: ["DREAM", "HARVEST", "FORGE", "LINGUA", "ECHO", "PHANTOM", "SANDBOX", "RIPPLE"], desc: "Processing powerhouses — invoked for complex tasks", icon: Zap },
+  { name: "AGENTS", modules: ["ENCODE", "DECODE", "AUDIT", "ECONOMY", "INCLUSIVE", "CORTEX", "ORACLE", "ENGINEER"], desc: "Autonomous actors — specialized AI workers", icon: Brain },
 ];
 
 const PRINCIPLES = [
