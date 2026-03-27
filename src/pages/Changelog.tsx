@@ -442,7 +442,7 @@ const stratumSparta: Specimen[] = [
     phenotype: [
       "Each zone can be surgically hot-swapped without affecting siblings or parent layers",
       "Fault isolation identifies the exact zone at fault — no more blaming entire layers",
-      "Architecture correctly reflects a multi-node cognitive mesh across defined sectors",
+      "Architecture correctly reflects a multi-primitive cognitive mesh across defined categories",
     ],
     affectedNodes: ["SYSTEM Organ", "BRAIN Organ", "MEMORY Organ", "DREAM Engine"],
   },
@@ -632,12 +632,12 @@ const stratumFormation: Specimen[] = [
     origin: "architecture",
     stimulus: "The system needed formal infrastructure separation — nodes existed without a named organizational layer",
     adaptations: [
-      "Infrastructure layer formalized with dedicated nodes for memory, messaging, auditing, identity, economics, and sandboxing",
+      "Infrastructure layer formalized with dedicated primitives for memory, messaging, auditing, identity, economics, and sandboxing",
       "Orchestration layer gained a dedicated encoding module",
       "Legacy version references consolidated and unified",
     ],
     phenotype: [
-      "The substrate is a multi-node cognitive architecture organized across defined sectors",
+      "The substrate is a multi-primitive cognitive architecture organized across defined categories",
       "Single source of truth for all versioning — one file, one function, every surface",
     ],
   },
