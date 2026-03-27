@@ -17749,10 +17749,10 @@ async function handleAccess(
           const { data: newDev, error: devErr } = await supabase
             .from('access_developers')
             .insert({
-              display_name: emailAddr.split('@')[0],
+              display_name: data.display_name || emailAddr.split('@')[0],
               email: emailAddr,
               status: 'active',
-              metadata: { source: 'evlvbl_signup', framework: data.framework || 'unknown' },
+              metadata: { source: data.source || 'cli_signup', framework: data.framework || 'unknown' },
             })
             .select('id')
             .single();
