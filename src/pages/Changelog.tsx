@@ -81,7 +81,7 @@ const stratumIronclad: Specimen[] = [
       "Memory self-maintenance scales linearly regardless of tier size",
       "Infrastructure queries that previously scanned full tables now resolve through indexed lookups",
     ],
-    affectedNodes: ["SYSTEM Organ", "BRAIN Organ", "MEMORY Organ", "OBSERVER Agent"],
+    affectedNodes: ["SYSTEM Organ", "BRAIN Organ", "MEMORY Organ", "SHADOW Layer"],
   },
   {
     id: "IRNC-015",
