@@ -120,7 +120,7 @@ function clamp(val: number, min = 0, max = 1): number {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §3 — DEEP MODULE EFFECTS (Layer 2) — All 40 Nodes
+// §3 — DEEP MODULE EFFECTS (Layer 2) — All 40 Primitives
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ── 1. CORE — System Foundation ──
