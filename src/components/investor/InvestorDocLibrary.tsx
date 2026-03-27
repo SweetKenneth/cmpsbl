@@ -8,7 +8,7 @@ import {
   ArrowLeft, ChevronRight, Printer, BookOpen,
   Target, Brain, BarChart3, Users, Zap, Shield,
   AlertTriangle, Sparkles, GitBranch, Globe, Cpu,
-  Lock, FileText, Layers
+  Lock, FileText, Layers, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
