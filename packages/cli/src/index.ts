@@ -324,7 +324,7 @@ async function inlineRegister(): Promise<string | null> {
   const s = spinner('Registering with the substrate...');
 
   try {
-    const res = await fetch(SUBSTRATE_ENDPOINT, {
+    const res = await fetch(getSubstrateEndpoint(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
