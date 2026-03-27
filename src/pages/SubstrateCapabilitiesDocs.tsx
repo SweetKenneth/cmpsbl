@@ -332,7 +332,7 @@ export default function SubstrateCapabilitiesDocs() {
           
           <div className="flex items-start gap-4 mb-4">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center shrink-0">
-              <BookOpen className="w-7 h-7 text-white" />
+              <BookOpen className="w-7 h-7 text-primary-foreground" />
             </div>
             <div>
               <Badge className="mb-2 bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30">
@@ -421,7 +421,7 @@ export default function SubstrateCapabilitiesDocs() {
                       const Icon = currentCategory.icon;
                       return (
                         <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${currentCategory.color} flex items-center justify-center`}>
-                          <Icon className="w-5 h-5 text-white" />
+                          <Icon className="w-5 h-5 text-primary-foreground" />
                         </div>
                       );
                     })()}
