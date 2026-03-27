@@ -99,7 +99,7 @@ const LAYERS: LayerDef[] = [
       { key: 'harvest', label: 'HARVEST' },
       { key: 'sovereign', label: 'SOVEREIGN' },
       { key: 'engineer', label: 'ENGINEER' },
-      { key: 'observer', label: 'OBSERVER' },
+      { key: 'oracle', label: 'ORACLE' },
     ],
   },
 ];
