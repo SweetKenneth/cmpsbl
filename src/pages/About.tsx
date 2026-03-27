@@ -574,7 +574,7 @@ export default function About() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/about" title="About CMPSBL" faq={[
-        { question: "What is CMPSBL?", answer: "CMPSBL is a cognitive operating system — a substrate layer between AI models and applications that manages persistent memory, orchestration, governance, and recursive self-improvement across 40 autonomous nodes." },
+        { question: "What is CMPSBL?", answer: "CMPSBL is a cognitive operating system — a substrate layer between AI models and applications that manages persistent memory, orchestration, governance, and continuous self-improvement across 40 autonomous primitives." },
         { question: "Who founded CMPSBL?", answer: "CMPSBL was founded by Kenneth E Sweet Jr in 2009. The platform has evolved from a portfolio tool into a full cognitive infrastructure layer." },
         { question: "How is CMPSBL different from other AI platforms?", answer: "Unlike traditional AI wrappers, CMPSBL operates as an operating system with persistent memory, DREAM cycle consolidation, and self-improving capabilities. Intelligence compounds over time rather than resetting per session." },
       ]} />
