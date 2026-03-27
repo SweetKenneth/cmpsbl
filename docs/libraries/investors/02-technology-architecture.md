@@ -7,18 +7,16 @@
 
 ## 1. System Design
 
-CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 12 categorys. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
+CMPSBL is a **field-based cognitive kernel** — a 40-primitive weighted matrix organized into 4 categories using a symmetric 12·12·8·8 architecture. System health is a deterministic weighted sum (Σ = 1.000), not a heuristic estimate.
 
 ### Topology
 
-| Category | Primitives | Weight | Purpose |
-|--------|-------|--------|---------|
-| Spine (CORE, SYSTEM, CCR) | 5 | 0.260 | Kernel, lifecycle, reasoning, memory, synthesis |
-| Operational Grid (OCG) | 6 | 0.140 | Auth, compliance, audit, event routing |
-| Execution Layer | 10 | 0.240 | Public AI capabilities (routing, generation, orchestration) |
-| expansion categories (ESZ+EPZ+EMZ) | 10 | 0.175 | Ethics, prediction, simulation, manufacturing, translation |
-| Covert Systems (CSZ) | 3 | 0.045 | Evolution, shadow testing, phantom ops |
-| Fields + Meta + Plane + Shell | 6 | 0.140 | Cross-cutting immunity, governance, defense |
+| Category | Count | Primitives | Purpose |
+|----------|-------|-----------|---------|
+| **Organs** | 12 | CORE, SYSTEM, BRAIN, MEMORY, NERVE, NEXUS, IDENTITY, SOVEREIGN, ATLAS, MEDIC, RELAY, CONSCIENCE | Core infrastructure — kernel, lifecycle, memory, routing, identity, medical |
+| **Layers** | 12 | DEFENSE, IMMUNITY, GOVERNANCE, TREATY, EVOLUTION, REFLEX, COMPASS, INTEGRATION, INTENT, ACCESS, VISION, SHADOW | Cross-cutting concerns — security, governance, evolution, access control |
+| **Engines** | 8 | DREAM, HARVEST, FORGE, LINGUA, ECHO, PHANTOM, SANDBOX, RIPPLE | Active processing — synthesis, discovery, manufacturing, translation |
+| **Agents** | 8 | ENCODE, DECODE, AUDIT, ECONOMY, INCLUSIVE, CORTEX, ORACLE, ENGINEER | Autonomous actors — code generation, analysis, orchestration, maintenance |
 
 ---
 
