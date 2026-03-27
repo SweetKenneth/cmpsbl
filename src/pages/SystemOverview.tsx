@@ -84,7 +84,7 @@ function MemoryStreamSection() {
     { icon: Eye, label: 'Signal Capture', desc: 'The substrate observes inputs, conversations, and environmental data continuously.', color: 'text-sky-500' },
     { icon: Brain, label: 'Memory Formation', desc: 'Signals are compressed into persistent memory traces across isolated namespaces.', color: 'text-neon-amber' },
     { icon: Sparkles, label: 'Crystallization', desc: 'The autonomous engine discovers viable software patterns and scores them (CJPI 68–100).', color: 'text-primary' },
-    { icon: Code2, label: 'Software Export', desc: 'Crystallized memories export to 20+ languages with the CMPSBL® Mini-Runtime™ Engine and test harness.', color: 'text-neon-green' },
+    { icon: Code2, label: 'Software Export', desc: 'Crystallized memories export to 25 languages as self-contained single-file distributions with built-in runtime and test harness.', color: 'text-neon-green' },
     { icon: CircuitBoard, label: 'Silicon Boundary', desc: 'Apex-tier memories (CJPI ≥ 94) unlock hardware description languages: Verilog, VHDL, SPICE.', color: 'text-neon-purple' },
   ];
 
