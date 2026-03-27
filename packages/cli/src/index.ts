@@ -257,6 +257,7 @@ function openBrowser(url: string): void {
 
 const DEV_PORTAL_URL = 'https://cmpsbl.com/api-access';
 const SUBSTRATE_ENDPOINT_FALLBACK = `https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate`;
+const REGISTRATION_ENDPOINT = `https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate`;
 function getSubstrateEndpoint(): string { try { return CLI_CONFIG?.endpoint ?? SUBSTRATE_ENDPOINT_FALLBACK; } catch { return SUBSTRATE_ENDPOINT_FALLBACK; } }
 
 /**
@@ -324,16 +325,18 @@ async function inlineRegister(): Promise<string | null> {
   const s = spinner('Registering with the substrate...');
 
   try {
-    const res = await fetch(getSubstrateEndpoint(), {
+    const res = await fetch(REGISTRATION_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         module: 'access',
         action: 'create_key',
-        email,
-        display_name: name || email.split('@')[0],
-        name: `CLI Key — ${email.split('@')[0]}`,
-        scopes: ['substrate.read', 'substrate.write', 'brain.query'],
+        payload: {
+          email,
+          display_name: name || email.split('@')[0],
+          name: `CLI Key — ${email.split('@')[0]}`,
+          scopes: ['substrate.read', 'substrate.write', 'brain.query'],
+        },
       }),
     });
 
@@ -385,17 +388,17 @@ async function requireApiKey(): Promise<string> {
 
   blank();
   box([
-    '⚠  AUTHENTICATION REQUIRED',
+    '◈  WELCOME TO THE SUBSTRATE',
     '',
-    'The CMPSBL Substrate requires a developer API key.',
-    'Register now — it takes 10 seconds.',
+    'Register in 10 seconds to get your API key.',
+    'Already have one? Choose option 2 below.',
   ], 'ACCESS');
   blank();
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
   const choice = await new Promise<string>((resolve) => {
-    say('  [1] Register now (email → instant key)');
+    say('  [1] Register now (email → instant key)  ← recommended');
     say(`  [2] I have a key already`);
     say(`  [3] Open Developer Portal in browser`);
     blank();
