@@ -199,7 +199,7 @@ function PipelineCard({ pipeline, index, featured = false }: { pipeline: any; in
             </span>
             <span className="flex items-center gap-1">
               <Network className="w-3 h-3" />
-              {pipeline.cross_sector_count} sectors
+              {pipeline.cross_sector_count} categories
             </span>
             <span className="flex items-center gap-1">
               <Zap className="w-3 h-3" />
