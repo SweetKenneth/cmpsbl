@@ -52,7 +52,7 @@ The substrate is valued across six pillars:
 |----------|--------|-----------|
 | Governance model | Architectural enforcement | Policy-as-code |
 | Autonomy levels | 4 explicit modes | Binary allow/deny |
-| Evolution control | 7-gate SEBA Memory Chain | Manual versioning |
+| Evolution control | 7-gate SEBA pipeline | Manual versioning |
 | Audit trail | Merkle-chained, tamper-evident | Append-only logs |
 | Truth preservation | TSAC verification | None |
 
@@ -212,7 +212,7 @@ Investors will — and should — discount for:
 |---------------|---------------|
 | **3,000+ hours = conviction** | This isn't a weekend project or a pitch deck with a prototype. The system is built, running, and discoverable. Most funded startups don't have this at Series A. |
 | **Solo = undiluted IP** | Every algorithm, every architectural decision, every Crown Jewel was created by one mind. There is no ambiguity about IP ownership, no co-founder disputes, no contractor claims. |
-| **Self-taught = first principles** | The system wasn't built by following textbooks — it was built by solving problems. The 40-primitive topology, SEBA Memory Chain, and Ascension dual-layer architecture came from original thinking, not curriculum. |
+| **Self-taught = first principles** | The system wasn't built by following textbooks — it was built by solving problems. The 40-primitive topology, SEBA pipeline, and Ascension dual-layer architecture came from original thinking, not curriculum. |
 | **Full succession plan** | Unlike most solo-founder companies, CMPSBL has a documented succession protocol, dead-man switch, credential transfer process, and minimum viable operation specification. The system is designed to survive its creator. |
 | **Working system** | The substrate boots, discovers, governs, audits, and exports. This is not a concept — it is a cognitive runtime with 60+ production tables, 675+ capabilities, and 40 active primitives. |
 
