@@ -24,7 +24,7 @@ This library provides investors, advisors, and potential partners with a compreh
 | 07 | [Governance & Risk](07-governance-risk.md) | Risk classification, mitigation, governance model |
 | 08 | [Survivability & Continuity](08-survivability.md) | Succession protocol, minimum viable operation, self-sufficiency |
 | 09 | [Defensible Valuation](09-defensible-valuation.md) | Full substrate valuation, industry parallels, Ascension premium |
-| 10 | [Ascension Demo Script](10-ascension-demo-script.md) | Step-by-step narration for live Ascension demonstrations |
+| 10 | [Use of Funds & GTM](10-use-of-funds-gtm.md) | Capital allocation, go-to-market strategy, hiring plan, 18-month execution roadmap |
 | 11 | [Evolution Engine](11-evolution-engine.md) | Self-improving software: 166 bugs fixed for $0.06, engine benchmarks, market opportunity |
 | 12 | [Why Invest Now](12-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
 
@@ -32,9 +32,9 @@ This library provides investors, advisors, and potential partners with a compreh
 
 ## Recent Updates (v17.0.0)
 
+- **Use of Funds & GTM** — New document replacing Ascension Demo Script; covers capital allocation, hiring, IP protection, and phased GTM
 - **Commercial Model** — Updated to reflect 5-tier pricing (Builder/Studio/Creator/Architect/Governor)
 - **IP & Defensibility** — Added black-box hex-encoding details for exported artifacts
-- **Ascension Demo Script** — Updated for new PIN (2026), archetype-based classification UI, single-file export model
 - **Executive Summary** — Aligned revenue streams with current pricing and export model
 
 ---
