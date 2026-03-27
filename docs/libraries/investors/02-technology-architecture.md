@@ -69,7 +69,7 @@ The substrate implements production-grade infrastructure patterns:
 |----------|---------------|
 | **Architectural governance** | 4-mode GOVERNANCE Layer, immutable at runtime, enforced by code not config |
 | **Persistent tiered memory** | 4-tier Hot/Warm/Cold/Glacier with SM-2 spaced repetition, survives restarts and deployments |
-| **Validated evolution with truth preservation** | 7-gate SEBA Memory Chain, TSAC truth arbitration, shadow testing before any production promotion |
+| **Validated evolution with truth preservation** | 7-gate SEBA pipeline, TSAC truth arbitration, shadow testing before any production promotion |
 | **Sealed multi-agent coordination** | 20 source-blocked agents, memory-isolated runtimes, consent-gated DREAM pooling |
 | **Tamper-evident audit provenance** | Merkle chain SHA-256, every action cryptographically chained, cannot be altered retroactively |
 | **Continuous autonomous learning** | CLM 14,400 calls/day, 70% system telemetry, 30% scheduled curriculum, knowledge permanently distilled |

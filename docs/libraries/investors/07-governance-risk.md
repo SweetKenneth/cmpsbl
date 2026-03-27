@@ -23,7 +23,7 @@ CMPSBL operates under **supervised autonomy** — the system acts independently 
 - GOVERNANCE logic cannot be modified at runtime
 - AUDIT records cannot be deleted or modified
 - DEFENSE block decisions cannot be overridden by internal primitives
-- Evolution changes cannot skip the 7-gate SEBA Memory Chain
+- Evolution changes cannot skip the 7-gate SEBA pipeline
 - Agents cannot escape sealed runtime isolation
 - Cross-tenant data access is impossible at the database level (RLS)
 
