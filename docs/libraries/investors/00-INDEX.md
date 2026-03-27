@@ -32,9 +32,9 @@ This library provides investors, advisors, and potential partners with a compreh
 
 ## Recent Updates (v17.0.0)
 
+- **Use of Funds & GTM** — New document replacing Ascension Demo Script; covers capital allocation, hiring, IP protection, and phased GTM
 - **Commercial Model** — Updated to reflect 5-tier pricing (Builder/Studio/Creator/Architect/Governor)
 - **IP & Defensibility** — Added black-box hex-encoding details for exported artifacts
-- **Ascension Demo Script** — Updated for new PIN (2026), archetype-based classification UI, single-file export model
 - **Executive Summary** — Aligned revenue streams with current pricing and export model
 
 ---
