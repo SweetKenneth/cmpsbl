@@ -887,7 +887,7 @@ export function generatePipelineDetailsHTML(input: PipelineDetailsInput): string
   <header class="certificate-header">
     <div class="meta">
       <div class="certificate-issuer">CMPSBL® Memory Stream — Pipeline Certificate of Discovery</div>
-      <h1>${escapeHtml(input.name)}</h1>
+      <h1>${escapeHtml(input.name).replace(/_/g, ' ')}</h1>
       <div class="certificate-subtitle">${escapeHtml(functionalDesc)}</div>
     </div>
     <div class="seal-container">

@@ -242,9 +242,10 @@ export function generateLicenseHTML(productName: string): string {
   <h2><span class="num">§1</span> Origin Notice</h2>
   <p>
     This software was crystallized and exported from the CMPSBL® Substrate, a cognitive 
-    orchestration platform by promptfluid®. This software requires the included CMPSBL® 
-    Micro-Substrate Runtime to function. The runtime is proprietary to CMPSBL® and may not 
-    be separated, reverse-engineered, or redistributed independently of this package.
+    orchestration platform by promptfluid®. The CMPSBL® runtime is built directly into 
+    the single-file distribution (cmpsbl.*). No separate installation required. Drop in, 
+    require, use. The runtime is proprietary to CMPSBL® and may not be reverse-engineered 
+    or redistributed independently of this package.
   </p>
 
   <h2><span class="num">§2</span> Grant of Rights</h2>
@@ -265,12 +266,12 @@ export function generateLicenseHTML(productName: string): string {
 
   <div class="highlight">
     <strong>"Built with the CMPSBL® Substrate — https://cmpsbl.com<br>
-    Powered by the CMPSBL® Micro-Substrate Runtime."</strong>
+    Powered by the CMPSBL® runtime (built into this distribution)."</strong>
   </div>
 
-  <p><strong>3.2 — Runtime Dependency.</strong> This software depends on the CMPSBL® Micro-Substrate 
-  Runtime included in this package. The runtime must be included in all distributions. It may not 
-  be replaced, stubbed out, or removed.</p>
+  <p><strong>3.2 — Runtime Dependency.</strong> The CMPSBL® runtime is built directly into the 
+  single-file distribution (cmpsbl.*). No separate installation required. Drop in, require, use. 
+  The runtime must not be replaced, stubbed out, or removed.</p>
 
   <p><strong>3.3 — License Preservation.</strong> This license file must be included, unmodified, 
   in every copy or distribution of this software.</p>
@@ -280,9 +281,10 @@ export function generateLicenseHTML(productName: string): string {
 
   <h2><span class="num">§4</span> Runtime License</h2>
   <p>
-    The CMPSBL® Micro-Substrate Runtime (<code>standalone-runtime.ts</code>) is licensed 
-    solely for use with software exported from the CMPSBL® Substrate. It may not be used, 
-    copied, or distributed for any other purpose. The Discovery Engine, Memory Stream, and 
+    The CMPSBL® runtime is built directly into the single-file distribution (cmpsbl.*). 
+    No separate installation required. Drop in, require, use. The runtime is licensed solely 
+    for use with software exported from the CMPSBL® Substrate. It may not be extracted, used, 
+    copied, or distributed for any other purpose. The Discovery Engine, Memory Stream, and
     Ascension Reactor are substrate-exclusive components and are never distributed.
   </p>
 

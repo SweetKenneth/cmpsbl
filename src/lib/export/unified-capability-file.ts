@@ -1144,6 +1144,35 @@ if __name__ == "__main__":
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// PHP Pack Metadata Serializer (native PHP array syntax, not JSON)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function generatePhpPackMeta(
+  capabilities: UnifiedCapabilityInput[],
+  allModules: string[],
+  packName: string,
+): string {
+  const capEntries = capabilities.map(c => {
+    const chainStr = c.chain.map(m => `'${m}'`).join(', ');
+    return `    [
+        'name' => '${c.name.replace(/'/g, "\\'")}',
+        'cjpi' => ${c.cjpiScore},
+        'tier' => '${c.tier}',
+        'chain' => [${chainStr}],
+        'fingerprint' => '${c.fingerprint.slice(0, 12).toUpperCase()}',
+    ]`;
+  });
+  const modulesStr = allModules.map(m => `'${m}'`).join(', ');
+  return `define('CMPSBL_PACK_META', [
+    'name' => '${packName.replace(/'/g, "\\'")}',
+    'capabilities' => [
+${capEntries.join(',\n')},
+    ],
+    'modules' => [${modulesStr}],
+]);`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // PHP Generator
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1415,14 +1444,7 @@ function cmpsbl_execute_pipeline(array $input, array $chain, array $meta): array
 // ║  §4 — CAPABILITY API                                                         ║
 // ╚═══════════════════════════════════════════════════════════════════════════════╝
 
-define('CMPSBL_PACK_META', ${JSON.stringify({
-    name: packName,
-    capabilities: capabilities.map(c => ({
-      name: c.name, cjpi: c.cjpiScore, tier: c.tier, chain: c.chain,
-      fingerprint: c.fingerprint.slice(0, 12).toUpperCase(),
-    })),
-    modules: allModules,
-  }, null, 4)});
+${generatePhpPackMeta(capabilities, allModules, packName)}
 
 class CMPSBLCapability
 {

@@ -105,8 +105,8 @@ _T = [0x5C, 0x50, 0x41, 0x2D]
   
   if (lang === 'php') {
     return `// Sealed scoring parameters — DO NOT MODIFY
-$_W = array_map(fn($v) => $v / 100, [0x1E, 0x1E, 0x14, 0x14]);
-$_T = [0x5C, 0x50, 0x41, 0x2D];
+define('CMPSBL_W', array_map(fn($v) => $v / 100, [0x1E, 0x1E, 0x14, 0x14]));
+define('CMPSBL_T', [0x5C, 0x50, 0x41, 0x2D]);
 `;
   }
   
@@ -190,7 +190,7 @@ export function blackboxFile(source: string, lang: string): string {
   result += `\n${commentPrefix} ═══ SEALED RUNTIME INTEGRITY ═══\n`;
   result += `${commentPrefix} Hash: ${integrityHash}\n`;
   result += `${commentPrefix} Sealed: ${new Date().toISOString().slice(0, 10)}\n`;
-  result += `${commentPrefix} CMPSBL® Mini-Runtime™ — Redistribution as standalone product prohibited.\n`;
+  result += `${commentPrefix} CMPSBL® runtime — built into this file. Redistribution as standalone product prohibited.\n`;
   result += `${commentPrefix} Decompilation, extraction, or reverse engineering of scoring parameters is prohibited.\n`;
 
   return result;
