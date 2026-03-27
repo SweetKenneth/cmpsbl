@@ -69,7 +69,7 @@ const TAXONOMY: TaxonomyCategory[] = [
       { id: 'nexus', label: 'NEXUS', tagline: 'Fleet Router', description: '14-provider fleet, health ranking, zero-mock policy, multi-model consensus, and cost ledger.', icon: Network, slug: 'nexus' },
       { id: 'identity', label: 'IDENTITY', tagline: 'Actor Attribution', description: 'Human/agent/system identity, persistent signatures, and cross-system provenance.', icon: Fingerprint, slug: 'identity' },
       { id: 'sovereign', label: 'SOVEREIGN', tagline: 'Data Authority', description: 'Jurisdictional compliance, data residency enforcement, sovereignty protocols, and consent management.', icon: Crown, slug: 'sovereign' },
-      { id: 'atlas', label: 'ATLAS', tagline: 'Control Authority', description: 'System cartography, capability mapping, governance hub, and cross-sector oversight.', icon: Map, slug: 'atlas' },
+      { id: 'atlas', label: 'ATLAS', tagline: 'Control Authority', description: 'System cartography, capability mapping, governance hub, and cross-category oversight.', icon: Map, slug: 'atlas' },
       { id: 'medic', label: 'MEDIC', tagline: 'Diagnostics', description: 'Autonomous health management, self-repair coordination, and diagnostic telemetry.', icon: Stethoscope, slug: 'medic' },
       { id: 'relay', label: 'RELAY', tagline: 'Outbound Effects', description: 'Webhook dispatch, notification routing, retry queues, and delivery guarantees.', icon: Send, slug: 'relay' },
       { id: 'conscience', label: 'CONSCIENCE', tagline: 'Ethical Compass', description: 'Bias detection, ethical scoring, and responsible AI enforcement.', icon: Heart, slug: 'conscience' },
