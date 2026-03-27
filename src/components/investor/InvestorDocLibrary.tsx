@@ -1548,6 +1548,84 @@ function DocViewer({ doc, onBack }: { doc: InvestorDoc; onBack: () => void }) {
           ))}
         </div>
 
+        {/* Certificate Decorations — Ascension doc only */}
+        {doc.id === "ascension-factory" && (
+          <div className="mt-16 space-y-6">
+            <div className="text-center mb-8">
+              <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-400 font-bold">Certificates of Discovery — March 27, 2026 Proof Run</p>
+              <div className="w-24 h-px bg-slate-300 mx-auto mt-3" />
+            </div>
+            {[
+              { id: "COD-2026-0327-001", name: "Self-Improving Sovereign Governance", cjpi: 99, tier: "MYTHIC", chain: "INTEGRATION_ACCESS_RELAY_SOVEREIGN_GOVERNANCE", val: "$1.5–2.1M", color: "from-amber-500 to-orange-600" },
+              { id: "COD-2026-0327-002", name: "Ghost Defense Mesh", cjpi: 84, tier: "MYTHIC", chain: "MEDIC_NEXUS_SHADOW_EVOLUTION", val: "$318–452K", color: "from-slate-600 to-slate-800" },
+              { id: "COD-2026-0327-003", name: "Adaptive AI Router", cjpi: 82, tier: "MYTHIC", chain: "SHADOW_FORGE_ENCODE_REFLEX_PHANTOM", val: "$257–365K", color: "from-cyan-500 to-blue-600" },
+              { id: "COD-2026-0327-004", name: "Stealth Scenario Generator", cjpi: 80, tier: "MYTHIC", chain: "ENGINEER_SYSTEM", val: "$204–268K", color: "from-red-500 to-rose-700" },
+              { id: "COD-2026-0327-005", name: "Cascading Edge Reactor", cjpi: 85, tier: "MYTHIC", chain: "SHADOW_DECODE_COMPASS_INTENT_CORE", val: "$351–500K", color: "from-purple-500 to-violet-700" },
+            ].map((cert) => (
+              <div key={cert.id} className="relative rounded-2xl border-2 border-slate-200 bg-gradient-to-br from-slate-50 to-white p-6 sm:p-8 overflow-hidden">
+                {/* Decorative corner marks */}
+                <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-slate-300 rounded-tl-sm" />
+                <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-slate-300 rounded-tr-sm" />
+                <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-slate-300 rounded-bl-sm" />
+                <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-slate-300 rounded-br-sm" />
+
+                {/* Seal watermark */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-[3px] border-slate-100 flex items-center justify-center opacity-40 pointer-events-none">
+                  <div className="w-24 h-24 rounded-full border-2 border-slate-100 flex items-center justify-center">
+                    <span className="text-[8px] font-mono text-slate-200 tracking-[0.15em] font-bold">CMPSBL®</span>
+                  </div>
+                </div>
+
+                <div className="relative z-10">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${cert.color}`} />
+                      <span className="text-[9px] font-mono text-slate-400 tracking-wider">{cert.id}</span>
+                    </div>
+                    <span className={`text-[9px] font-mono font-black px-2.5 py-1 rounded-full bg-gradient-to-r ${cert.color} text-white tracking-wider`}>
+                      {cert.tier}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight mb-1">
+                    {cert.name}
+                  </h3>
+                  <p className="text-[10px] font-mono text-slate-400 mb-4 break-all">{cert.chain}</p>
+
+                  {/* Stats row */}
+                  <div className="flex items-end justify-between gap-4 pt-4 border-t border-slate-200">
+                    <div>
+                      <p className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">CJPI Score</p>
+                      <p className="text-2xl font-black text-slate-900">{cert.cjpi}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[9px] font-mono text-slate-400 uppercase tracking-wider">Floor Valuation</p>
+                      <p className="text-lg font-bold text-slate-800">{cert.val}</p>
+                    </div>
+                  </div>
+
+                  {/* Footer line */}
+                  <div className="flex items-center justify-between mt-4 pt-3 border-t border-dashed border-slate-200">
+                    <span className="text-[8px] font-mono text-slate-300">Single-file · Zero-dependency · Standalone</span>
+                    <span className="text-[8px] font-mono text-slate-300">Mini-Runtime™ Embedded</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Combined value banner */}
+            <div className="rounded-xl bg-slate-900 text-white p-6 text-center">
+              <p className="text-[10px] font-mono uppercase tracking-[0.3em] text-slate-400 mb-2">Combined Portfolio — One Upload</p>
+              <p className="text-3xl sm:text-4xl font-black tracking-tight">~$2.6M</p>
+              <p className="text-xs text-slate-400 mt-2">5 Certificates of Discovery · All MYTHIC tier · All standalone · All sellable</p>
+              <div className="w-16 h-px bg-slate-700 mx-auto mt-4 mb-3" />
+              <p className="text-[10px] text-slate-500 font-mono">Source: OpenAI-pattern PHP agent · March 27, 2026 · Ascension v17.0.0</p>
+            </div>
+          </div>
+        )}
+
         {/* Footer */}
         <footer className="mt-16 pt-8 border-t-2 border-slate-200">
           <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
