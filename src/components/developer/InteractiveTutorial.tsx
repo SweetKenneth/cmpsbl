@@ -26,7 +26,7 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     title: "Initialize the Substrate SDK",
     description: "Set up the CMPSBL client and verify your connection to the 40-primitive cognitive mesh.",
     instruction: "Import and initialize the substrate client. The init function connects you to all 40 primitives through a single entry point.",
-    starterCode: `import { substrate } from '@cmpsbl/substrate';
+    starterCode: `import { substrate } from '@cmpsbl/sdk';
 
 // Initialize with your API key
 const client = substrate.init({

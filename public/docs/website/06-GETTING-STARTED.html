@@ -37,7 +37,7 @@ blockquote { border-left: 3pt solid #ccc; margin-left: 0; padding-left: 12pt; co
 <p>Add persistent memory to any existing agent or React app in under an hour. No rewrites. No new framework.</p>
 
 <h3>Step 1: Import the SDK</h3>
-<pre><code>import { withPersistentMemory } from '@cmpsbl/memory';</code></pre>
+<pre><code>import { withPersistentMemory } from '@cmpsbl/sdk';</code></pre>
 
 <h3>Step 2: Wrap Your Agent</h3>
 <pre><code>const agent = withPersistentMemory({
@@ -53,7 +53,7 @@ const context = await agent.getContext(userMessage);
 const prompt = userMessage + context.contextString;</code></pre>
 
 <h3>React Hook</h3>
-<pre><code>import { usePersistentAgent } from '@cmpsbl/memory';
+<pre><code>import { usePersistentAgent } from '@cmpsbl/sdk';
 
 function ChatComponent() {
   const { respond, remember, isLoading } = usePersistentAgent('my-agent');

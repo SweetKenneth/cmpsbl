@@ -3,7 +3,7 @@
  * Framework-agnostic immune system for any JS/TS async function.
  * 
  * Usage:
- *   import { wrap, defineSchema } from '@cmpsbl/evolution-mesh';
+ *   import { wrap, defineSchema } from '@cmpsbl/sdk/evolution-mesh';
  *   
  *   const safe = wrap(myHandler, {
  *     schema: defineSchema({
