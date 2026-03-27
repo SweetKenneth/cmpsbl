@@ -337,7 +337,7 @@ async function inlineRegister(): Promise<string | null> {
       }),
     });
 
-    const data = await res.json();
+    const data = await res.json() as Record<string, any>;
 
     if (!data.success || !data.api_key) {
       s.stop('Registration failed');
