@@ -227,6 +227,7 @@ export const publicRoutes = (
     <Route path="/start-here" element={<StartHere />} />
     <Route path="/enterprise" element={<Enterprise />} />
     <Route path="/api-access" element={<ApiAccess />} />
+    <Route path="/keys" element={<Navigate to="/api-access" replace />} />
     <Route path="/careers" element={<Careers />} />
     <Route path="/x" element={<ProprietaryEvolution />} />
   </>
