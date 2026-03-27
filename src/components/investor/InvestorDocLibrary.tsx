@@ -149,6 +149,25 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         heading: "Infrastructure Depth",
         content: "The substrate implements circuit breakers with exponential backoff, dead letter queues, saga orchestrators with multi-step rollback, CQRS bus, Merkle audit chains (SHA-256), tenant isolation, chaos testing harnesses, canary deployment gates, and schema registries. Every item is implemented, exported, and wired into the boot sequence.",
       },
+      {
+        heading: "NPM Package Ecosystem",
+        table: {
+          headers: ["Package", "Tier", "Capability"],
+          rows: [
+            ["@cmpsbl/core", "Foundation", "Substrate runtime, intent router, mesh communications"],
+            ["@cmpsbl/brain", "Cognitive", "Persistent memory, reasoning context, CLM integration"],
+            ["@cmpsbl/defense", "Security", "Threat scoring, anomaly detection, zone shielding"],
+            ["@cmpsbl/governance", "Compliance", "4-mode governance, audit chains, policy enforcement"],
+            ["@cmpsbl/evolution", "Self-Improvement", "SEBA pipeline, ENCODE agent, patch validation"],
+            ["@cmpsbl/agents", "Autonomous", "Sealed agent runtimes, competency tracking, task execution"],
+            ["@cmpsbl/engines", "Processing", "Premium engine access, synergy amplification, compound logic"],
+            ["@cmpsbl/memory", "Persistence", "Memory Stream, discovery corpus, tiered storage"],
+            ["@cmpsbl/export", "Distribution", "Ascension pipeline, 25-language export, black-box encoding"],
+            ["@cmpsbl/analytics", "Observability", "Event tracking, health monitoring, telemetry dashboards"],
+            ["@cmpsbl/cli", "Developer Tools", "Terminal interface, 500+ commands, system administration"],
+          ],
+        },
+      },
     ],
   },
   {
