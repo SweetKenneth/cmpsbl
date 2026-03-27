@@ -27,6 +27,7 @@ import * as readline from 'readline';
 
 import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
+import { preKeyHook } from './pre-key-hook';
 
 // ═══════════════════════════════════════════════════════════════
 // Personality
@@ -425,13 +426,23 @@ async function requireApiKey(): Promise<string> {
   // Manual key paste (choice 2 or fallback)
   const rl2 = readline.createInterface({ input: process.stdin, output: process.stdout });
   const key = await new Promise<string>((resolve) => {
-    rl2.question('  Paste your API key: ', (answer: string) => {
+    rl2.question(`  Paste your API key ${c.dim('(Enter to explore locally)')}: `, (answer: string) => {
       resolve(answer.trim());
     });
   });
   rl2.close();
 
-  if (!key || key.length < 10) {
+  // Allow skipping — explore locally without a key
+  if (!key || key === '') {
+    blank();
+    sayMuted('  Running in local mode — memory is ephemeral.');
+    sayMuted('  Connect anytime with `cmpsbl login`.');
+    blank();
+    CLI_CONFIG.apiKey = `local-${Date.now()}`;
+    return CLI_CONFIG.apiKey;
+  }
+
+  if (key.length < 10) {
     say(pick(V.err));
     say('Invalid API key. Run `cmpsbl login` to try again.');
     blank();
@@ -745,8 +756,8 @@ async function cmdOnboarding() {
   await sleep(300);
   blank();
 
-  // ── MESH DEMO FIRST — show value before asking for auth ──
-  await liveMeshDemo();
+  // ── PRE-KEY HOOK — prove substrate value before asking for auth ──
+  await preKeyHook();
 
   // ── NOW ask for auth ──
   const apiKey = await requireApiKey();
@@ -921,8 +932,8 @@ async function cmdShell() {
 
 async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
   if (!opts?.skipCeremony) {
-    // ── Show mesh demo before auth gate ──
-    if (!JSON_MODE) await liveMeshDemo();
+    // ── Pre-key hook — prove substrate value before asking for auth ──
+    if (!JSON_MODE) await preKeyHook();
     const apiKey = await requireApiKey();
     CLI_CONFIG.apiKey = apiKey;
   }
