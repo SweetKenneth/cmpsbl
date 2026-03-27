@@ -741,7 +741,10 @@ async function cmdOnboarding() {
   await sleep(300);
   blank();
 
-  // ── Mandatory API key gate ──
+  // ── MESH DEMO FIRST — show value before asking for auth ──
+  await liveMeshDemo();
+
+  // ── NOW ask for auth ──
   const apiKey = await requireApiKey();
   CLI_CONFIG.apiKey = apiKey;
   blank();
