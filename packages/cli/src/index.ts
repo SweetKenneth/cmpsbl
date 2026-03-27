@@ -256,7 +256,7 @@ function openBrowser(url: string): void {
 }
 
 const DEV_PORTAL_URL = 'https://cmpsbl.com/api-access';
-const SUBSTRATE_ENDPOINT = CLI_CONFIG.endpoint ?? `https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate`;
+const SUBSTRATE_ENDPOINT_FALLBACK = `https://bxodolqqczjuahwdrswy.supabase.co/functions/v1/pf-substrate`;
 
 /**
  * Live Mesh Demo — shows primitives communicating before any auth.
