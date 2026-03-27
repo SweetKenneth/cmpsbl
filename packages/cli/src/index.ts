@@ -917,7 +917,8 @@ async function cmdShell() {
 
 async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
   if (!opts?.skipCeremony) {
-    // ── Mandatory API key gate ──
+    // ── Show mesh demo before auth gate ──
+    if (!JSON_MODE) await liveMeshDemo();
     const apiKey = await requireApiKey();
     CLI_CONFIG.apiKey = apiKey;
   }
