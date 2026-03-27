@@ -445,7 +445,7 @@ function BrainSection() {
             ["Hot", "500 entries", "<10ms", "Active session", "Current conversation context, recent actions"],
             ["Warm", "10,000 entries", "<50ms", "30 days", "User preferences, learned patterns, frequent context"],
             ["Cold", "10,000 entries", "<200ms", "1 year", "Historical interactions, archived knowledge"],
-            ["Legacy", "Unlimited", "<500ms", "Permanent", "Compressed summaries, institutional knowledge"],
+            ["Glacier", "Unlimited", "<500ms", "Permanent", "Compressed summaries, institutional knowledge"],
           ]}
         />
       </div>
