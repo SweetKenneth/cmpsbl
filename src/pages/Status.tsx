@@ -258,9 +258,9 @@ export default function Status() {
             <Activity className="w-3 h-3" />
             <span className="text-xs font-semibold">Live Status</span>
           </Badge>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">Memory Stream Status</h1>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-2">System Status</h1>
           <p className="text-muted-foreground">
-            Real-time health of all stream systems · Auto-refreshes every 30 seconds
+            Real-time health of all 40 primitives · Auto-refreshes every 30 seconds
           </p>
         </motion.div>
 
