@@ -14,7 +14,7 @@ export default function WhereWeAreNow() {
     <BlogArticleLayout
       slug={SLUG}
       title="Where We Are Now"
-      subtitle="Forty nodes. Fifteen months. And something we didn't expect."
+      subtitle="Forty primitives. Fifteen months. And something we didn't expect."
       date="March 7, 2026"
       readTime="20 min read"
       heroImage={heroImg}
@@ -27,17 +27,17 @@ export default function WhereWeAreNow() {
         </>
       }
     >
-      <p className="text-sm sm:text-base leading-relaxed">Forty chapters. Fifteen months. From <Link to="/blog/the-first-line-of-code" className="text-primary hover:underline">one function</Link> to a cognitive infrastructure platform with forty nodes, a marketplace, an agency system, and an auto-blog that writes about itself. Here's where things stand — and why we think the most interesting part hasn't happened yet.</p>
+      <p className="text-sm sm:text-base leading-relaxed">Forty chapters. Fifteen months. From <Link to="/blog/the-first-line-of-code" className="text-primary hover:underline">one function</Link> to a cognitive infrastructure platform with forty primitives, a marketplace, an agency system, and an auto-blog that writes about itself. Here's where things stand — and why we think the most interesting part hasn't happened yet.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What's Running</h2>
       <p>The full substrate is live. <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">NEXUS</Link> routes thousands of requests daily. <Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN</Link> maintains persistent memory across sessions. <Link to="/blog/when-bots-found-us-first" className="text-primary hover:underline">DEFENSE</Link> blocks automated attacks in real time. <Link to="/blog/the-memory-stream" className="text-primary hover:underline">Memory Stream</Link> crystallizes cognitive signals into deployable software. The <Link to="/blog/the-marketplace" className="text-primary hover:underline">Store</Link> serves discoveries and <Link to="/blog/packing-intelligence" className="text-primary hover:underline">Packs</Link>.</p>
 
-      <p>By the numbers: the substrate processes an average of 47,000 requests per day across all nodes. <Link to="/blog/nodes-that-talk" className="text-primary hover:underline">RIPPLE</Link> handles 2.3 million events daily. BRAIN maintains 14 million memory entries across all customers. The <Link to="/blog/the-scanner" className="text-primary hover:underline">Scanner</Link> has processed over 28,000 domain scans since launch. <Link to="/blog/teams-of-machines" className="text-primary hover:underline">Agencies</Link> complete approximately 3,200 tasks per week across all deployments.</p>
+      <p>By the numbers: the substrate processes an average of 47,000 requests per day across all primitives. <Link to="/blog/nodes-that-talk" className="text-primary hover:underline">RIPPLE</Link> handles 2.3 million events daily. BRAIN maintains 14 million memory entries across all customers. The <Link to="/blog/the-scanner" className="text-primary hover:underline">Scanner</Link> has processed over 28,000 domain scans since launch. <Link to="/blog/teams-of-machines" className="text-primary hover:underline">Agencies</Link> complete approximately 3,200 tasks per week across all deployments.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What Surprised Us</h2>
       <p>Gaming. We built the substrate for enterprise AI workflows. <Link to="/blog/gaming-the-substrate" className="text-primary hover:underline">Game developers</Link> found it and used it for NPC memory and adaptive narratives. The Scanner — our simplest product — brings in more new users than any other feature. And the <Link to="/blog/when-the-system-writes" className="text-primary hover:underline">auto-blog</Link> has generated more content than we could have written manually.</p>
 
-      <p>But the biggest surprise was which node matters most. We expected NEXUS, CASCADE, and DECODE to be the stars — the processing powerhouses. In practice, BRAIN is the most valuable node by customer feedback. Persistent memory is the capability that customers can't get elsewhere. If we'd known that in December 2024, we would have built BRAIN first instead of fourth.</p>
+      <p>But the biggest surprise was which primitive matters most. We expected NEXUS, CORTEX, and DECODE to be the stars — the processing powerhouses. In practice, BRAIN is the most valuable primitive by customer feedback. Persistent memory is the capability that customers can't get elsewhere. If we'd known that in December 2024, we would have built BRAIN first instead of fourth.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">What We'd Do Differently</h2>
       <p><Link to="/blog/what-we-got-wrong" className="text-primary hover:underline">Chapter 38</Link> covers the mistakes in detail. The short version: fewer nodes earlier, better documentation from day one, and one brand name from the start. But you can't learn these lessons without making the mistakes first.</p>

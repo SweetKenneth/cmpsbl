@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { BlogArticleJsonLd } from "@/components/blog/BlogArticleJsonLd";
 import { BlogArticleLayout } from "@/components/blog/BlogArticleLayout";
-import heroImg from "@/assets/blog/cascade-ai-brain-cycles.jpg";
+import heroImg from "@/assets/blog/cortex-ai-brain-cycles.jpg";
 
 const SLUG = "gaming-the-substrate";
 
@@ -17,11 +17,11 @@ export default function GamingTheSubstrate() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">The Gaming Stack</h2>
       <p><Link to="/blog/teaching-machines-to-remember" className="text-primary hover:underline">BRAIN</Link> gives NPCs persistent memory. <Link to="/blog/the-composable-agent" className="text-primary hover:underline">Cognitives</Link> give them personality. <Link to="/blog/interfaces-that-think" className="text-primary hover:underline">MORPH</Link> generates dynamic dialogue interfaces. <Link to="/blog/what-if-software-could-dream" className="text-primary hover:underline">DREAM</Link> consolidates player interaction patterns during off-peak hours. The same substrate, applied to a domain we never planned for.</p>
-      <p>Each NPC is a Cognitive with a personality profile tuned for the game world. The blacksmith NPC has domain expertise in weapons and metals, a gruff communication style, and high recall for player purchase history. The diplomat NPC has political knowledge, a formal tone, and tracks relationship scores across factions. Both are Cognitives with different skill weights — the blacksmith leans on BRAIN for inventory memory and FORGE for custom item descriptions, while the diplomat uses DECODE for multi-party conversation analysis and PROOF to maintain factual consistency across diplomatic storylines.</p>
+      <p>Each NPC is a Cognitive with a personality profile tuned for the game world. The blacksmith NPC has domain expertise in weapons and metals, a gruff communication style, and high recall for player purchase history. The diplomat NPC has political knowledge, a formal tone, and tracks relationship scores across factions. Both are Cognitives with different skill weights — the blacksmith leans on BRAIN for inventory memory and FORGE for custom item descriptions, while the diplomat uses DECODE for multi-party conversation analysis and AUDIT to maintain factual consistency across diplomatic storylines.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Real-Time Constraints</h2>
       <p>Games have latency budgets that enterprise software doesn't. An NPC response needs to arrive in under 200ms, not 2 seconds. This forced us to optimize <Link to="/blog/routing-the-unknown" className="text-primary hover:underline">NEXUS routing</Link> for latency-first selection and expand BRAIN's hot memory tier for sub-50ms retrieval.</p>
-      <p>We built a "gaming mode" for the substrate that optimizes for latency above all else. In gaming mode, NEXUS routes to the fastest available model rather than the highest-quality one. BRAIN pre-loads NPC memory into an in-memory cache at session start. CASCADE is limited to two-stage chains maximum. PROOF runs a lighter validation pass. These trade-offs reduce quality by about 8% compared to enterprise mode but drop median latency from 1,200ms to 145ms. For gaming, that trade-off is non-negotiable.</p>
+      <p>We built a "gaming mode" for the substrate that optimizes for latency above all else. In gaming mode, NEXUS routes to the fastest available model rather than the highest-quality one. BRAIN pre-loads NPC memory into an in-memory cache at session start. CORTEX is limited to two-stage chains maximum. AUDIT runs a lighter validation pass. These trade-offs reduce quality by about 8% compared to enterprise mode but drop median latency from 1,200ms to 145ms. For gaming, that trade-off is non-negotiable.</p>
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Emergent Narratives</h2>
       <p>The unexpected result: stories that no one wrote. When NPCs have real memory and genuine personality, their interactions with players produce narratives that emerge from the system rather than from a script. Players create their own story — the substrate just provides the cognitive infrastructure to make it coherent.</p>
