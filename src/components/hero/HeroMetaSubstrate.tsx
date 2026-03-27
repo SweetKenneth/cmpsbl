@@ -295,6 +295,22 @@ export function HeroMetaSubstrate() {
                 </Link>
               </Button>
             </FadeIn>
+
+            {/* Zenodo academic publication CTA */}
+            <FadeIn delay={0.5} className="flex justify-center lg:justify-start mt-4">
+              <a
+                href="https://zenodo.org/records/18895141"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-card/20 backdrop-blur-sm hover:border-primary/30 hover:bg-card/40 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-purple))] opacity-70 group-hover:opacity-100 transition-opacity" />
+                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground/70 group-hover:text-foreground/80 transition-colors tracking-wide">
+                  Academic Prior Art — Zenodo v13.5
+                </span>
+                <ArrowRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
+              </a>
+            </FadeIn>
           </div>
           
           {/* Right column — Memory River visualization + context */}

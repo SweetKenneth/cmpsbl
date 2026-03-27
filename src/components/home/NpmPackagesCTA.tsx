@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 const NPM_PACKAGES = [
   { name: "@cmpsbl/types", desc: "Shared TypeScript schemas — CJPI, manifests, resolvers, mesh events", tier: "Foundation" },
-  { name: "@cmpsbl/runtime", desc: "Mini-Runtime™ — CJPI scoring, tiering, memory chain orchestration", tier: "Foundation" },
+  { name: "@cmpsbl/runtime", desc: "CJPI scoring, tiering, memory chain orchestration, and pipeline execution", tier: "Foundation" },
   { name: "@cmpsbl/failsafe", desc: "Zero-dep migration engine for platform portability", tier: "Foundation" },
   { name: "@cmpsbl/intent", desc: "Intent router — broadcast + resolver dispatch for any app", tier: "Core" },
   { name: "@cmpsbl/mesh", desc: "Mesh telemetry — emit and subscribe to node communication events", tier: "Core" },

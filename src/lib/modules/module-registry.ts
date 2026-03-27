@@ -897,6 +897,27 @@ export const MODULE_REGISTRY: ModuleInfo[] = [
     integrations: ["MEDIC Organ (health coordination)", "GOVERNANCE Layer (proposal approval)", "EVOLUTION Layer (upgrade pipeline)"],
     useCases: ["Autonomous infrastructure management", "Performance optimization", "Predictive maintenance programs"],
   },
+  {
+    slug: "nerve",
+    name: "NERVE Organ",
+    tagline: "Neural Signaling Backbone",
+    description: "Inter-primitive consensus repair, signal backbone, neural pathway management, and real-time event propagation across all substrate surfaces.",
+    layer: "Module",
+    visibility: "public",
+    icon: Zap,
+    color: "yellow-500",
+    useCaseH1: "Real-Time Neural Signaling for Autonomous AI Coordination",
+    heroDescription: "NERVE is the substrate's nervous system — a real-time signaling backbone that carries inter-primitive messages, coordinates consensus repair, and ensures every surface stays synchronized.",
+    features: ["Inter-primitive signal propagation", "Consensus repair protocols", "Neural pathway management", "Signal priority routing", "Latency-optimized backbone", "Cross-surface event synchronization"],
+    highlights: [
+      { title: "Sub-Millisecond Signal Propagation", description: "NERVE delivers inter-primitive signals in sub-millisecond timeframes, enabling real-time coordination between surfaces like BRAIN, CORTEX, and DEFENSE without polling or batching delays." },
+      { title: "Consensus Repair", description: "When surfaces disagree on state, NERVE mediates consensus repair — comparing signal histories, identifying divergence points, and orchestrating state reconciliation across the mesh." },
+      { title: "Adaptive Neural Pathways", description: "NERVE dynamically optimizes signal routing based on observed traffic patterns — strengthening frequently used pathways and pruning inactive ones, just like biological neural plasticity." },
+    ],
+    codeSnippet: `import { useNerve } from '@cmpsbl/substrate';\n\nconst { signal, subscribe, pathways } = useNerve();\nawait signal('BRAIN', { type: 'context-update', data });\nsubscribe('DEFENSE', (msg) => handleAlert(msg));`,
+    integrations: ["CORTEX Engine (orchestration signals)", "DEFENSE Layer (threat alerts)", "RIPPLE Organ (cascade propagation)"],
+    useCases: ["Real-time multi-agent coordination", "Distributed consensus systems", "Event-driven AI architectures"],
+  },
 ];
 
 // ══════════════════════════════════════════
