@@ -244,18 +244,22 @@ function MobileDemoCard({ title, subtitle, icon, status, what, index, onClick }:
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <h3 className="font-bold text-foreground text-sm truncate">{title}</h3>
-            {status === "live" && (
+            <h3 className="font-bold text-foreground text-sm">{title}</h3>
+            {title === "Ascension" ? (
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-500 border border-amber-500/20 shrink-0">
+                unreleased
+              </span>
+            ) : status === "live" ? (
               <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 shrink-0">
                 live
               </span>
-            )}
+            ) : null}
           </div>
-          <p className="text-[11px] text-muted-foreground truncate">{subtitle}</p>
+          <p className="text-[11px] text-muted-foreground">{subtitle}</p>
         </div>
         <ArrowRight className="w-4 h-4 text-primary/50 shrink-0" />
       </div>
-      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{what}</p>
+      <p className="text-xs text-muted-foreground leading-relaxed">{what}</p>
     </motion.button>
   );
 }
