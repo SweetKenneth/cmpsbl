@@ -30,7 +30,7 @@ export default function BreakingProblemsApart() {
 
       <h2 className="text-2xl font-bold text-foreground mt-8">Learning From Decomposition Patterns</h2>
       <p>Every decomposition DECODE performs becomes training data for better decompositions. When a decomposition produces excellent results, DECODE records the pattern — the input structure, the sub-task split, the execution order, and the reassembly strategy. When it sees a similar request later, it can skip the analysis phase and apply a proven decomposition pattern directly. Our pattern library grew from zero to over 2,000 canonical decomposition templates in the first six months.</p>
-      <p>DECODE and <Link to="/blog/when-one-model-isnt-enough" className="text-primary hover:underline">CORTEX</Link> became a natural pair. DECODE breaks the problem apart. CORTEX runs each piece through the right model. Together, they turned complex requests from our weakest use case into one of our strongest. The need to verify all of this output led directly to <Link to="/blog/trust-but-verify" className="text-primary hover:underline">PROOF</Link>.</p>
+      <p>DECODE and <Link to="/blog/when-one-model-isnt-enough" className="text-primary hover:underline">CORTEX</Link> became a natural pair. DECODE breaks the problem apart. CORTEX runs each piece through the right model. Together, they turned complex requests from our weakest use case into one of our strongest. The need to verify all of this output led directly to <Link to="/blog/trust-but-verify" className="text-primary hover:underline">AUDIT</Link>.</p>
     </BlogArticleLayout>
   );
 }
