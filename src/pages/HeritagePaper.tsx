@@ -308,7 +308,7 @@ const HeritagePaper = () => {
             {/* Phase 0.5: WebAdoption */}
             <PhaseHeader num="0.5" title="WebAdoption — The Living Directory (July 2025)" />
             <p className="text-sm leading-relaxed text-muted-foreground mb-3">
-              WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites — featuring automated audits, live compliance badges, and public listings. Proof replaced promises. WebAdoption established the principle of <em>continuous verification</em> — the idea that compliance is not a one-time event but an ongoing process. This principle directly informed the OBSERVER node's continuous monitoring architecture and the INCLUSIVE drift-detector module.
+              WebAdoption emerged alongside Clarity as a living index of WCAG-verified sites — featuring automated audits, live compliance badges, and public listings. Proof replaced promises. WebAdoption established the principle of <em>continuous verification</em> — the idea that compliance is not a one-time event but an ongoing process. This principle directly informed the SHADOW layer's continuous monitoring architecture and the INCLUSIVE drift-detector module.
             </p>
 
             {/* Phase 1: Cascade */}
@@ -512,7 +512,7 @@ const HeritagePaper = () => {
                   <tr><td className="p-2 border border-border">Ripple</td><td className="p-2 border border-border">4</td><td className="p-2 border border-border">RIPPLE, TREATY</td></tr>
                   <tr><td className="p-2 border border-border">Nexus</td><td className="p-2 border border-border">3</td><td className="p-2 border border-border">NEXUS</td></tr>
                   <tr><td className="p-2 border border-border">Verify</td><td className="p-2 border border-border">4</td><td className="p-2 border border-border">SHADOW, AUDIT</td></tr>
-                  <tr><td className="p-2 border border-border">WebAdoption</td><td className="p-2 border border-border">2</td><td className="p-2 border border-border">OBSERVER, INCLUSIVE</td></tr>
+                  <tr><td className="p-2 border border-border">WebAdoption</td><td className="p-2 border border-border">2</td><td className="p-2 border border-border">SHADOW, INCLUSIVE</td></tr>
                   <tr><td className="p-2 border border-border">Cascade</td><td className="p-2 border border-border">30+</td><td className="p-2 border border-border">CORTEX, ORACLE, INTENT</td></tr>
                   <tr><td className="p-2 border border-border">SimNap</td><td className="p-2 border border-border">10+</td><td className="p-2 border border-border">DREAM, MEMORY</td></tr>
                   <tr><td className="p-2 border border-border">Modernizer</td><td className="p-2 border border-border">5</td><td className="p-2 border border-border">FORGE, DECODE, ENCODE</td></tr>
@@ -626,7 +626,7 @@ const HeritagePaper = () => {
 │ ├─ DECODE (parsing)        └─ AUDIT (chain of custody) │
 │ ├─ ENCODE (generation)                                  │
 │ └─ HARVEST (extraction)    From WebAdoption:            │
-│                            └─ OBSERVER (continuous)     │
+│                            └─ SHADOW (continuous)     │
 └─────────────────────────────────────────────────────────┘`}
               </pre>
             </details>
