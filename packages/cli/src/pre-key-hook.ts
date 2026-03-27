@@ -8,7 +8,6 @@
  * © CMPSBL® — All rights reserved.
  */
 
-import * as os from 'os';
 import { c, spinner, supportsAnimatedOutput } from './ui';
 
 // ═══════════════════════════════════════════════════════════════

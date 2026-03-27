@@ -464,7 +464,7 @@ async function requireApiKey(): Promise<string> {
 // Config & Nodes
 // ═══════════════════════════════════════════════════════════════
 
-const CLI_VERSION = '2.2.3' as const;
+const CLI_VERSION = '2.5.0' as const;
 
 const CLI_CONFIG: FirstContactConfig = {
   package: '@cmpsbl/cli',
@@ -1079,6 +1079,11 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
     say(pick(V.idle));
     sayMuted('  Discovery will activate on next interaction.');
   }
+
+  // Offer the First Dream after direct `cmpsbl init`
+  if (!opts?.skipCeremony && isInteractiveTTY()) {
+    await offerFirstDream();
+  }
 }
 
 async function cmdConfig(args: string[]) {
@@ -1350,13 +1355,11 @@ function scaffoldFirstDream(heuristic: { pattern: string; confidence: number; in
  * Usage: npx ts-node dream.ts
  */
 
-import { CMPSBL, Engine } from '@cmpsbl/sdk';
+import { CMPSBL } from '@cmpsbl/sdk';
 
 async function main() {
   // Connect to the substrate (uses ~/.cmpsbl/credentials or CMPSBL_API_KEY)
-  const cmpsbl = new CMPSBL({
-    apiKey: resolveApiKey(),
-  });
+  const cmpsbl = new CMPSBL();
 
   await cmpsbl.init();
   console.log('◈ Initiating dream cycle...');
@@ -2899,19 +2902,19 @@ function sleep(ms: number): Promise<void> {
 
 const ECOSYSTEM_PACKAGES = {
   tier1: [
-    { name: '@cmpsbl/types',     version: '1.1.0',  deps: [] as string[] },
-    { name: '@cmpsbl/runtime',   version: '1.1.0',  deps: [] as string[] },
-    { name: '@cmpsbl/sdk',       version: '2.0.0',  deps: [] as string[] },
-    { name: '@cmpsbl/intent',    version: '1.2.0',  deps: [] as string[] },
-    { name: '@cmpsbl/mesh',      version: '1.2.0',  deps: [] as string[] },
-    { name: '@cmpsbl/bridge',    version: '1.2.0',  deps: [] as string[] },
-    { name: '@cmpsbl/discovery', version: '1.2.0',  deps: [] as string[] },
-    { name: '@cmpsbl/failsafe',  version: '3.2.0',  deps: [] as string[] },
+    { name: '@cmpsbl/types',     version: '1.3.0',  deps: [] as string[] },
+    { name: '@cmpsbl/runtime',   version: '1.3.0',  deps: [] as string[] },
+    { name: '@cmpsbl/sdk',       version: '2.2.0',  deps: [] as string[] },
+    { name: '@cmpsbl/intent',    version: '1.4.0',  deps: [] as string[] },
+    { name: '@cmpsbl/mesh',      version: '1.4.0',  deps: [] as string[] },
+    { name: '@cmpsbl/bridge',    version: '1.4.0',  deps: [] as string[] },
+    { name: '@cmpsbl/discovery', version: '1.4.0',  deps: [] as string[] },
+    { name: '@cmpsbl/failsafe',  version: '3.4.0',  deps: [] as string[] },
   ],
   tier2: [
-    { name: '@cmpsbl/cli',          version: '2.2.2',  deps: ['@cmpsbl/runtime'] },
-    { name: '@cmpsbl/test-harness', version: '1.2.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
-    { name: '@cmpsbl/react',        version: '1.2.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
+    { name: '@cmpsbl/cli',          version: '2.5.0',  deps: ['@cmpsbl/runtime'] },
+    { name: '@cmpsbl/test-harness', version: '1.4.0',  deps: ['@cmpsbl/runtime', '@cmpsbl/bridge'] },
+    { name: '@cmpsbl/react',        version: '1.4.0',  deps: ['@cmpsbl/intent', '@cmpsbl/mesh', '@cmpsbl/runtime', 'react'] },
   ],
 };
 
