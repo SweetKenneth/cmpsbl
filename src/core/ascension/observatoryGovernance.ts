@@ -127,8 +127,8 @@ export function executeGoverned(capabilityId: string, input: unknown): GovernedR
 
   try {
     const output = executeCapability(cap, input);
-    const window = rateWindows.get(capabilityId) || [];
-    window.push(Date.now());
+    const rateWindow = rateWindows.get(capabilityId);
+    if (rateWindow) rateWindow.push(Date.now());
     gov.totalExecutions++;
     gov.consecutiveFailures = 0;
     gov.lastExecution = new Date().toISOString();
