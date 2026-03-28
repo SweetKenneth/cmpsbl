@@ -165,6 +165,11 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
                 FEATURED
               </Badge>
             )}
+            {isEngineDogfooded(engine.slug) && (
+              <Badge variant="outline" className="text-[10px] font-mono text-neon-cyan border-neon-cyan/25 bg-neon-cyan/5">
+                Powers CMPSBL
+              </Badge>
+            )}
           </div>
 
           {/* Title & tagline */}
