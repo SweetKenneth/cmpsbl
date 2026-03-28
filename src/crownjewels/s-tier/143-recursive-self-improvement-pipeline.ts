@@ -72,6 +72,6 @@ export class RecursiveSelfImprovementPipeline {
     return true;
   }
 
-  getProposals(): ImprovementProposal[] { return [...this.proposals.values()]; }
+  getProposals(): ImprovementProposal[] { return Array.from(this.proposals.values()); }
   getTests(): ABTest[] { return [...this.tests]; }
 }

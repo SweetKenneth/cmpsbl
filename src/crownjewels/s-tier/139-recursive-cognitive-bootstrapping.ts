@@ -39,7 +39,7 @@ export class RecursiveCognitiveBootstrapper {
     const newUnlocks: string[] = [];
 
     // Train unlocked skills
-    for (const [id, skill] of this.skills) {
+    for (const [id, skill] of Array.from(this.skills)) {
       if (!skill.unlocked) {
         // Check if prerequisites are met
         const prereqsMet = skill.prerequisites.every(p => {
@@ -73,9 +73,9 @@ export class RecursiveCognitiveBootstrapper {
     return cycle;
   }
 
-  getSkills(): CognitiveSkill[] { return [...this.skills.values()]; }
+  getSkills(): CognitiveSkill[] { return Array.from(this.skills.values()); }
   getAverageProficiency(): number {
-    const skills = [...this.skills.values()].filter(s => s.unlocked);
+    const skills = Array.from(this.skills.values()).filter(s => s.unlocked);
     if (skills.length === 0) return 0;
     return skills.reduce((s, sk) => s + sk.proficiency, 0) / skills.length;
   }

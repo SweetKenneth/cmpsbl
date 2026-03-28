@@ -56,6 +56,6 @@ export class TopologyMutator {
     return mutation;
   }
 
-  getTopology(): TopologyNode[] { return [...this.nodes.values()]; }
+  getTopology(): TopologyNode[] { return Array.from(this.nodes.values()); }
   getMutationHistory(): TopologyMutation[] { return [...this.mutations]; }
 }
