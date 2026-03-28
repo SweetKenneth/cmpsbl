@@ -168,7 +168,7 @@ export const publicRoutes = (
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />
     <Route path="/operatives" element={<Navigate to="/store" replace />} />
     <Route path="/operatives/:slug" element={<Navigate to="/store" replace />} />
-    <Route path="/engines" element={<Navigate to="/store" replace />} />
+    <Route path="/engines" element={<Engines />} />
     <Route path="/engines/:slug" element={<EngineDetail />} />
     <Route path="/agents/:slug" element={<AgentDetail />} />
     <Route path="/composable-cognitives" element={<Navigate to="/store" replace />} />
