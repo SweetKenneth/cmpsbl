@@ -46,7 +46,7 @@ export { useNerve, type UseNerveReturn } from './useNerve';
 
 // ESZ — Expansion Sovereignty Zone
 export { useSovereign, type UseSovereignReturn } from './useSovereign';
-export { useConscience, type UseConscienceReturn } from './useConscience';
+export { useConscience } from './useConscience';
 export { useTreaty, type UseTreatyReturn } from './useTreaty';
 export { useOracle, type UseOracleReturn } from './useOracle';
 
