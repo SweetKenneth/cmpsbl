@@ -81,7 +81,7 @@ export interface PublicMetricsStore {
 
 export const DEFAULT_METRICS: PublicMetrics = {
   // Version Information
-  version: '17.0.0',
+  version: '17.1.0',
   codename: 'BELIEVER',
   epoch: 'BELIEVER',
   buildDate: new Date().toISOString().split('T')[0],
