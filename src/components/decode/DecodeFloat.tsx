@@ -613,7 +613,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
                   <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-primary/15 text-primary font-medium">sovereign</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[11px] text-muted-foreground">cognitive interface</span>
+                  <span className="text-[11px] text-muted-foreground">substrate interpreter</span>
                   <span className={cn("w-1.5 h-1.5 rounded-full", {
                     "bg-[hsl(var(--system-green))]": connection.status === "connected",
                     "bg-[hsl(var(--system-amber))] animate-pulse": connection.status === "degraded",
@@ -696,7 +696,7 @@ export default function DecodeFloat({ anchorId = "decode-float-anchor" }: Props)
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder={mode === 'support' ? "Describe your issue or type /help…" : "Speak to DECODE or type /help…"}
+                placeholder={mode === 'support' ? "Describe your issue…" : "Ask DECODE anything…"}
                 disabled={isLoading || connection.status === "disconnected"}
                 className="flex-1 h-10 px-3 rounded-xl text-sm bg-muted/60 border border-border/50 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 disabled:opacity-50"
               />

@@ -1,8 +1,8 @@
 /**
- * Support Bot Panel
+ * DECODE Support Panel
  * Governed Evolving Support System UI
  * 
- * Interactive chat interface for the substrate-integrated support bot.
+ * Interactive support interface powered by the DECODE interpreter primitive.
  */
 
 import React, { useState, useRef, useEffect } from 'react';
@@ -222,7 +222,7 @@ export function SupportBotPanel() {
             </div>
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
-                Support Bot
+                DECODE Support
                 {isEnabled && (
                   <Badge className="bg-neon-green/10 text-neon-green border-neon-green/20">
                     <Zap className="w-3 h-3 mr-1" />
@@ -231,7 +231,7 @@ export function SupportBotPanel() {
                 )}
               </CardTitle>
               <p className="text-xs text-muted-foreground">
-                Memory-backed • Governed • Self-improving
+                Substrate-backed • Governed • Self-improving
               </p>
             </div>
           </div>
@@ -268,9 +268,9 @@ export function SupportBotPanel() {
               {messages.length === 0 ? (
                 <div className="text-center py-12">
                   <Bot className="w-12 h-12 mx-auto text-muted-foreground/50 mb-4" />
-                  <h3 className="font-medium text-muted-foreground">No messages yet</h3>
+                  <h3 className="font-medium text-muted-foreground">DECODE Support is ready</h3>
                   <p className="text-sm text-muted-foreground/60 mt-1">
-                    Ask a question to start the conversation
+                    Ask a question to start a support session
                   </p>
                   
                   <div className="flex flex-wrap gap-2 justify-center mt-6">

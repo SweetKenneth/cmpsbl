@@ -789,6 +789,105 @@ const stratumBeliever: Specimen[] = [
     ],
     affectedNodes: ["CORE Organ", "SYSTEM Organ", "GOVERNANCE Layer"],
   },
+  // ─── v17.0.1 → v17.0.9 → v17.1.0 Patch Notes ──────────────────────────────
+
+  {
+    id: "BLVR-009",
+    fossilized: "2026-03-26",
+    origin: "architecture",
+    stimulus: "The investor showcase library displayed static defense documentation but did not reflect the latest autonomous detection, consensus, and self-healing architecture additions",
+    adaptations: [
+      "Investor showcase defense document updated with Sentinel Layer data table showing 10 autonomous capabilities and their CJPI Apex ratings",
+      "Self-Healing Consensus Meta-Engine section added mapping Crown Jewel primitives into the autonomous detect → consensus → reconstruct → verify → reintegrate loop",
+      "Key Insight callout rewritten to emphasize security as architectural, autonomous, and self-improving",
+    ],
+    phenotype: [
+      "Investors see the latest defense posture — not a snapshot from weeks ago",
+      "The showcase dynamically reflects the substrate's real autonomous security capabilities",
+    ],
+    affectedNodes: ["GOVERNANCE Layer", "DEFENSE Layer"],
+  },
+  {
+    id: "BLVR-010",
+    fossilized: "2026-03-26",
+    origin: "governance",
+    stimulus: "Admin observability had no centralized kill switch or real-time health panel for the consensus and self-healing subsystems",
+    adaptations: [
+      "Admin observability panel built with live health monitoring for all consensus engine nodes",
+      "Kill switch integrated into the observability panel — single toggle to disable consensus engines system-wide",
+      "Admin sidebar updated for both mobile and desktop layouts to include the new observability panel",
+      "Real-time status indicators showing node health, quorum state, and healing pipeline activity",
+    ],
+    phenotype: [
+      "Governors can monitor and kill consensus engines from a single admin surface",
+      "Mobile and desktop admin navigation are in parity — no feature gaps between viewports",
+    ],
+    affectedNodes: ["GOVERNANCE Layer", "CORE Organ", "SYSTEM Organ"],
+  },
+  {
+    id: "BLVR-011",
+    fossilized: "2026-03-27",
+    origin: "cognition",
+    stimulus: "Internal documentation existed for defense architecture but was not accessible from the docs/libraries/internal path and had no structured reference for the engineering team",
+    adaptations: [
+      "Internal engineering doc created at docs/libraries/internal covering the full self-healing consensus architecture",
+      "Document covers meta-engine composition, individual engine responsibilities, kill switch behavior, and operational guidance",
+      "Clear guidance added: leave engines enabled unless actively debugging — they are autonomous and self-governing",
+    ],
+    phenotype: [
+      "Engineering team has a single reference doc for the consensus architecture — no tribal knowledge required",
+      "Operational runbook included so new team members know when and how to use the kill switch",
+    ],
+    affectedNodes: ["GOVERNANCE Layer", "DECODE Agent"],
+  },
+  {
+    id: "BLVR-012",
+    fossilized: "2026-03-27",
+    origin: "distribution",
+    stimulus: "The public glossary and GlossaryTerm tooltip component were missing definitions for newly introduced substrate concepts and engine terminology",
+    adaptations: [
+      "Glossary expanded with new entries for consensus engines, meta-engines, pipeline scoring, and substrate interpreter primitives",
+      "GlossaryTerm component verified working with dotted underline hover tooltips across all new terms",
+    ],
+    phenotype: [
+      "Every new concept introduced in the last epoch has a hoverable definition — no undefined jargon",
+      "The glossary grows with the substrate instead of lagging behind it",
+    ],
+    affectedNodes: ["DECODE Agent", "CORTEX Engine"],
+  },
+  {
+    id: "BLVR-013",
+    fossilized: "2026-03-28",
+    origin: "architecture",
+    stimulus: "DECODE floating orb and support panel used legacy terminology ('cognitive interface', 'Support Bot', 'chatbot') that didn't match the current sovereign interpreter identity",
+    adaptations: [
+      "DecodeFloat header updated: 'cognitive interface' → 'substrate interpreter' to match the SOVEREIGN voice profile",
+      "SupportBotPanel renamed to 'DECODE Support' across title, description, and empty-state messaging",
+      "Input placeholders updated to remove legacy '/help' references and align with current interaction patterns",
+      "All user-facing strings audited for consistency with the DECODE interpreter primitive identity",
+    ],
+    phenotype: [
+      "DECODE speaks with one voice everywhere — floating orb, support panel, and status bar all use the same language",
+      "No surface in the substrate still calls DECODE a 'bot' or 'chatbot' — it is an interpreter primitive",
+    ],
+    affectedNodes: ["DECODE Agent", "SYSTEM Organ"],
+  },
+  {
+    id: "BLVR-014",
+    fossilized: "2026-03-28",
+    origin: "governance",
+    stimulus: "Version remained at 17.0.0 despite 14 specimens of architectural, governance, and distribution changes since the BELIEVER epoch began",
+    adaptations: [
+      "Version bumped through 17.0.1 → 17.0.9 → 17.1.0 to reflect the accumulated work since epoch start",
+      "Patch notes cover: investor showcase updates, admin observability panel, kill switch, internal docs, glossary expansion, terminology alignment, and changelog itself",
+      "Public metrics store updated to v17.1.0 — all surfaces reading from the store reflect the new version immediately",
+    ],
+    phenotype: [
+      "The version number tells the truth — 17.1.0 reflects a minor release worth of real architectural change",
+      "Every surface that displays a version badge now shows v17.1.0 without manual updates",
+    ],
+    affectedNodes: ["CORE Organ", "EVOLUTION Layer"],
+  },
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
