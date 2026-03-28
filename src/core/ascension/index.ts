@@ -36,3 +36,7 @@ export type {
 // Legacy single-profiler exports (backward compat)
 export { executeThreatProfiler, validateProfiler, getProfilerMeta } from './cognitiveThreatProfiler';
 export type { ThreatProfileInput, ThreatProfile } from './cognitiveThreatProfiler';
+
+// Self-Healing Consensus Meta-Engine
+export { SelfHealingConsensusMetaEngine, getMetaEngine, resetMetaEngine } from './selfHealingConsensusEngine';
+export type { MetaNode, MetaEngineEvent, MetaEngineSnapshot, MetaEngineConfig } from './selfHealingConsensusEngine';
