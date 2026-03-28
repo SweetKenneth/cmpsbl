@@ -516,7 +516,41 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// COMBINED — All Crown Jewel IDs (both types)
+// EXPANSION PRIMITIVE INJECTION — Auto-discovered jewels from expansion primitives
+// ═══════════════════════════════════════════════════════════════════════════════
+
+import {
+  getExpansionArchitectureIds,
+  getExpansionExperienceIds,
+  getExpansionTierMap,
+} from './expansion-crown-jewel-registry';
+import { COMPOUND_CROWN_JEWEL_IDS } from './compound-ip-guard';
+
+// Inject expansion architecture jewels
+for (const id of getExpansionArchitectureIds()) {
+  ARCHITECTURE_CROWN_JEWEL_IDS.add(id);
+}
+
+// Inject expansion experience jewels
+for (const id of getExpansionExperienceIds()) {
+  EXPERIENCE_CROWN_JEWEL_IDS.add(id);
+}
+
+// Inject compound jewels into architecture set
+for (const id of COMPOUND_CROWN_JEWEL_IDS) {
+  ARCHITECTURE_CROWN_JEWEL_IDS.add(id);
+}
+
+// Inject expansion tier mappings
+const expansionTierMap = getExpansionTierMap();
+for (const [id, tier] of Object.entries(expansionTierMap)) {
+  // Map ProductTier to experience tier format
+  const mapped = tier === 'studio' ? 'creator' : tier === 'enterprise' ? 'architect' : tier;
+  EXPERIENCE_TIER_MAP[id] = mapped as 'builder' | 'creator' | 'studio' | 'architect';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// COMBINED — All Crown Jewel IDs (both types + expansion + compound)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const CROWN_JEWEL_IDS = new Set<string>([
