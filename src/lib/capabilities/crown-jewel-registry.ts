@@ -349,8 +349,17 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cj6-integration-api-rate-limiter',
 ]);
 
-/** Map experience jewels to their minimum tier */
-export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
+/** Map experience jewels to their minimum tier (4-tier: builder/creator/studio/architect) */
+export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio' | 'architect'> = {
+  // ── BUILDER TIER (free) — Foundational sealed capabilities ──
+  'recursive-goal-optimizer': 'builder',
+  'recursive-emergent-behavior-analyzer': 'builder',
+  'syn-end-to-end-reasoning': 'builder',
+  'cap-chaos-resilience': 'builder',
+  'cj-ripple-event-dedup': 'builder',
+  'cj-economy-value-attribution': 'builder',
+  'cj6-system-health-aggregation': 'builder',
+  'cj6-decode-terminal-command-parser': 'builder',
   // Creator tier ($49)
   'recursive-goal-optimizer': 'creator',
   'recursive-emergent-behavior-analyzer': 'creator',
