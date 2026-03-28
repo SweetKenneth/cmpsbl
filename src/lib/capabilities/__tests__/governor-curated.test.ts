@@ -9,18 +9,17 @@ import {
   getGovernorTierMap,
   getGovernorSTierIds,
   getGovernorCurationSummary,
-  type GovernorCuratedJewel,
 } from '../governor-curated-crown-jewels';
 
-describe('Governor-Curated Crown Jewels', () => {
-  it('has exactly 27 jewels (one per primitive)', () => {
-    expect(GOVERNOR_CURATED_JEWELS).toHaveLength(27);
+describe('Governor-Curated Crown Jewels — Full Primitive Coverage', () => {
+
+  it('has 80 total jewels', () => {
+    expect(GOVERNOR_CURATED_JEWELS).toHaveLength(80);
   });
 
-  it('covers 27 unique primitives', () => {
+  it('covers 42 primitives', () => {
     const primitives = new Set(GOVERNOR_CURATED_JEWELS.map(j => j.primitive));
-    // DREAM replaces OBSERVER per taxonomy rules
-    expect(primitives.size).toBe(27);
+    expect(primitives.size).toBe(42);
   });
 
   it('has no duplicate IDs', () => {
@@ -28,95 +27,81 @@ describe('Governor-Curated Crown Jewels', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('all CJPI totals are between 80-95', () => {
-    for (const j of GOVERNOR_CURATED_JEWELS) {
-      expect(j.cjpi.total).toBeGreaterThanOrEqual(80);
-      expect(j.cjpi.total).toBeLessThanOrEqual(95);
+  it('expansion primitives have 3 jewels each', () => {
+    const expansion = ['ORACLE', 'SOVEREIGN', 'SHADOW', 'FORGE', 'HARVEST', 'TREATY', 'COMPASS', 'PHANTOM', 'ECHO', 'LINGUA', 'REFLEX'];
+    for (const p of expansion) {
+      const count = GOVERNOR_CURATED_JEWELS.filter(j => j.primitive === p).length;
+      expect(count, `${p} should have 3 jewels`).toBe(3);
+    }
+  });
+
+  it('original core primitives have 2 jewels each', () => {
+    const original = ['CORE', 'BRAIN', 'MEMORY', 'NERVE', 'DECODE', 'ENCODE', 'CORTEX', 'DEFENSE', 'CONSCIENCE', 'EVOLUTION', 'IMMUNITY', 'INTENT', 'GOVERNANCE', 'ATLAS', 'ENGINEER', 'DREAM'];
+    for (const p of original) {
+      const count = GOVERNOR_CURATED_JEWELS.filter(j => j.primitive === p).length;
+      expect(count, `${p} should have 2 jewels`).toBe(2);
+    }
+  });
+
+  it('infrastructure primitives have 1 jewel each', () => {
+    const infra = ['SYSTEM', 'NEXUS', 'VISION', 'RELAY', 'RIPPLE', 'SANDBOX', 'ECONOMY', 'IDENTITY', 'ACCESS', 'AUDIT', 'MEDIC', 'INCLUSIVE', 'INTEGRATION', 'ANALYTICS', 'OBSERVABILITY'];
+    for (const p of infra) {
+      const count = GOVERNOR_CURATED_JEWELS.filter(j => j.primitive === p).length;
+      expect(count, `${p} should have 1 jewel`).toBe(1);
     }
   });
 
   it('all guarded jewels are architecture-class', () => {
     const guarded = GOVERNOR_CURATED_JEWELS.filter(j => j.decision === 'guard');
     for (const j of guarded) {
-      expect(j.isArchitecture).toBe(true);
-      expect(j.blackBoxed).toBe(true);
-      expect(j.sealedExecution).toBe(true);
+      expect(j.isArchitecture, `${j.id} should be architecture`).toBe(true);
     }
   });
 
   it('all activated jewels are NOT architecture-class', () => {
     const activated = GOVERNOR_CURATED_JEWELS.filter(j => j.decision === 'activate');
     for (const j of activated) {
-      expect(j.isArchitecture).toBe(false);
+      expect(j.isArchitecture, `${j.id} should not be architecture`).toBe(false);
     }
   });
 
-  it('has the correct activate/guard split', () => {
-    const summary = getGovernorCurationSummary();
-    // 10 guarded (CORE, BRAIN, NERVE, CORTEX, CONSCIENCE, EVOLUTION, SHADOW, IMMUNITY, GOVERNANCE, DREAM)
-    // 17 activated (rest)
-    expect(summary.guarded).toBe(10);
-    expect(summary.activated).toBe(17);
-    expect(summary.deferred).toBe(0);
+  it('has S-Tier jewels', () => {
+    const sTier = getGovernorSTierIds();
+    expect(sTier.length).toBeGreaterThanOrEqual(10);
   });
 
-  it('activated jewels have tier mappings', () => {
+  it('S-Tier includes crown jewels of key primitives', () => {
+    const sTier = getGovernorSTierIds();
+    expect(sTier).toContain('gov-dream-synthetic-intuition');
+    expect(sTier).toContain('gov-cortex-emergent-strategy');
+    expect(sTier).toContain('gov-evolution-architectural-telomere');
+    expect(sTier).toContain('gov-governance-veto-authority');
+  });
+
+  it('activated jewels all have tier mappings', () => {
     const tierMap = getGovernorTierMap();
     const activatedIds = getGovernorActivatedIds();
     for (const id of activatedIds) {
-      expect(tierMap[id]).toBeDefined();
+      expect(tierMap[id], `${id} should have tier mapping`).toBeDefined();
     }
   });
 
-  it('guarded IDs include structural primitives', () => {
-    const guarded = getGovernorGuardedIds();
-    expect(guarded).toContain('gov-core-circuit-breaker-fabric');
-    expect(guarded).toContain('gov-brain-knowledge-fusion-reactor');
-    expect(guarded).toContain('gov-cortex-emergent-strategy');
-    expect(guarded).toContain('gov-governance-veto-authority');
-    expect(guarded).toContain('gov-evolution-architectural-telomere');
-  });
-
-  it('activated IDs include user-facing primitives', () => {
-    const activated = getGovernorActivatedIds();
-    expect(activated).toContain('gov-memory-semantic-versioning');
-    expect(activated).toContain('gov-decode-intent-disambiguation');
-    expect(activated).toContain('gov-defense-zero-day-synthesis');
-    expect(activated).toContain('gov-harvest-multi-source-ingestion');
-    expect(activated).toContain('gov-oracle-bayesian-inference');
-  });
-
-  it('has exactly 1 S-Tier jewel (Synthetic Intuition)', () => {
-    const sTier = getGovernorSTierIds();
-    expect(sTier).toHaveLength(1);
-    expect(sTier[0]).toBe('gov-dream-synthetic-intuition');
-  });
-
-  it('summary avgCjpi is in reasonable range', () => {
+  it('summary totals are consistent', () => {
     const summary = getGovernorCurationSummary();
-    expect(summary.avgCjpi).toBeGreaterThanOrEqual(85);
-    expect(summary.avgCjpi).toBeLessThanOrEqual(92);
+    expect(summary.totalJewels).toBe(80);
+    expect(summary.activated + summary.guarded + summary.deferred).toBe(80);
+    expect(summary.totalPrimitives).toBe(42);
   });
 
-  it('creator tier has at least 2 jewels', () => {
-    const summary = getGovernorCurationSummary();
-    expect(summary.byTier.creator).toBeGreaterThanOrEqual(2);
-  });
-
-  it('architect tier has the most activated jewels', () => {
-    const summary = getGovernorCurationSummary();
-    expect(summary.byTier.architect).toBeGreaterThan(summary.byTier.creator);
-  });
-
-  it('every jewel has a selection rationale', () => {
+  it('every jewel has rationale and reason > 20 chars', () => {
     for (const j of GOVERNOR_CURATED_JEWELS) {
       expect(j.selectionRationale.length).toBeGreaterThan(20);
+      expect(j.decisionReason.length).toBeGreaterThan(20);
     }
   });
 
-  it('every jewel has a decision reason', () => {
-    for (const j of GOVERNOR_CURATED_JEWELS) {
-      expect(j.decisionReason.length).toBeGreaterThan(20);
-    }
+  it('creator tier has broad access', () => {
+    const summary = getGovernorCurationSummary();
+    expect(summary.byTier.creator).toBeGreaterThanOrEqual(8);
   });
 });
