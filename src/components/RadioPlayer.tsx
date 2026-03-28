@@ -149,7 +149,12 @@ export function RadioPlayer({ className }: { className?: string }) {
 
   useEffect(() => {
     return () => {
-      audioRef.current?.pause();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.removeAttribute('src');
+        audioRef.current.load();
+        audioRef.current = null;
+      }
       if (progressInterval.current) clearInterval(progressInterval.current);
     };
   }, []);
