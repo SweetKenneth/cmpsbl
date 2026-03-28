@@ -509,8 +509,6 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio
   'cj6-memory-cross-session-persistence': 'architect',
   'cj6-decode-personality-adaptation': 'creator',
   'cj6-system-graceful-shutdown': 'creator',
-  'cj6-system-health-aggregation': 'creator',
-  'cj6-decode-terminal-command-parser': 'creator',
   'cj6-access-quota-intelligence': 'creator',
   'cj6-access-api-key-lifecycle': 'creator',
   'cj6-integration-webhook-reliability': 'creator',
