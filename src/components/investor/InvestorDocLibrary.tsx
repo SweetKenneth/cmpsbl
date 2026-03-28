@@ -1148,10 +1148,43 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         ],
       },
       {
+        heading: "Ascension Sentinel Layer",
+        content: "DEFENSE is further extended by 10 autonomous sentinel capabilities discovered through the Ascension Transplant Engine. These are not bolted-on features — they are working software discovered by the substrate's own evolution lifecycle, then transplanted back into the security mesh.",
+        table: {
+          headers: ["Capability", "How It Works", "CJPI Rating"],
+          rows: [
+            ["Real-time threat profiling", "8-primitive chain scanning for XSS, SQL injection, prototype pollution, path traversal, template injection", "97 — Apex"],
+            ["Privacy-preserving reasoning", "Zero-knowledge pipeline with 3-hop phantom anonymization and treaty compliance", "96 — Apex"],
+            ["Accessibility enforcement", "Continuous WCAG scanning with shadow verification and engineering quality gates", "92 — Apex"],
+            ["Self-healing consensus", "Autonomous Byzantine fault tolerance — heals drifting nodes from peer consensus in <100ms", "94 — Mythic"],
+          ],
+        },
+      },
+      {
+        heading: "Self-Healing Consensus Meta-Engine",
+        content: "The Self-Healing Consensus Meta-Engine composes 6 Crown Jewel primitives (#005, #018, #039, #083, #103, #160) into a continuous detect → consensus → reconstruct → verify → reintegrate loop. Most distributed systems replace failed nodes. This one mathematically reconstructs their state from surviving peers and verifies quorum before reintegration.",
+        table: {
+          headers: ["Primitive", "Crown Jewel #", "Role"],
+          rows: [
+            ["Heartbeat Protocol", "#005", "Drift detection via EMA scoring"],
+            ["Consensus Engine", "#018", "Multi-source state voting"],
+            ["Fault Detector", "#039", "Byzantine behavior classification"],
+            ["Quorum Negotiator", "#083", "Dynamic quorum threshold management"],
+            ["State Sync", "#103", "Vector clock / CRDT reconstruction"],
+            ["Self-Repair", "#160", "Execution of autonomous repair actions"],
+          ],
+        },
+        callout: {
+          label: "Comparable",
+          text: "Google Spanner, Amazon DynamoDB consensus layers. Built by one engineer. Zero external dependencies.",
+          variant: "primary",
+        },
+      },
+      {
         heading: "Key Insight",
         callout: {
           label: "The Takeaway",
-          text: "DEFENSE is not a feature bolted onto the substrate — it is the substrate's immune system. Every request is scored, every zone is shielded, every action is chained. Security is architectural, not configurable.",
+          text: "DEFENSE is not a feature bolted onto the substrate — it is the substrate's immune system. Every request is scored, every zone is shielded, every action is chained. The Ascension sentinels are capabilities the system discovered about itself — and then deployed to protect itself. Security is architectural, autonomous, and self-improving.",
           variant: "warning",
         },
       },
