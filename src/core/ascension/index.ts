@@ -1,43 +1,38 @@
 /**
- * Ascension Capability Exports
- * Currently active: Cognitive Threat Profiler (APEX-97)
- *
- * All ascended capabilities are governed — disabled by default.
- * Enable explicitly via enableProfiler() after review.
+ * Ascension Capability Exports — Unified API
+ * 5 capabilities from api_gateway-20260328 export pack.
+ * All governed — disabled by default. Enable explicitly.
  */
 
-// Core profiler
-export {
-  executeThreatProfiler,
-  validateProfiler,
-  getProfilerMeta,
-} from './cognitiveThreatProfiler';
+// Capability engine
+export { executeCapability } from './capabilityEngine';
+export type { CapabilityMeta, CapabilityOutput, PrimitiveSignal, EnrichmentResult } from './capabilityEngine';
 
-export type {
-  ThreatProfileInput,
-  ThreatProfile,
-  ThreatSignal,
-  DefenseResult,
-  ImmunityResult,
-  BrainResult,
-} from './cognitiveThreatProfiler';
+// Registry
+export { ASCENSION_CAPABILITIES, PACK_META } from './capabilityRegistry';
 
-// Governance layer
+// Observatory governance (unified)
 export {
-  profileWithGovernance,
-  enableProfiler,
-  disableProfiler,
-  rollbackProfiler,
+  executeGoverned,
+  enableCapability,
+  disableCapability,
+  enableAll,
+  disableAll,
+  rollbackCapability,
+  rollbackAll,
   resetCircuit,
-  configureProfiler,
-  getProfilerState,
-  getAuditTrail,
-  verifyAuditIntegrity,
-} from './profilerGovernance';
+  getObservatoryState,
+  getCapabilityState,
+  getObservatoryAudit,
+  verifyObservatoryIntegrity,
+} from './observatoryGovernance';
 
 export type {
-  ProfilerConfig,
-  AuditEntry,
-  ProfilerState,
+  CapabilityGovernance,
+  ObservatoryAuditEntry,
   GovernedResult,
-} from './profilerGovernance';
+} from './observatoryGovernance';
+
+// Legacy single-profiler exports (backward compat)
+export { executeThreatProfiler, validateProfiler, getProfilerMeta } from './cognitiveThreatProfiler';
+export type { ThreatProfileInput, ThreatProfile } from './cognitiveThreatProfiler';
