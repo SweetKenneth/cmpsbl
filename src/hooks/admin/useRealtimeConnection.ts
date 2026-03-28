@@ -70,7 +70,7 @@ export function useRealtimeConnection() {
 
     return () => {
       clearInterval(interval);
-      channel.unsubscribe();
+      supabase.removeChannel(channel);
     };
   }, []);
 
