@@ -54,6 +54,27 @@ import { confidenceClassifier } from './confidence-classifier';
 import { driftDetector } from './drift-detector';
 import { maintenanceManager } from './maintenance-manager';
 import { startAutoTiering, stopAutoTiering } from '../brain-auto-tiering';
+import { getMetaEngine } from '@/core/ascension/selfHealingConsensusEngine';
+
+// ═══ Self-Healing Consensus — persistent background tick ══════════════════
+let consensusInterval: ReturnType<typeof setInterval> | null = null;
+
+function startConsensusEngine(): void {
+  if (consensusInterval) return;
+  const engine = getMetaEngine();
+  // Tick every 5 s — lightweight in-memory cycle, zero API calls
+  consensusInterval = setInterval(() => {
+    try { engine.tick(); } catch { /* non-blocking */ }
+  }, 5_000);
+  console.log('[NeuralSubstrate] Self-Healing Consensus Engine → ALWAYS-ON (5 s tick)');
+}
+
+function stopConsensusEngine(): void {
+  if (consensusInterval) {
+    clearInterval(consensusInterval);
+    consensusInterval = null;
+  }
+}
 
 /**
  * Initialize the entire Neural Substrate Layer
@@ -63,6 +84,8 @@ export async function initializeNeuralSubstrate(): Promise<void> {
   await maintenanceManager.start();
   // Start automatic memory tier enforcement (every 15 min)
   startAutoTiering();
+  // Start Self-Healing Consensus Meta-Engine — persistent background service
+  startConsensusEngine();
 }
 
 /**
@@ -71,18 +94,29 @@ export async function initializeNeuralSubstrate(): Promise<void> {
 export function shutdownNeuralSubstrate(): void {
   maintenanceManager.stop();
   stopAutoTiering();
+  stopConsensusEngine();
 }
 
 /**
  * Get unified neural substrate health status
  */
 export function getNeuralSubstrateStatus() {
+  const engine = getMetaEngine();
+  const snap = engine.getSnapshot();
   return {
     embedding: embeddingEngine.getState(),
     vectorIndex: vectorIndex.getState(),
     classifier: confidenceClassifier.getState(),
     driftDetector: driftDetector.getState(),
     maintenance: maintenanceManager.getState(),
+    consensus: {
+      active: !snap.killed,
+      leader: snap.leaderId,
+      nodes: snap.nodes.length,
+      heals: snap.totalHeals,
+      failures: snap.totalFailures,
+      uptimeMs: snap.uptime,
+    },
   };
 }
 
