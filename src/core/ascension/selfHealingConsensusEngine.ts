@@ -279,10 +279,11 @@ export class SelfHealingConsensusMetaEngine {
     node.stateHash = stateSource.stateHash;
 
     // Step 3: Quorum verification (#083)
+    // Peers vote 'accept' if they agree the reconstructed hash matches the source of truth
     const votes: QuorumVote[] = healthyPeers.map(peer => ({
       instanceId: peer.id,
       proposalId: `reintegrate-${nodeId}`,
-      vote: peer.stateHash === node.stateHash ? 'accept' : 'reject',
+      vote: node.stateHash === stateSource.stateHash ? 'accept' : 'reject',
       timestamp: Date.now(),
     }));
 
