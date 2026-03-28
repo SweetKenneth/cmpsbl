@@ -79,13 +79,18 @@ export function propagateEthicalFlag(
 
   // Emit to substrate event bus (non-blocking)
   try {
-    emit('conscience', 'ethical_flag', {
-      severity,
-      compositeScore,
-      recommendation,
-      action: action.slice(0, 100),
-      targetModules,
-    });
+    emit({
+      module: 'conscience',
+      event_type: 'ethical_flag',
+      outcome: severity === 'emergency' || severity === 'critical' ? 'failed' : 'succeeded',
+      data: {
+        severity,
+        compositeScore,
+        recommendation,
+        action: action.slice(0, 100),
+        targetModules,
+      },
+    }).catch(() => {});
   } catch {
     // Non-blocking — never interrupt evaluation
   }
