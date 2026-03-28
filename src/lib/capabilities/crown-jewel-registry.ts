@@ -360,14 +360,10 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio
   'cj-economy-value-attribution': 'builder',
   'cj6-system-health-aggregation': 'builder',
   'cj6-decode-terminal-command-parser': 'builder',
-  // Creator tier ($49)
-  'recursive-goal-optimizer': 'creator',
-  'recursive-emergent-behavior-analyzer': 'creator',
+  // ── CREATOR TIER ($29) — Enhanced sealed capabilities ──
   'recursive-self-healing-mesh': 'creator',
-  'syn-end-to-end-reasoning': 'creator',
   'creative_evolution_engine': 'creator',
   'creative_forge': 'creator',
-  'cap-chaos-resilience': 'creator',
   // Architect tier ($149)
   'knowledge_graph_topology': 'architect',
   'stier-emergent-threat-anticipator': 'architect',
@@ -559,7 +555,7 @@ export function isExperienceCrownJewel(id: string): boolean {
 }
 
 /** Get the minimum tier required for an experience jewel */
-export function getExperienceJewelTier(id: string): 'creator' | 'architect' | null {
+export function getExperienceJewelTier(id: string): 'builder' | 'creator' | 'studio' | 'architect' | null {
   if (EXPERIENCE_TIER_MAP[id]) return EXPERIENCE_TIER_MAP[id];
   const normalized = id.replace(/^(cap-|stier-|syn-|recursive-)/, '').replace(/-/g, '_');
   return EXPERIENCE_TIER_MAP[normalized] ?? null;
