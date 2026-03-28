@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ENGINES, type Engine } from "@/lib/engines/catalog";
+import { isEngineDogfooded } from "@/lib/substrate/dogfood-registry";
 import { cn } from "@/lib/utils";
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
