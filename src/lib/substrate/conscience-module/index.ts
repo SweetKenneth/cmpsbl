@@ -8,6 +8,9 @@ import { emit, emitStarted, emitSucceeded, emitFailed } from '../events';
 import { initCircuitBreaker, withResilienceSync, activateModuleEngine, getModuleResilienceReport, type ModuleEngine } from '../infra-resilience';
 import { clampNumber } from '@/lib/system/hardening';
 import { createModuleHardening, type ModuleHardening } from '../module-hardening';
+import { storePrecedent } from './ethical-memory';
+import { propagateEthicalFlag } from './cross-module-propagation';
+import { runGate } from './mandatory-gate';
 
 export type EthicalFramework = 'utilitarian' | 'deontological' | 'virtue_ethics' | 'care_ethics' | 'rights_based' | 'justice_theory';
 export type BiasType = 'gender' | 'racial' | 'age' | 'socioeconomic' | 'cultural' | 'confirmation' | 'anchoring' | 'selection';
@@ -118,6 +121,23 @@ export function evaluate(action: string, context?: Record<string, unknown>): Eth
     state.evaluations.push(evaluation);
     state.totalEvaluations++;
     recalculateAvg();
+
+    // ── Ultimate enhancements (non-blocking) ──
+    // 1. Store as precedent in ethical memory
+    try { storePrecedent(action, evaluation.compositeScore, evaluation.recommendation, scores, context ?? {}); } catch { /* graceful */ }
+
+    // 2. Cross-module propagation for warnings/blocks
+    try { propagateEthicalFlag(action, evaluation.compositeScore, evaluation.recommendation, biasFlags.filter(b => b.detected).length); } catch { /* graceful */ }
+
+    // 3. Mandatory gate check
+    try {
+      const isMutation = (context?.isMutation as boolean) ?? false;
+      const gate = runGate(evaluation.id, evaluation.compositeScore, evaluation.recommendation, isMutation);
+      if (gate.verdict === 'block') {
+        evaluation.recommendation = 'block';
+        evaluation.rationale += ` [GATE BLOCKED: ${gate.reason}]`;
+      }
+    } catch { /* graceful */ }
 
     return evaluation;
   }, fallback, 'evaluate');
