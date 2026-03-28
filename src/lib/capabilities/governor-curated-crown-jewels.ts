@@ -225,21 +225,6 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
     'Controlled evolution visible at architect tier — sandbox heuristics sealed',
     false),
 
-  // ── SHADOW ────────────────────────────────────────────────────────────────
-  jewel('gov-shadow-divergence-engine', 'SHADOW',
-    'Shadow Divergence Engine',
-    'Parallel shadow execution with configurable divergence thresholds, convergence verdict, mesh load balancing, and canary promotion/rollback',
-    'The only way to safely test changes in production.',
-    [92, 90, 88, 82], 'enterprise', 'guard',
-    'Powers SEBA pipeline validation — core safety IP',
-    true),
-  jewel('gov-shadow-dark-launch-controller', 'SHADOW',
-    'Dark Launch Controller',
-    'Enables full production execution of new capabilities without user visibility — captures real-world metrics before formal launch with zero user impact',
-    'Ship to production without shipping to users. Real data, zero risk.',
-    [85, 92, 78, 80], 'architect', 'activate',
-    'DevOps innovation at architect tier — sealed delivery',
-    false),
 
   // ── IMMUNITY ──────────────────────────────────────────────────────────────
   jewel('gov-immunity-self-healing-orchestrator', 'IMMUNITY',
