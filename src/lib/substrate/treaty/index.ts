@@ -31,3 +31,9 @@ export {
 
 export { treatyCLM, runTreatyCLMCycle, type TreatyCLMInsight, type TreatyCLMReport } from './clm';
 export { treatyHardeningReport, validateTreatyInput, TREATY_LIMITS } from './hardening';
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TREATY Ultimate Form — v9.0.0 "Pact Sovereign"
+// ═══════════════════════════════════════════════════════════════════════════════
+import * as TreatyUltimate from '../../treaty/ultimate';
+export { TreatyUltimate };
