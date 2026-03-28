@@ -10,7 +10,7 @@
  * 
  * B. EXPERIENCE CROWN JEWELS — Released as SEALED (black-boxed) artifacts.
  *    Execution-only, no source visibility, no config exposure, no export.
- *    Tiered: Creator ($9) and Architect ($19) get increasing access.
+ *    Tiered: Builder (free, 8 CJs), Creator ($29, +20 CJs), Studio ($49, +40 CJs), Architect ($79, all Experience CJs)
  */
 
 export type CrownJewelClassification = 'architecture' | 'experience';
@@ -32,7 +32,7 @@ export interface CrownJewelEntry {
   sealed_execution?: boolean;
   non_exportable?: boolean;
   /** Minimum tier required for experience jewels */
-  minimumTier?: 'builder' | 'pro' | 'enterprise';
+  minimumTier?: 'builder' | 'creator' | 'studio' | 'architect';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -172,7 +172,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
-  // ── CREATOR TIER ($9) — Single-project, in-run self-improvement ──
+  // ── BUILDER TIER (free) — Foundational sealed capabilities ──
   'recursive-goal-optimizer',           // Bounded goal optimization
   'recursive-emergent-behavior-analyzer', // Emergent behavior detection
   'recursive-self-healing-mesh',        // Self-healing neural mesh
