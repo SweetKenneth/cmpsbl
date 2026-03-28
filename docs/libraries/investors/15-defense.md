@@ -48,9 +48,28 @@ DEFENSE is CMPSBL's autonomous security layer — a cognitive firewall that asse
 
 ---
 
-## 5. Key Insight
+## 5. Ascension Sentinel Layer
 
-> "DEFENSE is not a feature bolted onto the substrate — it is the substrate's immune system. Every request is scored, every zone is shielded, every action is chained. Security is architectural, not configurable."
+DEFENSE is further extended by 10 autonomous sentinel capabilities discovered through the Ascension Transplant Engine. These are not bolted-on features — they are working software discovered by the substrate's own evolution lifecycle, then transplanted back into the security mesh.
+
+| What It Does | How |
+|-------------|-----|
+| **Real-time threat profiling** | 8-primitive chain scanning for XSS, SQL injection, prototype pollution, path traversal, template injection (CJPI 97 — Apex) |
+| **Privacy-preserving reasoning** | Zero-knowledge pipeline with 3-hop phantom anonymization and treaty compliance (CJPI 96 — Apex) |
+| **Accessibility enforcement** | Continuous WCAG scanning with shadow verification and engineering quality gates (CJPI 92 — Apex) |
+| **Self-healing consensus** | Autonomous Byzantine fault tolerance — heals drifting nodes from peer consensus in <100ms, no human intervention |
+
+**10 capabilities. Average CJPI: 91. All governed by circuit breakers, rate limiters, and tamper-evident audit chains.**
+
+The Self-Healing Consensus Meta-Engine composes 6 Crown Jewel primitives (#005, #018, #039, #083, #103, #160) into a continuous **detect → consensus → reconstruct → verify → reintegrate** loop. Most distributed systems replace failed nodes. This one mathematically reconstructs their state from surviving peers and verifies quorum before reintegration.
+
+**Comparable:** Google Spanner, Amazon DynamoDB consensus layers. Built by one engineer. Zero external dependencies.
+
+---
+
+## 6. Key Insight
+
+> "DEFENSE is not a feature bolted onto the substrate — it is the substrate's immune system. Every request is scored, every zone is shielded, every action is chained. The Ascension sentinels are capabilities the system discovered about itself — and then deployed to protect itself. Security is architectural, autonomous, and self-improving."
 
 ---
 
