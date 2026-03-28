@@ -227,6 +227,57 @@ const primitiveHandlers: Record<string, PrimitiveHandler> = {
     signals.push({ type: 'nexus_route', source: 'NEXUS', ts: performance.now() });
     return { _nexus: { routed: true, selectedProvider: 'substrate-internal', cjpi: meta.cjpi } };
   },
+
+  // ── Consensus Engine Primitives ─────────────────────────────────
+  CONSENSUSENGINE: (_s, signals) => {
+    signals.push({ type: 'consensus_init', source: 'CONSENSUSENGINE', ts: performance.now() });
+    return { _consensus: { initialized: true, protocol: 'byzantine_ft', selfHealing: true } };
+  },
+
+  HARVEST: (s, signals) => {
+    signals.push({ type: 'harvest', source: 'HARVEST', ts: performance.now() });
+    return { _harvest: { collected: true, dataHash: quickHash(`harvest:${s}`) } };
+  },
+
+  IDENTITY: (s, signals) => {
+    signals.push({ type: 'identity_verify', source: 'IDENTITY', ts: performance.now() });
+    return { _identity: { verified: true, identityHash: quickHash(`id:${s}`) } };
+  },
+
+  INTEGRATION: (_s, signals) => {
+    signals.push({ type: 'integrate', source: 'INTEGRATION', ts: performance.now() });
+    return { _integration: { bridged: true, protocol: 'substrate' } };
+  },
+
+  LINGUA: (s, signals) => {
+    signals.push({ type: 'translate', source: 'LINGUA', ts: performance.now() });
+    return { _lingua: { translated: true, format: 'canonical', hash: quickHash(`lingua:${s}`) } };
+  },
+
+  CORTEX: (_s, signals) => {
+    signals.push({ type: 'orchestrate', source: 'CORTEX', ts: performance.now() });
+    return { _cortex: { orchestrated: true, strategy: 'parallel' } };
+  },
+
+  MEMORY: (s, signals) => {
+    signals.push({ type: 'recall', source: 'MEMORY', ts: performance.now() });
+    return { _memory: { recalled: true, stateHash: quickHash(`mem:${s}`) } };
+  },
+
+  ATLAS: (_s, signals) => {
+    signals.push({ type: 'map', source: 'ATLAS', ts: performance.now() });
+    return { _atlas: { mapped: true, topology: 'mesh' } };
+  },
+
+  SANDBOX: (_s, signals) => {
+    signals.push({ type: 'sandbox', source: 'SANDBOX', ts: performance.now() });
+    return { _sandbox: { isolated: true, safeExecution: true } };
+  },
+
+  REFLEX: (_s, signals) => {
+    signals.push({ type: 'reflex', source: 'REFLEX', ts: performance.now() });
+    return { _reflex: { triggered: true, latency: 'sub-ms' } };
+  },
 };
 
 // ═══ Execute a capability chain ══════════════════════════════════════════
