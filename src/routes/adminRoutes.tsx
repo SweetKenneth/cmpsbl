@@ -21,6 +21,7 @@ const AuditCenterPage = lazy(() => import("@/pages/admin/AuditCenterPage"));
 const EmailListPanel = lazy(() => import("@/pages/admin/EmailListPanel"));
 const GovernorNodeDashboard = lazy(() => import("@/pages/admin/GovernorNodeDashboard"));
 const EvolutionCycleReport = lazy(() => import("@/components/evolution/EvolutionCycleReport"));
+const AscensionObservatory = lazy(() => import("@/pages/admin/AscensionObservatory"));
 
 export const adminRoutes = (
   <>
