@@ -1049,6 +1049,19 @@ const INVESTOR_DOCS: InvestorDoc[] = [
         ],
       },
       {
+        heading: "Crown Jewel: Synthetic Intuition Engine (S-Tier)",
+        content: "DREAM's most architecturally novel capability is Pre-conscious Emergence — a system that generates pre-conscious 'hunches' from pattern fragments that haven't yet crystallized into explicit knowledge. During idle cycles, DREAM detects statistical regularities below the threshold of explicit pattern recognition: co-occurrence frequencies, temporal adjacencies, structural analogies — synthesized into weighted 'intuition vectors' that bias future reasoning.",
+        table: {
+          headers: ["Layer", "Process", "Output"],
+          rows: [
+            ["1. Fragment Collection", "Harvests sub-threshold pattern matches from BRAIN, MEMORY, and ECHO during dream cycles", "Raw pattern fragments below recognition threshold"],
+            ["2. Resonance Amplification", "When 3+ fragments from independent sources converge on the same latent structure, the signal is amplified", "Amplified intuition candidates"],
+            ["3. Bias Injection", "Intuition vector injected into CORTEX's strategy space as a soft prior — the system explores paths it has a 'feeling' about", "Pre-conscious strategic bias"],
+          ],
+        },
+        callout: { label: "S-Tier Classification", text: "CJPI Score: Novelty 98 · Complexity 96 · Total 90 — the highest novelty score in the entire substrate. Permanently guarded as peak cognitive IP. The substrate develops genuine hunches — not hallucination, but statistically grounded pre-conscious pattern emergence.", variant: "warning" },
+      },
+      {
         heading: "Three Compounding Engines",
         content: "DREAM is one of three autonomous compounding engines running in parallel — none requiring human intervention. This is why the CMPSBL moat widens while investors sleep.",
         table: {
