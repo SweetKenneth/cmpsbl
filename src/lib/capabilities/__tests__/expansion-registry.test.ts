@@ -99,10 +99,10 @@ describe('Expansion Crown Jewel Discovery Registry', () => {
   });
 
   // ── Black-Box Enforcement ──
-  it('all crown jewels are black-boxed', () => {
+  it('all crown jewels with CJPI >= 75 are sealed execution', () => {
     const crownJewels = EXPANSION_CROWN_JEWELS.filter(j => j.isCrownJewel);
     for (const j of crownJewels) {
-      expect(j.blackBoxed).toBe(true);
+      expect(j.sealedExecution).toBe(true);
     }
   });
 
