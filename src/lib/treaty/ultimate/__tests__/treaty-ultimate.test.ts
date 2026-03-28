@@ -82,8 +82,7 @@ describe('TREATY Ultimate — SLA Forecaster', () => {
 
   it('should return zero forecast for insufficient data', () => {
     const forecast = forecastSLA('c-nodata', 'latency', 50);
-    expect(forecast.samples).toBe(0);
-  });
+    expect(forecast.currentValue).toBe(0);
 });
 
 describe('TREATY Ultimate — Penalty Calculus', () => {
