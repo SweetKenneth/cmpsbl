@@ -146,4 +146,76 @@ Module-specific: REFLEX 500/s, NEXUS 200/s, DECODE 100/s, EVOLUTION 5/s, GOVERNA
 
 ---
 
+## 11. Ascension Observatory — Active Sentinel Layer
+
+**Status:** PRODUCTION · All capabilities enabled by default after initial governor activation.
+
+The Ascension Observatory extends DEFENSE with 10 autonomous sentinel capabilities discovered through the Ascension Transplant Engine. These capabilities run continuously inside the substrate, providing cognitive security, accessibility enforcement, privacy preservation, and self-healing infrastructure.
+
+### 11.1 Active Capabilities
+
+| ID | Capability | CJPI | Tier | Chain Length | Protects |
+|----|-----------|------|------|-------------|----------|
+| ctp-004 | Cognitive Threat Profiler | 97 | Apex | 8 | DEFENSE · IMMUNITY · ENCODE |
+| gme-001 | Generative Mutation Engine | 87 | Mythic | 7 | EVOLUTION · GOVERNANCE · DREAM |
+| ara-002 | Accessibility Reasoning Advisor | 92 | Apex | 7 | INCLUSIVE · SHADOW · SYSTEM |
+| cen-003 | Consensus Event Network | 87 | Mythic | 8 | GOVERNANCE · NERVE · CONSCIENCE |
+| zkr-005 | Zero Knowledge Reasoner | 96 | Apex | 8 | IMMUNITY · TREATY · PHANTOM |
+| cpm-006 | Capability Performance Map | 90 | Mythic | 8 | SYSTEM · SHADOW · ENGINEER |
+| gme-007 | Generative Mutation Engine (Consensus) | 89 | Mythic | 8 | EVOLUTION · CONSCIENCE · SOVEREIGN |
+| zkr-008 | Zero Knowledge Reasoner (Consensus) | 89 | Mythic | 7 | DEFENSE · TREATY · PHANTOM |
+| sdr-009 | Sovereign Data Reasoner | 89 | Mythic | 8 | IDENTITY · GOVERNANCE · NERVE |
+| cao-010 | Context-Aware Orchestrator | 91 | Mythic | 8 | CORTEX · MEMORY · INTEGRATION |
+
+**Average CJPI:** 91 · **Pack fingerprint:** FEDAC39F87A1
+
+### 11.2 Governance Gates
+
+Every capability is wrapped by a governance layer enforcing:
+
+| Gate | Threshold | Behavior |
+|------|----------|----------|
+| **Feature flag** | Enabled/Disabled | Disabled by default. Governor must explicitly enable. |
+| **Circuit breaker** | 5 consecutive failures | Auto-opens, blocks execution until manual reset. |
+| **Rate limiter** | 120 executions/minute | Sliding window. Excess calls return `rate_limited`. |
+| **Audit chain** | 1,000-entry ring buffer | SHA-256 integrity hashing. Each entry chains to previous hash. |
+
+### 11.3 Self-Healing Consensus Meta-Engine
+
+The Meta-Engine orchestrates 6 Crown Jewel primitives into an autonomous Byzantine fault tolerance loop:
+
+```
+detect drift → reach consensus → reconstruct state → verify quorum → reintegrate
+```
+
+| Primitive | Crown Jewel # | Role |
+|-----------|--------------|------|
+| Consensus Heartbeat Protocol | #005 | Drift detection via EMA scoring |
+| Consensus Engine | #018 | Multi-source voting (majority/supermajority/unanimity) |
+| Distributed Consensus Mesh | #039 | Leader election, term management |
+| Quorum Negotiator | #083 | Quorum verification before reintegration |
+| State Synchronization | #103 | Vector clock merging, CRDT state reconstruction |
+| Self-Repair Engine | #160 | Damage assessment, repair action execution |
+
+**Kill switch:** Immediate halt via Observatory dashboard. All nodes freeze, no further ticks execute.
+
+### 11.4 Operational Guidance
+
+- **Leave enabled.** All capabilities are production-hardened with circuit breakers and rate limits.
+- **Monitor via** `/admin/ascension-observatory` for real-time status, audit trail, and Meta-Engine node health.
+- **Kill switch** is for emergency only — stops the Meta-Engine tick loop instantly.
+- **Rollback** any individual capability via `rollbackCapability(id)` or `rollbackAll()` to restore disabled state.
+- **Circuit resets** are manual — if a circuit opens, investigate the failure pattern in the audit chain before resetting.
+
+### 11.5 Risk Assessment
+
+| Risk | Severity | Mitigation |
+|------|----------|-----------|
+| Capability produces false positives | Low | Circuit breaker auto-trips after 5 failures |
+| Rate limit exhaustion under load | Medium | Configurable `MAX_RATE_PER_MIN` (default 120) |
+| Meta-Engine node drift cascade | Low | Byzantine detection isolates before spread |
+| Audit buffer overflow | None | Ring buffer evicts oldest entries, integrity hash preserved |
+
+---
+
 © 2025–2026 CMPSBL®. Governor Eyes Only.
