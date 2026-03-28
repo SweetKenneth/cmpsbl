@@ -79,8 +79,8 @@ const THREAT_PATTERNS = [
   { pattern: /javascript:/i, name: 'javascript_uri' },
   { pattern: /on(error|load|click)\s*=/i, name: 'event_handler_injection' },
   { pattern: /\bSELECT\b.*\bFROM\b.*\bWHERE\b/i, name: 'sql_injection_pattern' },
-  { pattern: /\.\.\//g, name: 'path_traversal' },
-  { pattern: /\$\{.*\}/g, name: 'template_injection' },
+  { pattern: /\.\.\//i, name: 'path_traversal' },
+  { pattern: /\$\{[^}]*\}/i, name: 'template_injection' },
 ];
 
 // ═══ Primitive Handlers (translated from PHP Mini-Runtime) ═══════════════

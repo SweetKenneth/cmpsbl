@@ -81,7 +81,6 @@ export interface ThreatProfile {
 
 // ═══ Sealed Scoring (hex-encoded from export) ════════════════════════════
 
-const CJPI_WEIGHTS = [0x1E, 0x1E, 0x14, 0x14].map(v => v / 100);
 const TIER_THRESHOLDS = [0x5C, 0x50, 0x41, 0x2D]; // apex=92, mythic=80, relic=65, prime=45
 
 function tierFromCjpi(score: number): string {
@@ -92,7 +91,7 @@ function tierFromCjpi(score: number): string {
   return 'mint';
 }
 
-// ═══ FNV-1a hash (matches PHP cmpsbl_quick_hash) ════════════════════════
+// ═══ DJB2 hash (matches PHP cmpsbl_quick_hash) ══════════════════════════
 
 function quickHash(input: string): string {
   let h = 5381;
@@ -104,6 +103,7 @@ function quickHash(input: string): string {
 }
 
 // ═══ Threat Detection Patterns ═══════════════════════════════════════════
+// CRITICAL: No /g flags — stateful regex causes inconsistent results on repeated calls
 
 const THREAT_PATTERNS = [
   { pattern: /<script/i, name: 'xss_script_injection' },
@@ -114,8 +114,8 @@ const THREAT_PATTERNS = [
   { pattern: /on(error|load|click)\s*=/i, name: 'event_handler_injection' },
   { pattern: /\bSELECT\b.*\bFROM\b.*\bWHERE\b/i, name: 'sql_injection_pattern' },
   { pattern: /\bunion\b.*\bselect\b/i, name: 'sql_union_injection' },
-  { pattern: /\.\.\//g, name: 'path_traversal' },
-  { pattern: /\$\{.*\}/g, name: 'template_injection' },
+  { pattern: /\.\.\//i, name: 'path_traversal' },
+  { pattern: /\$\{[^}]*\}/i, name: 'template_injection' },
 ];
 
 // ═══ The 8-Stage Chain ═══════════════════════════════════════════════════

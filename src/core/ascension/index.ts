@@ -30,8 +30,11 @@ export {
 export type {
   CapabilityGovernance,
   ObservatoryAuditEntry,
-  GovernedResult,
+  GovernedResult as ObservatoryGovernedResult,
 } from './observatoryGovernance';
+
+// Re-export GovernedResult from observatory as the primary
+export type { GovernedResult } from './observatoryGovernance';
 
 // Legacy single-profiler exports (backward compat)
 export { executeThreatProfiler, validateProfiler, getProfilerMeta } from './cognitiveThreatProfiler';
