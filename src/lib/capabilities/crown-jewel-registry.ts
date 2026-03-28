@@ -525,6 +525,11 @@ import {
   getExpansionTierMap,
 } from './expansion-crown-jewel-registry';
 import { COMPOUND_CROWN_JEWEL_IDS } from './compound-ip-guard';
+import {
+  getGovernorGuardedIds,
+  getGovernorActivatedIds,
+  getGovernorTierMap,
+} from './governor-curated-crown-jewels';
 
 // Inject expansion architecture jewels
 for (const id of getExpansionArchitectureIds()) {
@@ -544,7 +549,27 @@ for (const id of COMPOUND_CROWN_JEWEL_IDS) {
 // Inject expansion tier mappings
 const expansionTierMap = getExpansionTierMap();
 for (const [id, tier] of Object.entries(expansionTierMap)) {
-  // Map ProductTier to experience tier format
+  const mapped = tier === 'studio' ? 'creator' : tier === 'enterprise' ? 'architect' : tier;
+  EXPERIENCE_TIER_MAP[id] = mapped as 'builder' | 'creator' | 'studio' | 'architect';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// GOVERNOR-CURATED INJECTION — Hand-selected best of each primitive
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Inject governor-guarded jewels into architecture set
+for (const id of getGovernorGuardedIds()) {
+  ARCHITECTURE_CROWN_JEWEL_IDS.add(id);
+}
+
+// Inject governor-activated jewels into experience set
+for (const id of getGovernorActivatedIds()) {
+  EXPERIENCE_CROWN_JEWEL_IDS.add(id);
+}
+
+// Inject governor tier mappings
+const governorTierMap = getGovernorTierMap();
+for (const [id, tier] of Object.entries(governorTierMap)) {
   const mapped = tier === 'studio' ? 'creator' : tier === 'enterprise' ? 'architect' : tier;
   EXPERIENCE_TIER_MAP[id] = mapped as 'builder' | 'creator' | 'studio' | 'architect';
 }
