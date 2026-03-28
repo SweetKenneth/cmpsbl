@@ -1,7 +1,7 @@
 # CMPSBL® Investor Documentation Library
 
 **Classification:** CONFIDENTIAL — Investor & Stakeholder Use  
-**Version:** v17.0.0 — BELIEVER Epoch
+**Version:** v17.1.0 — BELIEVER Epoch
 
 ---
 
@@ -28,28 +28,23 @@ This library provides investors, advisors, and potential partners with a compreh
 | 11 | [Evolution Engine](11-evolution-engine.md) | Self-improving software: 166 bugs fixed for $0.06, engine benchmarks, market opportunity |
 | 12 | [Ascension: The Software Product Factory](12-ascension-product-factory.md) | Upload → classify → score → export as IP-protected artifact in 25 languages |
 | 13 | [Memory Stream: The Discovery Engine](13-memory-stream.md) | Autonomous pipeline crystallization every 8 hours |
-| 14 | [DREAM Engine: The Compounding Intelligence Layer](14-dream-engine.md) | Cross-agent knowledge consolidation during idle cycles |
+| 14 | [DREAM Engine: The Compounding Intelligence Layer](14-dream-engine.md) | Cross-agent knowledge consolidation, Pre-conscious Emergence |
 | 15 | [DEFENSE: Cognitive Security Mesh](15-defense.md) | Zero-trust security architecture, zone shielding, tamper-evident audit |
 | 16 | [NEXUS: Intelligent Multi-Provider Routing](16-nexus.md) | 14+ provider routing, automatic failover, BYOK, zero vendor lock-in |
 | 17 | [@cmpsbl NPM Ecosystem](17-npm-ecosystem.md) | 11 published packages — cognitive infrastructure for developers |
-| 18 | [Why Invest Now](18-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
+| 18 | [BRAIN Organ: The Cognitive Core](18-brain-organ.md) | Knowledge Fusion Reactor, Associative Recall Mesh, compounding intelligence |
+| 19 | [CMPSBL Capabilities](19-cmpsbl-capabilities.md) | Full 42-primitive capability catalog — 80 Crown Jewels, 17 S-Tier |
+| 20 | [Why Invest Now](20-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
 
 ---
 
-## Recent Updates (v17.0.0)
+## Recent Updates (v17.1.0)
 
-- **Deck expanded** from 12 to 18 documents — added Ascension Product Factory, Memory Stream, DREAM Engine, DEFENSE, NEXUS, and @cmpsbl NPM Ecosystem
-- **Executive Summary** — Restructured with lead problem statement, AWS/Stripe analogy, traction section, Ascension-first stack ordering
-- **Technology Architecture** — Added Ascension Engine, capability definition, "Defending the Six Properties" table, prior art footnote
-- **Competitive Positioning** — Added named competitor table with hyperscaler row and Ascension export column
-- **Commercial Model** — Revenue projections, Governor pricing clarified, Ascension/Memory Stream value callouts
-- **Engineering Proof** — Architectural constraints lead, interpretive headers, verification timestamps, single-engineer attribution
-- **IP & Defensibility** — Protection status column, export comparison snippet, patent strategy, Crown Jewel/Engine distinction
-- **Governance & Risk** — New risk rows (funding, privacy, competitive), EU AI Act classification, traction-based mitigations
-- **Survivability** — Expanded succession narrative, dead-man switch details, autonomous runtime duration, IP recovery times
-- **Defensible Valuation** — Comparison basis column, milestone de-risking schedule, margin context, rebuild time basis
-- **Evolution Engine** — Cycle gap explanation, cost methodology, TAM sources, total row, documentation-grade language
-- **Why Invest Now** — Pre-scale revenue framing, Memory Stream inclusion, hiring plan alignment, concrete compounding data, contact block
+- **Deck expanded** from 18 to 20 documents — added BRAIN Organ deep-dive and full CMPSBL Capabilities catalog
+- **DREAM Engine** — Added Pre-conscious Emergence (Synthetic Intuition Engine) section with three-layer cognitive process
+- **BRAIN Organ** (new) — Knowledge Fusion Reactor S-Tier deep-dive, Associative Recall Mesh, substrate integration map
+- **CMPSBL Capabilities** (new) — 42 primitives, 80 Crown Jewels, 17 S-Tier capabilities with definitions and CJPI scores
+- **Why Invest Now** — Renumbered to Document 20 as the closing document
 
 ---
 
