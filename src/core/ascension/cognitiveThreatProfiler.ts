@@ -126,7 +126,7 @@ const META = {
   name: 'Cognitive_Threat_Profiler_Plus_ENCODE_SOVEREIGN_EVOLUTION_IMMUNITY_FORGE',
   cjpi: 97,
   tier: 'apex' as const,
-  chain: [...CHAIN],
+  chain: [...CHAIN] as string[],
   fingerprint: '69162EC40ECB',
   moatSignature: 'bd0f75bd-1ddc-430a-a580-2a42918c8274',
 } as const;

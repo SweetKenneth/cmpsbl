@@ -112,13 +112,15 @@ function logAudit(entry: Omit<AuditEntry, 'id' | 'timestamp' | 'integrityHash'>)
   }
   auditBuffer.push(full);
 
-  // Emit to event backbone (non-blocking)
-  emit('ascension.threat_profiler', {
-    type: entry.action,
-    success: entry.success,
-    threats: entry.threatsFound,
-    durationMs: entry.durationMs,
-  }, 'DEFENSE', entry.action === 'circuit_trip' ? 'critical' : 'standard').catch(() => {});
+  // Emit to event backbone (non-blocking, synchronous dispatch)
+  try {
+    emit('ascension.threat_profiler', {
+      type: entry.action,
+      success: entry.success,
+      threats: entry.threatsFound,
+      durationMs: entry.durationMs,
+    }, 'DEFENSE', entry.action === 'circuit_trip' ? 'critical' : 'standard');
+  } catch { /* telemetry must never interrupt execution */ }
 }
 
 // ═══ Rate Limiter ════════════════════════════════════════════════════════
