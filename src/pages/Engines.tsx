@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ENGINES, type Engine } from "@/lib/engines/catalog";
+import { isEngineDogfooded } from "@/lib/substrate/dogfood-registry";
 import { cn } from "@/lib/utils";
 import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
@@ -162,6 +163,11 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
             {engine.isFeatured && (
               <Badge className="text-[10px] font-mono bg-primary/15 text-primary border-primary/25">
                 FEATURED
+              </Badge>
+            )}
+            {isEngineDogfooded(engine.slug) && (
+              <Badge variant="outline" className="text-[10px] font-mono text-neon-cyan border-neon-cyan/25 bg-neon-cyan/5">
+                Powers CMPSBL
               </Badge>
             )}
           </div>
