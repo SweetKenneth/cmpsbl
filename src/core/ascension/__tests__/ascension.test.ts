@@ -27,8 +27,8 @@ import {
 // ═══ Registry ════════════════════════════════════════════════════════════
 
 describe('Ascension Registry', () => {
-  it('has exactly 5 capabilities', () => {
-    expect(ASCENSION_CAPABILITIES).toHaveLength(5);
+  it('has exactly 10 capabilities', () => {
+    expect(ASCENSION_CAPABILITIES).toHaveLength(10);
   });
 
   it('all capabilities have required fields', () => {
@@ -46,8 +46,8 @@ describe('Ascension Registry', () => {
   });
 
   it('pack metadata is consistent', () => {
-    expect(PACK_META.totalCapabilities).toBe(5);
-    expect(PACK_META.averageCjpi).toBe(92);
+    expect(PACK_META.totalCapabilities).toBe(10);
+    expect(PACK_META.averageCjpi).toBe(91);
     expect(PACK_META.fingerprint).toBe('FEDAC39F87A1');
   });
 
@@ -56,9 +56,9 @@ describe('Ascension Registry', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('all chains start with API_GATEWAY', () => {
+  it('all chains start with API_GATEWAY or CONSENSUSENGINE', () => {
     for (const cap of ASCENSION_CAPABILITIES) {
-      expect(cap.chain[0]).toBe('API_GATEWAY');
+      expect(['API_GATEWAY', 'CONSENSUSENGINE']).toContain(cap.chain[0]);
     }
   });
 });
