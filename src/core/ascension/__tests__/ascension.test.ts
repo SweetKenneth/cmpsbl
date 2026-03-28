@@ -176,12 +176,13 @@ describe('Observatory Governance', () => {
 
   it('tracks execution count', () => {
     enableCapability('ctp-004');
+    const before = getObservatoryState().capabilities.find(c => c.capabilityId === 'ctp-004')!.totalExecutions;
     executeGoverned('ctp-004', { a: 1 });
     executeGoverned('ctp-004', { b: 2 });
     executeGoverned('ctp-004', { c: 3 });
     const state = getObservatoryState();
     const cap = state.capabilities.find(c => c.capabilityId === 'ctp-004')!;
-    expect(cap.totalExecutions).toBe(3);
+    expect(cap.totalExecutions - before).toBe(3);
   });
 
   it('rollback disables and clears circuit', () => {
