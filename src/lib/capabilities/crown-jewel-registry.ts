@@ -401,8 +401,6 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio
   'cj-defense-behavioral-biometrics': 'creator',
   'cj-encode-mutation-testing': 'creator',
   'cj-decode-intent-evolution': 'creator',
-  'cj-ripple-event-dedup': 'creator',
-  'cj-economy-value-attribution': 'creator',
   // v10.5.5 — Wave 2
   'cj2-nexus-provider-trust-scoring': 'architect',
   'cj2-vision-anomaly-precognition': 'architect',
