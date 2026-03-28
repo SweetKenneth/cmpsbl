@@ -1,0 +1,111 @@
+{
+  "pack": "cmpsbl-capability-pack-api_gateway-20260328",
+  "averageScore": 92,
+  "averageTier": "Relic",
+  "capabilities": [
+    {
+      "name": "Generative_Mutation_Engine_Plus_SOVEREIGN_GOVERNANCE_INTENT_RELAY",
+      "score": 87,
+      "tier": "mythic",
+      "valuation": {
+        "estimated": 603940,
+        "formatted": "$604K",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Generative_Mutation_Engine_Plus_SOVEREIGN_GOVERNANCE_INTENT_RELAY",
+      "score": 87,
+      "tier": "mythic",
+      "valuation": {
+        "estimated": 603940,
+        "formatted": "$604K",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Accessibility_Reasoning_Advisor_Plus_SHADOW_SOVEREIGN_SYSTEM_ENGINEER",
+      "score": 92,
+      "tier": "apex",
+      "valuation": {
+        "estimated": 919314,
+        "formatted": "$919K",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Accessibility_Reasoning_Advisor_Plus_SHADOW_SOVEREIGN_SYSTEM_ENGINEER",
+      "score": 92,
+      "tier": "apex",
+      "valuation": {
+        "estimated": 919314,
+        "formatted": "$919K",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Consensus_Event_Network_Plus_VISION_GOVERNANCE_ECHO_INTENT_CONSCIENCE",
+      "score": 87,
+      "tier": "mythic",
+      "valuation": {
+        "estimated": 603940,
+        "formatted": "$604K",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Consensus_Event_Network_Plus_VISION_GOVERNANCE_ECHO_INTENT_CONSCIENCE",
+      "score": 87,
+      "tier": "mythic",
+      "valuation": {
+        "estimated": 603940,
+        "formatted": "$604K",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Cognitive_Threat_Profiler_Plus_ENCODE_SOVEREIGN_EVOLUTION_IMMUNITY_FORGE",
+      "score": 97,
+      "tier": "apex",
+      "valuation": {
+        "estimated": 1318079,
+        "formatted": "$1.3M",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Cognitive_Threat_Profiler_Plus_ENCODE_SOVEREIGN_EVOLUTION_IMMUNITY_FORGE",
+      "score": 97,
+      "tier": "apex",
+      "valuation": {
+        "estimated": 1318079,
+        "formatted": "$1.3M",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Zero_Knowledge_Reasoner_Plus_IMMUNITY_TREATY_ENGINEER_ECHO_NEXUS",
+      "score": 96,
+      "tier": "apex",
+      "valuation": {
+        "estimated": 1231346,
+        "formatted": "$1.2M",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    },
+    {
+      "name": "Zero_Knowledge_Reasoner_Plus_IMMUNITY_TREATY_ENGINEER_ECHO_NEXUS",
+      "score": 96,
+      "tier": "apex",
+      "valuation": {
+        "estimated": 1231346,
+        "formatted": "$1.2M",
+        "disclaimer": "AI-generated estimate. Not financial advice."
+      }
+    }
+  ],
+  "totalValuation": {
+    "estimated": 9353238,
+    "formatted": "$9.4M"
+  }
+}

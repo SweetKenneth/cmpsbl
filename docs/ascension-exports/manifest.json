@@ -1,0 +1,40 @@
+{
+  "name": "cmpsbl-capability-pack-api_gateway-20260328",
+  "tier": "Apex",
+  "cjpi": 92,
+  "modules": [
+    "API_GATEWAY",
+    "SOVEREIGN",
+    "GOVERNANCE",
+    "INTENT",
+    "RELAY",
+    "EVOLUTION",
+    "DREAM",
+    "SHADOW",
+    "SYSTEM",
+    "INCLUSIVE",
+    "BRAIN",
+    "ENGINEER",
+    "VISION",
+    "ECHO",
+    "NERVE",
+    "RIPPLE",
+    "CONSCIENCE",
+    "ENCODE",
+    "DEFENSE",
+    "IMMUNITY",
+    "FORGE",
+    "TREATY",
+    "PHANTOM",
+    "NEXUS"
+  ],
+  "exported": "2026-03-28",
+  "runtime": "cmpsbl-mini-runtime-engine",
+  "targets": [
+    "php"
+  ],
+  "version": "1.0.0",
+  "category": "proprietary-evolution",
+  "fingerprint": "FEDAC39F87A1",
+  "source": "proprietary-evolution-lifecycle"
+}
