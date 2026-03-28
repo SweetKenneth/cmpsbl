@@ -57,7 +57,7 @@ const TIERS: {
     capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
     features: [
       'Full runtime — not a demo',
-      'Browse all 24 capability packs',
+      '8 sealed Crown Jewel capabilities included',
       'Standard memory (5 recalls)',
       'Usage dashboard with ROI metrics',
       'Member Hub access',
@@ -78,11 +78,11 @@ const TIERS: {
     capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
     features: [
       'Run 6 packs simultaneously',
+      '28 Crown Jewel capabilities (8 Builder + 20 Creator)',
       'Saved Workflows — one-click intent presets',
       'Export traces & audit logs',
       '2× deeper memory recall',
       'Priority queue — 3× faster routing',
-      'Usage dashboard with ROI tracking',
       'Referral credits program',
       'Email support',
     ],
@@ -102,12 +102,12 @@ const TIERS: {
     capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
     features: [
       '9 packs running concurrently',
+      '68 Crown Jewel capabilities (Builder + Creator + 40 Studio)',
       'Saved Workflows & custom presets',
       'Dedicated memory partitions',
       'Full trace & compliance exports',
       'Export templates (PDF/CSV/JSON)',
       'Memory Stream alerts for memory chains',
-      'Trace replay — visual debugging',
       'Custom memory slots you configure',
       'Priority email support',
     ],
@@ -126,6 +126,7 @@ const TIERS: {
     capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
     features: [
       '12 packs — maximum throughput',
+      'All Experience Crown Jewels unlocked',
       'Unlimited vault — never lose context',
       'Private Discovery Pool — isolated memory',
       'Governance snapshots & audit trails',
