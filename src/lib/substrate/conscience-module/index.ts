@@ -119,6 +119,30 @@ export function evaluate(action: string, context?: Record<string, unknown>): Eth
     state.totalEvaluations++;
     recalculateAvg();
 
+    // ── Ultimate enhancements (non-blocking) ──
+    // 1. Store as precedent in ethical memory
+    try {
+      const { storePrecedent } = require('./ethical-memory');
+      storePrecedent(action, evaluation.compositeScore, evaluation.recommendation, scores, context ?? {});
+    } catch { /* graceful */ }
+
+    // 2. Cross-module propagation for warnings/blocks
+    try {
+      const { propagateEthicalFlag } = require('./cross-module-propagation');
+      propagateEthicalFlag(action, evaluation.compositeScore, evaluation.recommendation, biasFlags.filter(b => b.detected).length);
+    } catch { /* graceful */ }
+
+    // 3. Mandatory gate check
+    try {
+      const { runGate } = require('./mandatory-gate');
+      const isMutation = (context?.isMutation as boolean) ?? false;
+      const gate = runGate(evaluation.id, evaluation.compositeScore, evaluation.recommendation, isMutation);
+      if (gate.verdict === 'block') {
+        evaluation.recommendation = 'block';
+        evaluation.rationale += ` [GATE BLOCKED: ${gate.reason}]`;
+      }
+    } catch { /* graceful */ }
+
     return evaluation;
   }, fallback, 'evaluate');
 
