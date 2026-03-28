@@ -157,9 +157,7 @@ export function arbitrate(disputeId: string): Verdict | null {
   dispute.status = 'resolved';
   dispute.resolvedAt = Date.now();
 
-  if (dispute.status === 'resolved') totalResolved++;
-  else totalEscalated++;
-
+  totalResolved++;
   return verdict;
 }
 
