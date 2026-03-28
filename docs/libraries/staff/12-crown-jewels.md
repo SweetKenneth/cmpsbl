@@ -25,8 +25,9 @@ This document is the single source of truth for the Crown Jewel system — the 2
 |--------|-------|
 | **Total Crown Jewels** | 233 |
 | **Architecture (NEVER exported)** | 209 |
-| **Experience (sealed black-box only)** | 24 |
-| **Active in substrate** | 233 (100%) |
+| **Experience (sealed black-box only)** | 24 (across 4 tiers) |
+| **Active in substrate** | 222 (95%) |
+| **Safety-gated (human-in-the-loop required)** | 11 |
 | **Activation waves** | 14 |
 | **Covered primitives** | All 40 + cross-primitive compounds |
 | **Registry version** | v7.0.0 |
@@ -63,9 +64,7 @@ These are the **substrate's immune system, nervous system, and evolutionary engi
 
 ### 🟢 EXPERIENCE Crown Jewels — 24 Total
 
-**Rule: Released ONLY as sealed, black-boxed artifacts. No source visibility. No config exposure.**
-
-Experience Crown Jewels are customer-facing capabilities delivered through Artifact Packs:
+**Rule: Released ONLY as sealed, black-boxed artifacts. 4-tier access: Builder (8 free), Creator ($29, +20), Studio ($49, +40), Architect ($79, all).**
 - Execution-only (no source code visible)
 - Black-box enforcement via `blackbox.ts` (hex-encoded weights, stripped comments)
 - Tiered access: Creator ($49) and Architect ($149)

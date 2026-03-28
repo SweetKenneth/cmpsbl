@@ -10,7 +10,7 @@
  * 
  * B. EXPERIENCE CROWN JEWELS — Released as SEALED (black-boxed) artifacts.
  *    Execution-only, no source visibility, no config exposure, no export.
- *    Tiered: Creator ($9) and Architect ($19) get increasing access.
+ *    Tiered: Builder (free, 8 CJs), Creator ($29, +20 CJs), Studio ($49, +40 CJs), Architect ($79, all Experience CJs)
  */
 
 export type CrownJewelClassification = 'architecture' | 'experience';
@@ -32,7 +32,7 @@ export interface CrownJewelEntry {
   sealed_execution?: boolean;
   non_exportable?: boolean;
   /** Minimum tier required for experience jewels */
-  minimumTier?: 'builder' | 'pro' | 'enterprise';
+  minimumTier?: 'builder' | 'creator' | 'studio' | 'architect';
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -172,7 +172,7 @@ export const ARCHITECTURE_CROWN_JEWEL_IDS = new Set<string>([
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
-  // ── CREATOR TIER ($9) — Single-project, in-run self-improvement ──
+  // ── BUILDER TIER (free) — Foundational sealed capabilities ──
   'recursive-goal-optimizer',           // Bounded goal optimization
   'recursive-emergent-behavior-analyzer', // Emergent behavior detection
   'recursive-self-healing-mesh',        // Self-healing neural mesh
@@ -349,16 +349,21 @@ export const EXPERIENCE_CROWN_JEWEL_IDS = new Set<string>([
   'cj6-integration-api-rate-limiter',
 ]);
 
-/** Map experience jewels to their minimum tier */
-export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
-  // Creator tier ($49)
-  'recursive-goal-optimizer': 'creator',
-  'recursive-emergent-behavior-analyzer': 'creator',
+/** Map experience jewels to their minimum tier (4-tier: builder/creator/studio/architect) */
+export const EXPERIENCE_TIER_MAP: Record<string, 'builder' | 'creator' | 'studio' | 'architect'> = {
+  // ── BUILDER TIER (free) — Foundational sealed capabilities ──
+  'recursive-goal-optimizer': 'builder',
+  'recursive-emergent-behavior-analyzer': 'builder',
+  'syn-end-to-end-reasoning': 'builder',
+  'cap-chaos-resilience': 'builder',
+  'cj-ripple-event-dedup': 'builder',
+  'cj-economy-value-attribution': 'builder',
+  'cj6-system-health-aggregation': 'builder',
+  'cj6-decode-terminal-command-parser': 'builder',
+  // ── CREATOR TIER ($29) — Enhanced sealed capabilities ──
   'recursive-self-healing-mesh': 'creator',
-  'syn-end-to-end-reasoning': 'creator',
   'creative_evolution_engine': 'creator',
   'creative_forge': 'creator',
-  'cap-chaos-resilience': 'creator',
   // Architect tier ($149)
   'knowledge_graph_topology': 'architect',
   'stier-emergent-threat-anticipator': 'architect',
@@ -396,8 +401,6 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
   'cj-defense-behavioral-biometrics': 'creator',
   'cj-encode-mutation-testing': 'creator',
   'cj-decode-intent-evolution': 'creator',
-  'cj-ripple-event-dedup': 'creator',
-  'cj-economy-value-attribution': 'creator',
   // v10.5.5 — Wave 2
   'cj2-nexus-provider-trust-scoring': 'architect',
   'cj2-vision-anomaly-precognition': 'architect',
@@ -506,8 +509,6 @@ export const EXPERIENCE_TIER_MAP: Record<string, 'creator' | 'architect'> = {
   'cj6-memory-cross-session-persistence': 'architect',
   'cj6-decode-personality-adaptation': 'creator',
   'cj6-system-graceful-shutdown': 'creator',
-  'cj6-system-health-aggregation': 'creator',
-  'cj6-decode-terminal-command-parser': 'creator',
   'cj6-access-quota-intelligence': 'creator',
   'cj6-access-api-key-lifecycle': 'creator',
   'cj6-integration-webhook-reliability': 'creator',
@@ -550,7 +551,7 @@ export function isExperienceCrownJewel(id: string): boolean {
 }
 
 /** Get the minimum tier required for an experience jewel */
-export function getExperienceJewelTier(id: string): 'creator' | 'architect' | null {
+export function getExperienceJewelTier(id: string): 'builder' | 'creator' | 'studio' | 'architect' | null {
   if (EXPERIENCE_TIER_MAP[id]) return EXPERIENCE_TIER_MAP[id];
   const normalized = id.replace(/^(cap-|stier-|syn-|recursive-)/, '').replace(/-/g, '_');
   return EXPERIENCE_TIER_MAP[normalized] ?? null;
@@ -1201,7 +1202,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Graph construction algorithm and clustering heuristics are proprietary',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'stier-emergent-threat-anticipator',
@@ -1215,7 +1216,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Prediction model reveals detection blind spots',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'stier-audit-grade-decision-ledger',
@@ -1229,7 +1230,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Ledger schema reveals internal decision architecture',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'stier-decision-confidence-governor',
@@ -1243,7 +1244,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Confidence thresholds and override protocols exposed',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'stier-friction-auto-removal-engine',
@@ -1257,7 +1258,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Auto-modification patterns reveal code generation internals',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'cap-cognitive-mesh',
@@ -1271,7 +1272,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Distributed consensus protocol reveals coordination architecture',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'syn-autonomous-evolution',
@@ -1285,7 +1286,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Evolution proposal pipeline reveals self-modification architecture',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   {
     id: 'syn-self-healing',
@@ -1299,105 +1300,105 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     dangerIfExposed: 'Self-repair trigger conditions reveal vulnerability vectors',
     crown_jewel: true, admin_only: false,
     black_box: true, sealed_execution: true, non_exportable: true,
-    minimumTier: 'pro',
+    minimumTier: 'studio',
   },
   // Pro engines
   {
     id: 'self_healing_engine', name: 'Self-Healing Engine', artifactType: 'engine', modules: ['SYSTEM', 'DEFENSE', 'CORE'],
     classification: 'experience', reason: 'Autonomous self-repair with drift detection', enables: 'System homeostasis',
     composesWith: ['system_guardian'], dangerIfExposed: 'Healing patterns reveal fault boundaries',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'attack_surface_engine', name: 'Attack Surface Engine', artifactType: 'engine', modules: ['DEFENSE', 'VISION', 'SYSTEM'],
     classification: 'experience', reason: 'Privilege escalation detection, zero-day defense', enables: 'Proactive attack surface mapping',
     composesWith: ['security_fortress'], dangerIfExposed: 'Attack surface map reveals defensive blind spots',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'knowledge_retrieval_engine', name: 'Knowledge Retrieval Engine', artifactType: 'engine', modules: ['MEMORY'],
     classification: 'experience', reason: 'Full-stack RAG', enables: 'Complete memory infrastructure',
     composesWith: ['knowledge_nexus'], dangerIfExposed: 'Retrieval architecture reveals memory topology',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'delivery_orchestrator', name: 'Delivery Orchestrator', artifactType: 'engine', modules: ['RELAY'],
     classification: 'experience', reason: 'Webhook fan-out, encrypted delivery', enables: 'Complete outbound delivery',
     composesWith: ['enterprise_trust_fabric'], dangerIfExposed: 'Delivery topology reveals integration surface',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'compliance_audit_engine', name: 'Compliance & Audit Engine', artifactType: 'engine', modules: ['AUDIT'],
     classification: 'experience', reason: 'Immutable logs with Merkle proofs', enables: 'Tamper-evident compliance',
     composesWith: ['enterprise_trust_fabric'], dangerIfExposed: 'Audit chain architecture reveals governance implementation',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'zero_trust_engine', name: 'Zero Trust Engine', artifactType: 'engine', modules: ['IDENTITY'],
     classification: 'experience', reason: 'SAML/OIDC SSO, row-level isolation', enables: 'Enterprise identity infrastructure',
     composesWith: ['enterprise_trust_fabric'], dangerIfExposed: 'Identity architecture reveals trust boundaries',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'finops_engine', name: 'FinOps Engine', artifactType: 'engine', modules: ['ECONOMY'],
     classification: 'experience', reason: 'Sub-second metering, cost anomaly detection', enables: 'Complete FinOps',
     composesWith: ['platform_economics_engine'], dangerIfExposed: 'Economic model exposed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'resilience_lab', name: 'Resilience Lab', artifactType: 'engine', modules: ['SANDBOX'],
     classification: 'experience', reason: 'Ephemeral environments, chaos injection', enables: 'Complete isolation & testing',
     composesWith: ['resilience_shield'], dangerIfExposed: 'Testing topology reveals production failure modes',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   // Pro meta-engines
   {
     id: 'system_guardian', name: 'System Guardian', artifactType: 'meta-engine', modules: ['CORE', 'DEFENSE', 'SYSTEM', 'VISION'],
     classification: 'experience', reason: 'Complete system protection with self-healing', enables: 'Zero-downtime protection',
     composesWith: ['security_fortress'], dangerIfExposed: 'Defense topology exposed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'security_fortress', name: 'Security Fortress', artifactType: 'meta-engine', modules: ['DEFENSE', 'SYSTEM', 'VISION', 'CORTEX'],
     classification: 'experience', reason: 'Zero-trust security stack', enables: 'Complete security posture',
     composesWith: ['system_guardian'], dangerIfExposed: 'Zero-trust implementation exposed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'enterprise_trust_fabric', name: 'Enterprise Trust Fabric', artifactType: 'meta-engine', modules: ['IDENTITY', 'AUDIT', 'RELAY'],
     classification: 'experience', reason: 'End-to-end enterprise trust', enables: 'SOC2/ISO27001 compliance',
     composesWith: ['security_fortress'], dangerIfExposed: 'Trust fabric architecture exposed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'platform_economics_engine', name: 'Platform Economics Engine', artifactType: 'meta-engine', modules: ['ECONOMY', 'MEMORY', 'SANDBOX'],
     classification: 'experience', reason: 'Full-stack cost and value attribution', enables: 'Per-capability ROI',
     composesWith: ['resource_governor'], dangerIfExposed: 'Economic model revealed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'world_first_cognitive', name: 'World-First Cognitive', artifactType: 'meta-engine', modules: ['BRAIN', 'DECODE', 'DREAM'],
     classification: 'experience', reason: 'Unified cognitive world-first enhancements', enables: 'Advanced attention-based reasoning',
     composesWith: ['cognitive_mesh'], dangerIfExposed: 'World-first enhancement patterns are unique IP',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'world_first_operational', name: 'World-First Operational', artifactType: 'meta-engine', modules: ['NEXUS', 'SYSTEM', 'CORE', 'INTEGRATION'],
     classification: 'experience', reason: 'Complete operational world-first stack', enables: 'Zero-cost optimization',
     composesWith: ['autonomous_operator'], dangerIfExposed: 'Operational world-first patterns revealed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'world_first_intelligence', name: 'World-First Intelligence', artifactType: 'meta-engine', modules: ['VISION', 'CORTEX', 'EVOLUTION'],
     classification: 'experience', reason: 'Full intelligence world-first stack', enables: 'SLA breach prediction',
     composesWith: ['intelligence_pipeline'], dangerIfExposed: 'Intelligence enhancement patterns are IP',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'world_first_governance', name: 'World-First Governance', artifactType: 'meta-engine', modules: ['DEFENSE', 'ACCESS', 'RIPPLE', 'INCLUSIVE'],
     classification: 'experience', reason: 'Complete governance world-first', enables: 'Zero-trust behavioral analysis',
     composesWith: ['enterprise_trust_fabric'], dangerIfExposed: 'Governance implementation exposed',
-    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    crown_jewel: true, admin_only: false, black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
 
   // ══════════════════════════════════════════════════════
@@ -1476,7 +1477,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['knowledge_graph_topology', 'recursive-knowledge-crystallization'],
     dangerIfExposed: 'Associative retrieval heuristics reveal memory graph traversal strategy',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-dream-pattern-crystallizer', name: 'Dream Pattern Crystallizer',
@@ -1487,7 +1488,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['creative_evolution_engine', 'recursive-knowledge-crystallization'],
     dangerIfExposed: 'Pattern crystallization algorithm reveals dream-to-production pipeline',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-encode-semantic-refactoring', name: 'Semantic Code Refactoring',
@@ -1498,7 +1499,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['evolution_engine', 'self_documentation_engine'],
     dangerIfExposed: 'Semantic understanding of code intent reveals code generation internals',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-decode-adaptive-personality', name: 'Adaptive Personality Engine',
@@ -1509,7 +1510,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['world_first_cognitive', 'creative_forge'],
     dangerIfExposed: 'Personality adaptation algorithm is proprietary behavioral IP',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-nexus-model-quality-scoring', name: 'Model Quality Scoring Engine',
@@ -1520,7 +1521,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['world_first_operational', 'stier-decision-confidence-governor'],
     dangerIfExposed: 'Quality scoring heuristics reveal routing optimization strategy',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-identity-sovereign-federation', name: 'Sovereign Identity Federation',
@@ -1531,7 +1532,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['enterprise_trust_fabric', 'zero_trust_engine'],
     dangerIfExposed: 'Federation protocol reveals trust negotiation and data residency enforcement',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-identity-behavioral-fingerprinting', name: 'Behavioral Fingerprinting',
@@ -1542,7 +1543,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['zero_trust_engine', 'security_fortress'],
     dangerIfExposed: 'Fingerprinting algorithm reveals identity verification bypass vectors',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj-audit-forensic-timeline', name: 'Forensic Timeline Reconstruction',
@@ -1553,7 +1554,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['compliance_audit_engine', 'enterprise_trust_fabric'],
     dangerIfExposed: 'Timeline reconstruction algorithm reveals audit data correlation methods',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
 
   // ── EXPERIENCE — CREATOR TIER ──
@@ -1769,7 +1770,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['cj-nexus-model-quality-scoring', 'world_first_operational'],
     dangerIfExposed: 'Trust scoring reveals provider evaluation strategy',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-vision-anomaly-precognition', name: 'Anomaly Precognition Engine',
@@ -1780,7 +1781,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['stier-emergent-threat-anticipator', 'world_first_intelligence'],
     dangerIfExposed: 'Precognition signals reveal detection sensitivity thresholds',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-memory-selective-amnesia', name: 'Selective Amnesia Engine',
@@ -1791,7 +1792,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['knowledge_retrieval_engine', 'compliance_audit_engine'],
     dangerIfExposed: 'Selective deletion algorithm reveals memory graph structure',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-relay-adaptive-delivery', name: 'Adaptive Delivery Optimizer',
@@ -1802,7 +1803,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['delivery_orchestrator', 'world_first_operational'],
     dangerIfExposed: 'Delivery optimization reveals behavioral prediction model',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-audit-causal-attribution', name: 'Causal Attribution Engine',
@@ -1813,7 +1814,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['cj-audit-forensic-timeline', 'compliance_audit_engine'],
     dangerIfExposed: 'Causal model reveals internal decision tracing architecture',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-defense-zero-day-synthesis', name: 'Zero-Day Attack Synthesizer',
@@ -1824,7 +1825,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['attack_surface_engine', 'stier-emergent-threat-anticipator'],
     dangerIfExposed: 'Synthesized attack vectors could be weaponized',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-identity-trust-decay-model', name: 'Trust Decay Modeler',
@@ -1835,7 +1836,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['zero_trust_engine', 'cj-identity-behavioral-fingerprinting'],
     dangerIfExposed: 'Trust decay curves reveal authentication bypass timing windows',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-cortex-multi-objective-optimizer', name: 'Multi-Objective Optimizer',
@@ -1846,7 +1847,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['stier-decision-confidence-governor', 'platform_economics_engine'],
     dangerIfExposed: 'Pareto frontier computation reveals system optimization boundaries',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-brain-knowledge-distillation', name: 'Knowledge Distillation Engine',
@@ -1857,7 +1858,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['cj-brain-semantic-compression', 'knowledge_graph_topology'],
     dangerIfExposed: 'Distillation algorithm reveals knowledge representation internals',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-dream-lucid-intervention', name: 'Lucid Dream Intervention',
@@ -1868,7 +1869,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['dream_lucidity_control', 'cj-dream-pattern-crystallizer'],
     dangerIfExposed: 'Intervention protocol reveals dream control architecture',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-encode-semantic-debt-detector', name: 'Semantic Debt Detector',
@@ -1879,7 +1880,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['cj-encode-semantic-refactoring', 'evolution_engine'],
     dangerIfExposed: 'Debt detection reveals code quality assessment internals',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-decode-empathic-calibration', name: 'Empathic Calibration Engine',
@@ -1890,7 +1891,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['cj-decode-adaptive-personality', 'world_first_cognitive'],
     dangerIfExposed: 'Empathic calibration model reveals emotional manipulation vectors',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-economy-dynamic-pricing', name: 'Dynamic Pricing Engine',
@@ -1901,7 +1902,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['platform_economics_engine', 'cj-economy-value-attribution'],
     dangerIfExposed: 'Pricing model reveals economic strategy and margin structure',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-sandbox-chaos-orchestrator', name: 'Chaos Orchestration Engine',
@@ -1912,7 +1913,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['resilience_lab', 'cap-chaos-resilience'],
     dangerIfExposed: 'Chaos orchestration reveals system failure mode taxonomy',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-vision-cognitive-horizon-scanner', name: 'Cognitive Horizon Scanner',
@@ -1923,7 +1924,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['stier-emergent-threat-anticipator', 'cj2-vision-anomaly-precognition'],
     dangerIfExposed: 'Horizon scanning reveals system awareness boundaries',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-access-entitlement-reasoning', name: 'Entitlement Reasoning Engine',
@@ -1934,7 +1935,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['zero_trust_engine', 'cj-identity-sovereign-federation'],
     dangerIfExposed: 'Entitlement reasoning reveals access control decision boundaries',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-nerve-adaptive-circuit-topology', name: 'Adaptive Circuit Topology',
@@ -1945,7 +1946,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['system_guardian', 'cap-chaos-resilience'],
     dangerIfExposed: 'Circuit topology reveals system protection architecture',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
   {
     id: 'cj2-inclusive-cognitive-accessibility', name: 'Cognitive Accessibility Engine',
@@ -1956,7 +1957,7 @@ export const CROWN_JEWEL_REGISTRY: CrownJewelEntry[] = [
     composesWith: ['world_first_governance', 'cj-decode-adaptive-personality'],
     dangerIfExposed: 'Accessibility adaptation reveals cognitive output manipulation techniques',
     crown_jewel: true, admin_only: false,
-    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'pro',
+    black_box: true, sealed_execution: true, non_exportable: true, minimumTier: 'studio',
   },
 
   // ── EXPERIENCE — CREATOR TIER ($49) (10 new) ──

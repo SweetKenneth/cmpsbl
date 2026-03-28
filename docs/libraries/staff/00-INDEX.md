@@ -27,6 +27,7 @@ This library is the single onboarding resource for every CMPSBL team member — 
 | 10 | [Onboarding Checklist](10-onboarding-checklist.md) | Week-by-week ramp plan with verification milestones |
 | 11 | [Dogfooded Engines Registry](11-dogfooded-engines.md) | All 35 engines powering the substrate, internal mappings, and sales implications |
 | 12 | [Crown Jewels Registry](12-crown-jewels.md) | All 233 active Crown Jewels, classification rules, and export restrictions |
+| 13 | [Active Crown Jewels Operations](13-active-crown-jewels.md) | Operational status, safety gates, 4-tier mapping, audit results |
 
 ---
 
