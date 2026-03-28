@@ -102,7 +102,7 @@ export function shutdownNeuralSubstrate(): void {
  */
 export function getNeuralSubstrateStatus() {
   const engine = getMetaEngine();
-  const snap = engine.snapshot();
+  const snap = engine.getSnapshot();
   return {
     embedding: embeddingEngine.getState(),
     vectorIndex: vectorIndex.getState(),
