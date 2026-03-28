@@ -2,20 +2,13 @@
  * Memory River — The anti-chatbot hero visualization
  * Intelligence that compounds instead of restarting.
  * 
- * Particles flow left-to-right using CSS @keyframes for buttery performance.
+ * 100% CSS animations — zero framer-motion dependency.
+ * Particles flow left-to-right using CSS @keyframes.
  * Dream arcs upward, Defense diverts, Crystallized solidifies.
  * Mobile-first, DOM-based (no canvas).
- *
- * Props:
- *   crystallizing — external trigger for convergence burst
- *   autoCrystallize — self-triggering crystallization events
- *   compact — reduced particle count & height for inline usage
- *   hideTagline — suppress the "No resets" tagline
- *   hideLegend — suppress the bottom legend
  */
 
-import React, { memo, useMemo, useState, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { memo, useMemo, useState, useEffect, useRef } from "react";
 
 type ParticleType = "memory" | "dream" | "defense" | "crystallized" | "signal";
 
@@ -98,23 +91,60 @@ const KEYFRAMES_CSS = `
   0%, 100% { opacity: 0.2; height: 50%; }
   50%      { opacity: 0.7; height: 60%; }
 }
+@keyframes river-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes river-scale-in {
+  from { opacity: 0; transform: scaleY(0.75); }
+  to   { opacity: 1; transform: scaleY(1); }
+}
+@keyframes crystal-node-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes convergence-radial {
+  0%   { opacity: 0; transform: scale(0.2); }
+  25%  { opacity: 0.6; transform: scale(0.7); }
+  50%  { opacity: 0.3; transform: scale(1.1); }
+  100% { opacity: 0; transform: scale(0.15); }
+}
+@keyframes spark-scatter {
+  0%   { opacity: 0; transform: scale(0) translate(0, 0); }
+  30%  { opacity: 0.9; transform: scale(1.3) translate(var(--sx), var(--sy)); }
+  100% { opacity: 0; transform: scale(0) translate(var(--ex), var(--ey)); }
+}
+@keyframes infinity-breathe {
+  0%, 100% { opacity: 0.06; }
+  50%      { opacity: 0.2; }
+}
+@keyframes river-glow-idle {
+  0%, 100% { box-shadow: 0 0 60px -25px hsl(var(--primary) / 0.08), inset 0 1px 0 hsl(var(--primary) / 0.02); }
+  50%      { box-shadow: 0 0 70px -20px hsl(var(--primary) / 0.12), inset 0 1px 0 hsl(var(--primary) / 0.04); }
+}
+@keyframes river-glow-crystal {
+  0%   { box-shadow: 0 0 60px -25px hsl(var(--primary) / 0.08), inset 0 1px 0 hsl(var(--primary) / 0.02); }
+  30%  { box-shadow: 0 0 120px -15px hsl(var(--primary) / 0.4), 0 0 50px -8px hsl(var(--primary) / 0.18), inset 0 1px 0 hsl(var(--primary) / 0.1); }
+  100% { box-shadow: 0 0 60px -25px hsl(var(--primary) / 0.08), inset 0 1px 0 hsl(var(--primary) / 0.02); }
+}
 `;
 
 function RiverStyles() {
   return <style dangerouslySetInnerHTML={{ __html: KEYFRAMES_CSS }} />;
 }
 
-// ─── Crystallized Node ──────────────────────────────────────────
+// ─── Crystallized Node (pure CSS) ───────────────────────────────
 const CrystallizedNode = memo(function CrystallizedNode({
   label, position, delay, compact,
 }: { label: string; position: number; delay: number; compact?: boolean }) {
   return (
-    <motion.div
+    <div
       className="absolute flex flex-col items-center gap-0.5 pointer-events-none z-10"
-      style={{ left: `${position}%`, top: "50%", transform: "translate(-50%, -50%)" }}
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        left: `${position}%`,
+        top: "50%",
+        animation: `crystal-node-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s both`,
+      }}
     >
       <div className="relative">
         {/* Ambient radial glow */}
@@ -142,7 +172,7 @@ const CrystallizedNode = memo(function CrystallizedNode({
           {label}
         </span>
       )}
-    </motion.div>
+    </div>
   );
 });
 
@@ -277,61 +307,69 @@ const RiverChannel = memo(function RiverChannel() {
   );
 });
 
-// ─── Convergence Burst ──────────────────────────────────────────
+// ─── Convergence Burst (pure CSS) ───────────────────────────────
 function ConvergenceBurst({ active }: { active: boolean }) {
+  const [visible, setVisible] = useState(false);
+  const sparksRef = useRef<{ sx: number; sy: number; ex: number; ey: number; left: number; top: number; delay: number }[]>([]);
+
+  useEffect(() => {
+    if (active) {
+      sparksRef.current = Array.from({ length: 8 }, (_, i) => ({
+        sx: (Math.random() - 0.5) * 40,
+        sy: (Math.random() - 0.5) * 20,
+        ex: (Math.random() - 0.5) * 100,
+        ey: (Math.random() - 0.5) * 50,
+        left: 35 + Math.random() * 30,
+        top: 30 + Math.random() * 40,
+        delay: 0.15 + i * 0.06,
+      }));
+      setVisible(true);
+      const t = setTimeout(() => setVisible(false), 2800);
+      return () => clearTimeout(t);
+    }
+  }, [active]);
+
+  if (!visible) return null;
+
   return (
-    <AnimatePresence>
-      {active && (
-        <>
-          {/* Radial pulse */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.2 }}
-            animate={{ opacity: [0, 0.6, 0.3, 0], scale: [0.2, 0.7, 1.1, 0.15] }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 2.4, ease: "easeOut" }}
-            className="absolute inset-0 z-20 pointer-events-none"
-            style={{
-              background: "radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.35), hsl(var(--primary) / 0.08) 45%, transparent 70%)",
-            }}
-          />
-          {/* Horizontal convergence wave */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute left-[8%] right-[8%] top-[38%] bottom-[38%] z-[18] pointer-events-none origin-center rounded"
-            style={{
-              background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.12), hsl(var(--primary) / 0.28), hsl(var(--primary) / 0.12), transparent)",
-              animation: "convergence-wave 2.2s ease-out forwards",
-            }}
-          />
-          {/* Scatter sparks */}
-          {Array.from({ length: 8 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute z-[22] pointer-events-none rounded-full"
-              style={{
-                width: 2.5,
-                height: 2.5,
-                background: "hsl(var(--primary))",
-                boxShadow: "0 0 6px 1px hsl(var(--primary) / 0.4)",
-                left: `${35 + Math.random() * 30}%`,
-                top: `${30 + Math.random() * 40}%`,
-              }}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{
-                opacity: [0, 0.9, 0],
-                scale: [0, 1.3, 0],
-                x: (Math.random() - 0.5) * 100,
-                y: (Math.random() - 0.5) * 50,
-              }}
-              transition={{ duration: 1.6, delay: 0.15 + i * 0.06, ease: "easeOut" }}
-            />
-          ))}
-        </>
-      )}
-    </AnimatePresence>
+    <>
+      {/* Radial pulse */}
+      <div
+        className="absolute inset-0 z-20 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.35), hsl(var(--primary) / 0.08) 45%, transparent 70%)",
+          animation: "convergence-radial 2.4s ease-out forwards",
+        }}
+      />
+      {/* Horizontal convergence wave */}
+      <div
+        className="absolute left-[8%] right-[8%] top-[38%] bottom-[38%] z-[18] pointer-events-none origin-center rounded"
+        style={{
+          background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.12), hsl(var(--primary) / 0.28), hsl(var(--primary) / 0.12), transparent)",
+          animation: "convergence-wave 2.2s ease-out forwards",
+        }}
+      />
+      {/* Scatter sparks */}
+      {sparksRef.current.map((s, i) => (
+        <div
+          key={i}
+          className="absolute z-[22] pointer-events-none rounded-full"
+          style={{
+            width: 2.5,
+            height: 2.5,
+            background: "hsl(var(--primary))",
+            boxShadow: "0 0 6px 1px hsl(var(--primary) / 0.4)",
+            left: `${s.left}%`,
+            top: `${s.top}%`,
+            "--sx": `${s.sx}px`,
+            "--sy": `${s.sy}px`,
+            "--ex": `${s.ex}px`,
+            "--ey": `${s.ey}px`,
+            animation: `spark-scatter 1.6s ease-out ${s.delay}s both`,
+          } as React.CSSProperties}
+        />
+      ))}
+    </>
   );
 }
 
@@ -341,7 +379,6 @@ function buildParticles(compact: boolean) {
   let id = 0;
 
   if (compact) {
-    // Lighter set for inline/compact usage
     for (let i = 0; i < 10; i++)
       w.push({ id: id++, type: "signal", delay: i * 0.6, row: i % 3, duration: 4.2 + (i % 3) * 0.3, size: 1.5 });
     for (let i = 0; i < 5; i++)
@@ -353,7 +390,6 @@ function buildParticles(compact: boolean) {
     w.push({ id: id++, type: "crystallized", delay: 2, row: 1, duration: 8.5, size: 6 });
     w.push({ id: id++, type: "crystallized", delay: 7, row: 0, duration: 9, size: 5 });
   } else {
-    // Full density
     for (let i = 0; i < 20; i++)
       w.push({ id: id++, type: "signal", delay: i * 0.45, row: i % 4, duration: 3.8 + (i % 4) * 0.35, size: 1.2 + (i % 3) * 0.5 });
     for (let i = 0; i < 9; i++)
@@ -449,31 +485,22 @@ export const MemoryRiver = memo(function MemoryRiver({
 
       {/* Tagline */}
       {!hideTagline && (
-        <motion.p
+        <p
           className="text-center text-[9px] sm:text-[10px] text-muted-foreground/25 font-semibold tracking-[0.3em] uppercase mb-3"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
+          style={{ animation: "river-fade-in 0.6s ease 0.8s both" }}
         >
           No resets · No forgetting · No clock
-        </motion.p>
+        </p>
       )}
 
       {/* River container */}
-      <motion.div
-        className={`relative w-full ${heightClass} rounded-lg sm:rounded-xl overflow-hidden border border-border/12 bg-background/15`}
-        initial={{ opacity: 0, scaleY: 0.75 }}
-        animate={{
-          opacity: 1,
-          scaleY: 1,
-          boxShadow: crystallizing
-            ? "0 0 120px -15px hsl(var(--primary) / 0.4), 0 0 50px -8px hsl(var(--primary) / 0.18), inset 0 1px 0 hsl(var(--primary) / 0.1)"
-            : "0 0 60px -25px hsl(var(--primary) / 0.08), inset 0 1px 0 hsl(var(--primary) / 0.02)",
+      <div
+        className={`relative w-full ${heightClass} rounded-xl overflow-hidden border border-border/15 bg-background/20 backdrop-blur-[2px]`}
+        style={{
+          animation: crystallizing
+            ? "river-scale-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both, river-glow-crystal 2.6s ease-out forwards"
+            : "river-scale-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both, river-glow-idle 6s ease-in-out infinite",
         }}
-        transition={crystallizing
-          ? { boxShadow: { duration: 0.4, ease: "easeOut" } }
-          : { delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }
-        }
       >
         <ConvergenceBurst active={crystallizing} />
         <RiverChannel />
@@ -524,23 +551,20 @@ export const MemoryRiver = memo(function MemoryRiver({
           style={{ background: "linear-gradient(270deg, hsl(var(--background)), hsl(var(--background) / 0.5), transparent)" }}
         />
         {!compact && (
-          <motion.span
+          <span
             className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-muted-foreground/10 text-lg sm:text-xl font-light pointer-events-none z-[9] select-none"
-            animate={{ opacity: [0.06, 0.2, 0.06] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            style={{ animation: "infinity-breathe 4s ease-in-out infinite" }}
           >
             ∞
-          </motion.span>
+          </span>
         )}
-      </motion.div>
+      </div>
 
       {/* Legend */}
       {!hideLegend && (
-        <motion.div
+        <div
           className="flex flex-wrap justify-center gap-x-5 gap-y-1 mt-2.5 sm:mt-3.5"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
+          style={{ animation: "river-fade-in 0.5s ease 1.2s both" }}
         >
           {([
             { type: "memory" as ParticleType, label: "MEMORY Organ" },
@@ -559,7 +583,7 @@ export const MemoryRiver = memo(function MemoryRiver({
               <span className="text-[8px] sm:text-[10px] text-muted-foreground/35 font-medium tracking-wide">{label}</span>
             </div>
           ))}
-        </motion.div>
+        </div>
       )}
     </div>
   );
