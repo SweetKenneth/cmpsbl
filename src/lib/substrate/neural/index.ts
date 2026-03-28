@@ -101,12 +101,22 @@ export function shutdownNeuralSubstrate(): void {
  * Get unified neural substrate health status
  */
 export function getNeuralSubstrateStatus() {
+  const engine = getMetaEngine();
+  const snap = engine.snapshot();
   return {
     embedding: embeddingEngine.getState(),
     vectorIndex: vectorIndex.getState(),
     classifier: confidenceClassifier.getState(),
     driftDetector: driftDetector.getState(),
     maintenance: maintenanceManager.getState(),
+    consensus: {
+      active: !snap.killed,
+      leader: snap.leaderId,
+      nodes: snap.nodes.length,
+      heals: snap.totalHeals,
+      failures: snap.totalFailures,
+      uptimeMs: snap.uptime,
+    },
   };
 }
 
