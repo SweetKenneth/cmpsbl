@@ -95,46 +95,16 @@ export function useClocklessRadio() {
           // Standard DJ interjection
           const djContent = djRef.current.onTrackChange();
           if (djContent && engineRef.current) {
-            setTimeout(async () => {
+            setTimeout(() => {
               const engine = engineRef.current;
               if (!engine) return;
               setRadioState(prev => ({ ...prev, djContent, isDJSpeaking: true }));
               engine.duckForDJ();
-              const ctx = (engine as any).ctx as AudioContext | null;
-              if (!ctx) {
+              // Display text overlay for the content's duration, then unduck
+              setTimeout(() => {
                 engine.unduckFromDJ();
                 setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                return;
-              }
-              const audioBuffer = await fetchDJAudio(djContent, ctx);
-              if (!audioBuffer) {
-                setTimeout(() => {
-                  engine.unduckFromDJ();
-                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                }, 2000);
-                return;
-              }
-              const masterGain = (engine as any).masterGain as GainNode | null;
-              if (!masterGain || !ctx) {
-                engine.unduckFromDJ();
-                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                return;
-              }
-              const djGain = ctx.createGain();
-              djGain.gain.value = 1.0;
-              djGain.connect(ctx.destination);
-              const source = ctx.createBufferSource();
-              source.buffer = audioBuffer;
-              source.connect(djGain);
-              source.onended = () => {
-                engine.unduckFromDJ();
-                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                try { djGain.disconnect(); } catch {}
-                djSourceRef.current = null;
-              };
-              djSourceRef.current = source;
-              source.start(0);
-              console.log('[RadioDJ] 🎙️ Rex Binary is speaking!');
+              }, djContent.duration);
             }, 1500);
           }
         },
