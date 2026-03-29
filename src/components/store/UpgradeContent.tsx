@@ -386,6 +386,21 @@ export function UpgradeContent() {
 
                   <div className="h-px bg-border/50 mb-4 sm:mb-5" />
 
+                  {/* Crown Jewel link */}
+                  <a
+                    href="#crown-jewel-breakdown"
+                    className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm mb-3 group/cj cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('crown-jewel-breakdown')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <Diamond className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-amber shrink-0 mt-0.5" />
+                    <span className="text-neon-amber underline underline-offset-2 decoration-neon-amber/40 group-hover/cj:decoration-neon-amber transition-colors">
+                      {t.crownJewelLine}
+                    </span>
+                  </a>
+
                   <ul className="space-y-2.5 sm:space-y-3 flex-1">
                     {t.features.map(f => (
                       <li key={f} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm">
@@ -418,6 +433,8 @@ export function UpgradeContent() {
         </div>
       </div>
 
+      {/* ═══ CROWN JEWEL BREAKDOWN ═══ */}
+      <CrownJewelTierBreakdown />
 
       {/* Slot Pressure Modal */}
       <SlotPressureModal
