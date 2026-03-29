@@ -185,8 +185,6 @@ export function useClocklessRadio() {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
-    try { djSourceRef.current?.stop(); } catch {}
-    djSourceRef.current = null;
     engineRef.current?.stop();
   }, []);
 
@@ -225,8 +223,6 @@ export function useClocklessRadio() {
   useEffect(() => {
     return () => {
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-      try { djSourceRef.current?.stop(); } catch {}
-      djSourceRef.current = null;
       engineRef.current?.destroy();
       engineRef.current = null;
     };
