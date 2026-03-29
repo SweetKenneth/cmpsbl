@@ -82,7 +82,7 @@ serve(async (req) => {
             agent_name: agent.name,
             agent_type: agent.type,
             system_prompt: agent.system_prompt,
-            model_preference: agent.model_preference || 'groq/llama-3.3-70b',
+            model_preference: agent.model_preference || 'groq/llama-3.3-70b-versatile',
             capabilities: agent.capabilities || [],
             constraints: agent.constraints || {},
             is_active: true,
@@ -421,7 +421,7 @@ async function executeAgent(
   const startTime = Date.now();
   
   // Parse model preference
-  const [provider, model] = (agent.model_preference || 'groq/llama-3.3-70b').split('/');
+  const [provider, model] = (agent.model_preference || 'groq/llama-3.3-70b-versatile').split('/');
   
   // Call BYOK proxy
   const baseUrl = Deno.env.get('SUPABASE_URL');

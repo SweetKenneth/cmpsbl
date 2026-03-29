@@ -70,7 +70,7 @@ const PROVIDERS: ProviderConfig[] = [
     id: "groq-8b",
     name: "Groq (8B Fast)",
     baseUrl: "https://api.groq.com/openai/v1/chat/completions",
-    model: "llama-3.1-8b-instant",
+    model: "llama-3.3-70b-versatile",
     envKey: "GROQ_API_KEY",
     actualRpm: 30, actualRpd: 14400,
     rpm: 19, rpd: 9360,  // 65% of 30/14400 — spaced to ~10/min sustained
@@ -116,7 +116,7 @@ const PROVIDERS: ProviderConfig[] = [
     id: "cerebras",
     name: "Cerebras",
     baseUrl: "https://api.cerebras.ai/v1/chat/completions",
-    model: "llama3.1-8b",
+    model: "llama-3.3-70b-versatile",
     envKey: "CEREBRAS_API_KEY",
     actualRpm: 30, actualRpd: 14400,
     rpm: 19, rpd: 9360,  // 65% of 30/14400
@@ -321,7 +321,7 @@ const PROVIDERS: ProviderConfig[] = [
     id: "hyperbolic",
     name: "Hyperbolic",
     baseUrl: "https://api.hyperbolic.xyz/v1/chat/completions",
-    model: "meta-llama/Llama-3.1-70B-Instruct",
+    model: "meta-llama/Llama-3.3-70B-Instruct",
     envKey: "HYPERBOLIC_API_KEY",
     actualRpm: 30, actualRpd: 5000,
     rpm: 19, rpd: 3250,  // 65% — credit-based, conservative estimate

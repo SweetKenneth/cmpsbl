@@ -45,11 +45,11 @@ serve(async (req) => {
     // Real free tier limits from free-tier-router.ts
     const limits = {
       'google': { limit: 1500, cost_limit: 0, model: 'gemini-2.5-flash-lite' },
-      'cerebras': { limit: 30, cost_limit: 0, model: 'llama-3.3-70b' },
+      'cerebras': { limit: 30, cost_limit: 0, model: 'llama-3.3-70b-versatile' },
       'groq': { limit: 14400, cost_limit: 0, model: 'llama-3.3-70b-versatile' },
-      'together': { limit: 60, cost_limit: 0, model: 'meta-llama-3.1-70b' },
+      'together': { limit: 60, cost_limit: 0, model: 'meta-llama/Llama-3.3-70B-Instruct-Turbo' },
       'deepseek': { limit: 50, cost_limit: 0, model: 'deepseek-chat' },
-      'hyperbolic': { limit: 100, cost_limit: 0, model: 'llama-3.1-70b' }
+      'hyperbolic': { limit: 100, cost_limit: 0, model: 'meta-llama/Llama-3.3-70B-Instruct' }
     };
 
     const usage: Record<string, { calls: number; tokens: number; cost: number }> = {
