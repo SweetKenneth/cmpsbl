@@ -82,7 +82,7 @@ serve(async (req) => {
             agent_name: agent.name,
             agent_type: agent.type,
             system_prompt: agent.system_prompt,
-            model_preference: agent.model_preference || 'groq/llama-3.3-70b',
+            model_preference: agent.model_preference || 'groq/llama-3.3-70b-versatile',
             capabilities: agent.capabilities || [],
             constraints: agent.constraints || {},
             is_active: true,
