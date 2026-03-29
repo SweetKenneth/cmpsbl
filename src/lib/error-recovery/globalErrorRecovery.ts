@@ -23,12 +23,14 @@ export function installGlobalErrorRecovery(): () => void {
     try {
       const response = await originalFetch(...args);
 
-      // Rate limit detection
+      // Rate limit detection — only surface for user-initiated requests
       if (response.status === 429) {
-        const retryAfter = parseInt(response.headers.get('retry-after') || '30', 10);
         const url = typeof args[0] === 'string' ? args[0] : (args[0] as Request).url;
-        const endpoint = extractEndpointName(url);
-        emitRateLimitEvent({ endpoint, retryAfter });
+        if (!isBackgroundRequest(url)) {
+          const retryAfter = parseInt(response.headers.get('retry-after') || '30', 10);
+          const endpoint = extractEndpointName(url);
+          emitRateLimitEvent({ endpoint, retryAfter });
+        }
       }
 
       // Server error — only surface to user for non-background requests
