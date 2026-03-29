@@ -2,7 +2,7 @@
  * UpgradeContent — Extracted inner content from Upgrade page.
  * Embeddable inside Store tabs or standalone Upgrade page.
  */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useEngineSubscription } from '@/hooks/useEngineSubscription';
 import { toast } from 'sonner';
@@ -15,12 +15,13 @@ import {
   Check, ArrowRight, Package,
   Building2, Unlock, Layers,
   Sparkles, Download, X,
-  Zap, Shield, Brain, Globe,
+  Zap, Shield, Brain, Globe, Diamond,
 } from 'lucide-react';
 import { PRODUCT_TIERS, type ProductTier, type ArtifactPack } from '@/lib/quarry/types';
 import type { EngineSubscriptionTier } from '@/config/engine-stripe-products';
 import { PackDetailModal } from '@/components/slots/PackDetailModal';
 import { motion } from 'framer-motion';
+import { CrownJewelTierBreakdown } from '@/components/pricing/CrownJewelTierBreakdown';
 
 /* ─── Tier definitions (public-facing) ─── */
 const TIERS: {
@@ -35,6 +36,7 @@ const TIERS: {
   icon: React.ElementType;
   popular?: boolean;
   stripeTier?: EngineSubscriptionTier;
+  crownJewelLine: string;
   features: string[];
   capacity: {
     slots: number;
@@ -55,9 +57,9 @@ const TIERS: {
     accent: 'from-neon-green to-neon-green',
     icon: Unlock,
     capacity: { slots: 3, vault: '5 memories', pulls: '3 per day', exportEnabled: false, customSlots: false },
+    crownJewelLine: '8 sealed Crown Jewel capabilities included',
     features: [
       'Full runtime — not a demo',
-      '8 sealed Crown Jewel capabilities included',
       'Standard memory (5 recalls)',
       'Usage dashboard with ROI metrics',
       'Member Hub access',
@@ -76,9 +78,9 @@ const TIERS: {
     icon: Sparkles,
     stripeTier: 'creator' as EngineSubscriptionTier,
     capacity: { slots: 6, vault: '25 memories', pulls: '6 per day', exportEnabled: true, customSlots: false },
+    crownJewelLine: '28 Crown Jewel capabilities (8 Builder + 20 Creator)',
     features: [
       'Run 6 packs simultaneously',
-      '28 Crown Jewel capabilities (8 Builder + 20 Creator)',
       'Saved Workflows — one-click intent presets',
       'Export traces & audit logs',
       '2× deeper memory recall',
@@ -100,9 +102,9 @@ const TIERS: {
     popular: true,
     stripeTier: 'studio' as EngineSubscriptionTier,
     capacity: { slots: 9, vault: '75 memories', pulls: '9 per day', exportEnabled: true, customSlots: true },
+    crownJewelLine: '68 Crown Jewel capabilities (Builder + Creator + 40 Studio)',
     features: [
       '9 packs running concurrently',
-      '68 Crown Jewel capabilities (Builder + Creator + 40 Studio)',
       'Saved Workflows & custom presets',
       'Dedicated memory partitions',
       'Full trace & compliance exports',
@@ -124,9 +126,9 @@ const TIERS: {
     icon: Building2,
     stripeTier: 'architect' as EngineSubscriptionTier,
     capacity: { slots: 12, vault: 'Unlimited', pulls: '12 per day', exportEnabled: true, customSlots: true },
+    crownJewelLine: 'All Experience Crown Jewels unlocked',
     features: [
       '12 packs — maximum throughput',
-      'All Experience Crown Jewels unlocked',
       'Unlimited vault — never lose context',
       'Private Discovery Pool — isolated memory',
       'Governance snapshots & audit trails',
@@ -384,6 +386,21 @@ export function UpgradeContent() {
 
                   <div className="h-px bg-border/50 mb-4 sm:mb-5" />
 
+                  {/* Crown Jewel link */}
+                  <a
+                    href="#crown-jewel-breakdown"
+                    className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm mb-3 group/cj cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById('crown-jewel-breakdown')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <Diamond className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon-amber shrink-0 mt-0.5" />
+                    <span className="text-neon-amber underline underline-offset-2 decoration-neon-amber/40 group-hover/cj:decoration-neon-amber transition-colors">
+                      {t.crownJewelLine}
+                    </span>
+                  </a>
+
                   <ul className="space-y-2.5 sm:space-y-3 flex-1">
                     {t.features.map(f => (
                       <li key={f} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm">
@@ -416,6 +433,8 @@ export function UpgradeContent() {
         </div>
       </div>
 
+      {/* ═══ CROWN JEWEL BREAKDOWN ═══ */}
+      <CrownJewelTierBreakdown />
 
       {/* Slot Pressure Modal */}
       <SlotPressureModal
