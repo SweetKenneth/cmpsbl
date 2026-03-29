@@ -36,6 +36,7 @@ const TIERS: {
   icon: React.ElementType;
   popular?: boolean;
   stripeTier?: EngineSubscriptionTier;
+  crownJewelLine: string;
   features: string[];
   capacity: {
     slots: number;
