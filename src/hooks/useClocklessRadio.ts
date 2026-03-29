@@ -9,9 +9,6 @@ import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type D
 import { useRadioTimer } from '@/hooks/useRadioTimer';
 import { supabase } from '@/integrations/supabase/client';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-
 export interface ClocklessRadioState {
   isPlaying: boolean;
   state: RadioState;
@@ -24,45 +21,6 @@ export interface ClocklessRadioState {
   limitReached: boolean;
 }
 
-/**
- * Fetches TTS audio from the radio-dj-tts edge function
- */
-async function fetchDJAudio(
-  content: DJContent,
-  audioCtx: AudioContext
-): Promise<AudioBuffer | null> {
-  try {
-    console.log(`[RadioDJ] Fetching TTS for: "${content.text.slice(0, 50)}..."`);
-    const response = await fetch(
-      `${SUPABASE_URL}/functions/v1/radio-dj-tts`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-        },
-        body: JSON.stringify({
-          text: content.text,
-          contentType: content.type,
-          caller: content.caller,
-          callerVoice: content.callerVoice,
-        }),
-      }
-    );
-    if (!response.ok) {
-      console.error('[RadioDJ] TTS fetch failed:', response.status);
-      return null;
-    }
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    console.log(`[RadioDJ] Decoded DJ audio: ${audioBuffer.duration.toFixed(1)}s`);
-    return audioBuffer;
-  } catch (err) {
-    console.error('[RadioDJ] Failed to fetch/decode TTS:', err);
-    return null;
-  }
-}
 
 export function useClocklessRadio() {
   const [radioState, setRadioState] = useState<ClocklessRadioState>({
@@ -79,7 +37,7 @@ export function useClocklessRadio() {
   
   const engineRef = useRef<ClocklessRadioEngine | null>(null);
   const djRef = useRef<RadioDJ>(new RadioDJ());
-  const djSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  
   const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dailyBroadcastPlayedRef = useRef(false);
   const dailyBroadcastUrlRef = useRef<string | null>(null);
@@ -137,46 +95,16 @@ export function useClocklessRadio() {
           // Standard DJ interjection
           const djContent = djRef.current.onTrackChange();
           if (djContent && engineRef.current) {
-            setTimeout(async () => {
+            setTimeout(() => {
               const engine = engineRef.current;
               if (!engine) return;
               setRadioState(prev => ({ ...prev, djContent, isDJSpeaking: true }));
               engine.duckForDJ();
-              const ctx = (engine as any).ctx as AudioContext | null;
-              if (!ctx) {
+              // Display text overlay for the content's duration, then unduck
+              setTimeout(() => {
                 engine.unduckFromDJ();
                 setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                return;
-              }
-              const audioBuffer = await fetchDJAudio(djContent, ctx);
-              if (!audioBuffer) {
-                setTimeout(() => {
-                  engine.unduckFromDJ();
-                  setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                }, 2000);
-                return;
-              }
-              const masterGain = (engine as any).masterGain as GainNode | null;
-              if (!masterGain || !ctx) {
-                engine.unduckFromDJ();
-                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                return;
-              }
-              const djGain = ctx.createGain();
-              djGain.gain.value = 1.0;
-              djGain.connect(ctx.destination);
-              const source = ctx.createBufferSource();
-              source.buffer = audioBuffer;
-              source.connect(djGain);
-              source.onended = () => {
-                engine.unduckFromDJ();
-                setRadioState(prev => ({ ...prev, djContent: null, isDJSpeaking: false }));
-                try { djGain.disconnect(); } catch {}
-                djSourceRef.current = null;
-              };
-              djSourceRef.current = source;
-              source.start(0);
-              console.log('[RadioDJ] 🎙️ Rex Binary is speaking!');
+              }, djContent.duration);
             }, 1500);
           }
         },
@@ -257,8 +185,6 @@ export function useClocklessRadio() {
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
-    try { djSourceRef.current?.stop(); } catch {}
-    djSourceRef.current = null;
     engineRef.current?.stop();
   }, []);
 
@@ -297,8 +223,6 @@ export function useClocklessRadio() {
   useEffect(() => {
     return () => {
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-      try { djSourceRef.current?.stop(); } catch {}
-      djSourceRef.current = null;
       engineRef.current?.destroy();
       engineRef.current = null;
     };
