@@ -116,8 +116,8 @@ interface TierSection {
 
 const TIER_SECTIONS: TierSection[] = [
   { tier: 'Builder', accent: 'text-neon-green', count: 8, label: 'Included free', jewels: BUILDER_JEWELS },
-  { tier: 'Creator', accent: 'text-neon-purple', count: 20, label: '+20 capabilities', jewels: CREATOR_JEWELS },
-  { tier: 'Studio', accent: 'text-sky-400', count: 40, label: '+40 capabilities', jewels: STUDIO_JEWELS },
+  { tier: 'Studio', accent: 'text-neon-purple', count: 20, label: '+20 capabilities', jewels: CREATOR_JEWELS },
+  { tier: 'Creator', accent: 'text-sky-400', count: 40, label: '+40 capabilities', jewels: STUDIO_JEWELS },
   { tier: 'Architect', accent: 'text-neon-amber', count: 10, label: 'Exclusive', jewels: ARCHITECT_EXCLUSIVE_JEWELS },
 ];
 
