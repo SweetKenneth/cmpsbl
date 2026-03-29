@@ -284,7 +284,7 @@ const PROVIDER_CONFIGS = {
   },
   cerebras: {
     url: 'https://api.cerebras.ai/v1/chat/completions',
-    model: 'llama-3.3-70b',
+    model: 'llama-3.3-70b-versatile',
     keyEnv: 'CEREBRAS_API_KEY',
     headers: (key: string) => ({ 
       'Authorization': `Bearer ${key}`, 
