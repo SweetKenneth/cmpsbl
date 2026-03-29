@@ -305,10 +305,12 @@ export default function Store() {
                     variant="outline"
                     size="sm"
                     className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
-                    onClick={() => handleTabChange("plans")}
+                    asChild
                   >
-                    <Zap className="w-4 h-4" />
-                    Compare Plans
+                    <Link to="/composable-cognitives">
+                      <Users className="w-4 h-4" />
+                      Explore All Agents
+                    </Link>
                   </Button>
                   <Button
                     variant="outline"
@@ -316,10 +318,19 @@ export default function Store() {
                     className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
                     asChild
                   >
-                    <Link to="/foundry">
-                      <Sparkles className="w-4 h-4" />
-                      Explore Memory Stream
+                    <Link to="/engines">
+                      <Cpu className="w-4 h-4" />
+                      Discover All Engines
                     </Link>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 min-h-[44px] rounded-xl hover:border-primary/40 hover:bg-primary/5 transition-all"
+                    onClick={() => handleTabChange("plans")}
+                  >
+                    <Zap className="w-4 h-4" />
+                    Compare Plans
                   </Button>
                 </div>
               </motion.section>
