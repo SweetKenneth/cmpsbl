@@ -333,6 +333,70 @@ export default function Store() {
             {/* ═══ MEMORIES TAB ═══ */}
             <TabsContent value="memories" className="mt-0">
               <div className="max-w-6xl mx-auto">
+                {/* Memory Pack Explainer */}
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-10 sm:mb-12"
+                >
+                  <div className="max-w-3xl mx-auto text-center mb-8">
+                    <Badge variant="outline" className="mb-4 px-3 py-1 text-xs border-primary/30">
+                      <Brain className="w-3 h-3 mr-1.5 inline" />
+                      Memory Packs
+                    </Badge>
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+                      Capability Packs You Activate
+                    </h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mx-auto">
+                      Memory Packs are curated bundles of cognitive capabilities organized by domain — each pack occupies one slot in your runtime. Activate the packs that match your workflow, deactivate when you need room for others.
+                    </p>
+                  </div>
+
+                  <div className="max-w-3xl mx-auto grid sm:grid-cols-3 gap-4 mb-8">
+                    <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Layers className="w-4 h-4 text-primary" />
+                        What They Are
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Pre-composed capability bundles spanning strategic domains — from content generation to security hardening. Each pack contains multiple primitives working in concert as a single activatable unit.
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Zap className="w-4 h-4 text-neon-green" />
+                        How to Use Them
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Browse packs below, activate the ones you need (each uses 1 slot), and they immediately enhance your runtime. Your tier determines how many slots you have — Builder gets 3, Studio gets 6, Creator gets 9, Architect gets 12.
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-2">
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <Cpu className="w-4 h-4 text-neon-purple" />
+                        Access via NPM
+                      </div>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Active packs are delivered through the{' '}
+                        <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl/sdk</a>{' '}
+                        and{' '}
+                        <a href="https://www.npmjs.com/package/@cmpsbl/runtime" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">@cmpsbl/runtime</a>{' '}
+                        packages. Install, authenticate, and your active packs are available instantly.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="max-w-3xl mx-auto text-center">
+                    <div className="inline-flex flex-wrap items-center justify-center gap-2 text-[11px] text-muted-foreground">
+                      <code className="bg-muted px-2 py-1 rounded text-[10px] font-mono">npm i @cmpsbl/sdk</code>
+                      <span>·</span>
+                      <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
+                        View all 11 packages on NPM →
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+
                 <PacksContent />
               </div>
             </TabsContent>
