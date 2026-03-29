@@ -49,6 +49,7 @@ const CheckoutRedirect = lazy(() => import("@/pages/CheckoutRedirect"));
 const Engines = lazy(() => import("@/pages/Engines"));
 const EngineDetail = lazy(() => import("@/pages/EngineDetail"));
 const AgentDetail = lazy(() => import("@/pages/AgentDetail"));
+const AgentsLegacy = lazy(() => import("@/pages/Agents"));
 const Store = lazy(() => import("@/pages/Store"));
 const Upgrade = lazy(() => import("@/pages/Upgrade"));
 const Packs = lazy(() => import("@/pages/Packs"));
@@ -170,6 +171,7 @@ export const publicRoutes = (
     <Route path="/operatives/:slug" element={<Navigate to="/store" replace />} />
     <Route path="/engines" element={<Engines />} />
     <Route path="/engines/:slug" element={<EngineDetail />} />
+    <Route path="/agents" element={<AgentsLegacy />} />
     <Route path="/agents/:slug" element={<AgentDetail />} />
     <Route path="/composable-cognitives" element={<ComposableCognitives />} />
     <Route path="/composable-cognitives/success" element={<CognitivesSuccess />} />
