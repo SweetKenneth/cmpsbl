@@ -21,8 +21,8 @@ export function FullBackupButton() {
         return;
       }
 
-      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-      const url = `https://${projectId}.supabase.co/functions/v1/full-backup`;
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const url = `${supabaseUrl}/functions/v1/full-backup`;
 
       const res = await fetch(url, {
         method: 'POST',
@@ -32,12 +32,17 @@ export function FullBackupButton() {
         },
       });
 
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(err.error || `HTTP ${res.status}`);
+      // Check content-type before treating as ZIP — error responses return JSON
+      const contentType = res.headers.get('Content-Type') || '';
+      if (!res.ok || contentType.includes('application/json')) {
+        const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+        throw new Error(err.error || `Backup failed: HTTP ${res.status}`);
       }
 
       const blob = await res.blob();
+      if (blob.size < 100) {
+        throw new Error('Backup file is too small — likely an error response');
+      }
       const disposition = res.headers.get('Content-Disposition') || '';
       const filenameMatch = disposition.match(/filename="(.+)"/);
       const filename = filenameMatch?.[1] || `cmpsbl-full-backup-${new Date().toISOString().slice(0, 10)}.zip`;
