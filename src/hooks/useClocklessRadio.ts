@@ -37,7 +37,7 @@ export function useClocklessRadio() {
   
   const engineRef = useRef<ClocklessRadioEngine | null>(null);
   const djRef = useRef<RadioDJ>(new RadioDJ());
-  const djSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  
   const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dailyBroadcastPlayedRef = useRef(false);
   const dailyBroadcastUrlRef = useRef<string | null>(null);
