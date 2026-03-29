@@ -31,14 +31,16 @@ export function installGlobalErrorRecovery(): () => void {
         emitRateLimitEvent({ endpoint, retryAfter });
       }
 
-      // Server error with recovery suggestion
+      // Server error — only surface to user for non-background requests
       if (response.status >= 500 && response.status < 600) {
         const url = typeof args[0] === 'string' ? args[0] : (args[0] as Request).url;
-        const endpoint = extractEndpointName(url);
-        toast.error('Server Error', {
-          description: `${endpoint} returned ${response.status}. The system will retry automatically.`,
-          duration: 5000,
-        });
+        if (!isBackgroundRequest(url)) {
+          const endpoint = extractEndpointName(url);
+          toast.error('Server Error', {
+            description: `${endpoint} returned ${response.status}. The system will retry automatically.`,
+            duration: 5000,
+          });
+        }
       }
 
       return response;
@@ -63,6 +65,31 @@ export function installGlobalErrorRecovery(): () => void {
 // ═══════════════════════════════════════════════════════════════════════════════
 // §2 — Endpoint Name Extraction (human-readable)
 // ═══════════════════════════════════════════════════════════════════════════════
+
+/**
+ * Detect background/polling requests that should never surface errors to users.
+ * Only user-initiated actions (explicit button clicks, form submissions) should show toasts.
+ */
+function isBackgroundRequest(url: string): boolean {
+  const backgroundPatterns = [
+    '/functions/v1/pf-substrate',       // Substrate status polling
+    '/functions/v1/pf-radio-broadcast', // Radio broadcast generation
+    '/functions/v1/radio-dj-tts',       // Radio TTS
+    '/rest/v1/brain_maintenance_log',   // Neural maintenance
+    '/rest/v1/brain_embeddings',        // Embedding sync
+    '/rest/v1/brain_knowledge_crystals',// Crystal sync
+    '/rest/v1/brain_classifier_models', // Classifier polling
+    '/rest/v1/brain_reasoning_traces',  // Trace polling
+    '/rest/v1/defense_events',          // Defense telemetry
+    '/rest/v1/site_page_views',         // Analytics
+    '/rest/v1/site_sessions',           // Session tracking
+    '/rest/v1/analytics_events',        // Analytics events
+    '/rest/v1/rpc/brain_',              // Brain RPCs
+    '/rest/v1/rpc/run_memory_tiering',  // Memory tiering
+    '/rest/v1/rpc/apply_confidence_decay', // Confidence decay
+  ];
+  return backgroundPatterns.some(p => url.includes(p));
+}
 
 function extractEndpointName(url: string): string {
   try {

@@ -9,9 +9,6 @@ import { ClocklessRadioEngine, RadioDJ, type RadioTrack, type RadioState, type D
 import { useRadioTimer } from '@/hooks/useRadioTimer';
 import { supabase } from '@/integrations/supabase/client';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-
 export interface ClocklessRadioState {
   isPlaying: boolean;
   state: RadioState;
@@ -24,45 +21,6 @@ export interface ClocklessRadioState {
   limitReached: boolean;
 }
 
-/**
- * Fetches TTS audio from the radio-dj-tts edge function
- */
-async function fetchDJAudio(
-  content: DJContent,
-  audioCtx: AudioContext
-): Promise<AudioBuffer | null> {
-  try {
-    console.log(`[RadioDJ] Fetching TTS for: "${content.text.slice(0, 50)}..."`);
-    const response = await fetch(
-      `${SUPABASE_URL}/functions/v1/radio-dj-tts`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`,
-        },
-        body: JSON.stringify({
-          text: content.text,
-          contentType: content.type,
-          caller: content.caller,
-          callerVoice: content.callerVoice,
-        }),
-      }
-    );
-    if (!response.ok) {
-      console.error('[RadioDJ] TTS fetch failed:', response.status);
-      return null;
-    }
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    console.log(`[RadioDJ] Decoded DJ audio: ${audioBuffer.duration.toFixed(1)}s`);
-    return audioBuffer;
-  } catch (err) {
-    console.error('[RadioDJ] Failed to fetch/decode TTS:', err);
-    return null;
-  }
-}
 
 export function useClocklessRadio() {
   const [radioState, setRadioState] = useState<ClocklessRadioState>({
