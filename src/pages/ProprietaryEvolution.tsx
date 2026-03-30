@@ -7,7 +7,7 @@
  */
 
 import { useState, useCallback } from 'react';
-import { PinGate } from '@/components/gates/PinGate';
+import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
