@@ -233,5 +233,6 @@ export const publicRoutes = (
     <Route path="/keys" element={<Navigate to="/api-access" replace />} />
     <Route path="/careers" element={<Careers />} />
     <Route path="/x" element={<ProprietaryEvolution />} />
+    <Route path="/ascension" element={<ProprietaryEvolution />} />
   </>
 );
