@@ -186,6 +186,5 @@ export default function ProprietaryEvolution() {
 
       <EnhancedFooter />
     </div>
-    </PinGate>
   );
 }
