@@ -52,6 +52,7 @@ const OG_AUDIT = `${OG_BASE}/og/proof.jpg`;
 const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
 const OG_ARCHITECTURE = `${OG_BASE}/og/architecture.jpg`;
 const OG_INTENT = `${OG_BASE}/og/intent-mesh.jpg`;
+const OG_ASCENSION = `${OG_BASE}/og/ascension.jpg`;
 
 export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════

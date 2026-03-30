@@ -138,6 +138,19 @@ The Memory Stream is CMPSBL's autonomous software production experience:
 - Materialize (export) pipelines as JSON artifacts
 - 100% BYOK deployment model
 
+## ASCENSION — ZERO-LLM CODE TRANSFORMATION
+
+Ascension is CMPSBL's code transformation engine:
+- Upload source code in 25 languages (including 7 HDLs: VHDL, Verilog, SystemVerilog)
+- Code becomes Primitive #41 — collides against 40 substrate primitives
+- Capabilities discovered via deterministic collision cycles (chain depth 2–8)
+- Zero external AI/LLM calls — pure internal cording
+- CJPI-scored capability certificates
+- Exports include sealed Mini-Runtime™ for zero-dependency deployment
+- Governed by circuit breakers, rate limits (120/min), and FNV-1a/DJB2 audit chain
+- Counterpart to Memory Stream: Memory Stream discovers, Ascension transforms
+- Page: https://cmpsbl.com/ascension
+
 ---
 
 ## MEMORY TIERS
