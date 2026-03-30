@@ -1,5 +1,5 @@
 # CMPSBL® — Machine-Readable AI Context
-# 40-Node / 12-Sector Cognitive Substrate
+# 40-Primitive / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
 # Updated: 2026-03-18
 
