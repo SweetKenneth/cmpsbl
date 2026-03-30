@@ -43,6 +43,7 @@ const INTERNAL_LINKS: InternalLink[] = [
   { label: 'Showcase', href: '/showcase' },
   // Explore
   { label: 'Memory Stream', href: '/foundry' },
+  { label: 'Ascension', href: '/ascension' },
   { label: 'Blog', href: '/blog' },
   { label: 'Changelog', href: '/changelog' },
   { label: 'Developers', href: '/developers' },
