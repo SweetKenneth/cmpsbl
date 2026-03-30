@@ -8,7 +8,6 @@
 
 import { useState, useCallback } from 'react';
 import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
-import { ArrowLeft, ArrowRight, RotateCcw } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
