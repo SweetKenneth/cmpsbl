@@ -452,7 +452,7 @@ export function CmpsblNav() {
               {[
                   { name: "Memory Stream", href: "/foundry", icon: Sparkles, badge: "LIVE", highlight: true },
                   { name: "Member Hub", href: "/member", icon: Crown, badge: "NEW" },
-                  { name: "Plans", href: "/store?tab=plans", icon: Zap },
+                  { name: "Ascension", href: "/ascension", icon: Zap, badge: "NEW" },
                   { name: "Store", href: "/store", icon: Sparkles },
                 ].map((item) => (
                   <Link
