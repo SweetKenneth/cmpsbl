@@ -60,7 +60,7 @@ export default function Explore() {
         title="Composable AI Infrastructure | CMPSBL"
         description="Governed cognitive infrastructure where intelligence persists, adapts, and compounds. Free to start with 3 capability slots. Composable AI platform for agentic systems that learn."
         canonical="https://cmpsbl.com"
-        image="https://cmpsbl.com/og/home.jpg"
+        image="https://cmpsbl.com/og/home-v2.jpg"
         keywords={['composable AI', 'cognitive infrastructure', 'AI platform', 'agentic AI', 'governed AI', 'adaptive intelligence', 'AI agent memory', 'self-improving software', 'capability packs']}
         faq={[
           { question: 'What is CMPSBL?', answer: 'CMPSBL is composable cognitive infrastructure — a modular AI platform where intelligence persists across sessions, adapts through governed evolution, and compounds over time.' },

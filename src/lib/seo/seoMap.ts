@@ -52,6 +52,7 @@ const OG_AUDIT = `${OG_BASE}/og/proof.jpg`;
 const OG_GAMING = `${OG_BASE}/og/gaming.jpg`;
 const OG_ARCHITECTURE = `${OG_BASE}/og/architecture.jpg`;
 const OG_INTENT = `${OG_BASE}/og/intent-mesh.jpg`;
+const OG_ASCENSION = `${OG_BASE}/og/ascension.jpg`;
 
 export const seoMap: Record<string, PageSEO> = {
   // ═══════════════════════════════════════════════════
@@ -62,7 +63,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'CMPSBL is a cognitive infrastructure platform where autonomous systems discover, crystallize, and export deployable software pipelines & hardware architectures.',
     ogTitle: 'CMPSBL — Autonomous Software Discovery Platform',
     ogDescription: 'Autonomous systems that discover, crystallize, and export deployable software pipelines & hardware architectures.',
-    ogImage: OG_HOME,
+    ogImage: `${OG_BASE}/og/home-v2.jpg`,
     keywords: ['autonomous software discovery', 'cognitive infrastructure platform', 'deployable pipeline export', 'hardware architecture AI', 'signal crystallization', 'governed runtime', 'self-assembling pipelines', 'AI substrate'],
     schema: 'home',
     intent: 'Brand/Category',
@@ -649,6 +650,17 @@ export const seoMap: Record<string, PageSEO> = {
     schema: 'feature',
     intent: 'Feature/Capability',
     primaryKeyword: 'autonomous software foundry',
+  },
+  '/ascension': {
+    title: 'Ascension — Zero-LLM Code Transformation | CMPSBL',
+    description: 'Upload code in 25 languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording.',
+    ogTitle: 'Ascension — Zero-LLM Code Transformation',
+    ogDescription: 'Upload code, collide against 40 primitives, export enhanced capabilities. No LLM.',
+    ogImage: OG_ASCENSION,
+    keywords: ['code transformation', 'zero LLM', 'capability discovery', 'substrate collision', 'CJPI scoring', 'Mini-Runtime', 'software augmentation', 'deterministic AI'],
+    schema: 'product',
+    intent: 'Feature/Capability',
+    primaryKeyword: 'zero LLM code transformation',
   },
   '/evolution-mesh': {
     title: 'EVOLUTION Mesh — Governed Improvement | CMPSBL',

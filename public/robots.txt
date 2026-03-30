@@ -29,6 +29,8 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -123,6 +125,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -195,6 +198,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -248,6 +252,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -299,6 +304,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -350,6 +356,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -401,6 +408,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -452,6 +460,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -510,6 +519,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -561,6 +571,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -612,6 +623,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise
@@ -672,6 +684,7 @@ Allow: /runtime
 Allow: /os
 Allow: /store
 Allow: /foundry
+Allow: /ascension
 Allow: /persistent-memory
 Allow: /packs
 Allow: /enterprise

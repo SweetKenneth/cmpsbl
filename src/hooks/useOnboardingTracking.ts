@@ -24,7 +24,8 @@ export type OnboardingSurface =
   | 'codelab'
   | 'persistent-memory'
   | 'workspace'
-  | 'upgrade';
+  | 'upgrade'
+  | 'ascension';
 
 /**
  * Lightweight hook for tracking onboarding funnel progression.
