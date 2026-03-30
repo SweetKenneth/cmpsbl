@@ -19,7 +19,7 @@ export function FoundryDemoVideo() {
     <div className="relative w-full">
       <video
         ref={videoRef}
-        src="/videos/memory-stream-demo.mov"
+        src="/videos/memory-stream-demo.mp4"
         autoPlay
         loop
         muted

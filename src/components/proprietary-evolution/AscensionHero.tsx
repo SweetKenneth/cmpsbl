@@ -378,6 +378,18 @@ export function AscensionHero() {
           <OrbitalCanvas />
         </div>
 
+        {/* ═══ ASCENSION VIDEO ═══ */}
+        <div className="mt-10 sm:mt-14 relative w-full max-w-4xl mx-auto rounded-xl overflow-hidden border border-border/20 shadow-[0_0_40px_hsl(var(--primary)/0.08)] ascension-stagger-6">
+          <video
+            src="/videos/ascension-demo.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-auto block"
+          />
+        </div>
+
         {/* ═══ LIFECYCLE PIPELINE — 4 steps ═══ */}
         <div
           className="mt-10 sm:mt-14 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 ascension-stagger-7"
