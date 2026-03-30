@@ -34,6 +34,7 @@ const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksS
 const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
 const NpmPackagesCTA = lazy(() => import("@/components/home/NpmPackagesCTA").then(m => ({ default: m.NpmPackagesCTA })));
+const DiscoveryDualCards = lazy(() => import("@/components/home/DiscoveryDualCards").then(m => ({ default: m.DiscoveryDualCards })));
 
 // Clean section divider — animated diamond with cross-glow
 function SectionDivider() {
@@ -104,6 +105,11 @@ export default function Explore() {
       <Suspense fallback={<div className="min-h-[200px]" />}>
         {/* ═══ NPM SDK ═══ */}
         <NpmPackagesCTA />
+
+        <SectionDivider />
+
+        {/* ═══ MEMORY STREAM + ASCENSION ═══ */}
+        <DiscoveryDualCards />
 
         <SectionDivider />
 
