@@ -43,6 +43,7 @@ const ROUTE_LABELS: Record<string, string> = {
   'insights': 'Insights',
   'intent-mesh': 'Intent Mesh',
   'forge': 'Forge',
+  'ascension': 'Ascension',
 };
 
 /**
