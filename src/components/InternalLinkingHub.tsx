@@ -23,8 +23,8 @@ const LINK_SETS = {
   ai: [
     { href: "/substrate", icon: Layers, label: "Platform Architecture", description: "Composable AI infrastructure", priority: "high" as const },
     { href: "/blog/why-agents-forget", icon: Brain, label: "Why Agents Forget", description: "Episodic memory for stateful AI", priority: "high" as const },
-    { href: "/blog/building-agents-that-learn", icon: Code, label: "Building Agents That Learn", description: "Autonomous learning loop patterns", priority: "medium" as const },
-    { href: "/architecture", icon: Eye, label: "Architecture", description: "Agents, Engines, Layers & Organs", priority: "medium" as const },
+    { href: "/foundry", icon: Brain, label: "Memory Stream", description: "Autonomous software discovery", priority: "high" as const },
+    { href: "/ascension", icon: Zap, label: "Ascension", description: "Zero-LLM code transformation", priority: "high" as const },
   ],
   accessibility: [
     { href: "/blog/accessibility-free-for-all", icon: Eye, label: "Free Accessibility Tools", description: "WCAG scanning at zero cost", priority: "high" as const },
@@ -35,8 +35,8 @@ const LINK_SETS = {
   general: [
     { href: "/projects", icon: Shield, label: "DEFENSE WordPress Plugin", description: "AI-powered bot protection for WordPress", priority: "high" as const },
     { href: "/substrate", icon: Layers, label: "Substrate Architecture", description: "Composable cognitive infrastructure", priority: "high" as const },
-    { href: "/solutions", icon: Zap, label: "All Solutions", description: "Explore the CMPSBL ecosystem", priority: "medium" as const },
-    { href: "/blog", icon: BookOpen, label: "Research & Insights", description: "Technical deep dives and guides", priority: "medium" as const },
+    { href: "/foundry", icon: Brain, label: "Memory Stream", description: "Autonomous software discovery", priority: "high" as const },
+    { href: "/ascension", icon: Zap, label: "Ascension", description: "Zero-LLM code transformation", priority: "medium" as const },
   ],
 };
 
