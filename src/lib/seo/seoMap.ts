@@ -651,6 +651,17 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'autonomous software foundry',
   },
+  '/ascension': {
+    title: 'Ascension — Zero-LLM Code Transformation | CMPSBL',
+    description: 'Upload code in 25 languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording.',
+    ogTitle: 'Ascension — Zero-LLM Code Transformation',
+    ogDescription: 'Upload code, collide against 40 primitives, export enhanced capabilities. No LLM.',
+    ogImage: OG_ASCENSION,
+    keywords: ['code transformation', 'zero LLM', 'capability discovery', 'substrate collision', 'CJPI scoring', 'Mini-Runtime', 'software augmentation', 'deterministic AI'],
+    schema: 'product',
+    intent: 'Feature/Capability',
+    primaryKeyword: 'zero LLM code transformation',
+  },
   '/evolution-mesh': {
     title: 'EVOLUTION Mesh — Governed Improvement | CMPSBL',
     description: 'Self-improving substrate layer with shadow-run validation, governed promotion pipelines, and version-controlled architectural mutations.',
