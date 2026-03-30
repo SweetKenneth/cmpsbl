@@ -63,7 +63,7 @@ export const seoMap: Record<string, PageSEO> = {
     description: 'CMPSBL is a cognitive infrastructure platform where autonomous systems discover, crystallize, and export deployable software pipelines & hardware architectures.',
     ogTitle: 'CMPSBL — Autonomous Software Discovery Platform',
     ogDescription: 'Autonomous systems that discover, crystallize, and export deployable software pipelines & hardware architectures.',
-    ogImage: OG_HOME,
+    ogImage: `${OG_BASE}/og/home-v2.jpg`,
     keywords: ['autonomous software discovery', 'cognitive infrastructure platform', 'deployable pipeline export', 'hardware architecture AI', 'signal crystallization', 'governed runtime', 'self-assembling pipelines', 'AI substrate'],
     schema: 'home',
     intent: 'Brand/Category',
