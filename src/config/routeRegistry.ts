@@ -57,6 +57,7 @@ export const routeRegistry: RouteEntry[] = [
   // ── Product ──
   { path: "/store", label: "Store", section: "product", priority: 0.95, changefreq: "weekly", description: "Agents, engines, plans & memories" },
   { path: "/foundry", label: "Memory Stream", section: "product", priority: 0.95, changefreq: "daily", description: "Discover & crystallize memory pipelines" },
+  { path: "/ascension", label: "Ascension", section: "product", priority: 0.93, changefreq: "weekly", description: "Zero-LLM code transformation — upload code, collide against 40 primitives, export enhanced capabilities" },
   { path: "/persistent-memory", label: "Persistent Memory", section: "product", priority: 0.92, changefreq: "monthly", description: "4-tier memory for any agent" },
   { path: "/packs", label: "Capability Packs", section: "product", priority: 0.88, changefreq: "weekly", description: "Activate substrate capabilities" },
   
