@@ -7,7 +7,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Search, X, ShieldCheck, ArrowRight, Lock, Zap } from "lucide-react";
+import { Search, X, ShieldCheck, ArrowRight, Lock, Zap, Download, Package, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -16,9 +16,6 @@ import { Helmet } from "react-helmet-async";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
-import { useAuth } from "@/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 import {
   LEGACY_AGENTS, LEGACY_TIER_CONFIG,
   type LegacyAgent, type LegacyAgentTier,
@@ -27,28 +24,7 @@ import {
 const TIER_ORDER: LegacyAgentTier[] = ["free", "engineering", "defense", "intelligence", "growth"];
 
 function AgentCard({ agent, index }: { agent: LegacyAgent; index: number }) {
-  const { user } = useAuth();
   const tierCfg = LEGACY_TIER_CONFIG[agent.tier];
-
-  const handleBuy = async () => {
-    if (agent.isFree) {
-      toast.success(`${agent.codename} activated!`);
-      return;
-    }
-    if (!user) {
-      toast.warning("Please sign in to purchase");
-      return;
-    }
-    try {
-      const { data, error } = await supabase.functions.invoke("legacy-agent-checkout", {
-        body: { agent_slug: agent.slug },
-      });
-      if (error) throw error;
-      if (data?.url) window.location.href = data.url;
-    } catch (err) {
-      toast.error("Checkout failed. Please try again.");
-    }
-  };
 
   return (
     <motion.div
@@ -56,72 +32,72 @@ function AgentCard({ agent, index }: { agent: LegacyAgent; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.03, duration: 0.35 }}
-      className={cn(
-        "relative rounded-2xl border bg-card p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl overflow-hidden group",
-        tierCfg.border
-      )}
+      className="snap-start shrink-0"
     >
-      {/* Accent line */}
-      <div
-        className="absolute top-0 inset-x-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity"
-        style={{ background: `linear-gradient(90deg, transparent, hsl(${agent.color}), transparent)` }}
-      />
-
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-3">
+      <Link to={`/agents/${agent.slug}`} className="block group h-full">
         <div className={cn(
-          "w-10 h-10 rounded-xl flex items-center justify-center border",
-          tierCfg.bg, tierCfg.border
+          "relative h-full rounded-2xl border bg-card p-5 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl overflow-hidden",
+          tierCfg.border
         )}>
-          <agent.icon className="w-5 h-5" style={{ color: `hsl(${agent.color})` }} />
+          {/* Accent line */}
+          <div
+            className="absolute top-0 inset-x-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity"
+            style={{ background: `linear-gradient(90deg, transparent, hsl(${agent.color}), transparent)` }}
+          />
+
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-3">
+            <div className={cn(
+              "w-10 h-10 rounded-xl flex items-center justify-center border",
+              tierCfg.bg, tierCfg.border
+            )}>
+              <agent.icon className="w-5 h-5" style={{ color: `hsl(${agent.color})` }} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-black tracking-tight">{agent.codename}</h3>
+              <p className="text-xs text-muted-foreground truncate">{agent.role}</p>
+            </div>
+            <Badge variant="outline" className={cn("text-[10px] font-mono shrink-0", tierCfg.bg, tierCfg.color, tierCfg.border)}>
+              {tierCfg.label}
+            </Badge>
+          </div>
+
+          {/* Tagline */}
+          <p className="text-sm text-muted-foreground mb-3">{agent.tagline}</p>
+
+          {/* Capabilities */}
+          <ul className="space-y-1 mb-4">
+            {agent.capabilities.map((cap) => (
+              <li key={cap} className="flex items-start gap-1.5 text-xs text-muted-foreground/80">
+                <Zap className="w-3 h-3 mt-0.5 text-primary/50 shrink-0" />
+                <span>{cap}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Fused into badge */}
+          <div className="text-[10px] font-mono text-muted-foreground/50 mb-3">
+            Now part of → <span className="text-primary/60 font-bold">{agent.fusedInto}</span> Meta-Agent
+          </div>
+
+          {/* Price + CTA */}
+          <div className="flex items-end justify-between">
+            <div>
+              <span className="text-2xl font-black">{agent.priceDisplay}</span>
+              {agent.isFree ? (
+                <span className="text-xs text-neon-green font-semibold ml-1">No card required</span>
+              ) : (
+                <span className="text-xs text-muted-foreground ml-1">one-time</span>
+              )}
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-primary group-hover:gap-2 transition-all">
+              <Lock className="w-3 h-3" />
+              Dossier
+              <ArrowRight className="w-3 h-3" />
+            </div>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-black tracking-tight">{agent.codename}</h3>
-          <p className="text-xs text-muted-foreground truncate">{agent.role}</p>
-        </div>
-        <Badge variant="outline" className={cn("text-[10px] font-mono shrink-0", tierCfg.bg, tierCfg.color, tierCfg.border)}>
-          {tierCfg.label}
-        </Badge>
-      </div>
-
-      {/* Tagline */}
-      <p className="text-sm text-muted-foreground mb-3">{agent.tagline}</p>
-
-      {/* Capabilities */}
-      <ul className="space-y-1 mb-4">
-        {agent.capabilities.map((cap) => (
-          <li key={cap} className="flex items-start gap-1.5 text-xs text-muted-foreground/80">
-            <Zap className="w-3 h-3 mt-0.5 text-primary/50 shrink-0" />
-            <span>{cap}</span>
-          </li>
-        ))}
-      </ul>
-
-      {/* Fused into badge */}
-      <div className="text-[10px] font-mono text-muted-foreground/50 mb-3">
-        Now part of → <span className="text-primary/60 font-bold">{agent.fusedInto}</span> Meta-Agent
-      </div>
-
-      {/* Price + CTA */}
-      <div className="flex items-end justify-between">
-        <div>
-          <span className="text-2xl font-black">{agent.priceDisplay}</span>
-          {agent.isFree ? (
-            <span className="text-xs text-neon-green font-semibold ml-1">No card required</span>
-          ) : (
-            <span className="text-xs text-muted-foreground ml-1">one-time</span>
-          )}
-        </div>
-        <Button
-          size="sm"
-          variant={agent.isFree ? "outline" : "default"}
-          onClick={handleBuy}
-          className="text-xs"
-        >
-          {agent.isFree ? "Activate Free" : `Buy ${agent.priceDisplay}`}
-          <ArrowRight className="w-3 h-3 ml-1" />
-        </Button>
-      </div>
+      </Link>
     </motion.div>
   );
 }
@@ -179,6 +155,32 @@ export default function Agents() {
                 Later fused into 5 Meta-Agents on the <Link to="/store" className="text-primary hover:underline font-medium">Store</Link> —
                 but still available individually at legacy pricing.
               </p>
+
+              {/* Standalone deployment info */}
+              <div className="max-w-2xl mx-auto mb-4 p-4 rounded-xl border border-border/50 bg-card/50 text-left">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                  <strong className="text-foreground">Standalone deployment:</strong> Every agent purchase includes a
+                  self-contained ZIP with the embedded <strong className="text-foreground">Mini-Runtime™</strong> —
+                  deploy to your own infrastructure, no CMPSBL dependency required. Also activates via{" "}
+                  <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@cmpsbl/sdk</a>{" "}
+                  and the{" "}
+                  <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">CLI</a>.
+                </p>
+                <div className="flex flex-wrap gap-3 mt-3">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Download className="w-3.5 h-3.5 text-primary/60" />
+                    <span>ZIP download</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Package className="w-3.5 h-3.5 text-primary/60" />
+                    <span>NPM activation</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Terminal className="w-3.5 h-3.5 text-primary/60" />
+                    <span>CLI activation</span>
+                  </div>
+                </div>
+              </div>
 
               {/* Stats */}
               <div className="flex flex-wrap justify-center gap-3 mb-4">
