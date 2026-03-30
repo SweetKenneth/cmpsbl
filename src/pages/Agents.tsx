@@ -156,6 +156,32 @@ export default function Agents() {
                 but still available individually at legacy pricing.
               </p>
 
+              {/* Standalone deployment info */}
+              <div className="max-w-2xl mx-auto mb-4 p-4 rounded-xl border border-border/50 bg-card/50 text-left">
+                <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+                  <strong className="text-foreground">Standalone deployment:</strong> Every agent purchase includes a
+                  self-contained ZIP with the embedded <strong className="text-foreground">Mini-Runtime™</strong> —
+                  deploy to your own infrastructure, no CMPSBL dependency required. Also activates via{" "}
+                  <a href="https://www.npmjs.com/package/@cmpsbl/sdk" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@cmpsbl/sdk</a>{" "}
+                  and the{" "}
+                  <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">CLI</a>.
+                </p>
+                <div className="flex flex-wrap gap-3 mt-3">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Download className="w-3.5 h-3.5 text-primary/60" />
+                    <span>ZIP download</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Package className="w-3.5 h-3.5 text-primary/60" />
+                    <span>NPM activation</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Terminal className="w-3.5 h-3.5 text-primary/60" />
+                    <span>CLI activation</span>
+                  </div>
+                </div>
+              </div>
+
               {/* Stats */}
               <div className="flex flex-wrap justify-center gap-3 mb-4">
                 {TIER_ORDER.map((tier) => {
