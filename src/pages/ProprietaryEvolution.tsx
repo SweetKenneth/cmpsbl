@@ -93,9 +93,17 @@ export default function ProprietaryEvolution() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <SEO
-        title="Ascension — Software Evolution | CMPSBL"
-        description="Upload your code and let the 40-primitive substrate discover, augment, and export enhanced capabilities. Transform any script into a portable, sellable product."
+        title="Ascension — Zero-LLM Code Transformation | CMPSBL"
+        description="Upload code in 25 languages. The 40-Primitive substrate discovers capabilities your software already had. No LLM — pure internal cording. Export with sealed Mini-Runtime."
         canonical="https://cmpsbl.com/ascension"
+        image="https://cmpsbl.com/og/ascension.jpg"
+        keywords={['code transformation', 'zero LLM', 'capability discovery', 'substrate collision', 'CJPI scoring', 'Mini-Runtime', 'software augmentation']}
+        faq={[
+          { question: 'What is Ascension?', answer: 'Ascension is a code transformation engine that collides your source code against a 40-Primitive cognitive substrate to discover capabilities your software already had — with zero LLM involvement.' },
+          { question: 'Does Ascension use AI or LLMs?', answer: 'No. Ascension uses pure internal cording — deterministic collision cycles between your code and substrate primitives. No external AI calls are made at any point.' },
+          { question: 'What languages does Ascension support?', answer: 'Ascension supports 25 languages including Python, TypeScript, Rust, Go, C++, and 7 hardware description languages like VHDL and Verilog.' },
+          { question: 'What do I get when I export?', answer: 'A single portable file containing your original code, discovered capabilities, tests, documentation, a CJPI-scored certificate, and a sealed Mini-Runtime for zero-dependency deployment.' },
+        ]}
       />
 
       <PublicNav />
