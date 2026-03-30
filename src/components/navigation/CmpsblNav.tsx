@@ -135,6 +135,7 @@ export function CmpsblNav() {
       icon: Globe,
       items: [
         { name: "Memory Stream", href: "/foundry", description: "Discover & collect capabilities", icon: Sparkles, badge: "LIVE", highlight: true },
+        { name: "Ascension", href: "/ascension", description: "Upload code → discover new capabilities", icon: Zap, badge: "NEW", highlight: true },
         { name: "Blog", href: "/blog", description: "Articles & research", icon: FileText },
         { name: "About", href: "/about", description: "Our mission & team", icon: Users },
         { name: "Changelog", href: "/changelog", description: "What's new & updated", icon: FileText },

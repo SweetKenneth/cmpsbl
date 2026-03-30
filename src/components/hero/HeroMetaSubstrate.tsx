@@ -18,6 +18,7 @@ import {
   Layers,
   Brain,
   Shield,
+  Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -262,11 +263,13 @@ export function HeroMetaSubstrate() {
             {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
               <p className="text-sm sm:text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
-                CMPSBL gives your software{' '}
-                <span className="text-foreground/90 font-medium">persistent memory</span>,{' '}
-                <span className="text-foreground/90 font-medium">self‑improvement</span>, and{' '}
-                <span className="text-foreground/90 font-medium">governed reasoning</span>.
-                Every interaction flows through the Memory&nbsp;Stream, where the system crystallizes discoveries into exportable&nbsp;capabilities&nbsp;— automatically.
+                Build on the substrate with{' '}
+                <span className="text-foreground/90 font-medium">governed primitives</span>.{' '}
+                Capture memory chains in the{' '}
+                <span className="text-foreground/90 font-medium">Memory&nbsp;Stream</span>.{' '}
+                Or wrap your agents and code in{' '}
+                <span className="text-foreground/90 font-medium">Ascension</span>{' '}
+                — where the 40‑Primitive matrix discovers capabilities you didn't know your software&nbsp;had.
               </p>
             </FadeIn>
             
@@ -277,9 +280,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/auth">
+                <Link to="/foundry">
                   <Sparkles className="w-4 h-4" />
-                  Start Free
+                  Memory Stream
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -289,8 +292,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/store?tab=plans">
-                  View Plans
+                <Link to="/ascension">
+                  <Zap className="w-4 h-4" />
+                  Try Ascension
                 </Link>
               </Button>
             </FadeIn>
