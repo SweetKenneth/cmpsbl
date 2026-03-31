@@ -1008,7 +1008,7 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
 function generateUpgrading(input: IntegrationGuideInput): string {
   return `---
 
-## 8. Upgrading & Re-Exporting
+## 11. Upgrading & Re-Exporting
 
 When you re-export from CMPSBL (after new discoveries or score changes):
 
