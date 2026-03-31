@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import JSZip from 'jszip';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts } from '@/lib/export/export-artifacts-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 
 interface Template {
   id: string;
@@ -344,6 +344,15 @@ export function DownloadableTemplates({ className }: { className?: string }) {
       });
       for (const [filename, content] of Object.entries(templateArtifacts)) {
         zip.file(filename, content);
+      }
+      zip.file('TIER-MIGRATION.md', generateTierMigration());
+      const templateDiscovery = generateDiscoveryContext({
+        kind: 'engine',
+        name: template.name,
+        slug: template.id,
+      });
+      if (templateDiscovery) {
+        zip.file('DISCOVERY-CONTEXT.md', templateDiscovery);
       }
       
       // Generate the ZIP blob

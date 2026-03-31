@@ -8,7 +8,7 @@ import { BotClass, getClassById, MEMORY_MODES, LEARNING_MODES } from './botClass
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts, generateTierMigration } from '@/lib/export/export-artifacts-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 
 export interface ExportConfig {
   id: string;
@@ -516,6 +516,15 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
     zip.file(filename, content);
   }
   zip.file('TIER-MIGRATION.md', generateTierMigration());
+  const forgeDiscovery = generateDiscoveryContext({
+    kind: 'agent',
+    name: config.name,
+    slug: forgeSlug,
+    version: config.version,
+  });
+  if (forgeDiscovery) {
+    zip.file('DISCOVERY-CONTEXT.md', forgeDiscovery);
+  }
   
   const files = [
     'bot.yaml',

@@ -7,7 +7,7 @@ import JSZip from 'jszip';
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts, generateTierMigration } from '@/lib/export/export-artifacts-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 
 export interface BotExportConfig {
   id: string;
@@ -574,6 +574,15 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
     zip.file(filename, content);
   }
   zip.file('TIER-MIGRATION.md', generateTierMigration());
+  const svcDiscovery = generateDiscoveryContext({
+    kind: 'agent',
+    name: config.name,
+    slug: config.slug,
+    version: config.version,
+  });
+  if (svcDiscovery) {
+    zip.file('DISCOVERY-CONTEXT.md', svcDiscovery);
+  }
 
   const blob = await zip.generateAsync({ type: 'blob' });
   const filename = `${config.slug}-v${config.version}.zip`;

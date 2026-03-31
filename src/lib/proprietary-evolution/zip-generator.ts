@@ -20,7 +20,7 @@ import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts, generateTierMigration } from '@/lib/export/export-artifacts-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 
 export interface CapabilityForExport {
   id: string;
@@ -1059,6 +1059,16 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   });
   for (const [filename, content] of Object.entries(artifacts)) {
     zip.file(filename, content);
+  }
+  const discoveryCtx = generateDiscoveryContext({
+    kind: 'ascension',
+    name: packName,
+    slug: ascensionSlug,
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
+  });
+  if (discoveryCtx) {
+    zip.file('DISCOVERY-CONTEXT.md', discoveryCtx);
   }
   zip.file('TIER-MIGRATION.md', generateTierMigration());
 
