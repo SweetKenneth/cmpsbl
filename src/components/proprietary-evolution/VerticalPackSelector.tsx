@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { Shield, Network, Coins, User, Scale, Lock, Zap, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
+import forgeGraphic from '@/assets/forge-step-graphic.png';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -128,8 +129,16 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
         </Button>
       </div>
 
-      {/* Header */}
-      <div className="text-center space-y-2">
+      {/* Header with graphic */}
+      <div className="text-center space-y-3">
+        <img
+          src={forgeGraphic}
+          alt="Agent being scanned into 5 specialized capabilities"
+          loading="lazy"
+          width={800}
+          height={600}
+          className="w-48 h-auto mx-auto opacity-90"
+        />
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
           <Sparkles className="w-3.5 h-3.5 text-primary" />
           <span className="text-[11px] font-mono uppercase tracking-wider text-primary font-semibold">
