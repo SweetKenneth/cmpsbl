@@ -214,6 +214,17 @@ export async function downloadTieredFoundryZip(options: {
       source: item.source || options.sourceLabel,
     }));
 
+    // Integration guide — step-by-step instructions for placing into user's stack
+    artifactFolder.file('INTEGRATION.md', generateIntegrationGuide({
+      kind: 'crown-jewel',
+      name: item.name,
+      slug: slugify(item.name || item.id),
+      languages: unlockedLanguages,
+      systemChain: item.systemChain || ['SYSTEM'],
+      score: item.score,
+      category: item.category || undefined,
+    }));
+
     for (const file of bundle.files) {
       artifactFolder.file(file.filename, file.content);
       fileCount += 1;
