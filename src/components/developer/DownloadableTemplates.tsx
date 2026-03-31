@@ -335,6 +335,16 @@ export function DownloadableTemplates({ className }: { className?: string }) {
         name: template.name,
         slug: template.id,
       }));
+
+      // Supplementary artifacts
+      const templateArtifacts = generateExportArtifacts({
+        kind: 'engine',
+        name: template.name,
+        slug: template.id,
+      });
+      for (const [filename, content] of Object.entries(templateArtifacts)) {
+        zip.file(filename, content);
+      }
       
       // Generate the ZIP blob
       const blob = await zip.generateAsync({ type: 'blob' });
