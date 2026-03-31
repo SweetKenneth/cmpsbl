@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Shield, Network, Coins, User, Scale, Lock, Zap, ChevronRight, Sparkles } from 'lucide-react';
+import { Shield, Network, Coins, User, Scale, Lock, Zap, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
@@ -108,6 +108,26 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Skip banner — prominent first */}
+      <div className="p-4 rounded-xl border border-border/20 bg-card/40 flex items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-medium text-foreground">Not using agents?</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            This step is completely optional. Skip to go straight to Export.
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onSkip}
+          disabled={running}
+          className="text-xs h-10 min-h-[44px] px-5 rounded-xl shrink-0 gap-1.5"
+        >
+          Skip to Export
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Button>
+      </div>
+
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
@@ -246,21 +266,12 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onSkip}
-          disabled={running}
-          className="text-xs h-11 min-h-[44px] rounded-xl flex-1"
-        >
-          Skip Vertical Pack
-        </Button>
+      <div className="flex items-center justify-center">
         <Button
           size="sm"
           onClick={runForge}
           disabled={!selectedVertical || running}
-          className="text-xs h-11 min-h-[44px] rounded-xl flex-1 gap-1.5 shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
+          className="text-xs h-11 min-h-[44px] rounded-xl w-full max-w-xs gap-1.5 shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
         >
           {running ? (
             <>

@@ -7,11 +7,11 @@ import { Upload, Zap, Diamond, Package, Check, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const STEPS = [
-  { id: 'ingest', label: 'Ingest', icon: Upload },
-  { id: 'discovery', label: 'Discovery', icon: Zap },
-  { id: 'ascend', label: 'Ascend', icon: Diamond },
-  { id: 'forge', label: 'Forge', icon: Flame },
-  { id: 'export', label: 'Export', icon: Package },
+  { id: 'ingest', label: 'Ingest', icon: Upload, optional: false },
+  { id: 'discovery', label: 'Discovery', icon: Zap, optional: false },
+  { id: 'ascend', label: 'Ascend', icon: Diamond, optional: false },
+  { id: 'forge', label: 'Forge', icon: Flame, optional: true },
+  { id: 'export', label: 'Export', icon: Package, optional: false },
 ] as const;
 
 interface Props {
@@ -81,6 +81,11 @@ export function AscensionStepper({ activeStep, onStepClick, totalSteps = 5 }: Pr
               >
                 {step.label}
               </span>
+              {step.optional && !isComplete && (
+                <span className="text-[8px] font-mono text-muted-foreground/40 -mt-0.5">
+                  optional
+                </span>
+              )}
             </button>
 
             {/* Connector line */}
