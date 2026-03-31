@@ -364,7 +364,12 @@ describe('${product.name}', () => {
   test.file('chain-playback.test.ts', generateChainPlaybackTest(product));
 
   // ── Integration guide ─────────────────────────────────────────────────────
-  folder.file('INTEGRATION.md', generateIntegrationGuide(product));
+  folder.file('INTEGRATION.md', generateDetailedIntegrationGuide({
+    kind: product.ascension ? 'ascension' : product.kind,
+    name: product.name,
+    slug: product.slug,
+    category: product.tier,
+  }));
 
   return zip.generateAsync({ type: 'blob' });
 }
