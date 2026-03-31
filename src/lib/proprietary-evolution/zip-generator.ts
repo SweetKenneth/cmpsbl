@@ -1040,13 +1040,27 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   }, null, 2));
 
   // Integration guide — step-by-step stack integration instructions
+  const ascensionSlug = packName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   zip.file('INTEGRATION.md', generateIntegrationGuide({
     kind: 'ascension',
     name: packName,
-    slug: packName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    slug: ascensionSlug,
     languages: [targetLanguage],
     artifactCount: capabilities.length,
   }));
+
+  // Supplementary artifacts
+  const artifacts = generateExportArtifacts({
+    kind: 'ascension',
+    name: packName,
+    slug: ascensionSlug,
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
+  });
+  for (const [filename, content] of Object.entries(artifacts)) {
+    zip.file(filename, content);
+  }
+  zip.file('TIER-MIGRATION.md', generateTierMigration());
 
   // Generate and download
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });

@@ -563,6 +563,18 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
     slug: config.slug,
   }));
 
+  // Supplementary artifacts
+  const svcArtifacts = generateExportArtifacts({
+    kind: 'agent',
+    name: config.name,
+    slug: config.slug,
+    version: config.version,
+  });
+  for (const [filename, content] of Object.entries(svcArtifacts)) {
+    zip.file(filename, content);
+  }
+  zip.file('TIER-MIGRATION.md', generateTierMigration());
+
   const blob = await zip.generateAsync({ type: 'blob' });
   const filename = `${config.slug}-v${config.version}.zip`;
 

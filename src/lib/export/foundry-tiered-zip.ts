@@ -230,6 +230,31 @@ export async function downloadTieredFoundryZip(options: {
       artifactFolder.file(file.filename, file.content);
       fileCount += 1;
     }
+
+    // Supplementary artifacts per capability
+    const capArtifacts = generateExportArtifacts({
+      kind: 'crown-jewel',
+      name: item.name,
+      slug: slugify(item.name || item.id),
+      score: item.score,
+      languages: unlockedLanguages,
+      systemChain: item.systemChain || ['SYSTEM'],
+      category: item.category || undefined,
+    });
+    for (const [filename, content] of Object.entries(capArtifacts)) {
+      artifactFolder.file(filename, content);
+    }
+    const discoveryCtx = generateDiscoveryContext({
+      kind: 'crown-jewel',
+      name: item.name,
+      slug: slugify(item.name || item.id),
+      score: item.score,
+      category: item.category || undefined,
+      systemChain: item.systemChain || ['SYSTEM'],
+    });
+    if (discoveryCtx) {
+      artifactFolder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
+    }
   }
 
   const blob = await zip.generateAsync({ type: 'blob' });
