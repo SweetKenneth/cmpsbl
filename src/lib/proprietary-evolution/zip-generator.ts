@@ -20,7 +20,7 @@ import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts, generateTierMigration } from '@/lib/export/export-artifacts-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 
 export interface CapabilityForExport {
   id: string;
