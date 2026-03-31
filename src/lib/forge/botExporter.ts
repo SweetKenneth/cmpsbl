@@ -8,6 +8,7 @@ import { BotClass, getClassById, MEMORY_MODES, LEARNING_MODES } from './botClass
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 
 export interface ExportConfig {
   id: string;
