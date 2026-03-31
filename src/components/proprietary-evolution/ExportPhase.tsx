@@ -237,12 +237,25 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
 
       const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
+      // Build vertical discoveries for ZIP if forge was used
+      const verticalDiscoveries = verticalResult?.discoveries?.map(d => ({
+        id: d.id,
+        capabilityName: d.capabilityName,
+        primitiveName: d.primitiveName,
+        description: d.description,
+        cjpiScore: d.cjpiScore,
+        category: d.category,
+        vertical: d.vertical,
+      }));
+
       await generateCapabilityPackZip({
         targetLanguage: exportLanguage,
         capabilities: capsForExport,
         candidateName,
         userSourceFiles: userSourceFiles.length > 0 ? userSourceFiles : undefined,
         sourceLanguage: sourceLanguageLabel,
+        verticalDiscoveries: verticalDiscoveries && verticalDiscoveries.length > 0 ? verticalDiscoveries : undefined,
+        verticalName: verticalResult?.verticalName,
       });
 
       setExportResult({ packId: data.pack_id, count: targets.length });
