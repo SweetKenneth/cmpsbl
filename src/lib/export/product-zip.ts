@@ -14,6 +14,7 @@ import {
   generateSealedRuntimeReadme,
   generateSealedDiscoveryEngine,
 } from '@/lib/export/sealed-runtime-generator';
+import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/lib/export/integration-guide-generator';
 
 export interface ProductZipInput {
   id: string;
