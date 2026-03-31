@@ -1077,6 +1077,40 @@ The sealed components ensure consistent behavior across all deployments.
 
 ---
 
+## Glossary
+
+| Term | Meaning |
+|------|---------|
+| **CJPI** | Composable Joint Performance Index — scores artifacts on novelty, utility, complexity, and composability (0–100) |
+| **Primitive** | One of the 40 foundational capabilities in the CMPSBL substrate |
+| **Primitive Chain** | The sequence of primitives that execute for a given capability |
+| **Sealed Runtime™** | The self-contained TypeScript engine bundled with every export |
+| **Tier** | Score-based classification: Raw (0+), Mint (68+), Prime (80+), Relic (90+), Mythic (94+) |
+| **Bridge Adapter** | A pattern for calling the TypeScript runtime from non-JS/TS languages |
+| **Cognitive Overlay** | Layer 2 in Ascension exports — discovered primitive augmentations applied on top of your original code |
+| **Execution Trace** | The log of which primitives ran and their status (executed, delegated, unavailable) |
+| **Offline Mode** | Run the Sealed Runtime with zero network calls — all scoring happens locally |
+| **Hybrid Mode** | Default — tries network for deep effects, falls back to local if unavailable |
+| **Memory Stream** | Autonomous 8-hour discovery cycle that surfaces new capabilities |
+| **Ascension** | The process of enriching your code with discovered substrate capabilities |
+| **Discovery** | A newly found capability surfaced by the Memory Stream |
+
+---
+
+## Support & Resources
+
+| Resource | Link |
+|----------|------|
+| **Documentation** | https://cmpsbl.com/developers |
+| **Support Email** | support@cmpsbl.com |
+| **NPM Packages** | https://www.npmjs.com/org/cmpsbl |
+| **Test Harness** | https://www.npmjs.com/package/@cmpsbl/test-harness |
+| **CLI** | https://www.npmjs.com/package/@cmpsbl/cli |
+| **Daily Drops (Free)** | https://github.com/SweetKenneth/cmpsbl-daily-drops |
+| **CLI Diagnostics** | Run \`cmpsbl doctor\` in your terminal |
+
+---
+
 © 2025–2026 PromptFluid®. All rights reserved.
 CMPSBL® and Sealed Runtime™ are trademarks of PromptFluid.
 `;
