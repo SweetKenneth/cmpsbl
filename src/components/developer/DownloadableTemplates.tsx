@@ -12,6 +12,7 @@ import { Download, Loader2, CheckCircle2, FileCode, Package } from 'lucide-react
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import JSZip from 'jszip';
+import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 
 interface Template {
   id: string;
