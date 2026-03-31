@@ -78,7 +78,11 @@ function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
   return DISPLAY_TO_EXPORT[key] || null;
 }
 
-export function ExportPhase() {
+interface ExportPhaseProps {
+  verticalResult?: VerticalCollisionResult | null;
+}
+
+export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   const [allCapabilities, setAllCapabilities] = useState<AscendedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
