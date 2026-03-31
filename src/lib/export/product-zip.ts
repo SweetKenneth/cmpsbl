@@ -16,6 +16,7 @@ import {
 } from '@/lib/export/sealed-runtime-generator';
 import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
+import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 
 export interface ProductZipInput {
   id: string;
@@ -203,12 +204,15 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     source: 'store-download',
   }));
 
-  // ── Plain text docs ───────────────────────────────────────────────────────
+  // ── docs/ folder — organized documentation ────────────────────────────────
+  const docsFolder = folder.folder('docs')!;
+
+  // Plain text docs at root
   folder.file('README.md', generateReadmeMD(product));
   folder.file('LICENSE', generateLicenseTxt());
 
-  // ── HTML documentation suite ──────────────────────────────────────────────
-  folder.file('README.html', generateReadmeHTML({
+  // HTML docs in docs/
+  docsFolder.file('README.html', generateReadmeHTML({
     name: product.name,
     description: product.subtitle,
     category: kindLabel,
@@ -216,21 +220,15 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     modules: [product.kind === 'engine' ? 'ENGINE' : 'AGENT'],
     files: [
       { name: 'manifest.json', purpose: 'CMPSBL® software manifest' },
-      { name: 'README.md / README.html', purpose: 'Documentation and quick-start guide' },
-      { name: 'LICENSE / LICENSE.html', purpose: 'Proprietary license terms' },
-      { name: 'DETAILS.html', purpose: 'Product specification certificate' },
       { name: `src/${product.slug}.ts`, purpose: 'Sealed runtime entry point' },
-      { name: '_runtime/standalone-runtime.ts', purpose: 'CMPSBL® Mini-Runtime™ Engine (black-boxed)' },
-      { name: '_runtime/chain-executor.ts', purpose: 'Portable Chain Executor (40-primitive matrix)' },
-      { name: '_runtime/discovery-engine.ts', purpose: 'Sealed Discovery Engine' },
-      { name: `test/${product.slug}.test.ts`, purpose: 'Auto-generated test harness' },
+      { name: '_runtime/', purpose: 'CMPSBL® Mini-Runtime™ Engine' },
+      { name: 'test/', purpose: 'Auto-generated test harness' },
+      { name: 'docs/', purpose: 'Full documentation suite (HTML + Markdown)' },
     ],
-    quickStart: `# Install & run\nnpm install\nnpm test\n\n# Import in your project\nimport { init } from './${product.slug}';\nconst instance = init();\n\n# Or use via NPM\nnpm install @cmpsbl/sdk\nimport CMPSBL from '@cmpsbl/sdk';`,
+    quickStart: `# Install & run\nnpm install\nnpm test\n\n# Import in your project\nimport { init } from './${product.slug}';\nconst instance = init();`,
   }));
-
-  folder.file('LICENSE.html', generateLicenseHTML(product.name));
-
-  folder.file('DETAILS.html', generateProductDetailsHTML({
+  docsFolder.file('LICENSE.html', generateLicenseHTML(product.name));
+  docsFolder.file('DETAILS.html', generateProductDetailsHTML({
     name: product.name,
     subtitle: product.subtitle,
     kind: product.kind,
@@ -240,140 +238,16 @@ export async function generateProductZip(product: ProductZipInput): Promise<Blob
     capabilities: caps,
   }));
 
-  // ── Stub src (entry point) ────────────────────────────────────────────────
-  const src = folder.folder('src')!;
-  const safeName = product.name.replace(/[^a-zA-Z0-9]/g, '_');
-  src.file(`${product.slug}.ts`, `/**
- * ${product.name} — CMPSBL® Sealed Runtime™
- * ${product.subtitle}
- *
- * This is the sealed runtime entry point.
- * Internal implementation is protected.
- *
- * Usage:
- *   import { init, createPipeline } from './${product.slug}';
- *   const instance = init();
- *   const pipeline = createPipeline(instance);
- *   const result = await pipeline.execute({ input: 'your data' });
- *
- * Network Modes:
- *   import { configureEndpoint } from '../_runtime/standalone-runtime';
- *   configureEndpoint(null); // Force offline
- *
- * NPM Alternative:
- *   npm install @cmpsbl/sdk
- *   import CMPSBL from '@cmpsbl/sdk';
- */
-
-import { createRuntime } from '../_runtime/standalone-runtime';
-import { executeChain, formatReport } from '../_runtime/chain-executor';
-
-export const ${safeName}_VERSION = '${product.version}';
-export const ${safeName}_TIER = '${product.tier}';
-export const ${safeName}_CJPI = ${cjpi};
-
-export interface ${safeName}Config {
-  offline?: boolean;
-  verbose?: boolean;
-  [key: string]: unknown;
-}
-
-export function init(config?: ${safeName}Config) {
-  const runtime = createRuntime();
-
-  if (config?.offline) {
-    // Runtime ships network-aware; force offline if requested
-    runtime.configureEndpoint(null);
-  }
-
-  return {
-    name: '${product.name}',
-    tier: '${product.tier}',
-    version: '${product.version}',
-    cjpi: ${cjpi},
-    ready: true,
-    runtime,
-    config,
-  };
-}
-
-export function createPipeline(instance: ReturnType<typeof init>) {
-  const modules = ${JSON.stringify(caps.slice(0, 6).map(c => c.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 10) || 'CORE'))};
-  return {
-    execute: async (input: Record<string, unknown> = {}) => {
-      return executeChain({
-        id: '${product.id}',
-        name: '${product.name}',
-        description: '${product.subtitle}',
-        modules,
-        cjpiScore: ${cjpi},
-        tier: '${product.tier}',
-        category: '${product.kind}',
-      }, input);
-    },
-    formatReport,
-    modules,
-    instance,
-  };
-}
-`);
-
-  // ── Sealed Runtime (IP-protected — no proprietary logic exposed) ───────
-  const runtime = folder.folder('_runtime')!;
-  runtime.file('standalone-runtime.ts', generateSealedRuntime());
-  runtime.file('chain-executor.ts', generateSealedChainExecutor());
-  runtime.file('discovery-engine.ts', generateSealedDiscoveryEngine());
-  runtime.file('README.md', generateSealedRuntimeReadme());
-
-  // ── Test harness ──────────────────────────────────────────────────────────
-  const test = folder.folder('test')!;
-  test.file(`${product.slug}.test.ts`, `import { init, createPipeline } from '../src/${product.slug}';
-
-describe('${product.name}', () => {
-  it('initializes correctly', () => {
-    const instance = init();
-    expect(instance.name).toBe('${product.name}');
-    expect(instance.ready).toBe(true);
-    expect(instance.cjpi).toBe(${cjpi});
-  });
-
-  it('initializes in offline mode', () => {
-    const instance = init({ offline: true });
-    expect(instance.ready).toBe(true);
-  });
-
-  it('creates and executes a pipeline', async () => {
-    const instance = init({ offline: true });
-    const pipeline = createPipeline(instance);
-    const result = await pipeline.execute({ test: true });
-    expect(result.success).toBe(true);
-    expect(result.trace.length).toBeGreaterThan(0);
-    expect(result.confidence).toBeGreaterThan(0);
-  });
-
-  it('formats execution reports', async () => {
-    const instance = init({ offline: true });
-    const pipeline = createPipeline(instance);
-    const result = await pipeline.execute({});
-    const report = pipeline.formatReport(result);
-    expect(report).toContain('CMPSBL');
-    expect(report).toContain('SUCCESS');
-  });
-});
-`);
-
-  test.file('chain-playback.test.ts', generateChainPlaybackTest(product));
-
-  // ── Integration guide ─────────────────────────────────────────────────────
+  // docs/guides/ — Markdown guides
+  const guidesFolder = docsFolder.folder('guides')!;
   const exportKind = product.ascension ? 'ascension' as const : product.kind;
-  folder.file('INTEGRATION.md', generateDetailedIntegrationGuide({
+  guidesFolder.file('INTEGRATION.md', generateDetailedIntegrationGuide({
     kind: exportKind,
     name: product.name,
     slug: product.slug,
     category: product.tier,
   }));
 
-  // ── Supplementary artifacts ─────────────────────────────────────────────
   const artifacts = generateExportArtifacts({
     kind: exportKind,
     name: product.name,
@@ -384,7 +258,13 @@ describe('${product.name}', () => {
     languages: ['typescript'],
   });
   for (const [filename, content] of Object.entries(artifacts)) {
-    folder.file(filename, content);
+    if (filename.startsWith('_runtime/')) {
+      folder.file(filename, content);
+    } else if (filename === 'quickstart.ts' || filename === 'package.json' || filename === '.env.example') {
+      folder.file(filename, content);
+    } else {
+      guidesFolder.file(filename, content);
+    }
   }
   const discoveryCtx = generateDiscoveryContext({
     kind: exportKind,
@@ -394,9 +274,24 @@ describe('${product.name}', () => {
     score: cjpiFromTier(product.tier),
   });
   if (discoveryCtx) {
-    folder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
+    guidesFolder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
   }
-  folder.file('TIER-MIGRATION.md', generateTierMigration());
+  guidesFolder.file('TIER-MIGRATION.md', generateTierMigration());
+
+  // docs/html/ — Beautiful HTML versions
+  const htmlFolder = docsFolder.folder('html')!;
+  const htmlArtifacts = generateHTMLArtifacts({
+    name: product.name,
+    slug: product.slug,
+    kind: exportKind,
+    version: product.version,
+    score: cjpiFromTier(product.tier),
+    tier: product.tier,
+    languages: ['typescript'],
+  });
+  for (const [filename, content] of Object.entries(htmlArtifacts)) {
+    htmlFolder.file(filename, content);
+  }
 
   return zip.generateAsync({ type: 'blob' });
 }

@@ -6,7 +6,6 @@
 
 import { Link } from "react-router-dom";
 import { ArrowRight, Waves, Zap, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const CARDS = [
   {
@@ -49,10 +48,16 @@ export function DiscoveryDualCards() {
       aria-label="Memory Stream and Ascension"
       className="relative z-10 px-3 sm:px-6 py-16 sm:py-24"
     >
-      <div className="max-w-6xl mx-auto">
+      {/* Ambient glow behind the section */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute left-1/4 top-1/3 w-80 h-80 rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-cyan)/0.06)_0%,_transparent_70%)]" />
+        <div className="absolute right-1/4 bottom-1/3 w-80 h-80 rounded-full bg-[radial-gradient(circle,_hsl(var(--neon-purple)/0.06)_0%,_transparent_70%)]" />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto">
         {/* Section header */}
         <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-card/30 mb-5">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-card/40 backdrop-blur-sm mb-5">
             <ShieldCheck className="w-3.5 h-3.5 text-primary/70" />
             <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-wide uppercase">
               Two Sides of One Substrate
@@ -83,23 +88,24 @@ export function DiscoveryDualCards() {
             <Link
               key={card.href}
               to={card.href}
-              className="group relative rounded-2xl border border-border/25 bg-card/20 backdrop-blur-sm overflow-hidden hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 shadow-lg shadow-primary/[0.04] glass-edge"
+              className="group relative rounded-2xl border border-border/25 bg-card/30 backdrop-blur-md overflow-hidden hover:border-primary/30 hover:-translate-y-1.5 transition-all duration-400 shadow-lg shadow-primary/[0.04] hover:shadow-xl hover:shadow-primary/[0.08]"
             >
-              {/* Top accent bar */}
+              {/* Top accent bar — wider with gradient fade */}
               <div
-                className="h-[2px]"
+                className="h-[3px]"
                 style={{
-                  background: `linear-gradient(90deg, transparent, hsl(var(${card.glow})/0.6), transparent)`,
+                  background: `linear-gradient(90deg, transparent 5%, hsl(var(${card.glow})/0.7) 30%, hsl(var(${card.glow})/0.5) 70%, transparent 95%)`,
                 }}
               />
 
               <div className="p-5 sm:p-7">
                 {/* Icon + badge row */}
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-5">
                   <div
-                    className="p-2.5 rounded-xl border border-border/20"
+                    className="p-3 rounded-xl border border-border/20 shadow-sm group-hover:scale-105 transition-transform duration-300"
                     style={{
-                      background: `linear-gradient(135deg, hsl(var(${card.glow})/0.12), hsl(var(${card.glow})/0.04))`,
+                      background: `linear-gradient(135deg, hsl(var(${card.glow})/0.14), hsl(var(${card.glow})/0.04))`,
+                      boxShadow: `0 4px 20px hsl(var(${card.glow})/0.08)`,
                     }}
                   >
                     <card.icon
@@ -114,7 +120,7 @@ export function DiscoveryDualCards() {
                     >
                       {card.badge}
                     </span>
-                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    <h3 className="text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
                       {card.title}
                     </h3>
                   </div>
@@ -125,25 +131,43 @@ export function DiscoveryDualCards() {
                   {card.summary}
                 </p>
 
-                {/* Bullets */}
-                <ul className="space-y-2 mb-6">
+                {/* Bullets — enhanced with better spacing */}
+                <ul className="space-y-2.5 mb-6">
                   {card.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2 text-xs text-muted-foreground/70">
+                    <li key={b} className="flex items-start gap-2.5 text-xs text-muted-foreground/75">
                       <span
-                        className="mt-1.5 w-1 h-1 rounded-full shrink-0"
-                        style={{ background: `hsl(var(${card.glow}))` }}
+                        className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ring-2 ring-offset-1 ring-offset-transparent"
+                        style={{
+                          background: `hsl(var(${card.glow}))`,
+                          boxShadow: `0 0 6px hsl(var(${card.glow})/0.4)`,
+                        }}
                       />
-                      {b}
+                      <span className="leading-relaxed">{b}</span>
                     </li>
                   ))}
                 </ul>
 
-                {/* CTA */}
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:gap-2.5 transition-all duration-300">
+                {/* CTA — upgraded to pill button style */}
+                <div
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 group-hover:gap-3"
+                  style={{
+                    background: `linear-gradient(135deg, hsl(var(${card.glow})/0.1), hsl(var(${card.glow})/0.05))`,
+                    color: `hsl(var(${card.glow}))`,
+                    border: `1px solid hsl(var(${card.glow})/0.2)`,
+                  }}
+                >
                   {card.cta}
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </div>
               </div>
+
+              {/* Bottom corner glow on hover */}
+              <div
+                className="absolute -bottom-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{
+                  background: `radial-gradient(circle, hsl(var(${card.glow})/0.08), transparent 70%)`,
+                }}
+              />
             </Link>
           ))}
         </div>

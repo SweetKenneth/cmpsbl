@@ -21,6 +21,7 @@ import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effec
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
+import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 
 export interface CapabilityForExport {
   id: string;
@@ -900,23 +901,23 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const packName = `cmpsbl-capability-pack-${candidateName.toLowerCase()}-${timestamp}`;
 
   // ═══ Unified Single-File Distribution ═══
-  // ONE file containing: Mini-Runtime™ + Module Effects + Runtime Bridge + Capability API
   const unifiedCode = generateUnifiedCapabilityFile(capabilities, packName, targetLanguage, userSourceFiles);
   const unifiedFilename = getUnifiedFilename(targetLanguage);
   zip.file(unifiedFilename, unifiedCode);
 
-  // src/ — Per-capability source files (for granular access)
+  // src/ — Per-capability source files
   const srcFolder = zip.folder('src')!;
   for (const cap of capabilities) {
     srcFolder.file(`${cap.name.toLowerCase()}${ext}`, generateCapabilitySource(cap, targetLanguage, userSourceFiles));
   }
 
+  // test/ — Test harnesses
   const testFolder = zip.folder('test')!;
   for (const cap of capabilities) {
     testFolder.file(`${cap.name.toLowerCase()}_test${ext}`, generateTestHarness(cap, targetLanguage));
   }
 
-  // original/ — User's original source files (included when exporting in source language)
+  // original/ — User's original source files
   if (userSourceFiles && userSourceFiles.length > 0) {
     const originalFolder = zip.folder('original')!;
     for (const file of userSourceFiles) {
@@ -932,18 +933,11 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       '```',
       'Layer 1 — Native Execution (this folder)',
       '  Your original code. Unchanged. Trusted. Deterministic.',
-      '  This is the source of truth for all computation.',
       '',
       'Layer 2 — Cognitive Overlay (../src/ folder)',
       '  CMPSBL modules that observe, enrich, and augment.',
       '  Never substitutes your original logic.',
       '```',
-      '',
-      '## How to Use',
-      '',
-      '1. **Original only**: Import directly from this folder — runs your code with zero CMPSBL involvement',
-      '2. **With cognition**: Use the `src/` capability files — they call YOUR code first, then add cognitive overlay',
-      '3. **Inspect traces**: The `_cmpsbl` key in results shows what the cognitive layer observed',
       '',
       '## Files',
       '',
@@ -954,7 +948,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     ].join('\n'));
   }
 
-  // manifest.json — CMPSBL manifest
+  // manifest.json
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
   const totalValue = capabilities.reduce((sum, c) =>
     sum + estimateMarketValue(c.cjpiScore, c.category || 'general', c.chain.length), 0);
@@ -970,14 +964,18 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     source: 'proprietary-evolution-lifecycle',
   }));
 
-  // LICENSE — Plain text + HTML
+  // ═══ docs/ — All documentation in a single organized folder ═══
+  const docsFolder = zip.folder('docs')!;
   const humanizedPackName = humanizeCapabilityName(candidateName, capabilities[0]?.chain, capabilities[0]?.category);
-  zip.file('LICENSE', generateLicenseMd());
-  zip.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${humanizedPackName}`));
+  const ascensionSlug = packName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
-  // README — Plain text + HTML
+  // License (root + docs/)
+  zip.file('LICENSE', generateLicenseMd());
+  docsFolder.file('LICENSE.html', generateLicenseHTML(`Capability Pack — ${humanizedPackName}`));
+
+  // README (root + docs/)
   zip.file('README.md', generateReadmeMd(options));
-  zip.file('README.html', generateReadmeHTML({
+  docsFolder.file('README.html', generateReadmeHTML({
     name: `Capability Pack — ${humanizedPackName}`,
     description: `${capabilities.length} crystallized capabilities discovered through autonomous collision testing against the CMPSBL® 40-primitive substrate matrix.`,
     files: [
@@ -985,9 +983,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       { name: 'src/', purpose: 'Per-capability source files with dual-layer architecture' },
       { name: 'test/', purpose: 'Auto-generated test harnesses' },
       { name: 'manifest.json', purpose: 'Pack metadata and capability registry' },
-      { name: 'LICENSE.html', purpose: 'Commercial distribution license' },
-      { name: 'PIPELINE-DETAILS.html', purpose: 'Per-capability valuation dossier' },
-      { name: 'export-tier.json', purpose: 'Valuation summary' },
+      { name: 'docs/', purpose: 'Full documentation suite (HTML + Markdown)' },
     ],
     quickStart: targetLanguage === 'php'
       ? `require_once '${unifiedFilename}';\\n$result = cmpsbl_execute('my-capability', ['key' => 'value']);`
@@ -999,7 +995,8 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     version: '1.0.0',
   }));
 
-  // PIPELINE-DETAILS.html — Per-capability valuation & details
+  // docs/details/ — Per-capability pipeline detail pages
+  const detailsFolder = docsFolder.folder('details')!;
   for (const cap of capabilities) {
     const displayName = humanizeCapabilityName(cap.name, cap.chain, cap.category);
     const safeFilename = humanizeFilename(cap.name);
@@ -1015,10 +1012,10 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       obtainedAt: new Date().toISOString(),
       source: 'Proprietary Evolution Lifecycle',
     });
-    zip.file(`${safeFilename}-PIPELINE-DETAILS.html`, detailsHTML);
+    detailsFolder.file(`${safeFilename}-PIPELINE-DETAILS.html`, detailsHTML);
   }
 
-  // export-tier.json — Valuation summary
+  // export-tier.json
   zip.file('export-tier.json', JSON.stringify({
     pack: packName,
     averageScore: avgCjpi,
@@ -1039,9 +1036,9 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     },
   }, null, 2));
 
-  // Integration guide — step-by-step stack integration instructions
-  const ascensionSlug = packName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  zip.file('INTEGRATION.md', generateIntegrationGuide({
+  // docs/guides/ — Integration guide + supplementary markdown artifacts
+  const guidesFolder = docsFolder.folder('guides')!;
+  guidesFolder.file('INTEGRATION.md', generateIntegrationGuide({
     kind: 'ascension',
     name: packName,
     slug: ascensionSlug,
@@ -1049,7 +1046,7 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     artifactCount: capabilities.length,
   }));
 
-  // Supplementary artifacts
+  // Supplementary .md artifacts → docs/guides/
   const artifacts = generateExportArtifacts({
     kind: 'ascension',
     name: packName,
@@ -1058,8 +1055,18 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     artifactCount: capabilities.length,
   });
   for (const [filename, content] of Object.entries(artifacts)) {
-    zip.file(filename, content);
+    if (filename.startsWith('_runtime/')) {
+      // _runtime files stay at root
+      zip.file(filename, content);
+    } else if (filename === 'quickstart.ts' || filename === 'package.json' || filename === '.env.example') {
+      // Executable/config files stay at root
+      zip.file(filename, content);
+    } else {
+      guidesFolder.file(filename, content);
+    }
   }
+
+  // Discovery context & tier migration → docs/guides/
   const discoveryCtx = generateDiscoveryContext({
     kind: 'ascension',
     name: packName,
@@ -1068,9 +1075,24 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     artifactCount: capabilities.length,
   });
   if (discoveryCtx) {
-    zip.file('DISCOVERY-CONTEXT.md', discoveryCtx);
+    guidesFolder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
   }
-  zip.file('TIER-MIGRATION.md', generateTierMigration());
+  guidesFolder.file('TIER-MIGRATION.md', generateTierMigration());
+
+  // docs/html/ — Beautiful HTML versions of all guides
+  const htmlFolder = docsFolder.folder('html')!;
+  const htmlArtifacts = generateHTMLArtifacts({
+    name: packName,
+    slug: ascensionSlug,
+    kind: 'ascension',
+    version: '1.0.0',
+    score: avgCjpi,
+    tier: getTierFromScore(avgCjpi),
+    languages: [targetLanguage],
+  });
+  for (const [filename, content] of Object.entries(htmlArtifacts)) {
+    htmlFolder.file(filename, content);
+  }
 
   // Generate and download
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });
