@@ -81,6 +81,11 @@ export function AscensionStepper({ activeStep, onStepClick, totalSteps = 5 }: Pr
               >
                 {step.label}
               </span>
+              {step.optional && !isComplete && (
+                <span className="text-[8px] font-mono text-muted-foreground/40 -mt-0.5">
+                  optional
+                </span>
+              )}
             </button>
 
             {/* Connector line */}
