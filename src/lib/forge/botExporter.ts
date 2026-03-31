@@ -516,6 +516,15 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
     zip.file(filename, content);
   }
   zip.file('TIER-MIGRATION.md', generateTierMigration());
+  const forgeDiscovery = generateDiscoveryContext({
+    kind: 'agent',
+    name: config.name,
+    slug: forgeSlug,
+    version: config.version,
+  });
+  if (forgeDiscovery) {
+    zip.file('DISCOVERY-CONTEXT.md', forgeDiscovery);
+  }
   
   const files = [
     'bot.yaml',

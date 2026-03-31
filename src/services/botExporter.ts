@@ -574,6 +574,15 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
     zip.file(filename, content);
   }
   zip.file('TIER-MIGRATION.md', generateTierMigration());
+  const svcDiscovery = generateDiscoveryContext({
+    kind: 'agent',
+    name: config.name,
+    slug: config.slug,
+    version: config.version,
+  });
+  if (svcDiscovery) {
+    zip.file('DISCOVERY-CONTEXT.md', svcDiscovery);
+  }
 
   const blob = await zip.generateAsync({ type: 'blob' });
   const filename = `${config.slug}-v${config.version}.zip`;

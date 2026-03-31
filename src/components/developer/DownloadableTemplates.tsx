@@ -345,6 +345,15 @@ export function DownloadableTemplates({ className }: { className?: string }) {
       for (const [filename, content] of Object.entries(templateArtifacts)) {
         zip.file(filename, content);
       }
+      zip.file('TIER-MIGRATION.md', generateTierMigration());
+      const templateDiscovery = generateDiscoveryContext({
+        kind: 'engine',
+        name: template.name,
+        slug: template.id,
+      });
+      if (templateDiscovery) {
+        zip.file('DISCOVERY-CONTEXT.md', templateDiscovery);
+      }
       
       // Generate the ZIP blob
       const blob = await zip.generateAsync({ type: 'blob' });
