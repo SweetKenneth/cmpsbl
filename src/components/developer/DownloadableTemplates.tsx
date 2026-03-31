@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import JSZip from 'jszip';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
-import { generateExportArtifacts } from '@/lib/export/export-artifacts-generator';
+import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 
 interface Template {
   id: string;
