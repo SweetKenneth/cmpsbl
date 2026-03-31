@@ -235,5 +235,6 @@ export const publicRoutes = (
     <Route path="/careers" element={<Careers />} />
     <Route path="/x" element={<ProprietaryEvolution />} />
     <Route path="/ascension" element={<ProprietaryEvolution />} />
+    <Route path="/agent-forge" element={<AgentForge />} />
   </>
 );
