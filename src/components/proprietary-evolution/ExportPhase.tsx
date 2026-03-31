@@ -5,7 +5,11 @@
  * 
  * LOCKED EXPORT LANGUAGE: Ascension exports are always in the ingested language.
  * Users import Python → export Python. No cross-language export.
+ *
+ * Accepts optional verticalResult from the Forge phase to include
+ * vertical discoveries in the export ZIP.
  */
+import type { VerticalCollisionResult } from '@/lib/ascension/vertical-collision';
 
 import { useState, useEffect, useMemo } from 'react';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
@@ -74,7 +78,11 @@ function resolveSourceLanguage(langLabel: string): ExportLanguage | null {
   return DISPLAY_TO_EXPORT[key] || null;
 }
 
-export function ExportPhase() {
+interface ExportPhaseProps {
+  verticalResult?: VerticalCollisionResult | null;
+}
+
+export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   const [allCapabilities, setAllCapabilities] = useState<AscendedCapability[]>([]);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);

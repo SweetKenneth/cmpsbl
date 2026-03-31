@@ -662,6 +662,17 @@ export const seoMap: Record<string, PageSEO> = {
     intent: 'Feature/Capability',
     primaryKeyword: 'zero LLM code transformation',
   },
+  '/agent-forge': {
+    title: 'Agent Forge — Discover 5 Capabilities Your Agent Already Has | CMPSBL',
+    description: 'Upload your agent code. Five specialized primitives discover defense, coordination, cost optimization, identity, and arbitration capabilities. Zero AI.',
+    ogTitle: 'Agent Forge — 5 Specialized Agent Capabilities',
+    ogDescription: 'Turn any agent into 5 production specialists. Zero AI, pure structural discovery.',
+    ogImage: OG_ASCENSION,
+    keywords: ['AI agent capabilities', 'agent defense', 'multi-agent coordination', 'prompt injection defense', 'agent cost optimization', 'zero LLM discovery', 'vertical pack'],
+    schema: 'product',
+    intent: 'Feature/Capability',
+    primaryKeyword: 'AI agent capability discovery',
+  },
   '/evolution-mesh': {
     title: 'EVOLUTION Mesh — Governed Improvement | CMPSBL',
     description: 'Self-improving substrate layer with shadow-run validation, governed promotion pipelines, and version-controlled architectural mutations.',
