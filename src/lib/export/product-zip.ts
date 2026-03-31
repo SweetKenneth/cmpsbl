@@ -15,6 +15,7 @@ import {
   generateSealedDiscoveryEngine,
 } from '@/lib/export/sealed-runtime-generator';
 import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 
 export interface ProductZipInput {
   id: string;
