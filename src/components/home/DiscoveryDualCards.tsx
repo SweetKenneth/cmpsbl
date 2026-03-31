@@ -140,7 +140,6 @@ export function DiscoveryDualCards() {
                         style={{
                           background: `hsl(var(${card.glow}))`,
                           boxShadow: `0 0 6px hsl(var(${card.glow})/0.4)`,
-                          ringColor: `hsl(var(${card.glow})/0.2)`,
                         }}
                       />
                       <span className="leading-relaxed">{b}</span>
