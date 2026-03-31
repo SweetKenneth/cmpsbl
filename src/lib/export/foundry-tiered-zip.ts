@@ -14,6 +14,7 @@ import {
   generateSealedRuntimeReadme,
 } from './sealed-runtime-generator';
 import { generateIntegrationGuide } from './integration-guide-generator';
+import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from './export-artifacts-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
