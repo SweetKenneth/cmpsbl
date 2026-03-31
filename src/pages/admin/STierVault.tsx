@@ -856,7 +856,7 @@ export default function STierVault() {
       },
       registry: {
         version: registryData.version,
-        totalArtifacts: registryData.totalArtifacts,
+        totalArtifacts: entries.length + promoted.length,
         canonicalModules: registryData.canonicalModules,
         entries: entries.map(e => ({
           rank: e.rank, id: e.id, name: e.name, cjpi: e.cjpi,
