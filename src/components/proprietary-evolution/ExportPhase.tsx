@@ -235,18 +235,26 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         capabilityType: c.capabilityType, description: c.description, category: c.category,
       }));
 
-      const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
+      // Merge forge discoveries as proper capabilities so they flow through
+      // all export infrastructure: source code, tests, HTML docs, manifest, valuation
+      if (verticalResult?.discoveries?.length) {
+        for (const d of verticalResult.discoveries) {
+          capsForExport.push({
+            id: d.id,
+            name: `${d.primitiveName}-${d.capabilityName.replace(/\s+/g, '-')}`.toLowerCase(),
+            cjpiScore: d.cjpiScore,
+            tier: d.cjpiScore >= 80 ? 'S' : d.cjpiScore >= 60 ? 'A' : 'B',
+            chain: [d.primitiveName, ...(capsForExport[0]?.chain?.slice(0, 2) || [])],
+            fingerprint: d.id.slice(0, 12).toUpperCase(),
+            moatSignature: `${d.primitiveName}::${d.vertical}::forge`,
+            capabilityType: `${verticalResult.verticalName || d.vertical} Agent`,
+            description: d.description,
+            category: d.category,
+          });
+        }
+      }
 
-      // Build vertical discoveries for ZIP if forge was used
-      const verticalDiscoveries = verticalResult?.discoveries?.map(d => ({
-        id: d.id,
-        capabilityName: d.capabilityName,
-        primitiveName: d.primitiveName,
-        description: d.description,
-        cjpiScore: d.cjpiScore,
-        category: d.category,
-        vertical: d.vertical,
-      }));
+      const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
       await generateCapabilityPackZip({
         targetLanguage: exportLanguage,
@@ -254,8 +262,6 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         candidateName,
         userSourceFiles: userSourceFiles.length > 0 ? userSourceFiles : undefined,
         sourceLanguage: sourceLanguageLabel,
-        verticalDiscoveries: verticalDiscoveries && verticalDiscoveries.length > 0 ? verticalDiscoveries : undefined,
-        verticalName: verticalResult?.verticalName,
       });
 
       setExportResult({ packId: data.pack_id, count: targets.length });
@@ -405,8 +411,8 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
               </div>
               {verticalResult && verticalResult.discoveries.length > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{verticalResult.verticalName} features</span>
-                  <span className="font-mono font-bold text-primary">{verticalResult.discoveries.length}</span>
+                  <span className="text-muted-foreground">{verticalResult.verticalName} agents</span>
+                  <span className="font-mono font-bold text-primary">+{verticalResult.discoveries.length}</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -414,15 +420,21 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
                 <span className="font-mono font-bold text-neon-amber">{bestScore}</span>
               </div>
               <div className="flex justify-between">
+                <span className="text-muted-foreground">Total in export</span>
+                <span className="font-mono font-bold text-foreground">
+                  {eligible.length + (verticalResult?.discoveries?.length || 0)}
+                </span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-muted-foreground">Est. files in ZIP</span>
                 <span className="font-mono font-bold text-foreground">
-                  {eligible.length * 3 + userSourceFiles.length + 4 + (verticalResult?.discoveries?.length || 0) + (verticalResult ? 1 : 0)}
+                  {(eligible.length + (verticalResult?.discoveries?.length || 0)) * 3 + userSourceFiles.length + 4}
                 </span>
               </div>
             </div>
             <p className="text-[9px] text-muted-foreground">
               Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
-              {verticalResult && verticalResult.discoveries.length > 0 && `, ${verticalResult.verticalName} vertical pack`}
+              {verticalResult && verticalResult.discoveries.length > 0 && ` + ${verticalResult.discoveries.length} ${verticalResult.verticalName} agent capabilities`}
             </p>
           </div>
         )}
