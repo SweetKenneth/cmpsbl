@@ -266,21 +266,12 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onSkip}
-          disabled={running}
-          className="text-xs h-11 min-h-[44px] rounded-xl flex-1"
-        >
-          Skip Vertical Pack
-        </Button>
+      <div className="flex items-center justify-center">
         <Button
           size="sm"
           onClick={runForge}
           disabled={!selectedVertical || running}
-          className="text-xs h-11 min-h-[44px] rounded-xl flex-1 gap-1.5 shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
+          className="text-xs h-11 min-h-[44px] rounded-xl w-full max-w-xs gap-1.5 shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
         >
           {running ? (
             <>
