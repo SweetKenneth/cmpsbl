@@ -1,7 +1,7 @@
 /**
  * Ascension — /x
  * PIN-gated software evolution lifecycle within the CMPSBL cognitive substrate.
- * Full-page step-by-step wizard: INGEST → ASCENSION → CRYSTALLIZATION → EXPORT
+ * Full-page step-by-step wizard: INGEST → DISCOVERY → ASCEND → FORGE → EXPORT
  *
  * PERF: Pure CSS animations — no framer-motion dependency.
  */
@@ -23,13 +23,18 @@ import { ExportPhase } from '@/components/proprietary-evolution/ExportPhase';
 import { AscensionStepper } from '@/components/proprietary-evolution/AscensionStepper';
 import { AscensionOnboarding } from '@/components/proprietary-evolution/AscensionOnboarding';
 import { AscensionEffectPanel } from '@/components/proprietary-evolution/AscensionEffectPanel';
+import { VerticalPackSelector } from '@/components/proprietary-evolution/VerticalPackSelector';
+import type { VerticalCollisionResult } from '@/lib/ascension/vertical-collision';
 
-const PHASE_LABELS = ['Ingest', 'Discovery', 'Ascend', 'Export'] as const;
+const TOTAL_STEPS = 5;
+
+const PHASE_LABELS = ['Ingest', 'Discovery', 'Ascend', 'Forge', 'Export'] as const;
 
 const PHASE_DESCRIPTIONS = [
   'Upload source files — your code becomes Primitive #41',
   'Collide against 40 substrate primitives to discover capabilities',
   'Ascend discovered capabilities into permanent memories',
+  'Stack specialized discoveries with a Vertical Pack',
   'Export portable Ascended Memory packs',
 ] as const;
 
@@ -41,6 +46,7 @@ export default function ProprietaryEvolution() {
   const [showHero, setShowHero] = useState(true);
   const [cycleKey, setCycleKey] = useState(0);
   const [resetting, setResetting] = useState(false);
+  const [verticalResult, setVerticalResult] = useState<VerticalCollisionResult | null>(null);
   const { toast } = useToast();
 
   const resetCycle = useCallback(async () => {
@@ -55,6 +61,7 @@ export default function ProprietaryEvolution() {
         .eq('user_id', user.id)
         .in('category', ['proprietary-evolution', 'proprietary-discovery', 'proprietary-ascended']);
       setCycleKey(k => k + 1);
+      setVerticalResult(null);
       goTo(0);
       toast({ title: 'Cycle reset', description: 'All discoveries and ascensions cleared. Ready for a fresh upload.' });
     } catch (err) {
@@ -80,14 +87,29 @@ export default function ProprietaryEvolution() {
     }, 250);
   }, [activeStep]);
 
-  const next = () => { if (activeStep < 3) goTo(activeStep + 1); };
+  const next = () => { if (activeStep < TOTAL_STEPS - 1) goTo(activeStep + 1); };
   const back = () => { if (activeStep > 0) goTo(activeStep - 1); };
+
+  const handleVerticalComplete = (result: VerticalCollisionResult | null) => {
+    setVerticalResult(result);
+    next();
+  };
+
+  const handleVerticalSkip = () => {
+    setVerticalResult(null);
+    next();
+  };
 
   const phases = [
     <IngestPhase key={`ingest-${cycleKey}`} />,
     <DiscoveryPhase key={`discovery-${cycleKey}`} />,
     <CrystallizationPhase key={`crystallize-${cycleKey}`} />,
-    <ExportPhase key={`export-${cycleKey}`} />,
+    <VerticalPackSelector
+      key={`forge-${cycleKey}`}
+      onComplete={handleVerticalComplete}
+      onSkip={handleVerticalSkip}
+    />,
+    <ExportPhase key={`export-${cycleKey}`} verticalResult={verticalResult} />,
   ];
 
   return (
@@ -121,7 +143,7 @@ export default function ProprietaryEvolution() {
         {/* Stepper + phase header */}
         <div className="bg-background/80 backdrop-blur-2xl border-b border-border/10 shadow-[0_1px_12px_hsl(var(--primary)/0.04)]">
           <div className="max-w-4xl mx-auto px-4 pt-5 pb-4 space-y-4">
-            <AscensionStepper activeStep={activeStep} onStepClick={goTo} />
+            <AscensionStepper activeStep={activeStep} onStepClick={goTo} totalSteps={TOTAL_STEPS} />
 
             <div className="text-center">
               <h2 className="text-lg sm:text-xl font-bold text-foreground tracking-tight">
@@ -148,7 +170,7 @@ export default function ProprietaryEvolution() {
           </div>
         </main>
 
-        {/* Bottom navigation — improved touch targets & layout */}
+        {/* Bottom navigation */}
         <div className="sticky bottom-0 z-30 bg-background/80 backdrop-blur-2xl border-t border-border/10 shadow-[0_-1px_12px_hsl(var(--primary)/0.04)]">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
             <Button
@@ -174,14 +196,14 @@ export default function ProprietaryEvolution() {
                 Reset
               </Button>
               <span className="text-[10px] font-mono text-muted-foreground hidden sm:inline">
-                Step {activeStep + 1}/4
+                Step {activeStep + 1}/{TOTAL_STEPS}
               </span>
             </div>
 
             <Button
               size="sm"
               onClick={next}
-              disabled={activeStep === 3}
+              disabled={activeStep === TOTAL_STEPS - 1}
               className="gap-1.5 text-xs h-11 min-w-[80px] min-h-[44px] rounded-xl shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
             >
               Next
