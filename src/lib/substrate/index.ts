@@ -1466,7 +1466,7 @@ export {
 } from './autonomous-hardening/barrel';
 
 // ═══════════════════════════════════════════════════════════════
-// S-Tier Runtime Primitives — 233 capabilities across 40 primitives
+// S-Tier Runtime Primitives — capabilities across 40 primitives
 // ═══════════════════════════════════════════════════════════════
 
 // Kernel & Infrastructure
