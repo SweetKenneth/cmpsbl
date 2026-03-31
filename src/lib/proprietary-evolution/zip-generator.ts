@@ -1060,6 +1060,16 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   for (const [filename, content] of Object.entries(artifacts)) {
     zip.file(filename, content);
   }
+  const discoveryCtx = generateDiscoveryContext({
+    kind: 'ascension',
+    name: packName,
+    slug: ascensionSlug,
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
+  });
+  if (discoveryCtx) {
+    zip.file('DISCOVERY-CONTEXT.md', discoveryCtx);
+  }
   zip.file('TIER-MIGRATION.md', generateTierMigration());
 
   // Generate and download
