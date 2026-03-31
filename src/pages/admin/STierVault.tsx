@@ -832,6 +832,7 @@ export default function STierVault() {
       if (vaultDiscovery) {
         folder.file('DISCOVERY-CONTEXT.md', vaultDiscovery);
       }
+    }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
