@@ -555,6 +555,13 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
     zip.file(path, content);
   });
 
+  // Integration guide — step-by-step stack integration instructions
+  zip.file('INTEGRATION.md', generateIntegrationGuide({
+    kind: 'agent',
+    name: config.name,
+    slug: config.slug,
+  }));
+
   const blob = await zip.generateAsync({ type: 'blob' });
   const filename = `${config.slug}-v${config.version}.zip`;
 

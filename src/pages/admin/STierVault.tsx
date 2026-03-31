@@ -796,6 +796,15 @@ export default function STierVault() {
         source: 'vault-export',
       });
       folder.file('PIPELINE-DETAILS.html', detailsHTML);
+      folder.file('INTEGRATION.md', generateIntegrationGuide({
+        kind: 'crown-jewel',
+        name: d.name,
+        slug,
+        systemChain: d.module_chain || [primaryModule],
+        score: d.cjpi,
+        category: d.category,
+        languages: languages.map(l => l.language),
+      }));
     }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);

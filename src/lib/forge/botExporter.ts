@@ -495,6 +495,13 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
   // Source code
   const src = zip.folder('src');
   src?.file('index.ts', generateBotCode(config));
+
+  // Integration guide — step-by-step stack integration instructions
+  zip.file('INTEGRATION.md', generateIntegrationGuide({
+    kind: 'agent',
+    name: config.name,
+    slug: config.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+  }));
   
   const files = [
     'bot.yaml',
@@ -505,6 +512,7 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
     'LICENSE.html',
     'DETAILS.html',
     'manifest.json',
+    'INTEGRATION.md',
     'docs/usage.md',
     'docs/api.md',
     'src/index.ts',
