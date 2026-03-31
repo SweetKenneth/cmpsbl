@@ -8,6 +8,7 @@ import { BotClass, getClassById, MEMORY_MODES, LEARNING_MODES } from './botClass
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 
 export interface ExportConfig {
   id: string;
@@ -497,11 +498,24 @@ export async function createExportBundle(config: ExportConfig): Promise<ExportBu
   src?.file('index.ts', generateBotCode(config));
 
   // Integration guide — step-by-step stack integration instructions
+  const forgeSlug = config.name.toLowerCase().replace(/[^a-z0-9]/g, '-');
   zip.file('INTEGRATION.md', generateIntegrationGuide({
     kind: 'agent',
     name: config.name,
-    slug: config.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+    slug: forgeSlug,
   }));
+
+  // Supplementary artifacts
+  const forgeArtifacts = generateExportArtifacts({
+    kind: 'agent',
+    name: config.name,
+    slug: forgeSlug,
+    version: config.version,
+  });
+  for (const [filename, content] of Object.entries(forgeArtifacts)) {
+    zip.file(filename, content);
+  }
+  zip.file('TIER-MIGRATION.md', generateTierMigration());
   
   const files = [
     'bot.yaml',

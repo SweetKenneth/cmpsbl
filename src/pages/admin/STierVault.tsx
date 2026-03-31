@@ -4,6 +4,7 @@ import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { humanizeCapabilityName } from '@/lib/export/humanize-name';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -805,6 +806,32 @@ export default function STierVault() {
         category: d.category,
         languages: languages.map(l => l.language),
       }));
+
+      // Supplementary artifacts
+      const vaultArtifacts = generateExportArtifacts({
+        kind: 'crown-jewel',
+        name: d.name,
+        slug,
+        score: d.cjpi,
+        tier: getTierFromScore(d.cjpi),
+        languages: languages.map(l => l.language),
+        systemChain: d.module_chain || [primaryModule],
+        category: d.category,
+      });
+      for (const [filename, content] of Object.entries(vaultArtifacts)) {
+        folder.file(filename, content);
+      }
+      const vaultDiscovery = generateDiscoveryContext({
+        kind: 'crown-jewel',
+        name: d.name,
+        slug,
+        score: d.cjpi,
+        category: d.category,
+        systemChain: d.module_chain || [primaryModule],
+      });
+      if (vaultDiscovery) {
+        folder.file('DISCOVERY-CONTEXT.md', vaultDiscovery);
+      }
     }
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);

@@ -14,6 +14,7 @@ import {
   generateSealedRuntimeReadme,
 } from './sealed-runtime-generator';
 import { generateIntegrationGuide } from './integration-guide-generator';
+import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from './export-artifacts-generator';
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
@@ -228,6 +229,31 @@ export async function downloadTieredFoundryZip(options: {
     for (const file of bundle.files) {
       artifactFolder.file(file.filename, file.content);
       fileCount += 1;
+    }
+
+    // Supplementary artifacts per capability
+    const capArtifacts = generateExportArtifacts({
+      kind: 'crown-jewel',
+      name: item.name,
+      slug: slugify(item.name || item.id),
+      score: item.score,
+      languages: unlockedLanguages,
+      systemChain: item.systemChain || ['SYSTEM'],
+      category: item.category || undefined,
+    });
+    for (const [filename, content] of Object.entries(capArtifacts)) {
+      artifactFolder.file(filename, content);
+    }
+    const discoveryCtx = generateDiscoveryContext({
+      kind: 'crown-jewel',
+      name: item.name,
+      slug: slugify(item.name || item.id),
+      score: item.score,
+      category: item.category || undefined,
+      systemChain: item.systemChain || ['SYSTEM'],
+    });
+    if (discoveryCtx) {
+      artifactFolder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
     }
   }
 

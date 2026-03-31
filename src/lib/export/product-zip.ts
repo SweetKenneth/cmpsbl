@@ -15,6 +15,7 @@ import {
   generateSealedDiscoveryEngine,
 } from '@/lib/export/sealed-runtime-generator';
 import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
 
 export interface ProductZipInput {
   id: string;
@@ -364,12 +365,38 @@ describe('${product.name}', () => {
   test.file('chain-playback.test.ts', generateChainPlaybackTest(product));
 
   // ── Integration guide ─────────────────────────────────────────────────────
+  const exportKind = product.ascension ? 'ascension' as const : product.kind;
   folder.file('INTEGRATION.md', generateDetailedIntegrationGuide({
-    kind: product.ascension ? 'ascension' : product.kind,
+    kind: exportKind,
     name: product.name,
     slug: product.slug,
     category: product.tier,
   }));
+
+  // ── Supplementary artifacts ─────────────────────────────────────────────
+  const artifacts = generateExportArtifacts({
+    kind: exportKind,
+    name: product.name,
+    slug: product.slug,
+    version: product.version,
+    tier: product.tier,
+    score: cjpiFromTier(product.tier),
+    languages: ['typescript'],
+  });
+  for (const [filename, content] of Object.entries(artifacts)) {
+    folder.file(filename, content);
+  }
+  const discoveryCtx = generateDiscoveryContext({
+    kind: exportKind,
+    name: product.name,
+    slug: product.slug,
+    tier: product.tier,
+    score: cjpiFromTier(product.tier),
+  });
+  if (discoveryCtx) {
+    folder.file('DISCOVERY-CONTEXT.md', discoveryCtx);
+  }
+  folder.file('TIER-MIGRATION.md', generateTierMigration());
 
   return zip.generateAsync({ type: 'blob' });
 }
