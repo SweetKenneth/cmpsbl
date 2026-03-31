@@ -19,6 +19,7 @@ import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/
 import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 
 export interface CapabilityForExport {
   id: string;

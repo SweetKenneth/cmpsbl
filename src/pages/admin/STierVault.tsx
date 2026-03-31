@@ -3,6 +3,7 @@ import { getFunctionalDescription, getEnrichedDescription } from '@/lib/pipeline
 import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/pipeline-valuation';
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { humanizeCapabilityName } from '@/lib/export/humanize-name';
+import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
