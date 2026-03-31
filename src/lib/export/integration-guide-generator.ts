@@ -637,7 +637,7 @@ export CMPSBL_OFFLINE=true
 function generateNetworkModes(input: IntegrationGuideInput): string {
   return `---
 
-## 7. Network Modes & Offline Execution
+## 10. Network Modes & Offline Execution
 
 The Mini-Runtime™ included in this export supports three execution modes:
 
