@@ -21,6 +21,7 @@ import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effec
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { generateExportArtifacts, generateTierMigration, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
+import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 
 export interface CapabilityForExport {
   id: string;
