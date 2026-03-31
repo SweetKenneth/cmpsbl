@@ -908,7 +908,7 @@ CMPSBL® and Mini-Runtime™ are trademarks of CMPSBL.
 }
 
 export async function generateCapabilityPackZip(options: ExportOptions): Promise<void> {
-  const { targetLanguage, capabilities, candidateName, userSourceFiles, sourceLanguage } = options;
+  const { targetLanguage, capabilities, candidateName, userSourceFiles, sourceLanguage, verticalDiscoveries, verticalName } = options;
   const ext = LANG_EXT[targetLanguage] || '.ts';
   const zip = new JSZip();
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
