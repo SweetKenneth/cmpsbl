@@ -235,18 +235,26 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         capabilityType: c.capabilityType, description: c.description, category: c.category,
       }));
 
-      const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
+      // Merge forge discoveries as proper capabilities so they flow through
+      // all export infrastructure: source code, tests, HTML docs, manifest, valuation
+      if (verticalResult?.discoveries?.length) {
+        for (const d of verticalResult.discoveries) {
+          capsForExport.push({
+            id: d.id,
+            name: `${d.primitiveName}-${d.capabilityName.replace(/\s+/g, '-')}`.toLowerCase(),
+            cjpiScore: d.cjpiScore,
+            tier: d.cjpiScore >= 80 ? 'S' : d.cjpiScore >= 60 ? 'A' : 'B',
+            chain: [d.primitiveName, ...(capsForExport[0]?.chain?.slice(0, 2) || [])],
+            fingerprint: d.id.slice(0, 12).toUpperCase(),
+            moatSignature: `${d.primitiveName}::${d.vertical}::forge`,
+            capabilityType: `${verticalResult.verticalName || d.vertical} Agent`,
+            description: d.description,
+            category: d.category,
+          });
+        }
+      }
 
-      // Build vertical discoveries for ZIP if forge was used
-      const verticalDiscoveries = verticalResult?.discoveries?.map(d => ({
-        id: d.id,
-        capabilityName: d.capabilityName,
-        primitiveName: d.primitiveName,
-        description: d.description,
-        cjpiScore: d.cjpiScore,
-        category: d.category,
-        vertical: d.vertical,
-      }));
+      const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
       await generateCapabilityPackZip({
         targetLanguage: exportLanguage,
@@ -254,8 +262,6 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         candidateName,
         userSourceFiles: userSourceFiles.length > 0 ? userSourceFiles : undefined,
         sourceLanguage: sourceLanguageLabel,
-        verticalDiscoveries: verticalDiscoveries && verticalDiscoveries.length > 0 ? verticalDiscoveries : undefined,
-        verticalName: verticalResult?.verticalName,
       });
 
       setExportResult({ packId: data.pack_id, count: targets.length });
