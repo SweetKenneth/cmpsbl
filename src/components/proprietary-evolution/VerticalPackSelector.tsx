@@ -108,6 +108,26 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
 
   return (
     <div className="space-y-6">
+      {/* Skip banner — prominent first */}
+      <div className="p-4 rounded-xl border border-border/20 bg-card/40 flex items-center justify-between gap-4">
+        <div>
+          <p className="text-sm font-medium text-foreground">Not using agents?</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            This step is completely optional. Skip to go straight to Export.
+          </p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onSkip}
+          disabled={running}
+          className="text-xs h-10 min-h-[44px] px-5 rounded-xl shrink-0 gap-1.5"
+        >
+          Skip to Export
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Button>
+      </div>
+
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
