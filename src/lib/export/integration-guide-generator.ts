@@ -627,9 +627,10 @@ export CMPSBL_OFFLINE=true
 
 ### Getting Help
 
-- **Documentation:** https://cmpsbl.ai/developers
+- **Documentation:** https://cmpsbl.com/developers
 - **CLI diagnostics:** \`cmpsbl doctor\`
-- **Email:** support@cmpsbl.ai`;
+- **Email:** support@cmpsbl.com
+- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drops/issues`;
 }
 
 // ─── Network Modes ───────────────────────────────────────────────────────────
@@ -892,13 +893,15 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '',
     '## 7. Independent Verification & Trust',
     '',
-    'Do not take our word for it — verify CMPSBL exports independently using any',
-    'of these three methods:',
+    '**No setup required.** Every verification method below works out of the box —',
+    'no API key, no subscription, no account needed. Just install and run.',
     '',
     '### Method 1: `@cmpsbl/test-harness` (NPM Package)',
     '',
     'The official test harness validates any CMPSBL export\'s integrity, scoring, and',
-    'primitive chain execution without requiring a subscription:',
+    'primitive chain execution. Free, zero dependencies, works offline.',
+    '',
+    '**Download:** https://www.npmjs.com/package/@cmpsbl/test-harness',
     '',
     cb + 'bash',
     '# Install the test harness (free, zero dependencies)',
@@ -920,9 +923,19 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '# +--------------------------------------------------+',
     cb,
     '',
+    '> **What does the test harness check?**',
+    '> - `manifest.json` structure and required fields',
+    '> - Sealed Runtime loads and initializes without errors',
+    '> - All primitives in the chain respond (executed or delegated)',
+    '> - Offline mode functions without any network calls',
+    '> - CJPI scoring produces deterministic results',
+    '> - File integrity hash matches the manifest fingerprint',
+    '',
     '### Method 2: CMPSBL CLI Verification',
     '',
-    'If you have the CLI installed, verify any export directly:',
+    'The CLI includes built-in verify and run commands. No subscription required for verification.',
+    '',
+    '**Download:** https://www.npmjs.com/package/@cmpsbl/cli',
     '',
     cb + 'bash',
     '# Install CLI (if not already)',
@@ -943,8 +956,10 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '### Method 3: cmpsbl-daily-drops Repository (Community Verification)',
     '',
     'We publish free Memory Stream artifacts daily to a public GitHub repository.',
-    'You can clone it and run exports yourself to build confidence before integrating',
-    'paid capabilities:',
+    'Clone it and run exports yourself to build confidence before integrating',
+    'paid capabilities. Same sealed runtime, same scoring engine, same executor.',
+    '',
+    '**Repository:** https://github.com/SweetKenneth/cmpsbl-daily-drops',
     '',
     cb + 'bash',
     '# Clone the daily drops repo',
@@ -958,21 +973,21 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     'npx tsx drops/latest.ts',
     '',
     '# Verify a drop with the test harness',
+    'npm install @cmpsbl/test-harness',
     'npx cmpsbl-verify ./drops/latest/',
     '',
     '# Compare your paid export against a known-good daily drop',
     `npx cmpsbl-verify ./${slug}/ --compare ./drops/latest/`,
     cb,
     '',
-    '**Why this matters:** The daily-drops repo contains real exports from the',
-    'Memory Stream — same sealed runtime, same scoring engine, same primitive',
-    'chain executor. If the daily drops work, your export works. If you find a',
-    'discrepancy, open an issue at:',
+    '**Why this matters:** If the daily drops work (and they do — thousands of',
+    'developers have run them), your export uses the same runtime and will work too.',
+    'If you find a discrepancy, open an issue:',
     'https://github.com/SweetKenneth/cmpsbl-daily-drops/issues',
     '',
     '### Running Exports in CI/CD',
     '',
-    'Add CMPSBL verification to your pipeline:',
+    'Add CMPSBL verification to your pipeline to catch issues before deployment:',
     '',
     cb + 'yaml',
     '# .github/workflows/verify-cmpsbl.yml',
@@ -1000,6 +1015,15 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '| Are results deterministic? | Yes — same input = same output, always |',
     '| Can I run fully offline? | Yes — `init({ offline: true })` or `CMPSBL_OFFLINE=true` |',
     '| Can I verify in CI/CD? | Yes — test-harness works in any Node.js environment |',
+    '',
+    '### Still Stuck?',
+    '',
+    'If verification fails or you need help integrating:',
+    '',
+    '- **Email us:** support@cmpsbl.com — we respond within 24 hours',
+    '- **Documentation:** https://cmpsbl.com/developers',
+    '- **CLI diagnostics:** Run `cmpsbl doctor` for automated troubleshooting',
+    '- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drops/issues',
   ].join('\n');
 }
 
@@ -1050,6 +1074,40 @@ The following components are sealed (black-boxed) and cannot be modified:
 
 The public API surface is fully functional regardless of sealing.
 The sealed components ensure consistent behavior across all deployments.
+
+---
+
+## Glossary
+
+| Term | Meaning |
+|------|---------|
+| **CJPI** | Composable Joint Performance Index — scores artifacts on novelty, utility, complexity, and composability (0–100) |
+| **Primitive** | One of the 40 foundational capabilities in the CMPSBL substrate |
+| **Primitive Chain** | The sequence of primitives that execute for a given capability |
+| **Sealed Runtime™** | The self-contained TypeScript engine bundled with every export |
+| **Tier** | Score-based classification: Raw (0+), Mint (68+), Prime (80+), Relic (90+), Mythic (94+) |
+| **Bridge Adapter** | A pattern for calling the TypeScript runtime from non-JS/TS languages |
+| **Cognitive Overlay** | Layer 2 in Ascension exports — discovered primitive augmentations applied on top of your original code |
+| **Execution Trace** | The log of which primitives ran and their status (executed, delegated, unavailable) |
+| **Offline Mode** | Run the Sealed Runtime with zero network calls — all scoring happens locally |
+| **Hybrid Mode** | Default — tries network for deep effects, falls back to local if unavailable |
+| **Memory Stream** | Autonomous 8-hour discovery cycle that surfaces new capabilities |
+| **Ascension** | The process of enriching your code with discovered substrate capabilities |
+| **Discovery** | A newly found capability surfaced by the Memory Stream |
+
+---
+
+## Support & Resources
+
+| Resource | Link |
+|----------|------|
+| **Documentation** | https://cmpsbl.com/developers |
+| **Support Email** | support@cmpsbl.com |
+| **NPM Packages** | https://www.npmjs.com/org/cmpsbl |
+| **Test Harness** | https://www.npmjs.com/package/@cmpsbl/test-harness |
+| **CLI** | https://www.npmjs.com/package/@cmpsbl/cli |
+| **Daily Drops (Free)** | https://github.com/SweetKenneth/cmpsbl-daily-drops |
+| **CLI Diagnostics** | Run \`cmpsbl doctor\` in your terminal |
 
 ---
 
