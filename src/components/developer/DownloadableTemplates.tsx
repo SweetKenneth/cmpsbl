@@ -327,6 +327,13 @@ export function DownloadableTemplates({ className }: { className?: string }) {
         version: '1.0.0',
         source: 'developer-template',
       }));
+
+      // Integration guide
+      zip.file('INTEGRATION.md', generateIntegrationGuide({
+        kind: 'engine',
+        name: template.name,
+        slug: template.id,
+      }));
       
       // Generate the ZIP blob
       const blob = await zip.generateAsync({ type: 'blob' });
