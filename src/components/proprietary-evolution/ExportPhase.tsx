@@ -411,8 +411,8 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
               </div>
               {verticalResult && verticalResult.discoveries.length > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{verticalResult.verticalName} features</span>
-                  <span className="font-mono font-bold text-primary">{verticalResult.discoveries.length}</span>
+                  <span className="text-muted-foreground">{verticalResult.verticalName} agents</span>
+                  <span className="font-mono font-bold text-primary">+{verticalResult.discoveries.length}</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -420,15 +420,21 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
                 <span className="font-mono font-bold text-neon-amber">{bestScore}</span>
               </div>
               <div className="flex justify-between">
+                <span className="text-muted-foreground">Total in export</span>
+                <span className="font-mono font-bold text-foreground">
+                  {eligible.length + (verticalResult?.discoveries?.length || 0)}
+                </span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-muted-foreground">Est. files in ZIP</span>
                 <span className="font-mono font-bold text-foreground">
-                  {eligible.length * 3 + userSourceFiles.length + 4 + (verticalResult?.discoveries?.length || 0) + (verticalResult ? 1 : 0)}
+                  {(eligible.length + (verticalResult?.discoveries?.length || 0)) * 3 + userSourceFiles.length + 4}
                 </span>
               </div>
             </div>
             <p className="text-[9px] text-muted-foreground">
               Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
-              {verticalResult && verticalResult.discoveries.length > 0 && `, ${verticalResult.verticalName} vertical pack`}
+              {verticalResult && verticalResult.discoveries.length > 0 && ` + ${verticalResult.discoveries.length} ${verticalResult.verticalName} agent capabilities`}
             </p>
           </div>
         )}
