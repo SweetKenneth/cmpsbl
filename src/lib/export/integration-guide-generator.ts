@@ -627,9 +627,10 @@ export CMPSBL_OFFLINE=true
 
 ### Getting Help
 
-- **Documentation:** https://cmpsbl.ai/developers
+- **Documentation:** https://cmpsbl.com/developers
 - **CLI diagnostics:** \`cmpsbl doctor\`
-- **Email:** support@cmpsbl.ai`;
+- **Email:** support@cmpsbl.com
+- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drops/issues`;
 }
 
 // ─── Network Modes ───────────────────────────────────────────────────────────
