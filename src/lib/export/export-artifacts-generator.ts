@@ -292,7 +292,7 @@ Use this reference to diagnose and resolve them.
 - **Run diagnostics:** \`cmpsbl doctor\`
 - **Email support:** support@cmpsbl.com (include the error code and your \`manifest.json\`)
 - **Documentation:** https://cmpsbl.com/developers
-- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drops/issues
+- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drop/issues
 
 ---
 
@@ -866,8 +866,8 @@ npx cmpsbl-verify ./
 npx tsx quickstart.ts
 
 # Compare against daily drops (same runtime)
-git clone https://github.com/SweetKenneth/cmpsbl-daily-drops.git
-npx cmpsbl-verify ./ --compare ./cmpsbl-daily-drops/drops/latest/
+git clone https://github.com/SweetKenneth/cmpsbl-daily-drop.git
+npx cmpsbl-verify ./ --compare ./cmpsbl-daily-drop/drops/latest/
 \`\`\`
 
 ---
