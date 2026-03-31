@@ -463,7 +463,7 @@ RUN npm install --prefix /app/lib/cmpsbl/${input.slug}/ || true
 function generateTestingVerification(input: IntegrationGuideInput): string {
   return `---
 
-## 5. Testing & Verification
+## 8. Testing & Verification
 
 ### Quick Smoke Test
 
