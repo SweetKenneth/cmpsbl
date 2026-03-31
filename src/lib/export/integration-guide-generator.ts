@@ -630,7 +630,7 @@ export CMPSBL_OFFLINE=true
 - **Documentation:** https://cmpsbl.com/developers
 - **CLI diagnostics:** \`cmpsbl doctor\`
 - **Email:** support@cmpsbl.com
-- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drops/issues`;
+- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drop/issues`;
 }
 
 // ─── Network Modes ───────────────────────────────────────────────────────────
@@ -953,18 +953,18 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '# Both should produce identical scoring results',
     cb,
     '',
-    '### Method 3: cmpsbl-daily-drops Repository (Community Verification)',
+    '### Method 3: cmpsbl-daily-drop Repository (Community Verification)',
     '',
     'We publish free Memory Stream artifacts daily to a public GitHub repository.',
     'Clone it and run exports yourself to build confidence before integrating',
     'paid capabilities. Same sealed runtime, same scoring engine, same executor.',
     '',
-    '**Repository:** https://github.com/SweetKenneth/cmpsbl-daily-drops',
+    '**Repository:** https://github.com/SweetKenneth/cmpsbl-daily-drop',
     '',
     cb + 'bash',
     '# Clone the daily drops repo',
-    'git clone https://github.com/SweetKenneth/cmpsbl-daily-drops.git',
-    'cd cmpsbl-daily-drops',
+    'git clone https://github.com/SweetKenneth/cmpsbl-daily-drop.git',
+    'cd cmpsbl-daily-drop',
     '',
     '# Install dependencies',
     'npm install',
@@ -983,7 +983,7 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '**Why this matters:** If the daily drops work (and they do — thousands of',
     'developers have run them), your export uses the same runtime and will work too.',
     'If you find a discrepancy, open an issue:',
-    'https://github.com/SweetKenneth/cmpsbl-daily-drops/issues',
+    'https://github.com/SweetKenneth/cmpsbl-daily-drop/issues',
     '',
     '### Running Exports in CI/CD',
     '',
@@ -1023,7 +1023,7 @@ function generateIndependentVerification(input: IntegrationGuideInput): string {
     '- **Email us:** support@cmpsbl.com — we respond within 24 hours',
     '- **Documentation:** https://cmpsbl.com/developers',
     '- **CLI diagnostics:** Run `cmpsbl doctor` for automated troubleshooting',
-    '- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drops/issues',
+    '- **Community:** https://github.com/SweetKenneth/cmpsbl-daily-drop/issues',
   ].join('\n');
 }
 
@@ -1106,7 +1106,7 @@ The sealed components ensure consistent behavior across all deployments.
 | **NPM Packages** | https://www.npmjs.com/org/cmpsbl |
 | **Test Harness** | https://www.npmjs.com/package/@cmpsbl/test-harness |
 | **CLI** | https://www.npmjs.com/package/@cmpsbl/cli |
-| **Daily Drops (Free)** | https://github.com/SweetKenneth/cmpsbl-daily-drops |
+| **Daily Drops (Free)** | https://github.com/SweetKenneth/cmpsbl-daily-drop |
 | **CLI Diagnostics** | Run \`cmpsbl doctor\` in your terminal |
 
 ---
