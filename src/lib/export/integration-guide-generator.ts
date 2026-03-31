@@ -805,194 +805,202 @@ When you see execution traces, each primitive reports its status honestly:
 // ─── Sealed Runtime Explainer ────────────────────────────────────────────────
 
 function generateSealedRuntimeExplainer(_input: IntegrationGuideInput): string {
-  return \`---
-
-## 6. Understanding the Sealed Runtime™ (Black Box)
-
-### Why Does Some Code Look Unreadable?
-
-If you inspect the files in \\\`_runtime/\\\`, you'll notice that some code appears
-obfuscated or uses hex-encoded constants. **This is intentional.** Here's why:
-
-### What's Sealed
-
-| Component | Why It's Protected | What You See |
-|-----------|-------------------|--------------|
-| **CJPI Scoring Weights** | Proprietary scoring formula | Hex arrays: \\\`[0x1E, 0x1E, 0x14, 0x14]\\\` |
-| **Tier Thresholds** | IP-protected tier boundaries | Hex values: \\\`[0x5C, 0x50, 0x41, 0x2D]\\\` |
-| **Synergy Multipliers** | Composability formulas | Computed at runtime, not stored in source |
-| **Discovery Heuristics** | How capabilities are found | Not included in exports at all |
-| **Internal Comments** | Architecture references | Stripped during export |
-
-### What You CAN Verify
-
-Despite the sealing, the runtime's **public API** is fully transparent:
-
-\\\`\\\`\\\`typescript
-// These all work exactly as documented:
-import { init, createPipeline, getRuntimeMode } from './_runtime/standalone-runtime';
-
-const instance = init({ offline: true });
-console.log(instance.mode);          // 'offline' ← transparent
-console.log(instance.version);       // '1.x.x'  ← transparent
-
-const pipeline = createPipeline(instance);
-const result = await pipeline.execute({ test: true });
-
-console.log(result.output);          // ← your actual output
-console.log(result.executionTrace);  // ← full primitive chain with statuses
-console.log(result.cjpiScore);       // ← the computed score (value visible, formula sealed)
-console.log(result.tier);            // ← 'Mythic', 'Prime', etc.
-\\\`\\\`\\\`
-
-### Why You Can't "Read" the Scoring Logic
-
-The CJPI formula — how novelty, utility, complexity, and composability are weighted —
-is CMPSBL's core intellectual property. The sealed runtime ensures:
-
-1. **Consistency** — Every deployment scores identically, everywhere
-2. **Tamper resistance** — No one can adjust weights to inflate scores
-3. **IP protection** — The formula stays proprietary while the results stay transparent
-
-### The Contract
-
-> **You can verify every OUTPUT. You cannot inspect every FORMULA.**
->
-> This is the same model used by credit scoring (FICO), search ranking (PageRank),
-> and content recommendation engines. The results are auditable; the weights are not.
-
-### How to Audit Without Source Access
-
-\\\`\\\`\\\`typescript
-// Feed known inputs and verify deterministic outputs
-const testCases = [
-  { input: { novelty: 80, utility: 90, complexity: 70, composability: 85 }, expectedTier: 'Prime' },
-  { input: { novelty: 95, utility: 95, complexity: 90, composability: 95 }, expectedTier: 'Mythic' },
-];
-
-for (const tc of testCases) {
-  const result = await pipeline.execute(tc.input);
-  console.assert(result.tier === tc.expectedTier, \\\`Expected \\\${tc.expectedTier}, got \\\${result.tier}\\\`);
-}
-// Deterministic: same input → same output, every time, on every machine.
-\\\`\\\`\\\`\`;
+  const cb = '```'; // code block delimiter
+  return [
+    '---',
+    '',
+    '## 6. Understanding the Sealed Runtime™ (Black Box)',
+    '',
+    '### Why Does Some Code Look Unreadable?',
+    '',
+    'If you inspect the files in `_runtime/`, you will notice that some code appears',
+    'obfuscated or uses hex-encoded constants. **This is intentional.** Here is why:',
+    '',
+    '### What Is Sealed',
+    '',
+    '| Component | Why It Is Protected | What You See |',
+    '|-----------|-------------------|--------------|',
+    '| **CJPI Scoring Weights** | Proprietary scoring formula | Hex arrays: `[0x1E, 0x1E, 0x14, 0x14]` |',
+    '| **Tier Thresholds** | IP-protected tier boundaries | Hex values: `[0x5C, 0x50, 0x41, 0x2D]` |',
+    '| **Synergy Multipliers** | Composability formulas | Computed at runtime, not stored in source |',
+    '| **Discovery Heuristics** | How capabilities are found | Not included in exports at all |',
+    '| **Internal Comments** | Architecture references | Stripped during export |',
+    '',
+    '### What You CAN Verify',
+    '',
+    'Despite the sealing, the runtime\'s **public API** is fully transparent:',
+    '',
+    cb + 'typescript',
+    '// These all work exactly as documented:',
+    "import { init, createPipeline, getRuntimeMode } from './_runtime/standalone-runtime';",
+    '',
+    'const instance = init({ offline: true });',
+    "console.log(instance.mode);          // 'offline' — transparent",
+    "console.log(instance.version);       // '1.x.x'  — transparent",
+    '',
+    'const pipeline = createPipeline(instance);',
+    'const result = await pipeline.execute({ test: true });',
+    '',
+    'console.log(result.output);          // your actual output',
+    'console.log(result.executionTrace);  // full primitive chain with statuses',
+    'console.log(result.cjpiScore);       // the computed score (value visible, formula sealed)',
+    "console.log(result.tier);            // 'Mythic', 'Prime', etc.",
+    cb,
+    '',
+    '### Why You Cannot "Read" the Scoring Logic',
+    '',
+    'The CJPI formula — how novelty, utility, complexity, and composability are weighted —',
+    'is CMPSBL\'s core intellectual property. The sealed runtime ensures:',
+    '',
+    '1. **Consistency** — Every deployment scores identically, everywhere',
+    '2. **Tamper resistance** — No one can adjust weights to inflate scores',
+    '3. **IP protection** — The formula stays proprietary while the results stay transparent',
+    '',
+    '### The Contract',
+    '',
+    '> **You can verify every OUTPUT. You cannot inspect every FORMULA.**',
+    '>',
+    '> This is the same model used by credit scoring (FICO), search ranking (PageRank),',
+    '> and content recommendation engines. The results are auditable; the weights are not.',
+    '',
+    '### How to Audit Without Source Access',
+    '',
+    cb + 'typescript',
+    '// Feed known inputs and verify deterministic outputs',
+    'const testCases = [',
+    "  { input: { novelty: 80, utility: 90, complexity: 70, composability: 85 }, expectedTier: 'Prime' },",
+    "  { input: { novelty: 95, utility: 95, complexity: 90, composability: 95 }, expectedTier: 'Mythic' },",
+    '];',
+    '',
+    'for (const tc of testCases) {',
+    '  const result = await pipeline.execute(tc.input);',
+    '  console.assert(result.tier === tc.expectedTier,',
+    '    `Expected ${tc.expectedTier}, got ${result.tier}`);',
+    '}',
+    '// Deterministic: same input = same output, every time, on every machine.',
+    cb,
+  ].join('\n');
 }
 
 // ─── Independent Verification ────────────────────────────────────────────────
 
 function generateIndependentVerification(input: IntegrationGuideInput): string {
-  return \`---
-
-## 7. Independent Verification & Trust
-
-Don't take our word for it — verify CMPSBL exports independently using any
-of these three methods:
-
-### Method 1: \\\`@cmpsbl/test-harness\\\` (NPM Package)
-
-The official test harness validates any CMPSBL export's integrity, scoring, and
-primitive chain execution without requiring a subscription:
-
-\\\`\\\`\\\`bash
-# Install the test harness (free, zero dependencies)
-npm install @cmpsbl/test-harness
-
-# Run against your export directory
-npx cmpsbl-verify ./\${input.slug}/
-
-# Expected output:
-# ┌──────────────────────────────────────────────────┐
-# │  CMPSBL Export Verification Report               │
-# ├──────────────────────────────────────────────────┤
-# │  Manifest:        ✓ Valid                        │
-# │  Runtime:          ✓ Loads (sealed, v1.x.x)      │
-# │  Primitive Chain:  ✓ All primitives respond       │
-# │  Offline Mode:     ✓ Functions without network    │
-# │  Scoring:          ✓ Deterministic (CJPI)         │
-# │  Integrity Hash:   ✓ Matches manifest fingerprint │
-# └──────────────────────────────────────────────────┘
-\\\`\\\`\\\`
-
-### Method 2: CMPSBL CLI Verification
-
-If you have the CLI installed, verify any export directly:
-
-\\\`\\\`\\\`bash
-# Install CLI (if not already)
-npm install -g @cmpsbl/cli
-
-# Verify an export directory
-cmpsbl verify ./\${input.slug}/
-
-# Run the export in an isolated sandbox
-cmpsbl run ./\${input.slug}/ --input '{"test": true}' --offline
-
-# Compare outputs across modes
-cmpsbl run ./\${input.slug}/ --input '{"test": true}' --mode offline
-cmpsbl run ./\${input.slug}/ --input '{"test": true}' --mode hybrid
-# Both should produce identical scoring results
-\\\`\\\`\\\`
-
-### Method 3: cmpsbl-daily-drops Repository (Community Verification)
-
-We publish free Memory Stream artifacts daily to a public GitHub repository.
-You can clone it and run exports yourself to build confidence before integrating
-paid capabilities:
-
-\\\`\\\`\\\`bash
-# Clone the daily drops repo
-git clone https://github.com/SweetKenneth/cmpsbl-daily-drops.git
-cd cmpsbl-daily-drops
-
-# Install dependencies
-npm install
-
-# Run any drop to see real CMPSBL output
-npx tsx drops/latest.ts
-
-# Verify a drop with the test harness
-npx cmpsbl-verify ./drops/latest/
-
-# Compare your paid export against a known-good daily drop
-npx cmpsbl-verify ./\${input.slug}/ --compare ./drops/latest/
-\\\`\\\`\\\`
-
-**Why this matters:** The daily-drops repo contains real exports from the
-Memory Stream — same sealed runtime, same scoring engine, same primitive
-chain executor. If the daily drops work, your export works. If you find a
-discrepancy, open an issue at:
-https://github.com/SweetKenneth/cmpsbl-daily-drops/issues
-
-### Running Exports in CI/CD
-
-Add CMPSBL verification to your pipeline:
-
-\\\`\\\`\\\`yaml
-# .github/workflows/verify-cmpsbl.yml
-name: Verify CMPSBL Export
-on: [push, pull_request]
-jobs:
-  verify:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
-      - run: npm install @cmpsbl/test-harness
-      - run: npx cmpsbl-verify ./src/lib/cmpsbl/\${input.slug}/
-      - run: npx tsx ./src/lib/cmpsbl/\${input.slug}/tests/integration.test.ts
-\\\`\\\`\\\`
-
-### Trust Model Summary
-
-| Question | Answer |
-|----------|--------|
-| Can I verify the output? | ✅ Yes — fully transparent results, traces, and scores |
-| Can I read the scoring formula? | ❌ No — sealed IP (same as FICO, PageRank) |
-| Can I test without paying? | ✅ Yes — use daily-drops repo or test-harness |
-| Are results deterministic? | ✅ Yes — same input = same output, always |
-| Can I run fully offline? | ✅ Yes — \\\`init({ offline: true })\\\` or \\\`CMPSBL_OFFLINE=true\\\` |
-| Can I verify in CI/CD? | ✅ Yes — test-harness works in any Node.js environment |\`;
+  const cb = '```'; // code block delimiter
+  const slug = input.slug;
+  return [
+    '---',
+    '',
+    '## 7. Independent Verification & Trust',
+    '',
+    'Do not take our word for it — verify CMPSBL exports independently using any',
+    'of these three methods:',
+    '',
+    '### Method 1: `@cmpsbl/test-harness` (NPM Package)',
+    '',
+    'The official test harness validates any CMPSBL export\'s integrity, scoring, and',
+    'primitive chain execution without requiring a subscription:',
+    '',
+    cb + 'bash',
+    '# Install the test harness (free, zero dependencies)',
+    'npm install @cmpsbl/test-harness',
+    '',
+    '# Run against your export directory',
+    `npx cmpsbl-verify ./${slug}/`,
+    '',
+    '# Expected output:',
+    '# +--------------------------------------------------+',
+    '# |  CMPSBL Export Verification Report               |',
+    '# +--------------------------------------------------+',
+    '# |  Manifest:        OK Valid                       |',
+    '# |  Runtime:          OK Loads (sealed, v1.x.x)     |',
+    '# |  Primitive Chain:  OK All primitives respond      |',
+    '# |  Offline Mode:     OK Functions without network   |',
+    '# |  Scoring:          OK Deterministic (CJPI)        |',
+    '# |  Integrity Hash:   OK Matches manifest fingerprint|',
+    '# +--------------------------------------------------+',
+    cb,
+    '',
+    '### Method 2: CMPSBL CLI Verification',
+    '',
+    'If you have the CLI installed, verify any export directly:',
+    '',
+    cb + 'bash',
+    '# Install CLI (if not already)',
+    'npm install -g @cmpsbl/cli',
+    '',
+    '# Verify an export directory',
+    `cmpsbl verify ./${slug}/`,
+    '',
+    '# Run the export in an isolated sandbox',
+    `cmpsbl run ./${slug}/ --input '{"test": true}' --offline`,
+    '',
+    '# Compare outputs across modes',
+    `cmpsbl run ./${slug}/ --input '{"test": true}' --mode offline`,
+    `cmpsbl run ./${slug}/ --input '{"test": true}' --mode hybrid`,
+    '# Both should produce identical scoring results',
+    cb,
+    '',
+    '### Method 3: cmpsbl-daily-drops Repository (Community Verification)',
+    '',
+    'We publish free Memory Stream artifacts daily to a public GitHub repository.',
+    'You can clone it and run exports yourself to build confidence before integrating',
+    'paid capabilities:',
+    '',
+    cb + 'bash',
+    '# Clone the daily drops repo',
+    'git clone https://github.com/SweetKenneth/cmpsbl-daily-drops.git',
+    'cd cmpsbl-daily-drops',
+    '',
+    '# Install dependencies',
+    'npm install',
+    '',
+    '# Run any drop to see real CMPSBL output',
+    'npx tsx drops/latest.ts',
+    '',
+    '# Verify a drop with the test harness',
+    'npx cmpsbl-verify ./drops/latest/',
+    '',
+    '# Compare your paid export against a known-good daily drop',
+    `npx cmpsbl-verify ./${slug}/ --compare ./drops/latest/`,
+    cb,
+    '',
+    '**Why this matters:** The daily-drops repo contains real exports from the',
+    'Memory Stream — same sealed runtime, same scoring engine, same primitive',
+    'chain executor. If the daily drops work, your export works. If you find a',
+    'discrepancy, open an issue at:',
+    'https://github.com/SweetKenneth/cmpsbl-daily-drops/issues',
+    '',
+    '### Running Exports in CI/CD',
+    '',
+    'Add CMPSBL verification to your pipeline:',
+    '',
+    cb + 'yaml',
+    '# .github/workflows/verify-cmpsbl.yml',
+    'name: Verify CMPSBL Export',
+    'on: [push, pull_request]',
+    'jobs:',
+    '  verify:',
+    '    runs-on: ubuntu-latest',
+    '    steps:',
+    '      - uses: actions/checkout@v4',
+    '      - uses: actions/setup-node@v4',
+    "        with: { node-version: '20' }",
+    '      - run: npm install @cmpsbl/test-harness',
+    `      - run: npx cmpsbl-verify ./src/lib/cmpsbl/${slug}/`,
+    `      - run: npx tsx ./src/lib/cmpsbl/${slug}/tests/integration.test.ts`,
+    cb,
+    '',
+    '### Trust Model Summary',
+    '',
+    '| Question | Answer |',
+    '|----------|--------|',
+    '| Can I verify the output? | Yes — fully transparent results, traces, and scores |',
+    '| Can I read the scoring formula? | No — sealed IP (same as FICO, PageRank) |',
+    '| Can I test without paying? | Yes — use daily-drops repo or test-harness |',
+    '| Are results deterministic? | Yes — same input = same output, always |',
+    '| Can I run fully offline? | Yes — `init({ offline: true })` or `CMPSBL_OFFLINE=true` |',
+    '| Can I verify in CI/CD? | Yes — test-harness works in any Node.js environment |',
+  ].join('\n');
 }
 
 
