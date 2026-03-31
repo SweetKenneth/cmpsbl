@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { Shield, Network, Coins, User, Scale, Lock, Zap, ChevronRight, Sparkles, ArrowRight } from 'lucide-react';
+import forgeGraphic from '@/assets/forge-step-graphic.png';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
