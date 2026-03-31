@@ -43,6 +43,16 @@ interface UserSourceFile {
   content: string;
 }
 
+export interface VerticalDiscoveryForExport {
+  id: string;
+  capabilityName: string;
+  primitiveName: string;
+  description: string;
+  cjpiScore: number;
+  category: string;
+  vertical: string;
+}
+
 export interface ExportOptions {
   targetLanguage: string;
   capabilities: CapabilityForExport[];
@@ -51,6 +61,10 @@ export interface ExportOptions {
   userSourceFiles?: UserSourceFile[];
   /** Display label for the source language (e.g. "Verilog", "Python") */
   sourceLanguage?: string;
+  /** Optional vertical discoveries from Forge phase — stacked on top of base capabilities */
+  verticalDiscoveries?: VerticalDiscoveryForExport[];
+  /** Vertical pack name (e.g. "Agent Forge") */
+  verticalName?: string;
 }
 
 const LANG_EXT: Record<string, string> = {
@@ -894,7 +908,7 @@ CMPSBL® and Mini-Runtime™ are trademarks of CMPSBL.
 }
 
 export async function generateCapabilityPackZip(options: ExportOptions): Promise<void> {
-  const { targetLanguage, capabilities, candidateName, userSourceFiles, sourceLanguage } = options;
+  const { targetLanguage, capabilities, candidateName, userSourceFiles, sourceLanguage, verticalDiscoveries, verticalName } = options;
   const ext = LANG_EXT[targetLanguage] || '.ts';
   const zip = new JSZip();
   const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
@@ -945,6 +959,60 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       '',
       '---',
       '© Your original work. Cognitive overlay © 2025–2026 CMPSBL®.',
+    ].join('\n'));
+  }
+
+  // vertical/ — Vertical Pack discoveries (stacked on base capabilities)
+  if (verticalDiscoveries && verticalDiscoveries.length > 0) {
+    const vertSlug = verticalDiscoveries[0]?.vertical || 'vertical';
+    const vertFolder = zip.folder(`vertical/${vertSlug}`)!;
+
+    // Per-discovery source stubs
+    for (const vd of verticalDiscoveries) {
+      const [line] = LANG_COMMENT[targetLanguage] || ['//', '/*'];
+      const safeName = vd.capabilityName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      vertFolder.file(`${safeName}${ext}`, [
+        `${line} ═══════════════════════════════════════════════════════`,
+        `${line}  Vertical Discovery: ${vd.capabilityName}`,
+        `${line}  Primitive: ${vd.primitiveName} | CJPI: ${vd.cjpiScore}`,
+        `${line}  Category: ${vd.category}`,
+        `${line}  Vertical: ${verticalName || vertSlug}`,
+        `${line} ═══════════════════════════════════════════════════════`,
+        `${line}`,
+        `${line}  This capability was discovered by the ${vd.primitiveName} reserve primitive`,
+        `${line}  during the ${verticalName || 'Vertical'} pass. It STACKS on top of your`,
+        `${line}  base Ascension capabilities in the ../src/ folder.`,
+        `${line}`,
+        `${line}  ${vd.description}`,
+        `${line} ═══════════════════════════════════════════════════════`,
+        '',
+      ].join('\n'));
+    }
+
+    // Vertical README
+    vertFolder.file('README.md', [
+      `# ${verticalName || 'Vertical Pack'} — Specialized Discoveries`,
+      '',
+      `These ${verticalDiscoveries.length} capabilities were discovered by running your code through`,
+      `the **${verticalName || 'Vertical'}** reserve primitive pass — a domain-specialized`,
+      `5-primitive matrix that runs AFTER the core 40-primitive Ascension.`,
+      '',
+      '## Stacking Architecture',
+      '',
+      '```',
+      'Layer 1 — Your Original Code (../original/)',
+      'Layer 2 — Base Ascension Capabilities (../src/)',
+      `Layer 3 — ${verticalName || 'Vertical'} Discoveries (this folder)`,
+      '```',
+      '',
+      '## Discoveries',
+      '',
+      ...verticalDiscoveries.map(vd =>
+        `- **${vd.capabilityName}** (${vd.primitiveName}) — CJPI ${vd.cjpiScore}\n  ${vd.description}`
+      ),
+      '',
+      '---',
+      `© 2025–2026 CMPSBL®. ${verticalName || 'Vertical Pack'} discoveries.`,
     ].join('\n'));
   }
 

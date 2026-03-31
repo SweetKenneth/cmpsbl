@@ -237,12 +237,25 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
 
       const candidateName = capsForExport[0]?.chain[0] || 'CANDIDATE';
 
+      // Build vertical discoveries for ZIP if forge was used
+      const verticalDiscoveries = verticalResult?.discoveries?.map(d => ({
+        id: d.id,
+        capabilityName: d.capabilityName,
+        primitiveName: d.primitiveName,
+        description: d.description,
+        cjpiScore: d.cjpiScore,
+        category: d.category,
+        vertical: d.vertical,
+      }));
+
       await generateCapabilityPackZip({
         targetLanguage: exportLanguage,
         capabilities: capsForExport,
         candidateName,
         userSourceFiles: userSourceFiles.length > 0 ? userSourceFiles : undefined,
         sourceLanguage: sourceLanguageLabel,
+        verticalDiscoveries: verticalDiscoveries && verticalDiscoveries.length > 0 ? verticalDiscoveries : undefined,
+        verticalName: verticalResult?.verticalName,
       });
 
       setExportResult({ packId: data.pack_id, count: targets.length });
@@ -383,24 +396,33 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
             <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Export Preview</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Capabilities</span>
+                <span className="text-muted-foreground">Base Capabilities</span>
                 <span className="font-mono font-bold text-foreground">{eligible.length}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Source files</span>
                 <span className="font-mono font-bold text-foreground">{userSourceFiles.length}</span>
               </div>
+              {verticalResult && verticalResult.discoveries.length > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">{verticalResult.verticalName} features</span>
+                  <span className="font-mono font-bold text-primary">{verticalResult.discoveries.length}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Best CJPI</span>
                 <span className="font-mono font-bold text-neon-amber">{bestScore}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Est. files in ZIP</span>
-                <span className="font-mono font-bold text-foreground">{eligible.length * 3 + userSourceFiles.length + 4}</span>
+                <span className="font-mono font-bold text-foreground">
+                  {eligible.length * 3 + userSourceFiles.length + 4 + (verticalResult?.discoveries?.length || 0) + (verticalResult ? 1 : 0)}
+                </span>
               </div>
             </div>
             <p className="text-[9px] text-muted-foreground">
               Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
+              {verticalResult && verticalResult.discoveries.length > 0 && `, ${verticalResult.verticalName} vertical pack`}
             </p>
           </div>
         )}
