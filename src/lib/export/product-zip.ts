@@ -16,6 +16,7 @@ import {
 } from '@/lib/export/sealed-runtime-generator';
 import { generateIntegrationGuide as generateDetailedIntegrationGuide } from '@/lib/export/integration-guide-generator';
 import { generateExportArtifacts, generateDiscoveryContext, generateTierMigration } from '@/lib/export/export-artifacts-generator';
+import { generateHTMLArtifacts } from '@/lib/export/html-artifact-generator';
 
 export interface ProductZipInput {
   id: string;
