@@ -43,6 +43,16 @@ interface UserSourceFile {
   content: string;
 }
 
+export interface VerticalDiscoveryForExport {
+  id: string;
+  capabilityName: string;
+  primitiveName: string;
+  description: string;
+  cjpiScore: number;
+  category: string;
+  vertical: string;
+}
+
 export interface ExportOptions {
   targetLanguage: string;
   capabilities: CapabilityForExport[];
@@ -51,6 +61,10 @@ export interface ExportOptions {
   userSourceFiles?: UserSourceFile[];
   /** Display label for the source language (e.g. "Verilog", "Python") */
   sourceLanguage?: string;
+  /** Optional vertical discoveries from Forge phase — stacked on top of base capabilities */
+  verticalDiscoveries?: VerticalDiscoveryForExport[];
+  /** Vertical pack name (e.g. "Agent Forge") */
+  verticalName?: string;
 }
 
 const LANG_EXT: Record<string, string> = {
