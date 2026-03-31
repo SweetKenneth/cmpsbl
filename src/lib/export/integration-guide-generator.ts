@@ -588,7 +588,7 @@ app.get('/health/cmpsbl', async (req, res) => {
 function generateTroubleshooting(input: IntegrationGuideInput): string {
   return `---
 
-## 6. Troubleshooting
+## 9. Troubleshooting
 
 ### Common Issues
 
