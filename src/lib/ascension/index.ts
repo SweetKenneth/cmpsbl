@@ -169,6 +169,27 @@ export {
   clearLearningState,
 } from './primitive-learning';
 
+// Reserve Registry (Vertical Packs)
+export {
+  getVerticalPack,
+  listVerticalPacks,
+  getReservePrimitives,
+  scoreVerticalAffinity,
+  scoreReservePrimitiveAffinity,
+  type VerticalSlug,
+  type ReservePrimitive,
+  type VerticalPack,
+} from './reserve-registry';
+
+// Vertical Collision Engine
+export {
+  runVerticalCollision,
+  shouldRunVertical,
+  type VerticalDiscovery,
+  type VerticalCollisionResult,
+  type BaseDiscovery,
+} from './vertical-collision';
+
 // Primitive Governor
 export {
   governorInjectPrimitive,
