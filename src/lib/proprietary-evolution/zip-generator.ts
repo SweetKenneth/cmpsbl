@@ -19,6 +19,7 @@ import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/
 import { humanizeCapabilityName, humanizeFilename } from '@/lib/export/humanize-name';
 import { generateCherryPickedCapabilities } from '@/lib/export/cherry-pick-effects';
 import { generateUnifiedCapabilityFile, getUnifiedFilename } from '@/lib/export/unified-capability-file';
+import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 
 export interface CapabilityForExport {
   id: string;
@@ -1036,6 +1037,15 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
       formatted: formatMarketValue(totalValue),
     },
   }, null, 2));
+
+  // Integration guide — step-by-step stack integration instructions
+  zip.file('INTEGRATION.md', generateIntegrationGuide({
+    kind: 'ascension',
+    name: packName,
+    slug: packName.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    languages: [targetLanguage],
+    artifactCount: capabilities.length,
+  }));
 
   // Generate and download
   const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 9 } });

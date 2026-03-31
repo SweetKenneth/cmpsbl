@@ -6,6 +6,7 @@
 import JSZip from 'jszip';
 import { generateLicenseHTML, generateReadmeHTML } from '@/lib/export/elegant-html-docs';
 import { generateProductDetailsHTML } from '@/lib/export/product-details-page';
+import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
 
 export interface BotExportConfig {
   id: string;
@@ -553,6 +554,13 @@ export async function createExportBundle(config: BotExportConfig): Promise<Expor
   Object.entries(files).forEach(([path, content]) => {
     zip.file(path, content);
   });
+
+  // Integration guide — step-by-step stack integration instructions
+  zip.file('INTEGRATION.md', generateIntegrationGuide({
+    kind: 'agent',
+    name: config.name,
+    slug: config.slug,
+  }));
 
   const blob = await zip.generateAsync({ type: 'blob' });
   const filename = `${config.slug}-v${config.version}.zip`;
