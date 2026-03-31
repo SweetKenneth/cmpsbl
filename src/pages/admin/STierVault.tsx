@@ -4,6 +4,7 @@ import { estimateMarketValue, formatMarketValue, getTierFromScore } from '@/lib/
 import { generatePipelineDetailsHTML } from '@/lib/export/pipeline-details-page';
 import { humanizeCapabilityName } from '@/lib/export/humanize-name';
 import { generateIntegrationGuide } from '@/lib/export/integration-guide-generator';
+import { generateExportArtifacts, generateDiscoveryContext } from '@/lib/export/export-artifacts-generator';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
