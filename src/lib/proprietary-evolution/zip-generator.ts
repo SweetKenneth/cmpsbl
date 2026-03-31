@@ -962,6 +962,60 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     ].join('\n'));
   }
 
+  // vertical/ — Vertical Pack discoveries (stacked on base capabilities)
+  if (verticalDiscoveries && verticalDiscoveries.length > 0) {
+    const vertSlug = verticalDiscoveries[0]?.vertical || 'vertical';
+    const vertFolder = zip.folder(`vertical/${vertSlug}`)!;
+
+    // Per-discovery source stubs
+    for (const vd of verticalDiscoveries) {
+      const [line] = LANG_COMMENT[targetLanguage] || ['//', '/*'];
+      const safeName = vd.capabilityName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      vertFolder.file(`${safeName}${ext}`, [
+        `${line} ═══════════════════════════════════════════════════════`,
+        `${line}  Vertical Discovery: ${vd.capabilityName}`,
+        `${line}  Primitive: ${vd.primitiveName} | CJPI: ${vd.cjpiScore}`,
+        `${line}  Category: ${vd.category}`,
+        `${line}  Vertical: ${verticalName || vertSlug}`,
+        `${line} ═══════════════════════════════════════════════════════`,
+        `${line}`,
+        `${line}  This capability was discovered by the ${vd.primitiveName} reserve primitive`,
+        `${line}  during the ${verticalName || 'Vertical'} pass. It STACKS on top of your`,
+        `${line}  base Ascension capabilities in the ../src/ folder.`,
+        `${line}`,
+        `${line}  ${vd.description}`,
+        `${line} ═══════════════════════════════════════════════════════`,
+        '',
+      ].join('\n'));
+    }
+
+    // Vertical README
+    vertFolder.file('README.md', [
+      `# ${verticalName || 'Vertical Pack'} — Specialized Discoveries`,
+      '',
+      `These ${verticalDiscoveries.length} capabilities were discovered by running your code through`,
+      `the **${verticalName || 'Vertical'}** reserve primitive pass — a domain-specialized`,
+      `5-primitive matrix that runs AFTER the core 40-primitive Ascension.`,
+      '',
+      '## Stacking Architecture',
+      '',
+      '```',
+      'Layer 1 — Your Original Code (../original/)',
+      'Layer 2 — Base Ascension Capabilities (../src/)',
+      `Layer 3 — ${verticalName || 'Vertical'} Discoveries (this folder)`,
+      '```',
+      '',
+      '## Discoveries',
+      '',
+      ...verticalDiscoveries.map(vd =>
+        `- **${vd.capabilityName}** (${vd.primitiveName}) — CJPI ${vd.cjpiScore}\n  ${vd.description}`
+      ),
+      '',
+      '---',
+      `© 2025–2026 CMPSBL®. ${verticalName || 'Vertical Pack'} discoveries.`,
+    ].join('\n'));
+  }
+
   // manifest.json
   const avgCjpi = Math.round(capabilities.reduce((s, c) => s + c.cjpiScore, 0) / capabilities.length);
   const totalValue = capabilities.reduce((sum, c) =>
