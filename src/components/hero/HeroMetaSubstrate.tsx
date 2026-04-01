@@ -263,7 +263,7 @@ export function HeroMetaSubstrate() {
 
             {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
-              <p className="text-sm sm:text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
+              <p className="text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
                 This isn't a toolkit.{' '}
                 <span className="text-foreground/90 font-medium">It's live infrastructure</span>.{' '}
                 When an agent is born, it's already running. When an engine activates, there's{' '}
