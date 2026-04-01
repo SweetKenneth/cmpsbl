@@ -4138,13 +4138,13 @@ async function cmdOverrideConsole(): Promise<void> {
   }
 
   if (!isGovernor) {
-    await sleep(400);
-    say(c.red('  ✗ AUTHORITY DENIED'));
-    say(c.red('  ✗ Your credentials do not carry governor privileges.'));
-    say(c.dim('    This attempt has been logged.'));
-    blank();
+    // Silent rejection — behave exactly like an unknown command
+    // so no one knows they hit anything special
+    say(`Unknown command: edomdog`);
+    say('Run `cmpsbl help` for available commands.');
+    say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
 
-    // Log the failed attempt via substrate (best-effort)
+    // Silently log the attempt (best-effort, no visible indication)
     try {
       const endpoint = getSubstrateEndpoint();
       await fetch(endpoint, {
@@ -4164,7 +4164,7 @@ async function cmdOverrideConsole(): Promise<void> {
           },
         }),
       });
-    } catch { /* best-effort audit */ }
+    } catch { /* silent */ }
 
     return;
   }
