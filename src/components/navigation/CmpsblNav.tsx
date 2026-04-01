@@ -111,10 +111,10 @@ export function CmpsblNav() {
       name: "Build",
       icon: Code,
       items: [
-        { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal, highlight: true },
+        { name: "Agent Forge", href: "/forge", description: "Create & manage CMPSBL Agents", icon: Hammer, badge: "NEW", highlight: true },
+        { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal },
         { name: "Developers Playground", href: "/codelab", description: "Test and run code live", icon: Terminal },
         { name: "Developer Tools", href: "/devtools", description: "SDKs, packages, and playground", icon: Package },
-        
         { name: "Documentation", href: "/documentation", description: "Guides & API reference", icon: FileText },
         { name: "API access", href: "/api-access", description: "Keys, quotas & usage tracking", icon: Code },
       ]
