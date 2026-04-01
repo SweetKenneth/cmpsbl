@@ -403,7 +403,7 @@ export function HeroMetaSubstrate() {
               ].map((step, i, arr) => (
                 <div key={step} className="flex items-center shrink-0">
                   <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
-                    <span className="text-[9px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+                    <span className="text-[10px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
                   </div>
                   {i < arr.length - 1 && (
                     <span className="text-muted-foreground/30 text-[10px] sm:text-xs font-bold px-1 sm:px-1.5">→</span>
