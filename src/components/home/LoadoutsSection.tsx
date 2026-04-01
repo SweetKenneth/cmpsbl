@@ -94,9 +94,9 @@ export function LoadoutsSection() {
             <span className="text-foreground/90 font-medium">pre-built, working projects</span>{" "}
             with identity, memory, defense, and governance already wired.
           </p>
-          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-[1.8]">
             One command. Zero setup.{" "}
-            <span className="font-mono text-xs sm:text-sm text-primary/80 bg-primary/5 px-2 py-0.5 rounded">
+            <span className="font-mono text-xs text-primary/80 bg-primary/5 px-2 py-0.5 rounded">
               cmpsbl loadout build threat-detector
             </span>
           </p>
