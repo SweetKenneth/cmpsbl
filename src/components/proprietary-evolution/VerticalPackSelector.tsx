@@ -379,13 +379,13 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
         <div className="space-y-5 animate-fade-in">
           {/* Scan header */}
           <div className="text-center space-y-1">
-            <h3 className="text-base font-bold text-foreground">
-              {isForgeComplete ? 'Forge Complete' : 'Forging Vertical Capabilities…'}
-            </h3>
-            <p className="text-[11px] text-muted-foreground">
-              {isForgeComplete
-                ? `${finalResult.successfulCollisions} specialized features discovered`
-                : 'Scanning your code through 5 reserve primitives'}
+             <h3 className="text-base font-bold text-foreground">
+               {isForgeComplete ? 'Super Agents Forged' : 'Forging Super Agents…'}
+             </h3>
+             <p className="text-[11px] text-muted-foreground">
+               {isForgeComplete
+                 ? `${finalResult.successfulCollisions} capabilities upgraded with agent personas`
+                 : 'Merging agent personas into your base discoveries'}
             </p>
           </div>
 
