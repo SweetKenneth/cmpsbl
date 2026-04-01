@@ -40,6 +40,13 @@ import {
   type WelcomeBackData,
 } from './session';
 import { runInstallWizard } from './install-wizard';
+import {
+  loadSimulation, saveSimulation, createSimulation,
+  getCurrentMission, getCurrentStep, recordCommand,
+  getSimulationSummary, getSimulationBootMessage,
+  collectFeedback, MISSIONS,
+  type SimulationState,
+} from './simulation';
 
 // ═══════════════════════════════════════════════════════════════
 // Personality
