@@ -229,27 +229,7 @@ export default function UserDocsReader() {
                 <div className="w-5 h-5 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
               </div>
             ) : (
-              <article className="prose prose-slate max-w-none
-                prose-headings:text-foreground prose-headings:font-semibold prose-headings:tracking-tight
-                prose-h1:text-2xl sm:prose-h1:text-3xl prose-h1:border-b prose-h1:border-border prose-h1:pb-4 prose-h1:mb-8
-                prose-h2:text-lg sm:prose-h2:text-xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:pt-2
-                prose-h3:text-base sm:prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3
-                prose-p:text-foreground prose-p:leading-relaxed prose-p:text-[15px]
-                prose-strong:text-foreground
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                prose-code:text-primary prose-code:bg-primary/5 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
-                prose-pre:bg-muted prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:text-sm
-                prose-table:text-sm prose-table:overflow-x-auto
-                prose-th:text-foreground prose-th:font-semibold prose-th:bg-muted/60 prose-th:px-3 prose-th:py-2.5 prose-th:border prose-th:border-border prose-th:text-xs prose-th:uppercase prose-th:tracking-wider
-                prose-td:px-3 prose-td:py-2 prose-td:border prose-td:border-border prose-td:text-foreground
-                prose-li:text-foreground prose-li:text-[15px]
-                prose-hr:border-border
-                prose-blockquote:border-primary/20 prose-blockquote:text-muted-foreground prose-blockquote:bg-primary/[0.02] prose-blockquote:rounded-r-lg prose-blockquote:py-1
-              ">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {content}
-                </ReactMarkdown>
-              </article>
+              <DocsMarkdown content={content} />
             )}
 
             {/* Prev / Next */}
