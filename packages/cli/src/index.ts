@@ -3352,42 +3352,25 @@ async function cmdThreat(args: string[]) {
 }
 
 async function cmdImmune(args: string[]) {
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('IMMUNITY — System Health & Anomalies');
-
   const s = !JSON_MODE ? spinner('Scanning immune system...') : null;
-  await sleep(500);
-  s?.update('Checking anomaly response matrix...');
-  await sleep(400);
-  s?.stop('Immune scan complete');
 
-  const zones = [
-    { zone: 'Input Layer', status: 'healthy', anomalies: 0, lastCheck: '2s ago' },
-    { zone: 'Resolver Mesh', status: 'healthy', anomalies: Math.round(Math.random() * 2), lastCheck: '5s ago' },
-    { zone: 'Memory Tiers', status: 'healthy', anomalies: 0, lastCheck: '3s ago' },
-    { zone: 'Output Layer', status: 'healthy', anomalies: 0, lastCheck: '1s ago' },
-    { zone: 'External Boundary', status: Math.random() > 0.8 ? 'elevated' : 'healthy', anomalies: Math.round(Math.random() * 3), lastCheck: '4s ago' },
-  ];
-
-  const totalAnomalies = zones.reduce((s, z) => s + z.anomalies, 0);
-
-  if (JSON_MODE) { jsonOut({ zones, totalAnomalies, verdict: totalAnomalies === 0 ? 'CLEAN' : 'MONITORING' }); return; }
-
-  blank();
-  for (const z of zones) {
-    const icon = z.status === 'healthy' ? '●' : '◐';
-    say(`  ${icon} ${z.zone.padEnd(20)} ${z.status.padEnd(10)} ${z.anomalies > 0 ? `${z.anomalies} anomalie(s)` : 'clean'} [${z.lastCheck}]`);
+  const result = await substrateCall('immunity', 'scan', { source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Immune scan complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('immunity.scan', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  if (totalAnomalies === 0) {
-    say('  ◉ Immune system: ALL CLEAR');
-  } else {
-    say(`  ⚠ ${totalAnomalies} anomalie(s) under monitoring`);
-  }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Immune scan failed');
+  renderOfflineFallback(result, 'immunity.scan');
 }
 
 // ═══════════════════════════════════════════════════════════════
