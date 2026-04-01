@@ -1069,9 +1069,8 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     }
   }
 
-  // ═══ PERSISTENT MEMORY ADAPTER — auto-included for Super Agent exports ═══
-  const hasSuperAgents = capabilities.some(c => c.capabilityType?.includes('Super Agent'));
-  if (hasSuperAgents) {
+  // ═══ PERSISTENT MEMORY ADAPTER — auto-included for ALL agent exports ═══
+  {
     const { generatePersistentMemoryAdapter, generateMemoryQuickstart } = await import('@/lib/export/persistent-memory-adapter');
     const { blackboxFile } = await import('@/lib/export/blackbox');
     zip.file('_runtime/persistent-memory.ts', blackboxFile(generatePersistentMemoryAdapter(), 'typescript'));
