@@ -3302,43 +3302,25 @@ async function cmdAudit(args: string[]) {
 
 async function cmdCost(args: string[]) {
   const period = args[0] || 'today';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('ECONOMY — Usage & Cost Report');
-
   const s = !JSON_MODE ? spinner('Querying cost ledger...') : null;
-  await sleep(500);
-  s?.stop('Ledger loaded');
 
-  const report = {
-    period,
-    totalCostCents: Math.round(50 + Math.random() * 500),
-    apiCalls: Math.round(100 + Math.random() * 2000),
-    tokensUsed: Math.round(10000 + Math.random() * 100000),
-    topPrimitives: [
-      { primitive: 'BRAIN', costCents: Math.round(10 + Math.random() * 100), calls: Math.round(20 + Math.random() * 200) },
-      { primitive: 'DREAM', costCents: Math.round(5 + Math.random() * 80), calls: Math.round(10 + Math.random() * 50) },
-      { primitive: 'NEXUS', costCents: Math.round(15 + Math.random() * 120), calls: Math.round(50 + Math.random() * 300) },
-    ],
-    budgetRemaining: Math.round(5000 + Math.random() * 10000),
-  };
-
-  if (JSON_MODE) { jsonOut(report); return; }
-
-  blank();
-  say(`  Period:         ${report.period}`);
-  say(`  Total Cost:     $${(report.totalCostCents / 100).toFixed(2)}`);
-  say(`  API Calls:      ${report.apiCalls.toLocaleString()}`);
-  say(`  Tokens Used:    ${report.tokensUsed.toLocaleString()}`);
-  say(`  Budget Left:    $${(report.budgetRemaining / 100).toFixed(2)}`);
-  blank();
-  say('  Top primitives by cost:');
-  for (const p of report.topPrimitives) {
-    say(`    ${p.primitive.padEnd(10)} $${(p.costCents / 100).toFixed(2)} (${p.calls} calls)`);
+  const result = await substrateCall('economy', 'report', { period, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Ledger loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('economy.report', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Ledger query failed');
+  renderOfflineFallback(result, 'economy.report');
 }
 
 // ═══════════════════════════════════════════════════════════════
