@@ -127,7 +127,7 @@ export function DiscoveryDualCards() {
                 </div>
 
                 {/* Summary */}
-                <p className="text-sm text-muted-foreground/80 leading-relaxed mb-5">
+                <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-5">
                   {card.summary}
                 </p>
 
