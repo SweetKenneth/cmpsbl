@@ -81,7 +81,7 @@ export function SubstrateAliveSection() {
                   <Icon className="w-5 h-5 text-muted-foreground/60 group-hover:text-primary transition-colors" />
                 </div>
 
-                <h3 className="text-sm sm:text-base font-bold text-foreground/90 mb-2">
+                <h3 className="text-base font-bold text-foreground/90 mb-2">
                   {pillar.title}
                 </h3>
 
