@@ -147,10 +147,10 @@ const COMMANDS: Record<string, CommandHandler> = {
     const sectors = ['CORE', 'SYSTEM', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Fields', 'Plane', 'Shell'];
     const lines: string[] = [];
     for (const s of sectors) {
-      const nodes = getNodesBySector(s);
-      if (nodes.length === 0) continue;
+      const primitives = getNodesBySector(s);
+      if (primitives.length === 0) continue;
       lines.push(`── ${s} ──`);
-      for (const n of nodes) {
+      for (const n of primitives) {
         lines.push(`  ${n.displayName.padEnd(12)} ✓ acknowledged`);
         for (const p of n.priorities) {
           lines.push(`    ▸ ${p.capability.replace('clm_', '')} (p=${p.priority})`);
@@ -159,9 +159,9 @@ const COMMANDS: Record<string, CommandHandler> = {
       lines.push('');
     }
     const summary = getCLMPrioritySummary();
-    return formatBlock(`CLM PRIORITY REPORT — ${summary.totalNodes} NODES`, [
+    return formatBlock(`CLM PRIORITY REPORT — ${summary.totalNodes} PRIMITIVES`, [
       `Total capabilities: ${summary.totalCapabilities}`,
-      `All nodes acknowledged: ${summary.acknowledged === summary.totalNodes ? 'YES' : 'NO'}`,
+      `All primitives acknowledged: ${summary.acknowledged === summary.totalNodes ? 'YES' : 'NO'}`,
       '',
       ...lines,
     ]);
