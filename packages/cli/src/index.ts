@@ -2308,15 +2308,37 @@ async function cmdLogs(args: string[]) {
   const target = args[0]?.toUpperCase();
   const tailIdx = args.indexOf('--tail');
   const count = tailIdx >= 0 ? parseInt(args[tailIdx + 1]) || 10 : 10;
-  const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
+  const apiKey = resolveApiKey();
 
+  // Try live logs
+  const result = await substrateCall('vision', 'logs', { target: target ?? 'all', limit: count, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    const entries = Array.isArray(result.data.entries) ? result.data.entries as Record<string, unknown>[] :
+      Array.isArray(result.data) ? result.data as unknown as Record<string, unknown>[] : [];
+    for (const e of entries.slice(0, 20)) {
+      const ts = String(e.timestamp ?? e.time ?? '').slice(0, 19);
+      const lvl = String(e.level ?? 'INFO');
+      const node = String(e.node ?? e.source ?? '');
+      const msg = String(e.message ?? e.msg ?? '');
+      const icon = lvl === 'WARN' ? '⚠' : lvl === 'DEBUG' ? '◇' : '●';
+      say(`${ts} ${icon} ${lvl.padEnd(5)} ${node.padEnd(14)} ${msg}`);
+    }
+    div();
+    say(`${entries.length} entries.`);
+    say(pick(V.idle));
+    blank();
+    return;
+  }
+
+  // Fallback to local
+  const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
   if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Primitive "${target}" not found.`); return; }
 
   const levels = ['INFO', 'DEBUG', 'WARN'];
   const messages = [
     'resolver executed successfully', 'health check passed', 'matrix signal propagated',
     'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
-    'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
   ];
 
   const entries: unknown[] = [];
@@ -2328,12 +2350,12 @@ async function cmdLogs(args: string[]) {
     if (JSON_MODE) entries.push({ timestamp: ts, level, node: node.id, message: msg });
     else {
       const lvl = level === 'WARN' ? '⚠' : level === 'DEBUG' ? '◇' : '●';
-      say(`${ts} ${lvl} ${level.padEnd(5)} ${node.id.padEnd(14)} ${msg}`);
+      say(`${ts} ${lvl} ${level!.padEnd(5)} ${node.id.padEnd(14)} ${msg}`);
     }
   }
   if (JSON_MODE) { jsonOut(entries); return; }
   div();
-  say(`${Math.min(count, 20)} entries.`);
+  say(`${Math.min(count, 20)} entries (local).`);
   say(pick(V.idle));
   blank();
 }
