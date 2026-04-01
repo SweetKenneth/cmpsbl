@@ -89,7 +89,7 @@ export function LoadoutsSection() {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-4">
             Loadouts, Not Templates
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-3">
+          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-[1.8] mb-3">
             These aren't starter kits you spend a week configuring. They're{" "}
             <span className="text-foreground/90 font-medium">pre-built, working projects</span>{" "}
             with identity, memory, defense, and governance already wired.
