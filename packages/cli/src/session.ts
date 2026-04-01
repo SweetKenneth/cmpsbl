@@ -122,7 +122,7 @@ const DEFAULT_STATE: SessionState = {
 
 function loadState(): SessionState {
   try {
-    if (!fs.existsSync(STATE_FILE)) return { ...DEFAULT_STATE, todos: [], pins: [], sessionHistory: [] };
+    if (!fs.existsSync(STATE_FILE)) return { ...DEFAULT_STATE, todos: [], pins: [], dreamDigest: [], sessionHistory: [] };
     const raw = fs.readFileSync(STATE_FILE, 'utf-8');
     const parsed = JSON.parse(raw) as Partial<SessionState>;
     return {
@@ -130,11 +130,14 @@ function loadState(): SessionState {
       bookmark: parsed.bookmark ?? null,
       todos: Array.isArray(parsed.todos) ? parsed.todos : [],
       pins: Array.isArray(parsed.pins) ? parsed.pins : [],
+      goal: parsed.goal ?? null,
+      dreamDigest: Array.isArray(parsed.dreamDigest) ? parsed.dreamDigest : [],
+      lastDreamCheckTimestamp: parsed.lastDreamCheckTimestamp ?? null,
       streak: parsed.streak ?? { ...DEFAULT_STATE.streak },
       sessionHistory: Array.isArray(parsed.sessionHistory) ? parsed.sessionHistory : [],
     };
   } catch {
-    return { ...DEFAULT_STATE, todos: [], pins: [], sessionHistory: [] };
+    return { ...DEFAULT_STATE, todos: [], pins: [], dreamDigest: [], sessionHistory: [] };
   }
 }
 
