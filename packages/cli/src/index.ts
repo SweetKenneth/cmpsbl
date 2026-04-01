@@ -1263,9 +1263,36 @@ async function cmdWhoami() {
   const apiKey = resolveApiKey();
   const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
+
+  // Resolve developer name: stored → API → git → fallback
+  let developerName = storedCredentials?.displayName ?? null;
+
+  if (!developerName && hasKey) {
+    try {
+      const res = await fetch(GATEWAY_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify({ module: 'access', action: 'identity' }),
+      });
+      const result = await res.json() as Record<string, any>;
+      if (result.success && result.developer?.display_name) {
+        developerName = result.developer.display_name;
+        // Persist for future calls
+        saveStoredKey(apiKey!, developerName!);
+      }
+    } catch { /* API unavailable — continue with fallback */ }
+  }
+
+  if (!developerName) {
+    try {
+      const gitName = require('child_process').execSync('git config user.name', { encoding: 'utf-8' }).trim();
+      if (gitName) developerName = gitName;
+    } catch { /* git unavailable */ }
+  }
+
   const data = {
     apiKey: maskApiKey(apiKey),
-    developer: storedCredentials?.displayName ?? null,
+    developer: developerName,
     endpoint: process.env.CMPSBL_ENDPOINT ?? 'substrate-api (live)',
     session: session?.sessionId ?? null,
     memoryBound: session?.memoryBound ?? false,
