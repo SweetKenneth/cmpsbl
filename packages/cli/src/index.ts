@@ -25,7 +25,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
+import { c, spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 import { preKeyHook } from './pre-key-hook';
 import {
@@ -46,11 +46,11 @@ import { runInstallWizard } from './install-wizard';
 // ═══════════════════════════════════════════════════════════════
 
 const V = {
-  boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Signal mesh initializing...', '◈ Cognitive loop established.'],
-  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Mesh acknowledged.', '✔ Operation executed.'],
-  err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Mesh routing error.'],
-  think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving mesh topology'],
-  idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Signal mesh stable.', '◇ Awaiting intent...'],
+  boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Primitive matrix initializing...', '◈ Cognitive loop established.'],
+  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Matrix acknowledged.', '✔ Operation executed.'],
+  err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Routing error.'],
+  think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving topology'],
+  idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Primitive matrix stable.', '◇ Awaiting intent...'],
 };
 const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
 const say = (m: string) => console.log(`  ${m}`);
@@ -282,11 +282,11 @@ async function liveMeshDemo(): Promise<void> {
 
   blank();
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
-  say('  MESH INTERCEPT — LIVE PRIMITIVE COMMUNICATIONS');
+  say('  MATRIX INTERCEPT — LIVE PRIMITIVE COMMUNICATIONS');
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
   blank();
 
-  const meshSignals = [
+  const signals = [
     { from: 'DEFENSE Layer',   to: 'IMMUNITY Layer',   signal: 'Perimeter scan complete. No threats detected.', icon: '🛡' },
     { from: 'BRAIN Organ',     to: 'MEMORY Organ',     signal: 'New operator detected. Binding memory stream...', icon: '🧠' },
     { from: 'INTENT Layer',    to: 'CORTEX Agent',     signal: 'Routing intent: operator.first_contact', icon: '⚡' },
@@ -295,7 +295,7 @@ async function liveMeshDemo(): Promise<void> {
     { from: 'CORTEX Agent',    to: 'DECODE Agent',     signal: 'Operator identity unbound. Requesting authentication.', icon: '🌀' },
   ];
 
-  for (const sig of meshSignals) {
+  for (const sig of signals) {
     say(`  ${sig.icon} ${c.cyan(sig.from)} → ${c.green(sig.to)}`);
     say(`     ${c.muted('"' + sig.signal + '"')}`);
     await sleep(350);
@@ -473,7 +473,7 @@ async function requireApiKey(): Promise<string> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Config & Nodes
+// Config & Primitives
 // ═══════════════════════════════════════════════════════════════
 
 const CLI_VERSION = '2.5.0' as const;
@@ -499,48 +499,55 @@ function isInteractiveTTY(): boolean {
   return Boolean(process.stdin.isTTY && process.stdout.isTTY);
 }
 
-const NODES = [
-  { id: 'BRAIN', sector: 'CCR', status: 'online', health: 98, role: 'reasoning' },
-  { id: 'MEMORY', sector: 'CCR', status: 'online', health: 100, role: 'persistence' },
-  { id: 'DREAM', sector: 'CCR', status: 'online', health: 95, role: 'synthesis' },
-  { id: 'RIPPLE', sector: 'OCG', status: 'online', health: 99, role: 'messaging' },
-  { id: 'ACCESS', sector: 'OCG', status: 'online', health: 100, role: 'auth' },
-  { id: 'IDENTITY', sector: 'OCG', status: 'online', health: 100, role: 'identity' },
-  { id: 'RELAY', sector: 'OCG', status: 'online', health: 97, role: 'routing' },
-  { id: 'AUDIT', sector: 'OCG', status: 'online', health: 100, role: 'compliance' },
-  { id: 'NERVE', sector: 'OCG', status: 'online', health: 96, role: 'signaling' },
-  { id: 'DECODE', sector: 'EXEC', status: 'online', health: 99, role: 'analysis' },
-  { id: 'ENCODE', sector: 'EXEC', status: 'online', health: 98, role: 'generation' },
-  { id: 'VISION', sector: 'EXEC', status: 'online', health: 94, role: 'perception' },
-  { id: 'CORTEX', sector: 'EXEC', status: 'online', health: 100, role: 'orchestration' },
-  { id: 'NEXUS', sector: 'EXEC', status: 'online', health: 97, role: 'intelligence' },
-  { id: 'ECONOMY', sector: 'EXEC', status: 'online', health: 100, role: 'metering' },
-  { id: 'SANDBOX', sector: 'EXEC', status: 'online', health: 99, role: 'isolation' },
-  { id: 'INCLUSIVE', sector: 'EXEC', status: 'online', health: 100, role: 'accessibility' },
-  { id: 'MEDIC', sector: 'EXEC', status: 'online', health: 100, role: 'healing' },
-  { id: 'INTEGRATION', sector: 'EXEC', status: 'online', health: 98, role: 'connectors' },
-  { id: 'SOVEREIGN', sector: 'ESZ', status: 'online', health: 100, role: 'governance' },
-  { id: 'ORACLE', sector: 'ESZ', status: 'online', health: 93, role: 'prediction' },
-  { id: 'CONSCIENCE', sector: 'ESZ', status: 'online', health: 100, role: 'ethics' },
-  { id: 'TREATY', sector: 'ESZ', status: 'online', health: 100, role: 'agreements' },
-  { id: 'COMPASS', sector: 'EPZ', status: 'online', health: 98, role: 'navigation' },
-  { id: 'ECHO', sector: 'EPZ', status: 'online', health: 97, role: 'reflection' },
-  { id: 'REFLEX', sector: 'EPZ', status: 'online', health: 99, role: 'reaction' },
-  { id: 'FORGE', sector: 'EMZ', status: 'online', health: 96, role: 'fabrication' },
-  { id: 'LINGUA', sector: 'EMZ', status: 'online', health: 100, role: 'language' },
-  { id: 'HARVEST', sector: 'EMZ', status: 'online', health: 98, role: 'extraction' },
-  { id: 'EVOLUTION', sector: 'CSZ', status: 'online', health: 95, role: 'adaptation' },
-  { id: 'SHADOW', sector: 'CSZ', status: 'online', health: 92, role: 'stealth' },
-  { id: 'PHANTOM', sector: 'CSZ', status: 'online', health: 91, role: 'speculation' },
-  { id: 'IMMUNITY', sector: 'FLD', status: 'online', health: 100, role: 'defense' },
-  { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
-  { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
-  { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'ATLAS', sector: 'PLN', status: 'online', health: 99, role: 'mapping' },
-  { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
-  { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
-  { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
+const PRIMITIVES = [
+  // Organs (12)
+  { id: 'CORE', category: 'Organ', status: 'online', health: 100, role: 'kernel' },
+  { id: 'SYSTEM', category: 'Organ', status: 'online', health: 100, role: 'runtime' },
+  { id: 'BRAIN', category: 'Organ', status: 'online', health: 98, role: 'reasoning' },
+  { id: 'MEMORY', category: 'Organ', status: 'online', health: 100, role: 'persistence' },
+  { id: 'NERVE', category: 'Organ', status: 'online', health: 96, role: 'signaling' },
+  { id: 'NEXUS', category: 'Organ', status: 'online', health: 97, role: 'intelligence' },
+  { id: 'IDENTITY', category: 'Organ', status: 'online', health: 100, role: 'identity' },
+  { id: 'SOVEREIGN', category: 'Organ', status: 'online', health: 100, role: 'sovereignty' },
+  { id: 'ATLAS', category: 'Organ', status: 'online', health: 99, role: 'mapping' },
+  { id: 'MEDIC', category: 'Organ', status: 'online', health: 100, role: 'healing' },
+  { id: 'RELAY', category: 'Organ', status: 'online', health: 97, role: 'delivery' },
+  { id: 'CONSCIENCE', category: 'Organ', status: 'online', health: 100, role: 'ethics' },
+  // Layers (12)
+  { id: 'DEFENSE', category: 'Layer', status: 'online', health: 100, role: 'protection' },
+  { id: 'IMMUNITY', category: 'Layer', status: 'online', health: 100, role: 'anomaly' },
+  { id: 'GOVERNANCE', category: 'Layer', status: 'online', health: 100, role: 'policy' },
+  { id: 'TREATY', category: 'Layer', status: 'online', health: 100, role: 'trust' },
+  { id: 'EVOLUTION', category: 'Layer', status: 'online', health: 95, role: 'adaptation' },
+  { id: 'REFLEX', category: 'Layer', status: 'online', health: 99, role: 'reaction' },
+  { id: 'COMPASS', category: 'Layer', status: 'online', health: 98, role: 'navigation' },
+  { id: 'INTEGRATION', category: 'Layer', status: 'online', health: 98, role: 'connectors' },
+  { id: 'INTENT', category: 'Layer', status: 'online', health: 99, role: 'resolution' },
+  { id: 'ACCESS', category: 'Layer', status: 'online', health: 100, role: 'auth' },
+  { id: 'VISION', category: 'Layer', status: 'online', health: 94, role: 'observability' },
+  { id: 'SHADOW', category: 'Layer', status: 'online', health: 92, role: 'stealth' },
+  // Engines (8)
+  { id: 'DREAM', category: 'Engine', status: 'online', health: 95, role: 'synthesis' },
+  { id: 'HARVEST', category: 'Engine', status: 'online', health: 98, role: 'extraction' },
+  { id: 'FORGE', category: 'Engine', status: 'online', health: 96, role: 'fabrication' },
+  { id: 'LINGUA', category: 'Engine', status: 'online', health: 100, role: 'language' },
+  { id: 'ECHO', category: 'Engine', status: 'online', health: 97, role: 'reflection' },
+  { id: 'PHANTOM', category: 'Engine', status: 'online', health: 91, role: 'speculation' },
+  { id: 'SANDBOX', category: 'Engine', status: 'online', health: 99, role: 'isolation' },
+  { id: 'RIPPLE', category: 'Engine', status: 'online', health: 99, role: 'messaging' },
+  // Agents (8)
+  { id: 'ENCODE', category: 'Agent', status: 'online', health: 98, role: 'generation' },
+  { id: 'DECODE', category: 'Agent', status: 'online', health: 99, role: 'analysis' },
+  { id: 'AUDIT', category: 'Agent', status: 'online', health: 100, role: 'compliance' },
+  { id: 'ECONOMY', category: 'Agent', status: 'online', health: 100, role: 'metering' },
+  { id: 'INCLUSIVE', category: 'Agent', status: 'online', health: 100, role: 'accessibility' },
+  { id: 'CORTEX', category: 'Agent', status: 'online', health: 100, role: 'orchestration' },
+  { id: 'ORACLE', category: 'Agent', status: 'online', health: 93, role: 'prediction' },
+  { id: 'ENGINEER', category: 'Agent', status: 'online', health: 99, role: 'infrastructure' },
 ];
+
+// Backward compat alias
+const NODES = PRIMITIVES;
 
 // ═══════════════════════════════════════════════════════════════
 // Command Router
@@ -736,7 +743,7 @@ function printHelp() {
   ── System ───────────────────────────────────────
     status                  Show full substrate status
     health                  Health check across all primitives
-    nodes [filter]          List primitives (filter by category/status)
+    primitives [filter]          List primitives (filter by category/status)
     ping <node>             Ping a specific primitive
     inspect <node>          Deep-inspect a primitive's state
     topology                Display category topology map
@@ -881,7 +888,7 @@ async function cmdOnboarding() {
     '40 primitives  ·  12·12·8·8 matrix  ·  4 categories',
     'Layers → Organs → Engines → Agents',
     '',
-    'The mesh is alive. Every command leaves a trace.',
+    'The matrix is alive. Every command leaves a trace.',
     'Every trace becomes memory. Memory becomes capability.',
   ], 'CMPSBL®');
   blank();
@@ -917,13 +924,13 @@ async function cmdOnboarding() {
 
 async function cmdShell() {
   header('Interactive Shell');
-  say(`Type commands without the ${c.cyan('cmpsbl')} prefix. Tab-complete commands ${c.bold('and')} node names.`);
+  say(`Type commands without the ${c.cyan('cmpsbl')} prefix. Tab-complete commands ${c.bold('and')} primitive names.`);
   say(`Type ${c.cyan('exit')} or ${c.cyan('quit')} to leave.`);
   blank();
   sayMuted(pick(V.idle));
   blank();
 
-  // All node names for contextual autocomplete
+  // All primitive names for contextual autocomplete
   const nodeNames = NODES.map(n => n.id);
   const allCmds = [
     'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
@@ -938,7 +945,7 @@ async function cmdShell() {
     'demo', 'explain',
     'help', 'version', 'exit', 'quit',
   ];
-  // Commands that accept node names as args
+  // Commands that accept primitive names as args
   const nodeArgCmds = ['ping', 'inspect', 'explain', 'watch', 'logs', 'nodes'];
 
   // Build context-aware prompt
@@ -954,7 +961,7 @@ async function cmdShell() {
       const parts = line.trim().split(/\s+/);
       const cmd = parts[0]?.toLowerCase() ?? '';
 
-      // If typing second arg and command takes node names, complete node names
+      // If typing second arg and command takes primitive names, complete primitive names
       if (parts.length >= 2 && nodeArgCmds.includes(cmd)) {
         const partial = parts[parts.length - 1].toUpperCase();
         const hits = nodeNames.filter(n => n.startsWith(partial));
@@ -1093,7 +1100,7 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
       '40 primitives  ·  12·12·8·8 matrix  ·  4 categories',
       'Layers → Organs → Engines → Agents',
       '',
-      'The mesh is alive. Every command leaves a trace.',
+      'The matrix is alive. Every command leaves a trace.',
       'Every trace becomes memory. Memory becomes capability.',
     ], 'CMPSBL®');
     blank();
@@ -1354,7 +1361,7 @@ async function runFirstDream() {
 
   // Phase 4: Discovery result
   const heuristics = [
-    { pattern: 'cache-invalidation-cascade', confidence: 0.87, insight: 'Stale cache propagation can be prevented by binding invalidation signals to the NERVE mesh' },
+    { pattern: 'cache-invalidation-cascade', confidence: 0.87, insight: 'Stale cache propagation can be prevented by binding invalidation signals to the NERVE Organ' },
     { pattern: 'intent-deduplication-window', confidence: 0.91, insight: 'Duplicate intents within 200ms windows can be safely collapsed without data loss' },
     { pattern: 'memory-tier-promotion-trigger', confidence: 0.84, insight: 'Access frequency above 3x/minute should trigger automatic warm→hot tier promotion' },
     { pattern: 'resolver-fallback-chain', confidence: 0.89, insight: 'Three-resolver fallback chains reduce failure rate by 94% compared to single-resolver routing' },
@@ -1613,12 +1620,12 @@ function cmdScore(args: string[]) {
 async function cmdStatus() {
   const online = NODES.filter(n => n.status === 'online').length;
   const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
-  const sectors = [...new Set(NODES.map(n => n.sector))];
+  const sectors = [...new Set(NODES.map(n => n.category))];
   const session = getFirstContactSession();
 
   const data = {
     nodes: `${online}/${NODES.length}`,
-    sectors: sectors.length,
+    sectors: categories.length,
     health: avg,
     runtime: 'v14.4.1',
     memoryChains: getMemoryStream().length,
@@ -1627,8 +1634,8 @@ async function cmdStatus() {
 
   if (JSON_MODE) { jsonOut(data); return; }
   header('Substrate Status');
-  say(`Nodes:    ${data.nodes} online`);
-  say(`Sectors:  ${data.sectors} active`);
+  say(`Primitives:${data.nodes} online`);
+  say(`Categories:${data.sectors} active`);
   say(`Health:   ${avg}%`);
   say(`Runtime:  ${data.runtime}`);
   say(`Memory:   ${data.memoryChains} chains`);
@@ -1641,8 +1648,8 @@ async function cmdStatus() {
 }
 
 async function cmdHealth() {
-  if (!JSON_MODE) header('Node Health Report');
-  const s = !JSON_MODE ? spinner('Scanning nodes...') : null;
+  if (!JSON_MODE) header('Primitive Health Report');
+  const s = !JSON_MODE ? spinner('Scanning primitives...') : null;
   await sleep(400);
   s?.stop('Scan complete');
 
@@ -1655,7 +1662,7 @@ async function cmdHealth() {
   }
   div();
   const critical = sorted.filter(n => n.health < 90);
-  if (critical.length) say(`⚠ ${critical.length} node(s) below 90%`);
+  if (critical.length) say(`⚠ ${critical.length} primitive(s) below 90%`);
   else say(pick(V.ok));
   blank();
 }
@@ -1663,16 +1670,16 @@ async function cmdHealth() {
 async function cmdNodes(args: string[]) {
   const filter = args[0]?.toUpperCase();
   let nodes = NODES;
-  if (filter) nodes = NODES.filter(n => n.sector === filter || n.id.includes(filter) || n.role.includes(filter.toLowerCase()));
+  if (filter) nodes = NODES.filter(n => n.category === filter || n.id.includes(filter) || n.role.includes(filter.toLowerCase()));
 
   if (JSON_MODE) { jsonOut(nodes); return; }
-  header('Node Registry');
-  if (filter && nodes.length === 0) { say(`No nodes matching "${filter}".`); blank(); return; }
+  header('Primitive Registry');
+  if (filter && nodes.length === 0) { say(`No primitives matching "${filter}".`); blank(); return; }
   if (filter) { say(`Filtered: ${nodes.length} node(s) matching "${filter}"`); blank(); }
 
-  table(['Node', 'Sector', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.sector, n.role, `${n.health}%`, n.status]));
+  table(['Primitive', 'Category', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.category, n.role, `${n.health}%`, n.status]));
   blank();
-  say(`Total: ${nodes.length} nodes`);
+  say(`Total: ${nodes.length} primitives`);
   say(pick(V.idle));
   blank();
 }
@@ -1681,9 +1688,9 @@ async function cmdPing(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl ping <node>'); return; }
   const node = NODES.find(n => n.id === target);
-  if (!node) { say(pick(V.err)); say(`Node "${target}" not found.`); blank(); return; }
+  if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
-  if (!JSON_MODE) say(`Pinging ${node.id}@${node.sector}...`);
+  if (!JSON_MODE) say(`Pinging ${node.id}@${node.category}...`);
   const latencies: number[] = [];
   for (let i = 0; i < 4; i++) {
     await sleep(150 + Math.random() * 200);
@@ -1704,15 +1711,15 @@ async function cmdInspect(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl inspect <node>'); return; }
   const node = NODES.find(n => n.id === target);
-  if (!node) { say(pick(V.err)); say(`Node "${target}" not found.`); blank(); return; }
+  if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
   const data = {
-    node: node.id, sector: node.sector, role: node.role, status: node.status, health: node.health,
+    node: node.id, sector: node.category, role: node.role, status: node.status, health: node.health,
     uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
     resolvers: Math.round(3 + Math.random() * 12),
     intents24h: Math.round(50 + Math.random() * 500),
     avgLatency: Math.round(2 + Math.random() * 8),
-    meshLinks: NODES.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+    matrixLinks: NODES.filter(n => n.category === node.category && n.id !== node.id).map(n => n.id),
   };
 
   if (JSON_MODE) { jsonOut(data); return; }
@@ -1723,8 +1730,8 @@ async function cmdInspect(args: string[]) {
   blank();
 
   table(['Property', 'Value'], [
-    ['Node', data.node],
-    ['Sector', data.sector],
+    ['Primitive', data.node],
+    ['Category', data.sector],
     ['Role', data.role],
     ['Status', data.status],
     ['Health', `${data.health}%`],
@@ -1732,7 +1739,7 @@ async function cmdInspect(args: string[]) {
     ['Resolvers', String(data.resolvers)],
     ['Intents (24h)', String(data.intents24h)],
     ['Avg Latency', `${data.avgLatency}ms`],
-    ['Mesh Links', data.meshLinks.join(', ') || 'isolated'],
+    ['Matrix Links', data.matrixLinks.join(', ') || 'isolated'],
   ]);
   blank();
   say(pick(V.ok));
@@ -1740,12 +1747,12 @@ async function cmdInspect(args: string[]) {
 }
 
 async function cmdTopology() {
-  const sectors = new Map<string, typeof NODES>();
-  for (const n of NODES) { const s = sectors.get(n.sector) ?? []; s.push(n); sectors.set(n.sector, s); }
+  const categories = new Map<string, typeof NODES>();
+  for (const n of NODES) { const s = categories.get(n.category) ?? []; s.push(n); categories.set(n.category, s); }
 
   if (JSON_MODE) {
     const out: Record<string, unknown[]> = {};
-    for (const [k, v] of sectors) out[k] = v;
+    for (const [k, v] of categories) out[k] = v;
     jsonOut(out);
     return;
   }
@@ -1757,7 +1764,7 @@ async function cmdTopology() {
     say(`${icon} ${sector.padEnd(6)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
   }
   div();
-  say(`${NODES.length} nodes │ ${sectors.size} sectors`);
+  say(`${PRIMITIVES.length} primitives │ ${sectors.size} sectors`);
   say(pick(V.idle));
   blank();
 }
@@ -1775,7 +1782,7 @@ async function cmdRoute(args: string[]) {
   for (let i = 0; i < hops.length; i++) {
     const n = hops[i];
     await sleep(200);
-    say(`  ${i === 0 ? '►' : '→'} ${n.id}.${n.role} (${Math.round(1 + Math.random() * 6)}ms) — ${n.sector}`);
+    say(`  ${i === 0 ? '►' : '→'} ${n.id}.${n.role} (${Math.round(1 + Math.random() * 6)}ms) — ${n.category}`);
   }
   div();
   say(`${hops.length} hops │ Est. ${Math.round(5 + Math.random() * 20)}ms`);
@@ -1814,9 +1821,9 @@ async function cmdDoctor() {
     { name: 'Endpoint reachable', check: () => true },
     { name: 'Manifest exists', check: () => fs.existsSync(path.resolve('cmpsbl-manifest.json')) },
     { name: 'Config directory', check: () => fs.existsSync(path.resolve('.cmpsbl')) },
-    { name: 'Node mesh (40 nodes)', check: () => NODES.length === 40 },
-    { name: 'All nodes online', check: () => NODES.every(n => n.status === 'online') },
-    { name: 'Health > 90% all', check: () => NODES.every(n => n.health >= 90) },
+    { name: 'Primitive matrix (40 primitives)', check: () => NODES.length === 40 },
+    { name: 'All primitives online', check: () => NODES.every(n => n.status === 'online') },
+    { name: 'Health > 90% all primitives', check: () => NODES.every(n => n.health >= 90) },
     { name: 'Memory stream active', check: () => true },
     { name: 'Runtime loaded', check: () => true },
     { name: 'CJPI engine', check: () => typeof computeCJPI === 'function' },
@@ -1843,13 +1850,13 @@ async function cmdDoctor() {
 
 async function cmdWatch(args: string[]) {
   const target = args[0]?.toUpperCase();
-  const watchNodes = target ? NODES.filter(n => n.id === target || n.sector === target) : NODES;
-  if (watchNodes.length === 0) { say(pick(V.err)); say(`No nodes matching "${target}".`); return; }
+  const watchNodes = target ? NODES.filter(n => n.id === target || n.category === target) : NODES;
+  if (watchNodes.length === 0) { say(pick(V.err)); say(`No primitives matching "${target}".`); return; }
 
   if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''}`); say('Showing 8 events (demo):\n'); }
 
   const events: unknown[] = [];
-  const eventTypes = ['intent.resolved', 'health.check', 'mesh.signal', 'resolver.executed', 'memory.observed'];
+  const eventTypes = ['intent.resolved', 'health.check', 'matrix.signal', 'resolver.executed', 'memory.observed'];
   for (let i = 0; i < 8; i++) {
     await sleep(400 + Math.random() * 600);
     const node = watchNodes[Math.floor(Math.random() * watchNodes.length)];
@@ -1871,11 +1878,11 @@ async function cmdLogs(args: string[]) {
   const count = tailIdx >= 0 ? parseInt(args[tailIdx + 1]) || 10 : 10;
   const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
 
-  if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Node "${target}" not found.`); return; }
+  if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Primitive "${target}" not found.`); return; }
 
   const levels = ['INFO', 'DEBUG', 'WARN'];
   const messages = [
-    'resolver executed successfully', 'health check passed', 'mesh signal propagated',
+    'resolver executed successfully', 'health check passed', 'matrix signal propagated',
     'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
     'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
   ];
@@ -1904,14 +1911,14 @@ async function cmdLogs(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdBenchmark() {
-  if (!JSON_MODE) header('Node Latency Benchmark');
+  if (!JSON_MODE) header('Primitive Latency Benchmark');
 
-  const s = !JSON_MODE ? spinner('Benchmarking all nodes...') : null;
+  const s = !JSON_MODE ? spinner('Benchmarking all primitives...') : null;
   const results: Array<{ id: string; sector: string; latency: number }> = [];
 
   for (const node of NODES) {
     await sleep(30);
-    results.push({ id: node.id, sector: node.sector, latency: Math.round(1 + Math.random() * 15) });
+    results.push({ id: node.id, sector: node.category, latency: Math.round(1 + Math.random() * 15) });
     s?.update(`Benchmarking ${node.id}...`);
   }
   s?.stop('Benchmark complete');
@@ -1921,7 +1928,7 @@ async function cmdBenchmark() {
   if (JSON_MODE) { jsonOut(results); return; }
   blank();
 
-  table(['Rank', 'Node', 'Sector', 'Latency'], results.map((r, i) => [
+  table(['Rank', 'Primitive', 'Category', 'Latency'], results.map((r, i) => [
     `#${i + 1}`,
     r.id,
     r.sector,

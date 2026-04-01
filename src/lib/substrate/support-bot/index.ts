@@ -10,8 +10,8 @@
  * - BRAIN (CCR zone): Read-only recall + reinforcement for verified resolutions
  * - DECODE: Intent classification + sentiment detection
  * - VISION: Observability & monitoring
- * - SYSTEM (CCR zone): Ticket state + escalation hooks
- * - GOVERNANCE mesh overlay: Safety checks on responses
+ * - SYSTEM (Organ category): Ticket state + escalation hooks
+ * - GOVERNANCE Layer: Safety checks on responses
  * - KNOWLEDGE BASE: Pre-trained FAQ data for immediate utility
  * - NEXUS: Multi-provider AI routing for response generation
  *
