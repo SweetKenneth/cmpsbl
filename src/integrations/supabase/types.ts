@@ -7922,6 +7922,90 @@ export type Database = {
           },
         ]
       }
+      forge_agents: {
+        Row: {
+          agency_name: string | null
+          agent_name: string
+          agent_type: string
+          ascension_stage: number | null
+          capabilities: Json | null
+          cjpi_score: number | null
+          created_at: string
+          display_name: string | null
+          id: string
+          is_active: boolean
+          loadout_id: string | null
+          metadata: Json | null
+          personality: Json | null
+          primitive_chain: string[] | null
+          specialization: string | null
+          tier_created_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agency_name?: string | null
+          agent_name: string
+          agent_type?: string
+          ascension_stage?: number | null
+          capabilities?: Json | null
+          cjpi_score?: number | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_active?: boolean
+          loadout_id?: string | null
+          metadata?: Json | null
+          personality?: Json | null
+          primitive_chain?: string[] | null
+          specialization?: string | null
+          tier_created_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agency_name?: string | null
+          agent_name?: string
+          agent_type?: string
+          ascension_stage?: number | null
+          capabilities?: Json | null
+          cjpi_score?: number | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          is_active?: boolean
+          loadout_id?: string | null
+          metadata?: Json | null
+          personality?: Json | null
+          primitive_chain?: string[] | null
+          specialization?: string | null
+          tier_created_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      forge_reserved_names: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string | null
+          reserved_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reason?: string | null
+          reserved_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string | null
+          reserved_name?: string
+        }
+        Relationships: []
+      }
       foundry_bias_audit: {
         Row: {
           action: string
