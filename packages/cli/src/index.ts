@@ -2048,10 +2048,26 @@ async function cmdNodes(args: string[]) {
 async function cmdPing(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl ping <node>'); return; }
+  const apiKey = resolveApiKey();
+
+  // Try live ping
+  const result = await substrateCall('system', 'ping', { target, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    say(`Pinging ${target} (LIVE)...`);
+    blank();
+    renderGatewayResponse('system.ping', result.data);
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const node = NODES.find(n => n.id === target);
   if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
-  if (!JSON_MODE) say(`Pinging ${node.id}@${node.category}...`);
+  if (!JSON_MODE) say(`Pinging ${node.id}@${node.category} (local)...`);
   const latencies: number[] = [];
   for (let i = 0; i < 4; i++) {
     await sleep(150 + Math.random() * 200);
