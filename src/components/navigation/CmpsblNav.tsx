@@ -36,6 +36,7 @@ import {
   Play,
   CreditCard,
   Activity,
+  Hammer,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
