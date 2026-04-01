@@ -122,7 +122,7 @@ export function EnhancedFooter() {
                 to="/store?tab=plans" 
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] transition-colors mb-4"
               >
-                View Plans → Builder (free) · Creator · Architect
+                View Plans → Builder (free) · Studio · Creator · Architect
               </Link>
 
               {/* Social Links */}
