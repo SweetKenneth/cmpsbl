@@ -613,6 +613,7 @@ export async function run(args: string[]): Promise<void> {
       case 'forget':       await cmdForget(args.slice(1)); break;
       // ── Engines ──
       case 'forge':        await cmdForge(args.slice(1)); break;
+      case 'loadout':      await cmdLoadout(args.slice(1)); break;
       case 'harvest':      await cmdHarvest(args.slice(1)); break;
       case 'translate':    await cmdTranslate(args.slice(1)); break;
       case 'sandbox':      await cmdSandbox(args.slice(1)); break;
