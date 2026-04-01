@@ -161,6 +161,7 @@ export const publicRoutes = (
     <Route path="/docs/runtime" element={<RuntimeReference />} />
     <Route path="/docs/manifest" element={<CapabilityManifest />} />
     <Route path="/docs/system" element={<DocsReader />} />
+    <Route path="/docs/users" element={<UserDocsReader />} />
     <Route path="/docs/academic-v13" element={<AcademicV13Docs />} />
     <Route path="/docs/engines/:slug" element={<EngineDocsPage />} />
     <Route path="/runtime" element={<RuntimePage />} />
