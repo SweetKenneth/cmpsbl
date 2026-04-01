@@ -159,7 +159,7 @@ const COMMAND_GRAPH: Record<string, Suggestion[]> = {
     { command: 'cmpsbl inspect <NODE>', description: 'Deep inspect' },
   ],
   score: [
-    { command: 'cmpsbl forge', description: 'Synthesize scored blueprints' },
+    { command: 'cmpsbl loadout', description: 'Browse & deploy pre-built loadouts' },
     { command: 'cmpsbl stream', description: 'View memory stream' },
   ],
   config: [
