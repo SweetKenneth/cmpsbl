@@ -10,6 +10,8 @@ import { installProductionLogGuard } from "@/lib/system/productionLogGuard";
 installProductionLogGuard();
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState, lazy, Suspense, useRef } from "react";
+import { useCopyProtection } from "@/hooks/useCopyProtection";
+import { InvisibleWatermark } from "@/components/legal/InvisibleWatermark";
 import { SEOProvider } from "@/contexts/SEOContext";
 
 // Deferred providers — render children immediately, load library lazily
