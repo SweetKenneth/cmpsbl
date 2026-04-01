@@ -1926,14 +1926,59 @@ async function cmdTopology() {
     return;
   }
 
-  header('4-Category Topology');
+  header('12·12·8·8 Primitive Matrix');
+
+  const catMeta: Record<string, { icon: string; color: (s: string) => string; count: number }> = {
+    Organ:  { icon: '⬢', color: c.green,  count: 12 },
+    Layer:  { icon: '◈', color: c.cyan,   count: 12 },
+    Engine: { icon: '◆', color: c.amber,  count: 8 },
+    Agent:  { icon: '●', color: c.magenta ?? c.cyan, count: 8 },
+  };
+
   for (const [cat, nodes] of categories) {
-    const h = Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length);
-    const icon = h >= 98 ? '⬢' : h >= 90 ? '◈' : '◇';
-    say(`${icon} ${cat.padEnd(8)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
+    const meta = catMeta[cat] ?? { icon: '◇', color: c.dim, count: nodes.length };
+    const avgHealth = Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length);
+    blank();
+    say(`  ${meta.color(meta.icon)} ${c.bold(cat.toUpperCase())} ${c.dim(`(${nodes.length}/${meta.count})`)}`);
+    say(c.muted('  ┌────────────────────────────────────────────────┐'));
+
+    // Render nodes in a grid (4 per row)
+    for (let i = 0; i < nodes.length; i += 4) {
+      const row = nodes.slice(i, i + 4);
+      const cells = row.map(n => {
+        const hIcon = n.health >= 98 ? c.green('●') : n.health >= 90 ? c.cyan('◐') : c.amber('◑');
+        return `${hIcon} ${n.id.padEnd(12)}`;
+      }).join(' ');
+      say(`  │  ${cells}${' '.repeat(Math.max(0, 46 - cells.length))}│`);
+    }
+
+    say(c.muted('  └────────────────────────────────────────────────┘'));
+    say(`    ${c.dim(`Avg health: ${healthColor(avgHealth)}  ·  Roles: ${nodes.map(n => n.role).join(', ')}`)}`);
   }
+
+  blank();
   div();
-  say(`${PRIMITIVES.length} primitives │ ${categories.size} categories`);
+
+  // Live signal simulation
+  if (supportsAnimatedOutput()) {
+    say(c.bold('  LIVE SIGNAL INTERCEPT'));
+    blank();
+    const signalPairs = [
+      ['BRAIN', 'MEMORY', 'recall.query'],
+      ['INTENT', 'CORTEX', 'route.resolve'],
+      ['DEFENSE', 'IMMUNITY', 'perimeter.scan'],
+      ['DREAM', 'ECHO', 'resonance.sample'],
+      ['NEXUS', 'RELAY', 'provider.health'],
+      ['EVOLUTION', 'FORGE', 'mutation.candidate'],
+    ];
+    for (const [from, to, signal] of signalPairs) {
+      await sleep(250);
+      say(`    ${c.cyan(from!.padEnd(12))} ${c.dim('→')} ${c.green(to!.padEnd(12))} ${c.muted(signal!)}`);
+    }
+  }
+
+  blank();
+  say(`  ${PRIMITIVES.length} primitives │ ${categories.size} categories │ 12·12·8·8 matrix`);
   say(pick(V.idle));
   blank();
 }
