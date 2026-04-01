@@ -1986,11 +1986,34 @@ async function cmdStatus() {
 }
 
 async function cmdHealth() {
+  const apiKey = resolveApiKey();
   if (!JSON_MODE) header('Primitive Health Report');
   const s = !JSON_MODE ? spinner('Scanning primitives...') : null;
-  await sleep(400);
-  s?.stop('Scan complete');
 
+  // Try live substrate health first
+  const result = await substrateCall('system', 'health', { source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    s?.stop('Live health loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    const primitives = Array.isArray(result.data.primitives) ? result.data.primitives as Record<string, unknown>[] : [];
+    if (primitives.length > 0) {
+      for (const p of primitives) {
+        const h = Number(p.health ?? 100);
+        const icon = h >= 98 ? '●' : h >= 90 ? '◐' : '○';
+        say(`${icon} ${String(p.id ?? p.name ?? '').padEnd(14)} ${progressBar(h, 100, 15)} ${h}%`);
+      }
+    } else {
+      renderGatewayResponse('system.health', result.data);
+    }
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local registry
+  s?.stop('Scan complete (local)');
   const sorted = [...NODES].sort((a, b) => a.health - b.health);
   if (JSON_MODE) { jsonOut(sorted.map(n => ({ id: n.id, health: n.health, status: n.status }))); return; }
 
