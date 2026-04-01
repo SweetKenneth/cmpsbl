@@ -40,6 +40,13 @@ import {
   type WelcomeBackData,
 } from './session';
 import { runInstallWizard } from './install-wizard';
+import {
+  loadSimulation, saveSimulation, createSimulation,
+  getCurrentMission, getCurrentStep, recordCommand,
+  getSimulationSummary, getSimulationBootMessage,
+  collectFeedback, MISSIONS,
+  type SimulationState,
+} from './simulation';
 
 // ═══════════════════════════════════════════════════════════════
 // Personality
@@ -758,6 +765,9 @@ export async function run(args: string[]): Promise<void> {
       case 'advance':      await cmdAdvance(args.slice(1)); break;
       case 'next':         await cmdNext(); break;
       case 'welcome':      await cmdWelcome(); break;
+      // ── Simulation ──
+      case 'simulate': case 'train': case 'learn':
+        await cmdSimulate(args.slice(1)); break;
       // ── Guided ──
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
@@ -824,8 +834,28 @@ export async function run(args: string[]): Promise<void> {
         await cmdThink(args.slice(1)); break;
       case 'test': case 'check':
         await cmdDoctor(); break;
-      case 'setup': case 'start':
-        await cmdInit(args.slice(1), {}); break;
+      case 'setup': case 'start': case 'begin':
+        { const sim = loadSimulation(); if (sim?.active) { await cmdSimulate([]); } else { await cmdInit(args.slice(1), {}); } }
+        break;
+      case 'build': case 'create':
+        await cmdForge(args.slice(1)); break;
+      case 'connect':
+        await cmdLogin(args.slice(1)); break;
+      case 'activate':
+        await cmdLoadout(['activate', ...args.slice(1)]); break;
+      case 'stabilize': case 'recover':
+        await cmdGateway('system.heal', args.slice(1)); break;
+      case 'search': case 'find':
+        await cmdRecall(args.slice(1)); break;
+      case 'agents':
+        await cmdNodes(['--agents']); break;
+      case 'engines':
+        await cmdNodes(['--engines']); break;
+      case 'exit': case 'quit':
+        say('  ' + pick(V.idle));
+        say('  The substrate persists. You can return anytime.');
+        blank();
+        break;
       case 'run':
         if (args[1] === 'dream') { await cmdDream(args.slice(2)); }
         else if (args[1] === 'scan') { await cmdScan(args.slice(2)); }
@@ -850,6 +880,39 @@ export async function run(args: string[]): Promise<void> {
           await handleUnknownCommand(command, args.slice(1));
         }
         break;
+    }
+
+    // ── Simulation progress tracking ──
+    const sim = loadSimulation();
+    if (sim?.active && !JSON_MODE) {
+      const result = recordCommand(sim, command);
+      if (result.stepCompleted) {
+        blank();
+        if (result.missionCompleted && result.celebration) {
+          for (const line of result.celebration) say(`  ${line}`);
+          blank();
+          if (result.graduated) {
+            say(c.bold(c.green('  ◆ SIMULATION COMPLETE — You are a certified substrate operator.')));
+            blank();
+          }
+        } else {
+          const nextStep = getCurrentStep(result.state);
+          if (nextStep) {
+            say(`  ${c.green('✓')} Step complete. Next: ${nextStep.step.instruction}`);
+            say(`  ${c.dim(nextStep.step.hint)}`);
+            blank();
+          }
+        }
+      }
+    }
+
+    // ── Contextual nudge (20% chance, non-intrusive) ──
+    if (!JSON_MODE && command !== 'help' && command !== 'shell' && command !== 'simulate' && Math.random() < 0.2) {
+      const nudge = getContextualNudge(command, sim);
+      if (nudge) {
+        blank();
+        say(`  ${c.dim('◇')} ${c.dim(nudge)}`);
+      }
     }
 
     // Print next-step suggestions (unless JSON mode)
@@ -980,6 +1043,11 @@ function printHelp() {
                                  cmpsbl system.heal BRAIN force
                                  cmpsbl evolution.evolve shadow
                                  cmpsbl atlas.capabilities
+
+  ── Simulation ─────────────────────────────────
+    simulate                Start/resume the guided substrate simulation
+    simulate status         View simulation progress & health
+    simulate skip           Exit simulation early (collects feedback)
 
   ── Interactive ──────────────────────────────────
     shell                   Interactive REPL session
@@ -1129,9 +1197,13 @@ async function cmdOnboarding() {
         await cmdInit([], { skipCeremony: true });
         // After init, offer the First Dream
         await offerFirstDream();
+        // Offer optional simulation
+        await offerSimulation();
       } else {
         say('No problem. Run `cmpsbl init` when you\'re ready.');
         say(pick(V.idle));
+        // Still offer simulation for non-project users
+        await offerSimulation();
         blank();
       }
       resolve();
@@ -1160,6 +1232,7 @@ async function cmdShell() {
     'topology', 'route', 'benchmark', 'diff', 'changelog',
     'think', 'reflect', 'remember', 'forget',
     'name', 'todo', 'done', 'pin', 'unpin', 'goal', 'advance', 'next', 'welcome',
+    'simulate', 'train', 'learn',
     'forge', 'harvest', 'translate', 'sandbox',
     'scan', 'predict', 'audit', 'cost',
     'threat', 'immune', 'govern', 'treaty',
@@ -1563,6 +1636,38 @@ async function offerFirstDream() {
       resolve();
     });
   });
+}
+
+async function offerSimulation(): Promise<void> {
+  const sim = loadSimulation();
+  if (sim) return; // Already started or completed — don't re-offer
+
+  if (!isInteractiveTTY()) {
+    say(`  ${c.dim('Tip:')} Run ${c.cyan('cmpsbl simulate')} to try the guided substrate walkthrough.`);
+    blank();
+    return;
+  }
+
+  blank();
+  say(c.dim('  ─────────────────────────────────────────────'));
+  say(`  ${c.bold('One more thing.')} The founder created an optional guided`);
+  say('  simulation to help new developers learn the substrate.');
+  say('  5 missions. Exit anytime. Your feedback helps us improve.');
+  say(c.dim('  ─────────────────────────────────────────────'));
+  blank();
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await new Promise<string>(resolve =>
+    rl.question(`  Try the simulation? [Y/n] `, (a: string) => { rl.close(); resolve(a.trim().toLowerCase()); })
+  );
+
+  if (answer === 'n' || answer === 'no') {
+    say(`  No problem. Run ${c.cyan('cmpsbl simulate')} anytime.`);
+    blank();
+    return;
+  }
+
+  await cmdSimulate([]);
 }
 
 async function runFirstDream() {
@@ -4218,10 +4323,197 @@ async function cmdNext() {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════
+// §SIMULATE — Optional Guided Substrate Simulation
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdSimulate(args: string[]): Promise<void> {
+  const sub = args[0]?.toLowerCase();
+
+  // Status check
+  if (sub === 'status') {
+    const sim = loadSimulation();
+    if (!sim) {
+      say('  No simulation in progress.');
+      say(`  Run ${c.cyan('cmpsbl simulate')} to start the guided experience.`);
+      blank();
+      return;
+    }
+    blank();
+    box(getSimulationSummary(sim), 'SIMULATION');
+    blank();
+    return;
+  }
+
+  // Skip / exit
+  if (sub === 'skip' || sub === 'exit' || sub === 'quit') {
+    const sim = loadSimulation();
+    if (!sim || !sim.active) {
+      say('  No active simulation to exit.');
+      blank();
+      return;
+    }
+
+    blank();
+    say('  Exiting simulation. We\'d love your feedback to improve the experience.');
+    blank();
+    const fb = await collectFeedback(sim);
+    blank();
+    say(`  ${c.green('✓')} Feedback recorded. Thank you.`);
+    say('  You now have full access to all substrate commands.');
+    say(`  Run ${c.cyan('cmpsbl help')} to see everything available.`);
+    blank();
+    return;
+  }
+
+  // Start or resume
+  let sim = loadSimulation();
+
+  if (sim?.graduated) {
+    say('  You\'ve already graduated from the simulation.');
+    say('  All substrate commands are available to you.');
+    say(`  Run ${c.cyan('cmpsbl help')} to explore.`);
+    blank();
+    return;
+  }
+
+  if (!sim || !sim.active) {
+    // First time — offer the simulation
+    blank();
+    say(c.bold('  ◈ SUBSTRATE SIMULATION'));
+    blank();
+    say('  Created by the founder to help new developers');
+    say('  familiarize themselves with the cognitive substrate.');
+    blank();
+    say('  You\'ll guide a degraded system back to full health');
+    say('  through 5 missions, learning core commands along the way.');
+    blank();
+    say('  • Completely optional — exit anytime with ' + c.cyan('cmpsbl simulate skip'));
+    say('  • Your progress is saved between sessions');
+    say('  • All commands remain available during the simulation');
+    blank();
+
+    if (!isInteractiveTTY()) {
+      sim = createSimulation();
+      saveSimulation(sim);
+    } else {
+      const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+      const answer = await new Promise<string>(resolve =>
+        rl.question('  Begin the simulation? [Y/n] ', (a: string) => { rl.close(); resolve(a.trim().toLowerCase()); })
+      );
+      if (answer === 'n' || answer === 'no') {
+        say('  No problem. The simulation is here if you want it later.');
+        say(`  Run ${c.cyan('cmpsbl simulate')} anytime.`);
+        blank();
+        return;
+      }
+      sim = createSimulation();
+      saveSimulation(sim);
+    }
+  }
+
+  // Show current mission narrative
+  const mission = getCurrentMission(sim);
+  const step = getCurrentStep(sim);
+  if (!mission || !step) {
+    say('  Simulation state unclear. Run ' + c.cyan('cmpsbl simulate status'));
+    blank();
+    return;
+  }
+
+  blank();
+  say(c.muted('  ┌─────────────────────────────────────────────────┐'));
+  say(c.muted('  │') + c.bold(c.cyan(`  MISSION ${mission.id}: ${mission.name}`)) + ' '.repeat(Math.max(0, 35 - mission.name.length)) + c.muted('│'));
+  say(c.muted('  │') + `  System Health: ${sim.systemHealth}%` + ' '.repeat(30) + c.muted('│'));
+  say(c.muted('  │') + c.muted('                                                 │'));
+  say(c.muted('  └─────────────────────────────────────────────────┘'));
+  blank();
+
+  for (const line of mission.narrative) {
+    say(line ? `  ${line}` : '');
+    await sleep(80);
+  }
+  blank();
+
+  // Show steps with completion status
+  say(c.bold('  Steps:'));
+  for (let i = 0; i < mission.steps.length; i++) {
+    const s = mission.steps[i];
+    const status = s.completedAt ? c.green('✓') : (i === step.stepIndex ? c.cyan('→') : c.dim('○'));
+    say(`  ${status} ${i + 1}. ${s.instruction}`);
+    if (!s.completedAt && i === step.stepIndex) {
+      say(`     ${c.dim(s.hint)}`);
+    }
+  }
+  blank();
+  say(c.dim('  Exit anytime: cmpsbl simulate skip'));
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Contextual Nudge Engine
+// ═══════════════════════════════════════════════════════════════
+
+function getContextualNudge(lastCommand: string, sim: SimulationState | null): string | null {
+  // Simulation-aware nudges
+  if (sim?.active) {
+    const step = getCurrentStep(sim);
+    if (step && lastCommand !== step.step.requiredCommand) {
+      return `Simulation Mission ${sim.currentMission}: ${step.step.instruction} (${step.step.hint})`;
+    }
+    return null;
+  }
+
+  // General contextual nudges for non-simulation users
+  const nudges: Record<string, string[]> = {
+    health: [
+      'Run cmpsbl dream --watch to see what the substrate thinks about while idle.',
+      'Try cmpsbl topology for a visual map of all 40 primitives.',
+    ],
+    status: [
+      'Use cmpsbl witness to observe the substrate narrating itself in real-time.',
+      'Try cmpsbl recall to search across all memory tiers.',
+    ],
+    think: [
+      'Your thought was processed by BRAIN. Run cmpsbl stream to see it in the Memory Stream.',
+      'Try cmpsbl reflect for ECHO resonance patterns from your recent interactions.',
+    ],
+    dream: [
+      'DREAM operates autonomously every 8 hours. No AI — pure algorithmic synthesis.',
+      'Try cmpsbl crown to see which Crown Jewel capabilities have been discovered.',
+    ],
+    forge: [
+      'Loadouts from Signal Forge can be activated with cmpsbl loadout activate <id>.',
+      'Run cmpsbl scan on a URL to see INCLUSIVE accessibility analysis.',
+    ],
+    doctor: [
+      'For deeper inspection, try cmpsbl inspect <PRIMITIVE> on any failing node.',
+      'Run cmpsbl heal to trigger the self-repair protocol.',
+    ],
+  };
+
+  const options = nudges[lastCommand];
+  if (!options) return null;
+  return pick(options);
+}
+
 async function cmdWelcome() {
   const data = getWelcomeBackData();
   if (JSON_MODE) { jsonOut(data); return; }
+
+  // Surface simulation status on welcome
+  const sim = loadSimulation();
+  const simBoot = getSimulationBootMessage(sim);
+
   await renderWelcomeBack(data);
+
+  // Show simulation status after welcome if active
+  if (simBoot) {
+    blank();
+    for (const line of simBoot) say(line);
+    blank();
+  }
+
   markDreamDigestChecked();
 }
 
