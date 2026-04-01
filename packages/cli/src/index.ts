@@ -2874,49 +2874,39 @@ async function cmdForget(args: string[]) {
 
 async function cmdForge(args: string[]) {
   const topic = args.join(' ') || 'system topology';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('FORGE — Signal Forge Loadout Synthesis');
-
   const s = !JSON_MODE ? spinner('Mapping capabilities across 40 primitives...') : null;
-  const forgePhases = [
-    'Scanning primitive capability matrix...',
-    'Identifying unexplored combinations...',
-    'Simulating pipeline candidates...',
-    'CJPI validation pass...',
-    'Crystallizing loadout...',
-  ];
-  for (const p of forgePhases) {
-    await sleep(500 + Math.random() * 400);
-    s?.update(p);
+
+  const result = await substrateCall('forge', 'synthesize', { topic, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Loadout synthesized');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    const data = result.data;
+    const name = String(data.name ?? data.loadout_name ?? topic);
+    const primitives = Array.isArray(data.primitives) ? (data.primitives as string[]).join(' → ') : '';
+    const cjpi = Number(data.cjpi ?? data.score ?? 0);
+    const tier = String(data.tier ?? 'Prime');
+    box([
+      `⬢ LOADOUT DISCOVERED`,
+      '',
+      `Name:       ${name}`,
+      primitives ? `Primitives: ${primitives}` : '',
+      `CJPI:       ${cjpi}`,
+      `Tier:       ${tier}`,
+      '',
+      'Status: Ready to deploy',
+    ].filter(Boolean), 'FORGE');
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  s?.stop('Loadout synthesized');
 
-  const loadouts = [
-    { name: 'adaptive-cache-guardian', primitives: ['MEMORY', 'DEFENSE', 'REFLEX'], cjpi: 78, tier: 'Prime' },
-    { name: 'predictive-healing-pipeline', primitives: ['ORACLE', 'MEDIC', 'NERVE'], cjpi: 85, tier: 'Relic' },
-    { name: 'semantic-threat-correlator', primitives: ['BRAIN', 'DEFENSE', 'SHADOW'], cjpi: 91, tier: 'Mythic' },
-    { name: 'autonomous-compliance-auditor', primitives: ['AUDIT', 'GOVERNANCE', 'CONSCIENCE'], cjpi: 72, tier: 'Prime' },
-    { name: 'dream-forge-feedback-loop', primitives: ['DREAM', 'FORGE', 'ECHO'], cjpi: 94, tier: 'Apex' },
-  ];
-  const lo = loadouts[Math.floor(Math.random() * loadouts.length)];
-
-  if (JSON_MODE) { jsonOut({ topic, loadout: lo }); return; }
-
-  blank();
-  box([
-    `⬢ LOADOUT DISCOVERED`,
-    '',
-    `Name:       ${lo.name}`,
-    `Primitives: ${lo.primitives.join(' → ')}`,
-    `CJPI:       ${lo.cjpi}`,
-    `Tier:       ${lo.tier}`,
-    '',
-    'Status: Ready to deploy',
-  ], 'FORGE');
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Synthesis failed');
+  renderOfflineFallback(result, 'forge.synthesize');
 }
 
 // ═══════════════════════════════════════════════════════════════
