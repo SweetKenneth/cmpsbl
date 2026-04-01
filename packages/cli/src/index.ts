@@ -834,8 +834,28 @@ export async function run(args: string[]): Promise<void> {
         await cmdThink(args.slice(1)); break;
       case 'test': case 'check':
         await cmdDoctor(); break;
-      case 'setup': case 'start':
-        await cmdInit(args.slice(1), {}); break;
+      case 'setup': case 'start': case 'begin':
+        { const sim = loadSimulation(); if (sim?.active) { await cmdSimulate([]); } else { await cmdInit(args.slice(1), {}); } }
+        break;
+      case 'build': case 'create':
+        await cmdForge(args.slice(1)); break;
+      case 'connect':
+        await cmdLogin(args.slice(1)); break;
+      case 'activate':
+        await cmdLoadout(['activate', ...args.slice(1)]); break;
+      case 'stabilize': case 'recover':
+        await cmdGateway('system.heal', args.slice(1)); break;
+      case 'search': case 'find':
+        await cmdRecall(args.slice(1)); break;
+      case 'agents':
+        await cmdNodes(['--agents']); break;
+      case 'engines':
+        await cmdNodes(['--engines']); break;
+      case 'exit': case 'quit':
+        say('  ' + pick(V.idle));
+        say('  The substrate persists. You can return anytime.');
+        blank();
+        break;
       case 'run':
         if (args[1] === 'dream') { await cmdDream(args.slice(2)); }
         else if (args[1] === 'scan') { await cmdScan(args.slice(2)); }
