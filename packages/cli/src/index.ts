@@ -974,9 +974,7 @@ async function cmdShell() {
       if (trimmed === 'exit' || trimmed === 'quit') {
         // Save session bookmark on exit
         saveBookmark('Interactive shell session', trimmed);
-        sayOk(pick(V.ok));
-        say('Session bookmarked. See you next time.');
-        blank();
+        await substrateExit();
         rl.close();
         resolve();
         return;
