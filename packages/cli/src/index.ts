@@ -3378,39 +3378,25 @@ async function cmdImmune(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdGovern(args: string[]) {
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('GOVERNANCE — Policy Status');
-
   const s = !JSON_MODE ? spinner('Querying governance state machine...') : null;
-  await sleep(400);
-  s?.stop('Governance loaded');
 
-  const modes = ['PERMISSIVE', 'STANDARD', 'STRICT', 'LOCKDOWN', 'EMERGENCY'];
-  const currentMode = modes[1]; // STANDARD as default
-  const policies = [
-    { name: 'mutation-budget', status: 'enforced', violations: 0 },
-    { name: 'rate-limiting', status: 'enforced', violations: Math.round(Math.random() * 2) },
-    { name: 'data-sovereignty', status: 'enforced', violations: 0 },
-    { name: 'model-selection', status: 'enforced', violations: 0 },
-    { name: 'cost-ceiling', status: 'enforced', violations: Math.round(Math.random() * 1) },
-  ];
-  const driftScore = +(Math.random() * 0.1).toFixed(3);
-
-  if (JSON_MODE) { jsonOut({ mode: currentMode, policies, driftScore, auditChainIntact: true }); return; }
-
-  blank();
-  say(`  Mode:        ${currentMode}`);
-  say(`  Drift Score: ${driftScore} (Jaccard distance)`);
-  say(`  Audit Chain: ✔ Intact (FNV-1a verified)`);
-  blank();
-  for (const p of policies) {
-    const icon = p.violations === 0 ? '✔' : '⚠';
-    say(`  ${icon} ${p.name.padEnd(20)} ${p.status}${p.violations > 0 ? ` (${p.violations} violation${p.violations > 1 ? 's' : ''})` : ''}`);
+  const result = await substrateCall('governance', 'status', { source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Governance loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('governance.status', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Governance query failed');
+  renderOfflineFallback(result, 'governance.status');
 }
 
 async function cmdTreaty(args: string[]) {
