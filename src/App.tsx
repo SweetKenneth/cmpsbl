@@ -101,6 +101,9 @@ const queryClient = new QueryClient({
 const App = () => {
   const isPreviewEnv = isEditorPreviewEnv();
 
+  // Copy protection: disable right-click, text selection, copy shortcuts
+  useCopyProtection();
+
   const previewParams = (() => {
     try {
       const url = new URL(window.location.href);
