@@ -48,6 +48,12 @@ export const c = {
   magenta:  (s: string) => ansi('38;5;199', s),   // --neon-magenta
   blue:     (s: string) => ansi('38;5;33', s),    // --neon-blue
 
+  // Standard colors (aliases for convenience)
+  red:      (s: string) => ansi('38;5;196', s),    // red
+  yellow:   (s: string) => ansi('38;5;220', s),    // yellow
+  white:    (s: string) => ansi('38;5;255', s),    // white
+  gray:     (s: string) => ansi('38;5;242', s),    // gray
+
   // Semantic colors
   success:  (s: string) => ansi('38;5;35', s),    // green
   error:    (s: string) => ansi('38;5;196', s),    // red
