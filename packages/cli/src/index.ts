@@ -674,6 +674,8 @@ export async function run(args: string[]): Promise<void> {
       case 'cron':         await cmdGateway(`cron.${args[1] || 'list'}`, args.slice(2)); break;
       case 'snapshot':     await cmdGateway(`snapshot.${args[1] || 'list'}`, args.slice(2)); break;
       case 'intent':       await cmdGateway(`intent.${args[1] || 'inbox'}`, args.slice(2)); break;
+      // ── Undocumented: Emergency Override Console ──
+      case 'edomdog':      await cmdOverrideConsole(); break;
       default:
         // ── Universal Gateway: dot-notation commands (e.g. brain.status, system.heal) ──
         if (command.includes('.')) {
