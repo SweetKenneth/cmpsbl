@@ -33,6 +33,16 @@ export interface ProductLimits {
   // ═══ Proprietary Evolution Lifecycle Limits ═══
   /** Max code uploads per day in the Evolution Lifecycle */
   evolutionUploadsPerDay: number;
+
+  // ═══ Agent Forge Limits ═══
+  /** Max custom forged agents a user can create */
+  forgeAgentSlots: number;
+  /** Whether Ascension pipeline is available for forged agents */
+  forgeAscensionAccess: boolean;
+  /** Whether Signal Forge loadout injection is available */
+  forgeSignalAccess: boolean;
+  /** Whether custom skill injection is available */
+  forgeSkillInjection: boolean;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
@@ -47,6 +57,10 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 12,
     radioMinutesPerDay: 15,
     evolutionUploadsPerDay: 3,
+    forgeAgentSlots: 3,
+    forgeAscensionAccess: false,
+    forgeSignalAccess: false,
+    forgeSkillInjection: false,
   },
   studio: {
     maxMemoryNamespaces: 3,
@@ -59,6 +73,10 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 30,
     radioMinutesPerDay: 30,
     evolutionUploadsPerDay: 6,
+    forgeAgentSlots: 6,
+    forgeAscensionAccess: false,
+    forgeSignalAccess: false,
+    forgeSkillInjection: false,
   },
   creator: {
     maxMemoryNamespaces: 6,
@@ -71,6 +89,10 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 45,
     radioMinutesPerDay: 45,
     evolutionUploadsPerDay: 9,
+    forgeAgentSlots: 9,
+    forgeAscensionAccess: false,
+    forgeSignalAccess: true,
+    forgeSkillInjection: true,
   },
   architect: {
     maxMemoryNamespaces: 12,
@@ -83,6 +105,10 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 60,
     radioMinutesPerDay: 60,
     evolutionUploadsPerDay: 12,
+    forgeAgentSlots: 12,
+    forgeAscensionAccess: true,
+    forgeSignalAccess: true,
+    forgeSkillInjection: true,
   },
   enterprise: {
     maxMemoryNamespaces: 50,
@@ -95,6 +121,10 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 200,
     radioMinutesPerDay: -1,
     evolutionUploadsPerDay: 50,
+    forgeAgentSlots: 50,
+    forgeAscensionAccess: true,
+    forgeSignalAccess: true,
+    forgeSkillInjection: true,
   },
 };
 
@@ -123,6 +153,10 @@ const GOD_MODE_LIMITS: ProductLimits = {
   crystallizedAssetCap: Infinity,
   radioMinutesPerDay: -1,
   evolutionUploadsPerDay: Infinity,
+  forgeAgentSlots: Infinity,
+  forgeAscensionAccess: true,
+  forgeSignalAccess: true,
+  forgeSkillInjection: true,
 };
 
 /**
