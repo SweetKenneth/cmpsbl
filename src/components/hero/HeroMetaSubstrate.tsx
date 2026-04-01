@@ -279,9 +279,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/foundry">
+                <Link to="/auth">
                   <Sparkles className="w-4 h-4" />
-                  Memory Stream
+                  Log In
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -289,12 +289,12 @@ export function HeroMetaSubstrate() {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98] font-mono"
               >
-                <Link to="/ascension">
-                  <Zap className="w-4 h-4" />
-                  Try Ascension
-                </Link>
+                <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer">
+                  <Terminal className="w-4 h-4" />
+                  npm i -g @cmpsbl/cli
+                </a>
               </Button>
             </FadeIn>
 
