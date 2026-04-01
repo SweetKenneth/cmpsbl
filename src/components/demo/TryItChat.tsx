@@ -121,7 +121,7 @@ export function TryItChat({ className }: { className?: string }) {
             <Sparkles className="w-4 h-4 text-primary" />
           </div>
           <div>
-            <h3 className="text-sm font-bold leading-tight">NEXUS Chat</h3>
+            <h3 className="text-sm font-bold leading-tight">Persistent Chat</h3>
             <p className="text-[10px] text-muted-foreground font-mono leading-tight">
               Live routing · Persistent memory
             </p>
