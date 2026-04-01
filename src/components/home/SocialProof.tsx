@@ -91,7 +91,7 @@ export function SocialProof() {
                   <Star key={j} className="w-3.5 h-3.5 fill-[hsl(var(--neon-cyan))] text-[hsl(var(--neon-cyan))] group-hover:drop-shadow-[0_0_4px_hsl(var(--neon-cyan)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
                 ))}
               </div>
-              <p className="text-sm text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
+              <p className="text-sm sm:text-base text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-3 border-t border-border/30">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] flex items-center justify-center text-[10px] font-bold text-[hsl(var(--neon-purple))]">{t.author.charAt(0)}</div>
                 <div>
