@@ -3330,40 +3330,25 @@ async function cmdCost(args: string[]) {
 async function cmdThreat(args: string[]) {
   const input = args.join(' ');
   if (!input) { say('Usage: cmpsbl threat <input to analyze>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('DEFENSE — Threat Analysis');
-
   const s = !JSON_MODE ? spinner('Running threat evaluation...') : null;
-  await sleep(300);
-  s?.update('Trie-based path matching...');
-  await sleep(300);
-  s?.update('Behavioral analysis (Z-score)...');
-  await sleep(300);
-  s?.update('Kill-chain correlation...');
-  await sleep(300);
-  s?.stop('Analysis complete');
 
-  const threatScore = +(Math.random() * 0.6).toFixed(2);
-  const severity = threatScore > 0.4 ? 'HIGH' : threatScore > 0.2 ? 'MEDIUM' : 'LOW';
-  const signals = [
-    'No injection patterns detected',
-    'Unicode normalization: clean',
-    'Behavioral pattern: within baseline',
-    threatScore > 0.3 ? 'Anomaly: unusual token distribution' : 'Token distribution: normal',
-  ];
-  const action = threatScore > 0.4 ? 'BLOCK' : threatScore > 0.2 ? 'FLAG' : 'ALLOW';
+  const result = await substrateCall('defense', 'threat_analyze', { input, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Analysis complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('defense.threat_analyze', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
 
-  if (JSON_MODE) { jsonOut({ input: input.slice(0, 50), threatScore, severity, action, signals }); return; }
-
-  blank();
-  say(`  Threat Score: ${(threatScore * 100).toFixed(0)}% [${severity}]`);
-  say(`  Action:       ${action}`);
-  blank();
-  for (const sig of signals) say(`  ${sig.startsWith('Anomaly') ? '⚠' : '✔'} ${sig}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Analysis failed');
+  renderOfflineFallback(result, 'defense.threat_analyze');
 }
 
 async function cmdImmune(args: string[]) {
