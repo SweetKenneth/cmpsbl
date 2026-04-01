@@ -2260,10 +2260,32 @@ async function cmdDoctor() {
 
 async function cmdWatch(args: string[]) {
   const target = args[0]?.toUpperCase();
+  const apiKey = resolveApiKey();
+
+  // Try live watch via substrate
+  const result = await substrateCall('vision', 'watch', { target: target ?? 'all', limit: 8, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    header(`Live Watch${target ? ` (${target})` : ''} — LIVE`);
+    blank();
+    const events = Array.isArray(result.data.events) ? result.data.events as Record<string, unknown>[] :
+      Array.isArray(result.data) ? result.data as unknown as Record<string, unknown>[] : [];
+    for (const ev of events.slice(0, 20)) {
+      const ts = String(ev.timestamp ?? ev.time ?? new Date().toISOString()).slice(11, 23);
+      say(`[${ts}] ${String(ev.node ?? ev.source ?? '').padEnd(14)} ${String(ev.event ?? ev.action ?? '')}`);
+    }
+    div();
+    say(`${events.length} events.`);
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const watchNodes = target ? NODES.filter(n => n.id === target || n.category === target) : NODES;
   if (watchNodes.length === 0) { say(pick(V.err)); say(`No primitives matching "${target}".`); return; }
 
-  if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''}`); say('Showing 8 events (demo):\n'); }
+  if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''} (LOCAL)`); say('Showing 8 events:\n'); }
 
   const events: unknown[] = [];
   const eventTypes = ['intent.resolved', 'health.check', 'matrix.signal', 'resolver.executed', 'memory.observed'];
