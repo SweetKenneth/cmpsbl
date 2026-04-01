@@ -57,7 +57,7 @@ export function HowCmpsblWorks() {
 
             {/* CMPSBL */}
             <div className="rounded-xl border border-[hsl(var(--neon-cyan)/0.2)] bg-[hsl(var(--neon-cyan)/0.05)] p-5">
-              <div className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
+              <div className="text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
               <div className="flex flex-col items-center gap-2">
                 {cmpsblStack.map((item, i) => (
                   <div key={item} className="flex flex-col items-center gap-2">
