@@ -2690,45 +2690,37 @@ async function cmdReflect(args: string[]) {
 async function cmdRemember(args: string[]) {
   const input = args.join(' ');
   if (!input) { say('Usage: cmpsbl remember <input>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
-  const tiers = ['HOT', 'WARM', 'COLD'] as const;
-  const tier = tiers[Math.floor(Math.random() * 2)]; // mostly HOT or WARM for new entries
-  const chainId = `mem-${Date.now().toString(36)}`;
-  const fingerprint = Array.from({ length: 12 }, () => '0123456789abcdef'[Math.floor(Math.random() * 16)]).join('');
-  const wordCount = input.split(/\s+/).length;
-  const semanticWeight = (0.6 + Math.random() * 0.35).toFixed(3);
+  if (!JSON_MODE) header('MEMORY — Crystallization');
+
+  const s = !JSON_MODE ? spinner('Storing to substrate memory...') : null;
+
+  const result = await substrateCall('memory', 'store', {
+    content: input,
+    source: 'cli',
+    tier: 'HOT',
+  }, apiKey);
+
+  if (!result.success) {
+    s?.stop('Storage failed');
+    if (JSON_MODE) { jsonOut({ stored: false, error: result.error }); return; }
+    renderOfflineFallback(result, 'memory.store');
+    return;
+  }
+
+  s?.stop('Memory crystallized');
+
+  const data = result.data ?? {};
+  const chainId = String(data.chain_id ?? data.chainId ?? data.id ?? `mem-${Date.now().toString(36)}`);
+  const tier = String(data.tier ?? 'HOT');
+  const fingerprint = String(data.fingerprint ?? data.hash ?? '');
+  const semanticWeight = String(data.weight ?? data.semantic_weight ?? '');
 
   if (JSON_MODE) { jsonOut({ stored: true, chainId, tier, fingerprint, input }); return; }
 
-  header('MEMORY — Crystallization');
-
-  // Phase 1: Intake — the substrate receives the memory
-  const s1 = spinner('MEMORY Organ receiving input...');
-  await sleep(randomInt(400, 600));
-  s1.stop(`Input received — ${wordCount} tokens, ${input.length} chars`);
-
-  // Phase 2: Routing — show primitives waking up
-  const s2 = spinner('Routing through primitive matrix...');
-  await sleep(randomInt(300, 500));
-  s2.stop('BRAIN → MEMORY → ECHO pathway established');
-
-  // Phase 3: Embedding
-  const s3 = spinner('Computing semantic embedding...');
-  await sleep(randomInt(500, 700));
-  s3.stop(`Embedding crystallized — weight ${semanticWeight}`);
-
-  // Phase 4: Tier placement
   const tierColors: Record<string, (s: string) => string> = { HOT: c.error, WARM: c.amber, COLD: c.cyan };
   const tierColor = tierColors[tier] ?? c.muted;
-  const s4 = spinner('Assigning memory tier...');
-  await sleep(randomInt(300, 500));
-  s4.stop(`Tier: ${tierColor(tier)} — ${tier === 'HOT' ? 'instant recall' : tier === 'WARM' ? 'near-term recall' : 'deep archive'}`);
-
-  // Phase 5: Stream binding
-  const s5 = spinner('Binding to Memory Stream...');
-  await sleep(randomInt(400, 600));
-  s5.stop('Memory Stream updated — next DREAM cycle will process');
 
   // ── Crystallization receipt ──
   blank();
@@ -2737,15 +2729,15 @@ async function cmdRemember(args: string[]) {
   say(c.muted('  ├─────────────────────────────────────────────┤'));
   say(c.muted('  │') + `  ${c.bold('Chain')}        ${c.cyan(chainId)}` + ' '.repeat(Math.max(0, 27 - chainId.length)) + c.muted('│'));
   say(c.muted('  │') + `  ${c.bold('Tier')}         ${tierColor(tier)}` + ' '.repeat(Math.max(0, 31 - tier.length)) + c.muted('│'));
-  say(c.muted('  │') + `  ${c.bold('Fingerprint')}  ${c.dim(fingerprint)}` + ' '.repeat(Math.max(0, 24 - fingerprint.length)) + c.muted('│'));
-  say(c.muted('  │') + `  ${c.bold('Weight')}       ${semanticWeight}` + ' '.repeat(Math.max(0, 28 - semanticWeight.length)) + c.muted('│'));
+  if (fingerprint) say(c.muted('  │') + `  ${c.bold('Fingerprint')}  ${c.dim(fingerprint)}` + ' '.repeat(Math.max(0, 24 - fingerprint.length)) + c.muted('│'));
+  if (semanticWeight) say(c.muted('  │') + `  ${c.bold('Weight')}       ${semanticWeight}` + ' '.repeat(Math.max(0, 28 - semanticWeight.length)) + c.muted('│'));
   say(c.muted('  │') + `  ${c.bold('Input')}        ${c.dim('"' + input.slice(0, 28) + (input.length > 28 ? '…' : '') + '"')}` + ' '.repeat(Math.max(0, 2)) + c.muted('│'));
   say(c.muted('  ├─────────────────────────────────────────────┤'));
   say(c.muted('  │') + c.dim('  This memory will compound with every DREAM  ') + c.muted('│'));
   say(c.muted('  │') + c.dim('  cycle. Your substrate grows smarter tonight. ') + c.muted('│'));
   say(c.muted('  └─────────────────────────────────────────────┘'));
   blank();
-  say(c.dim(`  Recall: ${c.cyan('cmpsbl stream')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
+  say(c.dim(`  Recall: ${c.cyan('cmpsbl recall <query>')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
   blank();
 
   // Track memory for session continuity
@@ -2756,15 +2748,22 @@ async function cmdRemember(args: string[]) {
 async function cmdForget(args: string[]) {
   const chainId = args[0];
   if (!chainId) { say('Usage: cmpsbl forget <chain-id>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) {
     const s = spinner(`Pruning chain ${chainId}...`);
-    await sleep(600);
+    const result = await substrateCall('memory', 'prune', { chain_id: chainId }, apiKey);
+    if (!result.success) {
+      s.stop('Prune failed');
+      renderOfflineFallback(result, 'memory.prune');
+      return;
+    }
     s.stop('Chain pruned');
+  } else {
+    const result = await substrateCall('memory', 'prune', { chain_id: chainId }, apiKey);
+    jsonOut({ pruned: result.success, chainId, error: result.error });
+    return;
   }
-
-  if (JSON_MODE) { jsonOut({ pruned: true, chainId }); return; }
 
   blank();
   say(`  ✓ Chain ${chainId} removed from Memory Stream`);
