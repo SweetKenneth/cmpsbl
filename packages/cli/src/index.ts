@@ -713,7 +713,8 @@ function printHelp() {
     score <n> <u> <c> <m>   Score with CJPI algorithm
 
   ── Engines ──────────────────────────────────────
-    forge [topic]           Signal Forge blueprint synthesis
+    forge [topic]           Signal Forge loadout synthesis
+    loadout [list|build]    Browse & deploy pre-built projects
     harvest <url>           HARVEST data extraction
     translate <text>        LINGUA language processing
     sandbox <script>        SANDBOX safe code execution
