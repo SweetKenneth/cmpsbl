@@ -1675,22 +1675,31 @@ async function cmdDream(args: string[]) {
   const watchMode = args.includes('--watch') || args.includes('--live');
   const lastMode = args.includes('--last');
 
-  if (JSON_MODE) {
-    const patterns = ['cache-invalidation-cascade', 'intent-deduplication-window', 'memory-tier-promotion-trigger', 'resolver-fallback-chain'];
-    const pattern = patterns[Math.floor(Math.random() * patterns.length)];
-    const confidence = +(0.8 + Math.random() * 0.15).toFixed(2);
-    jsonOut({ pattern, confidence, status: 'crystallized', memoryStream: true });
-    return;
-  }
-
   if (lastMode) {
-    // Show recent DREAM digest
+    // Show recent DREAM digest from substrate
+    const result = await substrateCall('dream', 'digest', { limit: 10 }, apiKey);
+    if (result.success && result.data) {
+      const entries = Array.isArray(result.data.entries) ? result.data.entries as Record<string, unknown>[] :
+        Array.isArray(result.data.digest) ? result.data.digest as Record<string, unknown>[] : [];
+      if (entries.length > 0) {
+        if (JSON_MODE) { jsonOut({ digest: entries }); return; }
+        header('DREAM Digest');
+        for (const entry of entries.slice(0, 10)) {
+          say(`  ${c.green('◇')} ${String(entry.insight ?? entry.content ?? entry.pattern ?? '')}`);
+          say(`    ${c.dim(`Source: ${String(entry.source ?? 'dream')} · ${String(entry.crystallized_at ?? entry.created_at ?? '')}`)}`);
+          blank();
+        }
+        return;
+      }
+    }
+    // Fallback to local digest
     const digest = getDreamDigestSinceLastSession();
     if (digest.length === 0) {
       say(c.dim('  No new DREAM insights since last session.'));
       blank();
       return;
     }
+    if (JSON_MODE) { jsonOut({ digest }); return; }
     header('DREAM Digest');
     for (const entry of digest.slice(0, 10)) {
       say(`  ${c.green('◇')} ${entry.insight}`);
@@ -1701,12 +1710,50 @@ async function cmdDream(args: string[]) {
   }
 
   if (watchMode) {
-    // Live DREAM visualization
     await dreamLiveWatch(apiKey);
     return;
   }
 
-  await runFirstDream();
+  // Standard dream cycle — call real API
+  if (!JSON_MODE) header('DREAM ENGINE — Cycle');
+  const s = !JSON_MODE ? spinner('Initiating DREAM cycle...') : null;
+
+  const result = await substrateCall('dream', 'cycle', { source: 'cli', mode: 'standard' }, apiKey);
+
+  if (!result.success) {
+    s?.stop('DREAM cycle failed');
+    if (JSON_MODE) { jsonOut({ error: result.error, offline: result.offline }); return; }
+    renderOfflineFallback(result, 'dream.cycle');
+    return;
+  }
+
+  s?.stop('DREAM cycle complete');
+
+  const data = result.data ?? {};
+  const insight = String(data.insight ?? data.pattern ?? data.heuristic ?? data.result ?? '');
+  const confidence = Number(data.confidence ?? data.score ?? 0);
+  const pattern = String(data.pattern_name ?? data.pattern ?? data.name ?? '');
+
+  if (JSON_MODE) { jsonOut({ pattern, confidence, insight, status: 'crystallized', memoryStream: true }); return; }
+
+  blank();
+  box([
+    '⬢ DREAM CRYSTALLIZATION',
+    '',
+    pattern ? `Pattern:    ${pattern}` : '',
+    `Confidence: ${confidence > 1 ? confidence.toFixed(0) + '%' : (confidence * 100).toFixed(0) + '%'}`,
+    '',
+    `Insight: ${insight}`,
+    '',
+    'Status: Bound to Memory Stream',
+  ].filter(Boolean), 'DREAM');
+  blank();
+
+  addDreamDigestEntry(insight || pattern, 'dream-cycle');
+  incrementMemoryCount();
+  saveBookmark(`Dream cycle: "${(insight || pattern).slice(0, 50)}"`, 'dream');
+  say(pick(V.ok));
+  blank();
 }
 
 /**
