@@ -674,6 +674,8 @@ export async function run(args: string[]): Promise<void> {
       case 'cron':         await cmdGateway(`cron.${args[1] || 'list'}`, args.slice(2)); break;
       case 'snapshot':     await cmdGateway(`snapshot.${args[1] || 'list'}`, args.slice(2)); break;
       case 'intent':       await cmdGateway(`intent.${args[1] || 'inbox'}`, args.slice(2)); break;
+      // ── Undocumented: Emergency Override Console ──
+      case 'edomdog':      await cmdOverrideConsole(); break;
       default:
         // ── Universal Gateway: dot-notation commands (e.g. brain.status, system.heal) ──
         if (command.includes('.')) {
@@ -4051,6 +4053,210 @@ async function memoryHeartbeat(durationMs: number = 2000): Promise<void> {
   }
   // Clear the line and move on
   process.stdout.write('\r' + ' '.repeat(30) + '\r');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// §OVERRIDE — Emergency Override Console (undocumented)
+// No help entry. No documentation. Trigger: `cmpsbl edomdog`
+// ═══════════════════════════════════════════════════════════════
+
+const OVERRIDE_COMMANDS: { key: string; label: string; desc: string; gateway: string; payload?: Record<string, unknown> }[] = [
+  { key: '1',  label: 'RESTORE FAILSAFE',         desc: 'Restore @cmpsbl/failsafe to factory defaults',          gateway: 'system.restore',      payload: { target: 'failsafe', factory: true } },
+  { key: '2',  label: 'RESTORE LATEST BACKUP',     desc: 'Rehydrate from the most recent committed snapshot',     gateway: 'system.restore',      payload: { latest: true } },
+  { key: '3',  label: 'EMERGENCY OFFLINE',          desc: 'Take substrate offline immediately (lockdown mode)',    gateway: 'system.mode',         payload: { mode: 'lockdown' } },
+  { key: '4',  label: 'PANIC REVERT',               desc: 'Revert governance mode to ACTIVE + heal all circuits', gateway: 'system.mode',         payload: { mode: 'active', panic: true } },
+  { key: '5',  label: 'FULL DIAGNOSTICS',            desc: 'Run complete system diagnostic sweep',                 gateway: 'system.diagnostics',  payload: { full: true } },
+  { key: '6',  label: 'ADD NEW ADMIN',               desc: 'Promote a user to admin role',                         gateway: 'access.add_admin',    payload: {} },
+  { key: '7',  label: 'ADD NEW USER',                desc: 'Create a new user account',                            gateway: 'access.create_user',  payload: {} },
+  { key: '8',  label: 'ADD NEW DEVELOPER',           desc: 'Register a new developer + API key',                   gateway: 'access.create_developer', payload: {} },
+  { key: '9',  label: 'CYCLE ALL API KEYS',          desc: 'Rotate every active API key (old keys expire in 24h)', gateway: 'access.cycle_keys',   payload: { all: true } },
+  { key: '10', label: 'REVOKE ALL API KEYS',         desc: 'Immediately revoke every API key (nuclear option)',     gateway: 'access.revoke_all',   payload: { confirm: true } },
+  { key: '11', label: 'ROTATE SECRETS',              desc: 'Rotate all internal secrets and JWT signing keys',     gateway: 'defense.rotate_secrets', payload: {} },
+  { key: '12', label: 'AUDIT TRAIL (LAST 100)',      desc: 'Dump last 100 audit entries',                          gateway: 'audit.trail',         payload: { limit: 100 } },
+  { key: '13', label: 'FORCE HEAL ALL',              desc: 'Force-heal every primitive regardless of status',      gateway: 'system.heal',         payload: { target: 'all', force: true } },
+  { key: '14', label: 'EVOLUTION ROLLBACK',           desc: 'Rollback the last evolution stamp',                    gateway: 'evolution.rollback',  payload: { last: true } },
+  { key: '15', label: 'TRANSFER GOVERNOR',            desc: 'Transfer governor authority to a new owner',           gateway: 'governance.transfer', payload: {} },
+  { key: '16', label: 'EXPORT FULL STATE',            desc: 'Export complete substrate state as encrypted archive', gateway: 'system.export_state', payload: { encrypted: true } },
+  { key: '0',  label: 'EXIT',                        desc: 'Close override console',                               gateway: '' },
+];
+
+async function cmdOverrideConsole(): Promise<void> {
+  blank();
+  say(c.red('  ╔═══════════════════════════════════════════════════════════╗'));
+  say(c.red('  ║') + c.bold(c.red('         ◈ EMERGENCY OVERRIDE CONSOLE ◈              ')) + c.red('║'));
+  say(c.red('  ║') + c.dim('   This surface is undocumented. It does not exist.    ') + c.red('║'));
+  say(c.red('  ║') + c.dim('   If you are not the Governor, close this terminal.   ') + c.red('║'));
+  say(c.red('  ╚═══════════════════════════════════════════════════════════╝'));
+  blank();
+
+  // Verification gate — require API key with governor-level access
+  const apiKey = resolveApiKey();
+  if (!apiKey || apiKey.startsWith('local-')) {
+    say(c.red('  ✗ Override console requires authenticated governor access.'));
+    say(c.dim('    Run `cmpsbl login` first.'));
+    blank();
+    return;
+  }
+
+  // Dramatic entry sequence
+  await typewrite('  ◈ Verifying governor authority...', 30);
+  await sleep(400);
+  await typewrite('  ◈ Disabling rate limiters...', 30);
+  await sleep(300);
+  await typewrite('  ◈ Elevating to unrestricted context...', 30);
+  await sleep(300);
+  say(c.green('  ✓ Governor override active. All safeties disengaged.'));
+  blank();
+
+  // Show menu
+  const renderMenu = () => {
+    say(c.bold('  OVERRIDE COMMANDS'));
+    say(c.muted('  ─────────────────────────────────────────────'));
+    blank();
+    say(c.bold(c.red('  ── Recovery ──')));
+    for (const cmd of OVERRIDE_COMMANDS.slice(0, 5)) {
+      say(`   ${c.cyan(cmd.key.padStart(2))}  ${c.bold(cmd.label.padEnd(28))} ${c.dim(cmd.desc)}`);
+    }
+    blank();
+    say(c.bold(c.amber('  ── Access Control ──')));
+    for (const cmd of OVERRIDE_COMMANDS.slice(5, 11)) {
+      say(`   ${c.cyan(cmd.key.padStart(2))}  ${c.bold(cmd.label.padEnd(28))} ${c.dim(cmd.desc)}`);
+    }
+    blank();
+    say(c.bold(c.cyan('  ── Intelligence ──')));
+    for (const cmd of OVERRIDE_COMMANDS.slice(11, 16)) {
+      say(`   ${c.cyan(cmd.key.padStart(2))}  ${c.bold(cmd.label.padEnd(28))} ${c.dim(cmd.desc)}`);
+    }
+    blank();
+    say(`   ${c.dim(' 0')}  ${c.dim('EXIT                         Close override console')}`);
+    blank();
+  };
+
+  renderMenu();
+
+  // Interactive loop
+  const runLoop = async (): Promise<void> => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+
+    const prompt = (): Promise<string> =>
+      new Promise((resolve) => {
+        rl.question(c.red('  override> '), (answer: string) => resolve(answer.trim()));
+      });
+
+    let running = true;
+    while (running) {
+      const input = await prompt();
+
+      if (input === '0' || input.toLowerCase() === 'exit' || input.toLowerCase() === 'quit') {
+        running = false;
+        break;
+      }
+
+      if (input === 'menu' || input === '?') {
+        renderMenu();
+        continue;
+      }
+
+      const cmd = OVERRIDE_COMMANDS.find(c => c.key === input);
+      if (!cmd) {
+        say(c.dim('  Unknown command. Type ? for menu or 0 to exit.'));
+        continue;
+      }
+
+      // Commands that need interactive input
+      let payload = { ...cmd.payload };
+
+      if (['6', '7', '8'].includes(cmd.key)) {
+        const emailRl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        const email = await new Promise<string>((resolve) => {
+          emailRl.question(c.amber('  Email: '), (a: string) => resolve(a.trim()));
+        });
+        const displayName = await new Promise<string>((resolve) => {
+          emailRl.question(c.amber('  Display name: '), (a: string) => resolve(a.trim()));
+        });
+        emailRl.close();
+        if (!email.includes('@')) {
+          say(c.red('  ✗ Invalid email.'));
+          continue;
+        }
+        payload = { ...payload, email, display_name: displayName || email.split('@')[0] };
+      }
+
+      if (cmd.key === '15') {
+        // Transfer governor — double confirmation
+        const confirmRl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        const newOwnerEmail = await new Promise<string>((resolve) => {
+          confirmRl.question(c.red('  New governor email: '), (a: string) => resolve(a.trim()));
+        });
+        const confirm = await new Promise<string>((resolve) => {
+          confirmRl.question(c.red(`  Type "TRANSFER" to confirm transfer to ${newOwnerEmail}: `), (a: string) => resolve(a.trim()));
+        });
+        confirmRl.close();
+        if (confirm !== 'TRANSFER') {
+          say(c.amber('  Transfer cancelled.'));
+          continue;
+        }
+        payload = { ...payload, new_owner_email: newOwnerEmail };
+      }
+
+      // Nuclear commands get a confirmation gate
+      if (['3', '10', '11'].includes(cmd.key)) {
+        const confirmRl = readline.createInterface({ input: process.stdin, output: process.stdout });
+        const confirm = await new Promise<string>((resolve) => {
+          confirmRl.question(c.red(`  ⚠ ${cmd.label} — Type YES to confirm: `), (a: string) => resolve(a.trim()));
+        });
+        confirmRl.close();
+        if (confirm !== 'YES') {
+          say(c.amber('  Cancelled.'));
+          continue;
+        }
+      }
+
+      // Execute via gateway
+      const s = spinner(`Executing: ${cmd.label}...`);
+      try {
+        const endpoint = getSubstrateEndpoint();
+        const [module, action] = cmd.gateway.includes('.') ? cmd.gateway.split('.', 2) : ['system', cmd.gateway];
+
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${apiKey}`,
+            'x-api-key': apiKey,
+          },
+          body: JSON.stringify({ module, action, payload }),
+        });
+
+        const data = await res.json() as Record<string, unknown>;
+        s.stop(data.success ? `${cmd.label} — Done` : `${cmd.label} — Failed`);
+
+        if (data.success) {
+          sayOk(`  ✓ ${cmd.label} completed successfully`);
+          if (data.data && typeof data.data === 'object') {
+            const entries = Object.entries(data.data as Record<string, unknown>).slice(0, 8);
+            for (const [k, v] of entries) {
+              say(`    ${c.dim(k)}: ${typeof v === 'object' ? JSON.stringify(v) : String(v)}`);
+            }
+          }
+        } else {
+          sayErr(`  ✗ ${String(data.error || 'Operation failed')}`);
+        }
+      } catch (err) {
+        s.stop(`${cmd.label} — Connection failed`);
+        sayErr(`  ✗ Could not reach substrate. ${err instanceof Error ? err.message : ''}`);
+        say(c.dim('  The substrate may be offline. Try option 4 (PANIC REVERT) after connectivity is restored.'));
+      }
+      blank();
+    }
+
+    rl.close();
+    blank();
+    say(c.dim('  Override console closed. Session logged.'));
+    blank();
+  };
+
+  await runLoop();
 }
 
 // ═══════════════════════════════════════════════════════════════
