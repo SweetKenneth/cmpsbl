@@ -28,6 +28,14 @@ import * as readline from 'readline';
 import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 import { preKeyHook } from './pre-key-hook';
+import {
+  getAgentName, setAgentName, saveBookmark, getBookmark,
+  recordSessionStart, getStreak, incrementMemoryCount,
+  addTodo, completeTodo, removeTodo, getTodos,
+  addPin, removePin, getPins,
+  getWelcomeBackData, getFullState,
+  type WelcomeBackData,
+} from './session';
 import { runInstallWizard } from './install-wizard';
 
 // ═══════════════════════════════════════════════════════════════
