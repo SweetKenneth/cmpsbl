@@ -330,7 +330,7 @@ export function HeroMetaSubstrate() {
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
                 <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How Intelligence Flows</h3>
               </div>
-              <p className="text-xs text-muted-foreground/70 leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
                A persistent AI runtime where intelligence{' '}
                  <span className="text-foreground/80 font-medium">remembers</span>,{' '}
                  <span className="text-primary font-medium">adapts</span>, and{' '}
