@@ -1935,32 +1935,53 @@ function cmdScore(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdStatus() {
+  const apiKey = resolveApiKey();
+
+  // Try live substrate status first
+  const result = await substrateCall('system', 'status', { source: 'cli' }, apiKey ?? undefined);
+
+  if (result.success && result.data) {
+    const data = result.data;
+    if (JSON_MODE) { jsonOut(data); return; }
+    header('Substrate Status (LIVE)');
+    for (const [key, val] of Object.entries(data)) {
+      if (key === 'success') continue;
+      const display = typeof val === 'object' ? JSON.stringify(val) : String(val);
+      say(`  ${key.padEnd(16)} ${display}`);
+    }
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local primitive registry
   const online = NODES.filter(n => n.status === 'online').length;
   const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
   const categorySet = [...new Set(NODES.map(n => n.category))];
   const session = getFirstContactSession();
 
-  const data = {
-    nodes: `${online}/${NODES.length}`,
-    sectors: categorySet.length,
+  const fallback = {
+    primitives: `${online}/${NODES.length}`,
+    categories: categorySet.length,
     health: avg,
     runtime: 'v14.4.1',
     memoryChains: getMemoryStream().length,
     session: session?.sessionId ?? null,
+    mode: 'offline (local registry)',
   };
 
-  if (JSON_MODE) { jsonOut(data); return; }
-  header('Substrate Status');
-  say(`Primitives:${data.nodes} online`);
-  say(`Categories:${data.sectors} active`);
-  say(`Health:   ${avg}%`);
-  say(`Runtime:  ${data.runtime}`);
-  say(`Memory:   ${data.memoryChains} chains`);
-  say(`Session:  ${data.session ?? 'none'}`);
+  if (JSON_MODE) { jsonOut(fallback); return; }
+  header('Substrate Status (LOCAL)');
+  say(`Primitives: ${fallback.primitives} online`);
+  say(`Categories: ${fallback.categories} active`);
+  say(`Health:     ${avg}% (local estimate)`);
+  say(`Runtime:    ${fallback.runtime}`);
+  say(`Memory:     ${fallback.memoryChains} chains`);
+  say(`Session:    ${fallback.session ?? 'none'}`);
+  say(c.dim(`  ⚠ Showing local data — substrate unreachable`));
   div();
   say(progressBar(avg, 100));
-  blank();
-  say(pick(V.ok));
   blank();
 }
 
