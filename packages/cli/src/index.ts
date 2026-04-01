@@ -3243,6 +3243,206 @@ async function cmdTreaty(args: string[]) {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Universal Gateway — Routes ANY dot-notation command to substrate-api
+// Provides full CLI↔Terminal parity for Governor operations
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdGateway(dotCommand: string, args: string[]) {
+  const apiKey = await requireApiKey();
+
+  // Parse module.action from dot notation
+  const dotParts = dotCommand.split('.');
+  const module = dotParts[0];
+  const action = dotParts.slice(1).join('.');
+
+  if (!module || !action) {
+    sayErr('  Invalid command format. Use: cmpsbl <module>.<action> [args]');
+    say('  Example: cmpsbl brain.status, cmpsbl system.heal BRAIN');
+    blank();
+    return;
+  }
+
+  if (!JSON_MODE) {
+    header(`${module.toUpperCase()} — ${action}`);
+  }
+
+  const s = !JSON_MODE ? spinner(`Executing ${dotCommand}...`) : null;
+
+  // Build payload
+  const payload: Record<string, unknown> = {};
+
+  // Parse args: positional become args array, --key=value become params
+  const positional: string[] = [];
+  for (const arg of args) {
+    if (arg.startsWith('--')) {
+      const eqIdx = arg.indexOf('=');
+      if (eqIdx > 0) {
+        payload[arg.slice(2, eqIdx)] = arg.slice(eqIdx + 1);
+      } else {
+        payload[arg.slice(2)] = true;
+      }
+    } else {
+      positional.push(arg);
+    }
+  }
+  if (positional.length > 0) {
+    payload.args = positional;
+    // Common patterns: first positional is usually a target/query
+    if (positional[0]) payload.target = positional[0];
+    if (positional[1]) payload.value = positional[1];
+  }
+
+  try {
+    const endpoint = getSubstrateEndpoint();
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Engine-Key': apiKey,
+      },
+      body: JSON.stringify({
+        module,
+        action,
+        payload,
+      }),
+    });
+
+    const data = await res.json() as Record<string, unknown>;
+
+    s?.stop(`${dotCommand} complete`);
+
+    if (JSON_MODE) {
+      jsonOut(data);
+      return;
+    }
+
+    // Handle different response shapes
+    if (data.success === false) {
+      blank();
+      sayErr(`  ✗ ${data.error || data.message || 'Command failed'}`);
+      if (data.details) say(`  ${c.muted(String(data.details))}`);
+      blank();
+      return;
+    }
+
+    // Pretty-print the response
+    blank();
+    if (typeof data === 'object' && data !== null) {
+      renderGatewayResponse(dotCommand, data);
+    }
+
+    blank();
+    say(pick(V.ok));
+    blank();
+  } catch (err) {
+    s?.stop('Connection failed');
+    blank();
+
+    // Offline fallback — show what the command would do
+    sayErr(`  ✗ Could not reach substrate-api`);
+    say(c.muted(`  Command: ${dotCommand}`));
+    say(c.muted(`  Payload: ${JSON.stringify(payload)}`));
+    blank();
+    say('  The substrate-api may be unreachable. Options:');
+    say(`    1. Check your connection: ${c.cyan('cmpsbl doctor')}`);
+    say(`    2. Try again: ${c.cyan(`cmpsbl ${dotCommand} ${args.join(' ')}`)}`);
+    say(`    3. Use the dashboard terminal as fallback`);
+    blank();
+  }
+}
+
+/** Pretty-print gateway response based on command category */
+function renderGatewayResponse(cmd: string, data: Record<string, unknown>) {
+  // If there's a structured 'result' field, use that
+  const result = (data.result ?? data.data ?? data) as Record<string, unknown>;
+
+  // Status-style responses
+  if ('status' in result || 'health' in result || 'mode' in result) {
+    for (const [key, val] of Object.entries(result)) {
+      if (key === 'success') continue;
+      const display = typeof val === 'object' ? JSON.stringify(val) : String(val);
+      const icon = key === 'status' ? (val === 'healthy' || val === 'online' || val === 'active' ? '●' : '◐')
+        : key === 'health' ? (Number(val) >= 90 ? '●' : '◐')
+        : '◇';
+      say(`  ${icon} ${key.padEnd(20)} ${display}`);
+    }
+    return;
+  }
+
+  // List-style responses (arrays)
+  if (Array.isArray(result)) {
+    for (const item of (result as unknown[]).slice(0, 20)) {
+      if (typeof item === 'object' && item !== null) {
+        const entries = Object.entries(item as Record<string, unknown>);
+        const summary = entries.slice(0, 4).map(([k, v]) => `${k}=${v}`).join(' · ');
+        say(`  ◇ ${summary}`);
+      } else {
+        say(`  ◇ ${String(item)}`);
+      }
+    }
+    if ((result as unknown[]).length > 20) {
+      say(c.muted(`  ... and ${(result as unknown[]).length - 20} more`));
+    }
+    return;
+  }
+
+  // Generic object response
+  for (const [key, val] of Object.entries(result)) {
+    if (key === 'success') continue;
+    if (typeof val === 'object' && val !== null) {
+      say(`  ${c.bold(key)}:`);
+      for (const [k2, v2] of Object.entries(val as Record<string, unknown>)) {
+        say(`    ${k2}: ${typeof v2 === 'object' ? JSON.stringify(v2) : String(v2)}`);
+      }
+    } else {
+      say(`  ${key.padEnd(20)} ${String(val)}`);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Commands — Governance Mode (Governor shorthand)
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdMode(args: string[]) {
+  const sub = args[0]?.toLowerCase();
+
+  if (!sub || sub === 'get') {
+    // Show current mode via gateway
+    await cmdGateway('governance.mode', []);
+    return;
+  }
+
+  if (sub === 'set') {
+    const newMode = args[1]?.toUpperCase();
+    const validModes = ['ACTIVE', 'MAINTENANCE', 'DEGRADED', 'LOCKDOWN', 'SUSPENDED'];
+    if (!newMode || !validModes.includes(newMode)) {
+      sayErr('  Valid modes: ACTIVE | MAINTENANCE | DEGRADED | LOCKDOWN | SUSPENDED');
+      blank();
+      return;
+    }
+
+    const reason = args.slice(2).join(' ') || `CLI mode switch to ${newMode}`;
+    await cmdGateway('governance.set_mode', [newMode, reason]);
+    return;
+  }
+
+  if (sub === 'panic') {
+    if (!JSON_MODE) {
+      blank();
+      say(c.error('  🚨 PANIC REVERT — Restoring to ACTIVE mode'));
+      blank();
+    }
+    await cmdGateway('governance.panic_revert', []);
+    return;
+  }
+
+  say('  Usage: cmpsbl mode [get|set <MODE> [reason]|panic]');
+  say('  Modes: ACTIVE | MAINTENANCE | DEGRADED | LOCKDOWN | SUSPENDED');
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Commands — Personality (name, todo, pin, next, welcome)
 // ═══════════════════════════════════════════════════════════════
 
