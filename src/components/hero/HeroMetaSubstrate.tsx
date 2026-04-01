@@ -169,7 +169,7 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
       <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
         {count}{suffix}
       </div>
-      <div className="text-[9px] sm:text-[10px] text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
+      <div className="text-[10px] sm:text-xs text-muted-foreground/60 font-semibold mt-1 tracking-[0.15em] uppercase group-hover:text-muted-foreground/80 transition-colors duration-300">{label}</div>
     </div>
   );
 }
@@ -227,10 +227,10 @@ export function HeroMetaSubstrate() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
             >
               <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-[10px] sm:text-xs font-medium text-muted-foreground tracking-wide">AI Operating System</span>
+              <span className="text-xs font-medium text-muted-foreground tracking-wide">AI Operating System</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
-                <span className="text-[9px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
+                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
               </span>
             </FadeIn>
             
@@ -263,7 +263,7 @@ export function HeroMetaSubstrate() {
 
             {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
-              <p className="text-sm sm:text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
+              <p className="text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
                 This isn't a toolkit.{' '}
                 <span className="text-foreground/90 font-medium">It's live infrastructure</span>.{' '}
                 When an agent is born, it's already running. When an engine activates, there's{' '}
@@ -308,7 +308,7 @@ export function HeroMetaSubstrate() {
                 className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-card/20 backdrop-blur-sm hover:border-primary/30 hover:bg-card/40 transition-all duration-300 hover:-translate-y-0.5"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-purple))] opacity-70 group-hover:opacity-100 transition-opacity" />
-                <span className="text-[10px] sm:text-xs font-medium text-muted-foreground/70 group-hover:text-foreground/80 transition-colors tracking-wide">
+                <span className="text-xs font-medium text-muted-foreground/70 group-hover:text-foreground/80 transition-colors tracking-wide">
                   Academic Prior Art — Zenodo v13.5
                 </span>
                 <ArrowRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
@@ -330,7 +330,7 @@ export function HeroMetaSubstrate() {
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
                 <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How Intelligence Flows</h3>
               </div>
-              <p className="text-xs text-muted-foreground/70 leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
                A persistent AI runtime where intelligence{' '}
                  <span className="text-foreground/80 font-medium">remembers</span>,{' '}
                  <span className="text-primary font-medium">adapts</span>, and{' '}
@@ -354,8 +354,8 @@ export function HeroMetaSubstrate() {
                   key={item.label} 
                   className="rounded-lg border border-border/15 bg-card/25 p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group shimmer-on-hover glass-edge"
                 >
-                  <div className="text-[8px] sm:text-[9px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
-                  <div className="text-[11px] sm:text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
+                   <div className="text-[9px] sm:text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
+                   <div className="text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
                 </div>
               ))}
             </FadeIn>
@@ -382,7 +382,7 @@ export function HeroMetaSubstrate() {
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border/30 bg-card/30 shrink-0 hover:bg-card/60 hover:border-primary/25 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 active:scale-[0.97]"
               >
                 <item.icon className="w-3 h-3 text-muted-foreground/50" />
-                <span className="text-[11px] font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
+                <span className="text-xs font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
               </Link>
             </FadeIn>
           ))}
@@ -403,7 +403,7 @@ export function HeroMetaSubstrate() {
               ].map((step, i, arr) => (
                 <div key={step} className="flex items-center shrink-0">
                   <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
-                    <span className="text-[9px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+                    <span className="text-[10px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
                   </div>
                   {i < arr.length - 1 && (
                     <span className="text-muted-foreground/30 text-[10px] sm:text-xs font-bold px-1 sm:px-1.5">→</span>
@@ -422,7 +422,7 @@ export function HeroMetaSubstrate() {
               ].map((p, i, arr) => (
                 <div key={p.label} className="flex items-center shrink-0">
                   <div className="px-2.5 sm:px-3 py-1 rounded-full border border-border/20 bg-card/20">
-                    <span className="text-[9px] sm:text-[11px] font-bold whitespace-nowrap" style={{ color: `hsl(var(${p.color}))` }}>{p.label}</span>
+                    <span className="text-[10px] sm:text-xs font-bold whitespace-nowrap" style={{ color: `hsl(var(${p.color}))` }}>{p.label}</span>
                   </div>
                   {i < arr.length - 1 && (
                     <span className="text-muted-foreground/20 text-[10px] font-bold px-1">→</span>

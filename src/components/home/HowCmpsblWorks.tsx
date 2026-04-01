@@ -44,7 +44,7 @@ export function HowCmpsblWorks() {
           <div className="grid sm:grid-cols-2 gap-6 mb-8">
             {/* Traditional */}
             <div className="rounded-xl border border-border/20 bg-muted/30 p-5">
-              <div className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-[0.2em] mb-3">Traditional AI Stack</div>
+              <div className="text-xs font-bold text-muted-foreground/60 uppercase tracking-[0.2em] mb-3">Traditional AI Stack</div>
               <div className="flex items-center justify-center gap-2">
                 {traditionalStack.map((item, i) => (
                   <div key={item} className="flex items-center gap-2">
@@ -57,7 +57,7 @@ export function HowCmpsblWorks() {
 
             {/* CMPSBL */}
             <div className="rounded-xl border border-[hsl(var(--neon-cyan)/0.2)] bg-[hsl(var(--neon-cyan)/0.05)] p-5">
-              <div className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
+              <div className="text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-[0.2em] mb-3">CMPSBL Stack</div>
               <div className="flex flex-col items-center gap-2">
                 {cmpsblStack.map((item, i) => (
                   <div key={item} className="flex flex-col items-center gap-2">
@@ -89,7 +89,7 @@ export function HowCmpsblWorks() {
             ))}
           </div>
 
-          <p className="text-xs text-muted-foreground/60 text-center mt-6">
+          <p className="text-sm text-muted-foreground/60 text-center mt-6">
             CMPSBL manages memory, orchestration, governance, and continuous improvement automatically.
           </p>
         </motion.div>

@@ -44,7 +44,7 @@ export function SubstrateAliveSection() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
             <CheckCircle2 className="w-3 h-3 text-primary" />
-            <span className="text-[10px] sm:text-xs font-semibold text-primary/80 tracking-wide uppercase">
+            <span className="text-xs font-semibold text-primary/80 tracking-wide uppercase">
               Already Running
             </span>
           </div>
@@ -81,15 +81,15 @@ export function SubstrateAliveSection() {
                   <Icon className="w-5 h-5 text-muted-foreground/60 group-hover:text-primary transition-colors" />
                 </div>
 
-                <h3 className="text-sm sm:text-base font-bold text-foreground/90 mb-2">
+                <h3 className="text-base font-bold text-foreground/90 mb-2">
                   {pillar.title}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-muted-foreground/60 leading-relaxed mb-4">
+                <p className="text-sm text-muted-foreground/60 leading-relaxed mb-4">
                   {pillar.description}
                 </p>
 
-                <div className="font-mono text-[10px] sm:text-xs text-primary/50 bg-primary/5 rounded-lg px-3 py-2 border border-primary/10 group-hover:text-primary/70 group-hover:border-primary/20 transition-colors">
+                <div className="font-mono text-xs text-primary/50 bg-primary/5 rounded-lg px-3 py-2 border border-primary/10 group-hover:text-primary/70 group-hover:border-primary/20 transition-colors">
                   <span className="text-muted-foreground/30 mr-1">$</span>
                   {pillar.terminal}
                 </div>
@@ -103,7 +103,7 @@ export function SubstrateAliveSection() {
           <p className="text-base sm:text-lg font-semibold text-foreground/80 mb-2">
             You can build here faster than anywhere else.
           </p>
-          <p className="text-xs sm:text-sm text-muted-foreground/60 max-w-xl mx-auto">
+          <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto">
             Every loadout, engine, and agent ships with persistent memory, governed execution,
             self-healing, and continuous learning — already running the moment you activate it.
           </p>

@@ -59,7 +59,7 @@ export function DiscoveryDualCards() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-card/40 backdrop-blur-sm mb-5">
             <ShieldCheck className="w-3.5 h-3.5 text-primary/70" />
-            <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-wide uppercase">
+            <span className="text-xs font-semibold text-muted-foreground tracking-wide uppercase">
               Two Sides of One Substrate
             </span>
           </div>
@@ -75,7 +75,7 @@ export function DiscoveryDualCards() {
               Zero LLM
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto leading-[1.8]">
             No large‑language model sits between you and your results. Both systems
             run on <span className="text-foreground/90 font-medium">pure internal cording</span>{" "}
             — deterministic, auditable, and governed by the 40‑Primitive mesh.
@@ -115,7 +115,7 @@ export function DiscoveryDualCards() {
                   </div>
                   <div>
                     <span
-                      className="text-[9px] font-bold uppercase tracking-[0.18em] block mb-0.5"
+                      className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] block mb-0.5"
                       style={{ color: `hsl(var(${card.glow})/0.7)` }}
                     >
                       {card.badge}
@@ -127,14 +127,14 @@ export function DiscoveryDualCards() {
                 </div>
 
                 {/* Summary */}
-                <p className="text-sm text-muted-foreground/80 leading-relaxed mb-5">
+                <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-5">
                   {card.summary}
                 </p>
 
                 {/* Bullets — enhanced with better spacing */}
                 <ul className="space-y-2.5 mb-6">
                   {card.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2.5 text-xs text-muted-foreground/75">
+                    <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground/75">
                       <span
                         className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ring-2 ring-offset-1 ring-offset-transparent"
                         style={{
@@ -173,7 +173,7 @@ export function DiscoveryDualCards() {
         </div>
 
         {/* Bottom note */}
-        <p className="text-center text-[11px] text-muted-foreground/50 mt-6 sm:mt-8">
+        <p className="text-center text-xs text-muted-foreground/50 mt-6 sm:mt-8">
           Both systems share the same governed substrate. Memory Stream <em>discovers</em> — Ascension <em>transforms</em>. Neither touches an LLM.
         </p>
       </div>

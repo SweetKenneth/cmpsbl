@@ -84,19 +84,19 @@ export function LoadoutsSection() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/30 bg-card/30 mb-5">
             <Zap className="w-3 h-3 text-primary" />
-            <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-wide uppercase">Signal Forge</span>
+            <span className="text-xs font-semibold text-muted-foreground tracking-wide uppercase">Signal Forge</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight mb-4">
             Loadouts, Not Templates
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed mb-3">
+          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-[1.8] mb-3">
             These aren't starter kits you spend a week configuring. They're{" "}
             <span className="text-foreground/90 font-medium">pre-built, working projects</span>{" "}
             with identity, memory, defense, and governance already wired.
           </p>
-          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground/70 max-w-2xl mx-auto leading-[1.8]">
             One command. Zero setup.{" "}
-            <span className="font-mono text-xs sm:text-sm text-primary/80 bg-primary/5 px-2 py-0.5 rounded">
+            <span className="font-mono text-xs text-primary/80 bg-primary/5 px-2 py-0.5 rounded">
               cmpsbl loadout build threat-detector
             </span>
           </p>
@@ -119,12 +119,12 @@ export function LoadoutsSection() {
                       <Icon className="w-4 h-4 text-muted-foreground/60 group-hover:text-primary transition-colors" />
                     </div>
                     <div>
-                      <h3 className="text-sm font-bold text-foreground/90 leading-tight">{loadout.name}</h3>
-                      <span className="text-[10px] text-muted-foreground/50 uppercase tracking-wider">{loadout.category}</span>
+                      <h3 className="text-sm sm:text-base font-bold text-foreground/90 leading-tight">{loadout.name}</h3>
+                      <span className="text-xs text-muted-foreground/50 uppercase tracking-wider">{loadout.category}</span>
                     </div>
                   </div>
                   <span className={cn(
-                    "text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border",
+                    "text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border",
                     tierStyle
                   )}>
                     {loadout.tier}
@@ -134,7 +134,7 @@ export function LoadoutsSection() {
                 {/* Primitives */}
                 <div className="flex flex-wrap gap-1 mb-3">
                   {loadout.primitives.map((p, i) => (
-                    <span key={p} className="text-[9px] font-mono text-muted-foreground/50 bg-muted/30 px-1.5 py-0.5 rounded">
+                    <span key={p} className="text-[10px] font-mono text-muted-foreground/50 bg-muted/30 px-1.5 py-0.5 rounded">
                       {p}{i < loadout.primitives.length - 1 ? "" : ""}
                     </span>
                   ))}
@@ -142,10 +142,10 @@ export function LoadoutsSection() {
 
                 {/* CJPI + deploy hint */}
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-muted-foreground/40">
+                  <span className="text-xs text-muted-foreground/40">
                     CJPI <span className="font-bold text-foreground/60">{loadout.cjpi}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-primary/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-xs font-mono text-primary/50 opacity-0 group-hover:opacity-100 transition-opacity">
                     cmpsbl loadout build {loadout.id}
                   </span>
                 </div>
@@ -159,7 +159,7 @@ export function LoadoutsSection() {
           <p className="text-base sm:text-lg font-semibold text-foreground/80 mb-2">
             You can build here faster than anywhere else.
           </p>
-          <p className="text-xs sm:text-sm text-muted-foreground/60 max-w-xl mx-auto">
+          <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto">
             No boilerplate. No configuration. No wiring authentication, memory, or monitoring.
             Every loadout ships with the full substrate — persistent memory, governed execution,
             self-healing, and continuous learning — already running.

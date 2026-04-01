@@ -145,7 +145,7 @@ export function NpmPackagesCTA() {
             >
               <h.icon className={cn("w-5 h-5", i % 3 === 0 ? "text-[hsl(var(--neon-cyan))]" : i % 3 === 1 ? "text-[hsl(var(--neon-purple))]" : "text-[hsl(var(--neon-magenta))]")} />
               <span className="text-sm font-semibold text-foreground">{h.title}</span>
-              <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
+              <span className="text-xs sm:text-sm text-muted-foreground leading-snug">{h.desc}</span>
             </motion.div>
           ))}
         </div>
@@ -164,7 +164,7 @@ export function NpmPackagesCTA() {
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <code className="text-xs font-mono font-semibold text-foreground">{pkg.name}</code>
-                  <Badge variant="outline" className={cn("text-[9px]", TIER_COLORS[pkg.tier])}>
+                  <Badge variant="outline" className={cn("text-[10px]", TIER_COLORS[pkg.tier])}>
                     {pkg.tier}
                   </Badge>
                 </div>

@@ -75,7 +75,7 @@ export function SocialProof() {
               <Quote className="w-8 h-8 text-[hsl(var(--neon-purple)/0.1)] absolute top-4 right-4 quote-glow transition-colors duration-500 group-hover:text-[hsl(var(--neon-purple)/0.2)]" />
               
               <div
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border mb-4 text-[10px] font-semibold uppercase tracking-wider group-hover:border-opacity-50 transition-all duration-300"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border mb-4 text-xs font-semibold uppercase tracking-wider group-hover:border-opacity-50 transition-all duration-300"
                 style={{
                   backgroundColor: `color-mix(in srgb, ${t.accentColor} 8%, transparent)`,
                   borderColor: `color-mix(in srgb, ${t.accentColor} 25%, transparent)`,
@@ -91,12 +91,12 @@ export function SocialProof() {
                   <Star key={j} className="w-3.5 h-3.5 fill-[hsl(var(--neon-cyan))] text-[hsl(var(--neon-cyan))] group-hover:drop-shadow-[0_0_4px_hsl(var(--neon-cyan)/0.5)] transition-all duration-500" style={{ transitionDelay: `${j * 60}ms` }} />
                 ))}
               </div>
-              <p className="text-sm text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
+              <p className="text-sm sm:text-base text-foreground/90 mb-5 leading-relaxed italic">"{t.quote}"</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground pt-3 border-t border-border/30">
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] flex items-center justify-center text-[10px] font-bold text-[hsl(var(--neon-purple))]">{t.author.charAt(0)}</div>
                 <div>
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
-                  {t.role && <span className="text-[11px] text-muted-foreground/60">{t.role}</span>}
+                  {t.role && <span className="text-xs text-muted-foreground/60">{t.role}</span>}
                 </div>
               </div>
             </motion.div>

@@ -17,12 +17,12 @@ export function LiveStatsBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(var(--neon-cyan))] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[hsl(var(--neon-cyan))]" />
           </span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-widest">Platform · Memory Stream · Live</span>
+          <span className="text-[10px] sm:text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-widest">Platform · Memory Stream · Live</span>
         </div>
 
         {/* Concise value statement */}
         <p
-          className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
+          className="text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
           style={{ animationDelay: "0.15s", animationFillMode: "both" }}
         >
         <span className="text-foreground/90 font-medium">40 primitives</span> coordinating across{' '}

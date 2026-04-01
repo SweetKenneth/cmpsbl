@@ -118,7 +118,7 @@ export function DifferentiationSection() {
                 <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">
                   {pillar.headline}
                 </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-5">
                   {pillar.description}
                 </p>
 
