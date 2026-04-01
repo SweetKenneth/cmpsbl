@@ -2961,12 +2961,13 @@ async function cmdLoadout(args: string[]) {
     say(c.muted('  Pre-built projects. Pick one. It\'s already running.'));
     blank();
 
-    for (const lo of LOADOUT_CATALOG) {
+    for (let i = 0; i < LOADOUT_CATALOG.length; i++) {
+      const lo = LOADOUT_CATALOG[i];
       const tierColor = lo.tier === 'Apex' ? c.amber : lo.tier === 'Mythic' ? c.magenta : lo.tier === 'Relic' ? c.cyan : c.green;
-      say(`  ${tierColor(`◆`)} ${c.bold(lo.name)}`);
+      say(`  ${c.bold(c.cyan(`[${i + 1}]`))} ${tierColor(`◆`)} ${c.bold(lo.name)}`);
       say(`    ${c.muted(lo.category)} · CJPI ${lo.cjpi} · ${tierColor(lo.tier)}`);
       say(`    ${c.muted(lo.description)}`);
-      say(`    ${c.dim(`cmpsbl loadout build ${lo.id}`)}`);
+      say(`    ${c.dim(`cmpsbl loadout build ${i + 1}`)}`);
       blank();
     }
 
