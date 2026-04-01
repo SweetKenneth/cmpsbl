@@ -59,6 +59,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Navigate ONLY on a genuine new sign-in (not token refresh / tab-switch / reload).
         // INITIAL_SESSION and TOKEN_REFRESHED fire on reload & visibility-change — never redirect for those.
         if (_event === 'SIGNED_IN' && session) {
+          // Log successful login to security gate (fire-and-forget)
+          supabase.functions.invoke('pf-security-gate', {
+            body: {
+              action: 'log_auth_event',
+              event_type: 'login_success',
+              user_id: session.user.id,
+              email: session.user.email,
+            },
+          }).catch(() => {});
+
           const currentPath = window.location.pathname;
           // If the user is already past the auth page, don't yank them away
           if (currentPath !== '/auth' && currentPath !== '/login') return;
