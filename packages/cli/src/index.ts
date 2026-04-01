@@ -679,6 +679,15 @@ function printHelp() {
     remember <input>        MEMORY store & semantic retrieval
     forget <chain-id>       MEMORY prune a chain
 
+  ── Personality ──────────────────────────────────
+    name <name>             Name your agent (persists forever)
+    todo <task>             Add a task to your ledger
+    done <#|id>             Complete a task
+    pin <note>              Pin a thought for later
+    unpin <#|id>            Remove a pin
+    next                    DREAM-powered next steps & gap analysis
+    welcome                 Show welcome-back summary
+
   ── Discovery ────────────────────────────────────
     discover <input>        Start live discovery on an input
     stream                  View Memory Stream (live chains)
@@ -744,7 +753,7 @@ function printHelp() {
     CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
-  ${c.muted('46 commands · 40 primitives · cmpsbl.com')}
+  ${c.muted('52 commands · 40 primitives · cmpsbl.com')}
 `);
 }
 
