@@ -10,6 +10,7 @@
  */
 
 import type { ExportKind } from './integration-guide-generator';
+import { generateInstallWizardHtml } from './install-wizard-html';
 
 export interface ExportArtifactsInput {
   kind: ExportKind;
@@ -44,6 +45,16 @@ export function generateExportArtifacts(input: ExportArtifactsInput): Record<str
     'LICENSE-FAQ.md': generateLicenseFaq(),
     'MONITORING.md': generateMonitoringGuide(input),
     '_runtime/runtime.d.ts': generateDeclarationFile(input),
+    'docs/html/install-wizard.html': generateInstallWizardHtml({
+      kind: input.kind,
+      name: input.name,
+      slug: input.slug,
+      version: input.version,
+      score: input.score,
+      tier: input.tier,
+      languages: input.languages,
+      modules: input.systemChain,
+    }),
   };
 }
 

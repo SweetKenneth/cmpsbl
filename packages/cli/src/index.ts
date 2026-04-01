@@ -28,6 +28,7 @@ import * as readline from 'readline';
 import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 import { preKeyHook } from './pre-key-hook';
+import { runInstallWizard } from './install-wizard';
 
 // ═══════════════════════════════════════════════════════════════
 // Personality
@@ -606,6 +607,7 @@ export async function run(args: string[]): Promise<void> {
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
       // ── Ecosystem ──
+      case 'install':      await cmdInstallWizard(args.slice(1)); break;
       case 'deps':         cmdDeps(); break;
       case 'publish-order': cmdPublishOrder(); break;
       case 'version':
@@ -2974,4 +2976,12 @@ function cmdPublishOrder(): void {
   say(c.dim('    cd packages/$pkg && npm run build && npm publish --access public && cd ../..'));
   say(c.dim('  done'));
   say('');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Install Wizard (user-facing)
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdInstallWizard(args: string[]): Promise<void> {
+  await runInstallWizard(args[0]);
 }

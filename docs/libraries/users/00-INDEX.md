@@ -24,6 +24,7 @@ This library is for developers building on CMPSBL and users operating the platfo
 | 08 | [Ascension Integration](08-ascension-integration.md) | Upload, discovery, export workflow for developers |
 | 09 | [Agency Framework](09-agency-framework.md) | Multi-agent coordination, task management, DREAM Engine pools |
 | 10 | [Troubleshooting](10-troubleshooting.md) | Common errors, debugging, support channels |
+| 11 | [Agent Installation](11-agent-installation.md) | Install exported agents on any client stack |
 
 ---
 
