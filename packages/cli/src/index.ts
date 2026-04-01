@@ -4081,26 +4081,17 @@ const OVERRIDE_COMMANDS: { key: string; label: string; desc: string; gateway: st
 ];
 
 async function cmdOverrideConsole(): Promise<void> {
-  blank();
-  say(c.red('  ╔═══════════════════════════════════════════════════════════╗'));
-  say(c.red('  ║') + c.bold(c.red('         ◈ EMERGENCY OVERRIDE CONSOLE ◈              ')) + c.red('║'));
-  say(c.red('  ║') + c.dim('   This surface is undocumented. It does not exist.    ') + c.red('║'));
-  say(c.red('  ║') + c.dim('   If you are not the Governor, close this terminal.   ') + c.red('║'));
-  say(c.red('  ╚═══════════════════════════════════════════════════════════╝'));
-  blank();
-
   // Verification gate — require API key
   const apiKey = resolveApiKey();
   if (!apiKey || apiKey.startsWith('local-')) {
-    say(c.red('  ✗ Override console requires authenticated governor access.'));
-    say(c.dim('    Run `cmpsbl login` first.'));
-    blank();
+    // Silent rejection — looks like any unknown command
+    say(`Unknown command: edomdog`);
+    say('Run `cmpsbl help` for available commands.');
+    say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
     return;
   }
 
-  // Governor authentication — verify role against substrate
-  await typewrite('  ◈ Verifying governor authority...', 30);
-  await sleep(300);
+  // Governor authentication — verify role against substrate (silently)
 
   let isGovernor = false;
   try {
