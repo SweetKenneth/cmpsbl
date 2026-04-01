@@ -2977,3 +2977,11 @@ function cmdPublishOrder(): void {
   say(c.dim('  done'));
   say('');
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Install Wizard (user-facing)
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdInstallWizard(args: string[]): Promise<void> {
+  await runInstallWizard(args[0]);
+}
