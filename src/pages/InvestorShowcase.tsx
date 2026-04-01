@@ -8,7 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { ShowcaseMobile } from "@/components/investor/ShowcaseMobile";
 import { ShowcaseDesktop } from "@/components/investor/ShowcaseDesktop";
 
-const SHOWCASE_PIN = "2026";
+const SHOWCASE_PIN = "8888";
 
 // ─── PIN Gate ────────────────────────────────────────────────
 const PinGate = ({ onSuccess }: { onSuccess: () => void }) => {
