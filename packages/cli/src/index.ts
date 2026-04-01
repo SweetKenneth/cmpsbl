@@ -1959,7 +1959,7 @@ async function cmdTopology() {
     }
 
     say(c.muted('  └────────────────────────────────────────────────┘'));
-    say(`    ${c.dim(`Avg health: ${healthColor(avgHealth)}  ·  Roles: ${nodes.map(n => n.role).join(', ')}`)}`);
+    say(`    ${c.dim(`Avg health: ${healthColor(avgHealth, `${avgHealth.toFixed(1)}%`)}  ·  Roles: ${nodes.map(n => n.role).join(', ')}`)}`);
   }
 
   blank();
