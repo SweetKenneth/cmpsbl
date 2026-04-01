@@ -56,11 +56,29 @@ export interface StreakData {
   totalPins: number;
 }
 
+export interface GoalAnchor {
+  text: string;
+  setAt: string;
+  totalSteps: number;        // estimated steps to completion
+  completedSteps: number;    // manually incremented
+  milestones: Array<{ text: string; completedAt: string | null }>;
+}
+
+export interface DreamDigestEntry {
+  insight: string;
+  source: string;          // which DREAM cycle produced it
+  crystallizedAt: string;
+  applied: boolean;
+}
+
 export interface SessionState {
   identity: AgentIdentity | null;
   bookmark: SessionBookmark | null;
   todos: TodoItem[];
   pins: PinItem[];
+  goal: GoalAnchor | null;
+  dreamDigest: DreamDigestEntry[];
+  lastDreamCheckTimestamp: string | null;
   streak: StreakData;
   sessionHistory: Array<{ date: string; commands: number; memoriesStored: number }>;
 }
@@ -87,6 +105,9 @@ const DEFAULT_STATE: SessionState = {
   bookmark: null,
   todos: [],
   pins: [],
+  goal: null,
+  dreamDigest: [],
+  lastDreamCheckTimestamp: null,
   streak: {
     currentStreak: 0,
     longestStreak: 0,
@@ -101,7 +122,7 @@ const DEFAULT_STATE: SessionState = {
 
 function loadState(): SessionState {
   try {
-    if (!fs.existsSync(STATE_FILE)) return { ...DEFAULT_STATE, todos: [], pins: [], sessionHistory: [] };
+    if (!fs.existsSync(STATE_FILE)) return { ...DEFAULT_STATE, todos: [], pins: [], dreamDigest: [], sessionHistory: [] };
     const raw = fs.readFileSync(STATE_FILE, 'utf-8');
     const parsed = JSON.parse(raw) as Partial<SessionState>;
     return {
@@ -109,11 +130,14 @@ function loadState(): SessionState {
       bookmark: parsed.bookmark ?? null,
       todos: Array.isArray(parsed.todos) ? parsed.todos : [],
       pins: Array.isArray(parsed.pins) ? parsed.pins : [],
+      goal: parsed.goal ?? null,
+      dreamDigest: Array.isArray(parsed.dreamDigest) ? parsed.dreamDigest : [],
+      lastDreamCheckTimestamp: parsed.lastDreamCheckTimestamp ?? null,
       streak: parsed.streak ?? { ...DEFAULT_STATE.streak },
       sessionHistory: Array.isArray(parsed.sessionHistory) ? parsed.sessionHistory : [],
     };
   } catch {
-    return { ...DEFAULT_STATE, todos: [], pins: [], sessionHistory: [] };
+    return { ...DEFAULT_STATE, todos: [], pins: [], dreamDigest: [], sessionHistory: [] };
   }
 }
 
@@ -344,6 +368,81 @@ export function getPins(): PinItem[] {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Goal Anchors
+// ═══════════════════════════════════════════════════════════════
+
+export function setGoal(text: string, totalSteps: number = 5): GoalAnchor {
+  const state = loadState();
+  const goal: GoalAnchor = {
+    text: text.trim(),
+    setAt: new Date().toISOString(),
+    totalSteps,
+    completedSteps: 0,
+    milestones: [],
+  };
+  state.goal = goal;
+  saveState(state);
+  return goal;
+}
+
+export function getGoal(): GoalAnchor | null {
+  return loadState().goal;
+}
+
+export function advanceGoal(milestoneText?: string): GoalAnchor | null {
+  const state = loadState();
+  if (!state.goal) return null;
+  state.goal.completedSteps = Math.min(state.goal.completedSteps + 1, state.goal.totalSteps);
+  if (milestoneText) {
+    state.goal.milestones.push({ text: milestoneText.trim(), completedAt: new Date().toISOString() });
+  }
+  saveState(state);
+  return state.goal;
+}
+
+export function clearGoal(): GoalAnchor | null {
+  const state = loadState();
+  const old = state.goal;
+  state.goal = null;
+  saveState(state);
+  return old;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DREAM Digest
+// ═══════════════════════════════════════════════════════════════
+
+export function addDreamDigestEntry(insight: string, source: string = 'DREAM cycle'): DreamDigestEntry {
+  const state = loadState();
+  const entry: DreamDigestEntry = {
+    insight: insight.trim(),
+    source,
+    crystallizedAt: new Date().toISOString(),
+    applied: false,
+  };
+  state.dreamDigest.push(entry);
+  // Cap at 50 entries
+  if (state.dreamDigest.length > 50) {
+    state.dreamDigest = state.dreamDigest.slice(-50);
+  }
+  saveState(state);
+  return entry;
+}
+
+export function getDreamDigestSinceLastSession(): DreamDigestEntry[] {
+  const state = loadState();
+  const lastCheck = state.lastDreamCheckTimestamp;
+  if (!lastCheck) return state.dreamDigest;
+  return state.dreamDigest.filter(d => new Date(d.crystallizedAt) > new Date(lastCheck));
+}
+
+export function markDreamDigestChecked(): void {
+  const state = loadState();
+  state.lastDreamCheckTimestamp = new Date().toISOString();
+  saveState(state);
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Welcome-Back Generation
 // ═══════════════════════════════════════════════════════════════
 
@@ -354,7 +453,9 @@ export interface WelcomeBackData {
   streak: StreakData;
   openTodos: TodoItem[];
   pins: PinItem[];
-  urgentTodos: TodoItem[]; // todos that are getting old
+  urgentTodos: TodoItem[];
+  goal: GoalAnchor | null;
+  dreamDigestNew: DreamDigestEntry[];
 }
 
 function formatTimeSince(isoTimestamp: string): string {
@@ -376,6 +477,7 @@ export function getWelcomeBackData(): WelcomeBackData {
   const agentName = state.identity?.name ?? 'Substrate';
   const openTodos = state.todos.filter(t => !t.completedAt);
   const urgentTodos = openTodos.filter(t => daysSince(t.createdAt) >= 2);
+  const dreamDigestNew = getDreamDigestSinceLastSession();
 
   return {
     agentName,
@@ -385,6 +487,8 @@ export function getWelcomeBackData(): WelcomeBackData {
     openTodos,
     pins: state.pins,
     urgentTodos,
+    goal: state.goal,
+    dreamDigestNew,
   };
 }
 

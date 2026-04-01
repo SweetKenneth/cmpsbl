@@ -34,6 +34,8 @@ import {
   addTodo, completeTodo, removeTodo, getTodos,
   addPin, removePin, getPins,
   getWelcomeBackData, getFullState,
+  setGoal, getGoal, advanceGoal, clearGoal,
+  getDreamDigestSinceLastSession, markDreamDigestChecked, addDreamDigestEntry,
   type WelcomeBackData,
 } from './session';
 import { runInstallWizard } from './install-wizard';
@@ -630,6 +632,8 @@ export async function run(args: string[]): Promise<void> {
       case 'done':         await cmdDone(args.slice(1)); break;
       case 'pin':          await cmdPin(args.slice(1)); break;
       case 'unpin':        await cmdUnpin(args.slice(1)); break;
+      case 'goal':         await cmdGoal(args.slice(1)); break;
+      case 'advance':      await cmdAdvance(args.slice(1)); break;
       case 'next':         await cmdNext(); break;
       case 'welcome':      await cmdWelcome(); break;
       // ── Guided ──
@@ -3087,6 +3091,128 @@ async function cmdUnpin(args: string[]) {
   blank();
 }
 
+// ═══════════════════════════════════════════════════════════════
+// Goal Anchors
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdGoal(args: string[]) {
+  const sub = args[0];
+
+  // cmpsbl goal clear
+  if (sub === 'clear') {
+    const old = clearGoal();
+    if (JSON_MODE) { jsonOut({ cleared: !!old }); return; }
+    if (old) sayOk(`  ✓ Goal cleared: "${old.text}"`);
+    else say('  No active goal to clear.');
+    blank();
+    return;
+  }
+
+  // cmpsbl goal (no args) — show current
+  if (!sub) {
+    const goal = getGoal();
+    if (JSON_MODE) { jsonOut({ goal }); return; }
+    if (!goal) {
+      say('  No active goal set.');
+      say(`  Usage: ${c.cyan('cmpsbl goal "build production support bot"')}`);
+      say(`         ${c.cyan('cmpsbl goal "ship v2" --steps 8')}`);
+      blank();
+      return;
+    }
+    renderGoalProgress(goal);
+    return;
+  }
+
+  // cmpsbl goal "text" [--steps N]
+  const text = args.filter(a => !a.startsWith('--')).join(' ');
+  const stepsFlag = args.find(a => a.startsWith('--steps'));
+  const stepsIdx = stepsFlag ? args.indexOf(stepsFlag) : -1;
+  const totalSteps = stepsIdx >= 0 && args[stepsIdx + 1] ? parseInt(args[stepsIdx + 1], 10) : 5;
+
+  if (!text.trim()) {
+    say(`  Usage: ${c.cyan('cmpsbl goal "your objective"')}`);
+    blank();
+    return;
+  }
+
+  const goal = setGoal(text, isNaN(totalSteps) ? 5 : totalSteps);
+  if (JSON_MODE) { jsonOut({ goal }); return; }
+
+  const agentName = getAgentName() ?? 'Substrate';
+  blank();
+  say(c.bold(`  ◆ ${agentName} — North Star locked`));
+  blank();
+  say(`  ${c.cyan('◎')} ${goal.text}`);
+  say(`  ${c.dim(`${goal.totalSteps} steps estimated · ${progressBar(0, goal.totalSteps, 25)} 0%`)}`);
+  blank();
+  say(c.dim(`  ► cmpsbl advance "milestone"    Mark progress`));
+  say(c.dim(`  ► cmpsbl next                   See goal-aligned steps`));
+  say(c.dim(`  ► cmpsbl goal clear             Clear goal`));
+  blank();
+}
+
+async function cmdAdvance(args: string[]) {
+  const milestoneText = args.join(' ').trim() || undefined;
+  const goal = advanceGoal(milestoneText);
+
+  if (JSON_MODE) { jsonOut({ goal }); return; }
+
+  if (!goal) {
+    say('  No active goal. Set one with:');
+    say(`  ${c.cyan('cmpsbl goal "your objective"')}`);
+    blank();
+    return;
+  }
+
+  const pct = Math.round((goal.completedSteps / goal.totalSteps) * 100);
+  const agentName = getAgentName() ?? 'Substrate';
+  blank();
+  say(c.bold(`  ◆ ${agentName} — Progress recorded`));
+  blank();
+
+  if (milestoneText) {
+    say(`  ${c.green('✓')} ${milestoneText}`);
+  }
+
+  say(`  ${c.cyan('◎')} ${goal.text}`);
+  say(`  ${progressBar(goal.completedSteps, goal.totalSteps, 30)} ${pct}% · ${goal.completedSteps}/${goal.totalSteps} steps`);
+  blank();
+
+  if (goal.completedSteps >= goal.totalSteps) {
+    say(c.green(c.bold('  🎯 GOAL COMPLETE!')));
+    say(c.dim('  ► cmpsbl goal "next objective"   Set your next North Star'));
+    blank();
+  }
+}
+
+function renderGoalProgress(goal: ReturnType<typeof getGoal>): void {
+  if (!goal) return;
+  const pct = Math.round((goal.completedSteps / goal.totalSteps) * 100);
+  const agentName = getAgentName() ?? 'Substrate';
+
+  blank();
+  say(c.bold(`  ◆ ${agentName} — Current Objective`));
+  blank();
+  say(`  ${c.cyan('◎')} ${goal.text}`);
+  say(`  ${progressBar(goal.completedSteps, goal.totalSteps, 30)} ${pct}% · ${goal.completedSteps}/${goal.totalSteps} steps`);
+  blank();
+
+  if (goal.milestones.length > 0) {
+    say(c.dim('  Milestones:'));
+    for (const m of goal.milestones.slice(-5)) {
+      say(`    ${c.green('✓')} ${m.text} ${c.muted(`(${daysSinceStr(m.completedAt ?? goal.setAt)})`)}`);
+    }
+    blank();
+  }
+
+  say(c.dim(`  Set ${daysSinceStr(goal.setAt)}`));
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Next Steps (with goal + progress bar)
+// ═══════════════════════════════════════════════════════════════
+
 async function cmdNext() {
   await requireApiKey();
 
@@ -3097,15 +3223,28 @@ async function cmdNext() {
   if (JSON_MODE) {
     jsonOut({
       agentName: data.agentName,
+      goal: data.goal,
       openTodos: data.openTodos,
       pins: data.pins,
       streak: data.streak,
       memoryStreamChains: chains.length,
+      dreamDigestNew: data.dreamDigestNew,
     });
     return;
   }
 
   header(`${agentName} — Substrate Projection`);
+
+  // Goal progress bar (the hero visual)
+  if (data.goal) {
+    const pct = Math.round((data.goal.completedSteps / data.goal.totalSteps) * 100);
+    say(c.bold('  ◎ OBJECTIVE'));
+    say(`  ${c.cyan(data.goal.text)}`);
+    say(`  ${progressBar(data.goal.completedSteps, data.goal.totalSteps, 35)} ${pct}%`);
+    blank();
+    div();
+    blank();
+  }
 
   // DREAM-powered analysis
   const s = spinner('Analyzing recent substrate activity...');
@@ -3119,6 +3258,16 @@ async function cmdNext() {
 
   // Generate contextual next steps based on what we know
   const steps: Array<{ text: string; source: string; impact: string }> = [];
+
+  // Goal-aligned steps first
+  if (data.goal && data.goal.completedSteps < data.goal.totalSteps) {
+    const remaining = data.goal.totalSteps - data.goal.completedSteps;
+    steps.push({
+      text: `Continue toward "${data.goal.text}" — ${remaining} step${remaining > 1 ? 's' : ''} remaining`,
+      source: 'goal anchor',
+      impact: 'primary',
+    });
+  }
 
   // From open todos
   for (const todo of data.openTodos.slice(0, 2)) {
@@ -3170,7 +3319,10 @@ async function cmdNext() {
   blank();
   for (let i = 0; i < Math.min(steps.length, 4); i++) {
     const step = steps[i];
-    const impactColor = step.impact === 'overdue' ? c.amber : step.impact === 'high' ? c.green : c.muted;
+    const impactColor = step.impact === 'primary' ? c.cyan
+      : step.impact === 'overdue' ? c.amber
+      : step.impact === 'high' ? c.green
+      : c.muted;
     say(`  ${c.bold(`${i + 1}.`)} ${step.text}`);
     say(`     ${c.dim(`Source: ${step.source}`)} ${impactColor(`[${step.impact}]`)}`);
   }
@@ -3206,10 +3358,11 @@ async function cmdWelcome() {
   const data = getWelcomeBackData();
   if (JSON_MODE) { jsonOut(data); return; }
   renderWelcomeBack(data);
+  markDreamDigestChecked();
 }
 
 function renderWelcomeBack(data: WelcomeBackData): void {
-  const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos } = data;
+  const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos, goal, dreamDigestNew } = data;
 
   blank();
   say(c.muted('  ┌─────────────────────────────────────────────────┐'));
@@ -3233,6 +3386,13 @@ function renderWelcomeBack(data: WelcomeBackData): void {
     say(c.muted('  │') + `  ${c.green(streakLine)}` + ' '.repeat(Math.max(0, 39 - streakLine.length)) + c.muted('│'));
   }
 
+  // Goal progress inside the box
+  if (goal) {
+    const pct = Math.round((goal.completedSteps / goal.totalSteps) * 100);
+    say(c.muted('  │') + `  ${c.cyan('◎')} ${goal.text.length > 38 ? goal.text.slice(0, 38) + '…' : goal.text}` + ' '.repeat(Math.max(0, 10)) + c.muted('│'));
+    say(c.muted('  │') + `  ${progressBar(goal.completedSteps, goal.totalSteps, 25)} ${pct}%` + ' '.repeat(Math.max(0, 18)) + c.muted('│'));
+  }
+
   // Open tasks
   if (openTodos.length > 0) {
     say(c.muted('  │') + `  ${openTodos.length} open task${openTodos.length > 1 ? 's' : ''}${urgentTodos.length > 0 ? ` (${urgentTodos.length} overdue ⚠)` : ''}` + ' '.repeat(Math.max(0, 25)) + c.muted('│'));
@@ -3246,6 +3406,20 @@ function renderWelcomeBack(data: WelcomeBackData): void {
   say(c.muted('  │') + c.muted('                                                 │'));
   say(c.muted('  └─────────────────────────────────────────────────┘'));
   blank();
+
+  // DREAM Digest — what happened while you were away
+  if (dreamDigestNew.length > 0) {
+    say(c.bold(c.cyan('  💤 While you were away, DREAM crystallized:')));
+    blank();
+    for (const entry of dreamDigestNew.slice(0, 4)) {
+      say(`    ${c.green('◇')} ${entry.insight}`);
+      say(`      ${c.dim(`Source: ${entry.source} · ${daysSinceStr(entry.crystallizedAt)}`)}`);
+    }
+    if (dreamDigestNew.length > 4) {
+      say(c.dim(`    ... and ${dreamDigestNew.length - 4} more insight${dreamDigestNew.length - 4 > 1 ? 's' : ''}`));
+    }
+    blank();
+  }
 
   // Show urgent todos inline
   if (urgentTodos.length > 0) {
@@ -3269,6 +3443,7 @@ function renderWelcomeBack(data: WelcomeBackData): void {
   say(c.dim('  ► cmpsbl next         See recommended next steps'));
   say(c.dim('  ► cmpsbl todo         View your task ledger'));
   say(c.dim('  ► cmpsbl pin          View your pinned notes'));
+  if (goal) say(c.dim('  ► cmpsbl goal         View objective progress'));
   blank();
 }
 
