@@ -79,6 +79,7 @@ export interface SessionState {
   goal: GoalAnchor | null;
   dreamDigest: DreamDigestEntry[];
   lastDreamCheckTimestamp: string | null;
+  hasIntroduced: boolean;
   streak: StreakData;
   sessionHistory: Array<{ date: string; commands: number; memoriesStored: number }>;
 }
