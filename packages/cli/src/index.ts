@@ -5114,6 +5114,167 @@ async function substrateExit(): Promise<void> {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Intelligent Unknown Command Handler
+// Fuzzy match → LLM interpret → graceful suggestions
+// ═══════════════════════════════════════════════════════════════
+
+const ALL_COMMANDS = [
+  'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
+  'status', 'health', 'nodes', 'ping', 'inspect', 'config',
+  'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
+  'topology', 'route', 'benchmark', 'diff', 'changelog',
+  'think', 'reflect', 'remember', 'forget',
+  'name', 'todo', 'done', 'pin', 'unpin', 'goal', 'advance', 'next', 'welcome',
+  'forge', 'loadout', 'harvest', 'translate', 'sandbox',
+  'scan', 'predict', 'audit', 'cost',
+  'threat', 'immune', 'govern', 'treaty',
+  'ascend', 'witness', 'crown', 'recall',
+  'demo', 'explain', 'install', 'deps', 'shell',
+  'heal', 'diagnostics', 'evolve', 'mode', 'restore', 'repair', 'backup',
+  'about', 'info', 'explore', 'primitives', 'list',
+];
+
+function fuzzyMatch(input: string, candidates: string[], maxDistance: number = 2): string[] {
+  const results: { cmd: string; dist: number }[] = [];
+  for (const cmd of candidates) {
+    const dist = levenshtein(input.toLowerCase(), cmd);
+    if (dist <= maxDistance) results.push({ cmd, dist });
+  }
+  return results.sort((a, b) => a.dist - b.dist).map(r => r.cmd);
+}
+
+function levenshtein(a: string, b: string): number {
+  const m = a.length, n = b.length;
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i]![0] = i;
+  for (let j = 0; j <= n; j++) dp[0]![j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i]![j] = Math.min(
+        dp[i - 1]![j]! + 1,
+        dp[i]![j - 1]! + 1,
+        dp[i - 1]![j - 1]! + (a[i - 1] !== b[j - 1] ? 1 : 0),
+      );
+    }
+  }
+  return dp[m]![n]!;
+}
+
+async function cmdGreet(): Promise<void> {
+  const agentName = getAgentName() ?? 'Substrate';
+  const greetings = [
+    `${agentName} acknowledges your presence. 40 primitives standing by.`,
+    `Welcome, operator. ${agentName} is listening. What would you like to explore?`,
+    `Signal received. ${agentName} is active and ready. All primitives nominal.`,
+    `The substrate recognizes you. Memory stream flowing. What's on your mind?`,
+    `Operator detected. DEFENSE perimeter clear. ${agentName} awaits your intent.`,
+  ];
+  blank();
+  say(`  ${pick(greetings)}`);
+  blank();
+  say(c.dim('  Try:'));
+  say(c.dim(`    ${c.cyan('cmpsbl think "your question"')}  — Deep reasoning`));
+  say(c.dim(`    ${c.cyan('cmpsbl dream')}                  — Autonomous synthesis`));
+  say(c.dim(`    ${c.cyan('cmpsbl demo')}                   — Guided tour`));
+  say(c.dim(`    ${c.cyan('cmpsbl shell')}                  — Interactive mode`));
+  blank();
+}
+
+async function handleUnknownCommand(command: string, args: string[]): Promise<void> {
+  const fullInput = [command, ...args].join(' ');
+
+  // Step 1: Fuzzy match against known commands
+  const fuzzy = fuzzyMatch(command, ALL_COMMANDS);
+  if (fuzzy.length > 0 && fuzzy[0]) {
+    blank();
+    say(`  ${pick(V.curious)}`);
+    blank();
+    say(`  "${command}" isn't a recognized command, but did you mean:`);
+    blank();
+    for (const match of fuzzy.slice(0, 3)) {
+      say(`    ${c.cyan('→')} ${c.bold(`cmpsbl ${match}`)}`);
+    }
+    blank();
+    say(c.dim(`  Or try: ${c.cyan(`cmpsbl think "${fullInput}"`)} to let BRAIN reason about it.`));
+    blank();
+    return;
+  }
+
+  // Step 2: Check if it looks like natural language (multi-word input)
+  if (args.length > 0 || command.length > 8) {
+    blank();
+    say(`  ${pick(V.curious)}`);
+    blank();
+
+    // Try routing through BRAIN for interpretation
+    const apiKey = resolveApiKey();
+    if (apiKey && !apiKey.startsWith('local-')) {
+      const s = spinner('BRAIN is interpreting your intent...');
+      const result = await substrateCall('brain', 'interpret', {
+        input: fullInput,
+        source: 'cli-unknown',
+        context: 'operator typed unrecognized input in CLI',
+      }, apiKey);
+
+      if (result.success && result.data) {
+        s.stop('Intent resolved');
+        blank();
+        const interpretation = String(result.data.interpretation ?? result.data.response ?? result.data.insight ?? result.data.result ?? '');
+        const suggestedCmd = String(result.data.suggested_command ?? result.data.command ?? '');
+
+        if (interpretation) {
+          say(`  ${c.bold('BRAIN:')} ${interpretation}`);
+          blank();
+        }
+        if (suggestedCmd) {
+          say(`  ${c.dim('Suggested command:')} ${c.cyan(`cmpsbl ${suggestedCmd}`)}`);
+          blank();
+        }
+        if (!interpretation && !suggestedCmd) {
+          renderGatewayResponse('brain.interpret', result.data);
+          blank();
+        }
+        return;
+      }
+      s.stop('Interpretation complete');
+    }
+
+    // Offline fallback — still be helpful
+    blank();
+    say(`  ${pick(V.reflect)}`);
+    blank();
+    say('  Some things you could try:');
+    blank();
+    say(`    ${c.cyan('→')} ${c.bold(`cmpsbl think "${fullInput}"`)}  — Route through BRAIN`);
+    say(`    ${c.cyan('→')} ${c.bold('cmpsbl help')}                   — See all commands`);
+    say(`    ${c.cyan('→')} ${c.bold('cmpsbl shell')}                  — Interactive exploration`);
+    blank();
+    return;
+  }
+
+  // Step 3: Short unknown single word — check if it's a primitive name
+  const upperCmd = command.toUpperCase();
+  const matchedPrimitive = PRIMITIVES.find(p => p.id === upperCmd);
+  if (matchedPrimitive) {
+    cmdExplain([upperCmd]);
+    return;
+  }
+
+  // Step 4: Final graceful fallback
+  blank();
+  say(`  ${pick(V.curious)}`);
+  blank();
+  say(`  "${command}" doesn't map to a known pathway.`);
+  blank();
+  say('  Quick suggestions:');
+  say(`    ${c.cyan('→')} ${c.bold('cmpsbl help')}          — Full command reference`);
+  say(`    ${c.cyan('→')} ${c.bold('cmpsbl explain')}       — Browse all 40 primitives`);
+  say(`    ${c.cyan('→')} ${c.bold(`cmpsbl think "${command}"`)}  — Let BRAIN reason about it`);
+  say(`    ${c.cyan('→')} ${c.bold('cmpsbl shell')}         — Interactive mode with tab completion`);
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
 // §28 — Ecosystem: deps & publish-order
 // ═══════════════════════════════════════════════════════════════
 
