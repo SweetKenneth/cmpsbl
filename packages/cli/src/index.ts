@@ -2599,49 +2599,44 @@ async function cmdDemo() {
 async function cmdThink(args: string[]) {
   const prompt = args.join(' ');
   if (!prompt) { say('Usage: cmpsbl think <prompt>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('BRAIN — Deep Reasoning');
 
   const s = !JSON_MODE ? spinner('Engaging reasoning engine...') : null;
-  const phases = [
-    'Loading attention spotlight...',
-    'Activating multi-strategy reasoning...',
-    'Traversing causal graph...',
-    'Crystallizing insights...',
-    'Calibrating confidence (Brier score)...',
-  ];
-  for (const p of phases) {
-    await sleep(400 + Math.random() * 300);
-    s?.update(p);
+
+  const result = await substrateCall('brain', 'think', { prompt, source: 'cli' }, apiKey);
+
+  if (!result.success) {
+    s?.stop('Reasoning failed');
+    if (JSON_MODE) { jsonOut({ error: result.error, offline: result.offline }); return; }
+    renderOfflineFallback(result, 'brain.think');
+    return;
   }
+
   s?.stop('Reasoning complete');
 
-  const strategies = ['deductive', 'inductive', 'abductive', 'analogical'];
-  const strategy = strategies[Math.floor(Math.random() * strategies.length)];
-  const confidence = +(0.7 + Math.random() * 0.25).toFixed(2);
-  const cogLoad = Math.round(30 + Math.random() * 50);
-
-  const insights = [
-    'Pattern suggests recursive dependency — consider decoupling via event-driven architecture',
-    'High correlation between input frequency and memory tier promotion thresholds',
-    'Causal chain indicates upstream latency is primary contributor to degraded throughput',
-    'Analogical reasoning maps this to a classic producer-consumer synchronization problem',
-    'Contradiction detected between stated constraints — recommend constraint relaxation on dimension 2',
-  ];
-  const insight = insights[Math.floor(Math.random() * insights.length)];
+  const data = result.data ?? {};
+  const strategy = String(data.strategy ?? data.reasoning_strategy ?? 'multi-strategy');
+  const confidence = Number(data.confidence ?? data.confidence_score ?? 0);
+  const cogLoad = Number(data.cognitive_load ?? data.cognitiveLoad ?? 0);
+  const insight = String(data.insight ?? data.response ?? data.result ?? '');
 
   if (JSON_MODE) { jsonOut({ prompt, strategy, confidence, cognitiveLoad: cogLoad, insight }); return; }
 
   blank();
   box([
     `Strategy:       ${strategy}`,
-    `Confidence:     ${(confidence * 100).toFixed(0)}%`,
+    `Confidence:     ${confidence > 1 ? confidence.toFixed(0) + '%' : (confidence * 100).toFixed(0) + '%'}`,
     `Cognitive Load: ${cogLoad}%`,
     '',
     `Insight: ${insight}`,
   ], 'BRAIN');
   blank();
+
+  // Save to memory stream
+  incrementMemoryCount();
+  saveBookmark(`Deep think: "${prompt.slice(0, 50)}"`, 'think');
   say(pick(V.ok));
   blank();
 }
