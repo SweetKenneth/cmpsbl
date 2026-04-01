@@ -115,7 +115,7 @@ export function DiscoveryDualCards() {
                   </div>
                   <div>
                     <span
-                      className="text-[9px] font-bold uppercase tracking-[0.18em] block mb-0.5"
+                      className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.18em] block mb-0.5"
                       style={{ color: `hsl(var(${card.glow})/0.7)` }}
                     >
                       {card.badge}
