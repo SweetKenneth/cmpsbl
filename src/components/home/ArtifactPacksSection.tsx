@@ -57,7 +57,10 @@ export function ArtifactPacksSection() {
             <span className="text-[hsl(var(--neon-magenta))]">Need</span>
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {PIPELINE_PACK_DESCRIPTION}
+            Memory Packs are domain-specific cognitive bundles that plug directly into your runtime. Each pack occupies one slot — activate it and the capabilities are live instantly. Swap packs anytime to match your workload. Your tier determines capacity: Builder gets 3 slots, Studio 6, Creator 9, Architect 12.{" "}
+            <Link to="/packs" className="text-primary hover:underline font-medium inline-flex items-center gap-1">
+              Browse all 24 packs <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </p>
         </motion.div>
 
