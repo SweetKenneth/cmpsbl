@@ -635,6 +635,11 @@ export async function run(args: string[]): Promise<void> {
       // ── Governance ──
       case 'govern':       await cmdGovern(args.slice(1)); break;
       case 'treaty':       await cmdTreaty(args.slice(1)); break;
+      // ── Signature ──
+      case 'ascend':       await cmdAscend(args.slice(1)); break;
+      case 'witness':      await cmdWitness(args.slice(1)); break;
+      case 'crown':        await cmdCrown(args.slice(1)); break;
+      case 'recall':       await cmdRecall(args.slice(1)); break;
       // ── Personality ──
       case 'name':         await cmdName(args.slice(1)); break;
       case 'todo':         await cmdTodo(args.slice(1)); break;
