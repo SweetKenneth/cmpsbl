@@ -3524,6 +3524,47 @@ function randomInt(min: number, max: number): number {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// #1: Typewriter effect (character-by-character)
+// ═══════════════════════════════════════════════════════════════
+
+async function typewrite(text: string, delayMs: number = 40): Promise<void> {
+  for (const ch of text) {
+    process.stdout.write(ch);
+    await sleep(delayMs);
+  }
+  process.stdout.write('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #2: Memory heartbeat (breathing pulse)
+// ═══════════════════════════════════════════════════════════════
+
+async function memoryHeartbeat(durationMs: number = 2000): Promise<void> {
+  const intervalMs = 500;
+  const cycles = Math.floor(durationMs / intervalMs);
+  for (let i = 0; i < cycles; i++) {
+    const symbol = i % 2 === 0 ? '◆' : '◇';
+    process.stdout.write(`\r  ${symbol} substrate active`);
+    await sleep(intervalMs);
+  }
+  // Clear the line and move on
+  process.stdout.write('\r' + ' '.repeat(30) + '\r');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #5: Exit with weight
+// ═══════════════════════════════════════════════════════════════
+
+async function substrateExit(): Promise<void> {
+  blank();
+  say('  Substrate going dark.');
+  await sleep(600);
+  say('  Your work is remembered.');
+  await sleep(400);
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
 // §28 — Ecosystem: deps & publish-order
 // ═══════════════════════════════════════════════════════════════
 
