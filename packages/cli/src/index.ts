@@ -949,8 +949,10 @@ async function cmdShell() {
       const trimmed = line.trim();
       if (!trimmed) { rl.prompt(); return; }
       if (trimmed === 'exit' || trimmed === 'quit') {
+        // Save session bookmark on exit
+        saveBookmark('Interactive shell session', trimmed);
         sayOk(pick(V.ok));
-        say('Session ended.');
+        say('Session bookmarked. See you next time.');
         blank();
         rl.close();
         resolve();

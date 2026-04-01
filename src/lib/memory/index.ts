@@ -61,3 +61,6 @@ export { getRetrievalEngine, resetRetrievalEngine, type RetrievalEvent, type Str
 
 // Memory budget forecasting
 export { getBudgetForecaster, resetBudgetForecaster, type TierCapacity, type BudgetForecast, type BudgetRecommendation } from './budget-forecasting';
+
+// Session continuity (universal — for SDK/exports/agents)
+export { SessionContinuity, createFileSystemStorage, createInMemoryStorage, type AgentIdentity, type SessionBookmark as ContinuityBookmark, type TodoItem, type PinItem, type StreakData as ContinuityStreak, type DreamNudge, type WelcomeBack, type SessionStorage } from './session-continuity';
