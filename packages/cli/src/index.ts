@@ -172,11 +172,15 @@ function loadStoredKey(): string | undefined {
   return loadStoredCredentials()?.apiKey;
 }
 
-function saveStoredKey(key: string): void {
+function saveStoredKey(key: string, displayName?: string): void {
   const apiKey = normalizeApiKey(key);
   if (!apiKey) throw new Error('Invalid API key');
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
-  fs.writeFileSync(CREDS_FILE, JSON.stringify({ apiKey, api_key: apiKey, savedAt: new Date().toISOString() }, null, 2));
+  const existing = loadStoredCredentials();
+  const name = displayName ?? existing?.displayName;
+  const payload: Record<string, unknown> = { apiKey, api_key: apiKey, savedAt: new Date().toISOString() };
+  if (name) payload.displayName = name;
+  fs.writeFileSync(CREDS_FILE, JSON.stringify(payload, null, 2));
   try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* ignore platform-specific chmod failures */ }
 }
 
