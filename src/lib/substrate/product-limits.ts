@@ -153,6 +153,10 @@ const GOD_MODE_LIMITS: ProductLimits = {
   crystallizedAssetCap: Infinity,
   radioMinutesPerDay: -1,
   evolutionUploadsPerDay: Infinity,
+  forgeAgentSlots: Infinity,
+  forgeAscensionAccess: true,
+  forgeSignalAccess: true,
+  forgeSkillInjection: true,
 };
 
 /**
