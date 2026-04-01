@@ -236,7 +236,7 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
         {/* System name pill — solid bg instead of gradient */}
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           <div className={cn(
-            "inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-white shadow-sm",
+            "inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold text-white shadow-sm",
             item.pillBg
           )}>
             {item.highlight}
