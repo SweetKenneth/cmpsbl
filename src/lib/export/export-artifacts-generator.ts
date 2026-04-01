@@ -10,6 +10,7 @@
  */
 
 import type { ExportKind } from './integration-guide-generator';
+import { generateInstallWizardHtml } from './install-wizard-html';
 
 export interface ExportArtifactsInput {
   kind: ExportKind;
