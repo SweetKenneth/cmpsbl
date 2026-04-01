@@ -988,6 +988,11 @@ function printHelp() {
                                  cmpsbl evolution.evolve shadow
                                  cmpsbl atlas.capabilities
 
+  ── Simulation ─────────────────────────────────
+    simulate                Start/resume the guided substrate simulation
+    simulate status         View simulation progress & health
+    simulate skip           Exit simulation early (collects feedback)
+
   ── Interactive ──────────────────────────────────
     shell                   Interactive REPL session
     demo                    Guided 2-min tour of the substrate
