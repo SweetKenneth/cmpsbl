@@ -144,6 +144,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUpWithMagicLink = async (email: string, displayName?: string) => {
     try {
       const supabase = await getSupabase();
+
+      // Block disposable emails on signup
+      const { data: emailCheck } = await supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'validate_signup', email },
+      });
+      if (emailCheck && !emailCheck.allowed) {
+        toast.error(emailCheck.reason || 'This email domain is not permitted.');
+        return;
+      }
+
       const redirectUrl = `${window.location.origin}/os`;
       
       // Preserve redirect intent across magic link flow
@@ -163,6 +173,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       
       if (error) throw error;
+
+      // Log signup event
+      supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'log_auth_event', event_type: 'signup_initiated', email },
+      }).catch(() => {});
       
       // Send welcome email
       if (data) {
@@ -171,16 +186,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email,
             name: displayName || email.split('@')[0]
           }
-        }).catch(err => console.log('Welcome email error:', err));
+        }).catch(() => {});
       }
       
       toast.success('Secure link sent! Check your email.', {
         description: 'Click the link to create your account — zero passwords, ever.',
         duration: 6000,
       });
-    } catch (error: any) {
-      console.error('Sign up error:', error);
-      toast.error(error.message || 'Failed to send sign-up link');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to send sign-up link';
+      toast.error(message);
       throw error;
     }
   };
