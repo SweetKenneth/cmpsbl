@@ -230,7 +230,7 @@ export function HeroMetaSubstrate() {
               <span className="text-xs font-medium text-muted-foreground tracking-wide">AI Operating System</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
-                <span className="text-[9px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
+                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
               </span>
             </FadeIn>
             
