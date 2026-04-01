@@ -2643,40 +2643,46 @@ async function cmdThink(args: string[]) {
 
 async function cmdReflect(args: string[]) {
   const topic = args.join(' ') || 'recent activity';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('ECHO — Resonance Reflection');
 
   const s = !JSON_MODE ? spinner('Mining resonance patterns...') : null;
-  await sleep(600);
-  s?.update('Cross-node correlation analysis...');
-  await sleep(500);
-  s?.update('Amplifying signal patterns...');
-  await sleep(400);
+
+  const result = await substrateCall('echo', 'reflect', { topic, source: 'cli' }, apiKey);
+
+  if (!result.success) {
+    s?.stop('Reflection failed');
+    if (JSON_MODE) { jsonOut({ error: result.error, offline: result.offline }); return; }
+    renderOfflineFallback(result, 'echo.reflect');
+    return;
+  }
+
   s?.stop('Reflection complete');
 
-  const patterns = [
-    { signal: 'intent-clustering', strength: 0.89, source: 'INTENT → BRAIN', observation: 'Similar intents are being routed to the same resolver — consider memoization' },
-    { signal: 'memory-access-burst', strength: 0.76, source: 'MEMORY → NERVE', observation: 'Burst access pattern detected — warm tier is absorbing 73% of reads' },
-    { signal: 'dream-feedback-loop', strength: 0.92, source: 'DREAM → ECHO', observation: 'Previous dream heuristics are reinforcing current discoveries — compounding effect active' },
-    { signal: 'defense-signal-echo', strength: 0.81, source: 'DEFENSE → SHADOW', observation: 'Repeated low-severity signals suggest reconnaissance behavior — escalation recommended' },
-  ];
-  const found = patterns.slice(0, 2 + Math.floor(Math.random() * 2));
+  const data = result.data ?? {};
+  const patterns = Array.isArray(data.patterns) ? data.patterns as Record<string, unknown>[] :
+    Array.isArray(data.resonances) ? data.resonances as Record<string, unknown>[] : [];
 
-  if (JSON_MODE) { jsonOut({ topic, patterns: found }); return; }
+  if (JSON_MODE) { jsonOut({ topic, patterns }); return; }
 
   blank();
-  for (const p of found) {
-    box([
-      `Signal:   ${p.signal}`,
-      `Strength: ${(p.strength * 100).toFixed(0)}%`,
-      `Source:   ${p.source}`,
-      '',
-      p.observation,
-    ], 'RESONANCE');
-    blank();
+  if (patterns.length === 0) {
+    say(c.dim('  No resonance patterns detected for this topic yet.'));
+    say(c.dim('  Store more memories with `cmpsbl remember` to build signal density.'));
+  } else {
+    for (const p of patterns) {
+      box([
+        `Signal:   ${String(p.signal ?? p.pattern ?? p.name ?? '')}`,
+        `Strength: ${Number(p.strength ?? p.confidence ?? 0) > 1 ? String(p.strength) + '%' : ((Number(p.strength ?? p.confidence ?? 0)) * 100).toFixed(0) + '%'}`,
+        `Source:   ${String(p.source ?? '')}`,
+        '',
+        String(p.observation ?? p.insight ?? p.description ?? ''),
+      ], 'RESONANCE');
+      blank();
+    }
+    say(`  ${patterns.length} resonance pattern(s) detected for "${topic}"`);
   }
-  say(`  ${found.length} resonance pattern(s) detected for "${topic}"`);
   say(pick(V.ok));
   blank();
 }
