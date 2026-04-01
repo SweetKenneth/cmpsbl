@@ -135,8 +135,8 @@ export const publicRoutes = (
     <Route path="/workspace" element={<Workspace />} />
     <Route path="/sdk-playground" element={<SDKPlayground />} />
     <Route path="/templates" element={<Navigate to="/store" replace />} />
-    <Route path="/forge" element={<Navigate to="/" replace />} />
-    <Route path="/forge/catalog" element={<Navigate to="/" replace />} />
+    <Route path="/forge" element={<AgentForgeDashboard />} />
+    <Route path="/forge/catalog" element={<Navigate to="/forge" replace />} />
     <Route path="/agency" element={<Navigate to="/" replace />} />
     <Route path="/a/:slug" element={<AgencyPortal />} />
     <Route path="/devtools" element={<DevTools />} />
