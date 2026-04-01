@@ -552,12 +552,25 @@ export async function run(args: string[]): Promise<void> {
 
   const command = args[0]?.toLowerCase();
 
+  // Record session start for streak tracking
+  if (command && command !== 'version' && command !== '--version' && command !== '-v') {
+    recordSessionStart();
+  }
+
   // First-run detection
   if (!command || command === 'help' || command === '--help' || command === '-h') {
     const hasManifest = fs.existsSync(path.resolve('cmpsbl-manifest.json'));
     const hasConfig = fs.existsSync(path.resolve('.cmpsbl/config.json'));
     if (!hasManifest && !hasConfig && command !== 'help') {
       return cmdOnboarding();
+    }
+    // Returning user — show welcome-back before help
+    if (command !== 'help' && command !== '--help' && command !== '-h') {
+      const data = getWelcomeBackData();
+      if (data.bookmark || data.openTodos.length > 0 || data.pins.length > 0) {
+        renderWelcomeBack(data);
+        return;
+      }
     }
     printHelp();
     return;
