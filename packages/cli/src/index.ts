@@ -3232,58 +3232,25 @@ async function cmdSandbox(args: string[]) {
 
 async function cmdScan(args: string[]) {
   const target = args.join(' ') || 'current project';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('INCLUSIVE — Accessibility Scan (WCAG 2.2)');
-
   const s = !JSON_MODE ? spinner(`Scanning ${target}...`) : null;
-  const scanPhases = [
-    'Running WCAG 2.2 Level A checks...',
-    'Running WCAG 2.2 Level AA checks...',
-    'Running WCAG 2.2 Level AAA checks...',
-    'ARIA validation pass...',
-    'Keyboard navigation audit...',
-    'Contrast intelligence analysis...',
-    'Focus graph mapping...',
-  ];
-  for (const p of scanPhases) {
-    await sleep(300 + Math.random() * 200);
-    s?.update(p);
-  }
-  s?.stop('Scan complete');
 
-  const issues = [
-    { severity: 'critical', rule: '1.1.1', description: 'Image missing alt text', count: Math.round(Math.random() * 3) },
-    { severity: 'major', rule: '1.4.3', description: 'Insufficient color contrast (4.2:1, need 4.5:1)', count: Math.round(1 + Math.random() * 4) },
-    { severity: 'minor', rule: '2.4.7', description: 'Focus indicator not visible on interactive elements', count: Math.round(Math.random() * 6) },
-    { severity: 'major', rule: '4.1.2', description: 'ARIA role missing on custom component', count: Math.round(Math.random() * 2) },
-    { severity: 'minor', rule: '2.1.1', description: 'Keyboard trap in modal dialog', count: Math.round(Math.random() * 2) },
-  ].filter(i => i.count > 0);
-
-  const score = Math.round(60 + Math.random() * 35);
-  const level = score >= 90 ? 'AAA' : score >= 70 ? 'AA' : 'A';
-
-  if (JSON_MODE) { jsonOut({ target, score, level, issues, total: issues.reduce((s, i) => s + i.count, 0) }); return; }
-
-  blank();
-  say(`  Score:  ${score}/100 (Level ${level})`);
-  say(`  Target: ${target}`);
-  blank();
-
-  if (issues.length === 0) {
-    say('  ✓ No accessibility issues found!');
-  } else {
-    for (const issue of issues) {
-      const icon = issue.severity === 'critical' ? '✗' : issue.severity === 'major' ? '⚠' : '◇';
-      say(`  ${icon} [${issue.severity.toUpperCase()}] ${issue.rule}: ${issue.description} (×${issue.count})`);
-    }
+  const result = await substrateCall('inclusive', 'scan', { target, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Scan complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
     blank();
-    say(`  ${issues.reduce((s, i) => s + i.count, 0)} issue(s) across ${issues.length} rule(s)`);
-    say('  Run with --json for machine-readable output');
+    renderGatewayResponse('inclusive.scan', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Scan failed');
+  renderOfflineFallback(result, 'inclusive.scan');
 }
 
 async function cmdPredict(args: string[]) {
