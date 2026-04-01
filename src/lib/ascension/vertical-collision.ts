@@ -212,9 +212,22 @@ export function runVerticalCollision(
     }
   }
 
-  // Sort by CJPI score descending, take top 5
+    // Sort by CJPI score descending, take top N (one per base discovery for merging)
   discoveries.sort((a, b) => b.cjpiScore - a.cjpiScore);
-  const topDiscoveries = discoveries.slice(0, 5);
+  const maxDiscoveries = Math.max(baseDiscoveries.length, 5);
+  const topDiscoveries = discoveries.slice(0, maxDiscoveries);
+
+  // Pair each discovery 1:1 with a base discovery (round-robin assignment)
+  if (baseDiscoveries.length > 0) {
+    const usedBaseIds = new Set<string>();
+    for (const disc of topDiscoveries) {
+      // Find best unassigned base discovery
+      const available = baseDiscoveries.filter(b => !usedBaseIds.has(b.id));
+      const target = available.length > 0 ? available[0] : baseDiscoveries[0];
+      disc.baseDiscoveryId = target.id;
+      usedBaseIds.add(target.id);
+    }
+  }
 
   // Overall vertical affinity
   const avgAffinity = primitives.reduce(

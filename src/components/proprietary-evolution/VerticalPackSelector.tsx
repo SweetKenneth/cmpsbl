@@ -265,13 +265,13 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
               Vertical Pack — Optional
             </span>
           </div>
-          <h3 className="text-lg font-bold text-foreground">
-            Stack Specialized Discovery
-          </h3>
-          <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
-            Run an additional 5-primitive pass tuned for a specific domain.
-            Discoveries stack on top of your base Ascension results.
-          </p>
+           <h3 className="text-lg font-bold text-foreground">
+             Upgrade to Super Agents
+           </h3>
+           <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
+             Merge specialized agent personas into your base discoveries.
+             Same {baseDiscoveries.length || 5} capabilities — each upgraded with domain expertise.
+           </p>
         </div>
       )}
 
@@ -379,13 +379,13 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
         <div className="space-y-5 animate-fade-in">
           {/* Scan header */}
           <div className="text-center space-y-1">
-            <h3 className="text-base font-bold text-foreground">
-              {isForgeComplete ? 'Forge Complete' : 'Forging Vertical Capabilities…'}
-            </h3>
-            <p className="text-[11px] text-muted-foreground">
-              {isForgeComplete
-                ? `${finalResult.successfulCollisions} specialized features discovered`
-                : 'Scanning your code through 5 reserve primitives'}
+             <h3 className="text-base font-bold text-foreground">
+               {isForgeComplete ? 'Super Agents Forged' : 'Forging Super Agents…'}
+             </h3>
+             <p className="text-[11px] text-muted-foreground">
+               {isForgeComplete
+                 ? `${finalResult.successfulCollisions} capabilities upgraded with agent personas`
+                 : 'Merging agent personas into your base discoveries'}
             </p>
           </div>
 
@@ -485,9 +485,9 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold text-foreground">
-                  Discovered Features
-                </span>
+               <span className="text-sm font-semibold text-foreground">
+                   Agent Personas Applied
+                 </span>
               </div>
               <div className="grid gap-2">
                 {revealedDiscoveries.map((d) => {
@@ -560,7 +560,7 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
             className="text-xs h-11 min-h-[44px] rounded-xl w-full max-w-xs gap-1.5 shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
           >
             <ArrowRight className="w-3.5 h-3.5" />
-            Continue to Export with {revealedDiscoveries.length} Features
+            Continue to Export with {revealedDiscoveries.length} Super Agents
           </Button>
         )}
       </div>

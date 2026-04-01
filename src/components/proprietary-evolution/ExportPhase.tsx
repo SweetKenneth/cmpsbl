@@ -235,22 +235,25 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         capabilityType: c.capabilityType, description: c.description, category: c.category,
       }));
 
-      // Merge forge discoveries as proper capabilities so they flow through
-      // all export infrastructure: source code, tests, HTML docs, manifest, valuation
+      // Forge MERGES into base capabilities — upgrading them into super agents.
+      // Each forge discovery is paired 1:1 with a base capability via baseDiscoveryId.
+      // The result is the SAME number of capabilities, but each is enhanced with an agent persona.
       if (verticalResult?.discoveries?.length) {
         for (const d of verticalResult.discoveries) {
-          capsForExport.push({
-            id: d.id,
-            name: `${d.primitiveName}-${d.capabilityName.replace(/\s+/g, '-')}`.toLowerCase(),
-            cjpiScore: d.cjpiScore,
-            tier: d.cjpiScore >= 80 ? 'S' : d.cjpiScore >= 60 ? 'A' : 'B',
-            chain: [d.primitiveName, ...(capsForExport[0]?.chain?.slice(0, 2) || [])],
-            fingerprint: d.id.slice(0, 12).toUpperCase(),
-            moatSignature: `${d.primitiveName}::${d.vertical}::forge`,
-            capabilityType: `${verticalResult.verticalName || d.vertical} Agent`,
-            description: d.description,
-            category: d.category,
-          });
+          const baseIdx = capsForExport.findIndex(c => c.id === d.baseDiscoveryId);
+          if (baseIdx >= 0) {
+            // Upgrade the base capability in-place
+            const base = capsForExport[baseIdx];
+            capsForExport[baseIdx] = {
+              ...base,
+              name: `${base.name}::${d.primitiveName}`.toLowerCase(),
+              cjpiScore: Math.max(base.cjpiScore, d.cjpiScore),
+              chain: [...base.chain, d.primitiveName],
+              moatSignature: `${base.moatSignature}+${d.primitiveName}::forge`,
+              capabilityType: `${verticalResult.verticalName || d.vertical} Super Agent`,
+              description: `${base.description} Enhanced with ${d.primitiveName} agent persona: ${d.description}`,
+            };
+          }
         }
       }
 
@@ -402,7 +405,9 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
             <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Export Preview</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Base Capabilities</span>
+                <span className="text-muted-foreground">
+                  {verticalResult?.discoveries?.length ? 'Super Agents' : 'Capabilities'}
+                </span>
                 <span className="font-mono font-bold text-foreground">{eligible.length}</span>
               </div>
               <div className="flex justify-between">
@@ -410,9 +415,9 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
                 <span className="font-mono font-bold text-foreground">{userSourceFiles.length}</span>
               </div>
               {verticalResult && verticalResult.discoveries.length > 0 && (
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">{verticalResult.verticalName} agents</span>
-                  <span className="font-mono font-bold text-primary">+{verticalResult.discoveries.length}</span>
+                <div className="flex justify-between col-span-2">
+                  <span className="text-muted-foreground">{verticalResult.verticalName} personas merged</span>
+                  <span className="font-mono font-bold text-primary">{verticalResult.discoveries.length} of {eligible.length} upgraded</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -420,21 +425,15 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
                 <span className="font-mono font-bold text-neon-amber">{bestScore}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Total in export</span>
-                <span className="font-mono font-bold text-foreground">
-                  {eligible.length + (verticalResult?.discoveries?.length || 0)}
-                </span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-muted-foreground">Est. files in ZIP</span>
                 <span className="font-mono font-bold text-foreground">
-                  {(eligible.length + (verticalResult?.discoveries?.length || 0)) * 3 + userSourceFiles.length + 4}
+                  {eligible.length * 3 + userSourceFiles.length + 4}
                 </span>
               </div>
             </div>
             <p className="text-[9px] text-muted-foreground">
               Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
-              {verticalResult && verticalResult.discoveries.length > 0 && ` + ${verticalResult.discoveries.length} ${verticalResult.verticalName} agent capabilities`}
+              {verticalResult && verticalResult.discoveries.length > 0 && ` — each capability enhanced with ${verticalResult.verticalName} agent persona`}
             </p>
           </div>
         )}
@@ -453,7 +452,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
             ) : (
               <Download className="w-4 h-4" />
             )}
-            {isBuilderTier ? 'Upgrade to Export' : `Download All ${eligible.length + (verticalResult?.discoveries?.length || 0)} Capabilities (.zip)`}
+            {isBuilderTier ? 'Upgrade to Export' : `Download All ${eligible.length} ${verticalResult?.discoveries?.length ? 'Super Agents' : 'Capabilities'} (.zip)`}
           </Button>
         )}
       </div>
