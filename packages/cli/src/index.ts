@@ -882,6 +882,39 @@ export async function run(args: string[]): Promise<void> {
         break;
     }
 
+    // ── Simulation progress tracking ──
+    const sim = loadSimulation();
+    if (sim?.active && !JSON_MODE) {
+      const result = recordCommand(sim, command);
+      if (result.stepCompleted) {
+        blank();
+        if (result.missionCompleted && result.celebration) {
+          for (const line of result.celebration) say(`  ${line}`);
+          blank();
+          if (result.graduated) {
+            say(c.bold(c.green('  ◆ SIMULATION COMPLETE — You are a certified substrate operator.')));
+            blank();
+          }
+        } else {
+          const nextStep = getCurrentStep(result.state);
+          if (nextStep) {
+            say(`  ${c.green('✓')} Step complete. Next: ${nextStep.step.instruction}`);
+            say(`  ${c.dim(nextStep.step.hint)}`);
+            blank();
+          }
+        }
+      }
+    }
+
+    // ── Contextual nudge (20% chance, non-intrusive) ──
+    if (!JSON_MODE && command !== 'help' && command !== 'shell' && command !== 'simulate' && Math.random() < 0.2) {
+      const nudge = getContextualNudge(command, sim);
+      if (nudge) {
+        blank();
+        say(`  ${c.dim('◇')} ${c.dim(nudge)}`);
+      }
+    }
+
     // Print next-step suggestions (unless JSON mode)
     if (!JSON_MODE && command !== 'help' && command !== 'shell') {
       printSuggestions(command);
