@@ -368,6 +368,81 @@ export function getPins(): PinItem[] {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// Goal Anchors
+// ═══════════════════════════════════════════════════════════════
+
+export function setGoal(text: string, totalSteps: number = 5): GoalAnchor {
+  const state = loadState();
+  const goal: GoalAnchor = {
+    text: text.trim(),
+    setAt: new Date().toISOString(),
+    totalSteps,
+    completedSteps: 0,
+    milestones: [],
+  };
+  state.goal = goal;
+  saveState(state);
+  return goal;
+}
+
+export function getGoal(): GoalAnchor | null {
+  return loadState().goal;
+}
+
+export function advanceGoal(milestoneText?: string): GoalAnchor | null {
+  const state = loadState();
+  if (!state.goal) return null;
+  state.goal.completedSteps = Math.min(state.goal.completedSteps + 1, state.goal.totalSteps);
+  if (milestoneText) {
+    state.goal.milestones.push({ text: milestoneText.trim(), completedAt: new Date().toISOString() });
+  }
+  saveState(state);
+  return state.goal;
+}
+
+export function clearGoal(): GoalAnchor | null {
+  const state = loadState();
+  const old = state.goal;
+  state.goal = null;
+  saveState(state);
+  return old;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DREAM Digest
+// ═══════════════════════════════════════════════════════════════
+
+export function addDreamDigestEntry(insight: string, source: string = 'DREAM cycle'): DreamDigestEntry {
+  const state = loadState();
+  const entry: DreamDigestEntry = {
+    insight: insight.trim(),
+    source,
+    crystallizedAt: new Date().toISOString(),
+    applied: false,
+  };
+  state.dreamDigest.push(entry);
+  // Cap at 50 entries
+  if (state.dreamDigest.length > 50) {
+    state.dreamDigest = state.dreamDigest.slice(-50);
+  }
+  saveState(state);
+  return entry;
+}
+
+export function getDreamDigestSinceLastSession(): DreamDigestEntry[] {
+  const state = loadState();
+  const lastCheck = state.lastDreamCheckTimestamp;
+  if (!lastCheck) return state.dreamDigest;
+  return state.dreamDigest.filter(d => new Date(d.crystallizedAt) > new Date(lastCheck));
+}
+
+export function markDreamDigestChecked(): void {
+  const state = loadState();
+  state.lastDreamCheckTimestamp = new Date().toISOString();
+  saveState(state);
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Welcome-Back Generation
 // ═══════════════════════════════════════════════════════════════
 
@@ -378,7 +453,9 @@ export interface WelcomeBackData {
   streak: StreakData;
   openTodos: TodoItem[];
   pins: PinItem[];
-  urgentTodos: TodoItem[]; // todos that are getting old
+  urgentTodos: TodoItem[];
+  goal: GoalAnchor | null;
+  dreamDigestNew: DreamDigestEntry[];
 }
 
 function formatTimeSince(isoTimestamp: string): string {
@@ -400,6 +477,7 @@ export function getWelcomeBackData(): WelcomeBackData {
   const agentName = state.identity?.name ?? 'Substrate';
   const openTodos = state.todos.filter(t => !t.completedAt);
   const urgentTodos = openTodos.filter(t => daysSince(t.createdAt) >= 2);
+  const dreamDigestNew = getDreamDigestSinceLastSession();
 
   return {
     agentName,
@@ -409,6 +487,8 @@ export function getWelcomeBackData(): WelcomeBackData {
     openTodos,
     pins: state.pins,
     urgentTodos,
+    goal: state.goal,
+    dreamDigestNew,
   };
 }
 
