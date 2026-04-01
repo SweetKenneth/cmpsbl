@@ -99,6 +99,12 @@ const CONSTANT_OBFUSCATION: [RegExp, string][] = [
   [/score >= 80/g, 'score >= _T[1]'],
   [/score >= 65/g, 'score >= _T[2]'],
   [/score >= 45/g, 'score >= _T[3]'],
+
+  // Memory tier thresholds (hours/days → ms)
+  [/hotMaxHours\s*\?\?\s*24/g, '_MH[0]'],
+  [/warmMaxDays\s*\?\?\s*7/g, '_MH[1]'],
+  [/coldMaxDays\s*\?\?\s*parseInt\([^)]+\)/g, '_MH[2]'],
+  [/'90'/g, "'' + _MH[3]"],
 ];
 
 /**

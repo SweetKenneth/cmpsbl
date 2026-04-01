@@ -1073,7 +1073,8 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
   const hasSuperAgents = capabilities.some(c => c.capabilityType?.includes('Super Agent'));
   if (hasSuperAgents) {
     const { generatePersistentMemoryAdapter, generateMemoryQuickstart } = await import('@/lib/export/persistent-memory-adapter');
-    zip.file('_runtime/persistent-memory.ts', generatePersistentMemoryAdapter());
+    const { blackboxFile } = await import('@/lib/export/blackbox');
+    zip.file('_runtime/persistent-memory.ts', blackboxFile(generatePersistentMemoryAdapter(), 'typescript'));
     const agentId = ascensionSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
     zip.file('MEMORY-SETUP.md', `# Persistent Memory — ${packName}
 
