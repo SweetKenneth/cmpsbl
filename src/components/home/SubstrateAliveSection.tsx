@@ -89,7 +89,7 @@ export function SubstrateAliveSection() {
                   {pillar.description}
                 </p>
 
-                <div className="font-mono text-[10px] sm:text-xs text-primary/50 bg-primary/5 rounded-lg px-3 py-2 border border-primary/10 group-hover:text-primary/70 group-hover:border-primary/20 transition-colors">
+                <div className="font-mono text-xs text-primary/50 bg-primary/5 rounded-lg px-3 py-2 border border-primary/10 group-hover:text-primary/70 group-hover:border-primary/20 transition-colors">
                   <span className="text-muted-foreground/30 mr-1">$</span>
                   {pillar.terminal}
                 </div>
