@@ -110,6 +110,11 @@ export default function Explore() {
 
         <SectionDivider />
 
+        {/* ═══ SUBSTRATE IS ALIVE — zero-setup value prop ═══ */}
+        <SubstrateAliveSection />
+
+        <SectionDivider />
+
         {/* ═══ NPM SDK ═══ */}
         <NpmPackagesCTA />
 
