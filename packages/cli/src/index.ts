@@ -1986,11 +1986,34 @@ async function cmdStatus() {
 }
 
 async function cmdHealth() {
+  const apiKey = resolveApiKey();
   if (!JSON_MODE) header('Primitive Health Report');
   const s = !JSON_MODE ? spinner('Scanning primitives...') : null;
-  await sleep(400);
-  s?.stop('Scan complete');
 
+  // Try live substrate health first
+  const result = await substrateCall('system', 'health', { source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    s?.stop('Live health loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    const primitives = Array.isArray(result.data.primitives) ? result.data.primitives as Record<string, unknown>[] : [];
+    if (primitives.length > 0) {
+      for (const p of primitives) {
+        const h = Number(p.health ?? 100);
+        const icon = h >= 98 ? '●' : h >= 90 ? '◐' : '○';
+        say(`${icon} ${String(p.id ?? p.name ?? '').padEnd(14)} ${progressBar(h, 100, 15)} ${h}%`);
+      }
+    } else {
+      renderGatewayResponse('system.health', result.data);
+    }
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local registry
+  s?.stop('Scan complete (local)');
   const sorted = [...NODES].sort((a, b) => a.health - b.health);
   if (JSON_MODE) { jsonOut(sorted.map(n => ({ id: n.id, health: n.health, status: n.status }))); return; }
 
@@ -2025,10 +2048,26 @@ async function cmdNodes(args: string[]) {
 async function cmdPing(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl ping <node>'); return; }
+  const apiKey = resolveApiKey();
+
+  // Try live ping
+  const result = await substrateCall('system', 'ping', { target, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    say(`Pinging ${target} (LIVE)...`);
+    blank();
+    renderGatewayResponse('system.ping', result.data);
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const node = NODES.find(n => n.id === target);
   if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
-  if (!JSON_MODE) say(`Pinging ${node.id}@${node.category}...`);
+  if (!JSON_MODE) say(`Pinging ${node.id}@${node.category} (local)...`);
   const latencies: number[] = [];
   for (let i = 0; i < 4; i++) {
     await sleep(150 + Math.random() * 200);
@@ -2048,35 +2087,39 @@ async function cmdPing(args: string[]) {
 async function cmdInspect(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl inspect <node>'); return; }
+  const apiKey = resolveApiKey();
+
+  // Try live inspection first
+  const result = await substrateCall('atlas', 'inspect', { target, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    header(`Inspecting ${target} (LIVE)`);
+    blank();
+    renderGatewayResponse(`atlas.inspect`, result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const node = NODES.find(n => n.id === target);
   if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
   const data = {
     node: node.id, sector: node.category, role: node.role, status: node.status, health: node.health,
-    uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
-    resolvers: Math.round(3 + Math.random() * 12),
-    intents24h: Math.round(50 + Math.random() * 500),
-    avgLatency: Math.round(2 + Math.random() * 8),
     matrixLinks: NODES.filter(n => n.category === node.category && n.id !== node.id).map(n => n.id),
   };
 
   if (JSON_MODE) { jsonOut(data); return; }
-  header(`Inspecting ${node.id}`);
-  const s = spinner(pick(V.think));
-  await sleep(600);
-  s.stop('Inspection complete');
+  header(`Inspecting ${node.id} (LOCAL)`);
   blank();
-
   table(['Property', 'Value'], [
     ['Primitive', data.node],
     ['Category', data.sector],
     ['Role', data.role],
     ['Status', data.status],
     ['Health', `${data.health}%`],
-    ['Uptime', `${data.uptime}%`],
-    ['Resolvers', String(data.resolvers)],
-    ['Intents (24h)', String(data.intents24h)],
-    ['Avg Latency', `${data.avgLatency}ms`],
     ['Matrix Links', data.matrixLinks.join(', ') || 'isolated'],
   ]);
   blank();
@@ -2155,11 +2198,32 @@ async function cmdTopology() {
 async function cmdRoute(args: string[]) {
   const intent = args.join(' ');
   if (!intent) { say('Usage: cmpsbl route <intent>'); return; }
+  const apiKey = resolveApiKey();
 
+  // Try live routing
+  const result = await substrateCall('intent', 'route', { intent, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    header('Intent Routing Trace (LIVE)');
+    say(`Intent: "${intent}"`);
+    blank();
+    const hops = Array.isArray(result.data.hops) ? result.data.hops as Record<string, unknown>[] : [];
+    for (let i = 0; i < hops.length; i++) {
+      const h = hops[i]!;
+      say(`  ${i === 0 ? '►' : '→'} ${String(h.id ?? h.node ?? '')}.${String(h.role ?? '')} (${h.latencyMs ?? '?'}ms) — ${String(h.category ?? '')}`);
+    }
+    if (hops.length === 0) renderGatewayResponse('intent.route', result.data);
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const hops = pickRouteNodes(intent);
   if (JSON_MODE) { jsonOut({ intent, hops: hops.map(n => n.id), totalMs: Math.round(5 + Math.random() * 20) }); return; }
 
-  header('Intent Routing Trace');
+  header('Intent Routing Trace (LOCAL)');
   say(`Intent: "${intent}"`);
   blank();
   for (let i = 0; i < hops.length; i++) {
@@ -2233,10 +2297,32 @@ async function cmdDoctor() {
 
 async function cmdWatch(args: string[]) {
   const target = args[0]?.toUpperCase();
+  const apiKey = resolveApiKey();
+
+  // Try live watch via substrate
+  const result = await substrateCall('vision', 'watch', { target: target ?? 'all', limit: 8, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    header(`Live Watch${target ? ` (${target})` : ''} — LIVE`);
+    blank();
+    const events = Array.isArray(result.data.events) ? result.data.events as Record<string, unknown>[] :
+      Array.isArray(result.data) ? result.data as unknown as Record<string, unknown>[] : [];
+    for (const ev of events.slice(0, 20)) {
+      const ts = String(ev.timestamp ?? ev.time ?? new Date().toISOString()).slice(11, 23);
+      say(`[${ts}] ${String(ev.node ?? ev.source ?? '').padEnd(14)} ${String(ev.event ?? ev.action ?? '')}`);
+    }
+    div();
+    say(`${events.length} events.`);
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const watchNodes = target ? NODES.filter(n => n.id === target || n.category === target) : NODES;
   if (watchNodes.length === 0) { say(pick(V.err)); say(`No primitives matching "${target}".`); return; }
 
-  if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''}`); say('Showing 8 events (demo):\n'); }
+  if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''} (LOCAL)`); say('Showing 8 events:\n'); }
 
   const events: unknown[] = [];
   const eventTypes = ['intent.resolved', 'health.check', 'matrix.signal', 'resolver.executed', 'memory.observed'];
@@ -2259,15 +2345,37 @@ async function cmdLogs(args: string[]) {
   const target = args[0]?.toUpperCase();
   const tailIdx = args.indexOf('--tail');
   const count = tailIdx >= 0 ? parseInt(args[tailIdx + 1]) || 10 : 10;
-  const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
+  const apiKey = resolveApiKey();
 
+  // Try live logs
+  const result = await substrateCall('vision', 'logs', { target: target ?? 'all', limit: count, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    const entries = Array.isArray(result.data.entries) ? result.data.entries as Record<string, unknown>[] :
+      Array.isArray(result.data) ? result.data as unknown as Record<string, unknown>[] : [];
+    for (const e of entries.slice(0, 20)) {
+      const ts = String(e.timestamp ?? e.time ?? '').slice(0, 19);
+      const lvl = String(e.level ?? 'INFO');
+      const node = String(e.node ?? e.source ?? '');
+      const msg = String(e.message ?? e.msg ?? '');
+      const icon = lvl === 'WARN' ? '⚠' : lvl === 'DEBUG' ? '◇' : '●';
+      say(`${ts} ${icon} ${lvl.padEnd(5)} ${node.padEnd(14)} ${msg}`);
+    }
+    div();
+    say(`${entries.length} entries.`);
+    say(pick(V.idle));
+    blank();
+    return;
+  }
+
+  // Fallback to local
+  const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
   if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Primitive "${target}" not found.`); return; }
 
   const levels = ['INFO', 'DEBUG', 'WARN'];
   const messages = [
     'resolver executed successfully', 'health check passed', 'matrix signal propagated',
     'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
-    'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
   ];
 
   const entries: unknown[] = [];
@@ -2279,12 +2387,12 @@ async function cmdLogs(args: string[]) {
     if (JSON_MODE) entries.push({ timestamp: ts, level, node: node.id, message: msg });
     else {
       const lvl = level === 'WARN' ? '⚠' : level === 'DEBUG' ? '◇' : '●';
-      say(`${ts} ${lvl} ${level.padEnd(5)} ${node.id.padEnd(14)} ${msg}`);
+      say(`${ts} ${lvl} ${level!.padEnd(5)} ${node.id.padEnd(14)} ${msg}`);
     }
   }
   if (JSON_MODE) { jsonOut(entries); return; }
   div();
-  say(`${Math.min(count, 20)} entries.`);
+  say(`${Math.min(count, 20)} entries (local).`);
   say(pick(V.idle));
   blank();
 }
@@ -2294,30 +2402,46 @@ async function cmdLogs(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdBenchmark() {
+  const apiKey = resolveApiKey();
   if (!JSON_MODE) header('Primitive Latency Benchmark');
 
   const s = !JSON_MODE ? spinner('Benchmarking all primitives...') : null;
-  const results: Array<{ id: string; sector: string; latency: number }> = [];
 
+  // Try live benchmark
+  const result = await substrateCall('system', 'benchmark', { source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    s?.stop('Benchmark complete (live)');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    const primitives = Array.isArray(result.data.primitives) ? result.data.primitives as Record<string, unknown>[] : [];
+    if (primitives.length > 0) {
+      table(['Rank', 'Primitive', 'Category', 'Latency'], primitives.map((r, i) => [
+        `#${i + 1}`, String(r.id ?? ''), String(r.category ?? ''), `${r.latency ?? 0}ms`,
+      ]));
+    } else {
+      renderGatewayResponse('system.benchmark', result.data);
+    }
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local measurement
+  const results: Array<{ id: string; sector: string; latency: number }> = [];
   for (const node of NODES) {
     await sleep(30);
     results.push({ id: node.id, sector: node.category, latency: Math.round(1 + Math.random() * 15) });
     s?.update(`Benchmarking ${node.id}...`);
   }
-  s?.stop('Benchmark complete');
-
+  s?.stop('Benchmark complete (local)');
   results.sort((a, b) => a.latency - b.latency);
 
   if (JSON_MODE) { jsonOut(results); return; }
   blank();
-
   table(['Rank', 'Primitive', 'Category', 'Latency'], results.map((r, i) => [
-    `#${i + 1}`,
-    r.id,
-    r.sector,
-    `${r.latency}ms`,
+    `#${i + 1}`, r.id, r.sector, `${r.latency}ms`,
   ]));
-
   blank();
   const avg = Math.round(results.reduce((s, r) => s + r.latency, 0) / results.length);
   say(`Average: ${avg}ms │ Fastest: ${results[0].id} (${results[0].latency}ms) │ Slowest: ${results[results.length - 1].id} (${results[results.length - 1].latency}ms)`);
@@ -2847,49 +2971,39 @@ async function cmdForget(args: string[]) {
 
 async function cmdForge(args: string[]) {
   const topic = args.join(' ') || 'system topology';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('FORGE — Signal Forge Loadout Synthesis');
-
   const s = !JSON_MODE ? spinner('Mapping capabilities across 40 primitives...') : null;
-  const forgePhases = [
-    'Scanning primitive capability matrix...',
-    'Identifying unexplored combinations...',
-    'Simulating pipeline candidates...',
-    'CJPI validation pass...',
-    'Crystallizing loadout...',
-  ];
-  for (const p of forgePhases) {
-    await sleep(500 + Math.random() * 400);
-    s?.update(p);
+
+  const result = await substrateCall('forge', 'synthesize', { topic, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Loadout synthesized');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    const data = result.data;
+    const name = String(data.name ?? data.loadout_name ?? topic);
+    const primitives = Array.isArray(data.primitives) ? (data.primitives as string[]).join(' → ') : '';
+    const cjpi = Number(data.cjpi ?? data.score ?? 0);
+    const tier = String(data.tier ?? 'Prime');
+    box([
+      `⬢ LOADOUT DISCOVERED`,
+      '',
+      `Name:       ${name}`,
+      primitives ? `Primitives: ${primitives}` : '',
+      `CJPI:       ${cjpi}`,
+      `Tier:       ${tier}`,
+      '',
+      'Status: Ready to deploy',
+    ].filter(Boolean), 'FORGE');
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  s?.stop('Loadout synthesized');
 
-  const loadouts = [
-    { name: 'adaptive-cache-guardian', primitives: ['MEMORY', 'DEFENSE', 'REFLEX'], cjpi: 78, tier: 'Prime' },
-    { name: 'predictive-healing-pipeline', primitives: ['ORACLE', 'MEDIC', 'NERVE'], cjpi: 85, tier: 'Relic' },
-    { name: 'semantic-threat-correlator', primitives: ['BRAIN', 'DEFENSE', 'SHADOW'], cjpi: 91, tier: 'Mythic' },
-    { name: 'autonomous-compliance-auditor', primitives: ['AUDIT', 'GOVERNANCE', 'CONSCIENCE'], cjpi: 72, tier: 'Prime' },
-    { name: 'dream-forge-feedback-loop', primitives: ['DREAM', 'FORGE', 'ECHO'], cjpi: 94, tier: 'Apex' },
-  ];
-  const lo = loadouts[Math.floor(Math.random() * loadouts.length)];
-
-  if (JSON_MODE) { jsonOut({ topic, loadout: lo }); return; }
-
-  blank();
-  box([
-    `⬢ LOADOUT DISCOVERED`,
-    '',
-    `Name:       ${lo.name}`,
-    `Primitives: ${lo.primitives.join(' → ')}`,
-    `CJPI:       ${lo.cjpi}`,
-    `Tier:       ${lo.tier}`,
-    '',
-    'Status: Ready to deploy',
-  ], 'FORGE');
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Synthesis failed');
+  renderOfflineFallback(result, 'forge.synthesize');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3154,77 +3268,49 @@ async function cmdHarvest(args: string[]) {
 async function cmdTranslate(args: string[]) {
   const text = args.join(' ');
   if (!text) { say('Usage: cmpsbl translate <text>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('LINGUA — Language Processing');
-
   const s = !JSON_MODE ? spinner('Processing through LINGUA...') : null;
-  await sleep(600);
-  s?.update('Analyzing linguistic structure...');
-  await sleep(400);
-  s?.stop('Analysis complete');
 
-  const analysis = {
-    input: text,
-    language: 'en',
-    sentiment: +(0.3 + Math.random() * 0.5).toFixed(2),
-    complexity: Math.round(20 + Math.random() * 60),
-    entities: Math.round(1 + Math.random() * 5),
-    tokens: text.split(/\s+/).length,
-    readability: ['simple', 'moderate', 'complex', 'technical'][Math.floor(Math.random() * 4)],
-  };
+  const result = await substrateCall('lingua', 'analyze', { text, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Analysis complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('lingua.analyze', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
 
-  if (JSON_MODE) { jsonOut(analysis); return; }
-
-  blank();
-  say(`  Language:    ${analysis.language}`);
-  say(`  Sentiment:   ${analysis.sentiment > 0.5 ? '●' : '◐'} ${(analysis.sentiment * 100).toFixed(0)}% positive`);
-  say(`  Complexity:  ${analysis.complexity}%`);
-  say(`  Readability: ${analysis.readability}`);
-  say(`  Entities:    ${analysis.entities} detected`);
-  say(`  Tokens:      ${analysis.tokens}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Analysis failed');
+  renderOfflineFallback(result, 'lingua.analyze');
 }
 
 async function cmdSandbox(args: string[]) {
   const script = args.join(' ');
   if (!script) { say('Usage: cmpsbl sandbox <script or expression>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('SANDBOX — Safe Execution');
-
   const s = !JSON_MODE ? spinner('Provisioning hermetic environment...') : null;
-  await sleep(300);
-  s?.update('Applying syscall filters...');
-  await sleep(200);
-  s?.update('Executing in isolation...');
-  await sleep(500 + Math.random() * 400);
-  s?.stop('Execution complete');
 
-  const result = {
-    script,
-    exitCode: 0,
-    executionMs: Math.round(50 + Math.random() * 200),
-    memoryKb: Math.round(512 + Math.random() * 2048),
-    cpuMs: Math.round(10 + Math.random() * 100),
-    networkEgress: 'blocked (default-deny)',
-    verdict: 'SAFE',
-  };
+  const result = await substrateCall('sandbox', 'execute', { script, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Execution complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('sandbox.execute', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
 
-  if (JSON_MODE) { jsonOut(result); return; }
-
-  blank();
-  say(`  Exit:     ${result.exitCode}`);
-  say(`  Time:     ${result.executionMs}ms`);
-  say(`  Memory:   ${result.memoryKb}KB`);
-  say(`  CPU:      ${result.cpuMs}ms`);
-  say(`  Network:  ${result.networkEgress}`);
-  say(`  Verdict:  ${result.verdict}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Execution failed');
+  renderOfflineFallback(result, 'sandbox.execute');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3233,184 +3319,95 @@ async function cmdSandbox(args: string[]) {
 
 async function cmdScan(args: string[]) {
   const target = args.join(' ') || 'current project';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('INCLUSIVE — Accessibility Scan (WCAG 2.2)');
-
   const s = !JSON_MODE ? spinner(`Scanning ${target}...`) : null;
-  const scanPhases = [
-    'Running WCAG 2.2 Level A checks...',
-    'Running WCAG 2.2 Level AA checks...',
-    'Running WCAG 2.2 Level AAA checks...',
-    'ARIA validation pass...',
-    'Keyboard navigation audit...',
-    'Contrast intelligence analysis...',
-    'Focus graph mapping...',
-  ];
-  for (const p of scanPhases) {
-    await sleep(300 + Math.random() * 200);
-    s?.update(p);
-  }
-  s?.stop('Scan complete');
 
-  const issues = [
-    { severity: 'critical', rule: '1.1.1', description: 'Image missing alt text', count: Math.round(Math.random() * 3) },
-    { severity: 'major', rule: '1.4.3', description: 'Insufficient color contrast (4.2:1, need 4.5:1)', count: Math.round(1 + Math.random() * 4) },
-    { severity: 'minor', rule: '2.4.7', description: 'Focus indicator not visible on interactive elements', count: Math.round(Math.random() * 6) },
-    { severity: 'major', rule: '4.1.2', description: 'ARIA role missing on custom component', count: Math.round(Math.random() * 2) },
-    { severity: 'minor', rule: '2.1.1', description: 'Keyboard trap in modal dialog', count: Math.round(Math.random() * 2) },
-  ].filter(i => i.count > 0);
-
-  const score = Math.round(60 + Math.random() * 35);
-  const level = score >= 90 ? 'AAA' : score >= 70 ? 'AA' : 'A';
-
-  if (JSON_MODE) { jsonOut({ target, score, level, issues, total: issues.reduce((s, i) => s + i.count, 0) }); return; }
-
-  blank();
-  say(`  Score:  ${score}/100 (Level ${level})`);
-  say(`  Target: ${target}`);
-  blank();
-
-  if (issues.length === 0) {
-    say('  ✓ No accessibility issues found!');
-  } else {
-    for (const issue of issues) {
-      const icon = issue.severity === 'critical' ? '✗' : issue.severity === 'major' ? '⚠' : '◇';
-      say(`  ${icon} [${issue.severity.toUpperCase()}] ${issue.rule}: ${issue.description} (×${issue.count})`);
-    }
+  const result = await substrateCall('inclusive', 'scan', { target, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Scan complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
     blank();
-    say(`  ${issues.reduce((s, i) => s + i.count, 0)} issue(s) across ${issues.length} rule(s)`);
-    say('  Run with --json for machine-readable output');
+    renderGatewayResponse('inclusive.scan', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Scan failed');
+  renderOfflineFallback(result, 'inclusive.scan');
 }
 
 async function cmdPredict(args: string[]) {
   const scenario = args.join(' ');
   if (!scenario) { say('Usage: cmpsbl predict <scenario>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('ORACLE — Predictive Intelligence');
+  const s = !JSON_MODE ? spinner('Running prediction networks...') : null;
 
-  const s = !JSON_MODE ? spinner('Running Bayesian prediction networks...') : null;
-  await sleep(500);
-  s?.update('Monte Carlo scenario simulation...');
-  await sleep(600);
-  s?.update('Generating prescriptive recommendations...');
-  await sleep(400);
-  s?.stop('Prediction complete');
-
-  const outcomes = [
-    { outcome: 'favorable', probability: +(0.55 + Math.random() * 0.3).toFixed(2), impact: 'high' },
-    { outcome: 'neutral', probability: +(0.1 + Math.random() * 0.2).toFixed(2), impact: 'medium' },
-    { outcome: 'adverse', probability: +(0.05 + Math.random() * 0.15).toFixed(2), impact: 'high' },
-  ];
-  const recommendation = [
-    'Proceed with monitoring — favorable conditions detected',
-    'Pre-allocate resources for demand surge in next 72 hours',
-    'Defensive posture recommended — anomaly probability above threshold',
-    'Opportunity window detected — consider scaling operations',
-  ][Math.floor(Math.random() * 4)];
-
-  if (JSON_MODE) { jsonOut({ scenario, outcomes, recommendation, simulations: 10000 }); return; }
-
-  blank();
-  say(`  Scenario: "${scenario}"`);
-  say(`  Simulations: 10,000 Monte Carlo runs`);
-  blank();
-  for (const o of outcomes) {
-    const bar = progressBar(Math.round(Number(o.probability) * 100), 100, 15);
-    say(`  ${o.outcome.padEnd(12)} ${bar} ${(Number(o.probability) * 100).toFixed(0)}% [${o.impact}]`);
+  const result = await substrateCall('oracle', 'predict', { scenario, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Prediction complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('oracle.predict', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(`  ◈ Recommendation: ${recommendation}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Prediction failed');
+  renderOfflineFallback(result, 'oracle.predict');
 }
 
 async function cmdAudit(args: string[]) {
   const scope = args.join(' ') || 'full system';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('AUDIT — Compliance Report');
-
   const s = !JSON_MODE ? spinner('Running compliance audit...') : null;
-  const frameworks = ['SOC2', 'GDPR', 'HIPAA', 'ISO 27001'];
-  for (const fw of frameworks) {
-    await sleep(300 + Math.random() * 200);
-    s?.update(`Checking ${fw} compliance...`);
+
+  const result = await substrateCall('audit', 'compliance', { scope, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Audit complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('audit.compliance', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  s?.stop('Audit complete');
 
-  const results = frameworks.map(fw => ({
-    framework: fw,
-    status: Math.random() > 0.15 ? 'compliant' : 'review_needed',
-    controls: Math.round(20 + Math.random() * 40),
-    passed: 0,
-    findings: Math.round(Math.random() * 3),
-  }));
-  results.forEach(r => { r.passed = r.controls - r.findings; });
-
-  const hashChain = `fnv1a-${Date.now().toString(16)}`;
-
-  if (JSON_MODE) { jsonOut({ scope, results, auditHash: hashChain, immutable: true }); return; }
-
-  blank();
-  say(`  Scope: ${scope}`);
-  say(`  Audit Hash: ${hashChain} (immutable)`);
-  blank();
-
-  for (const r of results) {
-    const icon = r.status === 'compliant' ? '✔' : '⚠';
-    say(`  ${icon} ${r.framework.padEnd(12)} ${r.passed}/${r.controls} controls passed${r.findings > 0 ? ` (${r.findings} finding${r.findings > 1 ? 's' : ''})` : ''}`);
-  }
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Audit failed');
+  renderOfflineFallback(result, 'audit.compliance');
 }
 
 async function cmdCost(args: string[]) {
   const period = args[0] || 'today';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('ECONOMY — Usage & Cost Report');
-
   const s = !JSON_MODE ? spinner('Querying cost ledger...') : null;
-  await sleep(500);
-  s?.stop('Ledger loaded');
 
-  const report = {
-    period,
-    totalCostCents: Math.round(50 + Math.random() * 500),
-    apiCalls: Math.round(100 + Math.random() * 2000),
-    tokensUsed: Math.round(10000 + Math.random() * 100000),
-    topPrimitives: [
-      { primitive: 'BRAIN', costCents: Math.round(10 + Math.random() * 100), calls: Math.round(20 + Math.random() * 200) },
-      { primitive: 'DREAM', costCents: Math.round(5 + Math.random() * 80), calls: Math.round(10 + Math.random() * 50) },
-      { primitive: 'NEXUS', costCents: Math.round(15 + Math.random() * 120), calls: Math.round(50 + Math.random() * 300) },
-    ],
-    budgetRemaining: Math.round(5000 + Math.random() * 10000),
-  };
-
-  if (JSON_MODE) { jsonOut(report); return; }
-
-  blank();
-  say(`  Period:         ${report.period}`);
-  say(`  Total Cost:     $${(report.totalCostCents / 100).toFixed(2)}`);
-  say(`  API Calls:      ${report.apiCalls.toLocaleString()}`);
-  say(`  Tokens Used:    ${report.tokensUsed.toLocaleString()}`);
-  say(`  Budget Left:    $${(report.budgetRemaining / 100).toFixed(2)}`);
-  blank();
-  say('  Top primitives by cost:');
-  for (const p of report.topPrimitives) {
-    say(`    ${p.primitive.padEnd(10)} $${(p.costCents / 100).toFixed(2)} (${p.calls} calls)`);
+  const result = await substrateCall('economy', 'report', { period, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Ledger loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('economy.report', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Ledger query failed');
+  renderOfflineFallback(result, 'economy.report');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3420,79 +3417,47 @@ async function cmdCost(args: string[]) {
 async function cmdThreat(args: string[]) {
   const input = args.join(' ');
   if (!input) { say('Usage: cmpsbl threat <input to analyze>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('DEFENSE — Threat Analysis');
-
   const s = !JSON_MODE ? spinner('Running threat evaluation...') : null;
-  await sleep(300);
-  s?.update('Trie-based path matching...');
-  await sleep(300);
-  s?.update('Behavioral analysis (Z-score)...');
-  await sleep(300);
-  s?.update('Kill-chain correlation...');
-  await sleep(300);
-  s?.stop('Analysis complete');
 
-  const threatScore = +(Math.random() * 0.6).toFixed(2);
-  const severity = threatScore > 0.4 ? 'HIGH' : threatScore > 0.2 ? 'MEDIUM' : 'LOW';
-  const signals = [
-    'No injection patterns detected',
-    'Unicode normalization: clean',
-    'Behavioral pattern: within baseline',
-    threatScore > 0.3 ? 'Anomaly: unusual token distribution' : 'Token distribution: normal',
-  ];
-  const action = threatScore > 0.4 ? 'BLOCK' : threatScore > 0.2 ? 'FLAG' : 'ALLOW';
+  const result = await substrateCall('defense', 'threat_analyze', { input, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Analysis complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('defense.threat_analyze', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
 
-  if (JSON_MODE) { jsonOut({ input: input.slice(0, 50), threatScore, severity, action, signals }); return; }
-
-  blank();
-  say(`  Threat Score: ${(threatScore * 100).toFixed(0)}% [${severity}]`);
-  say(`  Action:       ${action}`);
-  blank();
-  for (const sig of signals) say(`  ${sig.startsWith('Anomaly') ? '⚠' : '✔'} ${sig}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Analysis failed');
+  renderOfflineFallback(result, 'defense.threat_analyze');
 }
 
 async function cmdImmune(args: string[]) {
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('IMMUNITY — System Health & Anomalies');
-
   const s = !JSON_MODE ? spinner('Scanning immune system...') : null;
-  await sleep(500);
-  s?.update('Checking anomaly response matrix...');
-  await sleep(400);
-  s?.stop('Immune scan complete');
 
-  const zones = [
-    { zone: 'Input Layer', status: 'healthy', anomalies: 0, lastCheck: '2s ago' },
-    { zone: 'Resolver Mesh', status: 'healthy', anomalies: Math.round(Math.random() * 2), lastCheck: '5s ago' },
-    { zone: 'Memory Tiers', status: 'healthy', anomalies: 0, lastCheck: '3s ago' },
-    { zone: 'Output Layer', status: 'healthy', anomalies: 0, lastCheck: '1s ago' },
-    { zone: 'External Boundary', status: Math.random() > 0.8 ? 'elevated' : 'healthy', anomalies: Math.round(Math.random() * 3), lastCheck: '4s ago' },
-  ];
-
-  const totalAnomalies = zones.reduce((s, z) => s + z.anomalies, 0);
-
-  if (JSON_MODE) { jsonOut({ zones, totalAnomalies, verdict: totalAnomalies === 0 ? 'CLEAN' : 'MONITORING' }); return; }
-
-  blank();
-  for (const z of zones) {
-    const icon = z.status === 'healthy' ? '●' : '◐';
-    say(`  ${icon} ${z.zone.padEnd(20)} ${z.status.padEnd(10)} ${z.anomalies > 0 ? `${z.anomalies} anomalie(s)` : 'clean'} [${z.lastCheck}]`);
+  const result = await substrateCall('immunity', 'scan', { source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Immune scan complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('immunity.scan', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  if (totalAnomalies === 0) {
-    say('  ◉ Immune system: ALL CLEAR');
-  } else {
-    say(`  ⚠ ${totalAnomalies} anomalie(s) under monitoring`);
-  }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Immune scan failed');
+  renderOfflineFallback(result, 'immunity.scan');
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -3500,71 +3465,47 @@ async function cmdImmune(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdGovern(args: string[]) {
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('GOVERNANCE — Policy Status');
-
   const s = !JSON_MODE ? spinner('Querying governance state machine...') : null;
-  await sleep(400);
-  s?.stop('Governance loaded');
 
-  const modes = ['PERMISSIVE', 'STANDARD', 'STRICT', 'LOCKDOWN', 'EMERGENCY'];
-  const currentMode = modes[1]; // STANDARD as default
-  const policies = [
-    { name: 'mutation-budget', status: 'enforced', violations: 0 },
-    { name: 'rate-limiting', status: 'enforced', violations: Math.round(Math.random() * 2) },
-    { name: 'data-sovereignty', status: 'enforced', violations: 0 },
-    { name: 'model-selection', status: 'enforced', violations: 0 },
-    { name: 'cost-ceiling', status: 'enforced', violations: Math.round(Math.random() * 1) },
-  ];
-  const driftScore = +(Math.random() * 0.1).toFixed(3);
-
-  if (JSON_MODE) { jsonOut({ mode: currentMode, policies, driftScore, auditChainIntact: true }); return; }
-
-  blank();
-  say(`  Mode:        ${currentMode}`);
-  say(`  Drift Score: ${driftScore} (Jaccard distance)`);
-  say(`  Audit Chain: ✔ Intact (FNV-1a verified)`);
-  blank();
-  for (const p of policies) {
-    const icon = p.violations === 0 ? '✔' : '⚠';
-    say(`  ${icon} ${p.name.padEnd(20)} ${p.status}${p.violations > 0 ? ` (${p.violations} violation${p.violations > 1 ? 's' : ''})` : ''}`);
+  const result = await substrateCall('governance', 'status', { source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Governance loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('governance.status', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Governance query failed');
+  renderOfflineFallback(result, 'governance.status');
 }
 
 async function cmdTreaty(args: string[]) {
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('TREATY — Trust Contracts');
-
   const s = !JSON_MODE ? spinner('Loading trust contracts...') : null;
-  await sleep(400);
-  s?.stop('Treaties loaded');
 
-  const treaties = [
-    { name: 'substrate-integrity', parties: ['CORE', 'GOVERNANCE'], status: 'active', trust: 0.98, expires: 'never' },
-    { name: 'memory-sovereignty', parties: ['MEMORY', 'SOVEREIGN'], status: 'active', trust: 0.95, expires: 'never' },
-    { name: 'defense-immunity-pact', parties: ['DEFENSE', 'IMMUNITY'], status: 'active', trust: 0.97, expires: 'never' },
-    { name: 'dream-brain-protocol', parties: ['DREAM', 'BRAIN'], status: 'active', trust: 0.93, expires: '90d' },
-    { name: 'audit-governance-bind', parties: ['AUDIT', 'GOVERNANCE'], status: 'active', trust: 0.99, expires: 'never' },
-  ];
-
-  if (JSON_MODE) { jsonOut({ treaties, totalActive: treaties.length }); return; }
-
-  blank();
-  for (const t of treaties) {
-    const trustBar = progressBar(Math.round(t.trust * 100), 100, 10);
-    say(`  ◈ ${t.name}`);
-    say(`    Parties: ${t.parties.join(' ↔ ')}  Trust: ${trustBar} ${(t.trust * 100).toFixed(0)}%  Expires: ${t.expires}`);
+  const result = await substrateCall('treaty', 'status', { source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Treaties loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('treaty.status', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(`  ${treaties.length} active trust contract(s)`);
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Treaty query failed');
+  renderOfflineFallback(result, 'treaty.status');
 }
 
 // ═══════════════════════════════════════════════════════════════
