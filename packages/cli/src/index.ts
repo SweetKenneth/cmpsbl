@@ -34,6 +34,8 @@ import {
   addTodo, completeTodo, removeTodo, getTodos,
   addPin, removePin, getPins,
   getWelcomeBackData, getFullState,
+  setGoal, getGoal, advanceGoal, clearGoal,
+  getDreamDigestSinceLastSession, markDreamDigestChecked, addDreamDigestEntry,
   type WelcomeBackData,
 } from './session';
 import { runInstallWizard } from './install-wizard';
