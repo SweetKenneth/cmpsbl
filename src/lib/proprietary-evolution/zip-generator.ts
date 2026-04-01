@@ -1069,6 +1069,78 @@ export async function generateCapabilityPackZip(options: ExportOptions): Promise
     }
   }
 
+  // ═══ PERSISTENT MEMORY ADAPTER — auto-included for Super Agent exports ═══
+  const hasSuperAgents = capabilities.some(c => c.capabilityType?.includes('Super Agent'));
+  if (hasSuperAgents) {
+    const { generatePersistentMemoryAdapter, generateMemoryQuickstart } = await import('@/lib/export/persistent-memory-adapter');
+    zip.file('_runtime/persistent-memory.ts', generatePersistentMemoryAdapter());
+    const agentId = ascensionSlug.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+    zip.file('MEMORY-SETUP.md', `# Persistent Memory — ${packName}
+
+## Zero Setup Required
+
+Your Super Agent exports include the **CMPSBL® Persistent Memory Adapter** — a tiered,
+file-backed storage engine that gives every agent cross-session memory out of the box.
+
+### Memory Tiers
+
+| Tier | Age | Storage | Access Speed |
+|------|-----|---------|-------------|
+| **HOT** | < 24h | In-memory + disk | Instant |
+| **WARM** | 1–7 days | Disk only | Fast |
+| **COLD** | 7–90 days | Compressed (gzip) | Deep recall |
+| **Expired** | > 90 days | Auto-purged | — |
+
+### Quick Start
+
+\`\`\`typescript
+import { createPersistentStorage } from './_runtime/persistent-memory';
+import { init } from './_runtime/standalone-runtime';
+
+const storage = createPersistentStorage({
+  agentId: '${agentId}',
+});
+
+const instance = init({ storage });
+// That's it. Your agent now remembers across sessions.
+\`\`\`
+
+### Configuration
+
+| Environment Variable | Default | Description |
+|---------------------|---------|-------------|
+| \`CMPSBL_MEMORY_TTL_DAYS\` | \`90\` | Max memory retention in days |
+| \`CMPSBL_MEMORY_SHARED\` | \`false\` | Share memory across all agents |
+
+### Memory Location
+
+\`~/.cmpsbl/memory/${agentId}/\`
+
+Each tier has its own subdirectory: \`hot/\`, \`warm/\`, \`cold/\`.
+
+### Shared Memory Mode
+
+To enable cross-agent recall (all agents share one memory pool):
+
+\`\`\`bash
+export CMPSBL_MEMORY_SHARED=true
+\`\`\`
+
+Or in code:
+
+\`\`\`typescript
+const storage = createPersistentStorage({
+  agentId: '${agentId}',
+  sharedMemory: true,
+});
+\`\`\`
+
+---
+
+© CMPSBL® — All rights reserved.
+`);
+  }
+
   // Discovery context & tier migration → docs/guides/
   const discoveryCtx = generateDiscoveryContext({
     kind: 'ascension',
