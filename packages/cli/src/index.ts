@@ -1269,7 +1269,7 @@ async function cmdWhoami() {
 
   if (!developerName && hasKey) {
     try {
-      const res = await fetch(GATEWAY_ENDPOINT, {
+      const res = await fetch(getSubstrateEndpoint(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
         body: JSON.stringify({ module: 'access', action: 'identity' }),
