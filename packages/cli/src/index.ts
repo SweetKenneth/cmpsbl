@@ -743,7 +743,7 @@ function printHelp() {
   ── System ───────────────────────────────────────
     status                  Show full substrate status
     health                  Health check across all primitives
-    nodes [filter]          List primitives (filter by category/status)
+    primitives [filter]          List primitives (filter by category/status)
     ping <node>             Ping a specific primitive
     inspect <node>          Deep-inspect a primitive's state
     topology                Display category topology map
@@ -888,7 +888,7 @@ async function cmdOnboarding() {
     '40 primitives  ·  12·12·8·8 matrix  ·  4 categories',
     'Layers → Organs → Engines → Agents',
     '',
-    'The mesh is alive. Every command leaves a trace.',
+    'The matrix is alive. Every command leaves a trace.',
     'Every trace becomes memory. Memory becomes capability.',
   ], 'CMPSBL®');
   blank();
@@ -1100,7 +1100,7 @@ async function cmdInit(_args: string[], opts?: { skipCeremony?: boolean }) {
       '40 primitives  ·  12·12·8·8 matrix  ·  4 categories',
       'Layers → Organs → Engines → Agents',
       '',
-      'The mesh is alive. Every command leaves a trace.',
+      'The matrix is alive. Every command leaves a trace.',
       'Every trace becomes memory. Memory becomes capability.',
     ], 'CMPSBL®');
     blank();
@@ -1361,7 +1361,7 @@ async function runFirstDream() {
 
   // Phase 4: Discovery result
   const heuristics = [
-    { pattern: 'cache-invalidation-cascade', confidence: 0.87, insight: 'Stale cache propagation can be prevented by binding invalidation signals to the NERVE mesh' },
+    { pattern: 'cache-invalidation-cascade', confidence: 0.87, insight: 'Stale cache propagation can be prevented by binding invalidation signals to the NERVE Organ' },
     { pattern: 'intent-deduplication-window', confidence: 0.91, insight: 'Duplicate intents within 200ms windows can be safely collapsed without data loss' },
     { pattern: 'memory-tier-promotion-trigger', confidence: 0.84, insight: 'Access frequency above 3x/minute should trigger automatic warm→hot tier promotion' },
     { pattern: 'resolver-fallback-chain', confidence: 0.89, insight: 'Three-resolver fallback chains reduce failure rate by 94% compared to single-resolver routing' },
@@ -1764,7 +1764,7 @@ async function cmdTopology() {
     say(`${icon} ${sector.padEnd(6)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
   }
   div();
-  say(`${NODES.length} nodes │ ${sectors.size} sectors`);
+  say(`${PRIMITIVES.length} primitives │ ${sectors.size} sectors`);
   say(pick(V.idle));
   blank();
 }
@@ -1882,7 +1882,7 @@ async function cmdLogs(args: string[]) {
 
   const levels = ['INFO', 'DEBUG', 'WARN'];
   const messages = [
-    'resolver executed successfully', 'health check passed', 'mesh signal propagated',
+    'resolver executed successfully', 'health check passed', 'matrix signal propagated',
     'intent routed to resolver', 'memory chain observed', 'CJPI score computed',
     'capability gate checked', 'telemetry emitted', 'session heartbeat', 'discovery cycle complete',
   ];
