@@ -109,13 +109,14 @@ export function NpmPackagesCTA() {
             Now on NPM — 11 Packages
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-4">
-            Build on the{" "}
-            <span className="text-[hsl(var(--neon-purple))]">Substrate</span>
+            Build What{" "}
+            <span className="text-[hsl(var(--neon-purple))]">Evolves</span>
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-            The <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl</code> SDK 
-            gives you composable intelligence — intent routing, mesh telemetry, and cognitive scoring 
-            in any JavaScript or TypeScript project.
+            Install the <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl/cli</code> to 
+            scaffold projects, deploy agents, and run Ascension discoveries from your terminal. Pair it with the{" "}
+            <code className="text-[hsl(var(--neon-cyan))] font-mono text-sm bg-[hsl(var(--neon-cyan)/0.05)] px-2 py-0.5 rounded">@cmpsbl/sdk</code> to 
+            embed persistent memory, cognitive scoring, and governed orchestration into any TypeScript or JavaScript project — your code ships with infrastructure that learns.
           </p>
         </motion.div>
 
