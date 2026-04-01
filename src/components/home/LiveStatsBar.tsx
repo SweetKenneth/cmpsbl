@@ -17,7 +17,7 @@ export function LiveStatsBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(var(--neon-cyan))] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[hsl(var(--neon-cyan))]" />
           </span>
-          <span className="text-[9px] sm:text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-widest">Platform · Memory Stream · Live</span>
+          <span className="text-[10px] sm:text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-widest">Platform · Memory Stream · Live</span>
         </div>
 
         {/* Concise value statement */}
