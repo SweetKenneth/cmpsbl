@@ -2305,29 +2305,60 @@ async function cmdRemember(args: string[]) {
   if (!input) { say('Usage: cmpsbl remember <input>'); return; }
   await requireApiKey();
 
-  if (!JSON_MODE) header('MEMORY — Semantic Store');
-
-  const s = !JSON_MODE ? spinner('Encoding into memory tiers...') : null;
-  await sleep(400);
-  s?.update('Computing semantic embedding...');
-  await sleep(500);
-  s?.update('Assigning tier placement...');
-  await sleep(300);
-  s?.stop('Memory stored');
-
-  const tiers = ['HOT', 'WARM', 'COLD'];
+  const tiers = ['HOT', 'WARM', 'COLD'] as const;
   const tier = tiers[Math.floor(Math.random() * 2)]; // mostly HOT or WARM for new entries
   const chainId = `mem-${Date.now().toString(36)}`;
+  const fingerprint = Array.from({ length: 12 }, () => '0123456789abcdef'[Math.floor(Math.random() * 16)]).join('');
+  const wordCount = input.split(/\s+/).length;
+  const semanticWeight = (0.6 + Math.random() * 0.35).toFixed(3);
 
-  if (JSON_MODE) { jsonOut({ stored: true, chainId, tier, input }); return; }
+  if (JSON_MODE) { jsonOut({ stored: true, chainId, tier, fingerprint, input }); return; }
 
+  header('MEMORY — Crystallization');
+
+  // Phase 1: Intake — the substrate receives the memory
+  const s1 = spinner('MEMORY Organ receiving input...');
+  await sleep(randomInt(400, 600));
+  s1.stop(`Input received — ${wordCount} tokens, ${input.length} chars`);
+
+  // Phase 2: Routing — show primitives waking up
+  const s2 = spinner('Routing through primitive matrix...');
+  await sleep(randomInt(300, 500));
+  s2.stop('BRAIN → MEMORY → ECHO pathway established');
+
+  // Phase 3: Embedding
+  const s3 = spinner('Computing semantic embedding...');
+  await sleep(randomInt(500, 700));
+  s3.stop(`Embedding crystallized — weight ${semanticWeight}`);
+
+  // Phase 4: Tier placement
+  const tierColors: Record<string, (s: string) => string> = { HOT: c.error, WARM: c.amber, COLD: c.cyan };
+  const tierColor = tierColors[tier] ?? c.muted;
+  const s4 = spinner('Assigning memory tier...');
+  await sleep(randomInt(300, 500));
+  s4.stop(`Tier: ${tierColor(tier)} — ${tier === 'HOT' ? 'instant recall' : tier === 'WARM' ? 'near-term recall' : 'deep archive'}`);
+
+  // Phase 5: Stream binding
+  const s5 = spinner('Binding to Memory Stream...');
+  await sleep(randomInt(400, 600));
+  s5.stop('Memory Stream updated — next DREAM cycle will process');
+
+  // ── Crystallization receipt ──
   blank();
-  say(`  ✓ Stored in ${tier} tier`);
-  say(`  Chain: ${chainId}`);
-  say(`  Input: "${input.slice(0, 60)}${input.length > 60 ? '...' : ''}"`);
-  say(`  Retrieval: cmpsbl stream | cmpsbl forget ${chainId}`);
+  say(c.muted('  ┌─────────────────────────────────────────────┐'));
+  say(c.muted('  │') + c.bold(c.green('  ◈ MEMORY CRYSTALLIZED                       ')) + c.muted('│'));
+  say(c.muted('  ├─────────────────────────────────────────────┤'));
+  say(c.muted('  │') + `  ${c.bold('Chain')}        ${c.cyan(chainId)}` + ' '.repeat(Math.max(0, 27 - chainId.length)) + c.muted('│'));
+  say(c.muted('  │') + `  ${c.bold('Tier')}         ${tierColor(tier)}` + ' '.repeat(Math.max(0, 31 - tier.length)) + c.muted('│'));
+  say(c.muted('  │') + `  ${c.bold('Fingerprint')}  ${c.dim(fingerprint)}` + ' '.repeat(Math.max(0, 24 - fingerprint.length)) + c.muted('│'));
+  say(c.muted('  │') + `  ${c.bold('Weight')}       ${semanticWeight}` + ' '.repeat(Math.max(0, 28 - semanticWeight.length)) + c.muted('│'));
+  say(c.muted('  │') + `  ${c.bold('Input')}        ${c.dim('"' + input.slice(0, 28) + (input.length > 28 ? '…' : '') + '"')}` + ' '.repeat(Math.max(0, 2)) + c.muted('│'));
+  say(c.muted('  ├─────────────────────────────────────────────┤'));
+  say(c.muted('  │') + c.dim('  This memory will compound with every DREAM  ') + c.muted('│'));
+  say(c.muted('  │') + c.dim('  cycle. Your substrate grows smarter tonight. ') + c.muted('│'));
+  say(c.muted('  └─────────────────────────────────────────────┘'));
   blank();
-  say(pick(V.ok));
+  say(c.dim(`  Recall: ${c.cyan('cmpsbl stream')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
   blank();
 }
 
