@@ -105,6 +105,9 @@ const DEFAULT_STATE: SessionState = {
   bookmark: null,
   todos: [],
   pins: [],
+  goal: null,
+  dreamDigest: [],
+  lastDreamCheckTimestamp: null,
   streak: {
     currentStreak: 0,
     longestStreak: 0,
