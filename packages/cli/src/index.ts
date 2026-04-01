@@ -3181,38 +3181,25 @@ async function cmdHarvest(args: string[]) {
 async function cmdTranslate(args: string[]) {
   const text = args.join(' ');
   if (!text) { say('Usage: cmpsbl translate <text>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('LINGUA — Language Processing');
-
   const s = !JSON_MODE ? spinner('Processing through LINGUA...') : null;
-  await sleep(600);
-  s?.update('Analyzing linguistic structure...');
-  await sleep(400);
-  s?.stop('Analysis complete');
 
-  const analysis = {
-    input: text,
-    language: 'en',
-    sentiment: +(0.3 + Math.random() * 0.5).toFixed(2),
-    complexity: Math.round(20 + Math.random() * 60),
-    entities: Math.round(1 + Math.random() * 5),
-    tokens: text.split(/\s+/).length,
-    readability: ['simple', 'moderate', 'complex', 'technical'][Math.floor(Math.random() * 4)],
-  };
+  const result = await substrateCall('lingua', 'analyze', { text, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Analysis complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('lingua.analyze', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
 
-  if (JSON_MODE) { jsonOut(analysis); return; }
-
-  blank();
-  say(`  Language:    ${analysis.language}`);
-  say(`  Sentiment:   ${analysis.sentiment > 0.5 ? '●' : '◐'} ${(analysis.sentiment * 100).toFixed(0)}% positive`);
-  say(`  Complexity:  ${analysis.complexity}%`);
-  say(`  Readability: ${analysis.readability}`);
-  say(`  Entities:    ${analysis.entities} detected`);
-  say(`  Tokens:      ${analysis.tokens}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Analysis failed');
+  renderOfflineFallback(result, 'lingua.analyze');
 }
 
 async function cmdSandbox(args: string[]) {
