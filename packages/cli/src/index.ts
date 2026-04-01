@@ -789,14 +789,65 @@ export async function run(args: string[]): Promise<void> {
       case 'intent':       await cmdGateway(`intent.${args[1] || 'inbox'}`, args.slice(2)); break;
       // ── Undocumented: Emergency Override Console ──
       case 'edomdog':      await cmdOverrideConsole(); break;
+      // ── Natural language aliases ──
+      case 'hi': case 'hello': case 'hey': case 'sup':
+        await cmdGreet(); break;
+      case 'primitives': case 'list': case 'ls':
+        await cmdNodes(args.slice(1)); break;
+      case 'who':
+        await cmdWhoami(); break;
+      case 'what':
+        if (args[1] === 'is' && args[2]) { cmdExplain([args.slice(2).join(' ')]); }
+        else { say('  The substrate is a 40-primitive cognitive infrastructure.'); say(`  Try: ${c.cyan('cmpsbl explain <PRIMITIVE>')} or ${c.cyan('cmpsbl about')}`); blank(); }
+        break;
+      case 'how':
+        say('  Start here:');
+        say(`    ${c.cyan('cmpsbl demo')}      — 2-minute guided tour`);
+        say(`    ${c.cyan('cmpsbl explain')}    — Browse all 40 primitives`);
+        say(`    ${c.cyan('cmpsbl shell')}      — Interactive exploration`);
+        blank();
+        break;
+      case 'about': case 'info':
+        say(`  CMPSBL® Substrate v${CLI_VERSION}`);
+        say('  Governed Cognitive Infrastructure');
+        say('  40 Primitives · 12·12·8·8 Matrix');
+        say('  Layers → Organs → Engines → Agents');
+        say(`  ${c.dim('cmpsbl.com')}`);
+        blank();
+        break;
+      case 'explore': case 'browse':
+        await cmdNodes(args.slice(1)); break;
+      case 'show':
+        if (args[1]) { cmdExplain(args.slice(1)); } else { await cmdStatus(); }
+        break;
+      case 'ask': case 'tell': case 'say':
+        await cmdThink(args.slice(1)); break;
+      case 'test': case 'check':
+        await cmdDoctor(); break;
+      case 'setup': case 'start':
+        await cmdInit(args.slice(1), {}); break;
+      case 'run':
+        if (args[1] === 'dream') { await cmdDream(args.slice(2)); }
+        else if (args[1] === 'scan') { await cmdScan(args.slice(2)); }
+        else { say(`  ${c.cyan('cmpsbl')} runs commands directly. Try: ${c.cyan(`cmpsbl ${args[1] || 'help'}`)}`); blank(); }
+        break;
+      case 'clear': case 'reset':
+        say('  Session state is managed by the substrate.');
+        say(`  To re-initialize: ${c.cyan('cmpsbl init')}`);
+        say(`  To re-authenticate: ${c.cyan('cmpsbl logout')} then ${c.cyan('cmpsbl login')}`);
+        blank();
+        break;
+      case 'restart':
+        say('  The substrate doesn\'t restart — it persists.');
+        say(`  Run ${c.cyan('cmpsbl doctor')} to verify health, or ${c.cyan('cmpsbl init')} to re-bind.`);
+        blank();
+        break;
       default:
         // ── Universal Gateway: dot-notation commands (e.g. brain.status, system.heal) ──
         if (command.includes('.')) {
           await cmdGateway(command, args.slice(1));
         } else {
-          say(`Unknown command: ${command}`);
-          say('Run `cmpsbl help` for available commands.');
-          say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
+          await handleUnknownCommand(command, args.slice(1));
         }
         break;
     }
