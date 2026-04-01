@@ -1698,7 +1698,7 @@ async function dreamLiveWatch(apiKey: string): Promise<void> {
     });
   } catch { /* best-effort */ }
 
-  addDreamDigestEntry({ insight, source: 'dream-live-watch', confidence });
+  addDreamDigestEntry(insight, 'dream-live-watch');
   markDreamDigestChecked();
 }
 
