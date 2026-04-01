@@ -31,6 +31,7 @@ const DifferentiationSection = lazy(() => import("@/components/home/Differentiat
 const BuiltForSection = lazy(() => import("@/components/home/BuiltForSection").then(m => ({ default: m.BuiltForSection })));
 const ArtifactPacksSection = lazy(() => import("@/components/home/ArtifactPacksSection").then(m => ({ default: m.ArtifactPacksSection })));
 const LoadoutsSection = lazy(() => import("@/components/home/LoadoutsSection").then(m => ({ default: m.LoadoutsSection })));
+const SubstrateAliveSection = lazy(() => import("@/components/home/SubstrateAliveSection").then(m => ({ default: m.SubstrateAliveSection })));
 
 const SocialProof = lazy(() => import("@/components/home/SocialProof").then(m => ({ default: m.SocialProof })));
 const UseCaseShowcase = lazy(() => import("@/components/home/UseCaseShowcase").then(m => ({ default: m.UseCaseShowcase })));
@@ -106,6 +107,11 @@ export default function Explore() {
       <Suspense fallback={<div className="min-h-[200px]" />}>
         {/* ═══ MEMORY STREAM + ASCENSION ═══ */}
         <DiscoveryDualCards />
+
+        <SectionDivider />
+
+        {/* ═══ SUBSTRATE IS ALIVE — zero-setup value prop ═══ */}
+        <SubstrateAliveSection />
 
         <SectionDivider />
 
