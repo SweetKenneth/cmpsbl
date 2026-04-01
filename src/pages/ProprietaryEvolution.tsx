@@ -203,7 +203,7 @@ export default function ProprietaryEvolution() {
             <Button
               size="sm"
               onClick={next}
-              disabled={activeStep === TOTAL_STEPS - 1}
+              disabled={activeStep === TOTAL_STEPS - 1 || activeStep === 3}
               className="gap-1.5 text-xs h-11 min-w-[80px] min-h-[44px] rounded-xl shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
             >
               Next
