@@ -114,7 +114,10 @@ export default function Explore() {
 
         <SectionDivider />
 
-        {/* ═══ WHO IT'S FOR ═══ */}
+        {/* ═══ SIGNAL FORGE LOADOUTS ═══ */}
+        <LoadoutsSection />
+
+        <SectionDivider />
         <BuiltForSection />
 
         <SectionDivider />
