@@ -109,6 +109,7 @@ const DEFAULT_STATE: SessionState = {
   goal: null,
   dreamDigest: [],
   lastDreamCheckTimestamp: null,
+  hasIntroduced: false,
   streak: {
     currentStreak: 0,
     longestStreak: 0,
