@@ -3400,35 +3400,25 @@ async function cmdGovern(args: string[]) {
 }
 
 async function cmdTreaty(args: string[]) {
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('TREATY — Trust Contracts');
-
   const s = !JSON_MODE ? spinner('Loading trust contracts...') : null;
-  await sleep(400);
-  s?.stop('Treaties loaded');
 
-  const treaties = [
-    { name: 'substrate-integrity', parties: ['CORE', 'GOVERNANCE'], status: 'active', trust: 0.98, expires: 'never' },
-    { name: 'memory-sovereignty', parties: ['MEMORY', 'SOVEREIGN'], status: 'active', trust: 0.95, expires: 'never' },
-    { name: 'defense-immunity-pact', parties: ['DEFENSE', 'IMMUNITY'], status: 'active', trust: 0.97, expires: 'never' },
-    { name: 'dream-brain-protocol', parties: ['DREAM', 'BRAIN'], status: 'active', trust: 0.93, expires: '90d' },
-    { name: 'audit-governance-bind', parties: ['AUDIT', 'GOVERNANCE'], status: 'active', trust: 0.99, expires: 'never' },
-  ];
-
-  if (JSON_MODE) { jsonOut({ treaties, totalActive: treaties.length }); return; }
-
-  blank();
-  for (const t of treaties) {
-    const trustBar = progressBar(Math.round(t.trust * 100), 100, 10);
-    say(`  ◈ ${t.name}`);
-    say(`    Parties: ${t.parties.join(' ↔ ')}  Trust: ${trustBar} ${(t.trust * 100).toFixed(0)}%  Expires: ${t.expires}`);
+  const result = await substrateCall('treaty', 'status', { source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Treaties loaded');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('treaty.status', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(`  ${treaties.length} active trust contract(s)`);
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Treaty query failed');
+  renderOfflineFallback(result, 'treaty.status');
 }
 
 // ═══════════════════════════════════════════════════════════════
