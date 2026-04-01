@@ -308,18 +308,18 @@ export function WhySubstrate() {
              <span className="text-xs">Build on the AI OS</span>
            </Badge>
            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-5 tracking-tight">
-                Four Categories.
+                40 Primitives.
                 <br />
-                <span className="text-[hsl(var(--neon-purple))]">One Operating System.</span>
+                <span className="text-[hsl(var(--neon-purple))]">Zero Assembly Required.</span>
               </h2>
            <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-               CMPSBL is powered by a set of core primitives:{" "}
-               <span className="text-foreground font-medium">agents</span>,{" "}
-               <span className="text-foreground font-medium">engines</span>,{" "}
-               <span className="text-foreground font-medium">layers</span>, and{" "}
-               <span className="text-foreground font-medium">organs</span>.
-               All included in every plan.
-             </p>
+                The substrate ships with 40 pre-wired primitives across four categories —{" "}
+                <span className="text-foreground font-medium">12 Organs</span> that process,{" "}
+                <span className="text-foreground font-medium">12 Layers</span> that protect,{" "}
+                <span className="text-foreground font-medium">8 Engines</span> that transform, and{" "}
+                <span className="text-foreground font-medium">8 Agents</span> that execute.
+                Every primitive is observable, failure-aware, and included in every plan — nothing to configure, nothing to assemble.
+              </p>
         </motion.div>
         
         <motion.div 
