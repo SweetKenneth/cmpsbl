@@ -73,6 +73,10 @@ export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
     crystallizedAssetCap: 30,
     radioMinutesPerDay: 30,
     evolutionUploadsPerDay: 6,
+    forgeAgentSlots: 6,
+    forgeAscensionAccess: false,
+    forgeSignalAccess: false,
+    forgeSkillInjection: false,
   },
   creator: {
     maxMemoryNamespaces: 6,
