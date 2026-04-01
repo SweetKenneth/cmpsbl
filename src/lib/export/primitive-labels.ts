@@ -22,6 +22,8 @@ const ENGINES = new Set([
 const AGENTS = new Set([
   'ENCODE', 'DECODE', 'AUDIT', 'ECONOMY',
   'INCLUSIVE', 'CORTEX', 'ORACLE', 'ENGINEER',
+  // Reserve primitives (Vertical Packs)
+  'SENTINEL', 'SWARM', 'THRIFT', 'PERSONA', 'ARBITER',
 ]);
 
 export type PrimitiveCategory = 'Organ' | 'Layer' | 'Engine' | 'Agent';
