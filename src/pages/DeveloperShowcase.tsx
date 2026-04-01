@@ -297,7 +297,7 @@ await cmpsbl.dream.cycle({
           <div className="max-w-2xl mx-auto bg-card border border-border rounded-xl p-4 mb-8">
             <div className="flex items-center gap-3 font-mono text-sm">
               <Terminal className="w-4 h-4 text-primary shrink-0" />
-              <code className="text-foreground">npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
+              <code className="text-foreground">npm i -g @cmpsbl/cli @cmpsbl/sdk</code>
             </div>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 max-w-4xl mx-auto">

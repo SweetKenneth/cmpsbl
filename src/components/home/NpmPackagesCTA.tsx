@@ -128,8 +128,8 @@ export function NpmPackagesCTA() {
         >
           <div className="flex items-center gap-3 bg-card border-2 border-[hsl(var(--neon-purple)/0.2)] rounded-2xl px-5 py-4 font-mono text-sm shadow-lg shadow-[hsl(var(--neon-purple)/0.05)]">
             <Terminal className="w-5 h-5 text-[hsl(var(--neon-purple))] shrink-0" />
-            <code className="text-foreground flex-1 text-xs sm:text-sm">npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react</code>
-            <CopyButton text="npm i @cmpsbl/runtime @cmpsbl/intent @cmpsbl/react" />
+            <code className="text-foreground flex-1 text-xs sm:text-sm">npm i -g @cmpsbl/cli @cmpsbl/sdk</code>
+            <CopyButton text="npm i -g @cmpsbl/cli @cmpsbl/sdk" />
           </div>
         </motion.div>
 
