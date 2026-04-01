@@ -74,7 +74,7 @@ const COMMANDS: Record<string, CommandHandler> = {
     '/mode          — current mode + identity',
     '/clear         — clear conversation',
     '/capabilities  — list active capabilities',
-    '/nodes         — substrate node count',
+    '/primitives    — substrate primitive count',
     '/clm           — CLM priority report',
     '/version       — substrate version',
     '',
