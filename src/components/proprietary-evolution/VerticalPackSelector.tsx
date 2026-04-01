@@ -485,9 +485,9 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-semibold text-foreground">
-                  Discovered Features
-                </span>
+               <span className="text-sm font-semibold text-foreground">
+                   Agent Personas Applied
+                 </span>
               </div>
               <div className="grid gap-2">
                 {revealedDiscoveries.map((d) => {
