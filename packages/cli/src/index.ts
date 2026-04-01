@@ -657,9 +657,32 @@ export async function run(args: string[]): Promise<void> {
       case '-v':
         if (JSON_MODE) jsonOut({ version: CLI_VERSION }); else say(`@cmpsbl/cli v${CLI_VERSION}`);
         break;
+      // ── Governor ──
+      case 'heal':         await cmdGateway('system.heal', args.slice(1)); break;
+      case 'diagnostics':  await cmdGateway('system.diagnostics', args.slice(1)); break;
+      case 'evolve':       await cmdGateway('evolution.evolve', args.slice(1)); break;
+      case 'mode':         await cmdMode(args.slice(1)); break;
+      case 'restore':      await cmdGateway('system.restore', args.slice(1)); break;
+      case 'repair':       await cmdGateway('system.repair', args.slice(1)); break;
+      case 'backup':       await cmdGateway('system.backup', args.slice(1)); break;
+      case 'resilience':   await cmdGateway('system.resilience', args.slice(1)); break;
+      case 'engine':       await cmdGateway(`engine.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'seba':         await cmdGateway(`seba.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'atlas':        await cmdGateway(`atlas.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'memory':       await cmdGateway(`memory.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'relay':        await cmdGateway(`relay.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'cron':         await cmdGateway(`cron.${args[1] || 'list'}`, args.slice(2)); break;
+      case 'snapshot':     await cmdGateway(`snapshot.${args[1] || 'list'}`, args.slice(2)); break;
+      case 'intent':       await cmdGateway(`intent.${args[1] || 'inbox'}`, args.slice(2)); break;
       default:
-        say(`Unknown command: ${command}`);
-        say('Run `cmpsbl help` for available commands.');
+        // ── Universal Gateway: dot-notation commands (e.g. brain.status, system.heal) ──
+        if (command.includes('.')) {
+          await cmdGateway(command, args.slice(1));
+        } else {
+          say(`Unknown command: ${command}`);
+          say('Run `cmpsbl help` for available commands.');
+          say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
+        }
         break;
     }
 
@@ -739,11 +762,29 @@ function printHelp() {
   ── Governance ───────────────────────────────────
     govern [policy]         GOVERNANCE policy check & mode
     treaty [status]         TREATY trust contracts
+    mode [get|set <mode>]   Governance mode (ACTIVE/MAINTENANCE/etc)
+
+  ── Governor ─────────────────────────────────────
+    heal [target] [force]   Self-healing trigger
+    diagnostics [--full]    Full system diagnostics
+    evolve [shadow|prod]    Unified Evolution Cycle
+    repair                  Self-repair loop (3 attempts)
+    resilience [role]       Resilience snapshot (circuits + heals)
+    backup [include_data]   Create backup snapshot
+    restore <backup_id>     Restore from backup
+    engine <sub>            Engine system (status|list|run|get)
+    seba <sub>              SEBA agent (status|cycle|propose|approve)
+    atlas <sub>             ATLAS control plane (status|capabilities)
+    memory <sub>            MEMORY module (status|recall|tiers)
+    relay <sub>             RELAY outbound hub (status|queue)
+    cron <sub>              Cron jobs (list|start|stop|trigger)
+    snapshot <sub>          State snapshots (list|capture|diff)
+    intent <sub>            INTENT Hub (inbox|stats|approve)
 
   ── System ───────────────────────────────────────
     status                  Show full substrate status
     health                  Health check across all primitives
-    primitives [filter]          List primitives (filter by category/status)
+    primitives [filter]     List primitives (filter by category/status)
     ping <node>             Ping a specific primitive
     inspect <node>          Deep-inspect a primitive's state
     topology                Display category topology map
@@ -759,6 +800,14 @@ function printHelp() {
     validate <file>         Validate a manifest.json file
     export <file> [name]    Generate an export manifest
     diff <file1> <file2>    Compare two manifests
+
+  ── Universal Gateway ────────────────────────────
+    <module>.<command>      Run ANY terminal command directly
+                            e.g. cmpsbl brain.status
+                                 cmpsbl dream.cycle
+                                 cmpsbl system.heal BRAIN force
+                                 cmpsbl evolution.evolve shadow
+                                 cmpsbl atlas.capabilities
 
   ── Interactive ──────────────────────────────────
     shell                   Interactive REPL session
@@ -780,7 +829,7 @@ function printHelp() {
     CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
-  ${c.muted('52 commands · 40 primitives · cmpsbl.com')}
+  ${c.muted('500+ commands · 40 primitives · full Governor parity · cmpsbl.com')}
 `);
 }
 
@@ -1620,12 +1669,12 @@ function cmdScore(args: string[]) {
 async function cmdStatus() {
   const online = NODES.filter(n => n.status === 'online').length;
   const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
-  const sectors = [...new Set(NODES.map(n => n.category))];
+  const categorySet = [...new Set(NODES.map(n => n.category))];
   const session = getFirstContactSession();
 
   const data = {
     nodes: `${online}/${NODES.length}`,
-    sectors: categories.length,
+    sectors: categorySet.length,
     health: avg,
     runtime: 'v14.4.1',
     memoryChains: getMemoryStream().length,
@@ -1675,7 +1724,7 @@ async function cmdNodes(args: string[]) {
   if (JSON_MODE) { jsonOut(nodes); return; }
   header('Primitive Registry');
   if (filter && nodes.length === 0) { say(`No primitives matching "${filter}".`); blank(); return; }
-  if (filter) { say(`Filtered: ${nodes.length} node(s) matching "${filter}"`); blank(); }
+  if (filter) { say(`Filtered: ${nodes.length} primitive(s) matching "${filter}"`); blank(); }
 
   table(['Primitive', 'Category', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.category, n.role, `${n.health}%`, n.status]));
   blank();
@@ -1757,14 +1806,14 @@ async function cmdTopology() {
     return;
   }
 
-  header('12-Sector Topology');
-  for (const [sector, nodes] of sectors) {
+  header('4-Category Topology');
+  for (const [cat, nodes] of categories) {
     const h = Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length);
     const icon = h >= 98 ? '⬢' : h >= 90 ? '◈' : '◇';
-    say(`${icon} ${sector.padEnd(6)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
+    say(`${icon} ${cat.padEnd(8)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
   }
   div();
-  say(`${PRIMITIVES.length} primitives │ ${sectors.size} sectors`);
+  say(`${PRIMITIVES.length} primitives │ ${categories.size} categories`);
   say(pick(V.idle));
   blank();
 }
@@ -3190,6 +3239,206 @@ async function cmdTreaty(args: string[]) {
   say(`  ${treaties.length} active trust contract(s)`);
   blank();
   say(pick(V.ok));
+  blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Universal Gateway — Routes ANY dot-notation command to substrate-api
+// Provides full CLI↔Terminal parity for Governor operations
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdGateway(dotCommand: string, args: string[]) {
+  const apiKey = await requireApiKey();
+
+  // Parse module.action from dot notation
+  const dotParts = dotCommand.split('.');
+  const module = dotParts[0];
+  const action = dotParts.slice(1).join('.');
+
+  if (!module || !action) {
+    sayErr('  Invalid command format. Use: cmpsbl <module>.<action> [args]');
+    say('  Example: cmpsbl brain.status, cmpsbl system.heal BRAIN');
+    blank();
+    return;
+  }
+
+  if (!JSON_MODE) {
+    header(`${module.toUpperCase()} — ${action}`);
+  }
+
+  const s = !JSON_MODE ? spinner(`Executing ${dotCommand}...`) : null;
+
+  // Build payload
+  const payload: Record<string, unknown> = {};
+
+  // Parse args: positional become args array, --key=value become params
+  const positional: string[] = [];
+  for (const arg of args) {
+    if (arg.startsWith('--')) {
+      const eqIdx = arg.indexOf('=');
+      if (eqIdx > 0) {
+        payload[arg.slice(2, eqIdx)] = arg.slice(eqIdx + 1);
+      } else {
+        payload[arg.slice(2)] = true;
+      }
+    } else {
+      positional.push(arg);
+    }
+  }
+  if (positional.length > 0) {
+    payload.args = positional;
+    // Common patterns: first positional is usually a target/query
+    if (positional[0]) payload.target = positional[0];
+    if (positional[1]) payload.value = positional[1];
+  }
+
+  try {
+    const endpoint = getSubstrateEndpoint();
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Engine-Key': apiKey,
+      },
+      body: JSON.stringify({
+        module,
+        action,
+        payload,
+      }),
+    });
+
+    const data = await res.json() as Record<string, unknown>;
+
+    s?.stop(`${dotCommand} complete`);
+
+    if (JSON_MODE) {
+      jsonOut(data);
+      return;
+    }
+
+    // Handle different response shapes
+    if (data.success === false) {
+      blank();
+      sayErr(`  ✗ ${data.error || data.message || 'Command failed'}`);
+      if (data.details) say(`  ${c.muted(String(data.details))}`);
+      blank();
+      return;
+    }
+
+    // Pretty-print the response
+    blank();
+    if (typeof data === 'object' && data !== null) {
+      renderGatewayResponse(dotCommand, data);
+    }
+
+    blank();
+    say(pick(V.ok));
+    blank();
+  } catch (err) {
+    s?.stop('Connection failed');
+    blank();
+
+    // Offline fallback — show what the command would do
+    sayErr(`  ✗ Could not reach substrate-api`);
+    say(c.muted(`  Command: ${dotCommand}`));
+    say(c.muted(`  Payload: ${JSON.stringify(payload)}`));
+    blank();
+    say('  The substrate-api may be unreachable. Options:');
+    say(`    1. Check your connection: ${c.cyan('cmpsbl doctor')}`);
+    say(`    2. Try again: ${c.cyan(`cmpsbl ${dotCommand} ${args.join(' ')}`)}`);
+    say(`    3. Use the dashboard terminal as fallback`);
+    blank();
+  }
+}
+
+/** Pretty-print gateway response based on command category */
+function renderGatewayResponse(cmd: string, data: Record<string, unknown>) {
+  // If there's a structured 'result' field, use that
+  const result = (data.result ?? data.data ?? data) as Record<string, unknown>;
+
+  // Status-style responses
+  if ('status' in result || 'health' in result || 'mode' in result) {
+    for (const [key, val] of Object.entries(result)) {
+      if (key === 'success') continue;
+      const display = typeof val === 'object' ? JSON.stringify(val) : String(val);
+      const icon = key === 'status' ? (val === 'healthy' || val === 'online' || val === 'active' ? '●' : '◐')
+        : key === 'health' ? (Number(val) >= 90 ? '●' : '◐')
+        : '◇';
+      say(`  ${icon} ${key.padEnd(20)} ${display}`);
+    }
+    return;
+  }
+
+  // List-style responses (arrays)
+  if (Array.isArray(result)) {
+    for (const item of (result as unknown[]).slice(0, 20)) {
+      if (typeof item === 'object' && item !== null) {
+        const entries = Object.entries(item as Record<string, unknown>);
+        const summary = entries.slice(0, 4).map(([k, v]) => `${k}=${v}`).join(' · ');
+        say(`  ◇ ${summary}`);
+      } else {
+        say(`  ◇ ${String(item)}`);
+      }
+    }
+    if ((result as unknown[]).length > 20) {
+      say(c.muted(`  ... and ${(result as unknown[]).length - 20} more`));
+    }
+    return;
+  }
+
+  // Generic object response
+  for (const [key, val] of Object.entries(result)) {
+    if (key === 'success') continue;
+    if (typeof val === 'object' && val !== null) {
+      say(`  ${c.bold(key)}:`);
+      for (const [k2, v2] of Object.entries(val as Record<string, unknown>)) {
+        say(`    ${k2}: ${typeof v2 === 'object' ? JSON.stringify(v2) : String(v2)}`);
+      }
+    } else {
+      say(`  ${key.padEnd(20)} ${String(val)}`);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Commands — Governance Mode (Governor shorthand)
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdMode(args: string[]) {
+  const sub = args[0]?.toLowerCase();
+
+  if (!sub || sub === 'get') {
+    // Show current mode via gateway
+    await cmdGateway('governance.mode', []);
+    return;
+  }
+
+  if (sub === 'set') {
+    const newMode = args[1]?.toUpperCase();
+    const validModes = ['ACTIVE', 'MAINTENANCE', 'DEGRADED', 'LOCKDOWN', 'SUSPENDED'];
+    if (!newMode || !validModes.includes(newMode)) {
+      sayErr('  Valid modes: ACTIVE | MAINTENANCE | DEGRADED | LOCKDOWN | SUSPENDED');
+      blank();
+      return;
+    }
+
+    const reason = args.slice(2).join(' ') || `CLI mode switch to ${newMode}`;
+    await cmdGateway('governance.set_mode', [newMode, reason]);
+    return;
+  }
+
+  if (sub === 'panic') {
+    if (!JSON_MODE) {
+      blank();
+      say(c.error('  🚨 PANIC REVERT — Restoring to ACTIVE mode'));
+      blank();
+    }
+    await cmdGateway('governance.panic_revert', []);
+    return;
+  }
+
+  say('  Usage: cmpsbl mode [get|set <MODE> [reason]|panic]');
+  say('  Modes: ACTIVE | MAINTENANCE | DEGRADED | LOCKDOWN | SUSPENDED');
   blank();
 }
 
