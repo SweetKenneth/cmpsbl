@@ -1698,7 +1698,7 @@ async function dreamLiveWatch(apiKey: string): Promise<void> {
     });
   } catch { /* best-effort */ }
 
-  addDreamDigestEntry({ insight, source: 'dream-live-watch', confidence });
+  addDreamDigestEntry(insight, 'dream-live-watch');
   markDreamDigestChecked();
 }
 
@@ -1959,7 +1959,7 @@ async function cmdTopology() {
     }
 
     say(c.muted('  └────────────────────────────────────────────────┘'));
-    say(`    ${c.dim(`Avg health: ${healthColor(avgHealth)}  ·  Roles: ${nodes.map(n => n.role).join(', ')}`)}`);
+    say(`    ${c.dim(`Avg health: ${healthColor(avgHealth, `${avgHealth.toFixed(1)}%`)}  ·  Roles: ${nodes.map(n => n.role).join(', ')}`)}`);
   }
 
   blank();
