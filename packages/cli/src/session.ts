@@ -79,6 +79,7 @@ export interface SessionState {
   goal: GoalAnchor | null;
   dreamDigest: DreamDigestEntry[];
   lastDreamCheckTimestamp: string | null;
+  hasIntroduced: boolean;
   streak: StreakData;
   sessionHistory: Array<{ date: string; commands: number; memoriesStored: number }>;
 }
@@ -108,6 +109,7 @@ const DEFAULT_STATE: SessionState = {
   goal: null,
   dreamDigest: [],
   lastDreamCheckTimestamp: null,
+  hasIntroduced: false,
   streak: {
     currentStreak: 0,
     longestStreak: 0,
@@ -133,6 +135,7 @@ function loadState(): SessionState {
       goal: parsed.goal ?? null,
       dreamDigest: Array.isArray(parsed.dreamDigest) ? parsed.dreamDigest : [],
       lastDreamCheckTimestamp: parsed.lastDreamCheckTimestamp ?? null,
+      hasIntroduced: parsed.hasIntroduced ?? false,
       streak: parsed.streak ?? { ...DEFAULT_STATE.streak },
       sessionHistory: Array.isArray(parsed.sessionHistory) ? parsed.sessionHistory : [],
     };
@@ -490,6 +493,24 @@ export function getWelcomeBackData(): WelcomeBackData {
     goal: state.goal,
     dreamDigestNew,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// First-Run & Introduction
+// ═══════════════════════════════════════════════════════════════
+
+export function isFirstRun(): boolean {
+  return !fs.existsSync(STATE_FILE);
+}
+
+export function hasIntroduced(): boolean {
+  return loadState().hasIntroduced;
+}
+
+export function markIntroduced(): void {
+  const state = loadState();
+  state.hasIntroduced = true;
+  saveState(state);
 }
 
 // ═══════════════════════════════════════════════════════════════

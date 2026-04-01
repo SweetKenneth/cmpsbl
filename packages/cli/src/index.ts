@@ -36,6 +36,7 @@ import {
   getWelcomeBackData, getFullState,
   setGoal, getGoal, advanceGoal, clearGoal,
   getDreamDigestSinceLastSession, markDreamDigestChecked, addDreamDigestEntry,
+  isFirstRun, hasIntroduced, markIntroduced,
   type WelcomeBackData,
 } from './session';
 import { runInstallWizard } from './install-wizard';
@@ -570,7 +571,7 @@ export async function run(args: string[]): Promise<void> {
     if (command !== 'help' && command !== '--help' && command !== '-h') {
       const data = getWelcomeBackData();
       if (data.bookmark || data.openTodos.length > 0 || data.pins.length > 0) {
-        renderWelcomeBack(data);
+        await renderWelcomeBack(data);
         return;
       }
     }
@@ -779,6 +780,24 @@ function printHelp() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdOnboarding() {
+  // ── #1: Substrate introduces itself (first run only) ──
+  if (!hasIntroduced()) {
+    // #4: Try git name before prompting
+    try {
+      const gitName = execSync('git config user.name', { encoding: 'utf-8' }).trim();
+      if (gitName) {
+        setAgentName(gitName, 'git');
+      }
+    } catch {
+      // git not available or no name configured — fall through
+    }
+
+    await typewrite('  I am your substrate. I\'ve been waiting.', 40);
+    await sleep(800);
+    blank();
+    markIntroduced();
+  }
+
   // ── Font recommendation (first-run only) ──
   printFontRecommendation();
 
@@ -910,7 +929,7 @@ async function cmdShell() {
     'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
     'topology', 'route', 'benchmark', 'diff', 'changelog',
     'think', 'reflect', 'remember', 'forget',
-    'name', 'todo', 'done', 'pin', 'unpin', 'next', 'welcome',
+    'name', 'todo', 'done', 'pin', 'unpin', 'goal', 'advance', 'next', 'welcome',
     'forge', 'harvest', 'translate', 'sandbox',
     'scan', 'predict', 'audit', 'cost',
     'threat', 'immune', 'govern', 'treaty',
@@ -955,9 +974,7 @@ async function cmdShell() {
       if (trimmed === 'exit' || trimmed === 'quit') {
         // Save session bookmark on exit
         saveBookmark('Interactive shell session', trimmed);
-        sayOk(pick(V.ok));
-        say('Session bookmarked. See you next time.');
-        blank();
+        await substrateExit();
         rl.close();
         resolve();
         return;
@@ -3357,12 +3374,16 @@ async function cmdNext() {
 async function cmdWelcome() {
   const data = getWelcomeBackData();
   if (JSON_MODE) { jsonOut(data); return; }
-  renderWelcomeBack(data);
+  await renderWelcomeBack(data);
   markDreamDigestChecked();
 }
 
-function renderWelcomeBack(data: WelcomeBackData): void {
+async function renderWelcomeBack(data: WelcomeBackData): Promise<void> {
   const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos, goal, dreamDigestNew } = data;
+
+  // Determine if DREAM has news (for #3 — announcement takes priority over inline)
+  const hasDreamNews = dreamDigestNew.length > 0 && bookmark?.timestamp
+    && dreamDigestNew.some(d => new Date(d.crystallizedAt) > new Date(bookmark.timestamp));
 
   blank();
   say(c.muted('  ┌─────────────────────────────────────────────────┐'));
@@ -3405,10 +3426,18 @@ function renderWelcomeBack(data: WelcomeBackData): void {
 
   say(c.muted('  │') + c.muted('                                                 │'));
   say(c.muted('  └─────────────────────────────────────────────────┘'));
+
+  // #2: Memory heartbeat — breathing pulse after box
+  await memoryHeartbeat(2000);
   blank();
 
-  // DREAM Digest — what happened while you were away
-  if (dreamDigestNew.length > 0) {
+  // #3: DREAM announces itself unprompted (replaces inline digest)
+  if (hasDreamNews) {
+    await sleep(600);
+    say('  ◆ DREAM — I found something while you were away. Run cmpsbl dream --last to see it.');
+    blank();
+  } else if (dreamDigestNew.length > 0) {
+    // Fallback: show inline if no bookmark-delta but entries exist
     say(c.bold(c.cyan('  💤 While you were away, DREAM crystallized:')));
     blank();
     for (const entry of dreamDigestNew.slice(0, 4)) {
@@ -3504,6 +3533,47 @@ function sleep(ms: number): Promise<void> {
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #1: Typewriter effect (character-by-character)
+// ═══════════════════════════════════════════════════════════════
+
+async function typewrite(text: string, delayMs: number = 40): Promise<void> {
+  for (const ch of text) {
+    process.stdout.write(ch);
+    await sleep(delayMs);
+  }
+  process.stdout.write('\n');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #2: Memory heartbeat (breathing pulse)
+// ═══════════════════════════════════════════════════════════════
+
+async function memoryHeartbeat(durationMs: number = 2000): Promise<void> {
+  const intervalMs = 500;
+  const cycles = Math.floor(durationMs / intervalMs);
+  for (let i = 0; i < cycles; i++) {
+    const symbol = i % 2 === 0 ? '◆' : '◇';
+    process.stdout.write(`\r  ${symbol} substrate active`);
+    await sleep(intervalMs);
+  }
+  // Clear the line and move on
+  process.stdout.write('\r' + ' '.repeat(30) + '\r');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// #5: Exit with weight
+// ═══════════════════════════════════════════════════════════════
+
+async function substrateExit(): Promise<void> {
+  blank();
+  say('  Substrate going dark.');
+  await sleep(600);
+  say('  Your work is remembered.');
+  await sleep(400);
+  blank();
 }
 
 // ═══════════════════════════════════════════════════════════════
