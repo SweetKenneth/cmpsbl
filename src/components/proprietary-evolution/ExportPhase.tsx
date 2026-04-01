@@ -235,22 +235,25 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
         capabilityType: c.capabilityType, description: c.description, category: c.category,
       }));
 
-      // Merge forge discoveries as proper capabilities so they flow through
-      // all export infrastructure: source code, tests, HTML docs, manifest, valuation
+      // Forge MERGES into base capabilities — upgrading them into super agents.
+      // Each forge discovery is paired 1:1 with a base capability via baseDiscoveryId.
+      // The result is the SAME number of capabilities, but each is enhanced with an agent persona.
       if (verticalResult?.discoveries?.length) {
         for (const d of verticalResult.discoveries) {
-          capsForExport.push({
-            id: d.id,
-            name: `${d.primitiveName}-${d.capabilityName.replace(/\s+/g, '-')}`.toLowerCase(),
-            cjpiScore: d.cjpiScore,
-            tier: d.cjpiScore >= 80 ? 'S' : d.cjpiScore >= 60 ? 'A' : 'B',
-            chain: [d.primitiveName, ...(capsForExport[0]?.chain?.slice(0, 2) || [])],
-            fingerprint: d.id.slice(0, 12).toUpperCase(),
-            moatSignature: `${d.primitiveName}::${d.vertical}::forge`,
-            capabilityType: `${verticalResult.verticalName || d.vertical} Agent`,
-            description: d.description,
-            category: d.category,
-          });
+          const baseIdx = capsForExport.findIndex(c => c.id === d.baseDiscoveryId);
+          if (baseIdx >= 0) {
+            // Upgrade the base capability in-place
+            const base = capsForExport[baseIdx];
+            capsForExport[baseIdx] = {
+              ...base,
+              name: `${base.name}::${d.primitiveName}`.toLowerCase(),
+              cjpiScore: Math.max(base.cjpiScore, d.cjpiScore),
+              chain: [...base.chain, d.primitiveName],
+              moatSignature: `${base.moatSignature}+${d.primitiveName}::forge`,
+              capabilityType: `${verticalResult.verticalName || d.vertical} Super Agent`,
+              description: `${base.description} Enhanced with ${d.primitiveName} agent persona: ${d.description}`,
+            };
+          }
         }
       }
 
