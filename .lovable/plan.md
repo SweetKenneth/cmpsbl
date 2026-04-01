@@ -1,114 +1,59 @@
-
-# Roadmap: Vertical Ascension Packs (Agent-First)
-
-## Architecture Decision: Hybrid Stacking
-
-The 40-primitive Ascension stays untouched. **Vertical Packs** are additional 5-primitive passes that run *after* the main Ascension, discovering domain-specialized capabilities. First vertical: **Agent Forge**.
+# CLI Substrate Simulation & Flow Gaps — Speedrun Roadmap
+## 20 credits budget · Parallel execution · Zero drift
 
 ---
 
-## Phase 1: Agent Forge Engine (Build)
+## Phase 1: Optional Simulation Mode (~3 credits)
+`cmpsbl simulate` — founder-created guided walkthrough teaching the substrate through "system recovery" missions. Optional. Exits anytime. Collects feedback.
 
-**Goal:** Create the Reserve Primitive system and ship the first 5-primitive Agent vertical.
+### 1A. Simulation Engine (`packages/cli/src/simulation.ts`)
+- `SimulationState` persisted to `~/.cmpsbl/simulation.json`
+- 5 missions: Stabilize → Repair → Build → Discover → Graduate
+- System health starts 35%, increases per mission
+- `cmpsbl simulate` start/resume · `simulate skip` exit w/ feedback · `simulate status`
 
-### 1A. Reserve Primitive Registry
-- New file: `src/lib/ascension/reserve-registry.ts`
-- Data model: `ReservePrimitive` (id, name, category, vertical, capabilities, affinity signals)
-- Vertical registry: maps vertical slug → 5 reserve primitives
-- First vertical `agent-forge` with 5 primitives:
-  - **SENTINEL** — Behavioral threat detection, prompt injection defense
-  - **SWARM** — Multi-agent coordination, task delegation
-  - **THRIFT** — Cost-aware model routing, token budgets
-  - **PERSONA** — Identity persistence, personality continuity across sessions
-  - **ARBITER** — Conflict resolution between competing agent goals
+### 1B. Mission Map
+| # | Mission | Teaches | Health |
+|---|---------|---------|--------|
+| 1 | Stabilize | `health`, `doctor`, `heal` | 35→55% |
+| 2 | Repair | `forge`, `loadout`, `scan` | 55→70% |
+| 3 | Build | `think`, `remember`, `recall` | 70→82% |
+| 4 | Discover | `dream`, `stream`, `discover` | 82→92% |
+| 5 | Graduate | `ascend`, `witness`, `topology` | 92→100% |
 
-### 1B. Vertical Collision Engine
-- New file: `src/lib/ascension/vertical-collision.ts`
-- Takes the main Ascension's 5 discoveries + runs them through the 5 reserve primitives
-- Produces 5 *additional* specialized capabilities (stacked on top)
-- Reuses existing CJPI scoring, chain-injection, and quality-gate infrastructure
-
-### 1C. Ascension UI Integration
-- Update `AscensionStepper.tsx` — add optional "Vertical Pack" step between Ascend and Export
-- New component: `VerticalPackSelector.tsx` — shows available verticals with lock/unlock state
-- Update `ExportPhase.tsx` — include vertical discoveries in export ZIP alongside base discoveries
-- Update `CapabilityMarketplace.tsx` — separate section for vertical-specific bundles
-
-### 1D. Export Augmentation
-- Vertical discoveries get their own subfolder in the ZIP: `vertical/agent-forge/`
-- Include vertical-specific README explaining what the 5 agent primitives discovered
-- HTML docs generated for vertical discoveries using existing `html-artifact-generator.ts`
+### 1C. Feedback on Exit
+- 3-question terminal prompt → `~/.cmpsbl/feedback.json` + API POST
 
 ---
 
-## Phase 2: Landing Page (Ship)
-
-**Goal:** Dedicated conversion page for the Agent Forge vertical.
-
-### 2A. Route & Page
-- New page: `/agent-forge` — dedicated landing page
-- Hero: "Turn Any Agent Into 5 Production Specialists"
-- Sections:
-  - The 5 agent primitives (SENTINEL, SWARM, THRIFT, PERSONA, ARBITER) with visual cards
-  - Before/After comparison — generic agent → 5 specialized outputs
-  - Live demo CTA → drives to Ascension flow with agent vertical pre-selected
-  - Trust signals: link to `cmpsbl-daily-drop` repo, export verification instructions
-  - Pricing: Architect tier includes Agent Forge
-
-### 2B. Homepage Integration
-- Add Agent Forge card to the existing Discovery section on `/explore`
-- Route visitors from the dual-card CTA to `/agent-forge`
-
-### 2C. SEO
-- Update `sitemap.xml`, `robots.txt`, meta tags
-- Add structured data for the product page
+## Phase 2: Contextual Event Surfacing (~2 credits)
+On boot, surface real events: new loadouts, dream digest, health changes, active goals.
 
 ---
 
-## Phase 3: Marketing ($250 Budget)
+## Phase 3: Flow Gap Filling (~3 credits)
+### 3A. Natural Aliases
+`start/setup/begin` → init/simulate · `build/create` → forge · `connect` → login · `activate` → loadout · `stabilize/recover` → heal · `train/learn` → simulate · `explore` → explain · `search/find` → recall · `list/show` → nodes/status · `exit/quit` → graceful
 
-**Goal:** 10 paying customers from targeted developer ads.
+### 3B. Multi-Response Variants
+3-5 variants for status, health, help, whoami — random per invocation
 
-### Budget Split
-| Channel | Spend | Target |
-|---------|-------|--------|
-| Reddit (r/LocalLLaMA, r/AutoGPT) | $100 | Agent builders looking for defense + coordination |
-| Twitter/X promoted posts | $100 | OpenClaw, LangChain, CrewAI communities |
-| Dev.to sponsored post | $50 | Tutorial-style "I ran my agent through Ascension" |
-
-### Ad Hook
-> "Your agent does one thing. Ascension discovers five things it *could* do — defense, coordination, cost optimization, identity, arbitration. Zero AI. Pure structural discovery. Try it free at cmpsbl.com/agent-forge"
-
-### Conversion Path
-1. Ad → `/agent-forge` landing page (UTM tracked)
-2. CTA → Ascension flow with Agent Forge pre-selected
-3. Export → includes `cmpsbl-daily-drop` test instructions
-4. Follow-up → support@cmpsbl.com in every export
-
-### Tracking
-- UTM parameters on all ad links
-- Track landing page → Ascension start → export completion funnel
+### 3C. Contextual Nudges
+30% post-command chance of "one more thing" based on simulation progress / unused capabilities
 
 ---
 
-## Implementation Order
-
-1. **Phase 1A-1B** — Reserve registry + vertical collision engine (core logic)
-2. **Phase 1C-1D** — UI integration + export augmentation
-3. **Phase 2** — Landing page + homepage integration + SEO
-4. **Phase 3** — Ad copy, UTM links, launch
-
-Estimated implementation: 3-4 turns for Phase 1, 1-2 turns for Phase 2, marketing copy in same turn as Phase 2.
+## Phase 4: Router Wiring (~2 credits)
+`case 'simulate'` + aliases in switch. Simulation-aware unknown cmd responses. Post-mission celebration.
 
 ---
 
-## Future Verticals (After Agent Forge Proves the Model)
+## Execution (Parallel Batches)
+- **Batch 1**: Phase 1 (new simulation.ts) ‖ Phase 3A (aliases in index.ts)
+- **Batch 2**: Phase 2 + 3B + 3C + Phase 4 (index.ts edits)
 
-| Vertical | Primitives | Market |
-|----------|-----------|--------|
-| **DeFi Forge** | LEDGER, ORACLE, VAULT, COMPLIANCE, ARBITER | Smart contract / DeFi developers |
-| **Security Forge** | SENTINEL, SHADOW, CLOAK, FORENSIC, HONEYPOT | AppSec teams |
-| **IoT Forge** | PULSE, MESH, TELEMETRY, EDGE, FAILOVER | Embedded / edge developers |
-| **Data Forge** | PIPELINE, SCHEMA, LINEAGE, QUALITY, ARCHIVE | Data engineers |
+**Est: ~10 credits · Remaining ~10 for governor commands + polish**
 
-Each vertical is a new product line, new landing page, new ad campaign — all stacking on the same 40-primitive base.
+---
+
+## Previous: Vertical Ascension Packs (Agent-First) — Completed/Archived
