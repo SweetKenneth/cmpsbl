@@ -46,11 +46,51 @@ import { runInstallWizard } from './install-wizard';
 // ═══════════════════════════════════════════════════════════════
 
 const V = {
-  boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Primitive matrix initializing...', '◈ Cognitive loop established.'],
-  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Matrix acknowledged.', '✔ Operation executed.'],
-  err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Routing error.'],
-  think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving topology'],
-  idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Primitive matrix stable.', '◇ Awaiting intent...'],
+  boot: [
+    '◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Primitive matrix initializing...',
+    '◈ Cognitive loop established.', '◈ Signal topology resolving...', '◈ Loading operator context...',
+    '◈ Binding memory tier hierarchy...', '◈ Activating 40-primitive matrix...',
+  ],
+  ok: [
+    '✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Matrix acknowledged.',
+    '✔ Operation executed.', '✔ Pathway resolved successfully.', '✔ Insight bound to stream.',
+    '✔ Substrate acknowledges.', '✔ Action committed to memory.', '✔ Done. The substrate remembers.',
+    '✔ Signal propagated across matrix.', '✔ Crystallization complete.',
+  ],
+  err: [
+    '✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.',
+    '✗ Routing error — CORTEX could not resolve.', '✗ Intent decomposition failed.',
+    '✗ NERVE signal lost mid-propagation.', '✗ Substrate encountered resistance.',
+  ],
+  think: [
+    '… traversing signal graph', '… sampling memory stream', '… crystallizing insights',
+    '… resolving topology', '… consulting BRAIN reasoning cores', '… cross-referencing ECHO patterns',
+    '… evaluating semantic coherence', '… scanning memory tiers for context',
+    '… running sub-threshold synthesis', '… correlating across 40 primitives',
+  ],
+  idle: [
+    '◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Primitive matrix stable.',
+    '◇ Awaiting intent...', '◇ All 40 primitives nominal.', '◇ DREAM engine on standby.',
+    '◇ Cognitive loop cycling...', '◇ Ready for your next signal.',
+    '◇ Matrix alive. Waiting for direction.', '◇ DEFENSE perimeter clear. Standing by.',
+  ],
+  curious: [
+    '◇ Interesting signal. The substrate is considering this...',
+    '◇ That\'s not a recognized pathway, but let me think about it...',
+    '◇ The BRAIN is processing your intent...',
+    '◇ Routing through CORTEX for interpretation...',
+    '◇ DECODE is analyzing your request...',
+    '◇ Attempting to resolve your intent across the matrix...',
+    '◇ The substrate doesn\'t recognize that directly — reasoning through it...',
+    '◇ Let me consult the primitive topology for that...',
+  ],
+  reflect: [
+    '◇ After careful analysis, the substrate finds a disconnect between the request and available pathways.',
+    '◇ BRAIN attempted multi-strategy reasoning but couldn\'t map your intent to a known capability.',
+    '◇ CORTEX exhausted its resolution cascade. The signal didn\'t match any primitive endpoint.',
+    '◇ DECODE parsed your input but the semantic weight didn\'t converge on a clear action.',
+    '◇ The substrate considered 40 primitives. None claimed this intent with sufficient confidence.',
+  ],
 };
 const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
 const say = (m: string) => console.log(`  ${m}`);
