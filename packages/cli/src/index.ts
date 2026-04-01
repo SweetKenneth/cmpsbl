@@ -473,7 +473,7 @@ async function requireApiKey(): Promise<string> {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// Config & Nodes
+// Config & Primitives
 // ═══════════════════════════════════════════════════════════════
 
 const CLI_VERSION = '2.5.0' as const;
@@ -499,48 +499,55 @@ function isInteractiveTTY(): boolean {
   return Boolean(process.stdin.isTTY && process.stdout.isTTY);
 }
 
-const NODES = [
-  { id: 'BRAIN', sector: 'CCR', status: 'online', health: 98, role: 'reasoning' },
-  { id: 'MEMORY', sector: 'CCR', status: 'online', health: 100, role: 'persistence' },
-  { id: 'DREAM', sector: 'CCR', status: 'online', health: 95, role: 'synthesis' },
-  { id: 'RIPPLE', sector: 'OCG', status: 'online', health: 99, role: 'messaging' },
-  { id: 'ACCESS', sector: 'OCG', status: 'online', health: 100, role: 'auth' },
-  { id: 'IDENTITY', sector: 'OCG', status: 'online', health: 100, role: 'identity' },
-  { id: 'RELAY', sector: 'OCG', status: 'online', health: 97, role: 'routing' },
-  { id: 'AUDIT', sector: 'OCG', status: 'online', health: 100, role: 'compliance' },
-  { id: 'NERVE', sector: 'OCG', status: 'online', health: 96, role: 'signaling' },
-  { id: 'DECODE', sector: 'EXEC', status: 'online', health: 99, role: 'analysis' },
-  { id: 'ENCODE', sector: 'EXEC', status: 'online', health: 98, role: 'generation' },
-  { id: 'VISION', sector: 'EXEC', status: 'online', health: 94, role: 'perception' },
-  { id: 'CORTEX', sector: 'EXEC', status: 'online', health: 100, role: 'orchestration' },
-  { id: 'NEXUS', sector: 'EXEC', status: 'online', health: 97, role: 'intelligence' },
-  { id: 'ECONOMY', sector: 'EXEC', status: 'online', health: 100, role: 'metering' },
-  { id: 'SANDBOX', sector: 'EXEC', status: 'online', health: 99, role: 'isolation' },
-  { id: 'INCLUSIVE', sector: 'EXEC', status: 'online', health: 100, role: 'accessibility' },
-  { id: 'MEDIC', sector: 'EXEC', status: 'online', health: 100, role: 'healing' },
-  { id: 'INTEGRATION', sector: 'EXEC', status: 'online', health: 98, role: 'connectors' },
-  { id: 'SOVEREIGN', sector: 'ESZ', status: 'online', health: 100, role: 'governance' },
-  { id: 'ORACLE', sector: 'ESZ', status: 'online', health: 93, role: 'prediction' },
-  { id: 'CONSCIENCE', sector: 'ESZ', status: 'online', health: 100, role: 'ethics' },
-  { id: 'TREATY', sector: 'ESZ', status: 'online', health: 100, role: 'agreements' },
-  { id: 'COMPASS', sector: 'EPZ', status: 'online', health: 98, role: 'navigation' },
-  { id: 'ECHO', sector: 'EPZ', status: 'online', health: 97, role: 'reflection' },
-  { id: 'REFLEX', sector: 'EPZ', status: 'online', health: 99, role: 'reaction' },
-  { id: 'FORGE', sector: 'EMZ', status: 'online', health: 96, role: 'fabrication' },
-  { id: 'LINGUA', sector: 'EMZ', status: 'online', health: 100, role: 'language' },
-  { id: 'HARVEST', sector: 'EMZ', status: 'online', health: 98, role: 'extraction' },
-  { id: 'EVOLUTION', sector: 'CSZ', status: 'online', health: 95, role: 'adaptation' },
-  { id: 'SHADOW', sector: 'CSZ', status: 'online', health: 92, role: 'stealth' },
-  { id: 'PHANTOM', sector: 'CSZ', status: 'online', health: 91, role: 'speculation' },
-  { id: 'IMMUNITY', sector: 'FLD', status: 'online', health: 100, role: 'defense' },
-  { id: 'INTENT', sector: 'FLD', status: 'online', health: 99, role: 'resolution' },
-  { id: 'GOVERNANCE', sector: 'PLN', status: 'online', health: 100, role: 'policy' },
-  { id: 'DEFENSE', sector: 'SHL', status: 'online', health: 100, role: 'protection' },
-  { id: 'ATLAS', sector: 'PLN', status: 'online', health: 99, role: 'mapping' },
-  { id: 'ENGINEER', sector: 'SHL', status: 'online', health: 99, role: 'infrastructure' },
-  { id: 'CORE', sector: 'CORE', status: 'online', health: 100, role: 'kernel' },
-  { id: 'SYSTEM', sector: 'CORE', status: 'online', health: 100, role: 'runtime' },
+const PRIMITIVES = [
+  // Organs (12)
+  { id: 'CORE', category: 'Organ', status: 'online', health: 100, role: 'kernel' },
+  { id: 'SYSTEM', category: 'Organ', status: 'online', health: 100, role: 'runtime' },
+  { id: 'BRAIN', category: 'Organ', status: 'online', health: 98, role: 'reasoning' },
+  { id: 'MEMORY', category: 'Organ', status: 'online', health: 100, role: 'persistence' },
+  { id: 'NERVE', category: 'Organ', status: 'online', health: 96, role: 'signaling' },
+  { id: 'NEXUS', category: 'Organ', status: 'online', health: 97, role: 'intelligence' },
+  { id: 'IDENTITY', category: 'Organ', status: 'online', health: 100, role: 'identity' },
+  { id: 'SOVEREIGN', category: 'Organ', status: 'online', health: 100, role: 'sovereignty' },
+  { id: 'ATLAS', category: 'Organ', status: 'online', health: 99, role: 'mapping' },
+  { id: 'MEDIC', category: 'Organ', status: 'online', health: 100, role: 'healing' },
+  { id: 'RELAY', category: 'Organ', status: 'online', health: 97, role: 'delivery' },
+  { id: 'CONSCIENCE', category: 'Organ', status: 'online', health: 100, role: 'ethics' },
+  // Layers (12)
+  { id: 'DEFENSE', category: 'Layer', status: 'online', health: 100, role: 'protection' },
+  { id: 'IMMUNITY', category: 'Layer', status: 'online', health: 100, role: 'anomaly' },
+  { id: 'GOVERNANCE', category: 'Layer', status: 'online', health: 100, role: 'policy' },
+  { id: 'TREATY', category: 'Layer', status: 'online', health: 100, role: 'trust' },
+  { id: 'EVOLUTION', category: 'Layer', status: 'online', health: 95, role: 'adaptation' },
+  { id: 'REFLEX', category: 'Layer', status: 'online', health: 99, role: 'reaction' },
+  { id: 'COMPASS', category: 'Layer', status: 'online', health: 98, role: 'navigation' },
+  { id: 'INTEGRATION', category: 'Layer', status: 'online', health: 98, role: 'connectors' },
+  { id: 'INTENT', category: 'Layer', status: 'online', health: 99, role: 'resolution' },
+  { id: 'ACCESS', category: 'Layer', status: 'online', health: 100, role: 'auth' },
+  { id: 'VISION', category: 'Layer', status: 'online', health: 94, role: 'observability' },
+  { id: 'SHADOW', category: 'Layer', status: 'online', health: 92, role: 'stealth' },
+  // Engines (8)
+  { id: 'DREAM', category: 'Engine', status: 'online', health: 95, role: 'synthesis' },
+  { id: 'HARVEST', category: 'Engine', status: 'online', health: 98, role: 'extraction' },
+  { id: 'FORGE', category: 'Engine', status: 'online', health: 96, role: 'fabrication' },
+  { id: 'LINGUA', category: 'Engine', status: 'online', health: 100, role: 'language' },
+  { id: 'ECHO', category: 'Engine', status: 'online', health: 97, role: 'reflection' },
+  { id: 'PHANTOM', category: 'Engine', status: 'online', health: 91, role: 'speculation' },
+  { id: 'SANDBOX', category: 'Engine', status: 'online', health: 99, role: 'isolation' },
+  { id: 'RIPPLE', category: 'Engine', status: 'online', health: 99, role: 'messaging' },
+  // Agents (8)
+  { id: 'ENCODE', category: 'Agent', status: 'online', health: 98, role: 'generation' },
+  { id: 'DECODE', category: 'Agent', status: 'online', health: 99, role: 'analysis' },
+  { id: 'AUDIT', category: 'Agent', status: 'online', health: 100, role: 'compliance' },
+  { id: 'ECONOMY', category: 'Agent', status: 'online', health: 100, role: 'metering' },
+  { id: 'INCLUSIVE', category: 'Agent', status: 'online', health: 100, role: 'accessibility' },
+  { id: 'CORTEX', category: 'Agent', status: 'online', health: 100, role: 'orchestration' },
+  { id: 'ORACLE', category: 'Agent', status: 'online', health: 93, role: 'prediction' },
+  { id: 'ENGINEER', category: 'Agent', status: 'online', health: 99, role: 'infrastructure' },
 ];
+
+// Backward compat alias
+const NODES = PRIMITIVES;
 
 // ═══════════════════════════════════════════════════════════════
 // Command Router

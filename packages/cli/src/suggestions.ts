@@ -55,7 +55,7 @@ const COMMAND_GRAPH: Record<string, Suggestion[]> = {
   forge: [
     { command: 'cmpsbl explain FORGE', description: 'Learn about Signal Forge' },
     { command: 'cmpsbl dream', description: 'Dream to feed more discoveries' },
-    { command: 'cmpsbl export', description: 'Export blueprints' },
+    { command: 'cmpsbl export', description: 'Export loadouts' },
   ],
   harvest: [
     { command: 'cmpsbl remember "findings"', description: 'Store extracted data' },
@@ -114,49 +114,49 @@ const COMMAND_GRAPH: Record<string, Suggestion[]> = {
     { command: 'cmpsbl topology', description: 'View category topology' },
   ],
   status: [
-    { command: 'cmpsbl health', description: 'Detailed health report across all nodes' },
-    { command: 'cmpsbl nodes', description: 'Browse the full node registry' },
+    { command: 'cmpsbl health', description: 'Detailed health report across all primitives' },
+    { command: 'cmpsbl primitives', description: 'Browse the full primitive registry' },
     { command: 'cmpsbl benchmark', description: 'Run latency benchmarks' },
   ],
   health: [
-    { command: 'cmpsbl inspect <NODE>', description: 'Deep-inspect an underperforming node' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Deep-inspect an underperforming primitive' },
     { command: 'cmpsbl doctor', description: 'Run full diagnostic suite' },
     { command: 'cmpsbl immune', description: 'Check immunity system' },
   ],
   nodes: [
-    { command: 'cmpsbl explain <NODE>', description: 'Learn about a primitive' },
-    { command: 'cmpsbl inspect <NODE>', description: 'Inspect a node in detail' },
-    { command: 'cmpsbl topology', description: 'View sector topology map' },
+    { command: 'cmpsbl explain <PRIMITIVE>', description: 'Learn about a primitive' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Inspect a primitive in detail' },
+    { command: 'cmpsbl topology', description: 'View category topology map' },
   ],
   ping: [
-    { command: 'cmpsbl inspect <NODE>', description: 'Get full node details' },
-    { command: 'cmpsbl benchmark', description: 'Benchmark all nodes' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Get full primitive details' },
+    { command: 'cmpsbl benchmark', description: 'Benchmark all primitives' },
   ],
   inspect: [
-    { command: 'cmpsbl explain <NODE>', description: 'Quick reference for this primitive' },
+    { command: 'cmpsbl explain <PRIMITIVE>', description: 'Quick reference for this primitive' },
     { command: 'cmpsbl route "intent"', description: 'Trace intent routing' },
-    { command: 'cmpsbl logs <NODE>', description: 'View recent logs' },
+    { command: 'cmpsbl logs <PRIMITIVE>', description: 'View recent logs' },
   ],
   topology: [
-    { command: 'cmpsbl explain <NODE>', description: 'Learn about any primitive' },
-    { command: 'cmpsbl nodes', description: 'Full node registry' },
+    { command: 'cmpsbl explain <PRIMITIVE>', description: 'Learn about any primitive' },
+    { command: 'cmpsbl primitives', description: 'Full primitive registry' },
   ],
   route: [
-    { command: 'cmpsbl inspect <NODE>', description: 'Inspect a node from the route' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Inspect a primitive from the route' },
     { command: 'cmpsbl explain INTENT', description: 'Learn about intent resolution' },
   ],
   doctor: [
     { command: 'cmpsbl init', description: 'Initialize missing configuration' },
     { command: 'cmpsbl login', description: 'Authenticate if API key is missing' },
-    { command: 'cmpsbl health', description: 'Check node health' },
+    { command: 'cmpsbl health', description: 'Check primitive health' },
   ],
   watch: [
-    { command: 'cmpsbl logs <NODE>', description: 'View historical logs' },
-    { command: 'cmpsbl inspect <NODE>', description: 'Inspect node state' },
+    { command: 'cmpsbl logs <PRIMITIVE>', description: 'View historical logs' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Inspect primitive state' },
   ],
   logs: [
-    { command: 'cmpsbl watch <NODE>', description: 'Watch live activity' },
-    { command: 'cmpsbl inspect <NODE>', description: 'Deep inspect' },
+    { command: 'cmpsbl watch <PRIMITIVE>', description: 'Watch live activity' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Deep inspect' },
   ],
   score: [
     { command: 'cmpsbl loadout', description: 'Browse & deploy pre-built loadouts' },
@@ -176,7 +176,7 @@ const COMMAND_GRAPH: Record<string, Suggestion[]> = {
   ],
   benchmark: [
     { command: 'cmpsbl health', description: 'Correlate with health data' },
-    { command: 'cmpsbl inspect <NODE>', description: 'Inspect slowest node' },
+    { command: 'cmpsbl inspect <PRIMITIVE>', description: 'Inspect slowest primitive' },
   ],
   diff: [
     { command: 'cmpsbl validate <file>', description: 'Validate a manifest' },
@@ -233,7 +233,7 @@ export interface RecoverySuggestion {
 
 const ERROR_PATTERNS: Array<{ pattern: RegExp; recovery: RecoverySuggestion }> = [
   { pattern: /api.key|CMPSBL_API_KEY|unauthorized|401/i, recovery: { message: 'API key is missing or invalid.', fix: 'Run `cmpsbl login` or set CMPSBL_API_KEY environment variable.' } },
-  { pattern: /not found|404|no such/i, recovery: { message: 'Resource not found.', fix: 'Run `cmpsbl nodes` to see available nodes, or `cmpsbl help` for commands.' } },
+  { pattern: /not found|404|no such/i, recovery: { message: 'Resource not found.', fix: 'Run `cmpsbl primitives` to see available primitives, or `cmpsbl help` for commands.' } },
   { pattern: /manifest|cmpsbl-manifest/i, recovery: { message: 'Manifest file is missing or invalid.', fix: 'Run `cmpsbl init` to create a new project manifest.' } },
   { pattern: /timeout|ETIMEDOUT|ECONNREFUSED/i, recovery: { message: 'Connection timed out.', fix: 'Check your network, or set CMPSBL_ENDPOINT for a custom endpoint.' } },
   { pattern: /permission|forbidden|403/i, recovery: { message: 'Permission denied.', fix: 'Your API key may lack the required scope. Check `cmpsbl whoami` for details.' } },
