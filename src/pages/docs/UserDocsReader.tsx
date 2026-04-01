@@ -5,8 +5,7 @@
 
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { DocsMarkdown } from '@/components/docs/DocsMarkdown';
 import { cn } from '@/lib/utils';
 import {
   Book, ChevronRight, Rocket, Code, Brain, Zap, Shield,

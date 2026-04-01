@@ -5,8 +5,7 @@
 
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { DocsMarkdown } from '@/components/docs/DocsMarkdown';
 import { cn } from '@/lib/utils';
 import { Book, ChevronRight, Globe, Settings, Layers, Zap, Brain, Shield, Package, Rocket, BarChart3, Eye, BookOpen, Menu, X } from 'lucide-react';
 import { CmpsblNav } from '@/components/navigation/CmpsblNav';
