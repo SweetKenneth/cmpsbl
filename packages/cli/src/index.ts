@@ -1394,7 +1394,7 @@ async function runFirstDream() {
     '  cmpsbl stream        View all Memory Stream chains',
     '  cmpsbl dream         Run another dream cycle',
     '  cmpsbl discover      Discover patterns in your data',
-    '  cmpsbl forge         Synthesize blueprints from capabilities',
+    '  cmpsbl loadout       Browse & deploy pre-built projects',
     '',
     'Every interaction teaches the substrate.',
     'Every dream makes it smarter.',
