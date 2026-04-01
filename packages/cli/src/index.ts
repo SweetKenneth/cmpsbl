@@ -780,6 +780,24 @@ function printHelp() {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdOnboarding() {
+  // ── #1: Substrate introduces itself (first run only) ──
+  if (!hasIntroduced()) {
+    // #4: Try git name before prompting
+    try {
+      const gitName = execSync('git config user.name', { encoding: 'utf-8' }).trim();
+      if (gitName) {
+        setAgentName(gitName, 'git');
+      }
+    } catch {
+      // git not available or no name configured — fall through
+    }
+
+    await typewrite('  I am your substrate. I\'ve been waiting.', 40);
+    await sleep(800);
+    blank();
+    markIntroduced();
+  }
+
   // ── Font recommendation (first-run only) ──
   printFontRecommendation();
 
