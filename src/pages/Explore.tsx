@@ -192,7 +192,7 @@ export default function Explore() {
                 <br className="hidden sm:block" />
                 <span className="text-white/80">Today — Free</span>
               </h2>
-              <p className="text-white/70 text-sm sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
+              <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed">
                 Persistent memory, governed evolution, and self-improvement cycles — all included. 
                 Start with 3 capability slots, no credit card required.
               </p>
