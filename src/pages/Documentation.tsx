@@ -1385,6 +1385,21 @@ export default function Documentation() {
                 {s.label}
               </button>
             ))}
+            <div className="w-px h-5 bg-border/40 mx-1 self-center shrink-0" />
+            <Link
+              to="/docs/users"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px] text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
+            >
+              <BookOpen className="w-3.5 h-3.5 shrink-0 text-neon-cyan" />
+              User Library
+            </Link>
+            <Link
+              to="/docs/system"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px] text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
+            >
+              <Cpu className="w-3.5 h-3.5 shrink-0 text-neon-purple" />
+              System Library
+            </Link>
           </div>
         </div>
       </div>
