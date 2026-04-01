@@ -88,14 +88,47 @@ export default function AgentForgePage() {
     return (
       <div className="min-h-screen bg-background text-foreground">
         <PublicNav />
-        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <Hammer className="w-12 h-12 mx-auto text-primary mb-4" />
-          <h1 className="text-3xl font-bold mb-3">Agent Forge</h1>
-          <p className="text-muted-foreground mb-6">Create custom named agents. Activate them in the CLI. Ascend them through the 40-Primitive collision matrix.</p>
-          <Link to="/login">
-            <Button size="lg">Sign In to Forge</Button>
-          </Link>
-        </div>
+
+        {/* Hero section */}
+        <section className="relative overflow-hidden border-b border-border/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/3 pointer-events-none" />
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24 relative">
+            <Badge variant="outline" className="mb-4 border-primary/30 text-primary font-mono text-xs tracking-wider">
+              CMPSBL AGENTS
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4 leading-tight">
+              Forge your own<br className="hidden sm:block" /> internal agents.
+            </h1>
+            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mb-6 leading-relaxed">
+              CMPSBL Agents are fully customizable, internal-only agents that live inside your 
+              substrate. Name them. Specialize them. Call them by name from the CLI. Each tier 
+              unlocks more slots — <span className="text-foreground font-medium">3 for Builder</span>,{' '}
+              <span className="text-foreground font-medium">6 for Studio</span>,{' '}
+              <span className="text-foreground font-medium">9 for Creator</span>,{' '}
+              <span className="text-foreground font-medium">12 for Architect</span> — with only 
+              one active at a time. Architect-tier users can <span className="text-primary font-medium">Ascend</span> their 
+              agents through the 40-Primitive collision matrix.
+            </p>
+
+            {/* CLI example */}
+            <div className="bg-card border border-border/60 rounded-xl p-4 max-w-md mb-8 font-mono text-sm">
+              <p className="text-muted-foreground text-xs mb-2 font-sans">Call your agent by name:</p>
+              <div className="space-y-1.5 text-muted-foreground">
+                <p><span className="text-primary">$</span> cmpsbl forge activate <span className="text-foreground font-bold">VIPER</span></p>
+                <p><span className="text-primary">$</span> cmpsbl forge status <span className="text-foreground font-bold">VIPER</span></p>
+                <p><span className="text-primary">$</span> cmpsbl ascend <span className="text-foreground font-bold">VIPER</span> <span className="text-muted-foreground/60">← Architect only</span></p>
+              </div>
+            </div>
+
+            <Link to="/auth">
+              <Button size="lg" className="gap-2 font-semibold shadow-md shadow-primary/15">
+                <Hammer className="w-5 h-5" />
+                Sign In to Start Forging
+              </Button>
+            </Link>
+          </div>
+        </section>
+
         <EnhancedFooter />
       </div>
     );
