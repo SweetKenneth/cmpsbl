@@ -3134,34 +3134,18 @@ You don't configure infrastructure. You write logic.
 async function cmdHarvest(args: string[]) {
   const target = args.join(' ');
   if (!target) { say('Usage: cmpsbl harvest <url or domain>'); return; }
-  await requireApiKey();
-
+  const apiKey = await requireApiKey();
   if (!JSON_MODE) header('HARVEST — Data Extraction');
-
-  const s = !JSON_MODE ? spinner(`Targeting ${target}...`) : null;
-  const phases = ['Resolving target...', 'Crawling structure...', 'Extracting signals...', 'Scoring relevance...'];
-  for (const p of phases) {
-    await sleep(400 + Math.random() * 300);
-    s?.update(p);
-  }
+  const s = !JSON_MODE ? spinner(`Extracting from ${target}...`) : null;
+  const result = await substrateCall('harvest', 'extract', { target, source: 'cli' }, apiKey);
+  if (!result.success) { s?.stop('Extraction failed'); if (JSON_MODE) { jsonOut({ error: result.error }); } else { renderOfflineFallback(result, 'harvest.extract'); } return; }
   s?.stop('Extraction complete');
-
-  const extracted = {
-    target,
-    pages: Math.round(5 + Math.random() * 30),
-    signals: Math.round(20 + Math.random() * 100),
-    relevance: +(0.6 + Math.random() * 0.35).toFixed(2),
-    topEntities: ['pricing model', 'API documentation', 'authentication flow', 'rate limits'].slice(0, 2 + Math.floor(Math.random() * 2)),
-  };
-
-  if (JSON_MODE) { jsonOut(extracted); return; }
-
+  if (JSON_MODE) { jsonOut(result.data); return; }
   blank();
-  say(`  Target:    ${extracted.target}`);
-  say(`  Pages:     ${extracted.pages} crawled`);
-  say(`  Signals:   ${extracted.signals} extracted`);
-  say(`  Relevance: ${(extracted.relevance * 100).toFixed(0)}%`);
-  say(`  Entities:  ${extracted.topEntities.join(', ')}`);
+  for (const [key, val] of Object.entries(result.data ?? {})) {
+    if (key === 'success') continue;
+    say(`  ${key.padEnd(14)} ${typeof val === 'object' ? JSON.stringify(val) : String(val)}`);
+  }
   blank();
   say(pick(V.ok));
   blank();
