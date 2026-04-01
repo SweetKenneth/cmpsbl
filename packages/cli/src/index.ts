@@ -1724,7 +1724,7 @@ async function cmdNodes(args: string[]) {
   if (JSON_MODE) { jsonOut(nodes); return; }
   header('Primitive Registry');
   if (filter && nodes.length === 0) { say(`No primitives matching "${filter}".`); blank(); return; }
-  if (filter) { say(`Filtered: ${nodes.length} node(s) matching "${filter}"`); blank(); }
+  if (filter) { say(`Filtered: ${nodes.length} primitive(s) matching "${filter}"`); blank(); }
 
   table(['Primitive', 'Category', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.category, n.role, `${n.health}%`, n.status]));
   blank();
