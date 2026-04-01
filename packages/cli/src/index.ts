@@ -613,6 +613,7 @@ export async function run(args: string[]): Promise<void> {
       case 'forget':       await cmdForget(args.slice(1)); break;
       // ── Engines ──
       case 'forge':        await cmdForge(args.slice(1)); break;
+      case 'loadout':      await cmdLoadout(args.slice(1)); break;
       case 'harvest':      await cmdHarvest(args.slice(1)); break;
       case 'translate':    await cmdTranslate(args.slice(1)); break;
       case 'sandbox':      await cmdSandbox(args.slice(1)); break;
@@ -712,7 +713,8 @@ function printHelp() {
     score <n> <u> <c> <m>   Score with CJPI algorithm
 
   ── Engines ──────────────────────────────────────
-    forge [topic]           Signal Forge blueprint synthesis
+    forge [topic]           Signal Forge loadout synthesis
+    loadout [list|build]    Browse & deploy pre-built projects
     harvest <url>           HARVEST data extraction
     translate <text>        LINGUA language processing
     sandbox <script>        SANDBOX safe code execution
@@ -1392,7 +1394,7 @@ async function runFirstDream() {
     '  cmpsbl stream        View all Memory Stream chains',
     '  cmpsbl dream         Run another dream cycle',
     '  cmpsbl discover      Discover patterns in your data',
-    '  cmpsbl forge         Synthesize blueprints from capabilities',
+    '  cmpsbl loadout       Browse & deploy pre-built projects',
     '',
     'Every interaction teaches the substrate.',
     'Every dream makes it smarter.',
@@ -2457,7 +2459,7 @@ async function cmdForge(args: string[]) {
   const topic = args.join(' ') || 'system topology';
   await requireApiKey();
 
-  if (!JSON_MODE) header('FORGE — Signal Forge Blueprint Synthesis');
+  if (!JSON_MODE) header('FORGE — Signal Forge Loadout Synthesis');
 
   const s = !JSON_MODE ? spinner('Mapping capabilities across 40 primitives...') : null;
   const forgePhases = [
@@ -2465,39 +2467,271 @@ async function cmdForge(args: string[]) {
     'Identifying unexplored combinations...',
     'Simulating pipeline candidates...',
     'CJPI validation pass...',
-    'Crystallizing blueprint...',
+    'Crystallizing loadout...',
   ];
   for (const p of forgePhases) {
     await sleep(500 + Math.random() * 400);
     s?.update(p);
   }
-  s?.stop('Blueprint synthesized');
+  s?.stop('Loadout synthesized');
 
-  const blueprints = [
+  const loadouts = [
     { name: 'adaptive-cache-guardian', primitives: ['MEMORY', 'DEFENSE', 'REFLEX'], cjpi: 78, tier: 'Prime' },
     { name: 'predictive-healing-pipeline', primitives: ['ORACLE', 'MEDIC', 'NERVE'], cjpi: 85, tier: 'Relic' },
     { name: 'semantic-threat-correlator', primitives: ['BRAIN', 'DEFENSE', 'SHADOW'], cjpi: 91, tier: 'Mythic' },
     { name: 'autonomous-compliance-auditor', primitives: ['AUDIT', 'GOVERNANCE', 'CONSCIENCE'], cjpi: 72, tier: 'Prime' },
     { name: 'dream-forge-feedback-loop', primitives: ['DREAM', 'FORGE', 'ECHO'], cjpi: 94, tier: 'Apex' },
   ];
-  const bp = blueprints[Math.floor(Math.random() * blueprints.length)];
+  const lo = loadouts[Math.floor(Math.random() * loadouts.length)];
 
-  if (JSON_MODE) { jsonOut({ topic, blueprint: bp }); return; }
+  if (JSON_MODE) { jsonOut({ topic, loadout: lo }); return; }
 
   blank();
   box([
-    `⬢ BLUEPRINT DISCOVERED`,
+    `⬢ LOADOUT DISCOVERED`,
     '',
-    `Name:       ${bp.name}`,
-    `Primitives: ${bp.primitives.join(' → ')}`,
-    `CJPI:       ${bp.cjpi}`,
-    `Tier:       ${bp.tier}`,
+    `Name:       ${lo.name}`,
+    `Primitives: ${lo.primitives.join(' → ')}`,
+    `CJPI:       ${lo.cjpi}`,
+    `Tier:       ${lo.tier}`,
     '',
-    'Status: Available for export',
+    'Status: Ready to deploy',
   ], 'FORGE');
   blank();
   say(pick(V.ok));
   blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// §— Loadout — Signal Forge pre-built projects
+// ═══════════════════════════════════════════════════════════════
+
+const LOADOUT_CATALOG = [
+  {
+    id: 'threat-detector',
+    name: 'Threat Detection System',
+    primitives: ['DEFENSE', 'SHADOW', 'NERVE', 'BRAIN'],
+    category: 'Security',
+    description: 'Real-time threat scoring with behavioral analysis and memory-backed pattern recognition.',
+    cjpi: 88,
+    tier: 'Relic',
+  },
+  {
+    id: 'drift-monitor',
+    name: 'AI Drift Monitor',
+    primitives: ['DREAM', 'ECHO', 'CONSCIENCE', 'VISION'],
+    category: 'Governance',
+    description: 'Autonomous behavioral drift detection with overnight DREAM correction cycles.',
+    cjpi: 91,
+    tier: 'Mythic',
+  },
+  {
+    id: 'smart-cache',
+    name: 'Predictive Cache Layer',
+    primitives: ['MEMORY', 'ORACLE', 'REFLEX'],
+    category: 'Performance',
+    description: 'Self-optimizing cache that predicts access patterns and pre-warms hot paths.',
+    cjpi: 76,
+    tier: 'Prime',
+  },
+  {
+    id: 'compliance-bot',
+    name: 'Compliance Auditor',
+    primitives: ['AUDIT', 'GOVERNANCE', 'TREATY', 'CHRONICLE'],
+    category: 'Enterprise',
+    description: 'Continuous compliance monitoring with tamper-evident audit trails.',
+    cjpi: 82,
+    tier: 'Relic',
+  },
+  {
+    id: 'research-agent',
+    name: 'Research Intelligence Agent',
+    primitives: ['HARVEST', 'BRAIN', 'MEMORY', 'FORGE'],
+    category: 'Intelligence',
+    description: 'Autonomous research pipeline that crawls, reasons, remembers, and synthesizes reports.',
+    cjpi: 94,
+    tier: 'Apex',
+  },
+  {
+    id: 'healing-pipeline',
+    name: 'Self-Healing Pipeline',
+    primitives: ['MEDIC', 'FAILSAFE', 'NERVE', 'BEACON'],
+    category: 'Reliability',
+    description: 'Production pipeline that detects failures, routes around them, and self-repairs.',
+    cjpi: 87,
+    tier: 'Relic',
+  },
+  {
+    id: 'content-engine',
+    name: 'Autonomous Content Engine',
+    primitives: ['ENCODE', 'DECODE', 'LINGUA', 'DREAM'],
+    category: 'Content',
+    description: 'Multi-language content pipeline with overnight DREAM ideation and quality gates.',
+    cjpi: 79,
+    tier: 'Prime',
+  },
+  {
+    id: 'market-oracle',
+    name: 'Market Intelligence Oracle',
+    primitives: ['ORACLE', 'HARVEST', 'VISION', 'ECHO'],
+    category: 'Analytics',
+    description: 'Predictive market analysis with real-time data harvesting and trend resonance.',
+    cjpi: 92,
+    tier: 'Mythic',
+  },
+];
+
+async function cmdLoadout(args: string[]) {
+  const sub = args[0] || 'list';
+
+  if (sub === 'list') {
+    if (!JSON_MODE) header('SIGNAL FORGE — Loadouts');
+
+    if (JSON_MODE) { jsonOut(LOADOUT_CATALOG); return; }
+
+    say(c.muted('  Pre-built projects. Pick one. It\'s already running.'));
+    blank();
+
+    for (const lo of LOADOUT_CATALOG) {
+      const tierColor = lo.tier === 'Apex' ? c.amber : lo.tier === 'Mythic' ? c.magenta : lo.tier === 'Relic' ? c.cyan : c.green;
+      say(`  ${tierColor(`◆`)} ${c.bold(lo.name)}`);
+      say(`    ${c.muted(lo.category)} · CJPI ${lo.cjpi} · ${tierColor(lo.tier)}`);
+      say(`    ${c.muted(lo.description)}`);
+      say(`    ${c.dim(`cmpsbl loadout build ${lo.id}`)}`);
+      blank();
+    }
+
+    say(c.muted(`  ${LOADOUT_CATALOG.length} loadouts available · cmpsbl loadout build <id> to deploy`));
+    blank();
+    return;
+  }
+
+  if (sub === 'build') {
+    const loadoutId = args[1];
+    if (!loadoutId) { say('Usage: cmpsbl loadout build <loadout-id>'); return; }
+
+    const loadout = LOADOUT_CATALOG.find(l => l.id === loadoutId);
+    if (!loadout) {
+      sayErr(`  Unknown loadout: ${loadoutId}`);
+      say(c.muted('  Run cmpsbl loadout list to see available loadouts'));
+      return;
+    }
+
+    await requireApiKey();
+    if (!JSON_MODE) header(`SIGNAL FORGE — Deploying: ${loadout.name}`);
+
+    const s = !JSON_MODE ? spinner('Initializing loadout...') : null;
+    const phases = [
+      `Binding ${loadout.primitives.length} primitives...`,
+      'Wiring memory pathways...',
+      'Establishing DEFENSE perimeter...',
+      'Configuring BEACON health signals...',
+      'Applying GOVERNANCE checks...',
+      'Crystallizing project structure...',
+    ];
+    for (const p of phases) {
+      await sleep(400 + Math.random() * 300);
+      s?.update(p);
+    }
+    s?.stop('Loadout deployed');
+
+    // Scaffold project directory
+    const projectDir = path.resolve(loadoutId);
+    if (!fs.existsSync(projectDir)) fs.mkdirSync(projectDir, { recursive: true });
+
+    const entryFile = `/**
+ * ${loadout.name}
+ * Signal Forge Loadout — CJPI ${loadout.cjpi} (${loadout.tier})
+ * 
+ * Primitives: ${loadout.primitives.join(' → ')}
+ * Category: ${loadout.category}
+ * 
+ * This is a live project. Your substrate identity, memory,
+ * and capabilities are already wired. Customize and run.
+ *
+ * © CMPSBL® — All rights reserved.
+ */
+
+import CMPSBL from '@cmpsbl/runtime';
+
+const substrate = new CMPSBL();
+
+// ── ${loadout.name} ──
+// ${loadout.description}
+
+async function main() {
+  const status = await substrate.status();
+  console.log('Substrate:', status.state);
+  console.log('Primitives:', [${loadout.primitives.map(p => `'${p}'`).join(', ')}]);
+  
+  // Your logic here — the substrate handles the rest.
+}
+
+main().catch(console.error);
+`;
+
+    const readmeFile = `# ${loadout.name}
+
+> ${loadout.description}
+
+## Primitives
+
+${loadout.primitives.map(p => `- **${p}**`).join('\n')}
+
+## Quick Start
+
+\`\`\`bash
+npm install @cmpsbl/runtime
+npx tsx index.ts
+\`\`\`
+
+## What's Already Wired
+
+- **Identity**: Your API key and agent name carry over from \`~/.cmpsbl/\`
+- **Memory**: Persistent across sessions — the substrate remembers
+- **DEFENSE**: Circuit breakers and threat scoring active by default
+- **BEACON**: Health signals broadcasting from first run
+- **GOVERNANCE**: Policy checks enforced at every operation
+
+You don't configure infrastructure. You write logic.
+
+---
+
+*Generated by Signal Forge · CJPI ${loadout.cjpi} · ${loadout.tier} Tier*
+*© CMPSBL® — All rights reserved.*
+`;
+
+    fs.writeFileSync(path.join(projectDir, 'index.ts'), entryFile);
+    fs.writeFileSync(path.join(projectDir, 'README.md'), readmeFile);
+
+    if (JSON_MODE) { jsonOut({ loadout, dir: projectDir }); return; }
+
+    blank();
+    box([
+      `⬢ LOADOUT DEPLOYED: ${loadout.name}`,
+      '',
+      `Directory:  ./${loadoutId}/`,
+      `Primitives: ${loadout.primitives.join(' → ')}`,
+      `CJPI:       ${loadout.cjpi} (${loadout.tier})`,
+      '',
+      `Files:`,
+      `  └── index.ts    — Entry point (customize this)`,
+      `  └── README.md   — What\'s wired + next steps`,
+      '',
+      `Run: cd ${loadoutId} && npm i @cmpsbl/runtime && npx tsx index.ts`,
+    ], 'FORGE');
+    blank();
+    say('  Your identity, memory, and capabilities are already wired.');
+    say('  ' + c.muted('Write logic. The substrate handles everything else.'));
+    blank();
+    return;
+  }
+
+  // Unknown sub-command
+  say('Usage:');
+  say('  cmpsbl loadout              List all available loadouts');
+  say('  cmpsbl loadout list         List all available loadouts');
+  say('  cmpsbl loadout build <id>   Deploy a loadout as a project');
 }
 
 async function cmdHarvest(args: string[]) {
