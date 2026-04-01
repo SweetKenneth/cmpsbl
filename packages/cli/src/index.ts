@@ -2198,11 +2198,32 @@ async function cmdTopology() {
 async function cmdRoute(args: string[]) {
   const intent = args.join(' ');
   if (!intent) { say('Usage: cmpsbl route <intent>'); return; }
+  const apiKey = resolveApiKey();
 
+  // Try live routing
+  const result = await substrateCall('intent', 'route', { intent, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    header('Intent Routing Trace (LIVE)');
+    say(`Intent: "${intent}"`);
+    blank();
+    const hops = Array.isArray(result.data.hops) ? result.data.hops as Record<string, unknown>[] : [];
+    for (let i = 0; i < hops.length; i++) {
+      const h = hops[i]!;
+      say(`  ${i === 0 ? '►' : '→'} ${String(h.id ?? h.node ?? '')}.${String(h.role ?? '')} (${h.latencyMs ?? '?'}ms) — ${String(h.category ?? '')}`);
+    }
+    if (hops.length === 0) renderGatewayResponse('intent.route', result.data);
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const hops = pickRouteNodes(intent);
   if (JSON_MODE) { jsonOut({ intent, hops: hops.map(n => n.id), totalMs: Math.round(5 + Math.random() * 20) }); return; }
 
-  header('Intent Routing Trace');
+  header('Intent Routing Trace (LOCAL)');
   say(`Intent: "${intent}"`);
   blank();
   for (let i = 0; i < hops.length; i++) {
