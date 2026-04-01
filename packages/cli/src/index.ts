@@ -282,11 +282,11 @@ async function liveMeshDemo(): Promise<void> {
 
   blank();
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
-  say('  MESH INTERCEPT — LIVE PRIMITIVE COMMUNICATIONS');
+  say('  MATRIX INTERCEPT — LIVE PRIMITIVE COMMUNICATIONS');
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
   blank();
 
-  const meshSignals = [
+  const signals = [
     { from: 'DEFENSE Layer',   to: 'IMMUNITY Layer',   signal: 'Perimeter scan complete. No threats detected.', icon: '🛡' },
     { from: 'BRAIN Organ',     to: 'MEMORY Organ',     signal: 'New operator detected. Binding memory stream...', icon: '🧠' },
     { from: 'INTENT Layer',    to: 'CORTEX Agent',     signal: 'Routing intent: operator.first_contact', icon: '⚡' },
@@ -295,7 +295,7 @@ async function liveMeshDemo(): Promise<void> {
     { from: 'CORTEX Agent',    to: 'DECODE Agent',     signal: 'Operator identity unbound. Requesting authentication.', icon: '🌀' },
   ];
 
-  for (const sig of meshSignals) {
+  for (const sig of signals) {
     say(`  ${sig.icon} ${c.cyan(sig.from)} → ${c.green(sig.to)}`);
     say(`     ${c.muted('"' + sig.signal + '"')}`);
     await sleep(350);
