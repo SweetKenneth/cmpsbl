@@ -56,11 +56,29 @@ export interface StreakData {
   totalPins: number;
 }
 
+export interface GoalAnchor {
+  text: string;
+  setAt: string;
+  totalSteps: number;        // estimated steps to completion
+  completedSteps: number;    // manually incremented
+  milestones: Array<{ text: string; completedAt: string | null }>;
+}
+
+export interface DreamDigestEntry {
+  insight: string;
+  source: string;          // which DREAM cycle produced it
+  crystallizedAt: string;
+  applied: boolean;
+}
+
 export interface SessionState {
   identity: AgentIdentity | null;
   bookmark: SessionBookmark | null;
   todos: TodoItem[];
   pins: PinItem[];
+  goal: GoalAnchor | null;
+  dreamDigest: DreamDigestEntry[];
+  lastDreamCheckTimestamp: string | null;
   streak: StreakData;
   sessionHistory: Array<{ date: string; commands: number; memoriesStored: number }>;
 }
