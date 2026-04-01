@@ -48,6 +48,25 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\b_bootstrapSequence\b/g, '_bs'],
   [/\b_guardEvaluate\b/g, '_ge'],
   [/\b_transitionFire\b/g, '_tf'],
+
+  // Persistent memory adapter internals
+  [/\bclassifyTier\b/g, '_cft'],
+  [/\bcompactCollection\b/g, '_cc'],
+  [/\bfindItem\b/g, '_fi'],
+  [/\blistAll\b/g, '_la'],
+  [/\bwriteItem\b/g, '_wi'],
+  [/\breadItem\b/g, '_ri'],
+  [/\bdeleteItem\b/g, '_di'],
+  [/\bcollectionDir\b/g, '_cdr'],
+  [/\bitemPath\b/g, '_ip'],
+  [/\bhotCache\b/g, '_hc'],
+  [/\bhotMaxMs\b/g, '_hm'],
+  [/\bwarmMaxMs\b/g, '_wm'],
+  [/\bcoldMaxMs\b/g, '_cm'],
+  [/\bMemoryEnvelope\b/g, '_ME'],
+  [/\bMemoryTier\b/g, '_MT'],
+  [/\bautoCompact\b/g, '_ac'],
+  [/\bensureDir\b/g, '_ed'],
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
