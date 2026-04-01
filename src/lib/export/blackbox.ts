@@ -118,6 +118,7 @@ function getObfuscatedConstants(lang: string): string {
     return `${c} Sealed scoring parameters — DO NOT MODIFY
 const _W = [0x1E, 0x1E, 0x14, 0x14].map(v => v / 100);
 const _T = [0x5C, 0x50, 0x41, 0x2D];
+const _MH = [0x18, 0x07, 0x5A, 0x5A];
 `;
   }
   
