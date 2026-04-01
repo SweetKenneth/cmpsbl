@@ -142,10 +142,10 @@ export function LoadoutsSection() {
 
                 {/* CJPI + deploy hint */}
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-muted-foreground/40">
+                  <span className="text-xs text-muted-foreground/40">
                     CJPI <span className="font-bold text-foreground/60">{loadout.cjpi}</span>
                   </span>
-                  <span className="text-[10px] font-mono text-primary/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <span className="text-xs font-mono text-primary/50 opacity-0 group-hover:opacity-100 transition-opacity">
                     cmpsbl loadout build {loadout.id}
                   </span>
                 </div>
