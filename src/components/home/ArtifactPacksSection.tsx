@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import { PRODUCT_TIERS } from "@/lib/quarry/types";
 import {
   PIPELINE_PACKS_LABEL,
-  PIPELINE_PACK_DESCRIPTION,
   PIPELINE_STEPS,
 } from "@/lib/branding/memory-stream";
 
