@@ -33,6 +33,16 @@ export interface ProductLimits {
   // ═══ Proprietary Evolution Lifecycle Limits ═══
   /** Max code uploads per day in the Evolution Lifecycle */
   evolutionUploadsPerDay: number;
+
+  // ═══ Agent Forge Limits ═══
+  /** Max custom forged agents a user can create */
+  forgeAgentSlots: number;
+  /** Whether Ascension pipeline is available for forged agents */
+  forgeAscensionAccess: boolean;
+  /** Whether Signal Forge loadout injection is available */
+  forgeSignalAccess: boolean;
+  /** Whether custom skill injection is available */
+  forgeSkillInjection: boolean;
 }
 
 export const PRODUCT_LIMITS: Record<ProductTier, ProductLimits> = {
