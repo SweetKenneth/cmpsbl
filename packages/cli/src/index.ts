@@ -771,6 +771,12 @@ function printHelp() {
     treaty [status]         TREATY trust contracts
     mode [get|set <mode>]   Governance mode (ACTIVE/MAINTENANCE/etc)
 
+  ── Signature ────────────────────────────────────
+    ascend <file>           Ascension pipeline — collide code with 40 primitives
+    witness [seconds]       Live observation of substrate activity
+    crown [tier]            Crown Jewel capability registry
+    recall <query>          Semantic memory search across all tiers
+
   ── Governor ─────────────────────────────────────
     heal [target] [force]   Self-healing trigger
     diagnostics [--full]    Full system diagnostics
@@ -794,7 +800,7 @@ function printHelp() {
     primitives [filter]     List primitives (filter by category/status)
     ping <node>             Ping a specific primitive
     inspect <node>          Deep-inspect a primitive's state
-    topology                Display category topology map
+    topology                12·12·8·8 matrix with live signals
     route <intent>          Trace intent routing path
     benchmark               Benchmark latency across all primitives
 
