@@ -134,7 +134,7 @@ export function LoadoutsSection() {
                 {/* Primitives */}
                 <div className="flex flex-wrap gap-1 mb-3">
                   {loadout.primitives.map((p, i) => (
-                    <span key={p} className="text-[9px] font-mono text-muted-foreground/50 bg-muted/30 px-1.5 py-0.5 rounded">
+                    <span key={p} className="text-[10px] font-mono text-muted-foreground/50 bg-muted/30 px-1.5 py-0.5 rounded">
                       {p}{i < loadout.primitives.length - 1 ? "" : ""}
                     </span>
                   ))}
