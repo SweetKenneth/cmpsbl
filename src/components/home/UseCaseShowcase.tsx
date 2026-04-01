@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import {
   Gamepad2,
   Building2,
-  Code,
+  
   Brain,
   Shield,
   Stethoscope,
