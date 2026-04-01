@@ -1669,12 +1669,12 @@ function cmdScore(args: string[]) {
 async function cmdStatus() {
   const online = NODES.filter(n => n.status === 'online').length;
   const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
-  const sectors = [...new Set(NODES.map(n => n.category))];
+  const categorySet = [...new Set(NODES.map(n => n.category))];
   const session = getFirstContactSession();
 
   const data = {
     nodes: `${online}/${NODES.length}`,
-    sectors: categories.length,
+    sectors: categorySet.length,
     health: avg,
     runtime: 'v14.4.1',
     memoryChains: getMemoryStream().length,
