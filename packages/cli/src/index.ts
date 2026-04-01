@@ -2399,6 +2399,10 @@ async function cmdRemember(args: string[]) {
   blank();
   say(c.dim(`  Recall: ${c.cyan('cmpsbl stream')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
   blank();
+
+  // Track memory for session continuity
+  incrementMemoryCount();
+  saveBookmark(`Stored memory: "${input.slice(0, 50)}"`, 'remember');
 }
 
 async function cmdForget(args: string[]) {
