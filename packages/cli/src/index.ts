@@ -632,6 +632,8 @@ export async function run(args: string[]): Promise<void> {
       case 'done':         await cmdDone(args.slice(1)); break;
       case 'pin':          await cmdPin(args.slice(1)); break;
       case 'unpin':        await cmdUnpin(args.slice(1)); break;
+      case 'goal':         await cmdGoal(args.slice(1)); break;
+      case 'advance':      await cmdAdvance(args.slice(1)); break;
       case 'next':         await cmdNext(); break;
       case 'welcome':      await cmdWelcome(); break;
       // ── Guided ──
