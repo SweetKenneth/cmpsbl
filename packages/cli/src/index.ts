@@ -1638,6 +1638,38 @@ async function offerFirstDream() {
   });
 }
 
+async function offerSimulation(): Promise<void> {
+  const sim = loadSimulation();
+  if (sim) return; // Already started or completed — don't re-offer
+
+  if (!isInteractiveTTY()) {
+    say(`  ${c.dim('Tip:')} Run ${c.cyan('cmpsbl simulate')} to try the guided substrate walkthrough.`);
+    blank();
+    return;
+  }
+
+  blank();
+  say(c.dim('  ─────────────────────────────────────────────'));
+  say(`  ${c.bold('One more thing.')} The founder created an optional guided`);
+  say('  simulation to help new developers learn the substrate.');
+  say('  5 missions. Exit anytime. Your feedback helps us improve.');
+  say(c.dim('  ─────────────────────────────────────────────'));
+  blank();
+
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  const answer = await new Promise<string>(resolve =>
+    rl.question(`  Try the simulation? [Y/n] `, (a: string) => { rl.close(); resolve(a.trim().toLowerCase()); })
+  );
+
+  if (answer === 'n' || answer === 'no') {
+    say(`  No problem. Run ${c.cyan('cmpsbl simulate')} anytime.`);
+    blank();
+    return;
+  }
+
+  await cmdSimulate([]);
+}
+
 async function runFirstDream() {
   blank();
   say('╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌');
