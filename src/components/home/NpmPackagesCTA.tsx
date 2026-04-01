@@ -145,7 +145,7 @@ export function NpmPackagesCTA() {
             >
               <h.icon className={cn("w-5 h-5", i % 3 === 0 ? "text-[hsl(var(--neon-cyan))]" : i % 3 === 1 ? "text-[hsl(var(--neon-purple))]" : "text-[hsl(var(--neon-magenta))]")} />
               <span className="text-sm font-semibold text-foreground">{h.title}</span>
-              <span className="text-xs text-muted-foreground leading-snug">{h.desc}</span>
+              <span className="text-xs sm:text-sm text-muted-foreground leading-snug">{h.desc}</span>
             </motion.div>
           ))}
         </div>
