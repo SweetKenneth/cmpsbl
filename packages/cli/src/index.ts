@@ -46,11 +46,11 @@ import { runInstallWizard } from './install-wizard';
 // ═══════════════════════════════════════════════════════════════
 
 const V = {
-  boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Signal mesh initializing...', '◈ Cognitive loop established.'],
-  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Mesh acknowledged.', '✔ Operation executed.'],
-  err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Mesh routing error.'],
-  think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving mesh topology'],
-  idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Signal mesh stable.', '◇ Awaiting intent...'],
+  boot: ['◈ Substrate awakening...', '◈ Memory pathways binding...', '◈ Primitive matrix initializing...', '◈ Cognitive loop established.'],
+  ok: ['✔ Stream crystallized.', '✔ Signal confirmed.', '✔ Memory chain verified.', '✔ Matrix acknowledged.', '✔ Operation executed.'],
+  err: ['✗ Stream anomaly detected.', '✗ Signal pathway failed.', '✗ Crystallization disrupted.', '✗ Routing error.'],
+  think: ['… traversing signal graph', '… sampling memory stream', '… crystallizing insights', '… resolving topology'],
+  idle: ['◇ Substrate listening...', '◇ Memory stream flowing...', '◇ Primitive matrix stable.', '◇ Awaiting intent...'],
 };
 const pick = (a: string[]) => a[Math.floor(Math.random() * a.length)];
 const say = (m: string) => console.log(`  ${m}`);
