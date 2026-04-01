@@ -74,7 +74,7 @@ const COMMANDS: Record<string, CommandHandler> = {
     '/mode          — current mode + identity',
     '/clear         — clear conversation',
     '/capabilities  — list active capabilities',
-    '/nodes         — substrate node count',
+    '/primitives    — substrate primitive count',
     '/clm           — CLM priority report',
     '/version       — substrate version',
     '',
@@ -122,24 +122,24 @@ const COMMANDS: Record<string, CommandHandler> = {
       : 'Standard capability set active.',
   ]),
 
-  nodes: () => {
+  primitives: () => {
     const summary = getCLMPrioritySummary();
     const sectors = ['CORE', 'SYSTEM', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Fields', 'Plane', 'Shell'];
     const sectorLines = sectors.map(s => {
-      const nodes = getNodesBySector(s);
-      return `  ${s.padEnd(12)} ${nodes.map(n => n.displayName).join(' · ')}`;
+      const primitives = getNodesBySector(s);
+      return `  ${s.padEnd(12)} ${primitives.map(n => n.displayName).join(' · ')}`;
     });
     return formatBlock('SUBSTRATE TOPOLOGY', [
-      `Nodes:         ${summary.totalNodes}`,
+      `Primitives:    ${summary.totalNodes}`,
       `Sectors:       ${summary.sectors.length}`,
       `CLM Caps:      ${summary.totalCapabilities}`,
       `Acknowledged:  ${summary.acknowledged}/${summary.totalNodes}`,
-      `Gen-1 Nodes:   ${summary.generation1Count}`,
-      `Gen-2 Nodes:   ${summary.generation2Count}`,
+      `Gen-1:         ${summary.generation1Count}`,
+      `Gen-2:         ${summary.generation2Count}`,
       '',
       ...sectorLines,
       '',
-      'All nodes acknowledged and operational.',
+      'All primitives acknowledged and operational.',
     ]);
   },
 
@@ -147,10 +147,10 @@ const COMMANDS: Record<string, CommandHandler> = {
     const sectors = ['CORE', 'SYSTEM', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Fields', 'Plane', 'Shell'];
     const lines: string[] = [];
     for (const s of sectors) {
-      const nodes = getNodesBySector(s);
-      if (nodes.length === 0) continue;
+      const primitives = getNodesBySector(s);
+      if (primitives.length === 0) continue;
       lines.push(`── ${s} ──`);
-      for (const n of nodes) {
+      for (const n of primitives) {
         lines.push(`  ${n.displayName.padEnd(12)} ✓ acknowledged`);
         for (const p of n.priorities) {
           lines.push(`    ▸ ${p.capability.replace('clm_', '')} (p=${p.priority})`);
@@ -159,9 +159,9 @@ const COMMANDS: Record<string, CommandHandler> = {
       lines.push('');
     }
     const summary = getCLMPrioritySummary();
-    return formatBlock(`CLM PRIORITY REPORT — ${summary.totalNodes} NODES`, [
+    return formatBlock(`CLM PRIORITY REPORT — ${summary.totalNodes} PRIMITIVES`, [
       `Total capabilities: ${summary.totalCapabilities}`,
-      `All nodes acknowledged: ${summary.acknowledged === summary.totalNodes ? 'YES' : 'NO'}`,
+      `All primitives acknowledged: ${summary.acknowledged === summary.totalNodes ? 'YES' : 'NO'}`,
       '',
       ...lines,
     ]);
