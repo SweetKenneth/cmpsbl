@@ -4169,14 +4169,20 @@ async function cmdOverrideConsole(): Promise<void> {
     fs.writeFileSync(CREDS_FILE, JSON.stringify(creds, null, 2));
   } catch { /* ignore write failures */ }
 
-  // Entry sequence — governor confirmed
+  // Entry sequence — governor confirmed (only a governor ever sees this)
+  blank();
+  say(c.red('  ╔═══════════════════════════════════════════════════════════╗'));
+  say(c.red('  ║') + c.bold(c.red('         ◈ EMERGENCY OVERRIDE CONSOLE ◈              ')) + c.red('║'));
+  say(c.red('  ║') + c.dim('   This surface is undocumented. It does not exist.    ') + c.red('║'));
+  say(c.red('  ╚═══════════════════════════════════════════════════════════╝'));
+  blank();
   await typewrite('  ◈ Governor identity confirmed.', 30);
   await sleep(300);
   await typewrite('  ◈ Disabling rate limiters...', 30);
   await sleep(250);
   await typewrite('  ◈ Elevating to unrestricted context...', 30);
   await sleep(250);
-  say(c.green('  ✓ Governor override active. All safeties disengaged.'));
+  say(c.green('  ✓ All safeties disengaged. Full authority granted.'));
   blank();
 
   // Show menu
