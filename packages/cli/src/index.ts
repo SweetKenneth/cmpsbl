@@ -765,6 +765,9 @@ export async function run(args: string[]): Promise<void> {
       case 'advance':      await cmdAdvance(args.slice(1)); break;
       case 'next':         await cmdNext(); break;
       case 'welcome':      await cmdWelcome(); break;
+      // ── Simulation ──
+      case 'simulate': case 'train': case 'learn':
+        await cmdSimulate(args.slice(1)); break;
       // ── Guided ──
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
