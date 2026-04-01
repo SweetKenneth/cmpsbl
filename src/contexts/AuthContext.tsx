@@ -59,6 +59,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Navigate ONLY on a genuine new sign-in (not token refresh / tab-switch / reload).
         // INITIAL_SESSION and TOKEN_REFRESHED fire on reload & visibility-change — never redirect for those.
         if (_event === 'SIGNED_IN' && session) {
+          // Log successful login to security gate (fire-and-forget)
+          supabase.functions.invoke('pf-security-gate', {
+            body: {
+              action: 'log_auth_event',
+              event_type: 'login_success',
+              user_id: session.user.id,
+              email: session.user.email,
+            },
+          }).catch(() => {});
+
           const currentPath = window.location.pathname;
           // If the user is already past the auth page, don't yank them away
           if (currentPath !== '/auth' && currentPath !== '/login') return;
@@ -85,6 +95,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithMagicLink = async (email: string) => {
     try {
       const supabase = await getSupabase();
+
+      // Rate limit check
+      const { data: rateCheck } = await supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'check_rate_limit', email },
+      });
+      if (rateCheck?.blocked) {
+        toast.error('Too many login attempts. Please try again in 15 minutes.');
+        return;
+      }
+
+      // Disposable email check
+      const { data: emailCheck } = await supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'validate_signup', email },
+      });
+      if (emailCheck && !emailCheck.allowed) {
+        toast.error(emailCheck.reason || 'This email domain is not permitted.');
+        return;
+      }
+
       // Preserve redirect intent across magic link flow
       const params = new URLSearchParams(window.location.search);
       const redirectTo = params.get('redirect');
@@ -98,15 +127,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       });
       
-      if (error) throw error;
+      if (error) {
+        // Record failed attempt for rate limiting
+        supabase.functions.invoke('pf-security-gate', {
+          body: { action: 'record_failed_login', email },
+        }).catch(() => {});
+        throw error;
+      }
+
+      // Log successful auth attempt
+      supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'log_auth_event', event_type: 'magic_link_sent', email },
+      }).catch(() => {});
       
       toast.success('Check your email for a secure sign-in link.', {
         description: 'No password needed — click the link to authenticate.',
         duration: 6000,
       });
-    } catch (error: any) {
-      console.error('Magic link error:', error);
-      toast.error(error.message || 'Failed to send sign-in link');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to send sign-in link';
+      toast.error(message);
       throw error;
     }
   };
@@ -114,6 +154,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUpWithMagicLink = async (email: string, displayName?: string) => {
     try {
       const supabase = await getSupabase();
+
+      // Block disposable emails on signup
+      const { data: emailCheck } = await supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'validate_signup', email },
+      });
+      if (emailCheck && !emailCheck.allowed) {
+        toast.error(emailCheck.reason || 'This email domain is not permitted.');
+        return;
+      }
+
       const redirectUrl = `${window.location.origin}/os`;
       
       // Preserve redirect intent across magic link flow
@@ -133,6 +183,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
       
       if (error) throw error;
+
+      // Log signup event
+      supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'log_auth_event', event_type: 'signup_initiated', email },
+      }).catch(() => {});
       
       // Send welcome email
       if (data) {
@@ -141,16 +196,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email,
             name: displayName || email.split('@')[0]
           }
-        }).catch(err => console.log('Welcome email error:', err));
+        }).catch(() => {});
       }
       
       toast.success('Secure link sent! Check your email.', {
         description: 'Click the link to create your account — zero passwords, ever.',
         duration: 6000,
       });
-    } catch (error: any) {
-      console.error('Sign up error:', error);
-      toast.error(error.message || 'Failed to send sign-up link');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to send sign-up link';
+      toast.error(message);
       throw error;
     }
   };
@@ -158,6 +213,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     try {
       const supabase = await getSupabase();
+
+      // Log signout event
+      if (user) {
+        supabase.functions.invoke('pf-security-gate', {
+          body: { action: 'log_auth_event', event_type: 'logout', user_id: user.id, email: user.email },
+        }).catch(() => {});
+      }
+
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       
