@@ -134,7 +134,7 @@ export function DiscoveryDualCards() {
                 {/* Bullets — enhanced with better spacing */}
                 <ul className="space-y-2.5 mb-6">
                   {card.bullets.map((b) => (
-                    <li key={b} className="flex items-start gap-2.5 text-xs text-muted-foreground/75">
+                    <li key={b} className="flex items-start gap-2.5 text-sm text-muted-foreground/75">
                       <span
                         className="mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ring-2 ring-offset-1 ring-offset-transparent"
                         style={{
