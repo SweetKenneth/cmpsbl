@@ -124,7 +124,7 @@ export function LoadoutsSection() {
                     </div>
                   </div>
                   <span className={cn(
-                    "text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border",
+                    "text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border",
                     tierStyle
                   )}>
                     {loadout.tier}
