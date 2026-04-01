@@ -44,7 +44,7 @@ export function SubstrateAliveSection() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
             <CheckCircle2 className="w-3 h-3 text-primary" />
-            <span className="text-[10px] sm:text-xs font-semibold text-primary/80 tracking-wide uppercase">
+            <span className="text-xs font-semibold text-primary/80 tracking-wide uppercase">
               Already Running
             </span>
           </div>
