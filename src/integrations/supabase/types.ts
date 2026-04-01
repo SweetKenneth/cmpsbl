@@ -363,6 +363,30 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_ip_allowlist: {
+        Row: {
+          added_by: string | null
+          created_at: string
+          id: string
+          ip_address: string
+          label: string | null
+        }
+        Insert: {
+          added_by?: string | null
+          created_at?: string
+          id?: string
+          ip_address: string
+          label?: string | null
+        }
+        Update: {
+          added_by?: string | null
+          created_at?: string
+          id?: string
+          ip_address?: string
+          label?: string | null
+        }
+        Relationships: []
+      }
       agencies: {
         Row: {
           business_profile: Json | null
@@ -1862,6 +1886,111 @@ export type Database = {
           entity_type?: string | null
           id?: string
           performed_by?: string | null
+        }
+        Relationships: []
+      }
+      auth_events: {
+        Row: {
+          created_at: string
+          email: string | null
+          event_type: string
+          geo_city: string | null
+          geo_country: string | null
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          event_type: string
+          geo_city?: string | null
+          geo_country?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          event_type?: string
+          geo_city?: string | null
+          geo_country?: string | null
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      auth_geo_log: {
+        Row: {
+          city: string | null
+          country_code: string | null
+          created_at: string
+          distance_from_last_km: number | null
+          id: string
+          ip_address: string | null
+          is_anomalous: boolean | null
+          latitude: number | null
+          longitude: number | null
+          user_id: string
+        }
+        Insert: {
+          city?: string | null
+          country_code?: string | null
+          created_at?: string
+          distance_from_last_km?: number | null
+          id?: string
+          ip_address?: string | null
+          is_anomalous?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          user_id: string
+        }
+        Update: {
+          city?: string | null
+          country_code?: string | null
+          created_at?: string
+          distance_from_last_km?: number | null
+          id?: string
+          ip_address?: string | null
+          is_anomalous?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      auth_rate_limits: {
+        Row: {
+          attempt_type: string
+          email: string | null
+          failed_at: string
+          id: string
+          ip_address: string
+          locked_until: string | null
+        }
+        Insert: {
+          attempt_type?: string
+          email?: string | null
+          failed_at?: string
+          id?: string
+          ip_address: string
+          locked_until?: string | null
+        }
+        Update: {
+          attempt_type?: string
+          email?: string | null
+          failed_at?: string
+          id?: string
+          ip_address?: string
+          locked_until?: string | null
         }
         Relationships: []
       }
@@ -4543,6 +4672,36 @@ export type Database = {
           top_keywords?: string[] | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      canary_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          last_triggered_at: string | null
+          last_triggered_by: string | null
+          table_name: string
+          token_name: string
+          trigger_count: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_triggered_at?: string | null
+          last_triggered_by?: string | null
+          table_name: string
+          token_name: string
+          trigger_count?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_triggered_at?: string | null
+          last_triggered_by?: string | null
+          table_name?: string
+          token_name?: string
+          trigger_count?: number | null
         }
         Relationships: []
       }
@@ -17997,6 +18156,7 @@ export type Database = {
         Args: { _team_id: string; _user_id: string }
         Returns: boolean
       }
+      is_disposable_email: { Args: { email_addr: string }; Returns: boolean }
       nexus_cleanup_traces: { Args: never; Returns: undefined }
       nexus_record_cost: {
         Args: {
