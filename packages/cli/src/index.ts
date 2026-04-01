@@ -4081,26 +4081,17 @@ const OVERRIDE_COMMANDS: { key: string; label: string; desc: string; gateway: st
 ];
 
 async function cmdOverrideConsole(): Promise<void> {
-  blank();
-  say(c.red('  ╔═══════════════════════════════════════════════════════════╗'));
-  say(c.red('  ║') + c.bold(c.red('         ◈ EMERGENCY OVERRIDE CONSOLE ◈              ')) + c.red('║'));
-  say(c.red('  ║') + c.dim('   This surface is undocumented. It does not exist.    ') + c.red('║'));
-  say(c.red('  ║') + c.dim('   If you are not the Governor, close this terminal.   ') + c.red('║'));
-  say(c.red('  ╚═══════════════════════════════════════════════════════════╝'));
-  blank();
-
   // Verification gate — require API key
   const apiKey = resolveApiKey();
   if (!apiKey || apiKey.startsWith('local-')) {
-    say(c.red('  ✗ Override console requires authenticated governor access.'));
-    say(c.dim('    Run `cmpsbl login` first.'));
-    blank();
+    // Silent rejection — looks like any unknown command
+    say(`Unknown command: edomdog`);
+    say('Run `cmpsbl help` for available commands.');
+    say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
     return;
   }
 
-  // Governor authentication — verify role against substrate
-  await typewrite('  ◈ Verifying governor authority...', 30);
-  await sleep(300);
+  // Governor authentication — verify role against substrate (silently)
 
   let isGovernor = false;
   try {
@@ -4138,13 +4129,13 @@ async function cmdOverrideConsole(): Promise<void> {
   }
 
   if (!isGovernor) {
-    await sleep(400);
-    say(c.red('  ✗ AUTHORITY DENIED'));
-    say(c.red('  ✗ Your credentials do not carry governor privileges.'));
-    say(c.dim('    This attempt has been logged.'));
-    blank();
+    // Silent rejection — behave exactly like an unknown command
+    // so no one knows they hit anything special
+    say(`Unknown command: edomdog`);
+    say('Run `cmpsbl help` for available commands.');
+    say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
 
-    // Log the failed attempt via substrate (best-effort)
+    // Silently log the attempt (best-effort, no visible indication)
     try {
       const endpoint = getSubstrateEndpoint();
       await fetch(endpoint, {
@@ -4164,7 +4155,7 @@ async function cmdOverrideConsole(): Promise<void> {
           },
         }),
       });
-    } catch { /* best-effort audit */ }
+    } catch { /* silent */ }
 
     return;
   }
@@ -4178,14 +4169,20 @@ async function cmdOverrideConsole(): Promise<void> {
     fs.writeFileSync(CREDS_FILE, JSON.stringify(creds, null, 2));
   } catch { /* ignore write failures */ }
 
-  // Entry sequence — governor confirmed
+  // Entry sequence — governor confirmed (only a governor ever sees this)
+  blank();
+  say(c.red('  ╔═══════════════════════════════════════════════════════════╗'));
+  say(c.red('  ║') + c.bold(c.red('         ◈ EMERGENCY OVERRIDE CONSOLE ◈              ')) + c.red('║'));
+  say(c.red('  ║') + c.dim('   This surface is undocumented. It does not exist.    ') + c.red('║'));
+  say(c.red('  ╚═══════════════════════════════════════════════════════════╝'));
+  blank();
   await typewrite('  ◈ Governor identity confirmed.', 30);
   await sleep(300);
   await typewrite('  ◈ Disabling rate limiters...', 30);
   await sleep(250);
   await typewrite('  ◈ Elevating to unrestricted context...', 30);
   await sleep(250);
-  say(c.green('  ✓ Governor override active. All safeties disengaged.'));
+  say(c.green('  ✓ All safeties disengaged. Full authority granted.'));
   blank();
 
   // Show menu
