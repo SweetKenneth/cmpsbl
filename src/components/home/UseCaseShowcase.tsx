@@ -169,7 +169,7 @@ export function UseCaseShowcase() {
                     <Badge
                       variant="outline"
                       className={cn(
-                        "text-[10px] font-medium",
+                        "text-xs font-medium",
                         useCase.timelineColor
                       )}
                     >
