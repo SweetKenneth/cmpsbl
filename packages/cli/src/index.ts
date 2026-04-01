@@ -500,6 +500,69 @@ const CLI_CONFIG: FirstContactConfig = {
   },
 };
 
+// ═══════════════════════════════════════════════════════════════
+// Live Substrate Call — ALL commands route through here
+// No mock data. Real API or honest offline message.
+// ═══════════════════════════════════════════════════════════════
+
+interface SubstrateResult {
+  success: boolean;
+  data?: Record<string, unknown>;
+  error?: string;
+  offline?: boolean;
+}
+
+async function substrateCall(
+  module: string,
+  action: string,
+  payload: Record<string, unknown> = {},
+  apiKey?: string,
+): Promise<SubstrateResult> {
+  const key = apiKey ?? resolveApiKey();
+  if (!key) return { success: false, error: 'No API key configured', offline: true };
+
+  try {
+    const endpoint = getSubstrateEndpoint();
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Engine-Key': key,
+      },
+      body: JSON.stringify({ module, action, payload }),
+    });
+
+    const json = await res.json() as Record<string, unknown>;
+
+    if (json.success === false) {
+      return { success: false, error: String(json.error ?? json.message ?? 'Unknown error'), data: json };
+    }
+
+    return {
+      success: true,
+      data: (json.data as Record<string, unknown>) ?? json,
+    };
+  } catch {
+    return { success: false, error: 'Substrate unreachable', offline: true };
+  }
+}
+
+/** Render a live-or-offline status line after a substrateCall */
+function renderOfflineFallback(result: SubstrateResult, command: string): void {
+  if (result.offline) {
+    blank();
+    sayErr('  ✗ Substrate unreachable — cannot execute live.');
+    say(c.dim(`  Command: ${command}`));
+    say(c.dim('  Check connection with: cmpsbl doctor'));
+    say(c.dim('  Or use dot-notation: cmpsbl ' + command));
+    blank();
+  } else if (!result.success) {
+    blank();
+    sayErr(`  ✗ ${result.error}`);
+    blank();
+  }
+}
+
 function isInteractiveTTY(): boolean {
   return Boolean(process.stdin.isTTY && process.stdout.isTTY);
 }
@@ -1612,22 +1675,31 @@ async function cmdDream(args: string[]) {
   const watchMode = args.includes('--watch') || args.includes('--live');
   const lastMode = args.includes('--last');
 
-  if (JSON_MODE) {
-    const patterns = ['cache-invalidation-cascade', 'intent-deduplication-window', 'memory-tier-promotion-trigger', 'resolver-fallback-chain'];
-    const pattern = patterns[Math.floor(Math.random() * patterns.length)];
-    const confidence = +(0.8 + Math.random() * 0.15).toFixed(2);
-    jsonOut({ pattern, confidence, status: 'crystallized', memoryStream: true });
-    return;
-  }
-
   if (lastMode) {
-    // Show recent DREAM digest
+    // Show recent DREAM digest from substrate
+    const result = await substrateCall('dream', 'digest', { limit: 10 }, apiKey);
+    if (result.success && result.data) {
+      const entries = Array.isArray(result.data.entries) ? result.data.entries as Record<string, unknown>[] :
+        Array.isArray(result.data.digest) ? result.data.digest as Record<string, unknown>[] : [];
+      if (entries.length > 0) {
+        if (JSON_MODE) { jsonOut({ digest: entries }); return; }
+        header('DREAM Digest');
+        for (const entry of entries.slice(0, 10)) {
+          say(`  ${c.green('◇')} ${String(entry.insight ?? entry.content ?? entry.pattern ?? '')}`);
+          say(`    ${c.dim(`Source: ${String(entry.source ?? 'dream')} · ${String(entry.crystallized_at ?? entry.created_at ?? '')}`)}`);
+          blank();
+        }
+        return;
+      }
+    }
+    // Fallback to local digest
     const digest = getDreamDigestSinceLastSession();
     if (digest.length === 0) {
       say(c.dim('  No new DREAM insights since last session.'));
       blank();
       return;
     }
+    if (JSON_MODE) { jsonOut({ digest }); return; }
     header('DREAM Digest');
     for (const entry of digest.slice(0, 10)) {
       say(`  ${c.green('◇')} ${entry.insight}`);
@@ -1638,12 +1710,50 @@ async function cmdDream(args: string[]) {
   }
 
   if (watchMode) {
-    // Live DREAM visualization
     await dreamLiveWatch(apiKey);
     return;
   }
 
-  await runFirstDream();
+  // Standard dream cycle — call real API
+  if (!JSON_MODE) header('DREAM ENGINE — Cycle');
+  const s = !JSON_MODE ? spinner('Initiating DREAM cycle...') : null;
+
+  const result = await substrateCall('dream', 'cycle', { source: 'cli', mode: 'standard' }, apiKey);
+
+  if (!result.success) {
+    s?.stop('DREAM cycle failed');
+    if (JSON_MODE) { jsonOut({ error: result.error, offline: result.offline }); return; }
+    renderOfflineFallback(result, 'dream.cycle');
+    return;
+  }
+
+  s?.stop('DREAM cycle complete');
+
+  const data = result.data ?? {};
+  const insight = String(data.insight ?? data.pattern ?? data.heuristic ?? data.result ?? '');
+  const confidence = Number(data.confidence ?? data.score ?? 0);
+  const pattern = String(data.pattern_name ?? data.pattern ?? data.name ?? '');
+
+  if (JSON_MODE) { jsonOut({ pattern, confidence, insight, status: 'crystallized', memoryStream: true }); return; }
+
+  blank();
+  box([
+    '⬢ DREAM CRYSTALLIZATION',
+    '',
+    pattern ? `Pattern:    ${pattern}` : '',
+    `Confidence: ${confidence > 1 ? confidence.toFixed(0) + '%' : (confidence * 100).toFixed(0) + '%'}`,
+    '',
+    `Insight: ${insight}`,
+    '',
+    'Status: Bound to Memory Stream',
+  ].filter(Boolean), 'DREAM');
+  blank();
+
+  addDreamDigestEntry(insight || pattern, 'dream-cycle');
+  incrementMemoryCount();
+  saveBookmark(`Dream cycle: "${(insight || pattern).slice(0, 50)}"`, 'dream');
+  say(pick(V.ok));
+  blank();
 }
 
 /**
@@ -1825,32 +1935,53 @@ function cmdScore(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdStatus() {
+  const apiKey = resolveApiKey();
+
+  // Try live substrate status first
+  const result = await substrateCall('system', 'status', { source: 'cli' }, apiKey ?? undefined);
+
+  if (result.success && result.data) {
+    const data = result.data;
+    if (JSON_MODE) { jsonOut(data); return; }
+    header('Substrate Status (LIVE)');
+    for (const [key, val] of Object.entries(data)) {
+      if (key === 'success') continue;
+      const display = typeof val === 'object' ? JSON.stringify(val) : String(val);
+      say(`  ${key.padEnd(16)} ${display}`);
+    }
+    div();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local primitive registry
   const online = NODES.filter(n => n.status === 'online').length;
   const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
   const categorySet = [...new Set(NODES.map(n => n.category))];
   const session = getFirstContactSession();
 
-  const data = {
-    nodes: `${online}/${NODES.length}`,
-    sectors: categorySet.length,
+  const fallback = {
+    primitives: `${online}/${NODES.length}`,
+    categories: categorySet.length,
     health: avg,
     runtime: 'v14.4.1',
     memoryChains: getMemoryStream().length,
     session: session?.sessionId ?? null,
+    mode: 'offline (local registry)',
   };
 
-  if (JSON_MODE) { jsonOut(data); return; }
-  header('Substrate Status');
-  say(`Primitives:${data.nodes} online`);
-  say(`Categories:${data.sectors} active`);
-  say(`Health:   ${avg}%`);
-  say(`Runtime:  ${data.runtime}`);
-  say(`Memory:   ${data.memoryChains} chains`);
-  say(`Session:  ${data.session ?? 'none'}`);
+  if (JSON_MODE) { jsonOut(fallback); return; }
+  header('Substrate Status (LOCAL)');
+  say(`Primitives: ${fallback.primitives} online`);
+  say(`Categories: ${fallback.categories} active`);
+  say(`Health:     ${avg}% (local estimate)`);
+  say(`Runtime:    ${fallback.runtime}`);
+  say(`Memory:     ${fallback.memoryChains} chains`);
+  say(`Session:    ${fallback.session ?? 'none'}`);
+  say(c.dim(`  ⚠ Showing local data — substrate unreachable`));
   div();
   say(progressBar(avg, 100));
-  blank();
-  say(pick(V.ok));
   blank();
 }
 
@@ -2536,89 +2667,90 @@ async function cmdDemo() {
 async function cmdThink(args: string[]) {
   const prompt = args.join(' ');
   if (!prompt) { say('Usage: cmpsbl think <prompt>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('BRAIN — Deep Reasoning');
 
   const s = !JSON_MODE ? spinner('Engaging reasoning engine...') : null;
-  const phases = [
-    'Loading attention spotlight...',
-    'Activating multi-strategy reasoning...',
-    'Traversing causal graph...',
-    'Crystallizing insights...',
-    'Calibrating confidence (Brier score)...',
-  ];
-  for (const p of phases) {
-    await sleep(400 + Math.random() * 300);
-    s?.update(p);
+
+  const result = await substrateCall('brain', 'think', { prompt, source: 'cli' }, apiKey);
+
+  if (!result.success) {
+    s?.stop('Reasoning failed');
+    if (JSON_MODE) { jsonOut({ error: result.error, offline: result.offline }); return; }
+    renderOfflineFallback(result, 'brain.think');
+    return;
   }
+
   s?.stop('Reasoning complete');
 
-  const strategies = ['deductive', 'inductive', 'abductive', 'analogical'];
-  const strategy = strategies[Math.floor(Math.random() * strategies.length)];
-  const confidence = +(0.7 + Math.random() * 0.25).toFixed(2);
-  const cogLoad = Math.round(30 + Math.random() * 50);
-
-  const insights = [
-    'Pattern suggests recursive dependency — consider decoupling via event-driven architecture',
-    'High correlation between input frequency and memory tier promotion thresholds',
-    'Causal chain indicates upstream latency is primary contributor to degraded throughput',
-    'Analogical reasoning maps this to a classic producer-consumer synchronization problem',
-    'Contradiction detected between stated constraints — recommend constraint relaxation on dimension 2',
-  ];
-  const insight = insights[Math.floor(Math.random() * insights.length)];
+  const data = result.data ?? {};
+  const strategy = String(data.strategy ?? data.reasoning_strategy ?? 'multi-strategy');
+  const confidence = Number(data.confidence ?? data.confidence_score ?? 0);
+  const cogLoad = Number(data.cognitive_load ?? data.cognitiveLoad ?? 0);
+  const insight = String(data.insight ?? data.response ?? data.result ?? '');
 
   if (JSON_MODE) { jsonOut({ prompt, strategy, confidence, cognitiveLoad: cogLoad, insight }); return; }
 
   blank();
   box([
     `Strategy:       ${strategy}`,
-    `Confidence:     ${(confidence * 100).toFixed(0)}%`,
+    `Confidence:     ${confidence > 1 ? confidence.toFixed(0) + '%' : (confidence * 100).toFixed(0) + '%'}`,
     `Cognitive Load: ${cogLoad}%`,
     '',
     `Insight: ${insight}`,
   ], 'BRAIN');
   blank();
+
+  // Save to memory stream
+  incrementMemoryCount();
+  saveBookmark(`Deep think: "${prompt.slice(0, 50)}"`, 'think');
   say(pick(V.ok));
   blank();
 }
 
 async function cmdReflect(args: string[]) {
   const topic = args.join(' ') || 'recent activity';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('ECHO — Resonance Reflection');
 
   const s = !JSON_MODE ? spinner('Mining resonance patterns...') : null;
-  await sleep(600);
-  s?.update('Cross-node correlation analysis...');
-  await sleep(500);
-  s?.update('Amplifying signal patterns...');
-  await sleep(400);
+
+  const result = await substrateCall('echo', 'reflect', { topic, source: 'cli' }, apiKey);
+
+  if (!result.success) {
+    s?.stop('Reflection failed');
+    if (JSON_MODE) { jsonOut({ error: result.error, offline: result.offline }); return; }
+    renderOfflineFallback(result, 'echo.reflect');
+    return;
+  }
+
   s?.stop('Reflection complete');
 
-  const patterns = [
-    { signal: 'intent-clustering', strength: 0.89, source: 'INTENT → BRAIN', observation: 'Similar intents are being routed to the same resolver — consider memoization' },
-    { signal: 'memory-access-burst', strength: 0.76, source: 'MEMORY → NERVE', observation: 'Burst access pattern detected — warm tier is absorbing 73% of reads' },
-    { signal: 'dream-feedback-loop', strength: 0.92, source: 'DREAM → ECHO', observation: 'Previous dream heuristics are reinforcing current discoveries — compounding effect active' },
-    { signal: 'defense-signal-echo', strength: 0.81, source: 'DEFENSE → SHADOW', observation: 'Repeated low-severity signals suggest reconnaissance behavior — escalation recommended' },
-  ];
-  const found = patterns.slice(0, 2 + Math.floor(Math.random() * 2));
+  const data = result.data ?? {};
+  const patterns = Array.isArray(data.patterns) ? data.patterns as Record<string, unknown>[] :
+    Array.isArray(data.resonances) ? data.resonances as Record<string, unknown>[] : [];
 
-  if (JSON_MODE) { jsonOut({ topic, patterns: found }); return; }
+  if (JSON_MODE) { jsonOut({ topic, patterns }); return; }
 
   blank();
-  for (const p of found) {
-    box([
-      `Signal:   ${p.signal}`,
-      `Strength: ${(p.strength * 100).toFixed(0)}%`,
-      `Source:   ${p.source}`,
-      '',
-      p.observation,
-    ], 'RESONANCE');
-    blank();
+  if (patterns.length === 0) {
+    say(c.dim('  No resonance patterns detected for this topic yet.'));
+    say(c.dim('  Store more memories with `cmpsbl remember` to build signal density.'));
+  } else {
+    for (const p of patterns) {
+      box([
+        `Signal:   ${String(p.signal ?? p.pattern ?? p.name ?? '')}`,
+        `Strength: ${Number(p.strength ?? p.confidence ?? 0) > 1 ? String(p.strength) + '%' : ((Number(p.strength ?? p.confidence ?? 0)) * 100).toFixed(0) + '%'}`,
+        `Source:   ${String(p.source ?? '')}`,
+        '',
+        String(p.observation ?? p.insight ?? p.description ?? ''),
+      ], 'RESONANCE');
+      blank();
+    }
+    say(`  ${patterns.length} resonance pattern(s) detected for "${topic}"`);
   }
-  say(`  ${found.length} resonance pattern(s) detected for "${topic}"`);
   say(pick(V.ok));
   blank();
 }
@@ -2626,45 +2758,37 @@ async function cmdReflect(args: string[]) {
 async function cmdRemember(args: string[]) {
   const input = args.join(' ');
   if (!input) { say('Usage: cmpsbl remember <input>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
-  const tiers = ['HOT', 'WARM', 'COLD'] as const;
-  const tier = tiers[Math.floor(Math.random() * 2)]; // mostly HOT or WARM for new entries
-  const chainId = `mem-${Date.now().toString(36)}`;
-  const fingerprint = Array.from({ length: 12 }, () => '0123456789abcdef'[Math.floor(Math.random() * 16)]).join('');
-  const wordCount = input.split(/\s+/).length;
-  const semanticWeight = (0.6 + Math.random() * 0.35).toFixed(3);
+  if (!JSON_MODE) header('MEMORY — Crystallization');
+
+  const s = !JSON_MODE ? spinner('Storing to substrate memory...') : null;
+
+  const result = await substrateCall('memory', 'store', {
+    content: input,
+    source: 'cli',
+    tier: 'HOT',
+  }, apiKey);
+
+  if (!result.success) {
+    s?.stop('Storage failed');
+    if (JSON_MODE) { jsonOut({ stored: false, error: result.error }); return; }
+    renderOfflineFallback(result, 'memory.store');
+    return;
+  }
+
+  s?.stop('Memory crystallized');
+
+  const data = result.data ?? {};
+  const chainId = String(data.chain_id ?? data.chainId ?? data.id ?? `mem-${Date.now().toString(36)}`);
+  const tier = String(data.tier ?? 'HOT');
+  const fingerprint = String(data.fingerprint ?? data.hash ?? '');
+  const semanticWeight = String(data.weight ?? data.semantic_weight ?? '');
 
   if (JSON_MODE) { jsonOut({ stored: true, chainId, tier, fingerprint, input }); return; }
 
-  header('MEMORY — Crystallization');
-
-  // Phase 1: Intake — the substrate receives the memory
-  const s1 = spinner('MEMORY Organ receiving input...');
-  await sleep(randomInt(400, 600));
-  s1.stop(`Input received — ${wordCount} tokens, ${input.length} chars`);
-
-  // Phase 2: Routing — show primitives waking up
-  const s2 = spinner('Routing through primitive matrix...');
-  await sleep(randomInt(300, 500));
-  s2.stop('BRAIN → MEMORY → ECHO pathway established');
-
-  // Phase 3: Embedding
-  const s3 = spinner('Computing semantic embedding...');
-  await sleep(randomInt(500, 700));
-  s3.stop(`Embedding crystallized — weight ${semanticWeight}`);
-
-  // Phase 4: Tier placement
   const tierColors: Record<string, (s: string) => string> = { HOT: c.error, WARM: c.amber, COLD: c.cyan };
   const tierColor = tierColors[tier] ?? c.muted;
-  const s4 = spinner('Assigning memory tier...');
-  await sleep(randomInt(300, 500));
-  s4.stop(`Tier: ${tierColor(tier)} — ${tier === 'HOT' ? 'instant recall' : tier === 'WARM' ? 'near-term recall' : 'deep archive'}`);
-
-  // Phase 5: Stream binding
-  const s5 = spinner('Binding to Memory Stream...');
-  await sleep(randomInt(400, 600));
-  s5.stop('Memory Stream updated — next DREAM cycle will process');
 
   // ── Crystallization receipt ──
   blank();
@@ -2673,15 +2797,15 @@ async function cmdRemember(args: string[]) {
   say(c.muted('  ├─────────────────────────────────────────────┤'));
   say(c.muted('  │') + `  ${c.bold('Chain')}        ${c.cyan(chainId)}` + ' '.repeat(Math.max(0, 27 - chainId.length)) + c.muted('│'));
   say(c.muted('  │') + `  ${c.bold('Tier')}         ${tierColor(tier)}` + ' '.repeat(Math.max(0, 31 - tier.length)) + c.muted('│'));
-  say(c.muted('  │') + `  ${c.bold('Fingerprint')}  ${c.dim(fingerprint)}` + ' '.repeat(Math.max(0, 24 - fingerprint.length)) + c.muted('│'));
-  say(c.muted('  │') + `  ${c.bold('Weight')}       ${semanticWeight}` + ' '.repeat(Math.max(0, 28 - semanticWeight.length)) + c.muted('│'));
+  if (fingerprint) say(c.muted('  │') + `  ${c.bold('Fingerprint')}  ${c.dim(fingerprint)}` + ' '.repeat(Math.max(0, 24 - fingerprint.length)) + c.muted('│'));
+  if (semanticWeight) say(c.muted('  │') + `  ${c.bold('Weight')}       ${semanticWeight}` + ' '.repeat(Math.max(0, 28 - semanticWeight.length)) + c.muted('│'));
   say(c.muted('  │') + `  ${c.bold('Input')}        ${c.dim('"' + input.slice(0, 28) + (input.length > 28 ? '…' : '') + '"')}` + ' '.repeat(Math.max(0, 2)) + c.muted('│'));
   say(c.muted('  ├─────────────────────────────────────────────┤'));
   say(c.muted('  │') + c.dim('  This memory will compound with every DREAM  ') + c.muted('│'));
   say(c.muted('  │') + c.dim('  cycle. Your substrate grows smarter tonight. ') + c.muted('│'));
   say(c.muted('  └─────────────────────────────────────────────┘'));
   blank();
-  say(c.dim(`  Recall: ${c.cyan('cmpsbl stream')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
+  say(c.dim(`  Recall: ${c.cyan('cmpsbl recall <query>')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
   blank();
 
   // Track memory for session continuity
@@ -2692,15 +2816,22 @@ async function cmdRemember(args: string[]) {
 async function cmdForget(args: string[]) {
   const chainId = args[0];
   if (!chainId) { say('Usage: cmpsbl forget <chain-id>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) {
     const s = spinner(`Pruning chain ${chainId}...`);
-    await sleep(600);
+    const result = await substrateCall('memory', 'prune', { chain_id: chainId }, apiKey);
+    if (!result.success) {
+      s.stop('Prune failed');
+      renderOfflineFallback(result, 'memory.prune');
+      return;
+    }
     s.stop('Chain pruned');
+  } else {
+    const result = await substrateCall('memory', 'prune', { chain_id: chainId }, apiKey);
+    jsonOut({ pruned: result.success, chainId, error: result.error });
+    return;
   }
-
-  if (JSON_MODE) { jsonOut({ pruned: true, chainId }); return; }
 
   blank();
   say(`  ✓ Chain ${chainId} removed from Memory Stream`);
@@ -2851,12 +2982,13 @@ async function cmdLoadout(args: string[]) {
     say(c.muted('  Pre-built projects. Pick one. It\'s already running.'));
     blank();
 
-    for (const lo of LOADOUT_CATALOG) {
+    for (let i = 0; i < LOADOUT_CATALOG.length; i++) {
+      const lo = LOADOUT_CATALOG[i];
       const tierColor = lo.tier === 'Apex' ? c.amber : lo.tier === 'Mythic' ? c.magenta : lo.tier === 'Relic' ? c.cyan : c.green;
-      say(`  ${tierColor(`◆`)} ${c.bold(lo.name)}`);
+      say(`  ${c.bold(c.cyan(`[${i + 1}]`))} ${tierColor(`◆`)} ${c.bold(lo.name)}`);
       say(`    ${c.muted(lo.category)} · CJPI ${lo.cjpi} · ${tierColor(lo.tier)}`);
       say(`    ${c.muted(lo.description)}`);
-      say(`    ${c.dim(`cmpsbl loadout build ${lo.id}`)}`);
+      say(`    ${c.dim(`cmpsbl loadout build ${i + 1}`)}`);
       blank();
     }
 
@@ -2866,8 +2998,14 @@ async function cmdLoadout(args: string[]) {
   }
 
   if (sub === 'build') {
-    const loadoutId = args[1];
-    if (!loadoutId) { say('Usage: cmpsbl loadout build <loadout-id>'); return; }
+    let loadoutId = args[1];
+    if (!loadoutId) { say('Usage: cmpsbl loadout build <loadout-id or #number>'); return; }
+
+    // Support numerical selection: cmpsbl loadout build 1
+    const numIndex = parseInt(loadoutId, 10);
+    if (!isNaN(numIndex) && numIndex >= 1 && numIndex <= LOADOUT_CATALOG.length) {
+      loadoutId = LOADOUT_CATALOG[numIndex - 1].id;
+    }
 
     const loadout = LOADOUT_CATALOG.find(l => l.id === loadoutId);
     if (!loadout) {
@@ -2996,34 +3134,18 @@ You don't configure infrastructure. You write logic.
 async function cmdHarvest(args: string[]) {
   const target = args.join(' ');
   if (!target) { say('Usage: cmpsbl harvest <url or domain>'); return; }
-  await requireApiKey();
-
+  const apiKey = await requireApiKey();
   if (!JSON_MODE) header('HARVEST — Data Extraction');
-
-  const s = !JSON_MODE ? spinner(`Targeting ${target}...`) : null;
-  const phases = ['Resolving target...', 'Crawling structure...', 'Extracting signals...', 'Scoring relevance...'];
-  for (const p of phases) {
-    await sleep(400 + Math.random() * 300);
-    s?.update(p);
-  }
+  const s = !JSON_MODE ? spinner(`Extracting from ${target}...`) : null;
+  const result = await substrateCall('harvest', 'extract', { target, source: 'cli' }, apiKey);
+  if (!result.success) { s?.stop('Extraction failed'); if (JSON_MODE) { jsonOut({ error: result.error }); } else { renderOfflineFallback(result, 'harvest.extract'); } return; }
   s?.stop('Extraction complete');
-
-  const extracted = {
-    target,
-    pages: Math.round(5 + Math.random() * 30),
-    signals: Math.round(20 + Math.random() * 100),
-    relevance: +(0.6 + Math.random() * 0.35).toFixed(2),
-    topEntities: ['pricing model', 'API documentation', 'authentication flow', 'rate limits'].slice(0, 2 + Math.floor(Math.random() * 2)),
-  };
-
-  if (JSON_MODE) { jsonOut(extracted); return; }
-
+  if (JSON_MODE) { jsonOut(result.data); return; }
   blank();
-  say(`  Target:    ${extracted.target}`);
-  say(`  Pages:     ${extracted.pages} crawled`);
-  say(`  Signals:   ${extracted.signals} extracted`);
-  say(`  Relevance: ${(extracted.relevance * 100).toFixed(0)}%`);
-  say(`  Entities:  ${extracted.topEntities.join(', ')}`);
+  for (const [key, val] of Object.entries(result.data ?? {})) {
+    if (key === 'success') continue;
+    say(`  ${key.padEnd(14)} ${typeof val === 'object' ? JSON.stringify(val) : String(val)}`);
+  }
   blank();
   say(pick(V.ok));
   blank();
