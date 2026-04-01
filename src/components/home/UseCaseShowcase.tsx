@@ -44,17 +44,6 @@ const useCases = [
     timelineColor: "bg-[hsl(var(--neon-cyan)/0.15)] text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan)/0.3)]",
   },
   {
-    icon: Code,
-    title: "IDE Assistants With Context",
-    description: "Code editors that understand your architecture and evolve with your coding patterns.",
-    industry: "Development",
-    iconColor: "text-[hsl(var(--neon-purple))]",
-    gradient: "from-[hsl(var(--neon-purple)/0.15)] to-[hsl(var(--primary)/0.15)]",
-    borderColor: "group-hover:border-[hsl(var(--neon-purple)/0.4)]",
-    timeline: "Available Now",
-    timelineColor: "bg-[hsl(var(--neon-cyan)/0.15)] text-[hsl(var(--neon-cyan))] border-[hsl(var(--neon-cyan)/0.3)]",
-  },
-  {
     icon: Building2,
     title: "Self-Healing Enterprises",
     description: "Systems that detect degradation, predict failures, and autonomously reroute around bottlenecks.",
