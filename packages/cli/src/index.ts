@@ -723,7 +723,7 @@ function printHelp() {
 
   ── Project ──────────────────────────────────────
     init                    Initialize project with memory binding
-    dream                   Trigger a DREAM Engine cycle
+    dream [--watch|--last] DREAM Engine cycle (--watch for live visualization)
     config [key] [value]    View or set configuration
     whoami                  Show current identity & session
     login                   Authenticate with CMPSBL API
