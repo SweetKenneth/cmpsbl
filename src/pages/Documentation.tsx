@@ -1337,12 +1337,14 @@ const sectionComponents: Record<string, React.FC> = {
 
 export default function Documentation() {
   const [active, setActive] = useState("overview");
-  
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const ActiveComponent = sectionComponents[active] || OverviewSection;
+  const activeSection = sections.find(s => s.id === active);
 
   const handleNav = (id: string) => {
     setActive(id);
+    setMobileNavOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -1356,7 +1358,7 @@ export default function Documentation() {
         keywords={['CMPSBL documentation', 'platform docs', 'AI API reference', 'persistent memory API', 'AI module reference']}
       />
 
-      {/* Ambient background — matches homepage */}
+      {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-80" />
         <div
@@ -1397,46 +1399,111 @@ export default function Documentation() {
         </div>
       </section>
 
-      {/* Mobile horizontal section picker — always visible */}
+      {/* ── Mobile: sticky section selector button ── */}
       <div className="lg:hidden sticky top-0 z-30 bg-background/95 backdrop-blur-xl border-b border-border/30">
-        <div className="overflow-x-auto scrollbar-hide">
-          <div className="flex gap-1 px-4 py-2 min-w-max">
-            {sections.map(s => (
-              <button
-                key={s.id}
-                onClick={() => handleNav(s.id)}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px]",
-                  active === s.id
-                    ? "bg-primary/10 text-primary border border-primary/20"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
-                )}
-              >
-                <s.icon className={cn("w-3.5 h-3.5 shrink-0", active === s.id ? "text-primary" : s.color)} />
-                {s.label}
-              </button>
-            ))}
-            <div className="w-px h-5 bg-border/40 mx-1 self-center shrink-0" />
-            <Link
-              to="/docs/users"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px] text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
-            >
-              <BookOpen className="w-3.5 h-3.5 shrink-0 text-neon-cyan" />
-              User Library
-            </Link>
-            <Link
-              to="/docs/system"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px] text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
-            >
-              <Cpu className="w-3.5 h-3.5 shrink-0 text-neon-purple" />
-              System Library
-            </Link>
-          </div>
+        <div className="px-4 py-2.5">
+          <button
+            onClick={() => setMobileNavOpen(v => !v)}
+            className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-border/50 bg-card/50 backdrop-blur-sm min-h-[48px] active:scale-[0.98] transition-transform"
+          >
+            <div className="flex items-center gap-2.5">
+              {activeSection && <activeSection.icon className={cn("w-4 h-4", activeSection.color)} />}
+              <span className="text-sm font-medium text-foreground">{activeSection?.label || "Overview"}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">
+                {sections.findIndex(s => s.id === active) + 1}/{sections.length}
+              </span>
+              <ChevronRight className={cn(
+                "w-4 h-4 text-muted-foreground transition-transform duration-200",
+                mobileNavOpen && "rotate-90"
+              )} />
+            </div>
+          </button>
         </div>
       </div>
 
+      {/* ── Mobile: full nav drawer ── */}
+      <AnimatePresence>
+        {mobileNavOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+              onClick={() => setMobileNavOpen(false)}
+            />
+            {/* Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="lg:hidden fixed bottom-0 left-0 right-0 z-50 max-h-[75vh] overflow-y-auto rounded-t-2xl border-t border-border/50 bg-background shadow-2xl"
+            >
+              {/* Drag handle */}
+              <div className="flex justify-center pt-3 pb-1 sticky top-0 bg-background z-10">
+                <div className="w-10 h-1 rounded-full bg-border" />
+              </div>
+
+              <div className="px-4 pb-2">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3 px-1">Sections</h3>
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  {sections.map(s => (
+                    <button
+                      key={s.id}
+                      onClick={() => handleNav(s.id)}
+                      className={cn(
+                        "flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-sm font-medium transition-all min-h-[48px] text-left",
+                        active === s.id
+                          ? "bg-primary/10 text-primary border border-primary/20 shadow-sm"
+                          : "text-muted-foreground hover:text-foreground bg-muted/20 hover:bg-muted/40 border border-transparent"
+                      )}
+                    >
+                      <s.icon className={cn("w-4 h-4 shrink-0", active === s.id ? "text-primary" : s.color)} />
+                      <span className="truncate">{s.label}</span>
+                    </button>
+                  ))}
+                </div>
+
+                <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground/50 mb-3 px-1">Libraries</h3>
+                <div className="grid grid-cols-1 gap-2 mb-6">
+                  <Link
+                    to="/docs/users"
+                    onClick={() => setMobileNavOpen(false)}
+                    className="flex items-center gap-3 px-3.5 py-3.5 rounded-xl bg-muted/20 hover:bg-muted/40 border border-border/30 min-h-[48px] transition-colors"
+                  >
+                    <BookOpen className="w-4 h-4 shrink-0 text-[hsl(var(--neon-cyan))]" />
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm font-medium text-foreground block">User & Developer Library</span>
+                      <span className="text-xs text-muted-foreground">API, CLI, webhooks, guides</span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                  </Link>
+                  <Link
+                    to="/docs/system"
+                    onClick={() => setMobileNavOpen(false)}
+                    className="flex items-center gap-3 px-3.5 py-3.5 rounded-xl bg-muted/20 hover:bg-muted/40 border border-border/30 min-h-[48px] transition-colors"
+                  >
+                    <Cpu className="w-4 h-4 shrink-0 text-[hsl(var(--neon-purple))]" />
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm font-medium text-foreground block">System Reference Library</span>
+                      <span className="text-xs text-muted-foreground">Architecture, specs, security</span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground/40 shrink-0" />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* Content area — sidebar + main */}
-      <div className="container mx-auto px-4 py-8 sm:py-12">
+      <div className="container mx-auto px-4 py-6 sm:py-12">
         <div className="flex gap-8 max-w-7xl mx-auto">
 
           {/* Desktop sidebar */}
@@ -1470,7 +1537,7 @@ export default function Documentation() {
                 to="/docs/users"
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left text-muted-foreground hover:text-foreground hover:bg-muted/50"
               >
-                <BookOpen className="w-4 h-4 shrink-0 text-neon-cyan" />
+                <BookOpen className="w-4 h-4 shrink-0 text-[hsl(var(--neon-cyan))]" />
                 <span>User Docs</span>
                 <ArrowRight className="w-3 h-3 ml-auto text-muted-foreground/40" />
               </Link>
@@ -1478,7 +1545,7 @@ export default function Documentation() {
                 to="/docs/system"
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left text-muted-foreground hover:text-foreground hover:bg-muted/50"
               >
-                <Cpu className="w-4 h-4 shrink-0 text-neon-purple" />
+                <Cpu className="w-4 h-4 shrink-0 text-[hsl(var(--neon-purple))]" />
                 <span>System Docs</span>
                 <ArrowRight className="w-3 h-3 ml-auto text-muted-foreground/40" />
               </Link>
@@ -1487,6 +1554,32 @@ export default function Documentation() {
 
           {/* Main content */}
           <main className="flex-1 min-w-0">
+            {/* Mobile: prev/next nav at top */}
+            <div className="lg:hidden flex items-center justify-between mb-6">
+              <button
+                onClick={() => {
+                  const idx = sections.findIndex(s => s.id === active);
+                  if (idx > 0) handleNav(sections[idx - 1].id);
+                }}
+                disabled={sections.findIndex(s => s.id === active) === 0}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors min-h-[44px]"
+              >
+                <ChevronRight className="w-4 h-4 rotate-180" />
+                Prev
+              </button>
+              <button
+                onClick={() => {
+                  const idx = sections.findIndex(s => s.id === active);
+                  if (idx < sections.length - 1) handleNav(sections[idx + 1].id);
+                }}
+                disabled={sections.findIndex(s => s.id === active) === sections.length - 1}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors min-h-[44px]"
+              >
+                Next
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
             <AnimatePresence mode="wait">
               <motion.div
                 key={active}
@@ -1498,6 +1591,36 @@ export default function Documentation() {
                 <ActiveComponent />
               </motion.div>
             </AnimatePresence>
+
+            {/* Mobile: prev/next nav at bottom */}
+            <div className="lg:hidden flex items-center justify-between mt-8 pt-6 border-t border-border/30">
+              <button
+                onClick={() => {
+                  const idx = sections.findIndex(s => s.id === active);
+                  if (idx > 0) handleNav(sections[idx - 1].id);
+                }}
+                disabled={sections.findIndex(s => s.id === active) === 0}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors min-h-[44px]"
+              >
+                <ChevronRight className="w-4 h-4 rotate-180" />
+                {sections.findIndex(s => s.id === active) > 0
+                  ? sections[sections.findIndex(s => s.id === active) - 1].label
+                  : "Prev"}
+              </button>
+              <button
+                onClick={() => {
+                  const idx = sections.findIndex(s => s.id === active);
+                  if (idx < sections.length - 1) handleNav(sections[idx + 1].id);
+                }}
+                disabled={sections.findIndex(s => s.id === active) === sections.length - 1}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors min-h-[44px]"
+              >
+                {sections.findIndex(s => s.id === active) < sections.length - 1
+                  ? sections[sections.findIndex(s => s.id === active) + 1].label
+                  : "Next"}
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </main>
         </div>
       </div>
