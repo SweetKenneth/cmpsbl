@@ -59,7 +59,7 @@ export function DiscoveryDualCards() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/30 bg-card/40 backdrop-blur-sm mb-5">
             <ShieldCheck className="w-3.5 h-3.5 text-primary/70" />
-            <span className="text-[10px] sm:text-xs font-semibold text-muted-foreground tracking-wide uppercase">
+            <span className="text-xs font-semibold text-muted-foreground tracking-wide uppercase">
               Two Sides of One Substrate
             </span>
           </div>
