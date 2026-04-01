@@ -117,3 +117,5 @@ project_id = "bxodolqqczjuahwdrswy"
     verify_jwt = false
   [functions.pf-webhook-dispatch]
     verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = true
