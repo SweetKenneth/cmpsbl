@@ -144,25 +144,32 @@ export default function AgentForgePage() {
       <PublicNav />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-8">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-              <Hammer className="w-6 h-6 text-primary" />
-              Agent Forge
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Create custom agents with unique names. One active at a time.
-            </p>
+        {/* Hero header */}
+        <div className="mb-8">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <Badge variant="outline" className="mb-3 border-primary/30 text-primary font-mono text-[10px] tracking-widest">
+                CMPSBL AGENTS
+              </Badge>
+              <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+                <Hammer className="w-6 h-6 text-primary" />
+                Agent Forge
+              </h1>
+            </div>
+            <Button
+              onClick={() => setCreateOpen(true)}
+              disabled={forge.slotsRemaining <= 0}
+              className="gap-1.5"
+            >
+              <Plus className="w-4 h-4" />
+              Forge Agent
+            </Button>
           </div>
-          <Button
-            onClick={() => setCreateOpen(true)}
-            disabled={forge.slotsRemaining <= 0}
-            className="gap-1.5"
-          >
-            <Plus className="w-4 h-4" />
-            Forge Agent
-          </Button>
+          <p className="text-sm text-muted-foreground max-w-xl leading-relaxed">
+            Your internal, fully customizable CMPSBL Agents. Name them, specialize them, and 
+            call them directly from the CLI with <code className="text-primary text-xs">cmpsbl forge activate &lt;NAME&gt;</code>. 
+            Only one can be active at a time. Architect-tier agents can be Ascended.
+          </p>
         </div>
 
         {/* Slot usage */}
