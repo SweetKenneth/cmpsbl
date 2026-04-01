@@ -213,6 +213,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = async () => {
     try {
       const supabase = await getSupabase();
+
+      // Log signout event
+      if (user) {
+        supabase.functions.invoke('pf-security-gate', {
+          body: { action: 'log_auth_event', event_type: 'logout', user_id: user.id, email: user.email },
+        }).catch(() => {});
+      }
+
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       
