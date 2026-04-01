@@ -893,6 +893,7 @@ async function cmdShell() {
     'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
     'topology', 'route', 'benchmark', 'diff', 'changelog',
     'think', 'reflect', 'remember', 'forget',
+    'name', 'todo', 'done', 'pin', 'unpin', 'next', 'welcome',
     'forge', 'harvest', 'translate', 'sandbox',
     'scan', 'predict', 'audit', 'cost',
     'threat', 'immune', 'govern', 'treaty',
