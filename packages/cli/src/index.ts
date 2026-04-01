@@ -3205,40 +3205,25 @@ async function cmdTranslate(args: string[]) {
 async function cmdSandbox(args: string[]) {
   const script = args.join(' ');
   if (!script) { say('Usage: cmpsbl sandbox <script or expression>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('SANDBOX — Safe Execution');
-
   const s = !JSON_MODE ? spinner('Provisioning hermetic environment...') : null;
-  await sleep(300);
-  s?.update('Applying syscall filters...');
-  await sleep(200);
-  s?.update('Executing in isolation...');
-  await sleep(500 + Math.random() * 400);
-  s?.stop('Execution complete');
 
-  const result = {
-    script,
-    exitCode: 0,
-    executionMs: Math.round(50 + Math.random() * 200),
-    memoryKb: Math.round(512 + Math.random() * 2048),
-    cpuMs: Math.round(10 + Math.random() * 100),
-    networkEgress: 'blocked (default-deny)',
-    verdict: 'SAFE',
-  };
+  const result = await substrateCall('sandbox', 'execute', { script, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Execution complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('sandbox.execute', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
 
-  if (JSON_MODE) { jsonOut(result); return; }
-
-  blank();
-  say(`  Exit:     ${result.exitCode}`);
-  say(`  Time:     ${result.executionMs}ms`);
-  say(`  Memory:   ${result.memoryKb}KB`);
-  say(`  CPU:      ${result.cpuMs}ms`);
-  say(`  Network:  ${result.networkEgress}`);
-  say(`  Verdict:  ${result.verdict}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Execution failed');
+  renderOfflineFallback(result, 'sandbox.execute');
 }
 
 // ═══════════════════════════════════════════════════════════════
