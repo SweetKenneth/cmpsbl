@@ -172,11 +172,15 @@ function loadStoredKey(): string | undefined {
   return loadStoredCredentials()?.apiKey;
 }
 
-function saveStoredKey(key: string): void {
+function saveStoredKey(key: string, displayName?: string): void {
   const apiKey = normalizeApiKey(key);
   if (!apiKey) throw new Error('Invalid API key');
   if (!fs.existsSync(CREDS_DIR)) fs.mkdirSync(CREDS_DIR, { recursive: true });
-  fs.writeFileSync(CREDS_FILE, JSON.stringify({ apiKey, api_key: apiKey, savedAt: new Date().toISOString() }, null, 2));
+  const existing = loadStoredCredentials();
+  const name = displayName ?? existing?.displayName;
+  const payload: Record<string, unknown> = { apiKey, api_key: apiKey, savedAt: new Date().toISOString() };
+  if (name) payload.displayName = name;
+  fs.writeFileSync(CREDS_FILE, JSON.stringify(payload, null, 2));
   try { fs.chmodSync(CREDS_FILE, 0o600); } catch { /* ignore platform-specific chmod failures */ }
 }
 
@@ -368,8 +372,9 @@ async function inlineRegister(): Promise<string | null> {
     sayOk(`  ✓ API key generated: ${data.key_prefix}...`);
     blank();
 
-    // Auto-save the key
-    saveStoredKey(data.api_key);
+    // Auto-save the key with developer name
+    const devName = (data.display_name as string) || (data.developer?.display_name as string) || name || email.split('@')[0];
+    saveStoredKey(data.api_key, devName);
     say('  ✓ Key saved to ~/.cmpsbl/credentials');
     say('  ✓ Memory: PERSISTENT · Substrate: LIVE');
     blank();
@@ -1258,9 +1263,36 @@ async function cmdWhoami() {
   const apiKey = resolveApiKey();
   const apiKeySource = getApiKeySource();
   const hasKey = !!apiKey;
+
+  // Resolve developer name: stored → API → git → fallback
+  let developerName = storedCredentials?.displayName ?? null;
+
+  if (!developerName && hasKey) {
+    try {
+      const res = await fetch(getSubstrateEndpoint(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify({ module: 'access', action: 'identity' }),
+      });
+      const result = await res.json() as Record<string, any>;
+      if (result.success && result.developer?.display_name) {
+        developerName = result.developer.display_name;
+        // Persist for future calls
+        saveStoredKey(apiKey!, developerName!);
+      }
+    } catch { /* API unavailable — continue with fallback */ }
+  }
+
+  if (!developerName) {
+    try {
+      const gitName = require('child_process').execSync('git config user.name', { encoding: 'utf-8' }).trim();
+      if (gitName) developerName = gitName;
+    } catch { /* git unavailable */ }
+  }
+
   const data = {
     apiKey: maskApiKey(apiKey),
-    developer: storedCredentials?.displayName ?? null,
+    developer: developerName,
     endpoint: process.env.CMPSBL_ENDPOINT ?? 'substrate-api (live)',
     session: session?.sessionId ?? null,
     memoryBound: session?.memoryBound ?? false,
