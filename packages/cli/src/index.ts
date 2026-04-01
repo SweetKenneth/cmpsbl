@@ -1620,12 +1620,12 @@ function cmdScore(args: string[]) {
 async function cmdStatus() {
   const online = NODES.filter(n => n.status === 'online').length;
   const avg = Math.round(NODES.reduce((s, n) => s + n.health, 0) / NODES.length);
-  const sectors = [...new Set(NODES.map(n => n.sector))];
+  const sectors = [...new Set(NODES.map(n => n.category))];
   const session = getFirstContactSession();
 
   const data = {
     nodes: `${online}/${NODES.length}`,
-    sectors: sectors.length,
+    sectors: categories.length,
     health: avg,
     runtime: 'v14.4.1',
     memoryChains: getMemoryStream().length,
@@ -1634,8 +1634,8 @@ async function cmdStatus() {
 
   if (JSON_MODE) { jsonOut(data); return; }
   header('Substrate Status');
-  say(`Nodes:    ${data.nodes} online`);
-  say(`Sectors:  ${data.sectors} active`);
+  say(`Primitives:${data.nodes} online`);
+  say(`Categories:${data.sectors} active`);
   say(`Health:   ${avg}%`);
   say(`Runtime:  ${data.runtime}`);
   say(`Memory:   ${data.memoryChains} chains`);
@@ -1648,8 +1648,8 @@ async function cmdStatus() {
 }
 
 async function cmdHealth() {
-  if (!JSON_MODE) header('Node Health Report');
-  const s = !JSON_MODE ? spinner('Scanning nodes...') : null;
+  if (!JSON_MODE) header('Primitive Health Report');
+  const s = !JSON_MODE ? spinner('Scanning primitives...') : null;
   await sleep(400);
   s?.stop('Scan complete');
 
@@ -1662,7 +1662,7 @@ async function cmdHealth() {
   }
   div();
   const critical = sorted.filter(n => n.health < 90);
-  if (critical.length) say(`⚠ ${critical.length} node(s) below 90%`);
+  if (critical.length) say(`⚠ ${critical.length} primitive(s) below 90%`);
   else say(pick(V.ok));
   blank();
 }
@@ -1670,16 +1670,16 @@ async function cmdHealth() {
 async function cmdNodes(args: string[]) {
   const filter = args[0]?.toUpperCase();
   let nodes = NODES;
-  if (filter) nodes = NODES.filter(n => n.sector === filter || n.id.includes(filter) || n.role.includes(filter.toLowerCase()));
+  if (filter) nodes = NODES.filter(n => n.category === filter || n.id.includes(filter) || n.role.includes(filter.toLowerCase()));
 
   if (JSON_MODE) { jsonOut(nodes); return; }
-  header('Node Registry');
-  if (filter && nodes.length === 0) { say(`No nodes matching "${filter}".`); blank(); return; }
+  header('Primitive Registry');
+  if (filter && nodes.length === 0) { say(`No primitives matching "${filter}".`); blank(); return; }
   if (filter) { say(`Filtered: ${nodes.length} node(s) matching "${filter}"`); blank(); }
 
-  table(['Node', 'Sector', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.sector, n.role, `${n.health}%`, n.status]));
+  table(['Primitive', 'Category', 'Role', 'Health', 'Status'], nodes.map(n => [n.id, n.category, n.role, `${n.health}%`, n.status]));
   blank();
-  say(`Total: ${nodes.length} nodes`);
+  say(`Total: ${nodes.length} primitives`);
   say(pick(V.idle));
   blank();
 }
@@ -1688,9 +1688,9 @@ async function cmdPing(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl ping <node>'); return; }
   const node = NODES.find(n => n.id === target);
-  if (!node) { say(pick(V.err)); say(`Node "${target}" not found.`); blank(); return; }
+  if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
-  if (!JSON_MODE) say(`Pinging ${node.id}@${node.sector}...`);
+  if (!JSON_MODE) say(`Pinging ${node.id}@${node.category}...`);
   const latencies: number[] = [];
   for (let i = 0; i < 4; i++) {
     await sleep(150 + Math.random() * 200);
@@ -1711,15 +1711,15 @@ async function cmdInspect(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl inspect <node>'); return; }
   const node = NODES.find(n => n.id === target);
-  if (!node) { say(pick(V.err)); say(`Node "${target}" not found.`); blank(); return; }
+  if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
   const data = {
-    node: node.id, sector: node.sector, role: node.role, status: node.status, health: node.health,
+    node: node.id, sector: node.category, role: node.role, status: node.status, health: node.health,
     uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
     resolvers: Math.round(3 + Math.random() * 12),
     intents24h: Math.round(50 + Math.random() * 500),
     avgLatency: Math.round(2 + Math.random() * 8),
-    meshLinks: NODES.filter(n => n.sector === node.sector && n.id !== node.id).map(n => n.id),
+    matrixLinks: NODES.filter(n => n.category === node.category && n.id !== node.id).map(n => n.id),
   };
 
   if (JSON_MODE) { jsonOut(data); return; }
@@ -1730,8 +1730,8 @@ async function cmdInspect(args: string[]) {
   blank();
 
   table(['Property', 'Value'], [
-    ['Node', data.node],
-    ['Sector', data.sector],
+    ['Primitive', data.node],
+    ['Category', data.sector],
     ['Role', data.role],
     ['Status', data.status],
     ['Health', `${data.health}%`],
@@ -1739,7 +1739,7 @@ async function cmdInspect(args: string[]) {
     ['Resolvers', String(data.resolvers)],
     ['Intents (24h)', String(data.intents24h)],
     ['Avg Latency', `${data.avgLatency}ms`],
-    ['Mesh Links', data.meshLinks.join(', ') || 'isolated'],
+    ['Matrix Links', data.matrixLinks.join(', ') || 'isolated'],
   ]);
   blank();
   say(pick(V.ok));
@@ -1748,7 +1748,7 @@ async function cmdInspect(args: string[]) {
 
 async function cmdTopology() {
   const sectors = new Map<string, typeof NODES>();
-  for (const n of NODES) { const s = sectors.get(n.sector) ?? []; s.push(n); sectors.set(n.sector, s); }
+  for (const n of NODES) { const s = sectors.get(n.category) ?? []; s.push(n); sectors.set(n.category, s); }
 
   if (JSON_MODE) {
     const out: Record<string, unknown[]> = {};
@@ -1782,7 +1782,7 @@ async function cmdRoute(args: string[]) {
   for (let i = 0; i < hops.length; i++) {
     const n = hops[i];
     await sleep(200);
-    say(`  ${i === 0 ? '►' : '→'} ${n.id}.${n.role} (${Math.round(1 + Math.random() * 6)}ms) — ${n.sector}`);
+    say(`  ${i === 0 ? '►' : '→'} ${n.id}.${n.role} (${Math.round(1 + Math.random() * 6)}ms) — ${n.category}`);
   }
   div();
   say(`${hops.length} hops │ Est. ${Math.round(5 + Math.random() * 20)}ms`);
@@ -1821,9 +1821,9 @@ async function cmdDoctor() {
     { name: 'Endpoint reachable', check: () => true },
     { name: 'Manifest exists', check: () => fs.existsSync(path.resolve('cmpsbl-manifest.json')) },
     { name: 'Config directory', check: () => fs.existsSync(path.resolve('.cmpsbl')) },
-    { name: 'Node mesh (40 nodes)', check: () => NODES.length === 40 },
-    { name: 'All nodes online', check: () => NODES.every(n => n.status === 'online') },
-    { name: 'Health > 90% all', check: () => NODES.every(n => n.health >= 90) },
+    { name: 'Primitive matrix (40 primitives)', check: () => NODES.length === 40 },
+    { name: 'All primitives online', check: () => NODES.every(n => n.status === 'online') },
+    { name: 'Health > 90% all primitives', check: () => NODES.every(n => n.health >= 90) },
     { name: 'Memory stream active', check: () => true },
     { name: 'Runtime loaded', check: () => true },
     { name: 'CJPI engine', check: () => typeof computeCJPI === 'function' },
@@ -1850,13 +1850,13 @@ async function cmdDoctor() {
 
 async function cmdWatch(args: string[]) {
   const target = args[0]?.toUpperCase();
-  const watchNodes = target ? NODES.filter(n => n.id === target || n.sector === target) : NODES;
-  if (watchNodes.length === 0) { say(pick(V.err)); say(`No nodes matching "${target}".`); return; }
+  const watchNodes = target ? NODES.filter(n => n.id === target || n.category === target) : NODES;
+  if (watchNodes.length === 0) { say(pick(V.err)); say(`No primitives matching "${target}".`); return; }
 
   if (!JSON_MODE) { header(`Live Watch${target ? ` (${target})` : ''}`); say('Showing 8 events (demo):\n'); }
 
   const events: unknown[] = [];
-  const eventTypes = ['intent.resolved', 'health.check', 'mesh.signal', 'resolver.executed', 'memory.observed'];
+  const eventTypes = ['intent.resolved', 'health.check', 'matrix.signal', 'resolver.executed', 'memory.observed'];
   for (let i = 0; i < 8; i++) {
     await sleep(400 + Math.random() * 600);
     const node = watchNodes[Math.floor(Math.random() * watchNodes.length)];
@@ -1878,7 +1878,7 @@ async function cmdLogs(args: string[]) {
   const count = tailIdx >= 0 ? parseInt(args[tailIdx + 1]) || 10 : 10;
   const logNodes = target && target !== '--TAIL' ? NODES.filter(n => n.id === target) : NODES;
 
-  if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Node "${target}" not found.`); return; }
+  if (target && target !== '--TAIL' && logNodes.length === 0) { say(pick(V.err)); say(`Primitive "${target}" not found.`); return; }
 
   const levels = ['INFO', 'DEBUG', 'WARN'];
   const messages = [
@@ -1911,14 +1911,14 @@ async function cmdLogs(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdBenchmark() {
-  if (!JSON_MODE) header('Node Latency Benchmark');
+  if (!JSON_MODE) header('Primitive Latency Benchmark');
 
-  const s = !JSON_MODE ? spinner('Benchmarking all nodes...') : null;
+  const s = !JSON_MODE ? spinner('Benchmarking all primitives...') : null;
   const results: Array<{ id: string; sector: string; latency: number }> = [];
 
   for (const node of NODES) {
     await sleep(30);
-    results.push({ id: node.id, sector: node.sector, latency: Math.round(1 + Math.random() * 15) });
+    results.push({ id: node.id, sector: node.category, latency: Math.round(1 + Math.random() * 15) });
     s?.update(`Benchmarking ${node.id}...`);
   }
   s?.stop('Benchmark complete');
@@ -1928,7 +1928,7 @@ async function cmdBenchmark() {
   if (JSON_MODE) { jsonOut(results); return; }
   blank();
 
-  table(['Rank', 'Node', 'Sector', 'Latency'], results.map((r, i) => [
+  table(['Rank', 'Primitive', 'Category', 'Latency'], results.map((r, i) => [
     `#${i + 1}`,
     r.id,
     r.sector,
