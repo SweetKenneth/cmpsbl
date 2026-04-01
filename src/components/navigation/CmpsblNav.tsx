@@ -36,6 +36,7 @@ import {
   Play,
   CreditCard,
   Activity,
+  Hammer,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -111,10 +112,10 @@ export function CmpsblNav() {
       name: "Build",
       icon: Code,
       items: [
-        { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal, highlight: true },
+        { name: "Agent Forge", href: "/forge", description: "Create & manage CMPSBL Agents", icon: Hammer, badge: "NEW", highlight: true },
+        { name: "Builder workspace", href: "/workspace", description: "Your SDK, terminal & tools", icon: Terminal },
         { name: "Developers Playground", href: "/codelab", description: "Test and run code live", icon: Terminal },
         { name: "Developer Tools", href: "/devtools", description: "SDKs, packages, and playground", icon: Package },
-        
         { name: "Documentation", href: "/documentation", description: "Guides & API reference", icon: FileText },
         { name: "API access", href: "/api-access", description: "Keys, quotas & usage tracking", icon: Code },
       ]
@@ -134,6 +135,7 @@ export function CmpsblNav() {
       name: "Explore",
       icon: Globe,
       items: [
+        { name: "Try CMPSBL", href: "/try", description: "Interactive demo — see it live", icon: Play, badge: "TRY", highlight: true },
         { name: "Memory Stream", href: "/foundry", description: "Discover & collect capabilities", icon: Sparkles, badge: "LIVE", highlight: true },
         { name: "Ascension", href: "/ascension", description: "Upload code → discover new capabilities", icon: Zap, badge: "NEW", highlight: true },
         { name: "Blog", href: "/blog", description: "Articles & research", icon: FileText },
