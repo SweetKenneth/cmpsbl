@@ -122,24 +122,24 @@ const COMMANDS: Record<string, CommandHandler> = {
       : 'Standard capability set active.',
   ]),
 
-  nodes: () => {
+  primitives: () => {
     const summary = getCLMPrioritySummary();
     const sectors = ['CORE', 'SYSTEM', 'CCR', 'OCG', 'Execution', 'ESZ', 'EPZ', 'EMZ', 'CSZ', 'Fields', 'Plane', 'Shell'];
     const sectorLines = sectors.map(s => {
-      const nodes = getNodesBySector(s);
-      return `  ${s.padEnd(12)} ${nodes.map(n => n.displayName).join(' · ')}`;
+      const primitives = getNodesBySector(s);
+      return `  ${s.padEnd(12)} ${primitives.map(n => n.displayName).join(' · ')}`;
     });
     return formatBlock('SUBSTRATE TOPOLOGY', [
-      `Nodes:         ${summary.totalNodes}`,
+      `Primitives:    ${summary.totalNodes}`,
       `Sectors:       ${summary.sectors.length}`,
       `CLM Caps:      ${summary.totalCapabilities}`,
       `Acknowledged:  ${summary.acknowledged}/${summary.totalNodes}`,
-      `Gen-1 Nodes:   ${summary.generation1Count}`,
-      `Gen-2 Nodes:   ${summary.generation2Count}`,
+      `Gen-1:         ${summary.generation1Count}`,
+      `Gen-2:         ${summary.generation2Count}`,
       '',
       ...sectorLines,
       '',
-      'All nodes acknowledged and operational.',
+      'All primitives acknowledged and operational.',
     ]);
   },
 
