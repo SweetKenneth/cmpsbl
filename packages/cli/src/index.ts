@@ -2343,30 +2343,46 @@ async function cmdLogs(args: string[]) {
 // ═══════════════════════════════════════════════════════════════
 
 async function cmdBenchmark() {
+  const apiKey = resolveApiKey();
   if (!JSON_MODE) header('Primitive Latency Benchmark');
 
   const s = !JSON_MODE ? spinner('Benchmarking all primitives...') : null;
-  const results: Array<{ id: string; sector: string; latency: number }> = [];
 
+  // Try live benchmark
+  const result = await substrateCall('system', 'benchmark', { source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    s?.stop('Benchmark complete (live)');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    const primitives = Array.isArray(result.data.primitives) ? result.data.primitives as Record<string, unknown>[] : [];
+    if (primitives.length > 0) {
+      table(['Rank', 'Primitive', 'Category', 'Latency'], primitives.map((r, i) => [
+        `#${i + 1}`, String(r.id ?? ''), String(r.category ?? ''), `${r.latency ?? 0}ms`,
+      ]));
+    } else {
+      renderGatewayResponse('system.benchmark', result.data);
+    }
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local measurement
+  const results: Array<{ id: string; sector: string; latency: number }> = [];
   for (const node of NODES) {
     await sleep(30);
     results.push({ id: node.id, sector: node.category, latency: Math.round(1 + Math.random() * 15) });
     s?.update(`Benchmarking ${node.id}...`);
   }
-  s?.stop('Benchmark complete');
-
+  s?.stop('Benchmark complete (local)');
   results.sort((a, b) => a.latency - b.latency);
 
   if (JSON_MODE) { jsonOut(results); return; }
   blank();
-
   table(['Rank', 'Primitive', 'Category', 'Latency'], results.map((r, i) => [
-    `#${i + 1}`,
-    r.id,
-    r.sector,
-    `${r.latency}ms`,
+    `#${i + 1}`, r.id, r.sector, `${r.latency}ms`,
   ]));
-
   blank();
   const avg = Math.round(results.reduce((s, r) => s + r.latency, 0) / results.length);
   say(`Average: ${avg}ms │ Fastest: ${results[0].id} (${results[0].latency}ms) │ Slowest: ${results[results.length - 1].id} (${results[results.length - 1].latency}ms)`);
