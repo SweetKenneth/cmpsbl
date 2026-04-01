@@ -96,7 +96,7 @@ export function useForgeAgents() {
           loadout_id: input.loadout_id || null,
           primitive_chain: input.primitive_chain || [],
           personality: input.personality || {},
-        })
+        } as Record<string, unknown>)
         .select()
         .single();
 
