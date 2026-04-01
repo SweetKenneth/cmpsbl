@@ -3279,43 +3279,25 @@ async function cmdPredict(args: string[]) {
 
 async function cmdAudit(args: string[]) {
   const scope = args.join(' ') || 'full system';
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('AUDIT — Compliance Report');
-
   const s = !JSON_MODE ? spinner('Running compliance audit...') : null;
-  const frameworks = ['SOC2', 'GDPR', 'HIPAA', 'ISO 27001'];
-  for (const fw of frameworks) {
-    await sleep(300 + Math.random() * 200);
-    s?.update(`Checking ${fw} compliance...`);
+
+  const result = await substrateCall('audit', 'compliance', { scope, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Audit complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('audit.compliance', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  s?.stop('Audit complete');
 
-  const results = frameworks.map(fw => ({
-    framework: fw,
-    status: Math.random() > 0.15 ? 'compliant' : 'review_needed',
-    controls: Math.round(20 + Math.random() * 40),
-    passed: 0,
-    findings: Math.round(Math.random() * 3),
-  }));
-  results.forEach(r => { r.passed = r.controls - r.findings; });
-
-  const hashChain = `fnv1a-${Date.now().toString(16)}`;
-
-  if (JSON_MODE) { jsonOut({ scope, results, auditHash: hashChain, immutable: true }); return; }
-
-  blank();
-  say(`  Scope: ${scope}`);
-  say(`  Audit Hash: ${hashChain} (immutable)`);
-  blank();
-
-  for (const r of results) {
-    const icon = r.status === 'compliant' ? '✔' : '⚠';
-    say(`  ${icon} ${r.framework.padEnd(12)} ${r.passed}/${r.controls} controls passed${r.findings > 0 ? ` (${r.findings} finding${r.findings > 1 ? 's' : ''})` : ''}`);
-  }
-  blank();
-  say(pick(V.ok));
-  blank();
+  s?.stop('Audit failed');
+  renderOfflineFallback(result, 'audit.compliance');
 }
 
 async function cmdCost(args: string[]) {
