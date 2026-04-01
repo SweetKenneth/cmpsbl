@@ -405,7 +405,9 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
             <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Export Preview</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Base Capabilities</span>
+                <span className="text-muted-foreground">
+                  {verticalResult?.discoveries?.length ? 'Super Agents' : 'Capabilities'}
+                </span>
                 <span className="font-mono font-bold text-foreground">{eligible.length}</span>
               </div>
               <div className="flex justify-between">
@@ -413,9 +415,9 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
                 <span className="font-mono font-bold text-foreground">{userSourceFiles.length}</span>
               </div>
               {verticalResult && verticalResult.discoveries.length > 0 && (
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">{verticalResult.verticalName} agents</span>
-                  <span className="font-mono font-bold text-primary">+{verticalResult.discoveries.length}</span>
+                <div className="flex justify-between col-span-2">
+                  <span className="text-muted-foreground">{verticalResult.verticalName} personas merged</span>
+                  <span className="font-mono font-bold text-primary">{verticalResult.discoveries.length} of {eligible.length} upgraded</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -423,21 +425,15 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
                 <span className="font-mono font-bold text-neon-amber">{bestScore}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Total in export</span>
-                <span className="font-mono font-bold text-foreground">
-                  {eligible.length + (verticalResult?.discoveries?.length || 0)}
-                </span>
-              </div>
-              <div className="flex justify-between">
                 <span className="text-muted-foreground">Est. files in ZIP</span>
                 <span className="font-mono font-bold text-foreground">
-                  {(eligible.length + (verticalResult?.discoveries?.length || 0)) * 3 + userSourceFiles.length + 4}
+                  {eligible.length * 3 + userSourceFiles.length + 4}
                 </span>
               </div>
             </div>
             <p className="text-[9px] text-muted-foreground">
               Includes: capability modules, Mini-Runtime™, README, manifest, license, memory chain details
-              {verticalResult && verticalResult.discoveries.length > 0 && ` + ${verticalResult.discoveries.length} ${verticalResult.verticalName} agent capabilities`}
+              {verticalResult && verticalResult.discoveries.length > 0 && ` — each capability enhanced with ${verticalResult.verticalName} agent persona`}
             </p>
           </div>
         )}
