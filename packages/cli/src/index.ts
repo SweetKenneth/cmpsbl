@@ -1806,14 +1806,14 @@ async function cmdTopology() {
     return;
   }
 
-  header('12-Sector Topology');
-  for (const [sector, nodes] of sectors) {
+  header('4-Category Topology');
+  for (const [cat, nodes] of categories) {
     const h = Math.round(nodes.reduce((s, n) => s + n.health, 0) / nodes.length);
     const icon = h >= 98 ? '⬢' : h >= 90 ? '◈' : '◇';
-    say(`${icon} ${sector.padEnd(6)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
+    say(`${icon} ${cat.padEnd(8)} │ ${nodes.map(n => n.id).join(' · ')} │ ${h}%`);
   }
   div();
-  say(`${PRIMITIVES.length} primitives │ ${sectors.size} sectors`);
+  say(`${PRIMITIVES.length} primitives │ ${categories.size} categories`);
   say(pick(V.idle));
   blank();
 }
