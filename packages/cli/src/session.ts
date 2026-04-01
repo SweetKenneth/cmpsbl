@@ -496,6 +496,24 @@ export function getWelcomeBackData(): WelcomeBackData {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// First-Run & Introduction
+// ═══════════════════════════════════════════════════════════════
+
+export function isFirstRun(): boolean {
+  return !fs.existsSync(STATE_FILE);
+}
+
+export function hasIntroduced(): boolean {
+  return loadState().hasIntroduced;
+}
+
+export function markIntroduced(): void {
+  const state = loadState();
+  state.hasIntroduced = true;
+  saveState(state);
+}
+
+// ═══════════════════════════════════════════════════════════════
 // Full State Access (for JSON mode)
 // ═══════════════════════════════════════════════════════════════
 
