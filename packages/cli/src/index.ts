@@ -500,6 +500,69 @@ const CLI_CONFIG: FirstContactConfig = {
   },
 };
 
+// ═══════════════════════════════════════════════════════════════
+// Live Substrate Call — ALL commands route through here
+// No mock data. Real API or honest offline message.
+// ═══════════════════════════════════════════════════════════════
+
+interface SubstrateResult {
+  success: boolean;
+  data?: Record<string, unknown>;
+  error?: string;
+  offline?: boolean;
+}
+
+async function substrateCall(
+  module: string,
+  action: string,
+  payload: Record<string, unknown> = {},
+  apiKey?: string,
+): Promise<SubstrateResult> {
+  const key = apiKey ?? resolveApiKey();
+  if (!key) return { success: false, error: 'No API key configured', offline: true };
+
+  try {
+    const endpoint = getSubstrateEndpoint();
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Engine-Key': key,
+      },
+      body: JSON.stringify({ module, action, payload }),
+    });
+
+    const json = await res.json() as Record<string, unknown>;
+
+    if (json.success === false) {
+      return { success: false, error: String(json.error ?? json.message ?? 'Unknown error'), data: json };
+    }
+
+    return {
+      success: true,
+      data: (json.data as Record<string, unknown>) ?? json,
+    };
+  } catch {
+    return { success: false, error: 'Substrate unreachable', offline: true };
+  }
+}
+
+/** Render a live-or-offline status line after a substrateCall */
+function renderOfflineFallback(result: SubstrateResult, command: string): void {
+  if (result.offline) {
+    blank();
+    sayErr('  ✗ Substrate unreachable — cannot execute live.');
+    say(c.dim(`  Command: ${command}`));
+    say(c.dim('  Check connection with: cmpsbl doctor'));
+    say(c.dim('  Or use dot-notation: cmpsbl ' + command));
+    blank();
+  } else if (!result.success) {
+    blank();
+    sayErr(`  ✗ ${result.error}`);
+    blank();
+  }
+}
+
 function isInteractiveTTY(): boolean {
   return Boolean(process.stdin.isTTY && process.stdout.isTTY);
 }
