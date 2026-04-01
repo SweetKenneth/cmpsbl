@@ -85,6 +85,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithMagicLink = async (email: string) => {
     try {
       const supabase = await getSupabase();
+
+      // Rate limit check
+      const { data: rateCheck } = await supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'check_rate_limit', email },
+      });
+      if (rateCheck?.blocked) {
+        toast.error('Too many login attempts. Please try again in 15 minutes.');
+        return;
+      }
+
+      // Disposable email check
+      const { data: emailCheck } = await supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'validate_signup', email },
+      });
+      if (emailCheck && !emailCheck.allowed) {
+        toast.error(emailCheck.reason || 'This email domain is not permitted.');
+        return;
+      }
+
       // Preserve redirect intent across magic link flow
       const params = new URLSearchParams(window.location.search);
       const redirectTo = params.get('redirect');
@@ -98,15 +117,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         },
       });
       
-      if (error) throw error;
+      if (error) {
+        // Record failed attempt for rate limiting
+        supabase.functions.invoke('pf-security-gate', {
+          body: { action: 'record_failed_login', email },
+        }).catch(() => {});
+        throw error;
+      }
+
+      // Log successful auth attempt
+      supabase.functions.invoke('pf-security-gate', {
+        body: { action: 'log_auth_event', event_type: 'magic_link_sent', email },
+      }).catch(() => {});
       
       toast.success('Check your email for a secure sign-in link.', {
         description: 'No password needed — click the link to authenticate.',
         duration: 6000,
       });
-    } catch (error: any) {
-      console.error('Magic link error:', error);
-      toast.error(error.message || 'Failed to send sign-in link');
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Failed to send sign-in link';
+      toast.error(message);
       throw error;
     }
   };
