@@ -75,7 +75,7 @@ export function DiscoveryDualCards() {
               Zero LLM
             </span>
           </h2>
-          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground/80 max-w-2xl mx-auto leading-[1.8]">
             No large‑language model sits between you and your results. Both systems
             run on <span className="text-foreground/90 font-medium">pure internal cording</span>{" "}
             — deterministic, auditable, and governed by the 40‑Primitive mesh.
