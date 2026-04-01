@@ -85,7 +85,8 @@ export function useForgeAgents() {
         throw new Error(`Forge slot limit reached (${forgeAgentSlots}). Upgrade your tier for more slots.`);
       }
 
-      const { data, error } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data, error } = await (supabase as any)
         .from('forge_agents')
         .insert({
           user_id: user.id,
@@ -96,7 +97,7 @@ export function useForgeAgents() {
           loadout_id: input.loadout_id || null,
           primitive_chain: input.primitive_chain || [],
           personality: input.personality || {},
-        } as Record<string, unknown>)
+        })
         .select()
         .single();
 
