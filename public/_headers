@@ -1,3 +1,9 @@
+# Security: Prevent iframe embedding on unauthorized domains
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
 # Cache hashed assets immutably (1 year) — filenames change on every build
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
