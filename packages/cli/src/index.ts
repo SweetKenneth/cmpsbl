@@ -924,13 +924,13 @@ async function cmdOnboarding() {
 
 async function cmdShell() {
   header('Interactive Shell');
-  say(`Type commands without the ${c.cyan('cmpsbl')} prefix. Tab-complete commands ${c.bold('and')} node names.`);
+  say(`Type commands without the ${c.cyan('cmpsbl')} prefix. Tab-complete commands ${c.bold('and')} primitive names.`);
   say(`Type ${c.cyan('exit')} or ${c.cyan('quit')} to leave.`);
   blank();
   sayMuted(pick(V.idle));
   blank();
 
-  // All node names for contextual autocomplete
+  // All primitive names for contextual autocomplete
   const nodeNames = NODES.map(n => n.id);
   const allCmds = [
     'init', 'dream', 'discover', 'stream', 'score', 'validate', 'export',
@@ -945,7 +945,7 @@ async function cmdShell() {
     'demo', 'explain',
     'help', 'version', 'exit', 'quit',
   ];
-  // Commands that accept node names as args
+  // Commands that accept primitive names as args
   const nodeArgCmds = ['ping', 'inspect', 'explain', 'watch', 'logs', 'nodes'];
 
   // Build context-aware prompt
@@ -961,7 +961,7 @@ async function cmdShell() {
       const parts = line.trim().split(/\s+/);
       const cmd = parts[0]?.toLowerCase() ?? '';
 
-      // If typing second arg and command takes node names, complete node names
+      // If typing second arg and command takes primitive names, complete primitive names
       if (parts.length >= 2 && nodeArgCmds.includes(cmd)) {
         const partial = parts[parts.length - 1].toUpperCase();
         const hits = nodeNames.filter(n => n.startsWith(partial));
@@ -1747,12 +1747,12 @@ async function cmdInspect(args: string[]) {
 }
 
 async function cmdTopology() {
-  const sectors = new Map<string, typeof NODES>();
-  for (const n of NODES) { const s = sectors.get(n.category) ?? []; s.push(n); sectors.set(n.category, s); }
+  const categories = new Map<string, typeof NODES>();
+  for (const n of NODES) { const s = categories.get(n.category) ?? []; s.push(n); categories.set(n.category, s); }
 
   if (JSON_MODE) {
     const out: Record<string, unknown[]> = {};
-    for (const [k, v] of sectors) out[k] = v;
+    for (const [k, v] of categories) out[k] = v;
     jsonOut(out);
     return;
   }
