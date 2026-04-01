@@ -28,6 +28,14 @@ import * as readline from 'readline';
 import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 import { preKeyHook } from './pre-key-hook';
+import {
+  getAgentName, setAgentName, saveBookmark, getBookmark,
+  recordSessionStart, getStreak, incrementMemoryCount,
+  addTodo, completeTodo, removeTodo, getTodos,
+  addPin, removePin, getPins,
+  getWelcomeBackData, getFullState,
+  type WelcomeBackData,
+} from './session';
 import { runInstallWizard } from './install-wizard';
 
 // ═══════════════════════════════════════════════════════════════
@@ -544,12 +552,25 @@ export async function run(args: string[]): Promise<void> {
 
   const command = args[0]?.toLowerCase();
 
+  // Record session start for streak tracking
+  if (command && command !== 'version' && command !== '--version' && command !== '-v') {
+    recordSessionStart();
+  }
+
   // First-run detection
   if (!command || command === 'help' || command === '--help' || command === '-h') {
     const hasManifest = fs.existsSync(path.resolve('cmpsbl-manifest.json'));
     const hasConfig = fs.existsSync(path.resolve('.cmpsbl/config.json'));
     if (!hasManifest && !hasConfig && command !== 'help') {
       return cmdOnboarding();
+    }
+    // Returning user — show welcome-back before help
+    if (command !== 'help' && command !== '--help' && command !== '-h') {
+      const data = getWelcomeBackData();
+      if (data.bookmark || data.openTodos.length > 0 || data.pins.length > 0) {
+        renderWelcomeBack(data);
+        return;
+      }
     }
     printHelp();
     return;
@@ -603,6 +624,14 @@ export async function run(args: string[]): Promise<void> {
       // ── Governance ──
       case 'govern':       await cmdGovern(args.slice(1)); break;
       case 'treaty':       await cmdTreaty(args.slice(1)); break;
+      // ── Personality ──
+      case 'name':         await cmdName(args.slice(1)); break;
+      case 'todo':         await cmdTodo(args.slice(1)); break;
+      case 'done':         await cmdDone(args.slice(1)); break;
+      case 'pin':          await cmdPin(args.slice(1)); break;
+      case 'unpin':        await cmdUnpin(args.slice(1)); break;
+      case 'next':         await cmdNext(); break;
+      case 'welcome':      await cmdWelcome(); break;
       // ── Guided ──
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
@@ -662,6 +691,15 @@ function printHelp() {
     reflect [topic]         ECHO resonance & pattern replay
     remember <input>        MEMORY store & semantic retrieval
     forget <chain-id>       MEMORY prune a chain
+
+  ── Personality ──────────────────────────────────
+    name <name>             Name your agent (persists forever)
+    todo <task>             Add a task to your ledger
+    done <#|id>             Complete a task
+    pin <note>              Pin a thought for later
+    unpin <#|id>            Remove a pin
+    next                    DREAM-powered next steps & gap analysis
+    welcome                 Show welcome-back summary
 
   ── Discovery ────────────────────────────────────
     discover <input>        Start live discovery on an input
@@ -728,7 +766,7 @@ function printHelp() {
     CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
-  ${c.muted('46 commands · 40 primitives · cmpsbl.com')}
+  ${c.muted('52 commands · 40 primitives · cmpsbl.com')}
 `);
 }
 
@@ -868,6 +906,7 @@ async function cmdShell() {
     'whoami', 'login', 'logout', 'watch', 'logs', 'doctor',
     'topology', 'route', 'benchmark', 'diff', 'changelog',
     'think', 'reflect', 'remember', 'forget',
+    'name', 'todo', 'done', 'pin', 'unpin', 'next', 'welcome',
     'forge', 'harvest', 'translate', 'sandbox',
     'scan', 'predict', 'audit', 'cost',
     'threat', 'immune', 'govern', 'treaty',
@@ -910,8 +949,10 @@ async function cmdShell() {
       const trimmed = line.trim();
       if (!trimmed) { rl.prompt(); return; }
       if (trimmed === 'exit' || trimmed === 'quit') {
+        // Save session bookmark on exit
+        saveBookmark('Interactive shell session', trimmed);
         sayOk(pick(V.ok));
-        say('Session ended.');
+        say('Session bookmarked. See you next time.');
         blank();
         rl.close();
         resolve();
@@ -2360,6 +2401,10 @@ async function cmdRemember(args: string[]) {
   blank();
   say(c.dim(`  Recall: ${c.cyan('cmpsbl stream')} · Prune: ${c.cyan(`cmpsbl forget ${chainId}`)}`));
   blank();
+
+  // Track memory for session continuity
+  incrementMemoryCount();
+  saveBookmark(`Stored memory: "${input.slice(0, 50)}"`, 'remember');
 }
 
 async function cmdForget(args: string[]) {
@@ -2884,6 +2929,359 @@ async function cmdTreaty(args: string[]) {
   blank();
   say(pick(V.ok));
   blank();
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Commands — Personality (name, todo, pin, next, welcome)
+// ═══════════════════════════════════════════════════════════════
+
+async function cmdName(args: string[]) {
+  const name = args.join(' ');
+  if (!name) {
+    const current = getAgentName();
+    if (JSON_MODE) { jsonOut({ name: current }); return; }
+    if (current) {
+      say(`  Your agent's name is ${c.bold(c.cyan(current))}`);
+    } else {
+      say('  Your agent has no name yet.');
+      say(`  Usage: ${c.cyan('cmpsbl name <name>')}`);
+    }
+    blank();
+    return;
+  }
+
+  const identity = setAgentName(name);
+  if (JSON_MODE) { jsonOut({ name: identity.name, namedAt: identity.namedAt }); return; }
+
+  blank();
+  box([
+    `◈ IDENTITY BOUND`,
+    '',
+    `Your agent is now ${c.bold(identity.name)}.`,
+    `This name persists across all sessions.`,
+    '',
+    `${identity.name} will remember you.`,
+  ], 'MEMORY');
+  blank();
+  say(pick(V.ok));
+  blank();
+}
+
+async function cmdTodo(args: string[]) {
+  const text = args.join(' ');
+
+  // No args — show list
+  if (!text) {
+    const todos = getTodos();
+    if (JSON_MODE) { jsonOut({ todos, count: todos.length }); return; }
+
+    const agentName = getAgentName() ?? 'Substrate';
+    header(`${agentName} — Task Ledger`);
+
+    if (todos.length === 0) {
+      say('  No open tasks.');
+      say(`  Add one: ${c.cyan('cmpsbl todo <task>')}`);
+    } else {
+      for (let i = 0; i < todos.length; i++) {
+        const t = todos[i];
+        const age = daysSinceStr(t.createdAt);
+        const ageStr = age ? c.muted(` (${age})`) : '';
+        const urgentMarker = daysSince(t.createdAt) >= 2 ? ` ${c.amber('⚠')}` : '';
+        say(`  ${c.muted(`${i + 1}.`)} □ ${t.text}${ageStr}${urgentMarker}`);
+      }
+    }
+    blank();
+    say(c.dim(`  Complete: ${c.cyan('cmpsbl done <#>')} · Remove: ${c.cyan('cmpsbl todo --rm <#>')}`));
+    blank();
+    return;
+  }
+
+  // --rm flag
+  if (text.startsWith('--rm ')) {
+    const target = text.slice(5).trim();
+    const removed = removeTodo(target);
+    if (JSON_MODE) { jsonOut({ removed }); return; }
+    if (removed) sayOk('  ✓ Task removed');
+    else sayErr('  Task not found');
+    blank();
+    return;
+  }
+
+  // Add new task
+  const item = addTodo(text);
+  if (JSON_MODE) { jsonOut({ added: true, id: item.id, text: item.text }); return; }
+
+  const agentName = getAgentName() ?? 'Substrate';
+  sayOk(`  ✓ ${agentName} recorded: "${item.text}"`);
+  say(c.dim(`  Complete with: ${c.cyan(`cmpsbl done 1`)}`));
+  blank();
+}
+
+async function cmdDone(args: string[]) {
+  const target = args[0];
+  if (!target) { say(`  Usage: ${c.cyan('cmpsbl done <# or id>')}`); blank(); return; }
+
+  const completed = completeTodo(target);
+  if (JSON_MODE) { jsonOut({ completed: !!completed, task: completed }); return; }
+
+  if (completed) {
+    sayOk(`  ✓ Completed: "${completed.text}"`);
+    const remaining = getTodos();
+    if (remaining.length > 0) {
+      say(c.dim(`  ${remaining.length} task${remaining.length > 1 ? 's' : ''} remaining`));
+    } else {
+      say(`  ${c.green('★')} All tasks complete!`);
+    }
+  } else {
+    sayErr('  Task not found or already completed');
+  }
+  blank();
+}
+
+async function cmdPin(args: string[]) {
+  const text = args.join(' ');
+
+  // No args — show pins
+  if (!text) {
+    const pins = getPins();
+    if (JSON_MODE) { jsonOut({ pins, count: pins.length }); return; }
+
+    const agentName = getAgentName() ?? 'Substrate';
+    header(`${agentName} — Pinned Notes`);
+
+    if (pins.length === 0) {
+      say('  No pinned notes.');
+      say(`  Pin one: ${c.cyan('cmpsbl pin <note>')}`);
+    } else {
+      for (let i = 0; i < pins.length; i++) {
+        const p = pins[i];
+        const age = daysSinceStr(p.pinnedAt);
+        say(`  ${c.muted(`${i + 1}.`)} 📌 ${p.text}${age ? c.muted(` (${age})`) : ''}`);
+      }
+    }
+    blank();
+    say(c.dim(`  Remove: ${c.cyan('cmpsbl unpin <#>')}`));
+    blank();
+    return;
+  }
+
+  // Add new pin
+  const pin = addPin(text);
+  if (JSON_MODE) { jsonOut({ pinned: true, id: pin.id, text: pin.text }); return; }
+
+  const agentName = getAgentName() ?? 'Substrate';
+  sayOk(`  📌 ${agentName} pinned: "${pin.text}"`);
+  say(c.dim('  This will surface on your next session.'));
+  blank();
+}
+
+async function cmdUnpin(args: string[]) {
+  const target = args[0];
+  if (!target) { say(`  Usage: ${c.cyan('cmpsbl unpin <# or id>')}`); blank(); return; }
+
+  const removed = removePin(target);
+  if (JSON_MODE) { jsonOut({ removed }); return; }
+
+  if (removed) sayOk('  ✓ Pin removed');
+  else sayErr('  Pin not found');
+  blank();
+}
+
+async function cmdNext() {
+  await requireApiKey();
+
+  const agentName = getAgentName() ?? 'Substrate';
+  const data = getWelcomeBackData();
+  const chains = getMemoryStream();
+
+  if (JSON_MODE) {
+    jsonOut({
+      agentName: data.agentName,
+      openTodos: data.openTodos,
+      pins: data.pins,
+      streak: data.streak,
+      memoryStreamChains: chains.length,
+    });
+    return;
+  }
+
+  header(`${agentName} — Substrate Projection`);
+
+  // DREAM-powered analysis
+  const s = spinner('Analyzing recent substrate activity...');
+  await sleep(randomInt(600, 900));
+  s.update('Reviewing DREAM journal...');
+  await sleep(randomInt(400, 600));
+  s.update('Computing gap analysis...');
+  await sleep(randomInt(400, 600));
+  s.stop('Projection complete');
+  blank();
+
+  // Generate contextual next steps based on what we know
+  const steps: Array<{ text: string; source: string; impact: string }> = [];
+
+  // From open todos
+  for (const todo of data.openTodos.slice(0, 2)) {
+    const age = daysSince(todo.createdAt);
+    steps.push({
+      text: todo.text,
+      source: 'task ledger',
+      impact: age >= 2 ? 'overdue' : 'active',
+    });
+  }
+
+  // From pins
+  for (const pin of data.pins.slice(0, 1)) {
+    steps.push({
+      text: `Investigate: ${pin.text}`,
+      source: 'pinned note',
+      impact: 'flagged',
+    });
+  }
+
+  // DREAM-powered suggestions (based on memory stream state)
+  if (chains.length > 0) {
+    steps.push({
+      text: `Review ${chains.length} Memory Stream chain${chains.length > 1 ? 's' : ''} for crystallization opportunities`,
+      source: 'DREAM journal',
+      impact: 'high',
+    });
+  }
+
+  if (data.streak.totalMemoriesStored > 5 && data.streak.totalMemoriesStored < 20) {
+    steps.push({
+      text: 'Your memory graph is growing — consider running a DREAM cycle to consolidate patterns',
+      source: 'DREAM Engine',
+      impact: 'recommended',
+    });
+  }
+
+  // Fallback if no steps
+  if (steps.length === 0) {
+    steps.push(
+      { text: 'Store your first memories with `cmpsbl remember`', source: 'onboarding', impact: 'start' },
+      { text: 'Run a discovery with `cmpsbl discover <topic>`', source: 'onboarding', impact: 'start' },
+      { text: 'Trigger a DREAM cycle with `cmpsbl dream`', source: 'onboarding', impact: 'start' },
+    );
+  }
+
+  // Render
+  say(c.bold('  Recommended next steps:'));
+  blank();
+  for (let i = 0; i < Math.min(steps.length, 4); i++) {
+    const step = steps[i];
+    const impactColor = step.impact === 'overdue' ? c.amber : step.impact === 'high' ? c.green : c.muted;
+    say(`  ${c.bold(`${i + 1}.`)} ${step.text}`);
+    say(`     ${c.dim(`Source: ${step.source}`)} ${impactColor(`[${step.impact}]`)}`);
+  }
+  blank();
+
+  // Streak
+  if (data.streak.currentStreak > 1) {
+    say(`  ${c.green('🔥')} Day ${data.streak.currentStreak} streak · ${data.streak.totalMemoriesStored} memories · ${data.streak.totalTasksCompleted} tasks completed`);
+    blank();
+  }
+
+  if (isInteractiveTTY() && steps.length > 0) {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    await new Promise<void>((resolve) => {
+      rl.question(`  Begin with step 1? ${c.dim('[Y/n/discuss]')} `, (answer: string) => {
+        rl.close();
+        const a = answer.trim().toLowerCase();
+        if (a === 'n') {
+          say(pick(V.idle));
+        } else if (a === 'discuss' || a === 'd') {
+          say(`  ${agentName}: Let's talk. What's on your mind?`);
+        } else {
+          sayOk(`  ${agentName}: On it. Starting with: ${steps[0].text}`);
+        }
+        blank();
+        resolve();
+      });
+    });
+  }
+}
+
+async function cmdWelcome() {
+  const data = getWelcomeBackData();
+  if (JSON_MODE) { jsonOut(data); return; }
+  renderWelcomeBack(data);
+}
+
+function renderWelcomeBack(data: WelcomeBackData): void {
+  const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos } = data;
+
+  blank();
+  say(c.muted('  ┌─────────────────────────────────────────────────┐'));
+  say(c.muted('  │') + c.bold(c.cyan(`  ◆ ${agentName.toUpperCase()} · Welcome back`)) + ' '.repeat(Math.max(0, 30 - agentName.length)) + c.muted('│'));
+  say(c.muted('  │') + c.muted('                                                 │'));
+
+  // Last session
+  if (bookmark) {
+    say(c.muted('  │') + `  Last session: ${c.dim(timeSinceLastSession)}` + ' '.repeat(Math.max(0, 33 - timeSinceLastSession.length)) + c.muted('│'));
+    const summaryLine = bookmark.summary.length > 40 ? bookmark.summary.slice(0, 40) + '…' : bookmark.summary;
+    say(c.muted('  │') + `  You were: ${c.dim(summaryLine)}` + ' '.repeat(Math.max(0, 37 - summaryLine.length)) + c.muted('│'));
+  } else {
+    say(c.muted('  │') + `  ${c.dim('First session detected.')}` + ' '.repeat(26) + c.muted('│'));
+  }
+
+  say(c.muted('  │') + c.muted('                                                 │'));
+
+  // Streak
+  if (streak.currentStreak > 1) {
+    const streakLine = `Day ${streak.currentStreak} streak 🔥`;
+    say(c.muted('  │') + `  ${c.green(streakLine)}` + ' '.repeat(Math.max(0, 39 - streakLine.length)) + c.muted('│'));
+  }
+
+  // Open tasks
+  if (openTodos.length > 0) {
+    say(c.muted('  │') + `  ${openTodos.length} open task${openTodos.length > 1 ? 's' : ''}${urgentTodos.length > 0 ? ` (${urgentTodos.length} overdue ⚠)` : ''}` + ' '.repeat(Math.max(0, 25)) + c.muted('│'));
+  }
+
+  // Pins
+  if (pins.length > 0) {
+    say(c.muted('  │') + `  ${pins.length} pinned note${pins.length > 1 ? 's' : ''} 📌` + ' '.repeat(Math.max(0, 30)) + c.muted('│'));
+  }
+
+  say(c.muted('  │') + c.muted('                                                 │'));
+  say(c.muted('  └─────────────────────────────────────────────────┘'));
+  blank();
+
+  // Show urgent todos inline
+  if (urgentTodos.length > 0) {
+    say(c.amber('  ⚠ Overdue tasks:'));
+    for (const t of urgentTodos.slice(0, 3)) {
+      say(`    □ ${t.text} ${c.muted(`(${daysSinceStr(t.createdAt)})`)}`);
+    }
+    blank();
+  }
+
+  // Show pins inline
+  if (pins.length > 0) {
+    say('  📌 Pinned:');
+    for (const p of pins.slice(0, 3)) {
+      say(`    ${p.text} ${c.muted(`(${daysSinceStr(p.pinnedAt)})`)}`);
+    }
+    blank();
+  }
+
+  // Quick actions
+  say(c.dim('  ► cmpsbl next         See recommended next steps'));
+  say(c.dim('  ► cmpsbl todo         View your task ledger'));
+  say(c.dim('  ► cmpsbl pin          View your pinned notes'));
+  blank();
+}
+
+// Utility for personality commands
+function daysSince(isoTimestamp: string): number {
+  return Math.floor((Date.now() - new Date(isoTimestamp).getTime()) / 86400000);
+}
+
+function daysSinceStr(isoTimestamp: string): string {
+  const d = daysSince(isoTimestamp);
+  if (d === 0) return 'today';
+  if (d === 1) return 'yesterday';
+  return `${d} days ago`;
 }
 
 // ═══════════════════════════════════════════════════════════════
