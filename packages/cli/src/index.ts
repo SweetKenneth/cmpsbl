@@ -3378,8 +3378,12 @@ async function cmdWelcome() {
   markDreamDigestChecked();
 }
 
-function renderWelcomeBack(data: WelcomeBackData): void {
+async function renderWelcomeBack(data: WelcomeBackData): Promise<void> {
   const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos, goal, dreamDigestNew } = data;
+
+  // Determine if DREAM has news (for #3 — announcement takes priority over inline)
+  const hasDreamNews = dreamDigestNew.length > 0 && bookmark?.timestamp
+    && dreamDigestNew.some(d => new Date(d.crystallizedAt) > new Date(bookmark.timestamp));
 
   blank();
   say(c.muted('  ┌─────────────────────────────────────────────────┐'));
@@ -3422,10 +3426,18 @@ function renderWelcomeBack(data: WelcomeBackData): void {
 
   say(c.muted('  │') + c.muted('                                                 │'));
   say(c.muted('  └─────────────────────────────────────────────────┘'));
+
+  // #2: Memory heartbeat — breathing pulse after box
+  await memoryHeartbeat(2000);
   blank();
 
-  // DREAM Digest — what happened while you were away
-  if (dreamDigestNew.length > 0) {
+  // #3: DREAM announces itself unprompted (replaces inline digest)
+  if (hasDreamNews) {
+    await sleep(600);
+    say('  ◆ DREAM — I found something while you were away. Run cmpsbl dream --last to see it.');
+    blank();
+  } else if (dreamDigestNew.length > 0) {
+    // Fallback: show inline if no bookmark-delta but entries exist
     say(c.bold(c.cyan('  💤 While you were away, DREAM crystallized:')));
     blank();
     for (const entry of dreamDigestNew.slice(0, 4)) {
