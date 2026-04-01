@@ -2071,35 +2071,39 @@ async function cmdPing(args: string[]) {
 async function cmdInspect(args: string[]) {
   const target = args[0]?.toUpperCase();
   if (!target) { say('Usage: cmpsbl inspect <node>'); return; }
+  const apiKey = resolveApiKey();
+
+  // Try live inspection first
+  const result = await substrateCall('atlas', 'inspect', { target, source: 'cli' }, apiKey ?? undefined);
+  if (result.success && result.data) {
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    header(`Inspecting ${target} (LIVE)`);
+    blank();
+    renderGatewayResponse(`atlas.inspect`, result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
+  }
+
+  // Fallback to local
   const node = NODES.find(n => n.id === target);
   if (!node) { say(pick(V.err)); say(`Primitive "${target}" not found.`); blank(); return; }
 
   const data = {
     node: node.id, sector: node.category, role: node.role, status: node.status, health: node.health,
-    uptime: +(99.5 + Math.random() * 0.5).toFixed(2),
-    resolvers: Math.round(3 + Math.random() * 12),
-    intents24h: Math.round(50 + Math.random() * 500),
-    avgLatency: Math.round(2 + Math.random() * 8),
     matrixLinks: NODES.filter(n => n.category === node.category && n.id !== node.id).map(n => n.id),
   };
 
   if (JSON_MODE) { jsonOut(data); return; }
-  header(`Inspecting ${node.id}`);
-  const s = spinner(pick(V.think));
-  await sleep(600);
-  s.stop('Inspection complete');
+  header(`Inspecting ${node.id} (LOCAL)`);
   blank();
-
   table(['Property', 'Value'], [
     ['Primitive', data.node],
     ['Category', data.sector],
     ['Role', data.role],
     ['Status', data.status],
     ['Health', `${data.health}%`],
-    ['Uptime', `${data.uptime}%`],
-    ['Resolvers', String(data.resolvers)],
-    ['Intents (24h)', String(data.intents24h)],
-    ['Avg Latency', `${data.avgLatency}ms`],
     ['Matrix Links', data.matrixLinks.join(', ') || 'isolated'],
   ]);
   blank();
