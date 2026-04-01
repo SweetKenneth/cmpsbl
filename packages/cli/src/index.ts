@@ -1232,6 +1232,7 @@ async function cmdShell() {
     'topology', 'route', 'benchmark', 'diff', 'changelog',
     'think', 'reflect', 'remember', 'forget',
     'name', 'todo', 'done', 'pin', 'unpin', 'goal', 'advance', 'next', 'welcome',
+    'simulate', 'train', 'learn',
     'forge', 'harvest', 'translate', 'sandbox',
     'scan', 'predict', 'audit', 'cost',
     'threat', 'immune', 'govern', 'treaty',
