@@ -229,7 +229,7 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
             )}>
               {item.stat}
             </div>
-            <div className="text-[10px] text-muted-foreground">{item.statLabel}</div>
+            <div className="text-xs text-muted-foreground">{item.statLabel}</div>
           </div>
         </div>
         
