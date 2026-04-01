@@ -3353,13 +3353,16 @@ async function cmdNext() {
     });
   }
 }
+
+async function cmdWelcome() {
   const data = getWelcomeBackData();
   if (JSON_MODE) { jsonOut(data); return; }
   renderWelcomeBack(data);
+  markDreamDigestChecked();
 }
 
 function renderWelcomeBack(data: WelcomeBackData): void {
-  const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos } = data;
+  const { agentName, timeSinceLastSession, bookmark, streak, openTodos, pins, urgentTodos, goal, dreamDigestNew } = data;
 
   blank();
   say(c.muted('  ┌─────────────────────────────────────────────────┐'));
@@ -3383,6 +3386,13 @@ function renderWelcomeBack(data: WelcomeBackData): void {
     say(c.muted('  │') + `  ${c.green(streakLine)}` + ' '.repeat(Math.max(0, 39 - streakLine.length)) + c.muted('│'));
   }
 
+  // Goal progress inside the box
+  if (goal) {
+    const pct = Math.round((goal.completedSteps / goal.totalSteps) * 100);
+    say(c.muted('  │') + `  ${c.cyan('◎')} ${goal.text.length > 38 ? goal.text.slice(0, 38) + '…' : goal.text}` + ' '.repeat(Math.max(0, 10)) + c.muted('│'));
+    say(c.muted('  │') + `  ${progressBar(goal.completedSteps, goal.totalSteps, 25)} ${pct}%` + ' '.repeat(Math.max(0, 18)) + c.muted('│'));
+  }
+
   // Open tasks
   if (openTodos.length > 0) {
     say(c.muted('  │') + `  ${openTodos.length} open task${openTodos.length > 1 ? 's' : ''}${urgentTodos.length > 0 ? ` (${urgentTodos.length} overdue ⚠)` : ''}` + ' '.repeat(Math.max(0, 25)) + c.muted('│'));
@@ -3396,6 +3406,20 @@ function renderWelcomeBack(data: WelcomeBackData): void {
   say(c.muted('  │') + c.muted('                                                 │'));
   say(c.muted('  └─────────────────────────────────────────────────┘'));
   blank();
+
+  // DREAM Digest — what happened while you were away
+  if (dreamDigestNew.length > 0) {
+    say(c.bold(c.cyan('  💤 While you were away, DREAM crystallized:')));
+    blank();
+    for (const entry of dreamDigestNew.slice(0, 4)) {
+      say(`    ${c.green('◇')} ${entry.insight}`);
+      say(`      ${c.dim(`Source: ${entry.source} · ${daysSinceStr(entry.crystallizedAt)}`)}`);
+    }
+    if (dreamDigestNew.length > 4) {
+      say(c.dim(`    ... and ${dreamDigestNew.length - 4} more insight${dreamDigestNew.length - 4 > 1 ? 's' : ''}`));
+    }
+    blank();
+  }
 
   // Show urgent todos inline
   if (urgentTodos.length > 0) {
@@ -3419,6 +3443,7 @@ function renderWelcomeBack(data: WelcomeBackData): void {
   say(c.dim('  ► cmpsbl next         See recommended next steps'));
   say(c.dim('  ► cmpsbl todo         View your task ledger'));
   say(c.dim('  ► cmpsbl pin          View your pinned notes'));
+  if (goal) say(c.dim('  ► cmpsbl goal         View objective progress'));
   blank();
 }
 
