@@ -28,6 +28,7 @@ import * as readline from 'readline';
 import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 import { preKeyHook } from './pre-key-hook';
+import { runInstallWizard } from './install-wizard';
 
 // ═══════════════════════════════════════════════════════════════
 // Personality
