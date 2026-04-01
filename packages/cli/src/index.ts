@@ -571,7 +571,7 @@ export async function run(args: string[]): Promise<void> {
     if (command !== 'help' && command !== '--help' && command !== '-h') {
       const data = getWelcomeBackData();
       if (data.bookmark || data.openTodos.length > 0 || data.pins.length > 0) {
-        renderWelcomeBack(data);
+        await renderWelcomeBack(data);
         return;
       }
     }
