@@ -657,9 +657,32 @@ export async function run(args: string[]): Promise<void> {
       case '-v':
         if (JSON_MODE) jsonOut({ version: CLI_VERSION }); else say(`@cmpsbl/cli v${CLI_VERSION}`);
         break;
+      // ── Governor ──
+      case 'heal':         await cmdGateway('system.heal', args.slice(1)); break;
+      case 'diagnostics':  await cmdGateway('system.diagnostics', args.slice(1)); break;
+      case 'evolve':       await cmdGateway('evolution.evolve', args.slice(1)); break;
+      case 'mode':         await cmdMode(args.slice(1)); break;
+      case 'restore':      await cmdGateway('system.restore', args.slice(1)); break;
+      case 'repair':       await cmdGateway('system.repair', args.slice(1)); break;
+      case 'backup':       await cmdGateway('system.backup', args.slice(1)); break;
+      case 'resilience':   await cmdGateway('system.resilience', args.slice(1)); break;
+      case 'engine':       await cmdGateway(`engine.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'seba':         await cmdGateway(`seba.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'atlas':        await cmdGateway(`atlas.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'memory':       await cmdGateway(`memory.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'relay':        await cmdGateway(`relay.${args[1] || 'status'}`, args.slice(2)); break;
+      case 'cron':         await cmdGateway(`cron.${args[1] || 'list'}`, args.slice(2)); break;
+      case 'snapshot':     await cmdGateway(`snapshot.${args[1] || 'list'}`, args.slice(2)); break;
+      case 'intent':       await cmdGateway(`intent.${args[1] || 'inbox'}`, args.slice(2)); break;
       default:
-        say(`Unknown command: ${command}`);
-        say('Run `cmpsbl help` for available commands.');
+        // ── Universal Gateway: dot-notation commands (e.g. brain.status, system.heal) ──
+        if (command.includes('.')) {
+          await cmdGateway(command, args.slice(1));
+        } else {
+          say(`Unknown command: ${command}`);
+          say('Run `cmpsbl help` for available commands.');
+          say(c.dim('Tip: Use dot-notation for any terminal command, e.g. cmpsbl brain.status'));
+        }
         break;
     }
 
