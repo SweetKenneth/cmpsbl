@@ -452,7 +452,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
             ) : (
               <Download className="w-4 h-4" />
             )}
-            {isBuilderTier ? 'Upgrade to Export' : `Download All ${eligible.length + (verticalResult?.discoveries?.length || 0)} Capabilities (.zip)`}
+            {isBuilderTier ? 'Upgrade to Export' : `Download All ${eligible.length} ${verticalResult?.discoveries?.length ? 'Super Agents' : 'Capabilities'} (.zip)`}
           </Button>
         )}
       </div>

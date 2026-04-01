@@ -560,7 +560,7 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
             className="text-xs h-11 min-h-[44px] rounded-xl w-full max-w-xs gap-1.5 shadow-[0_0_12px_hsl(var(--primary)/0.15)]"
           >
             <ArrowRight className="w-3.5 h-3.5" />
-            Continue to Export with {revealedDiscoveries.length} Features
+            Continue to Export with {revealedDiscoveries.length} Super Agents
           </Button>
         )}
       </div>
