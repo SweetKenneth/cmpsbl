@@ -1197,9 +1197,13 @@ async function cmdOnboarding() {
         await cmdInit([], { skipCeremony: true });
         // After init, offer the First Dream
         await offerFirstDream();
+        // Offer optional simulation
+        await offerSimulation();
       } else {
         say('No problem. Run `cmpsbl init` when you\'re ready.');
         say(pick(V.idle));
+        // Still offer simulation for non-project users
+        await offerSimulation();
         blank();
       }
       resolve();
