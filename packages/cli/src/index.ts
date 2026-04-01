@@ -606,6 +606,7 @@ export async function run(args: string[]): Promise<void> {
       case 'demo':         await cmdDemo(); break;
       case 'explain':      cmdExplain(args.slice(1)); break;
       // ── Ecosystem ──
+      case 'install':      await cmdInstallWizard(args.slice(1)); break;
       case 'deps':         cmdDeps(); break;
       case 'publish-order': cmdPublishOrder(); break;
       case 'version':
