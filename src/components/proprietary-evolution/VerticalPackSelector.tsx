@@ -265,13 +265,13 @@ export function VerticalPackSelector({ onComplete, onSkip }: Props) {
               Vertical Pack — Optional
             </span>
           </div>
-          <h3 className="text-lg font-bold text-foreground">
-            Stack Specialized Discovery
-          </h3>
-          <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
-            Run an additional 5-primitive pass tuned for a specific domain.
-            Discoveries stack on top of your base Ascension results.
-          </p>
+           <h3 className="text-lg font-bold text-foreground">
+             Upgrade to Super Agents
+           </h3>
+           <p className="text-xs text-muted-foreground max-w-md mx-auto leading-relaxed">
+             Merge specialized agent personas into your base discoveries.
+             Same {baseDiscoveries.length || 5} capabilities — each upgraded with domain expertise.
+           </p>
         </div>
       )}
 
