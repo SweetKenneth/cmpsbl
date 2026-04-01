@@ -3374,7 +3374,7 @@ async function cmdNext() {
 async function cmdWelcome() {
   const data = getWelcomeBackData();
   if (JSON_MODE) { jsonOut(data); return; }
-  renderWelcomeBack(data);
+  await renderWelcomeBack(data);
   markDreamDigestChecked();
 }
 
