@@ -3256,45 +3256,25 @@ async function cmdScan(args: string[]) {
 async function cmdPredict(args: string[]) {
   const scenario = args.join(' ');
   if (!scenario) { say('Usage: cmpsbl predict <scenario>'); return; }
-  await requireApiKey();
+  const apiKey = await requireApiKey();
 
   if (!JSON_MODE) header('ORACLE — Predictive Intelligence');
+  const s = !JSON_MODE ? spinner('Running prediction networks...') : null;
 
-  const s = !JSON_MODE ? spinner('Running Bayesian prediction networks...') : null;
-  await sleep(500);
-  s?.update('Monte Carlo scenario simulation...');
-  await sleep(600);
-  s?.update('Generating prescriptive recommendations...');
-  await sleep(400);
-  s?.stop('Prediction complete');
-
-  const outcomes = [
-    { outcome: 'favorable', probability: +(0.55 + Math.random() * 0.3).toFixed(2), impact: 'high' },
-    { outcome: 'neutral', probability: +(0.1 + Math.random() * 0.2).toFixed(2), impact: 'medium' },
-    { outcome: 'adverse', probability: +(0.05 + Math.random() * 0.15).toFixed(2), impact: 'high' },
-  ];
-  const recommendation = [
-    'Proceed with monitoring — favorable conditions detected',
-    'Pre-allocate resources for demand surge in next 72 hours',
-    'Defensive posture recommended — anomaly probability above threshold',
-    'Opportunity window detected — consider scaling operations',
-  ][Math.floor(Math.random() * 4)];
-
-  if (JSON_MODE) { jsonOut({ scenario, outcomes, recommendation, simulations: 10000 }); return; }
-
-  blank();
-  say(`  Scenario: "${scenario}"`);
-  say(`  Simulations: 10,000 Monte Carlo runs`);
-  blank();
-  for (const o of outcomes) {
-    const bar = progressBar(Math.round(Number(o.probability) * 100), 100, 15);
-    say(`  ${o.outcome.padEnd(12)} ${bar} ${(Number(o.probability) * 100).toFixed(0)}% [${o.impact}]`);
+  const result = await substrateCall('oracle', 'predict', { scenario, source: 'cli' }, apiKey);
+  if (result.success && result.data) {
+    s?.stop('Prediction complete');
+    if (JSON_MODE) { jsonOut(result.data); return; }
+    blank();
+    renderGatewayResponse('oracle.predict', result.data);
+    blank();
+    say(pick(V.ok));
+    blank();
+    return;
   }
-  blank();
-  say(`  ◈ Recommendation: ${recommendation}`);
-  blank();
-  say(pick(V.ok));
-  blank();
+
+  s?.stop('Prediction failed');
+  renderOfflineFallback(result, 'oracle.predict');
 }
 
 async function cmdAudit(args: string[]) {
