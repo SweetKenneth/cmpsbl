@@ -4089,7 +4089,7 @@ async function cmdOverrideConsole(): Promise<void> {
   say(c.red('  ╚═══════════════════════════════════════════════════════════╝'));
   blank();
 
-  // Verification gate — require API key with governor-level access
+  // Verification gate — require API key
   const apiKey = resolveApiKey();
   if (!apiKey || apiKey.startsWith('local-')) {
     say(c.red('  ✗ Override console requires authenticated governor access.'));
@@ -4098,13 +4098,93 @@ async function cmdOverrideConsole(): Promise<void> {
     return;
   }
 
-  // Dramatic entry sequence
+  // Governor authentication — verify role against substrate
   await typewrite('  ◈ Verifying governor authority...', 30);
-  await sleep(400);
+  await sleep(300);
+
+  let isGovernor = false;
+  try {
+    const endpoint = getSubstrateEndpoint();
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'x-api-key': apiKey,
+      },
+      body: JSON.stringify({
+        module: 'governance',
+        action: 'verify_governor',
+        payload: { override_surface: 'edomdog' },
+      }),
+    });
+
+    const data = await res.json() as Record<string, unknown>;
+    isGovernor = data.success === true && data.role === 'governor';
+  } catch {
+    // If substrate is unreachable, allow override access with stored credentials
+    // only if the credentials file contains a governor flag (set during first verification)
+    try {
+      const credsRaw = fs.readFileSync(CREDS_FILE, 'utf-8');
+      const creds = JSON.parse(credsRaw) as Record<string, unknown>;
+      isGovernor = creds.governor_verified === true;
+    } catch {
+      isGovernor = false;
+    }
+
+    if (isGovernor) {
+      say(c.amber('  ⚠ Substrate unreachable — using cached governor credential.'));
+    }
+  }
+
+  if (!isGovernor) {
+    await sleep(400);
+    say(c.red('  ✗ AUTHORITY DENIED'));
+    say(c.red('  ✗ Your credentials do not carry governor privileges.'));
+    say(c.dim('    This attempt has been logged.'));
+    blank();
+
+    // Log the failed attempt via substrate (best-effort)
+    try {
+      const endpoint = getSubstrateEndpoint();
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify({
+          module: 'audit',
+          action: 'log',
+          payload: {
+            event: 'override_console_denied',
+            surface: 'edomdog',
+            timestamp: new Date().toISOString(),
+          },
+        }),
+      });
+    } catch { /* best-effort audit */ }
+
+    return;
+  }
+
+  // Cache governor verification for offline access
+  try {
+    const credsRaw = fs.existsSync(CREDS_FILE) ? fs.readFileSync(CREDS_FILE, 'utf-8') : '{}';
+    const creds = JSON.parse(credsRaw) as Record<string, unknown>;
+    creds.governor_verified = true;
+    creds.governor_verified_at = new Date().toISOString();
+    fs.writeFileSync(CREDS_FILE, JSON.stringify(creds, null, 2));
+  } catch { /* ignore write failures */ }
+
+  // Entry sequence — governor confirmed
+  await typewrite('  ◈ Governor identity confirmed.', 30);
+  await sleep(300);
   await typewrite('  ◈ Disabling rate limiters...', 30);
-  await sleep(300);
+  await sleep(250);
   await typewrite('  ◈ Elevating to unrestricted context...', 30);
-  await sleep(300);
+  await sleep(250);
   say(c.green('  ✓ Governor override active. All safeties disengaged.'));
   blank();
 
