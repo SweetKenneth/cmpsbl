@@ -25,7 +25,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 
-import { spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, c, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
+import { c, spinner, pulseSpinner, meshSpinner, progressBar, animatedList, table, box, setNoColor, healthColor, printFontRecommendation, supportsAnimatedOutput } from './ui';
 import { printSuggestions, printErrorRecovery } from './suggestions';
 import { preKeyHook } from './pre-key-hook';
 import {
