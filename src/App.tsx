@@ -282,6 +282,9 @@ const App = () => {
       <Suspense fallback={null}>
         <DiagPanelLazy />
       </Suspense>
+
+      {/* Invisible ownership watermark */}
+      <InvisibleWatermark />
     </DiagErrorBoundary>
   );
 };
