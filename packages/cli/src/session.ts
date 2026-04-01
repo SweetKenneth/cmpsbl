@@ -135,6 +135,7 @@ function loadState(): SessionState {
       goal: parsed.goal ?? null,
       dreamDigest: Array.isArray(parsed.dreamDigest) ? parsed.dreamDigest : [],
       lastDreamCheckTimestamp: parsed.lastDreamCheckTimestamp ?? null,
+      hasIntroduced: parsed.hasIntroduced ?? false,
       streak: parsed.streak ?? { ...DEFAULT_STATE.streak },
       sessionHistory: Array.isArray(parsed.sessionHistory) ? parsed.sessionHistory : [],
     };
