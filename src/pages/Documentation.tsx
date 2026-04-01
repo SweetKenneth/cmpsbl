@@ -235,6 +235,37 @@ Total: 40 primitives · 4 categories · Σ weights = 1.000`}</CodeBlock>
         </div>
       </div>
 
+      {/* Documentation Libraries */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-4">Documentation Libraries</h3>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Link to="/docs/users" className="group rounded-xl border border-border/50 bg-card/50 p-5 hover:border-primary/30 transition-all duration-300 card-lift">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-lg bg-[hsl(var(--neon-cyan))]/10">
+                <BookOpen className="w-4 h-4 text-[hsl(var(--neon-cyan))]" />
+              </div>
+              <h4 className="font-semibold text-sm">User & Developer Library</h4>
+              <ArrowRight className="w-3.5 h-3.5 ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors" />
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              API reference, primitives guide, CLI & SDK, webhooks, rate limits, agency framework, and getting started tutorials.
+            </p>
+          </Link>
+          <Link to="/docs/system" className="group rounded-xl border border-border/50 bg-card/50 p-5 hover:border-primary/30 transition-all duration-300 card-lift">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-lg bg-[hsl(var(--neon-purple))]/10">
+                <Cpu className="w-4 h-4 text-[hsl(var(--neon-purple))]" />
+              </div>
+              <h4 className="font-semibold text-sm">System Reference Library</h4>
+              <ArrowRight className="w-3.5 h-3.5 ml-auto text-muted-foreground/40 group-hover:text-primary transition-colors" />
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Architecture deep-dives, primitive specifications, memory chains, security model, and governance documentation.
+            </p>
+          </Link>
+        </div>
+      </div>
+
       {/* Quick links */}
       <div className="flex flex-wrap gap-3 pt-2">
         <Button asChild size="sm" variant="outline">
@@ -1385,6 +1416,21 @@ export default function Documentation() {
                 {s.label}
               </button>
             ))}
+            <div className="w-px h-5 bg-border/40 mx-1 self-center shrink-0" />
+            <Link
+              to="/docs/users"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px] text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
+            >
+              <BookOpen className="w-3.5 h-3.5 shrink-0 text-neon-cyan" />
+              User Library
+            </Link>
+            <Link
+              to="/docs/system"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all min-h-[36px] text-muted-foreground hover:text-foreground hover:bg-muted/30 border border-transparent"
+            >
+              <Cpu className="w-3.5 h-3.5 shrink-0 text-neon-purple" />
+              System Library
+            </Link>
           </div>
         </div>
       </div>
@@ -1418,6 +1464,24 @@ export default function Documentation() {
                   <span>{s.label}</span>
                 </button>
               ))}
+              <div className="my-2 mx-2 border-t border-border/30" />
+              <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Libraries</p>
+              <Link
+                to="/docs/users"
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              >
+                <BookOpen className="w-4 h-4 shrink-0 text-neon-cyan" />
+                <span>User Docs</span>
+                <ArrowRight className="w-3 h-3 ml-auto text-muted-foreground/40" />
+              </Link>
+              <Link
+                to="/docs/system"
+                className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left text-muted-foreground hover:text-foreground hover:bg-muted/50"
+              >
+                <Cpu className="w-4 h-4 shrink-0 text-neon-purple" />
+                <span>System Docs</span>
+                <ArrowRight className="w-3 h-3 ml-auto text-muted-foreground/40" />
+              </Link>
             </div>
           </nav>
 
