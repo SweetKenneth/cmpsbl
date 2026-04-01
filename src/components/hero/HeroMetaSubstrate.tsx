@@ -263,13 +263,12 @@ export function HeroMetaSubstrate() {
             {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
               <p className="text-sm sm:text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
-                Build on the substrate with{' '}
-                <span className="text-foreground/90 font-medium">governed primitives</span>.{' '}
-                Capture memory chains in the{' '}
-                <span className="text-foreground/90 font-medium">Memory&nbsp;Stream</span>.{' '}
-                Or wrap your agents and code in{' '}
-                <span className="text-foreground/90 font-medium">Ascension</span>{' '}
-                — where the 40‑Primitive matrix discovers capabilities you didn't know your software&nbsp;had.
+                This isn't a toolkit.{' '}
+                <span className="text-foreground/90 font-medium">It's live infrastructure</span>.{' '}
+                When an agent is born, it's already running. When an engine activates, there's{' '}
+                <span className="text-foreground/90 font-medium">zero&nbsp;setup</span>{' '}
+                — it's done and working. Your identity, memory, and capabilities are wired the moment they exist.{' '}
+                <span className="text-foreground/90 font-medium">Log&nbsp;in&nbsp;and&nbsp;use&nbsp;it</span>.
               </p>
             </FadeIn>
             
