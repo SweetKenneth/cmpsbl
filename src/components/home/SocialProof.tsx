@@ -96,7 +96,7 @@ export function SocialProof() {
                 <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[hsl(var(--neon-purple)/0.2)] to-[hsl(var(--neon-cyan)/0.1)] flex items-center justify-center text-[10px] font-bold text-[hsl(var(--neon-purple))]">{t.author.charAt(0)}</div>
                 <div>
                   <span className="font-semibold text-foreground block leading-tight">{t.author}</span>
-                  {t.role && <span className="text-[11px] text-muted-foreground/60">{t.role}</span>}
+                  {t.role && <span className="text-xs text-muted-foreground/60">{t.role}</span>}
                 </div>
               </div>
             </motion.div>

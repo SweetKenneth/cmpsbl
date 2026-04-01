@@ -164,7 +164,7 @@ export function NpmPackagesCTA() {
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <code className="text-xs font-mono font-semibold text-foreground">{pkg.name}</code>
-                  <Badge variant="outline" className={cn("text-[9px]", TIER_COLORS[pkg.tier])}>
+                  <Badge variant="outline" className={cn("text-[10px]", TIER_COLORS[pkg.tier])}>
                     {pkg.tier}
                   </Badge>
                 </div>

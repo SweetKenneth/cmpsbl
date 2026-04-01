@@ -185,7 +185,7 @@ export function UseCaseShowcase() {
                   </p>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase tracking-wider text-current/60 font-semibold">
+                    <span className="text-xs uppercase tracking-wider text-current/60 font-semibold">
                       {useCase.industry}
                     </span>
                     <motion.div

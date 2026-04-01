@@ -158,7 +158,7 @@ function AudienceCard({ audience, index }: { audience: typeof audiences[0]; inde
               <div className="text-2xl sm:text-3xl font-black" style={{ color: audience.accentColor }}>
                 {audience.stats.value}
               </div>
-              <div className="text-[10px] sm:text-xs text-muted-foreground">
+              <div className="text-xs text-muted-foreground">
                 {audience.stats.label}
               </div>
             </motion.div>

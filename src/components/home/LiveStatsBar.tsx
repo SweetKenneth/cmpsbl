@@ -22,7 +22,7 @@ export function LiveStatsBar() {
 
         {/* Concise value statement */}
         <p
-          className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
+          className="text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
           style={{ animationDelay: "0.15s", animationFillMode: "both" }}
         >
         <span className="text-foreground/90 font-medium">40 primitives</span> coordinating across{' '}

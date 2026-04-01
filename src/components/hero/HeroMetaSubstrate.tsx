@@ -422,7 +422,7 @@ export function HeroMetaSubstrate() {
               ].map((p, i, arr) => (
                 <div key={p.label} className="flex items-center shrink-0">
                   <div className="px-2.5 sm:px-3 py-1 rounded-full border border-border/20 bg-card/20">
-                    <span className="text-[9px] sm:text-[11px] font-bold whitespace-nowrap" style={{ color: `hsl(var(${p.color}))` }}>{p.label}</span>
+                    <span className="text-[10px] sm:text-xs font-bold whitespace-nowrap" style={{ color: `hsl(var(${p.color}))` }}>{p.label}</span>
                   </div>
                   {i < arr.length - 1 && (
                     <span className="text-muted-foreground/20 text-[10px] font-bold px-1">→</span>

@@ -241,7 +241,7 @@ function FeatureCard({ item, idx }: { item: typeof primitives[0]; idx: number })
           )}>
             {item.highlight}
           </div>
-          <span className="text-[10px] font-mono text-muted-foreground/60">{item.node}</span>
+          <span className="text-xs font-mono text-muted-foreground/60">{item.node}</span>
         </div>
         
         {/* Content */}

@@ -89,7 +89,7 @@ export function HowCmpsblWorks() {
             ))}
           </div>
 
-          <p className="text-xs text-muted-foreground/60 text-center mt-6">
+          <p className="text-sm text-muted-foreground/60 text-center mt-6">
             CMPSBL manages memory, orchestration, governance, and continuous improvement automatically.
           </p>
         </motion.div>

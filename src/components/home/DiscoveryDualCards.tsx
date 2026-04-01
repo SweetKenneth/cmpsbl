@@ -173,7 +173,7 @@ export function DiscoveryDualCards() {
         </div>
 
         {/* Bottom note */}
-        <p className="text-center text-[11px] text-muted-foreground/50 mt-6 sm:mt-8">
+        <p className="text-center text-xs text-muted-foreground/50 mt-6 sm:mt-8">
           Both systems share the same governed substrate. Memory Stream <em>discovers</em> — Ascension <em>transforms</em>. Neither touches an LLM.
         </p>
       </div>

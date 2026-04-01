@@ -83,7 +83,7 @@ export function ArtifactPacksSection() {
                   <Icon className={cn("w-5 h-5", colors.color)} />
                 </div>
                 <h3 className="font-bold text-lg sm:text-xl text-foreground mb-1.5">{step.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{step.description}</p>
               </motion.div>
             );
           })}

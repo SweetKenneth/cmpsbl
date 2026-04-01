@@ -159,7 +159,7 @@ export function LoadoutsSection() {
           <p className="text-base sm:text-lg font-semibold text-foreground/80 mb-2">
             You can build here faster than anywhere else.
           </p>
-          <p className="text-xs sm:text-sm text-muted-foreground/60 max-w-xl mx-auto">
+          <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto">
             No boilerplate. No configuration. No wiring authentication, memory, or monitoring.
             Every loadout ships with the full substrate — persistent memory, governed execution,
             self-healing, and continuous learning — already running.
