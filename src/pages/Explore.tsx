@@ -103,13 +103,13 @@ export default function Explore() {
       <LiveStatsBar />
 
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        {/* ═══ NPM SDK ═══ */}
-        <NpmPackagesCTA />
+        {/* ═══ MEMORY STREAM + ASCENSION ═══ */}
+        <DiscoveryDualCards />
 
         <SectionDivider />
 
-        {/* ═══ MEMORY STREAM + ASCENSION ═══ */}
-        <DiscoveryDualCards />
+        {/* ═══ NPM SDK ═══ */}
+        <NpmPackagesCTA />
 
         <SectionDivider />
 
