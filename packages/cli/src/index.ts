@@ -2976,8 +2976,14 @@ async function cmdLoadout(args: string[]) {
   }
 
   if (sub === 'build') {
-    const loadoutId = args[1];
-    if (!loadoutId) { say('Usage: cmpsbl loadout build <loadout-id>'); return; }
+    let loadoutId = args[1];
+    if (!loadoutId) { say('Usage: cmpsbl loadout build <loadout-id or #number>'); return; }
+
+    // Support numerical selection: cmpsbl loadout build 1
+    const numIndex = parseInt(loadoutId, 10);
+    if (!isNaN(numIndex) && numIndex >= 1 && numIndex <= LOADOUT_CATALOG.length) {
+      loadoutId = LOADOUT_CATALOG[numIndex - 1].id;
+    }
 
     const loadout = LOADOUT_CATALOG.find(l => l.id === loadoutId);
     if (!loadout) {
