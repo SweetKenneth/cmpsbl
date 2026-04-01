@@ -48,6 +48,25 @@ const OBFUSCATION_MAP: [RegExp, string][] = [
   [/\b_bootstrapSequence\b/g, '_bs'],
   [/\b_guardEvaluate\b/g, '_ge'],
   [/\b_transitionFire\b/g, '_tf'],
+
+  // Persistent memory adapter internals
+  [/\bclassifyTier\b/g, '_cft'],
+  [/\bcompactCollection\b/g, '_cc'],
+  [/\bfindItem\b/g, '_fi'],
+  [/\blistAll\b/g, '_la'],
+  [/\bwriteItem\b/g, '_wi'],
+  [/\breadItem\b/g, '_ri'],
+  [/\bdeleteItem\b/g, '_di'],
+  [/\bcollectionDir\b/g, '_cdr'],
+  [/\bitemPath\b/g, '_ip'],
+  [/\bhotCache\b/g, '_hc'],
+  [/\bhotMaxMs\b/g, '_hm'],
+  [/\bwarmMaxMs\b/g, '_wm'],
+  [/\bcoldMaxMs\b/g, '_cm'],
+  [/\bMemoryEnvelope\b/g, '_ME'],
+  [/\bMemoryTier\b/g, '_MT'],
+  [/\bautoCompact\b/g, '_ac'],
+  [/\bensureDir\b/g, '_ed'],
 ];
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -80,6 +99,12 @@ const CONSTANT_OBFUSCATION: [RegExp, string][] = [
   [/score >= 80/g, 'score >= _T[1]'],
   [/score >= 65/g, 'score >= _T[2]'],
   [/score >= 45/g, 'score >= _T[3]'],
+
+  // Memory tier thresholds (hours/days → ms)
+  [/hotMaxHours\s*\?\?\s*24/g, '_MH[0]'],
+  [/warmMaxDays\s*\?\?\s*7/g, '_MH[1]'],
+  [/coldMaxDays\s*\?\?\s*parseInt\([^)]+\)/g, '_MH[2]'],
+  [/'90'/g, "'' + _MH[3]"],
 ];
 
 /**
@@ -93,6 +118,7 @@ function getObfuscatedConstants(lang: string): string {
     return `${c} Sealed scoring parameters — DO NOT MODIFY
 const _W = [0x1E, 0x1E, 0x14, 0x14].map(v => v / 100);
 const _T = [0x5C, 0x50, 0x41, 0x2D];
+const _MH = [0x18, 0x07, 0x5A, 0x5A];
 `;
   }
   
