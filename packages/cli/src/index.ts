@@ -762,11 +762,29 @@ function printHelp() {
   ── Governance ───────────────────────────────────
     govern [policy]         GOVERNANCE policy check & mode
     treaty [status]         TREATY trust contracts
+    mode [get|set <mode>]   Governance mode (ACTIVE/MAINTENANCE/etc)
+
+  ── Governor ─────────────────────────────────────
+    heal [target] [force]   Self-healing trigger
+    diagnostics [--full]    Full system diagnostics
+    evolve [shadow|prod]    Unified Evolution Cycle
+    repair                  Self-repair loop (3 attempts)
+    resilience [role]       Resilience snapshot (circuits + heals)
+    backup [include_data]   Create backup snapshot
+    restore <backup_id>     Restore from backup
+    engine <sub>            Engine system (status|list|run|get)
+    seba <sub>              SEBA agent (status|cycle|propose|approve)
+    atlas <sub>             ATLAS control plane (status|capabilities)
+    memory <sub>            MEMORY module (status|recall|tiers)
+    relay <sub>             RELAY outbound hub (status|queue)
+    cron <sub>              Cron jobs (list|start|stop|trigger)
+    snapshot <sub>          State snapshots (list|capture|diff)
+    intent <sub>            INTENT Hub (inbox|stats|approve)
 
   ── System ───────────────────────────────────────
     status                  Show full substrate status
     health                  Health check across all primitives
-    primitives [filter]          List primitives (filter by category/status)
+    primitives [filter]     List primitives (filter by category/status)
     ping <node>             Ping a specific primitive
     inspect <node>          Deep-inspect a primitive's state
     topology                Display category topology map
@@ -782,6 +800,14 @@ function printHelp() {
     validate <file>         Validate a manifest.json file
     export <file> [name]    Generate an export manifest
     diff <file1> <file2>    Compare two manifests
+
+  ── Universal Gateway ────────────────────────────
+    <module>.<command>      Run ANY terminal command directly
+                            e.g. cmpsbl brain.status
+                                 cmpsbl dream.cycle
+                                 cmpsbl system.heal BRAIN force
+                                 cmpsbl evolution.evolve shadow
+                                 cmpsbl atlas.capabilities
 
   ── Interactive ──────────────────────────────────
     shell                   Interactive REPL session
@@ -803,7 +829,7 @@ function printHelp() {
     CMPSBL_ENDPOINT         Custom endpoint (default: substrate-api)
 
   Get your API key at ${c.cyan('https://cmpsbl.com/api-access')}
-  ${c.muted('52 commands · 40 primitives · cmpsbl.com')}
+  ${c.muted('500+ commands · 40 primitives · full Governor parity · cmpsbl.com')}
 `);
 }
 
