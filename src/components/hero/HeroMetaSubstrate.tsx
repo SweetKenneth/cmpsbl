@@ -368,10 +368,10 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
-            { icon: Sparkles, label: "Free to Start", href: "/auth" },
-            { icon: Brain, label: "Persistent Memory", href: "/persistent-memory" },
-            { icon: Layers, label: "24 Capability Packs", href: "/packs" },
-            { icon: Shield, label: "Governed Runtime", href: "/documentation" },
+            { icon: Sparkles, label: "Free Junkyard", href: "/memory-stream" },
+            { icon: Shield, label: "3-Day Test Drive", href: "/ascension" },
+            { icon: Layers, label: "$1,952 Vault", href: "/memory-stream" },
+            { icon: Zap, label: "Zero AI in Output", href: "/documentation" },
           ].map((item, index) => (
             <FadeIn
               key={item.label}
