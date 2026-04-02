@@ -358,7 +358,7 @@ export default function ArchitecturePage() {
             <h2 className="text-xl font-bold mb-6 text-foreground">Category Summary</h2>
             <div className="space-y-2">
               {TAXONOMY.map((cat) => (
-                <div key={cat.key} className="flex items-center justify-between py-2 border-b border-border/50">
+                <div key={cat.key} className="flex items-center justify-between py-2 border-b border-border/50 gap-2">
                   <div className="flex items-center gap-3">
                     <span className={cn(
                       "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border uppercase",
