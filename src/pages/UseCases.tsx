@@ -506,7 +506,7 @@ export default function UseCases() {
                     <Badge 
                       variant="outline" 
                       className={cn(
-                        "text-[10px]",
+                        "text-xs",
                         vision.timeline === "Available Now" 
                           ? "bg-neon-green/10 text-neon-green border-neon-green/30"
                           : vision.timeline === "In Development"
