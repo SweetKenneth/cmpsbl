@@ -49,6 +49,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -151,6 +153,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -229,6 +233,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -288,6 +294,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -345,6 +353,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -402,6 +412,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -459,6 +471,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -516,6 +530,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -580,6 +596,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -637,6 +655,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -694,6 +714,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh
@@ -760,6 +782,8 @@ Allow: /llms-txt
 Allow: /about
 Allow: /solutions
 Allow: /restoration-shop
+Allow: /plans
+Allow: /showroom
 Allow: /use-cases
 Allow: /gaming
 Allow: /intent-mesh

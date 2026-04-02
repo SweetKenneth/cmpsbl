@@ -173,6 +173,8 @@ Ascension is CMPSBL's code transformation engine:
 ## PRODUCTS & FEATURES
 
 - Store: https://cmpsbl.com/store
+- Showroom: https://cmpsbl.com/showroom
+- Plans: https://cmpsbl.com/plans
 - Memory Stream: https://cmpsbl.com/foundry
 - Ascension: https://cmpsbl.com/ascension
 - Persistent Memory: https://cmpsbl.com/persistent-memory

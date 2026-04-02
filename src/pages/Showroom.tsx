@@ -354,7 +354,7 @@ export default function Showroom() {
         title="Showroom — Certified Software Discoveries | CMPSBL"
         description="Find exactly what your software needs. Search by problem, sort by solution, and purchase one-of-a-kind certified discoveries from the CMPSBL Showroom."
         canonical="https://cmpsbl.com/showroom"
-        image="https://cmpsbl.com/og/store.jpg"
+        image="https://cmpsbl.com/og/showroom.jpg"
         keywords={['certified discoveries', 'CJPI scored software', 'autonomous discovery marketplace', 'software showroom', 'tiered pricing']}
       />
 

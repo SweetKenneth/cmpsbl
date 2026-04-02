@@ -23,7 +23,7 @@ export default function Plans() {
         title="Plans — Builder to Architect | CMPSBL"
         description="Four tiers of cognitive infrastructure: Builder (free, 3 slots), Studio ($29/mo), Creator ($49/mo), Architect ($79/mo). Full runtime on every plan. Scale slots, memory, exports, and routing as you grow."
         canonical="https://cmpsbl.com/plans"
-        image="/og/plans.jpg"
+        image="https://cmpsbl.com/og/plans.jpg"
       />
 
       <PublicNav />
