@@ -31,7 +31,7 @@ import { cn } from '@/lib/utils';
 import {
   Archive, ChevronLeft, ChevronRight, Search, X, Wrench,
   AlertTriangle, Zap, Package, ArrowRight, Shield, Brain,
-  Code, Layers, Eye, Cpu, HardDrive, CircuitBoard,
+  Code, Layers, Eye, Cpu, HardDrive, CircuitBoard, Download,
 } from 'lucide-react';
 
 // Junkyard images
