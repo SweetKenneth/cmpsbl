@@ -530,7 +530,6 @@ export default function Foundry() {
           image="https://cmpsbl.com/og-memory-stream.jpg"
           keywords={['open archive', 'broken tech', 'raw discoveries', 'salvage', 'CMPSBL', 'restoration', 'junkyard']}
         />
-        <MemoryStreamOnboarding />
         <ArchiveBrowseView />
       </>
     );
