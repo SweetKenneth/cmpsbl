@@ -33,6 +33,7 @@ const CodeLab = lazy(() => import("@/pages/CodeLab"));
 const AgencyPortal = lazy(() => import("@/pages/AgencyPortal"));
 const ProprietaryEvolution = lazy(() => import("@/pages/ProprietaryEvolution"));
 const AgentForge = lazy(() => import("@/pages/AgentForge"));
+const AgentPowerUp = lazy(() => import("@/pages/AgentPowerUp"));
 const DevTools = lazy(() => import("@/pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("@/pages/DeveloperAcademy"));
 const VanillaDeveloperGuide = lazy(() => import("@/pages/VanillaDeveloperGuide"));
@@ -239,5 +240,7 @@ export const publicRoutes = (
     <Route path="/x" element={<ProprietaryEvolution />} />
     <Route path="/ascension" element={<ProprietaryEvolution />} />
     <Route path="/agent-forge" element={<AgentForge />} />
+    <Route path="/agent-power-up" element={<AgentPowerUp />} />
+    <Route path="/junkyard" element={<Navigate to="/memory-stream" replace />} />
   </>
 );

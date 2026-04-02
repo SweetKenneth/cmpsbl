@@ -16,6 +16,8 @@ import { FactoryPillars } from "@/components/home/FactoryPillars";
 import { CustomerJourney } from "@/components/home/CustomerJourney";
 import { ShowroomPreview } from "@/components/home/ShowroomPreview";
 import { FactoryGuarantee } from "@/components/home/FactoryGuarantee";
+import { JunkyardBanner } from "@/components/factory/JunkyardBanner";
+import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
@@ -88,6 +90,20 @@ export default function FactoryHome() {
 
       {/* ═══ SHOWROOM PREVIEW ═══ */}
       <ShowroomPreview />
+
+      <SectionDivider />
+
+      {/* ═══ JUNKYARD — free Raw-tier discoveries ═══ */}
+      <JunkyardBanner />
+
+      <SectionDivider />
+
+      {/* ═══ DECODE VOICE — discovery commentator preview ═══ */}
+      <section className="relative z-10 px-3 sm:px-6 py-8 sm:py-12">
+        <div className="max-w-3xl mx-auto">
+          <DecodeFactoryVoice role="commentator" />
+        </div>
+      </section>
 
       <SectionDivider />
 
