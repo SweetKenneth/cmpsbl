@@ -51,7 +51,7 @@ const STEPS: OnboardingStep[] = [
     icon: ShoppingBag,
     tag: 'Showroom',
     title: 'Browse What the Scouts Found',
-    body: 'The Showroom displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Junkyard — free access to Raw-tier discoveries that haven't been fully restored yet.',
+    body: "The Showroom displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Junkyard — free access to Raw-tier discoveries that haven't been fully restored yet.",
     footer: 'Priced by quality. $1–$2 per CJPI point. Perfect 100s at $1,952.',
     accent: 'neon-magenta',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
