@@ -60,7 +60,7 @@ export function checkModuleHealth(): AuditFinding[] {
     id: 'matrix_node_count',
     category: 'matrix',
     severity: 'info',
-    title: `${nodeDefs.length} Matrix Nodes registered`,
+    title: `${nodeDefs.length} Matrix Primitives registered`,
     detail: `${sectorCounts.size} sectors × ${nodeDefs.length} nodes: ${sectorBreakdown}.`,
   });
 

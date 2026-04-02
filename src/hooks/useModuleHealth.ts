@@ -1,6 +1,6 @@
 /**
  * Matrix Primitive Health Monitor Hook
- * Tracks health status of all Matrix Nodes via substrate
+ * Tracks health status of all Matrix Primitives via substrate
  * Respects debugMode — when enabled, auto-check is disabled
  */
 

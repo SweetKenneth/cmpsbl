@@ -1,7 +1,7 @@
 /**
  * Metrics Grid — Premium live system metrics with animations
  * Enhanced visual indicators, mini charts, and glassmorphic design
- * Includes CLM, Matrix Nodes, and autonomous learning metrics
+ * Includes CLM, Matrix Primitives, and autonomous learning metrics
  */
 
 import { Activity, Brain, MessageSquare, Shield, Zap, Moon, TrendingUp, TrendingDown, Database, Cpu, Minus, Sparkles, GitBranch } from 'lucide-react';

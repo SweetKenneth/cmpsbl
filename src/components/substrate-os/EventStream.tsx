@@ -1,7 +1,7 @@
 /**
  * Event Stream — Live system events feed
  * Real-time log viewer with filtering and LIVE indicator
- * Streams events from all 37 Matrix Nodes across the substrate
+ * Streams events from all 37 Matrix Primitives across the substrate
  */
 
 import { useState, useEffect, memo } from 'react';
