@@ -45,7 +45,7 @@ Your techs still understand it — because it still IS the underlying software.
 - **Up to 20** primitives per restoration
 
 ### Pillar III — The Craftsmen (Substrate)
-**The Factory Floor · 42 Primitives**
+**The Factory Floor · 40 Primitives**
 
 The 42 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time you turn the key. The factory runs every 8 hours whether anyone is watching or not.
 
