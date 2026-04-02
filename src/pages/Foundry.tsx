@@ -64,7 +64,15 @@ const ARCHIVE_ITEMS: ArchiveItem[] = buildArchiveCatalog({
   tangledNetwork: imgTangledNetwork, legacyStorage: imgLegacyStorage,
 });
 
-// ─── Horizontal Scroll Carousel ───
+// ─── Category config ───
+const CATEGORIES: { id: ArchiveCategory; label: string; icon: typeof Archive; color: string; border: string; text: string; bg: string; subtitle: string }[] = [
+  { id: 'Raw Discoveries', label: 'Raw Discoveries', icon: Archive, color: 'from-neon-cyan/20 to-neon-cyan/5', border: 'border-neon-cyan/30', text: 'text-neon-cyan', bg: 'bg-neon-cyan/10', subtitle: 'Sub-68 scored. Free to take.' },
+  { id: 'Broken Tech', label: 'Broken Tech', icon: AlertTriangle, color: 'from-destructive/20 to-destructive/5', border: 'border-destructive/30', text: 'text-destructive', bg: 'bg-destructive/10', subtitle: 'Damaged but diagnosable. Restoration available.' },
+  { id: 'Salvageable Parts', label: 'Salvageable Parts', icon: Wrench, color: 'from-neon-amber/20 to-neon-amber/5', border: 'border-neon-amber/30', text: 'text-neon-amber', bg: 'bg-neon-amber/10', subtitle: 'Partial capabilities. Worth the rebuild.' },
+  { id: 'Legacy Systems', label: 'Legacy Systems', icon: HardDrive, color: 'from-neon-purple/20 to-neon-purple/5', border: 'border-neon-purple/30', text: 'text-neon-purple', bg: 'bg-neon-purple/10', subtitle: 'Deprecated runtimes. Classic potential.' },
+];
+
+
 function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 'left' | 'right') => {
