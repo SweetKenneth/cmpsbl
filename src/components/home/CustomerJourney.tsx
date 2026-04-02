@@ -1,5 +1,6 @@
 /**
  * CustomerJourney — The refurbishment experience in 6 clear steps
+ * Timeline-style with connecting lines and staggered entrance
  */
 
 import { cn } from "@/lib/utils";
@@ -81,27 +82,30 @@ export function CustomerJourney() {
               <div
                 key={step.number}
                 className="group relative rounded-xl border border-border/40 bg-card/20 p-4 sm:p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in opacity-0 lab-card-glow"
-                style={{ animationDelay: `${idx * 0.06}s`, animationFillMode: "both" }}
+                style={{ animationDelay: `${idx * 0.08}s`, animationFillMode: "both" }}
               >
-                {/* Step connector line — desktop */}
+                {/* Connecting dot on right edge — desktop */}
                 {idx < STEPS.length - 1 && idx !== 2 && (
-                  <div className="hidden lg:block absolute -right-2 top-1/2 w-4 h-px bg-gradient-to-r from-border/40 to-transparent" />
+                  <>
+                    <div className="hidden lg:block absolute -right-[5px] top-1/2 -translate-y-1/2 w-[6px] h-[6px] rounded-full border border-border/40 bg-background z-10" />
+                    <div className="hidden lg:block absolute -right-4 top-1/2 w-4 h-px bg-gradient-to-r from-border/50 to-border/20" />
+                  </>
                 )}
 
                 {/* Icon + step number */}
                 <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                   <div
-                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center border border-border/20 shrink-0 relative"
+                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center border border-border/20 shrink-0 relative group-hover:scale-110 transition-transform duration-300"
                     style={{ background: `hsl(var(${step.accent}) / 0.08)` }}
                   >
                     <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: `hsl(var(${step.accent}))` }} />
                     <div
                       className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{ boxShadow: `0 0 10px hsl(var(${step.accent}) / 0.15)` }}
+                      style={{ boxShadow: `0 0 12px hsl(var(${step.accent}) / 0.2)` }}
                     />
                   </div>
                   <span
-                    className="text-lg sm:text-xl font-black opacity-20 font-mono"
+                    className="text-lg sm:text-xl font-black opacity-15 font-mono group-hover:opacity-30 transition-opacity duration-300"
                     style={{ color: `hsl(var(${step.accent}))` }}
                   >
                     {step.number}
@@ -110,6 +114,12 @@ export function CustomerJourney() {
 
                 <h3 className="text-xs sm:text-sm font-bold text-foreground mb-1">{step.title}</h3>
                 <p className="text-xs text-muted-foreground/70 leading-relaxed">{step.description}</p>
+
+                {/* Bottom accent line — appears on hover */}
+                <div
+                  className="absolute bottom-0 left-4 right-4 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: `linear-gradient(90deg, transparent, hsl(var(${step.accent}) / 0.3), transparent)` }}
+                />
               </div>
             );
           })}

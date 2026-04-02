@@ -1220,11 +1220,15 @@ All colors MUST be HSL.
 
 /* Card glow on hover — lab specimen inspection */
 .lab-card-glow {
-  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, transform 0.3s ease;
 }
 .lab-card-glow:hover {
-  box-shadow: 0 0 20px hsl(var(--primary) / 0.08), 0 0 40px hsl(var(--neon-cyan) / 0.04);
+  box-shadow:
+    0 0 20px hsl(var(--primary) / 0.08),
+    0 0 40px hsl(var(--neon-cyan) / 0.04),
+    inset 0 1px 0 hsl(var(--primary) / 0.06);
   border-color: hsl(var(--primary) / 0.25);
+  transform: translateY(-2px);
 }
 
 /* Section glow divider — replaces plain borders */
@@ -1245,6 +1249,86 @@ All colors MUST be HSL.
     hsl(var(--primary) / 0.15),
     transparent
   );
+}
+
+/* ─── Shimmer sweep — premium loading/highlight effect ─── */
+@keyframes lab-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.lab-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.lab-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    hsl(var(--primary) / 0.04) 45%,
+    hsl(var(--neon-cyan) / 0.06) 50%,
+    hsl(var(--primary) / 0.04) 55%,
+    transparent 60%
+  );
+  animation: lab-shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ─── Breathing border — subtle alive-feel on cards ─── */
+@keyframes lab-breathe {
+  0%, 100% { border-color: hsl(var(--border) / 0.3); }
+  50% { border-color: hsl(var(--primary) / 0.15); }
+}
+.lab-breathe {
+  animation: lab-breathe 4s ease-in-out infinite;
+}
+
+/* ─── Glass edge — frosted premium depth ─── */
+.lab-glass {
+  background: hsl(var(--card) / 0.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid hsl(var(--border) / 0.3);
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.04),
+    0 4px 24px -4px hsl(var(--background) / 0.5);
+}
+
+/* ─── Gradient text utility ─── */
+.lab-gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Divider diamond pulse ─── */
+@keyframes divider-diamond {
+  0%, 100% { transform: rotate(45deg) scale(1); opacity: 0.25; }
+  50% { transform: rotate(45deg) scale(1.3); opacity: 0.5; }
+}
+.animate-divider-diamond {
+  animation: divider-diamond 3s ease-in-out infinite;
+}
+
+/* ─── Fade pulse for divider halos ─── */
+@keyframes fade-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+.animate-fade-pulse {
+  animation: fade-pulse 3s ease-in-out infinite;
+}
+
+/* ─── Image reveal — slides up with a sheen ─── */
+@keyframes lab-image-reveal {
+  0% { clip-path: inset(100% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+.lab-image-reveal {
+  animation: lab-image-reveal 0.6s ease-out both;
 }
 
 /* CMPSBL wordmark — per-letter gradient flow */

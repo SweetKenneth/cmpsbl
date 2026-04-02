@@ -54,6 +54,10 @@ export function FactoryPillars() {
     <section className="relative z-10 px-4 sm:px-6 py-14 sm:py-20">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/30 bg-card/30 mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary lab-status-blink" />
+            <span className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground/50">Core Architecture</span>
+          </div>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground mb-2">
             Three Pillars. One Center.
           </h2>
@@ -63,16 +67,23 @@ export function FactoryPillars() {
         </div>
 
         <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
-          {PILLARS.map((pillar) => (
+          {PILLARS.map((pillar, idx) => (
             <div
               key={pillar.title}
-              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300 lab-card-glow"
+              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300 lab-card-glow lab-breathe animate-fade-in opacity-0"
+              style={{ animationDelay: `${idx * 0.1}s`, animationFillMode: "both" }}
             >
-              {/* Top accent bar */}
-              <div 
-                className="h-0.5" 
-                style={{ background: `linear-gradient(90deg, hsl(var(${pillar.glowVar})), hsl(var(${pillar.glowVar}) / 0.3))` }} 
-              />
+              {/* Top accent bar with shimmer */}
+              <div className="relative h-0.5 overflow-hidden">
+                <div
+                  className="absolute inset-0"
+                  style={{ background: `linear-gradient(90deg, hsl(var(${pillar.glowVar})), hsl(var(${pillar.glowVar}) / 0.3))` }}
+                />
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+                  style={{ background: `linear-gradient(90deg, hsl(var(${pillar.glowVar}) / 0.3), hsl(var(${pillar.glowVar})), hsl(var(${pillar.glowVar}) / 0.3))` }}
+                />
+              </div>
 
               {/* Corner brackets */}
               <div className="absolute top-2 left-2 w-3 h-3 border-t border-l opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ borderColor: `hsl(var(${pillar.glowVar}) / 0.3)` }} />
@@ -90,14 +101,13 @@ export function FactoryPillars() {
                 {/* Icon + Title */}
                 <div className="flex items-center gap-3 mb-3">
                   <div
-                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 relative"
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 relative group-hover:scale-110 transition-transform duration-300"
                     style={{ background: `hsl(var(${pillar.glowVar}) / 0.1)` }}
                   >
                     <pillar.icon className="w-4 h-4" style={{ color: `hsl(var(${pillar.glowVar}))` }} />
-                    {/* Subtle icon glow */}
                     <div
                       className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{ boxShadow: `0 0 12px hsl(var(${pillar.glowVar}) / 0.2)` }}
+                      style={{ boxShadow: `0 0 16px hsl(var(${pillar.glowVar}) / 0.25)` }}
                     />
                   </div>
                   <div className="min-w-0">
@@ -114,7 +124,7 @@ export function FactoryPillars() {
                 {/* Stats */}
                 <div className="flex gap-2 mb-4">
                   {pillar.stats.map((stat) => (
-                    <div key={stat.label} className="flex-1 text-center p-2 rounded-lg bg-secondary/40 border border-border/20">
+                    <div key={stat.label} className="flex-1 text-center p-2 rounded-lg bg-secondary/40 border border-border/20 group-hover:border-border/40 transition-colors duration-300">
                       <div className="text-xs sm:text-sm font-bold text-foreground font-mono tabular-nums">{stat.value}</div>
                       <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider">{stat.label}</div>
                     </div>
@@ -127,7 +137,7 @@ export function FactoryPillars() {
                   className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors group/link"
                 >
                   {pillar.cta}
-                  <ArrowRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform duration-200" />
                 </Link>
               </div>
             </div>
