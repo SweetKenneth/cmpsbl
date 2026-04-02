@@ -389,7 +389,7 @@ export default function EvolutionCycleReport() {
             <p className="text-xs font-medium text-foreground mb-2">Roadmap Position — Phase 6 of 8</p>
             <div className="space-y-1">
               {[
-                { phase: "1. Foundation", status: "✅", desc: "40-node substrate" },
+                { phase: "1. Foundation", status: "✅", desc: "40-Primitive substrate" },
                 { phase: "2. Cognition", status: "✅", desc: "BRAIN, MEMORY, DECODE, ENCODE" },
                 { phase: "3. Security", status: "✅", desc: "DEFENSE, IMMUNITY, zero-trust" },
                 { phase: "4. Orchestration", status: "✅", desc: "Intent mesh, CORTEX routing" },
