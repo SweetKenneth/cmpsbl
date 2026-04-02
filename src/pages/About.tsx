@@ -127,9 +127,9 @@ export default function About() {
           { name: 'About', url: 'https://cmpsbl.com/about' },
         ]}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'A composable AI platform with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
-          { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the platform consolidates memory, extracts patterns, and generates new insights without active compute.' },
-          { question: 'Can I build on the platform?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
+          { question: 'What is CMPSBL?', answer: 'A composable cognitive infrastructure substrate with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
+          { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the substrate consolidates memory, extracts patterns, and generates new insights without active compute.' },
+          { question: 'Can I build on the substrate?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
         ]}
       />
 
