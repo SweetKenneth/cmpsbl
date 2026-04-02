@@ -252,7 +252,7 @@ CMPSBL's 8-phase evolution roadmap:
 
 | Phase | Name | Status | Description |
 |-------|------|--------|-------------|
-| 1 | **Foundation** | ✅ Complete | Core 40-node substrate architecture |
+| 1 | **Foundation** | ✅ Complete | Core 40-Primitive substrate architecture |
 | 2 | **Cognition** | ✅ Complete | BRAIN, MEMORY, DECODE, ENCODE nodes |
 | 3 | **Security & Governance** | ✅ Complete | DEFENSE, IMMUNITY, zero-trust mesh |
 | 4 | **Orchestration & Routing** | ✅ Complete | Intent mesh, resolver routing, CORTEX |
