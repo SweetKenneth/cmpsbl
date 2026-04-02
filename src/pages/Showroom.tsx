@@ -18,9 +18,7 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
-import { useAuth } from '@/contexts/AuthContext';
-import { useVaultState } from '@/hooks/useVaultState';
-import { type PublicTier, getTierBadgeClass, PUBLIC_TIERS } from '@/lib/foundry/public-tiers';
+import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
 import { getFunctionalDescription } from '@/lib/pipeline-descriptions';
 
 // ═══ Pain-point categories ═══
