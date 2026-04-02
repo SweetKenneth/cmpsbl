@@ -218,7 +218,7 @@ export default function Support() {
                 How can we <span className="text-primary">help?</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
-                Browse our FAQ below or chat directly with DECODE — the cognitive interface that can answer questions, troubleshoot issues, and escalate to our team when needed.
+                Browse our FAQ below or chat directly with DECODE — the cognitive interface that can answer questions, troubleshoot issues, and escalate when needed.
               </p>
 
               {/* Chat with Support CTA */}
