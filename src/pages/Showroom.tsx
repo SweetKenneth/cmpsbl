@@ -290,19 +290,26 @@ export default function Showroom() {
   const showSuccess = searchParams.get('success') === 'true';
   const successItem = searchParams.get('item');
 
+  // Fetch live catalog from Memory Stream
+  const { data: catalog = [], isLoading: catalogLoading } = useQuery({
+    queryKey: ['showroom-catalog'],
+    queryFn: fetchShowroomCatalog,
+    staleTime: 1000 * 60 * 5, // 5 min cache
+  });
+
   // Group by tier
   const itemsByTier = useMemo(() => {
     const grouped: Record<string, ShowroomItem[]> = {};
-    CATALOG.forEach((item) => {
+    catalog.forEach((item) => {
       const tier = getTierLabel(item.score);
       if (!grouped[tier]) grouped[tier] = [];
       grouped[tier].push(item);
     });
     return grouped;
-  }, []);
+  }, [catalog]);
 
   // Filter for search/tier/pain
-  const filteredItems = useMemo(() => CATALOG.filter((item) => {
+  const filteredItems = useMemo(() => catalog.filter((item) => {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       return (
@@ -314,7 +321,7 @@ export default function Showroom() {
     if (selectedTier) return getTierLabel(item.score) === selectedTier;
     if (painFilter !== 'all') return item.painId === painFilter;
     return true;
-  }), [searchQuery, selectedTier, painFilter]);
+  }), [catalog, searchQuery, selectedTier, painFilter]);
 
   const showBrowseMode = !searchQuery && !selectedTier && painFilter === 'all';
 
