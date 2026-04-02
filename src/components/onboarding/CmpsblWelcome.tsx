@@ -77,7 +77,7 @@ const STEPS: OnboardingStep[] = [
     footer: 'All users are first-class. No credit card required.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Explore the Platform', href: '/explore' },
+    inlineCta: { text: 'Explore the Substrate', href: '/explore' },
     secondaryInlineCta: { text: 'Start Building — Free', href: '/auth' },
   },
 ];
