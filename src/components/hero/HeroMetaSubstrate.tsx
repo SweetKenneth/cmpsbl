@@ -250,6 +250,7 @@ export function HeroMetaSubstrate() {
                 <TypedText 
                   texts={["improve.", "persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                     "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",

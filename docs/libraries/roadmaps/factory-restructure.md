@@ -178,24 +178,18 @@ The queue isn't a limitation. It's the experience. The factory has a line becaus
 
 ### Revenue Stream 2: The Showroom (CJPI-Based Discovery Pricing)
 
-Every discovery in the Memory Stream Showroom is priced by a single formula:
+Every discovery in the Memory Stream Showroom is priced by a **graduated CJPI formula** that scales with tier rarity:
 
-```
-Price = $1 × CJPI score
-```
+| CJPI Range | Rate | Price Range | Tier |
+|-----------|------|------------|------|
+| 68–79 | $1.00/point | $68–$79 | Mint |
+| 80–89 | $1.25/point | $100–$111 | Prime |
+| 90–93 | $1.50/point | $135–$140 | Relic |
+| 94–99 | $2.00/point | $188–$198 | Mythic |
+| **100** | **Fixed** | **$1,952** | **Apex — The First Compiler** |
 
-| CJPI Score | Price | Tier |
-|-----------|-------|------|
-| 68–79 | $68–$79 | Mint |
-| 80–89 | $80–$89 | Prime |
-| 90–93 | $90–$93 | Relic |
-| 94–99 | $94–$99 | Mythic |
-| **100** | **$11,981** | **Apex — The First Compiler** |
-
-**Why $11,981 for perfect 100s?**
-In 1952, Grace Hopper's A-0 System became the first compiler ever written — the moment software stopped being hand-assembled and started being *built*. The year of that breakthrough: **1952**. But CMPSBL's system code identifier — the number that means "this is where it all began" — is **11981**. Every perfect discovery carries that origin mark. It's not arbitrary. It's provenance.
-
-> *Alternative consideration: $777 ("good luck" — the slot machine jackpot on a discovery nobody predicted) or $1952 (the literal year of the first compiler). $11,981 is the current recommendation.*
+**Why $1,952 for perfect 100s?**
+In 1952, Grace Hopper's A-0 System became the first compiler ever written — the moment software stopped being hand-assembled and started being *built*. Every perfect discovery carries the year that changed everything. It's not arbitrary. It's provenance. Premium enough to feel extravagant. Realistic enough that a serious buyer doesn't blink.
 
 ### Scarcity Model: One Certificate. One Fingerprint. Gone Forever.
 
