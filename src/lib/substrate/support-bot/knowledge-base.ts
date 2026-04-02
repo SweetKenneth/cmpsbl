@@ -31,18 +31,16 @@ export const PLATFORM_KNOWLEDGE: KnowledgeEntry[] = [
   {
     id: 'platform_001',
     question_pattern: 'What is CMPSBL?',
-    answer: `CMPSBL® (Composable) is a cognitive infrastructure substrate — the operating layer for AI applications. It provides persistent memory, autonomous learning, multi-provider AI routing, built-in security, and self-evolution capabilities.
+    answer: `CMPSBL® (Composable) is a classic car factory for software — a cognitive infrastructure substrate. It discovers capabilities in code, restores and hardens them, and sends them back production-ready.
 
 Key characteristics:
-• Model-agnostic and provider-agnostic — use OpenAI, Anthropic, Google, Mistral, or any combination
-• Persistent memory that never resets
-• Governed EVOLUTION with audit trails
-• Built-in DEFENSE system for security
-• The NEXUS router handles intelligent multi-provider AI routing
-
-Think of it as the infrastructure layer that makes any AI provider more capable.`,
+• **Memory Stream** (The Scouts) — autonomous 8-hour discovery cycles finding capabilities nobody asked it to find
+• **Ascension** (The Restoration Shop) — bring us your code, we scan, restore, and harden it with up to 20 primitives
+• **40 Primitives** (The Craftsmen) — 12 Organs, 12 Layers, 8 Engines, 8 Agents powering everything
+• **CJPI scoring** — every discovery is scored, priced, and placed in the Showroom
+• No AI inside the output — pure algorithmic, production-ready code`,
     category: 'question',
-    keywords: ['cmpsbl', 'composable', 'what is', 'platform', 'substrate'],
+    keywords: ['cmpsbl', 'composable', 'what is', 'factory', 'substrate'],
     confidence: 0.95,
     verified: true,
     priority: 'critical',
@@ -351,7 +349,7 @@ export const SECURITY_KNOWLEDGE: KnowledgeEntry[] = [
 • Row Level Security (RLS) on all user data
 • Encryption at rest and in transit (TLS 1.3)
 
-The DEFENSE system is an outer containment boundary — a mesh overlay that spans all systems. All access attempts are monitored, logged, and analyzed for threats.
+The DEFENSE primitive is an outer containment boundary — a protective layer that spans all primitives. All access attempts are monitored, logged, and analyzed for threats.
 
 CMPSBL follows compliance-ready patterns for SOC 2 and GDPR.`,
     category: 'question',

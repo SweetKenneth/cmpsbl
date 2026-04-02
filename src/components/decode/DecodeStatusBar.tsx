@@ -1,5 +1,6 @@
 /**
  * DECODE Status Bar — Console-style mode/identity/capability display
+ * Factory-aligned terminology: primitives, categories, discoveries
  */
 
 import { useDecodeStore, type DecodeMode } from '@/stores/decodeStore';
