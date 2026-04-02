@@ -1,6 +1,6 @@
 /**
  * CMPSBL Welcome Onboarding — First-visit guided tour for /
- * Factory-narrative intro: Memory Stream, Ascension, Showroom, legacy access
+ * Software Refurbishment Center intro: Memory Stream, Ascension, Catalog, legacy access
  * Uniform "Next" button bottom-right on every card
  */
 
@@ -32,26 +32,26 @@ const STEPS: OnboardingStep[] = [
   {
     icon: Search,
     tag: 'Discovery',
-    title: 'The Scouts Are Running',
-    body: 'Memory Stream runs autonomous 8-hour discovery cycles — finding capabilities in code that nobody asked it to find.\n\nEvery discovery is scored by CJPI, priced, and placed in the Showroom. You browse, you buy, you own it forever. Once purchased, a discovery is permanently retired from the stream.',
+    title: 'The Scanners Are Running',
+    body: 'Memory Stream runs autonomous 8-hour discovery cycles — finding capabilities in code that nobody asked it to find.\n\nEvery discovery is scored by CJPI, priced, and placed in the Catalog. You browse, you buy, you own it forever. Once purchased, a discovery is permanently retired from the stream.',
     footer: 'No AI inside the output. Pure algorithmic discovery.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 50%)',
   },
   {
     icon: Wrench,
-    tag: 'Restoration',
-    title: 'The Restoration Shop',
-    body: "Ascension takes your existing code and restores it. We scan for vulnerabilities and hidden capabilities, harden it with up to 20 primitives, and send it back production-ready.\n\nThree-day test drive included. If you're not satisfied, you keep the diagnostic report for free.",
-    footer: "Bring us your code. We'll make it a classic.",
+    tag: 'Refurbishment',
+    title: 'The Refurbishment Lab',
+    body: "Ascension takes your existing code and refurbishes it. We scan for vulnerabilities and hidden capabilities, harden it with up to 20 primitives, and send it back production-ready.\n\n3-day evaluation period included. If you're not satisfied, you keep the diagnostic report for free.",
+    footer: "Submit your code. We'll make it certified.",
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: ShoppingBag,
-    tag: 'Showroom',
-    title: 'Browse What the Scouts Found',
-    body: "The Showroom displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Junkyard — free access to Raw-tier discoveries that haven't been fully restored yet.",
+    tag: 'Catalog',
+    title: 'Browse What the Scanners Found',
+    body: "The Catalog displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Open Archive — free access to Raw-tier discoveries that haven't been fully refurbished yet.",
     footer: 'Priced by quality. $1–$2 per CJPI point. Perfect 100s at $1,952.',
     accent: 'neon-magenta',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
@@ -61,7 +61,7 @@ const STEPS: OnboardingStep[] = [
     tag: 'Legacy access',
     title: 'Substrate Still Available',
     body: 'The 40-Primitive substrate architecture — 12 Organs, 12 Layers, 8 Engines, 8 Agents — still powers everything under the hood.\n\nLegacy reference materials including the Substrate Explorer, Architecture deep-dives, and full documentation are accessible from the footer under "Legacy Reference."',
-    footer: 'The factory runs on the substrate. The substrate is the IP moat.',
+    footer: 'The center runs on the substrate. The substrate is the IP moat.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
@@ -69,11 +69,11 @@ const STEPS: OnboardingStep[] = [
     icon: Zap,
     tag: 'Get started',
     title: 'Start with a Free Account',
-    body: "Builder tier is free — browse the Showroom, access the Junkyard for Raw-tier discoveries, and view diagnostics.\n\nCreator and Architect tiers unlock Ascension restorations, expanded vaults, and priority processing. The factory is already running — the Scouts never stop.",
-    footer: 'No credit card required. The Scouts are already discovering.',
+    body: "Builder tier is free — browse the Catalog, access the Open Archive for Raw-tier discoveries, and view diagnostics.\n\nCreator and Architect tiers unlock Ascension refurbishments, expanded vaults, and priority processing. The center is already running — the scanners never stop.",
+    footer: 'No credit card required. The scanners are already discovering.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Browse the Showroom', href: '/showcase' },
+    inlineCta: { text: 'Browse the Catalog', href: '/showcase' },
     secondaryInlineCta: { text: 'Create Free Account', href: '/auth' },
   },
 ];
@@ -321,7 +321,7 @@ export function CmpsblWelcome() {
               onClick={next}
               className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow"
             >
-              {isLastStep ? 'Enter the Factory' : 'Next →'}
+              {isLastStep ? 'Get Started' : 'Next →'}
               <ChevronRight className="w-3.5 h-3.5" />
             </Button>
           </div>

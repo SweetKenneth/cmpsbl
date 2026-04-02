@@ -225,7 +225,7 @@ export function HeroMetaSubstrate() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
             >
               <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-xs font-medium text-muted-foreground tracking-wide">Classic Car Factory for Software</span>
+              <span className="text-xs font-medium text-muted-foreground tracking-wide">Software Refurbishment Center</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
                 <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
@@ -242,11 +242,11 @@ export function HeroMetaSubstrate() {
             {/* Tagline */}
             <FadeIn delay={0.2} className="mb-6 sm:mb-8">
               <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground/70 tracking-tight leading-snug mb-2">
-                Fall back in love with the
+                Restore. Harden. Own.
               </p>
               <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
                 <TypedText 
-                  texts={["classics.", "discovery.", "restoration.", "ownership.", "craftsmanship."]}
+                  texts={["certified builds.", "discovery.", "refurbishment.", "ownership.", "precision."]}
                   gradientColors={[
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
@@ -265,7 +265,7 @@ export function HeroMetaSubstrate() {
                 <span className="text-foreground/90 font-medium">We scan it, restore it, and send it back</span>{' '}
                 — hardened with new capabilities, wrapped in governance, and ready for production.{' '}
                 No AI inside the output. No lock-in.{' '}
-                <span className="text-foreground/90 font-medium">Just&nbsp;classics</span>.
+                <span className="text-foreground/90 font-medium">Just&nbsp;certified&nbsp;builds</span>.
               </p>
             </FadeIn>
             
@@ -278,7 +278,7 @@ export function HeroMetaSubstrate() {
               >
                 <Link to="/ascension">
                   <Zap className="w-4 h-4" />
-                  Bring Us Your Tech
+                  Submit Your Code
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -290,7 +290,7 @@ export function HeroMetaSubstrate() {
               >
                 <Link to="/memory-stream">
                   <Sparkles className="w-4 h-4" />
-                  Browse the Showroom
+                  Browse the Catalog
                 </Link>
               </Button>
             </FadeIn>
@@ -324,14 +324,14 @@ export function HeroMetaSubstrate() {
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
-                <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How the Factory Works</h3>
+               <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How the Center Works</h3>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
-               Scouts{' '}
+               Scanners{' '}
                   <span className="text-foreground/80 font-medium">discover</span> capabilities.{' '}
-                  The Restoration Team{' '}
+                  The Refurbishment Lab{' '}
                   <span className="text-primary font-medium">hardens</span> your code.{' '}
-                  40 Craftsmen{' '}
+                  40 Specialists{' '}
                   <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>power</span>{' '}
                   everything — autonomously, every 8 hours.
               </p>
@@ -366,8 +366,8 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
-            { icon: Sparkles, label: "Free Junkyard", href: "/memory-stream" },
-            { icon: Shield, label: "3-Day Test Drive", href: "/ascension" },
+            { icon: Sparkles, label: "Open Archive", href: "/memory-stream" },
+            { icon: Shield, label: "3-Day Evaluation", href: "/ascension" },
             { icon: Layers, label: "$1,952 Vault", href: "/memory-stream" },
             { icon: Zap, label: "Zero AI in Output", href: "/documentation" },
           ].map((item, index) => (
@@ -395,8 +395,8 @@ export function HeroMetaSubstrate() {
                 "Upload",
                 "Diagnostic",
                 "Choose Primitives",
-                "Restoration",
-                "Test Drive",
+                "Refurbishment",
+                "Evaluation",
                 "Ownership",
               ].map((step, i, arr) => (
                 <div key={step} className="flex items-center shrink-0">
@@ -413,9 +413,9 @@ export function HeroMetaSubstrate() {
             <div className="w-full overflow-x-auto scrollbar-hide">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                { label: "Scouts", color: "--neon-cyan" },
-                { label: "Restoration", color: "--neon-magenta" },
-                { label: "Craftsmen", color: "--neon-purple" },
+                { label: "Scanners", color: "--neon-cyan" },
+                { label: "Refurbishment", color: "--neon-magenta" },
+                { label: "Specialists", color: "--neon-purple" },
                 { label: "40 Primitives", color: "--neon-amber" },
               ].map((p, i, arr) => (
                 <div key={p.label} className="flex items-center shrink-0">

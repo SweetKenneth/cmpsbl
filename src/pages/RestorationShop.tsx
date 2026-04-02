@@ -1,6 +1,6 @@
 /**
- * RestorationShop — The Restoration Shop (/ascension rewrite)
- * Full journey: Upload → Diagnostic → Select Primitives → Queue → Debrief → Documentation
+ * RestorationShop → Refurbishment Lab (/ascension)
+ * Full journey: Upload → Diagnostic → Select Primitives → Queue → DECODE Debrief → Documentation
  */
 
 import { useState, useCallback, lazy, Suspense } from "react";
@@ -14,6 +14,13 @@ import {
   ArrowRight,
   Sparkles,
   Loader2,
+  Search,
+  Settings2,
+  Cpu,
+  MessageSquare,
+  FileText,
+  TestTube2,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
@@ -24,10 +31,20 @@ import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
 import { RestorationReportView } from "@/components/factory/RestorationReportView";
 import { MembershipTiers } from "@/components/factory/MembershipTiers";
+import { DecodeDebrief } from "@/components/factory/DecodeDebrief";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
+
+/** Phase step metadata with icons */
+const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
+  { key: 'upload', label: 'Upload', icon: Upload },
+  { key: 'diagnostic', label: 'Diagnostic', icon: Search },
+  { key: 'select', label: 'Select', icon: Settings2 },
+  { key: 'queue', label: 'Processing', icon: Cpu },
+  { key: 'debrief', label: 'Debrief', icon: MessageSquare },
+];
 
 export default function RestorationShop() {
   const [phase, setPhase] = useState<Phase>('upload');
@@ -54,19 +71,15 @@ export default function RestorationShop() {
     if (!scanResult || isRestoring) return;
     setIsRestoring(true);
 
-    // Add to queue
     const entry = addToQueue('demo-user', 'builder', 'demo-hash', selected.map(s => s.name));
     setQueueEntry(entry);
     setPhase('queue');
 
-    // Simulate processing delay
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // Generate report
     const restorationReport = generateRestorationReport(scanResult, selected);
     setReport(restorationReport);
 
-    // Update queue entry status
     entry.status = 'complete';
     setQueueEntry({ ...entry });
     setPhase('debrief');
@@ -81,11 +94,13 @@ export default function RestorationShop() {
     setQueueEntry(null);
   }, []);
 
+  const currentPhaseIdx = PHASE_META.findIndex(p => p.key === phase);
+
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="The Restoration Shop | CMPSBL® — Code Restoration with 40 Primitives"
-        description="Upload your code. Our three-primitive scan team identifies vulnerabilities. Select up to 20 primitives to harden it. Three-day test drive included."
+        title="The Refurbishment Lab | CMPSBL® — Code Refurbishment with 40 Primitives"
+        description="Upload your code. Our three-primitive scan team identifies vulnerabilities. Select up to 20 primitives to harden it. 3-day evaluation period included."
         canonical="https://cmpsbl.com/ascension"
       />
 
@@ -104,11 +119,11 @@ export default function RestorationShop() {
         <div className="relative z-10 max-w-3xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6">
             <Wrench className="w-3 h-3 text-primary" />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Restoration Shop</span>
+            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Refurbishment Lab</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground mb-4 leading-[1.05]">
-            Bring us your tech.{" "}
+            Submit your code.{" "}
             <span className="bg-clip-text text-transparent" style={{
               backgroundImage: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
             }}>
@@ -116,7 +131,7 @@ export default function RestorationShop() {
             </span>
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-            ENCODE + ORACLE + ENGINEER scan your code. DECODE explains the findings. You choose up to 20 primitives. We restore it and send it back.
+            ENCODE + ORACLE + ENGINEER scan your code. DECODE explains the findings. You choose up to 20 primitives. We refurbish it and send it back.
           </p>
         </div>
       </section>
@@ -124,22 +139,33 @@ export default function RestorationShop() {
       {/* Main flow */}
       <section className="relative z-10 px-3 sm:px-6 pb-16 sm:pb-24">
         <div className="max-w-4xl mx-auto">
-          {/* Phase indicators */}
+          {/* Phase indicators with icons */}
           <div className="flex items-center justify-center gap-1 mb-10">
-            {(['upload', 'diagnostic', 'select', 'queue', 'debrief'] as Phase[]).map((p, idx) => (
-              <div key={p} className="flex items-center">
-                <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold transition-all",
-                  phase === p ? "bg-primary text-primary-foreground" :
-                  (['upload', 'diagnostic', 'select', 'queue', 'debrief'].indexOf(phase) > idx)
-                    ? "bg-primary/20 text-primary"
-                    : "bg-card/40 text-muted-foreground/40",
-                )}>
-                  {idx + 1}
+            {PHASE_META.map((p, idx) => {
+              const Icon = p.icon;
+              const isActive = phase === p.key;
+              const isPast = currentPhaseIdx > idx;
+              return (
+                <div key={p.key} className="flex items-center">
+                  <div className={cn(
+                    "w-9 h-9 rounded-xl flex items-center justify-center transition-all border",
+                    isActive
+                      ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
+                      : isPast
+                        ? "bg-primary/15 text-primary border-primary/30"
+                        : "bg-card/40 text-muted-foreground/40 border-border/20",
+                  )}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  {idx < PHASE_META.length - 1 && (
+                    <div className={cn(
+                      "w-8 h-px mx-1 transition-colors",
+                      isPast ? "bg-primary/40" : "bg-border/30"
+                    )} />
+                  )}
                 </div>
-                {idx < 4 && <div className="w-8 h-px bg-border/30 mx-1" />}
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* UPLOAD PHASE */}
@@ -235,23 +261,15 @@ export default function RestorationShop() {
               />
               <div className="text-center">
                 <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">The factory is working on your code...</p>
+                <p className="text-sm text-muted-foreground">The refurbishment lab is processing your code...</p>
               </div>
             </div>
           )}
 
-          {/* DEBRIEF PHASE */}
+          {/* DEBRIEF PHASE — Interactive DECODE walkthrough */}
           {phase === 'debrief' && report && (
             <div className="max-w-3xl mx-auto space-y-6">
-              <div className="text-center mb-6">
-                <Sparkles className="w-8 h-8 text-primary mx-auto mb-3" />
-                <h2 className="text-xl font-black text-foreground mb-1">Restoration Complete</h2>
-                <p className="text-sm text-muted-foreground">
-                  DECODE has your results. Here's everything that changed.
-                </p>
-              </div>
-
-              <DecodeFactoryVoice role="recommender" recommendedPrimitives={report.primitiveManifest.map(p => p.name)} />
+              <DecodeDebrief report={report} scanResult={scanResult} />
               <RestorationReportView report={report} />
 
               <div className="flex gap-3">
@@ -260,11 +278,11 @@ export default function RestorationShop() {
                   variant="outline"
                   className="flex-1 rounded-xl font-semibold"
                 >
-                  Start New Restoration
+                  Start New Refurbishment
                 </Button>
                 <Button className="flex-1 rounded-xl font-bold gap-2">
                   <ArrowRight className="w-3.5 h-3.5" />
-                  Begin 3-Day Test Drive
+                  Begin 3-Day Evaluation
                 </Button>
               </div>
             </div>
@@ -277,10 +295,10 @@ export default function RestorationShop() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-black text-foreground mb-3">
-              Restoration Shop Membership
+              Refurbishment Center Membership
             </h2>
             <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-              One membership. Unlimited restorations. The queue is the experience — the factory has a line because the work is worth waiting for.
+              One membership. Unlimited refurbishments. The queue is the experience — the center has a line because the work is worth waiting for.
             </p>
           </div>
           <MembershipTiers />
