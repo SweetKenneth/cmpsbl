@@ -210,26 +210,7 @@ export default function Showroom() {
   const [tierFilter, setTierFilter] = useState<PublicTier | 'all'>('all');
   const [showFilters, setShowFilters] = useState(false);
 
-  // Transform vault discoveries into showroom items
-  const items: ShowroomItem[] = useMemo(() => {
-    const raw = vault.inventory || [];
-    return raw.map((item: any) => {
-      const chain = item.systemChain || item.system_chain || [];
-      const cat = item.category || null;
-      const painId = domainToPainPoint(cat);
-      const painConfig = PAIN_POINTS.find(p => p.id === painId);
-      return {
-        id: item.id || item.artifactId,
-        name: item.artifactName || item.artifact_name || item.name || 'Unknown Discovery',
-        score: item.score || 0,
-        chain,
-        category: cat,
-        solutionDesc: toSolutionDescription(item.artifactName || item.name || '', chain, cat),
-        painLabel: painConfig?.label || 'General',
-        painId,
-      };
-    }).sort((a: ShowroomItem, b: ShowroomItem) => b.score - a.score);
-  }, [vault.inventory]);
+  // TODO: Wire to real discovery data from Memory Stream when available
 
   // Demo items when no vault data
   const demoItems: ShowroomItem[] = useMemo(() => {
