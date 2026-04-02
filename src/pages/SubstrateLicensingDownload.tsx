@@ -43,7 +43,7 @@ const LICENSE_TIERS = [
     icon: Sparkles,
     gradient: "from-neon-purple to-neon-purple",
     cta: "Subscribe",
-    ctaAction: "/upgrade",
+    ctaAction: "/plans",
     popular: true,
     comingSoon: false,
     features: [
@@ -63,7 +63,7 @@ const LICENSE_TIERS = [
     icon: Crown,
     gradient: "from-neon-amber to-neon-amber",
     cta: "Subscribe",
-    ctaAction: "/upgrade",
+    ctaAction: "/plans",
     popular: false,
     comingSoon: false,
     features: [
