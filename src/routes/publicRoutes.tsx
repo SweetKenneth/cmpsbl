@@ -86,6 +86,7 @@ const ArchitectureOld = lazy(() => import("@/pages/Architecture"));
 const ArchitecturePage = lazy(() => import("@/pages/ArchitecturePage"));
 const ModuleDetail = lazy(() => import("@/pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("@/pages/AIOperatingSystem"));
+const ShowroomPage = lazy(() => import("@/pages/Showroom"));
 
 // Marketing / Info
 const About = lazy(() => import("@/pages/About"));
