@@ -1,9 +1,8 @@
 /**
  * FactoryHome — Classic Car Factory landing page
- * Hero → Pillars → Journey → Showroom → Guarantee
+ * Hero → Live Stats → Pillars → Journey → Showroom → Junkyard → Guarantee
  * 
- * NOTE: Keeps the existing HeroMetaSubstrate hero (brand recognition).
- * Factory narrative sections are layered below.
+ * Streamlined factory narrative. No substrate-era sections.
  */
 
 import { lazy, Suspense } from "react";
@@ -17,13 +16,12 @@ import { CustomerJourney } from "@/components/home/CustomerJourney";
 import { ShowroomPreview } from "@/components/home/ShowroomPreview";
 import { FactoryGuarantee } from "@/components/home/FactoryGuarantee";
 import { JunkyardBanner } from "@/components/factory/JunkyardBanner";
-import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
 function SectionDivider() {
   return (
-    <div className="relative py-12 sm:py-16">
+    <div className="relative py-10 sm:py-14">
       <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -38,11 +36,11 @@ export default function FactoryHome() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO
-        title="CMPSBL® — Where Machines Learn How to Improve"
-        description="Classic car factory for software. Memory Stream discovers. Ascension restores. 40 Primitives power everything. No AI tricks. No lock-in. Just classics."
+        title="CMPSBL® — Classic Car Factory for Software"
+        description="Memory Stream discovers. Ascension restores. 40 Primitives power everything. No AI tricks. No lock-in. Just classics."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home-v2.jpg"
-        keywords={['cognitive infrastructure', 'code restoration', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'AI governance', 'composable AI']}
+        keywords={['cognitive infrastructure', 'code restoration', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'classic car factory']}
         faq={[
           { question: 'What is CMPSBL?', answer: 'CMPSBL is a classic car factory for software — it discovers capabilities in code, restores and hardens them, and sends them back production-ready. No AI inside the output.' },
           { question: 'What is Memory Stream?', answer: 'Memory Stream is the autonomous discovery engine that runs 8-hour cycles finding capabilities nobody asked it to find. Every discovery is scored, priced, and placed in the Showroom.' },
@@ -72,10 +70,10 @@ export default function FactoryHome() {
         />
       </div>
 
-      {/* ═══ HERO — preserved for brand recognition ═══ */}
+      {/* ═══ HERO ═══ */}
       <HeroMetaSubstrate />
 
-      {/* ═══ LIVE METRICS ═══ */}
+      {/* ═══ LIVE FACTORY STATUS ═══ */}
       <LiveStatsBar />
 
       {/* ═══ THREE PILLARS ═══ */}
@@ -93,21 +91,12 @@ export default function FactoryHome() {
 
       <SectionDivider />
 
-      {/* ═══ JUNKYARD — free Raw-tier discoveries ═══ */}
+      {/* ═══ JUNKYARD ═══ */}
       <JunkyardBanner />
 
       <SectionDivider />
 
-      {/* ═══ DECODE VOICE — discovery commentator preview ═══ */}
-      <section className="relative z-10 px-3 sm:px-6 py-8 sm:py-12">
-        <div className="max-w-3xl mx-auto">
-          <DecodeFactoryVoice role="commentator" />
-        </div>
-      </section>
-
-      <SectionDivider />
-
-      {/* ═══ THE GUARANTEE — replaces old generic CTA ═══ */}
+      {/* ═══ THE GUARANTEE ═══ */}
       <FactoryGuarantee />
 
       <Suspense fallback={<div className="min-h-[100px]" />}>
