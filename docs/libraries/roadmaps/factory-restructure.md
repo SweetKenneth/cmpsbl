@@ -276,7 +276,7 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 | Model | Factory Name | What It Is | Revenue Model |
 |-------|-------------|------------|---------------|
 | **21** | **The Diagnostic Clinic** | Upload broken code. ENCODE+ORACLE+ENGINEER scan it. DECODE tells you the truth. Entry point for every customer. | Included in membership |
-| **10** | **The Showroom** (Software Generator) | Memory Stream's catalog. Pre-built artifacts in 25 languages. Browse. Buy. Drive home today. | CJPI-based pricing ($1/point, $11,981 for 100s) |
+| **10** | **The Showroom** (Software Generator) | Memory Stream's catalog. Pre-built artifacts in 25 languages. Browse. Buy. Drive home today. | Graduated CJPI pricing ($1–$2/point, $1,952 for 100s) |
 | **4** | **The Collision Engine** | Upload two codebases. Discover capabilities neither has alone. 1 + 1 = 3. | Included in Architect membership |
 
 ### Tier 2 — Growth Engine
