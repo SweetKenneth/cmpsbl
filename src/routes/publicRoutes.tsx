@@ -58,6 +58,7 @@ const AgentsLegacy = lazy(() => import("@/pages/Agents"));
 const Store = lazy(() => import("@/pages/Store"));
 const Upgrade = lazy(() => import("@/pages/Upgrade"));
 const Packs = lazy(() => import("@/pages/Packs"));
+const Plans = lazy(() => import("@/pages/Plans"));
 const CapabilityMap = lazy(() => import("@/pages/CapabilityMap"));
 const ScanResult = lazy(() => import("@/pages/ScanResult"));
 const Scanner = lazy(() => import("@/pages/Scanner"));
@@ -235,9 +236,10 @@ export const publicRoutes = (
       </PinGate>
     } />
     <Route path="/architecture" element={<ArchitecturePage />} />
-    <Route path="/pricing" element={<Store />} />
+    <Route path="/pricing" element={<Navigate to="/plans" replace />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
-    <Route path="/upgrade" element={<Navigate to="/store" replace />} />
+    <Route path="/plans" element={<Plans />} />
+    <Route path="/upgrade" element={<Navigate to="/plans" replace />} />
     <Route path="/packs" element={<Packs />} />
     <Route path="/start-here" element={<StartHere />} />
     <Route path="/enterprise" element={<Enterprise />} />
