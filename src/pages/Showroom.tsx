@@ -262,7 +262,7 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
           </h3>
 
           {/* Solution description */}
-          <p className="text-xs text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3">
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3">
             {item.solutionDesc}
           </p>
 
@@ -337,7 +337,7 @@ export default function Showroom() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">THE SHOWROOM</span>
+                <span className="text-xs font-mono tracking-wider text-primary">THE SHOWROOM</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 sm:mb-4">
@@ -349,30 +349,22 @@ export default function Showroom() {
                 Once purchased, it's retired from the catalog forever.
               </p>
 
-              {/* Tier stats */}
-              <div className="flex flex-wrap justify-center gap-3 mb-4">
-                {TIER_CONFIG.map((tier, i) => {
-                  const count = itemsByTier[tier.id]?.length || 0;
-                  if (!count) return null;
-                  return (
-                    <motion.div
-                      key={tier.id}
-                      className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 + i * 0.08 }}
-                    >
-                      <div className={cn("w-4 h-[3px] rounded bg-gradient-to-r", tier.accent)} />
-                      <span className="font-black text-lg">{count}</span>
-                      <span className="text-xs text-muted-foreground">{tier.label}</span>
-                    </motion.div>
-                  );
-                })}
+              {/* Quick stats */}
+              <div className="flex items-center justify-center gap-4 mb-4 text-sm text-muted-foreground">
+                <span className="font-mono">{CATALOG.length} discoveries</span>
+                <span className="text-border">·</span>
+                <span>{TIER_CONFIG.filter(t => itemsByTier[t.id]?.length).length} tiers</span>
+                <span className="text-border">·</span>
+                <span>Catalog rotates every 8 hours</span>
               </div>
 
-              <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-                {CATALOG.length} certified discoveries · catalog rotates every 8 hours
-              </p>
+              <Button asChild variant="outline" size="sm" className="rounded-xl font-semibold gap-2">
+                <Link to="/ascension">
+                  <Wrench className="w-3.5 h-3.5" />
+                  Or bring your own code
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </Button>
             </motion.div>
           </div>
         </section>

@@ -4,6 +4,7 @@
  */
 
 import { useState, useCallback, lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,7 @@ import { RestorationQueue } from "@/components/factory/RestorationQueue";
 import { RestorationReportView } from "@/components/factory/RestorationReportView";
 import { MembershipTiers } from "@/components/factory/MembershipTiers";
 import { DecodeDebrief } from "@/components/factory/DecodeDebrief";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
@@ -106,8 +108,13 @@ export default function RestorationShop() {
 
       <PublicNav />
 
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-3 sm:px-4 pt-20">
+        <PublicBreadcrumb />
+      </div>
+
       {/* Hero */}
-      <section className="relative px-3 sm:px-6 pt-28 sm:pt-36 pb-10 sm:pb-16">
+      <section className="relative px-3 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-16">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-background" />
           <div
@@ -221,12 +228,12 @@ export default function RestorationShop() {
               {/* CJPI Estimate + Runway */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
-                  <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
-                  <div className="text-[10px] text-muted-foreground">Current CJPI Estimate</div>
+                   <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
+                   <div className="text-xs text-muted-foreground">Current CJPI Estimate</div>
                 </div>
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
-                  <div className="text-2xl font-black text-foreground">{scanResult.architecturalRunway}mo</div>
-                  <div className="text-[10px] text-muted-foreground">Architectural Runway</div>
+                   <div className="text-2xl font-black text-foreground">{scanResult.architecturalRunway}mo</div>
+                   <div className="text-xs text-muted-foreground">Architectural Runway</div>
                 </div>
               </div>
 
@@ -283,6 +290,14 @@ export default function RestorationShop() {
                 <Button className="flex-1 rounded-xl font-bold gap-2">
                   <ArrowRight className="w-3.5 h-3.5" />
                   Begin 3-Day Evaluation
+                </Button>
+              </div>
+              <div className="text-center pt-2">
+                <Button asChild variant="link" size="sm" className="text-muted-foreground gap-1">
+                  <Link to="/showroom">
+                    <Sparkles className="w-3 h-3" />
+                    Browse certified discoveries in the Showroom
+                  </Link>
                 </Button>
               </div>
             </div>

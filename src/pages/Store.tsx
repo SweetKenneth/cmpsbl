@@ -20,6 +20,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { StoreOnboarding } from "@/components/onboarding/StoreOnboarding";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { UpgradeContent } from "@/components/store/UpgradeContent";
 import { PacksContent } from "@/components/store/PacksContent";
 import {
@@ -105,8 +106,11 @@ export default function Store() {
       <PublicNav />
       <StoreOnboarding />
 
-      <main className="min-h-screen pt-28 sm:pt-32 pb-24">
+      <main className="min-h-screen pt-20 pb-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="mb-6">
+            <PublicBreadcrumb />
+          </div>
           {/* ═══ HERO ═══ */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -179,7 +183,7 @@ export default function Store() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
                       className={cn(
-                        "px-3.5 py-1.5 rounded-full border text-[10px] sm:text-[11px] font-black tracking-wider",
+                        "px-3.5 py-1.5 rounded-full border text-xs font-black tracking-wider",
                         "transition-all duration-300 hover:scale-110 cursor-default",
                         "backdrop-blur-sm shadow-sm",
                         meta.bg, meta.color, meta.border
@@ -210,7 +214,7 @@ export default function Store() {
                     <span className="hidden sm:inline">{label}</span>
                     <span className="sm:hidden">{shortLabel}</span>
                     <span className={cn(
-                      "ml-1 text-[9px] font-mono tabular-nums px-1.5 py-0.5 rounded-full",
+                      "ml-1 text-xs font-mono tabular-nums px-1.5 py-0.5 rounded-full",
                       filter === key
                         ? "bg-primary-foreground/20 text-primary-foreground"
                         : "bg-muted text-muted-foreground"
@@ -280,7 +284,7 @@ export default function Store() {
                               {feat.label}
                             </h4>
                           </div>
-                          <p className="text-[11px] sm:text-xs text-muted-foreground/70 leading-relaxed pl-11">
+                          <p className="text-xs text-muted-foreground/70 leading-relaxed pl-11">
                             {feat.desc}
                           </p>
                         </motion.div>
@@ -297,7 +301,7 @@ export default function Store() {
                 viewport={{ once: true }}
                 className="mt-16 sm:mt-20 text-center pb-8"
               >
-                <p className="text-[10px] text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
+                <p className="text-xs text-muted-foreground/40 font-mono tracking-wider mb-4 uppercase">
                   Every agent and engine runs on the CMPSBL sealed runtime — secure, self-improving, and yours to own
                 </p>
                 <div className="flex items-center justify-center gap-3 flex-wrap">
@@ -398,8 +402,8 @@ export default function Store() {
                   </div>
 
                   <div className="max-w-3xl mx-auto text-center">
-                    <div className="inline-flex flex-wrap items-center justify-center gap-2 text-[11px] text-muted-foreground">
-                      <code className="bg-muted px-2 py-1 rounded text-[10px] font-mono">npm i @cmpsbl/sdk</code>
+                    <div className="inline-flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+                      <code className="bg-muted px-2 py-1 rounded text-xs font-mono">npm i @cmpsbl/sdk</code>
                       <span>·</span>
                       <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
                         View all 11 packages on NPM →
