@@ -34,6 +34,7 @@ const AgencyPortal = lazy(() => import("@/pages/AgencyPortal"));
 const ProprietaryEvolution = lazy(() => import("@/pages/ProprietaryEvolution"));
 const AgentForge = lazy(() => import("@/pages/AgentForge"));
 const AgentPowerUp = lazy(() => import("@/pages/AgentPowerUp"));
+const RestorationShop = lazy(() => import("@/pages/RestorationShop"));
 const DevTools = lazy(() => import("@/pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("@/pages/DeveloperAcademy"));
 const VanillaDeveloperGuide = lazy(() => import("@/pages/VanillaDeveloperGuide"));
