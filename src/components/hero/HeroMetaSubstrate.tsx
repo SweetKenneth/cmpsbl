@@ -242,7 +242,7 @@ export function HeroMetaSubstrate() {
                 </span>
               </FadeIn>
               <FadeIn delay={0.2}>
-                <span className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black min-h-[1.15em]">
+                <span className="block text-lg sm:text-xl md:text-2xl lg:text-3xl font-black min-h-[1.15em]">
                   <TypedText 
                     texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
                     gradientColors={[
