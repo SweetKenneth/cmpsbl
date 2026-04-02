@@ -170,7 +170,7 @@ export function CmpsblNav() {
                     </Button>
                     <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold shadow-md shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                       <Link to="/ascension">
-                        Bring Us Your Tech
+                        Run Diagnostic
                         <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                       </Link>
                     </Button>
@@ -233,7 +233,7 @@ export function CmpsblNav() {
                   <CmpsblLogo size="md" />
                   <div>
                     <div className="text-xl font-bold tracking-tight">CMPSBL</div>
-                    <div className="text-xs text-muted-foreground font-medium">Signal → Silicon</div>
+                    <div className="text-xs text-muted-foreground font-medium">Software Refurbishment Center</div>
                   </div>
                 </motion.div>
               </div>
@@ -292,7 +292,7 @@ export function CmpsblNav() {
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
                       <Link to="/ascension">
-                        Bring Us Your Tech
+                        Run Diagnostic
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
