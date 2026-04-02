@@ -227,7 +227,7 @@ export const publicRoutes = (
       </PinGate>
     } />
     <Route path="/architecture" element={<ArchitecturePage />} />
-    <Route path="/pricing" element={<Navigate to="/" replace />} />
+    <Route path="/pricing" element={<Store />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Navigate to="/store" replace />} />
     <Route path="/packs" element={<Packs />} />
