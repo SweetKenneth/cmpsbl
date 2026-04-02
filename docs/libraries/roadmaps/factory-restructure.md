@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-CMPSBL transitions from a substrate-first presentation to a **classic car factory** narrative built on three pillars: **Scouts** (Memory Stream), **Restoration** (Ascension), and **Craftsmen** (the 42-Primitive Substrate). The factory self-reinforces through a flywheel where every customer interaction makes the system stronger.
+CMPSBL transitions from a substrate-first presentation to a **classic car factory** narrative built on three pillars: **Scouts** (Memory Stream), **Restoration** (Ascension), and **Craftsmen** (the 40-Primitive Substrate). The factory self-reinforces through a flywheel where every customer interaction makes the system stronger.
 
 DECODE serves as the **voice of the factory** — the trusted mechanic who explains what's wrong, what's possible, and what just happened.
 
@@ -51,7 +51,7 @@ The 40 specialists who make everything possible. Pure algorithmic code — zero 
 
 BRAIN learns everything. DREAM synthesizes while you sleep. SHADOW holds the architecture stable through every change. They never stop.
 
-- **42** Primitives
+- **40** Primitives
 - **Zero** external AI
 - **3** Zenodo DOIs
 
@@ -413,12 +413,12 @@ All existing pages remain active at their current URLs:
 ## Implementation Phases
 
 ### Phase 1: The Showroom + DECODE Voice (Week 1–2)
-- [ ] New home page with factory narrative and "classics" branding
+- [x] New home page with factory narrative and "classics" branding ✅
 - [ ] DECODE integration as factory voice (diagnostic explanations, discovery commentary)
-- [ ] Memory Stream catalog browser with graduated CJPI pricing display
-- [ ] Navigation restructure (preserve all legacy routes)
+- [x] Memory Stream catalog browser with graduated CJPI pricing display ✅
+- [x] Navigation restructure (preserve all legacy routes) ✅
 - [ ] Agent Power-Up landing page live
-- [ ] ToS §15 live ✅
+- [x] ToS §15 live ✅
 
 ### Phase 2: The Restoration Shop (Week 3–4)
 - [ ] ENCODE+ORACLE+ENGINEER three-primitive scan team implementation

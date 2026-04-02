@@ -7,7 +7,7 @@
 
 ## 1. Overview
 
-CMPSBL's 42-primitive substrate contains 80 governor-curated Crown Jewel capabilities — the highest-value, most differentiated capabilities across the entire topology. This document highlights the top S-Tier capability from each primitive category, giving investors a complete picture of the substrate's depth.
+CMPSBL's 40-primitive substrate contains 80 governor-curated Crown Jewel capabilities — the highest-value, most differentiated capabilities across the entire topology. This document highlights the top S-Tier capability from each primitive category, giving investors a complete picture of the substrate's depth.
 
 **Registry Summary:**
 - **40 Primitives** across 4 categories (12 Organs · 12 Layers · 8 Engines · 8 Agents)

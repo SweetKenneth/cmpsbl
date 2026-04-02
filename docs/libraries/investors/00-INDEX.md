@@ -33,7 +33,7 @@ This library provides investors, advisors, and potential partners with a compreh
 | 16 | [NEXUS: Intelligent Multi-Provider Routing](16-nexus.md) | 14+ provider routing, automatic failover, BYOK, zero vendor lock-in |
 | 17 | [@cmpsbl NPM Ecosystem](17-npm-ecosystem.md) | 11 published packages — cognitive infrastructure for developers |
 | 18 | [BRAIN Organ: The Cognitive Core](18-brain-organ.md) | Knowledge Fusion Reactor, Associative Recall Mesh, compounding intelligence |
-| 19 | [CMPSBL Capabilities](19-cmpsbl-capabilities.md) | Full 42-primitive capability catalog — 80 Crown Jewels, 17 S-Tier |
+| 19 | [CMPSBL Capabilities](19-cmpsbl-capabilities.md) | Full 40-primitive capability catalog — 80 Crown Jewels, 17 S-Tier |
 | 20 | [Why Invest Now](20-why-invest-now.md) | The case for early participation, what's built vs planned, investment thesis |
 
 ---

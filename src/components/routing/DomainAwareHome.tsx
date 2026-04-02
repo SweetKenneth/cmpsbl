@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
-const Explore = lazy(() => import("@/pages/Explore"));
+const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
 
 /**
  * Shows PromptFluidHome only when accessed via promptfluid.com,
- * otherwise shows the default Explore/CMPSBL homepage.
+ * otherwise shows the factory-era CMPSBL homepage.
  */
 function isPromptFluidDomain(): boolean {
   if (typeof window === "undefined") return false;
@@ -23,7 +23,7 @@ export default function DomainAwareHome() {
   }
   return (
     <Suspense fallback={<div className="min-h-screen bg-background" />}>
-      <Explore />
+      <FactoryHome />
     </Suspense>
   );
 }

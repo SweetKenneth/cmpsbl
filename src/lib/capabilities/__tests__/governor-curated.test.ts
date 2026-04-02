@@ -17,9 +17,9 @@ describe('Governor-Curated Crown Jewels — Full Primitive Coverage', () => {
     expect(GOVERNOR_CURATED_JEWELS).toHaveLength(80);
   });
 
-  it('covers 42 primitives', () => {
+  it('covers 40 primitives', () => {
     const primitives = new Set(GOVERNOR_CURATED_JEWELS.map(j => j.primitive));
-    expect(primitives.size).toBe(42);
+    expect(primitives.size).toBe(40);
   });
 
   it('has no duplicate IDs', () => {

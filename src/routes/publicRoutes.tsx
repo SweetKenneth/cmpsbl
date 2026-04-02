@@ -125,7 +125,7 @@ export const publicRoutes = (
     <Route path="/try" element={<TryIt />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
-    <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />
+    <Route path="/memory-stream" element={<Foundry />} />
     <Route path="/proof" element={<ProofMode />} />
     <Route path="/showcase" element={<STierDemos />} />
     <Route path="/publication" element={<Publication />} />
@@ -198,7 +198,7 @@ export const publicRoutes = (
     <Route path="/register" element={<Navigate to="/auth" replace />} />
     <Route path="/library" element={<Navigate to="/" replace />} />
     <Route path="/support" element={<Support />} />
-    <Route path="/explore" element={<Navigate to="/store" replace />} />
+    <Route path="/explore" element={<Navigate to="/" replace />} />
     <Route path="/promptfluid" element={<PromptFluidHome />} />
 
     {/* System pages */}
@@ -227,7 +227,7 @@ export const publicRoutes = (
       </PinGate>
     } />
     <Route path="/architecture" element={<ArchitecturePage />} />
-    <Route path="/pricing" element={<Navigate to="/" replace />} />
+    <Route path="/pricing" element={<Store />} />
     <Route path="/pricing-method" element={<PricingMethod />} />
     <Route path="/upgrade" element={<Navigate to="/store" replace />} />
     <Route path="/packs" element={<Packs />} />
