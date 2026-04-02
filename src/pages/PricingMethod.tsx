@@ -12,20 +12,13 @@ import { Badge } from '@/components/ui/badge';
 export default function PricingMethod() {
   return (
     <>
-      <Helmet>
-        <title>Pricing Methodology — How We Price AI Capabilities | CMPSBL®</title>
-        <meta name="description" content="How CMPSBL® systematically prices software capabilities using multi-model consensus, quality scoring, and market-grounded analysis. Transparent, auditable methodology." />
-        <link rel="canonical" href="https://cmpsbl.com/pricing-method" />
-        <meta property="og:title" content="Pricing Methodology | CMPSBL®" />
-        <meta property="og:description" content="Transparent, auditable pricing for AI capabilities — multi-model consensus and quality scoring." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://cmpsbl.com/pricing-method" />
-        <meta property="og:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Pricing Methodology | CMPSBL®" />
-        <meta name="twitter:description" content="Transparent, auditable pricing for AI capabilities — multi-model consensus and quality scoring." />
-        <meta name="twitter:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
-      </Helmet>
+      <SEO
+        title="Pricing Methodology — Transparent AI Pricing | CMPSBL"
+        description="How CMPSBL prices software capabilities using multi-model consensus, quality scoring, and market-grounded analysis. Fully auditable."
+        canonical="https://cmpsbl.com/pricing-method"
+        image="https://cmpsbl.com/og/pricing.jpg"
+        keywords={['pricing methodology', 'consensus pricing', 'quality scoring', 'auditable pricing']}
+      />
 
       <PublicNav />
       <div className="min-h-screen bg-background">
