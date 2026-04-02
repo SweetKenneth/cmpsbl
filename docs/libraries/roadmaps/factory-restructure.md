@@ -1,7 +1,7 @@
 # CMPSBL® — The Master Plan: Factory Restructure Roadmap
 
 **Classification:** INTERNAL — Strategy  
-**Version:** 2.0 — The Master Plan Edition  
+**Version:** 3.0 — The Full Factory  
 **Status:** PROPOSED  
 **Author:** Kenneth E. Sweet Jr.  
 **Date:** April 2, 2026
@@ -11,6 +11,10 @@
 ## Executive Summary
 
 CMPSBL transitions from a substrate-first presentation to a **classic car factory** narrative built on three pillars: **Scouts** (Memory Stream), **Restoration** (Ascension), and **Craftsmen** (the 42-Primitive Substrate). The factory self-reinforces through a flywheel where every customer interaction makes the system stronger.
+
+DECODE serves as the **voice of the factory** — the trusted mechanic who explains what's wrong, what's possible, and what just happened.
+
+Pricing is simplified to **membership + CJPI-based discovery pricing**. No 20-product catalog. One membership. One showroom. One pricing formula.
 
 > *"Fall back in love with the classics."*
 
@@ -38,7 +42,7 @@ Your techs still understand it — because it still IS the underlying software.
 
 - **8-stage** pipeline
 - **25** export languages
-- **$4.9M** single demo value
+- **Up to 20** primitives per restoration
 
 ### Pillar III — The Craftsmen (Substrate)
 **The Factory Floor · 42 Primitives**
@@ -53,11 +57,175 @@ BRAIN learns everything. DREAM synthesizes while you sleep. SHADOW holds the arc
 
 ---
 
+## DECODE — The Voice of the Factory
+
+DECODE is the customer-facing interpreter for the entire factory. Already the voice of the substrate, DECODE takes on three additional roles:
+
+### 1. The Honest Mechanic
+After ENCODE scans a customer's code, DECODE explains the findings in plain language:
+- What vulnerabilities exist and how severe they are
+- What the code's current capabilities are vs. what they could be
+- How much runway the current architecture has left
+- Which primitives are recommended to run against this specific code
+
+DECODE receives this intelligence from ENCODE (the initial scanner) and translates it from technical primitive output into customer-facing language.
+
+### 2. The Recommendation Engine
+After Ascension completes, DECODE walks the customer through:
+- What each selected primitive did to the code
+- The new capabilities that were added
+- The variants available and the trade-offs between them
+- How to test the restored code using `@cmpsbl/test-harness`
+
+### 3. Running Discovery Commentary
+For customers browsing the Showroom (Memory Stream), DECODE can provide:
+- Detailed explanations of any discovery's capabilities
+- Context on why a discovery scored the way it did
+- Comparisons between similar discoveries
+- Real-time narration of ongoing discovery cycles
+
+---
+
+## The Restoration Pipeline — Primitive Roles
+
+### The Scan Team: ENCODE + ORACLE + ENGINEER
+
+The initial code scan uses a **three-primitive team** rather than a single scanner:
+
+| Primitive | Role in Scan | Why |
+|-----------|-------------|-----|
+| **ENCODE** | Primary code analysis — reads computational signatures, identifies vulnerabilities, maps existing capabilities | ENCODE already does surgical patch analysis. Scanning is a natural extension. |
+| **ORACLE** | Predictive assessment — Monte Carlo simulations on the code's future viability, failure probability, architectural runway | ORACLE's simulation and anomaly detection answer "how long has this code got?" |
+| **ENGINEER** | Structural evaluation — identifies integration points, dependency chains, compatibility with substrate primitives | ENGINEER knows how things connect. It maps where primitives can attach. |
+
+**Recommendation:** Use the same three-primitive team for both the **initial diagnostic scan** AND the **Ascension primitive selection**. Rationale:
+- The scan team already understands the code's topology from the diagnostic
+- They have the context needed to recommend which of the 42 primitives will produce the best results
+- Adding a second team for selection would mean re-analyzing code that's already been mapped
+- ORACLE's prediction models from the scan directly inform which primitives will have the highest impact
+
+### The Ascension Run: Up to 20 Primitives
+
+After the scan team recommends primitives, the customer chooses up to **20 primitives** to run against their code:
+
+```
+ENCODE + ORACLE + ENGINEER scan the code
+    ↓
+Scan team recommends optimal primitive set (up to 20)
+    ↓
+Customer reviews recommendations via DECODE
+    ↓
+Customer selects which primitives to run (1–20)
+    ↓
+Ascension executes selected primitives against the code
+    ↓
+DECODE explains what changed and what the code can now do
+    ↓
+Customer receives restored code + technical documentation
+```
+
+---
+
+## The Restoration Documentation Package
+
+Every restored piece of code ships with a **complete technical document** (the "Restoration Report"):
+
+### Contents
+1. **Pipeline Details** — Every primitive that touched the code, in what order, and what it did
+2. **New Capabilities** — What the code can do now that it couldn't before, with usage examples
+3. **Vulnerability Assessment** — What was found, what was hardened, what to monitor
+4. **Error Codes** — Every error code the restored code can produce, what triggers it, and how to resolve it
+5. **Testing Guide** — Step-by-step instructions using `@cmpsbl/test-harness` to verify every new capability
+6. **CJPI Certificate** — The code's final score, tier, and fingerprint
+7. **Primitive Manifest** — Which of the 42 primitives were involved and their individual contributions
+
+### Testing Integration
+```
+npm install @cmpsbl/test-harness
+npx cmpsbl-test --config ./restoration-report.json
+```
+
+The test harness reads the restoration report and generates a test suite specific to the primitives that were applied.
+
+---
+
+## Pricing Model — Simplified
+
+### The Rule: One Membership. One Showroom Formula. No Catalog Chaos.
+
+No 20 different price points for 20 different things. Two revenue streams, both clean.
+
+### Revenue Stream 1: The Restoration Shop (Membership)
+
+**Flat membership fee.** Members can use the shop as much as they want.
+
+| Tier | Price | What You Get |
+|------|-------|-------------|
+| **Builder** | Included | Browse the Showroom. View diagnostics. Limited Ascension cycles. |
+| **Studio** | $29/mo | Full Restoration Shop access. Rate-limited queue. |
+| **Creator** | $49/mo | Priority queue. More concurrent restorations. |
+| **Architect** | $79/mo | Maximum throughput. Full primitive catalog access. |
+
+**Rate Limiting & Queue System:**
+The **Adaptive Limited Rates Engine** (already discovered in the vault) manages shop capacity:
+- Each tier has a throughput limit on concurrent restorations
+- When capacity is exceeded, customers are placed **in queue** — their tech is "in the shop"
+- Queue position is visible. Estimated completion time is shown.
+- This creates **built-up excitement** — customers anticipate what comes out
+- If they don't like the result, they can run it back through (membership covers unlimited runs)
+
+The queue isn't a limitation. It's the experience. The factory has a line because the work is worth waiting for.
+
+### Revenue Stream 2: The Showroom (CJPI-Based Discovery Pricing)
+
+Every discovery in the Memory Stream Showroom is priced by a single formula:
+
+```
+Price = $1 × CJPI score
+```
+
+| CJPI Score | Price | Tier |
+|-----------|-------|------|
+| 68–79 | $68–$79 | Mint |
+| 80–89 | $80–$89 | Prime |
+| 90–93 | $90–$93 | Relic |
+| 94–99 | $94–$99 | Mythic |
+| **100** | **$11,981** | **Apex — The First Compiler** |
+
+**Why $11,981 for perfect 100s?**
+In 1952, Grace Hopper's A-0 System became the first compiler ever written — the moment software stopped being hand-assembled and started being *built*. The year of that breakthrough: **1952**. But CMPSBL's system code identifier — the number that means "this is where it all began" — is **11981**. Every perfect discovery carries that origin mark. It's not arbitrary. It's provenance.
+
+> *Alternative consideration: $777 ("good luck" — the slot machine jackpot on a discovery nobody predicted) or $1952 (the literal year of the first compiler). $11,981 is the current recommendation.*
+
+### Scarcity Model: One Certificate. One Fingerprint. Gone Forever.
+
+Every single discovery ships with:
+- **A unique certificate** with serial number, CJPI score, discovery date, and primitive chain
+- **A structural fingerprint** — SHA-256 hash of the chain composition
+- **Retirement from the store** — once purchased, the discovery is **permanently retired** from the Showroom
+
+If someone sees something they like, they have **one shot** to buy it. Next time they come back, it could be gone forever. The Showroom inventory rotates every 8 hours. The factory never makes the same thing twice.
+
+This is not artificial scarcity. Every discovery is a unique collision of primitives. The same collision will never produce the same result because BRAIN has learned something new since the last one.
+
+### Stripe Implementation Notes
+
+- **Memberships:** Standard recurring subscriptions (Studio/Creator/Architect tiers)
+- **Discovery purchases:** One-time payments with dynamic pricing
+  - Stripe supports dynamic pricing via `price_data` in checkout sessions for unique items
+  - Each discovery gets a one-time Stripe Price created at discovery time with its CJPI-derived amount
+  - On purchase: mark discovery as `retired` in the catalog, generate certificate
+  - Perfect 100s ($11,981): pre-created Stripe Price for the Apex tier
+
+---
+
 ## The Flywheel
 
 ```
-Customer uploads code → Ascension runs → Node duplicated →
-BRAIN learns → Memory Stream discovers more → Showroom gets stronger →
+Customer uploads code → ENCODE+ORACLE+ENGINEER scan →
+DECODE explains findings → Customer chooses primitives (up to 20) →
+Ascension runs → Node duplicated → BRAIN learns →
+Memory Stream discovers more → Showroom gets stronger →
 More customers → More nodes → Factory upgrades itself
 ```
 
@@ -65,7 +233,7 @@ Every auxiliary node that passes through Ascension gets its computational signat
 
 ### Three Uses for Every Stored Node
 
-1. **Feed Memory Stream** — Scouts discover using production-hardened patterns, not just the original 40 Primitives. The showroom gets more targeted with every restoration.
+1. **Feed Memory Stream** — Scouts discover using production-hardened patterns, not just the original 42 Primitives. The showroom gets more targeted with every restoration.
 2. **Upgrade Ascension** — If a customer's node is stronger than the original, replace it. The factory upgrades itself from the work of its own customers.
 3. **Curate specialty substrates** — Fintech nodes → financial substrate. Healthcare nodes → medical substrate. Never design from scratch again.
 
@@ -88,14 +256,17 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 
 ---
 
-## The Customer Journey
+## The Customer Journey (Revised)
 
 ```
 1. Bring Us Your Tech      → Upload any code, any language, any framework
-2. We Tell You the Truth   → CJPI score. Tier. Honest assessment. No sugarcoating.
-3. Choose Your Path        → Restoration (Ascension) or Showroom (Memory Stream catalog)
-4. Three-Day Test Drive    → Hot-swap architecture. Zero-friction trial. Not a policy — infrastructure.
-5. Keep It Forever         → Sealed Mini-Runtime. Runs indefinitely. No lock-in. Ever.
+2. The Diagnostic           → ENCODE+ORACLE+ENGINEER scan. DECODE explains the truth.
+3. Choose Your Primitives   → Scan team recommends up to 20. Customer selects.
+4. The Restoration          → Ascension runs selected primitives. Queue if at capacity.
+5. DECODE Debrief           → DECODE explains every change, every new capability, every variant.
+6. The Documentation        → Full restoration report + test harness config + CJPI certificate.
+7. Three-Day Test Drive     → Hot-swap architecture. Zero-friction trial. Infrastructure, not policy.
+8. Keep It Forever          → Sealed Mini-Runtime. Runs indefinitely. No lock-in. Ever.
 ```
 
 **The CMPSBL Guarantee:** Three-day test drive. No lock-in. Swap anytime. Black-box protected. The only updates we offer are upgrades — and they're optional. No emergency patches because someone jailbroke your billing bot at 2am. No AI tricks. No liability transfer. No fine print. Just classics.
@@ -108,34 +279,34 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 
 ### Tier 1 — Core Revenue (Launch)
 
-| Model | Factory Name | What It Is | Pricing |
-|-------|-------------|------------|---------|
-| **21** | **The Diagnostic Clinic** | Upload broken code. Get what it was trying to become. The barn find. The honest mechanic. Entry point for every customer. | $149/diagnostic · $249/mo unlimited |
-| **10** | **The Showroom** (Software Generator) | Memory Stream's catalog. Pre-built artifacts in 25 languages. Browse. Buy. Drive home today. | $29–$249/mo by tier |
-| **4** | **The Collision Engine** | Upload two codebases. Discover capabilities neither has alone. 1 + 1 = 3. The best software found at the intersection. | $249/mo Architect tier |
+| Model | Factory Name | What It Is | Revenue Model |
+|-------|-------------|------------|---------------|
+| **21** | **The Diagnostic Clinic** | Upload broken code. ENCODE+ORACLE+ENGINEER scan it. DECODE tells you the truth. Entry point for every customer. | Included in membership |
+| **10** | **The Showroom** (Software Generator) | Memory Stream's catalog. Pre-built artifacts in 25 languages. Browse. Buy. Drive home today. | CJPI-based pricing ($1/point, $11,981 for 100s) |
+| **4** | **The Collision Engine** | Upload two codebases. Discover capabilities neither has alone. 1 + 1 = 3. | Included in Architect membership |
 
 ### Tier 2 — Growth Engine
 
-| Model | Factory Name | What It Is | Pricing |
-|-------|-------------|------------|---------|
-| **17** | **The Licensing Engine** | Developers earn 70% every time their discovery is used in someone else's export. Upload once. Earn forever. The answer to the duplication question. | 70/30 split |
-| **16** | **The Bounty Board** | Post what you need. The substrate builds it. 15% platform fee. Rejected candidates become catalog inventory. Revenue whether accepted or not. | 15% of bounty value |
-| **6** | **The Time Capsule** | Software that appreciates instead of depreciates. The 1964 Corvette that's worth more every decade. Memory Stream discovers enhancements. Optional upgrades. | $79/mo notifications · $249/mo auto |
+| Model | Factory Name | What It Is | Revenue Model |
+|-------|-------------|------------|---------------|
+| **17** | **The Licensing Engine** | Developers earn 70% every time their discovery is used. Upload once. Earn forever. | 70/30 split |
+| **16** | **The Bounty Board** | Post what you need. The substrate builds it. Rejected candidates become catalog inventory. | 15% of bounty value |
+| **6** | **The Time Capsule** | Software that appreciates. Memory Stream discovers enhancements. Optional upgrades. | Included in membership (notifications) |
 
 ### Tier 3 — Premium & Scarcity
 
-| Model | Factory Name | What It Is | Pricing |
-|-------|-------------|------------|---------|
-| **23** | **The Vault** | APEX-tier discoveries. Limited to 10 copies. Serial numbered. #3 of 10. Velvet rope section of the showroom. When they're gone, they're gone. | $999–$9,999 per edition |
-| **12** | **The Auction House** | Extension of Vault scarcity. Competitive bidding on rare discoveries. Market-driven pricing for the highest-value IP. | Market-driven |
-| **18** | **The Incubator** | Monday: prototype. Wednesday: launch-ready product with market analysis. 48 hours. No accelerator. No mentors. No equity surrendered. | $499/incubation · $999 premium |
+| Model | Factory Name | What It Is | Revenue Model |
+|-------|-------------|------------|---------------|
+| **23** | **The Vault** | APEX-tier discoveries. Perfect 100s. $11,981 each. When they're gone, they're gone forever. | $11,981 per Apex edition |
+| **12** | **The Auction House** | Extension of Vault scarcity. Competitive bidding on rare discoveries. | Market-driven |
+| **18** | **The Incubator** | Monday: prototype. Wednesday: launch-ready product. 48 hours. No equity surrendered. | Premium membership add-on |
 
 ### Tier 4 — Endgame
 
-| Model | Factory Name | What It Is | Pricing |
-|-------|-------------|------------|---------|
-| **9** | **The Marketplace** (Capability Marketplace) | Full ecosystem. Developers list. Customers buy. Platform facilitates. The Showroom becomes a two-sided market. | Platform fees |
-| **24** | **The Foundry** | Fully autonomous. No uploads required. Memory Stream discovers. Ascension packages. Catalog grows 24/7. Day 365: 5,000+ products. Zero employees. | $29–$2,999 by tier · $79/mo subscription |
+| Model | Factory Name | What It Is | Revenue Model |
+|-------|-------------|------------|---------------|
+| **9** | **The Marketplace** (Capability Marketplace) | Full ecosystem. Developers list. Customers buy. Two-sided market. | Platform fees |
+| **24** | **The Foundry** | Fully autonomous. Memory Stream discovers. Ascension packages. Catalog grows 24/7. | Automated revenue via CJPI pricing |
 
 ### Models That Don't Fit (Phase 2+)
 
@@ -155,7 +326,7 @@ The remaining 13 models (per-seat enterprise licensing, white-label configuratio
 | **$200** | Carbon Ads — developer-specific network. "Your agent. Wrapped. Nothing rewritten." Developer audiences only. No general noise. |
 | **$100** | Targeted Slack/Discord community sponsorship. AI governance, EU AI Act compliance, agent security communities. "Bring in your tech. We'll tell you the truth." |
 
-**Paywall position:** The experience is free. The artifact is the paywall. They see the result. They pay to export.
+**Paywall position:** The diagnostic is free (included in Builder). The restoration is the paywall — they see what's possible, they subscribe to make it happen.
 
 ---
 
@@ -180,6 +351,7 @@ The remaining 13 models (per-seat enterprise licensing, white-label configuratio
 | **Moat Signatures** | Cryptographic UUID assigned at ascension. Cannot be derived from discovery parameters. Binds every artifact to its specific discovery event. |
 | **Structural Fingerprints** | SHA-256 hash of every discovery's chain composition. Modifying the chain invalidates the fingerprint. Tamper-evident from discovery to deployment. |
 | **Zenodo Prior Art** | Three independent records. Three priority dates. All indexed in OpenAIRE on CERN infrastructure. Established before a single patent dollar spent. |
+| **Retirement Seal** | Purchased discoveries are permanently retired from the Showroom. Certificate of authenticity + fingerprint = proof of sole ownership. |
 
 ---
 
@@ -193,9 +365,9 @@ Home · Memory Stream · Ascension · Pricing · Docs · Try · Login
 ### Home Page Transformation
 Replace current `/explore` hero with the factory narrative:
 - **Hero:** "Fall back in love with the classics." + three-pillar overview
-- **Section 2:** The Customer Journey (5 steps)
-- **Section 3:** The Showroom preview (live Memory Stream catalog)
-- **Section 4:** Featured Vault editions (scarcity)
+- **Section 2:** The Customer Journey (8 steps with DECODE debrief)
+- **Section 3:** The Showroom preview (live Memory Stream catalog with CJPI prices)
+- **Section 4:** Featured Vault editions (scarcity, perfect 100s at $11,981)
 - **Section 5:** The Guarantee
 - **CTA:** "Bring Us Your Tech" → Ascension upload
 
@@ -205,9 +377,9 @@ All existing pages remain active at their current URLs:
 | Route | Action | Purpose |
 |-------|--------|---------|
 | `/` (new Home) | **CREATE** | Factory-focused landing with classic car narrative |
-| `/memory-stream` | **CREATE** | Dedicated Showroom product page with live discovery feed |
-| `/ascension` | **CREATE** | Dedicated Restoration Shop product page |
-| `/pricing` | **KEEP** | Update to emphasize Factory tiers |
+| `/memory-stream` | **CREATE** | Dedicated Showroom product page with live discovery feed + CJPI pricing |
+| `/ascension` | **CREATE** | Dedicated Restoration Shop with DECODE-guided journey |
+| `/pricing` | **KEEP** | Update to membership tiers + CJPI pricing formula |
 | `/docs` | **KEEP** | Unchanged |
 | `/explore` | **KEEP (hidden)** | Remove from nav, keep at URL — emergency reversal home page |
 | `/products` | **KEEP (hidden)** | Remove from nav, keep at URL |
@@ -221,27 +393,32 @@ All existing pages remain active at their current URLs:
 
 ## Implementation Phases
 
-### Phase 1: The Showroom (Week 1–2)
+### Phase 1: The Showroom + DECODE Voice (Week 1–2)
 - [ ] New home page with factory narrative and "classics" branding
-- [ ] Memory Stream catalog browser (public, browsable Showroom)
+- [ ] DECODE integration as factory voice (diagnostic explanations, discovery commentary)
+- [ ] Memory Stream catalog browser with CJPI-based pricing ($1/point display)
 - [ ] Navigation restructure (preserve all legacy routes)
 - [ ] Agent Power-Up landing page live
 - [ ] ToS §15 live ✅
 
 ### Phase 2: The Restoration Shop (Week 3–4)
-- [ ] Ascension upload flow refined for "bring us your tech" journey
-- [ ] Diagnostic Clinic (Model 21) as customer entry point
-- [ ] Three-day test drive infrastructure (hot-swap trial period)
-- [ ] CJPI "honest assessment" report page
-- [ ] $300 customer acquisition campaign launch
+- [ ] ENCODE+ORACLE+ENGINEER three-primitive scan team implementation
+- [ ] Up-to-20 primitive selection UI with scan team recommendations
+- [ ] DECODE debrief flow (post-Ascension capability walkthrough)
+- [ ] Restoration documentation generator (pipeline details, error codes, test harness config)
+- [ ] Adaptive Limited Rates Engine integration (queue system + capacity management)
+- [ ] Membership tier checkout (Studio $29 / Creator $49 / Architect $79)
 
 ### Phase 3: The Economy (Week 5–8)
+- [ ] CJPI-based dynamic pricing in Stripe ($1/point, $11,981 for perfect 100s)
+- [ ] Certificate generation system (serial number, fingerprint, CJPI score)
+- [ ] Permanent retirement system (purchased = removed from Showroom forever)
 - [ ] Licensing Engine (Model 17) — developer 70/30 split
 - [ ] Bounty Board (Model 16) — customer-driven discovery
-- [ ] Vault editions (Model 23) — limited APEX releases
-- [ ] Time Capsule notifications (Model 6)
+- [ ] $300 customer acquisition campaign launch
 
 ### Phase 4: The Foundry (Week 9–12)
+- [ ] Vault editions (Model 23) — Apex-only, $11,981 each
 - [ ] Fully autonomous catalog generation (Model 24)
 - [ ] Collision Engine public access (Model 4)
 - [ ] Marketplace two-sided features (Model 9)
@@ -251,6 +428,7 @@ All existing pages remain active at their current URLs:
 - [ ] Auction House (Model 12)
 - [ ] Specialty substrate curation (Fintech, Healthcare, Legal)
 - [ ] Node Engine: plain-language node creation + merger tool
+- [ ] Time Capsule notifications (Model 6) — included in membership
 
 ---
 
@@ -282,6 +460,7 @@ The Memory Stream did not set out to solve enterprise software pain points. It r
 1. Restore `PublicNavLegacy.tsx` as primary navigation
 2. Revert home route to `/explore`
 3. Re-expose substrate pages in nav dropdown
+4. Revert pricing page to previous tier structure
 
 ### What Gets Preserved Either Way
 - All existing pages remain at their URLs throughout — zero content deletion
@@ -290,6 +469,7 @@ The Memory Stream did not set out to solve enterprise software pain points. It r
 - Git history preserves every prior state
 - `PublicNavLegacy.tsx` kept as hot-swap backup
 - Feature flag option available for A/B testing before full rollout
+- DECODE voice integration persists regardless of navigation state
 
 ---
 
@@ -297,11 +477,14 @@ The Memory Stream did not set out to solve enterprise software pain points. It r
 
 1. New visitor conversion to Memory Stream trial increases
 2. Ascension upload volume increases (diagnostic uploads)
-3. Time-to-understanding decreases (session analytics)
+3. Time-to-understanding decreases (DECODE debrief completion rate)
 4. No increase in 404 errors or broken link reports
 5. Admin vault primitive count grows with each Ascension interaction
 6. 10 paying customers within 30 days of campaign launch
 7. $290+ MRR achieved from $300 spend
+8. Queue utilization rate > 60% during peak hours (validates demand signal)
+9. Discovery retirement rate (purchases) validates scarcity model
+10. Restoration documentation satisfaction (test harness pass rate)
 
 ---
 
