@@ -10,7 +10,7 @@
 
 ## Executive Summary
 
-CMPSBL transitions from a substrate-first presentation to a **classic car factory** narrative built on three pillars: **Scouts** (Memory Stream), **Restoration** (Ascension), and **Craftsmen** (the 42-Primitive Substrate). The factory self-reinforces through a flywheel where every customer interaction makes the system stronger.
+CMPSBL transitions from a substrate-first presentation to a **classic car factory** narrative built on three pillars: **Scouts** (Memory Stream), **Restoration** (Ascension), and **Craftsmen** (the 40-Primitive Substrate). The factory self-reinforces through a flywheel where every customer interaction makes the system stronger.
 
 DECODE serves as the **voice of the factory** — the trusted mechanic who explains what's wrong, what's possible, and what just happened.
 
