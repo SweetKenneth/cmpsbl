@@ -349,7 +349,7 @@ export const SECURITY_KNOWLEDGE: KnowledgeEntry[] = [
 • Row Level Security (RLS) on all user data
 • Encryption at rest and in transit (TLS 1.3)
 
-The DEFENSE system is an outer containment boundary — a mesh overlay that spans all systems. All access attempts are monitored, logged, and analyzed for threats.
+The DEFENSE primitive is an outer containment boundary — a protective layer that spans all primitives. All access attempts are monitored, logged, and analyzed for threats.
 
 CMPSBL follows compliance-ready patterns for SOC 2 and GDPR.`,
     category: 'question',
