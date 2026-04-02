@@ -14,9 +14,9 @@ const TIER_ORDER: MembershipTier[] = ['builder', 'studio', 'creator', 'architect
 const TIER_FEATURES: Record<MembershipTier, string[]> = {
   builder: [
     'Browse the Showroom',
-    'Access the Junkyard (unlimited)',
+    'Access the Foundry (Open Archive)',
     'View diagnostics',
-    'Limited Ascension cycles',
+    'Limited restoration cycles',
   ],
   studio: [
     'Full Restoration Shop access',

@@ -49,9 +49,9 @@ const TIERS: {
   {
     key: 'builder',
     name: 'Builder',
-    price: '$0',
-    annualPrice: '$0',
-    period: '/mo',
+    price: 'Free',
+    annualPrice: 'Free',
+    period: '',
     tagline: 'Build real things. Not a trial.',
     description: 'Full runtime access with baseline technology.',
     accent: 'from-neon-green to-neon-green',
@@ -479,11 +479,12 @@ export function UpgradeContent() {
           {[
             { q: 'What is the Memory Stream?', a: 'The Memory Stream continuously discovers new capabilities. Each day you can crystallize discoveries depending on your plan — Builder gets 3 pulls, Studio gets 6, Creator gets 9, and Architect gets 12.' },
             { q: 'What is the vault?', a: 'The vault stores memories you choose to keep after crystallization. Each tier has different vault capacity — from 5 (Builder) to unlimited (Architect). Remove old memories to free space.' },
+            { q: 'How does the 7-day free trial work?', a: 'Every paid plan starts with a 7-day free trial. You won\'t be charged until day 8. Cancel anytime during the trial — no questions asked, no charge.' },
             { q: 'What happens with Mythic discoveries?', a: 'Mythic memories are among the rarest outcomes. If your vault is full when one appears, you will be prompted to upgrade or manage your vault to keep it.' },
             { q: 'Can I export my discoveries?', a: 'Studio and above can export full capability packs including runtime, memory implementation, and documentation. Builder tier can explore and store, but export requires an upgrade.' },
             { q: 'What are custom memory slots?', a: 'Creator and Architect tiers can equip discovered memories directly into runtime slots. Lower tiers can only activate prebuilt capability packs.' },
             { q: 'What does priority routing do?', a: 'Higher tiers get faster NEXUS execution, dedicated memory partitions, and priority queue placement. Architect gets the fastest routing with dedicated infrastructure.' },
-            { q: 'Can I start free and upgrade later?', a: 'Yes. Builder is fully functional with 3 slots, 5 vault capacity, and 3 daily pulls. Upgrade when you need more.' },
+            { q: 'Can I start free and upgrade later?', a: 'Yes. Builder is fully functional with 3 slots, 5 vault capacity, and 3 daily pulls. Upgrade when you need more capacity.' },
           ].map(faq => (
             <div key={faq.q} className="space-y-2 p-4 rounded-xl hover:bg-muted/30 border border-transparent hover:border-border/30 transition-all duration-300">
               <h3 className="font-semibold">{faq.q}</h3>

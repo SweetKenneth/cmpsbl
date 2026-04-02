@@ -5,6 +5,7 @@
 
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { Button } from "@/components/ui/button";
@@ -287,7 +288,12 @@ export default function RestorationShop() {
                 >
                   Start New Refurbishment
                 </Button>
-                <Button className="flex-1 rounded-xl font-bold gap-2">
+                <Button 
+                  className="flex-1 rounded-xl font-bold gap-2"
+                  onClick={() => {
+                    toast.info('Evaluation period starting — check your member dashboard for progress.');
+                  }}
+                >
                   <ArrowRight className="w-3.5 h-3.5" />
                   Begin 3-Day Evaluation
                 </Button>
