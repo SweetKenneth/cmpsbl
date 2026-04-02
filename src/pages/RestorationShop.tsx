@@ -88,13 +88,13 @@ export default function RestorationShop() {
     if (!code.trim() || isScanning) return;
     setIsScanning(true);
     try {
-      const result = await runScanTeam(code);
+      const result = await runScanTeam(code, fileName ?? undefined);
       setScanResult(result);
       setPhase('diagnostic');
     } finally {
       setIsScanning(false);
     }
-  }, [code, isScanning]);
+  }, [code, isScanning, fileName]);
 
   const handleSelectPrimitives = useCallback(async (selected: PrimitiveRecommendation[]) => {
     if (!scanResult || isRestoring) return;
