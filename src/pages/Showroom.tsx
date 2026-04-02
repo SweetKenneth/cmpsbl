@@ -262,7 +262,7 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
           </h3>
 
           {/* Solution description */}
-          <p className="text-xs text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3">
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3">
             {item.solutionDesc}
           </p>
 
