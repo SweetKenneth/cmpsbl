@@ -559,7 +559,6 @@ export default function Foundry() {
       />
 
       <PublicNav />
-      <MemoryStreamOnboarding />
 
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none z-0 substrate-grid-bg opacity-30" />
