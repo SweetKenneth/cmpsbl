@@ -18,6 +18,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDecodeStore } from "@/stores/decodeStore";
 
 export type DecodeVoiceRole = "mechanic" | "recommender" | "commentator";
 
@@ -99,8 +100,13 @@ export function DecodeFactoryVoice({
   const [expanded, setExpanded] = useState(true);
   const config = ROLE_CONFIG[role];
   const Icon = config.icon;
+  const openDecode = useDecodeStore(s => s.open);
 
   const toggleExpanded = useCallback(() => setExpanded(prev => !prev), []);
+
+  const handleAskDecode = useCallback(() => {
+    openDecode("assistant");
+  }, [openDecode]);
 
   return (
     <div className={cn(
@@ -224,16 +230,13 @@ export function DecodeFactoryVoice({
             </div>
           )}
 
-          {/* Open full DECODE chat */}
+          {/* Open full DECODE chat — wired to store */}
           <div className="pt-2 border-t border-border/20">
             <Button
               variant="ghost"
               size="sm"
               className="w-full text-xs text-muted-foreground hover:text-foreground"
-              onClick={() => {
-                const { open } = (window as any).__decodeStore?.getState?.() ?? {};
-                if (open) open("assistant");
-              }}
+              onClick={handleAskDecode}
             >
               <MessageCircle className="w-3 h-3 mr-1.5" />
               Ask DECODE a question

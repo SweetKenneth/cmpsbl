@@ -1,9 +1,9 @@
 /**
  * RestorationShop → Refurbishment Lab (/ascension)
- * Full journey: Upload → Diagnostic → Select Primitives → Queue → DECODE Debrief → Documentation
+ * Full journey: Upload → Diagnostic → Select Primitives → Queue → DECODE Debrief → Export
  */
 
-import { useState, useCallback, lazy, Suspense } from "react";
+import { useState, useCallback, useRef, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { SEO } from "@/components/SEO";
@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Upload,
-  Wrench,
   ArrowRight,
   Sparkles,
   Loader2,
@@ -20,9 +19,8 @@ import {
   Settings2,
   Cpu,
   MessageSquare,
-  FileText,
-  TestTube2,
-  ShieldCheck,
+  FileUp,
+  Download,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
@@ -35,12 +33,12 @@ import { RestorationReportView } from "@/components/factory/RestorationReportVie
 import { MembershipTiers } from "@/components/factory/MembershipTiers";
 import { DecodeDebrief } from "@/components/factory/DecodeDebrief";
 import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
+import { useDecodeStore } from "@/stores/decodeStore";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
 
-/** Phase step metadata with icons */
 const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
   { key: 'upload', label: 'Upload', icon: Upload },
   { key: 'diagnostic', label: 'Diagnostic', icon: Search },
@@ -52,11 +50,36 @@ const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
 export default function RestorationShop() {
   const [phase, setPhase] = useState<Phase>('upload');
   const [code, setCode] = useState('');
+  const [fileName, setFileName] = useState<string | null>(null);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [report, setReport] = useState<RestorationReport | null>(null);
   const [queueEntry, setQueueEntry] = useState<QueueEntry | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const identityRole = useDecodeStore(s => s.identityRole);
+
+  const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file size (max 1MB)
+    if (file.size > 1_048_576) {
+      toast.error('File too large. Maximum size is 1MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result;
+      if (typeof text === 'string') {
+        setCode(text);
+        setFileName(file.name);
+      }
+    };
+    reader.onerror = () => toast.error('Failed to read file.');
+    reader.readAsText(file);
+  }, []);
 
   const handleScan = useCallback(async () => {
     if (!code.trim() || isScanning) return;
@@ -89,9 +112,76 @@ export default function RestorationShop() {
     setIsRestoring(false);
   }, [scanResult, isRestoring]);
 
+  const handleExport = useCallback(() => {
+    const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator';
+
+    if (!isSubscribed) {
+      toast.error('To export your refurbished code, please subscribe to a paid plan.', {
+        action: {
+          label: 'View Plans',
+          onClick: () => window.location.href = '/plans',
+        },
+      });
+      return;
+    }
+
+    // Build and trigger ZIP download
+    if (!report) return;
+    toast.success('Preparing your refurbished code package for download...');
+
+    import('jszip').then(({ default: JSZip }) => {
+      const zip = new JSZip();
+
+      // Original source
+      zip.file('original-source.txt', code || '// No source provided');
+
+      // Refurbishment report as JSON
+      zip.file('restoration-report.json', JSON.stringify(report, null, 2));
+
+      // Pipeline details
+      const pipelineMd = report.pipelineDetails.map(
+        p => `### Step ${p.order}: ${p.primitiveName}\n${p.action}\nDuration: ${p.durationMs}ms`
+      ).join('\n\n');
+      zip.file('docs/pipeline-details.md', `# Pipeline Details\n\n${pipelineMd}`);
+
+      // New capabilities
+      const capsMd = report.newCapabilities.map(
+        c => `### ${c.name}\n${c.description}\n\n\`\`\`typescript\n${c.usageExample}\n\`\`\``
+      ).join('\n\n');
+      zip.file('docs/new-capabilities.md', `# New Capabilities\n\n${capsMd}`);
+
+      // Test harness config
+      const testMd = [
+        `# Testing Guide`,
+        `\nInstall: \`${report.testingGuide.installCommand}\``,
+        `Run: \`${report.testingGuide.testCommand}\``,
+        `\n## Steps\n`,
+        ...report.testingGuide.steps.map((s, i) => `${i + 1}. ${s}`),
+      ].join('\n');
+      zip.file('docs/testing-guide.md', testMd);
+
+      // CJPI certificate
+      zip.file('docs/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
+
+      // Error codes
+      const errorMd = report.errorCodes.map(
+        e => `### ${e.code}\n**Trigger:** ${e.trigger}\n**Resolution:** ${e.resolution}`
+      ).join('\n\n');
+      zip.file('docs/error-codes.md', `# Error Codes\n\n${errorMd}`);
+
+      zip.generateAsync({ type: 'blob' }).then(blob => {
+        import('file-saver').then(({ saveAs }) => {
+          saveAs(blob, `cmpsbl-refurbished-${report.id}.zip`);
+          toast.success('Export complete. Your refurbished code has been downloaded.');
+        });
+      });
+    });
+  }, [report, code, identityRole]);
+
   const resetFlow = useCallback(() => {
     setPhase('upload');
     setCode('');
+    setFileName(null);
     setScanResult(null);
     setReport(null);
     setQueueEntry(null);
@@ -107,7 +197,7 @@ export default function RestorationShop() {
         canonical="https://cmpsbl.com/ascension"
       />
 
-      {/* Lab ambient — glow + scan + data streams */}
+      {/* Lab ambient */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 gradient-mesh opacity-60" />
         <div
@@ -118,11 +208,9 @@ export default function RestorationShop() {
           className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
           style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.05) 0%, transparent 50%)" }}
         />
-        {/* Scan line */}
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
           <div className="absolute inset-x-0 h-px lab-scan-line" style={{ animationDuration: "10s" }} />
         </div>
-        {/* Dot grid */}
         <div className="absolute inset-0" style={{
           backgroundImage: "radial-gradient(circle, hsl(var(--primary) / 0.02) 1px, transparent 1px)",
           backgroundSize: "36px 36px",
@@ -131,7 +219,6 @@ export default function RestorationShop() {
 
       <PublicNav />
 
-      {/* Breadcrumb */}
       <div className="container mx-auto px-3 sm:px-4 pt-20 relative z-10">
         <PublicBreadcrumb />
       </div>
@@ -161,7 +248,7 @@ export default function RestorationShop() {
       {/* Main flow */}
       <section className="relative z-10 px-3 sm:px-6 pb-16 sm:pb-24">
         <div className="max-w-4xl mx-auto">
-          {/* Phase indicators with icons */}
+          {/* Phase indicators */}
           <div className="flex items-center justify-center gap-1 mb-10">
             {PHASE_META.map((p, idx) => {
               const Icon = p.icon;
@@ -198,11 +285,51 @@ export default function RestorationShop() {
                   <Upload className="w-5 h-5 text-primary" />
                   <h2 className="text-sm font-bold text-foreground">Upload Your Code</h2>
                 </div>
+
+                {/* File upload drop zone */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".js,.jsx,.ts,.tsx,.py,.rs,.go,.java,.c,.cpp,.cs,.rb,.swift,.kt,.php,.scala,.lua,.r,.dart,.ex,.vhd,.v,.sv,.scala,.hdl,.fir,text/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className={cn(
+                    "w-full rounded-xl border-2 border-dashed p-6 mb-4 text-center transition-colors",
+                    "hover:border-primary/40 hover:bg-primary/5",
+                    fileName ? "border-primary/30 bg-primary/5" : "border-border/40 bg-background/30"
+                  )}
+                >
+                  <FileUp className={cn("w-8 h-8 mx-auto mb-2", fileName ? "text-primary" : "text-muted-foreground/40")} />
+                  {fileName ? (
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{fileName}</p>
+                      <p className="text-[10px] text-muted-foreground mt-1">Click to choose a different file</p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-sm font-medium text-foreground">Click to upload a file</p>
+                      <p className="text-[10px] text-muted-foreground mt-1">
+                        Any of 25 supported languages · Max 1MB
+                      </p>
+                    </div>
+                  )}
+                </button>
+
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex-1 h-px bg-border/30" />
+                  <span className="text-[10px] text-muted-foreground/50 uppercase tracking-widest">or paste code</span>
+                  <div className="flex-1 h-px bg-border/30" />
+                </div>
+
                 <Textarea
                   value={code}
-                  onChange={(e) => setCode(e.target.value)}
+                  onChange={(e) => { setCode(e.target.value); setFileName(null); }}
                   placeholder="Paste your code here — any language, any stack..."
-                  className="min-h-[200px] bg-background/50 font-mono text-xs mb-4"
+                  className="min-h-[160px] bg-background/50 font-mono text-xs mb-4"
                 />
                 <Button
                   onClick={handleScan}
@@ -240,7 +367,6 @@ export default function RestorationShop() {
                 }))}
               />
 
-              {/* CJPI Estimate + Runway */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
                    <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
@@ -288,7 +414,7 @@ export default function RestorationShop() {
             </div>
           )}
 
-          {/* DEBRIEF PHASE — Interactive DECODE walkthrough */}
+          {/* DEBRIEF PHASE */}
           {phase === 'debrief' && report && (
             <div className="max-w-3xl mx-auto space-y-6">
               <DecodeDebrief report={report} scanResult={scanResult} />
@@ -302,14 +428,12 @@ export default function RestorationShop() {
                 >
                   Start New Refurbishment
                 </Button>
-                <Button 
+                <Button
                   className="flex-1 rounded-xl font-bold gap-2"
-                  onClick={() => {
-                    toast.info('Evaluation period starting — check your member dashboard for progress.');
-                  }}
+                  onClick={handleExport}
                 >
-                  <ArrowRight className="w-3.5 h-3.5" />
-                  Begin 3-Day Evaluation
+                  <Download className="w-3.5 h-3.5" />
+                  Export Refurbished Code
                 </Button>
               </div>
               <div className="text-center pt-2">
