@@ -263,8 +263,8 @@ function ArchiveBrowseView() {
                     transition={{ delay: 0.3 + i * 0.08 }}
                   >
                     <cat.icon className={cn("w-3.5 h-3.5", cat.text)} />
-                    <span className="font-black text-lg">{count}</span>
-                    <span className="text-xs text-muted-foreground">{cat.label}</span>
+                    <span className="font-black text-base sm:text-lg">{count}</span>
+                    <span className="text-[10px] sm:text-xs text-muted-foreground">{cat.label}</span>
                   </motion.div>
                 );
               })}
