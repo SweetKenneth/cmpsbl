@@ -137,7 +137,7 @@ Every restored piece of code ships with a **complete technical document** (the "
 4. **Error Codes** — Every error code the restored code can produce, what triggers it, and how to resolve it
 5. **Testing Guide** — Step-by-step instructions using `@cmpsbl/test-harness` to verify every new capability
 6. **CJPI Certificate** — The code's final score, tier, and fingerprint
-7. **Primitive Manifest** — Which of the 42 primitives were involved and their individual contributions
+7. **Primitive Manifest** — Which of the 40 primitives were involved and their individual contributions
 
 ### Testing Integration
 ```
