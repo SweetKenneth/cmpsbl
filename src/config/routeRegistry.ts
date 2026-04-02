@@ -75,6 +75,11 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/scanner", label: "Scanner Tool", section: "product", priority: 0, changefreq: "monthly", redirect: true },
   { path: "/engines/:slug", label: "Engine Detail", section: "product", priority: 0.70, changefreq: "weekly", description: "Individual engine details" },
   { path: "/agents/:slug", label: "Agent Detail", section: "product", priority: 0.70, changefreq: "weekly", description: "Individual agent details" },
+  { path: "/assembly", label: "Code Assembly", section: "product", priority: 0.82, changefreq: "monthly", description: "Full-service code reconstruction and component integration" },
+  { path: "/restoration-shop", label: "Refurbishment Lab", section: "product", priority: 0.80, changefreq: "monthly", description: "Professional code diagnostic and certified restoration" },
+  { path: "/agent-forge", label: "Agent Forge", section: "product", priority: 0.78, changefreq: "monthly", description: "Discover 5 agent capabilities via zero-AI structural analysis" },
+  { path: "/agent-power-up", label: "Agent Power-Up", section: "product", priority: 0.75, changefreq: "monthly", description: "Enhance any AI agent with substrate capabilities" },
+  { path: "/investor-showcase", label: "Investor Showcase", section: "company", priority: 0.70, changefreq: "monthly", description: "Technical demonstration for strategic partners" },
 
   // ── Developer ──
   { path: "/documentation", label: "Documentation", section: "developer", priority: 0.92, changefreq: "weekly", description: "API reference & guides" },
