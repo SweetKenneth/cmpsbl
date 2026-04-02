@@ -1707,7 +1707,7 @@ function DocViewer({ doc, onBack }: { doc: InvestorDoc; onBack: () => void }) {
           </div>
 
           <div className="flex items-center gap-4 text-[10px] text-slate-400 font-mono">
-            <span>Version 17.0.0</span>
+            <span>Version 18.0.0</span>
             <span>·</span>
             <span>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
             <span>·</span>
@@ -1871,7 +1871,7 @@ function DocViewer({ doc, onBack }: { doc: InvestorDoc; onBack: () => void }) {
               <p className="text-3xl sm:text-4xl font-black tracking-tight">~$2.6M</p>
               <p className="text-xs text-slate-400 mt-2">5 Certificates of Discovery · All MYTHIC tier · All standalone · All sellable</p>
               <div className="w-16 h-px bg-slate-700 mx-auto mt-4 mb-3" />
-              <p className="text-[10px] text-slate-500 font-mono">Source: OpenAI-pattern PHP agent · March 27, 2026 · Ascension v17.0.0</p>
+              <p className="text-[10px] text-slate-500 font-mono">Source: OpenAI-pattern PHP agent · March 27, 2026 · Ascension v18.0.0</p>
             </div>
           </div>
         )}
