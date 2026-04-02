@@ -58,6 +58,16 @@ const PROFILES: Record<IdentityRole, CalibrationProfile> = {
     maxResponseTokens: 600,
     contextPrefix: 'Addressing a registered user — balanced depth.',
   },
+  studio: {
+    role: 'studio',
+    depthLevel: 2,
+    verbosity: 'balanced',
+    technicalLevel: 'intermediate',
+    includeExamples: true,
+    includeSubstrateRefs: true,
+    maxResponseTokens: 600,
+    contextPrefix: 'Addressing a Studio subscriber — balanced depth with substrate references.',
+  },
   creator: {
     role: 'creator',
     depthLevel: 3,
