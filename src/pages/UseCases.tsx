@@ -43,6 +43,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { cn } from "@/lib/utils";
 
 // Industry card
