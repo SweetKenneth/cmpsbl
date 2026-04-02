@@ -4,6 +4,8 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Brain, Scale, Shield, BarChart3, Layers, Zap, Target, CheckCircle2 } from 'lucide-react';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -25,6 +27,7 @@ export default function PricingMethod() {
         <meta name="twitter:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
           {/* Back link */}
@@ -284,6 +287,7 @@ export default function PricingMethod() {
           </div>
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 }

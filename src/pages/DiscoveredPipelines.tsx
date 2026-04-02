@@ -7,6 +7,8 @@ import { useDiscoveredPipelines } from '@/hooks/useDiscoveredPipelines';
 import { motion } from 'framer-motion';
 import { ArrowRight, Layers, Cpu, Sparkles, Network, Zap, Shield, Brain, Eye, GitBranch } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
 
@@ -43,6 +45,7 @@ export default function DiscoveredPipelines() {
         <meta name="description" content="The substrate's highest-scoring autonomous Memory Stream compositions. CJPI-scored, tier-ranked from Mint to Apex, and ready for deployment across 40 primitives. Real crystallized software." />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background">
         {/* Hero */}
         <section className="pt-24 pb-16 px-5 sm:px-6 relative overflow-hidden">
@@ -143,6 +146,7 @@ export default function DiscoveredPipelines() {
           </div>
         </section>
       </div>
+      <EnhancedFooter />
     </>
   );
 }

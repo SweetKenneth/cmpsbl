@@ -7,6 +7,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '@/integrations/supabase/client';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { ScanShareCard } from '@/components/conversion/ScanShareCard';
 import { InternalLinkMesh } from '@/components/seo/InternalLinkMesh';
 import { LeadCaptureCTA } from '@/components/conversion/LeadCaptureCTA';
@@ -61,6 +63,7 @@ export default function ScanResult() {
         <link rel="canonical" href={`https://cmpsbl.com/scan/results/${id}`} />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background">
         <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
           <Link to="/">
@@ -137,6 +140,7 @@ export default function ScanResult() {
           )}
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 }
