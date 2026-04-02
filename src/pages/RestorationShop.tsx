@@ -228,8 +228,8 @@ export default function RestorationShop() {
               {/* CJPI Estimate + Runway */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
-                  <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
-                  <div className="text-[10px] text-muted-foreground">Current CJPI Estimate</div>
+                   <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
+                   <div className="text-xs text-muted-foreground">Current CJPI Estimate</div>
                 </div>
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
                   <div className="text-2xl font-black text-foreground">{scanResult.architecturalRunway}mo</div>
