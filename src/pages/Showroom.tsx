@@ -400,7 +400,7 @@ export default function Showroom() {
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-4 text-sm text-muted-foreground">
-                <span className="font-mono">{CATALOG.length} discoveries</span>
+                <span className="font-mono">{catalog.length} discoveries</span>
                 <span className="text-border">·</span>
                 <span>{TIER_CONFIG.filter(t => itemsByTier[t.id]?.length).length} tiers</span>
                 <span className="text-border">·</span>
