@@ -92,7 +92,7 @@ export function DepotDisclaimer({ onClose }: DepotDisclaimerProps) {
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground">Need Help?</h3>
-                <p className="text-sm text-muted-foreground">Our team is here to assist with any questions.</p>
+                <p className="text-sm text-muted-foreground">We're here to assist with any questions.</p>
               </div>
               <Link 
                 to="/support" 
