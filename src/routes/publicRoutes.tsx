@@ -125,7 +125,7 @@ export const publicRoutes = (
     <Route path="/try" element={<TryIt />} />
     <Route path="/foundry" element={<Foundry />} />
     <Route path="/foundry/demo" element={<Navigate to="/foundry" replace />} />
-    <Route path="/memory-stream" element={<Navigate to="/foundry" replace />} />
+    <Route path="/memory-stream" element={<Foundry />} />
     <Route path="/proof" element={<ProofMode />} />
     <Route path="/showcase" element={<STierDemos />} />
     <Route path="/publication" element={<Publication />} />
