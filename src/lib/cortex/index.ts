@@ -55,7 +55,7 @@ export const MODULE_REGISTRY: Record<SubstrateModule, Omit<ModuleRegistryEntry, 
   governance: { module: 'governance', layer: 'mesh', bootOrder: 25, dependencies: ['core'] },
   medic: { module: 'medic', layer: 'operational', bootOrder: 38, dependencies: ['core', 'system', 'vision'] },
   nerve: { module: 'nerve', layer: 'infrastructure', bootOrder: 39, dependencies: ['core', 'ripple'] },
-  // Expansion Modules (40-Primitive Architecture)
+  // Expansion Primitives (40-Primitive Architecture)
   sovereign: { module: 'sovereign', layer: 'mesh', bootOrder: 26, dependencies: ['core', 'defense', 'access'] },
   oracle: { module: 'oracle', layer: 'cognitive', bootOrder: 27, dependencies: ['core', 'brain', 'vision'] },
   conscience: { module: 'conscience', layer: 'mesh', bootOrder: 28, dependencies: ['core', 'defense'] },

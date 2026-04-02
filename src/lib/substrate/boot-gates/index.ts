@@ -20,7 +20,7 @@ export type ModuleName =
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
   | 'nerve'   // OCG — inter-primitive signaling
   | 'shadow'  // CSZ — shadow mesh operations
-  // Expansion Nodes (40-Primitive Architecture)
+  // Expansion Primitives (40-Primitive Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
   | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 

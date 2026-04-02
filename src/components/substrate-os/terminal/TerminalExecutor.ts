@@ -877,7 +877,7 @@ export async function executeCommand(
         csz: ['evolution', 'shadow', 'phantom'],
       };
       const mods = zones[module] || zones.expansion;
-      let output = `\n┌─ ${module.toUpperCase()} — Expansion Modules ────────────────────────────\n│\n`;
+      let output = `\n┌─ ${module.toUpperCase()} — Expansion Primitives ────────────────────────────\n│\n`;
       for (const m of mods) {
         output += `│  ${m.padEnd(14)} → help ${m}\n`;
       }
