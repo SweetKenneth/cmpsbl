@@ -109,6 +109,7 @@ export default function Assembly() {
         <meta name="description" content="Full-service code reconstruction, splicing, and component integration. Bring us your broken, fragmented, or incomplete code — we'll piece it back together." />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background">
         {/* Hero */}
         <section className="relative py-20 sm:py-28 px-4 overflow-hidden">
