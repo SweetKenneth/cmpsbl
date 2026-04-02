@@ -18,10 +18,13 @@ import {
   Play,
   FileText,
   CreditCard,
+  Package,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -145,24 +148,37 @@ export function CmpsblNav() {
             <div className="flex items-center gap-2">
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (
-                  <>
-                    <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-3 font-medium">
-                      <Link to="/os">
-                        <Command className="w-4 h-4 mr-1.5" />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" aria-label="Account menu">
+                        <Avatar className="h-9 w-9 border-2 border-border hover:border-primary transition-colors cursor-pointer">
+                          <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
+                            {user.email?.charAt(0).toUpperCase() || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent align="end" className="w-56 p-2">
+                      <div className="px-3 py-2 border-b border-border mb-1">
+                        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                      </div>
+                      <Link to="/workbench" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
+                        <Package className="w-4 h-4" />
+                        My Workbench
+                      </Link>
+                      <Link to="/os" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
+                        <Command className="w-4 h-4" />
                         Dashboard
                       </Link>
-                    </Button>
-                    <div className="w-px h-5 bg-border mx-1" />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={handleSignOut}
-                      className="rounded-lg h-9 w-9 text-muted-foreground hover:text-foreground"
-                      aria-label="Sign out"
-                    >
-                      <LogOut className="w-4 h-4" />
-                    </Button>
-                  </>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-destructive"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </PopoverContent>
+                  </Popover>
                 ) : (
                   <>
                     <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground">
@@ -277,6 +293,12 @@ export function CmpsblNav() {
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="pt-6 border-t border-border">
                 {user ? (
                   <div className="space-y-3">
+                    <Button asChild variant="outline" className="w-full h-11 rounded-xl font-medium">
+                      <Link to="/workbench">
+                        <Package className="w-4 h-4 mr-2" />
+                        My Workbench
+                      </Link>
+                    </Button>
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
                       <Link to="/os">
                         <Command className="w-4 h-4 mr-2" />

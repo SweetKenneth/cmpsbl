@@ -4,8 +4,8 @@
  * Authenticated users still see their vault/mining experience.
  */
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { MemoryStreamOnboarding } from '@/components/onboarding/MemoryStreamOnboarding';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
@@ -31,7 +31,7 @@ import { cn } from '@/lib/utils';
 import {
   Archive, ChevronLeft, ChevronRight, Search, X, Wrench,
   AlertTriangle, Zap, Package, ArrowRight, Shield, Brain,
-  Code, Layers, Eye, Cpu, HardDrive, CircuitBoard,
+  Code, Layers, Eye, Cpu, HardDrive, CircuitBoard, Download,
 } from 'lucide-react';
 
 // Junkyard images
@@ -113,12 +113,30 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
   const isBroken = item.condition === 'broken';
   const isSalvageable = item.condition === 'salvageable';
   const isRestorable = isBroken || isSalvageable;
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const conditionConfig = {
     raw: { label: 'RAW', className: 'bg-neon-cyan/15 text-neon-cyan border-neon-cyan/30', accent: 'from-neon-cyan via-neon-cyan to-neon-cyan' },
     broken: { label: 'BROKEN', className: 'bg-destructive/15 text-destructive border-destructive/30', accent: 'from-destructive via-neon-amber to-destructive' },
     salvageable: { label: 'SALVAGEABLE', className: 'bg-neon-amber/15 text-neon-amber border-neon-amber/30', accent: 'from-neon-amber via-neon-amber to-neon-amber' },
   }[item.condition];
+
+  const handleDownload = () => {
+    if (!user) {
+      toast.error('Sign in to download items to your Workbench');
+      navigate('/auth');
+      return;
+    }
+    // Store in localStorage as collected items
+    const key = 'cmpsbl_workbench_items';
+    const existing = JSON.parse(localStorage.getItem(key) || '[]') as string[];
+    if (!existing.includes(item.id)) {
+      existing.push(item.id);
+      localStorage.setItem(key, JSON.stringify(existing));
+    }
+    toast.success(`${item.name} added to your Workbench`);
+  };
 
   return (
     <div className="snap-start shrink-0 w-[260px] sm:w-[300px] md:w-[320px]">
@@ -173,7 +191,7 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
           <p className="text-xs text-muted-foreground mb-3 flex-1 leading-relaxed">{item.description}</p>
 
           {/* Footer */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             {isRestorable ? (
               <>
                 <div>
@@ -181,7 +199,7 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
                   <span className="text-sm font-bold text-neon-amber ml-1.5">{item.restorationCost}</span>
                 </div>
                 <Button asChild size="sm" variant="outline" className="gap-1 text-xs border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10">
-                  <Link to="/consultation">
+                  <Link to="/ascension">
                     <Wrench className="w-3 h-3" />
                     Restore
                   </Link>
@@ -190,7 +208,10 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
             ) : (
               <>
                 <span className="text-sm font-bold text-neon-green">Free</span>
-                <span className="text-xs text-muted-foreground">No certificate · unlimited copies</span>
+                <Button size="sm" variant="outline" className="gap-1 text-xs" onClick={handleDownload}>
+                  <Download className="w-3 h-3" />
+                  Download
+                </Button>
               </>
             )}
           </div>
@@ -246,7 +267,7 @@ function ArchiveBrowseView() {
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
               Raw discoveries scored below 68. Damaged runtimes pulled from production.
               Legacy systems that shaped what we build today. Everything here is free to take —
-              or <Link to="/consultation" className="text-neon-amber hover:underline font-medium">send it to the Restoration Lab</Link> and
+              or <Link to="/ascension" className="text-neon-amber hover:underline font-medium">send it to the Restoration Lab</Link> and
               we'll bring it back to spec.
             </p>
 
@@ -415,9 +436,9 @@ function ArchiveBrowseView() {
                 CJPI re-scoring and an ownership certificate.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Button asChild size="lg" className="gap-2">
-                  <Link to="/consultation">
-                    <Wrench className="w-4 h-4" />
+                 <Button asChild size="lg" className="gap-2">
+                   <Link to="/ascension">
+                     <Wrench className="w-4 h-4" />
                     Visit the Restoration Lab
                   </Link>
                 </Button>
@@ -531,7 +552,6 @@ export default function Foundry() {
           image="https://cmpsbl.com/og-memory-stream.jpg"
           keywords={['open archive', 'broken tech', 'raw discoveries', 'salvage', 'CMPSBL', 'restoration', 'junkyard']}
         />
-        <MemoryStreamOnboarding />
         <ArchiveBrowseView />
       </>
     );
@@ -561,7 +581,6 @@ export default function Foundry() {
       />
 
       <PublicNav />
-      <MemoryStreamOnboarding />
 
       <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none z-0 substrate-grid-bg opacity-30" />
