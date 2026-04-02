@@ -1,7 +1,7 @@
 /**
- * useAtlas Hook — ATLAS node operations
- * Governance Authority & System Control (Node 40)
- * Part of the Plane sector — 40-Node / 12-Sector Architecture
+ * useAtlas Hook — ATLAS Primitive operations
+ * Governance Authority & System Control (Primitive 40)
+ * Part of the Plane sector — 40-Primitive / 12-Sector Architecture
  */
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { debugMode } from '@/lib/debug-mode';

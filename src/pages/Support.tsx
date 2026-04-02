@@ -348,7 +348,7 @@ export default function Support() {
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/30">
                 <Clock className="w-4 h-4 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground">
-                  Average response time: under 48 hours · All escalations reviewed by our team
+                  Average response time: under 48 hours · All escalations reviewed by CMPSBL
                 </span>
               </div>
             </motion.div>
