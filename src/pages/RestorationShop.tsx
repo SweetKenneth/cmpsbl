@@ -108,8 +108,13 @@ export default function RestorationShop() {
 
       <PublicNav />
 
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-3 sm:px-4 pt-20">
+        <PublicBreadcrumb />
+      </div>
+
       {/* Hero */}
-      <section className="relative px-3 sm:px-6 pt-28 sm:pt-36 pb-10 sm:pb-16">
+      <section className="relative px-3 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-16">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-background" />
           <div
