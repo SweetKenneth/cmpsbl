@@ -1192,7 +1192,7 @@ Content-Type: application/json`}</CodeBlock>
           {endpoints.map(ep => (
             <div key={ep.action} className="rounded-xl border border-border/50 bg-card/30 overflow-hidden">
               <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border/30">
-                <Badge className="bg-neon-green/15 text-neon-green border-neon-green/30 text-[10px] font-mono px-2">
+                <Badge className="bg-neon-green/15 text-neon-green border-neon-green/30 text-xs font-mono px-2">
                   {ep.method}
                 </Badge>
                 <code className="text-sm font-semibold text-foreground">{ep.action}</code>
