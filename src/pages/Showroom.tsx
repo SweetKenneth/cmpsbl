@@ -5,7 +5,6 @@
  */
 
 import { useState, useMemo, useRef, useCallback } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
@@ -20,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
+import { SEO } from '@/components/SEO';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
@@ -237,7 +237,7 @@ function DiscoveryCard({
             {item.name}
           </h3>
 
-          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3 flex-1">
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 flex-1">
             {item.solutionDesc}
           </p>
 
@@ -350,11 +350,13 @@ export default function Showroom() {
 
   return (
     <>
-      <Helmet>
-        <title>Showroom — Browse Certified Software Discoveries | CMPSBL</title>
-        <meta name="description" content="Find exactly what your software needs. Search by problem, sort by solution, and purchase one-of-a-kind certified discoveries from the CMPSBL Showroom." />
-        <link rel="canonical" href="https://cmpsbl.com/showroom" />
-      </Helmet>
+      <SEO
+        title="Showroom — Certified Software Discoveries | CMPSBL"
+        description="Find exactly what your software needs. Search by problem, sort by solution, and purchase one-of-a-kind certified discoveries from the CMPSBL Showroom."
+        canonical="https://cmpsbl.com/showroom"
+        image="https://cmpsbl.com/og/store.jpg"
+        keywords={['certified discoveries', 'CJPI scored software', 'autonomous discovery marketplace', 'software showroom', 'tiered pricing']}
+      />
 
       <div className="min-h-screen bg-background">
         <PublicNav />

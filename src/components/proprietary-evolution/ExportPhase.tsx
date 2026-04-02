@@ -87,6 +87,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   
   const [showRetirementDialog, setShowRetirementDialog] = useState(false);
   const [exportScope, setExportScope] = useState<'all' | string>('all');
@@ -115,7 +116,15 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   // The export language is ALWAYS the source language — no picker needed
   const exportLanguage = sourceLanguage || 'typescript';
 
-  useEffect(() => { loadCrystallized(); loadCandidateLanguage(); }, []);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+    };
+    checkAuth();
+    loadCrystallized();
+    loadCandidateLanguage();
+  }, []);
 
   /** Load the candidate's ingested language and source files (user-scoped) */
   const loadCandidateLanguage = async () => {
@@ -183,6 +192,14 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   };
 
   const initiateExport = (scope: 'all' | string) => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Sign in required',
+        description: 'You must be signed in to export capabilities. Create an account or sign in to continue.',
+        variant: 'destructive',
+      });
+      return;
+    }
     const targets = scope === 'all' ? eligible : eligible.filter(c => c.id === scope);
     if (targets.length === 0) {
       toast({ title: 'Nothing to export', description: 'No capabilities available for export' });
@@ -327,6 +344,16 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
 
   return (
     <div className="space-y-6">
+      {/* Sign-in Warning */}
+      {isAuthenticated === false && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/20">
+          <Lock className="w-4 h-4 text-destructive shrink-0" />
+          <div className="flex-1">
+            <p className="text-xs text-destructive font-medium">Sign in required to export</p>
+            <p className="text-[10px] text-destructive/70">Create an account or sign in to export your discovered capabilities.</p>
+          </div>
+        </div>
+      )}
       {/* Tier Status Bar */}
       <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20">
         <div className="flex items-center gap-3">
