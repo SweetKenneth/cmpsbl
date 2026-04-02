@@ -1470,7 +1470,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     id: "cmpsbl-capabilities",
     number: "19",
     title: "CMPSBL Capabilities",
-    subtitle: "80 Crown Jewels across 42 primitives — the full arsenal",
+    subtitle: "80 Crown Jewels across 40 primitives — the full arsenal",
     icon: <Sparkles className="w-4 h-4" />,
     accentClass: "text-amber-600 border-amber-200 bg-amber-50",
     sections: [
