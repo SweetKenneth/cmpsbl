@@ -1,9 +1,11 @@
 /**
- * Showroom — Solution-forward marketplace of real S-Tier vault discoveries.
+ * Showroom — Solution-forward marketplace of Memory Stream discoveries.
+ * Pulls live data from the discoveries table. No Crown Jewel registry data.
  * Horizontal-scroll carousels grouped by CJPI tier with Stripe checkout.
  */
 
 import { useState, useMemo, useRef, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -24,7 +26,7 @@ import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
-import { loadShowroomCatalog, getShowroomPriceDisplay, getShowroomPrice, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
+import { fetchShowroomCatalog, getShowroomPriceDisplay, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -47,9 +49,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
   optimization: imgOptimization,
 };
 
-// ═══ Load real catalog ═══
-const CATALOG = loadShowroomCatalog();
-
+// Catalog loaded via react-query from Memory Stream
 // ═══ Tier config ═══
 const TIER_CONFIG = [
   {
@@ -290,19 +290,26 @@ export default function Showroom() {
   const showSuccess = searchParams.get('success') === 'true';
   const successItem = searchParams.get('item');
 
+  // Fetch live catalog from Memory Stream
+  const { data: catalog = [], isLoading: catalogLoading } = useQuery<ShowroomItem[]>({
+    queryKey: ['showroom-catalog'],
+    queryFn: () => fetchShowroomCatalog(50),
+    staleTime: 1000 * 60 * 5,
+  });
+
   // Group by tier
   const itemsByTier = useMemo(() => {
     const grouped: Record<string, ShowroomItem[]> = {};
-    CATALOG.forEach((item) => {
+    catalog.forEach((item) => {
       const tier = getTierLabel(item.score);
       if (!grouped[tier]) grouped[tier] = [];
       grouped[tier].push(item);
     });
     return grouped;
-  }, []);
+  }, [catalog]);
 
   // Filter for search/tier/pain
-  const filteredItems = useMemo(() => CATALOG.filter((item) => {
+  const filteredItems = useMemo(() => catalog.filter((item) => {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       return (
@@ -314,7 +321,7 @@ export default function Showroom() {
     if (selectedTier) return getTierLabel(item.score) === selectedTier;
     if (painFilter !== 'all') return item.painId === painFilter;
     return true;
-  }), [searchQuery, selectedTier, painFilter]);
+  }), [catalog, searchQuery, selectedTier, painFilter]);
 
   const showBrowseMode = !searchQuery && !selectedTier && painFilter === 'all';
 
@@ -393,7 +400,7 @@ export default function Showroom() {
               </p>
 
               <div className="flex items-center justify-center gap-4 mb-4 text-sm text-muted-foreground">
-                <span className="font-mono">{CATALOG.length} discoveries</span>
+                <span className="font-mono">{catalog.length} discoveries</span>
                 <span className="text-border">·</span>
                 <span>{TIER_CONFIG.filter(t => itemsByTier[t.id]?.length).length} tiers</span>
                 <span className="text-border">·</span>
@@ -417,7 +424,7 @@ export default function Showroom() {
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder={`Search ${CATALOG.length} discoveries...`}
+                placeholder={`Search ${catalog.length} discoveries...`}
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setSelectedTier(null); setPainFilter('all'); }}
                 className="pl-10 h-12 text-base rounded-xl bg-card border-border"
@@ -484,6 +491,13 @@ export default function Showroom() {
 
         {/* ═══ CONTENT ═══ */}
         <main className="flex-1">
+          {catalogLoading ? (
+            <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span>Loading discoveries from the Memory Stream…</span>
+            </div>
+          ) : (
+          <>
           <div className="container mx-auto px-4 pt-6 pb-2">
             <p className="text-sm text-muted-foreground">
               {filteredItems.length} {filteredItems.length === 1 ? 'discovery' : 'discoveries'}
@@ -598,6 +612,8 @@ export default function Showroom() {
               </div>
             </div>
           </section>
+          </>
+          )}
         </main>
 
         <RelatedCapabilities />

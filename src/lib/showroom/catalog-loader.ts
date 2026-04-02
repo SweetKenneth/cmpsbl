@@ -1,11 +1,11 @@
 /**
  * Showroom Catalog Loader
- * Loads 50 real discoveries from the S-Tier Crown Jewel vault registry.
- * Maps vault entries to solution-forward showroom items with pain categories.
+ * Pulls real discoveries from the Memory Stream (discoveries table).
+ * Maps to solution-forward showroom items with pain categories.
+ * No Crown Jewel registry data — those are protected IP.
  */
 
-import registryData from '@/crownjewels/s-tier.registry.json';
-import type { STierEntry } from '@/crownjewels/types';
+import { supabase } from '@/integrations/supabase/client';
 
 export type PainPointId = 'security' | 'governance' | 'intelligence' | 'observability' | 'resilience' | 'optimization';
 
@@ -20,76 +20,70 @@ export interface ShowroomItem {
   painId: PainPointId;
 }
 
-/** Module → pain-point mapping */
-const MODULE_TO_PAIN: Record<string, [PainPointId, string]> = {
-  DEFENSE: ['security', 'Security & Compliance'],
-  SENTINEL: ['security', 'Security & Compliance'],
-  IDENTITY: ['security', 'Security & Compliance'],
-  PHANTOM: ['security', 'Security & Compliance'],
-  IMMUNITY: ['security', 'Security & Compliance'],
-  GOVERNANCE: ['governance', 'Policy & Governance'],
-  AUDIT: ['governance', 'Policy & Governance'],
-  WITNESS: ['governance', 'Policy & Governance'],
-  SOVEREIGN: ['governance', 'Policy & Governance'],
-  INCLUSIVE: ['governance', 'Policy & Governance'],
-  CONSCIENCE: ['governance', 'Policy & Governance'],
-  BRAIN: ['intelligence', 'Decision Making'],
-  ORACLE: ['intelligence', 'Decision Making'],
-  CORTEX: ['intelligence', 'Decision Making'],
-  DREAM: ['intelligence', 'Decision Making'],
-  INTENT: ['intelligence', 'Decision Making'],
-  DECODE: ['intelligence', 'Decision Making'],
-  ANALYTICS: ['observability', 'Monitoring & Visibility'],
-  VISION: ['observability', 'Monitoring & Visibility'],
-  ECHO: ['observability', 'Monitoring & Visibility'],
-  OBSERVABILITY: ['observability', 'Monitoring & Visibility'],
-  MEDIC: ['resilience', 'Reliability & Recovery'],
-  NERVE: ['resilience', 'Reliability & Recovery'],
-  SYSTEM: ['resilience', 'Reliability & Recovery'],
-  CORE: ['resilience', 'Reliability & Recovery'],
-  RIPPLE: ['resilience', 'Reliability & Recovery'],
-  MEMORY: ['resilience', 'Reliability & Recovery'],
-  MESH: ['resilience', 'Reliability & Recovery'],
-  EVOLUTION: ['optimization', 'Performance'],
-  ECONOMY: ['optimization', 'Performance'],
-  HARMONY: ['optimization', 'Performance'],
-  NEXUS: ['optimization', 'Performance'],
-  INTEGRATION: ['optimization', 'Performance'],
-  ENCODE: ['optimization', 'Performance'],
-  FORGE: ['optimization', 'Performance'],
-  HARVEST: ['optimization', 'Performance'],
+/** Discovery category → pain-point mapping */
+const CATEGORY_TO_PAIN: Record<string, [PainPointId, string]> = {
+  security: ['security', 'Security & Compliance'],
+  compliance: ['security', 'Security & Compliance'],
+  governance: ['governance', 'Policy & Governance'],
+  ethics: ['governance', 'Policy & Governance'],
+  contracts: ['governance', 'Policy & Governance'],
+  cognitive: ['intelligence', 'Decision Making'],
+  prediction: ['intelligence', 'Decision Making'],
+  simulation: ['intelligence', 'Decision Making'],
+  learning: ['intelligence', 'Decision Making'],
+  observability: ['observability', 'Monitoring & Visibility'],
+  edge: ['observability', 'Monitoring & Visibility'],
+  evolution: ['resilience', 'Reliability & Recovery'],
+  orchestration: ['resilience', 'Reliability & Recovery'],
+  synthesis: ['optimization', 'Performance'],
+  integration: ['optimization', 'Performance'],
+  acquisition: ['optimization', 'Performance'],
+  routing: ['optimization', 'Performance'],
+  localization: ['optimization', 'Performance'],
+  privacy: ['security', 'Security & Compliance'],
 };
 
 const DEFAULT_PAIN: [PainPointId, string] = ['optimization', 'Performance'];
-const CATALOG_SIZE = 50;
 
-function mapEntryToItem(entry: STierEntry): ShowroomItem {
-  const primaryModule = entry.module.split('×')[0];
-  const [painId, painLabel] = MODULE_TO_PAIN[primaryModule] ?? DEFAULT_PAIN;
-  const chain = entry.dependencyFootprint.length > 0
-    ? entry.dependencyFootprint.slice(0, 5)
-    : [primaryModule];
+interface DiscoveryRow {
+  id: string;
+  name: string;
+  cjpi: number;
+  category: string;
+  tier: string;
+  module_chain: string[];
+  description: string;
+}
 
+function mapRowToItem(row: DiscoveryRow): ShowroomItem {
+  const [painId, painLabel] = CATEGORY_TO_PAIN[row.category] ?? DEFAULT_PAIN;
   return {
-    id: entry.id,
-    name: entry.name,
-    score: entry.cjpi,
-    chain,
+    id: row.id,
+    name: row.name,
+    score: row.cjpi,
+    chain: (row.module_chain || []).slice(0, 5),
     category: painId,
-    solutionDesc: entry.description,
+    solutionDesc: row.description || `${row.name} — a ${row.category} discovery from the Memory Stream.`,
     painLabel,
     painId,
   };
 }
 
-/** Load the top 50 items (CJPI 68–100) from the vault, sorted by score descending. */
-export function loadShowroomCatalog(): ShowroomItem[] {
-  const entries = (registryData as { entries: STierEntry[] }).entries ?? [];
-  return entries
-    .filter((e) => e.cjpi >= 68 && e.cjpi <= 100)
-    .sort((a, b) => b.cjpi - a.cjpi)
-    .slice(0, CATALOG_SIZE)
-    .map(mapEntryToItem);
+/** Fetch top 50 Memory Stream discoveries (CJPI 68–100) */
+export async function fetchShowroomCatalog(limit = 50): Promise<ShowroomItem[]> {
+  const { data, error } = await supabase
+    .from('discoveries')
+    .select('id, name, cjpi, category, tier, module_chain, description')
+    .gte('cjpi', 68)
+    .order('cjpi', { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error('[Showroom] Failed to load catalog:', error.message);
+    return [];
+  }
+
+  return ((data || []) as unknown as DiscoveryRow[]).map(mapRowToItem);
 }
 
 /** Graduated CJPI pricing formula */
