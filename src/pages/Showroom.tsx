@@ -210,28 +210,21 @@ export default function Showroom() {
   const [tierFilter, setTierFilter] = useState<PublicTier | 'all'>('all');
   const [showFilters, setShowFilters] = useState(false);
 
-  // TODO: Wire to real discovery data from Memory Stream when available
-
-  // Demo items when no vault data
-  const demoItems: ShowroomItem[] = useMemo(() => {
-    if (items.length > 0) return [];
-    return [
-      { id: 'd1', name: 'Drift Prevention Engine', score: 97, chain: ['GOVERNANCE', 'EVOLUTION', 'AUDIT'], category: 'governance', solutionDesc: 'Stops your software from quietly changing behavior over time. Catches configuration drift before it causes production issues.', painLabel: 'Policy & Governance', painId: 'governance' },
-      { id: 'd2', name: 'Threat Hardening Pipeline', score: 94, chain: ['DEFENSE', 'SENTINEL', 'IDENTITY'], category: 'security', solutionDesc: 'Finds and fixes security vulnerabilities in your existing code without rewriting it. Hardens authentication and access controls.', painLabel: 'Security & Compliance', painId: 'security' },
-      { id: 'd3', name: 'Self-Healing Runtime', score: 91, chain: ['MEDIC', 'SYSTEM', 'DEFENSE'], category: 'resilience', solutionDesc: 'Detects failures and recovers automatically. Keeps your systems running even when individual components break.', painLabel: 'Reliability & Recovery', painId: 'resilience' },
-      { id: 'd4', name: 'Predictive Decision Core', score: 88, chain: ['ORACLE', 'BRAIN', 'CORTEX'], category: 'intelligence', solutionDesc: 'Anticipates what your software needs before problems happen. Makes smarter automated decisions based on patterns.', painLabel: 'Decision Making', painId: 'intelligence' },
-      { id: 'd5', name: 'Full-Stack Observer', score: 85, chain: ['ANALYTICS', 'VISION', 'ECHO'], category: 'observability', solutionDesc: 'Shows you exactly what your software is doing at every level. Replays events and surfaces issues before users notice.', painLabel: 'Monitoring & Visibility', painId: 'observability' },
-      { id: 'd6', name: 'Cost Optimization Engine', score: 82, chain: ['ECONOMY', 'HARMONY', 'EVOLUTION'], category: 'optimization', solutionDesc: 'Finds where your software is wasting resources and fixes it. Balances performance against infrastructure costs.', painLabel: 'Performance', painId: 'optimization' },
-      { id: 'd7', name: 'Compliance Certification Suite', score: 100, chain: ['AUDIT', 'GOVERNANCE', 'WITNESS', 'INCLUSIVE'], category: 'governance', solutionDesc: 'Generates audit-ready compliance reports and certificates. Proves your software meets industry standards — automatically.', painLabel: 'Policy & Governance', painId: 'governance' },
-      { id: 'd8', name: 'Legacy API Bridge', score: 79, chain: ['INTEGRATION', 'LINGUA', 'NEXUS'], category: 'integration', solutionDesc: 'Connects your old APIs with modern systems without rewriting either side. Translates formats and protocols on the fly.', painLabel: 'Performance', painId: 'optimization' },
-      { id: 'd9', name: 'Encrypted State Vault', score: 96, chain: ['MEMORY', 'PHANTOM', 'DEFENSE'], category: 'security', solutionDesc: 'Stores sensitive data with military-grade encryption. No one — not even us — can read it without your keys.', painLabel: 'Security & Compliance', painId: 'security' },
-      { id: 'd10', name: 'Autonomous Patch Pipeline', score: 74, chain: ['EVOLUTION', 'ENGINEER', 'SYSTEM'], category: 'maintenance', solutionDesc: 'Finds outdated dependencies and patches them safely. Keeps your software up to date without breaking anything.', painLabel: 'Performance', painId: 'optimization' },
-      { id: 'd11', name: 'Real-Time Anomaly Detector', score: 93, chain: ['SENTINEL', 'ANALYTICS', 'REFLEX'], category: 'observability', solutionDesc: 'Spots unusual behavior the moment it happens. Alerts you before small anomalies become big outages.', painLabel: 'Monitoring & Visibility', painId: 'observability' },
-      { id: 'd12', name: 'Smart Workflow Orchestrator', score: 86, chain: ['SYSTEM', 'COMPASS', 'NERVE'], category: 'orchestration', solutionDesc: 'Manages complex multi-step processes without manual intervention. Routes tasks to the right component automatically.', painLabel: 'Performance', painId: 'optimization' },
-    ];
-  }, [items]);
-
-  const displayItems = items.length > 0 ? items : demoItems;
+  // Demo catalog — will be wired to real Memory Stream discoveries
+  const displayItems: ShowroomItem[] = useMemo(() => [
+    { id: 'd1', name: 'Drift Prevention Engine', score: 97, chain: ['GOVERNANCE', 'EVOLUTION', 'AUDIT'], category: 'governance', solutionDesc: 'Stops your software from quietly changing behavior over time. Catches configuration drift before it causes production issues.', painLabel: 'Policy & Governance', painId: 'governance' },
+    { id: 'd2', name: 'Threat Hardening Pipeline', score: 94, chain: ['DEFENSE', 'SENTINEL', 'IDENTITY'], category: 'security', solutionDesc: 'Finds and fixes security vulnerabilities in your existing code without rewriting it. Hardens authentication and access controls.', painLabel: 'Security & Compliance', painId: 'security' },
+    { id: 'd3', name: 'Self-Healing Runtime', score: 91, chain: ['MEDIC', 'SYSTEM', 'DEFENSE'], category: 'resilience', solutionDesc: 'Detects failures and recovers automatically. Keeps your systems running even when individual components break.', painLabel: 'Reliability & Recovery', painId: 'resilience' },
+    { id: 'd4', name: 'Predictive Decision Core', score: 88, chain: ['ORACLE', 'BRAIN', 'CORTEX'], category: 'intelligence', solutionDesc: 'Anticipates what your software needs before problems happen. Makes smarter automated decisions based on patterns.', painLabel: 'Decision Making', painId: 'intelligence' },
+    { id: 'd5', name: 'Full-Stack Observer', score: 85, chain: ['ANALYTICS', 'VISION', 'ECHO'], category: 'observability', solutionDesc: 'Shows you exactly what your software is doing at every level. Replays events and surfaces issues before users notice.', painLabel: 'Monitoring & Visibility', painId: 'observability' },
+    { id: 'd6', name: 'Cost Optimization Engine', score: 82, chain: ['ECONOMY', 'HARMONY', 'EVOLUTION'], category: 'optimization', solutionDesc: 'Finds where your software is wasting resources and fixes it. Balances performance against infrastructure costs.', painLabel: 'Performance', painId: 'optimization' },
+    { id: 'd7', name: 'Compliance Certification Suite', score: 100, chain: ['AUDIT', 'GOVERNANCE', 'WITNESS', 'INCLUSIVE'], category: 'governance', solutionDesc: 'Generates audit-ready compliance reports and certificates. Proves your software meets industry standards — automatically.', painLabel: 'Policy & Governance', painId: 'governance' },
+    { id: 'd8', name: 'Legacy API Bridge', score: 79, chain: ['INTEGRATION', 'LINGUA', 'NEXUS'], category: 'integration', solutionDesc: 'Connects your old APIs with modern systems without rewriting either side. Translates formats and protocols on the fly.', painLabel: 'Performance', painId: 'optimization' },
+    { id: 'd9', name: 'Encrypted State Vault', score: 96, chain: ['MEMORY', 'PHANTOM', 'DEFENSE'], category: 'security', solutionDesc: 'Stores sensitive data with military-grade encryption. No one — not even us — can read it without your keys.', painLabel: 'Security & Compliance', painId: 'security' },
+    { id: 'd10', name: 'Autonomous Patch Pipeline', score: 74, chain: ['EVOLUTION', 'ENGINEER', 'SYSTEM'], category: 'maintenance', solutionDesc: 'Finds outdated dependencies and patches them safely. Keeps your software up to date without breaking anything.', painLabel: 'Performance', painId: 'optimization' },
+    { id: 'd11', name: 'Real-Time Anomaly Detector', score: 93, chain: ['SENTINEL', 'ANALYTICS', 'REFLEX'], category: 'observability', solutionDesc: 'Spots unusual behavior the moment it happens. Alerts you before small anomalies become big outages.', painLabel: 'Monitoring & Visibility', painId: 'observability' },
+    { id: 'd12', name: 'Smart Workflow Orchestrator', score: 86, chain: ['SYSTEM', 'COMPASS', 'NERVE'], category: 'orchestration', solutionDesc: 'Manages complex multi-step processes without manual intervention. Routes tasks to the right component automatically.', painLabel: 'Performance', painId: 'optimization' },
+  ], []);
 
   // Filtered results
   const filtered = useMemo(() => {
