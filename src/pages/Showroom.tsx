@@ -491,6 +491,13 @@ export default function Showroom() {
 
         {/* ═══ CONTENT ═══ */}
         <main className="flex-1">
+          {catalogLoading ? (
+            <div className="flex items-center justify-center py-20 gap-3 text-muted-foreground">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span>Loading discoveries from the Memory Stream…</span>
+            </div>
+          ) : (
+          <>
           <div className="container mx-auto px-4 pt-6 pb-2">
             <p className="text-sm text-muted-foreground">
               {filteredItems.length} {filteredItems.length === 1 ? 'discovery' : 'discoveries'}
