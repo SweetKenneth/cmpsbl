@@ -257,7 +257,7 @@ export default function About() {
                     <pillar.icon className={cn("w-5 h-5", pillar.color)} />
                   </div>
                   <div>
-                    <span className={cn("text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase", pillar.color)}>{pillar.name}</span>
+                    <span className={cn("text-xs font-mono font-bold tracking-wider uppercase", pillar.color)}>{pillar.name}</span>
                     <h3 className="text-sm sm:text-base font-bold text-foreground leading-tight">{pillar.verb}</h3>
                   </div>
                 </div>
