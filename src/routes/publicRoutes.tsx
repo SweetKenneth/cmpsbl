@@ -86,6 +86,7 @@ const ArchitectureOld = lazy(() => import("@/pages/Architecture"));
 const ArchitecturePage = lazy(() => import("@/pages/ArchitecturePage"));
 const ModuleDetail = lazy(() => import("@/pages/ModuleDetail"));
 const AIOperatingSystem = lazy(() => import("@/pages/AIOperatingSystem"));
+const ShowroomPage = lazy(() => import("@/pages/Showroom"));
 
 // Marketing / Info
 const About = lazy(() => import("@/pages/About"));
@@ -173,6 +174,7 @@ export const publicRoutes = (
     <Route path="/capabilities" element={<Navigate to="/store" replace />} />
     <Route path="/synergies" element={<Navigate to="/store" replace />} />
     <Route path="/store" element={<Store />} />
+    <Route path="/showroom" element={<ShowroomPage />} />
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />
     <Route path="/operatives" element={<Navigate to="/store" replace />} />
     <Route path="/operatives/:slug" element={<Navigate to="/store" replace />} />
