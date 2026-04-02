@@ -18,7 +18,7 @@ export interface PublicTierConfig {
 }
 
 export const PUBLIC_TIERS: PublicTierConfig[] = [
-  { id: 'Raw',    min: 1,  max: 67, color: 'hsl(0, 0%, 50%)',     accent: 'text-muted-foreground', description: 'Unrefined extraction — experimental grade' },
+  { id: 'Raw',    min: 1,  max: 67, color: 'hsl(0, 0%, 50%)',     accent: 'text-muted-foreground', description: 'Junkyard grade — free to take, might surprise you' },
   { id: 'Mint',   min: 68, max: 79, color: 'hsl(160, 60%, 50%)',  accent: 'text-emerald-400', description: 'Solid discovery — production-viable' },
   { id: 'Prime',  min: 80, max: 89, color: 'hsl(200, 80%, 60%)',  accent: 'text-sky-400',     description: 'High-quality pipeline' },
   { id: 'Relic',  min: 90, max: 93, color: 'hsl(45, 95%, 55%)',   accent: 'text-amber-400',   description: 'Rare find — exceptional capability' },

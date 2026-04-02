@@ -161,7 +161,7 @@ No 20 different price points for 20 different things. Two revenue streams, both 
 
 | Tier | Price | What You Get |
 |------|-------|-------------|
-| **Builder** | Included | Browse the Showroom. View diagnostics. Limited Ascension cycles. |
+| **Builder** | Included | Browse the Showroom. Access the Junkyard (unlimited Raw-tier picks). View diagnostics. Limited Ascension cycles. |
 | **Studio** | $29/mo | Full Restoration Shop access. Rate-limited queue. |
 | **Creator** | $49/mo | Priority queue. More concurrent restorations. |
 | **Architect** | $79/mo | Maximum throughput. Full primitive catalog access. |
@@ -202,6 +202,30 @@ If someone sees something they like, they have **one shot** to buy it. Next time
 
 This is not artificial scarcity. Every discovery is a unique collision of primitives. The same collision will never produce the same result because BRAIN has learned something new since the last one.
 
+### Revenue Stream 3: The Junkyard (Raw Tier · Free)
+
+Everything scored **below 68** — the Raw tier — doesn't get thrown away. It gets sent to **The Junkyard**.
+
+**What it is:**
+A free-access area where Builder-tier (free) users can browse, pick through, and take any Raw-tier discovery at no cost. These are the unrefined extractions — experimental grade, unpolished, sometimes broken. But they're real computational signatures from real discovery cycles.
+
+**Why it works:**
+
+1. **Builder tier gets real value.** Free users aren't locked out staring at a paywall. They're in the yard, hands dirty, pulling parts. This is how you build loyalty before they ever pay.
+2. **Raw discoveries get a purpose.** Instead of being discarded below the quality floor, they become the entry drug. Some of them will surprise people.
+3. **Ascension upsell.** A free user finds a Raw discovery they think has potential? They can run it through Ascension (paid membership) and see what comes out the other side. A $0 junkyard find that scores 94 after restoration? That's a story they tell everyone.
+4. **Community competitions.** "Junkyard Wars" — who can build the best production software using only Raw-tier discoveries? Leaderboard. Bragging rights. Community content that writes itself.
+5. **The barn find narrative.** This is the 1967 Shelby GT500 found under a tarp in a barn. Most of the junkyard is scrap. But every now and then, someone finds something nobody expected. That possibility keeps people digging.
+
+**Rules:**
+- Raw discoveries (score < 68) are automatically routed to the Junkyard
+- No certificate, no fingerprint, no retirement — Junkyard items are **unlimited copies**
+- Free users can take as many as they want
+- If a Junkyard find is run through Ascension and scores ≥ 68, it enters the Showroom at its new CJPI price — now it's a real classic
+- Junkyard inventory is visible to all tiers but only free/Builder users would have reason to dig through it
+
+**The psychology:** The Showroom is velvet rope. The Junkyard is a treasure hunt. Both are powerful. Together they cover every customer mindset — the buyer who wants guaranteed quality AND the tinkerer who wants to find gold in the dirt.
+
 ### Stripe Implementation Notes
 
 - **Memberships:** Standard recurring subscriptions (Studio/Creator/Architect tiers)
@@ -210,6 +234,7 @@ This is not artificial scarcity. Every discovery is a unique collision of primit
   - Each discovery gets a one-time Stripe Price created at discovery time with its CJPI-derived amount
   - On purchase: mark discovery as `retired` in the catalog, generate certificate
   - Perfect 100s ($1,952): pre-created Stripe Price for the Apex tier
+- **Junkyard:** No Stripe integration needed — free downloads, tracked by user session for analytics
 
 ---
 
