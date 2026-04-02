@@ -217,6 +217,11 @@ export function HeroMetaSubstrate() {
           
           {/* Left column — Copy */}
           <div className="text-center lg:text-left order-1">
+            {/* CMPSBL Logo */}
+            <FadeIn delay={0.05} className="mb-4 sm:mb-6">
+              <CmpsblWordmark className="text-3xl sm:text-4xl md:text-5xl" />
+            </FadeIn>
+
             {/* Engine badge */}
             <FadeIn delay={0.1}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
@@ -237,7 +242,7 @@ export function HeroMetaSubstrate() {
                 </span>
               </FadeIn>
               <FadeIn delay={0.2}>
-                <span className="block text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black min-h-[1.15em]">
+                <span className="block text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-black min-h-[1.15em]">
                   <TypedText 
                     texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
                     gradientColors={[
