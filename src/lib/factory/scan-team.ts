@@ -4,9 +4,11 @@
  * All 40 primitives available as recommendations.
  * Capabilities classified as Active/Passive/Hybrid archetypes.
  * ENCODE drives selection logic with randomization for unique builds.
+ * Deep pattern analysis with 6-8 findings per analyzer.
  */
 
 import type { RateLimitDecision } from '@/lib/substrate/adaptive-rate-limit';
+import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
 
 export interface ScanFinding {
   id: string;
@@ -22,8 +24,10 @@ export interface ScanResult {
   recommendedPrimitives: PrimitiveRecommendation[];
   architecturalRunway: number;
   cjpiEstimate: number;
+  projectedCjpi: number;
   scanDurationMs: number;
   scanTeam: string[];
+  metrics: CodeMetrics;
 }
 
 export type CapabilityArchetype = 'Active' | 'Passive' | 'Hybrid';
