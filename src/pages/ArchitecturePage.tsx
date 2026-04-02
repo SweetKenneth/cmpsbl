@@ -369,7 +369,7 @@ export default function ArchitecturePage() {
                     <span className="text-sm font-medium text-foreground">{cat.label}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{cat.subtitle}</span>
+                    <span className="text-xs text-muted-foreground hidden sm:inline">{cat.subtitle}</span>
                     <span className="text-sm font-mono text-primary font-bold">{cat.entries.length}</span>
                   </div>
                 </div>
