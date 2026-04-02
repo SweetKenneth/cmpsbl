@@ -241,7 +241,7 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
           <Badge
             variant="outline"
             className={cn(
-              "absolute top-3 left-3 text-[10px] font-black tracking-wider border backdrop-blur-sm",
+              "absolute top-3 left-3 text-xs font-black tracking-wider border backdrop-blur-sm",
               getTierBadgeClass(tier),
             )}
           >
