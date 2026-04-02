@@ -868,6 +868,7 @@ const HeritagePaper = () => {
           </footer>
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 };

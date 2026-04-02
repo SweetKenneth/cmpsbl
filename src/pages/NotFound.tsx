@@ -65,6 +65,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      <PublicNav />
       <SEO title="Signal Lost — CMPSBL" description="This path dissolved before crystallization." noindex />
 
       {/* Background effects */}

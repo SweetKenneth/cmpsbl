@@ -146,6 +146,7 @@ export default function DiscoveredPipelines() {
           </div>
         </section>
       </div>
+      <EnhancedFooter />
     </>
   );
 }
