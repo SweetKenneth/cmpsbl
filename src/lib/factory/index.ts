@@ -153,3 +153,45 @@ export {
   type IncubatorProject,
   type IncubatorPhase,
 } from './incubator';
+
+// Auction House (Model 12)
+export {
+  getMinNextBid,
+  validateBid,
+  resolveAuction,
+  isRareAuction,
+  MIN_RESERVE_CENTS,
+  AUCTION_DURATIONS,
+  type Auction,
+  type AuctionStatus,
+  type Bid,
+} from './auction-house';
+
+// Specialty Substrates
+export {
+  getDomainConfig,
+  getAllDomains,
+  type SpecialtyDomain,
+  type SpecialtySubstrate,
+} from './specialty-substrates';
+
+// Node Engine
+export {
+  validateCreationRequest,
+  validateMergeRequest,
+  type NodeCreationRequest,
+  type NodeMergeRequest,
+  type GeneratedNode,
+} from './node-engine';
+
+// Time Capsule (Model 6)
+export {
+  hasAppreciated,
+  getAppreciationRate,
+  getPendingEnhancements,
+  getNotificationMessage,
+  type TimeCapsule,
+  type CapsuleEnhancement,
+  type CapsuleNotification,
+  type CapsuleNotificationType,
+} from './time-capsule';

@@ -444,10 +444,10 @@ All existing pages remain active at their current URLs:
 - [x] Incubator 48-hour pipeline (Model 18) ✅
 
 ### Phase 5: Scarcity & Premium (Week 13+)
-- [ ] Auction House (Model 12)
-- [ ] Specialty substrate curation (Fintech, Healthcare, Legal)
-- [ ] Node Engine: plain-language node creation + merger tool
-- [ ] Time Capsule notifications (Model 6) — included in membership
+- [x] Auction House (Model 12) ✅
+- [x] Specialty substrate curation (Fintech, Healthcare, Legal, Security, Gaming, Education) ✅
+- [x] Node Engine: plain-language node creation + merger tool ✅
+- [x] Time Capsule notifications (Model 6) — included in membership ✅
 
 ---
 
