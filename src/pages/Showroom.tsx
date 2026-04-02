@@ -424,7 +424,7 @@ export default function Showroom() {
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                placeholder={`Search ${CATALOG.length} discoveries...`}
+                placeholder={`Search ${catalog.length} discoveries...`}
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setSelectedTier(null); setPainFilter('all'); }}
                 className="pl-10 h-12 text-base rounded-xl bg-card border-border"
