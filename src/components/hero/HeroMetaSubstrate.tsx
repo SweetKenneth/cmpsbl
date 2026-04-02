@@ -394,12 +394,12 @@ export function HeroMetaSubstrate() {
             <div className="w-full overflow-x-auto scrollbar-hide py-2">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                "Signal",
-                "Memory Stream",
-                "Governed Runtime",
-                "Capability Packs",
-                "Sealed Engines",
-                "Applications",
+                "Upload",
+                "Diagnostic",
+                "Choose Primitives",
+                "Restoration",
+                "Test Drive",
+                "Ownership",
               ].map((step, i, arr) => (
                 <div key={step} className="flex items-center shrink-0">
                   <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
