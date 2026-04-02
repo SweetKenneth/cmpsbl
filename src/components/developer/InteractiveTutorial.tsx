@@ -115,7 +115,7 @@ const receipt = await client.broadcastIntent({
 
 console.log('Receipt ID:', receipt.id);
 console.log('Resolvers invoked:', receipt.resolverCount);
-console.log('Mesh events:', receipt.meshEvents);`,
+console.log('Matrix events:', receipt.meshEvents);`,
     expectedOutput: "Receipt ID: rcpt_x7f9e2\nResolvers invoked: 3\nMesh events: 8",
     hint: "Never bypass broadcastIntent() — it handles resolver routing, receipt logging, and mesh telemetry.",
     xpReward: 50,
