@@ -186,7 +186,7 @@ export function RestorationReportView({ report }: RestorationReportViewProps) {
                         <div key={pm.name} className="flex items-center gap-2 text-[11px]">
                           <span className="font-bold text-primary">{pm.name}</span>
                           <span className="text-muted-foreground/40 text-[9px] uppercase">{pm.category}</span>
-                          <span className="text-muted-foreground flex-1 truncate">— {pm.contribution}</span>
+                          <span className="text-muted-foreground flex-1">— {pm.contribution}</span>
                         </div>
                       ))}
                     </div>
