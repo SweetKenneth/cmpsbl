@@ -268,10 +268,10 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
 
           {/* Footer: category + CJPI + chain count */}
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-medium text-muted-foreground/60 px-2 py-0.5 rounded-full border border-border/30 bg-muted/20">
+            <span className="text-xs font-medium text-muted-foreground/60 px-2 py-0.5 rounded-full border border-border/30 bg-muted/20">
               {item.painLabel}
             </span>
-            <div className="flex items-center gap-2 text-[10px] text-muted-foreground/50">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground/50">
               <span className="font-mono">CJPI {item.score}</span>
               <span>·</span>
               <span>{item.chain.length} primitives</span>

@@ -1532,7 +1532,7 @@ export default function Documentation() {
                 </button>
               ))}
               <div className="my-2 mx-2 border-t border-border/30" />
-              <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Libraries</p>
+              <p className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground/50">Libraries</p>
               <Link
                 to="/docs/users"
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left text-muted-foreground hover:text-foreground hover:bg-muted/50"
