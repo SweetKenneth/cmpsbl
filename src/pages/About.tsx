@@ -20,6 +20,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
