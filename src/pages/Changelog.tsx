@@ -646,7 +646,34 @@ const stratumFormation: Specimen[] = [
 // ─── Strata Definition ─────────────────────────────────────────────────────────
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// EPOCH — BELIEVER
+// EPOCH — REVIVAL
+// The substrate shed its old skin, rebuilt its public surface, and invited the world in.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const stratumRevival: Specimen[] = [
+  {
+    id: "RVVL-001",
+    fossilized: "2026-04-02",
+    origin: "architecture",
+    stimulus: "Epoch transition from BELIEVER to REVIVAL — the substrate completed its internal hardening and turned outward to rebuild every public surface, unify its commercial model, and invite new users in",
+    adaptations: [
+      "Epoch transition to REVIVAL marks the shift from internal conviction to external presentation — the substrate's public face matches its private depth",
+      "Version constants elevated to v18.0.0 across the platform version registry",
+      "Complete site redesign deployed: Showroom, Restoration Shop, Foundry, Plans — every public page rebuilt",
+      "Four-tier subscription model (Builder / Studio / Creator / Architect) launched with Stripe-backed checkout and annual billing",
+      "Pipeline fingerprint epoch rotation path updated: SPARTA → ATHENA → TITAN → CONTACT → MINDGAMES → IRONCLAD → BELIEVER → REVIVAL",
+    ],
+    phenotype: [
+      "The substrate has a name for this phase: REVIVAL — the moment it stopped hiding its capabilities behind infrastructure jargon",
+      "v18 signals a distribution milestone: every public page exists to convert visitors into builders",
+      "The epoch hierarchy traces a complete arc: formation → infrastructure → governance → users → developers → conviction → revival",
+    ],
+    affectedNodes: ["CORE Organ", "EVOLUTION Layer", "GOVERNANCE Layer", "SYSTEM Organ", "ECONOMY Engine"],
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// EPOCH — BELIEVER (prior)
 // The substrate believed in what it built — hardened, healed, and made whole.
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -1382,12 +1409,21 @@ const stratumMindgames: Specimen[] = [
 
 const STRATA: Stratum[] = [
   {
-    epoch: "BELIEVER",
-    codename: "The substrate believed in what it built — hardened, healed, and made whole",
+    epoch: "REVIVAL",
+    codename: "The substrate shed its old skin and invited the world in",
     range: "Current epoch",
     color: "bg-primary/10 text-primary",
     borderColor: "border-primary/30",
     dotColor: "bg-primary",
+    specimens: stratumRevival,
+  },
+  {
+    epoch: "BELIEVER",
+    codename: "The substrate believed in what it built — hardened, healed, and made whole",
+    range: "Prior epoch",
+    color: "bg-neon-amber/10 text-neon-amber",
+    borderColor: "border-neon-amber/30",
+    dotColor: "bg-neon-amber",
     specimens: stratumBeliever,
   },
   {
