@@ -209,6 +209,9 @@ export default function RestorationShop() {
       // ═══ CJPI Certificate ═══
       zip.file('docs/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
 
+      // ═══ HTML Refurbishment Report (styled, self-contained) ═══
+      zip.file('refurbishment-report.html', generateHtmlReport(report));
+
       // ═══ Error Codes ═══
       const errorMd = report.errorCodes.map(
         e => `### ${e.code}\n**Trigger:** ${e.trigger}\n**Resolution:** ${e.resolution}`
