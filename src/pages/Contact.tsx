@@ -18,6 +18,7 @@ import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import { SEO } from "@/components/SEO";
 import { motion } from "framer-motion";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { DEPARTMENTS, COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 
 const fadeUp = {
