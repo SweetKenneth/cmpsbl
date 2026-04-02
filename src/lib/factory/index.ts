@@ -64,3 +64,43 @@ export {
   getCatalogStats,
   type ShowroomDiscovery,
 } from './discovery-retirement';
+
+// Licensing Engine (Model 17)
+export {
+  calculateRoyaltySplit,
+  validateSubmission,
+  summarizeEarnings,
+  isPayoutEligible,
+  MIN_PAYOUT_THRESHOLD_CENTS,
+  type LicensingSubmission,
+  type RoyaltyRecord,
+  type DeveloperEarnings,
+} from './licensing-engine';
+
+// Bounty Board (Model 16)
+export {
+  calculateBountyFees,
+  validateBounty,
+  scoreCandidateMatch,
+  routeRejectedCandidate,
+  getPriorityMultiplier,
+  MIN_BOUNTY_CENTS,
+  MAX_BOUNTY_DAYS,
+  type Bounty,
+  type BountyCandidate,
+  type BountyStatus,
+  type BountyPriority,
+} from './bounty-board';
+
+// Campaign Tracking
+export {
+  parseChannelFromUTM,
+  getChannelLabel,
+  getChannelBudget,
+  calculateCPA,
+  isCampaignSuccessful,
+  TOTAL_CAMPAIGN_BUDGET_CENTS,
+  type CampaignChannel,
+  type CampaignEvent,
+  type ChannelMetrics,
+} from './campaign-tracking';

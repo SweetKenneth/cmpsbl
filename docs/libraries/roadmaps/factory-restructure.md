@@ -432,9 +432,9 @@ All existing pages remain active at their current URLs:
 - [x] Graduated CJPI pricing in Stripe ($1–$2/point by tier, $1,952 for perfect 100s) ✅
 - [x] Certificate generation system (serial number, fingerprint, CJPI score) ✅
 - [x] Permanent retirement system (purchased = removed from Showroom forever) ✅
-- [ ] Licensing Engine (Model 17) — developer 70/30 split
-- [ ] Bounty Board (Model 16) — customer-driven discovery
-- [ ] $300 customer acquisition campaign launch
+- [x] Licensing Engine (Model 17) — developer 70/30 split ✅
+- [x] Bounty Board (Model 16) — customer-driven discovery ✅
+- [x] $300 customer acquisition campaign tracking ✅
 
 ### Phase 4: The Foundry (Week 9–12)
 - [ ] Vault editions (Model 23) — Apex-only, $1,952 each
