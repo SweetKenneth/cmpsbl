@@ -196,7 +196,7 @@ function DiscoveryCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.4 }}
-      className="snap-start shrink-0 w-[300px] sm:w-[340px]"
+      className="snap-start shrink-0 w-[260px] sm:w-[300px] md:w-[340px]"
     >
       <div className={cn(
         "group relative h-full rounded-2xl border bg-card overflow-hidden transition-all duration-300 flex flex-col",

@@ -121,7 +121,7 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
   }[item.condition];
 
   return (
-    <div className="snap-start shrink-0 w-[300px] sm:w-[320px]">
+    <div className="snap-start shrink-0 w-[260px] sm:w-[300px] md:w-[320px]">
       <div className={cn(
         "h-full rounded-xl border bg-card overflow-hidden transition-all duration-300",
         "hover:-translate-y-1 hover:shadow-xl flex flex-col",
