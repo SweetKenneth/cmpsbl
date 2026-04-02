@@ -358,9 +358,13 @@ export default function Showroom() {
                 <span>Catalog rotates every 8 hours</span>
               </div>
 
-              <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
-                {CATALOG.length} certified discoveries · catalog rotates every 8 hours
-              </p>
+              <Button asChild variant="outline" size="sm" className="rounded-xl font-semibold gap-2">
+                <Link to="/ascension">
+                  <Wrench className="w-3.5 h-3.5" />
+                  Or bring your own code
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+              </Button>
             </motion.div>
           </div>
         </section>
