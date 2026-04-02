@@ -22,13 +22,13 @@ const BASE_CAPABILITIES: DecodeCapability[] = [
 ];
 
 const GOVERNOR_CAPABILITIES: DecodeCapability[] = [
-  { id: 'inspect_nodes', label: 'inspect_nodes', governorOnly: true },
+  { id: 'inspect_primitives', label: 'inspect_primitives', governorOnly: true },
   { id: 'topology_view', label: 'topology_view', governorOnly: true },
   { id: 'discovery_metrics', label: 'discovery_metrics', governorOnly: true },
-  { id: 'pipeline_scoring', label: 'pipeline_scoring', governorOnly: true },
+  { id: 'cjpi_scoring', label: 'cjpi_scoring', governorOnly: true },
   { id: 'system_heal', label: 'system_heal', governorOnly: true },
   { id: 'governance_override', label: 'governance_override', governorOnly: true },
-  { id: 'foundry_reactor', label: 'foundry_reactor', governorOnly: true },
+  { id: 'memory_stream', label: 'memory_stream', governorOnly: true },
 ];
 
 interface DecodeState {

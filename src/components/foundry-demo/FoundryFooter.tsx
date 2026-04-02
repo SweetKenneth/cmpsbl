@@ -1,26 +1,35 @@
 /**
- * Memory Stream Footer — Flagship conversion CTA + navigation
+ * Memory Stream Footer — Factory conversion CTA + navigation
  */
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
 
 const NAV_COLUMNS = [
   {
-    title: 'Platform',
+    title: 'Factory',
     links: [
-      { label: 'How it works', to: '/ai-operating-system' },
-      { label: 'Architecture', to: '/architecture' },
-      { label: 'Runtime', to: '/runtime' },
-      { label: 'Persistent memory', to: '/persistent-memory' },
+      { label: 'Memory Stream', to: '/foundry' },
+      { label: 'Ascension', to: '/ascension' },
+      { label: 'Showroom', to: '/showcase' },
+      { label: 'Junkyard', to: '/junkyard' },
     ],
   },
   {
-    title: 'Discover',
+    title: 'Resources',
     links: [
-      { label: 'Memory Stream', to: '/foundry' },
-      { label: 'Showcase', to: '/showcase' },
+      { label: 'Documentation', to: '/documentation' },
+      { label: 'Heritage paper', to: '/heritage-paper' },
       { label: 'Blog', to: '/blog' },
       { label: 'Changelog', to: '/changelog' },
+    ],
+  },
+  {
+    title: 'Legacy Reference',
+    links: [
+      { label: 'Substrate explorer', to: '/explore' },
+      { label: 'Architecture', to: '/architecture' },
+      { label: 'Runtime', to: '/runtime' },
+      { label: 'Persistent memory', to: '/persistent-memory' },
     ],
   },
   {
@@ -28,15 +37,6 @@ const NAV_COLUMNS = [
     links: [
       { label: 'About', to: '/about' },
       { label: 'Investors', to: '/investors' },
-      { label: 'Publication', to: '/publication' },
-      { label: 'Contact', to: '/contact' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { label: 'Heritage paper', to: '/heritage-paper' },
-      { label: 'API access', to: '/api-access' },
       { label: 'Privacy', to: '/privacy' },
       { label: 'Terms', to: '/terms' },
     ],
@@ -51,7 +51,7 @@ export function FoundryFooter() {
       {/* Section divider */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-xs h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
 
-      {/* Final conversion CTA — the closer */}
+      {/* Final conversion CTA */}
       <section className="py-20 sm:py-28 md:py-36 px-5 sm:px-6 relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.08),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--neon-purple)/0.04),transparent_60%)]" />
@@ -76,8 +76,8 @@ export function FoundryFooter() {
             </span>
           </h2>
           <p className="text-muted-foreground/70 max-w-lg mx-auto mb-10 sm:mb-12 text-sm sm:text-base px-2 leading-relaxed">
-            Every system you add changes the topology. Every discovery compounds the next.
-            The Memory Stream doesn't stop — it accelerates.
+            Every discovery compounds the next. The Scouts never stop.
+            The Restoration Shop is always open.
           </p>
 
           {/* Primary CTA */}
@@ -86,7 +86,7 @@ export function FoundryFooter() {
               onClick={() => navigate('/auth?redirect=/foundry')}
               className="w-full sm:w-auto px-10 sm:px-12 py-4 sm:py-5 bg-primary text-primary-foreground rounded-xl font-mono text-base sm:text-lg font-bold hover:bg-primary/90 transition-all duration-200 shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/35 hover:-translate-y-1 min-h-[56px] crystallize-glow"
             >
-              Crystallize Software Now — Free
+              Enter the Factory — Free
             </button>
           </div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
@@ -99,7 +99,7 @@ export function FoundryFooter() {
           </div>
 
           <p className="mt-6 sm:mt-8 text-xs font-mono text-muted-foreground/40 leading-relaxed">
-            No credit card required · Passwordless magic link · Start crystallizing in 30 seconds
+            No credit card required · Passwordless magic link · Start discovering in 30 seconds
           </p>
         </motion.div>
       </section>

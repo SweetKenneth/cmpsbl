@@ -1,13 +1,13 @@
 /**
  * CMPSBL Welcome Onboarding — First-visit guided tour for /
- * Animated multi-step modal introducing the platform
+ * Factory-narrative intro: Memory Stream, Ascension, Showroom, legacy access
  * Uniform "Next" button bottom-right on every card
  */
 
 import { useState, useEffect } from 'react';
 import { useOnboardingTracking } from '@/hooks/useOnboardingTracking';
 import { useNavigate } from 'react-router-dom';
-import { X, ArrowRight, ChevronRight, Zap, Terminal, Database, LayoutDashboard, Route, Package, Brain, Shield, Moon } from 'lucide-react';
+import { X, ArrowRight, ChevronRight, Zap, Search, Wrench, ShoppingBag, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import './cmpsbl-welcome.css';
@@ -22,63 +22,59 @@ interface OnboardingStep {
   accent: string;
   pattern: string;
   footer?: string;
-  /** Inline CTA (embedded in card body, not footer) */
   inlineCta?: { text: string; href: string };
-  /** Second inline CTA */
   secondaryInlineCta?: { text: string; href: string };
-  /** Bullet list */
   bullets?: string[];
-  /** Dual entry descriptions */
   entries?: { icon: React.ElementType; label: string; desc: string }[];
 }
 
 const STEPS: OnboardingStep[] = [
   {
-    icon: Brain,
-    tag: 'Memory',
-    title: 'CMPSBL Remembers',
-    body: 'CMPSBL maintains a persistent memory layer where activity is retained and built upon over time.\n\nMemory can be applied to agents, language models, and applications, allowing behavior to carry forward between interactions. Systems can retain context, reuse what has already been learned, and operate with continuity instead of starting over.',
-    footer: 'Nothing resets.',
+    icon: Search,
+    tag: 'Discovery',
+    title: 'The Scouts Are Running',
+    body: 'Memory Stream runs autonomous 8-hour discovery cycles — finding capabilities in code that nobody asked it to find.\n\nEvery discovery is scored by CJPI, priced, and placed in the Showroom. You browse, you buy, you own it forever. Once purchased, a discovery is permanently retired from the stream.',
+    footer: 'No AI inside the output. Pure algorithmic discovery.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 30% 70%, hsl(var(--neon-cyan) / 0.12) 0%, transparent 50%)',
   },
   {
-    icon: Database,
-    tag: 'Discovery',
-    title: 'Memories Are Exportable',
-    body: 'CMPSBL is a cognitive environment that searches for memory chains autonomously. As they are discovered, chains are stored in the Memory Stream for users to capture, reuse, or resell.',
-    footer: 'Crystallize memories daily. Licensed, exportable, and valuable.',
+    icon: Wrench,
+    tag: 'Restoration',
+    title: 'The Restoration Shop',
+    body: 'Ascension takes your existing code and restores it. We scan for vulnerabilities and hidden capabilities, harden it with up to 20 primitives, and send it back production-ready.\n\nThree-day test drive included. If you're not satisfied, you keep the diagnostic report for free.',
+    footer: 'Bring us your code. We'll make it a classic.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 70% 30%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
   },
   {
-    icon: Moon,
-    tag: 'Evolution',
-    title: 'Self-Improving Infrastructure',
-    body: "CMPSBL enters dream states during off-peak hours, reasoning through the day's interactions to refine and optimize its capabilities.\n\nThis same behavior can be applied to agents, models, and applications, allowing what you build to improve over time without manual updates.",
-    footer: 'FAILSAFE provides backup and restore. Install it from The Store.',
+    icon: ShoppingBag,
+    tag: 'Showroom',
+    title: 'Browse What the Scouts Found',
+    body: 'The Showroom displays scored discoveries from Memory Stream. Each one is real, production-grade software with a CJPI quality score.\n\nBuilder tier users can also visit the Junkyard — free access to Raw-tier discoveries that haven't been fully restored yet.',
+    footer: 'Priced by quality. $1–$2 per CJPI point. Perfect 100s at $1,952.',
     accent: 'neon-magenta',
     pattern: 'radial-gradient(circle at 50% 80%, hsl(var(--neon-magenta) / 0.1) 0%, transparent 50%)',
   },
   {
-    icon: Shield,
-    tag: 'Governance',
-    title: 'Complete Control',
-    body: 'CMPSBL has built-in guardrails that give you direct control over your agents and language models. These can be used to guide behavior, validate outputs, and keep systems operating the way you intend.',
-    footer: 'You decide how it runs.',
+    icon: BookOpen,
+    tag: 'Legacy access',
+    title: 'Substrate Still Available',
+    body: 'The 40-Primitive substrate architecture — 12 Organs, 12 Layers, 8 Engines, 8 Agents — still powers everything under the hood.\n\nLegacy reference materials including the Substrate Explorer, Architecture deep-dives, and full documentation are accessible from the footer under "Legacy Reference."',
+    footer: 'The factory runs on the substrate. The substrate is the IP moat.',
     accent: 'neon-cyan',
     pattern: 'radial-gradient(circle at 80% 60%, hsl(var(--neon-cyan) / 0.1) 0%, transparent 50%)',
   },
   {
     icon: Zap,
     tag: 'Get started',
-    title: 'Create a Free Account',
-    body: "Upgradable plans unlock new capabilities, expand Memory Stream access, and open deeper parts of the system.\n\nEverything you build can retain context, improve through real usage, and behave the way you intend. The system is already running — you can explore it at any time.",
-    footer: 'All users are first-class. No credit card required.',
+    title: 'Start with a Free Account',
+    body: "Builder tier is free — browse the Showroom, access the Junkyard for Raw-tier discoveries, and view diagnostics.\n\nCreator and Architect tiers unlock Ascension restorations, expanded vaults, and priority processing. The factory is already running — the Scouts never stop.",
+    footer: 'No credit card required. The Scouts are already discovering.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Explore the Substrate', href: '/explore' },
-    secondaryInlineCta: { text: 'Start Building — Free', href: '/auth' },
+    inlineCta: { text: 'Browse the Showroom', href: '/showcase' },
+    secondaryInlineCta: { text: 'Create Free Account', href: '/auth' },
   },
 ];
 
@@ -249,7 +245,7 @@ export function CmpsblWelcome() {
               </p>
             )}
 
-            {/* Bullet list for card 4 */}
+            {/* Bullet list */}
             {current.bullets && (
               <ul className="mt-3 space-y-1.5 cmpsbl-welcome-body-fade">
                 {current.bullets.map((b) => (
@@ -261,7 +257,7 @@ export function CmpsblWelcome() {
               </ul>
             )}
 
-            {/* Dual entry paths for card 5 */}
+            {/* Dual entry paths */}
             {current.entries && (
               <div className="mt-4 space-y-2.5 cmpsbl-welcome-body-fade">
                 {current.entries.map((entry) => {
@@ -279,7 +275,7 @@ export function CmpsblWelcome() {
               </div>
             )}
 
-            {/* Inline CTAs embedded in card body */}
+            {/* Inline CTAs */}
             {(current.inlineCta || current.secondaryInlineCta) && (
               <div className="mt-4 flex flex-wrap gap-2 cmpsbl-welcome-body-fade">
                 {current.inlineCta && (
@@ -308,7 +304,7 @@ export function CmpsblWelcome() {
             )}
           </div>
 
-          {/* Footer — uniform Next button bottom-right on every card */}
+          {/* Footer — uniform Next button */}
           <div className="relative flex items-center justify-between px-6 pb-5 pt-1 border-t border-border/10">
             {step > 0 ? (
               <Button variant="ghost" size="sm" onClick={back} className="text-xs h-9 gap-1">
@@ -325,7 +321,7 @@ export function CmpsblWelcome() {
               onClick={next}
               className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow"
             >
-              {isLastStep ? 'Explore the Substrate' : 'Next →'}
+              {isLastStep ? 'Enter the Factory' : 'Next →'}
               <ChevronRight className="w-3.5 h-3.5" />
             </Button>
           </div>
