@@ -116,7 +116,15 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   // The export language is ALWAYS the source language — no picker needed
   const exportLanguage = sourceLanguage || 'typescript';
 
-  useEffect(() => { loadCrystallized(); loadCandidateLanguage(); }, []);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setIsAuthenticated(!!user);
+    };
+    checkAuth();
+    loadCrystallized();
+    loadCandidateLanguage();
+  }, []);
 
   /** Load the candidate's ingested language and source files (user-scoped) */
   const loadCandidateLanguage = async () => {
