@@ -171,7 +171,7 @@ export default function AgentPowerUp() {
               return (
                 <div
                   key={benefit.title}
-                  className="rounded-xl border border-border/40 bg-card/20 p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in opacity-0"
+                  className="rounded-xl border border-border/40 bg-card/20 p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in"
                   style={{ animationDelay: `${idx * 0.08}s`, animationFillMode: "both" }}
                 >
                   <BIcon className="w-6 h-6 text-primary mb-3" />
@@ -194,7 +194,7 @@ export default function AgentPowerUp() {
             {BEFORE_AFTER.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-3 rounded-lg border border-border/30 bg-card/20 p-4 animate-fade-in opacity-0"
+                className="flex items-center gap-3 rounded-lg border border-border/30 bg-card/20 p-4 animate-fade-in"
                 style={{ animationDelay: `${idx * 0.06}s`, animationFillMode: "both" }}
               >
                 <div className="flex-1 text-right">

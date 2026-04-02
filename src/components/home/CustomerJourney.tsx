@@ -81,7 +81,7 @@ export function CustomerJourney() {
             return (
               <div
                 key={step.number}
-                className="group relative rounded-xl border border-border/40 bg-card/20 p-4 sm:p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in opacity-0 lab-card-glow"
+                className="group relative rounded-xl border border-border/40 bg-card/20 p-4 sm:p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in lab-card-glow"
                 style={{ animationDelay: `${idx * 0.08}s`, animationFillMode: "both" }}
               >
                 {/* Connecting dot on right edge — desktop */}

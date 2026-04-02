@@ -70,7 +70,7 @@ export function FactoryPillars() {
           {PILLARS.map((pillar, idx) => (
             <div
               key={pillar.title}
-              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300 lab-card-glow lab-breathe animate-fade-in opacity-0"
+              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300 lab-card-glow lab-breathe animate-fade-in"
               style={{ animationDelay: `${idx * 0.1}s`, animationFillMode: "both" }}
             >
               {/* Top accent bar with shimmer */}

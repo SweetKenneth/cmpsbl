@@ -27,7 +27,7 @@ function FadeIn({ delay = 0, className = "", children, ...props }: {
 } & React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div 
-      className={cn("animate-fade-in opacity-0", className)}
+      className={cn("animate-fade-in", className)}
       style={{ animationDelay: `${delay}s`, animationFillMode: "both" }}
       {...props}
     >
@@ -159,7 +159,7 @@ function AnimatedStat({ value, label, suffix = "", delay = 0 }: {
   return (
     <div 
       ref={ref}
-      className="relative text-center py-4 sm:py-5 group stat-card-glow animate-fade-in opacity-0"
+      className="relative text-center py-4 sm:py-5 group stat-card-glow animate-fade-in"
       style={{ animationDelay: `${1.2 + delay * 0.06}s`, animationFillMode: "both" }}
     >
       <div className="text-xl sm:text-2xl md:text-3xl font-black tabular-nums tracking-tight text-foreground group-hover:text-glow-primary transition-all duration-500">
@@ -324,7 +324,7 @@ export function HeroMetaSubstrate() {
       
       {/* Scroll indicator */}
       <div
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 animate-fade-in opacity-0"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-1.5 animate-fade-in"
         style={{ animationDelay: "2.5s", animationFillMode: "both" }}
       >
         <span className="text-[9px] text-muted-foreground/30 font-medium tracking-[0.2em] uppercase">Explore</span>
