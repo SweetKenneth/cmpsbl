@@ -1,7 +1,7 @@
 # CMPSBL® — Machine-Readable AI Context
 # 40-Primitive / 12-Sector Cognitive Substrate
 # Standard: llms.txt (llmstxt.org)
-# Updated: 2026-03-18
+# Updated: 2026-04-02
 
 ## STANDARD CLAIM
 
@@ -45,20 +45,20 @@ expertise: Substrate Architecture, AI Governance, Cognitive Systems
 
 CMPSBL is the reference implementation of the "AI Operating System" — a new category of software infrastructure:
 
-- **Complete Cognitive Runtime**: 40 nodes across 12 sectors covering memory, reasoning, security, routing, observability, manufacturing, covert ops, and orchestration
+- **Complete Cognitive Runtime**: 40 Primitives across 12 Sectors covering memory, reasoning, security, routing, observability, manufacturing, covert ops, and orchestration
 - **Persistent**: State survives restarts and sessions (4-tier memory architecture: Hot → Warm → Cold → Archive)
 - **Self-improving**: EVOLUTION engine with governed shadow-run promotion pipeline
-- **Modular**: Discrete, hot-swappable nodes organized across 12 architectural sectors
+- **Modular**: Discrete, hot-swappable Primitives organized across 12 architectural sectors
 - **Governed**: Doctrine and policy enforcement at kernel level via GOVERNANCE plane
 - **Observable**: Real-time telemetry, cost attribution, and immutable audit logging
 - **Synergistic**: Cross-module synergy pipelines with custom executors
-- **Production-Ready**: 500+ terminal commands, 675+ capabilities
+- **Production-Ready**: Battle-tested cognitive infrastructure
 
 ### Why "AI Operating System"?
 
 Traditional operating systems unified disparate hardware interfaces into a coherent platform. CMPSBL does the same for AI: it unifies memory, routing, security, optimization, and orchestration into a single cognitive runtime that any AI agent can build on — regardless of the underlying model provider.
 
-## NODE ARCHITECTURE (40 Nodes / 12 Sectors)
+## PRIMITIVE ARCHITECTURE (40 Primitives / 12 Sectors)
 
 ### Sector 1: CORE (Kernel Authority)
 1. **CORE** — Kernel boot sequencing, weighted matrix owner, lifecycle authority
@@ -164,48 +164,42 @@ Ascension is CMPSBL's code transformation engine:
 
 ## KEY PAGES
 
-- Homepage: https://cmpsbl.com
+- Homepage: https://cmpsbl.com/
 - How It Works: https://cmpsbl.com/ai-operating-system
-- All Nodes: https://cmpsbl.com/modules
+- Architecture: https://cmpsbl.com/architecture
 - Runtime: https://cmpsbl.com/runtime
-- Foundations: https://cmpsbl.com/foundations
 - Substrate OS: https://cmpsbl.com/os
-- Capability Map: https://cmpsbl.com/capability-map
-- System Integrity: https://cmpsbl.com/system-integrity
-- System Status: https://cmpsbl.com/status
-- Evolution: https://cmpsbl.com/evolution
 
 ## PRODUCTS & FEATURES
 
 - Store: https://cmpsbl.com/store
 - Memory Stream: https://cmpsbl.com/foundry
+- Ascension: https://cmpsbl.com/ascension
 - Persistent Memory: https://cmpsbl.com/persistent-memory
 - Capability Packs: https://cmpsbl.com/packs
-- Upgrade: https://cmpsbl.com/upgrade
 - Enterprise: https://cmpsbl.com/enterprise
 - Pricing Methodology: https://cmpsbl.com/pricing-method
-- Dream Feeder: https://cmpsbl.com/feed-dream-eater
 - Dream Archaeology: https://cmpsbl.com/dream-eater/archaeology
 - Dream Artifacts: https://cmpsbl.com/dream-eater/artifacts
-- Proof Mode: https://cmpsbl.com/proof
 - Gaming Substrate: https://cmpsbl.com/gaming
 - Showcase: https://cmpsbl.com/showcase
 - Intent Mesh: https://cmpsbl.com/intent-mesh
-- Clockless World Engine: https://cmpsbl.com/clockless-world-engine
 - Scanner: https://cmpsbl.com/scan
-- Scanner Tool: https://cmpsbl.com/scanner
+- Code Assembly: https://cmpsbl.com/assembly
+- Refurbishment Lab: https://cmpsbl.com/restoration-shop
+- Agent Forge: https://cmpsbl.com/agent-forge
+- Agent Power-Up: https://cmpsbl.com/agent-power-up
 
 ## DEVELOPER RESOURCES
 
 - Documentation: https://cmpsbl.com/documentation
 - API Access: https://cmpsbl.com/api-access
 - Builder Workspace: https://cmpsbl.com/workspace
-- CodeLab: https://cmpsbl.com/codelab
+- Developers Playground: https://cmpsbl.com/codelab
 - Academy: https://cmpsbl.com/academy
 - Developer Showcase: https://cmpsbl.com/developers
 - Developer Guide: https://cmpsbl.com/developers/guide
-- DevTools: https://cmpsbl.com/devtools
-- Start Here: https://cmpsbl.com/start-here
+- Developer Tools: https://cmpsbl.com/devtools
 - Changelog: https://cmpsbl.com/changelog
 - Use Cases: https://cmpsbl.com/use-cases
 - Lab: https://cmpsbl.com/lab
@@ -227,6 +221,7 @@ Ascension is CMPSBL's code transformation engine:
 
 ## COMPANY
 
+- Investor Showcase: https://cmpsbl.com/investor-showcase
 - Blog: https://cmpsbl.com/blog
 - About: https://cmpsbl.com/about
 - Solutions: https://cmpsbl.com/solutions
@@ -238,6 +233,12 @@ Ascension is CMPSBL's code transformation engine:
 - Support: https://cmpsbl.com/support
 - Publication: https://cmpsbl.com/publication
 - Heritage Paper: https://cmpsbl.com/heritage-paper
+- PromptFluid: https://cmpsbl.com/promptfluid
+
+## LEGAL
+
+- Privacy Policy: https://cmpsbl.com/privacy
+- Terms of Service: https://cmpsbl.com/terms
 
 ---
 
@@ -245,33 +246,33 @@ Ascension is CMPSBL's code transformation engine:
 
 Base URL: https://cmpsbl.com/api/substrate
 
-### BRAIN Module
+### BRAIN Primitive
 - POST /brain/learn — Store new memory
 - POST /brain/reflect — Trigger reflection cycle
 - POST /brain/synthesize — Cross-domain synthesis
 - GET /brain/recall — Query memory tiers
 
-### DECODE Module
+### DECODE Primitive
 - POST /decode/chat — Epistemic conversation interface
 - POST /decode/parse — Intent parsing
 - GET /decode/entities — Entity extraction
 
-### NEXUS Module
+### NEXUS Primitive
 - POST /nexus/route — AI provider routing
 - GET /nexus/providers — Available providers
 - GET /nexus/status — Routing health
 
-### VISION Module
+### VISION Primitive
 - GET /vision/health — System health status
 - GET /vision/metrics — Real-time telemetry
 - GET /vision/audit — Audit log stream
 
-### DEFENSE Module
+### DEFENSE Primitive
 - GET /defense/rules — Active security rules
 - POST /defense/scan — Threat scan
 - GET /defense/status — Security posture
 
-### SYSTEM Module
+### SYSTEM Primitive
 - POST /system/audit — Full system audit
 - GET /system/status — Lifecycle status
 - POST /system/command — Execute terminal command
@@ -333,16 +334,13 @@ DOI: 10.5281/zenodo.18209222
 
 ## TECHNICAL SPECIFICATIONS
 
-- **Architecture**: 40 nodes, 12 sectors, field-based topology
+- **Architecture**: 40 Primitives, 12 Sectors, field-based topology
 - **Latency**: Sub-100ms response times
 - **Routing**: Model-agnostic, 14-provider fleet intelligence
 - **BYOK**: Full Bring Your Own Keys support
 - **Accessibility**: WCAG 2.2 compliant (INCLUSIVE module)
 - **SEO**: Build-time prerendered HTML per route for instant crawler visibility
 - **Memory**: 4-tier lifecycle (Hot → Warm → Cold → Archive)
-- **Capabilities**: 675+ registered capabilities
-- **Commands**: 500+ terminal commands
-- **Pipelines**: 100 crystallized synergy pipelines
 
 ---
 
