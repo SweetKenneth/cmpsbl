@@ -141,7 +141,7 @@ export function ConsolidationDiagram() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   DIAGRAM 3: CMPSBL 40-Primitive Sector Topology
+   DIAGRAM 3: CMPSBL 40-Primitive Category Topology
    ═══════════════════════════════════════════════════════════ */
 
 export function SectorTopologyDiagram() {
