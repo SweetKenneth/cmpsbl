@@ -381,7 +381,7 @@ async function handleUserMessage(userMessage: string) {
                   </li>
                 </ul>
                 <div className="mt-6">
-                  <Link to="/store?tab=plans">
+                  <Link to="/plans">
                     <Button variant="outline">
                       View Pricing
                       <ArrowRight className="w-4 h-4 ml-2" />
@@ -480,7 +480,7 @@ async function handleUserMessage(userMessage: string) {
                       <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
-                  <Link to="/store?tab=plans">
+                  <Link to="/plans">
                     <Button variant="outline" size="lg">
                       View Pricing
                     </Button>

@@ -164,7 +164,7 @@ export function CapabilityCardFree({ capability, categoryConfig, onViewDetails }
               asChild
               className="h-9 px-3 touch-manipulation text-xs md:text-sm border-neon-amber/30 text-neon-amber hover:bg-neon-amber/10"
             >
-              <Link to="/store?tab=plans">
+              <Link to="/plans">
                 Upgrade
                 <ChevronRight className="w-3 h-3 ml-1" />
               </Link>

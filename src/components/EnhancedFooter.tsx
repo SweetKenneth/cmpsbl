@@ -38,7 +38,7 @@ export function EnhancedFooter() {
         { name: "Showroom", href: "/showroom" },
         { name: "Junkyard", href: "/junkyard" },
         { name: "Assembly", href: "/assembly" },
-        { name: "Plans & pricing", href: "/store?tab=plans", highlight: true },
+        { name: "Plans & pricing", href: "/plans", highlight: true },
       ]
     },
     {
@@ -116,7 +116,7 @@ export function EnhancedFooter() {
                 Memory Stream discovers. Ascension restores. 40 Primitives power everything.
               </p>
               <Link 
-                to="/store?tab=plans" 
+                to="/plans" 
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] transition-colors mb-4"
               >
                 View Plans → Builder (free) · Creator · Architect

@@ -67,11 +67,11 @@ function buildDebriefMessages(
 
   // New capabilities
   if (report.newCapabilities.length > 0) {
-    const capList = report.newCapabilities.slice(0, 3).map(c => `• **${c.name}**: ${c.description.slice(0, 80)}...`).join('\n');
+    const capList = report.newCapabilities.map(c => `• **${c.name}**: ${c.description}`).join('\n');
     msgs.push({
       id: 'caps',
       role: 'decode',
-      content: `Your code now has ${report.newCapabilities.length} new capabilities:\n\n${capList}${report.newCapabilities.length > 3 ? `\n\n...and ${report.newCapabilities.length - 3} more in the full report.` : ''}`,
+      content: `Your code now has ${report.newCapabilities.length} new capabilities:\n\n${capList}`,
       icon: Sparkles,
     });
   }
@@ -142,7 +142,7 @@ export function DecodeDebrief({
       </div>
 
       {/* Messages */}
-      <div ref={scrollRef} className="max-h-[400px] overflow-y-auto p-4 space-y-3">
+      <div ref={scrollRef} className="max-h-[600px] overflow-y-auto p-4 space-y-3">
         <AnimatePresence>
           {messages.slice(0, visibleCount).map((msg, idx) => {
             const Icon = msg.icon || MessageSquare;

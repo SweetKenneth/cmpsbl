@@ -120,7 +120,7 @@ export function PrimitiveSelector({ recommendations, onConfirm, isProcessing }: 
                     )}
                     <div className="min-w-0">
                       <div className="text-xs font-bold text-foreground truncate">{primitive.name}</div>
-                      <div className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2">
+                      <div className="text-[10px] text-muted-foreground mt-0.5">
                         {primitive.rationale}
                       </div>
                       <div className="flex items-center gap-1 mt-1">

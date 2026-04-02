@@ -156,7 +156,7 @@ export function EvolutionCTA() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="h-12 sm:h-13 px-6 sm:px-8 text-sm sm:text-base font-semibold border-foreground/20 text-foreground hover:border-[hsl(var(--neon-cyan)/0.3)] transition-colors">
-                  <Link to="/store?tab=plans">
+                  <Link to="/plans">
                     See Plans
                   </Link>
                 </Button>

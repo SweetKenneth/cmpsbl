@@ -133,7 +133,7 @@ export function PriorityStatus({ tier }: { tier: string }) {
       {tier === 'free' || tier === 'builder' ? (
         <div className="text-center">
           <Button asChild variant="outline" className="gap-2">
-            <Link to="/store?tab=plans">
+            <Link to="/plans">
               Upgrade for Priority Routing <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>

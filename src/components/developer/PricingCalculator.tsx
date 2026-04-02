@@ -257,7 +257,7 @@ export function PricingCalculator({ className }: { className?: string }) {
         {/* CTA */}
         <div className="flex justify-center">
           <Button asChild size="lg">
-            <Link to="/store?tab=plans">
+            <Link to="/plans">
               Get Started with {calculations.recommendedTier.charAt(0).toUpperCase() + calculations.recommendedTier.slice(1)}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Link>

@@ -41,7 +41,7 @@ const solutions = [
     description: "Routes every AI request to the optimal provider based on task complexity, cost, and latency. Automatic failover across 14+ providers. Zero vendor lock-in.",
     features: ["14+ AI providers supported", "Automatic failover & load balancing", "Cost optimization per request", "Task-aware model selection", "Zero-downtime provider switching", "Latency-optimized routing"],
     metrics: ["14+ Providers", "< 100ms Routing", "Zero Lock-In"],
-    link: "/upgrade",
+    link: "/plans",
     color: "from-neon-cyan to-neon-blue",
   },
   {
@@ -61,7 +61,7 @@ const solutions = [
     description: "Behavioral threat detection, intelligent rate limiting, and governance rules that learn from attack patterns. Security that adapts in real-time.",
     features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "Adaptive rate limiting", "Governance rule enforcement", "Enterprise audit logging"],
     metrics: ["Adaptive", "Real-Time", "Enterprise Grade"],
-    link: "/store?tab=plans",
+    link: "/plans",
     color: "from-destructive to-neon-magenta",
   },
   {
@@ -145,7 +145,7 @@ export default function Solutions() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/store?tab=plans">View Plans</Link>
+                <Link to="/plans">View Plans</Link>
               </Button>
             </div>
           </motion.div>
@@ -243,7 +243,7 @@ export default function Solutions() {
               <Link to="/auth">Get Started Free <ArrowRight className="w-5 h-5" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/store?tab=plans">View Plans</Link>
+              <Link to="/plans">View Plans</Link>
             </Button>
           </div>
         </motion.div>

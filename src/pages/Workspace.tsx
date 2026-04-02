@@ -192,7 +192,7 @@ export default function Workspace() {
                         </div>
                       )}
                       {isLocked && (
-                        <Button size="sm" variant="outline" className="w-full mt-3 text-xs font-mono h-8" onClick={() => navigate('/store?tab=plans')}>
+                        <Button size="sm" variant="outline" className="w-full mt-3 text-xs font-mono h-8" onClick={() => navigate('/plans')}>
                           <Lock className="w-3 h-3 mr-1" /> Upgrade to {tierInfo.label}
                         </Button>
                       )}
@@ -341,7 +341,7 @@ export default function Workspace() {
               })}
 
               <div className="text-center mt-6">
-                <Button variant="outline" className="font-mono text-sm hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => navigate('/store?tab=plans')}>
+                <Button variant="outline" className="font-mono text-sm hover:border-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all" onClick={() => navigate('/plans')}>
                   <Rocket className="w-4 h-4 mr-2" /> View Plans & Pricing
                 </Button>
               </div>

@@ -43,7 +43,7 @@ const LICENSE_TIERS = [
     icon: Sparkles,
     gradient: "from-neon-purple to-neon-purple",
     cta: "Subscribe",
-    ctaAction: "/upgrade",
+    ctaAction: "/plans",
     popular: true,
     comingSoon: false,
     features: [
@@ -63,7 +63,7 @@ const LICENSE_TIERS = [
     icon: Crown,
     gradient: "from-neon-amber to-neon-amber",
     cta: "Subscribe",
-    ctaAction: "/upgrade",
+    ctaAction: "/plans",
     popular: false,
     comingSoon: false,
     features: [
@@ -139,7 +139,7 @@ export default function SubstrateLicensingDownload() {
                   <h3 className="font-semibold mb-2">Pricing</h3>
                   <p className="text-sm text-muted-foreground">
                     Build on our <strong>master substrate</strong> with all infrastructure managed for you.{" "}
-                    <Link to="/store?tab=plans" className="text-primary hover:underline">View pricing →</Link>
+                    <Link to="/plans" className="text-primary hover:underline">View pricing →</Link>
                   </p>
                 </CardContent>
               </Card>

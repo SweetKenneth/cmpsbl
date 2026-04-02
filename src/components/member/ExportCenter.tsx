@@ -145,7 +145,7 @@ export function ExportCenter({ tier }: { tier: string }) {
       {(tier === 'free' || tier === 'builder' || tier === 'creator') && (
         <div className="text-center pt-4">
           <Button asChild variant="outline" className="gap-2 text-sm">
-            <Link to="/store?tab=plans">
+            <Link to="/plans">
               Unlock More Exports <ArrowRight className="w-4 h-4" />
             </Link>
           </Button>

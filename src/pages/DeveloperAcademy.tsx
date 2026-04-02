@@ -245,7 +245,7 @@ const DeveloperAcademy = () => {
                     title: 'Choosing Your Tier',
                     desc: 'Compare Builder, Creator, Studio, and Architect tiers. See what each unlocks in terms of daily pulls, vault capacity, and runtime slots.',
                     tag: 'Guide',
-                    link: '/store?tab=plans',
+                    link: '/plans',
                     time: '2 min',
                   },
                 ].map((guide) => (
