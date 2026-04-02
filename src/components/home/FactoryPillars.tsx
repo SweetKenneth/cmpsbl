@@ -10,16 +10,16 @@ import { cn } from "@/lib/utils";
 const PILLARS = [
   {
     title: "The Scanners",
-    subtitle: "Memory Stream · The Catalog",
+    subtitle: "Memory Stream · The Showroom",
     icon: Sparkles,
-    description: "An autonomous 8-hour discovery cycle that finds capabilities nobody asked it to find. Every discovery scored, valued, and placed in the catalog. Browse certified builds. Deploy today.",
+    description: "An autonomous 8-hour discovery cycle that finds capabilities nobody asked it to find. Every discovery scored, valued, and placed in the showroom. Search by problem. Find your solution.",
     stats: [
       { label: "Discovery Cycle", value: "8hr" },
       { label: "Export Languages", value: "25" },
-      { label: "Catalog", value: "Growing" },
+      { label: "Showroom", value: "Growing" },
     ],
-    href: "/memory-stream",
-    cta: "Browse the Catalog",
+    href: "/showroom",
+    cta: "Browse the Showroom",
     gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
     glowVar: "--neon-cyan",
   },
