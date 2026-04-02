@@ -35,8 +35,8 @@ const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/agent-decode
 const SESSION_STORAGE_KEY = 'decode_chat_messages';
 
 const MODE_GREETINGS: Record<DecodeMode, string> = {
-  assistant: "Hey! 👋 I'm **DECODE** — your guide to everything CMPSBL.\n\nAsk me anything about the substrate, features, or how to get started. I'm here to help! ✨",
-  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nTell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
+  assistant: "Welcome to the **CMPSBL® Software Upgrade & Refurbishment Center** 🏗️\n\nI'm **DECODE** — your personal guide through the restoration process.\n\nIf you've been here before and have your **Fingerprint ID** from a previous upload, enter it now and I'll pull up your full refurbishment history for personalized support.\n\nOtherwise, how can I help you today? Whether you're here to scan new code, explore our primitives, or learn what CMPSBL can do — I'm ready. ✨",
+  support: "Hey there 🛠️ — **DECODE** here, in **support mode**.\n\nIf you have a **Fingerprint ID** from a previous refurbishment, paste it here and I can look up your transaction details instantly.\n\nOtherwise, tell me what's going on and I'll help you sort it out. If I can't fix it, I'll connect you with a human at **support@cmpsbl.com**.",
   builder: "**DECODE** online — **builder mode** active 🏗️\n\nReady to help with substrate configuration, memory chains, and capability integration. What are we building?",
   governor: "**DECODE** online — **governor mode** active 👑\n\nFull substrate telemetry and governance controls are live. All **40 primitives** across **4 categories** reporting.\n\nUse slash commands like `/health`, `/caps`, `/govern` for live data — or just talk to me. What do you need, Governor?",
 };
@@ -284,16 +284,16 @@ export function DecodeChat() {
 
   const quickActions = mode === 'support'
     ? [
-        { icon: "❓", title: "Getting Started", description: "Setup walkthrough", prompt: "How do I get started with CMPSBL? Walk me through the basics." },
+        { icon: "🔍", title: "Look Up Fingerprint", description: "Retrieve a past refurbishment", prompt: "I have a fingerprint ID from a previous refurbishment. Let me look it up." },
         { icon: "🔧", title: "Troubleshoot", description: "Fix an issue", prompt: "I'm having an issue and need help troubleshooting." },
         { icon: "💰", title: "Plans & Pricing", description: "Subscription tiers", prompt: "Explain the CMPSBL subscription tiers and what each includes." },
         { icon: "👤", title: "Talk to a Human", description: "Escalate to support", prompt: "I'd like to escalate this to a human support agent." },
       ]
     : [
-        { icon: "💡", title: "Remember a Fact", description: "Teach me about you", prompt: "I want to teach you something about me. Remember this fact:" },
-        { icon: "🧠", title: "What Do You Know?", description: "Recall your memories", prompt: "What do you know about me? Show me everything you've learned from our conversation." },
-        { icon: "🛡️", title: "Defense Update", description: "Security status check", prompt: "Give me a defense status update. Any threats detected recently?" },
-        { icon: "🚀", title: "Getting Started", description: "Learn the substrate", prompt: "How do I start using the substrate? Walk me through the key features and primitives." },
+        { icon: "🔍", title: "Look Up Fingerprint", description: "Retrieve past work", prompt: "I have a fingerprint ID from a previous refurbishment. Let me look it up." },
+        { icon: "🏗️", title: "Start Refurbishment", description: "Upgrade my code", prompt: "I want to refurbish my code. How do I get started with the Refurbishment Lab?" },
+        { icon: "🛡️", title: "What Are Primitives?", description: "Learn the 40 primitives", prompt: "Explain the 40 primitives and how they harden my software." },
+        { icon: "🚀", title: "Getting Started", description: "Learn the substrate", prompt: "How do I start using the substrate? Walk me through the key features." },
       ];
 
   // Connection status indicator
