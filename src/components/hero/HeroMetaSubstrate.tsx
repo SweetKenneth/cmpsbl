@@ -413,9 +413,9 @@ export function HeroMetaSubstrate() {
             <div className="w-full overflow-x-auto scrollbar-hide">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                { label: "Scouts", color: "--neon-cyan" },
-                { label: "Restoration", color: "--neon-magenta" },
-                { label: "Craftsmen", color: "--neon-purple" },
+                { label: "Scanners", color: "--neon-cyan" },
+                { label: "Refurbishment", color: "--neon-magenta" },
+                { label: "Specialists", color: "--neon-purple" },
                 { label: "40 Primitives", color: "--neon-amber" },
               ].map((p, i, arr) => (
                 <div key={p.label} className="flex items-center shrink-0">
