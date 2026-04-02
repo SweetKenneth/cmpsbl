@@ -1,6 +1,6 @@
 /**
  * Investor Showcase — Desktop Layout
- * Glass-morphism, gradient meshes, fluid typography, Believer Epoch aesthetic
+ * Glass-morphism, gradient meshes, fluid typography, Revival Epoch aesthetic
  */
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
