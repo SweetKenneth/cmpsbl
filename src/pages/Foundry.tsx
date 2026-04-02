@@ -549,7 +549,7 @@ export default function Foundry() {
           title="The Open Archive — Broken Tech & Raw Discoveries | CMPSBL"
           description="Browse raw discoveries, broken tech, and salvageable parts. Free to take or send to the Restoration Lab for certified rebuilds. The junkyard of cognitive infrastructure."
           canonical="https://cmpsbl.com/foundry"
-          image="https://cmpsbl.com/og-memory-stream.jpg"
+          image="https://cmpsbl.com/og/store.jpg"
           keywords={['open archive', 'broken tech', 'raw discoveries', 'salvage', 'CMPSBL', 'restoration', 'junkyard']}
         />
         <ArchiveBrowseView />
@@ -576,7 +576,7 @@ export default function Foundry() {
         title="Memory Stream — Discover & Collect Software Capabilities | CMPSBL"
         description="Discover scored, tiered, exportable software capabilities. 5 rarity tiers from Mint to Apex, quality floor of 68+, and per-user persistent vault. Start mining free."
         canonical="https://cmpsbl.com/foundry"
-        image="https://cmpsbl.com/og-memory-stream.jpg"
+        image="https://cmpsbl.com/og/store.jpg"
         keywords={['memory stream', 'crystallized memories', 'AI software discovery', 'CMPSBL', 'quality scoring', 'composable capabilities']}
       />
 
