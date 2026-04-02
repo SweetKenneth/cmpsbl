@@ -18,8 +18,8 @@ export function JunkyardBanner() {
           }} />
 
           <div className="relative flex flex-col sm:flex-row items-center gap-6">
-            <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/20 shrink-0">
-              <Wrench className="w-7 h-7 text-amber-400" />
+            <div className="flex items-center justify-center w-14 h-14 rounded-xl bg-accent/50 border border-accent/30 shrink-0">
+              <Wrench className="w-7 h-7 text-accent-foreground" />
             </div>
 
             <div className="flex-1 text-center sm:text-left">
