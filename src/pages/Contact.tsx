@@ -88,7 +88,7 @@ export default function Contact() {
                Talk to the CMPSBL Team
              </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl leading-relaxed">
-              Enterprise partnerships, technical questions, research collaborations, or just want to learn more — our team responds to every message.
+              Enterprise partnerships, technical questions, research collaborations, or just want to learn more — we respond to every message.
             </p>
           </motion.div>
         </div>

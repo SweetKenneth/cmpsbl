@@ -205,7 +205,7 @@ export function MailingListSignup({ variant = 'card', onSuccess }: MailingListSi
                 <div className="flex-1">
                   <div className="font-medium text-sm">Featured Picks</div>
                   <div className="text-xs text-muted-foreground">
-                    Handpicked templates recommended by our team
+                    Handpicked templates recommended by CMPSBL
                   </div>
                 </div>
                 <Star className="w-4 h-4 text-neon-amber" />
