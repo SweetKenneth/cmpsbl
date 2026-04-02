@@ -612,6 +612,8 @@ export default function Showroom() {
               </div>
             </div>
           </section>
+          </>
+          )}
         </main>
 
         <RelatedCapabilities />
