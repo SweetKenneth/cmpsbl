@@ -1584,7 +1584,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["PHANTOM", "Governance-Gated Covert Ops", "85"],
           ],
         },
-        callout: { label: "The Takeaway", text: "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. callout: { label: "The Takeaway", text: "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 40 primitives — each one sealed, governed, and compounding daily. The moat isn't one capability. It's all 80 working together.", variant: "success" }, — each one sealed, governed, and compounding daily. The moat isn't one capability. It's all 80 working together.", variant: "success" },
+        callout: { label: "The Takeaway", text: "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 40 primitives — each one sealed, governed, and compounding daily. The moat isn't one capability. It's all 80 working together.", variant: "success" },
       },
     ],
   },
