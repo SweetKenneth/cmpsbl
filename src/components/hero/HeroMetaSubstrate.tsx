@@ -265,7 +265,7 @@ export function HeroMetaSubstrate() {
                 <span className="text-foreground/90 font-medium">We scan it, restore it, and send it back</span>{' '}
                 — hardened with new capabilities, wrapped in governance, and ready for production.{' '}
                 No AI inside the output. No lock-in.{' '}
-                <span className="text-foreground/90 font-medium">Just&nbsp;classics</span>.
+                <span className="text-foreground/90 font-medium">Just&nbsp;certified&nbsp;builds</span>.
               </p>
             </FadeIn>
             
