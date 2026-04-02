@@ -1,9 +1,11 @@
 /**
  * Restoration Documentation Generator
  * Generates the full technical document package after Ascension.
+ * Uses the expanded capability registry for Active/Passive/Hybrid archetypes.
  */
 
 import type { ScanResult, PrimitiveRecommendation } from './scan-team';
+import { getCapabilityRegistry, type CapabilityDefinition } from './scan-team';
 
 export interface RestorationReport {
   id: string;
