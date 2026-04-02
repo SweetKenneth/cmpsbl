@@ -192,6 +192,14 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   };
 
   const initiateExport = (scope: 'all' | string) => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Sign in required',
+        description: 'You must be signed in to export capabilities. Create an account or sign in to continue.',
+        variant: 'destructive',
+      });
+      return;
+    }
     const targets = scope === 'all' ? eligible : eligible.filter(c => c.id === scope);
     if (targets.length === 0) {
       toast({ title: 'Nothing to export', description: 'No capabilities available for export' });

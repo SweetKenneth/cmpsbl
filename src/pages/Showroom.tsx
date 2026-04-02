@@ -237,7 +237,7 @@ function DiscoveryCard({
             {item.name}
           </h3>
 
-          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3 flex-1">
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 flex-1">
             {item.solutionDesc}
           </p>
 

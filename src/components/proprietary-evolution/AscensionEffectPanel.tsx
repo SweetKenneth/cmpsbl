@@ -269,10 +269,10 @@ function EffectRow({ entry }: { entry: AscensionEffectEntry }) {
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1.5">
-          <span className="text-xs font-bold truncate">{entry.nodeName}</span>
+          <span className="text-xs font-bold">{entry.nodeName}</span>
           <span className="text-[10px] font-mono opacity-60">{entry.language}</span>
         </div>
-        <p className="text-[11px] opacity-80 truncate mt-0.5">
+        <p className="text-[11px] opacity-80 mt-0.5">
           {summary?.shortSummary ?? `${entry.nodeName} — awaiting effect injection`}
         </p>
       </div>

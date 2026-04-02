@@ -169,8 +169,8 @@ function ArchiveCard({ item }: { item: ArchiveItem }) {
 
         {/* Content */}
         <div className="p-4 flex-1 flex flex-col">
-          <h3 className="font-bold text-sm leading-snug mb-1.5 line-clamp-2">{item.name}</h3>
-          <p className="text-xs text-muted-foreground line-clamp-3 mb-3 flex-1 leading-relaxed">{item.description}</p>
+          <h3 className="font-bold text-sm leading-snug mb-1.5">{item.name}</h3>
+          <p className="text-xs text-muted-foreground mb-3 flex-1 leading-relaxed">{item.description}</p>
 
           {/* Footer */}
           <div className="flex items-center justify-between">
