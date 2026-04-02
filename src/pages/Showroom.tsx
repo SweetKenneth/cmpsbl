@@ -337,7 +337,7 @@ export default function Showroom() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-5">
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-[11px] sm:text-xs font-mono tracking-wider text-primary">THE SHOWROOM</span>
+                <span className="text-xs font-mono tracking-wider text-primary">THE SHOWROOM</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-3 sm:mb-4">
