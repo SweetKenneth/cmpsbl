@@ -148,24 +148,37 @@ export function CmpsblNav() {
             <div className="flex items-center gap-2">
               <div className="hidden lg:flex items-center gap-2">
                 {user ? (
-                  <>
-                    <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-3 font-medium">
-                      <Link to="/os">
-                        <Command className="w-4 h-4 mr-1.5" />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" aria-label="Account menu">
+                        <Avatar className="h-9 w-9 border-2 border-border hover:border-primary transition-colors cursor-pointer">
+                          <AvatarFallback className="bg-primary/10 text-primary text-sm font-bold">
+                            {user.email?.charAt(0).toUpperCase() || 'U'}
+                          </AvatarFallback>
+                        </Avatar>
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent align="end" className="w-56 p-2">
+                      <div className="px-3 py-2 border-b border-border mb-1">
+                        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                      </div>
+                      <Link to="/workbench" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
+                        <Package className="w-4 h-4" />
+                        My Workbench
+                      </Link>
+                      <Link to="/os" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
+                        <Command className="w-4 h-4" />
                         Dashboard
                       </Link>
-                    </Button>
-                    <div className="w-px h-5 bg-border mx-1" />
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={handleSignOut}
-                      className="rounded-lg h-9 w-9 text-muted-foreground hover:text-foreground"
-                      aria-label="Sign out"
-                    >
-                      <LogOut className="w-4 h-4" />
-                    </Button>
-                  </>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors text-destructive"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </PopoverContent>
+                  </Popover>
                 ) : (
                   <>
                     <Button asChild variant="ghost" size="sm" className="rounded-lg h-9 px-4 font-medium text-muted-foreground hover:text-foreground">
