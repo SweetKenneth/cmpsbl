@@ -1,6 +1,6 @@
 /**
- * FactoryPillars — Three-pillar overview for the classic car factory narrative
- * Scouts (Memory Stream) · Restoration (Ascension) · Craftsmen (Substrate)
+ * FactoryPillars — Three-pillar overview for the Software Refurbishment Center
+ * Scanners (Memory Stream) · Refurbishment Lab (Ascension) · Specialists (Substrate)
  */
 
 import { Link } from "react-router-dom";
@@ -9,47 +9,47 @@ import { cn } from "@/lib/utils";
 
 const PILLARS = [
   {
-    title: "The Scouts",
-    subtitle: "Memory Stream · The Showroom",
+    title: "The Scanners",
+    subtitle: "Memory Stream · The Catalog",
     icon: Sparkles,
-    description: "An autonomous 8-hour discovery cycle that finds capabilities nobody asked it to find. Every discovery scored, valued, and placed in the showroom. Buy a new classic. Drive it home today.",
+    description: "An autonomous 8-hour discovery cycle that finds capabilities nobody asked it to find. Every discovery scored, valued, and placed in the catalog. Browse certified builds. Deploy today.",
     stats: [
       { label: "Discovery Cycle", value: "8hr" },
       { label: "Export Languages", value: "25" },
       { label: "Catalog", value: "Growing" },
     ],
     href: "/memory-stream",
-    cta: "Browse the Showroom",
+    cta: "Browse the Catalog",
     gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
     glowVar: "--neon-cyan",
   },
   {
-    title: "The Restoration Team",
-    subtitle: "Ascension · Your Car",
+    title: "The Refurbishment Lab",
+    subtitle: "Ascension · Your Code",
     icon: Zap,
-    description: "Bring us the code you've been running for five years. We scan it, find its vulnerabilities, restore it with new capabilities, and send it back. Your techs still understand it — because it still IS the code.",
+    description: "Bring us the code you've been running for five years. We scan it, find its vulnerabilities, refurbish it with new capabilities, and send it back. Your engineers still understand it — because it still IS the code.",
     stats: [
       { label: "Pipeline Stages", value: "8" },
       { label: "Primitives/Run", value: "Up to 20" },
       { label: "Downtime", value: "Zero" },
     ],
     href: "/ascension",
-    cta: "Bring Us Your Tech",
+    cta: "Submit Your Code",
     gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--primary))]",
     glowVar: "--neon-magenta",
   },
   {
-    title: "The Craftsmen",
+    title: "The Specialists",
     subtitle: "Substrate · 40 Primitives",
     icon: Cpu,
-    description: "The 40 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time you turn the key. The factory runs every 8 hours whether anyone is watching.",
+    description: "The 40 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time. The center runs every 8 hours whether anyone is watching.",
     stats: [
       { label: "Primitives", value: "40" },
       { label: "External AI", value: "Zero" },
       { label: "Zenodo DOIs", value: "3" },
     ],
     href: "/architecture",
-    cta: "Meet the Craftsmen",
+    cta: "Meet the Specialists",
     gradient: "from-[hsl(var(--primary))] to-[hsl(var(--neon-cyan))]",
     glowVar: "--primary",
   },
@@ -61,10 +61,10 @@ export function FactoryPillars() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-3">
-            Three Pillars. One Factory.
+            Three Pillars. One Center.
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-            The scouts find it. The restoration team refines it. The craftsmen make it all possible.
+            The scanners find it. The lab refines it. The specialists make it all possible.
           </p>
         </div>
 

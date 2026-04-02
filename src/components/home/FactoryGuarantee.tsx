@@ -1,6 +1,6 @@
 /**
  * FactoryGuarantee — The CMPSBL promise
- * Three-day test drive. No lock-in. Black-box protected.
+ * Three-day evaluation. No lock-in. Black-box protected.
  */
 
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ import { ArrowRight, Shield, Clock, Lock, Sparkles } from "lucide-react";
 const GUARANTEES = [
   {
     icon: Clock,
-    title: "Three-Day Test Drive",
+    title: "3-Day Evaluation Period",
     description: "Hot-swap architecture. Zero-friction trial. If you don't like it, swap it out.",
   },
   {
@@ -57,7 +57,7 @@ export function FactoryGuarantee() {
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 leading-[1.05] tracking-tight">
                 No AI Tricks. No Liability Transfer.
                 <br className="hidden sm:block" />
-                <span className="text-white/80">Just Classics.</span>
+                <span className="text-white/80">Just Certified Builds.</span>
               </h2>
               <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
                 The only updates we offer are upgrades — and they're optional. No emergency patches because someone jailbroke your billing bot at 2am.
@@ -80,13 +80,13 @@ export function FactoryGuarantee() {
               <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
                 <Link to="/ascension">
                   <Sparkles className="w-5 h-5 mr-2" />
-                  Bring Us Your Tech
+                  Submit Your Code
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
               <Button asChild size="lg" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold backdrop-blur-sm rounded-xl">
                 <Link to="/memory-stream">
-                  Browse the Showroom
+                  Browse the Catalog
                 </Link>
               </Button>
             </div>

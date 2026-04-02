@@ -1,5 +1,5 @@
 /**
- * Live Stats Bar — Factory status indicator
+ * Live Stats Bar — Refurbishment Center status indicator
  * PERFORMANCE: Pure CSS, no framer-motion
  */
 
@@ -16,16 +16,16 @@ export function LiveStatsBar() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[hsl(var(--neon-cyan))] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[hsl(var(--neon-cyan))]" />
           </span>
-          <span className="text-[10px] sm:text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-widest">Factory · Memory Stream · Live</span>
+          <span className="text-[10px] sm:text-xs font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-widest">Refurbishment Center · Memory Stream · Live</span>
         </div>
 
-        {/* Factory value statement */}
+        {/* Value statement */}
         <p
           className="text-sm text-muted-foreground/70 leading-relaxed text-center max-w-2xl mx-auto animate-fade-in opacity-0"
           style={{ animationDelay: "0.15s", animationFillMode: "both" }}
         >
-          The Scouts are running. <span className="text-foreground/90 font-medium">40 primitives</span> across{' '}
-          <span className="text-foreground/90 font-medium">4 categories</span> — discovering, restoring, and hardening code autonomously every 8 hours.
+          The scanners are running. <span className="text-foreground/90 font-medium">40 primitives</span> across{' '}
+          <span className="text-foreground/90 font-medium">4 categories</span> — discovering, refurbishing, and hardening code autonomously every 8 hours.
         </p>
       </div>
     </section>

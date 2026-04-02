@@ -1,5 +1,5 @@
 /**
- * ShowroomPreview — Live Memory Stream catalog preview with CJPI pricing
+ * ShowroomPreview → CatalogPreview — Live Memory Stream catalog preview with CJPI pricing
  * Shows tier distribution and graduated pricing formula
  */
 
@@ -23,13 +23,13 @@ export function ShowroomPreview() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-5">
             <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Showroom</span>
+            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Catalog</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-3">
             Every Discovery Has a Price
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-            Scored by CJPI. Priced by tier. Once purchased, permanently retired from the catalog. The factory never makes the same thing twice.
+            Scored by CJPI. Priced by tier. Once purchased, permanently retired from the catalog. The center never produces the same artifact twice.
           </p>
         </div>
 
@@ -63,12 +63,12 @@ export function ShowroomPreview() {
         {/* Scarcity note */}
         <div className="text-center">
           <p className="text-sm text-muted-foreground/70 mb-6 max-w-lg mx-auto">
-            Every discovery ships with a unique certificate, structural fingerprint, and retirement seal. One shot to buy. The showroom rotates every 8 hours.
+            Every discovery ships with a unique certificate, structural fingerprint, and retirement seal. One shot to buy. The catalog rotates every 8 hours.
           </p>
           <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold">
             <Link to="/memory-stream">
               <Sparkles className="w-4 h-4 mr-2" />
-              Browse the Showroom
+              Browse the Catalog
               <ArrowRight className="w-3.5 h-3.5 ml-2" />
             </Link>
           </Button>

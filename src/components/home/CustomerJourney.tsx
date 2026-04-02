@@ -1,58 +1,70 @@
 /**
- * CustomerJourney — The 8-step factory experience
- * Bring Us Your Tech → Keep It Forever
+ * CustomerJourney — The 8-step refurbishment experience
+ * Submit Your Code → Keep It Forever
  */
 
 import { cn } from "@/lib/utils";
+import {
+  Upload, Search, Settings2, Cpu, MessageSquare,
+  FileText, TestTube2, ShieldCheck,
+} from "lucide-react";
 
 const STEPS = [
   {
     number: "01",
-    title: "Bring Us Your Tech",
+    title: "Submit Your Code",
     description: "Upload any code, any language, any framework.",
     accent: "--neon-cyan",
+    icon: Upload,
   },
   {
     number: "02",
     title: "The Diagnostic",
-    description: "ENCODE + ORACLE + ENGINEER scan. DECODE explains the truth.",
+    description: "ENCODE + ORACLE + ENGINEER scan. DECODE explains the findings.",
     accent: "--neon-cyan",
+    icon: Search,
   },
   {
     number: "03",
     title: "Choose Your Primitives",
     description: "Scan team recommends up to 20. You select.",
     accent: "--primary",
+    icon: Settings2,
   },
   {
     number: "04",
-    title: "The Restoration",
+    title: "The Refurbishment",
     description: "Ascension runs selected primitives. Queue if at capacity.",
     accent: "--primary",
+    icon: Cpu,
   },
   {
     number: "05",
     title: "DECODE Debrief",
-    description: "Every change, every new capability, every variant — explained.",
+    description: "Every change, every new capability, every variant — explained interactively.",
     accent: "--neon-magenta",
+    icon: MessageSquare,
   },
   {
     number: "06",
     title: "The Documentation",
-    description: "Full restoration report + test harness config + CJPI certificate.",
+    description: "Full refurbishment report + test harness config + CJPI certificate.",
     accent: "--neon-magenta",
+    icon: FileText,
   },
   {
     number: "07",
-    title: "Three-Day Test Drive",
+    title: "3-Day Evaluation",
     description: "Hot-swap architecture. Zero-friction trial. Infrastructure, not policy.",
     accent: "--neon-purple",
+    icon: TestTube2,
   },
   {
     number: "08",
     title: "Keep It Forever",
     description: "Sealed Mini-Runtime. Runs indefinitely. No lock-in. Ever.",
     accent: "--neon-purple",
+    icon: ShieldCheck,
   },
 ] as const;
 
@@ -65,34 +77,45 @@ export function CustomerJourney() {
             From Upload to Ownership
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-            Eight steps. No surprises. No lock-in. Your code, restored and returned.
+            Eight steps. No surprises. No lock-in. Your code, refurbished and returned.
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          {STEPS.map((step, idx) => (
-            <div
-              key={step.number}
-              className="group relative rounded-xl border border-border/40 bg-card/20 p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in opacity-0"
-              style={{ animationDelay: `${idx * 0.06}s`, animationFillMode: "both" }}
-            >
-              {/* Step number */}
+          {STEPS.map((step, idx) => {
+            const Icon = step.icon;
+            return (
               <div
-                className="text-3xl font-black mb-3 opacity-20"
-                style={{ color: `hsl(var(${step.accent}))` }}
+                key={step.number}
+                className="group relative rounded-xl border border-border/40 bg-card/20 p-5 hover:border-primary/30 transition-all duration-300 animate-fade-in opacity-0"
+                style={{ animationDelay: `${idx * 0.06}s`, animationFillMode: "both" }}
               >
-                {step.number}
+                {/* Icon + step number */}
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center border border-border/20"
+                    style={{ background: `hsl(var(${step.accent}) / 0.08)` }}
+                  >
+                    <Icon className="w-4 h-4" style={{ color: `hsl(var(${step.accent}))` }} />
+                  </div>
+                  <span
+                    className="text-xl font-black opacity-20"
+                    style={{ color: `hsl(var(${step.accent}))` }}
+                  >
+                    {step.number}
+                  </span>
+                </div>
+
+                <h3 className="text-sm font-bold text-foreground mb-1.5">{step.title}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
+
+                {/* Connector line */}
+                {idx < STEPS.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-2 w-4 h-px bg-border/50" />
+                )}
               </div>
-
-              <h3 className="text-sm font-bold text-foreground mb-1.5">{step.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
-
-              {/* Connector line */}
-              {idx < STEPS.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-2 w-4 h-px bg-border/50" />
-              )}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
