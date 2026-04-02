@@ -47,7 +47,7 @@ Your techs still understand it — because it still IS the underlying software.
 ### Pillar III — The Craftsmen (Substrate)
 **The Factory Floor · 40 Primitives**
 
-The 42 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time you turn the key. The factory runs every 8 hours whether anyone is watching or not.
+The 40 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time you turn the key. The factory runs every 8 hours whether anyone is watching or not.
 
 BRAIN learns everything. DREAM synthesizes while you sleep. SHADOW holds the architecture stable through every change. They never stop.
 
