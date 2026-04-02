@@ -178,24 +178,18 @@ The queue isn't a limitation. It's the experience. The factory has a line becaus
 
 ### Revenue Stream 2: The Showroom (CJPI-Based Discovery Pricing)
 
-Every discovery in the Memory Stream Showroom is priced by a single formula:
+Every discovery in the Memory Stream Showroom is priced by a **graduated CJPI formula** that scales with tier rarity:
 
-```
-Price = $1 × CJPI score
-```
+| CJPI Range | Rate | Price Range | Tier |
+|-----------|------|------------|------|
+| 68–79 | $1.00/point | $68–$79 | Mint |
+| 80–89 | $1.25/point | $100–$111 | Prime |
+| 90–93 | $1.50/point | $135–$140 | Relic |
+| 94–99 | $2.00/point | $188–$198 | Mythic |
+| **100** | **Fixed** | **$1,952** | **Apex — The First Compiler** |
 
-| CJPI Score | Price | Tier |
-|-----------|-------|------|
-| 68–79 | $68–$79 | Mint |
-| 80–89 | $80–$89 | Prime |
-| 90–93 | $90–$93 | Relic |
-| 94–99 | $94–$99 | Mythic |
-| **100** | **$11,981** | **Apex — The First Compiler** |
-
-**Why $11,981 for perfect 100s?**
-In 1952, Grace Hopper's A-0 System became the first compiler ever written — the moment software stopped being hand-assembled and started being *built*. The year of that breakthrough: **1952**. But CMPSBL's system code identifier — the number that means "this is where it all began" — is **11981**. Every perfect discovery carries that origin mark. It's not arbitrary. It's provenance.
-
-> *Alternative consideration: $777 ("good luck" — the slot machine jackpot on a discovery nobody predicted) or $1952 (the literal year of the first compiler). $11,981 is the current recommendation.*
+**Why $1,952 for perfect 100s?**
+In 1952, Grace Hopper's A-0 System became the first compiler ever written — the moment software stopped being hand-assembled and started being *built*. Every perfect discovery carries the year that changed everything. It's not arbitrary. It's provenance. Premium enough to feel extravagant. Realistic enough that a serious buyer doesn't blink.
 
 ### Scarcity Model: One Certificate. One Fingerprint. Gone Forever.
 
@@ -215,7 +209,7 @@ This is not artificial scarcity. Every discovery is a unique collision of primit
   - Stripe supports dynamic pricing via `price_data` in checkout sessions for unique items
   - Each discovery gets a one-time Stripe Price created at discovery time with its CJPI-derived amount
   - On purchase: mark discovery as `retired` in the catalog, generate certificate
-  - Perfect 100s ($11,981): pre-created Stripe Price for the Apex tier
+  - Perfect 100s ($1,952): pre-created Stripe Price for the Apex tier
 
 ---
 
@@ -282,7 +276,7 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 | Model | Factory Name | What It Is | Revenue Model |
 |-------|-------------|------------|---------------|
 | **21** | **The Diagnostic Clinic** | Upload broken code. ENCODE+ORACLE+ENGINEER scan it. DECODE tells you the truth. Entry point for every customer. | Included in membership |
-| **10** | **The Showroom** (Software Generator) | Memory Stream's catalog. Pre-built artifacts in 25 languages. Browse. Buy. Drive home today. | CJPI-based pricing ($1/point, $11,981 for 100s) |
+| **10** | **The Showroom** (Software Generator) | Memory Stream's catalog. Pre-built artifacts in 25 languages. Browse. Buy. Drive home today. | Graduated CJPI pricing ($1–$2/point, $1,952 for 100s) |
 | **4** | **The Collision Engine** | Upload two codebases. Discover capabilities neither has alone. 1 + 1 = 3. | Included in Architect membership |
 
 ### Tier 2 — Growth Engine
@@ -297,7 +291,7 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 
 | Model | Factory Name | What It Is | Revenue Model |
 |-------|-------------|------------|---------------|
-| **23** | **The Vault** | APEX-tier discoveries. Perfect 100s. $11,981 each. When they're gone, they're gone forever. | $11,981 per Apex edition |
+| **23** | **The Vault** | APEX-tier discoveries. Perfect 100s. $1,952 each. When they're gone, they're gone forever. | $1,952 per Apex edition |
 | **12** | **The Auction House** | Extension of Vault scarcity. Competitive bidding on rare discoveries. | Market-driven |
 | **18** | **The Incubator** | Monday: prototype. Wednesday: launch-ready product. 48 hours. No equity surrendered. | Premium membership add-on |
 
@@ -367,7 +361,7 @@ Replace current `/explore` hero with the factory narrative:
 - **Hero:** "Fall back in love with the classics." + three-pillar overview
 - **Section 2:** The Customer Journey (8 steps with DECODE debrief)
 - **Section 3:** The Showroom preview (live Memory Stream catalog with CJPI prices)
-- **Section 4:** Featured Vault editions (scarcity, perfect 100s at $11,981)
+- **Section 4:** Featured Vault editions (scarcity, perfect 100s at $1,952)
 - **Section 5:** The Guarantee
 - **CTA:** "Bring Us Your Tech" → Ascension upload
 
@@ -396,7 +390,7 @@ All existing pages remain active at their current URLs:
 ### Phase 1: The Showroom + DECODE Voice (Week 1–2)
 - [ ] New home page with factory narrative and "classics" branding
 - [ ] DECODE integration as factory voice (diagnostic explanations, discovery commentary)
-- [ ] Memory Stream catalog browser with CJPI-based pricing ($1/point display)
+- [ ] Memory Stream catalog browser with graduated CJPI pricing display
 - [ ] Navigation restructure (preserve all legacy routes)
 - [ ] Agent Power-Up landing page live
 - [ ] ToS §15 live ✅
@@ -410,7 +404,7 @@ All existing pages remain active at their current URLs:
 - [ ] Membership tier checkout (Studio $29 / Creator $49 / Architect $79)
 
 ### Phase 3: The Economy (Week 5–8)
-- [ ] CJPI-based dynamic pricing in Stripe ($1/point, $11,981 for perfect 100s)
+- [ ] Graduated CJPI pricing in Stripe ($1–$2/point by tier, $1,952 for perfect 100s)
 - [ ] Certificate generation system (serial number, fingerprint, CJPI score)
 - [ ] Permanent retirement system (purchased = removed from Showroom forever)
 - [ ] Licensing Engine (Model 17) — developer 70/30 split
@@ -418,7 +412,7 @@ All existing pages remain active at their current URLs:
 - [ ] $300 customer acquisition campaign launch
 
 ### Phase 4: The Foundry (Week 9–12)
-- [ ] Vault editions (Model 23) — Apex-only, $11,981 each
+- [ ] Vault editions (Model 23) — Apex-only, $1,952 each
 - [ ] Fully autonomous catalog generation (Model 24)
 - [ ] Collision Engine public access (Model 4)
 - [ ] Marketplace two-sided features (Model 9)
