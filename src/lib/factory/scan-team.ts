@@ -226,149 +226,225 @@ export async function runScanTeam(codeSnippet: string, fileName?: string): Promi
 // DIAGNOSTIC ANALYZERS — each primitive in the scan squad
 // ═══════════════════════════════════════════════════════════════
 
-function analyzeWithEncode(code: string): ScanFinding[] {
+function analyzeWithEncode(code: string, metrics: CodeMetrics): ScanFinding[] {
   const findings: ScanFinding[] = [];
-  const len = code.length;
   const ts = Date.now();
 
-  if (!code.includes('try') && !code.includes('catch')) {
-    findings.push({ id: `enc-${ts}-1`, severity: 'critical', title: 'No error handling detected', description: 'Code has no try/catch blocks. Any runtime exception will crash the process.', source: 'ENCODE', primitiveRecommendation: 'FAILSAFE' });
+  if (!code.includes('try') && !code.includes('catch') && !code.includes('except') && !code.includes('rescue')) {
+    findings.push({ id: `enc-${ts}-1`, severity: 'critical', title: 'No error handling detected', description: 'Code has no try/catch, except, or rescue blocks. Any runtime exception will crash the process.', source: 'ENCODE', primitiveRecommendation: 'FAILSAFE' });
   }
 
-  if (code.includes('eval(') || code.includes('Function(')) {
-    findings.push({ id: `enc-${ts}-2`, severity: 'critical', title: 'Dynamic code execution vulnerability', description: 'eval() or Function() detected — injection vector for arbitrary code execution.', source: 'ENCODE', primitiveRecommendation: 'DEFENSE' });
+  if (code.includes('eval(') || code.includes('Function(') || code.includes('exec(')) {
+    findings.push({ id: `enc-${ts}-2`, severity: 'critical', title: 'Dynamic code execution vulnerability', description: 'eval(), Function(), or exec() detected — injection vector for arbitrary code execution.', source: 'ENCODE', primitiveRecommendation: 'DEFENSE' });
   }
 
-  if (len > 500 && !code.includes('async') && !code.includes('Promise')) {
+  if (metrics.totalLines > 50 && !metrics.hasAsync) {
     findings.push({ id: `enc-${ts}-3`, severity: 'warning', title: 'Synchronous-only architecture', description: 'No async patterns found in substantial codebase. May block the event loop under load.', source: 'ENCODE', primitiveRecommendation: 'RELAY' });
   }
 
-  if (len < 100) {
-    findings.push({ id: `enc-${ts}-4`, severity: 'info', title: 'Minimal code surface', description: 'Very small code sample — full diagnostic requires more source material for accurate analysis.', source: 'ENCODE' });
+  if (metrics.totalLines < 20) {
+    findings.push({ id: `enc-${ts}-4`, severity: 'info', title: 'Minimal code surface', description: `Only ${metrics.totalLines} lines — full diagnostic requires more source for accurate analysis.`, source: 'ENCODE' });
   }
 
-  // ENCODE-specific: detect hardcoded secrets
   if (/(?:password|secret|api_key|token)\s*[:=]\s*['"][^'"]{8,}/i.test(code)) {
     findings.push({ id: `enc-${ts}-5`, severity: 'critical', title: 'Hardcoded secrets detected', description: 'Credentials or API keys are embedded directly in source code. High-severity security risk.', source: 'ENCODE', primitiveRecommendation: 'WRAITH' });
   }
 
-  // ENCODE: detect missing input validation
-  if ((code.includes('req.body') || code.includes('req.params') || code.includes('req.query')) && !code.includes('validate') && !code.includes('schema')) {
-    findings.push({ id: `enc-${ts}-6`, severity: 'warning', title: 'Unvalidated request input', description: 'Request parameters are accessed without validation. Risk of injection and malformed data processing.', source: 'ENCODE', primitiveRecommendation: 'SENTINEL' });
+  if ((code.includes('req.body') || code.includes('req.params') || code.includes('req.query') || code.includes('request.')) && !code.includes('validate') && !code.includes('schema') && !code.includes('zod')) {
+    findings.push({ id: `enc-${ts}-6`, severity: 'warning', title: 'Unvalidated request input', description: 'Request parameters accessed without validation. Risk of injection and malformed data processing.', source: 'ENCODE', primitiveRecommendation: 'SENTINEL' });
+  }
+
+  if (metrics.cyclomaticComplexity > 20) {
+    findings.push({ id: `enc-${ts}-7`, severity: 'warning', title: `High cyclomatic complexity (${metrics.cyclomaticComplexity})`, description: `Complexity score of ${metrics.cyclomaticComplexity} indicates too many branching paths. Hard to test and maintain.`, source: 'ENCODE', primitiveRecommendation: 'CORTEX' });
+  }
+
+  if (metrics.maxNesting > 6) {
+    findings.push({ id: `enc-${ts}-8`, severity: 'warning', title: `Deep nesting detected (${metrics.maxNesting} levels)`, description: 'Excessive nesting reduces readability and increases bug probability. ENCODE recommends flattening via early returns.', source: 'ENCODE', primitiveRecommendation: 'ARCHITECT' });
+  }
+
+  if (metrics.longestFunction > 80) {
+    findings.push({ id: `enc-${ts}-9`, severity: 'info', title: `Oversized function (~${metrics.longestFunction} lines)`, description: 'Functions exceeding 80 lines violate single-responsibility. ENCODE recommends decomposition.', source: 'ENCODE', primitiveRecommendation: 'ENGINEER' });
   }
 
   return findings;
 }
 
-function analyzeWithOracle(code: string): ScanFinding[] {
+function analyzeWithOracle(code: string, metrics: CodeMetrics): ScanFinding[] {
   const findings: ScanFinding[] = [];
   const ts = Date.now();
 
-  if (!code.includes('test') && !code.includes('spec') && !code.includes('expect')) {
+  if (!metrics.hasTests) {
     findings.push({ id: `orc-${ts}-1`, severity: 'warning', title: 'No test coverage detected', description: 'ORACLE predicts 73% probability of regression bugs within 6 months without test coverage.', source: 'ORACLE', primitiveRecommendation: 'SHADOW' });
   }
 
-  if (code.includes('TODO') || code.includes('FIXME') || code.includes('HACK')) {
-    findings.push({ id: `orc-${ts}-2`, severity: 'warning', title: 'Technical debt markers found', description: 'TODO/FIXME/HACK comments indicate deferred work. ORACLE estimates this compounds into architectural risk within 12 months.', source: 'ORACLE', primitiveRecommendation: 'EVOLUTION' });
+  if (code.includes('TODO') || code.includes('FIXME') || code.includes('HACK') || code.includes('XXX')) {
+    const count = (code.match(/\b(TODO|FIXME|HACK|XXX)\b/g) ?? []).length;
+    findings.push({ id: `orc-${ts}-2`, severity: 'warning', title: `${count} technical debt markers found`, description: `${count} TODO/FIXME/HACK/XXX markers indicate deferred work. ORACLE estimates this compounds into architectural risk within 12 months.`, source: 'ORACLE', primitiveRecommendation: 'EVOLUTION' });
   }
 
-  // ORACLE: predict scaling issues
-  if (code.includes('for') && code.includes('for') && /for\s*\([\s\S]*?for\s*\(/.test(code)) {
+  if (/for\s*\([\s\S]*?for\s*\(/.test(code)) {
     findings.push({ id: `orc-${ts}-3`, severity: 'warning', title: 'Nested loop detected — O(n²) risk', description: 'ORACLE predicts exponential slowdown under scale. Quadratic complexity compounds with data growth.', source: 'ORACLE', primitiveRecommendation: 'CORTEX' });
   }
 
-  // ORACLE: single point of failure
-  if (code.length > 300 && !code.includes('fallback') && !code.includes('retry') && !code.includes('backup')) {
-    findings.push({ id: `orc-${ts}-4`, severity: 'info', title: 'No fallback mechanisms detected', description: 'ORACLE identifies single-path execution with no fallback strategy. Failure in any step halts the entire pipeline.', source: 'ORACLE', primitiveRecommendation: 'REFLEX' });
+  if (metrics.totalLines > 30 && !code.includes('fallback') && !code.includes('retry') && !code.includes('backup') && !code.includes('catch')) {
+    findings.push({ id: `orc-${ts}-4`, severity: 'info', title: 'No fallback mechanisms detected', description: 'ORACLE identifies single-path execution. Failure in any step halts the entire pipeline.', source: 'ORACLE', primitiveRecommendation: 'REFLEX' });
+  }
+
+  if (metrics.functionCount > 0 && metrics.totalLines / metrics.functionCount > 60) {
+    findings.push({ id: `orc-${ts}-5`, severity: 'info', title: 'Low function density', description: `ORACLE detects ${metrics.functionCount} functions across ${metrics.totalLines} lines (~${Math.round(metrics.totalLines / metrics.functionCount)} lines/fn). Monolithic functions resist change.`, source: 'ORACLE', primitiveRecommendation: 'ARCHITECT' });
+  }
+
+  if (metrics.depthScore > 60 && !metrics.hasTypes) {
+    findings.push({ id: `orc-${ts}-6`, severity: 'warning', title: 'Complex codebase without type safety', description: 'ORACLE predicts 45% higher bug rate in complex untyped code. Type contracts prevent class of runtime errors.', source: 'ORACLE', primitiveRecommendation: 'TREATY' });
+  }
+
+  if (code.includes('.then(') && code.includes('.catch(') && code.includes('.then(')) {
+    findings.push({ id: `orc-${ts}-7`, severity: 'info', title: 'Promise chain complexity', description: 'ORACLE detects deeply nested promise chains. Async/await patterns improve readability and error tracing.', source: 'ORACLE', primitiveRecommendation: 'RELAY' });
   }
 
   return findings;
 }
 
-function analyzeWithEngineer(code: string): ScanFinding[] {
+function analyzeWithEngineer(code: string, metrics: CodeMetrics): ScanFinding[] {
   const findings: ScanFinding[] = [];
   const ts = Date.now();
 
-  const importCount = (code.match(/import /g) ?? []).length;
-  if (importCount > 15) {
-    findings.push({ id: `eng-${ts}-1`, severity: 'warning', title: 'High dependency coupling', description: `${importCount} imports detected — high coupling increases blast radius of dependency failures.`, source: 'ENGINEER', primitiveRecommendation: 'IMMUNITY' });
+  if (metrics.importCount > 15) {
+    findings.push({ id: `eng-${ts}-1`, severity: 'warning', title: `High dependency coupling (${metrics.importCount} imports)`, description: `${metrics.importCount} imports detected — high coupling increases blast radius of dependency failures.`, source: 'ENGINEER', primitiveRecommendation: 'IMMUNITY' });
   }
 
-  if (!code.includes('interface') && !code.includes('type ') && code.length > 300) {
+  if (!metrics.hasTypes && metrics.totalLines > 30) {
     findings.push({ id: `eng-${ts}-2`, severity: 'info', title: 'No type contracts detected', description: 'No interfaces or type definitions found. Type safety improves long-term maintainability.', source: 'ENGINEER', primitiveRecommendation: 'TREATY' });
   }
 
-  // ENGINEER: monolithic file detection
-  const lineCount = code.split('\n').length;
-  if (lineCount > 200) {
-    findings.push({ id: `eng-${ts}-3`, severity: 'warning', title: 'Monolithic file structure', description: `${lineCount} lines in a single file. ENGINEER recommends decomposition to reduce cognitive load and merge conflicts.`, source: 'ENGINEER', primitiveRecommendation: 'ARCHITECT' });
+  if (metrics.totalLines > 200) {
+    findings.push({ id: `eng-${ts}-3`, severity: 'warning', title: `Monolithic file (${metrics.totalLines} lines)`, description: `${metrics.totalLines} lines in a single file. ENGINEER recommends decomposition to reduce cognitive load.`, source: 'ENGINEER', primitiveRecommendation: 'ARCHITECT' });
   }
 
-  // ENGINEER: no module exports
-  if (code.length > 200 && !code.includes('export') && !code.includes('module.exports')) {
+  if (metrics.totalLines > 20 && metrics.exportCount === 0) {
     findings.push({ id: `eng-${ts}-4`, severity: 'info', title: 'No module exports detected', description: 'Code appears self-contained with no exports. Limits reusability and testability.', source: 'ENGINEER', primitiveRecommendation: 'COMPASS' });
+  }
+
+  if (metrics.avgLineLength > 100) {
+    findings.push({ id: `eng-${ts}-5`, severity: 'info', title: `Long lines detected (avg ${metrics.avgLineLength} chars)`, description: 'Average line length exceeds 100 characters. Reduces readability and causes horizontal scroll in reviews.', source: 'ENGINEER', primitiveRecommendation: 'ENCODE' });
+  }
+
+  if (metrics.classCount > 5) {
+    findings.push({ id: `eng-${ts}-6`, severity: 'info', title: `${metrics.classCount} classes in single file`, description: 'Multiple classes in one file suggest God Object patterns. ENGINEER recommends single-class files.', source: 'ENGINEER', primitiveRecommendation: 'ARCHITECT' });
+  }
+
+  if (metrics.blankLines === 0 && metrics.totalLines > 30) {
+    findings.push({ id: `eng-${ts}-7`, severity: 'info', title: 'No whitespace separation', description: 'Dense code with no blank lines reduces readability. Logical blocks should be visually separated.', source: 'ENGINEER', primitiveRecommendation: 'ENCODE' });
   }
 
   return findings;
 }
 
-function analyzeWithMedic(code: string): ScanFinding[] {
+function analyzeWithMedic(code: string, metrics: CodeMetrics): ScanFinding[] {
   const findings: ScanFinding[] = [];
   const ts = Date.now();
 
-  // MEDIC: dead code detection
-  const commentRatio = (code.match(/\/\//g) ?? []).length / Math.max(code.split('\n').length, 1);
+  const commentRatio = metrics.commentLines / Math.max(metrics.totalLines, 1);
   if (commentRatio > 0.3) {
-    findings.push({ id: `med-${ts}-1`, severity: 'info', title: 'High comment-to-code ratio', description: 'Over 30% of lines are comments. MEDIC suspects commented-out dead code that should be pruned.', source: 'MEDIC', primitiveRecommendation: 'HARVEST' });
+    findings.push({ id: `med-${ts}-1`, severity: 'info', title: `High comment ratio (${Math.round(commentRatio * 100)}%)`, description: 'Over 30% of lines are comments. MEDIC suspects commented-out dead code that should be pruned.', source: 'MEDIC', primitiveRecommendation: 'HARVEST' });
   }
 
-  // MEDIC: structural rot detection
   if (code.includes('deprecated') || code.includes('@deprecated')) {
     findings.push({ id: `med-${ts}-2`, severity: 'warning', title: 'Deprecated API usage detected', description: 'Code references deprecated APIs. Structural rot accumulates — these should be replaced before they break.', source: 'MEDIC', primitiveRecommendation: 'EVOLUTION' });
   }
 
-  // MEDIC: orphaned state
   if (code.includes('useState') && !code.includes('useEffect') && code.split('useState').length > 4) {
-    findings.push({ id: `med-${ts}-3`, severity: 'info', title: 'Excessive unmanaged state', description: 'Multiple useState hooks without cleanup effects. MEDIC flags potential state leaks and orphaned subscriptions.', source: 'MEDIC', primitiveRecommendation: 'MEMORY' });
+    findings.push({ id: `med-${ts}-3`, severity: 'info', title: 'Excessive unmanaged state', description: 'Multiple useState hooks without cleanup effects. MEDIC flags potential state leaks.', source: 'MEDIC', primitiveRecommendation: 'MEMORY' });
+  }
+
+  if (code.includes('any') && metrics.language === 'TypeScript') {
+    const anyCount = (code.match(/:\s*any\b/g) ?? []).length;
+    if (anyCount > 2) {
+      findings.push({ id: `med-${ts}-4`, severity: 'warning', title: `${anyCount} untyped 'any' usages`, description: `${anyCount} uses of 'any' type bypass TypeScript safety. MEDIC recommends proper typing to prevent silent runtime errors.`, source: 'MEDIC', primitiveRecommendation: 'TREATY' });
+    }
+  }
+
+  if (code.includes('new Date()') && !code.includes('UTC') && !code.includes('toISO')) {
+    findings.push({ id: `med-${ts}-5`, severity: 'info', title: 'Timezone-unsafe date operations', description: 'Date operations without explicit timezone handling. Can cause data inconsistencies across regions.', source: 'MEDIC', primitiveRecommendation: 'SOVEREIGN' });
+  }
+
+  if (metrics.commentLines === 0 && metrics.codeLines > 50) {
+    findings.push({ id: `med-${ts}-6`, severity: 'info', title: 'Zero documentation comments', description: 'No comments in 50+ lines of code. MEDIC flags undocumented logic as maintainability risk.', source: 'MEDIC', primitiveRecommendation: 'ENCODE' });
+  }
+
+  if (/console\.(log|warn|error)\(/.test(code) && metrics.totalLines > 30) {
+    const logCount = (code.match(/console\.(log|warn|error)\(/g) ?? []).length;
+    findings.push({ id: `med-${ts}-7`, severity: 'info', title: `${logCount} raw console statements`, description: 'Unstructured logging detected. Production code should use structured logging for observability.', source: 'MEDIC', primitiveRecommendation: 'ECHO' });
   }
 
   return findings;
 }
 
-function analyzeWithDefense(code: string): ScanFinding[] {
+function analyzeWithDefense(code: string, metrics: CodeMetrics): ScanFinding[] {
   const findings: ScanFinding[] = [];
   const ts = Date.now();
 
-  // DEFENSE: SQL injection vectors
   if (code.includes('SELECT') && (code.includes('${') || code.includes("' +"))) {
     findings.push({ id: `def-${ts}-1`, severity: 'critical', title: 'SQL injection vulnerability', description: 'String interpolation in SQL queries detected. Direct path to database compromise.', source: 'DEFENSE', primitiveRecommendation: 'DEFENSE' });
   }
 
-  // DEFENSE: CORS misconfiguration
   if (code.includes("'*'") && (code.includes('Access-Control') || code.includes('cors'))) {
-    findings.push({ id: `def-${ts}-2`, severity: 'warning', title: 'Permissive CORS configuration', description: 'Wildcard CORS origin detected. Any domain can make authenticated requests to your API.', source: 'DEFENSE', primitiveRecommendation: 'SOVEREIGN' });
+    findings.push({ id: `def-${ts}-2`, severity: 'warning', title: 'Permissive CORS configuration', description: 'Wildcard CORS origin detected. Any domain can make authenticated requests.', source: 'DEFENSE', primitiveRecommendation: 'SOVEREIGN' });
   }
 
-  // DEFENSE: no auth checks
   if ((code.includes('app.get') || code.includes('app.post') || code.includes('router.')) && !code.includes('auth') && !code.includes('middleware') && !code.includes('token')) {
-    findings.push({ id: `def-${ts}-3`, severity: 'warning', title: 'No authentication layer detected', description: 'Route handlers exist without authentication middleware. All endpoints are publicly accessible.', source: 'DEFENSE', primitiveRecommendation: 'IDENTITY' });
+    findings.push({ id: `def-${ts}-3`, severity: 'warning', title: 'No authentication layer detected', description: 'Route handlers without authentication middleware. All endpoints publicly accessible.', source: 'DEFENSE', primitiveRecommendation: 'IDENTITY' });
+  }
+
+  if (code.includes('innerHTML') || code.includes('dangerouslySetInnerHTML') || code.includes('document.write')) {
+    findings.push({ id: `def-${ts}-4`, severity: 'critical', title: 'XSS vulnerability — raw HTML injection', description: 'Direct HTML insertion without sanitization. Attackers can inject malicious scripts.', source: 'DEFENSE', primitiveRecommendation: 'SANDBOX' });
+  }
+
+  if (code.includes('http://') && !code.includes('localhost')) {
+    findings.push({ id: `def-${ts}-5`, severity: 'warning', title: 'Insecure HTTP protocol usage', description: 'Non-HTTPS URLs detected. Data transmitted in plaintext is vulnerable to interception.', source: 'DEFENSE', primitiveRecommendation: 'DEFENSE' });
+  }
+
+  if (/Math\.random\(\)/.test(code) && (code.includes('token') || code.includes('secret') || code.includes('key') || code.includes('id'))) {
+    findings.push({ id: `def-${ts}-6`, severity: 'warning', title: 'Weak randomness for security-sensitive values', description: 'Math.random() is not cryptographically secure. Use crypto.randomUUID() for tokens and IDs.', source: 'DEFENSE', primitiveRecommendation: 'WRAITH' });
+  }
+
+  if (code.includes('process.env') && !code.includes('dotenv') && !code.includes('.env')) {
+    findings.push({ id: `def-${ts}-7`, severity: 'info', title: 'Direct env var access without config layer', description: 'Environment variables accessed directly. A config layer prevents missing-var crashes.', source: 'DEFENSE', primitiveRecommendation: 'GOVERNANCE' });
   }
 
   return findings;
 }
 
-function analyzeWithFailsafe(code: string): ScanFinding[] {
+function analyzeWithFailsafe(code: string, metrics: CodeMetrics): ScanFinding[] {
   const findings: ScanFinding[] = [];
   const ts = Date.now();
 
-  // FAILSAFE: no graceful shutdown
   if ((code.includes('server') || code.includes('listen')) && !code.includes('SIGTERM') && !code.includes('SIGINT') && !code.includes('graceful')) {
     findings.push({ id: `fs-${ts}-1`, severity: 'warning', title: 'No graceful shutdown handler', description: 'Server starts without SIGTERM/SIGINT handling. Abrupt shutdowns may corrupt in-flight operations.', source: 'FAILSAFE', primitiveRecommendation: 'FAILSAFE' });
   }
 
-  // FAILSAFE: no timeout protection
-  if ((code.includes('fetch') || code.includes('axios') || code.includes('http.')) && !code.includes('timeout')) {
-    findings.push({ id: `fs-${ts}-2`, severity: 'info', title: 'Network calls without timeout', description: 'HTTP requests detected without timeout configuration. Hung requests can exhaust connection pools.', source: 'FAILSAFE', primitiveRecommendation: 'AUTOMATON' });
+  if ((code.includes('fetch') || code.includes('axios') || code.includes('http.')) && !code.includes('timeout') && !code.includes('AbortController')) {
+    findings.push({ id: `fs-${ts}-2`, severity: 'info', title: 'Network calls without timeout', description: 'HTTP requests without timeout configuration. Hung requests can exhaust connection pools.', source: 'FAILSAFE', primitiveRecommendation: 'AUTOMATON' });
+  }
+
+  if (!code.includes('catch') && metrics.hasAsync) {
+    findings.push({ id: `fs-${ts}-3`, severity: 'critical', title: 'Unhandled async rejections', description: 'Async code without catch blocks. Unhandled rejections crash Node.js processes in production.', source: 'FAILSAFE', primitiveRecommendation: 'FAILSAFE' });
+  }
+
+  if (metrics.importCount > 10 && !code.includes('fallback') && !code.includes('retry')) {
+    findings.push({ id: `fs-${ts}-4`, severity: 'info', title: 'No dependency failure fallbacks', description: `${metrics.importCount} dependencies with no fallback strategy. Any dependency failure cascades to your application.`, source: 'FAILSAFE', primitiveRecommendation: 'IMMUNITY' });
+  }
+
+  if (code.includes('setInterval') && !code.includes('clearInterval')) {
+    findings.push({ id: `fs-${ts}-5`, severity: 'warning', title: 'Uncleared interval detected', description: 'setInterval without clearInterval. Memory leak that compounds over time until process crashes.', source: 'FAILSAFE', primitiveRecommendation: 'MEMORY' });
+  }
+
+  if (!code.includes('process.exit') && !code.includes('return') && metrics.totalLines > 50 && !code.includes('finally')) {
+    findings.push({ id: `fs-${ts}-6`, severity: 'info', title: 'No cleanup handlers detected', description: 'Long-running code without finally blocks or cleanup handlers. Resources may leak on unexpected termination.', source: 'FAILSAFE', primitiveRecommendation: 'FAILSAFE' });
+  }
+
+  if (code.includes('while(true)') || code.includes('while (true)')) {
+    findings.push({ id: `fs-${ts}-7`, severity: 'warning', title: 'Infinite loop without break condition', description: 'while(true) detected. Without explicit break conditions, this risks CPU exhaustion.', source: 'FAILSAFE', primitiveRecommendation: 'BEACON' });
   }
 
   return findings;
