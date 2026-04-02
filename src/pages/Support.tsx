@@ -132,7 +132,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "How do I contact human support?",
-    answer: "You can ask DECODE to escalate your issue, or email support@cmpsbl.com directly. Average response time is under 48 hours. All escalations are reviewed by our team.",
+    answer: "You can ask DECODE to escalate your issue, or email support@cmpsbl.com directly. Average response time is under 48 hours. All escalations are reviewed by CMPSBL.",
   },
 ];
 
