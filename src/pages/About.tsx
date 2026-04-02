@@ -380,7 +380,7 @@ export default function About() {
                   <sys.icon className="w-4 h-4 text-primary" />
                 </div>
                 <h3 className="text-xs sm:text-sm font-bold text-foreground mb-0.5">{sys.name}</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-snug">{sys.desc}</p>
+                <p className="text-xs text-muted-foreground leading-snug">{sys.desc}</p>
               </motion.div>
             ))}
           </div>
