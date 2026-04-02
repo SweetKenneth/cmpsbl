@@ -20,7 +20,7 @@ export default function BrainActivationTest() {
       
       const { data, error } = await supabase.functions.invoke('pf-brain-test-cycle');
       
-      console.log('📥 Response received:', { data, error });
+      
       
       if (error) {
         console.error('❌ Error from function:', error);
