@@ -210,7 +210,7 @@ export default function Store() {
                     <span className="hidden sm:inline">{label}</span>
                     <span className="sm:hidden">{shortLabel}</span>
                     <span className={cn(
-                      "ml-1 text-[9px] font-mono tabular-nums px-1.5 py-0.5 rounded-full",
+                      "ml-1 text-xs font-mono tabular-nums px-1.5 py-0.5 rounded-full",
                       filter === key
                         ? "bg-primary-foreground/20 text-primary-foreground"
                         : "bg-muted text-muted-foreground"
