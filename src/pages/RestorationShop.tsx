@@ -33,6 +33,7 @@ import { RestorationQueue } from "@/components/factory/RestorationQueue";
 import { RestorationReportView } from "@/components/factory/RestorationReportView";
 import { MembershipTiers } from "@/components/factory/MembershipTiers";
 import { DecodeDebrief } from "@/components/factory/DecodeDebrief";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
