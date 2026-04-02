@@ -422,6 +422,7 @@ export default function UseCases() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
+          <PublicBreadcrumb />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
