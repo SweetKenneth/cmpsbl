@@ -91,7 +91,7 @@ export function CustomerJourney() {
                 </div>
 
                 <h3 className="text-xs sm:text-sm font-bold text-foreground mb-1">{step.title}</h3>
-                <p className="text-[11px] sm:text-xs text-muted-foreground/70 leading-relaxed">{step.description}</p>
+                <p className="text-xs text-muted-foreground/70 leading-relaxed">{step.description}</p>
               </div>
             );
           })}

@@ -306,51 +306,7 @@ export function HeroMetaSubstrate() {
           </Suspense>
         </FadeIn>
 
-        {/* ─── Quick-fact cards ─── */}
-        <FadeIn delay={0.6} className="grid grid-cols-3 gap-2 sm:gap-3 max-w-md mx-auto mb-8 sm:mb-12">
-          {[
-            { label: "Discovery Cycle", value: "Every 8hr", glow: "--neon-cyan" },
-            { label: "Specialists", value: "40", glow: "--neon-purple" },
-            { label: "Export Targets", value: "25", glow: "--neon-magenta" },
-          ].map((item) => (
-            <div 
-              key={item.label} 
-              className="rounded-lg border border-border/15 bg-card/25 p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group glass-edge"
-            >
-               <div className="text-[10px] text-muted-foreground/50 uppercase tracking-[0.15em] font-semibold mb-0.5">{item.label}</div>
-               <div className="text-xs sm:text-sm font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
-            </div>
-          ))}
-        </FadeIn>
 
-        {/* ─── Journey strip ─── */}
-        <FadeIn delay={0.65} className="mb-8 sm:mb-10">
-          <div className="w-full overflow-x-auto scrollbar-hide py-1">
-            <div className="flex items-center justify-center gap-0 w-max sm:w-auto mx-auto px-2">
-              {[
-                { label: "Diagnostic", color: "--neon-cyan" },
-                { label: "Restore", color: "--neon-cyan" },
-                { label: "Refurbish", color: "--neon-magenta" },
-                { label: "Evaluate", color: "--neon-purple" },
-                { label: "Own", color: "--primary" },
-              ].map((step, i, arr) => (
-                <div key={step.label} className="flex items-center shrink-0">
-                  <div className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-border/20 bg-card/20">
-                    <span 
-                      className="text-[10px] sm:text-xs font-bold whitespace-nowrap"
-                      style={{ color: `hsl(var(${step.color}))` }}
-                    >
-                      {step.label}
-                    </span>
-                  </div>
-                  {i < arr.length - 1 && (
-                    <span className="text-muted-foreground/25 text-[10px] font-bold px-1 sm:px-1.5">→</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </FadeIn>
         
         {/* ─── Stats bar ─── */}
         <FadeIn delay={0.7}>

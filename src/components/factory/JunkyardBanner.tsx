@@ -35,7 +35,7 @@ export function JunkyardBanner() {
             </div>
 
             <Button asChild variant="outline" className="rounded-xl font-semibold shrink-0">
-              <Link to="/junkyard">
+              <Link to="/foundry">
                 Browse the Archive
                 <ArrowRight className="w-3.5 h-3.5 ml-2" />
               </Link>

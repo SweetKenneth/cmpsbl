@@ -77,9 +77,8 @@ export default function FactoryHome() {
       {/* ═══ THREE PILLARS ═══ */}
       <FactoryPillars />
 
-      <SectionDivider />
 
-      {/* ═══ CUSTOMER JOURNEY ═══ */}
+
       <CustomerJourney />
 
       <SectionDivider />
