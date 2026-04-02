@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight, Sparkles, Shield, Brain, Zap, Globe, Rocket, CheckCircle2, Clock,
-  Cpu, Layers, Beaker, Moon, GitBranch, Database, Activity, Satellite, Heart,
-  DollarSign, Network, Wind, Eye, Lock, Workflow, Code2, Radio, Map,
-  Fingerprint, Crown, Stethoscope, Hammer, Ghost, Telescope, Cog, Bug,
-  Languages, Wheat, FlaskConical, Plug, Target, KeyRound, Compass, Scale,
-  ScrollText, EyeOff, Accessibility, FileCheck, Waves, Send, Globe2,
+  Cpu, Layers, Beaker, GitBranch, Database, Activity, DollarSign, Network,
+  Eye, Lock, Workflow, Code2, Wrench, Puzzle, Package, Store,
+  Crown, Stethoscope, Hammer, Target, Scale, Send, CreditCard, Users,
+  FileSearch, Scan, BarChart3, ShoppingCart, Globe2, Plug,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SEO } from "@/components/SEO";
@@ -18,250 +17,191 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ═══════════════════════════════════════════════════════════
-// ROADMAP PHASES — Full Substrate Progression
+// ROADMAP — What we shipped, what's active, what's next
 // ═══════════════════════════════════════════════════════════
 
 const PHASES = [
   {
     number: 1,
-    name: "FOUNDATION",
-    tagline: "40-Primitive Architecture & Core Runtime",
-    status: "Live",
-    description: "The full 40-primitive substrate is operational — 12 Organs, 12 Layers, 8 Engines, 8 Agents. Boot sequence, event bus, health monitoring, and the intent mesh are production-ready.",
+    name: "SUBSTRATE",
+    tagline: "40-Primitive Cognitive Infrastructure",
+    status: "Shipped",
+    description: "The full 40-primitive substrate is live — 12 Organs, 12 Layers, 8 Engines, 8 Agents. Boot sequence, event bus, health monitoring, circuit breakers, and the intent mesh are production-ready.",
     capabilities: [
-      "Deterministic 12-stage boot via CORE Organ",
+      "12-stage deterministic boot via CORE Organ",
       "NERVE signal backbone with backpressure & circuit breaking",
-      "IDENTITY actor attribution & session management",
-      "SYSTEM lifecycle management & predictive failure engine",
-      "RELAY webhook dispatch with delivery guarantees",
+      "DEFENSE multi-layer security mesh & bot protection",
+      "GOVERNANCE 4-mode policy enforcement",
+      "NEXUS 14-provider AI fleet routing",
       "AUDIT append-only hash-chained compliance ledger",
     ],
     icon: Cpu,
   },
   {
     number: 2,
-    name: "COGNITION",
-    tagline: "Memory, Reasoning & Discovery",
-    status: "Live",
-    description: "The cognitive core is online — 4-tier memory, 12-engine reasoning, pattern discovery, and the Memory Stream crystallization pipeline powering autonomous capability generation.",
+    name: "DISCOVERY",
+    tagline: "Memory Stream & Autonomous Scanning",
+    status: "Shipped",
+    description: "Memory Stream runs autonomous 8-hour discovery cycles — ingesting, classifying, scoring, and surfacing capabilities without human intervention. DREAM synthesis produces pre-conscious pattern emergence with zero AI inside.",
     capabilities: [
-      "BRAIN 12-engine reasoning (deductive, inductive, abductive, analogical)",
-      "MEMORY 4-tier architecture (Hot/Warm/Cold/Glacier)",
-      "DREAM synthesis engine with lucid dreaming modes",
-      "Memory Stream discovery with CJPI scoring",
-      "CLM continuous learning & knowledge distillation",
-      "DECODE multi-modal NLU with epistemic audit trail",
+      "Memory Stream autonomous discovery pipeline",
+      "DREAM algorithmic synthesis (no AI — patentable)",
+      "CJPI scoring with graduated pricing tiers",
+      "Foundry open archive for raw discoveries (CJPI < 68)",
+      "CLM continuous learning with serialized snapshots",
+      "DECODE diagnostic team (ENCODE + ORACLE + ENGINEER)",
     ],
     icon: Brain,
   },
   {
     number: 3,
-    name: "SECURITY & GOVERNANCE",
-    tagline: "Defense, Compliance & Ethical AI",
-    status: "Live",
-    description: "Multi-layer security mesh, governance enforcement, and ethical guardrails are fully operational — protecting every action, every request, every output.",
+    name: "REFURBISHMENT",
+    tagline: "Ascension Pipeline & Code Assembly",
+    status: "Shipped",
+    description: "The Software Refurbishment Center is live. Users upload code, receive a full diagnostic, select primitives for hardening, and receive a sealed runtime with an HTML refurbishment report — all without replacing their original codebase.",
     capabilities: [
-      "DEFENSE prompt injection defense & threat intelligence",
-      "IMMUNITY adaptive resilience with self-healing patterns",
-      "GOVERNANCE 4-mode policy enforcement (autonomous/supervised/manual/lockdown)",
-      "ACCESS SHA-256 API keys, scope hierarchy & rate limiting",
-      "CONSCIENCE bias detection & ethical scoring",
-      "PHANTOM PII masking & privacy-preserving computation",
+      "5-step Ascension pipeline (Upload → Diagnostic → Select → Queue → Debrief)",
+      "Adaptive Limited Rates Engine for queue management",
+      "Code Assembly service — reconstruction from fragments",
+      "Code Splicing — substrate components injected into customer code",
+      "25-language export including 7 hardware description languages",
+      "IP protection via hex-encoded CJPI weights",
     ],
-    icon: Shield,
+    icon: Wrench,
   },
   {
     number: 4,
-    name: "ORCHESTRATION & ROUTING",
-    tagline: "Multi-Agent Coordination & AI Fleet Management",
-    status: "Live",
-    description: "Intelligent routing, multi-agent orchestration, and cost-optimized AI fleet management — the substrate's operational backbone for production-scale workloads.",
+    name: "COMMERCE",
+    tagline: "Showroom, Plans & Stripe Integration",
+    status: "Shipped",
+    description: "The commercial model is live. Tiered subscriptions (Builder → Studio → Creator → Architect), Showroom artifact sales with CJPI-based pricing, Stripe checkout, and the npm package ecosystem are all operational.",
     capabilities: [
-      "NEXUS 14-provider fleet with health ranking & failover",
-      "CORTEX DAG execution engine & cascade failure prediction",
-      "INTENT cross-surface goal decomposition & capability crystallization",
-      "ECONOMY real-time cost attribution & budget enforcement",
-      "RIPPLE intelligent fan-out with priority routing & deduplication",
-      "SANDBOX hermetically sealed execution environments",
+      "4-tier subscription model with 7-day free trials",
+      "Showroom marketplace with 100-item static collections",
+      "Graduated CJPI economy (Mint → Prime → Relic → Mythic → Apex)",
+      "Stripe integration for subscriptions and one-off purchases",
+      "@cmpsbl/cli and @cmpsbl/sdk published on npm",
+      "Persistent Memory SDK for developer integration",
     ],
-    icon: Network,
+    icon: ShoppingCart,
   },
   {
     number: 5,
-    name: "ECONOMY & MARKETPLACE",
-    tagline: "Tokenization, Trade & Creator Royalties",
-    status: "In Progress",
-    description: "Crystallized memories become tradeable assets. Creators earn royalties, consumers purchase proven capabilities, and the marketplace handles licensing, pricing, and procurement.",
+    name: "SITE & SEO",
+    tagline: "Public Presence, Content & Developer Docs",
+    status: "Shipped",
+    description: "Full public-facing site with the Software Refurbishment Center branding, automated blog pipeline, developer documentation, scanner tools, and SEO infrastructure — all live under the REVIVAL epoch (v18.0.0).",
     capabilities: [
-      "Memory marketplace with provenance verification",
-      "Usage-based pricing & automatic creator royalties",
-      "TREATY SLA enforcement & contract lifecycle management",
-      "Enterprise procurement & bulk licensing workflows",
-      "COMPASS capability discovery & trend analysis",
-      "ATLAS governance hub & capability registry",
-    ],
-    icon: DollarSign,
-  },
-  {
-    number: 6,
-    name: "EVOLUTION",
-    tagline: "Self-Improving Architecture via SEBA Pipeline",
-    status: "In Progress",
-    description: "The substrate evolves itself. Genetic-style mutation, shadow testing, fitness scoring, and governed selection produce increasingly capable systems — autonomously and safely.",
-    capabilities: [
-      "EVOLUTION 7-gate SEBA validation pipeline",
-      "SHADOW traffic mirroring & divergence scoring",
-      "ENGINEER predictive maintenance & architecture optimization",
-      "MEDIC autonomous diagnostics & self-repair coordination",
-      "ORACLE probabilistic forecasting & risk prediction",
-      "REFLEX sub-millisecond pattern response & auto-remediation",
-    ],
-    icon: GitBranch,
-  },
-  {
-    number: 7,
-    name: "FEDERATION",
-    tagline: "Multi-Substrate Networks & Sovereign Deployment",
-    status: "Planned",
-    description: "Independent substrate instances communicate, share capabilities, and form federated networks — each maintaining full sovereignty over their data and governance policies.",
-    capabilities: [
-      "SOVEREIGN jurisdictional compliance & data residency enforcement",
-      "Federated capability sharing with consent management",
-      "ECHO digital twin simulation across substrate boundaries",
-      "Cross-substrate TREATY agreements with cryptographic signing",
-      "Enterprise on-premise & air-gapped deployment",
-      "Multi-region orchestration with COMPASS strategic navigation",
+      "Software Refurbishment Center branding across all surfaces",
+      "Automated blog pipeline with confidence scoring",
+      "Scanner diagnostic tool for public-facing code analysis",
+      "Full developer documentation with runtime reference",
+      "DEFENSE WordPress plugin for bot protection",
+      "Agency system for multi-agent task orchestration",
     ],
     icon: Globe,
   },
   {
-    number: 8,
-    name: "SILICON",
-    tagline: "Hardware Export & Edge Intelligence",
-    status: "Research",
-    description: "Software memories compile to hardware. FPGA, ASIC, and edge device targets transform crystallized capabilities into dedicated silicon — the ultimate form of optimized execution.",
+    number: 6,
+    name: "ACTIVATION",
+    tagline: "User Onboarding, Conversion & Retention",
+    status: "In Progress",
+    description: "Converting visitors into paying members. Tightening the funnel from Scanner → Showroom → Code Assembly → Subscription. Building trust signals, case studies, and guided onboarding flows.",
     capabilities: [
-      "FORGE multi-target artifact generation (HDL, RTL, firmware)",
-      "LINGUA cross-language compilation (25+ target languages)",
-      "HARVEST automated training data pipeline for edge models",
-      "INTEGRATION universal adapter bridge for IoT & embedded systems",
-      "INCLUSIVE accessibility-first edge interfaces",
-      "ENCODE AST-aware code generation for embedded targets",
+      "Guided first-run experience from scan to subscription",
+      "Code Assembly intake form with file upload",
+      "Member dashboard with restoration history",
+      "Email notifications for completed restorations",
+      "Referral program for member-to-member growth",
+      "Public case studies showing before/after restorations",
     ],
-    icon: Cpu,
-  },
-];
-
-// ═══════════════════════════════════════════════════════════
-// SUBSTRATE AREAS — How primitives map to roadmap
-// ═══════════════════════════════════════════════════════════
-
-const SUBSTRATE_AREAS = [
-  {
-    area: "Cognitive Core",
-    primitives: ["BRAIN", "MEMORY", "DREAM", "CLM", "DECODE", "ENCODE"],
-    description: "Reasoning, memory, learning, and language processing — the thinking center of the substrate.",
-    phase: "Phase 2 — Live",
-    icon: Brain,
+    icon: Users,
   },
   {
-    area: "Security Mesh",
-    primitives: ["DEFENSE", "IMMUNITY", "PHANTOM", "ACCESS", "CONSCIENCE"],
-    description: "Multi-layer protection — from prompt injection defense to ethical AI enforcement.",
-    phase: "Phase 3 — Live",
-    icon: Shield,
+    number: 7,
+    name: "SCALE",
+    tagline: "Enterprise, API Access & Volume Operations",
+    status: "Planned",
+    description: "Moving from individual users to teams and enterprises. API access for programmatic restorations, bulk licensing, SLA guarantees, and white-label deployment options.",
+    capabilities: [
+      "REST API for programmatic code submission and retrieval",
+      "Enterprise team accounts with role-based access",
+      "Bulk restoration pricing for agencies and studios",
+      "SLA-backed turnaround guarantees (TREATY enforcement)",
+      "White-label deployment for partners",
+      "Priority queue with dedicated compute allocation",
+    ],
+    icon: Network,
   },
   {
-    area: "Orchestration Grid",
-    primitives: ["CORTEX", "NEXUS", "INTENT", "RIPPLE", "NERVE", "SANDBOX"],
-    description: "Request routing, multi-agent coordination, and isolated execution environments.",
-    phase: "Phase 4 — Live",
-    icon: Workflow,
-  },
-  {
-    area: "Governance & Compliance",
-    primitives: ["GOVERNANCE", "AUDIT", "TREATY", "SOVEREIGN", "ATLAS"],
-    description: "Policy enforcement, immutable logging, SLA management, and data sovereignty.",
-    phase: "Phase 5 — In Progress",
-    icon: Scale,
-  },
-  {
-    area: "Observation & Intelligence",
-    primitives: ["VISION", "ORACLE", "COMPASS", "SHADOW", "ECHO"],
-    description: "Observability, predictions, trend analysis, shadow testing, and digital twin simulation.",
-    phase: "Phase 6 — In Progress",
-    icon: Eye,
-  },
-  {
-    area: "Infrastructure & Manufacturing",
-    primitives: ["ENGINEER", "MEDIC", "FORGE", "HARVEST", "LINGUA", "INTEGRATION"],
-    description: "Self-tuning, diagnostics, artifact manufacturing, data acquisition, and external connectivity.",
-    phase: "Phase 6–7 — In Progress",
-    icon: Cog,
-  },
-  {
-    area: "Communication & Translation",
-    primitives: ["RELAY", "LINGUA", "INCLUSIVE", "REFLEX", "IDENTITY"],
-    description: "Multi-language support, accessibility, rapid response, and actor attribution.",
-    phase: "Phase 4–7 — Active",
+    number: 8,
+    name: "FEDERATION",
+    tagline: "Multi-Substrate Networks & Sovereign Deployment",
+    status: "Research",
+    description: "Independent substrate instances communicating, sharing discoveries, and forming federated networks — each maintaining full sovereignty over data and governance policies.",
+    capabilities: [
+      "SOVEREIGN jurisdictional compliance & data residency",
+      "Federated capability sharing with consent management",
+      "Cross-substrate TREATY agreements with cryptographic signing",
+      "On-premise and air-gapped deployment",
+      "Multi-region orchestration with COMPASS navigation",
+      "Hardware export targets (FPGA, ASIC, edge devices)",
+    ],
     icon: Globe2,
   },
-  {
-    area: "Sovereignty & Federation",
-    primitives: ["SOVEREIGN", "TREATY", "ECHO", "COMPASS", "ECONOMY"],
-    description: "Data residency, federated sharing, cross-substrate agreements, and marketplace economics.",
-    phase: "Phase 7–8 — Planned",
-    icon: Crown,
-  },
 ];
 
-const DOMAIN_NODES = [
+// ═══════════════════════════════════════════════════════════
+// What's next — concrete upcoming milestones
+// ═══════════════════════════════════════════════════════════
+
+const NEXT_STEPS = [
   {
-    domain: "Bioinformatics",
-    icon: Heart,
-    signal: "DNA sequences",
-    description: "Genomic pattern recognition, protein folding, drug interaction modeling. Crystallize from NCBI, UniProt, and clinical trial feeds.",
-    opportunities: ["Precision medicine memories", "Gene therapy target discovery", "Clinical trial optimization"],
+    title: "Code Assembly File Upload",
+    description: "Let users upload ZIP archives, Git repos, or individual files directly through the Assembly page for restoration.",
+    target: "Q3 2026",
+    icon: Package,
+    priority: "high" as const,
   },
   {
-    domain: "Finance",
-    icon: DollarSign,
-    signal: "Financial signals",
-    description: "Market microstructure analysis, risk modeling, and regulatory compliance engines at institutional scale.",
-    opportunities: ["Algorithmic trading strategies", "Fraud detection meshes", "Regulatory reporting automation"],
+    title: "Restoration Status Tracker",
+    description: "Real-time progress view showing which primitives are analyzing your code and estimated completion.",
+    target: "Q3 2026",
+    icon: Activity,
+    priority: "high" as const,
   },
   {
-    domain: "Astronomy",
-    icon: Satellite,
-    signal: "Satellite telemetry",
-    description: "Deep-sky object classification, exoplanet detection, and gravitational wave analysis from observatory data.",
-    opportunities: ["Exoplanet characterization", "Space debris tracking", "Multi-messenger event correlation"],
+    title: "Member Dashboard",
+    description: "Centralized view of your restorations, subscriptions, purchased artifacts, and diagnostic history.",
+    target: "Q3 2026",
+    icon: BarChart3,
+    priority: "high" as const,
   },
   {
-    domain: "Robotics",
-    icon: Cpu,
-    signal: "Sensor fusion",
-    description: "Multi-modal perception, path planning, and real-time control loops crystallized from simulation data.",
-    opportunities: ["Autonomous navigation stacks", "Manipulation skill transfer", "Sim-to-real bridges"],
+    title: "Before/After Case Studies",
+    description: "Public examples showing real code restorations — what came in broken, what went out working.",
+    target: "Q3 2026",
+    icon: FileSearch,
+    priority: "medium" as const,
   },
   {
-    domain: "Climate",
-    icon: Wind,
-    signal: "Weather data",
-    description: "Atmospheric modeling, carbon tracking, and extreme event prediction from NOAA, ERA5, and satellite feeds.",
-    opportunities: ["Extreme weather prediction", "Carbon offset verification", "Agricultural yield optimization"],
+    title: "Email Delivery Pipeline",
+    description: "Automated email delivery of completed restorations, refurbishment reports, and diagnostic summaries.",
+    target: "Q4 2026",
+    icon: Send,
+    priority: "medium" as const,
   },
   {
-    domain: "Cybersecurity",
-    icon: Shield,
-    signal: "Network packets",
-    description: "Threat detection, vulnerability assessment, and incident response automation with governed response memories.",
-    opportunities: ["Zero-day detection meshes", "Automated incident response", "Compliance audit automation"],
+    title: "REST API for Restorations",
+    description: "Programmatic access to submit code, check status, and retrieve results — for agencies and power users.",
+    target: "Q4 2026",
+    icon: Code2,
+    priority: "medium" as const,
   },
 ];
 
 const statusStyle: Record<string, string> = {
-  Live: "bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20",
+  Shipped: "bg-neon-green/10 text-neon-green dark:text-neon-green border-neon-green/20",
   "In Progress": "bg-neon-blue/10 text-neon-blue dark:text-neon-blue border-neon-blue/20",
   Planned: "bg-neon-amber/10 text-neon-amber dark:text-neon-amber border-neon-amber/20",
   Research: "bg-neon-purple/10 text-neon-purple dark:text-neon-purple border-neon-purple/20",
@@ -276,10 +216,10 @@ export default function Roadmap() {
   return (
     <div className="min-h-screen bg-background relative">
       <SEO
-        title="Roadmap — 8-Phase Substrate Evolution | CMPSBL"
-        description="CMPSBL's eight-phase roadmap from Foundation to Silicon: cognitive runtime, security mesh, orchestration, marketplace, self-evolution, federation, and hardware export. The full substrate progression."
+        title="Roadmap — What We Shipped & What's Next | CMPSBL"
+        description="See what CMPSBL has shipped: the 40-primitive substrate, Memory Stream discovery, Ascension refurbishment pipeline, Showroom marketplace, and Code Assembly service. Plus what's coming next."
         canonical="https://cmpsbl.com/roadmap"
-        keywords={["CMPSBL roadmap", "cognitive infrastructure", "AI evolution", "substrate architecture", "self-improving software", "federated AI"]}
+        keywords={["CMPSBL roadmap", "software refurbishment", "code restoration", "substrate architecture", "shipped features", "product roadmap"]}
       />
 
       {/* Ambient background */}
@@ -288,10 +228,6 @@ export default function Roadmap() {
         <div
           className="absolute -top-32 left-1/3 w-[600px] h-[600px] rounded-full animate-hero-orb-1"
           style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 55%)" }}
-        />
-        <div
-          className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full animate-hero-orb-3"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }}
         />
       </div>
 
@@ -305,32 +241,32 @@ export default function Roadmap() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-4xl">
             <Badge variant="outline" className="mb-6 border-primary/30 bg-primary/5 text-primary font-mono text-xs tracking-widest uppercase">
               <Sparkles className="w-3 h-3 mr-2" />
-              8-Phase Substrate Evolution
+              v18.0.0 · Epoch: REVIVAL
             </Badge>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground mb-6 leading-[0.95]">
-              The Substrate
+              What We Built.
               <br />
-              <span className="text-primary">Roadmap</span>
+              <span className="text-primary">What's Next.</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-10">
-              Eight phases. From a 40-primitive cognitive runtime to self-improving federated substrates compiled to silicon.
-              Every phase unlocks new capabilities that compound on everything before it.
+              No vaporware. Five phases shipped, one in progress, two on the horizon. 
+              Here's exactly where we are and where we're going.
             </p>
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-neon-green" />
-                <span>Phases 1–4 Live</span>
+                <span>5 Phases Shipped</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-neon-blue" />
-                <span>Phases 5–6 Active</span>
+                <span>1 In Progress</span>
               </div>
               <div className="flex items-center gap-2">
                 <Beaker className="w-4 h-4 text-neon-purple" />
-                <span>Phases 7–8 Research</span>
+                <span>2 On the Horizon</span>
               </div>
             </div>
           </motion.div>
@@ -341,7 +277,7 @@ export default function Roadmap() {
       <section className="container mx-auto px-4 pb-24">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-12">
-            Eight Phases of Substrate Evolution
+            The Full Timeline
           </h2>
 
           <div className="relative">
@@ -372,7 +308,7 @@ export default function Roadmap() {
                   <div className="hidden sm:flex absolute left-0 top-0 w-12 sm:w-16 h-12 sm:h-16 items-center justify-center">
                     <div className={cn(
                       "w-12 h-12 rounded-xl flex items-center justify-center font-black text-lg border-2 z-10",
-                      phase.status === "Live"
+                      phase.status === "Shipped"
                         ? "bg-primary text-primary-foreground border-primary"
                         : phase.status === "In Progress"
                           ? "bg-primary/20 text-primary border-primary/50"
@@ -408,7 +344,10 @@ export default function Roadmap() {
                       <div className="grid sm:grid-cols-2 gap-2">
                         {phase.capabilities.map((cap) => (
                           <div key={cap} className="flex items-start gap-2 text-sm">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                            <div className={cn(
+                              "w-1.5 h-1.5 rounded-full mt-1.5 shrink-0",
+                              phase.status === "Shipped" ? "bg-neon-green" : "bg-primary"
+                            )} />
                             <span className="text-muted-foreground">{cap}</span>
                           </div>
                         ))}
@@ -430,7 +369,7 @@ export default function Roadmap() {
               <div key={phase.name} className="flex items-center gap-2 sm:gap-3">
                 <span className={cn(
                   "px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg font-bold tracking-wide",
-                  phase.status === "Live"
+                  phase.status === "Shipped"
                     ? "bg-primary text-primary-foreground"
                     : phase.status === "In Progress"
                       ? "bg-primary/10 text-primary border border-primary/30"
@@ -447,113 +386,52 @@ export default function Roadmap() {
         </div>
       </section>
 
-      {/* ── Substrate Areas Map ── */}
+      {/* ── What's Next — Concrete Milestones ── */}
       <section className="container mx-auto px-4 py-20 sm:py-28">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
             <Badge variant="outline" className="mb-4 border-primary/30 bg-primary/5 text-primary font-mono text-xs tracking-widest uppercase">
-              40 Primitives Across 8 Areas
+              Upcoming Milestones
             </Badge>
             <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-4">
-              Substrate Area Progression
+              What's Coming Next
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Every primitive belongs to a functional area. Each area matures through the roadmap phases —
-              building on previous capabilities and unlocking new ones.
+              Concrete features on the build list — no vaporware, no "someday." These are the next things you'll see go live.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {SUBSTRATE_AREAS.map((area, i) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {NEXT_STEPS.map((step, i) => (
               <motion.div
-                key={area.area}
+                key={step.title}
                 custom={i}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-30px" }}
                 variants={fadeUp}
-                className="group p-5 rounded-2xl bg-card border border-border/60 hover:border-primary/30 transition-all duration-300 card-lift"
+                className="group p-6 rounded-2xl bg-card border border-border/60 hover:border-primary/30 transition-all duration-300 card-lift"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
-                    <area.icon className="w-5 h-5 text-primary" />
+                <div className="flex items-start gap-3 mb-3">
+                  <div className={cn(
+                    "w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors",
+                    step.priority === "high"
+                      ? "bg-primary/15 group-hover:bg-primary/20"
+                      : "bg-muted group-hover:bg-muted/80"
+                  )}>
+                    <step.icon className={cn(
+                      "w-5 h-5",
+                      step.priority === "high" ? "text-primary" : "text-muted-foreground"
+                    )} />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-sm text-foreground">{area.area}</h3>
-                    <p className="text-[10px] font-mono text-primary tracking-wider">{area.phase}</p>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-sm text-foreground mb-0.5">{step.title}</h3>
+                    <span className="text-[10px] font-mono text-muted-foreground tracking-wider">{step.target}</span>
                   </div>
                 </div>
-
-                <p className="text-xs text-muted-foreground leading-relaxed mb-3">{area.description}</p>
-
-                <div className="flex flex-wrap gap-1">
-                  {area.primitives.map((p) => (
-                    <Link
-                      key={p}
-                      to={`/modules/${p.toLowerCase()}`}
-                      className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-muted text-muted-foreground border border-border hover:border-primary/30 hover:text-primary transition-colors"
-                    >
-                      {p}
-                    </Link>
-                  ))}
-                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">{step.description}</p>
               </motion.div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Domain Nodes ── */}
-      <section className="border-t border-border bg-muted/20">
-        <div className="container mx-auto px-4 py-20 sm:py-28">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-14">
-              <Badge variant="outline" className="mb-4 border-primary/30 bg-primary/5 text-primary font-mono text-xs tracking-widest uppercase">
-                Domain-Specific Verticals
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-4">
-                Industry Verticals
-              </h2>
-              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-                Domain verticals are specialized configurations that plug into every phase of the evolution timeline.
-                Each brings its own signal types, compliance requirements, and revenue surfaces.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {DOMAIN_NODES.map((node, i) => (
-                <motion.article
-                  key={node.domain}
-                  custom={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-30px" }}
-                  variants={fadeUp}
-                  className="group p-6 rounded-2xl bg-card border border-border/60 hover:border-primary/30 transition-all duration-300 card-lift"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
-                      <node.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-foreground">{node.domain}</h3>
-                      <p className="text-xs font-mono text-muted-foreground uppercase tracking-wider">{node.signal}</p>
-                    </div>
-                  </div>
-
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-5">{node.description}</p>
-
-                  <div className="space-y-1.5">
-                    {node.opportunities.map((opp) => (
-                      <div key={opp} className="flex items-start gap-2 text-xs">
-                        <Zap className="w-3 h-3 text-primary mt-0.5 shrink-0" />
-                        <span className="text-muted-foreground">{opp}</span>
-                      </div>
-                    ))}
-                  </div>
-                </motion.article>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -562,32 +440,43 @@ export default function Roadmap() {
       <section className="border-t border-border">
         <div className="container mx-auto px-4 py-20 sm:py-28">
           <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-10 text-center">
-              Revenue Compounds at Every Phase
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground mb-4 text-center">
+              Revenue Grows at Every Phase
             </h2>
+            <p className="text-center text-sm text-muted-foreground mb-10 max-w-lg mx-auto">
+              Each phase layers new revenue on top of the previous — compounding, not replacing.
+            </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               {[
-                { phase: "Foundation", revenue: "Subscriptions", arpu: "$14/mo" },
-                { phase: "Cognition", revenue: "Memory Packs", arpu: "$29/mo" },
-                { phase: "Security", revenue: "Compliance", arpu: "$49/mo" },
-                { phase: "Orchestration", revenue: "Compute", arpu: "$79/mo" },
-                { phase: "Marketplace", revenue: "Royalties", arpu: "$120/mo" },
-                { phase: "Evolution", revenue: "Autonomy", arpu: "$180/mo" },
-                { phase: "Federation", revenue: "Enterprise", arpu: "Custom" },
-                { phase: "Silicon", revenue: "Hardware", arpu: "License" },
+                { phase: "Substrate", revenue: "npm Installs", status: "shipped" },
+                { phase: "Discovery", revenue: "Memory Packs", status: "shipped" },
+                { phase: "Refurbishment", revenue: "Restoration Fees", status: "shipped" },
+                { phase: "Commerce", revenue: "Subscriptions + Sales", status: "shipped" },
+                { phase: "Site & SEO", revenue: "Organic Traffic", status: "shipped" },
+                { phase: "Activation", revenue: "Conversion + Retention", status: "active" },
+                { phase: "Scale", revenue: "Enterprise + API", status: "planned" },
+                { phase: "Federation", revenue: "Licensing + Hardware", status: "planned" },
               ].map((item) => (
-                <div key={item.phase} className="text-center p-4 rounded-xl bg-card border border-border/60 hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300">
+                <div key={item.phase} className={cn(
+                  "text-center p-4 rounded-xl border transition-all duration-300 hover:-translate-y-0.5",
+                  item.status === "shipped"
+                    ? "bg-card border-neon-green/20"
+                    : item.status === "active"
+                      ? "bg-card border-primary/30"
+                      : "bg-card border-border/60"
+                )}>
                   <div className="text-[10px] font-mono text-muted-foreground tracking-wider mb-2 uppercase">{item.phase}</div>
-                  <div className="text-base sm:text-lg font-black font-mono tabular-nums text-foreground">{item.arpu}</div>
-                  <div className="text-[10px] text-primary font-medium mt-1">{item.revenue}</div>
+                  <div className={cn(
+                    "text-xs font-bold",
+                    item.status === "shipped" ? "text-neon-green" : item.status === "active" ? "text-primary" : "text-muted-foreground"
+                  )}>
+                    {item.status === "shipped" ? "✓ Live" : item.status === "active" ? "Building" : "Planned"}
+                  </div>
+                  <div className="text-[10px] text-muted-foreground mt-1">{item.revenue}</div>
                 </div>
               ))}
             </div>
-
-            <p className="text-center text-xs text-muted-foreground mt-6">
-              Each phase layers on top of the previous — revenue compounds, not replaces.
-            </p>
           </div>
         </div>
       </section>
@@ -596,21 +485,21 @@ export default function Roadmap() {
       <section className="py-20 sm:py-28 px-4">
         <div className="container mx-auto max-w-3xl text-center">
           <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-6">
-            Build on the Substrate
+            See It in Action
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground mb-10 max-w-xl mx-auto">
-            Start at Foundation. Every capability compounds through every phase — growing in intelligence, autonomy, and value.
+            Five phases shipped. Working software. Browse the Showroom, run a diagnostic, or bring us your broken code — we'll restore it.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/auth">
+            <Link to="/assembly">
               <Button size="lg" className="min-h-[48px] px-8 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                Start Building
-                <Rocket className="w-5 h-5 ml-2" />
+                <Wrench className="w-5 h-5 mr-2" />
+                Code Assembly
               </Button>
             </Link>
-            <Link to="/architecture">
+            <Link to="/showroom">
               <Button size="lg" variant="outline" className="min-h-[48px] px-8 font-semibold hover:border-primary/30 transition-all duration-200">
-                Explore Architecture
+                Explore Showroom
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
