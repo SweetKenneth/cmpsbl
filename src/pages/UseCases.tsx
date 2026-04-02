@@ -541,7 +541,7 @@ export default function UseCases() {
                       ))}
                     </ul>
                     <div className="pt-3 border-t border-border/50">
-                      <p className="text-[11px] italic text-current/80">"{vision.example}"</p>
+                      <p className="text-xs italic text-current/80">"{vision.example}"</p>
                     </div>
                   </CardContent>
                 </Card>
