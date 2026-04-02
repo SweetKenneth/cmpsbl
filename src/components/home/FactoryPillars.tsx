@@ -66,22 +66,39 @@ export function FactoryPillars() {
           {PILLARS.map((pillar) => (
             <div
               key={pillar.title}
-              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300"
+              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300 lab-card-glow"
             >
-              {/* Top accent */}
+              {/* Top accent bar */}
               <div 
                 className="h-0.5" 
                 style={{ background: `linear-gradient(90deg, hsl(var(${pillar.glowVar})), hsl(var(${pillar.glowVar}) / 0.3))` }} 
               />
 
-              <div className="p-5 sm:p-6">
+              {/* Corner brackets */}
+              <div className="absolute top-2 left-2 w-3 h-3 border-t border-l opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ borderColor: `hsl(var(${pillar.glowVar}) / 0.3)` }} />
+              <div className="absolute top-2 right-2 w-3 h-3 border-t border-r opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ borderColor: `hsl(var(${pillar.glowVar}) / 0.3)` }} />
+              <div className="absolute bottom-2 left-2 w-3 h-3 border-b border-l opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ borderColor: `hsl(var(${pillar.glowVar}) / 0.3)` }} />
+              <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ borderColor: `hsl(var(${pillar.glowVar}) / 0.3)` }} />
+
+              {/* Hover glow backdrop */}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                style={{ background: `radial-gradient(circle at 50% 0%, hsl(var(${pillar.glowVar}) / 0.06) 0%, transparent 60%)` }}
+              />
+
+              <div className="p-5 sm:p-6 relative">
                 {/* Icon + Title */}
                 <div className="flex items-center gap-3 mb-3">
                   <div
-                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 relative"
                     style={{ background: `hsl(var(${pillar.glowVar}) / 0.1)` }}
                   >
                     <pillar.icon className="w-4 h-4" style={{ color: `hsl(var(${pillar.glowVar}))` }} />
+                    {/* Subtle icon glow */}
+                    <div
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ boxShadow: `0 0 12px hsl(var(${pillar.glowVar}) / 0.2)` }}
+                    />
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground leading-tight">{pillar.title}</h3>
@@ -97,8 +114,8 @@ export function FactoryPillars() {
                 {/* Stats */}
                 <div className="flex gap-2 mb-4">
                   {pillar.stats.map((stat) => (
-                    <div key={stat.label} className="flex-1 text-center p-2 rounded-lg bg-secondary/40">
-                      <div className="text-xs sm:text-sm font-bold text-foreground">{stat.value}</div>
+                    <div key={stat.label} className="flex-1 text-center p-2 rounded-lg bg-secondary/40 border border-border/20">
+                      <div className="text-xs sm:text-sm font-bold text-foreground font-mono tabular-nums">{stat.value}</div>
                       <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider">{stat.label}</div>
                     </div>
                   ))}
@@ -114,7 +131,7 @@ export function FactoryPillars() {
                 </Link>
               </div>
             </div>
-          ))}
+          ))
         </div>
       </div>
     </section>
