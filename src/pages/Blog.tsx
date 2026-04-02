@@ -286,8 +286,8 @@ function PostCard({ post, href }: { post: BlogPost; href: string }) {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] font-medium truncate">{post.author}</p>
-              <div className="flex items-center gap-1.5 text-[9px] text-muted-foreground">
+              <p className="text-xs font-medium truncate">{post.author}</p>
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                 <Calendar className="w-2.5 h-2.5" />
                 {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 <span>·</span>
