@@ -9,8 +9,9 @@ import { PublicNav } from "@/components/PublicNav";
 import { CmpsblWelcome } from "@/components/onboarding/CmpsblWelcome";
 import { HeroMetaSubstrate } from "@/components/hero/HeroMetaSubstrate";
 import { LiveStatsBar } from "@/components/home/LiveStatsBar";
-import { FactoryPillars } from "@/components/home/FactoryPillars";
+import { DiagnosticExample } from "@/components/home/DiagnosticExample";
 import { CustomerJourney } from "@/components/home/CustomerJourney";
+import { FactoryPillars } from "@/components/home/FactoryPillars";
 import { ShowroomPreview } from "@/components/home/ShowroomPreview";
 import { FactoryGuarantee } from "@/components/home/FactoryGuarantee";
 import { JunkyardBanner } from "@/components/factory/JunkyardBanner";
@@ -68,10 +69,16 @@ export default function FactoryHome() {
       {/* ═══ LIVE CENTER STATUS ═══ */}
       <LiveStatsBar />
 
-      {/* ═══ THREE PILLARS ═══ */}
-      <FactoryPillars />
+      {/* ═══ EXAMPLE OUTPUT + BEFORE/AFTER ═══ */}
+      <DiagnosticExample />
 
+      {/* ═══ PIPELINE ═══ */}
       <CustomerJourney />
+
+      <SectionDivider />
+
+      {/* ═══ THREE PILLARS (Specialists — after value is clear) ═══ */}
+      <FactoryPillars />
 
       <SectionDivider />
 
