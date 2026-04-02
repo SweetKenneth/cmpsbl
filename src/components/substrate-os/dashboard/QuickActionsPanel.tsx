@@ -65,7 +65,7 @@ export function QuickActionsPanel({ enabled, onOpenTerminal }: QuickActionsPanel
 
   const handleDiagnostics = async () => {
     setDiagnosticsRunning(true);
-    voice.system('Running diagnostics', 'Analyzing all Matrix Nodes...', 'VISION');
+    voice.system('Running diagnostics', 'Analyzing all Matrix Primitives...', 'VISION');
     try {
       const result = await system.diagnostics();
       if (result?.success) {

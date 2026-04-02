@@ -27,7 +27,7 @@ const SEVERITY_CONFIG: Record<AuditSeverity, { icon: typeof Shield; color: strin
 
 const CATEGORY_LABELS: Record<AuditCategory, string> = {
   build: 'Build', runtime: 'Runtime', routes: 'Routes', imports: 'Imports',
-  hooks: 'Hooks', modules: 'Matrix Nodes', matrix: 'Matrix Integrity', terminal: 'Terminal', supabase: 'Backend',
+  hooks: 'Hooks', modules: 'Matrix Primitives', matrix: 'Matrix Integrity', terminal: 'Terminal', supabase: 'Backend',
   ui: 'UI/UX', a11y: 'Accessibility', seo: 'SEO', performance: 'Performance', security: 'Security', docs: 'Docs',
 };
 

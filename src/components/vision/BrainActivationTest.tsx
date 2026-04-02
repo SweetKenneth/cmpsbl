@@ -10,17 +10,17 @@ export default function BrainActivationTest() {
   const [results, setResults] = useState<any>(null);
 
   async function runTest() {
-    console.log('🧠 Brain test button clicked');
+    // Brain test initiated
     setTesting(true);
     setResults(null);
 
     try {
-      console.log('📡 Invoking pf-brain-test-cycle...');
+      // Invoking brain test cycle
       toast.info('Running Brain activation test...');
       
       const { data, error } = await supabase.functions.invoke('pf-brain-test-cycle');
       
-      console.log('📥 Response received:', { data, error });
+      
       
       if (error) {
         console.error('❌ Error from function:', error);
@@ -39,7 +39,7 @@ export default function BrainActivationTest() {
       toast.error('Test failed: ' + error.message);
       setResults({ error: error.message });
     } finally {
-      console.log('✅ Test complete');
+      // Test complete
       setTesting(false);
     }
   }

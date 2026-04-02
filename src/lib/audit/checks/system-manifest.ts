@@ -1,6 +1,6 @@
 /**
  * Audit Check: System Manifest Integrity
- * Validates ENCODE system manifest has all Matrix Nodes registered
+ * Validates ENCODE system manifest has all Matrix Primitives registered
  */
 
 import type { AuditFinding } from '../audit-types';
@@ -32,7 +32,7 @@ export function checkSystemManifest(): AuditFinding[] {
       id: 'manifest_entries_ok',
       category: 'matrix',
       severity: 'info',
-      title: `${moduleKeys.length} manifest entries, ${nodeCount} Matrix Nodes`,
+      title: `${moduleKeys.length} manifest entries, ${nodeCount} Matrix Primitives`,
       detail: `Manifest registry complete: ${moduleKeys.join(', ')}.`,
     });
   }

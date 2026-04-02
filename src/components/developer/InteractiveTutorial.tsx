@@ -115,7 +115,7 @@ const receipt = await client.broadcastIntent({
 
 console.log('Receipt ID:', receipt.id);
 console.log('Resolvers invoked:', receipt.resolverCount);
-console.log('Mesh events:', receipt.meshEvents);`,
+console.log('Matrix events:', receipt.meshEvents);`,
     expectedOutput: "Receipt ID: rcpt_x7f9e2\nResolvers invoked: 3\nMesh events: 8",
     hint: "Never bypass broadcastIntent() — it handles resolver routing, receipt logging, and mesh telemetry.",
     xpReward: 50,
@@ -169,7 +169,7 @@ console.log('Primitives:', ascension.primitiveCount);
 console.log('Quality score:', ascension.qualityScore);
 console.log('Status:', ascension.lifecycle);`,
     expectedOutput: "Node: Ψ₄₁ TRADE_ENGINE\nPrimitives: 12\nQuality score: 0.82\nStatus: candidate",
-    hint: "Ascension Nodes go through 4 lifecycle states: Candidate → Active → Archived → Rejected. Governor approval promotes candidates.",
+    hint: "Ascension Primitives go through 4 lifecycle states: Candidate → Active → Archived → Rejected. Governor approval promotes candidates.",
     xpReward: 60,
     track: 'ascension',
   },
