@@ -4,6 +4,7 @@
  * Authenticated users still see their vault/mining experience.
  */
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
