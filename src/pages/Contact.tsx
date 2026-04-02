@@ -80,6 +80,7 @@ export default function Contact() {
           <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-[100px]" />
         </div>
         <div className="container mx-auto px-3 sm:px-4 relative z-10 max-w-4xl">
+          <PublicBreadcrumb />
           <motion.div {...fadeUp}>
             <Badge variant="outline" className="mb-6 border-primary/30 text-primary">
               <Mail className="w-3 h-3 mr-2" />

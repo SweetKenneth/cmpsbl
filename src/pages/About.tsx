@@ -157,6 +157,7 @@ export default function About() {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/8 via-background to-background" />
 
         <div className="relative px-5 pt-24 pb-14 sm:pt-32 sm:pb-20 max-w-4xl mx-auto">
+          <PublicBreadcrumb />
           {/* Back link */}
           <motion.div {...fadeUp}>
             <Link
