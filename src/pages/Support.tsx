@@ -147,7 +147,7 @@ const CATEGORY_ICONS: Record<string, typeof Rocket> = {
 const QUICK_LINKS = [
   { to: "/documentation", icon: BookOpen, label: "Documentation", desc: "Browse the full docs library" },
   { to: "/changelog", icon: Sparkles, label: "Evolution Log", desc: "Recent changes & updates" },
-  { to: "/contact", icon: Mail, label: "Contact", desc: "Reach our team directly" },
+  { to: "/contact", icon: Mail, label: "Contact", desc: "Reach us directly" },
 ];
 
 export default function Support() {
