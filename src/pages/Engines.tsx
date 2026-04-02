@@ -141,7 +141,7 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
 
           {/* Threat level tag */}
           <div className="absolute top-0 right-0 px-3 py-1 bg-foreground/5 rounded-bl-xl">
-            <span className="text-[11px] font-mono tracking-widest text-muted-foreground uppercase">
+            <span className="text-xs font-mono tracking-widest text-muted-foreground uppercase">
               {engine.threatLevel.split("—")[0].trim()}
             </span>
           </div>
