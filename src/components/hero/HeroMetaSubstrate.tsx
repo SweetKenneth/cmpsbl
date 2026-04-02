@@ -444,9 +444,9 @@ export function HeroMetaSubstrate() {
             {/* Inner ambient glow */}
             <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-primary/[0.01] pointer-events-none" />
             <AnimatedStat value={40} label="Primitives" delay={0} />
-            <AnimatedStat value={24} label="Capability Packs" delay={1} />
-            <AnimatedStat value={20} label="Sealed Products" delay={2} />
-            <AnimatedStat value={4} label="Primitive Categories" delay={3} />
+            <AnimatedStat value={25} label="Export Languages" delay={1} />
+            <AnimatedStat value={8} label="Hour Cycles" suffix="hr" delay={2} />
+            <AnimatedStat value={3} label="Zenodo DOIs" delay={3} />
           </div>
         </FadeIn>
       </div>
