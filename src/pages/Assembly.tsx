@@ -120,48 +120,33 @@ export default function Assembly() {
           <div className="absolute inset-0 texture-noise" />
           
           <div className="relative z-10 max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6">
-              <Puzzle className="w-3.5 h-3.5 text-primary" />
-              <span className="text-xs font-medium text-muted-foreground tracking-wide">Coming Soon</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/10 mb-6">
+              <Wrench className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs font-medium text-primary tracking-wide">Member Service</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6">
-              <span className="text-foreground">Code </span>
-              <span 
-                className="inline-block"
-                style={{
-                  backgroundImage: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
-                Assembly
-              </span>
+              <span className="text-foreground">Code Assembly</span>
             </h1>
             
             <p className="text-lg sm:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed mb-4">
-              You don't need to understand code to get it fixed.{' '}
-              <span className="text-foreground/90 font-medium">
-                Bring us what you have
-              </span>{' '}
-              — half a backup, a folder of files, a vague description of what it used to do.
+              Bring us your broken, outdated, fragmented, or half-working code and we restore it into something usable again.
             </p>
             <p className="text-base text-muted-foreground/60 max-w-xl mx-auto leading-relaxed mb-10">
-              Our specialists diagnose, reconstruct, and deliver working software. No AI rewrites. No "start over." We restore what's yours and fill the gaps with certified components.
+              This is a paid member service for reconstruction, repair, splicing, and dependency cleanup — built for real projects that need restoration, not replacement.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3">
               <Button asChild size="lg" className="gap-2 px-8 h-12 text-sm font-bold rounded-xl">
                 <Link to="/ascension">
                   <Wrench className="w-4 h-4" />
-                  Start with a Consultation
+                  Start Restoration Review
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="gap-2 px-6 h-12 text-sm rounded-xl border-border/50">
-                <Link to="/showroom">
-                  Browse Components
+                <Link to="/plans">
+                  View Member Plans
                 </Link>
               </Button>
             </div>
