@@ -344,6 +344,16 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
 
   return (
     <div className="space-y-6">
+      {/* Sign-in Warning */}
+      {isAuthenticated === false && (
+        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/20">
+          <Lock className="w-4 h-4 text-destructive shrink-0" />
+          <div className="flex-1">
+            <p className="text-xs text-destructive font-medium">Sign in required to export</p>
+            <p className="text-[10px] text-destructive/70">Create an account or sign in to export your discovered capabilities.</p>
+          </div>
+        </div>
+      )}
       {/* Tier Status Bar */}
       <div className="flex items-center justify-between px-4 py-3 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20">
         <div className="flex items-center gap-3">
