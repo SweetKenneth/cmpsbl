@@ -291,7 +291,7 @@ No customer code is ever copied or redistributed. CMPSBL observes **patterns and
 
 | Model | Factory Name | What It Is | Revenue Model |
 |-------|-------------|------------|---------------|
-| **23** | **The Vault** | APEX-tier discoveries. Perfect 100s. $11,981 each. When they're gone, they're gone forever. | $11,981 per Apex edition |
+| **23** | **The Vault** | APEX-tier discoveries. Perfect 100s. $1,952 each. When they're gone, they're gone forever. | $1,952 per Apex edition |
 | **12** | **The Auction House** | Extension of Vault scarcity. Competitive bidding on rare discoveries. | Market-driven |
 | **18** | **The Incubator** | Monday: prototype. Wednesday: launch-ready product. 48 hours. No equity surrendered. | Premium membership add-on |
 
