@@ -248,7 +248,7 @@ export function HeroMetaSubstrate() {
               </p>
               <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
                 <TypedText 
-                  texts={["persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
+                  texts={["improve.", "persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
                   gradientColors={[
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
