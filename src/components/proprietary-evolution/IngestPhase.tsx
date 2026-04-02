@@ -543,7 +543,7 @@ export function IngestPhase() {
       </Tabs>
 
       {/* ═══ ORBITAL ASSEMBLY VISUALIZATION ═══ */}
-      {(files.length > 0 || parsedNode) && (
+      {(hasInput || parsedNode) && (
         <div id="ingest-orbital">
         <OrbitalAssembly
           state={
@@ -551,7 +551,7 @@ export function IngestPhase() {
               : (parsedNode && capSurface) ? 'complete'
               : 'idle'
           }
-          fileCount={files.length || 1}
+          fileCount={inputMode === 'upload' ? (files.length || 1) : 1}
           capabilities={capSurface?.capabilities}
           nodeName={capSurface?.nodeName}
         />
