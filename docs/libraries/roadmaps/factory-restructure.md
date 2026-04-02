@@ -412,7 +412,7 @@ All existing pages remain active at their current URLs:
 - [ ] $300 customer acquisition campaign launch
 
 ### Phase 4: The Foundry (Week 9–12)
-- [ ] Vault editions (Model 23) — Apex-only, $11,981 each
+- [ ] Vault editions (Model 23) — Apex-only, $1,952 each
 - [ ] Fully autonomous catalog generation (Model 24)
 - [ ] Collision Engine public access (Model 4)
 - [ ] Marketplace two-sided features (Model 9)
