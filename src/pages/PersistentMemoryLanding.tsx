@@ -92,7 +92,7 @@ const PersistentMemoryLanding = () => {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="text-lg px-8 h-14 hover:border-primary/30 transition-colors"
+                  className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 hover:border-primary/30 transition-colors"
                   onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   See how it works

@@ -297,7 +297,7 @@ export default function Assembly() {
             <p className="text-muted-foreground/70 mb-8 max-w-lg mx-auto">
               Start with a free consultation. Tell us what you have and we'll tell you exactly what we can do.
             </p>
-            <Button asChild size="lg" className="gap-2 px-10 h-13 text-sm font-bold rounded-xl">
+            <Button asChild size="lg" className="gap-2 px-10 h-12 sm:h-13 text-sm font-bold rounded-xl">
               <Link to="/ascension">
                 <Wrench className="w-4 h-4" />
                 Book a Consultation
