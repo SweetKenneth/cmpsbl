@@ -436,9 +436,9 @@ function ArchiveBrowseView() {
                 CJPI re-scoring and an ownership certificate.
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Button asChild size="lg" className="gap-2">
-                  <Link to="/consultation">
-                    <Wrench className="w-4 h-4" />
+                 <Button asChild size="lg" className="gap-2">
+                   <Link to="/ascension">
+                     <Wrench className="w-4 h-4" />
                     Visit the Restoration Lab
                   </Link>
                 </Button>
