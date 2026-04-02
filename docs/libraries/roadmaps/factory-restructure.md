@@ -100,7 +100,7 @@ The initial code scan uses a **three-primitive team** rather than a single scann
 
 **Recommendation:** Use the same three-primitive team for both the **initial diagnostic scan** AND the **Ascension primitive selection**. Rationale:
 - The scan team already understands the code's topology from the diagnostic
-- They have the context needed to recommend which of the 42 primitives will produce the best results
+- They have the context needed to recommend which of the 40 primitives will produce the best results
 - Adding a second team for selection would mean re-analyzing code that's already been mapped
 - ORACLE's prediction models from the scan directly inform which primitives will have the highest impact
 
