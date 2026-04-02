@@ -20,6 +20,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { StoreOnboarding } from "@/components/onboarding/StoreOnboarding";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { StoreCollectorDeck } from "@/components/store/StoreCollectorDeck";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { UpgradeContent } from "@/components/store/UpgradeContent";
 import { PacksContent } from "@/components/store/PacksContent";
 import {
