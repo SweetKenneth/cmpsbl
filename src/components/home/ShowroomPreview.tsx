@@ -71,7 +71,7 @@ export function ShowroomPreview() {
                 className={cn(
                   "snap-start shrink-0 w-[240px] sm:w-[280px] rounded-2xl border bg-card overflow-hidden",
                   "hover:shadow-xl transition-all duration-300 lab-card-glow",
-                  "border-border/40 animate-fade-in opacity-0",
+                  "border-border/40 animate-fade-in",
                 )}
                 style={{ animationDelay: `${idx * 0.06}s`, animationFillMode: "both" }}
               >

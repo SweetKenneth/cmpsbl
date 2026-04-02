@@ -66,7 +66,7 @@ export function FactoryGuarantee() {
               {GUARANTEES.map((g, idx) => (
                 <div
                   key={g.title}
-                  className="group text-center p-4 sm:p-5 rounded-xl bg-white/10 border border-white/10 backdrop-blur-sm hover:bg-white/15 hover:border-white/20 transition-all duration-300 animate-fade-in opacity-0"
+                  className="group text-center p-4 sm:p-5 rounded-xl bg-white/10 border border-white/10 backdrop-blur-sm hover:bg-white/15 hover:border-white/20 transition-all duration-300 animate-fade-in"
                   style={{ animationDelay: `${idx * 0.1}s`, animationFillMode: "both" }}
                 >
                   <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
