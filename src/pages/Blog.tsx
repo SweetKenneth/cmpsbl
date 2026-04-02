@@ -436,14 +436,14 @@ const HUMAN_POSTS: BlogPost[] = [
   },
   {
     id: 'ch19-burning', title: "Burning It Down: The Complete Platform Rebuild",
-    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the platform from scratch. Here's why, and what we learned.",
+    excerpt: "In February 2026, we deleted thousands of lines of code and rebuilt the substrate from scratch. Here's why, and what we learned.",
     href: "/blog/burning-it-down", category: "Technology",
     date: "2026-02-10", readTime: "20 min", image: ch19Img,
     imageAlt: "Platform rebuild from scratch", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
     id: 'ch18-evolving', title: "When Software Starts Evolving",
-    excerpt: "In January 2026, the platform crossed a threshold: self-improvement cycles started producing improvements we didn't program.",
+    excerpt: "In January 2026, the substrate crossed a threshold: self-improvement cycles started producing improvements we didn't program.",
     href: "/blog/when-software-starts-evolving", category: "Research",
     date: "2026-01-15", readTime: "18 min", image: ch18Img,
     imageAlt: "Software evolution breakthrough", source: 'human', featured: true, pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
@@ -505,8 +505,8 @@ const HUMAN_POSTS: BlogPost[] = [
     imageAlt: "Agent memory fading over time", source: 'human', pillar: true, author: "CMPSBL Team", authorRole: "Platform Engineering",
   },
   {
-    id: 'ch09-building', title: "Building on the Platform",
-    excerpt: "Eight modules and no documentation. Making the platform usable meant rethinking how developers interact with cognitive infrastructure.",
+    id: 'ch09-building', title: "Building on the Substrate",
+    excerpt: "Eight modules and no documentation. Making the substrate usable meant rethinking how developers interact with cognitive infrastructure.",
     href: "/blog/building-on-the-substrate", category: "Development",
     date: "2025-05-25", readTime: "11 min", image: ch09Img,
     imageAlt: "Developer building on the platform", source: 'human', author: "CMPSBL Team", authorRole: "Platform Engineering",

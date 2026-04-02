@@ -44,7 +44,7 @@ const faqItems = [
   },
   {
     question: "What problems does CMPSBL solve?",
-    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the platform provides 40 integrated primitives that share context, propagate events in real time, and self-optimize automatically.",
+    answer: "CMPSBL solves the fragmentation problem in AI infrastructure. Instead of stitching together separate tools for memory, routing, security, and monitoring, the substrate provides 40 integrated primitives that share context, propagate events in real time, and self-optimize automatically.",
   },
   {
     question: "Who needs an AI Operating System?",
@@ -63,7 +63,7 @@ const faqItems = [
 const pillars = [
   { icon: Brain, title: "Persistent Memory", desc: "Your agents remember everything across sessions. The MEMORY Organ provides 4-tier storage (hot → warm → cold → glacier) for fast recall of recent context and long-term historical knowledge.", link: "/persistent-memory" },
   { icon: Network, title: "Smart Model Routing", desc: "The NEXUS Organ picks the best AI provider for each task — balancing speed, cost, and quality across 14+ providers. Auto-failover if one goes down. No lock-in.", link: "/architecture" },
-  { icon: Shield, title: "Built-in AI Security", desc: "The DEFENSE Layer protects against prompt injection, adversarial inputs, and bot traffic — all built into the platform, not bolted on.", link: "/architecture" },
+  { icon: Shield, title: "Built-in AI Security", desc: "The DEFENSE Layer protects against prompt injection, adversarial inputs, and bot traffic — all built into the substrate, not bolted on.", link: "/architecture" },
   { icon: Moon, title: "Self-Improvement Cycles", desc: "During quiet periods, the DREAM Engine consolidates what the system learned, discovers patterns, and generates new insights — all automatically.", link: "/architecture" },
   { icon: Workflow, title: "Coordinated Intelligence", desc: "The CORTEX Agent coordinates all 40 primitives so they work as one unified system. Pre-built synergies discover capabilities that no single primitive could achieve alone.", link: "/architecture" },
   { icon: Cpu, title: "Self-Healing Runtime", desc: "The CORE Organ boots all 40 primitives in a deterministic 12-stage sequence, monitors health continuously, and automatically recovers from failures — zero downtime.", link: "/architecture" },
@@ -79,7 +79,7 @@ const categories = [
 const comparisonRows = [
   { feature: "Persistent Memory", framework: "DIY (vector DB)", aiOs: "Built-in 4-tier + auto-consolidation" },
   { feature: "Model Routing", framework: "Hardcoded switch", aiOs: "NEXUS Organ — picks best model per task" },
-  { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE Layer — built into the platform" },
+  { feature: "Security", framework: "Add-on tool", aiOs: "DEFENSE Layer — built into the substrate" },
   { feature: "Monitoring", framework: "Separate APM tool", aiOs: "Built-in across all 40 primitives" },
   { feature: "Self-Improvement", framework: "None", aiOs: "Automatic optimization cycles" },
   { feature: "Shared Context", framework: "None", aiOs: "Real-time event propagation" },
@@ -217,7 +217,7 @@ export default function AIOperatingSystem() {
                 <CardContent className="p-4 sm:p-6">
                   <p className="text-sm sm:text-base text-foreground font-medium leading-relaxed">
                     An AI Operating System eliminates this fragmentation. Every primitive shares context, events flow through the system in real time,
-                    and the platform self-improves as a unified whole — automatically.
+                    and the substrate self-improves as a unified whole — automatically.
                   </p>
                 </CardContent>
               </Card>
