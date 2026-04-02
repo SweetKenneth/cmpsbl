@@ -35,8 +35,9 @@ try {
 createRoot(document.getElementById("root")!).render(
   <ThemeProvider
     attribute="class"
-    defaultTheme="system"
-    enableSystem
+    defaultTheme="dark"
+    forcedTheme="dark"
+    enableSystem={false}
     storageKey="pf-theme"
     disableTransitionOnChange
   >
