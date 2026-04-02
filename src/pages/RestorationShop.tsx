@@ -123,15 +123,15 @@ export default function RestorationShop() {
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground mb-4 leading-[1.05]">
-            Submit your code.{" "}
+            Bring us your code.{" "}
             <span className="bg-clip-text text-transparent" style={{
               backgroundImage: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
             }}>
-              We'll tell you the truth.
+              We'll restore it first.
             </span>
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-            ENCODE + ORACLE + ENGINEER scan your code. DECODE explains the findings. You choose up to 20 primitives. We refurbish it and send it back.
+            We analyze your code, find its hidden potential, and refurbish it — only replacing what we absolutely have to. AI is our tool, not your dependency.
           </p>
         </div>
       </section>

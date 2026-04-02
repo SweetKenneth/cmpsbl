@@ -45,7 +45,7 @@ export function FoundryHero() {
           className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-[0.95] mb-6 sm:mb-8"
         >
           Software that{' '}
-          <span className="text-primary">crystallizes software</span>
+          <span className="text-primary">discovers software capabilities</span>
         </motion.h1>
 
         <motion.p
@@ -54,9 +54,9 @@ export function FoundryHero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
         >
-          A recursive discovery engine that surfaces production-grade software memories
-          directly from silicon.{' '}
-          <span className="text-foreground font-semibold">1,143 programs discovered in under 9 hours.</span>
+          A recursive discovery engine that finds production-grade capabilities
+          hidden in existing code.{' '}
+          <span className="text-foreground font-semibold">Browse what's been found. Purchase one-of-a-kind builds.</span>
           {' '}The stream never stops.
         </motion.p>
 
@@ -68,10 +68,10 @@ export function FoundryHero() {
           className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-14"
         >
           <button
-            onClick={() => navigate('/auth?redirect=/foundry')}
+            onClick={() => navigate('/showroom')}
             className="w-full sm:w-auto px-8 sm:px-10 py-4 bg-primary text-primary-foreground rounded-xl font-mono text-sm sm:text-base font-bold hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/35 hover:-translate-y-0.5 min-h-[52px] crystallize-glow"
           >
-            Start Crystallizing — Free
+            Browse the Showroom
           </button>
           <button
             onClick={() => {

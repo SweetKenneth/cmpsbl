@@ -34,8 +34,8 @@ interface NavLink {
 }
 
 const NAV_LINKS: NavLink[] = [
-  { name: "Memory Stream", href: "/memory-stream", icon: Sparkles, badge: "LIVE", highlight: true },
-  { name: "Ascension", href: "/ascension", icon: Zap },
+  { name: "Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
+  { name: "Consultation", href: "/ascension", icon: Zap },
   { name: "Pricing", href: "/pricing", icon: CreditCard },
   { name: "Docs", href: "/documentation", icon: FileText },
   { name: "Try", href: "/try", icon: Play },
