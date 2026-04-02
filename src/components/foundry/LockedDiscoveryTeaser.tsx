@@ -48,7 +48,7 @@ export function LockedDiscoveryTeaser({ tier = 'starter', pullsUsed, pullsMax, c
           variant="ghost"
           size="sm"
           className="text-xs text-primary hover:text-primary/80"
-          onClick={() => navigate('/store?tab=plans')}
+          onClick={() => navigate('/plans')}
         >
           Unlock more <ArrowRight className="h-3 w-3 ml-1" />
         </Button>
@@ -62,7 +62,7 @@ export function LockedDiscoveryTeaser({ tier = 'starter', pullsUsed, pullsMax, c
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1 }}
           className="relative group cursor-pointer"
-          onClick={() => navigate('/store?tab=plans')}
+          onClick={() => navigate('/plans')}
         >
           {/* Blurred card */}
           <div className="rounded-xl border border-border/30 bg-card/40 backdrop-blur-sm p-4 select-none pointer-events-none blur-[3px] opacity-60">
@@ -115,7 +115,7 @@ export function LockedDiscoveryTeaser({ tier = 'starter', pullsUsed, pullsMax, c
         </p>
         <Button
           size="sm"
-          onClick={() => navigate('/store?tab=plans')}
+          onClick={() => navigate('/plans')}
           className="w-full"
         >
           <Sparkles className="h-3.5 w-3.5 mr-1.5" />

@@ -61,7 +61,7 @@ const solutions = [
     description: "Behavioral threat detection, intelligent rate limiting, and governance rules that learn from attack patterns. Security that adapts in real-time.",
     features: ["AI-powered bot detection", "Behavioral fingerprinting", "Real-time threat blocking", "Adaptive rate limiting", "Governance rule enforcement", "Enterprise audit logging"],
     metrics: ["Adaptive", "Real-Time", "Enterprise Grade"],
-    link: "/store?tab=plans",
+    link: "/plans",
     color: "from-destructive to-neon-magenta",
   },
   {
@@ -145,7 +145,7 @@ export default function Solutions() {
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link to="/store?tab=plans">View Plans</Link>
+                <Link to="/plans">View Plans</Link>
               </Button>
             </div>
           </motion.div>
@@ -243,7 +243,7 @@ export default function Solutions() {
               <Link to="/auth">Get Started Free <ArrowRight className="w-5 h-5" /></Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/store?tab=plans">View Plans</Link>
+              <Link to="/plans">View Plans</Link>
             </Button>
           </div>
         </motion.div>

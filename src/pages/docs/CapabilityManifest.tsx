@@ -227,7 +227,7 @@ export default function CapabilityManifest() {
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link to="/store?tab=plans">View Plans</Link>
+              <Link to="/plans">View Plans</Link>
             </Button>
           </div>
         </div>

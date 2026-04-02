@@ -34,7 +34,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/architecture", title: "Substrate Architecture", description: "Full topology of the cognitive infrastructure substrate" },
     { href: "/solutions", title: "Solutions", description: "Pre-configured deployments by industry" },
     { href: "/contact", title: "Contact Sales", description: "Talk to the team about custom deployment" },
-    { href: "/store?tab=plans", title: "Plans & Pricing", description: "Compare plans and subscription tiers", badge: "Plans" },
+    { href: "/plans", title: "Plans & Pricing", description: "Compare plans and subscription tiers", badge: "Plans" },
   ],
   "/persistent-memory": [
     { href: "/architecture", title: "Substrate Architecture", description: "See where the MEMORY Organ fits in the topology" },

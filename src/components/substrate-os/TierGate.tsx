@@ -97,7 +97,7 @@ export function TierGate({ requiredTier, currentTier, children, tabLabel, descri
 
           {/* CTA */}
           <Button asChild size="lg" className="w-full sm:w-auto px-8">
-            <Link to="/store?tab=plans">
+            <Link to="/plans">
               Upgrade to {TIER_LABELS[requiredTier]}
               <ArrowUpRight className="w-4 h-4 ml-2" />
             </Link>
