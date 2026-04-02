@@ -14283,6 +14283,48 @@ export type Database = {
         }
         Relationships: []
       }
+      restoration_sessions: {
+        Row: {
+          cjpi_score: number | null
+          cjpi_tier: string | null
+          created_at: string
+          fingerprint: string
+          id: string
+          original_code: string
+          original_language: string | null
+          report: Json
+          scan_result: Json
+          selected_primitives: Json
+          serial_number: string
+        }
+        Insert: {
+          cjpi_score?: number | null
+          cjpi_tier?: string | null
+          created_at?: string
+          fingerprint: string
+          id?: string
+          original_code: string
+          original_language?: string | null
+          report: Json
+          scan_result: Json
+          selected_primitives: Json
+          serial_number: string
+        }
+        Update: {
+          cjpi_score?: number | null
+          cjpi_tier?: string | null
+          created_at?: string
+          fingerprint?: string
+          id?: string
+          original_code?: string
+          original_language?: string | null
+          report?: Json
+          scan_result?: Json
+          selected_primitives?: Json
+          serial_number?: string
+        }
+        Relationships: []
+      }
       ripple_campaigns: {
         Row: {
           campaign_name: string
