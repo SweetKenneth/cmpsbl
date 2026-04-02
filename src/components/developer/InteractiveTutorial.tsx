@@ -169,7 +169,7 @@ console.log('Primitives:', ascension.primitiveCount);
 console.log('Quality score:', ascension.qualityScore);
 console.log('Status:', ascension.lifecycle);`,
     expectedOutput: "Node: Ψ₄₁ TRADE_ENGINE\nPrimitives: 12\nQuality score: 0.82\nStatus: candidate",
-    hint: "Ascension Nodes go through 4 lifecycle states: Candidate → Active → Archived → Rejected. Governor approval promotes candidates.",
+    hint: "Ascension Primitives go through 4 lifecycle states: Candidate → Active → Archived → Rejected. Governor approval promotes candidates.",
     xpReward: 60,
     track: 'ascension',
   },

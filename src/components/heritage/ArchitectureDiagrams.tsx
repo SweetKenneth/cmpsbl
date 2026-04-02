@@ -274,7 +274,7 @@ export function LineageFlowDiagram() {
 
   return (
     <div className="my-6">
-      <DiagramTitle>Figure 5 — Heritage Lineage: Product Origins → Substrate Nodes</DiagramTitle>
+      <DiagramTitle>Figure 5 — Heritage Lineage: Product Origins → Substrate Primitives</DiagramTitle>
       <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
         <svg viewBox={`0 0 680 ${totalH}`} className="w-full max-w-[680px] mx-auto" role="img" aria-label="Heritage lineage showing how each PromptFluid product maps to CMPSBL substrate primitives">
           {/* Headers */}
