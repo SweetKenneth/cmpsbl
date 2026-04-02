@@ -7,6 +7,8 @@ import { useDiscoveredPipelines } from '@/hooks/useDiscoveredPipelines';
 import { motion } from 'framer-motion';
 import { ArrowRight, Layers, Cpu, Sparkles, Network, Zap, Shield, Brain, Eye, GitBranch } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PublicNav } from '@/components/PublicNav';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { Button } from '@/components/ui/button';
 import { labelPrimitive } from '@/lib/export/primitive-labels';
 

@@ -6,6 +6,8 @@
 
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { 
   Wrench, 
