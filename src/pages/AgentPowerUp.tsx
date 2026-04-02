@@ -7,6 +7,7 @@
 import { useState, useCallback } from "react";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { 
