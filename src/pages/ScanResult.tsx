@@ -63,6 +63,7 @@ export default function ScanResult() {
         <link rel="canonical" href={`https://cmpsbl.com/scan/results/${id}`} />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background">
         <div className="max-w-3xl mx-auto px-4 py-12 sm:py-16">
           <Link to="/">
