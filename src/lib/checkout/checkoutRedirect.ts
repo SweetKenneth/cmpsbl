@@ -7,7 +7,8 @@
 export type CheckoutFunctionName =
   | 'marketplace-checkout'
   | 'capability-checkout'
-  | 'licensing-checkout';
+  | 'licensing-checkout'
+  | 'showroom-checkout';
 
 const base64UrlEncode = (input: string): string => {
   const bytes = new TextEncoder().encode(input);

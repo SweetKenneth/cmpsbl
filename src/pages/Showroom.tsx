@@ -1,21 +1,22 @@
 /**
- * Showroom — Solution-forward marketplace of Memory Stream discoveries.
- * Engines-style horizontal-scroll carousels grouped by CJPI tier.
- * Image cards with solution-forward descriptions.
+ * Showroom — Solution-forward marketplace of real S-Tier vault discoveries.
+ * Horizontal-scroll carousels grouped by CJPI tier with Stripe checkout.
  */
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   Search, Sparkles, Shield, Zap, Package,
   Brain, Eye, Lock, RefreshCw, Wrench,
   ChevronLeft, ChevronRight, ArrowRight, X,
+  ShoppingCart, Loader2, CheckCircle,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
@@ -23,6 +24,10 @@ import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
+import { loadShowroomCatalog, getShowroomPriceDisplay, getShowroomPrice, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
+import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 // Category images
 import imgSecurity from '@/assets/showroom/security-compliance.jpg';
@@ -40,12 +45,12 @@ const CATEGORY_IMAGES: Record<string, string> = {
   observability: imgObservability,
   resilience: imgResilience,
   optimization: imgOptimization,
-  integration: imgOptimization,
-  orchestration: imgOptimization,
-  maintenance: imgResilience,
 };
 
-// ═══ Tier config (Engines-style) ═══
+// ═══ Load real catalog ═══
+const CATALOG = loadShowroomCatalog();
+
+// ═══ Tier config ═══
 const TIER_CONFIG = [
   {
     id: 'Apex' as PublicTier,
@@ -113,26 +118,14 @@ type TierConfig = typeof TIER_CONFIG[number];
 
 // ═══ Pain-point categories ═══
 const PAIN_POINTS = [
-  { id: 'all', label: 'All Solutions', icon: Package },
-  { id: 'security', label: 'Security', icon: Shield },
-  { id: 'intelligence', label: 'Decisions', icon: Brain },
-  { id: 'observability', label: 'Monitoring', icon: Eye },
-  { id: 'resilience', label: 'Reliability', icon: RefreshCw },
-  { id: 'governance', label: 'Governance', icon: Lock },
-  { id: 'optimization', label: 'Performance', icon: Zap },
+  { id: 'all' as const, label: 'All Solutions', icon: Package },
+  { id: 'security' as const, label: 'Security', icon: Shield },
+  { id: 'intelligence' as const, label: 'Decisions', icon: Brain },
+  { id: 'observability' as const, label: 'Monitoring', icon: Eye },
+  { id: 'resilience' as const, label: 'Reliability', icon: RefreshCw },
+  { id: 'governance' as const, label: 'Governance', icon: Lock },
+  { id: 'optimization' as const, label: 'Performance', icon: Zap },
 ] as const;
-
-type PainPointId = typeof PAIN_POINTS[number]['id'];
-
-// ═══ Price + tier helpers ═══
-function getPrice(score: number): string {
-  if (score === 100) return '$1,952';
-  if (score >= 94) return `$${(score * 2).toLocaleString()}`;
-  if (score >= 90) return `$${Math.round(score * 1.5).toLocaleString()}`;
-  if (score >= 80) return `$${Math.round(score * 1.25).toLocaleString()}`;
-  if (score >= 68) return `$${score}`;
-  return 'Free';
-}
 
 function getTierLabel(score: number): PublicTier {
   if (score === 100) return 'Apex';
@@ -143,7 +136,7 @@ function getTierLabel(score: number): PublicTier {
   return 'Raw';
 }
 
-// ═══ Horizontal Scroll Carousel (same as Engines page) ═══
+// ═══ Horizontal Scroll Carousel ═══
 function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 'left' | 'right') => {
@@ -179,37 +172,24 @@ function ScrollCarousel({ children, className }: { children: React.ReactNode; cl
   );
 }
 
-// ═══ Discovery data ═══
-interface ShowroomItem {
-  id: string;
-  name: string;
-  score: number;
-  chain: string[];
-  category: string;
-  solutionDesc: string;
-  painLabel: string;
-  painId: PainPointId;
-}
-
-const CATALOG: ShowroomItem[] = [
-  { id: 'd7', name: 'Compliance Certification Suite', score: 100, chain: ['AUDIT', 'GOVERNANCE', 'WITNESS', 'INCLUSIVE'], category: 'governance', solutionDesc: 'Generates audit-ready compliance reports and certificates. Proves your software meets industry standards — automatically.', painLabel: 'Policy & Governance', painId: 'governance' },
-  { id: 'd1', name: 'Drift Prevention Engine', score: 97, chain: ['GOVERNANCE', 'EVOLUTION', 'AUDIT'], category: 'governance', solutionDesc: 'Stops your software from quietly changing behavior over time. Catches configuration drift before it causes production issues.', painLabel: 'Policy & Governance', painId: 'governance' },
-  { id: 'd9', name: 'Encrypted State Vault', score: 96, chain: ['MEMORY', 'PHANTOM', 'DEFENSE'], category: 'security', solutionDesc: 'Stores sensitive data with military-grade encryption. No one — not even us — can read it without your keys.', painLabel: 'Security & Compliance', painId: 'security' },
-  { id: 'd2', name: 'Threat Hardening Pipeline', score: 94, chain: ['DEFENSE', 'SENTINEL', 'IDENTITY'], category: 'security', solutionDesc: 'Finds and fixes security vulnerabilities in your existing code without rewriting it. Hardens authentication and access controls.', painLabel: 'Security & Compliance', painId: 'security' },
-  { id: 'd11', name: 'Real-Time Anomaly Detector', score: 93, chain: ['SENTINEL', 'ANALYTICS', 'REFLEX'], category: 'observability', solutionDesc: 'Spots unusual behavior the moment it happens. Alerts you before small anomalies become big outages.', painLabel: 'Monitoring & Visibility', painId: 'observability' },
-  { id: 'd3', name: 'Self-Healing Runtime', score: 91, chain: ['MEDIC', 'SYSTEM', 'DEFENSE'], category: 'resilience', solutionDesc: 'Detects failures and recovers automatically. Keeps your systems running even when individual components break.', painLabel: 'Reliability & Recovery', painId: 'resilience' },
-  { id: 'd4', name: 'Predictive Decision Core', score: 88, chain: ['ORACLE', 'BRAIN', 'CORTEX'], category: 'intelligence', solutionDesc: 'Anticipates what your software needs before problems happen. Makes smarter automated decisions based on patterns.', painLabel: 'Decision Making', painId: 'intelligence' },
-  { id: 'd12', name: 'Smart Workflow Orchestrator', score: 86, chain: ['SYSTEM', 'COMPASS', 'NERVE'], category: 'orchestration', solutionDesc: 'Manages complex multi-step processes without manual intervention. Routes tasks to the right component automatically.', painLabel: 'Performance', painId: 'optimization' },
-  { id: 'd5', name: 'Full-Stack Observer', score: 85, chain: ['ANALYTICS', 'VISION', 'ECHO'], category: 'observability', solutionDesc: 'Shows you exactly what your software is doing at every level. Replays events and surfaces issues before users notice.', painLabel: 'Monitoring & Visibility', painId: 'observability' },
-  { id: 'd6', name: 'Cost Optimization Engine', score: 82, chain: ['ECONOMY', 'HARMONY', 'EVOLUTION'], category: 'optimization', solutionDesc: 'Finds where your software is wasting resources and fixes it. Balances performance against infrastructure costs.', painLabel: 'Performance', painId: 'optimization' },
-  { id: 'd8', name: 'Legacy API Bridge', score: 79, chain: ['INTEGRATION', 'LINGUA', 'NEXUS'], category: 'integration', solutionDesc: 'Connects your old APIs with modern systems without rewriting either side. Translates formats and protocols on the fly.', painLabel: 'Performance', painId: 'optimization' },
-  { id: 'd10', name: 'Autonomous Patch Pipeline', score: 74, chain: ['EVOLUTION', 'ENGINEER', 'SYSTEM'], category: 'maintenance', solutionDesc: 'Finds outdated dependencies and patches them safely. Keeps your software up to date without breaking anything.', painLabel: 'Performance', painId: 'optimization' },
-];
-
-// ═══ Discovery Card with image ═══
-function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index: number; tierConfig: TierConfig }) {
+// ═══ Discovery Card with image + purchase ═══
+function DiscoveryCard({
+  item,
+  index,
+  tierConfig,
+  onPurchase,
+  purchasing,
+}: {
+  item: ShowroomItem;
+  index: number;
+  tierConfig: TierConfig;
+  onPurchase: (item: ShowroomItem) => void;
+  purchasing: string | null;
+}) {
   const tier = getTierLabel(item.score);
   const image = CATEGORY_IMAGES[item.category] || imgOptimization;
+  const priceDisplay = getShowroomPriceDisplay(item.score);
+  const isLoading = purchasing === item.id;
 
   return (
     <motion.div
@@ -220,7 +200,7 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
       className="snap-start shrink-0 w-[300px] sm:w-[340px]"
     >
       <div className={cn(
-        "group relative h-full rounded-2xl border bg-card overflow-hidden transition-all duration-300",
+        "group relative h-full rounded-2xl border bg-card overflow-hidden transition-all duration-300 flex flex-col",
         "hover:scale-[1.02] hover:shadow-2xl",
         "border-border/40",
         tierConfig.glow,
@@ -237,7 +217,6 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
           />
           <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
 
-          {/* Tier badge on image */}
           <Badge
             variant="outline"
             className={cn(
@@ -248,26 +227,23 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
             {tier}
           </Badge>
 
-          {/* Price on image */}
           <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-background/80 backdrop-blur-sm border border-border/30">
-            <span className="text-sm font-black text-foreground">{getPrice(item.score)}</span>
+            <span className="text-sm font-black text-foreground">{priceDisplay}</span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-5">
-          {/* Name */}
+        <div className="p-5 flex-1 flex flex-col">
           <h3 className="text-base font-bold text-foreground mb-2 leading-tight group-hover:text-primary transition-colors">
             {item.name}
           </h3>
 
-          {/* Solution description */}
-          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3">
+          <p className="text-sm text-muted-foreground/80 leading-relaxed mb-4 line-clamp-3 flex-1">
             {item.solutionDesc}
           </p>
 
-          {/* Footer: category + CJPI + chain count */}
-          <div className="flex items-center justify-between">
+          {/* Footer: category + CJPI */}
+          <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-medium text-muted-foreground/60 px-2 py-0.5 rounded-full border border-border/30 bg-muted/20">
               {item.painLabel}
             </span>
@@ -277,6 +253,26 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
               <span>{item.chain.length} primitives</span>
             </div>
           </div>
+
+          {/* Purchase button */}
+          <Button
+            size="sm"
+            className="w-full gap-2 rounded-xl font-bold"
+            onClick={() => onPurchase(item)}
+            disabled={isLoading || purchasing !== null}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                Opening checkout…
+              </>
+            ) : (
+              <>
+                <ShoppingCart className="w-3.5 h-3.5" />
+                Purchase · {priceDisplay}
+              </>
+            )}
+          </Button>
         </div>
       </div>
     </motion.div>
@@ -285,20 +281,28 @@ function DiscoveryCard({ item, index, tierConfig }: { item: ShowroomItem; index:
 
 // ═══ Main page ═══
 export default function Showroom() {
+  const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTier, setSelectedTier] = useState<PublicTier | null>(null);
-  const [painFilter, setPainFilter] = useState<PainPointId>('all');
+  const [painFilter, setPainFilter] = useState<PainPointId | 'all'>('all');
+  const [purchasing, setPurchasing] = useState<string | null>(null);
+
+  const showSuccess = searchParams.get('success') === 'true';
+  const successItem = searchParams.get('item');
 
   // Group by tier
-  const itemsByTier: Record<string, ShowroomItem[]> = {};
-  CATALOG.forEach((item) => {
-    const tier = getTierLabel(item.score);
-    if (!itemsByTier[tier]) itemsByTier[tier] = [];
-    itemsByTier[tier].push(item);
-  });
+  const itemsByTier = useMemo(() => {
+    const grouped: Record<string, ShowroomItem[]> = {};
+    CATALOG.forEach((item) => {
+      const tier = getTierLabel(item.score);
+      if (!grouped[tier]) grouped[tier] = [];
+      grouped[tier].push(item);
+    });
+    return grouped;
+  }, []);
 
   // Filter for search/tier/pain
-  const filteredItems = CATALOG.filter((item) => {
+  const filteredItems = useMemo(() => CATALOG.filter((item) => {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       return (
@@ -310,25 +314,64 @@ export default function Showroom() {
     if (selectedTier) return getTierLabel(item.score) === selectedTier;
     if (painFilter !== 'all') return item.painId === painFilter;
     return true;
-  });
+  }), [searchQuery, selectedTier, painFilter]);
 
   const showBrowseMode = !searchQuery && !selectedTier && painFilter === 'all';
+
+  const handlePurchase = useCallback(async (item: ShowroomItem) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error('Please sign in to purchase.', {
+        action: { label: 'Sign In', onClick: () => { window.location.href = '/auth'; } },
+      });
+      return;
+    }
+
+    setPurchasing(item.id);
+    try {
+      openCheckoutRedirect({
+        fn: 'showroom-checkout',
+        body: {
+          item_id: item.id,
+          item_name: item.name,
+          cjpi_score: item.score,
+        },
+      });
+      toast.success('Opening secure checkout…');
+    } catch {
+      toast.error('Failed to open checkout. Please try again.');
+    } finally {
+      setPurchasing(null);
+    }
+  }, []);
 
   return (
     <>
       <Helmet>
         <title>Showroom — Browse Certified Software Discoveries | CMPSBL</title>
-        <meta name="description" content="Find exactly what your software needs. Search by problem, sort by solution, and purchase one-of-a-kind certified discoveries from the CMPSBL refurbishment catalog." />
+        <meta name="description" content="Find exactly what your software needs. Search by problem, sort by solution, and purchase one-of-a-kind certified discoveries from the CMPSBL Showroom." />
         <link rel="canonical" href="https://cmpsbl.com/showroom" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         <PublicNav />
 
-        {/* Breadcrumb */}
         <div className="container mx-auto px-3 sm:px-4 pt-20">
           <PublicBreadcrumb />
         </div>
+
+        {/* ═══ SUCCESS BANNER ═══ */}
+        {showSuccess && (
+          <div className="container mx-auto px-3 sm:px-4 pt-4">
+            <Alert className="border-emerald-500/30 bg-emerald-500/5">
+              <CheckCircle className="h-5 w-5 text-emerald-500" />
+              <AlertTitle className="text-emerald-400">Purchase Successful!</AlertTitle>
+              <AlertDescription className="text-muted-foreground">
+                Your discovery{successItem ? ` (${successItem})` : ''} has been certified and retired from the catalog. Check your email for delivery details.
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
 
         {/* ═══ HERO ═══ */}
         <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden">
@@ -349,7 +392,6 @@ export default function Showroom() {
                 Once purchased, it's retired from the catalog forever.
               </p>
 
-              {/* Quick stats */}
               <div className="flex items-center justify-center gap-4 mb-4 text-sm text-muted-foreground">
                 <span className="font-mono">{CATALOG.length} discoveries</span>
                 <span className="text-border">·</span>
@@ -372,7 +414,6 @@ export default function Showroom() {
         {/* ═══ STICKY TOOLBAR ═══ */}
         <section className="sticky top-16 z-40 border-b border-border/50 bg-background/95 backdrop-blur-xl">
           <div className="container mx-auto px-4 py-3">
-            {/* Search */}
             <div className="relative mb-3">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
@@ -388,9 +429,7 @@ export default function Showroom() {
               )}
             </div>
 
-            {/* Filter pills: Tiers + Pain Points */}
             <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-              {/* Tier filters */}
               <button
                 onClick={() => { setSelectedTier(null); setPainFilter('all'); }}
                 className={cn(
@@ -422,10 +461,8 @@ export default function Showroom() {
                 );
               })}
 
-              {/* Divider */}
               <div className="w-px h-6 bg-border/50 shrink-0 self-center mx-1" />
 
-              {/* Pain point filters */}
               {PAIN_POINTS.filter(p => p.id !== 'all').map((pp) => (
                 <button
                   key={pp.id}
@@ -447,7 +484,6 @@ export default function Showroom() {
 
         {/* ═══ CONTENT ═══ */}
         <main className="flex-1">
-          {/* Results count */}
           <div className="container mx-auto px-4 pt-6 pb-2">
             <p className="text-sm text-muted-foreground">
               {filteredItems.length} {filteredItems.length === 1 ? 'discovery' : 'discoveries'}
@@ -455,15 +491,12 @@ export default function Showroom() {
             </p>
           </div>
 
-          {/* Browse Mode: Horizontal carousels per tier */}
           {showBrowseMode ? (
             <div className="pb-12">
               {TIER_CONFIG.filter(tier => itemsByTier[tier.id]?.length).map(tier => {
                 const items = itemsByTier[tier.id] || [];
-
                 return (
                   <section key={tier.id} className="mb-10">
-                    {/* Tier header */}
                     <div className="container mx-auto px-4 mb-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
@@ -486,11 +519,17 @@ export default function Showroom() {
                       </div>
                     </div>
 
-                    {/* Horizontal scroll */}
                     <div className="container mx-auto px-4">
                       <ScrollCarousel>
                         {items.map((item, i) => (
-                          <DiscoveryCard key={item.id} item={item} index={i} tierConfig={tier} />
+                          <DiscoveryCard
+                            key={item.id}
+                            item={item}
+                            index={i}
+                            tierConfig={tier}
+                            onPurchase={handlePurchase}
+                            purchasing={purchasing}
+                          />
                         ))}
                       </ScrollCarousel>
                     </div>
@@ -499,7 +538,6 @@ export default function Showroom() {
               })}
             </div>
           ) : (
-            /* Grid Mode (search or filter active) */
             <div className="container mx-auto px-4 py-6">
               {filteredItems.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -507,7 +545,14 @@ export default function Showroom() {
                     const tier = getTierLabel(item.score);
                     const tierConfig = TIER_CONFIG.find(t => t.id === tier) || TIER_CONFIG[4];
                     return (
-                      <DiscoveryCard key={item.id} item={item} index={i} tierConfig={tierConfig} />
+                      <DiscoveryCard
+                        key={item.id}
+                        item={item}
+                        index={i}
+                        tierConfig={tierConfig}
+                        onPurchase={handlePurchase}
+                        purchasing={purchasing}
+                      />
                     );
                   })}
                 </div>
