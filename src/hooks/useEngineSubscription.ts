@@ -78,7 +78,14 @@ export function useEngineSubscription() {
       const { data: { user } } = await supabase.auth.getUser();
       
       if (!user) {
-        toast.error('Please sign in to subscribe');
+        toast.error('Please sign in to subscribe', {
+          action: {
+            label: 'Sign in',
+            onClick: () => {
+              window.location.assign(`/auth?redirect=/plans&tier=${tier}`);
+            },
+          },
+        });
         return null;
       }
 
