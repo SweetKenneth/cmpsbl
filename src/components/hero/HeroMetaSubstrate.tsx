@@ -278,7 +278,7 @@ export function HeroMetaSubstrate() {
               >
                 <Link to="/ascension">
                   <Zap className="w-4 h-4" />
-                  Bring Us Your Tech
+                  Submit Your Code
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
