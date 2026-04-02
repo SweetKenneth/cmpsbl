@@ -128,12 +128,13 @@ async function checkNexus(): Promise<ComponentStatus> {
 async function checkAIRoutes(): Promise<ComponentStatus> {
   try {
     const start = Date.now();
-    // Check if nexus router is responsive
+    // Sample a larger window and only count final outcomes (not intermediate retries)
+    // NEXUS failover retries are expected behavior, not failures
     const { data, error } = await supabase
       .from('ai_usage_log')
-      .select('id, success')
+      .select('id, success, metadata')
       .order('created_at', { ascending: false })
-      .limit(10);
+      .limit(50);
     
     const latency = Date.now() - start;
     
@@ -141,11 +142,24 @@ async function checkAIRoutes(): Promise<ComponentStatus> {
       return { status: 'warning', latency, message: 'AI logs unavailable' };
     }
     
-    // Check recent success rate
     if (data && data.length > 0) {
-      const successRate = data.filter(d => d.success).length / data.length;
-      if (successRate < 0.5) {
-        return { status: 'warning', latency, message: `Low success rate: ${(successRate * 100).toFixed(0)}%` };
+      // Filter out intermediate failover attempts (429s, 402s, 404s are expected retries)
+      // A route is only a real failure if it exhausted all fallbacks with no success
+      const meta = data as Array<{ id: string; success: boolean; metadata: Record<string, unknown> | null }>;
+      const finalOutcomes = meta.filter(d => {
+        const status = (d.metadata as Record<string, unknown>)?.status;
+        // Skip intermediate rate-limit retries — NEXUS handles these via fallback
+        return status !== 429 && status !== 402 && status !== 404;
+      });
+      
+      if (finalOutcomes.length > 0) {
+        const successRate = finalOutcomes.filter(d => d.success).length / finalOutcomes.length;
+        if (successRate < 0.3) {
+          return { status: 'error', latency, message: `Route success rate: ${(successRate * 100).toFixed(0)}%` };
+        }
+        if (successRate < 0.6) {
+          return { status: 'warning', latency, message: `Route success rate: ${(successRate * 100).toFixed(0)}%` };
+        }
       }
     }
     
