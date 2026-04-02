@@ -26,6 +26,8 @@ import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
+import { generateRefurbishedCode, generateLicense } from "@/lib/factory/generate-refurbished-code";
+import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
 import { RestorationQueue } from "@/components/factory/RestorationQueue";
@@ -54,6 +56,8 @@ export default function RestorationShop() {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [report, setReport] = useState<RestorationReport | null>(null);
   const [queueEntry, setQueueEntry] = useState<QueueEntry | null>(null);
+  const [selectedPrims, setSelectedPrims] = useState<PrimitiveRecommendation[]>([]);
+  const [refurbishedCode, setRefurbishedCode] = useState<string>('');
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -63,7 +67,6 @@ export default function RestorationShop() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file size (max 1MB)
     if (file.size > 1_048_576) {
       toast.error('File too large. Maximum size is 1MB.');
       return;
@@ -96,6 +99,7 @@ export default function RestorationShop() {
   const handleSelectPrimitives = useCallback(async (selected: PrimitiveRecommendation[]) => {
     if (!scanResult || isRestoring) return;
     setIsRestoring(true);
+    setSelectedPrims(selected);
 
     const entry = addToQueue('demo-user', 'builder', 'demo-hash', selected.map(s => s.name));
     setQueueEntry(entry);
@@ -106,11 +110,26 @@ export default function RestorationShop() {
     const restorationReport = generateRestorationReport(scanResult, selected);
     setReport(restorationReport);
 
+    // Generate dual-layer refurbished code
+    const fingerprint = restorationReport.cjpiCertificate.fingerprint;
+    const hardened = generateRefurbishedCode(code, selected, fingerprint);
+    setRefurbishedCode(hardened);
+
+    // Persist session for future DECODE lookups
+    saveRestorationSession({
+      fingerprint,
+      originalCode: code,
+      originalLanguage: fileName?.split('.').pop() ?? undefined,
+      scanResult,
+      selectedPrimitives: selected.map(s => s.name),
+      report: restorationReport,
+    });
+
     entry.status = 'complete';
     setQueueEntry({ ...entry });
     setPhase('debrief');
     setIsRestoring(false);
-  }, [scanResult, isRestoring]);
+  }, [scanResult, isRestoring, code, fileName]);
 
   const handleExport = useCallback(() => {
     const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator' || identityRole === 'studio';
@@ -125,32 +144,36 @@ export default function RestorationShop() {
       return;
     }
 
-    // Build and trigger ZIP download
     if (!report) return;
     toast.success('Preparing your refurbished code package for download...');
 
     import('jszip').then(({ default: JSZip }) => {
       const zip = new JSZip();
+      const fingerprint = report.cjpiCertificate.fingerprint;
 
-      // Original source
-      zip.file('original-source.txt', code || '// No source provided');
+      // ═══ LICENSE ═══
+      zip.file('LICENSE.txt', generateLicense(report.id, fingerprint));
 
-      // Refurbishment report as JSON
+      // ═══ Dual-Layer Source ═══
+      zip.file('src/original-source.txt', code || '// No source provided');
+      zip.file('src/refurbished-source.ts', refurbishedCode || '// Refurbished code not generated');
+
+      // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
 
-      // Pipeline details
+      // ═══ Pipeline Details ═══
       const pipelineMd = report.pipelineDetails.map(
         p => `### Step ${p.order}: ${p.primitiveName}\n${p.action}\nDuration: ${p.durationMs}ms`
       ).join('\n\n');
-      zip.file('docs/pipeline-details.md', `# Pipeline Details\n\n${pipelineMd}`);
+      zip.file('docs/pipeline-details.md', `# Pipeline Details\n\nFingerprint: \`${fingerprint}\`\nSerial: \`${report.id}\`\n\n${pipelineMd}`);
 
-      // New capabilities
+      // ═══ New Capabilities ═══
       const capsMd = report.newCapabilities.map(
         c => `### ${c.name}\n${c.description}\n\n\`\`\`typescript\n${c.usageExample}\n\`\`\``
       ).join('\n\n');
       zip.file('docs/new-capabilities.md', `# New Capabilities\n\n${capsMd}`);
 
-      // Test harness config
+      // ═══ Testing Guide ═══
       const testMd = [
         `# Testing Guide`,
         `\nInstall: \`${report.testingGuide.installCommand}\``,
@@ -160,14 +183,71 @@ export default function RestorationShop() {
       ].join('\n');
       zip.file('docs/testing-guide.md', testMd);
 
-      // CJPI certificate
+      // ═══ Test Harness Config ═══
+      const testConfig = {
+        serialNumber: report.id,
+        fingerprint,
+        configPath: report.testingGuide.configPath,
+        primitives: report.primitiveManifest.map(p => p.name),
+        testCommand: report.testingGuide.testCommand,
+      };
+      zip.file('test-harness.config.json', JSON.stringify(testConfig, null, 2));
+
+      // ═══ CJPI Certificate ═══
       zip.file('docs/cjpi-certificate.json', JSON.stringify(report.cjpiCertificate, null, 2));
 
-      // Error codes
+      // ═══ Error Codes ═══
       const errorMd = report.errorCodes.map(
         e => `### ${e.code}\n**Trigger:** ${e.trigger}\n**Resolution:** ${e.resolution}`
       ).join('\n\n');
       zip.file('docs/error-codes.md', `# Error Codes\n\n${errorMd}`);
+
+      // ═══ Vulnerability Assessment ═══
+      const vulnMd = report.vulnerabilityAssessment.map(
+        v => `### ${v.title}\n**Severity:** ${v.severity}\n**Status:** ${v.status}\n${v.details}`
+      ).join('\n\n');
+      zip.file('docs/vulnerability-assessment.md', `# Vulnerability Assessment\n\n${vulnMd}`);
+
+      // ═══ Primitive Manifest ═══
+      const manifestMd = report.primitiveManifest.map(
+        p => `- **${p.name}** (${p.category}): ${p.contribution}`
+      ).join('\n');
+      zip.file('docs/primitive-manifest.md', `# Primitive Manifest\n\n${manifestMd}`);
+
+      // ═══ README ═══
+      const readmeMd = [
+        `# CMPSBL® Refurbished Code Package`,
+        ``,
+        `**Serial:** \`${report.id}\``,
+        `**Fingerprint:** \`${fingerprint}\``,
+        `**CJPI Score:** ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier})`,
+        `**Primitives Applied:** ${report.primitiveManifest.map(p => p.name).join(', ')}`,
+        `**Generated:** ${new Date().toISOString()}`,
+        ``,
+        `## Contents`,
+        ``,
+        `- \`src/original-source.txt\` — Your original code`,
+        `- \`src/refurbished-source.ts\` — Hardened code with primitive guards`,
+        `- \`restoration-report.json\` — Full machine-readable report`,
+        `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
+        `- \`LICENSE.txt\` — Usage license`,
+        `- \`docs/\` — Pipeline details, capabilities, testing guide, error codes, CJPI cert`,
+        ``,
+        `## Quick Start`,
+        ``,
+        `\`\`\`bash`,
+        `npm install @cmpsbl/test-harness`,
+        `npx cmpsbl-test --config ./restoration-report.json`,
+        `\`\`\``,
+        ``,
+        `## Support`,
+        ``,
+        `Visit https://cmpsbl.com and use your fingerprint ID (\`${fingerprint}\`)`,
+        `to have DECODE pull up this refurbishment for customer support.`,
+        ``,
+        `© ${new Date().getFullYear()} PromptFluid™ · CMPSBL®`,
+      ].join('\n');
+      zip.file('README.md', readmeMd);
 
       zip.generateAsync({ type: 'blob' }).then(blob => {
         import('file-saver').then(({ saveAs }) => {
@@ -176,7 +256,7 @@ export default function RestorationShop() {
         });
       });
     });
-  }, [report, code, identityRole]);
+  }, [report, code, refurbishedCode, identityRole]);
 
   const resetFlow = useCallback(() => {
     setPhase('upload');
@@ -185,6 +265,8 @@ export default function RestorationShop() {
     setScanResult(null);
     setReport(null);
     setQueueEntry(null);
+    setSelectedPrims([]);
+    setRefurbishedCode('');
   }, []);
 
   const currentPhaseIdx = PHASE_META.findIndex(p => p.key === phase);
@@ -286,7 +368,6 @@ export default function RestorationShop() {
                   <h2 className="text-sm font-bold text-foreground">Upload Your Code</h2>
                 </div>
 
-                {/* File upload drop zone */}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -365,6 +446,7 @@ export default function RestorationShop() {
                   description: f.description,
                   primitiveRecommendation: f.primitiveRecommendation,
                 }))}
+                scanContext={{ originalCode: code, scanResult }}
               />
 
               <div className="grid grid-cols-2 gap-3">
@@ -417,8 +499,23 @@ export default function RestorationShop() {
           {/* DEBRIEF PHASE */}
           {phase === 'debrief' && report && (
             <div className="max-w-3xl mx-auto space-y-6">
-              <DecodeDebrief report={report} scanResult={scanResult} />
+              <DecodeDebrief
+                report={report}
+                scanResult={scanResult}
+                originalCode={code}
+                refurbishedCode={refurbishedCode}
+                selectedPrimitives={selectedPrims}
+              />
               <RestorationReportView report={report} />
+
+              {/* Fingerprint ID notice */}
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
+                <p className="text-xs text-muted-foreground mb-1">Your Fingerprint ID</p>
+                <p className="text-sm font-mono font-bold text-primary">{report.cjpiCertificate.fingerprint}</p>
+                <p className="text-[10px] text-muted-foreground mt-2">
+                  Save this ID — you can return anytime and use it with DECODE to pull up this refurbishment for support.
+                </p>
+              </div>
 
               <div className="flex gap-3">
                 <Button

@@ -1,7 +1,7 @@
 /**
  * DecodeFactoryVoice — DECODE as the Voice of the Factory
  * Three roles: Honest Mechanic, Recommendation Engine, Discovery Commentator
- * Contextual panel that appears on factory pages to explain findings.
+ * Now context-aware: receives scan data so DECODE chat is stateful within the flow.
  */
 
 import { useState, useCallback } from "react";
@@ -18,7 +18,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useDecodeStore } from "@/stores/decodeStore";
+import type { ScanResult } from "@/lib/factory/scan-team";
 
 export type DecodeVoiceRole = "mechanic" | "recommender" | "commentator";
 
@@ -46,6 +46,8 @@ interface DecodeFactoryVoiceProps {
   discoveries?: DiscoveryComment[];
   /** Primitives recommended after scan */
   recommendedPrimitives?: string[];
+  /** Full scan context for contextual DECODE questions */
+  scanContext?: { originalCode: string; scanResult: ScanResult };
   className?: string;
 }
 
@@ -58,7 +60,7 @@ const ROLE_CONFIG: Record<DecodeVoiceRole, {
   mechanic: {
     icon: Wrench,
     title: "The Honest Mechanic",
-    subtitle: "DECODE explains what ENCODE found in your code",
+    subtitle: "DECODE explains what the scan team found in your code",
     accent: "text-amber-400",
   },
   recommender: {
@@ -90,23 +92,51 @@ const TIER_COLORS: Record<string, string> = {
   Apex: "text-primary",
 };
 
+/** Context-aware inline Q&A for the diagnostic phase */
+function getDiagnosticAnswer(question: string, ctx?: { originalCode: string; scanResult: ScanResult }): string {
+  if (!ctx) return "Upload your code first and I'll be able to answer questions about the diagnostic results.";
+  
+  const q = question.toLowerCase();
+  const { scanResult } = ctx;
+  const critCount = scanResult.findings.filter(f => f.severity === 'critical').length;
+  const warnCount = scanResult.findings.filter(f => f.severity === 'warning').length;
+
+  if (/what.*found|what.*wrong|issue|problem|vulnerability/i.test(q)) {
+    return `The scan team (ENCODE, ORACLE, ENGINEER) found ${scanResult.findings.length} total issues: ${critCount} critical and ${warnCount} warnings. Critical items need immediate attention — the primitives I recommend will address them. Your current CJPI estimate is ${scanResult.cjpiEstimate} with an architectural runway of ${scanResult.architecturalRunway} months.`;
+  }
+  if (/cjpi|score/i.test(q)) {
+    return `Your current CJPI estimate is ${scanResult.cjpiEstimate}. After applying the recommended primitives, this score will improve. The runway estimate is ${scanResult.architecturalRunway} months — that's how long your current architecture can sustain growth before structural issues compound.`;
+  }
+  if (/recommend|which.*primitive|what.*should/i.test(q)) {
+    const topRecs = scanResult.recommendedPrimitives.slice(0, 5).map(p => p.name).join(', ');
+    return `Based on the scan, the highest-impact primitives for your code are: ${topRecs}. Each one addresses specific vulnerabilities found by the scan team. Select them in the next step to apply the hardening.`;
+  }
+
+  return `I found ${scanResult.findings.length} issues in your code (${critCount} critical, ${warnCount} warnings) with a CJPI estimate of ${scanResult.cjpiEstimate}. Ask me about specific findings, your score, or which primitives I recommend.`;
+}
+
 export function DecodeFactoryVoice({
   role,
   findings = [],
   discoveries = [],
   recommendedPrimitives = [],
+  scanContext,
   className,
 }: DecodeFactoryVoiceProps) {
   const [expanded, setExpanded] = useState(true);
+  const [inlineQuestion, setInlineQuestion] = useState('');
+  const [inlineAnswer, setInlineAnswer] = useState<string | null>(null);
   const config = ROLE_CONFIG[role];
   const Icon = config.icon;
-  const openDecode = useDecodeStore(s => s.open);
 
   const toggleExpanded = useCallback(() => setExpanded(prev => !prev), []);
 
-  const handleAskDecode = useCallback(() => {
-    openDecode("assistant");
-  }, [openDecode]);
+  const handleInlineAsk = useCallback(() => {
+    const q = inlineQuestion.trim();
+    if (!q) return;
+    setInlineAnswer(getDiagnosticAnswer(q, scanContext));
+    setInlineQuestion('');
+  }, [inlineQuestion, scanContext]);
 
   return (
     <div className={cn(
@@ -216,7 +246,7 @@ export function DecodeFactoryVoice({
             </div>
           )}
 
-          {/* Empty state */}
+          {/* Empty states */}
           {role === "mechanic" && findings.length === 0 && (
             <div className="text-center py-6">
               <MessageCircle className="w-8 h-8 text-muted-foreground/30 mx-auto mb-2" />
@@ -230,17 +260,34 @@ export function DecodeFactoryVoice({
             </div>
           )}
 
-          {/* Open full DECODE chat — wired to store */}
-          <div className="pt-2 border-t border-border/20">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full text-xs text-muted-foreground hover:text-foreground"
-              onClick={handleAskDecode}
-            >
-              <MessageCircle className="w-3 h-3 mr-1.5" />
-              Ask DECODE a question
-            </Button>
+          {/* Inline contextual Q&A — replaces stateless "Ask DECODE" button */}
+          <div className="pt-2 border-t border-border/20 space-y-2">
+            {inlineAnswer && (
+              <div className="rounded-lg border border-primary/20 bg-primary/5 p-3">
+                <p className="text-[10px] font-semibold text-primary mb-1">DECODE</p>
+                <p className="text-xs text-foreground/90 leading-relaxed">{inlineAnswer}</p>
+              </div>
+            )}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={inlineQuestion}
+                onChange={(e) => setInlineQuestion(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleInlineAsk(); }}
+                placeholder="Ask DECODE about this diagnostic..."
+                className="flex-1 h-8 rounded-md border border-border/30 bg-muted/30 px-3 text-xs text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/40"
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 px-3 text-xs"
+                onClick={handleInlineAsk}
+                disabled={!inlineQuestion.trim()}
+              >
+                <MessageCircle className="w-3 h-3 mr-1" />
+                Ask
+              </Button>
+            </div>
           </div>
         </div>
       )}
