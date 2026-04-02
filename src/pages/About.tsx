@@ -534,7 +534,7 @@ export default function About() {
               />
 
               <div className="relative">
-                <Badge className="mb-5 px-3 py-1 text-[10px] sm:text-xs bg-white/15 text-white border-white/20 font-semibold">
+                <Badge className="mb-5 px-3 py-1 text-xs bg-white/15 text-white border-white/20 font-semibold">
                   Signal → Silicon
                 </Badge>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">
