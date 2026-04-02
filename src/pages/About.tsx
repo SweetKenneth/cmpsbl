@@ -307,7 +307,7 @@ export default function About() {
                   <Link to="/modules" className="text-primary hover:underline font-medium">specialized primitives</Link>.{" "}
                   MEMORY persists context via{" "}
                   <a href="https://en.wikipedia.org/wiki/Spaced_repetition" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">spaced repetition</a>.{" "}
-                   Self-improvement cycles consolidate knowledge. <Link to="/modules/defense" className="text-primary hover:underline font-medium">Security</Link>{" "}
+                   Self-improvement cycles consolidate knowledge. <Link to="/architecture" className="text-primary hover:underline font-medium">Security</Link>{" "}
                    adapts to threats. Smart routing sends every call to the optimal provider.
                 </p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
