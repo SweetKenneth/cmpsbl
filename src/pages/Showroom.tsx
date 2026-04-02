@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { PublicNav } from '@/components/PublicNav';
+import { SEO } from '@/components/SEO';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
