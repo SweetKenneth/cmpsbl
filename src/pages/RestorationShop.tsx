@@ -100,34 +100,48 @@ export default function RestorationShop() {
   const currentPhaseIdx = PHASE_META.findIndex(p => p.key === phase);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <SEO
         title="The Refurbishment Lab | CMPSBL® — Code Refurbishment with 40 Primitives"
         description="Upload your code. Our three-primitive scan team identifies vulnerabilities. Select up to 20 primitives to harden it. 3-day evaluation period included."
         canonical="https://cmpsbl.com/ascension"
       />
 
+      {/* Lab ambient — glow + scan + data streams */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 gradient-mesh opacity-60" />
+        <div
+          className="absolute -top-48 left-1/3 w-[700px] h-[700px] rounded-full animate-hero-orb-1"
+          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 50%)" }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
+          style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.05) 0%, transparent 50%)" }}
+        />
+        {/* Scan line */}
+        <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
+          <div className="absolute inset-x-0 h-px lab-scan-line" style={{ animationDuration: "10s" }} />
+        </div>
+        {/* Dot grid */}
+        <div className="absolute inset-0" style={{
+          backgroundImage: "radial-gradient(circle, hsl(var(--primary) / 0.02) 1px, transparent 1px)",
+          backgroundSize: "36px 36px",
+        }} />
+      </div>
+
       <PublicNav />
 
       {/* Breadcrumb */}
-      <div className="container mx-auto px-3 sm:px-4 pt-20">
+      <div className="container mx-auto px-3 sm:px-4 pt-20 relative z-10">
         <PublicBreadcrumb />
       </div>
 
       {/* Hero */}
-      <section className="relative px-3 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-16">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute inset-0 bg-background" />
-          <div
-            className="absolute -top-48 left-1/3 w-[700px] h-[700px] rounded-full"
-            style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.06) 0%, transparent 50%)" }}
-          />
-        </div>
-
+      <section className="relative px-3 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-16 z-10">
         <div className="relative z-10 max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6">
-            <Wrench className="w-3 h-3 text-primary" />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Refurbishment Lab</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/20 bg-primary/5 mb-6">
+            <div className="w-1.5 h-1.5 rounded-full bg-neon-green lab-status-blink" />
+            <span className="text-xs font-medium text-primary tracking-wide">The Refurbishment Lab</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground mb-4 leading-[1.05]">
