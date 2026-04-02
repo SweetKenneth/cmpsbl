@@ -16,6 +16,8 @@ import { FactoryPillars } from "@/components/home/FactoryPillars";
 import { CustomerJourney } from "@/components/home/CustomerJourney";
 import { ShowroomPreview } from "@/components/home/ShowroomPreview";
 import { FactoryGuarantee } from "@/components/home/FactoryGuarantee";
+import { JunkyardBanner } from "@/components/factory/JunkyardBanner";
+import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
