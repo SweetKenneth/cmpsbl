@@ -123,6 +123,38 @@ export function DecodeChat() {
     setInput('');
     setShowMenu(false);
 
+    // ─── Fingerprint Detection Layer ───
+    // Detect if user pasted a fingerprint ID (hex-like string, 8+ chars)
+    const fingerprintMatch = userMessage.match(/\b([a-f0-9]{8,})\b/i);
+    if (fingerprintMatch && userMessage.length < 120) {
+      const possibleFp = fingerprintMatch[1];
+      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+      setIsLoading(true);
+      try {
+        const session = await lookupByFingerprint(possibleFp);
+        if (session) {
+          const primList = session.selectedPrimitives.join(', ');
+          const lookupReply = `Found it! 🔍 Here's your refurbishment record:\n\n` +
+            `**Fingerprint:** \`${session.fingerprint}\`\n` +
+            `**Serial:** \`${session.serialNumber}\`\n` +
+            `**CJPI Score:** ${session.cjpiScore}/100 (${session.cjpiTier})\n` +
+            `**Primitives Applied:** ${primList}\n` +
+            `**Language:** ${session.originalLanguage ?? 'Unknown'}\n` +
+            `**Date:** ${new Date(session.createdAt).toLocaleDateString()}\n\n` +
+            `I have your full original code, scan results, and refurbishment report on file. ` +
+            `What would you like to know? I can explain any primitive that was applied, walk you through the findings, or help with next steps.`;
+          setMessages(prev => [...prev, { role: 'assistant', content: lookupReply }]);
+          setIsLoading(false);
+          return;
+        }
+      } catch {
+        // Not a fingerprint or lookup failed — fall through to normal flow
+      }
+      setIsLoading(false);
+      // Remove the user message we just added so the normal flow can re-add it
+      setMessages(prev => prev.slice(0, -1));
+    }
+
     // ─── Terminal Command Layer ───
     if (isCommand(userMessage)) {
       const { capabilities } = useDecodeStore.getState();
