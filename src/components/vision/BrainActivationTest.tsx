@@ -15,7 +15,7 @@ export default function BrainActivationTest() {
     setResults(null);
 
     try {
-      console.log('📡 Invoking pf-brain-test-cycle...');
+      // Invoking brain test cycle
       toast.info('Running Brain activation test...');
       
       const { data, error } = await supabase.functions.invoke('pf-brain-test-cycle');
