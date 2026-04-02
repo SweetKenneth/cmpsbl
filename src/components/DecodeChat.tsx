@@ -2,6 +2,7 @@
  * CMPSBL® DECODE Chat — Unified Conversational Interface
  * Modes: assistant | support | builder | governor
  * Single persistent conversation memory across all modes.
+ * Fingerprint ID detection for return-visit refurbishment lookups.
  */
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -15,6 +16,7 @@ import { toast } from "sonner";
 import { useLocation } from "react-router-dom";
 import { useDecodeStore, type DecodeMode } from "@/stores/decodeStore";
 import { isCommand, routeCommand } from "@/lib/decode/command-router";
+import { lookupByFingerprint } from "@/lib/factory/restoration-session";
 
 interface Message {
   role: 'user' | 'assistant';
