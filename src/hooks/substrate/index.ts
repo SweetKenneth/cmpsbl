@@ -1,6 +1,6 @@
 /**
  * Substrate Node Hooks — Barrel Export
- * 40-Primitive / 12-Sector Architecture Hooks
+ * 40-Primitive / 12-Category Architecture Hooks
  *
  * Sectors: CORE, SYSTEM, CCR, OCG, Execution, ESZ, EPZ, EMZ, CSZ, Fields, Plane, Shell
  */

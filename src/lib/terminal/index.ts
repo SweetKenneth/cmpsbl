@@ -101,7 +101,7 @@ export {
   registerHardeningHandlers,
 } from './hardening-handlers';
 
-// Expansion module handlers (40-Primitive / 12-Sector Architecture)
+// Expansion module handlers (40-Primitive / 12-Category Architecture)
 export {
   registerExpansionHandlers,
 } from './expansion-handlers';

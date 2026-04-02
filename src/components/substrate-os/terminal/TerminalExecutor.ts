@@ -982,7 +982,7 @@ export async function executeCommand(
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  40-Primitive / 12-Sector Field-Based Topology — Full AI Substrate
+│  40-Primitive / 12-Category Field-Based Topology — Full AI Substrate
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}

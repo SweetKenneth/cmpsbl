@@ -1,6 +1,6 @@
 /**
  * CMPSBL® Substrate Client
- * 40-Primitive / 12-Sector Field-Based Topology
+ * 40-Primitive / 12-Category Field-Based Topology
  *
  * CORE → SYSTEM → CCR (BRAIN, MEMORY, DREAM)
  *   → OCG (RIPPLE, ACCESS, IDENTITY, RELAY, AUDIT, NERVE)
