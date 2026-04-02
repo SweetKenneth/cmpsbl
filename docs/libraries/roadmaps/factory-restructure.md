@@ -161,7 +161,7 @@ No 20 different price points for 20 different things. Two revenue streams, both 
 
 | Tier | Price | What You Get |
 |------|-------|-------------|
-| **Builder** | Included | Browse the Showroom. View diagnostics. Limited Ascension cycles. |
+| **Builder** | Included | Browse the Showroom. Access the Junkyard (unlimited Raw-tier picks). View diagnostics. Limited Ascension cycles. |
 | **Studio** | $29/mo | Full Restoration Shop access. Rate-limited queue. |
 | **Creator** | $49/mo | Priority queue. More concurrent restorations. |
 | **Architect** | $79/mo | Maximum throughput. Full primitive catalog access. |
