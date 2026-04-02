@@ -154,7 +154,7 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
             )}>
               <engine.icon className="w-6 h-6" style={{ color: `hsl(${engine.color})` }} />
             </div>
-            <Badge variant="outline" className={cn("text-[11px] font-mono", tierConfig.badgeClass)}>
+            <Badge variant="outline" className={cn("text-xs font-mono", tierConfig.badgeClass)}>
               {engine.tier}
             </Badge>
             <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground border-border/30">
