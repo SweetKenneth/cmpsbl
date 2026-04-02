@@ -1,6 +1,6 @@
 /**
  * ShowroomPreview — Teaser for the Showroom with mini horizontal scroll
- * Matches the new tier-carousel Showroom layout
+ * Premium glass cards with image reveal and shimmer effects
  */
 
 import { useRef } from "react";
@@ -18,13 +18,13 @@ import imgResilience from "@/assets/showroom/resilience-recovery.jpg";
 import imgOptimization from "@/assets/showroom/performance-optimization.jpg";
 
 const PREVIEW_ITEMS = [
-  { name: "Compliance Certification Suite", score: 100, tier: "Apex", price: "$1,952", image: imgGovernance, color: "text-primary", border: "border-primary/30" },
-  { name: "Drift Prevention Engine", score: 97, tier: "Mythic", price: "$194", image: imgGovernance, color: "text-purple-400", border: "border-purple-500/30" },
-  { name: "Encrypted State Vault", score: 96, tier: "Mythic", price: "$192", image: imgSecurity, color: "text-purple-400", border: "border-purple-500/30" },
-  { name: "Real-Time Anomaly Detector", score: 93, tier: "Relic", price: "$140", image: imgObservability, color: "text-amber-400", border: "border-amber-500/30" },
-  { name: "Self-Healing Runtime", score: 91, tier: "Relic", price: "$137", image: imgResilience, color: "text-amber-400", border: "border-amber-500/30" },
-  { name: "Predictive Decision Core", score: 88, tier: "Prime", price: "$110", image: imgIntelligence, color: "text-sky-400", border: "border-sky-500/30" },
-  { name: "Cost Optimization Engine", score: 82, tier: "Prime", price: "$103", image: imgOptimization, color: "text-sky-400", border: "border-sky-500/30" },
+  { name: "Compliance Certification Suite", score: 100, tier: "Apex", price: "$1,952", image: imgGovernance, color: "text-primary", border: "border-primary/30", glow: "--primary" },
+  { name: "Drift Prevention Engine", score: 97, tier: "Mythic", price: "$194", image: imgGovernance, color: "text-neon-purple", border: "border-neon-purple/30", glow: "--neon-purple" },
+  { name: "Encrypted State Vault", score: 96, tier: "Mythic", price: "$192", image: imgSecurity, color: "text-neon-purple", border: "border-neon-purple/30", glow: "--neon-purple" },
+  { name: "Real-Time Anomaly Detector", score: 93, tier: "Relic", price: "$140", image: imgObservability, color: "text-neon-amber", border: "border-neon-amber/30", glow: "--neon-amber" },
+  { name: "Self-Healing Runtime", score: 91, tier: "Relic", price: "$137", image: imgResilience, color: "text-neon-amber", border: "border-neon-amber/30", glow: "--neon-amber" },
+  { name: "Predictive Decision Core", score: 88, tier: "Prime", price: "$110", image: imgIntelligence, color: "text-neon-cyan", border: "border-neon-cyan/30", glow: "--neon-cyan" },
+  { name: "Cost Optimization Engine", score: 82, tier: "Prime", price: "$103", image: imgOptimization, color: "text-neon-cyan", border: "border-neon-cyan/30", glow: "--neon-cyan" },
 ] as const;
 
 export function ShowroomPreview() {
@@ -39,7 +39,7 @@ export function ShowroomPreview() {
     <section className="relative z-10 px-4 sm:px-6 py-14 sm:py-20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 lab-shimmer">
             <Sparkles className="w-3 h-3 text-primary" />
             <span className="text-xs font-medium text-muted-foreground tracking-wide">The Showroom</span>
           </div>
@@ -51,12 +51,12 @@ export function ShowroomPreview() {
           </p>
         </div>
 
-        {/* Horizontal scroll carousel — matches Showroom page */}
+        {/* Horizontal scroll carousel */}
         <div className="group relative mb-8">
           <button
             onClick={() => scroll('left')}
             aria-label="Scroll left"
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex hover:scale-110 active:scale-95 transition-transform"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -65,16 +65,17 @@ export function ShowroomPreview() {
             className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            {PREVIEW_ITEMS.map((item) => (
+            {PREVIEW_ITEMS.map((item, idx) => (
               <div
                 key={item.name}
                 className={cn(
                   "snap-start shrink-0 w-[240px] sm:w-[280px] rounded-2xl border bg-card overflow-hidden",
-                  "hover:scale-[1.02] hover:shadow-xl transition-all duration-300",
-                  "border-border/40",
+                  "hover:shadow-xl transition-all duration-300 lab-card-glow",
+                  "border-border/40 animate-fade-in opacity-0",
                 )}
+                style={{ animationDelay: `${idx * 0.06}s`, animationFillMode: "both" }}
               >
-                {/* Image */}
+                {/* Image with overlay */}
                 <div className="relative h-32 overflow-hidden">
                   <img
                     src={item.image}
@@ -82,9 +83,14 @@ export function ShowroomPreview() {
                     loading="lazy"
                     width={768}
                     height={512}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                  {/* Tier-colored top line */}
+                  <div
+                    className="absolute top-0 inset-x-0 h-[2px]"
+                    style={{ background: `linear-gradient(90deg, hsl(var(${item.glow}) / 0.6), hsl(var(${item.glow}) / 0.1))` }}
+                  />
                   <Badge
                     variant="outline"
                     className={cn("absolute top-2.5 left-2.5 text-[10px] font-black tracking-wider backdrop-blur-sm", item.border, item.color)}
@@ -101,7 +107,10 @@ export function ShowroomPreview() {
                   <h3 className="text-sm font-bold text-foreground leading-tight mb-1.5">{item.name}</h3>
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-mono text-muted-foreground/50">CJPI {item.score}</span>
-                    <span className={cn("text-[10px] font-bold", item.color)}>{item.tier}</span>
+                    <div className="flex items-center gap-1">
+                      <span className="w-1 h-1 rounded-full lab-status-blink" style={{ background: `hsl(var(${item.glow}))` }} />
+                      <span className={cn("text-[10px] font-bold", item.color)}>{item.tier}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -110,7 +119,7 @@ export function ShowroomPreview() {
           <button
             onClick={() => scroll('right')}
             aria-label="Scroll right"
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex hover:scale-110 active:scale-95 transition-transform"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -121,7 +130,7 @@ export function ShowroomPreview() {
           <p className="text-xs sm:text-sm text-muted-foreground/60 mb-5 max-w-md mx-auto">
             Unique certificate, structural fingerprint, and retirement seal with every purchase.
           </p>
-          <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold text-sm">
+          <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
             <Link to="/showroom">
               <Sparkles className="w-4 h-4 mr-2" />
               Browse the Showroom

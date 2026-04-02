@@ -1,7 +1,7 @@
 /**
  * Enhanced Footer — Legacy Guide + Factory Navigation
  * 4 columns × 5 links each = 20 footer links (uniform)
- * Legacy substrate pages preserved for documentation access
+ * Polished with shimmer bar, glass treatment, and hover micro-interactions
  */
 
 import { useState } from "react";
@@ -97,27 +97,27 @@ export function EnhancedFooter() {
       <footer className="relative z-20 border-t border-border/50 bg-gradient-to-b from-background via-background to-muted/20" role="contentinfo">
         {/* Memory Stream flowing accent bar at top of footer */}
         <div className="absolute inset-x-0 top-0 h-[3px] memory-stream-bar opacity-80" />
-        <div className="absolute inset-x-0 top-[3px] h-px bg-gradient-to-r from-transparent via-[hsl(var(--neon-purple)/0.2)] to-transparent" />
-        <div className="absolute inset-x-0 top-[4px] h-10 bg-gradient-to-b from-[hsl(var(--neon-purple)/0.03)] to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-[3px] h-px bg-gradient-to-r from-transparent via-neon-purple/20 to-transparent" />
+        <div className="absolute inset-x-0 top-[4px] h-10 bg-gradient-to-b from-neon-purple/[0.03] to-transparent pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none opacity-[0.02]" style={{backgroundImage: "radial-gradient(circle at 20% 50%, hsl(var(--neon-cyan)), transparent 50%), radial-gradient(circle at 80% 50%, hsl(var(--neon-purple)), transparent 50%)"}} />
 
         <div className="container mx-auto max-w-7xl px-4 py-10 sm:py-12 md:py-16">
           <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] lg:gap-10">
             {/* Brand Column */}
             <div className="col-span-2 sm:col-span-3 lg:col-span-1 mb-2 lg:mb-0">
-              <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3">
+              <Link to="/" className="inline-block hover:opacity-80 transition-opacity mb-3 hover:scale-105 active:scale-95 transition-transform duration-200">
                 <CmpsblLogo size="sm" className="sm:hidden" />
                 <CmpsblLogo size="md" className="hidden sm:block" />
               </Link>
               <p className="text-xs sm:text-sm text-foreground font-semibold leading-relaxed mb-1 max-w-[280px]">
-                Classic Car Factory for Software
+                Software Refurbishment Center
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed mb-2 max-w-[280px]">
                 Memory Stream discovers. Ascension restores. 40 Primitives power everything.
               </p>
               <Link 
                 to="/plans" 
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] transition-colors mb-4"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neon-cyan hover:text-neon-cyan/80 transition-colors mb-4"
               >
                 View Plans → Builder (free) · Creator · Architect
               </Link>
@@ -130,7 +130,7 @@ export function EnhancedFooter() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-[hsl(var(--neon-cyan)/0.1)] hover:text-[hsl(var(--neon-cyan))] hover:scale-110 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 touch-target"
+                    className="w-10 h-10 sm:w-9 sm:h-9 rounded-xl sm:rounded-lg bg-muted/50 hover:bg-neon-cyan/10 hover:text-neon-cyan hover:scale-110 hover:-translate-y-1 flex items-center justify-center transition-all duration-300 touch-target"
                     title={social.name}
                   >
                     <social.icon className="w-5 h-5 sm:w-4 sm:h-4" />
@@ -153,7 +153,7 @@ export function EnhancedFooter() {
                           rel="noopener noreferrer"
                           className={cn(
                             "text-sm transition-all duration-300 inline-block underline-reveal",
-                            link.highlight ? "text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] font-medium" : "text-muted-foreground hover:text-foreground"
+                            link.highlight ? "text-neon-cyan hover:text-neon-cyan/80 font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
@@ -163,7 +163,7 @@ export function EnhancedFooter() {
                           to={link.href}
                           className={cn(
                             "text-sm transition-all duration-300 inline-block underline-reveal hover:translate-x-0.5",
-                            link.highlight ? "text-[hsl(var(--neon-cyan))] hover:text-[hsl(var(--neon-cyan)/0.8)] font-medium" : "text-muted-foreground hover:text-foreground"
+                            link.highlight ? "text-neon-cyan hover:text-neon-cyan/80 font-medium" : "text-muted-foreground hover:text-foreground"
                           )}
                         >
                           {link.name}
@@ -192,7 +192,7 @@ export function EnhancedFooter() {
                     <button
                       key={link.name}
                       onClick={() => setXctblOpen(true)}
-                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-[hsl(var(--neon-purple))] transition-colors"
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-neon-purple transition-colors"
                     >
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
@@ -216,7 +216,7 @@ export function EnhancedFooter() {
                     <button
                       key={link.name}
                       onClick={() => setXctblOpen(true)}
-                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-[hsl(var(--neon-purple))] transition-colors min-h-[36px] py-1"
+                      className="group inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-neon-purple transition-colors min-h-[36px] py-1"
                     >
                       <Gamepad2 className="w-3 h-3 group-hover:animate-pulse" />
                       {link.name}
