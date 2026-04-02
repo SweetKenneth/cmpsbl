@@ -252,7 +252,7 @@ Every auxiliary node that passes through Ascension gets its computational signat
 
 ### Three Uses for Every Stored Node
 
-1. **Feed Memory Stream** — Scouts discover using production-hardened patterns, not just the original 42 Primitives. The showroom gets more targeted with every restoration.
+1. **Feed Memory Stream** — Scouts discover using production-hardened patterns, not just the original 40 Primitives. The showroom gets more targeted with every restoration.
 2. **Upgrade Ascension** — If a customer's node is stronger than the original, replace it. The factory upgrades itself from the work of its own customers.
 3. **Curate specialty substrates** — Fintech nodes → financial substrate. Healthcare nodes → medical substrate. Never design from scratch again.
 

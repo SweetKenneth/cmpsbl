@@ -234,7 +234,7 @@ End-to-end request tracing across all 40 primitives with automatic bottleneck de
 
 ## 8. Key Insight
 
-> "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 42 primitives — each one sealed, governed, and compounding daily through CLM and DREAM. The moat isn't one capability. It's all 80 working together."
+> "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. > "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 40 primitives — each one sealed, governed, and compounding daily through CLM and DREAM. The moat isn't one capability. It's all 80 working together." — each one sealed, governed, and compounding daily through CLM and DREAM. The moat isn't one capability. It's all 80 working together."
 
 ---
 

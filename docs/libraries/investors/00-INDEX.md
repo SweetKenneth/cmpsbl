@@ -43,7 +43,7 @@ This library provides investors, advisors, and potential partners with a compreh
 - **Deck expanded** from 18 to 20 documents — added BRAIN Organ deep-dive and full CMPSBL Capabilities catalog
 - **DREAM Engine** — Added Pre-conscious Emergence (Synthetic Intuition Engine) section with three-layer cognitive process
 - **BRAIN Organ** (new) — Knowledge Fusion Reactor S-Tier deep-dive, Associative Recall Mesh, substrate integration map
-- **CMPSBL Capabilities** (new) — 42 primitives, 80 Crown Jewels, 17 S-Tier capabilities with definitions and CJPI scores
+- **CMPSBL Capabilities** (new) — - **CMPSBL Capabilities** (new) — 40 primitives, 80 Crown Jewels, 17 S-Tier capabilities with definitions and CJPI scores, 17 S-Tier capabilities with definitions and CJPI scores
 - **Why Invest Now** — Renumbered to Document 20 as the closing document
 
 ---
