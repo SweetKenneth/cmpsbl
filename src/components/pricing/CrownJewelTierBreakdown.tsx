@@ -72,7 +72,7 @@ const STUDIO_JEWELS: CrownJewelCapability[] = [
   { name: 'CLM Gradient Accumulator', primitive: 'CLM', description: 'Accumulates learning gradients across sessions for continuous improvement without catastrophic forgetting.' },
   { name: 'Discovery Rarity Classifier', primitive: 'DREAM', description: 'Classifies Memory Stream discoveries by rarity tier — Common through Mythic.' },
   { name: 'SEBA Pipeline Optimizer', primitive: 'SEBA', description: 'Optimizes the full discovery pipeline for throughput without sacrificing quality gates.' },
-  { name: 'Topology Health Monitor', primitive: 'OBSERVABILITY', description: 'Monitors the health of all 42 primitive interconnections in real-time.' },
+  { name: 'Topology Health Monitor', primitive: 'OBSERVABILITY', description: 'Monitors the health of all 40 primitive interconnections in real-time.' },
   { name: 'Adaptive Threshold Tuner', primitive: 'ANALYTICS', description: 'Automatically tunes alert and activation thresholds based on your usage patterns.' },
   { name: 'Circuit Breaker Orchestrator', primitive: 'CORE', description: 'Coordinates circuit breakers across primitive boundaries to prevent cascade failures.' },
   { name: 'Intent Chain Debugger', primitive: 'CORTEX', description: 'Step-through debugging for multi-step intent resolution chains with state inspection.' },

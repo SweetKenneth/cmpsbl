@@ -1476,7 +1476,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     sections: [
       {
         heading: "Overview",
-        content: "CMPSBL's 42-primitive substrate contains 80 governor-curated Crown Jewel capabilities — the highest-value, most differentiated capabilities across the entire topology. 52 are activated under tier-gated sealed delivery. 28 are permanently guarded as architecture-class IP. 17 are classified S-Tier with Novelty or Utility scores ≥ 94.",
+        content: "CMPSBL's 40-primitive substrate contains 80 governor-curated Crown Jewel capabilities — the highest-value, most differentiated capabilities across the entire topology. 52 are activated under tier-gated sealed delivery. 28 are permanently guarded as architecture-class IP. 17 are classified S-Tier with Novelty or Utility scores ≥ 94.",
         table: {
           headers: ["Category", "Count", "Status"],
           rows: [

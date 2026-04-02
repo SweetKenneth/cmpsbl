@@ -51,7 +51,7 @@ The 40 specialists who make everything possible. Pure algorithmic code — zero 
 
 BRAIN learns everything. DREAM synthesizes while you sleep. SHADOW holds the architecture stable through every change. They never stop.
 
-- **42** Primitives
+- **40** Primitives
 - **Zero** external AI
 - **3** Zenodo DOIs
 
