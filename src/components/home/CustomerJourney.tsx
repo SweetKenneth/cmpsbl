@@ -12,8 +12,8 @@ import {
 const STEPS = [
   {
     number: "01",
-    title: "Submit Your Code",
-    description: "Upload any code, any language, any framework.",
+    title: "Book a Consultation",
+    description: "Tell us about your software. We'll scope the refurbishment.",
     accent: "--neon-cyan",
     icon: Upload,
   },

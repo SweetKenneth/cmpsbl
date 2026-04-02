@@ -80,13 +80,13 @@ export function FactoryGuarantee() {
               <Button asChild size="lg" className="relative px-8 sm:px-10 h-12 sm:h-16 text-sm sm:text-lg bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-bold shadow-2xl shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all rounded-xl">
                 <Link to="/ascension">
                   <Sparkles className="w-5 h-5 mr-2" />
-                  Submit Your Code
+                  Book a Consultation
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
               <Button asChild size="lg" className="px-6 sm:px-8 h-12 sm:h-16 text-sm sm:text-lg border border-white/30 bg-white/10 text-white hover:bg-white/20 font-semibold backdrop-blur-sm rounded-xl">
-                <Link to="/memory-stream">
-                  Browse the Catalog
+                <Link to="/showroom">
+                  Browse the Showroom
                 </Link>
               </Button>
             </div>

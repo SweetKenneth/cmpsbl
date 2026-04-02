@@ -45,7 +45,7 @@ export function FoundryHero() {
           className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-[0.95] mb-6 sm:mb-8"
         >
           Software that{' '}
-          <span className="text-primary">crystallizes software</span>
+          <span className="text-primary">discovers software capabilities</span>
         </motion.h1>
 
         <motion.p
@@ -54,9 +54,9 @@ export function FoundryHero() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-10 px-2"
         >
-          A recursive discovery engine that surfaces production-grade software memories
-          directly from silicon.{' '}
-          <span className="text-foreground font-semibold">1,143 programs discovered in under 9 hours.</span>
+          A recursive discovery engine that finds production-grade capabilities
+          hidden in existing code.{' '}
+          <span className="text-foreground font-semibold">Browse what's been found. Purchase one-of-a-kind builds.</span>
           {' '}The stream never stops.
         </motion.p>
 

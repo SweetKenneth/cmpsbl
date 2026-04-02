@@ -34,7 +34,7 @@ const PILLARS = [
       { label: "Downtime", value: "Zero" },
     ],
     href: "/ascension",
-    cta: "Submit Your Code",
+    cta: "Book a Consultation",
     gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--primary))]",
     glowVar: "--neon-magenta",
   },
