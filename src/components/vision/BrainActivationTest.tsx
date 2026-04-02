@@ -39,7 +39,7 @@ export default function BrainActivationTest() {
       toast.error('Test failed: ' + error.message);
       setResults({ error: error.message });
     } finally {
-      console.log('✅ Test complete');
+      // Test complete
       setTesting(false);
     }
   }

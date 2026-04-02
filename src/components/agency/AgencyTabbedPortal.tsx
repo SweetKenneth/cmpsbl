@@ -98,7 +98,7 @@ export function AgencyTabbedPortal({ agency, members, onBack, isOwner }: AgencyT
     
     // If multiple intents detected, use full orchestration
     if (intents.length > 1) {
-      console.log(`🎯 Multiple intents detected (${intents.length}), using orchestration`);
+      // Multiple intents detected, using orchestration
       const plan = createOrchestrationPlan(input, teamMembers);
       const result = await executeOrchestration(agency.id, plan);
       
