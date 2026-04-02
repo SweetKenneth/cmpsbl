@@ -349,25 +349,13 @@ export default function Showroom() {
                 Once purchased, it's retired from the catalog forever.
               </p>
 
-              {/* Tier stats */}
-              <div className="flex flex-wrap justify-center gap-3 mb-4">
-                {TIER_CONFIG.map((tier, i) => {
-                  const count = itemsByTier[tier.id]?.length || 0;
-                  if (!count) return null;
-                  return (
-                    <motion.div
-                      key={tier.id}
-                      className="flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 + i * 0.08 }}
-                    >
-                      <div className={cn("w-4 h-[3px] rounded bg-gradient-to-r", tier.accent)} />
-                      <span className="font-black text-lg">{count}</span>
-                      <span className="text-xs text-muted-foreground">{tier.label}</span>
-                    </motion.div>
-                  );
-                })}
+              {/* Quick stats */}
+              <div className="flex items-center justify-center gap-4 mb-4 text-sm text-muted-foreground">
+                <span className="font-mono">{CATALOG.length} discoveries</span>
+                <span className="text-border">·</span>
+                <span>{TIER_CONFIG.filter(t => itemsByTier[t.id]?.length).length} tiers</span>
+                <span className="text-border">·</span>
+                <span>Catalog rotates every 8 hours</span>
               </div>
 
               <p className="text-xs sm:text-sm text-muted-foreground/60 font-mono">
