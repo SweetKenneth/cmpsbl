@@ -20,6 +20,7 @@ import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
 import founderPhoto from "@/assets/founder-kenneth-sweet.png";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { COMPANY_PHONE, COMPANY_PHONE_TEL } from "@/data/team";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -156,6 +157,7 @@ export default function About() {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/8 via-background to-background" />
 
         <div className="relative px-5 pt-24 pb-14 sm:pt-32 sm:pb-20 max-w-4xl mx-auto">
+          <PublicBreadcrumb />
           {/* Back link */}
           <motion.div {...fadeUp}>
             <Link
@@ -170,7 +172,7 @@ export default function About() {
           <motion.div {...stagger(0.05)}>
             <Badge variant="outline" className="mb-5 border-primary/30 bg-primary/5 text-primary gap-1.5 px-3 py-1">
               <Hammer className="w-3 h-3" />
-              <span className="text-[10px] sm:text-xs font-semibold">Build on the Substrate</span>
+              <span className="text-xs font-semibold">Build on the Substrate</span>
             </Badge>
           </motion.div>
 
@@ -210,7 +212,7 @@ export default function About() {
                 className="flex items-center gap-2 px-3 py-2 rounded-xl bg-card/60 border border-border/50 backdrop-blur-sm hover:border-primary/30 hover:bg-card/80 transition-all duration-300"
               >
                 <span className="text-sm sm:text-base font-black text-foreground font-mono tabular-nums">{s.label}</span>
-                <span className="text-[10px] sm:text-xs text-muted-foreground font-medium uppercase tracking-wider">{s.sub}</span>
+                <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{s.sub}</span>
               </div>
             ))}
           </motion.div>
@@ -257,7 +259,7 @@ export default function About() {
                     <pillar.icon className={cn("w-5 h-5", pillar.color)} />
                   </div>
                   <div>
-                    <span className={cn("text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase", pillar.color)}>{pillar.name}</span>
+                    <span className={cn("text-xs font-mono font-bold tracking-wider uppercase", pillar.color)}>{pillar.name}</span>
                     <h3 className="text-sm sm:text-base font-bold text-foreground leading-tight">{pillar.verb}</h3>
                   </div>
                 </div>
@@ -380,7 +382,7 @@ export default function About() {
                   <sys.icon className="w-4 h-4 text-primary" />
                 </div>
                 <h3 className="text-xs sm:text-sm font-bold text-foreground mb-0.5">{sys.name}</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground leading-snug">{sys.desc}</p>
+                <p className="text-xs text-muted-foreground leading-snug">{sys.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -486,7 +488,7 @@ export default function About() {
                 className="rounded-xl border border-border/50 bg-card/60 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
               >
                 <h3 className="text-sm sm:text-base font-bold text-foreground mb-1">{dept.name}</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground mb-3 leading-relaxed">{dept.description}</p>
+                <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{dept.description}</p>
                 <div className="space-y-1.5 pt-3 border-t border-border/30">
                   <a
                     href={`mailto:${dept.email}`}
@@ -534,7 +536,7 @@ export default function About() {
               />
 
               <div className="relative">
-                <Badge className="mb-5 px-3 py-1 text-[10px] sm:text-xs bg-white/15 text-white border-white/20 font-semibold">
+                <Badge className="mb-5 px-3 py-1 text-xs bg-white/15 text-white border-white/20 font-semibold">
                   Signal → Silicon
                 </Badge>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 tracking-tight">

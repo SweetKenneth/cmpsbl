@@ -43,6 +43,7 @@ import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
 import { RelatedCapabilities } from "@/components/RelatedCapabilities";
 import { PageSEOBlock } from "@/components/seo/PageSEOBlock";
+import { PublicBreadcrumb } from "@/components/navigation/PublicBreadcrumb";
 import { cn } from "@/lib/utils";
 
 // Industry card
@@ -421,6 +422,7 @@ export default function UseCases() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
+          <PublicBreadcrumb />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -506,7 +508,7 @@ export default function UseCases() {
                     <Badge 
                       variant="outline" 
                       className={cn(
-                        "text-[10px]",
+                        "text-xs",
                         vision.timeline === "Available Now" 
                           ? "bg-neon-green/10 text-neon-green border-neon-green/30"
                           : vision.timeline === "In Development"
@@ -523,7 +525,7 @@ export default function UseCases() {
                         <vision.icon className="w-6 h-6" />
                       </div>
                     </div>
-                    <Badge variant="outline" className="w-fit mb-2 text-current border-current/30 text-[10px]">
+                    <Badge variant="outline" className="w-fit mb-2 text-current border-current/30 text-xs">
                       {vision.subtitle}
                     </Badge>
                     <CardTitle className="text-lg">{vision.title}</CardTitle>
@@ -541,7 +543,7 @@ export default function UseCases() {
                       ))}
                     </ul>
                     <div className="pt-3 border-t border-border/50">
-                      <p className="text-[11px] italic text-current/80">"{vision.example}"</p>
+                      <p className="text-xs italic text-current/80">"{vision.example}"</p>
                     </div>
                   </CardContent>
                 </Card>

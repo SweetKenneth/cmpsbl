@@ -1054,7 +1054,7 @@ const result = await fetch(GATEWAY, {
           ].map(f => (
             <div key={f.label} className="p-3 rounded-xl border border-border/50 bg-card/30">
               <h4 className="font-semibold text-xs mb-1">{f.label}</h4>
-              <p className="text-[11px] text-muted-foreground">{f.desc}</p>
+              <p className="text-xs text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -1192,7 +1192,7 @@ Content-Type: application/json`}</CodeBlock>
           {endpoints.map(ep => (
             <div key={ep.action} className="rounded-xl border border-border/50 bg-card/30 overflow-hidden">
               <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border/30">
-                <Badge className="bg-neon-green/15 text-neon-green border-neon-green/30 text-[10px] font-mono px-2">
+                <Badge className="bg-neon-green/15 text-neon-green border-neon-green/30 text-xs font-mono px-2">
                   {ep.method}
                 </Badge>
                 <code className="text-sm font-semibold text-foreground">{ep.action}</code>
@@ -1532,7 +1532,7 @@ export default function Documentation() {
                 </button>
               ))}
               <div className="my-2 mx-2 border-t border-border/30" />
-              <p className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50">Libraries</p>
+              <p className="px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-muted-foreground/50">Libraries</p>
               <Link
                 to="/docs/users"
                 className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 text-left text-muted-foreground hover:text-foreground hover:bg-muted/50"
