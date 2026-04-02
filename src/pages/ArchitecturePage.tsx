@@ -46,7 +46,7 @@ interface TaxonomyCategory {
 }
 
 // ═══════════════════════════════════════════════════════════
-// 40-NODE TAXONOMY — 4 Categories
+// 40-PRIMITIVE TAXONOMY — 4 Categories
 // ═══════════════════════════════════════════════════════════
 
 const TAXONOMY: TaxonomyCategory[] = [
