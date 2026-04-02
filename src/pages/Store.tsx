@@ -179,7 +179,7 @@ export default function Store() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + i * 0.06, duration: 0.4 }}
                       className={cn(
-                        "px-3.5 py-1.5 rounded-full border text-[10px] sm:text-[11px] font-black tracking-wider",
+                        "px-3.5 py-1.5 rounded-full border text-xs font-black tracking-wider",
                         "transition-all duration-300 hover:scale-110 cursor-default",
                         "backdrop-blur-sm shadow-sm",
                         meta.bg, meta.color, meta.border
