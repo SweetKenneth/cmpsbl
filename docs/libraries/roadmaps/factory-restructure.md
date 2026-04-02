@@ -414,10 +414,10 @@ All existing pages remain active at their current URLs:
 
 ### Phase 1: The Showroom + DECODE Voice (Week 1–2)
 - [x] New home page with factory narrative and "classics" branding ✅
-- [ ] DECODE integration as factory voice (diagnostic explanations, discovery commentary)
+- [x] DECODE integration as factory voice (diagnostic explanations, discovery commentary) ✅
 - [x] Memory Stream catalog browser with graduated CJPI pricing display ✅
 - [x] Navigation restructure (preserve all legacy routes) ✅
-- [ ] Agent Power-Up landing page live
+- [x] Agent Power-Up landing page live ✅
 - [x] ToS §15 live ✅
 
 ### Phase 2: The Restoration Shop (Week 3–4)
