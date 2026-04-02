@@ -96,7 +96,7 @@ export function RestorationReportView({ report }: RestorationReportViewProps) {
                         <div key={step.order} className="flex items-center gap-2 text-[11px]">
                           <span className="text-muted-foreground/50 font-mono w-6">{step.order}.</span>
                           <span className="font-bold text-primary">{step.primitiveName}</span>
-                          <span className="text-muted-foreground flex-1 truncate">— {step.action}</span>
+                          <span className="text-muted-foreground flex-1">— {step.action}</span>
                           <span className="text-muted-foreground/40 font-mono">{step.durationMs}ms</span>
                         </div>
                       ))}
