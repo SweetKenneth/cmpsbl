@@ -65,8 +65,10 @@ const HeritagePaper = () => {
         <meta name="twitter:image" content="https://cmpsbl.com/og-memory-stream.jpg" />
       </Helmet>
 
+      <PublicNav />
+
       {/* Sticky toolbar — hidden in print */}
-      <div className="print:hidden sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border px-4 py-3 flex items-center justify-between">
+      <div className="print:hidden sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border px-4 py-3 flex items-center justify-between mt-16">
         <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="gap-2">
           <ArrowLeft className="h-4 w-4" />
           <span className="hidden sm:inline">Back</span>
