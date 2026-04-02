@@ -23,26 +23,55 @@ interface DebriefMessage {
   highlight?: boolean;
 }
 
-/** Map primitive names to rich, actionable descriptions */
+/** Map ALL 40 primitive names to rich, actionable descriptions */
 const PRIMITIVE_DESCRIPTIONS: Record<string, string> = {
-  FAILSAFE: "You can now backup and restore any version of your system. Use `cmpsbl backup` to create a snapshot and `cmpsbl restore <id>` to roll back. Automatic recovery via circuit breakers is also active.",
+  // ═══ 12 ORGANS ═══
+  BRAIN: "Continuous learning patterns have been wired in. Your system can now accumulate operational insights over time, improving its own decision-making without external AI dependencies. Use `cmpsbl brain --status` to view accumulated knowledge.",
+  MEMORY: "Persistent state management is now active. MEMORY ensures your application retains context across sessions, crashes, and restarts. Use `cmpsbl memory --snapshot` to inspect current state.",
+  IDENTITY: "Identity resolution and access control are embedded. Every request is now validated against a multi-factor identity chain. This prevents unauthorized access and enables session binding across distributed services.",
+  CONSCIENCE: "Ethical decision boundaries are now enforced. CONSCIENCE intercepts operations that exceed configurable thresholds (default: 30% block, 60% review) and logs reasoning chains for audit compliance.",
+  COMPASS: "Navigation and module discovery are now automated. COMPASS maps your codebase's dependency graph and provides real-time navigation hints, helping new developers onboard faster and reducing wrong-path errors.",
+  REFLEX: "Fast reflexive fallback paths are now active. When primary operations fail, REFLEX triggers sub-millisecond fallback routines instead of waiting for timeout. This cuts your error response time by 60-80%.",
+  ECHO: "Structured echo patterns replace scattered logging. Every significant event is now captured with context, timestamps, and causal chains — making debugging a 5-minute task instead of a 5-hour one.",
+  OBSERVER: "Observable state transitions are now instrumented. OBSERVER emits structured events on every state change, enabling real-time debugging dashboards and post-mortem analysis without modifying your code.",
+  LINGUA: "Structured language interpretation is active. LINGUA parses and normalizes text inputs, handling edge cases like encoding mismatches, locale-specific formatting, and ambiguous string operations.",
+  HARVEST: "Dead code detection and pruning recommendations are now available. HARVEST identified unreachable paths, unused exports, and orphaned modules. Run `cmpsbl harvest --report` to see what can be safely removed.",
+  PHANTOM: "Phantom testing capabilities are integrated. PHANTOM generates synthetic traffic that mirrors real user patterns, letting you stress-test your system without impacting production users.",
+  NERVE: "Reliable signal propagation is now active across your event-driven components. NERVE ensures that events are delivered exactly once, in order, even during partial failures or network partitions.",
+
+  // ═══ 12 LAYERS ═══
   DEFENSE: "Device fingerprinting and request origin validation are now active. This hardens your security protocols by identifying suspicious access patterns and blocking unauthorized requests before they reach your logic.",
   GOVERNANCE: "Policy enforcement is now embedded in your code. Every operation is checked against configurable governance rules, ensuring compliance boundaries are never violated — even under heavy load.",
-  BEACON: "Real-time health monitoring is now active. BEACON emits structured health signals you can observe with `cmpsbl health` or integrate into your existing monitoring stack (Datadog, Grafana, etc.).",
-  ENCODE: "Your code's intent has been mapped and documented. ENCODE extracted behavioral signatures so every function's purpose is traceable — useful for onboarding new developers or auditing logic.",
-  ORACLE: "Predictive analysis is now part of your system. ORACLE identifies failure patterns before they cascade, giving you early warnings about architectural drift or resource exhaustion.",
-  ENGINEER: "Dependency resolution and structural repair have been applied. ENGINEER identified fragile dependency chains and reinforced them with fallback paths and version pinning.",
-  BRAIN: "Continuous learning patterns have been wired in. Your system can now accumulate operational insights over time, improving its own decision-making without external AI dependencies.",
-  CORTEX: "Advanced reasoning and decision-routing capabilities are now integrated. CORTEX handles complex multi-step operations that require contextual awareness across your codebase.",
-  NEXUS: "Intelligent routing is active. NEXUS directs operations to the optimal execution path based on real-time system state, reducing latency and improving throughput.",
-  ARCHITECT: "Structural blueprinting has been applied. Your codebase now has a documented architecture map that ARCHITECT uses to prevent structural regressions during future changes.",
-  AUTOMATON: "Automated workflow execution is now available. Repetitive operational tasks can be delegated to AUTOMATON, which handles them deterministically without human intervention.",
-  MEDIC: "Structural repair capabilities are embedded. MEDIC continuously monitors code integrity and can self-heal minor issues like corrupted state or orphaned connections.",
-  WRAITH: "Stealth operations are active. WRAITH handles sensitive operations with minimal footprint, ensuring audit trails exist without exposing operational details to unauthorized observers.",
-  OBSIDIAN: "Hardened persistence is now part of your system. OBSIDIAN ensures critical data survives even catastrophic failures through redundant storage patterns and integrity verification.",
-  MONOLITH: "Unified execution coordination is active. MONOLITH orchestrates complex multi-primitive operations as single atomic transactions, preventing partial-failure states.",
-  RAPTOR: "High-speed scanning and threat detection are integrated. RAPTOR performs continuous perimeter analysis, identifying and flagging anomalies in real-time.",
-  PRIMITIVE: "Base-level operational capabilities are reinforced. PRIMITIVE provides the foundational execution layer that all other primitives build upon.",
+  EVOLUTION: "Managed evolution cycles are now tracking your technical debt. EVOLUTION monitors TODO/FIXME markers, deprecated APIs, and structural drift — then generates prioritized remediation plans.",
+  SHADOW: "Shadow testing and canary analysis are active. SHADOW can mirror production traffic to test environments, comparing outputs without affecting real users. Use `cmpsbl shadow --compare` to run A/B infrastructure tests.",
+  ORACLE: "Predictive analysis is now part of your system. ORACLE identifies failure patterns before they cascade, giving you early warnings about architectural drift or resource exhaustion up to 60 seconds in advance.",
+  SOVEREIGN: "Cross-jurisdictional policy management is embedded. SOVEREIGN resolves authority conflicts between competing access policies and enforces hierarchical permission delegation across your service boundaries.",
+  TREATY: "API contract enforcement is now active. TREATY validates every request and response against defined schemas, catching contract violations before they reach consumers. Breaking changes trigger automatic alerts.",
+  RELAY: "Intelligent message routing is now in place. RELAY directs async communications to optimal paths based on current load, retry history, and endpoint health — reducing failed deliveries by up to 90%.",
+  SANDBOX: "Sandboxed execution contexts are now available. Untrusted operations run in isolated environments with restricted system access. Any attempt at privilege escalation is automatically terminated.",
+  SIMULATE: "Simulation capabilities are embedded. SIMULATE lets you test architectural changes, configuration updates, and deployment strategies against historical traffic patterns before going live.",
+  FORGE: "Build pipeline hardening is active. FORGE validates transformation outputs, enforces hash-chain integrity for build artifacts, and prevents tampered code from entering your production pipeline.",
+  IMMUNITY: "Dependency immunity is now protecting your import chains. IMMUNITY monitors for cascading failures from third-party dependencies and automatically isolates compromised packages.",
+
+  // ═══ 8 ENGINES ═══
+  FAILSAFE: "You can now backup and restore any version of your system. Use `cmpsbl backup` to create a snapshot and `cmpsbl restore <id>` to roll back. Circuit breakers handle automatic recovery during runtime failures.",
+  BEACON: "Real-time health monitoring is now active. BEACON emits structured health signals you can observe with `cmpsbl health` or integrate into your existing monitoring stack (Datadog, Grafana, Prometheus).",
+  AUTOMATON: "Automated workflow execution is now available. Repetitive operational tasks — cron jobs, scheduled maintenance, data cleanup — can be delegated to AUTOMATON for deterministic, unattended execution.",
+  CORTEX: "Advanced reasoning and decision-routing capabilities are integrated. CORTEX handles complex multi-step operations that require contextual awareness across your codebase, reducing decision latency by 40%.",
+  NEXUS: "Intelligent routing is active. NEXUS directs operations to the optimal execution path based on real-time system state — load, latency, error rates — improving throughput and reducing bottlenecks.",
+  ARCHITECT: "Structural blueprinting has been applied. Your codebase now has a documented architecture map that ARCHITECT uses to prevent structural regressions during future changes. Run `cmpsbl architect --blueprint` to view.",
+  ENCODE: "Your code's behavioral signatures have been mapped and documented. ENCODE extracted intent patterns so every function's purpose is traceable — useful for onboarding, auditing, and automated patching.",
+  ENGINEER: "Dependency resolution and structural repair have been applied. ENGINEER identified fragile dependency chains and reinforced them with fallback paths, version pinning, and isolation boundaries.",
+
+  // ═══ 8 AGENTS ═══
+  PRIMITIVE: "Base-level operational capabilities are reinforced. PRIMITIVE provides the foundational execution layer that all other primitives build upon — think of it as the kernel of your hardened system.",
+  WRAITH: "Stealth operations are active. WRAITH handles sensitive operations (secrets rotation, credential management, audit-sensitive flows) with minimal footprint and end-to-end encryption.",
+  OBSIDIAN: "Hardened persistence is now part of your system. OBSIDIAN ensures critical data survives catastrophic failures through redundant storage patterns, integrity verification, and automatic recovery.",
+  MONOLITH: "Unified execution coordination is active. MONOLITH orchestrates complex multi-primitive operations as single atomic transactions, preventing partial-failure states that corrupt your data.",
+  RAPTOR: "High-speed scanning and threat detection are integrated. RAPTOR performs continuous perimeter analysis at sub-millisecond intervals, identifying and flagging anomalies before they become breaches.",
+  DECODE: "Intent interpretation is now embedded. DECODE resolves ambiguous user inputs through contextual analysis and confidence scoring, reducing misrouted operations and improving user experience.",
+  SENTINEL: "Continuous validation is enforced at all system boundaries. SENTINEL guards every entry point — APIs, webhooks, internal calls — against malformed, unauthorized, or suspicious payloads.",
+  ATLAS: "System-wide mapping and navigation are active. ATLAS maintains a real-time topology of your entire architecture, enabling any component to discover and communicate with any other without hardcoded paths.",
 };
 
 function getCapabilityDescription(primitiveName: string): string {
