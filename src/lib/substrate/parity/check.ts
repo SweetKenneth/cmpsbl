@@ -81,7 +81,7 @@ const MODULE_HOOK_PATHS: Record<string, string> = {
   economy: 'src/hooks/substrate/useEconomy.ts',
   sandbox: 'src/hooks/substrate/useSandbox.ts',
   encode: 'src/hooks/substrate/useEncode.ts',
-  // Expansion Modules
+  // Expansion Primitives
   sovereign: 'src/hooks/substrate/useSovereign.ts',
   oracle: 'src/hooks/substrate/useOracle.ts',
   conscience: 'src/hooks/substrate/useConscience.ts',
@@ -126,7 +126,7 @@ const MODULE_CONFIG: Record<string, {
   economy: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.economy, hookName: 'useEconomy' },
   sandbox: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sandbox, hookName: 'useSandbox' },
   encode: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.encode, hookName: 'useEncode' },
-  // Expansion Modules
+  // Expansion Primitives
   sovereign: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.sovereign, hookName: 'useSovereign' },
   oracle: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.oracle, hookName: 'useOracle' },
   conscience: { hasHook: true, hasTerminalCommands: true, emitsEvents: true, hasDocumentation: true, hookPath: MODULE_HOOK_PATHS.conscience, hookName: 'useConscience' },

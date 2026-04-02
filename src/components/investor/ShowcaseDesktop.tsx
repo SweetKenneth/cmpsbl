@@ -131,7 +131,7 @@ export function ShowcaseDesktop() {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-[10px] font-mono uppercase tracking-widest text-primary">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                Cognitive Operating System
+                Cognitive Infrastructure Substrate
               </div>
               <h1 className="text-4xl font-black text-foreground tracking-tight leading-tight">
                 Software that discovers,<br />improves, and exports{" "}

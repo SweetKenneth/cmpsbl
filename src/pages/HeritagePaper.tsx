@@ -139,7 +139,7 @@ const HeritagePaper = () => {
               <dl className="space-y-3 text-sm text-muted-foreground">
                 <div>
                   <dt className="font-semibold text-foreground inline">What is CMPSBL? </dt>
-                  <dd className="inline">A 40-primitive cognitive operating system that governs itself — learning, evolving, and defending autonomously under human oversight.</dd>
+                  <dd className="inline">A 40-primitive cognitive infrastructure substrate that governs itself — learning, evolving, and defending autonomously under human oversight.</dd>
                 </div>
                 <div>
                   <dt className="font-semibold text-foreground inline">Where did it come from? </dt>
@@ -192,7 +192,7 @@ const HeritagePaper = () => {
                 The lineage begins not with a product launch but with a question: <em>How does a machine learn and remember?</em> In January 2025, the author began building what would become BRAIN — the neural substrate layer — a deterministic embedding engine, knowledge crystallization pipeline, and confidence-scored memory system. BRAIN was the first piece of code written in the entire ecosystem, and it remains the cognitive core of the 40-primitive substrate today. From BRAIN, the author expanded into Cascade, PromptFluid Clarity, AetherionShield, the Dream Protocol, a 23-provider AI routing mesh, Studio/Modernizer, SimNap, and the full CMPSBL Substrate OS across 14 major versions and four named epochs.
               </p>
               <p>
-                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-primitive cognitive operating system</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
+                The purpose of this paper is to provide the academic community with a single, coherent narrative — establishing the provenance chain from the first neural learning engine built in January 2025, to a <strong className="text-foreground">40-primitive cognitive infrastructure substrate</strong> capable of governed self-evolution, memory crystallization, and universal cross-language export.
               </p>
             </div>
           </section>

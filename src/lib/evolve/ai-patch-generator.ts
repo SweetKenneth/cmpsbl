@@ -162,7 +162,7 @@ export function updatePatchStatus(patchId: string, status: GeneratedPatch['statu
 
 // ── Prompt Building ────────────────────────────────────────
 
-const PATCH_SYSTEM_PROMPT = `You are a senior software engineer working on the CMPSBL substrate — a cognitive operating system built with React, TypeScript, Tailwind CSS, and Supabase.
+const PATCH_SYSTEM_PROMPT = `You are a senior software engineer working on the CMPSBL substrate — a cognitive infrastructure substrate built with React, TypeScript, Tailwind CSS, and Supabase.
 
 Your task is to generate precise, minimal code patches that fix issues or improve the codebase.
 

@@ -1,7 +1,7 @@
 /**
  * useSystem Hook — SYSTEM zone (Administration) operations
  * 
- * Part of the 40-Primitive / 12-Sector Field-Based Topology
+ * Part of the 40-Primitive / 12-Category Field-Based Topology
  * Fixed: All queries are top-level useQuery calls (no Rules-of-Hooks violations).
  * Fixed: Respects debugMode.allowModulePolling() kill-switch.
  */

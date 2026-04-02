@@ -3,7 +3,7 @@
  * 275 new capabilities — 25 per Expansion Layer module (11 modules)
  * Total: 400 (v9.0.1) + 275 = 675 capabilities
  * 
- * Expansion Modules: SOVEREIGN, ORACLE, CONSCIENCE, PHANTOM, FORGE,
+ * Expansion Primitives: SOVEREIGN, ORACLE, CONSCIENCE, PHANTOM, FORGE,
  *                    LINGUA, COMPASS, ECHO, TREATY, HARVEST, REFLEX
  */
 

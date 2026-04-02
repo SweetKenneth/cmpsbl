@@ -81,7 +81,7 @@
     // ── Shell ── (outer containment)
     defense: ['core', 'system', 'identity', 'ripple'],
 
-    // ── Expansion Modules (40-Primitive Architecture) ──
+    // ── Expansion Primitives (40-Primitive Architecture) ──
     sovereign: ['core', 'defense', 'access'],
     oracle: ['core', 'brain', 'vision'],
     conscience: ['core', 'defense'],

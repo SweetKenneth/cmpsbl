@@ -5,7 +5,7 @@
  * Full-stack integration node: adapter registry, connection pooling,
  * schema mapping/transforms, webhook relay, and hardening suite.
  *
- * Part of the 40-Primitive / 12-Sector Architecture (Execution Zone)
+ * Part of the 40-Primitive / 12-Category Architecture (Execution Zone)
  */
 
 export const INTEGRATION_MODULE_VERSION = '11.0.0';

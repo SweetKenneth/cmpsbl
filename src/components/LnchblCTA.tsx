@@ -60,7 +60,7 @@ export function LnchblCTA() {
             </h2>
 
             <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl leading-relaxed">
-               The same cognitive runtime powering this platform — deployable on your own servers.
+               The same cognitive runtime powering this substrate — deployable on your own servers.
                Persistent memory, NEXUS routing, and governed orchestration. Minutes to production.
              </p>
 

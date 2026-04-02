@@ -877,7 +877,7 @@ export async function executeCommand(
         csz: ['evolution', 'shadow', 'phantom'],
       };
       const mods = zones[module] || zones.expansion;
-      let output = `\n┌─ ${module.toUpperCase()} — Expansion Modules ────────────────────────────\n│\n`;
+      let output = `\n┌─ ${module.toUpperCase()} — Expansion Primitives ────────────────────────────\n│\n`;
       for (const m of mods) {
         output += `│  ${m.padEnd(14)} → help ${m}\n`;
       }
@@ -975,14 +975,14 @@ export async function executeCommand(
     const identity = `
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
-│  ██████╗ ███████╗     Cognitive Operating System
+│  ██████╗ ███████╗     Cognitive Infrastructure Substrate
 │  ██╔═══╝ ██╔════╝     CMPSBL® OS
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: CMPSBL Cloud
 │  ██████╗ ███████║     Status: OPERATIONAL
 │  ╚═════╝ ╚══════╝
 │ 
-│  40-Primitive / 12-Sector Field-Based Topology — Full AI Substrate
+│  40-Primitive / 12-Category Field-Based Topology — Full AI Substrate
 │  Where Dreams Come To Adapt
 │  
 ${identityLine}│  ${tierIcon} Tier:       ${tierLabel}

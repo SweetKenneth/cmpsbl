@@ -77,7 +77,7 @@ const STEPS: OnboardingStep[] = [
     footer: 'All users are first-class. No credit card required.',
     accent: 'neon-purple',
     pattern: 'radial-gradient(circle at 40% 50%, hsl(var(--neon-purple) / 0.1) 0%, transparent 50%)',
-    inlineCta: { text: 'Explore the Platform', href: '/explore' },
+    inlineCta: { text: 'Explore the Substrate', href: '/explore' },
     secondaryInlineCta: { text: 'Start Building — Free', href: '/auth' },
   },
 ];
@@ -325,7 +325,7 @@ export function CmpsblWelcome() {
               onClick={next}
               className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow"
             >
-              {isLastStep ? 'Explore the Platform' : 'Next →'}
+              {isLastStep ? 'Explore the Substrate' : 'Next →'}
               <ChevronRight className="w-3.5 h-3.5" />
             </Button>
           </div>

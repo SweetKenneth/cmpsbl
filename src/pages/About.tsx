@@ -127,9 +127,9 @@ export default function About() {
           { name: 'About', url: 'https://cmpsbl.com/about' },
         ]}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'A composable AI platform with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
-          { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the platform consolidates memory, extracts patterns, and generates new insights without active compute.' },
-          { question: 'Can I build on the platform?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
+          { question: 'What is CMPSBL?', answer: 'A composable cognitive infrastructure substrate with persistent memory, self-improvement cycles, intelligent routing, and governed orchestration.' },
+          { question: 'What are self-improvement cycles?', answer: 'Offline processing periods where the substrate consolidates memory, extracts patterns, and generates new insights without active compute.' },
+          { question: 'Can I build on the substrate?', answer: 'Yes. Activate capability packs, enable self-improvement cycles, and let your systems adapt and evolve. Start free with 3 capability slots.' },
         ]}
       />
 
@@ -170,7 +170,7 @@ export default function About() {
           <motion.div {...stagger(0.05)}>
             <Badge variant="outline" className="mb-5 border-primary/30 bg-primary/5 text-primary gap-1.5 px-3 py-1">
               <Hammer className="w-3 h-3" />
-              <span className="text-[10px] sm:text-xs font-semibold">Build on the Platform</span>
+              <span className="text-[10px] sm:text-xs font-semibold">Build on the Substrate</span>
             </Badge>
           </motion.div>
 
@@ -187,7 +187,7 @@ export default function About() {
             {...stagger(0.15)}
             className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mb-8"
           >
-            CMPSBL is the platform — composable{" "}
+            CMPSBL is the substrate — composable{" "}
             <a href="https://en.wikipedia.org/wiki/Cognitive_architecture" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">AI infrastructure</a>{" "}
             where your systems learn during downtime, self-tune within guardrails, and get smarter with every interaction. The{" "}
             <Link to="/foundry" className="text-primary hover:underline font-medium">Memory Stream</Link>{" "}
@@ -574,7 +574,7 @@ export default function About() {
 
       <RelatedCapabilities />
       <PageSEOBlock path="/about" title="About CMPSBL" faq={[
-        { question: "What is CMPSBL?", answer: "CMPSBL is a cognitive operating system — a substrate layer between AI models and applications that manages persistent memory, orchestration, governance, and continuous self-improvement across 40 autonomous primitives." },
+        { question: "What is CMPSBL?", answer: "CMPSBL is a cognitive infrastructure substrate — a substrate layer between AI models and applications that manages persistent memory, orchestration, governance, and continuous self-improvement across 40 autonomous primitives." },
         { question: "Who founded CMPSBL?", answer: "CMPSBL was founded by Kenneth E Sweet Jr in 2009. The platform has evolved from a portfolio tool into a full cognitive infrastructure layer." },
         { question: "How is CMPSBL different from other AI platforms?", answer: "Unlike traditional AI wrappers, CMPSBL operates as an operating system with persistent memory, DREAM cycle consolidation, and self-improving capabilities. Intelligence compounds over time rather than resetting per session." },
       ]} />

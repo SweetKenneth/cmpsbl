@@ -1,6 +1,6 @@
 /**
  * Marketing Facts — Single Source of Truth
- * 40-Primitive / 12-Sector Field-Based Topology
+ * 40-Primitive / 12-Category Field-Based Topology
  * 
  * CRITICAL: All public-facing numbers MUST come from this module.
  * Any changes here should trigger review of:

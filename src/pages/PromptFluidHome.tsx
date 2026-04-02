@@ -72,7 +72,7 @@ export default function PromptFluidHome() {
     <div className="min-h-screen bg-background overflow-x-hidden">
       <SEO
         title="PromptFluid — AI Infrastructure & Cognitive Systems Studio"
-        description="PromptFluid is the AI infrastructure studio behind CMPSBL®. Building persistent memory, self-learning AI, and cognitive operating systems."
+        description="PromptFluid is the AI infrastructure studio behind CMPSBL®. Building persistent memory, self-learning AI, and cognitive infrastructure substrates."
         canonical="https://promptfluid.com"
         keywords={["PromptFluid", "AI infrastructure", "cognitive systems", "CMPSBL", "AI consulting", "persistent memory"]}
       />
@@ -203,7 +203,7 @@ export default function PromptFluidHome() {
               <span className="text-primary">at Scale</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              The technology stack behind CMPSBL® — our flagship cognitive operating system.
+              The technology stack behind CMPSBL® — our flagship cognitive infrastructure substrate.
             </p>
           </motion.div>
 
@@ -354,7 +354,7 @@ export default function PromptFluidHome() {
                  </span>
               </h2>
               <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed">
-                The world's first public cognitive operating system — 40 primitives across 4 categories, 
+                The world's first public cognitive infrastructure substrate — 40 primitives across 4 categories, 
                 persistent memory, self-evolving architecture, and 200k+ lines of production code. 
                 Free to start.
               </p>

@@ -6,7 +6,7 @@
 const WORLD_FIRSTS = [
   { achievement: "Autonomous AI Dream State", description: "First AI system to enter an offline dream state for memory synthesis, consolidation, and creative recombination (Simnap & Cascade)", evidence: "Zenodo DOI: 10.5281/zenodo.18234910" },
   { achievement: "Self-Evolving Bounded Agent (SEBA)", description: "First verifiable self-improving AI system with cryptographic evolution stamps, rollback semantics, and human-in-the-loop governance", evidence: "Substrate v7.0.0+" },
-  { achievement: "40-Primitive Memory Stream", description: "First complete cognitive operating system with 40 primitives across 4 categories, 675+ capabilities, and 4 shielded expansion zones, operating as a unified Memory Stream", evidence: "Production-grade field-based topology" },
+  { achievement: "40-Primitive Memory Stream", description: "First complete cognitive infrastructure substrate with 40 primitives across 4 categories, 675+ capabilities, and 4 shielded expansion zones, operating as a unified Memory Stream", evidence: "Production-grade field-based topology" },
   { achievement: "Intent Mesh Crystallization", description: "First emergent capability discovery system where systems advertise, compose, and crystallize cross-system pipelines autonomously from the Memory Stream", evidence: "100+ crystallized pipelines" },
   { achievement: "Universal Brain Transfer Pipeline", description: "First system to automatically route memories from a central BRAIN to all systems based on relevance scoring and tag affinity", evidence: "CLM Engine v2.0" },
   { achievement: "DECODE → ENCODE Pipeline", description: "First governed natural-language-to-code execution pipeline where AI never receives raw input — all intent passes through normalization, enrichment, and safety gates", evidence: "v10.5.3" },
@@ -272,7 +272,7 @@ export function generateInvestorDeckHTML(): string {
   <h2>Investment Thesis</h2>
   <div class="highlight-box">
     <p style="font-size:18px;font-weight:300;color:var(--text);line-height:1.8;">
-      CMPSBL is building the Memory Stream — a cognitive operating system where raw AI signals <strong style="color:var(--cyan);">crystallize</strong> into production-grade software. 
+      CMPSBL is building the Memory Stream — a cognitive infrastructure substrate where raw AI signals <strong style="color:var(--cyan);">crystallize</strong> into production-grade software. 
       Systems that <strong style="color:var(--cyan);">remember</strong>, <strong style="color:var(--cyan);">learn</strong>, and <strong style="color:var(--cyan);">evolve</strong>. 
       The infrastructure layer for the next generation of AI applications — from software to silicon.
     </p>
