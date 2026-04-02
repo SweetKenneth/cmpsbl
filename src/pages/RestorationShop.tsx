@@ -5,6 +5,7 @@
 
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import { SEO } from "@/components/SEO";
 import { PublicNav } from "@/components/PublicNav";
 import { Button } from "@/components/ui/button";
