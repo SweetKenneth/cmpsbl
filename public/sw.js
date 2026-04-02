@@ -1,11 +1,12 @@
 /**
  * Service Worker — CMPSBL Substrate
  * Item #25: Scan result caching for offline/slow connections
+ * v7: Force fresh content on deploy
  */
 
-const CACHE_NAME = 'cmpsbl-v6';
-const SCAN_CACHE = 'cmpsbl-scans-v6';
-const STATIC_CACHE = 'cmpsbl-static-v6';
+const CACHE_NAME = 'cmpsbl-v7';
+const SCAN_CACHE = 'cmpsbl-scans-v7';
+const STATIC_CACHE = 'cmpsbl-static-v7';
 
 // Static assets to precache on install
 const PRECACHE_URLS = [
@@ -13,7 +14,7 @@ const PRECACHE_URLS = [
   '/offline.html',
 ];
 
-// Install: precache shell
+// Install: precache shell, force activate immediately
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE).then((cache) => {
@@ -25,7 +26,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate: clean old caches
+// Activate: purge ALL old caches so everyone gets fresh content
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -68,27 +69,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Static assets — cache-first
+  // Static assets — stale-while-revalidate (serve cached, update in background)
   if (url.pathname.match(/\.(js|css|png|jpg|svg|woff2?)$/)) {
     event.respondWith(
       caches.open(STATIC_CACHE).then(async (cache) => {
         const cached = await cache.match(event.request);
-        if (cached) return cached;
-        try {
-          const response = await fetch(event.request);
+        const fetchPromise = fetch(event.request).then((response) => {
           if (response.ok) {
             cache.put(event.request, response.clone());
           }
           return response;
-        } catch {
-          return new Response('', { status: 503 });
-        }
+        }).catch(() => null);
+
+        // Serve cached immediately, but always revalidate
+        return cached || (await fetchPromise) || new Response('', { status: 503 });
       })
     );
     return;
   }
 
-  // SPA navigation fallback — serve index.html for HTML navigation requests
+  // SPA navigation fallback — network-first for HTML
   if (event.request.mode === 'navigate' && url.origin === self.location.origin) {
     event.respondWith(
       fetch(event.request).catch(async () => {
