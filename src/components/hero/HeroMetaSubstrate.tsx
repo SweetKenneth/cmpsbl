@@ -13,11 +13,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
-  Sparkles,
   ChevronDown,
-  Layers,
-  Shield,
-  Zap,
   Search,
   Wrench,
 } from "lucide-react";
@@ -191,10 +187,6 @@ function HeroBackground() {
         className="absolute top-1/4 left-1/2 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, hsl(var(--neon-purple) / 0.01) 40%, transparent 55%)" }}
       />
-      <div
-        className="absolute top-1/2 left-1/4 w-[400px] h-[300px] rounded-full animate-hero-orb-2 opacity-50"
-        style={{ background: "radial-gradient(ellipse, hsl(var(--primary) / 0.04) 0%, transparent 50%)" }}
-      />
       <div className="absolute inset-0 substrate-grid-bg opacity-[0.3] dark:opacity-[0.5]" />
       <div className="absolute inset-0 texture-noise" />
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 70%, hsl(var(--background) / 0.85) 100%)" }} />
@@ -207,237 +199,165 @@ export function HeroMetaSubstrate() {
   return (
     <section 
       aria-label="CMPSBL hero"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-3 sm:px-6 pt-4 sm:pt-6 pb-6 sm:pb-10 overflow-x-clip overflow-y-visible"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 pt-6 sm:pt-8 pb-8 sm:pb-12 overflow-x-clip overflow-y-visible"
     >
       <HeroBackground />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto">
-        {/* Two-column layout */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-center mb-10 sm:mb-16">
+      <div className="relative z-10 w-full max-w-6xl mx-auto">
+        {/* ─── Stacked hero content ─── */}
+        <div className="text-center mb-10 sm:mb-14">
           
-          {/* Left column — Copy */}
-          <div className="text-center lg:text-left order-1">
-            {/* Software Refurbishment Center banner */}
-            <FadeIn delay={0.05}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-5"
-            >
-              <Wrench className="w-3 h-3 text-primary" />
-              <span className="text-xs font-medium text-muted-foreground tracking-wide">Software Refurbishment Center</span>
-              <span className="flex items-center gap-1 pl-2 border-l border-border/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
-                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
+          {/* Software Refurbishment Center banner */}
+          <FadeIn delay={0.05}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
+          >
+            <Wrench className="w-3.5 h-3.5 text-primary" />
+            <span className="text-xs sm:text-sm font-medium text-muted-foreground tracking-wide">Software Refurbishment Center</span>
+            <span className="flex items-center gap-1 pl-2 border-l border-border/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
+              <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
+            </span>
+          </FadeIn>
+
+          {/* CMPSBL Logo — the star */}
+          <FadeIn delay={0.1} className="mb-4 sm:mb-6">
+            <CmpsblWordmark className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl" />
+          </FadeIn>
+          
+          {/* Headline stack */}
+          <h1 className="tracking-[-0.03em] leading-[1.1]">
+            <FadeIn delay={0.15}>
+              <span className="block text-sm sm:text-base md:text-lg font-medium text-muted-foreground/70 mb-2 tracking-[0.05em] uppercase">
+                Where classic software gets
               </span>
             </FadeIn>
+            <FadeIn delay={0.2}>
+              <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black min-h-[1.2em]">
+                <TypedText 
+                  texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
+                  gradientColors={[
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
+                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                    "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
+                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
+                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                  ]}
+                />
+              </span>
+            </FadeIn>
+          </h1>
 
-            {/* CMPSBL Logo — main attention grabber */}
-            <FadeIn delay={0.1} className="mb-3 sm:mb-4">
-              <CmpsblWordmark className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl" />
-            </FadeIn>
-            
-            {/* Headline */}
-            <h1 className="tracking-[-0.04em] leading-[0.9]">
-              <FadeIn delay={0.15}>
-                <span className="block text-base sm:text-lg md:text-xl font-medium text-muted-foreground mb-2 sm:mb-3 tracking-normal">
-                  Where classic software gets
-                </span>
-              </FadeIn>
-              <FadeIn delay={0.2}>
-                <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black min-h-[1.15em]">
-                  <TypedText 
-                    texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
-                    gradientColors={[
-                      "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
-                      "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
-                      "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                      "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
-                      "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
-                      "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
-                    ]}
-                  />
-                </span>
-              </FadeIn>
-            </h1>
-
-            {/* Value proposition — tightened */}
-            <FadeIn delay={0.3} className="max-w-xl mx-auto lg:mx-0 mb-7 sm:mb-9 mt-5 sm:mt-6">
-              <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed">
-                Bring us your code. We restore first, replace only as a last resort.{' '}
-                <span className="text-foreground/90 font-medium">AI as a tool, not a foundation</span>{' '}
-                — classic development tactics to reinforce what you already have.
-              </p>
-            </FadeIn>
-            
-            {/* CTAs */}
-            <FadeIn delay={0.4} className="flex flex-wrap items-center justify-center lg:justify-start gap-3">
-              <Button 
-                asChild 
-                size="lg" 
-                className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <Link to="/ascension">
-                  <Wrench className="w-4 h-4" />
-                  Run Diagnostic
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </Button>
-              <Button 
-                asChild 
-                variant="outline" 
-                size="lg" 
-                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
-              >
-                <Link to="/showroom">
-                  <Search className="w-4 h-4" />
-                  Browse the Showroom
-                </Link>
-              </Button>
-            </FadeIn>
-
-            {/* Zenodo academic publication CTA */}
-            <FadeIn delay={0.5} className="flex justify-center lg:justify-start mt-4">
-              <a
-                href="https://zenodo.org/records/18895141"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-card/20 backdrop-blur-sm hover:border-primary/30 hover:bg-card/40 transition-all duration-300 hover:-translate-y-0.5"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-purple))] opacity-70 group-hover:opacity-100 transition-opacity" />
-                <span className="text-xs font-medium text-muted-foreground/70 group-hover:text-foreground/80 transition-colors tracking-wide">
-                  Academic Prior Art — Zenodo v13.5
-                </span>
-                <ArrowRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
-              </a>
-            </FadeIn>
-          </div>
+          {/* One-liner value prop */}
+          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
+            <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed">
+              Bring us your code. We restore first, replace only as a last resort.{' '}
+              <span className="text-foreground/90 font-medium">AI as a tool, not a foundation.</span>
+            </p>
+          </FadeIn>
           
-          {/* Right column — Memory River visualization + context */}
-          <FadeIn
-            delay={0.2}
-            className="order-2 flex flex-col gap-4"
-          >
-            {/* Above River — How it works */}
-            <FadeIn
-              delay={0.35}
-              className="hidden sm:block rounded-xl border border-border/15 bg-card/25 p-4 gradient-border-glow"
+          {/* CTAs */}
+          <FadeIn delay={0.4} className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button 
+              asChild 
+              size="lg" 
+              className="w-full sm:w-auto gap-2 px-8 h-12 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
-              <div className="flex items-center gap-2 mb-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
-               <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How the Center Works</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
-               Scanners{' '}
-                  <span className="text-foreground/80 font-medium">discover</span> what your code can already do.{' '}
-                  The Refurbishment Lab{' '}
-                  <span className="text-primary font-medium">restores and hardens</span> it.{' '}
-                  40 Specialists{' '}
-                  <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>power</span>{' '}
-                  the process — no AI in the output.
-              </p>
-            </FadeIn>
+              <Link to="/ascension">
+                <Wrench className="w-4 h-4" />
+                Run Diagnostic
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </Button>
+            <Button 
+              asChild 
+              variant="outline" 
+              size="lg" 
+              className="w-full sm:w-auto gap-2 px-6 h-12 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
+            >
+              <Link to="/showroom">
+                <Search className="w-4 h-4" />
+                Browse the Showroom
+              </Link>
+            </Button>
+          </FadeIn>
 
-            <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
-              <MemoryRiverLazy autoCrystallize hideTagline />
-            </Suspense>
-
-            {/* Below River — pulse cards */}
-            <FadeIn delay={0.7} className="grid grid-cols-3 gap-2">
-              {[
-                { label: "Discovery Cycle", value: "Every 8hr", glow: "--neon-cyan" },
-                { label: "Specialists", value: "40", glow: "--neon-purple" },
-                { label: "Export Languages", value: "25", glow: "--neon-magenta" },
-              ].map((item) => (
-                <div 
-                  key={item.label} 
-                  className="rounded-lg border border-border/15 bg-card/25 p-2.5 sm:p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group shimmer-on-hover glass-edge"
-                >
-                   <div className="text-[9px] sm:text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] font-semibold mb-0.5">{item.label}</div>
-                   <div className="text-xs font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
-                </div>
-              ))}
-            </FadeIn>
+          {/* Zenodo */}
+          <FadeIn delay={0.5} className="flex justify-center mt-4">
+            <a
+              href="https://zenodo.org/records/18895141"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/30 bg-card/20 backdrop-blur-sm hover:border-primary/30 hover:bg-card/40 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-purple))] opacity-70 group-hover:opacity-100 transition-opacity" />
+              <span className="text-xs font-medium text-muted-foreground/70 group-hover:text-foreground/80 transition-colors tracking-wide">
+                Academic Prior Art — Zenodo v13.5
+              </span>
+              <ArrowRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-primary transition-colors" />
+            </a>
           </FadeIn>
         </div>
         
-        {/* Feature pills */}
-        <FadeIn
-          delay={0.55}
-          className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
-        >
+        {/* ─── Memory River + context cards ─── */}
+        <FadeIn delay={0.5} className="max-w-4xl mx-auto mb-8 sm:mb-12">
+          <Suspense fallback={<div className="h-[200px] rounded-xl border border-border/15 bg-card/10 animate-pulse" />}>
+            <MemoryRiverLazy autoCrystallize hideTagline />
+          </Suspense>
+        </FadeIn>
+
+        {/* ─── Quick-fact cards ─── */}
+        <FadeIn delay={0.6} className="grid grid-cols-3 gap-2 sm:gap-3 max-w-md mx-auto mb-8 sm:mb-12">
           {[
-            { icon: Wrench, label: "Restore First", href: "/ascension" },
-            { icon: Shield, label: "3-Day Evaluation", href: "/ascension" },
-            { icon: Layers, label: "AI as Tool, Not Foundation", href: "/documentation" },
-            { icon: Zap, label: "Zero AI in Output", href: "/documentation" },
-          ].map((item, index) => (
-            <FadeIn
-              key={item.label}
-              delay={0.6 + index * 0.05}
+            { label: "Discovery Cycle", value: "Every 8hr", glow: "--neon-cyan" },
+            { label: "Specialists", value: "40", glow: "--neon-purple" },
+            { label: "Export Targets", value: "25", glow: "--neon-magenta" },
+          ].map((item) => (
+            <div 
+              key={item.label} 
+              className="rounded-lg border border-border/15 bg-card/25 p-3 text-center hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-300 group glass-edge"
             >
-              <Link
-                to={item.href}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border/30 bg-card/30 shrink-0 hover:bg-card/60 hover:border-primary/25 hover:-translate-y-0.5 hover:shadow-sm transition-all duration-300 active:scale-[0.97]"
-              >
-                <item.icon className="w-3 h-3 text-muted-foreground/50" />
-                <span className="text-xs font-medium text-foreground/70 whitespace-nowrap">{item.label}</span>
-              </Link>
-            </FadeIn>
+               <div className="text-[10px] text-muted-foreground/50 uppercase tracking-[0.15em] font-semibold mb-0.5">{item.label}</div>
+               <div className="text-xs sm:text-sm font-bold text-foreground/80 group-hover:text-primary transition-colors">{item.value}</div>
+            </div>
           ))}
         </FadeIn>
 
-        {/* Journey strip */}
-        <FadeIn delay={0.65} className="mb-6 sm:mb-10">
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-full overflow-x-auto scrollbar-hide py-2">
-              <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
+        {/* ─── Journey strip ─── */}
+        <FadeIn delay={0.65} className="mb-8 sm:mb-10">
+          <div className="w-full overflow-x-auto scrollbar-hide py-1">
+            <div className="flex items-center justify-center gap-0 w-max sm:w-auto mx-auto px-2">
               {[
-                "Consultation",
-                "Diagnostic",
-                "Restoration Plan",
-                "Refurbishment",
-                "Evaluation",
-                "Ownership",
+                { label: "Diagnostic", color: "--neon-cyan" },
+                { label: "Restore", color: "--neon-cyan" },
+                { label: "Refurbish", color: "--neon-magenta" },
+                { label: "Evaluate", color: "--neon-purple" },
+                { label: "Own", color: "--primary" },
               ].map((step, i, arr) => (
-                <div key={step} className="flex items-center shrink-0">
-                  <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
-                    <span className="text-[10px] sm:text-xs font-semibold text-foreground/70 whitespace-nowrap">{step}</span>
+                <div key={step.label} className="flex items-center shrink-0">
+                  <div className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-border/20 bg-card/20">
+                    <span 
+                      className="text-[10px] sm:text-xs font-bold whitespace-nowrap"
+                      style={{ color: `hsl(var(${step.color}))` }}
+                    >
+                      {step.label}
+                    </span>
                   </div>
                   {i < arr.length - 1 && (
-                    <span className="text-muted-foreground/30 text-[10px] sm:text-xs font-bold px-1 sm:px-1.5">→</span>
+                    <span className="text-muted-foreground/25 text-[10px] font-bold px-1 sm:px-1.5">→</span>
                   )}
                 </div>
               ))}
-              </div>
-            </div>
-            <div className="w-full overflow-x-auto scrollbar-hide">
-              <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
-              {[
-                { label: "Scanners", color: "--neon-cyan" },
-                { label: "Refurbishment", color: "--neon-magenta" },
-                { label: "Specialists", color: "--neon-purple" },
-                { label: "40 Primitives", color: "--neon-amber" },
-              ].map((p, i, arr) => (
-                <div key={p.label} className="flex items-center shrink-0">
-                  <div className="px-2.5 sm:px-3 py-1 rounded-full border border-border/20 bg-card/20">
-                    <span className="text-[10px] sm:text-xs font-bold whitespace-nowrap" style={{ color: `hsl(var(${p.color}))` }}>{p.label}</span>
-                  </div>
-                  {i < arr.length - 1 && (
-                    <span className="text-muted-foreground/20 text-[10px] font-bold px-1">→</span>
-                  )}
-                </div>
-              ))}
-              </div>
             </div>
           </div>
         </FadeIn>
         
-        {/* Stats bar */}
+        {/* ─── Stats bar ─── */}
         <FadeIn delay={0.7}>
           <div 
-            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge"
+            className="relative grid grid-cols-2 md:grid-cols-4 divide-x divide-border/20 rounded-2xl border border-border/25 bg-card/20 overflow-hidden shadow-xl shadow-primary/[0.04] glass-edge max-w-3xl mx-auto"
           >
             <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
-            <div className="absolute inset-x-0 bottom-0 h-[1px] memory-stream-bar opacity-15" />
-            <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-primary/[0.01] pointer-events-none" />
             <AnimatedStat value={40} label="Primitives" delay={0} />
             <AnimatedStat value={25} label="Export Languages" delay={1} />
             <AnimatedStat value={8} label="Hour Cycles" suffix="hr" delay={2} />
