@@ -415,10 +415,10 @@ export function HeroMetaSubstrate() {
             <div className="w-full overflow-x-auto scrollbar-hide">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                { label: "Layers", color: "--neon-magenta" },
-                { label: "Organs", color: "--neon-cyan" },
-                { label: "Engines", color: "--neon-purple" },
-                { label: "Agents", color: "--neon-amber" },
+                { label: "Scouts", color: "--neon-cyan" },
+                { label: "Restoration", color: "--neon-magenta" },
+                { label: "Craftsmen", color: "--neon-purple" },
+                { label: "40 Primitives", color: "--neon-amber" },
               ].map((p, i, arr) => (
                 <div key={p.label} className="flex items-center shrink-0">
                   <div className="px-2.5 sm:px-3 py-1 rounded-full border border-border/20 bg-card/20">
