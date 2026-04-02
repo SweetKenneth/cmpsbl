@@ -35,8 +35,9 @@ export function EnhancedFooter() {
       links: [
         { name: "Memory Stream", href: "/foundry" },
         { name: "Ascension", href: "/ascension" },
-        { name: "Showroom", href: "/showcase" },
+        { name: "Showroom", href: "/showroom" },
         { name: "Junkyard", href: "/junkyard" },
+        { name: "Assembly", href: "/assembly" },
         { name: "Plans & pricing", href: "/store?tab=plans", highlight: true },
       ]
     },
@@ -48,16 +49,18 @@ export function EnhancedFooter() {
         { name: "API access", href: "/api-access" },
         { name: "Blog", href: "/blog" },
         { name: "Changelog", href: "/changelog" },
+        { name: "Academy", href: "/academy" },
       ]
     },
     {
-      title: "Legacy Reference",
+      title: "Explore",
       links: [
-        { name: "Substrate explorer", href: "/explore" },
         { name: "Architecture", href: "/architecture" },
         { name: "How it works", href: "/ai-operating-system" },
-        { name: "Runtime", href: "/runtime" },
-        { name: "Persistent memory", href: "/persistent-memory" },
+        { name: "Use cases", href: "/use-cases" },
+        { name: "Developers", href: "/developers" },
+        { name: "Enterprise", href: "/enterprise" },
+        { name: "Start here", href: "/start-here" },
       ]
     },
     {
@@ -66,8 +69,9 @@ export function EnhancedFooter() {
         { name: "About", href: "/about" },
         { name: "Investors", href: "/investors" },
         { name: "Roadmap", href: "/roadmap" },
-        { name: "Publication", href: "/publication" },
+        { name: "Careers", href: "/careers" },
         { name: "Contact", href: "/contact" },
+        { name: "Status", href: "/status" },
       ]
     },
   ];
