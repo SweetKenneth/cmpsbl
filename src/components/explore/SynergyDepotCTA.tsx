@@ -131,7 +131,7 @@ export function SynergyDepotCTA() {
 
                 {/* CTA */}
                 <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-neon-purple to-neon-purple text-white hover:opacity-90 shadow-lg shadow-neon-purple/20 transition-all">
-                  <Link to="/store">
+                  <Link to="/showroom">
                     Explore Memories
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
@@ -204,7 +204,7 @@ export function SynergyDepotCTA() {
 
                 {/* CTA */}
                 <Button asChild className="w-full h-12 text-base font-semibold bg-gradient-to-r from-neon-green to-neon-cyan text-white hover:opacity-90 shadow-lg shadow-neon-green/20 transition-all">
-                  <Link to="/store">
+                  <Link to="/showroom">
                     Browse Discoveries
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>

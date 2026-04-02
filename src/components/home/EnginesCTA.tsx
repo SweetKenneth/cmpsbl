@@ -131,7 +131,7 @@ export function EnginesCTA() {
                 size="lg"
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm sm:text-base font-bold rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all bg-[hsl(var(--neon-cyan))] text-white border-0 hover:bg-[hsl(var(--neon-cyan)/0.9)]"
               >
-                <Link to="/store">
+                <Link to="/showroom">
                   <Shield className="w-4 h-4" />
                   Browse the Store
                   <ArrowRight className="w-4 h-4" />
