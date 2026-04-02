@@ -292,7 +292,7 @@ export function CmpsblNav() {
                   <div className="space-y-3">
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
                       <Link to="/ascension">
-                        Bring Us Your Tech
+                        Run Diagnostic
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Link>
                     </Button>
