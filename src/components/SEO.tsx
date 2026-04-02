@@ -81,7 +81,7 @@ export function SEO({
   title = 'Composable AI Infrastructure | CMPSBL',
   description = 'CMPSBL is governed cognitive infrastructure where intelligence persists, adapts, and compounds. Modular AI substrate for self-improving systems.',
   canonical,
-  image = 'https://cmpsbl.com/og-memory-stream.jpg',
+  image = 'https://cmpsbl.com/og/home.jpg',
   type = 'website',
   author = 'CMPSBL Research Team',
   publishedTime,

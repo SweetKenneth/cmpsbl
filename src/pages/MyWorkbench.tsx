@@ -1,6 +1,6 @@
 /**
  * MyWorkbench — User's collection of downloaded and purchased items
- * View code, interact, send to restoration, manage collection
+ * Persisted to database for cross-device sync
  */
 
 import { useState, useMemo } from 'react';
@@ -11,7 +11,7 @@ import { PublicNav } from '@/components/PublicNav';
 import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { useAuth } from '@/contexts/AuthContext';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useWorkbenchItems } from '@/hooks/useWorkbenchItems';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -19,12 +19,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import {
-  Package, Wrench, Trash2, Code, Eye, ArrowRight,
+  Package, Wrench, Trash2, Code, ArrowRight,
   Download, Archive, Search, X, Zap,
 } from 'lucide-react';
 import { buildArchiveCatalog, type ArchiveItem } from '@/lib/junkyard/static-archive';
 
-// Import junkyard images for item lookup
 import imgSecurity from '@/assets/showroom/security-compliance.jpg';
 import imgGovernance from '@/assets/showroom/governance-policy.jpg';
 import imgMonitoring from '@/assets/showroom/monitoring-visibility.jpg';
@@ -50,7 +49,6 @@ const ALL_ARCHIVE_ITEMS = buildArchiveCatalog({
 
 const ITEM_MAP = new Map(ALL_ARCHIVE_ITEMS.map(i => [i.id, i]));
 
-/** Generate pseudo-code snippet for an archive item */
 function generateCodeSnippet(item: ArchiveItem): string {
   return `// ${item.name} — CJPI ${item.score}
 // Condition: ${item.condition} | Category: ${item.category}
@@ -90,7 +88,6 @@ function WorkbenchCard({ item, onRemove, onViewCode }: { item: ArchiveItem; onRe
       className="group"
     >
       <Card className={cn("overflow-hidden transition-all hover:shadow-lg", conditionColors)}>
-        {/* Image */}
         <div className="aspect-[16/9] overflow-hidden relative">
           <img src={item.image} alt={item.imageAlt} className="w-full h-full object-cover" loading="lazy" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -127,16 +124,16 @@ function WorkbenchCard({ item, onRemove, onViewCode }: { item: ArchiveItem; onRe
 }
 
 export default function MyWorkbench() {
-  const { user, loading } = useAuth();
-  const [savedIds, setSavedIds] = useLocalStorage<string[]>('cmpsbl_workbench_items', []);
+  const { user, loading: authLoading } = useAuth();
+  const { itemIds, loading: workbenchLoading, removeItem } = useWorkbenchItems();
   const [codeItem, setCodeItem] = useState<ArchiveItem | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const items = useMemo(() => {
-    return savedIds
+    return itemIds
       .map(id => ITEM_MAP.get(id))
       .filter((i): i is ArchiveItem => !!i);
-  }, [savedIds]);
+  }, [itemIds]);
 
   const filtered = useMemo(() => {
     if (!searchQuery) return items;
@@ -144,12 +141,12 @@ export default function MyWorkbench() {
     return items.filter(i => i.name.toLowerCase().includes(q) || i.description.toLowerCase().includes(q));
   }, [items, searchQuery]);
 
-  const handleRemove = (id: string) => {
-    setSavedIds(prev => prev.filter(i => i !== id));
+  const handleRemove = async (id: string) => {
+    await removeItem(id);
     toast.success('Removed from Workbench');
   };
 
-  if (loading) return null;
+  if (authLoading || workbenchLoading) return null;
   if (!user) return <Navigate to="/auth" replace />;
 
   return (
@@ -167,7 +164,6 @@ export default function MyWorkbench() {
 
       <section className="container mx-auto px-3 sm:px-4 pt-6 pb-16">
         <div className="max-w-5xl mx-auto">
-          {/* Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
               <h1 className="text-2xl sm:text-3xl font-black tracking-tight mb-1">My Workbench</h1>
@@ -235,7 +231,6 @@ export default function MyWorkbench() {
         </div>
       </section>
 
-      {/* Code Viewer Dialog */}
       <Dialog open={!!codeItem} onOpenChange={open => !open && setCodeItem(null)}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
           <DialogHeader>
