@@ -16,10 +16,8 @@ import {
   Sparkles,
   ChevronDown,
   Layers,
-  Brain,
   Shield,
   Zap,
-  Terminal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -227,7 +225,7 @@ export function HeroMetaSubstrate() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
             >
               <Sparkles className="w-3 h-3 text-primary" />
-              <span className="text-xs font-medium text-muted-foreground tracking-wide">AI Operating System</span>
+              <span className="text-xs font-medium text-muted-foreground tracking-wide">Classic Car Factory for Software</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
                 <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
@@ -244,18 +242,16 @@ export function HeroMetaSubstrate() {
             {/* Tagline */}
             <FadeIn delay={0.2} className="mb-6 sm:mb-8">
               <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground/70 tracking-tight leading-snug mb-2">
-                Where machines learn how to
+                Fall back in love with the
               </p>
               <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
                 <TypedText 
-                  texts={["improve.", "persist.", "evolve.", "coordinate.", "compound.", "dream.", "execute."]}
+                  texts={["classics.", "discovery.", "restoration.", "ownership.", "craftsmanship."]}
                   gradientColors={[
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
                     "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
                     "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
                     "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
-                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--primary)))",
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
                     "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
                   ]}
                 />
@@ -265,12 +261,11 @@ export function HeroMetaSubstrate() {
             {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
               <p className="text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
-                This isn't a toolkit.{' '}
-                <span className="text-foreground/90 font-medium">It's live infrastructure</span>.{' '}
-                When an agent is born, it's already running. When an engine activates, there's{' '}
-                <span className="text-foreground/90 font-medium">zero&nbsp;setup</span>{' '}
-                — it's done and working. Your identity, memory, and capabilities are wired the moment they exist.{' '}
-                <span className="text-foreground/90 font-medium">Log&nbsp;in&nbsp;and&nbsp;use&nbsp;it</span>.
+                Bring us the code you've been running for years.{' '}
+                <span className="text-foreground/90 font-medium">We scan it, restore it, and send it back</span>{' '}
+                — hardened with new capabilities, wrapped in governance, and ready for production.{' '}
+                No AI inside the output. No lock-in.{' '}
+                <span className="text-foreground/90 font-medium">Just&nbsp;classics</span>.
               </p>
             </FadeIn>
             
@@ -281,9 +276,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <Link to="/auth">
-                  <Sparkles className="w-4 h-4" />
-                  Log In
+                <Link to="/ascension">
+                  <Zap className="w-4 h-4" />
+                  Bring Us Your Tech
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -291,12 +286,12 @@ export function HeroMetaSubstrate() {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98] font-mono"
+                className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
               >
-                <a href="https://www.npmjs.com/package/@cmpsbl/cli" target="_blank" rel="noopener noreferrer">
-                  <Terminal className="w-4 h-4" />
-                  npm i -g @cmpsbl/cli
-                </a>
+                <Link to="/memory-stream">
+                  <Sparkles className="w-4 h-4" />
+                  Browse the Showroom
+                </Link>
               </Button>
             </FadeIn>
 
@@ -329,14 +324,16 @@ export function HeroMetaSubstrate() {
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary/50 animate-pulse" />
-                <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How Intelligence Flows</h3>
+                <h3 className="text-[10px] font-bold text-foreground/60 uppercase tracking-[0.2em]">How the Factory Works</h3>
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
-               A persistent AI runtime where intelligence{' '}
-                 <span className="text-foreground/80 font-medium">remembers</span>,{' '}
-                 <span className="text-primary font-medium">adapts</span>, and{' '}
-                 <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>evolves</span>{' '}
-                 instead of resetting every request.
+               Scouts{' '}
+                  <span className="text-foreground/80 font-medium">discover</span> capabilities.{' '}
+                  The Restoration Team{' '}
+                  <span className="text-primary font-medium">hardens</span> your code.{' '}
+                  40 Craftsmen{' '}
+                  <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>power</span>{' '}
+                  everything — autonomously, every 8 hours.
               </p>
             </FadeIn>
 
@@ -347,9 +344,9 @@ export function HeroMetaSubstrate() {
             {/* Below River — pulse cards */}
             <FadeIn delay={0.7} className="grid grid-cols-3 gap-2">
               {[
-                { label: "Memory Depth", value: "Persistent", glow: "--neon-cyan" },
-                { label: "Background Processing", value: "Autonomous", glow: "--neon-purple" },
-                { label: "Defense Mesh", value: "Always-On", glow: "--neon-magenta" },
+                { label: "Discovery Cycle", value: "Every 8hr", glow: "--neon-cyan" },
+                { label: "Restoration", value: "Up to 20", glow: "--neon-purple" },
+                { label: "Export Languages", value: "25", glow: "--neon-magenta" },
               ].map((item) => (
                 <div 
                   key={item.label} 
@@ -369,10 +366,10 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
-            { icon: Sparkles, label: "Free to Start", href: "/auth" },
-            { icon: Brain, label: "Persistent Memory", href: "/persistent-memory" },
-            { icon: Layers, label: "24 Capability Packs", href: "/packs" },
-            { icon: Shield, label: "Governed Runtime", href: "/documentation" },
+            { icon: Sparkles, label: "Free Junkyard", href: "/memory-stream" },
+            { icon: Shield, label: "3-Day Test Drive", href: "/ascension" },
+            { icon: Layers, label: "$1,952 Vault", href: "/memory-stream" },
+            { icon: Zap, label: "Zero AI in Output", href: "/documentation" },
           ].map((item, index) => (
             <FadeIn
               key={item.label}
@@ -395,12 +392,12 @@ export function HeroMetaSubstrate() {
             <div className="w-full overflow-x-auto scrollbar-hide py-2">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                "Signal",
-                "Memory Stream",
-                "Governed Runtime",
-                "Capability Packs",
-                "Sealed Engines",
-                "Applications",
+                "Upload",
+                "Diagnostic",
+                "Choose Primitives",
+                "Restoration",
+                "Test Drive",
+                "Ownership",
               ].map((step, i, arr) => (
                 <div key={step} className="flex items-center shrink-0">
                   <div className="px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg border border-border/25 bg-card/30">
@@ -416,10 +413,10 @@ export function HeroMetaSubstrate() {
             <div className="w-full overflow-x-auto scrollbar-hide">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                { label: "Layers", color: "--neon-magenta" },
-                { label: "Organs", color: "--neon-cyan" },
-                { label: "Engines", color: "--neon-purple" },
-                { label: "Agents", color: "--neon-amber" },
+                { label: "Scouts", color: "--neon-cyan" },
+                { label: "Restoration", color: "--neon-magenta" },
+                { label: "Craftsmen", color: "--neon-purple" },
+                { label: "40 Primitives", color: "--neon-amber" },
               ].map((p, i, arr) => (
                 <div key={p.label} className="flex items-center shrink-0">
                   <div className="px-2.5 sm:px-3 py-1 rounded-full border border-border/20 bg-card/20">
@@ -445,9 +442,9 @@ export function HeroMetaSubstrate() {
             {/* Inner ambient glow */}
             <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-primary/[0.01] pointer-events-none" />
             <AnimatedStat value={40} label="Primitives" delay={0} />
-            <AnimatedStat value={24} label="Capability Packs" delay={1} />
-            <AnimatedStat value={20} label="Sealed Products" delay={2} />
-            <AnimatedStat value={4} label="Primitive Categories" delay={3} />
+            <AnimatedStat value={25} label="Export Languages" delay={1} />
+            <AnimatedStat value={8} label="Hour Cycles" suffix="hr" delay={2} />
+            <AnimatedStat value={3} label="Zenodo DOIs" delay={3} />
           </div>
         </FadeIn>
       </div>

@@ -153,7 +153,7 @@ export default function RestorationShop() {
                 <Textarea
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  placeholder="Paste your code here — any language, any framework..."
+                  placeholder="Paste your code here — any language, any stack..."
                   className="min-h-[200px] bg-background/50 font-mono text-xs mb-4"
                 />
                 <Button

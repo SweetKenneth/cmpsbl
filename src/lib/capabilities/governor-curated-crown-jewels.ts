@@ -640,7 +640,7 @@ export const GOVERNOR_CURATED_JEWELS: GovernorCuratedJewel[] = [
   // ── ECONOMY ───────────────────────────────────────────────────────────────
   jewel('gov-economy-dynamic-pricing', 'ECONOMY',
     'Dynamic Pricing Engine',
-    'Multi-model consensus pricing with IQR outlier rejection, market weight blending, and CJPI-anchored valuation. Real-time cost attribution across the 40-node matrix.',
+    'Multi-model consensus pricing with IQR outlier rejection, market weight blending, and CJPI-anchored valuation. Real-time cost attribution across the 40-Primitive matrix.',
     'Software that prices itself. Grounded valuations, not guesswork.',
     [88, 90, 85, 78], 'architect', 'activate',
     'Platform economics at architect tier — pricing models hex-encoded',

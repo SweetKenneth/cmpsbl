@@ -749,7 +749,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["GitHub Copilot", "AI suggestion", "Fully autonomous — no human needed"],
             ["Cursor", "AI editor", "System improves itself without developer"],
             ["Snyk / SonarQube", "Static analysis", "Finds AND fixes; no false positive triage"],
-            ["Devin (Cognition)", "AI engineer", "40-node cognitive mesh, not general-purpose"],
+            ["Devin (Cognition)", "AI engineer", "40-Primitive cognitive substrate, not general-purpose"],
             ["Kodex AI", "Auto PRs", "Brain memory compounds — each cycle is smarter"],
           ],
         },
