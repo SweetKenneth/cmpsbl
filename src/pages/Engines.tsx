@@ -141,7 +141,7 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
 
           {/* Threat level tag */}
           <div className="absolute top-0 right-0 px-3 py-1 bg-foreground/5 rounded-bl-xl">
-            <span className="text-[11px] font-mono tracking-widest text-muted-foreground uppercase">
+            <span className="text-xs font-mono tracking-widest text-muted-foreground uppercase">
               {engine.threatLevel.split("—")[0].trim()}
             </span>
           </div>
@@ -154,7 +154,7 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
             )}>
               <engine.icon className="w-6 h-6" style={{ color: `hsl(${engine.color})` }} />
             </div>
-            <Badge variant="outline" className={cn("text-[11px] font-mono", tierConfig.badgeClass)}>
+            <Badge variant="outline" className={cn("text-xs font-mono", tierConfig.badgeClass)}>
               {engine.tier}
             </Badge>
             <Badge variant="outline" className="text-[10px] font-mono text-muted-foreground border-border/30">
@@ -214,7 +214,7 @@ function EngineCard({ engine, index, tierConfig }: { engine: Engine; index: numb
 
           {/* Edition tag */}
           <div className="mt-4 pt-3 border-t border-border/20">
-            <span className="text-[11px] font-mono text-muted-foreground/50 tracking-wide">
+            <span className="text-xs font-mono text-muted-foreground/50 tracking-wide">
               {engine.edition}
             </span>
           </div>
