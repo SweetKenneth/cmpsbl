@@ -325,7 +325,7 @@ export function CmpsblWelcome() {
               onClick={next}
               className="text-xs h-9 gap-1.5 px-5 cmpsbl-welcome-cta-glow"
             >
-              {isLastStep ? 'Explore the Platform' : 'Next →'}
+              {isLastStep ? 'Explore the Substrate' : 'Next →'}
               <ChevronRight className="w-3.5 h-3.5" />
             </Button>
           </div>
