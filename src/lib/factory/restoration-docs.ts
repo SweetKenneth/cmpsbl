@@ -1,9 +1,11 @@
 /**
  * Restoration Documentation Generator
  * Generates the full technical document package after Ascension.
+ * Uses the expanded capability registry for Active/Passive/Hybrid archetypes.
  */
 
 import type { ScanResult, PrimitiveRecommendation } from './scan-team';
+import { getCapabilityRegistry, type CapabilityDefinition } from './scan-team';
 
 export interface RestorationReport {
   id: string;
@@ -89,12 +91,9 @@ export function generateRestorationReport(
     durationMs: 2000 + Math.floor(Math.random() * 8000),
   }));
 
-  // Generate new capabilities based on primitives used
-  const newCapabilities: CapabilityEntry[] = selectedPrimitives.slice(0, 5).map(p => ({
-    name: `${p.name} Protection`,
-    description: `${p.category}-level hardening applied by ${p.name}. ${p.rationale}`,
-    usageExample: `import { ${p.name.toLowerCase()}Guard } from '@cmpsbl/runtime';\n${p.name.toLowerCase()}Guard.activate();`,
-  }));
+  // Generate capabilities from the registry — ENCODE selects up to 10
+  // matched by source primitives, classified as Active/Passive/Hybrid
+  const newCapabilities = selectCapabilities(selectedPrimitives);
 
   // Convert findings to vulnerability assessment
   const vulnerabilityAssessment: VulnerabilityEntry[] = scanResult.findings.map(f => ({
@@ -171,4 +170,64 @@ function generateFingerprint(input: string): string {
     hash = hash & 0xFFFFFFFFFFFFFFFFn;
   }
   return hash.toString(16).padStart(16, '0');
+}
+
+/**
+ * ENCODE-driven capability selection — matches capabilities to the
+ * user's selected primitives using the registry's sourcePrimitives field.
+ * Returns up to 10 capabilities, randomized within relevance tiers.
+ * Ensures a mix of Active, Passive, and Hybrid archetypes.
+ */
+function selectCapabilities(
+  selectedPrimitives: PrimitiveRecommendation[],
+): CapabilityEntry[] {
+  const registry = getCapabilityRegistry();
+  const selectedIds = new Set(selectedPrimitives.map(p => p.primitiveId));
+
+  // Score each capability by how many of its source primitives are selected
+  const scored = registry.map(cap => {
+    const matchCount = cap.sourcePrimitives.filter(id => selectedIds.has(id)).length;
+    const relevance = matchCount / cap.sourcePrimitives.length;
+    // Add randomization within tiers
+    const jitter = Math.random() * 0.15;
+    return { cap, score: relevance + jitter, matchCount };
+  });
+
+  // Filter to only capabilities that match at least 1 selected primitive
+  const matched = scored.filter(s => s.matchCount > 0);
+  matched.sort((a, b) => b.score - a.score);
+
+  // Ensure archetype diversity: at least 2 Active, 2 Passive, 2 Hybrid if available
+  const result: CapabilityDefinition[] = [];
+  const archetypeCounts = { Active: 0, Passive: 0, Hybrid: 0 };
+  const minPerArchetype = 2;
+  const maxCapabilities = 10;
+
+  // First pass: ensure archetype minimums
+  for (const archetype of ['Active', 'Passive', 'Hybrid'] as const) {
+    const archetypeCaps = matched.filter(s => s.cap.archetype === archetype);
+    for (const s of archetypeCaps) {
+      if (archetypeCounts[archetype] < minPerArchetype && result.length < maxCapabilities) {
+        if (!result.find(r => r.id === s.cap.id)) {
+          result.push(s.cap);
+          archetypeCounts[archetype]++;
+        }
+      }
+    }
+  }
+
+  // Second pass: fill remaining by score
+  for (const s of matched) {
+    if (result.length >= maxCapabilities) break;
+    if (!result.find(r => r.id === s.cap.id)) {
+      result.push(s.cap);
+    }
+  }
+
+  // Convert to CapabilityEntry format
+  return result.map(cap => ({
+    name: `${cap.name} [${cap.archetype}]`,
+    description: cap.description,
+    usageExample: cap.usageExample,
+  }));
 }
