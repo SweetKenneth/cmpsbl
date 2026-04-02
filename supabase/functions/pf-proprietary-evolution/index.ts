@@ -928,6 +928,121 @@ const NODE_CAPABILITY_LABELS: Record<string, string> = {
   DEFENSE: 'threat detection',
 };
 
+// ═══ ARCHETYPE-ALIGNED ENHANCEMENT RECOMMENDATIONS ═══
+// Instead of only finding what's MISSING, these recommend capabilities
+// that ALIGN with and AMPLIFY what the code already does well.
+
+interface EnhancementRecommendation {
+  name: string;
+  description: string;
+  primitive: string;
+  category: 'amplify' | 'extend' | 'harden' | 'accelerate';
+  baseScore: number;
+}
+
+const ARCHETYPE_ENHANCEMENTS: Record<SoftwareArchetype, EnhancementRecommendation[]> = {
+  active: [
+    // Amplify — make what the agent already does, better
+    { name: 'Autonomous_Decision_Loop', description: 'Amplifies your agent\'s existing decision-making with confidence-gated autonomous execution — your logic runs faster with built-in rollback safety.', primitive: 'CORTEX', category: 'amplify', baseScore: 85 },
+    { name: 'Predictive_Prefetcher', description: 'Anticipates your agent\'s next data needs based on historical task patterns — resources are ready before your code asks for them.', primitive: 'ORACLE', category: 'accelerate', baseScore: 82 },
+    { name: 'Execution_Replay_Optimizer', description: 'Replays your agent\'s past executions to discover optimization shortcuts it missed — learns from its own history to execute faster.', primitive: 'ECHO', category: 'amplify', baseScore: 79 },
+    { name: 'Adaptive_Rate_Governor', description: 'Dynamically adjusts your agent\'s throughput based on downstream health signals — prevents overload without sacrificing speed.', primitive: 'NERVE', category: 'harden', baseScore: 77 },
+    { name: 'Task_Decomposition_Engine', description: 'Breaks your agent\'s complex workflows into parallelizable sub-tasks with dependency tracking — 3-5x throughput on multi-step operations.', primitive: 'CORTEX', category: 'accelerate', baseScore: 84 },
+    { name: 'Stealth_Execution_Wrapper', description: 'Wraps your agent\'s sensitive operations in ephemeral containers with masked fingerprints — your logic runs invisibly.', primitive: 'PHANTOM', category: 'extend', baseScore: 73 },
+    { name: 'Continuous_Learning_Bridge', description: 'Enables your agent to consolidate learnings between active sessions — knowledge compounds autonomously without retraining.', primitive: 'DREAM', category: 'amplify', baseScore: 88 },
+    { name: 'Multi_Provider_Failover', description: 'Wraps your agent\'s AI calls with automatic provider rotation and cost tracking — zero downtime, optimized spend.', primitive: 'NEXUS', category: 'harden', baseScore: 86 },
+    { name: 'Signal_Priority_Router', description: 'Routes your agent\'s internal events by urgency — critical signals bypass the queue, background tasks batch efficiently.', primitive: 'NERVE', category: 'accelerate', baseScore: 75 },
+    { name: 'Memory_Consolidation_Layer', description: 'Adds persistent recall to your agent — past decisions, results, and context survive across sessions with governed retention.', primitive: 'MEMORY', category: 'amplify', baseScore: 87 },
+  ],
+  passive: [
+    // Amplify — make the UI/dashboard smarter
+    { name: 'Accessibility_Hardening', description: 'Scans and auto-fixes WCAG compliance gaps in your interface — accessibility that adapts to every user without manual auditing.', primitive: 'INCLUSIVE', category: 'harden', baseScore: 80 },
+    { name: 'Real_Time_Observability_Layer', description: 'Adds live telemetry dashboards to your UI — see exactly what your application does in production without external tools.', primitive: 'VISION', category: 'extend', baseScore: 78 },
+    { name: 'Entitlement_Gateway', description: 'Wraps your UI components with tier-gated access control — features unlock based on user roles and subscription state.', primitive: 'ACCESS', category: 'extend', baseScore: 76 },
+    { name: 'Session_Identity_Resolver', description: 'Adds unified identity resolution to your auth flow — handles SSO, role mapping, and session management in one layer.', primitive: 'IDENTITY', category: 'amplify', baseScore: 82 },
+    { name: 'Webhook_Event_Bridge', description: 'Connects your UI to external services via guaranteed-delivery webhooks — reliable event dispatch with retry logic built in.', primitive: 'RELAY', category: 'extend', baseScore: 74 },
+    { name: 'Localization_Engine', description: 'Adds real-time multilingual support to your interface — automatic language detection and culturally-aware rendering.', primitive: 'LINGUA', category: 'extend', baseScore: 77 },
+    { name: 'Component_Scaffold_Generator', description: 'Generates reusable UI components from your existing patterns — standardized building blocks derived from your codebase.', primitive: 'FORGE', category: 'accelerate', baseScore: 75 },
+    { name: 'Intent_Navigation_System', description: 'Adds semantic navigation to your UI — users find features by describing what they need, not by clicking through menus.', primitive: 'COMPASS', category: 'amplify', baseScore: 79 },
+    { name: 'Audit_Trail_Layer', description: 'Adds immutable action logging to your interface — every user interaction is chain-of-custody recorded for compliance.', primitive: 'AUDIT', category: 'harden', baseScore: 73 },
+    { name: 'Diagnostic_Health_Widget', description: 'Embeds live system health monitoring into your dashboard — real-time diagnostics rendered alongside your existing UI.', primitive: 'MEDIC', category: 'extend', baseScore: 71 },
+  ],
+  hybrid: [
+    // Amplify — reinforce the API/middleware layer
+    { name: 'Policy_Enforcement_Layer', description: 'Wraps your API endpoints with governance rules — rate limits, approval gates, and audit trails enforced automatically.', primitive: 'GOVERNANCE', category: 'harden', baseScore: 81 },
+    { name: 'Dependency_Health_Monitor', description: 'Monitors your upstream and downstream services in real-time — routes around degraded dependencies before they cause failures.', primitive: 'INTEGRATION', category: 'harden', baseScore: 79 },
+    { name: 'Cost_Metering_Engine', description: 'Tracks compute and API costs per request through your pipeline — real-time ROI visibility with budget gates.', primitive: 'ECONOMY', category: 'extend', baseScore: 77 },
+    { name: 'Threat_Detection_Middleware', description: 'Adds behavioral anomaly detection to your request pipeline — blocks suspicious patterns before they reach your handlers.', primitive: 'DEFENSE', category: 'harden', baseScore: 83 },
+    { name: 'Resilience_Circuit_Breaker', description: 'Wraps your service calls with adaptive circuit breakers — graceful degradation that self-heals as conditions improve.', primitive: 'IMMUNITY', category: 'harden', baseScore: 80 },
+    { name: 'Data_Sovereignty_Layer', description: 'Routes data through jurisdiction-aware pipelines — ensures compliance with residency requirements without changing your logic.', primitive: 'SOVEREIGN', category: 'extend', baseScore: 74 },
+    { name: 'Bias_Detection_Filter', description: 'Scans your pipeline outputs for bias and fairness issues — ethical guardrails that scale with your throughput.', primitive: 'CONSCIENCE', category: 'harden', baseScore: 72 },
+    { name: 'SLA_Compliance_Engine', description: 'Tracks your API\'s performance against contractual SLAs — automated penalty calculus and compliance reporting.', primitive: 'TREATY', category: 'extend', baseScore: 76 },
+    { name: 'Adaptive_Evolution_Layer', description: 'Applies evolutionary optimization to your pipeline configurations — routing strategies that improve themselves over time.', primitive: 'EVOLUTION', category: 'amplify', baseScore: 78 },
+    { name: 'Shadow_Verification_Mesh', description: 'Runs changes through shadow environments before production deployment — catches regressions invisibly.', primitive: 'SHADOW', category: 'harden', baseScore: 75 },
+  ],
+};
+
+const ENHANCEMENT_CATEGORY_LABELS: Record<string, string> = {
+  amplify: 'Amplifies what your code already does well',
+  extend: 'Adds new aligned capabilities to your stack',
+  harden: 'Strengthens your code\'s operational resilience',
+  accelerate: 'Makes your existing workflows faster',
+};
+
+/**
+ * Generate enhancement recommendations aligned with the code's archetype.
+ * These COMPLEMENT collision discoveries by recommending capabilities
+ * that ALIGN with the code rather than fill gaps.
+ */
+function generateEnhancementDiscoveries(
+  surface: CapabilitySurface,
+  archetype: SoftwareArchetype,
+  targetNode: string,
+  existingCount: number,
+): CollisionResult[] {
+  const enhancements = ARCHETYPE_ENHANCEMENTS[archetype] || ARCHETYPE_ENHANCEMENTS.hybrid;
+  
+  // Filter to enhancements that involve the target node's primitive
+  const targetRelated = enhancements.filter(e => e.primitive === targetNode);
+  // Also include some high-value non-target enhancements for variety
+  const others = enhancements
+    .filter(e => e.primitive !== targetNode)
+    .sort((a, b) => b.baseScore - a.baseScore)
+    .slice(0, 2);
+  
+  const candidates = [...targetRelated, ...others];
+  if (candidates.length === 0) return [];
+  
+  const results: CollisionResult[] = [];
+  
+  for (const enh of candidates) {
+    const nameHash = hashString(`${surface.nodeName}:${enh.name}:${enh.primitive}:enh`);
+    const variance = ((nameHash >> 4) % 11) - 5;
+    const synergy = getSectorSynergy([surface.sector, NODE_SECTOR[enh.primitive] || 'unknown']);
+    
+    let cjpi = enh.baseScore + variance + synergy + Math.min(3, Math.floor(surface.capabilities.length / 2));
+    cjpi = Math.max(40, Math.min(cjpi, 92));
+    
+    const categoryLabel = ENHANCEMENT_CATEGORY_LABELS[enh.category] || 'Enhancement';
+    const desc = `${enh.description} [${categoryLabel}]`;
+    
+    results.push({
+      name: enh.name,
+      description: `${surface.nodeName} (${surface.capabilities.slice(0, 2).join(', ')}) → ${enh.primitive} ${NODE_CAPABILITY_LABELS[enh.primitive] || enh.primitive.toLowerCase()}. ${desc}`,
+      cjpi_score: cjpi,
+      tier: scoreTier(cjpi),
+      chain: [surface.nodeName, enh.primitive],
+      capability_type: `enhancement:${enh.category}`,
+      chain_depth: 2,
+      synergy_bonus: synergy,
+      sectors_crossed: new Set([surface.sector, NODE_SECTOR[enh.primitive] || 'unknown']).size,
+      candidate_surface: surface,
+    });
+  }
+  
+  return results.sort((a, b) => b.cjpi_score - a.cjpi_score).slice(0, 3);
+}
+
 // ═══ MULTI-NODE COLLISION ENGINE (Auxiliary Node = First-Class Participant) ═══
 
 interface CollisionResult {
@@ -1103,8 +1218,15 @@ function collideNodesMultiChain(
     }
   }
 
+  // ═══ ENHANCEMENT PASS — Recommend capabilities that ALIGN with the code ═══
+  // These complement gap-fill collision discoveries with archetype-aligned enhancements
+  if (softwareArchetype) {
+    const enhancements = generateEnhancementDiscoveries(surface, softwareArchetype, targetNode, results.length);
+    results.push(...enhancements);
+  }
+
   results.sort((a, b) => b.cjpi_score - a.cjpi_score);
-  return results.slice(0, permutationDepth + 3);
+  return results.slice(0, permutationDepth + 5); // +5 to accommodate enhancements
 }
 
 function findArchetype(substrateNodes: string[]): { name: string; desc: string } | null {
