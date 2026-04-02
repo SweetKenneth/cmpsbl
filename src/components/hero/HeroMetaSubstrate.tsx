@@ -263,12 +263,11 @@ export function HeroMetaSubstrate() {
             {/* Single clear value prop — replaces redundant thesis + subtitle */}
             <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
               <p className="text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
-                This isn't a toolkit.{' '}
-                <span className="text-foreground/90 font-medium">It's live infrastructure</span>.{' '}
-                When an agent is born, it's already running. When an engine activates, there's{' '}
-                <span className="text-foreground/90 font-medium">zero&nbsp;setup</span>{' '}
-                — it's done and working. Your identity, memory, and capabilities are wired the moment they exist.{' '}
-                <span className="text-foreground/90 font-medium">Log&nbsp;in&nbsp;and&nbsp;use&nbsp;it</span>.
+                Bring us the code you've been running for years.{' '}
+                <span className="text-foreground/90 font-medium">We scan it, restore it, and send it back</span>{' '}
+                — hardened with new capabilities, wrapped in governance, and ready for production.{' '}
+                No AI inside the output. No lock-in.{' '}
+                <span className="text-foreground/90 font-medium">Just&nbsp;classics</span>.
               </p>
             </FadeIn>
             
