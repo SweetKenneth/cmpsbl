@@ -27,6 +27,7 @@ import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/li
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
 import { generateRefurbishedCode, generateLicense } from "@/lib/factory/generate-refurbished-code";
+import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
 import { PrimitiveSelector } from "@/components/factory/PrimitiveSelector";
@@ -40,6 +41,7 @@ import { useDecodeStore } from "@/stores/decodeStore";
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
+type ProcessingPrimitive = { name: string; status: 'pending' | 'active' | 'done' };
 
 const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
   { key: 'upload', label: 'Upload', icon: Upload },
@@ -60,6 +62,7 @@ export default function RestorationShop() {
   const [refurbishedCode, setRefurbishedCode] = useState<string>('');
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
+  const [processingPrimitives, setProcessingPrimitives] = useState<ProcessingPrimitive[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const identityRole = useDecodeStore(s => s.identityRole);
 
