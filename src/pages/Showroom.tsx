@@ -202,7 +202,6 @@ interface ShowroomItem {
 
 // ═══ Main page ═══
 export default function Showroom() {
-  export default function Showroom() {
   const [search, setSearch] = useState('');
   const [painFilter, setPainFilter] = useState<PainPointId>('all');
   const [tierFilter, setTierFilter] = useState<PublicTier | 'all'>('all');
