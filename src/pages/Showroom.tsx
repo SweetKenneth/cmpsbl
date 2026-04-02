@@ -5,7 +5,6 @@
  */
 
 import { useState, useMemo, useRef, useCallback } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -26,7 +25,7 @@ import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
-import { fetchShowroomCatalog, getShowroomPriceDisplay, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
+import { SHOWROOM_CATALOG, getShowroomPriceDisplay, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -290,12 +289,9 @@ export default function Showroom() {
   const showSuccess = searchParams.get('success') === 'true';
   const successItem = searchParams.get('item');
 
-  // Fetch live catalog from Memory Stream
-  const { data: catalog = [], isLoading: catalogLoading } = useQuery<ShowroomItem[]>({
-    queryKey: ['showroom-catalog'],
-    queryFn: () => fetchShowroomCatalog(50),
-    staleTime: 1000 * 60 * 5,
-  });
+  // Static catalog — no database calls
+  const catalog = SHOWROOM_CATALOG;
+  const catalogLoading = false;
 
   // Group by tier
   const itemsByTier = useMemo(() => {

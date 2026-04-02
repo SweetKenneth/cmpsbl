@@ -52,22 +52,17 @@ import imgPerformance from '@/assets/showroom/performance-optimization.jpg';
 import imgResilience from '@/assets/showroom/resilience-recovery.jpg';
 import imgDecision from '@/assets/showroom/decision-intelligence.jpg';
 
-// ─── Types ───
-type ItemCondition = 'raw' | 'broken' | 'salvageable';
+// ─── Types + static data ───
+import { buildArchiveCatalog, type ArchiveItem } from '@/lib/junkyard/static-archive';
 type ArchiveCategory = 'Raw Discoveries' | 'Broken Tech' | 'Salvageable Parts' | 'Legacy Systems';
 
-interface ArchiveItem {
-  id: string;
-  name: string;
-  description: string;
-  category: ArchiveCategory;
-  condition: ItemCondition;
-  score: number;
-  image: string;
-  imageAlt: string;
-  restorationCost?: string;
-  originalValue?: string;
-}
+const ARCHIVE_ITEMS: ArchiveItem[] = buildArchiveCatalog({
+  security: imgSecurity, governance: imgGovernance, monitoring: imgMonitoring,
+  performance: imgPerformance, resilience: imgResilience, decision: imgDecision,
+  brokenCircuit: imgBrokenCircuit, decommServer: imgDecommServer, corruptedData: imgCorruptedData,
+  brokenInput: imgBrokenInput, crackedDisplay: imgCrackedDisplay, salvageRobot: imgSalvageRobot,
+  tangledNetwork: imgTangledNetwork, legacyStorage: imgLegacyStorage,
+});
 
 // ─── Category config ───
 const CATEGORIES: { id: ArchiveCategory; label: string; icon: typeof Archive; color: string; border: string; text: string; bg: string; subtitle: string }[] = [
@@ -77,34 +72,7 @@ const CATEGORIES: { id: ArchiveCategory; label: string; icon: typeof Archive; co
   { id: 'Legacy Systems', label: 'Legacy Systems', icon: HardDrive, color: 'from-neon-purple/20 to-neon-purple/5', border: 'border-neon-purple/30', text: 'text-neon-purple', bg: 'bg-neon-purple/10', subtitle: 'Deprecated runtimes. Classic potential.' },
 ];
 
-// ─── Static archive catalog ───
-const ARCHIVE_ITEMS: ArchiveItem[] = [
-  // Raw Discoveries (sub-68 score, free)
-  { id: 'raw-1', name: 'Partial Thread Isolator', description: 'Discovered during Cycle 4,812. Scored 41 — thread boundary detection works but leaks under concurrent load. Interesting foundation.', category: 'Raw Discoveries', condition: 'raw', score: 41, image: imgSecurity, imageAlt: 'Partial thread isolation capability' },
-  { id: 'raw-2', name: 'Naive Pattern Matcher v0.3', description: 'Early-stage regex alternative. Fast on simple patterns, catastrophic backtracking on nested groups. Score 33.', category: 'Raw Discoveries', condition: 'raw', score: 33, image: imgMonitoring, imageAlt: 'Pattern matching capability' },
-  { id: 'raw-3', name: 'Drift Signal Collector', description: 'Captures semantic drift between API versions. Noisy output, no deduplication. Score 52 — promising concept.', category: 'Raw Discoveries', condition: 'raw', score: 52, image: imgDecision, imageAlt: 'Drift signal collection' },
-  { id: 'raw-4', name: 'Config Entropy Scanner', description: 'Measures configuration complexity. Over-flags in monorepos. Score 47 but the metric is novel.', category: 'Raw Discoveries', condition: 'raw', score: 47, image: imgPerformance, imageAlt: 'Configuration entropy analysis' },
-  { id: 'raw-5', name: 'Shallow Dependency Walker', description: 'Walks first-level deps only. Misses transitive vulnerabilities. Score 38 — too shallow for production.', category: 'Raw Discoveries', condition: 'raw', score: 38, image: imgGovernance, imageAlt: 'Dependency analysis' },
-  { id: 'raw-6', name: 'Stale Cache Detector', description: 'Identifies cache entries older than TTL. False positives on warm caches. Score 44.', category: 'Raw Discoveries', condition: 'raw', score: 44, image: imgResilience, imageAlt: 'Cache detection capability' },
 
-  // Broken Tech (damaged, can be restored)
-  { id: 'broken-1', name: 'CORTEX-7 Reasoning Module', description: 'Previously rated CJPI 82. Corrupted during a failed migration. Core logic intact but the inference bridge is severed. Restorable.', category: 'Broken Tech', condition: 'broken', score: 82, image: imgCorruptedData, imageAlt: 'Corrupted reasoning module data stream', restorationCost: '$149', originalValue: '$329' },
-  { id: 'broken-2', name: 'SENTINEL Firewall Array', description: 'Multi-layer packet inspector. Clock desync bricked the timing module. Hardware-era code, still beautiful under the damage.', category: 'Broken Tech', condition: 'broken', score: 76, image: imgBrokenCircuit, imageAlt: 'Broken circuit board of firewall array', restorationCost: '$89', originalValue: '$199' },
-  { id: 'broken-3', name: 'MERIDIAN Load Balancer', description: 'Distributed traffic shaper. Memory leak in the connection pool. Was running 10k req/s before it went down.', category: 'Broken Tech', condition: 'broken', score: 71, image: imgDecommServer, imageAlt: 'Decommissioned server rack', restorationCost: '$119', originalValue: '$249' },
-  { id: 'broken-4', name: 'ORACLE Prediction Engine', description: 'Time-series forecasting runtime. Training data corruption caused drift in the confidence intervals. Fixable with re-calibration.', category: 'Broken Tech', condition: 'broken', score: 88, image: imgCrackedDisplay, imageAlt: 'Cracked display of prediction engine', restorationCost: '$199', originalValue: '$449' },
-
-  // Salvageable Parts (partial, worth rebuilding)
-  { id: 'salvage-1', name: 'Authentication Handshake Module', description: 'OAuth2 + PKCE implementation. Token refresh logic works, but the CSRF guard is stripped. 60% functional.', category: 'Salvageable Parts', condition: 'salvageable', score: 58, image: imgSalvageRobot, imageAlt: 'Salvageable robotics components', restorationCost: '$49', originalValue: '$99' },
-  { id: 'salvage-2', name: 'Rate Limiter Core', description: 'Token bucket algorithm with sliding window. Works for single-instance but no distributed coordination. Great starting point.', category: 'Salvageable Parts', condition: 'salvageable', score: 62, image: imgTangledNetwork, imageAlt: 'Tangled network cables of rate limiter', restorationCost: '$39', originalValue: '$79' },
-  { id: 'salvage-3', name: 'Webhook Dispatcher v2', description: 'Reliable delivery with exponential backoff. Missing dead-letter queue and retry dashboard. Core is solid.', category: 'Salvageable Parts', condition: 'salvageable', score: 55, image: imgBrokenInput, imageAlt: 'Input device for webhook dispatcher', restorationCost: '$59', originalValue: '$129' },
-
-  // Legacy Systems (deprecated but classic)
-  { id: 'legacy-1', name: 'ATLAS v1 Navigation Core', description: 'First-gen capability mapper. Sequential scan only — no parallel discovery. Historical artifact from Cycle 200.', category: 'Legacy Systems', condition: 'raw', score: 45, image: imgLegacyStorage, imageAlt: 'Legacy storage platters' },
-  { id: 'legacy-2', name: 'BEACON v0 Health Check', description: 'The original heartbeat monitor. UDP only, no TLS. The grandfather of our current BEACON engine.', category: 'Legacy Systems', condition: 'raw', score: 39, image: imgDecommServer, imageAlt: 'Original BEACON server hardware' },
-  { id: 'legacy-3', name: 'Proto-DREAM Synthesizer', description: 'Before DREAM was DREAM. This early prototype used random walks instead of sub-threshold synthesis. Fascinating failure.', category: 'Legacy Systems', condition: 'raw', score: 51, image: imgCorruptedData, imageAlt: 'Proto-DREAM data visualization' },
-];
-
-// ─── Horizontal Scroll Carousel ───
 function ScrollCarousel({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const scroll = (dir: 'left' | 'right') => {
