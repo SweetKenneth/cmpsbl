@@ -4,7 +4,7 @@
  * ENCODE + MEDIC + ENGINEER primitives — no AI in the output.
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
