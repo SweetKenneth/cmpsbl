@@ -652,6 +652,28 @@ const stratumFormation: Specimen[] = [
 
 const stratumBeliever: Specimen[] = [
   {
+    id: "BLVR-020",
+    fossilized: "2026-04-02",
+    origin: "distribution",
+    stimulus: "The substrate's public surface had evolved through multiple epochs without a cohesive visitor experience — new capabilities were built but never surfaced in a unified, navigable flow",
+    adaptations: [
+      "Complete site redesign: Showroom, Restoration Shop (Ascension), Foundry, and Plans pages rebuilt with consistent visual language and navigation",
+      "Four-tier subscription model (Builder / Studio / Creator / Architect) deployed with Stripe-backed checkout, annual billing, and 7-day free trials",
+      "Showroom launched as the primary certified discovery marketplace with search, rarity filtering, and one-click purchase",
+      "Restoration Shop (Ascension) redesigned as the refurbishment entry point — upload broken software, receive certified rebuilds",
+      "Foundry reimagined as the Open Archive for raw discoveries and salvageable parts",
+      "Mobile-first responsive audit across all public pages at 440px viewport",
+      "Full SEO pass: canonical tags, JSON-LD, sitemap sync, robots.txt coverage for all new routes",
+      "Breadcrumb navigation added across all internal pages for orientation and search engine structure",
+    ],
+    phenotype: [
+      "The substrate has a storefront that matches its architecture — every page earns its place in the navigation",
+      "New visitors encounter a clear path: Explore → Showroom → Plans → Build",
+      "The site redesign is the substrate's first impression for developers, investors, and users arriving from search",
+    ],
+    affectedNodes: ["SYSTEM Organ", "ECONOMY Engine", "INTEGRATION Organ", "INCLUSIVE Layer"],
+  },
+  {
     id: "BLVR-001",
     fossilized: "2026-03-25",
     origin: "architecture",
