@@ -1,6 +1,6 @@
 /**
  * Terminal Type Definitions
- * Terminal Configuration — 40-Node / 12-Sector Topology (500+ commands)
+ * Terminal Configuration — 40-Primitive / 12-Sector Topology (500+ commands)
  */
 
 export interface CommandResult {

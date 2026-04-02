@@ -421,7 +421,7 @@ export default function SystemOverview() {
   return (
     <>
       <Helmet>
-        <title>System Overview — 40-Node AI Substrate | CMPSBL®</title>
+        <title>System Overview — 40-Primitive AI Substrate | CMPSBL®</title>
         <meta name="description" content="From Memory to Silicon. A 40-primitive autonomous cognitive substrate across 4 categories that crystallizes ideas into production software and hardware. For investors, builders, and the curious." />
       </Helmet>
 

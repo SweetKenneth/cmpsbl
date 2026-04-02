@@ -1,6 +1,6 @@
 /**
  * Substrate Demo — Interactive AI OS Showcase
- * 40-Node / 12-Sector Field-Based Topology
+ * 40-Primitive / 12-Sector Field-Based Topology
  *
  * CORE → SYSTEM → CCR → OCG → Execution → ESZ → EPZ → EMZ → CSZ → Fields → Plane → Shell
  */

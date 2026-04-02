@@ -1,5 +1,5 @@
 /**
- * System Integrity — 40-Node / 12-Sector Topology
+ * System Integrity — 40-Primitive / 12-Sector Topology
  * Read-only dashboard: health %, breaker state, zone isolation
  */
 

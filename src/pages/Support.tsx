@@ -132,7 +132,7 @@ const FAQ_ITEMS = [
   {
     category: "Account & Access",
     question: "How do I contact human support?",
-    answer: "You can ask DECODE to escalate your issue, or email support@cmpsbl.com directly. Average response time is under 48 hours. All escalations are reviewed by our team.",
+    answer: "You can ask DECODE to escalate your issue, or email support@cmpsbl.com directly. Average response time is under 48 hours. All escalations are reviewed by CMPSBL.",
   },
 ];
 
@@ -147,7 +147,7 @@ const CATEGORY_ICONS: Record<string, typeof Rocket> = {
 const QUICK_LINKS = [
   { to: "/documentation", icon: BookOpen, label: "Documentation", desc: "Browse the full docs library" },
   { to: "/changelog", icon: Sparkles, label: "Evolution Log", desc: "Recent changes & updates" },
-  { to: "/contact", icon: Mail, label: "Contact", desc: "Reach our team directly" },
+  { to: "/contact", icon: Mail, label: "Contact", desc: "Reach us directly" },
 ];
 
 export default function Support() {
@@ -218,7 +218,7 @@ export default function Support() {
                 How can we <span className="text-primary">help?</span>
               </h1>
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-6">
-                Browse our FAQ below or chat directly with DECODE — the cognitive interface that can answer questions, troubleshoot issues, and escalate to our team when needed.
+                Browse our FAQ below or chat directly with DECODE — the cognitive interface that can answer questions, troubleshoot issues, and escalate when needed.
               </p>
 
               {/* Chat with Support CTA */}
@@ -348,7 +348,7 @@ export default function Support() {
               <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border/30">
                 <Clock className="w-4 h-4 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground">
-                  Average response time: under 48 hours · All escalations reviewed by our team
+                  Average response time: under 48 hours · All escalations reviewed by CMPSBL
                 </span>
               </div>
             </motion.div>

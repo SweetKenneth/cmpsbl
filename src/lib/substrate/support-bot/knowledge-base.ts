@@ -416,7 +416,7 @@ If the support bot can't resolve your issue, click "Escalate to Human" and we'll
     question_pattern: 'Can I talk to a human?',
     answer: `Absolutely. You have two options:
 
-1. **Escalate from this chat** — Click "Escalate to Human" and our team will follow up at support@cmpsbl.com within 48 hours.
+1. **Escalate from this chat** — Click "Escalate to Human" and we will follow up at support@cmpsbl.com within 48 hours.
 
 2. **Email directly** — Send your question to support@cmpsbl.com. Include your account email and a description of your issue.
 

@@ -6,7 +6,7 @@
  * ordered delivery, cross-primitive propagation, replay engine,
  * analytics, and 35-feature hardening suite.
  *
- * Part of the 40-Node / 12-Sector Architecture (Kernel Zone)
+ * Part of the 40-Primitive / 12-Sector Architecture (Kernel Zone)
  * Respects debug mode kill-switch
  */
 
