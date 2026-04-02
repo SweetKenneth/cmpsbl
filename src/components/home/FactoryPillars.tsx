@@ -10,99 +10,96 @@ import { cn } from "@/lib/utils";
 const PILLARS = [
   {
     title: "The Scanners",
-    subtitle: "Memory Stream · The Showroom",
+    subtitle: "Memory Stream · Discovery",
     icon: Sparkles,
-    description: "An autonomous 8-hour discovery cycle that finds capabilities nobody asked it to find. Every discovery scored, valued, and placed in the showroom. Search by problem. Find your solution.",
+    description: "Autonomous 8-hour cycles that find capabilities nobody asked it to find. Every discovery scored, valued, and placed in the Showroom.",
     stats: [
-      { label: "Discovery Cycle", value: "8hr" },
-      { label: "Export Languages", value: "25" },
-      { label: "Showroom", value: "Growing" },
+      { label: "Cycle", value: "8hr" },
+      { label: "Exports", value: "25" },
     ],
     href: "/showroom",
-    cta: "Browse the Showroom",
-    gradient: "from-[hsl(var(--neon-cyan))] to-[hsl(var(--neon-purple))]",
+    cta: "Browse Showroom",
     glowVar: "--neon-cyan",
   },
   {
     title: "The Refurbishment Lab",
     subtitle: "Ascension · Your Code",
     icon: Zap,
-    description: "Bring us your code. We analyze it, reimagine the possibilities, and restore first — only offering replacements as a last resort. We embrace AI as a tool, not as a foundation.",
+    description: "Bring us your code. We analyze, restore first, and only replace as a last resort. AI as a tool, not a foundation.",
     stats: [
-      { label: "Pipeline Stages", value: "8" },
-      { label: "Primitives/Run", value: "Up to 20" },
-      { label: "Downtime", value: "Zero" },
+      { label: "Stages", value: "8" },
+      { label: "Primitives", value: "Up to 20" },
     ],
     href: "/ascension",
-    cta: "Book a Consultation",
-    gradient: "from-[hsl(var(--neon-magenta))] to-[hsl(var(--primary))]",
+    cta: "Run Diagnostic",
     glowVar: "--neon-magenta",
   },
   {
     title: "The Specialists",
-    subtitle: "Substrate · 40 Primitives",
+    subtitle: "40 Primitives · Zero AI",
     icon: Cpu,
-    description: "The 40 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time. The center runs every 8 hours whether anyone is watching.",
+    description: "Pure algorithmic code. Deterministic. Auditable. Same output every time. The center runs every 8 hours whether anyone is watching.",
     stats: [
       { label: "Primitives", value: "40" },
       { label: "External AI", value: "Zero" },
-      { label: "Zenodo DOIs", value: "3" },
     ],
     href: "/architecture",
-    cta: "Meet the Specialists",
-    gradient: "from-[hsl(var(--primary))] to-[hsl(var(--neon-cyan))]",
+    cta: "Meet Specialists",
     glowVar: "--primary",
   },
 ] as const;
 
 export function FactoryPillars() {
   return (
-    <section className="relative z-10 px-3 sm:px-6 py-16 sm:py-24">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-3">
+    <section className="relative z-10 px-4 sm:px-6 py-14 sm:py-20">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-10 sm:mb-14">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground mb-2">
             Three Pillars. One Center.
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-            The scanners find it. The lab refines it. The specialists make it all possible.
+          <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
+            The scanners find it. The lab refines it. The specialists power it.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
           {PILLARS.map((pillar) => (
             <div
               key={pillar.title}
-              className="group relative rounded-2xl border border-border/50 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-500"
+              className="group relative rounded-xl border border-border/40 bg-card/30 backdrop-blur-sm overflow-hidden hover:border-primary/30 transition-all duration-300"
             >
-              {/* Top gradient bar */}
-              <div className={cn("h-1 bg-gradient-to-r", pillar.gradient)} />
+              {/* Top accent */}
+              <div 
+                className="h-0.5" 
+                style={{ background: `linear-gradient(90deg, hsl(var(${pillar.glowVar})), hsl(var(${pillar.glowVar}) / 0.3))` }} 
+              />
 
-              <div className="p-6 sm:p-8">
+              <div className="p-5 sm:p-6">
                 {/* Icon + Title */}
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
                     style={{ background: `hsl(var(${pillar.glowVar}) / 0.1)` }}
                   >
-                    <pillar.icon className="w-5 h-5" style={{ color: `hsl(var(${pillar.glowVar}))` }} />
+                    <pillar.icon className="w-4 h-4" style={{ color: `hsl(var(${pillar.glowVar}))` }} />
                   </div>
-                  <div>
-                    <h3 className="text-lg font-bold tracking-tight text-foreground">{pillar.title}</h3>
-                    <p className="text-xs text-muted-foreground font-medium">{pillar.subtitle}</p>
+                  <div className="min-w-0">
+                    <h3 className="text-sm sm:text-base font-bold tracking-tight text-foreground leading-tight">{pillar.title}</h3>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground/60 font-medium">{pillar.subtitle}</p>
                   </div>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm text-muted-foreground/80 leading-relaxed mb-6">
+                <p className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed mb-4">
                   {pillar.description}
                 </p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-3 gap-2 mb-6">
+                <div className="flex gap-2 mb-4">
                   {pillar.stats.map((stat) => (
-                    <div key={stat.label} className="text-center p-2 rounded-lg bg-secondary/50">
-                      <div className="text-sm font-bold text-foreground">{stat.value}</div>
-                      <div className="text-[10px] text-muted-foreground uppercase tracking-wider">{stat.label}</div>
+                    <div key={stat.label} className="flex-1 text-center p-2 rounded-lg bg-secondary/40">
+                      <div className="text-xs sm:text-sm font-bold text-foreground">{stat.value}</div>
+                      <div className="text-[10px] text-muted-foreground/60 uppercase tracking-wider">{stat.label}</div>
                     </div>
                   ))}
                 </div>
@@ -110,10 +107,10 @@ export function FactoryPillars() {
                 {/* CTA */}
                 <Link
                   to={pillar.href}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary/80 transition-colors group/link"
+                  className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 transition-colors group/link"
                 >
                   {pillar.cta}
-                  <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  <ArrowRight className="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
