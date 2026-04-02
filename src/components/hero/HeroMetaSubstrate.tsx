@@ -395,8 +395,8 @@ export function HeroMetaSubstrate() {
                 "Upload",
                 "Diagnostic",
                 "Choose Primitives",
-                "Restoration",
-                "Test Drive",
+                "Refurbishment",
+                "Evaluation",
                 "Ownership",
               ].map((step, i, arr) => (
                 <div key={step} className="flex items-center shrink-0">
