@@ -1,18 +1,19 @@
 /**
  * DecodeDebrief — Interactive guided tour of refurbishment results
- * DECODE walks user through findings conversationally after Ascension completes
- * Includes rich primitive descriptions and interactive Q&A at the end
+ * DECODE has FULL CONTEXT: original code, refurbished code, applied primitives, and scan results.
+ * Answers questions as if it performed the refurbishment itself.
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, ChevronRight, Sparkles, Shield, Zap, CheckCircle2, FileText, Send } from 'lucide-react';
+import { MessageSquare, ChevronRight, Sparkles, Shield, Zap, CheckCircle2, FileText, Send, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { useDecodeStore } from '@/stores/decodeStore';
+import { toast } from 'sonner';
 import type { RestorationReport } from '@/lib/factory/restoration-docs';
 import type { ScanResult } from '@/lib/factory/scan-team';
+import type { PrimitiveRecommendation } from '@/lib/factory/scan-team';
 
 interface DebriefMessage {
   id: string;
@@ -58,7 +59,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'intro',
     role: 'decode',
-    content: `Refurbishment complete. Let me walk you through exactly what changed — and what you're getting back. ✨`,
+    content: `Refurbishment complete. I've analyzed your code, applied the primitives you selected, and prepared your hardened package. Let me walk you through exactly what changed. ✨`,
     icon: MessageSquare,
   });
 
@@ -67,7 +68,7 @@ function buildDebriefMessages(
   msgs.push({
     id: 'cjpi',
     role: 'decode',
-    content: `Your code scored **CJPI ${cert.score}** — placing it in the **${cert.tier}** tier. ${cert.score >= 94 ? "That's exceptional." : cert.score >= 80 ? "Solid foundation." : "Room to grow."} Certificate serial: \`${cert.serialNumber}\``,
+    content: `Your code scored **CJPI ${cert.score}** — placing it in the **${cert.tier}** tier. ${cert.score >= 94 ? "That's exceptional." : cert.score >= 80 ? "Solid foundation." : "Room to grow."} Your fingerprint ID is \`${cert.fingerprint}\` — save this to pull up your refurbishment anytime.`,
     icon: Sparkles,
     highlight: cert.score >= 90,
   });
@@ -90,7 +91,7 @@ function buildDebriefMessages(
     msgs.push({
       id: `prim-${primitive.name}`,
       role: 'decode',
-      content: `**${primitive.name}** has been added. ${description}`,
+      content: `**${primitive.name}** has been applied. ${description}`,
       icon: Zap,
     });
   }
@@ -110,15 +111,15 @@ function buildDebriefMessages(
   msgs.push({
     id: 'docs',
     role: 'decode',
-    content: `Everything is documented — pipeline details, error codes, and a test harness config are included in your refurbishment report. You can verify every change independently with \`npx cmpsbl-test\`. 📋`,
+    content: `Your export includes: LICENSE, dual-layer source (original + refurbished), pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, and a README. Everything you need to verify and maintain independently. 📋`,
     icon: FileText,
   });
 
-  // Interactive closing — invitation to ask questions
+  // Interactive closing
   msgs.push({
     id: 'close',
     role: 'decode',
-    content: `That covers all the upgrades. Do you have any questions before you download your refurbished code? If not, I'm always available via the floating icon on your screen. 💬`,
+    content: `That covers all the upgrades. Do you have any questions about what was changed, how to use the new capabilities, or anything else before you download? I have full context on your code and every primitive that was applied. 💬`,
     icon: CheckCircle2,
     highlight: true,
   });
@@ -126,30 +127,105 @@ function buildDebriefMessages(
   return msgs;
 }
 
-/** Simple contextual Q&A responses for common debrief questions */
-const QA_RESPONSES: [RegExp, string][] = [
-  [/test|verify|harness/i, "You can verify all changes by running `npm install @cmpsbl/test-harness` followed by `npx cmpsbl-test --config ./restoration-report.json`. Each primitive's hardening is validated independently — green means active, red means review that section."],
-  [/backup|restore|rollback|failsafe/i, "FAILSAFE gives you full version control over your system state. Run `cmpsbl backup` to create a snapshot, and `cmpsbl restore <id>` to roll back. Circuit breakers handle automatic recovery during runtime failures."],
-  [/security|defense|fingerprint/i, "DEFENSE enables device fingerprinting and request origin validation. It identifies suspicious patterns and blocks unauthorized requests before they hit your application logic. Check your DEFENSE config for allowlist customization."],
-  [/monitor|health|beacon/i, "BEACON emits structured health signals. Use `cmpsbl health` to check status, or pipe the signals into your existing monitoring (Datadog, Grafana, Prometheus). It runs continuously with near-zero overhead."],
-  [/doc|documentation/i, "Your export includes: pipeline-details.md, new-capabilities.md, testing-guide.md, error-codes.md, and a CJPI certificate. Everything you need to understand, verify, and maintain the refurbished code."],
-  [/price|cost|plan|subscribe/i, "Exporting your refurbished code requires an active subscription. Visit the Plans page to see available tiers — Studio, Creator, or Architect. All paid plans include a 7-day free trial."],
-  [/how.*work|what.*happen/i, "The refurbishment process: your code was scanned by ENCODE, ORACLE, and ENGINEER to identify vulnerabilities and structural issues. Then the primitives you selected were applied to harden and enhance your code. The result is a production-ready package with documentation and tests."],
-];
+/** Context-aware Q&A that uses actual refurbishment data */
+function getContextualResponse(
+  question: string,
+  report: RestorationReport,
+  scanResult: ScanResult | null,
+  originalCode: string,
+  refurbishedCode: string,
+  selectedPrimitives: PrimitiveRecommendation[],
+): string {
+  const q = question.toLowerCase();
+  const fingerprint = report.cjpiCertificate.fingerprint;
+  const primNames = selectedPrimitives.map(p => p.name);
 
-function getQAResponse(question: string): string {
-  for (const [pattern, response] of QA_RESPONSES) {
-    if (pattern.test(question)) return response;
+  // Questions about what changed / what was upgraded
+  if (/what.*change|what.*upgrade|what.*different|what.*happen|what.*did you do/i.test(q)) {
+    const primList = primNames.join(', ');
+    const vulnCount = report.vulnerabilityAssessment.length;
+    return `I applied ${primNames.length} primitives to your code: ${primList}. The scan team identified ${vulnCount} issues — ${report.vulnerabilityAssessment.filter(v => v.severity === 'critical').length} critical and ${report.vulnerabilityAssessment.filter(v => v.severity === 'warning').length} warnings — all of which have been addressed. Your CJPI score is ${report.cjpiCertificate.score} (${report.cjpiCertificate.tier} tier). The refurbished code includes guard activations for each primitive, meaning they're actively protecting your runtime.`;
   }
-  return "That's a great question. For detailed technical support, open DECODE from the floating icon — it has full context on your refurbishment and can dive deeper into any topic. You can also visit our support page at /support.";
+
+  // Questions about a specific primitive
+  for (const prim of primNames) {
+    const re = new RegExp(prim, 'i');
+    if (re.test(q)) {
+      const desc = getCapabilityDescription(prim);
+      return `${prim} was one of the primitives applied to your code. ${desc}`;
+    }
+  }
+
+  // Testing
+  if (/test|verify|harness|validate/i.test(q)) {
+    return `To verify all changes: run \`${report.testingGuide.installCommand}\` then \`${report.testingGuide.testCommand}\`. Each primitive's hardening is validated independently — green means active, red means review that section. The test harness config is included in your export as \`test-harness.config.json\`.`;
+  }
+
+  // Export / download / zip
+  if (/export|download|zip|package/i.test(q)) {
+    return `Your export package includes: the original source, the refurbished (hardened) source with primitive guard activations, a LICENSE file, pipeline details, vulnerability assessment, test harness config, CJPI certificate, error codes, primitive manifest, and a README with quick-start instructions. Click "Export Refurbished Code" to download the ZIP.`;
+  }
+
+  // Fingerprint / return / support
+  if (/fingerprint|return|come back|support|lookup|pull up/i.test(q)) {
+    return `Your fingerprint ID is \`${fingerprint}\`. Save it — you can return to cmpsbl.com anytime and provide this ID to DECODE. I'll pull up your full refurbishment history including the original code, what was applied, your CJPI score, and every primitive's contribution. It's your permanent reference for this refurbishment.`;
+  }
+
+  // CJPI / score / tier
+  if (/cjpi|score|tier|rating/i.test(q)) {
+    const cert = report.cjpiCertificate;
+    return `Your code scored CJPI ${cert.score}, placing it in the ${cert.tier} tier. The score reflects structural integrity, vulnerability coverage, and primitive depth. Your certificate serial is \`${cert.serialNumber}\`. The full certificate with primitive chain is included in your export.`;
+  }
+
+  // Security
+  if (/security|defense|safe|protect|fingerprint.*device/i.test(q)) {
+    const hasDefense = primNames.some(n => n.toUpperCase() === 'DEFENSE');
+    if (hasDefense) {
+      return `DEFENSE is active on your code. It provides device fingerprinting, request origin validation, and suspicious pattern detection. Unauthorized requests are blocked before reaching your application logic. You can customize the allowlist in your DEFENSE config.`;
+    }
+    return `Security hardening was applied through the primitives you selected (${primNames.join(', ')}). Each one adds a layer of protection. For dedicated device-level security, the DEFENSE primitive would add fingerprinting — you can add it in a future refurbishment.`;
+  }
+
+  // Backup / restore
+  if (/backup|restore|rollback|failsafe|recover/i.test(q)) {
+    const hasFailsafe = primNames.some(n => n.toUpperCase() === 'FAILSAFE');
+    if (hasFailsafe) {
+      return `FAILSAFE is active. You now have full version control: \`cmpsbl backup\` creates a snapshot, \`cmpsbl restore <id>\` rolls back. Circuit breakers handle automatic recovery during runtime failures. Your backup history is maintained independently of your deployment pipeline.`;
+    }
+    return `Your current refurbishment doesn't include FAILSAFE. To add backup/restore capabilities with circuit breakers, you can run another refurbishment and select the FAILSAFE primitive.`;
+  }
+
+  // Documentation
+  if (/doc|documentation|readme/i.test(q)) {
+    return `Your export includes comprehensive documentation: pipeline-details.md (every step of the refurbishment), new-capabilities.md (what you can now do), testing-guide.md (verification steps), error-codes.md (runtime error handling), vulnerability-assessment.md (what was found and fixed), primitive-manifest.md (what was applied), cjpi-certificate.json, and a README.md with quick-start instructions.`;
+  }
+
+  // Code / source / original
+  if (/code|source|original|refurbished|dual.?layer/i.test(q)) {
+    return `Your export contains dual-layer source: \`src/original-source.txt\` (your unchanged code) and \`src/refurbished-source.ts\` (hardened code with @cmpsbl/runtime imports and primitive guard activations). The refurbished version wraps your original logic — nothing was removed, only reinforced.`;
+  }
+
+  // Price / plan
+  if (/price|cost|plan|subscribe|pay/i.test(q)) {
+    return `Exporting requires an active subscription. Studio ($29), Creator ($79), or Architect ($249) — all include unlimited refurbishments. Visit the Plans section below to get started.`;
+  }
+
+  // Fallback — still contextual
+  return `That's a good question. I have full context on your refurbishment — ${primNames.length} primitives applied (${primNames.join(', ')}), CJPI ${report.cjpiCertificate.score}, ${report.vulnerabilityAssessment.length} issues addressed. Could you rephrase or ask about a specific primitive, the export contents, testing, or your CJPI score? I'm here until you're ready to download.`;
 }
 
 export function DecodeDebrief({
   report,
   scanResult,
+  originalCode = '',
+  refurbishedCode = '',
+  selectedPrimitives = [],
 }: {
   report: RestorationReport;
   scanResult: ScanResult | null;
+  originalCode?: string;
+  refurbishedCode?: string;
+  selectedPrimitives?: PrimitiveRecommendation[];
 }) {
   const baseMessages = buildDebriefMessages(report, scanResult);
   const [messages, setMessages] = useState<DebriefMessage[]>(baseMessages);
@@ -157,10 +233,8 @@ export function DecodeDebrief({
   const [userInput, setUserInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const openDecode = useDecodeStore(s => s.open);
 
   const isComplete = visibleCount >= baseMessages.length;
-  const isFullyRevealed = visibleCount >= messages.length;
 
   useEffect(() => {
     if (visibleCount < baseMessages.length) {
@@ -185,7 +259,7 @@ export function DecodeDebrief({
       content: q,
     };
 
-    const response = getQAResponse(q);
+    const response = getContextualResponse(q, report, scanResult, originalCode, refurbishedCode, selectedPrimitives);
     const decodeMsg: DebriefMessage = {
       id: `decode-reply-${Date.now()}`,
       role: 'decode',
@@ -196,7 +270,7 @@ export function DecodeDebrief({
     setMessages(prev => [...prev, userMsg, decodeMsg]);
     setVisibleCount(prev => prev + 2);
     setUserInput('');
-  }, [userInput]);
+  }, [userInput, report, scanResult, originalCode, refurbishedCode, selectedPrimitives]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -205,6 +279,11 @@ export function DecodeDebrief({
     }
   }, [handleAskQuestion]);
 
+  const handleCopyFingerprint = useCallback(() => {
+    navigator.clipboard.writeText(report.cjpiCertificate.fingerprint);
+    toast.success('Fingerprint copied to clipboard');
+  }, [report.cjpiCertificate.fingerprint]);
+
   return (
     <div className="rounded-2xl border border-border/40 bg-card/20 overflow-hidden">
       {/* Header */}
@@ -212,12 +291,21 @@ export function DecodeDebrief({
         <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
           <MessageSquare className="w-3.5 h-3.5 text-primary" />
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="text-sm font-bold text-foreground">DECODE Debrief</h3>
-          <p className="text-[10px] text-muted-foreground">Interactive walkthrough of your refurbishment results</p>
+          <p className="text-[10px] text-muted-foreground">Interactive walkthrough — I have full context on your refurbishment</p>
         </div>
+        {/* Fingerprint badge */}
+        <button
+          onClick={handleCopyFingerprint}
+          className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary/10 border border-primary/20 hover:bg-primary/15 transition-colors"
+          title="Copy fingerprint ID"
+        >
+          <span className="text-[9px] font-mono text-primary">{report.cjpiCertificate.fingerprint.slice(0, 12)}…</span>
+          <Copy className="w-3 h-3 text-primary/60" />
+        </button>
         {!isComplete && (
-          <div className="ml-auto flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
             <span className="text-[10px] text-primary font-medium">Analyzing...</span>
           </div>
@@ -304,7 +392,7 @@ export function DecodeDebrief({
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask DECODE a question about your refurbishment..."
+              placeholder="Ask me anything about your refurbishment..."
               className="flex-1 h-9 text-xs bg-muted/30 border-border/30"
             />
             <Button
@@ -316,12 +404,9 @@ export function DecodeDebrief({
               <Send className="w-3.5 h-3.5" />
             </Button>
           </div>
-          <button
-            onClick={() => openDecode("assistant")}
-            className="w-full text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors text-center"
-          >
-            Or open DECODE in full view for deeper questions →
-          </button>
+          <p className="text-[10px] text-muted-foreground/50 text-center">
+            I have full context on your code, the {selectedPrimitives.length} primitives applied, and every change made. Ask anything.
+          </p>
         </div>
       )}
 
