@@ -196,8 +196,11 @@ function deriveLocalSurface(analysis: CandidateAnalysis): LocalCapabilitySurface
 
 /* ═══ COMPONENT ═══ */
 export function IngestPhase() {
+  const [inputMode, setInputMode] = useState<'upload' | 'paste'>('upload');
   const [dragOver, setDragOver] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
+  const [pastedCode, setPastedCode] = useState('');
+  const [pasteFilename, setPasteFilename] = useState('');
   const [parsing, setParsing] = useState(false);
   const [parsedNode, setParsedNode] = useState<ParsedNode | null>(null);
   const [registered, setRegistered] = useState(false);
@@ -212,6 +215,8 @@ export function IngestPhase() {
     refreshUsage,
   } = useEvolutionLimits();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const hasInput = inputMode === 'upload' ? files.length > 0 : pastedCode.trim().length > 20;
 
   /* ═══ FILE HANDLING ═══ */
   const handleFiles = useCallback((incoming: File[]) => {
