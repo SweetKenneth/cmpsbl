@@ -293,6 +293,12 @@ export function CmpsblNav() {
               <motion.div initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="pt-6 border-t border-border">
                 {user ? (
                   <div className="space-y-3">
+                    <Button asChild variant="outline" className="w-full h-11 rounded-xl font-medium">
+                      <Link to="/workbench">
+                        <Package className="w-4 h-4 mr-2" />
+                        My Workbench
+                      </Link>
+                    </Button>
                     <Button asChild className="w-full h-12 rounded-xl font-semibold">
                       <Link to="/os">
                         <Command className="w-4 h-4 mr-2" />
