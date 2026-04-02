@@ -1,25 +1,43 @@
 /**
- * ShowroomPreview — Live Memory Stream catalog preview with CJPI pricing
- * Shows tier distribution and graduated pricing formula
+ * ShowroomPreview — Teaser for the Showroom with mini horizontal scroll
+ * Matches the new tier-carousel Showroom layout
  */
 
+import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-const TIERS = [
-  { name: "Mint", range: "68–79", rate: "$1/pt", priceRange: "$68–$79", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/30" },
-  { name: "Prime", range: "80–89", rate: "$1.25/pt", priceRange: "$100–$111", color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/30" },
-  { name: "Relic", range: "90–93", rate: "$1.50/pt", priceRange: "$135–$140", color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/30" },
-  { name: "Mythic", range: "94–99", rate: "$2/pt", priceRange: "$188–$198", color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30" },
-  { name: "Apex", range: "100", rate: "Fixed", priceRange: "$1,952", color: "text-primary", bg: "bg-primary/10", border: "border-primary/30" },
+import imgSecurity from "@/assets/showroom/security-compliance.jpg";
+import imgGovernance from "@/assets/showroom/governance-policy.jpg";
+import imgIntelligence from "@/assets/showroom/decision-intelligence.jpg";
+import imgObservability from "@/assets/showroom/monitoring-visibility.jpg";
+import imgResilience from "@/assets/showroom/resilience-recovery.jpg";
+import imgOptimization from "@/assets/showroom/performance-optimization.jpg";
+
+const PREVIEW_ITEMS = [
+  { name: "Compliance Certification Suite", score: 100, tier: "Apex", price: "$1,952", image: imgGovernance, color: "text-primary", border: "border-primary/30" },
+  { name: "Drift Prevention Engine", score: 97, tier: "Mythic", price: "$194", image: imgGovernance, color: "text-purple-400", border: "border-purple-500/30" },
+  { name: "Encrypted State Vault", score: 96, tier: "Mythic", price: "$192", image: imgSecurity, color: "text-purple-400", border: "border-purple-500/30" },
+  { name: "Real-Time Anomaly Detector", score: 93, tier: "Relic", price: "$140", image: imgObservability, color: "text-amber-400", border: "border-amber-500/30" },
+  { name: "Self-Healing Runtime", score: 91, tier: "Relic", price: "$137", image: imgResilience, color: "text-amber-400", border: "border-amber-500/30" },
+  { name: "Predictive Decision Core", score: 88, tier: "Prime", price: "$110", image: imgIntelligence, color: "text-sky-400", border: "border-sky-500/30" },
+  { name: "Cost Optimization Engine", score: 82, tier: "Prime", price: "$103", image: imgOptimization, color: "text-sky-400", border: "border-sky-500/30" },
 ] as const;
 
 export function ShowroomPreview() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scroll = (dir: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    const amount = scrollRef.current.clientWidth * 0.7;
+    scrollRef.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
+
   return (
     <section className="relative z-10 px-4 sm:px-6 py-14 sm:py-20">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4">
             <Sparkles className="w-3 h-3 text-primary" />
@@ -33,37 +51,75 @@ export function ShowroomPreview() {
           </p>
         </div>
 
-        {/* Pricing tiers — 2-col on mobile, 5-col on desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3 mb-8">
-          {TIERS.map((tier) => (
-            <div
-              key={tier.name}
-              className={cn(
-                "relative rounded-xl border p-4 text-center transition-all duration-300 hover:scale-[1.02]",
-                tier.bg, tier.border,
-                tier.name === "Apex" && "col-span-2 sm:col-span-1 sm:ring-2 sm:ring-primary/30"
-              )}
-            >
-              <div className={cn("text-[10px] sm:text-xs font-bold uppercase tracking-wider mb-1.5", tier.color)}>
-                {tier.name}
-              </div>
-              <div className="text-base sm:text-lg font-black text-foreground mb-0.5">{tier.priceRange}</div>
-              <div className="text-[10px] text-muted-foreground/60">
-                CJPI {tier.range} · {tier.rate}
-              </div>
-              {tier.name === "Apex" && (
-                <div className="mt-1.5 text-[10px] text-primary/70 font-medium">
-                  The First Compiler · 1952
+        {/* Horizontal scroll carousel — matches Showroom page */}
+        <div className="group relative mb-8">
+          <button
+            onClick={() => scroll('left')}
+            aria-label="Scroll left"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity -translate-x-1/2 hidden md:flex"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {PREVIEW_ITEMS.map((item) => (
+              <div
+                key={item.name}
+                className={cn(
+                  "snap-start shrink-0 w-[240px] sm:w-[280px] rounded-2xl border bg-card overflow-hidden",
+                  "hover:scale-[1.02] hover:shadow-xl transition-all duration-300",
+                  "border-border/40",
+                )}
+              >
+                {/* Image */}
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    loading="lazy"
+                    width={768}
+                    height={512}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                  <Badge
+                    variant="outline"
+                    className={cn("absolute top-2.5 left-2.5 text-[10px] font-black tracking-wider backdrop-blur-sm", item.border, item.color)}
+                  >
+                    {item.tier}
+                  </Badge>
+                  <div className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-md bg-background/80 backdrop-blur-sm border border-border/30">
+                    <span className="text-xs font-black text-foreground">{item.price}</span>
+                  </div>
                 </div>
-              )}
-            </div>
-          ))}
+
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="text-sm font-bold text-foreground leading-tight mb-1.5">{item.name}</h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono text-muted-foreground/50">CJPI {item.score}</span>
+                    <span className={cn("text-[10px] font-bold", item.color)}>{item.tier}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => scroll('right')}
+            aria-label="Scroll right"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/90 border border-border shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2 hidden md:flex"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
 
         {/* CTA */}
         <div className="text-center">
           <p className="text-xs sm:text-sm text-muted-foreground/60 mb-5 max-w-md mx-auto">
-            Unique certificate, structural fingerprint, and retirement seal with every purchase. The catalog rotates every 8 hours.
+            Unique certificate, structural fingerprint, and retirement seal with every purchase.
           </p>
           <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold text-sm">
             <Link to="/showroom">
