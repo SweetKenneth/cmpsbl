@@ -180,17 +180,18 @@ function codeSeed(code: string): number {
 /**
  * Run the six-primitive diagnostic squad.
  */
-export async function runScanTeam(codeSnippet: string): Promise<ScanResult> {
+export async function runScanTeam(codeSnippet: string, fileName?: string): Promise<ScanResult> {
   const startTime = Date.now();
   const rand = seededRandom(codeSeed(codeSnippet));
+  const metrics = analyzeCodeMetrics(codeSnippet, fileName);
 
   // Six-primitive scan squad
-  const encodeFindings = analyzeWithEncode(codeSnippet);
-  const oracleFindings = analyzeWithOracle(codeSnippet);
-  const engineerFindings = analyzeWithEngineer(codeSnippet);
-  const medicFindings = analyzeWithMedic(codeSnippet);
-  const defenseFindings = analyzeWithDefense(codeSnippet);
-  const failsafeFindings = analyzeWithFailsafe(codeSnippet);
+  const encodeFindings = analyzeWithEncode(codeSnippet, metrics);
+  const oracleFindings = analyzeWithOracle(codeSnippet, metrics);
+  const engineerFindings = analyzeWithEngineer(codeSnippet, metrics);
+  const medicFindings = analyzeWithMedic(codeSnippet, metrics);
+  const defenseFindings = analyzeWithDefense(codeSnippet, metrics);
+  const failsafeFindings = analyzeWithFailsafe(codeSnippet, metrics);
 
   const allFindings = [
     ...encodeFindings,
@@ -207,14 +208,17 @@ export async function runScanTeam(codeSnippet: string): Promise<ScanResult> {
   const criticalCount = allFindings.filter(f => f.severity === 'critical').length;
   const warningCount = allFindings.filter(f => f.severity === 'warning').length;
   const baseCjpi = Math.max(35, 100 - (criticalCount * 10) - (warningCount * 4));
+  const projectedCjpi = Math.min(100, baseCjpi + recommendations.slice(0, 10).length * 3 + Math.floor(metrics.depthScore / 10));
 
   return {
     findings: allFindings,
     recommendedPrimitives: recommendations,
     architecturalRunway: Math.max(3, 36 - (criticalCount * 5) - (warningCount * 2)),
     cjpiEstimate: baseCjpi,
+    projectedCjpi,
     scanDurationMs: Date.now() - startTime,
     scanTeam: ['ENCODE', 'ORACLE', 'ENGINEER', 'MEDIC', 'DEFENSE', 'FAILSAFE'],
+    metrics,
   };
 }
 
