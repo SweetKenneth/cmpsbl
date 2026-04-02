@@ -68,7 +68,7 @@ const PersistentMemoryLanding = () => {
               </motion.h1>
               
               <motion.p 
-                className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+                className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -83,7 +83,7 @@ const PersistentMemoryLanding = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/docs/persistent-memory">
                     Get Started
                     <ArrowRight className="w-5 h-5 ml-2" />
@@ -92,7 +92,7 @@ const PersistentMemoryLanding = () => {
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="text-lg px-8 h-14 hover:border-primary/30 transition-colors"
+                  className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 hover:border-primary/30 transition-colors"
                   onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
                 >
                   See how it works

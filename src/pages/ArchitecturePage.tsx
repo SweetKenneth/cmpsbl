@@ -309,7 +309,7 @@ export default function ArchitecturePage() {
                   "grid gap-3",
                   cat.entries.length <= 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" :
                   cat.entries.length <= 8 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" :
-                  "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+                  "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 )}>
                   {cat.entries.map((entry) => (
                     <Link
@@ -358,7 +358,7 @@ export default function ArchitecturePage() {
             <h2 className="text-xl font-bold mb-6 text-foreground">Category Summary</h2>
             <div className="space-y-2">
               {TAXONOMY.map((cat) => (
-                <div key={cat.key} className="flex items-center justify-between py-2 border-b border-border/50">
+                <div key={cat.key} className="flex items-center justify-between py-2 border-b border-border/50 gap-2">
                   <div className="flex items-center gap-3">
                     <span className={cn(
                       "text-[9px] font-mono font-bold px-1.5 py-0.5 rounded border uppercase",
@@ -369,7 +369,7 @@ export default function ArchitecturePage() {
                     <span className="text-sm font-medium text-foreground">{cat.label}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{cat.subtitle}</span>
+                    <span className="text-xs text-muted-foreground hidden sm:inline">{cat.subtitle}</span>
                     <span className="text-sm font-mono text-primary font-bold">{cat.entries.length}</span>
                   </div>
                 </div>
