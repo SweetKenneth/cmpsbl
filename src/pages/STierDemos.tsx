@@ -1060,8 +1060,10 @@ export default function STierDemos() {
                 transition={{ delay: 0.1 * idx + 0.4, duration: 0.4 }}
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.97 }}
-                className="snap-start shrink-0 w-[220px] sm:w-[250px]"
-                style={{ width: isActive ? (window.innerWidth < 640 ? '260px' : '290px') : undefined, transition: 'width 0.3s ease' }}
+                className={cn(
+                  "snap-start shrink-0 transition-all duration-300",
+                  isActive ? "w-[260px] sm:w-[290px]" : "w-[220px] sm:w-[250px]"
+                )}
               >
                 <Card
                   className={`cursor-pointer transition-all duration-300 h-full relative overflow-hidden group ${
