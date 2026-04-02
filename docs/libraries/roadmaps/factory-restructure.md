@@ -429,9 +429,9 @@ All existing pages remain active at their current URLs:
 - [x] Membership tier checkout (Studio $29 / Creator $49 / Architect $79) ✅
 
 ### Phase 3: The Economy (Week 5–8)
-- [ ] Graduated CJPI pricing in Stripe ($1–$2/point by tier, $1,952 for perfect 100s)
-- [ ] Certificate generation system (serial number, fingerprint, CJPI score)
-- [ ] Permanent retirement system (purchased = removed from Showroom forever)
+- [x] Graduated CJPI pricing in Stripe ($1–$2/point by tier, $1,952 for perfect 100s) ✅
+- [x] Certificate generation system (serial number, fingerprint, CJPI score) ✅
+- [x] Permanent retirement system (purchased = removed from Showroom forever) ✅
 - [ ] Licensing Engine (Model 17) — developer 70/30 split
 - [ ] Bounty Board (Model 16) — customer-driven discovery
 - [ ] $300 customer acquisition campaign launch
