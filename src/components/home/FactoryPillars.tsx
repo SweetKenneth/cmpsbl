@@ -131,7 +131,7 @@ export function FactoryPillars() {
                 </Link>
               </div>
             </div>
-          ))
+          ))}
         </div>
       </div>
     </section>
