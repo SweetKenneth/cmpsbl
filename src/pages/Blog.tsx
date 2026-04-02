@@ -358,7 +358,7 @@ function GridPostCard({ post, index }: { post: BlogPost; index: number }) {
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium truncate">{post.author}</p>
-                <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-0.5"><Calendar className="w-2.5 h-2.5" />{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                   <span>·</span>
                   <span className="flex items-center gap-0.5"><Clock className="w-2.5 h-2.5" />{post.readTime}</span>
