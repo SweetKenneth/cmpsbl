@@ -267,7 +267,7 @@ function ArchiveBrowseView() {
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
               Raw discoveries scored below 68. Damaged runtimes pulled from production.
               Legacy systems that shaped what we build today. Everything here is free to take —
-              or <Link to="/consultation" className="text-neon-amber hover:underline font-medium">send it to the Restoration Lab</Link> and
+              or <Link to="/ascension" className="text-neon-amber hover:underline font-medium">send it to the Restoration Lab</Link> and
               we'll bring it back to spec.
             </p>
 
