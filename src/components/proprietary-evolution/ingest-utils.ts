@@ -222,6 +222,38 @@ export function estimateResolverCount(text: string): number {
   return patterns.reduce((count, pattern) => count + (text.match(pattern)?.length || 0), 0);
 }
 
+/**
+ * Analyze pasted code as a single virtual file.
+ */
+export function analyzePastedCode(code: string, filename?: string): CandidateAnalysis {
+  const name = filename || 'pasted_code';
+  const ext = name.split('.').pop()?.toLowerCase() || 'ts';
+  const language = LANG_MAP[ext] || 'TypeScript';
+  const resolvers = estimateResolverCount(code);
+  const charCount = code.length;
+  const truncated = charCount > MAX_STORED_CHARS_PER_FILE;
+  const content = code.slice(0, MAX_STORED_CHARS_PER_FILE);
+
+  return {
+    name: sanitizeCandidateName(name),
+    fileCount: 1,
+    resolverCount: Math.max(resolvers, 1),
+    language,
+    sizeKb: Math.round(new Blob([code]).size / 1024),
+    parseWarnings: truncated ? ['Pasted code was truncated to fit browser-safe ingest limits'] : [],
+    ingestedFiles: [{
+      name: filename || 'pasted_code.ts',
+      extension: ext,
+      language,
+      sizeBytes: new Blob([code]).size,
+      charCount,
+      content,
+      truncated,
+    }],
+    unreadableFileCount: 0,
+  };
+}
+
 export async function analyzeUploadedFiles(files: File[]): Promise<CandidateAnalysis> {
   const warnings: string[] = [];
   const totalSize = files.reduce((sum, file) => sum + file.size, 0);
