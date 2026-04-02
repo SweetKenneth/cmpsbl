@@ -246,6 +246,6 @@ export const publicRoutes = (
     <Route path="/ascension" element={<RestorationShop />} />
     <Route path="/agent-forge" element={<AgentForge />} />
     <Route path="/agent-power-up" element={<AgentPowerUp />} />
-    <Route path="/junkyard" element={<Navigate to="/memory-stream" replace />} />
+    <Route path="/junkyard" element={<Navigate to="/foundry" replace />} />
   </>
 );
