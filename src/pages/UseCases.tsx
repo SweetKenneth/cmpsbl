@@ -523,7 +523,7 @@ export default function UseCases() {
                         <vision.icon className="w-6 h-6" />
                       </div>
                     </div>
-                    <Badge variant="outline" className="w-fit mb-2 text-current border-current/30 text-[10px]">
+                    <Badge variant="outline" className="w-fit mb-2 text-current border-current/30 text-xs">
                       {vision.subtitle}
                     </Badge>
                     <CardTitle className="text-lg">{vision.title}</CardTitle>
