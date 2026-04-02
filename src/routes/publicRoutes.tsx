@@ -174,6 +174,7 @@ export const publicRoutes = (
     <Route path="/capabilities" element={<Navigate to="/store" replace />} />
     <Route path="/synergies" element={<Navigate to="/store" replace />} />
     <Route path="/store" element={<Store />} />
+    <Route path="/showroom" element={<ShowroomPage />} />
     <Route path="/artifacts" element={<Navigate to="/store" replace />} />
     <Route path="/operatives" element={<Navigate to="/store" replace />} />
     <Route path="/operatives/:slug" element={<Navigate to="/store" replace />} />
