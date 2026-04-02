@@ -462,7 +462,7 @@ export default function EvolutionCycleReport() {
                 { name: "GitHub Copilot", approach: "AI suggestion", limit: "Human accepts/rejects each one", edge: "Fully autonomous loop" },
                 { name: "Cursor", approach: "AI editor", limit: "Developer-in-the-loop required", edge: "No human needed" },
                 { name: "Snyk / SonarQube", approach: "Static analysis", limit: "Reports issues, doesn't fix them", edge: "Finds AND fixes" },
-                { name: "Devin (Cognition)", approach: "AI engineer", limit: "No substrate architecture", edge: "40-node cognitive mesh" },
+                { name: "Devin (Cognition)", approach: "AI engineer", limit: "No substrate architecture", edge: "40-Primitive cognitive substrate" },
                 { name: "Kodex AI", approach: "Auto PRs", limit: "No memory, no learning", edge: "Brain accumulates learnings" },
               ].map((c, i) => (
                 <div key={i} className="p-2 rounded-lg bg-muted/20 border border-border/50">

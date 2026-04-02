@@ -312,7 +312,7 @@ CMPSBL's evolution engine doesn't compete with code editors or CI tools. It repl
 | **Cursor** | AI-powered editor | Developer-in-the-loop required. No self-improvement. | No human required. System improves itself. |
 | **Snyk / SonarQube** | Static analysis | Reports issues, doesn't fix them. High false positive rate. | Finds AND fixes. Validation gate eliminates false positives. |
 | **Kodex AI** | Automated PR generation | Single-pass, no memory. No learning from prior patches. | Brain memory accumulates learnings. Each cycle is smarter. |
-| **Devin (Cognition)** | AI software engineer | General-purpose agent. No substrate architecture. | Purpose-built for substrate evolution. 40-node cognitive mesh. |
+| **Devin (Cognition)** | AI software engineer | General-purpose agent. No substrate architecture. | Purpose-built for substrate evolution. 40-Primitive cognitive substrate. |
 
 ### Why No One Else Can Do This
 
