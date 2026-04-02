@@ -398,8 +398,8 @@ export default function Store() {
                   </div>
 
                   <div className="max-w-3xl mx-auto text-center">
-                    <div className="inline-flex flex-wrap items-center justify-center gap-2 text-[11px] text-muted-foreground">
-                      <code className="bg-muted px-2 py-1 rounded text-[10px] font-mono">npm i @cmpsbl/sdk</code>
+                    <div className="inline-flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground">
+                      <code className="bg-muted px-2 py-1 rounded text-xs font-mono">npm i @cmpsbl/sdk</code>
                       <span>·</span>
                       <a href="https://www.npmjs.com/org/cmpsbl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">
                         View all 11 packages on NPM →
