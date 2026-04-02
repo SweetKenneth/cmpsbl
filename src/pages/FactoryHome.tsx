@@ -93,6 +93,20 @@ export default function FactoryHome() {
 
       <SectionDivider />
 
+      {/* ═══ JUNKYARD — free Raw-tier discoveries ═══ */}
+      <JunkyardBanner />
+
+      <SectionDivider />
+
+      {/* ═══ DECODE VOICE — discovery commentator preview ═══ */}
+      <section className="relative z-10 px-3 sm:px-6 py-8 sm:py-12">
+        <div className="max-w-3xl mx-auto">
+          <DecodeFactoryVoice role="commentator" />
+        </div>
+      </section>
+
+      <SectionDivider />
+
       {/* ═══ THE GUARANTEE — replaces old generic CTA ═══ */}
       <FactoryGuarantee />
 
