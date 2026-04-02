@@ -1219,14 +1219,18 @@ function collideNodesMultiChain(
   }
 
   // ═══ ENHANCEMENT PASS — Recommend capabilities that ALIGN with the code ═══
-  // These complement gap-fill collision discoveries with archetype-aligned enhancements
   if (softwareArchetype) {
     const enhancements = generateEnhancementDiscoveries(surface, softwareArchetype, targetNode, results.length);
     results.push(...enhancements);
   }
 
+  // ═══ 6-PRIMITIVE DIAGNOSTIC SQUAD ═══
+  // ORACLE + ENGINEER + ENCODE (original) + MEDIC + DEFENSE + FAILSAFE
+  const diagnosticResults = runDiagnosticSquad(surface, candidateMeta);
+  results.push(...diagnosticResults);
+
   results.sort((a, b) => b.cjpi_score - a.cjpi_score);
-  return results.slice(0, permutationDepth + 5); // +5 to accommodate enhancements
+  return results.slice(0, permutationDepth + 8); // +8 to accommodate enhancements + diagnostics
 }
 
 function findArchetype(substrateNodes: string[]): { name: string; desc: string } | null {
