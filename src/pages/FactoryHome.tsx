@@ -1,8 +1,6 @@
 /**
- * FactoryHome — Classic Car Factory landing page
- * Hero → Live Stats → Pillars → Journey → Showroom → Junkyard → Guarantee
- * 
- * Streamlined factory narrative. No substrate-era sections.
+ * FactoryHome — Software Refurbishment Center landing page
+ * Hero → Live Stats → Pillars → Journey → Catalog → Open Archive → Guarantee
  */
 
 import { lazy, Suspense } from "react";
@@ -36,17 +34,17 @@ export default function FactoryHome() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden overflow-y-visible">
       <SEO
-        title="CMPSBL® — Classic Car Factory for Software"
-        description="Memory Stream discovers. Ascension restores. 40 Primitives power everything. No AI tricks. No lock-in. Just classics."
+        title="CMPSBL® — Software Refurbishment Center"
+        description="Memory Stream discovers. Ascension refurbishes. 40 Primitives power everything. No AI tricks. No lock-in. Just certified builds."
         canonical="https://cmpsbl.com"
         image="https://cmpsbl.com/og/home-v2.jpg"
-        keywords={['cognitive infrastructure', 'code restoration', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'classic car factory']}
+        keywords={['cognitive infrastructure', 'code refurbishment', 'software discovery', 'CJPI', 'Memory Stream', 'Ascension', 'software refurbishment center']}
         faq={[
-          { question: 'What is CMPSBL?', answer: 'CMPSBL is a classic car factory for software — it discovers capabilities in code, restores and hardens them, and sends them back production-ready. No AI inside the output.' },
-          { question: 'What is Memory Stream?', answer: 'Memory Stream is the autonomous discovery engine that runs 8-hour cycles finding capabilities nobody asked it to find. Every discovery is scored, priced, and placed in the Showroom.' },
-          { question: 'What is Ascension?', answer: 'Ascension is the restoration shop. Bring us your code, we scan it for vulnerabilities and capabilities, restore it with up to 20 primitives, and send it back. Three-day test drive included.' },
-          { question: 'How does pricing work?', answer: 'Showroom discoveries are priced by CJPI score: $1-$2 per point depending on tier, with perfect 100s priced at $1,952 (the year of the first compiler). Once purchased, a discovery is permanently retired.' },
-          { question: 'Is there a free tier?', answer: 'Yes. Builder tier is free — browse the Showroom, access the Junkyard for Raw-tier discoveries, and view diagnostics.' },
+          { question: 'What is CMPSBL?', answer: 'CMPSBL is a software refurbishment center — it discovers capabilities in code, refurbishes and hardens them, and sends them back production-ready. No AI inside the output.' },
+          { question: 'What is Memory Stream?', answer: 'Memory Stream is the autonomous discovery engine that runs 8-hour cycles finding capabilities nobody asked it to find. Every discovery is scored, priced, and placed in the Catalog.' },
+          { question: 'What is Ascension?', answer: 'Ascension is the refurbishment lab. Submit your code, we scan it for vulnerabilities and capabilities, refurbish it with up to 20 primitives, and send it back. 3-day evaluation period included.' },
+          { question: 'How does pricing work?', answer: 'Catalog discoveries are priced by CJPI score: $1-$2 per point depending on tier, with perfect 100s priced at $1,952 (the year of the first compiler). Once purchased, a discovery is permanently retired.' },
+          { question: 'Is there a free tier?', answer: 'Yes. Builder tier is free — browse the Catalog, access the Open Archive for Raw-tier discoveries, and view diagnostics.' },
         ]}
       />
 
@@ -73,7 +71,7 @@ export default function FactoryHome() {
       {/* ═══ HERO ═══ */}
       <HeroMetaSubstrate />
 
-      {/* ═══ LIVE FACTORY STATUS ═══ */}
+      {/* ═══ LIVE CENTER STATUS ═══ */}
       <LiveStatsBar />
 
       {/* ═══ THREE PILLARS ═══ */}
@@ -86,12 +84,12 @@ export default function FactoryHome() {
 
       <SectionDivider />
 
-      {/* ═══ SHOWROOM PREVIEW ═══ */}
+      {/* ═══ CATALOG PREVIEW ═══ */}
       <ShowroomPreview />
 
       <SectionDivider />
 
-      {/* ═══ JUNKYARD ═══ */}
+      {/* ═══ OPEN ARCHIVE ═══ */}
       <JunkyardBanner />
 
       <SectionDivider />
