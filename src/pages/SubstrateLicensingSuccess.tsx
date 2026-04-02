@@ -61,7 +61,7 @@ export default function SubstrateLicensingSuccess() {
               tier,
               previous_tier: 'builder',
             },
-          }).catch(err => console.log('Upgrade email error:', err));
+          }).catch(() => { /* email send failure — non-critical */ });
         }
       } catch (err) {
         setStatus('error');
