@@ -55,7 +55,8 @@ export const routeRegistry: RouteEntry[] = [
   { path: "/evolution", label: "Evolution", section: "core", priority: 0, changefreq: "monthly", redirect: true },
 
   // ── Product ──
-  { path: "/store", label: "Store", section: "product", priority: 0.95, changefreq: "weekly", description: "Agents, engines, plans & memories" },
+  { path: "/store", label: "Store", section: "product", priority: 0.90, changefreq: "weekly", description: "Agents, engines & memories" },
+  { path: "/plans", label: "Plans", section: "product", priority: 0.95, changefreq: "weekly", description: "Builder, Studio, Creator & Architect subscription tiers" },
   { path: "/foundry", label: "Memory Stream", section: "product", priority: 0.95, changefreq: "daily", description: "Discover & crystallize memory pipelines" },
   { path: "/workbench", label: "My Workbench", section: "product", priority: 0.6, changefreq: "weekly", description: "Your personal collection of downloaded discoveries and restored tech", disallow: true },
   { path: "/ascension", label: "Ascension", section: "product", priority: 0.93, changefreq: "weekly", description: "Zero-LLM code transformation — upload code, collide against 40 primitives, export enhanced capabilities" },

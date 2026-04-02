@@ -121,7 +121,7 @@ serve(async (req) => {
         },
       },
       success_url: `${origin}/substrate/licensing/success?session_id={CHECKOUT_SESSION_ID}&tier=${displayTier}&success=true`,
-      cancel_url: `${origin}/store?tab=plans&canceled=true&tier=${displayTier}`,
+      cancel_url: `${origin}/plans?canceled=true&tier=${displayTier}`,
       metadata: {
         user_id: user.id,
         tier: displayTier,

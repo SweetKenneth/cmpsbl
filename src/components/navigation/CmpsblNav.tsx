@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   ArrowRight,
+  Wrench,
   LogOut,
   Command,
   Sparkles,
@@ -38,8 +39,8 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   { name: "Explore Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
-  { name: "Book Consultation", href: "/ascension", icon: Zap },
-  { name: "View Pricing", href: "/pricing", icon: CreditCard },
+  { name: "Restoration Shop", href: "/restoration-shop", icon: Wrench },
+  { name: "View Plans", href: "/plans", icon: CreditCard },
   { name: "Read the Docs", href: "/documentation", icon: FileText },
   { name: "Try the Substrate", href: "/try", icon: Play },
 ];
@@ -165,6 +166,10 @@ export function CmpsblNav() {
                       <Link to="/workbench" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
                         <Package className="w-4 h-4" />
                         My Workbench
+                      </Link>
+                      <Link to="/plans" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
+                        <CreditCard className="w-4 h-4" />
+                        My Plan
                       </Link>
                       <Link to="/os" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
                         <Command className="w-4 h-4" />
