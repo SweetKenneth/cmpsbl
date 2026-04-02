@@ -356,7 +356,7 @@ export function useSystemConfig(key?: string) {
 
 /**
  * Layer-weighted health score for dashboard
- * 40-Node / 12-Sector Field-Based Topology — weighted aggregation:
+ * 40-Primitive / 12-Sector Field-Based Topology — weighted aggregation:
  *   CORE+SYSTEM: 12% | CCR: 12% | OCG: 15% | Execution: 18% | ESZ+EPZ+EMZ: 13% | CSZ: 10% | Fields+Plane+Shell: 20%
  *
  * Batched into a single useQuery to prevent parallel network request storms.

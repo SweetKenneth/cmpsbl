@@ -1,6 +1,6 @@
 /**
  * Matrix Node Registry — Read-Only Abstraction Layer
- * 40-Node / 12-Sector Field-Based Topology
+ * 40-Primitive / 12-Sector Field-Based Topology
  * 
  * Topology:
  *   Shell: DEFENSE (outer containment boundary)

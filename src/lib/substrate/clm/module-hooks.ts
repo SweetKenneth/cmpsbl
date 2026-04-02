@@ -21,7 +21,7 @@ export type SubstrateModule =
   | 'memory' | 'relay' | 'audit' | 'identity' | 'economy' | 'sandbox'
   | 'immunity' | 'intent' | 'governance'
   | 'medic' | 'nerve'
-  // Expansion Nodes (40-Node Architecture)
+  // Expansion Nodes (40-Primitive Architecture)
   | 'sovereign' | 'oracle' | 'conscience' | 'phantom' | 'forge'
   | 'lingua' | 'compass' | 'echo' | 'treaty' | 'harvest' | 'reflex';
 

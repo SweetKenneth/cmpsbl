@@ -434,7 +434,7 @@ export const ephemeralEnv = new EphemeralEnvironment();`
     category: 'vision',
     difficulty: 'intermediate',
     estimatedTime: '30 min',
-    features: ['40-Node Aggregation', 'Composite Health Score', 'Degradation Alerts', 'Historical Trends'],
+    features: ['40-Primitive Aggregation', 'Composite Health Score', 'Degradation Alerts', 'Historical Trends'],
     code: `import { substrate } from './lib/substrate';
 
 class CrossModuleHealthAggregator {

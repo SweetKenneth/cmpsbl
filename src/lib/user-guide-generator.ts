@@ -191,7 +191,7 @@ export function generateUserGuideHTML(): string {
       <li><a href="#substrate-os">The Substrate OS Dashboard</a></li>
       <li><a href="#terminal">Memory Stream Terminal</a></li>
       <li><a href="#workspace">Builder Workspace</a></li>
-      <li><a href="#architecture">40-Node Architecture</a></li>
+      <li><a href="#architecture">40-Primitive Architecture</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ol>
   </div>
@@ -399,7 +399,7 @@ budget status       # View stream budget governance</code></pre>
     <li><strong>Memory Stream Access</strong> — Quick-link to the crystallization workspace</li>
   </ul>
 
-  <h2 id="architecture">11. 40-Node Architecture</h2>
+  <h2 id="architecture">11. 40-Primitive Architecture</h2>
   <p>The substrate operates across 40 primitives organized into 4 categories:</p>
   
   <table>

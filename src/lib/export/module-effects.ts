@@ -1106,7 +1106,7 @@ function createFallbackEffect(moduleName: string): ModuleEffect {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// §5 — EFFECT REGISTRY — Full 40-Node Matrix
+// §5 — EFFECT REGISTRY — Full 40-Primitive Matrix
 // ═══════════════════════════════════════════════════════════════════════════════
 
 const DEEP_EFFECTS: ModuleEffect[] = [
