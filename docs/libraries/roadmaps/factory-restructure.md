@@ -390,7 +390,7 @@ All existing pages remain active at their current URLs:
 ### Phase 1: The Showroom + DECODE Voice (Week 1–2)
 - [ ] New home page with factory narrative and "classics" branding
 - [ ] DECODE integration as factory voice (diagnostic explanations, discovery commentary)
-- [ ] Memory Stream catalog browser with CJPI-based pricing ($1/point display)
+- [ ] Memory Stream catalog browser with graduated CJPI pricing display
 - [ ] Navigation restructure (preserve all legacy routes)
 - [ ] Agent Power-Up landing page live
 - [ ] ToS §15 live ✅
