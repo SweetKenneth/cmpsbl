@@ -280,7 +280,7 @@ export default function Store() {
                               {feat.label}
                             </h4>
                           </div>
-                          <p className="text-[11px] sm:text-xs text-muted-foreground/70 leading-relaxed pl-11">
+                          <p className="text-xs text-muted-foreground/70 leading-relaxed pl-11">
                             {feat.desc}
                           </p>
                         </motion.div>
