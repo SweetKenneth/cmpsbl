@@ -16,6 +16,7 @@ const ALLOWED_FNS: CheckoutFunctionName[] = [
   "marketplace-checkout",
   "capability-checkout",
   "licensing-checkout",
+  "showroom-checkout",
 ];
 
 export default function CheckoutRedirect() {
