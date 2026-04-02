@@ -67,7 +67,14 @@ const PAIN_POINTS = [
   },
 ] as const;
 
-const TIERS = [
+const TIERS: Array<{
+  name: string;
+  price: string;
+  description: string;
+  scope: string;
+  includes: string[];
+  featured?: boolean;
+}> = [
   {
     name: "Splice",
     price: "$299",
@@ -90,7 +97,7 @@ const TIERS = [
     scope: "Reconstruct, enhance, harden, and certify — complete transformation",
     includes: ["Everything in Rebuild", "CJPI certification", "IP protection", "25-language export", "Priority support"],
   },
-] as const;
+];
 
 export default function Assembly() {
   return (
