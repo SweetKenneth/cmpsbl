@@ -361,7 +361,7 @@ Replace current `/explore` hero with the factory narrative:
 - **Hero:** "Fall back in love with the classics." + three-pillar overview
 - **Section 2:** The Customer Journey (8 steps with DECODE debrief)
 - **Section 3:** The Showroom preview (live Memory Stream catalog with CJPI prices)
-- **Section 4:** Featured Vault editions (scarcity, perfect 100s at $11,981)
+- **Section 4:** Featured Vault editions (scarcity, perfect 100s at $1,952)
 - **Section 5:** The Guarantee
 - **CTA:** "Bring Us Your Tech" → Ascension upload
 
