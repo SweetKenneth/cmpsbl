@@ -123,8 +123,21 @@ const sections = [
     content: "We reserve the right to modify these terms at any time. We will provide notice of material changes via email or platform notification. Continued use of our services after changes constitutes acceptance of the modified terms.",
   },
   {
+    id: "learning",
+    title: "15. Continuous Learning & Primitive Reuse",
+    content: "CMPSBL learns from every interaction across the substrate. By using our services — including Ascension, Memory Stream, and all primitive execution pathways — you acknowledge and agree that:",
+    list: [
+      "CMPSBL may analyze patterns, combinations, and behavioral signatures observed during primitive interactions to improve the substrate",
+      "Insights derived from interactions may inform the development of new primitives, capabilities, or substrate enhancements",
+      "CMPSBL may choose to reuse primitive interaction patterns, up to and including all primitives used in Ascension, to build new capabilities",
+      "No individual user code is copied, redistributed, or exposed — only abstracted architectural patterns and behavioral signatures are retained",
+      "The BRAIN Organ's continuous learning processes operate autonomously across all tiers and interaction types",
+      "Discoveries, scoring data, and execution traces contribute to the substrate's evolving intelligence baseline",
+    ],
+  },
+  {
     id: "contact",
-    title: "15. Contact Information",
+    title: "16. Contact Information",
     content: "For questions about these Terms of Service, please contact us at:",
     contact: true,
   },
