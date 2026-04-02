@@ -47,9 +47,7 @@ const CATEGORY_IMAGES: Record<string, string> = {
   optimization: imgOptimization,
 };
 
-// ═══ Load real catalog ═══
-const CATALOG = loadShowroomCatalog();
-
+// Catalog loaded via react-query from Memory Stream
 // ═══ Tier config ═══
 const TIER_CONFIG = [
   {
