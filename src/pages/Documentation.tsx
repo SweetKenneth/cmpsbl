@@ -1054,7 +1054,7 @@ const result = await fetch(GATEWAY, {
           ].map(f => (
             <div key={f.label} className="p-3 rounded-xl border border-border/50 bg-card/30">
               <h4 className="font-semibold text-xs mb-1">{f.label}</h4>
-              <p className="text-[11px] text-muted-foreground">{f.desc}</p>
+              <p className="text-xs text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>
