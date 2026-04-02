@@ -167,6 +167,10 @@ export function CmpsblNav() {
                         <Package className="w-4 h-4" />
                         My Workbench
                       </Link>
+                      <Link to="/plans" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
+                        <CreditCard className="w-4 h-4" />
+                        My Plan
+                      </Link>
                       <Link to="/os" className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-muted transition-colors">
                         <Command className="w-4 h-4" />
                         Dashboard
