@@ -205,7 +205,6 @@ interface ShowroomItem {
 // ═══ Main page ═══
 export default function Showroom() {
   const { user } = useAuth();
-  const vault = useVaultState();
   const [search, setSearch] = useState('');
   const [painFilter, setPainFilter] = useState<PainPointId>('all');
   const [tierFilter, setTierFilter] = useState<PublicTier | 'all'>('all');
