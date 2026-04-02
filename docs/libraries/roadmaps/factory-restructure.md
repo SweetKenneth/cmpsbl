@@ -437,11 +437,11 @@ All existing pages remain active at their current URLs:
 - [x] $300 customer acquisition campaign tracking ✅
 
 ### Phase 4: The Foundry (Week 9–12)
-- [ ] Vault editions (Model 23) — Apex-only, $1,952 each
-- [ ] Fully autonomous catalog generation (Model 24)
-- [ ] Collision Engine public access (Model 4)
-- [ ] Marketplace two-sided features (Model 9)
-- [ ] Incubator 48-hour pipeline (Model 18)
+- [x] Vault editions (Model 23) — Apex-only, $1,952 each ✅
+- [x] Fully autonomous catalog generation (Model 24) ✅
+- [x] Collision Engine public access (Model 4) ✅
+- [x] Marketplace two-sided features (Model 9) ✅
+- [x] Incubator 48-hour pipeline (Model 18) ✅
 
 ### Phase 5: Scarcity & Premium (Week 13+)
 - [ ] Auction House (Model 12)
