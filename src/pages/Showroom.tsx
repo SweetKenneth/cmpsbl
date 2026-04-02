@@ -24,7 +24,7 @@ import { RelatedCapabilities } from '@/components/RelatedCapabilities';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { PublicBreadcrumb } from '@/components/navigation/PublicBreadcrumb';
 import { type PublicTier, getTierBadgeClass } from '@/lib/foundry/public-tiers';
-import { loadShowroomCatalog, getShowroomPriceDisplay, getShowroomPrice, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
+import { fetchShowroomCatalog, getShowroomPriceDisplay, type ShowroomItem, type PainPointId } from '@/lib/showroom/catalog-loader';
 import { openCheckoutRedirect } from '@/lib/checkout/checkoutRedirect';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
