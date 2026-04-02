@@ -43,6 +43,9 @@ export function ShowroomPreview() {
             <Sparkles className="w-3 h-3 text-primary" />
             <span className="text-xs font-medium text-muted-foreground tracking-wide">The Showroom</span>
           </div>
+          <p className="text-xs text-muted-foreground/50 mb-3 max-w-md mx-auto">
+            These are the same upgrades applied during restoration, available instantly.
+          </p>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-foreground mb-2">
             Every Discovery Has a Price
           </h2>

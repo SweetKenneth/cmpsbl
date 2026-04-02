@@ -249,9 +249,12 @@ export function HeroMetaSubstrate() {
           </h1>
 
           {/* One-liner value prop */}
-          <FadeIn delay={0.3} className="max-w-lg mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
-            <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed">
-              Bring us your code. We restore first, replace only as a last resort.{' '}
+          <FadeIn delay={0.3} className="max-w-xl mx-auto mt-5 sm:mt-6 mb-8 sm:mb-10">
+            <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed mb-2">
+              Upload your code. In minutes, see what it can become.
+            </p>
+            <p className="text-xs sm:text-sm text-muted-foreground/60 leading-relaxed">
+              We scan for vulnerabilities, unlock new capabilities, and return upgraded code with full documentation.{' '}
               <span className="text-foreground/90 font-medium">AI as a tool, not a foundation.</span>
             </p>
           </FadeIn>
@@ -280,6 +283,13 @@ export function HeroMetaSubstrate() {
                 Browse the Showroom
               </Link>
             </Button>
+          </FadeIn>
+
+          {/* Trust line */}
+          <FadeIn delay={0.45} className="mt-4 mb-2">
+            <p className="text-[10px] sm:text-xs text-muted-foreground/40 font-medium tracking-wide">
+              Diagnostic in seconds · Restoration in minutes · Your code is never stored or reused
+            </p>
           </FadeIn>
 
           {/* Zenodo */}
