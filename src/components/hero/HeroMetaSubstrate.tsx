@@ -276,7 +276,7 @@ export function HeroMetaSubstrate() {
               >
                 <Link to="/ascension">
                   <Wrench className="w-4 h-4" />
-                  Book a Consultation
+                  Run Diagnostic
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
