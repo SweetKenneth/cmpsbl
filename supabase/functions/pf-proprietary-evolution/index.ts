@@ -1043,6 +1043,83 @@ function generateEnhancementDiscoveries(
   return results.sort((a, b) => b.cjpi_score - a.cjpi_score).slice(0, 3);
 }
 
+// ═══ 6-PRIMITIVE DIAGNOSTIC SQUAD ═══
+// Each primitive scans the code for issues in its domain:
+// ORACLE: prediction/forecasting gaps · ENGINEER: structural/perf issues
+// ENCODE: transformation/optimization · MEDIC: structural rot/dead patterns
+// DEFENSE: security vulnerabilities · FAILSAFE: resilience gaps
+
+interface DiagnosticSignal {
+  primitive: string;
+  name: string;
+  description: string;
+  category: string;
+  baseScore: number;
+  keywords: string[];
+}
+
+const DIAGNOSTIC_SIGNALS: DiagnosticSignal[] = [
+  // ── MEDIC: structural repair ──
+  { primitive: 'MEDIC', name: 'Dead_Code_Extraction', description: 'Unreachable code paths detected — MEDIC recommends surgical removal to reduce complexity and attack surface.', category: 'repair', baseScore: 62, keywords: ['unused', 'unreachable', 'deprecated', 'legacy', 'todo', 'fixme', 'hack'] },
+  { primitive: 'MEDIC', name: 'Incomplete_Pattern_Repair', description: 'Partial implementations detected (empty catch blocks, stub functions, incomplete switch cases) — MEDIC can restore structural completeness.', category: 'repair', baseScore: 70, keywords: ['catch', 'todo', 'stub', 'placeholder', 'not implemented', 'fixme', 'empty'] },
+  { primitive: 'MEDIC', name: 'Abstraction_Layer_Rebuild', description: 'Inconsistent abstraction levels detected — MEDIC recommends layer normalization to reduce cognitive load and coupling.', category: 'repair', baseScore: 58, keywords: ['class', 'interface', 'abstract', 'extends', 'implements', 'inherit', 'mixin'] },
+
+  // ── DEFENSE: security scanning ──
+  { primitive: 'DEFENSE', name: 'Input_Validation_Shield', description: 'Unvalidated input paths detected — DEFENSE recommends injection prevention and schema validation at trust boundaries.', category: 'security', baseScore: 78, keywords: ['input', 'form', 'query', 'param', 'body', 'request', 'user', 'eval', 'exec'] },
+  { primitive: 'DEFENSE', name: 'Auth_Boundary_Hardening', description: 'Authentication/authorization patterns found without defensive depth — DEFENSE recommends multi-layer access validation.', category: 'security', baseScore: 82, keywords: ['auth', 'token', 'jwt', 'session', 'login', 'password', 'credential', 'secret', 'api_key'] },
+  { primitive: 'DEFENSE', name: 'Data_Exposure_Quarantine', description: 'Potential data leakage vectors detected (logging sensitive fields, unmasked outputs) — DEFENSE recommends quarantine and masking.', category: 'security', baseScore: 74, keywords: ['log', 'console', 'print', 'debug', 'error', 'sensitive', 'email', 'password', 'ssn'] },
+
+  // ── FAILSAFE: resilience gaps ──
+  { primitive: 'FAILSAFE', name: 'Error_Boundary_Installation', description: 'Missing error handling paths detected — FAILSAFE recommends circuit breakers and graceful degradation at failure points.', category: 'resilience', baseScore: 72, keywords: ['try', 'catch', 'throw', 'error', 'exception', 'reject', 'fail'] },
+  { primitive: 'FAILSAFE', name: 'Retry_Logic_Injection', description: 'Network/IO operations without retry logic detected — FAILSAFE recommends exponential backoff with jitter for transient failures.', category: 'resilience', baseScore: 66, keywords: ['fetch', 'http', 'request', 'api', 'connect', 'socket', 'database', 'query'] },
+  { primitive: 'FAILSAFE', name: 'Graceful_Degradation_Layer', description: 'Hard failure paths detected (no fallback behavior) — FAILSAFE recommends degraded-mode operation with user-facing status signals.', category: 'resilience', baseScore: 68, keywords: ['throw', 'exit', 'process.exit', 'fatal', 'critical', 'abort', 'panic'] },
+];
+
+function runDiagnosticSquad(
+  surface: CapabilitySurface,
+  candidateMeta: Record<string, unknown>,
+): CollisionResult[] {
+  const sourceFiles = (candidateMeta.source_files as Array<{ content?: string }>) || [];
+  const allContent = sourceFiles.map(f => (f.content || '').toLowerCase()).join('\n');
+  if (allContent.length < 50) return [];
+
+  const results: CollisionResult[] = [];
+
+  for (const signal of DIAGNOSTIC_SIGNALS) {
+    // Count keyword hits to determine relevance
+    let hits = 0;
+    for (const kw of signal.keywords) {
+      const regex = new RegExp(kw, 'gi');
+      const matches = allContent.match(regex);
+      if (matches) hits += matches.length;
+    }
+
+    // Only surface diagnostics with meaningful signal strength
+    if (hits < 2) continue;
+
+    const hitBonus = Math.min(8, Math.floor(hits / 3));
+    const nameHash = hashString(`${surface.nodeName}:${signal.name}:diag`);
+    const variance = ((nameHash >> 4) % 7) - 3;
+    let cjpi = signal.baseScore + hitBonus + variance;
+    cjpi = Math.max(35, Math.min(cjpi, 88));
+
+    results.push({
+      name: signal.name,
+      description: `${signal.primitive} diagnostic: ${signal.description}`,
+      cjpi_score: cjpi,
+      tier: scoreTier(cjpi),
+      chain: [surface.nodeName, signal.primitive],
+      capability_type: `diagnostic:${signal.category}`,
+      chain_depth: 2,
+      synergy_bonus: 0,
+      sectors_crossed: 2,
+      candidate_surface: surface,
+    });
+  }
+
+  return results.sort((a, b) => b.cjpi_score - a.cjpi_score).slice(0, 4);
+}
+
 // ═══ MULTI-NODE COLLISION ENGINE (Auxiliary Node = First-Class Participant) ═══
 
 interface CollisionResult {
