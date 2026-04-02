@@ -291,10 +291,10 @@ export default function Showroom() {
   const successItem = searchParams.get('item');
 
   // Fetch live catalog from Memory Stream
-  const { data: catalog = [], isLoading: catalogLoading } = useQuery({
+  const { data: catalog = [], isLoading: catalogLoading } = useQuery<ShowroomItem[]>({
     queryKey: ['showroom-catalog'],
-    queryFn: fetchShowroomCatalog,
-    staleTime: 1000 * 60 * 5, // 5 min cache
+    queryFn: () => fetchShowroomCatalog(50),
+    staleTime: 1000 * 60 * 5,
   });
 
   // Group by tier
