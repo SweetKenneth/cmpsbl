@@ -462,14 +462,57 @@ export default function RestorationShop() {
                 scanContext={{ originalCode: code, scanResult }}
               />
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
                    <div className="text-2xl font-black text-foreground">{scanResult.cjpiEstimate}</div>
-                   <div className="text-xs text-muted-foreground">Current CJPI Estimate</div>
+                   <div className="text-xs text-muted-foreground">Current CJPI</div>
+                </div>
+                <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 text-center">
+                   <div className="text-2xl font-black text-primary">{scanResult.projectedCjpi}</div>
+                   <div className="text-xs text-muted-foreground">Projected CJPI</div>
                 </div>
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
                    <div className="text-2xl font-black text-foreground">{scanResult.architecturalRunway}mo</div>
-                   <div className="text-xs text-muted-foreground">Architectural Runway</div>
+                   <div className="text-xs text-muted-foreground">Arch. Runway</div>
+                </div>
+                <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
+                   <div className="text-2xl font-black text-foreground">{scanResult.findings.length}</div>
+                   <div className="text-xs text-muted-foreground">Findings</div>
+                </div>
+              </div>
+
+              {/* Code Metrics */}
+              <div className="rounded-xl border border-border/30 bg-card/20 p-4">
+                <h4 className="text-xs font-bold text-foreground mb-3 flex items-center gap-2">
+                  <Cpu className="w-3.5 h-3.5 text-primary" />
+                  Code Analysis — {scanResult.metrics.language}
+                  {scanResult.metrics.languageConfidence > 0.8 && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
+                      {Math.round(scanResult.metrics.languageConfidence * 100)}% match
+                    </span>
+                  )}
+                </h4>
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 text-center">
+                  {[
+                    { label: 'Lines', value: scanResult.metrics.totalLines },
+                    { label: 'Functions', value: scanResult.metrics.functionCount },
+                    { label: 'Classes', value: scanResult.metrics.classCount },
+                    { label: 'Complexity', value: scanResult.metrics.cyclomaticComplexity },
+                    { label: 'Depth Score', value: `${scanResult.metrics.depthScore}/100` },
+                  ].map(m => (
+                    <div key={m.label} className="rounded-lg bg-muted/20 p-2">
+                      <div className="text-sm font-bold text-foreground">{m.value}</div>
+                      <div className="text-[9px] text-muted-foreground">{m.label}</div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  {scanResult.metrics.hasAsync && <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">Async</span>}
+                  {scanResult.metrics.hasTypes && <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">Typed</span>}
+                  {scanResult.metrics.hasTests && <span className="text-[9px] px-1.5 py-0.5 rounded bg-neon-green/10 text-neon-green">Tests</span>}
+                  {scanResult.metrics.hasErrorHandling && <span className="text-[9px] px-1.5 py-0.5 rounded bg-neon-green/10 text-neon-green">Error Handling</span>}
+                  {!scanResult.metrics.hasErrorHandling && <span className="text-[9px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive">No Error Handling</span>}
+                  {!scanResult.metrics.hasTests && <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400">No Tests</span>}
                 </div>
               </div>
 
@@ -502,10 +545,43 @@ export default function RestorationShop() {
                 queuePosition={queueEntry ? getQueuePosition(queueEntry.id) : null}
                 estimatedWaitMs={estimateWaitTime('builder')}
               />
-              <div className="text-center">
-                <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">The refurbishment lab is processing your code...</p>
-              </div>
+
+              {/* Animated primitive activation */}
+              {processingPrimitives.length > 0 && (
+                <div className="rounded-xl border border-border/30 bg-card/20 p-4">
+                  <h4 className="text-xs font-bold text-foreground mb-3 flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-primary" />
+                    Applying Primitives
+                  </h4>
+                  <div className="space-y-1.5">
+                    {processingPrimitives.map((p) => (
+                      <div key={p.name} className="flex items-center gap-2">
+                        {p.status === 'done' ? (
+                          <div className="w-4 h-4 rounded-full bg-neon-green/20 flex items-center justify-center">
+                            <div className="w-2 h-2 rounded-full bg-neon-green" />
+                          </div>
+                        ) : p.status === 'active' ? (
+                          <Loader2 className="w-4 h-4 text-primary animate-spin" />
+                        ) : (
+                          <div className="w-4 h-4 rounded-full border border-border/40" />
+                        )}
+                        <span className={cn(
+                          "text-xs font-mono",
+                          p.status === 'done' ? "text-foreground" : p.status === 'active' ? "text-primary font-bold" : "text-muted-foreground/50"
+                        )}>
+                          {p.name}
+                        </span>
+                        {p.status === 'active' && (
+                          <span className="text-[9px] text-primary/70 ml-auto">activating...</span>
+                        )}
+                        {p.status === 'done' && (
+                          <span className="text-[9px] text-neon-green/70 ml-auto">sealed</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
