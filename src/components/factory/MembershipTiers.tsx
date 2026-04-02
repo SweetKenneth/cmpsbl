@@ -106,7 +106,7 @@ export function MembershipTiers({ className, highlightTier = 'creator' }: Member
               size="sm"
               className="w-full rounded-lg font-semibold text-xs"
             >
-              <Link to={tierKey === 'builder' ? '/auth' : '/auth'}>
+              <Link to={tierKey === 'builder' ? '/auth' : '/plans'}>
                 {tierKey === 'builder' ? 'Get Started' : 'Subscribe'}
                 <ArrowRight className="w-3 h-3 ml-1.5" />
               </Link>
