@@ -113,7 +113,7 @@ export default function RestorationShop() {
   }, [scanResult, isRestoring]);
 
   const handleExport = useCallback(() => {
-    const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator';
+    const isSubscribed = identityRole === 'governor' || identityRole === 'architect' || identityRole === 'creator' || identityRole === 'studio';
 
     if (!isSubscribed) {
       toast.error('To export your refurbished code, please subscribe to a paid plan.', {

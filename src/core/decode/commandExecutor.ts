@@ -105,9 +105,10 @@ for (const def of COMMAND_REGISTRY) {
 const ROLE_HIERARCHY: Record<IdentityRole, number> = {
   anonymous: 0,
   user: 1,
-  creator: 2,
-  architect: 3,
-  governor: 4,
+  studio: 2,
+  creator: 3,
+  architect: 4,
+  governor: 5,
 };
 
 function hasPermission(userRole: IdentityRole, requiredRole: IdentityRole): boolean {
