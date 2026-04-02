@@ -242,7 +242,11 @@ export function IngestPhase() {
 
   /* ═══ PARSE / ANALYZE ═══ */
   const handleParse = async () => {
-    if (files.length === 0) return;
+    if (inputMode === 'upload' && files.length === 0) return;
+    if (inputMode === 'paste' && pastedCode.trim().length < 20) {
+      toast({ title: 'Code too short', description: 'Paste at least 20 characters of source code.', variant: 'destructive' });
+      return;
+    }
     setParsing(true);
 
     // Snap to animation area
@@ -251,7 +255,9 @@ export function IngestPhase() {
     }, 100);
 
     try {
-      const analysis = await analyzeUploadedFiles(files);
+      const analysis = inputMode === 'upload'
+        ? await analyzeUploadedFiles(files)
+        : analyzePastedCode(pastedCode, pasteFilename || undefined);
       setParsedNode(analysis);
 
       // Derive capability surface locally for immediate display
