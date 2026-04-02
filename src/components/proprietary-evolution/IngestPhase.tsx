@@ -18,16 +18,19 @@ import { useState, useCallback, useRef, useMemo } from 'react';
 import {
   Upload, FileCode2, CheckCircle2, AlertCircle, Loader2,
   Code2, Layers, Lock, ShieldCheck, RefreshCw, AlertTriangle,
-  Cpu, Zap,
+  Cpu, Zap, ClipboardPaste,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { OrbitalAssembly, type AssemblyState } from './OrbitalAssembly';
 import { cn } from '@/lib/utils';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useEvolutionLimits } from '@/hooks/useEvolutionLimits';
 import { useAuth } from '@/contexts/AuthContext';
-import { analyzeUploadedFiles, type CandidateAnalysis, LANG_MAP } from './ingest-utils';
+import { analyzeUploadedFiles, analyzePastedCode, type CandidateAnalysis, LANG_MAP } from './ingest-utils';
 
 /* ═══ TYPES ═══ */
 type ParsedNode = CandidateAnalysis;
