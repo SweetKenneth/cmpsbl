@@ -16,10 +16,8 @@ import {
   Sparkles,
   ChevronDown,
   Layers,
-  Brain,
   Shield,
   Zap,
-  Terminal,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
