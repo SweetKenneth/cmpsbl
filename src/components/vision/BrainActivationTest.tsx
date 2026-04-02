@@ -10,7 +10,7 @@ export default function BrainActivationTest() {
   const [results, setResults] = useState<any>(null);
 
   async function runTest() {
-    console.log('🧠 Brain test button clicked');
+    // Brain test initiated
     setTesting(true);
     setResults(null);
 
