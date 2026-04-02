@@ -198,7 +198,7 @@ export const publicRoutes = (
     <Route path="/register" element={<Navigate to="/auth" replace />} />
     <Route path="/library" element={<Navigate to="/" replace />} />
     <Route path="/support" element={<Support />} />
-    <Route path="/explore" element={<Navigate to="/store" replace />} />
+    <Route path="/explore" element={<Navigate to="/" replace />} />
     <Route path="/promptfluid" element={<PromptFluidHome />} />
 
     {/* System pages */}
