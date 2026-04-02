@@ -83,7 +83,7 @@ const PersistentMemoryLanding = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
-                <Button asChild size="lg" className="text-lg px-8 h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                <Button asChild size="lg" className="text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
                   <Link to="/docs/persistent-memory">
                     Get Started
                     <ArrowRight className="w-5 h-5 ml-2" />
