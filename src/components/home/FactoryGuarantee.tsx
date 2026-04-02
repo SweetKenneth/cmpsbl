@@ -55,12 +55,12 @@ export function FactoryGuarantee() {
               </div>
 
               <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 leading-[1.05] tracking-tight">
-                No AI Tricks. No Liability Transfer.
+                We Embrace AI as a Tool.
                 <br className="hidden sm:block" />
-                <span className="text-white/80">Just Certified Builds.</span>
+                <span className="text-white/80">Not as a Foundation.</span>
               </h2>
               <p className="text-white/60 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
-                The only updates we offer are upgrades — and they're optional. No emergency patches because someone jailbroke your billing bot at 2am.
+                Your code stays your code. We restore first, replace only as a last resort. Classic development tactics, modern results.
               </p>
             </div>
 
