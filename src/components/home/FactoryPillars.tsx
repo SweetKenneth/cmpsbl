@@ -27,7 +27,7 @@ const PILLARS = [
     title: "The Refurbishment Lab",
     subtitle: "Ascension · Your Code",
     icon: Zap,
-    description: "Bring us the code you've been running for five years. We scan it, find its vulnerabilities, refurbish it with new capabilities, and send it back. Your engineers still understand it — because it still IS the code.",
+    description: "Bring us your code. We analyze it, reimagine the possibilities, and restore first — only offering replacements as a last resort. We embrace AI as a tool, not as a foundation.",
     stats: [
       { label: "Pipeline Stages", value: "8" },
       { label: "Primitives/Run", value: "Up to 20" },
