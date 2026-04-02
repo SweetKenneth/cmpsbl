@@ -1,6 +1,6 @@
 /**
- * META HERO: CMPSBL® — Composable AI Infrastructure
- * Studio-grade hero with cinematic typography and fluid motion
+ * META HERO: CMPSBL® Software Refurbishment Center
+ * Clean, solution-forward hero with typed rotation and dual CTAs.
  * 
  * PERFORMANCE: Uses pure CSS animations instead of framer-motion
  * to avoid 56KB parse cost on the landing page critical path.
@@ -18,6 +18,8 @@ import {
   Layers,
   Shield,
   Zap,
+  Search,
+  Wrench,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -177,7 +179,6 @@ function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-background" />
-      {/* Primary orbs — richer, larger, more layered */}
       <div
         className="absolute -top-48 -left-48 w-[700px] h-[700px] rounded-full animate-hero-orb-1"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.07) 0%, hsl(var(--neon-cyan) / 0.02) 40%, transparent 60%)" }}
@@ -190,16 +191,12 @@ function HeroBackground() {
         className="absolute top-1/4 left-1/2 w-[500px] h-[500px] rounded-full animate-hero-orb-3"
         style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.05) 0%, hsl(var(--neon-purple) / 0.01) 40%, transparent 55%)" }}
       />
-      {/* Secondary ambient — subtle depth layer */}
       <div
         className="absolute top-1/2 left-1/4 w-[400px] h-[300px] rounded-full animate-hero-orb-2 opacity-50"
         style={{ background: "radial-gradient(ellipse, hsl(var(--primary) / 0.04) 0%, transparent 50%)" }}
       />
-      {/* Substrate grid with enhanced opacity */}
       <div className="absolute inset-0 substrate-grid-bg opacity-[0.3] dark:opacity-[0.5]" />
-      {/* Noise texture overlay for tactile depth */}
       <div className="absolute inset-0 texture-noise" />
-      {/* Vignette fade */}
       <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background) / 0.5) 70%, hsl(var(--background) / 0.85) 100%)" }} />
     </div>
   );
@@ -224,48 +221,48 @@ export function HeroMetaSubstrate() {
             <FadeIn delay={0.1}
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
             >
-              <Sparkles className="w-3 h-3 text-primary" />
+              <Wrench className="w-3 h-3 text-primary" />
               <span className="text-xs font-medium text-muted-foreground tracking-wide">Software Refurbishment Center</span>
               <span className="flex items-center gap-1 pl-2 border-l border-border/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--neon-cyan))] animate-pulse" />
-                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Live</span>
+                <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
               </span>
             </FadeIn>
             
-            {/* CMPSBL wordmark */}
-            <h1 className="tracking-[-0.06em] leading-[0.85]">
-              <CmpsblWordmark 
-                className="text-[3rem] sm:text-7xl md:text-8xl lg:text-[7.5rem] mb-4 sm:mb-5"
-              />
+            {/* Headline */}
+            <h1 className="tracking-[-0.04em] leading-[0.9]">
+              <FadeIn delay={0.15}>
+                <span className="block text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground mb-2 sm:mb-3 tracking-normal">
+                  Where classic software gets
+                </span>
+              </FadeIn>
+              <FadeIn delay={0.2}>
+                <span className="block text-[2.75rem] sm:text-6xl md:text-7xl lg:text-[5.5rem] font-black min-h-[1.15em]">
+                  <TypedText 
+                    texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
+                    gradientColors={[
+                      "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
+                      "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
+                      "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
+                      "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
+                      "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
+                      "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-magenta)))",
+                    ]}
+                  />
+                </span>
+              </FadeIn>
             </h1>
 
-            {/* Tagline */}
-            <FadeIn delay={0.2} className="mb-6 sm:mb-8">
-              <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground/70 tracking-tight leading-snug mb-2">
-                Restore. Harden. Own.
-              </p>
-              <div className="text-[2.25rem] sm:text-6xl md:text-7xl lg:text-[4.5rem] font-black tracking-[-0.02em] leading-[0.95] min-h-[1.1em]">
-                <TypedText 
-                  texts={["certified builds.", "discovery.", "refurbishment.", "ownership.", "precision."]}
-                  gradientColors={[
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-magenta)))",
-                    "linear-gradient(135deg, hsl(var(--neon-cyan)), hsl(var(--neon-purple)))",
-                    "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--neon-cyan)))",
-                    "linear-gradient(135deg, hsl(var(--neon-magenta)), hsl(var(--primary)))",
-                    "linear-gradient(135deg, hsl(var(--neon-purple)), hsl(var(--neon-cyan)))",
-                  ]}
-                />
-              </div>
-            </FadeIn>
-
-            {/* Single clear value prop — replaces redundant thesis + subtitle */}
-            <FadeIn delay={0.3} className="max-w-lg mx-auto lg:mx-0 mb-7 sm:mb-9">
-              <p className="text-base text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
-                Bring us the code you've been running for years.{' '}
-                <span className="text-foreground/90 font-medium">We scan it, restore it, and send it back</span>{' '}
-                — hardened with new capabilities, wrapped in governance, and ready for production.{' '}
-                No AI inside the output. No lock-in.{' '}
-                <span className="text-foreground/90 font-medium">Just&nbsp;certified&nbsp;builds</span>.
+            {/* Value proposition */}
+            <FadeIn delay={0.3} className="max-w-xl mx-auto lg:mx-0 mb-7 sm:mb-9 mt-6 sm:mt-8">
+              <p className="text-base sm:text-lg text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
+                Bring us your code.{' '}
+                <span className="text-foreground/90 font-medium">We analyze it, reimagine the possibilities, and restore first</span>{' '}
+                — only offering replacements as a last resort.{' '}
+                We embrace AI as a tool, not as a foundation.{' '}
+                We don't force you to relearn your software.{' '}
+                <span className="text-foreground/90 font-medium">We make upgrading as&nbsp;easy&nbsp;as&nbsp;possible</span>{' '}
+                using classic development tactics to reinforce your&nbsp;existing&nbsp;systems.
               </p>
             </FadeIn>
             
@@ -277,8 +274,8 @@ export function HeroMetaSubstrate() {
                 className="gap-2 px-8 sm:px-10 h-12 sm:h-13 text-sm font-bold rounded-xl shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <Link to="/ascension">
-                  <Zap className="w-4 h-4" />
-                  Submit Your Code
+                  <Wrench className="w-4 h-4" />
+                  Book a Consultation
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </Button>
@@ -288,9 +285,9 @@ export function HeroMetaSubstrate() {
                 size="lg" 
                 className="gap-2 px-6 sm:px-8 h-12 sm:h-13 text-sm font-medium rounded-xl border-border/50 hover:border-primary/30 transition-all duration-300 active:scale-[0.98]"
               >
-                <Link to="/memory-stream">
-                  <Sparkles className="w-4 h-4" />
-                  Browse the Catalog
+                <Link to="/showroom">
+                  <Search className="w-4 h-4" />
+                  Browse the Showroom
                 </Link>
               </Button>
             </FadeIn>
@@ -317,7 +314,7 @@ export function HeroMetaSubstrate() {
             delay={0.2}
             className="order-2 flex flex-col gap-4"
           >
-            {/* Above River — Architecture blurb */}
+            {/* Above River — How it works */}
             <FadeIn
               delay={0.35}
               className="hidden sm:block rounded-xl border border-border/15 bg-card/25 p-4 gradient-border-glow"
@@ -328,12 +325,12 @@ export function HeroMetaSubstrate() {
               </div>
               <p className="text-xs sm:text-sm text-muted-foreground/70 leading-relaxed">
                Scanners{' '}
-                  <span className="text-foreground/80 font-medium">discover</span> capabilities.{' '}
+                  <span className="text-foreground/80 font-medium">discover</span> what your code can already do.{' '}
                   The Refurbishment Lab{' '}
-                  <span className="text-primary font-medium">hardens</span> your code.{' '}
+                  <span className="text-primary font-medium">restores and hardens</span> it.{' '}
                   40 Specialists{' '}
                   <span className="font-medium" style={{ color: "hsl(var(--neon-magenta))" }}>power</span>{' '}
-                  everything — autonomously, every 8 hours.
+                  the process — no AI in the output.
               </p>
             </FadeIn>
 
@@ -345,7 +342,7 @@ export function HeroMetaSubstrate() {
             <FadeIn delay={0.7} className="grid grid-cols-3 gap-2">
               {[
                 { label: "Discovery Cycle", value: "Every 8hr", glow: "--neon-cyan" },
-                { label: "Restoration", value: "Up to 20", glow: "--neon-purple" },
+                { label: "Specialists", value: "40", glow: "--neon-purple" },
                 { label: "Export Languages", value: "25", glow: "--neon-magenta" },
               ].map((item) => (
                 <div 
@@ -366,9 +363,9 @@ export function HeroMetaSubstrate() {
           className="flex justify-start sm:justify-center gap-2 mb-6 sm:mb-10 -mx-4 px-4 pr-8 sm:mx-0 sm:px-0 sm:pr-0 overflow-x-auto scrollbar-hide pb-1"
         >
           {[
-            { icon: Sparkles, label: "Open Archive", href: "/memory-stream" },
+            { icon: Wrench, label: "Restore First", href: "/ascension" },
             { icon: Shield, label: "3-Day Evaluation", href: "/ascension" },
-            { icon: Layers, label: "$1,952 Vault", href: "/memory-stream" },
+            { icon: Layers, label: "AI as Tool, Not Foundation", href: "/documentation" },
             { icon: Zap, label: "Zero AI in Output", href: "/documentation" },
           ].map((item, index) => (
             <FadeIn
@@ -386,15 +383,15 @@ export function HeroMetaSubstrate() {
           ))}
         </FadeIn>
 
-        {/* Primitives flow strip */}
+        {/* Journey strip */}
         <FadeIn delay={0.65} className="mb-6 sm:mb-10">
           <div className="flex flex-col items-center gap-2">
             <div className="w-full overflow-x-auto scrollbar-hide py-2">
               <div className="flex items-center sm:justify-center gap-0 w-max sm:w-auto mx-auto px-1">
               {[
-                "Upload",
+                "Consultation",
                 "Diagnostic",
-                "Choose Primitives",
+                "Restoration Plan",
                 "Refurbishment",
                 "Evaluation",
                 "Ownership",
@@ -439,7 +436,6 @@ export function HeroMetaSubstrate() {
           >
             <div className="absolute inset-x-0 top-0 h-[2px] memory-stream-bar opacity-50" />
             <div className="absolute inset-x-0 bottom-0 h-[1px] memory-stream-bar opacity-15" />
-            {/* Inner ambient glow */}
             <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] via-transparent to-primary/[0.01] pointer-events-none" />
             <AnimatedStat value={40} label="Primitives" delay={0} />
             <AnimatedStat value={25} label="Export Languages" delay={1} />
