@@ -108,17 +108,27 @@ export default function RestorationShop() {
     setQueueEntry(entry);
     setPhase('queue');
 
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    // Animate each primitive activating
+    const primStates: ProcessingPrimitive[] = selected.map(s => ({ name: s.name, status: 'pending' as const }));
+    setProcessingPrimitives([...primStates]);
+
+    for (let i = 0; i < primStates.length; i++) {
+      primStates[i].status = 'active';
+      setProcessingPrimitives([...primStates]);
+      await new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 300));
+      primStates[i].status = 'done';
+      setProcessingPrimitives([...primStates]);
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 800));
 
     const restorationReport = generateRestorationReport(scanResult, selected);
     setReport(restorationReport);
 
-    // Generate dual-layer refurbished code
     const fingerprint = restorationReport.cjpiCertificate.fingerprint;
     const hardened = generateRefurbishedCode(code, selected, fingerprint);
     setRefurbishedCode(hardened);
 
-    // Persist session for future DECODE lookups
     saveRestorationSession({
       fingerprint,
       originalCode: code,
