@@ -1,9 +1,11 @@
 /**
- * Showroom — Solution-forward marketplace of real S-Tier vault discoveries.
+ * Showroom — Solution-forward marketplace of Memory Stream discoveries.
+ * Pulls live data from the discoveries table. No Crown Jewel registry data.
  * Horizontal-scroll carousels grouped by CJPI tier with Stripe checkout.
  */
 
 import { useState, useMemo, useRef, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link, useSearchParams } from 'react-router-dom';
