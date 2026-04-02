@@ -140,6 +140,7 @@ export default function ScanResult() {
           )}
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 }

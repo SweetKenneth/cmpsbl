@@ -45,6 +45,7 @@ export default function DiscoveredPipelines() {
         <meta name="description" content="The substrate's highest-scoring autonomous Memory Stream compositions. CJPI-scored, tier-ranked from Mint to Apex, and ready for deployment across 40 primitives. Real crystallized software." />
       </Helmet>
 
+      <PublicNav />
       <div className="min-h-screen bg-background">
         {/* Hero */}
         <section className="pt-24 pb-16 px-5 sm:px-6 relative overflow-hidden">

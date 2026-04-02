@@ -221,6 +221,7 @@ export default function AgentPowerUp() {
           </p>
         </div>
       </section>
+      <EnhancedFooter />
     </div>
   );
 }

@@ -304,6 +304,7 @@ export default function Assembly() {
           </div>
         </section>
       </div>
+      <EnhancedFooter />
     </>
   );
 }

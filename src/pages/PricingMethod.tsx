@@ -287,6 +287,7 @@ export default function PricingMethod() {
           </div>
         </div>
       </div>
+      <EnhancedFooter />
     </>
   );
 }
