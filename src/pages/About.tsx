@@ -170,7 +170,7 @@ export default function About() {
           <motion.div {...stagger(0.05)}>
             <Badge variant="outline" className="mb-5 border-primary/30 bg-primary/5 text-primary gap-1.5 px-3 py-1">
               <Hammer className="w-3 h-3" />
-              <span className="text-[10px] sm:text-xs font-semibold">Build on the Platform</span>
+              <span className="text-[10px] sm:text-xs font-semibold">Build on the Substrate</span>
             </Badge>
           </motion.div>
 
