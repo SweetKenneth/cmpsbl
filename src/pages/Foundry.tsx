@@ -5,7 +5,6 @@
  */
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { MemoryStreamOnboarding } from '@/components/onboarding/MemoryStreamOnboarding';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
 import { useAuth } from '@/contexts/AuthContext';
