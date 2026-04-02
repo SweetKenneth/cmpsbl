@@ -322,7 +322,7 @@ export default function Showroom() {
               <div className="mt-3 text-center">
                 <span className="text-sm text-muted-foreground">
                   Showing <span className="font-semibold text-foreground">{filtered.length}</span> {filtered.length === 1 ? 'discovery' : 'discoveries'}
-                  {items.length === 0 && <span className="text-muted-foreground/50 ml-1">(demo catalog)</span>}
+                  
                 </span>
               </div>
             </div>
