@@ -232,8 +232,8 @@ export default function RestorationShop() {
                    <div className="text-xs text-muted-foreground">Current CJPI Estimate</div>
                 </div>
                 <div className="rounded-xl border border-border/30 bg-card/20 p-4 text-center">
-                  <div className="text-2xl font-black text-foreground">{scanResult.architecturalRunway}mo</div>
-                  <div className="text-[10px] text-muted-foreground">Architectural Runway</div>
+                   <div className="text-2xl font-black text-foreground">{scanResult.architecturalRunway}mo</div>
+                   <div className="text-xs text-muted-foreground">Architectural Runway</div>
                 </div>
               </div>
 
