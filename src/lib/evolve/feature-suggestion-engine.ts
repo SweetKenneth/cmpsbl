@@ -40,7 +40,7 @@ export interface FeatureSuggestion {
 
 // ── System Context Prompts ─────────────────────────────────
 
-const SUGGESTION_SYSTEM_PROMPT = `You are a senior software architect analyzing the CMPSBL cognitive operating system — a React/TypeScript/Tailwind/Supabase platform with 27+ substrate nodes (BRAIN, MEMORY, CORTEX, DEFENSE, ORACLE, EVOLUTION, etc.).
+const SUGGESTION_SYSTEM_PROMPT = `You are a senior software architect analyzing the CMPSBL cognitive infrastructure substrate — a React/TypeScript/Tailwind/Supabase platform with 27+ substrate nodes (BRAIN, MEMORY, CORTEX, DEFENSE, ORACLE, EVOLUTION, etc.).
 
 Your task is to suggest NEW functions, features, resolvers, or capabilities that would meaningfully extend the system.
 

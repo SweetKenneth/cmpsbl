@@ -90,7 +90,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
       },
       {
         heading: "What Makes CMPSBL Different",
-        content: "CMPSBL is not another AI wrapper, chatbot framework, or model fine-tuning service. It is the infrastructure layer beneath all of those — the cognitive operating system that provides memory, governance, security, evolution, and export capabilities to any AI application built on top of it. The closest analogy: AWS provides compute infrastructure; Stripe provides payment infrastructure; CMPSBL provides cognitive infrastructure.",
+        content: "CMPSBL is not another AI wrapper, chatbot framework, or model fine-tuning service. It is the infrastructure layer beneath all of those — the cognitive infrastructure substrate that provides memory, governance, security, evolution, and export capabilities to any AI application built on top of it. The closest analogy: AWS provides compute infrastructure; Stripe provides payment infrastructure; CMPSBL provides cognitive infrastructure.",
       },
       {
         heading: "Proprietary Technology Stack",

@@ -975,7 +975,7 @@ export async function executeCommand(
     const identity = `
 ┌─ SUBSTRATE IDENTITY ─────────────────────────────────────────
 │ 
-│  ██████╗ ███████╗     Cognitive Operating System
+│  ██████╗ ███████╗     Cognitive Infrastructure Substrate
 │  ██╔═══╝ ██╔════╝     CMPSBL® OS
 │  ██║     ███████╗     
 │  ██║     ╚════██║     Environment: CMPSBL Cloud

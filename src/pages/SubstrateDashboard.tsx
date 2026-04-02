@@ -576,7 +576,7 @@ export default function SubstrateDashboard() {
           </div>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-3xl mb-6">
-            The complete cognitive operating system — 40 primitives coordinated by a weighted matrix where Σ = 1.000. The CORE Organ boots every primitive in dependency order, the DEFENSE Layer wraps the outer shell, and the DREAM Engine synthesizes improvements autonomously.
+            The complete cognitive infrastructure substrate — 40 primitives coordinated by a weighted matrix where Σ = 1.000. The CORE Organ boots every primitive in dependency order, the DEFENSE Layer wraps the outer shell, and the DREAM Engine synthesizes improvements autonomously.
           </p>
           
           <div className="flex gap-3">

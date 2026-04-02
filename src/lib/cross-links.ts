@@ -31,7 +31,7 @@ const LINK_DB: Record<string, CrossLink[]> = {
     { href: "/persistent-memory", title: "Persistent Memory", description: "Give agents 4-tier cognitive recall" },
   ],
   "/enterprise": [
-    { href: "/architecture", title: "Substrate Architecture", description: "Full topology of the cognitive operating system" },
+    { href: "/architecture", title: "Substrate Architecture", description: "Full topology of the cognitive infrastructure substrate" },
     { href: "/solutions", title: "Solutions", description: "Pre-configured deployments by industry" },
     { href: "/contact", title: "Contact Sales", description: "Talk to the team about custom deployment" },
     { href: "/store?tab=plans", title: "Plans & Pricing", description: "Compare plans and subscription tiers", badge: "Plans" },
