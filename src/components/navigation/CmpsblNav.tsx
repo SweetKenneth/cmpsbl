@@ -170,7 +170,7 @@ export function CmpsblNav() {
                     </Button>
                     <Button asChild size="sm" className="rounded-lg h-9 px-4 font-semibold shadow-md shadow-primary/15 hover:shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-all">
                       <Link to="/ascension">
-                        Bring Us Your Tech
+                        Run Diagnostic
                         <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                       </Link>
                     </Button>
