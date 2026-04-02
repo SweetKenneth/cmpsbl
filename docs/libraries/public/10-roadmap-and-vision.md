@@ -27,6 +27,7 @@ The substrate is production-ready with:
 ## What's Next
 
 ### Near-Term
+- **Code Assembly Service** — full-service code splicing, reconstruction, and component integration for customers who need hands-off delivery. ENCODE + MEDIC + ENGINEER primitives handle corrupted backups, fragmented codebases, and plug-and-play component installation — no developer knowledge required
 - **Expanded engine marketplace** — more premium engines across additional categories
 - **Cross-agency DREAM Engine pooling** — privacy-preserving knowledge sharing between agencies
 - **Multi-language SDK** — beyond TypeScript to Python, Go, and more
