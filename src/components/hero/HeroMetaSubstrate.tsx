@@ -346,9 +346,9 @@ export function HeroMetaSubstrate() {
             {/* Below River — pulse cards */}
             <FadeIn delay={0.7} className="grid grid-cols-3 gap-2">
               {[
-                { label: "Memory Depth", value: "Persistent", glow: "--neon-cyan" },
-                { label: "Background Processing", value: "Autonomous", glow: "--neon-purple" },
-                { label: "Defense Mesh", value: "Always-On", glow: "--neon-magenta" },
+                { label: "Discovery Cycle", value: "Every 8hr", glow: "--neon-cyan" },
+                { label: "Restoration", value: "Up to 20", glow: "--neon-purple" },
+                { label: "Export Languages", value: "25", glow: "--neon-magenta" },
               ].map((item) => (
                 <div 
                   key={item.label} 
