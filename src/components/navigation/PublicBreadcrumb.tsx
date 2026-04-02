@@ -50,6 +50,11 @@ const LABEL_MAP: Record<string, string> = {
   "solutions": "Solutions",
   "enterprise": "Enterprise",
   "integrations": "Integrations",
+  "ascension": "Restoration Shop",
+  "showroom": "Showroom",
+  "foundry": "Foundry",
+  "plans": "Plans",
+  "member": "Member Hub",
 };
 
 function formatSegment(seg: string): string {
