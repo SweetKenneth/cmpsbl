@@ -113,9 +113,30 @@ export default function Assembly() {
       />
 
       <PublicNav />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background relative">
+        {/* Lab ambient — data streams + glow */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 gradient-mesh opacity-60" />
+          <div className="absolute -top-32 right-1/4 w-[500px] h-[500px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.05) 0%, transparent 55%)" }} />
+          <div className="absolute bottom-1/3 -left-20 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-magenta) / 0.04) 0%, transparent 55%)" }} />
+          {/* Vertical data streams */}
+          {[20, 40, 60, 80].map((pct, i) => (
+            <div
+              key={pct}
+              className="absolute w-px lab-data-stream"
+              style={{
+                left: `${pct}%`,
+                animationDelay: `${i * 1.5}s`,
+                animationDuration: `${7 + i}s`,
+                background: "linear-gradient(to bottom, transparent, hsl(var(--primary) / 0.06), transparent)",
+                height: "100%",
+              }}
+            />
+          ))}
+        </div>
+
         {/* Hero */}
-        <section className="relative py-20 sm:py-28 px-4 overflow-hidden">
+        <section className="relative py-20 sm:py-28 px-4 overflow-hidden z-10">
           <div className="absolute inset-0 substrate-grid-bg opacity-20" />
           <div className="absolute inset-0 texture-noise" />
           

@@ -358,16 +358,26 @@ export default function Showroom() {
         keywords={['certified discoveries', 'CJPI scored software', 'autonomous discovery marketplace', 'software showroom', 'tiered pricing']}
       />
 
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background relative">
         <PublicNav />
 
-        <div className="container mx-auto px-3 sm:px-4 pt-20">
+        {/* Lab ambient decoration */}
+        <div className="fixed inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 gradient-mesh opacity-60" />
+          <div className="absolute -top-32 left-1/4 w-[600px] h-[600px] rounded-full animate-hero-orb-1" style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.05) 0%, transparent 55%)" }} />
+          <div className="absolute bottom-1/4 -right-20 w-[400px] h-[400px] rounded-full animate-hero-orb-3" style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.04) 0%, transparent 55%)" }} />
+          <div className="absolute inset-x-0 top-0 h-full overflow-hidden">
+            <div className="absolute inset-x-0 h-px lab-scan-line" style={{ animationDuration: "15s" }} />
+          </div>
+        </div>
+
+        <div className="container mx-auto px-3 sm:px-4 pt-20 relative z-10">
           <PublicBreadcrumb />
         </div>
 
         {/* ═══ SUCCESS BANNER ═══ */}
         {showSuccess && (
-          <div className="container mx-auto px-3 sm:px-4 pt-4">
+          <div className="container mx-auto px-3 sm:px-4 pt-4 relative z-10">
             <Alert className="border-emerald-500/30 bg-emerald-500/5">
               <CheckCircle className="h-5 w-5 text-emerald-500" />
               <AlertTitle className="text-emerald-400">Purchase Successful!</AlertTitle>
@@ -379,7 +389,7 @@ export default function Showroom() {
         )}
 
         {/* ═══ HERO ═══ */}
-        <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden">
+        <section className="relative pt-8 sm:pt-10 pb-12 sm:pb-16 px-3 sm:px-4 overflow-hidden z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
           <div className="relative container mx-auto max-w-5xl text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>

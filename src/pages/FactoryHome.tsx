@@ -14,12 +14,13 @@ import { CustomerJourney } from "@/components/home/CustomerJourney";
 import { ShowroomPreview } from "@/components/home/ShowroomPreview";
 import { FactoryGuarantee } from "@/components/home/FactoryGuarantee";
 import { JunkyardBanner } from "@/components/factory/JunkyardBanner";
+import { LabAmbient, ScanLine, Crosshair, MeasureMarkers, StatusIndicator } from "@/components/decorative/LabDecorations";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
 function SectionDivider() {
   return (
-    <div className="relative py-10 sm:py-14">
+    <div className="relative py-10 sm:py-14 lab-section-glow">
       <div className="absolute inset-x-[10%] top-1/2 h-px bg-gradient-to-r from-transparent via-border/50 to-transparent" />
       <div className="absolute inset-x-[20%] top-1/2 translate-y-[1px] h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -51,22 +52,15 @@ export default function FactoryHome() {
       <PublicNav />
       <CmpsblWelcome />
 
-      {/* Ambient mesh background */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 gradient-mesh opacity-80" />
-        <div
-          className="absolute -top-48 -left-48 w-[900px] h-[900px] rounded-full animate-hero-orb-1"
-          style={{ background: "radial-gradient(circle, hsl(var(--primary) / 0.07) 0%, hsl(var(--primary) / 0.02) 35%, transparent 55%)" }}
-        />
-        <div
-          className="absolute top-1/3 -right-20 w-[600px] h-[600px] rounded-full animate-hero-orb-2"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-cyan) / 0.05) 0%, hsl(var(--neon-cyan) / 0.01) 35%, transparent 55%)" }}
-        />
-        <div
-          className="absolute -bottom-48 -right-48 w-[700px] h-[700px] rounded-full animate-hero-orb-3"
-          style={{ background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.06) 0%, hsl(var(--neon-purple) / 0.015) 35%, transparent 55%)" }}
-        />
-      </div>
+      {/* Lab-grade ambient background */}
+      <LabAmbient />
+
+      {/* Technical measure markers — desktop only */}
+      <MeasureMarkers />
+
+      {/* Decorative crosshairs */}
+      <Crosshair className="top-[30%] left-[5%] hidden lg:block" size={100} color="--neon-cyan" />
+      <Crosshair className="top-[60%] right-[8%] hidden lg:block" size={70} color="--neon-purple" />
 
       {/* ═══ HERO ═══ */}
       <HeroMetaSubstrate />
@@ -76,8 +70,6 @@ export default function FactoryHome() {
 
       {/* ═══ THREE PILLARS ═══ */}
       <FactoryPillars />
-
-
 
       <CustomerJourney />
 
