@@ -330,7 +330,7 @@ export default function Showroom() {
     setPurchasing(item.id);
     try {
       openCheckoutRedirect({
-        fn: 'capability-checkout',
+        fn: 'showroom-checkout',
         body: {
           item_id: item.id,
           item_name: item.name,
