@@ -217,14 +217,9 @@ export function HeroMetaSubstrate() {
           
           {/* Left column — Copy */}
           <div className="text-center lg:text-left order-1">
-            {/* CMPSBL Logo */}
-            <FadeIn delay={0.05} className="mb-4 sm:mb-6">
-              <CmpsblWordmark className="text-3xl sm:text-4xl md:text-5xl" />
-            </FadeIn>
-
-            {/* Engine badge */}
-            <FadeIn delay={0.1}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-6 sm:mb-8"
+            {/* Software Refurbishment Center banner */}
+            <FadeIn delay={0.05}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-4 sm:mb-5"
             >
               <Wrench className="w-3 h-3 text-primary" />
               <span className="text-xs font-medium text-muted-foreground tracking-wide">Software Refurbishment Center</span>
@@ -233,16 +228,21 @@ export function HeroMetaSubstrate() {
                 <span className="text-[10px] font-bold text-[hsl(var(--neon-cyan))] uppercase tracking-wider">Open</span>
               </span>
             </FadeIn>
+
+            {/* CMPSBL Logo — main attention grabber */}
+            <FadeIn delay={0.1} className="mb-3 sm:mb-4">
+              <CmpsblWordmark className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl" />
+            </FadeIn>
             
             {/* Headline */}
             <h1 className="tracking-[-0.04em] leading-[0.9]">
               <FadeIn delay={0.15}>
-                <span className="block text-lg sm:text-xl md:text-2xl font-medium text-muted-foreground mb-2 sm:mb-3 tracking-normal">
+                <span className="block text-base sm:text-lg md:text-xl font-medium text-muted-foreground mb-2 sm:mb-3 tracking-normal">
                   Where classic software gets
                 </span>
               </FadeIn>
               <FadeIn delay={0.2}>
-                <span className="block text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-black min-h-[1.15em]">
+                <span className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black min-h-[1.15em]">
                   <TypedText 
                     texts={["ascended.", "rediscovered.", "refurbished.", "certified.", "second chances.", "new features."]}
                     gradientColors={[
@@ -258,16 +258,12 @@ export function HeroMetaSubstrate() {
               </FadeIn>
             </h1>
 
-            {/* Value proposition */}
-            <FadeIn delay={0.3} className="max-w-xl mx-auto lg:mx-0 mb-7 sm:mb-9 mt-6 sm:mt-8">
-              <p className="text-base sm:text-lg text-muted-foreground/80 leading-[1.8]" style={{ hyphens: "none", WebkitHyphens: "none", overflowWrap: "normal", textWrap: "pretty" as any }}>
-                Bring us your code.{' '}
-                <span className="text-foreground/90 font-medium">We analyze it, reimagine the possibilities, and restore first</span>{' '}
-                — only offering replacements as a last resort.{' '}
-                We embrace AI as a tool, not as a foundation.{' '}
-                We don't force you to relearn your software.{' '}
-                <span className="text-foreground/90 font-medium">We make upgrading as&nbsp;easy&nbsp;as&nbsp;possible</span>{' '}
-                using classic development tactics to reinforce your&nbsp;existing&nbsp;systems.
+            {/* Value proposition — tightened */}
+            <FadeIn delay={0.3} className="max-w-xl mx-auto lg:mx-0 mb-7 sm:mb-9 mt-5 sm:mt-6">
+              <p className="text-sm sm:text-base text-muted-foreground/80 leading-relaxed">
+                Bring us your code. We restore first, replace only as a last resort.{' '}
+                <span className="text-foreground/90 font-medium">AI as a tool, not a foundation</span>{' '}
+                — classic development tactics to reinforce what you already have.
               </p>
             </FadeIn>
             
