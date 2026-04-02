@@ -209,7 +209,7 @@ This is not artificial scarcity. Every discovery is a unique collision of primit
   - Stripe supports dynamic pricing via `price_data` in checkout sessions for unique items
   - Each discovery gets a one-time Stripe Price created at discovery time with its CJPI-derived amount
   - On purchase: mark discovery as `retired` in the catalog, generate certificate
-  - Perfect 100s ($11,981): pre-created Stripe Price for the Apex tier
+  - Perfect 100s ($1,952): pre-created Stripe Price for the Apex tier
 
 ---
 
