@@ -7,7 +7,7 @@ import { create } from 'zustand';
 
 export type DecodeMode = 'assistant' | 'support' | 'builder' | 'governor';
 
-export type IdentityRole = 'anonymous' | 'user' | 'creator' | 'architect' | 'governor';
+export type IdentityRole = 'anonymous' | 'user' | 'studio' | 'creator' | 'architect' | 'governor';
 
 export interface DecodeCapability {
   id: string;
