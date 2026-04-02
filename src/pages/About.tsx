@@ -486,7 +486,7 @@ export default function About() {
                 className="rounded-xl border border-border/50 bg-card/60 p-4 sm:p-5 hover:border-primary/25 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
               >
                 <h3 className="text-sm sm:text-base font-bold text-foreground mb-1">{dept.name}</h3>
-                <p className="text-[10px] sm:text-xs text-muted-foreground mb-3 leading-relaxed">{dept.description}</p>
+                <p className="text-xs text-muted-foreground mb-3 leading-relaxed">{dept.description}</p>
                 <div className="space-y-1.5 pt-3 border-t border-border/30">
                   <a
                     href={`mailto:${dept.email}`}
