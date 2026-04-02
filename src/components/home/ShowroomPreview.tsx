@@ -66,9 +66,9 @@ export function ShowroomPreview() {
             Every discovery ships with a unique certificate, structural fingerprint, and retirement seal. One shot to buy. The catalog rotates every 8 hours.
           </p>
           <Button asChild variant="outline" size="lg" className="rounded-xl font-semibold">
-            <Link to="/memory-stream">
+            <Link to="/showroom">
               <Sparkles className="w-4 h-4 mr-2" />
-              Browse the Catalog
+              Browse the Showroom
               <ArrowRight className="w-3.5 h-3.5 ml-2" />
             </Link>
           </Button>
