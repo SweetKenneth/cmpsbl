@@ -87,6 +87,7 @@ export function ExportPhase({ verticalResult }: ExportPhaseProps = {}) {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState<string | null>(null);
   const [exportResult, setExportResult] = useState<{ packId: string; count: number } | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   
   const [showRetirementDialog, setShowRetirementDialog] = useState(false);
   const [exportScope, setExportScope] = useState<'all' | string>('all');
