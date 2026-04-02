@@ -440,59 +440,107 @@ export function IngestPhase() {
         </div>
       </div>
 
-      {/* Drop Zone */}
-      <div
-        onDragOver={e => { e.preventDefault(); setDragOver(true); }}
-        onDragLeave={() => setDragOver(false)}
-        onDrop={handleDrop}
-        className={cn(
-          "border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center transition-all duration-300 cursor-pointer",
-          !canUpload
-            ? "border-destructive/30 bg-destructive/5 opacity-60 pointer-events-none"
-            : dragOver
-              ? "border-primary/60 bg-primary/[0.06] shadow-[0_0_30px_hsl(var(--primary)/0.1)]"
-              : "border-border/30 bg-card/40 backdrop-blur-sm hover:border-primary/30 hover:bg-primary/[0.03]"
-        )}
-        onClick={() => canUpload && fileInputRef.current?.click()}
-      >
-        {!canUpload ? <Lock className="w-8 h-8 mx-auto text-destructive/50 mb-3" /> : <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />}
-        <p className="text-sm sm:text-base text-foreground font-medium">
-          {!canUpload ? 'Upload limit reached for today' : 'Drop source files here'}
-        </p>
-        <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
-          {!canUpload ? 'Upgrade your tier for more daily uploads' : 'All languages accepted — TypeScript, Python, Rust, Go, Verilog, VHDL, SystemVerilog, and any source file'}
-        </p>
-        {canUpload && <p className="mt-3 text-xs text-primary font-mono">click or drag to upload</p>}
-        <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
-      </div>
+      {/* ═══ INPUT MODE TABS ═══ */}
+      <Tabs value={inputMode} onValueChange={v => { setInputMode(v as 'upload' | 'paste'); setParsedNode(null); setRegistered(false); setCapSurface(null); }} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsTrigger value="upload" className="gap-1.5 text-xs">
+            <Upload className="w-3.5 h-3.5" /> Upload Files
+          </TabsTrigger>
+          <TabsTrigger value="paste" className="gap-1.5 text-xs">
+            <ClipboardPaste className="w-3.5 h-3.5" /> Paste Code
+          </TabsTrigger>
+        </TabsList>
 
-      {/* File List */}
-      {files.length > 0 && (
-        <div className="space-y-3">
+        {/* ── Upload Tab ── */}
+        <TabsContent value="upload" className="space-y-3 mt-0">
+          <div
+            onDragOver={e => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={handleDrop}
+            className={cn(
+              "border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center transition-all duration-300 cursor-pointer",
+              !canUpload
+                ? "border-destructive/30 bg-destructive/5 opacity-60 pointer-events-none"
+                : dragOver
+                  ? "border-primary/60 bg-primary/[0.06] shadow-[0_0_30px_hsl(var(--primary)/0.1)]"
+                  : "border-border/30 bg-card/40 backdrop-blur-sm hover:border-primary/30 hover:bg-primary/[0.03]"
+            )}
+            onClick={() => canUpload && fileInputRef.current?.click()}
+          >
+            {!canUpload ? <Lock className="w-8 h-8 mx-auto text-destructive/50 mb-3" /> : <Upload className="w-8 h-8 mx-auto text-muted-foreground mb-3" />}
+            <p className="text-sm sm:text-base text-foreground font-medium">
+              {!canUpload ? 'Upload limit reached for today' : 'Drop source files here'}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1 max-w-md mx-auto">
+              {!canUpload ? 'Upgrade your tier for more daily uploads' : 'All languages accepted — TypeScript, Python, Rust, Go, Verilog, VHDL, SystemVerilog, and any source file'}
+            </p>
+            {canUpload && <p className="mt-3 text-xs text-primary font-mono">click or drag to upload</p>}
+            <input ref={fileInputRef} type="file" multiple className="hidden" onChange={handleFileSelect} />
+          </div>
+
+          {/* File List */}
+          {files.length > 0 && (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs font-mono text-muted-foreground">{files.length} file{files.length !== 1 ? 's' : ''} selected</p>
+                <Button size="sm" onClick={handleParse} disabled={parsing} className="h-10 min-h-[44px] text-xs gap-1.5 px-5">
+                  {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Code2 className="w-4 h-4" />}
+                  Analyze
+                </Button>
+              </div>
+              <div className="grid gap-1 max-h-40 overflow-y-auto">
+                {files.slice(0, 20).map((f, i) => {
+                  const ext = f.name.split('.').pop()?.toLowerCase() || '';
+                  const lang = LANG_MAP[ext];
+                  return (
+                    <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/20 text-xs">
+                      <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
+                      <span className="text-foreground/80 break-words font-mono">{f.name}</span>
+                      {lang && <span className="text-[9px] text-primary/60 font-mono shrink-0">{lang}</span>}
+                      <span className="ml-auto text-muted-foreground shrink-0">{(f.size / 1024).toFixed(1)}KB</span>
+                    </div>
+                  );
+                })}
+                {files.length > 20 && <p className="text-[10px] text-muted-foreground text-center">+{files.length - 20} more</p>}
+              </div>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ── Paste Tab ── */}
+        <TabsContent value="paste" className="space-y-3 mt-0">
+          <div className="space-y-2">
+            <Input
+              placeholder="filename.ts (optional — helps language detection)"
+              value={pasteFilename}
+              onChange={e => setPasteFilename(e.target.value)}
+              className="h-9 text-xs font-mono bg-card/60"
+              disabled={!canUpload}
+            />
+            <Textarea
+              placeholder="Paste your source code here..."
+              value={pastedCode}
+              onChange={e => setPastedCode(e.target.value)}
+              className="min-h-[200px] font-mono text-xs bg-card/60 resize-y"
+              disabled={!canUpload}
+            />
+          </div>
           <div className="flex items-center justify-between gap-3">
-            <p className="text-xs font-mono text-muted-foreground">{files.length} file{files.length !== 1 ? 's' : ''} selected</p>
-            <Button size="sm" onClick={handleParse} disabled={parsing} className="h-10 min-h-[44px] text-xs gap-1.5 px-5">
+            <p className="text-xs font-mono text-muted-foreground">
+              {pastedCode.length > 0 ? `${pastedCode.length.toLocaleString()} chars` : 'Paste code to begin'}
+            </p>
+            <Button
+              size="sm"
+              onClick={handleParse}
+              disabled={parsing || pastedCode.trim().length < 20 || !canUpload}
+              className="h-10 min-h-[44px] text-xs gap-1.5 px-5"
+            >
               {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Code2 className="w-4 h-4" />}
               Analyze
             </Button>
           </div>
-          <div className="grid gap-1 max-h-40 overflow-y-auto">
-            {files.slice(0, 20).map((f, i) => {
-              const ext = f.name.split('.').pop()?.toLowerCase() || '';
-              const lang = LANG_MAP[ext];
-              return (
-                <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/20 text-xs">
-                  <FileCode2 className="w-3 h-3 text-muted-foreground shrink-0" />
-                  <span className="text-foreground/80 break-words font-mono">{f.name}</span>
-                  {lang && <span className="text-[9px] text-primary/60 font-mono shrink-0">{lang}</span>}
-                  <span className="ml-auto text-muted-foreground shrink-0">{(f.size / 1024).toFixed(1)}KB</span>
-                </div>
-              );
-            })}
-            {files.length > 20 && <p className="text-[10px] text-muted-foreground text-center">+{files.length - 20} more</p>}
-          </div>
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
 
       {/* ═══ ORBITAL ASSEMBLY VISUALIZATION ═══ */}
       {(files.length > 0 || parsedNode) && (
