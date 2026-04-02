@@ -1155,6 +1155,98 @@ All colors MUST be HSL.
 .animate-hero-orb-2 { animation: hero-orb-2 33s ease-in-out infinite; will-change: transform; }
 .animate-hero-orb-3 { animation: hero-orb-3 21s ease-in-out infinite; will-change: transform; }
 
+/* ═══ Lab Decoration Animations ═══ */
+
+/* Scanning line — sweeps top to bottom */
+@keyframes lab-scan {
+  0% { top: -2%; opacity: 0; }
+  5% { opacity: 1; }
+  95% { opacity: 1; }
+  100% { top: 102%; opacity: 0; }
+}
+.lab-scan-line {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    hsl(var(--primary) / 0.03) 10%,
+    hsl(var(--neon-cyan) / 0.15) 40%,
+    hsl(var(--primary) / 0.25) 50%,
+    hsl(var(--neon-cyan) / 0.15) 60%,
+    hsl(var(--primary) / 0.03) 90%,
+    transparent 100%
+  );
+  animation: lab-scan 8s ease-in-out infinite;
+  will-change: top;
+}
+
+/* Pulse ring — radiates outward */
+@keyframes lab-pulse {
+  0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+.lab-pulse-ring {
+  animation: lab-pulse 4s ease-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Data stream — vertical flow */
+@keyframes lab-stream {
+  0% { transform: translateY(-100%); opacity: 0; }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.6; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+.lab-data-stream {
+  animation: lab-stream 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Status blink — indicator dot */
+@keyframes lab-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+.lab-status-blink {
+  animation: lab-blink 2s ease-in-out infinite;
+}
+
+/* Crosshair slow rotation */
+@keyframes lab-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.lab-crosshair {
+  animation: lab-rotate 60s linear infinite;
+}
+
+/* Card glow on hover — lab specimen inspection */
+.lab-card-glow {
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.lab-card-glow:hover {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.08), 0 0 40px hsl(var(--neon-cyan) / 0.04);
+  border-color: hsl(var(--primary) / 0.25);
+}
+
+/* Section glow divider — replaces plain borders */
+.lab-section-glow {
+  position: relative;
+}
+.lab-section-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    hsl(var(--primary) / 0.15),
+    hsl(var(--neon-cyan) / 0.2),
+    hsl(var(--primary) / 0.15),
+    transparent
+  );
+}
+
 /* CMPSBL wordmark — per-letter gradient flow */
 @keyframes cmpsblLetterFlow {
   0%, 100% { background-position: 0% 50%; }
