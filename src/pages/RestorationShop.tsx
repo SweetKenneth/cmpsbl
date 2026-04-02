@@ -292,6 +292,14 @@ export default function RestorationShop() {
                   Begin 3-Day Evaluation
                 </Button>
               </div>
+              <div className="text-center pt-2">
+                <Button asChild variant="link" size="sm" className="text-muted-foreground gap-1">
+                  <Link to="/showroom">
+                    <Sparkles className="w-3 h-3" />
+                    Browse certified discoveries in the Showroom
+                  </Link>
+                </Button>
+              </div>
             </div>
           )}
         </div>
