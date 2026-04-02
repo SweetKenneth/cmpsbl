@@ -290,7 +290,7 @@ export function HeroMetaSubstrate() {
               >
                 <Link to="/memory-stream">
                   <Sparkles className="w-4 h-4" />
-                  Browse the Showroom
+                  Browse the Catalog
                 </Link>
               </Button>
             </FadeIn>
