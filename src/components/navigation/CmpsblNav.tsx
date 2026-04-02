@@ -233,7 +233,7 @@ export function CmpsblNav() {
                   <CmpsblLogo size="md" />
                   <div>
                     <div className="text-xl font-bold tracking-tight">CMPSBL</div>
-                    <div className="text-xs text-muted-foreground font-medium">Signal → Silicon</div>
+                    <div className="text-xs text-muted-foreground font-medium">Software Refurbishment Center</div>
                   </div>
                 </motion.div>
               </div>
