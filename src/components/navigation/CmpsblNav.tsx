@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   ArrowRight,
+  Wrench,
   LogOut,
   Command,
   Sparkles,
