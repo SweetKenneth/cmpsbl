@@ -91,12 +91,9 @@ export function generateRestorationReport(
     durationMs: 2000 + Math.floor(Math.random() * 8000),
   }));
 
-  // Generate new capabilities based on primitives used
-  const newCapabilities: CapabilityEntry[] = selectedPrimitives.slice(0, 5).map(p => ({
-    name: `${p.name} Protection`,
-    description: `${p.category}-level hardening applied by ${p.name}. ${p.rationale}`,
-    usageExample: `import { ${p.name.toLowerCase()}Guard } from '@cmpsbl/runtime';\n${p.name.toLowerCase()}Guard.activate();`,
-  }));
+  // Generate capabilities from the registry — ENCODE selects up to 10
+  // matched by source primitives, classified as Active/Passive/Hybrid
+  const newCapabilities = selectCapabilities(selectedPrimitives);
 
   // Convert findings to vulnerability assessment
   const vulnerabilityAssessment: VulnerabilityEntry[] = scanResult.findings.map(f => ({
