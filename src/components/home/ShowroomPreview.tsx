@@ -23,7 +23,7 @@ export function ShowroomPreview() {
         <div className="text-center mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-border/40 bg-card/40 mb-5">
             <Sparkles className="w-3 h-3 text-primary" />
-            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Catalog</span>
+            <span className="text-xs font-medium text-muted-foreground tracking-wide">The Showroom</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground mb-3">
             Every Discovery Has a Price
