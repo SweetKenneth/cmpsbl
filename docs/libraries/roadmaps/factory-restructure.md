@@ -421,17 +421,17 @@ All existing pages remain active at their current URLs:
 - [x] ToS §15 live ✅
 
 ### Phase 2: The Restoration Shop (Week 3–4)
-- [ ] ENCODE+ORACLE+ENGINEER three-primitive scan team implementation
-- [ ] Up-to-20 primitive selection UI with scan team recommendations
-- [ ] DECODE debrief flow (post-Ascension capability walkthrough)
-- [ ] Restoration documentation generator (pipeline details, error codes, test harness config)
-- [ ] Adaptive Limited Rates Engine integration (queue system + capacity management)
-- [ ] Membership tier checkout (Studio $29 / Creator $49 / Architect $79)
+- [x] ENCODE+ORACLE+ENGINEER three-primitive scan team implementation ✅
+- [x] Up-to-20 primitive selection UI with scan team recommendations ✅
+- [x] DECODE debrief flow (post-Ascension capability walkthrough) ✅
+- [x] Restoration documentation generator (pipeline details, error codes, test harness config) ✅
+- [x] Adaptive Limited Rates Engine integration (queue system + capacity management) ✅
+- [x] Membership tier checkout (Studio $29 / Creator $49 / Architect $79) ✅
 
 ### Phase 3: The Economy (Week 5–8)
-- [ ] Graduated CJPI pricing in Stripe ($1–$2/point by tier, $1,952 for perfect 100s)
-- [ ] Certificate generation system (serial number, fingerprint, CJPI score)
-- [ ] Permanent retirement system (purchased = removed from Showroom forever)
+- [x] Graduated CJPI pricing in Stripe ($1–$2/point by tier, $1,952 for perfect 100s) ✅
+- [x] Certificate generation system (serial number, fingerprint, CJPI score) ✅
+- [x] Permanent retirement system (purchased = removed from Showroom forever) ✅
 - [ ] Licensing Engine (Model 17) — developer 70/30 split
 - [ ] Bounty Board (Model 16) — customer-driven discovery
 - [ ] $300 customer acquisition campaign launch
