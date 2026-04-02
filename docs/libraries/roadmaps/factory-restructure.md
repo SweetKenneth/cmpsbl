@@ -45,9 +45,9 @@ Your techs still understand it — because it still IS the underlying software.
 - **Up to 20** primitives per restoration
 
 ### Pillar III — The Craftsmen (Substrate)
-**The Factory Floor · 42 Primitives**
+**The Factory Floor · 40 Primitives**
 
-The 42 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time you turn the key. The factory runs every 8 hours whether anyone is watching or not.
+The 40 specialists who make everything possible. Pure algorithmic code — zero external AI. Deterministic. Auditable. Same output every time you turn the key. The factory runs every 8 hours whether anyone is watching or not.
 
 BRAIN learns everything. DREAM synthesizes while you sleep. SHADOW holds the architecture stable through every change. They never stop.
 
@@ -100,7 +100,7 @@ The initial code scan uses a **three-primitive team** rather than a single scann
 
 **Recommendation:** Use the same three-primitive team for both the **initial diagnostic scan** AND the **Ascension primitive selection**. Rationale:
 - The scan team already understands the code's topology from the diagnostic
-- They have the context needed to recommend which of the 42 primitives will produce the best results
+- They have the context needed to recommend which of the 40 primitives will produce the best results
 - Adding a second team for selection would mean re-analyzing code that's already been mapped
 - ORACLE's prediction models from the scan directly inform which primitives will have the highest impact
 
@@ -137,7 +137,7 @@ Every restored piece of code ships with a **complete technical document** (the "
 4. **Error Codes** — Every error code the restored code can produce, what triggers it, and how to resolve it
 5. **Testing Guide** — Step-by-step instructions using `@cmpsbl/test-harness` to verify every new capability
 6. **CJPI Certificate** — The code's final score, tier, and fingerprint
-7. **Primitive Manifest** — Which of the 42 primitives were involved and their individual contributions
+7. **Primitive Manifest** — Which of the 40 primitives were involved and their individual contributions
 
 ### Testing Integration
 ```
@@ -252,7 +252,7 @@ Every auxiliary node that passes through Ascension gets its computational signat
 
 ### Three Uses for Every Stored Node
 
-1. **Feed Memory Stream** — Scouts discover using production-hardened patterns, not just the original 42 Primitives. The showroom gets more targeted with every restoration.
+1. **Feed Memory Stream** — Scouts discover using production-hardened patterns, not just the original 40 Primitives. The showroom gets more targeted with every restoration.
 2. **Upgrade Ascension** — If a customer's node is stronger than the original, replace it. The factory upgrades itself from the work of its own customers.
 3. **Curate specialty substrates** — Fintech nodes → financial substrate. Healthcare nodes → medical substrate. Never design from scratch again.
 

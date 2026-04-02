@@ -1470,7 +1470,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
     id: "cmpsbl-capabilities",
     number: "19",
     title: "CMPSBL Capabilities",
-    subtitle: "80 Crown Jewels across 42 primitives — the full arsenal",
+    subtitle: "80 Crown Jewels across 40 primitives — the full arsenal",
     icon: <Sparkles className="w-4 h-4" />,
     accentClass: "text-amber-600 border-amber-200 bg-amber-50",
     sections: [
@@ -1584,7 +1584,7 @@ const INVESTOR_DOCS: InvestorDoc[] = [
             ["PHANTOM", "Governance-Gated Covert Ops", "85"],
           ],
         },
-        callout: { label: "The Takeaway", text: "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 42 primitives — each one sealed, governed, and compounding daily. The moat isn't one capability. It's all 80 working together.", variant: "success" },
+        callout: { label: "The Takeaway", text: "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 40 primitives — each one sealed, governed, and compounding daily. The moat isn't one capability. It's all 80 working together.", variant: "success" },
       },
     ],
   },

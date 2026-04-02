@@ -133,6 +133,7 @@ const sections = [
       "No individual user code is copied, redistributed, or exposed — only abstracted architectural patterns and behavioral signatures are retained",
       "The BRAIN Organ's continuous learning processes operate autonomously across all tiers and interaction types",
       "Discoveries, scoring data, and execution traces contribute to the substrate's evolving intelligence baseline",
+      "Raw-tier discoveries available in the Junkyard are non-exclusive, unlimited-copy artifacts with no certificate, no fingerprint, and no retirement protection",
     ],
   },
   {

@@ -10,7 +10,7 @@
 CMPSBL's 42-primitive substrate contains 80 governor-curated Crown Jewel capabilities — the highest-value, most differentiated capabilities across the entire topology. This document highlights the top S-Tier capability from each primitive category, giving investors a complete picture of the substrate's depth.
 
 **Registry Summary:**
-- **42 Primitives** across 4 categories (12 Organs · 12 Layers · 8 Engines · 8 Agents)
+- **40 Primitives** across 4 categories (12 Organs · 12 Layers · 8 Engines · 8 Agents)
 - **80 Crown Jewels** hand-curated by the system governor
 - **~52 Activated** (tier-gated, sealed black-box delivery)
 - **~28 Guarded** (architecture-class, permanently protected IP)
@@ -234,7 +234,7 @@ End-to-end request tracing across all 40 primitives with automatic bottleneck de
 
 ## 8. Key Insight
 
-> "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 42 primitives — each one sealed, governed, and compounding daily through CLM and DREAM. The moat isn't one capability. It's all 80 working together."
+> "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. > "This is not a feature list. This is the deepest capability catalog of any AI infrastructure platform in existence. 80 hand-curated capabilities across 40 primitives — each one sealed, governed, and compounding daily through CLM and DREAM. The moat isn't one capability. It's all 80 working together." — each one sealed, governed, and compounding daily through CLM and DREAM. The moat isn't one capability. It's all 80 working together."
 
 ---
 
