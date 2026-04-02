@@ -30,19 +30,21 @@ export async function saveRestorationSession(params: {
   selectedPrimitives: string[];
   report: RestorationReport;
 }): Promise<string | null> {
+  const row = {
+    fingerprint: params.fingerprint,
+    original_code: params.originalCode,
+    original_language: params.originalLanguage ?? null,
+    scan_result: params.scanResult as unknown as Record<string, unknown>,
+    selected_primitives: params.selectedPrimitives as unknown as Record<string, unknown>,
+    report: params.report as unknown as Record<string, unknown>,
+    cjpi_score: params.report.cjpiCertificate.score,
+    cjpi_tier: params.report.cjpiCertificate.tier,
+    serial_number: params.report.id,
+  };
+
   const { data, error } = await supabase
     .from('restoration_sessions')
-    .insert({
-      fingerprint: params.fingerprint,
-      original_code: params.originalCode,
-      original_language: params.originalLanguage ?? null,
-      scan_result: params.scanResult as unknown as Record<string, unknown>,
-      selected_primitives: params.selectedPrimitives as unknown as Record<string, unknown>,
-      report: params.report as unknown as Record<string, unknown>,
-      cjpi_score: params.report.cjpiCertificate.score,
-      cjpi_tier: params.report.cjpiCertificate.tier,
-      serial_number: params.report.id,
-    })
+    .insert([row] as never[])
     .select('id')
     .single();
 
