@@ -340,7 +340,7 @@ export default function ArchitecturePage() {
                             "text-xs font-medium mb-1 opacity-80",
                             cat.textColor === 'text-muted-foreground' ? 'text-foreground/60' : cat.textColor,
                           )}>{entry.tagline}</p>
-                          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{entry.description}</p>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{entry.description}</p>
                         </div>
                       </div>
                       <ArrowRight className="absolute top-4 right-3 w-3 h-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />

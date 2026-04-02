@@ -4,7 +4,7 @@
  * ENCODE + MEDIC + ENGINEER primitives — no AI in the output.
  */
 
-import { Helmet } from "react-helmet-async";
+import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { PublicNav } from "@/components/PublicNav";
 import { EnhancedFooter } from "@/components/EnhancedFooter";
@@ -104,10 +104,13 @@ const TIERS: Array<{
 export default function Assembly() {
   return (
     <>
-      <Helmet>
-        <title>Code Assembly — CMPSBL® Software Refurbishment Center</title>
-        <meta name="description" content="Full-service code reconstruction, splicing, and component integration. Bring us your broken, fragmented, or incomplete code — we'll piece it back together." />
-      </Helmet>
+      <SEO
+        title="Code Assembly — Software Reconstruction Service | CMPSBL"
+        description="Full-service code reconstruction, splicing, and component integration. Bring us your broken, fragmented, or incomplete code — we piece it back together."
+        canonical="https://cmpsbl.com/assembly"
+        image="https://cmpsbl.com/og/store.jpg"
+        keywords={['code assembly', 'software reconstruction', 'component integration', 'code splicing', 'refurbishment service']}
+      />
 
       <PublicNav />
       <div className="min-h-screen bg-background">

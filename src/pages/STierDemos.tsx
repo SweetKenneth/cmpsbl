@@ -1092,7 +1092,7 @@ export default function STierDemos() {
                     <p className="text-xs text-muted-foreground italic">{demo.subtitle}</p>
                   </CardHeader>
                   <CardContent className="pt-0 relative z-10">
-                    <p className="text-xs text-muted-foreground mb-3 line-clamp-3">{demo.description}</p>
+                    <p className="text-xs text-muted-foreground mb-3">{demo.description}</p>
                     <div className="flex flex-wrap gap-1">
                       {demo.capabilities.slice(0, 3).map(c => (
                         <Badge key={c} variant="secondary" className="text-[10px] h-5">{c}</Badge>
