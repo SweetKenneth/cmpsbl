@@ -10,7 +10,7 @@
  * Hot-swapped Engines (8):
  *   VERITAS  — Hallucination detection & factual grounding
  *   RAMPART  — Prompt injection defense & input sanitization
- *   MERIDIAN — Reasoning chain validation & logic integrity
+ *   SYLLOGISM — Reasoning chain validation & logic integrity
  *   LEXICON  — Tokenizer security & data poisoning detection
  *   CLARITY  — Explainability, attribution & transparency
  *   FULCRUM  — Bias detection & fairness calibration
@@ -19,13 +19,13 @@
  * 
  * Hot-swapped Agents (8):
  *   SKEPTIC  — Adversarial red-team fact checker
- *   ARBITER  — Output consistency & cross-model arbitration
+ *   TRIBUNAL — Output consistency & cross-model arbitration
  *   HERALD   — Alignment drift monitoring
  *   MIMIC    — Sycophancy detection & authenticity enforcement
- *   QUARRY   — Data provenance & training data audit
+ *   LINEAGE  — Data provenance & training data audit
  *   EMBARGO  — Information leakage prevention
- *   CRUCIBLE — Adversarial stress testing & jailbreak detection
- *   WARDEN   — Model supply chain security & dependency audit
+ *   GAUNTLET — Adversarial stress testing & jailbreak detection
+ *   CUSTODIAN — Model supply chain security & dependency audit
  * 
  * © CMPSBL® — All rights reserved.
  */

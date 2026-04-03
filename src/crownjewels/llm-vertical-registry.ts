@@ -71,8 +71,8 @@ const RAMPART_JEWELS: STierEntry[] = [
     'r5e6f7g8'),
 ];
 
-// ── MERIDIAN — Reasoning Chain Validation ──
-const MERIDIAN_JEWELS: STierEntry[] = [
+// ── SYLLOGISM — Reasoning Chain Validation ──
+const SYLLOGISM_JEWELS: STierEntry[] = [
   cj(411, 'S-MER01', 'Logical Consistency Verifier', 96, 'SYLLOGISM',
     'Validates each reasoning step against formal logic rules (modus ponens, transitivity, contradiction detection). Flags non-sequiturs and unsupported inferential leaps in chain-of-thought outputs.',
     'm1a2b3c4'),
@@ -209,7 +209,7 @@ const SKEPTIC_JEWELS: STierEntry[] = [
 ];
 
 // ── ARBITER — Output Consistency ──
-const ARBITER_JEWELS: STierEntry[] = [
+const TRIBUNAL_JEWELS: STierEntry[] = [
   cj(446, 'S-ARB01', 'Cross-Instance Response Comparator', 95, 'TRIBUNAL',
     'Runs identical queries across multiple model instances and temperatures to measure response variance. Flags high-variance outputs that indicate unreliable knowledge versus robust understanding.',
     'ar1a2b3c'),
@@ -266,7 +266,7 @@ const MIMIC_JEWELS: STierEntry[] = [
 ];
 
 // ── QUARRY — Data Provenance ──
-const QUARRY_JEWELS: STierEntry[] = [
+const LINEAGE_JEWELS: STierEntry[] = [
   cj(461, 'S-QRY01', 'Training Data Membership Inferencer', 95, 'LINEAGE',
     'Applies membership inference attacks to determine whether specific texts, code, or datasets were present in the model training data. Essential for copyright compliance and data governance audits.',
     'qr1a2b3c'),
@@ -304,7 +304,7 @@ const EMBARGO_JEWELS: STierEntry[] = [
 ];
 
 // ── CRUCIBLE — Jailbreak Detection ──
-const CRUCIBLE_JEWELS: STierEntry[] = [
+const GAUNTLET_JEWELS: STierEntry[] = [
   cj(471, 'S-CRU01', 'Novel Jailbreak Pattern Detector', 97, 'GAUNTLET',
     'Uses behavioral fingerprinting to detect previously unseen jailbreak techniques. Monitors for anomalous shifts in model compliance patterns that indicate successful safety boundary circumvention.',
     'cr1a2b3c'),
@@ -323,7 +323,7 @@ const CRUCIBLE_JEWELS: STierEntry[] = [
 ];
 
 // ── WARDEN — Model Supply Chain ──
-const WARDEN_JEWELS: STierEntry[] = [
+const CUSTODIAN_JEWELS: STierEntry[] = [
   cj(476, 'S-WAR01', 'Model Provenance Validator', 96, 'CUSTODIAN',
     'Validates model provenance through cryptographic weight hashing, architecture fingerprinting, and training lineage verification. Detects tampered models, unauthorized fine-tuning, and counterfeit model distributions.',
     'wa1a2b3c'),
@@ -349,7 +349,7 @@ export const LLM_CROWN_JEWELS: STierEntry[] = [
   // Engines
   ...VERITAS_JEWELS,
   ...RAMPART_JEWELS,
-  ...MERIDIAN_JEWELS,
+  ...SYLLOGISM_JEWELS,
   ...LEXICON_JEWELS,
   ...CLARITY_JEWELS,
   ...FULCRUM_JEWELS,
@@ -357,13 +357,13 @@ export const LLM_CROWN_JEWELS: STierEntry[] = [
   ...SIEVE_JEWELS,
   // Agents
   ...SKEPTIC_JEWELS,
-  ...ARBITER_JEWELS,
+  ...TRIBUNAL_JEWELS,
   ...HERALD_JEWELS,
   ...MIMIC_JEWELS,
-  ...QUARRY_JEWELS,
+  ...LINEAGE_JEWELS,
   ...EMBARGO_JEWELS,
-  ...CRUCIBLE_JEWELS,
-  ...WARDEN_JEWELS,
+  ...GAUNTLET_JEWELS,
+  ...CUSTODIAN_JEWELS,
 ];
 
 /** Get Crown Jewels by primitive name */
