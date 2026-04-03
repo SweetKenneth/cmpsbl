@@ -998,7 +998,34 @@
 
     <p><strong>Primitive chain:</strong> FAILSAFE → BEACON → ATLAS → MONOLITH → ARCHITECT → ENGINEER → CORTEX → <strong>PRIMITIVE</strong> → HARVEST → SANDBOX → WRAITH → ORACLE → DECODE → TREATY → FORGE → OBSERVER → EVOLUTION → BRAIN → PHANTOM → REFLEX. PRIMITIVE — the foundational execution layer — fired on its own fingerprinting logic. That has never happened in any other run across 12 case studies.</p>
 
-    <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The final case study — and the only one where every finding was immediately remediated in the production codebase. Twelve runs. Twelve targets. IBM, Rapid7, HuggingFace, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic, and finally CMPSBL itself. The substrate found two CRITICAL gaps in its own fingerprinting system and hardened them. It doesn't know whose code it's looking at. It just sees the math.</p>
+    <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The first of four self-referential case studies.</p>
+
+    <!-- ── Case Study 13 ── -->
+    <h3>5.14 Case Study 13: CMPSBL decode-audit.ts</h3>
+    <p><strong>Subject:</strong> <code>src/substrate/decode-audit.ts</code> — the DECODE audit logging system. Serial: CMPSBL-MNJEX0UY-4RGQ · Fingerprint: 91ac14dd4706312f.</p>
+    <p><strong>Classification:</strong> TypeScript · 91 lines · Cyclomatic complexity 27 · No CRITICAL findings.</p>
+    <p><strong>Findings:</strong> Three warnings: synchronous-only architecture, no test coverage, cyclomatic complexity 27. <code>Math.random()</code> used for audit entry IDs — replaced with <code>crypto.randomUUID()</code>.</p>
+    <p><strong>Capabilities:</strong> Self-Healing State Machine, Circuit Breaker Mesh. <strong>Result:</strong> CJPI 100 (APEX).</p>
+
+    <!-- ── Case Study 14 ── -->
+    <h3>5.15 Case Study 14: CMPSBL memory-lineage.ts</h3>
+    <p><strong>Subject:</strong> <code>src/substrate/memory-lineage.ts</code> — Memory Stream lineage registry. Serial: CMPSBL-MNJEYCOS-F1UO · Fingerprint: 7bc9ab831fe3ce53.</p>
+    <p><strong>Classification:</strong> TypeScript · 66 lines · No CRITICAL findings.</p>
+    <div class="highlight-box">
+      <p><strong>Key Finding:</strong> Weak randomness (<code>Math.random()</code>) in lineage record IDs — predictable IDs could allow ancestry forgery. Replaced with <code>crypto.randomUUID()</code>.</p>
+    </div>
+    <p><strong>Capabilities:</strong> Structural Drift Detector, Adaptive Load Router. <strong>Result:</strong> CJPI 100 (APEX).</p>
+
+    <!-- ── Case Study 15 ── -->
+    <h3>5.16 Case Study 15: CMPSBL substrate-metrics.ts</h3>
+    <p><strong>Subject:</strong> <code>src/substrate/substrate-metrics.ts</code> — runtime metrics store for all 40 Primitives. Serial: CMPSBL-MNJF01GS-I1XH · Fingerprint: 5fe824a3da09e5d2.</p>
+    <p><strong>Classification:</strong> TypeScript · 150 lines · No CRITICAL findings.</p>
+    <p><strong>Findings:</strong> Synchronous-only architecture, no test coverage. The weak randomness flag was a <strong>false positive</strong> — source verification confirmed no <code>Math.random()</code> exists in this file.</p>
+    <p><strong>Capabilities:</strong> Live Threat Neutralizer, Autonomous Patch Engine. <strong>Result:</strong> CJPI 100 (APEX).</p>
+
+    <blockquote>
+      <strong>Self-Audit Summary:</strong> Four CMPSBL internal files analyzed. Two CRITICAL findings + two weak randomness findings remediated. One false positive documented. Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
+    </blockquote>
 
     <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
     <h2 class="section-heading">6. The Sealed Runtime™ Architecture</h2>
