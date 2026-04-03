@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
-import { generateRefurbishedCode, generateLicense } from "@/lib/factory/generate-refurbished-code";
+import { generateRefurbishedCode, generateLicense, getRefurbishedExtension } from "@/lib/factory/generate-refurbished-code";
 import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
@@ -60,6 +60,7 @@ export default function RestorationShop() {
   const [queueEntry, setQueueEntry] = useState<QueueEntry | null>(null);
   const [selectedPrims, setSelectedPrims] = useState<PrimitiveRecommendation[]>([]);
   const [refurbishedCode, setRefurbishedCode] = useState<string>('');
+  const [detectedLang, setDetectedLang] = useState<string>('TypeScript');
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
   const [processingPrimitives, setProcessingPrimitives] = useState<ProcessingPrimitive[]>([]);
@@ -93,6 +94,7 @@ export default function RestorationShop() {
     try {
       const result = await runScanTeam(code, fileName ?? undefined);
       setScanResult(result);
+      setDetectedLang(result.metrics.language || 'TypeScript');
       setPhase('diagnostic');
     } finally {
       setIsScanning(false);
@@ -126,7 +128,7 @@ export default function RestorationShop() {
     setReport(restorationReport);
 
     const fingerprint = restorationReport.cjpiCertificate.fingerprint;
-    const hardened = generateRefurbishedCode(code, selected, fingerprint);
+    const hardened = generateRefurbishedCode(code, selected, fingerprint, undefined, fileName ?? undefined);
     setRefurbishedCode(hardened);
 
     saveRestorationSession({
@@ -168,8 +170,9 @@ export default function RestorationShop() {
       zip.file('LICENSE.txt', generateLicense(report.id, fingerprint));
 
       // ═══ Dual-Layer Source ═══
+      const refExt = getRefurbishedExtension(detectedLang);
       zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file('src/refurbished-source.ts', refurbishedCode || '// Refurbished code not generated');
+      zip.file(`src/refurbished-source${refExt}`, refurbishedCode || '// Refurbished code not generated');
 
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
@@ -243,7 +246,7 @@ export default function RestorationShop() {
         `## Contents`,
         ``,
         `- \`src/original-source.txt\` — Your original code`,
-        `- \`src/refurbished-source.ts\` — Hardened code with primitive guards`,
+        `- \`src/refurbished-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
         `- \`restoration-report.json\` — Full machine-readable report`,
         `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
         `- \`LICENSE.txt\` — Usage license`,
