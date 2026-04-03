@@ -30,6 +30,15 @@ export const DOMAIN_CONFIG = {
     restricted: false,
     requiresAuth: false,
   },
+  /** Vertical substrate subdomains — each is a full 40-primitive instance */
+  verticals: {
+    security: 'security.cmpsbl.com',
+    health: 'health.cmpsbl.com',
+    fintech: 'fintech.cmpsbl.com',
+    legal: 'legal.cmpsbl.com',
+    gaming: 'gaming.cmpsbl.com',
+    education: 'education.cmpsbl.com',
+  },
 } as const;
 
 export const COPYRIGHT_NOTICE = {
