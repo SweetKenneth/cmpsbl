@@ -702,6 +702,12 @@ For licensing inquiries: founder@cmpsbl.com
 
 ---
 
+## Disclaimer
+
+The findings presented in this paper are the product of deterministic structural analysis performed by the Ascension™ engine. While every effort has been made to verify findings against actual source code — including documenting false positives where they occurred (see Case Study 15) — automated analysis of any kind can produce results that require further investigation. The case studies involving third-party software (IBM, Rapid7, Hugging Face, OpenSSL, ArduPilot, QuantLib, Google, Meta, and Anthropic) describe structural patterns identified through primitive collision and corroborated by publicly available evidence (GitHub issues, CVE records, and documented behavior). These findings do not constitute security advisories and should not be interpreted as vulnerability disclosures. Remediation decisions for any codebase remain the responsibility of that codebase's maintainers. To the best of our knowledge, all findings, serial numbers, fingerprints, and citations presented here are verifiable and accurate as of the date of publication.
+
+---
+
 © 2026 CMPSBL®. All rights reserved.  
 CMPSBL® is a registered trademark of PromptFluid™.  
 Ascension™, Sealed Runtime™, Memory Stream™, Discovery Engine™, Mini-Runtime Engine™, Crown Jewel Pipeline Index™ (CJPI™), Crown Jewels™, CLM™, Vertical Substrates™, CMPSBL LLM™, CMPSBL Cyber™, CMPSBL Quantum™, and CMPSBL Robotics™ are trademarks of PromptFluid™.
