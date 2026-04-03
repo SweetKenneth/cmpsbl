@@ -565,12 +565,55 @@ const ORTOOLS_CAPABILITIES = [
   { name: 'Policy Enforcement Layer', type: 'Hybrid' },
 ];
 
+/* ───────── PyTorch Data ───────── */
+
+const PYTORCH_VULNERABILITIES = [
+  { severity: 'critical' as const, title: 'Unhandled async rejections', status: 'hardened', details: 'GPU operations are async by default — CUDA backend failures can return control to Python without propagating errors, causing silent failures during training and inference affecting every AI model built on PyTorch.' },
+  { severity: 'warning' as const, title: 'High cyclomatic complexity (984)', status: 'mitigated', details: 'Extreme branching across 200+ neural network operation functions in a single 6,951-line file.' },
+  { severity: 'warning' as const, title: 'Deprecated API usage (28+ sites)', status: 'mitigated', details: 'dropout2d, dropout3d, upsample, upsample_nearest, upsample_bilinear all deprecated with explicit warnings. Structural backward-compatibility debt.' },
+  { severity: 'warning' as const, title: 'CVE-2022-45907 intersection (CVSS 9.8)', status: 'mitigated', details: 'Deprecated functions retain eval-based code via torch.jit.annotations.parse_type_line — confirmed arbitrary code execution vector. Incomplete mitigation documented in GitHub #151233 (Apr 2025).' },
+  { severity: 'warning' as const, title: 'High dependency coupling (80 imports)', status: 'mitigated', details: '80 imports detected — high coupling increases blast radius of dependency failures across the neural network stack.' },
+  { severity: 'warning' as const, title: 'Monolithic file (6,951 lines)', status: 'mitigated', details: 'Entire functional API for all neural network operations in a single file. The largest artifact in the case study suite.' },
+  { severity: 'warning' as const, title: '10 technical debt markers found', status: 'mitigated', details: '10 TODO/FIXME/HACK/XXX markers indicate deferred work in production-critical mathematical operations.' },
+  { severity: 'warning' as const, title: 'Insecure HTTP protocol usage', status: 'mitigated', details: 'Non-HTTPS URLs detected. Data transmitted in plaintext vulnerable to interception.' },
+  { severity: 'info' as const, title: '10 classes in single file', status: 'monitor', details: 'Multiple classes in one file suggest God Object patterns. ENGINEER recommends decomposition.' },
+  { severity: 'info' as const, title: 'No fallback mechanisms detected', status: 'monitor', details: 'Single-path execution in mathematical operations. Failure halts the entire training pipeline.' },
+  { severity: 'info' as const, title: 'No dependency failure fallbacks', status: 'monitor', details: '80 dependencies with no graceful degradation. Any failure cascades through the neural network stack.' },
+  { severity: 'info' as const, title: 'Silent CUDA hang patterns (GitHub #178491)', status: 'monitor', details: 'Active high-priority issue (March 2026): async GPU errors never propagated under VRAM pressure on modern hardware.' },
+];
+
+const PYTORCH_PRIMITIVES = [
+  { name: 'FULCRUM', type: 'Engine' }, { name: 'TREATY', type: 'Layer' },
+  { name: 'ECHO', type: 'Organ' }, { name: 'FORGE', type: 'Layer' },
+  { name: 'SYLLOGISM', type: 'Engine' }, { name: 'GOVERNANCE', type: 'Layer' },
+  { name: 'MIMIC', type: 'Agent' }, { name: 'CUSTODIAN', type: 'Agent' },
+  { name: 'BRAIN', type: 'Organ' }, { name: 'LINGUA', type: 'Organ' },
+  { name: 'SANDBOX', type: 'Layer' }, { name: 'IDENTITY', type: 'Organ' },
+  { name: 'CONSCIENCE', type: 'Organ' }, { name: 'EVOLUTION', type: 'Layer' },
+  { name: 'TETHER', type: 'Engine' }, { name: 'VERITAS', type: 'Engine' },
+  { name: 'RAMPART', type: 'Engine' }, { name: 'HERALD', type: 'Agent' },
+  { name: 'EMBARGO', type: 'Agent' }, { name: 'GAUNTLET', type: 'Agent' },
+];
+
+const PYTORCH_CAPABILITIES = [
+  { name: 'Zero-Trust Perimeter Enforcer', type: 'Active' },
+  { name: 'Autonomous Patch Engine', type: 'Active' },
+  { name: 'Behavioral Audit Trail', type: 'Passive' },
+  { name: 'Cognitive Load Profiler', type: 'Passive' },
+  { name: 'Version Reconciliation Engine', type: 'Hybrid' },
+  { name: 'Compliance Continuous Validator', type: 'Hybrid' },
+  { name: 'Policy Enforcement Layer', type: 'Hybrid' },
+  { name: 'Zero-Downtime Migrator', type: 'Hybrid' },
+  { name: 'Tachyonic Causality Analyzer', type: 'Passive' },
+  { name: 'Intelligent Retry Fabric', type: 'Active' },
+];
+
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '9', label: 'Case Studies', icon: FileCode },
-  { value: '7', label: 'Verticals Proven', icon: Layers },
-  { value: '180', label: 'Primitives Applied', icon: Shield },
+  { value: '10', label: 'Case Studies', icon: FileCode },
+  { value: '8', label: 'Verticals Proven', icon: Layers },
+  { value: '200', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
@@ -585,6 +628,7 @@ const HERO_SUBJECTS = [
   { name: 'ArduPilot autotest', org: 'ArduPilot', vertical: 'Robotics' },
   { name: 'QuantLib Gaussian 1D', org: 'QuantLib', vertical: 'FinTech' },
   { name: 'OR-Tools CP-SAT', org: 'Google', vertical: 'Operations Research' },
+  { name: 'PyTorch functional', org: 'Meta', vertical: 'AI / Deep Learning' },
 ];
 
 /* ───────── Main Page ───────── */
@@ -603,6 +647,7 @@ export default function CaseStudies() {
   const [showAllArduPrimitives, setShowAllArduPrimitives] = useState(false);
   const [showAllQuantLibPrimitives, setShowAllQuantLibPrimitives] = useState(false);
   const [showAllOrtoolsPrimitives, setShowAllOrtoolsPrimitives] = useState(false);
+  const [showAllPytorchPrimitives, setShowAllPytorchPrimitives] = useState(false);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
@@ -613,7 +658,7 @@ export default function CaseStudies() {
     <>
       <Helmet>
         <title>Case Studies — CMPSBL® Ascension Results</title>
-        <meta name="description" content="Real-world case studies demonstrating CMPSBL® Ascension refurbishment results on software from IBM, Rapid7, Hugging Face, OpenAI, and PythonRobotics. See before-and-after analysis with downloadable artifacts." />
+        <meta name="description" content="10 verified case studies: PyTorch, Google OR-Tools, ArduPilot, IBM Qiskit, Metasploit, Hugging Face, OpenSSL, QuantLib, and more — structurally analyzed and hardened by CMPSBL® Ascension without AI." />
         <link rel="canonical" href="https://cmpsbl.com/case-studies" />
       </Helmet>
 
@@ -2272,6 +2317,190 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+        {/* ══════════════ CASE STUDY #10: PyTorch ══════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mt-20">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-1 rounded">CASE STUDY #10</span>
+              <span className="text-xs font-mono bg-muted text-muted-foreground px-2 py-1 rounded">AI / DEEP LEARNING · LLM™ VERTICAL</span>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">Case Study #10: PyTorch torch.nn.functional</h2>
+              <p className="text-muted-foreground mt-1 text-sm font-mono">Serial: CMPSBL-MNJDRL4I-0DD8 · Fingerprint: 52e655af798050c8</p>
+            </div>
+
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <p className="text-muted-foreground leading-relaxed">
+                <code className="text-primary">functional.py</code> — the core functional interface for{' '}
+                <a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                  PyTorch
+                </a>{' '}
+                — Meta&apos;s open-source deep learning framework with{' '}
+                <strong className="text-foreground">99,000+ GitHub stars</strong>, and the mathematical foundation
+                underlying virtually every major AI model in production. This single file provides the functional API for
+                all neural network operations — convolutions, activations, normalization, loss functions, attention mechanisms,
+                and dropout — used by researchers and engineers at Meta, Google DeepMind, OpenAI, NVIDIA, and every major AI lab worldwide.
+                6,951 lines · Python · BSD-3-Clause · Copyright Meta Platforms, Inc.
+              </p>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: 'Lines', value: '6,951' },
+                { label: 'Complexity', value: '984' },
+                { label: 'Imports', value: '80' },
+                { label: 'CJPI', value: '100 APEX' },
+              ].map((m) => (
+                <div key={m.label} className="bg-muted/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{m.value}</p>
+                  <p className="text-xs text-muted-foreground">{m.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Critical Finding Highlight */}
+            <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+              <h3 className="text-sm font-bold text-destructive mb-2 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" /> CRITICAL FINDING
+              </h3>
+              <p className="text-sm text-foreground leading-relaxed">
+                The substrate identified unhandled asynchronous rejection patterns in PyTorch&apos;s core neural network operations library —
+                the mathematical foundation underlying every major AI model in production. In PyTorch&apos;s async execution model, GPU backend
+                failures can return control to the Python frontend without propagating errors, creating silent failure modes during model
+                training and inference that are invisible to conventional testing. This intersects with a CVE-confirmed code injection vector
+                (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-45907" target="_blank" rel="noopener noreferrer" className="text-primary underline">CVE-2022-45907</a>,
+                CVSS 9.8) in deprecated API surfaces that retain <code className="text-primary">eval</code>-based execution paths.
+              </p>
+            </div>
+
+            {/* Findings */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-primary" /> Structural Findings ({PYTORCH_VULNERABILITIES.length})
+              </h3>
+              <div className="space-y-2">
+                {PYTORCH_VULNERABILITIES.map((v, i) => (
+                  <div key={i} className="flex items-start gap-3 bg-muted/30 rounded-lg p-3">
+                    <span className={`mt-0.5 text-xs font-mono px-1.5 py-0.5 rounded ${v.severity === 'critical' ? 'bg-destructive/20 text-destructive' : v.severity === 'warning' ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.severity.toUpperCase()}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground">{v.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{v.details}</p>
+                    </div>
+                    <span className={`text-xs font-mono px-1.5 py-0.5 rounded ${v.status === 'hardened' ? 'bg-destructive/10 text-destructive' : v.status === 'mitigated' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Primitives */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" /> Primitives Applied ({PYTORCH_PRIMITIVES.length})
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {(showAllPytorchPrimitives ? PYTORCH_PRIMITIVES : PYTORCH_PRIMITIVES.slice(0, 8)).map((p, i) => (
+                  <span key={i} className="text-xs font-mono bg-muted px-2 py-1 rounded text-foreground">
+                    {p.name} <span className="text-muted-foreground">({p.type})</span>
+                  </span>
+                ))}
+              </div>
+              {PYTORCH_PRIMITIVES.length > 8 && (
+                <button
+                  className="text-xs text-primary mt-2 flex items-center hover:underline"
+                  onClick={() => setShowAllPytorchPrimitives(!showAllPytorchPrimitives)}
+                >
+                  {showAllPytorchPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all {PYTORCH_PRIMITIVES.length} primitives</>}
+                </button>
+              )}
+            </div>
+
+            {/* Capabilities */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" /> Capabilities Unlocked ({PYTORCH_CAPABILITIES.length})
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {PYTORCH_CAPABILITIES.map((c, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-muted/30 rounded-lg p-2.5">
+                    <span className="text-xs font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">{c.type}</span>
+                    <span className="text-sm text-foreground">{c.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Key Context */}
+            <div className="bg-muted/30 rounded-lg p-4 border border-border">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Why This Matters</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>First <strong className="text-foreground">Meta-authored</strong> code to pass through the Ascension™ pipeline</li>
+                <li>First <strong className="text-foreground">AI / Deep Learning vertical</strong> entry — the substrate analyzing the substrate&apos;s own infrastructure class</li>
+                <li>The <strong className="text-foreground">single largest and most complex artifact</strong> in the case study suite: 6,951 lines, cyclomatic complexity 984</li>
+                <li><strong className="text-foreground">CVE-2022-45907</strong> (CVSS 9.8 Critical): deprecated functions retain <code className="text-primary">eval</code>-based code injection paths via <code className="text-primary">torch.jit.annotations.parse_type_line</code>. Incomplete mitigation confirmed April 2025</li>
+                <li>Silent CUDA failures affect <strong className="text-foreground">every AI model</strong> built on PyTorch — from GPT to Stable Diffusion to Meta&apos;s own LLaMA</li>
+              </ul>
+            </div>
+
+            {/* Downloads + Refs */}
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Artifacts
+                </h3>
+                <div className="space-y-2">
+                  <a
+                    href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <FileCode className="w-4 h-4" /> View Original Source ↗
+                  </a>
+                  <a
+                    href="/downloads/case-studies/pytorch-ascended-CMPSBL-MNJDRL4I-0DD8.zip"
+                    download
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Download className="w-4 h-4" /> Download Ascended Artifact (.zip)
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'PyTorch Repository (99K+ ★)', url: 'https://github.com/pytorch/pytorch' },
+                    { label: 'torch.nn.functional Source', url: 'https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py' },
+                    { label: 'CVE-2022-45907 (CVSS 9.8)', url: 'https://nvd.nist.gov/vuln/detail/CVE-2022-45907' },
+                    { label: 'Incomplete Mitigation (GitHub #151233)', url: 'https://github.com/pytorch/pytorch/issues/151233' },
+                    { label: 'Silent CUDA Hang (GitHub #178491)', url: 'https://github.com/pytorch/pytorch/issues/178491' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
@@ -2282,7 +2511,7 @@ export default function CaseStudies() {
           { question: 'How long does Ascension take?', answer: 'A typical file processes through the full 20-primitive pipeline in approximately 10 seconds.' },
           { question: 'Does Ascension use AI?', answer: 'No. The Ascension pipeline is purely algorithmic — deterministic pattern matching, structural analysis, and primitive guard injection. Zero external AI calls.' },
           { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, Quantum, or LLM.' },
-          { question: 'What software has been tested?', answer: 'Case studies include code from Google OR-Tools, ArduPilot, IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, OpenSSL TLS 1.3, QuantLib, and PythonRobotics — all scored CJPI 98+ with multiple achieving Apex (100).' },
+          { question: 'What software has been tested?', answer: 'Case studies include code from PyTorch (Meta), Google OR-Tools, ArduPilot, IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, OpenSSL TLS 1.3, QuantLib, and PythonRobotics — all scored CJPI 98+ with multiple achieving Apex (100).' },
         ]}
       />
       <EnhancedFooter />
