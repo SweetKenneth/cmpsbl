@@ -150,7 +150,7 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
   // ═══ LLM VERTICAL (llm.cmpsbl.com) — 8 Engines ═══
   { name: 'VERITAS',   context: 'llm-engine', vertical: 'llm', role: 'engine' },
   { name: 'RAMPART',   context: 'llm-engine', vertical: 'llm', role: 'engine' },
-  { name: 'MERIDIAN',  context: 'llm-engine', vertical: 'llm', role: 'engine' },
+  { name: 'SYLLOGISM', context: 'llm-engine', vertical: 'llm', role: 'engine' },
   { name: 'LEXICON',   context: 'llm-engine', vertical: 'llm', role: 'engine' },
   { name: 'CLARITY',   context: 'llm-engine', vertical: 'llm', role: 'engine' },
   { name: 'FULCRUM',   context: 'llm-engine', vertical: 'llm', role: 'engine' },
@@ -159,13 +159,13 @@ export const GLOBAL_PRIMITIVE_NAMES: PrimitiveNameEntry[] = [
 
   // ═══ LLM VERTICAL (llm.cmpsbl.com) — 8 Agents ═══
   { name: 'SKEPTIC',   context: 'llm-agent', vertical: 'llm', role: 'agent' },
-  { name: 'ARBITER',   context: 'llm-agent', vertical: 'llm', role: 'agent' },
+  { name: 'TRIBUNAL',  context: 'llm-agent', vertical: 'llm', role: 'agent' },
   { name: 'HERALD',    context: 'llm-agent', vertical: 'llm', role: 'agent' },
   { name: 'MIMIC',     context: 'llm-agent', vertical: 'llm', role: 'agent' },
-  { name: 'QUARRY',    context: 'llm-agent', vertical: 'llm', role: 'agent' },
+  { name: 'LINEAGE',   context: 'llm-agent', vertical: 'llm', role: 'agent' },
   { name: 'EMBARGO',   context: 'llm-agent', vertical: 'llm', role: 'agent' },
-  { name: 'CRUCIBLE',  context: 'llm-agent', vertical: 'llm', role: 'agent' },
-  { name: 'WARDEN',    context: 'llm-agent', vertical: 'llm', role: 'agent' },
+  { name: 'GAUNTLET',  context: 'llm-agent', vertical: 'llm', role: 'agent' },
+  { name: 'CUSTODIAN', context: 'llm-agent', vertical: 'llm', role: 'agent' },
 ];
 
 /** Mutable set of all reserved primitive names (case-insensitive lookup) */
