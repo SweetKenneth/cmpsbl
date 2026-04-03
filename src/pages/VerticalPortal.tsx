@@ -56,6 +56,17 @@ const STATIC_VERTICALS = [
     capabilityCount: '85+',
     status: 'Active' as const,
   },
+  {
+    id: 'llm',
+    name: 'CMPSBL LLM™',
+    tagline: 'Cognitive LLM Infrastructure — Models Break Here, Not in Production',
+    url: 'https://llm.cmpsbl.com',
+    icon: Brain,
+    accentColor: 'hsl(160 90% 45%)',
+    primitiveCount: 16,
+    capabilityCount: '100+',
+    status: 'Active' as const,
+  },
 ];
 
 /** Merge static + dynamic verticals */
