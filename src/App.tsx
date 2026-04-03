@@ -8,6 +8,15 @@ import { installProductionLogGuard } from "@/lib/system/productionLogGuard";
 
 // Install production log guard before anything else logs
 installProductionLogGuard();
+
+// Redirect cmpsbl-com.lovable.app → cmpsbl.com (staging URL → production domain)
+if (
+  typeof window !== 'undefined' &&
+  window.location.hostname === 'cmpsbl-com.lovable.app' &&
+  !import.meta.env.DEV
+) {
+  window.location.replace(`https://cmpsbl.com${window.location.pathname}${window.location.search}${window.location.hash}`);
+}
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState, lazy, Suspense, useRef } from "react";
 
