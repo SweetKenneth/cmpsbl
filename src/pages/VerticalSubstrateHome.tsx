@@ -129,7 +129,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <section className="max-w-6xl mx-auto px-4 py-16">
           <h2 className="text-2xl font-bold mb-2">Engines</h2>
           <p className="text-muted-foreground mb-8">
-            8 domain-specific engines hot-swapped for cybersecurity operations
+            8 domain-specific engines hot-swapped for {verticalKey} operations
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {engines.map((engine) => (
