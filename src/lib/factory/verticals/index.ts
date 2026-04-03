@@ -12,6 +12,11 @@ export {
   getCyberSecurityEngines,
   getCyberSecurityAgents,
   getAllCyberCapabilities,
+  getCyberCrownJewels,
+  getCyberPrimitiveCrownJewels,
+  getCyberCrownJewelSummary,
+  getCyberCrownJewelCount,
+  getCyberCrownJewelCapabilities,
 } from './cybersecurity';
 
 export {
