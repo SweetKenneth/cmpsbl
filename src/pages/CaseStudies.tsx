@@ -434,6 +434,56 @@ function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRu
   );
 }
 
+/* ───────── ArduPilot Data ───────── */
+
+const ARDUPILOT_VULNERABILITIES = [
+  { severity: 'critical', title: 'Dynamic code execution vulnerability', status: 'hardened', details: 'eval(), Function(), or exec() detected — injection vector for arbitrary code execution.' },
+  { severity: 'warning', title: 'High cyclomatic complexity (2,442)', status: 'mitigated', details: 'Complexity score of 2,442 indicates too many branching paths. Hard to test and maintain.' },
+  { severity: 'warning', title: 'Deep nesting detected (12 levels)', status: 'mitigated', details: 'Excessive nesting reduces readability and increases bug probability.' },
+  { severity: 'warning', title: '32 technical debt markers found', status: 'mitigated', details: '32 TODO/FIXME/HACK/XXX markers indicate deferred work. ORACLE estimates compounding architectural risk.' },
+  { severity: 'warning', title: 'Nested loop detected — O(n²) risk', status: 'mitigated', details: 'ORACLE predicts exponential slowdown under scale. Quadratic complexity compounds with data growth.' },
+  { severity: 'warning', title: 'High dependency coupling (185 imports)', status: 'mitigated', details: '185 imports detected — high coupling increases blast radius of dependency failures.' },
+  { severity: 'warning', title: 'Monolithic file (15,869 lines)', status: 'mitigated', details: '15,869 lines in a single file. ENGINEER recommends decomposition to reduce cognitive load.' },
+  { severity: 'info', title: '85 classes in single file', status: 'monitor', details: 'Multiple classes in one file suggest God Object patterns. ENGINEER recommends single-class files.' },
+  { severity: 'warning', title: 'No graceful shutdown handler', status: 'mitigated', details: 'Server starts without SIGTERM/SIGINT handling. Abrupt shutdowns may corrupt in-flight operations.' },
+];
+
+const ARDUPILOT_PRIMITIVES = [
+  { name: 'LIDAR', category: 'Engine', contribution: 'Spatial perception and 3D point cloud mapping' },
+  { name: 'VECTOR', category: 'Engine', contribution: 'Navigation, pathfinding, and SLAM integration' },
+  { name: 'SWARM', category: 'Agent', contribution: 'Multi-robot coordination and fleet management' },
+  { name: 'WELDER', category: 'Agent', contribution: 'Assembly operations and joining processes' },
+  { name: 'FABRICATOR', category: 'Engine', contribution: 'Hardware fabrication and component lifecycle' },
+  { name: 'INSPECTOR', category: 'Agent', contribution: 'Quality inspection and defect detection' },
+  { name: 'KINETIC', category: 'Engine', contribution: 'Motion planning and trajectory optimization' },
+  { name: 'FLUX', category: 'Engine', contribution: 'Power management and energy distribution' },
+  { name: 'GRIPPER', category: 'Agent', contribution: 'Manipulation and adaptive grasp planning' },
+  { name: 'GUARDIAN', category: 'Agent', contribution: 'Safety monitoring and collision avoidance' },
+  { name: 'CONSCIENCE', category: 'Organ', contribution: 'Ethical decision boundaries' },
+  { name: 'LINGUA', category: 'Organ', contribution: 'Structured language interpretation' },
+  { name: 'SHADOW', category: 'Layer', contribution: 'Shadow testing and canary analysis' },
+  { name: 'BRAIN', category: 'Organ', contribution: 'Continuous learning patterns' },
+  { name: 'HARVEST', category: 'Organ', contribution: 'Dead code identification and pruning' },
+  { name: 'SIMULATE', category: 'Layer', contribution: 'Safe testing of architectural changes' },
+  { name: 'ECHO', category: 'Organ', contribution: 'Structured echo patterns for logging' },
+  { name: 'DEFENSE', category: 'Layer', contribution: 'Dynamic code execution shielding' },
+  { name: 'EVOLUTION', category: 'Layer', contribution: 'Technical debt resolution' },
+  { name: 'ORACLE', category: 'Layer', contribution: 'Predictive failure analysis' },
+];
+
+const ARDUPILOT_CAPABILITIES = [
+  'Chaos Pen Test Engine',
+  'Quantum Error Correction Engine',
+  'Silent Regression Scanner',
+  'Cognitive Load Profiler',
+  'Canary Deployment Gate',
+  'Rate Limit Intelligence',
+  'Dark Web Intelligence Monitor',
+  'Sandbox Escalation Guard',
+  'Predictive Failure Shield',
+  'Intent Disambiguation Engine',
+];
+
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
