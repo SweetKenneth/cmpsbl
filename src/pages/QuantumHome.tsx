@@ -72,6 +72,7 @@ export default function QuantumHome() {
       </Helmet>
 
       <VerticalReturnBanner verticalName="CMPSBL QUANTUM™" accentColor="hsl(270 90% 60%)" />
+      <PublicNav />
 
       <div className="min-h-screen" style={{ background: 'hsl(260 30% 4%)' }}>
         {/* Hero */}
