@@ -11,6 +11,7 @@ import { PinGate } from "@/components/gates/PinGate";
 const AgentForgeDashboard = lazy(() => import("@/pages/AgentForgePage"));
 const DiscoveredPipelines = lazy(() => import("@/pages/DiscoveredPipelines"));
 const DomainAwareHome = lazy(() => import("@/components/routing/DomainAwareHome"));
+const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const FeedDreamEater = lazy(() => import("@/pages/FeedDreamEater"));
 const DreamArchaeology = lazy(() => import("@/pages/dream-eater/DreamArchaeology"));
 const DreamArtifacts = lazy(() => import("@/pages/dream-eater/DreamArtifacts"));
@@ -209,6 +210,7 @@ export const publicRoutes = (
     <Route path="/support" element={<Support />} />
     <Route path="/explore" element={<Navigate to="/" replace />} />
     <Route path="/promptfluid" element={<PromptFluidHome />} />
+    <Route path="/security" element={<CyberSecurityHome />} />
 
     {/* System pages */}
     <Route path="/modules" element={<Navigate to="/architecture" replace />} />
