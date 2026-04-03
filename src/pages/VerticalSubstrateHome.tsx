@@ -16,14 +16,48 @@ import { useNavigate } from "react-router-dom";
 import { resolveSubdomainVertical, type VerticalSubstrateConfig, type VerticalPrimitive } from "@/lib/factory/verticals";
 
 const ENGINE_ICONS: Record<string, React.ElementType> = {
-  SENTINEL: Eye,
-  PHANTOM: Shield,
+  // Cyber
+  WATCHTOWER: Eye,
+  SHADE: Shield,
   AEGIS: Shield,
   CIPHER: Lock,
   RECON: Activity,
   VANGUARD: Zap,
   BASTION: Server,
   TEMPEST: Terminal,
+  // Robotics
+  SERVO: Cpu,
+  KINETIC: Zap,
+  LIDAR: Eye,
+  FABRICATOR: Server,
+  FLUX: Activity,
+  VECTOR: Layers,
+  TENSOR: Cpu,
+  CALIBER: Shield,
+  GRIPPER: Terminal,
+  SWARM: Layers,
+  ENVIRON: Eye,
+  GUARDIAN: Shield,
+  CONDUCTOR: Zap,
+  WELDER: Activity,
+  INSPECTOR: Eye,
+  PIONEER: Cpu,
+  // Quantum
+  HADRON: Zap,
+  QUBIT: Cpu,
+  ENTANGLE: Layers,
+  SCALAR: Activity,
+  PHASE: Eye,
+  WAVE: Zap,
+  SPIN: Cpu,
+  MUON: Terminal,
+  GRAVITON: Layers,
+  TACHYON: Zap,
+  PHOTON: Eye,
+  LEPTON: Activity,
+  QUARK: Cpu,
+  BOSON: Zap,
+  NEUTRINO: Shield,
 };
 
 interface VerticalSubstrateHomeProps {
@@ -95,7 +129,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <section className="max-w-6xl mx-auto px-4 py-16">
           <h2 className="text-2xl font-bold mb-2">Engines</h2>
           <p className="text-muted-foreground mb-8">
-            8 domain-specific engines hot-swapped for cybersecurity operations
+            8 domain-specific engines hot-swapped for {verticalKey} operations
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {engines.map((engine) => (
@@ -108,7 +142,7 @@ export default function VerticalSubstrateHome({ verticalKey }: VerticalSubstrate
         <section className="max-w-6xl mx-auto px-4 py-16 border-t border-border">
           <h2 className="text-2xl font-bold mb-2">Agents</h2>
           <p className="text-muted-foreground mb-8">
-            8 autonomous agents purpose-built for threat detection, response, and compliance
+            8 autonomous agents purpose-built for {verticalKey} intelligence and operations
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {agents.map((agent) => (
