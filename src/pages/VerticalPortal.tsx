@@ -65,6 +65,7 @@ function useAllVerticals() {
 
 export default function VerticalPortal() {
   const { session } = useAuth();
+  const VERTICALS = useAllVerticals();
 
   const handleVisitVertical = (url: string) => {
     if (session?.access_token && session?.refresh_token) {
