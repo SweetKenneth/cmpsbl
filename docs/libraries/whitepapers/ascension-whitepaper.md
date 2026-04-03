@@ -433,11 +433,9 @@ We present fifteen verified case studies spanning five programming languages, ei
 
 **Classification:** TypeScript · 91 lines · Cyclomatic complexity 27 · No CRITICAL findings.
 
-> **Structural Findings:** Three warnings: (1) synchronous-only architecture — no async patterns in a logging system that could benefit from non-blocking writes; (2) no test coverage detected; (3) cyclomatic complexity of 27 — excessive decision branching for an audit file, reducing reasoning confidence. Additionally, `Math.random()` was used for audit entry ID generation — while classified as WARNING-level here (the IDs are in-memory array keys, not database primary keys), the substrate flagged it because predictable IDs in a security audit trail reduce tamper-evidence guarantees.
+> **Structural Findings:** Three warnings: (1) synchronous-only architecture — no async patterns in a logging system that could benefit from non-blocking writes; (2) no test coverage detected; (3) cyclomatic complexity of 27 — excessive decision branching for an audit file, reducing reasoning confidence. The Ascension report also flagged weak randomness for audit entry ID generation; however, **verification against the actual source confirmed `crypto.randomUUID()` was already in use.** No fix required.
 
 **Standout capabilities:** Self-Healing State Machine, Circuit Breaker Mesh — the substrate found fault-tolerant state management patterns inside audit logic.
-
-**Remediation:** `Math.random()` replaced with `crypto.randomUUID()` for cryptographically strong audit entry IDs.
 
 **Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked.
 
