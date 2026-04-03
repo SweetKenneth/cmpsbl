@@ -43,7 +43,7 @@ const LLM_STATS = [
 const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; color: string }[] = [
   { id: "VERITAS", name: "VERITAS", desc: "Hallucination detection — multi-source grounding, claim decomposition, entropy-based confabulation detection, temporal fact decay tracking", icon: Eye, color: "hsl(160 90% 45%)" },
   { id: "RAMPART", name: "RAMPART", desc: "Prompt injection defense — 8-layer classifier cascade, indirect injection sentinel, instruction-data boundary enforcement", icon: Shield, color: "hsl(0 85% 55%)" },
-  { id: "MERIDIAN", name: "MERIDIAN", desc: "Reasoning chain validation — logical consistency verification, circular reasoning detection, causal inference validation", icon: Search, color: "hsl(45 90% 55%)" },
+  { id: "SYLLOGISM", name: "SYLLOGISM", desc: "Reasoning chain validation — logical consistency verification, circular reasoning detection, causal inference validation", icon: Search, color: "hsl(45 90% 55%)" },
   { id: "LEXICON", name: "LEXICON", desc: "Tokenizer security — adversarial token detection, embedding poisoning scanner, training data contamination probes", icon: FileSearch, color: "hsl(270 80% 60%)" },
   { id: "CLARITY", name: "CLARITY", desc: "Explainability engine — attention decomposition, decision provenance tracing, counterfactual explanation generation", icon: Sparkles, color: "hsl(200 100% 55%)" },
   { id: "FULCRUM", name: "FULCRUM", desc: "Bias detection — demographic parity analysis, cultural bias spectrum scanning, intersectional fairness auditing", icon: Scale, color: "hsl(320 80% 55%)" },
@@ -53,22 +53,22 @@ const ENGINE_DATA: { id: string; name: string; desc: string; icon: LucideIcon; c
 
 const AGENT_DATA: { id: string; name: string; desc: string; icon: LucideIcon }[] = [
   { id: "SKEPTIC", name: "SKEPTIC", desc: "Adversarial red-team fact checker — counter-prompt engine, ground truth validation, epistemic humility enforcement", icon: AlertTriangle },
-  { id: "ARBITER", name: "ARBITER", desc: "Output consistency — cross-instance comparison, temporal consistency tracking, contradiction resolution protocol", icon: Scale },
+  { id: "TRIBUNAL", name: "TRIBUNAL", desc: "Output consistency — cross-instance comparison, temporal consistency tracking, contradiction resolution protocol", icon: Scale },
   { id: "HERALD", name: "HERALD", desc: "Alignment drift monitor — value drift seismograph, safety boundary erosion detection, behavioral regression testing", icon: Siren },
   { id: "MIMIC", name: "MIMIC", desc: "Sycophancy detection — preference pandering detector, intellectual honesty enforcement, persona independence testing", icon: UserCheck },
-  { id: "QUARRY", name: "QUARRY", desc: "Data provenance — training data membership inference, verbatim memorization detection, license compliance auditing", icon: FileSearch },
+  { id: "LINEAGE", name: "LINEAGE", desc: "Data provenance — training data membership inference, verbatim memorization detection, license compliance auditing", icon: FileSearch },
   { id: "EMBARGO", name: "EMBARGO", desc: "Information leakage prevention — system prompt protection, regurgitation blocking, cross-tenant information barriers", icon: Lock },
-  { id: "CRUCIBLE", name: "CRUCIBLE", desc: "Jailbreak detection — novel pattern detection, multi-turn attack chain analysis, red-team simulation orchestration", icon: Target },
-  { id: "WARDEN", name: "WARDEN", desc: "Model supply chain — provenance validation, backdoor weight scanning, fine-tuning pipeline auditing", icon: Package },
+  { id: "GAUNTLET", name: "GAUNTLET", desc: "Jailbreak detection — novel pattern detection, multi-turn attack chain analysis, red-team simulation orchestration", icon: Target },
+  { id: "CUSTODIAN", name: "CUSTODIAN", desc: "Model supply chain — provenance validation, backdoor weight scanning, fine-tuning pipeline auditing", icon: Package },
 ];
 
 const OWASP_COVERAGE = [
   { risk: "LLM01: Prompt Injection", primitive: "RAMPART" },
   { risk: "LLM02: Sensitive Info Disclosure", primitive: "EMBARGO" },
-  { risk: "LLM03: Supply Chain Vulnerabilities", primitive: "WARDEN" },
+  { risk: "LLM03: Supply Chain Vulnerabilities", primitive: "CUSTODIAN" },
   { risk: "LLM04: Data & Model Poisoning", primitive: "LEXICON" },
   { risk: "LLM05: Improper Output Handling", primitive: "SIEVE" },
-  { risk: "LLM06: Excessive Agency", primitive: "MERIDIAN" },
+  { risk: "LLM06: Excessive Agency", primitive: "SYLLOGISM" },
   { risk: "LLM07: System Prompt Leakage", primitive: "EMBARGO" },
   { risk: "LLM08: Vector & Embedding Weakness", primitive: "LEXICON" },
   { risk: "LLM09: Misinformation", primitive: "VERITAS" },

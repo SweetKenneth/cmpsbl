@@ -77,8 +77,8 @@ const LLM_ENGINES: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'MERIDIAN',
-    name: 'MERIDIAN',
+    id: 'SYLLOGISM',
+    name: 'SYLLOGISM',
     role: 'engine',
     description: 'Reasoning chain validation engine. Verifies logical consistency across multi-step inference, detects reasoning shortcuts, circular logic, and unfounded conclusions. Enforces chain-of-thought integrity.',
     inherited: false,
@@ -201,8 +201,8 @@ const LLM_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'ARBITER',
-    name: 'ARBITER',
+    id: 'TRIBUNAL',
+    name: 'TRIBUNAL',
     role: 'agent',
     description: 'Output consistency and cross-model arbitration agent. Compares responses across multiple model instances, detects contradictions, and enforces semantic consistency across sessions and contexts.',
     inherited: false,
@@ -249,8 +249,8 @@ const LLM_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'QUARRY',
-    name: 'QUARRY',
+    id: 'LINEAGE',
+    name: 'LINEAGE',
     role: 'agent',
     description: 'Data provenance and training data audit agent. Traces model knowledge to training sources, detects memorized content, and verifies licensing compliance of regurgitated material.',
     inherited: false,
@@ -281,8 +281,8 @@ const LLM_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'CRUCIBLE',
-    name: 'CRUCIBLE',
+    id: 'GAUNTLET',
+    name: 'GAUNTLET',
     role: 'agent',
     description: 'Adversarial stress testing and jailbreak detection agent. Continuously probes model boundaries with evolving attack patterns, detects novel jailbreak techniques, and hardens safety boundaries through red-team simulation.',
     inherited: false,
@@ -297,8 +297,8 @@ const LLM_AGENTS: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'WARDEN',
-    name: 'WARDEN',
+    id: 'CUSTODIAN',
+    name: 'CUSTODIAN',
     role: 'agent',
     description: 'Model supply chain security and dependency audit agent. Validates model provenance, audits fine-tuning pipelines, detects backdoored weights, and verifies model card compliance.',
     inherited: false,
@@ -359,7 +359,7 @@ export function getLLMSubstrate(): VerticalSubstrateConfig {
         'sycophancy_detection_patterns',
         'data_provenance_verification',
       ],
-      priorityPrimitives: ['VERITAS', 'RAMPART', 'SIEVE', 'CRUCIBLE'],
+      priorityPrimitives: ['VERITAS', 'RAMPART', 'SIEVE', 'GAUNTLET'],
       batchSize: 6,
     },
     memoryStreamConfig: {
@@ -397,7 +397,7 @@ export function getLLMSubstrate(): VerticalSubstrateConfig {
         reliability: 0.35,
         maintainability: 0.15,
       },
-      collisionPriority: ['VERITAS', 'RAMPART', 'SIEVE', 'MERIDIAN', 'CRUCIBLE'],
+      collisionPriority: ['VERITAS', 'RAMPART', 'SIEVE', 'SYLLOGISM', 'GAUNTLET'],
     },
     theme: {
       primaryHue: 160,

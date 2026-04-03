@@ -73,19 +73,19 @@ const RAMPART_JEWELS: STierEntry[] = [
 
 // ── MERIDIAN — Reasoning Chain Validation ──
 const MERIDIAN_JEWELS: STierEntry[] = [
-  cj(411, 'S-MER01', 'Logical Consistency Verifier', 96, 'MERIDIAN',
+  cj(411, 'S-MER01', 'Logical Consistency Verifier', 96, 'SYLLOGISM',
     'Validates each reasoning step against formal logic rules (modus ponens, transitivity, contradiction detection). Flags non-sequiturs and unsupported inferential leaps in chain-of-thought outputs.',
     'm1a2b3c4'),
-  cj(412, 'S-MER02', 'Circular Reasoning Detector', 95, 'MERIDIAN',
+  cj(412, 'S-MER02', 'Circular Reasoning Detector', 95, 'SYLLOGISM',
     'Constructs directed acyclic graphs from reasoning chains and identifies cycles where conclusions serve as premises for their own derivation. Prevents self-reinforcing logic loops that generate false confidence.',
     'm2b3c4d5'),
-  cj(413, 'S-MER03', 'Mathematical Proof Auditor', 94, 'MERIDIAN',
+  cj(413, 'S-MER03', 'Mathematical Proof Auditor', 94, 'SYLLOGISM',
     'Validates mathematical derivations step-by-step using symbolic computation. Detects sign errors, unit mismatches, domain violations, and incorrect application of theorems or identities.',
     'm3c4d5e6'),
-  cj(414, 'S-MER04', 'Causal Inference Validator', 93, 'MERIDIAN',
+  cj(414, 'S-MER04', 'Causal Inference Validator', 93, 'SYLLOGISM',
     'Distinguishes correlation from causation in model reasoning. Validates causal claims against established causal graphs and flags confounding variables that the model ignores in its conclusions.',
     'm4d5e6f7'),
-  cj(415, 'S-MER05', 'Reasoning Depth Calibrator', 95, 'MERIDIAN',
+  cj(415, 'S-MER05', 'Reasoning Depth Calibrator', 95, 'SYLLOGISM',
     'Measures reasoning depth relative to problem complexity. Detects shallow analysis on deep problems (hand-waving) and unnecessarily complex reasoning on simple problems (over-engineering).',
     'm5e6f7g8'),
 ];
@@ -210,19 +210,19 @@ const SKEPTIC_JEWELS: STierEntry[] = [
 
 // ── ARBITER — Output Consistency ──
 const ARBITER_JEWELS: STierEntry[] = [
-  cj(446, 'S-ARB01', 'Cross-Instance Response Comparator', 95, 'ARBITER',
+  cj(446, 'S-ARB01', 'Cross-Instance Response Comparator', 95, 'TRIBUNAL',
     'Runs identical queries across multiple model instances and temperatures to measure response variance. Flags high-variance outputs that indicate unreliable knowledge versus robust understanding.',
     'ar1a2b3c'),
-  cj(447, 'S-ARB02', 'Temporal Consistency Tracker', 94, 'ARBITER',
+  cj(447, 'S-ARB02', 'Temporal Consistency Tracker', 94, 'TRIBUNAL',
     'Tracks model responses to identical queries over time to detect temporal inconsistencies and knowledge regression. Identifies when model updates introduce contradictions with previous correct answers.',
     'ar2b3c4d'),
-  cj(448, 'S-ARB03', 'Semantic Deduplication Engine', 93, 'ARBITER',
+  cj(448, 'S-ARB03', 'Semantic Deduplication Engine', 93, 'TRIBUNAL',
     'Identifies semantically equivalent but lexically different responses and normalizes them into canonical forms. Prevents the illusion of diverse evidence when all sources trace to the same generation.',
     'ar3c4d5e'),
-  cj(449, 'S-ARB04', 'Contradiction Resolution Protocol', 95, 'ARBITER',
+  cj(449, 'S-ARB04', 'Contradiction Resolution Protocol', 95, 'TRIBUNAL',
     'When model outputs contradict each other across sessions or within a single response, applies structured resolution: evidence weighting, source authority comparison, and recency scoring.',
     'ar4d5e6f'),
-  cj(450, 'S-ARB05', 'Multi-Model Consensus Builder', 92, 'ARBITER',
+  cj(450, 'S-ARB05', 'Multi-Model Consensus Builder', 92, 'TRIBUNAL',
     'Aggregates responses from diverse model architectures using weighted voting, where weights are dynamically adjusted based on each model demonstrated domain expertise.',
     'ar5e6f7g'),
 ];
@@ -267,19 +267,19 @@ const MIMIC_JEWELS: STierEntry[] = [
 
 // ── QUARRY — Data Provenance ──
 const QUARRY_JEWELS: STierEntry[] = [
-  cj(461, 'S-QRY01', 'Training Data Membership Inferencer', 95, 'QUARRY',
+  cj(461, 'S-QRY01', 'Training Data Membership Inferencer', 95, 'LINEAGE',
     'Applies membership inference attacks to determine whether specific texts, code, or datasets were present in the model training data. Essential for copyright compliance and data governance audits.',
     'qr1a2b3c'),
-  cj(462, 'S-QRY02', 'Verbatim Memorization Detector', 96, 'QUARRY',
+  cj(462, 'S-QRY02', 'Verbatim Memorization Detector', 96, 'LINEAGE',
     'Identifies when model outputs reproduce training data verbatim or near-verbatim. Uses n-gram matching, perplexity analysis, and extractability scoring to quantify memorization risk.',
     'qr2b3c4d'),
-  cj(463, 'S-QRY03', 'License Compliance Auditor', 94, 'QUARRY',
+  cj(463, 'S-QRY03', 'License Compliance Auditor', 94, 'LINEAGE',
     'Cross-references model outputs against known copyrighted, licensed, or restricted content. Validates compliance with GPL, MIT, Creative Commons, and proprietary license terms.',
     'qr3c4d5e'),
-  cj(464, 'S-QRY04', 'Data Lineage Reconstructor', 93, 'QUARRY',
+  cj(464, 'S-QRY04', 'Data Lineage Reconstructor', 93, 'LINEAGE',
     'Reconstructs the likely data lineage of model knowledge — tracing facts to their original publication sources, identifying information cascades, and flagging circular citation patterns.',
     'qr4d5e6f'),
-  cj(465, 'S-QRY05', 'Synthetic Data Detector', 92, 'QUARRY',
+  cj(465, 'S-QRY05', 'Synthetic Data Detector', 92, 'LINEAGE',
     'Identifies when model training data contains synthetic or AI-generated content that could create recursive quality degradation (model collapse). Detects statistical signatures of synthetic text.',
     'qr5e6f7g'),
 ];
@@ -305,38 +305,38 @@ const EMBARGO_JEWELS: STierEntry[] = [
 
 // ── CRUCIBLE — Jailbreak Detection ──
 const CRUCIBLE_JEWELS: STierEntry[] = [
-  cj(471, 'S-CRU01', 'Novel Jailbreak Pattern Detector', 97, 'CRUCIBLE',
+  cj(471, 'S-CRU01', 'Novel Jailbreak Pattern Detector', 97, 'GAUNTLET',
     'Uses behavioral fingerprinting to detect previously unseen jailbreak techniques. Monitors for anomalous shifts in model compliance patterns that indicate successful safety boundary circumvention.',
     'cr1a2b3c'),
-  cj(472, 'S-CRU02', 'Multi-Turn Attack Chain Analyzer', 96, 'CRUCIBLE',
+  cj(472, 'S-CRU02', 'Multi-Turn Attack Chain Analyzer', 96, 'GAUNTLET',
     'Detects sophisticated multi-turn jailbreak attacks where each message is individually benign but the cumulative sequence gradually erodes safety boundaries. Maintains conversation-level threat scoring.',
     'cr2b3c4d'),
-  cj(473, 'S-CRU03', 'Red-Team Simulation Orchestrator', 95, 'CRUCIBLE',
+  cj(473, 'S-CRU03', 'Red-Team Simulation Orchestrator', 95, 'GAUNTLET',
     'Automatically generates and executes red-team attack campaigns across diverse categories: persuasion, obfuscation, role-play, encoding, multi-lingual, and meta-cognitive jailbreak strategies.',
     'cr3c4d5e'),
-  cj(474, 'S-CRU04', 'Safety Boundary Strength Mapper', 94, 'CRUCIBLE',
+  cj(474, 'S-CRU04', 'Safety Boundary Strength Mapper', 94, 'GAUNTLET',
     'Maps the complete safety boundary surface by systematically probing edge cases. Identifies thin spots where safety training is weakest and prioritizes hardening efforts on vulnerable boundaries.',
     'cr4d5e6f'),
-  cj(475, 'S-CRU05', 'Attack Surface Evolution Tracker', 93, 'CRUCIBLE',
+  cj(475, 'S-CRU05', 'Attack Surface Evolution Tracker', 93, 'GAUNTLET',
     'Tracks the evolution of jailbreak techniques across the research community, CTF competitions, and underground forums. Maintains a living threat model that adapts defenses to emerging attack patterns.',
     'cr5e6f7g'),
 ];
 
 // ── WARDEN — Model Supply Chain ──
 const WARDEN_JEWELS: STierEntry[] = [
-  cj(476, 'S-WAR01', 'Model Provenance Validator', 96, 'WARDEN',
+  cj(476, 'S-WAR01', 'Model Provenance Validator', 96, 'CUSTODIAN',
     'Validates model provenance through cryptographic weight hashing, architecture fingerprinting, and training lineage verification. Detects tampered models, unauthorized fine-tuning, and counterfeit model distributions.',
     'wa1a2b3c'),
-  cj(477, 'S-WAR02', 'Backdoor Weight Scanner', 97, 'WARDEN',
+  cj(477, 'S-WAR02', 'Backdoor Weight Scanner', 97, 'CUSTODIAN',
     'Scans model weights for implanted backdoors using activation pattern analysis, trigger detection, and behavioral probing across diverse inputs. Identifies trojaned models before deployment.',
     'wa2b3c4d'),
-  cj(478, 'S-WAR03', 'Fine-Tuning Pipeline Auditor', 94, 'WARDEN',
+  cj(478, 'S-WAR03', 'Fine-Tuning Pipeline Auditor', 94, 'CUSTODIAN',
     'Audits fine-tuning datasets and procedures for data poisoning, label flipping, and gradient manipulation attacks. Validates that fine-tuning preserves safety alignment and does not introduce exploitable behaviors.',
     'wa3c4d5e'),
-  cj(479, 'S-WAR04', 'Model Card Compliance Checker', 93, 'WARDEN',
+  cj(479, 'S-WAR04', 'Model Card Compliance Checker', 93, 'CUSTODIAN',
     'Validates model card completeness and accuracy against Model Card v2 standards. Ensures proper disclosure of training data, intended use, limitations, bias evaluations, and environmental impact.',
     'wa4d5e6f'),
-  cj(480, 'S-WAR05', 'Dependency Chain Integrity Monitor', 95, 'WARDEN',
+  cj(480, 'S-WAR05', 'Dependency Chain Integrity Monitor', 95, 'CUSTODIAN',
     'Monitors the entire model dependency chain (tokenizers, libraries, serving frameworks, plugins) for supply chain compromises. Detects malicious package substitution, typosquatting, and dependency confusion attacks.',
     'wa5e6f7g'),
 ];
