@@ -1101,7 +1101,7 @@
     <p>
       We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent
       capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix.
-      Across ten verified case studies spanning four languages (Python, PHP, Ruby, C) and eight verticals
+      Across eleven verified case studies spanning four languages (Python, PHP, Ruby, C) and eight verticals
       (Robotics, Agentic AI, Quantum, Cyber, LLM/ML, FinTech, Operations Research, AI/Deep Learning), Ascension™ consistently surfaced
       structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap
       in Hugging Face Tokenizers (73M+ monthly downloads),
@@ -1110,9 +1110,10 @@
       dynamic code execution in ArduPilot (1M+ vehicles),
       structural deficiencies in QuantLib's swaption models,
       deprecated API patterns in Google OR-Tools CP-SAT (13.3K+ GitHub stars),
-      and unhandled asynchronous rejection patterns in PyTorch's core neural network operations library (99K+ GitHub stars) —
-      the mathematical foundation underlying every major AI model in production, where a CVE-confirmed code injection vector
-      (CVE-2022-45907) intersects with deprecated API surfaces and architecturally documented GPU async silent failures.
+      unhandled asynchronous rejection patterns in PyTorch's core neural network operations library (99K+ GitHub stars),
+      and the same class of async rejection patterns independently surfaced in Anthropic's official Python SDK —
+      the transport layer powering every API call to Claude, where documented mid-stream SSE failures, silent stream aborts,
+      and infinitely hanging clients confirm the structural gap the substrate detected.
     </p>
     <p>
       The implications extend beyond individual code hardening. Ascension™ establishes the foundation for
