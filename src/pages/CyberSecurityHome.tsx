@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { Card, CardContent } from "@/components/ui/card";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 import {
   resolveSubdomainVertical,
   type VerticalSubstrateConfig,
