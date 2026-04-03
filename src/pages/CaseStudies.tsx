@@ -313,6 +313,54 @@ const HF_CAPABILITIES = [
   { name: 'Phantom Load Tester', mode: 'Hybrid', desc: 'Generates synthetic traffic that mirrors real user patterns. Passively collects baselines, then actively stress-tests under configurable scenarios.' },
 ];
 
+/* ───────── Case Study #6 Data — OpenSSL tls13_enc.c (Cyber) ───────── */
+
+const OPENSSL_VULNERABILITIES = [
+  { severity: 'critical', title: 'No timeout enforcement in handshake state machine', status: 'hardened', detail: 'TLS 1.3 key derivation and handshake delegating timeout to callers — majority of downstream implementations fail to compensate. Known open issue on OpenSSL GitHub.' },
+  { severity: 'warning', title: 'Extreme cyclomatic complexity (185)', status: 'mitigated', detail: '185 branching paths with 7 levels of deep nesting. Among the most complex single files ever processed through Ascension.' },
+  { severity: 'warning', title: 'Zero test coverage in file', status: 'mitigated', detail: 'No test coverage detected in file. Critical encryption code with no in-file validation harness.' },
+  { severity: 'warning', title: 'No graceful shutdown on interrupted handshake', status: 'mitigated', detail: 'Interrupted TLS sessions leave state machine in indeterminate state. No cleanup or recovery path.' },
+  { severity: 'info', title: 'No health signaling for handshake liveness', status: 'monitor', detail: 'No heartbeat or liveness signals during key derivation — silent hangs undetectable by callers.' },
+  { severity: 'warning', title: 'Deep nesting (7 levels)', status: 'mitigated', detail: '7 levels of nesting in core encryption paths. Cognitive load exceeds maintainability thresholds.' },
+  { severity: 'info', title: 'Structural dependency on caller discipline', status: 'monitor', detail: 'Security-critical behavior delegated to callers who statistically fail to implement it correctly.' },
+];
+
+const OPENSSL_PRIMITIVES = [
+  { name: 'AEGIS', type: 'Agent', action: 'Shield layer for zero-trust perimeter enforcement on TLS handshake boundaries' },
+  { name: 'CIPHER', type: 'Engine', action: 'Cryptographic key lifecycle management and rotation enforcement for TLS 1.3' },
+  { name: 'RECON', type: 'Engine', action: 'Continuous attack surface reconnaissance for network exposure in encryption layer' },
+  { name: 'TEMPEST', type: 'Engine', action: 'Side-channel attack mitigation and emissions security for key derivation' },
+  { name: 'SHADE', type: 'Agent', action: 'Stealth hardening with minimal observable footprint on encryption operations' },
+  { name: 'OBSIDIAN', type: 'Agent', action: 'Deep structural integrity scanning for cryptographic state machines' },
+  { name: 'BULWARK', type: 'Engine', action: 'Fortified boundary enforcement on network-adjacent operations' },
+  { name: 'WRAITH', type: 'Agent', action: 'IP obfuscation and stealth hardening for sensitive internal paths' },
+  { name: 'BLACKOUT', type: 'Agent', action: 'Emergency kill-switch and data purge protocols for compromised sessions' },
+  { name: 'NOCTURNE', type: 'Agent', action: 'Dark web intelligence monitoring for credential leaks and threat actor activity' },
+  { name: 'SHADOW', type: 'Layer', action: 'Shadow testing and canary analysis for unverified encryption code paths' },
+  { name: 'DEFENSE', type: 'Layer', action: 'Defense-in-depth hardening for network-facing cryptographic code' },
+  { name: 'TREATY', type: 'Layer', action: 'API contract enforcement and protocol compliance validation' },
+  { name: 'IMMUNITY', type: 'Layer', action: 'Dependency shielding against cascading failures in handshake chain' },
+  { name: 'RELAY', type: 'Layer', action: 'Message relay with delivery guarantees for TLS state transitions' },
+  { name: 'EVOLUTION', type: 'Layer', action: 'Managed evolution cycles for cryptographic protocol updates' },
+  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered debug output in encryption paths' },
+  { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for cryptographic key handling' },
+  { name: 'BRAIN', type: 'Organ', action: 'Continuous learning patterns for complex state machine optimization' },
+  { name: 'IDENTITY', type: 'Organ', action: 'Authentication and certificate identity resolution for TLS peers' },
+];
+
+const OPENSSL_CAPABILITIES = [
+  { name: 'APT Threat Hunter', mode: 'Active', desc: 'Advanced persistent threat detection via behavioral analysis of TLS handshake anomalies and key derivation timing patterns.' },
+  { name: 'Emergency Breach Containment', mode: 'Active', desc: 'Automated session isolation and key revocation when compromise indicators are detected in the encryption layer.' },
+  { name: 'Dark Web Intelligence Monitor', mode: 'Passive', desc: 'Monitors for leaked certificates, compromised keys, and threat actor discussions targeting TLS implementations.' },
+  { name: 'Cryptographic Agility Layer', mode: 'Hybrid', desc: 'Manages cipher suite rotation, certificate lifecycle, and prepares quantum-resistant algorithm migration paths.' },
+  { name: 'Real-Time IOC Correlator', mode: 'Active', desc: 'Correlates Indicators of Compromise across TLS telemetry streams, mapped to MITRE ATT&CK techniques.' },
+  { name: 'Handshake Liveness Monitor', mode: 'Passive', desc: 'BEACON-powered heartbeat signals detecting silent hangs in TLS key derivation and handshake state transitions.' },
+  { name: 'Session Forensics Engine', mode: 'Hybrid', desc: 'Immutable audit trail of all TLS session state transitions with cryptographic anchoring for forensic analysis.' },
+  { name: 'Timeout Circuit Breaker', mode: 'Active', desc: 'Deterministic circuit-breaker enforcement on key derivation and handshake operations — the structural gap OpenSSL delegates to callers.' },
+  { name: 'Protocol Compliance Validator', mode: 'Passive', desc: 'Validates TLS 1.3 implementation against RFC 8446 and detects deviations from specification requirements.' },
+  { name: 'Graceful Session Recovery', mode: 'Hybrid', desc: 'Clean shutdown handlers for interrupted TLS sessions with state machine recovery and resource cleanup.' },
+];
+
 /* ───────── Shared Components ───────── */
 
 function SeverityBadge({ severity }: { severity: string }) {
