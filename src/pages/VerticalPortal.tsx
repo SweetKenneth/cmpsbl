@@ -123,7 +123,7 @@ export default function VerticalPortal() {
                     <Button
                       className="w-full border-0 text-sm font-semibold"
                       style={{ background: v.accentColor, color: 'white' }}
-                      onClick={() => window.open(v.url, '_blank')}
+                      onClick={() => handleVisitVertical(v.url)}
                     >
                       Visit {v.name.split('™')[0]}™ <ExternalLink className="ml-2 h-3.5 w-3.5" />
                     </Button>
