@@ -27,7 +27,7 @@ export function recordPipelineLineage(
   cjpi?: number | null,
 ): PipelineLineageRecord {
   const record: PipelineLineageRecord = {
-    id: `pl-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    id: `pl-${crypto.randomUUID()}`,
     pipelineName: name,
     modules: modules.map(m => m.toUpperCase()),
     cjpi: cjpi ?? null,
