@@ -1,6 +1,6 @@
 /**
  * CmpsblNav — Factory-Era Flat Navigation
- * Clean dark command bar: Home · Memory Stream · Ascension · Pricing · Docs · Try · Login
+ * Clean dark command bar: Home · Memory Stream · Ascension · Pricing · Docs · Try · Case Studies · Login
  * Preserves all legacy routes — only navigation menu changes.
  */
 
@@ -21,6 +21,7 @@ import {
   CreditCard,
   Package,
   Globe,
+  ScrollText,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
@@ -42,6 +43,7 @@ const NAV_LINKS: NavLink[] = [
   { name: "Explore Showroom", href: "/showroom", icon: Sparkles, badge: "NEW", highlight: true },
   { name: "Code Assembly", href: "/assembly", icon: Wrench, badge: "SERVICE", highlight: true },
   { name: "Verticals", href: "/verticals", icon: Globe },
+  { name: "Case Studies", href: "/case-studies", icon: ScrollText },
   { name: "View Plans", href: "/plans", icon: CreditCard },
   { name: "Read the Docs", href: "/documentation", icon: FileText },
   { name: "Try the Substrate", href: "/try", icon: Play },
