@@ -347,6 +347,8 @@ export default function CaseStudies() {
   const visiblePrimitives = showAllPrimitives ? PRIMITIVES_APPLIED : PRIMITIVES_APPLIED.slice(0, 8);
   const [showAllQiskitPrimitives, setShowAllQiskitPrimitives] = useState(false);
   const visibleQiskitPrimitives = showAllQiskitPrimitives ? QISKIT_PRIMITIVES : QISKIT_PRIMITIVES.slice(0, 8);
+  const [showAllMsfPrimitives, setShowAllMsfPrimitives] = useState(false);
+  const visibleMsfPrimitives = showAllMsfPrimitives ? MSF_PRIMITIVES : MSF_PRIMITIVES.slice(0, 8);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
