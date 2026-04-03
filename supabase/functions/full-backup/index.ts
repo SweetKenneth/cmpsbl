@@ -28,8 +28,8 @@ const TIME_BUDGET_MS = 142_000;
 const FINALIZE_RESERVE_MS = 6_000;
 
 /** Page size for table exports */
-const PAGE_SIZE = 1000;
-const MIN_PAGE_SIZE = 50;
+const PAGE_SIZE = 250;
+const MIN_PAGE_SIZE = 25;
 const QUERY_RETRIES = 2;
 const RETRY_DELAY_MS = 250;
 
