@@ -229,14 +229,14 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         }
       }
 
-      // Call the real full-backup edge function for a true disaster recovery ZIP
+      // Create a stored failsafe ZIP and return a signed download URL
       const { data: { session } } = await supabase.auth.getSession();
       if (!session?.access_token) {
         throw new Error('You must be logged in as an admin');
       }
 
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-      const url = `https://${projectId}.supabase.co/functions/v1/full-backup`;
+      const url = `https://${projectId}.supabase.co/functions/v1/failsafe-nightly`;
 
       const res = await fetch(url, {
         method: 'POST',
@@ -248,22 +248,22 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(err.error || `Backup failed: HTTP ${res.status}`);
+        throw new Error(err.error || `Failsafe backup failed: HTTP ${res.status}`);
       }
 
-      // Download the ZIP
-      const blob = await res.blob();
-      const disposition = res.headers.get('Content-Disposition') || '';
-      const filenameMatch = disposition.match(/filename="(.+)"/);
-      const filename = filenameMatch?.[1] || `cmpsbl-failsafe-backup-${new Date().toISOString().slice(0, 10)}.zip`;
+      const payload = await res.json();
+      if (!payload?.success) {
+        throw new Error(payload?.error || 'Failsafe backup failed');
+      }
 
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(a.href);
+      if (payload?.download_url) {
+        const a = document.createElement('a');
+        a.href = payload.download_url;
+        a.download = 'nightly-failsafe-latest.zip';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
 
       // Record in daily_backups as permanent failsafe
       const backupId = `failsafe-${Date.now()}`;
@@ -271,20 +271,20 @@ export function BackupRestorePanel({ enabled = true }: { enabled?: boolean }) {
         .from('daily_backups')
         .insert({
           backup_id: backupId,
-          backup_path: `downloaded/${filename}`,
-          snapshot: { type: 'full-zip-download', filename } as any,
+          backup_path: payload.file_path || 'failsafe-backups/nightly-failsafe-latest.zip',
+          snapshot: { type: 'failsafe-zip', filename: 'nightly-failsafe-latest.zip', files: payload.files } as any,
           status: 'completed',
           is_permanent: true,
           backup_category: 'failsafe',
           notes: notes || `Full failsafe backup created at ${new Date().toISOString()}`,
           expires_at: null,
-          substrate_version: 'full-backup-v2.1',
-          data_counts: { type: 'full-zip-download' } as any,
+          substrate_version: 'full-backup-v3',
+          size_bytes: payload?.size_mb ? Math.round(Number(payload.size_mb) * 1024 * 1024) : null,
+          data_counts: { type: 'failsafe-zip-download' } as any,
         });
 
       if (insertError) {
         console.error('Failed to record failsafe:', insertError);
-        // Don't throw — the ZIP was already downloaded successfully
       }
 
       return { failsafe_id: backupId, success: true, wasOverride: override };
