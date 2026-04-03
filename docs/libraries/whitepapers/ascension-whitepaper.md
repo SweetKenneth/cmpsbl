@@ -160,7 +160,7 @@ No stage in the pipeline invokes external AI, stochastic inference, or probabili
 
 ### 5.1 Overview
 
-We present six case studies spanning five languages, six industry verticals, and a range of structural complexities:
+We present seven case studies spanning five languages, seven industry verticals, and a range of structural complexities:
 
 | # | Software | Language | Vertical | CJPI | Capabilities | Critical Findings |
 |---|----------|----------|----------|------|-------------|-------------------|
@@ -170,6 +170,7 @@ We present six case studies spanning five languages, six industry verticals, and
 | 4 | Solana Token Program | Rust | Blockchain | 96 | 20 S-Tier | Cross-program invocation hardening |
 | 5 | IBM Qiskit ConsolidateBlocks | Python | Quantum | 98 | 20 S-Tier | Unguarded circuit optimization passes |
 | 6 | Hugging Face Tokenizers | Python | LLM/ML | 100 APEX | 20 S-Tier | **Critical error-handling vulnerability** |
+| 7 | OpenSSL tls13_enc.c | C | Cyber | 100 APEX | 20 S-Tier | Network timeout structural gap — hardened |
 
 ### 5.2 Case Study 1: Stripe Node.js SDK
 
