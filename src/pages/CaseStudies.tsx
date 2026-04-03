@@ -5,7 +5,7 @@
 
 import { Helmet } from 'react-helmet-async';
 import { PublicNav } from '@/components/PublicNav';
-import { EnhancedFooter } from '@/components/layout/EnhancedFooter';
+import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

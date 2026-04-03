@@ -44,6 +44,7 @@ const VanillaDeveloperGuide = lazy(() => import("@/pages/VanillaDeveloperGuide")
 const GamingSubstrate = lazy(() => import("@/pages/GamingSubstrate"));
 const DeveloperShowcase = lazy(() => import("@/pages/DeveloperShowcase"));
 const UseCases = lazy(() => import("@/pages/UseCases"));
+const CaseStudies = lazy(() => import("@/pages/CaseStudies"));
 const MarketplaceSuccess = lazy(() => import("@/pages/MarketplaceSuccess"));
 const SubstrateLicensingSuccess = lazy(() => import("@/pages/SubstrateLicensingSuccess"));
 const SubstrateLicensingDownload = lazy(() => import("@/pages/SubstrateLicensingDownload"));
