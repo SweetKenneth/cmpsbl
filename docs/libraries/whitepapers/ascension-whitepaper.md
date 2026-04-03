@@ -497,6 +497,10 @@ For licensing inquiries: founder@cmpsbl.com
 
 10. ArduPilot Dev Team. (2025). *ArduPilot: Open Source Autopilot.* https://github.com/ArduPilot/ardupilot
 
+11. Ballabio, L. et al. (2000–2026). *QuantLib: A Free/Open-Source Library for Quantitative Finance.* https://github.com/lballabio/QuantLib
+
+12. Lee, A. (2018). *Gaussian 1D Models — QuantLib-SWIG Python Example.* https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py
+
 ---
 
 ## Citation
