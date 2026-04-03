@@ -26,7 +26,7 @@ function pushEntry(entry: DecodeAuditEntry): void {
 }
 
 function makeId(): string {
-  return `da-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  return `da-${crypto.randomUUID()}`;
 }
 
 /** Log an admin directive */
