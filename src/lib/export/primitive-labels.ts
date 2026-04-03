@@ -17,13 +17,17 @@ const LAYERS = new Set([
 
 const ENGINES = new Set([
   'DREAM', 'HARVEST', 'FORGE', 'LINGUA', 'ECHO', 'PHANTOM', 'SANDBOX', 'RIPPLE',
+  // CyberSecurity Vertical Engines
+  'SENTINEL', 'AEGIS', 'CIPHER', 'RECON', 'VANGUARD', 'BASTION', 'TEMPEST',
 ]);
 
 const AGENTS = new Set([
   'ENCODE', 'DECODE', 'AUDIT', 'ECONOMY',
   'INCLUSIVE', 'CORTEX', 'ORACLE', 'ENGINEER',
   // Reserve primitives (Vertical Packs)
-  'SENTINEL', 'SWARM', 'THRIFT', 'PERSONA', 'ARBITER',
+  'SWARM', 'THRIFT', 'PERSONA', 'ARBITER',
+  // CyberSecurity Vertical Agents
+  'WRAITH', 'OBSIDIAN', 'SPECTER', 'BLACKOUT', 'TRACER', 'NOCTURNE', 'IRONCLAD', 'BULWARK',
 ]);
 
 export type PrimitiveCategory = 'Organ' | 'Layer' | 'Engine' | 'Agent';
