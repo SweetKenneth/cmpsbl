@@ -1612,7 +1612,7 @@ export default function CaseStudies() {
           { question: 'How long does Ascension take?', answer: 'A typical file processes through the full 20-primitive pipeline in approximately 10 seconds.' },
           { question: 'Does Ascension use AI?', answer: 'No. The Ascension pipeline is purely algorithmic — deterministic pattern matching, structural analysis, and primitive guard injection. Zero external AI calls.' },
           { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, Quantum, or LLM.' },
-          { question: 'What software has been tested?', answer: 'Case studies include code from IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, and PythonRobotics — all scored CJPI 100 (Apex).' },
+          { question: 'What software has been tested?', answer: 'Case studies include code from IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, OpenSSL TLS 1.3, and PythonRobotics — all scored CJPI 100 (Apex).' },
         ]}
       />
       <EnhancedFooter />
