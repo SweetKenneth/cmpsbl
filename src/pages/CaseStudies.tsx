@@ -507,7 +507,7 @@ export default function CaseStudies() {
               </h1>
 
               <p className="text-muted-foreground text-base sm:text-lg max-w-3xl mx-auto leading-relaxed mb-4">
-                We ran production code from <strong className="text-foreground">IBM</strong>, <strong className="text-foreground">Rapid7</strong>, <strong className="text-foreground">Hugging Face</strong>, <strong className="text-foreground">OpenAI</strong>, and the most-starred robotics repository on GitHub through the CMPSBL® Ascension pipeline. Every file scored <strong className="text-foreground">CJPI 100 (Apex)</strong>. Every one had vulnerabilities we found and fixed. Zero AI was used.
+                We ran production code from <strong className="text-foreground">IBM</strong>, <strong className="text-foreground">Rapid7</strong>, <strong className="text-foreground">Hugging Face</strong>, <strong className="text-foreground">OpenAI</strong>, <strong className="text-foreground">OpenSSL</strong>, and the most-starred robotics repository on GitHub through the CMPSBL® Ascension pipeline. Every file scored <strong className="text-foreground">CJPI 100 (Apex)</strong>. Every one had vulnerabilities we found and fixed. Zero AI was used.
               </p>
 
               <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
