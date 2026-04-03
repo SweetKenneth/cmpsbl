@@ -589,6 +589,8 @@ function scorePrimitiveRelevance(
     sentinel: { signals: [hasHttp, hasAuth], rationale: 'Continuous validation and guard enforcement at system boundaries' },
     atlas: { signals: [len > 300, code.includes('import')], rationale: 'System-wide mapping and navigation for complex codebases' },
     // CyberSecurity vertical primitives
+    watchtower: { signals: [hasHttp, hasAuth], rationale: 'Real-time threat detection and classification with behavioral telemetry fusion' },
+    shade: { signals: [hasHttp, code.includes('stealth') || code.includes('covert')], rationale: 'Stealth operations and covert reconnaissance with exfiltration detection' },
     aegis: { signals: [hasHttp, code.includes('rate') || code.includes('limit')], rationale: 'Traffic-facing code needs adaptive DDoS shielding and bot detection' },
     cipher: { signals: [code.includes('encrypt') || code.includes('hash') || code.includes('key'), hasAuth], rationale: 'Cryptographic operations require managed key lifecycle and rotation' },
     recon: { signals: [hasHttp, code.includes('port') || code.includes('scan')], rationale: 'Network exposure requires continuous attack surface reconnaissance' },
