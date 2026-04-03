@@ -21,6 +21,7 @@ import {
   CreditCard,
   Package,
   Globe,
+  ScrollText,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { CmpsblLogo } from "@/components/CmpsblLogo";
