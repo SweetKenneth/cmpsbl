@@ -92,6 +92,7 @@ ${bodyContent}
 </html>`;
 }
 
+type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
 type ProcessingPrimitive = { name: string; status: 'pending' | 'active' | 'done' };
 
 const PHASE_META: { key: Phase; label: string; icon: React.ElementType }[] = [
