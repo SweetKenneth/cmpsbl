@@ -580,26 +580,48 @@
 
     <h3>5.1 Overview</h3>
 
-    <p>We present four verified case studies spanning three languages, four industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number and downloadable artifacts:</p>
+    <p>We present six verified case studies spanning four programming languages, five industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:</p>
 
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>#</th><th>Software</th><th>Language</th><th>Vertical</th><th>CJPI</th><th>Capabilities</th><th>Critical Findings</th></tr>
+          <tr><th>#</th><th>Software</th><th>Language</th><th>Vertical</th><th>CJPI</th><th>Serial</th><th>Fingerprint</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>PHP Agent Framework</td><td>PHP</td><td>Agentic AI</td><td>100 APEX</td><td>20 S-Tier</td><td>~$2.6M latent IP discovered</td></tr>
-          <tr><td>2</td><td>IBM Qiskit ConsolidateBlocks</td><td>Python</td><td>Quantum</td><td>98</td><td>20 S-Tier</td><td>Unguarded circuit optimization passes</td></tr>
-          <tr><td>3</td><td>HuggingFace Tokenizers</td><td>Python</td><td>LLM / ML</td><td>100 APEX</td><td>20 S-Tier</td><td><strong>Critical error-handling vulnerability</strong></td></tr>
-          <tr><td>4</td><td>OpenSSL tls13_enc.c</td><td>C</td><td>Cyber</td><td>100 APEX</td><td>20 S-Tier</td><td>Network timeout structural gap — hardened</td></tr>
+          <tr><td>1</td><td>A* Path Planner (PythonRobotics)</td><td>Python</td><td>Robotics</td><td>100 APEX</td><td><code>CMPSBL-MNJ3IKWL-PBKA</code></td><td><code>481694a088211ebe</code></td></tr>
+          <tr><td>2</td><td>PHP Agent Framework (OpenClawAgent)</td><td>PHP</td><td>Agentic AI</td><td>100 APEX</td><td><code>CMPSBL-MNIHJAX3-4GSN</code></td><td><code>29ecd3d616393105</code></td></tr>
+          <tr><td>3</td><td>IBM Qiskit ConsolidateBlocks</td><td>Python</td><td>Quantum</td><td>98</td><td><code>CMPSBL-MNJ4Y3JG-CQOW</code></td><td><code>09d1c4bea3108524</code></td></tr>
+          <tr><td>4</td><td>Metasploit Exploit::Remote::Tcp</td><td>Ruby</td><td>Cyber</td><td>100 APEX</td><td><code>CMPSBL-MNJ5AB71-71MP</code></td><td><code>f90f697548eab361</code></td></tr>
+          <tr><td>5</td><td>HuggingFace Tokenizers</td><td>Python</td><td>LLM / ML</td><td>100 APEX</td><td><code>CMPSBL-MNJ6GG7U-EBF7</code></td><td><code>2c8b3cbaef71cecd</code></td></tr>
+          <tr><td>6</td><td>OpenSSL tls13_enc.c</td><td>C</td><td>Cyber</td><td>100 APEX</td><td><code>CMPSBL-MNJB00F5-626R</code></td><td><code>b82607914337f881</code></td></tr>
         </tbody>
       </table>
     </div>
 
     <!-- ── Case Study 1 ── -->
-    <h3>5.2 Case Study 1: PHP Agent Framework</h3>
+    <h3>5.2 Case Study 1: A* Path Planner (PythonRobotics)</h3>
 
-    <p><strong>Subject:</strong> <code>OpenClawAgent.php</code> — an OpenAI-pattern autonomous agent framework implementing tool-use, memory persistence, and multi-step reasoning in PHP. Serial: CMPSBL-MNIHJAX3-4GSN.</p>
+    <p><strong>Subject:</strong> <code>a_star.py</code> — the A* path planning algorithm from <a href="https://github.com/AtsushiSakai/PythonRobotics" target="_blank" rel="noopener">PythonRobotics</a> (29K+ GitHub stars), the most-referenced robotics algorithms collection in academia and industry. Serial: CMPSBL-MNJ3IKWL-PBKA · Fingerprint: 481694a088211ebe.</p>
+    <p><strong>Classification:</strong> Python · 200+ lines · Depth Score 62/100 (moderate complexity, numerical computation heavy, no error handling on critical path).</p>
+
+    <div class="highlight-box">
+      <div class="label">Critical Discovery</div>
+      <p>
+        During Stage 5 collision, the CMPSBL Robotics™ Vertical primitives identified <strong>7 structural vulnerabilities</strong>
+        in the path planning implementation. The KINETIC primitive detected unbounded computation paths where the search could
+        run indefinitely on adversarial grid configurations. The ENVIRON primitive flagged missing environmental boundary
+        validation. The CALIBER primitive identified floating-point accumulation drift in the heuristic distance calculation
+        that could compound over long planning horizons.
+      </p>
+    </div>
+
+    <p><strong>Remediation:</strong> KINETIC iteration bounds with graceful timeout, ENVIRON environmental validation on all grid inputs, CALIBER numerical precision guards, FAILSAFE circuit breaker on computation budget, and BEACON health signals for planning quality metrics.</p>
+    <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 spine primitives and 10 CMPSBL Robotics™ Vertical expansion primitives.</p>
+
+    <!-- ── Case Study 2 ── -->
+    <h3>5.3 Case Study 2: PHP Agent Framework (OpenClawAgent)</h3>
+
+    <p><strong>Subject:</strong> <code>OpenClawAgent.php</code> — an OpenAI-pattern autonomous agent framework implementing tool-use, memory persistence, and multi-step reasoning in PHP. Serial: CMPSBL-MNIHJAX3-4GSN · Fingerprint: 29ecd3d616393105.</p>
     <p><strong>Classification:</strong> PHP · 312 lines · Depth Score 58/100 (moderate complexity, minimal error handling, extensive function dispatch surface).</p>
 
     <div class="highlight-box">
@@ -615,12 +637,12 @@
     </div>
 
     <p><strong>Remediation:</strong> Sovereign governance layer for data residency compliance, ghost defense shielding via SHADOW primitive, AUDIT immutable logging, CONSCIENCE ethical boundary enforcement, and DREAM sub-threshold synthesis for emergent reasoning patterns.</p>
-    <p><strong>Result:</strong> CJPI 100 (APEX classification). 20 S-Tier capabilities unlocked. Domain-specific primitive application demonstrated: WATCHTOWER for CMPSBL Cyber™ analysis and VECTOR for CMPSBL Robotics™ cross-pollination.</p>
+    <p><strong>Result:</strong> CJPI 100 (APEX classification). 20 S-Tier capabilities unlocked.</p>
 
-    <!-- ── Case Study 2 ── -->
-    <h3>5.3 Case Study 2: IBM Qiskit ConsolidateBlocks</h3>
+    <!-- ── Case Study 3 ── -->
+    <h3>5.4 Case Study 3: IBM Qiskit ConsolidateBlocks</h3>
 
-    <p><strong>Subject:</strong> <code>qiskit/transpiler/passes/optimization/consolidate_blocks.py</code> — the circuit optimization pass in IBM's Qiskit quantum computing framework. Serial: CMPSBL-MNJ4Y3JG-CQOW.</p>
+    <p><strong>Subject:</strong> <code>qiskit/transpiler/passes/optimization/consolidate_blocks.py</code> — the circuit optimization pass in IBM's Qiskit quantum computing framework. Serial: CMPSBL-MNJ4Y3JG-CQOW · Fingerprint: 09d1c4bea3108524.</p>
     <p><strong>Classification:</strong> Python · 189 lines · Depth Score 54/100 (moderate complexity, minimal error handling, high mathematical density).</p>
 
     <div class="highlight-box">
@@ -638,12 +660,33 @@
     <p><strong>Remediation:</strong> VERITAS numerical stability verification, ORACLE predictive optimization with backtracking search, CONSCIENCE topology-aware bias correction, FAILSAFE circuit breaker on optimization passes that degrade fidelity, and BEACON health signals for optimization quality metrics.</p>
     <p><strong>Result:</strong> CJPI 98 (S-Tier). 20 S-Tier capabilities unlocked — 10 spine primitives and 10 CMPSBL Quantum™ Vertical expansion primitives.</p>
 
-    <!-- ── Case Study 3 ── -->
-    <h3>5.4 Case Study 3: Hugging Face Tokenizers (Detailed)</h3>
+    <!-- ── Case Study 4 ── -->
+    <h3>5.5 Case Study 4: Metasploit Exploit::Remote::Tcp</h3>
+
+    <p><strong>Subject:</strong> <code>lib/msf/core/exploit/remote/tcp.rb</code> — the core TCP communication mixin from <a href="https://github.com/rapid7/metasploit-framework" target="_blank" rel="noopener">Metasploit Framework</a> (38K+ GitHub stars), the world's most-used penetration testing framework maintained by Rapid7. Serial: CMPSBL-MNJ5AB71-71MP · Fingerprint: f90f697548eab361.</p>
+    <p><strong>Classification:</strong> Ruby · 180+ lines · Depth Score 68/100 (moderate-high complexity, cyclomatic complexity 49, extensive network I/O surface).</p>
+
+    <div class="highlight-box">
+      <div class="label">Critical Discovery</div>
+      <p>
+        During Stage 5 collision, the CMPSBL Cyber™ Vertical detected <strong>9 structural vulnerabilities</strong>
+        in the TCP mixin — the irony being that a professional-grade security tool carried its own structural
+        security gaps. The AEGIS primitive identified unguarded socket operations where connection failures could
+        cascade without cleanup. The CIPHER primitive flagged plaintext credential patterns in the connection
+        metadata. The RECON primitive detected that the mixin's proxy chain implementation had no circuit-breaker
+        protection — a failing proxy would cause indefinite blocking across all dependent exploit modules.
+      </p>
+    </div>
+
+    <p><strong>Remediation:</strong> The full CMPSBL Cyber™ offensive and defensive stack: AEGIS threat detection on socket lifecycle, CIPHER encrypted credential handling, RECON proxy chain hardening, TEMPEST signal intelligence monitoring, and BULWARK defensive perimeter on connection pooling.</p>
+    <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The pen test tool that finds everyone else's vulnerabilities had its own — and the Cyber vertical gave the security tool its own security substrate.</p>
+
+    <!-- ── Case Study 5 ── -->
+    <h3>5.6 Case Study 5: Hugging Face Tokenizers (Detailed)</h3>
 
     <p>
       <strong>Subject:</strong> <code>tokenizers/__init__.py</code> — the entry point for Hugging Face's tokenization library,
-      downloaded 73M+ times monthly via PyPI. Serial: CMPSBL-MNJ6GG7U-EBF7.
+      downloaded 73M+ times monthly via PyPI. Serial: CMPSBL-MNJ6GG7U-EBF7 · Fingerprint: 2c8b3cbaef71cecd.
     </p>
     <p>
       <strong>Classification:</strong> Python · 101 lines · Depth Score 42/100 (moderate complexity, low error handling density).
@@ -667,15 +710,15 @@
     </p>
     <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 spine, 10 CMPSBL LLM™ Vertical expansion.</p>
 
-    <!-- ── Case Study 4 ── -->
-    <h3>5.5 Case Study 4: OpenSSL TLS 1.3 Encryption Engine</h3>
+    <!-- ── Case Study 6 ── -->
+    <h3>5.7 Case Study 6: OpenSSL TLS 1.3 Encryption Engine</h3>
 
     <p>
       <strong>Subject:</strong> <code>ssl/tls13_enc.c</code> — the TLS 1.3 encryption engine of
       <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener">OpenSSL</a>, widely regarded as the
       most audited security codebase on earth. OpenSSL secures an estimated 66% of all encrypted internet traffic and is
       maintained by a dedicated security team with hundreds of world-class cryptographers who have reviewed this file.
-      Serial: CMPSBL-MNJB00F5-626R.
+      Serial: CMPSBL-MNJB00F5-626R · Fingerprint: b82607914337f881.
     </p>
     <p>
       <strong>Classification:</strong> C · 965 lines · Depth Score 91/100 (very high complexity — cyclomatic complexity 185,
