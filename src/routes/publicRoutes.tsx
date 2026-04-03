@@ -38,6 +38,7 @@ const ProprietaryEvolution = lazy(() => import("@/pages/ProprietaryEvolution"));
 const AgentForge = lazy(() => import("@/pages/AgentForge"));
 const AgentPowerUp = lazy(() => import("@/pages/AgentPowerUp"));
 const RestorationShop = lazy(() => import("@/pages/RestorationShop"));
+const RestoreKit = lazy(() => import("@/pages/RestoreKit"));
 const DevTools = lazy(() => import("@/pages/DevTools"));
 const DeveloperAcademy = lazy(() => import("@/pages/DeveloperAcademy"));
 const VanillaDeveloperGuide = lazy(() => import("@/pages/VanillaDeveloperGuide"));
@@ -261,5 +262,10 @@ export const publicRoutes = (
     <Route path="/junkyard" element={<Navigate to="/foundry" replace />} />
     <Route path="/restoration-shop" element={<Navigate to="/ascension" replace />} />
     <Route path="/checkout/redirect" element={<CheckoutRedirect />} />
+    <Route path="/restore-kit" element={
+      <PinGate pin="4645" storageKey="restore_kit_unlock">
+        <RestoreKit />
+      </PinGate>
+    } />
   </>
 );
