@@ -133,5 +133,5 @@ export function isHomeSubstrate(): boolean {
  * Get the vertical domains registry for building portal links.
  */
 export function getVerticalDomains(): Record<string, string> {
-  return { ...VERTICAL_DOMAINS };
+  return getAllVerticalDomains();
 }
