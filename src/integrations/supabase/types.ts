@@ -18674,6 +18674,74 @@ export type Database = {
         Returns: boolean
       }
       is_disposable_email: { Args: { email_addr: string }; Returns: boolean }
+      lookup_restoration_by_fingerprint: {
+        Args: { p_fingerprint: string }
+        Returns: {
+          cjpi_score: number | null
+          cjpi_tier: string | null
+          created_at: string
+          fingerprint: string
+          id: string
+          original_code: string
+          original_language: string | null
+          report: Json
+          scan_result: Json
+          selected_primitives: Json
+          serial_number: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "restoration_sessions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      lookup_restoration_by_serial: {
+        Args: { p_serial: string }
+        Returns: {
+          cjpi_score: number | null
+          cjpi_tier: string | null
+          created_at: string
+          fingerprint: string
+          id: string
+          original_code: string
+          original_language: string | null
+          report: Json
+          scan_result: Json
+          selected_primitives: Json
+          serial_number: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "restoration_sessions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      lookup_vertical_ascension_by_fingerprint: {
+        Args: { p_fingerprint: string }
+        Returns: {
+          capabilities_added: string[] | null
+          completed_at: string | null
+          created_at: string
+          enhancement_archetypes: string[] | null
+          final_cjpi: number | null
+          fingerprint_id: string
+          id: string
+          metadata: Json | null
+          original_cjpi: number | null
+          primitives_applied: string[] | null
+          status: string
+          user_id: string | null
+          vertical_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "vertical_ascension_sessions"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
