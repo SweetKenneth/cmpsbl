@@ -9,7 +9,7 @@ import { EnhancedFooter } from '@/components/EnhancedFooter';
 import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Download, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical, Sparkles, Brain, ArrowRight } from 'lucide-react';
+import { Download, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical, Sparkles, Brain, ArrowRight, AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
