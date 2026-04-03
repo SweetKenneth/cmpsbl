@@ -2317,6 +2317,190 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+        {/* ══════════════ CASE STUDY #10: PyTorch ══════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mt-20">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-1 rounded">CASE STUDY #10</span>
+              <span className="text-xs font-mono bg-muted text-muted-foreground px-2 py-1 rounded">AI / DEEP LEARNING · LLM™ VERTICAL</span>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">Case Study #10: PyTorch torch.nn.functional</h2>
+              <p className="text-muted-foreground mt-1 text-sm font-mono">Serial: CMPSBL-MNJDRL4I-0DD8 · Fingerprint: 52e655af798050c8</p>
+            </div>
+
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <p className="text-muted-foreground leading-relaxed">
+                <code className="text-primary">functional.py</code> — the core functional interface for{' '}
+                <a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                  PyTorch
+                </a>{' '}
+                — Meta&apos;s open-source deep learning framework with{' '}
+                <strong className="text-foreground">99,000+ GitHub stars</strong>, and the mathematical foundation
+                underlying virtually every major AI model in production. This single file provides the functional API for
+                all neural network operations — convolutions, activations, normalization, loss functions, attention mechanisms,
+                and dropout — used by researchers and engineers at Meta, Google DeepMind, OpenAI, NVIDIA, and every major AI lab worldwide.
+                6,951 lines · Python · BSD-3-Clause · Copyright Meta Platforms, Inc.
+              </p>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: 'Lines', value: '6,951' },
+                { label: 'Complexity', value: '984' },
+                { label: 'Imports', value: '80' },
+                { label: 'CJPI', value: '100 APEX' },
+              ].map((m) => (
+                <div key={m.label} className="bg-muted/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{m.value}</p>
+                  <p className="text-xs text-muted-foreground">{m.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Critical Finding Highlight */}
+            <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+              <h3 className="text-sm font-bold text-destructive mb-2 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" /> CRITICAL FINDING
+              </h3>
+              <p className="text-sm text-foreground leading-relaxed">
+                The substrate identified unhandled asynchronous rejection patterns in PyTorch&apos;s core neural network operations library —
+                the mathematical foundation underlying every major AI model in production. In PyTorch&apos;s async execution model, GPU backend
+                failures can return control to the Python frontend without propagating errors, creating silent failure modes during model
+                training and inference that are invisible to conventional testing. This intersects with a CVE-confirmed code injection vector
+                (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-45907" target="_blank" rel="noopener noreferrer" className="text-primary underline">CVE-2022-45907</a>,
+                CVSS 9.8) in deprecated API surfaces that retain <code className="text-primary">eval</code>-based execution paths.
+              </p>
+            </div>
+
+            {/* Findings */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-primary" /> Structural Findings ({PYTORCH_VULNERABILITIES.length})
+              </h3>
+              <div className="space-y-2">
+                {PYTORCH_VULNERABILITIES.map((v, i) => (
+                  <div key={i} className="flex items-start gap-3 bg-muted/30 rounded-lg p-3">
+                    <span className={`mt-0.5 text-xs font-mono px-1.5 py-0.5 rounded ${v.severity === 'critical' ? 'bg-destructive/20 text-destructive' : v.severity === 'warning' ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.severity.toUpperCase()}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground">{v.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{v.details}</p>
+                    </div>
+                    <span className={`text-xs font-mono px-1.5 py-0.5 rounded ${v.status === 'hardened' ? 'bg-destructive/10 text-destructive' : v.status === 'mitigated' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Primitives */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" /> Primitives Applied ({PYTORCH_PRIMITIVES.length})
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {(showAllPytorchPrimitives ? PYTORCH_PRIMITIVES : PYTORCH_PRIMITIVES.slice(0, 8)).map((p, i) => (
+                  <span key={i} className="text-xs font-mono bg-muted px-2 py-1 rounded text-foreground">
+                    {p.name} <span className="text-muted-foreground">({p.type})</span>
+                  </span>
+                ))}
+              </div>
+              {PYTORCH_PRIMITIVES.length > 8 && (
+                <button
+                  className="text-xs text-primary mt-2 flex items-center hover:underline"
+                  onClick={() => setShowAllPytorchPrimitives(!showAllPytorchPrimitives)}
+                >
+                  {showAllPytorchPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all {PYTORCH_PRIMITIVES.length} primitives</>}
+                </button>
+              )}
+            </div>
+
+            {/* Capabilities */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" /> Capabilities Unlocked ({PYTORCH_CAPABILITIES.length})
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {PYTORCH_CAPABILITIES.map((c, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-muted/30 rounded-lg p-2.5">
+                    <span className="text-xs font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">{c.type}</span>
+                    <span className="text-sm text-foreground">{c.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Key Context */}
+            <div className="bg-muted/30 rounded-lg p-4 border border-border">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Why This Matters</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>First <strong className="text-foreground">Meta-authored</strong> code to pass through the Ascension™ pipeline</li>
+                <li>First <strong className="text-foreground">AI / Deep Learning vertical</strong> entry — the substrate analyzing the substrate&apos;s own infrastructure class</li>
+                <li>The <strong className="text-foreground">single largest and most complex artifact</strong> in the case study suite: 6,951 lines, cyclomatic complexity 984</li>
+                <li><strong className="text-foreground">CVE-2022-45907</strong> (CVSS 9.8 Critical): deprecated functions retain <code className="text-primary">eval</code>-based code injection paths via <code className="text-primary">torch.jit.annotations.parse_type_line</code>. Incomplete mitigation confirmed April 2025</li>
+                <li>Silent CUDA failures affect <strong className="text-foreground">every AI model</strong> built on PyTorch — from GPT to Stable Diffusion to Meta&apos;s own LLaMA</li>
+              </ul>
+            </div>
+
+            {/* Downloads + Refs */}
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Artifacts
+                </h3>
+                <div className="space-y-2">
+                  <a
+                    href="https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <FileCode className="w-4 h-4" /> View Original Source ↗
+                  </a>
+                  <a
+                    href="/downloads/case-studies/pytorch-ascended-CMPSBL-MNJDRL4I-0DD8.zip"
+                    download
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Download className="w-4 h-4" /> Download Ascended Artifact (.zip)
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'PyTorch Repository (99K+ ★)', url: 'https://github.com/pytorch/pytorch' },
+                    { label: 'torch.nn.functional Source', url: 'https://github.com/pytorch/pytorch/blob/main/torch/nn/functional.py' },
+                    { label: 'CVE-2022-45907 (CVSS 9.8)', url: 'https://nvd.nist.gov/vuln/detail/CVE-2022-45907' },
+                    { label: 'Incomplete Mitigation (GitHub #151233)', url: 'https://github.com/pytorch/pytorch/issues/151233' },
+                    { label: 'Silent CUDA Hang (GitHub #178491)', url: 'https://github.com/pytorch/pytorch/issues/178491' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
