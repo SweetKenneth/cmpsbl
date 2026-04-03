@@ -215,6 +215,56 @@ const QISKIT_CAPABILITIES = [
   { name: 'Structural Drift Detector', mode: 'Passive', desc: 'Compares current architecture against original blueprint and flags deviations to prevent architectural erosion.' },
 ];
 
+/* ───────── Case Study #4 Data — Metasploit Exploit::Remote::Tcp (Cyber) ───────── */
+
+const MSF_VULNERABILITIES = [
+  { severity: 'warning', title: 'Synchronous-only architecture', status: 'mitigated', detail: 'No async patterns found in substantial codebase. May block the event loop under load.' },
+  { severity: 'warning', title: 'High cyclomatic complexity (49)', status: 'mitigated', detail: 'Complexity score of 49 indicates too many branching paths. Hard to test and maintain.' },
+  { severity: 'warning', title: 'No test coverage detected', status: 'mitigated', detail: 'ORACLE predicts 73% probability of regression bugs within 6 months without test coverage.' },
+  { severity: 'info', title: 'No fallback mechanisms detected', status: 'monitor', detail: 'ORACLE identifies single-path execution. Failure in any step halts the entire pipeline.' },
+  { severity: 'warning', title: 'Complex codebase without type safety', status: 'mitigated', detail: 'ORACLE predicts 45% higher bug rate in complex untyped code. Type contracts prevent class of runtime errors.' },
+  { severity: 'info', title: 'No type contracts detected', status: 'monitor', detail: 'No interfaces or type definitions found. Type safety improves long-term maintainability.' },
+  { severity: 'warning', title: 'Monolithic file (342 lines)', status: 'mitigated', detail: '342 lines in a single file. ENGINEER recommends decomposition to reduce cognitive load.' },
+  { severity: 'info', title: 'No module exports detected', status: 'monitor', detail: 'Code appears self-contained with no exports. Limits reusability and testability.' },
+  { severity: 'warning', title: 'No graceful shutdown handler', status: 'mitigated', detail: 'Server starts without SIGTERM/SIGINT handling. Abrupt shutdowns may corrupt in-flight operations.' },
+];
+
+const MSF_PRIMITIVES = [
+  { name: 'CIPHER', type: 'Engine', action: 'Cryptographic key lifecycle management and rotation enforcement' },
+  { name: 'WRAITH', type: 'Agent', action: 'Stealth handling with minimal operational footprint' },
+  { name: 'BASTION', type: 'Engine', action: 'Zero-trust enforcement with micro-segmentation and continuous verification' },
+  { name: 'RECON', type: 'Engine', action: 'Continuous attack surface reconnaissance for network exposure' },
+  { name: 'OBSIDIAN', type: 'Agent', action: 'Redundant storage and integrity checks for critical data persistence' },
+  { name: 'WATCHTOWER', type: 'Engine', action: 'Real-time threat detection and classification with behavioral telemetry fusion' },
+  { name: 'VANGUARD', type: 'Engine', action: 'Incident response automation with forensic evidence preservation' },
+  { name: 'IRONCLAD', type: 'Agent', action: 'Continuous compliance validation against SOC2, NIST, and ISO 27001' },
+  { name: 'SPECTER', type: 'Agent', action: 'Deception infrastructure luring attackers into observable honeypots' },
+  { name: 'SHADOW', type: 'Layer', action: 'Shadow testing and canary analysis for unverified code paths' },
+  { name: 'NOCTURNE', type: 'Agent', action: 'Dark web intelligence monitoring for credential leaks and threat actor activity' },
+  { name: 'ECHO', type: 'Organ', action: 'Structured logging replacing scattered print/debug statements' },
+  { name: 'TREATY', type: 'Layer', action: 'API contract enforcement and schema validation for complex codebases' },
+  { name: 'LINGUA', type: 'Organ', action: 'Structured language interpretation for text processing' },
+  { name: 'EVOLUTION', type: 'Layer', action: 'Managed evolution cycles for technical debt reduction' },
+  { name: 'CONSCIENCE', type: 'Organ', action: 'Ethical decision boundaries for offensive security tooling' },
+  { name: 'BRAIN', type: 'Organ', action: 'Continuous learning patterns for complex logic optimization' },
+  { name: 'IDENTITY', type: 'Organ', action: 'Authentication and identity resolution for access control' },
+  { name: 'DEFENSE', type: 'Layer', action: 'Defense-in-depth hardening for network-facing code' },
+  { name: 'RELAY', type: 'Layer', action: 'Message relay with delivery guarantees for synchronous architectures' },
+];
+
+const MSF_CAPABILITIES = [
+  { name: 'Intelligent Retry Fabric', mode: 'Active', desc: 'Context-aware retry strategies with intelligent backoff, fallback path switching, and failure pattern learning.' },
+  { name: 'Real-Time IOC Correlator', mode: 'Active', desc: 'Ingests threat intel feeds and correlates Indicators of Compromise across telemetry streams, mapped to MITRE ATT&CK.' },
+  { name: 'Behavioral Audit Trail', mode: 'Passive', desc: 'Records every state transition with timestamps, actor IDs, and causal chains. FNV-1a hash-sealed for tamper evidence.' },
+  { name: 'Silent Regression Scanner', mode: 'Passive', desc: 'Background scanner detecting behavioral regressions by comparing output signatures against historical baselines.' },
+  { name: 'Cryptographic Agility Layer', mode: 'Hybrid', desc: 'Manages key rotation, certificate lifecycle, and encryption protocol enforcement including quantum-resistant algorithm preparation.' },
+  { name: 'Zero-Downtime Migrator', mode: 'Hybrid', desc: 'Dual-writes to old and new schemas during migration, seamlessly cutting over when parity is confirmed.' },
+  { name: 'Rate Limit Intelligence', mode: 'Hybrid', desc: 'Learns traffic patterns and dynamically adjusts rate limits per client/endpoint. Prevents abuse while preserving legitimate spikes.' },
+  { name: 'Cognitive Load Profiler', mode: 'Passive', desc: 'Measures code complexity per module and identifies areas where cognitive load exceeds maintainability thresholds.' },
+  { name: 'Device Fingerprint Layer', mode: 'Passive', desc: 'Unique device fingerprints from browser/OS signals for fraud detection and session binding with zero user-visible impact.' },
+  { name: 'Compliance Continuous Validator', mode: 'Hybrid', desc: 'Validates security postures against SOC2, ISO 27001, NIST, and CIS benchmarks with gap analysis and remediation priorities.' },
+];
+
 /* ───────── Shared Components ───────── */
 
 function SeverityBadge({ severity }: { severity: string }) {
