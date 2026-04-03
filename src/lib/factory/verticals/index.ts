@@ -51,55 +51,74 @@ import { getCyberSecuritySubstrate } from './cybersecurity';
 import { getRoboticsSubstrate } from './robotics';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
+import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
 
-/** All registered vertical substrates */
+/** All registered vertical substrates (static) */
 const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['cyber-v1', getCyberSecuritySubstrate],
   ['robo-v1', getRoboticsSubstrate],
 ]);
 
-/** Domain to vertical ID mapping */
+/** Domain to vertical ID mapping (static) */
 const DOMAIN_VERTICAL_MAP = new Map<SpecialtyDomain, string>([
   ['security', 'cyber-v1'],
   ['robotics', 'robo-v1'],
 ]);
 
 /**
- * Get a vertical substrate by its ID
+ * Get a vertical substrate by its ID (checks static + dynamic)
  */
 export function getVerticalSubstrate(verticalId: string): VerticalSubstrateConfig | null {
   const factory = VERTICAL_REGISTRY.get(verticalId);
-  return factory ? factory() : null;
+  if (factory) return factory();
+  const dynamic = getDynamicVerticalById(verticalId);
+  return dynamic?.config ?? null;
 }
 
 /**
- * Get vertical substrate by domain
+ * Get vertical substrate by domain (checks static + dynamic)
  */
 export function getVerticalByDomain(domain: SpecialtyDomain): VerticalSubstrateConfig | null {
   const verticalId = DOMAIN_VERTICAL_MAP.get(domain);
-  return verticalId ? getVerticalSubstrate(verticalId) : null;
+  if (verticalId) return getVerticalSubstrate(verticalId);
+  // Check dynamic verticals by domain
+  const allDynamic = getAllDynamicVerticals();
+  const match = allDynamic.find(rv => rv.config.domain === domain);
+  return match?.config ?? null;
 }
 
 /**
- * Get all registered vertical IDs
+ * Get all registered vertical IDs (static + dynamic)
  */
 export function getRegisteredVerticals(): string[] {
-  return Array.from(VERTICAL_REGISTRY.keys());
+  const staticIds = Array.from(VERTICAL_REGISTRY.keys());
+  const dynamicIds = getAllDynamicVerticals().map(rv => rv.config.verticalId);
+  return [...staticIds, ...dynamicIds];
 }
 
 /**
  * Get all vertical substrate configs (for portal page)
  */
 export function getAllVerticalConfigs(): VerticalSubstrateConfig[] {
-  return Array.from(VERTICAL_REGISTRY.values()).map(factory => factory());
+  const staticConfigs = Array.from(VERTICAL_REGISTRY.values()).map(factory => factory());
+  const dynamicConfigs = getAllDynamicVerticals().map(rv => rv.config);
+  return [...staticConfigs, ...dynamicConfigs];
 }
 
 /**
- * Resolve a subdomain to its vertical substrate config
+ * Resolve a subdomain to its vertical substrate config (static + dynamic)
  */
 export function resolveSubdomainVertical(hostname: string): VerticalSubstrateConfig | null {
+  // Check static verticals
   for (const [, factory] of VERTICAL_REGISTRY) {
     const config = factory();
+    if (hostname === `${config.subdomain}.cmpsbl.com` || hostname === `www.${config.subdomain}.cmpsbl.com`) {
+      return config;
+    }
+  }
+  // Check dynamic verticals
+  for (const rv of getAllDynamicVerticals()) {
+    const config = rv.config;
     if (hostname === `${config.subdomain}.cmpsbl.com` || hostname === `www.${config.subdomain}.cmpsbl.com`) {
       return config;
     }

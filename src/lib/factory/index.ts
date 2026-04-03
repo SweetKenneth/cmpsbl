@@ -175,6 +175,28 @@ export {
   type SpecialtySubstrate,
 } from './specialty-substrates';
 
+// Vertical Factory Engine (Meta-Engine)
+export {
+  instantiateVertical,
+  validateVerticalSpec,
+  getDynamicVertical,
+  getDynamicVerticalById,
+  getAllDynamicVerticals,
+  getDynamicPortalEntries,
+  getDynamicSSODomains,
+  getDynamicVerticalPrimitives,
+  getDynamicCrownJewels,
+  getDynamicSignalMap,
+  isDynamicVertical,
+  getTotalVerticalCount,
+  type VerticalFactoryInput,
+  type VerticalManifest,
+  type VerticalActivationChecklist,
+  type VerticalPortalEntry,
+  type VerticalEngineSpec,
+  type VerticalAgentSpec,
+} from './vertical-factory-engine';
+
 // Node Engine
 export {
   validateCreationRequest,

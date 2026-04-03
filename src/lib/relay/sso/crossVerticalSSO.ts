@@ -22,11 +22,22 @@
 const SSO_FRAGMENT_KEY = 'cmpsbl_sso';
 const SSO_EXPIRY_MS = 30_000; // 30 seconds
 
-/** Known vertical subdomains */
-const VERTICAL_DOMAINS: Record<string, string> = {
+/** Known vertical subdomains (static) */
+const STATIC_VERTICAL_DOMAINS: Record<string, string> = {
   security: 'security.cmpsbl.com',
   robotics: 'robotics.cmpsbl.com',
 };
+
+/** Lazy import to avoid circular deps — merged at query time */
+function getAllVerticalDomains(): Record<string, string> {
+  try {
+    // Dynamic verticals discovered from the factory engine
+    const { getDynamicSSODomains } = require('@/lib/factory/vertical-factory-engine');
+    return { ...STATIC_VERTICAL_DOMAINS, ...getDynamicSSODomains() };
+  } catch {
+    return { ...STATIC_VERTICAL_DOMAINS };
+  }
+}
 
 export interface SSORelayToken {
   accessToken: string;
@@ -96,7 +107,8 @@ export function extractSSOToken(): SSORelayToken | null {
  */
 export function detectVertical(): string | null {
   const hostname = window.location.hostname;
-  for (const [key, domain] of Object.entries(VERTICAL_DOMAINS)) {
+  const domains = getAllVerticalDomains();
+  for (const [key, domain] of Object.entries(domains)) {
     if (hostname === domain || hostname.startsWith(`${key}.`)) {
       return key;
     }
@@ -121,5 +133,5 @@ export function isHomeSubstrate(): boolean {
  * Get the vertical domains registry for building portal links.
  */
 export function getVerticalDomains(): Record<string, string> {
-  return { ...VERTICAL_DOMAINS };
+  return getAllVerticalDomains();
 }

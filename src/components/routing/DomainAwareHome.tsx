@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { getVerticalSubdomain } from "@/config/domains";
+import { isDynamicVertical } from "@/lib/factory/vertical-factory-engine";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
@@ -11,6 +12,7 @@ const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
  * - promptfluid.com → PromptFluid landing (parent company)
  * - security.cmpsbl.com → CMPSBL CYBER™ (custom security landing)
  * - robotics.cmpsbl.com → CMPSBL ROBOTICS™ (custom robotics landing)
+ * - {dynamic}.cmpsbl.com → Dynamic vertical substrate landing
  * - cmpsbl.com (default) → Factory-era CMPSBL homepage
  */
 function isPromptFluidDomain(): boolean {
@@ -46,6 +48,7 @@ export default function DomainAwareHome() {
     );
   }
 
+  // Dynamic verticals from the factory engine + generic fallback
   if (verticalKey) {
     const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
     return (

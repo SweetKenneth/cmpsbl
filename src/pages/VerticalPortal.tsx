@@ -9,13 +9,19 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
+import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory/vertical-factory-engine";
 
-const VERTICALS = [
+/** Map icon names to Lucide components */
+const ICON_MAP: Record<string, LucideIcon> = {
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe,
+};
+
+const STATIC_VERTICALS = [
   {
     id: 'security',
     name: 'CMPSBL CYBER™',
@@ -25,7 +31,7 @@ const VERTICALS = [
     accentColor: 'hsl(0 85% 55%)',
     primitiveCount: 16,
     capabilityCount: '130+',
-    status: 'Active',
+    status: 'Active' as const,
   },
   {
     id: 'robotics',
@@ -36,12 +42,30 @@ const VERTICALS = [
     accentColor: 'hsl(200 100% 55%)',
     primitiveCount: 16,
     capabilityCount: '130+',
-    status: 'Active',
+    status: 'Active' as const,
   },
 ];
 
+/** Merge static + dynamic verticals */
+function useAllVerticals() {
+  const dynamicEntries = getDynamicPortalEntries();
+  const dynamicMapped = dynamicEntries.map(d => ({
+    id: d.id,
+    name: d.name,
+    tagline: d.tagline,
+    url: d.url,
+    icon: ICON_MAP[d.iconName] ?? Globe,
+    accentColor: d.accentColor,
+    primitiveCount: d.primitiveCount,
+    capabilityCount: d.capabilityCount,
+    status: d.status,
+  }));
+  return [...STATIC_VERTICALS, ...dynamicMapped];
+}
+
 export default function VerticalPortal() {
   const { session } = useAuth();
+  const VERTICALS = useAllVerticals();
 
   const handleVisitVertical = (url: string) => {
     if (session?.access_token && session?.refresh_token) {
@@ -133,17 +157,25 @@ export default function VerticalPortal() {
             ))}
           </div>
 
-          {/* Coming soon */}
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-2">More verticals coming soon</p>
-            <div className="flex flex-wrap gap-2 justify-center">
-              {['Health', 'Fintech', 'Legal', 'Gaming', 'Education'].map(v => (
-                <span key={v} className="px-3 py-1 text-xs font-mono rounded-full border border-border/50 text-muted-foreground/50">
-                  {v}
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Coming soon — filter out verticals that are already active */}
+          {(() => {
+            const activeIds = new Set(VERTICALS.map(v => v.id));
+            const upcoming = ['Health', 'Fintech', 'Legal', 'Gaming', 'Education']
+              .filter(v => !activeIds.has(v.toLowerCase()));
+            if (upcoming.length === 0) return null;
+            return (
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground mb-2">More verticals coming soon</p>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {upcoming.map(v => (
+                    <span key={v} className="px-3 py-1 text-xs font-mono rounded-full border border-border/50 text-muted-foreground/50">
+                      {v}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
     </>
