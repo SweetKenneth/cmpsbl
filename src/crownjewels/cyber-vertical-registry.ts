@@ -33,40 +33,40 @@ function cj(
    ENGINES (8 × 5 = 40 Crown Jewels)
    ═══════════════════════════════════════════════ */
 
-// ── SENTINEL ──
-const SENTINEL_JEWELS: STierEntry[] = [
-  cj(242, 'S-SENT01', 'Behavioral Telemetry Fusion Matrix', 96, 'SENTINEL',
+// ── WATCHTOWER ──
+const WATCHTOWER_JEWELS: STierEntry[] = [
+  cj(242, 'S-SENT01', 'Behavioral Telemetry Fusion Matrix', 96, 'WATCHTOWER',
     'Merges heterogeneous telemetry streams (syslog, netflow, EDR, cloud audit) into a unified behavioral model. Applies temporal correlation windows with configurable decay to surface multi-stage attack patterns invisible to single-source analysis.',
     'a1b2c3d4'),
-  cj(243, 'S-SENT02', 'MITRE ATT&CK Live Mapper', 95, 'SENTINEL',
+  cj(243, 'S-SENT02', 'MITRE ATT&CK Live Mapper', 95, 'WATCHTOWER',
     'Real-time classification engine that maps observed behaviors to MITRE ATT&CK techniques, tactics, and sub-techniques. Maintains a rolling heat map of adversary TTPs with confidence-weighted attribution chains.',
     'a2b3c4d5'),
-  cj(244, 'S-SENT03', 'Adaptive IOC Correlation Engine', 97, 'SENTINEL',
+  cj(244, 'S-SENT03', 'Adaptive IOC Correlation Engine', 97, 'WATCHTOWER',
     'Cross-correlates indicators of compromise across temporal, spatial, and contextual dimensions using graph-based similarity scoring. Auto-promotes high-fidelity IOCs to block lists while suppressing noise through Bayesian false-positive calibration.',
     'a3b4c5d6'),
-  cj(245, 'S-SENT04', 'Threat Severity Scoring Kernel', 94, 'SENTINEL',
+  cj(245, 'S-SENT04', 'Threat Severity Scoring Kernel', 94, 'WATCHTOWER',
     'Multi-factor threat scoring algorithm combining asset criticality, exploitability, blast radius, and threat actor sophistication into a single severity index. Feeds into automated escalation and containment policies.',
     'a4b5c6d7'),
-  cj(246, 'S-SENT05', 'Anomaly Drift Detector', 95, 'SENTINEL',
+  cj(246, 'S-SENT05', 'Anomaly Drift Detector', 95, 'WATCHTOWER',
     'Detects gradual behavioral drift in network baselines using exponential moving average divergence analysis. Distinguishes between organic infrastructure changes and low-and-slow adversary activity.',
     'a5b6c7d8'),
 ];
 
-// ── PHANTOM ──
-const PHANTOM_JEWELS: STierEntry[] = [
-  cj(247, 'S-PHN01', 'Stealth Exfiltration Fingerprinter', 96, 'PHANTOM',
+// ── SHADE ──
+const SHADE_JEWELS: STierEntry[] = [
+  cj(247, 'S-PHN01', 'Stealth Exfiltration Fingerprinter', 96, 'SHADE',
     'Identifies data exfiltration patterns through DNS tunneling, steganography, and covert channel analysis. Uses statistical frequency analysis on packet timing to detect sub-bandwidth exfil attempts.',
     'b1c2d3e4'),
-  cj(248, 'S-PHN02', 'Lateral Movement Graph Tracer', 95, 'PHANTOM',
+  cj(248, 'S-PHN02', 'Lateral Movement Graph Tracer', 95, 'SHADE',
     'Constructs real-time lateral movement graphs from authentication logs, RDP sessions, and SMB traffic. Identifies pivot points and predicts next-hop targets using Markov chain transition probabilities.',
     'b2c3d4e5'),
-  cj(249, 'S-PHN03', 'Covert Channel Spectral Analyzer', 94, 'PHANTOM',
+  cj(249, 'S-PHN03', 'Covert Channel Spectral Analyzer', 94, 'SHADE',
     'Applies spectral analysis to network traffic patterns to detect covert channels hidden in legitimate protocol exchanges. Identifies timing-based, storage-based, and hybrid covert communication mechanisms.',
     'b3c4d5e6'),
-  cj(250, 'S-PHN04', 'Silent Probe Orchestrator', 93, 'PHANTOM',
+  cj(250, 'S-PHN04', 'Silent Probe Orchestrator', 93, 'SHADE',
     'Coordinates passive reconnaissance probes that operate below detection thresholds by distributing observation points across multiple vantage points with randomized timing and minimal footprint.',
     'b4c5d6e7'),
-  cj(251, 'S-PHN05', 'Adversary Dwell-Time Calculator', 95, 'PHANTOM',
+  cj(251, 'S-PHN05', 'Adversary Dwell-Time Calculator', 95, 'SHADE',
     'Reverse-engineers adversary dwell time by correlating initial compromise indicators with lateral movement timelines. Produces probabilistic breach-age estimates for incident response prioritization.',
     'b5c6d7e8'),
 ];
@@ -240,7 +240,7 @@ const SPECTER_JEWELS: STierEntry[] = [
     'Manages full-stack decoy environments including fake databases, credential stores, and API endpoints. Routes attacker traffic through instrumented observation paths.',
     'k3l4m5n6'),
   cj(295, 'S-SPC04', 'Attacker Behavior Profiler', 96, 'SPECTER',
-    'Profiles attacker behavior within deception environments capturing tool usage, exploitation techniques, and objective patterns. Feeds intelligence back to SENTINEL for detection rule generation.',
+    'Profiles attacker behavior within deception environments capturing tool usage, exploitation techniques, and objective patterns. Feeds intelligence back to WATCHTOWER for detection rule generation.',
     'k4l5m6n7'),
   cj(296, 'S-SPC05', 'Deception Confidence Calibrator', 93, 'SPECTER',
     'Measures the effectiveness of deception deployments by tracking interaction rates, dwell times, and attacker engagement depth. Optimizes deception placement through A/B testing.',
@@ -346,8 +346,8 @@ const BULWARK_JEWELS: STierEntry[] = [
 /* ─── Assembled Registry ─── */
 
 export const CYBER_CROWN_JEWELS: STierEntry[] = [
-  ...SENTINEL_JEWELS,
-  ...PHANTOM_JEWELS,
+  ...WATCHTOWER_JEWELS,
+  ...SHADE_JEWELS,
   ...AEGIS_JEWELS,
   ...CIPHER_JEWELS,
   ...RECON_JEWELS,

@@ -89,21 +89,21 @@ const LIDAR_JEWELS: STierEntry[] = [
     't5u6v7w8'),
 ];
 
-// ── FORGE ──
-const FORGE_JEWELS: STierEntry[] = [
-  cj(415, 'S-FRG01', 'Predictive Maintenance Scheduler', 97, 'FORGE',
+// ── FABRICATOR ──
+const FABRICATOR_JEWELS: STierEntry[] = [
+  cj(415, 'S-FRG01', 'Predictive Maintenance Scheduler', 97, 'FABRICATOR',
     'Forecasts component failure timelines using Weibull distribution modeling on vibration, temperature, and cycle-count data. Generates optimal replacement schedules minimizing downtime.',
     'u1v2w3x4'),
-  cj(416, 'S-FRG02', 'Additive Manufacturing Parameter Optimizer', 96, 'FORGE',
+  cj(416, 'S-FRG02', 'Additive Manufacturing Parameter Optimizer', 96, 'FABRICATOR',
     'Optimizes 3D printing parameters (layer height, infill, speed, temperature) through design-of-experiment analysis to maximize part strength while minimizing material usage and print time.',
     'u2v3w4x5'),
-  cj(417, 'S-FRG03', 'Digital Twin Synchronizer', 95, 'FORGE',
+  cj(417, 'S-FRG03', 'Digital Twin Synchronizer', 95, 'FABRICATOR',
     'Maintains real-time digital twin models of physical robot assemblies by synchronizing sensor data, wear models, and operational parameters with sub-millisecond latency.',
     'u3v4w5x6'),
-  cj(418, 'S-FRG04', 'Thermal Stress Analyzer', 94, 'FORGE',
+  cj(418, 'S-FRG04', 'Thermal Stress Analyzer', 94, 'FABRICATOR',
     'Simulates thermal expansion and stress distribution across mechanical assemblies to predict deformation, identify hotspots, and recommend cooling strategies.',
     'u4v5w6x7'),
-  cj(419, 'S-FRG05', 'Component Lifecycle Tracker', 95, 'FORGE',
+  cj(419, 'S-FRG05', 'Component Lifecycle Tracker', 95, 'FABRICATOR',
     'Tracks full lifecycle of every mechanical component from manufacture through installation, operation, maintenance, and eventual replacement. Maintains cryptographic provenance chains.',
     'u5v6w7x8'),
 ];
@@ -348,7 +348,7 @@ export const ROBOTICS_CROWN_JEWELS: STierEntry[] = [
   ...SERVO_JEWELS,
   ...KINETIC_JEWELS,
   ...LIDAR_JEWELS,
-  ...FORGE_JEWELS,
+  ...FABRICATOR_JEWELS,
   ...FLUX_JEWELS,
   ...VECTOR_JEWELS,
   ...TENSOR_JEWELS,

@@ -7,7 +7,7 @@
  *   SERVO    — Motor control and actuator orchestration
  *   KINETIC  — Motion planning and trajectory optimization
  *   LIDAR    — Spatial perception and 3D point cloud mapping
- *   FORGE    — Hardware fabrication and component lifecycle
+ *   FABRICATOR — Hardware fabrication and component lifecycle
  *   FLUX     — Power management and energy distribution
  *   VECTOR   — Navigation, pathfinding, and localization
  *   TENSOR   — Sensor fusion and multi-modal signal processing
@@ -86,8 +86,8 @@ const ROBO_ENGINES: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'FORGE',
-    name: 'FORGE',
+    id: 'FABRICATOR',
+    name: 'FABRICATOR',
     role: 'engine',
     description: 'Hardware fabrication and component lifecycle engine. Manages CAD-to-part pipelines, additive manufacturing parameters, and predictive maintenance schedules.',
     inherited: false,
