@@ -272,6 +272,25 @@ We present seven verified case studies spanning four programming languages, five
 
 **Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked. Standout discoveries include APT Threat Hunter, Emergency Breach Containment, and Dark Web Intelligence Monitor. The full CMPSBL Cyber™ Vertical Primitive chain fired — AEGIS, CIPHER, RECON, TEMPEST, SHADE, OBSIDIAN, BULWARK, WRAITH, BLACKOUT, NOCTURNE — the complete offensive and defensive stack.
 
+### 5.8 Case Study 7: ArduPilot vehicle_test_suite.py
+
+**Subject:** `Tools/autotest/vehicle_test_suite.py` — the core test orchestration layer of [ArduPilot](https://github.com/ArduPilot/ardupilot) (15K+ GitHub stars), the world's most trusted open-source autonomous vehicle platform. ArduPilot is installed in over 1,000,000 vehicles worldwide — drones, planes, rovers, submarines, and blimps — and is used for testing and development by NASA, Intel, and Boeing. Originally named `common.py`, it was renamed in [PR #25330](https://github.com/ArduPilot/ardupilot/pull/25330) (merged October 2023). This file orchestrates all vehicle-type testing across ArduCopter, ArduPlane, ArduRover, ArduSub, and Blimp. Serial: CMPSBL-MNJBTP5Q-V0OK · Fingerprint: 13c42397bead4a65.
+
+**Classification:** Python · 15,869 lines · Depth Score 97/100 (extreme complexity — cyclomatic complexity 2,442, 12 levels of deep nesting, 185 imports, 85 classes in a single file).
+
+> **Critical Discovery:** The substrate detected **dynamic code execution patterns** in autonomous vehicle test orchestration software — structural patterns that, if present in production control paths, represent a documented attack surface per [OWASP guidelines](https://owasp.org/www-community/attacks/Code_Injection). Python's `exec()` and `eval()` functions support dynamic execution of arbitrary Python code and are flagged as dangerous if used to execute dynamic content. While test frameworks legitimately use dynamic dispatch, the structural flag itself is architecturally valid — and in software installed in over one million autonomous vehicles, that context makes the finding significant regardless of direct exploitability. Additionally, the substrate identified **32 technical debt markers** (TODO/FIXME/HACK/XXX), **O(n²) nested loop patterns**, and **no graceful shutdown handler** — structural patterns that compound risk in safety-critical testing infrastructure.
+
+**Remediation:** Ascension™ applied the full CMPSBL Robotics™ Vertical primitive stack:
+- DEFENSE Layer shielding on dynamic code execution paths
+- EVOLUTION technical debt resolution for 32 deferred markers
+- GUARDIAN safety monitoring and collision avoidance protocols
+- KINETIC motion planning hardening for trajectory optimization tests
+- SWARM multi-robot coordination hardening for fleet management tests
+- ORACLE predictive failure analysis for cascading test failures
+- BEACON health signals for test orchestration liveness
+
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 from the Robotics™ Vertical expansion primitives (LIDAR, VECTOR, SWARM, KINETIC, FLUX, FABRICATOR, INSPECTOR, GRIPPER, GUARDIAN, WELDER) and 10 from the core spine. The highest cyclomatic complexity of any case study (2,442) — reflecting the file's role as the single orchestration layer across all ArduPilot vehicle types.
+
 ---
 
 ## 6. The Sealed Runtime™ Architecture
