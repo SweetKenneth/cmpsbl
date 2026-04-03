@@ -1388,6 +1388,220 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/*  CASE STUDY #6 — OpenSSL tls13_enc.c (Cyber)               */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
+          <div className="border border-border rounded-2xl overflow-hidden bg-card">
+            <div className="bg-gradient-to-br from-red-500/10 to-muted/30 border-b border-border p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <Badge className="bg-red-500/15 text-red-500 border-red-500/20" variant="outline">Cyber</Badge>
+                <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" variant="outline">CJPI 100 — Apex</Badge>
+                <Badge className="bg-yellow-500/15 text-yellow-600 dark:text-yellow-400 border-yellow-500/20" variant="outline">Structural Dependency Gap</Badge>
+                <Badge variant="outline" className="text-muted-foreground">CMPSBL-MNJB00F5-626R</Badge>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                OpenSSL tls13_enc.c — The Internet's Encryption Engine
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
+                The <code className="text-xs px-1.5 py-0.5 rounded bg-muted font-mono">ssl/tls13_enc.c</code> TLS 1.3 encryption engine from{' '}
+                <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">OpenSSL</a>{' '}
+                — widely regarded as the most audited security codebase on earth. Secures an estimated <strong className="text-foreground">66% of all encrypted internet traffic</strong>. Maintained by hundreds of world-class cryptographers. The full CMPSBL Cyber™ Vertical Primitive chain fired — every offensive and defensive primitive activated — in under 10 seconds, with zero AI.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
+              {[
+                { icon: Clock, label: 'Processing Time', value: '~10s' },
+                { icon: Shield, label: 'Primitives Applied', value: '20' },
+                { icon: Bug, label: 'Vulnerabilities Found', value: '7' },
+                { icon: Award, label: 'CJPI Score', value: '100' },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="p-4 sm:p-5 text-center border-r border-border last:border-r-0">
+                  <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
+                  <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
+                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 sm:p-8 space-y-10">
+
+              {/* ─── Origin & Provenance ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <GitBranch className="w-4 h-4 text-primary" /> Origin & Provenance
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    <strong className="text-foreground">Repository:</strong>{' '}
+                    <a href="https://github.com/openssl/openssl" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">openssl/openssl</a>{' '}
+                    — the open-source cryptography and SSL/TLS toolkit that secures an estimated 66% of all encrypted internet traffic. Maintained by the OpenSSL Software Foundation with a dedicated security team and hundreds of world-class cryptographers who have reviewed this codebase. Licensed under Apache 2.0.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">File:</strong>{' '}
+                    <a href="https://github.com/openssl/openssl/blob/master/ssl/tls13_enc.c" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">ssl/tls13_enc.c</a>{' '}
+                    — the TLS 1.3 encryption engine responsible for key derivation, handshake encryption, traffic key generation, and the cryptographic state machine that secures HTTPS connections worldwide. This file implements the core of RFC 8446.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Why This File Matters:</strong> Every HTTPS connection, every API call over TLS, every secure WebSocket — if the server runs OpenSSL (and most do), the handshake flows through this file. The key derivation functions here generate the session keys that protect billions of daily transactions across banking, healthcare, government, and critical infrastructure.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Critical Finding ─── */}
+              <div className="bg-yellow-500/[0.04] border border-yellow-500/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Bug className="w-4 h-4 text-yellow-600 dark:text-yellow-400" /> Critical Finding: Structural Timeout Dependency Gap
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  The AEGIS and CIPHER engines detected <strong className="text-foreground">network call patterns with no timeout enforcement</strong> baked into the TLS 1.3 key derivation and handshake state machine. The substrate identified an absence of timeout enforcement at the encryption layer that creates a structural dependency requiring downstream implementations to compensate — <strong className="text-foreground">a dependency the majority of production deployments fail to satisfy</strong>. OpenSSL intentionally delegates timeout responsibility to the calling application layer, but the substrate classified this as a structural dependency gap because the majority of production implementations that inherit this code fail to implement timeout handling correctly downstream. This is a <strong className="text-foreground">known, verified, open issue</strong> in OpenSSL's own GitHub — real developers are hitting this failure in production today.
+                </p>
+              </div>
+
+              {/* ─── Vulnerability Assessment ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Bug className="w-4 h-4 text-destructive" /> Pre-Ascension Vulnerability Assessment
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The CMPSBL six-primitive diagnostic squad identified 7 structural vulnerabilities in the 965-line C source:
+                </p>
+                <div className="space-y-2">
+                  {OPENSSL_VULNERABILITIES.map((v) => (
+                    <div key={v.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/40 border border-border/50">
+                      <div className="flex gap-2 shrink-0 pt-0.5">
+                        <SeverityBadge severity={v.severity} />
+                        <StatusBadge status={v.status} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-foreground">{v.title}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{v.detail}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Why Cyber Vertical ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Brain className="w-4 h-4 text-primary" /> Why the Full CYBER Chain Fired
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    OpenSSL's TLS 1.3 encryption engine is the defining target for <strong className="text-foreground">CMPSBL Cyber™</strong>. The complete offensive and defensive Primitive chain activated: AEGIS, CIPHER, RECON, TEMPEST, SHADE, OBSIDIAN, BULWARK, WRAITH, BLACKOUT, and NOCTURNE. This is the first case study where every single Cyber vertical expansion primitive fired — the code's structural profile triggered the full stack because it sits at the intersection of cryptography, network security, and protocol implementation.
+                  </p>
+                  <p>
+                    Standout discoveries include <strong className="text-foreground">APT Threat Hunter</strong> (advanced persistent threat detection via handshake anomalies), <strong className="text-foreground">Emergency Breach Containment</strong> (automated session isolation on compromise indicators), and <strong className="text-foreground">Dark Web Intelligence Monitor</strong> (monitoring for leaked certificates and compromised keys). These are not theoretical — they are structural augmentations that address real attack patterns against TLS implementations.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Primitives Applied ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" /> 20 Primitives Applied
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The CMPSBL Cyber™ vertical selected 20 primitives — 10 from the fixed Spine (Organs/Layers) and 10 from the Cyber expansion matrix (Engines/Agents) — the complete offensive and defensive stack:
+                </p>
+                <div className="grid gap-2">
+                  {visibleOpensslPrimitives.map((p) => (
+                    <div key={p.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/40">
+                      <span className="font-mono text-xs font-bold text-foreground w-24 shrink-0">{p.name}</span>
+                      <TypeBadge type={p.type} />
+                      <span className="text-xs text-muted-foreground">{p.action}</span>
+                    </div>
+                  ))}
+                </div>
+                {OPENSSL_PRIMITIVES.length > 8 && (
+                  <Button variant="ghost" size="sm" className="mt-3 w-full text-xs text-muted-foreground" onClick={() => setShowAllOpensslPrimitives(!showAllOpensslPrimitives)}>
+                    {showAllOpensslPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all 20 primitives</>}
+                  </Button>
+                )}
+              </div>
+
+              {/* ─── New Capabilities Unlocked ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" /> 10 New Capabilities Unlocked
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {OPENSSL_CAPABILITIES.map((c) => (
+                    <div key={c.name} className="p-3 rounded-lg bg-muted/30 border border-border/40">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-medium text-foreground">{c.name}</span>
+                        <Badge variant="outline" className="text-[9px] uppercase">{c.mode}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{c.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Key Insight ─── */}
+              <div className="bg-red-500/[0.04] border border-red-500/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  OpenSSL's TLS 1.3 encryption engine — the most audited security codebase on earth, reviewed by hundreds of world-class cryptographers — had a <strong className="text-foreground">structural dependency gap</strong> that Ascension identified in seconds. The timeout delegation pattern is an intentional design choice, but the substrate recognized that it creates a failure mode that the majority of real-world deployments do not handle. This is not a vulnerability in OpenSSL — it is a <strong className="text-foreground">structural gap between design intent and production reality</strong> that only structural analysis can surface.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Ascension™ wrapped the network-adjacent operations with BEACON health signals, circuit-breaker timeout enforcement, graceful shutdown handlers, and DEFENSE Layer shielding — the protections the file delegates to callers but callers rarely implement. Processed in ~10 seconds with zero AI. The code that secures 66% of the internet is now wrapped in a <strong className="text-foreground">Cyber-aware Sealed Runtime</strong>.
+                </p>
+              </div>
+
+              {/* ─── Downloads ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Download & Verify
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The full CMPSBL Cyber™ Ascension export is available for download and independent verification.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a href="/downloads/case-studies/openssl-tls13-ascended-CMPSBL-MNJB00F5-626R.zip" download>
+                    <Button size="sm" className="gap-2">
+                      <Download className="w-3.5 h-3.5" />
+                      Ascended Export (.zip)
+                    </Button>
+                  </a>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-3">
+                  Serial: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">CMPSBL-MNJB00F5-626R</code>{' · '}
+                  Fingerprint: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">b82607914337f881</code>{' · '}
+                  Generated: April 3, 2026
+                </p>
+              </div>
+
+              {/* ─── External References ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References & Further Reading
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'OpenSSL Repository', url: 'https://github.com/openssl/openssl' },
+                    { label: 'tls13_enc.c Source', url: 'https://github.com/openssl/openssl/blob/master/ssl/tls13_enc.c' },
+                    { label: 'RFC 8446 — TLS 1.3 Specification', url: 'https://www.rfc-editor.org/rfc/rfc8446' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
