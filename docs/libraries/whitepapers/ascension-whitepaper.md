@@ -393,6 +393,36 @@ We present eleven verified case studies spanning four programming languages, eig
 
 **Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked. Notable as the **second LLM vertical entry** and the first case study analyzing the SDK of a company whose core mission is AI safety. The same class of unhandled async rejection patterns found in PyTorch's neural network operations (Case Study 10) surfaced independently in Anthropic's transport layer — demonstrating that this structural gap is endemic to async Python infrastructure, not specific to any single vendor. The substrate governed the governor.
 
+### 5.13 Case Study 12: CMPSBL pipeline-fingerprint.ts (Self-Referential)
+
+**Subject:** `src/substrate/pipeline-fingerprint.ts` — the cryptographic fingerprint generation engine of the CMPSBL® substrate itself. The system that produces the unique identity hash on every Certificate of Discovery. Run through the original 40-Primitive base matrix with no vertical hot-swap — the substrate analyzing itself. Serial: CMPSBL-MNJEN2SS-XF1N · Fingerprint: 18b8cd05bd02ba6d.
+
+**Classification:** TypeScript · 116 lines · 10 classes · 93 imports · Cyclomatic complexity 83 · Deep nesting 7 levels · Zero test coverage · Two CRITICAL findings.
+
+> **Critical Discovery:** The substrate found that its own fingerprinting system had no error handling around cryptographic operations and unhandled async rejection paths — meaning a fingerprint generation failure would produce no diagnostic information. FAILSAFE fired first. The system that signs every Certificate of Discovery had never been signed itself. Until now.
+>
+> **(1) No error handling detected — CRITICAL.** The pipeline fingerprint system had zero try/catch blocks around its cryptographic operations. `generateStructuralFingerprint` calls `sha256()` via WebCrypto (`crypto.subtle.digest`) with no error handling. If the fingerprint generation fails for any reason — malformed input, collision edge case, WebCrypto unavailability, encoding error — it fails silently with no diagnostic information. FAILSAFE fired first.
+>
+> **(2) Unhandled async rejections — CRITICAL.** The fingerprint pipeline uses async operations (`crypto.subtle.digest` returns a Promise) without explicit rejection handlers. If an async operation in the fingerprinting chain rejects without a handler, it drops silently. This is the same class of structural gap found in PyTorch (Case Study 10) and Anthropic (Case Study 11) — confirming that unhandled async rejection patterns are endemic across languages, not just Python.
+>
+> **(3) Deep nesting at 7 levels — WARNING.** ARCHITECT flagged excessive nesting depth in the fingerprint payload construction logic. 7 levels exceeds the cognitive maintainability threshold.
+>
+> **(4) No test coverage detected — WARNING.** SHADOW flagged zero test coverage on the fingerprint system. The file that signs every Certificate of Discovery had no tests validating determinism, uniqueness, or error handling.
+
+**Remediation:** All findings were remediated in the live codebase:
+- FAILSAFE structured error handling with `FingerprintError` typed exceptions carrying diagnostic codes and context
+- BEACON health signals via structured logger on all cryptographic operation failures
+- Input validation on all public API surfaces (empty steps, invalid modules, malformed chains)
+- Async rejection propagation ensuring SHA-256 failures surface as typed errors with diagnostic context
+- Deep nesting refactored into named helper functions (`normalizeStep`, `buildPayloadObject`, `resolveSteps`, `validateSteps`)
+- 29 unit tests covering determinism, uniqueness, error handling, async rejection handling, legacy compatibility, conversion utilities, and display utilities
+
+**Primitive chain:** FAILSAFE → BEACON → ATLAS → MONOLITH → ARCHITECT → ENGINEER → CORTEX → PRIMITIVE → HARVEST → SANDBOX → WRAITH → ORACLE → DECODE → TREATY → FORGE → OBSERVER → EVOLUTION → BRAIN → PHANTOM → REFLEX. PRIMITIVE — the foundational execution layer — fired on its own fingerprinting logic. That has never happened in any other run across 12 case studies.
+
+**Standout capabilities:** Autonomous Decision Loop, Predictive Failure Shield, APT Threat Hunter, Real-Time Performance Optimizer, Telemetry Mesh.
+
+**Result:** CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The final case study — and the only one where every finding was immediately remediated in the production codebase. Twelve runs. Twelve targets. IBM, Rapid7, HuggingFace, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic, and finally CMPSBL itself. The substrate found two CRITICAL gaps in its own fingerprinting system and hardened them. It doesn't know whose code it's looking at. It just sees the math.
+
 ---
 
 ## 6. The Sealed Runtime™ Architecture
