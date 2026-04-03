@@ -160,6 +160,7 @@ export const publicRoutes = (
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />
+    <Route path="/case-studies" element={<CaseStudies />} />
     <Route path="/marketplace" element={<Navigate to="/store" replace />} />
     <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
     <Route path="/engine-marketplace" element={<Navigate to="/store" replace />} />
