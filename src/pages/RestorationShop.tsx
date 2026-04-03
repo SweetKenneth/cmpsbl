@@ -166,8 +166,8 @@ export default function RestorationShop() {
       const zip = new JSZip();
       const fingerprint = report.cjpiCertificate.fingerprint;
 
-      // ═══ LICENSE ═══
-      zip.file('LICENSE.txt', generateLicense(report.id, fingerprint));
+      // ═══ LICENSE (styled HTML) ═══
+      zip.file('LICENSE.html', wrapDocHtml('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
 
       // ═══ Dual-Layer Source ═══
       const refExt = getRefurbishedExtension(detectedLang);
@@ -177,27 +177,27 @@ export default function RestorationShop() {
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
 
-      // ═══ Pipeline Details ═══
-      const pipelineMd = report.pipelineDetails.map(
-        p => `### Step ${p.order}: ${p.primitiveName}\n${p.action}\nDuration: ${p.durationMs}ms`
-      ).join('\n\n');
-      zip.file('docs/pipeline-details.md', `# Pipeline Details\n\nFingerprint: \`${fingerprint}\`\nSerial: \`${report.id}\`\n\n${pipelineMd}`);
+      // ═══ Pipeline Details (styled HTML) ═══
+      const pipelineHtml = report.pipelineDetails.map(
+        p => `<div class="step"><span class="step-num">${p.order}</span><div><strong>${p.primitiveName}</strong><span class="dim"> — ${p.durationMs}ms</span><div class="detail">${p.action}</div></div></div>`
+      ).join('\n');
+      zip.file('docs/pipeline-details.html', wrapDocHtml('Pipeline Details', `<p>Fingerprint: <code>${fingerprint}</code><br/>Serial: <code>${report.id}</code></p>\n${pipelineHtml}`));
 
-      // ═══ New Capabilities ═══
-      const capsMd = report.newCapabilities.map(
-        c => `### ${c.name}\n${c.description}\n\n\`\`\`typescript\n${c.usageExample}\n\`\`\``
-      ).join('\n\n');
-      zip.file('docs/new-capabilities.md', `# New Capabilities\n\n${capsMd}`);
+      // ═══ New Capabilities (styled HTML) ═══
+      const capsHtml = report.newCapabilities.map(
+        c => `<div class="card"><h3>${c.name}</h3><p>${c.description}</p><pre><code>${escHtml(c.usageExample)}</code></pre></div>`
+      ).join('\n');
+      zip.file('docs/new-capabilities.html', wrapDocHtml('New Capabilities', capsHtml));
 
-      // ═══ Testing Guide ═══
-      const testMd = [
-        `# Testing Guide`,
-        `\nInstall: \`${report.testingGuide.installCommand}\``,
-        `Run: \`${report.testingGuide.testCommand}\``,
-        `\n## Steps\n`,
-        ...report.testingGuide.steps.map((s, i) => `${i + 1}. ${s}`),
+      // ═══ Testing Guide (styled HTML) ═══
+      const testHtml = [
+        `<p>Install: <code>${report.testingGuide.installCommand}</code></p>`,
+        `<p>Run: <code>${report.testingGuide.testCommand}</code></p>`,
+        `<h2>Steps</h2><ol>`,
+        ...report.testingGuide.steps.map(s => `<li>${s}</li>`),
+        `</ol>`,
       ].join('\n');
-      zip.file('docs/testing-guide.md', testMd);
+      zip.file('docs/testing-guide.html', wrapDocHtml('Testing Guide', testHtml));
 
       // ═══ Test Harness Config ═══
       const testConfig = {
@@ -215,23 +215,23 @@ export default function RestorationShop() {
       // ═══ HTML Refurbishment Report (styled, self-contained) ═══
       zip.file('refurbishment-report.html', generateHtmlReport(report));
 
-      // ═══ Error Codes ═══
-      const errorMd = report.errorCodes.map(
-        e => `### ${e.code}\n**Trigger:** ${e.trigger}\n**Resolution:** ${e.resolution}`
-      ).join('\n\n');
-      zip.file('docs/error-codes.md', `# Error Codes\n\n${errorMd}`);
-
-      // ═══ Vulnerability Assessment ═══
-      const vulnMd = report.vulnerabilityAssessment.map(
-        v => `### ${v.title}\n**Severity:** ${v.severity}\n**Status:** ${v.status}\n${v.details}`
-      ).join('\n\n');
-      zip.file('docs/vulnerability-assessment.md', `# Vulnerability Assessment\n\n${vulnMd}`);
-
-      // ═══ Primitive Manifest ═══
-      const manifestMd = report.primitiveManifest.map(
-        p => `- **${p.name}** (${p.category}): ${p.contribution}`
+      // ═══ Error Codes (styled HTML) ═══
+      const errorHtml = report.errorCodes.map(
+        e => `<div class="card"><h3>${e.code}</h3><p><strong>Trigger:</strong> ${e.trigger}</p><p><strong>Resolution:</strong> ${e.resolution}</p></div>`
       ).join('\n');
-      zip.file('docs/primitive-manifest.md', `# Primitive Manifest\n\n${manifestMd}`);
+      zip.file('docs/error-codes.html', wrapDocHtml('Error Codes', errorHtml));
+
+      // ═══ Vulnerability Assessment (styled HTML) ═══
+      const vulnHtml = report.vulnerabilityAssessment.map(
+        v => `<div class="card"><h3>${v.title}</h3><span class="badge badge-${v.severity}">${v.severity}</span> <span class="badge badge-${v.status}">${v.status}</span><p>${v.details}</p></div>`
+      ).join('\n');
+      zip.file('docs/vulnerability-assessment.html', wrapDocHtml('Vulnerability Assessment', vulnHtml));
+
+      // ═══ Primitive Manifest (styled HTML) ═══
+      const manifestHtml = `<table><thead><tr><th>Primitive</th><th>Category</th><th>Contribution</th></tr></thead><tbody>${
+        report.primitiveManifest.map(p => `<tr><td><strong>${p.name}</strong></td><td>${p.category}</td><td>${p.contribution}</td></tr>`).join('\n')
+      }</tbody></table>`;
+      zip.file('docs/primitive-manifest.html', wrapDocHtml('Primitive Manifest', manifestHtml));
 
       // ═══ README ═══
       const readmeMd = [
