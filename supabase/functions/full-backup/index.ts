@@ -119,20 +119,17 @@ Deno.serve(async (req: Request) => {
       return errorResponse('Unauthorized — invalid or expired token', 401);
     }
 
-    // ── Optional: Admin role check ──
-    // Uncomment the block below if you have a user_roles table and want
-    // to restrict backups to admin users only.
-    //
-    // const adminClient = createClient(supabaseUrl, serviceKey);
-    // const { data: roles } = await adminClient
-    //   .from('user_roles')
-    //   .select('role')
-    //   .eq('user_id', user.id)
-    //   .eq('role', 'admin')
-    //   .limit(1);
-    // if (!roles || roles.length === 0) {
-    //   return errorResponse('Forbidden — admin role required', 403);
-    // }
+    // ── Admin role check — restrict backups to admin users ──
+    const adminClient = createClient(supabaseUrl, serviceKey);
+    const { data: roles } = await adminClient
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .limit(1);
+    if (!roles || roles.length === 0) {
+      return errorResponse('Forbidden — admin role required', 403);
+    }
 
     // ── Service-role client for full data access ──
     const admin = createClient(supabaseUrl, serviceKey);
