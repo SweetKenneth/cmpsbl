@@ -134,6 +134,24 @@ function buildVerticalCatalog(): {
     return { spine: [...SPINE_PRIMITIVES], expansion: [...roboEngines, ...roboAgents] };
   }
 
+  // Dynamic verticals — auto-discovered from the factory engine
+  if (vertical) {
+    const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
+    if (dynamicPrimitives) {
+      const dynEngines = dynamicPrimitives.engines.map(e => ({
+        primitiveId: e.id.toLowerCase(),
+        name: e.name,
+        category: 'Engine' as const,
+      }));
+      const dynAgents = dynamicPrimitives.agents.map(a => ({
+        primitiveId: a.id.toLowerCase(),
+        name: a.name,
+        category: 'Agent' as const,
+      }));
+      return { spine: [...SPINE_PRIMITIVES], expansion: [...dynEngines, ...dynAgents] };
+    }
+  }
+
   return { spine: [...SPINE_PRIMITIVES], expansion: [...STANDARD_ENGINES_AGENTS] };
 }
 
