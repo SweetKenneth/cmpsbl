@@ -160,7 +160,7 @@ No stage in the pipeline invokes external AI, stochastic inference, or probabili
 
 ### 5.1 Overview
 
-We present ten verified case studies spanning four programming languages, eight industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:
+We present eleven verified case studies spanning four programming languages, eight industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:
 
 | # | Subject | Language | Vertical | CJPI | Serial | Fingerprint |
 |---|---------|----------|----------|------|--------|-------------|
@@ -174,6 +174,7 @@ We present ten verified case studies spanning four programming languages, eight 
 | 8 | QuantLib Gaussian 1D Models | Python | FinTech | 100 APEX | CMPSBL-MNJD2A7W-DMM8 | 9012a33c2dd6b2ce |
 | 9 | Google OR-Tools CP-SAT | Python | Operations Research | 100 APEX | CMPSBL-MNJDGI57-L2XP | af7743b905e75374 |
 | 10 | PyTorch torch.nn.functional | Python | AI / Deep Learning | 100 APEX | CMPSBL-MNJDRL4I-0DD8 | 52e655af798050c8 |
+| 11 | Anthropic _client.py | Python | LLM | 100 APEX | CMPSBL-MNJE8I5T-NC7Y | 47badac2117529a8 |
 
 ### 5.2 Case Study 1: A* Path Planner (PythonRobotics)
 
