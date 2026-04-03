@@ -20,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
+import { PublicNav } from "@/components/PublicNav";
+import { EnhancedFooter } from "@/components/EnhancedFooter";
 
 const Q_STATS = [
   { label: "Quantum Algorithms Loaded", value: "860", icon: Atom },
@@ -70,6 +72,7 @@ export default function QuantumHome() {
       </Helmet>
 
       <VerticalReturnBanner verticalName="CMPSBL QUANTUM™" accentColor="hsl(270 90% 60%)" />
+      <PublicNav />
 
       <div className="min-h-screen" style={{ background: 'hsl(260 30% 4%)' }}>
         {/* Hero */}
@@ -223,6 +226,8 @@ export default function QuantumHome() {
           </div>
         </section>
       </div>
+
+      <EnhancedFooter />
     </>
   );
 }
