@@ -97,9 +97,12 @@ const STANDARD_ENGINES_AGENTS: Omit<PrimitiveRecommendation, 'impactScore' | 'ra
 
 /**
  * Build the 40-primitive catalog for the active vertical.
- * Security subdomain gets cyber-specific engines/agents; everything else gets standard.
+ * Each vertical gets its own specialized engines/agents; default falls back to standard.
  */
-function buildVerticalCatalog(): Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] {
+function buildVerticalCatalog(): {
+  spine: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[];
+  expansion: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[];
+} {
   const vertical = getVerticalSubdomain();
 
   if (vertical === 'security') {
@@ -113,10 +116,24 @@ function buildVerticalCatalog(): Omit<PrimitiveRecommendation, 'impactScore' | '
       name: a.name,
       category: 'Agent' as const,
     }));
-    return [...SPINE_PRIMITIVES, ...cyberEngines, ...cyberAgents];
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...cyberEngines, ...cyberAgents] };
   }
 
-  return [...SPINE_PRIMITIVES, ...STANDARD_ENGINES_AGENTS];
+  if (vertical === 'robotics') {
+    const roboEngines = getRoboticsEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const roboAgents = getRoboticsAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...roboEngines, ...roboAgents] };
+  }
+
+  return { spine: [...SPINE_PRIMITIVES], expansion: [...STANDARD_ENGINES_AGENTS] };
 }
 
 export function getPrimitiveCatalog() {
