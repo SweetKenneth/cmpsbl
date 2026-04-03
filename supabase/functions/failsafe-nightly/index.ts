@@ -28,8 +28,49 @@ Deno.serve(async (req: Request) => {
 
   const startTime = Date.now();
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const authHeader = req.headers.get('Authorization');
   const admin = createClient(supabaseUrl, serviceKey);
+
+  if (!authHeader?.startsWith('Bearer ')) {
+    return new Response(JSON.stringify({ success: false, error: 'Unauthorized — Bearer token required' }), {
+      status: 401,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
+  const bearerToken = authHeader.slice('Bearer '.length).trim();
+  const apiKeyHeader = req.headers.get('apikey');
+  const isInternalServiceCall = bearerToken === serviceKey || apiKeyHeader === serviceKey;
+
+  if (!isInternalServiceCall) {
+    const userClient = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: authError } = await userClient.auth.getUser();
+
+    if (authError || !user) {
+      return new Response(JSON.stringify({ success: false, error: 'Unauthorized — invalid or expired token' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    const { data: roles } = await admin
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .limit(1);
+
+    if (!roles || roles.length === 0) {
+      return new Response(JSON.stringify({ success: false, error: 'Forbidden — admin role required' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+  }
 
   const log = (msg: string) => console.log(`[FailsafeNightly] ${msg}`);
 
