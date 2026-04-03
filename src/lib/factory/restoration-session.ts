@@ -55,56 +55,40 @@ export async function saveRestorationSession(params: {
   return data?.id ?? null;
 }
 
-/** Look up a restoration session by fingerprint */
+/** Look up a restoration session by fingerprint (via security definer RPC) */
 export async function lookupByFingerprint(fingerprint: string): Promise<RestorationSession | null> {
   const { data, error } = await supabase
-    .from('restoration_sessions')
-    .select('*')
-    .eq('fingerprint', fingerprint)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single();
+    .rpc('lookup_restoration_by_fingerprint', { p_fingerprint: fingerprint });
 
-  if (error || !data) return null;
+  const row = (data as unknown as Record<string, unknown>[] | null)?.[0];
+  if (error || !row) return null;
 
-  return {
-    id: data.id,
-    fingerprint: data.fingerprint,
-    originalCode: data.original_code,
-    originalLanguage: data.original_language,
-    scanResult: data.scan_result as unknown as ScanResult,
-    selectedPrimitives: data.selected_primitives as unknown as string[],
-    report: data.report as unknown as RestorationReport,
-    cjpiScore: Number(data.cjpi_score),
-    cjpiTier: data.cjpi_tier ?? '',
-    serialNumber: data.serial_number,
-    createdAt: data.created_at,
-  };
+  return mapRow(row);
 }
 
-/** Look up a restoration session by serial number */
+/** Look up a restoration session by serial number (via security definer RPC) */
 export async function lookupBySerial(serialNumber: string): Promise<RestorationSession | null> {
   const { data, error } = await supabase
-    .from('restoration_sessions')
-    .select('*')
-    .eq('serial_number', serialNumber)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single();
+    .rpc('lookup_restoration_by_serial', { p_serial: serialNumber });
 
-  if (error || !data) return null;
+  const row = (data as unknown as Record<string, unknown>[] | null)?.[0];
+  if (error || !row) return null;
 
+  return mapRow(row);
+}
+
+function mapRow(row: Record<string, unknown>): RestorationSession {
   return {
-    id: data.id,
-    fingerprint: data.fingerprint,
-    originalCode: data.original_code,
-    originalLanguage: data.original_language,
-    scanResult: data.scan_result as unknown as ScanResult,
-    selectedPrimitives: data.selected_primitives as unknown as string[],
-    report: data.report as unknown as RestorationReport,
-    cjpiScore: Number(data.cjpi_score),
-    cjpiTier: data.cjpi_tier ?? '',
-    serialNumber: data.serial_number,
-    createdAt: data.created_at,
+    id: row.id as string,
+    fingerprint: row.fingerprint as string,
+    originalCode: row.original_code as string,
+    originalLanguage: (row.original_language as string) ?? null,
+    scanResult: row.scan_result as unknown as ScanResult,
+    selectedPrimitives: row.selected_primitives as unknown as string[],
+    report: row.report as unknown as RestorationReport,
+    cjpiScore: Number(row.cjpi_score),
+    cjpiTier: (row.cjpi_tier as string) ?? '',
+    serialNumber: row.serial_number as string,
+    createdAt: row.created_at as string,
   };
 }
