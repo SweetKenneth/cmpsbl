@@ -33,6 +33,7 @@ This library contains everything the system governor needs to operate, protect, 
 | 16 | [Trade Secrets & Algorithms](16-trade-secrets.md) | Proprietary algorithms, CJPI scoring, convergence formulas |
 | 17 | [Crown Jewel Registry](17-crown-jewel-registry.md) | 54 classified capabilities, mining reports, S-Tier vault |
 | 18 | [Vertical Ecosystem & Factory Engine](18-vertical-ecosystem.md) | Full ecosystem spec, factory engine, SSO, roadmap, valuation |
+| 19 | [Backup & Disaster Recovery](19-backup-disaster-recovery.md) | Complete 3-layer backup architecture, restore kit, DR procedures |
 
 ---
 
