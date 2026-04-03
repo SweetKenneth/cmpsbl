@@ -4,8 +4,8 @@
  * Subdomain: security.cmpsbl.com
  * 
  * Hot-swapped Engines (8):
- *   SENTINEL — Real-time threat detection and classification
- *   PHANTOM  — Stealth operations and covert reconnaissance
+ *   WATCHTOWER — Real-time threat detection and classification
+ *   SHADE    — Stealth operations and covert reconnaissance
  *   AEGIS    — Shield orchestration and DDoS mitigation
  *   CIPHER   — Cryptographic operations and key management
  *   RECON    — Network reconnaissance and attack surface mapping
@@ -33,8 +33,8 @@ import type { STierEntry } from '@/crownjewels/types';
 
 const CYBER_ENGINES: VerticalPrimitive[] = [
   {
-    id: 'SENTINEL',
-    name: 'SENTINEL',
+    id: 'WATCHTOWER',
+    name: 'WATCHTOWER',
     role: 'engine',
     description: 'Real-time threat detection and classification engine. Ingests telemetry streams, correlates IOCs, and assigns threat severity scores using behavioral heuristics.',
     inherited: false,
@@ -52,8 +52,8 @@ const CYBER_ENGINES: VerticalPrimitive[] = [
     classification: 'active',
   },
   {
-    id: 'PHANTOM',
-    name: 'PHANTOM',
+    id: 'SHADE',
+    name: 'SHADE',
     role: 'engine',
     description: 'Stealth operations engine for covert network reconnaissance and silent data exfiltration detection.',
     inherited: false,
@@ -349,7 +349,7 @@ export function getCyberSecuritySubstrate(): VerticalSubstrateConfig {
         'network_forensics_techniques',
         'cloud_security_posture_management',
       ],
-      priorityPrimitives: ['SENTINEL', 'DEFENSE', 'VANGUARD', 'BASTION'],
+      priorityPrimitives: ['WATCHTOWER', 'DEFENSE', 'VANGUARD', 'BASTION'],
       batchSize: 4,
     },
     memoryStreamConfig: {
@@ -385,7 +385,7 @@ export function getCyberSecuritySubstrate(): VerticalSubstrateConfig {
         reliability: 0.25,
         maintainability: 0.10,
       },
-      collisionPriority: ['SENTINEL', 'AEGIS', 'BASTION', 'VANGUARD', 'CIPHER'],
+      collisionPriority: ['WATCHTOWER', 'AEGIS', 'BASTION', 'VANGUARD', 'CIPHER'],
     },
     theme: {
       primaryHue: 220,
