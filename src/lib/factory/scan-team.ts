@@ -150,6 +150,20 @@ function buildVerticalCatalog(): {
     return { spine: [...SPINE_PRIMITIVES], expansion: [...qEngines, ...qAgents] };
   }
 
+  if (vertical === 'llm') {
+    const llmEngines = getLLMEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const llmAgents = getLLMAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...llmEngines, ...llmAgents] };
+  }
+
   // Dynamic verticals — auto-discovered from the factory engine
   if (vertical) {
     const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
