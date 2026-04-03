@@ -658,7 +658,7 @@ export default function CaseStudies() {
     <>
       <Helmet>
         <title>Case Studies — CMPSBL® Ascension Results</title>
-        <meta name="description" content="Real-world case studies demonstrating CMPSBL® Ascension refurbishment results on software from IBM, Rapid7, Hugging Face, OpenAI, and PythonRobotics. See before-and-after analysis with downloadable artifacts." />
+        <meta name="description" content="10 verified case studies: PyTorch, Google OR-Tools, ArduPilot, IBM Qiskit, Metasploit, Hugging Face, OpenSSL, QuantLib, and more — structurally analyzed and hardened by CMPSBL® Ascension without AI." />
         <link rel="canonical" href="https://cmpsbl.com/case-studies" />
       </Helmet>
 
