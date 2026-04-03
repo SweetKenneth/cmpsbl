@@ -5521,6 +5521,8 @@ ${sorted.map(([m, c]) => `│  ${m.padEnd(15)} ${c.toString().padStart(2)} memor
         registerCoreHandlers();
         const { registerEncodedHandlers } = await import('@/lib/terminal/encoded-handlers');
         registerEncodedHandlers();
+        const { registerPowerHandlers } = await import('@/lib/terminal/power-handlers');
+        registerPowerHandlers();
         const { registerGovernanceHandlers } = await import('@/lib/terminal/governance-handlers');
         registerGovernanceHandlers();
         const { registerObservabilityHandlers } = await import('@/lib/terminal/observability-handlers');
