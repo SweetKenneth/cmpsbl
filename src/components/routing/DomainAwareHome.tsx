@@ -3,12 +3,12 @@ import { getVerticalSubdomain } from "@/config/domains";
 
 const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
-const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
+const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 
 /**
  * Domain-aware routing:
- * - promptfluid.com → PromptFluid landing
- * - security.cmpsbl.com → CyberSecurity vertical substrate
+ * - promptfluid.com → PromptFluid landing (parent company)
+ * - security.cmpsbl.com → CMPSBL CYBER™ (custom security landing)
  * - cmpsbl.com (default) → Factory-era CMPSBL homepage
  */
 function isPromptFluidDomain(): boolean {
@@ -28,7 +28,17 @@ export default function DomainAwareHome() {
     );
   }
 
+  if (verticalKey === 'security') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(220 30% 3%)" }} />}>
+        <CyberSecurityHome />
+      </Suspense>
+    );
+  }
+
   if (verticalKey) {
+    // Future verticals use generic page
+    const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
     return (
       <Suspense fallback={<div className="min-h-screen bg-background" />}>
         <VerticalSubstrateHome verticalKey={verticalKey} />
