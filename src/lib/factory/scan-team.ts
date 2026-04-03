@@ -604,6 +604,7 @@ function scorePrimitiveRelevance(
     ironclad: { signals: [code.includes('compliance') || code.includes('audit'), hasAuth], rationale: 'Continuous compliance validation against SOC2, NIST, and ISO 27001' },
     bulwark: { signals: [code.includes('import') || code.includes('require'), code.includes('package')], rationale: 'Supply chain auditing detects compromised packages and typosquatting' },
     // Robotics vertical primitives — Engines
+    fabricator: { signals: [code.includes('build') || code.includes('manufacture') || code.includes('cad'), hasAsync], rationale: 'Hardware fabrication and component lifecycle with CAD-to-part pipelines and predictive maintenance' },
     servo: { signals: [code.includes('motor') || code.includes('actuator') || code.includes('pid'), hasAsync], rationale: 'Motor control and actuator orchestration with PID tuning and torque profiling' },
     kinetic: { signals: [code.includes('trajectory') || code.includes('motion') || code.includes('velocity'), len > 200], rationale: 'Motion planning and trajectory optimization for multi-axis coordination' },
     lidar: { signals: [code.includes('sensor') || code.includes('point') || code.includes('scan'), hasAsync], rationale: 'Spatial perception and 3D point cloud mapping for environment modeling' },
