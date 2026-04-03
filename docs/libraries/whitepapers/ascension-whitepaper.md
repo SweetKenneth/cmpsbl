@@ -362,7 +362,7 @@ By eschewing AI-based code analysis, Ascension™ achieves properties no probabi
 
 ## 10. Conclusion
 
-We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix. Across seven case studies spanning five languages and seven verticals, Ascension™ consistently surfaced structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap in one of the world's most-downloaded software libraries and a structural timeout dependency in the most audited security codebase on earth.
+We have presented Ascension™, a deterministic software evolution engine that discovers and hardens latent capabilities in arbitrary source code through systematic collision with a fixed 40-primitive matrix. Across four verified case studies spanning three languages and four verticals, Ascension™ consistently surfaced structural vulnerabilities invisible to conventional tooling — including a critical error-handling gap in one of the world's most-downloaded software libraries (Hugging Face Tokenizers, 73M+ monthly downloads) and a structural timeout dependency in the most audited security codebase on earth (OpenSSL TLS 1.3).
 
 The implications extend beyond individual code hardening. Ascension™ establishes the foundation for **post-authorship software evolution** — a discipline where code improvement is structural, deterministic, and autonomous. Every piece of software ever written is a candidate. Every vulnerability is discoverable. Every capability is hardenable.
 
