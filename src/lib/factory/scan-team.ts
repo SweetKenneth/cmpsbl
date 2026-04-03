@@ -655,6 +655,24 @@ function scorePrimitiveRelevance(
     welder: { signals: [code.includes('weld') || code.includes('assemble') || code.includes('join'), hasAsync], rationale: 'Assembly operations and joining processes with seam tracking' },
     inspector: { signals: [code.includes('inspect') || code.includes('defect') || code.includes('quality'), hasState], rationale: 'Quality inspection and defect detection with machine vision classification' },
     pioneer: { signals: [code.includes('explor') || code.includes('frontier') || code.includes('unknown'), hasAsync], rationale: 'Autonomous exploration and frontier mapping in unknown environments' },
+    // Quantum vertical primitives — Engines
+    hadron: { signals: [code.includes('particle') || code.includes('collision') || code.includes('scatter'), len > 200], rationale: 'Particle collision simulation and cross-section computation for high-energy physics' },
+    qubit: { signals: [code.includes('qubit') || code.includes('gate') || code.includes('circuit'), hasAsync], rationale: 'Quantum gate orchestration and circuit transpilation for quantum algorithms' },
+    photon: { signals: [code.includes('photon') || code.includes('optic') || code.includes('laser') || code.includes('interferom'), hasAsync], rationale: 'Optical computing and photonic signal processing with interferometry modeling' },
+    fermion: { signals: [code.includes('wavefunction') || code.includes('schrodinger') || code.includes('hamiltonian') || code.includes('eigenvalue'), len > 200], rationale: 'Many-body quantum state evolution with Schrödinger equation solvers' },
+    entangle: { signals: [code.includes('entangle') || code.includes('bell') || code.includes('teleport') || code.includes('epr'), hasAsync], rationale: 'Quantum entanglement management and Bell state preparation for quantum communication' },
+    lattice: { signals: [code.includes('lattice') || code.includes('crystal') || code.includes('phonon') || code.includes('band'), hasState], rationale: 'Crystal structure simulation and phonon modeling for condensed matter physics' },
+    plasma: { signals: [code.includes('plasma') || code.includes('tokamak') || code.includes('fusion') || code.includes('mhd'), hasAsync], rationale: 'Plasma dynamics and magneto-hydrodynamics for fusion reactor modeling' },
+    cryogen: { signals: [code.includes('cryogen') || code.includes('dilution') || code.includes('thermal') || code.includes('decoher'), hasState], rationale: 'Cryogenic system modeling and thermal noise reduction for quantum hardware' },
+    // Quantum vertical primitives — Agents
+    muon: { signals: [code.includes('muon') || code.includes('decay') || code.includes('lepton'), len > 100], rationale: 'Decay chain analysis and lepton tracking for particle detector data' },
+    boson: { signals: [code.includes('boson') || code.includes('higgs') || code.includes('gauge') || code.includes('electroweak'), len > 200], rationale: 'Force carrier simulation and gauge field mapping for the Standard Model' },
+    neutrino: { signals: [code.includes('neutrino') || code.includes('oscillat') || code.includes('weak') || code.includes('flavor'), hasAsync], rationale: 'Weak interaction modeling and neutrino flavor oscillation prediction' },
+    gluon: { signals: [code.includes('gluon') || code.includes('qcd') || code.includes('quark') || code.includes('color charge'), len > 200], rationale: 'Strong force coupling and QCD color charge simulation' },
+    graviton: { signals: [code.includes('graviton') || code.includes('gravity') || code.includes('spacetime') || code.includes('relativi'), hasAsync], rationale: 'Gravitational wave detection and spacetime curvature modeling' },
+    tachyon: { signals: [code.includes('tachyon') || code.includes('superluminal') || code.includes('lorentz') || code.includes('causal'), hasAsync], rationale: 'Superluminal signal modeling and causality analysis in relativistic frameworks' },
+    meson: { signals: [code.includes('meson') || code.includes('hadron') || code.includes('quark') || code.includes('fragmentation'), len > 200], rationale: 'Quark confinement and hadronization processes for jet formation modeling' },
+    prism: { signals: [code.includes('spectro') || code.includes('wavelength') || code.includes('emission') || code.includes('raman'), hasState], rationale: 'Spectroscopy analysis and wavelength decomposition for atomic line identification' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
