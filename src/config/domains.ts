@@ -84,3 +84,26 @@ export function isBackendDomain(): boolean {
 export function isFrontendDomain(): boolean {
   return getCurrentDomainType() === 'frontend';
 }
+
+/**
+ * Detect if current hostname is a vertical substrate subdomain
+ * Returns the vertical key (e.g. 'security') or null
+ */
+export function getVerticalSubdomain(): string | null {
+  if (typeof window === 'undefined') return null;
+  const hostname = window.location.hostname.toLowerCase();
+
+  for (const [key, subdomain] of Object.entries(DOMAIN_CONFIG.verticals)) {
+    if (hostname === subdomain || hostname === `www.${subdomain}`) {
+      return key;
+    }
+  }
+  return null;
+}
+
+/**
+ * Check if on any vertical substrate subdomain
+ */
+export function isVerticalDomain(): boolean {
+  return getVerticalSubdomain() !== null;
+}
