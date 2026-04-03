@@ -410,15 +410,9 @@ For licensing inquiries: founder@cmpsbl.com
 
 5. Hugging Face. (2026). *Tokenizers: Fast State-of-the-Art Tokenizers.* https://github.com/huggingface/tokenizers
 
-6. NASA Goddard Space Flight Center. (2024). *core Flight System (cFS).* https://github.com/nasa/cFS
+6. IBM Research. (2025). *Qiskit: An Open-Source Framework for Quantum Computing.* https://github.com/Qiskit/qiskit
 
-7. Solana Foundation. (2025). *Solana Program Library: Token Program.* https://github.com/solana-labs/solana-program-library
-
-8. Stripe, Inc. (2025). *Stripe Node.js SDK.* https://github.com/stripe/stripe-node
-
-9. IBM Research. (2025). *Qiskit: An Open-Source Framework for Quantum Computing.* https://github.com/Qiskit/qiskit
-
-10. OpenSSL Software Foundation. (2025). *OpenSSL: Cryptography and SSL/TLS Toolkit.* https://github.com/openssl/openssl
+7. OpenSSL Software Foundation. (2025). *OpenSSL: Cryptography and SSL/TLS Toolkit.* https://github.com/openssl/openssl
 
 ---
 
