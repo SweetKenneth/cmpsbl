@@ -565,12 +565,55 @@ const ORTOOLS_CAPABILITIES = [
   { name: 'Policy Enforcement Layer', type: 'Hybrid' },
 ];
 
+/* ───────── PyTorch Data ───────── */
+
+const PYTORCH_VULNERABILITIES = [
+  { severity: 'critical' as const, title: 'Unhandled async rejections', status: 'hardened', details: 'GPU operations are async by default — CUDA backend failures can return control to Python without propagating errors, causing silent failures during training and inference affecting every AI model built on PyTorch.' },
+  { severity: 'warning' as const, title: 'High cyclomatic complexity (984)', status: 'mitigated', details: 'Extreme branching across 200+ neural network operation functions in a single 6,951-line file.' },
+  { severity: 'warning' as const, title: 'Deprecated API usage (28+ sites)', status: 'mitigated', details: 'dropout2d, dropout3d, upsample, upsample_nearest, upsample_bilinear all deprecated with explicit warnings. Structural backward-compatibility debt.' },
+  { severity: 'warning' as const, title: 'CVE-2022-45907 intersection (CVSS 9.8)', status: 'mitigated', details: 'Deprecated functions retain eval-based code via torch.jit.annotations.parse_type_line — confirmed arbitrary code execution vector. Incomplete mitigation documented in GitHub #151233 (Apr 2025).' },
+  { severity: 'warning' as const, title: 'High dependency coupling (80 imports)', status: 'mitigated', details: '80 imports detected — high coupling increases blast radius of dependency failures across the neural network stack.' },
+  { severity: 'warning' as const, title: 'Monolithic file (6,951 lines)', status: 'mitigated', details: 'Entire functional API for all neural network operations in a single file. The largest artifact in the case study suite.' },
+  { severity: 'warning' as const, title: '10 technical debt markers found', status: 'mitigated', details: '10 TODO/FIXME/HACK/XXX markers indicate deferred work in production-critical mathematical operations.' },
+  { severity: 'warning' as const, title: 'Insecure HTTP protocol usage', status: 'mitigated', details: 'Non-HTTPS URLs detected. Data transmitted in plaintext vulnerable to interception.' },
+  { severity: 'info' as const, title: '10 classes in single file', status: 'monitor', details: 'Multiple classes in one file suggest God Object patterns. ENGINEER recommends decomposition.' },
+  { severity: 'info' as const, title: 'No fallback mechanisms detected', status: 'monitor', details: 'Single-path execution in mathematical operations. Failure halts the entire training pipeline.' },
+  { severity: 'info' as const, title: 'No dependency failure fallbacks', status: 'monitor', details: '80 dependencies with no graceful degradation. Any failure cascades through the neural network stack.' },
+  { severity: 'info' as const, title: 'Silent CUDA hang patterns (GitHub #178491)', status: 'monitor', details: 'Active high-priority issue (March 2026): async GPU errors never propagated under VRAM pressure on modern hardware.' },
+];
+
+const PYTORCH_PRIMITIVES = [
+  { name: 'FULCRUM', type: 'Engine' }, { name: 'TREATY', type: 'Layer' },
+  { name: 'ECHO', type: 'Organ' }, { name: 'FORGE', type: 'Layer' },
+  { name: 'SYLLOGISM', type: 'Engine' }, { name: 'GOVERNANCE', type: 'Layer' },
+  { name: 'MIMIC', type: 'Agent' }, { name: 'CUSTODIAN', type: 'Agent' },
+  { name: 'BRAIN', type: 'Organ' }, { name: 'LINGUA', type: 'Organ' },
+  { name: 'SANDBOX', type: 'Layer' }, { name: 'IDENTITY', type: 'Organ' },
+  { name: 'CONSCIENCE', type: 'Organ' }, { name: 'EVOLUTION', type: 'Layer' },
+  { name: 'TETHER', type: 'Engine' }, { name: 'VERITAS', type: 'Engine' },
+  { name: 'RAMPART', type: 'Engine' }, { name: 'HERALD', type: 'Agent' },
+  { name: 'EMBARGO', type: 'Agent' }, { name: 'GAUNTLET', type: 'Agent' },
+];
+
+const PYTORCH_CAPABILITIES = [
+  { name: 'Zero-Trust Perimeter Enforcer', type: 'Active' },
+  { name: 'Autonomous Patch Engine', type: 'Active' },
+  { name: 'Behavioral Audit Trail', type: 'Passive' },
+  { name: 'Cognitive Load Profiler', type: 'Passive' },
+  { name: 'Version Reconciliation Engine', type: 'Hybrid' },
+  { name: 'Compliance Continuous Validator', type: 'Hybrid' },
+  { name: 'Policy Enforcement Layer', type: 'Hybrid' },
+  { name: 'Zero-Downtime Migrator', type: 'Hybrid' },
+  { name: 'Tachyonic Causality Analyzer', type: 'Passive' },
+  { name: 'Intelligent Retry Fabric', type: 'Active' },
+];
+
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '9', label: 'Case Studies', icon: FileCode },
-  { value: '7', label: 'Verticals Proven', icon: Layers },
-  { value: '180', label: 'Primitives Applied', icon: Shield },
+  { value: '10', label: 'Case Studies', icon: FileCode },
+  { value: '8', label: 'Verticals Proven', icon: Layers },
+  { value: '200', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
@@ -585,6 +628,7 @@ const HERO_SUBJECTS = [
   { name: 'ArduPilot autotest', org: 'ArduPilot', vertical: 'Robotics' },
   { name: 'QuantLib Gaussian 1D', org: 'QuantLib', vertical: 'FinTech' },
   { name: 'OR-Tools CP-SAT', org: 'Google', vertical: 'Operations Research' },
+  { name: 'PyTorch functional', org: 'Meta', vertical: 'AI / Deep Learning' },
 ];
 
 /* ───────── Main Page ───────── */
