@@ -422,6 +422,7 @@ export function recordRoleChange(userId: string, fromRole: string, toRole: strin
 
 const ALLOWED_ORIGINS = new Set([
   'https://cmpsbl.lovable.app',
+  'https://cmpsbl-com.lovable.app',
   'https://cmpsbl.com',
   'https://www.cmpsbl.com',
   'https://promptfluid.com',
