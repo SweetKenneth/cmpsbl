@@ -295,6 +295,8 @@ function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRu
 export default function CaseStudies() {
   const [showAllPrimitives, setShowAllPrimitives] = useState(false);
   const visiblePrimitives = showAllPrimitives ? PRIMITIVES_APPLIED : PRIMITIVES_APPLIED.slice(0, 8);
+  const [showAllQiskitPrimitives, setShowAllQiskitPrimitives] = useState(false);
+  const visibleQiskitPrimitives = showAllQiskitPrimitives ? QISKIT_PRIMITIVES : QISKIT_PRIMITIVES.slice(0, 8);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
