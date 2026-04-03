@@ -100,7 +100,7 @@ export default function RoboticsHome() {
         <VerticalReturnBanner verticalName="CMPSBL ROBOTICS™" accentColor="hsl(200 100% 55%)" />
 
         {/* NAV */}
-        <RoboNav navigate={navigate} />
+        <PublicNav />
 
         {/* HERO */}
         <motion.section
