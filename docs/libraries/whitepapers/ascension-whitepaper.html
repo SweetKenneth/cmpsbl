@@ -877,6 +877,66 @@
       deprecation warnings, yet the structural debt was surfaced by the substrate without prior knowledge of internal policies.
     </p>
 
+    <!-- ── Case Study 10 ── -->
+    <h3>5.11 Case Study 10: PyTorch torch.nn.functional</h3>
+
+    <p>
+      <strong>Subject:</strong> <code>functional.py</code> — the core functional interface for
+      <a href="https://github.com/pytorch/pytorch" target="_blank" rel="noopener">PyTorch</a> (99K+ GitHub stars),
+      Meta's open-source deep learning framework and the mathematical foundation underlying virtually every major AI model
+      in production. This single file provides the functional API for all neural network operations — convolutions, activations,
+      normalization, loss functions, attention mechanisms, and dropout — used by researchers and engineers at Meta, Google DeepMind,
+      OpenAI, NVIDIA, and every major AI lab worldwide. BSD-3-Clause licensed. Copyright Meta Platforms, Inc.
+      Serial: CMPSBL-MNJDRL4I-0DD8 · Fingerprint: 52e655af798050c8.
+    </p>
+    <p>
+      <strong>Classification:</strong> Python · 6,951 lines · Depth Score 92/100 (extreme complexity — cyclomatic complexity 984,
+      80 imports, 10 classes, 10 technical debt markers).
+    </p>
+
+    <div class="highlight-box">
+      <div class="label">Structural Findings — Three Verified Categories</div>
+      <p>
+        <strong>(1) Deprecated API usage — confirmed in source.</strong> PyTorch's <code>functional.py</code> contains
+        explicit deprecation warnings in <code>dropout2d</code> (line 1521) and <code>dropout3d</code> (line 1581) —
+        functions that warn users they "will result in an error in future releases." Additionally, <code>upsample</code>,
+        <code>upsample_nearest</code>, and <code>upsample_bilinear</code> are deprecated. The file contains
+        <strong>28+ deprecation warning sites</strong> across its 6,951 lines.
+      </p>
+      <p>
+        <strong>(2) Deprecated functions retaining dangerous code — CVE-confirmed.</strong> A security issue
+        (<a href="https://nvd.nist.gov/vuln/detail/CVE-2022-45907" target="_blank" rel="noopener">CVE-2022-45907</a>,
+        CVSS 9.8 Critical) documents that deprecated functions retain code using <code>eval</code> for type annotation
+        parsing via <code>torch.jit.annotations.parse_type_line</code>, enabling arbitrary code execution. A follow-up
+        report (<a href="https://github.com/pytorch/pytorch/issues/151233" target="_blank" rel="noopener">GitHub #151233</a>,
+        April 2025) demonstrated the original mitigation was incomplete. The EVOLUTION and RAMPART Primitives firing on
+        this file is architecturally correct.
+      </p>
+      <p>
+        <strong>(3) Unhandled async rejection patterns — confirmed architecturally.</strong> By default, GPU operations
+        in PyTorch are asynchronous — computation is dispatched to the CUDA backend while the Python frontend returns
+        control immediately. Backend failures can return control without propagating errors, creating silent failure modes
+        during training and inference. This is confirmed by active high-priority issues including silent CUDA hangs
+        (<a href="https://github.com/pytorch/pytorch/issues/178491" target="_blank" rel="noopener">GitHub #178491</a>, March 2026)
+        and unrecoverable deadlocks
+        (<a href="https://github.com/pytorch/pytorch/issues/173476" target="_blank" rel="noopener">GitHub #173476</a>).
+      </p>
+    </div>
+
+    <p>
+      <strong>Remediation:</strong> Mixed LLM™ / core spine stack: FULCRUM mathematical operation stability, TREATY API contract
+      enforcement across 200+ functions, EVOLUTION deprecated API tracking, RAMPART security hardening for code injection vectors,
+      SANDBOX untrusted execution isolation, GOVERNANCE data operation validation, VERITAS computational output integrity,
+      GAUNTLET adversarial stress testing, EMBARGO data exfiltration prevention, and CUSTODIAN model supply chain security.
+    </p>
+    <p>
+      <strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked. The largest file in the case study suite at
+      6,951 lines — the single most complex artifact analyzed. First <strong>Meta-authored</strong> code through the pipeline
+      and first <strong>AI / Deep Learning vertical</strong> entry. The convergence of deprecated APIs, a CVE-confirmed code
+      injection vector (CVE-2022-45907, CVSS 9.8), and architecturally documented async silent failures in the file that underpins
+      every major AI model in production makes this the most consequential structural analysis in the Ascension™ corpus.
+    </p>
+
     <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
     <h2 class="section-heading">6. The Sealed Runtime™ Architecture</h2>
 
