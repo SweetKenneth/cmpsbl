@@ -450,6 +450,10 @@ For licensing inquiries: founder@cmpsbl.com
 
 7. OpenSSL Software Foundation. (2025). *OpenSSL: Cryptography and SSL/TLS Toolkit.* https://github.com/openssl/openssl
 
+8. Sakai, A. et al. (2018). *PythonRobotics: a Python code collection of robotics algorithms.* https://github.com/AtsushiSakai/PythonRobotics
+
+9. Rapid7, Inc. (2025). *Metasploit Framework.* https://github.com/rapid7/metasploit-framework
+
 ---
 
 ## Citation
