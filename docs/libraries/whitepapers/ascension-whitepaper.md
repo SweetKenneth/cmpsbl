@@ -596,6 +596,14 @@ For licensing inquiries: founder@cmpsbl.com
 
 19. PyTorch Contributors. (2026). *Silent CUDA hang under high VRAM pressure — async error never propagated.* GitHub Issue #178491. https://github.com/pytorch/pytorch/issues/178491
 
+20. Anthropic, Inc. (2023–2026). *Anthropic Python SDK.* https://github.com/anthropics/anthropic-sdk-python
+
+21. sarth6. (2026). *Mid-stream SSE errors get status_code=200 instead of the actual error code.* GitHub Issue #1258. https://github.com/anthropics/anthropic-sdk-python/issues/1258
+
+22. sjlee001. (2026). *Silent stream abort causes Claude to stop mid-task without error.* GitHub Issue #38905. https://github.com/anthropics/claude-code/issues/38905
+
+23. notactuallytreyanastasio. (2025). *Infinitely hanging clients breaking bigger/complex sessions.* GitHub Issue #867. https://github.com/anthropics/anthropic-sdk-typescript/issues/867
+
 ---
 
 ## Citation
