@@ -524,12 +524,53 @@ const QUANTLIB_CAPABILITIES = [
   { name: 'Particle Collision Analyzer', type: 'Active' },
 ];
 
+/* ───────── Google OR-Tools Data ───────── */
+
+const ORTOOLS_VULNERABILITIES = [
+  { severity: 'warning' as const, title: 'Synchronous-only architecture', status: 'mitigated', details: 'No async patterns in a solver that can run for hours on complex optimization problems.' },
+  { severity: 'warning' as const, title: 'High cyclomatic complexity (230)', status: 'mitigated', details: 'Extreme branching across model-building, constraint-posting, and solver-invocation paths.' },
+  { severity: 'warning' as const, title: 'High dependency coupling (42 imports)', status: 'mitigated', details: '42 imports detected — high coupling increases blast radius of dependency failures.' },
+  { severity: 'warning' as const, title: 'Monolithic file (2,332 lines)', status: 'mitigated', details: 'Entire CP-SAT Python API in a single module. ENGINEER recommends decomposition.' },
+  { severity: 'warning' as const, title: 'Deprecated API usage detected', status: 'mitigated', details: 'File implements its own deprecated decorator because warnings.deprecated is Python 3.13+ only.' },
+  { severity: 'warning' as const, title: 'Insecure HTTP protocol usage', status: 'mitigated', details: 'Non-HTTPS URLs in license headers. Data in plaintext vulnerable to interception.' },
+  { severity: 'info' as const, title: '9 classes in single file', status: 'monitor', details: 'CpModel, CpSolver, Constraint, LinearExpr, callbacks — God Object decomposition opportunities.' },
+  { severity: 'info' as const, title: 'No fallback mechanisms detected', status: 'monitor', details: 'Single-path execution. Failure in any step halts the entire pipeline.' },
+  { severity: 'info' as const, title: 'No module exports detected', status: 'monitor', details: 'Code appears self-contained. Limits reusability and testability.' },
+  { severity: 'info' as const, title: 'No dependency failure fallbacks', status: 'monitor', details: '42 dependencies with no fallback strategy. Any failure cascades.' },
+];
+
+const ORTOOLS_PRIMITIVES = [
+  { name: 'QUBIT', type: 'Engine' }, { name: 'PLASMA', type: 'Engine' },
+  { name: 'BOSON', type: 'Agent' }, { name: 'MESON', type: 'Agent' },
+  { name: 'ENTANGLE', type: 'Engine' }, { name: 'LATTICE', type: 'Engine' },
+  { name: 'CONSCIENCE', type: 'Organ' }, { name: 'PHOTON', type: 'Engine' },
+  { name: 'ECHO', type: 'Organ' }, { name: 'OBSERVER', type: 'Organ' },
+  { name: 'NEUTRINO', type: 'Agent' }, { name: 'BRAIN', type: 'Organ' },
+  { name: 'SANDBOX', type: 'Layer' }, { name: 'MUON', type: 'Agent' },
+  { name: 'GRAVITON', type: 'Agent' }, { name: 'LINGUA', type: 'Organ' },
+  { name: 'ORACLE', type: 'Engine' }, { name: 'IMMUNITY', type: 'Layer' },
+  { name: 'SIMULATE', type: 'Engine' }, { name: 'EVOLUTION', type: 'Layer' },
+];
+
+const ORTOOLS_CAPABILITIES = [
+  { name: 'Quantum Circuit Optimizer', type: 'Active' },
+  { name: 'Particle Collision Analyzer', type: 'Active' },
+  { name: 'Neutrino Oscillation Predictor', type: 'Passive' },
+  { name: 'Cognitive Load Profiler', type: 'Passive' },
+  { name: 'Entanglement Verification Protocol', type: 'Hybrid' },
+  { name: 'Gravitational Wave Template Matcher', type: 'Hybrid' },
+  { name: 'Silent Regression Scanner', type: 'Passive' },
+  { name: 'Tachyonic Causality Analyzer', type: 'Passive' },
+  { name: 'Spectral Line Identifier', type: 'Passive' },
+  { name: 'Policy Enforcement Layer', type: 'Hybrid' },
+];
+
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '8', label: 'Case Studies', icon: FileCode },
-  { value: '6', label: 'Verticals Proven', icon: Layers },
-  { value: '160', label: 'Primitives Applied', icon: Shield },
+  { value: '9', label: 'Case Studies', icon: FileCode },
+  { value: '7', label: 'Verticals Proven', icon: Layers },
+  { value: '180', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
@@ -543,6 +584,7 @@ const HERO_SUBJECTS = [
   { name: 'OpenSSL tls13_enc.c', org: 'OpenSSL Foundation', vertical: 'Cyber' },
   { name: 'ArduPilot autotest', org: 'ArduPilot', vertical: 'Robotics' },
   { name: 'QuantLib Gaussian 1D', org: 'QuantLib', vertical: 'FinTech' },
+  { name: 'OR-Tools CP-SAT', org: 'Google', vertical: 'Operations Research' },
 ];
 
 /* ───────── Main Page ───────── */
