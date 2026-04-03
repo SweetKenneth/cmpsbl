@@ -26,6 +26,8 @@
 
 import type { VerticalPrimitive, VerticalSubstrateConfig } from '../vertical-substrate';
 import { getSpinePrimitives, assembleVerticalPrimitives } from '../vertical-substrate';
+import { CYBER_CROWN_JEWELS, getCyberJewelsByPrimitive, getCyberJewelSummary } from '@/crownjewels/cyber-vertical-registry';
+import type { STierEntry } from '@/crownjewels/types';
 
 /* ─── CyberSecurity Engines ─── */
 
