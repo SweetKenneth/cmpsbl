@@ -54,6 +54,7 @@ export const COPYRIGHT_NOTICE = {
     'CMPSBL DEFENSE™',
     'CMPSBL NEXUS™',
     'CMPSBL RIPPLE™',
+    'CMPSBL CYBER™',
   ],
   legalWarning: `All Rights Reserved. Unauthorized access, use, or distribution of CMPSBL's proprietary APIs, networks, products, or intellectual property is strictly prohibited and subject to legal prosecution.`,
   enforcementNotice: `This system is protected by CMPSBL DEFENSE™. All access attempts are monitored, logged, and analyzed for security threats.`,
