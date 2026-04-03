@@ -210,6 +210,7 @@ export const publicRoutes = (
     <Route path="/support" element={<Support />} />
     <Route path="/explore" element={<Navigate to="/" replace />} />
     <Route path="/promptfluid" element={<PromptFluidHome />} />
+    <Route path="/security" element={<CyberSecurityHome />} />
 
     {/* System pages */}
     <Route path="/modules" element={<Navigate to="/architecture" replace />} />
