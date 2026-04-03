@@ -10,7 +10,7 @@ import { PageSEOBlock } from '@/components/seo/PageSEOBlock';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, ExternalLink, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical } from 'lucide-react';
+import { Download, ExternalLink, Clock, Shield, Zap, GitBranch, Bug, Eye, FileCode, Award, ChevronDown, ChevronUp, Layers, FlaskConical, Atom } from 'lucide-react';
 import { useState } from 'react';
 
 /* ───────── Case Study #1 Data — A* Path Planner ───────── */
