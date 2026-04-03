@@ -135,6 +135,20 @@ function buildVerticalCatalog(): {
     return { spine: [...SPINE_PRIMITIVES], expansion: [...roboEngines, ...roboAgents] };
   }
 
+  if (vertical === 'quantum') {
+    const qEngines = getQuantumEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const qAgents = getQuantumAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return { spine: [...SPINE_PRIMITIVES], expansion: [...qEngines, ...qAgents] };
+  }
+
   // Dynamic verticals — auto-discovered from the factory engine
   if (vertical) {
     const dynamicPrimitives = getDynamicVerticalPrimitives(vertical);
