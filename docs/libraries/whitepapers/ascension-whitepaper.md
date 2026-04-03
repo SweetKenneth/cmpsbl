@@ -474,6 +474,8 @@ For licensing inquiries: founder@cmpsbl.com
 
 9. Rapid7, Inc. (2025). *Metasploit Framework.* https://github.com/rapid7/metasploit-framework
 
+10. ArduPilot Dev Team. (2025). *ArduPilot: Open Source Autopilot.* https://github.com/ArduPilot/ardupilot
+
 ---
 
 ## Citation
