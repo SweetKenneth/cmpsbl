@@ -2738,6 +2738,196 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+
+        {/* ═══════════════════════════════════════════════════════════════════ */}
+        {/* Case Study #12 — CMPSBL pipeline-fingerprint.ts (Self-Referential) */}
+        {/* ═══════════════════════════════════════════════════════════════════ */}
+        <section className="space-y-6">
+          <div className="flex flex-wrap items-center gap-3 mb-2">
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 font-mono text-xs">Case Study #12</Badge>
+            <Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/30 font-mono text-xs">CJPI 100 APEX</Badge>
+            <Badge variant="outline" className="font-mono text-xs">Core Substrate (No Vertical)</Badge>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-1">CMPSBL® pipeline-fingerprint.ts</h2>
+              <p className="text-muted-foreground text-sm">
+                The cryptographic fingerprint generation engine of the CMPSBL® substrate itself — the system that produces the unique identity hash on every Certificate of Discovery. Run through the original 40-Primitive base matrix with no vertical hot-swap. The substrate analyzing itself.
+              </p>
+            </div>
+
+            {/* Provenance */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: 'Serial', value: 'CMPSBL-MNJEN2SS-XF1N' },
+                { label: 'Fingerprint', value: '18b8cd05bd02ba6d' },
+                { label: 'Language', value: 'TypeScript' },
+                { label: 'Lines', value: '116' },
+              ].map(item => (
+                <div key={item.label} className="bg-muted/30 rounded-lg p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{item.label}</p>
+                  <p className="text-sm font-mono font-semibold text-foreground">{item.value}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Critical Discovery */}
+            <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-4">
+              <div className="flex items-start gap-2 mb-2">
+                <AlertTriangle className="w-5 h-5 text-destructive shrink-0 mt-0.5" />
+                <h3 className="text-base font-bold text-destructive">Critical Discovery</h3>
+              </div>
+              <p className="text-sm text-foreground/90 leading-relaxed">
+                The substrate found that its own fingerprinting system had no error handling around cryptographic operations and unhandled async rejection paths — meaning a fingerprint generation failure would produce no diagnostic information. FAILSAFE fired first. <strong className="text-foreground">The system that signs every Certificate of Discovery had never been signed itself. Until now.</strong>
+              </p>
+            </div>
+
+            {/* Findings */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Bug className="w-4 h-4 text-destructive" /> Structural Findings
+              </h3>
+              <div className="space-y-2">
+                {[
+                  { severity: 'critical', title: 'No error handling detected', status: 'hardened', detail: 'Zero try/catch blocks around cryptographic operations. SHA-256 via WebCrypto (crypto.subtle.digest) had no error handling — failures drop silently with no diagnostic information. FAILSAFE fired first.' },
+                  { severity: 'critical', title: 'Unhandled async rejections', status: 'hardened', detail: 'Async operations in the fingerprinting chain (crypto.subtle.digest returns a Promise) had no explicit rejection handlers. Same class of structural gap found in PyTorch and Anthropic — now confirmed endemic across languages.' },
+                  { severity: 'warning', title: 'Deep nesting at 7 levels', status: 'refactored', detail: 'ARCHITECT flagged excessive nesting depth in fingerprint payload construction. Refactored into named helper functions: normalizeStep, buildPayloadObject, resolveSteps, validateSteps.' },
+                  { severity: 'warning', title: 'No test coverage detected', status: 'mitigated', detail: 'SHADOW flagged zero test coverage. 29 unit tests now cover determinism, uniqueness, error handling, async rejection handling, legacy compatibility, conversion utilities, and display utilities.' },
+                  { severity: 'info', title: 'Cyclomatic complexity 83', status: 'monitor', detail: 'Moderate complexity appropriate for a cryptographic pipeline handling multiple input formats and conversion paths.' },
+                  { severity: 'info', title: 'No input validation', status: 'hardened', detail: 'Public API surfaces accepted any input without validation. Now validates steps array, module strings, and capability strings with typed FingerprintError exceptions.' },
+                ].map((v) => (
+                  <div key={v.title} className="flex items-start gap-3 p-3 bg-muted/20 rounded-lg border border-border/30">
+                    <Badge variant={v.severity === 'critical' ? 'destructive' : 'outline'}
+                      className={`text-[10px] uppercase shrink-0 mt-0.5 ${v.severity === 'warning' ? 'bg-yellow-500/15 text-yellow-600 border-yellow-500/30' : v.severity === 'info' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' : ''}`}
+                    >{v.severity}</Badge>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-sm font-semibold text-foreground">{v.title}</span>
+                        <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-500/20">{v.status}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">{v.detail}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Primitive Chain */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-primary" /> 20 Primitives Applied — Original Base Matrix
+              </h3>
+              <div className="flex flex-wrap gap-1.5">
+                {['FAILSAFE', 'BEACON', 'ATLAS', 'MONOLITH', 'ARCHITECT', 'ENGINEER', 'CORTEX', 'PRIMITIVE', 'HARVEST', 'SANDBOX', 'WRAITH', 'ORACLE', 'DECODE', 'TREATY', 'FORGE', 'OBSERVER', 'EVOLUTION', 'BRAIN', 'PHANTOM', 'REFLEX'].map((p) => (
+                  <Badge key={p} variant="outline" className={`font-mono text-xs ${p === 'PRIMITIVE' ? 'bg-primary/20 text-primary border-primary/40 ring-1 ring-primary/30' : ''}`}>
+                    {p}
+                  </Badge>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground mt-2 italic">
+                PRIMITIVE — the foundational execution layer — fired on its own fingerprinting logic. That has never happened in any other run across 12 case studies.
+              </p>
+            </div>
+
+            {/* Capabilities */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" /> Standout Capabilities Discovered
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {[
+                  { name: 'Autonomous Decision Loop', mode: 'Active', desc: 'Self-governing decision pipeline that evaluates, selects, and executes optimal paths without external input.' },
+                  { name: 'Predictive Failure Shield', mode: 'Active', desc: 'Pre-emptive failure detection using structural analysis of execution paths before they are triggered.' },
+                  { name: 'APT Threat Hunter', mode: 'Active', desc: 'Advanced persistent threat detection across cryptographic operation boundaries.' },
+                  { name: 'Real-Time Performance Optimizer', mode: 'Hybrid', desc: 'Dynamic performance tuning of hash computation paths based on input characteristics.' },
+                  { name: 'Telemetry Mesh', mode: 'Passive', desc: 'Distributed health signal network providing comprehensive observability across the fingerprint pipeline.' },
+                ].map((cap) => (
+                  <div key={cap.name} className="bg-muted/30 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-sm font-semibold text-foreground">{cap.name}</span>
+                      <Badge variant="outline" className="text-[10px] h-4">{cap.mode}</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground">{cap.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Remediation */}
+            <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-emerald-600 mb-2">✅ All Findings Remediated in Production</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>FAILSAFE structured error handling with <code className="text-xs bg-muted px-1 rounded">FingerprintError</code> typed exceptions carrying diagnostic codes and context</li>
+                <li>BEACON health signals via structured logger on all cryptographic operation failures</li>
+                <li>Input validation on all public API surfaces (empty steps, invalid modules, malformed chains)</li>
+                <li>Async rejection propagation — SHA-256 failures surface as typed errors, never silently</li>
+                <li>Deep nesting refactored into named functions: <code className="text-xs bg-muted px-1 rounded">normalizeStep</code>, <code className="text-xs bg-muted px-1 rounded">buildPayloadObject</code>, <code className="text-xs bg-muted px-1 rounded">resolveSteps</code>, <code className="text-xs bg-muted px-1 rounded">validateSteps</code></li>
+                <li><strong className="text-foreground">29 unit tests</strong> covering determinism, uniqueness, error handling, async rejection, legacy compat, and display utilities</li>
+              </ul>
+            </div>
+
+            {/* Why This Matters */}
+            <div className="bg-muted/30 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Why This Matters</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>The substrate <strong className="text-foreground">analyzed itself</strong> — the file that signs every Certificate of Discovery was run through the same 40-Primitive collision matrix</li>
+                <li>The <strong className="text-foreground">same class of async rejection patterns</strong> found in PyTorch and Anthropic surfaced here — confirming this structural gap is endemic across languages, not just Python</li>
+                <li><strong className="text-foreground">PRIMITIVE fired on its own logic</strong> — the foundational execution layer analyzing its own fingerprinting system. First time in 12 case studies</li>
+                <li>Every finding was <strong className="text-foreground">immediately remediated</strong> — the only case study where all CRITICAL gaps were fixed in the production codebase before publication</li>
+              </ul>
+            </div>
+
+            {/* Closing Quote */}
+            <div className="border-l-4 border-primary/50 pl-4 py-2 bg-primary/5 rounded-r-lg">
+              <p className="text-sm text-foreground/90 italic leading-relaxed">
+                &ldquo;Twelve runs. Twelve targets. IBM, Rapid7, HuggingFace, OpenSSL, ArduPilot, QuantLib, Google, Meta, Anthropic, and finally CMPSBL itself. The substrate found two CRITICAL gaps in its own fingerprinting system and hardened them. It doesn&apos;t know whose code it&apos;s looking at. It just sees the math.&rdquo;
+              </p>
+            </div>
+
+            {/* Downloads + Refs */}
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Artifacts
+                </h3>
+                <div className="space-y-2">
+                  <a
+                    href="/downloads/case-studies/cmpsbl-ascended-CMPSBL-MNJEN2SS-XF1N.zip"
+                    download
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Download className="w-4 h-4" /> Download Ascended Artifact (.zip)
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'pipeline-fingerprint.ts (hardened)', url: 'https://github.com' },
+                    { label: 'WebCrypto SubtleCrypto.digest() (MDN)', url: 'https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
