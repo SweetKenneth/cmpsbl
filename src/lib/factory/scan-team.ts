@@ -601,6 +601,23 @@ function scorePrimitiveRelevance(
     nocturne: { signals: [hasHttp, code.includes('monitor') || code.includes('intel')], rationale: 'Dark web intelligence monitors credential leaks and threat actor activity' },
     ironclad: { signals: [code.includes('compliance') || code.includes('audit'), hasAuth], rationale: 'Continuous compliance validation against SOC2, NIST, and ISO 27001' },
     bulwark: { signals: [code.includes('import') || code.includes('require'), code.includes('package')], rationale: 'Supply chain auditing detects compromised packages and typosquatting' },
+    // Robotics vertical primitives — Engines
+    servo: { signals: [code.includes('motor') || code.includes('actuator') || code.includes('pid'), hasAsync], rationale: 'Motor control and actuator orchestration with PID tuning and torque profiling' },
+    kinetic: { signals: [code.includes('trajectory') || code.includes('motion') || code.includes('velocity'), len > 200], rationale: 'Motion planning and trajectory optimization for multi-axis coordination' },
+    lidar: { signals: [code.includes('sensor') || code.includes('point') || code.includes('scan'), hasAsync], rationale: 'Spatial perception and 3D point cloud mapping for environment modeling' },
+    flux: { signals: [code.includes('power') || code.includes('battery') || code.includes('energy'), hasState], rationale: 'Power management and energy distribution across robotic subsystems' },
+    vector: { signals: [code.includes('path') || code.includes('navigate') || code.includes('position'), hasAsync], rationale: 'Navigation, pathfinding, and localization with SLAM integration' },
+    tensor: { signals: [code.includes('sensor') || code.includes('signal') || code.includes('fusion'), len > 300], rationale: 'Sensor fusion and multi-modal signal processing for situational awareness' },
+    caliber: { signals: [code.includes('calibrat') || code.includes('precision') || code.includes('tolerance'), hasState], rationale: 'Precision calibration and tolerance enforcement for repeatable operations' },
+    // Robotics vertical primitives — Agents
+    gripper: { signals: [code.includes('grip') || code.includes('grasp') || code.includes('manipulat'), hasAsync], rationale: 'Manipulation and dexterous object handling with adaptive grasp planning' },
+    swarm: { signals: [code.includes('fleet') || code.includes('multi') || code.includes('coordinat'), len > 300], rationale: 'Multi-robot coordination and fleet management with consensus protocols' },
+    environ: { signals: [code.includes('environment') || code.includes('scene') || code.includes('obstacle'), hasState], rationale: 'Environmental awareness and scene understanding for safe operation' },
+    guardian: { signals: [code.includes('safety') || code.includes('collision') || code.includes('emergency'), hasAsync], rationale: 'Safety monitoring and collision avoidance with emergency stop protocols' },
+    conductor: { signals: [hasAsync, code.includes('task') || code.includes('sequence') || code.includes('workflow')], rationale: 'Task sequencing and workflow automation for multi-step robotic operations' },
+    welder: { signals: [code.includes('weld') || code.includes('assemble') || code.includes('join'), hasAsync], rationale: 'Assembly operations and joining processes with seam tracking' },
+    inspector: { signals: [code.includes('inspect') || code.includes('defect') || code.includes('quality'), hasState], rationale: 'Quality inspection and defect detection with machine vision classification' },
+    pioneer: { signals: [code.includes('explor') || code.includes('frontier') || code.includes('unknown'), hasAsync], rationale: 'Autonomous exploration and frontier mapping in unknown environments' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
