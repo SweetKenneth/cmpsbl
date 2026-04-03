@@ -389,7 +389,7 @@ export default function CyberSecurityHome() {
         </section>
 
         {/* ── FOOTER ── */}
-        <CyberFooter />
+        <EnhancedFooter />
 
         {/* JSON-LD */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
