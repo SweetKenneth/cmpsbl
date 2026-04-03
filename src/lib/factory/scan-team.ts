@@ -486,7 +486,7 @@ function analyzeWithFailsafe(code: string, metrics: CodeMetrics): ScanFinding[] 
 
 /** ENCODE analyzes code signals to score each primitive's relevance */
 function scorePrimitiveRelevance(
-  primitive: typeof PRIMITIVE_CATALOG[0],
+  primitive: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>,
   code: string,
   findings: ScanFinding[],
   rand: () => number,
