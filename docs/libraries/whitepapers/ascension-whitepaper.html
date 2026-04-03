@@ -1004,7 +1004,7 @@
     <h3>5.14 Case Study 13: CMPSBL decode-audit.ts</h3>
     <p><strong>Subject:</strong> <code>src/substrate/decode-audit.ts</code> — the DECODE audit logging system. Serial: CMPSBL-MNJEX0UY-4RGQ · Fingerprint: 91ac14dd4706312f.</p>
     <p><strong>Classification:</strong> TypeScript · 91 lines · Cyclomatic complexity 27 · No CRITICAL findings.</p>
-    <p><strong>Findings:</strong> Three warnings: synchronous-only architecture, no test coverage, cyclomatic complexity 27. <code>Math.random()</code> used for audit entry IDs — replaced with <code>crypto.randomUUID()</code>.</p>
+<p><strong>Findings:</strong> Three warnings: synchronous-only architecture, no test coverage, cyclomatic complexity 27. The report flagged weak randomness for audit entry IDs; however, <strong>verification confirmed <code>crypto.randomUUID()</code> was already in use.</strong> No fix required.</p>
     <p><strong>Capabilities:</strong> Self-Healing State Machine, Circuit Breaker Mesh. <strong>Result:</strong> CJPI 100 (APEX).</p>
 
     <!-- ── Case Study 14 ── -->
