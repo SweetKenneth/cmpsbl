@@ -37,7 +37,7 @@ const ENGINE_DATA = [
   { id: "SERVO", name: "SERVO", desc: "Motor control & actuator orchestration — PID tuning, torque profiling, multi-axis servo loop execution", icon: Cog, color: "hsl(200 100% 55%)" },
   { id: "KINETIC", name: "KINETIC", desc: "Motion planning & trajectory optimization — RRT* pathfinding, collision avoidance, inverse kinematics", icon: Navigation, color: "hsl(170 80% 50%)" },
   { id: "LIDAR", name: "LIDAR", desc: "Spatial perception — 3D point cloud processing, SLAM mapping, semantic terrain classification", icon: Eye, color: "hsl(45 100% 55%)" },
-  { id: "FORGE", name: "FORGE", desc: "Hardware fabrication — CAD pipelines, additive manufacturing, predictive maintenance, digital twins", icon: Wrench, color: "hsl(15 90% 55%)" },
+  { id: "FABRICATOR", name: "FABRICATOR", desc: "Hardware fabrication — CAD pipelines, additive manufacturing, predictive maintenance, digital twins", icon: Wrench, color: "hsl(15 90% 55%)" },
   { id: "FLUX", name: "FLUX", desc: "Power management — battery SOH estimation, regenerative braking, energy budget allocation", icon: Battery, color: "hsl(120 70% 50%)" },
   { id: "VECTOR", name: "VECTOR", desc: "Navigation & localization — GPS/IMU fusion, visual odometry, geofencing, waypoint navigation", icon: Compass, color: "hsl(260 80% 65%)" },
   { id: "TENSOR", name: "TENSOR", desc: "Sensor fusion — Kalman filtering, multi-modal state estimation, anomaly signal detection", icon: CircuitBoard, color: "hsl(330 80% 60%)" },
