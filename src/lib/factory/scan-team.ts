@@ -10,6 +10,7 @@
 import type { RateLimitDecision } from '@/lib/substrate/adaptive-rate-limit';
 import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
 import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
+import { getRoboticsEngines, getRoboticsAgents } from './verticals/robotics';
 import { getVerticalSubdomain } from '@/config/domains';
 
 export interface ScanFinding {
