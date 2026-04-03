@@ -580,45 +580,24 @@
 
     <h3>5.1 Overview</h3>
 
+    <p>We present four verified case studies spanning three languages, four industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number and downloadable artifacts:</p>
+
     <div class="table-wrap">
       <table>
         <thead>
           <tr><th>#</th><th>Software</th><th>Language</th><th>Vertical</th><th>CJPI</th><th>Capabilities</th><th>Critical Findings</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td>Stripe Node.js SDK</td><td>TypeScript</td><td>FinTech</td><td>98</td><td>20 S-Tier</td><td>Undocumented circuit-breaker gaps</td></tr>
-          <tr><td>2</td><td>PHP Agent Framework</td><td>PHP</td><td>Agentic AI</td><td>100 APEX</td><td>20 S-Tier</td><td>~$2.6M latent IP discovered</td></tr>
-          <tr><td>3</td><td>NASA cFS Framework</td><td>C</td><td>Aerospace</td><td>97</td><td>20 S-Tier</td><td>Memory safety augmentation paths</td></tr>
-          <tr><td>4</td><td>Solana Token Program</td><td>Rust</td><td>Blockchain</td><td>96</td><td>20 S-Tier</td><td>Cross-program invocation hardening</td></tr>
-          <tr><td>5</td><td>IBM Qiskit ConsolidateBlocks</td><td>Python</td><td>Quantum</td><td>98</td><td>20 S-Tier</td><td>Unguarded circuit optimization passes</td></tr>
-          <tr><td>6</td><td>HuggingFace Tokenizers</td><td>Python</td><td>LLM / ML</td><td>100 APEX</td><td>20 S-Tier</td><td><strong>Critical error-handling vulnerability</strong></td></tr>
-          <tr><td>7</td><td>OpenSSL tls13_enc.c</td><td>C</td><td>Cyber</td><td>100 APEX</td><td>20 S-Tier</td><td>Network timeout structural gap — hardened</td></tr>
+          <tr><td>1</td><td>PHP Agent Framework</td><td>PHP</td><td>Agentic AI</td><td>100 APEX</td><td>20 S-Tier</td><td>~$2.6M latent IP discovered</td></tr>
+          <tr><td>2</td><td>IBM Qiskit ConsolidateBlocks</td><td>Python</td><td>Quantum</td><td>98</td><td>20 S-Tier</td><td>Unguarded circuit optimization passes</td></tr>
+          <tr><td>3</td><td>HuggingFace Tokenizers</td><td>Python</td><td>LLM / ML</td><td>100 APEX</td><td>20 S-Tier</td><td><strong>Critical error-handling vulnerability</strong></td></tr>
+          <tr><td>4</td><td>OpenSSL tls13_enc.c</td><td>C</td><td>Cyber</td><td>100 APEX</td><td>20 S-Tier</td><td>Network timeout structural gap — hardened</td></tr>
         </tbody>
       </table>
     </div>
 
     <!-- ── Case Study 1 ── -->
-    <h3>5.2 Case Study 1: Stripe Node.js SDK</h3>
-
-    <p><strong>Subject:</strong> <code>stripe-node/src/stripe.core.ts</code> — the core request engine of Stripe's official Node.js SDK, used by millions of businesses for payment processing. 4M+ weekly npm downloads.</p>
-    <p><strong>Classification:</strong> TypeScript · 847 lines · Depth Score 71/100 (high complexity, moderate error handling density, extensive type coverage).</p>
-
-    <div class="highlight-box">
-      <div class="label">Critical Discovery</div>
-      <p>
-        During Stage 5 collision, the IMMUNITY primitive detected <strong>undocumented circuit-breaker gaps</strong>
-        in the SDK's retry logic. The exponential backoff implementation lacked configurable jitter bounds, and the
-        maximum retry window had no hard ceiling — meaning a pathological API response pattern could keep a client
-        thread blocked indefinitely. Additionally, the TREATY primitive identified that the SDK's idempotency key
-        handling did not enforce temporal expiration, creating a window for stale replays in high-throughput environments.
-      </p>
-    </div>
-
-    <p><strong>Remediation:</strong> Ascension™ hardened the request engine with deterministic circuit-breaker state machines, bounded retry windows, idempotency key expiration via GOVERNANCE temporal validation, BEACON health signals for retry exhaustion monitoring, and FAILSAFE graceful degradation on circuit breaker trips.</p>
-    <p><strong>Result:</strong> CJPI 98 (S-Tier). 20 S-Tier capabilities unlocked — 10 spine primitives (including IMMUNITY, TREATY, GOVERNANCE, FAILSAFE, DEFENSE) and 10 expansion primitives providing financial-domain hardening.</p>
-
-    <!-- ── Case Study 2 ── -->
-    <h3>5.3 Case Study 2: PHP Agent Framework</h3>
+    <h3>5.2 Case Study 1: PHP Agent Framework</h3>
 
     <p><strong>Subject:</strong> <code>OpenClawAgent.php</code> — an OpenAI-pattern autonomous agent framework implementing tool-use, memory persistence, and multi-step reasoning in PHP. Serial: CMPSBL-MNIHJAX3-4GSN.</p>
     <p><strong>Classification:</strong> PHP · 312 lines · Depth Score 58/100 (moderate complexity, minimal error handling, extensive function dispatch surface).</p>
@@ -638,51 +617,8 @@
     <p><strong>Remediation:</strong> Sovereign governance layer for data residency compliance, ghost defense shielding via SHADOW primitive, AUDIT immutable logging, CONSCIENCE ethical boundary enforcement, and DREAM sub-threshold synthesis for emergent reasoning patterns.</p>
     <p><strong>Result:</strong> CJPI 100 (APEX classification). 20 S-Tier capabilities unlocked. Domain-specific primitive application demonstrated: WATCHTOWER for CMPSBL Cyber™ analysis and VECTOR for CMPSBL Robotics™ cross-pollination.</p>
 
-    <!-- ── Case Study 3 ── -->
-    <h3>5.4 Case Study 3: NASA cFS Framework</h3>
-
-    <p><strong>Subject:</strong> <code>cfe/fsw/cfe-core/src/es/cfe_es_api.c</code> — the Executive Services API of NASA's core Flight System (cFS), the open-source flight software framework used aboard the International Space Station and multiple satellite missions.</p>
-    <p><strong>Classification:</strong> C · 1,247 lines · Depth Score 82/100 (very high complexity, moderate error handling, zero type safety annotations, deep nesting).</p>
-
-    <div class="highlight-box">
-      <div class="label">Critical Discovery</div>
-      <p>
-        During Stage 5 collision, the IMMUNITY primitive detected <strong>memory safety augmentation paths</strong>
-        that conventional static analysis tools — including NASA's own CFS verification suite — had not surfaced.
-        The <code>CFE_ES_CreateChildTask</code> function accepted raw pointer parameters without bounds validation,
-        creating a potential stack overflow vector. The application restart mechanism (<code>CFE_ES_RestartApp</code>)
-        lacked atomic state transition guarantees, meaning a restart during mid-flight data acquisition could leave
-        telemetry buffers in an inconsistent state. The MEDIC primitive identified that the health monitoring subsystem
-        had no self-diagnostic capability.
-      </p>
-    </div>
-
-    <p><strong>Remediation:</strong> IMMUNITY adaptive threshold guards on raw pointer parameters, GOVERNANCE atomic state machines for application lifecycle, MEDIC self-diagnostic health loops with BEACON heartbeat signaling, FAILSAFE circuit breakers on the restart path, and DEFENSE anomaly detection on telemetry buffer access.</p>
-    <p><strong>Result:</strong> CJPI 97 (S-Tier). 20 S-Tier capabilities unlocked. Demonstrates that Ascension™ surfaces memory safety issues domain-specific tools miss because they focus on functional correctness rather than structural resilience.</p>
-
-    <!-- ── Case Study 4 ── -->
-    <h3>5.5 Case Study 4: Solana Token Program</h3>
-
-    <p><strong>Subject:</strong> <code>token/program/src/processor.rs</code> — the core instruction processor for Solana's SPL Token Program, securing billions of dollars in on-chain token assets and processing millions of transactions daily.</p>
-    <p><strong>Classification:</strong> Rust · 1,893 lines · Depth Score 88/100 (very high complexity, strong type coverage, extensive pattern matching, deep control flow).</p>
-
-    <div class="highlight-box">
-      <div class="label">Critical Discovery</div>
-      <p>
-        During Stage 5 collision, the DEFENSE primitive detected <strong>cross-program invocation (CPI) hardening gaps</strong>
-        in the token transfer path. While Rust's type system prevented memory safety issues, the structural analysis revealed
-        that: (1) the <code>process_transfer</code> instruction did not enforce caller-identity verification at the CPI boundary;
-        (2) the AUDIT primitive identified that mint authority transitions lacked immutable provenance chains; and
-        (3) the SOVEREIGN primitive detected that account validation relied on runtime checks rather than compile-time
-        constraints, creating a class of "phantom account" attacks.
-      </p>
-    </div>
-
-    <p><strong>Remediation:</strong> DEFENSE CPI boundary hardening with caller-identity chain verification, AUDIT immutable authority provenance chains with cryptographic anchoring, SOVEREIGN compile-time account constraint enforcement, IMMUNITY adaptive rate limiting on high-frequency transfers, and FAILSAFE circuit breaker on mint operations during authority transitions.</p>
-    <p><strong>Result:</strong> CJPI 96 (S-Tier). 20 S-Tier capabilities unlocked. Demonstrates that even in memory-safe languages like Rust, Ascension™ discovers architectural vulnerabilities at the protocol design layer.</p>
-
-    <!-- ── Case Study 5 ── -->
-    <h3>5.6 Case Study 5: IBM Qiskit ConsolidateBlocks</h3>
+    <!-- ── Case Study 2 ── -->
+    <h3>5.3 Case Study 2: IBM Qiskit ConsolidateBlocks</h3>
 
     <p><strong>Subject:</strong> <code>qiskit/transpiler/passes/optimization/consolidate_blocks.py</code> — the circuit optimization pass in IBM's Qiskit quantum computing framework. Serial: CMPSBL-MNJ4Y3JG-CQOW.</p>
     <p><strong>Classification:</strong> Python · 189 lines · Depth Score 54/100 (moderate complexity, minimal error handling, high mathematical density).</p>
@@ -702,8 +638,8 @@
     <p><strong>Remediation:</strong> VERITAS numerical stability verification, ORACLE predictive optimization with backtracking search, CONSCIENCE topology-aware bias correction, FAILSAFE circuit breaker on optimization passes that degrade fidelity, and BEACON health signals for optimization quality metrics.</p>
     <p><strong>Result:</strong> CJPI 98 (S-Tier). 20 S-Tier capabilities unlocked — 10 spine primitives and 10 CMPSBL Quantum™ Vertical expansion primitives.</p>
 
-    <!-- ── Case Study 6 ── -->
-    <h3>5.7 Case Study 6: Hugging Face Tokenizers (Detailed)</h3>
+    <!-- ── Case Study 3 ── -->
+    <h3>5.4 Case Study 3: Hugging Face Tokenizers (Detailed)</h3>
 
     <p>
       <strong>Subject:</strong> <code>tokenizers/__init__.py</code> — the entry point for Hugging Face's tokenization library,
@@ -731,8 +667,8 @@
     </p>
     <p><strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 spine, 10 CMPSBL LLM™ Vertical expansion.</p>
 
-    <!-- ── Case Study 7 ── -->
-    <h3>5.8 Case Study 7: OpenSSL TLS 1.3 Encryption Engine</h3>
+    <!-- ── Case Study 4 ── -->
+    <h3>5.5 Case Study 4: OpenSSL TLS 1.3 Encryption Engine</h3>
 
     <p>
       <strong>Subject:</strong> <code>ssl/tls13_enc.c</code> — the TLS 1.3 encryption engine of
