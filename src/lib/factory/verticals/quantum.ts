@@ -344,7 +344,7 @@ export function getQuantumSubstrate(): VerticalSubstrateConfig {
     verticalId: 'quantum-v1',
     name: 'CMPSBL QUANTUM™',
     tagline: 'Cognitive Quantum Infrastructure — Reality Bends Here',
-    domain: 'quantum' as any,
+    domain: 'quantum',
     subdomain: 'quantum',
     url: 'https://quantum.cmpsbl.com',
     status: 'active',
