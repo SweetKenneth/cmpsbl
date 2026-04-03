@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { VerticalReturnBanner } from "@/components/shared/VerticalReturnBanner";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   resolveSubdomainVertical,
@@ -100,6 +101,9 @@ export default function CyberSecurityHome() {
       </Helmet>
 
       <div className="cyber-substrate min-h-screen bg-background text-foreground font-sans">
+
+        {/* Return Banner */}
+        <VerticalReturnBanner verticalName="CMPSBL CYBER™" accentColor="hsl(0 85% 60%)" />
 
         {/* ── NAV ── */}
         <CyberNav />

@@ -12,6 +12,8 @@ const AgentForgeDashboard = lazy(() => import("@/pages/AgentForgePage"));
 const DiscoveredPipelines = lazy(() => import("@/pages/DiscoveredPipelines"));
 const DomainAwareHome = lazy(() => import("@/components/routing/DomainAwareHome"));
 const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
+const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
+const VerticalPortal = lazy(() => import("@/pages/VerticalPortal"));
 const FeedDreamEater = lazy(() => import("@/pages/FeedDreamEater"));
 const DreamArchaeology = lazy(() => import("@/pages/dream-eater/DreamArchaeology"));
 const DreamArtifacts = lazy(() => import("@/pages/dream-eater/DreamArtifacts"));
@@ -152,6 +154,8 @@ export const publicRoutes = (
     <Route path="/academy" element={<DeveloperAcademy />} />
     <Route path="/audit" element={<Navigate to="/" replace />} />
     <Route path="/gaming" element={<GamingSubstrate />} />
+    <Route path="/verticals" element={<VerticalPortal />} />
+    <Route path="/robotics" element={<RoboticsHome />} />
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />

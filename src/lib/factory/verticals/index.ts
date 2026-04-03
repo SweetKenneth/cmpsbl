@@ -20,6 +20,19 @@ export {
 } from './cybersecurity';
 
 export {
+  getRoboticsSubstrate,
+  getRoboticsPrimitives,
+  getRoboticsEngines,
+  getRoboticsAgents,
+  getAllRoboticsCapabilities,
+  getRoboticsCrownJewels,
+  getRoboticsPrimitiveCrownJewels,
+  getRoboticsCrownJewelSummary,
+  getRoboticsCrownJewelCount,
+  getRoboticsCrownJewelCapabilities,
+} from './robotics';
+
+export {
   type VerticalPrimitive,
   type VerticalSubstrateConfig,
   type VerticalSubstrateStatus,
@@ -35,17 +48,20 @@ export {
 } from '../vertical-substrate';
 
 import { getCyberSecuritySubstrate } from './cybersecurity';
+import { getRoboticsSubstrate } from './robotics';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 
 /** All registered vertical substrates */
 const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['cyber-v1', getCyberSecuritySubstrate],
+  ['robo-v1', getRoboticsSubstrate],
 ]);
 
 /** Domain to vertical ID mapping */
 const DOMAIN_VERTICAL_MAP = new Map<SpecialtyDomain, string>([
   ['security', 'cyber-v1'],
+  ['robotics', 'robo-v1'],
 ]);
 
 /**
@@ -69,6 +85,13 @@ export function getVerticalByDomain(domain: SpecialtyDomain): VerticalSubstrateC
  */
 export function getRegisteredVerticals(): string[] {
   return Array.from(VERTICAL_REGISTRY.keys());
+}
+
+/**
+ * Get all vertical substrate configs (for portal page)
+ */
+export function getAllVerticalConfigs(): VerticalSubstrateConfig[] {
+  return Array.from(VERTICAL_REGISTRY.values()).map(factory => factory());
 }
 
 /**
