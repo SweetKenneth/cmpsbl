@@ -318,12 +318,11 @@ class MasterPowerCenter {
     const pullSTier = async () => {
       const sub = this.getSubsystem('Memory Stream (S-Tier Pull)');
       try {
-        // Query S-Tier discoveries (CJPI >= 95) that haven't been streamed yet
+        // Query S-Tier discoveries (CJPI >= 95)
         const { data: sTierDiscoveries, error } = await supabase
           .from('discoveries')
-          .select('id, name, cjpi, modules, category, metadata')
+          .select('id, name, cjpi, module_chain, category')
           .gte('cjpi', 95)
-          .eq('promoted', true)
           .order('cjpi', { ascending: false })
           .limit(50);
 
@@ -331,19 +330,20 @@ class MasterPowerCenter {
 
         if (sTierDiscoveries && sTierDiscoveries.length > 0) {
           // Feed into memory stream via brain_memories for persistent recall
-          for (const discovery of sTierDiscoveries.slice(0, 10)) {
-            await supabase.from('brain_memories').insert({
-              content: `[S-Tier Discovery] ${discovery.name}: CJPI ${discovery.cjpi} — ${JSON.stringify(discovery.modules)}`,
-              source: 'memory_stream_stier_pull',
-              tier: 'hot',
-              confidence: Math.min(discovery.cjpi / 100, 0.99),
-              tags: ['s-tier', 'discovery', 'auto-pull'],
-              metadata: {
-                discovery_id: discovery.id,
-                cjpi: discovery.cjpi,
-                category: discovery.category,
-              },
-            });
+          const inserts = sTierDiscoveries.slice(0, 10).map(discovery => ({
+            content: `[S-Tier Discovery] ${discovery.name}: CJPI ${discovery.cjpi} — ${JSON.stringify(discovery.module_chain)}`,
+            memory_type: 'discovery_stier',
+            source: 'memory_stream_stier_pull',
+            confidence: Math.min(discovery.cjpi / 100, 0.99),
+            metadata: {
+              discovery_id: discovery.id,
+              cjpi: discovery.cjpi,
+              category: discovery.category,
+            } as Record<string, unknown>,
+          }));
+
+          if (inserts.length > 0) {
+            await supabase.from('brain_memories').insert(inserts);
           }
         }
 
