@@ -154,6 +154,8 @@ export const publicRoutes = (
     <Route path="/academy" element={<DeveloperAcademy />} />
     <Route path="/audit" element={<Navigate to="/" replace />} />
     <Route path="/gaming" element={<GamingSubstrate />} />
+    <Route path="/verticals" element={<VerticalPortal />} />
+    <Route path="/robotics" element={<RoboticsHome />} />
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />

@@ -221,6 +221,92 @@ All colors MUST be HSL.
   z-index: 9999;
 }
 
+/* ═══════════════════════════════════════════════════════════════ */
+/* CMPSBL ROBOTICS™ — Robotics Vertical Theme                    */
+/* Titanium base · Electric blue accents · Silver highlights      */
+/* ═══════════════════════════════════════════════════════════════ */
+.robotics-theme,
+.robotics-theme .dark,
+.robotics-theme :root {
+  --background: 215 25% 5%;
+  --foreground: 0 0% 92%;
+  --card: 215 22% 7%;
+  --card-foreground: 0 0% 90%;
+  --popover: 215 22% 6%;
+  --popover-foreground: 0 0% 92%;
+  --primary: 200 100% 55%;
+  --primary-variant: 200 80% 42%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 215 18% 11%;
+  --secondary-foreground: 0 0% 88%;
+  --muted: 215 18% 9%;
+  --muted-foreground: 215 12% 50%;
+  --accent: 220 10% 75%;
+  --accent-foreground: 215 25% 5%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 215 18% 13%;
+  --input: 215 18% 11%;
+  --ring: 200 100% 55%;
+  --sidebar-background: 215 22% 6%;
+  --sidebar-foreground: 0 0% 88%;
+  --sidebar-primary: 200 100% 55%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 215 18% 11%;
+  --sidebar-accent-foreground: 0 0% 88%;
+  --sidebar-border: 215 18% 13%;
+  --sidebar-ring: 200 100% 55%;
+
+  --neon-cyan: 200 100% 55%;
+  --neon-magenta: 330 80% 60%;
+  --neon-purple: 260 80% 65%;
+  --neon-amber: 45 100% 55%;
+  --neon-green: 170 80% 50%;
+  --neon-blue: 200 100% 55%;
+  --stream-slate: 215 18% 9%;
+
+  --system-green: 170 80% 50%;
+  --system-amber: 45 100% 55%;
+
+  --gradient-fluid: linear-gradient(135deg, hsl(200 100% 55%), hsl(200 80% 38%));
+  --gradient-primary: linear-gradient(135deg, hsl(200 100% 55%), hsl(200 80% 38%));
+  --gradient-accent: linear-gradient(135deg, hsl(220 10% 75%), hsl(220 10% 60%));
+  --gradient-warm: linear-gradient(135deg, hsl(200 100% 55%), hsl(170 80% 50%));
+  --gradient-mesh: radial-gradient(at 0% 0%, hsl(200 100% 55% / 0.08) 0px, transparent 50%),
+                   radial-gradient(at 100% 0%, hsl(220 10% 70% / 0.06) 0px, transparent 50%),
+                   radial-gradient(at 100% 100%, hsl(170 80% 50% / 0.05) 0px, transparent 50%),
+                   radial-gradient(at 0% 100%, hsl(200 100% 55% / 0.04) 0px, transparent 50%);
+  --shadow-glow: 0 0 40px hsl(200 100% 55% / 0.15);
+  --shadow-glow-lg: 0 20px 60px hsl(200 100% 55% / 0.12);
+  --shadow-elegant: 0 4px 20px -4px hsl(0 0% 0% / 0.4);
+
+  color-scheme: dark;
+}
+
+.robotics-theme body {
+  background: hsl(215 25% 5%);
+  color: hsl(0 0% 92%);
+}
+
+@keyframes robo-scan {
+  0% { transform: translateY(-100%); opacity: 0; }
+  20% { opacity: 0.5; }
+  80% { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.robotics-theme .robotics-scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, hsl(200 100% 55% / 0.5), hsl(220 10% 75% / 0.4), transparent);
+  animation: robo-scan 10s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 9999;
+}
+
 @layer base {
   * {
     @apply border-border;
