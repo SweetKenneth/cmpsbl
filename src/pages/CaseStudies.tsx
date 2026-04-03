@@ -451,6 +451,7 @@ const HERO_SUBJECTS = [
   { name: 'Metasploit', org: 'Rapid7', vertical: 'Cyber' },
   { name: 'HuggingFace Tokenizers', org: 'Hugging Face', vertical: 'LLM' },
   { name: 'OpenSSL tls13_enc.c', org: 'OpenSSL Foundation', vertical: 'Cyber' },
+  { name: 'ArduPilot autotest', org: 'ArduPilot', vertical: 'Robotics' },
 ];
 
 /* ───────── Main Page ───────── */
