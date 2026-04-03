@@ -575,8 +575,9 @@ function generateRecommendations(
   code: string,
   rand: () => number,
 ): PrimitiveRecommendation[] {
-  // Score ALL 40 primitives
-  const scored = PRIMITIVE_CATALOG.map(p => {
+  // Score ALL 40 primitives for the active vertical
+  const catalog = buildVerticalCatalog();
+  const scored = catalog.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
     return { ...p, impactScore: score, rationale };
   });
