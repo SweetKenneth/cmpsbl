@@ -46,8 +46,8 @@ This paper makes four contributions:
 
 1. **Architecture:** A formal description of the 40-primitive collision matrix and its taxonomic organization
 2. **Method:** The Ascension™ pipeline — an 8-stage deterministic transformation process
-3. **Evidence:** Four verified case studies demonstrating structural discovery across languages and domains
-4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads) and a structural dependency gap in OpenSSL's TLS 1.3 encryption engine
+3. **Evidence:** Six verified case studies spanning four languages and five verticals, each with a verifiable serial number and fingerprint
+4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads), a structural dependency gap in OpenSSL's TLS 1.3 encryption engine, and structural hardening of Metasploit's core TCP exploitation framework
 
 ---
 
