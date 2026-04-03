@@ -484,12 +484,52 @@ const ARDUPILOT_CAPABILITIES = [
   'Intent Disambiguation Engine',
 ];
 
+/* ───────── QuantLib Data ───────── */
+
+const QUANTLIB_VULNERABILITIES = [
+  { severity: 'warning' as const, title: 'Synchronous-only architecture', status: 'mitigated', details: 'No async patterns found in substantial codebase. May block the event loop under load during iterative calibration.' },
+  { severity: 'warning' as const, title: 'High cyclomatic complexity (30)', status: 'mitigated', details: 'Complexity score of 30 indicates too many branching paths. Hard to test and maintain.' },
+  { severity: 'info' as const, title: 'No fallback mechanisms detected', status: 'monitor', details: 'ORACLE identifies single-path execution. Failure in any calibration step halts the entire pipeline.' },
+  { severity: 'info' as const, title: 'Low function density', status: 'monitor', details: 'ORACLE detects 4 functions across 490 lines (~123 lines/fn). Monolithic functions resist change.' },
+  { severity: 'warning' as const, title: 'Complex codebase without type safety', status: 'mitigated', details: 'ORACLE predicts 45% higher bug rate in complex untyped code. Type contracts prevent class of runtime errors.' },
+  { severity: 'info' as const, title: 'No type contracts detected', status: 'monitor', details: 'No interfaces or type definitions found. Type safety improves long-term maintainability.' },
+  { severity: 'warning' as const, title: 'Monolithic file (490 lines)', status: 'mitigated', details: '490 lines in a single file. ENGINEER recommends decomposition to reduce cognitive load.' },
+  { severity: 'info' as const, title: 'No module exports detected', status: 'monitor', details: 'Code appears self-contained with no exports. Limits reusability and testability.' },
+  { severity: 'info' as const, title: 'High comment ratio (37%)', status: 'monitor', details: 'Over 30% of lines are comments. MEDIC suspects commented-out dead code that should be pruned.' },
+];
+
+const QUANTLIB_PRIMITIVES = [
+  { name: 'MUON', type: 'Agent' }, { name: 'FERMION', type: 'Engine' },
+  { name: 'ENTANGLE', type: 'Engine' }, { name: 'PRISM', type: 'Agent' },
+  { name: 'BOSON', type: 'Agent' }, { name: 'GLUON', type: 'Agent' },
+  { name: 'GRAVITON', type: 'Agent' }, { name: 'HADRON', type: 'Engine' },
+  { name: 'LATTICE', type: 'Engine' }, { name: 'QUBIT', type: 'Engine' },
+  { name: 'TREATY', type: 'Layer' }, { name: 'LINGUA', type: 'Organ' },
+  { name: 'RELAY', type: 'Layer' }, { name: 'MEMORY', type: 'Organ' },
+  { name: 'COMPASS', type: 'Organ' }, { name: 'SOVEREIGN', type: 'Layer' },
+  { name: 'PHANTOM', type: 'Organ' }, { name: 'EVOLUTION', type: 'Layer' },
+  { name: 'OBSERVER', type: 'Organ' }, { name: 'SANDBOX', type: 'Layer' },
+];
+
+const QUANTLIB_CAPABILITIES = [
+  { name: 'Quantum Circuit Optimizer', type: 'Active' },
+  { name: 'QCD Color Charge Simulator', type: 'Active' },
+  { name: 'Spectral Line Identifier', type: 'Passive' },
+  { name: 'API Contract Validator', type: 'Passive' },
+  { name: 'Version Reconciliation Engine', type: 'Hybrid' },
+  { name: 'Cryptographic Agility Layer', type: 'Hybrid' },
+  { name: 'Quantum Teleportation Protocol', type: 'Active' },
+  { name: 'Policy Enforcement Layer', type: 'Hybrid' },
+  { name: 'Band Structure Calculator', type: 'Passive' },
+  { name: 'Particle Collision Analyzer', type: 'Active' },
+];
+
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '7', label: 'Case Studies', icon: FileCode },
+  { value: '8', label: 'Case Studies', icon: FileCode },
   { value: '6', label: 'Verticals Proven', icon: Layers },
-  { value: '140', label: 'Primitives Applied', icon: Shield },
+  { value: '160', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
@@ -502,6 +542,7 @@ const HERO_SUBJECTS = [
   { name: 'HuggingFace Tokenizers', org: 'Hugging Face', vertical: 'LLM' },
   { name: 'OpenSSL tls13_enc.c', org: 'OpenSSL Foundation', vertical: 'Cyber' },
   { name: 'ArduPilot autotest', org: 'ArduPilot', vertical: 'Robotics' },
+  { name: 'QuantLib Gaussian 1D', org: 'QuantLib', vertical: 'FinTech' },
 ];
 
 /* ───────── Main Page ───────── */
@@ -518,6 +559,7 @@ export default function CaseStudies() {
   const [showAllOpensslPrimitives, setShowAllOpensslPrimitives] = useState(false);
   const visibleOpensslPrimitives = showAllOpensslPrimitives ? OPENSSL_PRIMITIVES : OPENSSL_PRIMITIVES.slice(0, 8);
   const [showAllArduPrimitives, setShowAllArduPrimitives] = useState(false);
+  const [showAllQuantLibPrimitives, setShowAllQuantLibPrimitives] = useState(false);
   const [expandedVerticals, setExpandedVerticals] = useState<Record<string, boolean>>({ main: true });
 
   const toggleVertical = (key: string) => {
@@ -1848,6 +1890,178 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+
+        {/* ══════════════ CASE STUDY #8: QuantLib ══════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mt-20">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono bg-primary/10 text-primary px-2 py-1 rounded">CASE STUDY #8</span>
+              <span className="text-xs font-mono bg-muted text-muted-foreground px-2 py-1 rounded">FINTECH · QUANTUM™ VERTICAL</span>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">Case Study #8: QuantLib Gaussian 1D Models</h2>
+              <p className="text-muted-foreground mt-1 text-sm font-mono">Serial: CMPSBL-MNJD2A7W-DMM8 · Fingerprint: 9012a33c2dd6b2ce</p>
+            </div>
+
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <p className="text-muted-foreground leading-relaxed">
+                <code className="text-primary">gaussian1d-models.py</code> — a swaption calibration example from{' '}
+                <a href="https://github.com/lballabio/QuantLib-SWIG" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                  QuantLib-SWIG
+                </a>{' '}
+                (385+ GitHub stars), the Python binding layer for{' '}
+                <a href="https://github.com/lballabio/QuantLib" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary">
+                  QuantLib
+                </a>{' '}
+                — the most widely adopted open-source library for quantitative finance with{' '}
+                <strong className="text-foreground">6,900+ GitHub stars and 210 contributors</strong>.
+                BSD-licensed and in active development since 2000, QuantLib is used by banks, hedge funds, and financial institutions worldwide
+                for derivative pricing, risk management, and model calibration. The core C++ library underpins production pricing systems
+                including those built on the Open Source Risk Engine (ORE). 489 lines · Python · Copyright 2018 Angus Lee.
+              </p>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: 'Lines', value: '489' },
+                { label: 'Complexity', value: '30' },
+                { label: 'Functions', value: '4' },
+                { label: 'CJPI', value: '100 APEX' },
+              ].map((m) => (
+                <div key={m.label} className="bg-muted/50 rounded-lg p-3 text-center">
+                  <p className="text-lg font-bold text-foreground">{m.value}</p>
+                  <p className="text-xs text-muted-foreground">{m.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Findings */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-primary" /> Structural Findings ({QUANTLIB_VULNERABILITIES.length})
+              </h3>
+              <div className="space-y-2">
+                {QUANTLIB_VULNERABILITIES.map((v, i) => (
+                  <div key={i} className="flex items-start gap-3 bg-muted/30 rounded-lg p-3">
+                    <span className={`mt-0.5 text-xs font-mono px-1.5 py-0.5 rounded ${v.severity === 'warning' ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.severity.toUpperCase()}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground">{v.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{v.details}</p>
+                    </div>
+                    <span className={`text-xs font-mono px-1.5 py-0.5 rounded ${v.status === 'mitigated' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                      {v.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Primitives */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-primary" /> Primitives Applied ({QUANTLIB_PRIMITIVES.length})
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {(showAllQuantLibPrimitives ? QUANTLIB_PRIMITIVES : QUANTLIB_PRIMITIVES.slice(0, 8)).map((p, i) => (
+                  <span key={i} className="text-xs font-mono bg-muted px-2 py-1 rounded text-foreground">
+                    {p.name} <span className="text-muted-foreground">({p.type})</span>
+                  </span>
+                ))}
+              </div>
+              {QUANTLIB_PRIMITIVES.length > 8 && (
+                <button
+                  className="text-xs text-primary mt-2 flex items-center hover:underline"
+                  onClick={() => setShowAllQuantLibPrimitives(!showAllQuantLibPrimitives)}
+                >
+                  {showAllQuantLibPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all {QUANTLIB_PRIMITIVES.length} primitives</>}
+                </button>
+              )}
+            </div>
+
+            {/* Capabilities */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-primary" /> Capabilities Unlocked ({QUANTLIB_CAPABILITIES.length})
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-2">
+                {QUANTLIB_CAPABILITIES.map((c, i) => (
+                  <div key={i} className="flex items-center gap-2 bg-muted/30 rounded-lg p-2.5">
+                    <span className="text-xs font-mono bg-primary/10 text-primary px-1.5 py-0.5 rounded">{c.type}</span>
+                    <span className="text-sm text-foreground">{c.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Key Context */}
+            <div className="bg-muted/30 rounded-lg p-4 border border-border">
+              <h3 className="text-sm font-semibold text-foreground mb-2">Why This Matters</h3>
+              <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
+                <li>QuantLib has <strong className="text-foreground">6,900+ GitHub stars</strong>, 210 contributors, and has been in continuous development since 2000</li>
+                <li>BSD-licensed — used in <strong className="text-foreground">production pricing systems</strong> at banks and financial institutions worldwide</li>
+                <li>First case study to activate the <strong className="text-foreground">complete QUANTUM primitive chain</strong> on financial quantitative code</li>
+                <li>Demonstrates the substrate maps physics-domain primitives (particle collision, lattice models) directly to financial modeling (yield curves, rate calibration)</li>
+              </ul>
+            </div>
+
+            {/* Downloads + Refs */}
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Artifacts
+                </h3>
+                <div className="space-y-2">
+                  <a
+                    href="https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <FileCode className="w-4 h-4" /> View Original Source ↗
+                  </a>
+                  <a
+                    href="/downloads/case-studies/quantlib-ascended-CMPSBL-MNJD2A7W-DMM8.zip"
+                    download
+                    className="flex items-center gap-2 text-sm text-primary hover:underline"
+                  >
+                    <Download className="w-4 h-4" /> Download Ascended Artifact (.zip)
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-primary" /> References
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'QuantLib Repository (6.9K+ ★)', url: 'https://github.com/lballabio/QuantLib' },
+                    { label: 'QuantLib-SWIG Python Bindings', url: 'https://github.com/lballabio/QuantLib-SWIG' },
+                    { label: 'gaussian1d-models.py Source', url: 'https://github.com/lballabio/QuantLib-SWIG/blob/master/Python/examples/gaussian1d-models.py' },
+                    { label: 'QuantLib Official Site', url: 'https://www.quantlib.org/' },
+                    { label: 'Open Source Risk Engine (ORE)', url: 'https://www.opensourcerisk.org/' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
@@ -1858,7 +2072,7 @@ export default function CaseStudies() {
           { question: 'How long does Ascension take?', answer: 'A typical file processes through the full 20-primitive pipeline in approximately 10 seconds.' },
           { question: 'Does Ascension use AI?', answer: 'No. The Ascension pipeline is purely algorithmic — deterministic pattern matching, structural analysis, and primitive guard injection. Zero external AI calls.' },
           { question: 'What are vertical substrates?', answer: 'Vertical substrates are domain-specific configurations of the CMPSBL® 40-Primitive topology. Each vertical shares the same 24-primitive Spine but swaps in 16 specialized expansion primitives for its domain — Cyber, Robotics, Quantum, or LLM.' },
-          { question: 'What software has been tested?', answer: 'Case studies include code from ArduPilot, IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, OpenSSL TLS 1.3, and PythonRobotics — all scored CJPI 98+ with multiple achieving Apex (100).' },
+          { question: 'What software has been tested?', answer: 'Case studies include code from ArduPilot, IBM Qiskit, Rapid7 Metasploit, Hugging Face Tokenizers, OpenAI Agents SDK architecture, OpenSSL TLS 1.3, QuantLib, and PythonRobotics — all scored CJPI 98+ with multiple achieving Apex (100).' },
         ]}
       />
       <EnhancedFooter />
