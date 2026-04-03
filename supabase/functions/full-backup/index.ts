@@ -21,11 +21,11 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // ═══════════════════════════════════════════════════════════════
 
 /**
- * Time budget: Edge functions have ~150s wall-clock.
- * We reserve 10s at the end for ZIP finalization (central directory + EOCD).
+ * Runtime budget: use most of the available edge window while still
+ * leaving enough time to finalize the ZIP directory cleanly.
  */
-const TIME_BUDGET_MS = 120_000;
-const FINALIZE_RESERVE_MS = 10_000;
+const TIME_BUDGET_MS = 142_000;
+const FINALIZE_RESERVE_MS = 6_000;
 
 /** Page size for table exports */
 const PAGE_SIZE = 1000;
@@ -34,8 +34,9 @@ const QUERY_RETRIES = 2;
 const RETRY_DELAY_MS = 250;
 
 /**
- * Tables to skip — ONLY truly high-volume telemetry that regenerates at runtime.
- * Everything else (memories, graphs, metrics, discoveries, configs) is INCLUDED.
+ * Tables to skip — only regenerable telemetry, caches, and derived learning
+ * surfaces. Essential state, discoveries, vault data, configs, and substrate
+ * records remain included for recovery.
  */
 const SKIP_TABLES = new Set<string>([
   // ── High-volume telemetry (regenerated at runtime, not needed for DR) ──
@@ -52,6 +53,27 @@ const SKIP_TABLES = new Set<string>([
   'ai_daily_quota',            // daily counters, reset each day
   'nexus_traces',              // transient provider traces
   'maintenance_reports',       // auto-generated reports
+
+  // ── Regenerable brain caches shared across substrate surfaces ──
+  'brain_memory_hot',          // hot cache, rebuilt from durable memory/discovery state
+  'brain_memory_warm',         // warm cache, rebuilt from durable memory/discovery state
+  'brain_memory_cold',         // cold cache, rebuilt from durable memory/discovery state
+  'brain_graph_edges',         // derived knowledge graph edges
+  'brain_graph_nodes',         // derived knowledge graph nodes
+  'brain_metrics',             // runtime metrics, recalculated
+  'brain_reasoning_traces',    // transient reasoning traces
+  'brain_reflection_log',      // reflection telemetry
+  'brain_distillation_runs',   // distillation run history
+  'brain_transfer_heuristics', // derived transfer heuristics
+  'mesh_comms',                // internal communication traces
+  'learning_cycles',           // learning cycle telemetry
+  'discovery_runs',            // discovery execution history
+  'nexus_hourly_snapshots',    // periodic snapshots
+  'pf_brain_anomalies',        // anomaly telemetry
+
+  // ── Vertical substrate regenerables ──
+  'vertical_clm_cycles',       // vertical learning cycle history
+  'vertical_ascension_sessions', // vertical ascension/session history
 ]);
 
  /** Pattern-based skips — DISABLED to avoid accidentally excluding critical tables */
@@ -138,6 +160,9 @@ Deno.serve(async (req: Request) => {
           backup_type: 'full',
           packaging: 'streaming-zip',
           chunked_table_exports: true,
+          runtime_budget_ms: TIME_BUDGET_MS,
+          finalize_reserve_ms: FINALIZE_RESERVE_MS,
+          skip_profile: 'failsafe-lean-v2',
         };
 
         console.log('[FullBackup] Starting backup...');
@@ -185,6 +210,7 @@ Deno.serve(async (req: Request) => {
 
         const skippedTables = tableNames.filter(shouldSkipTable);
         const exportTables = tableNames.filter((t) => !shouldSkipTable(t));
+        manifest.skipped_tables = [...skippedTables].sort();
 
         if (skippedTables.length > 0) {
           console.log(`[FullBackup] Skipping ${skippedTables.length} tables (configured skip list)`);
@@ -591,7 +617,7 @@ function generateRestoreGuide(
     : '';
 
   const timeoutNote = manifest.timed_out
-    ? `\n> ⚠️ **Partial backup**: Time budget was exceeded. ${manifest.tables_exported}/${manifest.table_count} tables were exported. Run the backup again or increase TIME_BUDGET_MS.\n`
+    ? `\n> ⚠️ **Partial backup**: Runtime budget was exceeded. ${manifest.tables_exported}/${manifest.table_count} tables were exported. This export already uses most of the available edge runtime, so any remaining cutoffs will need a queued backup flow instead of a larger in-request budget.\n`
     : '';
 
   return `# Full Backup — Restoration Guide
