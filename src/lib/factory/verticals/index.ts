@@ -45,6 +45,19 @@ export {
 } from './quantum';
 
 export {
+  getLLMSubstrate,
+  getLLMPrimitives,
+  getLLMEngines,
+  getLLMAgents,
+  getAllLLMCapabilities,
+  getLLMCrownJewels,
+  getLLMPrimitiveCrownJewels,
+  getLLMCrownJewelSummary,
+  getLLMCrownJewelCount,
+  getLLMCrownJewelCapabilities,
+} from './llm';
+
+export {
   seedQuantumDiscoveries,
   getQuantumSeedResult,
   getQuantumSeedSummary,
