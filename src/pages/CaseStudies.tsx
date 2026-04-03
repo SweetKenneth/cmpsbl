@@ -437,9 +437,9 @@ function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRu
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '6', label: 'Case Studies', icon: FileCode },
+  { value: '7', label: 'Case Studies', icon: FileCode },
   { value: '6', label: 'Verticals Proven', icon: Layers },
-  { value: '120', label: 'Primitives Applied', icon: Shield },
+  { value: '140', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
