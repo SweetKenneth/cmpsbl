@@ -221,7 +221,7 @@ All colors MUST be HSL.
   z-index: 9999;
 }
 
-
+@layer base {
   * {
     @apply border-border;
   }
