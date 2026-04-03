@@ -350,7 +350,7 @@ export function getRoboticsSubstrate(): VerticalSubstrateConfig {
       retentionDays: 365,
     },
     ascensionConfig: {
-      maxCapabilities: 12,
+      maxCapabilities: 20,
       enhancementArchetypes: [
         'Autonomous Navigation Stack',
         'Multi-Robot Formation Control',
