@@ -22,11 +22,22 @@
 const SSO_FRAGMENT_KEY = 'cmpsbl_sso';
 const SSO_EXPIRY_MS = 30_000; // 30 seconds
 
-/** Known vertical subdomains */
-const VERTICAL_DOMAINS: Record<string, string> = {
+/** Known vertical subdomains (static) */
+const STATIC_VERTICAL_DOMAINS: Record<string, string> = {
   security: 'security.cmpsbl.com',
   robotics: 'robotics.cmpsbl.com',
 };
+
+/** Lazy import to avoid circular deps — merged at query time */
+function getAllVerticalDomains(): Record<string, string> {
+  try {
+    // Dynamic verticals discovered from the factory engine
+    const { getDynamicSSODomains } = require('@/lib/factory/vertical-factory-engine');
+    return { ...STATIC_VERTICAL_DOMAINS, ...getDynamicSSODomains() };
+  } catch {
+    return { ...STATIC_VERTICAL_DOMAINS };
+  }
+}
 
 export interface SSORelayToken {
   accessToken: string;
