@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
 import { runScanTeam, type ScanResult, type PrimitiveRecommendation } from "@/lib/factory/scan-team";
 import { generateRestorationReport, type RestorationReport } from "@/lib/factory/restoration-docs";
 import { addToQueue, getQueuePosition, estimateWaitTime, type QueueEntry } from "@/lib/factory/restoration-queue";
-import { generateRefurbishedCode, generateLicense } from "@/lib/factory/generate-refurbished-code";
+import { generateRefurbishedCode, generateLicense, getRefurbishedExtension } from "@/lib/factory/generate-refurbished-code";
 import { generateHtmlReport } from "@/lib/factory/html-report-generator";
 import { saveRestorationSession } from "@/lib/factory/restoration-session";
 import { DecodeFactoryVoice } from "@/components/factory/DecodeFactoryVoice";
