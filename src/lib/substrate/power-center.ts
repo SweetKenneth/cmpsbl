@@ -335,11 +335,11 @@ class MasterPowerCenter {
             memory_type: 'discovery_stier',
             source: 'memory_stream_stier_pull',
             confidence: Math.min(discovery.cjpi / 100, 0.99),
-            metadata: {
+            metadata: JSON.parse(JSON.stringify({
               discovery_id: discovery.id,
               cjpi: discovery.cjpi,
               category: discovery.category,
-            } as Record<string, unknown>,
+            })),
           }));
 
           if (inserts.length > 0) {
