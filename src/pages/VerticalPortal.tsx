@@ -9,16 +9,17 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, type LucideIcon } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, Lock, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { PublicNav } from "@/components/PublicNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
 import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory/vertical-factory-engine";
 
 /** Map icon names to Lucide components */
 const ICON_MAP: Record<string, LucideIcon> = {
-  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe,
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe, Lock,
 };
 
 const STATIC_VERTICALS = [
@@ -81,6 +82,8 @@ export default function VerticalPortal() {
         <title>Vertical Substrates — CMPSBL®</title>
         <meta name="description" content="Explore CMPSBL® vertical substrates — domain-specific cognitive infrastructure for cybersecurity, robotics, and more." />
       </Helmet>
+
+      <PublicNav />
 
       <div className="min-h-screen bg-background">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
