@@ -49,6 +49,14 @@ export default function DomainAwareHome() {
     );
   }
 
+  if (verticalKey === 'quantum') {
+    return (
+      <Suspense fallback={<div className="min-h-screen" style={{ background: "hsl(260 30% 4%)" }} />}>
+        <QuantumHome />
+      </Suspense>
+    );
+  }
+
   // Dynamic verticals from the factory engine + generic fallback
   if (verticalKey) {
     const VerticalSubstrateHome = lazy(() => import("@/pages/VerticalSubstrateHome"));
