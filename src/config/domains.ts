@@ -39,6 +39,7 @@ export const DOMAIN_CONFIG = {
     gaming: 'gaming.cmpsbl.com',
     education: 'education.cmpsbl.com',
     robotics: 'robotics.cmpsbl.com',
+    quantum: 'quantum.cmpsbl.com',
   },
 } as const;
 

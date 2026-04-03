@@ -45,6 +45,17 @@ const STATIC_VERTICALS = [
     capabilityCount: '130+',
     status: 'Active' as const,
   },
+  {
+    id: 'quantum',
+    name: 'CMPSBL QUANTUM™',
+    tagline: 'Cognitive Quantum Infrastructure — Reality Bends Here',
+    url: 'https://quantum.cmpsbl.com',
+    icon: Atom,
+    accentColor: 'hsl(270 90% 60%)',
+    primitiveCount: 16,
+    capabilityCount: '85+',
+    status: 'Active' as const,
+  },
 ];
 
 /** Merge static + dynamic verticals */

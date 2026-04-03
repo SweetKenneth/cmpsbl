@@ -61,6 +61,7 @@ export {
 
 import { getCyberSecuritySubstrate } from './cybersecurity';
 import { getRoboticsSubstrate } from './robotics';
+import { getQuantumSubstrate } from './quantum';
 import type { VerticalSubstrateConfig } from '../vertical-substrate';
 import type { SpecialtyDomain } from '../specialty-substrates';
 import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, type VerticalPortalEntry } from '../vertical-factory-engine';
@@ -69,12 +70,14 @@ import { getDynamicVertical, getDynamicVerticalById, getAllDynamicVerticals, typ
 const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
   ['cyber-v1', getCyberSecuritySubstrate],
   ['robo-v1', getRoboticsSubstrate],
+  ['quantum-v1', getQuantumSubstrate],
 ]);
 
 /** Domain to vertical ID mapping (static) */
 const DOMAIN_VERTICAL_MAP = new Map<SpecialtyDomain, string>([
   ['security', 'cyber-v1'],
   ['robotics', 'robo-v1'],
+  ['quantum', 'quantum-v1'],
 ]);
 
 /**
