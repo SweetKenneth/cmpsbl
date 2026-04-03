@@ -337,7 +337,7 @@ export default function CyberSecurityHome() {
               background: "hsl(185 100% 50% / 0.08)",
               color: "hsl(185 100% 55%)",
             }}>
-              +118 more
+              +112 more
             </span>
           </div>
         </section>

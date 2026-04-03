@@ -570,6 +570,19 @@ function scorePrimitiveRelevance(
     decode: { signals: [code.includes('input') || code.includes('command'), len > 100], rationale: 'User input interpretation benefits from structured intent resolution' },
     sentinel: { signals: [hasHttp, hasAuth], rationale: 'Continuous validation and guard enforcement at system boundaries' },
     atlas: { signals: [len > 300, code.includes('import')], rationale: 'System-wide mapping and navigation for complex codebases' },
+    // CyberSecurity vertical primitives
+    aegis: { signals: [hasHttp, code.includes('rate') || code.includes('limit')], rationale: 'Traffic-facing code needs adaptive DDoS shielding and bot detection' },
+    cipher: { signals: [code.includes('encrypt') || code.includes('hash') || code.includes('key'), hasAuth], rationale: 'Cryptographic operations require managed key lifecycle and rotation' },
+    recon: { signals: [hasHttp, code.includes('port') || code.includes('scan')], rationale: 'Network exposure requires continuous attack surface reconnaissance' },
+    vanguard: { signals: [code.includes('incident') || code.includes('error'), hasAsync], rationale: 'Incident response automation with forensic evidence preservation' },
+    bastion: { signals: [hasAuth, code.includes('trust') || code.includes('verify')], rationale: 'Zero-trust enforcement with micro-segmentation and continuous verification' },
+    tempest: { signals: [code.includes('test') || code.includes('simulate'), hasAsync], rationale: 'Chaos engineering validates resilience against adversarial scenarios' },
+    specter: { signals: [hasHttp, code.includes('trap') || code.includes('decoy')], rationale: 'Deception infrastructure lures attackers into observable honeypots' },
+    blackout: { signals: [code.includes('kill') || code.includes('shutdown'), hasHttp], rationale: 'Emergency kill-switch protocols for active breach containment' },
+    tracer: { signals: [hasAuth, code.includes('trace') || code.includes('chain')], rationale: 'Attack chain reconstruction traces lateral movement and credential abuse' },
+    nocturne: { signals: [hasHttp, code.includes('monitor') || code.includes('intel')], rationale: 'Dark web intelligence monitors credential leaks and threat actor activity' },
+    ironclad: { signals: [code.includes('compliance') || code.includes('audit'), hasAuth], rationale: 'Continuous compliance validation against SOC2, NIST, and ISO 27001' },
+    bulwark: { signals: [code.includes('import') || code.includes('require'), code.includes('package')], rationale: 'Supply chain auditing detects compromised packages and typosquatting' },
   };
 
   const mapping = SIGNAL_MAP[primitive.primitiveId];
