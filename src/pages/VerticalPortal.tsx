@@ -21,7 +21,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe,
 };
 
-const VERTICALS = [
+const STATIC_VERTICALS = [
   {
     id: 'security',
     name: 'CMPSBL CYBER™',
@@ -31,7 +31,7 @@ const VERTICALS = [
     accentColor: 'hsl(0 85% 55%)',
     primitiveCount: 16,
     capabilityCount: '130+',
-    status: 'Active',
+    status: 'Active' as const,
   },
   {
     id: 'robotics',
@@ -42,9 +42,26 @@ const VERTICALS = [
     accentColor: 'hsl(200 100% 55%)',
     primitiveCount: 16,
     capabilityCount: '130+',
-    status: 'Active',
+    status: 'Active' as const,
   },
 ];
+
+/** Merge static + dynamic verticals */
+function useAllVerticals() {
+  const dynamicEntries = getDynamicPortalEntries();
+  const dynamicMapped = dynamicEntries.map(d => ({
+    id: d.id,
+    name: d.name,
+    tagline: d.tagline,
+    url: d.url,
+    icon: ICON_MAP[d.iconName] ?? Globe,
+    accentColor: d.accentColor,
+    primitiveCount: d.primitiveCount,
+    capabilityCount: d.capabilityCount,
+    status: d.status,
+  }));
+  return [...STATIC_VERTICALS, ...dynamicMapped];
+}
 
 export default function VerticalPortal() {
   const { session } = useAuth();
