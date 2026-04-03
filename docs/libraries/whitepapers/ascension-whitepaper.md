@@ -465,7 +465,7 @@ We present fifteen verified case studies spanning five programming languages, ei
 
 ---
 
-**Self-Audit Summary:** Four CMPSBL internal files were run through Ascension using the original 40-Primitive base matrix. The substrate found two instances of weak cryptographic randomness (both remediated), two CRITICAL error-handling gaps in the fingerprinting system (Case Study 12, remediated with 29 unit tests), and one false positive (substrate-metrics.ts randomness flag). Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
+**Self-Audit Summary:** Four CMPSBL internal files were run through Ascension using the original 40-Primitive base matrix. The substrate found two CRITICAL error-handling gaps in the fingerprinting system (Case Study 12, remediated with 29 unit tests). The other three files were verified clean — `crypto.randomUUID()` already in use in `decode-audit.ts` and `memory-lineage.ts`, and no random generation at all in `substrate-metrics.ts`. One false positive confirmed (substrate-metrics.ts randomness flag). Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
 
 ---
 
