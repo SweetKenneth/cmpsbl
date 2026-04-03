@@ -13,6 +13,7 @@ import { useEffect, useState, lazy, Suspense, useRef } from "react";
 
 import { InvisibleWatermark } from "@/components/legal/InvisibleWatermark";
 import { SEOProvider } from "@/contexts/SEOContext";
+import { CyberThemeWrapper } from "@/components/theme/CyberThemeWrapper";
 
 // Deferred providers — render children immediately, load library lazily
 // This prevents ~87KB of framer-motion + radix from blocking initial render
@@ -220,7 +221,8 @@ const App = () => {
           <SEOProvider>
             <Suspense fallback={<PageLoader />}>
               <SubstrateProvider autoInit={substrateAutoInit}>
-                <DeferredTooltipProvider>
+              <DeferredTooltipProvider>
+                <CyberThemeWrapper>
                   <SmartToastRenderer />
                   <SonnerToaster />
                    <BrowserRouter>
@@ -267,6 +269,7 @@ const App = () => {
                     } />
                   </Routes>
                 </BrowserRouter>
+                </CyberThemeWrapper>
               </DeferredTooltipProvider>
             </SubstrateProvider>
           </Suspense>

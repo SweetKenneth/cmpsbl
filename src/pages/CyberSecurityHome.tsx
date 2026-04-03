@@ -99,11 +99,7 @@ export default function CyberSecurityHome() {
         <link rel="dns-prefetch" href="https://cmpsbl.com" />
       </Helmet>
 
-      <div className="cyber-substrate min-h-screen" style={{
-        background: "hsl(220 30% 3%)",
-        color: "hsl(0 0% 95%)",
-        fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-      }}>
+      <div className="cyber-substrate min-h-screen bg-background text-foreground font-sans">
 
         {/* ── NAV ── */}
         <CyberNav />
