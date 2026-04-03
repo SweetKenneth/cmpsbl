@@ -9,11 +9,17 @@
 
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink } from "lucide-react";
+import { Shield, Cpu, ArrowRight, Globe, Layers, ExternalLink, Heart, Scale, Gamepad2, GraduationCap, Banknote, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { buildSSOVerticalUrl } from "@/lib/relay/sso/crossVerticalSSO";
+import { getDynamicPortalEntries, type VerticalPortalEntry } from "@/lib/factory/vertical-factory-engine";
+
+/** Map icon names to Lucide components */
+const ICON_MAP: Record<string, LucideIcon> = {
+  Shield, Cpu, Heart, Scale, Gamepad2, GraduationCap, Banknote, Globe,
+};
 
 const VERTICALS = [
   {
