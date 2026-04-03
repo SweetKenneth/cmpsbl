@@ -66,6 +66,11 @@ export {
   registerMeshHandlers,
 } from './mesh-handlers';
 
+// Power Center handlers
+export {
+  registerPowerHandlers,
+} from './power-handlers';
+
 // Observability handlers
 export {
   registerObservabilityHandlers,
