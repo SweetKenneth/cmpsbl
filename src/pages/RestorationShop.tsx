@@ -126,7 +126,7 @@ export default function RestorationShop() {
     setReport(restorationReport);
 
     const fingerprint = restorationReport.cjpiCertificate.fingerprint;
-    const hardened = generateRefurbishedCode(code, selected, fingerprint);
+    const hardened = generateRefurbishedCode(code, selected, fingerprint, undefined, fileName ?? undefined);
     setRefurbishedCode(hardened);
 
     saveRestorationSession({
