@@ -179,18 +179,22 @@ Deno.serve(async (req: Request) => {
     log(`ERROR: ${message}`);
 
     // Log failure to audit
-    await admin.from('audit_logs').insert({
-      action: 'failsafe_nightly_backup',
-      entity_type: 'system',
-      entity_id: 'failsafe-backup',
-      performed_by: 'pg_cron',
-      details: {
-        status: 'failed',
-        error: message,
-        elapsed_ms: elapsed,
-        timestamp: new Date().toISOString(),
-      },
-    }).catch(() => {});
+    try {
+      await admin.from('audit_logs').insert({
+        action: 'failsafe_nightly_backup',
+        entity_type: 'system',
+        entity_id: 'failsafe-backup',
+        performed_by: 'pg_cron',
+        details: {
+          status: 'failed',
+          error: message,
+          elapsed_ms: elapsed,
+          timestamp: new Date().toISOString(),
+        },
+      });
+    } catch {
+      // Swallow audit write failures so the function can still return its real error
+    }
 
     return new Response(JSON.stringify({
       success: false,
