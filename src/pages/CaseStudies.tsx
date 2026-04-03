@@ -437,9 +437,9 @@ function VerticalComparisonCard({ run, isExpanded, onToggle }: { run: VerticalRu
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '5', label: 'Case Studies', icon: FileCode },
-  { value: '5', label: 'Verticals Proven', icon: Layers },
-  { value: '100', label: 'Primitives Applied', icon: Shield },
+  { value: '6', label: 'Case Studies', icon: FileCode },
+  { value: '6', label: 'Verticals Proven', icon: Layers },
+  { value: '120', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
 
@@ -449,6 +449,7 @@ const HERO_SUBJECTS = [
   { name: 'Qiskit', org: 'IBM', vertical: 'Quantum' },
   { name: 'Metasploit', org: 'Rapid7', vertical: 'Cyber' },
   { name: 'HuggingFace Tokenizers', org: 'Hugging Face', vertical: 'LLM' },
+  { name: 'OpenSSL tls13_enc.c', org: 'OpenSSL Foundation', vertical: 'Cyber' },
 ];
 
 /* ───────── Main Page ───────── */
