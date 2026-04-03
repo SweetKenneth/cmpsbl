@@ -1,6 +1,6 @@
 /**
  * CmpsblNav — Factory-Era Flat Navigation
- * Clean dark command bar: Home · Memory Stream · Ascension · Pricing · Docs · Try · Login
+ * Clean dark command bar: Home · Memory Stream · Ascension · Pricing · Docs · Try · Case Studies · Login
  * Preserves all legacy routes — only navigation menu changes.
  */
 
