@@ -789,6 +789,49 @@
       <strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 Robotics™ Vertical expansion primitives
       (LIDAR, VECTOR, SWARM, KINETIC, FLUX, FABRICATOR, INSPECTOR, GRIPPER, GUARDIAN, WELDER) and 10 from the core spine.
       Highest cyclomatic complexity of any case study (2,442).
+    </p>
+
+    <!-- ── Case Study 8 ── -->
+    <h3>5.9 Case Study 8: QuantLib Gaussian 1D Models</h3>
+
+    <p>
+      <strong>Subject:</strong> <code>gaussian1d-models.py</code> — a swaption calibration example from
+      <a href="https://github.com/lballabio/QuantLib-SWIG" target="_blank" rel="noopener">QuantLib-SWIG</a> (385+ GitHub stars),
+      the Python binding layer for <a href="https://github.com/lballabio/QuantLib" target="_blank" rel="noopener">QuantLib</a>
+      (6.9K+ GitHub stars, 210 contributors), the most widely adopted open-source library for quantitative finance. QuantLib is
+      BSD-licensed, has been in active development since 2000, and is used by banks, hedge funds, and financial institutions worldwide
+      for derivative pricing, risk management, and model calibration. Copyright 2018 Angus Lee.
+      Serial: CMPSBL-MNJD2A7W-DMM8 · Fingerprint: 9012a33c2dd6b2ce.
+    </p>
+    <p>
+      <strong>Classification:</strong> Python · 489 lines · Depth Score 68/100 (moderate complexity, Jupyter notebook-style,
+      4 functions averaging ~123 lines each, synchronous-only architecture).
+    </p>
+
+    <div class="highlight-box">
+      <div class="label">Structural Findings</div>
+      <p>
+        The substrate identified multiple architectural patterns characteristic of legacy quantitative finance code:
+        <strong>synchronous-only architecture</strong> — no async patterns in iterative numerical calibration that blocks
+        the event loop under load; <strong>cyclomatic complexity of 30</strong> — excessive branching in calibration routines;
+        <strong>monolithic file structure</strong> (489 lines, 4 functions at ~123 lines/function); <strong>no type contracts</strong> —
+        complex numerical code without interfaces or type definitions, which ORACLE predicts increases bug rate by 45%;
+        <strong>no fallback mechanisms</strong> — single-path execution where any calibration failure halts the pipeline;
+        and <strong>high comment ratio (37%)</strong> with potential dead code mixed into documentation.
+      </p>
+    </div>
+
+    <p>
+      <strong>Remediation:</strong> Full CMPSBL Quantum™ Vertical stack — the first financial quantitative code to activate the
+      complete QUANTUM primitive chain: MUON numerical precision tracking, FERMION multi-factor model hardening, ENTANGLE correlated
+      rate curve calibration, LATTICE yield curve lattice models, QUBIT circuit-based calibration optimization, TREATY type contract
+      enforcement, RELAY asynchronous architecture injection, and SANDBOX isolation for dynamic parameter evaluation.
+    </p>
+    <p>
+      <strong>Result:</strong> CJPI 100 (APEX). 20 S-Tier capabilities unlocked — 10 Quantum™ Vertical expansion primitives
+      (MUON, FERMION, ENTANGLE, PRISM, BOSON, GLUON, GRAVITON, HADRON, LATTICE, QUBIT) and 10 from the core spine.
+      First case study to activate the complete QUANTUM chain on financial quantitative code.
+    </p>
 
     <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
     <h2 class="section-heading">6. The Sealed Runtime™ Architecture</h2>
