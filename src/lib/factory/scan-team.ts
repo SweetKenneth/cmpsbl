@@ -9,6 +9,8 @@
 
 import type { RateLimitDecision } from '@/lib/substrate/adaptive-rate-limit';
 import { analyzeCodeMetrics, type CodeMetrics } from './code-metrics';
+import { getCyberSecurityEngines, getCyberSecurityAgents } from './verticals/cybersecurity';
+import { getVerticalSubdomain } from '@/config/domains';
 
 export interface ScanFinding {
   id: string;
@@ -40,8 +42,8 @@ export interface PrimitiveRecommendation {
   rationale: string;
 }
 
-/** All 40 primitives */
-const PRIMITIVE_CATALOG: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
+/** Core 24 spine primitives (12 Organs + 12 Layers) — shared across all verticals */
+const SPINE_PRIMITIVES: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
   // 12 Organs
   { primitiveId: 'brain', name: 'BRAIN', category: 'Organ' },
   { primitiveId: 'memory', name: 'MEMORY', category: 'Organ' },
@@ -68,6 +70,10 @@ const PRIMITIVE_CATALOG: Omit<PrimitiveRecommendation, 'impactScore' | 'rational
   { primitiveId: 'simulate', name: 'SIMULATE', category: 'Layer' },
   { primitiveId: 'forge', name: 'FORGE', category: 'Layer' },
   { primitiveId: 'immunity', name: 'IMMUNITY', category: 'Layer' },
+];
+
+/** Standard 8 Engines + 8 Agents (cmpsbl.com default) */
+const STANDARD_ENGINES_AGENTS: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] = [
   // 8 Engines
   { primitiveId: 'failsafe', name: 'FAILSAFE', category: 'Engine' },
   { primitiveId: 'beacon', name: 'BEACON', category: 'Engine' },
@@ -88,8 +94,32 @@ const PRIMITIVE_CATALOG: Omit<PrimitiveRecommendation, 'impactScore' | 'rational
   { primitiveId: 'atlas', name: 'ATLAS', category: 'Agent' },
 ];
 
+/**
+ * Build the 40-primitive catalog for the active vertical.
+ * Security subdomain gets cyber-specific engines/agents; everything else gets standard.
+ */
+function buildVerticalCatalog(): Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>[] {
+  const vertical = getVerticalSubdomain();
+
+  if (vertical === 'security') {
+    const cyberEngines = getCyberSecurityEngines().map(e => ({
+      primitiveId: e.id.toLowerCase(),
+      name: e.name,
+      category: 'Engine' as const,
+    }));
+    const cyberAgents = getCyberSecurityAgents().map(a => ({
+      primitiveId: a.id.toLowerCase(),
+      name: a.name,
+      category: 'Agent' as const,
+    }));
+    return [...SPINE_PRIMITIVES, ...cyberEngines, ...cyberAgents];
+  }
+
+  return [...SPINE_PRIMITIVES, ...STANDARD_ENGINES_AGENTS];
+}
+
 export function getPrimitiveCatalog() {
-  return PRIMITIVE_CATALOG;
+  return buildVerticalCatalog();
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -456,7 +486,7 @@ function analyzeWithFailsafe(code: string, metrics: CodeMetrics): ScanFinding[] 
 
 /** ENCODE analyzes code signals to score each primitive's relevance */
 function scorePrimitiveRelevance(
-  primitive: typeof PRIMITIVE_CATALOG[0],
+  primitive: Omit<PrimitiveRecommendation, 'impactScore' | 'rationale'>,
   code: string,
   findings: ScanFinding[],
   rand: () => number,
@@ -545,8 +575,9 @@ function generateRecommendations(
   code: string,
   rand: () => number,
 ): PrimitiveRecommendation[] {
-  // Score ALL 40 primitives
-  const scored = PRIMITIVE_CATALOG.map(p => {
+  // Score ALL 40 primitives for the active vertical
+  const catalog = buildVerticalCatalog();
+  const scored = catalog.map(p => {
     const { score, rationale } = scorePrimitiveRelevance(p, code, findings, rand);
     return { ...p, impactScore: score, rationale };
   });
