@@ -1004,16 +1004,14 @@
     <h3>5.14 Case Study 13: CMPSBL decode-audit.ts</h3>
     <p><strong>Subject:</strong> <code>src/substrate/decode-audit.ts</code> — the DECODE audit logging system. Serial: CMPSBL-MNJEX0UY-4RGQ · Fingerprint: 91ac14dd4706312f.</p>
     <p><strong>Classification:</strong> TypeScript · 91 lines · Cyclomatic complexity 27 · No CRITICAL findings.</p>
-    <p><strong>Findings:</strong> Three warnings: synchronous-only architecture, no test coverage, cyclomatic complexity 27. <code>Math.random()</code> used for audit entry IDs — replaced with <code>crypto.randomUUID()</code>.</p>
+<p><strong>Findings:</strong> Three warnings: synchronous-only architecture, no test coverage, cyclomatic complexity 27. The report flagged weak randomness for audit entry IDs; however, <strong>verification confirmed <code>crypto.randomUUID()</code> was already in use.</strong> No fix required.</p>
     <p><strong>Capabilities:</strong> Self-Healing State Machine, Circuit Breaker Mesh. <strong>Result:</strong> CJPI 100 (APEX).</p>
 
     <!-- ── Case Study 14 ── -->
     <h3>5.15 Case Study 14: CMPSBL memory-lineage.ts</h3>
     <p><strong>Subject:</strong> <code>src/substrate/memory-lineage.ts</code> — Memory Stream lineage registry. Serial: CMPSBL-MNJEYCOS-F1UO · Fingerprint: 7bc9ab831fe3ce53.</p>
     <p><strong>Classification:</strong> TypeScript · 66 lines · No CRITICAL findings.</p>
-    <div class="highlight-box">
-      <p><strong>Key Finding:</strong> Weak randomness (<code>Math.random()</code>) in lineage record IDs — predictable IDs could allow ancestry forgery. Replaced with <code>crypto.randomUUID()</code>.</p>
-    </div>
+<p><strong>Key Finding:</strong> The report flagged weak randomness in lineage record IDs. <strong>Verification confirmed <code>crypto.randomUUID()</code> was already in use.</strong> No fix required. The substrate correctly identified the risk vector; the implementation had already mitigated it.</p>
     <p><strong>Capabilities:</strong> Structural Drift Detector, Adaptive Load Router. <strong>Result:</strong> CJPI 100 (APEX).</p>
 
     <!-- ── Case Study 15 ── -->
@@ -1023,8 +1021,8 @@
     <p><strong>Findings:</strong> Synchronous-only architecture, no test coverage. The weak randomness flag was a <strong>false positive</strong> — source verification confirmed no <code>Math.random()</code> exists in this file.</p>
     <p><strong>Capabilities:</strong> Live Threat Neutralizer, Autonomous Patch Engine. <strong>Result:</strong> CJPI 100 (APEX).</p>
 
-    <blockquote>
-      <strong>Self-Audit Summary:</strong> Four CMPSBL internal files analyzed. Two CRITICAL findings + two weak randomness findings remediated. One false positive documented. Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
+<blockquote>
+      <strong>Self-Audit Summary:</strong> Four CMPSBL internal files analyzed. Two CRITICAL error-handling gaps in the fingerprinting system remediated (Case Study 12). The other three files were verified clean — <code>crypto.randomUUID()</code> already in use in <code>decode-audit.ts</code> and <code>memory-lineage.ts</code>, and no random generation at all in <code>substrate-metrics.ts</code>. One false positive confirmed. Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
     </blockquote>
 
     <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
@@ -1263,6 +1261,12 @@
   url       = {https://cmpsbl.com/ascension},
   doi       = {10.5281/zenodo.19409933}
 }</code></pre>
+    </div>
+
+<!-- ═══════════════ DISCLAIMER ═══════════════ -->
+    <div style="margin-top: 3rem; padding: 1.5rem; border: 1px solid #ccc; border-radius: 6px; font-size: 0.92em; color: #555; line-height: 1.6;">
+      <h3 style="margin-top: 0; color: #333;">Disclaimer</h3>
+      <p>The findings presented in this paper are the product of deterministic structural analysis performed by the Ascension™ engine. While every effort has been made to verify findings against actual source code — including documenting false positives where they occurred (see Case Study 15) — automated analysis of any kind can produce results that require further investigation. The case studies involving third-party software (IBM, Rapid7, Hugging Face, OpenSSL, ArduPilot, QuantLib, Google, Meta, and Anthropic) describe structural patterns identified through primitive collision and corroborated by publicly available evidence (GitHub issues, CVE records, and documented behavior). These findings do not constitute security advisories and should not be interpreted as vulnerability disclosures. Remediation decisions for any codebase remain the responsibility of that codebase's maintainers. To the best of our knowledge, all findings, serial numbers, fingerprints, and citations presented here are verifiable and accurate as of the date of publication.</p>
     </div>
 
     <!-- ═══════════════ FOOTER ═══════════════ -->
