@@ -11,6 +11,7 @@ import { PinGate } from "@/components/gates/PinGate";
 const AgentForgeDashboard = lazy(() => import("@/pages/AgentForgePage"));
 const DiscoveredPipelines = lazy(() => import("@/pages/DiscoveredPipelines"));
 const DomainAwareHome = lazy(() => import("@/components/routing/DomainAwareHome"));
+const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const FeedDreamEater = lazy(() => import("@/pages/FeedDreamEater"));
 const DreamArchaeology = lazy(() => import("@/pages/dream-eater/DreamArchaeology"));
 const DreamArtifacts = lazy(() => import("@/pages/dream-eater/DreamArtifacts"));
