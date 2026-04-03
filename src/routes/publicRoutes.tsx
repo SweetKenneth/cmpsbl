@@ -44,6 +44,7 @@ const VanillaDeveloperGuide = lazy(() => import("@/pages/VanillaDeveloperGuide")
 const GamingSubstrate = lazy(() => import("@/pages/GamingSubstrate"));
 const DeveloperShowcase = lazy(() => import("@/pages/DeveloperShowcase"));
 const UseCases = lazy(() => import("@/pages/UseCases"));
+const CaseStudies = lazy(() => import("@/pages/CaseStudies"));
 const MarketplaceSuccess = lazy(() => import("@/pages/MarketplaceSuccess"));
 const SubstrateLicensingSuccess = lazy(() => import("@/pages/SubstrateLicensingSuccess"));
 const SubstrateLicensingDownload = lazy(() => import("@/pages/SubstrateLicensingDownload"));
@@ -159,6 +160,7 @@ export const publicRoutes = (
     <Route path="/developers" element={<DeveloperShowcase />} />
     <Route path="/developers/guide" element={<VanillaDeveloperGuide />} />
     <Route path="/use-cases" element={<UseCases />} />
+    <Route path="/case-studies" element={<CaseStudies />} />
     <Route path="/marketplace" element={<Navigate to="/store" replace />} />
     <Route path="/marketplace/success" element={<PhaseGateRoute><MarketplaceSuccess /></PhaseGateRoute>} />
     <Route path="/engine-marketplace" element={<Navigate to="/store" replace />} />

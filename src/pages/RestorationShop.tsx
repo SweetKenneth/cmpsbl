@@ -40,6 +40,58 @@ import { useDecodeStore } from "@/stores/decodeStore";
 
 const EnhancedFooter = lazy(() => import("@/components/EnhancedFooter").then(m => ({ default: m.EnhancedFooter })));
 
+/** Escape HTML entities for safe injection into styled doc templates */
+function escHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** Wrap doc content in a styled, self-contained HTML page matching the Ascension aesthetic */
+function wrapDocHtml(title: string, bodyContent: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title} — CMPSBL®</title>
+<style>
+:root{--primary:#8b5cf6;--bg:#0a0a0b;--surface:#141416;--border:#27272a;--text:#fafafa;--text-muted:#a1a1aa;--text-dim:#71717a;--success:#22c55e;--warning:#f59e0b;--error:#ef4444}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:2rem;max-width:800px;margin:0 auto}
+h1{font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+h2{font-size:1.15rem;font-weight:700;margin:1.5rem 0 .75rem;color:var(--text)}
+h3{font-size:1rem;font-weight:600;margin:.5rem 0 .25rem}
+p{color:var(--text-muted);margin-bottom:.75rem;font-size:.9rem}
+code{font-family:'SF Mono','Fira Code',monospace;font-size:.8rem;background:rgba(39,39,42,.5);padding:.15rem .4rem;border-radius:.25rem}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:.75rem;padding:1rem;font-size:.8rem;overflow-x:auto;margin:.75rem 0}
+pre code{background:none;padding:0}
+.card{border:1px solid var(--border);border-radius:.75rem;padding:1rem 1.25rem;background:var(--surface);margin-bottom:.75rem}
+.step{display:flex;align-items:flex-start;gap:.75rem;padding:.5rem 0;border-bottom:1px solid rgba(39,39,42,.3)}
+.step-num{width:28px;height:28px;border-radius:50%;background:rgba(139,92,246,.15);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.dim{color:var(--text-dim);font-size:.8rem;margin-left:.5rem}
+.detail{color:var(--text-muted);font-size:.8rem;margin-top:.25rem}
+table{width:100%;border-collapse:collapse;font-size:.85rem;margin:1rem 0}
+th{text-align:left;padding:.5rem .75rem;border-bottom:1px solid var(--border);color:var(--text-dim);font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+td{padding:.5rem .75rem;border-bottom:1px solid rgba(39,39,42,.5)}
+strong{color:var(--text)}
+ol,ul{padding-left:1.25rem;margin:.75rem 0}
+li{margin-bottom:.5rem;color:var(--text-muted);font-size:.9rem}
+.badge{display:inline-block;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:.2rem .5rem;border-radius:.375rem;margin-right:.25rem}
+.badge-critical{background:rgba(239,68,68,.15);color:var(--error)}
+.badge-warning{background:rgba(245,158,11,.15);color:var(--warning)}
+.badge-info{background:rgba(139,92,246,.15);color:var(--primary)}
+.badge-hardened{background:rgba(34,197,94,.15);color:var(--success)}
+.badge-mitigated{background:rgba(245,158,11,.15);color:var(--warning)}
+.badge-monitor{background:rgba(139,92,246,.1);color:var(--text-dim)}
+.footer{text-align:center;padding:2rem 0;color:var(--text-dim);font-size:.7rem;border-top:1px solid var(--border);margin-top:2rem}
+</style>
+</head>
+<body>
+<h1>${title}</h1>
+${bodyContent}
+<div class="footer">© ${new Date().getFullYear()} PromptFluid™ · CMPSBL® · All rights reserved.</div>
+</body>
+</html>`;
+}
+
 type Phase = 'upload' | 'diagnostic' | 'select' | 'queue' | 'debrief';
 type ProcessingPrimitive = { name: string; status: 'pending' | 'active' | 'done' };
 
@@ -166,8 +218,8 @@ export default function RestorationShop() {
       const zip = new JSZip();
       const fingerprint = report.cjpiCertificate.fingerprint;
 
-      // ═══ LICENSE ═══
-      zip.file('LICENSE.txt', generateLicense(report.id, fingerprint));
+      // ═══ LICENSE (styled HTML) ═══
+      zip.file('LICENSE.html', wrapDocHtml('CMPSBL® Software License', generateLicense(report.id, fingerprint)));
 
       // ═══ Dual-Layer Source ═══
       const refExt = getRefurbishedExtension(detectedLang);
@@ -177,27 +229,27 @@ export default function RestorationShop() {
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
 
-      // ═══ Pipeline Details ═══
-      const pipelineMd = report.pipelineDetails.map(
-        p => `### Step ${p.order}: ${p.primitiveName}\n${p.action}\nDuration: ${p.durationMs}ms`
-      ).join('\n\n');
-      zip.file('docs/pipeline-details.md', `# Pipeline Details\n\nFingerprint: \`${fingerprint}\`\nSerial: \`${report.id}\`\n\n${pipelineMd}`);
+      // ═══ Pipeline Details (styled HTML) ═══
+      const pipelineHtml = report.pipelineDetails.map(
+        p => `<div class="step"><span class="step-num">${p.order}</span><div><strong>${p.primitiveName}</strong><span class="dim"> — ${p.durationMs}ms</span><div class="detail">${p.action}</div></div></div>`
+      ).join('\n');
+      zip.file('docs/pipeline-details.html', wrapDocHtml('Pipeline Details', `<p>Fingerprint: <code>${fingerprint}</code><br/>Serial: <code>${report.id}</code></p>\n${pipelineHtml}`));
 
-      // ═══ New Capabilities ═══
-      const capsMd = report.newCapabilities.map(
-        c => `### ${c.name}\n${c.description}\n\n\`\`\`typescript\n${c.usageExample}\n\`\`\``
-      ).join('\n\n');
-      zip.file('docs/new-capabilities.md', `# New Capabilities\n\n${capsMd}`);
+      // ═══ New Capabilities (styled HTML) ═══
+      const capsHtml = report.newCapabilities.map(
+        c => `<div class="card"><h3>${c.name}</h3><p>${c.description}</p><pre><code>${escHtml(c.usageExample)}</code></pre></div>`
+      ).join('\n');
+      zip.file('docs/new-capabilities.html', wrapDocHtml('New Capabilities', capsHtml));
 
-      // ═══ Testing Guide ═══
-      const testMd = [
-        `# Testing Guide`,
-        `\nInstall: \`${report.testingGuide.installCommand}\``,
-        `Run: \`${report.testingGuide.testCommand}\``,
-        `\n## Steps\n`,
-        ...report.testingGuide.steps.map((s, i) => `${i + 1}. ${s}`),
+      // ═══ Testing Guide (styled HTML) ═══
+      const testHtml = [
+        `<p>Install: <code>${report.testingGuide.installCommand}</code></p>`,
+        `<p>Run: <code>${report.testingGuide.testCommand}</code></p>`,
+        `<h2>Steps</h2><ol>`,
+        ...report.testingGuide.steps.map(s => `<li>${s}</li>`),
+        `</ol>`,
       ].join('\n');
-      zip.file('docs/testing-guide.md', testMd);
+      zip.file('docs/testing-guide.html', wrapDocHtml('Testing Guide', testHtml));
 
       // ═══ Test Harness Config ═══
       const testConfig = {
@@ -215,23 +267,23 @@ export default function RestorationShop() {
       // ═══ HTML Refurbishment Report (styled, self-contained) ═══
       zip.file('refurbishment-report.html', generateHtmlReport(report));
 
-      // ═══ Error Codes ═══
-      const errorMd = report.errorCodes.map(
-        e => `### ${e.code}\n**Trigger:** ${e.trigger}\n**Resolution:** ${e.resolution}`
-      ).join('\n\n');
-      zip.file('docs/error-codes.md', `# Error Codes\n\n${errorMd}`);
-
-      // ═══ Vulnerability Assessment ═══
-      const vulnMd = report.vulnerabilityAssessment.map(
-        v => `### ${v.title}\n**Severity:** ${v.severity}\n**Status:** ${v.status}\n${v.details}`
-      ).join('\n\n');
-      zip.file('docs/vulnerability-assessment.md', `# Vulnerability Assessment\n\n${vulnMd}`);
-
-      // ═══ Primitive Manifest ═══
-      const manifestMd = report.primitiveManifest.map(
-        p => `- **${p.name}** (${p.category}): ${p.contribution}`
+      // ═══ Error Codes (styled HTML) ═══
+      const errorHtml = report.errorCodes.map(
+        e => `<div class="card"><h3>${e.code}</h3><p><strong>Trigger:</strong> ${e.trigger}</p><p><strong>Resolution:</strong> ${e.resolution}</p></div>`
       ).join('\n');
-      zip.file('docs/primitive-manifest.md', `# Primitive Manifest\n\n${manifestMd}`);
+      zip.file('docs/error-codes.html', wrapDocHtml('Error Codes', errorHtml));
+
+      // ═══ Vulnerability Assessment (styled HTML) ═══
+      const vulnHtml = report.vulnerabilityAssessment.map(
+        v => `<div class="card"><h3>${v.title}</h3><span class="badge badge-${v.severity}">${v.severity}</span> <span class="badge badge-${v.status}">${v.status}</span><p>${v.details}</p></div>`
+      ).join('\n');
+      zip.file('docs/vulnerability-assessment.html', wrapDocHtml('Vulnerability Assessment', vulnHtml));
+
+      // ═══ Primitive Manifest (styled HTML) ═══
+      const manifestHtml = `<table><thead><tr><th>Primitive</th><th>Category</th><th>Contribution</th></tr></thead><tbody>${
+        report.primitiveManifest.map(p => `<tr><td><strong>${p.name}</strong></td><td>${p.category}</td><td>${p.contribution}</td></tr>`).join('\n')
+      }</tbody></table>`;
+      zip.file('docs/primitive-manifest.html', wrapDocHtml('Primitive Manifest', manifestHtml));
 
       // ═══ README ═══
       const readmeMd = [
@@ -249,7 +301,7 @@ export default function RestorationShop() {
         `- \`src/refurbished-source${getRefurbishedExtension(detectedLang)}\` — Hardened code with primitive guards`,
         `- \`restoration-report.json\` — Full machine-readable report`,
         `- \`test-harness.config.json\` — Config for @cmpsbl/test-harness`,
-        `- \`LICENSE.txt\` — Usage license`,
+        `- \`LICENSE.html\` — Usage license`,
         `- \`docs/\` — Pipeline details, capabilities, testing guide, error codes, CJPI cert`,
         ``,
         `## Quick Start`,
