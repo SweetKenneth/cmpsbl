@@ -611,10 +611,9 @@ const PYTORCH_CAPABILITIES = [
 /* ───────── Hero Stats ───────── */
 
 const HERO_STATS = [
-  { value: '10', label: 'Case Studies', icon: FileCode },
+  { value: '11', label: 'Case Studies', icon: FileCode },
   { value: '8', label: 'Verticals Proven', icon: Layers },
-  { value: '200', label: 'Primitives Applied', icon: Shield },
-  { value: '0', label: 'AI Calls Made', icon: Brain },
+  { value: '220', label: 'Primitives Applied', icon: Shield },
   { value: '0', label: 'AI Calls Made', icon: Brain },
 ];
 
