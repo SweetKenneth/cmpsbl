@@ -169,8 +169,9 @@ export default function RestorationShop() {
       zip.file('LICENSE.txt', generateLicense(report.id, fingerprint));
 
       // ═══ Dual-Layer Source ═══
+      const refExt = getRefurbishedExtension(detectedLang);
       zip.file('src/original-source.txt', code || '// No source provided');
-      zip.file('src/refurbished-source.ts', refurbishedCode || '// Refurbished code not generated');
+      zip.file(`src/refurbished-source${refExt}`, refurbishedCode || '// Refurbished code not generated');
 
       // ═══ Restoration Report (JSON) ═══
       zip.file('restoration-report.json', JSON.stringify(report, null, 2));
