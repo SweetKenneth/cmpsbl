@@ -46,8 +46,8 @@ This paper makes four contributions:
 
 1. **Architecture:** A formal description of the 40-primitive collision matrix and its taxonomic organization
 2. **Method:** The Ascension™ pipeline — an 8-stage deterministic transformation process
-3. **Evidence:** Eight verified case studies spanning four languages and six verticals, each with a verifiable serial number and fingerprint
-4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads), a structural dependency gap in OpenSSL's TLS 1.3 encryption engine, structural hardening of Metasploit's core TCP exploitation framework, dynamic code execution detection in ArduPilot autonomous vehicle software (1M+ vehicles), and structural deficiencies in QuantLib's swaption calibration models used across global financial institutions
+3. **Evidence:** Nine verified case studies spanning four languages and seven verticals, each with a verifiable serial number and fingerprint
+4. **Discovery:** Identification of a critical vulnerability in Hugging Face `tokenizers` (73M+ monthly downloads), a structural dependency gap in OpenSSL's TLS 1.3 encryption engine, structural hardening of Metasploit's core TCP exploitation framework, dynamic code execution detection in ArduPilot autonomous vehicle software (1M+ vehicles), structural deficiencies in QuantLib's swaption calibration models, and deprecated API / monolithic architecture patterns in Google OR-Tools CP-SAT (13.3K+ GitHub stars)
 
 ---
 
