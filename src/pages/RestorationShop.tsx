@@ -60,6 +60,7 @@ export default function RestorationShop() {
   const [queueEntry, setQueueEntry] = useState<QueueEntry | null>(null);
   const [selectedPrims, setSelectedPrims] = useState<PrimitiveRecommendation[]>([]);
   const [refurbishedCode, setRefurbishedCode] = useState<string>('');
+  const [detectedLang, setDetectedLang] = useState<string>('TypeScript');
   const [isScanning, setIsScanning] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
   const [processingPrimitives, setProcessingPrimitives] = useState<ProcessingPrimitive[]>([]);
