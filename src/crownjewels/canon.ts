@@ -5,6 +5,7 @@
 
 /** All 26 canonical substrate modules + known execution-layer entities */
 export const CANONICAL_MODULES = [
+  // Core 40 Primitives
   'CORE', 'SYSTEM', 'BRAIN', 'DREAM', 'RIPPLE', 'ACCESS', 'DEFENSE',
   'NEXUS', 'DECODE', 'VISION', 'CORTEX', 'INCLUSIVE', 'INTEGRATION',
   'EVOLUTION', 'MEDIC', 'NERVE', 'GOVERNANCE', 'OBSERVABILITY',
@@ -12,6 +13,10 @@ export const CANONICAL_MODULES = [
   'MEMORY', 'ECONOMY', 'RELAY', 'IDENTITY', 'ATLAS', 'ENCODE',
   'SOVEREIGN', 'ORACLE', 'CONSCIENCE', 'PHANTOM', 'FORGE',
   'LINGUA', 'COMPASS', 'ECHO', 'TREATY', 'HARVEST', 'REFLEX',
+  // CYBER™ Vertical Engines
+  'SENTINEL', 'AEGIS', 'CIPHER', 'RECON', 'VANGUARD', 'BASTION', 'TEMPEST',
+  // CYBER™ Vertical Agents
+  'WRAITH', 'OBSIDIAN', 'SPECTER', 'BLACKOUT', 'TRACER', 'NOCTURNE', 'IRONCLAD', 'BULWARK',
 ] as const;
 
 export type CanonicalModule = typeof CANONICAL_MODULES[number];

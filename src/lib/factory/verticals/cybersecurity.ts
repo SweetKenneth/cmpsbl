@@ -412,3 +412,34 @@ export function getAllCyberCapabilities(): string[] {
   }
   return Array.from(capabilities).sort();
 }
+
+/* ═══════════════════════════════════════════════
+   Crown Jewel Integration — S-Tier Registry Surface
+   ═══════════════════════════════════════════════ */
+
+/** All 80 architectural Crown Jewels for the CYBER™ vertical */
+export function getCyberCrownJewels(): STierEntry[] {
+  return [...CYBER_CROWN_JEWELS];
+}
+
+/** Crown Jewels for a specific cyber primitive */
+export function getCyberPrimitiveCrownJewels(primitiveId: string): STierEntry[] {
+  return getCyberJewelsByPrimitive(primitiveId);
+}
+
+/** Crown Jewel summary per primitive (for dashboard) */
+export function getCyberCrownJewelSummary() {
+  return getCyberJewelSummary();
+}
+
+/** Total Crown Jewel count for the vertical */
+export function getCyberCrownJewelCount(): number {
+  return CYBER_CROWN_JEWELS.length;
+}
+
+/** All Crown Jewel capability IDs as active capabilities */
+export function getCyberCrownJewelCapabilities(): string[] {
+  return CYBER_CROWN_JEWELS.map(j =>
+    j.id.toLowerCase().replace(/^s-/, 'cj_')
+  );
+}
