@@ -6,6 +6,7 @@ const PromptFluidHome = lazy(() => import("@/pages/PromptFluidHome"));
 const FactoryHome = lazy(() => import("@/pages/FactoryHome"));
 const CyberSecurityHome = lazy(() => import("@/pages/CyberSecurityHome"));
 const RoboticsHome = lazy(() => import("@/pages/RoboticsHome"));
+const QuantumHome = lazy(() => import("@/pages/QuantumHome"));
 
 /**
  * Domain-aware routing:
