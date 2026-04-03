@@ -702,6 +702,250 @@ export default function CaseStudies() {
             </div>
           </div>
         </section>
+
+        {/* ════════════════════════════════════════════════════════════ */}
+        {/*  CASE STUDY #3 — Qiskit ConsolidateBlocks (Quantum)       */}
+        {/* ════════════════════════════════════════════════════════════ */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 mb-12">
+          <div className="border border-border rounded-2xl overflow-hidden bg-card">
+            {/* Study Header */}
+            <div className="bg-gradient-to-br from-violet-500/10 to-muted/30 border-b border-border p-6 sm:p-8">
+              <div className="flex flex-wrap items-center gap-2 mb-3">
+                <Badge className="bg-violet-500/15 text-violet-500 border-violet-500/20" variant="outline">Quantum</Badge>
+                <Badge className="bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20" variant="outline">CJPI 100 — Apex</Badge>
+                <Badge variant="outline" className="text-muted-foreground">CMPSBL-MNJ4Y3JG-CQOW</Badge>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+                Qiskit ConsolidateBlocks — IBM's Quantum Circuit Optimizer
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-3xl">
+                The{' '}
+                <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">ConsolidateBlocks</a>{' '}
+                transpiler pass from IBM's Qiskit SDK — the world's most-downloaded quantum computing framework (13M+ downloads, 7K+ GitHub stars). This critical optimization pass consolidates consecutive quantum gates into single unitary operations using{' '}
+                <a href="https://en.wikipedia.org/wiki/KAK_decomposition" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 hover:text-primary/80">KAK decomposition</a>{' '}
+                — refurbished through CMPSBL QUANTUM™ in under 10 seconds, with zero AI.
+              </p>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-border">
+              {[
+                { icon: Clock, label: 'Processing Time', value: '~10s' },
+                { icon: Shield, label: 'Primitives Applied', value: '20' },
+                { icon: Bug, label: 'Vulnerabilities Found', value: '7' },
+                { icon: Award, label: 'CJPI Score', value: '100' },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="p-4 sm:p-5 text-center border-r border-border last:border-r-0">
+                  <Icon className="w-4 h-4 text-muted-foreground mx-auto mb-1" />
+                  <div className="text-xl sm:text-2xl font-bold text-foreground">{value}</div>
+                  <div className="text-[11px] text-muted-foreground uppercase tracking-wider">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="p-6 sm:p-8 space-y-10">
+
+              {/* ─── Origin & Provenance ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <GitBranch className="w-4 h-4 text-primary" /> Origin & Provenance
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    <strong className="text-foreground">Repository:</strong>{' '}
+                    <a href="https://github.com/Qiskit/qiskit" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Qiskit/qiskit</a>{' '}
+                    — IBM's open-source SDK for quantum computing. Qiskit is the world's most popular quantum software stack, with over{' '}
+                    <strong className="text-foreground">13 million downloads</strong> and{' '}
+                    <strong className="text-foreground">69% developer preference</strong> according to IBM. It powers research and production workloads on IBM Quantum hardware, including 1,121+ qubit processors.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">File:</strong>{' '}
+                    <a href="https://github.com/Qiskit/qiskit/blob/main/qiskit/transpiler/passes/optimization/consolidate_blocks.py" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2 font-mono text-xs">transpiler/passes/optimization/consolidate_blocks.py</a>{' '}
+                    — the <code className="text-xs px-1 py-0.5 rounded bg-muted">ConsolidateBlocks</code> transpiler pass. Copyright IBM 2017–2019, licensed under Apache 2.0.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Algorithm:</strong> ConsolidateBlocks replaces consecutive sequences of quantum gates acting on the same qubits with a single{' '}
+                    <a href="https://en.wikipedia.org/wiki/Unitary_matrix" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Unitary</a>{' '}
+                    node, which is then resynthesized into an optimal subcircuit using{' '}
+                    <a href="https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.synthesis.TwoQubitBasisDecomposer" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">KAK (Cartan) decomposition</a>{' '}
+                    — a mathematical technique from Lie group theory that decomposes any two-qubit unitary into a minimal sequence of single-qubit rotations and entangling gates. This is critical for reducing circuit depth on NISQ-era hardware where every additional gate introduces decoherence.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Why This File Matters:</strong> On today's noisy quantum processors, circuit depth directly determines whether a computation produces meaningful results or noise. ConsolidateBlocks is activated at{' '}
+                    <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level=2</code> and above in Qiskit's transpiler pipeline — meaning it runs on virtually every production quantum circuit compiled through Qiskit. It supports 12 basis gate types (CX, CZ, iSwap, ECR, RXX, RYY, RZZ, RZX, CRX, CRY, CRZ, CPhase) and handles recursive control-flow operations.
+                  </p>
+                  <p>
+                    <strong className="text-foreground">Real-World Impact:</strong> This pass is used by{' '}
+                    <a href="https://www.ibm.com/quantum" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">IBM Quantum</a>,{' '}
+                    research institutions worldwide, and every major quantum computing lab running Qiskit. It has been cited in hundreds of peer-reviewed quantum computing papers and is a core component of the{' '}
+                    <a href="https://www.ibm.com/quantum/blog/qiskit-2-0-release-summary" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">Qiskit 2.x release series</a>{' '}
+                    that IBM describes as "the world's most performant quantum SDK." Open issues (
+                    <a href="https://github.com/Qiskit/qiskit/issues/11975" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">#11975</a>,{' '}
+                    <a href="https://github.com/Qiskit/qiskit/issues/15631" target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">#15631</a>) demonstrate the ongoing complexity of this optimization problem.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Vulnerability Assessment ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Bug className="w-4 h-4 text-destructive" /> Pre-Ascension Vulnerability Assessment
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The CMPSBL six-primitive diagnostic squad (ENCODE, ORACLE, ENGINEER, MEDIC, DEFENSE, FAILSAFE) identified 7 structural vulnerabilities in the 192-line transpiler pass:
+                </p>
+                <div className="space-y-2">
+                  {QISKIT_VULNERABILITIES.map((v) => (
+                    <div key={v.title} className="flex items-start gap-3 p-3 rounded-lg bg-muted/40 border border-border/50">
+                      <div className="flex gap-2 shrink-0 pt-0.5">
+                        <SeverityBadge severity={v.severity} />
+                        <StatusBadge status={v.status} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-medium text-foreground">{v.title}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{v.detail}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Quantum-Specific Hardening ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Atom className="w-4 h-4 text-primary" /> Why Quantum Vertical Matters Here
+                </h3>
+                <div className="prose-sm text-muted-foreground space-y-3 leading-relaxed">
+                  <p>
+                    Running ConsolidateBlocks through the <strong className="text-foreground">CMPSBL QUANTUM™</strong> vertical instead of the core substrate is not arbitrary — it is the correct domain match. The Quantum vertical's expansion primitives understand quantum-computational semantics: QUBIT provides gate orchestration and circuit transpilation awareness, FERMION brings Schrödinger equation solvers for many-body state evolution, CRYOGEN models T1/T2 decoherence timescales that directly affect how aggressively gates should be consolidated, and PHOTON adds interferometry modeling relevant to optical quantum hardware.
+                  </p>
+                  <p>
+                    The core substrate would harden this file generically — circuit breakers, logging, IP obfuscation. The Quantum vertical instead enriches it with <strong className="text-foreground">domain-aware capabilities</strong> like the Neutrino Oscillation Predictor (PMNS matrix computation), Cryogenic Decoherence Shield (dilution refrigerator optimization), and Fusion Reactor Modeler (tokamak plasma confinement). These capabilities compose with the existing KAK decomposition logic to create a transpiler pass that is not just hardened but quantum-physically informed.
+                  </p>
+                </div>
+              </div>
+
+              {/* ─── Primitives Applied ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" /> 20 Primitives Applied
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  The CMPSBL QUANTUM™ vertical selected 20 primitives — 5 Organs for structural integrity, 5 Layers for operational resilience, 5 Engines for domain-specific computation, and 5 Agents for quantum-physical simulation:
+                </p>
+                <div className="grid gap-2">
+                  {visibleQiskitPrimitives.map((p) => (
+                    <div key={p.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/40">
+                      <span className="font-mono text-xs font-bold text-foreground w-24 shrink-0">{p.name}</span>
+                      <TypeBadge type={p.type} />
+                      <span className="text-xs text-muted-foreground">{p.action}</span>
+                    </div>
+                  ))}
+                </div>
+                {QISKIT_PRIMITIVES.length > 8 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="mt-3 w-full text-xs text-muted-foreground"
+                    onClick={() => setShowAllQiskitPrimitives(!showAllQiskitPrimitives)}
+                  >
+                    {showAllQiskitPrimitives ? <><ChevronUp className="w-3 h-3 mr-1" /> Show fewer</> : <><ChevronDown className="w-3 h-3 mr-1" /> Show all 20 primitives</>}
+                  </Button>
+                )}
+              </div>
+
+              {/* ─── New Capabilities Unlocked ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" /> 10 New Capabilities Unlocked
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-2">
+                  {QISKIT_CAPABILITIES.map((c) => (
+                    <div key={c.name} className="p-3 rounded-lg bg-muted/30 border border-border/40">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-sm font-medium text-foreground">{c.name}</span>
+                        <Badge variant="outline" className="text-[9px] uppercase">{c.mode}</Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground">{c.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ─── Key Insight ─── */}
+              <div className="bg-violet-500/[0.04] border border-violet-500/15 rounded-xl p-5">
+                <h3 className="text-base font-semibold text-foreground mb-2">Key Insight</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+                  IBM's ConsolidateBlocks is arguably the single most-executed quantum circuit optimization in the world — it runs on every Qiskit circuit compiled at <code className="text-xs px-1 py-0.5 rounded bg-muted">optimization_level≥2</code>. Despite being authored by IBM Research and maintained by a world-class quantum engineering team, the CMPSBL six-primitive diagnostic squad still identified <strong className="text-foreground">3 actionable vulnerabilities</strong> (synchronous-only architecture, cyclomatic complexity of 32, and 19-dependency coupling with no fallback strategy) and <strong className="text-foreground">4 structural monitors</strong>.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  The CMPSBL QUANTUM™ vertical then wrapped this file in 20 primitives that don't just harden it generically — they understand quantum physics. CRYOGEN models the thermal noise environment where consolidated gates will execute. FERMION tracks many-body state evolution that consolidation affects. BOSON and GLUON add Standard Model simulation capabilities. The result is a transpiler pass that is no longer just an optimizer — it is a <strong className="text-foreground">quantum-physically aware Sealed Runtime</strong>, processed in approximately 10 seconds with zero AI.
+                </p>
+              </div>
+
+              {/* ─── Downloads ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Download className="w-4 h-4 text-primary" /> Download & Verify
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Both the original IBM source and the full CMPSBL QUANTUM™ Ascension export are available for download.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a href="/downloads/case-studies/consolidate_blocks_original.py" download>
+                    <Button variant="outline" size="sm" className="gap-2">
+                      <FileCode className="w-3.5 h-3.5" />
+                      Original Source (.py)
+                    </Button>
+                  </a>
+                  <a href="/downloads/case-studies/qiskit-consolidate-ascended-CMPSBL-MNJ4Y3JG-CQOW.zip" download>
+                    <Button size="sm" className="gap-2">
+                      <Download className="w-3.5 h-3.5" />
+                      Ascended Export (.zip)
+                    </Button>
+                  </a>
+                </div>
+                <p className="text-[11px] text-muted-foreground mt-3">
+                  Serial: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">CMPSBL-MNJ4Y3JG-CQOW</code>{' · '}
+                  Fingerprint: <code className="px-1 py-0.5 rounded bg-muted text-[10px] font-mono">09d1c4bea3108524</code>{' · '}
+                  Generated: April 3, 2026
+                </p>
+              </div>
+
+              {/* ─── External References ─── */}
+              <div>
+                <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <ExternalLink className="w-4 h-4 text-primary" /> References & Further Reading
+                </h3>
+                <ul className="space-y-1.5 text-sm">
+                  {[
+                    { label: 'Qiskit GitHub Repository (7K+ ★)', url: 'https://github.com/Qiskit/qiskit' },
+                    { label: 'ConsolidateBlocks — IBM Quantum Docs', url: 'https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.transpiler.passes.ConsolidateBlocks' },
+                    { label: 'TwoQubitBasisDecomposer (KAK) — IBM Docs', url: 'https://quantum.cloud.ibm.com/docs/en/api/qiskit/qiskit.synthesis.TwoQubitBasisDecomposer' },
+                    { label: 'Qiskit 2.0 Release Summary — IBM Blog', url: 'https://www.ibm.com/quantum/blog/qiskit-2-0-release-summary' },
+                    { label: 'Issue #11975: Resynthesis Edge Cases', url: 'https://github.com/Qiskit/qiskit/issues/11975' },
+                    { label: 'Issue #15631: Improve Block Merging', url: 'https://github.com/Qiskit/qiskit/issues/15631' },
+                    { label: 'KAK Decomposition — Wikipedia', url: 'https://en.wikipedia.org/wiki/KAK_decomposition' },
+                    { label: 'IBM Quantum Platform', url: 'https://www.ibm.com/quantum' },
+                    { label: 'Qiskit PyPI Stats (13M+ Downloads)', url: 'https://pypistats.org/packages/qiskit' },
+                    { label: 'CMPSBL® Ascension Lab', url: '/ascension' },
+                  ].map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target={ref.url.startsWith('http') ? '_blank' : undefined}
+                        rel={ref.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="text-primary underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+                      >
+                        {ref.label} {ref.url.startsWith('http') ? '↗' : '→'}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <PageSEOBlock
