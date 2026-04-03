@@ -160,7 +160,7 @@ No stage in the pipeline invokes external AI, stochastic inference, or probabili
 
 ### 5.1 Overview
 
-We present six verified case studies spanning four programming languages, five industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:
+We present seven verified case studies spanning four programming languages, five industry verticals, and a range of structural complexities. Each study represents a real Ascension™ session with a verifiable serial number, cryptographic fingerprint, and downloadable artifacts:
 
 | # | Software | Language | Vertical | CJPI | Serial | Fingerprint |
 |---|----------|----------|----------|------|--------|-------------|
@@ -170,6 +170,7 @@ We present six verified case studies spanning four programming languages, five i
 | 4 | Metasploit Exploit::Remote::Tcp | Ruby | Cyber | 100 APEX | CMPSBL-MNJ5AB71-71MP | f90f697548eab361 |
 | 5 | Hugging Face Tokenizers | Python | LLM/ML | 100 APEX | CMPSBL-MNJ6GG7U-EBF7 | 2c8b3cbaef71cecd |
 | 6 | OpenSSL tls13_enc.c | C | Cyber | 100 APEX | CMPSBL-MNJB00F5-626R | b82607914337f881 |
+| 7 | ArduPilot vehicle_test_suite.py | Python | Robotics | 100 APEX | CMPSBL-MNJBTP5Q-V0OK | 13c42397bead4a65 |
 
 ### 5.2 Case Study 1: A* Path Planner (PythonRobotics)
 
