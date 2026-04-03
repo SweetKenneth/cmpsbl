@@ -1021,8 +1021,8 @@
     <p><strong>Findings:</strong> Synchronous-only architecture, no test coverage. The weak randomness flag was a <strong>false positive</strong> — source verification confirmed no <code>Math.random()</code> exists in this file.</p>
     <p><strong>Capabilities:</strong> Live Threat Neutralizer, Autonomous Patch Engine. <strong>Result:</strong> CJPI 100 (APEX).</p>
 
-    <blockquote>
-      <strong>Self-Audit Summary:</strong> Four CMPSBL internal files analyzed. Two CRITICAL findings + two weak randomness findings remediated. One false positive documented. Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
+<blockquote>
+      <strong>Self-Audit Summary:</strong> Four CMPSBL internal files analyzed. Two CRITICAL error-handling gaps in the fingerprinting system remediated (Case Study 12). The other three files were verified clean — <code>crypto.randomUUID()</code> already in use in <code>decode-audit.ts</code> and <code>memory-lineage.ts</code>, and no random generation at all in <code>substrate-metrics.ts</code>. One false positive confirmed. Fifteen runs. Fifteen targets. The substrate doesn't know whose code it's looking at. It just sees the math.
     </blockquote>
 
     <!-- ═══════════════ 6. SEALED RUNTIME ═══════════════ -->
