@@ -142,6 +142,14 @@ Deno.serve(async (req: Request) => {
     });
     log(`Rolling copy saved: ${datedName}`);
 
+    const { data: signedDownload, error: signedDownloadError } = await admin.storage
+      .from('failsafe-backups')
+      .createSignedUrl(fileName, 60 * 60);
+
+    if (signedDownloadError) {
+      throw new Error(`Signed URL creation failed: ${signedDownloadError.message}`);
+    }
+
     // ── Step 4: Log to audit ──
     const elapsed = Date.now() - startTime;
     await admin.from('audit_logs').insert({
@@ -169,6 +177,8 @@ Deno.serve(async (req: Request) => {
       elapsed_ms: elapsed,
       validation: validation.details,
       files: [fileName, datedName],
+      file_path: `failsafe-backups/${fileName}`,
+      download_url: signedDownload?.signedUrl ?? null,
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
