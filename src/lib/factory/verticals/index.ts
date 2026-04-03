@@ -102,10 +102,11 @@ const VERTICAL_REGISTRY = new Map<string, () => VerticalSubstrateConfig>([
 ]);
 
 /** Domain to vertical ID mapping (static) */
-const DOMAIN_VERTICAL_MAP = new Map<SpecialtyDomain, string>([
+const DOMAIN_VERTICAL_MAP = new Map<string, string>([
   ['security', 'cyber-v1'],
   ['robotics', 'robo-v1'],
   ['quantum', 'quantum-v1'],
+  ['llm', 'llm-v1'],
 ]);
 
 /**
